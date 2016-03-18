@@ -1,0 +1,44 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2012
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Silicus.Provare.Entities", "Silicus.Provare.Entities\Silicus.Provare.Entities.csproj", "{73783206-19E7-45DB-960B-5A7F17CBDCD8}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Silicus.Provare.Model", "Silicus.Provare.Model\Silicus.Provare.Model.csproj", "{2DAF03E8-3568-485C-8D8F-64B359333723}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Silicus.Provare.Web.Angular", "Silicus.Provare.Web.Angular\Silicus.Provare.Web.Angular.csproj", "{6E2ADEDB-FA7E-4E16-A0A5-E7DB19A4E3CF}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Silicus.Provare.Web.Backbone", "Silicus.Provare.Web.Backbone\Silicus.Provare.Web.Backbone.csproj", "{105B39E8-9102-4E1F-992D-49A5098A0A9A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Silicus.Provare.API", "Silicus.Provare.API\Silicus.Provare.API.csproj", "{5FE9A302-DAEE-4E69-B7D2-786C5F2D980E}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{73783206-19E7-45DB-960B-5A7F17CBDCD8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{73783206-19E7-45DB-960B-5A7F17CBDCD8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{73783206-19E7-45DB-960B-5A7F17CBDCD8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{73783206-19E7-45DB-960B-5A7F17CBDCD8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2DAF03E8-3568-485C-8D8F-64B359333723}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2DAF03E8-3568-485C-8D8F-64B359333723}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2DAF03E8-3568-485C-8D8F-64B359333723}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2DAF03E8-3568-485C-8D8F-64B359333723}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6E2ADEDB-FA7E-4E16-A0A5-E7DB19A4E3CF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6E2ADEDB-FA7E-4E16-A0A5-E7DB19A4E3CF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6E2ADEDB-FA7E-4E16-A0A5-E7DB19A4E3CF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6E2ADEDB-FA7E-4E16-A0A5-E7DB19A4E3CF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{105B39E8-9102-4E1F-992D-49A5098A0A9A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{105B39E8-9102-4E1F-992D-49A5098A0A9A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{105B39E8-9102-4E1F-992D-49A5098A0A9A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{105B39E8-9102-4E1F-992D-49A5098A0A9A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5FE9A302-DAEE-4E69-B7D2-786C5F2D980E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5FE9A302-DAEE-4E69-B7D2-786C5F2D980E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5FE9A302-DAEE-4E69-B7D2-786C5F2D980E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5FE9A302-DAEE-4E69-B7D2-786C5F2D980E}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

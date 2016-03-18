@@ -1,0 +1,81 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>Create test 01</title>
+    <script src="../Scripts/jquery-1.9.1.js"></script>
+    <script src="../Scripts/bootstrap.js"></script>
+    <link href="../Content/bootstrap-theme.css" rel="stylesheet" />
+    <link href="../Content/bootstrap.css" rel="stylesheet" />
+</head>
+<body>
+    <header>
+        <nav class="navbar navbar-default">
+            <div class="container-fluid">
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <a class="navbar-brand" href="AdminDashboard.html">My Dashboard</a>
+                </div>
+
+                <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                    <ul class="nav navbar-nav">
+                        <li><a href="Result.html">Results</a></li>
+                        <li><a href="QuestionBank.html">Question Bank</a></li>
+                        <li><a href="Tests.html">Tests</a></li>
+                        <li><a href="Files.html">Files</a></li>
+                    </ul>
+                    <form class="navbar-form navbar-left" role="search">
+                        <div class="form-group">
+                            <input type="text" class="form-control" placeholder="Search test or participant" />
+                        </div>
+                        <button type="submit" class="btn btn-info"><span class="glyphicon glyphicon-search"></span></button>
+                    </form>
+                    <ul class="nav navbar-nav navbar-right">
+                        <li><a href="../Account/Login.html">Logout</a></li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </header>
+    <div class="panel panel-primary">
+        <div class="panel-heading">
+            <h1 class="panel-title">
+                <p class="text-center" style="font-size: larger">New Test</p>
+            </h1>
+        </div>
+        <div class="panel-body">
+            <form role="form">
+                <div class="form-group">
+                    <label for="inputEmail">Test Name: </label>
+                    <input type="text" class="form-control" id="inputEmail" placeholder="TestName">
+                </div>
+                <div class="form-group">
+                    <label for="disabledInput">Test ID:</label>
+                    <input class="form-control" id="disabledInput" type="text" placeholder="System generated unique ID .." disabled="">
+                </div>
+                <div class="form-group">
+                    <label for="sel1">Select Category (select one):</label>
+                    <select class="form-control" id="Select1">
+                        <option>Demo</option>
+                        <option>Generic</option>
+                        <option>Security</option>
+                        <option>c#_level_01</option>
+                    </select>
+                    <br />
+                    <a class="btn btn-success" href="#"><span class="glyphicon glyphicon-plus"></span>New category</a>
+                    <a href="#" data-toggle="tooltip" title="Categorizing your tests and questions allows you to easily keep these items organized."><span class="glyphicon glyphicon-question-sign"></span></a>              
+                     <a href="CreateTest02.html" class="btn btn-danger text-center">Start Adding Questions</a>
+                </div>
+                <br />
+            </form>
+        </div>
+    </div>
+
+    <footer></footer>
+
+</body>
+</html>

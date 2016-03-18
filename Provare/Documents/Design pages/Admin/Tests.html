@@ -1,0 +1,117 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>Tests</title>
+    <script src="../Scripts/jquery-1.9.1.js"></script>
+    <script src="../Scripts/bootstrap.js"></script>
+    <link href="../Content/bootstrap-theme.css" rel="stylesheet" />
+    <link href="../Content/bootstrap.css" rel="stylesheet" />
+</head>
+<body>
+    <header>
+        <nav class="navbar navbar-default">
+            <div class="container-fluid">
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <a class="navbar-brand" href="AdminDashboard.html">My Dashboard</a>
+                </div>
+
+                <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                    <ul class="nav navbar-nav">
+                        <li><a href="Result.html">Results</a></li>
+                        <li><a href="QuestionBank.html">Question Bank</a></li>
+                        <li><a href="Tests.html">Tests</a></li>
+                        <li><a href="Files.html">Files</a></li>
+                    </ul>
+                    <form class="navbar-form navbar-left" role="search">
+                        <div class="form-group">
+                            <input type="text" class="form-control" placeholder="Search test or participant" />
+                        </div>
+                        <button type="submit" class="btn btn-info"><span class="glyphicon glyphicon-search"></span></button>
+                    </form>
+                    <ul class="nav navbar-nav navbar-right">
+                        <li><a href="../Account/Login.html">Logout</a></li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </header>
+    <div class="panel panel-primary">
+        <div class="panel-heading">
+            <h1 class="panel-title">
+                <p class="text-center" style="font-size: larger">Tests</p>
+            </h1>
+        </div>
+        <div class="panel-body">
+            <div class="row text-center">
+                <a href="CreateTest01.html" class="btn btn-info btn-group-lg"><span class="glyphicon glyphicon-plus"></span><span> Create a new test</span></a>              
+            </div>  
+            <div class="btn-group pull-right">
+                <a href="#" class="btn btn-primary">View by</a>
+                <a href="#" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><span class="caret"></span></a>
+                <ul class="dropdown-menu">
+                    <li><a href="#">Action</a></li>
+                    <li><a href="#">Another action</a></li>                    
+                </ul>
+            </div>
+           
+            <table class="table table-striped table-hover ">
+                <thead>
+                    <tr>
+                        <th>Test no.</th>
+                        <th>Test Name</th>
+                        <th>Test duration</th>
+                        <th>Last modified </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>1</td>
+                        <td>C# level 01</td>
+                        <td>40 Min</td>
+                        <td>12/12/2014 14:00</td>
+                    </tr>
+                    <tr>
+                        <td>2</td>
+                        <td>MVC level 03</td>
+                        <td>45 Min</td>
+                        <td>11/12/2014 11:00</td>
+                    </tr>
+                    <tr>
+                        <td>3</td>
+                        <td>Backbonejs level 01</td>
+                        <td>34 Min</td>
+                        <td>12/12/2015 10:00</td>
+                    </tr>
+                    <tr>
+                        <td>4</td>
+                        <td>C# level 05</td>
+                        <td>90 Min</td>
+                        <td>12/02/2015 19:11</td>
+                    </tr>                    
+                </tbody>
+            </table>
+
+        </div>
+        <div class="text-center">
+            <ul class="pagination pagination-sm">
+                <li class="disabled"><a href="#">«</a></li>
+                <li class="active"><a href="#">1</a></li>
+                <li><a href="#">2</a></li>
+                <li><a href="#">3</a></li>
+                <li><a href="#">4</a></li>
+                <li><a href="#">5</a></li>
+                <li><a href="#">»</a></li>
+            </ul>
+        </div>
+    </div>
+    <footer>
+        
+    </footer>
+</body>
+</html>

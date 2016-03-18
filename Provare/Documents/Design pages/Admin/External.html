@@ -1,0 +1,111 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>Add external users</title>
+<script src="../Scripts/jquery-1.9.1.js"></script>
+    <script src="../Scripts/bootstrap.js"></script>
+    <link href="../Content/bootstrap-theme.css" rel="stylesheet" />
+    <link href="../Content/bootstrap.css" rel="stylesheet" />
+    <link href="../Content/admin.css" rel="stylesheet" />
+</head>
+<body>
+      <header>
+          <script src="admin.js"></script>
+        <nav class="navbar navbar-default">
+            <div class="container-fluid">
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <a class="navbar-brand" href="Dashboard.html">My Dashboard</a>
+                </div>
+
+                <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                    <ul class="nav navbar-nav">
+                        <li><a href="Result.html">Results</a></li>
+                        <li><a href="QuestionBank.html">Question Bank</a></li>
+                        <li><a href="Tests.html">Tests</a></li>
+                        <li><a href="Files.html">Files</a></li>
+                    </ul>
+                    <form class="navbar-form navbar-left" role="search">
+                        <div class="form-group">
+                            <input type="text" class="form-control" placeholder="Search test or participant" />
+                        </div>
+                        <button type="submit" class="btn btn-info"><span class="glyphicon glyphicon-search"></span></button>
+                    </form>
+                    <ul class="nav navbar-nav navbar-right">
+                        <li><a href="../Account/Login.html">Logout</a></li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <form class="form-horizontal">
+<fieldset>
+
+<!-- Form Name -->
+<legend>Add Users</legend>
+
+<!-- Text input-->
+<div class="control-group">
+  <label class="control-label" for="Name" id="myName">Name</label>
+  <div class="controls">
+    <input id="Name" name="Name" type="text" placeholder="Name here" class="input-xlarge">
+    
+  </div>
+</div>
+
+<!-- Text input-->
+<div class="control-group">
+  <label class="control-label" for="E-mail" id="myEmail">E-mail</label>
+  <div class="controls">
+    <input id="E-mail" name="E-mail" type="text" placeholder="Email here" class="input-xlarge">
+    
+  </div>
+</div>
+
+
+    <div class="control-group">
+  <label class="control-label" for="contact" id="contact">Contact</label>
+  <div class="controls">
+    <input id="Text1" name="contact" type="text" placeholder="Contact Number here" class="input-xlarge">
+    
+  </div>
+</div>
+
+
+<!-- Button -->
+<div class="control-group">
+  <label class="control-label" for="singlebutton"></label>
+  <div class="controls">
+    <button id="singlebutton" name="singlebutton" class="btn btn-primary">Publish</button>
+  </div>
+</div>
+
+<!-- Button -->
+<div class="control-group">
+  <label class="control-label" for="singlebutton"></label>
+  <div class="controls">
+    <button id="Button1" name="singlebutton" class="btn btn-primary">Add </button>
+  </div>
+</div>
+
+</fieldset>
+</form>
+
+     <div class="added_names">
+            <h4 class="text-center">Added Names</h4>
+            <div class="well">
+                <ul class="well_add">
+                  <li class="list-group-item">Ronak Shah</li>
+                  <li class="list-group-item">Sandeep Gangwar</li>
+                </div>
+   </div>
+
+   
+</body>
+</html>

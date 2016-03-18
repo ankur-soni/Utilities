@@ -1,0 +1,15 @@
+Provare Technical Project Structure Definition
+
+Solution Name: Silicus.Provare
+
+Project Details:
+
+Project Name: Silicus.Provare.API (Endpoint for data)
+
+Project Name: Silicus.Provare.Entities (Entity framework related stuff)
+
+Project Name: Silicus.Provare.Model (POCO classes)
+
+Project Name: Silicus.Provare.Web.Angular
+
+Project Name: Silicus.Provare.Web.Backbone

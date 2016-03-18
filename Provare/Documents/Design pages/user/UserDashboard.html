@@ -1,0 +1,185 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>User Dashboard</title>
+     <script src="../Scripts/jquery-1.9.1.js"></script>
+    <script src="../Scripts/bootstrap.js"></script>
+    <link href="../Content/bootstrap-theme.css" rel="stylesheet" />
+    <link href="../Content/bootstrap.css" rel="stylesheet" />
+    <link href="../Content/admin.css" rel="stylesheet" />
+     <link href="../Content/counter.css" rel="stylesheet" />
+    <script src="../Scripts/counter.js"></script>
+    <script src="../Scripts/jquery.countdown.js"></script>
+</head>
+<body>
+   
+     <nav class="navbar navbar-default">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="#"> My Dashboard</a>
+            </div>
+
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                <ul class="nav navbar-nav">
+                    <li><a href="Result.html">Result</a></li>
+                     <li><a href="Tests.html">Tests</a></li>
+                     <li><a href="Files.html">Files &nbsp &nbsp &nbsp &nbsp &nbsp</a></li>
+                </ul>
+            
+                 <form class="navbar-form navbar-left" role="search">
+                    <div class="form-group">
+                        <input type="text" class="form-control" placeholder="Search User">
+                    </div>
+                    <button type="submit" class="btn btn-info"> <span class="glyphicon glyphicon-search"></span></button>
+                </form>
+                   
+                <ul class="nav navbar-nav navbar-right">
+                    <li><a href="../Account/Login.html">Logout</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+
+    <div class ="user_image">
+   <img src="../Images/Nature.jpeg" />
+        </div>
+  
+   <!-- <ul>
+  <li class="list-group-item">
+    <span class="badge">14</span>
+   Tests
+  </li>
+  <li class="list-group-item">
+    <span class="badge">2</span>
+    Questions
+  </li>
+  <li class="list-group-item">
+    <span class="badge">1</span>
+    Files
+  </li>
+</ul> -->
+
+    <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+  <div class="panel panel-default">
+    <div class="panel-heading" role="tab" id="headingOne">
+      <h4 class="panel-title">
+        <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+          Tests Assigned to you
+        </a>
+      </h4>
+    </div>
+    <div id="collapseOne" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne">
+      <div class="panel-body">
+        <table class="table table-hover">
+      <thead>
+      <tr>
+         <th>Test Name</th>
+         <th>Category</th>
+         <th>Due Date</th>
+      </tr>
+   </thead>
+   <tbody>
+      <tr>
+         <td><a href="TestAttempt01.html">Test1</a></td>
+         <td>.Net Fundamentals</td>
+         <td>12 March 2015</td>
+      </tr>
+      <tr>
+         <td><a href="#">Test2</a></td>
+         <td>Testing</td>
+         <td>15 April 2015</td>
+      </tr>
+      
+   </tbody>
+</table>
+      </div>
+    </div>
+  </div>
+
+  <div class="panel panel-default   ">
+    <div class="panel-heading" role="tab" id="headingTwo">
+      <h4 class="panel-title">
+        <a class="collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+          Test Appeared and Result
+        </a>
+      </h4>
+    </div>
+    <div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
+      <div class="panel-body">
+       <table class="table table-hover">
+   
+   <thead>
+      <tr>
+         <th>Test Name</th>
+         <th>Marks Scored</th>
+         <th>Result</th>
+      </tr>
+   </thead>
+   <tbody>
+      <tr>
+         <td><a href="#">Test1</a></td>
+         <td>29/50</td>
+         <td>Fail</td>
+      </tr>
+      <tr>
+         <td><a href="#">Test2</a></td>
+         <td>46/50</td>
+         <td>Pass</td>
+      </tr>
+      
+   </tbody>
+</table>
+      </div>
+    </div>
+  </div>
+  <div class="panel panel-default">
+    <div class="panel-heading" role="tab" id="headingThree">
+      <h4 class="panel-title">
+        <a class="collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+          Files
+        </a>
+      </h4>
+    </div>
+    <div id="collapseThree" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingThree">
+      <div class="panel-body">
+       <table class="table table-hover">
+   
+   <thead>
+      <tr>
+         <th>File Name</th>
+         <th>Type</th>
+         <th>Size</th>
+      </tr>
+   </thead>
+   <tbody>
+      <tr>
+         <td><a href="#">Clean Code</a></td>
+         <td>PDF</td>
+         <td>560kb</td>
+      </tr>
+      <tr>
+         <td><a href="#">Android doc</a></td>
+         <td>Word</td>
+         <td>1403kb</td>
+      </tr>
+    
+   </tbody>
+</table>
+      </div>
+    </div>
+  </div>
+</div>
+  <!--  <div class="well">
+  Look, I'm in a well!
+</div> -->
+
+
+</body>
+</html>

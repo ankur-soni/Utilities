@@ -1,0 +1,136 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>Add a new question in questionbank</title>
+    <script src="../Scripts/jquery-1.9.1.js"></script>
+    <script src="../Scripts/bootstrap.js"></script>
+    <link href="../Content/bootstrap-theme.css" rel="stylesheet" />
+    <link href="../Content/bootstrap.css" rel="stylesheet" />
+    <link href="../Content/bootstrap-markdown.min.css" rel="stylesheet" />
+    <script src="../Scripts/bootstrap-markdown.js"></script>
+        
+</head>
+<body>
+     <header>
+        <nav class="navbar navbar-default">
+            <div class="container-fluid">
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <a class="navbar-brand" href="AdminDashboard.html">My Dashboard</a>
+                </div>
+
+                <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                    <ul class="nav navbar-nav">
+                        <li><a href="Result.html">Results</a></li>
+                        <li><a href="QuestionBank.html">Question Bank</a></li>
+                        <li><a href="Tests.html">Tests</a></li>
+                        <li><a href="Files.html">Files</a></li>
+                    </ul>
+                    <form class="navbar-form navbar-left" role="search">
+                        <div class="form-group">
+                            <input type="text" class="form-control" placeholder="Search test or participant" />
+                        </div>
+                        <button type="submit" class="btn btn-info"><span class="glyphicon glyphicon-search"></span></button>
+                    </form>
+                    <ul class="nav navbar-nav navbar-right">
+                        <li><a href="../Account/Login.html">Logout</a></li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <div class="panel panel-primary">
+        <div class="panel-heading">
+            <h1 class="panel-title">
+                <p class="text-center" style="font-size: larger">Add new question</p>
+            </h1>
+        </div>
+        <div class="panel-body">
+            <a href="QuestionBank.html" class="btn btn-danger pull-right">Back To QuestionBank</a>
+            <ul class="nav nav-tabs">
+                <li class="active"><a href="#home" data-toggle="tab">Question Bank Questions</a></li>
+
+            </ul>
+            <div id="myTabContent" class="tab-content">
+                <div class="tab-pane fade active in" id="home">
+
+                    <div class="mcq">
+                        <div class="question_box">
+                            <form role="form">
+                                 <div class="form-group">
+                                    <h4><label for="name">Instruction</label></h4>
+                                      <div class="checkbox">
+                                        <label>
+                                            <input type="checkbox">
+                                            Show this instruction before question
+                                        </label>
+                                    </div>
+                                    <textarea name="content" data-provide="markdown" rows="10"></textarea>
+                                </div>
+                                <div class="form-group">
+                                    <h4><label for="name">Question</label></h4>
+                                    <textarea name="content" data-provide="markdown" rows="10"></textarea>
+                                </div>
+                            </form>    
+                        </div>
+                        <div class="answer_box">
+                            <h5>Answers</h5>
+                            <form role="form">
+                                <div class="form-group">
+                                    <h4>
+                                        <label for="name">(A)</label></h4>
+                                    <div class="checkbox">
+                                        <label>
+                                            <input type="checkbox">
+                                            This answer option is correct
+                                        </label>
+                                    </div>
+                                   <textarea name="content" data-provide="markdown" rows="10"></textarea>
+                                </div>
+                            </form>
+                            <form role="form">
+                                <div class="form-group">
+                                    <h4>
+                                        <label for="name">(B)</label></h4>
+                                    <div class="checkbox">
+                                        <label>
+                                            <input type="checkbox">
+                                            This answer option is correct
+                                        </label>
+                                    </div>
+                                    <textarea name="content" data-provide="markdown" rows="10"></textarea>
+                                </div>
+                            </form>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+            <a href="#" class="btn btn-info btn-block"><span class="glyphicon glyphicon-plus"></span><span>Add more answer options</span></a>
+            <br />
+            <div class="form-group">
+                <label for="sel1">Select Category (select one):</label>
+                <select class="form-control" id="Select1">
+                    <option>Demo</option>
+                    <option>Generic</option>
+                    <option>Security</option>
+                    <option>c#_level_01</option>
+                </select>
+                <br />
+                <a class="btn btn-success" href="#"><span class="glyphicon glyphicon-plus"></span> New category</a> 
+            </div>
+            <div class="btn-group btn-group-justified">
+                <a href="#" class="btn btn-primary">Preview</a>
+                <a href="#" class="btn btn-success">Save</a>
+                <a href="#" class="btn btn-info">Next</a>
+                <a href="#" class="btn btn-danger">Cancel</a>
+            </div>
+        </div>
+</body>
+</html>

@@ -1,0 +1,212 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>Test Attempt 02</title>
+    <script src="../Scripts/jquery-1.9.1.js"></script>
+    <script src="../Scripts/bootstrap.js"></script>
+    <link href="../Content/bootstrap-theme.css" rel="stylesheet" />
+    <link href="../Content/bootstrap.css" rel="stylesheet" />
+    <link href="../Content/counter.css" rel="stylesheet" />
+    <script src="../Scripts/counter.js"></script>
+    <script src="../Scripts/jquery.countdown.js"></script>
+
+</head>
+<body>
+    <header>
+    </header>
+    <div class="panel panel-primary">
+        <div class="panel-heading">
+            <h1 class="panel-title">
+                <p class="text-center" style="font-size: larger">C# test 01</p>
+            </h1>
+            <div class="text-right" style="font-size: larger">
+                <span class="glyphicon glyphicon-time">Time Remaining</span>
+                <div id="clock"></div>
+                <script type="text/javascript">
+                    $('#clock').countdown("2015/02/22", function (event) {
+                        var totalHours = event.offset.totalDays * 24 + event.offset.hours;
+                        $(this).html(event.strftime(totalHours + ' hr %M min %S sec'));
+                    });
+                </script>
+            </div>
+        </div>
+        <div class="panel-body">
+            <ul class="nav nav-tabs">
+                <li class="active"><a href="#home" data-toggle="tab">Test</a></li>
+            </ul>
+            <div id="myTabContent" class="tab-content">
+                <div class="tab-pane fade active in" id="home">
+                    <div class="row">
+                        <div class="col-md-8">
+                            <table class="bix-tbl-container" cellspacing="0" cellpadding="0" border="0" width="100%">
+                                <tbody>
+                                    <tr>
+                                        <td class="bix-td-qno jq-qno-120" rowspan="2" valign="top" align="left">1.</td>
+                                        <td class="bix-td-qtxt" valign="top">
+                                            <p>
+                                                What will be the output of the program?
+                                            </p>
+                                            <pre class="code-pre"><code class="cpp"><span 
+
+class="preprocessor">#include&lt;stdio.h&gt;</span>
+<span class="keyword">int</span> main()
+{
+    <span class="keyword">int</span> k, num=<span class="number">30</span>;
+    k = (num&gt;<span class="number">5</span> ? (num &lt;=<span class="number">10</span> ? <span 
+
+class="number">100</span> : <span class="number">200</span>): <span class="number">500</span>);
+    printf(<span class="string">"%d\n"</span>, num);
+    <span class="keyword">return</span> <span class="number">0</span>;
+}
+</code></pre>
+                                            <p></p>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="bix-td-miscell" valign="top">
+                                            <table class="bix-tbl-options"
+                                                id="tblOption_120" border="0" cellpadding="0" cellspacing="0" width="100%">
+                                                <tbody>
+                                                    <tr>
+                                                        <td
+                                                            nowrap="nowrap" class="bix-td-option bix-td-radio" width="1%" id="tdOptionNo_A_120">
+                                                            <input
+                                                                type="radio" class="result-option cls_120" id="optionAns_A_120"></td>
+                                                        <td class="bix-td-option"
+                                                            width="1%">A.</td>
+                                                        <td class="bix-td-option" width="48%" id="tdOptionDt_A_120">
+                                                            <table
+                                                                border="0" cellpadding="0" cellspacing="0">
+                                                                <tbody>
+                                                                    <tr>
+                                                                        <td class="bix-inner-td-option">200</td>
+
+                                                                        <td id="tdAnswerIMG_A_120" class="jq-img-answer" valign="middle"
+                                                                            style="display: none; padding-left: 10px;">
+                                                                            <img src="/_files/images/website/wrong.gif" alt="">
+                                                                        </td>
+                                                                    </tr>
+                                                                </tbody>
+                                                            </table>
+                                                        </td>
+                                                        <td nowrap="nowrap" class="bix-td-option bix-td-radio" width="1%"
+                                                            id="tdOptionNo_B_120">
+                                                            <input type="radio" class="result-option cls_120"
+                                                                id="optionAns_B_120"></td>
+                                                        <td class="bix-td-option" width="1%">B.</td>
+                                                        <td class="bix-td-option" width="48%" id="tdOptionDt_B_120">
+                                                            <table
+                                                                border="0" cellpadding="0" cellspacing="0">
+                                                                <tbody>
+                                                                    <tr>
+                                                                        <td class="bix-inner-td-option">30</td>
+
+                                                                        <td id="tdAnswerIMG_B_120" class="jq-img-answer" valign="middle"
+                                                                            style="display: none; padding-left: 10px;">
+                                                                            <img src="/_files/images/website/accept.png" alt="">
+                                                                        </td>
+                                                                    </tr>
+                                                                </tbody>
+                                                            </table>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td nowrap="nowrap" class="bix-td-option bix-td-radio"
+                                                            width="1%" id="tdOptionNo_C_120">
+                                                            <input type="radio" class="result-option cls_120"
+                                                                id="optionAns_C_120"></td>
+                                                        <td class="bix-td-option" width="1%">C.</td>
+                                                        <td class="bix-td-option" width="48%" id="tdOptionDt_C_120">
+                                                            <table
+                                                                border="0" cellpadding="0" cellspacing="0">
+                                                                <tbody>
+                                                                    <tr>
+                                                                        <td class="bix-inner-td-option">100</td>
+
+                                                                        <td id="tdAnswerIMG_C_120" class="jq-img-answer" valign="middle"
+                                                                            style="display: none; padding-left: 10px;">
+                                                                            <img src="/_files/images/website/wrong.gif" alt="">
+                                                                        </td>
+                                                                    </tr>
+                                                                </tbody>
+                                                            </table>
+                                                        </td>
+                                                        <td nowrap="nowrap" class="bix-td-option bix-td-radio" width="1%"
+                                                            id="tdOptionNo_D_120">
+                                                            <input type="radio" class="result-option cls_120"
+                                                                id="optionAns_D_120"></td>
+                                                        <td class="bix-td-option" width="1%">D.</td>
+                                                        <td class="bix-td-option" width="48%" id="tdOptionDt_D_120">
+                                                            <table
+                                                                border="0" cellpadding="0" cellspacing="0">
+                                                                <tbody>
+                                                                    <tr>
+                                                                        <td class="bix-inner-td-option">500</td>
+
+                                                                        <td id="tdAnswerIMG_D_120" class="jq-img-answer" valign="middle"
+                                                                            style="display: none; padding-left: 10px;">
+                                                                            <img src="/_files/images/website/wrong.gif" alt="">
+                                                                        </td>
+                                                                    </tr>
+                                                                </tbody>
+                                                            </table>
+                                                        </td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                            <input type="hidden" class="jq-actual-answer"
+                                                id="optionAnswer_120" value="B">
+                                            <input type="hidden" class="jq-selected-answer" id="optionSelAns_120"
+                                                value="">
+
+                                            <div class="bix-div-answer" style="display: none" id="divAnswer_120">
+                                                <p>
+                                                    <span class="ib-green"><b>Answer: </b></span>Option <b class="ib-
+
+dgray">B</b>
+                                                </p>
+                                                <p><span class="ib-green"><b>Explanation:</b></span></p>
+                                                <p>
+                                                    <b>Step 1</b>: <i class="C-code">int k, num=30;</i> here variable <i class="C-code">k</i> and <i
+                                                        class="C-code">num</i> are declared as an integer type and variable <i class="C-code">num</i> is 
+
+initialized to '30'.<br>
+                                                    <b>Step 2</b>: <i class="C-code">k = (num&gt;5 ? (num &lt;=10 ? 100 : 200): 500);</i> This 
+
+statement does not affect the output of the program. Because we are going to print the variable 
+
+                                                    <i class="C-code">num</i> in the next statement. So, we skip this statement.<br>
+                                                    <b>Step 3</b>: <i class="C-code">printf("%d\n", num);</i> It prints the value of variable <i
+                                                        class="C-code">num</i> '30'<br>
+                                                    <b>Step 3</b>: Hence the output of the program is '30'<br>
+                                                </p>
+                                                <p>
+                                                    <span class="ib-green"><b>Learn more problems on : <a target="_blank" href="/c-
+
+programming/expressions/">Expressions</a> </b></span>
+                                                </p>
+                                                <p>
+                                                    <span class="ib-green"><b>Discuss 
+
+about this problem : <a target="_blank" href="/c-programming/expressions/discussion-120">Discuss 
+
+in Forum</a> </b></span>
+                                                </p>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <ul class="pager">
+            <li class="previous disabled"><a href="#">← Previous</a></li>
+            <li class="next"><a href="TestAttempts03.html">Next →</a></li>
+        </ul>
+</body>
+</html>
+
+

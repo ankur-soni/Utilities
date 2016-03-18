@@ -1,0 +1,265 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>Question Bank</title>
+    <script src="../Scripts/jquery-1.9.1.js"></script>
+    <script src="../Scripts/bootstrap.js"></script>
+    <link href="../Content/bootstrap-theme.css" rel="stylesheet" />
+    <link href="../Content/bootstrap.css" rel="stylesheet" />
+    <link href="../Content/bootstrap-markdown.min.css" rel="stylesheet" />
+    <script src="../Scripts/bootstrap-markdown.js"></script>
+</head>
+<body>
+    <header>
+        <nav class="navbar navbar-default">
+            <div class="container-fluid">
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <a class="navbar-brand" href="AdminDashboard.html">My Dashboard</a>
+                </div>
+
+                <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                    <ul class="nav navbar-nav">
+                        <li><a href="Result.html">Results</a></li>
+                        <li><a href="QuestionBank.html">Question Bank</a></li>
+                        <li><a href="Tests.html">Tests</a></li>
+                        <li><a href="Files.html">Files</a></li>
+                    </ul>
+                    <form class="navbar-form navbar-left" role="search">
+                        <div class="form-group">
+                            <input type="text" class="form-control" placeholder="Search test or participant" />
+                        </div>
+                        <button type="submit" class="btn btn-info"><span class="glyphicon glyphicon-search"></span></button>
+                    </form>
+                    <ul class="nav navbar-nav navbar-right">
+                        <li><a href="../Account/Login.html">Logout</a></li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </header>
+    <div class="panel panel-primary">
+        <div class="panel-heading">
+            <h1 class="panel-title">
+                <p class="text-center" style="font-size: larger">Test Name</p>
+            </h1>
+        </div>
+        <div class="panel-body">
+            <div class="row text-center">
+                <a href="CreateTest03.html" class="btn btn-info btn-group-lg"><span class="glyphicon glyphicon-plus"></span><span>Add a new question</span></a>
+            </div>
+            <div class="btn-group pull-right">
+                <a href="#" class="btn btn-primary">Sort by</a>
+                <a href="#" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><span class="caret"></span></a>
+                <ul class="dropdown-menu">
+                    <li><a href="#">Test</a></li>
+                    <li><a href="#">Category</a></li>
+                </ul>
+            </div>
+
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+             <form role="form">
+                        <div class="form-group">
+                            <h4>
+                                <label for="name">Test Instructions</label></h4>
+                            <textarea name="content" data-provide="markdown" rows="10"></textarea>
+                        </div>
+                    </form>
+        </div>
+    </div>
+    <div class="row">
+
+        <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">            
+            <div class="panel panel-default">
+                <div class="panel-heading" role="tab" id="headingOne">
+                    <div class="btn-group pull-right">
+                        <a href="#" class="btn btn-default btn-sm">Edit</a>
+                        <a href="#" class="btn btn-default btn-sm  btn-danger">Delete</a>
+                    </div>
+                    <div class="clearfix">
+                        <h4 class="panel-title">                           
+                            <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="true" aria-controls="collapseOne">Question #1
+                            </a>
+                        </h4>
+                    </div>
+                </div>
+            </div>
+            <div id="collapseOne" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne">
+                <div class="panel-body">
+                    <span class="label label-primary">C#</span><br />
+                    <div class="panel panel-info">
+                        <div class="panel-heading">
+                            <h3 class="panel-title">Which of the following utilities can be used to compile managed assemblies into processor-specific native code?</h3>
+                        </div>
+                        <div class="panel-body">
+                            <table class="table">
+                                <thead>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td style="width: 10px"></td>
+                                        <td class="col-md-1">A)</td>
+                                        <td>gacutil</td>
+
+                                    </tr>
+                                    <tr>
+                                        <td></td>
+                                        <td>B)</td>
+                                        <td>ngen</td>
+                                    </tr>
+                                    <tr>
+                                        <td></td>
+                                        <td>C)</td>
+                                        <td>sn</td>
+                                        <td></td>
+                                    </tr>
+                                    <tr>
+                                        <td><span class="glyphicon glyphicon-ok-sign"></span></td>
+                                        <td>D)</td>
+                                        <td>dumpbin</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="panel panel-default">
+            <div class="panel-heading" role="tab" id="headingTwo">
+                <div class="btn-group pull-right">
+                    <a href="#" class="btn btn-default btn-sm">Edit</a>
+                    <a href="#" class="btn btn-default btn-sm  btn-danger">Delete</a>
+                </div>
+                <div class="clearfix">
+                    <h4 class="panel-title">
+                        <a class="collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">Question #2
+                        </a>
+                    </h4>
+                </div>
+            </div>
+            <div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
+                <div class="panel-body">
+                    <span class="label label-primary">MVC</span><br />
+                    <div class="panel panel-info">
+                        <div class="panel-heading">
+                            <h3 class="panel-title">Which Action Result Renders a partial view, which defines a section of a view that can be rendered inside another view?</h3>
+                        </div>
+                        <div class="panel-body">
+                            <table class="table">
+                                <thead>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td style="width: 10px"></td>
+                                        <td class="col-md-1">A)</td>
+                                        <td>ContentResult</td>
+
+                                    </tr>
+                                    <tr>
+                                        <td></td>
+                                        <td>B)</td>
+                                        <td>RedirectResult</td>
+                                    </tr>
+                                    <tr>
+                                        <td><span class="glyphicon glyphicon-ok-sign"></span></td>
+                                        <td>C)</td>
+                                        <td>PartialViewResult</td>
+                                        <td></td>
+                                    </tr>
+                                    <tr>
+                                        <td></td>
+                                        <td>D)</td>
+                                        <td>None of above.</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="panel panel-default">
+            <div class="panel-heading" role="tab" id="headingThree">
+                <div class="btn-group pull-right">
+                    <a href="#" class="btn btn-default btn-sm">Edit</a>
+                    <a href="#" class="btn btn-default btn-sm  btn-danger">Delete</a>
+                </div>
+                <div class="clearfix">
+                    <h4 class="panel-title">
+                        <a class="collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseThree" aria-expanded="false" aria-controls="collapseThree">Question #3
+                        </a>
+                    </h4>
+                </div>
+            </div>
+            <div id="collapseThree" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingThree">
+                <div class="panel-body">
+                    <span class="label label-primary">SQL</span><br />
+                    <div class="panel panel-info">
+                        <div class="panel-heading">
+                            <h3 class="panel-title">The SQL WHERE clause:</h3>
+                        </div>
+                        <div class="panel-body">
+                            <table class="table">
+                                <thead>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td style="width: 10px"></td>
+                                        <td class="col-md-1">A)</td>
+                                        <td>limits the column data that are returned.</td>
+
+                                    </tr>
+                                    <tr>
+                                        <td><span class="glyphicon glyphicon-ok-sign"></span></td>
+                                        <td>B)</td>
+                                        <td>limits the row data are returned.</td>
+                                    </tr>
+                                    <tr>
+                                        <td></td>
+                                        <td>C)</td>
+                                        <td>Both A and B are correct.</td>
+                                        <td></td>
+                                    </tr>
+                                    <tr>
+                                        <td></td>
+                                        <td>D)</td>
+                                        <td>Neither A nor B are correct.</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>        
+    </div>
+    <footer>
+        <div class="text-center">
+            <ul class="pagination pagination-sm">
+                <li class="disabled"><a href="#">«</a></li>
+                <li class="active"><a href="#">1</a></li>
+                <li><a href="#">2</a></li>
+                <li><a href="#">3</a></li>
+                <li><a href="#">4</a></li>
+                <li><a href="#">5</a></li>
+                <li><a href="#">»</a></li>
+            </ul>
+        </div>
+          <div class="btn-group btn-group-justified">                
+                <a href="#" class="btn btn-success">Save</a>
+                <a href="#" class="btn btn-info">Publish</a>
+                <a href="#" class="btn btn-danger">Cancel</a>
+            </div>
+    </footer>
+
+</body>
+</html>
