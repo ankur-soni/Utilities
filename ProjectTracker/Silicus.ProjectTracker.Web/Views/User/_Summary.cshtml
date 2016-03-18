@@ -1,0 +1,78 @@
+﻿@model Silicus.ProjectTracker.Web.ViewModel.ProjectViewModel
+@using Silicus.ProjectTracker.Web.ViewModel
+@using Silicus.ProjectTracker.Models.DataObjects
+@using Kendo.Mvc.UI;
+
+
+<div class="widget grid12" style="width:103.4%;">
+ 
+        @Html.HiddenFor(p => p.ProjectId)
+        @Html.HiddenFor(p => p.ProjectStatusId)
+        
+        <div class="grid6">
+            <div class="widget-content">
+                @Html.LabelFor(model => model.ProjectName, "Name", new { @class = "req col-sm-3" })
+                <div class="col-sm-9">
+                    @Html.TextBoxFor(model => model.ProjectName, new { @class = "form-control disabled", @placeholder = "Name", style = "width:250px" })
+                    @Html.ValidationMessageFor(model => model.ProjectName)
+                </div>
+            </div>
+
+            <div class="widget-content">
+                @Html.LabelFor(model => model.StartDate, new { @class = "req col-sm-3" })
+                <div class="col-sm-9">
+                    @(Html.Kendo().DatePicker()
+                        .Name("StartDate")
+                        .Value(Model.StartDate)
+                        .HtmlAttributes(new { style = "width:250px", @class = "disabled" })
+                    )                        
+                    @Html.ValidationMessageFor(model => model.StartDate)
+                </div>
+            </div>
+            <div class="widget-content">
+                @Html.LabelFor(model => model.PlannedEndDate, new { @class = "req col-sm-3" })
+                <div class="col-sm-9">
+                    @(Html.Kendo().DatePicker()
+                        .Name("PlannedEndDate")
+                        .Value(Model.PlannedEndDate)
+                        .HtmlAttributes(new { style = "width:250px", @class = "disabled" })
+                    )
+                    @Html.ValidationMessageFor(model => model.PlannedEndDate)
+                </div>
+            </div>
+
+        </div> <!-- /widget -->
+
+        <div class="grid6">
+            <div class="widget-content">
+                @Html.LabelFor(model => model.StatusId, "Status", new { @class = "req col-sm-3" })
+                <div class="col-sm-9">
+                    @(Html.Kendo().DropDownListFor(model => model.StatusId)
+                    .Name("StatusId")
+                    .DataValueField("Value")
+                    .DataTextField("Text")
+                    .OptionLabel("Select Status")
+                    .BindTo(((SelectList)Model.Status).ToList())
+                    )
+                </div>
+            </div>
+
+            <div class="widget-content">
+                @Html.LabelFor(model => model.ProjectSummary, "Summary", new { @class = "req col-sm-3" })
+                <div class="col-sm-9">
+                    @Html.TextAreaFor(model => model.ProjectSummary, new { @class = "form-control", @placeholder = "Summary of project", style = "width: 400px; height: 150px;" })
+                    @Html.ValidationMessageFor(model => model.ProjectSummary)
+                </div>
+            </div>
+        </div> <!-- /widget -->
+    @*}*@
+
+</div>
+
+<script>
+    $(document).ready(function () {
+        $('#ProjectName').attr("readonly", "readonly")
+        $("#StartDate").data("kendoDatePicker").enable(false);
+        $("#PlannedEndDate").data("kendoDatePicker").enable(false);
+    });
+</script>

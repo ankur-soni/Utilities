@@ -1,0 +1,62 @@
+﻿@model Silicus.ProjectTracker.Web.ViewModel.ProjectResourceUtilizationViewModel
+@using Silicus.ProjectTracker.Web.ViewModel;
+@using Kendo.Mvc.UI;
+
+
+<table style="width: 100%;">
+
+    <tr>
+        <td>
+            <div class="kendotable mt10">
+
+                @(Html.Kendo().Grid<ProjectResourceUtilizationViewModel>().Name("grdProjectResource")
+                    .DataSource(dataSource => dataSource
+                    .Ajax()
+                    .Batch(true)
+                    .ServerOperation(false)
+                    .Model(model =>
+                            {
+                                model.Id(p => p.ProjectResourceId);
+                                model.Field(p => p.ProjectResourceId).Editable(false);
+                            })
+                                    .Read(read => read.Action("GetProjectResourceDetails", "User").Data("additionalInfo"))
+                            )
+
+                        .Columns(columns =>
+                        {
+                            columns.Bound(p => p.ProjectResourceId).Hidden();
+                            columns.Bound(p => p.ProjectId).Hidden();
+                            columns.Bound(p => p.RoleName);
+                            columns.Bound(p => p.ResourceName);
+                            columns.Bound(p => p.AvailableEfforts);
+                            columns.Bound(p => p.ConsumedEfforts);
+                            columns.Bound(p => p.Status).Title("Remarks");
+                            columns.Command(command => command.Destroy()).Width(90).Title("Actions");
+
+                        })
+                          .ToolBar(toolBar =>
+                        {
+                            toolBar.Create();
+                        })
+
+                        .Pageable()
+                        .Sortable()
+                        .Editable(ed => ed.Mode(GridEditMode.InCell))
+                        .Navigatable()
+                        .Filterable()
+                        .ColumnMenu()
+                )
+
+            </div>
+        </td>
+    </tr>
+</table>
+
+<script>
+
+    $(document).ready(function () {
+        var projectID = $("#hdnProjectId").val();
+    });
+
+</script>
+

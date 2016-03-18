@@ -1,0 +1,59 @@
+﻿@using System.Configuration
+@model Silicus.ProjectTracker.Web.Models.LoginModel
+
+@{
+    ViewBag.Title = "Sign In";
+}
+
+@using (Html.BeginForm("Login", "Account", FormMethod.Post, new { ReturnUrl = ViewBag.ReturnUrl, @id = "loginform", @class = "form-horizontal" }))
+{
+    <input type="hidden" name="ReturnUrl" value="@Request.QueryString["ReturnUrl"]" />   
+    
+    <div class="logincontainer">    
+        <div id="loginbox" class="mainbox col-md-6 col-md-offset-3 col-sm-8 col-sm-offset-2">
+            <div class="panel panel-default" >
+                <div class="p10" style="background-color:#000;"><img src="../../Images/silicus/logo.png" alt="Silicus Technologies, LLC. Logo" /></div> 
+                <div class="panel-heading">
+                    <div class="panel-title">Sign In</div>
+                    @*<div class="floatRight positionrel mt20neg"><a href="@Url.Action("ForgotPassword", "Account")" tabindex="5">Forgot your password?</a></div>*@
+                </div>     
+                
+                <div class="panel-body p30" >
+                    <div id="login-alert" class="alert alert-danger col-sm-12 hidden"></div>
+                     @Html.AntiForgeryToken()
+                     @Html.ValidationSummary(true)
+                    <div class="input-group mb5">
+                        <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>    
+                        @Html.TextBoxFor(m => m.UserName, new { @placeholder="User Name", @onfocus="this.placeholder = ''", @onblur="this.placeholder = 'User Name';",tabindex=1, @class="form-control" })                                    
+                    </div>
+                    <span class="help-block field-validation-error mt10 mb10">@Html.ValidationMessageFor(m => m.UserName)</span>
+                                
+                    <div class="input-group mb5">
+                        <span class="input-group-addon"><i class="glyphicon glyphicon-lock"></i></span>
+                        @Html.PasswordFor(m => m.Password, new { @class="form-control", @placeholder="Password", @onfocus="this.placeholder = ''", @onblur="this.placeholder = 'Password';",tabindex=2 })
+                    </div>
+                    <span class="help-block field-validation-error mt10 mb10">@Html.ValidationMessageFor(m => m.Password)</span>            
+
+                                
+                  @*  <div class="input-group">
+                        <div class="checkbox">
+                        <label>
+                            @Html.CheckBoxFor(m => m.RememberMe, new { @id="login-remember", tabindex=3, @checked = "checked"})
+                            <span><label for="login-remember">Remember me</label></span>
+                        </label>
+                        </div>
+                    </div>*@
+
+
+                    <div style="margin-top:10px" class="form-group">
+                        <!-- Button -->
+
+                        <div class="col-sm-12 controls">
+                            <input type="submit" value="Sign In" id="btn-login" class="btn btn-silicus" tabindex="4" />
+                        </div>
+                    </div>
+                </div>                     
+            </div>  
+        </div>
+    </div>
+}

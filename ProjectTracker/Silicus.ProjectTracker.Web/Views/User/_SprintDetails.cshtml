@@ -1,0 +1,94 @@
+﻿@model Silicus.ProjectTracker.Web.ViewModel.ProjectSummaryViewModel
+@using Silicus.ProjectTracker.Web.ViewModel;
+@using Kendo.Mvc.UI;
+
+<table style="width: 100%;">
+   
+    <tr>
+        <td>
+            <div class="kendotable mt10">
+
+                 @(Html.Kendo().Grid<ProjectSummaryViewModel>().Name("grdProjectSummary")
+                    .DataSource(dataSource => dataSource
+                    .Ajax()
+                    .Batch(true)
+                    .ServerOperation(false)
+                    .Model(model =>
+                            {
+                                model.Id(p => p.ProjectSummaryId);
+                                model.Field(p => p.ProjectSummaryId).Editable(false);
+                            })
+                                    .Read(read => read.Action("GetProjectTypeDetails", "User").Data("additionalInfo"))
+                            )
+
+                        .Columns(columns =>
+                        {
+                            columns.Bound(p => p.ProjectSummaryId).Hidden();
+                            columns.Bound(p => p.ProjectId).Hidden();   
+                            columns.Bound(p => p.SprintName).EditorTemplateName("SprintList");
+                            columns.Bound(p => p.MilestoneName).EditorTemplateName("MilestoneList");
+                            columns.Bound(p => p.ReleaseNumber);
+                            columns.Bound(p => p.StartDate);
+                            columns.Bound(p => p.EndDate);
+                            columns.Bound(p => p.ReleaseDate);
+                            columns.Bound(p => p.FeedBack);
+                            columns.Bound(p => p.Remarks);
+                            columns.Command(command => command.Destroy()).Width(90).Title("Actions");
+
+                        })
+                          .ToolBar(toolBar =>
+                        {
+                            toolBar.Create();
+                        })
+            
+                        .Pageable()
+                        .Sortable()
+                        .Editable(ed => ed.Mode(GridEditMode.InCell))
+                        //.Selectable()
+                        .Navigatable()
+                        .Filterable()
+                        .ColumnMenu()
+                     
+                       
+                    )
+   
+            </div>
+        </td>
+    </tr>
+  </table>
+
+<script type="text/javascript">
+
+        $(document).ready(function () {
+            var projectID = $("#hdnProjectId").val();
+           
+        });
+
+
+        function onSelectSprint(e) {
+            var dataItem;
+            var selectedText = this.dataItem(e.item.index()).Text;
+            var grid = $("#grdProjectSummary").data("kendoGrid");
+            model = grid.dataItem(this.element.closest("tr"));
+            var toRemove = ('Sprint').toLowerCase();
+            var toRemoveString = selectedText.toLowerCase().replace(toRemove, '');
+            var selectedValue = parseInt(toRemoveString);
+            model.set("SprintId", selectedValue);                       
+        }
+
+        function onSelectMilestone(e) {
+            var dataItem;
+            var selectedText = this.dataItem(e.item.index()).Text;
+            var grid = $("#grdProjectSummary").data("kendoGrid");
+            model = grid.dataItem(this.element.closest("tr")); 
+            var toRemove = ('MileStone').toLowerCase();
+            var toRemoveString = selectedText.toLowerCase().replace(toRemove, '');
+            var selectedValue = parseInt(toRemoveString);
+            model.set("MileStoneId", selectedValue);
+        }
+
+    </script>
+
+
+
+

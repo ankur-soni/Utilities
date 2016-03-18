@@ -1,0 +1,14 @@
+﻿@using Silicus.ProjectTracker.Core;
+@using Silicus.ProjectTracker.Web.Models;
+@model InvoiceStatus
+@using Kendo.Mvc.UI;
+
+@(Html.Kendo().DropDownListFor(m => m)
+        .DataTextField("Text")
+        .DataValueField("Value")
+        .BindTo(Extensions.EnumToSelectList(typeof(InvoiceStatus)))
+        .Events(e =>
+        {
+            e.Select("onSelectInvoiceStatus");
+        })
+)

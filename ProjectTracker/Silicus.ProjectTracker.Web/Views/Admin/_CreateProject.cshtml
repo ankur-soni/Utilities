@@ -1,0 +1,217 @@
+﻿@using Silicus.ProjectTracker.Models.DataObjects
+@*@model Silicus.ProjectTracker.Models.DataObjects.Project*@
+@model Silicus.ProjectTracker.Web.ViewModel.ProjectViewModel
+@using Kendo.Mvc.UI;
+
+@{
+    ViewBag.Title = "Project";
+}
+
+<script>
+    webshims.setOptions('waitReady', false);
+    webshims.setOptions('forms-ext', { types: 'date' });
+    webshims.polyfill('forms forms-ext');
+</script>
+
+<div class="widget grid12" style="width:103.4%;">
+    @using (Html.BeginForm("CreateProject", "Admin", FormMethod.Post, new { id = "CreateProjectForm" }))
+    {
+        @Html.AntiForgeryToken()
+        @Html.HiddenFor(p => p.ProjectId)
+        @Html.HiddenFor(ps => ps.ProjectStatusId)
+        <span style="color: red">@Html.ValidationSummary(true)</span>
+
+        <span class="grid12" style="color: red">@Html.ValidationMessage("DuplicateProjectName")</span>
+
+        <div class="grid6">
+            <div class="widget-content">
+                @Html.LabelFor(model => model.ProjectName, "Name", new { @class = "req col-sm-3" })
+                <div class="col-sm-9">
+                    @Html.TextBoxFor(model => model.ProjectName, new { @class = "form-control", @placeholder = "Name", style = "width:250px" })
+                    @Html.ValidationMessageFor(model => model.ProjectName)
+                </div>
+            </div>
+
+            <div class="widget-content">
+                @Html.LabelFor(model => model.StartDate, new { @class = "req col-sm-3" })
+                <div class="col-sm-9">
+                    @(Html.Kendo().DatePicker()
+                        .Name("StartDate")
+                        .Value(Model.StartDate)
+                        .HtmlAttributes(new { style = "width:250px", @class = "disabled" })
+                    )
+                    @Html.ValidationMessageFor(model => model.StartDate)
+                </div>
+            </div>
+
+            @if (Model.ProjectId != 0)
+            {
+                <div class="widget-content">
+                    @Html.LabelFor(model => model.IsActive, "Is Active", new { @class = "req col-sm-3" })
+                    <div class="col-sm-9">
+                        @Html.EditorFor(model => model.IsActive)
+                        @Html.ValidationMessageFor(model => model.IsActive)
+                    </div>
+                </div>
+            }
+        </div> <!-- /widget -->
+
+        <div class="grid6">
+            <div class="widget-content">
+                @Html.LabelFor(model => model.ProjectDescription, "Description", new { @class = "req col-sm-3" })
+                <div class="col-sm-9">
+                    @Html.TextBoxFor(model => model.ProjectDescription, new { @class = "form-control", @placeholder = "Description", style = "width:250px" })
+                    @Html.ValidationMessageFor(model => model.ProjectDescription)
+                </div>
+            </div>
+
+            <div class="widget-content">
+                @Html.LabelFor(model => model.PlannedEndDate, new { @class = "req col-sm-3" })
+                <div class="col-sm-9">
+                    @(Html.Kendo().DatePicker()
+                        .Name("PlannedEndDate")
+                        .Value(Model.PlannedEndDate)
+                        .HtmlAttributes(new { style = "width:250px", @class = "disabled" })
+                    )
+                    @Html.ValidationMessageFor(model => model.PlannedEndDate)
+                </div>
+            </div>
+
+            @*<div class="widget-content">
+                @Html.LabelFor(model => model.StatusId, "Status", new { @class = "req col-sm-3" })
+                <div class="col-sm-9">
+                    @(Html.Kendo().DropDownListFor(model => model.StatusId)
+                    .Name("StatusId") // Name of the widget should be the same as the name of the property
+                    .DataValueField("Value")
+                    .DataTextField("Text")
+                    .OptionLabel("Select Status")
+                    .BindTo(((SelectList)Model.Status).ToList())
+                    .ValuePrimitive(true)
+                    )
+                </div>
+            </div>*@
+
+        </div> <!-- /widget -->
+    }
+    <div class="widget-content mt10">
+        <input class="btn btn-silicus mt5 mb5" id="btnBackToList" value="Back to list" type="button" title="Back" />
+
+        @if (Model.ProjectId == 0)
+        {
+            <input class="btn btn-silicus mt5 mb5" id="btnSaveProjectEntry" value="Save" type="button" title="Save" />
+        }
+
+        @if (Model.ProjectId != 0)
+        {
+            if (Model.IsActive == true)
+            {
+                <input class="btn btn-silicus mt5 mb5" id="btnDeleteProjectEntry" value="Delete" type="button" title="Delete" />
+            }
+            <input class="btn btn-silicus mt5 mb5" id="btnUpdateProjectEntry" value="Update" type="button" title="Update" />
+        }
+    </div>
+
+</div>
+
+<script>
+
+    $(document).ready(function () {
+
+        var projectId = $("#ProjectId").val();
+
+        if (projectId == 0) {
+            var todayDate = new Date();
+            $('#StartDate').data("kendoDatePicker").value(todayDate);
+            $('#PlannedEndDate').data("kendoDatePicker").value(todayDate);
+        }
+
+
+        $("#btnBackToList").click(function (e) {
+            RedirectToPage('adminProject', 'Admin');
+        });
+
+        $("#btnSaveProjectEntry").click(function (e) {
+            if ($("#StatusId").val() == "") {
+                toastr.error('Please select Status');
+                return false;
+            }
+
+            if ($('#StartDate').data("kendoDatePicker").value() > $('#PlannedEndDate').data("kendoDatePicker").value()) {
+                toastr.error('Start Date Can Not Be Greater Then End Date');
+                return false;
+
+            } 
+          
+            $.ajax({
+                url: "/Admin/CreateProject",
+                contentType: 'application/x-www-form-urlencoded; charset=UTF-8',
+                type: 'POST',
+                //dataType: 'JSON',
+                data: $('#CreateProjectForm').serialize()
+            })
+            .success(function (data) {
+                //alert(JSON.stringify(data));
+                if (typeof data.Status != "undefined" && data.Status == "Success") {
+                    toastr.success('Project Saved Successfully.');
+                    RedirectToPage("adminProject", 'Admin');
+                }
+                else {
+                    $('#dashboardContainerDiv').html(data);
+                }
+            })
+            .error(function (xhr, status) {
+                toastr.error('Error In Saving Project.');
+            });
+
+        });
+
+        $("#btnUpdateProjectEntry").click(function (e) {
+            if ($("#StatusId").val() == "") {
+                toastr.error('Please select Status');
+                return false;
+            }
+
+            $.ajax({
+                url: "/Admin/UpdateProject",
+                contentType: 'application/x-www-form-urlencoded; charset=UTF-8',
+                type: 'POST',
+                //dataType: 'JSON',
+                data: $('#CreateProjectForm').serialize()
+            })
+            .success(function (data) {
+                if (typeof data.Status != "undefined" && data.Status == "Success") {
+                    RedirectToPage("adminProject", 'Admin');
+                }
+                else {
+                    $('#dashboardContainerDiv').html(data);
+                }
+            })
+            .error(function (xhr, status) {
+                //alert(JSON.stringify(xhr));
+            });
+        });
+
+        $("#btnDeleteProjectEntry").click(function (e) {
+            var result = confirm("Are you sure you want to delete this entry?");
+            if (result) {
+                $.ajax({
+                    url: "/Admin/DeleteProject",
+                    contentType: 'application/x-www-form-urlencoded; charset=UTF-8',
+                    type: 'POST',
+                    //dataType: 'JSON',
+                    data: $('#CreateProjectForm').serialize()
+                })
+                .success(function (data) {
+                    RedirectToPage("adminProject", 'Admin');
+                    //alert('Deleted');
+                })
+                .error(function (xhr, status) {
+                    //alert('fail');
+                    //alert(JSON.stringify(xhr));
+                });
+            }
+        });
+    });
+
+</script>
+

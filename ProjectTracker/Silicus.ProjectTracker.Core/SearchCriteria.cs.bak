@@ -1,0 +1,166 @@
+﻿
+namespace Eda.RDBI.Core
+{
+    using System.Collections.Generic;
+
+    using Eda.RDBI.Core.Interfaces;
+
+    /// <summary>
+    /// The search args object contains all filters.
+    /// </summary>
+    public class SearchCriteria : IVisitable
+    {
+        public SearchCriteria()
+        {
+            isProspectProfile = false;
+        }
+
+        #region Filter Values Selected From UI
+
+        public List<string> OEM;
+
+        public string SearchType;
+
+        public List<string> RRIDList { get; set; }
+
+        public List<string> State { get; set; }
+
+        public List<string> Country { get; set; }
+
+        public List<string> EstimatedPowerUnit { get; set; }
+
+        public List<string> OperatingClass { get; set; }
+
+        public List<string> County { get; set; }
+
+        public List<string> GvwrClass { get; set; }
+
+        public List<string> MarketSegment { get; set; }
+
+        /// <summary>
+        /// Vehicle Type
+        /// </summary>
+        public List<string> EquipmentType { get; set; }
+
+        public List<string> EngineType { get; set; }
+
+        /// <summary>
+        /// Engine Brand
+        /// </summary>
+        public List<string> EngineManufacturer { get; set; }
+
+        /// <summary>
+        /// Vehicle Brand
+        /// </summary>
+        public List<string> EquipmentMake { get; set; }
+
+        /// <summary>
+        /// Vehicle Model
+        /// </summary>
+        public List<string> EquipmentModel { get; set; }
+
+        /// <summary>
+        /// Vehicle Model Year
+        /// </summary>
+        public List<string> EquipmentModelYrs { get; set; }
+
+        public List<string> EquipmentVinDateRange { get; set; }
+
+        public List<string> OperatingSegment { get; set; }
+
+        public List<string> CargoHauled { get; set; }
+
+        public List<string> DnBPrimaryIndustry { get; set; }
+
+        public List<string> DnBPrimarySIC { get; set; }
+
+        public List<string> DnBCreditRisk { get; set; }
+
+        public string DeliveryPointValidated { get; set; }
+
+        public string ValidatedPhone { get; set; }
+
+        public string EmailAvailable { get; set; }
+
+        public List<string> AvgModelYearAge { get; set; }
+
+        public List<string> PreviouslyOperatedEqt { get; set; }
+
+        public List<string> LeasedOperators { get; set; }
+
+        public List<string> FinancedOffRoadEqt { get; set; }
+
+        public List<string> ActivityState { get; set; }
+
+        public List<string> ActivityCounty { get; set; }
+
+        public List<string> FmcsaSafetyRating { get; set; }
+
+        public List<string> CsaBasic { get; set; }
+
+        public List<string> ViolationsFamily { get; set; }
+
+        public List<string> Violations { get; set; }
+
+        public string OutOfServiceViolation { get; set; }
+
+        public List<string> AccidentRatioGroup { get; set; }
+
+        public string FatalityaccidentFlag { get; set; }
+
+        public List<string> ActivityDateRange { get; set; }
+
+        public List<string> UserDefinedField1 { get; set; }
+
+        public List<string> UserDefinedField2 { get; set; }
+
+        public List<string> UserDefinedField3 { get; set; }
+
+        public List<string> UserDefinedField4 { get; set; }
+
+        public List<string> DataAccessCountry { get; set; }
+
+		public List<string> DataAccessState { get; set; }
+
+        public List<string> DataAccessCounty { get; set; }
+
+        public List<string> DataAccessEstimatedPowerUnit { get; set; }
+
+        public List<string> DataAccessGvwrClass { get; set; }
+
+        public bool isProspectProfile { get; set; }
+
+        #endregion
+
+        #region Exlcluded Filter Values
+
+        public bool IsExcludedState { get; set; }
+        public bool IsExcludedCounty { get; set; }
+        public bool IsExcludedCargoHauled { get; set; }
+        public bool IsExcludedDnBPrimaryIndustry { get; set; }
+        public bool IsExcludedDnBPrimarySIC { get; set; }
+        public bool IsExcludedEquipmentType { get; set; }
+        public bool IsExcludedEngineType { get; set; }
+        public bool IsExcludedEngineManufacturer { get; set; }
+        public bool IsExcludedEquipmentMake { get; set; }
+        public bool IsExcludedEquipmentModel { get; set; }
+        public bool IsExcludedEquipmentModelYrs { get; set; }
+        public bool IsExcludedActivityState { get; set; }
+        public bool IsExcludedActivityCounty { get; set; }
+        public bool IsExcludedViolations { get; set; }
+
+        public bool IsExcludedUserDefinedField1 { get; set; }
+        public bool IsExcludedUserDefinedField2 { get; set; }
+        public bool IsExcludedUserDefinedField3 { get; set; }
+        public bool IsExcludedUserDefinedField4 { get; set; }
+        public bool IsExcludedCountry { get; set; }
+
+        #endregion
+
+        public void Accept(IVisitor visitor)
+        {
+            Guard.ArgumentNotNull(visitor, "visitor");
+            visitor.Visit(this);
+        }
+    }
+}

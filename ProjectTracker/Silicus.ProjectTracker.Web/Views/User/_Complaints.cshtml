@@ -1,0 +1,67 @@
+﻿@model Silicus.ProjectTracker.Web.ViewModel.ProjectComplaintViewModel
+@using Silicus.ProjectTracker.Web.ViewModel;
+@using Kendo.Mvc.UI;
+
+<table style="width: 100%;">
+   
+    <tr>
+        <td>
+            <div class="kendotable mt10" >
+
+                 @(Html.Kendo().Grid<ProjectComplaintViewModel>().Name("grdProjectComplaint")
+                    .DataSource(dataSource => dataSource
+                    .Ajax()
+                    .Batch(true)
+                    .ServerOperation(false)
+                    //.Events(events => events.Error("errorComplaint_handler"))
+                    .Model(model =>
+                            {
+                                model.Id(p => p.ComplaintId);
+                                model.Field(p => p.ComplaintId).Editable(false);
+                            })
+                                    .Read(read => read.Action("GetComplaintsDetails", "User").Data("additionalInfo"))
+                            )
+
+                        .Columns(columns =>
+                        {
+                            columns.Bound(p => p.ComplaintId).Hidden();
+                            columns.Bound(p => p.ComplaintId).Hidden();   
+                            columns.Bound(p => p.Description);
+                            columns.Bound(p => p.PlannedAction);
+                            columns.Bound(p => p.Remarks);
+                            columns.Bound(p => p.ComplaintStatus);
+                            columns.Command(command => command.Destroy()).Width(90).Title("Actions");
+
+                        })
+                          .ToolBar(toolBar =>
+                        {
+                            toolBar.Create();
+                        })
+            
+                        .Pageable()
+                        .Sortable()
+                        .Editable(ed => ed.Mode(GridEditMode.InCell))
+                        .Navigatable()
+                        .Filterable()
+                        .ColumnMenu()
+                    )
+   
+            </div>
+        </td>
+    </tr>
+  </table>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        var projectID = $("#hdnProjectId").val();           
+    });
+
+    function onSelectStatus(e) {
+        var dataItem;
+        var selectedText = this.dataItem(e.item.index()).Text;
+        var selectedValue = this.dataItem(e.item.index()).Value;
+        var grid = $("#grdProjectComplaint").data("kendoGrid");
+        model = grid.dataItem(this.element.closest("tr"));
+        model.set("StatusId", selectedValue);
+    }
+</script>

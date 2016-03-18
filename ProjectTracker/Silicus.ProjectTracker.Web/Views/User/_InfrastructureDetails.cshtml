@@ -1,0 +1,61 @@
+﻿@model Silicus.ProjectTracker.Web.ViewModel.InfrastructureDetailsViewModel
+@using Silicus.ProjectTracker.Web.ViewModel;
+@using Kendo.Mvc.UI;
+@using Silicus.ProjectTracker.Models.DataObjects;
+
+
+<table style="width: 100%;">
+
+    <tr>
+        <td>
+            <div class="kendotable mt10">
+
+                @(Html.Kendo().Grid<InfrastructureDetailsViewModel>().Name("grdInfrastructureDetail")
+                    .DataSource(dataSource => dataSource
+                    .Ajax()
+                    .Batch(true)
+                    .ServerOperation(false)
+                    .Model(model =>
+                            {
+                                model.Id(p => p.InfrastructureDetailId);
+                                model.Field(p => p.InfrastructureDetailId).Editable(false);
+                            })
+                                .Read(read => read.Action("GetInfrastructureDetails", "User").Data("additionalInfo"))
+                            )
+
+                        .Columns(columns =>
+                        {
+                            columns.Bound(p => p.InfrastructureDetailId).Hidden();
+                            columns.Bound(p => p.ProjectId).Hidden();
+                            columns.Bound(p => p.DevelopmentAndQA);
+                            columns.Bound(p => p.UAT);
+                            columns.Bound(p => p.Production);
+                            columns.Command(command => command.Destroy()).Width(90).Title("Actions");
+
+                        })
+                          .ToolBar(toolBar =>
+                        {
+                            toolBar.Create();
+                        })
+
+                        .Pageable()
+                        .Sortable()
+                        .Editable(ed => ed.Mode(GridEditMode.InCell))
+                        .Navigatable()
+                        .Filterable()
+                        .ColumnMenu()
+                )
+
+            </div>
+        </td>
+    </tr>
+</table>
+
+<script>
+
+    $(document).ready(function () {
+        var projectID = $("#hdnProjectId").val();
+    });
+
+</script>
+

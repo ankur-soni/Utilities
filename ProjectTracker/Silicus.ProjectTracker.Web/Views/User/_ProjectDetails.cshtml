@@ -1,0 +1,712 @@
+﻿@model Silicus.ProjectTracker.Web.ViewModel.ProjectMainViewModel
+@using Silicus.ProjectTracker.Core;
+@using Kendo.Mvc.UI;
+
+<script>
+    $('#myTab a').click(function (e) {
+        e.preventDefault();
+        $(this).tab('show');
+    })
+</script>
+
+@using (Ajax.BeginForm("SaveProjectSummary", "User", new AjaxOptions
+    {
+        HttpMethod = "POST"
+
+
+    }, new { @id = "projectSummaryForm" }))
+{
+    @Html.AntiForgeryToken()
+    @Html.Hidden("hdnProjectId", Model.ProjectViewModel.ProjectId)
+    @Html.Hidden("hdnProjectStatusId", Model.ProjectViewModel.ProjectStatusId)
+    
+    <div id="upperSection">
+
+        @(Html.Kendo().DropDownList()
+        .Name("getWeekControl")
+        .BindTo((SelectList)Model.WeekList)
+        .DataValueField("Text")
+        .DataTextField("Value")
+        .SelectedIndex(Model.CurrentWeek)
+        .OptionLabel("Select Week")
+        .HtmlAttributes(new { style = "width:250px" })
+        .Events(events => events.Change(
+        @<text>
+            function(e) {
+                        Select_Week();
+                        }
+        </text>
+        ))
+         )
+
+        @if (Model.ProjectViewModel.IsActive)
+        {
+            <input type="button" value="Save" name="Save" class="btn btn-silicus" id="btnSaveProjectDetails" onclick="SaveProjectSummary()" />    
+        }
+        else
+        { 
+            <input type="button" value="Save" name="Save" class="btn btn-silicus" id="btnSaveProjectDetails" onclick="javascript:toastr.error('Data not saved. Project is inactive.');" />
+        }        
+
+        <input class="btn btn-silicus mt5 mb5" id="btnBackToProjectSummaryList" value="Back to list" type="button" title="Back" />
+
+        <input type="hidden" id="hdnWeek" />     
+
+    </div>
+
+    <div class="fluid mt20">
+        <ul class="nav nav-tabs responsive" id="myTab" role="tablist">
+            <li class="active"><a href="#tabs-1" id="SummaryTab">Project Summary</a></li>
+            <li><a href="#tabs-2" onclick="getContentTab(2);">Project Sprints/Milestones</a></li>
+            <li><a href="#tabs-3" onclick="getContentTab(3);">Resource & Efforts</a></li>
+            <li><a href="#tabs-4" onclick="getContentTab(4);">Customer Complaints</a></li>
+            <li><a href="#tabs-5" onclick="getContentTab(5);">Payment</a></li>
+            <li><a href="#tabs-6" onclick="getContentTab(6);">Change Requests</a></li>
+            <li><a href="#tabs-7" onclick="getContentTab(7);">Infrastructure</a></li>
+        </ul>
+
+        <div class="tab-content responsive">
+            <div class="tab-pane active" id="tabs-1">
+                @Html.Partial("_Summary", Model.ProjectViewModel)
+            </div>
+            <div class="tab-pane" id="tabs-2">
+            </div>
+            <div class="tab-pane" id="tabs-3">
+            </div>
+            <div class="tab-pane" id="tabs-4">
+            </div>
+            <div class="tab-pane" id="tabs-5">
+            </div>
+            <div class="tab-pane" id="tabs-6">
+            </div>
+            <div class="tab-pane" id="tabs-7">
+        </div>
+    </div>
+    </div>
+     
+}
+
+
+<script type="text/javascript">
+    //The first tab will be always true to handle the page load
+    var IsUpdate = true;
+    var tabPostedSummary = true;
+    var tabPostedSprint = false;
+    var tabPostedResource = false;
+    var tabPostedComplaint = false;
+    var tabPostedPaymentDetails = false;
+    var tabPostedChangeRequestDetails = false;
+    var tabPostedInfrastructureDetails = false;
+
+    function Select_Week() {
+
+        tabsPosted(0, true);
+
+        var projectId = $("#hdnProjectId").val();
+        var weekid = $("#getWeekControl").val();
+
+        if (typeof (weekid) == null || typeof (weekid) == "" || typeof (weekid) == undefined || weekid == "") {
+            weekid = 0;
+        }
+        //Load the sprint details partial view
+        var model = { ProjectId: projectId, WeekId: weekid };
+                 
+        $("#hdnWeek").val(weekid);
+        $('#SummaryTab').click();
+        tabPostedSummary = false;
+        getContentTab(1);
+        
+
+    };
+
+    function getProject() {
+        
+        var weekid = $("#getWeekControl").val();
+
+        var data = new Object();
+        data.ProjectId = $("#ProjectId").val();
+        data.ProjectStatusId = $("#hdnProjectStatusId").val();
+        data.StatusId = $("#StatusId").val();
+        data.ProjectSummary = $("#ProjectSummary").val();
+        data.WeekId = weekid;
+        return data;
+    };
+
+    function getSprintDetails() {
+
+        //get the weekid from hidden field
+        var weekid = $("#getWeekControl").val();
+
+        var sample = new Array();
+        var entityGrid = $("#grdProjectSummary").data("kendoGrid");
+        //null check used if user didn't entered any data in second tab
+        if (entityGrid != null) {
+            var entitydata = entityGrid.dataSource.data();
+            //console.log(entitydata);
+            var JSONObject = JSON.parse(JSON.stringify(entitydata));
+            //console.log(JSONObject);
+            for (var key in JSONObject) {
+                if (JSONObject.hasOwnProperty(key)) {
+                    var data = new Object();
+                    data.ProjectSummaryId = JSONObject[key]["ProjectSummaryId"];
+                    data.ReleaseNumber = JSONObject[key]["ReleaseNumber"];
+                    data.ProjectId = JSONObject[key]["ProjectId"];
+                    data.SprintId = JSONObject[key]["SprintId"];
+                    data.MileStoneId = JSONObject[key]["MileStoneId"];
+                    data.StartDate = JSONObject[key]["StartDate"];
+                    data.EndDate = JSONObject[key]["EndDate"];
+                    data.ReleaseDate = JSONObject[key]["ReleaseDate"];
+                    data.FeedBack = JSONObject[key]["FeedBack"];
+                    data.Remarks = JSONObject[key]["Remarks"];
+                    data.CreatedBy = JSONObject[key]["CreatedBy"];
+                    data.CreatedDate = JSONObject[key]["CreatedDate"];
+                    data.ModifiedBy = JSONObject[key]["ModifiedBy"];
+                    data.ModifiedDate = JSONObject[key]["ModifiedDate"];
+                    data.WeekId = weekid;
+                    sample.push(data);
+                }
+            }
+        }
+
+        return sample;
+    };
+
+    function getResourceDetails() {
+
+        var weekid = $("#getWeekControl").val();
+
+        var resourceList = new Array();
+        var entityGrid = $("#grdProjectResource").data("kendoGrid");
+
+        if (entityGrid != null) {
+            var entitydata = entityGrid.dataSource.data();
+            var JSONObject = JSON.parse(JSON.stringify(entitydata));
+            for (var key in JSONObject) {
+                if (JSONObject.hasOwnProperty(key)) {
+                    var data = new Object();
+
+                    data.WeekId = weekid;
+                    data.ProjectId = JSONObject[key]["ProjectId"];
+                    data.ProjectResourceId = JSONObject[key]["ProjectResourceId"];
+                    data.ResourceName = JSONObject[key]["ResourceName"];
+                    data.RoleName = JSONObject[key]["RoleName"];
+                    data.Status = JSONObject[key]["Status"];
+                    data.AvailableEfforts = JSONObject[key]["AvailableEfforts"];
+                    data.ConsumedEfforts = JSONObject[key]["ConsumedEfforts"];
+                    data.CreatedBy = JSONObject[key]["CreatedBy"];
+                    data.CreatedDate = JSONObject[key]["CreatedDate"];
+                    data.ModifiedBy = JSONObject[key]["ModifiedBy"];
+                    data.ModifiedDate = JSONObject[key]["ModifiedDate"];
+                    
+                    resourceList.push(data);
+                }
+            }
+        }
+
+        return resourceList;
+
+    };
+
+    function getComplaintDetails() {
+
+        var weekid = $("#getWeekControl").val();
+
+        var resourceList = new Array();
+        var entityGrid = $("#grdProjectComplaint").data("kendoGrid");
+
+        if (entityGrid != null) {
+            var entitydata = entityGrid.dataSource.data();
+            var JSONObject = JSON.parse(JSON.stringify(entitydata));
+            for (var key in JSONObject) {
+                if (JSONObject.hasOwnProperty(key)) {
+                    var data = new Object();
+
+                    data.ComplaintId = JSONObject[key]["ComplaintId"];
+                    data.ProjectId = JSONObject[key]["ProjectId"];
+                    data.WeekId = JSONObject[key]["WeekId"];
+                    data.StatusId = JSONObject[key]["StatusId"];
+                    data.Description = JSONObject[key]["Description"];
+                    data.PlannedAction = JSONObject[key]["PlannedAction"];
+                    data.Remarks = JSONObject[key]["Remarks"];
+                    data.CreatedBy = JSONObject[key]["CreatedBy"];
+                    data.CreatedDate = JSONObject[key]["CreatedDate"];
+                    data.ModifiedBy = JSONObject[key]["ModifiedBy"];
+                    data.ModifiedDate = JSONObject[key]["ModifiedDate"];
+
+                    resourceList.push(data);
+                }
+            }
+        }
+
+        return resourceList;
+
+    };
+
+    function getPaymentDetails() {
+
+        var weekid = $("#getWeekControl").val();
+
+        var paymentList = new Array();
+        var entityGrid = $("#grdPaymentDetails").data("kendoGrid");
+
+        if (entityGrid != null) {
+            var entitydata = entityGrid.dataSource.data();
+            var JSONObject = JSON.parse(JSON.stringify(entitydata));
+            for (var key in JSONObject) {
+                if (JSONObject.hasOwnProperty(key)) {
+                    var data = new Object();
+
+                    data.WeekId = weekid;
+                    data.ProjectId = JSONObject[key]["ProjectId"];
+                    data.PaymentDetailId = JSONObject[key]["PaymentDetailId"];
+                    data.InvoiceNumber = JSONObject[key]["InvoiceNumber"];
+                    data.InvoicedEffort = JSONObject[key]["InvoicedEffort"];
+                    data.InvoiceStatus = JSONObject[key]["InvoiceStatus"];
+                    data.InvoiceStatusId = JSONObject[key]["InvoiceStatusId"];
+                    data.CreatedBy = JSONObject[key]["CreatedBy"];
+                    data.CreatedDate = JSONObject[key]["CreatedDate"];
+                    data.ModifiedBy = JSONObject[key]["ModifiedBy"];
+                    data.ModifiedDate = JSONObject[key]["ModifiedDate"];
+
+                    paymentList.push(data);
+                }
+            }
+        }
+
+        return paymentList;
+    };
+
+    function getChangeRequestDetails()
+    {
+        var weekid = $("#getWeekControl").val();
+
+        var changeRequestList = new Array();
+        var entityGrid = $("#grdChangeRequestDetail").data("kendoGrid");
+
+        if (entityGrid != null) {
+            var entitydata = entityGrid.dataSource.data();
+            var JSONObject = JSON.parse(JSON.stringify(entitydata));
+            for (var key in JSONObject) {
+                if (JSONObject.hasOwnProperty(key)) {
+                    var data = new Object();
+                    data.WeekId = weekid;
+                    data.ProjectId = JSONObject[key]["ProjectId"];
+                    data.ChangeRequestId = JSONObject[key]["ChangeRequestId"];
+                    data.ChangeRequestNumber = JSONObject[key]["ChangeRequestNumber"];
+                    data.ReceivedDate = JSONObject[key]["ReceivedDate"];
+                    data.ChangeRequestStatusId = JSONObject[key]["ChangeRequestStatusId"];
+                    data.CreatedBy = JSONObject[key]["CreatedBy"];
+                    data.CreatedDate = JSONObject[key]["CreatedDate"];
+                    data.ModifiedBy = JSONObject[key]["ModifiedBy"];
+                    data.ModifiedDate = JSONObject[key]["ModifiedDate"];
+
+                    changeRequestList.push(data);
+                }
+            }
+        }
+
+        return changeRequestList;
+    }
+
+    function getInfrastructureDetails()
+    {
+        var weekid = $("#getWeekControl").val();
+
+        var infrastructureList = new Array();
+        var entityGrid = $("#grdInfrastructureDetail").data("kendoGrid");
+
+        if (entityGrid != null) {
+            var entitydata = entityGrid.dataSource.data();
+            var JSONObject = JSON.parse(JSON.stringify(entitydata));
+            for (var key in JSONObject) {
+                if (JSONObject.hasOwnProperty(key)) {
+                    var data = new Object();
+                    data.WeekId = weekid;
+                    data.ProjectId = JSONObject[key]["ProjectId"];
+                    data.InfrastructureDetailId = JSONObject[key]["InfrastructureDetailId"];
+                    data.DevelopmentAndQA = JSONObject[key]["DevelopmentAndQA"];
+                    data.UAT = JSONObject[key]["UAT"];
+                    data.Production = JSONObject[key]["Production"];
+                    data.CreatedBy = JSONObject[key]["CreatedBy"];
+                    data.CreatedDate = JSONObject[key]["CreatedDate"];
+                    data.ModifiedBy = JSONObject[key]["ModifiedBy"];
+                    data.ModifiedDate = JSONObject[key]["ModifiedDate"];
+
+                    infrastructureList.push(data);
+                }
+            }
+        }
+
+        return infrastructureList;
+    }
+
+    function SaveProjectSummary() {
+     
+        var Success = "SUCCESS";
+        var Failure = "FAILURE";
+
+        //The week should be selected
+        var weekid = $("#getWeekControl").val();
+        if (typeof (weekid) != null && typeof (weekid) != "" && typeof (weekid) != undefined && weekid != "") {
+
+            //get the summary details
+            var prjSummary = getProject();
+
+            //get the sprint details data
+            var prjSprintDetails = getSprintDetails();
+            //console.log('6'+prjSprintDetails);
+
+            //get the resource details
+            var prjResourceDetails = getResourceDetails();
+
+            //get complaints details
+            var prjComplaintDetails = getComplaintDetails();
+
+            // Payment Details
+            var prjPaymentDetails = getPaymentDetails();
+                        
+            // Change Request Details
+            var prjChangeRequestDetails = getChangeRequestDetails();
+
+            // Infrastructure Details
+            var prjInfrastructureDetails = getInfrastructureDetails()
+
+            //Validations
+            CheckTabValidations(prjSummary, prjSprintDetails, prjResourceDetails, prjComplaintDetails, prjPaymentDetails);
+         
+            if (IsUpdate == true)
+            {
+                //Additional Parameter
+                var tabsVisited = "{ tabPostedSummary : " + tabPostedSummary + "},{ tabPostedSprint : " + tabPostedSprint + "},{ tabPostedResource : " + tabPostedResource + "},{ tabPostedComplaint : " + tabPostedComplaint + "},{ tabPostedPaymentDetails : " + tabPostedPaymentDetails + "},{ tabPostedChangeRequestDetails : " + tabPostedChangeRequestDetails + "},{ tabPostedInfrastructureDetails : " + tabPostedInfrastructureDetails + "}";
+                var model = { ProjectStatus: prjSummary, SprintDetails: prjSprintDetails, ResourceDetails: prjResourceDetails, ComplaintDetails: prjComplaintDetails, PaymentDetails: prjPaymentDetails, ChangeRequestDetails: prjChangeRequestDetails, InfrastructureDetails: prjInfrastructureDetails, tabsPosted: tabsVisited };
+            
+                $.ajax({
+                    url: '@Url.Action("SaveProjectSummary", "User")',
+                    contentType: 'application/json; charset=utf-8',
+                    type: 'POST',
+                    //dataType: 'json',
+                    data: JSON.stringify(model)
+                })
+			    .success(function (result) {
+				  
+				    if (result.IsSuccess == Success) {
+				    toastr.success('Data Saved Successfully');
+				    getContentTab(1);
+				    tabsPosted(0, true);
+				    tabPostedSummary = true;
+				   
+				    }
+				    else {
+				        toastr.error('Error While Saving Data');
+
+				    }
+				  
+				    $('#SummaryTab').click();
+				   
+			    })
+			    .error(function (xhr, status) {
+				    toastr.error('Error While Saving Data');
+			    });
+            }
+           
+        }
+       
+    }
+
+    function UploadData() {
+
+        var projectId = $("#hdnProjectId").val();
+        var weekid = $("#getWeekControl").val();
+
+        var model = { WeekId: weekid, ProjectId: projectId };
+        $.ajax({
+            url: '@Url.Action("UploadData", "User")',
+              contentType: 'application/json; charset=utf-8',
+              type: 'POST',
+              data: JSON.stringify(model)
+          })
+			    .success(function (result) {
+
+			        if (result.IsSuccess == Success) {
+			            toastr.success('Data Uploaded Successfully');
+			            //Refresh the data in the grid
+			        }
+			        else {
+			            toastr.error('Error While Uploading Data');
+
+			        }
+                    
+			    })
+			    .error(function (xhr, status) {
+			        toastr.error('Error While Uploading Data');
+			    });
+
+    }
+
+    function CheckTabValidations(prjSummary, prjSprintDetails, prjResourceDetails, prjComplaintDetails, prjPaymentDetails) {
+
+        IsUpdate = true;
+
+        if (tabPostedSummary == true) {
+            prjSummary = getProject();
+            if (prjSummary.StatusId == 0 || prjSummary.StatusId == "") {
+                toastr.error('Please select the Status');
+                IsUpdate = false;
+                return IsUpdate;
+            }
+
+            if (prjSummary.ProjectSummary == "") {
+                toastr.error('Please enter project summary.');
+                IsUpdate = false;
+                return IsUpdate;
+            }
+        }
+       
+
+        if (tabPostedSprint == true) {
+            var grid = $("#grdProjectSummary").data("kendoGrid");
+            var entitydata = grid.dataSource.data();
+            var JSONObject = JSON.parse(JSON.stringify(entitydata));
+            console.log(JSONObject);
+            for (var key in JSONObject) {
+                  if (JSONObject.hasOwnProperty(key)) {
+                      var data = new Object();
+                      if (JSONObject[key]["SprintId"] == 0 && JSONObject[key]["MileStoneId"] == 0 && (JSONObject[key]["ReleaseNumber"] == null || JSONObject[key]["ReleaseNumber"] == "")) {
+                        toastr.error('Please Enter Sprint or Milestone or Release Number in Summary Tab.');
+                        IsUpdate = false;
+                        return IsUpdate;
+                    }
+                    
+                }
+            }
+
+        }
+
+        if (tabPostedResource == true) {
+            var grid = $("#grdProjectResource").data("kendoGrid");
+            var entitydata = grid.dataSource.data();
+            var JSONObject = JSON.parse(JSON.stringify(entitydata));
+            for (var key in JSONObject) {
+                if (JSONObject.hasOwnProperty(key)) {
+                    var data = new Object();
+
+                    if (JSONObject[key]["ResourceName"] == "") {
+                        toastr.error('Resource Name  Can Not Be Blank in Resource Tab.');
+                        IsUpdate = false;
+                        return IsUpdate;
+                    }
+
+                    if (JSONObject[key]["RoleName"] == "") {
+                        toastr.error('Role Name  Can Not Be Blank in Resource Tab.');
+                        IsUpdate = false;
+                        return IsUpdate;
+                    }
+
+                }
+            }
+
+        }
+
+        if (tabPostedComplaint == true) {
+            var grid = $("#grdProjectComplaint").data("kendoGrid");
+            var entitydata = grid.dataSource.data();
+            var JSONObject = JSON.parse(JSON.stringify(entitydata));
+            for (var key in JSONObject) {
+                if (JSONObject.hasOwnProperty(key)) {
+                    var data = new Object();
+
+                    if (JSONObject[key]["Description"] == "") {
+                        toastr.error('Description  Can Not Be Blank in Complaint Tab.');
+                        IsUpdate = false;
+                        return IsUpdate;
+                    }
+
+                    if (JSONObject[key]["PlannedAction"] == "") {
+                        toastr.error('PlannedAction  Can Not Be Blank in Complaint Tab.');
+                        IsUpdate = false;
+                        return IsUpdate;
+                    }
+                                        
+                }
+            }
+
+        }
+
+        if (tabPostedPaymentDetails == true) {
+            var grid = $("#grdPaymentDetails").data("kendoGrid");
+            var entitydata = grid.dataSource.data();
+            var JSONObject = JSON.parse(JSON.stringify(entitydata));
+            for (var key in JSONObject) {
+                if (JSONObject.hasOwnProperty(key)) {
+                    var data = new Object();
+
+                    if (JSONObject[key]["InvoiceNumber"] == 0) {
+                        toastr.error('Invoice Number  Can Not Be Blank in Payment Tab.');
+                        IsUpdate = false;
+                        return IsUpdate;
+                    }
+
+                    if (JSONObject[key]["InvoiceEffort"] == 0) {
+                        toastr.error('Invoice Effort  Can Not Be Blank in Payment Tab.');
+                        IsUpdate = false;
+                        return IsUpdate;
+                    }
+
+                }
+            }
+
+        }
+
+        if (tabPostedChangeRequestDetails == true) {
+            var grid = $("#grdChangeRequestDetail").data("kendoGrid");
+            var entitydata = grid.dataSource.data();
+            var JSONObject = JSON.parse(JSON.stringify(entitydata));
+            for (var key in JSONObject) {
+                if (JSONObject.hasOwnProperty(key)) {
+                    var data = new Object();
+
+                    if (JSONObject[key]["ChangeRequestNumber"] == "") {
+                        toastr.error('Change Request Number  Can Not Be Blank in Change Request Tab.');
+                        IsUpdate = false;
+                        return IsUpdate;
+                    }
+
+                }
+            }
+
+        }
+
+        if (tabPostedInfrastructureDetails == true) {
+            var grid = $("#grdInfrastructureDetail").data("kendoGrid");
+            var entitydata = grid.dataSource.data();
+            var JSONObject = JSON.parse(JSON.stringify(entitydata));
+            for (var key in JSONObject) {
+                if (JSONObject.hasOwnProperty(key)) {
+                    var data = new Object();
+
+                    if (JSONObject[key]["DevelopmentAndQA"] == "") {
+                        toastr.error('Change Request Number  Can Not Be Blank in Infrastructure Tab.');
+                        IsUpdate = false;
+                        return IsUpdate;
+                    }
+
+                    if (JSONObject[key]["UAT"] == "") {
+                        toastr.error('UAT Can Not Be Blank in Infrastructure Tab.');
+                        IsUpdate = false;
+                        return IsUpdate;
+                    }
+
+                    if (JSONObject[key]["Production"] == "") {
+                        toastr.error('Production Can Not Be Blank in Infrastructure Tab.');
+                        IsUpdate = false;
+                        return IsUpdate;
+                    }
+                }
+            }
+        }
+    }
+
+    $(document).ready(function () {
+        $("#tabs").prop("disabled", false);
+
+        $("#btnBackToProjectSummaryList").click(function () {
+            RedirectToPage('userProject', "User");
+        });
+    });
+
+    //Issue - From code whne the partial view is called it do not fires the Reda method of kendo grid
+    function getContentTab(index) {
+
+        var targetDiv = "#tabs-" + index;
+        var projectId = $("#hdnProjectId").val();
+
+        //Current weekid
+        var weekid = $("#getWeekControl").val();
+      
+        if ((index == 1 && tabPostedSummary == false) || (index == 2 && tabPostedSprint == false) ||
+            (index == 3 && tabPostedResource == false) || (index == 4 && tabPostedComplaint == false) ||
+            (index == 5 && tabPostedPaymentDetails == false) || (index == 6 && tabPostedChangeRequestDetails == false) ||
+            (index == 7 && tabPostedInfrastructureDetails == false))
+        {
+          
+            $.ajax({
+                url: "/User/getAjaxTab?tabId=" + index + "&ProjectId=" + projectId + "&Weekid=" + weekid,
+                contentType: 'application/json; charset=utf-8',
+                type: 'Get',
+
+            })
+            .success(function (result) {
+                 $(targetDiv).html(result);
+
+                //once the user visits the tab ,mark it as true to stop ajax requests till the week is changed
+                tabsPosted(index, false);
+            })
+            .error(function (xhr, status) {
+                $(targetDiv).html("Error While Loading Data");
+            });
+        }
+    }
+
+  
+    function tabsPosted(index, defaultValue) {
+        
+        if (defaultValue == false) {
+            if (index == 1) {
+                tabPostedSummary = true;
+            }
+            else if (index == 2) {
+                tabPostedSprint = true;
+            }
+            else if (index == 3)
+            {
+                tabPostedResource = true;
+            }
+            else if (index == 4) {
+                tabPostedComplaint = true;
+            }
+            else if (index == 5)
+            {
+                tabPostedPaymentDetails = true;
+            }
+            else if (index == 6) {
+                tabPostedChangeRequestDetails = true;
+            }
+            else if (index == 7) {
+                tabPostedInfrastructureDetails = true;
+            }
+        }
+        //as the week is changed we need to post ajax calls
+        else {
+            tabPostedSprint = false;
+            tabPostedResource = false;
+            tabPostedComplaint = false;
+            tabPostedPaymentDetails = false;
+            tabPostedChangeRequestDetails = false;
+            tabPostedInfrastructureDetails = false;
+        }
+
+    }
+
+    function RedirectToPage(pageName, controllerName) {
+        $.ajax({
+            url: "/" + controllerName + "/LoadPage?pageName=" + pageName,
+            type: 'GET',
+            cache: false,
+            contentType: 'application/json; charset=utf-8',
+            success: function (response) {
+                $("#dashboardContainerDiv").html(response);
+
+                if ((pageName == "adminProject" || pageName == "userProject") && (controllerName != "User")) {
+                    $('#btnCreateProject').show();
+                }
+                else {
+                    $('#btnCreateProject').hide();
+                }
+            },
+            error: function (e) {
+                //console.log(JSON.stringify(e));
+            }
+        });
+    }
+</script>
+

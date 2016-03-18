@@ -1,0 +1,78 @@
+﻿@model Silicus.ProjectTracker.Web.ViewModel.ProjectsTotalCountsViewModel
+@using Kendo.Mvc.UI;
+
+@{
+    ViewBag.Title = "Admin Dashboard";
+}
+
+<div class="main-content">
+    <div class="header">
+        <h1 class="page-title">
+            <i class="fa fa-dashboard"></i>Dashboard@*<span>Statistics and more</span>*@
+        </h1>
+        @*<div class="search">
+            <input type="text" placeholder="Search...">
+            <i class="fa fa-search"></i>
+        </div>*@
+    </div>
+    <div class="intro">
+        <ul class="clearfix">
+            <li>
+                <div class="intro-content">
+                    <div class="circle">
+                        <i class="fa fa-calendar"></i>
+                    </div> <!-- /circle -->
+                    <div class="intro-info">
+                        <span class="mt10 bold_text">Total projects: @Model.NoOfProjects</span>
+                    </div> <!-- /intro-info -->
+                </div> <!-- /intro-content -->
+            </li>
+            <li>
+                <div class="intro-content">
+                    <div class="circle">
+                        <div class="arc" id="arc-2"><div class="arc-in green"></div></div>
+                        <i class="fa fa-bar-chart-o"></i>
+                    </div> <!-- /circle -->
+                    <div class="intro-info">
+                        <span class="mt10 bold_text">Total Managers: @Model.NoOfManagers</span>
+                    </div> <!-- /intro-info -->
+                </div> <!-- /intro-content -->
+            </li>
+            <li>
+                <div class="intro-content">
+                    <div class="circle">
+                        <div class="arc" id="arc-3">
+                        <div class="arc-in blue"></div></div>
+                        <i class="fa fa-tag"></i>
+                    </div> <!-- /circle -->
+                    <div class="intro-info">
+                        <span class="mt10 bold_text">Assigned Projects: @Model.NoOfAssignedProjects</span>
+                    </div> <!-- /intro-info -->
+                </div> <!-- /intro-content -->
+            </li>
+            <li>
+                <div class="intro-content">
+                    <div class="circle">
+                        <div class="arc" id="arc-4">
+                        <div class="arc-in blue"></div></div>
+                        <i class="fa fa-tag"></i>
+                    </div> <!-- /circle -->
+                    <div class="intro-info">
+                        <span class="mt10 bold_text">Unassigned Projects: @Model.NoOfUnAssignedProjects</span>
+                    </div> <!-- /intro-info -->
+                </div> <!-- /intro-content -->
+            </li>
+        </ul>
+    </div>
+
+
+    <div class="fluid mt20">
+        @*<div class="kendotable">*@
+        
+            <input type="button" class="btn btn-silicus" id="btnCreateProject" value="Add New Project" style="display:none" />
+            <div id="dashboardContainerDiv">
+                @Html.Partial("/Views/Admin/_Dashboard.cshtml",Model.ProjectStatusAdminDashBoardModel)
+            </div>
+        
+    </div>
+</div> <!-- /main-content -->

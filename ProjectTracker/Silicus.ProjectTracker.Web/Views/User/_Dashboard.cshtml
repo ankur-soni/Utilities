@@ -1,0 +1,243 @@
+﻿@model IEnumerable<Silicus.ProjectTracker.Web.ViewModel.ProjectStatusReportViewModel>
+@using Silicus.ProjectTracker.Web.ViewModel
+@using Kendo.Mvc.UI;
+
+@{
+    var currentWeek = 0;
+    var topWeekCount = 0;
+    var tdClass = "";
+
+    var currentWeekTd = 0;
+    //var columnNumber = 1; 
+    var style = "";
+}
+
+<div class="kendotable">
+
+@if (Model != null && Model.Count() > 0)
+{
+    currentWeek = Model.FirstOrDefault().CurrentWeek;
+    topWeekCount = currentWeek - Model.FirstOrDefault().TotalWeeksToDisplay;
+    var weekListData = Model.FirstOrDefault().WeekListData;
+    var ii = currentWeek;
+  
+    @Html.Hidden("currentWeek", currentWeek);
+    @Html.Hidden("currentWeekTd", currentWeek);                                                               
+    @Html.Hidden("recordsToShow", Model.FirstOrDefault().TotalWeeksToDisplay);
+
+    currentWeekTd = currentWeek;
+    <table border="0" width="100%" class="table" id="UserReportTable" >
+        <thead>
+            <tr>
+                <th><b>Project Name</b></th>
+                
+                @foreach (var item in weekListData)
+                {
+                    if (ii > topWeekCount)
+                    {
+                        tdClass = "visibleTH";
+                    }
+                    else
+                    {
+                        tdClass = "invisibleTH";
+                    }
+
+                    if (ii == currentWeek)
+                    {
+                        style = "background-color:#a1c4f5; color:white;";
+                    }
+                    else {
+                        style = "";
+                    }
+                    
+                    
+                    @: <th id="week-@ii" style="border: 1px solid gray; @(style)" class="@tdClass @( "weekNumber"+ @ii) center">
+                            @:<b> @item.Text</b>
+                        @: </th> 
+                    
+                    ii--;
+                }      
+            </tr>
+        </thead>
+
+        @foreach (var model in Model)
+        {
+            var projectData = model.ProjectData;            
+            <tr>
+                <td>
+                    @projectData.ProjectName
+                </td>
+                @for (int i = model.CurrentWeek; i > 0; i--)
+                {
+                    var week = projectData.WeekData.FirstOrDefault(w => w.WeekId == i);
+                    var weekIdToRedirect = model.WeekListData.FirstOrDefault(wld => wld.WeekId == i).WeekId;
+
+                    if (i > topWeekCount)
+                    {
+                        tdClass = "visibleTH";
+                    }
+                    else
+                    {
+                        tdClass = "invisibleTH";
+                    }
+
+                    if (model.CurrentWeek == i)
+                    {
+                        style = "background-color:#c3dbfe;";
+                    }
+                    else
+                    {
+                        style = "";
+                    }
+
+                    if (week == null || week.WeekId == 0 || week.WeekId == null)
+                    {
+                        <td style="border:1px solid gray; @(style)" class="@tdClass textClass @( "weekNumber"+ @i) center">
+                            <a href='javascript:void(0)' onclick='OpenProjectDetailsByWeek(@(model.ProjectData.ProjectId), @weekIdToRedirect)' title='Not Submitted'>
+                                <img src="~/Content/Images/status_not_available.png" style="width: 32px; height: 32px; " title="Not Submitted" />
+                            </a>
+                        </td>
+                    }
+                    else
+                    {
+                        foreach (var weekData in projectData.WeekData.Where(w => w.WeekId == i))
+                        {                                       
+                            @: <td style="border: 1px solid gray; @(style)" class="@tdClass textClass @( "weekNumber"+ @i) center">
+                                if (@weekData.StatusId == 1)
+                                {
+                                    <a href='javascript:void(0)' onclick='OpenProjectDetailsByWeek(@(model.ProjectData.ProjectId), @weekIdToRedirect)' title='Green'>
+                                        <img src="~/Content/Images/status_green.png" style="width: 32px; height: 32px;" title="Green" />
+                                    </a>
+                                }
+                                else if (@weekData.StatusId == 2)
+                                {
+                                    <a href='javascript:void(0)' onclick='OpenProjectDetailsByWeek(@(model.ProjectData.ProjectId), @weekIdToRedirect)' title='Yellow'>
+                                        <img src="~/Content/Images/status_yellow.png" style="width: 32px; height: 32px;" title="Yellow" />
+                                    </a>
+                                }
+                                else if (@weekData.StatusId == 3)
+                                {
+                                    <a href='javascript:void(0)' onclick='OpenProjectDetailsByWeek(@(model.ProjectData.ProjectId), @weekIdToRedirect)' title='Red'>
+                                        <img src="~/Content/Images/status_red.png" style="width: 32px; height: 32px;" title="Red" />
+                                    </a>
+                                }
+                                else if (@weekData.StatusId == 4)
+                                {
+                                    <a href='javascript:void(0)' onclick='OpenProjectDetailsByWeek(@(model.ProjectData.ProjectId), @weekIdToRedirect)' title='Closed'>
+                                        <img src="~/Content/Images/status_closed.png" style="width: 32px; height: 32px;" title="Closed" />
+                                    </a>
+                                }
+                            @: </td>
+                        }
+                    }
+                }
+            </tr>
+        }
+    </table>
+    <table width="100%" border="0">
+        <tr>
+            <td style="float: left; border: 0px solid gray; padding: 2px; cursor: pointer; display: none;" id="prevButtonTd">
+                <a onclick="PreviousWeek()" id="prevButton" style="display:none;" class="btn btn-silicus"><< Previous</a>
+            </td>
+            <td style="float: right; border: 0px solid gray; padding: 2px; cursor: pointer;" id="nextButtonTd">
+                <a onclick="NextWeek()" id="nextButton" style="display:none;" class="btn btn-silicus">Next >></a>
+            </td>
+        </tr>
+    </table>
+}
+</div>
+
+<style>
+    .invisibleTH {
+        display: none;
+    }
+    th.center {
+        text-align: center;
+        vertical-align: middle;
+    }
+    td.center {
+        text-align: center;
+        vertical-align: middle;
+    }
+
+</style>
+
+<script>
+    var currentWeek = $('#currentWeek').val();
+    var currentWeekTd = $('#currentWeekTd').val();
+    var recordsToShow = $('#recordsToShow').val();
+
+    if (($('#UserReportTable td').length - $('#UserReportTable td:visible').length) == 0) {
+        $("#nextButton").hide();
+        $("#nextButtonTd").hide();
+    }
+    else{
+        $("#nextButton").show();
+        $("#nextButtonTd").show();
+    }
+
+    function NextWeek() {
+                
+        $(".weekNumber" + currentWeekTd).css({ display: "none" });
+        $(".weekNumber" + (currentWeekTd - recordsToShow)).css({ display: "table-cell" });
+
+        currentWeekTd = currentWeekTd - 1;
+        
+        if (currentWeekTd < currentWeek) {
+            $("#prevButton").show();
+            $("#prevButtonTd").show();
+        } else {
+            $("#prevButton").hide();
+            $("#prevButtonTd").hide();
+        }
+
+        if (currentWeekTd == recordsToShow) {
+            $("#nextButton").hide();
+            $("#nextButtonTd").hide();
+        }
+        else {
+            $("#nextButton").show();
+            $("#nextButtonTd").show();
+        }
+    }
+
+
+    function PreviousWeek() {
+        currentWeekTd = currentWeekTd + 1;
+
+        $(".weekNumber" + currentWeekTd).css({ display: "table-cell" });
+        $(".weekNumber" + (currentWeekTd - recordsToShow)).css({ display: "none" });        
+
+        if (currentWeekTd < currentWeek) {
+            $("#prevButton").show();
+            $("#prevButtonTd").show();
+        } else {
+            $("#prevButton").hide();
+            $("#prevButtonTd").hide();
+        }
+
+        if (currentWeekTd == recordsToShow) {
+            $("#nextButton").hide();
+            $("#nextButtonTd").hide();
+        }
+        else {
+            $("#nextButton").show();
+            $("#nextButtonTd").show();
+        }
+    }
+
+
+    $(function () {
+        // Declare a proxy to reference the hub.
+        var dashboard = $.connection.trackerHub;
+        dashboard.client.UpdateUserDashboard = function () {
+            //alert(dashboard);
+            //RedirectToPage("dashboard", "User");
+        };
+
+        // Start the connection.
+        $.connection.hub.start().done(function () {
+
+        });
+    });
+</script>

@@ -1,0 +1,196 @@
+
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2012
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Silicus.ProjectTracker.Web", "Silicus.ProjectTracker.Web\Silicus.ProjectTracker.Web.csproj", "{1486A84A-408E-4E95-92C5-6E57D9F7350A}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{E78A3B8C-D6F3-4824-8F2F-044DBF36282D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Silicus.ProjectTracker.Web.Tests", "Silicus.ProjectTracker.Web.Tests\Silicus.ProjectTracker.Web.Tests.csproj", "{32B13C93-6BD2-4A71-B693-A3EDE8151E76}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Silicus.ProjectTracker.Models", "Silicus.ProjectTracker.Models\Silicus.ProjectTracker.Models.csproj", "{2F4384AA-2FE9-4C85-A6CC-59228BC587E6}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Common", "Common", "{D6150A87-6B5C-41B0-8171-C95D6CA6953D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Silicus.ProjectTracker.Core", "Silicus.ProjectTracker.Core\Silicus.ProjectTracker.Core.csproj", "{2B2F0EBB-CF61-4DA5-9375-A66AE73C0CB0}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Silicus.ProjectTracker.Services", "Silicus.ProjectTracker.Services\Silicus.ProjectTracker.Services.csproj", "{840DB0BC-4016-4C33-9746-ED48BDE5C544}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Silicus.ProjectTracker.Core.Tests", "Silicus.ProjectTracker.Core.Tests\Silicus.ProjectTracker.Core.Tests.csproj", "{D5B213AB-242C-40A0-AEF6-0E5A842E115C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Silicus.ProjectTracker.Services.Tests", "Silicus.ProjectTracker.Services.Tests\Silicus.ProjectTracker.Services.Tests.csproj", "{EA0685A4-784F-4B42-A4AB-761A2E6128DA}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Silicus.ProjectTracker.Entities", "Silicus.ProjectTracker.Entities\Silicus.ProjectTracker.Entities.csproj", "{33F03AEB-5ED5-4F31-A3F5-D39B22373027}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{C08F0628-465F-4B65-AAFD-11A8601DBBF5}"
+	ProjectSection(SolutionItems) = preProject
+		Local.runsettings = Local.runsettings
+		Local.testsettings = Local.testsettings
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "IntegrationTests", "IntegrationTests", "{B76CED24-BC29-4063-9209-79E9312ED9F1}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Silicus.ProjectTracker.Integration.Tests", "Silicus.ProjectTracker.Integration.Tests\Silicus.ProjectTracker.Integration.Tests.csproj", "{11DC4C64-6EB2-46B4-87D5-BA2DFF308151}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Silicus.ProjectTracker.Logger", "Silicus.ProjectTracker.Logger\Silicus.ProjectTracker.Logger.csproj", "{A7873741-089F-47F0-A608-E3CC6AF2FD45}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Silicus.ProjectTracker.Auditing", "Silicus.ProjectTracker.Auditing\Silicus.ProjectTracker.Auditing.csproj", "{E681E537-18A3-4BB9-B3AA-502E2C0E05F0}"
+EndProject
+Global
+	GlobalSection(TeamFoundationVersionControl) = preSolution
+		SccNumberOfProjects = 12
+		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
+		SccTeamFoundationServer = http://silpunapp7:8080/tfs/teamplus
+		SccProjectUniqueName0 = Silicus.ProjectTracker.Web\\Silicus.ProjectTracker.Web.csproj
+		SccProjectName0 = Silicus.ProjectTracker.Web
+		SccLocalPath0 = Silicus.ProjectTracker.Web
+		SccProjectUniqueName1 = Silicus.ProjectTracker.Services\\Silicus.ProjectTracker.Services.csproj
+		SccProjectName1 = Silicus.ProjectTracker.Services
+		SccLocalPath1 = Silicus.ProjectTracker.Services
+		SccProjectUniqueName2 = Silicus.ProjectTracker.Models\\Silicus.ProjectTracker.Models.csproj
+		SccProjectName2 = Silicus.ProjectTracker.Models
+		SccLocalPath2 = Silicus.ProjectTracker.Models
+		SccProjectUniqueName3 = Silicus.ProjectTracker.Entities\\Silicus.ProjectTracker.Entities.csproj
+		SccProjectName3 = Silicus.ProjectTracker.Entities
+		SccLocalPath3 = Silicus.ProjectTracker.Entities
+		SccProjectUniqueName4 = Silicus.ProjectTracker.Core\\Silicus.ProjectTracker.Core.csproj
+		SccProjectTopLevelParentUniqueName4 = Silicus.ProjectTracker.sln
+		SccProjectName4 = Silicus.ProjectTracker.Core
+		SccLocalPath4 = Silicus.ProjectTracker.Core
+		SccProjectUniqueName5 = Silicus.ProjectTracker.Logger\\Silicus.ProjectTracker.Logger.csproj
+		SccProjectTopLevelParentUniqueName5 = Silicus.ProjectTracker.sln
+		SccProjectName5 = Silicus.ProjectTracker.Logger
+		SccLocalPath5 = Silicus.ProjectTracker.Logger
+		SccProjectUniqueName6 = Silicus.ProjectTracker.Auditing\\Silicus.ProjectTracker.Auditing.csproj
+		SccProjectTopLevelParentUniqueName6 = Silicus.ProjectTracker.sln
+		SccProjectName6 = Silicus.ProjectTracker.Auditing
+		SccLocalPath6 = Silicus.ProjectTracker.Auditing
+		SccProjectUniqueName7 = Silicus.ProjectTracker.Integration.Tests\\Silicus.ProjectTracker.Integration.Tests.csproj
+		SccProjectTopLevelParentUniqueName7 = Silicus.ProjectTracker.sln
+		SccProjectName7 = Silicus.ProjectTracker.Integration.Tests
+		SccLocalPath7 = Silicus.ProjectTracker.Integration.Tests
+		SccProjectUniqueName8 = Silicus.ProjectTracker.Core.Tests\\Silicus.ProjectTracker.Core.Tests.csproj
+		SccProjectTopLevelParentUniqueName8 = Silicus.ProjectTracker.sln
+		SccProjectName8 = Silicus.ProjectTracker.Core.Tests
+		SccLocalPath8 = Silicus.ProjectTracker.Core.Tests
+		SccProjectUniqueName9 = Silicus.ProjectTracker.Web.Tests\\Silicus.ProjectTracker.Web.Tests.csproj
+		SccProjectTopLevelParentUniqueName9 = Silicus.ProjectTracker.sln
+		SccProjectName9 = Silicus.ProjectTracker.Web.Tests
+		SccLocalPath9 = Silicus.ProjectTracker.Web.Tests
+		SccProjectUniqueName10 = Silicus.ProjectTracker.Services.Tests\\Silicus.ProjectTracker.Services.Tests.csproj
+		SccProjectTopLevelParentUniqueName10 = Silicus.ProjectTracker.sln
+		SccProjectName10 = Silicus.ProjectTracker.Services.Tests
+		SccLocalPath10 = Silicus.ProjectTracker.Services.Tests
+		SccLocalPath11 = .
+	EndGlobalSection
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Beta|Any CPU = Beta|Any CPU
+		Debug|Any CPU = Debug|Any CPU
+		Integration|Any CPU = Integration|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{1486A84A-408E-4E95-92C5-6E57D9F7350A}.Beta|Any CPU.ActiveCfg = Beta|Any CPU
+		{1486A84A-408E-4E95-92C5-6E57D9F7350A}.Beta|Any CPU.Build.0 = Beta|Any CPU
+		{1486A84A-408E-4E95-92C5-6E57D9F7350A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1486A84A-408E-4E95-92C5-6E57D9F7350A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1486A84A-408E-4E95-92C5-6E57D9F7350A}.Integration|Any CPU.ActiveCfg = Integration|Any CPU
+		{1486A84A-408E-4E95-92C5-6E57D9F7350A}.Integration|Any CPU.Build.0 = Integration|Any CPU
+		{1486A84A-408E-4E95-92C5-6E57D9F7350A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1486A84A-408E-4E95-92C5-6E57D9F7350A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{32B13C93-6BD2-4A71-B693-A3EDE8151E76}.Beta|Any CPU.ActiveCfg = Beta|Any CPU
+		{32B13C93-6BD2-4A71-B693-A3EDE8151E76}.Beta|Any CPU.Build.0 = Beta|Any CPU
+		{32B13C93-6BD2-4A71-B693-A3EDE8151E76}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{32B13C93-6BD2-4A71-B693-A3EDE8151E76}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{32B13C93-6BD2-4A71-B693-A3EDE8151E76}.Integration|Any CPU.ActiveCfg = Integration|Any CPU
+		{32B13C93-6BD2-4A71-B693-A3EDE8151E76}.Integration|Any CPU.Build.0 = Integration|Any CPU
+		{32B13C93-6BD2-4A71-B693-A3EDE8151E76}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{32B13C93-6BD2-4A71-B693-A3EDE8151E76}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2F4384AA-2FE9-4C85-A6CC-59228BC587E6}.Beta|Any CPU.ActiveCfg = Beta|Any CPU
+		{2F4384AA-2FE9-4C85-A6CC-59228BC587E6}.Beta|Any CPU.Build.0 = Beta|Any CPU
+		{2F4384AA-2FE9-4C85-A6CC-59228BC587E6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2F4384AA-2FE9-4C85-A6CC-59228BC587E6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2F4384AA-2FE9-4C85-A6CC-59228BC587E6}.Integration|Any CPU.ActiveCfg = Integration|Any CPU
+		{2F4384AA-2FE9-4C85-A6CC-59228BC587E6}.Integration|Any CPU.Build.0 = Integration|Any CPU
+		{2F4384AA-2FE9-4C85-A6CC-59228BC587E6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2F4384AA-2FE9-4C85-A6CC-59228BC587E6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2B2F0EBB-CF61-4DA5-9375-A66AE73C0CB0}.Beta|Any CPU.ActiveCfg = Beta|Any CPU
+		{2B2F0EBB-CF61-4DA5-9375-A66AE73C0CB0}.Beta|Any CPU.Build.0 = Beta|Any CPU
+		{2B2F0EBB-CF61-4DA5-9375-A66AE73C0CB0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2B2F0EBB-CF61-4DA5-9375-A66AE73C0CB0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2B2F0EBB-CF61-4DA5-9375-A66AE73C0CB0}.Integration|Any CPU.ActiveCfg = Integration|Any CPU
+		{2B2F0EBB-CF61-4DA5-9375-A66AE73C0CB0}.Integration|Any CPU.Build.0 = Integration|Any CPU
+		{2B2F0EBB-CF61-4DA5-9375-A66AE73C0CB0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2B2F0EBB-CF61-4DA5-9375-A66AE73C0CB0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{840DB0BC-4016-4C33-9746-ED48BDE5C544}.Beta|Any CPU.ActiveCfg = Beta|Any CPU
+		{840DB0BC-4016-4C33-9746-ED48BDE5C544}.Beta|Any CPU.Build.0 = Beta|Any CPU
+		{840DB0BC-4016-4C33-9746-ED48BDE5C544}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{840DB0BC-4016-4C33-9746-ED48BDE5C544}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{840DB0BC-4016-4C33-9746-ED48BDE5C544}.Integration|Any CPU.ActiveCfg = Integration|Any CPU
+		{840DB0BC-4016-4C33-9746-ED48BDE5C544}.Integration|Any CPU.Build.0 = Integration|Any CPU
+		{840DB0BC-4016-4C33-9746-ED48BDE5C544}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{840DB0BC-4016-4C33-9746-ED48BDE5C544}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D5B213AB-242C-40A0-AEF6-0E5A842E115C}.Beta|Any CPU.ActiveCfg = Beta|Any CPU
+		{D5B213AB-242C-40A0-AEF6-0E5A842E115C}.Beta|Any CPU.Build.0 = Beta|Any CPU
+		{D5B213AB-242C-40A0-AEF6-0E5A842E115C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D5B213AB-242C-40A0-AEF6-0E5A842E115C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D5B213AB-242C-40A0-AEF6-0E5A842E115C}.Integration|Any CPU.ActiveCfg = Integration|Any CPU
+		{D5B213AB-242C-40A0-AEF6-0E5A842E115C}.Integration|Any CPU.Build.0 = Integration|Any CPU
+		{D5B213AB-242C-40A0-AEF6-0E5A842E115C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D5B213AB-242C-40A0-AEF6-0E5A842E115C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EA0685A4-784F-4B42-A4AB-761A2E6128DA}.Beta|Any CPU.ActiveCfg = Beta|Any CPU
+		{EA0685A4-784F-4B42-A4AB-761A2E6128DA}.Beta|Any CPU.Build.0 = Beta|Any CPU
+		{EA0685A4-784F-4B42-A4AB-761A2E6128DA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EA0685A4-784F-4B42-A4AB-761A2E6128DA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EA0685A4-784F-4B42-A4AB-761A2E6128DA}.Integration|Any CPU.ActiveCfg = Integration|Any CPU
+		{EA0685A4-784F-4B42-A4AB-761A2E6128DA}.Integration|Any CPU.Build.0 = Integration|Any CPU
+		{EA0685A4-784F-4B42-A4AB-761A2E6128DA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EA0685A4-784F-4B42-A4AB-761A2E6128DA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{33F03AEB-5ED5-4F31-A3F5-D39B22373027}.Beta|Any CPU.ActiveCfg = Beta|Any CPU
+		{33F03AEB-5ED5-4F31-A3F5-D39B22373027}.Beta|Any CPU.Build.0 = Beta|Any CPU
+		{33F03AEB-5ED5-4F31-A3F5-D39B22373027}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{33F03AEB-5ED5-4F31-A3F5-D39B22373027}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{33F03AEB-5ED5-4F31-A3F5-D39B22373027}.Integration|Any CPU.ActiveCfg = Integration|Any CPU
+		{33F03AEB-5ED5-4F31-A3F5-D39B22373027}.Integration|Any CPU.Build.0 = Integration|Any CPU
+		{33F03AEB-5ED5-4F31-A3F5-D39B22373027}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{33F03AEB-5ED5-4F31-A3F5-D39B22373027}.Release|Any CPU.Build.0 = Release|Any CPU
+		{11DC4C64-6EB2-46B4-87D5-BA2DFF308151}.Beta|Any CPU.ActiveCfg = Beta|Any CPU
+		{11DC4C64-6EB2-46B4-87D5-BA2DFF308151}.Beta|Any CPU.Build.0 = Beta|Any CPU
+		{11DC4C64-6EB2-46B4-87D5-BA2DFF308151}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{11DC4C64-6EB2-46B4-87D5-BA2DFF308151}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{11DC4C64-6EB2-46B4-87D5-BA2DFF308151}.Integration|Any CPU.ActiveCfg = Integration|Any CPU
+		{11DC4C64-6EB2-46B4-87D5-BA2DFF308151}.Integration|Any CPU.Build.0 = Integration|Any CPU
+		{11DC4C64-6EB2-46B4-87D5-BA2DFF308151}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{11DC4C64-6EB2-46B4-87D5-BA2DFF308151}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A7873741-089F-47F0-A608-E3CC6AF2FD45}.Beta|Any CPU.ActiveCfg = Release|Any CPU
+		{A7873741-089F-47F0-A608-E3CC6AF2FD45}.Beta|Any CPU.Build.0 = Release|Any CPU
+		{A7873741-089F-47F0-A608-E3CC6AF2FD45}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A7873741-089F-47F0-A608-E3CC6AF2FD45}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A7873741-089F-47F0-A608-E3CC6AF2FD45}.Integration|Any CPU.ActiveCfg = Release|Any CPU
+		{A7873741-089F-47F0-A608-E3CC6AF2FD45}.Integration|Any CPU.Build.0 = Release|Any CPU
+		{A7873741-089F-47F0-A608-E3CC6AF2FD45}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A7873741-089F-47F0-A608-E3CC6AF2FD45}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E681E537-18A3-4BB9-B3AA-502E2C0E05F0}.Beta|Any CPU.ActiveCfg = Release|Any CPU
+		{E681E537-18A3-4BB9-B3AA-502E2C0E05F0}.Beta|Any CPU.Build.0 = Release|Any CPU
+		{E681E537-18A3-4BB9-B3AA-502E2C0E05F0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E681E537-18A3-4BB9-B3AA-502E2C0E05F0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E681E537-18A3-4BB9-B3AA-502E2C0E05F0}.Integration|Any CPU.ActiveCfg = Release|Any CPU
+		{E681E537-18A3-4BB9-B3AA-502E2C0E05F0}.Integration|Any CPU.Build.0 = Release|Any CPU
+		{E681E537-18A3-4BB9-B3AA-502E2C0E05F0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E681E537-18A3-4BB9-B3AA-502E2C0E05F0}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{32B13C93-6BD2-4A71-B693-A3EDE8151E76} = {E78A3B8C-D6F3-4824-8F2F-044DBF36282D}
+		{D5B213AB-242C-40A0-AEF6-0E5A842E115C} = {E78A3B8C-D6F3-4824-8F2F-044DBF36282D}
+		{EA0685A4-784F-4B42-A4AB-761A2E6128DA} = {E78A3B8C-D6F3-4824-8F2F-044DBF36282D}
+		{2B2F0EBB-CF61-4DA5-9375-A66AE73C0CB0} = {D6150A87-6B5C-41B0-8171-C95D6CA6953D}
+		{A7873741-089F-47F0-A608-E3CC6AF2FD45} = {D6150A87-6B5C-41B0-8171-C95D6CA6953D}
+		{E681E537-18A3-4BB9-B3AA-502E2C0E05F0} = {D6150A87-6B5C-41B0-8171-C95D6CA6953D}
+		{11DC4C64-6EB2-46B4-87D5-BA2DFF308151} = {B76CED24-BC29-4063-9209-79E9312ED9F1}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		VisualSVNWorkingCopyRoot = .
+	EndGlobalSection
+EndGlobal

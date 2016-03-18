@@ -1,0 +1,59 @@
+﻿@model Silicus.ProjectTracker.Web.ViewModel.ProjectViewModel
+@using Silicus.ProjectTracker.Web.ViewModel
+@using Kendo.Mvc.UI;
+@using Silicus.ProjectTracker.Models.DataObjects
+
+
+<div class="fluid mt20">
+    @*<input type="button" class="btn btn-silicus" id="btnCreateProject" value="Add" />*@
+    <h3>Project List</h3>
+    <div class="kendotable">
+
+        @if (Model!=null)
+        { 
+            @Html.Hidden("hdnUserName", Model.UserName)
+        }
+        
+        @(Html.Kendo().Grid<ProjectViewModel>().Name("projectGrid")
+        .DataSource(dataSource => dataSource
+        .Ajax()
+        .Model(model =>
+                {
+                    model.Id(p => p.ProjectId);
+                    model.Field(p => p.ProjectId).Editable(false);
+
+                })
+                        .Read(read => read.Action("GetProjectsByUsername", "User").Data("SendUserName"))
+                        .Create(update => update.Action("CreateProject", "User"))
+                        .Update(update => update.Action("UpdateProject", "User"))
+                        .Destroy(update => update.Action("DeleteProject", "User"))
+                )
+
+            .Columns(columns =>
+            {
+                columns.Bound(p => p.ProjectName).Filterable(true).Title("Project Name").Groupable(false).Width(100)
+                    .ClientTemplate("<a  href='javascript:void(0)' onclick='OpenProjectDetails(#=ProjectId#)' title='Summary' > #=ProjectName# </a>");
+                columns.Bound(p => p.ProjectDescription).Width(200);
+                columns.Bound(p => p.StartDate).Width(100).Title("Project Start Date");
+                columns.Bound(p => p.IsActive).Width(50)
+                    .ClientTemplate(
+                    "# if (IsActive == true) { #" +
+                    "Active" +
+                    "# } else { #" +
+                    "InActive" +
+                    "# } #"
+                    );
+                columns.ForeignKey(p => p.StatusId, (System.Collections.IEnumerable)ViewData["Status"], "StatusId", "StatusName").Title("Current Status").Width(50);
+            })
+
+            .Pageable()
+            .Sortable()
+            .Editable(ed => ed.Mode(GridEditMode.PopUp))
+            .Navigatable()
+            .Filterable()
+            .ColumnMenu()
+        )
+    </div>
+
+</div>
+

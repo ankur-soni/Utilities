@@ -1,0 +1,182 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{2F4384AA-2FE9-4C85-A6CC-59228BC587E6}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Eda.RDBI.Models</RootNamespace>
+    <AssemblyName>Eda.RDBI.Models</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Beta|AnyCPU'">
+    <OutputPath>bin\Beta\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Integration|AnyCPU'">
+    <OutputPath>bin\Integration\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="..\AssemblyVersionInfo.cs">
+      <Link>Properties\AssemblyVersionInfo.cs</Link>
+    </Compile>
+    <Compile Include="..\SharedAssemblyInfo.cs">
+      <Link>Properties\SharedAssemblyInfo.cs</Link>
+    </Compile>
+    <Compile Include="ActivityAccidentDetailsGrid.cs" />
+    <Compile Include="BillingType.cs" />
+    <Compile Include="ClassEntityCountModel.cs" />
+    <Compile Include="ActivityAnalyticsChartModel.cs" />
+    <Compile Include="ClientLeftPanelModel.cs" />
+<<<<<<< .mine
+=======
+    <Compile Include="EquipmentFleetSummaryModel.cs" />
+    <Compile Include="DataObjects\NotificationMessage.cs" />
+>>>>>>> .r1510
+    <Compile Include="DataObjects\UserNotification.cs" />
+    <Compile Include="ExportExtraColumnsForProspectLeadListSmall.cs" />
+    <Compile Include="DataObjects\SearchUDFFilter.cs" />
+    <Compile Include="DataObjects\UDFCriteria.cs" />
+    <Compile Include="DataObjects\UDFType.cs" />
+    <Compile Include="DataObjects\UDFDefinition.cs" />
+    <Compile Include="SelectableItemModelForVehicleModel.cs" />
+    <Compile Include="DimensionWithCodeModel.cs" />
+    <Compile Include="DataObjects\AccidentRatioGroup.cs" />
+    <Compile Include="DataObjects\ActivityDateRange.cs" />
+    <Compile Include="DataObjects\Activity_County.cs" />
+    <Compile Include="DataObjects\Activity_State.cs" />
+    <Compile Include="DataObjects\QuickSearchHistory.cs" />
+    <Compile Include="DataObjects\CurrentCSABasicAlert.cs" />
+    <Compile Include="DataObjects\FatalityAccidentFlag.cs" />
+    <Compile Include="DataObjects\FmcaSafetyRating.cs" />
+    <Compile Include="DataObjects\OutOfServiceViolation.cs" />
+    <Compile Include="DataObjects\Violation.cs" />
+    <Compile Include="DataObjects\ViolationsFamily.cs" />
+    <Compile Include="ModelAverageAgeWidgetModel.cs" />
+    <Compile Include="DataObjects\ExecutionFilter.cs" />
+    <Compile Include="ModelYearWidgetModel.cs" />
+    <Compile Include="TopModelWidgetModel.cs" />
+    <Compile Include="TopBrandWidgetModel.cs" />
+    <Compile Include="QuickSearchGridModel.cs" />
+    <Compile Include="DataObjects\AvgModelYearAge.cs" />
+    <Compile Include="DataObjects\CargoHauled.cs" />
+    <Compile Include="DataObjects\DeliveryPointValidated.cs" />
+    <Compile Include="DataObjects\DnBCreditRisk.cs" />
+    <Compile Include="DataObjects\DnBPrimaryIndustry.cs" />
+    <Compile Include="DataObjects\DnBPrimarySIC.cs" />
+    <Compile Include="DataObjects\EmailAvailable.cs" />
+    <Compile Include="DataObjects\EngineManufacturer.cs" />
+    <Compile Include="DataObjects\EngineType.cs" />
+    <Compile Include="DataObjects\EquipmentMake.cs" />
+    <Compile Include="DataObjects\EquipmentModelFilter.cs" />
+    <Compile Include="DataObjects\EquipmentModelYrs.cs" />
+    <Compile Include="DataObjects\EquipmentVinDateRange.cs" />
+    <Compile Include="DataObjects\FinancedOffRoadEqt.cs" />
+    <Compile Include="DataObjects\LeasedOperators.cs" />
+    <Compile Include="DataObjects\MarketSegment.cs" />
+    <Compile Include="DataObjects\OperatingSegment.cs" />
+    <Compile Include="DataObjects\PreviouslyOperatedEquipment.cs" />
+    <Compile Include="DataObjects\SearchTempStore.cs" />
+    <Compile Include="DataObjects\SearchFilterBase.cs" />
+    <Compile Include="DataObjects\OrganizationUsers\OrganizationUserGvwrClassDataAccess.cs" />
+    <Compile Include="DataObjects\OrganizationUsers\OrganizationUserOperatingClassDataAccess.cs" />
+    <Compile Include="DataObjects\OrganizationUsers\OrganizationUserCountyDataAccess.cs" />
+    <Compile Include="DataObjects\OrganizationUsers\OrganizationUserEstimatedPowerUnitDataAccess.cs" />
+    <Compile Include="DataObjects\OrganizationUsers\OrganizationUserStateDataAccess.cs" />
+    <Compile Include="DataObjects\OrganizationUsers\OrganizationUserCountryDataAccess.cs" />
+    <Compile Include="DataObjects\ValidatedPhone.cs" />
+    <Compile Include="EntityClusterMapModel.cs" />
+    <Compile Include="EntityExtendedGridModel.cs" />
+    <Compile Include="EntityHeatMapModel.cs" />
+    <Compile Include="EntityStandardGridModel.cs" />
+    <Compile Include="DataObjects\EquipmentType.cs" />
+    <Compile Include="FilterItemModel.cs" />
+    <Compile Include="MoverBoxModel.cs" />
+    <Compile Include="EntityAnalyticsBarChartModel.cs" />
+    <Compile Include="OrganizationUserDataAccessBase.cs" />
+    <Compile Include="DataAccessEntityBase.cs" />
+    <Compile Include="DataObjects\Address.cs" />
+    <Compile Include="DataObjects\AddressType.cs" />
+    <Compile Include="OrganizationDataAccessBase.cs" />
+    <Compile Include="DataObjects\County.cs" />
+    <Compile Include="DataObjects\EstimatedPowerUnitsRange.cs" />
+    <Compile Include="DataObjects\GvwrClass.cs" />
+    <Compile Include="DataObjects\OperatingClass.cs" />
+    <Compile Include="DataObjects\OrganizationDataAccessCounty.cs" />
+    <Compile Include="DataObjects\OrganizationDataAccessEstimatedPowerUnit.cs" />
+    <Compile Include="DataObjects\OrganizationDataAccessGvwrClass.cs" />
+    <Compile Include="DataObjects\OrganizationDataAccessOperatingClass.cs" />
+    <Compile Include="DataObjects\OrganizationDataAccessState.cs" />
+    <Compile Include="DataObjects\Search.cs" />
+    <Compile Include="DataObjects\State.cs" />
+    <Compile Include="DataObjects\OrganizationDataAccessCountry.cs" />
+    <Compile Include="DataObjects\Country.cs" />
+    <Compile Include="DataObjects\Organization.cs" />
+    <Compile Include="DataObjects\OrganizationUser.cs" />
+    <Compile Include="DataObjects\UserSearch.cs" />
+    <Compile Include="EntityModel.cs" />
+    <Compile Include="EquipmentModel.cs" />
+    <Compile Include="SearchFilterLeftMenuModel.cs" />
+    <Compile Include="SelectableItemModel.cs" />
+    <Compile Include="StateEntityCountModel.cs" />
+    <Compile Include="EstimatedPowerUnitEntityCountModel.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="EntityDetailsModel.cs" />
+    <Compile Include="TopEngineWidgetModel.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Eda.RDBI.Core\Eda.RDBI.Core.csproj">
+      <Project>{2B2F0EBB-CF61-4DA5-9375-A66AE73C0CB0}</Project>
+      <Name>Eda.RDBI.Core</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

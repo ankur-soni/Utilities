@@ -1,0 +1,149 @@
+using System.Web.Mvc;
+using Eda.RDBI.Auditing;
+using Eda.RDBI.Logger;
+using Eda.RDBI.Web;
+using Eda.RDBI.Web.Controllers;
+using Eda.RDBI.Web.UserMembership;
+using Ninject.Web.Mvc.FilterBindingSyntax;
+
+[assembly: WebActivator.PreApplicationStartMethod(typeof(NinjectWebCommon), "Start")]
+[assembly: WebActivator.ApplicationShutdownMethodAttribute(typeof(NinjectWebCommon), "Stop")]
+
+namespace Eda.RDBI.Web
+{
+    using System;
+    using System.Configuration;
+    using System.Diagnostics.CodeAnalysis;
+    using System.Web;
+
+    using Eda.RDBI.Core.Interfaces;
+    using Eda.RDBI.Entities;
+    using Eda.RDBI.Repositories;
+    using Eda.RDBI.Repositories.Interfaces;
+    using Eda.RDBI.Services;
+    using Eda.RDBI.SiSenseProxy;
+    using Eda.RDBI.Web.Mappings;
+
+    using Microsoft.Web.Infrastructure.DynamicModuleHelper;
+
+    using Ninject;
+    using Ninject.Web.Common;
+
+    [ExcludeFromCodeCoverage]
+    public static class NinjectWebCommon
+    {
+        private static readonly Bootstrapper bootstrapper = new Bootstrapper();
+
+        /// <summary>
+        /// Starts the application
+        /// </summary>
+        public static void Start()
+        {
+            DynamicModuleUtility.RegisterModule(typeof(OnePerRequestHttpModule));
+            DynamicModuleUtility.RegisterModule(typeof(NinjectHttpModule));
+            bootstrapper.Initialize(CreateKernel);
+        }
+
+        /// <summary>
+        /// Stops the application.
+        /// </summary>
+        public static void Stop()
+        {
+            bootstrapper.ShutDown();
+        }
+
+        /// <summary>
+        /// Creates the kernel that will manage your application.
+        /// </summary>
+        /// <returns>The created kernel.</returns>
+        public static IKernel CreateKernel()
+        {
+            var kernel = new StandardKernel();
+            kernel.Bind<Func<IKernel>>().ToMethod(ctx => () => new Bootstrapper().Kernel);
+            kernel.Bind<IHttpModule>().To<HttpApplicationInitializationHttpModule>();
+
+            RegisterServices(kernel);
+            return kernel;
+        }
+
+        /// <summary>
+        /// Load your modules or register your services here!
+        /// </summary>
+        /// <param name="kernel">The kernel.</param>
+        private static void RegisterServices(IKernel kernel)
+        {
+            kernel.Bind<ISisenseServerProxy>()
+                .To<SisenseServerProxy>()
+                .WithConstructorArgument("url", ConfigurationManager.AppSettings["SisenseUrl"])
+                .WithConstructorArgument("userName", ConfigurationManager.AppSettings["SisenseUserName"])
+                .WithConstructorArgument("password", ConfigurationManager.AppSettings["SisensePassword"]);
+
+            kernel.Bind<ILuceneRepository>()
+                .To<LuceneRepository>()
+                .WithConstructorArgument("indexLocation", ConfigurationManager.AppSettings["FleetSummaryIndex"])
+                .WithConstructorArgument("searchreturnmaxcount",
+                    Convert.ToInt32(ConfigurationManager.AppSettings["SearchReturnMaxCount"]));
+            
+            kernel.Bind<ILogger>().To<DatabaseLogger>()
+                .WithConstructorArgument("connectionString", "name=RdbiLoggerDataContext")
+                .WithConstructorArgument("dateGetter", (Func<DateTime>)(() => DateTime.UtcNow))
+                .WithConstructorArgument("type", Type.GetType(string.Empty));
+
+            kernel.Bind<IFactRepository>()
+                .To<FactRepository>()
+                .WithConstructorArgument("dataSource", ConfigurationManager.AppSettings["DataSourceName"]);
+
+			kernel.Bind<IDriverRepository>()
+                .To<DriverRepository>()
+                .WithConstructorArgument("dataSource", ConfigurationManager.AppSettings["DataSourceName"]);
+
+            kernel.Bind<IGeographyService>().To<GeographyService>();
+            kernel.Bind<IDataAccessService>().To<DataAccessService>();
+
+            kernel.Bind<IDataContextFactory>().To<DataContextFactory>();
+            kernel.Bind<IOrganizationService>().To<OrganizationService>();
+            kernel.Bind<IOrganizationUserService>().To<OrganizationUserService>();
+            kernel.Bind<IMappingService>().To<MappingService>();
+            kernel.Bind<IMembershipService>().To<MembershipService>();
+            kernel.Bind<ISearchService>().To<SearchService>();
+            kernel.Bind<IEquipmentFactService>().To<EquipmentFactService>();
+            kernel.Bind<ISearchFilterService>().To<SearchFilterService>();
+            kernel.Bind<ISearchCriteriaService>().To<SearchCriteriaService>();
+            kernel.Bind<IUserDefinedFieldService>().To<UserDefinedFieldService>();
+            kernel.Bind<IBlobService>().To<BlobService>();
+            kernel.Bind<IDriverSearchService>().To<DriverSearchService>();
+			kernel.Bind<IDriverSearchCriteriaService>().To<DriverSearchCriteriaService>();
+            kernel.Bind<IExportService>().To<ExportService>()
+                .WithConstructorArgument("factRepository", kernel.Get<IFactRepository>())
+                .WithConstructorArgument("dateGetter", (Func<DateTime>)(() => DateTime.UtcNow));
+			kernel.Bind<IProspectProfileService>().To<ProspectProfileService>();
+
+            kernel.Bind<ISystemIntegrationReportService>()
+                .To<SystemIntegrationReportService>()
+                .WithConstructorArgument("organizationService", kernel.Get<IOrganizationService>())
+                .WithConstructorArgument("dateGetter", (Func<DateTime>)(() => DateTime.UtcNow));
+
+            kernel.Bind<IExportReportService>()
+                .To<ExportReportService>()
+                .WithConstructorArgument("organizationUserService", kernel.Get<IOrganizationUserService>())
+                .WithConstructorArgument("dateGetter", (Func<DateTime>)(() => DateTime.UtcNow));
+
+            kernel.Bind<ISmtpClient>().To<SmtpClientWrapper>();
+            kernel.Bind<IEmailService>().To<EmailService>();
+
+            kernel.Bind<BaseController>()
+                .To<NotificationController>()
+                .WithConstructorArgument("dataContextFactory", kernel.Get<IDataContextFactory>())
+                .WithConstructorArgument("organizationUserService", kernel.Get<IOrganizationUserService>())
+                .WithConstructorArgument("membershipService", kernel.Get<IMembershipService>())
+                .WithConstructorArgument("dateGetter", (Func<DateTime>) (() => DateTime.UtcNow));
+
+            kernel.Bind<ICookieHelper>().To<CookieHelper>();
+
+            kernel.Bind<IAuditManager>().To<AuditManager>()
+                .WithConstructorArgument("connectionString", "name=RdbiAuditingDataContext");
+
+            kernel.BindFilter<AuthorizeAttribute>(FilterScope.Controller, 0).WhenControllerType<ProspectProfileController>();
+        }
+    }
+}

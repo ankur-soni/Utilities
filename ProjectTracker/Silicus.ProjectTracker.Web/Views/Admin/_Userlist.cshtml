@@ -1,0 +1,56 @@
+﻿@model Silicus.ProjectTracker.Web.ViewModel.UserListViewModel
+@using Silicus.ProjectTracker.Web.ViewModel
+@using Kendo.Mvc.UI;
+
+<div class="fluid mt20">
+    <h3>User List</h3>
+    <div class="kendotable">
+        @(Html.Kendo().Grid<UserListViewModel>().Name("managesGrid")
+        .DataSource(dataSource => dataSource
+        .Ajax()
+        .Model(model =>
+                {
+                    model.Id(p => p.UserName);
+
+                })
+                    .Read(read => read.Action("GetManagers", "Admin"))
+                )
+
+            .Columns(columns =>
+            {
+                columns.Bound(p => p.UserName).Filterable(true).Title("UserName").Groupable(false).Width(200)
+                    .ClientTemplate("<a  href='javascript:void(0)' onclick='javascript:OpenUserProjectList(\"#=UserDisplayName#\")' title='User Name' > #=UserName# </a>");
+                columns.Bound(p => p.ProjectCount).Width(100);
+            })
+
+            .Pageable()
+            .Sortable()
+            .Editable(ed => ed.Mode(GridEditMode.PopUp))
+            .Navigatable()
+            .Filterable()
+            .ColumnMenu()
+        )
+    </div>
+</div>
+
+
+<script type="text/javascript">
+
+    function OpenUserProjectList(userName)
+    {
+        $.ajax({
+            url: "/User/LoadPage?pageName=userProject&username=" + userName,
+            type: 'GET',
+            cache: false,
+            contentType: 'application/json; charset=utf-8',
+            success: function (response) {
+                $("#dashboardContainerDiv").html(response);
+                console.log("Success");
+            },
+            error: function (e) {
+                console.log("Error");
+            }
+        });
+    }
+
+</script>

@@ -1,0 +1,86 @@
+﻿@*@model Silicus.ProjectTracker.Models.DataObjects.Project*@
+@using Kendo.Mvc.UI;
+@using Silicus.ProjectTracker.Models.DataObjects
+
+@model IEnumerable<Silicus.ProjectTracker.Web.ViewModel.ProjectStatusReportViewModel>
+
+@{
+    ViewBag.Title = "User Dashboard";
+      
+}
+ 
+
+<div class="main-content">
+	<div class="header">
+		<h1 class="page-title">
+			<i class="fa fa-dashboard"></i>Dashboard
+		</h1>
+		@*<div class="search">
+			<input type="text" placeholder="Search...">
+            <i class="fa fa-search"></i>
+        </div>*@
+	</div>
+	@*<div class="intro">
+		<ul class="clearfix">
+			<li>
+				<div class="intro-content">
+					<div class="circle">
+						<i class="fa fa-calendar"></i>
+					</div> <!-- /circle -->
+					<div class="intro-info">
+						June 4, 2013 <span>Tuesday, 12:06</span>
+					</div> <!-- /intro-info -->
+				</div> <!-- /intro-content -->
+			</li>
+			<li>
+				<div class="intro-content">
+					<div class="circle">
+						<div class="arc" id="arc-2"><div class="arc-in green"></div></div>
+						<i class="fa fa-bar-chart-o"></i>
+					</div> <!-- /circle -->
+					<div class="intro-info">
+						$754,28 <span>Total balance</span>
+					</div> <!-- /intro-info -->
+				</div> <!-- /intro-content -->
+			</li>
+			<li>
+				<div class="intro-content">
+					<div class="circle">
+						<div class="arc" id="arc-3"><div class="arc-in blue"></div></div>
+						<i class="fa fa-tag"></i>
+					</div> <!-- /circle -->
+					<div class="intro-info">
+						+364 <span>New orders</span>
+					</div> <!-- /intro-info -->
+				</div> <!-- /intro-content -->
+			</li>
+			<li>
+				<div class="intro-content">
+					<div class="circle">
+						<div class="arc" id="arc-4">
+							<div class="arc-in yellow"></div>
+							<div class="arc-in arc-sec yellow"></div>
+						</div>
+						<i class="fa fa-user"></i>
+					</div> <!-- /circle -->	
+					<div class="intro-info">
+						+1584 <span>New visitors</span>
+					</div> <!-- /intro-info -->
+				</div> <!-- /intro-content -->
+			</li>
+		</ul>
+	</div>*@
+
+    <div class="fluid mt20">
+     
+        <div>
+            <input type="button" class="btn btn-silicus" id="btnCreateProject" value="Add New Project" style="display:none" />
+            <div id="dashboardContainerDiv">
+                @Html.Partial("/Views/User/_Dashboard.cshtml", Model)
+            </div>            
+        </div>
+    </div>
+</div> <!-- /main-content -->
+
+
+	

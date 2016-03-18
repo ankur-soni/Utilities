@@ -1,0 +1,18 @@
+﻿@using Kendo.Mvc.UI
+@using Silicus.ProjectTracker.Web.ViewModel;
+@model string
+
+@(Html.Kendo().DropDownList()
+.Name("MilestoneName")
+.DataValueField("Text")
+.DataTextField("Text")
+.SelectedIndex(0)
+.DataSource(d => d.Read(r => r.Action("GetMilestones", "User")))
+.Events(e =>
+{
+    e.Select("onSelectMilestone");
+})
+ )
+
+
+

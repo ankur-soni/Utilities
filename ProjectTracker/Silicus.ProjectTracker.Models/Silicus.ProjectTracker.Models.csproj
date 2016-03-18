@@ -1,0 +1,117 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{2F4384AA-2FE9-4C85-A6CC-59228BC587E6}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Silicus.ProjectTracker.Models</RootNamespace>
+    <AssemblyName>Silicus.ProjectTracker.Models</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <SccProjectName>SAK</SccProjectName>
+    <SccLocalPath>SAK</SccLocalPath>
+    <SccAuxPath>SAK</SccAuxPath>
+    <SccProvider>SAK</SccProvider>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Beta|AnyCPU'">
+    <OutputPath>bin\Beta\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Integration|AnyCPU'">
+    <OutputPath>bin\Integration\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Web.Extensions" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="..\AssemblyVersionInfo.cs">
+      <Link>Properties\AssemblyVersionInfo.cs</Link>
+    </Compile>
+    <Compile Include="..\SharedAssemblyInfo.cs">
+      <Link>Properties\SharedAssemblyInfo.cs</Link>
+    </Compile>
+    <Compile Include="DataAccessEntityBase.cs" />
+    <Compile Include="DataObjects\ActiveDirectory.cs" />
+    <Compile Include="DataObjects\BaseEntity.cs" />
+    <Compile Include="DataObjects\DataAccessEntityBase.cs" />
+    <Compile Include="DataObjects\EmailAvailable.cs" />
+    <Compile Include="DataObjects\Manager.cs" />
+    <Compile Include="DataObjects\MoverBoxModel.cs" />
+    <Compile Include="DataObjects\Organization.cs" />
+    <Compile Include="DataObjects\InfrastructureDetails.cs" />
+    <Compile Include="DataObjects\ChangeRequestDetails.cs" />
+    <Compile Include="DataObjects\PaymentDetails.cs" />
+    <Compile Include="DataObjects\Project.cs" />
+    <Compile Include="DataObjects\ProjectChangeRequestDetails.cs" />
+    <Compile Include="DataObjects\ProjectComplaint.cs" />
+    <Compile Include="DataObjects\ProjectInfrastructureDetails.cs" />
+    <Compile Include="DataObjects\ProjectMapping.cs" />
+    <Compile Include="DataObjects\ProjectResourceUtilization.cs" />
+    <Compile Include="DataObjects\ProjectStatus.cs" />
+    <Compile Include="DataObjects\ProjectStatusPieChartModel.cs" />
+    <Compile Include="DataObjects\ProjectSummary.cs" />
+    <Compile Include="DataObjects\ProjectTopDefaultersModel.cs" />
+    <Compile Include="DataObjects\ProjectTopSubmittedModel.cs" />
+    <Compile Include="DataObjects\SelectableItemModel.cs" />
+    <Compile Include="DataObjects\Sprints.cs" />
+    <Compile Include="DataObjects\Status.cs" />
+    <Compile Include="DataObjects\Week.cs" />
+    <Compile Include="DataObjects\WeekModel.cs" />
+    <Compile Include="FilterItemModel.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Silicus.ProjectTracker.Core\Silicus.ProjectTracker.Core.csproj">
+      <Project>{2B2F0EBB-CF61-4DA5-9375-A66AE73C0CB0}</Project>
+      <Name>Silicus.ProjectTracker.Core</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup />
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

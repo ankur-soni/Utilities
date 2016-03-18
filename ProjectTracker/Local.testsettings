@@ -1,0 +1,47 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<TestSettings name="Local" id="3181bba2-09bd-4242-8bee-6eedcd7022a0" xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010">
+  <Description>These are default test settings for a local test run.</Description>
+  <Execution hostProcessPlatform="MSIL">
+    <Hosts>
+      <AspNet name="ASP.NET" executionType="WebDev" />
+    </Hosts>
+    <TestTypeSpecific>
+      <UnitTestRunConfig testTypeId="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b">
+        <AssemblyResolution>
+          <TestDirectory useLoadContext="true" />
+        </AssemblyResolution>
+      </UnitTestRunConfig>
+    </TestTypeSpecific>
+    <AgentRule name="LocalMachineDefaultRole">
+      <DataCollectors>
+        <DataCollector uri="datacollector://microsoft/TestImpact/1.0" assemblyQualifiedName="Microsoft.VisualStudio.TraceCollector.TestImpactDataCollector, Microsoft.VisualStudio.TraceCollector, Version=11.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" friendlyName="Test Impact">
+        </DataCollector>
+        <DataCollector uri="datacollector://microsoft/CodeCoverage/1.0" assemblyQualifiedName="Microsoft.VisualStudio.TestTools.CodeCoverage.CoveragePlugIn, Microsoft.VisualStudio.QualityTools.Plugins.CodeCoverage, Version=11.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" friendlyName="Code Coverage (Visual Studio 2010)">
+          <Configuration>
+            <CodeCoverage xmlns="">
+              <Regular>
+                <CodeCoverageItem binaryFile="Silicus.ProjectTracker.Core\bin\Debug\Silicus.ProjectTracker.Core.dll" pdbFile="Silicus.ProjectTracker.Core\bin\Debug\Silicus.ProjectTracker.Core.pdb" instrumentInPlace="true" />
+                <CodeCoverageItem binaryFile="Silicus.ProjectTracker.Entities\bin\Debug\Silicus.ProjectTracker.Entities.dll" pdbFile="Silicus.ProjectTracker.Entities\bin\Debug\Silicus.ProjectTracker.Entities.pdb" instrumentInPlace="true" />
+                <CodeCoverageItem binaryFile="Silicus.ProjectTracker.Jaql\bin\Debug\Silicus.ProjectTracker.Jaql.dll" pdbFile="Silicus.ProjectTracker.Jaql\bin\Debug\Silicus.ProjectTracker.Jaql.pdb" instrumentInPlace="true" />
+                <CodeCoverageItem binaryFile="Silicus.ProjectTracker.Visitor\bin\Debug\Silicus.ProjectTracker.JAQLVisitor.dll" pdbFile="Silicus.ProjectTracker.Visitor\bin\Debug\Silicus.ProjectTracker.JAQLVisitor.pdb" instrumentInPlace="true" />
+                <CodeCoverageItem binaryFile="Silicus.ProjectTracker.Models\bin\Debug\Silicus.ProjectTracker.Models.dll" pdbFile="Silicus.ProjectTracker.Models\bin\Debug\Silicus.ProjectTracker.Models.pdb" instrumentInPlace="true" />
+                <CodeCoverageItem binaryFile="Silicus.ProjectTracker.Repositories\bin\Debug\Silicus.ProjectTracker.Repositories.dll" pdbFile="Silicus.ProjectTracker.Repositories\bin\Debug\Silicus.ProjectTracker.Repositories.pdb" instrumentInPlace="true" />
+                <CodeCoverageItem binaryFile="Silicus.ProjectTracker.Services\bin\Debug\Silicus.ProjectTracker.Services.dll" pdbFile="Silicus.ProjectTracker.Services\bin\Debug\Silicus.ProjectTracker.Services.pdb" instrumentInPlace="true" />
+                <CodeCoverageItem binaryFile="Silicus.ProjectTracker.SiSenseProxy\bin\Debug\Silicus.ProjectTracker.SiSenseProxy.dll" pdbFile="Silicus.ProjectTracker.SiSenseProxy\bin\Debug\Silicus.ProjectTracker.SiSenseProxy.pdb" instrumentInPlace="true" />
+              </Regular>
+			  <ModulePaths>
+              <Exclude>
+                <ModulePath>.*.Tests.dll$</ModulePath>                
+                <ModulePath>.*.Test.dll$</ModulePath>
+              </Exclude>
+            </ModulePaths>
+              <AspNet>
+                <AspNetCodeCoverageItem id="1486a84a-408e-4e95-92c5-6e57d9f7350a" name="Silicus.ProjectTracker.Web" url="http://localhost:61135/" isIis="true" />
+              </AspNet>
+            </CodeCoverage>
+          </Configuration>
+        </DataCollector>
+      </DataCollectors>
+    </AgentRule>
+  </Execution>
+</TestSettings>

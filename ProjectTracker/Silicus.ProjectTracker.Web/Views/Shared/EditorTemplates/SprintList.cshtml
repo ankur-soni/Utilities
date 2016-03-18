@@ -1,0 +1,15 @@
+﻿@using Kendo.Mvc.UI
+@model string
+@using Silicus.ProjectTracker.Web.ViewModel;
+
+@(Html.Kendo().DropDownList()
+.Name("SprintName")
+.DataSource(d => d.Read(r => r.Action("GetSprints", "User")))
+.DataValueField("Text")
+.SelectedIndex(0)
+.DataTextField("Text")
+.Events(e =>
+{
+    e.Select("onSelectSprint");
+})
+)

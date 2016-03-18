@@ -1,0 +1,176 @@
+﻿@using Kendo.Mvc.UI;
+@using Silicus.ProjectTracker.Web.ViewModel;
+@using Silicus.ProjectTracker.Services;
+@model IEnumerable<Silicus.ProjectTracker.Web.ViewModel.ProjectStatusAdminDashBoardModel>
+
+@{
+    var weekData = @Model.FirstOrDefault().WeekListData;
+}
+<div class="dashboard">
+    <div class="dashboard2Col">
+            <div class ="dashboardPieCol">
+                <div class="dashboardItem" style="height: 300px !important;">
+                    <div class="dashboardItemHeader">
+                        Status Report for @weekData.Text @*week: @(weekData.WeekNumber) (@(weekData.Year))*@
+                    </div>
+                    <div class="dashboardItemBody">
+                        @(Html.Kendo().Chart<Silicus.ProjectTracker.Web.ViewModel.ProjectStatusPieChartViewModel>()
+                          .Title("")
+                          .Name("ProjectStatusPieChart")
+                          .Legend(legend => legend.Position(ChartLegendPosition.Bottom))
+                          .SeriesColors(new string[] { "#A4A4A4", "#31B404", "#FF0000", "#FFFF00", "#AEB404" })
+                          .DataSource(ds => ds.Read(read => read.Action("GetProjectStatusDataForPieChart", "Admin")))
+                          .Series(series => series.Donut(model => model.percentage, model => model.project).Name("ProjectStatus").Overlay(ChartPieSeriesOverlay.None)
+                          .Labels(labels => labels.Background("transparent").Visible(true).Position(ChartPieLabelsPosition.OutsideEnd).Align(ChartPieLabelsAlign.Circle)
+
+                                  .Template("#= category #: #= kendo.format('{0:p0}', percentage).replace(' ','') #")
+                        )
+
+                          )
+                          .ChartArea(chartArea => chartArea.Background("transparent").Margin(0).Height(250))
+                          .PlotArea(plotArea => plotArea.Background("transparent").Margin(0).Opacity(0.5))
+                          .Tooltip(tooltip => tooltip
+                              .Template("#= category #: <strong>#= kendo.format('{0:p0}', percentage).replace(' ','') #</strong><br /> Activities: <strong>#= kendo.format('{0:n0}', value) #</strong>")
+                              .Visible(true))
+                          .Events(events => events
+                              .DataBound("onDataBound")
+
+                              )
+                        )
+
+                    </div>
+                </div>                      
+            </div>
+
+            <div class ="dashboardCol">
+                <div class ="dashboardItem">
+                    <div class ="dashboardItemHeader">
+                        Missing Status Report List
+                    </div>
+                    <div class ="dashboardItemBody">
+                          @(Html.Kendo().Grid<Silicus.ProjectTracker.Web.ViewModel.ProjectTopDefaultersViewModel>().Name("topDefaulterGrid")
+                            .DataSource(dataSource => dataSource
+                            .Ajax()
+                            .Sort(sort => sort.Add("weeks").Descending()) 
+                            .Model(model =>
+                                    {
+                                        model.Id(p => p.defaulterId);
+                                        model.Field(p => p.defaulterId).Editable(false);
+
+                                    })
+                                    .PageSize(5)        
+                                    .Read(read => read.Action("GetDataForDefaulterList", "Admin"))
+                                    )
+
+                                .Columns(columns =>
+                                {
+                                    columns.Bound(p => p.projectName).Title("Project Name");
+                                    columns.Bound(p => p.userName).Title("Manager Name");
+                                    columns.Bound(p => p.weeks).Title("#No Of Weeks");
+                                })
+
+                                .Pageable()
+                                .Sortable()
+                                .Navigatable()
+                                .Filterable()
+                                .ColumnMenu()
+                            )
+                    </div>
+                </div>
+        </div>
+    </div>
+    <div class="dashboard2Col">
+
+        <div class="dashboardPieCol">
+            <div class="dashboardItem" style="width:528px; border:0px;">
+                &nbsp;
+            </div>
+        </div>
+              
+            <div class ="dashboardCol">
+             <div class ="dashboardItem">
+                <div class ="dashboardItemHeader">
+                     Report Submitted List for @weekData.Text @*week: @(weekData.WeekNumber) (@(weekData.Year))*@
+                </div>
+                <div class ="dashboardItemBody">
+                      @(Html.Kendo().Grid<Silicus.ProjectTracker.Web.ViewModel.ProjectTopSubmittedViewModel>().Name("topSubmittedGrid")
+                        .DataSource(dataSource => dataSource
+                        .Ajax()
+                        .Model(model =>
+                                {
+                                    model.Id(p => p.defaulterId);
+                                    model.Field(p => p.defaulterId).Editable(false);
+
+                                })
+                                        .PageSize(5)     
+                                        .Read(read => read.Action("GetListForStatusReportSubmitted", "Admin"))
+                                )
+
+                            .Columns(columns =>
+                            {
+                                columns.Bound(p => p.projectName).Title("Project Name");
+                                columns.Bound(p => p.userName).Title("Manager Name");
+                                columns.Bound(p => p.submittedDate).Title("Submitted Date");
+                                columns.Bound(p => p.status).Title("Status");
+                              
+                            })
+
+                            .Pageable()
+                            .Sortable()
+                            .Navigatable()
+                            .Filterable()
+                            .ColumnMenu()
+                )
+
+                </div>
+            </div>
+       </div>
+    </div>
+ </div>
+ 
+<script>
+    kendo.ui.progress($("#ProjectStatusPieChart"), true);
+</script>
+
+<script>
+
+    $(window).resize(function () {
+        $('#ProjectStatusPieChart').data('kendoChart').refresh();
+    });
+    
+    function onDataBound(e) {
+        var grid = $("#ProjectStatusPieChart").data("kendoChart");
+        kendo.ui.progress($("#ProjectStatusPieChart"), false);
+        if (grid != null) {
+            var count = grid.dataSource.total();
+            if (count == 0) {
+                toastr.error('No Results Found For The Pie Chart');
+            }
+        }
+    }
+       
+</script>
+
+<script type="text/javascript">
+    $(function () {
+        // Declare a proxy to reference the hub.
+        var chat = $.connection.trackerHub;
+        chat.client.UpdateDashboard = function () {
+          
+            $('#ProjectStatusPieChart').data('kendoChart').dataSource.read();
+            $('#ProjectStatusPieChart').data('kendoChart').refresh();
+
+            $('#topDefaulterGrid').data('kendoGrid').dataSource.read();
+            $('#topDefaulterGrid').data('kendoGrid').refresh();
+
+            $('#topSubmittedGrid').data('kendoGrid').dataSource.read();
+            $('#topSubmittedGrid').data('kendoGrid').refresh();
+
+        };
+               
+        // Start the connection.
+        $.connection.hub.start().done(function () {
+         
+        });
+    });
+    </script>

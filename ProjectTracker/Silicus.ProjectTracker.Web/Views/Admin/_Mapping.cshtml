@@ -1,0 +1,246 @@
+﻿@model Silicus.ProjectTracker.Models.DataObjects.ActiveDirectory
+@using Kendo.Mvc.UI;
+
+<script src="~/Scripts/knockout-3.1.0.debug.js"></script>
+<script src="~/Scripts/knockout.mapping-latest.js"></script>
+<script src="~/Scripts/KnockoutViewModel/SelectableItemViewModel.js"></script>
+<script src="~/Scripts/linq.js"></script>
+
+<div style="border: 1px solid gray; position: absolute; width:910px;">
+    <div class="overlay3">
+        <img class="loaderimg" src="~/Images/ajax-loader.gif" />
+    </div>
+    <div class="mapping" style="padding-right:20px;">
+        <div class="mappingCol1">
+            Map Manager With Projects
+            <span class="float_right">
+                <input type="button" class="btn btn-silicus" id="btnApplySelectedFilters" value="Apply" title="Map Projects" />
+            </span>
+        </div>
+    </div>
+    <div class="mapping">
+        @(Html.Kendo().DropDownList()
+            .Name("adUsersControl")
+            .BindTo((SelectList)ViewBag.ActiveDirectoryUsers)
+            .DataValueField("Text")
+            .DataTextField("Value")
+            .OptionLabel("Select")
+            .Events(events => events.Change(
+                @<text>
+                    function(e) {
+                    Select_User();
+                    }
+                </text>
+                )))
+
+    </div>
+
+
+    @using (Html.BeginForm())
+    {
+        <div class="rowcontainer">
+            <div class="gencontainer" id="knockOutMainContainer">
+                <div class="col-lg-7 col-md-7 col-sm-7 col-xs-7 borderright">
+                    <div class="movertopheight1">
+                        @*<div class="rowcontainer2">
+                                <input class="chkbox1" data-bind="checked: selectAll" type="checkbox" onchange="fnChangeMeAll(event)" />
+                                <span class="selectdeselect">Select / Deselect All</span>
+                            </div>*@
+                        <div class="rowcontainer2" style="margin-left:-30px;">
+                            <input id="myFilter" placeholder="Search..." type="text">
+                        </div>
+                    </div>
+
+                    <ul class="maxheight moverleft projectList" data-bind="foreach: filteredItems, visible: availableItems().length > 0">
+                        <li>
+                            <input type="checkbox" data-bind="checked: isSelected,enable: isActive" onchange="fnChangeMe(event)" />
+
+                            <span class="spanmoverleft" data-bind="text: title"></span>
+                        </li>
+                    </ul>
+                </div>
+                <div class="col-lg-5 col-md-5 col-sm-5 col-xs-5">
+                    <div class="movertopheight1">
+
+                        <span class="bold_text" data-bind="visible: selectedItems().length > 0">Selected Projects: </span>
+                    </div>
+
+                    <ul class="maxheight moverright" data-bind="foreach: selectedItems, visible: selectedItems().length > 0">
+                        <li>
+                            <input type="checkbox" data-bind="checked: isSelected,enable: isActive" onchange="fnChangeMe(event)" />
+                            <span class="spanmoverright3" data-bind="text: title"></span>
+                            <a href="#" class="btnmoverdelete" data-bind="click: $parent.removeItem">&nbsp;</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    }
+
+</div>
+<style type="text/css">
+    .liselectednobgcolor {
+        background-color: none;
+    }
+
+    .liselectedbgcolor {
+        background-color: #f6f5f5;
+    }
+
+    ul {
+        list-style-type: none;
+    }
+    .moverleft {
+        margin-left:10px;
+    }
+</style>
+
+<script type="text/javascript">
+
+    var selectedUser;
+    var vm;
+
+    function fnChangeMe(e) {
+
+        if ($(e.currentTarget).is(":checked") == true) {
+           
+            $(e.currentTarget).closest("li").removeClass('liselectednobgcolor');
+            $(e.currentTarget).closest("li").addClass('liselectedbgcolor');
+        }
+        else {
+         
+            $(e.currentTarget).closest("li").addClass('liselectednobgcolor');
+            $(e.currentTarget).closest("li").removeClass('liselectedbgcolor');
+        }
+    }
+
+    function Select_User() {       
+        selectedUser = $("#adUsersControl").val();
+        LoadValues(selectedUser);
+    };
+    
+
+    $(document).ready(function () {
+        LoadValues("Demo");
+
+        $('#myFilter').keyup(function () {
+            var valThis = $(this).val().toLowerCase();
+            $('.projectList>li').each(function () {
+                var text = $(this).text().toLowerCase().trim();
+                (text.indexOf(valThis) == 0) ? $(this).show() : $(this).hide();
+            });
+        });
+    });
+
+    function LoadValues(selectedUser) {
+        $("div.overlay").show();
+        var username = selectedUser;
+
+        if (username != "") {
+            var model = { userName: username };
+            $.ajax({
+                url: '@Url.Action("GetProjectMappingData", "Admin")',
+                contentType: 'application/json; charset=utf-8',
+                type: 'POST',
+                dataType: 'html',
+                cache: false,
+                data: JSON.stringify(model)
+
+            })
+				.success(function (result) {
+
+				    items = JSON.parse(result);
+
+				    if (selectedUser == "Demo") {
+
+				        if (items.AvailableItems.length == 0) {
+				            toastr.error('There Are No Available Projects To Map');
+				            $('#btnApplySelectedFilters').attr("disabled", true);
+				        }
+				        else {
+				            $('#btnApplySelectedFilters').attr("disabled", false);
+				        }
+				        //we can bind the kendo only once
+				        vm = new SelectableItemViewModel(items);
+				        ko.applyBindings(vm);
+
+				    }
+				    else {
+				        //Incase of any changes we need to push the latest array items in to the main array
+				        vm.UpdateItems(items);
+				    }
+				    $("div.overlay3").fadeOut(1000);
+
+				    var panelheight = $("#wrap").height();
+				    $(".maxheight").height($("#moverboxcontainer").height - 35);
+				})
+				.error(function (xhr, status) {
+				    toastr.error('Error In Fetching Projects');
+
+				    $("div.overlay").hide();
+				    $("div.overlay3").hide();
+				});
+        }
+    }
+
+ 
+    $('#btnApplySelectedFilters').click(function () {
+      
+        var my_css_class;
+        var isApplyFilter = true;
+        $("div.overlay").show();
+
+        var userName = $("#adUsersControl").val();
+      
+        var selectedList = ko.toJS(vm.selectedItems);
+        
+        var selectedEnumerableList = Enumerable.from(selectedList).select(function (x) { return x.itemId; }).toArray();
+      
+        if (typeof (userName) == "undefined" || userName == null || (!userName)) {
+           
+            toastr.error('Please Select User To Map');
+            isApplyFilter = false;
+            return;
+        }
+            
+        if (selectedEnumerableList.length == 0) {
+
+            toastr.error('Please Select Projects To Map');
+            isApplyFilter = false;
+            return;
+        }
+         
+        
+        if (isApplyFilter) {
+
+            var projectList = selectedEnumerableList.join("~");
+                    
+
+            if (userName != "") {
+                var model = { projectsList: projectList, user: userName };
+
+                $.ajax({
+                    url: '@Url.Action("AssignProjectsToUser", "Admin")',
+                    contentType: 'application/json; charset=utf-8',
+                    type: 'POST',
+                    //dataType: 'html',
+                    data: JSON.stringify(model)
+                })
+                    .success(function (result) {
+
+                        toastr.success('Mapping Done Successfully');
+                        $("div.overlay").hide();
+
+
+                    })
+                    .error(function (xhr, status) {
+
+                        toastr.error('Error In Mapping');
+                        $("div.overlay").hide();
+
+                    });
+            }
+        }      
+    });
+
+</script>

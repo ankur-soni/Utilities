@@ -1,0 +1,71 @@
+﻿@model Silicus.ProjectTracker.Web.ViewModel.PaymentDetailsViewModel
+@using Silicus.ProjectTracker.Web.ViewModel;
+@using Kendo.Mvc.UI;
+@using Silicus.ProjectTracker.Models.DataObjects;
+
+
+<table style="width: 100%;">
+
+    <tr>
+        <td>
+            <div class="kendotable mt10">
+
+                @(Html.Kendo().Grid<PaymentDetailsViewModel>().Name("grdPaymentDetails")
+                    .DataSource(dataSource => dataSource
+                    .Ajax()
+                    .Batch(true)
+                    .ServerOperation(false)
+                    .Model(model =>
+                            {
+                                model.Id(p => p.PaymentDetailId);
+                                model.Field(p => p.PaymentDetailId).Editable(false);
+                            })
+                                    .Read(read => read.Action("GetPaymentDetails", "User").Data("additionalInfo"))
+                            )
+
+                        .Columns(columns =>
+                        {
+                            columns.Bound(p => p.PaymentDetailId).Hidden();
+                            columns.Bound(p => p.ProjectId).Hidden();
+                            columns.Bound(p => p.InvoiceNumber);
+                            columns.Bound(p => p.InvoicedEffort);
+                            columns.Bound(p => p.InvoiceStatus);
+                            columns.Command(command => command.Destroy()).Width(90).Title("Actions");
+
+                        })
+                          .ToolBar(toolBar =>
+                        {
+                            toolBar.Create();
+                        })
+
+                        .Pageable()
+                        .Sortable()
+                        .Editable(ed => ed.Mode(GridEditMode.InCell))
+                        .Navigatable()
+                        .Filterable()
+                        .ColumnMenu()
+                )
+
+            </div>
+        </td>
+    </tr>
+</table>
+
+<script type="text/javascript">
+
+    $(document).ready(function () {
+        var projectID = $("#hdnProjectId").val();
+
+    });
+
+    function onSelectInvoiceStatus(e) {
+        var dataItem;
+        var selectedText = this.dataItem(e.item.index()).Text;
+        var selectedValue = this.dataItem(e.item.index()).Value;
+        var grid = $("#grdPaymentDetails").data("kendoGrid");
+        model = grid.dataItem(this.element.closest("tr"));
+        model.set("InvoiceStatusId", selectedValue);        
+    }
+    
+ </script>
+
