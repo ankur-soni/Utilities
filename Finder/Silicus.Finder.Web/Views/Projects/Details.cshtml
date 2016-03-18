@@ -1,0 +1,155 @@
+﻿@model Silicus.Finder.Web.ViewModel.ProjectDetailsViewModel
+
+@using Silicus.Finder.Models.DataObjects;
+@using Kendo.Mvc.UI;
+
+@{
+    var skills = Html.Partial("~/Views/Projects/_SkillSetDetails.cshtml", Model.SkillSets);
+    var employees = Html.Partial("~/Views/Projects/_EmployeeDetails.cshtml", Model.Employees);
+}
+
+@{
+    ViewBag.Title = "Project's Details";
+    var employeeList = ViewData["Employees"] as List<Employee>;
+}
+
+<h2>Project Details</h2>
+
+<div>
+    <hr />
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-7">
+                <div>
+                    <span class="details-header">
+                        @Html.DisplayNameFor(model => model.ProjectId) :
+                    </span>
+                    <span class="details-content">
+                        @Html.DisplayFor(model => model.ProjectId)
+                    </span>
+                </div>
+                <div>
+                    <span class="details-header">
+                        @Html.DisplayNameFor(model => model.ProjectName):
+                    </span>
+                    <span class="details-content">
+                        @Html.DisplayFor(model => model.ProjectName)
+                    </span>
+                </div>
+                <div>
+                    <span class="details-header">
+                        @Html.DisplayNameFor(model => model.Description):
+                    </span>
+                    <span class="details-content">
+                        @Html.DisplayFor(model => model.Description)
+                    </span>
+                </div>
+                <div>
+                    <span class="details-header">
+                        @Html.DisplayNameFor(model => model.ProjectType):
+                    </span>
+                    <span class="details-content">
+                        @Html.DisplayFor(model => model.ProjectType)
+                    </span>
+                </div>
+                <div>
+                    <span class="details-header">
+                        @Html.DisplayNameFor(model => model.EngagementType):
+                    </span>
+                    <span class="details-content">
+                        @Html.DisplayFor(model => model.EngagementType)
+                    </span>
+                </div>
+                <div>
+                    <span class="details-header">
+                        @Html.DisplayNameFor(model => model.Status):
+                    </span>
+
+                    <span class="details-content">
+                        @Html.DisplayFor(model => model.Status)
+                    </span>
+                </div>
+                <div>
+                    <span class="details-header">
+                        @Html.DisplayNameFor(model => model.StartDate):
+                    </span>
+                    <span class="details-content">
+                        @Html.DisplayFor(model => model.StartDate)
+                    </span>
+                </div>
+                <div>
+                    <span class="details-header">
+                        @Html.DisplayNameFor(model => model.ExpectedEndDate):
+                    </span>
+
+                    <span class="details-content">
+                        @Html.DisplayFor(model => model.ExpectedEndDate)
+                    </span>
+                </div>
+                <div>
+                    <span class="details-header">
+                        @Html.DisplayNameFor(model => model.ActualEndDate):
+                    </span>
+                    <span class="details-content">
+                        @Html.DisplayFor(model => model.ActualEndDate)
+                    </span>
+                </div>
+            </div>
+
+            <div class="col-md-5">
+                <div>
+                    <span class="details-header">
+                        @Html.DisplayNameFor(model => model.EngagementManagerId):
+                    </span>
+                    <span class="details-content">
+                        @foreach (var employee in employeeList.Where(e => e.EmployeeId == Model.EngagementManagerId))
+                        {
+                            @Html.Label(employee.FirstName + " " + employee.LastName)
+                        }
+                    </span>
+                </div>
+                <div>
+                    <span class="details-header">
+                        @Html.DisplayNameFor(model => model.ProjectManagerId):
+                    </span>
+                    <span class="details-content">
+                        @foreach (var employee in employeeList.Where(e => e.EmployeeId == Model.ProjectManagerId))
+                        {
+                            @Html.Label(employee.FirstName + " " + employee.LastName)
+                        }
+                    </span>
+                </div>
+                <div>
+                    <span class="details-header">
+                        @Html.DisplayNameFor(model => model.AdditionalNotes):
+                    </span>
+                    <span class="details-content">
+                        @Html.DisplayFor(model => model.AdditionalNotes)
+                    </span>
+                </div>
+            </div>
+        </div>
+        <p>
+            @Html.ActionLink("Edit", "EditProject", new { projectId = Model.ProjectId })
+            @Html.ActionLink("Cancel", "GetProjects")
+        </p>
+        <hr/>
+
+        <div class="fluid mt20">
+            <div class="kendogrid">
+                @(Html.Kendo().TabStrip()
+                    .Name("Tabs")
+                    .Items(tabstrip =>
+                        {
+                            tabstrip.Add().Text("Skills")
+                                .Selected(true)
+                                .Content(skills.ToString());
+
+                            tabstrip.Add().Text("Employees")
+                                .Content(employees.ToString());
+                        })
+                )
+            </div>
+        </div>
+    </div>
+</div>

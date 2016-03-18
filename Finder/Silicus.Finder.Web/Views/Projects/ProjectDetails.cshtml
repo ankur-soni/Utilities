@@ -1,0 +1,90 @@
+﻿@model Silicus.Finder.Web.ViewModel.ProjectDetailsViewModel
+
+@{
+    Layout = "";
+ }
+
+
+
+<div>
+    <h4>Project's Information</h4>
+    <hr />
+    <dl class="dl-horizontal">
+       
+        <dt>
+            @Html.DisplayNameFor(model => model.ProjectName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ProjectName)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.ProjectCode)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ProjectCode)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Description)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Description)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.StartDate)
+        </dt>
+
+        <dd>
+            @String.Format("{0:d}", Model.StartDate)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.ExpectedEndDate)
+        </dt>
+
+        <dd>
+            @String.Format("{0:d}", Model.ExpectedEndDate)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.ActualEndDate)
+        </dt>
+
+        <dd>
+            @String.Format("{0:d}", Model.ActualEndDate)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.EngagementManagerId)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.EngagementManagerId)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.ProjectManagerId)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ProjectManagerId)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.AdditionalNotes)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.AdditionalNotes)
+        </dd>
+
+    </dl>
+</div>
+
+
+ 

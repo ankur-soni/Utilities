@@ -1,0 +1,41 @@
+﻿@model IEnumerable<Silicus.Finder.Models.DataObjects.EmployeeRewards>
+
+<link href="~/Content/css/table-view.css" rel="stylesheet" />
+
+<p>
+    <h4>Employee Rewards</h4>
+</p>
+<div style="height:200px; overflow-y:auto;">
+    <table class="table">
+        <tr style="position:relative;">
+            <th>
+                @Html.DisplayName("Reward")
+            </th>
+            <th>
+                @Html.DisplayName("Given On")
+            </th>
+        </tr>
+        @if (Model.Count() > 0)
+        {
+            foreach (var item in Model)
+            {
+                <tr>
+                    <td style="text-align:left;padding-left:8px; width:50%">
+                        @Html.DisplayFor(modelItem => item.RewardsAndRecognitions.RewardsAndRecognitionName)
+                    </td>
+                    <td style="text-align:left;padding-left:8px">
+                        @Html.DisplayFor(modelItem => item.GivenOn)
+                    </td>
+                </tr>
+            }
+        }
+        else
+        {
+            <tr>
+                <td colspan="2" style="text-align:center;">
+                    No Rewards Awarded.
+                </td>
+            </tr>
+        }
+    </table>
+</div>     

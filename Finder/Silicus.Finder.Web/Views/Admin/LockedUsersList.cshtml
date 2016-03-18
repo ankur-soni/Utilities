@@ -1,0 +1,52 @@
+﻿@model IEnumerable<Silicus.Finder.Web.ViewModel.ApplicationUserViewModel>
+@using Kendo.Mvc.UI;
+
+@{
+    ViewBag.Title = "Locked Users List";
+}
+
+<link href="~/Content/MyKendoStyle.css" rel="stylesheet" />
+<style>
+    .btn-info {
+        height: 17px;
+        width: 30px;
+        padding-top: 6px;
+        padding-left: 5px;
+    }
+
+    .k-grid-content tr:last-child > td {       
+        border-bottom: 1px solid grey;
+    }
+</style>
+
+<div id="Grid" class="container-fluid" style="padding-left:20%">    
+    <br />
+    <br />
+
+    @(Html.Kendo().Grid((IEnumerable<Silicus.Finder.Web.ViewModel.ApplicationUserViewModel>)Model)
+    .Name("LockedUsersGrid")
+    .Columns(columns =>
+    {
+        columns.Bound(u => u.UserName).Width(150);
+        columns.Bound(u => u.UserName)
+            .Title("Unlock")
+            .Width(150)
+            .Template(u => @Html.ActionLink("Unlock", "UnlockUserAccount", "Admin", new { userId = u.Id }, new { @class = "btn btn-info" })).Sortable(false);
+    })
+        .HtmlAttributes(new { style = "width: 600px;" })
+        .Scrollable()
+        .Sortable(sortable => sortable.AllowUnsort(false))
+        .Pageable(pageable => pageable
+        .Refresh(true)
+        .PageSizes(true)
+        .ButtonCount(5))
+        
+    )
+</div>
+
+
+<script>
+    $(window).load(function () {
+        $('#moduleHeaderTitleOnDashBoardImage').text("Locked Users");
+    });
+</script>

@@ -1,0 +1,70 @@
+﻿@model Silicus.Finder.Web.ViewModel.ProjectSearchCriteriaViewModel
+
+
+<style>
+    .labeltop {
+        margin-top: -12px;
+    }
+</style>
+<div class="form-horizontal">
+    <div class="row" style="width:95%">
+        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+            <div class="form-group">
+
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+
+                    @Html.LabelFor(model => model.EngagementManager, htmlAttributes: new { @class = "control-label col-md-2 labeltop" })
+                    <div class="col-md-2">
+                        @Html.EditorFor(model => model.EngagementManager, new { htmlAttributes = new { @class = "form-control", id = "engagement_manager" } })
+                    </div>
+
+                    @Html.LabelFor(model => model.ProjectManager, htmlAttributes: new { @class = "control-label col-md-2 labeltop" })
+                    <div class="col-md-2">
+                        @Html.EditorFor(model => model.ProjectManager, new { htmlAttributes = new { @class = "form-control", id = "project_manager" } })
+                    </div>
+
+                    @Html.LabelFor(model => model.SkillSet, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-2">
+                        @Html.EditorFor(model => model.SkillSet, new { htmlAttributes = new { @class = "form-control", id = "skill_set" } })
+                    </div>
+
+                </div>
+
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+
+                    @Html.LabelFor(model => model.ProjectType, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-2">
+                        @Html.EditorFor(model => model.ProjectType, new { htmlAttributes = new { @class = "form-control", id = "project_type" } })
+                    </div>
+
+                    @Html.LabelFor(model => model.Status, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-2">
+                        @Html.EditorFor(model => model.Status, new { htmlAttributes = new { @class = "form-control", id = "status" } })
+                    </div>
+
+                    <div class="col-md-3  pull-right">
+                        <button id="checkfornull" class="btn btn-default" style="margin-right: 4%; margin-left:37%;" type="submit"><span class="glyphicon glyphicon-search "></span></button>
+                        @Html.ActionLink("Clear Filter", "GetProjects", "Projects")
+                        <div id="error_message_search" style="color:red;height:30px;padding-left: 40px;"> </div>
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+
+    $('#checkfornull').on('click', function () {
+
+        if ($('#engagement_manager').val().length == 0 && $('#project_manager').val().length == 0 && $('#skill_set').val().length == 0 && $('#project_type').val().length == 0 && $('#status').val().length == 0)
+        {
+            document.getElementById('error_message_search').innerHTML = "Please Enter At Least One Criteria";
+            document.getElementById('engagement_manager').focus();
+            return false;
+        }
+    });
+
+</script>

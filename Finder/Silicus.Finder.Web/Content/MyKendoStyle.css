@@ -1,0 +1,17 @@
+﻿.k-grid-content tr:last-child > td {
+    border-bottom: 1px solid grey;
+}
+
+.k-grid-header .k-header {
+    background-color: #468aa1;
+    font-size:18px;
+}
+
+.k-grid-header .k-header .k-link {
+    color: white;
+    font-weight: normal;
+}
+
+.k-grid-content {
+    font-size: 16px;
+}

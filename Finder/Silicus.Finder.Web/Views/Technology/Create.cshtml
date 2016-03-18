@@ -1,0 +1,86 @@
+﻿@model Silicus.Finder.Models.DataObjects.SkillSet
+
+@{
+    ViewBag.Title = "Create Skill";
+}
+
+@*<script src="~/Scripts/JQuery/1.11.2/jquery-1.11.2.min.js"></script>
+    <script src="~/Scripts/JQuery/1.11.2/jquery.validate.js"></script>*@
+
+<link href="~/Content/css/FinderStyle.css" rel="stylesheet" />
+<style type="text/css">
+    label.error {
+        float: none;
+        color: Blue;
+        padding-left: .5em;
+        vertical-align: top;
+    }
+    .required:after 
+    {
+        content: "*";
+        font-weight: bold;
+        color: black; 
+    }
+
+</style>
+<div class="container-fluid">
+    @using (Html.BeginForm(new { name = "Technologyform" }))
+    {
+        @Html.AntiForgeryToken()
+
+        <div class="form-horizontal">
+
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+            <div class="form-group">
+                @Html.LabelFor(model => model.Name, htmlAttributes: new { @class = "control-label col-md-2 required" })
+                
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control", @id = "MyName", @placeholder = "Skill name" } })
+                    <font color='red'> <div>@ViewBag.message</div> </font>
+                    @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger", size = 50 })
+                    <span id="test1"></span>
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.Description, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10" >
+                    @Html.TextAreaFor(model => model.Description, 8, 34, new { htmlAttributes = new { @class = "form-control", @id = "MyDescription", @placeholder = "Short Description", resize = "none" } })
+                    @Html.ValidationMessageFor(model => model.Description, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="col-md-offset-2 col-md-10">
+                    <input type="submit" id="Create" value="Create" class="btn btn-default" />
+                    @Html.ActionLink("Cancel", "GetAllSkillSet", "Technology", null, new { @class = "btn btn-default", @style = "font-size: 16px;" })
+                </div>
+            </div>
+        </div>
+    }
+</div>
+
+<script language="javascript" type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+<script language="javascript" type="text/javascript" src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.10.0/jquery.validate.min.js"></script>
+<script>
+$(document).ready(function () {
+    $("#Create").click(function () {
+        var MyName = $("#MyName").val();
+        var regex = new RegExp("^[a-zA-Z0-9#-]+( [a-zA-Z0-9_]+$");
+        if (MyName.length == 0) {
+            $("#test1").text("Please Enter Skill Name").css("color", "Red");
+            return false;
+        }
+        else if (!regex.test(MyName)) {
+            $("#test1").text("");
+            $("#test1").text("Please Enter only valid special characters").css("color", "Red");
+            return false;
+        }
+    });
+});
+
+$(window).load(function () {
+    $('#moduleHeaderTitleOnDashBoardImage').text("Add Skill");
+});
+
+</script>

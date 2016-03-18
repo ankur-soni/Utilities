@@ -1,0 +1,154 @@
+﻿@model Silicus.Finder.Web.ViewModel.ProjectCreateViewModel
+
+@{
+    ViewBag.Title = "Create Project";    
+}
+<link href="~/Content/css/FinderStyle.css" rel="stylesheet" />
+<style>
+    .required:after {
+        content: "*";
+        font-weight: bold;
+        color: black; 
+     }
+</style>
+
+@using (Html.BeginForm( new { id = "createForm" })) 
+{
+    @Html.AntiForgeryToken()
+    <br />
+    <div class="form-horizontal">
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+        <div class="container-fluid">
+
+            <div class="row">
+
+                <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.ProjectCode, htmlAttributes: new { @class = "control-label  col-md-4 " })
+                        <div class="col-md-6">
+                            @Html.EditorFor(model => model.ProjectCode, new { id = "project_code", htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.ProjectCode, "", new { @class = "text-danger" })
+                            <font color="red"> <div>@ViewBag.message</div> </font>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.ProjectName, htmlAttributes: new { @class = "control-label col-md-4" })
+                        <div class="col-md-6 ">
+                            @Html.EditorFor(model => model.ProjectName, new { htmlAttributes = new { @class = "form-control", } })
+                            @Html.ValidationMessageFor(model => model.ProjectName, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.ProjectType, htmlAttributes: new { @class = "control-label col-md-4" })
+                        <div class="col-md-6">
+                            @Html.EnumDropDownListFor(model => model.ProjectType, "Select", new { @class = "form-control", @style = "width: 100%;" })
+                            @Html.ValidationMessageFor(model => model.ProjectType, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.EngagementType, htmlAttributes: new { @class = "control-label col-md-4" })
+                        <div class="col-md-6">
+                            @Html.EnumDropDownListFor(model => model.EngagementType, "Select", new { @class = "form-control", @style = "width: 100%;" })
+                            @Html.ValidationMessageFor(model => model.EngagementType, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.Status, htmlAttributes: new { @class = "control-label col-md-4" })
+                        <div class="col-md-6">
+                            @Html.EnumDropDownListFor(model => model.Status, "Select", new { @class = "form-control", @style = "width: 100%;", id = "status" })
+                            @Html.ValidationMessageFor(model => model.Status, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.StartDate, htmlAttributes: new { @class = "control-label col-md-4" })
+                        <div class="col-md-6">
+                            @Html.EditorFor(model => model.StartDate, new { htmlAttributes = new { @class = "form-control", id = "startDate",  disabled= "disabled"  } })
+                            @Html.ValidationMessageFor(model => model.StartDate, "", new { @class = "text-danger", id = "startDateInvalid" })
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.ExpectedEndDate, htmlAttributes: new { @class = "control-label col-md-4" })
+                        <div class="col-md-6">
+                            @Html.EditorFor(model => model.ExpectedEndDate, new { htmlAttributes = new { @class = "form-control", id = "expectedEndDate", disabled = "disabled" } })
+                            @Html.ValidationMessageFor(model => model.ExpectedEndDate, "", new { @class = "text-danger", @id = "errorMessageExpectedEndDate" })
+                            <span id="EngagementDate"></span>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.ActualEndDate, htmlAttributes: new { @class = "control-label col-md-4" })
+                        <div class="col-md-6">
+                            @Html.EditorFor(model => model.ActualEndDate, new { htmlAttributes = new { @class = "form-control", id = "actualEndDate", disabled = "disabled" } })
+                            @Html.ValidationMessageFor(model => model.ActualEndDate, "", new { @class = "text-danger", @id = "errorMessageActualEndDate" })
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.EngagementManagerId, htmlAttributes: new { @class = "control-label col-md-4" })
+                        <div class="col-md-6">
+                            @Html.DropDownListFor(model => model.EngagementManagerId, (SelectList)ViewBag.Managers, "Select", new { @class = "form-control", @style = "width: 100%;" })
+                            @Html.ValidationMessageFor(model => model.EngagementManagerId, "", new { @class = "text-danger", @id = "EngagementDate" })
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.ProjectManagerId, htmlAttributes: new { @class =  "control-label col-md-4" })
+                        <div class="col-md-6 ">
+                            @Html.DropDownListFor(model => model.ProjectManagerId, (SelectList)ViewBag.Managers, "Select", new { @class = "form-control", @style = "width: 100%;" })
+                            @Html.ValidationMessageFor(model => model.ProjectManagerId, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.Description, htmlAttributes: new { @class = "control-label col-md-4" })
+                        <div class="col-md-6">
+                            @Html.TextAreaFor(model => model.Description, 5, 0,new { @class = "form-control", @style = "width:100%" })
+                            @Html.ValidationMessageFor(model => model.Description, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.AdditionalNotes, htmlAttributes: new { @class = "control-label col-md-4" })
+                        <div class="col-md-6">
+                            @Html.TextAreaFor(model => model.AdditionalNotes, 5, 0, new { @class = "form-control", @style = "width:100%" })
+                            @Html.ValidationMessageFor(model => model.AdditionalNotes, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+
+            <div class="row">
+                <div class="form-group">
+                    <div class="col-md-offset-5 col-md-6">
+                        <input type="submit" value="Create" class="btn btn-default" id="CreateEditProjectButton" />
+                        <input type="button" value="Cancel" class="btn btn-default" onclick="@("window.location.href='" + @Url.Action("GetProjects", "Projects") + "'");" />
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}
+<script src="https://code.jquery.com/jquery-1.10.2.js"></script>
+<script src="~/Content/js/ProjectStatusDateValidation.js"></script>
+
+<script>
+    $(window).load(function () {
+        $('#moduleHeaderTitleOnDashBoardImage').text("Create Project");
+    });
+</script>

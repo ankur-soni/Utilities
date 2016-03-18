@@ -1,0 +1,42 @@
+﻿@model Silicus.Finder.Web.ViewModel.ContactViewModel
+<div>
+    
+    <h3>Contact</h3>
+    <div>
+        <span class="details-header">
+            Email Address
+        </span>
+        <span>:</span>
+        <span class="details-content">
+            @Html.DisplayFor(model => model.EmailAddress)
+        </span>
+    </div>
+    <div>
+        <span class="details-header">
+            @Html.DisplayNameFor(model => model.Skype)
+        </span>
+        <span>:</span>
+        <span class="details-content">
+            @Html.DisplayFor(model => model.Skype)
+        </span>
+    </div>
+    <div>
+        <span class="details-header">
+            @Html.DisplayNameFor(model => model.PhoneNumber)
+        </span>
+        <span>:</span>
+        <span class="details-content">
+            @Html.DisplayFor(model => model.PhoneNumber)
+        </span>
+    </div>
+    <div>
+        <span class="details-header">
+            Mobile Number 
+        </span>
+        <span>:</span>
+        <span class="details-content">
+            @Html.DisplayFor(model => model.MobileNumber)
+        </span>
+    </div>
+
+</div>

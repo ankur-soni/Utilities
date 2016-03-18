@@ -1,0 +1,88 @@
+﻿@model IEnumerable<Silicus.Finder.Models.DataObjects.Employee>
+
+@{
+    var currenProjectId = ViewData["id"];
+}
+
+<p>
+    <h2>Project's Employees</h2>
+</p>
+<p>
+    @Html.ActionLink("Add Employee", "AddEmployeeToProject", "Projects", new { id = currenProjectId },null)
+</p>
+
+<table class="table">
+    <tr style="font-weight: bold;">
+        <th>
+            @Html.DisplayNameFor(model => model.EmployeeId)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.FullName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Gender)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.EmployeeType)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.CubicleLocationId)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Contact.Skype)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Contact.EmailAddress)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Contact.MobileNumber)
+        </th>
+        <th></th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.EmployeeId)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.FullName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Gender)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.EmployeeType)
+            </td>
+            <td>
+                @{
+                    var cubicleLocation = item.CubicleLocation.Building + "-Building,Floor-" + item.CubicleLocation.FloorNumber + ",Desk- " + item.CubicleLocation.DeskNumber;
+                }
+                @Html.DisplayFor(modelItem => cubicleLocation)
+            </td>
+            <td>
+                @{
+                    var skypeId = Model.Select(model => model.Contact.Skype);
+                }
+                  @Html.DisplayFor(modelItem => skypeId)
+            </td>
+
+            <td>
+                @{
+                  var emailAddress = Model.Select(model => model.Contact.EmailAddress);
+                }
+                @Html.DisplayFor(modelItem => emailAddress)
+            </td>
+            <td>
+                @{
+                  var mobileNo = Model.Select(model => model.Contact.MobileNumber);
+                }
+                @Html.DisplayFor(modelItem => mobileNo)
+            </td>
+            <td>
+                @Html.ActionLink("Remove", "RemoveProjectEmployee", "Projects", new { empId = item.EmployeeId, projectId = currenProjectId }, null)
+            </td>
+        </tr>
+    }
+</table> 

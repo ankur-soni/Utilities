@@ -1,0 +1,47 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<TestSettings name="Local" id="3181bba2-09bd-4242-8bee-6eedcd7022a0" xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010">
+  <Description>These are default test settings for a local test run.</Description>
+  <Execution hostProcessPlatform="MSIL">
+    <Hosts>
+      <AspNet name="ASP.NET" executionType="WebDev" />
+    </Hosts>
+    <TestTypeSpecific>
+      <UnitTestRunConfig testTypeId="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b">
+        <AssemblyResolution>
+          <TestDirectory useLoadContext="true" />
+        </AssemblyResolution>
+      </UnitTestRunConfig>
+    </TestTypeSpecific>
+    <AgentRule name="LocalMachineDefaultRole">
+      <DataCollectors>
+        <DataCollector uri="datacollector://microsoft/TestImpact/1.0" assemblyQualifiedName="Microsoft.VisualStudio.TraceCollector.TestImpactDataCollector, Microsoft.VisualStudio.TraceCollector, Version=11.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" friendlyName="Test Impact">
+        </DataCollector>
+        <DataCollector uri="datacollector://microsoft/CodeCoverage/1.0" assemblyQualifiedName="Microsoft.VisualStudio.TestTools.CodeCoverage.CoveragePlugIn, Microsoft.VisualStudio.QualityTools.Plugins.CodeCoverage, Version=11.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" friendlyName="Code Coverage (Visual Studio 2010)">
+          <Configuration>
+            <CodeCoverage xmlns="">
+              <Regular>
+                <CodeCoverageItem binaryFile="Silicus.MvcTemplate.Core\bin\Debug\Silicus.MvcTemplate.Core.dll" pdbFile="Silicus.MvcTemplate.Core\bin\Debug\Silicus.MvcTemplate.Core.pdb" instrumentInPlace="true" />
+                <CodeCoverageItem binaryFile="Silicus.MvcTemplate.Entities\bin\Debug\Silicus.MvcTemplate.Entities.dll" pdbFile="Silicus.MvcTemplate.Entities\bin\Debug\Silicus.MvcTemplate.Entities.pdb" instrumentInPlace="true" />
+                <CodeCoverageItem binaryFile="Silicus.MvcTemplate.Jaql\bin\Debug\Silicus.MvcTemplate.Jaql.dll" pdbFile="Silicus.MvcTemplate.Jaql\bin\Debug\Silicus.MvcTemplate.Jaql.pdb" instrumentInPlace="true" />
+                <CodeCoverageItem binaryFile="Silicus.MvcTemplate.Visitor\bin\Debug\Silicus.MvcTemplate.JAQLVisitor.dll" pdbFile="Silicus.MvcTemplate.Visitor\bin\Debug\Silicus.MvcTemplate.JAQLVisitor.pdb" instrumentInPlace="true" />
+                <CodeCoverageItem binaryFile="Silicus.MvcTemplate.Models\bin\Debug\Silicus.MvcTemplate.Models.dll" pdbFile="Silicus.MvcTemplate.Models\bin\Debug\Silicus.MvcTemplate.Models.pdb" instrumentInPlace="true" />
+                <CodeCoverageItem binaryFile="Silicus.MvcTemplate.Repositories\bin\Debug\Silicus.MvcTemplate.Repositories.dll" pdbFile="Silicus.MvcTemplate.Repositories\bin\Debug\Silicus.MvcTemplate.Repositories.pdb" instrumentInPlace="true" />
+                <CodeCoverageItem binaryFile="Silicus.MvcTemplate.Services\bin\Debug\Silicus.MvcTemplate.Services.dll" pdbFile="Silicus.MvcTemplate.Services\bin\Debug\Silicus.MvcTemplate.Services.pdb" instrumentInPlace="true" />
+                <CodeCoverageItem binaryFile="Silicus.MvcTemplate.SiSenseProxy\bin\Debug\Silicus.MvcTemplate.SiSenseProxy.dll" pdbFile="Silicus.MvcTemplate.SiSenseProxy\bin\Debug\Silicus.MvcTemplate.SiSenseProxy.pdb" instrumentInPlace="true" />
+              </Regular>
+			  <ModulePaths>
+              <Exclude>
+                <ModulePath>.*.Tests.dll$</ModulePath>                
+                <ModulePath>.*.Test.dll$</ModulePath>
+              </Exclude>
+            </ModulePaths>
+              <AspNet>
+                <AspNetCodeCoverageItem id="1486a84a-408e-4e95-92c5-6e57d9f7350a" name="Silicus.MvcTemplate.Web" url="http://localhost:61135/" isIis="true" />
+              </AspNet>
+            </CodeCoverage>
+          </Configuration>
+        </DataCollector>
+      </DataCollectors>
+    </AgentRule>
+  </Execution>
+</TestSettings>

@@ -1,0 +1,20 @@
+﻿
+    .popup-details {
+        display: none;
+        font-size: 18px;
+        color:black;
+    }
+
+    .ui-dialog {
+        border: solid !important;
+    }
+    
+.details-header {
+    font-size: 16px;
+    font-weight: bold;
+}
+
+.details-content {
+    font-size: 16px;
+    color: #000000;
+}

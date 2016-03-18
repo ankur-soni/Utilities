@@ -1,0 +1,22 @@
+﻿.table tr th {
+    font-weight: bold;
+    text-align: left;
+    background-color :#75A8B9;
+    color: white;
+    font-size:17px;
+}
+
+.table tr td {
+    font-size:16px;
+    text-align: left;
+    color:black;
+}
+
+.tab-table {
+     height:200px;
+    overflow-y:auto;
+}
+
+.morecontent span {
+        display: none;
+    }

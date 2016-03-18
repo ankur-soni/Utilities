@@ -1,0 +1,80 @@
+﻿@model Silicus.Finder.Web.ViewModel.EmployeeViewModel
+
+@{
+    ViewBag.Title = "Employee Details";
+}
+
+
+
+<div>
+    <h4>Employee's Details</h4>
+    <hr />
+    <dl class="dl-horizontal">
+       
+        <dt>
+            @Html.DisplayNameFor(model => model.EmployeeCode)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.EmployeeCode)
+        </dd>
+
+
+        <dt>
+            @Html.DisplayNameFor(model => model.FullName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.FullName)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Role)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Role)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.TotalExperienceInMonths)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.TotalExperienceInMonths)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.SilicusExperienceInMonths)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.SilicusExperienceInMonths)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.HighestQualification)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.HighestQualification)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Title)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Title)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.ManagerRecommendation)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ManagerRecommendation)
+        </dd>
+
+    </dl>
+</div>

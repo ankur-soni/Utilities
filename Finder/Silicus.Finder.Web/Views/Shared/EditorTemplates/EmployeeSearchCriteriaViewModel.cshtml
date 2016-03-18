@@ -1,0 +1,52 @@
+﻿@model Silicus.Finder.Web.ViewModel.EmployeeSearchCriteriaViewModel
+
+<style>
+    .labeltop {
+        margin-top: -12px;
+    }
+</style>
+
+<div class="form-horizontal">
+    <div class="row" style="width:95%">
+        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+            <div class="form-group">
+                @Html.LabelFor(model => model.Title, htmlAttributes: new { @class = "control-label col-md-1" })
+                <div class="col-md-2">
+                    @Html.EditorFor(model => model.Title, new { htmlAttributes = new { @class = "form-control", id = "title" } })
+                </div>
+           
+                @Html.LabelFor(model => model.EmployeeType, htmlAttributes: new { @class = "control-label col-md-1 labeltop" })
+                <div class="col-md-2">
+                    @Html.EditorFor(model => model.EmployeeType, new { htmlAttributes = new { @class = "form-control align-to-right" , id = "employee_type" } })
+                </div>
+           
+                @Html.LabelFor(model => model.Project, htmlAttributes: new { @class = "control-label col-md-1 labeltop" })
+                <div class="col-md-2">
+                    @Html.EditorFor(model => model.Project, new { htmlAttributes = new { @class = "form-control", id = "project" } })
+                </div>
+
+                @Html.LabelFor(model => model.SkillSet, htmlAttributes: new { @class = "control-label col-md-1" })
+                <div class="col-md-2">
+                    @Html.EditorFor(model => model.SkillSet, new { htmlAttributes = new { @class = "form-control" , id = "skill_set" } })                    
+                </div>
+                
+                <span class="input-group-btn">
+                    <button id="checkfornull" class="btn btn-default pull-right" style="margin-right: -50px; width:30px; height:30px;" type="submit"><span class="glyphicon glyphicon-search "></span></button>                    
+                </span>
+                @Html.ActionLink("Clear Filter", "GetAllEmployees", "Employee", new { @class = "pull-right", style = "margin-right: -4%;" })
+                <div id="error_message_search" style="color:red;height:30px;padding-left: 40px;"> </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $('#checkfornull').on('click', function () {
+        if ($('#title').val().length == 0 && $('#employee_type').val().length == 0 && $('#project').val().length == 0 && $('#skill_set').val().length == 0)
+        {
+            document.getElementById('error_message_search').innerHTML = "Please Enter At Least One Criteria";
+            document.getElementById('title').focus();
+            return false;
+        }
+    });
+</script>

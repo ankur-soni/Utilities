@@ -1,0 +1,211 @@
+﻿@model Silicus.Finder.Web.ViewModel.ProjectsViewModel
+@using Kendo.Mvc.UI;
+@using Silicus.Finder.Models.DataObjects;
+
+@{
+    ViewBag.Title = "Project List";
+    var employees = ViewData["Employees"] as List<Employee>;
+    var alertMessage = TempData["AlertMessage"] ?? string.Empty;
+}
+
+<link href="~/Content/MyKendoStyle.css" rel="stylesheet" />
+<link href="~/Content/css/FinderStyle.css" rel="stylesheet" />
+
+<style>
+    #dialog-confirm {
+        display: none;
+        font-size: 18px;
+        color: black;
+    }
+
+    .ui-dialog {
+        border: solid !important;
+    }
+
+    .k-grid-content tr:last-child > td {
+        border-bottom: 1px solid gray;
+    }
+
+    .ContainerPanel .content {
+        display: none;
+        padding: 5px;
+    }
+
+    .advance-width {
+        width: 100% !important;
+    }
+
+    .ContainerPanel {
+        width: 20%;
+        height: 5%;
+        border: 1px;
+        border-color: #468aa1;
+        border-style: solid;
+    }
+</style>
+
+<div id="modal-container" class="k-popup my" tabindex="-1" role="dialog" style="border-style: hidden;margin-top:-100px;">
+    <div class="modal-content" style=" position:fixed !important;z-index:auto;width:90%;">
+    </div>
+</div>
+
+<div id="adv" class="container-fluid">
+
+    <div class="ContainerPanel">
+        <div>
+            <span style="color:black; font-weight: bold;">Advanced Search</span>
+            <div class="header1 pull-right">
+                <img src="~/Images/Project/down-arrow.png" style="height:20px; margin-top: -3px;" />
+            </div>
+
+            <div class="content">
+                <br /><br />
+                @using (Html.BeginForm("GetProjectsByCriteria", "Projects", FormMethod.Post))
+                {
+                    var model = Model.SearchCriteria;
+                    var i = 0;
+                    if (i == 0)
+                    {
+                        <div>
+                            @Html.EditorFor(modelItem => model, new { htmlAttributes = new { @class = "form-control" } })
+                        </div>
+                        ++i;
+                    }
+                }
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<div id="Grid" class="container-fluid">
+    
+    @if (User.IsInRole("Admin"))
+    {
+        <p>
+            <div class="container-fluid">
+                <input type="submit" value="Create Project" style="float:right;" class="btn btn-default" onclick="@("window.location.href='" + @Url.Action("CreateProject", "Projects") + "'");" />
+                <input type="button" value="Import Projects" id="importprojects" style="float:right;margin-right: 7px;" class="btn btn-default" />
+            </div>
+        </p>
+    }
+    else
+    {
+        <br />
+    }
+    @(Html.Kendo().Grid((IEnumerable<Silicus.Finder.Web.ViewModel.ProjectListViewModel>)Model.Projects)
+        .Name("ProjectGrid")
+        .Columns(columns =>
+        {
+            columns.Bound(c => c.ProjectName).Width(120)
+                .Template(c => @Html.ActionLink(c.ProjectName, "GetProjectDetails", new { projectId = c.ProjectId }, new { @class = "modal-link" }));
+
+            columns.Bound(c => c.ProjectCode).Width(76);
+            columns.Bound(c => c.ProjectType).Width(74);
+            columns.Bound(c => c.EngagementType).Template(c => c.EngagementType.GetDescription()).Width(100);
+            columns.Bound(c => c.Status).Template(c => c.Status.GetDescription()).Width(90);
+        })
+            .Scrollable(scr => scr.Height(300))
+            .Pageable(pageable => pageable
+            .Refresh(true)
+            .PageSizes(true)
+            .ButtonCount(5))
+            .Sortable(sortable => sortable.AllowUnsort(false))
+    )
+</div>
+
+<div id="import-project-popup" style="display:none">
+    <div style="align-items:center">
+
+        @using (Html.BeginForm("ImportProjectsFromExcel", "Projects", FormMethod.Post, new { enctype = "multipart/form-data" }))
+        {
+            <label for="file">Upload File:</label>
+            <input type="file" name="file" id="file" /><br><br>
+            @ViewBag.Message;
+            <br /><br />
+
+            <div class="col-md-offset-6">
+                <input type="submit" value="Upload File" class="btn btn-default" />
+            </div>
+        }
+    </div>
+</div>
+
+<div id="dialog-confirm">
+    <span>@alertMessage</span>
+</div>
+
+@Scripts.Render("~/bundles/jquery")
+
+<script type="text/javascript">
+    $(function () {
+        $('body').on('click', '.modal-link', function (e) {
+            e.preventDefault();
+            $(this).attr('data-target', '#modal-container');
+            $(this).attr('data-toggle', 'modal');
+            $('#Grid').toggle();
+            $('#adv').toggle();
+
+        });
+
+        $('body').on('click', '.modal-close-btn', function () {
+            $('#modal-container').modal('hide');
+        });
+
+        $('#modal-container').on('hidden.bs.modal', function () {
+            $(this).removeData('bs.modal');
+        });
+
+        $('#CancelModal').on('click', function () {
+            return false;
+        });
+    });
+
+    $(window).load(function () {
+        $('#modal-container').hide();
+        $('#moduleHeaderTitleOnDashBoardImage').text("Projects");
+    });
+
+    $(document).ready(function () {
+        var message = '@alertMessage';
+        if (message) {
+            $("#dialog-confirm").dialog({
+                resizable: false,
+                modal: true,
+                title: "Information!",
+                height: 200,
+                width: 300,
+                buttons: {
+                    "Ok": function (e) {
+                        $(this).dialog('close');
+                    }
+                }
+            });
+        }
+    });
+
+    $(".header1").click(function () {
+
+        $(".ContainerPanel").toggleClass("advance-width");
+
+        $header = $(this);
+
+        $content = $header.next();
+
+        $content.slideToggle(1, function () {
+        });
+
+    });
+
+    //import project popup
+    $('#importprojects').click(function () {
+        $("#import-project-popup").dialog({
+            resizable: false,
+            modal: true,
+            title: "Import Projects",
+            height: 300,
+            width: 300,
+        });
+    })
+
+</script>

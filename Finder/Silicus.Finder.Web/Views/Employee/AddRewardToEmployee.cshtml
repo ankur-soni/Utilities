@@ -1,0 +1,126 @@
+﻿@model Silicus.Finder.Models.DataObjects.EmployeeRewards
+
+@{
+    ViewBag.Title = "Add Reward(s) To Employee";
+    var selectedEmployee=ViewBag.Employee;
+}
+<link href="~/Content/css/table-view.css" rel="stylesheet" />
+<link href="~/Content/css/FinderStyle.css" rel="stylesheet" />
+
+<style>
+    #dialog-confirm, #dialog-noneSelected {
+        display: none;
+        font-size: 18px;
+        color: #ffffff;
+    }
+
+    .ui-dialog {
+        border: solid !important;
+    }
+
+    .SearchTech {
+        float: right;
+    }
+
+    .SearchTech, input-group {
+        vertical-align: top;
+    }
+</style>
+
+@using (Html.BeginForm(@*"AddRewardToEmployee", "Employee"*@)) 
+{
+    @Html.AntiForgeryToken()
+    
+    <div class="form-horizontal">
+      
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        
+        <div class="form-group">
+            @Html.Label("Employee", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.HiddenFor(model => model.EmployeeId)
+                @ViewBag.Employee
+                @Html.ValidationMessageFor(model => model.EmployeeId, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.RewardsAndRecognitionId, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-3">
+                @Html.DropDownListFor(model => model.RewardsAndRecognitionId, (SelectList)ViewData["Rewards"], "Select", new { @class = "form-control", @style = "width: 100%;" })
+                @Html.ValidationMessageFor(model => model.RewardsAndRecognitionId, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.GivenOn, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-3">
+                @Html.EditorFor(model => model.GivenOn, new { htmlAttributes = new { @class = "form-control", id = "GivenOn"} })
+                @Html.ValidationMessageFor(model => model.GivenOn, "", new { @class = "text-danger"})
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" id="AddReward" value="Save" class="btn btn-default" />
+                <input type="button" value="Back" id="Cancel" class="btn btn-default" onclick="@("window.location.href='" + @Url.Action("Edit", new { employeeId = Model.EmployeeId }) + "'");" />
+            </div>
+        </div>
+    </div>
+    <div id="dialog-confirm">
+        Reward added to Employee
+    </div>
+
+    <div id="dialog-noneSelected">
+        Reward is selected to add
+    </div>
+}
+
+
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}
+<script src="https://code.jquery.com/jquery-1.10.2.js"></script>
+<script>
+    $("#AddReward").click(function ()
+    {
+       EmployeeId=JSON.stringify(currentEmployeeId=@Model.EmployeeId);
+        RewardId=JSON.stringify(currentRewardId=@Model.RewardsAndRecognitionId);
+        GivenOn=JSON.stringify(givenOn=@Model.GivenOn)
+
+        $.ajax({
+            async: false,
+            cache: false,
+            type: "POST",
+            url: "@(Url.Action("AddRewardToEmployee", "Employee", new { area = "" }))",
+            data: {
+                "employeeId":EmployeeId,
+                "rewardId":RewardId,
+                "givenOn":GivenOn
+            },
+            success: function (data)
+            {
+                $("#dialog-confirm").dialog({
+                    resizable: false,
+                    modal: true,
+                    title: "Resource Added",
+                    height: 200,
+                    width: 300,
+                    buttons: {
+                        "Ok": function (e)
+                        {
+                            $(this).dialog('close');
+                            window.location.href="/Employee/Edit?employeeId="+@Model.EmployeeId;
+                        }
+                    }
+                });
+            }
+        });
+    });
+
+    $(window).load(function()
+    {
+        $('#moduleHeaderTitleOnDashBoardImage').text("Add Rewards");
+    });
+
+</script>

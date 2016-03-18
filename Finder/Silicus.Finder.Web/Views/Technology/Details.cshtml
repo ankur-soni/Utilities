@@ -1,0 +1,142 @@
+﻿@model Silicus.Finder.Web.ViewModel.SkillSetViewModel
+
+<link href="~/Content/css/FinderStyle.css" rel="stylesheet" />
+<link href="~/Content/css/finder-dialog.css" rel="stylesheet" />
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<div class="row">
+    <div class="overlay">
+        <h4 style="padding-left:35px; margin-right:26px;">
+            <button type="button" id="close-popup" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+            <span style="font-size:30px; margin-left:40px;">Technology Details</span>
+            @if (User.IsInRole("Admin") || User.IsInRole("Manager"))
+            {
+                <span style="float:right; margin-right:30px;">
+                    @Html.ActionLink(" ", "Edit", new { SkillSetId = Model.SkillSetId }, new { @class = "fa fa-pencil-square-o action add", title = "Edit Technology Details" })
+                    @{if (@Model.Projects.Count == 0)
+                    {
+                        <a data-dialog-href="#" id="delete-@Model.SkillSetId" href="#" data-deleteid=@Model.SkillSetId
+                           fullname="@Model.Name" class=" action add" title="Delete technology Record ">
+                            <i class="fa fa-archive" style="color:#59A5B6"></i>
+                        </a>
+                    }
+                    else
+                    {
+                        <a data-dialog-href1="#" id="DeleteErrorMessage" fullname="@Model.Name" style=" color:#59a5b6"
+                           class=" action add" title="Delete Technology Record ">
+                            <i class="fa fa-archive"></i>
+                        </a>}
+                    }
+                </span>
+            }
+        </h4>
+    </div>
+</div>
+
+<div style="margin-left:60px;">
+    <div>
+        <span class=" details-header">
+    @Html.DisplayNameFor(model => model.Name)
+    </span>
+    <span class="details-content">
+        @Html.DisplayFor(model => model.Name)
+    </span>
+</div>
+    <div>
+        <span class="details-header">
+            @Html.DisplayNameFor(model => model.Description)
+        </span>
+        <span class="details-content">
+            @Html.DisplayFor(model => model.Description)
+        </span>
+    </div>
+</div>
+
+
+<div id="dialog-confirm">
+    Are you sure you want to Delete the technology record of <span id="employee-delete"></span> ?
+</div>
+
+<div id="dialog-error">
+    Can not delete!<br />
+    technology <span id="technology-delete-error"></span>
+    is assigned to atleast one Project.
+</div>
+
+
+@Scripts.Render("~/bundles/jquery")
+
+<script>
+    debugger;
+
+    $(function () {
+        $('#approve-btn').click(function () {
+            $('#modal-container').modal('hide');
+        });
+    });
+
+    $('#close-popup').click(function () {
+        $('#Grid').toggle();
+    });
+
+    jQuery('body').on('click', '[data-dialog-href]', function (e) {
+        var id = jQuery(this).attr('data-deleteId');
+        var name = jQuery(this).attr('name');
+        $('#employee-delete').text(name);
+
+        var SkillSetId = id;
+
+        $("#dialog-confirm").dialog({
+            resizable: false,
+            modal: true,
+            title: "Confirm Delete",
+            height: 250,
+            width: 400,
+            buttons: {
+                "Yes": function (e) {
+
+                    $("dialog-confirm").css("display: block");
+                    $.ajax({
+                        SkillSetId: id,
+                        url: '@Url.Action("Delete", "Technology")?SkillSetId=' + SkillSetId,
+                        type: "GET",
+                        success: function (result) {
+                            $("#information").html(result);
+                            grid = $("#technologyGrid").data("kendoGrid");
+                            grid.dataSource.read();
+                        }
+                    });
+                    $(this).dialog('close');
+                },
+                "No": function () {
+                    $(this).dialog('close');
+                }
+            }
+        });
+
+    });
+
+    jQuery('body').on('click', '[data-dialog-href1]', function (e) {
+        var name = jQuery(this).attr('name');
+        $("#technology-delete-error").text(name);
+        $("#dialog-error").dialog({
+            resizable: false,
+            modal: true,
+            title: "Error",
+            height: 250,
+            width: 300,
+            buttons: {
+                "OK": function () {
+                    $("dialog-error");
+                    $(this).dialog('close');
+                }
+            }
+        });
+    });
+
+
+
+</script>

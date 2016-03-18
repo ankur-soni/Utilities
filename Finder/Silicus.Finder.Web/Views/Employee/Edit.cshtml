@@ -1,0 +1,189 @@
+﻿@model Silicus.Finder.Web.ViewModel.EmployeeEditViewModel
+@using Kendo.Mvc.UI;
+@{
+    ViewBag.Title = "Edit Employee";
+    var projects = Html.Partial("~/Views/Employee/_EditProjects.cshtml", Model.Projects, new ViewDataDictionary { { "id", Model.EmployeeId } });
+    var skills = Html.Partial("~/Views/Employee/_EditSkillSets.cshtml", Model.SkillSets, new ViewDataDictionary { { "id", Model.EmployeeId } });
+    var rewards = Html.Partial("~/Views/Employee/_EditRewardsAndRecognition.cshtml", Model.EmployeeRewards, new ViewDataDictionary { { "id", Model.EmployeeId } });
+}
+
+<link href="~/Content/css/FinderStyle.css" rel="stylesheet" />
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+    
+    <div class="form-horizontal">
+      
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        <font color='red'> <div>@ViewBag.message</div> </font>
+        <div class="container-fluid">
+
+            <div class="row">
+
+            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                @Html.HiddenFor(model => model.EmployeeId)
+                                
+                <div class="form-group">
+                    @Html.LabelFor(model => model.EmployeeCode, htmlAttributes: new { @class = "control-label col-md-4" })
+                    <div class="col-md-6">
+                        @Html.EditorFor(model => model.EmployeeCode, new { htmlAttributes = new { @class = "form-control ", @readonly = "readonly" } })
+                        @Html.ValidationMessageFor(model => model.EmployeeCode, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.FirstName, htmlAttributes: new { @class = "control-label col-md-4" })
+                    <div class="col-md-6">
+                        @Html.EditorFor(model => model.FirstName, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.FirstName, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.MiddleName, htmlAttributes: new { @class = "control-label col-md-4" })
+                    <div class="col-md-6">
+                        @Html.EditorFor(model => model.MiddleName, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.MiddleName, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.LastName, htmlAttributes: new { @class = "control-label col-md-4" })
+                    <div class="col-md-6">
+                        @Html.EditorFor(model => model.LastName, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.LastName, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.Role, htmlAttributes: new { @class = "control-label col-md-4" })
+                    <div class="col-md-6">
+                        @Html.DropDownListFor(model => model.Role, (SelectList)ViewData["Roles"], "Select", new { style = "color:black; width: 100%;" })
+                        @Html.ValidationMessageFor(model => model.Role, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    @Html.Label("Title", htmlAttributes: new { @class = "control-label col-md-4" })
+                    <div class="col-md-6">
+                        @Html.DropDownListFor(model => model.TitleId, (SelectList)ViewData["Titles"], "Select", new { style = "color:black; width: 100%;" })
+                        @Html.ValidationMessageFor(model => model.TitleId, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.Gender, htmlAttributes: new { @class = "control-label col-md-4" })
+                    <div class="col-md-6">
+                        @Html.EnumDropDownListFor(model => model.Gender, "Select", new { style = "color:black ;width: 100%;" })
+                        @Html.ValidationMessageFor(model => model.Gender, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.EmployeeType, htmlAttributes: new { @class = "control-label col-md-4" })
+                    <div class="col-md-6">
+                        @Html.EnumDropDownListFor(model => model.EmployeeType, "Select", new { style = "color:black; width: 100%;" })
+                        @Html.ValidationMessageFor(model => model.EmployeeType, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.TotalExperienceInMonths, htmlAttributes: new { @class = "control-label col-md-4" })
+                    <div class="col-md-6">
+                        @Html.EditorFor(model => model.TotalExperienceInMonths, new { htmlAttributes = new { @class = "form-control", @placeholder = "in months", id = "totalExperience" } })
+                        @Html.ValidationMessageFor(model => model.TotalExperienceInMonths, "", new { @class = "text-danger", id = "errorSilicusExperienceInvalid" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.SilicusExperienceInMonths, htmlAttributes: new { @class = "control-label col-md-4" })
+                    <div class="col-md-6">
+                        @Html.EditorFor(model => model.SilicusExperienceInMonths, new { htmlAttributes = new { @class = "form-control", @placeholder = "in months", id = "silicusExperience" } })
+                        @Html.ValidationMessageFor(model => model.SilicusExperienceInMonths, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.HighestQualification, htmlAttributes: new { @class = "control-label col-md-4" })
+                    <div class="col-md-6">
+                        @Html.EditorFor(model => model.HighestQualification, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.HighestQualification, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+
+                <div class="form-group">
+                    @Html.Label("Cubicle Location", htmlAttributes: new { @class = "control-label col-md-4" })
+                    <div class="col-md-6">
+                        @Html.EditorFor(model => model.CubicleLocation, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.CubicleLocation, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.Contact, htmlAttributes: new { @class = "control-label col-md-4" })
+                    <div class="col-md-6">
+                        @Html.EditorFor(model => model.Contact, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.Contact, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.ManagerRecommendation, htmlAttributes: new { @class = "control-label col-md-4" })
+                    <div class="col-md-6">
+                        @Html.TextAreaFor(model => model.ManagerRecommendation, new { @class = "form-control", style = "width: 100%;" } )
+                        @Html.ValidationMessageFor(model => model.ManagerRecommendation, "", new { @class = "text-danger" })
+                    </div>
+                    </div>
+                </div>
+
+                </div>
+
+            <div class="row">
+                <div class="form-group">
+                    <div class="col-md-offset-5 col-md-6">
+                        <input type="submit" value="Update" class="btn btn-default" />
+                        @*@Html.ActionLink("Back To List", "GetAllEmployees", "Employee", null, new { @class = "btn btn-default" })*@
+                        <input type="button" value="Back to List" class="btn btn-default" onclick="@("window.location.href='" + @Url.Action("GetAllEmployees", "Employee") + "'");" />
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="fluid mt20" style="margin-bottom:10px;">
+            <div class="kendogrid">
+
+                <div class="kendogrid">
+                    @(Html.Kendo().TabStrip()
+        .Name("Tabs")
+        .Items(tabstrip =>
+            {
+                tabstrip.Add().Text("Skills")
+                    .Selected(true)
+                    .Content(skills.ToString());
+
+                tabstrip.Add().Text("Projects")
+                    .Content(projects.ToString());
+                
+                tabstrip.Add().Text("Rewards And Recognition")
+                   .Content(rewards.ToString());
+            })
+                    )
+                </div>
+            </div>
+        </div>
+       
+    </div>
+}
+
+<script>
+    $(window).load(function () {
+        $('#moduleHeaderTitleOnDashBoardImage').text("Edit Employee");
+    });
+</script>

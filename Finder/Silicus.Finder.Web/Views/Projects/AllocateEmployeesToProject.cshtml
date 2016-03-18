@@ -1,0 +1,228 @@
+﻿@model IEnumerable<Silicus.Finder.Web.ViewModel.EmployeeSelectViewModel>
+@using Silicus.Finder.Models.DataObjects;
+@{
+    ViewBag.Title = "Allocate Employee(s) To Project";
+    var ProjectId = ViewBag.ProjectID;
+}
+
+<link href="~/Content/css/table-view.css" rel="stylesheet" />
+<link href="~/Content/css/FinderStyle.css" rel="stylesheet" />
+
+<style>
+    #dialog-confirm, #dialog-noneSelected {
+        display: none;
+        font-size: 18px;
+        color: black;
+    }
+
+    .ui-dialog {
+        border: solid !important;
+    }
+
+    .searchEmp {
+        float: right;
+    }
+
+        .searchEmp input {
+            vertical-align: top;
+        }
+</style>
+<br />
+<div class="form-group">
+    <div class="searchEmp">
+        <div id="error_message_employee" style="color:red;height:30px;padding-left: 40px;"> </div>
+        <div class="input-group" id="dashboard-search-div">
+            <input type="text" id="textbox1" name="firstname" placeholder="Search Employee" />
+            <button class="btn btn-default" style="height:30px;" data-toggle="tooltip" data-placement="bottom" title="Search For Employee" id="search" type="submit"><span class="glyphicon glyphicon-search "></span></button>
+            <br />
+        </div>
+    </div>
+</div>
+
+
+<div id="allocate_employees">
+
+
+    @using (Html.BeginForm("AllocateEmployeesToProject", "Projects"))
+    {
+
+        <table class="table">
+            <tr>
+                <th>
+                    @Html.DisplayName("Select Employee")
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.EmployeeCode)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.FullName)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.TotalExperienceInMonths)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.ManagerRecommendation)
+                </th>
+            </tr>
+
+            @if (Model.Count() > 0)
+            {
+                foreach (var item in Model)
+                {
+                    <tr>
+                        <td style="text-align:left;padding-left:8px">
+                            <input type="checkbox" name="SelectedEmployee" value=@item.EmployeeId id=@item.EmployeeId>
+                        </td>
+                        <td style="text-align:left;padding-left:8px">
+                            @Html.DisplayFor(modelItem => item.EmployeeCode)
+                        </td>
+                        <td style="text-align:left;padding-left:8px">
+                            @Html.DisplayFor(modelItem => item.FullName)
+                        </td>
+                        <td style="text-align:left;padding-left:8px">
+                            @Html.DisplayFor(modelItem => item.TotalExperienceInMonths)
+                        </td>
+                        <td style="text-align:left;padding-left:8px">
+                            @Html.DisplayFor(modelItem => item.ManagerRecommendation)
+                        </td>
+                    </tr>
+                }
+            }
+            else
+            {
+                <tr>
+                    <td colspan="8" style="text-align:center;">
+                        No more Employee is left to add in Project.
+                        @Html.ActionLink("Create Employee", "Create", "Employee")
+                    </td>
+                </tr>
+            }
+
+        </table>
+
+        <div class="form-group">
+            @if (Model.Count() > 0)
+            {
+                <input type="button" value="Add" id="AddEmployee" class="btn btn-default" />
+            }
+            <input type="button" value="Back" id="Cancel" class="btn btn-default" onclick="@("window.location.href='" + @Url.Action("EditProject", new { projectId = ProjectId }) + "'");" />
+        </div>
+
+        <div id="dialog-confirm">
+            Employee(s) has been added to project.
+        </div>
+
+        <div id="dialog-noneSelected">
+            No Employee is selected
+        </div>
+    }
+
+</div>
+
+<div id="getEmp">
+
+</div>
+
+@Scripts.Render("~/bundles/jquery")
+<script>
+    $("#AddEmployee").click(function ()
+    {
+        var selectedEmployeeIds = [];
+        $('input[name=SelectedEmployee]:checked').map(function () {
+            selectedEmployeeIds.push($(this).val());
+        });
+
+        ProjectId=JSON.stringify(currentProjectId=@ProjectId)
+
+        if(selectedEmployeeIds.length>0)
+        {
+
+            $.ajax({
+                async: false,
+                cache: false,
+                type: "POST",
+                url: "@(Url.Action("AllocateEmployeesToProject","Projects"))",
+                data: {
+                    "empIDs": selectedEmployeeIds,
+                    "currentProjectId":ProjectId
+                },
+                success: function (data)
+                {
+                    $("#dialog-confirm").dialog({
+                        resizable: false,
+                        modal: true,
+                        title: "Resource Added",
+                        height: 200,
+                        width: 300,
+                        buttons: {
+                            "Ok": function (e)
+                            {
+                                $(this).dialog('close');
+                                window.location.href="/Projects/EditProject?projectId="+@ProjectId;
+                            }
+                        }
+                    });
+                }
+            });
+        }
+        else
+        {
+            $("#dialog-noneSelected").dialog({
+                resizable: false,
+                modal: true,
+                title: "Empty Selection",
+                height: 200,
+                width: 300,
+                buttons: {
+                    "Ok": function (e)
+                    {
+                        $(this).dialog('close');
+                    }
+                }
+            });
+        }
+    });
+
+    $("#search").click(function()
+    {
+        debugger;
+        var EmpName = $("#textbox1").val();
+        if (EmpName.length == 0 || $.trim(EmpName)=="") {
+            document.getElementById('error_message_employee').innerHTML = "Please Enter Search Name";
+            document.getElementById('textbox1').focus();
+            return false;
+        }
+        $("#error_message_employee").css({
+            display: "none",
+            visibility: "hidden"
+        });
+        $("#allocate_employees").css({
+            display: "none",
+            visibility: "hidden"
+        });
+
+        id=JSON.stringify(currentProjectId=@ProjectId)
+        var input =  $('input[name=firstname]').val()
+        $.ajax(
+            {
+                async: false,
+                cache: false,
+                type:"Post",
+                url:"/Projects/SearchEmployeeByName",
+                data:
+                    {
+                        "name" :input,
+                        "projectId":id
+                    },
+                success: function (data)
+                {
+                    $("#getEmp").html(data);
+                }
+            }
+            );
+    });
+    
+    $(window).load(function () {
+        $('#moduleHeaderTitleOnDashBoardImage').text("Add Employee(s)");
+    });
+</script>

@@ -1,0 +1,16 @@
+﻿@model string
+@{
+    ViewBag.Title = "Employee Not Found";
+    Layout = "";
+    var ProjectId = ViewBag.ProjectID;
+}
+<br />
+<br />
+<br/>
+
+<p>
+    <h5>@ViewBag.Message </h5>
+</p>
+
+
+<input type="button" value="Back" id="Cancel" class="btn btn-default" onclick="@("window.location.href='" + @Url.Action("EditProject", new { projectId = ProjectId }) + "'");" />

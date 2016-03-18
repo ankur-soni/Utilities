@@ -1,0 +1,57 @@
+﻿
+#chart_div1 {
+-moz-box-flex:1.0; /* Firefox */
+-webkit-box-flex:1.0; /* Safari and Chrome */
+-ms-flex:1.0; /* Internet Explorer 10 */
+border:1px solid red;
+}
+#chart_div2 {
+-moz-box-flex:2.0; /* Firefox */
+-webkit-box-flex:2.0; /* Safari and Chrome */
+-ms-flex:2.0; /* Internet Explorer 10 */
+border:1px solid blue;
+}
+
+#filter {
+    margin-left: 5px;
+    margin-top: 20px;
+    margin-right: 10px;
+    width: 100px;
+    min-width: 300px
+}
+
+.gridCustomDivClass {
+    margin-top: 20px;
+    margin-left: 50px;
+    float: inherit;
+    clear: none;
+    width: 600px;
+    min-width: 600px;
+    height: 400px;
+    align-content: center;
+}
+
+#title {
+    font: 24px Arial, Helvetica, sans-serif;
+    text-align: center
+}
+
+#filterGroup {
+	-moz-box-flex: 1.0; /* Firefox */
+	-webkit-box-flex: 1.0; /* Safari and Chrome */
+	-ms-flex: 1.0; /* Internet Explorer 10 */
+	border: 1px solid black;
+
+	margin-left: 5px;
+	margin-top: 20px;
+	margin-right: 10px;
+	width: 300px;
+    overflow: auto
+}
+
+.multiselectGroup {
+	margin-left: 5px;
+	margin-top: 5px;
+	margin-right: 5px;    
+	margin-bottom: 5px;    
+}

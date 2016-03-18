@@ -1,0 +1,118 @@
+﻿@model IEnumerable<Silicus.Finder.Models.DataObjects.Project>
+
+@{
+    var EmpList = ViewBag.EmployeesList as List<Silicus.Finder.Models.DataObjects.Employee>;
+    
+}
+
+<link href="~/Content/css/table-view.css" rel="stylesheet" />
+
+<p>
+    <h4>Employee Projects</h4>
+</p>
+
+<form id="form12">
+    <div class="tab-table">
+        <table class="table">
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.ProjectName)
+
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.StartDate)
+                </th>
+
+                <th>
+                    @Html.DisplayNameFor(model => model.ProjectType)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Status)
+                </th>
+                <th>
+                    @Html.DisplayName("Project Manager")
+                </th>
+
+            </tr>
+
+            @if (Model.Count() > 0)
+            {
+                foreach (var item in Model)
+                {
+                    <tr>
+                        <td style="text-align:left;padding-left:8px">
+                            <a href="#" id="ProjectId_@item.ProjectId" class="Project_ID" pid="@item.ProjectId">@item.ProjectName</a>
+        </td>
+        <td style="text-align:left;padding-left:8px">
+            @Html.DisplayFor(modelItem => item.StartDate)
+        </td>
+
+        <td style="text-align:left;padding-left:8px">
+            @Html.DisplayFor(modelItem => item.ProjectType)
+        </td>
+
+        <td style="text-align:left;padding-left:8px">
+            @Html.DisplayFor(modelItem => item.Status)
+        </td>
+
+        <td style="text-align:left;padding-left:8px">
+            @{
+                    foreach (var employee in EmpList)
+                    {
+                        if (employee.EmployeeId == item.ProjectManagerId)
+                        {
+                            @Html.Label(employee.FirstName + " " + employee.LastName)
+                        }
+                    }
+            }
+        </td>
+    </tr>
+                }
+            }
+            else
+            {
+                <tr>
+                    <td colspan="5" style="text-align:center;">
+                        No Project is assigned to this Employee.
+                    </td>
+                </tr>
+            }
+        </table>
+    </div>
+</form>
+    
+<div id="ProjectInformation" class="k-popup"></div>
+
+@Scripts.Render("~/bundles/jquery")
+
+<script>
+
+    //$(document).click(function (e) {
+
+    //    $(e.target).hide();
+       
+    //});
+
+    $(".Project_ID").click(
+        function()
+        {
+            debugger;
+            var project_ID = $(this).attr('pid');
+            $("#ProjectInformation").data('pId', project_ID);
+            $("#ProjectInformation").dialog(
+             {
+                 title:"Project Details",
+                   autoOpen: true,
+                   height: 400,
+                   width: 600,
+                   modal: true,
+                   open: function ()
+                   {
+                       $(this).load('/Projects/ProjectDetails/?projectId=' + $("#ProjectInformation").data("pId"));
+                       
+                   },
+           });
+    });
+        
+      
+</script>

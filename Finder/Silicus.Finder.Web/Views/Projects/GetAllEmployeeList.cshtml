@@ -1,0 +1,163 @@
+﻿@model IEnumerable<Silicus.Finder.Web.ViewModel.EmployeesListViewModel>
+
+@{
+    Layout = "";
+    var ProjectId = ViewBag.ProjectID;
+}
+
+
+<br/>
+<br/>
+<br/>
+<style>
+    #dialog-confirm {
+        display: none;
+        font-size: 18px;
+        color: #ffffff;
+    }
+
+    .ui-dialog {
+        border: solid !important;
+    }
+
+
+    .id1{
+        float:left;
+        margin-right :150px;
+    }
+
+    #CreateEmployees{
+        float:right;
+    }
+
+    #Cancel{
+        margin-right:0px;
+    }
+
+</style>
+
+@using (Html.BeginForm("AllocateEmployeesToProject", "Projects"))
+{
+    <table class="table">
+        <tr>
+            <th>
+                 <label>Select Employee</label>
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.EmployeeCode)
+            </th>
+          
+            <th>
+                @Html.DisplayNameFor(model => model.FullName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.TotalExperienceInMonths)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ManagerRecommendation)
+            </th>
+
+            <th></th>
+        </tr>
+
+@if (Model.Count() > 0)
+    {
+
+        foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    <input type="checkbox" name="SelectedEmployee" value=@item.EmployeeId id=@item.EmployeeId>
+                </td>
+
+                <td>
+                    @Html.DisplayFor(modelItem => item.EmployeeCode)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.FullName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.TotalExperienceInMonths)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ManagerRecommendation)
+                </td>
+
+            </tr>
+        }
+    
+    }
+    else
+    {
+    <tr>
+    <td colspan="8" style="text-align:center;">
+        No more Employee is left to add in Project.
+        @Html.ActionLink("Create Employee", "Create", "Employee")
+    </td>
+  </tr>
+    }
+
+    </table>
+
+    <div class="id1">
+        <div class="form-group">
+            <div class="col-md-pull-1 col-md-10">
+
+                    @if (Model.Count() > 0)
+                    {
+                        <input type="button" value="Add" id="AddEmp" class="btn btn-default" />
+                    }
+
+                <input type="button" value="Back" id="Cancel" class="btn btn-default" onclick="@("window.location.href='" + @Url.Action("EditProject", new { projectId = ProjectId }) + "'");" />
+            </div>
+        
+              
+        </div>
+    </div>
+    <div id="dialog-confirm">
+        Resource added to project
+    </div>
+}
+
+<script>
+   
+    $("#AddEmp").click(function ()
+    {
+        
+        Project_Id=JSON.stringify(currentProjectId=@ProjectId)
+        var selectedEmployeeIds = [];
+       
+        $('input[name=SelectedEmployee]:checked').map(function () {
+            selectedEmployeeIds.push($(this).val());
+        });
+        $.ajax({
+            async: false,
+            cache: false,
+            type: "POST",
+            url: "/Projects/AllocateEmployeesToProject",
+            data: {
+                "empIDs": selectedEmployeeIds,
+                "currentProjectId":  Project_Id
+            },
+            success: function (data)
+            {
+                $("#dialog-confirm").dialog({
+                    resizable: false,
+                    modal: true,
+                    title: "Resource Added",
+                    height: 200,
+                    width: 300,
+                    buttons: {
+                        "Ok": function (e)
+                        {
+                            $(this).dialog('close');
+                            window.location.href = "/Projects/EditProject?projectId=" + Project_Id;
+                        }
+                    }
+                });
+            }
+        });
+    });
+</script>
+
+

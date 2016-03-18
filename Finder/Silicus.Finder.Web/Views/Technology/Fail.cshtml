@@ -1,0 +1,18 @@
+﻿@model Silicus.Finder.Models.DataObjects.SkillSet
+
+@{
+    ViewBag.Title = "Fail";
+}
+
+<h2>Fail</h2>
+
+@{
+    ViewBag.Title = "Success";
+}
+<div style="padding-top:100px">
+    <h2>@ViewBag.SavedskillSet Technology is all ready in DataBase.</h2>
+</div>
+<div>
+    @Html.ActionLink("Back to Create", "Create", null, new { @class = "btn btn-primary" })
+</div>
+

@@ -1,0 +1,54 @@
+﻿@model Silicus.Finder.Web.Models.EmailModel
+@using Kendo.Mvc.UI;
+
+<h2>Send Reminder To Submit Status Report</h2>
+
+<Style type ="text/css">
+    
+    .inputclass
+    {
+    background: white;
+	border: 1px solid #DDD;
+	border-radius: 5px;
+	box-shadow: 0 0 5px #DDD inset;
+	color: #666;
+	float: left;
+	padding: 5px 10px;
+	width: 165px;
+	outline: none;
+
+    } 
+       
+</Style>
+
+<div id="admin">
+    @using (
+                Html.BeginForm(
+                    "SendEmail", "Admin",FormMethod.Post                 
+                )
+            )
+    {
+        @Html.ValidationSummary(true)
+        <fieldset>
+            <legend>Details</legend>
+            <div class="inputclass">
+                @Html.LabelFor(model => model.Name)
+            </div>
+            <div class="inputclass">
+                @Html.EditorFor(model => model.Name)
+                @Html.ValidationMessageFor(model => model.Name)
+            </div>
+            <div class="inputclass">
+                @Html.LabelFor(model => model.Email)
+            </div>
+            <div class="inputclass">
+                @Html.EditorFor(model => model.Email)
+                @Html.ValidationMessageFor(model => model.Email)
+            </div>
+            <p>
+                <input type="submit" value="Submit" />
+            </p>
+        </fieldset>
+    }
+</div>
+

@@ -1,0 +1,216 @@
+﻿@model Silicus.Finder.Web.ViewModel.EmployeeCreateViewModel
+<link href="~/Content/css/FinderStyle.css" rel="stylesheet" />
+@{
+    ViewBag.Title = "Create Employee";
+}
+<script src="@Url.Content("~/Scripts/jquery.validate.min.js")" type="text/javascript"></script>
+<script src="@Url.Content("~/Scripts/jquery.validate.unobtrusive.min.js")" type="text/javascript"></script>
+<style>
+    .validation-message {
+        /* ... */
+        display: block;
+    }
+
+    select {
+        width: 200px;
+    }
+</style>
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+   
+    <div class="form-horizontal">
+       
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        <font color='red'> <div>@ViewBag.message</div> </font>
+        @Html.HiddenFor(model => model.EmployeeId)
+
+        <div class="container-fluid">
+            
+            <div class="row">
+
+            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.EmployeeCode, htmlAttributes: new { @class = "control-label col-md-4 " })
+                    <div class="col-md-6">
+                        @Html.TextBoxFor(model => model.EmployeeCode, new { style = "width: 100%" })
+                        @Html.ValidationMessageFor(model => model.EmployeeCode, "", new { @class = "text-danger" })
+
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.FirstName, htmlAttributes: new { @class = "control-label col-md-4 " })
+                    <div class="col-md-6">
+                        @Html.TextBoxFor(model => model.FirstName, new { style = "width: 100%" })
+                        @Html.ValidationMessageFor(model => model.FirstName, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.MiddleName, htmlAttributes: new { @class = "control-label col-md-4 " })
+                    <div class="col-md-6">
+                        @Html.TextBoxFor(model => model.MiddleName, new { style = "width: 100%" })
+                        @Html.ValidationMessageFor(model => model.MiddleName, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.LastName, htmlAttributes: new { @class = "control-label col-md-4 " })
+                    <div class="col-md-6">
+                        @Html.TextBoxFor(model => model.LastName, new { style = "width: 100%" })
+                        @Html.ValidationMessageFor(model => model.LastName, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.Role, htmlAttributes: new { @class = "control-label col-md-4 " })
+                    <div class="col-md-6">
+                        @Html.DropDownListFor(model => model.Role, (SelectList)ViewData["Roles"], "Select", new { style = "color:black;width:100%" })
+                        @Html.ValidationMessageFor(model => model.Role, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                        @Html.Label("Title", htmlAttributes: new { @class = "control-label col-md-4 col-lg-4" })
+                        <div class="col-md-6 col-lg-6">
+                            @Html.DropDownListFor(model => model.TitleId, (SelectList)ViewData["Titles"], new { style = "color:black;width:100%" })
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                    @Html.LabelFor(model => model.Gender, htmlAttributes: new { @class = "control-label col-md-4 " })
+                    <div class="col-md-6">
+                        @Html.EnumDropDownListFor(model => model.Gender, "Select", new { style = "color:black;width:100%" })
+                        @Html.ValidationMessageFor(model => model.Gender, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.EmployeeType, htmlAttributes: new { @class = "control-label col-md-4 " })
+                    <div class="col-md-6">
+                        @Html.EnumDropDownListFor(model => model.EmployeeType, "Select", new { style = "color:black;width:100%" })
+                        @Html.ValidationMessageFor(model => model.EmployeeType, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.TotalExperienceInMonths, htmlAttributes: new { @class = "control-label col-md-4 " })
+                    <div class="col-md-6">
+                        @Html.TextBoxFor(model => model.TotalExperienceInMonths, new { @style = "width: 100%", @placeholder = "in months", id = "totalExperience" })
+                        @Html.ValidationMessageFor(model => model.TotalExperienceInMonths, "", new { @class = "text-danger", id = "totalExperienceInvalid" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.SilicusExperienceInMonths, htmlAttributes: new { @class = "control-label col-md-4  " })
+                    <div class="col-md-6">
+                        @Html.TextBoxFor(model => model.SilicusExperienceInMonths, new { style = "width: 100%", @placeholder = "in months", id = "silicusExperience" })
+                        @Html.ValidationMessageFor(model => model.SilicusExperienceInMonths, "", new { @class = "text-danger", id = "errorSilicusExperienceInvalid" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.HighestQualification, htmlAttributes: new { @class = "control-label col-md-4  " })
+                    <div class="col-md-6">
+                        @Html.TextBoxFor(model => model.HighestQualification, new { style = "width: 100%" })
+                        @Html.ValidationMessageFor(model => model.HighestQualification, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.ManagerRecommendation, htmlAttributes: new { @class = "control-label col-md-4  " })
+                    <div class="col-md-6">
+                            @Html.TextAreaFor(model => model.ManagerRecommendation, new { @class = "form-control", style = "width:100%" })
+                        @Html.ValidationMessageFor(model => model.ManagerRecommendation, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+
+                <div class="form-group">
+                    @Html.Label("Cubicle Location", htmlAttributes: new { @class = "control-label col-md-4 " })
+                    <div class="col-md-6">
+                        @Html.EditorFor(model => model.CubicleLocation, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.CubicleLocation, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.Contact, htmlAttributes: new { @class = "control-label col-md-4 " })
+                    <div class="col-md-6">
+                        @Html.EditorFor(model => model.Contact, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.Contact, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    @Html.Label("Skill sets", htmlAttributes: new { @class = "control-label col-md-4 " })
+                    <div class="col-md-6">
+                        @Html.ListBoxFor(model => model.SkillId, (MultiSelectList)ViewData["Skills"], new { style = "color:black;width:100%" })
+                        @Html.ValidationMessageFor(model => model.SkillSets, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.Projects, htmlAttributes: new { @class = "control-label col-md-4 " })
+                    <div class="col-md-6">
+                        @Html.ListBoxFor(model => model.ProjectId, (MultiSelectList)ViewData["Projects"], new { style = "color:black;width:100%" })
+                        @Html.ValidationMessageFor(model => model.Projects, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="row">
+                <div class="form-group">
+                    <div class="col-md-offset-5 col-lg-offset-5 col-md-6 col-lg-6">
+                        <input type="submit" value="Create" class="btn btn-default" />
+                        <input type="button" value="Cancel" class="btn btn-default" onclick="@("window.location.href='" + @Url.Action("GetAllEmployees", "Employee") + "'");" />
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+        </div>
+}
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}
+
+<script src="https://code.jquery.com/jquery-1.10.2.js"></script>
+
+<script>
+
+    //$("#silicusExperience").blur(function ()
+    // {
+    //    var silicusExperience = $("#silicusExperience").val();
+    //    var totalExperience = $("#totalExperience").val();
+   
+    //   if (silicusExperience > totalExperience)
+    //     {
+    //       $("#totalExperienceInvalid").val('');
+    //    }
+    // });
+
+    //$("#silicusExperience").blur(function () {
+    //    var totalExperience = $("#totalExperience").val();
+    //    var silicusExperience = $("#silicusExperience").val();
+
+
+
+    //    if (totalExperience < silicusExperience) {
+    //        $("#errorSilicusExperienceInvalid").text("Total Experience should be either equal or greater than Silicus Experience");
+    //    }
+    //});
+
+    $(window).load(function () {
+        $('#moduleHeaderTitleOnDashBoardImage').text("Create Employee");
+    });
+</script>

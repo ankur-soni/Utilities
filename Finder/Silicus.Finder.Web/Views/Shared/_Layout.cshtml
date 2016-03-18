@@ -1,0 +1,154 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>@ViewBag.Title - Finder</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <link href="~/favicon.ico" rel="shortcut icon" type="image/x-icon" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <link rel="apple-touch-icon" href="" />
+    <link rel="apple-touch-icon" sizes="57x57" href="" />
+    <link rel="apple-touch-icon" sizes="72x72" href="" />
+    <link rel="apple-touch-icon" sizes="114x114" href="" />
+    <meta name="keywords" content="">
+    <meta name="description" content="">
+    <meta name="application-name" content="" />
+    <meta name="msapplication-tooltip" content="Silicus Technologies, LLC." />
+    <meta name="msapplication-starturl" content="" />
+    <meta name="rating" content="General" />
+    <meta name="robots" content="index, follow" />
+    <meta name="GOOGLEBOT" content="INDEX, FOLLOW" />
+    <meta name="revisit-after" content="2 days" />
+    <meta name="author" content="Silicus Technologies, LLC." />
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+    <meta http-equiv="imagetoolbar" content="no" />
+    <meta http-equiv="cache-control" content="no-cache" />
+    <meta http-equiv="expires" content="-1" />
+    <meta http-equiv="pragma" content="no-cache" />
+
+    @Styles.Render("~/Content/BootstrapCSS")
+    @Styles.Render("~/Content/kendoCSS")
+    @*@Styles.Render("~/Content/knockoutCSS")*@
+    @Styles.Render("~/Content/JQueryUI")
+
+    @Scripts.Render("~/bundles/modernizr")
+    @Scripts.Render("~/bundles/kendoJS")
+    @Scripts.Render("~/bundles/BootstrapJS")
+
+
+    <link href="~/Content/css/font-awesome-4.2.0/css/font-awesome.min.css" rel="stylesheet" />
+    <link href="~/Content/toastr.css" rel="stylesheet" />
+    <link href="~/Content/css/style.css" rel="stylesheet" />
+
+    @Scripts.Render("~/bundles/jqueryval")
+
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <style>
+    </style>
+
+
+</head>
+@using Microsoft.AspNet.Identity
+@{
+    var conname = @ViewContext.RouteData.Values["controller"].ToString().ToLower();
+    var actname = @ViewContext.RouteData.Values["action"].ToString().ToLower();
+    //Response.Write(conname);
+    //Response.Write(actname);
+}
+
+<body>
+    <div class="container-fluid">
+
+        <div id="loading">
+            <div>
+                <div></div>
+                <div></div>
+                <div></div>
+            </div>
+        </div>
+
+        <div id="wrapper" class="container-fluid">
+            <div class="row" id="row1" style="height: 205px;">
+                @if (actname != "login" && actname != "logoff")
+                {
+                    <div id="top">
+                        <div class="container-fluid" style="margin: 0.5% 3% 0.5% 3%;">
+                            <a href="@Url.Action("Dashboard", "Dashboard")"><div class="main-logo" id="logo-main"><img src="../../Images/Silicus/logo.jpg"></div></a>
+                            <div class="user-info">
+                                @if (Request.IsAuthenticated)
+                                {
+                                    @*<div id="userpicture"></div>*@
+                                    <span>Welcome @User.Identity.GetUserName()</span>
+                                    <br /> 
+                                    @*  <span style="float:right">
+                                              <a href="@Url.Action("LogOff", "Account")">Log Out</a>
+                                        </span>*@
+
+                                    <div class="menuList">
+                                        <div class="dropdown" style="float:right">
+                                            <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">
+                                                @if (User.IsInRole("Admin"))
+                                                {
+                                                    <span>Admin</span>
+                                                }
+                                                else
+                                                {
+                                                    <span>My Account</span>
+                                                }
+                                                <span class="caret"></span>
+                                            </button>
+                                            <ul class="dropdown-menu">
+                                                @if (User.IsInRole("Admin"))
+                                                {
+                                                    <li><a href="@Url.Action("GetLockedUsers", "Admin")">Locked Users</a></li>
+                                                }
+                                                <li><a href="@Url.Action("ChangePassword", "Account")">Change Password</a></li>
+                                                <li><a href="@Url.Action("LogOff", "Account")">Log Out</a></li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                }
+                            </div>
+                        </div>
+                    </div>
+                    @*<div id="dashboardlink" class="container-fluid"><span><a href="@Url.Action("GetLockedUsers", "Admin")">Locked Users</a></span><span><a href="@Url.Action("ChangePassword", "Account")">ChangePassword</a></span><span><a href="@Url.Action("Dashboard", "Admin")">Dashboard</a></span></div>*@
+                    <div id="dashboardlink" class="container-fluid">
+                        @if (Request.IsAuthenticated)
+                        {
+                            @*    <span>
+                                    @if (User.IsInRole("Admin"))
+                                    {
+                                        <a href="@Url.Action("GetLockedUsers", "Admin")">Locked Users</a>
+                                    }
+                                </span>
+                                <span><a href="@Url.Action("ChangePassword", "Account")">Change Password</a></span>
+                            *@
+                            <span><a href="@Url.Action("Dashboard", "Dashboard")">Dashboard</a></span>
+                        }
+                    </div>
+                    <div id="dashboardimage" style="padding-top:1%">
+                        <h2 style="padding-left:4%;padding-top:1%; color:white;" id="moduleHeaderTitleOnDashBoardImage"></h2>
+                    </div>
+                }
+            </div>
+        </div>
+        <div class="row">
+            <div class="container-fluid headmain">
+                <div>
+                    <div class="row">
+                        @RenderBody()
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    @RenderSection("scripts", required: false)
+</body>
+</html>
+@Scripts.Render("~/bundles/CommonJS")

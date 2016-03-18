@@ -1,0 +1,160 @@
+﻿@model IEnumerable<Silicus.Finder.Web.ViewModel.ProjectEmployeeDetailsViewModel>
+
+@{
+    var thisProjectId = ViewData["id"];
+    var thisProjectName = ViewData["projectName"];
+}
+
+<link href="~/Content/css/table-view.css" rel="stylesheet" />
+<link href="~/Content/css/FinderStyle.css" rel="stylesheet" />
+
+<style>
+    #dialog-confirm {
+    display: none;
+    font-size: 18px;
+    color:black;
+}
+
+</style>
+
+<p>
+    <h4>Project Employees</h4>
+</p>
+<p>
+    <input type="button" value="Add Employees" class="btn btn-default pull-right" style="margin-top: -40px; margin-right: 2px;" onclick="@("window.location.href='" + @Url.Action("AllocateEmployeesToProject", "Projects", new { projectId = thisProjectId }) + "'") ;" />
+    @*@Html.ActionLink("Add Employees", "AllocateEmployeesToProject", "Projects", new { projectId = thisProjectId }, new { @class = "btn btn-default" })*@
+</p>
+
+<div style="height:200px; overflow-y:auto;">
+    <table class="table">
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.FullName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Title)
+            </th>
+            <th>
+                @Html.DisplayName("Cubicle Location")
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Contact.EmailAddress)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Contact.Skype)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.TotalExperienceInMonths)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Contact.PhoneNumber)
+            </th>
+            <th>
+                Deallocate
+            </th>
+        </tr>
+
+        @if (Model.Count() > 0)
+        {
+            foreach (var item in Model)
+            {
+                <tr>
+                    <td style="text-align:left;padding-left:8px">
+                        @Html.DisplayFor(modelItem => item.FullName)
+                    </td>
+                    <td style="text-align:left;padding-left:8px">
+                        @{
+                          string title = string.Empty;
+                          if (item.EmployeeTitles.Count > 0)
+                           {
+                               title = item.EmployeeTitles.Where(emptitle => emptitle.IsCurrent == true).SingleOrDefault().Title.Name;
+                           }
+                        }
+                        @Html.DisplayFor(modelitem => title)
+                    </td>
+                    <td style="text-align:left;padding-left:8px">
+                        @{
+                var cubicleLocation = item.CubicleLocation.Building + "/" + item.CubicleLocation.DeskNumber;
+                        }
+                        @Html.DisplayFor(modelItem => cubicleLocation)
+                    <td style="text-align:left;padding-left:8px">
+                        @Html.DisplayFor(modelItem => item.Contact.EmailAddress)
+                    </td>
+                    <td style="text-align:left;padding-left:8px">
+                        @Html.DisplayFor(modelItem => item.Contact.Skype)
+                    </td>
+                    <td style="text-align:left;padding-left:8px">
+                        @Html.DisplayFor(modelItem => item.TotalExperienceInMonths)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Contact.PhoneNumber)
+                    </td>
+                    <td>
+                        <a data-dialog-href="#" id="delete-@item.EmployeeId" href="#" data-deleteid=@item.EmployeeId data-projectid="@thisProjectId" data-employeename="@item.FullName" data-projectname="@thisProjectName" class="action add" title="Deallocate Employee from Project"><i class="fa fa-trash-o fa-2x" style="color:#59A5B6"></i></a>
+                    </td>
+                </tr>
+            }
+        }
+        else
+        {
+            <tr>
+                <td colspan="8" style="text-align:center;">
+                    No Employee is assigned to this Project.
+                </td>
+            </tr>
+        }
+
+    </table>
+</div>
+
+<div id="dialog-confirm">
+    Are you sure you want to Deallocate <span id="employee-name"></span> from <span id="project-name-span"></span> Project?
+</div>
+
+@Scripts.Render("~/bundles/jquery")
+
+<script type="text/javascript">
+
+    jQuery('body').on('click', '[data-dialog-href]', function (e) {
+
+        var id = jQuery(this).attr('data-deleteId');
+        var projectId = jQuery(this).attr('data-projectId');
+        var empName = jQuery(this).attr('data-employeename');
+        var projectName = jQuery(this).attr('data-projectName');
+
+        $('#employee-name').text(empName);
+        $('#project-name-span').text(projectName);
+
+        $("#dialog-confirm").dialog({
+            resizable: false,
+            modal: true,
+            title: "Deallocate Resource",
+            height: 250,
+            width: 400,
+            buttons: {
+                "Yes": function (e) {
+                    $("dialog-confirm").css("display: block");
+
+                    $.ajax({
+                        async: false,
+                        cache: false,
+                        type: "POST",
+                        url: "@(Url.Action("DeallocateProjectEmployee", "Projects"))",
+                        data: {
+                            "empId": id,
+                            "projectId": projectId
+                        },
+                        success: function (data) { }
+                    });
+
+                    $(this).dialog('close');
+                    window.location.reload();
+                },
+                "No": function () {
+                    $(this).dialog('close');
+                }
+            }
+        });
+    });
+
+</script>

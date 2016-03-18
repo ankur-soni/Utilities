@@ -1,0 +1,161 @@
+﻿@model IEnumerable<Silicus.Finder.Web.ViewModel.SkillSetViewModel>
+@using Kendo.Mvc.UI;
+<link href="~/Content/css/FinderStyle.css" rel="stylesheet" />
+
+@{
+    ViewBag.Title = "Skill's List";
+    var importMessage = Session["ImportSkill"] ?? string.Empty;
+    Session["ImportSkill"] = string.Empty;
+}
+
+
+
+<link href="~/Content/MyKendoStyle.css" rel="stylesheet" />
+<link href="~/Content/css/FinderStyle.css" rel="stylesheet" />
+
+<style>
+    .k-grid-content tr:last-child > td {
+        border-bottom: 1px solid grey;
+    }
+.k-grid td {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+</style>
+
+
+<div id="modal-container" class="k-popup my" tabindex="-1" role="dialog" style="border-style: hidden; margin-top:-20px;">
+    <div class="modal-content" style=" position:fixed !important;z-index:auto;width:93%;">
+    </div>
+</div>
+<div id="Grid" class="container-fluid" style="padding-right: 15px;padding-left: 15px;">
+   
+    @* <h2 style="color:#295071;margin-top: 0;">Skills</h2>*@
+
+    @if (User.IsInRole("Admin"))
+    {
+        
+        <p>
+            <div class="container-fluid">
+                <input type="submit" value="Create Skill" class="btn btn-default" style="float:right;" onclick="@("window.location.href='" + @Url.Action("Create", "Technology") + "'");" />
+                @*@Html.ActionLink("Create Technology", "Create", "Technology", null, new { @class = "btn btn-default", @style = "font-size:17px;" })*@
+                <input type="button" id="importButton" value="Import Skills" style="float:right;margin-right: 7px;" class="btn btn-default" />
+             </div>
+</p>
+    }
+
+    @(Html.Kendo().Grid((IEnumerable<Silicus.Finder.Web.ViewModel.SkillSetViewModel>)(Model)) //Bind the grid to ViewBag.Products
+    .Name("technologyGrid")
+      .Columns(columns =>
+      {
+          columns.Bound(skills => skills.Name).Width(50)
+              .Template(skills => @Html.ActionLink(skills.Name, "Details", "Technology", new { skillSetId = skills.SkillSetId }, new { @class = "modal-link" }));
+
+          columns.Bound(skills => skills.Description).Width(60);
+
+          columns.Bound(skills => skills.Employees).Title("#Employees Tagged").Template(
+            @<label>
+                @{
+                    var total = item.Employees.Count();
+                    @Html.Label(total.ToString())
+                }
+            </label>).Width(50);
+          columns.Bound(skills => skills.Projects).Title("#Projects Tagged").Template(
+            @<label>
+                @{
+                    var total = item.Projects.Count();
+                    @Html.Label(total.ToString())
+                }
+            </label>).Width(50);
+
+      })
+                .Scrollable(scr => scr.Height(300))
+                .Pageable(pageable => pageable
+                .Refresh(true)
+                .PageSizes(true)
+                .ButtonCount(5))
+                .Sortable(sortable => sortable.AllowUnsort(false))
+    )
+    <div id="dialog-import-skill">
+        <div style="align-items:center">
+            <h3>Upload Skill Records Sheet</h3>
+            <hr />
+            @using (Html.BeginForm("ImportSkillsFromExcel", "Technology", FormMethod.Post, new { enctype = "multipart/form-data" }))
+            {
+                <label for="file"><b>Upload File:</b></label>
+                <input type="file" name="file" id="file" /><br><br>
+
+                <br /><br />
+
+                <div>
+                    <input type="submit" value="Upload File" class="btn btn-default" />
+                </div>
+            }
+        </div>
+    </div>
+    <div id="import-dialog">
+        <span>@importMessage</span>
+    </div>
+</div>
+
+@Scripts.Render("~/bundles/jquery")
+
+<script>
+
+    $(function () {
+        $('body').on('click', '.modal-link', function (e) {
+            e.preventDefault();
+            $(this).attr('data-target', '#modal-container');
+            $(this).attr('data-toggle', 'modal');
+            $('#Grid').toggle();
+        });
+
+        $('body').on('click', '.modal-close-btn', function () {
+            $('#modal-container').modal('hide');
+        });
+
+        $('#modal-container').on('hidden.bs.modal', function () {
+            $(this).removeData('bs.modal');
+        });
+
+        $('#CancelModal').on('click', function () {
+            return false;
+        });
+    });
+
+    $(window).load(function () {
+        $('#moduleHeaderTitleOnDashBoardImage').text("Skills");
+        $('#modal-container').hide();
+        $("#dialog-import-skill").hide();
+    });
+    $(document).ready(function () {
+        var importMessage = '@importMessage';
+        if (importMessage) {
+            $("#import-dialog").dialog({
+                resizable: false,
+                modal: true,
+                title: "Information!",
+                height: 400,
+                width: 400,
+                buttons: {
+                    "Ok": function (e) {
+                        $(this).dialog('close');
+                    }
+                }
+            });
+        }
+    });
+    $("#importButton").click(function () {
+        $("#dialog-import-skill").dialog({
+            resizable: false,
+            modal: true,
+            title: "Select File",
+            height: 310,
+            width: 400,
+
+        });
+    });
+
+</script>

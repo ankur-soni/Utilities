@@ -1,0 +1,290 @@
+﻿@model Silicus.Finder.Web.ViewModel.EmployeeViewModel
+<link href="~/Content/css/FinderStyle.css" rel="stylesheet" />
+@using Kendo.Mvc.UI;
+
+@{
+    var skills = Html.Partial("~/Views/Employee/_SkillSetDetails.cshtml", Model.SkillSets);
+    var projects = Html.Partial("~/Views/Employee/_ProjectDetails.cshtml", Model.Projects);
+    var rewards = Html.Partial("~/Views/Employee/_RewardsAndRecognition.cshtml", Model.EmployeeRewards);
+
+}
+<link href="~/Content/css/FinderStyle.css" rel="stylesheet" />
+<link href="~/Content/css/finder-dialog.css" rel="stylesheet" />
+
+<style>
+    .details-header {
+        font-size: 16px;
+        font-weight: bold;
+    }
+
+    .details-content {
+        font-size: 16px;
+        color: #000000;
+    }
+
+    .popup-details {
+        display: none;
+        font-size: 18px;
+        color: black;
+    }
+</style>
+<div id="id13">
+    <div>
+
+        <div class="row">
+            <div class="overlay">
+                <h4 style="padding-left:35px; margin-right:26px;">
+                    <button id="close-popup" class="close fa fa-2x fa-times" aria-hidden="true" data-dismiss="modal" type="button"></button>
+                    <span style="font-size:30px; margin-left:3%; color:#295071;">Employee Details</span>
+                    @if (User.IsInRole("Admin") || User.IsInRole("Manager"))
+                    {
+                        <span style="float:right; margin-right:56px;">
+                            @Html.ActionLink(" ", "Edit", new { employeeId = Model.EmployeeId }, new { @class = "fa fa-pencil-square-o fa-2x action add", title = "Edit Employee Details" })
+                        </span>
+                        <span style="float:right; margin-right:-75px;">
+                            <a data-dialog-href="#" id="delete-@Model.EmployeeId" href="#" data-deleteid="@Model.EmployeeId" data-employeename="@Model.FullName" data-projectscount="@Model.Projects.Count" class="action add" title="Archieve Employee">
+                                <i class="fa fa-trash-o fa-2x" style="color:#59A5B6"></i>
+                            </a>
+                        </span>
+                    }
+                </h4>
+            </div>
+        </div>
+
+        <div class="row" style="margin-left:4.25%">
+
+            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                <h3>
+                    @Html.DisplayFor(model => model.FirstName)
+                    @Html.DisplayFor(model => model.MiddleName)
+                    @Html.DisplayFor(model => model.LastName)
+                </h3>
+                <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                    <div class="container-fluid">
+                        <div class="row">
+                            <div>
+
+                            </div>
+
+                            <div>
+                                <span class="details-header">
+                                    @Html.DisplayNameFor(model => model.EmployeeCode)
+                                </span>
+                                <span>:</span>
+                                <span class="details-content">
+                                    @Html.DisplayFor(model => model.EmployeeCode)
+                                </span>
+                            </div>
+
+                            <div>
+                                <span class="details-header">
+                                    @Html.DisplayNameFor(model => model.Gender)
+                                </span>
+                                <span>:</span>
+                                <span class="details-content">
+                                    @Html.DisplayFor(model => model.Gender)
+                                </span>
+                            </div>
+
+                            <div>
+                                <span class="details-header">
+                                    @Html.DisplayNameFor(model => model.Role)
+                                </span>
+                                <span>:</span>
+                                <span class="details-content">
+                                    @Html.DisplayFor(model => model.Role)
+                                </span>
+                            </div>
+
+                            <div>
+                                <span class="details-header">
+                                    @Html.DisplayNameFor(model => model.Title)
+                                </span>
+                                <span>:</span>
+                                <span class="details-content">
+                                    @Html.DisplayFor(model => model.Title)
+                                </span>
+                            </div>
+
+                            <div>
+                                <span class="details-header">
+                                    @Html.DisplayNameFor(model => model.EmployeeType)
+                                </span>
+                                <span>:</span>
+                                <span class="details-content">
+                                    @Html.DisplayFor(model => model.EmployeeType)
+                                </span>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                    <div class="container-fluid">
+                        <div class="row">
+                            <div>
+                                <span class="details-header">
+                                    @Html.DisplayNameFor(model => model.TotalExperienceInMonths)
+                                </span>
+                                <span>:</span>
+                                <span class="details-content">
+                                    @Html.DisplayFor(model => model.TotalExperienceInMonths)
+                                </span>
+                                <span>Months</span>
+                            </div>
+
+                            <div>
+                                <span class="details-header">
+                                    @Html.DisplayNameFor(model => model.SilicusExperienceInMonths)
+                                </span>
+                                <span>:</span>
+                                <span class="details-content">
+                                    @Html.DisplayFor(model => model.SilicusExperienceInMonths)
+                                </span>
+                                <span>Months</span>
+                            </div>
+
+                            <div>
+                                <span class="details-header">
+                                    @Html.DisplayNameFor(model => model.HighestQualification)
+                                </span>
+                                <span>:</span>
+                                <span class="details-content">
+                                    @Html.DisplayFor(model => model.HighestQualification)
+                                </span>
+                            </div>
+
+                            <div>
+                                <span class="details-header">
+                                    @Html.DisplayNameFor(model => model.ManagerRecommendation)
+                                </span>
+                                <span>:</span>
+                                <span class="details-content">
+                                    @Html.DisplayFor(model => model.ManagerRecommendation)
+                                </span>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                <div class="col-lg-5 col-md-5 col-sm-5 col-xs-5">
+                    <div>
+                        @Html.Partial("~/Views/Employee/_CubicleLocationDetails.cshtml", Model.CubicleLocation)
+                    </div>
+                </div>
+
+                <div class="col-lg-7 col-md-7 col-sm-7 col-xs-7">
+                    <div>@Html.Partial("~/Views/Employee/_ContactDetails.cshtml", Model.Contact)</div>
+                </div>
+            </div>
+        </div>
+
+        <br />
+
+        <div class="row">
+            <div class="container" style="width:90%;margin-bottom:1% !important;">
+                <div class="row">
+                    <div class="kendogrid">
+                        @(Html.Kendo().TabStrip()
+        .Name("Tabs")
+        .Items(tabstrip =>
+            {
+                tabstrip.Add().Text("Skills")
+                    .Selected(true)
+                    .Content(skills.ToString());
+
+                tabstrip.Add().Text("Projects")
+                    .Content(projects.ToString());
+                tabstrip.Add().Text("Rewards And Recognition")
+                   .Content(rewards.ToString());
+            })
+                        )
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="dialog-archive" class="popup-details">
+    Are you sure you want to Archieve the employee record of <span id="employee-name-span"></span>?
+</div>
+
+<div id="dialog-ok" class="popup-details">
+    Cannot Archieve!<br />
+    Employee <span class="employee-name-span"></span>
+    is assigned to atleast one Project.
+</div>
+
+@Scripts.Render("~/bundles/jquery")
+
+<script>
+    $(function () {
+        $('#approve-btn').click(function () {
+            $('#modal-container').modal('hide');
+        });
+    });
+
+    $('#close-popup').click(function () {
+        $('#Grid').toggle();
+        $('#adv').toggle();
+    });
+
+    jQuery('body').on('click', '[data-dialog-href]', function (e) {
+
+        var id = jQuery(this).attr('data-deleteid');
+        var EmployeeFullName = $(this).data('employeename');
+        var count = jQuery(this).data('projectscount');
+
+        $('#employee-name-span').text(EmployeeFullName);
+
+        var employeeId = id;
+
+        if (count == 0) {
+            $("#dialog-archive").dialog({
+                resizable: false,
+                modal: true,
+                title: "Confirm Archive",
+                height: 250,
+                width: 400,
+                buttons: {
+                    "Yes": function (e) {
+                        $("dialog-archive").css("display: block");
+                        $.ajax({
+                            employeeId: id,
+                            url: '@Url.Action("Delete", "Employee")?employeeId=' + employeeId,
+                            type: "GET",
+                            success: function (result) {
+                                $("#information").html(result);
+                                grid = $("#employeeListGrid").data("kendoGrid");
+                                grid.dataSource.read();
+                            }
+                        });
+                        $(this).dialog('close');
+                        window.location.reload();
+                    },
+                    "No": function () {
+                        $(this).dialog('close');
+                    }
+                }
+            });
+        }
+        else {
+            $("#dialog-ok").dialog({
+                resizable: false,
+                modal: true,
+                title: "Inforamtion!",
+                height: 250,
+                width: 400,
+                buttons: {
+                    "OK": function () {
+                        $(".dialog-confirm").css("display: block");
+                        $(this).dialog('close');
+                    }
+                }
+            });
+        }
+    });
+</script>

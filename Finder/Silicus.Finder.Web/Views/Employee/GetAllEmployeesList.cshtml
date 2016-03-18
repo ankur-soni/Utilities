@@ -1,0 +1,265 @@
+﻿@model Silicus.Finder.Web.ViewModel.EmployeesViewModel
+@using Kendo.Mvc.UI;
+@using Silicus.Finder.Models.DataObjects;
+
+<link href="~/Content/css/FinderStyle.css" rel="stylesheet" />
+@{
+    ViewBag.Title = "Employees List";
+    var message = TempData["AlertMessage"] ?? string.Empty;
+
+    var importMessage = Session["ImportEmployee"] ?? string.Empty;
+    Session["ImportEmployee"] = string.Empty;
+}
+
+<style>
+    #create-dialog-confirm {
+        /*//  display: none;*/
+        font-size: 18px;
+        color: black;
+    }
+
+    .ui-dialog {
+        border: solid !important;
+    }
+
+    .k-grid-content tr:last-child > td {
+        border-bottom: 1px solid grey;
+    }
+
+    .container-fluid {
+        padding-right: 0px;
+        padding-left: 0px;
+    }
+
+    #dialog-importFile {
+        display: none;
+        font-size: 18px;
+        color: #ffffff;
+    }
+
+    .ui-dialog {
+        border: solid !important;
+    }
+
+    .ContainerPanel .content {
+        display: none;
+        padding: 5px;
+    }
+
+    .advance-width {
+        width: 97% !important;
+    }
+
+    .ContainerPanel {
+        width: 20%;
+        height: 5%;
+        border: 1px;
+        border-color: #468aa1;
+        border-style: solid;
+    }
+</style>
+
+<link href="~/Content/MyKendoStyle.css" rel="stylesheet" />
+<link href="~/Content/css/FinderStyle.css" rel="stylesheet" />
+
+<div class="container-fluid" style="padding-right: 0px;padding-left: 0px;">
+    <div id="modal-container" class="k-popup" tabindex="-1" role="dialog" style="border-style: hidden;margin-top:-100px">
+        <div class="modal-content" style=" position:fixed !important;z-index:auto;width:97%;">
+        </div>
+    </div>
+</div>
+
+<div id="adv" class="container-fluid" style="margin-left: 3%;">
+
+    <div class="ContainerPanel">
+       
+        <div>
+            <span style="color:black; font-weight: bold;">Advanced Search</span>
+            <div class="header1 pull-right">
+                <img src="~/Images/Project/down-arrow.png" style="height:20px; margin-top: -3px;" />
+            </div>
+
+            <div class="content">
+                <br />
+                @using (Html.BeginForm("GetEmployeesByCriteria", "Employee", FormMethod.Post))
+                {
+                    var model = Model.SearchCriteria;
+                    var i = 0;
+                    if (i == 0)
+                    {
+                        @Html.EditorFor(modelItem => model, new { htmlAttributes = new { @class = "form-control" } });
+                        ++i;
+                    }
+                }
+            </div>
+        </div>
+
+    </div>
+
+</div>
+
+<div id="Grid" class="container-fluid" style="margin: 0.5% 3% 0.5% 3%;">
+    @*  <h2 style="color:#295071;margin-top: 0;">Employees</h2>*@
+    <p>
+        @if (User.IsInRole("Admin"))
+        {
+        <div class="container-fluid">
+            <input type="submit" value="Create Employee" style="float:right;" class="btn btn-default" onclick="@("window.location.href='" + @Url.Action("Create", "Employee") + "'");" />
+            <input type="button" id="importButton" value="Import Employee" style="float:right;margin-right: 7px;" class="btn btn-default" />
+            @*<input type="button" value="Import Employee" id="importButton"/>*@
+        </div>
+        }
+    </p>
+
+    @(Html.Kendo().Grid((IEnumerable<Silicus.Finder.Web.ViewModel.EmployeesListViewModel>)Model.Employees)
+          .Name("employeeListGrid")
+              .Columns(columns =>
+            {
+                columns.Bound(employee => employee.FullName).Template(@<label>
+        @Html.ActionLink(item.FullName, "Details", "Employee", new { id = item.EmployeeId }, new { @class = "modal-link" })
+    </label>
+                       );
+                columns.Bound(employee => employee.EmployeeCode).Title("Employee Code");
+                columns.Bound(employee => employee.Title);
+                columns.Bound(employee => employee.HighestQualification).Sortable(false);
+                columns.Bound(employee => employee.EmployeeType).Sortable(false);
+                columns.Bound(employee => employee.TotalExperienceInMonths);
+                columns.Bound(employee => employee.SilicusExperienceInMonths).Sortable(false);
+
+            })
+                        .Scrollable(scr => scr.Height(300))
+            .Pageable(pageable => pageable
+            .Refresh(true)
+            .PageSizes(true)
+            .ButtonCount(5))
+            .Sortable(sortable => sortable.AllowUnsort(false))
+    )
+</div>
+
+<div id="dialog-import-employee">
+    <div style="align-items:center">
+        <h3>Upload Employee Records Sheet</h3>
+        <hr />
+        @using (Html.BeginForm("ImportEmployeesFromExcel", "Employee", FormMethod.Post, new { enctype = "multipart/form-data" }))
+        {
+        <label for="file"><b>Upload File:</b></label>
+        <input type="file" name="file" id="file" /><br><br>
+
+        <br /><br />
+
+        <div>
+            <input type="submit" value="Upload File" class="btn btn-default" />
+        </div>
+        }
+    </div>
+</div>
+
+<div id="dialog-error">
+    Cannot delete!<br />
+    Employee <span id="employee-delete-error"></span>
+    is assigned to atleast one Project.
+</div>
+
+<div id="create-dialog-confirm">
+    <span>@message</span>
+</div>
+
+<div id="import-dialog">
+    <span>@importMessage</span>
+</div>
+
+@Scripts.Render("~/bundles/jquery")
+
+<script>
+    //Details Modal Popup
+    $(function () {
+        $('body').on('click', '.modal-link', function (e) {
+            e.preventDefault();
+            $(this).attr('data-target', '#modal-container');
+            $(this).attr('data-toggle', 'modal');
+            $('#Grid').toggle();
+            $('#adv').toggle();
+        });
+
+        $('body').on('click', '.modal-close-btn', function () {
+            $('#modal-container').modal('hide');
+        });
+
+        $('#modal-container').on('hidden.bs.modal', function () {
+            $(this).removeData('bs.modal');
+        });
+
+        $('#CancelModal').on('click', function () {
+            return false;
+        });
+    });
+
+    $(document).ready(function () {
+        $("#modal-container").hide();
+        $("#dialog-import-employee").hide();
+    });
+
+    $(window).load(function () {
+        $('#moduleHeaderTitleOnDashBoardImage').text("Employees");
+        $('#modal-container').hide();
+    });
+
+    $(".header1").click(function () {
+
+        $(".ContainerPanel").toggleClass("advance-width");
+
+        $header = $(this);
+        
+        $content = $header.next();
+        
+        $content.slideToggle(1, function () {           
+        });
+
+    });
+
+    //popup after createemployee
+    $(document).ready(function () {
+        var message = '@message';
+        if (message) {
+            $("#create-dialog-confirm").dialog({
+                resizable: false,
+                modal: true,
+                title: "Information!",
+                height: 200,
+                width: 300,
+                buttons: {
+                    "Ok": function (e) {
+                        $(this).dialog('close');
+                    }
+                }
+            });
+        }
+    });
+    $(document).ready(function () {
+        var importMessage = '@importMessage';
+        if (importMessage) {
+            $("#import-dialog").dialog({
+                resizable: false,
+                modal: true,
+                title: "Information!",
+                height: 200,
+                width: 300,
+                buttons: {
+                    "Ok": function (e) {
+                        $(this).dialog('close');
+                    }
+                }
+            });
+        }
+    });
+    $("#importButton").click(function () {
+        $("#dialog-import-employee").dialog({
+            resizable: false,
+            modal: true,
+            title: "Select File",
+            height: 310,
+            width: 400,
+
+        });
+    });
+</script>

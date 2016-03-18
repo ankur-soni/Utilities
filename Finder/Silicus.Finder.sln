@@ -1,0 +1,139 @@
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2013
+VisualStudioVersion = 12.0.40629.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{E78A3B8C-D6F3-4824-8F2F-044DBF36282D}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{C08F0628-465F-4B65-AAFD-11A8601DBBF5}"
+	ProjectSection(SolutionItems) = preProject
+		Local.runsettings = Local.runsettings
+		Local.testsettings = Local.testsettings
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "IntegrationTests", "IntegrationTests", "{B76CED24-BC29-4063-9209-79E9312ED9F1}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{053B75DC-2CA7-4D9E-A8B7-316341165B4C}"
+	ProjectSection(SolutionItems) = preProject
+		.nuget\NuGet.Config = .nuget\NuGet.Config
+		.nuget\NuGet.exe = .nuget\NuGet.exe
+		.nuget\NuGet.targets = .nuget\NuGet.targets
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Silicus.Finder.Web", "Silicus.Finder.Web\Silicus.Finder.Web.csproj", "{1486A84A-408E-4E95-92C5-6E57D9F7350A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Silicus.Finder.Web.Tests", "Silicus.Finder.Web.Tests\Silicus.Finder.Web.Tests.csproj", "{32B13C93-6BD2-4A71-B693-A3EDE8151E76}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Silicus.Finder.Models", "Silicus.Finder.Models\Silicus.Finder.Models.csproj", "{2F4384AA-2FE9-4C85-A6CC-59228BC587E6}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Silicus.Finder.Services", "Silicus.Finder.Services\Silicus.Finder.Services.csproj", "{840DB0BC-4016-4C33-9746-ED48BDE5C544}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Silicus.Finder.Services.Tests", "Silicus.Finder.Services.Tests\Silicus.Finder.Services.Tests.csproj", "{EA0685A4-784F-4B42-A4AB-761A2E6128DA}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Silicus.Finder.Entities", "Silicus.Finder.Entities\Silicus.Finder.Entities.csproj", "{33F03AEB-5ED5-4F31-A3F5-D39B22373027}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Silicus.Finder.Integration.Tests", "Silicus.Finder.Integration.Tests\Silicus.Finder.Integration.Tests.csproj", "{11DC4C64-6EB2-46B4-87D5-BA2DFF308151}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Silicus.Finder.IdentityWrapper", "Silicus.Finder.IdentityWrapper\Silicus.Finder.IdentityWrapper.csproj", "{DB09DF65-ED4F-41E2-AEA3-0162281568E7}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Azure|Any CPU = Azure|Any CPU
+		Beta|Any CPU = Beta|Any CPU
+		Debug|Any CPU = Debug|Any CPU
+		Integration|Any CPU = Integration|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{1486A84A-408E-4E95-92C5-6E57D9F7350A}.Azure|Any CPU.ActiveCfg = Azure|Any CPU
+		{1486A84A-408E-4E95-92C5-6E57D9F7350A}.Azure|Any CPU.Build.0 = Azure|Any CPU
+		{1486A84A-408E-4E95-92C5-6E57D9F7350A}.Beta|Any CPU.ActiveCfg = Beta|Any CPU
+		{1486A84A-408E-4E95-92C5-6E57D9F7350A}.Beta|Any CPU.Build.0 = Beta|Any CPU
+		{1486A84A-408E-4E95-92C5-6E57D9F7350A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1486A84A-408E-4E95-92C5-6E57D9F7350A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1486A84A-408E-4E95-92C5-6E57D9F7350A}.Integration|Any CPU.ActiveCfg = Integration|Any CPU
+		{1486A84A-408E-4E95-92C5-6E57D9F7350A}.Integration|Any CPU.Build.0 = Integration|Any CPU
+		{1486A84A-408E-4E95-92C5-6E57D9F7350A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1486A84A-408E-4E95-92C5-6E57D9F7350A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{32B13C93-6BD2-4A71-B693-A3EDE8151E76}.Azure|Any CPU.ActiveCfg = Azure|Any CPU
+		{32B13C93-6BD2-4A71-B693-A3EDE8151E76}.Azure|Any CPU.Build.0 = Azure|Any CPU
+		{32B13C93-6BD2-4A71-B693-A3EDE8151E76}.Beta|Any CPU.ActiveCfg = Beta|Any CPU
+		{32B13C93-6BD2-4A71-B693-A3EDE8151E76}.Beta|Any CPU.Build.0 = Beta|Any CPU
+		{32B13C93-6BD2-4A71-B693-A3EDE8151E76}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{32B13C93-6BD2-4A71-B693-A3EDE8151E76}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{32B13C93-6BD2-4A71-B693-A3EDE8151E76}.Integration|Any CPU.ActiveCfg = Integration|Any CPU
+		{32B13C93-6BD2-4A71-B693-A3EDE8151E76}.Integration|Any CPU.Build.0 = Integration|Any CPU
+		{32B13C93-6BD2-4A71-B693-A3EDE8151E76}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{32B13C93-6BD2-4A71-B693-A3EDE8151E76}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2F4384AA-2FE9-4C85-A6CC-59228BC587E6}.Azure|Any CPU.ActiveCfg = Azure|Any CPU
+		{2F4384AA-2FE9-4C85-A6CC-59228BC587E6}.Azure|Any CPU.Build.0 = Azure|Any CPU
+		{2F4384AA-2FE9-4C85-A6CC-59228BC587E6}.Beta|Any CPU.ActiveCfg = Beta|Any CPU
+		{2F4384AA-2FE9-4C85-A6CC-59228BC587E6}.Beta|Any CPU.Build.0 = Beta|Any CPU
+		{2F4384AA-2FE9-4C85-A6CC-59228BC587E6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2F4384AA-2FE9-4C85-A6CC-59228BC587E6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2F4384AA-2FE9-4C85-A6CC-59228BC587E6}.Integration|Any CPU.ActiveCfg = Integration|Any CPU
+		{2F4384AA-2FE9-4C85-A6CC-59228BC587E6}.Integration|Any CPU.Build.0 = Integration|Any CPU
+		{2F4384AA-2FE9-4C85-A6CC-59228BC587E6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2F4384AA-2FE9-4C85-A6CC-59228BC587E6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{840DB0BC-4016-4C33-9746-ED48BDE5C544}.Azure|Any CPU.ActiveCfg = Azure|Any CPU
+		{840DB0BC-4016-4C33-9746-ED48BDE5C544}.Azure|Any CPU.Build.0 = Azure|Any CPU
+		{840DB0BC-4016-4C33-9746-ED48BDE5C544}.Beta|Any CPU.ActiveCfg = Beta|Any CPU
+		{840DB0BC-4016-4C33-9746-ED48BDE5C544}.Beta|Any CPU.Build.0 = Beta|Any CPU
+		{840DB0BC-4016-4C33-9746-ED48BDE5C544}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{840DB0BC-4016-4C33-9746-ED48BDE5C544}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{840DB0BC-4016-4C33-9746-ED48BDE5C544}.Integration|Any CPU.ActiveCfg = Integration|Any CPU
+		{840DB0BC-4016-4C33-9746-ED48BDE5C544}.Integration|Any CPU.Build.0 = Integration|Any CPU
+		{840DB0BC-4016-4C33-9746-ED48BDE5C544}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{840DB0BC-4016-4C33-9746-ED48BDE5C544}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EA0685A4-784F-4B42-A4AB-761A2E6128DA}.Azure|Any CPU.ActiveCfg = Azure|Any CPU
+		{EA0685A4-784F-4B42-A4AB-761A2E6128DA}.Azure|Any CPU.Build.0 = Azure|Any CPU
+		{EA0685A4-784F-4B42-A4AB-761A2E6128DA}.Beta|Any CPU.ActiveCfg = Beta|Any CPU
+		{EA0685A4-784F-4B42-A4AB-761A2E6128DA}.Beta|Any CPU.Build.0 = Beta|Any CPU
+		{EA0685A4-784F-4B42-A4AB-761A2E6128DA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EA0685A4-784F-4B42-A4AB-761A2E6128DA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EA0685A4-784F-4B42-A4AB-761A2E6128DA}.Integration|Any CPU.ActiveCfg = Integration|Any CPU
+		{EA0685A4-784F-4B42-A4AB-761A2E6128DA}.Integration|Any CPU.Build.0 = Integration|Any CPU
+		{EA0685A4-784F-4B42-A4AB-761A2E6128DA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EA0685A4-784F-4B42-A4AB-761A2E6128DA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{33F03AEB-5ED5-4F31-A3F5-D39B22373027}.Azure|Any CPU.ActiveCfg = Azure|Any CPU
+		{33F03AEB-5ED5-4F31-A3F5-D39B22373027}.Azure|Any CPU.Build.0 = Azure|Any CPU
+		{33F03AEB-5ED5-4F31-A3F5-D39B22373027}.Beta|Any CPU.ActiveCfg = Beta|Any CPU
+		{33F03AEB-5ED5-4F31-A3F5-D39B22373027}.Beta|Any CPU.Build.0 = Beta|Any CPU
+		{33F03AEB-5ED5-4F31-A3F5-D39B22373027}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{33F03AEB-5ED5-4F31-A3F5-D39B22373027}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{33F03AEB-5ED5-4F31-A3F5-D39B22373027}.Integration|Any CPU.ActiveCfg = Integration|Any CPU
+		{33F03AEB-5ED5-4F31-A3F5-D39B22373027}.Integration|Any CPU.Build.0 = Integration|Any CPU
+		{33F03AEB-5ED5-4F31-A3F5-D39B22373027}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{33F03AEB-5ED5-4F31-A3F5-D39B22373027}.Release|Any CPU.Build.0 = Release|Any CPU
+		{11DC4C64-6EB2-46B4-87D5-BA2DFF308151}.Azure|Any CPU.ActiveCfg = Azure|Any CPU
+		{11DC4C64-6EB2-46B4-87D5-BA2DFF308151}.Azure|Any CPU.Build.0 = Azure|Any CPU
+		{11DC4C64-6EB2-46B4-87D5-BA2DFF308151}.Beta|Any CPU.ActiveCfg = Beta|Any CPU
+		{11DC4C64-6EB2-46B4-87D5-BA2DFF308151}.Beta|Any CPU.Build.0 = Beta|Any CPU
+		{11DC4C64-6EB2-46B4-87D5-BA2DFF308151}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{11DC4C64-6EB2-46B4-87D5-BA2DFF308151}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{11DC4C64-6EB2-46B4-87D5-BA2DFF308151}.Integration|Any CPU.ActiveCfg = Integration|Any CPU
+		{11DC4C64-6EB2-46B4-87D5-BA2DFF308151}.Integration|Any CPU.Build.0 = Integration|Any CPU
+		{11DC4C64-6EB2-46B4-87D5-BA2DFF308151}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{11DC4C64-6EB2-46B4-87D5-BA2DFF308151}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DB09DF65-ED4F-41E2-AEA3-0162281568E7}.Azure|Any CPU.ActiveCfg = Azure|Any CPU
+		{DB09DF65-ED4F-41E2-AEA3-0162281568E7}.Azure|Any CPU.Build.0 = Azure|Any CPU
+		{DB09DF65-ED4F-41E2-AEA3-0162281568E7}.Beta|Any CPU.ActiveCfg = Release|Any CPU
+		{DB09DF65-ED4F-41E2-AEA3-0162281568E7}.Beta|Any CPU.Build.0 = Release|Any CPU
+		{DB09DF65-ED4F-41E2-AEA3-0162281568E7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DB09DF65-ED4F-41E2-AEA3-0162281568E7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DB09DF65-ED4F-41E2-AEA3-0162281568E7}.Integration|Any CPU.ActiveCfg = Release|Any CPU
+		{DB09DF65-ED4F-41E2-AEA3-0162281568E7}.Integration|Any CPU.Build.0 = Release|Any CPU
+		{DB09DF65-ED4F-41E2-AEA3-0162281568E7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DB09DF65-ED4F-41E2-AEA3-0162281568E7}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{32B13C93-6BD2-4A71-B693-A3EDE8151E76} = {E78A3B8C-D6F3-4824-8F2F-044DBF36282D}
+		{EA0685A4-784F-4B42-A4AB-761A2E6128DA} = {E78A3B8C-D6F3-4824-8F2F-044DBF36282D}
+		{11DC4C64-6EB2-46B4-87D5-BA2DFF308151} = {B76CED24-BC29-4063-9209-79E9312ED9F1}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		VisualSVNWorkingCopyRoot = .
+	EndGlobalSection
+EndGlobal

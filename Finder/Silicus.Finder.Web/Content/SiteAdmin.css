@@ -1,0 +1,8 @@
+﻿.content { padding-bottom: 80px; overflow: hidden; }
+.content .title { background: url(images/darkBg.jpg) repeat-x; -moz-box-shadow: 0 1px 0 #fff; -webkit-box-shadow: 0 1px 0 #fff; box-shadow: 0 1px 0 #fff; }
+.content .title:after { content: ""; display: block; clear: both; }
+.content .title h5 { float: left; color: #fafafa; font-weight: normal; display: block; padding: 9px 15px; }
+
+.body { padding: 12px 14px; }
+
+.alignleft { text-align: left; }

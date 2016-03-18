@@ -1,0 +1,40 @@
+﻿@model Silicus.Finder.Models.DataObjects.ProjectDetail
+@using Kendo.Mvc.UI;
+@using Silicus.Finder.Models.DataObjects
+
+@{
+    ViewBag.Title = "Dashboard";
+}
+
+<h2>Admin Dashboard</h2>
+
+<div>          
+        @if (Request.IsAuthenticated)
+        { 
+             @(Html.Kendo().Grid<ProjectDetail>().Name("productDetailGrids")
+            .DataSource(dataSource => dataSource
+            .Ajax()
+            .Model(model =>
+                    {
+                        model.Id(p => p.ProjectDetailId);
+                        model.Field(p => p.ProjectDetailId).Editable(false);
+
+                    })
+                    .Read(read => read.Action("GetProjectDetails", "Project"))
+                    .Create(update => update.Action("CreateProject", "Project"))
+                    .Update(update => update.Action("UpdateProject", "Project"))
+                    .Destroy(update => update.Action("DeleteProject", "Project"))
+                )
+                .Columns(columns =>
+                {
+                    columns.Bound(p => p.ProjectName).Width(50);
+                    columns.Bound(p => p.Status).Width(50);
+                    columns.Command(command => { command.Edit(); command.Destroy(); }).Width(160);
+                })
+                .Pageable()
+                .Sortable()
+                .ToolBar(toolbar => toolbar.Create())
+                .Editable(ed => ed.Mode(GridEditMode.InLine))
+            )
+        }
+</div>

@@ -1,0 +1,160 @@
+﻿@model IEnumerable<Silicus.Finder.Models.DataObjects.Project>
+@{
+    var EmpList = Session["EmployeeList"] as List<Silicus.Finder.Models.DataObjects.Employee>;
+    var EmployeeId = ViewData["id"];
+   
+}
+
+<link href="~/Content/css/table-view.css" rel="stylesheet" />
+<link href="~/Content/css/FinderStyle.css" rel="stylesheet" />
+
+<style>
+      #employee-dialog-confirm {
+        display: none;
+        font-size: 18px;
+        color: black;
+    }
+
+    .ui-dialog {
+        border: solid !important;
+    }
+</style>
+
+<p>
+    <h4>Employee Projects</h4>
+</p>
+<p>
+    <input type="button" value="Add Projects" class="btn btn-default pull-right" style="margin-top: -40px; margin-right: 2px;" onclick="@("window.location.href='" + @Url.Action("AddProjectToEmployee", "Employee", new { employeeId = EmployeeId }) + "'") ;" />
+    @*@Html.ActionLink("Add Project", "AddProjectToEmployee", "Employee", new { employeeId = EmployeeId }, new { @class = "btn btn-default" })*@  
+</p>
+
+<div style="height:200px; overflow-y:auto;">
+    <table class="table">
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.ProjectName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.StartDate)
+            </th>
+
+            <th>
+                @Html.DisplayNameFor(model => model.ProjectType)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Status)
+            </th>
+            <th>
+                @Html.DisplayName("Project Manager") 
+            </th>
+            <th>
+                Deallocate
+            </th>
+        </tr>
+
+        @if (Model.Count() > 0)
+        {
+            foreach (var item in Model)
+            {
+                <tr>
+                    <td style="text-align:left;padding-left:8px">
+                        @Html.DisplayFor(modelItem => item.ProjectName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.StartDate)
+                    </td>
+
+                    <td>
+                        @Html.DisplayFor(modelItem => item.ProjectType)
+                    </td>
+
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Status)
+                    </td>
+
+                    <td>
+                        @{
+                foreach (var employee in EmpList)
+                {
+                    if (employee.EmployeeId == item.ProjectManagerId)
+                    {
+                        @Html.Label(employee.FirstName + " " + employee.LastName)
+                    }
+                }
+                        }
+                    </td>
+                    @*<td>
+                        @Html.ActionLink(" ", "DeallocateProject", "Employee", new { employeeId = EmployeeId, projectId = item.ProjectId}, new { @class = "fa fa-archive fa-2x action add", title = "Deallocate project from Employee" })
+                    </td>*@
+                    <td>
+                        <a data-dialog-href="#" id="delete-@item.ProjectId" href="#" data-deleteid=@item.ProjectId data-employeeId="@EmployeeId" data-projectname="@item.ProjectName"  class="action add" title="Delete project from employee"><i class="fa fa-trash-o fa-2x" style="color:#59A5B6"></i></a>
+                    </td>
+
+                </tr>
+            }
+        }
+        else
+        {
+            <tr>
+                <td colspan="5" style="text-align:center;">
+                    No Project is assigned to this Employee.
+                </td>
+            </tr>
+        }
+    </table>
+</div>
+
+<div id="employee-dialog-confirm">
+    Are you sure you want to Delete <span id="project-name-span"></span> from Employee?
+</div>
+
+@Scripts.Render("~/bundles/jquery")
+
+<script type="text/javascript">
+
+
+
+
+    jQuery('body').on('click', '[data-dialog-href]', function (e) {
+
+        var id = jQuery(this).attr('data-employeeId');
+        var projectId = jQuery(this).attr('data-deleteid');
+        var projectName = jQuery(this).attr('data-projectName');
+      
+        $('#project-name-span').text(projectName);
+
+        $("#employee-dialog-confirm").dialog({
+            resizable: false,
+            modal: true,
+            title: "Deallocate Resource",
+            height: 250,
+            width: 400,
+            buttons: {
+                "Yes": function (e) {
+                    $("employee-dialog-confirm").css("display: block");
+
+                    $.ajax({
+                        async: false,
+                        cache: false,
+                        type: "POST",
+                        url: "@(Url.Action("DeallocateProject", "Employee"))",
+                        data: {
+                            "employeeId": id,
+                            "projectId": projectId
+                        },
+                        success: function (data) { }
+                    });
+
+                    $(this).dialog('close');
+                    window.location.reload();
+                },
+                "No": function () {
+                    $(this).dialog('close');
+                }
+            }
+        });
+
+
+    });
+
+</script>

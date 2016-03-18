@@ -1,0 +1,220 @@
+﻿@model IEnumerable<Silicus.Finder.Models.DataObjects.SkillSet>
+@{
+    ViewBag.Title = "Assign Skill(s) To Project";
+    var ProjectId = ViewBag.ProjectID;
+}
+
+<link href="~/Content/css/table-view.css" rel="stylesheet" />
+<link href="~/Content/css/FinderStyle.css" rel="stylesheet" />
+
+<style>
+    #dialog-confirm, #dialog-noneSelected {
+        display: none;
+        font-size: 18px;
+        color: black;
+    }
+
+    .ui-dialog {
+        border: solid !important;
+    }
+
+    .column {
+        width: 30%;
+        padding: 10px;
+        float: left;
+    }
+
+        .column h4 {
+            font-size: 14px;
+            margin: 0 0 7px 0;
+        }
+
+        .column p {
+            font-size: 12px;
+            margin: 0;
+            line-height: 140%;
+        }
+
+    .searchTech {
+        float: right;
+    }
+
+    #CreateSkill {
+        float: right;
+    }
+
+    .searchTech, input-group {
+        vertical-align: top;
+    }
+</style>
+
+@using (Html.BeginForm(FormMethod.Get))
+{
+    <br />
+    <div class="searchTech">
+        <div id="error_message_tech" style="color:red;height:30px;padding-left: 40px;"> </div>
+        <div class="input-group">
+            @Html.TextBox("technologyName", "", new { id = "technologyName", @class = "form-control", @placeholder = "Search For Technology", style = "width:200px" })
+
+            <button class="btn btn-default" style="height:30px;" data-toggle="tooltip" data-placement="bottom" title="Search For Technology" id="searchTechnology" type="submit"><span class="glyphicon glyphicon-search "></span></button>
+            <br />
+             <br />
+        </div>
+    </div>
+}
+
+@using (Html.BeginForm("AddSkillsToProject", "Projects"))
+{
+
+    <table class="table">
+        <tr>
+            <th>
+                @Html.DisplayName("Select Skill")
+            </th>
+            <th>
+                @Html.DisplayName("Name")
+            </th>
+            <th>
+                @Html.DisplayName("Description")
+            </th>
+
+        </tr>
+
+        @if (Model.Count() > 0)
+        {
+            foreach (var item in Model)
+            {
+                <tr>
+                    <td style="text-align:left;padding-left:8px;  width:12%;">
+                        <input type="checkbox" name="SelectedSkill" value=@item.SkillSetId id=@item.SkillSetId>
+                    </td>
+                    <td style="text-align:left;padding-left:8px;  width:23%;">
+                        @Html.DisplayFor(modelItem => item.Name)
+                        @Html.Action("GetProjectCountBySkill", "Projects", new { skillSetId = item.SkillSetId })
+                    </td>
+                    <td style="text-align:left;padding-left:8px" class="more">
+                        @Html.DisplayFor(modelItem => item.Description)
+                    </td>
+                </tr>
+            }
+        }
+        else
+        {
+            <tr>
+                <td colspan="8" style="text-align:center;">
+                    No more Skill is left to add in this Project.
+                    @Html.ActionLink("Create Skill", "Create", "Technology")
+                </td>
+            </tr>
+        }
+
+    </table>
+    <div class="form-group">
+        @if (Model.Count() > 0)
+        {
+            <input type="button" value="Add" class="btn btn-default" id="AddSkills" />
+        }
+        <input type="button" value="Back" class="btn btn-default" onclick="@("window.location.href='" + @Url.Action("EditProject", new { projectId = ViewBag.ProjectId }) + "'");" />
+
+    </div>
+}
+
+<div id="dialog-confirm">
+    Skill(s) has been added to Project.
+</div>
+
+<div id="dialog-noneSelected">
+    No Technology is selected
+</div>
+
+@Scripts.Render("~/bundles/jquery")
+<script src="~/Content/js/Ellipsis.js"></script>
+<script>
+    $('#searchTechnology').click(function (e) {
+        e.preventDefault();
+
+        var url = '@Url.Action("SearchForTechnologyToAddInProject", "Projects", new { projectId=ProjectId })';
+        var technologyName = $('#technologyName').val();
+
+        if (technologyName.length ==0 || $.trim(technologyName) == "") {
+            // no value was entered, don't modify the url
+
+            document.getElementById('error_message_tech').innerHTML = "Please Enter Search Name";
+            document.getElementById('technologyName').focus();
+
+            // window.location.href = url;
+        } else {
+            // a value was entered, add it to the url
+            if (url.indexOf('?') >= 0) {
+                // this is not the first query string parameter
+                window.location.href = url + '&technologyName=' + technologyName;
+            } else {
+                // this is the first query string parameter
+                window.location.href = url + '?technologyName=' + technologyName;
+            }
+        }
+
+        return false;
+    });
+
+
+    $("#AddSkills").click(function ()
+    {
+        var selectedSkills = [];
+        $('input[name=SelectedSkill]:checked').map(function () {
+            selectedSkills.push($(this).val());
+        });
+
+        ProjectId=JSON.stringify(currentProjectId=@ProjectId)
+
+        if(selectedSkills.length>0)
+        {
+            $.ajax({
+                async: false,
+                cache: false,
+                type: "POST",
+                url: "@(Url.Action("AddSkillsToProject", "Projects"))",
+                data: {
+                    "skillIds": selectedSkills,
+                    "currentProjectId":ProjectId
+                },
+                success: function (data) {
+                    $("#dialog-confirm").dialog({
+                        resizable: false,
+                        modal: true,
+                        title: "Resource Added",
+                        height: 200,
+                        width: 300,
+                        buttons: {
+                            "Ok": function (e)
+                            {
+                                $(this).dialog('close');
+                                window.location.href="/Projects/EditProject?projectId="+@ProjectId;
+                            }
+                        }
+                    });
+                }
+            });
+        }
+        else
+        {
+            $("#dialog-noneSelected").dialog({
+                resizable: false,
+                modal: true,
+                title: "Empty Selection",
+                height: 200,
+                width: 300,
+                buttons: {
+                    "Ok": function (e)
+                    {
+                        $(this).dialog('close');
+                    }
+                }
+            });
+        }
+    })
+
+    $(window).load(function () {
+        $('#moduleHeaderTitleOnDashBoardImage').text("Add Skill(s)");
+    });
+</script>

@@ -1,0 +1,75 @@
+This document contains brief instruction on how to use this template.
+
+Prerequisites:
+
+1. The development machine must have Visual Studio (2012 is preferred but any version will work) and .NET framework installed on it.
+2. SQL Server must be installed (preferably SQL Express).
+3. Silicus Nuget Repository is setup in Visual Studio. If not, go to VS Tools > NuGet Package Manager > Package Manager Settings. 
+In the options window, click on "Package Sources", on right hand side, select + button to add new package source. Enter a name in Name 
+text box and Enter following URL into Source text box "\\Silpunnas1\SilicusNugetStore". If you can not access this network path, please 
+take help from IT team.
+
+Instructions:
+
+1. Download the source code from the GitHub. You can clone the master repo or download as a zip file (on right hand side menu).
+2. Open the sln "Silicus.MvcTemplate.sln" file in Visual Studio.
+3. Right click the solution in VS and select "Restore Nuget Packages" from context menu. You can also do it from Package Manager setting
+  window.
+4. While building the solution VS will download required packages and build successfully.
+5. In case of error building one or more projects, build project individually.
+6. Once the project is built successfully, open Web.Config file and make following changes.
+
+6.a Change the connection string as per your SQL Server instance name. You can either create a DB user and add his credential
+into connection string with "Integrated Security=false" or you can use "Integrated Security=true" in which case application
+will connect to SQL Server with windows authentication.
+6.b You will need membership DB aspnetdb by name "Silicus_ASPNETDB". Run following command to create a new membership DB.
+
+"C:\Windows\Microsoft.NET\Framework\v2.0.50727\aspnet_regsql.exe"
+
+For a step by step instruction refer this "http://weblogs.asp.net/sukumarraju/installing-asp-net-membership-services-database-in-sql-server-expreess". 
+Please note that you should use ".\SQLExpress" as server name (or else change connection string in web.config as per the 
+server name).
+
+Following are the users which are created:
+ 
+1)      Username : testadmin@test.com
+ 
+Password : testadmin@123
+ 
+Role : Admin
+ 
+2)      Username : testuser@test.com
+ 
+Password : testuser@123
+ 
+Role : User
+
+6.c Change following app key values based on DB name selected in connection strings:
+
+  <add key="DBName" value="SilicusMvcTemplateDB" />
+  <add key="MembershipDBName" value="Silicus_ASPNETDB" />
+
+Features:
+
+Following are the features in MVC template:
+ 
+Reuse-able Components
+ 
+While all of the template is designed to be used by any green field project below components can be reused in any other project independently:
+ 
+1.	Silicus.Logger – A simple library that implements a Database Logger which is very simple to use. Maintain log level and does logging asynchronously. Fail safe (never throws, logs in windows event viewer).
+2.	Silicus.Auditing – A simple library provide ability to add business events into database (separate). Audit information can be changed based on project needs.
+3.	Silicus.Core – A class library that provides common core functionality. Guard class provides input validation against NULL and Empty for various datatypes. EncryptionHelper provides ability to encrypt or decrypt strings.
+ 
+Features
+ 
+1.	Authentication (Form based) and Authorization using SQLMembershipProvider
+2.	Both filter based and explicit logging is demonstrated.
+3.	Filter based auditing is demonstrated.
+4.	Exception Handling (Different error view for different HTTP error code) is demonstrated.
+5.	User Account Management – Added two default users in two different roles. Login, Forgot Password, Change Password, Reset Password, Auto logoff after x hours, etc. 
+6.	Data Access Layer – Fully working and ready to use EntityFramework based library demonstrated.
+7.	CRUD Operation with DB – End to End communication
+8.	Send Email
+9.	Publish profile – two profiles demonstrated with web.config transformations
+10.	Unit test cases added for sample controller and classes.

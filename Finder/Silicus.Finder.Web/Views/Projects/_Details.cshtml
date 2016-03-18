@@ -1,0 +1,284 @@
+﻿@model Silicus.Finder.Web.ViewModel.ProjectDetailsViewModel
+
+@using Silicus.Finder.Models.DataObjects;
+@using Kendo.Mvc.UI;
+
+@{
+    var skills = Html.Partial("~/Views/Projects/_SkillSetDetails.cshtml", Model.SkillSets);
+    var employees = Html.Partial("~/Views/Projects/_EmployeeDetails.cshtml", Model.Employees);
+    ViewBag.Title = "Project Details";
+    var employeeList = ViewData["Employees"] as List<Employee>;
+}
+
+
+<link href="~/Content/css/finder-dialog.css" rel="stylesheet" />
+<link href="~/Content/css/FinderStyle.css" rel="stylesheet" />
+
+
+<style>
+    .popup-details {
+        display: none;
+        font-size: 18px;
+        color:black;
+    }
+    .details-header {
+        font-size: 16px;
+        font-weight: bold;
+    }
+
+    .details-content {
+        font-size: 16px;
+        color: #000000;
+    }
+
+.morecontent span {
+display: none;
+}
+
+</style>
+
+<div>
+    <div class="row">
+        <div class="overlay">
+            <h4 style="padding-left:35px; margin-right:26px;">
+                <button id="close-popup" class="close fa fa-2x fa-times" aria-hidden="true" data-dismiss="modal" type="button"></button>
+                <span style="font-size:30px; margin-left:3%; color:#295071;">Project Details</span>
+                @if (User.IsInRole("Admin") || User.IsInRole("Manager"))
+                {
+                    <span style="float:right; margin-right:56px;">
+                        @Html.ActionLink(" ", "EditProject", new { projectId = Model.ProjectId }, new { @class = "fa fa-pencil-square-o fa-2x action add", title = "Edit Project" })
+                    </span>
+                    <span style="float:right; margin-right:-75px;">
+                        <a data-dialog-href="#" id="delete-@Model.ProjectId" href="#" data-deleteid=@Model.ProjectId data-projectname="@Model.ProjectName" data-status="@Model.Status.GetDescription()" class="action add" title="Archive Project"><i class="fa fa-trash-o fa-2x" style="color:#59A5B6"></i></a>
+                    </span>
+                }
+            </h4>
+        </div>
+    </div>
+
+    <div class="row" style="padding-left:2.40%;">
+
+        <div class="col-lg-5 col-md-5 col-sm-5 col-xs-5">
+            <div class="row" style="margin-left:26px; margin-right:5px;">
+                <div>
+                    <span class="details-header">
+                        @Html.DisplayNameFor(model => model.ProjectCode):
+                    </span>
+                    <span class="details-content">
+                        @Html.DisplayFor(model => model.ProjectCode)
+                    </span>
+                </div>
+                <div>
+                    <span class="details-header">
+                        @Html.DisplayNameFor(model => model.ProjectName):
+                    </span>
+                    <span class="details-content">
+                        @Html.DisplayFor(model => model.ProjectName)
+                    </span>
+                </div>
+                <div>
+                    <span class="details-header">
+                        @Html.DisplayNameFor(model => model.EngagementManagerId):
+                    </span>
+                    <span class="details-content">
+                        @foreach (var employee in employeeList.Where(e => e.EmployeeId == Model.EngagementManagerId))
+                        {
+                        @Html.Label(employee.FirstName + " " + employee.LastName)
+                        }
+                    </span>
+                </div>
+                <div>
+                    <span class="details-header">
+                        @Html.DisplayNameFor(model => model.ProjectManagerId):
+                    </span>
+                    <span class="details-content">
+                        @foreach (var employee in employeeList.Where(e => e.EmployeeId == Model.ProjectManagerId))
+                        {
+                        @Html.Label(employee.FirstName + " " + employee.LastName)
+                        }
+                    </span>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3">
+            <div class="row">
+                <div>
+                    <span class="details-header">
+                        @Html.DisplayNameFor(model => model.Status):
+                    </span>
+
+                    <span class="details-content">
+                        @{var status=Model.Status.GetDescription();}
+                        @Html.DisplayFor(model => status)
+                    </span>
+                </div>
+                <div>
+                    <span class="details-header">
+                        @Html.DisplayNameFor(model => model.StartDate):
+                    </span>
+                    <span class="details-content">
+                        @String.Format("{0:d}", Model.StartDate)
+                    </span>
+                </div>
+                <div>
+                    <span class="details-header">
+                        @Html.DisplayNameFor(model => model.ExpectedEndDate)
+                    </span>
+
+                    <span class="details-content">
+                        @String.Format("{0:d}", Model.ExpectedEndDate)
+                    </span>
+                </div>
+                <div>
+                    <span class="details-header">
+                        @Html.DisplayNameFor(model => model.ActualEndDate):
+                    </span>
+                    <span class="details-content">
+                        @String.Format("{0:d}", Model.ActualEndDate)
+                    </span>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
+            <div class="row" style="margin-right:1px;">
+                <div>
+                    <span class="details-header">
+                        @Html.DisplayNameFor(model => model.ProjectType):
+                    </span>
+                    <span class="details-content">
+                        @Html.DisplayFor(model => model.ProjectType)
+                    </span>
+                </div>
+                <div>
+                    <span class="details-header">
+                        @Html.DisplayNameFor(model => model.EngagementType):
+                    </span>
+                    <span class="details-content">
+                        @{var engagementType = Model.EngagementType.GetDescription();}
+                        @Html.DisplayFor(model => engagementType)
+                    </span>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="row" style="padding-left:4%; padding-right:50px;">
+        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+            <div>
+                <span class="details-header">
+                    @Html.DisplayNameFor(model => model.Description):
+                </span>
+
+                <span class="details-content more">
+                    @Html.DisplayFor(model => model.Description)
+                </span>
+            </div>
+            <div>
+                <span class="details-header">
+                    @Html.DisplayNameFor(model => model.AdditionalNotes):
+                </span>
+                <span class="details-content more">
+                    @Html.DisplayFor(model => model.AdditionalNotes)
+                </span>
+            </div>
+        </div>
+    </div>
+    <br />
+    <div class="row">
+        <div class=" container" style="width:90%; margin-bottom:1%;">
+            <div class="row">
+                <div class="kendogrid">
+                    @(Html.Kendo().TabStrip()
+                .Name("Tabs")
+                .Items(tabstrip =>
+                    {
+                        tabstrip.Add().Text("Skills").Selected(true).Content(skills.ToString());
+
+                        tabstrip.Add().Text("Employees").Content(employees.ToString());
+                    })
+                    )
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<div id="dialog-archive" class="popup-details">
+    Are you sure you want to Archive <span class="project-name-span"></span> Project?
+</div>
+
+<div id="dialog-ok" class="popup-details">
+    This <span class="project-name-span"></span> Project is <span id="project-status-span"></span>, can't archive this project.
+</div>
+
+<script src="~/Content/js/Ellipsis.js"></script>
+
+<script>
+
+    $('#close-popup').click(function () {
+        $('#Grid').toggle();
+        $('#adv').toggle();
+    });
+
+    jQuery('body').on('click', '[data-dialog-href]', function (e) {
+
+        var id = jQuery(this).attr('data-deleteid');
+        var projectName = $(this).data('projectname');
+        var projectStatus = jQuery(this).data('status');
+
+        $('.project-name-span').text(projectName);
+        $('#project-status-span').text(projectStatus);
+
+        var projectId = id;
+
+        if (projectStatus == "Completed") {
+            $("#dialog-archive").dialog({
+                resizable: false,
+                modal: true,
+                title: "Confirm Archive",
+                height: 250,
+                width: 400,
+                buttons: {
+                    "Yes": function (e) {
+                        $("dialog-confirm").css("display: block");
+                        $.ajax({
+                            projectId: id,
+                            url: '@Url.Action("ArchiveProject", "Projects")?projectId=' + projectId,
+                            type: "GET",
+                            success: function (result) {
+                                $("#information").html(result);
+                                grid = $("#ProjectGrid").data("kendoGrid");
+                                grid.dataSource.read();
+                            }
+                        });
+                        $(this).dialog('close');
+                        window.location.reload();
+                    },
+                    "No": function () {
+                        $(this).dialog('close');
+                    }
+                }
+            });
+        }
+        else {
+            $("#dialog-ok").dialog({
+                resizable: false,
+                modal: true,
+                title: "Inforamtion!",
+                height: 250,
+                width: 400,
+                buttons: {
+                    "OK": function () {
+                        $(".dialog-confirm").css("display: block");
+                        $(this).dialog('close');
+                    }
+                }
+            });
+        }
+    });
+
+</script>

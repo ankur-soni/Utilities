@@ -1,0 +1,39 @@
+﻿@model Silicus.Finder.Web.Models.RoleViewModel
+
+@using Kendo.Mvc.UI;
+
+<h2>Admin Dashboard</h2>
+
+<div> 
+    
+       @if (Request.IsAuthenticated)
+        { 
+             @(Html.Kendo().Grid<Silicus.Finder.Web.Models.RoleViewModel>().Name("roleGrids")
+            .DataSource(dataSource => dataSource
+            .Ajax()
+            .Model(model =>
+                    {
+                        model.Id(p => p.RoleId);
+                        model.Field(p => p.RoleId).Editable(false);
+
+                    })
+                 .Read(read => read.Action("GetRoleDetails", "Role"))
+                    .Create(update => update.Action("CreateRole", "Role"))
+                    .Update(update => update.Action("UpdateRole", "Role"))
+                    //.Destroy(update => update.Action("DeleteRole", "Role"))
+                )
+                .Columns(columns =>
+                {
+                    columns.Bound(p => p.RoleName).Width(50);
+                    columns.Bound(p => p.Description).Width(50);
+                  
+                    
+                  columns.Command(command => { command.Edit(); }).Width(160);
+                })
+                .Pageable()
+                .Sortable()
+                .ToolBar(toolbar => toolbar.Create())
+                .Editable(ed => ed.Mode(GridEditMode.InLine))
+            )
+        }
+</div>

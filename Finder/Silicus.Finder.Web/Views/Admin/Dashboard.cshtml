@@ -1,0 +1,126 @@
+﻿@{
+    ViewBag.Title = "Dashboard";
+}
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-4 col-sm-4 col-xs-4 col-lg-4">
+            <div class="coldash">
+                @using (Html.BeginForm("GetAllEmployees", "Employee"))
+                {
+                    <div>
+                        <button class="dashboardbutton"><span class="dashboardbutton-text">Employees</span></button>
+                    </div>
+                    <div class="round-button-align"><button class="dashboard-round-button"><span class="fa fa-users fa-5x"></span></button></div>
+
+                }
+                @using (Html.BeginForm("SearchEmployeeByName", "Employee", FormMethod.Post, new { name = @Html.TextBox("Search For Employee") }))
+                {
+                    <div id="error_message_employee" style="color:red;height:30px;padding-left: 40px;"> </div>
+                    <div class="input-group" id="dashboard-search-div">
+                        @Html.TextBox("name", "", new { id = "employee_name", @class = "form-control", @placeholder = "Search For Employee" })
+                        <span class="input-group-btn">
+                            <button class="btn btn-default" id="submit" type="submit"><span class="glyphicon glyphicon-search "></span></button>
+                        </span>
+                    </div>
+
+                }
+                <div class="dashboard-viewbag-data-align">
+                    <span class="dashboard-viewbag-data">@ViewBag.NumberOfEmployee Employees</span>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="col-md-4 col-sm-4 col-xs-4 col-lg-4">
+            <div class="coldash">
+                @using (Html.BeginForm("GetProjects", "Projects"))
+                {
+                    <div id="projects">
+                        <button class="dashboardbutton"><span class="dashboardbutton-text">Projects</span></button>
+                    </div>
+                    <div class="round-button-align"><button class="dashboard-round-button"><span class="fa fa-pencil-square-o fa-5x"></span></button></div>
+
+                }
+                @using (Html.BeginForm("GetProjectsByName", "Projects", FormMethod.Post, new { projectName = @Html.TextBox("Project Name") }))
+                {
+                    <div id="error_message" style="color:red;height:30px;padding-left: 40px;"> </div>
+                    <div class="input-group" id="dashboard-search-div">
+                        @Html.TextBox("projectName", "", new { id = "project_name", @class = "form-control", @placeholder = "Search For Project" })
+                        <span class="input-group-btn">
+                            <button class="btn btn-default" id="psubmit" type="submit"><span class="glyphicon glyphicon-search "></span></button>
+                        </span>
+                    </div>
+                }
+                <div class="dashboard-viewbag-data-align">
+                    <span class="dashboard-viewbag-data">@ViewBag.NumberOfProjects Projects</span>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4 col-sm-4 col-xs-4 col-lg-4">
+            <div class="coldash">
+                @using (Html.BeginForm("GetAllSkillSet", "Technology"))
+                {
+                    <div>
+                        <button class="dashboardbutton"><span class="dashboardbutton-text">Technologies</span></button>
+                    </div>
+                    <div class="round-button-align"><button class="dashboard-round-button"><span class="fa fa-cogs fa-5x"></span></button></div>
+
+                }
+             @using (Html.BeginForm("GetSkillSetListByName", "Technology", FormMethod.Post, new { name = @Html.TextBox(" Search For Technology") }))
+             {
+                <div id="error_message_tech" style="color:red;height:30px;padding-left: 40px;"> </div>
+                <div class="input-group" id="dashboard-search-div">
+                    @Html.TextBox("name", "", new { id = "technology_name", @class = "form-control", @placeholder = "Search For Technology" })
+                    <span class="input-group-btn">
+                        <button class="btn btn-default" id="submitTechnology" type="submit"><span class="glyphicon glyphicon-search "></span></button>
+                    </span>
+                </div>
+
+             }
+                <div class="dashboard-viewbag-data-align">
+                    <span class="dashboard-viewbag-data">@ViewBag.NumberOfSkills Technologies</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+
+
+    $(window).load(function () {
+        $('#moduleHeaderTitleOnDashBoardImage').text("Dashboard");
+    });
+
+    $(document).ready(function () {
+        $("#submit").click(function () {
+            var data = $("#employee_name").val();
+            if (data.length == 0 || $.trim(data) == '') {
+                document.getElementById('error_message_employee').innerHTML = "Please Enter Search Name";
+                document.getElementById('employee_name').focus();
+                return false;
+            }
+        });
+
+        $("#psubmit").click(function () {
+            var data = $("#project_name").val();
+            if (data.length == 0 || $.trim(data) == '') {
+                document.getElementById('error_message').innerHTML = "Please Enter Search Name";
+                document.getElementById('project_name').focus();
+                return false;
+            }
+        });
+
+        $("#submitTechnology").click(function () {
+            var data = $("#technology_name").val();
+            if (data.length == 0 || $.trim(data) == '') {
+                document.getElementById('error_message_tech').innerHTML = "Please Enter Search Name";
+                document.getElementById('technology_name').focus();
+                return false;
+            }
+        });
+    });
+
+
+</script>
