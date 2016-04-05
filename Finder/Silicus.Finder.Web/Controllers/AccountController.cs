@@ -84,9 +84,118 @@ namespace Silicus.Finder.Web.Controllers
             _emailService = emailService;
         }
 
-        [HttpGet]
+
+
+        //[HttpGet]
+        //[AllowAnonymous]
+        //public async Task<ActionResult> Login(string returnUrl, string userName)
+        //{
+        //    using (var context = _dataContextFactory.Create(ConnectionType.Ip))
+        //    {
+        //        // Hitting database just to let EF create it if it does not
+        //        // exist based on initializer.
+        //        context.Query<Organization>().Count();
+        //    }
+
+
+        //    var stat = Request.IsAuthenticated;
+
+        //    if (!Request.IsAuthenticated)
+        //    {
+        //        _logger.Log(string.Format("Request not authenticated, showing login form."), LogCategory.Information);
+
+        //        return View();
+        //    }
+
+        //    var model = new LoginModel();
+        //    if (string.IsNullOrWhiteSpace(userName) && HttpContext.User != null && !string.IsNullOrWhiteSpace(HttpContext.User.Identity.Name))
+        //    {
+        //        userName = HttpContext.User.Identity.Name;
+        //    }
+
+        //    _logger.Log(string.Format("Request authenticated for user : {0}", userName),
+        //        LogCategory.Information, GetUserIdentifiableString(userName));
+
+        //    if (string.IsNullOrWhiteSpace(userName))
+        //    {
+        //        _logger.Log("UserName found null for user, showing login form.", LogCategory.Warning);
+
+        //        return View();
+        //    }
+
+        //    ViewBag.UserName = userName;
+        //    ViewBag.ReturnUrl = returnUrl;
+
+        //    model.UserName = userName;
+        //    model.Password = string.Empty;
+
+        //    var identityUser = await UserManager.FindByNameAsync(model.UserName);
+        //    var isAdmin = await UserManager.IsInRoleAsync(identityUser.Id, "Admin");
+        //    if (identityUser == null)
+        //    {
+        //        _logger.Log(string.Format("MembershipUser is found null for user : {0}", userName),
+        //            LogCategory.Warning, GetUserIdentifiableString(userName));
+        //        return View();
+        //    }
+
+        //    // Setting a cookie value for notification status.
+        //    _cookieHelper.SetCookie("_notification", "false", new TimeSpan(8, 0, 0));
+
+        //    var userRoles = await UserManager.GetRolesAsync(identityUser.Id);
+        //    if (userRoles.Count > 0)
+        //    {
+        //        _logger.Log(string.Format("Redirecting to {1} URL for user : {0}", userName, returnUrl),
+        //            LogCategory.Verbose, GetUserIdentifiableString(userName));
+
+        //        return RedirectToLocal(returnUrl, userName, isAdmin);
+        //    }
+
+        //    return View();
+        //}
+
+
+
+        // GET: /Account/Login
+        //[AllowAnonymous]
+        //[HttpGet]
+        //public ActionResult Login(string returnUrl)
+        //{
+        //    using (var context = _dataContextFactory.Create(ConnectionType.Ip))
+        //    {
+        //        // Hitting database just to let EF create it if it does not
+        //        // exist based on initializer.
+        //        context.Query<Organization>().Count();
+        //    }
+
+        //    var authCookie = Request.Cookies[".ADAuthCookie"];
+
+        //    if (authCookie==null)
+        //    {
+        //       return View();  
+        //    }
+
+        //    if (authCookie.Value != null)
+        //    {
+        //        var authenticationTicket = FormsAuthentication.Decrypt(authCookie.Value);
+        //        var username = authenticationTicket.Name;
+        //        var password = authenticationTicket.UserData;
+        //        if (Membership.ValidateUser(username, password))
+        //        {
+        //            return this.RedirectToAction("Dashboard", "Dashboard");
+        //        }
+
+        //    }
+
+        //    ViewBag.ReturnUrl = returnUrl;
+        //    return View();
+        //}
+
+
+
+
         [AllowAnonymous]
-        public async Task<ActionResult> Login(string returnUrl, string userName)
+        [HttpGet]
+        public async Task<ActionResult> Login(string returnUrl)
         {
             using (var context = _dataContextFactory.Create(ConnectionType.Ip))
             {
@@ -94,62 +203,142 @@ namespace Silicus.Finder.Web.Controllers
                 // exist based on initializer.
                 context.Query<Organization>().Count();
             }
+            var cookieName = FormsAuthentication.FormsCookieName;
 
-          
-            var stat = Request.IsAuthenticated;
+            var authCookie = Request.Cookies[".ADAuthCookie"];
 
-            if (!Request.IsAuthenticated)
+            if (authCookie == null)
             {
-                _logger.Log(string.Format("Request not authenticated, showing login form."), LogCategory.Information);
-
+                // cookie to check if user logins directly in finder
+                HttpCookie DirectLoginInFinderCookie = new HttpCookie("DirectLoginInFinderCookie");
+                DirectLoginInFinderCookie.Value = "abcd";
+                Response.Cookies.Add(DirectLoginInFinderCookie);
                 return View();
             }
 
-            var model = new LoginModel();
-            if (string.IsNullOrWhiteSpace(userName) && HttpContext.User != null && !string.IsNullOrWhiteSpace(HttpContext.User.Identity.Name))
+            if (authCookie.Value != null)
             {
-                userName = HttpContext.User.Identity.Name;
+                var model = new LoginModel();
+                var authenticationTicket = FormsAuthentication.Decrypt(authCookie.Value);
+                var username = authenticationTicket.Name;
+                var password = authenticationTicket.UserData;
+              
+                if (!Membership.ValidateUser(username, password))
+                {
+                    ModelState.AddModelError("", "User Name and Password does not matches! Please provide your correct login credentials.");
+                    return View(model);
+                }
+
+                if (ModelState.IsValid)
+                {
+
+                    var userFromAd = Membership.GetUser(username);
+                    var userManager = new UserManager();
+                    var membershipId = userManager.CreateUserIfNotExistfromActiveDirectory(userFromAd.UserName, userFromAd.Email, password);
+                    userManager.AssignRoleToUser(membershipId, "Admin");
+
+                    var loginResult = await SignInManager.PasswordSignInAsync(username, password, false, shouldLockout: true);
+                    switch (loginResult)
+                    {
+                        case SignInStatus.Success:
+                            var user = await UserManager.FindByNameAsync(username);
+                            var isAdmin = await UserManager.IsInRoleAsync(user.Id, "Admin");
+
+                            //GetLoggedUserRole(user);
+                            return RedirectToLocal(returnUrl, username, isAdmin);
+                        case SignInStatus.LockedOut:
+                            ModelState.AddModelError("", "Your account has been locked. Please contact system Administrator");
+                            return View(model);
+                        case SignInStatus.RequiresVerification:
+                            ModelState.AddModelError("", "Account verification is pending. Please verify your account.");
+                            return View(model);
+                        case SignInStatus.Failure:
+                            var userName = UserManager.FindByName(model.UserName);
+                            if (userName != null)
+                            {
+                                string message = "The password does not matches with your username, please enter the correct one.";
+                                var loginUser = await UserManager.FindByNameAsync(model.UserName);
+
+                                string role = UserManager.GetRoles(loginUser.Id).FirstOrDefault();
+
+                                if (loginUser.AccessFailedCount == 3 && role != "Admin")
+                                {
+                                    UserManager.SetLockoutEnabled(loginUser.Id, true);
+                                    UserManager.SetLockoutEndDate(loginUser.Id, DateTimeOffset.MaxValue);
+                                    message = "Your account has been locked. Please contact system Administrator";
+                                }
+                                ModelState.AddModelError("", message);
+                                return View(model);
+                            }
+                            ModelState.AddModelError("", "User Name and Password does not matches! Please provide your correct login credentials.");
+                            return View(model);
+                        default:
+                            ModelState.AddModelError("", "User Name and Password does not matches! Please provide your correct login credentials.");
+                            return View(model);
+                    }
+                }
+
+                // If we got this far, something failed, redisplay form
+
+                return View(model);
             }
 
-            _logger.Log(string.Format("Request authenticated for user : {0}", userName),
-                LogCategory.Information, GetUserIdentifiableString(userName));
-
-            if (string.IsNullOrWhiteSpace(userName))
-            {
-                _logger.Log("UserName found null for user, showing login form.", LogCategory.Warning);
-
-                return View();
-            }
-
-            ViewBag.UserName = userName;
             ViewBag.ReturnUrl = returnUrl;
-
-            model.UserName = userName;
-            model.Password = string.Empty;
-
-            var identityUser = await UserManager.FindByNameAsync(model.UserName);
-            var isAdmin = await UserManager.IsInRoleAsync(identityUser.Id, "Admin");
-            if (identityUser == null)
-            {
-                _logger.Log(string.Format("MembershipUser is found null for user : {0}", userName),
-                    LogCategory.Warning, GetUserIdentifiableString(userName));
-                return View();
-            }
-
-            // Setting a cookie value for notification status.
-            _cookieHelper.SetCookie("_notification", "false", new TimeSpan(8, 0, 0));
-
-            var userRoles = await UserManager.GetRolesAsync(identityUser.Id);
-            if (userRoles.Count > 0)
-            {
-                _logger.Log(string.Format("Redirecting to {1} URL for user : {0}", userName, returnUrl),
-                    LogCategory.Verbose, GetUserIdentifiableString(userName));
-
-                return RedirectToLocal(returnUrl, userName, isAdmin);
-            }
-
             return View();
         }
+
+
+
+        // POST: /Account/Login
+        //[HttpPost]
+        //[AllowAnonymous]
+        //[ValidateAntiForgeryToken]
+        //public async Task<ActionResult> Login(LoginModel model, string returnUrl)
+        //{
+
+        //    //FormsAuthentication.SetAuthCookie(model.UserName, model.RememberMe);
+
+        //    if (!ModelState.IsValid)
+        //    {
+        //        return View(model);
+        //    }
+
+
+        //    if (Membership.ValidateUser(model.UserName, model.Password))
+        //    {
+
+        //        var cookie = FormsAuthentication.GetAuthCookie(model.UserName, model.RememberMe);
+
+        //        //cookie to check if user logins directly in finder
+        //        HttpCookie DirectLoginInFinderCookie = new HttpCookie("DirectLoginInFinderCookie");
+        //        DirectLoginInFinderCookie.Value ="abcd";
+        //        Response.Cookies.Add(DirectLoginInFinderCookie);
+
+        //        // Gets an authentication ticket with the appropriate default and configured values.  
+        //        var ticket = FormsAuthentication.Decrypt(cookie.Value);
+        //        var newTicket = new FormsAuthenticationTicket(
+        //                      ticket.Version,
+        //                      model.UserName,
+        //                     DateTime.Now,
+        //                      new DateTime(2016, 3, 30),
+        //                      true, userData: model.Password);
+
+        //        var encryptedTicket = FormsAuthentication.Encrypt(newTicket);
+        //        cookie.Value = encryptedTicket;
+        //        Response.Cookies.Add(cookie);
+        //        //FormsAuthentication.SetAuthCookie(model.UserName, model.RememberMe);
+        //        Session.Add("currentUser", model.UserName);
+
+        //        return this.RedirectToAction("Dashboard", "Dashboard");
+        //    }
+
+        //    this.ModelState.AddModelError(string.Empty, "The user name or password is incorrect.");
+
+        //    return this.View(model);
+
+        //}
+
+
 
         [HttpPost]
         [AllowAnonymous]
@@ -157,18 +346,29 @@ namespace Silicus.Finder.Web.Controllers
         [Audit]
         public async Task<ActionResult> Login(LoginModel model, string returnUrl)
         {
-            _logger.Log(string.Format("Login request received for user : {0}", model.UserName),
+           _logger.Log(string.Format("Login request received for user : {0}", model.UserName),
                 LogCategory.Information, GetUserIdentifiableString(model.UserName));
-
+            if (!Membership.ValidateUser(model.UserName, model.Password))
+            {
+                ModelState.AddModelError("", "User Name and Password does not matches! Please provide your correct login credentials.");
+                return View(model);
+            }
             if (ModelState.IsValid)
             {
+
+                var userFromAd = Membership.GetUser(model.UserName);
+                var userManager = new UserManager();
+                var membershipId = userManager.CreateUserIfNotExistfromActiveDirectory(userFromAd.UserName, userFromAd.Email, model.Password);
+                userManager.AssignRoleToUser(membershipId, "Admin");
                 var loginResult = await SignInManager.PasswordSignInAsync(model.UserName, model.Password, model.RememberMe, shouldLockout: true);
                 switch (loginResult)
                 {
+
+
                     case SignInStatus.Success:
                         var user = await UserManager.FindByNameAsync(model.UserName);
                         var isAdmin = await UserManager.IsInRoleAsync(user.Id, "Admin");
-                                                
+
                         //GetLoggedUserRole(user);
                         return RedirectToLocal(returnUrl, model.UserName, isAdmin);
                     case SignInStatus.LockedOut:
@@ -178,24 +378,24 @@ namespace Silicus.Finder.Web.Controllers
                         ModelState.AddModelError("", "Account verification is pending. Please verify your account.");
                         return View(model);
                     case SignInStatus.Failure:
-                        var userName =UserManager.FindByName(model.UserName);
+                        var userName = UserManager.FindByName(model.UserName);
                         if (userName != null)
-                        { 
-                        string message = "The password does not matches with your username, please enter the correct one.";
-                        var loginUser = await UserManager.FindByNameAsync(model.UserName);
-
-                        string role = UserManager.GetRoles(loginUser.Id).FirstOrDefault();
-
-                        if (loginUser.AccessFailedCount == 3 && role != "Admin")
                         {
-                            UserManager.SetLockoutEnabled(loginUser.Id, true);
-                            UserManager.SetLockoutEndDate(loginUser.Id, DateTimeOffset.MaxValue);
-                            message = "Your account has been locked. Please contact system Administrator";
+                            string message = "The password does not matches with your username, please enter the correct one.";
+                            var loginUser = await UserManager.FindByNameAsync(model.UserName);
+
+                            string role = UserManager.GetRoles(loginUser.Id).FirstOrDefault();
+
+                            if (loginUser.AccessFailedCount == 3 && role != "Admin")
+                            {
+                                UserManager.SetLockoutEnabled(loginUser.Id, true);
+                                UserManager.SetLockoutEndDate(loginUser.Id, DateTimeOffset.MaxValue);
+                                message = "Your account has been locked. Please contact system Administrator";
+                            }
+                            ModelState.AddModelError("", message);
+                            return View(model);
                         }
-                        ModelState.AddModelError("", message);
-                        return View(model);
-                        }
-                         ModelState.AddModelError("", "User Name and Password does not matches! Please provide your correct login credentials.");
+                        ModelState.AddModelError("", "User Name and Password does not matches! Please provide your correct login credentials.");
                         return View(model);
                     default:
                         ModelState.AddModelError("", "User Name and Password does not matches! Please provide your correct login credentials.");
@@ -370,7 +570,7 @@ namespace Silicus.Finder.Web.Controllers
         }
 
         [HttpPost]
-    public async Task<JsonResult> ChangePassword(ChangePasswordModel model)
+        public async Task<JsonResult> ChangePassword(ChangePasswordModel model)
         {
 
             if (ModelState.IsValid)
@@ -398,7 +598,7 @@ namespace Silicus.Finder.Web.Controllers
                     {
                         await SignInManager.SignInAsync(user, isPersistent: false, rememberBrowser: false);
                     }
-                   
+
 
                     return Json(new { Result = "OK" }, JsonRequestBehavior.AllowGet);
 
@@ -415,12 +615,12 @@ namespace Silicus.Finder.Web.Controllers
 
 
 
-      var query = from state in ModelState.Values
-                  from error in state.Errors
-                  select error.ErrorMessage;
+            var query = from state in ModelState.Values
+                        from error in state.Errors
+                        select error.ErrorMessage;
 
-      var errorList = query.ToList();
-     // return errorList;
+            var errorList = query.ToList();
+            // return errorList;
 
 
 
@@ -452,10 +652,10 @@ namespace Silicus.Finder.Web.Controllers
                        "<body>" +
                        "<table style='width: 590px; border: none;'><tr><td><table style='border: 1px solid :#75A8B9; align: left; width: 1000px; font-family: arial; font-size: 14px; height: auto;border-spacing: 0;'>" +
                        "<tr style='width: 590px; height: 44px; border-bottom: 1px solid  #75A8B9;'>" +
-                       "<td style=' background-color:#75A8B9; height: 44px; width: 650px; border-bottom: 5px solid :#75A8B9; margin: 0 auto;'>" +"<p style='font-size: 19px; margin-left: 20px; color: #fff; font-weight: bold; padding: 0; width: 100%;'>" +
+                       "<td style=' background-color:#75A8B9; height: 44px; width: 650px; border-bottom: 5px solid :#75A8B9; margin: 0 auto;'>" + "<p style='font-size: 19px; margin-left: 20px; color: #fff; font-weight: bold; padding: 0; width: 100%;'>" +
                        "Password Reset" +
-                       "</p>" +"</td>" +
-                       
+                       "</p>" + "</td>" +
+
                        "</tr>" +
                        "<tr>" +
                        "<td colspan='2' style='width: 590px; width: auto; border: 4px solid #D1D3D4; border-top: none; padding: 30px; margin-top: 4px;'>" +

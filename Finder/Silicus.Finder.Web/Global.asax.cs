@@ -10,6 +10,7 @@ using System.Web.Routing;
 using Silicus.FrameWorx.Logger;
 using Silicus.Finder.Web.Controllers;
 using Silicus.Finder.Web.Mappings;
+using Silicus.Finder.Entities;
 
 namespace Silicus.Finder.Web
 {
@@ -32,6 +33,8 @@ namespace Silicus.Finder.Web
             AutoMapperConfiguration.Configure();
             ViewEngines.Engines.Clear();
             ViewEngines.Engines.Add(new RazorViewEngine());
+
+           
          
         }
 

@@ -4,6 +4,7 @@ using System.Web.Mvc;
 using Microsoft.AspNet.Identity.Owin;
 using Silicus.Finder.IdentityWrapper;
 using Silicus.Finder.Services.Interfaces;
+using Silicus.Finder.Web.Filters;
 
 namespace Silicus.Finder.Web.Controllers
 {
@@ -34,7 +35,8 @@ namespace Silicus.Finder.Web.Controllers
             }
         }
 
-        [Authorize(Roles = "Admin, Manager,User")]
+       // [UtilityAuthorizationAttribute]
+        [Authorize]
         public ActionResult Dashboard()
         {
             ViewBag.UserRoles = RoleManager.Roles.Select(r => new SelectListItem { Text = r.Name, Value = r.Name }).ToList();

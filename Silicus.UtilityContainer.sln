@@ -3,13 +3,13 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2013
 VisualStudioVersion = 12.0.40629.0
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Silicus.UtilityContainer.Models", "Common.Utility.Dashboard.Models\Silicus.UtilityContainer.Models.csproj", "{D5A36DCC-FAEB-46BD-BC1C-C24E18D9E587}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Silicus.UtilityContainer.Models", "..\..\..\Desktop\utilities\Silicus.UtilityContainer\Common.Utility.Dashboard.Models\Silicus.UtilityContainer.Models.csproj", "{D5A36DCC-FAEB-46BD-BC1C-C24E18D9E587}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Silicus.UtilityContainer.Entities", "Common.Utility.Dashboard.Entities\Silicus.UtilityContainer.Entities.csproj", "{D4055F95-9DC1-4188-B532-626A8C86BFED}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Silicus.UtilityContainer.Entities", "..\..\..\Desktop\utilities\Silicus.UtilityContainer\Common.Utility.Dashboard.Entities\Silicus.UtilityContainer.Entities.csproj", "{D4055F95-9DC1-4188-B532-626A8C86BFED}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Silicus.UtilityContainer.Services", "Silicus.CommonUtility.Service\Silicus.UtilityContainer.Services.csproj", "{34ECB52F-33C2-4A55-887F-8E1188850292}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Silicus.UtilityContainer.Services", "..\..\..\Desktop\utilities\Silicus.UtilityContainer\Silicus.CommonUtility.Service\Silicus.UtilityContainer.Services.csproj", "{34ECB52F-33C2-4A55-887F-8E1188850292}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Silicus.UtilityContainer.Web", "Silicus.CommonUtility.Web\Silicus.UtilityContainer.Web.csproj", "{161D6CBD-78D3-469A-A40D-96B5DD8B71BD}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Silicus.UtilityContainer.Web", "..\..\..\Desktop\utilities\Silicus.UtilityContainer\Silicus.CommonUtility.Web\Silicus.UtilityContainer.Web.csproj", "{161D6CBD-78D3-469A-A40D-96B5DD8B71BD}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

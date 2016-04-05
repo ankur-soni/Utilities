@@ -18,7 +18,7 @@ using Silicus.Finder.Models.Models;
 
 namespace Silicus.Finder.Web.Controllers
 {
-//    [Authorize(Roles="Admin")]
+    //[Authorize(Roles="Admin")]
     public class EmployeeController : Controller
     {
         private readonly IEmployeeService _employeeService;

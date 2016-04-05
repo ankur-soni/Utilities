@@ -24,6 +24,7 @@ namespace Silicus.Finder.Web.Controllers
         private readonly IMappingService _mappingService;
 
         private ApplicationUserManager _userManager;
+
         public ApplicationUserManager UserManager
         {
             get
