@@ -440,8 +440,14 @@ namespace Silicus.UtilityContainer.Web.Controllers
         // POST: /Account/LogOff
        // [HttpPost]
        // [ValidateAntiForgeryToken]
+        [AllowAnonymous]
         public ActionResult LogOff()
         {
+            var cookies = HttpContext.Request.Cookies.AllKeys;
+            foreach (var cookie in cookies)
+            {
+                HttpContext.Response.Cookies[cookie].Expires = DateTime.Now;
+            }
             AuthenticationManager.SignOut(DefaultAuthenticationTypes.ApplicationCookie);
             return RedirectToAction("Login","Account");
         }
