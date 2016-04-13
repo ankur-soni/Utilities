@@ -222,6 +222,10 @@
       <Project>{34ecb52f-33c2-4a55-887f-8e1188850292}</Project>
       <Name>Silicus.UtilityContainer.Services</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Silicus.UtilityContainer.Security\Silicus.UtilityContainer.Security.csproj">
+      <Project>{5394c1eb-8f58-468f-aa02-a0e863141f45}</Project>
+      <Name>Silicus.UtilityContainer.Security</Name>
+    </ProjectReference>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

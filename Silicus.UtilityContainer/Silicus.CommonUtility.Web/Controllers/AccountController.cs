@@ -8,6 +8,8 @@ using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
 using Silicus.UtilityContainer.Web.Models;
 using System.Web.Security;
+using Silicus.UtilityContainer.Security.Interface;
+using Silicus.UtilityContainer.Security;
 
 namespace Silicus.UtilityContainer.Web.Controllers
 {
@@ -16,6 +18,8 @@ namespace Silicus.UtilityContainer.Web.Controllers
     {
         private ApplicationSignInManager _signInManager;
         private ApplicationUserManager _userManager;
+        private IAuthentication _userAuthentication = new Authentication();
+             
 
         public AccountController()
         {
@@ -25,6 +29,7 @@ namespace Silicus.UtilityContainer.Web.Controllers
         {
             UserManager = userManager;
             SignInManager = signInManager;
+           
         }
 
         public ApplicationSignInManager SignInManager
@@ -53,6 +58,7 @@ namespace Silicus.UtilityContainer.Web.Controllers
 
         //
         // GET: /Account/Login
+        [HttpGet]
         [AllowAnonymous]
         public ActionResult Login(string returnUrl)
         {
@@ -68,13 +74,15 @@ namespace Silicus.UtilityContainer.Web.Controllers
         public async Task<ActionResult> Login(LoginViewModel model, string returnUrl)
         {
 
+            
+
             if (!ModelState.IsValid)
             {
                 return View(model);
             }
 
 
-            if (Membership.ValidateUser(model.UserName, model.Password))
+            if (_userAuthentication.ValidateUser(model.UserName, model.Password))
             {
                
                 var cookie = FormsAuthentication.GetAuthCookie(model.UserName, model.RememberMe);
@@ -437,10 +445,11 @@ namespace Silicus.UtilityContainer.Web.Controllers
         }
 
         //
-        // POST: /Account/LogOff
+         //POST: /Account/LogOff
        // [HttpPost]
        // [ValidateAntiForgeryToken]
-        public ActionResult LogOff()
+        [AllowAnonymous]
+        public ActionResult LogOut()
         {
             AuthenticationManager.SignOut(DefaultAuthenticationTypes.ApplicationCookie);
             return RedirectToAction("Login","Account");

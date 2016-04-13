@@ -18,6 +18,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{E6A033
 		.nuget\NuGet.targets = .nuget\NuGet.targets
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Silicus.UtilityContainer.Security", "Silicus.UtilityContainer.Security\Silicus.UtilityContainer.Security.csproj", "{5394C1EB-8F58-468F-AA02-A0E863141F45}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -40,6 +42,10 @@ Global
 		{161D6CBD-78D3-469A-A40D-96B5DD8B71BD}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{161D6CBD-78D3-469A-A40D-96B5DD8B71BD}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{161D6CBD-78D3-469A-A40D-96B5DD8B71BD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5394C1EB-8F58-468F-AA02-A0E863141F45}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5394C1EB-8F58-468F-AA02-A0E863141F45}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5394C1EB-8F58-468F-AA02-A0E863141F45}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5394C1EB-8F58-468F-AA02-A0E863141F45}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
