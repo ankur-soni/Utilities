@@ -97,8 +97,14 @@ namespace Silicus.UtilityContainer.Web.Controllers
                 Response.Cookies.Add(cookie);
 
                 Session["CurrentUser"] = model.UserName;
+                if (returnUrl == null)
+                {
+                    return this.RedirectToAction("Index", "Home");  
+                }
 
-                return this.RedirectToAction("Index", "Home");
+                return Redirect(returnUrl);
+
+               
             }
 
             this.ModelState.AddModelError(string.Empty, "The user name or password is incorrect.");

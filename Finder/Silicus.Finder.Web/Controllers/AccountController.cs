@@ -213,7 +213,9 @@ namespace Silicus.Finder.Web.Controllers
                 HttpCookie DirectLoginInFinderCookie = new HttpCookie("DirectLoginInFinderCookie");
                 DirectLoginInFinderCookie.Value = "abcd";
                 Response.Cookies.Add(DirectLoginInFinderCookie);
-                return View();
+                return Redirect("http://localhost:52250/?returnUrl=http://localhost:53393/" + returnUrl);
+               
+                
             }
 
             if (authCookie.Value != null)
@@ -289,55 +291,7 @@ namespace Silicus.Finder.Web.Controllers
 
 
 
-        // POST: /Account/Login
-        //[HttpPost]
-        //[AllowAnonymous]
-        //[ValidateAntiForgeryToken]
-        //public async Task<ActionResult> Login(LoginModel model, string returnUrl)
-        //{
-
-        //    //FormsAuthentication.SetAuthCookie(model.UserName, model.RememberMe);
-
-        //    if (!ModelState.IsValid)
-        //    {
-        //        return View(model);
-        //    }
-
-
-        //    if (Membership.ValidateUser(model.UserName, model.Password))
-        //    {
-
-        //        var cookie = FormsAuthentication.GetAuthCookie(model.UserName, model.RememberMe);
-
-        //        //cookie to check if user logins directly in finder
-        //        HttpCookie DirectLoginInFinderCookie = new HttpCookie("DirectLoginInFinderCookie");
-        //        DirectLoginInFinderCookie.Value ="abcd";
-        //        Response.Cookies.Add(DirectLoginInFinderCookie);
-
-        //        // Gets an authentication ticket with the appropriate default and configured values.  
-        //        var ticket = FormsAuthentication.Decrypt(cookie.Value);
-        //        var newTicket = new FormsAuthenticationTicket(
-        //                      ticket.Version,
-        //                      model.UserName,
-        //                     DateTime.Now,
-        //                      new DateTime(2016, 3, 30),
-        //                      true, userData: model.Password);
-
-        //        var encryptedTicket = FormsAuthentication.Encrypt(newTicket);
-        //        cookie.Value = encryptedTicket;
-        //        Response.Cookies.Add(cookie);
-        //        //FormsAuthentication.SetAuthCookie(model.UserName, model.RememberMe);
-        //        Session.Add("currentUser", model.UserName);
-
-        //        return this.RedirectToAction("Dashboard", "Dashboard");
-        //    }
-
-        //    this.ModelState.AddModelError(string.Empty, "The user name or password is incorrect.");
-
-        //    return this.View(model);
-
-        //}
-
+       
 
 
         [HttpPost]

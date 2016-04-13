@@ -44,6 +44,7 @@ namespace Silicus.Finder.Web.Controllers
             return View("GetAllEmployeesList", employees);
         }
 
+        [Authorize]
         public ActionResult GetAllEmployees()
         {
             var employeesList = _employeeService.GetAllEmployees();
