@@ -18,7 +18,7 @@ namespace Silicus.UtilityContainer.Web.Controllers
     {
         private ApplicationSignInManager _signInManager;
         private ApplicationUserManager _userManager;
-        private IAuthentication _userAuthentication = new Authentication();
+        private IAuthentication _userAuthentication;
              
 
         public AccountController()
@@ -30,6 +30,12 @@ namespace Silicus.UtilityContainer.Web.Controllers
             UserManager = userManager;
             SignInManager = signInManager;
            
+        }
+
+        public AccountController(IAuthentication userAuthentication)
+        {
+            _userAuthentication = userAuthentication;
+
         }
 
         public ApplicationSignInManager SignInManager
@@ -73,9 +79,6 @@ namespace Silicus.UtilityContainer.Web.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Login(LoginViewModel model, string returnUrl)
         {
-
-            
-
             if (!ModelState.IsValid)
             {
                 return View(model);
@@ -119,11 +122,6 @@ namespace Silicus.UtilityContainer.Web.Controllers
             return this.View(model);
 
         }
-
-
-
-
-
         //
         // GET: /Account/VerifyCode
         [AllowAnonymous]
@@ -425,7 +423,8 @@ namespace Silicus.UtilityContainer.Web.Controllers
         [AllowAnonymous]
         public ActionResult LogOut()
         {
-            AuthenticationManager.SignOut(DefaultAuthenticationTypes.ApplicationCookie);
+            // AuthenticationManager.SignOut(DefaultAuthenticationTypes.ApplicationCookie);
+            FormsAuthentication.SignOut();
             return RedirectToAction("Login","Account");
         }
 
