@@ -84,115 +84,7 @@ namespace Silicus.Finder.Web.Controllers
             _emailService = emailService;
         }
 
-
-
-        //[HttpGet]
-        //[AllowAnonymous]
-        //public async Task<ActionResult> Login(string returnUrl, string userName)
-        //{
-        //    using (var context = _dataContextFactory.Create(ConnectionType.Ip))
-        //    {
-        //        // Hitting database just to let EF create it if it does not
-        //        // exist based on initializer.
-        //        context.Query<Organization>().Count();
-        //    }
-
-
-        //    var stat = Request.IsAuthenticated;
-
-        //    if (!Request.IsAuthenticated)
-        //    {
-        //        _logger.Log(string.Format("Request not authenticated, showing login form."), LogCategory.Information);
-
-        //        return View();
-        //    }
-
-        //    var model = new LoginModel();
-        //    if (string.IsNullOrWhiteSpace(userName) && HttpContext.User != null && !string.IsNullOrWhiteSpace(HttpContext.User.Identity.Name))
-        //    {
-        //        userName = HttpContext.User.Identity.Name;
-        //    }
-
-        //    _logger.Log(string.Format("Request authenticated for user : {0}", userName),
-        //        LogCategory.Information, GetUserIdentifiableString(userName));
-
-        //    if (string.IsNullOrWhiteSpace(userName))
-        //    {
-        //        _logger.Log("UserName found null for user, showing login form.", LogCategory.Warning);
-
-        //        return View();
-        //    }
-
-        //    ViewBag.UserName = userName;
-        //    ViewBag.ReturnUrl = returnUrl;
-
-        //    model.UserName = userName;
-        //    model.Password = string.Empty;
-
-        //    var identityUser = await UserManager.FindByNameAsync(model.UserName);
-        //    var isAdmin = await UserManager.IsInRoleAsync(identityUser.Id, "Admin");
-        //    if (identityUser == null)
-        //    {
-        //        _logger.Log(string.Format("MembershipUser is found null for user : {0}", userName),
-        //            LogCategory.Warning, GetUserIdentifiableString(userName));
-        //        return View();
-        //    }
-
-        //    // Setting a cookie value for notification status.
-        //    _cookieHelper.SetCookie("_notification", "false", new TimeSpan(8, 0, 0));
-
-        //    var userRoles = await UserManager.GetRolesAsync(identityUser.Id);
-        //    if (userRoles.Count > 0)
-        //    {
-        //        _logger.Log(string.Format("Redirecting to {1} URL for user : {0}", userName, returnUrl),
-        //            LogCategory.Verbose, GetUserIdentifiableString(userName));
-
-        //        return RedirectToLocal(returnUrl, userName, isAdmin);
-        //    }
-
-        //    return View();
-        //}
-
-
-
-        // GET: /Account/Login
-        //[AllowAnonymous]
-        //[HttpGet]
-        //public ActionResult Login(string returnUrl)
-        //{
-        //    using (var context = _dataContextFactory.Create(ConnectionType.Ip))
-        //    {
-        //        // Hitting database just to let EF create it if it does not
-        //        // exist based on initializer.
-        //        context.Query<Organization>().Count();
-        //    }
-
-        //    var authCookie = Request.Cookies[".ADAuthCookie"];
-
-        //    if (authCookie==null)
-        //    {
-        //       return View();  
-        //    }
-
-        //    if (authCookie.Value != null)
-        //    {
-        //        var authenticationTicket = FormsAuthentication.Decrypt(authCookie.Value);
-        //        var username = authenticationTicket.Name;
-        //        var password = authenticationTicket.UserData;
-        //        if (Membership.ValidateUser(username, password))
-        //        {
-        //            return this.RedirectToAction("Dashboard", "Dashboard");
-        //        }
-
-        //    }
-
-        //    ViewBag.ReturnUrl = returnUrl;
-        //    return View();
-        //}
-
-
-
-
+        
         [AllowAnonymous]
         [HttpGet]
         public async Task<ActionResult> Login(string returnUrl)
@@ -213,7 +105,7 @@ namespace Silicus.Finder.Web.Controllers
                 HttpCookie DirectLoginInFinderCookie = new HttpCookie("DirectLoginInFinderCookie");
                 DirectLoginInFinderCookie.Value = "abcd";
                 Response.Cookies.Add(DirectLoginInFinderCookie);
-                return View();
+                return Redirect("http://localhost:52250/?returnUrl=http://localhost:53393/" + returnUrl);
             }
 
             if (authCookie.Value != null)
