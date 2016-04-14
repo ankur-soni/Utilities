@@ -1,5 +1,6 @@
 ﻿using Silicus.UtilityContainer.Models.DataObjects;
 using Silicus.UtilityContainer.Services;
+using Silicus.UtilityContainer.Services.Interfaces;
 using System.Web.Mvc;
 
 namespace Silicus.UtilityContainer.Web.Controllers
@@ -7,14 +8,16 @@ namespace Silicus.UtilityContainer.Web.Controllers
     public class HomeController : Controller
     {
 
-        private readonly UtilityService _utilityService=new UtilityService();
-        private readonly RoleService _roleService = new RoleService();
-        private readonly UserService _userService = new UserService();
+        private readonly IUtilityService _utilityService;
+        private readonly IRoleService _roleService;
+        private readonly IUserService _userService;
 
-        //public HomeController(IUtilityService utilityService)
-        //{
-        //    _utilityService = utilityService;
-        //}
+        public HomeController(IUtilityService utilityService,IRoleService roleService,IUserService userService)
+        {
+            _utilityService = utilityService;
+            _roleService = roleService;
+            _userService = userService;
+        }
 
         public ActionResult Index()
         {

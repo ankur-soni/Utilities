@@ -5,10 +5,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Silicus.UtilityContainerr.Entities;
+using Silicus.UtilityContainer.Services.Interfaces;
 
 namespace Silicus.UtilityContainer.Services
 {
-    public class RoleService
+    public class RoleService:IRoleService
     {
         private readonly SilicusUtilityContext _context;
 

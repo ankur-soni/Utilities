@@ -16,13 +16,14 @@ namespace Silicus.UtilityContainerr.Entities.DatabaseInitializer
             //get all members frm active directory.
             var allMembers = Membership.GetAllUsers();
 
+
             //Insert roles into database
             IList<Role> defaultRoles = new List<Role>();
             context.Roles.Add(new Role { RoleName = "User" });
             context.Roles.Add(new Role { RoleName = "Admin" });
             context.Roles.Add(new Role { RoleName = "Manager" });
             foreach (var role in defaultRoles)
-            context.Roles.Add(role);
+                context.Roles.Add(role);
             context.SaveChanges();
 
             //Insert utilities into database
