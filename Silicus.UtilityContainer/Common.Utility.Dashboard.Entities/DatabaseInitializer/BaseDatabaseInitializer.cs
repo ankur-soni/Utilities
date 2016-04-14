@@ -8,7 +8,7 @@ using Silicus.UtilityContainer.Models.DataObjects;
 
 namespace Silicus.UtilityContainerr.Entities.DatabaseInitializer
 {
-    class BaseDatabaseInitializer : DropCreateDatabaseAlways<SilicusUtilityContext>
+    class BaseDatabaseInitializer :DropCreateDatabaseIfModelChanges <SilicusUtilityContext>
     {
         protected override void Seed(SilicusUtilityContext context)
         {
@@ -25,7 +25,7 @@ namespace Silicus.UtilityContainerr.Entities.DatabaseInitializer
             context.SaveChanges();
 
             //Insert utilities into database
-            Image img = Image.FromFile(@"C:\Users\yparab\Desktop\Silicus.CommonUtility\Silicus.CommonUtility.Web\Images\loginbackground.jpg");
+            Image img = Image.FromFile(@"C:\Users\abhandare\Desktop\DI changes\Silicus.UtilityContainer\Silicus.CommonUtility.Web\Images\loginbackground.jpg");
             byte[] arr;
             using (MemoryStream ms = new MemoryStream())
             {
@@ -34,14 +34,14 @@ namespace Silicus.UtilityContainerr.Entities.DatabaseInitializer
             }
 
             context.Utilities.Add(new Utility { Name = "Finder", Description = "Find Employee", Url = "http://localhost:53393", UtilityIcon = arr });
-            img = Image.FromFile(@"C:\Users\yparab\Desktop\Silicus.CommonUtility\Silicus.CommonUtility.Web\Images\Enable Logo.PNG");
+            img = Image.FromFile(@"C:\Users\abhandare\Desktop\DI changes\Silicus.UtilityContainer\Silicus.CommonUtility.Web\Images\Enable Logo.PNG");
             using (MemoryStream ms = new MemoryStream())
             {
                 img.Save(ms, System.Drawing.Imaging.ImageFormat.Jpeg);
                 arr = ms.ToArray();
             }
             context.Utilities.Add(new Utility { Name = "Enable", Description = "Time Sheets", Url = "https://entime.silicus.com/", UtilityIcon = arr });
-            img = Image.FromFile(@"C:\Users\yparab\Desktop\Silicus.CommonUtility\Silicus.CommonUtility.Web\Images\PROVARE-logo.jpg");
+            img = Image.FromFile(@"C:\Users\abhandare\Desktop\DI changes\Silicus.UtilityContainer\Silicus.CommonUtility.Web\Images\PROVARE-logo.jpg");
             using (MemoryStream ms = new MemoryStream())
             {
                 img.Save(ms, System.Drawing.Imaging.ImageFormat.Jpeg);
