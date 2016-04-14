@@ -1,6 +1,8 @@
 ﻿using LightInject;
 using Silicus.UtilityContainer.Security;
 using Silicus.UtilityContainer.Security.Interface;
+using Silicus.UtilityContainer.Services.Interfaces;
+using Silicus.UtilityContainer.Services;
 using Silicus.UtilityContainer.Web.App_Start;
 using System.Reflection;
 
@@ -23,6 +25,9 @@ namespace Silicus.UtilityContainer.Web.App_Start
         private static void InitializeContainer(IServiceContainer container)
         {
             container.Register<IAuthentication, Authentication>();
+            container.Register<IUtilityService, UtilityService>();
+            container.Register<IUserService, UserService>();
+            container.Register<IRoleService, RoleService>();
         }
 
     }
