@@ -52,28 +52,28 @@ namespace Silicus.UtilityContainerr.Entities.DatabaseInitializer
             context.Utilities.Add(new Utility { Name = "Provare", Description = "test", Url = "#", UtilityIcon = arr });
             context.SaveChanges();
 
-            //IList<User> defaultUsers = new List<User>();
-            var allUtilities = context.Utilities.ToList();
-           //Adding AD users to DB
-            foreach (var member in allMembers)
-            {
-                MembershipUser currentUser = (MembershipUser)member;
-                var newUser = new User() { Name = currentUser.UserName };
-                context.Users.Add(newUser);
-                context.SaveChanges();
+           // //IList<User> defaultUsers = new List<User>();
+           // var allUtilities = context.Utilities.ToList();
+           ////Adding AD users to DB
+           // foreach (var member in allMembers)
+           // {
+           //     MembershipUser currentUser = (MembershipUser)member;
+           //     var newUser = new User() { Name = currentUser.UserName };
+           //     context.Users.Add(newUser);
+           //     context.SaveChanges();
 
-                foreach (var utility in allUtilities)
-                {
-                    var newUserRole = new UserRole() { UserId = newUser.Id, UtilityId = utility.Id, RoleId = 1 };
-                    context.UserRoles.Add(newUserRole);
-                    context.SaveChanges();
-                }
-            }
+           //     foreach (var utility in allUtilities)
+           //     {
+           //         var newUserRole = new UserRole() { UserId = newUser.Id, UtilityId = utility.Id, RoleId = 1 };
+           //         context.UserRoles.Add(newUserRole);
+           //         context.SaveChanges();
+           //     }
+           // }
 
-            //defaultUsers.Add(new User() { Name = "Yeshwant", Designation = "trainee" });
-            //defaultUsers.Add(new User() { Name = "Abhishek", Designation = "trainee" });
-            //foreach (var user in defaultUsers)
-            //    context.Users.Add(user);
+           // //defaultUsers.Add(new User() { Name = "Yeshwant", Designation = "trainee" });
+           // //defaultUsers.Add(new User() { Name = "Abhishek", Designation = "trainee" });
+           // //foreach (var user in defaultUsers)
+           // //    context.Users.Add(user);
 
             base.Seed(context);
         }
