@@ -19,13 +19,7 @@ namespace Silicus.UtilityContainer.Web.Controllers
         private ApplicationSignInManager _signInManager;
         private ApplicationUserManager _userManager;
         private IAuthentication _userAuthentication;
-             
 
-        public AccountController(IAuthentication userAuthentication)
-        {
-            _userAuthentication = userAuthentication;
-
-        }
 
         public AccountController(IAuthentication userAuthentication)
         {
@@ -39,9 +33,9 @@ namespace Silicus.UtilityContainer.Web.Controllers
             {
                 return _signInManager ?? HttpContext.GetOwinContext().Get<ApplicationSignInManager>();
             }
-            private set 
-            { 
-                _signInManager = value; 
+            private set
+            {
+                _signInManager = value;
             }
         }
 
@@ -82,7 +76,7 @@ namespace Silicus.UtilityContainer.Web.Controllers
 
             if (_userAuthentication.ValidateUser(model.UserName, model.Password))
             {
-               
+
                 var cookie = FormsAuthentication.GetAuthCookie(model.UserName, model.RememberMe);
 
                 var authenticationTicket = FormsAuthentication.Decrypt(cookie.Value);
@@ -182,7 +176,7 @@ namespace Silicus.UtilityContainer.Web.Controllers
                 if (result.Succeeded)
                 {
                     await SignInManager.SignInAsync(user, isPersistent: false, rememberBrowser: false);
-                    
+
                     // For more information on how to enable account confirmation and password reset please visit http://go.microsoft.com/fwlink/?LinkID=320771
                     // Send an email with this link
                     // string code = await UserManager.GenerateEmailConfirmationTokenAsync(user.Id);
@@ -412,15 +406,17 @@ namespace Silicus.UtilityContainer.Web.Controllers
         }
 
         //
-         //POST: /Account/LogOff
-       // [HttpPost]
-       // [ValidateAntiForgeryToken]
+        //POST: /Account/LogOff
+        // [HttpPost]
+        // [ValidateAntiForgeryToken]
         [AllowAnonymous]
         public ActionResult LogOut()
         {
             // AuthenticationManager.SignOut(DefaultAuthenticationTypes.ApplicationCookie);
             FormsAuthentication.SignOut();
-            return RedirectToAction("Login","Account");
+
+            
+            return RedirectToAction("Login", "Account");
         }
 
         //
