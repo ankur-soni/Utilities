@@ -11,5 +11,6 @@ namespace Silicus.UtilityContainer.Services.Interfaces
     {
         List<User> GetAllUsers();
         void AddRolesToUserForAUtility(UserRole newUserRole);
+        void CreateUserIfNotExists(User newUser);
     }
 }
