@@ -7,7 +7,5 @@ using System.Threading.Tasks;
 
 namespace Silicus.UtilityContainerr.Entities.DatabaseInitializer
 {
-    public class BaseDataBaseInitializer : CreateDatabaseIfNotExists<LocalDataBaseContext>
-    {
-    }
+    
 }

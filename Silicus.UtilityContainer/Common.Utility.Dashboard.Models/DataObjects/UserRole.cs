@@ -11,13 +11,7 @@ namespace Silicus.UtilityContainer.Models.DataObjects
         public int RoleId { get; set; }
         public int UtilityId { get; set; }
 
-       // [ForeignKey("UserId")]
-       // public virtual User Users { get; set; }
-
-        [ForeignKey("UtilityId")]
-        public virtual Utility Utilities { get; set; }
-
-        [ForeignKey("RoleId")]
-        public virtual Role Roles { get; set; }
+    //    public virtual Utility Utilities { get; set; }
+    //    public virtual Role Roles { get; set; }
     }
 }

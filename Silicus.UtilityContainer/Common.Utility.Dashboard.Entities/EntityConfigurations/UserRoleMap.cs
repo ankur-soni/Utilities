@@ -12,7 +12,7 @@ namespace Silicus.UtilityContainerr.Entities.EntityConfigurations
 
             Property(p => p.Id).HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity);
 
-            ToTable(TableSettings.UserRoles, TableSettings.DefaultSchema);
+            ToTable(TableSettings.UtilityUserRoles, TableSettings.DefaultSchema);
         }
     }
 }

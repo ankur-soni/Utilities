@@ -9,7 +9,5 @@ namespace Silicus.UtilityContainerr.Entities
     public interface IDataContextFactory
     {
         ICommonDataBaseContext CreateCommonDBContext();
-        ILocalDataBaseContext CreateLocalDBContext();
-        
     }
 }

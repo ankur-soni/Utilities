@@ -14,21 +14,21 @@ namespace Silicus.UtilityContainer.Services
 {
     public class UtilityService : IUtilityService
     {
-         private readonly ILocalDataBaseContext _localDBContext;
+         private readonly ICommonDataBaseContext _commmonDBContext;
 
          public UtilityService(IDataContextFactory dataContextFactory)
         {
-            _localDBContext = dataContextFactory.CreateLocalDBContext();
+            _commmonDBContext = dataContextFactory.CreateCommonDBContext();
         }
         
        public List<Utility> GetAllUtilities()
        {
-           return _localDBContext.Query<Utility>().ToList();
+           return _commmonDBContext.Query<Utility>().ToList();
        }
 
        public Utility FindUtility(int id)
        {
-           return _localDBContext.Query<Utility>().Where(x => x.Id == id).FirstOrDefault();
+           return _commmonDBContext.Query<Utility>().Where(x => x.Id == id).FirstOrDefault();
        }
     }
 }

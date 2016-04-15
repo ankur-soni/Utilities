@@ -8,7 +8,10 @@ namespace Silicus.UtilityContainerr.Entities
 {
      public interface ICommonDataBaseContext : IDisposable
      {
+         T Add<T>(T item) where T : class;
+         int Update<T>(T item) where T : class;
          IQueryable<T> Query<T>() where T : class;
+         void Delete<T>(T item) where T : class;
          int SaveChanges();
      }
     

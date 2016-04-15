@@ -14,13 +14,11 @@ namespace Silicus.UtilityContainer.Services
         //private readonly SilicusUtilityContext _context;
         private readonly IUtilityService _utilityService;
         private readonly ICommonDataBaseContext _commonDBContext;
-        private readonly ILocalDataBaseContext _localDBContext;
 
         public UserService(IUtilityService utilityService, IDataContextFactory dataContextFactory)
         {
             _commonDBContext = dataContextFactory.CreateCommonDBContext();
             _utilityService = utilityService;
-            _localDBContext = dataContextFactory.CreateLocalDBContext();
         }
 
         public List<User> GetAllUsers()
@@ -30,12 +28,12 @@ namespace Silicus.UtilityContainer.Services
 
         public void AddRolesToUserForAUtility(UserRole newUserRole)
         {
-            var userRole = _localDBContext.Query<UserRole>().Where(x => x.UserId == newUserRole.UserId && x.UtilityId == newUserRole.UtilityId).FirstOrDefault();
+            var userRole = _commonDBContext.Query<UserRole>().Where(x => x.UserId == newUserRole.UserId && x.UtilityId == newUserRole.UtilityId).FirstOrDefault();
             if (userRole != null)
             {
-                _localDBContext.Delete(userRole);
+                _commonDBContext.Delete(userRole);
             }
-            _localDBContext.Add(newUserRole);
+            _commonDBContext.Add(newUserRole);
         }
 
         

@@ -56,8 +56,6 @@
     <Compile Include="EntityConfigurations\UtilityMap.cs" />
     <Compile Include="ICommonDataBaseContext.cs" />
     <Compile Include="IDataContextFactory.cs" />
-    <Compile Include="ILocalDataBaseContext.cs" />
-    <Compile Include="LocalDataBaseContext.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
