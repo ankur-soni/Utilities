@@ -10,8 +10,6 @@ using Silicus.UtilityContainer.Web.Models;
 using System.Web.Security;
 using Silicus.UtilityContainer.Security.Interface;
 using Silicus.UtilityContainer.Security;
-using Silicus.UtilityContainer.Services.Interfaces;
-using Silicus.UtilityContainer.Models.DataObjects;
 
 namespace Silicus.UtilityContainer.Web.Controllers
 {
@@ -21,15 +19,13 @@ namespace Silicus.UtilityContainer.Web.Controllers
         private ApplicationSignInManager _signInManager;
         private ApplicationUserManager _userManager;
         private IAuthentication _userAuthentication;
-        private IUserService _userService;
              
 
-        public AccountController(IAuthentication userAuthentication, IUserService userService)
+        public AccountController(IAuthentication userAuthentication)
         {
             _userAuthentication = userAuthentication;
-            _userService = userService;
-        }
 
+        }
 
         public ApplicationSignInManager SignInManager
         {
@@ -80,8 +76,6 @@ namespace Silicus.UtilityContainer.Web.Controllers
 
             if (_userAuthentication.ValidateUser(model.UserName, model.Password))
             {
-                //var newUser = new User() { Name = model.UserName };
-               // _userService.CreateUserIfNotExists(newUser);
                
                 var cookie = FormsAuthentication.GetAuthCookie(model.UserName, model.RememberMe);
 
@@ -419,8 +413,12 @@ namespace Silicus.UtilityContainer.Web.Controllers
         public ActionResult LogOut()
         {
             // AuthenticationManager.SignOut(DefaultAuthenticationTypes.ApplicationCookie);
-            FormsAuthentication.SignOut();
-            return RedirectToAction("Login","Account");
+            var cookies = HttpContext.Request.Cookies.AllKeys;
+            foreach (var cookie in cookies)
+            {
+                HttpContext.Response.Cookies[cookie].Expires = DateTime.Now;
+            }      
+            return RedirectToAction("Login", "Account");
         }
 
         //

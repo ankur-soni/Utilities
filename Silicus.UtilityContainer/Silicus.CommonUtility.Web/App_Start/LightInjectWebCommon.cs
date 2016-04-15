@@ -1,8 +1,8 @@
 ﻿using LightInject;
 using Silicus.UtilityContainer.Security;
 using Silicus.UtilityContainer.Security.Interface;
-using Silicus.UtilityContainer.Services.Interfaces;
 using Silicus.UtilityContainer.Services;
+using Silicus.UtilityContainer.Services.Interfaces;
 using Silicus.UtilityContainer.Web.App_Start;
 using System.Reflection;
 using Silicus.UtilityContainerr.Entities;
@@ -28,8 +28,8 @@ namespace Silicus.UtilityContainer.Web.App_Start
             container.Register<IDataContextFactory, DataContextFactory>();
             container.Register<IAuthentication, Authentication>();
             container.Register<IUtilityService, UtilityService>();
-            container.Register<IUserService, UserService>();
             container.Register<IRoleService, RoleService>();
+            container.Register<IUserService, UserService>();
         }
 
     }
