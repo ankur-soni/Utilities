@@ -6,24 +6,29 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Silicus.UtilityContainerr.Entities;
+using System.Drawing;
+using System.Web;
+using System.IO;
 
 namespace Silicus.UtilityContainer.Services
 {
     public class UtilityService : IUtilityService
     {
-        private readonly SilicusUtilityContext _context;
+         private readonly ILocalDataBaseContext _localDBContext;
 
-        public UtilityService()
+         public UtilityService(IDataContextFactory dataContextFactory)
         {
-            _context = new SilicusUtilityContext();
+            _localDBContext = dataContextFactory.CreateLocalDBContext();
         }
+        
        public List<Utility> GetAllUtilities()
        {
-           return _context.Utilities.ToList();
+           return _localDBContext.Query<Utility>().ToList();
        }
+
        public Utility FindUtility(int id)
        {
-          return _context.Utilities.Find(id);
+           return _localDBContext.Query<Utility>().Where(x => x.Id == id).FirstOrDefault();
        }
     }
 }

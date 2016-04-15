@@ -80,8 +80,8 @@ namespace Silicus.UtilityContainer.Web.Controllers
 
             if (_userAuthentication.ValidateUser(model.UserName, model.Password))
             {
-                var newUser = new User() { Name = model.UserName };
-                _userService.CreateUserIfNotExists(newUser);
+                //var newUser = new User() { Name = model.UserName };
+               // _userService.CreateUserIfNotExists(newUser);
                
                 var cookie = FormsAuthentication.GetAuthCookie(model.UserName, model.RememberMe);
 

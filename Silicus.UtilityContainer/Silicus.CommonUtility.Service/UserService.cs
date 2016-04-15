@@ -11,44 +11,33 @@ namespace Silicus.UtilityContainer.Services
 {
     public class UserService : IUserService
     {
-        private readonly SilicusUtilityContext _context;
+        //private readonly SilicusUtilityContext _context;
         private readonly IUtilityService _utilityService;
+        private readonly ICommonDataBaseContext _commonDBContext;
+        private readonly ILocalDataBaseContext _localDBContext;
 
-        public UserService(IUtilityService utilityService)
+        public UserService(IUtilityService utilityService, IDataContextFactory dataContextFactory)
         {
-            _context = new SilicusUtilityContext();
+            _commonDBContext = dataContextFactory.CreateCommonDBContext();
             _utilityService = utilityService;
+            _localDBContext = dataContextFactory.CreateLocalDBContext();
         }
 
         public List<User> GetAllUsers()
         {
-            return _context.Users.ToList();
+            return _commonDBContext.Query<User>().ToList();
         }
 
         public void AddRolesToUserForAUtility(UserRole newUserRole)
         {
-            var userRole = _context.UserRoles.Where(x => x.UserId == newUserRole.UserId && x.UtilityId == newUserRole.UtilityId).FirstOrDefault();
+            var userRole = _localDBContext.Query<UserRole>().Where(x => x.UserId == newUserRole.UserId && x.UtilityId == newUserRole.UtilityId).FirstOrDefault();
             if (userRole != null)
             {
-                _context.UserRoles.Remove(userRole);
+                _localDBContext.Delete(userRole);
             }
-            _context.UserRoles.Add(newUserRole);
-            _context.SaveChanges();
+            _localDBContext.Add(newUserRole);
         }
 
-        public void CreateUserIfNotExists(User newUser)
-        {
-            if (_context.Users.Where(x => x.Name == newUser.Name).FirstOrDefault() == null)
-            {
-                _context.Users.Add(newUser);
-                _context.SaveChanges();
-                var allUtilities = _utilityService.GetAllUtilities();
-                foreach (var utility in allUtilities)
-                {
-                    AddRolesToUserForAUtility(new UserRole() { RoleId = 1, UserId = newUser.Id, UtilityId = utility.Id });
-                }
-
-            }
-        }
+        
     }
 }

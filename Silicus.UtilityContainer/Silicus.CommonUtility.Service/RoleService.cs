@@ -11,15 +11,16 @@ namespace Silicus.UtilityContainer.Services
 {
     public class RoleService:IRoleService
     {
-        private readonly SilicusUtilityContext _context;
+        private readonly ILocalDataBaseContext _localDBContext;
 
-        public RoleService()
+        public RoleService(IDataContextFactory dataContextFactory)
         {
-            _context = new SilicusUtilityContext();
+            _localDBContext = dataContextFactory.CreateLocalDBContext();
         }
+
         public List<Role> GetAllRoles()
         {
-            return _context.Roles.ToList();
+            return _localDBContext.Query<Role>().ToList();
         }
     }
 }

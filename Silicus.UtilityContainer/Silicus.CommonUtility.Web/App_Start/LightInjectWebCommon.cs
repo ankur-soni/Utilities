@@ -5,6 +5,7 @@ using Silicus.UtilityContainer.Services.Interfaces;
 using Silicus.UtilityContainer.Services;
 using Silicus.UtilityContainer.Web.App_Start;
 using System.Reflection;
+using Silicus.UtilityContainerr.Entities;
 
 [assembly: WebActivator.PostApplicationStartMethod(typeof(LightInjectWebCommon), "CreateContainer")]
 
@@ -24,6 +25,7 @@ namespace Silicus.UtilityContainer.Web.App_Start
 
         private static void InitializeContainer(IServiceContainer container)
         {
+            container.Register<IDataContextFactory, DataContextFactory>();
             container.Register<IAuthentication, Authentication>();
             container.Register<IUtilityService, UtilityService>();
             container.Register<IUserService, UserService>();
