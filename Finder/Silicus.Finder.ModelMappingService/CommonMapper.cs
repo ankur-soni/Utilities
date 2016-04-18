@@ -58,7 +58,7 @@ namespace Silicus.Finder.ModelMappingService
             return project;
         }
 
-        public SkillSet MapSkillToSkillSet(Skill skill)
+        public SkillSet MapSkillToSkillSet(Silicus.UtilityContainer.Models.DataObjects.Skill skill)
         {
             throw new NotImplementedException();
         }
