@@ -19,8 +19,8 @@ namespace Silicus.Finder.Web.Mappings
         protected override void Configure()
         {
             Mapper.CreateMap<Model, EntityA>();
-            Mapper.CreateMap<UserViewModel, User>();
-            Mapper.CreateMap<User,UserViewModel>();
+           // Mapper.CreateMap<UserViewModel, User>();
+            //Mapper.CreateMap<User,UserViewModel>();
             Mapper.CreateMap<ProjectSearchCriteriaViewModel, ProjectSearchCriteriaModel>();
             Mapper.CreateMap<EmployeeSearchCriteriaViewModel, EmployeeSearchCriteriaModel>();
         }

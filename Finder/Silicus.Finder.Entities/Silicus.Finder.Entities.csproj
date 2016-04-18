@@ -103,6 +103,7 @@
     <Compile Include="..\SharedAssemblyInfo.cs">
       <Link>Properties\SharedAssemblyInfo.cs</Link>
     </Compile>
+    <Compile Include="CommonDataBaseContext.cs" />
     <Compile Include="EntityConfigurations\ContactMap.cs" />
     <Compile Include="EntityConfigurations\CubicleLocationMap.cs" />
     <Compile Include="EntityConfigurations\EmailAvailableMap.cs" />
@@ -113,10 +114,12 @@
     <Compile Include="EntityConfigurations\ProjectMap.cs" />
     <Compile Include="EntityConfigurations\RewardsAndRecognitionMap.cs" />
     <Compile Include="EntityConfigurations\RolesMap.cs" />
+    <Compile Include="EntityConfigurations\SkillMap.cs" />
     <Compile Include="EntityConfigurations\SkillSetMap.cs" />
     <Compile Include="EntityConfigurations\TableSettings.cs" />
     <Compile Include="EntityConfigurations\TitleMap.cs" />
     <Compile Include="EntityConfigurations\UserMap.cs" />
+    <Compile Include="ICommonDataBaseContext.cs" />
     <Compile Include="Initializer\BaseDatabaseInitializer.cs" />
     <Compile Include="Initializer\FinderIpCreateDatabaseIfNotExistsInitializer.cs" />
     <Compile Include="Initializer\FinderIpDropCreateDatabaseAlwaysInitializer.cs" />

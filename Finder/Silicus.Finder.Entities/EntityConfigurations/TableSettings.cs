@@ -16,5 +16,6 @@
         public static readonly string Roles = "Roles";
         public static readonly string RewardsAndRecognitions = "RewardsAndRecognition";
         public static readonly string Titles = "Title";
+        public static readonly string Skills = "Skill";
     }
 }

@@ -16,6 +16,8 @@ using LightInject.Web;
 using LightInject.Mvc;
 using System.Reflection;
 using WebGrease;
+using Silicus.Finder.ModelMappingService.Interfaces;
+using Silicus.Finder.ModelMappingService;
 
 [assembly: WebActivator.PostApplicationStartMethod(typeof(LightInjectWebCommon), "CreateContainer")]
 
@@ -47,6 +49,7 @@ namespace Silicus.Finder.Web
             container.Register<IEmployeeService, EmployeeService>();
             container.Register<ISkillSetService, SkillSetService>();
             container.Register<ICookieHelper, CookieHelper>();
+            container.Register<ICommonMapper, CommonMapper>();
             container.Register<ILogger>((factory) => new DatabaseLogger("name=FinderLoggerDataContext", Type.GetType(string.Empty), (Func<DateTime>)(() => DateTime.UtcNow), string.Empty));
             container.Register<IAuditManager>((factory) => new AuditManager("name=FinderAuditingDataContext"));
 

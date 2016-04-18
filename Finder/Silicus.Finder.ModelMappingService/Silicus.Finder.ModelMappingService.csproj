@@ -30,12 +30,6 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Silicus.UtilityContainer.Entities">
-      <HintPath>..\..\Silicus.UtilityContainer\Common.Utility.Dashboard.Entities\bin\Debug\Silicus.UtilityContainer.Entities.dll</HintPath>
-    </Reference>
-    <Reference Include="Silicus.UtilityContainer.Models">
-      <HintPath>..\..\Silicus.UtilityContainer\Common.Utility.Dashboard.Entities\bin\Debug\Silicus.UtilityContainer.Models.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />

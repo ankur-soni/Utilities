@@ -15,5 +15,14 @@ namespace Silicus.Finder.Entities
 
             return dataContext;
         }
+        public ICommonDataBaseContext CreateCommonDataBaseContext()
+        {
+            ICommonDataBaseContext dataContext = null;
+
+
+            dataContext = new CommonDataBaseContext(ConfigurationManager.ConnectionStrings["CommonDataBaseConnection"].ConnectionString);
+           
+            return dataContext;
+        }
     }
 }

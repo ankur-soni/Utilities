@@ -1,5 +1,6 @@
 ﻿using Aspose.Cells;
 using Silicus.Finder.Entities;
+using Silicus.Finder.ModelMappingService.Interfaces;
 using Silicus.Finder.Models.DataObjects;
 using Silicus.Finder.Services.Comparable.SkillSetComparable;
 using Silicus.Finder.Services.Interfaces;
@@ -14,10 +15,14 @@ namespace Silicus.Finder.Services
     public class SkillSetService : ISkillSetService
     {
         private readonly IDataContext _context;
+        private readonly ICommonDataBaseContext _commonDBContext;
+        private readonly ICommonMapper _commonMapperService;
 
-        public SkillSetService(IDataContextFactory dataContextFactory)
+        public SkillSetService(IDataContextFactory dataContextFactory, ICommonMapper mapper)
         {
+            _commonMapperService = mapper;
             _context = dataContextFactory.Create(ConnectionType.Ip);
+            _commonDBContext = dataContextFactory.CreateCommonDataBaseContext();
         }
 
         public void Add(SkillSet skillSet)
@@ -27,7 +32,12 @@ namespace Silicus.Finder.Services
 
         public List<SkillSet> GetAllSkills()
         {
-            var skillSetList = _context.Query<SkillSet>().ToList();
+            var skillSetList = new List<SkillSet>();
+            var skillList = _commonDBContext.Query<Skill>().ToList();
+            foreach (var skill in skillList)
+            {
+                skillSetList.Add(_commonMapperService.MapSkillToSkillSet(skill));
+            }
             SkillSetSortByName skillSetSortByName = new SkillSetSortByName();
             skillSetList.Sort(skillSetSortByName);
             return skillSetList;

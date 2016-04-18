@@ -6,12 +6,12 @@ namespace Silicus.Finder.Services.Interfaces
 {
     public interface IUserService
     {
-        IEnumerable<User> GetUserDetails();
+        //IEnumerable<User> GetUserDetails();
 
-        int Add(User User);
+        //int Add(User User);
 
-        void Update(User User);
+        //void Update(User User);
 
-        void Delete(User User);
+        //void Delete(User User);
     }
 }
