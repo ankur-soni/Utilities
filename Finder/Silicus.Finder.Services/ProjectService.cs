@@ -1,8 +1,10 @@
 ﻿using Aspose.Cells;
 using Silicus.Finder.Entities;
+using Silicus.Finder.ModelMappingService.Interfaces;
 using Silicus.Finder.Models.DataObjects;
 using Silicus.Finder.Models.Models;
 using Silicus.Finder.Services.Interfaces;
+using Silicus.UtilityContainer.Models.DataObjects;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -14,12 +16,15 @@ namespace Silicus.Finder.Services
     {
         private readonly IDataContext _context;
         IEmployeeService _employeeService;
+        Silicus.UtilityContainerr.Entities.ICommonDataBaseContext _utilityCommonDbContext;
+        private readonly ICommonMapper _commonMapper;
 
-        public ProjectService(IDataContextFactory dataContextFactory, IEmployeeService employeeService)
+        public ProjectService(IDataContextFactory dataContextFactory, IEmployeeService employeeService,ICommonMapper commonMapper)
         {
-
             _context = dataContextFactory.Create(ConnectionType.Ip);
             _employeeService = employeeService;
+            _commonMapper = commonMapper;
+            _utilityCommonDbContext = _commonMapper.GetCommonDataBAseContext();
         }
 
         public int AddProject(Project project)
@@ -43,13 +48,23 @@ namespace Silicus.Finder.Services
 
         public IEnumerable<Project> GetProjects()
         {
-            var projectList = _context.Query<Project>().Where(p => p.ArchiveDate == null).ToList();
+            var engagementList = _utilityCommonDbContext.Query<Engagement>().ToList();
+            var projectList = new List<Project>();
+
+            foreach (Engagement engagement in engagementList)
+            {
+                var project = _commonMapper.MapEngagementToProject(engagement);
+                projectList.Add(project);
+            }
+            //   var projectList = _context.Query<Project>().Where(p => p.ArchiveDate == null).ToList();
             return projectList;
         }
 
         public Project GetProjectById(int? projectId)
         {
-            var project = _context.Query<Project>().Where(model => model.ProjectId == projectId).FirstOrDefault();
+            //  var project = _context.Query<Project>().Where(model => model.ProjectId == projectId).FirstOrDefault();
+            var engagement = _utilityCommonDbContext.Query<Engagement>().Where(model => model.ID == projectId).FirstOrDefault();
+            var project = _commonMapper.MapEngagementToProject(engagement);
             return project;
         }
 
@@ -93,7 +108,9 @@ namespace Silicus.Finder.Services
 
         public Project GetProjectDetails(int projectId)
         {
-            var project = _context.Query<Project>().FirstOrDefault(p => p.ProjectId == projectId);
+            //var project = _context.Query<Project>().FirstOrDefault(p => p.ProjectId == projectId);
+            var engagement = _utilityCommonDbContext.Query<Engagement>().Where(model => model.ID == projectId).FirstOrDefault();
+            var project = _commonMapper.MapEngagementToProject(engagement);
             return project;
         }
 

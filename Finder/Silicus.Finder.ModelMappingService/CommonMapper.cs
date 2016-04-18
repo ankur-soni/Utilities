@@ -46,13 +46,19 @@ namespace Silicus.Finder.ModelMappingService
             project.ProjectName = engagement.Name;
             project.ProjectCode = engagement.Code;
             project.Description = engagement.Description;
-          //  project.ProjectType=engagement.   
-            project.EngagementType = (EngagementType)engagement.ContractTypeID;     
-           // project.Status=
+            //project.ProjectType=engagement.   
+            //project.EngagementType = (EngagementType)engagement.ContractTypeID;
+            //project.Status=
             project.StartDate = engagement.BeginDate;
             //project.ExpectedEndDate=engagement.
             project.ActualEndDate = engagement.EndDate;
-            project.ArchiveDate = engagement.EndDate;
+            //project.ArchiveDate=engagement.
+            project.EngagementManagerId = engagement.EngagementManagerID;
+            project.ProjectManagerId = engagement.PrimaryProjectManagerID;
+            //project.AdditionalNotes=engagement.
+
+            //project.skillSetId=
+            //project.EmployeeIds=
 
 
             return project;
