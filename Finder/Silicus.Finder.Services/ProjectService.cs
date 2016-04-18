@@ -12,8 +12,6 @@ namespace Silicus.Finder.Services
 {
     public class ProjectService : IProjectService
     {
-
-
         private readonly IDataContext _context;
         IEmployeeService _employeeService;
 
