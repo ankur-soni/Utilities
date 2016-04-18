@@ -1,5 +1,6 @@
 ﻿using Silicus.Finder.Models.DataObjects;
 using Silicus.UtilityContainer.Models.DataObjects;
+using Silicus.UtilityContainerr.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,5 +14,6 @@ namespace Silicus.Finder.ModelMappingService.Interfaces
         Employee MapUserToEmployee(User user);
         Project MapEngagementToProject(Engagement engagement);
         SkillSet MapSkillToSkillSet(Skill skill);
+       ICommonDataBaseContext GetCommonDataBAseContext();
     }
 }

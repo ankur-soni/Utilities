@@ -53,31 +53,31 @@ namespace Silicus.Finder.Services
             return project;
         }
 
-        public List<Project> GetProjectsByCriteria(ProjectSearchCriteriaModel criteria)
-        {
-            var projectList = GetProjects().ToList();
+        //public List<Project> GetProjectsByCriteria(ProjectSearchCriteriaModel criteria)
+        //{
+        //    var projectList = GetProjects().ToList();
 
-            if (projectList.Count() != 0)
-            {
-                projectList = projectList.Where(p => p.Status.ToString().Equals(string.IsNullOrEmpty(criteria.Status) ? p.Status.ToString() : criteria.Status.Trim())
-                    && p.ProjectType.ToString().Equals(string.IsNullOrEmpty(criteria.ProjectType) ? p.ProjectType.ToString() : criteria.ProjectType.Trim())
-                    && p.SkillSets.Any(s => s.Name.Equals(string.IsNullOrEmpty(criteria.SkillSet) ? s.Name : criteria.SkillSet.Trim()))).ToList();
+        //    if (projectList.Count() != 0)
+        //    {
+        //        projectList = projectList.Where(p => p.Status.ToString().Equals(string.IsNullOrEmpty(criteria.Status) ? p.Status.ToString() : criteria.Status.Trim())
+        //            && p.ProjectType.ToString().Equals(string.IsNullOrEmpty(criteria.ProjectType) ? p.ProjectType.ToString() : criteria.ProjectType.Trim())
+        //            && p.SkillSets.Any(s => s.Name.Equals(string.IsNullOrEmpty(criteria.SkillSet) ? s.Name : criteria.SkillSet.Trim()))).ToList();
 
-                if (!string.IsNullOrEmpty(criteria.EngagementManager) && projectList.Count() != 0)
-                {
-                    var employeeIds = _employeeService.GetEmployeeByName(criteria.EngagementManager).Select(pm => pm.EmployeeId).ToList();
-                    projectList = projectList.Where(p => employeeIds.Contains(Convert.ToInt32(p.EngagementManagerId))).ToList();
-                }
+        //        if (!string.IsNullOrEmpty(criteria.EngagementManager) && projectList.Count() != 0)
+        //        {
+        //            var employeeIds = _employeeService.GetEmployeeByName(criteria.EngagementManager).Select(pm => pm.EmployeeId).ToList();
+        //            projectList = projectList.Where(p => employeeIds.Contains(Convert.ToInt32(p.EngagementManagerId))).ToList();
+        //        }
 
-                if (!string.IsNullOrEmpty(criteria.ProjectManager) && projectList.Count() != 0)
-                {
-                    var employeeIds = _employeeService.GetEmployeeByName(criteria.ProjectManager).Select(pm => pm.EmployeeId).ToList();
-                    projectList = projectList.Where(p => employeeIds.Contains(Convert.ToInt32(p.ProjectManagerId))).ToList();
-                }
-            }
+        //        if (!string.IsNullOrEmpty(criteria.ProjectManager) && projectList.Count() != 0)
+        //        {
+        //            var employeeIds = _employeeService.GetEmployeeByName(criteria.ProjectManager).Select(pm => pm.EmployeeId).ToList();
+        //            projectList = projectList.Where(p => employeeIds.Contains(Convert.ToInt32(p.ProjectManagerId))).ToList();
+        //        }
+        //    }
 
-            return projectList;
-        }
+        //    return projectList;
+        //}
 
         public IEnumerable<Project> GetProjectsByName(string projectName)
         {

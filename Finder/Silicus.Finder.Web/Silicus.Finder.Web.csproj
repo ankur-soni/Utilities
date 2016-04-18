@@ -824,6 +824,10 @@
       <Project>{db09df65-ed4f-41e2-aea3-0162281568e7}</Project>
       <Name>Silicus.Finder.IdentityWrapper</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Silicus.Finder.ModelMappingService\Silicus.Finder.ModelMappingService.csproj">
+      <Project>{5450761e-0f88-4f66-ad55-ff0fe63856fc}</Project>
+      <Name>Silicus.Finder.ModelMappingService</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Silicus.Finder.Models\Silicus.Finder.Models.csproj">
       <Project>{2f4384aa-2fe9-4c85-a6cc-59228bc587e6}</Project>
       <Name>Silicus.Finder.Models</Name>

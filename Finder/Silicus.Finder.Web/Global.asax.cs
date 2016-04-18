@@ -1,4 +1,4 @@
-﻿using System;
+﻿
 using System.Configuration;
 using System.Diagnostics.CodeAnalysis;
 using System.Security.Authentication;
@@ -11,7 +11,7 @@ using Silicus.FrameWorx.Logger;
 using Silicus.Finder.Web.Controllers;
 using Silicus.Finder.Web.Mappings;
 using Silicus.Finder.Entities;
-
+using System;
 namespace Silicus.Finder.Web
 {
     //using Eda.RDBI.Entities.Initializer;
