@@ -11,5 +11,7 @@ namespace Silicus.UtilityContainerr.Entities.EntityConfigurations
 
         public static readonly string Engagements = "Engagement";
         public static readonly string EngagementUserPermissions = "EngagementUserPermissions";
+        public static readonly string EngagementRoles = "EngagementRoles";
+        public static readonly string Resources = "Resource";
     }
 }
