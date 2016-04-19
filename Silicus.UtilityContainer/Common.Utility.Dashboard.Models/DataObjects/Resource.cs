@@ -11,11 +11,15 @@ namespace Silicus.UtilityContainer.Models.DataObjects
 {
     using System;
     using System.Collections.Generic;
+    using System.ComponentModel.DataAnnotations.Schema;
     
     public partial class Resource
     {
         public int ID { get; set; }
+        [ForeignKey("User")]
         public int UserID { get; set; }
+
+        public virtual User User { get; set; }
         public bool IsTimecardsRequireApproval { get; set; }
         public Nullable<int> DirectManager1ID { get; set; }
         public bool CanDirectManager1ApproveTime { get; set; }

@@ -40,6 +40,7 @@ namespace Silicus.Finder.ModelMappingService
             employee.Contact = contact;
             employee.Role = user.PrimaryRoleID.ToString();
             employee.ProjectId = EngagementUserPermissionToProject(employee);
+
             return employee;
         }
 
@@ -64,7 +65,7 @@ namespace Silicus.Finder.ModelMappingService
         public Project MapEngagementToProject(Engagement engagement)
         {
             var project = new Project();
-            var commonDbContext=GetCommonDataBAseContext();
+            var commonDbContext = GetCommonDataBAseContext();
 
             project.ProjectId = engagement.ID;
 
@@ -101,10 +102,10 @@ namespace Silicus.Finder.ModelMappingService
 
             //project.skillSetId=
 
-            var userInEngagement = commonDbContext.Query<EngagementUserPermission>().Where(model => model.EngagementID == engagement.ID).Select(model=>model.ID).ToList();
-         //   project.EmployeeIds = userInEngagement.ToArray();
-           
-            foreach(int userId in userInEngagement)
+            var userInEngagement = commonDbContext.Query<EngagementUserPermission>().Where(model => model.EngagementID == engagement.ID).Select(model => model.UserID).ToList();
+            project.EmployeeIds = userInEngagement.ToArray();
+
+            foreach (int userId in userInEngagement)
             {
                 var user = commonDbContext.Query<User>().Where(model => model.ID == userId).FirstOrDefault();
                 project.Employees.Add(MapUserToEmployee(user));
@@ -114,9 +115,43 @@ namespace Silicus.Finder.ModelMappingService
         }
 
 
-        public SkillSet MapSkillToSkillSet(Silicus.UtilityContainer.Models.DataObjects.Skill skill)
+        public SkillSet MapSkillToSkillSet(Skill skill)
         {
-            throw new NotImplementedException();
+            var _commonDBContext = GetCommonDataBAseContext();
+            var resourceList = _commonDBContext.Query<Resource>().ToList();
+            var resourceSkillList = _commonDBContext.Query<ResourceSkillLevel>().ToList();
+            var userSkillList = new List<ResourceSkillLevel>();
+            var skillSet = new SkillSet();
+            skillSet.SkillSetId = skill.ID;
+            if (skill.Parent == null)
+            {
+                skillSet.Name = skill.Name;
+            }
+            else
+            {
+                skillSet.Name = skill.Parent.Name;
+                skillSet.Description = skill.Name;
+            }
+            foreach (var resourceSkill in resourceSkillList)
+            {
+                if (resourceSkill.SkillID == skill.ID)
+                {
+                    userSkillList.Add(resourceSkill);
+                }
+            }
+            foreach (var user in userSkillList)
+            {
+                foreach (var resource in resourceList)
+                {
+                    if (user.ResourceID == resource.ID)
+                    {
+                        skillSet.Employees.Add(MapUserToEmployee(resource.User));
+                    }
+
+                }
+
+            }
+            return skillSet;
         }
     }
 }
