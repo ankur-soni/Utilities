@@ -272,7 +272,7 @@ namespace Silicus.Finder.Web.Controllers
            // _roleService.GetRoleDetails();
             var selectedEmployee = _employeeService.GetEmployeeById(id);
             var employeeViewModel = new EmployeeViewModel();
-             ViewBag.selectedEmployeesRole = _roleService.GetRoleById(Convert.ToInt32( selectedEmployee.Role)).RoleName;
+           //  ViewBag.selectedEmployeesRole = _roleService.GetRoleById(Convert.ToInt32( selectedEmployee.Role)).RoleName;
             Mapper.Map(selectedEmployee, employeeViewModel);
             ViewBag.EmployeesList = _employeeService.GetAllEmployees();
             return PartialView("_Details", employeeViewModel);

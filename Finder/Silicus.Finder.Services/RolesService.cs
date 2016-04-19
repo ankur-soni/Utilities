@@ -32,12 +32,12 @@ namespace Silicus.Finder.Services
 
         //}
 
-        public Role GetRoleById(int Id)
-        {
+        //public Role GetRoleById(int Id)
+        //{
 
-           var role = _mapper.GetCommonDataBAseContext().Query<Silicus.UtilityContainer.Models.DataObjects.Role>().Where(r => r.ID == Id).SingleOrDefault();
-          return  _mapper.MapRoleToRole(role);
-        }
+        //   var role = _mapper.GetCommonDataBAseContext().Query<Silicus.UtilityContainer.Models.DataObjects.Role>().Where(r => r.ID == Id).SingleOrDefault();
+        //  return  _mapper.MapRoleToRole(role);
+        //}
 
         //public int Add(Role Role)
         //{

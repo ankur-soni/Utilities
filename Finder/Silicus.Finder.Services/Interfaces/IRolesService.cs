@@ -8,6 +8,6 @@ namespace Silicus.Finder.Services.Interfaces
     {
         //IEnumerable<Role> GetRoleDetails();
 
-        Role GetRoleById(int Id);
+      //  Role GetRoleById(int Id);
     }
 }
