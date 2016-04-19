@@ -33,6 +33,7 @@ namespace Silicus.UtilityContainerr.Entities
             modelBuilder.Configurations.Add(new EngagementUserPermissionsMap());
             modelBuilder.Configurations.Add(new EngagementRoleMap());
             modelBuilder.Configurations.Add(new ResourceMap());
+            modelBuilder.Configurations.Add(new ResourceHistoryMap());
 
             // Many-to-many example - can be moved to Map file as well.
             modelBuilder.Entity<Asset>()

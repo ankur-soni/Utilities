@@ -9,10 +9,9 @@ using System.Threading.Tasks;
 
 namespace Silicus.UtilityContainerr.Entities.EntityConfigurations
 {
-
-    internal class EngagementUserPermissionMap : EntityTypeConfiguration<EngagementUserPermission>
+    internal class EngagementUserPermissionsMap : EntityTypeConfiguration<EngagementUserPermission>
     {
-        public EngagementUserPermissionMap()
+        public EngagementUserPermissionsMap()
         {
             HasKey(o => o.ID);
 
@@ -20,5 +19,5 @@ namespace Silicus.UtilityContainerr.Entities.EntityConfigurations
 
             ToTable(TableSettings.EngagementUserPermissions, TableSettings.DefaultSchema);
         }
-    }
+    } 
 }
