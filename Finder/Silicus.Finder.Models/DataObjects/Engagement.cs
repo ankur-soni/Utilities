@@ -5,6 +5,10 @@ namespace Silicus.Finder.Models.DataObjects
 {
     public enum EngagementType
     {
+        [Display(Name = "None")]
+        [Description("None")]
+        None,
+
         [Display(Name = "Fixed Price")]
         [Description("Fixed Price")]
         Fixed_Price,

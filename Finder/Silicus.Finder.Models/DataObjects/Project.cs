@@ -73,11 +73,11 @@ namespace Silicus.Finder.Models.DataObjects
         public string AdditionalNotes { get; set; }
 
         [NotMapped]
-        public int[] skillSetId { get; set; }
+        public int?[] skillSetId { get; set; }
         public virtual ICollection<SkillSet> SkillSets { get; set; }
 
         [NotMapped]
-        public int[] EmployeeIds { get; set; }
+        public int?[] EmployeeIds { get; set; }
         public virtual ICollection<Employee> Employees { get; set; }
     }
 }

@@ -9,15 +9,16 @@ using System.Threading.Tasks;
 
 namespace Silicus.UtilityContainerr.Entities.EntityConfigurations
 {
-    internal class EngagementMap : EntityTypeConfiguration<Engagement>
+    internal class EngagementUserPermissionsMap : EntityTypeConfiguration<EngagementUserPermission>
     {
-        public EngagementMap()
+        public EngagementUserPermissionsMap()
         {
             HasKey(o => o.ID);
 
             Property(p => p.ID).HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity);
 
-            ToTable(TableSettings.Engagements, TableSettings.DefaultSchema);
+            ToTable(TableSettings.EngagementUserPermissions, TableSettings.DefaultSchema);
         }
+
     }
 }
