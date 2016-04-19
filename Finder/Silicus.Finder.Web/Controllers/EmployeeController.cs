@@ -25,10 +25,14 @@ namespace Silicus.Finder.Web.Controllers
 
         private readonly ISkillSetService _skillSetService;
 
-        public EmployeeController(IEmployeeService employeeService, ISkillSetService skillSetService)
+        private readonly IRolesService _roleService;
+
+        public EmployeeController(IRolesService roleService, IEmployeeService employeeService, ISkillSetService skillSetService)
         {
             _employeeService = employeeService;
             _skillSetService = skillSetService;
+            _roleService = roleService;
+
         }
 
         //[HttpPost]
@@ -265,8 +269,10 @@ namespace Silicus.Finder.Web.Controllers
 
         public ActionResult Details(string id)
         {
+           // _roleService.GetRoleDetails();
             var selectedEmployee = _employeeService.GetEmployeeById(id);
             var employeeViewModel = new EmployeeViewModel();
+           //  ViewBag.selectedEmployeesRole = _roleService.GetRoleById(Convert.ToInt32( selectedEmployee.Role)).RoleName;
             Mapper.Map(selectedEmployee, employeeViewModel);
             ViewBag.EmployeesList = _employeeService.GetAllEmployees();
             return PartialView("_Details", employeeViewModel);

@@ -101,8 +101,8 @@ namespace Silicus.Finder.ModelMappingService
 
             //project.skillSetId=
 
-            var userInEngagement = commonDbContext.Query<EngagementUserPermission>().Where(model => model.EngagementID == engagement.ID).Select(model=>model.UserID).ToList();
-            project.EmployeeIds = userInEngagement.ToArray();
+            var userInEngagement = commonDbContext.Query<EngagementUserPermission>().Where(model => model.EngagementID == engagement.ID).Select(model=>model.ID).ToList();
+         //   project.EmployeeIds = userInEngagement.ToArray();
            
             foreach(int userId in userInEngagement)
             {
