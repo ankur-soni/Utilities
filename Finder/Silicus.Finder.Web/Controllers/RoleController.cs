@@ -61,47 +61,47 @@ namespace Silicus.Finder.Web.Controllers
             return Json(modelList.ToDataSourceResult(request), JsonRequestBehavior.AllowGet);
         }
         
-        [AcceptVerbs(HttpVerbs.Post)]
-        public async Task<ActionResult> CreateRole(Role role)
-        {
-            if (ModelState.IsValid)
-            {
-                var identityRole = new IdentityRole(role.RoleName);
-                var roleresult = await RoleManager.CreateAsync(identityRole);
-                if (!roleresult.Succeeded)
-                {
-                    ModelState.AddModelError("", roleresult.Errors.First());
-                    return Json(-1);
-                }
-                return Json(_rolesService.Add(role));
-            }
+        //[AcceptVerbs(HttpVerbs.Post)]
+        //public async Task<ActionResult> CreateRole(Role role)
+        //{
+        //    if (ModelState.IsValid)
+        //    {
+        //        var identityRole = new IdentityRole(role.RoleName);
+        //        var roleresult = await RoleManager.CreateAsync(identityRole);
+        //        if (!roleresult.Succeeded)
+        //        {
+        //            ModelState.AddModelError("", roleresult.Errors.First());
+        //            return Json(-1);
+        //        }
+        //        return Json(_rolesService.Add(role));
+        //    }
 
-            return Json(-1);
-        }
+        //    return Json(-1);
+        //}
 
-        [AcceptVerbs(HttpVerbs.Post)]
-        public ActionResult UpdateRole(Role role)
-        {
-            if (role != null && ModelState.IsValid)
-            {
-                _rolesService.Update(role);
-                return Json(1);
-            }
+        //[AcceptVerbs(HttpVerbs.Post)]
+        //public ActionResult UpdateRole(Role role)
+        //{
+        //    if (role != null && ModelState.IsValid)
+        //    {
+        //        _rolesService.Update(role);
+        //        return Json(1);
+        //    }
 
-            return Json(-1);
-        }
+        //    return Json(-1);
+        //}
 
-        [AcceptVerbs(HttpVerbs.Post)]
-        public ActionResult DeleteRole(Role role)
-        {
-            if (role != null && ModelState.IsValid)
-            {
+        //[AcceptVerbs(HttpVerbs.Post)]
+        //public ActionResult DeleteRole(Role role)
+        //{
+        //    if (role != null && ModelState.IsValid)
+        //    {
                 
-                _rolesService.Delete(role);
-                return Json(1);
-            }
+        //        _rolesService.Delete(role);
+        //        return Json(1);
+        //    }
 
-            return Json(-1);
-        }
+        //    return Json(-1);
+        //}
     }
 }
