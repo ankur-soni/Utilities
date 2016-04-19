@@ -128,16 +128,23 @@ namespace Silicus.Finder.Services
 
         public List<Employee> GetAllEmployees()
         {
-            var allEmployeeList = _context.Query<Employee>().ToList();
-            foreach (Employee emp in allEmployeeList)
-            {
-                if (emp.EmployeeTitles.Count > 0)
-                {
-                    var empTitle = emp.EmployeeTitles.Where(title => title.IsCurrent == true).SingleOrDefault().Title;
-                    emp.Title = empTitle.Name;
-                    emp.TitleId = empTitle.TitleId;
-                }
-            }
+            var allUsers = _utilityCommonDbContext.Query<User>().ToList();
+            var allEmployeeList = new List<Employee>();
+
+            foreach (var user in allUsers)
+                allEmployeeList.Add(_commonMapper.MapUserToEmployee(user));
+
+           // var allEmployeeList = _context.Query<Employee>().ToList();
+
+            //foreach (Employee emp in allEmployeeList)
+            //{
+            //    if (emp.EmployeeTitles.Count > 0)
+            //    {
+            //        var empTitle = emp.EmployeeTitles.Where(title => title.IsCurrent == true).SingleOrDefault().Title;
+            //        emp.Title = empTitle.Name;
+            //        emp.TitleId = empTitle.TitleId;
+            //    }
+            //}
 
             return allEmployeeList;
         }
