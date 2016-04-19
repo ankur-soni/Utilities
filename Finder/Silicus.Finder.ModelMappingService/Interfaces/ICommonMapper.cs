@@ -16,7 +16,7 @@ namespace Silicus.Finder.ModelMappingService.Interfaces
         Project MapEngagementToProject(Engagement engagement);
         SkillSet MapSkillToSkillSet(Skill skill);
         ICommonDataBaseContext GetCommonDataBAseContext();
-      //  Models.DataObjects.Role MapRoleToRole(Silicus.UtilityContainer.Models.DataObjects.Role role);
-      //  List<Project> EmployeeProjects(IList<int> projectIds);
+      Models.DataObjects.Role MapRoleToRole(Silicus.UtilityContainer.Models.DataObjects.Role role);
+        List<Project> EmployeeProjects(IList<int> projectIds);
     }
 }
