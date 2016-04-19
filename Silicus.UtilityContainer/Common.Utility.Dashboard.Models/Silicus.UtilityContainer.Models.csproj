@@ -61,6 +61,7 @@
     <Compile Include="DataObjects\Category.cs" />
     <Compile Include="DataObjects\Engagement.cs" />
     <Compile Include="DataObjects\EngagementUserPermissions.cs" />
+    <Compile Include="DataObjects\ResourceHistory.cs" />
     <Compile Include="DataObjects\Role.cs" />
     <Compile Include="DataObjects\Skill.cs" />
     <Compile Include="DataObjects\User.cs" />
@@ -69,7 +70,9 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="App.config" />
+    <None Include="App.config">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>

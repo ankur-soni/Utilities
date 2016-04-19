@@ -55,6 +55,7 @@
     <Compile Include="DataContextFactory.cs" />
     <Compile Include="EntityConfigurations\EngagementMap.cs" />
     <Compile Include="EntityConfigurations\EngagementUserPermissionMap.cs" />
+    <Compile Include="EntityConfigurations\ResourceHistoryMap.cs" />
     <Compile Include="EntityConfigurations\RoleMap.cs" />
     <Compile Include="EntityConfigurations\TableSettings.cs" />
     <Compile Include="EntityConfigurations\UserMap.cs" />
