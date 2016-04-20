@@ -61,6 +61,7 @@
     <Compile Include="DataObjects\Category.cs" />
     <Compile Include="DataObjects\Engagement.cs" />
     <Compile Include="DataObjects\EngagementRole.cs" />
+    <Compile Include="DataObjects\EngagementType.cs" />
     <Compile Include="DataObjects\EngagementUserPermissions.cs" />
     <Compile Include="DataObjects\Resource.cs" />
     <Compile Include="DataObjects\ResourceHistory.cs" />

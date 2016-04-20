@@ -9,17 +9,15 @@ using System.Threading.Tasks;
 
 namespace Silicus.UtilityContainerr.Entities.EntityConfigurations
 {
-   
-  internal class ResourceMap : EntityTypeConfiguration<Resource>
+    internal class EngagementTypeMap : EntityTypeConfiguration<EngagementType>
     {
-      public ResourceMap()
+        public EngagementTypeMap()
         {
             HasKey(o => o.ID);
 
             Property(p => p.ID).HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity);
 
-            ToTable(TableSettings.Resources, TableSettings.DefaultSchema);
+            ToTable(TableSettings.EngagementTypes, TableSettings.DefaultSchema);
         }
     }
-
 }

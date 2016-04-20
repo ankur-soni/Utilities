@@ -37,5 +37,6 @@ namespace Silicus.Finder.Services.Interfaces
        //List<Employee> ImportEmployeesFromExcel(string path);
        //List<string> AddAllEmployees(List<Employee> employees);
        //List<Title> GetAllTitles();
+       int GetEmployeesCount();
     }
 }

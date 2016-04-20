@@ -114,7 +114,13 @@ namespace Silicus.Finder.Services
             return project;
         }
 
-        public List<SkillSet> GetAllSkills()
+       public int GetProjectsCount()
+        {
+            int count = _utilityCommonDbContext.Query<Engagement>().Count();
+            return count;
+        }
+
+       public List<SkillSet> GetAllSkills()
         {
             var skills = _context.Query<SkillSet>().ToList();
             return skills;
