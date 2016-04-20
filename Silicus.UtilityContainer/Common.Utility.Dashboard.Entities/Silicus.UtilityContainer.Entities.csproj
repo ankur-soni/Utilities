@@ -61,6 +61,7 @@
     <Compile Include="EntityConfigurations\ResourceSkillLevelMap.cs" />
     <Compile Include="EntityConfigurations\RoleMap.cs" />
     <Compile Include="EntityConfigurations\TableSettings.cs" />
+    <Compile Include="EntityConfigurations\TitleMap.cs" />
     <Compile Include="EntityConfigurations\UserMap.cs" />
     <Compile Include="EntityConfigurations\UserRoleMap.cs" />
     <Compile Include="EntityConfigurations\UtilityMap.cs" />

@@ -19,5 +19,6 @@ namespace Silicus.Finder.ModelMappingService.Interfaces
       Models.DataObjects.Role MapRoleToRole(Silicus.UtilityContainer.Models.DataObjects.Role role);
         List<Engagement> EmployeeProjects(IList<int> engagegmetIds);
          Project MapEngagementToProjectForEmployee(Engagement engagement);
+          string GetUserTitle(User user);
     }
 }

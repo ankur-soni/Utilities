@@ -64,9 +64,9 @@
     <Compile Include="DataObjects\EngagementUserPermissions.cs" />
     <Compile Include="DataObjects\Resource.cs" />
     <Compile Include="DataObjects\ResourceHistory.cs" />
-    <Compile Include="DataObjects\ResourceSkillLevel.cs" />
     <Compile Include="DataObjects\Role.cs" />
     <Compile Include="DataObjects\Skill.cs" />
+    <Compile Include="DataObjects\Title.cs" />
     <Compile Include="DataObjects\User.cs" />
     <Compile Include="DataObjects\UserRole.cs" />
     <Compile Include="DataObjects\Utility.cs" />

@@ -10,13 +10,7 @@ namespace Silicus.Finder.ModelMappingService
 {
     public class CommonMapper : ICommonMapper
     {
-        //Silicus.UtilityContainerr.Entities.ICommonDataBaseContext _utilityCommonDbContext;
-
-        //public CommonMapper()
-        //{
-        //    Silicus.UtilityContainerr.Entities.IDataContextFactory dataContextFactory = new Silicus.UtilityContainerr.Entities.DataContextFactory();
-        //    _utilityCommonDbContext = dataContextFactory.CreateCommonDBContext();
-        //}
+        
 
         public ICommonDataBaseContext GetCommonDataBAseContext()
         {
@@ -39,9 +33,16 @@ namespace Silicus.Finder.ModelMappingService
                 employee.FirstName = user.FirstName;
                 employee.MiddleName = user.MiddleName;
                 employee.LastName = user.LastName;
+                employee.Title = GetUserTitle(user);
+                
+                var resourceId= GetCommonDataBAseContext().Query<Resource>().Where(r => r.UserID == user.ID).SingleOrDefault().ID;
+                var joiningDate = GetCommonDataBAseContext().Query<ResourceHistory>().Where(rh => rh.ResourceID == resourceId).FirstOrDefault().EffectiveDate;
+                employee.SilicusExperienceInMonths = (DateTime.Now.Month-joiningDate.Month)+12*(DateTime.Now.Year-joiningDate.Year);
+
                 employee.Contact = contact;
                 employee.Role = user.PrimaryRoleID.ToString();
                 employee.ProjectId = EngagementIds(user);
+
                 if (employee.ProjectId.Count > 0)
                 {
 
@@ -57,11 +58,22 @@ namespace Silicus.Finder.ModelMappingService
 
             }
 
+           // employee.SkillId = SkillIds(user);
+
+
             return employee;
         }
 
 
 
+        public string GetUserTitle(User user)
+        {
+            var resourceId = GetCommonDataBAseContext().Query<Resource>().Where(r => r.UserID == user.ID).SingleOrDefault().ID;
+            var titleId = GetCommonDataBAseContext().Query<ResourceHistory>().Where(rh => rh.ResourceID == resourceId).FirstOrDefault().TitleID;
+            var title = GetCommonDataBAseContext().Query<Title>().Where(t => t.TitleId == titleId).SingleOrDefault().Name;
+            return title;
+
+        }
 
 
         public Project MapEngagementToProjectForEmployee(Engagement engagement)
@@ -235,7 +247,7 @@ namespace Silicus.Finder.ModelMappingService
 
             var userInEngagement = commonDbContext.Query<EngagementUserPermission>().Where(model => model.EngagementID == engagement.ID).Select(model => model.UserID).ToList();
             project.EmployeeIds = userInEngagement.ToArray();
-           
+
             foreach (int userId in userInEngagement)
             {
                 var user = commonDbContext.Query<User>().Where(model => model.ID == userId).FirstOrDefault();
@@ -275,7 +287,7 @@ namespace Silicus.Finder.ModelMappingService
                 foreach (var resource in resourceList)
                 {
                     if (user.ResourceID == resource.ID)
-        {
+                    {
                         skillSet.Employees.Add(MapUserToEmployee(resource.User));
                     }
 
