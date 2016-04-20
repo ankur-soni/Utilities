@@ -43,9 +43,15 @@
   <ItemGroup>
     <Compile Include="Authentication.cs" />
     <Compile Include="Interface\IAuthentication.cs" />
+    <Compile Include="Interface\IAuthorization.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <ProjectReference Include="..\Common.Utility.Dashboard.Models\Silicus.UtilityContainer.Models.csproj">
+      <Project>{d5a36dcc-faeb-46bd-bc1c-c24e18d9e587}</Project>
+      <Name>Silicus.UtilityContainer.Models</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

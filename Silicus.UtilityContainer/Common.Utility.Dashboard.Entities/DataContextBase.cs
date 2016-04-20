@@ -28,12 +28,13 @@ namespace Silicus.UtilityContainerr.Entities
             modelBuilder.Configurations.Add(new UserMap());
             modelBuilder.Configurations.Add(new UtilityMap());
             modelBuilder.Configurations.Add(new RoleMap());
-            modelBuilder.Configurations.Add(new UserRoleMap());
+            modelBuilder.Configurations.Add(new UtilityUserRolesMap());
             modelBuilder.Configurations.Add(new EngagementMap());
             modelBuilder.Configurations.Add(new EngagementUserPermissionsMap());
             modelBuilder.Configurations.Add(new EngagementRoleMap());
             modelBuilder.Configurations.Add(new ResourceMap());
             modelBuilder.Configurations.Add(new ResourceHistoryMap());
+            modelBuilder.Configurations.Add(new EngagementTypeMap());
             modelBuilder.Configurations.Add(new ResourceSkillLevelMap());
 
             // Many-to-many example - can be moved to Map file as well.

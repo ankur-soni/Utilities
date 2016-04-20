@@ -4,9 +4,9 @@ using System.Data.Entity.ModelConfiguration;
 
 namespace Silicus.UtilityContainerr.Entities.EntityConfigurations
 {
-    internal class UserRoleMap : EntityTypeConfiguration<UserRole>
+    internal class UtilityUserRolesMap : EntityTypeConfiguration<UtilityUserRoles>
     {
-        public UserRoleMap()
+        public UtilityUserRolesMap()
         {
             HasKey(o => o.Id);
 

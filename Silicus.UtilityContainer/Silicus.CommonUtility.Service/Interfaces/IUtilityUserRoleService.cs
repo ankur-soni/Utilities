@@ -7,9 +7,8 @@ using System.Threading.Tasks;
 
 namespace Silicus.UtilityContainer.Services.Interfaces
 {
-    public interface IUserService
+    public interface IUtilityUserRoleService
     {
-        List<User> GetAllUsers();
-        void AddRolesToUserForAUtility(UtilityUserRoles newUserRole);
+        List<UtilityUserRoles> GetAllRolesForUser(string userName);
     }
 }
