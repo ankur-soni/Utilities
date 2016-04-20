@@ -9,13 +9,9 @@ namespace Silicus.Finder.Services
 {
     public class RolesService : IRolesService
     {
-        //private readonly IDataContext _context;
 
         private readonly ICommonMapper _mapper;
-        //public RolesService(IDataContextFactory dataContextFactory)
-        //{
-        //    _context = dataContextFactory.Create(ConnectionType.Ip);
-        //}
+
 
 
         public RolesService(ICommonMapper commonMapper)
@@ -23,21 +19,25 @@ namespace Silicus.Finder.Services
             _mapper = commonMapper;
         }
 
-        //public IEnumerable<Role> GetRoleDetails()
-        //{
-        //    var RoleList = _mapper.GetCommonDataBAseContext().Query<Silicus.UtilityContainer.Models.DataObjects.Role>().ToList();
-            
-            
-        //    return _mapper.
+        public IEnumerable<Role> GetRoleDetails()
+        {
+            var RoleList = _mapper.GetCommonDataBAseContext().Query<Silicus.UtilityContainer.Models.DataObjects.Role>().ToList();
+            var employeeRoleList = new List<Role>();
+            foreach (var role in RoleList)
+            {
+                employeeRoleList.Add(_mapper.MapRoleToRole(role));
 
-        //}
+            }
+            return employeeRoleList;
 
-        //public Role GetRoleById(int Id)
-        //{
+        }
 
-        //   var role = _mapper.GetCommonDataBAseContext().Query<Silicus.UtilityContainer.Models.DataObjects.Role>().Where(r => r.ID == Id).SingleOrDefault();
-        //  return  _mapper.MapRoleToRole(role);
-        //}
+        public Role GetRoleById(int Id)
+        {
+
+            var role = _mapper.GetCommonDataBAseContext().Query<Silicus.UtilityContainer.Models.DataObjects.Role>().Where(r => r.ID == Id).SingleOrDefault();
+            return _mapper.MapRoleToRole(role);
+        }
 
         //public int Add(Role Role)
         //{

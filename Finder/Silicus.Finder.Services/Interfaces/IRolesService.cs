@@ -6,8 +6,8 @@ namespace Silicus.Finder.Services.Interfaces
 {
     public interface IRolesService
     {
-        //IEnumerable<Role> GetRoleDetails();
+        IEnumerable<Role> GetRoleDetails();
 
-      //  Role GetRoleById(int Id);
+       Role GetRoleById(int Id);
     }
 }

@@ -279,7 +279,7 @@ namespace Silicus.Finder.Services
                         ++column;
                         break;
                     case 'E':
-                        project.EngagementType = ParseEnum<EngagementType>(cell.StringValue);
+                        project.EngagementType = ParseEnum<Silicus.Finder.Models.DataObjects.EngagementType>(cell.StringValue);
                         ++column;
                         break;
 

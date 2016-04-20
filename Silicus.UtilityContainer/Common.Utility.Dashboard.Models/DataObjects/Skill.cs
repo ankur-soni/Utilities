@@ -22,6 +22,7 @@ namespace Silicus.UtilityContainer.Models.DataObjects
         public Nullable<int> DisplayOrder { get; set; }
         public bool IsActive { get; set; }
         public Nullable<int> ParentID { get; set; }
+        public virtual Skill Parent { get; set; }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Skill> Skill1 { get; set; }
