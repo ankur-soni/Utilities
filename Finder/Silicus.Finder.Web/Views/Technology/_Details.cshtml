@@ -16,7 +16,7 @@
         <h4 style="padding-left:35px; margin-right:26px;">
             <button id="close-popup" class="close fa fa-2x fa-times" aria-hidden="true" data-dismiss="modal" type="button"></button>
             <span style="font-size:30px; margin-left:2%; color:#295071;">Skill Details</span>
-            @if (User.IsInRole("Admin") || User.IsInRole("Manager"))
+            @*@if (User.IsInRole("Admin") || User.IsInRole("Manager"))
             {
                 <span style="float:right; margin-right:30px;">
                     @Html.ActionLink(" ", "Edit", new { SkillSetId = Model.SkillSetId }, new { @class = "fa fa-pencil-square-o fa-2x action add", title = "Edit Skill Details" })
@@ -28,7 +28,7 @@
                       {<a data-dialog-href1="#" id="DeleteErrorMessage" fullname="@Model.Name" style=" color:#59a5b6" class="close action add" title="Delete Skill Record "><i class="fa fa-trash-o fa-2x"></i></a>}
                     }
                 </span>
-            }
+            }*@
         </h4>
     </div>
 </div>
