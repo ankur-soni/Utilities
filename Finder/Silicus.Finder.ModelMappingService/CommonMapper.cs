@@ -29,26 +29,26 @@ namespace Silicus.Finder.ModelMappingService
             var employee = new Employee();
             if (user != null)
             {
-            var contact = new Contact();
-            contact.EmailAddress = user.EmailAddress;
-            contact.MobileNumber = Convert.ToInt64(user.MobilePhone);
-            contact.PhoneNumber = user.OfficePhone;
+                var contact = new Contact();
+                contact.EmailAddress = user.EmailAddress;
+                contact.MobileNumber = Convert.ToInt64(user.MobilePhone);
+                contact.PhoneNumber = user.OfficePhone;
 
-            employee.EmployeeId = user.ID;
-            employee.EmployeeCode = user.EmployeeID;
-            employee.FirstName = user.FirstName;
-            employee.MiddleName = user.MiddleName;
-            employee.LastName = user.LastName;
-            employee.Contact = contact;
-            employee.Role = user.PrimaryRoleID.ToString();
-            employee.ProjectId = EngagementUserPermissionToProject(employee);
+                employee.EmployeeId = user.ID;
+                employee.EmployeeCode = user.EmployeeID;
+                employee.FirstName = user.FirstName;
+                employee.MiddleName = user.MiddleName;
+                employee.LastName = user.LastName;
+                employee.Contact = contact;
+                employee.Role = user.PrimaryRoleID.ToString();
+                employee.ProjectId = EngagementUserPermissionToProject(employee);
                 if (employee.ProjectId.Count > 0)
                 {
                     employee.Projects = EmployeeProjects(employee.ProjectId);
                 }
 
             }
-            
+
             return employee;
         }
 
@@ -61,8 +61,8 @@ namespace Silicus.Finder.ModelMappingService
 
             foreach (var projectId in projectIds)
             {
-
                 projects.Add(MapEngagementToProject(GetCommonDataBAseContext().Query<Engagement>().Where(e => e.ID == projectId).SingleOrDefault()));
+              
             }
             return projects;
 
@@ -143,7 +143,7 @@ namespace Silicus.Finder.ModelMappingService
 
             var userInEngagement = commonDbContext.Query<EngagementUserPermission>().Where(model => model.EngagementID == engagement.ID).Select(model => model.UserID).ToList();
             project.EmployeeIds = userInEngagement.ToArray();
-           
+
             foreach (int userId in userInEngagement)
             {
                 var user = commonDbContext.Query<User>().Where(model => model.ID == userId).FirstOrDefault();
@@ -183,7 +183,7 @@ namespace Silicus.Finder.ModelMappingService
                 foreach (var resource in resourceList)
                 {
                     if (user.ResourceID == resource.ID)
-        {
+                    {
                         skillSet.Employees.Add(MapUserToEmployee(resource.User));
                     }
 
