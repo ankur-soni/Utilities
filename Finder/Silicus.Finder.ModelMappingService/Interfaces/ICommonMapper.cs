@@ -11,12 +11,13 @@ namespace Silicus.Finder.ModelMappingService.Interfaces
 {
     public interface ICommonMapper
     {
-        IList<int> EngagementUserPermissionToProject(Employee employee);
+        IList<int> EngagementIds(User user);
         Employee MapUserToEmployee(User user);
         Project MapEngagementToProject(Engagement engagement);
         SkillSet MapSkillToSkillSet(Skill skill);
         ICommonDataBaseContext GetCommonDataBAseContext();
       Models.DataObjects.Role MapRoleToRole(Silicus.UtilityContainer.Models.DataObjects.Role role);
-        List<Project> EmployeeProjects(IList<int> projectIds);
+        List<Engagement> EmployeeProjects(IList<int> engagegmetIds);
+         Project MapEngagementToProjectForEmployee(Engagement engagement);
     }
 }

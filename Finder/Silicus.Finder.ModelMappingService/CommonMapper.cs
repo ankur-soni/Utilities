@@ -41,10 +41,18 @@ namespace Silicus.Finder.ModelMappingService
                 employee.LastName = user.LastName;
                 employee.Contact = contact;
                 employee.Role = user.PrimaryRoleID.ToString();
-                employee.ProjectId = EngagementUserPermissionToProject(employee);
+                employee.ProjectId = EngagementIds(user);
                 if (employee.ProjectId.Count > 0)
                 {
-                    employee.Projects = EmployeeProjects(employee.ProjectId);
+                   
+                     var engagements =  EmployeeProjects(employee.ProjectId);
+                     var projects = new List<Project>();
+                     foreach (var engagement in engagements)
+                     {
+                         projects.Add(MapEngagementToProjectForEmployee(engagement));
+                     }
+                     employee.Projects = projects;
+                   
                 }
 
             }
@@ -53,38 +61,98 @@ namespace Silicus.Finder.ModelMappingService
         }
 
 
-        public List<Project> EmployeeProjects(IList<int> projectIds)
+
+
+        public Project MapEngagementToProjectForEmployee(Engagement engagement)
         {
-            var projects = new List<Project>();
+            var project = new Project();
+            var commonDbContext = GetCommonDataBAseContext();
 
-            // var engagements = GetCommonDataBAseContext().Query<Engagement>();
+            project.ProjectId = engagement.ID;
 
-            foreach (var projectId in projectIds)
+            project.ProjectName = engagement.Name;
+
+            project.ProjectCode = engagement.Code;
+
+            project.Description = engagement.Description;
+
+            //project.ProjectType=engagement.   
+
+            project.EngagementType = engagement.ContractTypeID == null ? EngagementType.None : (EngagementType)engagement.ContractTypeID;
+
+            if (engagement.BeginDate > DateTime.Now)
+                project.Status = Status.Not_Started;
+            else if (engagement.EndDate > DateTime.Now && engagement.BeginDate < DateTime.Now)
+                project.Status = Status.On_Going;
+            else if (engagement.EndDate < DateTime.Now)
+                project.Status = Status.Completed;
+
+            project.StartDate = engagement.BeginDate;
+
+            //project.ExpectedEndDate=engagement.
+
+            project.ActualEndDate = engagement.EndDate;
+
+            //project.ArchiveDate=engagement.
+
+            project.EngagementManagerId = engagement.EngagementManagerID;
+
+            project.ProjectManagerId = engagement.PrimaryProjectManagerID;
+
+            //project.AdditionalNotes=engagement.
+
+            //project.skillSetId=
+
+            var userInEngagement = commonDbContext.Query<EngagementUserPermission>().Where(model => model.EngagementID == engagement.ID).Select(model => model.UserID).ToList();
+            project.EmployeeIds = userInEngagement.ToArray();
+
+            
+            return project;
+        }
+
+
+
+
+        public List<Engagement> EmployeeProjects(IList<int> engagementIds)
+        {
+            var engagements = new List<Engagement>();
+
+
+            foreach (var engagementID in engagementIds)
             {
-
-                projects.Add(MapEngagementToProject(GetCommonDataBAseContext().Query<Engagement>().Where(e => e.ID == projectId).SingleOrDefault()));
+                engagements.Add(GetCommonDataBAseContext().Query<Engagement>().Where(e => e.ID == engagementID).SingleOrDefault());
             }
-            return projects;
+
+            return engagements;
 
         }
 
 
-        public IList<int> EngagementUserPermissionToProject(Employee employee)
+        public IList<int> EngagementIds(User user)
         {
-            var ProjectIds = new List<int>();
-            var projectMappingToUSer = GetCommonDataBAseContext().Query<EngagementUserPermission>();
-            foreach (var item in projectMappingToUSer)
-            {
-                if (item.UserID == employee.EmployeeId)
-                {
-                    if (item.EngagementID != null)
-                    {
-                        ProjectIds.Add(Convert.ToInt32(item.EngagementID));
-                    }
+           
+            var resource = GetCommonDataBAseContext().Query<Resource>().Where(r => r.UserID == user.ID).SingleOrDefault();
+            var resourceHistoryIds = GetCommonDataBAseContext().Query<ResourceHistory>().Where(rh => rh.ResourceID == resource.ID);
+            var engagementRole = GetCommonDataBAseContext().Query<EngagementRole>();
 
+            var engagementIdsOfCurrentUser = new List<int>();
+
+            foreach (var resourceHistoryId in resourceHistoryIds)
+            {
+                var engagementIDs = engagementRole.Where(er => er.ResourceHistoryID == resourceHistoryId.ID).ToList();
+                if (engagementIDs.Count>0)
+                {
+                    foreach (var engagementID in engagementIDs)
+                    {
+                        engagementIdsOfCurrentUser.Add(engagementID.EngagementID); 
+                    }
+                    
                 }
             }
-            return ProjectIds;
+            
+            
+            
+            return engagementIdsOfCurrentUser;
         }
 
 
@@ -158,5 +226,8 @@ namespace Silicus.Finder.ModelMappingService
         {
             throw new NotImplementedException();
         }
+
+
+       
     }
 }
