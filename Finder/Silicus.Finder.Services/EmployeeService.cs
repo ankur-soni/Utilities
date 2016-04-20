@@ -32,8 +32,7 @@ namespace Silicus.Finder.Services
         public List<Employee> GetAllEmployees()
         {
             var context = _commonMapper.GetCommonDataBAseContext();
-          
-
+      
             EmployeeSortByEmpCode employeeSortByEmpCode = new EmployeeSortByEmpCode();
             var userList = context.Query<User>();
             var employeeList = new List<Employee>();
@@ -112,11 +111,16 @@ namespace Silicus.Finder.Services
             var user = context.Query<User>().Where(emp => (emp.EmployeeID == employeeId)).SingleOrDefault();
            // employee.TitleId = context.Query<EmployeeTitles>().Where(emp => emp.EmployeeId == employeeId && emp.IsCurrent == true).Select(t => t.TitleId).SingleOrDefault();
             //employee.Title = GetEmployeeTitle(employeeId);
-
-           
-
             return _commonMapper.MapUserToEmployee(user);
         }
+
+
+        public int GetEmployeesCount()
+        {
+            int count =  _commonMapper.GetCommonDataBAseContext().Query<User>().Count();
+            return count;
+        }
+
 
         //public SkillSet GetSkillSetById(int skillSetId)
         //{

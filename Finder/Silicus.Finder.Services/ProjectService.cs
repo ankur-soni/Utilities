@@ -114,7 +114,13 @@ namespace Silicus.Finder.Services
             return project;
         }
 
-        public List<SkillSet> GetAllSkills()
+       public int GetProjectsCount()
+        {
+            int count = _utilityCommonDbContext.Query<Engagement>().Count();
+            return count;
+        }
+
+       public List<SkillSet> GetAllSkills()
         {
             var skills = _context.Query<SkillSet>().ToList();
             return skills;
@@ -273,7 +279,7 @@ namespace Silicus.Finder.Services
                         ++column;
                         break;
                     case 'E':
-                        project.EngagementType = ParseEnum<EngagementType>(cell.StringValue);
+                        project.EngagementType = ParseEnum<Silicus.Finder.Models.DataObjects.EngagementType>(cell.StringValue);
                         ++column;
                         break;
 
