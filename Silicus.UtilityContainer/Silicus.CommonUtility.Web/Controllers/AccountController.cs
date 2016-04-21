@@ -10,6 +10,7 @@ using Silicus.UtilityContainer.Web.Models;
 using System.Web.Security;
 using Silicus.UtilityContainer.Security.Interface;
 using Silicus.UtilityContainer.Security;
+using Silicus.UtilityContainer.Services.Interfaces;
 
 namespace Silicus.UtilityContainer.Web.Controllers
 {
@@ -18,13 +19,11 @@ namespace Silicus.UtilityContainer.Web.Controllers
     {
         private ApplicationSignInManager _signInManager;
         private ApplicationUserManager _userManager;
-        private IAuthentication _userAuthentication;
-             
+        private IAuthentication _userAuthentication;    
 
         public AccountController(IAuthentication userAuthentication)
         {
             _userAuthentication = userAuthentication;
-
         }
 
         public ApplicationSignInManager SignInManager
@@ -89,6 +88,7 @@ namespace Silicus.UtilityContainer.Web.Controllers
                               true,
                               userData: model.Password);
 
+               // var newAuthorizationCookie; 
 
                 var encryptedTicket = FormsAuthentication.Encrypt(newAuthenticationTicket);
 

@@ -28,6 +28,7 @@ namespace Silicus.Finder.ModelMappingService.Interfaces
         Project MapBasicPropertiesOfEngagementToProject(Engagement engagement);
 
         SkillSet MapSkillToSkillSet(Skill skill);
+        SkillSet MapSkillToEmployee(SkillSet skillSet);
 
         IList<int> GetSkillIds(User user);
 

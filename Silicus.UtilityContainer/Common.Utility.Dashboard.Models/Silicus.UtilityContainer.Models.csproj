@@ -71,7 +71,7 @@
     <Compile Include="DataObjects\Skill.cs" />
     <Compile Include="DataObjects\Title.cs" />
     <Compile Include="DataObjects\User.cs" />
-    <Compile Include="DataObjects\UserRole.cs" />
+    <Compile Include="DataObjects\UtilityUserRoles.cs" />
     <Compile Include="DataObjects\Utility.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

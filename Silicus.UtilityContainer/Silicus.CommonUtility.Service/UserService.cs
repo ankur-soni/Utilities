@@ -26,9 +26,9 @@ namespace Silicus.UtilityContainer.Services
             return _commonDBContext.Query<User>().ToList();
         }
 
-        public void AddRolesToUserForAUtility(UserRole newUserRole)
+        public void AddRolesToUserForAUtility(UtilityUserRoles newUserRole)
         {
-            var userRole = _commonDBContext.Query<UserRole>().Where(x => x.UserId == newUserRole.UserId && x.UtilityId == newUserRole.UtilityId).FirstOrDefault();
+            var userRole = _commonDBContext.Query<UtilityUserRoles>().Where(x => x.UserId == newUserRole.UserId && x.UtilityId == newUserRole.UtilityId).FirstOrDefault();
             if (userRole != null)
             {
                 _commonDBContext.Delete(userRole);

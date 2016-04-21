@@ -26,8 +26,8 @@ namespace Silicus.Finder.ModelMappingService
 
 
         public Employee MapBasicPropertiesOfUserToEmployee(User user)
-        { 
-             var employee = new Employee();
+        {
+            var employee = new Employee();
             if (user != null)
             {
                 var contact = new Contact();
@@ -104,7 +104,7 @@ namespace Silicus.Finder.ModelMappingService
             var title = GetCommonDataBAseContext().Query<Silicus.UtilityContainer.Models.DataObjects.Title>().Where(t => t.ID == titleId).SingleOrDefault().Name;
             return title;
 
-        }
+            }
 
         public string GetResourceType(User user)
         {
@@ -139,7 +139,7 @@ namespace Silicus.Finder.ModelMappingService
                 skills.Add(GetCommonDataBAseContext().Query<Skill>().Where(s => s.ID == skillId).SingleOrDefault());
             }
             return skills;
-        
+
         }
 
         public IList<int> GetEngagementIds(User user)
@@ -243,30 +243,17 @@ namespace Silicus.Finder.ModelMappingService
             //project.skillSetId=
             var userInEngagement = commonDbContext.Query<EngagementUserPermission>().Where(model => model.EngagementID == engagement.ID).Select(model => model.UserID).ToList();
             project.EmployeeIds = userInEngagement.ToArray();
-           
+
             return project;
         }
 
-
-
-
-        public SkillSet MapSkillToSkillSet(Skill skill)
+        public SkillSet MapSkillToEmployee(SkillSet skillSet)
         {
             var _commonDBContext = GetCommonDataBAseContext();
+            var skill = _commonDBContext.Query<Skill>().Where(x => x.ID == skillSet.SkillSetId).FirstOrDefault();
             var resourceList = _commonDBContext.Query<Resource>().ToList();
             var resourceSkillList = _commonDBContext.Query<ResourceSkillLevel>().ToList();
             var userSkillList = new List<ResourceSkillLevel>();
-            var skillSet = new SkillSet();
-            skillSet.SkillSetId = skill.ID;
-            if (skill.Parent == null)
-            {
-                skillSet.Name = skill.Name;
-            }
-            else
-            {
-                skillSet.Name = skill.Parent.Name;
-                skillSet.Description = skill.Name;
-            }
             foreach (var resourceSkill in resourceSkillList)
             {
                 if (resourceSkill.SkillID == skill.ID)
@@ -279,13 +266,32 @@ namespace Silicus.Finder.ModelMappingService
                 foreach (var resource in resourceList)
                 {
                     if (user.ResourceID == resource.ID)
-        {
+                    {
             skillSet.Employees.Add(MapBasicPropertiesOfUserToEmployee (resource.User));
                     }
 
                 }
 
             }
+            return skillSet;
+        }
+
+        public SkillSet MapSkillToSkillSet(Skill skill)
+        {
+            var _commonDBContext = GetCommonDataBAseContext();
+            
+            var skillSet = new SkillSet();
+            skillSet.SkillSetId = skill.ID;
+            if (skill.Parent == null)
+            {
+                skillSet.Name = skill.Name;
+            }
+            else
+            {
+                skillSet.Name = skill.Parent.Name;
+                skillSet.Description = skill.Name;
+            }
+           
             return skillSet;
         }
     }
