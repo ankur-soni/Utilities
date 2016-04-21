@@ -38,7 +38,7 @@ namespace Silicus.Finder.Services
             var employeeList = new List<Employee>();
             foreach (var user in userList)
             {
-               employeeList.Add( _commonMapper.MapUserToEmployee(user));
+                employeeList.Add(_commonMapper.MapUserToEmployee(user));
             }
            // employeeList = AttachTitleToEmployee(employeeList);
             employeeList.Sort(employeeSortByEmpCode);

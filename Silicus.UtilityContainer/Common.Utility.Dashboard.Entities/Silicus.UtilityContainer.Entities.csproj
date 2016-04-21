@@ -60,6 +60,7 @@
     <Compile Include="EntityConfigurations\ResourceHistoryMap.cs" />
     <Compile Include="EntityConfigurations\ResourceMap.cs" />
     <Compile Include="EntityConfigurations\ResourceSkillLevelMap.cs" />
+    <Compile Include="EntityConfigurations\ResourceTypeMpa.cs" />
     <Compile Include="EntityConfigurations\RoleMap.cs" />
     <Compile Include="EntityConfigurations\TableSettings.cs" />
     <Compile Include="EntityConfigurations\TitleMap.cs" />

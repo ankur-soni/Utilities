@@ -24,9 +24,10 @@ namespace Silicus.Finder.ModelMappingService
             return _dataContextFactory.CreateCommonDBContext();
         }
 
-        public Employee MapUserToEmployee(User user)
-        {
-            var employee = new Employee();
+
+        public Employee MapBasicPropertiesOfUserToEmployee(User user)
+        { 
+             var employee = new Employee();
             if (user != null)
             {
                 var contact = new Contact();
@@ -40,6 +41,8 @@ namespace Silicus.Finder.ModelMappingService
                 employee.MiddleName = user.MiddleName;
                 employee.LastName = user.LastName;
                 employee.Title = GetUserTitle(user);
+                employee.IsActive = UserIsActive(user);
+                employee.EmployeeType = GetResourceType(user);
                 
                 var resourceId= GetCommonDataBAseContext().Query<Resource>().Where(r => r.UserID == user.ID).SingleOrDefault().ID;
                 var joiningDate = GetCommonDataBAseContext().Query<ResourceHistory>().Where(rh => rh.ResourceID == resourceId).FirstOrDefault().EffectiveDate;
@@ -47,7 +50,29 @@ namespace Silicus.Finder.ModelMappingService
 
                 employee.Contact = contact;
                 employee.Role = user.PrimaryRoleID.ToString();
-                employee.ProjectId = EngagementIds(user);
+                }
+            return employee;
+        }
+
+        public Employee MapUserToEmployee(User user)
+        {
+            var employee = MapBasicPropertiesOfUserToEmployee(user);
+
+            employee.SkillId = GetSkillIds(user);
+
+             //if (employee.SkillId.Count > 0)
+             //{
+             //    var skills = EmployeeSkills(employee.SkillId);
+             //    var skillSets = new List<SkillSet>();
+             //    foreach (var skill in skills)
+             //    {
+             //        skillSets.Add(MapSkillToSkillSet(skill));
+             //    }
+             //    employee.SkillSets = skillSets;
+
+             //}
+           
+                employee.ProjectId = GetEngagementIds(user);
 
                 if (employee.ProjectId.Count > 0)
                 {
@@ -59,68 +84,37 @@ namespace Silicus.Finder.ModelMappingService
                     }
                     employee.Projects = projects;
                 }
-            }
+            
             return employee;
         }
 
 
 
+        public bool UserIsActive(User user)
+        {
+            var resourceId = GetCommonDataBAseContext().Query<Resource>().Where(r => r.UserID == user.ID).SingleOrDefault().ID;
+            var isActive = GetCommonDataBAseContext().Query<ResourceHistory>().Where(rh => rh.ResourceID == resourceId).FirstOrDefault().IsActive;
+            return isActive;
+        }
+
         public string GetUserTitle(User user)
         {
             var resourceId = GetCommonDataBAseContext().Query<Resource>().Where(r => r.UserID == user.ID).SingleOrDefault().ID;
             var titleId = GetCommonDataBAseContext().Query<ResourceHistory>().Where(rh => rh.ResourceID == resourceId).FirstOrDefault().TitleID;
-            var title = GetCommonDataBAseContext().Query<Title>().Where(t => t.TitleId == titleId).SingleOrDefault().Name;
+            var title = GetCommonDataBAseContext().Query<Silicus.UtilityContainer.Models.DataObjects.Title>().Where(t => t.ID == titleId).SingleOrDefault().Name;
             return title;
 
         }
 
-
-        public Project MapEngagementToProjectForEmployee(Engagement engagement)
+        public string GetResourceType(User user)
         {
-            var project = new Project();
-            var commonDbContext = GetCommonDataBAseContext();
+             var resourceId = GetCommonDataBAseContext().Query<Resource>().Where(r => r.UserID == user.ID).SingleOrDefault().ID;
+            var resourceTypeId = GetCommonDataBAseContext().Query<ResourceHistory>().Where(rh => rh.ResourceID == resourceId).FirstOrDefault().ResourceTypeID;
+            var resourceType = GetCommonDataBAseContext().Query<ResourceType>().Where(rt=>rt.ID==resourceTypeId).SingleOrDefault().Name;
 
-            project.ProjectId = engagement.ID;
-
-            project.ProjectName = engagement.Name;
-
-            project.ProjectCode = engagement.Code;
-
-            project.Description = engagement.Description;
-
-            //project.ProjectType=engagement.   
-
-            project.EngagementType = engagement.ContractTypeID == null ? EngagementType.None : (EngagementType)engagement.ContractTypeID;
-
-            if (engagement.BeginDate > DateTime.Now)
-                project.Status = Status.Not_Started;
-            else if (engagement.EndDate > DateTime.Now && engagement.BeginDate < DateTime.Now)
-                project.Status = Status.On_Going;
-            else if (engagement.EndDate < DateTime.Now)
-                project.Status = Status.Completed;
-
-            project.StartDate = engagement.BeginDate;
-
-            //project.ExpectedEndDate=engagement.
-
-            project.ActualEndDate = engagement.EndDate;
-
-            //project.ArchiveDate=engagement.
-
-            project.EngagementManagerId = engagement.EngagementManagerID;
-
-            project.ProjectManagerId = engagement.PrimaryProjectManagerID;
-
-            //project.AdditionalNotes=engagement.
-
-            //project.skillSetId=
-
-            var userInEngagement = commonDbContext.Query<EngagementUserPermission>().Where(model => model.EngagementID == engagement.ID).Select(model => model.UserID).ToList();
-            project.EmployeeIds = userInEngagement.ToArray();
-
-
-            return project;
+            return resourceType;
         }
+
 
 
 
@@ -135,7 +129,20 @@ namespace Silicus.Finder.ModelMappingService
             return engagements;
         }
 
-        public IList<int> EngagementIds(User user)
+
+        public List<Skill> EmployeeSkills(IList<int> skillIds)
+        {
+            var skills = new List<Skill>();
+
+            foreach (var skillId in skillIds)
+            {
+                skills.Add(GetCommonDataBAseContext().Query<Skill>().Where(s => s.ID == skillId).SingleOrDefault());
+            }
+            return skills;
+        
+        }
+
+        public IList<int> GetEngagementIds(User user)
         {
             var resource = GetCommonDataBAseContext().Query<Resource>().Where(r => r.UserID == user.ID).SingleOrDefault();
             var resourceHistoryIds = GetCommonDataBAseContext().Query<ResourceHistory>().Where(rh => rh.ResourceID == resource.ID);
@@ -157,6 +164,24 @@ namespace Silicus.Finder.ModelMappingService
             return engagementIdsOfCurrentUser;
         }
 
+        public IList<int> GetSkillIds(User user)
+        {
+            var resource = GetCommonDataBAseContext().Query<Resource>().Where(r => r.UserID == user.ID).SingleOrDefault();
+            var resourceSkillLevels = GetCommonDataBAseContext().Query<ResourceSkillLevel>().Where(rh => rh.ResourceID == resource.ID).ToList();
+            var skillIds = new List<int>();
+
+            if (resourceSkillLevels.Count>0)
+            {
+                foreach (var resourceSkillLevel in resourceSkillLevels)
+                {
+                    skillIds.Add(resourceSkillLevel.SkillID);
+                }  
+            }
+
+
+
+            return skillIds;
+        }
 
 
         public Models.DataObjects.Role MapRoleToRole(Silicus.UtilityContainer.Models.DataObjects.Role role)
@@ -184,7 +209,7 @@ namespace Silicus.Finder.ModelMappingService
                                    select user;
 
             foreach (User user in userInEngagement)
-                project.Employees.Add(MapUserToEmployee(user));
+                project.Employees.Add(MapBasicPropertiesOfUserToEmployee(user));
 
             return project;
         }
@@ -223,6 +248,8 @@ namespace Silicus.Finder.ModelMappingService
         }
 
 
+
+
         public SkillSet MapSkillToSkillSet(Skill skill)
         {
             var _commonDBContext = GetCommonDataBAseContext();
@@ -253,7 +280,7 @@ namespace Silicus.Finder.ModelMappingService
                 {
                     if (user.ResourceID == resource.ID)
         {
-                        skillSet.Employees.Add(MapUserToEmployee(resource.User));
+            skillSet.Employees.Add(MapBasicPropertiesOfUserToEmployee (resource.User));
                     }
 
                 }
