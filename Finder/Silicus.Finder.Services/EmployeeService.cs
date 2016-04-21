@@ -28,41 +28,7 @@ namespace Silicus.Finder.Services
         {
             _commonMapper = commonMapper;
         }
-        //public void SaveEmployee(Employee newEmployee)
-        //{
-
-        //    var userManager = new UserManager();
-        //    var membershipId = userManager.CreateUserIfNotExist(newEmployee.Contact.EmailAddress, "Silicus@123");
-        //    userManager.AssignRoleToUser(membershipId, newEmployee.Role);
-        //    newEmployee.MembershipId = membershipId;
-        //    if (newEmployee.ProjectId != null)
-        //    {
-        //        foreach (int projectId in newEmployee.ProjectId)
-        //        {
-        //            var employeeProject = GetProjectById(projectId);
-        //            newEmployee.Projects.Add(employeeProject);
-        //        }
-        //    }
-        //    if (newEmployee.SkillId != null)
-        //    {
-        //        foreach (int skillId in newEmployee.SkillId)
-        //        {
-        //            var employeeSkill = GetSkillSetById(skillId);
-        //            newEmployee.SkillSets.Add(employeeSkill);
-        //        }
-        //    }
-        //    foreach (var project in newEmployee.Projects)
-        //    {
-        //        context.Attach<Project>(project);
-        //    }
-        //    foreach (var skill in newEmployee.SkillSets)
-        //    {
-        //        context.Attach<SkillSet>(skill);
-        //    }
-        //    newEmployee = AddTitle(newEmployee);
-        //    context.Add<Employee>(newEmployee);
-        //}
-
+       
         public List<Employee> GetAllEmployees()
         {
             var context = _commonMapper.GetCommonDataBAseContext();
@@ -72,7 +38,7 @@ namespace Silicus.Finder.Services
             var employeeList = new List<Employee>();
             foreach (var user in userList)
             {
-               employeeList.Add( _commonMapper.MapUserToEmployee(user));
+                employeeList.Add(_commonMapper.MapUserToEmployee(user));
             }
            // employeeList = AttachTitleToEmployee(employeeList);
             employeeList.Sort(employeeSortByEmpCode);

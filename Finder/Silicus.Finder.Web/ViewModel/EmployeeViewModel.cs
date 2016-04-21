@@ -33,7 +33,7 @@ namespace Silicus.Finder.Web.ViewModel
         public string Role { get; set; }
 
         [Display(Name = "Employee Type")]
-        public EmployeeType EmployeeType { get; set; }
+        public string EmployeeType { get; set; }
 
         [Display(Name = "Total Experience")]
         public int? TotalExperienceInMonths { get; set; }

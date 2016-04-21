@@ -24,7 +24,7 @@ namespace Silicus.Finder.Web.ViewModel
         public Gender Gender { get; set; }
 
         [Display(Name = "Employee Type")]
-        public EmployeeType EmployeeType { get; set; }
+        public string EmployeeType { get; set; }
 
         [Display(Name = "Highest Qualification")]
 
