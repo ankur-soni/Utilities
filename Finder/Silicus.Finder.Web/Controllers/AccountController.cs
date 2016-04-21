@@ -19,6 +19,10 @@ using Silicus.Finder.IdentityWrapper;
 using Silicus.Finder.IdentityWrapper.Models;
 using System.Web.Security;
 using System.Security.Principal;
+using Silicus.UtilityContainer.Security.Interface;
+using Silicus.UtilityContainer.Security;
+using System.Web.Configuration;
+using Silicus.Finder.ModelMappingService;
 
 namespace Silicus.Finder.Web.Controllers
 {
@@ -29,6 +33,8 @@ namespace Silicus.Finder.Web.Controllers
         private readonly ILogger _logger;
         private readonly IDataContextFactory _dataContextFactory;
         private readonly IEmailService _emailService;
+        private readonly IAuthorization _authorizationService;
+        private readonly IUserSecurityService _securityService;       
 
         private ApplicationUserManager _userManager;
         public ApplicationUserManager UserManager
@@ -76,12 +82,13 @@ namespace Silicus.Finder.Web.Controllers
         }
 
         public AccountController(ICookieHelper cookieHelper, ILogger logger,
-            IDataContextFactory dataContextFactory, IEmailService emailService)
+            IDataContextFactory dataContextFactory, IEmailService emailService, IUserSecurityService securityService)
         {
             _cookieHelper = cookieHelper;
             _logger = logger;
             _dataContextFactory = dataContextFactory;
             _emailService = emailService;
+            _securityService = securityService;
         }
 
         
@@ -125,26 +132,36 @@ namespace Silicus.Finder.Web.Controllers
                 {
 
                     var userFromAd = Membership.GetUser(username);
-                    var userManager = new UserManager();
-                    var membershipId = userManager.CreateUserIfNotExistfromActiveDirectory(userFromAd.UserName, userFromAd.Email, password);
-                    userManager.AssignRoleToUser(membershipId, "Admin");
+                    //var userManager = new UserManager();
+                    //var membershipId = userManager.CreateUserIfNotExistfromActiveDirectory(userFromAd.UserName, userFromAd.Email, password);
+                    //userManager.AssignRoleToUser(membershipId, "Admin");
+                    string utility = WebConfigurationManager.AppSettings["ProductName"];
+                    var commonMapper = new CommonMapper();
+                    var context = commonMapper.GetCommonDataBAseContext();
+                    var temp = new Authorization(context);
+                    var commonRole = temp.GetRoleForUtility(username, utility);
 
-                    var loginResult = await SignInManager.PasswordSignInAsync(username, password, false, shouldLockout: true);
+                    var loginResult = _securityService.PasswordSignInAsync(username, password);
+
                     switch (loginResult)
                     {
-                        case SignInStatus.Success:
-                            var user = await UserManager.FindByNameAsync(username);
-                            var isAdmin = await UserManager.IsInRoleAsync(user.Id, "Admin");
-
-                            //GetLoggedUserRole(user);
+                        case "Success":
+                            FormsAuthentication.SetAuthCookie(username, model.RememberMe);
+                            var isAdmin=false;
+                            //var user = await UserManager.FindByNameAsync(username);
+                            if (commonRole == "Admin")//await UserManager.IsInRoleAsync(user.Id, "Admin");
+                            {
+                                
+                                isAdmin = true;
+                            }
                             return RedirectToLocal(returnUrl, username, isAdmin);
-                        case SignInStatus.LockedOut:
-                            ModelState.AddModelError("", "Your account has been locked. Please contact system Administrator");
-                            return View(model);
-                        case SignInStatus.RequiresVerification:
-                            ModelState.AddModelError("", "Account verification is pending. Please verify your account.");
-                            return View(model);
-                        case SignInStatus.Failure:
+                        //case SignInStatus.LockedOut:
+                        //    ModelState.AddModelError("", "Your account has been locked. Please contact system Administrator");
+                        //    return View(model);
+                        //case SignInStatus.RequiresVerification:
+                        //    ModelState.AddModelError("", "Account verification is pending. Please verify your account.");
+                        //    return View(model);
+                        case "Failure":
                             var userName = UserManager.FindByName(model.UserName);
                             if (userName != null)
                             {

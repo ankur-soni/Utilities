@@ -6,8 +6,8 @@ using System.Threading.Tasks;
 
 namespace Silicus.UtilityContainer.Security.Interface
 {
-    public interface IAuthorization
+    public interface IUserSecurityService
     {
-        string GetRoleForUtility(string userName, string utiltyName);
+        string PasswordSignInAsync(string userName, string password);
     }
 }
