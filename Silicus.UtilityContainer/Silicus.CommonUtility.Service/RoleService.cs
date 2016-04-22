@@ -20,7 +20,7 @@ namespace Silicus.UtilityContainer.Services
 
         public List<Role> GetAllRoles()
         {
-            return _commmonDBContext.Query<Role>().ToList();
+            return _commmonDBContext.Query<Role>().OrderBy(role => role.Name).ToList();
         }
     }
 }

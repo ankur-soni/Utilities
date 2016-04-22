@@ -16,9 +16,9 @@ namespace Silicus.UtilityContainer.Security
         {
             _commonDBContext = commonDBContext;
         }
-        public string GetRoleForUtility(string userName, string utiltyName)
+        public string GetRoleForUtility(string email, string utiltyName)
         {
-            return _commonDBContext.Query<UtilityUserRoles>().Where(x => x.User.UserName == userName && x.Utility.Name == utiltyName).Select(x => x.Role.Name).FirstOrDefault();
+            return _commonDBContext.Query<UtilityUserRoles>().Where(x => x.User.EmailAddress.ToLower() == email.ToLower() && x.Utility.Name == utiltyName).Select(x => x.Role.Name).FirstOrDefault();
         }
     }
 }

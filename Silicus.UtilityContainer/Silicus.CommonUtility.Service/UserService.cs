@@ -24,7 +24,7 @@ namespace Silicus.UtilityContainer.Services
 
         public List<User> GetAllUsers()
         {
-            return _commonDBContext.Query<User>().ToList();
+            return _commonDBContext.Query<User>().OrderBy(user => user.DisplayName).ToList();
         }
 
         public void AddRolesToUserForAUtility(UtilityUserRoles newUserRole)
