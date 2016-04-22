@@ -32,7 +32,7 @@ namespace Silicus.Finder.Models.DataObjects
 
         [Required(ErrorMessage = "Please select Project Type")]
         [Display(Name = "Project Type")]
-        public ProjectType? ProjectType { get; set; }
+        public string ProjectType { get; set; }
 
         [Required(ErrorMessage = "Please select Engagement Type")]
         [Display(Name = "Engagement Type")]
