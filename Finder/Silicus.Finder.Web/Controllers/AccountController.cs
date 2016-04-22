@@ -127,7 +127,7 @@ namespace Silicus.Finder.Web.Controllers
                     var userFromAd = Membership.GetUser(username);
                     var userManager = new UserManager();
                     var membershipId = userManager.CreateUserIfNotExistfromActiveDirectory(userFromAd.UserName, userFromAd.Email, password);
-                    userManager.AssignRoleToUser(membershipId, "Admin");
+                    userManager.AssignRoleToUser(membershipId, "User");
 
                     var loginResult = await SignInManager.PasswordSignInAsync(username, password, false, shouldLockout: true);
                     switch (loginResult)
