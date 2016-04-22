@@ -18,8 +18,8 @@ namespace Silicus.Finder.Entities.Initializer
         private static readonly string MembershipDatabaseName = ConfigurationManager.AppSettings["MembershipDBName"];
 
 
-        //public void Seed(FinderIpDataContext context)
-        //{
+        public void Seed(FinderIpDataContext context)
+        {
         //    const string roleAdmin = "Admin";
         //    const string roleManager = "Manager";
         //    const string roleUser = "User";
@@ -432,7 +432,7 @@ namespace Silicus.Finder.Entities.Initializer
         //        ProjectName = "Silicus Finder",
         //        ProjectCode = "PR01",
         //        Description = "Employee Finder",
-        //        ProjectType = ProjectType.Internal,
+        //        ProjectType = "",
         //        EngagementType = EngagementType.Fixed_Price,
         //        Status = Status.On_Going,
         //        StartDate = new DateTime(2016, 1, 10),
@@ -764,6 +764,6 @@ namespace Silicus.Finder.Entities.Initializer
 
         //        return streamReader.ReadToEnd();
         //    }
-      //  }
+        }
     }
 }

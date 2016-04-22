@@ -16,7 +16,7 @@ namespace Silicus.Finder.Services.Interfaces
 
         Project GetProjectById(int? projectId);
         
-        //List<Project> GetProjectsByCriteria(ProjectSearchCriteriaModel criteria);
+        List<Project> GetProjectsByCriteria(ProjectSearchCriteriaModel criteria);
 
         IEnumerable<Project> GetProjectsByName(string projectName);
 

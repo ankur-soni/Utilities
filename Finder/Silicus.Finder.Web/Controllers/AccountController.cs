@@ -94,7 +94,7 @@ namespace Silicus.Finder.Web.Controllers
         
         [AllowAnonymous]
         [HttpGet]
-        public async Task<ActionResult> Login(string returnUrl)
+        public async Task<ActionResult> Login(string returnUrl, int utilityID = 0)
         {
             using (var context = _dataContextFactory.Create(ConnectionType.Ip))
             {
@@ -135,13 +135,15 @@ namespace Silicus.Finder.Web.Controllers
                     //var userManager = new UserManager();
                     //var membershipId = userManager.CreateUserIfNotExistfromActiveDirectory(userFromAd.UserName, userFromAd.Email, password);
                     //userManager.AssignRoleToUser(membershipId, "Admin");
-                    string utility = WebConfigurationManager.AppSettings["ProductName"];
                     var commonMapper = new CommonMapper();
                     var context = commonMapper.GetCommonDataBAseContext();
-                    var temp = new Authorization(context);
+
+                    string  utility = WebConfigurationManager.AppSettings["ProductName"];
+                   
+                    var authorizationService = new Authorization(context);
                     var user = Membership.GetUser(username);
 
-                    var commonRole = temp.GetRoleForUtility(user.Email, utility);
+                    var commonRole = authorizationService.GetRoleForUtility(user.Email, utility);
                     HttpContext.Session["Role"] = commonRole;
                     var loginResult = _securityService.PasswordSignInAsync(username, password);
 

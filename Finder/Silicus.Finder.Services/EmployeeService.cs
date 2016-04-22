@@ -45,7 +45,7 @@ namespace Silicus.Finder.Services
 
             if (employeeList.Count() != 0)
             {
-             
+
 
                employeeList = employeeList.Where(e => e.Projects.Any(p => p.ProjectName.Equals(string.IsNullOrEmpty(criteria.Project) ? p.ProjectName : criteria.Project.Trim())) && ( e.Title == criteria.Title)
                    &&(e.EmployeeType.ToString().Equals(string.IsNullOrEmpty(criteria.EmployeeType) ? e.EmployeeType.ToString() : criteria.EmployeeType.Trim()))
@@ -62,46 +62,61 @@ namespace Silicus.Finder.Services
             return employeeList;
         }
 
+        //public List<Employee> GetEmployeeByName(string name)
+        //{
+
+
+        //    EmployeeSortByEmpCode employeeSortByEmpCode = new EmployeeSortByEmpCode();
+        //    List<Employee> employeeList = new List<Employee>();
+        //    if (name != null)
+        //    {
+        //        string _name = name.Trim().ToLower();
+
+        //        var usersByName = _commonMapper.GetCommonDataBAseContext().Query<User>().ToList().Where(u => u.DisplayName.Trim().ToLower().Contains(_name)).ToList();
+
+
+        //        foreach (var user in usersByName)
+        //        {
+        //            employeeList.Add(_commonMapper.MapBasicPropertiesOfUserToEmployee(user));
+        //        }
+                
+
         public List<Employee> GetEmployeeByName(string name)
         {
-
-
             EmployeeSortByEmpCode employeeSortByEmpCode = new EmployeeSortByEmpCode();
             List<Employee> employeeList = new List<Employee>();
+            var context = _commonMapper.GetCommonDataBAseContext();
+                
             if (name != null)
             {
                 string _name = name.Trim().ToLower();
 
-                var usersByName = _commonMapper.GetCommonDataBAseContext().Query<User>().ToList().Where(u => u.DisplayName.Trim().ToLower().Contains(_name)).ToList();
+                var userList = context.Query<User>().Where((e => e.DisplayName.Trim().ToLower().Contains(_name))).ToList();
+                foreach (User user in userList)
+                    employeeList.Add(_commonMapper.MapUserToEmployee(user));
 
+                employeeList = employeeList.Where(emp => emp.IsActive == true).ToList();
 
-                foreach (var user in usersByName)
+                if (employeeList.Count == 0)
                 {
-                    employeeList.Add(_commonMapper.MapBasicPropertiesOfUserToEmployee(user));
-                }
+                    var empList = context.Query<User>().ToList()
+                   .Where((e => e.UserName.ToString().ToLower().Contains(_name)));
 
+                    foreach (User user in empList)
+                        employeeList.Add(_commonMapper.MapUserToEmployee(user));
 
-                if (usersByName.Count == 0)
-                {
+                    employeeList = employeeList.Where(emp => emp.IsActive == true).ToList();
 
-                    var usersByCode = _commonMapper.GetCommonDataBAseContext().Query<User>().ToList().Where(u => u.EmployeeID.ToLower().Contains(_name)).ToList();
-                    var empList = new List<Employee>();
-                    foreach (var user in usersByCode)
-                    {
-                        empList.Add(_commonMapper.MapBasicPropertiesOfUserToEmployee(user));
+                    employeeList.Sort(employeeSortByEmpCode);
+                    return employeeList;
                     }
-                    //  employeeList = AttachTitleToEmployee(employeeList);
-                    empList.Sort(employeeSortByEmpCode);
-                    return empList;
                 }
 
-            }
-            //  employeeList = AttachTitleToEmployee(employeeList);
             employeeList.Sort(employeeSortByEmpCode);
             return employeeList;
         }
 
-               
+
         //public List<SkillSet> GetAllSkillSets()
         //{
         //    return context.Query<SkillSet>().ToList();
@@ -135,16 +150,16 @@ namespace Silicus.Finder.Services
         //    return context.Query<Title>().Where(title => title.TitleId == titleId).First();
         //}
 
-       
 
-       
+
+
         //public int GetProjectCountBySkill(int skillSetId)
         //{
         //    var employeeCount = context.Query<Employee>().Where(model => model.SkillSets.Any(r => r.SkillSetId == skillSetId)).Count();
         //    return employeeCount;
         //}
 
-       
+
         //public IEnumerable<Project> GetProjectsByName(string projectName)
         //{
         //    List<Project> projectList = new List<Project>();
@@ -156,7 +171,7 @@ namespace Silicus.Finder.Services
         //    return projectList;
         //}
 
-        
+
 
 
         //public Employee GetEmployeeByEmployeeCode(string employeeCode)
@@ -165,7 +180,7 @@ namespace Silicus.Finder.Services
         //    employee.Title = GetEmployeeTitle(employee.EmployeeId);
         //    return employee;
         //}
-        
+
 
         //        public List<Title> GetAllTitles()
         //        {
@@ -174,19 +189,19 @@ namespace Silicus.Finder.Services
 
 
 
-        //        private string GetEmployeeTitle(int employeeId)
-        //        {
-        //            var titleName = context.Query<EmployeeTitles>().Where(title => title.EmployeeId == employeeId && title.IsCurrent == true).Select(title => title.Title.Name).SingleOrDefault();
-        //            return titleName;
-        //        }
+        //private string GetEmployeeTitle(int employeeId)
+        //{
+        //    var titleName = context.Query<EmployeeTitles>().Where(title => title.EmployeeId == employeeId && title.IsCurrent == true).Select(title => title.Title.Name).SingleOrDefault();
+        //    return titleName;
+        //}
 
-        //        private List<Employee> AttachTitleToEmployee(List<Employee> employeeList)
-        //        {
-        //            foreach (var employee in employeeList)
-        //            {
-        //                employee.Title = GetEmployeeTitle(employee.EmployeeId);
+        //private List<Employee> AttachTitleToEmployee(List<User> employeeList)
+        //{
+        //    foreach (var employee in employeeList)
+        //    {
+        //        employee. = _commonMapper.GetUserTitle(employee);
         //    }
-        //            return employeeList;
+        //    return employeeList;
         //}
 
         //        private int GetTitleIdByName(string titleName)

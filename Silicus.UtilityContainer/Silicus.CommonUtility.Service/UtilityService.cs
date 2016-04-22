@@ -23,7 +23,7 @@ namespace Silicus.UtilityContainer.Services
         
        public List<Utility> GetAllUtilities()
        {
-           return _commmonDBContext.Query<Utility>().ToList();
+           return _commmonDBContext.Query<Utility>().OrderBy(utility => utility.Name).ToList();
        }
 
        public Utility FindUtility(int id)

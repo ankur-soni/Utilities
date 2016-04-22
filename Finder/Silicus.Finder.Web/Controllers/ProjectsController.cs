@@ -209,25 +209,25 @@ namespace Silicus.Finder.Web.Controllers
             var projects = new ProjectsViewModel { Projects = projectListViewModel, SearchCriteria = new ProjectSearchCriteriaViewModel() };
             return View("List", projects);
         }
-        
-        //public ActionResult GetProjectsByCriteria(ProjectSearchCriteriaViewModel criteria)
-        //{
-        //    IEnumerable<Project> projectsList;
 
-        //    var searchCriteriaModel = new ProjectSearchCriteriaModel();
-        //    Mapper.Map(criteria, searchCriteriaModel);
+        public ActionResult GetProjectsByCriteria(ProjectSearchCriteriaViewModel criteria)
+        {
+            IEnumerable<Project> projectsList;
 
-        //    ViewData["Employees"] = _projectService.GetAllEmployees();
+            var searchCriteriaModel = new ProjectSearchCriteriaModel();
+            Mapper.Map(criteria, searchCriteriaModel);
 
-        //    projectsList = _projectService.GetProjectsByCriteria(searchCriteriaModel);
+            ViewData["Employees"] = _projectService.GetAllEmployees();
 
-        //    var projectListViewModel = new List<ProjectListViewModel>();
-        //    Mapper.Map(projectsList, projectListViewModel);
+            projectsList = _projectService.GetProjectsByCriteria(searchCriteriaModel);
 
-        //    var projects = new ProjectsViewModel { Projects = projectListViewModel, SearchCriteria = new ProjectSearchCriteriaViewModel() };
+            var projectListViewModel = new List<ProjectListViewModel>();
+            Mapper.Map(projectsList, projectListViewModel);
 
-        //    return View("List", projects);
-        //}
+            var projects = new ProjectsViewModel { Projects = projectListViewModel, SearchCriteria = new ProjectSearchCriteriaViewModel() };
+
+            return View("List", projects);
+        }
 
         public ActionResult GetProjectsByName(string projectName)
         {
