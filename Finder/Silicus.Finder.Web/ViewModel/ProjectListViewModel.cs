@@ -18,7 +18,7 @@ namespace Silicus.Finder.Web.ViewModel
         public string ProjectCode { get; set; }
 
         [Display(Name = "Project Type")]
-        public ProjectType ProjectType { get; set; }
+        public string ProjectType { get; set; }
 
         [Display(Name = "Engagement Type")]
         public EngagementType EngagementType { get; set; }

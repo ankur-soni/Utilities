@@ -223,7 +223,13 @@ namespace Silicus.Finder.ModelMappingService
             project.ProjectName = engagement.Name;
             project.ProjectCode = engagement.Code;
             project.Description = engagement.Description;
-            //project.ProjectType=engagement.   
+            var engagementType = from engagementInstance in commonDbContext.Query<Engagement>()
+                                 join engagamentTypeInstance in commonDbContext.Query<Silicus.UtilityContainer.Models.DataObjects.EngagementType>()
+                                 on engagementInstance.EngagementTypeID equals engagamentTypeInstance.ID
+                                 where engagementInstance.ID == engagement.ID
+                                 select engagamentTypeInstance;
+
+            project.ProjectType = engagementType.Count() > 0 ? engagementType.FirstOrDefault().Name : "Not Defined"; 
             project.EngagementType = engagement.ContractTypeID == null ? Silicus.Finder.Models.DataObjects.EngagementType.None : (Silicus.Finder.Models.DataObjects.EngagementType)engagement.ContractTypeID;
 
             if (engagement.BeginDate > DateTime.Now)

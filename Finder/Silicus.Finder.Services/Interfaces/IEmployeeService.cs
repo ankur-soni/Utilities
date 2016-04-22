@@ -11,7 +11,7 @@ namespace Silicus.Finder.Services.Interfaces
     public interface IEmployeeService
     {
         //Employee GetEmployee(int id);
-       //List<Employee> GetEmployeeByName(string name);
+       List<Employee> GetEmployeeByName(string name);
        List<Employee> GetAllEmployees();
        //List<Employee> GetEmployeesByCriteria(EmployeeSearchCriteriaModel criteria);
        //void SaveEmployee(Employee newEmployee);
