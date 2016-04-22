@@ -81,7 +81,7 @@
 
             <div class="content">
                 <br />
-                @using (Html.BeginForm("GetEmployeesByCriteria", "Employee", FormMethod.Post))
+                @using (Html.BeginForm("GetEmployeesByCriteria", "Employee", FormMethod.Get))
                 {
                     var model = Model.SearchCriteria;
                     var i = 0;

@@ -35,7 +35,8 @@ namespace Silicus.Finder.Web.Controllers
 
         }
 
-        [HttpPost]
+        [Authorize]
+        [ValidateInput(false)]
         public ActionResult SearchEmployeeByName(string name)
         {
             List<EmployeesListViewModel> employeesListViewModel = new List<EmployeesListViewModel>();
@@ -48,6 +49,7 @@ namespace Silicus.Finder.Web.Controllers
             return View("GetAllEmployeesList", employees);
         }
 
+        [Authorize]
         public ActionResult GetAllEmployees()
         {
             var employeesList = _employeeService.GetAllEmployees();
@@ -59,7 +61,8 @@ namespace Silicus.Finder.Web.Controllers
             return View("GetAllEmployeesList", employees);
         }
 
-
+        
+        [Authorize]
         public ActionResult GetEmployeesByCriteria(EmployeeSearchCriteriaViewModel criteria)
         {
             var searchCriteriaModel = new EmployeeSearchCriteriaModel();
@@ -269,6 +272,8 @@ namespace Silicus.Finder.Web.Controllers
 
         //}
 
+
+        [Authorize]
         public ActionResult Details(string id)
         {
            // _roleService.GetRoleDetails();
@@ -281,6 +286,7 @@ namespace Silicus.Finder.Web.Controllers
 
         }
 
+        [Authorize]
         public ActionResult EmployeeDetails(string id)
         {
             var selectedEmployee = _employeeService.GetEmployeeById(id);
