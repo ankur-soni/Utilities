@@ -27,10 +27,12 @@ namespace Silicus.UtilityContainer.Web.App_Start
         {
             container.Register<IDataContextFactory, DataContextFactory>();
             container.Register<IAuthentication, Authentication>();
+            container.Register<IAuthorization, Authorization>();
             container.Register<IUtilityUserRoleService, UtilityUserRoleService>();
             container.Register<IUtilityService, UtilityService>();
             container.Register<IRoleService, RoleService>();
             container.Register<IUserService, UserService>();
+            container.Register<IUserSecurityService, UserSecurityService>();
         }
 
     }

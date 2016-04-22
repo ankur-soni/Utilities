@@ -21,6 +21,7 @@ namespace Silicus.UtilityContainer.Services
             _utilityService = utilityService;
         }
 
+
         public List<User> GetAllUsers()
         {
             return _commonDBContext.Query<User>().ToList();

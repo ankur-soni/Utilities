@@ -68,7 +68,7 @@ namespace Silicus.Finder.Web.Controllers
             return PartialView("_Details", skillSetListViewModel);
        }
 
-        [Authorize(Roles = "Admin,Manager,User")]
+        //[Authorize(Roles = "Admin,Manager,User")]
         public ActionResult GetAllSkillSet()
         {
             var skillSetList =  _skillSetService.GetAllSkills();
@@ -81,7 +81,7 @@ namespace Silicus.Finder.Web.Controllers
             return View(skillSetListViewModel);
         }
 
-        [Authorize(Roles = "Admin,Manager,User")]
+        //[Authorize(Roles = "Admin,Manager,User")]
         public ActionResult GetSkillSetListByName(string name)
         {
             //if (ModelState.IsValid)

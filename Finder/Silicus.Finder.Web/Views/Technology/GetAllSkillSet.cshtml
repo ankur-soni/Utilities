@@ -62,13 +62,13 @@
                     @Html.Label(total.ToString())
                 }
             </label>).Width(50);
-          columns.Bound(skills => skills.Projects).Title("#Projects Tagged").Template(
+          @*columns.Bound(skills => skills.Projects).Title("#Projects Tagged").Template(
             @<label>
                 @{
                     var total = item.Projects.Count();
                     @Html.Label(total.ToString())
                 }
-            </label>).Width(50);
+            </label>).Width(50);*@
 
       })
                 .Scrollable(scr => scr.Height(300))
