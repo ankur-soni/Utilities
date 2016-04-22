@@ -60,6 +60,8 @@ namespace Silicus.Finder.ModelMappingService
 
             employee.SkillId = GetSkillIds(user);
 
+
+
              //if (employee.SkillId.Count > 0)
              //{
              //    var skills = EmployeeSkills(employee.SkillId);

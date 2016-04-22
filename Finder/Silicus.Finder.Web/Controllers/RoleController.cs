@@ -10,7 +10,7 @@ using Kendo.Mvc.Extensions;
 using Silicus.Finder.Models.DataObjects;
 using Silicus.Finder.Web.Models;
 using System.Collections.Generic;
-using Silicus.Finder.IdentityWrapper;
+//using Silicus.Finder.IdentityWrapper;
 
 namespace Silicus.Finder.Web.Controllers
 {
@@ -18,48 +18,48 @@ namespace Silicus.Finder.Web.Controllers
     {
         private readonly IRolesService _rolesService;
 
-        private ApplicationUserManager _userManager;
-        public ApplicationUserManager UserManager
-        {
-            get
-            {
-                return _userManager ?? HttpContext.GetOwinContext().GetUserManager<ApplicationUserManager>();
-            }
-            set
-            {
-                _userManager = value;
-            }
-        }
+        //private ApplicationUserManager _userManager;
+        //public ApplicationUserManager UserManager
+        //{
+        //    get
+        //    {
+        //        return _userManager ?? HttpContext.GetOwinContext().GetUserManager<ApplicationUserManager>();
+        //    }
+        //    set
+        //    {
+        //        _userManager = value;
+        //    }
+        //}
 
-        private ApplicationRoleManager _roleManager;
-        public ApplicationRoleManager RoleManager
-        {
-            get
-            {
-                return _roleManager ?? HttpContext.GetOwinContext().Get<ApplicationRoleManager>();
-            }
-            private set
-            {
-                _roleManager = value;
-            }
-        }
+        //private ApplicationRoleManager _roleManager;
+        //public ApplicationRoleManager RoleManager
+        //{
+        //    get
+        //    {
+        //        return _roleManager ?? HttpContext.GetOwinContext().Get<ApplicationRoleManager>();
+        //    }
+        //    private set
+        //    {
+        //        _roleManager = value;
+        //    }
+        //}
 
         public RoleController(IRolesService rolesService)
         {
             _rolesService = rolesService;
         }
 
-        public ActionResult GetRoleDetails([DataSourceRequest] DataSourceRequest request)
-        {
-            var userdetails = RoleManager.Roles.ToList();
+        //public ActionResult GetRoleDetails([DataSourceRequest] DataSourceRequest request)
+        //{
+        //    var userdetails = RoleManager.Roles.ToList();
 
-            IList<RoleViewModel> modelList = userdetails.Select(userdetail => new RoleViewModel()
-            {
-                RoleName = userdetail.Name, Description = userdetail.Name
-            }).ToList();
+        //    IList<RoleViewModel> modelList = userdetails.Select(userdetail => new RoleViewModel()
+        //    {
+        //        RoleName = userdetail.Name, Description = userdetail.Name
+        //    }).ToList();
 
-            return Json(modelList.ToDataSourceResult(request), JsonRequestBehavior.AllowGet);
-        }
+        //    return Json(modelList.ToDataSourceResult(request), JsonRequestBehavior.AllowGet);
+        //}
         
         //[AcceptVerbs(HttpVerbs.Post)]
         //public async Task<ActionResult> CreateRole(Role role)

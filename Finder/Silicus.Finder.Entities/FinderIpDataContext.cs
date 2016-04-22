@@ -23,7 +23,8 @@ namespace Silicus.Finder.Entities
 
         public IQueryable<T> Query<T>() where T : class
         {
-            return Set<T>().AsNoTracking();
+            var data = Set<T>().AsNoTracking();
+            return data;
         }
 
         public T Add<T>(T item) where T : class

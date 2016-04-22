@@ -1,5 +1,5 @@
 ﻿using Silicus.Finder.Entities;
-using Silicus.Finder.IdentityWrapper;
+//using Silicus.Finder.IdentityWrapper;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -37,9 +37,9 @@ namespace Silicus.Finder.Web.Filters
                 if (Membership.ValidateUser(username, password))
                 {
                     var userFromAd = Membership.GetUser(username);
-                    var userManager = new UserManager();
-                    var membershipId = userManager.CreateUserIfNotExistfromActiveDirectory(userFromAd.UserName, userFromAd.Email, password);
-                    userManager.AssignRoleToUser(membershipId, "Admin");
+                    //var userManager = new UserManager();
+                    //var membershipId = userManager.CreateUserIfNotExistfromActiveDirectory(userFromAd.UserName, userFromAd.Email, password);
+                   // userManager.AssignRoleToUser(membershipId, "Admin");
                     return true;
                 }
 

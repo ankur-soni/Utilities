@@ -74,9 +74,6 @@
       <HintPath>..\packages\Newtonsoft.Json.7.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Silicus.Finder.ModelMappingService">
-      <HintPath>..\Silicus.Finder.ModelMappingService\bin\Debug\Silicus.Finder.ModelMappingService.dll</HintPath>
-    </Reference>
     <Reference Include="Silicus.FrameWorx.Utility">
       <HintPath>..\packages\Silicus.FrameWorx.Utility.1.0.0\lib\net45\Silicus.FrameWorx.Utility.dll</HintPath>
     </Reference>
@@ -140,9 +137,9 @@
       <Project>{33F03AEB-5ED5-4F31-A3F5-D39B22373027}</Project>
       <Name>Silicus.Finder.Entities</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Silicus.Finder.IdentityWrapper\Silicus.Finder.IdentityWrapper.csproj">
-      <Project>{db09df65-ed4f-41e2-aea3-0162281568e7}</Project>
-      <Name>Silicus.Finder.IdentityWrapper</Name>
+    <ProjectReference Include="..\Silicus.Finder.ModelMappingService\Silicus.Finder.ModelMappingService.csproj">
+      <Project>{5450761e-0f88-4f66-ad55-ff0fe63856fc}</Project>
+      <Name>Silicus.Finder.ModelMappingService</Name>
     </ProjectReference>
     <ProjectReference Include="..\Silicus.Finder.Models\Silicus.Finder.Models.csproj">
       <Project>{2F4384AA-2FE9-4C85-A6CC-59228BC587E6}</Project>
