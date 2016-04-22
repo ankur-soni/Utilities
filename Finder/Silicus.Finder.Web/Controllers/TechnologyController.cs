@@ -13,6 +13,7 @@ using System.Web;
 using System.Web.Mvc;
 using System.Diagnostics;
 using Silicus.Finder.ModelMappingService.Interfaces;
+using Silicus.Finder.Web.Filters;
 
 namespace Silicus.Finder.Web.Controllers
 {
@@ -69,6 +70,7 @@ namespace Silicus.Finder.Web.Controllers
        }
 
         //[Authorize(Roles = "Admin,Manager,User")]
+        [CustomAuthorizeAttribute(AllowedRole = "Admin, Manager, User")]
         public ActionResult GetAllSkillSet()
         {
             var skillSetList =  _skillSetService.GetAllSkills();
@@ -81,7 +83,7 @@ namespace Silicus.Finder.Web.Controllers
             return View(skillSetListViewModel);
         }
 
-        //[Authorize(Roles = "Admin,Manager,User")]
+        [CustomAuthorizeAttribute(AllowedRole = "Admin, Manager, User")]
         public ActionResult GetSkillSetListByName(string name)
         {
             //if (ModelState.IsValid)

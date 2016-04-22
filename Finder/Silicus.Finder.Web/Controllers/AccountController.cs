@@ -322,7 +322,7 @@ namespace Silicus.Finder.Web.Controllers
         public async Task<ActionResult> LogOff()
         {
             var userName = "Unknown";
-
+            HttpContext.Session["Role"] = "";
             if (HttpContext.User != null && !string.IsNullOrWhiteSpace(HttpContext.User.Identity.Name))
             {
                 userName = HttpContext.User.Identity.Name;

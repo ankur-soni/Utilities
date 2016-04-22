@@ -348,6 +348,7 @@
     <Compile Include="CookieHelper.cs" />
     <Compile Include="Filters\AuditAttribute.cs" />
     <Compile Include="Filters\CustomAllowAnonymous.cs" />
+    <Compile Include="Filters\CustomAuthorizeAttribute.cs" />
     <Compile Include="Filters\LogAttribute.cs" />
     <Compile Include="Filters\UtilityAuthorizationAttribute.cs" />
     <Compile Include="GlimpseSecurityPolicy.cs" />
