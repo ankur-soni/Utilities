@@ -18,13 +18,21 @@ namespace Silicus.Finder.Web.Filters
         }
         protected override bool AuthorizeCore(HttpContextBase httpContext)
         {
-            bool status = false;
-            string[] allowedRoles = AllowedRole.Split(new char[] { ',', ' ' }, StringSplitOptions.RemoveEmptyEntries);
-            var userRole = HttpContext.Current.Session["Role"].ToString();
-            if (allowedRoles.Contains(userRole))
-                status = true;
+            var adAuthenticationCookie = httpContext.Request.Cookies[".ADAuthCookie"];
+
+            if (adAuthenticationCookie != null)
+            {
+                bool status = false;
+                string[] allowedRoles = AllowedRole.Split(new char[] { ',', ' ' }, StringSplitOptions.RemoveEmptyEntries);
+                var userRole = HttpContext.Current.Session["Role"].ToString();
+                if (allowedRoles.Contains(userRole))
+                    status = true;
+                return status;
+            }
+
+
+            return false;
             
-            return status;
         }
     }
 }

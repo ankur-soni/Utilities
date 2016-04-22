@@ -139,7 +139,9 @@ namespace Silicus.Finder.Web.Controllers
                     var commonMapper = new CommonMapper();
                     var context = commonMapper.GetCommonDataBAseContext();
                     var temp = new Authorization(context);
-                    var commonRole = temp.GetRoleForUtility(username, utility);
+                    var user = Membership.GetUser(username);
+
+                    var commonRole = temp.GetRoleForUtility(user.Email, utility);
                     HttpContext.Session["Role"] = commonRole;
                     var loginResult = _securityService.PasswordSignInAsync(username, password);
 

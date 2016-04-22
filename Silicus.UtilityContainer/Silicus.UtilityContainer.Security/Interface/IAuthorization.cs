@@ -8,6 +8,6 @@ namespace Silicus.UtilityContainer.Security.Interface
 {
     public interface IAuthorization
     {
-        string GetRoleForUtility(string userName, string utiltyName);
+        string GetRoleForUtility(string email, string utiltyName);
     }
 }

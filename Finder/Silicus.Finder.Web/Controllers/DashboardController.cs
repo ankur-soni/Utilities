@@ -36,7 +36,7 @@ namespace Silicus.Finder.Web.Controllers
         //}
 
        // [UtilityAuthorizationAttribute]
-        [Authorize]
+        [CustomAuthorizeAttribute(AllowedRole = "Admin, Manager, User")]
         public ActionResult Dashboard()
         {
             //ViewBag.UserRoles = RoleManager.Roles.Select(r => new SelectListItem { Text = r.Name, Value = r.Name }).ToList();
