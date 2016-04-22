@@ -55,7 +55,9 @@
 
 </head>
 @using Microsoft.AspNet.Identity
+@using System.Web;
 @{
+    
     var conname = @ViewContext.RouteData.Values["controller"].ToString().ToLower();
     var actname = @ViewContext.RouteData.Values["action"].ToString().ToLower();
     //Response.Write(conname);
@@ -93,7 +95,7 @@
                                     <div class="menuList">
                                         <div class="dropdown" style="float:right">
                                             <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">
-                                                @if (User.IsInRole("Admin"))
+                                                @if (HttpContext.Current.Session["Role"].ToString()=="Admin")
                                                 {
                                                     <span>Admin</span>
                                                 }
@@ -104,7 +106,7 @@
                                                 <span class="caret"></span>
                                             </button>
                                             <ul class="dropdown-menu">
-                                                @if (User.IsInRole("Admin"))
+                                                @if (HttpContext.Current.Session["Role"].ToString() == "Admin")
                                                 {
                                                     <li><a href="@Url.Action("GetLockedUsers", "Admin")">Locked Users</a></li>
                                                 }

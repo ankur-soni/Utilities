@@ -6,7 +6,7 @@ using System.Linq;
 using System.Web.Mvc;
 using Silicus.Finder.Models.DataObjects;
 using System.Data.Entity.Infrastructure;
-using Silicus.Finder.IdentityWrapper;
+//using Silicus.Finder.IdentityWrapper;
 using Silicus.Finder.Services.Comparable.SkillsComparable;
 using Silicus.Finder.Services.Comparable.ProjectComparable;
 using System.Web;
@@ -35,19 +35,21 @@ namespace Silicus.Finder.Web.Controllers
 
         }
 
-        //[HttpPost]
-        //public ActionResult SearchEmployeeByName(string name)
-        //{
-        //    List<EmployeesListViewModel> employeesListViewModel = new List<EmployeesListViewModel>();
-        //    if (ModelState.IsValid)
-        //    {
-        //        var employeeList = _employeeService.GetEmployeeByName(name);
-        //        Mapper.Map(employeeList, employeesListViewModel);
-        //    }
-        //    var employees = new EmployeesViewModel { Employees = employeesListViewModel, SearchCriteria = new EmployeeSearchCriteriaViewModel() };
-        //    return View("GetAllEmployeesList", employees);
-        //}
+        [Authorize]
+        [ValidateInput(false)]
+        public ActionResult SearchEmployeeByName(string name)
+        {
+            List<EmployeesListViewModel> employeesListViewModel = new List<EmployeesListViewModel>();
+            if (ModelState.IsValid)
+            {
+                var employeeList = _employeeService.GetEmployeeByName(name);
+                Mapper.Map(employeeList, employeesListViewModel);
+            }
+            var employees = new EmployeesViewModel { Employees = employeesListViewModel, SearchCriteria = new EmployeeSearchCriteriaViewModel() };
+            return View("GetAllEmployeesList", employees);
+        }
 
+        [Authorize]
         public ActionResult GetAllEmployees()
         {
             var employeesList = _employeeService.GetAllEmployees();
@@ -59,21 +61,24 @@ namespace Silicus.Finder.Web.Controllers
             return View("GetAllEmployeesList", employees);
         }
 
+        
+        [Authorize]
+        public ActionResult GetEmployeesByCriteria(EmployeeSearchCriteriaViewModel criteria)
+        {
+            var searchCriteriaModel = new EmployeeSearchCriteriaModel();
+            Mapper.Map(criteria, searchCriteriaModel);
 
-        //public ActionResult GetEmployeesByCriteria(EmployeeSearchCriteriaViewModel criteria)
-        //{
-        //    var searchCriteriaModel = new EmployeeSearchCriteriaModel();
-        //    Mapper.Map(criteria, searchCriteriaModel);
+            var employeeList = _employeeService.GetEmployeesByCriteria(searchCriteriaModel);
 
-        //    var employeeList = _employeeService.GetEmployeesByCriteria(searchCriteriaModel);
+            var employeeListViewModel = new List<EmployeesListViewModel>();
+            Mapper.Map(employeeList, employeeListViewModel);
 
-        //    var employeeListViewModel = new List<EmployeesListViewModel>();
-        //    Mapper.Map(employeeList, employeeListViewModel);
+            var employees = new EmployeesViewModel { Employees = employeeListViewModel, SearchCriteria = new EmployeeSearchCriteriaViewModel() };
 
-        //    var employees = new EmployeesViewModel { Employees = employeeListViewModel, SearchCriteria = new EmployeeSearchCriteriaViewModel() };
+            return View("GetAllEmployeesList", employees);
+        }
 
-        //    return View("GetAllEmployeesList", employees);
-        //}
+
         
         //[Authorize(Roles = "Admin")]
         //[HttpGet]
@@ -267,6 +272,8 @@ namespace Silicus.Finder.Web.Controllers
 
         //}
 
+
+        [Authorize]
         public ActionResult Details(string id)
         {
            // _roleService.GetRoleDetails();
@@ -279,6 +286,7 @@ namespace Silicus.Finder.Web.Controllers
 
         }
 
+        [Authorize]
         public ActionResult EmployeeDetails(string id)
         {
             var selectedEmployee = _employeeService.GetEmployeeById(id);

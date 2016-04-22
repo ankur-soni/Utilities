@@ -30,6 +30,7 @@ namespace Silicus.Finder.Web.Controllers
         }
 
         [HttpPost]
+        [Authorize]
         public ActionResult SearchEmployeeByName(string name, int projectId)
         {
             List<EmployeesListViewModel> employeesListViewModel = new List<EmployeesListViewModel>();

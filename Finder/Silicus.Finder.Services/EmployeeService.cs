@@ -6,7 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System;
 using Aspose.Cells;
-using Silicus.Finder.IdentityWrapper;
+//using Silicus.Finder.IdentityWrapper;
 using Silicus.Finder.Models.Models;
 using Silicus.Finder.ModelMappingService.Interfaces;
 using Silicus.UtilityContainer.Models.DataObjects;
@@ -15,7 +15,7 @@ namespace Silicus.Finder.Services
 {
     public class EmployeeService : IEmployeeService
     {
-        // private readonly IDataContext context;
+       // private readonly IDataContext context;
         private readonly ICommonMapper _commonMapper;
 
         //public EmployeeService(IDataContextFactory dataContextFactory)
@@ -28,11 +28,11 @@ namespace Silicus.Finder.Services
         {
             _commonMapper = commonMapper;
         }
-
+       
         public List<Employee> GetAllEmployees()
         {
             var context = _commonMapper.GetCommonDataBAseContext();
-
+      
             EmployeeSortByEmpCode employeeSortByEmpCode = new EmployeeSortByEmpCode();
             var userList = context.Query<User>();
             var employeeList = new List<Employee>();
@@ -40,37 +40,62 @@ namespace Silicus.Finder.Services
             {
                 employeeList.Add(_commonMapper.MapUserToEmployee(user));
             }
-            // employeeList = AttachTitleToEmployee(employeeList);
+           // employeeList = AttachTitleToEmployee(employeeList);
             employeeList.Sort(employeeSortByEmpCode);
             return employeeList;
         }
 
-        //public List<Employee> GetEmployeesByCriteria(EmployeeSearchCriteriaModel criteria)
+        public List<Employee> GetEmployeesByCriteria(EmployeeSearchCriteriaModel criteria)
+        {
+            var employeeList = GetAllEmployees();
+
+            if (employeeList.Count() != 0)
+            {
+                //employeeList = employeeList.Where(e => e.Projects.Any(p => p.ProjectName.Equals(string.IsNullOrEmpty(criteria.Project) ? p.ProjectName : criteria.Project.Trim()))
+                //    && e.SkillSets.Any(s => s.Name.Equals(string.IsNullOrEmpty(criteria.SkillSet) ? s.Name : criteria.SkillSet.Trim()))
+                //    && e.EmployeeType.ToString().Equals(string.IsNullOrEmpty(criteria.EmployeeType) ? e.EmployeeType.ToString() : criteria.EmployeeType.Trim()))
+                //    .ToList();
+
+               employeeList = employeeList.Where(e => e.Projects.Any(p => p.ProjectName.Equals(string.IsNullOrEmpty(criteria.Project) ? p.ProjectName : criteria.Project.Trim())) && ( e.Title == criteria.Title)
+                   &&(e.EmployeeType.ToString().Equals(string.IsNullOrEmpty(criteria.EmployeeType) ? e.EmployeeType.ToString() : criteria.EmployeeType.Trim()))
+                   ).ToList();
+
+               
+
+                //if (!string.IsNullOrEmpty(criteria.Title) && employeeList.Count() != 0)
         //{
-        //    var employeeList = GetAllEmployees();
+                //    var titleId = context.Query<Title>().Where(t => t.Name.Equals(criteria.Title.Trim())).Select(t => t.TitleId).FirstOrDefault();
+                //    employeeList = employeeList.Where(e => e.EmployeeTitles.Any(et => et.TitleId.Equals(titleId))).ToList();
+                //}
+            }
+            return employeeList;
+        }
 
-        //    if (employeeList.Count() != 0)
+        //public List<Employee> GetEmployeeByName(string name)
+        //{
+
+
+        //    EmployeeSortByEmpCode employeeSortByEmpCode = new EmployeeSortByEmpCode();
+        //    List<Employee> employeeList = new List<Employee>();
+        //    if (name != null)
         //    {
-        //        employeeList = employeeList.Where(e => e.Projects.Any(p => p.ProjectName.Equals(string.IsNullOrEmpty(criteria.Project) ? p.ProjectName : criteria.Project.Trim()))
-        //            && e.SkillSets.Any(s => s.Name.Equals(string.IsNullOrEmpty(criteria.SkillSet) ? s.Name : criteria.SkillSet.Trim()))
-        //            && e.EmployeeType.ToString().Equals(string.IsNullOrEmpty(criteria.EmployeeType) ? e.EmployeeType.ToString() : criteria.EmployeeType.Trim()))
-        //            .ToList();
+        //        string _name = name.Trim().ToLower();
 
-        //        if (!string.IsNullOrEmpty(criteria.Title) && employeeList.Count() != 0)
+        //        var usersByName = _commonMapper.GetCommonDataBAseContext().Query<User>().ToList().Where(u => u.DisplayName.Trim().ToLower().Contains(_name)).ToList();
+
+
+        //        foreach (var user in usersByName)
         //        {
-        //            var titleId = context.Query<Title>().Where(t => t.Name.Equals(criteria.Title.Trim())).Select(t => t.TitleId).FirstOrDefault();
-        //            employeeList = employeeList.Where(e => e.EmployeeTitles.Any(et => et.TitleId.Equals(titleId))).ToList();
+        //            employeeList.Add(_commonMapper.MapBasicPropertiesOfUserToEmployee(user));
         //        }
-        //    }
-        //    return employeeList;
-        //}
+                
 
         public List<Employee> GetEmployeeByName(string name)
         {
             EmployeeSortByEmpCode employeeSortByEmpCode = new EmployeeSortByEmpCode();
             List<Employee> employeeList = new List<Employee>();
             var context = _commonMapper.GetCommonDataBAseContext();
-
+                
             if (name != null)
             {
                 string _name = name.Trim().ToLower();
@@ -95,7 +120,7 @@ namespace Silicus.Finder.Services
                     return employeeList;
                 }
             }
-         
+
             employeeList.Sort(employeeSortByEmpCode);
             return employeeList;
         }
@@ -119,7 +144,7 @@ namespace Silicus.Finder.Services
         {
             var context = _commonMapper.GetCommonDataBAseContext();
             var user = context.Query<User>().Where(emp => (emp.EmployeeID == employeeId)).SingleOrDefault();
-            // employee.TitleId = context.Query<EmployeeTitles>().Where(emp => emp.EmployeeId == employeeId && emp.IsCurrent == true).Select(t => t.TitleId).SingleOrDefault();
+           // employee.TitleId = context.Query<EmployeeTitles>().Where(emp => emp.EmployeeId == employeeId && emp.IsCurrent == true).Select(t => t.TitleId).SingleOrDefault();
             //employee.Title = GetEmployeeTitle(employeeId);
             return _commonMapper.MapUserToEmployee(user);
         }
@@ -146,7 +171,7 @@ namespace Silicus.Finder.Services
         //public void EditEmployee(Employee selectedEmployee)
         //{
         //    Employee targetEmployee = GetEmployeeById(selectedEmployee.EmployeeId);
-
+        
         //    selectedEmployee.ContactId = targetEmployee.ContactId;
         //    selectedEmployee.Contact.ContactId = targetEmployee.Contact.ContactId;
         //    if (selectedEmployee.Contact.EmailAddress != targetEmployee.Contact.EmailAddress)
@@ -258,7 +283,7 @@ namespace Silicus.Finder.Services
         //public void SaveEmployeeReward(EmployeeRewards employeeToBeRewarded)
         //{
         //    context.Add<EmployeeRewards>(employeeToBeRewarded);
-
+          
         //}
 
         //public Employee GetEmployeeByEmployeeCode(string employeeCode)
@@ -270,7 +295,7 @@ namespace Silicus.Finder.Services
         //public Employee GetEmployeeByEmployeeCodeForValidation(string employeeCode)
         //{
         //    return context.Query<Employee>().Where(emp => (emp.EmployeeCode == employeeCode)).SingleOrDefault();
-
+            
 
         //}
 
@@ -398,87 +423,87 @@ namespace Silicus.Finder.Services
         //    return employees;
         //}
 
-        //        Employee CreateUser(Employee employee, string roleName)
-        //        {
-        //            employee.Role = roleName;
-        //            var userManager = new UserManager();
-        //            var membershipId = userManager.CreateUserIfNotExist(employee.Contact.EmailAddress, "Silicus@123");
-        //            userManager.AssignRoleToUser(membershipId, employee.Role);
-        //            employee.MembershipId = membershipId;
-        //            return employee;
-        //        }
+//        Employee CreateUser(Employee employee, string roleName)
+//        {
+//            employee.Role = roleName;
+//            var userManager = new UserManager();
+//            var membershipId = userManager.CreateUserIfNotExist(employee.Contact.EmailAddress, "Silicus@123");
+//            userManager.AssignRoleToUser(membershipId, employee.Role);
+//            employee.MembershipId = membershipId;
+//            return employee;
+//        }
 
-        //        public List<string> AddAllEmployees(List<Employee> employees)
-        //        {
-        //           var count = 0;
-        //           var empCodeFailedToAdd = new List<string>();
-        //           var employee = new Employee();
-        //Start:
-        //           while(count<employees.Count)
-        //           {
-        //               employee = employees.ElementAt(count);
-        //                try
-        //                {
-        //                    context.Add<Employee>(employee);
-        //                    count++;
-        //                }
-        //                catch (Exception ex)
-        //        {
-        //            empCodeFailedToAdd.Add(employee.EmployeeCode);
-        //            employee = new Employee();
-        //                   count++;
-        //                    goto Start;
+//        public List<string> AddAllEmployees(List<Employee> employees)
+//        {
+//           var count = 0;
+//           var empCodeFailedToAdd = new List<string>();
+//           var employee = new Employee();
+//Start:
+//           while(count<employees.Count)
+//           {
+//               employee = employees.ElementAt(count);
+//                try
+//                {
+//                    context.Add<Employee>(employee);
+//                    count++;
+//                }
+//                catch (Exception ex)
+//        {
+//            empCodeFailedToAdd.Add(employee.EmployeeCode);
+//            employee = new Employee();
+//                   count++;
+//                    goto Start;
 
-        //                }
-        //            }
+//                }
+//            }
 
-        //            return empCodeFailedToAdd;
-        //        }
+//            return empCodeFailedToAdd;
+//        }
 
-        //        public static T ParseEnum<T>(string value)
-        //        {
-        //            return (T)Enum.Parse(typeof(T), value, true);
-        //        }
+//        public static T ParseEnum<T>(string value)
+//        {
+//            return (T)Enum.Parse(typeof(T), value, true);
+//        }
 
-        //        public List<Title> GetAllTitles()
-        //        {
-        //            return context.Query<Title>().ToList();
-        //        }
+//        public List<Title> GetAllTitles()
+//        {
+//            return context.Query<Title>().ToList();
+//        }
 
-        //        private Employee AddTitle(Employee newEmployee)
-        //        {
-        //            newEmployee.EmployeeTitles = new List<EmployeeTitles>();
-        //            newEmployee.EmployeeTitles.Add(
-        //            new EmployeeTitles
-        //            {
-        //                TitleId = newEmployee.TitleId,
-        //                IsCurrent = true
-        //            });
-        //            return newEmployee;
-        //        }
+//        private Employee AddTitle(Employee newEmployee)
+//        {
+//            newEmployee.EmployeeTitles = new List<EmployeeTitles>();
+//            newEmployee.EmployeeTitles.Add(
+//            new EmployeeTitles
+//            {
+//                TitleId = newEmployee.TitleId,
+//                IsCurrent = true
+//            });
+//            return newEmployee;
+//        }
 
-        //        private Employee EditEmployeeTitle(Employee selectedEmployee)
-        //        {
-        //            var employeeTitles = context.Query<EmployeeTitles>().Where(title => title.EmployeeId == selectedEmployee.EmployeeId).ToList();
-        //            selectedEmployee.EmployeeTitles = employeeTitles;
-        //            foreach (var item in selectedEmployee.EmployeeTitles)
-        //            {
-        //                context.Attach<EmployeeTitles>(item);
-        //                item.IsCurrent = false;
-        //            }
+//        private Employee EditEmployeeTitle(Employee selectedEmployee)
+//        {
+//            var employeeTitles = context.Query<EmployeeTitles>().Where(title => title.EmployeeId == selectedEmployee.EmployeeId).ToList();
+//            selectedEmployee.EmployeeTitles = employeeTitles;
+//            foreach (var item in selectedEmployee.EmployeeTitles)
+//            {
+//                context.Attach<EmployeeTitles>(item);
+//                item.IsCurrent = false;
+//            }
 
-        //            var newEmployeeTitle = new EmployeeTitles
-        //            {
-        //                EmployeeId = selectedEmployee.EmployeeId,
-        //                TitleId = selectedEmployee.TitleId,
-        //                IsCurrent = true
-        //            };
+//            var newEmployeeTitle = new EmployeeTitles
+//            {
+//                EmployeeId = selectedEmployee.EmployeeId,
+//                TitleId = selectedEmployee.TitleId,
+//                IsCurrent = true
+//            };
 
-        //            context.Add<EmployeeTitles>(newEmployeeTitle);
+//            context.Add<EmployeeTitles>(newEmployeeTitle);
 
-        //            selectedEmployee.EmployeeTitles.Add(newEmployeeTitle);
-        //            return selectedEmployee;
-        //        }
+//            selectedEmployee.EmployeeTitles.Add(newEmployeeTitle);
+//            return selectedEmployee;
+//        }
 
         //private string GetEmployeeTitle(int employeeId)
         //{
@@ -491,16 +516,16 @@ namespace Silicus.Finder.Services
         //    foreach (var employee in employeeList)
         //    {
         //        employee. = _commonMapper.GetUserTitle(employee);
-        //    }
+//    }
         //    return employeeList;
-        //}
+//}
 
-        //        private int GetTitleIdByName(string titleName)
-        //        {
-        //            var titleId = context.Query<Title>().Where(title => title.Name.Equals(titleName,
-        //                   StringComparison.OrdinalIgnoreCase)).Select(t=>t.TitleId).FirstOrDefault();
-        //            return titleId;
-        //        }
+//        private int GetTitleIdByName(string titleName)
+//        {
+//            var titleId = context.Query<Title>().Where(title => title.Name.Equals(titleName,
+//                   StringComparison.OrdinalIgnoreCase)).Select(t=>t.TitleId).FirstOrDefault();
+//            return titleId;
+//        }
 
         //private Employee AddSkills(Employee targetEmployee, string skills)
         //{

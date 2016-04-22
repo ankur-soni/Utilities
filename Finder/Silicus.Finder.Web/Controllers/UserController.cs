@@ -12,8 +12,8 @@ using System.Security.Cryptography;
 using System.Text;
 using System.Web;
 using System.Web.Mvc;
-using Silicus.Finder.IdentityWrapper;
-using Silicus.Finder.IdentityWrapper.Models;
+//using Silicus.Finder.IdentityWrapper;
+//using Silicus.Finder.IdentityWrapper.Models;
 using Silicus.Finder.Models.DataObjects;
 
 namespace Silicus.Finder.Web.Controllers
