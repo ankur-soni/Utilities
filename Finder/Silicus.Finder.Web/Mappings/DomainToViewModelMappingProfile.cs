@@ -6,7 +6,7 @@ using Silicus.Finder.Models;
 using Silicus.Finder.Models.DataObjects;
 using Silicus.Finder.Web.ViewModel;
 using Silicus.Finder.Web.Controllers;
-using Silicus.Finder.IdentityWrapper.Models;
+//using Silicus.Finder.IdentityWrapper.Models;
 
 namespace Silicus.Finder.Web.Mappings
 {
@@ -29,7 +29,7 @@ namespace Silicus.Finder.Web.Mappings
             Mapper.CreateMap<Project, ProjectDetailsViewModel>();
             Mapper.CreateMap<Project, ProjectCreateViewModel>().ReverseMap();
             Mapper.CreateMap<Project, ProjectEditViewModel>();
-            Mapper.CreateMap<ApplicationUser, ApplicationUserViewModel>();
+           // Mapper.CreateMap<ApplicationUser, ApplicationUserViewModel>();
             Mapper.CreateMap<SkillSet, SkillSetViewModel>();
             Mapper.CreateMap<SkillSet, ProjectSkillSetDetailsViewModel>();
             Mapper.CreateMap<Employee, ProjectEmployeeDetailsViewModel>();

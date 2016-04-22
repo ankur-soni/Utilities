@@ -140,10 +140,6 @@
       <Project>{33F03AEB-5ED5-4F31-A3F5-D39B22373027}</Project>
       <Name>Silicus.Finder.Entities</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Silicus.Finder.IdentityWrapper\Silicus.Finder.IdentityWrapper.csproj">
-      <Project>{db09df65-ed4f-41e2-aea3-0162281568e7}</Project>
-      <Name>Silicus.Finder.IdentityWrapper</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Silicus.Finder.Models\Silicus.Finder.Models.csproj">
       <Project>{2F4384AA-2FE9-4C85-A6CC-59228BC587E6}</Project>
       <Name>Silicus.Finder.Models</Name>

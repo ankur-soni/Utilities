@@ -6,7 +6,7 @@ using System.Linq;
 using System.Web.Mvc;
 using Silicus.Finder.Models.DataObjects;
 using System.Data.Entity.Infrastructure;
-using Silicus.Finder.IdentityWrapper;
+//using Silicus.Finder.IdentityWrapper;
 using Silicus.Finder.Services.Comparable.SkillsComparable;
 using Silicus.Finder.Services.Comparable.ProjectComparable;
 using System.Web;

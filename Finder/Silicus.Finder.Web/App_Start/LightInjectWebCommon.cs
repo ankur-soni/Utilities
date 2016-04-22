@@ -2,7 +2,7 @@
 using System.Diagnostics.CodeAnalysis;
 using System.Web;
 using Microsoft.Web.Infrastructure.DynamicModuleHelper;
-using Silicus.Finder.IdentityWrapper;
+//using Silicus.Finder.IdentityWrapper;
 using Silicus.FrameWorx.Auditing;
 using Silicus.FrameWorx.Logger;
 using Silicus.Finder.Entities;
@@ -58,7 +58,7 @@ namespace Silicus.Finder.Web
             container.Register<IAuditManager>((factory) => new AuditManager("name=FinderAuditingDataContext"));
             container.Register<ICommonMapper, CommonMapper>();
             container.Register<IAuthorization, Authorization>();
-            container.Register<IUserManager, UserManager>(new PerRequestLifeTime());
+           // container.Register<IUserManager, UserManager>(new PerRequestLifeTime());
         }
     }
 }
