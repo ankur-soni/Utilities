@@ -23,6 +23,7 @@ using Silicus.UtilityContainer.Security.Interface;
 using Silicus.UtilityContainer.Security;
 using System.Web.Configuration;
 using Silicus.Finder.ModelMappingService;
+using Silicus.UtilityContainer.Services.Interfaces;
 
 namespace Silicus.Finder.Web.Controllers
 {
@@ -34,7 +35,8 @@ namespace Silicus.Finder.Web.Controllers
         private readonly IDataContextFactory _dataContextFactory;
         private readonly IEmailService _emailService;
         private readonly IAuthorization _authorizationService;
-        private readonly IUserSecurityService _securityService;       
+        private readonly IUserSecurityService _securityService;
+        private readonly IUserService _userService;
 
         //private ApplicationUserManager _userManager;
         //public ApplicationUserManager UserManager
@@ -82,26 +84,21 @@ namespace Silicus.Finder.Web.Controllers
         }
 
         public AccountController(ICookieHelper cookieHelper, ILogger logger,
-            IDataContextFactory dataContextFactory, IEmailService emailService, IUserSecurityService securityService)
+            IDataContextFactory dataContextFactory, IEmailService emailService, IUserSecurityService securityService, IUserService userService)
         {
             _cookieHelper = cookieHelper;
             _logger = logger;
             _dataContextFactory = dataContextFactory;
             _emailService = emailService;
             _securityService = securityService;
+            _userService = userService;
         }
 
         
         [AllowAnonymous]
         [HttpGet]
         public async Task<ActionResult> Login(string returnUrl, int utilityID = 0)
-         {
-            using (var context = _dataContextFactory.Create(ConnectionType.Ip))
-            {
-                // Hitting database just to let EF create it if it does not
-                // exist based on initializer.
-                context.Query<Organization>().Count();
-            }
+        {
             var cookieName = FormsAuthentication.FormsCookieName;
 
             var authCookie = Request.Cookies[".ADAuthCookie"];
@@ -112,7 +109,7 @@ namespace Silicus.Finder.Web.Controllers
                 HttpCookie DirectLoginInFinderCookie = new HttpCookie("DirectLoginInFinderCookie");
                 DirectLoginInFinderCookie.Value = "abcd";
                 Response.Cookies.Add(DirectLoginInFinderCookie);
-                return Redirect("http://localhost:52250/?returnUrl=http://localhost:53393/" + returnUrl);
+                return Redirect(ConfigurationManager.AppSettings["utilityContainer"] + returnUrl);
             }
 
             if (authCookie.Value != null)
@@ -142,6 +139,16 @@ namespace Silicus.Finder.Web.Controllers
                    
                     var authorizationService = new Authorization(context);
                     var user = Membership.GetUser(username);
+
+                    //run this code
+                    //var ADUser = Membership.GetUser(model.UserName);
+                    //var checkFirstLogin = _userService.CheckForFirstLoginByEmail(ADUser.Email);
+
+                    //if (checkFirstLogin)
+                    //{
+                    //    var newUser = _userService.FindUserByEmail(ADUser.Email);
+                    //    _userService.AddRoleToUserForAllUtility(newUser);
+                    //}
 
                     var commonRole = authorizationService.GetRoleForUtility(user.Email, utility);
                     HttpContext.Session["Role"] = commonRole;

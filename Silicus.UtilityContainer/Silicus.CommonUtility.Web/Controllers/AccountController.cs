@@ -11,6 +11,7 @@ using System.Web.Security;
 using Silicus.UtilityContainer.Security.Interface;
 using Silicus.UtilityContainer.Security;
 using Silicus.UtilityContainer.Services.Interfaces;
+using System.Configuration;
 
 namespace Silicus.UtilityContainer.Web.Controllers
 {
@@ -111,7 +112,7 @@ namespace Silicus.UtilityContainer.Web.Controllers
 
                 if (returnUrl != null)
                 {
-                    return Redirect(returnUrl);
+                    return Redirect(ConfigurationManager.AppSettings["Finder"] + "?returnUrl=" + returnUrl);
                 }
 
                 return this.RedirectToAction("Index", "Home");

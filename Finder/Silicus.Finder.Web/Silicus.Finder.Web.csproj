@@ -216,8 +216,15 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\Silicus.UtilityContainer\Silicus.CommonUtility.Service\bin\Debug\Silicus.UtilityContainer.Entities.dll</HintPath>
     </Reference>
+    <Reference Include="Silicus.UtilityContainer.Models, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\Silicus.UtilityContainer\Silicus.CommonUtility.Service\bin\Debug\Silicus.UtilityContainer.Models.dll</HintPath>
+    </Reference>
     <Reference Include="Silicus.UtilityContainer.Security">
       <HintPath>..\..\Silicus.UtilityContainer\Silicus.UtilityContainer.Security\bin\Debug\Silicus.UtilityContainer.Security.dll</HintPath>
+    </Reference>
+    <Reference Include="Silicus.UtilityContainer.Services">
+      <HintPath>..\..\Silicus.UtilityContainer\Silicus.CommonUtility.Service\bin\Debug\Silicus.UtilityContainer.Services.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
@@ -726,7 +733,6 @@
     <Content Include="Views\_ViewStart.cshtml" />
     <Content Include="Views\Account\Login.cshtml" />
     <Content Include="Views\Shared\_LoginPartial.cshtml" />
-    <Content Include="Views\Shared\_Layout.cshtml" />
     <Content Include="Views\Web.config" />
     <Content Include="Views\Error\PageNotFound.cshtml" />
     <Content Include="Views\Error\BadRequest.cshtml" />
@@ -804,6 +810,7 @@
     <Content Include="Views\Shared\EditorTemplates\EmployeeSearchCriteriaViewModel.cshtml" />
     <Content Include="Views\Projects\ProjectDetails.cshtml" />
     <Content Include="Views\Employee\EmployeeDetails.cshtml" />
+    <Content Include="Views\Shared\_Layout.cshtml" />
     <None Include="Web.Azure.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

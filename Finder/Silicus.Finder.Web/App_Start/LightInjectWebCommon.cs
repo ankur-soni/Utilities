@@ -20,6 +20,8 @@ using Silicus.Finder.ModelMappingService.Interfaces;
 using Silicus.Finder.ModelMappingService;
 using Silicus.UtilityContainer.Security.Interface;
 using Silicus.UtilityContainer.Security;
+using Silicus.UtilityContainer.Services.Interfaces;
+using Silicus.UtilityContainer.Services;
 
 [assembly: WebActivator.PostApplicationStartMethod(typeof(LightInjectWebCommon), "CreateContainer")]
 
@@ -43,7 +45,7 @@ namespace Silicus.Finder.Web
             container.Register<IDataContextFactory, DataContextFactory>();
             container.Register<IProjectDetailService, ProjectDetailService>();
             container.Register<IProjectService, ProjectService>();
-            container.Register<IUserService, UserService>();
+            //container.Register<IUserService, UserService>();
             container.Register<IRolesService, RolesService>();
             container.Register<IMappingService, MappingService>();
             container.Register<ISmtpClient, SmtpClientWrapper>();
