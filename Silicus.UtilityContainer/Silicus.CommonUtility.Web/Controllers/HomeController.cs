@@ -38,9 +38,9 @@ namespace Silicus.UtilityContainer.Web.Controllers
         {
 
             var newUserRole = new UtilityUserRoles();
-            ViewData["User"] = new SelectList(_userService.GetAllUsers(), "ID", "DisplayName");
-            ViewData["Utilities"] = new SelectList(_utilityService.GetAllUtilities(), "Id", "Name");
-            ViewData["Roles"] = new SelectList(_roleService.GetAllRoles(), "ID", "Name");
+            ViewData["User"] = new SelectList(_userService.GetAllUsers(), "ID", "DisplayName", "Select");
+            ViewData["Utilities"] = new SelectList(_utilityService.GetAllUtilities(), "Id", "Name","Select");
+            ViewData["Roles"] = new SelectList(_roleService.GetAllRoles(), "ID", "Name", "Select");
             //var role = _roleService.GetAllRoles();
             return View(newUserRole);
         }

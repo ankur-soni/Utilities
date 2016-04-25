@@ -29,7 +29,7 @@ namespace Silicus.Finder.Web.Controllers
         private readonly IDataContextFactory _dataContextFactory;
         private readonly IEmailService _emailService;
         private readonly IAuthorization _authorizationService;
-        private readonly IUserSecurityService _securityService;       
+        private readonly IUserSecurityService _securityService;
 
         //private ApplicationUserManager _userManager;
         //public ApplicationUserManager UserManager
@@ -86,7 +86,7 @@ namespace Silicus.Finder.Web.Controllers
             _securityService = securityService;
         }
 
-        
+
         [AllowAnonymous]
         [HttpGet]
         public async Task<ActionResult> Login(string returnUrl, int utilityID = 0)
@@ -116,25 +116,16 @@ namespace Silicus.Finder.Web.Controllers
                 var authenticationTicket = FormsAuthentication.Decrypt(authCookie.Value);
                 var username = authenticationTicket.Name;
                 var password = authenticationTicket.UserData;
-              
-                if (!Membership.ValidateUser(username, password))
-                {
-                    ModelState.AddModelError("", "User Name and Password does not matches! Please provide your correct login credentials.");
-                    return View(model);
-                }
 
                 if (ModelState.IsValid)
                 {
 
                     var userFromAd = Membership.GetUser(username);
-                    //var userManager = new UserManager();
-                    //var membershipId = userManager.CreateUserIfNotExistfromActiveDirectory(userFromAd.UserName, userFromAd.Email, password);
-                    //userManager.AssignRoleToUser(membershipId, "Admin");
                     var commonMapper = new CommonMapper();
                     var context = commonMapper.GetCommonDataBAseContext();
 
-                    string  utility = WebConfigurationManager.AppSettings["ProductName"];
-                   
+                    string utility = WebConfigurationManager.AppSettings["ProductName"];
+
                     var authorizationService = new Authorization(context);
                     var user = Membership.GetUser(username);
 
@@ -146,47 +137,27 @@ namespace Silicus.Finder.Web.Controllers
                     {
                         case "Success":
                             FormsAuthentication.SetAuthCookie(username, model.RememberMe);
-                            var isAdmin=false;
-                            //var user = await UserManager.FindByNameAsync(username);
-                            if (commonRole == "Admin")//await UserManager.IsInRoleAsync(user.Id, "Admin");
+                            var isAdmin = false;
+
+                            if (commonRole == "Admin")
                             {
                                 isAdmin = true;
                             }
                             return RedirectToLocal(returnUrl, username, isAdmin);
-                        //case SignInStatus.LockedOut:
-                        //    ModelState.AddModelError("", "Your account has been locked. Please contact system Administrator");
-                        //    return View(model);
-                        //case SignInStatus.RequiresVerification:
-                        //    ModelState.AddModelError("", "Account verification is pending. Please verify your account.");
-                        //    return View(model);
                         case "Failure":
-                            //var userName = UserManager.FindByName(model.UserName);
                             if (username != null)
                             {
                                 string message = "The password does not matches with your username, please enter the correct one.";
-                                //var loginUser = await UserManager.FindByNameAsync(model.UserName);
-
-                                //string role = UserManager.GetRoles(loginUser.Id).FirstOrDefault();
-
-                                //if (loginUser.AccessFailedCount == 3 && role != "Admin")
-                                //{
-                                //    UserManager.SetLockoutEnabled(loginUser.Id, true);
-                                //    UserManager.SetLockoutEndDate(loginUser.Id, DateTimeOffset.MaxValue);
-                                //    message = "Your account has been locked. Please contact system Administrator";
-                                //}
                                 ModelState.AddModelError("", message);
-                                return View(model);
+                                return Redirect(ConfigurationManager.AppSettings["utilityContainer"]);
                             }
                             ModelState.AddModelError("", "User Name and Password does not matches! Please provide your correct login credentials.");
-                            return View(model);
+                            return Redirect(ConfigurationManager.AppSettings["utilityContainer"]);
                         default:
                             ModelState.AddModelError("", "User Name and Password does not matches! Please provide your correct login credentials.");
-                            return View(model);
+                            return Redirect(ConfigurationManager.AppSettings["utilityContainer"]);
                     }
                 }
-
-                // If we got this far, something failed, redisplay form
-
                 return View(model);
             }
 

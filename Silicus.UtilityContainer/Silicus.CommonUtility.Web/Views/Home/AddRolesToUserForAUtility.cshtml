@@ -3,20 +3,19 @@
     ViewBag.Title = "AddRolesToUserForAUtility";
 }
 
-<h2>AddRolesToUserForAUtility</h2>
+<h2>Add Role To User For Utility</h2>
 
 @using (Html.BeginForm())
 {
     @Html.AntiForgeryToken()
 
     <div class="form-horizontal">
-        <h4>UserRole</h4>
         <hr />
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
         <div class="form-group">
             @Html.LabelFor(model => model.UserId, "User", htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.DropDownList("UserId", (SelectList)ViewData["User"], htmlAttributes: new { @class = "form-control" })
+                @Html.DropDownListFor(model=>model.UserId,(SelectList)ViewData["User"],"Select", htmlAttributes: new { @class = "form-control" })
                 @Html.ValidationMessageFor(model => model.UserId, "", new { @class = "text-danger" })
             </div>
         </div>
@@ -24,28 +23,28 @@
         <div class="form-group">
             @Html.LabelFor(model => model.UtilityId, "Utility", htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.DropDownList("UtilityId", (SelectList)ViewData["Utilities"], htmlAttributes: new { @class = "form-control" })
+                @Html.DropDownListFor(model=>model.UtilityId, (SelectList)ViewData["Utilities"],"Select",htmlAttributes: new { @class = "form-control" })
                 @Html.ValidationMessageFor(model => model.UtilityId, "", new { @class = "text-danger" })
             </div>
         </div>
         <div class="form-group">
             @Html.LabelFor(model => model.RoleId, "Role", htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.DropDownList("RoleId", (SelectList)ViewData["Roles"], htmlAttributes: new { @class = "form-control" })
+                @Html.DropDownListFor(model => model.RoleId, (SelectList)ViewData["Roles"], "Select",htmlAttributes: new { @class = "form-control" })
                 @Html.ValidationMessageFor(model => model.RoleId, "", new { @class = "text-danger" })
             </div>
         </div>
 
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Create" class="btn btn-default" />
+                <input type="submit" value="Add Role" class="btn btn-default" />
             </div>
         </div>
     </div>
 }
 
 <div>
-    @Html.ActionLink("Back to List", "Index")
+    @Html.ActionLink("Back to Dashboard", "Index")
 </div>
 
 @section Scripts {
