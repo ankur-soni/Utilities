@@ -48,9 +48,6 @@ namespace Silicus.UtilityContainer.Web.Controllers
         [HttpPost]
         public ActionResult AddRolesToUserForAUtility(UtilityUserRoles newUserRole)
         {
-           // ViewData["User"] = new SelectList(_userService.GetAllUsers(), "ID", "DisplayName");
-           //ViewData["Utilities"] = new SelectList(_utilityService.GetAllUtilities(), "Id", "Name");
-           // ViewData["Roles"] = new SelectList(_roleService.GetAllRoles(), "Id", "Name");
             _userService.AddRolesToUserForAUtility(newUserRole);
             return RedirectToAction("Index");
         }
