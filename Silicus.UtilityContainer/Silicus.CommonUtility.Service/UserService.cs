@@ -13,12 +13,16 @@ namespace Silicus.UtilityContainer.Services
     {
         //private readonly SilicusUtilityContext _context;
         private readonly IUtilityService _utilityService;
+        private readonly IUtilityUserRoleService _utilityUserRoleService;
         private readonly ICommonDataBaseContext _commonDBContext;
+        private readonly IRoleService _roleService;
 
-        public UserService(IUtilityService utilityService, IDataContextFactory dataContextFactory)
+        public UserService(IUtilityService utilityService, IDataContextFactory dataContextFactory, IUtilityUserRoleService utilityUserRoleService, IRoleService roleService)
         {
             _commonDBContext = dataContextFactory.CreateCommonDBContext();
             _utilityService = utilityService;
+            _utilityUserRoleService = utilityUserRoleService;
+            _roleService = roleService;
         }
 
 
@@ -37,6 +41,31 @@ namespace Silicus.UtilityContainer.Services
             _commonDBContext.Add(newUserRole);
         }
 
+        public User FindUserByEmail(string email)
+        {
+            return _commonDBContext.Query<User>().Where(user=>user.EmailAddress==email).First();
+        }
+
+        public void AddRoleToUserForAllUtility(User user)
+        {
+            var allUtilities = _utilityService.GetAllUtilities();
+            var userRole=_roleService.GetRoleByRoleName("User");
+            foreach(var utility in allUtilities)
+            {
+               _commonDBContext.Add(new UtilityUserRoles { UtilityId=utility.Id, UserId=user.ID, RoleId=userRole.ID});
+            }
+            
+        }
+
+        public bool CheckForFirstLoginByEmail(string email)
+        {
+            bool status = false;
+            var user = FindUserByEmail(email);
+            var utilityRegisteredCount = _utilityUserRoleService.GetAllRolesForUser(user.UserName).Count;
+            if (utilityRegisteredCount == 0)
+                status = true;
+            return status;
+        }
         
     }
 }

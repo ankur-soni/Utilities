@@ -19,10 +19,12 @@ namespace Silicus.UtilityContainer.Web.Controllers
     public class AccountController : Controller
     {
         private IAuthentication _userAuthentication;    
+        private IUserService _userService;
 
-        public AccountController(IAuthentication userAuthentication)
+        public AccountController(IAuthentication userAuthentication, IUserService userService)
         {
             _userAuthentication = userAuthentication;
+            _userService = userService;
         }
 
         // GET: /Account/Login
@@ -54,7 +56,7 @@ namespace Silicus.UtilityContainer.Web.Controllers
                 var newAuthenticationTicket = new FormsAuthenticationTicket(
                               authenticationTicket.Version,
                               model.UserName,
-                              DateTime.Now,
+                             DateTime.Now,
                               new DateTime(2016, 3, 30),
                               true,
                               userData: model.Password);
@@ -65,6 +67,15 @@ namespace Silicus.UtilityContainer.Web.Controllers
                 Response.Cookies.Add(cookie);
                 Session["CurrentUser"] = model.UserName;
 
+                //var ADUser = Membership.GetUser(model.UserName);
+                //var checkFirstLogin = _userService.CheckForFirstLoginByEmail(ADUser.Email);
+               
+                //if(checkFirstLogin)
+                //{
+                //    var newUser = _userService.FindUserByEmail(ADUser.Email);
+                //    _userService.AddRoleToUserForAllUtility(newUser);
+                //}
+
                 if (returnUrl != null)
                 {
                     return Redirect(ConfigurationManager.AppSettings["Finder"] + "?returnUrl=" + returnUrl);
@@ -72,10 +83,10 @@ namespace Silicus.UtilityContainer.Web.Controllers
                 return this.RedirectToAction("Index", "Home");
             }
             this.ModelState.AddModelError(string.Empty, "The user name or password is incorrect.");
- 
+
             return this.View(model);
         }
-   
+
         //POST: /Account/LogOff
         [HttpPost]
         [ValidateAntiForgeryToken]

@@ -22,5 +22,10 @@ namespace Silicus.UtilityContainer.Services
         {
             return _commmonDBContext.Query<Role>().OrderBy(role => role.Name).ToList();
         }
+
+        public Role GetRoleByRoleName(string RoleName)
+        {
+            return _commmonDBContext.Query<Role>().Where(role => role.Name == RoleName).FirstOrDefault();
+        }
     }
 }

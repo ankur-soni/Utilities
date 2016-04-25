@@ -2,6 +2,7 @@
 
 @{
     ViewBag.Title = "Dashboard";
+    var isRoleAvailable = Session["NoRoleAvailable"];
 }
 
 <h2>Dashboard</h2>
@@ -71,7 +72,7 @@
         /*background-repeat: repeat;*/
     }
 </style>
-
+       @isRoleAvailable
     <div class="container">
 
         @if (Model != null)

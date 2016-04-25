@@ -119,7 +119,6 @@
     <Compile Include="Interfaces\IRolesService.cs" />
     <Compile Include="Interfaces\ISkillSetService.cs" />
     <Compile Include="Interfaces\ISmtpClient.cs" />
-    <Compile Include="Interfaces\IUserService.cs" />
     <Compile Include="ManagerService.cs" />
     <Compile Include="obj\Debug\TemporaryGeneratedFile_036C0B5B-1481-4323-8D20-8F5ADCB23D92.cs" />
     <Compile Include="obj\Debug\TemporaryGeneratedFile_5937a670-0e60-4077-877b-f7221da3dda1.cs" />
@@ -130,7 +129,6 @@
     <Compile Include="RolesService.cs" />
     <Compile Include="SkillSetService.cs" />
     <Compile Include="SmtpClientWrapper.cs" />
-    <Compile Include="UserService.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Silicus.Finder.Entities\Silicus.Finder.Entities.csproj">

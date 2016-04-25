@@ -18,6 +18,7 @@ using Silicus.UtilityContainer.Security.Interface;
 using Silicus.UtilityContainer.Security;
 using System.Web.Configuration;
 using Silicus.Finder.ModelMappingService;
+using Silicus.UtilityContainer.Services.Interfaces;
 
 namespace Silicus.Finder.Web.Controllers
 {
@@ -29,7 +30,8 @@ namespace Silicus.Finder.Web.Controllers
         private readonly IDataContextFactory _dataContextFactory;
         private readonly IEmailService _emailService;
         private readonly IAuthorization _authorizationService;
-        private readonly IUserSecurityService _securityService;
+        private readonly IUserSecurityService _securityService;       
+        //private readonly IUserService _userService;
 
         //private ApplicationUserManager _userManager;
         //public ApplicationUserManager UserManager
@@ -84,21 +86,15 @@ namespace Silicus.Finder.Web.Controllers
             _dataContextFactory = dataContextFactory;
             _emailService = emailService;
             _securityService = securityService;
+           // _userService = userService;
         }
 
-
+        
         [AllowAnonymous]
         [HttpGet]
         public async Task<ActionResult> Login(string returnUrl, int utilityID = 0)
         {
-            //using (var context = _dataContextFactory.Create(ConnectionType.Ip))
-            //{
-            //    // Hitting database just to let EF create it if it does not
-            //    // exist based on initializer.
-            //    context.Query<Organization>().Count();
-            //}
             var cookieName = FormsAuthentication.FormsCookieName;
-
             var authCookie = Request.Cookies[".ADAuthCookie"];
 
             if (authCookie == null)
@@ -116,7 +112,7 @@ namespace Silicus.Finder.Web.Controllers
                 var authenticationTicket = FormsAuthentication.Decrypt(authCookie.Value);
                 var username = authenticationTicket.Name;
                 var password = authenticationTicket.UserData;
-
+              
                 if (ModelState.IsValid)
                 {
 
@@ -125,12 +121,31 @@ namespace Silicus.Finder.Web.Controllers
                     var context = commonMapper.GetCommonDataBAseContext();
 
                     string utility = WebConfigurationManager.AppSettings["ProductName"];
-
+                   
                     var authorizationService = new Authorization(context);
                     var user = Membership.GetUser(username);
 
+                
+                    //var ADUser = Membership.GetUser(model.UserName);
+                    //var checkFirstLogin = _userService.CheckForFirstLoginByEmail(ADUser.Email);
+
+                    //if (checkFirstLogin)
+                    //{
+                    //    var newUser = _userService.FindUserByEmail(ADUser.Email);
+                    //    _userService.AddRoleToUserForAllUtility(newUser);
+                    //}
+
                     var commonRole = authorizationService.GetRoleForUtility(user.Email, utility);
-                    HttpContext.Session["Role"] = commonRole;
+
+                    if (!string.IsNullOrEmpty(commonRole))
+                        HttpContext.Session["Role"] = commonRole;
+                    else
+                    {
+                        HttpContext.Session["NoRoleAvailable"] = "No role Assigned";
+                        return Redirect("http://localhost:52250/Home/Index");
+                    }
+                                   
+                   // HttpContext.Session["Role"] = commonRole;
                     var loginResult = _securityService.PasswordSignInAsync(username, password);
 
                     switch (loginResult)
@@ -291,7 +306,7 @@ namespace Silicus.Finder.Web.Controllers
         public async Task<ActionResult> LogOff()
         {
             var userName = "Unknown";
-            HttpContext.Session["Role"] = "";
+            HttpContext.Session["Role"] = null;
             if (HttpContext.User != null && !string.IsNullOrWhiteSpace(HttpContext.User.Identity.Name))
             {
                 userName = HttpContext.User.Identity.Name;

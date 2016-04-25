@@ -10,5 +10,6 @@ namespace Silicus.UtilityContainer.Services.Interfaces
     public interface IRoleService
     {
         List<Role> GetAllRoles();
+        Role GetRoleByRoleName(string RoleName);
     }
 }
