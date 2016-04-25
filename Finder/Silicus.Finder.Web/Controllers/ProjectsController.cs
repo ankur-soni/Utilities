@@ -4,6 +4,7 @@ using Silicus.Finder.Models.Models;
 using Silicus.Finder.Services.Comparable.EmployeeComparable;
 using Silicus.Finder.Services.Comparable.SkillsComparable;
 using Silicus.Finder.Services.Interfaces;
+using Silicus.Finder.Web.Filters;
 using Silicus.Finder.Web.ViewModel;
 using System;
 using System.Collections.Generic;
@@ -198,6 +199,7 @@ namespace Silicus.Finder.Web.Controllers
             }            
         }
 
+       [CustomAuthorizeAttribute(AllowedRole = "Admin, Manager, User")]
         public ActionResult GetProjects()
         {
             ViewData["Employees"] = _projectService.GetAllEmployees();
@@ -210,6 +212,7 @@ namespace Silicus.Finder.Web.Controllers
             return View("List", projects);
         }
 
+         [CustomAuthorizeAttribute(AllowedRole = "Admin, Manager, User")]
         public ActionResult GetProjectsByCriteria(ProjectSearchCriteriaViewModel criteria)
         {
             IEnumerable<Project> projectsList;
@@ -229,6 +232,7 @@ namespace Silicus.Finder.Web.Controllers
             return View("List", projects);
         }
 
+         [CustomAuthorizeAttribute(AllowedRole = "Admin, Manager, User")]
         public ActionResult GetProjectsByName(string projectName)
         {
             IEnumerable<Project> projectsList;
@@ -252,6 +256,7 @@ namespace Silicus.Finder.Web.Controllers
             return View("RecordNotFound");
         }
 
+         [CustomAuthorizeAttribute(AllowedRole = "Admin, Manager, User")]
         public ActionResult GetProjectDetails(int projectId)
         {
             ViewData["Employees"] = _projectService.GetAllEmployees();
@@ -261,7 +266,7 @@ namespace Silicus.Finder.Web.Controllers
             return PartialView("_Details", projectViewModel);
         }
 
-
+         [CustomAuthorizeAttribute(AllowedRole = "Admin, Manager, User")]
         public ActionResult ProjectDetails(int projectId)
         {
             ViewData["Employees"] = _projectService.GetAllEmployees();
@@ -282,6 +287,7 @@ namespace Silicus.Finder.Web.Controllers
         }
 
         [ChildActionOnly]
+        [CustomAuthorizeAttribute(AllowedRole = "Admin, Manager, User")]
         public ActionResult GetProjectCountBySkill(int skillSetId)
         {
             var projectCount = _projectService.GetProjectCountBySkill(skillSetId);

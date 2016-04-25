@@ -1,24 +1,19 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
 using System.Configuration;
-using System.Diagnostics;
-using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using System.Threading.Tasks;
 using Microsoft.AspNet.Identity;
-using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
 using Silicus.FrameWorx.Logger;
 using Silicus.Finder.Entities;
-using Silicus.Finder.Models.DataObjects;
 using Silicus.Finder.Services.Interfaces;
 using Silicus.Finder.Web.Filters;
 using Silicus.Finder.Web.Models;
 //using Silicus.Finder.IdentityWrapper;
 //using Silicus.Finder.IdentityWrapper.Models;
 using System.Web.Security;
-using System.Security.Principal;
 using Silicus.UtilityContainer.Security.Interface;
 using Silicus.UtilityContainer.Security;
 using System.Web.Configuration;
@@ -96,16 +91,16 @@ namespace Silicus.Finder.Web.Controllers
         [HttpGet]
         public async Task<ActionResult> Login(string returnUrl, int utilityID = 0)
         {
-            using (var context = _dataContextFactory.Create(ConnectionType.Ip))
-            {
-                // Hitting database just to let EF create it if it does not
-                // exist based on initializer.
-                context.Query<Organization>().Count();
-            }
+            //using (var context = _dataContextFactory.Create(ConnectionType.Ip))
+            //{
+            //    // Hitting database just to let EF create it if it does not
+            //    // exist based on initializer.
+            //    context.Query<Organization>().Count();
+            //}
             var cookieName = FormsAuthentication.FormsCookieName;
 
             var authCookie = Request.Cookies[".ADAuthCookie"];
-
+           
             if (authCookie == null)
             {
                 // cookie to check if user logins directly in finder
@@ -155,7 +150,6 @@ namespace Silicus.Finder.Web.Controllers
                             //var user = await UserManager.FindByNameAsync(username);
                             if (commonRole == "Admin")//await UserManager.IsInRoleAsync(user.Id, "Admin");
                             {
-
                                 isAdmin = true;
                             }
                             return RedirectToLocal(returnUrl, username, isAdmin);
