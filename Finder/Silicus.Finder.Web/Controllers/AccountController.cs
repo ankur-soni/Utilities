@@ -100,14 +100,14 @@ namespace Silicus.Finder.Web.Controllers
             var cookieName = FormsAuthentication.FormsCookieName;
 
             var authCookie = Request.Cookies[".ADAuthCookie"];
-           
+
             if (authCookie == null)
             {
                 // cookie to check if user logins directly in finder
                 HttpCookie DirectLoginInFinderCookie = new HttpCookie("DirectLoginInFinderCookie");
                 DirectLoginInFinderCookie.Value = "abcd";
                 Response.Cookies.Add(DirectLoginInFinderCookie);
-                return Redirect("http://localhost:52250/?returnUrl=http://localhost:53393/" + returnUrl);
+                return Redirect(ConfigurationManager.AppSettings["utilityContainer"] + returnUrl);
             }
 
             if (authCookie.Value != null)

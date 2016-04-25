@@ -118,21 +118,21 @@
                             </div>
                         </div>
                     </div>
-                    @*<div id="dashboardlink" class="container-fluid"><span><a href="@Url.Action("GetLockedUsers", "Admin")">Locked Users</a></span><span><a href="@Url.Action("ChangePassword", "Account")">ChangePassword</a></span><span><a href="@Url.Action("Dashboard", "Admin")">Dashboard</a></span></div>*@
+                    @*<div id="dashboardlink" class="container-fluid"><span><a href="@Url.Action("GetLockedUsers", "Admin")">Locked Users</a></span><span><a href="@Url.Action("ChangePassword", "Account")">ChangePassword</a></span><span><a href="@Url.Action("Dashboard", "Admin")">Dashboard</a></span></div>
                     <div id="dashboardlink" class="container-fluid">
                         @if (Request.IsAuthenticated)
                         {
-                            @*    <span>
+                               <span>
                                     @if (User.IsInRole("Admin"))
                                     {
                                         <a href="@Url.Action("GetLockedUsers", "Admin")">Locked Users</a>
                                     }
                                 </span>
                                 <span><a href="@Url.Action("ChangePassword", "Account")">Change Password</a></span>
-                            *@
+                            
                             <span><a href="@Url.Action("Dashboard", "Dashboard")">Dashboard</a></span>
                         }
-                    </div>
+                    </div>*@
                     <div id="dashboardimage" style="padding-top:1%">
                         <h2 style="padding-left:4%;padding-top:1%; color:white;" id="moduleHeaderTitleOnDashBoardImage"></h2>
                     </div>
