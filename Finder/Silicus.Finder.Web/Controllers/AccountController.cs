@@ -96,13 +96,7 @@ namespace Silicus.Finder.Web.Controllers
         [HttpGet]
         public async Task<ActionResult> Login(string returnUrl, int utilityID = 0)
         {
-            using (var context = _dataContextFactory.Create(ConnectionType.Ip))
-            {
-                // Hitting database just to let EF create it if it does not
-                // exist based on initializer.
-                context.Query<Organization>().Count();
-            }
-            var cookieName = FormsAuthentication.FormsCookieName;
+             var cookieName = FormsAuthentication.FormsCookieName;
 
             var authCookie = Request.Cookies[".ADAuthCookie"];
 
@@ -112,7 +106,7 @@ namespace Silicus.Finder.Web.Controllers
                 HttpCookie DirectLoginInFinderCookie = new HttpCookie("DirectLoginInFinderCookie");
                 DirectLoginInFinderCookie.Value = "abcd";
                 Response.Cookies.Add(DirectLoginInFinderCookie);
-                return Redirect("http://localhost:52250/?returnUrl=http://localhost:53393/" + returnUrl);
+                return Redirect(ConfigurationManager.AppSettings["utilityContainer"] + returnUrl);
             }
 
             if (authCookie.Value != null)
