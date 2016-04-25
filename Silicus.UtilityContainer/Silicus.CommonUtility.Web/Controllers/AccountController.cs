@@ -19,11 +19,13 @@ namespace Silicus.UtilityContainer.Web.Controllers
     {
         private ApplicationSignInManager _signInManager;
         private ApplicationUserManager _userManager;
-        private IAuthentication _userAuthentication;    
+        private IAuthentication _userAuthentication;
+        private IUserService _userService;
 
-        public AccountController(IAuthentication userAuthentication)
+        public AccountController(IAuthentication userAuthentication, IUserService userService)
         {
             _userAuthentication = userAuthentication;
+            _userService = userService;
         }
 
         public ApplicationSignInManager SignInManager
@@ -97,6 +99,15 @@ namespace Silicus.UtilityContainer.Web.Controllers
                 Response.Cookies.Add(cookie);
 
                 Session["CurrentUser"] = model.UserName;
+
+                var ADUser = Membership.GetUser(model.UserName);
+                var checkFirstLogin = _userService.CheckForFirstLoginByEmail(ADUser.Email);
+               
+                if(checkFirstLogin)
+                {
+                    var newUser = _userService.FindUserByEmail(ADUser.Email);
+                    _userService.AddRoleToUserForAllUtility(newUser);
+                }
 
                 if (returnUrl != null)
                 {

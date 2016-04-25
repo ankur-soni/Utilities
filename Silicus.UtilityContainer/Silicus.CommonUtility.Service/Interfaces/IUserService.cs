@@ -11,5 +11,8 @@ namespace Silicus.UtilityContainer.Services.Interfaces
     {
         List<User> GetAllUsers();
         void AddRolesToUserForAUtility(UtilityUserRoles newUserRole);
+        bool CheckForFirstLoginByEmail(string email);
+        User FindUserByEmail(string email);
+        void AddRoleToUserForAllUtility(User user);
     }
 }

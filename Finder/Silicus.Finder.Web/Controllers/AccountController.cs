@@ -95,7 +95,7 @@ namespace Silicus.Finder.Web.Controllers
         [AllowAnonymous]
         [HttpGet]
         public async Task<ActionResult> Login(string returnUrl, int utilityID = 0)
-        {
+         {
             using (var context = _dataContextFactory.Create(ConnectionType.Ip))
             {
                 // Hitting database just to let EF create it if it does not
@@ -326,7 +326,7 @@ namespace Silicus.Finder.Web.Controllers
         public async Task<ActionResult> LogOff()
         {
             var userName = "Unknown";
-            HttpContext.Session["Role"] = "";
+            HttpContext.Session["Role"] = null;
             if (HttpContext.User != null && !string.IsNullOrWhiteSpace(HttpContext.User.Identity.Name))
             {
                 userName = HttpContext.User.Identity.Name;
