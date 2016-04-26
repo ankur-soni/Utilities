@@ -4,6 +4,7 @@ using Silicus.Finder.Entities;
 using Silicus.Finder.Models.DataObjects;
 using Silicus.Finder.Services.Interfaces;
 using Silicus.Finder.ModelMappingService.Interfaces;
+using Silicus.UtilityContainer.Security;
 
 namespace Silicus.Finder.Services
 {
@@ -39,27 +40,14 @@ namespace Silicus.Finder.Services
             return _mapper.MapRoleToRole(role);
         }
 
-        //public int Add(Role Role)
-        //{
-        //    _context.Add(Role);
-        //    return Role.RoleId;
-        //}
 
-        //public void Update(Role Role)
-        //{
-        //    if (Role.RoleName != null && Role.Description != null)
-        //    {
-        //        _context.Update(Role);
-        //    }
-        //}
 
-        //public void Delete(Role Role)
-        //{
-        //    if (Role.RoleName != null && Role.Description != null)
-        //    {
-        //        _context.Delete(Role);
-        //    }
-        //}
+
+        public string getFindersRole(string email, string utility)
+        {
+            var authorization = new Authorization(_mapper.GetCommonDataBAseContext());
+            return authorization.GetRoleForUtility(email, utility);
+        }
     }
 }
 

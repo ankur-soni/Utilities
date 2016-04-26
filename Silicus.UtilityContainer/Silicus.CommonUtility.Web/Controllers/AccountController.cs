@@ -33,6 +33,20 @@ namespace Silicus.UtilityContainer.Web.Controllers
         public ActionResult Login(string returnUrl)
         {
             ViewBag.ReturnUrl = returnUrl;
+            var cookie = HttpContext.Request.Cookies[".ADAuthCookie"];
+            if (cookie != null)
+            {
+                var authenticationTicket = FormsAuthentication.Decrypt(cookie.Value);
+                var userName = authenticationTicket.Name;
+                var password = authenticationTicket.UserData;
+                if (_userAuthentication.ValidateUser(userName,password))
+                {
+                    return this.RedirectToAction("Index", "Home"); 
+                }
+
+            }
+
+           
             return View();
         }
 
@@ -67,14 +81,6 @@ namespace Silicus.UtilityContainer.Web.Controllers
                 Response.Cookies.Add(cookie);
                 Session["CurrentUser"] = model.UserName;
 
-                //var ADUser = Membership.GetUser(model.UserName);
-                //var checkFirstLogin = _userService.CheckForFirstLoginByEmail(ADUser.Email);
-               
-                //if(checkFirstLogin)
-                //{
-                //    var newUser = _userService.FindUserByEmail(ADUser.Email);
-                //    _userService.AddRoleToUserForAllUtility(newUser);
-                //}
 
                 if (returnUrl != null)
                 {

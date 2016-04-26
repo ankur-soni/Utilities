@@ -31,44 +31,9 @@ namespace Silicus.Finder.Web.Controllers
         private readonly IEmailService _emailService;
         private readonly IAuthorization _authorizationService;
         private readonly IUserSecurityService _securityService;       
-        //private readonly IUserService _userService;
+       
 
-        //private ApplicationUserManager _userManager;
-        //public ApplicationUserManager UserManager
-        //{
-        //    get
-        //    {
-        //        return _userManager ?? HttpContext.GetOwinContext().GetUserManager<ApplicationUserManager>();
-        //    }
-        //    set
-        //    {
-        //        _userManager = value;
-        //    }
-        //}
-
-        //private ApplicationRoleManager _roleManager;
-        //public ApplicationRoleManager RoleManager
-        //{
-        //    get
-        //    {
-        //        return _roleManager ?? HttpContext.GetOwinContext().Get<ApplicationRoleManager>();
-        //    }
-        //    private set
-        //    {
-        //        _roleManager = value;
-        //    }
-        //}
-
-        //private ApplicationSignInManager _signInManager;
-
-        //public ApplicationSignInManager SignInManager
-        //{
-        //    get
-        //    {
-        //        return _signInManager ?? HttpContext.GetOwinContext().Get<ApplicationSignInManager>();
-        //    }
-        //    private set { _signInManager = value; }
-        //}
+       
 
         private IAuthenticationManager AuthenticationManager
         {
@@ -125,15 +90,6 @@ namespace Silicus.Finder.Web.Controllers
                     var authorizationService = new Authorization(context);
                     var user = Membership.GetUser(username);
 
-                
-                    //var ADUser = Membership.GetUser(model.UserName);
-                    //var checkFirstLogin = _userService.CheckForFirstLoginByEmail(ADUser.Email);
-
-                    //if (checkFirstLogin)
-                    //{
-                    //    var newUser = _userService.FindUserByEmail(ADUser.Email);
-                    //    _userService.AddRoleToUserForAllUtility(newUser);
-                    //}
 
                     var commonRole = authorizationService.GetRoleForUtility(user.Email, utility);
 
@@ -141,8 +97,8 @@ namespace Silicus.Finder.Web.Controllers
                         HttpContext.Session["Role"] = commonRole;
                     else
                     {
-                        HttpContext.Session["NoRoleAvailable"] = "No role Assigned";
-                        return Redirect("http://localhost:52250/Home/Index");
+                  
+                        return Redirect("http://localhost:52250/Home/Index?data=" + "No role Assigned for "+username+" in "+utility+" uitility!");
                     }
                                    
                    // HttpContext.Session["Role"] = commonRole;

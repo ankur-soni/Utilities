@@ -86,7 +86,8 @@ namespace Silicus.Finder.Web.Controllers
             // _roleService.GetRoleDetails();
             var selectedEmployee = _employeeService.GetEmployeeById(id);
             var employeeViewModel = new EmployeeViewModel();
-            ViewBag.selectedEmployeesRole = _roleService.GetRoleById(Convert.ToInt32(selectedEmployee.Role)).RoleName;
+            ViewBag.selectedEmployeesRole = _roleService.getFindersRole(selectedEmployee.Contact.EmailAddress, "Finder");
+                //_roleService.GetRoleById(Convert.ToInt32(selectedEmployee.Role)).RoleName;
             Mapper.Map(selectedEmployee, employeeViewModel);
             ViewBag.EmployeesList = _employeeService.GetAllEmployees();
             return PartialView("_Details", employeeViewModel);
@@ -105,23 +106,7 @@ namespace Silicus.Finder.Web.Controllers
         }
 
 
-        //[ChildActionOnly]
-        //public ActionResult GetEmployeeCountBySkill(int skillSetId)
-        //{
-        //    var projectCount = _employeeService.GetProjectCountBySkill(skillSetId);
-        //    return PartialView(projectCount);
-        //}
-
-        //public ActionResult SearchForTechnologyToAddToEmployee(string technologyName, int employeeId)
-        //{
-        //    ViewBag.EmployeeID = employeeId;
-        //    var employee = _employeeService.GetEmployeeById(employeeId);
-        //    var allSkills = _employeeService.GetAllSkillSets();
-        //    var currentlyAddedSkills = employee.SkillSets;
-        //    var searchedTechnology = _skillSetService.GetSkillSetListByName(technologyName).Except(currentlyAddedSkills, new SkillsEqualityComparer());
-        //    return View("AddSkillSetToEmployee", searchedTechnology);
-
-        //}
+       
 
 
 
