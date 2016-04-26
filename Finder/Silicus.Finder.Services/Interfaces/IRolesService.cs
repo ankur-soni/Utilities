@@ -9,5 +9,7 @@ namespace Silicus.Finder.Services.Interfaces
         IEnumerable<Role> GetRoleDetails();
 
        Role GetRoleById(int Id);
+
+       string getFindersRole(string email, string utility);
     }
 }

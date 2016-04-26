@@ -1,6 +1,7 @@
 ﻿using Silicus.UtilityContainer.Models.DataObjects;
 using Silicus.UtilityContainer.Services;
 using Silicus.UtilityContainer.Services.Interfaces;
+using Silicus.UtilityContainer.Web.Filters;
 using System.Web.Mvc;
 
 namespace Silicus.UtilityContainer.Web.Controllers
@@ -19,9 +20,11 @@ namespace Silicus.UtilityContainer.Web.Controllers
             _userService = userService;
         }
 
-        public ActionResult Index()
+        [CustomeAuthorize]
+        public ActionResult Index(string data)
         {
             var allUtilities = _utilityService.GetAllUtilities();
+            ViewBag.noRoleForCUrrentUser = data;
             return View("Dashboard",allUtilities);
         }
 
