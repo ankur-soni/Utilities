@@ -41,9 +41,11 @@ namespace Silicus.UtilityContainer.Web.Controllers
                 var password = authenticationTicket.UserData;
                 if (_userAuthentication.ValidateUser(userName,password))
                 {
+                    var membershipUser = Membership.GetUser(userName);
+                    var userDisplayName = _userService.FindDisplayNameFromEmail(membershipUser.Email);
+                    Session["CurrentUser"] = userDisplayName;
                     return this.RedirectToAction("Index", "Home"); 
                 }
-
             }
 
            
@@ -79,7 +81,10 @@ namespace Silicus.UtilityContainer.Web.Controllers
                 cookie.Value = encryptedTicket;
 
                 Response.Cookies.Add(cookie);
-                Session["CurrentUser"] = model.UserName;
+
+                var membershipUser=Membership.GetUser(model.UserName);
+                var userDisplayName = _userService.FindDisplayNameFromEmail(membershipUser.Email);
+                Session["CurrentUser"] = userDisplayName;
 
 
                 if (returnUrl != null)

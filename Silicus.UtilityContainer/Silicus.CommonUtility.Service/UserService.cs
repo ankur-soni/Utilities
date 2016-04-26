@@ -66,6 +66,11 @@ namespace Silicus.UtilityContainer.Services
                 status = true;
             return status;
         }
-        
+
+       public string FindDisplayNameFromEmail(string email)
+        {
+            var userDisplayName = _commonDBContext.Query<User>().Where(user => user.EmailAddress == email).FirstOrDefault().DisplayName;
+            return userDisplayName;
+        }
     }
 }
