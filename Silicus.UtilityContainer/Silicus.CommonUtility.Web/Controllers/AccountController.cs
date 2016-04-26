@@ -88,8 +88,8 @@ namespace Silicus.UtilityContainer.Web.Controllers
         }
 
         //POST: /Account/LogOff
-        [HttpPost]
-        [ValidateAntiForgeryToken]
+       // [HttpPost]
+       // [ValidateAntiForgeryToken]
         [AllowAnonymous]
         public ActionResult LogOut()
         {
