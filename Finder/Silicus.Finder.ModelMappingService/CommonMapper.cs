@@ -62,17 +62,17 @@ namespace Silicus.Finder.ModelMappingService
 
 
 
-             //if (employee.SkillId.Count > 0)
-             //{
-             //    var skills = EmployeeSkills(employee.SkillId);
-             //    var skillSets = new List<SkillSet>();
-             //    foreach (var skill in skills)
-             //    {
-             //        skillSets.Add(MapSkillToSkillSet(skill));
-             //    }
-             //    employee.SkillSets = skillSets;
+            if (employee.SkillId.Count > 0)
+            {
+                var skills = EmployeeSkills(employee.SkillId);
+                var skillSets = new List<SkillSet>();
+                foreach (var skill in skills)
+                {
+                    skillSets.Add(MapSkillToSkillSet(skill));
+                }
+                employee.SkillSets = skillSets;
 
-             //}
+            }
            
                 employee.ProjectId = GetEngagementIds(user);
 

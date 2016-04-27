@@ -32,7 +32,7 @@ namespace Silicus.Finder.Services
             var employeeList = new List<Employee>();
             foreach (var user in userList)
             {
-                employeeList.Add(_commonMapper.MapUserToEmployee(user));
+                employeeList.Add(_commonMapper.MapBasicPropertiesOfUserToEmployee(user));
             }
             // employeeList = AttachTitleToEmployee(employeeList);
             employeeList.Sort(employeeSortByEmpCode);
@@ -93,7 +93,7 @@ namespace Silicus.Finder.Services
 
                 var userList = context.Query<User>().Where((e => e.DisplayName.Trim().ToLower().Contains(_name))).ToList();
                 foreach (User user in userList)
-                    employeeList.Add(_commonMapper.MapUserToEmployee(user));
+                    employeeList.Add(_commonMapper.MapBasicPropertiesOfUserToEmployee(user));
 
                 employeeList = employeeList.Where(emp => emp.IsActive == true).ToList();
 
@@ -103,7 +103,7 @@ namespace Silicus.Finder.Services
                    .Where((e => e.UserName.ToString().ToLower().Contains(_name)));
 
                     foreach (User user in empList)
-                        employeeList.Add(_commonMapper.MapUserToEmployee(user));
+                        employeeList.Add(_commonMapper.MapBasicPropertiesOfUserToEmployee(user));
 
                     employeeList = employeeList.Where(emp => emp.IsActive == true).ToList();
 
