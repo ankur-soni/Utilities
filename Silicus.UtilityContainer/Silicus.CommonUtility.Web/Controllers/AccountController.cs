@@ -32,10 +32,11 @@ namespace Silicus.UtilityContainer.Web.Controllers
         [AllowAnonymous]
         public ActionResult Login(string returnUrl)
         {
-            ViewBag.ReturnUrl = returnUrl;
+           
             var cookie = HttpContext.Request.Cookies[".ADAuthCookie"];
             if (cookie != null)
             {
+                ViewBag.ReturnUrl = returnUrl;
                 var authenticationTicket = FormsAuthentication.Decrypt(cookie.Value);
                 var userName = authenticationTicket.Name;
                 var password = authenticationTicket.UserData;

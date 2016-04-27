@@ -224,8 +224,9 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\Silicus.UtilityContainer\Silicus.CommonUtility.Service\bin\Debug\Silicus.UtilityContainer.Models.dll</HintPath>
     </Reference>
-    <Reference Include="Silicus.UtilityContainer.Security">
-      <HintPath>..\..\Silicus.UtilityContainer\Silicus.UtilityContainer.Security\bin\Debug\Silicus.UtilityContainer.Security.dll</HintPath>
+    <Reference Include="Silicus.UtilityContainer.Security, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Silicus.UtilityContainer.SecurityService.1.0.0\lib\Silicus.UtilityContainer.Security.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="Silicus.UtilityContainer.Services">
       <HintPath>..\..\Silicus.UtilityContainer\Silicus.CommonUtility.Service\bin\Debug\Silicus.UtilityContainer.Services.dll</HintPath>

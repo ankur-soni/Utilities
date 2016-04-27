@@ -105,11 +105,7 @@ namespace Silicus.Finder.Web.Controllers
 
         }
 
-
-       
-
-
-
+        
         [HttpPost]
         public ActionResult ValidateDateEqualOrLess(DateTime GivenOn)
         {
@@ -121,8 +117,7 @@ namespace Silicus.Finder.Web.Controllers
             return Json(false);
         }
 
-
-
+        
         [HttpPost]
         public ActionResult CheckForSilicusExperience(EmployeeCreateViewModel model)//int SilicusExperienceInMonths, int TotalExperienceInMonths)
         {
