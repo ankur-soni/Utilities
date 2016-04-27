@@ -60,7 +60,7 @@
 
             <div class="content">
                 <br /><br />
-                @using (Html.BeginForm("GetProjectsByCriteria", "Projects", FormMethod.Post))
+                @using (Html.BeginForm("GetProjectsByCriteria", "Projects", FormMethod.Get))
                 {
                     var model = Model.SearchCriteria;
                     var i = 0;
