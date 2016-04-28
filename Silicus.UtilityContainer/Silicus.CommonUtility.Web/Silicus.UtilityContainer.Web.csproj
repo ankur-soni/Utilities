@@ -223,6 +223,7 @@
     <Content Include="Views\Shared\_LoginPartial.cshtml" />
     <Content Include="Views\Home\Dashboard.cshtml" />
     <Content Include="Views\Home\AddRolesToUserForAUtility.cshtml" />
+    <Content Include="Views\Home\AddRoleToUtility.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

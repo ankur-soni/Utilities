@@ -3,6 +3,7 @@ using Silicus.UtilityContainer.Services;
 using Silicus.UtilityContainer.Services.Interfaces;
 using Silicus.UtilityContainer.Web.Filters;
 using System.Web.Mvc;
+using System.Linq;
 
 namespace Silicus.UtilityContainer.Web.Controllers
 {
@@ -53,6 +54,38 @@ namespace Silicus.UtilityContainer.Web.Controllers
         {
             _userService.AddRolesToUserForAUtility(newUserRole);
             return RedirectToAction("Index");
+        }
+
+        [HttpGet]
+        public ActionResult AddRoleToUtility()
+        {
+            var newUtilityRole = new UtilityRole();
+            ViewData["Utilities"] = new SelectList(_utilityService.GetAllUtilities(), "Id", "Name");
+            ViewData["Roles"] = new SelectList(_roleService.GetAllRoles(), "ID", "Name");
+            return View(newUtilityRole);
+        }
+
+        [HttpPost]
+        public ActionResult AddRoleToUtility(UtilityRole newUtilityRole)
+        {
+            ViewData["Utilities"] = new SelectList(_utilityService.GetAllUtilities(), "Id", "Name");
+            ViewData["Roles"] = new SelectList(_roleService.GetAllRoles(), "ID", "Name");
+            _utilityService.SaveUtilityRole(newUtilityRole);
+            return RedirectToAction("Index");
+        }
+
+        [HttpGet]
+        public ActionResult FillRoles(int utilityId)
+        {
+
+            var roles = _utilityService.GetAllRolesForAnUtility(utilityId);
+            //SelectList obgroles = new SelectList(roles, "Id", "RoleName", 0);
+            var roleData = roles.Select(m => new SelectListItem()
+            {
+                Text = _roleService.GetRoleName(m.RoleID),
+                Value = m.RoleID.ToString(),
+            });
+            return Json(roleData, JsonRequestBehavior.AllowGet);
         }
 
     }

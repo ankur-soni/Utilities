@@ -10,7 +10,9 @@ namespace Silicus.UtilityContainer.Services.Interfaces
     public interface IUtilityService
     {
         List<Utility> GetAllUtilities();
-        Utility FindUtility(int id);
+        Utility FindUtility(int utilityId);
+        List<UtilityRole> GetAllRolesForAnUtility(int utilityId);
+        void SaveUtilityRole(UtilityRole newUtilityRole);
 
     }
 }

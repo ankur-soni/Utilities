@@ -26,9 +26,19 @@ namespace Silicus.UtilityContainer.Services
            return _commmonDBContext.Query<Utility>().OrderBy(utility => utility.Name).ToList();
        }
 
-       public Utility FindUtility(int id)
+       public Utility FindUtility(int utilityId)
        {
-           return _commmonDBContext.Query<Utility>().Where(x => x.Id == id).FirstOrDefault();
+           return _commmonDBContext.Query<Utility>().Where(x => x.Id == utilityId).FirstOrDefault();
        }
+
+        public List<UtilityRole> GetAllRolesForAnUtility(int utilityId)
+       {
+           return _commmonDBContext.Query<UtilityRole>().Where(utility => utility.UtilityID == utilityId).ToList();
+       }
+
+        public void SaveUtilityRole(UtilityRole newUtilityRole)
+        {
+            _commmonDBContext.Add(newUtilityRole);
+        }
     }
 }

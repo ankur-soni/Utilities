@@ -38,6 +38,7 @@ namespace Silicus.UtilityContainerr.Entities
             modelBuilder.Configurations.Add(new ResourceSkillLevelMap());
             modelBuilder.Configurations.Add(new TitleMap());
             modelBuilder.Configurations.Add(new ResourceTypeMap());
+            modelBuilder.Configurations.Add(new UtilityRoleMap());
 
             // Many-to-many example - can be moved to Map file as well.
             modelBuilder.Entity<Asset>()

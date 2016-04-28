@@ -67,6 +67,7 @@
     <Compile Include="EntityConfigurations\UserMap.cs" />
     <Compile Include="EntityConfigurations\UserRoleMap.cs" />
     <Compile Include="EntityConfigurations\UtilityMap.cs" />
+    <Compile Include="EntityConfigurations\UtilityRoleMap.cs" />
     <Compile Include="ICommonDataBaseContext.cs" />
     <Compile Include="IDataContextFactory.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
