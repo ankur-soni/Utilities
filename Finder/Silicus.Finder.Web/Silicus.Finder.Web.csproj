@@ -202,10 +202,6 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\Silicus.Finder.ModelMappingService\bin\Debug\Silicus.Finder.ModelMappingService.dll</HintPath>
     </Reference>
-    <Reference Include="Silicus.Finder.Services, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\Silicus.Finder.Services\bin\Debug\Silicus.Finder.Services.dll</HintPath>
-    </Reference>
     <Reference Include="Silicus.FrameWorx.Auditing">
       <HintPath>..\packages\Silicus.FrameWorx.Auditing.1.0.0\lib\net45\Silicus.FrameWorx.Auditing.dll</HintPath>
     </Reference>
@@ -216,20 +212,17 @@
     <Reference Include="Silicus.FrameWorx.Utility">
       <HintPath>..\packages\Silicus.FrameWorx.Utility.1.0.0\lib\net45\Silicus.FrameWorx.Utility.dll</HintPath>
     </Reference>
-    <Reference Include="Silicus.UtilityContainer.Entities, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\Silicus.UtilityContainer\Silicus.CommonUtility.Service\bin\Debug\Silicus.UtilityContainer.Entities.dll</HintPath>
+    <Reference Include="Silicus.UtilityContainer.Entities">
+      <HintPath>..\..\Silicus.UtilityContainer\Silicus.UtilityContainer.Service\bin\Debug\Silicus.UtilityContainer.Entities.dll</HintPath>
     </Reference>
-    <Reference Include="Silicus.UtilityContainer.Models, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\Silicus.UtilityContainer\Silicus.CommonUtility.Service\bin\Debug\Silicus.UtilityContainer.Models.dll</HintPath>
+    <Reference Include="Silicus.UtilityContainer.Models">
+      <HintPath>..\..\Silicus.UtilityContainer\Silicus.UtilityContainer.Service\bin\Debug\Silicus.UtilityContainer.Models.dll</HintPath>
     </Reference>
-    <Reference Include="Silicus.UtilityContainer.Security, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Silicus.UtilityContainer.SecurityService.1.0.0\lib\Silicus.UtilityContainer.Security.dll</HintPath>
-      <Private>True</Private>
+    <Reference Include="Silicus.UtilityContainer.Security">
+      <HintPath>..\..\Silicus.UtilityContainer\Silicus.UtilityContainer.Security\bin\Debug\Silicus.UtilityContainer.Security.dll</HintPath>
     </Reference>
     <Reference Include="Silicus.UtilityContainer.Services">
-      <HintPath>..\..\Silicus.UtilityContainer\Silicus.CommonUtility.Service\bin\Debug\Silicus.UtilityContainer.Services.dll</HintPath>
+      <HintPath>..\..\Silicus.UtilityContainer\Silicus.UtilityContainer.Service\bin\Debug\Silicus.UtilityContainer.Services.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
@@ -845,6 +838,10 @@
     <ProjectReference Include="..\Silicus.Finder.Models\Silicus.Finder.Models.csproj">
       <Project>{2f4384aa-2fe9-4c85-a6cc-59228bc587e6}</Project>
       <Name>Silicus.Finder.Models</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Silicus.Finder.Services\Silicus.Finder.Services.csproj">
+      <Project>{840db0bc-4016-4c33-9746-ed48bde5c544}</Project>
+      <Name>Silicus.Finder.Services</Name>
     </ProjectReference>
   </ItemGroup>
   <PropertyGroup>

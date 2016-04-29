@@ -77,13 +77,11 @@
     <Reference Include="Silicus.FrameWorx.Utility">
       <HintPath>..\packages\Silicus.FrameWorx.Utility.1.0.0\lib\net45\Silicus.FrameWorx.Utility.dll</HintPath>
     </Reference>
-    <Reference Include="Silicus.UtilityContainer.Entities, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\Silicus.UtilityContainer\Common.Utility.Dashboard.Entities\bin\Debug\Silicus.UtilityContainer.Entities.dll</HintPath>
+    <Reference Include="Silicus.UtilityContainer.Entities">
+      <HintPath>..\..\Silicus.UtilityContainer\Silicus.UtilityContainer.Service\bin\Debug\Silicus.UtilityContainer.Entities.dll</HintPath>
     </Reference>
-    <Reference Include="Silicus.UtilityContainer.Models, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\Silicus.UtilityContainer\Common.Utility.Dashboard.Models\bin\Debug\Silicus.UtilityContainer.Models.dll</HintPath>
+    <Reference Include="Silicus.UtilityContainer.Models">
+      <HintPath>..\..\Silicus.UtilityContainer\Silicus.UtilityContainer.Service\bin\Debug\Silicus.UtilityContainer.Models.dll</HintPath>
     </Reference>
     <Reference Include="Silicus.UtilityContainer.Security">
       <HintPath>..\..\Silicus.UtilityContainer\Silicus.UtilityContainer.Security\bin\Debug\Silicus.UtilityContainer.Security.dll</HintPath>
