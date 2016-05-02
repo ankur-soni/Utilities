@@ -1,6 +1,6 @@
 ﻿using Silicus.UtilityContainer.Models.DataObjects;
 using Silicus.UtilityContainer.Security.Interface;
-using Silicus.UtilityContainerr.Entities;
+using Silicus.UtilityContainer.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;

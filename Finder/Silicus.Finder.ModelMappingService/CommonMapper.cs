@@ -1,7 +1,7 @@
 ﻿using Silicus.Finder.ModelMappingService.Interfaces;
 using Silicus.Finder.Models.DataObjects;
 using Silicus.UtilityContainer.Models.DataObjects;
-using Silicus.UtilityContainerr.Entities;
+using Silicus.UtilityContainer.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -62,17 +62,17 @@ namespace Silicus.Finder.ModelMappingService
 
 
 
-             //if (employee.SkillId.Count > 0)
-             //{
-             //    var skills = EmployeeSkills(employee.SkillId);
-             //    var skillSets = new List<SkillSet>();
-             //    foreach (var skill in skills)
-             //    {
-             //        skillSets.Add(MapSkillToSkillSet(skill));
-             //    }
-             //    employee.SkillSets = skillSets;
+            if (employee.SkillId.Count > 0)
+            {
+                var skills = EmployeeSkills(employee.SkillId);
+                var skillSets = new List<SkillSet>();
+                foreach (var skill in skills)
+                {
+                    skillSets.Add(MapSkillToSkillSet(skill));
+                }
+                employee.SkillSets = skillSets;
 
-             //}
+            }
            
                 employee.ProjectId = GetEngagementIds(user);
 

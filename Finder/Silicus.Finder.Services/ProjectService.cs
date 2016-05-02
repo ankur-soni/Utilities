@@ -16,7 +16,7 @@ namespace Silicus.Finder.Services
     {
         private readonly IDataContext _context;
         IEmployeeService _employeeService;
-        Silicus.UtilityContainerr.Entities.ICommonDataBaseContext _utilityCommonDbContext;
+        Silicus.UtilityContainer.Entities.ICommonDataBaseContext _utilityCommonDbContext;
         private readonly ICommonMapper _commonMapper;
 
         public ProjectService(IDataContextFactory dataContextFactory, IEmployeeService employeeService, ICommonMapper commonMapper)

@@ -50,11 +50,11 @@
     <Compile Include="UserSecurityService.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Common.Utility.Dashboard.Entities\Silicus.UtilityContainer.Entities.csproj">
+    <ProjectReference Include="..\Silicus.UtilityContainer.Entities\Silicus.UtilityContainer.Entities.csproj">
       <Project>{d4055f95-9dc1-4188-b532-626a8c86bfed}</Project>
       <Name>Silicus.UtilityContainer.Entities</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Common.Utility.Dashboard.Models\Silicus.UtilityContainer.Models.csproj">
+    <ProjectReference Include="..\Silicus.UtilityContainer.Models\Silicus.UtilityContainer.Models.csproj">
       <Project>{d5a36dcc-faeb-46bd-bc1c-c24e18d9e587}</Project>
       <Name>Silicus.UtilityContainer.Models</Name>
     </ProjectReference>
