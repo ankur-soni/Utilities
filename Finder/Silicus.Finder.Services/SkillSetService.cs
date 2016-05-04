@@ -5,7 +5,7 @@ using Silicus.Finder.Models.DataObjects;
 using Silicus.Finder.Services.Comparable.SkillSetComparable;
 using Silicus.Finder.Services.Interfaces;
 using Silicus.UtilityContainer.Models.DataObjects;
-using Silicus.UtilityContainerr.Entities;
+using Silicus.UtilityContainer.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;

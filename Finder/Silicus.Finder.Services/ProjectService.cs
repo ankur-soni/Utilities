@@ -16,7 +16,7 @@ namespace Silicus.Finder.Services
     {
         private readonly IDataContext _context;
         IEmployeeService _employeeService;
-        Silicus.UtilityContainerr.Entities.ICommonDataBaseContext _utilityCommonDbContext;
+        Silicus.UtilityContainer.Entities.ICommonDataBaseContext _utilityCommonDbContext;
         private readonly ICommonMapper _commonMapper;
 
         public ProjectService(IDataContextFactory dataContextFactory, IEmployeeService employeeService, ICommonMapper commonMapper)
@@ -53,7 +53,7 @@ namespace Silicus.Finder.Services
 
             foreach (Engagement engagement in engagementList)
             {
-                var project = _commonMapper.MapEngagementToProject(engagement);
+                var project = _commonMapper.MapBasicPropertiesOfEngagementToProject(engagement);
                 projectList.Add(project);
             }
             //   var projectList = _context.Query<Project>().Where(p => p.ArchiveDate == null).ToList();
@@ -64,7 +64,7 @@ namespace Silicus.Finder.Services
         {
             //  var project = _context.Query<Project>().Where(model => model.ProjectId == projectId).FirstOrDefault();
             var engagement = _utilityCommonDbContext.Query<Engagement>().Where(model => model.ID == projectId).FirstOrDefault();
-            var project = _commonMapper.MapEngagementToProject(engagement);
+            var project = _commonMapper.MapBasicPropertiesOfEngagementToProject(engagement);
             return project;
         }
 
@@ -123,7 +123,7 @@ namespace Silicus.Finder.Services
             var projectList = new List<Project>();
 
             foreach (Engagement engagement in engagementList)
-                projectList.Add(_commonMapper.MapEngagementToProject(engagement));
+                projectList.Add(_commonMapper.MapBasicPropertiesOfEngagementToProject(engagement));
 
             if (projectList.Count == 0)
             {
@@ -131,7 +131,7 @@ namespace Silicus.Finder.Services
                 if (engagementsSearchedById.Count > 0)
                 {
                     foreach (Engagement engagement in engagementsSearchedById)
-                        projectList.Add(_commonMapper.MapEngagementToProject(engagement));
+                        projectList.Add(_commonMapper.MapBasicPropertiesOfEngagementToProject(engagement));
                 }
             }
             return projectList;
@@ -169,7 +169,7 @@ namespace Silicus.Finder.Services
             var allEmployeeList = new List<Employee>();
 
             foreach (var user in allUsers)
-                allEmployeeList.Add(_commonMapper.MapUserToEmployee(user));
+                allEmployeeList.Add(_commonMapper.MapBasicPropertiesOfUserToEmployee(user));
 
             // var allEmployeeList = _context.Query<Employee>().ToList();
 

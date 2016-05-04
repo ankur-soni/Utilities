@@ -16,6 +16,7 @@ namespace Silicus.UtilityContainer.Web.Filters
             {
                 var autheticationTicket = FormsAuthentication.Decrypt(cookie.Value);
 
+
                 if (Membership.ValidateUser(autheticationTicket.Name, autheticationTicket.UserData))
                 {
                     return true;
