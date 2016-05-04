@@ -55,13 +55,13 @@
 
           columns.Bound(skills => skills.Description).Width(60);
 
-          columns.Bound(skills => skills.Employees).Title("#Employees Tagged").Template(
+          @*columns.Bound(skills => skills.Employees).Title("#Employees Tagged").Template(
             @<label>
                 @{
                     var total = item.Employees.Count();
                     @Html.Label(total.ToString())
                 }
-            </label>).Width(50);
+            </label>).Width(50);*@
           @*columns.Bound(skills => skills.Projects).Title("#Projects Tagged").Template(
             @<label>
                 @{
