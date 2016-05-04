@@ -15,7 +15,7 @@ namespace Silicus.UtilityContainer.Services.Interfaces
         void AddRolesToUserForAUtility(UtilityUserRoleViewModel newUserRole);
         bool CheckForFirstLoginByEmail(string email);
         User FindUserByEmail(string email);
-    //    void AddRoleToUserForAllUtility(User user);
+        //    void AddRoleToUserForAllUtility(User user);
         string FindDisplayNameFromEmail(string email);
     }
 }

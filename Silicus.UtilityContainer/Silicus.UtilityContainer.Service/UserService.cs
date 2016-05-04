@@ -6,6 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Silicus.UtilityContainer.Entities;
+using Silicus.UtilityContainer.Models.ViewModels;
 
 namespace Silicus.UtilityContainer.Services
 {
@@ -57,6 +58,28 @@ namespace Silicus.UtilityContainer.Services
             
         }
 
+        public void AddRolesToUserForAUtility(UtilityUserRoleViewModel newUserRole)
+        {
+            var myNewUserRole = new UtilityUserRoles();
+            foreach (var item in newUserRole.UserId)
+            {
+
+                var userRole = _commonDBContext.Query<UtilityUserRoles>().Where(x => x.UserId == item && x.UtilityId == newUserRole.UtilityId).FirstOrDefault();
+                if (userRole != null)
+                {
+                    _commonDBContext.Delete(userRole);
+                }
+
+                myNewUserRole.UtilityId = newUserRole.UtilityId;
+                myNewUserRole.RoleId = newUserRole.RoleId;
+                myNewUserRole.UserId = item;
+                _commonDBContext.Add(myNewUserRole);
+
+            }
+
+
+        }
+
         public bool CheckForFirstLoginByEmail(string email)
         {
             bool status = false;
@@ -66,6 +89,12 @@ namespace Silicus.UtilityContainer.Services
                 status = true;
             return status;
         }
+
+        public User GetUserByID(int ID)
+        {
+            return _commonDBContext.Query<User>().Where(user => user.ID == ID).FirstOrDefault();
+        }
+
 
        public string FindDisplayNameFromEmail(string email)
         {
