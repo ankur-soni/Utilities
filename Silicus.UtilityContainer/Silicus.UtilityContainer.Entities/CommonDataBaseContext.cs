@@ -7,7 +7,7 @@ namespace Silicus.UtilityContainer.Entities
     {
         public CommonDataBaseContext(string connectionString)
             : base(connectionString)
-        {
+         {
             
         }
 
@@ -41,7 +41,7 @@ namespace Silicus.UtilityContainer.Entities
 
         public IQueryable<T> Query<T>() where T : class
         {
-            return Set<T>().AsNoTracking();
+           return Set<T>().AsNoTracking();
         }
 
         public void Delete<T>(T item) where T : class
