@@ -41,14 +41,15 @@ namespace Silicus.UtilityContainerr.Entities
 
         public IQueryable<T> Query<T>() where T : class
         {
-            return Set<T>().AsNoTracking();
+            var data = Set<T>().AsNoTracking();
+            return data;
         }
 
         public void Delete<T>(T item) where T : class
         {
+           
 
-
-            Set<T>().Attach(item);
+          Set<T>().Attach(item);
 
             Set<T>().Remove(item);
 

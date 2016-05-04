@@ -1,4 +1,5 @@
-﻿@model Silicus.UtilityContainer.Models.DataObjects.UtilityUserRoles
+﻿@model Silicus.UtilityContainer.Models.ViewModels.UtilityUserRoleViewModel
+@using Silicus.UtilityContainer.Models.DataObjects;
 @{
     ViewBag.Title = "AddRolesToUserForAUtility";
 }
@@ -8,50 +9,66 @@
     <div class="col-md-8" style="background-color:#57A6B7">
         <h2>Add Role To User For Utility</h2>
 
-        @using (Html.BeginForm())
+        @using (Html.BeginForm(null, null, FormMethod.Post, new { name = "form", id = "form" }))
         {
             @Html.AntiForgeryToken()
 
             <div class="form-horizontal">
                 <hr />
 
-                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                @*@Html.ValidationSummary(true, "", new { @class = "text-danger" })*@
 
                 <div class="form-group">
                     @Html.LabelFor(model => model.UtilityId, "Utility", htmlAttributes: new { @class = "control-label col-md-2" })
                     <div class="col-md-10">
-                        @Html.DropDownListFor(model => model.UtilityId, (SelectList)ViewData["Utilities"],"Select", new { id = "utilityList" })
+                        @Html.DropDownListFor(model => model.UtilityId, (SelectList)ViewData["Utilities"], "Select", new { id = "utilityList" })
                         @Html.ValidationMessageFor(model => model.UtilityId, "", new { @class = "text-danger" })
+
                     </div>
                 </div>
 
                 <div class="form-group">
                     @Html.LabelFor(model => model.RoleId, "Role", htmlAttributes: new { @class = "control-label col-md-2" })
                     <div class="col-md-10">
-                        @Html.DropDownListFor(model => model.RoleId, new SelectList(Enumerable.Empty<SelectListItem>(), "ID", "RoleName"),"Select a Role", new { id = "rolesList" }) 
-                            @Html.ValidationMessageFor(model => model.RoleId, "", new { @class = "text-danger" })
+
+                        @Html.DropDownListFor(model => model.RoleId, new SelectList(Enumerable.Empty<SelectListItem>(), "ID", "RoleName"), "Select a Role", new { id = "rolesList" })
+                        @*<p id="roleRequired" style="color:red"></p>*@
+                        @Html.ValidationMessage("", new { @class = "text-danger", @id = "roleRequired" })
+
                     </div>
                 </div>
 
                 <div class="form-group">
-                    @Html.LabelFor(model => model.UserId, "User", htmlAttributes: new { @class = "control-label col-md-2" })
-                    <div class="col-md-10">
-                        @Html.DropDownListFor(model => model.UserId, (SelectList)ViewData["User"], "Select", htmlAttributes: new { @class = "form-control" })
-                        @Html.ValidationMessageFor(model => model.UserId, "", new { @class = "text-danger" })
+                    @Html.LabelFor(model => model.User, "User", htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-4">
+                        @Html.ListBoxFor(Model => Model.UserId,
+     new MultiSelectList((List<SelectListItem>)ViewData["User"], "Text", "Value"), new { style = "display:block;", @id = "userNames" })
+                        @*@Html.DropDownListFor(model => model.UserId, (SelectList)ViewData["User"], "Select", htmlAttributes: new { @class = "form-control" })*@
+                        @Html.ValidationMessage("", new { @class = "text-danger", @id = "userRequired" })
+                    </div>
+                    <div class="col-md-1"></div>
+                    <div class="col-md-4">
+                        @Html.ListBox("userIds", new MultiSelectList((new List<SelectListItem>()), "Text", "Value"), new { @name = "userId" })
                     </div>
                 </div>
 
-               
-               
+                <p id="asha" style="width:500px;height:50px; color:black;">
+
+                </p>
 
                 <div class="form-group">
-                    <div class="col-md-offset-2 col-md-10">
+                    <div class="col-md-offset-2 col-md-5">
                         <input type="submit" value="Add Role" class="btn btn-default" />
+                    </div>
+                    <div class="col-md-5">
+                        <input type="button" value="Cancle" onclick="window.location.reload()" class="btn btn-default" />
                     </div>
                 </div>
             </div>
         }
-
+        <div class="form-group">
+            
+        </div>
         <div>
             @Html.ActionLink("Back to Dashboard", "Index", "Home", new { @style = "color:#000aaa;" })
         </div>
@@ -60,28 +77,156 @@
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
 
-<script type="text/javascript">
-                    $(document).ready(function () {
-                        $("#utilityList").change(function () {
-                            var uID = $(this).val();
-                            $.getJSON("../Home/FillRoles", { utilityId: uID },
-                                   function (data) {
-                                       var select = $("#rolesList");
-                                       select.empty();
-                                       select.append($('<option/>', {
-                                           value: 0,
-                                           text: "Select a Role"
-                                       }));
-                                       $.each(data, function (index, itemData) {
-                                           select.append($('<option/>', {
-                                               value: itemData.Value,
-                                               text: itemData.Text
-                                           }));
-                                       });
-                                   });
+    <script type="text/javascript">
+
+
+        //$("#userIds").hide();
+        //$("#userNames").hide();
+
+
+        $(document).ready(function () {
+
+
+            $("#utilityList").change(function () {
+                debugger;
+
+                if ($("#utilityList").val().trim() != "" || $("#rolesList").val() != 0) {
+                    debugger;
+                   
+                                      
+                    $("#utilityList option").not(':selected').each(function (index) {
+                            $(this).prop('disabled', true);
                         });
+                    
+
+                }
+
+               var uID = $(this).val();
+                $.getJSON("../Home/FillRoles", { utilityId: uID },
+                       function (data) {
+                           var select = $("#rolesList");
+                           select.empty();
+                           select.append($('<option/>', {
+                               value: 0,
+                               text: "Select a Role"
+                           }));
+                           $.each(data, function (index, itemData) {
+                               debugger;
+                               select.append($('<option/>', {
+                                   value: itemData.Value,
+                                   text: itemData.Text
+
+
+                               }));
+
+
+
+                           });
+                       });
+
+                
+
+            });
+
+
+
+            $('#form').on('submit', function (e) {
+                $("#roleRequired").empty();
+                $("#userRequired").empty();
+
+                if ($("#rolesList").val().trim() == "" || $("#rolesList").val() == 0) {
+                    e.preventDefault();
+                    $("#roleRequired").append("Please select the role.")
+
+                }
+
+                if ($("#userNames").val() == null || $("#userNames").val == 0) {
+                    e.preventDefault();
+                    $("#userRequired").append("Please select the User.");
+
+
+                }
+
+            });
+
+
+            $("#rolesList").change(function (e) {
+                debugger;
+                e.preventDefault();
+                $("#roleRequired").empty();
+                var data = $("#rolesList option:selected").val();
+               
+                if ($("#rolesList option:selected").val() != 0 && $("#rolesList option:selected").val() != "") {
+                    //$("#rolesList").attr("disabled", "disabled");
+                    //$("#userIds").show();
+                    //$("#userNames").show();
+                    $("#rolesList option").not(':selected').each(function (index) {
+                        $(this).prop('disabled', true);
                     });
-</script>
+
+
+                }
+            })
+
+
+            $("#userNames").click(function (e) {
+                debugger;
+                e.preventDefault();
+                $("#userRequired").empty();
+                if ($("#rolesList").val().trim() == "" || $("#rolesList").val() == 0) {
+                    $("#roleRequired").empty();
+                   
+                    $("#roleRequired").append("Please select the role first.")
+
+                }
+                else {
+                    var userNames = [];
+
+                    $("#userNames option:selected").each(function (i, selected) {
+                        userNames[i] = $(selected).text();
+
+                    });
+
+                    var deselectName = $("#userIds").text();
+
+                    $("#userIds").empty();
+
+                    userNames.forEach(function (item) { $('#userIds').append("<option>" + item + "</option>"); })
+
+                    $("#userNames option:selected").hide();
+
+
+
+                    if (deselectName != "" && $("#userNames option:selected").size() == 1) {
+                        $('#userNames option:contains(' + deselectName + ')').show();
+                    }
+
+                }
+
+               
+               
+                
+
+
+            })
+
+            $("#userIds").click(function (e) {
+                debugger;
+                e.preventDefault()
+                var dselectdUserName = $("#userIds option:selected").text();
+                $("#userIds option:selected").hide();
+
+                $('#userNames option:contains(' + dselectdUserName + ')').show().attr("selected", false);
+
+            })
+
+
+
+        });
+
+
+
+    </script>
 
 }
 

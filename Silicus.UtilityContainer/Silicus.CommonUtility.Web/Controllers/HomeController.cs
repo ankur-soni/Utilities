@@ -4,6 +4,10 @@ using Silicus.UtilityContainer.Services.Interfaces;
 using Silicus.UtilityContainer.Web.Filters;
 using System.Web.Mvc;
 using System.Linq;
+using System.Collections.Generic;
+using System;
+using Silicus.UtilityContainer.Web.Models;
+using Silicus.UtilityContainer.Models.ViewModels;
 
 namespace Silicus.UtilityContainer.Web.Controllers
 {
@@ -41,8 +45,13 @@ namespace Silicus.UtilityContainer.Web.Controllers
         public ActionResult AddRolesToUserForAUtility()
         {
 
-            var newUserRole = new UtilityUserRoles();
-            ViewData["User"] = new SelectList(_userService.GetAllUsers(), "ID", "DisplayName", "Select");
+            var newUserRole = new UtilityUserRoleViewModel();
+           // ViewData["User"] = new SelectList(_userService.GetAllUsers(), "ID", "DisplayName", "Select");
+          
+           var selectListItems = _userService.GetAllUsers().Select(u => new SelectListItem() { Text = u.ID.ToString(), Value = u.DisplayName }).ToList();
+            
+           ViewData["User"] = selectListItems;
+
             ViewData["Utilities"] = new SelectList(_utilityService.GetAllUtilities(), "Id", "Name","Select");
             ViewData["Roles"] = new SelectList(_roleService.GetAllRoles(), "ID", "Name", "Select");
             //var role = _roleService.GetAllRoles();
@@ -50,9 +59,16 @@ namespace Silicus.UtilityContainer.Web.Controllers
         }
 
         [HttpPost]
-        public ActionResult AddRolesToUserForAUtility(UtilityUserRoles newUserRole)
+        public ActionResult AddRolesToUserForAUtility(UtilityUserRoleViewModel newUserRole)
         {
-            _userService.AddRolesToUserForAUtility(newUserRole);
+
+            if (newUserRole.RoleId != 0)
+            {
+                _userService.AddRolesToUserForAUtility(new UtilityUserRoleViewModel { UtilityId = newUserRole.UtilityId, RoleId = newUserRole.RoleId, UserId = newUserRole.UserId });
+                return RedirectToAction("Index");
+            }
+
+            
             return RedirectToAction("Index");
         }
 
@@ -86,6 +102,20 @@ namespace Silicus.UtilityContainer.Web.Controllers
                 Value = m.RoleID.ToString(),
             });
             return Json(roleData, JsonRequestBehavior.AllowGet);
+        }
+
+
+
+        [HttpGet]
+        public string GetUserByID(string userId)
+        {
+
+
+            var user = _userService.GetUserByID(Convert.ToInt32( userId ));
+
+
+
+            return user.DisplayName;
         }
 
     }

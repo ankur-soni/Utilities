@@ -20,7 +20,7 @@ namespace Silicus.UtilityContainer.Services
 
         public List<UtilityUserRoles> GetAllRolesForUser(string userName)
         {
-            return _commmonDBContext.Query<UtilityUserRoles>().Where(x => x.User.UserName == userName).ToList();
+            return _commmonDBContext.Query<UtilityUserRoles>().Where(x => x.User.ToString() == userName).ToList();
         }
     }
 }

@@ -6,6 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Silicus.UtilityContainerr.Entities;
+using Silicus.UtilityContainer.Models.ViewModels;
 
 namespace Silicus.UtilityContainer.Services
 {
@@ -31,31 +32,49 @@ namespace Silicus.UtilityContainer.Services
             return _commonDBContext.Query<User>().OrderBy(user => user.DisplayName).ToList();
         }
 
-        public void AddRolesToUserForAUtility(UtilityUserRoles newUserRole)
+        public User GetUserByID(int ID)
         {
-            var userRole = _commonDBContext.Query<UtilityUserRoles>().Where(x => x.UserId == newUserRole.UserId && x.UtilityId == newUserRole.UtilityId).FirstOrDefault();
-            if (userRole != null)
+            return _commonDBContext.Query<User>().Where(user => user.ID == ID).FirstOrDefault();
+        }
+
+
+        public void AddRolesToUserForAUtility(UtilityUserRoleViewModel newUserRole)
+        {
+            var myNewUserRole = new UtilityUserRoles();
+            foreach (var item in newUserRole.UserId)
             {
-                _commonDBContext.Delete(userRole);
+
+                var userRole = _commonDBContext.Query<UtilityUserRoles>().Where(x => x.UserId == item && x.UtilityId == newUserRole.UtilityId).FirstOrDefault();
+                if (userRole != null)
+                {
+                    _commonDBContext.Delete(userRole);
+                }
+
+                myNewUserRole.UtilityId = newUserRole.UtilityId;
+                myNewUserRole.RoleId = newUserRole.RoleId;
+                myNewUserRole.UserId = item;
+                _commonDBContext.Add(myNewUserRole);
+
             }
-            _commonDBContext.Add(newUserRole);
+
+           
         }
 
         public User FindUserByEmail(string email)
         {
-            return _commonDBContext.Query<User>().Where(user=>user.EmailAddress==email).First();
+            return _commonDBContext.Query<User>().Where(user => user.EmailAddress == email).First();
         }
 
-        public void AddRoleToUserForAllUtility(User user)
-        {
-            var allUtilities = _utilityService.GetAllUtilities();
-            var userRole=_roleService.GetRoleByRoleName("User");
-            foreach(var utility in allUtilities)
-            {
-               _commonDBContext.Add(new UtilityUserRoles { UtilityId=utility.Id, UserId=user.ID, RoleId=userRole.ID});
-            }
-            
-        }
+        //public void AddRoleToUserForAllUtility(User user)
+        //{
+        //    var allUtilities = _utilityService.GetAllUtilities();
+        //    var userRole=_roleService.GetRoleByRoleName("User");
+        //    foreach(var utility in allUtilities)
+        //    {
+        //       _commonDBContext.Add(new UtilityUserRoles { UtilityId=utility.Id, UserId=user.ID, RoleId=userRole.ID});
+        //    }
+
+        //}
 
         public bool CheckForFirstLoginByEmail(string email)
         {
@@ -67,7 +86,7 @@ namespace Silicus.UtilityContainer.Services
             return status;
         }
 
-       public string FindDisplayNameFromEmail(string email)
+        public string FindDisplayNameFromEmail(string email)
         {
             var userDisplayName = _commonDBContext.Query<User>().Where(user => user.EmailAddress == email).FirstOrDefault().DisplayName;
             return userDisplayName;
