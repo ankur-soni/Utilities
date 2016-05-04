@@ -6,7 +6,7 @@ namespace Silicus.Finder.Entities.Initializer
     {
         protected override void Seed(FinderIpDataContext context)
         {
-            new BaseDatabaseInitializer().Seed(context);
+           // new BaseDatabaseInitializer().Seed(context);
         }
     }
 }

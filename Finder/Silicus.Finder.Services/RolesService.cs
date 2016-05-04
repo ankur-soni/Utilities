@@ -3,45 +3,50 @@ using System.Linq;
 using Silicus.Finder.Entities;
 using Silicus.Finder.Models.DataObjects;
 using Silicus.Finder.Services.Interfaces;
+using Silicus.Finder.ModelMappingService.Interfaces;
+using Silicus.UtilityContainer.Security;
 
 namespace Silicus.Finder.Services
 {
     public class RolesService : IRolesService
     {
-        private readonly IDataContext _context;
 
-        public RolesService(IDataContextFactory dataContextFactory)
+        private readonly ICommonMapper _mapper;
+
+
+
+        public RolesService(ICommonMapper commonMapper)
         {
-            _context = dataContextFactory.Create(ConnectionType.Ip);
+            _mapper = commonMapper;
         }
 
         public IEnumerable<Role> GetRoleDetails()
         {
-            var RoleList = _context.Query<Role>().ToList();
-            return RoleList;
-
-        }
-
-        public int Add(Role Role)
-        {
-            _context.Add(Role);
-            return Role.RoleId;
-        }
-
-        public void Update(Role Role)
-        {
-            if (Role.RoleName != null && Role.Description != null)
+            var RoleList = _mapper.GetCommonDataBAseContext().Query<Silicus.UtilityContainer.Models.DataObjects.Role>().ToList();
+            var employeeRoleList = new List<Role>();
+            foreach (var role in RoleList)
             {
-                _context.Update(Role);
+                employeeRoleList.Add(_mapper.MapRoleToRole(role));
+
             }
+            return employeeRoleList;
+
         }
 
-        public void Delete(Role Role)
+        public Role GetRoleById(int Id)
         {
-            if (Role.RoleName != null && Role.Description != null)
-            {
-                _context.Delete(Role);
-            }
+
+            var role = _mapper.GetCommonDataBAseContext().Query<Silicus.UtilityContainer.Models.DataObjects.Role>().Where(r => r.ID == Id).SingleOrDefault();
+            return _mapper.MapRoleToRole(role);
+        }
+
+
+
+
+        public string getFindersRole(string email, string utility)
+        {
+            var authorization = new Authorization(_mapper.GetCommonDataBAseContext());
+            return authorization.GetRoleForUtility(email, utility);
         }
     }
 }

@@ -53,7 +53,7 @@ namespace Silicus.Finder.Models.DataObjects
 
         [Display(Name = "Employee Type")]
         [Range(1, int.MaxValue, ErrorMessage = "Select a correct EmployeeType")]
-        public EmployeeType EmployeeType { get; set; }
+        public string EmployeeType { get; set; }
 
         [Display(Name = "Total Experience")]
         public int? TotalExperienceInMonths { get; set; }

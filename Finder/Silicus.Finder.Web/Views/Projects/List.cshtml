@@ -60,7 +60,7 @@
 
             <div class="content">
                 <br /><br />
-                @using (Html.BeginForm("GetProjectsByCriteria", "Projects", FormMethod.Post))
+                @using (Html.BeginForm("GetProjectsByCriteria", "Projects", FormMethod.Get))
                 {
                     var model = Model.SearchCriteria;
                     var i = 0;
@@ -80,7 +80,7 @@
 
 <div id="Grid" class="container-fluid">
     
-    @if (User.IsInRole("Admin"))
+    @*@if (User.IsInRole("Admin"))
     {
         <p>
             <div class="container-fluid">
@@ -91,8 +91,10 @@
     }
     else
     {
-        <br />
-    }
+       
+    }*@
+
+    <br /><br />
     @(Html.Kendo().Grid((IEnumerable<Silicus.Finder.Web.ViewModel.ProjectListViewModel>)Model.Projects)
         .Name("ProjectGrid")
         .Columns(columns =>

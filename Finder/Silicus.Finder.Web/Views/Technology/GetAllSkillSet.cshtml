@@ -34,17 +34,17 @@
    
     @* <h2 style="color:#295071;margin-top: 0;">Skills</h2>*@
 
-    @if (User.IsInRole("Admin"))
+    @*@if (User.IsInRole("Admin"))
     {
         
         <p>
             <div class="container-fluid">
                 <input type="submit" value="Create Skill" class="btn btn-default" style="float:right;" onclick="@("window.location.href='" + @Url.Action("Create", "Technology") + "'");" />
-                @*@Html.ActionLink("Create Technology", "Create", "Technology", null, new { @class = "btn btn-default", @style = "font-size:17px;" })*@
+               
                 <input type="button" id="importButton" value="Import Skills" style="float:right;margin-right: 7px;" class="btn btn-default" />
              </div>
 </p>
-    }
+    }*@
 
     @(Html.Kendo().Grid((IEnumerable<Silicus.Finder.Web.ViewModel.SkillSetViewModel>)(Model)) //Bind the grid to ViewBag.Products
     .Name("technologyGrid")
@@ -62,13 +62,13 @@
                     @Html.Label(total.ToString())
                 }
             </label>).Width(50);
-          columns.Bound(skills => skills.Projects).Title("#Projects Tagged").Template(
+          @*columns.Bound(skills => skills.Projects).Title("#Projects Tagged").Template(
             @<label>
                 @{
                     var total = item.Projects.Count();
                     @Html.Label(total.ToString())
                 }
-            </label>).Width(50);
+            </label>).Width(50);*@
 
       })
                 .Scrollable(scr => scr.Height(300))

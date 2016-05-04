@@ -12,16 +12,20 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using System.Diagnostics;
+using Silicus.Finder.ModelMappingService.Interfaces;
+using Silicus.Finder.Web.Filters;
 
 namespace Silicus.Finder.Web.Controllers
 {
     public class TechnologyController : Controller
     {
         private readonly ISkillSetService _skillSetService;
+        private readonly ICommonMapper _commonMapper;
 
-        public TechnologyController(ISkillSetService skillSetService)
+        public TechnologyController(ISkillSetService skillSetService, ICommonMapper commonMapper)
         {
             _skillSetService = skillSetService;
+            _commonMapper = commonMapper;
         }
         [Authorize(Roles = "Admin, Manager")]
         public ActionResult Create()
@@ -65,16 +69,21 @@ namespace Silicus.Finder.Web.Controllers
             return PartialView("_Details", skillSetListViewModel);
        }
 
-        [Authorize(Roles = "Admin,Manager,User")]
+        //[Authorize(Roles = "Admin,Manager,User")]
+        [CustomAuthorizeAttribute(AllowedRole = "Admin, Manager, User")]
         public ActionResult GetAllSkillSet()
         {
-            var skillSetList = _skillSetService.GetAllSkills();
+            var skillSetList =  _skillSetService.GetAllSkills();
+            foreach(var skillSet in skillSetList)
+            {
+                _commonMapper.MapSkillToEmployee(skillSet);
+            }
             List<SkillSetViewModel> skillSetListViewModel = new List<SkillSetViewModel>();
             Mapper.Map(skillSetList, skillSetListViewModel);
             return View(skillSetListViewModel);
         }
 
-        [Authorize(Roles = "Admin,Manager,User")]
+        [CustomAuthorizeAttribute(AllowedRole = "Admin, Manager, User")]
         public ActionResult GetSkillSetListByName(string name)
         {
             //if (ModelState.IsValid)

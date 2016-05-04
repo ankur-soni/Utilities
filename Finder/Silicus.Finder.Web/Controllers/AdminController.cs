@@ -6,7 +6,7 @@ using System.Web;
 using System.Web.Mvc;
 using Microsoft.AspNet.Identity.Owin; 
 using Silicus.Finder.Services.Interfaces;
-using Silicus.Finder.IdentityWrapper;
+//using Silicus.Finder.IdentityWrapper;
 using Silicus.Finder.Services;
 using System.Collections.Generic;
 using Silicus.Finder.Web.ViewModel;
@@ -23,31 +23,31 @@ namespace Silicus.Finder.Web.Controllers
          private readonly ISkillSetService _skillsetservice;
         // private readonly 
 
-        private ApplicationUserManager _userManager;
-        public ApplicationUserManager UserManager
-        {
-            get
-            {
-                return _userManager ?? HttpContext.GetOwinContext().GetUserManager<ApplicationUserManager>();
-            }
-            set
-            {
-                _userManager = value;
-            }
-        }
+        //private ApplicationUserManager _userManager;
+        //public ApplicationUserManager UserManager
+        //{
+        //    get
+        //    {
+        //        return _userManager ?? HttpContext.GetOwinContext().GetUserManager<ApplicationUserManager>();
+        //    }
+        //    set
+        //    {
+        //        _userManager = value;
+        //    }
+        //}
 
-        private ApplicationRoleManager _roleManager;
-        public ApplicationRoleManager RoleManager
-        {
-            get
-            {
-                return _roleManager ?? HttpContext.GetOwinContext().Get<ApplicationRoleManager>();
-            }
-            private set
-            {
-                _roleManager = value;
-            }
-        }
+        //private ApplicationRoleManager _roleManager;
+        //public ApplicationRoleManager RoleManager
+        //{
+        //    get
+        //    {
+        //        return _roleManager ?? HttpContext.GetOwinContext().Get<ApplicationRoleManager>();
+        //    }
+        //    private set
+        //    {
+        //        _roleManager = value;
+        //    }
+        //}
 
         public AdminController(IEmailService emailService, IEmployeeService employeeservice, IProjectService projectService, ISkillSetService skillsetservice)
         {
@@ -69,22 +69,22 @@ namespace Silicus.Finder.Web.Controllers
         //    return View();
         //}
 
-        [AcceptVerbs(HttpVerbs.Post)]
-        public async Task<ActionResult> SendEmail(FormCollection email)
-        {           
-            string retVal = "failed";
-            if (!string.IsNullOrEmpty(email[1]))
-            {
-                var userDetails = await UserManager.FindByEmailAsync(email[1]);
-                var code = await UserManager.GeneratePasswordResetTokenAsync(userDetails.Id);
-                if (SendWelcomeMail(userDetails.Email, email[1], code))
-                {
-                    retVal = "succeeded";
-                }
-            }
+        //[AcceptVerbs(HttpVerbs.Post)]
+        //public async Task<ActionResult> SendEmail(FormCollection email)
+        //{           
+        //    string retVal = "failed";
+        //    if (!string.IsNullOrEmpty(email[1]))
+        //    {
+        //        var userDetails = await UserManager.FindByEmailAsync(email[1]);
+        //        var code = await UserManager.GeneratePasswordResetTokenAsync(userDetails.Id);
+        //        if (SendWelcomeMail(userDetails.Email, email[1], code))
+        //        {
+        //            retVal = "succeeded";
+        //        }
+        //    }
 
-            return Json(retVal);
-        }
+        //    return Json(retVal);
+        //}
 
         private bool SendWelcomeMail(string email, string userFirstName, object key)
         {
@@ -204,26 +204,26 @@ namespace Silicus.Finder.Web.Controllers
             return hashParams;
         }
 
-        public ActionResult GetLockedUsers()
-        {
-            var lockedUsers = UserManager.Users.Where(u => u.LockoutEnabled == true).ToList();
+        //public ActionResult GetLockedUsers()
+        //{
+        //    var lockedUsers = UserManager.Users.Where(u => u.LockoutEnabled == true).ToList();
             
-            var applicationUserViewModel = new List<ApplicationUserViewModel>();
-            Mapper.Map(lockedUsers,applicationUserViewModel);
+        //    var applicationUserViewModel = new List<ApplicationUserViewModel>();
+        //    Mapper.Map(lockedUsers,applicationUserViewModel);
 
-            return View("LockedUsersList", applicationUserViewModel);
-        }
+        //    return View("LockedUsersList", applicationUserViewModel);
+        //}
 
-        public ActionResult UnlockUserAccount(string userId)
-        {
-            var result = UserManager.SetLockoutEnabled(userId, false);
+        //public ActionResult UnlockUserAccount(string userId)
+        //{
+        //    var result = UserManager.SetLockoutEnabled(userId, false);
            
-            if(result.Succeeded)
-            {
-                result = UserManager.ResetAccessFailedCount(userId);;
-            }
+        //    if(result.Succeeded)
+        //    {
+        //        result = UserManager.ResetAccessFailedCount(userId);;
+        //    }
 
-            return RedirectToAction("GetLockedUsers");
-        }
+        //    return RedirectToAction("GetLockedUsers");
+        //}
     }
 }

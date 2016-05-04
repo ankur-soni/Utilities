@@ -5,17 +5,21 @@ namespace Silicus.Finder.Models.DataObjects
 {
     public enum EngagementType
     {
-       [Display(Name="T and M")]
-       [Description("T and M")]
-       T_and_M,
+        [Display(Name = "None")]
+        [Description("None")]
+        None,
 
-       [Display(Name="Fixed Price")]
-       [Description("Fixed Price")]
-       Fixed_Price,
+        [Display(Name = "Fixed Price")]
+        [Description("Fixed Price")]
+        Fixed_Price,
 
-       [Display(Name="Time Based")]
-       [Description("Time Based")]
-       Time_Based
+        [Display(Name = "T and M")]
+        [Description("T and M")]
+        T_and_M,
+
+        [Display(Name = "Not To Exceed")]
+        [Description("Not To Exceed")]
+        Not_To_Exceed
     }
-    
+
 }

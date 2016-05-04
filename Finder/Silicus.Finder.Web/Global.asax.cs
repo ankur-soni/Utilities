@@ -1,4 +1,4 @@
-﻿using System;
+﻿
 using System.Configuration;
 using System.Diagnostics.CodeAnalysis;
 using System.Security.Authentication;
@@ -10,7 +10,8 @@ using System.Web.Routing;
 using Silicus.FrameWorx.Logger;
 using Silicus.Finder.Web.Controllers;
 using Silicus.Finder.Web.Mappings;
-
+using Silicus.Finder.Entities;
+using System;
 namespace Silicus.Finder.Web
 {
     //using Eda.RDBI.Entities.Initializer;
@@ -32,8 +33,11 @@ namespace Silicus.Finder.Web
             AutoMapperConfiguration.Configure();
             ViewEngines.Engines.Clear();
             ViewEngines.Engines.Add(new RazorViewEngine());
+
+           
          
         }
+
 
 	    protected void Application_Error(object sender, EventArgs e)
 	    {

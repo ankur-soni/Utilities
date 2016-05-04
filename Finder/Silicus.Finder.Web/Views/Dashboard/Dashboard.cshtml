@@ -14,7 +14,7 @@
                     <div class="round-button-align"><button class="roundedButton"><span class="fa fa-users fa-5x"></span></button></div>
 
                 }
-                @using (Html.BeginForm("SearchEmployeeByName", "Employee", FormMethod.Post, new { name = @Html.TextBox("Search For Employee") }))
+                @using (Html.BeginForm("SearchEmployeeByName", "Employee",FormMethod.Get, new { name = @Html.TextBox("Search For Employee") }))
                 {
                     <div id="error_message_employee" style="color:red;height:30px;padding-left: 40px;"> </div>
                     <div class="input-group" id="dashboard-search-div">
@@ -42,7 +42,7 @@
                     <div class="round-button-align"><button class="roundedButton"><span class="fa fa-pencil-square-o fa-5x"></span></button></div>
 
                 }
-                @using (Html.BeginForm("GetProjectsByName", "Projects", FormMethod.Post, new { projectName = @Html.TextBox("Project Name") }))
+                @using (Html.BeginForm("GetProjectsByName", "Projects", FormMethod.Get, new { projectName = @Html.TextBox("Project Name") }))
                 {
                     <div id="error_message" style="color:red;height:30px;padding-left: 40px;"> </div>
                     <div class="input-group" id="dashboard-search-div">

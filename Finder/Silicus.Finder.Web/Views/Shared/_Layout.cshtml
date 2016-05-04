@@ -55,7 +55,9 @@
 
 </head>
 @using Microsoft.AspNet.Identity
+@using System.Web;
 @{
+    
     var conname = @ViewContext.RouteData.Values["controller"].ToString().ToLower();
     var actname = @ViewContext.RouteData.Values["action"].ToString().ToLower();
     //Response.Write(conname);
@@ -93,7 +95,7 @@
                                     <div class="menuList">
                                         <div class="dropdown" style="float:right">
                                             <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">
-                                                @if (User.IsInRole("Admin"))
+                                                @if (HttpContext.Current.Session["Role"].ToString()=="Admin")
                                                 {
                                                     <span>Admin</span>
                                                 }
@@ -104,11 +106,10 @@
                                                 <span class="caret"></span>
                                             </button>
                                             <ul class="dropdown-menu">
-                                                @if (User.IsInRole("Admin"))
+                                                @if (HttpContext.Current.Session["Role"].ToString() == "Admin")
                                                 {
                                                     <li><a href="@Url.Action("GetLockedUsers", "Admin")">Locked Users</a></li>
                                                 }
-                                                <li><a href="@Url.Action("ChangePassword", "Account")">Change Password</a></li>
                                                 <li><a href="@Url.Action("LogOff", "Account")">Log Out</a></li>
                                             </ul>
                                         </div>
@@ -117,21 +118,21 @@
                             </div>
                         </div>
                     </div>
-                    @*<div id="dashboardlink" class="container-fluid"><span><a href="@Url.Action("GetLockedUsers", "Admin")">Locked Users</a></span><span><a href="@Url.Action("ChangePassword", "Account")">ChangePassword</a></span><span><a href="@Url.Action("Dashboard", "Admin")">Dashboard</a></span></div>*@
+                    @*<div id="dashboardlink" class="container-fluid"><span><a href="@Url.Action("GetLockedUsers", "Admin")">Locked Users</a></span><span><a href="@Url.Action("ChangePassword", "Account")">ChangePassword</a></span><span><a href="@Url.Action("Dashboard", "Admin")">Dashboard</a></span></div>
                     <div id="dashboardlink" class="container-fluid">
                         @if (Request.IsAuthenticated)
                         {
-                            @*    <span>
+                               <span>
                                     @if (User.IsInRole("Admin"))
                                     {
                                         <a href="@Url.Action("GetLockedUsers", "Admin")">Locked Users</a>
                                     }
                                 </span>
                                 <span><a href="@Url.Action("ChangePassword", "Account")">Change Password</a></span>
-                            *@
+                            
                             <span><a href="@Url.Action("Dashboard", "Dashboard")">Dashboard</a></span>
                         }
-                    </div>
+                    </div>*@
                     <div id="dashboardimage" style="padding-top:1%">
                         <h2 style="padding-left:4%;padding-top:1%; color:white;" id="moduleHeaderTitleOnDashBoardImage"></h2>
                     </div>

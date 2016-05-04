@@ -36,7 +36,7 @@ namespace Silicus.Finder.Entities
             modelBuilder.Configurations.Add(new ProjectDetailMap());
             modelBuilder.Configurations.Add(new ManagerDetailMap());
             modelBuilder.Configurations.Add(new EmailAvailableMap());
-            modelBuilder.Configurations.Add(new UserMap());
+        //    modelBuilder.Configurations.Add(new UserMap());
             modelBuilder.Configurations.Add(new RolesMap());
             modelBuilder.Configurations.Add(new ContactMap());
             modelBuilder.Configurations.Add(new CubicleLocationMap());

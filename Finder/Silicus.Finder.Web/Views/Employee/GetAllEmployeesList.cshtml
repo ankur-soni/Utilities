@@ -81,7 +81,7 @@
 
             <div class="content">
                 <br />
-                @using (Html.BeginForm("GetEmployeesByCriteria", "Employee", FormMethod.Post))
+                @using (Html.BeginForm("GetEmployeesByCriteria", "Employee", FormMethod.Get))
                 {
                     var model = Model.SearchCriteria;
                     var i = 0;
@@ -103,11 +103,11 @@
     <p>
         @if (User.IsInRole("Admin"))
         {
-        <div class="container-fluid">
+        @*<div class="container-fluid">
             <input type="submit" value="Create Employee" style="float:right;" class="btn btn-default" onclick="@("window.location.href='" + @Url.Action("Create", "Employee") + "'");" />
             <input type="button" id="importButton" value="Import Employee" style="float:right;margin-right: 7px;" class="btn btn-default" />
-            @*<input type="button" value="Import Employee" id="importButton"/>*@
-        </div>
+           
+        </div>*@
         }
     </p>
 
@@ -116,7 +116,7 @@
               .Columns(columns =>
             {
                 columns.Bound(employee => employee.FullName).Template(@<label>
-        @Html.ActionLink(item.FullName, "Details", "Employee", new { id = item.EmployeeId }, new { @class = "modal-link" })
+        @Html.ActionLink(item.FullName, "Details", "Employee", new { id = item.EmployeeCode }, new { @class = "modal-link" })
     </label>
                        );
                 columns.Bound(employee => employee.EmployeeCode).Title("Employee Code");

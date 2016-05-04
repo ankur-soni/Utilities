@@ -32,7 +32,7 @@ namespace Silicus.Finder.Models.DataObjects
 
         [Required(ErrorMessage = "Please select Project Type")]
         [Display(Name = "Project Type")]
-        public ProjectType? ProjectType { get; set; }
+        public string ProjectType { get; set; }
 
         [Required(ErrorMessage = "Please select Engagement Type")]
         [Display(Name = "Engagement Type")]
@@ -73,11 +73,11 @@ namespace Silicus.Finder.Models.DataObjects
         public string AdditionalNotes { get; set; }
 
         [NotMapped]
-        public int[] skillSetId { get; set; }
+        public int?[] skillSetId { get; set; }
         public virtual ICollection<SkillSet> SkillSets { get; set; }
 
         [NotMapped]
-        public int[] EmployeeIds { get; set; }
+        public int?[] EmployeeIds { get; set; }
         public virtual ICollection<Employee> Employees { get; set; }
     }
 }

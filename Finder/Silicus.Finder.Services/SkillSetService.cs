@@ -1,8 +1,11 @@
 ﻿using Aspose.Cells;
 using Silicus.Finder.Entities;
+using Silicus.Finder.ModelMappingService.Interfaces;
 using Silicus.Finder.Models.DataObjects;
 using Silicus.Finder.Services.Comparable.SkillSetComparable;
 using Silicus.Finder.Services.Interfaces;
+using Silicus.UtilityContainer.Models.DataObjects;
+using Silicus.UtilityContainer.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,11 +16,20 @@ namespace Silicus.Finder.Services
 {
     public class SkillSetService : ISkillSetService
     {
+        private readonly ICommonMapper _commonMapper;
         private readonly IDataContext _context;
+        private readonly ICommonDataBaseContext _commonDBContext;
+        //private readonly ICommonDataBaseContext _commonDBContxt;
 
-        public SkillSetService(IDataContextFactory dataContextFactory)
+        //public SkillSetService(IDataContextFactory dataContextFactory)
+        //{
+        //    _context = dataContextFactory.Create(ConnectionType.Ip);
+        //}
+
+        public SkillSetService(ICommonMapper commonMapper)
         {
-            _context = dataContextFactory.Create(ConnectionType.Ip);
+            _commonMapper = commonMapper;
+            _commonDBContext = commonMapper.GetCommonDataBAseContext();
         }
 
         public void Add(SkillSet skillSet)
@@ -27,7 +39,12 @@ namespace Silicus.Finder.Services
 
         public List<SkillSet> GetAllSkills()
         {
-            var skillSetList = _context.Query<SkillSet>().ToList();
+            var skillSetList = new List<SkillSet>();
+            var skillList = _commonDBContext.Query<Skill>().ToList();
+            foreach (var skill in skillList)
+            {
+                skillSetList.Add(_commonMapper.MapSkillToSkillSet(skill));
+            }
             SkillSetSortByName skillSetSortByName = new SkillSetSortByName();
             skillSetList.Sort(skillSetSortByName);
             return skillSetList;
@@ -41,21 +58,28 @@ namespace Silicus.Finder.Services
 
         public SkillSet GetSkillSetById(int skillSetId)
         {
-            return _context.Query<SkillSet>().Where(skill => skill.SkillSetId == skillSetId).Single();
+            var targetSkill = _commonDBContext.Query<Skill>().Where(skill => skill.ID == skillSetId).Single();
+            
+            return _commonMapper.MapSkillToSkillSet(targetSkill);
 
         }
 
         public IEnumerable<SkillSet> GetSkillSetListByName(string name)
         {
-            List<SkillSet> skillsetList = new List<SkillSet>();
+            List<SkillSet> skillSetList = new List<SkillSet>();
             if (name != null)
             {
                 string _name = name.Trim().ToLower();
-                skillsetList = _context.Query<SkillSet>().Where((skill => skill.Name.ToLower().Contains(_name))).ToList();
+                var skillList = _commonDBContext.Query<Skill>().Where(skill => skill.Name.ToLower().Contains(_name) || skill.Parent.Name.ToLower().Contains(_name)).ToList();
+                foreach(var skill in skillList)
+                {
+                   skillSetList.Add(_commonMapper.MapSkillToSkillSet(skill));
+                }
             }
+            
             SkillSetSortByName skillSetSortByName = new SkillSetSortByName();
-            skillsetList.Sort(skillSetSortByName);
-            return skillsetList;
+            skillSetList.Sort(skillSetSortByName);
+            return skillSetList;
         }
 
         public void EditSkillSet(SkillSet selectedSkillSet)
@@ -65,13 +89,13 @@ namespace Silicus.Finder.Services
 
         public bool CheckRedudanceForSkillSet(string skillname)
         {
-           var allSkill = GetAllSkills();
-           foreach(var skill in allSkill)
-           {
-               if (skill.Name.ToLower() == skillname.ToLower())
-                   return true;
-           }
-           return false;
+            var allSkill = GetAllSkills();
+            foreach (var skill in allSkill)
+            {
+                if (skill.Name.ToLower() == skillname.ToLower())
+                    return true;
+            }
+            return false;
         }
 
         public List<string> AddAllSkills(List<SkillSet> skills)
@@ -94,7 +118,7 @@ namespace Silicus.Finder.Services
                     {
                         skillNameFailedToAdd.Add(skill.Name);
                     }
-                    
+
                 }
                 catch (Exception ex)
                 {

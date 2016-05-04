@@ -13,15 +13,6 @@ namespace Silicus.Finder.Web.Tests.Controllers
     public class ProjectControllerTest
     {
         [TestMethod]
-        public void Constructor_Invoked_Success()
-        {
-            var mockService = new Mock<IProjectDetailService>(MockBehavior.Strict);
-            var target = new ProjectController(mockService.Object);
-
-            Assert.IsNotNull(target);
-        }
-
-        [TestMethod]
         public void GetProjectDetails_ProjectExist_ReturnCorrectCount()
         {
             var mockService = new Mock<IProjectDetailService>(MockBehavior.Strict);

@@ -45,8 +45,9 @@ namespace Silicus.Finder.Services.Interfaces
         int GetProjectCountBySkill(int skillSetId);
 
         List<string> AddAllProjects(List<Project> projects);
-       
-
+     
         List<Project> ImportProjectsFromExcel(string path);
+
+        int GetProjectsCount();
     }
 }

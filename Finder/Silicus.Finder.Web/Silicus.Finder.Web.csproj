@@ -198,6 +198,10 @@
       <HintPath>..\packages\PagedList.Mvc.4.5.0.0\lib\net40\PagedList.Mvc.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="Silicus.Finder.ModelMappingService, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Silicus.Finder.ModelMappingService\bin\Debug\Silicus.Finder.ModelMappingService.dll</HintPath>
+    </Reference>
     <Reference Include="Silicus.FrameWorx.Auditing">
       <HintPath>..\packages\Silicus.FrameWorx.Auditing.1.0.0\lib\net45\Silicus.FrameWorx.Auditing.dll</HintPath>
     </Reference>
@@ -207,6 +211,18 @@
     </Reference>
     <Reference Include="Silicus.FrameWorx.Utility">
       <HintPath>..\packages\Silicus.FrameWorx.Utility.1.0.0\lib\net45\Silicus.FrameWorx.Utility.dll</HintPath>
+    </Reference>
+    <Reference Include="Silicus.UtilityContainer.Entities">
+      <HintPath>..\..\Silicus.UtilityContainer\Silicus.UtilityContainer.Service\bin\Debug\Silicus.UtilityContainer.Entities.dll</HintPath>
+    </Reference>
+    <Reference Include="Silicus.UtilityContainer.Models">
+      <HintPath>..\..\Silicus.UtilityContainer\Silicus.UtilityContainer.Service\bin\Debug\Silicus.UtilityContainer.Models.dll</HintPath>
+    </Reference>
+    <Reference Include="Silicus.UtilityContainer.Security">
+      <HintPath>..\..\Silicus.UtilityContainer\Silicus.UtilityContainer.Security\bin\Debug\Silicus.UtilityContainer.Security.dll</HintPath>
+    </Reference>
+    <Reference Include="Silicus.UtilityContainer.Services">
+      <HintPath>..\..\Silicus.UtilityContainer\Silicus.UtilityContainer.Service\bin\Debug\Silicus.UtilityContainer.Services.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
@@ -224,6 +240,8 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.ServiceModel" />
+    <Reference Include="System.ServiceModel.DomainServices.Server, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
     <Reference Include="System.Spatial, Version=5.6.4.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\System.Spatial.5.6.4\lib\net40\System.Spatial.dll</HintPath>
       <Private>True</Private>
@@ -327,15 +345,15 @@
     <Compile Include="Controllers\DashboardController.cs" />
     <Compile Include="Controllers\EmployeeController.cs" />
     <Compile Include="Controllers\ErrorController.cs" />
-    <Compile Include="Controllers\ProjectController.cs" />
     <Compile Include="Controllers\ProjectsController.cs" />
     <Compile Include="Controllers\RoleController.cs" />
     <Compile Include="Controllers\TechnologyController.cs" />
-    <Compile Include="Controllers\UserController.cs" />
     <Compile Include="CookieHelper.cs" />
     <Compile Include="Filters\AuditAttribute.cs" />
     <Compile Include="Filters\CustomAllowAnonymous.cs" />
+    <Compile Include="Filters\CustomAuthorizeAttribute.cs" />
     <Compile Include="Filters\LogAttribute.cs" />
+    <Compile Include="Filters\UtilityAuthorizationAttribute.cs" />
     <Compile Include="GlimpseSecurityPolicy.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -711,7 +729,6 @@
     <Content Include="Views\_ViewStart.cshtml" />
     <Content Include="Views\Account\Login.cshtml" />
     <Content Include="Views\Shared\_LoginPartial.cshtml" />
-    <Content Include="Views\Shared\_Layout.cshtml" />
     <Content Include="Views\Web.config" />
     <Content Include="Views\Error\PageNotFound.cshtml" />
     <Content Include="Views\Error\BadRequest.cshtml" />
@@ -789,6 +806,7 @@
     <Content Include="Views\Shared\EditorTemplates\EmployeeSearchCriteriaViewModel.cshtml" />
     <Content Include="Views\Projects\ProjectDetails.cshtml" />
     <Content Include="Views\Employee\EmployeeDetails.cshtml" />
+    <Content Include="Views\Shared\_Layout.cshtml" />
     <None Include="Web.Azure.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -817,16 +835,12 @@
       <Project>{33F03AEB-5ED5-4F31-A3F5-D39B22373027}</Project>
       <Name>Silicus.Finder.Entities</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Silicus.Finder.IdentityWrapper\Silicus.Finder.IdentityWrapper.csproj">
-      <Project>{db09df65-ed4f-41e2-aea3-0162281568e7}</Project>
-      <Name>Silicus.Finder.IdentityWrapper</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Silicus.Finder.Models\Silicus.Finder.Models.csproj">
       <Project>{2f4384aa-2fe9-4c85-a6cc-59228bc587e6}</Project>
       <Name>Silicus.Finder.Models</Name>
     </ProjectReference>
     <ProjectReference Include="..\Silicus.Finder.Services\Silicus.Finder.Services.csproj">
-      <Project>{840DB0BC-4016-4C33-9746-ED48BDE5C544}</Project>
+      <Project>{840db0bc-4016-4c33-9746-ed48bde5c544}</Project>
       <Name>Silicus.Finder.Services</Name>
     </ProjectReference>
   </ItemGroup>

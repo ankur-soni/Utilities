@@ -12,7 +12,7 @@
         public static readonly string DefaultSchema = "dbo";
         public static readonly string Organizations = "Organization";
         public static readonly string EmailAvailable = "EmailAvailable";
-        public static readonly string User = "User";
+        public static readonly string User = "Users";
         public static readonly string Roles = "Roles";
         public static readonly string RewardsAndRecognitions = "RewardsAndRecognition";
         public static readonly string Titles = "Title";

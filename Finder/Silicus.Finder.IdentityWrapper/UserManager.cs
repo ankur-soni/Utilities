@@ -17,6 +17,7 @@ namespace Silicus.Finder.IdentityWrapper
             var rolesForUser = userManager.GetRoles(userId);
             if (!rolesForUser.Contains(roleName))
             {
+                
                 userManager.AddToRole(userId, roleName);
             }
         }
@@ -33,6 +34,21 @@ namespace Silicus.Finder.IdentityWrapper
             }
             return user.Id;
         }
+
+        public string CreateUserIfNotExistfromActiveDirectory(string name, string email, string password)
+        {
+            var userManager = HttpContext.Current.GetOwinContext().GetUserManager<ApplicationUserManager>();
+            var user = userManager.FindByName(name);
+            if (user == null)
+            {
+                user = new ApplicationUser { UserName = name, Email = email };
+                var result = userManager.Create(user, password);
+                userManager.SetLockoutEnabled(user.Id, false);
+            }
+            return user.Id;
+
+        }
+
 
         public void DeleteUser(string name)
         {

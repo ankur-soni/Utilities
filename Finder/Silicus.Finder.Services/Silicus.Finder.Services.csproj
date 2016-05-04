@@ -77,11 +77,21 @@
     <Reference Include="Silicus.FrameWorx.Utility">
       <HintPath>..\packages\Silicus.FrameWorx.Utility.1.0.0\lib\net45\Silicus.FrameWorx.Utility.dll</HintPath>
     </Reference>
+    <Reference Include="Silicus.UtilityContainer.Entities">
+      <HintPath>..\..\Silicus.UtilityContainer\Silicus.UtilityContainer.Service\bin\Debug\Silicus.UtilityContainer.Entities.dll</HintPath>
+    </Reference>
+    <Reference Include="Silicus.UtilityContainer.Models">
+      <HintPath>..\..\Silicus.UtilityContainer\Silicus.UtilityContainer.Service\bin\Debug\Silicus.UtilityContainer.Models.dll</HintPath>
+    </Reference>
+    <Reference Include="Silicus.UtilityContainer.Security">
+      <HintPath>..\..\Silicus.UtilityContainer\Silicus.UtilityContainer.Security\bin\Debug\Silicus.UtilityContainer.Security.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Web" />
+    <Reference Include="System.Web.ApplicationServices" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -110,7 +120,6 @@
     <Compile Include="Interfaces\IRolesService.cs" />
     <Compile Include="Interfaces\ISkillSetService.cs" />
     <Compile Include="Interfaces\ISmtpClient.cs" />
-    <Compile Include="Interfaces\IUserService.cs" />
     <Compile Include="ManagerService.cs" />
     <Compile Include="obj\Debug\TemporaryGeneratedFile_036C0B5B-1481-4323-8D20-8F5ADCB23D92.cs" />
     <Compile Include="obj\Debug\TemporaryGeneratedFile_5937a670-0e60-4077-877b-f7221da3dda1.cs" />
@@ -121,16 +130,15 @@
     <Compile Include="RolesService.cs" />
     <Compile Include="SkillSetService.cs" />
     <Compile Include="SmtpClientWrapper.cs" />
-    <Compile Include="UserService.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Silicus.Finder.Entities\Silicus.Finder.Entities.csproj">
       <Project>{33F03AEB-5ED5-4F31-A3F5-D39B22373027}</Project>
       <Name>Silicus.Finder.Entities</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Silicus.Finder.IdentityWrapper\Silicus.Finder.IdentityWrapper.csproj">
-      <Project>{db09df65-ed4f-41e2-aea3-0162281568e7}</Project>
-      <Name>Silicus.Finder.IdentityWrapper</Name>
+    <ProjectReference Include="..\Silicus.Finder.ModelMappingService\Silicus.Finder.ModelMappingService.csproj">
+      <Project>{5450761e-0f88-4f66-ad55-ff0fe63856fc}</Project>
+      <Name>Silicus.Finder.ModelMappingService</Name>
     </ProjectReference>
     <ProjectReference Include="..\Silicus.Finder.Models\Silicus.Finder.Models.csproj">
       <Project>{2F4384AA-2FE9-4C85-A6CC-59228BC587E6}</Project>

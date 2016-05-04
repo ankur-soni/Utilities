@@ -37,7 +37,7 @@
             {
                 <tr>
                     <td style="text-align:left;padding-left:8px">
-                        <a href="#" id="ProjectId_@item.EmployeeId" class="Project_ID" pid="@item.EmployeeId">@item.FullName</a>
+                        <a href="#" id="ProjectId_@item.EmployeeCode" class="Project_ID" pid="@item.EmployeeCode">@item.FullName</a>
                     </td>
                     <td style="text-align:left;padding-left:8px">
                         @{  
@@ -49,11 +49,11 @@
                           }
                         @Html.DisplayFor(modelitem=>title)
                     </td>
-                    <td style="text-align:left;padding-left:8px">
+                    @*<td style="text-align:left;padding-left:8px">
                         @{
-                            var cubicleLocation = item.CubicleLocation.Building + "/" + item.CubicleLocation.DeskNumber;
+                          //  var cubicleLocation = item.CubicleLocation.Building + "/" + item.CubicleLocation.DeskNumber;
                         }
-                        @Html.DisplayFor(modelItem => cubicleLocation)
+                        @Html.DisplayFor(modelItem => cubicleLocation)*@
                     <td style="text-align:left;padding-left:8px">
                         @Html.DisplayFor(modelItem => item.Contact.EmailAddress)
                     </td>

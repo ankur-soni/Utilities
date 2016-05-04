@@ -2,8 +2,9 @@
 using System.Web;
 using System.Web.Mvc;
 using Microsoft.AspNet.Identity.Owin;
-using Silicus.Finder.IdentityWrapper;
+//using Silicus.Finder.IdentityWrapper;
 using Silicus.Finder.Services.Interfaces;
+using Silicus.Finder.Web.Filters;
 
 namespace Silicus.Finder.Web.Controllers
 {
@@ -21,29 +22,30 @@ namespace Silicus.Finder.Web.Controllers
             _skillsetservice = skillsetservice;
         }
 
-        private ApplicationRoleManager _roleManager;
-        public ApplicationRoleManager RoleManager
-        {
-            get
-            {
-                return _roleManager ?? HttpContext.GetOwinContext().Get<ApplicationRoleManager>();
-            }
-            private set
-            {
-                _roleManager = value;
-            }
-        }
+        //private ApplicationRoleManager _roleManager;
+        //public ApplicationRoleManager RoleManager
+        //{
+        //    get
+        //    {
+        //        return _roleManager ?? HttpContext.GetOwinContext().Get<ApplicationRoleManager>();
+        //    }
+        //    private set
+        //    {
+        //        _roleManager = value;
+        //    }
+        //}
 
-        [Authorize(Roles = "Admin, Manager,User")]
+       // [UtilityAuthorizationAttribute]
+        [CustomAuthorizeAttribute(AllowedRole = "Admin, Manager, User")]
         public ActionResult Dashboard()
         {
-            ViewBag.UserRoles = RoleManager.Roles.Select(r => new SelectListItem { Text = r.Name, Value = r.Name }).ToList();
-            Session["uname"] = User.Identity.Name;
-            @ViewBag.NumberOfEmployee = _employeeService.GetAllEmployees().Count();
-            @ViewBag.NumberOfProjects = _projectService.GetProjects().Count();
+            //ViewBag.UserRoles = RoleManager.Roles.Select(r => new SelectListItem { Text = r.Name, Value = r.Name }).ToList();
+            //Session["uname"] = User.Identity.Name;
+            @ViewBag.NumberOfEmployee = _employeeService.GetEmployeesCount();
+            @ViewBag.NumberOfProjects = _projectService.GetProjectsCount();
             @ViewBag.NumberOfSkills = _skillsetservice.GetAllSkills().Count();
 
             return View();
         }
     }
-}
+} 

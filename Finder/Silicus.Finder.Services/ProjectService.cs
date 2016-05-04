@@ -1,8 +1,10 @@
 ﻿using Aspose.Cells;
 using Silicus.Finder.Entities;
+using Silicus.Finder.ModelMappingService.Interfaces;
 using Silicus.Finder.Models.DataObjects;
 using Silicus.Finder.Models.Models;
 using Silicus.Finder.Services.Interfaces;
+using Silicus.UtilityContainer.Models.DataObjects;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -12,16 +14,17 @@ namespace Silicus.Finder.Services
 {
     public class ProjectService : IProjectService
     {
-
-
         private readonly IDataContext _context;
         IEmployeeService _employeeService;
+        Silicus.UtilityContainer.Entities.ICommonDataBaseContext _utilityCommonDbContext;
+        private readonly ICommonMapper _commonMapper;
 
-        public ProjectService(IDataContextFactory dataContextFactory, IEmployeeService employeeService)
+        public ProjectService(IDataContextFactory dataContextFactory, IEmployeeService employeeService, ICommonMapper commonMapper)
         {
-
             _context = dataContextFactory.Create(ConnectionType.Ip);
             _employeeService = employeeService;
+            _commonMapper = commonMapper;
+            _utilityCommonDbContext = _commonMapper.GetCommonDataBAseContext();
         }
 
         public int AddProject(Project project)
@@ -45,37 +48,70 @@ namespace Silicus.Finder.Services
 
         public IEnumerable<Project> GetProjects()
         {
-            var projectList = _context.Query<Project>().Where(p => p.ArchiveDate == null).ToList();
+            var engagementList = _utilityCommonDbContext.Query<Engagement>().ToList();
+            var projectList = new List<Project>();
+
+            foreach (Engagement engagement in engagementList)
+            {
+                var project = _commonMapper.MapBasicPropertiesOfEngagementToProject(engagement);
+                projectList.Add(project);
+            }
+            //   var projectList = _context.Query<Project>().Where(p => p.ArchiveDate == null).ToList();
             return projectList;
         }
 
         public Project GetProjectById(int? projectId)
         {
-            var project = _context.Query<Project>().Where(model => model.ProjectId == projectId).FirstOrDefault();
+            //  var project = _context.Query<Project>().Where(model => model.ProjectId == projectId).FirstOrDefault();
+            var engagement = _utilityCommonDbContext.Query<Engagement>().Where(model => model.ID == projectId).FirstOrDefault();
+            var project = _commonMapper.MapBasicPropertiesOfEngagementToProject(engagement);
             return project;
         }
 
         public List<Project> GetProjectsByCriteria(ProjectSearchCriteriaModel criteria)
         {
-            var projectList = GetProjects().ToList();
+            // var allProjects = GetProjects().ToList();
+            var projectList = GetProjects().ToList(); ;
 
             if (projectList.Count() != 0)
             {
-                projectList = projectList.Where(p => p.Status.ToString().Equals(string.IsNullOrEmpty(criteria.Status) ? p.Status.ToString() : criteria.Status.Trim())
-                    && p.ProjectType.ToString().Equals(string.IsNullOrEmpty(criteria.ProjectType) ? p.ProjectType.ToString() : criteria.ProjectType.Trim())
-                    && p.SkillSets.Any(s => s.Name.Equals(string.IsNullOrEmpty(criteria.SkillSet) ? s.Name : criteria.SkillSet.Trim()))).ToList();
 
-                if (!string.IsNullOrEmpty(criteria.EngagementManager) && projectList.Count() != 0)
+                if (!string.IsNullOrEmpty(criteria.Status))
+                    projectList = (projectList.Where(p => p.Status.GetDescription() == criteria.Status)).ToList();
+
+                if (!string.IsNullOrEmpty(criteria.ProjectType))
+                    projectList = (projectList.Where(p => p.ProjectType == criteria.ProjectType)).ToList();
+
+                if (!string.IsNullOrEmpty(criteria.ProjectManager))
+                {
+                    var employeeIds = _employeeService.GetEmployeeByName(criteria.ProjectManager).Select(pm => pm.EmployeeId).ToList();
+                    projectList = projectList.Where(p => employeeIds.Contains(Convert.ToInt32(p.ProjectManagerId))).ToList();
+                }
+
+                if (!string.IsNullOrEmpty(criteria.EngagementManager))
                 {
                     var employeeIds = _employeeService.GetEmployeeByName(criteria.EngagementManager).Select(pm => pm.EmployeeId).ToList();
                     projectList = projectList.Where(p => employeeIds.Contains(Convert.ToInt32(p.EngagementManagerId))).ToList();
                 }
 
-                if (!string.IsNullOrEmpty(criteria.ProjectManager) && projectList.Count() != 0)
-                {
-                    var employeeIds = _employeeService.GetEmployeeByName(criteria.ProjectManager).Select(pm => pm.EmployeeId).ToList();
-                    projectList = projectList.Where(p => employeeIds.Contains(Convert.ToInt32(p.ProjectManagerId))).ToList();
-                }
+                // //projectList = projectList.Where(p => p.Status.GetDescription().Equals(string.IsNullOrEmpty(criteria.Status) ? p.Status.GetDescription(): criteria.Status.Trim())
+                // //    && p.ProjectType.Equals(string.IsNullOrEmpty(criteria.ProjectType) ? p.ProjectType : criteria.ProjectType.Trim())).ToList();
+
+                // projectList = (projectList.Where(p => p.Status.GetDescription() == criteria.Status) ).ToList();
+
+                //// projectList = projectList.Where(p => p.ProjectType==criteria.ProjectType).ToList();
+
+                // if (!string.IsNullOrEmpty(criteria.EngagementManager) && projectList.Count() != 0)
+                // {
+                //     var employeeIds = _employeeService.GetEmployeeByName(criteria.EngagementManager).Select(pm => pm.EmployeeId).ToList();
+                //     projectList = projectList.Where(p => employeeIds.Contains(Convert.ToInt32(p.EngagementManagerId))).ToList();
+                // }
+
+                // if (!string.IsNullOrEmpty(criteria.ProjectManager) && projectList.Count() != 0)
+                // {
+                //     var employeeIds = _employeeService.GetEmployeeByName(criteria.ProjectManager).Select(pm => pm.EmployeeId).ToList();
+                //     projectList = projectList.Where(p => employeeIds.Contains(Convert.ToInt32(p.ProjectManagerId))).ToList();
+                // }
             }
 
             return projectList;
@@ -83,20 +119,36 @@ namespace Silicus.Finder.Services
 
         public IEnumerable<Project> GetProjectsByName(string projectName)
         {
-            var projectList = _context.Query<Project>().Where(e => e.ProjectName.Contains(projectName.Trim())).ToList();
+            var engagementList = _utilityCommonDbContext.Query<Engagement>().Where(engagement => engagement.Name.Contains(projectName.Trim())).ToList();
+            var projectList = new List<Project>();
+
+            foreach (Engagement engagement in engagementList)
+                projectList.Add(_commonMapper.MapBasicPropertiesOfEngagementToProject(engagement));
 
             if (projectList.Count == 0)
             {
-                return _context.Query<Project>().Where(e => e.ProjectCode.Equals(projectName.Trim())).ToList();
+                var engagementsSearchedById = _utilityCommonDbContext.Query<Engagement>().Where(engagement => engagement.Code.Contains(projectName.Trim())).ToList();
+                if (engagementsSearchedById.Count > 0)
+                {
+                    foreach (Engagement engagement in engagementsSearchedById)
+                        projectList.Add(_commonMapper.MapBasicPropertiesOfEngagementToProject(engagement));
+                }
             }
-
             return projectList;
         }
 
         public Project GetProjectDetails(int projectId)
         {
-            var project = _context.Query<Project>().FirstOrDefault(p => p.ProjectId == projectId);
+            //var project = _context.Query<Project>().FirstOrDefault(p => p.ProjectId == projectId);
+            var engagement = _utilityCommonDbContext.Query<Engagement>().Where(model => model.ID == projectId).FirstOrDefault();
+            var project = _commonMapper.MapEngagementToProject(engagement);
             return project;
+        }
+
+        public int GetProjectsCount()
+        {
+            int count = _utilityCommonDbContext.Query<Engagement>().Count();
+            return count;
         }
 
         public List<SkillSet> GetAllSkills()
@@ -113,16 +165,23 @@ namespace Silicus.Finder.Services
 
         public List<Employee> GetAllEmployees()
         {
-            var allEmployeeList = _context.Query<Employee>().ToList();
-            foreach (Employee emp in allEmployeeList)
-            {
-                if (emp.EmployeeTitles.Count > 0)
-                {
-                    var empTitle = emp.EmployeeTitles.Where(title => title.IsCurrent == true).SingleOrDefault().Title;
-                    emp.Title = empTitle.Name;
-                    emp.TitleId = empTitle.TitleId;
-                }
-            }
+            var allUsers = _utilityCommonDbContext.Query<User>().ToList();
+            var allEmployeeList = new List<Employee>();
+
+            foreach (var user in allUsers)
+                allEmployeeList.Add(_commonMapper.MapBasicPropertiesOfUserToEmployee(user));
+
+            // var allEmployeeList = _context.Query<Employee>().ToList();
+
+            //foreach (Employee emp in allEmployeeList)
+            //{
+            //    if (emp.EmployeeTitles.Count > 0)
+            //    {
+            //        var empTitle = emp.EmployeeTitles.Where(title => title.IsCurrent == true).SingleOrDefault().Title;
+            //        emp.Title = empTitle.Name;
+            //        emp.TitleId = empTitle.TitleId;
+            //    }
+            //}
 
             return allEmployeeList;
         }
@@ -247,11 +306,11 @@ namespace Silicus.Finder.Services
                         ++column;
                         break;
                     case 'D':
-                        project.ProjectType = ParseEnum<ProjectType>(cell.StringValue);
+                        //   project.ProjectType = ParseEnum<ProjectType>(cell.StringValue);
                         ++column;
                         break;
                     case 'E':
-                        project.EngagementType = ParseEnum<EngagementType>(cell.StringValue);
+                        project.EngagementType = ParseEnum<Silicus.Finder.Models.DataObjects.EngagementType>(cell.StringValue);
                         ++column;
                         break;
 
@@ -361,7 +420,7 @@ namespace Silicus.Finder.Services
                     }
                     catch (Exception ex)
                     {
-                        ErrorLog(@"D:\Error.txt", "Problem while updating the skills for project with ProjectId " +targetProject.ProjectId  );
+                        ErrorLog(@"D:\Error.txt", "Problem while updating the skills for project with ProjectId " + targetProject.ProjectId);
 
                     }
 
