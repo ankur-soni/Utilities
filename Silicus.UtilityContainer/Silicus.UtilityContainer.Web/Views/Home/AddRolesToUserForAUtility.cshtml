@@ -61,7 +61,7 @@
                         <input type="submit" value="Add Role" class="btn btn-default" />
                     </div>
                     <div class="col-md-5">
-                        <input type="button" value="Cancle" onclick="window.location.reload()" class="btn btn-default" />
+                        <input type="button" value="Cancel" onclick="window.location.reload()" class="btn btn-default" />
                     </div>
                 </div>
             </div>
@@ -74,6 +74,8 @@
         </div>
     </div>
 </div>
+
+<div id="dialog" title="Dialog Title" style="display:none">I'm in a dialog</div>
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
 
@@ -86,18 +88,21 @@
 
         $(document).ready(function () {
 
+            var lastSelectOption = $("#utilityList option:selected").text();
+            $("#utilityList").click(function(){
+                lastSelectOption = $("#utilityList option:selected");
+            });
 
             $("#utilityList").change(function () {
-                debugger;
-
-                if ($("#utilityList").val().trim() != "" || $("#rolesList").val() != 0) {
-                    debugger;
+               
+                if ($("#utilityList").val().trim() != "" && $("#utilityList").val() != 0 && $("#userNames").val() != null && $("#userNames").val != 0) {
                    
-                                      
-                    $("#utilityList option").not(':selected').each(function (index) {
-                            $(this).prop('disabled', true);
-                        });
-                    
+
+                    if (!confirm("Do you want to change the utility to " + $("#utilityList option:selected").text())) {
+                        
+                        lastSelectOption.prop("selected", true);
+                        
+                    }
 
                 }
 
