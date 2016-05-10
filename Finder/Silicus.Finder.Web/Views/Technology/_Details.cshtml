@@ -49,6 +49,12 @@
                 @Html.DisplayFor(model => model.Description)
             </span>
         </dd>
+        <dt>
+            @Html.DisplayName("# Employees Tagged")
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Employees.Count)
+        </dd>
     </dl>
 </div>
 

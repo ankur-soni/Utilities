@@ -64,6 +64,7 @@ namespace Silicus.Finder.Web.Controllers
         public ActionResult Details(int skillSetId)
         {
             var selectedSkill = _skillSetService.GetSkillSetById(skillSetId);
+            _commonMapper.MapSkillToEmployee(selectedSkill);
             var skillSetListViewModel = new SkillSetViewModel();
             Mapper.Map(selectedSkill, skillSetListViewModel);
             return PartialView("_Details", skillSetListViewModel);
@@ -74,10 +75,10 @@ namespace Silicus.Finder.Web.Controllers
         public ActionResult GetAllSkillSet()
         {
             var skillSetList =  _skillSetService.GetAllSkills();
-            foreach(var skillSet in skillSetList)
-            {
-                _commonMapper.MapSkillToEmployee(skillSet);
-            }
+            //foreach(var skillSet in skillSetList)
+            //{
+            //    _commonMapper.MapSkillToEmployee(skillSet);
+            //}
             List<SkillSetViewModel> skillSetListViewModel = new List<SkillSetViewModel>();
             Mapper.Map(skillSetList, skillSetListViewModel);
             return View(skillSetListViewModel);
