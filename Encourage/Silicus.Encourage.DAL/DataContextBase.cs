@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Silicus.Encourage.DAL.EntityConfigurations;
+using Silicus.Encourage.Models.DataObjects;
+using System;
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Data.Entity.ModelConfiguration.Conventions;
@@ -16,6 +18,7 @@ namespace Silicus.Encourage.DAL
         protected DataContextBase(string connectionString)
             : base(connectionString)
         {
+           
         }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
@@ -23,8 +26,8 @@ namespace Silicus.Encourage.DAL
             //  Disable the default PluralizingTableNameConvention 
             modelBuilder.Conventions.Remove<PluralizingTableNameConvention>();
 
-            //  modelBuilder.Configurations.Add(new UserMap());
-
+            modelBuilder.Configurations.Add(new AwardMap());
+            modelBuilder.Configurations.Add(new FrequencyMasterMap());          
         }
     }
 }

@@ -39,7 +39,19 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AwardService.cs" />
+    <Compile Include="Interface\IAwardService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Silicus.Encourage.DAL\Silicus.Encourage.DAL.csproj">
+      <Project>{e96c89c4-0ed3-4c21-94eb-93a11d022573}</Project>
+      <Name>Silicus.Encourage.DAL</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Silicus.Encourage.Models\Silicus.Encourage.Models.csproj">
+      <Project>{ed67f947-0d14-4706-8e40-054ae932df36}</Project>
+      <Name>Silicus.Encourage.Models</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -1,4 +1,5 @@
-﻿using Silicus.Encourage.DAL.Interfaces;
+﻿using Silicus.Encourage.DAL.Initializer;
+using Silicus.Encourage.DAL.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
@@ -8,12 +9,12 @@ using System.Threading.Tasks;
 
 namespace Silicus.Encourage.DAL
 {
-    public class EncourageDatabaseContext :DataContextBase,IEncourageDatabaseContext
+    public class EncourageDatabaseContext : DataContextBase, IEncourageDatabaseContext
     {
         public EncourageDatabaseContext(string connectionString)
             : base(connectionString)
-         {
-            
+        {
+            Database.SetInitializer<EncourageDatabaseContext>(new EncourageCreateDatabaseIfNotExistsInitializer());
         }
 
         public int Update<T>(T item) where T : class
@@ -46,7 +47,7 @@ namespace Silicus.Encourage.DAL
 
         public IQueryable<T> Query<T>() where T : class
         {
-           return Set<T>().AsNoTracking();
+            return Set<T>().AsNoTracking();
         }
 
         public void Delete<T>(T item) where T : class
