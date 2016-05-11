@@ -53,12 +53,22 @@
     <Compile Include="DataContextBase.cs" />
     <Compile Include="DataContextFactory.cs" />
     <Compile Include="EncourageDatabaseContext.cs" />
+    <Compile Include="EntityConfigurations\AwardMap.cs" />
+    <Compile Include="EntityConfigurations\FrequencyMasterMap.cs" />
+    <Compile Include="EntityConfigurations\TableSettings.cs" />
+    <Compile Include="Initializer\BaseDatabaseInitializer.cs" />
+    <Compile Include="Initializer\EncourageCreateDatabaseIfNotExistsInitializer.cs" />
     <Compile Include="Interfaces\ICommonDatabaseContext.cs" />
     <Compile Include="Interfaces\IDataContextFactory.cs" />
     <Compile Include="Interfaces\IEncourageDatabaseContext.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <ProjectReference Include="..\Silicus.Encourage.Models\Silicus.Encourage.Models.csproj">
+      <Project>{ed67f947-0d14-4706-8e40-054ae932df36}</Project>
+      <Name>Silicus.Encourage.Models</Name>
+    </ProjectReference>
+  </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
     <None Include="packages.config" />
