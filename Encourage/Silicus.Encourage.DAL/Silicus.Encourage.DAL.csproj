@@ -61,8 +61,14 @@
     <Compile Include="DataContextBase.cs" />
     <Compile Include="DataContextFactory.cs" />
     <Compile Include="EncourageDatabaseContext.cs" />
+    <Compile Include="EntityConfigurations\AwardCriteriaMap.cs" />
     <Compile Include="EntityConfigurations\AwardMap.cs" />
+    <Compile Include="EntityConfigurations\CriteriaMap.cs" />
     <Compile Include="EntityConfigurations\FrequencyMasterMap.cs" />
+    <Compile Include="EntityConfigurations\ManagerCommentMap.cs" />
+    <Compile Include="EntityConfigurations\NominationMap.cs" />
+    <Compile Include="EntityConfigurations\ReviewerCommentMap.cs" />
+    <Compile Include="EntityConfigurations\ReviewerMap.cs" />
     <Compile Include="EntityConfigurations\TableSettings.cs" />
     <Compile Include="Initializer\BaseDatabaseInitializer.cs" />
     <Compile Include="Initializer\EncourageCreateDatabaseIfNotExistsInitializer.cs" />

@@ -17,6 +17,8 @@ namespace Silicus.Encourage.Models.DataObjects
 
         [ForeignKey("FrequencyId")]
         public virtual FrequencyMaster Frequency { get; set; }
+
+        public virtual List<Criteria> Criterias { get; set; }
     }
 
 }

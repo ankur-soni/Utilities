@@ -1,4 +1,5 @@
 ﻿using Silicus.Encourage.Services;
+using Silicus.Encourage.Services.Interface;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,10 +10,16 @@ namespace Silicus.Encourage.Web.Controllers
 {
     public class HomeController : Controller
     {
+        private readonly IAwardService _awardService;
+        public HomeController(IAwardService awardService)
+        {
+            _awardService = awardService;
+        }
+
         public ActionResult Index()
         {
-            var awardService = new AwardService();
-            var awards = awardService.GetAllAwards();
+
+            var awards = _awardService.GetAllAwards();
             return View();
         }
 

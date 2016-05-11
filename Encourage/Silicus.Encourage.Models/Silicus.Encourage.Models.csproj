@@ -41,6 +41,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DataObjects\Award.cs" />
+    <Compile Include="DataObjects\AwardCriteria.cs" />
     <Compile Include="DataObjects\Criteria.cs" />
     <Compile Include="DataObjects\FrequencyMaster.cs" />
     <Compile Include="DataObjects\ManagerComment.cs" />

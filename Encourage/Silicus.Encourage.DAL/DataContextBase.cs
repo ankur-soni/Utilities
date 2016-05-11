@@ -18,16 +18,23 @@ namespace Silicus.Encourage.DAL
         protected DataContextBase(string connectionString)
             : base(connectionString)
         {
-           
+
         }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
             //  Disable the default PluralizingTableNameConvention 
             modelBuilder.Conventions.Remove<PluralizingTableNameConvention>();
-
             modelBuilder.Configurations.Add(new AwardMap());
-            modelBuilder.Configurations.Add(new FrequencyMasterMap());          
+            modelBuilder.Configurations.Add(new FrequencyMasterMap());
+            modelBuilder.Configurations.Add(new CriteriaMap());
+            modelBuilder.Configurations.Add(new NominationMap());
+            modelBuilder.Configurations.Add(new ReviewerCommentMap());
+            modelBuilder.Configurations.Add(new ManagerCommentMap());
+            modelBuilder.Configurations.Add(new ReviewerMap());
+            modelBuilder.Configurations.Add(new AwardCriteriaMap());
+            
+
         }
     }
 }
