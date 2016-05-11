@@ -31,6 +31,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -39,6 +40,13 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DataObjects\Award.cs" />
+    <Compile Include="DataObjects\Criteria.cs" />
+    <Compile Include="DataObjects\FrequencyMaster.cs" />
+    <Compile Include="DataObjects\ManagerComment.cs" />
+    <Compile Include="DataObjects\Nomination.cs" />
+    <Compile Include="DataObjects\Reviewer.cs" />
+    <Compile Include="DataObjects\ReviewerComment.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
