@@ -108,6 +108,8 @@ namespace Silicus.Finder.Web.Controllers
                     {
                         case "Success":
                             FormsAuthentication.SetAuthCookie(username, model.RememberMe);
+                            var result = Request.IsAuthenticated;
+                            
                             var isAdmin = false;
 
                             if (commonRole == "Admin")
