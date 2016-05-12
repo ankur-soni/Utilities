@@ -1,11 +1,6 @@
-﻿using Silicus.Encourage.DAL.Initializer;
-using Silicus.Encourage.DAL.Interfaces;
-using System;
-using System.Collections.Generic;
+﻿using Silicus.Encourage.DAL.Interfaces;
 using System.Data.Entity;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Silicus.Encourage.DAL
 {
@@ -14,7 +9,7 @@ namespace Silicus.Encourage.DAL
         public EncourageDatabaseContext(string connectionString)
             : base(connectionString)
         {
-            Database.SetInitializer<EncourageDatabaseContext>(new EncourageCreateDatabaseIfNotExistsInitializer());
+           // Database.SetInitializer<EncourageDatabaseContext>(new EncourageCreateDatabaseIfNotExistsInitializer());
         }
 
         public int Update<T>(T item) where T : class

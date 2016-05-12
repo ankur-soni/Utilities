@@ -70,8 +70,7 @@
     <Compile Include="EntityConfigurations\ReviewerCommentMap.cs" />
     <Compile Include="EntityConfigurations\ReviewerMap.cs" />
     <Compile Include="EntityConfigurations\TableSettings.cs" />
-    <Compile Include="Initializer\BaseDatabaseInitializer.cs" />
-    <Compile Include="Initializer\EncourageCreateDatabaseIfNotExistsInitializer.cs" />
+    <Compile Include="EntityConfigurations\WinnerMap.cs" />
     <Compile Include="Interfaces\ICommonDatabaseContext.cs" />
     <Compile Include="Interfaces\IDataContextFactory.cs" />
     <Compile Include="Interfaces\IEncourageDatabaseContext.cs" />
@@ -86,6 +85,9 @@
   <ItemGroup>
     <None Include="App.config" />
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Initializer\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

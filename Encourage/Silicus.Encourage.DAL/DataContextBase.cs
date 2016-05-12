@@ -25,6 +25,7 @@ namespace Silicus.Encourage.DAL
         {
             //  Disable the default PluralizingTableNameConvention 
             modelBuilder.Conventions.Remove<PluralizingTableNameConvention>();
+
             modelBuilder.Configurations.Add(new AwardMap());
             modelBuilder.Configurations.Add(new FrequencyMasterMap());
             modelBuilder.Configurations.Add(new CriteriaMap());
@@ -33,8 +34,7 @@ namespace Silicus.Encourage.DAL
             modelBuilder.Configurations.Add(new ManagerCommentMap());
             modelBuilder.Configurations.Add(new ReviewerMap());
             modelBuilder.Configurations.Add(new AwardCriteriaMap());
-            
-
+            modelBuilder.Configurations.Add(new WinnerMap());
         }
     }
 }

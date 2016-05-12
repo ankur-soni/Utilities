@@ -48,6 +48,7 @@
     <Compile Include="DataObjects\Nomination.cs" />
     <Compile Include="DataObjects\Reviewer.cs" />
     <Compile Include="DataObjects\ReviewerComment.cs" />
+    <Compile Include="DataObjects\Winner.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
