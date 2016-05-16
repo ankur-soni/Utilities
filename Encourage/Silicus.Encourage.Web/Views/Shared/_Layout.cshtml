@@ -1,96 +1,227 @@
-﻿<!DOCTYPE html>
+﻿
+
+<!DOCTYPE html>
+<!-- Spell Checked and Validated 02/14-->
 <html>
 
-@{
-    var conname = @ViewContext.RouteData.Values["controller"].ToString().ToLower();
-    var actname = @ViewContext.RouteData.Values["action"].ToString().ToLower();
-}
 <head>
-    <meta charset="utf-8" />
+
+    <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>@ViewBag.Title - Utility Container</title>
-    @Styles.Render("~/Content/css")
-    @Scripts.Render("~/bundles/modernizr")
+
+    <title>SILICUS</title>
+    <link href="~/css/bootstrap.min.css" rel="stylesheet" />
+
+
+   
+    <link href="~/font-awesome/css/font-awesome.css" rel="stylesheet" />
+
+    <link href="~/css/animate.css" rel="stylesheet" />
+
+    <link href="~/LESS/style.css" rel="stylesheet" />
+
+
+    <!-- FooTable -->
+    <link href="~/css/plugins/footable/footable.core.css" rel="stylesheet" />
+
+
 
 </head>
-<body>
-    @if (actname != "login" && actname != "logout")
-    {
 
+<body class="">
 
-        <div class="navbar navbar-inverse navbar-fixed-top" style="background-color:white;border:none">
-            <div class="container">
-                <div class="navbar-header">
-                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                    </button>
-                    <a href="@Url.Action("Dashboard", "Dashboard", new { @Style = "color:#57A6B7;font-weight:bold" })">
+    <div class="row top-header bbl">
 
-                        <img src="~/Images/logo.jpg" />
-
-                    </a>
-                    @*<div id="sideBar" style="width:100px;background-color:#3276B1">
-                        <div>
-                            @Html.ActionLink("Dashboard", "Dashboard", "Dashboard", new { area = "" }, new { @Style = "color:White" })
-                        </div>
-                        <div>
-                            @Html.ActionLink("Nominations", "Nominations", "Nominations", new { @Style = "Color:White" })
-                        </div>
-                        <div>
-                            @Html.ActionLink("Admin", "Admin", "", new { @Style = "Color:White" })
-                        </div>
-
-                    </div>*@
-
-
-
-                </div>
-                <div class="navbar-collapse collapse">
-
-                    <div style=" float: right;font-size: 23px;color:#3F617C;margin: 20px 0 0 10px;text-shadow: 0 1px 1px rgba(0,0,0,0.5);font-family: 'cartogothic_stdbold';">
-                        @if (actname != "login")
-                        {
-                            @Html.Label("Welcome " + Session["CurrentUser"])
-                            <br>
-                            <div class="menuList">
-                                <div class="dropdown" style="float:right">
-                                    <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">
-
-                                        <span>My Account</span>
-
-                                        <span class="caret"></span>
-                                    </button>
-                                    <ul class="dropdown-menu">
-                                        <li><a href="@Url.Action("LogOut", "Account")">Log Out</a></li>
-                                    </ul>
-                                </div>
-                            </div>
-
-                        }
-                    </div>
-
-
-                </div>
-            </div>
+        <div class="col-sm-4">
+            <div class="pll ptm pbs"><img src="~/img/logo_large.png" class="mts mbs" alt="Silicus Logo" title="Silicus Encloud" /></div>
         </div>
-    }
-    <div class="container body-content">
-        <br />
-        <br />
-        @RenderBody()
+        <div class="col-sm-8">
 
+
+            <div class="text-center">
+
+                <nav class="navbar navbar-static-top  " role="navigation" style="margin-bottom: 0">
+
+                    <ul class="nav navbar-top-links navbar-right">
+
+                        <li class="dropdown">
+                            <a class="dropdown-toggle count-info" data-toggle="dropdown" href="#">
+                                <span class="hidden-sm hidden-xs">
+                                    <span class="m-r-sm text-muted welcome-message">Welcome, @Session["CurrentUser"]</span> <i class="fa fa-chevron-down"></i>
+                                </span>
+                                <span class="hidden-md hidden-lg">
+                                    <i class="fa fa-user"></i>
+                                </span>
+                            </a>
+                            <ul class="dropdown-menu dropdown-user-menu">
+                                <li>
+                                    <a href="">
+                                        <div>
+                                            EDIT PROFILE
+                                        </div>
+                                    </a>
+                                </li>
+                                <!-- if access -->
+                                <li>
+                                    <a href="">
+                                        <div>
+                                            EDIT COMPANY
+                                        </div>
+                                    </a>
+                                </li>
+                                <li class="divider"></li>
+                                <li>
+                                    <a href="">
+                                        <div>
+                                            <i class="fa fa-sign-out fa-fw"></i> LOGOUT
+                                        </div>
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+
+                        <li class="dropdown">
+                            <a class="dropdown-toggle count-info" data-toggle="dropdown" href="#">
+                                <i class="fa fa-bell"></i>  <span class="label label-primary">3</span>
+                            </a>
+                            <ul class="dropdown-menu dropdown-alerts">
+                                <li>
+                                    <a href="">
+                                        <div>
+                                            <i class="fa fa-exclamation-triangle fa-fw"></i> ALERT on Subscription Zeon 3
+                                            <span class="pull-right text-muted small">CPU above threshold</span>
+                                        </div>
+                                    </a>
+                                </li>
+                                <li class="divider"></li>
+                                <li>
+                                    <a href="">
+                                        <div>
+                                            <i class="fa fa-exclamation-triangle fa-fw"></i> ALERT on Subscription Zeon 8
+                                            <span class="pull-right text-muted small">Memory above threshold</span>
+                                        </div>
+                                    </a>
+                                </li>
+                                <li class="divider"></li>
+                                <li>
+                                    <a href="">
+                                        <div>
+                                            <i class="fa fa-exclamation-triangle fa-fw"></i> ALERT on Subscription Zeon 6
+                                            <span class="pull-right text-muted small">CPU above threshold</span>
+                                        </div>
+                                    </a>
+                                </li>
+                                <li class="divider"></li>
+                                <li>
+                                    <div class="text-center link-block">
+                                        <a href="notifications.html">
+                                            <strong>See All Alerts</strong>
+                                            <i class="fa fa-angle-right"></i>
+                                        </a>
+                                    </div>
+                                </li>
+                            </ul>
+                        </li>
+
+                    </ul>
+
+                </nav>
+            </div><!-- pad -->
+
+
+        </div>
     </div>
 
-    @Scripts.Render("~/bundles/jquery")
-    @Scripts.Render("~/bundles/bootstrap")
-    @RenderSection("scripts", required: false)
+    <div id="wrapper" style=" height:85%">
+        <!-- START LEFT MENU -->
+        <nav class="navbar-default navbar-static-side" role="navigation">
+            <div class="sidebar-collapse">
+                <ul class="nav metismenu" id="side-menu">
+                    <li class="active"><a href="@Url.Action("Dashboard","Dashboard")"><i class="fa fa-dashboard"></i> <span class="nav-label">DASHBOARD</span></a></li>
+                    <li>
+                        <a href="#"><i class="fa fa-medkit"></i> <span class="nav-label">Nominations </span></a>
+                    </li>
+                    @{
+                        var roles = HttpContext.Current.Session["Role"] as List<string>;
+                    }
+                    <!-- admin role only -->
+                    @if (roles.Contains( "Admin"))
+                    {
+                        <li>
+                            <a href="#"><i class="fa fa-cogs"></i> <span class="nav-label">ADMIN</span> <span class="fa arrow"></span></a>
+                            <ul class="nav nav-second-level">
+                                <li><a href="edit-users.html" class="active">Edit Users</a></li>
+                            </ul>
+                        </li>
+                    }
+                   
+                </ul>
+
+            </div>
+        </nav>
+
+
+        <!-- END LEFT MENU -->
+        <!--   START OF CONTENT AREA -->
+
+
+
+
+        <div id="page-wrapper" class="gray-bg">
+
+            <div class="container body-content">
+               
+                @RenderBody()
+
+            </div>
+
+
+        </div>
+
+        <div class="footer">
+            <div class="pull-right">
+                Viewing:
+            </div>
+            <div>
+                <strong>&copy;Copyright</strong> 2000 -
+                <script>document.write(new Date().getFullYear())</script> Silicus Technologies
+            </div>
+        </div>
+    </div>
+
+    <!-- Mainly scripts -->
+    <script src="~/js/jquery-2.1.1.js"></script>
+
+    <script src="~/js/bootstrap.min.js"></script>
+    
+    <script src="~/js/plugins/metisMenu/jquery.metisMenu.js"></script>
+    <script src="~/js/plugins/slimscroll/jquery.slimscroll.min.js"></script>
+
+    <!-- Custom and plugin javascript -->
+    <script src="~/js/inspinia.js"></script>
+    <script src="~/js/plugins/pace/pace.min.js"></script>
+
+    <!-- FooTable -->
+    <script src="~/js/plugins/footable/footable.all.min.js"></script>
+    
+  
+
+
 </body>
+
 </html>
 
-<script>
 
-    $('#sideBar').height($(window).height() - 50)
+<script>
+    $(".fa-chevron-down").click(function() { 
+        $('.dropdown').toggleClass('open')
+    })
+
+    $(".fa-bell").click(function () {
+        $(".dropdown").toggleClass('open')
+
+    })
+
+    
 </script>
 

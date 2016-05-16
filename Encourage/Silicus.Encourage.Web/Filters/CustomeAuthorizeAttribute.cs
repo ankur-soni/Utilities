@@ -34,13 +34,13 @@ namespace Silicus.Encourage.Web.Filters
             if (adAuthenticationCookie != null)
             {
                 bool status = false;
-                var userRole = string.Empty;
+                var userRoles = new List<string>();
                 string[] allowedRoles = AllowedRole.Split(new char[] { ',', ' ' }, StringSplitOptions.RemoveEmptyEntries);
 
 
                 if (!string.IsNullOrEmpty(HttpContext.Current.Session["Role"] as string))
                 {
-                    userRole = HttpContext.Current.Session["Role"].ToString();
+                    userRoles =HttpContext.Current.Session["Role"] as List<string>;
                 }
                 else
                 {
@@ -53,12 +53,17 @@ namespace Silicus.Encourage.Web.Filters
 
                    
                     var _authorizationService = new Authorization(_commonDbService.GetCommonDataBaseContext());
-                    userRole = _authorizationService.GetRoleForUtility(user.Email, utility);
+                    userRoles = _authorizationService.GetRoleForUtility(user.Email, utility);
                 }
 
-                if (allowedRoles.Contains(userRole))
-                    status = true;
-                return status;
+                foreach (var userRole in userRoles)
+                {
+                    if (allowedRoles.Contains(userRole))
+                        status = true;
+                    return status;
+                    
+                }
+                
             }
 
 
