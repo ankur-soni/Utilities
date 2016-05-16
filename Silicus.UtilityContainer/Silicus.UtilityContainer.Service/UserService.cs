@@ -35,10 +35,10 @@ namespace Silicus.UtilityContainer.Services
         public void AddRolesToUserForAUtility(UtilityUserRoles newUserRole)
         {
             var userRole = _commonDBContext.Query<UtilityUserRoles>().Where(x => x.UserId == newUserRole.UserId && x.UtilityId == newUserRole.UtilityId).FirstOrDefault();
-            if (userRole != null)
-            {
-                _commonDBContext.Delete(userRole);
-            }
+            //if (userRole != null)
+            //{
+            //    _commonDBContext.Delete(userRole);
+            //}
             _commonDBContext.Add(newUserRole);
         }
 
@@ -64,11 +64,11 @@ namespace Silicus.UtilityContainer.Services
             foreach (var item in newUserRole.UserId)
             {
 
-                var userRole = _commonDBContext.Query<UtilityUserRoles>().Where(x => x.UserId == item && x.UtilityId == newUserRole.UtilityId).FirstOrDefault();
-                if (userRole != null)
-                {
-                    _commonDBContext.Delete(userRole);
-                }
+                var userRole = _commonDBContext.Query<UtilityUserRoles>().Where(x => x.UserId == item && x.UtilityId == newUserRole.UtilityId).ToList();
+                //if (userRole != null)
+                //{
+                //    _commonDBContext.Delete(userRole);
+                //}
 
                 myNewUserRole.UtilityId = newUserRole.UtilityId;
                 myNewUserRole.RoleId = newUserRole.RoleId;

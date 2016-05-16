@@ -20,11 +20,10 @@ namespace Silicus.Encourage.Web.Controllers
         _commonDbService = commonDbService;
         }
 
-        [CustomeAuthorize(AllowedRole="User")]
+        [CustomeAuthorize(AllowedRole="User,Manager,Admin,Reviewer")]
         public ActionResult Dashboard()
         {
-
-            
+                        
             return View();
         }
 

@@ -24,10 +24,10 @@ namespace Silicus.UtilityContainer.Security
 
         
        
-        public string GetRoleForUtility(string email, string utiltyName)
+        public List<string> GetRoleForUtility(string email, string utiltyName)
         {
             
-                return _commonDBContext.Query<UtilityUserRoles>().Where(x => x.User.EmailAddress.ToLower() == email.ToLower() && x.Utility.Name == utiltyName).Select(x => x.Role.Name).FirstOrDefault();  
+                return _commonDBContext.Query<UtilityUserRoles>().Where(x => x.User.EmailAddress.ToLower() == email.ToLower() && x.Utility.Name == utiltyName).Select(x => x.Role.Name).ToList();  
            
            
         }

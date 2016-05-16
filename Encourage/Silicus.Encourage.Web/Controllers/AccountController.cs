@@ -73,15 +73,19 @@ namespace Silicus.Encourage.Web.Controllers
                     var user = Membership.GetUser(username);
 
 
-                    var commonRole = authorizationService.GetRoleForUtility(user.Email, utility);
+                    List<string> commonRoles = authorizationService.GetRoleForUtility(user.Email, utility);
 
-                    if (!string.IsNullOrEmpty(commonRole))
-                        HttpContext.Session["Role"] = commonRole;
-                    else
-                    {
+                    
+                        if ((commonRoles.Count>0))
+                            HttpContext.Session["Role"] = commonRoles;
+                        else
+                        {
 
-                        return Redirect("http://localhost:52250/Home/Index?data=" + "No role Assigned for " + username + " in " + utility + " uitility!");
-                    }
+                            return Redirect("http://localhost:52250/Home/Index?data=" + "No role Assigned for " + username + " in " + utility + " uitility!");
+                        }
+                   
+
+                   
 
                     // HttpContext.Session["Role"] = commonRole;
                     var loginResult = _securityService.PasswordSignInAsync(username, password);
@@ -94,7 +98,7 @@ namespace Silicus.Encourage.Web.Controllers
                             Session["CurrentUser"] = username.ToUpper();
                             var isAdmin = false;
 
-                            if (commonRole == "Admin")
+                            if (commonRoles.Contains( "Admin"))
                             {
                                 isAdmin = true;
                             }

@@ -624,7 +624,7 @@
     <Content Include="Views\Shared\_Layout.cshtml" />
     <Content Include="Views\Dashboard\About.cshtml" />
     <Content Include="Views\Dashboard\Contact.cshtml" />
-    <Content Include="Views\Dashboard\DashBoard.cshtml" />
+    <Content Include="Views\Dashboard\Dashboard.cshtml" />
     <Content Include="Scripts\jquery-1.10.2.min.map" />
   </ItemGroup>
   <ItemGroup>

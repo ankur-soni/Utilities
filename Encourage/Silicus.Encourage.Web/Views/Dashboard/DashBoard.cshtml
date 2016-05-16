@@ -56,8 +56,14 @@
 
         <div class="wrapper wrapper-content animated fadeInRight">
 
+           @{
+             var roles =  HttpContext.Current.Session["Role"] as List<string> ;
+           }
             <!-- IT STAFF ROW -->
             <div class="row">
+                @if ( roles.Contains("Manager"))
+                {
+                
                 <div class="col-md-2">
                     <div class="ibox float-e-margins">
                         <div class="ibox-title">
@@ -71,6 +77,11 @@
                     </div>
 
                 </div>
+                }
+                @if (roles.Contains("Reviewer"))
+                {
+                    
+                
                 <div class="col-md-2">
                     <div class="ibox float-e-margins">
                         <div class="ibox-title">
@@ -85,8 +96,10 @@
                     </div>
 
                 </div>
-                @*@if (HttpContext.Current.Session["Role"].ToString() == "Admin")
-                {*@
+                    
+                }
+                @if (roles.Contains("Admin"))
+                {
                     <div class="col-md-3">
                         <div class="ibox float-e-margins">
                             <div class="ibox-title">
@@ -115,7 +128,7 @@
                         </div>
 
                     </div>
-                @*}*@
+                }
 
 
             </div>
@@ -190,18 +203,32 @@
 
 
     $(document).ready(function () {
-       
-
-        
-
+     
         $("#recentFeeds1").animate({ right: "+=1100" }, 8000).delay(1000);
         $("#recentFeeds2").animate({ right: "+=1000" }, 14000).delay(1500);
         $("#recentFeeds3").animate({ right: "+=900" }, 20000).delay(2000);
         $("#recentFeeds4").animate({ right: "+=800" }, 26000).delay(2500);
       
-       
       
     });
+    $(".fa-bars").click(function () {
+        debugger;
+        var x = document.getElementById("side-menu");
+        if (x.style.display == "block") {
+            // $("#side-menu style").remove();
+            x.style.backgroundColor = "red";
+           
+        }
+        else
+        {
+            x.style.display = "block";
+        }
+          
+
+        
+
+       // $("#side-menu").toggle().css("display", "hidden");
+    })
 
 
 </script>

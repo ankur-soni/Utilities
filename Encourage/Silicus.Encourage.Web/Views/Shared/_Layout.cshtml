@@ -82,61 +82,6 @@
 
                         <li class="dropdown">
                             <a class="dropdown-toggle count-info" data-toggle="dropdown" href="#">
-                                <i class="fa fa-envelope"></i>  <span class="label label-warning">16</span>
-                            </a>
-                            <ul class="dropdown-menu dropdown-messages">
-                                <li>
-                                    <div class="dropdown-messages-box">
-                                        <a href="profile.html" class="pull-left">
-                                            <i class="fa  fa-envelope fa-2x"></i>
-                                        </a>
-                                        <div>
-                                            <strong>From: </strong> John Silicus. <br>
-                                            <strong>Sub: </strong> We resovled ticket 123111. <br>
-                                            <small class="text-muted">3 days ago at 7:58 pm - 10.06.2014</small>
-                                        </div>
-                                    </div>
-                                </li>
-                                <li class="divider"></li>
-                                <li>
-                                    <div class="dropdown-messages-box">
-                                        <a href="profile.html" class="pull-left">
-                                            <i class="fa  fa-envelope fa-2x"></i>
-                                        </a>
-                                        <div>
-                                            <small class="pull-right text-navy">5h ago</small>
-                                            <strong>From: </strong> John Silicus. <br>
-                                            <strong>Sub: </strong> We resovled ticket 1234. <br>
-                                            <small class="text-muted">Yesterday 1:21 pm - 11.06.2014</small>
-                                        </div>
-                                    </div>
-                                </li>
-                                <li class="divider"></li>
-                                <li>
-                                    <div class="dropdown-messages-box">
-                                        <a href="profile.html" class="pull-left">
-                                            <i class="fa  fa-envelope fa-2x"></i>
-                                        </a>
-                                        <div>
-                                            <strong>From: </strong> John Silicus. <br>
-                                            <strong>Sub: </strong> We resovled ticket 3322. <br>
-                                            <small class="text-muted">2 days ago at 2:30 am - 11.06.2014</small>
-                                        </div>
-                                    </div>
-                                </li>
-                                <li class="divider"></li>
-                                <li>
-                                    <div class="text-center link-block">
-                                        <a href="message-center.html">
-                                            <i class="fa fa-envelope"></i> <strong>Read All Messages</strong>
-                                        </a>
-                                    </div>
-                                </li>
-                            </ul>
-                        </li>
-
-                        <li class="dropdown">
-                            <a class="dropdown-toggle count-info" data-toggle="dropdown" href="#">
                                 <i class="fa fa-bell"></i>  <span class="label label-primary">3</span>
                             </a>
                             <ul class="dropdown-menu dropdown-alerts">
@@ -196,17 +141,19 @@
                     <li>
                         <a href="#"><i class="fa fa-medkit"></i> <span class="nav-label">Nominations </span></a>
                     </li>
-
+                    @{
+                        var roles = HttpContext.Current.Session["Role"] as List<string>;
+                    }
                     <!-- admin role only -->
-                    @*@if (HttpContext.Current.Session["Role"].ToString() == "Admin")
-                    {*@
+                    @if (roles.Contains( "Admin"))
+                    {
                         <li>
                             <a href="#"><i class="fa fa-cogs"></i> <span class="nav-label">ADMIN</span> <span class="fa arrow"></span></a>
                             <ul class="nav nav-second-level">
                                 <li><a href="edit-users.html" class="active">Edit Users</a></li>
                             </ul>
                         </li>
-                    @*}*@
+                    }
                    
                 </ul>
 
@@ -256,7 +203,7 @@
 
     <!-- FooTable -->
     <script src="~/js/plugins/footable/footable.all.min.js"></script>
-
+    
   
 
 
@@ -265,5 +212,16 @@
 </html>
 
 
+<script>
+    $(".fa-chevron-down").click(function() { 
+        $('.dropdown').toggleClass('open')
+    })
 
+    $(".fa-bell").click(function () {
+        $(".dropdown").toggleClass('open')
+
+    })
+
+    
+</script>
 
