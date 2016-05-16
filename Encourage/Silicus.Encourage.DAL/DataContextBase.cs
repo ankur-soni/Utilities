@@ -18,7 +18,7 @@ namespace Silicus.Encourage.DAL
         protected DataContextBase(string connectionString)
             : base(connectionString)
         {
-
+            Configuration.ProxyCreationEnabled = false;
         }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)

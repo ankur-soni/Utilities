@@ -30,6 +30,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Silicus.Encourage.DAL">
+      <HintPath>..\..\Encourage\Silicus.Encourage.DAL\bin\Debug\Silicus.Encourage.DAL.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Web" />

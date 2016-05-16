@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Silicus.Encourage.Services.Interface;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -8,70 +9,38 @@ namespace Silicus.Encourage.Web.Controllers
 {
     public class NominationController : Controller
     {
+        IAwardService _awardService;
+
+        public NominationController( IAwardService awardService)
+        {
+            _awardService = awardService;
+        }
+               
         // GET: Nomination/Create
         public ActionResult AddNomination()
         {
+            ViewBag.Awards= new SelectList(_awardService.GetAllAwards(), "Id", "Name");
+            //ViewBag.ProjectsUnderCurrentUser
+            //    = new SelectList(_awardService.GetProjectsUnderCurrentUserAsManager(Session["UserEmailAddress"] as string), "Id", "Name"); 
+
+            ViewBag.ProjectsUnderCurrentUser
+                = new SelectList(_awardService.GetProjectsUnderCurrentUserAsManager("shailendra.birthare@silicus.com"), "Id", "Name"); 
+ 
             return View();
         }
 
-        // POST: Nomination/Create
-        [HttpPost]
-        public ActionResult Create(FormCollection collection)
+        [HttpGet]
+        public JsonResult CriteriasForAward(int awardId)
         {
-            try
-            {
-                // TODO: Add insert logic here
-
-                return RedirectToAction("Index");
-            }
-            catch
-            {
-                return View();
-            }
+            var criteriaList = _awardService.GetCriteriasForAward(awardId);
+            return Json(criteriaList, JsonRequestBehavior.AllowGet);
         }
 
-        // GET: Nomination/Edit/5
-        public ActionResult Edit(int id)
+        [HttpGet]
+        public JsonResult ResourcesInProject(int engagementID)
         {
-            return View();
-        }
-
-        // POST: Nomination/Edit/5
-        [HttpPost]
-        public ActionResult Edit(int id, FormCollection collection)
-        {
-            try
-            {
-                // TODO: Add update logic here
-
-                return RedirectToAction("Index");
-            }
-            catch
-            {
-                return View();
-            }
-        }
-
-        // GET: Nomination/Delete/5
-        public ActionResult Delete(int id)
-        {
-            return View();
-        }
-
-        // POST: Nomination/Delete/5
-        [HttpPost]
-        public ActionResult Delete(int id, FormCollection collection)
-        {
-            try
-            {
-                // TODO: Add delete logic here
-
-                return RedirectToAction("Index");
-            }
-            catch
-            {
-                return View();
-            }
-        }
+            var usersInEngagement = _awardService.GetResourcesInEngagement(engagementID);
+            return Json(usersInEngagement,JsonRequestBehavior.AllowGet);
+        }    
     }
 }

@@ -9,8 +9,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Silicus.UtilityContainer.En
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Silicus.UtilityContainer.Services", "Silicus.UtilityContainer.Service\Silicus.UtilityContainer.Services.csproj", "{34ECB52F-33C2-4A55-887F-8E1188850292}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Silicus.UtilityContainer.Web", "Silicus.UtilityContainer.Web\Silicus.UtilityContainer.Web.csproj", "{161D6CBD-78D3-469A-A40D-96B5DD8B71BD}"
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{E6A0338F-B670-4E36-BF18-7B5BAA2F2FD0}"
 	ProjectSection(SolutionItems) = preProject
 		.nuget\NuGet.Config = .nuget\NuGet.Config
@@ -19,6 +17,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{E6A033
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Silicus.UtilityContainer.Security", "Silicus.UtilityContainer.Security\Silicus.UtilityContainer.Security.csproj", "{5394C1EB-8F58-468F-AA02-A0E863141F45}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Silicus.UtilityContainer.Web", "Silicus.UtilityContainer.Web\Silicus.UtilityContainer.Web.csproj", "{161D6CBD-78D3-469A-A40D-96B5DD8B71BD}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -38,14 +38,14 @@ Global
 		{34ECB52F-33C2-4A55-887F-8E1188850292}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{34ECB52F-33C2-4A55-887F-8E1188850292}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{34ECB52F-33C2-4A55-887F-8E1188850292}.Release|Any CPU.Build.0 = Release|Any CPU
-		{161D6CBD-78D3-469A-A40D-96B5DD8B71BD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{161D6CBD-78D3-469A-A40D-96B5DD8B71BD}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{161D6CBD-78D3-469A-A40D-96B5DD8B71BD}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{161D6CBD-78D3-469A-A40D-96B5DD8B71BD}.Release|Any CPU.Build.0 = Release|Any CPU
 		{5394C1EB-8F58-468F-AA02-A0E863141F45}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{5394C1EB-8F58-468F-AA02-A0E863141F45}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5394C1EB-8F58-468F-AA02-A0E863141F45}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5394C1EB-8F58-468F-AA02-A0E863141F45}.Release|Any CPU.Build.0 = Release|Any CPU
+		{161D6CBD-78D3-469A-A40D-96B5DD8B71BD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{161D6CBD-78D3-469A-A40D-96B5DD8B71BD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{161D6CBD-78D3-469A-A40D-96B5DD8B71BD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{161D6CBD-78D3-469A-A40D-96B5DD8B71BD}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

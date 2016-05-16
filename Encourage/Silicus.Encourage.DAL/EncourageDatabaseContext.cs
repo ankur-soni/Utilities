@@ -9,7 +9,7 @@ namespace Silicus.Encourage.DAL
         public EncourageDatabaseContext(string connectionString)
             : base(connectionString)
         {
-           // Database.SetInitializer<EncourageDatabaseContext>(new EncourageCreateDatabaseIfNotExistsInitializer());
+           Database.SetInitializer<EncourageDatabaseContext>(null);
         }
 
         public int Update<T>(T item) where T : class

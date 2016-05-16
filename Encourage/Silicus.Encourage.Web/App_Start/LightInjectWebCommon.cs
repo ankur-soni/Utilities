@@ -5,6 +5,8 @@ using System.Reflection;
 using LightInject;
 using Silicus.Encourage.Services.Interface;
 using Silicus.Encourage.Services;
+using Silicus.UtilityContainer.Security.Interface;
+using Silicus.UtilityContainer.Security;
 
 
 [assembly: WebActivatorEx.PostApplicationStartMethod(typeof(LightInjectWebCommon), "CreateContainer")]
@@ -27,6 +29,10 @@ namespace Silicus.Encourage.Web.App_Start
         {
             container.Register<IDataContextFactory, DataContextFactory>();
             container.Register<IAwardService, AwardService>();
+            container.Register<IAuthentication, Authentication>();
+            container.Register<IUserSecurityService,UserSecurityService>();
+            container.Register<Silicus.UtilityContainer.Entities.IDataContextFactory, Silicus.UtilityContainer.Entities.DataContextFactory>();
+            container.Register<ICommonDbService, CommonDbService>();
         }
 
     }
