@@ -1,4 +1,6 @@
 ﻿using Silicus.Encourage.Services.Interface;
+using Silicus.Encourage.Web.Models;
+using Silicus.UtilityContainer.Models.DataObjects;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -26,6 +28,16 @@ namespace Silicus.Encourage.Web.Controllers
             ViewBag.ProjectsUnderCurrentUser
                 = new SelectList(_awardService.GetProjectsUnderCurrentUserAsManager("shailendra.birthare@silicus.com"), "Id", "Name"); 
  
+            ViewBag.Resources=new SelectList(new List<User>(),"Id","DisplayName");
+
+            
+            return View();
+        }
+
+        [HttpPost]
+        public ActionResult AddNomination(NominationViewModel model)
+        {
+                 
             return View();
         }
 
