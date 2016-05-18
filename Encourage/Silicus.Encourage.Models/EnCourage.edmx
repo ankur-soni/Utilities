@@ -1,0 +1,771 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="EnCourage.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="__MigrationHistory">
+          <Key>
+            <PropertyRef Name="MigrationId" />
+            <PropertyRef Name="ContextKey" />
+          </Key>
+          <Property Name="MigrationId" Type="nvarchar" MaxLength="150" Nullable="false" />
+          <Property Name="ContextKey" Type="nvarchar" MaxLength="300" Nullable="false" />
+          <Property Name="Model" Type="varbinary(max)" Nullable="false" />
+          <Property Name="ProductVersion" Type="nvarchar" MaxLength="32" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Award">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="nvarchar(max)" />
+          <Property Name="Code" Type="nvarchar(max)" />
+          <Property Name="FrequencyId" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="AwardCriteria">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="CriteriaId" Type="int" Nullable="false" />
+          <Property Name="AwardId" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Criteria">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Title" Type="varchar" MaxLength="150" Nullable="false" />
+          <Property Name="AwardId" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="FrequencyMaster">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="FrequencyPeriod" Type="nvarchar(max)" />
+          <Property Name="Code" Type="nvarchar(max)" />
+        </EntityType>
+        <EntityType Name="ManagerComment">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="NominationId" Type="int" Nullable="false" />
+          <Property Name="CriteriaId" Type="int" Nullable="false" />
+          <Property Name="Comment" Type="nvarchar(max)" />
+        </EntityType>
+        <EntityType Name="Nomination">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="AwardId" Type="int" Nullable="false" />
+          <Property Name="ManagerId" Type="int" Nullable="false" />
+          <Property Name="UserId" Type="int" Nullable="false" />
+          <Property Name="ProjectID" Type="int" />
+          <Property Name="DepartmentId" Type="int" />
+          <Property Name="NominationDate" Type="datetime" />
+          <Property Name="CreatedDate" Type="datetime" Nullable="false" />
+          <Property Name="IsPLC" Type="bit" />
+          <Property Name="IsLocked" Type="bit" />
+          <Property Name="IsSubmitted" Type="bit" />
+          <Property Name="UserImage" Type="varbinary" MaxLength="500" />
+        </EntityType>
+        <EntityType Name="Reviewer">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="UserId" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="ReviewerComment">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="NominationId" Type="int" Nullable="false" />
+          <Property Name="CriteriaId" Type="int" Nullable="false" />
+          <Property Name="ReviewerId" Type="int" Nullable="false" />
+          <Property Name="Comment" Type="nvarchar(max)" />
+        </EntityType>
+        <EntityType Name="Winner">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="NominationId" Type="int" Nullable="false" />
+          <Property Name="WinningDate" Type="datetime" Nullable="false" />
+        </EntityType>
+        <Association Name="FK_dbo_Award_dbo_FrequencyMaster_FrequencyId">
+          <End Role="FrequencyMaster" Type="Self.FrequencyMaster" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="Award" Type="Self.Award" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="FrequencyMaster">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Award">
+              <PropertyRef Name="FrequencyId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_dbo_AwardCriteria_dbo_Award_AwardId">
+          <End Role="Award" Type="Self.Award" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="AwardCriteria" Type="Self.AwardCriteria" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Award">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="AwardCriteria">
+              <PropertyRef Name="AwardId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_dbo_AwardCriteria_dbo_Criteria_CriteriaId">
+          <End Role="Criteria" Type="Self.Criteria" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="AwardCriteria" Type="Self.AwardCriteria" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Criteria">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="AwardCriteria">
+              <PropertyRef Name="CriteriaId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_dbo_Criteria_dbo_Award_Award_Id">
+          <End Role="Award" Type="Self.Award" Multiplicity="1" />
+          <End Role="Criteria" Type="Self.Criteria" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Award">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Criteria">
+              <PropertyRef Name="AwardId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_dbo_ManagerComment_dbo_Criteria_CriteriaId">
+          <End Role="Criteria" Type="Self.Criteria" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="ManagerComment" Type="Self.ManagerComment" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Criteria">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ManagerComment">
+              <PropertyRef Name="CriteriaId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_dbo_ManagerComment_dbo_Nomination_NominationId">
+          <End Role="Nomination" Type="Self.Nomination" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="ManagerComment" Type="Self.ManagerComment" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Nomination">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ManagerComment">
+              <PropertyRef Name="NominationId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_dbo_Nomination_dbo_Award_AwardId">
+          <End Role="Award" Type="Self.Award" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="Nomination" Type="Self.Nomination" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Award">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Nomination">
+              <PropertyRef Name="AwardId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_dbo_ReviewerComment_dbo_Criteria_CriteriaId">
+          <End Role="Criteria" Type="Self.Criteria" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="ReviewerComment" Type="Self.ReviewerComment" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Criteria">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ReviewerComment">
+              <PropertyRef Name="CriteriaId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_dbo_ReviewerComment_dbo_Nomination_NominationId">
+          <End Role="Nomination" Type="Self.Nomination" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="ReviewerComment" Type="Self.ReviewerComment" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Nomination">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ReviewerComment">
+              <PropertyRef Name="NominationId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_dbo_ReviewerComment_dbo_Reviewer_ReviewerId">
+          <End Role="Reviewer" Type="Self.Reviewer" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="ReviewerComment" Type="Self.ReviewerComment" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Reviewer">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ReviewerComment">
+              <PropertyRef Name="ReviewerId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_dbo_Winner_dbo_Nomination_NominationId">
+          <End Role="Nomination" Type="Self.Nomination" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="Winner" Type="Self.Winner" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Nomination">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Winner">
+              <PropertyRef Name="NominationId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="EnCourageStoreContainer">
+          <EntitySet Name="__MigrationHistory" EntityType="Self.__MigrationHistory" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Award" EntityType="Self.Award" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="AwardCriteria" EntityType="Self.AwardCriteria" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Criteria" EntityType="Self.Criteria" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="FrequencyMaster" EntityType="Self.FrequencyMaster" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ManagerComment" EntityType="Self.ManagerComment" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Nomination" EntityType="Self.Nomination" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Reviewer" EntityType="Self.Reviewer" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ReviewerComment" EntityType="Self.ReviewerComment" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Winner" EntityType="Self.Winner" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_dbo_Award_dbo_FrequencyMaster_FrequencyId" Association="Self.FK_dbo_Award_dbo_FrequencyMaster_FrequencyId">
+            <End Role="FrequencyMaster" EntitySet="FrequencyMaster" />
+            <End Role="Award" EntitySet="Award" />
+          </AssociationSet>
+          <AssociationSet Name="FK_dbo_AwardCriteria_dbo_Award_AwardId" Association="Self.FK_dbo_AwardCriteria_dbo_Award_AwardId">
+            <End Role="Award" EntitySet="Award" />
+            <End Role="AwardCriteria" EntitySet="AwardCriteria" />
+          </AssociationSet>
+          <AssociationSet Name="FK_dbo_AwardCriteria_dbo_Criteria_CriteriaId" Association="Self.FK_dbo_AwardCriteria_dbo_Criteria_CriteriaId">
+            <End Role="Criteria" EntitySet="Criteria" />
+            <End Role="AwardCriteria" EntitySet="AwardCriteria" />
+          </AssociationSet>
+          <AssociationSet Name="FK_dbo_Criteria_dbo_Award_Award_Id" Association="Self.FK_dbo_Criteria_dbo_Award_Award_Id">
+            <End Role="Award" EntitySet="Award" />
+            <End Role="Criteria" EntitySet="Criteria" />
+          </AssociationSet>
+          <AssociationSet Name="FK_dbo_ManagerComment_dbo_Criteria_CriteriaId" Association="Self.FK_dbo_ManagerComment_dbo_Criteria_CriteriaId">
+            <End Role="Criteria" EntitySet="Criteria" />
+            <End Role="ManagerComment" EntitySet="ManagerComment" />
+          </AssociationSet>
+          <AssociationSet Name="FK_dbo_ManagerComment_dbo_Nomination_NominationId" Association="Self.FK_dbo_ManagerComment_dbo_Nomination_NominationId">
+            <End Role="Nomination" EntitySet="Nomination" />
+            <End Role="ManagerComment" EntitySet="ManagerComment" />
+          </AssociationSet>
+          <AssociationSet Name="FK_dbo_Nomination_dbo_Award_AwardId" Association="Self.FK_dbo_Nomination_dbo_Award_AwardId">
+            <End Role="Award" EntitySet="Award" />
+            <End Role="Nomination" EntitySet="Nomination" />
+          </AssociationSet>
+          <AssociationSet Name="FK_dbo_ReviewerComment_dbo_Criteria_CriteriaId" Association="Self.FK_dbo_ReviewerComment_dbo_Criteria_CriteriaId">
+            <End Role="Criteria" EntitySet="Criteria" />
+            <End Role="ReviewerComment" EntitySet="ReviewerComment" />
+          </AssociationSet>
+          <AssociationSet Name="FK_dbo_ReviewerComment_dbo_Nomination_NominationId" Association="Self.FK_dbo_ReviewerComment_dbo_Nomination_NominationId">
+            <End Role="Nomination" EntitySet="Nomination" />
+            <End Role="ReviewerComment" EntitySet="ReviewerComment" />
+          </AssociationSet>
+          <AssociationSet Name="FK_dbo_ReviewerComment_dbo_Reviewer_ReviewerId" Association="Self.FK_dbo_ReviewerComment_dbo_Reviewer_ReviewerId">
+            <End Role="Reviewer" EntitySet="Reviewer" />
+            <End Role="ReviewerComment" EntitySet="ReviewerComment" />
+          </AssociationSet>
+          <AssociationSet Name="FK_dbo_Winner_dbo_Nomination_NominationId" Association="Self.FK_dbo_Winner_dbo_Nomination_NominationId">
+            <End Role="Nomination" EntitySet="Nomination" />
+            <End Role="Winner" EntitySet="Winner" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="EnCourage" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="C__MigrationHistory">
+          <Key>
+            <PropertyRef Name="MigrationId" />
+            <PropertyRef Name="ContextKey" />
+          </Key>
+          <Property Name="MigrationId" Type="String" MaxLength="150" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="ContextKey" Type="String" MaxLength="300" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Model" Type="Binary" MaxLength="Max" FixedLength="false" Nullable="false" />
+          <Property Name="ProductVersion" Type="String" MaxLength="32" FixedLength="false" Unicode="true" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Award">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Code" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="FrequencyId" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="FrequencyMaster" Relationship="Self.FK_dbo_Award_dbo_FrequencyMaster_FrequencyId" FromRole="Award" ToRole="FrequencyMaster" />
+          <NavigationProperty Name="AwardCriterias" Relationship="Self.FK_dbo_AwardCriteria_dbo_Award_AwardId" FromRole="Award" ToRole="AwardCriteria" />
+          <NavigationProperty Name="Criteria" Relationship="Self.FK_dbo_Criteria_dbo_Award_Award_Id" FromRole="Award" ToRole="Criteria" />
+          <NavigationProperty Name="Nominations" Relationship="Self.FK_dbo_Nomination_dbo_Award_AwardId" FromRole="Award" ToRole="Nomination" />
+        </EntityType>
+        <EntityType Name="AwardCriteria">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="CriteriaId" Type="Int32" Nullable="false" />
+          <Property Name="AwardId" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Award" Relationship="Self.FK_dbo_AwardCriteria_dbo_Award_AwardId" FromRole="AwardCriteria" ToRole="Award" />
+          <NavigationProperty Name="Criterion" Relationship="Self.FK_dbo_AwardCriteria_dbo_Criteria_CriteriaId" FromRole="AwardCriteria" ToRole="Criteria" />
+        </EntityType>
+        <EntityType Name="Criterion">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Title" Type="String" MaxLength="150" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="AwardId" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Award" Relationship="Self.FK_dbo_Criteria_dbo_Award_Award_Id" FromRole="Criteria" ToRole="Award" />
+          <NavigationProperty Name="AwardCriterias" Relationship="Self.FK_dbo_AwardCriteria_dbo_Criteria_CriteriaId" FromRole="Criteria" ToRole="AwardCriteria" />
+          <NavigationProperty Name="ManagerComments" Relationship="Self.FK_dbo_ManagerComment_dbo_Criteria_CriteriaId" FromRole="Criteria" ToRole="ManagerComment" />
+          <NavigationProperty Name="ReviewerComments" Relationship="Self.FK_dbo_ReviewerComment_dbo_Criteria_CriteriaId" FromRole="Criteria" ToRole="ReviewerComment" />
+        </EntityType>
+        <EntityType Name="FrequencyMaster">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="FrequencyPeriod" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Code" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Awards" Relationship="Self.FK_dbo_Award_dbo_FrequencyMaster_FrequencyId" FromRole="FrequencyMaster" ToRole="Award" />
+        </EntityType>
+        <EntityType Name="ManagerComment">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="NominationId" Type="Int32" Nullable="false" />
+          <Property Name="CriteriaId" Type="Int32" Nullable="false" />
+          <Property Name="Comment" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Criterion" Relationship="Self.FK_dbo_ManagerComment_dbo_Criteria_CriteriaId" FromRole="ManagerComment" ToRole="Criteria" />
+          <NavigationProperty Name="Nomination" Relationship="Self.FK_dbo_ManagerComment_dbo_Nomination_NominationId" FromRole="ManagerComment" ToRole="Nomination" />
+        </EntityType>
+        <EntityType Name="Nomination">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="AwardId" Type="Int32" Nullable="false" />
+          <Property Name="ManagerId" Type="Int32" Nullable="false" />
+          <Property Name="UserId" Type="Int32" Nullable="false" />
+          <Property Name="ProjectID" Type="Int32" />
+          <Property Name="DepartmentId" Type="Int32" />
+          <Property Name="NominationDate" Type="DateTime" Precision="3" />
+          <Property Name="CreatedDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="IsPLC" Type="Boolean" />
+          <Property Name="IsLocked" Type="Boolean" />
+          <Property Name="IsSubmitted" Type="Boolean" />
+          <Property Name="UserImage" Type="Binary" MaxLength="500" FixedLength="false" />
+          <NavigationProperty Name="Award" Relationship="Self.FK_dbo_Nomination_dbo_Award_AwardId" FromRole="Nomination" ToRole="Award" />
+          <NavigationProperty Name="ManagerComments" Relationship="Self.FK_dbo_ManagerComment_dbo_Nomination_NominationId" FromRole="Nomination" ToRole="ManagerComment" />
+          <NavigationProperty Name="ReviewerComments" Relationship="Self.FK_dbo_ReviewerComment_dbo_Nomination_NominationId" FromRole="Nomination" ToRole="ReviewerComment" />
+          <NavigationProperty Name="Winners" Relationship="Self.FK_dbo_Winner_dbo_Nomination_NominationId" FromRole="Nomination" ToRole="Winner" />
+        </EntityType>
+        <EntityType Name="Reviewer">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="UserId" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="ReviewerComments" Relationship="Self.FK_dbo_ReviewerComment_dbo_Reviewer_ReviewerId" FromRole="Reviewer" ToRole="ReviewerComment" />
+        </EntityType>
+        <EntityType Name="ReviewerComment">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="NominationId" Type="Int32" Nullable="false" />
+          <Property Name="CriteriaId" Type="Int32" Nullable="false" />
+          <Property Name="ReviewerId" Type="Int32" Nullable="false" />
+          <Property Name="Comment" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Criterion" Relationship="Self.FK_dbo_ReviewerComment_dbo_Criteria_CriteriaId" FromRole="ReviewerComment" ToRole="Criteria" />
+          <NavigationProperty Name="Nomination" Relationship="Self.FK_dbo_ReviewerComment_dbo_Nomination_NominationId" FromRole="ReviewerComment" ToRole="Nomination" />
+          <NavigationProperty Name="Reviewer" Relationship="Self.FK_dbo_ReviewerComment_dbo_Reviewer_ReviewerId" FromRole="ReviewerComment" ToRole="Reviewer" />
+        </EntityType>
+        <EntityType Name="Winner">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="NominationId" Type="Int32" Nullable="false" />
+          <Property Name="WinningDate" Type="DateTime" Nullable="false" Precision="3" />
+          <NavigationProperty Name="Nomination" Relationship="Self.FK_dbo_Winner_dbo_Nomination_NominationId" FromRole="Winner" ToRole="Nomination" />
+        </EntityType>
+        <Association Name="FK_dbo_Award_dbo_FrequencyMaster_FrequencyId">
+          <End Role="FrequencyMaster" Type="Self.FrequencyMaster" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="Award" Type="Self.Award" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="FrequencyMaster">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Award">
+              <PropertyRef Name="FrequencyId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_dbo_AwardCriteria_dbo_Award_AwardId">
+          <End Role="Award" Type="Self.Award" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="AwardCriteria" Type="Self.AwardCriteria" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Award">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="AwardCriteria">
+              <PropertyRef Name="AwardId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_dbo_Criteria_dbo_Award_Award_Id">
+          <End Role="Award" Type="Self.Award" Multiplicity="1" />
+          <End Role="Criteria" Type="Self.Criterion" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Award">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Criteria">
+              <PropertyRef Name="AwardId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_dbo_Nomination_dbo_Award_AwardId">
+          <End Role="Award" Type="Self.Award" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="Nomination" Type="Self.Nomination" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Award">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Nomination">
+              <PropertyRef Name="AwardId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_dbo_AwardCriteria_dbo_Criteria_CriteriaId">
+          <End Role="Criteria" Type="Self.Criterion" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="AwardCriteria" Type="Self.AwardCriteria" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Criteria">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="AwardCriteria">
+              <PropertyRef Name="CriteriaId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_dbo_ManagerComment_dbo_Criteria_CriteriaId">
+          <End Role="Criteria" Type="Self.Criterion" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="ManagerComment" Type="Self.ManagerComment" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Criteria">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ManagerComment">
+              <PropertyRef Name="CriteriaId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_dbo_ReviewerComment_dbo_Criteria_CriteriaId">
+          <End Role="Criteria" Type="Self.Criterion" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="ReviewerComment" Type="Self.ReviewerComment" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Criteria">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ReviewerComment">
+              <PropertyRef Name="CriteriaId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_dbo_ManagerComment_dbo_Nomination_NominationId">
+          <End Role="Nomination" Type="Self.Nomination" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="ManagerComment" Type="Self.ManagerComment" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Nomination">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ManagerComment">
+              <PropertyRef Name="NominationId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_dbo_ReviewerComment_dbo_Nomination_NominationId">
+          <End Role="Nomination" Type="Self.Nomination" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="ReviewerComment" Type="Self.ReviewerComment" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Nomination">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ReviewerComment">
+              <PropertyRef Name="NominationId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_dbo_Winner_dbo_Nomination_NominationId">
+          <End Role="Nomination" Type="Self.Nomination" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="Winner" Type="Self.Winner" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Nomination">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Winner">
+              <PropertyRef Name="NominationId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_dbo_ReviewerComment_dbo_Reviewer_ReviewerId">
+          <End Role="Reviewer" Type="Self.Reviewer" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="ReviewerComment" Type="Self.ReviewerComment" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Reviewer">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ReviewerComment">
+              <PropertyRef Name="ReviewerId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="EnCourageEntities3" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="C__MigrationHistory" EntityType="Self.C__MigrationHistory" />
+          <EntitySet Name="Awards" EntityType="Self.Award" />
+          <EntitySet Name="AwardCriterias" EntityType="Self.AwardCriteria" />
+          <EntitySet Name="Criteria" EntityType="Self.Criterion" />
+          <EntitySet Name="FrequencyMasters" EntityType="Self.FrequencyMaster" />
+          <EntitySet Name="ManagerComments" EntityType="Self.ManagerComment" />
+          <EntitySet Name="Nominations" EntityType="Self.Nomination" />
+          <EntitySet Name="Reviewers" EntityType="Self.Reviewer" />
+          <EntitySet Name="ReviewerComments" EntityType="Self.ReviewerComment" />
+          <EntitySet Name="Winners" EntityType="Self.Winner" />
+          <AssociationSet Name="FK_dbo_Award_dbo_FrequencyMaster_FrequencyId" Association="Self.FK_dbo_Award_dbo_FrequencyMaster_FrequencyId">
+            <End Role="FrequencyMaster" EntitySet="FrequencyMasters" />
+            <End Role="Award" EntitySet="Awards" />
+          </AssociationSet>
+          <AssociationSet Name="FK_dbo_AwardCriteria_dbo_Award_AwardId" Association="Self.FK_dbo_AwardCriteria_dbo_Award_AwardId">
+            <End Role="Award" EntitySet="Awards" />
+            <End Role="AwardCriteria" EntitySet="AwardCriterias" />
+          </AssociationSet>
+          <AssociationSet Name="FK_dbo_Criteria_dbo_Award_Award_Id" Association="Self.FK_dbo_Criteria_dbo_Award_Award_Id">
+            <End Role="Award" EntitySet="Awards" />
+            <End Role="Criteria" EntitySet="Criteria" />
+          </AssociationSet>
+          <AssociationSet Name="FK_dbo_Nomination_dbo_Award_AwardId" Association="Self.FK_dbo_Nomination_dbo_Award_AwardId">
+            <End Role="Award" EntitySet="Awards" />
+            <End Role="Nomination" EntitySet="Nominations" />
+          </AssociationSet>
+          <AssociationSet Name="FK_dbo_AwardCriteria_dbo_Criteria_CriteriaId" Association="Self.FK_dbo_AwardCriteria_dbo_Criteria_CriteriaId">
+            <End Role="Criteria" EntitySet="Criteria" />
+            <End Role="AwardCriteria" EntitySet="AwardCriterias" />
+          </AssociationSet>
+          <AssociationSet Name="FK_dbo_ManagerComment_dbo_Criteria_CriteriaId" Association="Self.FK_dbo_ManagerComment_dbo_Criteria_CriteriaId">
+            <End Role="Criteria" EntitySet="Criteria" />
+            <End Role="ManagerComment" EntitySet="ManagerComments" />
+          </AssociationSet>
+          <AssociationSet Name="FK_dbo_ReviewerComment_dbo_Criteria_CriteriaId" Association="Self.FK_dbo_ReviewerComment_dbo_Criteria_CriteriaId">
+            <End Role="Criteria" EntitySet="Criteria" />
+            <End Role="ReviewerComment" EntitySet="ReviewerComments" />
+          </AssociationSet>
+          <AssociationSet Name="FK_dbo_ManagerComment_dbo_Nomination_NominationId" Association="Self.FK_dbo_ManagerComment_dbo_Nomination_NominationId">
+            <End Role="Nomination" EntitySet="Nominations" />
+            <End Role="ManagerComment" EntitySet="ManagerComments" />
+          </AssociationSet>
+          <AssociationSet Name="FK_dbo_ReviewerComment_dbo_Nomination_NominationId" Association="Self.FK_dbo_ReviewerComment_dbo_Nomination_NominationId">
+            <End Role="Nomination" EntitySet="Nominations" />
+            <End Role="ReviewerComment" EntitySet="ReviewerComments" />
+          </AssociationSet>
+          <AssociationSet Name="FK_dbo_Winner_dbo_Nomination_NominationId" Association="Self.FK_dbo_Winner_dbo_Nomination_NominationId">
+            <End Role="Nomination" EntitySet="Nominations" />
+            <End Role="Winner" EntitySet="Winners" />
+          </AssociationSet>
+          <AssociationSet Name="FK_dbo_ReviewerComment_dbo_Reviewer_ReviewerId" Association="Self.FK_dbo_ReviewerComment_dbo_Reviewer_ReviewerId">
+            <End Role="Reviewer" EntitySet="Reviewers" />
+            <End Role="ReviewerComment" EntitySet="ReviewerComments" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="EnCourageStoreContainer" CdmEntityContainer="EnCourageEntities3">
+          <EntitySetMapping Name="C__MigrationHistory">
+            <EntityTypeMapping TypeName="EnCourage.C__MigrationHistory">
+              <MappingFragment StoreEntitySet="__MigrationHistory">
+                <ScalarProperty Name="MigrationId" ColumnName="MigrationId" />
+                <ScalarProperty Name="ContextKey" ColumnName="ContextKey" />
+                <ScalarProperty Name="Model" ColumnName="Model" />
+                <ScalarProperty Name="ProductVersion" ColumnName="ProductVersion" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Awards">
+            <EntityTypeMapping TypeName="EnCourage.Award">
+              <MappingFragment StoreEntitySet="Award">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Code" ColumnName="Code" />
+                <ScalarProperty Name="FrequencyId" ColumnName="FrequencyId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="AwardCriterias">
+            <EntityTypeMapping TypeName="EnCourage.AwardCriteria">
+              <MappingFragment StoreEntitySet="AwardCriteria">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="CriteriaId" ColumnName="CriteriaId" />
+                <ScalarProperty Name="AwardId" ColumnName="AwardId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Criteria">
+            <EntityTypeMapping TypeName="EnCourage.Criterion">
+              <MappingFragment StoreEntitySet="Criteria">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Title" ColumnName="Title" />
+                <ScalarProperty Name="AwardId" ColumnName="AwardId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="FrequencyMasters">
+            <EntityTypeMapping TypeName="EnCourage.FrequencyMaster">
+              <MappingFragment StoreEntitySet="FrequencyMaster">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="FrequencyPeriod" ColumnName="FrequencyPeriod" />
+                <ScalarProperty Name="Code" ColumnName="Code" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ManagerComments">
+            <EntityTypeMapping TypeName="EnCourage.ManagerComment">
+              <MappingFragment StoreEntitySet="ManagerComment">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="NominationId" ColumnName="NominationId" />
+                <ScalarProperty Name="CriteriaId" ColumnName="CriteriaId" />
+                <ScalarProperty Name="Comment" ColumnName="Comment" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Nominations">
+            <EntityTypeMapping TypeName="EnCourage.Nomination">
+              <MappingFragment StoreEntitySet="Nomination">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="AwardId" ColumnName="AwardId" />
+                <ScalarProperty Name="ManagerId" ColumnName="ManagerId" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="ProjectID" ColumnName="ProjectID" />
+                <ScalarProperty Name="DepartmentId" ColumnName="DepartmentId" />
+                <ScalarProperty Name="NominationDate" ColumnName="NominationDate" />
+                <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+                <ScalarProperty Name="IsPLC" ColumnName="IsPLC" />
+                <ScalarProperty Name="IsLocked" ColumnName="IsLocked" />
+                <ScalarProperty Name="IsSubmitted" ColumnName="IsSubmitted" />
+                <ScalarProperty Name="UserImage" ColumnName="UserImage" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Reviewers">
+            <EntityTypeMapping TypeName="EnCourage.Reviewer">
+              <MappingFragment StoreEntitySet="Reviewer">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ReviewerComments">
+            <EntityTypeMapping TypeName="EnCourage.ReviewerComment">
+              <MappingFragment StoreEntitySet="ReviewerComment">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="NominationId" ColumnName="NominationId" />
+                <ScalarProperty Name="CriteriaId" ColumnName="CriteriaId" />
+                <ScalarProperty Name="ReviewerId" ColumnName="ReviewerId" />
+                <ScalarProperty Name="Comment" ColumnName="Comment" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Winners">
+            <EntityTypeMapping TypeName="EnCourage.Winner">
+              <MappingFragment StoreEntitySet="Winner">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="NominationId" ColumnName="NominationId" />
+                <ScalarProperty Name="WinningDate" ColumnName="WinningDate" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

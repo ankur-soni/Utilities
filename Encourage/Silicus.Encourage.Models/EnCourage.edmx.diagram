@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="1e2b76777ce844a0a97fe9f0c7eb2d67" Name="Diagram1">
+        <EntityTypeShape EntityType="EnCourage.C__MigrationHistory" Width="1.5" PointX="0.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="EnCourage.Award" Width="1.5" PointX="3" PointY="6.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="EnCourage.AwardCriteria" Width="1.5" PointX="7.5" PointY="7.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="EnCourage.Criterion" Width="1.5" PointX="5.25" PointY="7.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="EnCourage.FrequencyMaster" Width="1.5" PointX="0.75" PointY="7.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="EnCourage.ManagerComment" Width="1.5" PointX="10.5" PointY="9.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="EnCourage.Nomination" Width="1.5" PointX="5.25" PointY="10.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="EnCourage.Reviewer" Width="1.5" PointX="8.25" PointY="4" IsExpanded="true" />
+        <EntityTypeShape EntityType="EnCourage.ReviewerComment" Width="1.5" PointX="10.5" PointY="5.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="EnCourage.Winner" Width="1.5" PointX="7.5" PointY="11.375" IsExpanded="true" />
+        <AssociationConnector Association="EnCourage.FK_dbo_Award_dbo_FrequencyMaster_FrequencyId" ManuallyRouted="false" />
+        <AssociationConnector Association="EnCourage.FK_dbo_AwardCriteria_dbo_Award_AwardId" ManuallyRouted="false" />
+        <AssociationConnector Association="EnCourage.FK_dbo_Criteria_dbo_Award_Award_Id" ManuallyRouted="false" />
+        <AssociationConnector Association="EnCourage.FK_dbo_Nomination_dbo_Award_AwardId" ManuallyRouted="false" />
+        <AssociationConnector Association="EnCourage.FK_dbo_AwardCriteria_dbo_Criteria_CriteriaId" ManuallyRouted="false" />
+        <AssociationConnector Association="EnCourage.FK_dbo_ManagerComment_dbo_Criteria_CriteriaId" ManuallyRouted="false" />
+        <AssociationConnector Association="EnCourage.FK_dbo_ReviewerComment_dbo_Criteria_CriteriaId" ManuallyRouted="false" />
+        <AssociationConnector Association="EnCourage.FK_dbo_ManagerComment_dbo_Nomination_NominationId" ManuallyRouted="false" />
+        <AssociationConnector Association="EnCourage.FK_dbo_ReviewerComment_dbo_Nomination_NominationId" ManuallyRouted="false" />
+        <AssociationConnector Association="EnCourage.FK_dbo_Winner_dbo_Nomination_NominationId" ManuallyRouted="false" />
+        <AssociationConnector Association="EnCourage.FK_dbo_ReviewerComment_dbo_Reviewer_ReviewerId" ManuallyRouted="false" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>
