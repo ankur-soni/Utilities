@@ -49,6 +49,8 @@
     <Compile Include="CommonDbService.cs" />
     <Compile Include="Interface\IAwardService.cs" />
     <Compile Include="Interface\ICommonDbService.cs" />
+    <Compile Include="Interface\INominationService.cs" />
+    <Compile Include="NominationService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

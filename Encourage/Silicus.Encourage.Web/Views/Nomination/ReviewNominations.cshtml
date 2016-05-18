@@ -1,0 +1,70 @@
+﻿@model IEnumerable<Silicus.Encourage.Web.Models.ReviewNominationViewModel>
+@using System.Drawing;
+@{
+    ViewBag.Title = "ReviewNominations";
+}
+
+<style>
+    hr {
+        background-color: black;
+        height: 1px;
+        border: 0;
+        padding-left: 0px;
+    }
+</style>
+@foreach (var item in Model)
+{
+
+    Random randomGen = new Random();
+    KnownColor[] names = (KnownColor[])Enum.GetValues(typeof(KnownColor));
+    KnownColor randomColorName = names[randomGen.Next(names.Length)];
+    Color randomColor = Color.FromKnownColor(randomColorName);
+
+    <div class="row border-bottom">
+        <nav class="navbar  " role="navigation" style="margin-bottom: 0">
+            <div class="navbar-header">
+                <a class="navbar-minimalize minimalize-styl-2 btn btn-primary " href="#"><i class="fa fa-bars"></i> </a>
+            </div>
+        </nav>
+    </div>
+    <div class="row wrapper border-bottom white-bg page-heading border-bottom">
+        <div class="col-sm-12">
+            <h1>ReviewNominations</h1>
+            @*<ol class="breadcrumb">
+                    <li>
+                        <strong> Home</strong>
+                    </li>
+                </ol>*@
+
+        </div>
+    </div>
+    <br />
+    <div style="border:solid;color:black;" class="col-md-3">
+        <div style="background-color:@randomColor.Name;height:60px;margin-top:10px;padding-left:10px;padding-bottom:70px; font-weight:bold;font-size:50px;text-align:left" class="col-md-5">
+            @Html.DisplayFor(modelItem => item.Intials)
+        </div>
+        <div class="col-md-7">
+            <div>
+                @Html.DisplayFor(modelItem => item.DisplayName)
+            </div>
+            <br />
+            <div>
+                For @Html.DisplayFor(modelItem => item.AwardName)
+
+                @Html.DisplayFor(modelItem => item.NominationTime)
+            </div>
+
+
+        </div>
+
+        <div class="col-md-12">
+            <br /><br />
+            <hr />
+            <a href="#">Review</a>
+        </div>
+    </div>
+
+
+}
+
+

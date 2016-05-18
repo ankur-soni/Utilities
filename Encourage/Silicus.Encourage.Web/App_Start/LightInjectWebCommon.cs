@@ -33,6 +33,8 @@ namespace Silicus.Encourage.Web.App_Start
             container.Register<IUserSecurityService,UserSecurityService>();
             container.Register<Silicus.UtilityContainer.Entities.IDataContextFactory, Silicus.UtilityContainer.Entities.DataContextFactory>();
             container.Register<ICommonDbService, CommonDbService>();
+            container.Register<INominationService, NominationService>();
+            container.Register<IEncourageDatabaseContext, EncourageDatabaseContext>();
         }
 
     }
