@@ -7,17 +7,18 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Silicus.Encourage.Models.DataObjects
+namespace Silicus.Encourage.Models
 {
     using System;
     using System.Collections.Generic;
     
     public partial class Award
     {
-       public Award()
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
+        public Award()
         {
             this.AwardCriterias = new HashSet<AwardCriteria>();
-            this.Criteria = new HashSet<Criteria>();
+            this.Criteria = new HashSet<Criterion>();
             this.Nominations = new HashSet<Nomination>();
         }
     
@@ -27,8 +28,11 @@ namespace Silicus.Encourage.Models.DataObjects
         public int FrequencyId { get; set; }
     
         public virtual FrequencyMaster FrequencyMaster { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<AwardCriteria> AwardCriterias { get; set; }
-        public virtual ICollection<Criteria> Criteria { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Criterion> Criteria { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Nomination> Nominations { get; set; }
     }
 }

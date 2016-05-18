@@ -59,6 +59,7 @@
   <ItemGroup>
     <Compile Include="DataObjects\Asset.cs" />
     <Compile Include="DataObjects\Category.cs" />
+    <Compile Include="DataObjects\Department.cs" />
     <Compile Include="DataObjects\Engagement.cs" />
     <Compile Include="DataObjects\EngagementRole.cs" />
     <Compile Include="DataObjects\EngagementType.cs" />

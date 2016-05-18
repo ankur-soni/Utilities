@@ -53,6 +53,7 @@
     <Compile Include="DatabaseInitializer\BaseDataBaseInitializer.cs" />
     <Compile Include="DataContextBase.cs" />
     <Compile Include="DataContextFactory.cs" />
+    <Compile Include="EntityConfigurations\DepartmentMap.cs" />
     <Compile Include="EntityConfigurations\EngagementMap.cs" />
     <Compile Include="EntityConfigurations\EngagementRoleMap.cs" />
     <Compile Include="EntityConfigurations\EngagementTypeMap.cs" />

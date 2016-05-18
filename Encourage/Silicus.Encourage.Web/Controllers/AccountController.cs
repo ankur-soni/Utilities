@@ -67,6 +67,7 @@ namespace Silicus.Encourage.Web.Controllers
 
 
                     Session["UserEmailAddress"] = user.Email;
+
                     var commonRoles = authorizationService.GetRoleForUtility(user.Email, utility);
                     
                         if ((commonRoles.Count>0))

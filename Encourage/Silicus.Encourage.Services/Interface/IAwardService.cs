@@ -1,4 +1,4 @@
-﻿using Silicus.Encourage.Models.DataObjects;
+﻿using Silicus.Encourage.Models;
 using Silicus.UtilityContainer.Models.DataObjects;
 using System;
 using System.Collections.Generic;
@@ -12,7 +12,9 @@ namespace Silicus.Encourage.Services.Interface
     {
         IEnumerable<Award> GetAllAwards();
         List<Engagement> GetProjectsUnderCurrentUserAsManager(string email);
-        List<Criteria> GetCriteriasForAward(int awardId);
-        List<User> GetResourcesInEngagement(int projectId);
+        List<Department> GetDepartmentsUnderCurrentUserAsManager(string email);
+        List<Criterion> GetCriteriasForAward(int awardId);
+        List<User> GetResourcesInEngagement(int projectId, int userIdToExcept);
+        int GetUserIdFromEmail(string email);
     }
 }

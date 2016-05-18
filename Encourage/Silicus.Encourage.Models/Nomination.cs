@@ -7,13 +7,14 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Silicus.Encourage.Models.DataObjects
+namespace Silicus.Encourage.Models
 {
     using System;
     using System.Collections.Generic;
     
     public partial class Nomination
     {
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public Nomination()
         {
             this.ManagerComments = new HashSet<ManagerComment>();
@@ -24,15 +25,22 @@ namespace Silicus.Encourage.Models.DataObjects
         public int Id { get; set; }
         public int AwardId { get; set; }
         public int ManagerId { get; set; }
-        public int ProjectID { get; set; }
         public int UserId { get; set; }
-        public bool IsPLC { get; set; }
+        public Nullable<int> ProjectID { get; set; }
+        public Nullable<int> DepartmentId { get; set; }
         public Nullable<System.DateTime> NominationDate { get; set; }
-        public Nullable<System.DateTime> CreatedDate { get; set; }
+        public System.DateTime CreatedDate { get; set; }
+        public Nullable<bool> IsPLC { get; set; }
+        public Nullable<bool> IsLocked { get; set; }
+        public Nullable<bool> IsSubmitted { get; set; }
+        public byte[] UserImage { get; set; }
     
         public virtual Award Award { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<ManagerComment> ManagerComments { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<ReviewerComment> ReviewerComments { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Winner> Winners { get; set; }
     }
 }

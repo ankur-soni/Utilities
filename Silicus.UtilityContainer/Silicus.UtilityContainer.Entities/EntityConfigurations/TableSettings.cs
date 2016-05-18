@@ -17,6 +17,7 @@ namespace Silicus.UtilityContainer.Entities.EntityConfigurations
         public static readonly string Titles = "Title";
         public static readonly string EngagementTypes = "EngagementType";
         public static readonly string ResourceTypes = "ResourceType";
-        public static readonly string UtilityRoles = "UtilityRole";   
+        public static readonly string UtilityRoles = "UtilityRole";
+        public static readonly string Departments = "Department";
         }
 }

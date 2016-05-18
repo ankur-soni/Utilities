@@ -7,18 +7,17 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Silicus.Encourage.Models.DataObjects
+namespace Silicus.Encourage.Models
 {
     using System;
     using System.Collections.Generic;
     
-    public partial class AwardCriteria
+    public partial class Winner
     {
         public int Id { get; set; }
-        public int CriteriaId { get; set; }
-        public int AwardId { get; set; }
+        public int NominationId { get; set; }
+        public System.DateTime WinningDate { get; set; }
     
-        public virtual Award Award { get; set; }
-        public virtual Criteria Criterion { get; set; }
+        public virtual Nomination Nomination { get; set; }
     }
 }

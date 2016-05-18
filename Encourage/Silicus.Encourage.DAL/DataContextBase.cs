@@ -1,5 +1,4 @@
 ﻿using Silicus.Encourage.DAL.EntityConfigurations;
-using Silicus.Encourage.Models.DataObjects;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;

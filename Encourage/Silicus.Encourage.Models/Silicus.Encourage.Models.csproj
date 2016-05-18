@@ -50,20 +50,73 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="DataObjects\Award.cs" />
-    <Compile Include="DataObjects\AwardCriteria.cs" />
-    <Compile Include="DataObjects\Criteria.cs" />
-    <Compile Include="DataObjects\FrequencyMaster.cs" />
-    <Compile Include="DataObjects\ManagerComment.cs" />
-    <Compile Include="DataObjects\Nomination.cs" />
-    <Compile Include="DataObjects\Reviewer.cs" />
-    <Compile Include="DataObjects\ReviewerComment.cs" />
-    <Compile Include="DataObjects\Winner.cs" />
+    <Compile Include="Award.cs">
+      <DependentUpon>EnCourage.tt</DependentUpon>
+    </Compile>
+    <Compile Include="AwardCriteria.cs">
+      <DependentUpon>EnCourage.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Criterion.cs">
+      <DependentUpon>EnCourage.tt</DependentUpon>
+    </Compile>
+    <Compile Include="C__MigrationHistory.cs">
+      <DependentUpon>EnCourage.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EnCourage.Context.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>EnCourage.Context.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EnCourage.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>EnCourage.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EnCourage.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>EnCourage.edmx</DependentUpon>
+    </Compile>
+    <Compile Include="FrequencyMaster.cs">
+      <DependentUpon>EnCourage.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ManagerComment.cs">
+      <DependentUpon>EnCourage.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Nomination.cs">
+      <DependentUpon>EnCourage.tt</DependentUpon>
+    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Reviewer.cs">
+      <DependentUpon>EnCourage.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ReviewerComment.cs">
+      <DependentUpon>EnCourage.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Winner.cs">
+      <DependentUpon>EnCourage.tt</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
     <None Include="App.Config" />
+    <EntityDeploy Include="EnCourage.edmx">
+      <Generator>EntityModelCodeGenerator</Generator>
+      <LastGenOutput>EnCourage.Designer.cs</LastGenOutput>
+    </EntityDeploy>
+    <None Include="EnCourage.Context.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>EnCourage.edmx</DependentUpon>
+      <LastGenOutput>EnCourage.Context.cs</LastGenOutput>
+    </None>
+    <None Include="EnCourage.edmx.diagram">
+      <DependentUpon>EnCourage.edmx</DependentUpon>
+    </None>
+    <None Include="EnCourage.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>EnCourage.edmx</DependentUpon>
+      <LastGenOutput>EnCourage.cs</LastGenOutput>
+    </None>
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>

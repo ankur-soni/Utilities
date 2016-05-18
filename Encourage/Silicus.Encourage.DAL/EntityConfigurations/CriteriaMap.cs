@@ -1,10 +1,10 @@
-﻿using Silicus.Encourage.Models.DataObjects;
+﻿using Silicus.Encourage.Models;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Data.Entity.ModelConfiguration;
 
 namespace Silicus.Encourage.DAL.EntityConfigurations
 {
-    internal class CriteriaMap : EntityTypeConfiguration<Criteria>
+    internal class CriteriaMap : EntityTypeConfiguration<Criterion>
     {
         public CriteriaMap()
         {

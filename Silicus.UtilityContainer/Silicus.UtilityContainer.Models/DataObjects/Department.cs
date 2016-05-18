@@ -7,22 +7,14 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Silicus.Encourage.Models.DataObjects
+namespace Silicus.UtilityContainer.Models.DataObjects
 {
     using System;
     using System.Collections.Generic;
     
-    public partial class FrequencyMaster
+    public class Department
     {
-        public FrequencyMaster()
-        {
-            this.Awards = new HashSet<Award>();
-        }
-    
-        public int Id { get; set; }
-        public string FrequencyPeriod { get; set; }
-        public string Code { get; set; }
-    
-        public virtual ICollection<Award> Awards { get; set; }
+        public int ID { get; set; }
+        public string Name { get; set; }
     }
 }

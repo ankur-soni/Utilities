@@ -8,7 +8,6 @@ namespace Silicus.Encourage.Web.Models
     public class CriteriaCommentViewModel
     {
         public int Id { get; set; }
-        public string Title { get; set; }
         public string Comment { get; set; }
     }
 }

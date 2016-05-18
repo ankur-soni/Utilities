@@ -1,5 +1,5 @@
 ﻿using Silicus.Encourage.DAL.Interfaces;
-using Silicus.Encourage.Models.DataObjects;
+using Silicus.Encourage.Models;
 using Silicus.Encourage.Services.Interface;
 using Silicus.UtilityContainer.Models.DataObjects;
 using System.Collections.Generic;
@@ -7,8 +7,8 @@ using System.Linq;
 
 namespace Silicus.Encourage.Services
 {
-    public class AwardService:IAwardService
-    { 
+    public class AwardService : IAwardService
+    {
         private readonly IDataContextFactory _contextFactory;
         private readonly IEncourageDatabaseContext _encourageDbcontext;
         private readonly ICommonDbService _commonDbService;
@@ -21,9 +21,9 @@ namespace Silicus.Encourage.Services
             _encourageDbcontext = _contextFactory.CreateEncourageDbContext();
             _commonDbService = commonDbService;
             _CommonDbContext = _commonDbService.GetCommonDataBaseContext();
-       }
+        }
 
-        public IEnumerable<Models.DataObjects.Award> GetAllAwards()
+        public IEnumerable<Award> GetAllAwards()
         {
             return _encourageDbcontext.Query<Award>().ToList();
         }
@@ -35,13 +35,28 @@ namespace Silicus.Encourage.Services
             return projectUnderCurrentUser;
         }
 
-        public List<Criteria> GetCriteriasForAward(int awardId)
+
+        public List<Department> GetDepartmentsUnderCurrentUserAsManager(string email)
         {
-            var criteriaList = _encourageDbcontext.Query<Criteria>().Where(criteria => criteria.AwardId == awardId).ToList();
+            var currentUser = _CommonDbContext.Query<User>().Where(user => user.EmailAddress == email).SingleOrDefault();
+
+            var resourcesInDepartment = from resource in _CommonDbContext.Query<Resource>()
+                                        join resourceHistory in _CommonDbContext.Query<ResourceHistory>() on resource.ID equals resourceHistory.ResourceID
+                                        join title in _CommonDbContext.Query<Title>() on resourceHistory.TitleID equals title.ID
+                                        join department in _CommonDbContext.Query<Department>() on title.DepartmentID equals department.ID
+                                        where resource.DirectManager1ID == 3779
+                                        select department;
+
+            return resourcesInDepartment.Distinct().ToList();
+        }
+
+        public List<Criterion> GetCriteriasForAward(int awardId)
+        {
+            var criteriaList = _encourageDbcontext.Query<Criterion>().Where(criteria => criteria.AwardId == awardId).ToList();
             return criteriaList;
         }
 
-        public List<User> GetResourcesInEngagement(int engagementId)
+        public List<User> GetResourcesInEngagement(int engagementId, int userIdToExcept)
         {
             var userInEngagement = from engagementRole in _CommonDbContext.Query<EngagementRole>()
                                    join resourceHistory in _CommonDbContext.Query<ResourceHistory>() on engagementRole.ResourceHistoryID equals resourceHistory.ID
@@ -49,9 +64,17 @@ namespace Silicus.Encourage.Services
                                    join user in _CommonDbContext.Query<User>() on resource.UserID equals user.ID
                                    where engagementRole.EngagementID == engagementId
                                    select user;
-           
+
+            var currentUser = _CommonDbContext.Query<User>().Where(user => user.ID == userIdToExcept);
+            userInEngagement = userInEngagement.Except(currentUser);
+
             return userInEngagement.ToList();
         }
 
+
+        public int GetUserIdFromEmail(string email)
+        {
+            return _CommonDbContext.Query<User>().Where(user => user.EmailAddress == email).FirstOrDefault().ID;
+        }
     }
 }

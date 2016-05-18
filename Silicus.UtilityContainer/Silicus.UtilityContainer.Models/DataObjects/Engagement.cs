@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Silicus.UtilityContainer.Models.DataObjects
 {
-    public partial class Engagement
+    public class Engagement
     {
         public int ID { get; set; }
         public string Name { get; set; }
