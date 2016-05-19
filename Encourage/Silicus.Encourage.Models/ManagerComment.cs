@@ -19,7 +19,7 @@ namespace Silicus.Encourage.Models
         public int CriteriaId { get; set; }
         public string Comment { get; set; }
     
-        public virtual Criterion Criterion { get; set; }
+        public virtual Criteria Criterion { get; set; }
         public virtual Nomination Nomination { get; set; }
     }
 }

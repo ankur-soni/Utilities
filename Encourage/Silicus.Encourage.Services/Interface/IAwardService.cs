@@ -13,8 +13,11 @@ namespace Silicus.Encourage.Services.Interface
         IEnumerable<Award> GetAllAwards();
         List<Engagement> GetProjectsUnderCurrentUserAsManager(string email);
         List<Department> GetDepartmentsUnderCurrentUserAsManager(string email);
-        List<Criterion> GetCriteriasForAward(int awardId);
+        List<Criteria> GetCriteriasForAward(int awardId);
         List<User> GetResourcesInEngagement(int projectId, int userIdToExcept);
+        List<User> GetResourcesUnderDepartment(int DepartmentId, int userIdToExcept);
+        bool AddNomination(Nomination nomination);
         int GetUserIdFromEmail(string email);
+
     }
 }

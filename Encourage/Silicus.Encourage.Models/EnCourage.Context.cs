@@ -13,10 +13,10 @@ namespace Silicus.Encourage.Models
     using System.Data.Entity;
     using System.Data.Entity.Infrastructure;
     
-    public partial class EnCourageEntities3 : DbContext
+    public partial class EnCourageEntities : DbContext
     {
-        public EnCourageEntities3()
-            : base("name=EnCourageEntities3")
+        public EnCourageEntities()
+            : base("name=EnCourageEntities")
         {
         }
     
@@ -28,7 +28,7 @@ namespace Silicus.Encourage.Models
         public virtual DbSet<C__MigrationHistory> C__MigrationHistory { get; set; }
         public virtual DbSet<Award> Awards { get; set; }
         public virtual DbSet<AwardCriteria> AwardCriterias { get; set; }
-        public virtual DbSet<Criterion> Criteria { get; set; }
+        public virtual DbSet<Criteria> Criteria { get; set; }
         public virtual DbSet<FrequencyMaster> FrequencyMasters { get; set; }
         public virtual DbSet<ManagerComment> ManagerComments { get; set; }
         public virtual DbSet<Nomination> Nominations { get; set; }

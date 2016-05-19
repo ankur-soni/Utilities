@@ -2,6 +2,7 @@
 using Silicus.Encourage.Models;
 using Silicus.Encourage.Services.Interface;
 using Silicus.UtilityContainer.Models.DataObjects;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -35,7 +36,6 @@ namespace Silicus.Encourage.Services
             return projectUnderCurrentUser;
         }
 
-
         public List<Department> GetDepartmentsUnderCurrentUserAsManager(string email)
         {
             var currentUser = _CommonDbContext.Query<User>().Where(user => user.EmailAddress == email).SingleOrDefault();
@@ -50,9 +50,26 @@ namespace Silicus.Encourage.Services
             return resourcesInDepartment.Distinct().ToList();
         }
 
-        public List<Criterion> GetCriteriasForAward(int awardId)
+        public List<User> GetResourcesUnderDepartment(int DepartmentId, int userIdToExcept)
         {
-            var criteriaList = _encourageDbcontext.Query<Criterion>().Where(criteria => criteria.AwardId == awardId).ToList();
+            var resourcesUnderDept = from user in _CommonDbContext.Query<User>()
+                                     join resource in _CommonDbContext.Query<Resource>() on user.ID equals resource.UserID
+                                     join resourceHistory in _CommonDbContext.Query<ResourceHistory>() on resource.ID equals resourceHistory.ResourceID
+                                     join title in _CommonDbContext.Query<Title>() on resourceHistory.TitleID equals title.ID
+                                     join department in _CommonDbContext.Query<Department>() on title.DepartmentID equals department.ID
+                                     where department.ID == DepartmentId
+                                     select user;
+
+            //var currentUser = _CommonDbContext.Query<User>().Where(user => user.ID == userIdToExcept);
+            var currentUser = _CommonDbContext.Query<User>().Where(user => user.ID == 3779);
+            resourcesUnderDept = resourcesUnderDept.Except(currentUser);
+
+            return resourcesUnderDept.ToList();
+        }
+
+        public List<Criteria> GetCriteriasForAward(int awardId)
+        {
+            var criteriaList = _encourageDbcontext.Query<Criteria>().Where(criteria => criteria.AwardId == awardId).ToList();
             return criteriaList;
         }
 
@@ -71,10 +88,25 @@ namespace Silicus.Encourage.Services
             return userInEngagement.ToList();
         }
 
-
         public int GetUserIdFromEmail(string email)
         {
             return _CommonDbContext.Query<User>().Where(user => user.EmailAddress == email).FirstOrDefault().ID;
         }
+
+
+        public bool AddNomination(Nomination nomination)
+        {
+            try
+            {
+                _encourageDbcontext.Add<Nomination>(nomination);
+                return true;
+            }
+            catch(Exception Ex)
+            {
+                return false;
+            }
+        }
+
+
     }
 }

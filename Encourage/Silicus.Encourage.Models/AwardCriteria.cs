@@ -19,6 +19,6 @@ namespace Silicus.Encourage.Models
         public int AwardId { get; set; }
     
         public virtual Award Award { get; set; }
-        public virtual Criterion Criterion { get; set; }
+        public virtual Criteria Criterion { get; set; }
     }
 }

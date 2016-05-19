@@ -4,7 +4,7 @@ using System.Data.Entity.ModelConfiguration;
 
 namespace Silicus.Encourage.DAL.EntityConfigurations
 {
-    internal class CriteriaMap : EntityTypeConfiguration<Criterion>
+    internal class CriteriaMap : EntityTypeConfiguration<Criteria>
     {
         public CriteriaMap()
         {

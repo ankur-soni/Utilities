@@ -23,7 +23,7 @@ namespace Silicus.Encourage.Web.Controllers
         public ActionResult AddNomination()
         {
             var userEmailAddress = Session["UserEmailAddress"] as string;
-            ViewBag.Awards = new SelectList(_awardService.GetAllAwards(),"Id", "Name");
+            ViewBag.Awards = new SelectList(_awardService.GetAllAwards(), "Id", "Name");
 
             //ViewBag.ProjectsUnderCurrentUser
             //    = new SelectList(_awardService.GetProjectsUnderCurrentUserAsManager(userEmailAddress), "Id", "Name"); 
@@ -34,7 +34,7 @@ namespace Silicus.Encourage.Web.Controllers
             ViewBag.ManagerId = _awardService.GetUserIdFromEmail("shailendra.birthare@silicus.com");
             ViewBag.DepartmentsUnderCurrentUser = new SelectList(_awardService.GetDepartmentsUnderCurrentUserAsManager("shailendra.birthare@silicus.com"), "Id", "Name");
             ViewBag.Resources = new SelectList(new List<User>(), "Id", "DisplayName");
-            
+
             return View();
         }
 
@@ -45,16 +45,32 @@ namespace Silicus.Encourage.Web.Controllers
             nomination.AwardId = model.AwardId;
             nomination.ManagerId = model.ManagerId;
             nomination.UserId = model.ResourceId;
-            
-            if(model.SelectResourcesBy.Equals("Project"))
-                 nomination.ProjectID = model.ProjectID;
+
+            if (model.SelectResourcesBy.Equals("Project"))
+                nomination.ProjectID = model.ProjectID;
             else if (model.SelectResourcesBy.Equals("Department"))
-                nomination.DepartmentId = nomination.DepartmentId;
+                nomination.DepartmentId = model.DepartmentId;
 
             nomination.NominationDate = DateTime.Now.Date;
-            
+            nomination.IsPLC = model.IsPLC;
+            nomination.IsSubmitted = true;
 
+            foreach (var criteria in model.Comments)
+            {
+                if (criteria.Comment != null)
+                {
+                    nomination.ManagerComments.Add(
+                        new ManagerComment()
+                            {
+                                CriteriaId = criteria.Id,
+                                Comment = criteria.Comment
+                            }
+                        );
+                }
 
+            }
+
+            var isNominated=_awardService.AddNomination(nomination);
 
             return RedirectToAction("Dashboard", "Dashboard");
         }
@@ -71,7 +87,7 @@ namespace Silicus.Encourage.Web.Controllers
         {
             //var userIdToExcept = _awardService.GetUserIdFromEmail(Session["UserEmailAddress"] as string);
             var userIdToExcept = _awardService.GetUserIdFromEmail("shailendra.birthare@silicus.com");
-            
+
             var usersInEngagement = _awardService.GetResourcesInEngagement(engagementID, userIdToExcept);
             return Json(usersInEngagement, JsonRequestBehavior.AllowGet);
         }
@@ -80,12 +96,10 @@ namespace Silicus.Encourage.Web.Controllers
         public JsonResult ResourcesInDepartment(int departmentID)
         {
             //var userIdToExcept = _awardService.GetUserIdFromEmail(Session["UserEmailAddress"] as string);
-          //  var userIdToExcept = _awardService.GetUserIdFromEmail("shailendra.birthare@silicus.com");
+            var userIdToExcept = _awardService.GetUserIdFromEmail("shailendra.birthare@silicus.com");
 
-           // var usersInEngagement = _awardService.GetResourcesInEngagement(engagementID, userIdToExcept);
-           // return Json(usersInEngagement, JsonRequestBehavior.AllowGet);
-
-            return null;
+            var usersInDepartment = _awardService.GetResourcesUnderDepartment(departmentID, userIdToExcept);
+            return Json(usersInDepartment, JsonRequestBehavior.AllowGet);
         }
     }
 }

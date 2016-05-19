@@ -150,6 +150,8 @@
 
     $("#SelectedProject").change(function () {
         var selectedProject = $("#SelectedProject").val();
+        $('#Resources').empty();
+        $('#Resources').append($("<option selected></option>").val(null).html("Select"));
 
         var ServiceUrl = "/Nomination/ResourcesInProject?engagementID=" + selectedProject;
         $.ajax({
@@ -160,8 +162,7 @@
                 alert(xhr.responseText)
             },
             success: function (data) {
-                debugger;
-                
+                          
                 for (var key in data) {
                     $('#Resources')
                         .append($("<option></option>").val(data[key].ID).html(data[key].DisplayName));
@@ -174,7 +175,9 @@
     $("#SelectedDepartment").change(function () {
         var selectedDept = $("#SelectedDepartment").val();
         var ServiceUrl = "/Nomination/ResourcesInDepartment?departmentID=" + selectedDept;
-        
+        $('#Resources').empty();
+        $('#Resources').append($("<option selected></option>").val(null).html("Select"));
+
         $.ajax({
             type: 'GET',
             url: ServiceUrl,
@@ -183,9 +186,6 @@
                 alert(xhr.responseText)
             },
             success: function (data) {
-                debugger;
-                $('#Resources')
-                       .append($("<option></option>").val(null).html("Select"));
                 for (var key in data) {
                     $('#Resources')
                         .append($("<option></option>").val(data[key].ID).html(data[key].DisplayName));

@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="EnCourage.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+      <Schema Namespace="EnCourageModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="__MigrationHistory">
           <Key>
             <PropertyRef Name="MigrationId" />
@@ -68,7 +68,7 @@
           <Property Name="ProjectID" Type="int" />
           <Property Name="DepartmentId" Type="int" />
           <Property Name="NominationDate" Type="datetime" />
-          <Property Name="CreatedDate" Type="datetime" Nullable="false" />
+          <Property Name="CreatedDate" Type="datetime" />
           <Property Name="IsPLC" Type="bit" />
           <Property Name="IsLocked" Type="bit" />
           <Property Name="IsSubmitted" Type="bit" />
@@ -251,7 +251,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <EntityContainer Name="EnCourageStoreContainer">
+        <EntityContainer Name="EnCourageModelStoreContainer">
           <EntitySet Name="__MigrationHistory" EntityType="Self.__MigrationHistory" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Award" EntityType="Self.Award" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="AwardCriteria" EntityType="Self.AwardCriteria" Schema="dbo" store:Type="Tables" />
@@ -311,7 +311,7 @@
     </edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
-      <Schema Namespace="EnCourage" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+      <Schema Namespace="EnCourageModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
         <EntityType Name="C__MigrationHistory">
           <Key>
             <PropertyRef Name="MigrationId" />
@@ -345,7 +345,7 @@
           <NavigationProperty Name="Award" Relationship="Self.FK_dbo_AwardCriteria_dbo_Award_AwardId" FromRole="AwardCriteria" ToRole="Award" />
           <NavigationProperty Name="Criterion" Relationship="Self.FK_dbo_AwardCriteria_dbo_Criteria_CriteriaId" FromRole="AwardCriteria" ToRole="Criteria" />
         </EntityType>
-        <EntityType Name="Criterion">
+        <EntityType Name="Criteria">
           <Key>
             <PropertyRef Name="Id" />
           </Key>
@@ -388,7 +388,7 @@
           <Property Name="ProjectID" Type="Int32" />
           <Property Name="DepartmentId" Type="Int32" />
           <Property Name="NominationDate" Type="DateTime" Precision="3" />
-          <Property Name="CreatedDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="CreatedDate" Type="DateTime" Precision="3" />
           <Property Name="IsPLC" Type="Boolean" />
           <Property Name="IsLocked" Type="Boolean" />
           <Property Name="IsSubmitted" Type="Boolean" />
@@ -458,7 +458,7 @@
         </Association>
         <Association Name="FK_dbo_Criteria_dbo_Award_Award_Id">
           <End Role="Award" Type="Self.Award" Multiplicity="1" />
-          <End Role="Criteria" Type="Self.Criterion" Multiplicity="*" />
+          <End Role="Criteria" Type="EnCourageModel.Criteria" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Award">
               <PropertyRef Name="Id" />
@@ -483,7 +483,7 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_dbo_AwardCriteria_dbo_Criteria_CriteriaId">
-          <End Role="Criteria" Type="Self.Criterion" Multiplicity="1">
+          <End Role="Criteria" Type="EnCourageModel.Criteria" Multiplicity="1">
             <OnDelete Action="Cascade" />
           </End>
           <End Role="AwardCriteria" Type="Self.AwardCriteria" Multiplicity="*" />
@@ -497,7 +497,7 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_dbo_ManagerComment_dbo_Criteria_CriteriaId">
-          <End Role="Criteria" Type="Self.Criterion" Multiplicity="1">
+          <End Role="Criteria" Type="EnCourageModel.Criteria" Multiplicity="1">
             <OnDelete Action="Cascade" />
           </End>
           <End Role="ManagerComment" Type="Self.ManagerComment" Multiplicity="*" />
@@ -511,7 +511,7 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_dbo_ReviewerComment_dbo_Criteria_CriteriaId">
-          <End Role="Criteria" Type="Self.Criterion" Multiplicity="1">
+          <End Role="Criteria" Type="EnCourageModel.Criteria" Multiplicity="1">
             <OnDelete Action="Cascade" />
           </End>
           <End Role="ReviewerComment" Type="Self.ReviewerComment" Multiplicity="*" />
@@ -580,11 +580,11 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <EntityContainer Name="EnCourageEntities3" annotation:LazyLoadingEnabled="true">
+        <EntityContainer Name="EnCourageEntities" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="C__MigrationHistory" EntityType="Self.C__MigrationHistory" />
           <EntitySet Name="Awards" EntityType="Self.Award" />
           <EntitySet Name="AwardCriterias" EntityType="Self.AwardCriteria" />
-          <EntitySet Name="Criteria" EntityType="Self.Criterion" />
+          <EntitySet Name="Criteria" EntityType="EnCourageModel.Criteria" />
           <EntitySet Name="FrequencyMasters" EntityType="Self.FrequencyMaster" />
           <EntitySet Name="ManagerComments" EntityType="Self.ManagerComment" />
           <EntitySet Name="Nominations" EntityType="Self.Nomination" />
@@ -641,9 +641,9 @@
     <!-- C-S mapping content -->
     <edmx:Mappings>
       <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
-        <EntityContainerMapping StorageEntityContainer="EnCourageStoreContainer" CdmEntityContainer="EnCourageEntities3">
+        <EntityContainerMapping StorageEntityContainer="EnCourageModelStoreContainer" CdmEntityContainer="EnCourageEntities">
           <EntitySetMapping Name="C__MigrationHistory">
-            <EntityTypeMapping TypeName="EnCourage.C__MigrationHistory">
+            <EntityTypeMapping TypeName="EnCourageModel.C__MigrationHistory">
               <MappingFragment StoreEntitySet="__MigrationHistory">
                 <ScalarProperty Name="MigrationId" ColumnName="MigrationId" />
                 <ScalarProperty Name="ContextKey" ColumnName="ContextKey" />
@@ -653,7 +653,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="Awards">
-            <EntityTypeMapping TypeName="EnCourage.Award">
+            <EntityTypeMapping TypeName="EnCourageModel.Award">
               <MappingFragment StoreEntitySet="Award">
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="Name" ColumnName="Name" />
@@ -663,7 +663,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="AwardCriterias">
-            <EntityTypeMapping TypeName="EnCourage.AwardCriteria">
+            <EntityTypeMapping TypeName="EnCourageModel.AwardCriteria">
               <MappingFragment StoreEntitySet="AwardCriteria">
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="CriteriaId" ColumnName="CriteriaId" />
@@ -672,7 +672,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="Criteria">
-            <EntityTypeMapping TypeName="EnCourage.Criterion">
+            <EntityTypeMapping TypeName="EnCourageModel.Criteria">
               <MappingFragment StoreEntitySet="Criteria">
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="Title" ColumnName="Title" />
@@ -681,7 +681,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="FrequencyMasters">
-            <EntityTypeMapping TypeName="EnCourage.FrequencyMaster">
+            <EntityTypeMapping TypeName="EnCourageModel.FrequencyMaster">
               <MappingFragment StoreEntitySet="FrequencyMaster">
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="FrequencyPeriod" ColumnName="FrequencyPeriod" />
@@ -690,7 +690,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="ManagerComments">
-            <EntityTypeMapping TypeName="EnCourage.ManagerComment">
+            <EntityTypeMapping TypeName="EnCourageModel.ManagerComment">
               <MappingFragment StoreEntitySet="ManagerComment">
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="NominationId" ColumnName="NominationId" />
@@ -700,7 +700,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="Nominations">
-            <EntityTypeMapping TypeName="EnCourage.Nomination">
+            <EntityTypeMapping TypeName="EnCourageModel.Nomination">
               <MappingFragment StoreEntitySet="Nomination">
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="AwardId" ColumnName="AwardId" />
@@ -718,7 +718,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="Reviewers">
-            <EntityTypeMapping TypeName="EnCourage.Reviewer">
+            <EntityTypeMapping TypeName="EnCourageModel.Reviewer">
               <MappingFragment StoreEntitySet="Reviewer">
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="UserId" ColumnName="UserId" />
@@ -726,7 +726,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="ReviewerComments">
-            <EntityTypeMapping TypeName="EnCourage.ReviewerComment">
+            <EntityTypeMapping TypeName="EnCourageModel.ReviewerComment">
               <MappingFragment StoreEntitySet="ReviewerComment">
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="NominationId" ColumnName="NominationId" />
@@ -737,7 +737,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="Winners">
-            <EntityTypeMapping TypeName="EnCourage.Winner">
+            <EntityTypeMapping TypeName="EnCourageModel.Winner">
               <MappingFragment StoreEntitySet="Winner">
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="NominationId" ColumnName="NominationId" />
