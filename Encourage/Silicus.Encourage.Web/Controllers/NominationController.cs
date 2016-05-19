@@ -39,8 +39,9 @@ namespace Silicus.Encourage.Web.Controllers
         }
 
         [HttpPost]
-        public ActionResult AddNomination(NominationViewModel model)
+        public ActionResult AddNomination(NominationViewModel model, string submit)
         {
+
             var nomination = new Nomination();
             nomination.AwardId = model.AwardId;
             nomination.ManagerId = model.ManagerId;
@@ -53,8 +54,13 @@ namespace Silicus.Encourage.Web.Controllers
 
             nomination.NominationDate = DateTime.Now.Date;
             nomination.IsPLC = model.IsPLC;
-            nomination.IsSubmitted = true;
 
+            if (submit.Equals("Submit"))
+                nomination.IsSubmitted = true;
+            else
+                nomination.IsSubmitted = false;
+
+           
             foreach (var criteria in model.Comments)
             {
                 if (criteria.Comment != null)
@@ -70,7 +76,7 @@ namespace Silicus.Encourage.Web.Controllers
 
             }
 
-            var isNominated=_awardService.AddNomination(nomination);
+            var isNominated = _awardService.AddNomination(nomination);
 
             return RedirectToAction("Dashboard", "Dashboard");
         }
