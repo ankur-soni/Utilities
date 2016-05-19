@@ -136,14 +136,28 @@
         <!-- START LEFT MENU -->
         <nav class="navbar-default navbar-static-side" role="navigation">
             <div class="sidebar-collapse">
+                @{
+                    var roles = HttpContext.Current.Session["Role"] as List<string>;
+                }
                 <ul class="nav metismenu" id="side-menu">
                     <li class="active"><a href="@Url.Action("Dashboard","Dashboard")"><i class="fa fa-dashboard"></i> <span class="nav-label">DASHBOARD</span></a></li>
                     <li>
-                        <a href="#"><i class="fa fa-medkit"></i> <span class="nav-label">Nominations </span></a>
+                        <a href="#"><i class="fa fa-user"></i> <span class="nav-label">Nominatios</span> <span class="fa arrow"></span></a>
+                        <ul class="nav nav-second-level">
+                            @if (roles.Contains("Manager"))
+                            {
+                                <li><a href="edit-users.html" class="active">Add Nominations</a></li>
+                                <li><a href="edit-users.html" class="active">Edit Nominations</a></li>
+                            }
+                            @if (roles.Contains("Reviewer"))
+                            {
+                                <li><a href="@Url.Action("ReviewNominations","Nomination")" class="active">Review Nominations</a></li>
+                                <li><a href="edit-users.html" class="active">Edit Review</a></li>
+                            }
+
+                        </ul>
                     </li>
-                    @{
-                        var roles = HttpContext.Current.Session["Role"] as List<string>;
-                    }
+                    
                     <!-- admin role only -->
                     @if (roles.Contains( "Admin"))
                     {
