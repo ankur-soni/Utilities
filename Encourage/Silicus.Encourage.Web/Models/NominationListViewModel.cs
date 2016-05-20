@@ -6,7 +6,7 @@ using System.Web;
 namespace Silicus.Encourage.Web.Models
 {
   
-    public class ReviewNominationViewModel
+    public class NominationListViewModel
     {
         public int Id { get; set; }
         public string DisplayName { get; set; }
@@ -14,5 +14,6 @@ namespace Silicus.Encourage.Web.Models
         public string AwardName { get; set; }
         public string Intials { get; set; }
         public int ManagerId { get; set; }
+        public bool? IsSubmitted { get; set; }
     }
 }

@@ -1,6 +1,7 @@
 ﻿using Silicus.Encourage.DAL.Interfaces;
 using System.Data.Entity;
 using System.Linq;
+using System.Linq.Expressions;
 
 namespace Silicus.Encourage.DAL
 {
@@ -17,6 +18,7 @@ namespace Silicus.Encourage.DAL
 
             if (Entry(item).State == EntityState.Detached)
                 Set<T>().Attach(item);
+                
 
             // Entry(item).CurrentValues.SetValues(item);
             // Calling State on an entity in the Detached state will call DetectChanges() 
@@ -45,10 +47,13 @@ namespace Silicus.Encourage.DAL
             return Set<T>().AsNoTracking();
         }
 
+        public IQueryable<T> Query<T>(string property) where T : class
+        {
+            return Set<T>().Include(property).AsNoTracking();
+        }
+
         public void Delete<T>(T item) where T : class
         {
-
-
             Set<T>().Attach(item);
 
             Set<T>().Remove(item);

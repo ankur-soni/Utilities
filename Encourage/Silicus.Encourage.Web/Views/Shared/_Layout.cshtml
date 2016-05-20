@@ -146,8 +146,8 @@
                         <ul class="nav nav-second-level">
                             @if (roles.Contains("Manager"))
                             {
-                                <li><a href="edit-users.html" class="active">Add Nominations</a></li>
-                                <li><a href="edit-users.html" class="active">Edit Nominations</a></li>
+                                <li><a href="@Url.Action("AddNomination","Nomination")" class="active">Add Nominations</a></li>
+                                <li><a href="@Url.Action("SavedNomination", "Nomination")" class="active">Edit Nominations</a></li>
                             }
                             @if (roles.Contains("Reviewer"))
                             {

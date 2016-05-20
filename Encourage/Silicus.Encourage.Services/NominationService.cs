@@ -21,8 +21,22 @@ namespace Silicus.Encourage.Services
 
         public List<Nomination> GetAllNominations()
         {
-            return _encourageDatabaseContext.Query<Nomination>().ToList();
+            return _encourageDatabaseContext.Query<Nomination>("ManagerComments").ToList();
+        }
 
+        public List<Nomination> GetAllSubmitedNominations()
+        {
+            return _encourageDatabaseContext.Query<Nomination>().ToList();
+        }
+
+        public List<Nomination> GetAllSavedNominations()
+        {
+            return _encourageDatabaseContext.Query<Nomination>("ManagerComments").Where(nomination => nomination.IsSubmitted == false).ToList();
+        }
+
+        public Nomination GetNomination(int nominationId)
+        {
+           return _encourageDatabaseContext.Query<Nomination>("ManagerComments").Where(nomination => nomination.Id == nominationId).SingleOrDefault();
         }
     }
 }

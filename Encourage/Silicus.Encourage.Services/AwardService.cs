@@ -44,7 +44,7 @@ namespace Silicus.Encourage.Services
                                         join resourceHistory in _CommonDbContext.Query<ResourceHistory>() on resource.ID equals resourceHistory.ResourceID
                                         join title in _CommonDbContext.Query<Title>() on resourceHistory.TitleID equals title.ID
                                         join department in _CommonDbContext.Query<Department>() on title.DepartmentID equals department.ID
-                                        where resource.DirectManager1ID == 3779
+                                        where resource.DirectManager1ID == currentUser.ID
                                         select department;
 
             return resourcesInDepartment.Distinct().ToList();
@@ -61,7 +61,7 @@ namespace Silicus.Encourage.Services
                                      select user;
 
             //var currentUser = _CommonDbContext.Query<User>().Where(user => user.ID == userIdToExcept);
-            var currentUser = _CommonDbContext.Query<User>().Where(user => user.ID == 3779);
+            var currentUser = _CommonDbContext.Query<User>().Where(user => user.ID == userIdToExcept);
             resourcesUnderDept = resourcesUnderDept.Except(currentUser);
 
             return resourcesUnderDept.ToList();

@@ -11,6 +11,7 @@ namespace Silicus.Encourage.DAL.Interfaces
         T Add<T>(T item) where T : class;
         int Update<T>(T item) where T : class;
         IQueryable<T> Query<T>() where T : class;
+        IQueryable<T> Query<T>(string property) where T : class;
         void Delete<T>(T item) where T : class;
         int SaveChanges();
     }

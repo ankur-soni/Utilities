@@ -158,7 +158,7 @@
     <Compile Include="Models\LoginModel.cs" />
     <Compile Include="Models\LoginViewModel.cs" />
     <Compile Include="Models\NominationViewModel.cs" />
-    <Compile Include="Models\ReviewNominationViewModel.cs" />
+    <Compile Include="Models\NominationListViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -636,6 +636,8 @@
     <Content Include="Scripts\jquery-1.10.2.min.map" />
     <Content Include="Views\Nomination\AddNomination.cshtml" />
     <Content Include="Views\Nomination\ReviewNominations.cshtml" />
+    <Content Include="Views\Nomination\SavedNomination.cshtml" />
+    <Content Include="Views\Nomination\EditNomination.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
