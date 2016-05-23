@@ -638,6 +638,8 @@
     <Content Include="Views\Nomination\ReviewNominations.cshtml" />
     <Content Include="Views\Nomination\SavedNomination.cshtml" />
     <Content Include="Views\Nomination\EditNomination.cshtml" />
+    <Content Include="Views\Shared\EditorTemplates\CriteriaCommentViewModel.cshtml" />
+    <Content Include="Views\Shared\DisplayTemplates\CriteriaCommentViewModel.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

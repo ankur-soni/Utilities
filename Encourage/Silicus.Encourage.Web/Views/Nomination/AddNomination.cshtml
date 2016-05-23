@@ -65,31 +65,27 @@
             </div>
         </div>
         <br />
-        <br />
-        <hr />
-
         <div class="form-group">
-            @Html.Label("Criteria", htmlAttributes: new { @class = "control-label col-md-2" })
+            @Html.Label("Criteria", htmlAttributes: new { @class = "control-label col-md-offset-5" })
             <br />
-            <div class="form-group">
+            <br />
+            <div class="col-md-offset-1">
                 <div id="Criterias">
                     <table border="1" id="criteriaTable"></table>
                 </div>
             </div>
         </div>
+        <br />
+        <br />
         <div class="form-group">
-            <div class="col-md-offset-2 col-md-10">
+            <div class="col-md-offset-4">
                 <input type="submit" name="submit" value="Save Draft" id="saveButton" class="btn btn-default" />
                 <input type="submit" name="submit" value="Submit" id="submitButton"  class="btn btn-default" />
-                <input type="button" value="Cancel" class="btn btn-default" />
+                <input type="button" value="Cancel" class="btn btn-default" onclick="location.href='@Url.Action("Dashboard", "Dashboard")'" />
             </div>
         </div>
     </div>
 }
-
-<div>
-    @Html.ActionLink("Back to List", "Index")
-</div>
 
 <script src="https://code.jquery.com/jquery-1.10.2.js"></script>
 <script src="~/Scripts/jquery.validate.min.js"></script>

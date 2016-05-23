@@ -22,7 +22,7 @@
         </div>
 
         <div class="form-group">
-            @Html.Label("Resource From", htmlAttributes: new { @class = "control-label col-md-4" })
+            @Html.Label("Resource From", htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-8">
                 <label> @Html.RadioButtonFor(model => model.SelectResourcesBy, "Project", new { htmlAttributes = new { @class = "form-control" }, id = "ProjectRadioButton" })Project</label>
                 <label> @Html.RadioButtonFor(model => model.SelectResourcesBy, "Department", new { htmlAttributes = new { @class = "form-control" }, id = "DepartmentRadioButton" })Department</label>
@@ -58,22 +58,39 @@
             @Html.LabelFor(model => model.IsPLC, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
                 <div class="checkbox">
-                    @Html.CheckBoxFor(model => model.IsPLC.Value, new { htmlAttributes = new { @class = "form-control" } }) Yes
+                    @Html.CheckBoxFor(model => model.IsPLC, new { htmlAttributes = new { @class = "form-control" } }) Yes
                     @Html.ValidationMessageFor(model => model.IsPLC, "", new { @class = "text-danger" })
                 </div>
             </div>
         </div>
 
         <div class="form-group">
-            <div class="col-md-offset-2 col-md-10">
-                @if (Model.IsSubmitted == true)
-                {
-                    <input type="button" value="Cancel" class="btn btn-default" onclick="location.href='@Url.Action("SavedNomination", "Nomination")'" />
-                }
-                else
+            @Html.LabelFor(model => model.Comments, htmlAttributes: new { @class = "control-label col-md-offset-5" })
+            <br />
+            <br />
+            <div class="col-md-11">
+                <table border="1">
+                    <tr><th>Criteria Title</th><th>Comment</th></tr>
+                    @if (Model.IsSubmitted == true)
+                    {
+                        @Html.DisplayFor(model => model.Comments)
+                    }
+                    else
+                    {
+                        @Html.EditorFor(model => model.Comments)
+                    }
+                </table>
+            </div>
+        </div>
+        <br />
+        <br />
+        <div class="form-group">
+            <div class="col-md-offset-4 col-md-10">
+                @if (Model.IsSubmitted !=true)
                 {
                     <input type="submit" value="Submit" class="btn btn-default" />
                 }
+                <input type="button" value="Cancel" class="btn btn-default" onclick="location.href='@Url.Action("SavedNomination", "Nomination")'" />
             </div>
         </div>
     </div>

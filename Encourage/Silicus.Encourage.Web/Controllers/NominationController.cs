@@ -132,6 +132,27 @@ namespace Silicus.Encourage.Web.Controllers
             nominationViewModel.ResourceId = savedNomination.UserId;
             nominationViewModel.IsSubmitted = savedNomination.IsSubmitted;
 
+
+            var criterias = _awardService.GetCriteriasForAward(nominationViewModel.AwardId);
+
+            foreach (var criteria in criterias)
+            {
+                string addedComment = string.Empty;
+
+                foreach (var comment in savedNomination.ManagerComments)
+                {
+                    if (criteria.Id == comment.CriteriaId)
+                    {
+                        addedComment=comment.Comment;
+                    }
+                }
+                nominationViewModel.Comments.Add(new CriteriaCommentViewModel()
+                {
+                    Id = criteria.Id,
+                    title = criteria.Title,
+                    Comment = addedComment
+                });
+            }
             return View("EditNomination", nominationViewModel);
         }
 

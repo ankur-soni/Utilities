@@ -9,5 +9,6 @@ namespace Silicus.Encourage.Web.Models
     {
         public int Id { get; set; }
         public string Comment { get; set; }
+        public string title { get; set; }
     }
 }
