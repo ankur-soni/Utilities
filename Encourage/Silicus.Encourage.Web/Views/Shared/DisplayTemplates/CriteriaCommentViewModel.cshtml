@@ -1,11 +1,15 @@
 ﻿@model Silicus.Encourage.Web.Models.CriteriaCommentViewModel
 
 <tr>
+    <td>
+        @Html.HiddenFor(modelItem => modelItem.Id)
+    </td>
     <td class="col-md-6">
         @Html.DisplayFor(modelItem => modelItem.title)
     </td>
+
     <td class="col-md-6">
-        @Html.DisplayFor(modelItem => modelItem.Comment)
+        @Html.TextAreaFor(modelItem => modelItem.Comment, htmlAttributes: new { @class = "col-md-12" ,@readonly="readonly" })
     </td>
 </tr>
 
