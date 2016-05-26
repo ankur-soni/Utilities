@@ -93,7 +93,7 @@
         <div class="form-group">
             <div class="col-md-offset-3">
                 <input type="submit" name="submit" value="Save Draft" id="saveButton" class="btn btn-default" />
-                <input type="submit" name="submit" value="Submit" id="submitButton" class="btn btn-default" />
+                <input type="submit" name="submit" value="Submit" id="submitButton" class="btn btn-default" onclick="return checkCriteriaComments();" />
                 <input type="button" value="Cancel" class="btn btn-default" onclick="location.href='@Url.Action("Dashboard", "Dashboard")'" />
             </div>
         </div>
@@ -104,6 +104,8 @@
 <script src="~/Scripts/jquery.validate.min.js"></script>
 <script src="~/Scripts/jquery.validate.unobtrusive.js"></script>
 <script type="text/javascript">
+
+    $(".criteriaComment").on('click', function () { debugger; alert("hello"); $(".criteriaComment").children("textarea").first().tooltip('destroy'); });
 
     $(document).ready(function () {
         $("#projectInput").hide();
@@ -139,22 +141,18 @@
             type: 'post',
             url: ServiceUrl,
             contentType: "application/json; charset=utf-8",
-            error: function (xhr, err) {
-               
-            },
             success: function (data) {
                 $('#criteriaTable').append('<tr><th style="text-align:center">Criteria-Description</th><th  style="text-align:center">Comment</th></tr>');
 
                 for (var key in data) {
                     $('#criteriaTable tr:last')
                         .after('<tr><td class="col-md-6"><label>' + data[key].Title + '</label></td>'
-                        + '<td class="col-md-6"><textarea class="form-control" rows="" name=Comments[' + key + '].Comment id="comment"></textarea></td>'
+                        + '<td class="col-md-6 criteriaComment"><textarea class="form-control" rows="" name=Comments[' + key + '].Comment id="comment"></textarea></td>'
                         + '<td><input type="hidden" name=Comments[' + key + '].Id value=' + data[key].Id + '></td></tr>');
                 }
             }
         });
     });
-
 
     $("#SelectedProject").change(function () {
         var selectedProject = $("#SelectedProject").val();
@@ -167,9 +165,6 @@
             url: '@Url.Action("ResourcesInProject", "Nomination")',
             data: JSON.stringify({ engagementID: selectedProject,awardId:selectedAward }),
             contentType: "application/json; charset=utf-8",
-            error: function (xhr, err) {
-              
-            },
             success: function (data) {
 
                 for (var key in data) {
@@ -179,7 +174,6 @@
             }
         });
     });
-
 
     $("#SelectedDepartment").change(function () {
         var selectedDept = $("#SelectedDepartment").val();
@@ -191,9 +185,6 @@
             type: 'GET',
             url: ServiceUrl,
             contentType: "application/json; charset=utf-8",
-            error: function (xhr, err) {
-             
-            },
             success: function (data) {
                 for (var key in data) {
                     $('#Resources')
@@ -216,4 +207,20 @@
             this.defaultShowErrors();
         }
     })
+
+    function checkCriteriaComments() {
+        var comments = 0;
+
+        debugger;
+        $(".criteriaComment").children("textarea").each(function (data) {
+            if ($(this).val().trim())
+                comments++;
+        });
+
+        if (comments < 1) {
+            $(".criteriaComment").children("textarea").first().tooltip({ title: "Enter at least one criteria comment.", placement: 'right' }).tooltip('show');
+            return false;
+        }
+    }
+
 </script>

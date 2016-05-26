@@ -112,7 +112,7 @@
                 @if (Model.IsSubmitted != true)
                 {
                     <input type="button" value="Discard" id="discardButton" class="btn btn-default" />
-                    <input type="button" value="Submit" class="btn btn-default" onclick="return checkCriteriaComments();" />
+                    <input type="submit" value="Submit" class="btn btn-default" onclick="return checkCriteriaComments();" />
                 }
                 <input type="button" value="Back" class="btn btn-default" onclick="location.href='@Url.Action("SavedNomination", "Nomination")'" />
             </div>
