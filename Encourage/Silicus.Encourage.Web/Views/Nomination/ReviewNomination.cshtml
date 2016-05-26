@@ -1,0 +1,124 @@
+﻿@model Silicus.Encourage.Web.Models.ReviewSubmitionViewModel
+
+@{
+    ViewBag.Title = "ReviewNomination";
+}
+
+
+<div class="row border-bottom">
+    <nav class="navbar  " role="navigation" style="margin-bottom: 0">
+        <div class="navbar-header">
+            <a class="navbar-minimalize minimalize-styl-2 btn btn-primary " href="#"><i class="fa fa-bars"></i> </a>
+        </div>
+    </nav>
+</div>
+<div class="row wrapper border-bottom white-bg page-heading border-bottom">
+    <div class="col-sm-12">
+        <h1>Review Nomination</h1>
+    </div>
+</div>
+
+@using (Html.BeginForm())
+{
+
+
+    @Html.HiddenFor(modelItem => modelItem.ReviewerId)
+    @Html.HiddenFor(modelItem => modelItem.NominationId);
+    <table class="table" border="1" style="width:60%">
+        <tr class="col-md-12">
+            <td class="col-md-3">
+                ReviewFor:
+            </td>
+
+            <td class="col-md-9">
+                @Html.DisplayFor(modelItem => modelItem.NomineeName)
+            </td>
+        </tr>
+        <tr class="col-md-12">
+            <td class="col-md-3">
+                Project/Department:
+            </td>
+
+            <td class="col-md-9">
+                @Html.DisplayFor(modelItem => modelItem.ProjectOrDepartment)
+            </td>
+        </tr>
+        <tr class="col-md-12">
+            <td class="col-md-3">
+                Manager:
+            </td>
+
+            <td class="col-md-9">
+                @Html.DisplayFor(modelItem => modelItem.Manager)
+            </td>
+        </tr>
+
+        <tr class="col-md-12">
+            <td class="col-md-3">
+                @Html.DisplayFor(modelItem => modelItem.Manager) Says:
+            </td>
+
+            <td class="col-md-3">
+                Singleton design pattern is one of simplest design patterns.
+            </td>
+        </tr>
+
+    </table>
+
+    @*@Html.HiddenFor( model => model.ManagerComments)
+        @Html.HiddenFor(model => model.Criterias)*@
+
+
+    <table border="1" style="width:80%" id="reviewTable">
+
+        <tr class="col-md-12">
+            <th class="col-md-1">Id</th>
+            <th class="col-md-3">Criteria</th>
+            <th class="col-md-3">ManagerComment</th>
+            <th class="col-md-3">ReviewerComment</th>
+            <th class="col-md-2">Credits</th>
+        </tr>
+
+        @foreach (var item in Model.Criterias)
+        {
+
+            <tr class="col-md-12">
+                <td class="col-md-1">@item.Id</td>
+                @Html.Hidden("CriteriaId", @item.Id)
+                <td class="col-md-3">@item.Title</td>
+
+                @*@foreach (var comment in Model.ManagerComments)
+                {
+                     while (comment.CriteriaId == item.Id)
+                        {
+                            <td class="col-md-3" >@comment.Comment</td>
+   
+                            break;
+
+                        }
+
+
+                     break;
+
+
+                }*@
+              
+                <td class="col-md-3"></td>
+                <td class="col-md-3" id="@item.Id">@Html.TextBox("ReviewerComments")</td>
+
+                <td><input type="checkbox" name="credit" value="@item.Id" /></td>
+               
+                @*<td class="col-md-3">@Html.CheckBox("Credit", "")</td>*@
+            </tr>
+        }
+
+
+    </table>
+
+
+    <input type="submit" id="submitButton" value="Submit" />
+}
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/2.0.0/jquery.min.js"></script>
+
+
+

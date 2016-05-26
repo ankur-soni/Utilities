@@ -15,7 +15,7 @@ namespace Silicus.Encourage.Web.Models
         public int ResourceId { get; set; }
         public int? ProjectID { get; set; }
         public int? DepartmentId { get; set; }
-        public bool? IsPLC { get; set; }
+        public bool IsPLC { get; set; }
         public bool? IsSubmitted { get; set; }
 
         [Required(ErrorMessage = "Select Project or Department")]

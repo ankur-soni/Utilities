@@ -65,8 +65,9 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\Silicus.UtilityContainer\Silicus.UtilityContainer.Entities\bin\Debug\Silicus.UtilityContainer.Entities.dll</HintPath>
     </Reference>
-    <Reference Include="Silicus.UtilityContainer.Models">
-      <HintPath>..\..\..\UtilitiesFromMaster\Silicus.UtilityContainer\Silicus.UtilityContainer.Models\bin\Debug\Silicus.UtilityContainer.Models.dll</HintPath>
+    <Reference Include="Silicus.UtilityContainer.Models, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\Silicus.UtilityContainer\Silicus.UtilityContainer.Models\bin\Debug\Silicus.UtilityContainer.Models.dll</HintPath>
     </Reference>
     <Reference Include="Silicus.UtilityContainer.Security">
       <HintPath>..\..\Silicus.UtilityContainer\Silicus.UtilityContainer.Security\bin\Debug\Silicus.UtilityContainer.Security.dll</HintPath>
@@ -159,6 +160,7 @@
     <Compile Include="Models\LoginViewModel.cs" />
     <Compile Include="Models\NominationViewModel.cs" />
     <Compile Include="Models\NominationListViewModel.cs" />
+    <Compile Include="Models\ReviewSubmitionViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -638,6 +640,7 @@
     <Content Include="Views\Nomination\ReviewNominations.cshtml" />
     <Content Include="Views\Nomination\SavedNomination.cshtml" />
     <Content Include="Views\Nomination\EditNomination.cshtml" />
+    <Content Include="Views\Nomination\ReviewNomination.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

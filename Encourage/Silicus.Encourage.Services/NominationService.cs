@@ -26,7 +26,7 @@ namespace Silicus.Encourage.Services
 
         public List<Nomination> GetAllSubmitedNominations()
         {
-            return _encourageDatabaseContext.Query<Nomination>().ToList();
+            return _encourageDatabaseContext.Query<Nomination>().Where(N => N.IsSubmitted == true).ToList();
         }
 
         public List<Nomination> GetAllSavedNominations()

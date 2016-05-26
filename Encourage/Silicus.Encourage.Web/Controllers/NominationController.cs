@@ -21,7 +21,7 @@ namespace Silicus.Encourage.Web.Controllers
         private readonly ICommonDataBaseContext _commonDbContext;
         private readonly IEncourageDatabaseContext _encourageDatabaseContext;
         private readonly Silicus.Encourage.DAL.Interfaces.IDataContextFactory _dataContextFactory;
-
+       
         public NominationController(INominationService nominationService, Silicus.Encourage.DAL.Interfaces.IDataContextFactory dataContextFactory, ICommonDbService commonDbService, IAwardService awardService)
         {
             _nominationService = nominationService;
@@ -45,7 +45,7 @@ namespace Silicus.Encourage.Web.Controllers
             ViewBag.ProjectsUnderCurrentUser
                 = new SelectList(_awardService.GetProjectsUnderCurrentUserAsManager("shailendra.birthare@silicus.com"), "Id", "Name");
             ViewBag.ManagerId = _awardService.GetUserIdFromEmail("shailendra.birthare@silicus.com");
-            ViewBag.DepartmentsUnderCurrentUser = new SelectList(_awardService.GetDepartmentsUnderCurrentUserAsManager("tushar.surve@silicus.com"), "Id", "Name");
+           // ViewBag.DepartmentsUnderCurrentUser = new SelectList(_awardService.GetDepartmentsUnderCurrentUserAsManager("tushar.surve@silicus.com"), "Id", "Name");
             ViewBag.Resources = new SelectList(new List<User>(), "Id", "DisplayName");
             return View();
         }
@@ -110,7 +110,7 @@ namespace Silicus.Encourage.Web.Controllers
             var currentUserId = _awardService.GetUserIdFromEmail("shailendra.birthare@silicus.com");
             ViewBag.ManagerId = currentUserId;
 
-            ViewBag.DepartmentsUnderCurrentUser = new SelectList(_awardService.GetDepartmentsUnderCurrentUserAsManager("tushar.surve@silicus.com"), "Id", "Name");
+          //  ViewBag.DepartmentsUnderCurrentUser = new SelectList(_awardService.GetDepartmentsUnderCurrentUserAsManager("tushar.surve@silicus.com"), "Id", "Name");
 
             if (savedNomination.ProjectID != null)
             {
@@ -180,6 +180,78 @@ namespace Silicus.Encourage.Web.Controllers
             }
             return View(reviewNominations);
         }
+
+        public ActionResult ReviewNomination(int nominationId)
+        {
+
+
+            var result = _encourageDatabaseContext.Query<Nomination>().Where(n => n.Id == nominationId).FirstOrDefault();
+           
+            var managerComments = _encourageDatabaseContext.Query<ManagerComment>().ToList();
+
+            var criterias = _encourageDatabaseContext.Query<Criteria>().Where(c => c.AwardId == result.AwardId).ToList();
+
+            var userEmailAddress = Session["UserEmailAddress"] as string;
+
+            var reviewerId = _commonDbContext.Query<User>().Where(u => u.EmailAddress == userEmailAddress).FirstOrDefault().ID;
+            var nomineeName = _commonDbContext.Query<User>().Where(u => u.ID == result.UserId).FirstOrDefault().DisplayName;
+            var manager = _commonDbContext.Query<User>().Where(u => u.ID == result.ManagerId).FirstOrDefault().DisplayName;
+            string projectName = string.Empty ;
+            if (result.ProjectID != null)
+            {
+                projectName = _commonDbContext.Query<Engagement>().Where(e => e.ID == result.ProjectID).FirstOrDefault().Name; 
+            }
+           
+            var reviewNominationViewModel = new ReviewSubmitionViewModel() { ManagerComments = managerComments, Manager = manager, NomineeName = nomineeName, ProjectOrDepartment = projectName, Criterias = criterias, ReviewerId = reviewerId, NominationId = result.Id };
+
+            return View(reviewNominationViewModel);
+        }
+
+
+       
+
+
+        [HttpPost]
+        public ActionResult ReviewNomination(FormCollection collection)
+        {
+             int i = 0;
+            char[] delimiters = { ',' };
+            var reviewerId = Convert.ToInt32(collection["ReviewerId"]);
+            var result = _encourageDatabaseContext.Query<Reviewer>().Where(r => r.UserId == reviewerId).FirstOrDefault().Id;
+            var nominationId = Convert.ToInt32(collection["NominationId"]);
+            var rComments = collection["ReviewerComments"].Split(delimiters).ToArray();
+            var cId = collection["CriteriaId"].Split(delimiters).ToArray();
+            //var credit = collection["Credit"].Split(delimiters).ToArray();
+            List<int> Ids = new List<int>();
+            List<int> finalIds = new List<int>();
+            foreach (var rComment in rComments)
+            {
+                if (!String.IsNullOrEmpty(rComment))
+                {
+                    int data = Array.IndexOf(rComments, rComment);
+                    Ids.Add(data);
+                }
+
+            }
+
+            foreach (var item in Ids)
+            {
+                finalIds.Add(Convert.ToInt32(cId[item]));
+
+            }
+
+            foreach (var finalId in finalIds)
+            {
+                var rc = new ReviewerComment() { ReviewerId = result, NominationId = nominationId, CriteriaId = finalId, Comment = rComments[Ids[i]] };
+                _encourageDatabaseContext.Add<ReviewerComment>(rc);
+                _encourageDatabaseContext.SaveChanges();
+                i++;
+
+            }
+
+            return RedirectToAction("Dashboard", "Dashboard");
+        }
+
 
         [HttpGet]
         public ActionResult SavedNomination()
