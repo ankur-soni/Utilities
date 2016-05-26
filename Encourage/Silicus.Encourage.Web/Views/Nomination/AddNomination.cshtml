@@ -7,23 +7,37 @@
 <h2>Add Nomination</h2>
 
 
+<head>
+    <title>Add Nomination</title>
+    <link href="~/css/bootstrap.min.css" rel="stylesheet" />
+
+
+    <link href="~/font-awesome/css/font-awesome.css" rel="stylesheet" />
+    <link href="~/css/animate.css" rel="stylesheet" />
+
+    <link href="~/LESS/style.css" rel="stylesheet" />
+
+
+    <!-- FooTable -->
+    <link href="~/css/plugins/footable/footable.core.css" rel="stylesheet" />
+</head>
+
 @using (Html.BeginForm())
 {
     @Html.AntiForgeryToken()
 
     <div class="form-horizontal">
-        <hr />
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
         <div class="form-group">
-            @Html.Label("Nomination Category", htmlAttributes: new { @class = "control-label col-md-4" })
-            <div class="col-md-8">
+            @Html.Label("Nomination Category", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
                 @Html.DropDownListFor(model => model.AwardId, @ViewBag.Awards as SelectList, "Select", new { htmlAttributes = new { @class = "form-control" }, id = "Award" })
                 @Html.ValidationMessageFor(model => model.AwardId, "", new { @class = "text-danger" })
             </div>
         </div>
 
         <div class="form-group">
-            @Html.Label("Resource From", htmlAttributes: new { @class = "control-label col-md-4" })
+            @Html.Label("Resource From", htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-8">
                 <label> @Html.RadioButtonFor(model => model.SelectResourcesBy, "Project", new { htmlAttributes = new { @class = "form-control" }, id = "ProjectRadioButton" })Project</label>
                 <label> @Html.RadioButtonFor(model => model.SelectResourcesBy, "Department", new { htmlAttributes = new { @class = "form-control" }, id = "DepartmentRadioButton" })Department</label>
@@ -34,62 +48,58 @@
         <input type="hidden" name=ManagerId value=@ViewBag.ManagerId>
 
         <div class="form-group">
-            @Html.Label("Project", htmlAttributes: new { @class = "control-label col-md-4" })
-            <div class="col-md-8">
-                @Html.DropDownListFor(model => model.ProjectID, @ViewBag.ProjectsUnderCurrentUser as SelectList, "Select", new { htmlAttributes = new { @class = "form-control"}, id = "SelectedProject" })
+            @Html.Label("Project", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.DropDownListFor(model => model.ProjectID, @ViewBag.ProjectsUnderCurrentUser as SelectList, "Select", new { htmlAttributes = new { @class = "form-control" }, id = "SelectedProject" })
                 @Html.ValidationMessageFor(model => model.ProjectID, "", new { @class = "text-danger" })
             </div>
         </div>
 
         <div class="form-group">
-            @Html.Label("Department", htmlAttributes: new { @class = "control-label col-md-4" })
-            <div class="col-md-8">
-                @Html.DropDownListFor(model => model.DepartmentId, @ViewBag.DepartmentsUnderCurrentUser as SelectList, "Select", new { htmlAttributes = new { @class = "form-control"}, id = "SelectedDepartment" })
+            @Html.Label("Department", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.DropDownListFor(model => model.DepartmentId, @ViewBag.DepartmentsUnderCurrentUser as SelectList, "Select", new { htmlAttributes = new { @class = "form-control" }, id = "SelectedDepartment" })
                 @Html.ValidationMessageFor(model => model.DepartmentId, "", new { @class = "text-danger" })
             </div>
         </div>
 
         <div class="form-group">
-            @Html.Label("Resource Name", htmlAttributes: new { @class = "control-label col-md-4" })
-            <div class="col-md-8">
+            @Html.Label("Resource Name", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
                 @Html.DropDownListFor(model => model.ResourceId, @ViewBag.Resources as SelectList, "Select", new { htmlAttributes = new { @class = "form-control" }, id = "Resources" })
                 @Html.ValidationMessageFor(model => model.ResourceId, "", new { @class = "text-danger" })
             </div>
         </div>
 
         <div class="form-group">
-            @Html.Label("IsPLC", htmlAttributes: new { @class = "control-label col-md-4" })
-            <div class="col-md-8">
+            @Html.Label("IsPLC", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
                 @Html.CheckBoxFor(model => model.IsPLC, new { htmlAttributes = new { @class = "form-control" } }) Yes
                 @Html.ValidationMessageFor(model => model.IsPLC, "", new { @class = "text-danger" })
             </div>
         </div>
         <br />
-        <br />
-        <hr />
-
         <div class="form-group">
-            @Html.Label("Criteria", htmlAttributes: new { @class = "control-label col-md-2" })
+            @Html.Label("Criteria Comment", htmlAttributes: new { @class = "control-label col-md-offset-5" })
             <br />
-            <div class="form-group">
+            <br />
+            <div class="col-md-10">
                 <div id="Criterias">
                     <table border="1" id="criteriaTable"></table>
                 </div>
             </div>
         </div>
+        <br />
+        <br />
         <div class="form-group">
-            <div class="col-md-offset-2 col-md-10">
+            <div class="col-md-offset-4">
                 <input type="submit" name="submit" value="Save Draft" id="saveButton" class="btn btn-default" />
                 <input type="submit" name="submit" value="Submit" id="submitButton"  class="btn btn-default" />
-                <input type="button" value="Cancel" class="btn btn-default" />
+                <input type="button" value="Cancel" class="btn btn-default" onclick="location.href='@Url.Action("Dashboard", "Dashboard")'" />
             </div>
         </div>
     </div>
 }
-
-<div>
-    @Html.ActionLink("Back to List", "Index")
-</div>
 
 <script src="https://code.jquery.com/jquery-1.10.2.js"></script>
 <script src="~/Scripts/jquery.validate.min.js"></script>
@@ -134,15 +144,15 @@
                 alert(xhr.responseText)
             },
             success: function (data) {
-                $('#criteriaTable').append('<tr><th>Id</th><th>Criteria-Description</th><th>Comment</th></tr>');
+                $('#criteriaTable').append('<tr><th style="text-align:center">Criteria-Description</th><th  style="text-align:center">Comment</th></tr>');
 
                 for (var key in data) {
                     $('#criteriaTable tr:last')
-                        .after('<tr><td><label>' + data[key].Id + '</label></td>'
-                        + '<td><label>' + data[key].Title + '</label></td>'
-                        + '<td><input type="text" name=Comments[' + key + '].Comment></td>'
+                        .after('<tr><td class="col-md-6"><label>' + data[key].Title + '</label></td>'
+                        + '<td class="col-md-6"><textarea class="form-control" rows="" name=Comments[' + key + '].Comment id="comment"></textarea></td>'
                         + '<td><input type="hidden" name=Comments[' + key + '].Id value=' + data[key].Id + '></td></tr>');
                 }
+
             }
         });
     });

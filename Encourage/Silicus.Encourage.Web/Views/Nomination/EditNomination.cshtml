@@ -5,24 +5,41 @@
 }
 
 <h2>Edit Nomination</h2>
+<head>
+    <title>Edit Nomination</title>
+    <link href="~/css/bootstrap.min.css" rel="stylesheet" />
 
+
+    <link href="~/font-awesome/css/font-awesome.css" rel="stylesheet" />
+    <link href="~/css/animate.css" rel="stylesheet" />
+
+    <link href="~/LESS/style.css" rel="stylesheet" />
+
+
+    <!-- FooTable -->
+    <link href="~/css/plugins/footable/footable.core.css" rel="stylesheet" />
+</head>
 
 @using (Html.BeginForm())
 {
     @Html.AntiForgeryToken()
 
+    @Html.HiddenFor(model => model.NominationId, new { htmlAttributes = new { @id = "NominationId" } });
+    @Html.HiddenFor(model => model.ManagerId);
+
     <div class="form-horizontal">
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
         <div class="form-group">
-            @Html.LabelFor(model => model.AwardId, htmlAttributes: new { @class = "control-label col-md-2" })
+            @Html.Label("Award Category", htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
                 @Html.DropDownListFor(model => model.AwardId, @ViewBag.Awards as SelectList, "Select", new { htmlAttributes = new { @class = "form-control" }, id = "Award" })
+                @Html.HiddenFor(model => model.AwardId)
                 @Html.ValidationMessageFor(model => model.AwardId, "", new { @class = "text-danger" })
             </div>
         </div>
 
         <div class="form-group">
-            @Html.Label("Resource From", htmlAttributes: new { @class = "control-label col-md-4" })
+            @Html.Label("Resource From", htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-8">
                 <label> @Html.RadioButtonFor(model => model.SelectResourcesBy, "Project", new { htmlAttributes = new { @class = "form-control" }, id = "ProjectRadioButton" })Project</label>
                 <label> @Html.RadioButtonFor(model => model.SelectResourcesBy, "Department", new { htmlAttributes = new { @class = "form-control" }, id = "DepartmentRadioButton" })Department</label>
@@ -31,7 +48,7 @@
         </div>
 
         <div class="form-group">
-            @Html.LabelFor(model => model.ProjectID, htmlAttributes: new { @class = "control-label col-md-2" })
+            @Html.Label("Project", htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
                 @Html.DropDownListFor(model => model.ProjectID, @ViewBag.ProjectsUnderCurrentUser as SelectList, "Select", new { htmlAttributes = new { @class = "form-control" }, id = "SelectedProject" })
                 @Html.ValidationMessageFor(model => model.ProjectID, "", new { @class = "text-danger" })
@@ -39,7 +56,7 @@
         </div>
 
         <div class="form-group">
-            @Html.LabelFor(model => model.DepartmentId, htmlAttributes: new { @class = "control-label col-md-2" })
+            @Html.Label("Department", htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
                 @Html.DropDownListFor(model => model.DepartmentId, @ViewBag.DepartmentsUnderCurrentUser as SelectList, "Select", new { htmlAttributes = new { @class = "form-control" }, id = "SelectedDepartment" })
                 @Html.ValidationMessageFor(model => model.DepartmentId, "", new { @class = "text-danger" })
@@ -47,7 +64,7 @@
         </div>
 
         <div class="form-group">
-            @Html.LabelFor(model => model.ResourceId, htmlAttributes: new { @class = "control-label col-md-2" })
+            @Html.Label("Resource", htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
                 @Html.DropDownListFor(model => model.ResourceId, @ViewBag.Resources as SelectList, "Select", new { htmlAttributes = new { @class = "form-control" }, id = "Resources" })
                 @Html.ValidationMessageFor(model => model.ResourceId, "", new { @class = "text-danger" })
@@ -55,27 +72,143 @@
         </div>
 
         <div class="form-group">
-            @Html.LabelFor(model => model.IsPLC, htmlAttributes: new { @class = "control-label col-md-2" })
+            @Html.Label("Is PLC", htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
                 <div class="checkbox">
-                    @Html.CheckBoxFor(model => model.IsPLC.Value, new { htmlAttributes = new { @class = "form-control" } }) Yes
+                    @Html.CheckBoxFor(model => model.IsPLC, new { htmlAttributes = new { @class = "form-control" } }) Yes
                     @Html.ValidationMessageFor(model => model.IsPLC, "", new { @class = "text-danger" })
                 </div>
             </div>
         </div>
 
         <div class="form-group">
-            <div class="col-md-offset-2 col-md-10">
-                @if (Model.IsSubmitted == true)
+            @Html.Label("Criteria Comment", htmlAttributes: new { @class = "control-label col-md-offset-4" })
+            <br />
+            <br />
+            <div class="col-md-10">
+                <table border="1">
+                    <tr><th></th><th style="text-align:center">Criteria Title</th><th style="text-align:center">Comment</th></tr>
+                    @if (Model.IsSubmitted == true)
+                    {
+                        @Html.DisplayFor(model => model.Comments)
+                    }
+                    else
+                    {
+                        @Html.EditorFor(model => model.Comments)
+                    }
+                </table>
+            </div>
+        </div>
+        <br />
+        <br />
+        <div class="form-group">
+            <div class="col-md-offset-4 col-md-10">
+                @if (Model.IsSubmitted != true)
                 {
-                    <input type="button" value="Cancel" class="btn btn-default" onclick="location.href='@Url.Action("SavedNomination", "Nomination")'" />
-                }
-                else
-                {
+                    <input type="button" value="Discard" id="discardButton" class="btn btn-default" />
                     <input type="submit" value="Submit" class="btn btn-default" />
                 }
+                <input type="button" value="Back" class="btn btn-default" onclick="location.href='@Url.Action("SavedNomination", "Nomination")'" />
             </div>
         </div>
     </div>
 }
 
+<script src="https://code.jquery.com/jquery-1.10.2.js"></script>
+<script src="~/Scripts/jquery.validate.min.js"></script>
+<script src="~/Scripts/jquery.validate.unobtrusive.js"></script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        $("#Award").prop("disabled", true);
+    })
+
+    $("#ProjectRadioButton").change
+        (
+         function () {
+             $("#SelectedProject").prop("disabled", false);
+             $("#SelectedDepartment").prop('selectedIndex', 0);
+             $("#SelectedDepartment").prop("disabled", true);
+             $('#Resources').empty();
+             $('#Resources').append($("<option selected></option>").val(null).html("Select"));
+         });
+
+    $("#DepartmentRadioButton").change
+        (
+          function () {
+              $("#SelectedDepartment").prop("disabled", false);
+              $("#SelectedProject").prop('selectedIndex', 0);
+              $("#SelectedProject").prop("disabled", true);
+              $('#Resources').empty();
+              $('#Resources').append($("<option selected></option>").val(null).html("Select"));
+          });
+
+    $("#SelectedProject").change(function () {
+        var selectedProject = $("#SelectedProject").val();
+        $('#Resources').empty();
+        $('#Resources').append($("<option selected></option>").val(null).html("Select"));
+
+        var ServiceUrl = "/Nomination/ResourcesInProject?engagementID=" + selectedProject;
+        $.ajax({
+            type: 'GET',
+            url: ServiceUrl,
+            contentType: "application/json; charset=utf-8",
+            error: function (xhr, err) {
+                alert(xhr.responseText)
+            },
+            success: function (data) {
+
+                for (var key in data) {
+                    $('#Resources')
+                        .append($("<option></option>").val(data[key].ID).html(data[key].DisplayName));
+                }
+            }
+        });
+    });
+
+
+    $("#SelectedDepartment").change(function () {
+        var selectedDept = $("#SelectedDepartment").val();
+        var ServiceUrl = "/Nomination/ResourcesInDepartment?departmentID=" + selectedDept;
+        $('#Resources').empty();
+        $('#Resources').append($("<option selected></option>").val(null).html("Select"));
+
+        $.ajax({
+            type: 'GET',
+            url: ServiceUrl,
+            contentType: "application/json; charset=utf-8",
+            error: function (xhr, err) {
+                alert(xhr.responseText)
+            },
+            success: function (data) {
+                for (var key in data) {
+                    $('#Resources')
+                        .append($("<option></option>").val(data[key].ID).html(data[key].DisplayName));
+                }
+            }
+        });
+    });
+
+
+    $("#discardButton").click(function () {
+        var nominationId = $("#NominationId").val();
+
+        $.ajax({
+            url: '@Url.Action("DiscardNomination", "Nomination")',
+            type: "POST",
+            data: JSON.stringify({ nominationId: nominationId }),
+            datatype: "JSON",
+            contentType: "application/json; charset=utf-8",
+            success: function (data) {
+                alert("succed")
+                window.location.href = "/Nomination/SavedNomination/";
+            },
+            error: function () {
+                alert("An error has occured!!!");
+            }
+
+        });
+
+
+
+    });
+</script>

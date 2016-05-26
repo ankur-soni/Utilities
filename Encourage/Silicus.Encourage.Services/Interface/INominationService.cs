@@ -13,5 +13,8 @@ namespace Silicus.Encourage.Services.Interface
         List<Nomination> GetAllSubmitedNominations();
         List<Nomination> GetAllSavedNominations();
         Nomination GetNomination(int nominationId);
+        void UpdateNomination(Nomination model);
+        void DeletePrevoiusManagerComments(int nominationID);
+        void DiscardNomination(int nominationId);
     }
 }

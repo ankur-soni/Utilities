@@ -1,4 +1,5 @@
-﻿using Silicus.Encourage.DAL.Interfaces;
+﻿using AutoMapper;
+using Silicus.Encourage.DAL.Interfaces;
 using Silicus.Encourage.Models;
 using Silicus.Encourage.Services.Interface;
 using Silicus.Encourage.Web.Models;
@@ -96,6 +97,13 @@ namespace Silicus.Encourage.Web.Controllers
             return Json(criteriaList, JsonRequestBehavior.AllowGet);
         }
 
+        [HttpPost]
+        public ActionResult DiscardNomination(int nominationId)
+        {
+            _nominationService.DiscardNomination(nominationId);
+            return RedirectToAction("SavedNomination");
+        }
+
         [HttpGet]
         public ActionResult EditSavedNomination(int nominationId)
         {
@@ -125,6 +133,7 @@ namespace Silicus.Encourage.Web.Controllers
 
             //IN FUTURE GOING TO USE MAPPER
             nominationViewModel.AwardId = savedNomination.AwardId;
+            nominationViewModel.NominationId = savedNomination.Id;
             nominationViewModel.ManagerId = savedNomination.ManagerId;
             nominationViewModel.ProjectID = savedNomination.ProjectID;
             nominationViewModel.DepartmentId = savedNomination.DepartmentId;
@@ -132,8 +141,66 @@ namespace Silicus.Encourage.Web.Controllers
             nominationViewModel.ResourceId = savedNomination.UserId;
             nominationViewModel.IsSubmitted = savedNomination.IsSubmitted;
 
+
+            var criterias = _awardService.GetCriteriasForAward(nominationViewModel.AwardId);
+
+            foreach (var criteria in criterias)
+            {
+                string addedComment = string.Empty;
+
+                foreach (var comment in savedNomination.ManagerComments)
+                {
+                    if (criteria.Id == comment.CriteriaId)
+                    {
+                        addedComment = comment.Comment;
+                    }
+                }
+                nominationViewModel.Comments.Add(new CriteriaCommentViewModel()
+                {
+                    Id = criteria.Id,
+                    title = criteria.Title,
+                    Comment = addedComment
+                });
+            }
             return View("EditNomination", nominationViewModel);
         }
+
+        [HttpPost]
+        public ActionResult EditSavedNomination(NominationViewModel model)
+        {
+            Nomination nomination = new Nomination();
+
+            nomination.Id = model.NominationId;
+            nomination.AwardId = model.AwardId;
+            nomination.DepartmentId = model.DepartmentId;
+            nomination.ProjectID = model.ProjectID;
+            nomination.IsPLC = model.IsPLC;
+            nomination.IsSubmitted = true;
+            nomination.ManagerId = model.ManagerId;
+            nomination.UserId = model.ResourceId;
+            nomination.NominationDate = DateTime.Now.Date;
+
+            foreach (var comment in model.Comments)
+            {
+                if (comment != null)
+                {
+                    nomination.ManagerComments.Add(new ManagerComment()
+                    {
+                        CriteriaId = comment.Id,
+                        Comment = comment.Comment,
+                        NominationId = model.NominationId
+
+                    });
+                }
+            }
+
+            _nominationService.DeletePrevoiusManagerComments(model.NominationId);
+
+            _nominationService.UpdateNomination(nomination);
+
+            return RedirectToAction("SavedNomination");
+        }
+
 
         [HttpGet]
         public JsonResult ResourcesInProject(int engagementID)
