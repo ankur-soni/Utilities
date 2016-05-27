@@ -4,7 +4,7 @@
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram DiagramId="b0f16ab7290149988f3ed7597bf23ec6" Name="Diagram1">
+      <Diagram DiagramId="5278463af54b448fab6de1123557403c" Name="Diagram1">
         <EntityTypeShape EntityType="EnCourageModel.C__MigrationHistory" Width="1.5" PointX="0.75" PointY="0.75" IsExpanded="true" />
         <EntityTypeShape EntityType="EnCourageModel.Award" Width="1.5" PointX="3" PointY="7.375" IsExpanded="true" />
         <EntityTypeShape EntityType="EnCourageModel.AwardCriteria" Width="1.5" PointX="7.5" PointY="7.625" IsExpanded="true" />

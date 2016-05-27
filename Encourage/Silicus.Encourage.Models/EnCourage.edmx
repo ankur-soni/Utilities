@@ -353,7 +353,8 @@
             <End Role="Review" EntitySet="Review" />
           </AssociationSet>
         </EntityContainer>
-      </Schema></edmx:StorageModels>
+      </Schema>
+    </edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="EnCourageModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
@@ -797,7 +798,6 @@
           <EntitySetMapping Name="Nominations">
             <EntityTypeMapping TypeName="EnCourageModel.Nomination">
               <MappingFragment StoreEntitySet="Nomination">
-                <ScalarProperty Name="Comment" ColumnName="Comment" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="AwardId" ColumnName="AwardId" />
                 <ScalarProperty Name="ManagerId" ColumnName="ManagerId" />
