@@ -22,6 +22,7 @@ namespace Silicus.Encourage.Web.Controllers
         private readonly ICommonDataBaseContext _commonDbContext;
         private readonly IEncourageDatabaseContext _encourageDatabaseContext;
         private readonly Silicus.Encourage.DAL.Interfaces.IDataContextFactory _dataContextFactory;
+        private readonly TextInfo textInfo;
        
         public NominationController(INominationService nominationService, Silicus.Encourage.DAL.Interfaces.IDataContextFactory dataContextFactory, ICommonDbService commonDbService, IAwardService awardService)
         {
@@ -31,6 +32,7 @@ namespace Silicus.Encourage.Web.Controllers
             _dataContextFactory = dataContextFactory;
             _encourageDatabaseContext = _dataContextFactory.CreateEncourageDbContext();
             _awardService = awardService;
+            textInfo= new CultureInfo("en-US", false).TextInfo;
         }
 
         // GET: Nomination/Create
@@ -40,13 +42,14 @@ namespace Silicus.Encourage.Web.Controllers
             ViewBag.Awards = new SelectList(_awardService.GetAllAwards(), "Id", "Name");
 
             //ViewBag.ProjectsUnderCurrentUser
-            //    = new SelectList(_awardService.GetProjectsUnderCurrentUserAsManager(userEmailAddress), "Id", "Name"); 
+            //   = new SelectList(_awardService.GetProjectsUnderCurrentUserAsManager(userEmailAddress), "Id", "Name"); 
             //ViewBag.ManagerId = _awardService.GetUserIdFromEmail(userEmailAddress);
 
             ViewBag.ProjectsUnderCurrentUser
                 = new SelectList(_awardService.GetProjectsUnderCurrentUserAsManager("shailendra.birthare@silicus.com"), "Id", "Name");
             ViewBag.ManagerId = _awardService.GetUserIdFromEmail("shailendra.birthare@silicus.com");
             ViewBag.DepartmentsUnderCurrentUser = new SelectList(_awardService.GetDepartmentsUnderCurrentUserAsManager("tushar.surve@silicus.com"), "Id", "Name");
+           
             ViewBag.Resources = new SelectList(new List<User>(), "Id", "DisplayName");
             return View();
         }
@@ -55,6 +58,8 @@ namespace Silicus.Encourage.Web.Controllers
         public ActionResult AddNomination(NominationViewModel model, string submit)
         {
             var nomination = new Nomination();
+          
+            
             nomination.AwardId = model.AwardId;
             nomination.ManagerId = model.ManagerId;
             nomination.UserId = model.ResourceId;
@@ -80,11 +85,13 @@ namespace Silicus.Encourage.Web.Controllers
                         new ManagerComment()
                         {
                             CriteriaId = criteria.Id,
-                            Comment = criteria.Comment
+                            Comment =criteria.Comment!=null?textInfo.ToTitleCase(criteria.Comment):"" 
                         }
                         );
                 }
             }
+            nomination.Comment =textInfo.ToTitleCase(model.MainComment);
+
             var isNominated = _awardService.AddNomination(nomination);
             return RedirectToAction("Dashboard", "Dashboard");
         }
@@ -118,7 +125,7 @@ namespace Silicus.Encourage.Web.Controllers
             var currentUserId = _awardService.GetUserIdFromEmail("shailendra.birthare@silicus.com");
             ViewBag.ManagerId = currentUserId;
 
-          //  ViewBag.DepartmentsUnderCurrentUser = new SelectList(_awardService.GetDepartmentsUnderCurrentUserAsManager("tushar.surve@silicus.com"), "Id", "Name");
+            ViewBag.DepartmentsUnderCurrentUser = new SelectList(_awardService.GetDepartmentsUnderCurrentUserAsManager("tushar.surve@silicus.com"), "Id", "Name");
 
             if (savedNomination.ProjectID != null)
             {
@@ -140,7 +147,7 @@ namespace Silicus.Encourage.Web.Controllers
             nominationViewModel.IsPLC = savedNomination.IsPLC.Value;
             nominationViewModel.ResourceId = savedNomination.UserId;
             nominationViewModel.IsSubmitted = savedNomination.IsSubmitted;
-
+            nominationViewModel.MainComment = savedNomination.Comment;
 
             var criterias = _awardService.GetCriteriasForAward(nominationViewModel.AwardId);
 
@@ -187,28 +194,29 @@ namespace Silicus.Encourage.Web.Controllers
                     nomination.ManagerComments.Add(new ManagerComment()
                     {
                         CriteriaId = comment.Id,
-                        Comment = comment.Comment,
+                        Comment = comment.Comment!=null?textInfo.ToTitleCase(comment.Comment):"",
                         NominationId = model.NominationId
 
                     });
                 }
             }
 
-            _nominationService.DeletePrevoiusManagerComments(model.NominationId);
+            nomination.Comment =textInfo.ToTitleCase(model.MainComment);
 
+            _nominationService.DeletePrevoiusManagerComments(model.NominationId);
             _nominationService.UpdateNomination(nomination);
 
             return RedirectToAction("SavedNomination");
         }
 
 
-        [HttpGet]
-        public JsonResult ResourcesInProject(int engagementID)
+        [HttpPost]
+        public JsonResult ResourcesInProject(int engagementID, int awardId)
         {
             //var userIdToExcept = _awardService.GetUserIdFromEmail(Session["UserEmailAddress"] as string);
-            var userIdToExcept = _awardService.GetUserIdFromEmail("shailendra.birthare@silicus.com");
+            var managerId = _awardService.GetUserIdFromEmail("shailendra.birthare@silicus.com");
 
-            var usersInEngagement = _awardService.GetResourcesInEngagement(engagementID, userIdToExcept);
+            var usersInEngagement = _awardService.GetResourcesInEngagement(engagementID, managerId);
             return Json(usersInEngagement, JsonRequestBehavior.AllowGet);
         }
 
@@ -254,7 +262,7 @@ namespace Silicus.Encourage.Web.Controllers
         {
 
             var result = _encourageDatabaseContext.Query<Nomination>().Where(n => n.Id == nominationId).FirstOrDefault();
-
+           
             var managerComments = _encourageDatabaseContext.Query<ManagerComment>().ToList();
 
             var criterias = _encourageDatabaseContext.Query<Criteria>().Where(c => c.AwardId == result.AwardId).ToList();
@@ -268,18 +276,18 @@ namespace Silicus.Encourage.Web.Controllers
             string projectName = string.Empty;
             if (result.ProjectID != null)
             {
-                projectName = _commonDbContext.Query<Engagement>().Where(e => e.ID == result.ProjectID).FirstOrDefault().Name;
+                projectName = _commonDbContext.Query<Engagement>().Where(e => e.ID == result.ProjectID).FirstOrDefault().Name; 
             }
-
+           
             var reviewNominationViewModel = new ReviewSubmitionViewModel() { ManagerComments = managerComments, Manager = manager, NomineeName = nomineeName, ProjectOrDepartment = projectName, Criterias = criterias, ReviewerId = reviewerId, NominationId = result.Id };
 
             return View(reviewNominationViewModel);
 
-            
+
         }
-
-
        
+
+
 
         [HttpPost]
         public ActionResult ReviewNomination(ReviewSubmitionViewModel model,string Submit)
@@ -292,10 +300,10 @@ namespace Silicus.Encourage.Web.Controllers
                 _encourageDatabaseContext.Delete<ReviewerComment>(previousComment);
             }
             if (alreadyReviewed != null)
-            {
+                {
                 _encourageDatabaseContext.Delete<Review>(alreadyReviewed);
                 _encourageDatabaseContext.SaveChanges();
-            }
+                }
 
             var review = new Review();
             review.NominationId = model.NominationId;
@@ -307,11 +315,11 @@ namespace Silicus.Encourage.Web.Controllers
             {
                 review.IsSubmited = true; 
             }
-            
+
             
 
             _encourageDatabaseContext.Add<Review>(review);
-           
+
             foreach (var item in model.Comments)
             {
                 var revrComment = new ReviewerComment() { 

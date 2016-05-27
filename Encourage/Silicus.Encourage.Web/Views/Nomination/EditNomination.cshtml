@@ -4,19 +4,13 @@
     ViewBag.Title = "EditNomination";
 }
 
-<h2>Edit Nomination</h2>
+<h2 id="heading">EDIT NOMINATION</h2>
 <head>
     <title>Edit Nomination</title>
     <link href="~/css/bootstrap.min.css" rel="stylesheet" />
-
-
     <link href="~/font-awesome/css/font-awesome.css" rel="stylesheet" />
     <link href="~/css/animate.css" rel="stylesheet" />
-
     <link href="~/LESS/style.css" rel="stylesheet" />
-
-
-    <!-- FooTable -->
     <link href="~/css/plugins/footable/footable.core.css" rel="stylesheet" />
 </head>
 
@@ -26,87 +20,99 @@
 
     @Html.HiddenFor(model => model.NominationId, new { htmlAttributes = new { @id = "NominationId" } });
     @Html.HiddenFor(model => model.ManagerId);
+    @Html.HiddenFor(model => model.IsSubmitted, new { htmlAttributes = new { @id = "IsSubmitted" } });
 
-    <div class="form-horizontal">
+    <div class="form-horizontal  col-md-offset-1">
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-        <div class="form-group">
-            @Html.Label("Award Category", htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.DropDownListFor(model => model.AwardId, @ViewBag.Awards as SelectList, "Select", new { htmlAttributes = new { @class = "form-control" }, id = "Award" })
-                @Html.HiddenFor(model => model.AwardId)
-                @Html.ValidationMessageFor(model => model.AwardId, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.Label("Resource From", htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-8">
-                <label> @Html.RadioButtonFor(model => model.SelectResourcesBy, "Project", new { htmlAttributes = new { @class = "form-control" }, id = "ProjectRadioButton" })Project</label>
-                <label> @Html.RadioButtonFor(model => model.SelectResourcesBy, "Department", new { htmlAttributes = new { @class = "form-control" }, id = "DepartmentRadioButton" })Department</label>
-                @Html.ValidationMessageFor(model => model.SelectResourcesBy, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.Label("Project", htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.DropDownListFor(model => model.ProjectID, @ViewBag.ProjectsUnderCurrentUser as SelectList, "Select", new { htmlAttributes = new { @class = "form-control" }, id = "SelectedProject" })
-                @Html.ValidationMessageFor(model => model.ProjectID, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.Label("Department", htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.DropDownListFor(model => model.DepartmentId, @ViewBag.DepartmentsUnderCurrentUser as SelectList, "Select", new { htmlAttributes = new { @class = "form-control" }, id = "SelectedDepartment" })
-                @Html.ValidationMessageFor(model => model.DepartmentId, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.Label("Resource", htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.DropDownListFor(model => model.ResourceId, @ViewBag.Resources as SelectList, "Select", new { htmlAttributes = new { @class = "form-control" }, id = "Resources" })
-                @Html.ValidationMessageFor(model => model.ResourceId, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.Label("Is PLC", htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                <div class="checkbox">
-                    @Html.CheckBoxFor(model => model.IsPLC, new { htmlAttributes = new { @class = "form-control" } }) Yes
-                    @Html.ValidationMessageFor(model => model.IsPLC, "", new { @class = "text-danger" })
+        <div id="basicFields">
+            <div class="form-group">
+                @Html.Label("Award Category", htmlAttributes: new { @class = "control-label col-md-3", style = "text-align: left" })
+                <div class="col-md-9">
+                    @Html.DropDownListFor(model => model.AwardId, @ViewBag.Awards as SelectList, "Select", new { htmlAttributes = new { @class = "form-control" }, id = "Award" })
+                    @Html.HiddenFor(model => model.AwardId)
+                    @Html.ValidationMessageFor(model => model.AwardId, "", new { @class = "text-danger" })
                 </div>
             </div>
-        </div>
 
-        <div class="form-group">
-            @Html.Label("Criteria Comment", htmlAttributes: new { @class = "control-label col-md-offset-4" })
-            <br />
-            <br />
+            <div class="form-group">
+                @Html.Label("Resource From", htmlAttributes: new { @class = "control-label col-md-3", style = "text-align: left" })
+                <div class="col-md-9">
+                    <label> @Html.RadioButtonFor(model => model.SelectResourcesBy, "Project", new { htmlAttributes = new { @class = "form-control" }, id = "ProjectRadioButton" })Project</label>
+                    <label> @Html.RadioButtonFor(model => model.SelectResourcesBy, "Department", new { htmlAttributes = new { @class = "form-control" }, id = "DepartmentRadioButton" })Department</label>
+                    @Html.ValidationMessageFor(model => model.SelectResourcesBy, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group" id="projectInput">
+                @Html.Label("Project", htmlAttributes: new { @class = "control-label col-md-3", style = "text-align: left" })
+                <div class="col-md-9">
+                    @Html.DropDownListFor(model => model.ProjectID, @ViewBag.ProjectsUnderCurrentUser as SelectList, "Select", new { htmlAttributes = new { @class = "form-control" }, id = "SelectedProject" })
+                    @Html.ValidationMessageFor(model => model.ProjectID, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group" id="departmentInput">
+                @Html.Label("Department", htmlAttributes: new { @class = "control-label col-md-3", style = "text-align: left" })
+                <div class="col-md-9">
+                    @Html.DropDownListFor(model => model.DepartmentId, @ViewBag.DepartmentsUnderCurrentUser as SelectList, "Select", new { htmlAttributes = new { @class = "form-control" }, id = "SelectedDepartment" })
+                    @Html.ValidationMessageFor(model => model.DepartmentId, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.Label("Resource", htmlAttributes: new { @class = "control-label col-md-3", style = "text-align: left" })
+                <div class="col-md-9">
+                    @Html.DropDownListFor(model => model.ResourceId, @ViewBag.Resources as SelectList, "Select", new { htmlAttributes = new { @class = "form-control" }, id = "Resources" })
+                    @Html.ValidationMessageFor(model => model.ResourceId, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.Label("Is PLC", htmlAttributes: new { @class = "control-label col-md-3", style = "text-align: left" })
+                <div class="col-md-9">
+                    <div class="checkbox">
+                        @Html.CheckBoxFor(model => model.IsPLC, new { htmlAttributes = new { @class = "form-control" } }) Yes
+                        @Html.ValidationMessageFor(model => model.IsPLC, "", new { @class = "text-danger"})
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.Label("Criteria Comment", htmlAttributes: new { @class = "control-label col-md-offset-4" })
+                <br />
+                <br />
+                <div class="col-md-10  ">
+                    <table border="1">
+                        <tr><th></th><th style="text-align:center">Criteria Title</th><th style="text-align:center">Comment</th></tr>
+                        @if (Model.IsSubmitted == true)
+                        {
+                            @Html.DisplayFor(model => model.Comments)
+                        }
+                        else
+                        {
+                            @Html.EditorFor(model => model.Comments)
+                        }
+                    </table>
+                    @Html.ValidationMessageFor(model => model.Comments, "", new { @class = "text-danger" })
+                    <span id="criteriaCommentValidationMsg"></span>
+                 </div>
+            </div>
+        </div>
+        <br />
+        <div class="form-group ">
+            @Html.Label("Comment", htmlAttributes: new { @class = "control-label col-md-2", style = "text-align: left" })
             <div class="col-md-10">
-                <table border="1">
-                    <tr><th></th><th style="text-align:center">Criteria Title</th><th style="text-align:center">Comment</th></tr>
-                    @if (Model.IsSubmitted == true)
-                    {
-                        @Html.DisplayFor(model => model.Comments)
-                    }
-                    else
-                    {
-                        @Html.EditorFor(model => model.Comments)
-                    }
-                </table>
+                @Html.TextAreaFor(model => model.MainComment, new { htmlAttributes = new { @class = "form-control" }, id = "commentBox", style = "min-width: 60%", rows = "7", placeholder = "If candidate is selected as winner, this text will be shared across the company" })
             </div>
         </div>
         <br />
         <br />
         <div class="form-group">
-            <div class="col-md-offset-4 col-md-10">
+            <div class="col-md-offset-3 col-md-10">
                 @if (Model.IsSubmitted != true)
                 {
                     <input type="button" value="Discard" id="discardButton" class="btn btn-default" />
-                    <input type="submit" value="Submit" class="btn btn-default" />
+                    <input type="submit" value="Submit" class="btn btn-default" onclick="return checkCriteriaComments();" />
                 }
                 <input type="button" value="Back" class="btn btn-default" onclick="location.href='@Url.Action("SavedNomination", "Nomination")'" />
             </div>
@@ -117,40 +123,78 @@
 <script src="https://code.jquery.com/jquery-1.10.2.js"></script>
 <script src="~/Scripts/jquery.validate.min.js"></script>
 <script src="~/Scripts/jquery.validate.unobtrusive.js"></script>
+<script src="//code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
+
 <script type="text/javascript">
     $(document).ready(function () {
+
+        var selectedProject = $("#SelectedProject").val();
+        var selectedDept = $("#SelectedDepartment").val();
+        var isSubmitted = $("#IsSubmitted").val();
+
         $("#Award").prop("disabled", true);
+
+        if (selectedProject != "")
+            $("#departmentInput").hide();
+        else if (selectedDept != "")
+            $("#projectInput").hide();
+
+        if (isSubmitted == "True") {
+            $('#basicFields').find('*').prop('disabled', true);
+            $('#commentBox').removeAttr('placeholder');
+            $('#commentBox').prop('disabled', true);
+            $('#heading').text("Nomination Details")
+        }
     })
 
     $("#ProjectRadioButton").change
         (
          function () {
-             $("#SelectedProject").prop("disabled", false);
-             $("#SelectedDepartment").prop('selectedIndex', 0);
-             $("#SelectedDepartment").prop("disabled", true);
+             $("#departmentInput").hide();
+             $("#SelectedProject").prop('selectedIndex', 0);
              $('#Resources').empty();
              $('#Resources').append($("<option selected></option>").val(null).html("Select"));
+             $("#projectInput").show();
          });
 
     $("#DepartmentRadioButton").change
         (
           function () {
-              $("#SelectedDepartment").prop("disabled", false);
-              $("#SelectedProject").prop('selectedIndex', 0);
-              $("#SelectedProject").prop("disabled", true);
+              $("#projectInput").hide();
+              $("#SelectedDepartment").prop('selectedIndex', 0);
               $('#Resources').empty();
               $('#Resources').append($("<option selected></option>").val(null).html("Select"));
+              $("#departmentInput").show();
           });
+
+    function checkCriteriaComments() {
+        var comments = new Array();
+       
+        $(".criteriaComment").children("textarea").each(function (data) {
+            if ($(this).val().trim())
+                comments.push($(this).val());
+        });
+
+        if (comments.length < 1) {
+            $(".criteriaComment").children("textarea").first().tooltip({ title: "Enter at least one criteria comment.", placement: 'right' }).tooltip('show');;
+           return false;
+        }
+    }
+
+    $(".criteriaComment").on('click', function () { $(".criteriaComment").children("textarea").first().tooltip('destroy'); });
 
     $("#SelectedProject").change(function () {
         var selectedProject = $("#SelectedProject").val();
+        var selectedAward = $("#Award").val();
+
         $('#Resources').empty();
         $('#Resources').append($("<option selected></option>").val(null).html("Select"));
 
         var ServiceUrl = "/Nomination/ResourcesInProject?engagementID=" + selectedProject;
         $.ajax({
-            type: 'GET',
-            url: ServiceUrl,
+            type: 'post',
+            url: '@Url.Action("ResourcesInProject", "Nomination")',
+            data: JSON.stringify({ engagementID: selectedProject, awardId: selectedAward }),
             contentType: "application/json; charset=utf-8",
             error: function (xhr, err) {
                 alert(xhr.responseText)
@@ -164,7 +208,6 @@
             }
         });
     });
-
 
     $("#SelectedDepartment").change(function () {
         var selectedDept = $("#SelectedDepartment").val();
@@ -208,7 +251,19 @@
 
         });
 
-
-
     });
+
+    $.validator.setDefaults({
+        showErrors: function (errorMap, errorList) {
+            $(".valid").each(function (i, v) {
+                $(v).tooltip('destroy');
+            });
+
+            $.each(errorList, function (i, v) {
+                $(v.element).tooltip({ title: v.message, placement: 'right' });
+            });
+
+            this.defaultShowErrors();
+        }
+    })
 </script>
