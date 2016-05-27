@@ -16,9 +16,16 @@ namespace Silicus.Encourage.Web.Models
         public string ProjectOrDepartment { get; set; }
         public string Manager { get; set; }
         public List<ManagerComment> ManagerComments { get; set; }
-        public List<ReviewerComment> ReviewerComments { get; set; }
+        //public List<ReviewerComment> ReviewerComments { get; set; }
         public List<Criteria> Criterias { get; set; }
       //  public List<bool> Credits { get; set; }
+
+        public IList<ReviewerCommentViewModel> Comments { get; set; }
+
+        public ReviewSubmitionViewModel()
+        {
+            Comments = new List<ReviewerCommentViewModel>();   
+        }
     }
 
 }

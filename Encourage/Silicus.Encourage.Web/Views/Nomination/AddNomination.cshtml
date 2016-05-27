@@ -135,7 +135,7 @@
         var selectdAward = $("#Award").val();
         $('#criteriaTable').empty();
         var ServiceUrl = "/Nomination/CriteriasForAward?awardId=" + selectdAward;
-
+        debugger;
         $.ajax({
             type: 'post',
             url: ServiceUrl,
@@ -145,8 +145,9 @@
             },
             success: function (data) {
                 $('#criteriaTable').append('<tr><th style="text-align:center">Criteria-Description</th><th  style="text-align:center">Comment</th></tr>');
-
+                debugger;
                 for (var key in data) {
+                    debugger
                     $('#criteriaTable tr:last')
                         .after('<tr><td class="col-md-6"><label>' + data[key].Title + '</label></td>'
                         + '<td class="col-md-6"><textarea class="form-control" rows="" name=Comments[' + key + '].Comment id="comment"></textarea></td>'

@@ -46,7 +46,7 @@ namespace Silicus.Encourage.Web.Controllers
             ViewBag.ProjectsUnderCurrentUser
                 = new SelectList(_awardService.GetProjectsUnderCurrentUserAsManager("shailendra.birthare@silicus.com"), "Id", "Name");
             ViewBag.ManagerId = _awardService.GetUserIdFromEmail("shailendra.birthare@silicus.com");
-           // ViewBag.DepartmentsUnderCurrentUser = new SelectList(_awardService.GetDepartmentsUnderCurrentUserAsManager("tushar.surve@silicus.com"), "Id", "Name");
+            ViewBag.DepartmentsUnderCurrentUser = new SelectList(_awardService.GetDepartmentsUnderCurrentUserAsManager("tushar.surve@silicus.com"), "Id", "Name");
             ViewBag.Resources = new SelectList(new List<User>(), "Id", "DisplayName");
             return View();
         }
@@ -227,10 +227,12 @@ namespace Silicus.Encourage.Web.Controllers
         [HttpGet]
         public ActionResult ReviewNominations()
         {
-            var nominations = _nominationService.GetAllSubmitedNominations();
+
+            var nominations = _nominationService.GetAllSubmitedNonreviewedNominations();
             var reviewNominations = new List<NominationListViewModel>();
             foreach (var nomination in nominations)
             {
+
                 var awardName = _encourageDatabaseContext.Query<Award>().Where(a => a.Id == nomination.AwardId).FirstOrDefault().Code;
                 var nomineeName = _commonDbContext.Query<User>().Where(u => u.ID == nomination.UserId).FirstOrDefault();
                 var nominationTime = _encourageDatabaseContext.Query<Nomination>().Where(n => n.Id == nomination.Id).FirstOrDefault().NominationDate;
@@ -251,74 +253,87 @@ namespace Silicus.Encourage.Web.Controllers
         public ActionResult ReviewNomination(int nominationId)
         {
 
-
             var result = _encourageDatabaseContext.Query<Nomination>().Where(n => n.Id == nominationId).FirstOrDefault();
-           
+
             var managerComments = _encourageDatabaseContext.Query<ManagerComment>().ToList();
 
             var criterias = _encourageDatabaseContext.Query<Criteria>().Where(c => c.AwardId == result.AwardId).ToList();
 
             var userEmailAddress = Session["UserEmailAddress"] as string;
 
-            var reviewerId = _commonDbContext.Query<User>().Where(u => u.EmailAddress == userEmailAddress).FirstOrDefault().ID;
+            var reviewersUserId = _commonDbContext.Query<User>().Where(u => u.EmailAddress == userEmailAddress).FirstOrDefault().ID;
+            var reviewerId = _encourageDatabaseContext.Query<Reviewer>().Where(r => r.UserId == reviewersUserId).FirstOrDefault().Id;
             var nomineeName = _commonDbContext.Query<User>().Where(u => u.ID == result.UserId).FirstOrDefault().DisplayName;
             var manager = _commonDbContext.Query<User>().Where(u => u.ID == result.ManagerId).FirstOrDefault().DisplayName;
-            string projectName = string.Empty ;
+            string projectName = string.Empty;
             if (result.ProjectID != null)
             {
-                projectName = _commonDbContext.Query<Engagement>().Where(e => e.ID == result.ProjectID).FirstOrDefault().Name; 
+                projectName = _commonDbContext.Query<Engagement>().Where(e => e.ID == result.ProjectID).FirstOrDefault().Name;
             }
-           
+
             var reviewNominationViewModel = new ReviewSubmitionViewModel() { ManagerComments = managerComments, Manager = manager, NomineeName = nomineeName, ProjectOrDepartment = projectName, Criterias = criterias, ReviewerId = reviewerId, NominationId = result.Id };
 
             return View(reviewNominationViewModel);
+
+            
         }
 
 
        
 
-
         [HttpPost]
-        public ActionResult ReviewNomination(FormCollection collection)
+        public ActionResult ReviewNomination(ReviewSubmitionViewModel model,string Submit)
         {
-             int i = 0;
-            char[] delimiters = { ',' };
-            var reviewerId = Convert.ToInt32(collection["ReviewerId"]);
-            var result = _encourageDatabaseContext.Query<Reviewer>().Where(r => r.UserId == reviewerId).FirstOrDefault().Id;
-            var nominationId = Convert.ToInt32(collection["NominationId"]);
-            var rComments = collection["ReviewerComments"].Split(delimiters).ToArray();
-            var cId = collection["CriteriaId"].Split(delimiters).ToArray();
-            //var credit = collection["Credit"].Split(delimiters).ToArray();
-            List<int> Ids = new List<int>();
-            List<int> finalIds = new List<int>();
-            foreach (var rComment in rComments)
-            {
-                if (!String.IsNullOrEmpty(rComment))
-                {
-                    int data = Array.IndexOf(rComments, rComment);
-                    Ids.Add(data);
-                }
 
+            var alreadyReviewed = _encourageDatabaseContext.Query<Review>().Where(r => r.ReviewerId == model.ReviewerId && r.NominationId == model.NominationId).FirstOrDefault();
+            var previousComments = _encourageDatabaseContext.Query<ReviewerComment>().Where(r => r.ReviewerId == model.ReviewerId && r.NominationId == model.NominationId).ToList();
+            foreach (var previousComment in previousComments)
+            {
+                _encourageDatabaseContext.Delete<ReviewerComment>(previousComment);
             }
-
-            foreach (var item in Ids)
+            if (alreadyReviewed != null)
             {
-                finalIds.Add(Convert.ToInt32(cId[item]));
-
-            }
-
-            foreach (var finalId in finalIds)
-            {
-                var rc = new ReviewerComment() { ReviewerId = result, NominationId = nominationId, CriteriaId = finalId, Comment = rComments[Ids[i]] };
-                _encourageDatabaseContext.Add<ReviewerComment>(rc);
+                _encourageDatabaseContext.Delete<Review>(alreadyReviewed);
                 _encourageDatabaseContext.SaveChanges();
-                i++;
-
             }
 
+            var review = new Review();
+            review.NominationId = model.NominationId;
+            review.ReviewerId = model.ReviewerId;
+            review.ReviewDate = DateTime.UtcNow;
+
+
+            if (!string.IsNullOrEmpty(Submit) && Submit == "Submit")
+            {
+                review.IsSubmited = true; 
+            }
+            
+            
+
+            _encourageDatabaseContext.Add<Review>(review);
+           
+            foreach (var item in model.Comments)
+            {
+                var revrComment = new ReviewerComment() { 
+                    NominationId=model.NominationId,
+                    ReviewerId = model.ReviewerId,
+                    CriteriaId = item.Id,
+                    Comment = item.Comment,
+                    Credit =Convert.ToInt32(item.Credit)
+                
+                };
+                _encourageDatabaseContext.Add<ReviewerComment>(revrComment);
+                _encourageDatabaseContext.SaveChanges();
+            }
             return RedirectToAction("Dashboard", "Dashboard");
         }
 
+        
+        [HttpPost]
+        public ActionResult SaveReview(ReviewSubmitionViewModel model)
+        {
+            return View();
+        }
 
         [HttpGet]
         public ActionResult SavedNomination()

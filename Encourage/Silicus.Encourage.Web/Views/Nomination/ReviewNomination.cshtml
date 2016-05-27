@@ -1,5 +1,7 @@
 ﻿@model Silicus.Encourage.Web.Models.ReviewSubmitionViewModel
 
+
+
 @{
     ViewBag.Title = "ReviewNomination";
 }
@@ -78,47 +80,70 @@
             <th class="col-md-3">ReviewerComment</th>
             <th class="col-md-2">Credits</th>
         </tr>
-
+        @{
+    var j = 0;
+        }
         @foreach (var item in Model.Criterias)
         {
-
+          
             <tr class="col-md-12">
                 <td class="col-md-1">@item.Id</td>
                 @Html.Hidden("CriteriaId", @item.Id)
                 <td class="col-md-3">@item.Title</td>
 
                 @*@foreach (var comment in Model.ManagerComments)
-                {
-                     while (comment.CriteriaId == item.Id)
-                        {
-                            <td class="col-md-3" >@comment.Comment</td>
-   
-                            break;
+                    {
+                         while (comment.CriteriaId == item.Id)
+                            {
+                                <td class="col-md-3" >@comment.Comment</td>
 
-                        }
+                                break;
 
-
-                     break;
+                            }
 
 
-                }*@
-              
+                         break;
+
+
+                    }*@
+
                 <td class="col-md-3"></td>
-                <td class="col-md-3" id="@item.Id">@Html.TextBox("ReviewerComments")</td>
-
-                <td><input type="checkbox" name="credit" value="@item.Id" /></td>
                
-                @*<td class="col-md-3">@Html.CheckBox("Credit", "")</td>*@
-            </tr>
-        }
+                <td class="col-md-3">@Html.TextBox("Comments["+@j+"].Comment")</td>
+                
+                @Html.Hidden("Comments["+@j+"].Id",item.Id)
 
+               
+                @*<td><input type="checkbox" name="credit" value="@item.Id" /></td>*@
+
+                <td class="col-md-3">@Html.CheckBox("Comments["+j+"].Credit", "")</td>
+            </tr>
+            j++;
+        }
+        @if (Model.ManagerComments != null)
+        {
+            for (int i = 0; i < Model.ManagerComments.Count; i++)
+            {
+                @Html.HiddenFor(model => Model.ManagerComments[i].Comment)
+            }
+        }
 
     </table>
 
 
-    <input type="submit" id="submitButton" value="Submit" />
+    <div class="form-group">
+        <div class="col-md-offset-4">
+            <input type="submit" name="submit" value="Save Draft" id="saveButton" class="btn btn-default"   />
+            <input type="submit" name="submit" value="Submit" id="submitButton" class="btn btn-default" />
+            <input type="button" value="Cancel" class="btn btn-default" onclick="location.href='@Url.Action("Dashboard", "Dashboard")'" />
+        </div>
+    </div>
 }
+
+
 <script src="http://ajax.googleapis.com/ajax/libs/jquery/2.0.0/jquery.min.js"></script>
 
-
-
+<script>
+   
+</script>
+   

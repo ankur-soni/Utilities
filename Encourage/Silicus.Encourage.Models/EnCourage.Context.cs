@@ -28,10 +28,11 @@ namespace Silicus.Encourage.Models
         public virtual DbSet<C__MigrationHistory> C__MigrationHistory { get; set; }
         public virtual DbSet<Award> Awards { get; set; }
         public virtual DbSet<AwardCriteria> AwardCriterias { get; set; }
-        public virtual DbSet<Criteria> Criteria { get; set; }
+        public virtual DbSet<Criteria> Criteria1 { get; set; }
         public virtual DbSet<FrequencyMaster> FrequencyMasters { get; set; }
         public virtual DbSet<ManagerComment> ManagerComments { get; set; }
         public virtual DbSet<Nomination> Nominations { get; set; }
+        public virtual DbSet<Review> Reviews { get; set; }
         public virtual DbSet<Reviewer> Reviewers { get; set; }
         public virtual DbSet<ReviewerComment> ReviewerComments { get; set; }
         public virtual DbSet<Winner> Winners { get; set; }

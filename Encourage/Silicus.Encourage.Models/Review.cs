@@ -12,16 +12,15 @@ namespace Silicus.Encourage.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class ReviewerComment
+    public partial class Review
     {
         public int Id { get; set; }
         public int NominationId { get; set; }
-        public int CriteriaId { get; set; }
         public int ReviewerId { get; set; }
-        public string Comment { get; set; }
-        public Nullable<int> Credit { get; set; }
+        public Nullable<bool> IsSubmited { get; set; }
+        public Nullable<bool> IsLocked { get; set; }
+        public Nullable<System.DateTime> ReviewDate { get; set; }
     
-        public virtual Criteria Criterion { get; set; }
         public virtual Nomination Nomination { get; set; }
         public virtual Reviewer Reviewer { get; set; }
     }

@@ -20,6 +20,7 @@ namespace Silicus.Encourage.Models
             this.ManagerComments = new HashSet<ManagerComment>();
             this.ReviewerComments = new HashSet<ReviewerComment>();
             this.Winners = new HashSet<Winner>();
+            this.Reviews = new HashSet<Review>();
         }
     
         public int Id { get; set; }
@@ -34,13 +35,16 @@ namespace Silicus.Encourage.Models
         public Nullable<bool> IsLocked { get; set; }
         public Nullable<bool> IsSubmitted { get; set; }
         public byte[] UserImage { get; set; }
+        public string Comment { get; set; }
     
         public virtual Award Award { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public ICollection<ManagerComment> ManagerComments { get; set; }
+        public virtual ICollection<ManagerComment> ManagerComments { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<ReviewerComment> ReviewerComments { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Winner> Winners { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Review> Reviews { get; set; }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using Silicus.Encourage.DAL.Interfaces;
 using Silicus.Encourage.Models;
+using Silicus.Encourage.Services.Comparer;
 using Silicus.Encourage.Services.Interface;
 using System;
 using System.Collections.Generic;
@@ -24,9 +25,24 @@ namespace Silicus.Encourage.Services
             return _encourageDatabaseContext.Query<Nomination>("ManagerComments").ToList();
         }
 
-        public List<Nomination> GetAllSubmitedNominations()
+        public List<Nomination> GetAllSubmitedNonreviewedNominations()
         {
-            return _encourageDatabaseContext.Query<Nomination>().Where(N => N.IsSubmitted == true).ToList();
+            var alreadyReviewedRecords = _encourageDatabaseContext.Query<Review>().ToList();
+            var finalNomination = new List<Nomination>();
+            var allNominations = _encourageDatabaseContext.Query<Nomination>().Where(N => N.IsSubmitted == true).ToList();
+
+            foreach (var item in alreadyReviewedRecords)
+            {
+                finalNomination.Add(_encourageDatabaseContext.Query<Nomination>().Where(N => N.IsSubmitted == true && N.Id == item.NominationId).FirstOrDefault());
+                
+            }
+            foreach (var item in finalNomination)
+	        {
+                allNominations.RemoveAll(r => r.Id == item.Id);
+	        }
+
+
+            return allNominations;
         }
 
         public List<Nomination> GetAllSavedNominations()
@@ -36,13 +52,13 @@ namespace Silicus.Encourage.Services
 
         public Nomination GetNomination(int nominationId)
         {
-           return _encourageDatabaseContext.Query<Nomination>("ManagerComments").Where(nomination => nomination.Id == nominationId).SingleOrDefault();
+            return _encourageDatabaseContext.Query<Nomination>("ManagerComments").Where(nomination => nomination.Id == nominationId).SingleOrDefault();
         }
 
         public void UpdateNomination(Nomination model)
         {
 
-           _encourageDatabaseContext.Update<Nomination>(model);
+            _encourageDatabaseContext.Update<Nomination>(model);
         }
 
         public void DeletePrevoiusManagerComments(int nominationID)
@@ -56,7 +72,7 @@ namespace Silicus.Encourage.Services
         public void DiscardNomination(int nominationId)
         {
             DeletePrevoiusManagerComments(nominationId);
-            var nominationToDelete=_encourageDatabaseContext.Query<Nomination>().Where(nomination => nomination.Id == nominationId).SingleOrDefault();
+            var nominationToDelete = _encourageDatabaseContext.Query<Nomination>().Where(nomination => nomination.Id == nominationId).SingleOrDefault();
             _encourageDatabaseContext.Delete<Nomination>(nominationToDelete);
         }
 

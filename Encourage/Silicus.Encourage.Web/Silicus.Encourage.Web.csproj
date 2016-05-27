@@ -167,6 +167,7 @@
     <Compile Include="Models\LoginViewModel.cs" />
     <Compile Include="Models\NominationViewModel.cs" />
     <Compile Include="Models\NominationListViewModel.cs" />
+    <Compile Include="Models\ReviewerCommentViewModel.cs" />
     <Compile Include="Models\ReviewSubmitionViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -649,6 +650,7 @@
     <Content Include="Views\Nomination\EditNomination.cshtml" />
     <Content Include="Views\Shared\EditorTemplates\CriteriaCommentViewModel.cshtml" />
     <Content Include="Views\Shared\DisplayTemplates\CriteriaCommentViewModel.cshtml" />
+    <Content Include="Views\Nomination\ReviewNomination.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
