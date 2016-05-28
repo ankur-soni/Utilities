@@ -1,0 +1,76 @@
+﻿@model IEnumerable<Silicus.Encourage.Web.Models.NominationListViewModel>
+@using System.Drawing;
+@{
+    ViewBag.Title = "ReviewNominations";
+}
+
+<style>
+    hr {
+        background-color: black;
+        height: 1px;
+        border: 0;
+        padding-left: 0px;
+    }
+</style>
+
+
+<div class="row border-bottom">
+    <nav class="navbar  " role="navigation" style="margin-bottom: 0">
+        <div class="navbar-header">
+            <a class="navbar-minimalize minimalize-styl-2 btn btn-primary " href="#"><i class="fa fa-bars"></i> </a>
+        </div>
+    </nav>
+</div>
+<div class="row wrapper border-bottom white-bg page-heading border-bottom">
+    <div class="col-sm-12">
+        <h1>Review Nominations</h1>
+    </div>
+</div>
+<div class="wrapper wrapper-content animated fadeInRight">
+   
+    <div class="row">
+        @foreach (var item in Model)
+        {
+            Random randomGen = new Random();
+            KnownColor[] names = (KnownColor[])Enum.GetValues(typeof(KnownColor));
+            KnownColor randomColorName = names[randomGen.Next(names.Length)];
+            Color randomColor = Color.FromKnownColor(randomColorName);
+            var myBorderColor = string.Empty;
+            var myButtonText = string.Empty;
+
+            if (item.IsSubmitted == true)
+            {
+                myBorderColor = "Green";
+                myButtonText = "Details";
+            }
+            else
+            {
+                myBorderColor = "Red";
+                myButtonText = "Edit";
+            }
+
+            <div class="col-md-3" style="Margin-right:10px;Margin-bottom:10px; border:solid; color:@myBorderColor;">
+                <div class="ibox float-e-margins">
+
+                    <div class="ibox-title">
+                        @*<div style="background-color:@randomColor.Name;height:60px;padding-left:10px;padding-bottom:70px; font-weight:bold;font-size:40px;text-align:left" class="col-md-5">
+                            @Html.DisplayFor(modelItem => item.Intials)
+                            </div>*@
+                        @Html.DisplayFor(modelItem => item.DisplayName)
+                        @Html.DisplayFor(modelItem => item.AwardName)
+                        @Html.DisplayFor(modelItem => item.NominationTime)
+                    </div>
+                    <div class="ibox-footer text-left">
+                        <a href="@Url.Action("EditReview", "Nomination", new { nominationId = item.Id, details = myButtonText})" class="btn btn-primary btn-sm">
+                            <span style="font-weight:bold">  @myButtonText </span> <span><i class="fa fa-arrow-circle-o-right fa-2x" aria-hidden="true"></i></span>
+                        </a>
+                    </div>
+                </div>
+
+            </div>
+
+        }
+    </div>
+   
+    <br />
+</div>

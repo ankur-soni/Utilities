@@ -651,6 +651,11 @@
     <Content Include="Views\Shared\EditorTemplates\CriteriaCommentViewModel.cshtml" />
     <Content Include="Views\Shared\DisplayTemplates\CriteriaCommentViewModel.cshtml" />
     <Content Include="Views\Nomination\ReviewNomination.cshtml" />
+    <Content Include="Views\Nomination\SavedReviews.cshtml" />
+    <Content Include="Views\Nomination\ReviewDetails.cshtml" />
+    <Content Include="Views\Shared\DisplayTemplates\ReviewerCommentViewModel.cshtml" />
+    <Content Include="Views\Shared\EditorTemplates\RvierCommentViewModel.cshtml" />
+    <Content Include="Views\Nomination\EditReview.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

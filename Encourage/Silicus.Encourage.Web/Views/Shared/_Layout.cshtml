@@ -13,7 +13,7 @@
     <link href="~/css/bootstrap.min.css" rel="stylesheet" />
 
 
-   
+
     <link href="~/font-awesome/css/font-awesome.css" rel="stylesheet" />
 
     <link href="~/css/animate.css" rel="stylesheet" />
@@ -152,14 +152,15 @@
                             @if (roles.Contains("Reviewer"))
                             {
                                 <li><a href="@Url.Action("ReviewNominations","Nomination")" class="active">Review Nominations</a></li>
+                                <li><a href="@Url.Action("SavedReviews","Nomination")" class="active">Reviewed Nominations</a></li>
                                 <li><a href="edit-users.html" class="active">Edit Review</a></li>
                             }
 
                         </ul>
                     </li>
-                    
+
                     <!-- admin role only -->
-                    @if (roles.Contains( "Admin"))
+                    @if (roles.Contains("Admin"))
                     {
                         <li>
                             <a href="#"><i class="fa fa-cogs"></i> <span class="nav-label">ADMIN</span> <span class="fa arrow"></span></a>
@@ -168,7 +169,7 @@
                             </ul>
                         </li>
                     }
-                   
+
                 </ul>
 
             </div>
@@ -184,7 +185,7 @@
         <div id="page-wrapper" class="gray-bg">
 
             <div class="container body-content">
-               
+
                 @RenderBody()
 
             </div>
@@ -207,7 +208,7 @@
     <script src="~/js/jquery-2.1.1.js"></script>
 
     <script src="~/js/bootstrap.min.js"></script>
-    
+
     <script src="~/js/plugins/metisMenu/jquery.metisMenu.js"></script>
     <script src="~/js/plugins/slimscroll/jquery.slimscroll.min.js"></script>
 
@@ -217,8 +218,8 @@
 
     <!-- FooTable -->
     <script src="~/js/plugins/footable/footable.all.min.js"></script>
-    
-  
+
+
 
 
 </body>
@@ -227,7 +228,7 @@
 
 
 <script>
-    $(".fa-chevron-down").click(function() { 
+    $(".fa-chevron-down").click(function () {
         $('.dropdown').toggleClass('open')
     })
 
@@ -236,6 +237,6 @@
 
     })
 
-    
+
 </script>
 

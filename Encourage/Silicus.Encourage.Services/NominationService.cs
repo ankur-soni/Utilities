@@ -45,6 +45,25 @@ namespace Silicus.Encourage.Services
             return allNominations;
         }
 
+        public List<Nomination> GetAllSubmitedReviewedNominations()
+        {
+            var alreadyReviewedRecords = _encourageDatabaseContext.Query<Review>().ToList();
+            var finalNominations = new List<Nomination>();
+           
+
+            foreach (var item in alreadyReviewedRecords)
+            {
+                var nomination = _encourageDatabaseContext.Query<Nomination>().Where(N => N.IsSubmitted == true && N.Id == item.NominationId).FirstOrDefault();
+                nomination.IsSubmitted = item.IsSubmited;
+                finalNominations.Add(nomination);
+
+            }
+
+
+
+            return finalNominations;
+        }
+
         public List<Nomination> GetAllSavedNominations()
         {
             return _encourageDatabaseContext.Query<Nomination>("ManagerComments").Where(nomination => nomination.IsSubmitted == false).ToList();

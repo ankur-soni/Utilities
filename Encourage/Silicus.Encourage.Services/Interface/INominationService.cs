@@ -11,6 +11,7 @@ namespace Silicus.Encourage.Services.Interface
     {
         List<Nomination> GetAllNominations();
         List<Nomination> GetAllSubmitedNonreviewedNominations();
+        List<Nomination> GetAllSubmitedReviewedNominations();
         List<Nomination> GetAllSavedNominations();
         Nomination GetNomination(int nominationId);
         void UpdateNomination(Nomination model);
