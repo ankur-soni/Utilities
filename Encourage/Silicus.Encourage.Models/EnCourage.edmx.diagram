@@ -26,6 +26,10 @@
         <AssociationConnector Association="EnCourageModel.FK_dbo_ReviewerComment_dbo_Nomination_NominationId" ManuallyRouted="false" />
         <AssociationConnector Association="EnCourageModel.FK_dbo_Winner_dbo_Nomination_NominationId" ManuallyRouted="false" />
         <AssociationConnector Association="EnCourageModel.FK_dbo_ReviewerComment_dbo_Reviewer_ReviewerId" ManuallyRouted="false" />
+        <EntityTypeShape EntityType="EnCourageModel.Review" Width="1.5" PointX="13.5" PointY="8.125" />
+        <AssociationConnector Association="EnCourageModel.FK_Review_NominationId" />
+        <AssociationConnector Association="EnCourageModel.FK_Review_Reviewer_Id" />
+        <AssociationConnector Association="EnCourageModel.FK_Review_ReviewId" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

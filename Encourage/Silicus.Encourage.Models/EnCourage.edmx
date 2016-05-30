@@ -75,6 +75,17 @@
           <Property Name="UserImage" Type="varbinary" MaxLength="500" />
           <Property Name="Comment" Type="varchar" MaxLength="500" />
         </EntityType>
+        <EntityType Name="Review">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="NominationId" Type="int" Nullable="false" />
+          <Property Name="ReviewerId" Type="int" Nullable="false" />
+          <Property Name="IsSubmited" Type="bit" />
+          <Property Name="IsLocked" Type="bit" />
+          <Property Name="ReviewDate" Type="date" />
+        </EntityType>
         <EntityType Name="Reviewer">
           <Key>
             <PropertyRef Name="Id" />
@@ -91,6 +102,8 @@
           <Property Name="CriteriaId" Type="int" Nullable="false" />
           <Property Name="ReviewerId" Type="int" Nullable="false" />
           <Property Name="Comment" Type="nvarchar(max)" />
+          <Property Name="Credit" Type="int" />
+          <Property Name="ReviewId" Type="int" Nullable="false" />
         </EntityType>
         <EntityType Name="Winner">
           <Key>
@@ -252,6 +265,42 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_Review_NominationId">
+          <End Role="Nomination" Type="Self.Nomination" Multiplicity="1" />
+          <End Role="Review" Type="Self.Review" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Nomination">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Review">
+              <PropertyRef Name="NominationId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Review_Reviewer_Id">
+          <End Role="Reviewer" Type="Self.Reviewer" Multiplicity="1" />
+          <End Role="Review" Type="Self.Review" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Reviewer">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Review">
+              <PropertyRef Name="ReviewerId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Review_ReviewId">
+          <End Role="Review" Type="Self.Review" Multiplicity="1" />
+          <End Role="ReviewerComment" Type="Self.ReviewerComment" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Review">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ReviewerComment">
+              <PropertyRef Name="ReviewId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <EntityContainer Name="EnCourageModelStoreContainer">
           <EntitySet Name="__MigrationHistory" EntityType="Self.__MigrationHistory" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Award" EntityType="Self.Award" Schema="dbo" store:Type="Tables" />
@@ -260,6 +309,7 @@
           <EntitySet Name="FrequencyMaster" EntityType="Self.FrequencyMaster" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ManagerComment" EntityType="Self.ManagerComment" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Nomination" EntityType="Self.Nomination" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Review" EntityType="Self.Review" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Reviewer" EntityType="Self.Reviewer" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ReviewerComment" EntityType="Self.ReviewerComment" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Winner" EntityType="Self.Winner" Schema="dbo" store:Type="Tables" />
@@ -306,6 +356,18 @@
           <AssociationSet Name="FK_dbo_Winner_dbo_Nomination_NominationId" Association="Self.FK_dbo_Winner_dbo_Nomination_NominationId">
             <End Role="Nomination" EntitySet="Nomination" />
             <End Role="Winner" EntitySet="Winner" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Review_NominationId" Association="Self.FK_Review_NominationId">
+            <End Role="Nomination" EntitySet="Nomination" />
+            <End Role="Review" EntitySet="Review" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Review_Reviewer_Id" Association="Self.FK_Review_Reviewer_Id">
+            <End Role="Reviewer" EntitySet="Reviewer" />
+            <End Role="Review" EntitySet="Review" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Review_ReviewId" Association="Self.FK_Review_ReviewId">
+            <End Role="Review" EntitySet="Review" />
+            <End Role="ReviewerComment" EntitySet="ReviewerComment" />
           </AssociationSet>
         </EntityContainer>
       </Schema></edmx:StorageModels>
@@ -398,6 +460,7 @@
           <NavigationProperty Name="ReviewerComments" Relationship="Self.FK_dbo_ReviewerComment_dbo_Nomination_NominationId" FromRole="Nomination" ToRole="ReviewerComment" />
           <NavigationProperty Name="Winners" Relationship="Self.FK_dbo_Winner_dbo_Nomination_NominationId" FromRole="Nomination" ToRole="Winner" />
           <Property Name="Comment" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Reviews" Relationship="EnCourageModel.FK_Review_NominationId" FromRole="Nomination" ToRole="Review" />
         </EntityType>
         <EntityType Name="Reviewer">
           <Key>
@@ -406,6 +469,7 @@
           <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="UserId" Type="Int32" Nullable="false" />
           <NavigationProperty Name="ReviewerComments" Relationship="Self.FK_dbo_ReviewerComment_dbo_Reviewer_ReviewerId" FromRole="Reviewer" ToRole="ReviewerComment" />
+          <NavigationProperty Name="Reviews" Relationship="EnCourageModel.FK_Review_Reviewer_Id" FromRole="Reviewer" ToRole="Review" />
         </EntityType>
         <EntityType Name="ReviewerComment">
           <Key>
@@ -419,6 +483,9 @@
           <NavigationProperty Name="Criterion" Relationship="Self.FK_dbo_ReviewerComment_dbo_Criteria_CriteriaId" FromRole="ReviewerComment" ToRole="Criteria" />
           <NavigationProperty Name="Nomination" Relationship="Self.FK_dbo_ReviewerComment_dbo_Nomination_NominationId" FromRole="ReviewerComment" ToRole="Nomination" />
           <NavigationProperty Name="Reviewer" Relationship="Self.FK_dbo_ReviewerComment_dbo_Reviewer_ReviewerId" FromRole="ReviewerComment" ToRole="Reviewer" />
+          <Property Name="Credit" Type="Int32" />
+          <Property Name="ReviewId" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Review" Relationship="EnCourageModel.FK_Review_ReviewId" FromRole="ReviewerComment" ToRole="Review" />
         </EntityType>
         <EntityType Name="Winner">
           <Key>
@@ -636,7 +703,70 @@
             <End Role="Reviewer" EntitySet="Reviewers" />
             <End Role="ReviewerComment" EntitySet="ReviewerComments" />
           </AssociationSet>
+          <EntitySet Name="Reviews" EntityType="EnCourageModel.Review" />
+          <AssociationSet Name="FK_Review_NominationId" Association="EnCourageModel.FK_Review_NominationId">
+            <End Role="Nomination" EntitySet="Nominations" />
+            <End Role="Review" EntitySet="Reviews" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Review_Reviewer_Id" Association="EnCourageModel.FK_Review_Reviewer_Id">
+            <End Role="Reviewer" EntitySet="Reviewers" />
+            <End Role="Review" EntitySet="Reviews" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Review_ReviewId" Association="EnCourageModel.FK_Review_ReviewId">
+            <End Role="Review" EntitySet="Reviews" />
+            <End Role="ReviewerComment" EntitySet="ReviewerComments" />
+          </AssociationSet>
         </EntityContainer>
+        <EntityType Name="Review">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="NominationId" Type="Int32" Nullable="false" />
+          <Property Name="ReviewerId" Type="Int32" Nullable="false" />
+          <Property Name="IsSubmited" Type="Boolean" />
+          <Property Name="IsLocked" Type="Boolean" />
+          <Property Name="ReviewDate" Type="DateTime" Precision="0" />
+          <NavigationProperty Name="Nomination" Relationship="EnCourageModel.FK_Review_NominationId" FromRole="Review" ToRole="Nomination" />
+          <NavigationProperty Name="Reviewer" Relationship="EnCourageModel.FK_Review_Reviewer_Id" FromRole="Review" ToRole="Reviewer" />
+          <NavigationProperty Name="ReviewerComments" Relationship="EnCourageModel.FK_Review_ReviewId" FromRole="Review" ToRole="ReviewerComment" />
+        </EntityType>
+        <Association Name="FK_Review_NominationId">
+          <End Type="EnCourageModel.Nomination" Role="Nomination" Multiplicity="1" />
+          <End Type="EnCourageModel.Review" Role="Review" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Nomination">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Review">
+              <PropertyRef Name="NominationId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Review_Reviewer_Id">
+          <End Type="EnCourageModel.Reviewer" Role="Reviewer" Multiplicity="1" />
+          <End Type="EnCourageModel.Review" Role="Review" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Reviewer">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Review">
+              <PropertyRef Name="ReviewerId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Review_ReviewId">
+          <End Type="EnCourageModel.Review" Role="Review" Multiplicity="1" />
+          <End Type="EnCourageModel.ReviewerComment" Role="ReviewerComment" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Review">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ReviewerComment">
+              <PropertyRef Name="ReviewId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -730,6 +860,8 @@
           <EntitySetMapping Name="ReviewerComments">
             <EntityTypeMapping TypeName="EnCourageModel.ReviewerComment">
               <MappingFragment StoreEntitySet="ReviewerComment">
+                <ScalarProperty Name="ReviewId" ColumnName="ReviewId" />
+                <ScalarProperty Name="Credit" ColumnName="Credit" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="NominationId" ColumnName="NominationId" />
                 <ScalarProperty Name="CriteriaId" ColumnName="CriteriaId" />
@@ -744,6 +876,18 @@
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="NominationId" ColumnName="NominationId" />
                 <ScalarProperty Name="WinningDate" ColumnName="WinningDate" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Reviews">
+            <EntityTypeMapping TypeName="EnCourageModel.Review">
+              <MappingFragment StoreEntitySet="Review">
+                <ScalarProperty Name="ReviewDate" ColumnName="ReviewDate" />
+                <ScalarProperty Name="IsLocked" ColumnName="IsLocked" />
+                <ScalarProperty Name="IsSubmited" ColumnName="IsSubmited" />
+                <ScalarProperty Name="ReviewerId" ColumnName="ReviewerId" />
+                <ScalarProperty Name="NominationId" ColumnName="NominationId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

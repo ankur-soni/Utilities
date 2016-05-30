@@ -87,6 +87,9 @@
       <DependentUpon>Encourage.tt</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Review.cs">
+      <DependentUpon>Encourage.tt</DependentUpon>
+    </Compile>
     <Compile Include="Reviewer.cs">
       <DependentUpon>Encourage.tt</DependentUpon>
     </Compile>

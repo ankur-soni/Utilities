@@ -18,6 +18,7 @@ namespace Silicus.Encourage.Models
         public Reviewer()
         {
             this.ReviewerComments = new HashSet<ReviewerComment>();
+            this.Reviews = new HashSet<Review>();
         }
     
         public int Id { get; set; }
@@ -25,5 +26,7 @@ namespace Silicus.Encourage.Models
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<ReviewerComment> ReviewerComments { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Review> Reviews { get; set; }
     }
 }

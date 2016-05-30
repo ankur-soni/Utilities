@@ -19,9 +19,12 @@ namespace Silicus.Encourage.Models
         public int CriteriaId { get; set; }
         public int ReviewerId { get; set; }
         public string Comment { get; set; }
+        public Nullable<int> Credit { get; set; }
+        public int ReviewId { get; set; }
     
         public virtual Criteria Criterion { get; set; }
         public virtual Nomination Nomination { get; set; }
         public virtual Reviewer Reviewer { get; set; }
+        public virtual Review Review { get; set; }
     }
 }

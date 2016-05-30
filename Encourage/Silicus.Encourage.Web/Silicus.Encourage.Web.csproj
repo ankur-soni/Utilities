@@ -153,8 +153,11 @@
     <Compile Include="App_Start\LightInjectWebCommon.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Controllers\IIncluder.cs" />
     <Compile Include="Controllers\NominationController.cs" />
     <Compile Include="Controllers\DashboardController.cs" />
+    <Compile Include="Controllers\QueryableExtensions.cs" />
+    <Compile Include="Controllers\ReviewController.cs" />
     <Compile Include="Filters\CustomeAuthorizeAttribute.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -167,6 +170,7 @@
     <Compile Include="Models\LoginViewModel.cs" />
     <Compile Include="Models\NominationViewModel.cs" />
     <Compile Include="Models\NominationListViewModel.cs" />
+    <Compile Include="Models\ReviewFeedbackListViewModel.cs" />
     <Compile Include="Models\ReviewSubmitionViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -649,6 +653,7 @@
     <Content Include="Views\Nomination\EditNomination.cshtml" />
     <Content Include="Views\Shared\EditorTemplates\CriteriaCommentViewModel.cshtml" />
     <Content Include="Views\Shared\DisplayTemplates\CriteriaCommentViewModel.cshtml" />
+    <Content Include="Views\Review\ReviewFeedbackList.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

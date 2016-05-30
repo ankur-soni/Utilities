@@ -10,6 +10,7 @@ namespace Silicus.Encourage.Services.Interface
 {
     public interface IAwardService
     {
+        Award GetAwardFromNominationId(int nominationId);
         IEnumerable<Award> GetAllAwards();
         List<Engagement> GetProjectsUnderCurrentUserAsManager(string email);
         List<Department> GetDepartmentsUnderCurrentUserAsManager(string email);
@@ -18,6 +19,7 @@ namespace Silicus.Encourage.Services.Interface
         List<User> GetResourcesUnderDepartment(int DepartmentId, int userIdToExcept);
         bool AddNomination(Nomination nomination);
         int GetUserIdFromEmail(string email);
+
 
     }
 }

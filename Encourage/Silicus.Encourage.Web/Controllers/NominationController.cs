@@ -189,7 +189,7 @@ namespace Silicus.Encourage.Web.Controllers
 
             foreach (var comment in model.Comments)
             {
-                if (comment != null)
+                if (comment.Comment != null)
                 {
                     nomination.ManagerComments.Add(new ManagerComment()
                     {
@@ -258,8 +258,6 @@ namespace Silicus.Encourage.Web.Controllers
 
         public ActionResult ReviewNomination(int nominationId)
         {
-
-
             var result = _encourageDatabaseContext.Query<Nomination>().Where(n => n.Id == nominationId).FirstOrDefault();
            
             var managerComments = _encourageDatabaseContext.Query<ManagerComment>().ToList();
@@ -281,10 +279,6 @@ namespace Silicus.Encourage.Web.Controllers
 
             return View(reviewNominationViewModel);
         }
-
-
-       
-
 
         [HttpPost]
         public ActionResult ReviewNomination(FormCollection collection)
@@ -326,7 +320,6 @@ namespace Silicus.Encourage.Web.Controllers
 
             return RedirectToAction("Dashboard", "Dashboard");
         }
-
 
         [HttpGet]
         public ActionResult SavedNomination()

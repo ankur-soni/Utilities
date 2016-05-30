@@ -5,7 +5,6 @@ using System.Web;
 
 namespace Silicus.Encourage.Web.Models
 {
-  
     public class NominationListViewModel
     {
         public int Id { get; set; }
