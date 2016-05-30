@@ -170,8 +170,10 @@
     <Compile Include="Models\LoginViewModel.cs" />
     <Compile Include="Models\NominationViewModel.cs" />
     <Compile Include="Models\NominationListViewModel.cs" />
+    <Compile Include="Models\ReviewerCommentViewModel.cs" />
     <Compile Include="Models\ReviewFeedbackListViewModel.cs" />
     <Compile Include="Models\ReviewSubmitionViewModel.cs" />
+    <Compile Include="Models\ViewShortlistDetailsViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -653,6 +655,12 @@
     <Content Include="Views\Nomination\EditNomination.cshtml" />
     <Content Include="Views\Shared\EditorTemplates\CriteriaCommentViewModel.cshtml" />
     <Content Include="Views\Shared\DisplayTemplates\CriteriaCommentViewModel.cshtml" />
+    <Content Include="Views\Nomination\ReviewNomination.cshtml" />
+    <Content Include="Views\Nomination\SavedReviews.cshtml" />
+    <Content Include="Views\Nomination\ReviewDetails.cshtml" />
+    <Content Include="Views\Shared\DisplayTemplates\ReviewerCommentViewModel.cshtml" />
+    <Content Include="Views\Shared\EditorTemplates\RvierCommentViewModel.cshtml" />
+    <Content Include="Views\Nomination\EditReview.cshtml" />
     <Content Include="Views\Review\ReviewFeedbackList.cshtml" />
   </ItemGroup>
   <ItemGroup>

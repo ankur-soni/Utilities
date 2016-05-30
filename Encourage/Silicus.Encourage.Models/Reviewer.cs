@@ -17,16 +17,16 @@ namespace Silicus.Encourage.Models
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public Reviewer()
         {
-            this.ReviewerComments = new HashSet<ReviewerComment>();
             this.Reviews = new HashSet<Review>();
+            this.ReviewerComments = new HashSet<ReviewerComment>();
         }
     
         public int Id { get; set; }
         public int UserId { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<ReviewerComment> ReviewerComments { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Review> Reviews { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<ReviewerComment> ReviewerComments { get; set; }
     }
 }

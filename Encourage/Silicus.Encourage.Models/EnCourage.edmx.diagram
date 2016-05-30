@@ -4,17 +4,18 @@
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram DiagramId="bddd9a4d035d476ba1b668219cf0df05" Name="Diagram1">
+      <Diagram DiagramId="95c7f0c5bfa440b9b5517d954b5cc638" Name="Diagram1">
         <EntityTypeShape EntityType="EnCourageModel.C__MigrationHistory" Width="1.5" PointX="0.75" PointY="0.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="EnCourageModel.Award" Width="1.5" PointX="3" PointY="6.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="EnCourageModel.AwardCriteria" Width="1.5" PointX="7.5" PointY="7.125" IsExpanded="true" />
-        <EntityTypeShape EntityType="EnCourageModel.Criteria" Width="1.5" PointX="5.25" PointY="7.125" IsExpanded="true" />
-        <EntityTypeShape EntityType="EnCourageModel.FrequencyMaster" Width="1.5" PointX="0.75" PointY="7.125" IsExpanded="true" />
-        <EntityTypeShape EntityType="EnCourageModel.ManagerComment" Width="1.5" PointX="10.5" PointY="9.625" IsExpanded="true" />
-        <EntityTypeShape EntityType="EnCourageModel.Nomination" Width="1.5" PointX="5.25" PointY="10.25" IsExpanded="true" />
-        <EntityTypeShape EntityType="EnCourageModel.Reviewer" Width="1.5" PointX="8.25" PointY="4" IsExpanded="true" />
-        <EntityTypeShape EntityType="EnCourageModel.ReviewerComment" Width="1.5" PointX="10.5" PointY="5.5" IsExpanded="true" />
-        <EntityTypeShape EntityType="EnCourageModel.Winner" Width="1.5" PointX="7.5" PointY="11.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="EnCourageModel.Award" Width="1.5" PointX="3" PointY="7.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="EnCourageModel.AwardCriteria" Width="1.5" PointX="7.5" PointY="8" IsExpanded="true" />
+        <EntityTypeShape EntityType="EnCourageModel.Criteria" Width="1.5" PointX="5.25" PointY="7.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="EnCourageModel.FrequencyMaster" Width="1.5" PointX="0.75" PointY="8.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="EnCourageModel.ManagerComment" Width="1.5" PointX="7.5" PointY="11.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="EnCourageModel.Nomination" Width="1.5" PointX="5.25" PointY="11" IsExpanded="true" />
+        <EntityTypeShape EntityType="EnCourageModel.Review" Width="1.5" PointX="10.5" PointY="14.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="EnCourageModel.Reviewer" Width="1.5" PointX="8.25" PointY="19.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="EnCourageModel.ReviewerComment" Width="1.5" PointX="10.5" PointY="10.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="EnCourageModel.Winner" Width="1.5" PointX="7.5" PointY="15.875" IsExpanded="true" />
         <AssociationConnector Association="EnCourageModel.FK_dbo_Award_dbo_FrequencyMaster_FrequencyId" ManuallyRouted="false" />
         <AssociationConnector Association="EnCourageModel.FK_dbo_AwardCriteria_dbo_Award_AwardId" ManuallyRouted="false" />
         <AssociationConnector Association="EnCourageModel.FK_dbo_Criteria_dbo_Award_Award_Id" ManuallyRouted="false" />
@@ -25,11 +26,10 @@
         <AssociationConnector Association="EnCourageModel.FK_dbo_ManagerComment_dbo_Nomination_NominationId" ManuallyRouted="false" />
         <AssociationConnector Association="EnCourageModel.FK_dbo_ReviewerComment_dbo_Nomination_NominationId" ManuallyRouted="false" />
         <AssociationConnector Association="EnCourageModel.FK_dbo_Winner_dbo_Nomination_NominationId" ManuallyRouted="false" />
+        <AssociationConnector Association="EnCourageModel.FK_Review_NominationId" ManuallyRouted="false" />
+        <AssociationConnector Association="EnCourageModel.FK_Review_Reviewer_Id" ManuallyRouted="false" />
+        <AssociationConnector Association="EnCourageModel.FK_Review_ReviewId" ManuallyRouted="false" />
         <AssociationConnector Association="EnCourageModel.FK_dbo_ReviewerComment_dbo_Reviewer_ReviewerId" ManuallyRouted="false" />
-        <EntityTypeShape EntityType="EnCourageModel.Review" Width="1.5" PointX="13.5" PointY="8.125" />
-        <AssociationConnector Association="EnCourageModel.FK_Review_NominationId" />
-        <AssociationConnector Association="EnCourageModel.FK_Review_Reviewer_Id" />
-        <AssociationConnector Association="EnCourageModel.FK_Review_ReviewId" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

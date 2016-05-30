@@ -24,7 +24,7 @@ namespace Silicus.Encourage.Models
     
         public virtual Criteria Criterion { get; set; }
         public virtual Nomination Nomination { get; set; }
-        public virtual Reviewer Reviewer { get; set; }
         public virtual Review Review { get; set; }
+        public virtual Reviewer Reviewer { get; set; }
     }
 }

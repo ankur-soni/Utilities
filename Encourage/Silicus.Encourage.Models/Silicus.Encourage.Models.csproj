@@ -100,7 +100,6 @@
       <DependentUpon>Encourage.tt</DependentUpon>
     </Compile>
   </ItemGroup>
-  <ItemGroup />
   <ItemGroup>
     <EntityDeploy Include="Encourage.edmx">
       <Generator>EntityModelCodeGenerator</Generator>

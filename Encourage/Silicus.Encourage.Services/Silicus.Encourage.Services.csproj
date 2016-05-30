@@ -49,11 +49,14 @@
   <ItemGroup>
     <Compile Include="AwardService.cs" />
     <Compile Include="CommonDbService.cs" />
+    <Compile Include="Comparer\NominationComaprer.cs" />
     <Compile Include="Interface\IAwardService.cs" />
     <Compile Include="Interface\ICommonDbService.cs" />
     <Compile Include="Interface\INominationService.cs" />
+    <Compile Include="Interface\IReviewService.cs" />
     <Compile Include="NominationService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ReviewService.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Silicus.Encourage.DAL\Silicus.Encourage.DAL.csproj">

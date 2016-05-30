@@ -1,11 +1,6 @@
 ﻿@model Silicus.Encourage.Web.Models.ReviewSubmitionViewModel
 
 
-
-@{
-    ViewBag.Title = "ReviewNomination";
-}
-
 <style>
     .container .content {
         display: none;
@@ -21,7 +16,7 @@
 </div>
 <div class="row wrapper border-bottom white-bg page-heading border-bottom">
     <div class="col-sm-12">
-        <h1>Review Nomination</h1>
+        <h1>Edit Review</h1>
     </div>
 </div>
 <div class="wrapper wrapper-content animated fadeInRight">
@@ -29,7 +24,6 @@
     <div class="row">
         @using (Html.BeginForm())
         {
-
             @Html.HiddenFor(modelItem => modelItem.ReviewerId)
             @Html.HiddenFor(modelItem => modelItem.NominationId);
             <table border="1" style="width:80%" class="white-bg">
@@ -93,9 +87,10 @@
                                                         var j = 0;
                                                         var k = 0;
                 }
-                @foreach (var item in Model.Criterias)
-                {
-                    <tbody>
+                <tbody>
+                    @foreach (var item in Model.Criterias)
+                    {
+
                         <tr>
                             <td class="col-md-1">@item.Id</td>
                             @Html.Hidden("CriteriaId", @item.Id)
@@ -112,16 +107,24 @@
                             }
 
 
-                            <td class="col-md-3">@Html.TextArea("Comments[" + @j + "].Comment")</td>
+                            <td class="col-md-3">@Html.TextArea("Comments[" + @j + "].Comment", Model.Comments[j].Comment)</td>
 
                             @Html.Hidden("Comments[" + @j + "].Id", item.Id)
 
 
-                            <td class="col-md-1">@Html.CheckBox("Comments[" + j + "].Credit", "")</td>
+                            <td class="col-md-1">@Html.CheckBox("Comments[" + j + "].Credit", Model.Comments[j].Credit)</td>
                         </tr>
-                    </tbody>
+
                             j++;
-                }
+                    }
+                    <tr>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <th>Credit Given</th>
+                        <td class="text-center">@ViewBag.creditGiven</td>
+                    </tr>
+                </tbody>
                 @if (Model.ManagerComments != null)
                 {
                     for (int i = 0; i < Model.ManagerComments.Count; i++)
@@ -132,22 +135,21 @@
             </table>
 
 
-
             <div class="form-group">
                 <div class="col-md-offset-4">
-                    <input type="submit" name="submit" value="Save Draft" id="saveButton" class="btn btn-default" />
+                    <input type="submit" name="submit" value="Discard Review" id="saveButton" class="btn btn-default" />
                     <input type="submit" name="submit" value="Submit" id="submitButton" class="btn btn-default" />
-                    <input type="button" value="Cancel" class="btn btn-default" onclick="location.href='@Url.Action("ReviewNominations","Nomination")'" />
+                    <input type="button" value="Cancel" class="btn btn-default" onclick="location.href='@Url.Action("SavedReviews", "Nomination")'" />
                 </div>
             </div>
         }
-        </div>
+       </div>
     </div>
-
         <script src="http://ajax.googleapis.com/ajax/libs/jquery/2.0.0/jquery.min.js"></script>
 
 
         <script>
+
 
             $(".header").click(function () {
 

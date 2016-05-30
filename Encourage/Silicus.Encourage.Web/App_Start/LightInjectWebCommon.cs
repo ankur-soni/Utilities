@@ -35,6 +35,7 @@ namespace Silicus.Encourage.Web.App_Start
             container.Register<ICommonDbService, CommonDbService>();
             container.Register<INominationService, NominationService>();
             container.Register<IEncourageDatabaseContext, EncourageDatabaseContext>();
+            container.Register<IReviewService, ReviewService>();
         }
 
     }

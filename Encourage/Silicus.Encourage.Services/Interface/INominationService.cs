@@ -10,7 +10,19 @@ namespace Silicus.Encourage.Services.Interface
     public interface INominationService
     {
         List<Nomination> GetAllNominations();
-        List<Nomination> GetAllSubmitedNominations();
+        List<Nomination> GetAllSubmitedNonreviewedNominations();
+        Nomination GetReviewNomination(int nominationId);
+        List<ManagerComment> GetManagerCommentsForNomination(int nominationId);
+        List<Criteria> GetCriteriaForNomination(int nominationId);
+        int GetReviewerIdOfCurrentNomination(string email);
+        string GetNomineeNameOfCurrentNomination(int nominationId);
+        string GetManagerNameOfCurrentNomination(int nominationId);
+        string GetProjectNameOfCurrentNomination(int nominationId);
+        public string GetDeptNameOfCurrentNomination(int nominationId);
+        void AddReviewForCurrentNomination(Review review);
+        void AddReviewerCommentsForCurrentNomination(ReviewerComment revrComment);
+
+        List<Nomination> GetAllSubmitedReviewedNominations();
         List<Nomination> GetAllSavedNominations();
         Nomination GetNomination(int nominationId);
         void UpdateNomination(Nomination model);

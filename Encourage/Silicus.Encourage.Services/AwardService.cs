@@ -111,9 +111,5 @@ namespace Silicus.Encourage.Services
             return _CommonDbContext.Query<User>().Where(user => user.EmailAddress == email).FirstOrDefault().ID;
         }
 
-
-    
-
-
     }
 }

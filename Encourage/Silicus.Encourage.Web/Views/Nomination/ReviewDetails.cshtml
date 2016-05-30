@@ -1,17 +1,5 @@
 ﻿@model Silicus.Encourage.Web.Models.ReviewSubmitionViewModel
 
-
-
-@{
-    ViewBag.Title = "ReviewNomination";
-}
-
-<style>
-    .container .content {
-        display: none;
-        padding: 5px;
-    }
-</style>
 <div class="row border-bottom">
     <nav class="navbar  " role="navigation" style="margin-bottom: 0">
         <div class="navbar-header">
@@ -21,9 +9,15 @@
 </div>
 <div class="row wrapper border-bottom white-bg page-heading border-bottom">
     <div class="col-sm-12">
-        <h1>Review Nomination</h1>
+        <h1>Review Details</h1>
     </div>
 </div>
+<style>
+    .container .content {
+        display: none;
+        padding: 5px;
+    }
+</style>
 <div class="wrapper wrapper-content animated fadeInRight">
 
     <div class="row">
@@ -90,12 +84,13 @@
                     </tr>
                 </thead>
                 @{
-                                                        var j = 0;
-                                                        var k = 0;
+                                                                var j = 0;
+                                                                var k = 0;
                 }
-                @foreach (var item in Model.Criterias)
-                {
-                    <tbody>
+                <tbody>
+                    @foreach (var item in Model.Criterias)
+                    {
+
                         <tr>
                             <td class="col-md-1">@item.Id</td>
                             @Html.Hidden("CriteriaId", @item.Id)
@@ -112,16 +107,24 @@
                             }
 
 
-                            <td class="col-md-3">@Html.TextArea("Comments[" + @j + "].Comment")</td>
+                            <td class="col-md-3">@Html.TextArea("Comments[" + @j + "].Comment", Model.Comments[j].Comment, htmlAttributes: new { @class = "col-md-12", @readonly = "readonly" })</td>
 
                             @Html.Hidden("Comments[" + @j + "].Id", item.Id)
 
 
-                            <td class="col-md-1">@Html.CheckBox("Comments[" + j + "].Credit", "")</td>
+                            <td class="col-md-1">@Html.CheckBox("Comments[" + j + "].Credit", Model.Comments[j].Credit, htmlAttributes: new { @class = "col-md-12", @disabled = "disabled" })</td>
                         </tr>
-                    </tbody>
+
                             j++;
-                }
+                    }
+                    <tr>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <th>Credit Given</th>
+                        <td class="text-center">@ViewBag.creditGiven</td>
+                    </tr>
+                </tbody>
                 @if (Model.ManagerComments != null)
                 {
                     for (int i = 0; i < Model.ManagerComments.Count; i++)
@@ -130,41 +133,32 @@
                     }
                 }
             </table>
-
-
-
-            <div class="form-group">
-                <div class="col-md-offset-4">
-                    <input type="submit" name="submit" value="Save Draft" id="saveButton" class="btn btn-default" />
-                    <input type="submit" name="submit" value="Submit" id="submitButton" class="btn btn-default" />
-                    <input type="button" value="Cancel" class="btn btn-default" onclick="location.href='@Url.Action("ReviewNominations","Nomination")'" />
-                </div>
-            </div>
+    <input type="button" value="Back" class="btn btn-default" onclick="location.href='@Url.Action("SavedReviews","Nomination")'" />
         }
-        </div>
     </div>
+</div>
 
-        <script src="http://ajax.googleapis.com/ajax/libs/jquery/2.0.0/jquery.min.js"></script>
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/2.0.0/jquery.min.js"></script>
+
+<script>
 
 
-        <script>
+    $(".header").click(function () {
 
-            $(".header").click(function () {
-
-                $header = $(this);
-                //getting the next element
-                $content = $header.next();
-                //open up the content needed - toggle the slide- if visible, slide up, if not slidedown.
-                $content.slideToggle(500, function () {
-                    //execute this after slideToggle is done
-                    //change text of header based on visibility of content div
-                    $header.text(function () {
-                        //change text based on condition
-                        return $content.is(":visible") ? "Click here to hide comment." : "Click here to see comment.";
-                    });
-                });
-
+        $header = $(this);
+        //getting the next element
+        $content = $header.next();
+        //open up the content needed - toggle the slide- if visible, slide up, if not slidedown.
+        $content.slideToggle(500, function () {
+            //execute this after slideToggle is done
+            //change text of header based on visibility of content div
+            $header.text(function () {
+                //change text based on condition
+                return $content.is(":visible") ? "Click here to hide comment." : "Click here to see comment.";
             });
+        });
 
-        </script>
+    });
+
+</script>
 
