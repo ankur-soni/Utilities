@@ -4,224 +4,222 @@
     ViewBag.Title = "AddNomination";
 }
 
-<h2>ADD NOMINATION</h2>
-
-
-<head>
-    <title>Add Nomination</title>
-    <link href="~/css/bootstrap.min.css" rel="stylesheet" />
-
-
-    <link href="~/font-awesome/css/font-awesome.css" rel="stylesheet" />
-    <link href="~/css/animate.css" rel="stylesheet" />
-
-    <link href="~/LESS/style.css" rel="stylesheet" />
-
-
-    <!-- FooTable -->
-    <link href="~/css/plugins/footable/footable.core.css" rel="stylesheet" />
-</head>
-
-@using (Html.BeginForm())
-{
-    @Html.AntiForgeryToken()
-
-    <div class="form-horizontal col-md-offset-1" >
-        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-        <div class="form-group">
-            @Html.Label("Nomination Category", htmlAttributes: new { @class = "control-label col-md-3", style = "text-align: left" })
-            <div class="col-md-9">
-                @Html.DropDownListFor(model => model.AwardId, @ViewBag.Awards as SelectList, "Select", new { htmlAttributes = new { @class = "form-control" }, id = "Award" })
-            </div>
+<div class="row border-bottom">
+    <nav class="navbar  " role="navigation" style="margin-bottom: 0">
+        <div class="navbar-header">
+            <a class="navbar-minimalize minimalize-styl-2 btn btn-primary " href="#"><i class="fa fa-bars"></i> </a>
         </div>
-
-        <div class="form-group">
-            @Html.Label("Resource From", htmlAttributes: new { @class = "control-label col-md-3", style = "text-align: left" })
-            <div class="col-md-9">
-                <label> @Html.RadioButtonFor(model => model.SelectResourcesBy, "Project", new { htmlAttributes = new { @class = "form-control" }, id = "ProjectRadioButton" })Project</label>
-                <label> @Html.RadioButtonFor(model => model.SelectResourcesBy, "Department", new { htmlAttributes = new { @class = "form-control" }, id = "DepartmentRadioButton" })Department</label>
-            </div>
-        </div>
-
-        <input type="hidden" name=ManagerId value=@ViewBag.ManagerId>
-
-        <div class="form-group" id="projectInput">
-            @Html.Label("Project", htmlAttributes: new { @class = "control-label col-md-3", style = "text-align: left" })
-            <div class="col-md-9">
-                @Html.DropDownListFor(model => model.ProjectID, @ViewBag.ProjectsUnderCurrentUser as SelectList, "Select", new { htmlAttributes = new { @class = "form-control" }, id = "SelectedProject" })
-            </div>
-        </div>
-
-        <div class="form-group" id="departmentInput">
-            @Html.Label("Department", htmlAttributes: new { @class = "control-label col-md-3", style = "text-align: left" })
-            <div class="col-md-9">
-                @Html.DropDownListFor(model => model.DepartmentId, @ViewBag.DepartmentsUnderCurrentUser as SelectList, "Select", new { htmlAttributes = new { @class = "form-control" }, id = "SelectedDepartment" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.Label("Resource Name", htmlAttributes: new { @class = "control-label col-md-3", style = "text-align: left" })
-            <div class="col-md-9">
-                @Html.DropDownListFor(model => model.ResourceId, @ViewBag.Resources as SelectList, "Select", new { htmlAttributes = new { @class = "form-control" }, id = "Resources" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.Label("IsPLC", htmlAttributes: new { @class = "control-label col-md-3", style = "text-align: left" })
-            <div class="col-md-9">
-                @Html.CheckBoxFor(model => model.IsPLC, new { htmlAttributes = new { @class = "form-control" } }) Yes
-            </div>
-        </div>
-        <br />
-        <div class="form-group">
-            <div class="col-md-10">
-                <div id="Criterias">
-                    <table border="1" id="criteriaTable"></table>
-                </div>
-                @Html.ValidationMessageFor(model => model.Comments, "", new { @class = "text-danger" })
-            </div>
-        </div>
-        <br />
-        <div class="form-group">
-            @Html.Label("Comment", htmlAttributes: new { @class = "control-label col-md-2", style = "text-align: left" })
-            <div class="col-md-10">
-                @Html.TextAreaFor(model => model.MainComment, new { htmlAttributes = new { @class = "form-control" }, style = "min-width: 60%", rows = "7", placeholder = "If candidate is selected as winner, this text will be shared across the company" })
-            </div>
-        </div>
-        <br />
-        <br />
-        <div class="form-group">
-            <div class="col-md-offset-3">
-                <input type="submit" name="submit" value="Save Draft" id="saveButton" class="btn btn-default" />
-                <input type="submit" name="submit" value="Submit" id="submitButton" class="btn btn-default" onclick="return checkCriteriaComments();" />
-                <input type="button" value="Cancel" class="btn btn-default" onclick="location.href='@Url.Action("Dashboard", "Dashboard")'" />
-            </div>
-        </div>
+    </nav>
+</div>
+<div class="row wrapper border-bottom white-bg page-heading border-bottom">
+    <div class="col-sm-12">
+        <h1>Add Nomination</h1>
     </div>
-}
+</div>
+<div class="wrapper wrapper-content animated fadeInRight">
 
-<script src="https://code.jquery.com/jquery-1.10.2.js"></script>
-<script src="~/Scripts/jquery.validate.min.js"></script>
-<script src="~/Scripts/jquery.validate.unobtrusive.js"></script>
-<script type="text/javascript">
+    <div class="row white-bg" style="width:80%;padding-top:20px">
+        @using (Html.BeginForm())
+        {
+            @Html.AntiForgeryToken()
 
-    $(".criteriaComment").on('click', function () { debugger; alert("hello"); $(".criteriaComment").children("textarea").first().tooltip('destroy'); });
 
-    $(document).ready(function () {
-        $("#projectInput").hide();
-        $("#departmentInput").hide();
-    })
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+            <div class="form-group">
+                @Html.Label("Nomination Category", htmlAttributes: new { @class = "control-label col-md-3", style = "text-align: left" })
+                <div>
+                    @Html.DropDownListFor(model => model.AwardId, @ViewBag.Awards as SelectList, "Select", new { htmlAttributes = new { @class = "form-control" }, id = "Award" })
+                </div>
+            </div>
 
-    $("#ProjectRadioButton").change
-        (
-         function () {
-             $("#departmentInput").hide();
-             $("#SelectedProject").prop('selectedIndex', 0);
-             $('#Resources').empty();
-             $('#Resources').append($("<option selected></option>").val(null).html("Select"));
-             $("#projectInput").show();
-         });
+            <div class="form-group">
+                @Html.Label("Resource From", htmlAttributes: new { @class = "control-label col-md-3", style = "text-align: left" })
+                <div>
+                    <label> @Html.RadioButtonFor(model => model.SelectResourcesBy, "Project", new { htmlAttributes = new { @class = "form-control" }, id = "ProjectRadioButton" })Project</label>
+                    <label> @Html.RadioButtonFor(model => model.SelectResourcesBy, "Department", new { htmlAttributes = new { @class = "form-control" }, id = "DepartmentRadioButton" })Department</label>
+                </div>
+            </div>
 
-    $("#DepartmentRadioButton").change
-        (
-          function () {
-              $("#projectInput").hide();
-              $("#SelectedDepartment").prop('selectedIndex', 0);
-              $('#Resources').empty();
-              $('#Resources').append($("<option selected></option>").val(null).html("Select"));
-              $("#departmentInput").show();
-          });
+            <input type="hidden" name=ManagerId value=@ViewBag.ManagerId>
 
-    $("#Award").change(function () {
-        var selectdAward = $("#Award").val();
-        $('#criteriaTable').empty();
-        var ServiceUrl = "/Nomination/CriteriasForAward?awardId=" + selectdAward;
-        debugger;
-        $.ajax({
-            type: 'post',
-            url: ServiceUrl,
-            contentType: "application/json; charset=utf-8",
-            success: function (data) {
-                $('#criteriaTable').append('<tr><th style="text-align:center">Criteria-Description</th><th  style="text-align:center">Comment</th></tr>');
+            <div class="form-group" id="projectInput">
+                @Html.Label("Project", htmlAttributes: new { @class = "control-label col-md-3", style = "text-align: left" })
+                <div>
+                    @Html.DropDownListFor(model => model.ProjectID, @ViewBag.ProjectsUnderCurrentUser as SelectList, "Select", new { htmlAttributes = new { @class = "form-control" }, id = "SelectedProject" })
+                </div>
+            </div>
+
+            <div class="form-group" id="departmentInput">
+                @Html.Label("Department", htmlAttributes: new { @class = "control-label col-md-3", style = "text-align: left" })
+                <div>
+                    @Html.DropDownListFor(model => model.DepartmentId, @ViewBag.DepartmentsUnderCurrentUser as SelectList, "Select", new { htmlAttributes = new { @class = "form-control" }, id = "SelectedDepartment" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.Label("Resource Name", htmlAttributes: new { @class = "control-label col-md-3", style = "text-align: left" })
+                <div>
+                    @Html.DropDownListFor(model => model.ResourceId, @ViewBag.Resources as SelectList, "Select", new { htmlAttributes = new { @class = "form-control" }, id = "Resources" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.Label("IsPLC", htmlAttributes: new { @class = "control-label col-md-3", style = "text-align: left" })
+                <div>
+                    @Html.CheckBoxFor(model => model.IsPLC, new { htmlAttributes = new { @class = "form-control" } }) Yes
+                </div>
+            </div>
+            <br />
+            <div class="form-group">
+                <div>
+                    <div id="Criterias">
+                        <table border="1" id="criteriaTable"></table>
+                    </div>
+                    @Html.ValidationMessageFor(model => model.Comments, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <br />
+            <div class="form-group">
+                @Html.Label("Comment", htmlAttributes: new { @class = "control-label col-md-2", style = "text-align: left" })
+                <div>
+                    @Html.TextAreaFor(model => model.MainComment, new { htmlAttributes = new { @class = "form-control" }, style = "min-width: 60%", rows = "7", placeholder = "If candidate is selected as winner, this text will be shared across the company" })
+                </div>
+            </div>
+            <br />
+            <br />
+            <div class="form-group">
+                <div class="col-md-offset-3">
+                    <input type="submit" name="submit" value="Save Draft" id="saveButton" class="btn btn-default" />
+                    <input type="submit" name="submit" value="Submit" id="submitButton" class="btn btn-default" onclick="return checkCriteriaComments();" />
+                    <input type="button" value="Cancel" class="btn btn-default" onclick="location.href='@Url.Action("Dashboard", "Dashboard")'" />
+                </div>
+            </div>
+
+        }
+    </div>
+    </div>
+        <script src="https://code.jquery.com/jquery-1.10.2.js"></script>
+        <script src="~/Scripts/jquery.validate.min.js"></script>
+        <script src="~/Scripts/jquery.validate.unobtrusive.js"></script>
+        <script type="text/javascript">
+
+            $(".criteriaComment").on('click', function () { debugger; alert("hello"); $(".criteriaComment").children("textarea").first().tooltip('destroy'); });
+
+            $(document).ready(function () {
+                $("#projectInput").hide();
+                $("#departmentInput").hide();
+            })
+
+            $("#ProjectRadioButton").change
+                (
+                 function () {
+                     $("#departmentInput").hide();
+                     $("#SelectedProject").prop('selectedIndex', 0);
+                     $('#Resources').empty();
+                     $('#Resources').append($("<option selected></option>").val(null).html("Select"));
+                     $("#projectInput").show();
+                 });
+
+            $("#DepartmentRadioButton").change
+                (
+                  function () {
+                      $("#projectInput").hide();
+                      $("#SelectedDepartment").prop('selectedIndex', 0);
+                      $('#Resources').empty();
+                      $('#Resources').append($("<option selected></option>").val(null).html("Select"));
+                      $("#departmentInput").show();
+                  });
+
+            $("#Award").change(function () {
+                var selectdAward = $("#Award").val();
+                $('#criteriaTable').empty();
+                var ServiceUrl = "/Nomination/CriteriasForAward?awardId=" + selectdAward;
                 debugger;
-                for (var key in data) {
-                    debugger
-                    $('#criteriaTable tr:last')
-                        .after('<tr><td class="col-md-6"><label>' + data[key].Title + '</label></td>'
-                        + '<td class="col-md-6 criteriaComment"><textarea class="form-control" rows="" name=Comments[' + key + '].Comment id="comment"></textarea></td>'
-                        + '<td><input type="hidden" name=Comments[' + key + '].Id value=' + data[key].Id + '></td></tr>');
-                }
-            }
-        });
-    });
-
-    $("#SelectedProject").change(function () {
-        var selectedProject = $("#SelectedProject").val();
-        var selectedAward=$("#Award").val();
-        $('#Resources').empty();
-        $('#Resources').append($("<option selected></option>").val(null).html("Select"));
-
-        $.ajax({
-            type: 'post',
-            url: '@Url.Action("ResourcesInProject", "Nomination")',
-            data: JSON.stringify({ engagementID: selectedProject,awardId:selectedAward }),
-            contentType: "application/json; charset=utf-8",
-            success: function (data) {
-
-                for (var key in data) {
-                    $('#Resources')
-                        .append($("<option></option>").val(data[key].ID).html(data[key].DisplayName));
-                }
-            }
-        });
-    });
-
-    $("#SelectedDepartment").change(function () {
-        var selectedDept = $("#SelectedDepartment").val();
-        var ServiceUrl = "/Nomination/ResourcesInDepartment?departmentID=" + selectedDept;
-        $('#Resources').empty();
-        $('#Resources').append($("<option selected></option>").val(null).html("Select"));
-
-        $.ajax({
-            type: 'GET',
-            url: ServiceUrl,
-            contentType: "application/json; charset=utf-8",
-            success: function (data) {
-                for (var key in data) {
-                    $('#Resources')
-                        .append($("<option></option>").val(data[key].ID).html(data[key].DisplayName));
-                }
-            }
-        });
-    });
-
-    $.validator.setDefaults({
-        showErrors: function (errorMap, errorList) {
-            $(".valid").each(function (i, v) {
-                $(v).tooltip('destroy');
+                $.ajax({
+                    type: 'post',
+                    url: ServiceUrl,
+                    contentType: "application/json; charset=utf-8",
+                    success: function (data) {
+                        $('#criteriaTable').append('<tr><th style="text-align:center">Criteria-Description</th><th  style="text-align:center">Comment</th></tr>');
+                        debugger;
+                        for (var key in data) {
+                            debugger
+                            $('#criteriaTable tr:last')
+                                .after('<tr><td class="col-md-6"><label>' + data[key].Title + '</label></td>'
+                                + '<td class="col-md-6 criteriaComment"><textarea class="form-control" rows="" name=Comments[' + key + '].Comment id="comment"></textarea></td>'
+                                + '<td><input type="hidden" name=Comments[' + key + '].Id value=' + data[key].Id + '></td></tr>');
+                        }
+                    }
+                });
             });
 
-            $.each(errorList, function (i, v) {
-                $(v.element).tooltip({ title: v.message, placement: 'right' });
+            $("#SelectedProject").change(function () {
+                var selectedProject = $("#SelectedProject").val();
+                var selectedAward = $("#Award").val();
+                $('#Resources').empty();
+                $('#Resources').append($("<option selected></option>").val(null).html("Select"));
+
+                $.ajax({
+                    type: 'post',
+                    url: '@Url.Action("ResourcesInProject", "Nomination")',
+                    data: JSON.stringify({ engagementID: selectedProject, awardId: selectedAward }),
+                    contentType: "application/json; charset=utf-8",
+                    success: function (data) {
+
+                        for (var key in data) {
+                            $('#Resources')
+                                .append($("<option></option>").val(data[key].ID).html(data[key].DisplayName));
+                        }
+                    }
+                });
             });
 
-            this.defaultShowErrors();
-        }
-    })
+            $("#SelectedDepartment").change(function () {
+                var selectedDept = $("#SelectedDepartment").val();
+                var ServiceUrl = "/Nomination/ResourcesInDepartment?departmentID=" + selectedDept;
+                $('#Resources').empty();
+                $('#Resources').append($("<option selected></option>").val(null).html("Select"));
 
-    function checkCriteriaComments() {
-        var comments = 0;
+                $.ajax({
+                    type: 'GET',
+                    url: ServiceUrl,
+                    contentType: "application/json; charset=utf-8",
+                    success: function (data) {
+                        for (var key in data) {
+                            $('#Resources')
+                                .append($("<option></option>").val(data[key].ID).html(data[key].DisplayName));
+                        }
+                    }
+                });
+            });
 
-        debugger;
-        $(".criteriaComment").children("textarea").each(function (data) {
-            if ($(this).val().trim())
-                comments++;
-        });
+            $.validator.setDefaults({
+                showErrors: function (errorMap, errorList) {
+                    $(".valid").each(function (i, v) {
+                        $(v).tooltip('destroy');
+                    });
 
-        if (comments < 1) {
-            $(".criteriaComment").children("textarea").first().tooltip({ title: "Enter at least one criteria comment.", placement: 'right' }).tooltip('show');
-            return false;
-        }
-    }
+                    $.each(errorList, function (i, v) {
+                        $(v.element).tooltip({ title: v.message, placement: 'right' });
+                    });
 
-</script>
+                    this.defaultShowErrors();
+                }
+            })
+
+            function checkCriteriaComments() {
+                var comments = 0;
+
+                debugger;
+                $(".criteriaComment").children("textarea").each(function (data) {
+                    if ($(this).val().trim())
+                        comments++;
+                });
+
+                if (comments < 1) {
+                    $(".criteriaComment").children("textarea").first().tooltip({ title: "Enter at least one criteria comment.", placement: 'right' }).tooltip('show');
+                    return false;
+                }
+            }
+
+        </script>
