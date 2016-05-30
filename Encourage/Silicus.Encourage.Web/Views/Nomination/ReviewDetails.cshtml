@@ -18,112 +18,124 @@
         padding: 5px;
     }
 </style>
-@using (Html.BeginForm())
-{
+<div class="wrapper wrapper-content animated fadeInRight">
 
-
-    @Html.HiddenFor(modelItem => modelItem.ReviewerId)
-    @Html.HiddenFor(modelItem => modelItem.NominationId);
-    <table border="1" style="width:80%">
-        <thead>
-            <tr>
-                <th>
-                    ReviewFor:
-                </th>
-
-                <td>
-                    @Html.DisplayFor(modelItem => modelItem.NomineeName)
-                </td>
-            </tr>
-            <tr>
-                <th>
-                    Project/Department:
-                </th>
-
-                <td>
-                    @Html.DisplayFor(modelItem => modelItem.ProjectOrDepartment)
-                </td>
-            </tr>
-            <tr>
-                <th>
-                    Manager:
-                </th>
-
-                <td>
-                    @Html.DisplayFor(modelItem => modelItem.Manager)
-                </td>
-            </tr>
-        </thead>
-    </table>
-    <br />
-    <table border="1" style="width:80%">
-        <tr>
-            <th>
-                @Html.DisplayFor(modelItem => modelItem.Manager) Says:
-            </th>
-            
-            <td>
-               
-                <span class="header">Click here to see comment.</span>
-                <textarea  class="content" style="width:100%" readonly>@Model.ManagerComment</textarea>
-               
-            </td>
-        </tr>
-    </table>
-    <br />
-    <table border="1" style="width:80%">
-        <thead>
-            <tr>
-                <th>Id</th>
-                <th>Criteria</th>
-                <th>ManagerComment</th>
-                <th>ReviewerComment</th>
-                <th>Credits</th>
-            </tr>
-        </thead>
-        @{
-                                                        var j = 0;
-                                                        var k = 0;
-        }
-        @foreach (var item in Model.Criterias)
+    <div class="row">
+        @using (Html.BeginForm())
         {
-            <tbody>
+
+            @Html.HiddenFor(modelItem => modelItem.ReviewerId)
+            @Html.HiddenFor(modelItem => modelItem.NominationId);
+            <table border="1" style="width:80%" class="white-bg">
+                <thead>
+                    <tr>
+                        <th>
+                            ReviewFor:
+                        </th>
+
+                        <td>
+                            @Html.DisplayFor(modelItem => modelItem.NomineeName)
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>
+                            Project/Department:
+                        </th>
+
+                        <td>
+                            @Html.DisplayFor(modelItem => modelItem.ProjectOrDepartment)
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>
+                            Manager:
+                        </th>
+
+                        <td>
+                            @Html.DisplayFor(modelItem => modelItem.Manager)
+                        </td>
+                    </tr>
+                </thead>
+            </table>
+            <br />
+            <table border="1" style="width:80%" class="white-bg">
                 <tr>
-                    <td class="col-md-1">@item.Id</td>
-                    @Html.Hidden("CriteriaId", @item.Id)
-                    <td class="col-md-3">@item.Title</td>
+                    <th>
+                        @Html.DisplayFor(modelItem => modelItem.Manager) Says:
+                    </th>
 
-                    @if (k < Model.ManagerComments.Count() && Model.ManagerComments[k].CriteriaId == item.Id)
-                    {
-                        <td class="col-md-3">@Model.ManagerComments[k].Comment</td>
-                        k++;
-                    }
-                    else
-                    {
-                        <td class="col-md-3"></td>
-                    }
+                    <td>
 
+                        <span class="header">Click here to see comment.</span>
+                        <textarea class="content" style="width:100%" readonly>@Model.ManagerComment</textarea>
 
-                    <td class="col-md-3">@Html.TextArea("Comments[" + @j + "].Comment", Model.Comments[j].Comment, htmlAttributes: new { @class = "col-md-12", @readonly = "readonly" })</td>
-
-                    @Html.Hidden("Comments[" + @j + "].Id", item.Id)
-
-
-                    <td class="col-md-1">@Html.CheckBox("Comments[" + j + "].Credit", Model.Comments[j].Credit, htmlAttributes: new { @class = "col-md-12", @disabled = "disabled" })</td>
+                    </td>
                 </tr>
-            </tbody>
-                    j++;
-        }
-        @if (Model.ManagerComments != null)
-        {
-            for (int i = 0; i < Model.ManagerComments.Count; i++)
-            {
-                @Html.HiddenFor(model => Model.ManagerComments[i].Comment)
-            }
-        }
-    </table>
-}
+            </table>
+            <br />
+            <table border="1" style="width:80%" class="white-bg">
+                <thead>
+                    <tr>
+                        <th>Id</th>
+                        <th>Criteria</th>
+                        <th>ManagerComment</th>
+                        <th>ReviewerComment</th>
+                        <th>Credits</th>
+                    </tr>
+                </thead>
+                @{
+                                                                var j = 0;
+                                                                var k = 0;
+                }
+                <tbody>
+                    @foreach (var item in Model.Criterias)
+                    {
 
+                        <tr>
+                            <td class="col-md-1">@item.Id</td>
+                            @Html.Hidden("CriteriaId", @item.Id)
+                            <td class="col-md-3">@item.Title</td>
+
+                            @if (k < Model.ManagerComments.Count() && Model.ManagerComments[k].CriteriaId == item.Id)
+                            {
+                                <td class="col-md-3">@Model.ManagerComments[k].Comment</td>
+                                k++;
+                            }
+                            else
+                            {
+                                <td class="col-md-3"></td>
+                            }
+
+
+                            <td class="col-md-3">@Html.TextArea("Comments[" + @j + "].Comment", Model.Comments[j].Comment, htmlAttributes: new { @class = "col-md-12", @readonly = "readonly" })</td>
+
+                            @Html.Hidden("Comments[" + @j + "].Id", item.Id)
+
+
+                            <td class="col-md-1">@Html.CheckBox("Comments[" + j + "].Credit", Model.Comments[j].Credit, htmlAttributes: new { @class = "col-md-12", @disabled = "disabled" })</td>
+                        </tr>
+
+                            j++;
+                    }
+                    <tr>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <th>Credit Given</th>
+                        <td class="text-center">@ViewBag.creditGiven</td>
+                    </tr>
+                </tbody>
+                @if (Model.ManagerComments != null)
+                {
+                    for (int i = 0; i < Model.ManagerComments.Count; i++)
+                    {
+                        @Html.HiddenFor(model => Model.ManagerComments[i].Comment)
+                    }
+                }
+            </table>
+        }
+    </div>
+</div>
 
 <script src="http://ajax.googleapis.com/ajax/libs/jquery/2.0.0/jquery.min.js"></script>
 
