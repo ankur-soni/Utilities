@@ -32,9 +32,9 @@ namespace Silicus.Encourage.Services
             return _encourageDatabaseContext.Query<Nomination>("ManagerComments").ToList();
         }
 
-        public List<Nomination> GetAllSubmitedNonreviewedNominations()
+        public List<Nomination> GetAllSubmitedNonreviewedNominations(int reviewerId)
         {
-            var alreadyReviewedRecords = _encourageDatabaseContext.Query<Review>().ToList();
+            var alreadyReviewedRecords = _encourageDatabaseContext.Query<Review>().Where(r => r.ReviewerId == reviewerId).ToList();
             var finalNomination = new List<Nomination>();
             var allNominations = _encourageDatabaseContext.Query<Nomination>().Where(N => N.IsSubmitted == true).ToList();
 
@@ -113,9 +113,9 @@ namespace Silicus.Encourage.Services
             return _encourageDatabaseContext.Query<Reviewer>().Where(r => r.UserId == reviewersUserId).FirstOrDefault().Id;
         }
 
-        public List<Nomination> GetAllSubmitedReviewedNominations()
+        public List<Nomination> GetAllSubmitedReviewedNominations(int reviewerId)
         {
-            var alreadyReviewedRecords = _encourageDatabaseContext.Query<Review>().ToList();
+            var alreadyReviewedRecords = _encourageDatabaseContext.Query<Review>().Where(r => r.ReviewerId == reviewerId).ToList();
             var finalNominations = new List<Nomination>();
 
 

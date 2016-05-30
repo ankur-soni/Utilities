@@ -8,16 +8,11 @@
 
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
     <title>SILICUS</title>
     <link href="~/css/bootstrap.min.css" rel="stylesheet" />
-
     <link href="~/font-awesome/css/font-awesome.css" rel="stylesheet" />
-
     <link href="~/css/animate.css" rel="stylesheet" />
-
     <link href="~/LESS/style.css" rel="stylesheet" />
-
     <!-- FooTable -->
     <link href="~/css/plugins/footable/footable.core.css" rel="stylesheet" />
 
@@ -126,7 +121,7 @@
         </div>
     </div>
 
-    <div id="wrapper" style=" height:85%">
+    <div id="wrapper" style="height:85%">
         <!-- START LEFT MENU -->
         <nav class="navbar-default navbar-static-side" role="navigation">
             <div class="sidebar-collapse">
@@ -147,7 +142,7 @@
                             {
                                 <li><a href="@Url.Action("ReviewNominations","Nomination")" class="active">Review Nominations</a></li>
                                 <li><a href="@Url.Action("SavedReviews","Nomination")" class="active">Reviewed Nominations</a></li>
-                             
+
                             }
 
                         </ul>
@@ -173,25 +168,31 @@
         <!-- END LEFT MENU -->
         <!--   START OF CONTENT AREA -->
 
+        @*<div class="container body-content">
+            @RenderBody()
+            <hr />
+            <footer>
+                <p>&copy; @DateTime.Now.Year - My ASP.NET Application</p>
+            </footer>
+        </div>*@
+
         <div id="page-wrapper" class="gray-bg">
 
-            <div class="container body-content">
+            <div class="container body-content" >
 
                 @RenderBody()
 
             </div>
             
-        </div>
-
-        <div class="footer">
-            <div class="pull-right">
-                Viewing:
             </div>
+        <div class="footer">
             <div>
                 <strong>&copy;Copyright</strong> 2000 -
                 <script>document.write(new Date().getFullYear())</script> Silicus Technologies
             </div>
         </div>
+
+        
     </div>
 
     <!-- Mainly scripts -->

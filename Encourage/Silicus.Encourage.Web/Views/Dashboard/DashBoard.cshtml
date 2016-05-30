@@ -1,31 +1,13 @@
-﻿<!DOCTYPE html>
+﻿
+
+<!DOCTYPE html>
 <!-- Spell Checked and Validated 02/14-->
 <html>
-
-<head>
-
-
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-    <title>SILICUS</title>
-    <link href="~/css/bootstrap.min.css" rel="stylesheet" />
-
-
-    <link href="~/font-awesome/css/font-awesome.css" rel="stylesheet" />
-    <link href="~/css/animate.css" rel="stylesheet" />
-
-    <link href="~/LESS/style.css" rel="stylesheet" />
-
-
-    <!-- FooTable -->
-    <link href="~/css/plugins/footable/footable.core.css" rel="stylesheet" />
-   
-</head>
 
 <body class="pace-done">
 
     <div id="wrapper">
+
         <div class="row border-bottom">
             <nav class="navbar  " role="navigation" style="margin-bottom: 0">
                 <div class="navbar-header">
@@ -33,129 +15,123 @@
                 </div>
             </nav>
         </div>
-        <div class="row wrapper border-bottom white-bg page-heading border-bottom">
+        <div class="row wrapper border-bottom white-bg page-heading border-bottom" style="width:90%">
             <div class="col-sm-12">
                 <h1>Dashboard</h1>
-                <ol class="breadcrumb">
-                    <li>
-                        <strong> Home</strong>
-                    </li>
-                </ol>
-
             </div>
         </div>
 
 
         <!-- begin content -->
 
-        <div class="wrapper wrapper-content animated fadeInRight">
-
-           @{
-             var roles =  HttpContext.Current.Session["Role"] as List<string> ;
-           }
-            <!-- IT STAFF ROW -->
+        <div class="wrapper wrapper-content animated fadeInRight" style="width:80%">
             <div class="row">
-                @if ( roles.Contains("Manager"))
-                {
-                
-                <div class="col-md-2">
-                    <div class="ibox float-e-margins">
-                        <div class="ibox-title">
-                            <i class="fa fa-users fa-5x" aria-hidden="true"></i>
+                @{
+                    var roles = HttpContext.Current.Session["Role"] as List<string>;
+                }
+                <!-- IT STAFF ROW -->
+                <div class="row">
+                    @if (roles.Contains("Manager"))
+                    {
+
+                        <div class="col-md-3">
+                            <div class="ibox float-e-margins">
+                                <div class="ibox-title">
+                                    <i class="fa fa-users fa-5x" aria-hidden="true"></i>
+                                </div>
+                                <div class="ibox-footer text-left">
+                                    <a href="@Url.Action("AddNomination", "Nomination")" class="btn btn-primary btn-sm">
+                                        <span style="font-weight:bold">  Nominate </span>
+                                    </a>
+                                </div>
+                            </div>
+
                         </div>
-                        <div class="ibox-footer text-left">
-                            <a href="@Url.Action("AddNomination", "Nomination")" class="btn btn-primary btn-sm">
-                                <span style="font-weight:bold">  Nominate </span> <span><i class="fa fa-arrow-circle-o-right fa-2x" aria-hidden="true"></i></span>
-                            </a>
+                    }
+                    @if (roles.Contains("Reviewer"))
+                    {
+
+
+                        <div class="col-md-3">
+                            <div class="ibox float-e-margins">
+                                <div class="ibox-title">
+                                    <i class="fa fa-search fa-5x" aria-hidden="true"></i>
+                                </div>
+
+                                <div class="ibox-footer text-left">
+                                    <a href="@Url.Action("ReviewNominations", "Nomination")" class="btn btn-primary btn-sm">
+                                        <span style="font-weight:bold">Review </span>
+                                    </a>
+                                </div>
+                            </div>
+
                         </div>
-                    </div>
+
+                    }
+                    @if (roles.Contains("Admin"))
+                    {
+                        <div class="col-md-3">
+                            <div class="ibox float-e-margins">
+                                <div class="ibox-title">
+                                    <i class="fa fa-lock fa-5x" aria-hidden="true"></i>
+                                </div>
+
+                                <div class="ibox-footer text-left">
+                                    <a href="@Url.Action("","")" class="btn btn-primary btn-sm" id="lockNominations">
+                                        <span style="font-weight:bold">Lock Nominations</span> 
+                                    </a>
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="col-md-3">
+                            <div class="ibox float-e-margins">
+                                <div class="ibox-title">
+                                    <i class="fa fa-unlock-alt fa-5x" aria-hidden="true"></i>
+                                </div>
+
+                                <div class="ibox-footer text-left">
+                                    <a href="@Url.Action("","")" class="btn btn-primary btn-sm" id="unLockNominations">
+                                        <span style="font-weight:bold">Unlock Nominations</span>
+                                    </a>
+                                </div>
+                            </div>
+
+                        </div>
+                    }
+
 
                 </div>
-                }
-                @if (roles.Contains("Reviewer"))
-                {
-                    
-                
-                <div class="col-md-2">
-                    <div class="ibox float-e-margins">
-                        <div class="ibox-title">
-                            <i class="fa fa-search fa-5x" aria-hidden="true"></i>
-                        </div>
-
-                        <div class="ibox-footer text-left">
-                            <a href="@Url.Action("ReviewNominations","Nomination")" class="btn btn-primary btn-sm">
-                                <span style="font-weight:bold">Review </span> <span><i class="fa fa-arrow-circle-o-right fa-2x" aria-hidden="true"></i></span>
-                            </a>
-                        </div>
-                    </div>
-
+                <div style="position:relative">
+                    <div id="b" style="position:absolute;">B</div>
                 </div>
-                    
-                }
-                @if (roles.Contains("Admin"))
-                {
-                    <div class="col-md-3">
-                        <div class="ibox float-e-margins">
-                            <div class="ibox-title">
-                                <i class="fa fa-lock fa-5x" aria-hidden="true"></i>
-                            </div>
+                <div class="row">
+                    <div class="col-md-10">
+                        <div>
+                            Recent Feeds
+                        </div>
 
-                            <div class="ibox-footer text-left">
-                                <a href="@Url.Action("","")" class="btn btn-primary btn-sm" id="lockNominations">
-                                    <span style="font-weight:bold">Lock Nominations</span> <span><i class="fa fa-arrow-circle-o-right fa-2x" aria-hidden="true"></i></span>
-                                </a>
-                            </div>
+                        <div id="recentFeeds1" style=" position:absolute;">
+                            Hey I'm moving first!!
+
+                        </div>
+                        <div id="recentFeeds2" style="position:absolute;">
+                            Hey I'm moving second!!
+
+                        </div>
+                        <div id="recentFeeds3" style="position:absolute;">
+                            Hey I'm moving 3rd!!
+
+                        </div>
+                        <div id="recentFeeds4" style="position:absolute;">
+                            Hey I'm moving 4th!!
+
                         </div>
 
                     </div>
-                    <div class="col-md-3">
-                        <div class="ibox float-e-margins">
-                            <div class="ibox-title">
-                                <i class="fa fa-unlock-alt fa-5x" aria-hidden="true"></i>
-                            </div>
-
-                            <div class="ibox-footer text-left">
-                                <a href="@Url.Action("","")" class="btn btn-primary btn-sm" id="unLockNominations">
-                                    <span style="font-weight:bold">Unlock Nominations</span> <span><i class="fa fa-arrow-circle-o-right fa-2x" aria-hidden="true"></i></span>
-                                </a>
-                            </div>
-                        </div>
-
-                    </div>
-                }
-
-
-            </div>
-            <div style="position:relative">
-                <div id="b" style="position:absolute;">B</div>
-            </div>
-            <div class="row">
-                <div class="col-md-10">
-                    <div>
-                        Recent Feeds
-                    </div>
-                   
-                    <div id="recentFeeds1" style=" position:absolute;">
-                        Hey I'm moving first!!
-
-                    </div>
-                    <div id="recentFeeds2" style="position:absolute;">
-                        Hey I'm moving second!!
-
-                    </div>
-                    <div id="recentFeeds3" style="position:absolute;">
-                        Hey I'm moving 3rd!!
-
-                    </div>
-                    <div id="recentFeeds4" style="position:absolute;">
-                        Hey I'm moving 4th!!
-
-                    </div>
-
                 </div>
             </div>
-
-        </div><!-- ./ wrapper -->
+            </div><!-- ./ wrapper -->
 
     </div>
 
@@ -205,24 +181,7 @@
       
       
     });
-    $(".fa-bars").click(function () {
-        debugger;
-        var x = document.getElementById("side-menu");
-        if (x.style.display == "block") {
-            // $("#side-menu style").remove();
-            x.style.backgroundColor = "red";
-           
-        }
-        else
-        {
-            x.style.display = "block";
-        }
-          
-
-        
-
-       // $("#side-menu").toggle().css("display", "hidden");
-    })
+    
 
 
 </script>
