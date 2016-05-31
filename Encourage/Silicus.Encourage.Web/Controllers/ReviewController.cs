@@ -102,30 +102,46 @@ namespace Silicus.Encourage.Web.Controllers
         {
             var reviews = _reviewService.GetReviewsForNomination(nominationModel.NominationId);
             var nomination = _nominationService.GetNomination(reviews.FirstOrDefault().NominationId);
+            var allReviewerComments = new List<List<ReviewerCommentViewModel>>();
 
-            var allReviewerComments=new List<List<ReviewerComment>>();
-            foreach(var review in reviews)
+
+            foreach (var review in reviews)
             {
-                allReviewerComments.Add(review.ReviewerComments.ToList());
+                var allreviewerComment = _encourageDatabaseContext.Query<ReviewerComment>().Where(model => model.ReviewId == review.Id);
+              
+                var reviewerCommentList = new List<ReviewerCommentViewModel>();
+                foreach (var reviewerComment in allreviewerComment)
+                {
+                    var singleReviewerComent = new ReviewerCommentViewModel()
+                      {
+                          CriteriaID = reviewerComment.CriteriaId,
+                          Comment = reviewerComment.Comment,
+                          Credit = Convert.ToBoolean(reviewerComment.Credit.Value)
+                      };
+                    reviewerCommentList.Add(singleReviewerComent);
+                }
+
+                allReviewerComments.Add(reviewerCommentList);
             }
 
             var shortlistViewModel = new ViewShortlistDetailsViewModel()
             {
+                nominationId = nomination.Id,
                 userName = nominationModel.DisplayName,
                 totalCredits = nominationModel.Credits,
                 Manager = _nominationService.GetManagerNameOfCurrentNomination(reviews.FirstOrDefault().NominationId),
-                projectOrDepartment=nomination.ProjectID!=null?
-                                           _nominationService.GetProjectNameOfCurrentNomination(nomination.Id):
+                projectOrDepartment = nomination.ProjectID != null ?
+                                           _nominationService.GetProjectNameOfCurrentNomination(nomination.Id) :
                                            _nominationService.GetDeptNameOfCurrentNomination(nomination.Id),
-                nominationComments = nomination.Comment,
-                reviewerComments = null,
+                nominationComment = nomination.Comment,
+                reviewerComments = allReviewerComments,
+                Criterias = _nominationService.GetCriteriaForNomination(nomination.Id),
+                ManagerComments=nomination.ManagerComments.ToList(),
+               
             };
 
-
-            return null;
+            return View(shortlistViewModel);
         }
-
-
 
     }
 }

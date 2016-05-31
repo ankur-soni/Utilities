@@ -662,6 +662,7 @@
     <Content Include="Views\Shared\EditorTemplates\RvierCommentViewModel.cshtml" />
     <Content Include="Views\Nomination\EditReview.cshtml" />
     <Content Include="Views\Review\ReviewFeedbackList.cshtml" />
+    <Content Include="Views\Review\ViewNominationForShortlist.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
