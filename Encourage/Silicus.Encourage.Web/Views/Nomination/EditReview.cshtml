@@ -26,113 +26,113 @@
         {
             @Html.HiddenFor(modelItem => modelItem.ReviewerId)
             @Html.HiddenFor(modelItem => modelItem.NominationId);
-            <table border="1" style="width:80%" class="white-bg">
-                <thead>
-                    <tr>
-                        <th>
-                            ReviewFor:
-                        </th>
+    <table class="table table-hover issue-tracker white-bg" style="width:80%">
+        <thead>
+            <tr>
+                <th>
+                    Review For:
+                </th>
 
-                        <td>
-                            @Html.DisplayFor(modelItem => modelItem.NomineeName)
-                        </td>
-                    </tr>
-                    <tr>
-                        <th>
-                            Project/Department:
-                        </th>
+                <td>
+                    @Html.DisplayFor(modelItem => modelItem.NomineeName)
+                </td>
+            </tr>
+            <tr>
+                <th>
+                    Project/Department:
+                </th>
 
-                        <td>
-                            @Html.DisplayFor(modelItem => modelItem.ProjectOrDepartment)
-                        </td>
-                    </tr>
-                    <tr>
-                        <th>
-                            Manager:
-                        </th>
+                <td>
+                    @Html.DisplayFor(modelItem => modelItem.ProjectOrDepartment)
+                </td>
+            </tr>
+            <tr>
+                <th>
+                    Manager:
+                </th>
 
-                        <td>
-                            @Html.DisplayFor(modelItem => modelItem.Manager)
-                        </td>
-                    </tr>
-                </thead>
-            </table>
+                <td>
+                    @Html.DisplayFor(modelItem => modelItem.Manager)
+                </td>
+            </tr>
+        </thead>
+    </table>
             <br />
-            <table border="1" style="width:80%" class="white-bg">
+    <table class="table table-hover issue-tracker white-bg" style="width:80%">
+        <tr>
+            <th>
+                @Html.DisplayFor(modelItem => modelItem.Manager) Says:
+            </th>
+
+            <td class="more">
+
+            
+                @Model.ManagerComment
+
+            </td>
+        </tr>
+    </table>
+    <br />
+    <table class="table table-hover issue-tracker white-bg" style="width:80%">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Criteria</th>
+                <th>ManagerComment</th>
+                <th>ReviewerComment</th>
+                <th>Credits</th>
+            </tr>
+        </thead>
+        @{
+                                                                var j = 0;
+                                                                var k = 0;
+        }
+        <tbody>
+            @foreach (var item in Model.Criterias)
+            {
+
                 <tr>
-                    <th>
-                        @Html.DisplayFor(modelItem => modelItem.Manager) Says:
-                    </th>
+                    <td class="col-md-1">@item.Id</td>
+                    @Html.Hidden("CriteriaId", @item.Id)
+                    <td class="col-md-3">@item.Title</td>
 
-                    <td>
+                    @if (k < Model.ManagerComments.Count() && Model.ManagerComments[k].CriteriaId == item.Id)
+                    {
+                        <td class="col-md-3">@Model.ManagerComments[k].Comment</td>
+                        k++;
+                    }
+                    else
+                    {
+                        <td class="col-md-3"></td>
+                    }
 
-                        <span class="header">Click here to see comment.</span>
-                        <textarea class="content" style="width:100%" readonly>@Model.ManagerComment</textarea>
 
-                    </td>
+                    <td class="col-md-3">@Html.TextArea("Comments[" + @j + "].Comment", Model.Comments[j].Comment)</td>
+
+                    @Html.Hidden("Comments[" + @j + "].Id", item.Id)
+
+
+                    <td class="col-md-1">@Html.CheckBox("Comments[" + j + "].Credit", Model.Comments[j].Credit)</td>
                 </tr>
-            </table>
-            <br />
-            <table border="1" style="width:80%" class="white-bg">
-                <thead>
-                    <tr>
-                        <th>Id</th>
-                        <th>Criteria</th>
-                        <th>ManagerComment</th>
-                        <th>ReviewerComment</th>
-                        <th>Credits</th>
-                    </tr>
-                </thead>
-                @{
-                                                        var j = 0;
-                                                        var k = 0;
-                }
-                <tbody>
-                    @foreach (var item in Model.Criterias)
-                    {
 
-                        <tr>
-                            <td class="col-md-1">@item.Id</td>
-                            @Html.Hidden("CriteriaId", @item.Id)
-                            <td class="col-md-3">@item.Title</td>
-
-                            @if (k < Model.ManagerComments.Count() && Model.ManagerComments[k].CriteriaId == item.Id)
-                            {
-                                <td class="col-md-3">@Model.ManagerComments[k].Comment</td>
-                                k++;
-                            }
-                            else
-                            {
-                                <td class="col-md-3"></td>
-                            }
-
-
-                            <td class="col-md-3">@Html.TextArea("Comments[" + @j + "].Comment", Model.Comments[j].Comment)</td>
-
-                            @Html.Hidden("Comments[" + @j + "].Id", item.Id)
-
-
-                            <td class="col-md-1">@Html.CheckBox("Comments[" + j + "].Credit", Model.Comments[j].Credit)</td>
-                        </tr>
-
-                            j++;
-                    }
-                    <tr>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <th>Credit Given</th>
-                        <td class="text-center">@ViewBag.creditGiven</td>
-                    </tr>
-                </tbody>
-                @if (Model.ManagerComments != null)
-                {
-                    for (int i = 0; i < Model.ManagerComments.Count; i++)
-                    {
-                        @Html.HiddenFor(model => Model.ManagerComments[i].Comment)
-                    }
-                }
-            </table>
+                    j++;
+            }
+            <tr>
+                <td></td>
+                <td></td>
+                <td></td>
+                <th>Credit Given</th>
+                <td>@ViewBag.creditGiven</td>
+            </tr>
+        </tbody>
+        @if (Model.ManagerComments != null)
+        {
+            for (int i = 0; i < Model.ManagerComments.Count; i++)
+            {
+                @Html.HiddenFor(model => Model.ManagerComments[i].Comment)
+            }
+        }
+    </table>
 
 
             <div class="form-group">
@@ -147,26 +147,4 @@
     </div>
         <script src="http://ajax.googleapis.com/ajax/libs/jquery/2.0.0/jquery.min.js"></script>
 
-
-        <script>
-
-
-            $(".header").click(function () {
-
-                $header = $(this);
-                //getting the next element
-                $content = $header.next();
-                //open up the content needed - toggle the slide- if visible, slide up, if not slidedown.
-                $content.slideToggle(500, function () {
-                    //execute this after slideToggle is done
-                    //change text of header based on visibility of content div
-                    $header.text(function () {
-                        //change text based on condition
-                        return $content.is(":visible") ? "Click here to hide comment." : "Click here to see comment.";
-                    });
-                });
-
-            });
-
-        </script>
 
