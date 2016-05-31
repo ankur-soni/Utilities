@@ -131,7 +131,7 @@
                 <ul class="nav metismenu" id="side-menu">
                     <li class="active"><a href="@Url.Action("Dashboard","Dashboard")"><i class="fa fa-dashboard"></i> <span class="nav-label">DASHBOARD</span></a></li>
                     <li>
-                        <a href="#"><i class="fa fa-user"></i> <span class="nav-label">Nominatios</span> <span class="fa arrow"></span></a>
+                        <a href="#"><i class="fa fa-user"></i> <span class="nav-label">Nominations</span> <span class="fa arrow"></span></a>
                         <ul class="nav nav-second-level">
                             @if (roles.Contains("Manager"))
                             {
@@ -154,6 +154,7 @@
                         <li>
                             <a href="#"><i class="fa fa-cogs"></i> <span class="nav-label">ADMIN</span> <span class="fa arrow"></span></a>
                             <ul class="nav nav-second-level">
+                                <li><a href="@Url.Action("ReviewFeedbackList", "Review")" class="active">Shortlist Nominations</a></li>
                                 <li><a href="edit-users.html" class="active">Edit Users</a></li>
                             </ul>
                         </li>

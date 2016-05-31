@@ -1,4 +1,5 @@
 ﻿using Silicus.Encourage.DAL.Interfaces;
+using System;
 using System.Data.Entity;
 using System.Linq;
 using System.Linq.Expressions;
@@ -49,6 +50,11 @@ namespace Silicus.Encourage.DAL
         public IQueryable<T> Query<T>(string property) where T : class
         {
             return Set<T>().Include(property).AsNoTracking();
+        }
+
+        public IQueryable<T> Query<T>(string property1, string property2) where T : class
+        {
+            return Set<T>().Include(property1).Include(property2).AsNoTracking();
         }
 
         public void Delete<T>(T item) where T : class

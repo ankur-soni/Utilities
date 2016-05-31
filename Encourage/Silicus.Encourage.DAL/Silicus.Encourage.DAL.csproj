@@ -76,7 +76,9 @@
     <Compile Include="Interfaces\ICommonDatabaseContext.cs" />
     <Compile Include="Interfaces\IDataContextFactory.cs" />
     <Compile Include="Interfaces\IEncourageDatabaseContext.cs" />
+    <Compile Include="Interfaces\IIncluder.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="QueryableExtensions.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Silicus.Encourage.Models\Silicus.Encourage.Models.csproj">

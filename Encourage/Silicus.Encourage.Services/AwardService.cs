@@ -24,11 +24,29 @@ namespace Silicus.Encourage.Services
             _CommonDbContext = _commonDbService.GetCommonDataBaseContext();
         }
 
+        public bool AddNomination(Nomination nomination)
+        {
+            try
+            {
+                _encourageDbcontext.Add<Nomination>(nomination);
+                return true;
+            }
+            catch (Exception Ex)
+            {
+                return false;
+            }
+        }
+
         public IEnumerable<Award> GetAllAwards()
         {
             return _encourageDbcontext.Query<Award>().ToList();
         }
 
+        public Award GetAwardFromNominationId(int nominationId)
+        {
+            return _encourageDbcontext.Query<Nomination>("Award").Where(nomination => nomination.Id == nominationId).SingleOrDefault().Award;
+        }
+        
         public List<Engagement> GetProjectsUnderCurrentUserAsManager(string email)
         {
             var currentUser = _CommonDbContext.Query<User>().Where(user => user.EmailAddress.Equals(email)).SingleOrDefault();
@@ -130,21 +148,6 @@ namespace Silicus.Encourage.Services
         {
             return _CommonDbContext.Query<User>().Where(user => user.EmailAddress == email).FirstOrDefault().ID;
         }
-
-
-        public bool AddNomination(Nomination nomination)
-        {
-            try
-            {
-                _encourageDbcontext.Add<Nomination>(nomination);
-                return true;
-            }
-            catch(Exception Ex)
-            {
-                return false;
-            }
-        }
-
 
     }
 }

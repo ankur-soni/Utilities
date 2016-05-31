@@ -106,6 +106,20 @@ namespace Silicus.Encourage.Services
             return projectName;
         }
 
+        public string GetDeptNameOfCurrentNomination(int nominationId)
+        {
+            var nomination = GetReviewNomination(nominationId);
+            string deptName = string.Empty;
+            if (nomination.DepartmentId != null)
+            {
+                deptName = _commonDataBaseContext.Query<Department>().Where(e => e.ID == nomination.DepartmentId).FirstOrDefault().Name;
+            }
+
+            return deptName;
+        }
+
+
+
         public int GetReviewerIdOfCurrentNomination(string email)
         {
 

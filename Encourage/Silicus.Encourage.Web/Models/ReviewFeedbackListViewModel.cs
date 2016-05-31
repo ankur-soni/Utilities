@@ -5,14 +5,13 @@ using System.Web;
 
 namespace Silicus.Encourage.Web.Models
 {
-    public class NominationListViewModel
+    public class ReviewFeedbackListViewModel
     {
-        public int Id { get; set; }
+        public int NominationId { get; set; }
         public string DisplayName { get; set; }
         public string NominationTime { get; set; }
         public string AwardName { get; set; }
         public string Intials { get; set; }
-        public int ManagerId { get; set; }
-        public bool? IsSubmitted { get; set; }
+        public int Credits { get; set; }
     }
 }

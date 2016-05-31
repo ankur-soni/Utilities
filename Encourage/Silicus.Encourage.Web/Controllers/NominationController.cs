@@ -51,7 +51,7 @@ namespace Silicus.Encourage.Web.Controllers
                 = new SelectList(_awardService.GetProjectsUnderCurrentUserAsManager("shailendra.birthare@silicus.com"), "Id", "Name");
             ViewBag.ManagerId = _awardService.GetUserIdFromEmail("shailendra.birthare@silicus.com");
             ViewBag.DepartmentsUnderCurrentUser = new SelectList(_awardService.GetDepartmentsUnderCurrentUserAsManager("tushar.surve@silicus.com"), "Id", "Name");
-
+           
             ViewBag.Resources = new SelectList(new List<User>(), "Id", "DisplayName");
             return View();
         }
@@ -60,8 +60,8 @@ namespace Silicus.Encourage.Web.Controllers
         public ActionResult AddNomination(NominationViewModel model, string submit)
         {
             var nomination = new Nomination();
-
-
+          
+            
             nomination.AwardId = model.AwardId;
             nomination.ManagerId = model.ManagerId;
             nomination.UserId = model.ResourceId;
@@ -191,7 +191,7 @@ namespace Silicus.Encourage.Web.Controllers
 
             foreach (var comment in model.Comments)
             {
-                if (comment != null)
+                if (comment.Comment != null)
                 {
                     nomination.ManagerComments.Add(new ManagerComment()
                     {
@@ -292,7 +292,7 @@ namespace Silicus.Encourage.Web.Controllers
                         Id = item.Id,
                     });
                 if (item.Credit == 1)
-                {
+        {
                     totalCredit = totalCredit + Convert.ToInt32(item.Credit);
                 }
             }
@@ -303,7 +303,7 @@ namespace Silicus.Encourage.Web.Controllers
             {
                 return View("ReviewDetails", reviewNominationViewModel);
             }
-
+           
             return View(reviewNominationViewModel);
 
         }
@@ -323,7 +323,7 @@ namespace Silicus.Encourage.Web.Controllers
                 _encourageDatabaseContext.Delete<Review>(alreadyReviewed);
                 _encourageDatabaseContext.SaveChanges();
             }
-
+           
             var review = new Review();
             review.NominationId = model.NominationId;
             review.ReviewerId = model.ReviewerId;
@@ -332,7 +332,7 @@ namespace Silicus.Encourage.Web.Controllers
             if (!string.IsNullOrEmpty(Submit) && Submit == "Submit")
             {
                 review.IsSubmited = true;
-            }
+        }
 
             if (!string.IsNullOrEmpty(Submit) && Submit != "Discard Review")
             {
@@ -346,7 +346,8 @@ namespace Silicus.Encourage.Web.Controllers
                         ReviewerId = model.ReviewerId,
                         CriteriaId = item.Id,
                         Comment = item.Comment,
-                        Credit = Convert.ToInt32(item.Credit)
+                        Credit = Convert.ToInt32(item.Credit),
+                        ReviewId = review.Id
 
                     };
                     _nominationService.AddReviewerCommentsForCurrentNomination(revrComment);
@@ -379,7 +380,7 @@ namespace Silicus.Encourage.Web.Controllers
                 reviewNominations.Add(reviewNominationViewModel);
             }
             return View(reviewNominations);
-        }
+                }
 
         public ActionResult ReviewNomination(int nominationId)
         {
@@ -401,12 +402,12 @@ namespace Silicus.Encourage.Web.Controllers
 
             return View(reviewNominationViewModel);
 
-        }
+            }
 
 
         [HttpPost]
         public ActionResult ReviewNomination(ReviewSubmitionViewModel model, string Submit)
-        {
+            {
             var alreadyReviewed = _encourageDatabaseContext.Query<Review>().Where(r => r.ReviewerId == model.ReviewerId && r.NominationId == model.NominationId).FirstOrDefault();
             var previousComments = _encourageDatabaseContext.Query<ReviewerComment>().Where(r => r.ReviewerId == model.ReviewerId && r.NominationId == model.NominationId).ToList();
 
@@ -441,14 +442,14 @@ namespace Silicus.Encourage.Web.Controllers
                     ReviewerId = model.ReviewerId,
                     CriteriaId = item.Id,
                     Comment = item.Comment,
-                    Credit = Convert.ToInt32(item.Credit)
+                    Credit = Convert.ToInt32(item.Credit),
+                    ReviewId = review.Id
 
                 };
                 _nominationService.AddReviewerCommentsForCurrentNomination(revrComment);
             }
             return RedirectToAction("Dashboard", "Dashboard");
         }
-
 
 
         public ActionResult SavedReviews()

@@ -18,6 +18,9 @@ namespace Silicus.Encourage.DAL.EntityConfigurations
             Property(p => p.Id).HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity);
 
             ToTable(TableSettings.Awards, TableSettings.DefaultSchema);
+
+            HasMany(o => o.Nominations);
+
         }
     }
 }
