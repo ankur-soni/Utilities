@@ -4,7 +4,7 @@
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram DiagramId="95c7f0c5bfa440b9b5517d954b5cc638" Name="Diagram1">
+      <Diagram DiagramId="893784e9ceb54aed92e4c3308a099689" Name="Diagram1">
         <EntityTypeShape EntityType="EnCourageModel.C__MigrationHistory" Width="1.5" PointX="0.75" PointY="0.75" IsExpanded="true" />
         <EntityTypeShape EntityType="EnCourageModel.Award" Width="1.5" PointX="3" PointY="7.75" IsExpanded="true" />
         <EntityTypeShape EntityType="EnCourageModel.AwardCriteria" Width="1.5" PointX="7.5" PointY="8" IsExpanded="true" />
@@ -27,8 +27,8 @@
         <AssociationConnector Association="EnCourageModel.FK_dbo_ReviewerComment_dbo_Nomination_NominationId" ManuallyRouted="false" />
         <AssociationConnector Association="EnCourageModel.FK_dbo_Winner_dbo_Nomination_NominationId" ManuallyRouted="false" />
         <AssociationConnector Association="EnCourageModel.FK_Review_NominationId" ManuallyRouted="false" />
+        <AssociationConnector Association="EnCourageModel.FK__ReviewerC__Revie__24E777C3" ManuallyRouted="false" />
         <AssociationConnector Association="EnCourageModel.FK_Review_Reviewer_Id" ManuallyRouted="false" />
-        <AssociationConnector Association="EnCourageModel.FK_Review_ReviewId" ManuallyRouted="false" />
         <AssociationConnector Association="EnCourageModel.FK_dbo_ReviewerComment_dbo_Reviewer_ReviewerId" ManuallyRouted="false" />
       </Diagram>
     </edmx:Diagrams>

@@ -13,10 +13,10 @@ namespace Silicus.Encourage.Models
     using System.Data.Entity;
     using System.Data.Entity.Infrastructure;
     
-    public partial class EnCourageEntities : DbContext
+    public partial class EnCourageEntities1 : DbContext
     {
-        public EnCourageEntities()
-            : base("name=EnCourageEntities")
+        public EnCourageEntities1()
+            : base("name=EnCourageEntities1")
         {
         }
     
