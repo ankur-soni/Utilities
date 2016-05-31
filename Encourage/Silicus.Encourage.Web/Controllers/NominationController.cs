@@ -132,7 +132,7 @@ namespace Silicus.Encourage.Web.Controllers
             if (savedNomination.ProjectID != null)
             {
                 nominationViewModel.SelectResourcesBy = "Project";
-                ViewBag.Resources = new SelectList(_awardService.GetResourcesInEngagement(savedNomination.ProjectID.Value, currentUserId), "Id", "DisplayName");
+                ViewBag.Resources = new SelectList(_awardService.GetResourcesForEditInEngagement(savedNomination.ProjectID.Value, currentUserId), "Id", "DisplayName");
             }
             else if (savedNomination.DepartmentId != null)
             {

@@ -168,14 +168,6 @@
         <!-- END LEFT MENU -->
         <!--   START OF CONTENT AREA -->
 
-        @*<div class="container body-content">
-            @RenderBody()
-            <hr />
-            <footer>
-                <p>&copy; @DateTime.Now.Year - My ASP.NET Application</p>
-            </footer>
-        </div>*@
-
         <div id="page-wrapper" class="gray-bg">
 
             <div class="container body-content" >
@@ -183,14 +175,14 @@
                 @RenderBody()
 
             </div>
-            
+            <div class="footer">
+                <div>
+                    <strong>&copy;Copyright</strong> 2000 -
+                    <script>document.write(new Date().getFullYear())</script> Silicus Technologies
+                </div>
             </div>
-        <div class="footer">
-            <div>
-                <strong>&copy;Copyright</strong> 2000 -
-                <script>document.write(new Date().getFullYear())</script> Silicus Technologies
             </div>
-        </div>
+        
 
         
     </div>

@@ -57,7 +57,10 @@
 
                     <div class="ibox-footer text-left">
                         <br /><br />
-                        <a href="@Url.Action("ReviewNomination", "Nomination", new { nominationId = item.Id })">Review</a>
+                        <a href="@Url.Action("ReviewNomination", "Nomination", new { nominationId = item.Id })" class="btn btn-primary btn-sm">
+                            <span style="font-weight:bold">  Review </span>
+                        </a>
+                       
                     </div>
                 </div>
             </div>
