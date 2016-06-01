@@ -100,11 +100,49 @@ namespace Silicus.Encourage.Services
                                    where engagementRole.EngagementID == engagementId
                                    select user;
 
+           
+            
             var currentUser = _CommonDbContext.Query<User>().Where(user => user.ID == userIdToExcept);
+            var currentUserId = currentUser.FirstOrDefault().ID;
+
+            var recourcesInEnggementUnderCurrentManger = _encourageDbcontext.Query<Nomination>().Where(n => n.ProjectID == engagementId && n.ManagerId == currentUserId );
+
+           
             userInEngagement = userInEngagement.Except(currentUser);
+
+            var userList = userInEngagement.ToList();
+
+            foreach (var item in recourcesInEnggementUnderCurrentManger)
+            {
+                userList.RemoveAll(u => u.ID == item.UserId);
+            }
+
+            return userList;
+        }
+
+
+        public List<User> GetResourcesForEditInEngagement(int engagementId, int userIdToExcept)
+        {
+            var userInEngagement = from engagementRole in _CommonDbContext.Query<EngagementRole>()
+                                   join resourceHistory in _CommonDbContext.Query<ResourceHistory>() on engagementRole.ResourceHistoryID equals resourceHistory.ID
+                                   join resource in _CommonDbContext.Query<Resource>() on resourceHistory.ResourceID equals resource.ID
+                                   join user in _CommonDbContext.Query<User>() on resource.UserID equals user.ID
+                                   where engagementRole.EngagementID == engagementId
+                                   select user;
+
+
+
+            var currentUser = _CommonDbContext.Query<User>().Where(user => user.ID == userIdToExcept);
+           
+
+
+            userInEngagement = userInEngagement.Except(currentUser);
+
+
 
             return userInEngagement.ToList();
         }
+
 
         public int GetUserIdFromEmail(string email)
         {

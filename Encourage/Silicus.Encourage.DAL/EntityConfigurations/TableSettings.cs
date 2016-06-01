@@ -17,6 +17,6 @@ namespace Silicus.Encourage.DAL.EntityConfigurations
        public static readonly string Nominations = "Nomination";
        public static readonly string Reviewers = "Reviewer";
        public static readonly string AwardCriterias = "AwardCriteria";
-       public static readonly string Winners = "Winner";
+       public static readonly string Shortlists = "Shortlist";
     }
 }

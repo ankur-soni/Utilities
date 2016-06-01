@@ -32,13 +32,13 @@
             var borderColor = string.Empty;
             if (item.IsSubmitted == true)
             {
-              borderColor   = "Green";  
+                borderColor = "#0067AA";
             }
             else
             {
-                borderColor = "Red";     
+                borderColor = "#F8AC59";
             }
-            
+
             Random randomGen = new Random();
             KnownColor[] names = (KnownColor[])Enum.GetValues(typeof(KnownColor));
             KnownColor randomColorName = names[randomGen.Next(names.Length)];
@@ -48,8 +48,8 @@
                 <div class="ibox float-e-margins">
                     <div class="ibox-title">
                         @*<div style="background-color:@randomColor.Name;height:60px;margin-top:10px;padding-left:10px;padding-bottom:70px; font-weight:bold;font-size:50px;text-align:left" class="col-md-5">
-                            @Html.DisplayFor(modelItem => item.Intials)
-                        </div>*@
+                                @Html.DisplayFor(modelItem => item.Intials)
+                            </div>*@
                         <div>
                             <div>
                                 @Html.DisplayFor(modelItem => item.DisplayName)
@@ -64,19 +64,21 @@
                     </div>
                     <div class="ibox-footer text-left">
                         @if (item.IsSubmitted == false)
-                    {
-                            <div>
-                                @Html.ActionLink("Edit", "EditSavedNomination", "Nomination", new { nominationId = item.Id }, null)
-                            </div>
-                    }
-                    else
-                    {
-                            <div>
-                                @Html.ActionLink("Details", "EditSavedNomination", "Nomination", new { nominationId = item.Id }, null)
-                            </div>
-                    }
-                        </div>
+                        {
+                            <a href="@Url.Action("EditSavedNomination", "Nomination", new { nominationId = item.Id })" class="btn btn-primary btn-sm">
+                                <span style="font-weight:bold">  Edit </span>
+                            </a>
+
+                        }
+                        else
+                        {
+                            <a href="@Url.Action("EditSavedNomination", "Nomination", new { nominationId = item.Id })" class="btn btn-primary btn-sm">
+                                <span style="font-weight:bold">  Details </span>
+                            </a>
+
+                        }
                     </div>
+                </div>
             </div>
 
         }

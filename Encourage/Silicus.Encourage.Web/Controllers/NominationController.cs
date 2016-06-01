@@ -132,7 +132,7 @@ namespace Silicus.Encourage.Web.Controllers
             if (savedNomination.ProjectID != null)
             {
                 nominationViewModel.SelectResourcesBy = "Project";
-                ViewBag.Resources = new SelectList(_awardService.GetResourcesInEngagement(savedNomination.ProjectID.Value, currentUserId), "Id", "DisplayName");
+                ViewBag.Resources = new SelectList(_awardService.GetResourcesForEditInEngagement(savedNomination.ProjectID.Value, currentUserId), "Id", "DisplayName");
             }
             else if (savedNomination.DepartmentId != null)
             {
@@ -361,7 +361,7 @@ namespace Silicus.Encourage.Web.Controllers
         [HttpGet]
         public ActionResult ReviewNominations()
         {
-            var nominations = _nominationService.GetAllSubmitedNonreviewedNominations();
+            var nominations = _nominationService.GetAllSubmitedNonreviewedNominations(_nominationService.GetReviewerIdOfCurrentNomination( Session["UserEmailAddress"] as string));
             var reviewNominations = new List<NominationListViewModel>();
             foreach (var nomination in nominations)
             {
@@ -456,7 +456,7 @@ namespace Silicus.Encourage.Web.Controllers
         {
 
             var reviewedNominations = new List<NominationListViewModel>();
-            var nominations = _nominationService.GetAllSubmitedReviewedNominations();
+            var nominations = _nominationService.GetAllSubmitedReviewedNominations(_nominationService.GetReviewerIdOfCurrentNomination( Session["UserEmailAddress"] as string));
 
             foreach (var nomination in nominations)
             {

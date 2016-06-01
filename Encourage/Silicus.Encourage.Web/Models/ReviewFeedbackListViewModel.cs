@@ -13,5 +13,7 @@ namespace Silicus.Encourage.Web.Models
         public string AwardName { get; set; }
         public string Intials { get; set; }
         public int Credits { get; set; }
+        public bool IsShortlisted { get; set; }
+        public bool IsWinner { get; set; }
     }
 }

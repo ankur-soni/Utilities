@@ -28,8 +28,8 @@ namespace Silicus.Encourage.Models
         public Nullable<System.DateTime> ReviewDate { get; set; }
     
         public virtual Nomination Nomination { get; set; }
-        public virtual Reviewer Reviewer { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<ReviewerComment> ReviewerComments { get; set; }
+        public virtual Reviewer Reviewer { get; set; }
     }
 }

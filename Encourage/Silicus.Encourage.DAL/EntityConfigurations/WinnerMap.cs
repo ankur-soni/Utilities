@@ -9,15 +9,15 @@ using System.Threading.Tasks;
 
 namespace Silicus.Encourage.DAL.EntityConfigurations
 {
-        internal class WinnerMap : EntityTypeConfiguration<Winner>
+        internal class ShortlistMap : EntityTypeConfiguration<Shortlist>
         {
-            public WinnerMap()
+            public ShortlistMap()
             {
                 HasKey(o => o.Id);
 
                 Property(p => p.Id).HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity);
 
-                ToTable(TableSettings.Winners, TableSettings.DefaultSchema);
+                ToTable(TableSettings.Shortlists, TableSettings.DefaultSchema);
             }
         }
   

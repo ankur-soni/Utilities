@@ -32,11 +32,11 @@
 
             @Html.HiddenFor(modelItem => modelItem.ReviewerId)
             @Html.HiddenFor(modelItem => modelItem.NominationId);
-            <table border="1" style="width:80%" class="white-bg">
+            <table class="table table-hover issue-tracker white-bg" style="width:80%">
                 <thead>
                     <tr>
-                        <th>
-                            ReviewFor:
+                        <th class="mail-ontact">
+                            Review For:
                         </th>
 
                         <td>
@@ -64,22 +64,21 @@
                 </thead>
             </table>
             <br />
-            <table border="1" style="width:80%" class="white-bg">
+            <table class="table table-hover issue-tracker white-bg" style="width:80%">
                 <tr>
                     <th>
                         @Html.DisplayFor(modelItem => modelItem.Manager) Says:
                     </th>
 
-                    <td>
+                    <td class="more">
 
-                        <span class="header">Click here to see comment.</span>
-                        <textarea class="content" style="width:100%" readonly>@Model.ManagerComment</textarea>
+                        @Model.ManagerComment
 
                     </td>
                 </tr>
             </table>
             <br />
-            <table border="1" style="width:80%" class="white-bg">
+            <table class="table table-hover issue-tracker white-bg" style="width:80%">
                 <thead>
                     <tr>
                         <th>Id</th>
@@ -90,8 +89,8 @@
                     </tr>
                 </thead>
                 @{
-                                                        var j = 0;
-                                                        var k = 0;
+                                                                var j = 0;
+                                                                var k = 0;
                 }
                 @foreach (var item in Model.Criterias)
                 {
@@ -115,9 +114,19 @@
                             <td class="col-md-3">@Html.TextArea("Comments[" + @j + "].Comment")</td>
 
                             @Html.Hidden("Comments[" + @j + "].Id", item.Id)
+                            <td>
+                                <div class="switch">
+                                    <div class="onoffswitch">
+                                        <input type="checkbox" value="true" length="0" class="onoffswitch-checkbox" id='example @j' name="Comments[@j].Credit">
 
+                                        <label class=" onoffswitch-label" for="example @j">
+                                            <span class="onoffswitch-inner"></span>
+                                            <span class="onoffswitch-switch"></span>
+                                        </label>
+                                    </div>
+                                </div>
+                            </td>
 
-                            <td class="col-md-1">@Html.CheckBox("Comments[" + j + "].Credit", "")</td>
                         </tr>
                     </tbody>
                             j++;
@@ -135,36 +144,21 @@
 
             <div class="form-group">
                 <div class="col-md-offset-4">
-                    <input type="submit" name="submit" value="Save Draft" id="saveButton" class="btn btn-default" />
-                    <input type="submit" name="submit" value="Submit" id="submitButton" class="btn btn-default" />
-                    <input type="button" value="Cancel" class="btn btn-default" onclick="location.href='@Url.Action("ReviewNominations","Nomination")'" />
+                    <input type="submit" name="submit" value="Save Draft" id="saveButton" class="btn btn-warning" />
+                    <input type="submit" name="submit" value="Submit" id="submitButton" class="btn btn-success-green" />
+                    <input type="button" value="Cancel" class="btn btn-danger" onclick="location.href='@Url.Action("ReviewNominations","Nomination")'" />
                 </div>
             </div>
         }
-        </div>
     </div>
+</div>
 
-        <script src="http://ajax.googleapis.com/ajax/libs/jquery/2.0.0/jquery.min.js"></script>
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/2.0.0/jquery.min.js"></script>
 
 
-        <script>
+<script>
 
-            $(".header").click(function () {
 
-                $header = $(this);
-                //getting the next element
-                $content = $header.next();
-                //open up the content needed - toggle the slide- if visible, slide up, if not slidedown.
-                $content.slideToggle(500, function () {
-                    //execute this after slideToggle is done
-                    //change text of header based on visibility of content div
-                    $header.text(function () {
-                        //change text based on condition
-                        return $content.is(":visible") ? "Click here to hide comment." : "Click here to see comment.";
-                    });
-                });
 
-            });
-
-        </script>
+</script>
 

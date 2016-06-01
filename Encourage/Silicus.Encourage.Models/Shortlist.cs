@@ -12,11 +12,12 @@ namespace Silicus.Encourage.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class Winner
+    public partial class Shortlist
     {
         public int Id { get; set; }
         public int NominationId { get; set; }
-        public System.DateTime WinningDate { get; set; }
+        public Nullable<bool> IsWinner { get; set; }
+        public Nullable<System.DateTime> WinningDate { get; set; }
     
         public virtual Nomination Nomination { get; set; }
     }

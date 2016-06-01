@@ -105,14 +105,37 @@
           <Property Name="Credit" Type="int" />
           <Property Name="ReviewId" Type="int" Nullable="false" />
         </EntityType>
-        <EntityType Name="Winner">
+        <EntityType Name="Shortlist">
           <Key>
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="NominationId" Type="int" Nullable="false" />
-          <Property Name="WinningDate" Type="datetime" Nullable="false" />
+          <Property Name="IsWinner" Type="bit" />
+          <Property Name="WinningDate" Type="datetime" />
         </EntityType>
+        <EntityType Name="sysdiagrams">
+          <Key>
+            <PropertyRef Name="diagram_id" />
+          </Key>
+          <Property Name="name" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="principal_id" Type="int" Nullable="false" />
+          <Property Name="diagram_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="version" Type="int" />
+          <Property Name="definition" Type="varbinary(max)" />
+        </EntityType>
+        <Association Name="FK__ReviewerC__Revie__24E777C3">
+          <End Role="Review" Type="Self.Review" Multiplicity="1" />
+          <End Role="ReviewerComment" Type="Self.ReviewerComment" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Review">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ReviewerComment">
+              <PropertyRef Name="ReviewId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_dbo_Award_dbo_FrequencyMaster_FrequencyId">
           <End Role="FrequencyMaster" Type="Self.FrequencyMaster" Multiplicity="1">
             <OnDelete Action="Cascade" />
@@ -251,20 +274,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_dbo_Winner_dbo_Nomination_NominationId">
-          <End Role="Nomination" Type="Self.Nomination" Multiplicity="1">
-            <OnDelete Action="Cascade" />
-          </End>
-          <End Role="Winner" Type="Self.Winner" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Nomination">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="Winner">
-              <PropertyRef Name="NominationId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK_Review_NominationId">
           <End Role="Nomination" Type="Self.Nomination" Multiplicity="1" />
           <End Role="Review" Type="Self.Review" Multiplicity="*" />
@@ -289,15 +298,15 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_Review_ReviewId">
-          <End Role="Review" Type="Self.Review" Multiplicity="1" />
-          <End Role="ReviewerComment" Type="Self.ReviewerComment" Multiplicity="*" />
+        <Association Name="FK_Shortlist_NominationId">
+          <End Role="Nomination" Type="Self.Nomination" Multiplicity="1" />
+          <End Role="Shortlist" Type="Self.Shortlist" Multiplicity="*" />
           <ReferentialConstraint>
-            <Principal Role="Review">
+            <Principal Role="Nomination">
               <PropertyRef Name="Id" />
             </Principal>
-            <Dependent Role="ReviewerComment">
-              <PropertyRef Name="ReviewId" />
+            <Dependent Role="Shortlist">
+              <PropertyRef Name="NominationId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -312,7 +321,12 @@
           <EntitySet Name="Review" EntityType="Self.Review" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Reviewer" EntityType="Self.Reviewer" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ReviewerComment" EntityType="Self.ReviewerComment" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="Winner" EntityType="Self.Winner" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Shortlist" EntityType="Self.Shortlist" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK__ReviewerC__Revie__24E777C3" Association="Self.FK__ReviewerC__Revie__24E777C3">
+            <End Role="Review" EntitySet="Review" />
+            <End Role="ReviewerComment" EntitySet="ReviewerComment" />
+          </AssociationSet>
           <AssociationSet Name="FK_dbo_Award_dbo_FrequencyMaster_FrequencyId" Association="Self.FK_dbo_Award_dbo_FrequencyMaster_FrequencyId">
             <End Role="FrequencyMaster" EntitySet="FrequencyMaster" />
             <End Role="Award" EntitySet="Award" />
@@ -353,10 +367,6 @@
             <End Role="Reviewer" EntitySet="Reviewer" />
             <End Role="ReviewerComment" EntitySet="ReviewerComment" />
           </AssociationSet>
-          <AssociationSet Name="FK_dbo_Winner_dbo_Nomination_NominationId" Association="Self.FK_dbo_Winner_dbo_Nomination_NominationId">
-            <End Role="Nomination" EntitySet="Nomination" />
-            <End Role="Winner" EntitySet="Winner" />
-          </AssociationSet>
           <AssociationSet Name="FK_Review_NominationId" Association="Self.FK_Review_NominationId">
             <End Role="Nomination" EntitySet="Nomination" />
             <End Role="Review" EntitySet="Review" />
@@ -365,9 +375,9 @@
             <End Role="Reviewer" EntitySet="Reviewer" />
             <End Role="Review" EntitySet="Review" />
           </AssociationSet>
-          <AssociationSet Name="FK_Review_ReviewId" Association="Self.FK_Review_ReviewId">
-            <End Role="Review" EntitySet="Review" />
-            <End Role="ReviewerComment" EntitySet="ReviewerComment" />
+          <AssociationSet Name="FK_Shortlist_NominationId" Association="Self.FK_Shortlist_NominationId">
+            <End Role="Nomination" EntitySet="Nomination" />
+            <End Role="Shortlist" EntitySet="Shortlist" />
           </AssociationSet>
         </EntityContainer>
       </Schema>
@@ -460,8 +470,8 @@
           <NavigationProperty Name="Award" Relationship="Self.FK_dbo_Nomination_dbo_Award_AwardId" FromRole="Nomination" ToRole="Award" />
           <NavigationProperty Name="ManagerComments" Relationship="Self.FK_dbo_ManagerComment_dbo_Nomination_NominationId" FromRole="Nomination" ToRole="ManagerComment" />
           <NavigationProperty Name="ReviewerComments" Relationship="Self.FK_dbo_ReviewerComment_dbo_Nomination_NominationId" FromRole="Nomination" ToRole="ReviewerComment" />
-          <NavigationProperty Name="Winners" Relationship="Self.FK_dbo_Winner_dbo_Nomination_NominationId" FromRole="Nomination" ToRole="Winner" />
           <NavigationProperty Name="Reviews" Relationship="Self.FK_Review_NominationId" FromRole="Nomination" ToRole="Review" />
+          <NavigationProperty Name="Shortlists" Relationship="Self.FK_Shortlist_NominationId" FromRole="Nomination" ToRole="Shortlist" />
         </EntityType>
         <EntityType Name="Review">
           <Key>
@@ -474,8 +484,8 @@
           <Property Name="IsLocked" Type="Boolean" />
           <Property Name="ReviewDate" Type="DateTime" Precision="0" />
           <NavigationProperty Name="Nomination" Relationship="Self.FK_Review_NominationId" FromRole="Review" ToRole="Nomination" />
+          <NavigationProperty Name="ReviewerComments" Relationship="Self.FK__ReviewerC__Revie__24E777C3" FromRole="Review" ToRole="ReviewerComment" />
           <NavigationProperty Name="Reviewer" Relationship="Self.FK_Review_Reviewer_Id" FromRole="Review" ToRole="Reviewer" />
-          <NavigationProperty Name="ReviewerComments" Relationship="Self.FK_Review_ReviewId" FromRole="Review" ToRole="ReviewerComment" />
         </EntityType>
         <EntityType Name="Reviewer">
           <Key>
@@ -499,17 +509,28 @@
           <Property Name="ReviewId" Type="Int32" Nullable="false" />
           <NavigationProperty Name="Criterion" Relationship="Self.FK_dbo_ReviewerComment_dbo_Criteria_CriteriaId" FromRole="ReviewerComment" ToRole="Criteria" />
           <NavigationProperty Name="Nomination" Relationship="Self.FK_dbo_ReviewerComment_dbo_Nomination_NominationId" FromRole="ReviewerComment" ToRole="Nomination" />
-          <NavigationProperty Name="Review" Relationship="Self.FK_Review_ReviewId" FromRole="ReviewerComment" ToRole="Review" />
+          <NavigationProperty Name="Review" Relationship="Self.FK__ReviewerC__Revie__24E777C3" FromRole="ReviewerComment" ToRole="Review" />
           <NavigationProperty Name="Reviewer" Relationship="Self.FK_dbo_ReviewerComment_dbo_Reviewer_ReviewerId" FromRole="ReviewerComment" ToRole="Reviewer" />
         </EntityType>
-        <EntityType Name="Winner">
+        <EntityType Name="Shortlist">
           <Key>
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="NominationId" Type="Int32" Nullable="false" />
-          <Property Name="WinningDate" Type="DateTime" Nullable="false" Precision="3" />
-          <NavigationProperty Name="Nomination" Relationship="Self.FK_dbo_Winner_dbo_Nomination_NominationId" FromRole="Winner" ToRole="Nomination" />
+          <Property Name="IsWinner" Type="Boolean" />
+          <Property Name="WinningDate" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="Nomination" Relationship="Self.FK_Shortlist_NominationId" FromRole="Shortlist" ToRole="Nomination" />
+        </EntityType>
+        <EntityType Name="sysdiagram">
+          <Key>
+            <PropertyRef Name="diagram_id" />
+          </Key>
+          <Property Name="name" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="principal_id" Type="Int32" Nullable="false" />
+          <Property Name="diagram_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="version" Type="Int32" />
+          <Property Name="definition" Type="Binary" MaxLength="Max" FixedLength="false" />
         </EntityType>
         <Association Name="FK_dbo_Award_dbo_FrequencyMaster_FrequencyId">
           <End Role="FrequencyMaster" Type="Self.FrequencyMaster" Multiplicity="1">
@@ -635,20 +656,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_dbo_Winner_dbo_Nomination_NominationId">
-          <End Role="Nomination" Type="Self.Nomination" Multiplicity="1">
-            <OnDelete Action="Cascade" />
-          </End>
-          <End Role="Winner" Type="Self.Winner" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Nomination">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="Winner">
-              <PropertyRef Name="NominationId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK_Review_NominationId">
           <End Role="Nomination" Type="Self.Nomination" Multiplicity="1" />
           <End Role="Review" Type="Self.Review" Multiplicity="*" />
@@ -661,6 +668,30 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_Shortlist_NominationId">
+          <End Role="Nomination" Type="Self.Nomination" Multiplicity="1" />
+          <End Role="Shortlist" Type="Self.Shortlist" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Nomination">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Shortlist">
+              <PropertyRef Name="NominationId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__ReviewerC__Revie__24E777C3">
+          <End Role="Review" Type="Self.Review" Multiplicity="1" />
+          <End Role="ReviewerComment" Type="Self.ReviewerComment" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Review">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="ReviewerComment">
+              <PropertyRef Name="ReviewId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_Review_Reviewer_Id">
           <End Role="Reviewer" Type="Self.Reviewer" Multiplicity="1" />
           <End Role="Review" Type="Self.Review" Multiplicity="*" />
@@ -670,18 +701,6 @@
             </Principal>
             <Dependent Role="Review">
               <PropertyRef Name="ReviewerId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_Review_ReviewId">
-          <End Role="Review" Type="Self.Review" Multiplicity="1" />
-          <End Role="ReviewerComment" Type="Self.ReviewerComment" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Review">
-              <PropertyRef Name="Id" />
-            </Principal>
-            <Dependent Role="ReviewerComment">
-              <PropertyRef Name="ReviewId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -710,7 +729,8 @@
           <EntitySet Name="Reviews" EntityType="Self.Review" />
           <EntitySet Name="Reviewers" EntityType="Self.Reviewer" />
           <EntitySet Name="ReviewerComments" EntityType="Self.ReviewerComment" />
-          <EntitySet Name="Winners" EntityType="Self.Winner" />
+          <EntitySet Name="Shortlists" EntityType="Self.Shortlist" />
+          <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagram" />
           <AssociationSet Name="FK_dbo_Award_dbo_FrequencyMaster_FrequencyId" Association="Self.FK_dbo_Award_dbo_FrequencyMaster_FrequencyId">
             <End Role="FrequencyMaster" EntitySet="FrequencyMasters" />
             <End Role="Award" EntitySet="Awards" />
@@ -747,21 +767,21 @@
             <End Role="Nomination" EntitySet="Nominations" />
             <End Role="ReviewerComment" EntitySet="ReviewerComments" />
           </AssociationSet>
-          <AssociationSet Name="FK_dbo_Winner_dbo_Nomination_NominationId" Association="Self.FK_dbo_Winner_dbo_Nomination_NominationId">
-            <End Role="Nomination" EntitySet="Nominations" />
-            <End Role="Winner" EntitySet="Winners" />
-          </AssociationSet>
           <AssociationSet Name="FK_Review_NominationId" Association="Self.FK_Review_NominationId">
             <End Role="Nomination" EntitySet="Nominations" />
             <End Role="Review" EntitySet="Reviews" />
           </AssociationSet>
+          <AssociationSet Name="FK_Shortlist_NominationId" Association="Self.FK_Shortlist_NominationId">
+            <End Role="Nomination" EntitySet="Nominations" />
+            <End Role="Shortlist" EntitySet="Shortlists" />
+          </AssociationSet>
+          <AssociationSet Name="FK__ReviewerC__Revie__24E777C3" Association="Self.FK__ReviewerC__Revie__24E777C3">
+            <End Role="Review" EntitySet="Reviews" />
+            <End Role="ReviewerComment" EntitySet="ReviewerComments" />
+          </AssociationSet>
           <AssociationSet Name="FK_Review_Reviewer_Id" Association="Self.FK_Review_Reviewer_Id">
             <End Role="Reviewer" EntitySet="Reviewers" />
             <End Role="Review" EntitySet="Reviews" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Review_ReviewId" Association="Self.FK_Review_ReviewId">
-            <End Role="Review" EntitySet="Reviews" />
-            <End Role="ReviewerComment" EntitySet="ReviewerComments" />
           </AssociationSet>
           <AssociationSet Name="FK_dbo_ReviewerComment_dbo_Reviewer_ReviewerId" Association="Self.FK_dbo_ReviewerComment_dbo_Reviewer_ReviewerId">
             <End Role="Reviewer" EntitySet="Reviewers" />
@@ -883,12 +903,24 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="Winners">
-            <EntityTypeMapping TypeName="EnCourageModel.Winner">
-              <MappingFragment StoreEntitySet="Winner">
+          <EntitySetMapping Name="Shortlists">
+            <EntityTypeMapping TypeName="EnCourageModel.Shortlist">
+              <MappingFragment StoreEntitySet="Shortlist">
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="NominationId" ColumnName="NominationId" />
+                <ScalarProperty Name="IsWinner" ColumnName="IsWinner" />
                 <ScalarProperty Name="WinningDate" ColumnName="WinningDate" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="sysdiagrams">
+            <EntityTypeMapping TypeName="EnCourageModel.sysdiagram">
+              <MappingFragment StoreEntitySet="sysdiagrams">
+                <ScalarProperty Name="name" ColumnName="name" />
+                <ScalarProperty Name="principal_id" ColumnName="principal_id" />
+                <ScalarProperty Name="diagram_id" ColumnName="diagram_id" />
+                <ScalarProperty Name="version" ColumnName="version" />
+                <ScalarProperty Name="definition" ColumnName="definition" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

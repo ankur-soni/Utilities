@@ -51,73 +51,76 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Award.cs">
-      <DependentUpon>Encourage.tt</DependentUpon>
+      <DependentUpon>EnCourage.tt</DependentUpon>
     </Compile>
     <Compile Include="AwardCriteria.cs">
-      <DependentUpon>Encourage.tt</DependentUpon>
+      <DependentUpon>EnCourage.tt</DependentUpon>
     </Compile>
     <Compile Include="Criteria.cs">
-      <DependentUpon>Encourage.tt</DependentUpon>
+      <DependentUpon>EnCourage.tt</DependentUpon>
     </Compile>
     <Compile Include="C__MigrationHistory.cs">
-      <DependentUpon>Encourage.tt</DependentUpon>
+      <DependentUpon>EnCourage.tt</DependentUpon>
     </Compile>
-    <Compile Include="Encourage.Context.cs">
+    <Compile Include="EnCourage.Context.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>Encourage.Context.tt</DependentUpon>
+      <DependentUpon>EnCourage.Context.tt</DependentUpon>
     </Compile>
-    <Compile Include="Encourage.cs">
+    <Compile Include="EnCourage.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>Encourage.tt</DependentUpon>
+      <DependentUpon>EnCourage.tt</DependentUpon>
     </Compile>
-    <Compile Include="Encourage.Designer.cs">
+    <Compile Include="EnCourage.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>Encourage.edmx</DependentUpon>
+      <DependentUpon>EnCourage.edmx</DependentUpon>
     </Compile>
     <Compile Include="FrequencyMaster.cs">
-      <DependentUpon>Encourage.tt</DependentUpon>
+      <DependentUpon>EnCourage.tt</DependentUpon>
     </Compile>
     <Compile Include="ManagerComment.cs">
-      <DependentUpon>Encourage.tt</DependentUpon>
+      <DependentUpon>EnCourage.tt</DependentUpon>
     </Compile>
     <Compile Include="Nomination.cs">
-      <DependentUpon>Encourage.tt</DependentUpon>
+      <DependentUpon>EnCourage.tt</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Review.cs">
-      <DependentUpon>Encourage.tt</DependentUpon>
+      <DependentUpon>EnCourage.tt</DependentUpon>
     </Compile>
     <Compile Include="Reviewer.cs">
-      <DependentUpon>Encourage.tt</DependentUpon>
+      <DependentUpon>EnCourage.tt</DependentUpon>
     </Compile>
     <Compile Include="ReviewerComment.cs">
-      <DependentUpon>Encourage.tt</DependentUpon>
+      <DependentUpon>EnCourage.tt</DependentUpon>
     </Compile>
-    <Compile Include="Winner.cs">
-      <DependentUpon>Encourage.tt</DependentUpon>
+    <Compile Include="Shortlist.cs">
+      <DependentUpon>EnCourage.tt</DependentUpon>
+    </Compile>
+    <Compile Include="sysdiagram.cs">
+      <DependentUpon>EnCourage.tt</DependentUpon>
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <EntityDeploy Include="Encourage.edmx">
+    <EntityDeploy Include="EnCourage.edmx">
       <Generator>EntityModelCodeGenerator</Generator>
-      <LastGenOutput>Encourage.Designer.cs</LastGenOutput>
+      <LastGenOutput>EnCourage.Designer.cs</LastGenOutput>
     </EntityDeploy>
     <None Include="App.Config" />
-    <None Include="Encourage.Context.tt">
+    <None Include="EnCourage.Context.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
-      <DependentUpon>Encourage.edmx</DependentUpon>
-      <LastGenOutput>Encourage.Context.cs</LastGenOutput>
+      <DependentUpon>EnCourage.edmx</DependentUpon>
+      <LastGenOutput>EnCourage.Context.cs</LastGenOutput>
     </None>
-    <None Include="Encourage.edmx.diagram">
-      <DependentUpon>Encourage.edmx</DependentUpon>
+    <None Include="EnCourage.edmx.diagram">
+      <DependentUpon>EnCourage.edmx</DependentUpon>
     </None>
-    <None Include="Encourage.tt">
+    <None Include="EnCourage.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
-      <DependentUpon>Encourage.edmx</DependentUpon>
-      <LastGenOutput>Encourage.cs</LastGenOutput>
+      <DependentUpon>EnCourage.edmx</DependentUpon>
+      <LastGenOutput>EnCourage.cs</LastGenOutput>
     </None>
     <None Include="packages.config" />
   </ItemGroup>

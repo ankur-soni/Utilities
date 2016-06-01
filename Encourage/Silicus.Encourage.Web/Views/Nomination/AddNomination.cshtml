@@ -73,7 +73,7 @@
             <div class="form-group">
                 <div>
                     <div id="Criterias">
-                        <table border="1" id="criteriaTable"></table>
+                        <table class="table table-hover issue-tracker white-bg" id="criteriaTable"></table>
                     </div>
                     @Html.ValidationMessageFor(model => model.Comments, "", new { @class = "text-danger" })
                 </div>
@@ -89,9 +89,9 @@
             <br />
             <div class="form-group">
                 <div class="col-md-offset-3">
-                    <input type="submit" name="submit" value="Save Draft" id="saveButton" class="btn btn-default" />
-                    <input type="submit" name="submit" value="Submit" id="submitButton" class="btn btn-default" onclick="return checkCriteriaComments();" />
-                    <input type="button" value="Cancel" class="btn btn-default" onclick="location.href='@Url.Action("Dashboard", "Dashboard")'" />
+                    <input type="submit" name="submit" value="Save Draft" id="saveButton" class="btn btn-warning" />
+                    <input type="submit" name="submit" value="Submit" id="submitButton" class="btn btn-success-green" onclick="return checkCriteriaComments();" />
+                    <input type="button" value="Cancel" class="btn btn-danger" onclick="location.href='@Url.Action("Dashboard", "Dashboard")'" />
                 </div>
             </div>
 
@@ -140,7 +140,7 @@
                     url: ServiceUrl,
                     contentType: "application/json; charset=utf-8",
                     success: function (data) {
-                        $('#criteriaTable').append('<tr><th style="text-align:center">Criteria-Description</th><th  style="text-align:center">Comment</th></tr>');
+                        $('#criteriaTable').append('<tr><th style="text-align:center">Criteria</th><th  style="text-align:center">Manager Comment</th></tr>');
                         debugger;
                         for (var key in data) {
                             debugger
