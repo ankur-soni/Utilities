@@ -108,15 +108,21 @@ namespace Silicus.Encourage.Web.Controllers
             foreach (var review in reviews)
             {
                 var allreviewerComment = _encourageDatabaseContext.Query<ReviewerComment>().Where(model => model.ReviewId == review.Id);
-              
+                var reviewer = _encourageDatabaseContext.Query<Reviewer>().Where(model => model.Id == review.ReviewerId).FirstOrDefault();
+                var reviewerObj = _commonDbContext.Query<User>().Where(u => u.ID == reviewer.UserId).FirstOrDefault();
+
+
                 var reviewerCommentList = new List<ReviewerCommentViewModel>();
                 foreach (var reviewerComment in allreviewerComment)
                 {
+
                     var singleReviewerComent = new ReviewerCommentViewModel()
                       {
                           CriteriaID = reviewerComment.CriteriaId,
                           Comment = reviewerComment.Comment,
-                          Credit = Convert.ToBoolean(reviewerComment.Credit.Value)
+                          Credit = Convert.ToBoolean(reviewerComment.Credit.Value),
+                          ReviewerName = reviewerObj.DisplayName
+                         
                       };
                     reviewerCommentList.Add(singleReviewerComent);
                 }

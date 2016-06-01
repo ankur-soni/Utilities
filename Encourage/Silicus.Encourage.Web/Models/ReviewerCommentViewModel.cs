@@ -12,5 +12,6 @@ namespace Silicus.Encourage.Web.Models
         public string Comment { get; set; }
         public string title { get; set; }
         public bool Credit { get; set; }
+        public string ReviewerName { get; set; }
     }
 }
