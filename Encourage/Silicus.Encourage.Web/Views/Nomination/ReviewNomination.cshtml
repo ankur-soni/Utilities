@@ -64,13 +64,13 @@
                 </thead>
             </table>
             <br />
-            <table class="table table-hover issue-tracker white-bg" style="width:80%">
+            <table class="table table-hover issue-tracker white-bg" style="width:80%;table-layout:fixed">
                 <tr>
                     <th>
                         @Html.DisplayFor(modelItem => modelItem.Manager) Says:
                     </th>
 
-                    <td class="more">
+                    <td class="more" style="word-wrap: break-word;">
 
                         @Model.ManagerComment
 

@@ -35,6 +35,12 @@ h5 {
 th {
     color:#0067AA;
 }
+.card {
+    Margin-right:10px;
+    Margin-bottom:10px;
+    height:150px;
+    border:solid;
+}
 .nav > li > a {
   color: #a7b1c2;
   font-weight: 600;
