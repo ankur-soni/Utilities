@@ -44,13 +44,17 @@
             KnownColor randomColorName = names[randomGen.Next(names.Length)];
             Color randomColor = Color.FromKnownColor(randomColorName);
 
-            <div style="Margin-right:10px;Margin-bottom:10px; border:solid;border-color:@borderColor" class="col-md-3">
+            <div class="col-md-3 card" style="border-color:@borderColor">
                 <div class="ibox float-e-margins">
                     <div class="ibox-title">
-                        @*<div style="background-color:@randomColor.Name;height:60px;margin-top:10px;padding-left:10px;padding-bottom:70px; font-weight:bold;font-size:50px;text-align:left" class="col-md-5">
+                        @*<div style="background-color:pink;font-weight:bold;font-size:large" class="col-md-5">
+                                @Html.DisplayFor(modelItem => item.Intials)
+                            </div>*@
+                        @*<div style="background-color:gray;height:60px;padding-left:10px;padding-bottom:70px; font-weight:bold;font-size:50px;text-align:center" class="col-md-6">
                                 @Html.DisplayFor(modelItem => item.Intials)
                             </div>*@
                         <div>
+
                             <div>
                                 @Html.DisplayFor(modelItem => item.DisplayName)
                             </div>

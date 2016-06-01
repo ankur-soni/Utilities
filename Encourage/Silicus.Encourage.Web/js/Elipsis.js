@@ -4,13 +4,15 @@ $(function () {
     $('.more').each(function () {
         var content = $(this).text();
         if (content.length > showChar) {
+            debugger;
             var con = content.substr(0, showChar);
             var hcon = content.substr(showChar, content.length - showChar);
-            var txt = con + '<span class="dots">...</span><span class="morecontent"><span>' + hcon + '</span>&nbsp;&nbsp;<a href="" class="moretxt">' + showtxt + '</a></span>';
+            var txt = con + '<div class="morecontent"><div style="width:100%;max-width:100%;display: inline-block;word-wrap: break-word;">' + hcon + '</div>&nbsp;&nbsp;<a href="" class="moretxt">' + showtxt + '</a></div>';
             $(this).html(txt);
         }
     });
     $(".moretxt").click(function () {
+        debugger;
         if ($(this).hasClass("sample")) {
             $(this).removeClass("sample");
             $(this).text(showtxt);
@@ -23,3 +25,7 @@ $(function () {
         return false;
     });
 });
+
+
+ /* or whatever width you want. */
+ /* or whatever width you want. */

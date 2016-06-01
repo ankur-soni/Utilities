@@ -58,21 +58,18 @@
         </thead>
     </table>
             <br />
-    <table class="table table-hover issue-tracker white-bg" style="width:80%">
+    <table class="table table-hover issue-tracker white-bg" style="width:80%;table-layout:fixed">
         <tr>
             <th>
                 @Html.DisplayFor(modelItem => modelItem.Manager) Says:
             </th>
 
-            <td class="more">
-
-            
-               @Model.ManagerComment
-
-            </td>
+            <td class="more" style="word-wrap: break-word;">
+                <div>@Model.ManagerComment</div>
+              </td>
         </tr>
     </table>
-            <br />
+            <br/>
     <table class="table table-hover issue-tracker white-bg" style="width:80%">
         <thead>
             <tr>
