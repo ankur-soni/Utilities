@@ -334,7 +334,12 @@ namespace Silicus.Encourage.Web.Controllers
             if (!string.IsNullOrEmpty(Submit) && Submit == "Submit")
             {
                 review.IsSubmited = true;
-        }
+            }
+
+            if (!string.IsNullOrEmpty(Submit) && Submit == "Save Draft")
+            {
+                review.IsSubmited = false;
+            }
 
             if (!string.IsNullOrEmpty(Submit) && Submit != "Discard Review")
             {

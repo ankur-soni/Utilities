@@ -25,141 +25,142 @@
         {
             @Html.HiddenFor(modelItem => modelItem.ReviewerId)
             @Html.HiddenFor(modelItem => modelItem.NominationId);
-    <table class="table table-hover issue-tracker white-bg" style="width:80%">
-        <thead>
-            <tr>
-                <th>
-                    Review For:
-                </th>
+            <table class="table table-hover issue-tracker white-bg" style="width:80%">
+                <thead>
+                    <tr>
+                        <th>
+                            Review For:
+                        </th>
 
-                <td>
-                    @Html.DisplayFor(modelItem => modelItem.NomineeName)
-                </td>
-            </tr>
-            <tr>
-                <th>
-                    Project/Department:
-                </th>
+                        <td>
+                            @Html.DisplayFor(modelItem => modelItem.NomineeName)
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>
+                            Project/Department:
+                        </th>
 
-                <td>
-                    @Html.DisplayFor(modelItem => modelItem.ProjectOrDepartment)
-                </td>
-            </tr>
-            <tr>
-                <th>
-                    Manager:
-                </th>
+                        <td>
+                            @Html.DisplayFor(modelItem => modelItem.ProjectOrDepartment)
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>
+                            Manager:
+                        </th>
 
-                <td>
-                    @Html.DisplayFor(modelItem => modelItem.Manager)
-                </td>
-            </tr>
-        </thead>
-    </table>
+                        <td>
+                            @Html.DisplayFor(modelItem => modelItem.Manager)
+                        </td>
+                    </tr>
+                </thead>
+            </table>
             <br />
-    <table class="table table-hover issue-tracker white-bg" style="width:80%;table-layout:fixed">
-        <tr>
-            <th>
-                @Html.DisplayFor(modelItem => modelItem.Manager) Says:
-            </th>
+            <table class="table table-hover issue-tracker white-bg" style="width:80%;table-layout:fixed">
+                <tr>
+                    <th>
+                        @Html.DisplayFor(modelItem => modelItem.Manager) Says:
+                    </th>
 
-            <td class="more" style="word-wrap: break-word;">
+                    <td class="more" style="word-wrap: break-word;">
 
 
-                @Model.ManagerComment
+                        @Model.ManagerComment
 
-            </td>
-        </tr>
-    </table>
-    <br />
-    <table class="table table-hover issue-tracker white-bg" style="width:80%">
-        <thead>
-            <tr>
-                <th>Id</th>
-                <th>Criteria</th>
-                <th>ManagerComment</th>
-                <th>ReviewerComment</th>
-                <th>Credits</th>
-            </tr>
-        </thead>
-        @{
+                    </td>
+                </tr>
+            </table>
+            <br />
+            <table class="table table-hover issue-tracker white-bg" style="width:80%">
+                <thead>
+                    <tr>
+                        <th>Id</th>
+                        <th>Criteria</th>
+                        <th>ManagerComment</th>
+                        <th>ReviewerComment</th>
+                        <th>Credits</th>
+                    </tr>
+                </thead>
+                @{
                                                                 var j = 0;
                                                                 var k = 0;
-        }
-        <tbody>
-            @foreach (var item in Model.Criterias)
-            {
-
-                <tr>
-                    <td class="col-md-1">@item.Id</td>
-                    @Html.Hidden("CriteriaId", @item.Id)
-                    <td class="col-md-3">@item.Title</td>
-
-                    @if (k < Model.ManagerComments.Count() && Model.ManagerComments[k].CriteriaId == item.Id)
+                }
+                <tbody>
+                    @foreach (var item in Model.Criterias)
                     {
-                        <td class="col-md-3">@Model.ManagerComments[k].Comment</td>
-                        k++;
+
+                        <tr>
+                            <td class="col-md-1">@item.Id</td>
+                            @Html.Hidden("CriteriaId", @item.Id)
+                            <td class="col-md-3">@item.Title</td>
+
+                            @if (k < Model.ManagerComments.Count() && Model.ManagerComments[k].CriteriaId == item.Id)
+                            {
+                                <td class="col-md-3">@Model.ManagerComments[k].Comment</td>
+                                k++;
+                            }
+                            else
+                            {
+                                <td class="col-md-3"></td>
+                            }
+
+
+                            <td class="col-md-3">@Html.TextArea("Comments[" + @j + "].Comment", Model.Comments[j].Comment)</td>
+
+                            @Html.Hidden("Comments[" + @j + "].Id", item.Id)
+                            <td>
+                                <div class="switch">
+                                    <div class="onoffswitch">
+                                        @if (Model.Comments[j].Credit == true)
+                                        {
+                                            <input type="checkbox" value="true" length="0" class="onoffswitch-checkbox" id='example @j' name="Comments[@j].Credit" checked>
+                                        }
+                                        else
+                                        {
+                                            <input type="checkbox" value="true" length="0" class="onoffswitch-checkbox" id='example @j' name="Comments[@j].Credit">
+                                        }
+
+                                        <label class=" onoffswitch-label" for="example @j">
+                                            <span class="onoffswitch-inner"></span>
+                                            <span class="onoffswitch-switch"></span>
+                                        </label>
+                                    </div>
+                                </div>
+                            </td>
+
+
+                        </tr>
+
+                                        j++;
                     }
-                    else
+                    @*<tr>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <th>Credit Given</th>
+                            <td class="text-left">@ViewBag.creditGiven</td>
+                        </tr>*@
+                </tbody>
+                @if (Model.ManagerComments != null)
+                {
+                    for (int i = 0; i < Model.ManagerComments.Count; i++)
                     {
-                        <td class="col-md-3"></td>
+                        @Html.HiddenFor(model => Model.ManagerComments[i].Comment)
                     }
-
-
-                    <td class="col-md-3">@Html.TextArea("Comments[" + @j + "].Comment", Model.Comments[j].Comment)</td>
-
-                    @Html.Hidden("Comments[" + @j + "].Id", item.Id)
-                    <td>
-                        <div class="switch">
-                            <div class="onoffswitch">
-                                @if (Model.Comments[j].Credit == true)
-                                {
-                                    <input type="checkbox" value="true" length="0" class="onoffswitch-checkbox" id='example @j' name="Comments[@j].Credit" checked>
-                                }
-                                else
-                                {
-                                    <input type="checkbox" value="true" length="0" class="onoffswitch-checkbox" id='example @j' name="Comments[@j].Credit">
-                                }
-
-                                <label class=" onoffswitch-label" for="example @j">
-                                    <span class="onoffswitch-inner"></span>
-                                    <span class="onoffswitch-switch"></span>
-                                </label>
-                            </div>
-                        </div>
-                    </td>
-
-                   
-                </tr>
-
-                    j++;
-            }
-            @*<tr>
-                <td></td>
-                <td></td>
-                <td></td>
-                <th>Credit Given</th>
-                <td class="text-left">@ViewBag.creditGiven</td>
-            </tr>*@
-        </tbody>
-        @if (Model.ManagerComments != null)
-        {
-            for (int i = 0; i < Model.ManagerComments.Count; i++)
-            {
-                @Html.HiddenFor(model => Model.ManagerComments[i].Comment)
-            }
-        }
-    </table>
+                }
+            </table>
 
 
             <div class="form-group">
                 <div class="col-md-offset-4">
                     <input type="submit" name="submit" value="Discard Review" id="saveButton" class="btn btn-danger" />
+                    <input type="submit" name="submit" value="Save Draft" id="saveButton" class="btn btn-warning" />
                     <input type="submit" name="submit" value="Submit" id="submitButton" class="btn btn-success-green" />
                     <input type="button" value="Back" class="btn btn-default" onclick="location.href='@Url.Action("SavedReviews", "Nomination")'" />
                 </div>
             </div>
         }
-       </div>
     </div>
-        <script src="http://ajax.googleapis.com/ajax/libs/jquery/2.0.0/jquery.min.js"></script>
+</div>
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/2.0.0/jquery.min.js"></script>
