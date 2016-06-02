@@ -42,7 +42,7 @@ namespace Silicus.Encourage.Web.Controllers
             var reviewFeedbacks = new List<ReviewFeedbackListViewModel>();
             //if (string.IsNullOrEmpty(rejectAll))
             //{
-                var uniqueReviewedNomination = _encourageDatabaseContext.Query<Review>().GroupBy(x => x.NominationId).Select(group => group.FirstOrDefault()).ToList();
+                var uniqueReviewedNomination = _encourageDatabaseContext.Query<Review>().Where(r => r.IsSubmited == true).GroupBy(x => x.NominationId).Select(group => group.FirstOrDefault()).ToList();
 
                 foreach (var reviewNomination in uniqueReviewedNomination)
                 {
