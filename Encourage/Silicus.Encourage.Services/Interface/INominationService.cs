@@ -21,6 +21,8 @@ namespace Silicus.Encourage.Services.Interface
         string GetDeptNameOfCurrentNomination(int nominationId);
         void AddReviewForCurrentNomination(Review review);
         void AddReviewerCommentsForCurrentNomination(ReviewerComment revrComment);
+        string GetAwardMonthAndYear(int nominationId);
+        string GetAwardName(int nominationId);
 
         List<Nomination> GetAllSubmitedReviewedNominations(int reviewerId);
         List<Nomination> GetAllSavedNominations();

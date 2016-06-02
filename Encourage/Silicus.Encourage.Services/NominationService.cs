@@ -5,6 +5,7 @@ using Silicus.Encourage.Services.Interface;
 using Silicus.UtilityContainer.Models.DataObjects;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -36,7 +37,7 @@ namespace Silicus.Encourage.Services
         {
             var alreadyReviewedRecords = _encourageDatabaseContext.Query<Review>().Where(r => r.ReviewerId == reviewerId).ToList();
             var finalNomination = new List<Nomination>();
-            var allNominations = _encourageDatabaseContext.Query<Nomination>().Where(N => N.IsSubmitted == true).ToList();
+            var allNominations = _encourageDatabaseContext.Query<Nomination>().Where(N => N.IsSubmitted == true && N.NominationDate.Value.Month == (DateTime.Now.Month-1) && N.NominationDate.Value.Year == DateTime.Now.Year).ToList();
 
             foreach (var item in alreadyReviewedRecords)
             {
@@ -86,6 +87,21 @@ namespace Silicus.Encourage.Services
         {
             var nomination = GetReviewNomination(nominationId);
             return _commonDataBaseContext.Query<User>().Where(u => u.ID == nomination.UserId).FirstOrDefault().DisplayName;
+        }
+
+        public string GetAwardName(int nominationId)
+        {
+           
+            var nomination = GetReviewNomination(nominationId);
+
+            return _encourageDatabaseContext.Query<Award>().Where(a => a.Id == nomination.AwardId).FirstOrDefault().Code;
+        }
+
+        public string GetAwardMonthAndYear(int nominationId)
+        {
+            var nominationTime = _encourageDatabaseContext.Query<Nomination>().Where(n => n.Id == nominationId).FirstOrDefault().NominationDate;
+
+            return DateTimeFormatInfo.CurrentInfo.GetAbbreviatedMonthName(nominationTime.Value.Month) + "-" + nominationTime.Value.Year.ToString();
         }
 
         public string GetManagerNameOfCurrentNomination(int nominationId)
