@@ -32,10 +32,9 @@
         <input type="button" value="SOM" class="btn btn-default" onclick="location.href=''" />
         <input type="button" value="Pinnacle" class="btn btn-default" onclick="location.href=''" />
         <input type="button" value="Team Awesome" class="btn btn-default" onclick="location.href=''" />
-        <input type="button" value="Reject All" class="btn btn-danger" onclick="location.href='@Url.Action("RejectAll", "Review")'" />
     </div>
     <br />
-    <div style="font-weight:bold;">ALL</div>
+    <div style="font-weight:bold;color:#0070B9"">ALL</div>
     <hr style="margin-top:0px"/>
     <div class="row">
        
@@ -85,7 +84,7 @@
         <br />
     </div>
    
-    <div style="font-weight:bold;">SHORTLISTED</div>
+    <div style="font-weight:bold; color:#0070B9">SHORTLISTED</div>
     <hr style="margin-top:0px" />
     <div class="row">
 
@@ -128,6 +127,6 @@
         }
         <br />
     </div>
-
+    <input type="button" value="Reject All" class="btn btn-danger" onclick="location.href='@Url.Action("RejectAll", "Review")'" />
 </div>
 
