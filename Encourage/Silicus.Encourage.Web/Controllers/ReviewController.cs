@@ -176,7 +176,20 @@ namespace Silicus.Encourage.Web.Controllers
             {
                 return false;
             }
+        }
 
+        [HttpPost]
+        public bool SelectWinner(int nominationId)
+        {
+            try
+            {
+                _resultService.SelectWinner(nominationId);
+                return true;                                                                               
+            }
+            catch
+            {
+                return false;
+            }
         }
 
     }

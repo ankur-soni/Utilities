@@ -28,179 +28,168 @@
 
     @using (Html.BeginForm())
     {
-    @Html.HiddenFor(model => model.nominationId, htmlAttributes: new { id = "nominationId" })
+        @Html.HiddenFor(model => model.nominationId, htmlAttributes: new { id = "nominationId" })
 
-    <table class="table table-hover issue-tracker white-bg" style="width:90%">
-        <tr>
-            <td align="center" colspan="4" style="font-weight:bold">
-                Review For:
-                @Html.DisplayFor(modelItem => modelItem.userName)
-            </td>
-        </tr>
-        <tr>
-            <th>
-                Project/Department:
-            </th>
-            <td>
-                @Html.DisplayFor(modelItem => modelItem.projectOrDepartment)
-            </td>
-
-            <td rowspan="3">
-                <input type="button" value="Shortlist" class="btn btn-warning use-method" onclick="location.href='#'"
-                        @{
-                         if (Model.IsShortlisted || Model.IsWinner) 
-                            {
-                                 @: disabled="disabled"
-                            }
-                         }
-                />
-            </td>
-            <td rowspan="3">
-                <input type="button" value="Mark Winner" class="btn btn-default" onclick="location.href='@Url.Action(" "," ")'" />
-            </td>
-        </tr>
-        <tr>
-            <th>
-                Manager:
-            </th>
-            <td>
-                @Html.DisplayFor(modelItem => modelItem.Manager)
-            </td>
-        </tr>
-        <tr>
-            <th>
-                Total Credits
-            </th>
-            <td>
-                @Html.DisplayFor(modelItem => modelItem.totalCredits)
-            </td>
-        </tr>
-    </table>
-
-    <div class="row">&nbsp;</div>
-    <div class="row">&nbsp;</div>
-
-    <table class="table table-hover issue-tracker white-bg" style="width:90%">
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => modelItem.Manager) Says:
-            </td>
-            <td class="more ">
-                @Model.nominationComment
-            </td>
-        </tr>
-    </table>
-
-    <div class="row">&nbsp;</div>
-    <div class="row">&nbsp;</div>
-
-    foreach (var reviewer in Model.reviewerComments)
-    {
-    var creditCount = 0;
-    <div class="row col-md-10">
-        @Html.Label("Review By:" + reviewer.FirstOrDefault().ReviewerName)
-    </div>
-
-    <span class="header"><a>Expand</a></span>
-
-    <table class="table table-hover issue-tracker white-bg content" style="width:90%">
-        <thead>
+        <table class="table table-hover issue-tracker white-bg" style="width:90%">
             <tr>
-                <th>Criteria</th>
-                <th>ManagerComment</th>
-                <th>ReviewerComment</th>
-                <th>Credits</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var item in Model.Criterias)
-            {
-            <tr>
-                <td class="col-md-3">@item.Title</td>
-
-                <td class="col-md-3">
-                    @{
-                    var commentObj = Model.ManagerComments.Where(model => model.CriteriaId == @item.Id).FirstOrDefault();
-                    if (commentObj != null && !string.IsNullOrEmpty(commentObj.Comment))
-                    {
-                    @Html.Label(commentObj.Comment);
-                    }
-                    }
-                </td>
-
-                <td class="col-md-3">
-                    @{
-                    var reviewObj = reviewer.Where(model => model.CriteriaID == @item.Id).FirstOrDefault();
-                    if (reviewObj != null && !string.IsNullOrEmpty(reviewObj.Comment))
-                    {
-                    @Html.Label(reviewObj.Comment);
-                    }
-                    }
-                </td>
-
-                <td class="col-md-2">
-                    @{
-                    if (reviewObj != null && !reviewObj.Credit != null)
-                    {
-                    <div class="switch">
-                        <div class="onoffswitch">
-                            @if (reviewObj.Credit == true)
-                            {
-                            creditCount++;
-                            <input type="checkbox" value="true" length="0" disabled="disabled" class="onoffswitch-checkbox" id='example @reviewObj.Id' checked>
-                            }
-                            else
-                            {
-                            <input type="checkbox" value="true" length="0" disabled="disabled" class="onoffswitch-checkbox" id='example @reviewObj.Id'>
-                            }
-
-                            <label class=" onoffswitch-label" for="example @reviewObj.Id">
-                                <span class="onoffswitch-inner"></span>
-                                <span class="onoffswitch-switch"></span>
-                            </label>
-                        </div>
-                    </div>
-                    }
-                    }
+                <td align="center" colspan="4" style="font-weight:bold">
+                    Review For:
+                    @Html.DisplayFor(modelItem => modelItem.userName)
                 </td>
             </tr>
-            }
-
             <tr>
-                <td align="right" colspan="3" style="font-weight:bold">
-                    @Html.Label("Credit:")
-                </td>
+                <th>
+                    Project/Department:
+                </th>
                 <td>
-                    @creditCount
+                    @Html.DisplayFor(modelItem => modelItem.projectOrDepartment)
+                </td>
+
+                <td rowspan="3">
+                    <input type="button" value="Shortlist" class="btn btn-warning shortlist" onclick="location.href='#'"
+                           @{ if (Model.IsShortlisted || Model.IsWinner) { @: disabled="disabled"
+                                                       } } />
+                </td>
+                <td rowspan="3">
+                    <input type="button" value="Mark Winner" class="btn btn-default winner" onclick="location.href='#'"
+                           @{  if (Model.IsWinner) {   @: disabled="disabled"
+                                                                                }  } />
+
                 </td>
             </tr>
-        </tbody>
-    </table>
-    <div class="row">&nbsp;</div>
-    <div class="row">&nbsp;</div>
-    }
+            <tr>
+                <th>
+                    Manager:
+                </th>
+                <td>
+                    @Html.DisplayFor(modelItem => modelItem.Manager)
+                </td>
+            </tr>
+            <tr>
+                <th>
+                    Total Credits
+                </th>
+                <td>
+                    @Html.DisplayFor(modelItem => modelItem.totalCredits)
+                </td>
+            </tr>
+        </table>
 
-    <div class="row">&nbsp;</div>
+        <div class="row">&nbsp;</div>
+        <div class="row">&nbsp;</div>
 
-    <div class="form-group">
-        <div class="col-md-offset-4">
-            <input type="button" value="Shortlist" class="btn btn-warning use-method" onclick="location.href='#'"
-                   @{
-                      if (Model.IsShortlisted || Model.IsWinner)
-                          {
-                            @: disabled="disabled"
-                          }
+        <table class="table table-hover issue-tracker white-bg" style="width:90%">
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => modelItem.Manager) Says:
+                </td>
+                <td class="more ">
+                    @Model.nominationComment
+                </td>
+            </tr>
+        </table>
+
+        <div class="row">&nbsp;</div>
+        <div class="row">&nbsp;</div>
+
+        foreach (var reviewer in Model.reviewerComments)
+        {
+            var creditCount = 0;
+            <div class="row col-md-10">
+                @Html.Label("Review By:" + reviewer.FirstOrDefault().ReviewerName)
+            </div>
+
+            <span class="header"><a>Expand</a></span>
+
+            <table class="table table-hover issue-tracker white-bg content" style="width:90%">
+                <thead>
+                    <tr>
+                        <th>Criteria</th>
+                        <th>ManagerComment</th>
+                        <th>ReviewerComment</th>
+                        <th>Credits</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model.Criterias)
+                    {
+                        <tr>
+                            <td class="col-md-3">@item.Title</td>
+
+                            <td class="col-md-3">
+                                @{
+                        var commentObj = Model.ManagerComments.Where(model => model.CriteriaId == @item.Id).FirstOrDefault();
+                        if (commentObj != null && !string.IsNullOrEmpty(commentObj.Comment))
+                        {
+                            @Html.Label(commentObj.Comment);
+                        }
+                                }
+                            </td>
+
+                            <td class="col-md-3">
+                                @{
+                        var reviewObj = reviewer.Where(model => model.CriteriaID == @item.Id).FirstOrDefault();
+                        if (reviewObj != null && !string.IsNullOrEmpty(reviewObj.Comment))
+                        {
+                            @Html.Label(reviewObj.Comment);
+                        }
+                                }
+                            </td>
+
+                            <td class="col-md-2">
+                                @{
+                        if (reviewObj != null && !reviewObj.Credit != null)
+                        {
+                            <div class="switch">
+                                <div class="onoffswitch">
+                                    @if (reviewObj.Credit == true)
+                                    {
+                                        creditCount++;
+                                        <input type="checkbox" value="true" length="0" disabled="disabled" class="onoffswitch-checkbox" id='example @reviewObj.Id' checked>
+                                    }
+                                    else
+                                    {
+                                        <input type="checkbox" value="true" length="0" disabled="disabled" class="onoffswitch-checkbox" id='example @reviewObj.Id'>
+                                    }
+
+                                    <label class=" onoffswitch-label" for="example @reviewObj.Id">
+                                        <span class="onoffswitch-inner"></span>
+                                        <span class="onoffswitch-switch"></span>
+                                    </label>
+                                </div>
+                            </div>
+                        }
+                                }
+                            </td>
+                        </tr>
                     }
-             />
-            <input type="button" value="Mark Winner" class="btn btn-default" onclick="location.href='@Url.Action(" reviewnominations","nomination")'"
-                   @{ if (Model.IsWinner)
-                      { 
-                          @: disabled="disabled"
-                      }
-                    }
-             />
+
+                    <tr>
+                        <td align="right" colspan="3" style="font-weight:bold">
+                            @Html.Label("Credit:")
+                        </td>
+                        <td>
+                            @creditCount
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <div class="row">&nbsp;</div>
+            <div class="row">&nbsp;</div>
+        }
+
+        <div class="row">&nbsp;</div>
+
+        <div class="form-group">
+            <div class="col-md-offset-4">
+                <input type="button" value="Shortlist" class="btn btn-warning shortlist" onclick="location.href='#'"
+                       @{ if (Model.IsShortlisted || Model.IsWinner) { @: disabled="disabled"
+                                                 } } />
+                <input type="button" value="Mark Winner" class="btn btn-default winner" onclick="location.href='#'"
+                       @{ if (Model.IsWinner) {  @: disabled="disabled"
+                                                                    } } />
+            </div>
         </div>
-    </div>
     }
 </div>
 
@@ -222,8 +211,7 @@
 
 
     $(document).ready(function () {
-        $('.use-method').click(function () {
-            debugger;
+        $('.shortlist').click(function () {
             swal({
                 title: "Shortlist Nomination",
                 text: "Are you sure you want to shortlist this candidate?",
@@ -258,10 +246,53 @@
                              }
                          });
                      } else {
-                         swal("Cancelled", "This payment method was not deleted", "error");
+                         swal("Cancelled", "This candidate has not been shortlisted");
+                     }
+                 });
+        });
+
+
+
+        $('.winner').click(function () {
+          
+            swal({
+                title: "Select Winner",
+                text: "Are you sure you want to select this candidate as Winner?",
+                type: "info",
+                showCancelButton: true,
+                confirmButtonColor: "#88a364",
+                confirmButtonText: "Yes!",
+                cancelButtonText: "No!",
+                closeOnConfirm: false,
+                closeOnCancel: false
+            },
+                 function (isConfirm) {
+                     if (isConfirm) {
+                         debugger;
+                         var nominationIdToShortlist = $("#nominationId").val();
+                         $.ajax({
+                             type: 'post',
+                             url: '@Url.Action("SelectWinner", "Review")',
+                             data: JSON.stringify({ nominationId: nominationIdToShortlist }),
+                             contentType: "application/json; charset=utf-8",
+                             success: function (data) {
+                                 swal({
+                                     title: "Winner Selected",
+                                     showCancelButton: false,
+                                     confirmButtonColor: "#88a364",
+                                     confirmButtonText: "Ok"
+                                 },
+                                 function () {
+                                     if (isConfirm) {
+                                         window.location.href = '@Url.Action("ReviewFeedbackList", "Review")';
+                                     }
+                                 });
+                             }
+                         });
+                     } else {
+                         swal("Cancelled", "This candidate has not been selected as Winner");
                      }
                  });
         });
     });
 </script>
-
