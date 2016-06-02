@@ -28,27 +28,27 @@
     <table class="table table-hover issue-tracker white-bg" style="width:80%">
         <thead>
             <tr>
-                <th>
-                    Review For:
-                </th>
+                <td>
+                  <label> Review For:</label> 
+                </td>
 
                 <td>
                     @Html.DisplayFor(modelItem => modelItem.NomineeName)
                 </td>
             </tr>
             <tr>
-                <th>
-                    Project/Department:
-                </th>
+                <td>
+                 <label> Project/Department:</label>  
+                </td>
 
                 <td>
                     @Html.DisplayFor(modelItem => modelItem.ProjectOrDepartment)
                 </td>
             </tr>
             <tr>
-                <th>
-                    Manager:
-                </th>
+                <td>
+                   <label>Manager:</label> 
+                </td>
 
                 <td>
                     @Html.DisplayFor(modelItem => modelItem.Manager)
@@ -57,13 +57,14 @@
         </thead>
     </table>
             <br />
-    <table class="table table-hover issue-tracker white-bg" style="width:80%;table-layout:fixed">
+    <table class="table table-hover issue-tracker" style="width:80%;table-layout:fixed">
         <tr>
             <th>
                 @Html.DisplayFor(modelItem => modelItem.Manager) Says:
             </th>
-
-            <td class="more" style="word-wrap: break-word;">
+            </tr>
+        <tr>
+            <td class="more white-bg" style="word-wrap: break-word;">
 
                 @Model.ManagerComment
 
@@ -76,8 +77,8 @@
             <tr>
                 <th>Id</th>
                 <th>Criteria</th>
-                <th>ManagerComment</th>
-                <th>ReviewerComment</th>
+                <th>Manager Comment</th>
+                <th>Reviewer Comment</th>
                 <th>Credits</th>
             </tr>
         </thead>

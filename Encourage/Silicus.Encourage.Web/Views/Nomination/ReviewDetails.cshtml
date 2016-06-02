@@ -29,27 +29,27 @@
     <table class="table table-hover issue-tracker white-bg" style="width:80%">
         <thead>
             <tr>
-                <th>
-                    Review For:
-                </th>
+                <td>
+                  <label> Review For:</label> 
+                </td>
 
                 <td>
                     @Html.DisplayFor(modelItem => modelItem.NomineeName)
                 </td>
             </tr>
             <tr>
-                <th>
-                    Project/Department:
-                </th>
+                <td>
+                   <label>Project/Department:</label> 
+                </td>
 
                 <td>
                     @Html.DisplayFor(modelItem => modelItem.ProjectOrDepartment)
                 </td>
             </tr>
             <tr>
-                <th>
-                    Manager:
-                </th>
+                <td>
+                   <label>Manager:</label> 
+                </td>
 
                 <td>
                     @Html.DisplayFor(modelItem => modelItem.Manager)
@@ -75,8 +75,8 @@
             <tr>
                 <th>Id</th>
                 <th>Criteria</th>
-                <th>ManagerComment</th>
-                <th>ReviewerComment</th>
+                <th>Manager Comment</th>
+                <th>Reviewer Comment</th>
                 <th>Credits</th>
             </tr>
         </thead>
@@ -150,6 +150,8 @@
     <input type="button" value="Back" class="btn btn-default" onclick="location.href='@Url.Action("SavedReviews","Nomination")'" />
         }
     </div>
+    <div class="row">&nbsp;</div>
+    <div class="row">&nbsp;</div>
 </div>
 
 <script src="http://ajax.googleapis.com/ajax/libs/jquery/2.0.0/jquery.min.js"></script>
