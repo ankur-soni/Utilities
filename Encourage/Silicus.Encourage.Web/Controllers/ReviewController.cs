@@ -40,43 +40,73 @@ namespace Silicus.Encourage.Web.Controllers
         public ActionResult ReviewFeedbackList()
         {
             var reviewFeedbacks = new List<ReviewFeedbackListViewModel>();
-            var uniqueReviewedNomination = _encourageDatabaseContext.Query<Review>().GroupBy(x => x.NominationId).Select(group => group.FirstOrDefault()).ToList();
+            //if (string.IsNullOrEmpty(rejectAll))
+            //{
+                var uniqueReviewedNomination = _encourageDatabaseContext.Query<Review>().GroupBy(x => x.NominationId).Select(group => group.FirstOrDefault()).ToList();
 
-            foreach (var reviewNomination in uniqueReviewedNomination)
-            {
-                var isShortlisted = false;
-                var isWinner = false;
-                var nomination = _encourageDatabaseContext.Query<Nomination>().Where(x => x.Id == reviewNomination.NominationId).SingleOrDefault();
-                var awardCode = _encourageDatabaseContext.Query<Award>().Where(award => award.Id == nomination.AwardId).SingleOrDefault().Code;
-                var nominee = _commonDbContext.Query<User>().Where(u => u.ID == nomination.UserId).FirstOrDefault();
-                var nominationTime = nomination.NominationDate;
-                string nominationTimeToDisplay = DateTimeFormatInfo.CurrentInfo.GetAbbreviatedMonthName(nominationTime.Value.Month) + "-" + nominationTime.Value.Year.ToString();
+                foreach (var reviewNomination in uniqueReviewedNomination)
+                {
+                    var isShortlisted = false;
+                    var isWinner = false;
+                    var nomination = _encourageDatabaseContext.Query<Nomination>().Where(x => x.Id == reviewNomination.NominationId).SingleOrDefault();
+                    var awardCode = _encourageDatabaseContext.Query<Award>().Where(award => award.Id == nomination.AwardId).SingleOrDefault().Code;
+                    var nominee = _commonDbContext.Query<User>().Where(u => u.ID == nomination.UserId).FirstOrDefault();
+                    var nominationTime = nomination.NominationDate;
+                    string nominationTimeToDisplay = DateTimeFormatInfo.CurrentInfo.GetAbbreviatedMonthName(nominationTime.Value.Month) + "-" + nominationTime.Value.Year.ToString();
 
-                var totalCreditPoints = _encourageDatabaseContext.Query<ReviewerComment>().
-                                     Where(model => model.NominationId == nomination.Id).
-                                     Sum(model => model.Credit.Value);
+                    var totalCreditPoints = _encourageDatabaseContext.Query<ReviewerComment>().
+                                         Where(model => model.NominationId == nomination.Id).
+                                         Sum(model => model.Credit.Value);
 
-                var checkResultStatus = _resultService.IsShortlistedOrWinner(nomination.Id);
-                if (checkResultStatus == 1)
-                    isWinner = true;
-                else if (checkResultStatus == 2)
-                    isShortlisted = true;
+                    var checkResultStatus = _resultService.IsShortlistedOrWinner(nomination.Id);
+                    if (checkResultStatus == 1)
+                        isWinner = true;
+                    else if (checkResultStatus == 2)
+                        isShortlisted = true;
 
-                reviewFeedbacks.Add(
-                     new ReviewFeedbackListViewModel()
-                       {
-                           AwardName = awardCode,
-                           Credits = totalCreditPoints,
-                           DisplayName = nominee.DisplayName,
-                           Intials = nominee.FirstName.Substring(0, 1) + "" + nominee.LastName.Substring(0, 1),
-                           NominationTime = nominationTimeToDisplay,
-                           NominationId = nomination.Id,
-                           IsShortlisted = isShortlisted,
-                           IsWinner = isWinner
-                       }
-                    );
-            }
+                    reviewFeedbacks.Add(
+                         new ReviewFeedbackListViewModel()
+                           {
+                               AwardName = awardCode,
+                               Credits = totalCreditPoints,
+                               DisplayName = nominee.DisplayName,
+                               Intials = nominee.FirstName.Substring(0, 1) + "" + nominee.LastName.Substring(0, 1),
+                               NominationTime = nominationTimeToDisplay,
+                               NominationId = nomination.Id,
+                               IsShortlisted = isShortlisted,
+                               IsWinner = isWinner
+                           }
+                        );
+                }
+           // }
             return View(reviewFeedbacks);
+        }
+
+        public ActionResult RejectAll()
+        {
+            var rejectAllRviews = _encourageDatabaseContext.Query<Review>().Where(r => r.IsSubmited == true).ToList();
+          
+            var shortlist = _encourageDatabaseContext.Query<Shortlist>();
+
+            foreach (var shortListedEmployee in shortlist)
+            {
+                rejectAllRviews.RemoveAll(r => r.NominationId == shortListedEmployee.NominationId);
+            }
+
+            foreach (var item in rejectAllRviews)
+            {
+              
+               var Comments = _encourageDatabaseContext.Query<ReviewerComment>().Where(rc => rc.ReviewId == item.Id).ToList();
+
+               foreach (var reviewComment in Comments)
+               {
+                   _encourageDatabaseContext.Delete<ReviewerComment>(reviewComment);
+               }
+
+               _encourageDatabaseContext.Delete<Review>(item);
+            }
+
+            return RedirectToAction("Dashboard", "Dashboard");
         }
 
 
@@ -123,8 +153,8 @@ namespace Silicus.Encourage.Web.Controllers
                                            _nominationService.GetProjectNameOfCurrentNomination(nomination.Id) :
                                            _nominationService.GetDeptNameOfCurrentNomination(nomination.Id),
                 nominationComment = nomination.Comment,
-                IsShortlisted=nominationModel.IsShortlisted,
-                IsWinner=nominationModel.IsWinner,
+                IsShortlisted = nominationModel.IsShortlisted,
+                IsWinner = nominationModel.IsWinner,
                 reviewerComments = allReviewerComments,
                 Criterias = _nominationService.GetCriteriaForNomination(nomination.Id),
                 ManagerComments = nomination.ManagerComments.ToList(),

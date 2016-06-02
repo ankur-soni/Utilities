@@ -27,9 +27,18 @@
     </div>
 </div>
 <div class="wrapper wrapper-content animated fadeInRight">
-
-   
+    <div>
+        <input type="button" value="ALL" class="btn btn-default" onclick="location.href=''" />
+        <input type="button" value="SOM" class="btn btn-default" onclick="location.href=''" />
+        <input type="button" value="Pinnacle" class="btn btn-default" onclick="location.href=''" />
+        <input type="button" value="Team Awesome" class="btn btn-default" onclick="location.href=''" />
+        <input type="button" value="Reject All" class="btn btn-default" onclick="location.href='@Url.Action("RejectAll", "Review")'" />
+    </div>
+    <br />
+    <div style="font-weight:bold;">ALL</div>
+    <hr style="margin-top:0px"/>
     <div class="row">
+       
         @foreach (var item in Model)
         {
             Random randomGen = new Random();
@@ -75,8 +84,9 @@
         }
         <br />
     </div>
-    <span style="font-weight:bold">Shortlisted</span>
-    <hr />
+   
+    <div style="font-weight:bold;">SHORTLISTED</div>
+    <hr style="margin-top:0px" />
     <div class="row">
 
         @foreach (var item in Model)
@@ -120,3 +130,4 @@
     </div>
 
 </div>
+
