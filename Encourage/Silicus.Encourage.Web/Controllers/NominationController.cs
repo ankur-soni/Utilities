@@ -175,16 +175,18 @@ namespace Silicus.Encourage.Web.Controllers
         }
 
         [HttpPost]
-        public ActionResult EditSavedNomination(NominationViewModel model)
+        public ActionResult EditSavedNomination(NominationViewModel model, string submit)
         {
             Nomination nomination = new Nomination();
-
             nomination.Id = model.NominationId;
             nomination.AwardId = model.AwardId;
             nomination.DepartmentId = model.DepartmentId;
             nomination.ProjectID = model.ProjectID;
             nomination.IsPLC = model.IsPLC;
-            nomination.IsSubmitted = true;
+            if (submit.Equals("Submit"))
+               nomination.IsSubmitted = true;
+            else
+                nomination.IsSubmitted = false;
             nomination.ManagerId = model.ManagerId;
             nomination.UserId = model.ResourceId;
             nomination.NominationDate = DateTime.Now.Date;

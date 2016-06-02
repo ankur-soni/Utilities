@@ -20,7 +20,6 @@
     </div>
 </div>
 <div class="wrapper wrapper-content animated fadeInRight">
-
     <div class="row">
         @using (Html.BeginForm())
         {
@@ -134,13 +133,13 @@
 
                     j++;
             }
-            <tr>
+            @*<tr>
                 <td></td>
                 <td></td>
                 <td></td>
                 <th>Credit Given</th>
                 <td class="text-left">@ViewBag.creditGiven</td>
-            </tr>
+            </tr>*@
         </tbody>
         @if (Model.ManagerComments != null)
         {
@@ -163,5 +162,3 @@
        </div>
     </div>
         <script src="http://ajax.googleapis.com/ajax/libs/jquery/2.0.0/jquery.min.js"></script>
-
-

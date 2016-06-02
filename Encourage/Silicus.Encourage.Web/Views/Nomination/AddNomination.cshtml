@@ -22,7 +22,7 @@
         @using (Html.BeginForm())
         {
             @Html.AntiForgeryToken()
-            
+
             <div class="white-bg">
 
             @Html.ValidationSummary(true, "", new { @class = "text-danger" })
@@ -69,7 +69,7 @@
             <div class="form-group" style="padding-bottom:10px">
                 @Html.Label("Is PLC ?", htmlAttributes: new { @class = "control-label col-md-3", style = "text-align: left" })
                 <div>
-                    @Html.CheckBoxFor(model => model.IsPLC, new { htmlAttributes = new { @class = "form-control" } }) Yes
+                    @Html.CheckBoxFor(model => model.IsPLC, new { htmlAttributes = new { @class = "form-control"  },id="IsPlcCheckbox" }) Yes
                 </div>
             </div>
                 </div>
@@ -106,7 +106,7 @@
         <script src="~/Scripts/jquery.validate.unobtrusive.js"></script>
         <script type="text/javascript">
 
-            $(".criteriaComment").on('click', function () { debugger; alert("hello"); $(".criteriaComment").children("textarea").first().tooltip('destroy'); });
+            $(".criteriaComment").on('click', function () {$(".criteriaComment").children("textarea").first().tooltip('destroy'); });
 
             $(document).ready(function () {
                 $("#projectInput").hide();
@@ -134,19 +134,27 @@
                   });
 
             $("#Award").change(function () {
+                $('#ProjectRadioButton').prop('checked', false);
+                $('#DepartmentRadioButton').prop('checked', false);
+                $("#projectInput").hide();
+                $("#departmentInput").hide();
+                $("#SelectedProject").prop('selectedIndex', 0);
+                $("#SelectedDepartment").prop('selectedIndex', 0);
+                $('#Resources').empty();
+                $('#Resources').append($("<option selected></option>").val(null).html("Select"));
+                $('#IsPlcCheckbox').prop('checked', false);
+
+
                 var selectdAward = $("#Award").val();
                 $('#criteriaTable').empty();
                 var ServiceUrl = "/Nomination/CriteriasForAward?awardId=" + selectdAward;
-                debugger;
                 $.ajax({
                     type: 'post',
                     url: ServiceUrl,
                     contentType: "application/json; charset=utf-8",
                     success: function (data) {
                         $('#criteriaTable').append('<tr><th style="text-align:center">Criteria</th><th  style="text-align:center">Manager Comment</th></tr>');
-                        debugger;
                         for (var key in data) {
-                            debugger
                             $('#criteriaTable tr:last')
                                 .after('<tr><td class="col-md-6"><label>' + data[key].Title + '</label></td>'
                                 + '<td class="col-md-6 criteriaComment"><textarea class="form-control" rows="" name=Comments[' + key + '].Comment id="comment"></textarea></td>'
@@ -213,7 +221,6 @@
             function checkCriteriaComments() {
                 var comments = 0;
 
-                debugger;
                 $(".criteriaComment").children("textarea").each(function (data) {
                     if ($(this).val().trim())
                         comments++;
