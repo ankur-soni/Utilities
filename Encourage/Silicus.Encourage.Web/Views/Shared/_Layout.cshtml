@@ -137,12 +137,18 @@
                             @if (roles.Contains("Manager"))
                             {
                                 <li><a href="@Url.Action("AddNomination","Nomination")" class="active">Add Nominations</a></li>
-                                <li><a href="@Url.Action("SavedNomination", "Nomination")" class="active">Added Nominations</a></li>
+                                <li><a href="@Url.Action("SavedNomination", "Nomination")" class="active">Edit Nominations</a></li>
                             }
                             @if (roles.Contains("Reviewer"))
                             {
                                 <li><a href="@Url.Action("ReviewNominations","Nomination")" class="active">Review Nominations</a></li>
-                                <li><a href="@Url.Action("SavedReviews","Nomination")" class="active">Reviewed Nominations</a></li>
+                                <li><a href="@Url.Action("SavedReviews","Nomination")" class="active">Edit Reviews</a></li>
+
+                            }
+                            @if (roles.Contains("Admin"))
+                            {
+
+                                <li><a href="@Url.Action("ReviewFeedbackList", "Review")" class="active">Submitted Reviews</a></li>
 
                             }
 
@@ -151,15 +157,15 @@
 
                     <!-- admin role only -->
                     @if (roles.Contains("Admin"))
-                    {
-                        <li>
-                            <a href="#"><i class="fa fa-cogs"></i> <span class="nav-label">ADMIN</span> <span class="fa arrow"></span></a>
-                            <ul class="nav nav-second-level">
-                                <li><a href="@Url.Action("ReviewFeedbackList", "Review")" class="active">Shortlist Nominations</a></li>
-                                <li><a href="edit-users.html" class="active">Edit Users</a></li>
-                            </ul>
-                        </li>
-                    }
+                        {
+                            <li>
+                                <a href="#"><i class="fa fa-cogs"></i> <span class="nav-label">ADMIN</span> <span class="fa arrow"></span></a>
+                                <ul class="nav nav-second-level">
+                                    @*<li><a href="@Url.Action("ReviewFeedbackList", "Review")" class="active">Shortlist Nominations</a></li>*@
+                                    <li><a href="edit-users.html" class="active">Edit Users</a></li>
+                                </ul>
+                            </li>
+                        }
 
                 </ul>
 
@@ -172,7 +178,7 @@
 
         <div id="page-wrapper" class="gray-bg">
 
-            <div class="container body-content" >
+            <div class="container body-content">
 
                 @RenderBody()
 
@@ -183,10 +189,10 @@
                     <script>document.write(new Date().getFullYear())</script> Silicus Technologies
                 </div>
             </div>
-            </div>
-        
+        </div>
 
-        
+
+
     </div>
 
     <!-- Mainly scripts -->

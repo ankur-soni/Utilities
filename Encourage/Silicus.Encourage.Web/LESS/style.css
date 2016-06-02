@@ -44,7 +44,9 @@ h5 {
 th {
     color: #0067AA;
 }
-
+.dashboardButtons {
+    width:100%;
+}
 .requiredfeild:after {
     content: "*";
     color: red;
