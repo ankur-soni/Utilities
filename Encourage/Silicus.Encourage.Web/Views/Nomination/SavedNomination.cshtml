@@ -44,15 +44,15 @@
             KnownColor randomColorName = names[randomGen.Next(names.Length)];
             Color randomColor = Color.FromKnownColor(randomColorName);
 
-            <div class="col-md-3 card" style="border-color:@borderColor">
-                <div class="ibox float-e-margins">
-                    <div class="ibox-title">
+            <div class="col-md-3 white-bg card" style="border-color:@borderColor">
+                
+                    <div class="cardHeader text-center">
                         @*<div style="background-color:pink;font-weight:bold;font-size:large" class="col-md-5">
-                                @Html.DisplayFor(modelItem => item.Intials)
-                            </div>*@
+                @Html.DisplayFor(modelItem => item.Intials)
+            </div>*@
                         @*<div style="background-color:gray;height:60px;padding-left:10px;padding-bottom:70px; font-weight:bold;font-size:50px;text-align:center" class="col-md-6">
-                                @Html.DisplayFor(modelItem => item.Intials)
-                            </div>*@
+                @Html.DisplayFor(modelItem => item.Intials)
+            </div>*@
                         <div>
 
                             <div>
@@ -66,23 +66,24 @@
                         </div>
 
                     </div>
-                    <div class="ibox-footer text-left">
+               
+                    <div class="cardFooter text-center">
                         @if (item.IsSubmitted == false)
                         {
-                            <a href="@Url.Action("EditSavedNomination", "Nomination", new { nominationId = item.Id })" class="btn btn-primary btn-sm">
+                            <a href="@Url.Action("EditSavedNomination", "Nomination", new { nominationId = item.Id })" class="btn btn-primary btn-sm cardButtons">
                                 <span style="font-weight:bold">  Edit </span>
                             </a>
 
                         }
                         else
                         {
-                            <a href="@Url.Action("EditSavedNomination", "Nomination", new { nominationId = item.Id })" class="btn btn-primary btn-sm">
+                            <a href="@Url.Action("EditSavedNomination", "Nomination", new { nominationId = item.Id })" class="btn btn-primary btn-sm cardButtons">
                                 <span style="font-weight:bold">  Details </span>
                             </a>
 
                         }
                     </div>
-                </div>
+               
             </div>
 
         }

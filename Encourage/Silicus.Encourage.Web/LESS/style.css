@@ -46,6 +46,7 @@ th {
 }
 .dashboardButtons {
     width:100%;
+    text-align:center;
 }
 .requiredfeild:after {
     content: "*";
@@ -53,10 +54,24 @@ th {
 }
 
 .card {
-    Margin-right: 10px;
-    Margin-bottom: 10px;
+    Margin-right: 20px;
+    Margin-bottom: 20px;
     height: 150px;
     border: solid;
+   
+}
+.cardHeader {
+    padding-top:10px;
+    padding-bottom:10px;
+    height:70%;
+   
+}
+.cardFooter {
+        padding-top:10px;
+    padding-bottom:10px;
+}
+.cardButtons {
+    width:100%
 }
 
 .nav > li > a {
