@@ -18,14 +18,15 @@
 </div>
 <div class="wrapper wrapper-content animated fadeInRight">
 
-    <div class="row white-bg" style="width:80%;padding-top:20px">
+    <div class="row" style="width:80%;padding-top:20px">
         @using (Html.BeginForm())
         {
             @Html.AntiForgeryToken()
-
+            
+            <div class="white-bg">
 
             @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-            <div class="form-group">
+            <div class="form-group" style="padding-top:10px">
                
                 @Html.Label("Nomination Category", htmlAttributes: new { @class = "control-label col-md-3 requiredfeild", style = "text-align: left" })
                 <div>
@@ -37,6 +38,7 @@
                 @Html.Label("Resource From", htmlAttributes: new { @class = "control-label col-md-3 requiredfeild", style = "text-align: left" })
                 <div>
                     <label> @Html.RadioButtonFor(model => model.SelectResourcesBy, "Project", new { htmlAttributes = new { @class = "form-control" }, id = "ProjectRadioButton" })Project</label>
+                    &nbsp;
                     <label> @Html.RadioButtonFor(model => model.SelectResourcesBy, "Department", new { htmlAttributes = new { @class = "form-control" }, id = "DepartmentRadioButton" })Department</label>
                 </div>
             </div>
@@ -64,12 +66,13 @@
                 </div>
             </div>
 
-            <div class="form-group">
-                @Html.Label("IsPLC", htmlAttributes: new { @class = "control-label col-md-3", style = "text-align: left" })
+            <div class="form-group" style="padding-bottom:10px">
+                @Html.Label("Is PLC ?", htmlAttributes: new { @class = "control-label col-md-3", style = "text-align: left" })
                 <div>
                     @Html.CheckBoxFor(model => model.IsPLC, new { htmlAttributes = new { @class = "form-control" } }) Yes
                 </div>
             </div>
+                </div>
             <br />
             <div class="form-group">
                 <div>
@@ -80,14 +83,13 @@
                 </div>
             </div>
             <br />
-            <div class="form-group">
+            <div class="form-group white-bg" style="padding-top:10px;padding-bottom:10px">
                 @Html.Label("Comment", htmlAttributes: new { @class = "control-label col-md-2 requiredfeild", style = "text-align: left" })
                 <div>
-                    @Html.TextAreaFor(model => model.MainComment, new { htmlAttributes = new { @class = "form-control" }, style = "min-width: 60%", rows = "7", placeholder = "If candidate is selected as winner, this text will be shared across the company" })
+                    @Html.TextAreaFor(model => model.MainComment, new { htmlAttributes = new { @class = "form-control" }, style = "min-width: 80%", rows = "7", placeholder = "If candidate is selected as winner, this text will be shared across the company" })
                 </div>
             </div>
-            <br />
-            <br />
+           
             <div class="form-group">
                 <div class="col-md-offset-3">
                     <input type="submit" name="submit" value="Save Draft" id="saveButton" class="btn btn-warning" />
