@@ -27,8 +27,18 @@
     </div>
 </div>
 <div class="wrapper wrapper-content animated fadeInRight">
-
+    <div>
+        <input type="button" value="ALL" class="btn btn-default" onclick="location.href=''" />
+        <input type="button" value="SOM" class="btn btn-default" onclick="location.href=''" />
+        <input type="button" value="Pinnacle" class="btn btn-default" onclick="location.href=''" />
+        <input type="button" value="Team Awesome" class="btn btn-default" onclick="location.href=''" />
+        <input type="button" value="Reject All" class="btn btn-danger" onclick="location.href='@Url.Action("RejectAll", "Review")'" />
+    </div>
+    <br />
+    <div style="font-weight:bold;">ALL</div>
+    <hr style="margin-top:0px"/>
     <div class="row">
+       
         @foreach (var item in Model)
         {
             Random randomGen = new Random();
@@ -58,15 +68,15 @@
                     </div>
                     <div class="ibox-footer text-left">
                         <input type="button" value="View" class="btn btn-default" onclick="location.href='@Url.Action("ViewNominationForShortlist", "Review", item)'" />
-                        @{ 
-                            if (item.IsShortlisted)
-                            {
-                                @Html.Label("Shortlisted")
-                            }
-                            else if (item.IsWinner)
-                            {
-                                @Html.Label("Winner")
-                            }
+                        @{
+            if (item.IsShortlisted)
+            {
+                @Html.Label("Shortlisted")
+            }
+            else if (item.IsWinner)
+            {
+                @Html.Label("Winner")
+            }
                         }
                     </div>
                 </div>
@@ -74,4 +84,50 @@
         }
         <br />
     </div>
+   
+    <div style="font-weight:bold;">SHORTLISTED</div>
+    <hr style="margin-top:0px" />
+    <div class="row">
+
+        @foreach (var item in Model)
+        {
+            Random randomGen = new Random();
+            KnownColor[] names = (KnownColor[])Enum.GetValues(typeof(KnownColor));
+            KnownColor randomColorName = names[randomGen.Next(names.Length)];
+            Color randomColor = Color.FromKnownColor(randomColorName);
+            if (item.IsShortlisted)
+            {
+
+                <div style="Margin-right:10px;Margin-bottom:10px; border:solid;" class="col-md-3">
+                    <div class="ibox float-e-margins">
+
+                        <div class="ibox-title">
+                            @*<div style="background-color:@randomColor.Name;height:60px;margin-top:10px;padding-left:10px;padding-bottom:70px; font-weight:bold;font-size:50px;text-align:left" class="col-md-5">
+                                    @Html.DisplayFor(modelItem => item.Intials)
+                                </div>*@
+                            <div>
+                                @Html.DisplayFor(modelItem => item.DisplayName)
+                            </div>
+
+                            <div>
+                                For
+                                @Html.DisplayFor(modelItem => item.AwardName)
+                                @Html.DisplayFor(modelItem => item.NominationTime)
+                                <br />
+                                @Html.Label("Credits:")
+                                @Html.DisplayFor(modelItem => item.Credits)
+                            </div>
+                        </div>
+                        <div class="ibox-footer text-left">
+                            <input type="button" value="View" class="btn btn-default" onclick="location.href='@Url.Action("ViewNominationForShortlist", "Review", item)'" />
+
+                        </div>
+                    </div>
+                </div>
+            }
+        }
+        <br />
+    </div>
+
 </div>
+

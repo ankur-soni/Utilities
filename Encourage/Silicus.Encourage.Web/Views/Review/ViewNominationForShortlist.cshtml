@@ -48,12 +48,12 @@
                 <td rowspan="3">
                     <input type="button" value="Shortlist" class="btn btn-warning shortlist" onclick="location.href='#'"
                            @{ if (Model.IsShortlisted || Model.IsWinner) { @: disabled="disabled"
-                                                       } } />
+                                                                                  } } />
                 </td>
                 <td rowspan="3">
                     <input type="button" value="Mark Winner" class="btn btn-default winner" onclick="location.href='#'"
                            @{  if (Model.IsWinner) {   @: disabled="disabled"
-                                                                                }  } />
+                                                                                                           }  } />
 
                 </td>
             </tr>
@@ -78,13 +78,14 @@
         <div class="row">&nbsp;</div>
         <div class="row">&nbsp;</div>
 
-        <table class="table table-hover issue-tracker white-bg" style="width:90%">
+        <table class="table table-hover issue-tracker white-bg" style="width:90%;table-layout:fixed">
             <tr>
-                <td>
+                <th>
                     @Html.DisplayFor(modelItem => modelItem.Manager) Says:
-                </td>
-                <td class="more ">
-                    @Model.nominationComment
+                </th>
+
+                <td class="more" style="word-wrap: break-word;">
+                    <div>@Model.nominationComment</div>
                 </td>
             </tr>
         </table>
@@ -184,10 +185,10 @@
             <div class="col-md-offset-4">
                 <input type="button" value="Shortlist" class="btn btn-warning shortlist" onclick="location.href='#'"
                        @{ if (Model.IsShortlisted || Model.IsWinner) { @: disabled="disabled"
-                                                 } } />
+                                                                        } } />
                 <input type="button" value="Mark Winner" class="btn btn-default winner" onclick="location.href='#'"
                        @{ if (Model.IsWinner) {  @: disabled="disabled"
-                                                                    } } />
+                                                                                           } } />
             </div>
         </div>
     }
@@ -254,7 +255,7 @@
 
 
         $('.winner').click(function () {
-          
+
             swal({
                 title: "Select Winner",
                 text: "Are you sure you want to select this candidate as Winner?",
