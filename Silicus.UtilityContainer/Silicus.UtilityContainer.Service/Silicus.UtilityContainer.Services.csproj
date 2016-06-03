@@ -31,6 +31,15 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Azure|AnyCPU'">
+    <OutputPath>bin\Azure\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
       <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.dll</HintPath>
@@ -46,9 +55,6 @@
     <Compile Include="Interfaces\IUserService.cs" />
     <Compile Include="Interfaces\IUtilityService.cs" />
     <Compile Include="Interfaces\IUtilityUserRoleService.cs" />
-    <Compile Include="obj\Debug\TemporaryGeneratedFile_036C0B5B-1481-4323-8D20-8F5ADCB23D92.cs" />
-    <Compile Include="obj\Debug\TemporaryGeneratedFile_5937a670-0e60-4077-877b-f7221da3dda1.cs" />
-    <Compile Include="obj\Debug\TemporaryGeneratedFile_E7A71F73-0F8D-4B9B-B56E-8E70B10BC5D3.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RoleService.cs" />
     <Compile Include="UserService.cs" />
@@ -67,27 +73,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
-    <None Include="bin\Debug\Silicus.UtilityContainer.Services.dll.config" />
-    <None Include="obj\Debug\DesignTimeResolveAssemblyReferencesInput.cache" />
-    <None Include="obj\Debug\Silicus.UtilityContainer.Services.csprojResolveAssemblyReference.cache" />
     <None Include="packages.config" />
   </ItemGroup>
-  <ItemGroup>
-    <Content Include="bin\Debug\EntityFramework.dll" />
-    <Content Include="bin\Debug\EntityFramework.xml" />
-    <Content Include="bin\Debug\Silicus.UtilityContainer.Entities.dll" />
-    <Content Include="bin\Debug\Silicus.UtilityContainer.Entities.pdb" />
-    <Content Include="bin\Debug\Silicus.UtilityContainer.Models.dll" />
-    <Content Include="bin\Debug\Silicus.UtilityContainer.Models.pdb" />
-    <Content Include="bin\Debug\Silicus.UtilityContainer.Services.dll" />
-    <Content Include="bin\Debug\Silicus.UtilityContainer.Services.pdb" />
-    <Content Include="obj\Debug\Silicus.UtilityContainer.Services.csproj.FileListAbsolute.txt" />
-    <Content Include="obj\Debug\Silicus.UtilityContainer.Services.dll" />
-    <Content Include="obj\Debug\Silicus.UtilityContainer.Services.pdb" />
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="obj\Debug\TempPE\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

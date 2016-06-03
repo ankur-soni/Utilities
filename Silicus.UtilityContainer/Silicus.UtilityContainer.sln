@@ -22,26 +22,37 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Silicus.UtilityContainer.We
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Azure|Any CPU = Azure|Any CPU
 		Debug|Any CPU = Debug|Any CPU
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{D5A36DCC-FAEB-46BD-BC1C-C24E18D9E587}.Azure|Any CPU.ActiveCfg = Azure|Any CPU
+		{D5A36DCC-FAEB-46BD-BC1C-C24E18D9E587}.Azure|Any CPU.Build.0 = Azure|Any CPU
 		{D5A36DCC-FAEB-46BD-BC1C-C24E18D9E587}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{D5A36DCC-FAEB-46BD-BC1C-C24E18D9E587}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D5A36DCC-FAEB-46BD-BC1C-C24E18D9E587}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D5A36DCC-FAEB-46BD-BC1C-C24E18D9E587}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D4055F95-9DC1-4188-B532-626A8C86BFED}.Azure|Any CPU.ActiveCfg = Azure|Any CPU
+		{D4055F95-9DC1-4188-B532-626A8C86BFED}.Azure|Any CPU.Build.0 = Azure|Any CPU
 		{D4055F95-9DC1-4188-B532-626A8C86BFED}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{D4055F95-9DC1-4188-B532-626A8C86BFED}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D4055F95-9DC1-4188-B532-626A8C86BFED}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D4055F95-9DC1-4188-B532-626A8C86BFED}.Release|Any CPU.Build.0 = Release|Any CPU
+		{34ECB52F-33C2-4A55-887F-8E1188850292}.Azure|Any CPU.ActiveCfg = Azure|Any CPU
+		{34ECB52F-33C2-4A55-887F-8E1188850292}.Azure|Any CPU.Build.0 = Azure|Any CPU
 		{34ECB52F-33C2-4A55-887F-8E1188850292}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{34ECB52F-33C2-4A55-887F-8E1188850292}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{34ECB52F-33C2-4A55-887F-8E1188850292}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{34ECB52F-33C2-4A55-887F-8E1188850292}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5394C1EB-8F58-468F-AA02-A0E863141F45}.Azure|Any CPU.ActiveCfg = Azure|Any CPU
+		{5394C1EB-8F58-468F-AA02-A0E863141F45}.Azure|Any CPU.Build.0 = Azure|Any CPU
 		{5394C1EB-8F58-468F-AA02-A0E863141F45}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{5394C1EB-8F58-468F-AA02-A0E863141F45}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5394C1EB-8F58-468F-AA02-A0E863141F45}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5394C1EB-8F58-468F-AA02-A0E863141F45}.Release|Any CPU.Build.0 = Release|Any CPU
+		{161D6CBD-78D3-469A-A40D-96B5DD8B71BD}.Azure|Any CPU.ActiveCfg = Azure|Any CPU
+		{161D6CBD-78D3-469A-A40D-96B5DD8B71BD}.Azure|Any CPU.Build.0 = Azure|Any CPU
 		{161D6CBD-78D3-469A-A40D-96B5DD8B71BD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{161D6CBD-78D3-469A-A40D-96B5DD8B71BD}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{161D6CBD-78D3-469A-A40D-96B5DD8B71BD}.Release|Any CPU.ActiveCfg = Release|Any CPU

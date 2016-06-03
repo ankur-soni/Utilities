@@ -59,6 +59,8 @@ namespace Silicus.UtilityContainer.Web.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Login(LoginViewModel model, string returnUrl)
         {
+            System.Diagnostics.Trace.WriteLine("Enter - Login");
+
             if (!ModelState.IsValid)
             {
                 return View(model);
