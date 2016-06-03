@@ -240,7 +240,8 @@ namespace Silicus.Encourage.Web.Controllers
         [HttpGet]
         public ActionResult SavedNomination()
         {
-            var nominations = _nominationService.GetAllNominations();
+            var managerId = _awardService.GetUserIdFromEmail("shailendra.birthare@silicus.com");
+            var nominations = _nominationService.GetAllSubmittedAndSavedNominationsByCurrentUser(managerId);
             var savedNominations = new List<NominationListViewModel>();
 
             foreach (var nomination in nominations)

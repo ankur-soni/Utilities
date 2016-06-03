@@ -19,76 +19,77 @@
         </div>
     </nav>
 </div>
-<div class="row wrapper border-bottom white-bg page-heading border-bottom">
+<div class="row wrapper border-bottom white-bg page-heading border-bottom" style="width:90%;">
     <div class="col-sm-12">
         <h1>Nominated Employees</h1>
     </div>
 </div>
-<div class="wrapper wrapper-content animated fadeInRight">
+<div class="wrapper wrapper-content animated fadeInRight" style="margin-left:7%;">
 
-    <div class="row">
-        @foreach (var item in Model)
+    <div class=" row">
+    @foreach (var item in Model)
+    {
+        var borderColor = string.Empty;
+        if (item.IsSubmitted == true)
         {
-            var borderColor = string.Empty;
-            if (item.IsSubmitted == true)
-            {
-                borderColor = "#0067AA";
-            }
-            else
-            {
-                borderColor = "#F8AC59";
-            }
-
-            Random randomGen = new Random();
-            KnownColor[] names = (KnownColor[])Enum.GetValues(typeof(KnownColor));
-            KnownColor randomColorName = names[randomGen.Next(names.Length)];
-            Color randomColor = Color.FromKnownColor(randomColorName);
-
-            <div class="col-md-3 white-bg card" style="border-color:@borderColor">
-                
-                    <div class="cardHeader text-center">
-                        @*<div style="background-color:pink;font-weight:bold;font-size:large" class="col-md-5">
-                @Html.DisplayFor(modelItem => item.Intials)
-            </div>*@
-                        @*<div style="background-color:gray;height:60px;padding-left:10px;padding-bottom:70px; font-weight:bold;font-size:50px;text-align:center" class="col-md-6">
-                @Html.DisplayFor(modelItem => item.Intials)
-            </div>*@
-                        <div>
-
-                            <div>
-                                @Html.DisplayFor(modelItem => item.DisplayName)
-                            </div>
-                            <div>
-                                @Html.DisplayFor(modelItem => item.AwardName)
-
-                                @Html.DisplayFor(modelItem => item.NominationTime)
-                            </div>
-                        </div>
-
-                    </div>
-               
-                    <div class="cardFooter text-right" style="border-color:@borderColor">
-                        @if (item.IsSubmitted == false)
-                        {
-                            <a href="@Url.Action("EditSavedNomination", "Nomination", new { nominationId = item.Id })">
-                                <span> <i class="fa fa-pencil fa-2x" title="Edit Nomination" aria-hidden="true"></i> </span>
-                            </a>
-
-                        }
-                        else
-                        {
-                            <a href="@Url.Action("EditSavedNomination", "Nomination", new { nominationId = item.Id })">
-                                <span> <i class="fa fa-info-circle fa-2x" title="Nomination Deatils" aria-hidden="true"></i> </span>
-                            </a>
-
-                        }
-                    </div>
-               
-            </div>
-
+            borderColor = "#0067AA";
+        }
+        else
+        {
+            borderColor = "#F8AC59";
         }
 
-    </div>
+        Random randomGen = new Random();
+        KnownColor[] names = (KnownColor[])Enum.GetValues(typeof(KnownColor));
+        KnownColor randomColorName = names[randomGen.Next(names.Length)];
+        Color randomColor = Color.FromKnownColor(randomColorName);
+
+        <div class="col-md-3 white-bg card" style="border-color:@borderColor">
+
+            <div class="cardHeader text-center">
+                @*<div style="background-color:pink;font-weight:bold;font-size:large" class="col-md-5">
+                        @Html.DisplayFor(modelItem => item.Intials)
+                    </div>*@
+                @*<div style="background-color:gray;height:60px;padding-left:10px;padding-bottom:70px; font-weight:bold;font-size:50px;text-align:center" class="col-md-6">
+                        @Html.DisplayFor(modelItem => item.Intials)
+                    </div>*@
+                <div>
+
+                    <div>
+                        @Html.DisplayFor(modelItem => item.DisplayName)
+                    </div>
+                    <div>
+                        @Html.DisplayFor(modelItem => item.AwardName)
+
+                        @Html.DisplayFor(modelItem => item.NominationTime)
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="cardFooter text-right" style="border-color:@borderColor">
+                @if (item.IsSubmitted == false)
+                {
+                    <a href="@Url.Action("EditSavedNomination", "Nomination", new { nominationId = item.Id })">
+                        <span> <i class="fa fa-pencil fa-2x" title="Edit Nomination" aria-hidden="true"></i> </span>
+                    </a>
+
+                }
+                else
+                {
+                    <a href="@Url.Action("EditSavedNomination", "Nomination", new { nominationId = item.Id })">
+                        <span> <i class="fa fa-info-circle fa-2x" title="Nomination Deatils" aria-hidden="true"></i> </span>
+                    </a>
+
+                }
+            </div>
+
+        </div>
+
+    }
+
+</div>
+
 </div>
 <script>
     $(function () {
