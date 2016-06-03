@@ -37,7 +37,7 @@
             <div class="form-group">
                 @Html.Label("Resource From", htmlAttributes: new { @class = "control-label col-md-3 requiredfeild", style = "text-align: left" })
                 <div>
-                    <label> @Html.RadioButtonFor(model => model.SelectResourcesBy, "Project", new { htmlAttributes = new { @class = "form-control" }, id = "ProjectRadioButton" })Project</label>
+                    <label> @Html.RadioButtonFor(model => model.SelectResourcesBy, "Project", new { htmlAttributes = new { @class = "form-control" },id = "ProjectRadioButton" })Project</label>
                     &nbsp;
                     <label> @Html.RadioButtonFor(model => model.SelectResourcesBy, "Department", new { htmlAttributes = new { @class = "form-control" }, id = "DepartmentRadioButton" })Department</label>
                 </div>
@@ -109,7 +109,6 @@
             $(".criteriaComment").on('click', function () {$(".criteriaComment").children("textarea").first().tooltip('destroy'); });
 
             $(document).ready(function () {
-                $("#projectInput").hide();
                 $("#departmentInput").hide();
             })
 
@@ -134,16 +133,15 @@
                   });
 
             $("#Award").change(function () {
-                $('#ProjectRadioButton').prop('checked', false);
+                $('#ProjectRadioButton').prop('checked', true);
                 $('#DepartmentRadioButton').prop('checked', false);
-                $("#projectInput").hide();
+                $("#projectInput").show();
                 $("#departmentInput").hide();
                 $("#SelectedProject").prop('selectedIndex', 0);
                 $("#SelectedDepartment").prop('selectedIndex', 0);
                 $('#Resources').empty();
                 $('#Resources').append($("<option selected></option>").val(null).html("Select"));
                 $('#IsPlcCheckbox').prop('checked', false);
-
 
                 var selectdAward = $("#Award").val();
                 $('#criteriaTable').empty();
