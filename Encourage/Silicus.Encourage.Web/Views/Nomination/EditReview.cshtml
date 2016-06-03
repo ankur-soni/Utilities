@@ -75,7 +75,7 @@
     <table class="table table-hover issue-tracker white-bg" style="width:80%">
         <thead>
             <tr>
-                <th>Id</th>
+                @*<th>Id</th>*@
                 <th>Criteria</th>
                 <th>Manager Comment</th>
                 <th>Reviewer Comment</th>
@@ -91,25 +91,25 @@
             {
 
                 <tr>
-                    <td class="col-md-1">@item.Id</td>
+                    @*<td class="col-md-1">@item.Id</td>*@
                     @Html.Hidden("CriteriaId", @item.Id)
-                    <td class="col-md-3">@item.Title</td>
+                    <td class="col-md-4">@item.Title</td>
 
                     @if (k < Model.ManagerComments.Count() && Model.ManagerComments[k].CriteriaId == item.Id)
                     {
-                        <td class="col-md-3">@Model.ManagerComments[k].Comment</td>
+                        <td class="col-md-4">@Model.ManagerComments[k].Comment</td>
                         k++;
                     }
                     else
                     {
-                        <td class="col-md-3"></td>
+                        <td class="col-md-4"></td>
                     }
 
 
                     <td class="col-md-3">@Html.TextArea("Comments[" + @j + "].Comment", Model.Comments[j].Comment)</td>
 
                     @Html.Hidden("Comments[" + @j + "].Id", item.Id)
-                    <td>
+                    <td class="col-md-1">
                         <div class="switch">
                             <div class="onoffswitch">
                                 @if (Model.Comments[j].Credit == true)

@@ -44,6 +44,10 @@ h5 {
 th {
     color: #0067AA;
 }
+.fa-trophy:hover {
+   
+    
+}
 .dashboardButtons {
     width:100%;
     text-align:center;
@@ -58,6 +62,8 @@ th {
     Margin-bottom: 20px;
     height: 150px;
     border: solid;
+    padding-left:0%;
+    padding-right:0%;
    
 }
 .cardHeader {
@@ -67,12 +73,23 @@ th {
    
 }
 .cardFooter {
-        padding-top:10px;
+    
+    border-top:solid;
+    padding-top:5px;
     padding-bottom:10px;
+    padding-right:5px;
+    margin-right:150px;
+    width:100%;
+   
 }
-.cardButtons {
+
+/*.admin-cardFooter {
+        padding-top:10px;
+        padding-bottom:10px;
+}*/
+/*.cardButtons {
     width:100%
-}
+}*/
 
 .nav > li > a {
     color: #a7b1c2;

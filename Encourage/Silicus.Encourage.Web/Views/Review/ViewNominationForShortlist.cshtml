@@ -30,7 +30,7 @@
     {
         @Html.HiddenFor(model => model.nominationId, htmlAttributes: new { id = "nominationId" })
 
-        <table class="table table-hover issue-tracker white-bg" style="width:90%">
+        <table class="table table-hover issue-tracker white-bg" style="width:80%">
             <tr>
                 <td align="center" colspan="4" style="font-weight:bold">
                     Review For:
@@ -45,17 +45,7 @@
                     @Html.DisplayFor(modelItem => modelItem.projectOrDepartment)
                 </td>
 
-                <td rowspan="3">
-                    <input type="button" value="Shortlist" class="btn btn-warning shortlist" onclick="location.href='#'"
-                           @{ if (Model.IsShortlisted || Model.IsWinner) { @: disabled="disabled"
-                                                                                  } } />
-                </td>
-                <td rowspan="3">
-                    <input type="button" value="Mark Winner" class="btn btn-default winner" onclick="location.href='#'"
-                           @{  if (Model.IsWinner) {   @: disabled="disabled"
-                                                                                                           }  } />
 
-                </td>
             </tr>
             <tr>
                 <th>
@@ -74,16 +64,26 @@
                 </td>
             </tr>
         </table>
+        <div>
+            <input type="button" value="Shortlist" class="btn btn-warning shortlist" onclick="location.href='#'"
+                   @{ if (Model.IsShortlisted || Model.IsWinner) { @: disabled="disabled"
+                                                                                                                                                                      } } />
+            <input type="button" value="Mark Winner" class="btn btn-default winner" onclick="location.href='#'"
+                   @{  if (Model.IsWinner) {   @: disabled="disabled"
+                                                                                                                                                                                               }  } />
 
+
+        </div>
         <div class="row">&nbsp;</div>
         <div class="row">&nbsp;</div>
 
-        <table class="table table-hover issue-tracker white-bg" style="width:90%;table-layout:fixed">
+        <table class="table table-hover issue-tracker " style="width:80%;table-layout:fixed">
             <tr>
                 <th>
                     @Html.DisplayFor(modelItem => modelItem.Manager) Says:
                 </th>
-
+            </tr>
+            <tr class="white-bg">
                 <td class="more" style="word-wrap: break-word;">
                     <div>@Model.nominationComment</div>
                 </td>
@@ -96,18 +96,18 @@
         foreach (var reviewer in Model.reviewerComments)
         {
             var creditCount = 0;
-            <div class="row col-md-10">
+            <div class="row col-md-8">
                 @Html.Label("Review By:" + reviewer.FirstOrDefault().ReviewerName)
             </div>
 
             <span class="header"><a>Expand</a></span>
 
-            <table class="table table-hover issue-tracker white-bg content" style="width:90%">
+            <table class="table table-hover issue-tracker white-bg content" style="width:80%">
                 <thead>
                     <tr>
                         <th>Criteria</th>
-                        <th>ManagerComment</th>
-                        <th>ReviewerComment</th>
+                        <th>Manager Comment</th>
+                        <th>Reviewer Comment</th>
                         <th>Credits</th>
                     </tr>
                 </thead>
@@ -185,10 +185,10 @@
             <div class="col-md-offset-4">
                 <input type="button" value="Shortlist" class="btn btn-warning shortlist" onclick="location.href='#'"
                        @{ if (Model.IsShortlisted || Model.IsWinner) { @: disabled="disabled"
-                                                                        } } />
+                                                                                                                      } } />
                 <input type="button" value="Mark Winner" class="btn btn-default winner" onclick="location.href='#'"
                        @{ if (Model.IsWinner) {  @: disabled="disabled"
-                                                                                           } } />
+                                                                                                                                         } } />
             </div>
         </div>
     }

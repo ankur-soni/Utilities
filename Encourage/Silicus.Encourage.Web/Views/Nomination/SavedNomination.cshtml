@@ -67,18 +67,18 @@
 
                     </div>
                
-                    <div class="cardFooter text-center">
+                    <div class="cardFooter text-right" style="border-color:@borderColor">
                         @if (item.IsSubmitted == false)
                         {
-                            <a href="@Url.Action("EditSavedNomination", "Nomination", new { nominationId = item.Id })" class="btn btn-primary btn-sm cardButtons">
-                                <span style="font-weight:bold">  Edit </span>
+                            <a href="@Url.Action("EditSavedNomination", "Nomination", new { nominationId = item.Id })">
+                                <span> <i class="fa fa-pencil fa-2x" title="Edit Nomination" aria-hidden="true"></i> </span>
                             </a>
 
                         }
                         else
                         {
-                            <a href="@Url.Action("EditSavedNomination", "Nomination", new { nominationId = item.Id })" class="btn btn-primary btn-sm cardButtons">
-                                <span style="font-weight:bold">  Details </span>
+                            <a href="@Url.Action("EditSavedNomination", "Nomination", new { nominationId = item.Id })">
+                                <span> <i class="fa fa-info-circle fa-2x" title="Nomination Deatils" aria-hidden="true"></i> </span>
                             </a>
 
                         }
@@ -90,3 +90,9 @@
 
     </div>
 </div>
+<script>
+    $(function () {
+        $("fa-pencil").tooltip();
+        $("fa-info-circle").tooltip();
+    })
+</script>

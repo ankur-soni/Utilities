@@ -60,9 +60,16 @@
                         @Html.DisplayFor(modelItem => item.AwardName)
                         @Html.DisplayFor(modelItem => item.NominationTime)
                     </div>
-                    <div class="cardFooter text-center">
-                        <a href="@Url.Action("EditReview", "Nomination", new { nominationId = item.Id, details = myButtonText})" class="btn btn-primary btn-sm cardButtons">
-                            <span style="font-weight:bold">  @myButtonText </span>
+                    <div class="cardFooter text-right" style="border-color:@myBorderColor">
+                        <a href="@Url.Action("EditReview", "Nomination", new { nominationId = item.Id, details = myButtonText})">
+                           @if (!string.IsNullOrEmpty(myButtonText) && myButtonText == "Details")
+                           {
+                            <span>  <i class="fa fa-info-circle fa-2x" title="Review Deatils" aria-hidden="true"></i></span>
+                           }
+                           else
+                           {
+                            <span> <i class="fa fa-pencil fa-2x" title="Edit Review" aria-hidden="true" style="color:@myBorderColor"></i> </span>
+                           } 
                         </a>
                     </div>
               
@@ -74,3 +81,9 @@
    
     <br />
 </div>
+<script>
+    $(function () {
+        $("fa-pencil").tooltip();
+        $("fa-info-circle").tooltip();
+    })
+</script>

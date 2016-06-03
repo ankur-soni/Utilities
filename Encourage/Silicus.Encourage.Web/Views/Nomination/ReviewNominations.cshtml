@@ -11,6 +11,9 @@
         border: 0;
         padding-left: 0px;
     }
+    .fa-circle {
+        color:grey;
+    }
 </style>
 
 
@@ -55,10 +58,10 @@
                     </div>
 
                 </div>
-                <div class="cardFooter text-center">
+                <div class="cardFooter text-right">
 
-                    <a href="@Url.Action("ReviewNomination", "Nomination", new { nominationId = item.Id })" class="btn btn-primary btn-sm cardButtons">
-                        <span style="font-weight:bold">  Review </span>
+                    <a href="@Url.Action("ReviewNomination", "Nomination", new { nominationId = item.Id })" >
+                        <span> <i class="fa fa-circle fa-2x" title="Review Nomination" aria-hidden="true"></i> </span>
                     </a>
 
                 </div>
@@ -69,3 +72,10 @@
    
 </div>
 </div>
+<script>
+    $(function () {
+
+        $(".fa-circle").tooltip();
+    })
+
+</script>

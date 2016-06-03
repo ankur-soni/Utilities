@@ -23,21 +23,21 @@
 </div>
 <div class="row wrapper border-bottom white-bg page-heading border-bottom">
     <div class="col-sm-12">
-        <h1>Shortlist Nominations</h1>
+        <h1>Shortlisted Nominations</h1>
     </div>
 </div>
 <div class="wrapper wrapper-content animated fadeInRight">
-    <div>
-        <input type="button" value="ALL" class="btn btn-default" onclick="location.href=''" />
-        <input type="button" value="SOM" class="btn btn-default" onclick="location.href=''" />
-        <input type="button" value="Pinnacle" class="btn btn-default" onclick="location.href=''" />
-        <input type="button" value="Team Awesome" class="btn btn-default" onclick="location.href=''" />
-    </div>
-    <br />
-    <div style="font-weight:bold;color:#0070B9"">ALL</div>
-    <hr style="margin-top:0px"/>
+
     <div class="row">
-       
+        <div>
+            <input type="button" value="ALL" class="btn btn-default" onclick="location.href=''" />
+            <input type="button" value="SOM" class="btn btn-default" onclick="location.href=''" />
+            <input type="button" value="Pinnacle" class="btn btn-default" onclick="location.href=''" />
+            <input type="button" value="Team Awesome" class="btn btn-default" onclick="location.href=''" />
+        </div>
+        <br />
+        <div style="font-weight:bold;color:#0070B9">ALL</div>
+        <hr style="margin-top:0px;height:10px" />
         @foreach (var item in Model)
         {
             Random randomGen = new Random();
@@ -45,10 +45,66 @@
             KnownColor randomColorName = names[randomGen.Next(names.Length)];
             Color randomColor = Color.FromKnownColor(randomColorName);
 
-            <div style="Margin-right:10px;Margin-bottom:10px; border:solid;" class="col-md-3">
-                <div class="ibox float-e-margins">
+            <div class="col-md-3 card white-bg">
 
-                    <div class="ibox-title">
+
+                <div class="cardHeader text-center">
+                    @*<div style="background-color:@randomColor.Name;height:60px;margin-top:10px;padding-left:10px;padding-bottom:70px; font-weight:bold;font-size:50px;text-align:left" class="col-md-5">
+                            @Html.DisplayFor(modelItem => item.Intials)
+                        </div>*@
+                    <div>
+                        @Html.DisplayFor(modelItem => item.DisplayName)
+                    </div>
+
+                    <div>
+                        For
+                        @Html.DisplayFor(modelItem => item.AwardName)
+                        @Html.DisplayFor(modelItem => item.NominationTime)
+                        <br />
+                        @Html.Label("Credits:")
+                        @Html.DisplayFor(modelItem => item.Credits)
+                    </div>
+                </div>
+                <div class="cardFooter" style="padding-top:0px">
+                    <a href="@Url.Action("ViewNominationForShortlist", "Review", item)">
+                        <span> <i class="fa fa-circle fa-2x" title="View Nomination" aria-hidden="true"></i> </span>
+                    </a>
+                    @*<input type="button" value="View" onclick="location.href='@Url.Action("ViewNominationForShortlist", "Review", item)'" />*@
+                    @{
+            if (item.IsShortlisted)
+            {
+                <span style="padding-left:50%;color:#0067AA"><i class="fa fa-star fa-2x" title="Shortlisted" aria-hidden="true"></i></span>
+            }
+            else if (item.IsWinner)
+            {
+                <span style="padding-left:50%;color:#0067AA"><i class="fa fa-trophy fa-2x" title="Winner" aria-hidden="true"></i></span>
+            }
+                    }
+                </div>
+
+            </div>
+        }
+        <br />
+    </div>
+
+
+    <div class="row">
+        <div style="font-weight:bold; color:#0070B9">SHORTLISTED</div>
+
+        <hr style="margin-top:0px;height:10px" />
+        @foreach (var item in Model)
+        {
+            Random randomGen = new Random();
+            KnownColor[] names = (KnownColor[])Enum.GetValues(typeof(KnownColor));
+            KnownColor randomColorName = names[randomGen.Next(names.Length)];
+            Color randomColor = Color.FromKnownColor(randomColorName);
+            if (item.IsShortlisted)
+            {
+
+                <div class="col-md-3 card white-bg">
+
+
+                    <div class="cardHeader text-center">
                         @*<div style="background-color:@randomColor.Name;height:60px;margin-top:10px;padding-left:10px;padding-bottom:70px; font-weight:bold;font-size:50px;text-align:left" class="col-md-5">
                                 @Html.DisplayFor(modelItem => item.Intials)
                             </div>*@
@@ -65,68 +121,27 @@
                             @Html.DisplayFor(modelItem => item.Credits)
                         </div>
                     </div>
-                    <div class="ibox-footer text-left">
-                        <input type="button" value="View" class="btn btn-default" onclick="location.href='@Url.Action("ViewNominationForShortlist", "Review", item)'" />
-                        @{
-            if (item.IsShortlisted)
-            {
-                @Html.Label("Shortlisted")
-            }
-            else if (item.IsWinner)
-            {
-                @Html.Label("Winner")
-            }
-                        }
+                    <div class="cardFooter text-right">
+                        <input type="button" value="View" class="btn btn-default cardButtons" onclick="location.href='@Url.Action("ViewNominationForShortlist", "Review", item)'" />
+
                     </div>
-                </div>
-            </div>
-        }
-        <br />
-    </div>
-   
-    <div style="font-weight:bold; color:#0070B9">SHORTLISTED</div>
-    <hr style="margin-top:0px" />
-    <div class="row">
 
-        @foreach (var item in Model)
-        {
-            Random randomGen = new Random();
-            KnownColor[] names = (KnownColor[])Enum.GetValues(typeof(KnownColor));
-            KnownColor randomColorName = names[randomGen.Next(names.Length)];
-            Color randomColor = Color.FromKnownColor(randomColorName);
-            if (item.IsShortlisted)
-            {
-
-                <div style="Margin-right:10px;Margin-bottom:10px; border:solid;" class="col-md-3">
-                    <div class="ibox float-e-margins">
-
-                        <div class="ibox-title">
-                            @*<div style="background-color:@randomColor.Name;height:60px;margin-top:10px;padding-left:10px;padding-bottom:70px; font-weight:bold;font-size:50px;text-align:left" class="col-md-5">
-                                    @Html.DisplayFor(modelItem => item.Intials)
-                                </div>*@
-                            <div>
-                                @Html.DisplayFor(modelItem => item.DisplayName)
-                            </div>
-
-                            <div>
-                                For
-                                @Html.DisplayFor(modelItem => item.AwardName)
-                                @Html.DisplayFor(modelItem => item.NominationTime)
-                                <br />
-                                @Html.Label("Credits:")
-                                @Html.DisplayFor(modelItem => item.Credits)
-                            </div>
-                        </div>
-                        <div class="ibox-footer text-left">
-                            <input type="button" value="View" class="btn btn-default" onclick="location.href='@Url.Action("ViewNominationForShortlist", "Review", item)'" />
-
-                        </div>
-                    </div>
                 </div>
             }
         }
         <br />
     </div>
     <input type="button" value="Reject All" class="btn btn-danger" onclick="location.href='@Url.Action("RejectAll", "Review")'" />
+    <div class="row">&nbsp;</div>
+    <div class="row">&nbsp;</div>
 </div>
 
+<script>
+    $(function () {
+
+        $('.fa-trophy').tooltip();
+        $('.fa-star').tooltip();
+
+
+    });
+</script>
