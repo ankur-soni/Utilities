@@ -352,7 +352,7 @@ namespace Silicus.Encourage.Web.Controllers
                         NominationId = model.NominationId,
                         ReviewerId = model.ReviewerId,
                         CriteriaId = item.Id,
-                        Comment = item.Comment,
+                        Comment = item.Comment != null ? textInfo.ToTitleCase(item.Comment) : "",
                         Credit = Convert.ToInt32(item.Credit),
                         ReviewId = review.Id
 
@@ -388,7 +388,7 @@ namespace Silicus.Encourage.Web.Controllers
             }
             return View(reviewNominations);
                 }
-
+        [HttpGet]
         public ActionResult ReviewNomination(int nominationId)
         {
 
@@ -448,7 +448,7 @@ namespace Silicus.Encourage.Web.Controllers
                     NominationId = model.NominationId,
                     ReviewerId = model.ReviewerId,
                     CriteriaId = item.Id,
-                    Comment = item.Comment,
+                    Comment = item.Comment != null ? textInfo.ToTitleCase(item.Comment) : "",
                     Credit = Convert.ToInt32(item.Credit),
                     ReviewId = review.Id
 

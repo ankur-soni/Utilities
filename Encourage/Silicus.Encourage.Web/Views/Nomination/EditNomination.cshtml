@@ -142,13 +142,11 @@
 
         <script type="text/javascript">
             $(document).ready(function () {
-
                 var selectedProject = $("#SelectedProject").val();
                 var selectedDept = $("#SelectedDepartment").val();
                 var isSubmitted = $("#IsSubmitted").val();
 
         $('#basicFields').find('*').prop('disabled', true);
-
                 if (selectedProject != "")
                     $("#departmentInput").hide();
                 else if (selectedDept != "")
@@ -211,9 +209,6 @@
                     url: '@Url.Action("ResourcesInProject", "Nomination")',
                     data: JSON.stringify({ engagementID: selectedProject, awardId: selectedAward }),
                     contentType: "application/json; charset=utf-8",
-                    error: function (xhr, err) {
-                        alert(xhr.responseText)
-                    },
                     success: function (data) {
 
                         for (var key in data) {
@@ -234,9 +229,6 @@
                     type: 'GET',
                     url: ServiceUrl,
                     contentType: "application/json; charset=utf-8",
-                    error: function (xhr, err) {
-                        alert(xhr.responseText)
-                    },
                     success: function (data) {
                         for (var key in data) {
                             $('#Resources')
@@ -257,7 +249,6 @@
                     datatype: "JSON",
                     contentType: "application/json; charset=utf-8",
                     success: function (data) {
-                        alert("succed")
                         window.location.href = "/Nomination/SavedNomination/";
                     },
                     error: function () {
