@@ -109,6 +109,7 @@
             $(".criteriaComment").on('click', function () {$(".criteriaComment").children("textarea").first().tooltip('destroy'); });
 
             $(document).ready(function () {
+                $('#ProjectRadioButton').prop('checked', true);
                 $("#departmentInput").hide();
             })
 
@@ -120,6 +121,7 @@
                      $('#Resources').empty();
                      $('#Resources').append($("<option selected></option>").val(null).html("Select"));
                      $("#projectInput").show();
+                     $('#IsPlcCheckbox').prop('checked', false);
                  });
 
             $("#DepartmentRadioButton").change
@@ -130,6 +132,7 @@
                       $('#Resources').empty();
                       $('#Resources').append($("<option selected></option>").val(null).html("Select"));
                       $("#departmentInput").show();
+                      $('#IsPlcCheckbox').prop('checked', false);
                   });
 
             $("#Award").change(function () {

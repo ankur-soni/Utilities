@@ -88,7 +88,7 @@ namespace Silicus.Encourage.Web.Controllers
                         case "Success":
                             FormsAuthentication.SetAuthCookie(username, model.RememberMe);
                             var result = Request.IsAuthenticated;
-                            Session["CurrentUser"] = username.ToUpper();
+                            Session["CurrentUser"] = _commonDbService.FindDisplayNameFromEmail(user.Email);
                             var isAdmin = false;
 
                             if (commonRoles.Contains( "Admin"))
@@ -125,6 +125,18 @@ namespace Silicus.Encourage.Web.Controllers
                 return Redirect(returnUrl);
             }
             return RedirectToAction("Dashboard", "Dashboard", new { });
+        }
+
+        [AllowAnonymous]
+        public ActionResult LogOut()
+        {
+            // AuthenticationManager.SignOut(DefaultAuthenticationTypes.ApplicationCookie);
+            var cookies = HttpContext.Request.Cookies.AllKeys;
+            foreach (var cookie in cookies)
+            {
+                HttpContext.Response.Cookies[cookie].Expires = DateTime.Now;
+            }
+            return RedirectToAction("Login", "Account");
         }
 
         // GET: Account/Create

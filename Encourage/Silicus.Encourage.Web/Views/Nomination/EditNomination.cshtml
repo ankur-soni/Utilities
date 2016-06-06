@@ -189,12 +189,19 @@
         });
 
         if (comments.length < 1) {
-            $(".criteriaComment").children("textarea").first().tooltip({ title: "Enter at least one criteria comment.", placement: 'right' }).tooltip('show');;
+            $(".criteriaComment").children("textarea").first().tooltip({ title: "Enter at least one criteria comment.", placement: 'right' }).tooltip('show');
+            return false;
+        }
+
+        if (!$("#commentBox").val())
+            {
+            $("#commentBox").tooltip({ title: "Enter enter main comment on Nomination.", placement: 'right' }).tooltip('show');
             return false;
         }
     }
 
     $(".criteriaComment").on('click', function () { $(".criteriaComment").children("textarea").first().tooltip('destroy'); });
+    $("#commentBox").on('click', function () { $("#commentBox").tooltip('destroy'); });
 
     $("#SelectedProject").change(function () {
         var selectedProject = $("#SelectedProject").val();

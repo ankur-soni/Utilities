@@ -1,7 +1,5 @@
 ﻿@model Silicus.Encourage.Web.Models.ReviewSubmitionViewModel
 
-
-
 @{
     ViewBag.Title = "ReviewNomination";
 }
@@ -29,7 +27,6 @@
     <div class="row">
         @using (Html.BeginForm())
         {
-
             @Html.HiddenFor(modelItem => modelItem.ReviewerId)
             @Html.HiddenFor(modelItem => modelItem.NominationId);
             <table class="table table-hover issue-tracker white-bg" style="width:80%">
@@ -117,7 +114,7 @@
 
                             @Html.Hidden("Comments[" + @j + "].Id", item.Id)
                             <td class="col-md-1">
-                                <div class="switch">
+                                <div class="switch" >
                                     <div class="onoffswitch">
                                         <input type="checkbox" value="true" length="0" class="onoffswitch-checkbox" id='example @j' name="Comments[@j].Credit">
 
@@ -140,10 +137,16 @@
                         @Html.HiddenFor(model => Model.ManagerComments[i].Comment)
                     }
                 }
+                <tr>
+                    <th colspan="3" style="text-align:right;">
+                        Total Credits:
+                    </th>
+                    <td style="text-align:center;">
+                        <span id="totalCredits">0</span>
+                    </td>
+                </tr>
+
             </table>
-
-
-
             <div class="form-group">
                 <div class="col-md-offset-4">
                     <input type="submit" name="submit" value="Save Draft" id="saveButton" class="btn btn-warning" />
@@ -156,3 +159,22 @@
 </div>
 
 <script src="http://ajax.googleapis.com/ajax/libs/jquery/2.0.0/jquery.min.js"></script>
+
+<script>
+    var totalCredits = 0;
+    $(".onoffswitch-checkbox").change(function ()
+    {
+        if($(this).is(':checked'))
+        {
+            totalCredits++;
+        }
+        else if (!$(this).is(':checked'))
+        {
+            totalCredits--;
+        }
+
+        $("#totalCredits").text(totalCredits);
+    });
+  
+
+</script>
