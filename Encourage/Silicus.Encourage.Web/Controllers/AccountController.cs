@@ -127,6 +127,18 @@ namespace Silicus.Encourage.Web.Controllers
             return RedirectToAction("Dashboard", "Dashboard", new { });
         }
 
+        [AllowAnonymous]
+        public ActionResult LogOut()
+        {
+            // AuthenticationManager.SignOut(DefaultAuthenticationTypes.ApplicationCookie);
+            var cookies = HttpContext.Request.Cookies.AllKeys;
+            foreach (var cookie in cookies)
+            {
+                HttpContext.Response.Cookies[cookie].Expires = DateTime.Now;
+            }
+            return RedirectToAction("Login", "Account");
+        }
+
         // GET: Account/Create
         public ActionResult Create()
         {

@@ -5,7 +5,6 @@
 <html>
 
 <body class="pace-done">
-
         <div class="row border-bottom">
             <nav class="navbar  " role="navigation" style="margin-bottom: 0">
                 <div class="navbar-header">
@@ -19,9 +18,7 @@
             </div>
         </div>
 
-
         <!-- begin content -->
-
         <div class="wrapper wrapper-content animated fadeInRight" style="width:80%">
             <div class="row">
            @{
@@ -48,8 +45,6 @@
                 }
                 @if (roles.Contains("Reviewer"))
                 {
-                    
-                
                         <div class="col-md-3">
                     <div class="ibox float-e-margins">
                         <div class="ibox-title text-center">
@@ -97,44 +92,13 @@
 
                     </div>
                 }
-
-
             </div>
-                @*<div style="position:relative">
-                <div id="b" style="position:absolute;">B</div>
-                </div>*@
-                @*<div class="row">
-                <div class="col-md-10">
-                    <div>
-                        Recent Feeds
-                    </div>
-                   
-                    <div id="recentFeeds1" style=" position:absolute;">
-                        Hey I'm moving first!!
-
-                    </div>
-                    <div id="recentFeeds2" style="position:absolute;">
-                        Hey I'm moving second!!
-
-                    </div>
-                    <div id="recentFeeds3" style="position:absolute;">
-                        Hey I'm moving 3rd!!
-
-                    </div>
-                    <div id="recentFeeds4" style="position:absolute;">
-                        Hey I'm moving 4th!!
-
-                    </div>
-
-                </div>
-                </div>*@
                 <div class="wrapper wrapper-content animated fadeInRight">
                     <span style="font-weight:bold">Winners</span>
+                    <div class="row">&nbsp;</div>
                     <div class="row">
-                        
                             @{
                                 var index = 0;
-                               
                             }
                         <marquee>
                             @foreach (var item in Model)
@@ -145,13 +109,7 @@
                                 Color randomColor = Color.FromKnownColor(randomColorName);
 
                                 <div class="col-md-3 card"  id="winnerCard @index">
-
-
                                     <div class="cardHeader text-center">
-                                        @*<div style="background-color:@randomColor.Name;height:60px;margin-top:10px;padding-left:10px;padding-bottom:70px; font-weight:bold;font-size:50px;text-align:left" class="col-md-5">
-                            @Html.DisplayFor(modelItem => item.Intials)
-                        </div>*@
-
                                         <div>
                                             @Html.DisplayFor(modelItem => item.DisplayName)
                                         </div>
@@ -162,11 +120,8 @@
                                             @Html.DisplayFor(modelItem => item.NominationTime)
                                         </div>
                                     </div>
-
                                 </div>
-
                                 index++;
-
                             }
                         </marquee>
                             <br />

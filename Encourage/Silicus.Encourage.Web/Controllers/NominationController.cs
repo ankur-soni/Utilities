@@ -92,7 +92,7 @@ namespace Silicus.Encourage.Web.Controllers
                         );
                 }
             }
-            nomination.Comment = textInfo.ToTitleCase(model.MainComment);
+            nomination.Comment =model.MainComment != null? textInfo.ToTitleCase(model.MainComment):"";
 
             var isNominated = _awardService.AddNomination(nomination);
             return RedirectToAction("Dashboard", "Dashboard");
@@ -205,7 +205,7 @@ namespace Silicus.Encourage.Web.Controllers
                 }
             }
 
-            nomination.Comment = textInfo.ToTitleCase(model.MainComment);
+            nomination.Comment = model.MainComment != null?textInfo.ToTitleCase(model.MainComment):"";
 
             _nominationService.DeletePrevoiusManagerComments(model.NominationId);
             _nominationService.UpdateNomination(nomination);

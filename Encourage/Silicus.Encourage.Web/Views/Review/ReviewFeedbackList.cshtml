@@ -21,14 +21,13 @@
         </div>
     </nav>
 </div>
-<div class="row wrapper border-bottom white-bg page-heading border-bottom">
+<div class="row wrapper border-bottom white-bg page-heading border-bottom" style="width:90%;">
     <div class="col-sm-12">
         <h1>Shortlisted Nominations</h1>
     </div>
 </div>
 <div class="wrapper wrapper-content animated fadeInRight">
-
-    <div class="row">
+    <div class="row" style="margin-left: 2%;">
         <div>
             <input type="button" value="ALL" class="btn btn-default" onclick="location.href=''" />
             <input type="button" value="SOM" class="btn btn-default" onclick="location.href=''" />
@@ -37,7 +36,8 @@
         </div>
         <br />
         <div style="font-weight:bold;color:#0070B9">ALL</div>
-        <hr style="margin-top:0px;height:10px" />
+        <div class="row">&nbsp;</div>
+        <hr style="margin-top:0px;height:6px;margin-left:0px; width:85%;" />
         @foreach (var item in Model)
         {
             Random randomGen = new Random();
@@ -88,10 +88,10 @@
     </div>
 
 
-    <div class="row">
+    <div class="row" style="margin-left:2%;">
         <div style="font-weight:bold; color:#0070B9">SHORTLISTED</div>
-
-        <hr style="margin-top:0px;height:10px" />
+        <div class="row">&nbsp;</div>
+        <hr style="margin-top:0px;height:6px;margin-left:0px; width:85%;" />
         @foreach (var item in Model)
         {
             Random randomGen = new Random();
@@ -100,10 +100,7 @@
             Color randomColor = Color.FromKnownColor(randomColorName);
             if (item.IsShortlisted)
             {
-
                 <div class="col-md-3 card white-bg">
-
-
                     <div class="cardHeader text-center">
                         @*<div style="background-color:@randomColor.Name;height:60px;margin-top:10px;padding-left:10px;padding-bottom:70px; font-weight:bold;font-size:50px;text-align:left" class="col-md-5">
                                 @Html.DisplayFor(modelItem => item.Intials)
@@ -132,7 +129,7 @@
         }
         <br />
     </div>
-    <input type="button" value="Reject All" class="btn btn-danger" onclick="location.href='@Url.Action("RejectAll", "Review")'" />
+    <input type="button" value="Reject All" class="btn btn-danger" onclick="location.href='@Url.Action("RejectAll", "Review")'" style="margin-left: 3%;" />
     <div class="row">&nbsp;</div>
     <div class="row">&nbsp;</div>
 </div>
