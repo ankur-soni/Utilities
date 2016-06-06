@@ -88,7 +88,7 @@ namespace Silicus.Encourage.Web.Controllers
                         case "Success":
                             FormsAuthentication.SetAuthCookie(username, model.RememberMe);
                             var result = Request.IsAuthenticated;
-                            Session["CurrentUser"] = username.ToUpper();
+                            Session["CurrentUser"] = _commonDbService.FindDisplayNameFromEmail(user.Email);
                             var isAdmin = false;
 
                             if (commonRoles.Contains( "Admin"))
