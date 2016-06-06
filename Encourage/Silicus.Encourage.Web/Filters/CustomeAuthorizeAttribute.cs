@@ -28,12 +28,12 @@ namespace Silicus.Encourage.Web.Filters
         {
             var dataContextFactory = new DataContextFactory();
             var _commonDbService = new CommonDbService(dataContextFactory);
-
+            bool status = false;
             var adAuthenticationCookie = httpContext.Request.Cookies[".ADAuthCookie"];
 
             if (adAuthenticationCookie != null)
             {
-                bool status = false;
+               
                 var userRoles = new List<string>();
                 string[] allowedRoles = AllowedRole.Split(new char[] { ',', ' ' }, StringSplitOptions.RemoveEmptyEntries);
 
@@ -56,18 +56,27 @@ namespace Silicus.Encourage.Web.Filters
                     userRoles = _authorizationService.GetRoleForUtility(user.Email, utility);
                 }
 
-                foreach (var userRole in userRoles)
+                foreach (var allowedRole in  allowedRoles)
                 {
-                    if (allowedRoles.Contains(userRole))
+                    if (userRoles.Contains(allowedRole))
+                    {
                         status = true;
-                    return status;
-                    
+                    }
+                        
+                    else
+                    {
+                        status = false;
+                    }
+                   
+
                 }
+
+               
                 
             }
 
 
-            return false;
+            return status;
             
         }
     }
