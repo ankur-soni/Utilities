@@ -18,7 +18,7 @@
         padding: 5px;
     }
 </style>
-<div class="wrapper wrapper-content animated fadeInRight" >
+<div class="wrapper wrapper-content animated fadeInRight">
     <div class="row">
         @using (Html.BeginForm())
         {
@@ -145,7 +145,12 @@
                     }
                 }
             </table>
-            <input type="button" value="Back" class="btn btn-default" onclick="location.href='@Url.Action("SavedReviews","Nomination")'" />
+            <div class="form-group">
+                <div class="col-md-offset-4">
+                    <input type="button" value="Back" class="btn btn-default" onclick="location.href='@Url.Action("SavedReviews","Nomination")'" />
+                </div>
+            </div>
+
         }
     </div>
     <div class="row">&nbsp;</div>
@@ -154,5 +159,5 @@
 
 <script src="http://ajax.googleapis.com/ajax/libs/jquery/2.0.0/jquery.min.js"></script>
 <script>
-   
+
 </script>
