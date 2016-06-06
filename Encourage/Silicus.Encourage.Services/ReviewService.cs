@@ -27,7 +27,7 @@ namespace Silicus.Encourage.Services
 
         public IEnumerable<Review> GetReviewsForNomination(int nominationID)
         {
-            var reviews = _encourageDatabaseContext.Query<Review>("ReviewerComments").Where(review => review.NominationId == nominationID).ToList();
+            var reviews = _encourageDatabaseContext.Query<Review>("ReviewerComments").Where(review => review.NominationId == nominationID && review.IsSubmited==true).ToList();
             return reviews;
         }
 
