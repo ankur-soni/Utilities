@@ -2,6 +2,7 @@
 using Silicus.Encourage.DAL.Interfaces;
 using Silicus.Encourage.Models;
 using Silicus.Encourage.Services.Interface;
+using Silicus.Encourage.Web.Filters;
 using Silicus.Encourage.Web.Models;
 using Silicus.UtilityContainer.Entities;
 using Silicus.UtilityContainer.Models.DataObjects;
@@ -38,6 +39,7 @@ namespace Silicus.Encourage.Web.Controllers
         #region Nomination
 
         // GET: Nomination/Create
+           [CustomeAuthorize(AllowedRole = "Manager")]
         public ActionResult AddNomination()
         {
             var userEmailAddress = Session["UserEmailAddress"] as string;
@@ -57,6 +59,7 @@ namespace Silicus.Encourage.Web.Controllers
         }
 
         [HttpPost]
+        [CustomeAuthorize(AllowedRole = "Manager")]
         public ActionResult AddNomination(NominationViewModel model, string submit)
         {
             var nomination = new Nomination();
@@ -107,6 +110,7 @@ namespace Silicus.Encourage.Web.Controllers
         }
 
         [HttpPost]
+        [CustomeAuthorize(AllowedRole = "Manager")]
         public ActionResult DiscardNomination(int nominationId)
         {
             _nominationService.DiscardNomination(nominationId);
@@ -114,6 +118,7 @@ namespace Silicus.Encourage.Web.Controllers
         }
 
         [HttpGet]
+        [CustomeAuthorize(AllowedRole = "Manager")]
         public ActionResult EditSavedNomination(int nominationId)
         {
             var savedNomination = _nominationService.GetNomination(nominationId);
@@ -175,6 +180,7 @@ namespace Silicus.Encourage.Web.Controllers
         }
 
         [HttpPost]
+        [CustomeAuthorize(AllowedRole = "Manager")]
         public ActionResult EditSavedNomination(NominationViewModel model, string submit)
         {
             Nomination nomination = new Nomination();
@@ -238,6 +244,7 @@ namespace Silicus.Encourage.Web.Controllers
 
 
         [HttpGet]
+        [CustomeAuthorize(AllowedRole = "Manager")]
         public ActionResult SavedNomination()
         {
             var managerId = _awardService.GetUserIdFromEmail("shailendra.birthare@silicus.com");
@@ -267,6 +274,7 @@ namespace Silicus.Encourage.Web.Controllers
 
         #region ReviewNomination
 
+        [CustomeAuthorize(AllowedRole="Reviewer")]
         public ActionResult EditReview(int nominationId, string details)
         {
             int totalCredit = 0;
@@ -313,6 +321,7 @@ namespace Silicus.Encourage.Web.Controllers
 
 
         [HttpPost]
+        [CustomeAuthorize(AllowedRole = "Reviewer")]
         public ActionResult EditReview(ReviewSubmitionViewModel model, string Submit)
         {
             var alreadyReviewed = _encourageDatabaseContext.Query<Review>().Where(r => r.ReviewerId == model.ReviewerId && r.NominationId == model.NominationId).FirstOrDefault();
@@ -367,6 +376,7 @@ namespace Silicus.Encourage.Web.Controllers
 
 
         [HttpGet]
+        [CustomeAuthorize(AllowedRole = "Reviewer")]
         public ActionResult ReviewNominations()
         {
             var nominations = _nominationService.GetAllSubmitedNonreviewedNominations(_nominationService.GetReviewerIdOfCurrentNomination( Session["UserEmailAddress"] as string));
@@ -389,7 +399,9 @@ namespace Silicus.Encourage.Web.Controllers
             }
             return View(reviewNominations);
                 }
+
         [HttpGet]
+        [CustomeAuthorize(AllowedRole = "Reviewer")]
         public ActionResult ReviewNomination(int nominationId)
         {
 
@@ -414,6 +426,7 @@ namespace Silicus.Encourage.Web.Controllers
 
 
         [HttpPost]
+        [CustomeAuthorize(AllowedRole = "Reviewer")]
         public ActionResult ReviewNomination(ReviewSubmitionViewModel model, string Submit)
             {
             var alreadyReviewed = _encourageDatabaseContext.Query<Review>().Where(r => r.ReviewerId == model.ReviewerId && r.NominationId == model.NominationId).FirstOrDefault();
@@ -460,6 +473,7 @@ namespace Silicus.Encourage.Web.Controllers
         }
 
 
+        [CustomeAuthorize(AllowedRole = "Reviewer")]
         public ActionResult SavedReviews()
         {
 
