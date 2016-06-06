@@ -59,11 +59,15 @@ namespace Silicus.UtilityContainer.Web.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Login(LoginViewModel model, string returnUrl)
         {
+
             if (!ModelState.IsValid)
             {
                 return View(model);
             }
-
+            if (!Request.IsAuthenticated)
+            {
+                HttpContext.GetOwinContext().Authentication.Challenge(new AuthenticationProperties { RedirectUri = "/" });
+            }
 
             if (_userAuthentication.ValidateUser(model.UserName, model.Password))
             {

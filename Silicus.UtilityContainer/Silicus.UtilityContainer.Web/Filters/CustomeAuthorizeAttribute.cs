@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.Owin.Security;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -15,7 +16,6 @@ namespace Silicus.UtilityContainer.Web.Filters
             if (cookie != null)
             {
                 var autheticationTicket = FormsAuthentication.Decrypt(cookie.Value);
-
 
                 if (Membership.ValidateUser(autheticationTicket.Name, autheticationTicket.UserData))
                 {

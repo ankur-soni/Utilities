@@ -65,11 +65,11 @@
                         @Html.DisplayFor(modelItem => item.Credits)
                     </div>
                 </div>
-                <div class="cardFooter" style="padding-top:0px">
+                <div class="cardFooter text-right" style="padding-top:5px">
                     <a href="@Url.Action("ViewNominationForShortlist", "Review", item)">
                         <span> <i class="fa fa-circle fa-2x" title="View Nomination" aria-hidden="true"></i> </span>
                     </a>
-                    @*<input type="button" value="View" onclick="location.href='@Url.Action("ViewNominationForShortlist", "Review", item)'" />*@
+                   
                     @{
             if (item.IsShortlisted)
             {
@@ -122,8 +122,9 @@
                         </div>
                     </div>
                     <div class="cardFooter text-right">
-                        <input type="button" value="View" class="btn btn-default cardButtons" onclick="location.href='@Url.Action("ViewNominationForShortlist", "Review", item)'" />
-
+                        <a href="@Url.Action("ViewNominationForShortlist", "Review", item)">
+                            <span> <i class="fa fa-circle fa-2x" title="View Nomination" aria-hidden="true"></i> </span>
+                        </a>
                     </div>
 
                 </div>
