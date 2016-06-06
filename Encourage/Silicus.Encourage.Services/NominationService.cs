@@ -33,6 +33,11 @@ namespace Silicus.Encourage.Services
             return _encourageDatabaseContext.Query<Nomination>("ManagerComments").ToList();
         }
 
+        public List<Nomination> GetAllSubmittedAndSavedNominationsByCurrentUser(int managerID)
+        {
+            return _encourageDatabaseContext.Query<Nomination>("ManagerComments").Where(model => model.ManagerId == managerID).ToList();
+        }
+
         public List<Nomination> GetAllSubmitedNonreviewedNominations(int reviewerId)
         {
             var alreadyReviewedRecords = _encourageDatabaseContext.Query<Review>().Where(r => r.ReviewerId == reviewerId).ToList();
@@ -91,7 +96,7 @@ namespace Silicus.Encourage.Services
 
         public string GetAwardName(int nominationId)
         {
-           
+
             var nomination = GetReviewNomination(nominationId);
 
             return _encourageDatabaseContext.Query<Award>().Where(a => a.Id == nomination.AwardId).FirstOrDefault().Code;

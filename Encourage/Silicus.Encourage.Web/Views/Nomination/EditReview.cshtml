@@ -14,10 +14,10 @@
         </div>
     </nav>
 </div>
-<div class="row wrapper border-bottom white-bg page-heading border-bottom">
-    <div class="col-sm-12">
-        <h1>Edit Review</h1>
-    </div>
+<div class="row wrapper border-bottom white-bg page-heading border-bottom" style="width:90%;">
+    <div class=" col-sm-12">
+    <h1>Edit Review</h1>
+</div>
 </div>
 <div class="wrapper wrapper-content animated fadeInRight">
     <div class="row">
@@ -134,13 +134,13 @@
 
                     j++;
             }
-            @*<tr>
+            <tr>
+               
                 <td></td>
                 <td></td>
-                <td></td>
-                <th>Credit Given</th>
-                <td class="text-left">@ViewBag.creditGiven</td>
-            </tr>*@
+                <th>Total Credits</th>
+                <td class="text-left" id="totalCredits"> @ViewBag.creditGiven</td>
+            </tr>
         </tbody>
         @if (Model.ManagerComments != null)
         {
@@ -164,3 +164,11 @@
        </div>
     </div>
         <script src="http://ajax.googleapis.com/ajax/libs/jquery/2.0.0/jquery.min.js"></script>
+<script>
+    $(".onoffswitch").click(function () {
+        var count = $("[type='checkbox']:checked").length;
+        $("#totalCredits").html(count);
+    });
+    
+   
+</script>
