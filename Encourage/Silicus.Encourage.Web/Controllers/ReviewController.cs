@@ -89,7 +89,7 @@ namespace Silicus.Encourage.Web.Controllers
         {
             var rejectAllRviews = _encourageDatabaseContext.Query<Review>().Where(r => r.IsSubmited == true).ToList();
           
-            var shortlist = _encourageDatabaseContext.Query<Shortlist>();
+            var shortlist = _encourageDatabaseContext.Query<Shortlist>().Where(s => s.IsWinner == true);
 
             foreach (var shortListedEmployee in shortlist)
             {
