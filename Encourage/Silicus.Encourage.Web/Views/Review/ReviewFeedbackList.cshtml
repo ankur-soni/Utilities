@@ -37,7 +37,7 @@
         <br />
 
         <div style="font-weight:bold;color:#0070B9">ALL</div>
-        
+
         <hr style="margin-top:0px;height:2px;margin-left:0px; width:85%;" />
         @foreach (var item in Model)
         {
@@ -54,7 +54,7 @@
                             @Html.DisplayFor(modelItem => item.Intials)
                         </div>*@
                     <div>
-                        @Html.DisplayFor(modelItem => item.DisplayName)
+                        <label>@Html.DisplayFor(modelItem => item.DisplayName)</label>
                     </div>
 
                     <div>
@@ -70,7 +70,7 @@
                     <a href="@Url.Action("ViewNominationForShortlist", "Review", item)">
                         <span> <i class="fa fa-circle fa-2x" title="View Nomination" aria-hidden="true" style="padding:7px;"></i> </span>
                     </a>
-                   
+
                     @{
             if (item.IsShortlisted)
             {
@@ -92,7 +92,7 @@
     <div class="row" style="margin-left:2%;">
         <div class="row">&nbsp;</div>
         <div style="font-weight:bold; color:#0070B9">SHORTLISTED</div>
-        
+
         <hr style="margin-top:0px;height:2px;margin-left:0px; width:85%;" />
         @foreach (var item in Model)
         {
