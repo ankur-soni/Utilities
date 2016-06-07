@@ -120,11 +120,11 @@
                 <div class="col-md-offset-3 col-md-10">
                     @if (Model.IsSubmitted != true)
                     {
-                        <input type="button" value="Discard" id="discardButton" class="btn btn-danger" />
-                        <input type="submit" name="submit" value="Save Draft" id="saveButton" class="btn btn-warning" />
-                        <input type="submit" name="submit" value="Submit" class="btn btn-success-green" onclick="return checkCriteriaComments();" />
+                        <input type="button" value="Discard" id="discardButton" class="btn btn-danger btnSameSize" />
+    <input type="submit" name="submit" value="Save Draft" id="saveButton" class="btn btn-warning btnSameSize" />
+    <input type="submit" name="submit" value="Submit" class="btn btn-success-green btnSameSize" onclick="return checkCriteriaComments();" />
                     }
-                    <input type="button" value="Back" class="btn btn-default" onclick="location.href='@Url.Action("SavedNomination", "Nomination")'" />
+                    <input type="button" value="Back" class="btn btn-default btnSameSize " onclick="location.href='@Url.Action("SavedNomination", "Nomination")'" />
                 </div>
             </div>
             <div class="=row">&nbsp;</div>

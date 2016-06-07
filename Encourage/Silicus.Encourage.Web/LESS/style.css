@@ -761,6 +761,10 @@ body.canvas-menu.mini-navbar nav.navbar-static-side {
     border-radius: 3px;
 }
 
+.btnSameSize{
+    width:14%;
+}
+
 .float-e-margins .btn {
     margin-bottom: 5px;
 }
@@ -8859,6 +8863,10 @@ body.rtls.top-navigation .footer.fixed {
 .skin-1 .navbar-minimalize {
     background: #0e9aef;
     border-color: #0e9aef;
+}
+
+.navbar-minimalize{
+    margin-left:auto;
 }
 
 body.skin-1 {

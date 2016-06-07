@@ -177,12 +177,12 @@
 
         <div class="form-group">
             <div class="col-md-offset-4">
-                <input type="button" value="Shortlist" class="btn btn-warning shortlist" onclick="location.href='#'"
+                <input type="button" value="Shortlist" class="btn btn-warning shortlist btnSameSize" onclick="location.href='#'"
                        @{ if (Model.IsShortlisted || Model.IsWinner) { @: disabled="disabled"
-                                                                                                                                                                                                                  } } />
-                <input type="button" value="Mark Winner" class="btn btn-default winner" onclick="location.href='#'"
+                                                                                                                                                                                                                                         } } />
+                <input type="button" value="Mark Winner" class="btn btn-default winner btnSameSize" onclick="location.href='#'"
                        @{ if (Model.IsWinner) {  @: disabled="disabled"
-                                                                                                                                                                                                                                     } } />
+                                                                                                                                                                                                                                                            } } />
             </div>
         </div>
     }

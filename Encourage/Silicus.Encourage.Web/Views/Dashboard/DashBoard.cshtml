@@ -12,7 +12,7 @@
             </div>
         </nav>
     </div>
-    <div class="row wrapper border-bottom white-bg page-heading border-bottom" style="width:90%">
+    <div class="row wrapper border-bottom white-bg page-heading border-bottom" style="width:90%;">
         <div class="col-sm-12">
             <h1>Dashboard</h1>
         </div>
@@ -20,7 +20,7 @@
 
     <!-- begin content -->
     <div class="wrapper wrapper-content animated fadeInRight" style="width:80%">
-        <div class="row">
+        <div class="row" style="margin-left:4%;">
             @{
                 var roles = HttpContext.Current.Session["Role"] as List<string>;
             }
