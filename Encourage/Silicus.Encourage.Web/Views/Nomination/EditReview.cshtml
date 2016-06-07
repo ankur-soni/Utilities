@@ -14,13 +14,13 @@
         </div>
     </nav>
 </div>
-<div class="row wrapper border-bottom white-bg page-heading border-bottom">
-    <div class="col-sm-12">
-        <h1>Edit Review</h1>
-    </div>
+<div class="row wrapper border-bottom white-bg page-heading border-bottom" style="width:90%;">
+    <div class=" col-sm-12">
+    <h1>Edit Review</h1>
+</div>
 </div>
 <div class="wrapper wrapper-content animated fadeInRight">
-    <div class="row">
+    <div class="row" style="margin-left:3%">
         @using (Html.BeginForm())
         {
             @Html.HiddenFor(modelItem => modelItem.ReviewerId)
@@ -105,7 +105,6 @@
                         <td class="col-md-4"></td>
                     }
 
-
                     <td class="col-md-3">@Html.TextArea("Comments[" + @j + "].Comment", Model.Comments[j].Comment)</td>
 
                     @Html.Hidden("Comments[" + @j + "].Id", item.Id)
@@ -128,19 +127,19 @@
                             </div>
                         </div>
                     </td>
-
-                   
                 </tr>
-
                     j++;
             }
-            @*<tr>
-                <td></td>
-                <td></td>
-                <td></td>
-                <th>Credit Given</th>
-                <td class="text-left">@ViewBag.creditGiven</td>
-            </tr>*@
+                    <tr>
+                        <td></td>
+                        <td></td>
+                        <td  class="col-md-3 text-left" style="color:#0063A7">
+                            Total Credits:
+                        </td>
+                        <td id="totalCredits" class="col-md-1 text-left">
+                            @ViewBag.creditGiven
+                        </td>
+                    </tr>
         </tbody>
         @if (Model.ManagerComments != null)
         {
@@ -150,8 +149,6 @@
             }
         }
     </table>
-
-
             <div class="form-group">
                 <div class="col-md-offset-4">
                     <input type="submit" name="submit" value="Discard Review" id="saveButton" class="btn btn-danger" />
@@ -164,3 +161,15 @@
        </div>
     </div>
         <script src="http://ajax.googleapis.com/ajax/libs/jquery/2.0.0/jquery.min.js"></script>
+<script>
+    var totalCredits = $("#totalCredits").text();
+    $(".onoffswitch-checkbox").change(function () {
+        if ($(this).is(':checked')) {
+            totalCredits++;
+        }
+        else if (!$(this).is(':checked')) {
+            totalCredits--;
+        }
+        $("#totalCredits").text(totalCredits);
+    });
+</script>

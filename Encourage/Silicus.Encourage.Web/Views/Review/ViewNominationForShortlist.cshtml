@@ -11,6 +11,9 @@
         display: none;
         padding: 5px;
     }
+
+    th {
+    }
 </style>
 <div class="row border-bottom">
     <nav class="navbar  " role="navigation" style="margin-bottom: 0">
@@ -19,67 +22,59 @@
         </div>
     </nav>
 </div>
-<div class="row wrapper border-bottom white-bg page-heading border-bottom">
+<div class="row wrapper border-bottom white-bg page-heading border-bottom" style="width:90%;">
     <div class="col-md-11">
         <h1>Nomination</h1>
     </div>
 </div>
-<div class="wrapper wrapper-content animated fadeInRight">
+<div class="wrapper wrapper-content animated fadeInRight" style="margin-left:5%">
 
     @using (Html.BeginForm())
     {
         @Html.HiddenFor(model => model.nominationId, htmlAttributes: new { id = "nominationId" })
 
         <table class="table table-hover issue-tracker white-bg" style="width:80%">
-            <tr>
-                <td align="center" colspan="4" style="font-weight:bold">
-                    Review For:
-                    @Html.DisplayFor(modelItem => modelItem.userName)
-                </td>
-            </tr>
-            <tr>
-                <th>
-                    Project/Department:
-                </th>
-                <td>
-                    @Html.DisplayFor(modelItem => modelItem.projectOrDepartment)
-                </td>
+            <thead>
+                <tr>
+                    <td align="center" colspan="4" style="font-weight:bold">
+                        <label>
+                            Review For:
+                            @Html.DisplayFor(modelItem => modelItem.userName)
+                        </label>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <label> Project/Department:</label>
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => modelItem.projectOrDepartment)
+                    </td>
 
 
-            </tr>
-            <tr>
-                <th>
-                    Manager:
-                </th>
-                <td>
-                    @Html.DisplayFor(modelItem => modelItem.Manager)
-                </td>
-            </tr>
-            <tr>
-                <th>
-                    Total Credits
-                </th>
-                <td>
-                    @Html.DisplayFor(modelItem => modelItem.totalCredits)
-                </td>
-            </tr>
+                </tr>
+                <tr>
+                    <td>
+                        <label> Manager:</label>
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => modelItem.Manager)
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <label>Credits</label> 
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => modelItem.totalCredits)
+                    </td>
+                </tr>
+            </thead>
         </table>
-        <div>
-            <input type="button" value="Shortlist" class="btn btn-warning shortlist" onclick="location.href='#'"
-                   @{ if (Model.IsShortlisted || Model.IsWinner) { @: disabled="disabled"
-                                                                                                                                                                      } } />
-            <input type="button" value="Mark Winner" class="btn btn-default winner" onclick="location.href='#'"
-                   @{  if (Model.IsWinner) {   @: disabled="disabled"
-                                                                                                                                                                                               }  } />
-
-
-        </div>
-        <div class="row">&nbsp;</div>
-        <div class="row">&nbsp;</div>
 
         <table class="table table-hover issue-tracker " style="width:80%;table-layout:fixed">
             <tr>
-                <th>
+                <th >
                     @Html.DisplayFor(modelItem => modelItem.Manager) Says:
                 </th>
             </tr>
@@ -90,92 +85,91 @@
             </tr>
         </table>
 
-        <div class="row">&nbsp;</div>
-        <div class="row">&nbsp;</div>
-
         foreach (var reviewer in Model.reviewerComments)
         {
             var creditCount = 0;
-            <div class="row col-md-8">
-                @Html.Label("Review By:" + reviewer.FirstOrDefault().ReviewerName)
-            </div>
+            <div class="white-bg" style="width:80%;">
+                <div class=" row col-md-8 ">
+                    @Html.Label("Review Comments By : " + reviewer.FirstOrDefault().ReviewerName, new { style = "margin-left:3%;color: #0067AA;"  })
+                    <div class="row">&nbsp;</div>
+                </div>
+                <a class="header"><div>Expand the Comments</div></a>
 
-            <span class="header"><a>Expand</a></span>
-
-            <table class="table table-hover issue-tracker white-bg content" style="width:80%">
-                <thead>
-                    <tr>
-                        <th>Criteria</th>
-                        <th>Manager Comment</th>
-                        <th>Reviewer Comment</th>
-                        <th>Credits</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach (var item in Model.Criterias)
-                    {
+                <table class="table table-hover issue-tracker white-bg content">
+                    <thead>
+                        <tr></tr>
                         <tr>
-                            <td class="col-md-3">@item.Title</td>
-
-                            <td class="col-md-3">
-                                @{
-                        var commentObj = Model.ManagerComments.Where(model => model.CriteriaId == @item.Id).FirstOrDefault();
-                        if (commentObj != null && !string.IsNullOrEmpty(commentObj.Comment))
+                            <th>Criteria</th>
+                            <th>Manager Comment</th>
+                            <th>Reviewer Comment</th>
+                            <th>Credits</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model.Criterias)
                         {
-                            @Html.Label(commentObj.Comment);
-                        }
-                                }
-                            </td>
+                            <tr>
+                                <td class="col-md-3">@item.Title</td>
 
-                            <td class="col-md-3">
-                                @{
-                        var reviewObj = reviewer.Where(model => model.CriteriaID == @item.Id).FirstOrDefault();
-                        if (reviewObj != null && !string.IsNullOrEmpty(reviewObj.Comment))
-                        {
-                            @Html.Label(reviewObj.Comment);
-                        }
-                                }
-                            </td>
-
-                            <td class="col-md-2">
-                                @{
-                        if (reviewObj != null && !reviewObj.Credit != null)
-                        {
-                            <div class="switch">
-                                <div class="onoffswitch">
-                                    @if (reviewObj.Credit == true)
-                                    {
-                                        creditCount++;
-                                        <input type="checkbox" value="true" length="0" disabled="disabled" class="onoffswitch-checkbox" id='example @reviewObj.Id' checked>
+                                <td class="col-md-3">
+                                    @{
+                            var commentObj = Model.ManagerComments.Where(model => model.CriteriaId == @item.Id).FirstOrDefault();
+                            if (commentObj != null && !string.IsNullOrEmpty(commentObj.Comment))
+                            {
+                                @Html.Label(commentObj.Comment, new { style = "font-weight: 500;" });
+                            }
                                     }
-                                    else
-                                    {
-                                        <input type="checkbox" value="true" length="0" disabled="disabled" class="onoffswitch-checkbox" id='example @reviewObj.Id'>
-                                    }
+                                </td>
 
-                                    <label class=" onoffswitch-label" for="example @reviewObj.Id">
-                                        <span class="onoffswitch-inner"></span>
-                                        <span class="onoffswitch-switch"></span>
-                                    </label>
+                                <td class="col-md-3">
+                                    @{
+                            var reviewObj = reviewer.Where(model => model.CriteriaID == @item.Id).FirstOrDefault();
+                            if (reviewObj != null && !string.IsNullOrEmpty(reviewObj.Comment))
+                            {
+                                @Html.Label(reviewObj.Comment, new { style = "font-weight: 500;" });
+                            }
+                                    }
+                                </td>
+
+                                <td class="col-md-2 ">
+                                    @{
+                            if (reviewObj != null && !reviewObj.Credit != null)
+                            {
+                                <div class="switch">
+                                    <div class="onoffswitch" style="text-align:center;">
+                                        @if (reviewObj.Credit == true)
+                                        {
+                                            creditCount++;
+                                            <input type="checkbox" value="true" length="0" disabled="disabled" class="onoffswitch-checkbox" id='example @reviewObj.Id' checked>
+                                        }
+                                        else
+                                        {
+                                            <input type="checkbox" value="true" length="0" disabled="disabled" class="onoffswitch-checkbox" id='example @reviewObj.Id'>
+                                        }
+
+                                        <label class=" onoffswitch-label" for="example @reviewObj.Id">
+                                            <span class="onoffswitch-inner"></span>
+                                            <span class="onoffswitch-switch"></span>
+                                        </label>
+                                    </div>
                                 </div>
-                            </div>
+                            }
+                                    }
+                                </td>
+                            </tr>
                         }
-                                }
+
+                        <tr>
+                            <td align="right" colspan="3" style="font-weight:bold">
+                                @Html.Label("Total Credits:", new { style = "color: #0067AA;" })
+                            </td>
+                            <td>
+                                @creditCount
                             </td>
                         </tr>
-                    }
-
-                    <tr>
-                        <td align="right" colspan="3" style="font-weight:bold">
-                            @Html.Label("Credit:")
-                        </td>
-                        <td>
-                            @creditCount
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
-            <div class="row">&nbsp;</div>
+                    </tbody>
+                </table>
+            </div>
             <div class="row">&nbsp;</div>
         }
 
@@ -185,10 +179,10 @@
             <div class="col-md-offset-4">
                 <input type="button" value="Shortlist" class="btn btn-warning shortlist" onclick="location.href='#'"
                        @{ if (Model.IsShortlisted || Model.IsWinner) { @: disabled="disabled"
-                                                                                                                      } } />
+                                                                                                                                                                                                                  } } />
                 <input type="button" value="Mark Winner" class="btn btn-default winner" onclick="location.href='#'"
                        @{ if (Model.IsWinner) {  @: disabled="disabled"
-                                                                                                                                         } } />
+                                                                                                                                                                                                                                     } } />
             </div>
         </div>
     }
@@ -203,9 +197,8 @@
         $content = $header.next();
         $content.slideToggle(100, function () {
             $header.text(function () {
-                debugger;
                 //change text based on condition
-                return $content.is(":visible") ? "Collapse" : "Expand";
+                return $content.is(":visible") ? "Collapse the Comments" : "Expand the Comments";
             });
         });
     });

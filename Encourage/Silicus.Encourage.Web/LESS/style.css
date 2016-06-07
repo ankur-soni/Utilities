@@ -43,7 +43,9 @@ h5 {
 
 th {
     color: #0067AA;
+   
 }
+
 .fa-trophy:hover {
    
     
@@ -1401,7 +1403,7 @@ button.dim:active:before {
     display: block;
     overflow: hidden;
     cursor: pointer;
-    border: 2px solid #0070b9;
+    border: 2px solid #0063A7;
     border-radius: 2px;
 }
 
@@ -2332,7 +2334,7 @@ a.DTTT_button {
     display: block;
     overflow: hidden;
     cursor: pointer;
-    border: 2px solid #1AB394;
+    border: 2px solid #0063A7;
     border-radius: 3px;
 }
 
@@ -2354,7 +2356,7 @@ a.DTTT_button {
         height: 16px;
         padding: 0;
         line-height: 16px;
-        font-size: 10px;
+        font-size: 20px;
         color: white;
         font-family: Trebuchet, Arial, sans-serif;
         font-weight: bold;
@@ -2364,17 +2366,19 @@ a.DTTT_button {
     }
 
     .onoffswitch-inner:before {
-        content: "ON";
+        content: "-";
+        font-weight:bold;
         padding-left: 7px;
-        background-color: #1AB394;
+        background-color: #0063A7;
         color: #FFFFFF;
     }
 
     .onoffswitch-inner:after {
-        content: "OFF";
+        content: "+";
+        font-weight:bold;
         padding-right: 7px;
         background-color: #FFFFFF;
-        color: #919191;
+        color: #0063A7;
         text-align: right;
     }
 
@@ -2383,7 +2387,7 @@ a.DTTT_button {
     width: 18px;
     margin: 0px;
     background: #FFFFFF;
-    border: 2px solid #1AB394;
+    border: 2px solid #0063A7;
     border-radius: 3px;
     position: absolute;
     top: 0;

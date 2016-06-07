@@ -8,6 +8,7 @@ namespace Silicus.Encourage.Services.Interface
 {
   public interface ICommonDbService
     {
-      Silicus.UtilityContainer.Entities.ICommonDataBaseContext GetCommonDataBaseContext(); 
+      Silicus.UtilityContainer.Entities.ICommonDataBaseContext GetCommonDataBaseContext();
+      string FindDisplayNameFromEmail(string email);
     }
 }

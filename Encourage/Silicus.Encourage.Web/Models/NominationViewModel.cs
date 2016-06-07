@@ -25,7 +25,6 @@ namespace Silicus.Encourage.Web.Models
         public bool IsPLC { get; set; }
         public bool? IsSubmitted { get; set; }
 
-        [Required(ErrorMessage = "Please provide a comment.")]
         public string MainComment { get; set; }
 
         [Required(ErrorMessage = "Select Project or Department")]

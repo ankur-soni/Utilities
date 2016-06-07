@@ -1,6 +1,7 @@
 ﻿using Silicus.Encourage.DAL.Interfaces;
 using Silicus.Encourage.Models;
 using Silicus.Encourage.Services.Interface;
+using Silicus.Encourage.Web.Filters;
 using Silicus.Encourage.Web.Models;
 using Silicus.UtilityContainer.Entities;
 using Silicus.UtilityContainer.Models.DataObjects;
@@ -37,6 +38,7 @@ namespace Silicus.Encourage.Web.Controllers
         }
 
         [HttpGet]
+        [CustomeAuthorize(AllowedRole = "Admin")]
         public ActionResult ReviewFeedbackList()
         {
             var reviewFeedbacks = new List<ReviewFeedbackListViewModel>();
@@ -82,11 +84,12 @@ namespace Silicus.Encourage.Web.Controllers
             return View(reviewFeedbacks);
         }
 
+        [CustomeAuthorize(AllowedRole = "Admin")]
         public ActionResult RejectAll()
         {
             var rejectAllRviews = _encourageDatabaseContext.Query<Review>().Where(r => r.IsSubmited == true).ToList();
           
-            var shortlist = _encourageDatabaseContext.Query<Shortlist>();
+            var shortlist = _encourageDatabaseContext.Query<Shortlist>().Where(s => s.IsWinner == true);
 
             foreach (var shortListedEmployee in shortlist)
             {
@@ -111,6 +114,7 @@ namespace Silicus.Encourage.Web.Controllers
 
 
         [HttpGet]
+        [CustomeAuthorize(AllowedRole = "Admin")]
         public ActionResult ViewNominationForShortlist(ReviewFeedbackListViewModel nominationModel)
         {
             var reviews = _reviewService.GetReviewsForNomination(nominationModel.NominationId).ToList();
@@ -165,6 +169,7 @@ namespace Silicus.Encourage.Web.Controllers
         }
 
         [HttpPost]
+        [CustomeAuthorize(AllowedRole = "Admin")]
         public bool ShortlistNomination(int nominationId)
         {
             try
@@ -179,6 +184,7 @@ namespace Silicus.Encourage.Web.Controllers
         }
 
         [HttpPost]
+        [CustomeAuthorize(AllowedRole = "Admin")]
         public bool SelectWinner(int nominationId)
         {
             try

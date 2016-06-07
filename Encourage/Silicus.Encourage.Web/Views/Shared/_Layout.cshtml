@@ -16,7 +16,7 @@
     <link href="~/css/plugins/sweetalert/sweetalert.css" rel="stylesheet" />
     <!-- FooTable -->
     <link href="~/css/plugins/footable/footable.core.css" rel="stylesheet" />
-
+    <link href="~/css/bootstrap-switch.css" rel="stylesheet" />
 </head>
 
 <body class="">
@@ -37,7 +37,7 @@
                         <li class="dropdown">
                             <a class="dropdown-toggle count-info" data-toggle="dropdown" href="#">
                                 <span class="hidden-sm hidden-xs">
-                                    <span class="m-r-sm text-muted welcome-message">Welcome, @Session["CurrentUser"]</span> <i class="fa fa-chevron-down"></i>
+                                    <span class="m-r-sm text-muted welcome-message">Welcome  @Session["CurrentUser"]</span> <i class="fa fa-chevron-down"></i>
                                 </span>
                                 <span class="hidden-md hidden-lg">
                                     <i class="fa fa-user"></i>
@@ -61,11 +61,9 @@
                                 </li>
                                 <li class="divider"></li>
                                 <li>
-                                    <a href="">
                                         <div>
-                                            <i class="fa fa-sign-out fa-fw"></i> LOGOUT
+                                                @Html.ActionLink("Logout", "LogOut", "Account", new { @class = "fa fa-sign-out fa-fw" }, null)
                                         </div>
-                                    </a>
                                 </li>
                             </ul>
                         </li>
@@ -139,8 +137,8 @@
                             }
                             @if (roles.Contains("Reviewer"))
                             {
-                                <li><a href="@Url.Action("ReviewNominations","Nomination")" class="active">Review Nominations</a></li>
-                                <li><a href="@Url.Action("SavedReviews","Nomination")" class="active">Edit Reviews</a></li>
+                                <li><a href="@Url.Action("ReviewNominations","Nomination")" class="active">Pending Reviews</a></li>
+                                <li><a href="@Url.Action("SavedReviews","Nomination")" class="active">Draft / Done Reviews</a></li>
 
                             }
                             @if (roles.Contains("Admin"))
@@ -209,8 +207,7 @@
     <script src="~/js/plugins/footable/footable.all.min.js"></script>
 
     <script src="~/js/plugins/sweetalert/sweetalert.min.js"></script>
-
-
+    <script src="~/js/bootstrap-switch.js"></script>
 </body>
 
 </html>

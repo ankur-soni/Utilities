@@ -11,26 +11,26 @@
         </div>
     </nav>
 </div>
-<div class="row wrapper border-bottom white-bg page-heading border-bottom">
+<div class="row wrapper border-bottom white-bg page-heading border-bottom" style="width:90%;">
     <div class="col-sm-12">
         <h1>Add Nomination</h1>
     </div>
 </div>
 <div class="wrapper wrapper-content animated fadeInRight">
 
-    <div class="row" style="width:80%;padding-top:20px">
+    <div class="row" style="width:80%;padding-top:20px;margin-left:3%;">
         @using (Html.BeginForm())
         {
             @Html.AntiForgeryToken()
 
-            <div class="white-bg">
+            <div class="white-bg" style="padding-left:2%">
 
             @Html.ValidationSummary(true, "", new { @class = "text-danger" })
             <div class="form-group" style="padding-top:10px">
                
                 @Html.Label("Nomination Category", htmlAttributes: new { @class = "control-label col-md-3 requiredfeild", style = "text-align: left" })
                 <div>
-                    @Html.DropDownListFor(model => model.AwardId, @ViewBag.Awards as SelectList, "Select", new { htmlAttributes = new { @class = "form-control" }, id = "Award" })
+                    @Html.DropDownListFor(model => model.AwardId, @ViewBag.Awards as SelectList, "Select", new { htmlAttributes = new { @class = "form-control"}, id = "Award",style="width:25%" })
                 </div>
             </div>
 
@@ -48,21 +48,21 @@
             <div class="form-group" id="projectInput">
                 @Html.Label("Project", htmlAttributes: new { @class = "control-label col-md-3 requiredfeild", style = "text-align: left" })
                 <div>
-                    @Html.DropDownListFor(model => model.ProjectID, @ViewBag.ProjectsUnderCurrentUser as SelectList, "Select", new { htmlAttributes = new { @class = "form-control" }, id = "SelectedProject" })
+                    @Html.DropDownListFor(model => model.ProjectID, @ViewBag.ProjectsUnderCurrentUser as SelectList, "Select", new { htmlAttributes = new { @class = "form-control" }, id = "SelectedProject",style="width:25%"  })
                 </div>
             </div>
 
             <div class="form-group" id="departmentInput">
                 @Html.Label("Department", htmlAttributes: new { @class = "control-label col-md-3 requiredfeild", style = "text-align: left" })
                 <div>
-                    @Html.DropDownListFor(model => model.DepartmentId, @ViewBag.DepartmentsUnderCurrentUser as SelectList, "Select", new { htmlAttributes = new { @class = "form-control" }, id = "SelectedDepartment" })
+                    @Html.DropDownListFor(model => model.DepartmentId, @ViewBag.DepartmentsUnderCurrentUser as SelectList, "Select", new { htmlAttributes = new { @class = "form-control" }, id = "SelectedDepartment", style = "width:25%" })
                 </div>
             </div>
 
             <div class="form-group">
                 @Html.Label("Resource Name", htmlAttributes: new { @class = "control-label col-md-3 requiredfeild", style = "text-align: left" })
                 <div>
-                    @Html.DropDownListFor(model => model.ResourceId, @ViewBag.Resources as SelectList, "Select", new { htmlAttributes = new { @class = "form-control" }, id = "Resources" })
+                    @Html.DropDownListFor(model => model.ResourceId, @ViewBag.Resources as SelectList, "Select", new { htmlAttributes = new { @class = "form-control" }, id = "Resources", style = "width:25%" })
                 </div>
             </div>
 
@@ -83,7 +83,7 @@
                 </div>
             </div>
             <br />
-            <div class="form-group white-bg" style="padding-top:10px;padding-bottom:10px">
+            <div class="form-group white-bg" style="padding-top:10px;padding-bottom;padding-left:2%">
                 @Html.Label("Comment", htmlAttributes: new { @class = "control-label col-md-2 requiredfeild", style = "text-align: left" })
                 <div>
                     @Html.TextAreaFor(model => model.MainComment, new { htmlAttributes = new { @class = "form-control" }, style = "min-width: 80%", rows = "7", placeholder = "If candidate is selected as winner, this text will be shared across the company" })
@@ -109,6 +109,7 @@
             $(".criteriaComment").on('click', function () {$(".criteriaComment").children("textarea").first().tooltip('destroy'); });
 
             $(document).ready(function () {
+                $('#ProjectRadioButton').prop('checked', true);
                 $("#departmentInput").hide();
             })
 
@@ -120,6 +121,7 @@
                      $('#Resources').empty();
                      $('#Resources').append($("<option selected></option>").val(null).html("Select"));
                      $("#projectInput").show();
+                     $('#IsPlcCheckbox').prop('checked', false);
                  });
 
             $("#DepartmentRadioButton").change
@@ -130,6 +132,7 @@
                       $('#Resources').empty();
                       $('#Resources').append($("<option selected></option>").val(null).html("Select"));
                       $("#departmentInput").show();
+                      $('#IsPlcCheckbox').prop('checked', false);
                   });
 
             $("#Award").change(function () {
@@ -154,7 +157,7 @@
                         $('#criteriaTable').append('<tr><th style="text-align:center">Criteria</th><th  style="text-align:center">Manager Comment</th></tr>');
                         for (var key in data) {
                             $('#criteriaTable tr:last')
-                                .after('<tr><td class="col-md-6"><label>' + data[key].Title + '</label></td>'
+                                .after('<tr><td class="col-md-6" style="padding-left:2%"><label>' + data[key].Title + '</label></td>'
                                 + '<td class="col-md-6 criteriaComment"><textarea class="form-control" rows="" name=Comments[' + key + '].Comment id="comment"></textarea></td>'
                                 + '<td><input type="hidden" name=Comments[' + key + '].Id value=' + data[key].Id + '></td></tr>');
                         }
