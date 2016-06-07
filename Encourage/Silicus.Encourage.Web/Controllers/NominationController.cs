@@ -50,8 +50,8 @@ namespace Silicus.Encourage.Web.Controllers
             //ViewBag.ManagerId = _awardService.GetUserIdFromEmail(userEmailAddress);
 
             ViewBag.ProjectsUnderCurrentUser
-                = new SelectList(_awardService.GetProjectsUnderCurrentUserAsManager("shailendra.birthare@silicus.com"), "Id", "Name");
-            ViewBag.ManagerId = _awardService.GetUserIdFromEmail("shailendra.birthare@silicus.com");
+                = new SelectList(_awardService.GetProjectsUnderCurrentUserAsManager("Amit.Khandelwal@silicus.com"), "Id", "Name");
+            ViewBag.ManagerId = _awardService.GetUserIdFromEmail("Amit.Khandelwal@silicus.com");
             ViewBag.DepartmentsUnderCurrentUser = new SelectList(_awardService.GetDepartmentsUnderCurrentUserAsManager("tushar.surve@silicus.com"), "Id", "Name");
            
             ViewBag.Resources = new SelectList(new List<User>(), "Id", "DisplayName");
@@ -128,8 +128,8 @@ namespace Silicus.Encourage.Web.Controllers
             ViewBag.Awards = new SelectList(_awardService.GetAllAwards(), "Id", "Name");
 
             ViewBag.ProjectsUnderCurrentUser
-                = new SelectList(_awardService.GetProjectsUnderCurrentUserAsManager("shailendra.birthare@silicus.com"), "Id", "Name");
-            var currentUserId = _awardService.GetUserIdFromEmail("shailendra.birthare@silicus.com");
+                = new SelectList(_awardService.GetProjectsUnderCurrentUserAsManager("Amit.Khandelwal@silicus.com"), "Id", "Name");
+            var currentUserId = _awardService.GetUserIdFromEmail("Amit.Khandelwal@silicus.com");
             ViewBag.ManagerId = currentUserId;
 
             ViewBag.DepartmentsUnderCurrentUser = new SelectList(_awardService.GetDepartmentsUnderCurrentUserAsManager("tushar.surve@silicus.com"), "Id", "Name");
@@ -224,7 +224,7 @@ namespace Silicus.Encourage.Web.Controllers
         public JsonResult ResourcesInProject(int engagementID, int awardId)
         {
             //var userIdToExcept = _awardService.GetUserIdFromEmail(Session["UserEmailAddress"] as string);
-            var managerId = _awardService.GetUserIdFromEmail("shailendra.birthare@silicus.com");
+            var managerId = _awardService.GetUserIdFromEmail("Amit.Khandelwal@silicus.com");
 
             var usersInEngagement = _awardService.GetResourcesInEngagement(engagementID, managerId);
             return Json(usersInEngagement, JsonRequestBehavior.AllowGet);
@@ -247,7 +247,7 @@ namespace Silicus.Encourage.Web.Controllers
         [CustomeAuthorize(AllowedRole = "Manager")]
         public ActionResult SavedNomination()
         {
-            var managerId = _awardService.GetUserIdFromEmail("shailendra.birthare@silicus.com");
+            var managerId = _awardService.GetUserIdFromEmail("Amit.Khandelwal@silicus.com");
             var nominations = _nominationService.GetAllSubmittedAndSavedNominationsByCurrentUser(managerId);
             var savedNominations = new List<NominationListViewModel>();
 

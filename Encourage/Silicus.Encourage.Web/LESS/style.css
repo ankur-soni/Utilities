@@ -2364,7 +2364,7 @@ a.DTTT_button {
     }
 
     .onoffswitch-inner:before {
-        content: "+";
+        content: "-";
         font-weight:bold;
         padding-left: 7px;
         background-color: #0063A7;
@@ -2372,7 +2372,7 @@ a.DTTT_button {
     }
 
     .onoffswitch-inner:after {
-        content: "-";
+        content: "+";
         font-weight:bold;
         padding-right: 7px;
         background-color: #FFFFFF;

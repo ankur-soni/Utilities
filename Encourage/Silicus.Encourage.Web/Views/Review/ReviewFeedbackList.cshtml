@@ -35,9 +35,10 @@
             <input type="button" value="Team Awesome" class="btn btn-default" onclick="location.href=''" />
         </div>
         <br />
+
         <div style="font-weight:bold;color:#0070B9">ALL</div>
-        <div class="row">&nbsp;</div>
-        <hr style="margin-top:0px;height:6px;margin-left:0px; width:85%;" />
+        
+        <hr style="margin-top:0px;height:2px;margin-left:0px; width:85%;" />
         @foreach (var item in Model)
         {
             Random randomGen = new Random();
@@ -89,9 +90,10 @@
 
 
     <div class="row" style="margin-left:2%;">
-        <div style="font-weight:bold; color:#0070B9">SHORTLISTED</div>
         <div class="row">&nbsp;</div>
-        <hr style="margin-top:0px;height:6px;margin-left:0px; width:85%;" />
+        <div style="font-weight:bold; color:#0070B9">SHORTLISTED</div>
+        
+        <hr style="margin-top:0px;height:2px;margin-left:0px; width:85%;" />
         @foreach (var item in Model)
         {
             Random randomGen = new Random();

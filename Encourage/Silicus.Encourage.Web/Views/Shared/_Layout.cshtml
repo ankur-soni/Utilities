@@ -137,8 +137,8 @@
                             }
                             @if (roles.Contains("Reviewer"))
                             {
-                                <li><a href="@Url.Action("ReviewNominations","Nomination")" class="active">Review Nominations</a></li>
-                                <li><a href="@Url.Action("SavedReviews","Nomination")" class="active">Edit Reviews</a></li>
+                                <li><a href="@Url.Action("ReviewNominations","Nomination")" class="active">Pending Reviews</a></li>
+                                <li><a href="@Url.Action("SavedReviews","Nomination")" class="active">Draft / Done Reviews</a></li>
 
                             }
                             @if (roles.Contains("Admin"))
