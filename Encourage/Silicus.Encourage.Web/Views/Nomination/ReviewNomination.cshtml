@@ -33,7 +33,7 @@
                 <thead>
                     <tr>
                         <td>
-                          <label> Review For:</label> 
+                            <label> Review For:</label>
                         </td>
 
                         <td>
@@ -51,7 +51,7 @@
                     </tr>
                     <tr>
                         <td>
-                          <label> Manager:</label> 
+                            <label> Manager:</label>
                         </td>
 
                         <td>
@@ -63,7 +63,7 @@
             <br />
             <table class="table table-hover issue-tracker" style="width:80%;table-layout:fixed">
                 <tr>
-                    
+
                     <th>
                         @Html.DisplayFor(modelItem => modelItem.Manager) Says:
                     </th>
@@ -114,7 +114,7 @@
 
                             @Html.Hidden("Comments[" + @j + "].Id", item.Id)
                             <td class="col-md-1">
-                                <div class="switch" >
+                                <div class="switch">
                                     <div class="onoffswitch">
                                         <input type="checkbox" value="true" length="0" class="onoffswitch-checkbox" id='example @j' name="Comments[@j].Credit">
 
@@ -138,11 +138,14 @@
                     }
                 }
                 <tr>
-                    <th colspan="3" style="text-align:right;">
+                    <td></td>
+                    <td></td>
+                    <td style="text-align:left;color:#0063A7;font-weight:bold" class="col-md-3">
                         Total Credits:
-                    </th>
-                    <td style="text-align:center;">
-                        <span id="totalCredits">0</span>
+
+                    </td>
+                    <td id="totalCredits" class="col-md-1 text-left">
+                        0
                     </td>
                 </tr>
 
@@ -175,6 +178,6 @@
 
         $("#totalCredits").text(totalCredits);
     });
-  
+
 
 </script>
