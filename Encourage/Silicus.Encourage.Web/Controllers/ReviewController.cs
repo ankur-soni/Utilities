@@ -84,7 +84,7 @@ namespace Silicus.Encourage.Web.Controllers
             return View(reviewFeedbacks);
         }
 
-         [CustomeAuthorize(AllowedRole = "Admin")]
+        [CustomeAuthorize(AllowedRole = "Admin")]
         public ActionResult RejectAll()
         {
             var rejectAllRviews = _encourageDatabaseContext.Query<Review>().Where(r => r.IsSubmited == true).ToList();
