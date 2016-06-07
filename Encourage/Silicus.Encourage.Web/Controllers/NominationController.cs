@@ -39,7 +39,7 @@ namespace Silicus.Encourage.Web.Controllers
         #region Nomination
 
         // GET: Nomination/Create
-           [CustomeAuthorize(AllowedRole = "Manager")]
+           [CustomeAuthorize(AllowedRole = "tyuuy,Manager,gfgf")]
         public ActionResult AddNomination()
         {
             var userEmailAddress = Session["UserEmailAddress"] as string;
@@ -59,7 +59,7 @@ namespace Silicus.Encourage.Web.Controllers
         }
 
         [HttpPost]
-        [CustomeAuthorize(AllowedRole = "Manager")]
+        [CustomeAuthorize(AllowedRole = "tyuuy,Manager,gfgf")]
         public ActionResult AddNomination(NominationViewModel model, string submit)
         {
             var nomination = new Nomination();

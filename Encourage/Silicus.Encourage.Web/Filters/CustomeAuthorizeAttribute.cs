@@ -56,11 +56,13 @@ namespace Silicus.Encourage.Web.Filters
                     userRoles = _authorizationService.GetRoleForUtility(user.Email, utility);
                 }
 
+
+            
                 foreach (var allowedRole in  allowedRoles)
                 {
                     if (userRoles.Contains(allowedRole))
                     {
-                        status = true;
+                       return true;
                     }
                         
                     else
