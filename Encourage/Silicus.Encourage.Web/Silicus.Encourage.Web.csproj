@@ -94,6 +94,10 @@
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
+    <Reference Include="System.Net.Http.Formatting, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebApi.Client.4.0.20710.0\lib\net40\System.Net.Http.Formatting.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System.Web.DynamicData" />
     <Reference Include="System.Web.Entity" />
     <Reference Include="System.Web.ApplicationServices" />
@@ -146,6 +150,10 @@
       <HintPath>..\packages\WebActivatorEx.2.1.0\lib\net40\WebActivatorEx.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="WebApiContrib.Formatting.JavaScriptSerializer, Version=0.9.4.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\WebApiContrib.Formatting.JavaScriptSerializer.0.9.4.0\lib\net40\WebApiContrib.Formatting.JavaScriptSerializer.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="WebGrease, Version=1.5.2.14234, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\WebGrease.1.5.2\lib\WebGrease.dll</HintPath>
       <Private>True</Private>
@@ -181,10 +189,6 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Content\bootstrap-theme.css" />
-    <Content Include="Content\bootstrap-theme.min.css" />
-    <Content Include="Content\bootstrap.css" />
-    <Content Include="Content\bootstrap.min.css" />
     <Content Include="css\animate.css" />
     <Content Include="css\bootstrap-switch.css" />
     <Content Include="css\bootstrap.css" />
@@ -358,7 +362,6 @@
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="fonts\_notes\dwsync.xml" />
     <Content Include="Global.asax" />
-    <Content Include="Content\Site.css" />
     <Content Include="Images\logo.jpg" />
     <Content Include="img\logo_large.png" />
     <Content Include="img\logo_sm.png" />
@@ -629,27 +632,11 @@
     <Content Include="fonts\glyphicons-halflings-regular.woff2" />
     <Content Include="js\plugins\chartist\chartist.min.js.map" />
     <Content Include="LESS\.crunch" />
-    <Content Include="Content\bootstrap-theme.min.css.map" />
-    <Content Include="Content\bootstrap-theme.css.map" />
-    <Content Include="Content\bootstrap.min.css.map" />
-    <Content Include="Content\bootstrap.css.map" />
-    <None Include="Scripts\jquery-2.2.3.intellisense.js" />
-    <Content Include="Scripts\bootstrap.js" />
-    <Content Include="Scripts\bootstrap.min.js" />
-    <Content Include="Scripts\jquery-2.2.3.js" />
-    <Content Include="Scripts\jquery-2.2.3.min.js" />
-    <Content Include="Scripts\jquery-2.2.3.min.map" />
     <None Include="Scripts\jquery.validate-vsdoc.js" />
     <Content Include="Scripts\jquery.validate.js" />
     <Content Include="Scripts\jquery.validate.min.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
-    <Content Include="Scripts\modernizr-2.8.3.js" />
-    <Content Include="Scripts\respond.js" />
-    <Content Include="Scripts\respond.matchmedia.addListener.js" />
-    <Content Include="Scripts\respond.matchmedia.addListener.min.js" />
-    <Content Include="Scripts\respond.min.js" />
-    <Content Include="Scripts\_references.js" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>

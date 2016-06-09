@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Newtonsoft.Json;
 using Silicus.Encourage.DAL.Interfaces;
 using Silicus.Encourage.Models;
 using Silicus.Encourage.Services.Interface;
@@ -69,11 +70,10 @@ namespace Silicus.Encourage.Web.Controllers
 
         [HttpPost]
         [CustomeAuthorize(AllowedRole = "Manager")]
-        public ActionResult AddNomination(NominationViewModel model, string submit)
+           public ActionResult AddNomination(NominationViewModel model, string submit)
         {
             var nomination = new Nomination();
-          
-            
+
             nomination.AwardId = model.AwardId;
             nomination.ManagerId = model.ManagerId;
             nomination.UserId = model.ResourceId;

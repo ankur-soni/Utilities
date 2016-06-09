@@ -235,3 +235,6 @@ _Pvt_Extensions
 # FAKE - F# Make
 .fake/
 /Encourage/.nuget
+/Encourage/Silicus.Encourage.Web/Scripts/jquery-1.4.4.js
+/Encourage/Silicus.Encourage.Web/Scripts/jquery-1.4.4.min.js
+/Encourage/Silicus.Encourage.Web/Scripts/jquery-1.4.4-vsdoc.js
