@@ -5,9 +5,7 @@
 
 }
 
-<script src="~/js/jquery-2.1.1.js"></script>
-<script src="~/js/plugins/validate/jquery.validate.min.js"></script>
-<script src="~/Scripts/jquery.validate.unobtrusive.js"></script>
+
 <div class="row border-bottom">
     <nav class="navbar  " role="navigation" style="margin-bottom: 0">
         <div class="navbar-header">
@@ -116,11 +114,18 @@
     </div>
 </div>
 
+
+<script src="~/js/jquery-2.1.1.js"></script>
+<script src="~/js/plugins/validate/jquery.validate.min.js"></script>
+<script src="~/Scripts/jquery.validate.unobtrusive.js"></script>
+
+
 <script type="text/javascript">
 
     $(document).ready(function () {
         $('#ProjectRadioButton').prop('checked', true);
         $("#departmentInput").hide();
+        $.noConflict();
     })
 
     $("#ProjectRadioButton").change
@@ -243,18 +248,22 @@
                     confirmButtonColor: "#88a364",
                     confirmButtonText: "Yes!",
                     cancelButtonText: "No!",
-                    closeOnConfirm: true,
-                    closeOnCancel: true
+                    closeOnConfirm: false,
+                    closeOnCancel: false
                 },
                function (isConfirm) {
                    if (isConfirm) {
+                       debugger;
                        var modelbjectToSend = $('#addNominationForm').serialize() + '&' + $.param({ 'submit': "Submit" }, true);
 
                        $.ajax({
                            type: 'post',
                            url: '@Url.Action("AddNomination", "Nomination")',
+                           dataType: 'json',
+                           async: false,
                            data: modelbjectToSend,
-                           success: function (data) {
+                           success: function (success) {
+                               debugger;
                                swal({
                                    title: "Nominated Successfully",
                                    text: "",
@@ -285,6 +294,7 @@
     }
 
     function checkValidationOnSaveDraft() {
+        debugger;
         if ($('#addNominationForm').valid()) {
             swal({
                 title: "Save Nomination",
@@ -294,11 +304,12 @@
                 confirmButtonColor: "#88a364",
                 confirmButtonText: "Yes!",
                 cancelButtonText: "No!",
-                closeOnConfirm: true,
-                closeOnCancel: true
+                closeOnConfirm: false,
+                closeOnCancel: false
             },
            function (isConfirm) {
                if (isConfirm) {
+                   debugger;
                    var modelbjectToSend = $('#addNominationForm').serialize() + '&' + $.param({ 'submit': "Save" }, true);
 
                    $.ajax({
@@ -333,9 +344,6 @@
             return false;
         }
     }
-
-
-
 
 
     $("#criteriaTable").on('click', function () { $("#criterisCommentValidationmessage").text("") });

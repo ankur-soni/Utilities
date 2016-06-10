@@ -4,6 +4,7 @@
     ViewBag.Title = "ReviewNomination";
 }
 
+
 <style>
     .container .content {
         display: none;
@@ -25,7 +26,7 @@
 <div class="wrapper wrapper-content animated fadeInRight">
 
     <div class="row">
-        @using (Html.BeginForm())
+        @using (Html.BeginForm("ReviewNomination", "Nomination", FormMethod.Post, new { id = "reviewNominationForm" }))
         {
             @Html.HiddenFor(modelItem => modelItem.ReviewerId)
             @Html.HiddenFor(modelItem => modelItem.NominationId);
@@ -152,16 +153,19 @@
             </table>
             <div class="form-group">
                 <div class="col-md-offset-4">
-                    <input type="submit" name="submit" value="Save Draft" id="saveButton" class="btn btn-warning btnSameSize" />
-                    <input type="submit" name="submit" value="Submit" id="submitButton" class="btn btn-success-green btnSameSize" />
-                    <input type="button" value="Cancel" class="btn btn-danger btnSameSize" onclick="location.href='@Url.Action("ReviewNominations","Nomination")'" />
+                    <input type="button" name="submit" value="Save Draft" id="saveButton" class="btn btn-warning btnSameSize" onclick=" return SaveDraftReview()"/>
+                    <input type="button" name="submit" value="Submit" id="submitButton" class="btn btn-success-green btnSameSize" onclick="return SubmitReview()" />
+                    <input type="button" value="Cancel" class="btn btn-danger btnSameSize" onclick="location.href='@Url.Action("ReviewNominations", "Nomination")'" />
                 </div>
             </div>
         }
     </div>
 </div>
 
-<script src="http://ajax.googleapis.com/ajax/libs/jquery/2.0.0/jquery.min.js"></script>
+
+<script src="~/js/jquery-2.1.1.js"></script>
+<script src="~/js/plugins/validate/jquery.validate.min.js"></script>
+<script src="~/Scripts/jquery.validate.unobtrusive.js"></script>
 
 <script>
     var totalCredits = 0;
@@ -178,6 +182,108 @@
 
         $("#totalCredits").text(totalCredits);
     });
+
+
+    function SaveDraftReview() {
+        if ($('#reviewNominationForm').valid()) {
+            swal({
+                title: "Save Review",
+                text: "Do you want to save this review for nomination?",
+                type: "info",
+                showCancelButton: true,
+                confirmButtonColor: "#88a364",
+                confirmButtonText: "Yes!",
+                cancelButtonText: "No!",
+                closeOnConfirm: false,
+                closeOnCancel: false
+            },
+           function (isConfirm) {
+               if (isConfirm) {
+                   var modelbjectToSend = $('#reviewNominationForm').serialize() + '&' + $.param({ 'Submit': "Save" }, true);
+
+                   $.ajax({
+                       type: 'post',
+                       url: '@Url.Action("ReviewNomination", "Nomination")',
+                       data: modelbjectToSend,
+                       success: function (data) {
+                           swal({
+                               title: "Review saved successfully",
+                               showCancelButton: false,
+                               confirmButtonColor: "#88a364",
+                               confirmButtonText: "Ok"
+                           },
+                           function () {
+                               if (isConfirm) {
+                                   window.location.href = '@Url.Action("ReviewNominations", "Nomination")';
+                               }
+                           });
+                       },
+                       error: function () {
+                           swal("Error", "Oops! Something wrong happened..");
+                       }
+                   });
+               } else {
+                   swal("Cancelled", "Review Cancelled");
+                   window.location.href = '@Url.Action("ReviewNominations", "Nomination")';
+               }
+           });
+
+        }
+        else {
+            return false;
+        }
+    }
+
+    function SubmitReview() {
+        if ($('#reviewNominationForm').valid()) {
+            swal({
+                title: "Submit Review",
+                text: "Do you want to submit this review for nomination?",
+                type: "info",
+                showCancelButton: true,
+                confirmButtonColor: "#88a364",
+                confirmButtonText: "Yes!",
+                cancelButtonText: "No!",
+                closeOnConfirm: false,
+                closeOnCancel: false
+            },
+           function (isConfirm) {
+               if (isConfirm) {
+                   var modelbjectToSend = $('#reviewNominationForm').serialize() + '&' + $.param({ 'Submit': "Submit" }, true);
+
+                   $.ajax({
+                       type: 'post',
+                       url: '@Url.Action("ReviewNomination", "Nomination")',
+                       data: modelbjectToSend,
+                       success: function (data) {
+                           swal({
+                               title: "Review submitted successfully",
+                               showCancelButton: false,
+                               confirmButtonColor: "#88a364",
+                               confirmButtonText: "Ok"
+                           },
+                           function () {
+                               if (isConfirm) {
+                                   window.location.href = '@Url.Action("ReviewNominations", "Nomination")';
+                               }
+                           });
+                       },
+                       error: function () {
+                           swal("Error", "Oops! Something wrong happened..");
+                       }
+                   });
+               } else {
+                   swal("Cancelled", "Review Cancelled");
+                   window.location.href = '@Url.Action("ReviewNominations", "Nomination")';
+               }
+           });
+
+        }
+        else {
+            return false;
+        }
+    }
+
 
 
 </script>

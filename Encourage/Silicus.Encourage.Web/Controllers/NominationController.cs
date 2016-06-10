@@ -106,7 +106,8 @@ namespace Silicus.Encourage.Web.Controllers
             nomination.Comment = model.MainComment != null ? textInfo.ToTitleCase(model.MainComment) : "";
 
             var isNominated = _awardService.AddNomination(nomination);
-            return RedirectToAction("Dashboard", "Dashboard");
+           // return RedirectToAction("Dashboard", "Dashboard");
+            return Json(new { success = true}, JsonRequestBehavior.AllowGet);
         }
 
 
@@ -199,7 +200,7 @@ namespace Silicus.Encourage.Web.Controllers
 
         [HttpPost]
         [CustomeAuthorize(AllowedRole = "Manager")]
-        public ActionResult EditSavedNomination(NominationViewModel model, string submit)
+        public void EditSavedNomination(NominationViewModel model, string submit)
         {
             Nomination nomination = new Nomination();
             nomination.Id = model.NominationId;
@@ -234,7 +235,7 @@ namespace Silicus.Encourage.Web.Controllers
             _nominationService.DeletePrevoiusManagerComments(model.NominationId);
             _nominationService.UpdateNomination(nomination);
 
-            return RedirectToAction("SavedNomination");
+           // return RedirectToAction("SavedNomination");
         }
 
 
@@ -320,6 +321,7 @@ namespace Silicus.Encourage.Web.Controllers
             var userEmailAddress = Session["UserEmailAddress"] as string;
             var reviewerId = _nominationService.GetReviewerIdOfCurrentNomination(userEmailAddress);
             var reviewerComments = _encourageDatabaseContext.Query<ReviewerComment>().Where(rc => rc.NominationId == nominationId && rc.ReviewerId == reviewerId);
+         
             var reviewNominationViewModel = new ReviewSubmitionViewModel()
             {
                 ManagerComments = _nominationService.GetManagerCommentsForNomination(nominationId),
