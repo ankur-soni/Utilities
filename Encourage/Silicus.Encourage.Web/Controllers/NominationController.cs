@@ -73,7 +73,6 @@ namespace Silicus.Encourage.Web.Controllers
            public ActionResult AddNomination(NominationViewModel model, string submit)
         {
             var nomination = new Nomination();
-
             nomination.AwardId = model.AwardId;
             nomination.ManagerId = model.ManagerId;
             nomination.UserId = model.ResourceId;
@@ -104,7 +103,7 @@ namespace Silicus.Encourage.Web.Controllers
                         );
                 }
             }
-            nomination.Comment =model.MainComment != null? textInfo.ToTitleCase(model.MainComment):"";
+            nomination.Comment = model.MainComment != null ? textInfo.ToTitleCase(model.MainComment) : "";
 
             var isNominated = _awardService.AddNomination(nomination);
             return RedirectToAction("Dashboard", "Dashboard");

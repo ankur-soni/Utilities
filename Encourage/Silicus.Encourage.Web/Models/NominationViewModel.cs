@@ -12,6 +12,7 @@ namespace Silicus.Encourage.Web.Models
         public int AwardId { get; set; }
 
         public int NominationId { get; set; }
+        
         public int ManagerId { get; set; }
 
         [Required(ErrorMessage = "Select Resource")]

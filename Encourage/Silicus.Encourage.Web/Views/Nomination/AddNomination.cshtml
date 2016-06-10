@@ -4,7 +4,6 @@
     ViewBag.Title = "AddNomination";
 
 }
-}
 
 <script src="~/js/jquery-2.1.1.js"></script>
 <script src="~/js/plugins/validate/jquery.validate.min.js"></script>
@@ -43,13 +42,13 @@
                 <div class="form-group">
                     @Html.Label("Resource From", htmlAttributes: new { @class = "control-label col-md-3 requiredfeild", style = "text-align: left" })
                     <div>
-                        <label> @Html.RadioButtonFor(model => model.SelectResourcesBy, "Project", new { htmlAttributes = new { @class = "form-control" }, id = "ProjectRadioButton" })Project</label>
+                        <label> @Html.RadioButtonFor(model => model.SelectResourcesBy, "Project", new { htmlAttributes = new { @class = "form-control" }, id = "ProjectRadioButton", value = "Project" })Project</label>
                         &nbsp;
-                        <label> @Html.RadioButtonFor(model => model.SelectResourcesBy, "Department", new { htmlAttributes = new { @class = "form-control" }, id = "DepartmentRadioButton" })Department</label>
+                        <label> @Html.RadioButtonFor(model => model.SelectResourcesBy, "Department", new { htmlAttributes = new { @class = "form-control" }, id = "DepartmentRadioButton", value = "Department" })Department</label>
                     </div>
                 </div>
 
-                <input type="hidden" name=ManagerId value=@ViewBag.ManagerId>
+                <input type="hidden" name=ManagerId id="ManagerId" value=@ViewBag.ManagerId>
 
                 <div class="form-group" id="projectInput">
                     @Html.Label("Project", htmlAttributes: new { @class = "control-label col-md-3 requiredfeild", style = "text-align: left" })
@@ -107,12 +106,12 @@
 
             <div class="form-group">
                 <div class="col-md-offset-3">
-                    <input type="submit" name="submit" value="Save Draft" id="saveButton" class="btn btn-warning btnSameSize" />
-                    <input type="submit" name="submit" value="Submit" id="submitButton" class="btn btn-success-green btnSameSize" @*onclick="return checkCriteriaComments();"*@ />
+                    @*<input type="button" name="submit" value="Save draft" id="savebutton" class="btn btn-warning btnsamesize" />*@
+                    <input type="button" name="submit" value="Save Draft" id="savebutton" class="btn btn-warning btnSameSize" onclick="return checkValidationOnSaveDraft();"  />
+                    <input type="button" name="submit" value="Submit" id="submitButton" class="btn btn-success-green btnSameSize" onclick="return checkValidationOnSubmit();" />
                     <input type="button" value="Cancel" class="btn btn-danger btnSameSize" onclick="location.href='@Url.Action("Dashboard", "Dashboard")'" />
                 </div>
             </div>
-
         }
     </div>
 </div>
@@ -217,9 +216,8 @@
         });
     });
 
-    $('#addNominationForm').on("submit", function (e) {
-        debugger;
-       // e.preventDefault();
+    function checkValidationOnSubmit() {
+
         if ($('#addNominationForm').valid()) {
             var comments = 0;
             $(".criteriaComment").children("textarea").each(function (data) {
@@ -238,28 +236,107 @@
 
             else {
                 swal({
-                    title: "",
-                    text: "Nomination Added Successfully",
+                    title: "Submit Nomination",
+                    text: "Do you want to nominate this candidate?",
                     type: "info",
-                    showCancelButton: false,
+                    showCancelButton: true,
                     confirmButtonColor: "#88a364",
-                    confirmButtonText: "Ok!",
+                    confirmButtonText: "Yes!",
+                    cancelButtonText: "No!",
                     closeOnConfirm: true,
+                    closeOnCancel: true
                 },
-                function (isConfirm) {
-                    if (isConfirm) {
-                        debugger;
-                        
-                        $('#addNominationForm').submit();
-                        window.location.href = '@Url.Action("Dashboard", "Dashboard")';
-                    }
-                });
+               function (isConfirm) {
+                   if (isConfirm) {
+                       var modelbjectToSend = $('#addNominationForm').serialize() + '&' + $.param({ 'submit': "Submit" }, true);
+
+                       $.ajax({
+                           type: 'post',
+                           url: '@Url.Action("AddNomination", "Nomination")',
+                           data: modelbjectToSend,
+                           success: function (data) {
+                               swal({
+                                   title: "Nominated Successfully",
+                                   text: "",
+                                   type: "info",
+                                   showCancelButton: false,
+                                   confirmButtonColor: "#88a364",
+                                   confirmButtonText: "Ok",
+                               },
+                               function () {
+                                   if (isConfirm) {
+                                       window.location.href = '@Url.Action("Dashboard", "Dashboard")';
+                                   }
+                               });
+                           },
+                           error: function () {
+                               swal("Error", "Oops! Something wrong happened..");
+                           }
+                       });
+                   } else {
+                       swal("Cancelled", "Nomination Cancelled");
+                   }
+               });
             }
         }
         else {
             return false;
         }
-    });
+    }
+
+    function checkValidationOnSaveDraft() {
+        if ($('#addNominationForm').valid()) {
+            swal({
+                title: "Save Nomination",
+                text: "Do you want to save this nomination?",
+                type: "info",
+                showCancelButton: true,
+                confirmButtonColor: "#88a364",
+                confirmButtonText: "Yes!",
+                cancelButtonText: "No!",
+                closeOnConfirm: true,
+                closeOnCancel: true
+            },
+           function (isConfirm) {
+               if (isConfirm) {
+                   var modelbjectToSend = $('#addNominationForm').serialize() + '&' + $.param({ 'submit': "Save" }, true);
+
+                   $.ajax({
+                       type: 'post',
+                       url: '@Url.Action("AddNomination", "Nomination")',
+                       data: modelbjectToSend,
+                       success: function (data) {
+                           swal({
+                               title: "Nomination saved successfully",
+                               showCancelButton: false,
+                               confirmButtonColor: "#88a364",
+                               confirmButtonText: "Ok"
+                           },
+                           function () {
+                               if (isConfirm) {
+                                   window.location.href = '@Url.Action("Dashboard", "Dashboard")';
+                               }
+                           });
+                       },
+                       error: function () {
+                           swal("Error", "Oops! Something wrong happened..");
+                       }
+                   });
+               } else {
+                   swal("Cancelled", "Nomination Cancelled");
+                   window.location.href = '@Url.Action("Dashboard", "Dashboard")';
+               }
+           });
+
+        }
+        else {
+            return false;
+        }
+    }
+
+
+
+
 
     $("#criteriaTable").on('click', function () { $("#criterisCommentValidationmessage").text("") });
     $("#managerComment").on('click', function () { $("#managerCommentValidationmessage").text("") });
