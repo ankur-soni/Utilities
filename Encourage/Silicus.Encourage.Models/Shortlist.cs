@@ -18,6 +18,7 @@ namespace Silicus.Encourage.Models
         public int NominationId { get; set; }
         public Nullable<bool> IsWinner { get; set; }
         public Nullable<System.DateTime> WinningDate { get; set; }
+        public string WinningComment { get; set; }
     
         public virtual Nomination Nomination { get; set; }
     }

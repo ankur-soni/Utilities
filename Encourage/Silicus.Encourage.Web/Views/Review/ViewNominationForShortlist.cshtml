@@ -63,7 +63,7 @@
                 </tr>
                 <tr>
                     <td>
-                        <label>Credits</label> 
+                        <label>Credits</label>
                     </td>
                     <td>
                         @Html.DisplayFor(modelItem => modelItem.totalCredits)
@@ -74,7 +74,7 @@
 
         <table class="table table-hover issue-tracker " style="width:80%;table-layout:fixed">
             <tr>
-                <th >
+                <th>
                     @Html.DisplayFor(modelItem => modelItem.Manager) Says:
                 </th>
             </tr>
@@ -90,7 +90,7 @@
             var creditCount = 0;
             <div class="white-bg" style="width:80%;">
                 <div class=" row col-md-8 ">
-                    @Html.Label("Review Comments By : " + reviewer.FirstOrDefault().ReviewerName, new { style = "margin-left:3%;color: #0067AA;"  })
+                    @Html.Label("Review Comments By : " + reviewer.FirstOrDefault().ReviewerName, new { style = "margin-left:3%;color: #0067AA;" })
                     <div class="row">&nbsp;</div>
                 </div>
                 <a class="header"><div>Expand the Comments</div></a>
@@ -176,22 +176,32 @@
         <div class="row">&nbsp;</div>
 
         <div class="form-group">
-            <div class="col-md-offset-4">
+            <div style="text-align:center;width:80%;">
                 <input type="button" value="Shortlist" class="btn btn-warning shortlist btnSameSize" onclick="location.href='#'"
-                       @{ if (Model.IsShortlisted || Model.IsWinner) { @: disabled="disabled"
-                                                                                                                                                                                                                                         } } />
+                     @{  
+                         if (Model.IsShortlisted || Model.IsWinner) 
+                             {
+                                 @: disabled="disabled"
+                             }
+                      }
+                />
                 <input type="button" value="Mark Winner" class="btn btn-default winner btnSameSize" onclick="location.href='#'"
-                       @{ if (Model.IsWinner) {  @: disabled="disabled"
-                                                                                                                                                                                                                                                            } } />
+                @{
+                    if (Model.IsWinner)
+                      {  
+                        @: disabled="disabled"
+                      }
+                 }
+               />
             </div>
         </div>
     }
 </div>
 
+<script src="~/js/jquery-2.1.1.js"></script>
 
-<script src="http://ajax.googleapis.com/ajax/libs/jquery/2.0.0/jquery.min.js"></script>
 <script>
-
+  
     $(".header").click(function () {
         $header = $(this);
         $content = $header.next();
@@ -209,7 +219,7 @@
             swal({
                 title: "Shortlist Nomination",
                 text: "Are you sure you want to shortlist this candidate?",
-                type: "info",
+                type: "warning",
                 showCancelButton: true,
                 confirmButtonColor: "#88a364",
                 confirmButtonText: "Yes!",
@@ -217,7 +227,9 @@
                 closeOnConfirm: false,
                 closeOnCancel: false
             },
-                 function (isConfirm) {
+                 function (isConfirm, inputValue) {
+                     debugger;
+                     var a = inputValue;
                      if (isConfirm) {
                          var nominationIdToShortlist = $("#nominationId").val();
                          $.ajax({
@@ -230,7 +242,7 @@
                                      title: "Nomination Shortlisted",
                                      showCancelButton: false,
                                      confirmButtonColor: "#88a364",
-                                     confirmButtonText: "Ok"
+                                     confirmButtonText: "Ok",
                                  },
                                  function () {
                                      if (isConfirm) {
@@ -249,10 +261,10 @@
 
         $('.winner').click(function () {
 
-            swal({
+            @*swal({
                 title: "Select Winner",
                 text: "Are you sure you want to select this candidate as Winner?",
-                type: "info",
+               type: "warning",
                 showCancelButton: true,
                 confirmButtonColor: "#88a364",
                 confirmButtonText: "Yes!",
@@ -287,6 +299,67 @@
                          swal("Cancelled", "This candidate has not been selected as Winner");
                      }
                  });
+        });*@
+
+
+            //swal({
+            //    input: 'textarea',
+            //    showCancelButton: true
+            //}).then(function (text) {
+            //    if (text) {
+            //        swal(text);
+            //    }
+            //});
+
+
+
+            swal({
+                title: "Select Winner",
+                text: "Are you sure you want to select this candidate as Winner?",
+                type: "input",
+                confirmButtonText: "Yes!",
+                cancelButtonText: "No!",
+                showCancelButton: true,
+                closeOnConfirm: false,
+                animation: "slide-from-top",
+                inputPlaceholder: "To be shared across the company",
+            },
+            function (inputValue)
+            {
+                if (inputValue === false) {
+                                      
+                }
+                else if (inputValue === "")
+                {
+                    swal.showInputError("You need to write something!");
+                    return false
+                }
+                else {
+                    var nominationIdToShortlist = $("#nominationId").val();
+                    $.ajax({
+                        type: 'post',
+                        url: '@Url.Action("SelectWinner", "Review")',
+                        data: JSON.stringify({ nominationId: nominationIdToShortlist, winningComment: inputValue }),
+                        contentType: "application/json; charset=utf-8",
+                        success: function (data) {
+                            swal({
+                                title: "Winner Selected",
+                                showCancelButton: false,
+                                confirmButtonColor: "#88a364",
+                                confirmButtonText: "Ok"
+                            },
+                            function (isConfirm) {
+                                if (isConfirm) {
+                                    window.location.href = '@Url.Action("ReviewFeedbackList", "Review")';
+                                }
+                            });
+                        }
+                    });
+                }
+
+               
+            });
+
         });
     });
 </script>
