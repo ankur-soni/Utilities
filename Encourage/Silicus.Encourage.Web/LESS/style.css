@@ -762,8 +762,8 @@ body.canvas-menu.mini-navbar nav.navbar-static-side {
 }
 
 .btnSameSize{
-    width:20%;
-    margin-right:2%;
+    width:15% !important;
+    margin-right:2% !important;
 
 }
 
@@ -1441,7 +1441,7 @@ button.dim:active:before {
     .onoffswitch-inner:before {
         content: "ON";
         padding-left: 10px;
-        background-color: #0070b9;
+        background-color: #3dbb4b;
         color: #FFFFFF;
     }
 
@@ -2375,7 +2375,7 @@ a.DTTT_button {
         content: "-";
         font-weight:bold;
         padding-left: 7px;
-        background-color: #0063A7;
+        background-color: green;
         color: #FFFFFF;
     }
 

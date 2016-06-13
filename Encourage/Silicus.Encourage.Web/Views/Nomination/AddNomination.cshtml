@@ -20,13 +20,17 @@
 </div>
 <div class="wrapper wrapper-content animated fadeInRight">
 
+
     <div class="row" style="width:80%;padding-top:20px;margin-left:3%;">
+        <div style="text-align:center;">
+            <label style="color:#0067AA; font-style:italic;padding-bottom:1%;">For  @String.Format("{0:MMMM}", DateTime.Now) - @DateTime.Now.Year</label>
+        </div>
+
         @using (Html.BeginForm("AddNomination", "Nomination", FormMethod.Post, new { id = "addNominationForm" }))
         {
             @Html.AntiForgeryToken()
 
             <div class="white-bg" style="padding-left:2%">
-
                 @Html.ValidationSummary(true, "", new { @class = "text-danger" })
                 <div class="form-group" style="padding-top:10px">
 
@@ -73,20 +77,10 @@
                 </div>
 
                 <div class="form-group" style="padding-bottom:10px">
-                    @Html.Label("Is PLC ?", htmlAttributes: new { @class = "control-label col-md-3", style = "text-align: left" })
+                    @*@Html.Label("Is PLC ", htmlAttributes: new { @class = "control-label col-md-3", style = "text-align: left" })*@
+                    <label class="control-label col-md-3" style="text-align: left">Is PLC <span style="color:#0067AA;"> ?</span></label>
                     <div>
                         @Html.CheckBoxFor(model => model.IsPLC, new { htmlAttributes = new { @class = "form-control" }, id = "IsPlcCheckbox" }) Yes
-                    </div>
-                </div>
-            </div>
-            <br />
-            <div class="form-group">
-                <div>
-                    <div id="Criterias">
-                        <table class="table table-hover issue-tracker white-bg" id="criteriaTable"></table>
-                        <div style="text-align:right;">
-                            @Html.ValidationMessageFor(model => model.Comments, "", new { @class = "text-danger", id = "criterisCommentValidationmessage" })
-                        </div>
                     </div>
                 </div>
             </div>
@@ -101,11 +95,31 @@
                     <div class="row">&nbsp;</div>
                 </div>
             </div>
+            <br />
+
+    <div class="form-group" style="padding-bottom:1%" hidden="hidden" id="disclamer">
+      <span style="font-family:  Arial, Helvetica, sans-serif;color:rgba(255, 0, 0, 0.71)">
+          <label>Disclaimer :</label>  Mention your comments against the criteria your nominee fits in. Please note that it’s NOT mandatory to mention comments against each criteria given below. You can leave the comment area blank for the criteria which are not relevant.
+      </span>
+    </div>
+
 
             <div class="form-group">
-                <div class="col-md-offset-3">
-                    @*<input type="button" name="submit" value="Save draft" id="savebutton" class="btn btn-warning btnsamesize" />*@
-                    <input type="button" name="submit" value="Save Draft" id="savebutton" class="btn btn-warning btnSameSize" onclick="return checkValidationOnSaveDraft();"  />
+                <div>
+                    <div id="Criterias">
+                        <table class="table table-hover issue-tracker white-bg" id="criteriaTable"></table>
+                        <div style="text-align:right;">
+                            @Html.ValidationMessageFor(model => model.Comments, "", new { @class = "text-danger", id = "criterisCommentValidationmessage" })
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <br />
+
+
+            <div class="form-group">
+                <div style="text-align:center;width:100%;">
+                    <input type="button" name="submit" value="Save Draft" id="savebutton" class="btn btn-warning btnSameSize" onclick="return checkValidationOnSaveDraft();" />
                     <input type="button" name="submit" value="Submit" id="submitButton" class="btn btn-success-green btnSameSize" onclick="return checkValidationOnSubmit();" />
                     <input type="button" value="Cancel" class="btn btn-danger btnSameSize" onclick="location.href='@Url.Action("Dashboard", "Dashboard")'" />
                 </div>
@@ -160,6 +174,8 @@
         $('#Resources').empty();
         $('#Resources').append($("<option selected></option>").val(null).html("Select"));
         $('#IsPlcCheckbox').prop('checked', false);
+
+        $('#disclamer').prop('hidden', false);
 
         var selectdAward = $("#Award").val();
         $('#criteriaTable').empty();

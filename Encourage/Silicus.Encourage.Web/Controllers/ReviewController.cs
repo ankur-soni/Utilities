@@ -55,10 +55,16 @@ namespace Silicus.Encourage.Web.Controllers
                     var nominee = _commonDbContext.Query<User>().Where(u => u.ID == nomination.UserId).FirstOrDefault();
                     var nominationTime = nomination.NominationDate;
                     string nominationTimeToDisplay = DateTimeFormatInfo.CurrentInfo.GetAbbreviatedMonthName(nominationTime.Value.Month) + "-" + nominationTime.Value.Year.ToString();
+                    var totalReviews = _reviewService.GetReviewsForNomination(reviewNomination.NominationId).Count();
 
                     var totalCreditPoints = _encourageDatabaseContext.Query<ReviewerComment>().
                                          Where(model => model.NominationId == nomination.Id).
                                          Sum(model => model.Credit.Value);
+                    var averageCredits = 0;
+                    if (totalReviews != 0 && totalCreditPoints != 0)
+                    {
+                         averageCredits = totalCreditPoints / totalReviews;
+                    }
 
                     var checkResultStatus = _resultService.IsShortlistedOrWinner(nomination.Id);
                     if (checkResultStatus == 1)
@@ -76,7 +82,9 @@ namespace Silicus.Encourage.Web.Controllers
                                NominationTime = nominationTimeToDisplay,
                                NominationId = nomination.Id,
                                IsShortlisted = isShortlisted,
-                               IsWinner = isWinner
+                               IsWinner = isWinner,
+                               numberOfReviews = totalReviews,
+                               averageCredits = averageCredits
                            }
                         );
                 }

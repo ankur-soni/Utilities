@@ -22,9 +22,10 @@
     </div>
 </div>
 <div class="wrapper wrapper-content animated fadeInRight">
-
     <div class="row" style="width:80%;padding-top:20px;margin-left:3%;">
-
+        <div style="text-align:center;">
+            <label style="color:#0067AA; font-style:italic;padding-bottom:1%;">For  @String.Format("{0:MMMM}", DateTime.Now) - @DateTime.Now.Year</label>
+        </div>
         @using (Html.BeginForm("EditSavedNomination", "Nomination", FormMethod.Post, new { id = "editNominationForm" }))
         {
             @Html.AntiForgeryToken()
@@ -126,18 +127,25 @@
             </div>
 
             <div class="form-group">
-                <div class="col-md-offset-3 col-md-10">
-                    @if (Model.IsSubmitted != true)
-                    {
+                @if (Model.IsSubmitted != true)
+                {
+                    <div style="text-align:center;">
                         <input type="button" value="Discard" id="discardButton" class="btn btn-danger btnSameSize" />
                         <input type="button" name="submit" value="Save Draft" id="saveButton" class="btn btn-warning btnSameSize" onclick="return checkValidationOnSaveDraft();" />
                         <input type="button" name="button" value="Submit" class="btn btn-success-green btnSameSize" onclick="return checkValidationOnSubmit();" />
-                    }
-                    <input type="button" value="Back" class="btn btn-default btnSameSize " onclick="location.href='@Url.Action("SavedNomination", "Nomination")'" />
-                </div>
+                        <input type="button" value="Back" class="btn btn-default btnSameSize " onclick="location.href='@Url.Action("SavedNomination", "Nomination")'" />
+                        <div class="=row">&nbsp;</div>
+                        <div class="=row">&nbsp;</div>
+                    </div>
+                }
+                else
+                {
+                    <div style="text-align:center;">
+                        <input type="button" value="Back" class="btn btn-default btnSameSize " onclick="location.href='@Url.Action("SavedNomination", "Nomination")'" />
+                    </div>
+                    <div class="=row">&nbsp;</div>
+                }
             </div>
-            <div class="=row">&nbsp;</div>
-            <div class="=row">&nbsp;</div>
 
 
         }

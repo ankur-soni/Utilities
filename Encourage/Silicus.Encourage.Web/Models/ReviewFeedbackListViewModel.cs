@@ -15,5 +15,7 @@ namespace Silicus.Encourage.Web.Models
         public int Credits { get; set; }
         public bool IsShortlisted { get; set; }
         public bool IsWinner { get; set; }
+        public int numberOfReviews { get; set; }
+        public float averageCredits { get; set; }
     }
 }

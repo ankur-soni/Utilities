@@ -11,6 +11,11 @@
         border: 0;
         padding-left: 0px;
     }
+
+    th, td {
+        padding-left: 10px;
+        padding-right: 10px;
+    }
 </style>
 
 
@@ -28,7 +33,7 @@
 </div>
 <div class="wrapper wrapper-content animated fadeInRight">
     <div class="row" style="margin-left: 2%;">
-        <div>
+        <div style="text-align:left;width:80%;">
             <input type="button" value="ALL" class="btn btn-default btnSameSize" onclick="location.href=''" />
             <input type="button" value="SOM" class="btn btn-default btnSameSize" onclick="location.href=''" />
             <input type="button" value="Pinnacle" class="btn btn-default btnSameSize" onclick="location.href=''" />
@@ -47,8 +52,6 @@
             Color randomColor = Color.FromKnownColor(randomColorName);
 
             <div class="col-md-3 card white-bg">
-
-
                 <div class="cardHeader text-center">
                     @*<div style="background-color:@randomColor.Name;height:60px;margin-top:10px;padding-left:10px;padding-bottom:70px; font-weight:bold;font-size:50px;text-align:left" class="col-md-5">
                             @Html.DisplayFor(modelItem => item.Intials)
@@ -61,9 +64,26 @@
                         For
                         @Html.DisplayFor(modelItem => item.AwardName)
                         @Html.DisplayFor(modelItem => item.NominationTime)
-                        <br />
-                        @Html.Label("Credits:")
-                        @Html.DisplayFor(modelItem => item.Credits)
+                        @*<br />
+                            Total Credits:@Html.DisplayFor(modelItem => item.Credits)
+                            <br />
+                            Total Reviews: @Html.DisplayFor(modelItem => item.numberOfReviews)
+                            <br />
+                            Average Credits:@Html.DisplayFor(modelItem => item.averageCredits)*@
+                        <table align="center" style="border: 1px solid rgba(178, 176, 176, 0.96);margin-top:2%;">
+                            <tr>
+                                <th>Credits</th>
+                                <th>Reviews</th>
+                                <th>Average</th>
+                            </tr>
+                            <tr>
+                                <td>@Html.DisplayFor(modelItem => item.Credits)</td>
+                                <td>@Html.DisplayFor(modelItem => item.numberOfReviews)</td>
+                                <td>@Html.DisplayFor(modelItem => item.averageCredits)</td>
+                            </tr>
+                        </table>
+                      
+
                     </div>
                 </div>
                 <div class="cardFooter text-right" style="padding-top:5px">
@@ -131,17 +151,17 @@
         }
         <br />
     </div>
-    <input type="button" value="Reject All" class="btn btn-danger btnSameSize" onclick="location.href='@Url.Action("RejectAll", "Review")'" style="margin-left: 3%;" />
+    <div style="text-align:left;width:80%;">
+        <input type="button" value="Reject All" class="btn btn-danger btnSameSize" onclick="location.href='@Url.Action("RejectAll", "Review")'" style="margin-left: 3%;" />
+    </div>
     <div class="row">&nbsp;</div>
     <div class="row">&nbsp;</div>
 </div>
-
+<script src="~/js/jquery-2.1.1.js"></script>
 <script>
     $(function () {
 
         $('.fa-trophy').tooltip();
         $('.fa-star').tooltip();
-
-
     });
 </script>
