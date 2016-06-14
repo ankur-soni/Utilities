@@ -71,14 +71,14 @@
                         @if (item.IsSubmitted == false)
                         {
                             <a href="@Url.Action("EditSavedNomination", "Nomination", new { nominationId = item.Id })">
-                                <span> <i class="fa fa-pencil fa-2x" title="Edit Nomination" aria-hidden="true" style="color:@borderColor"></i> </span>
+                                <span> <i class="fa fa-pencil fa-2x" title="Edit Nomination" aria-hidden="true" style="color:@borderColor;font-size:30px;"></i> </span>
                             </a>
 
                         }
                         else
                         {
                             <a href="@Url.Action("EditSavedNomination", "Nomination", new { nominationId = item.Id })">
-                                <span> <i class="fa fa-info-circle fa-2x" title="Nomination Deatils" aria-hidden="true" style="color:@borderColor"></i> </span>
+                                <span> <i class="fa fa-file-text-o" title="Nomination Deatils" aria-hidden="true" style="color:@borderColor;font-size:30px;"></i> </span>
                             </a>
 
                         }

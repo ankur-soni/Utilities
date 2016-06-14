@@ -448,12 +448,20 @@ namespace Silicus.Encourage.Web.Controllers
             var result = _nominationService.GetReviewNomination(nominationId);
             var userEmailAddress = Session["UserEmailAddress"] as string;
 
+            var projectOrDept =string.Empty;
+            if(result.ProjectID!=null)
+                projectOrDept = _nominationService.GetProjectNameOfCurrentNomination(nominationId);
+            else if(result.DepartmentId!=null)
+                projectOrDept = _nominationService.GetDeptNameOfCurrentNomination(nominationId);
+
+            
+
             var reviewNominationViewModel = new ReviewSubmitionViewModel()
             {
                 ManagerComments = _nominationService.GetManagerCommentsForNomination(nominationId),
                 Manager = _nominationService.GetManagerNameOfCurrentNomination(nominationId),
                 NomineeName = _nominationService.GetNomineeNameOfCurrentNomination(nominationId),
-                ProjectOrDepartment = _nominationService.GetProjectNameOfCurrentNomination(nominationId),
+                ProjectOrDepartment = projectOrDept,
                 Criterias = _nominationService.GetCriteriaForNomination(nominationId),
                 ReviewerId = _nominationService.GetReviewerIdOfCurrentNomination(userEmailAddress),
                 NominationId = result.Id,

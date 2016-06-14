@@ -35,7 +35,14 @@ namespace Silicus.Encourage.Services
             _encourageDatabaseContext.Add<Shortlist>(shortlistedNomination);
         }
 
-        public void SelectWinner(int nominationId,string winningComment)
+        public void UnShortlistNomination(int nominationId)
+        {
+            var shortlistedNomination = _encourageDatabaseContext.Query<Shortlist>().Where(model => model.NominationId == nominationId).SingleOrDefault();
+            if (shortlistedNomination != null)
+                _encourageDatabaseContext.Delete<Shortlist>(shortlistedNomination);
+        }
+
+        public void SelectWinner(int nominationId, string winningComment)
         {
             var shortlistedNomination = _encourageDatabaseContext.Query<Shortlist>().Where(model => model.NominationId == nominationId).SingleOrDefault();
 
@@ -53,7 +60,7 @@ namespace Silicus.Encourage.Services
                     IsWinner = true,
                     NominationId = nominationId,
                     WinningDate = DateTime.Now.Date,
-                    WinningComment=winningComment
+                    WinningComment = winningComment
                 };
                 _encourageDatabaseContext.Add<Shortlist>(winner);
             }

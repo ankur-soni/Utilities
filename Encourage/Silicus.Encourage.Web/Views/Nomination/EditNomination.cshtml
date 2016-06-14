@@ -113,7 +113,7 @@
             <div>
                 <br />
                 <div>
-                    <table class="table table-hover issue-tracker white-bg">
+                    <table class="table table-hover issue-tracker white-bg" id="criteriaTable">
                         <tr><th></th><th style="text-align:center">Criteria</th><th style="text-align:center">Manager Comment</th></tr>
                         @if (Model.IsSubmitted == true)
                         {
@@ -200,24 +200,24 @@
               $("#departmentInput").show();
           });
 
-    function checkCriteriaComments() {
-        var comments = new Array();
+    //function checkCriteriaComments() {
+    //    var comments = new Array();
 
-        $(".criteriaComment").children("textarea").each(function (data) {
-            if ($(this).val().trim())
-                comments.push($(this).val());
-        });
+    //    $(".criteriaComment").children("textarea").each(function (data) {
+    //        if ($(this).val().trim())
+    //            comments.push($(this).val());
+    //    });
 
-        if (comments.length < 1) {
-            $(".criteriaComment").children("textarea").first().tooltip({ title: "Enter at least one criteria comment.", placement: 'right' }).tooltip('show');
-            return false;
-        }
+    //    if (comments.length < 1) {
+    //        $(".criteriaComment").children("textarea").first().tooltip({ title: "Enter at least one criteria comment.", placement: 'right' }).tooltip('show');
+    //        return false;
+    //    }
 
-        if (!$("#commentBox").val()) {
-            $("#commentBox").tooltip({ title: "Enter main comment.", placement: 'right' }).tooltip('show');
-            return false;
-        }
-    }
+    //    if (!$("#commentBox").val()) {
+    //        $("#commentBox").tooltip({ title: "Enter main comment.", placement: 'right' }).tooltip('show');
+    //        return false;
+    //    }
+    //}
 
     $("#SelectedProject").change(function () {
         var selectedProject = $("#SelectedProject").val();
@@ -287,7 +287,7 @@
                            contentType: "application/json; charset=utf-8",
                            success: function (data) {
                                swal({
-                                   title: "Nomination discarded Successfully",
+                                   title: "Nomination Discarded!",
                                    text: "",
                                    type: "info",
                                    showCancelButton: false,
@@ -321,15 +321,14 @@
                     comments++;
             });
 
-            if (comments < 1) {
-                $("#criterisCommentValidationmessage").text("Enter at least one criteria comment")
-                return false;
-            }
-            else if (!$("#commentBox").val()) {
+            if (!$("#commentBox").val()) {
                 $("#managerCommentValidationmessage").text("Enter main comment")
                 return false;
             }
-
+            else if (comments < 1) {
+                $("#criterisCommentValidationmessage").text("Enter at least one criteria comment")
+                return false;
+            }
             else {
                 swal({
                     title: "Submit Nomination",
@@ -353,7 +352,7 @@
                            data: modelbjectToSend,
                            success: function (data) {
                                swal({
-                                   title: "Nominated Successfully",
+                                   title: "Nomination Submitted!",
                                    text: "",
                                    type: "info",
                                    showCancelButton: false,
@@ -405,7 +404,7 @@
                        data: modelbjectToSend,
                        success: function (data) {
                            swal({
-                               title: "Nomination saved successfully",
+                               title: "Nomination Saved!",
                                showCancelButton: false,
                                confirmButtonColor: "#88a364",
                                confirmButtonText: "Ok"

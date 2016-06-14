@@ -59,11 +59,17 @@
                                         </div>
                                     </a>
                                 </li>
+                               
                                 <li class="divider"></li>
                                 <li>
+                                    <a href='@Url.Action("LogOut", "Account")'>
                                         <div>
-                                                @Html.ActionLink("Logout", "LogOut", "Account", new { @class = "fa fa-sign-out fa-fw" }, null)
+                                          LOGOUT
                                         </div>
+                                    </a>
+                                        @*<div>
+                                                @Html.ActionLink("Logout", "LogOut", "Account", new { @class = "fa fa-sign-out fa-fw" }, null)
+                                        </div>*@
                                 </li>
                             </ul>
                         </li>

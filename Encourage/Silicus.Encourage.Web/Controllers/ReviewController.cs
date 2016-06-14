@@ -191,6 +191,20 @@ namespace Silicus.Encourage.Web.Controllers
             }
         }
 
+        [CustomeAuthorize(AllowedRole = "Admin")]
+        public ActionResult RemoveShortlistNomination(int nominationId)
+        {
+            try
+            {
+                _resultService.UnShortlistNomination(nominationId);
+                return RedirectToAction("ReviewFeedbackList");
+            }
+            catch
+            {
+                return RedirectToAction("ReviewFeedbackList");
+            }
+        }
+
         [HttpPost]
         [CustomeAuthorize(AllowedRole = "Admin")]
         public bool SelectWinner(int nominationId,string winningComment)

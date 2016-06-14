@@ -246,15 +246,14 @@
                     comments++;
             });
 
-            if (comments < 1) {
-                $("#criterisCommentValidationmessage").text("Enter at least one criteria comment")
-                return false;
-            }
-            else if (!$("#managerComment").val()) {
+            if (!$("#managerComment").val()) {
                 $("#managerCommentValidationmessage").text("Enter main comment")
                 return false;
             }
-
+            else if (comments < 1) {
+                $("#criterisCommentValidationmessage").text("Enter at least one criteria comment")
+                return false;
+            }
             else {
                 swal({
                     title: "Submit Nomination",
@@ -281,7 +280,7 @@
                            success: function (success) {
                                debugger;
                                swal({
-                                   title: "Nominated Successfully",
+                                   title: "Nomination Submitted!",
                                    text: "",
                                    type: "info",
                                    showCancelButton: false,
@@ -334,7 +333,7 @@
                        data: modelbjectToSend,
                        success: function (data) {
                            swal({
-                               title: "Nomination saved successfully",
+                               title: "Nomination Saved!",
                                showCancelButton: false,
                                confirmButtonColor: "#88a364",
                                confirmButtonText: "Ok"

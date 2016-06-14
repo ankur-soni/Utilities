@@ -363,6 +363,7 @@
     <Content Include="fonts\_notes\dwsync.xml" />
     <Content Include="Global.asax" />
     <Content Include="Images\logo.jpg" />
+    <Content Include="Images\View details Icon.png" />
     <Content Include="img\logo_large.png" />
     <Content Include="img\logo_sm.png" />
     <Content Include="img\_notes\dwsync.xml" />

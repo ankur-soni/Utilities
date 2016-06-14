@@ -84,20 +84,22 @@
                     </div>
                 </div>
                 <div class="cardFooter text-right" style="padding-top:5px">
-                    <a href="@Url.Action("ViewNominationForShortlist", "Review", item)">
-                        <span> <i class="fa fa-circle fa-2x" title="View Nomination" aria-hidden="true" style="padding:7px;"></i> </span>
-                    </a>
 
-                    @{
-            if (item.IsShortlisted)
-            {
-                <span style="color:#0067AA"><i class="fa fa-star fa-2x" title="Shortlisted" aria-hidden="true"></i></span>
-            }
-            else if (item.IsWinner)
-            {
-                <span style="color:#0067AA"><i class="fa fa-trophy fa-2x" title="Winner" aria-hidden="true"></i></span>
-            }
-                    }
+                    @*@{
+                        if (item.IsShortlisted)
+                        {
+                            <span style="color:#0067AA"><i class="fa fa-star fa-2x" title="Shortlisted" aria-hidden="true"></i></span>
+                        }
+                        else if (item.IsWinner)
+                        {
+                            <span style="color:#0067AA"><i class="fa fa-trophy fa-2x" title="Winner" aria-hidden="true"></i></span>
+                        }
+                                }*@
+
+
+                    <a href="@Url.Action("ViewNominationForShortlist", "Review", item)">
+                        <span> <i class="fa fa-file-text-o" title="View Nomination" aria-hidden="true" style="font-size:30px;"></i> </span>
+                    </a>
                 </div>
 
             </div>
@@ -125,22 +127,41 @@
                                 @Html.DisplayFor(modelItem => item.Intials)
                             </div>*@
                         <div>
-                            @Html.DisplayFor(modelItem => item.DisplayName)
+                            <label> @Html.DisplayFor(modelItem => item.DisplayName)</label>
                         </div>
 
                         <div>
                             For
                             @Html.DisplayFor(modelItem => item.AwardName)
                             @Html.DisplayFor(modelItem => item.NominationTime)
-                            <br />
+                            @*<br />
                             @Html.Label("Credits:")
-                            @Html.DisplayFor(modelItem => item.Credits)
+                            @Html.DisplayFor(modelItem => item.Credits)*@
+                            <table align="center" style="border: 1px solid rgba(178, 176, 176, 0.96);margin-top:2%;">
+                                <tr>
+                                    <th>Credits</th>
+                                    <th>Reviews</th>
+                                    <th>Average</th>
+                                </tr>
+                                <tr>
+                                    <td>@Html.DisplayFor(modelItem => item.Credits)</td>
+                                    <td>@Html.DisplayFor(modelItem => item.numberOfReviews)</td>
+                                    <td>@Html.DisplayFor(modelItem => item.averageCredits)</td>
+                                </tr>
+                            </table>
                         </div>
                     </div>
                     <div class="cardFooter text-right">
-                        <a href="@Url.Action("ViewNominationForShortlist", "Review", item)">
-                            <span> <i class="fa fa-circle fa-2x" title="View Nomination" aria-hidden="true"></i> </span>
+                        <a href="@Url.Action("RemoveShortlistNomination", "Review", new { nominationId = item.NominationId })">
+                            <span> <i class="glyphicon glyphicon-remove" title="Remove From Shortlist" aria-hidden="true" style="font-size:25px;margin-right:1%;"></i> </span>
                         </a>
+                        
+                        <a href="@Url.Action("ViewNominationForShortlist", "Review", item)">
+                            <span> <i class="fa fa-file-text-o" title="View Nomination" aria-hidden="true" style="font-size:30px;"></i> </span>
+                        </a>
+                        
+                        
+                        
                     </div>
 
                 </div>
@@ -163,44 +184,44 @@
     });
 
     function rejectAllNominations() {
-            swal({
-                title: "Reject all nominations",
-                text: "Do you want to raject all nominations?",
-                type: "info",
-                showCancelButton: true,
-                confirmButtonColor: "#88a364",
-                confirmButtonText: "Yes!",
-                cancelButtonText: "No!",
-                closeOnConfirm: false,
-                closeOnCancel: false
-            },
-           function (isConfirm) {
-               if (isConfirm) {
-                    $.ajax({
-                       type: 'post',
-                       url: '@Url.Action("RejectAll", "Review")',
-                       success: function (data) {
-                           swal({
-                               title: "All nominations rejected..",
-                               showCancelButton: false,
-                               confirmButtonColor: "#88a364",
-                               confirmButtonText: "Ok"
-                           },
-                           function () {
-                               if (isConfirm) {
-                                   window.location.href = '@Url.Action("ReviewFeedbackList", "Review")';
-                               }
-                           });
+        swal({
+            title: "Reject all nominations",
+            text: "Do you want to raject all nominations?",
+            type: "info",
+            showCancelButton: true,
+            confirmButtonColor: "#88a364",
+            confirmButtonText: "Yes!",
+            cancelButtonText: "No!",
+            closeOnConfirm: false,
+            closeOnCancel: false
+        },
+       function (isConfirm) {
+           if (isConfirm) {
+               $.ajax({
+                   type: 'post',
+                   url: '@Url.Action("RejectAll", "Review")',
+                   success: function (data) {
+                       swal({
+                           title: "All nominations rejected..",
+                           showCancelButton: false,
+                           confirmButtonColor: "#88a364",
+                           confirmButtonText: "Ok"
                        },
-                       error: function () {
-                           swal("Error", "Oops! Something wrong happened..");
-                       }
-                   });
-               } else {
-                   swal("Cancelled", "Rejection of all nominations Cancelled");
-                   window.location.href = '@Url.Action("ReviewFeedbackList", "Review")';
-               }
-           });
+                       function () {
+                           if (isConfirm) {
+                               window.location.href = '@Url.Action("ReviewFeedbackList", "Review")';
+                           }
+                       });
+                   },
+                   error: function () {
+                       swal("Error", "Oops! Something wrong happened..");
+                   }
+               });
+           } else {
+               swal("Cancelled", "Rejection of all nominations Cancelled");
+               window.location.href = '@Url.Action("ReviewFeedbackList", "Review")';
+           }
+       });
 
     }
 
