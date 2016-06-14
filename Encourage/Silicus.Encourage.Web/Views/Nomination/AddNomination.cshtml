@@ -6,6 +6,12 @@
 }
 
 
+<script src="~/js/jquery-2.1.1.js"></script>
+<script src="~/js/plugins/validate/jquery.validate.min.js"></script>
+<script src="~/Scripts/jquery.validate.unobtrusive.js"></script>
+
+
+
 <div class="row border-bottom">
     <nav class="navbar  " role="navigation" style="margin-bottom: 0">
         <div class="navbar-header">
@@ -23,7 +29,7 @@
 
     <div class="row" style="width:80%;padding-top:20px;margin-left:3%;">
         <div style="text-align:center;">
-            <label style="color:#0067AA; font-style:italic;padding-bottom:1%;">For  @String.Format("{0:MMMM}", DateTime.Now) - @DateTime.Now.Year</label>
+            <label style="color:#0067AA; font-style:italic; font-family:'Times New Roman', Times, serif; padding-bottom:1%;">For  @String.Format("{0:MMMM}", DateTime.Now) - @DateTime.Now.Year</label>
         </div>
 
         @using (Html.BeginForm("AddNomination", "Nomination", FormMethod.Post, new { id = "addNominationForm" }))
@@ -97,13 +103,11 @@
             </div>
             <br />
 
-    <div class="form-group" style="padding-bottom:1%" hidden="hidden" id="disclamer">
-      <span style="font-family:  Arial, Helvetica, sans-serif;color:rgba(255, 0, 0, 0.71)">
-          <label>Disclaimer :</label>  Mention your comments against the criteria your nominee fits in. Please note that it’s NOT mandatory to mention comments against each criteria given below. You can leave the comment area blank for the criteria which are not relevant.
-      </span>
-    </div>
-
-
+            <div class="form-group"  hidden="hidden" id="disclamer">
+                <span style="font-family:  Arial, Helvetica, sans-serif;color:rgba(255, 0, 0, 0.71)">
+                    <label>Disclaimer :</label> Please enter the comments against those criterias which are applicable.
+                </span>
+            </div>
             <div class="form-group">
                 <div>
                     <div id="Criterias">
@@ -119,9 +123,9 @@
 
             <div class="form-group">
                 <div style="text-align:center;width:100%;">
-                    <input type="button" name="submit" value="Save Draft" id="savebutton" class="btn btn-warning btnSameSize" onclick="return checkValidationOnSaveDraft();" />
-                    <input type="button" name="submit" value="Submit" id="submitButton" class="btn btn-success-green btnSameSize" onclick="return checkValidationOnSubmit();" />
-                    <input type="button" value="Cancel" class="btn btn-danger btnSameSize" onclick="location.href='@Url.Action("Dashboard", "Dashboard")'" />
+                    <input type="button" name="submit" value="Save Draft" id="savebutton" class="btn btn-default  btnSameSize" onclick="return checkValidationOnSaveDraft();" />
+                    <input type="button" name="submit" value="Submit" id="submitButton" class="btn btn-default  btnSameSize" onclick="return checkValidationOnSubmit();" />
+                    <input type="button" value="Cancel" class="btn btn-default  btnSameSize" onclick="location.href='@Url.Action("Dashboard", "Dashboard")'" />
                 </div>
             </div>
         }
@@ -129,9 +133,6 @@
 </div>
 
 
-<script src="~/js/jquery-2.1.1.js"></script>
-<script src="~/js/plugins/validate/jquery.validate.min.js"></script>
-<script src="~/Scripts/jquery.validate.unobtrusive.js"></script>
 
 
 <script type="text/javascript">

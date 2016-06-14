@@ -60,10 +60,10 @@ namespace Silicus.Encourage.Web.Controllers
                     var totalCreditPoints = _encourageDatabaseContext.Query<ReviewerComment>().
                                          Where(model => model.NominationId == nomination.Id).
                                          Sum(model => model.Credit.Value);
-                    var averageCredits = 0;
+                    float averageCredits = 0;
                     if (totalReviews != 0 && totalCreditPoints != 0)
                     {
-                         averageCredits = totalCreditPoints / totalReviews;
+                        averageCredits = (float)totalCreditPoints / totalReviews;
                     }
 
                     var checkResultStatus = _resultService.IsShortlistedOrWinner(nomination.Id);

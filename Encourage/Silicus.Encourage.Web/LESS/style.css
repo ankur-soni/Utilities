@@ -74,6 +74,10 @@ th {
     height:70%;
    
 }
+
+.cardHeaderLabel{
+    font-size:x-large;
+}
 .cardFooter {
     
     border-top:solid;

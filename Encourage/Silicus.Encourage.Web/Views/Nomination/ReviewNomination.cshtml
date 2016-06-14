@@ -10,6 +10,8 @@
         display: none;
         padding: 5px;
     }
+
+  
 </style>
 <div class="row border-bottom">
     <nav class="navbar  " role="navigation" style="margin-bottom: 0">
@@ -114,10 +116,10 @@
                             <td class="col-md-3">@Html.TextArea("Comments[" + @j + "].Comment")</td>
 
                             @Html.Hidden("Comments[" + @j + "].Id", item.Id)
-                            <td class="col-md-1">
+                           <td>
                                 <div class="switch">
                                     <div class="onoffswitch">
-                                        <input type="checkbox" value="true" length="0" class="onoffswitch-checkbox" id='example @j' name="Comments[@j].Credit">
+                                        <input type="checkbox" value="true" length="0" class="onoffswitch-checkbox"  id='example @j' name="Comments[@j].Credit">
 
                                         <label class=" onoffswitch-label" for="example @j">
                                             <span class="onoffswitch-inner"></span>
@@ -126,7 +128,6 @@
                                     </div>
                                 </div>
                             </td>
-
                         </tr>
                     </tbody>
                             j++;
@@ -153,15 +154,14 @@
             </table>
             <div class="form-group">
                 <div style="text-align:center;width:80%;">
-                    <input type="button" name="submit" value="Save Draft" id="saveButton" class="btn btn-warning btnSameSize" onclick=" return SaveDraftReview()" />
-                    <input type="button" name="submit" value="Submit" id="submitButton" class="btn btn-success-green btnSameSize" onclick="return SubmitReview()" />
-                    <input type="button" value="Cancel" class="btn btn-danger btnSameSize" onclick="location.href='@Url.Action("ReviewNominations", "Nomination")'" />
+                    <input type="button" name="submit" value="Save Draft" id="saveButton" class="btn btn-default btnSameSize" onclick=" return SaveDraftReview()" />
+                    <input type="button" name="submit" value="Submit" id="submitButton" class="btn btn-default btnSameSize" onclick="return SubmitReview()" />
+                    <input type="button" value="Cancel" class="btn btn-default btnSameSize" onclick="location.href='@Url.Action("ReviewNominations", "Nomination")'" />
                 </div>
             </div>
         }
     </div>
 </div>
-
 
 <script src="~/js/jquery-2.1.1.js"></script>
 <script src="~/js/plugins/validate/jquery.validate.min.js"></script>
@@ -182,7 +182,6 @@
 
         $("#totalCredits").text(totalCredits);
     });
-
 
     function SaveDraftReview() {
         if ($('#reviewNominationForm').valid()) {

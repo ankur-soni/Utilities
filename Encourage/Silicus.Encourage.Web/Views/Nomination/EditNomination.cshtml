@@ -24,7 +24,7 @@
 <div class="wrapper wrapper-content animated fadeInRight">
     <div class="row" style="width:80%;padding-top:20px;margin-left:3%;">
         <div style="text-align:center;">
-            <label style="color:#0067AA; font-style:italic;padding-bottom:1%;">For  @String.Format("{0:MMMM}", DateTime.Now) - @DateTime.Now.Year</label>
+            <label style="color:#0067AA; font-style:italic; font-family:'Times New Roman', Times, serif;padding-bottom:1%;">For  @String.Format("{0:MMMM}", DateTime.Now) - @DateTime.Now.Year</label>
         </div>
         @using (Html.BeginForm("EditSavedNomination", "Nomination", FormMethod.Post, new { id = "editNominationForm" }))
         {
@@ -104,9 +104,9 @@
                 </div>
             </div>
 
-            <div class="form-group" style="padding-bottom:1%" id="disclamer">
+            <div class="form-group" id="disclamer">
                 <span style="font-family:  Arial, Helvetica, sans-serif;color:rgba(255, 0, 0, 0.71)">
-                    <label>Disclaimer :</label>  Mention your comments against the criteria your nominee fits in. Please note that it’s NOT mandatory to mention comments against each criteria given below. You can leave the comment area blank for the criteria which are not relevant.
+                    <label>Disclaimer :</label> Please enter the comments against those criterias which are applicable.
                 </span>
             </div>
 
@@ -137,9 +137,9 @@
                 @if (Model.IsSubmitted != true)
                 {
                     <div style="text-align:center;">
-                        <input type="button" value="Discard" id="discardButton" class="btn btn-danger btnSameSize" />
-                        <input type="button" name="submit" value="Save Draft" id="saveButton" class="btn btn-warning btnSameSize" onclick="return checkValidationOnSaveDraft();" />
-                        <input type="button" name="button" value="Submit" class="btn btn-success-green btnSameSize" onclick="return checkValidationOnSubmit();" />
+                        <input type="button" value="Discard" id="discardButton" class="btn btn-default btnSameSize" />
+                        <input type="button" name="submit" value="Save Draft" id="saveButton" class="btn btn-default btnSameSize" onclick="return checkValidationOnSaveDraft();" />
+                        <input type="button" name="button" value="Submit" class="btn btn-default btnSameSize" onclick="return checkValidationOnSubmit();" />
                         <input type="button" value="Back" class="btn btn-default btnSameSize " onclick="location.href='@Url.Action("SavedNomination", "Nomination")'" />
                         <div class="=row">&nbsp;</div>
                         <div class="=row">&nbsp;</div>
