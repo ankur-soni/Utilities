@@ -1,0 +1,29 @@
+{
+  "siteName": {
+    "value": "SilicusEncourageWeb6373"
+  },
+  "hostingPlanName": {
+    "value": "DemoAppServiceplan"
+  },
+  "siteLocation": {
+    "value": "East Asia"
+  },
+  "sku": {
+    "value": "Free"
+  },
+  "workerSize": {
+    "value": "0"
+  },
+  "siteMode": {
+    "value": "Limited"
+  },
+  "computeMode": {
+    "value": "0"
+  },
+  "subscriptionId": {
+    "value": "b88ee5bf-109f-42fa-947d-5fe5c79372b3"
+  },
+  "resourceGroup": {
+    "value": "UtilityAppsResourceGroup"
+  }
+}

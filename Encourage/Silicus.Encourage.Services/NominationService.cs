@@ -75,12 +75,19 @@ namespace Silicus.Encourage.Services
             _encourageDatabaseContext.Add<Review>(review);
             _encourageDatabaseContext.SaveChanges();
         }
+
         public void AddReviewerCommentsForCurrentNomination(ReviewerComment revrComment)
         {
             _encourageDatabaseContext.Add<ReviewerComment>(revrComment);
             _encourageDatabaseContext.SaveChanges();
         }
 
+       public List<Review> GetAllSubmitedReviewsForCurrentNomination(int nominationId)
+        {
+          var data =  _encourageDatabaseContext.Query<Review>().Where(r => r.NominationId == nominationId && r.IsSubmited == true).ToList();
+
+            return data;
+        }
 
         public List<Criteria> GetCriteriaForNomination(int nominationId)
         {

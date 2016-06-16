@@ -32,11 +32,11 @@
   <ItemGroup>
     <Reference Include="Silicus.UtilityContainer.Entities, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\Silicus.UtilityContainer\Silicus.UtilityContainer.Entities\bin\Debug\Silicus.UtilityContainer.Entities.dll</HintPath>
+      <HintPath>..\Silicus.UtilityContainer.Entities\bin\Debug\Silicus.UtilityContainer.Entities.dll</HintPath>
     </Reference>
     <Reference Include="Silicus.UtilityContainer.Models, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\Silicus.UtilityContainer\Silicus.UtilityContainer.Models\bin\Debug\Silicus.UtilityContainer.Models.dll</HintPath>
+      <HintPath>..\Silicus.UtilityContainer.Models\bin\Debug\Silicus.UtilityContainer.Models.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />

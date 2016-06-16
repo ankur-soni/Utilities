@@ -1,236 +1,53 @@
-﻿
-
-<!DOCTYPE html>
-<!-- Spell Checked and Validated 02/14-->
+﻿<!DOCTYPE html>
 <html>
-@*bfdbfgbdf*@
 <head>
-
-    <meta charset="utf-8">
+    <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SILICUS</title>
-    <link href="~/css/bootstrap.min.css" rel="stylesheet" />
-    <link href="~/font-awesome/css/font-awesome.css" rel="stylesheet" />
-    <link href="~/css/animate.css" rel="stylesheet" />
-    <link href="~/LESS/style.css" rel="stylesheet" />
-    <link href="~/css/plugins/sweetalert/sweetalert.css" rel="stylesheet" />
-    <!-- FooTable -->
-    <link href="~/css/plugins/footable/footable.core.css" rel="stylesheet" />
-    <link href="~/css/bootstrap-switch.css" rel="stylesheet" />
+    <title>@ViewBag.Title - My ASP.NET Application</title>
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
+    <script type="text/javascript">
+        var appInsights=window.appInsights||function(config){
+            function r(config){t[config]=function(){var i=arguments;t.queue.push(function(){t[config].apply(t,i)})}}var t={config:config},u=document,e=window,o="script",s=u.createElement(o),i,f;for(s.src=config.url||"//az416426.vo.msecnd.net/scripts/a/ai.0.js",u.getElementsByTagName(o)[0].parentNode.appendChild(s),t.cookie=u.cookie,t.queue=[],i=["Event","Exception","Metric","PageView","Trace","Ajax"];i.length;)r("track"+i.pop());return r("setAuthenticatedUserContext"),r("clearAuthenticatedUserContext"),config.disableExceptionTracking||(i="onerror",r("_"+i),f=e[i],e[i]=function(config,r,u,e,o){var s=f&&f(config,r,u,e,o);return s!==!0&&t["_"+i](config,r,u,e,o),s}),t
+        }({
+            instrumentationKey:"5d1606fa-b039-4b69-9752-b4e8cf77f3db"
+        });
+        
+        window.appInsights=appInsights;
+        appInsights.trackPageView();
+    </script>
 </head>
-
-<body class="">
-
-    <div class="row top-header bbl">
-
-        <div class="col-sm-4">
-            <div class="pll ptm pbs"><img src="~/img/logo_large.png" class="mts mbs" alt="Silicus Logo" title="Silicus Encloud" /></div>
-        </div>
-        <div class="col-sm-8">
-
-            <div class="text-center">
-
-                <nav class="navbar navbar-static-top  " role="navigation" style="margin-bottom: 0">
-
-                    <ul class="nav navbar-top-links navbar-right">
-
-                        <li class="dropdown">
-                            <a class="dropdown-toggle count-info" data-toggle="dropdown" href="#">
-                                <span class="hidden-sm hidden-xs">
-                                    <span class="m-r-sm text-muted welcome-message">Welcome  @Session["CurrentUser"]</span> <i class="fa fa-chevron-down"></i>
-                                </span>
-                                <span class="hidden-md hidden-lg">
-                                    <i class="fa fa-user"></i>
-                                </span>
-                            </a>
-                            <ul class="dropdown-menu dropdown-user-menu">
-                                <li>
-                                    <a href="">
-                                        <div>
-                                            EDIT PROFILE
-                                        </div>
-                                    </a>
-                                </li>
-                                <!-- if access -->
-                                <li>
-                                    <a href="">
-                                        <div>
-                                            EDIT COMPANY
-                                        </div>
-                                    </a>
-                                </li>
-                               
-                                <li class="divider"></li>
-                                <li>
-                                    <a href='@Url.Action("LogOut", "Account")'>
-                                        <div>
-                                          LOGOUT
-                                        </div>
-                                    </a>
-                                        @*<div>
-                                                @Html.ActionLink("Logout", "LogOut", "Account", new { @class = "fa fa-sign-out fa-fw" }, null)
-                                        </div>*@
-                                </li>
-                            </ul>
-                        </li>
-
-                        <li class="dropdown">
-                            <a class="dropdown-toggle count-info" data-toggle="dropdown" href="#">
-                                <i class="fa fa-bell"></i>  <span class="label label-primary">3</span>
-                            </a>
-                            <ul class="dropdown-menu dropdown-alerts">
-                                <li>
-                                    <a href="">
-                                        <div>
-                                            <i class="fa fa-exclamation-triangle fa-fw"></i> ALERT on Subscription Zeon 3
-                                            <span class="pull-right text-muted small">CPU above threshold</span>
-                                        </div>
-                                    </a>
-                                </li>
-                                <li class="divider"></li>
-                                <li>
-                                    <a href="">
-                                        <div>
-                                            <i class="fa fa-exclamation-triangle fa-fw"></i> ALERT on Subscription Zeon 8
-                                            <span class="pull-right text-muted small">Memory above threshold</span>
-                                        </div>
-                                    </a>
-                                </li>
-                                <li class="divider"></li>
-                                <li>
-                                    <a href="">
-                                        <div>
-                                            <i class="fa fa-exclamation-triangle fa-fw"></i> ALERT on Subscription Zeon 6
-                                            <span class="pull-right text-muted small">CPU above threshold</span>
-                                        </div>
-                                    </a>
-                                </li>
-                                <li class="divider"></li>
-                                <li>
-                                    <div class="text-center link-block">
-                                        <a href="notifications.html">
-                                            <strong>See All Alerts</strong>
-                                            <i class="fa fa-angle-right"></i>
-                                        </a>
-                                    </div>
-                                </li>
-                            </ul>
-                        </li>
-
-                    </ul>
-
-                </nav>
-            </div><!-- pad -->
-        </div>
-    </div>
-
-    <div id="wrapper" style="height:85%">
-        <!-- START LEFT MENU -->
-        <nav class="navbar-default navbar-static-side" role="navigation">
-            <div class="sidebar-collapse">
-                @{
-                    var roles = HttpContext.Current.Session["Role"] as List<string>;
-                }
-                <ul class="nav metismenu" id="side-menu">
-                    <li class="active"><a href="@Url.Action("Dashboard","Dashboard")"><i class="fa fa-dashboard"></i> <span class="nav-label">DASHBOARD</span></a></li>
-                    <li>
-                        <a href="#"><i class="fa fa-user"></i> <span class="nav-label">Nominations</span> <span class="fa arrow"></span></a>
-                        <ul class="nav nav-second-level">
-                            @if (roles.Contains("Manager"))
-                            {
-                                <li><a href="@Url.Action("AddNomination","Nomination")" class="active">Add Nominations</a></li>
-                                <li><a href="@Url.Action("SavedNomination", "Nomination")" class="active">Edit Nominations</a></li>
-                            }
-                            @if (roles.Contains("Reviewer"))
-                            {
-                                <li><a href="@Url.Action("ReviewNominations","Nomination")" class="active">Pending Reviews</a></li>
-                                <li><a href="@Url.Action("SavedReviews","Nomination")" class="active">Draft / Done Reviews</a></li>
-
-                            }
-                            @if (roles.Contains("Admin"))
-                            {
-
-                                <li><a href="@Url.Action("ReviewFeedbackList", "Review")" class="active">Submitted Reviews</a></li>
-
-                            }
-
-                        </ul>
-                    </li>
-
-                    <!-- admin role only -->
-                    @if (roles.Contains("Admin"))
-                        {
-                            <li>
-                                <a href="#"><i class="fa fa-cogs"></i> <span class="nav-label">ADMIN</span> <span class="fa arrow"></span></a>
-                                <ul class="nav nav-second-level">
-                                    @*<li><a href="@Url.Action("ReviewFeedbackList", "Review")" class="active">Shortlist Nominations</a></li>*@
-                                    <li><a href="edit-users.html" class="active">Edit Users</a></li>
-                                </ul>
-                            </li>
-                        }
-
+<body>
+    <div class="navbar navbar-inverse navbar-fixed-top">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                @Html.ActionLink("Application name", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
+            </div>
+            <div class="navbar-collapse collapse">
+                <ul class="nav navbar-nav">
+                    <li>@Html.ActionLink("Home", "Index", "Home")</li>
+                    <li>@Html.ActionLink("About", "About", "Home")</li>
+                    <li>@Html.ActionLink("Contact", "Contact", "Home")</li>
                 </ul>
-
-            </div>
-        </nav>
-
-
-        <!-- END LEFT MENU -->
-        <!--   START OF CONTENT AREA -->
-
-        <div id="page-wrapper" class="gray-bg">
-
-            <div class="container body-content">
-
-                @RenderBody()
-
-            </div>
-            <div class="footer">
-                <div>
-                    <strong>&copy;Copyright</strong> 2000 -
-                    <script>document.write(new Date().getFullYear())</script> Silicus Technologies
-                </div>
+                @Html.Partial("_LoginPartial")
             </div>
         </div>
-
-
-
+    </div>
+    <div class="container body-content">
+        @RenderBody()
+        <hr />
+        <footer>
+            <p>&copy; @DateTime.Now.Year - My ASP.NET Application</p>
+        </footer>
     </div>
 
-    <!-- Mainly scripts -->
-    <script src="~/js/jquery-2.1.1.js"></script>
-    <script src="~/js/bootstrap.min.js"></script>
-
-    <script src="~/js/plugins/metisMenu/jquery.metisMenu.js"></script>
-    <script src="~/js/plugins/slimscroll/jquery.slimscroll.min.js"></script>
-    <script src="~/js/Elipsis.js"></script>
-    <!-- Custom and plugin javascript -->
-    <script src="~/js/inspinia.js"></script>
-    <script src="~/js/plugins/pace/pace.min.js"></script>
-
-    <!-- FooTable -->
-    <script src="~/js/plugins/footable/footable.all.min.js"></script>
-
-    <script src="~/js/plugins/sweetalert/sweetalert.min.js"></script>
-    <script src="~/js/bootstrap-switch.js"></script>
-    <script src="~/js/plugins/validate/jquery.validate.min.js"></script>
-    <script src="~/Scripts/jquery.validate.unobtrusive.js"></script>
-
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+    @RenderSection("scripts", required: false)
 </body>
-
 </html>
-
-
-<script>
-    $(".fa-chevron-down").click(function () {
-        $('.dropdown').toggleClass('open')
-    })
-
-    $(".fa-bell").click(function () {
-        $(".dropdown").toggleClass('open')
-
-    })
-
-
-</script>
-

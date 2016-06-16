@@ -1,0 +1,16 @@
+﻿@model Silicus.EncourageWithAzureAd.Web.Models.CriteriaCommentViewModel
+
+<tr>
+    <td >
+        @Html.HiddenFor(modelItem => modelItem.Id)
+    </td>
+    <td class="col-md-6">
+        @Html.DisplayFor(modelItem => modelItem.title)
+    </td>
+
+    <td class="col-md-6 criteriaComment">
+        @Html.TextAreaFor(modelItem => modelItem.Comment, htmlAttributes: new { @class = "col-md-12" })
+    </td>
+</tr>
+
+

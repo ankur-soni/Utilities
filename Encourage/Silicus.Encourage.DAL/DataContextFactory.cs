@@ -16,7 +16,7 @@ namespace Silicus.Encourage.DAL
 
             dataContext =
                 new CommonDatabaseContext(
-                    ConfigurationManager.ConnectionStrings["CommonDataBaseConnection"].ConnectionString);
+                    ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString);
 
             return dataContext;
         }

@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2013
-VisualStudioVersion = 12.0.40629.0
+# Visual Studio 14
+VisualStudioVersion = 14.0.25123.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Silicus.UtilityContainer.Models", "Silicus.UtilityContainer.Models\Silicus.UtilityContainer.Models.csproj", "{D5A36DCC-FAEB-46BD-BC1C-C24E18D9E587}"
 EndProject
@@ -18,7 +18,28 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{E6A033
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Silicus.UtilityContainer.Security", "Silicus.UtilityContainer.Security\Silicus.UtilityContainer.Security.csproj", "{5394C1EB-8F58-468F-AA02-A0E863141F45}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Silicus.UtilityContainer.Web", "Silicus.UtilityContainer.Web\Silicus.UtilityContainer.Web.csproj", "{161D6CBD-78D3-469A-A40D-96B5DD8B71BD}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Silicus.UtilityContainerWithAzureAd.Web", "Silicus.UtilityContainerWithAzureAd.Web\Silicus.UtilityContainerWithAzureAd.Web.csproj", "{BA81B897-898D-49EE-A398-6A3BB419D6B9}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "PublishScripts", "PublishScripts", "{DF75547E-E9DE-48FB-9B07-022478492F22}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Scripts", "Scripts", "{4C822D9E-935A-4FC7-B2BE-0787A076DD99}"
+	ProjectSection(SolutionItems) = preProject
+		PublishScripts\Scripts\Deploy-AzureResourceGroup-2.ps1 = PublishScripts\Scripts\Deploy-AzureResourceGroup-2.ps1
+		PublishScripts\Scripts\Deploy-AzureResourceGroup-3.ps1 = PublishScripts\Scripts\Deploy-AzureResourceGroup-3.ps1
+		PublishScripts\Scripts\Deploy-AzureResourceGroup.ps1 = PublishScripts\Scripts\Deploy-AzureResourceGroup.ps1
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Templates", "Templates", "{F1B83592-18A1-46A6-9464-A0DEA0DD800C}"
+	ProjectSection(SolutionItems) = preProject
+		PublishScripts\Templates\SilicusUtilityContainerWeb-2.json = PublishScripts\Templates\SilicusUtilityContainerWeb-2.json
+		PublishScripts\Templates\SilicusUtilityContainerWeb.json = PublishScripts\Templates\SilicusUtilityContainerWeb.json
+		PublishScripts\Templates\SilicusUtilityContainerWeb.param.dev-2.json = PublishScripts\Templates\SilicusUtilityContainerWeb.param.dev-2.json
+		PublishScripts\Templates\SilicusUtilityContainerWeb.param.dev.json = PublishScripts\Templates\SilicusUtilityContainerWeb.param.dev.json
+		PublishScripts\Templates\SilicusUtilityContainerWithAzureAdWeb.json = PublishScripts\Templates\SilicusUtilityContainerWithAzureAdWeb.json
+		PublishScripts\Templates\SilicusUtilityContainerWithAzureAdWeb.param.dev.json = PublishScripts\Templates\SilicusUtilityContainerWithAzureAdWeb.param.dev.json
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Silicus.UtilityContainer.Web", "Silicus.UtilityContainer.Web\Silicus.UtilityContainer.Web.csproj", "{CBDDAD3B-BDF4-4747-BAB8-DCE0379FA5C1}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -51,14 +72,24 @@ Global
 		{5394C1EB-8F58-468F-AA02-A0E863141F45}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5394C1EB-8F58-468F-AA02-A0E863141F45}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5394C1EB-8F58-468F-AA02-A0E863141F45}.Release|Any CPU.Build.0 = Release|Any CPU
-		{161D6CBD-78D3-469A-A40D-96B5DD8B71BD}.Azure|Any CPU.ActiveCfg = Azure|Any CPU
-		{161D6CBD-78D3-469A-A40D-96B5DD8B71BD}.Azure|Any CPU.Build.0 = Azure|Any CPU
-		{161D6CBD-78D3-469A-A40D-96B5DD8B71BD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{161D6CBD-78D3-469A-A40D-96B5DD8B71BD}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{161D6CBD-78D3-469A-A40D-96B5DD8B71BD}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{161D6CBD-78D3-469A-A40D-96B5DD8B71BD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BA81B897-898D-49EE-A398-6A3BB419D6B9}.Azure|Any CPU.ActiveCfg = Release|Any CPU
+		{BA81B897-898D-49EE-A398-6A3BB419D6B9}.Azure|Any CPU.Build.0 = Release|Any CPU
+		{BA81B897-898D-49EE-A398-6A3BB419D6B9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BA81B897-898D-49EE-A398-6A3BB419D6B9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BA81B897-898D-49EE-A398-6A3BB419D6B9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BA81B897-898D-49EE-A398-6A3BB419D6B9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CBDDAD3B-BDF4-4747-BAB8-DCE0379FA5C1}.Azure|Any CPU.ActiveCfg = Release|Any CPU
+		{CBDDAD3B-BDF4-4747-BAB8-DCE0379FA5C1}.Azure|Any CPU.Build.0 = Release|Any CPU
+		{CBDDAD3B-BDF4-4747-BAB8-DCE0379FA5C1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CBDDAD3B-BDF4-4747-BAB8-DCE0379FA5C1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CBDDAD3B-BDF4-4747-BAB8-DCE0379FA5C1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CBDDAD3B-BDF4-4747-BAB8-DCE0379FA5C1}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{4C822D9E-935A-4FC7-B2BE-0787A076DD99} = {DF75547E-E9DE-48FB-9B07-022478492F22}
+		{F1B83592-18A1-46A6-9464-A0DEA0DD800C} = {DF75547E-E9DE-48FB-9B07-022478492F22}
 	EndGlobalSection
 EndGlobal

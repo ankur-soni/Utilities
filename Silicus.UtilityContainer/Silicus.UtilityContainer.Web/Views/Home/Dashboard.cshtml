@@ -72,25 +72,34 @@
         /*background-repeat: repeat;*/
     }
 </style>
-      <p style=" color:red;font-size:20px">@isRoleAvailable</p> 
-    <div class="container">
+<p style="color:red;font-size:20px">@isRoleAvailable</p>
 
-        @if (Model != null)
-        {
-            foreach (var item in Model)
+    <div class="animated fadeInRight">
+        <div>
+
+            @if (Model != null)
             {
+                foreach (var item in Model)
+                {
 
-                <section class="block col-lg-6 col-md-6">
-                    <a href="@item.Url?utilityID=@item.Id" class="image featured" target="_blank"><img src="@Url.Action("getImg", "Home", new { id = item.Id })" alt="Utility Image" /></a>
-                    <div class="box col-lg-12 col-md-12">
-                        <p>@item.Name</p>
-                        @*<a href="#" target="_blank" class="button">More</a>*@
-                    </div>
-                </section>
+                    <section class="block col-lg-6 col-md-6">
+                        <a title="@item.Name" href="@item.Url?utilityID=@item.Id" class="image featured" target="_blank"><img src="@Url.Action("getImg", "Home", new { id = item.Id })" alt="Utility Image" /></a>
+                        @*<div class="box col-lg-12 col-md-12">
+                            <p>@item.Name</p>
+                        </div>*@
+                    </section>
+                }
+
             }
-
-        }
+        </div>
     </div>
 
 
+
+<script>
+    $(function () {
+    
+        $(".block").tooltip();
+    })
+</script>
 
