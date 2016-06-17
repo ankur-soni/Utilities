@@ -99,26 +99,28 @@
       <HintPath>..\packages\Microsoft.Web.RedisSessionStateProvider.2.2.0\lib\net40\Microsoft.Web.RedisSessionStateProvider.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Silicus.Encourage.DAL">
-      <HintPath>..\Silicus.Encourage.Services\bin\Debug\Silicus.Encourage.DAL.dll</HintPath>
+    <Reference Include="Silicus.Encourage.DAL, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Silicus.Encourage.DAL\bin\Debug\Silicus.Encourage.DAL.dll</HintPath>
     </Reference>
     <Reference Include="Silicus.Encourage.Models">
-      <HintPath>..\Silicus.Encourage.Services\bin\Debug\Silicus.Encourage.Models.dll</HintPath>
+      <HintPath>..\Silicus.Encourage.Models\bin\Debug\Silicus.Encourage.Models.dll</HintPath>
     </Reference>
-    <Reference Include="Silicus.Encourage.Services">
-      <HintPath>..\Silicus.Encourage.Services\obj\Debug\Silicus.Encourage.Services.dll</HintPath>
+    <Reference Include="Silicus.Encourage.Services, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Silicus.Encourage.Services\bin\Debug\Silicus.Encourage.Services.dll</HintPath>
     </Reference>
     <Reference Include="Silicus.UtilityContainer.Entities, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\Silicus.UtilityContainer.Entities\bin\Debug\Silicus.UtilityContainer.Entities.dll</HintPath>
+      <HintPath>..\..\Silicus.UtilityContainer\Silicus.UtilityContainer.Entities\bin\Debug\Silicus.UtilityContainer.Entities.dll</HintPath>
     </Reference>
     <Reference Include="Silicus.UtilityContainer.Models, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\Silicus.UtilityContainer.Models\bin\Debug\Silicus.UtilityContainer.Models.dll</HintPath>
+      <HintPath>..\..\Silicus.UtilityContainer\Silicus.UtilityContainer.Models\bin\Debug\Silicus.UtilityContainer.Models.dll</HintPath>
     </Reference>
     <Reference Include="Silicus.UtilityContainer.Security, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\Silicus.UtilityContainer.Security\bin\Debug\Silicus.UtilityContainer.Security.dll</HintPath>
+      <HintPath>..\..\Silicus.UtilityContainer\Silicus.UtilityContainer.Security\bin\Debug\Silicus.UtilityContainer.Security.dll</HintPath>
     </Reference>
     <Reference Include="StackExchange.Redis.StrongName, Version=1.0.316.0, Culture=neutral, PublicKeyToken=c219ff1ca8c2ce46, processorArchitecture=MSIL">
       <HintPath>..\packages\StackExchange.Redis.StrongName.1.0.488\lib\net45\StackExchange.Redis.StrongName.dll</HintPath>
@@ -279,6 +281,7 @@
     <Compile Include="StaticClasses\GetRoles.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="ApplicationInsights.config" />
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="Css\animate.css" />
@@ -684,9 +687,6 @@
     <Content Include="Scripts\ai.0.22.9-build00167.min.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
-    <Content Include="ApplicationInsights.config">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
     <Content Include="Css\plugins\bootstrap-rtl\bootstrap-rtl.css.map" />
     <Content Include="Css\plugins\footable\fonts\footable.eot" />
     <Content Include="Css\plugins\footable\fonts\footable.ttf" />

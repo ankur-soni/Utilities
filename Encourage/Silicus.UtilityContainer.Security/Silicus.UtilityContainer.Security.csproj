@@ -43,13 +43,11 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\Silicus.Encourage.DAL\bin\Debug\Silicus.Encourage.DAL.dll</HintPath>
     </Reference>
-    <Reference Include="Silicus.UtilityContainer.Entities, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
+    <Reference Include="Silicus.UtilityContainer.Entities">
       <HintPath>..\Silicus.UtilityContainer.Entities\bin\Debug\Silicus.UtilityContainer.Entities.dll</HintPath>
     </Reference>
-    <Reference Include="Silicus.UtilityContainer.Models, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\Silicus.UtilityContainer.Entities\bin\Debug\Silicus.UtilityContainer.Models.dll</HintPath>
+    <Reference Include="Silicus.UtilityContainer.Models">
+      <HintPath>..\Silicus.UtilityContainer.Models\bin\Debug\Silicus.UtilityContainer.Models.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />

@@ -4,9 +4,10 @@ using System.Reflection;
 using LightInject;
 using Silicus.Encourage.Services.Interface;
 using Silicus.Encourage.Services;
+
+using Silicus.EncourageWithAzureAd.Web;
 using Silicus.UtilityContainer.Security.Interface;
 using Silicus.UtilityContainer.Security;
-using Silicus.EncourageWithAzureAd.Web;
 
 [assembly: WebActivatorEx.PostApplicationStartMethod(typeof(LightInjectWebCommon), "CreateContainer")]
 

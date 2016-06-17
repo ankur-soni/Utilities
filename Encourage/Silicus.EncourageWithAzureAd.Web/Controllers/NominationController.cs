@@ -71,7 +71,7 @@ namespace Silicus.EncourageWithAzureAd.Web.Controllers
            
             ViewBag.DepartmentsUnderCurrentUser = new SelectList(_awardService.GetDepartmentsUnderCurrentUserAsManager("tushar.surve@silicus.com"), "Id", "Name");
            
-            ViewBag.Resources = new SelectList(new List<User>(), "Id", "DisplayName");
+            ViewBag.Resources = new SelectList(new List<UtilityContainer.Models.DataObjects.User>(), "Id", "DisplayName");
             return View();
         }
 

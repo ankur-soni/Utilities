@@ -18,8 +18,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{E6A033
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Silicus.UtilityContainer.Security", "Silicus.UtilityContainer.Security\Silicus.UtilityContainer.Security.csproj", "{5394C1EB-8F58-468F-AA02-A0E863141F45}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Silicus.UtilityContainerWithAzureAd.Web", "Silicus.UtilityContainerWithAzureAd.Web\Silicus.UtilityContainerWithAzureAd.Web.csproj", "{BA81B897-898D-49EE-A398-6A3BB419D6B9}"
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "PublishScripts", "PublishScripts", "{DF75547E-E9DE-48FB-9B07-022478492F22}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Scripts", "Scripts", "{4C822D9E-935A-4FC7-B2BE-0787A076DD99}"
@@ -72,12 +70,6 @@ Global
 		{5394C1EB-8F58-468F-AA02-A0E863141F45}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5394C1EB-8F58-468F-AA02-A0E863141F45}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5394C1EB-8F58-468F-AA02-A0E863141F45}.Release|Any CPU.Build.0 = Release|Any CPU
-		{BA81B897-898D-49EE-A398-6A3BB419D6B9}.Azure|Any CPU.ActiveCfg = Release|Any CPU
-		{BA81B897-898D-49EE-A398-6A3BB419D6B9}.Azure|Any CPU.Build.0 = Release|Any CPU
-		{BA81B897-898D-49EE-A398-6A3BB419D6B9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{BA81B897-898D-49EE-A398-6A3BB419D6B9}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{BA81B897-898D-49EE-A398-6A3BB419D6B9}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{BA81B897-898D-49EE-A398-6A3BB419D6B9}.Release|Any CPU.Build.0 = Release|Any CPU
 		{CBDDAD3B-BDF4-4747-BAB8-DCE0379FA5C1}.Azure|Any CPU.ActiveCfg = Release|Any CPU
 		{CBDDAD3B-BDF4-4747-BAB8-DCE0379FA5C1}.Azure|Any CPU.Build.0 = Release|Any CPU
 		{CBDDAD3B-BDF4-4747-BAB8-DCE0379FA5C1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
