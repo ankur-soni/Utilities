@@ -1,0 +1,326 @@
+﻿@model Silicus.EncourageWithAzureAd.Web.Models.ReviewSubmitionViewModel
+
+
+<style>
+    .container .content {
+        display: none;
+        padding: 5px;
+    }
+</style>
+<div class="row border-bottom">
+    <nav class="navbar  " role="navigation" style="margin-bottom: 0">
+        <div class="navbar-header">
+            <a class="navbar-minimalize minimalize-styl-2 btn btn-primary " href="#"><i class="fa fa-bars"></i> </a>
+        </div>
+    </nav>
+</div>
+<div class="row wrapper border-bottom white-bg page-heading border-bottom" style="width:90%;">
+    <div class=" col-sm-12">
+    <h1>Edit Review</h1>
+</div>
+</div>
+<div class="wrapper wrapper-content animated fadeInRight">
+    <div class="row" style="margin-left:4%">
+        @using (Html.BeginForm("EditReview", "Nomination", FormMethod.Post, new { id = "editReviewForm" }))
+        {
+            @Html.HiddenFor(modelItem => modelItem.ReviewerId)
+            @Html.HiddenFor(modelItem => modelItem.NominationId);
+    <table class="table table-hover issue-tracker white-bg" style="width:80%">
+        <thead>
+            <tr>
+                <td>
+                  <label> Review For:</label> 
+                </td>
+
+                <td>
+                    @Html.DisplayFor(modelItem => modelItem.NomineeName)
+                </td>
+            </tr>
+            <tr>
+                <td>
+                 <label> Project/Department:</label>  
+                </td>
+
+                <td>
+                    @Html.DisplayFor(modelItem => modelItem.ProjectOrDepartment)
+                </td>
+            </tr>
+            <tr>
+                <td>
+                   <label>Manager:</label> 
+                </td>
+
+                <td>
+                    @Html.DisplayFor(modelItem => modelItem.Manager)
+                </td>
+            </tr>
+        </thead>
+    </table>
+            <br />
+    <table class="table table-hover issue-tracker" style="width:80%;table-layout:fixed">
+        <tr>
+            <th>
+                @Html.DisplayFor(modelItem => modelItem.Manager) Says:
+            </th>
+            </tr>
+        <tr>
+            <td class="more white-bg" style="word-wrap: break-word;">
+
+                @Model.ManagerComment
+
+            </td>
+        </tr>
+    </table>
+    <br />
+    <table class="table table-hover issue-tracker white-bg" style="width:80%">
+        <thead>
+            <tr>
+                @*<th>Id</th>*@
+                <th>Criteria</th>
+                <th>Manager Comment</th>
+                <th>Reviewer Comment</th>
+                <th>Credits</th>
+            </tr>
+        </thead>
+        @{
+                                                                var j = 0;
+                                                                var k = 0;
+        }
+        <tbody>
+            @foreach (var item in Model.Criterias)
+            {
+
+                <tr>
+                    @*<td class="col-md-1">@item.Id</td>*@
+                    @Html.Hidden("CriteriaId", @item.Id)
+                    <td class="col-md-4">@item.Title</td>
+
+                    @if (k < Model.ManagerComments.Count() && Model.ManagerComments[k].CriteriaId == item.Id)
+                    {
+                        <td class="col-md-4">@Model.ManagerComments[k].Comment</td>
+                        k++;
+                    }
+                    else
+                    {
+                        <td class="col-md-4"></td>
+                    }
+
+                    <td class="col-md-3">@Html.TextArea("Comments[" + @j + "].Comment", Model.Comments[j].Comment)</td>
+
+                    @Html.Hidden("Comments[" + @j + "].Id", item.Id)
+                    <td class="col-md-1">
+                        <div class="switch">
+                            <div class="onoffswitch">
+                                @if (Model.Comments[j].Credit == true)
+                                {
+                                    <input type="checkbox" value="true" length="0" class="onoffswitch-checkbox" id='example @j' name="Comments[@j].Credit" checked>
+                                }
+                                else
+                                {
+                                    <input type="checkbox" value="true" length="0" class="onoffswitch-checkbox" id='example @j' name="Comments[@j].Credit">
+                                }
+
+                                <label class=" onoffswitch-label" for="example @j">
+                                    <span class="onoffswitch-inner"></span>
+                                    <span class="onoffswitch-switch"></span>
+                                </label>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+                    j++;
+            }
+                    <tr>
+                        <td></td>
+                        <td></td>
+                        <td  class="col-md-3 text-left" style="color:#0063A7">
+                            Total Credits:
+                        </td>
+                        <td id="totalCredits" class="col-md-1 text-left">
+                            @ViewBag.creditGiven
+                        </td>
+                    </tr>
+        </tbody>
+        @if (Model.ManagerComments != null)
+        {
+            for (int i = 0; i < Model.ManagerComments.Count; i++)
+            {
+                @Html.HiddenFor(model => Model.ManagerComments[i].Comment)
+            }
+        }
+    </table>
+            <div class="form-group">
+                <div style="text-align:center;width:80%;">
+                    <input type="button" name="submit" value="Discard Review" id="saveButton" class="btn btn-danger btnSameSize" onclick=" return DiscardReview()" />
+                    <input type="button" name="submit" value="Save Draft" id="saveButton" class="btn btn-warning btnSameSize" onclick=" return SaveDraftReview()" />
+                    <input type="button" name="submit" value="Submit" id="submitButton" class="btn btn-success-green btnSameSize" onclick=" return SubmitReview()" />
+                    <input type="button" value="Back" class="btn btn-default btnSameSize" onclick="location.href='@Url.Action("SavedReviews", "Nomination")'" />
+                </div>
+            </div>
+        }
+       </div>
+    </div>
+        <script src="http://ajax.googleapis.com/ajax/libs/jquery/2.0.0/jquery.min.js"></script>
+<script src="~/js/plugins/validate/jquery.validate.min.js"></script>
+<script src="~/Scripts/jquery.validate.unobtrusive.js"></script>
+
+<script>
+    var totalCredits = $("#totalCredits").text();
+    $(".onoffswitch-checkbox").change(function () {
+        if ($(this).is(':checked')) {
+            totalCredits++;
+        }
+        else if (!$(this).is(':checked')) {
+            totalCredits--;
+        }
+        $("#totalCredits").text(totalCredits);
+    });
+
+    function SaveDraftReview() {
+        debugger;
+        if ($('#editReviewForm').valid()) {
+            swal({
+                title: "Save Review",
+                text: "Do you want to save this review for nomination?",
+                type: "info",
+                showCancelButton: true,
+                confirmButtonColor: "#88a364",
+                confirmButtonText: "Yes!",
+                cancelButtonText: "No!",
+                closeOnConfirm: false,
+                closeOnCancel: false
+            },
+           function (isConfirm) {
+               if (isConfirm) {
+                   var modelbjectToSend = $('#editReviewForm').serialize() + '&' + $.param({ 'Submit': "Save Draft" }, true);
+
+                   $.ajax({
+                       type: 'post',
+                       url: '@Url.Action("EditReview", "Nomination")',
+                       data: modelbjectToSend,
+                       success: function (data) {
+                           swal({
+                               title: "Review Saved!",
+                               showCancelButton: false,
+                               confirmButtonColor: "#88a364",
+                               confirmButtonText: "Ok"
+                           },
+                           function (isConfirm) {
+                               if (isConfirm) {
+                                   window.location.href = '@Url.Action("SavedReviews", "Nomination")';
+                               }
+                           });
+                       },
+                       error: function () {
+                           swal("Error", "Oops! Something wrong happened..");
+                       }
+                   });
+               } else {
+                   swal("Cancelled", "Review Cancelled");
+                   window.location.href = '@Url.Action("SavedReviews", "Nomination")';
+               }
+           });
+
+        }
+        else {
+            return false;
+        }
+    }
+
+    function SubmitReview() {
+        if ($('#editReviewForm').valid()) {
+            swal({
+                title: "Submit Review",
+                text: "Do you want to submit this review for nomination?",
+                type: "info",
+                showCancelButton: true,
+                confirmButtonColor: "#88a364",
+                confirmButtonText: "Yes!",
+                cancelButtonText: "No!",
+                closeOnConfirm: false,
+                closeOnCancel: false
+            },
+           function (isConfirm) {
+               if (isConfirm) {
+                   var modelbjectToSend = $('#editReviewForm').serialize() + '&' + $.param({ 'Submit': "Submit" }, true);
+
+                   $.ajax({
+                       type: 'post',
+                       url: '@Url.Action("EditReview", "Nomination")',
+                       data: modelbjectToSend,
+                       success: function (data) {
+                           swal({
+                               title: "Review Submitted!",
+                               showCancelButton: false,
+                               confirmButtonColor: "#88a364",
+                               confirmButtonText: "Ok"
+                           },
+                           function () {
+                               if (isConfirm) {
+                                   window.location.href = '@Url.Action("SavedReviews", "Nomination")';
+                               }
+                           });
+                       },
+                       error: function () {
+                           swal("Error", "Oops! Something wrong happened..");
+                       }
+                   });
+               } else {
+                   swal("Cancelled", "Review Cancelled");
+                   window.location.href = '@Url.Action("SavedReviews", "Nomination")';
+               }
+           });
+
+        }
+        else {
+            return false;
+        }
+    }
+
+    function DiscardReview() {
+        debugger;
+            swal({
+                title: "Discard Review",
+                text: "Do you want to discard this review ?",
+                type: "info",
+                showCancelButton: true,
+                confirmButtonColor: "#88a364",
+                confirmButtonText: "Yes!",
+                cancelButtonText: "No!",
+                closeOnConfirm: false,
+                closeOnCancel: false
+            },
+           function (isConfirm) {
+               if (isConfirm) {
+                   var modelbjectToSend = $('#editReviewForm').serialize() + '&' + $.param({ 'Submit': "Discard Review" }, true);
+
+                   $.ajax({
+                       type: 'post',
+                       url: '@Url.Action("EditReview", "Nomination")',
+                       data: modelbjectToSend,
+                       success: function (data) {
+                           swal({
+                               title: "Review Discarded!",
+                               showCancelButton: false,
+                               confirmButtonColor: "#88a364",
+                               confirmButtonText: "Ok"
+                           },
+                           function (isConfirm) {
+                               debugger;
+                               if (isConfirm) {
+                                   window.location.href = '@Url.Action("SavedReviews", "Nomination")';
+                               }
+                           });
+                       },
+                       error: function () {
+                           swal("Error", "Oops! Something wrong happened..");
+                       }
+                   });
+               } else {
+                   swal("Cancelled", "Discard Cancelled");
+                   window.location.href = '@Url.Action("SavedReviews", "Nomination")';
+               }
+           });
+
+        }
+</script>

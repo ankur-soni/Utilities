@@ -15,7 +15,7 @@ namespace Silicus.UtilityContainer.Entities
 
             dataContext =
                 new CommonDataBaseContext(
-                    ConfigurationManager.ConnectionStrings["CommonDataBaseConnection"].ConnectionString);
+                    ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString);
 
             return dataContext;
         }

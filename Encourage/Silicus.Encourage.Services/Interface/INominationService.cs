@@ -26,6 +26,8 @@ namespace Silicus.Encourage.Services.Interface
         string GetAwardName(int nominationId);
 
         List<Nomination> GetAllSubmitedReviewedNominations(int reviewerId);
+
+        List<Review> GetAllSubmitedReviewsForCurrentNomination(int nominationId);
         List<Nomination> GetAllSavedNominations();
         Nomination GetNomination(int nominationId);
         void UpdateNomination(Nomination model);

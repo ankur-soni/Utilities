@@ -1,7 +1,8 @@
-﻿using Microsoft.Owin;
+﻿using System;
+using System.Threading.Tasks;
+using Microsoft.Owin;
 using Owin;
 
-[assembly: OwinStartupAttribute(typeof(Silicus.UtilityContainer.Web.Startup))]
 namespace Silicus.UtilityContainer.Web
 {
     public partial class Startup

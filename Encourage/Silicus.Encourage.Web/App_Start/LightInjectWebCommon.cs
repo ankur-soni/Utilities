@@ -1,17 +1,16 @@
 ﻿using Silicus.Encourage.DAL;
 using Silicus.Encourage.DAL.Interfaces;
-using Silicus.Encourage.Web.App_Start;
 using System.Reflection;
 using LightInject;
 using Silicus.Encourage.Services.Interface;
 using Silicus.Encourage.Services;
 using Silicus.UtilityContainer.Security.Interface;
 using Silicus.UtilityContainer.Security;
-
+using Silicus.Encourage.Web;
 
 [assembly: WebActivatorEx.PostApplicationStartMethod(typeof(LightInjectWebCommon), "CreateContainer")]
 
-namespace Silicus.Encourage.Web.App_Start
+namespace Silicus.Encourage.Web
 {
     public static class LightInjectWebCommon
     {

@@ -1,37 +1,36 @@
 ﻿using Silicus.UtilityContainer.Models.DataObjects;
-using Silicus.UtilityContainer.Services;
-using Silicus.UtilityContainer.Services.Interfaces;
-using Silicus.UtilityContainer.Web.Filters;
-using System.Web.Mvc;
-using System.Linq;
-using System.Collections.Generic;
-using System;
-using Silicus.UtilityContainer.Web.Models;
 using Silicus.UtilityContainer.Models.ViewModels;
+using Silicus.UtilityContainer.Services.Interfaces;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Web;
+using System.Web.Mvc;
 
 namespace Silicus.UtilityContainer.Web.Controllers
 {
+    [Authorize]
     public class HomeController : Controller
     {
-
         private readonly IUtilityService _utilityService;
         private readonly IRoleService _roleService;
         private readonly IUserService _userService;
 
-        public HomeController(IUtilityService utilityService,IRoleService roleService,IUserService userService)
+        public HomeController(IUtilityService utilityService, IRoleService roleService, IUserService userService)
         {
             _utilityService = utilityService;
             _roleService = roleService;
             _userService = userService;
         }
 
-        [CustomeAuthorize]
+
         public ActionResult Index(string data)
         {
             var allUtilities = _utilityService.GetAllUtilities();
             ViewBag.noRoleForCUrrentUser = data;
-            return View("Dashboard",allUtilities);
+            return View("Dashboard", allUtilities);
         }
+
 
         public FileContentResult GetImg(int id)
         {
@@ -41,18 +40,17 @@ namespace Silicus.UtilityContainer.Web.Controllers
                 : null;
         }
 
-        [HttpGet]
         public ActionResult AddRolesToUserForAUtility()
         {
 
             var newUserRole = new UtilityUserRoleViewModel();
-           // ViewData["User"] = new SelectList(_userService.GetAllUsers(), "ID", "DisplayName", "Select");
-          
-           var selectListItems = _userService.GetAllUsers().Select(u => new SelectListItem() { Text = u.ID.ToString(), Value = u.DisplayName }).ToList();
-            
-           ViewData["User"] = selectListItems;
+            // ViewData["User"] = new SelectList(_userService.GetAllUsers(), "ID", "DisplayName", "Select");
 
-            ViewData["Utilities"] = new SelectList(_utilityService.GetAllUtilities(), "Id", "Name","Select");
+            var selectListItems = _userService.GetAllUsers().Select(u => new SelectListItem() { Text = u.ID.ToString(), Value = u.DisplayName }).ToList();
+
+            ViewData["User"] = selectListItems;
+
+            ViewData["Utilities"] = new SelectList(_utilityService.GetAllUtilities(), "Id", "Name", "Select");
             ViewData["Roles"] = new SelectList(_roleService.GetAllRoles(), "ID", "Name", "Select");
             //var role = _roleService.GetAllRoles();
             return View(newUserRole);
@@ -68,7 +66,7 @@ namespace Silicus.UtilityContainer.Web.Controllers
                 return RedirectToAction("Index");
             }
 
-            
+
             return RedirectToAction("Index");
         }
 
@@ -111,12 +109,25 @@ namespace Silicus.UtilityContainer.Web.Controllers
         {
 
 
-            var user = _userService.GetUserByID(Convert.ToInt32( userId ));
+            var user = _userService.GetUserByID(Convert.ToInt32(userId));
 
 
 
             return user.DisplayName;
         }
 
+        public ActionResult About()
+        {
+            ViewBag.Message = "Your application description page.";
+
+            return View();
+        }
+
+        public ActionResult Contact()
+        {
+            ViewBag.Message = "Your contact page.";
+
+            return View();
+        }
     }
 }

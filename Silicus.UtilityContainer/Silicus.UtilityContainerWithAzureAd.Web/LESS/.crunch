@@ -1,0 +1,46 @@
+{
+	"files": {
+		"style.less": {
+			"engines": [
+				{
+					"compiler": "less",
+					"output": "style.css",
+					"options": {
+						"compress": false,
+						"ieCompat": false,
+						"strictMath": false,
+						"strictUnits": false,
+						"javascriptEnabled": false,
+						"sourcemap": true
+					}
+				}
+			],
+			"sources": [
+				"badgets_labels.less",
+				"base.less",
+				"buttons.less",
+				"chat.less",
+				"custom.less",
+				"elements.less",
+				"landing.less",
+				"md-skin.less",
+				"media.less",
+				"metismenu.less",
+				"mixins.less",
+				"modules/borders.less",
+				"modules/spaces.less",
+				"navigation.less",
+				"pages.less",
+				"rtl.less",
+				"sidebar.less",
+				"skins.less",
+				"spinners.less",
+				"style.less",
+				"theme-config.less",
+				"top_navigation.less",
+				"typography.less",
+				"variables.less"
+			]
+		}
+	}
+}

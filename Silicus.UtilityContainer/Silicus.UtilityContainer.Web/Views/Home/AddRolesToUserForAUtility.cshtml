@@ -5,13 +5,13 @@
 }
 
 
-<div class="row" style="margin-left:20%;margin-top:10%">
-    <div class="col-md-8" style="background-color:#57A6B7">
+<div class="row"style="width:80%;padding-bottom:10px;padding-top:25px">
+    <div class="col-md-8 white-bg">
         <h2>Add Role To User For Utility</h2>
 
         @using (Html.BeginForm(null, null, FormMethod.Post, new { name = "form", id = "form" }))
         {
-            @Html.AntiForgeryToken()
+          //  @Html.AntiForgeryToken()
 
             <div class="form-horizontal">
                 <hr />
@@ -19,7 +19,7 @@
                 @*@Html.ValidationSummary(true, "", new { @class = "text-danger" })*@
 
                 <div class="form-group">
-                    @Html.LabelFor(model => model.UtilityId, "Utility", htmlAttributes: new { @class = "control-label col-md-2" })
+                    @Html.LabelFor(model => model.UtilityId, "Utility", htmlAttributes: new { @class = "control-label col-md-2 requiredfeild" })
                     <div class="col-md-10">
                         @Html.DropDownListFor(model => model.UtilityId, (SelectList)ViewData["Utilities"], "Select", new { id = "utilityList" })
                         @Html.ValidationMessageFor(model => model.UtilityId, "", new { @class = "text-danger" })
@@ -28,7 +28,7 @@
                 </div>
 
                 <div class="form-group">
-                    @Html.LabelFor(model => model.RoleId, "Role", htmlAttributes: new { @class = "control-label col-md-2" })
+                    @Html.LabelFor(model => model.RoleId, "Role", htmlAttributes: new { @class = "control-label col-md-2 requiredfeild" })
                     <div class="col-md-10">
 
                         @Html.DropDownListFor(model => model.RoleId, new SelectList(Enumerable.Empty<SelectListItem>(), "ID", "RoleName"), "Select a Role", new { id = "rolesList" })
@@ -39,10 +39,10 @@
                 </div>
 
                 <div class="form-group">
-                    @Html.LabelFor(model => model.User, "User", htmlAttributes: new { @class = "control-label col-md-2" })
+                    @Html.LabelFor(model => model.User, "User", htmlAttributes: new { @class = "control-label col-md-2 requiredfeild" })
                     <div class="col-md-4">
                         @Html.ListBoxFor(Model => Model.UserId,
-     new MultiSelectList((List<SelectListItem>)ViewData["User"], "Text", "Value"), new { style = "display:block;", @id = "userNames" })
+     new MultiSelectList((List<SelectListItem>)ViewData["User"], "Text", "Value"), new { style = "display:block;", @id = "userNames"})
                         @*@Html.DropDownListFor(model => model.UserId, (SelectList)ViewData["User"], "Select", htmlAttributes: new { @class = "form-control" })*@
                         @Html.ValidationMessage("", new { @class = "text-danger", @id = "userRequired" })
                     </div>
@@ -57,11 +57,11 @@
                 </p>
 
                 <div class="form-group">
-                    <div class="col-md-offset-2 col-md-5">
-                        <input type="submit" value="Add Role" class="btn btn-default" />
+                    <div class="col-md-3">
+                        <input type="submit" value="Add Role" class="btn btn-primary"  style="width:100%"/>
                     </div>
-                    <div class="col-md-5">
-                        <input type="button" value="Cancel" onclick="window.location.reload()" class="btn btn-default" />
+                    <div class="col-md-3">
+                        <input type="button" value="Cancel" onclick="window.location.reload()" class="btn btn-danger" style="width:100%" />
                     </div>
                 </div>
             </div>
@@ -149,7 +149,7 @@
 
                 }
                 else {
-                    alert("Role added sucessfully!!");
+                    swal("Role added sucessfully!!");
                 }
 
             });

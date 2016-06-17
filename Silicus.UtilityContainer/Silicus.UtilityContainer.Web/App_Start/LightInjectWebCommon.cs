@@ -1,15 +1,16 @@
-﻿using LightInject;
-using Silicus.UtilityContainer.Security;
-using Silicus.UtilityContainer.Security.Interface;
-using Silicus.UtilityContainer.Services;
+﻿using Silicus.UtilityContainer.Services;
 using Silicus.UtilityContainer.Services.Interfaces;
-using Silicus.UtilityContainer.Web.App_Start;
+
 using System.Reflection;
 using Silicus.UtilityContainer.Entities;
+using LightInject;
+using Silicus.UtilityContainer.Web;
+using Silicus.UtilityContainer.Security.Interface;
+using Silicus.UtilityContainer.Security;
 
-[assembly: WebActivator.PostApplicationStartMethod(typeof(LightInjectWebCommon), "CreateContainer")]
+[assembly: WebActivatorEx.PostApplicationStartMethod(typeof(LightInjectWebCommon), "CreateContainer")]
 
-namespace Silicus.UtilityContainer.Web.App_Start
+namespace Silicus.UtilityContainer.Web
 {
     public static class LightInjectWebCommon
     {
