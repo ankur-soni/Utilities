@@ -85,6 +85,11 @@ th {
    
 }
 
+
+.cardHeaderEmpName{
+        font-size: x-large;
+}
+
 /*.admin-cardFooter {
         padding-top:10px;
         padding-bottom:10px;
