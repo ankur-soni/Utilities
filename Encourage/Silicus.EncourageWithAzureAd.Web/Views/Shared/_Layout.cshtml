@@ -37,13 +37,17 @@
                     <ul class="nav navbar-top-links navbar-right">
                         @Html.Partial("_LoginPartial")
                         @if (Request.IsAuthenticated)
-	{
-                            
+                        {
+
                             var userName = @User.Identity.Name;
+
+                            var data = userName.Split('.','@');
+
+
 	                <li class="dropdown">
                             <a class="dropdown-toggle count-info" data-toggle="dropdown" href="#">
                                 <span class="hidden-sm hidden-xs">
-                                    <span class="m-r-sm text-muted welcome-message">Welcome @userName </span> <i class="fa fa-chevron-down"></i>
+                                    <span class="m-r-sm text-muted welcome-message">Welcome @data[0] @data[1]</span> <i class="fa fa-chevron-down"></i>
                                 </span>
                                 <span class="hidden-md hidden-lg">
                                     <i class="fa fa-user"></i>
@@ -141,6 +145,11 @@
                     List<string> roles = MvcApplication.getCurrentUserRoles();
 
                 }
+
+                @if (roles.Count() != 0)
+                {
+                    
+               
                 <ul class="nav metismenu" id="side-menu">
                     <li class="active"><a href="@Url.Action("Index","Home")"><i class="fa fa-dashboard"></i> <span class="nav-label">DASHBOARD</span></a></li>
                     <li>
@@ -180,7 +189,8 @@
                     }
 
                 </ul>
-
+                }
+                <!--End of if-->
             </div>
         </nav>
                     }

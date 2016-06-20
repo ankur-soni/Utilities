@@ -152,7 +152,15 @@ namespace Silicus.Encourage.Services
         {
 
             var reviewersUserId = _commonDataBaseContext.Query<User>().Where(u => u.EmailAddress == email).FirstOrDefault().ID;
-            return _encourageDatabaseContext.Query<Reviewer>().Where(r => r.UserId == reviewersUserId).FirstOrDefault().Id;
+            var reviewer = _encourageDatabaseContext.Query<Reviewer>().Where(r => r.UserId == reviewersUserId).FirstOrDefault();
+            var reviewerId = 0;
+            if (reviewer != null)
+            {
+                reviewerId = reviewer.Id;
+                return reviewerId;
+            }
+          
+            return reviewerId;
         }
 
         public List<Nomination> GetAllSubmitedReviewedNominations(int reviewerId)

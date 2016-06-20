@@ -7,16 +7,12 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Silicus.Encourage.DAL", "Si
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Silicus.Encourage.Models", "Silicus.Encourage.Models\Silicus.Encourage.Models.csproj", "{ED67F947-0D14-4706-8E40-054AE932DF36}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Silicus.Encourage.Services", "Silicus.Encourage.Services\Silicus.Encourage.Services.csproj", "{B478DF7F-933C-4EDD-ACCD-7050F1FA88CD}"
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{5A78BC64-AE33-4E81-8129-2482423E3324}"
 	ProjectSection(SolutionItems) = preProject
 		.nuget\NuGet.Config = .nuget\NuGet.Config
 		.nuget\NuGet.exe = .nuget\NuGet.exe
 		.nuget\NuGet.targets = .nuget\NuGet.targets
 	EndProjectSection
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Silicus.EncourageWithAzureAd.Web", "Silicus.EncourageWithAzureAd.Web\Silicus.EncourageWithAzureAd.Web.csproj", "{86989CFC-2B6F-437A-ADD1-B5C4D70DB3A9}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "PublishScripts", "PublishScripts", "{22142C27-74F5-472C-9CAB-37B5EF5A9221}"
 EndProject
@@ -33,6 +29,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Templates", "Templates", "{
 		PublishScripts\Templates\SilicusEncourageWithAzureAdWeb.json = PublishScripts\Templates\SilicusEncourageWithAzureAdWeb.json
 		PublishScripts\Templates\SilicusEncourageWithAzureAdWeb.param.dev.json = PublishScripts\Templates\SilicusEncourageWithAzureAdWeb.param.dev.json
 	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Silicus.Encourage.Services", "Silicus.Encourage.Services\Silicus.Encourage.Services.csproj", "{B478DF7F-933C-4EDD-ACCD-7050F1FA88CD}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Silicus.EncourageWithAzureAd.Web", "Silicus.EncourageWithAzureAd.Web\Silicus.EncourageWithAzureAd.Web.csproj", "{86989CFC-2B6F-437A-ADD1-B5C4D70DB3A9}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

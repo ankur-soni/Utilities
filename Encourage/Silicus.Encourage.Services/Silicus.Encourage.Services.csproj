@@ -30,20 +30,13 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Silicus.Encourage.DAL">
-      <HintPath>..\Silicus.Encourage.DAL\bin\Debug\Silicus.Encourage.DAL.dll</HintPath>
+    <Reference Include="Silicus.UtilityContainer.Entities, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Silicus.UtilityContainer.Entities\bin\Debug\Silicus.UtilityContainer.Entities.dll</HintPath>
     </Reference>
-    <Reference Include="Silicus.Encourage.Models">
-      <HintPath>..\Silicus.Encourage.Models\bin\Debug\Silicus.Encourage.Models.dll</HintPath>
-    </Reference>
-    <Reference Include="Silicus.UtilityContainer.Entities">
-      <HintPath>..\..\Silicus.UtilityContainer\Silicus.UtilityContainer.Entities\bin\Debug\Silicus.UtilityContainer.Entities.dll</HintPath>
-    </Reference>
-    <Reference Include="Silicus.UtilityContainer.Models">
-      <HintPath>..\..\Silicus.UtilityContainer\Silicus.UtilityContainer.Models\bin\Debug\Silicus.UtilityContainer.Models.dll</HintPath>
-    </Reference>
-    <Reference Include="Silicus.UtilityContainer.Security">
-      <HintPath>..\..\Silicus.UtilityContainer\Silicus.UtilityContainer.Security\bin\Debug\Silicus.UtilityContainer.Security.dll</HintPath>
+    <Reference Include="Silicus.UtilityContainer.Models, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Silicus.UtilityContainer.Models\bin\Debug\Silicus.UtilityContainer.Models.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -66,6 +59,16 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ResultService.cs" />
     <Compile Include="ReviewService.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Silicus.Encourage.DAL\Silicus.Encourage.DAL.csproj">
+      <Project>{e96c89c4-0ed3-4c21-94eb-93a11d022573}</Project>
+      <Name>Silicus.Encourage.DAL</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Silicus.Encourage.Models\Silicus.Encourage.Models.csproj">
+      <Project>{ed67f947-0d14-4706-8e40-054ae932df36}</Project>
+      <Name>Silicus.Encourage.Models</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

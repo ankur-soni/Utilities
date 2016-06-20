@@ -85,19 +85,20 @@
                     </div>
 
                     <div class="form-group">
-                        @Html.Label("Is PLC ?", htmlAttributes: new { @class = "control-label col-md-3", style = "text-align: left" })
-                        <div>
-                            @Html.CheckBoxFor(model => model.IsPLC, new { htmlAttributes = new { @class = "form-control" } }) Yes
-                            @Html.ValidationMessageFor(model => model.IsPLC, "", new { @class = "text-danger" })
-                        </div>
-                    </div>
+                        @*@Html.Label("PLC", htmlAttributes: new { @class = "control-label col-md-3", style = "text-align: left" })*@
+                        <label class="control-label col-md-3" style="text-align: left">PLC<span style="color:#0067AA;"> <i class="fa fa-question-circle" title="Programmable logic controller" aria-hidden="true"></i></span></label>
+                            <div>
+                                @Html.CheckBoxFor(model => model.IsPLC, new { htmlAttributes = new { @class = "form-control" } }) Yes
+                                @Html.ValidationMessageFor(model => model.IsPLC, "", new { @class = "text-danger" })
+                            </div>
+</div>
                 </div>
             </div>
 
             <div class="form-group white-bg" style="padding-bottom:10px;padding-top:10px">
                 @Html.Label("Comment", htmlAttributes: new { @class = "control-label col-md-2 requiredfeild", style = "text-align: left" })
                 <div>
-                    @Html.TextAreaFor(model => model.MainComment, new { htmlAttributes = new { @class = "form-control" }, id = "commentBox", style = "min-width: 80%", rows = "7"})
+                    @Html.TextAreaFor(model => model.MainComment, new { htmlAttributes = new { @class = "form-control" }, id = "commentBox", style = "min-width: 70%;margin-left:8%", rows = "7", maxlength = 1000 })
                     <div style="text-align:right;">
                         @Html.ValidationMessageFor(model => model.MainComment, "", new { @class = "text-danger", id = "managerCommentValidationmessage" })
                     </div>
@@ -137,10 +138,10 @@
                 @if (Model.IsSubmitted != true)
                 {
                     <div style="text-align:center;">
-                        <input type="button" value="Discard" id="discardButton" class="btn btn-danger btnSameSize" />
-                        <input type="button" name="submit" value="Save Draft" id="saveButton" class="btn btn-warning btnSameSize" onclick="return checkValidationOnSaveDraft();" />
-                        <input type="button" name="button" value="Submit" class="btn btn-success-green btnSameSize" onclick="return checkValidationOnSubmit();" />
-                        <input type="button" value="Back" class="btn btn-default btnSameSize " onclick="location.href='@Url.Action("SavedNomination", "Nomination")'" />
+                        <input type="button" value="Discard" id="discardButton" class="btn btn-primary btnSameSize" />
+                        <input type="button" name="submit" value="Save Draft" id="saveButton" class="btn btn-primary btnSameSize" onclick="return checkValidationOnSaveDraft();" />
+                        <input type="button" name="button" value="Submit" class="btn btn-primary btnSameSize" onclick="return checkValidationOnSubmit();" />
+                        <input type="button" value="Back" class="btn btn-primary btnSameSize " onclick="location.href='@Url.Action("SavedNomination", "Nomination")'" />
                         <div class="=row">&nbsp;</div>
                         <div class="=row">&nbsp;</div>
                     </div>
@@ -148,7 +149,7 @@
                 else
                 {
                     <div style="text-align:center;">
-                        <input type="button" value="Back" class="btn btn-default btnSameSize " onclick="location.href='@Url.Action("SavedNomination", "Nomination")'" />
+                        <input type="button" value="Back" class="btn btn-primary btnSameSize " onclick="location.href='@Url.Action("SavedNomination", "Nomination")'" />
                     </div>
                     <div class="=row">&nbsp;</div>
                 }

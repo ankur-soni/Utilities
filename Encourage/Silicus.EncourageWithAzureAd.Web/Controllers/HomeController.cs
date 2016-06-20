@@ -41,10 +41,10 @@ namespace Silicus.EncourageWithAzureAd.Web.Controllers
              var commonRoles = authorizationService.GetRoleForUtility(User.Identity.Name, utility);
               
            
-            var d = new Dashboard();
+            var dashboard = new Dashboard();
             if ((commonRoles.Count > 0))
             {
-                d.userRoles = commonRoles;
+                dashboard.userRoles = commonRoles;
                 ViewBag.currentUserRoles = commonRoles;
             }
               
@@ -61,8 +61,8 @@ namespace Silicus.EncourageWithAzureAd.Web.Controllers
                 listOfWinners.Add(new NominationListViewModel() { DisplayName = winnerName, NominationTime = awardMonthYear, AwardName = awardName });
 
             }
-            d.NominationList = listOfWinners;
-            return View("Dashboard",d);
+            dashboard.NominationList = listOfWinners;
+            return View("Dashboard", dashboard);
         }
 
         public ActionResult About()

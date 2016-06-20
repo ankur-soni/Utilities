@@ -712,6 +712,8 @@
     <Content Include="font-awesome\scss\_variables.scss" />
     <Content Include="js\plugins\chartist\chartist.min.js.map" />
     <Content Include="LESS\.crunch" />
+    <None Include="Properties\PublishProfiles\SilicusUtilityContainerWeb7780 - FTP.pubxml" />
+    <None Include="Properties\PublishProfiles\SilicusUtilityContainerWeb7780 - Web Deploy.pubxml" />
     <None Include="Properties\PublishProfiles\SilicusUtilityContainerWeb7780.pubxml" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />

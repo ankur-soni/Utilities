@@ -44,17 +44,9 @@ namespace Silicus.EncourageWithAzureAd.Web.Controllers
         public ActionResult AddNomination()
         {
 
-
-            //  var userEmailAddress = Session["UserEmailAddress"] as string;
-
             var userEmailAddress = User.Identity.Name;
-
-
-
+            
             ViewBag.Awards = new SelectList(_awardService.GetAllAwards(), "Id", "Name");
-
-           
-
 
             var projects = _awardService.GetProjectsUnderCurrentUserAsManager(userEmailAddress);
             if (projects.Count() > 0)
@@ -71,7 +63,7 @@ namespace Silicus.EncourageWithAzureAd.Web.Controllers
            
             ViewBag.DepartmentsUnderCurrentUser = new SelectList(_awardService.GetDepartmentsUnderCurrentUserAsManager("tushar.surve@silicus.com"), "Id", "Name");
            
-            ViewBag.Resources = new SelectList(new List<UtilityContainer.Models.DataObjects.User>(), "Id", "DisplayName");
+            ViewBag.Resources = new SelectList(new List<User>(), "Id", "DisplayName");
             return View();
         }
 
@@ -514,8 +506,17 @@ namespace Silicus.EncourageWithAzureAd.Web.Controllers
         public ActionResult ReviewNominations()
         {
             // var nominations = _nominationService.GetAllSubmitedNonreviewedNominations(_nominationService.GetReviewerIdOfCurrentNomination( Session["UserEmailAddress"] as string));
-            var nominations = _nominationService.GetAllSubmitedNonreviewedNominations(_nominationService.GetReviewerIdOfCurrentNomination(User.Identity.Name));
+            var reviewerId = _nominationService.GetReviewerIdOfCurrentNomination(User.Identity.Name);
             var reviewNominations = new List<NominationListViewModel>();
+            if (reviewerId == 0)
+            {
+                ViewBag.erroMessage = "You are not authorized to view this page, please contact system administrator.";
+                return View(reviewNominations);
+            }
+           
+
+            var nominations = _nominationService.GetAllSubmitedNonreviewedNominations(reviewerId);
+           
             foreach (var nomination in nominations)
             {
                 var awardName = _encourageDatabaseContext.Query<Award>().Where(a => a.Id == nomination.AwardId).FirstOrDefault().Code;
@@ -623,7 +624,14 @@ namespace Silicus.EncourageWithAzureAd.Web.Controllers
 
             var reviewedNominations = new List<NominationListViewModel>();
             // var nominations = _nominationService.GetAllSubmitedReviewedNominations(_nominationService.GetReviewerIdOfCurrentNomination( Session["UserEmailAddress"] as string));
-            var nominations = _nominationService.GetAllSubmitedReviewedNominations(_nominationService.GetReviewerIdOfCurrentNomination(User.Identity.Name));
+            var reviewerId = _nominationService.GetReviewerIdOfCurrentNomination(User.Identity.Name);
+            if (reviewerId == 0)
+            {
+                ViewBag.erroMessage = "You are not authorized to view this page, please contact system administrator.";
+                return View(reviewedNominations);
+            }
+
+            var nominations = _nominationService.GetAllSubmitedReviewedNominations(reviewerId);
             foreach (var nomination in nominations)
             {
                 var awardName = _encourageDatabaseContext.Query<Award>().Where(a => a.Id == nomination.AwardId).FirstOrDefault().Code;

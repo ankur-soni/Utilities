@@ -27,7 +27,19 @@
             }
             <!-- IT STAFF ROW -->
             <div class="row">
-                @if (roles.Contains("Manager"))
+@if (roles == null)
+{
+
+    <div class="col-md-8">
+      
+                    <span style="font-weight:bold;color:red">You are not authorized to view this page, please contact system administrator.</span>
+                
+    </div>
+}
+
+else
+    { 
+                if (roles.Contains("Manager"))
                 {
 
                     <div class="col-md-3">
@@ -44,7 +56,7 @@
 
                     </div>
                 }
-                @if (roles.Contains("Reviewer"))
+                if (roles.Contains("Reviewer"))
                 {
                     <div class="col-md-3">
                         <div class="ibox float-e-margins">
@@ -62,7 +74,7 @@
                     </div>
 
                 }
-                @if (roles.Contains("Admin"))
+                if (roles.Contains("Admin"))
                 {
                     <div class="col-md-3">
                         <div class="ibox float-e-margins">
@@ -93,6 +105,7 @@
 
                     </div>
                 }
+                }  @*end of Else*@
             </div>
             @*<div class="wrapper wrapper-content animated fadeInRight">
                 @if (Model.Count() > 0)

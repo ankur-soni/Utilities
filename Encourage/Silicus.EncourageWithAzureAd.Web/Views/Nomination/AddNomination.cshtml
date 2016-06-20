@@ -78,17 +78,17 @@
 
                 <div class="form-group" style="padding-bottom:10px">
                     @*@Html.Label("Is PLC ", htmlAttributes: new { @class = "control-label col-md-3", style = "text-align: left" })*@
-                    <label class="control-label col-md-3" style="text-align: left">Is PLC <span style="color:#0067AA;"> ?</span></label>
+                    <label class="control-label col-md-3" style="text-align: left">PLC<span style="color:#0067AA;"> <i class="fa fa-question-circle" title="Programmable logic controller" aria-hidden="true"></i></span></label>
                     <div>
                         @Html.CheckBoxFor(model => model.IsPLC, new { htmlAttributes = new { @class = "form-control" }, id = "IsPlcCheckbox" }) Yes
                     </div>
                 </div>
             </div>
             <br />
-            <div class="form-group white-bg" style="padding-top:10px;padding-bottom;padding-left:2%">
+            <div class="form-group white-bg" style="padding-top:10px;padding-left:2%">
                 @Html.Label("Comment", htmlAttributes: new { @class = "control-label col-md-2 requiredfeild", style = "text-align: left" })
                 <div>
-                    @Html.TextAreaFor(model => model.MainComment, new { htmlAttributes = new { @class = "form-control" }, id = "managerComment", style = "min-width: 80%", rows = "7" })
+                    @Html.TextAreaFor(model => model.MainComment, new { htmlAttributes = new { @class = "form-control" }, id = "managerComment", style = "min-width: 70%;margin-left:8%", rows = "7" , maxlength = 1000 })
                     <div style="text-align:right;">
                         @Html.ValidationMessageFor(model => model.MainComment, "", new { @class = "text-danger", id = "managerCommentValidationmessage" })
                     </div>
@@ -119,9 +119,9 @@
 
             <div class="form-group">
                 <div style="text-align:center;width:100%;">
-                    <input type="button" name="submit" value="Save Draft" id="savebutton" class="btn btn-warning btnSameSize" onclick="return checkValidationOnSaveDraft();" />
-                    <input type="button" name="submit" value="Submit" id="submitButton" class="btn btn-success-green btnSameSize" onclick="return checkValidationOnSubmit();" />
-                    <input type="button" value="Cancel" class="btn btn-danger btnSameSize" onclick="location.href='@Url.Action("Index", "Home")'" />
+                    <input type="button" name="submit" value="Save Draft" id="savebutton" class="btn btn-primary btnSameSize" onclick="return checkValidationOnSaveDraft();" />
+                    <input type="button" name="submit" value="Submit" id="submitButton" class="btn btn-primary btnSameSize" onclick="return checkValidationOnSubmit();" />
+                    <input type="button" value="Cancel" class="btn btn-primary btnSameSize" onclick="location.href='@Url.Action("Index", "Home")'" />
                 </div>
             </div>
         }
@@ -132,10 +132,9 @@
 <script src="~/js/jquery-2.1.1.js"></script>
 <script src="~/js/plugins/validate/jquery.validate.min.js"></script>
 <script src="~/Scripts/jquery.validate.unobtrusive.js"></script>
-
+<script language="javascript" src="jquery.maxlength.js"></script>
 
 <script type="text/javascript">
-
     $(document).ready(function () {
         $('#ProjectRadioButton').prop('checked', true);
         $("#departmentInput").hide();
@@ -190,7 +189,7 @@
                 for (var key in data) {
                     $('#criteriaTable tr:last')
                         .after('<tr><td class="col-md-6" style="padding-left:2%"><label>' + data[key].Title + '</label></td>'
-                        + '<td class="col-md-6 criteriaComment"><textarea class="form-control" rows="" name=Comments[' + key + '].Comment id="comment"></textarea></td>'
+                        + '<td class="col-md-6 criteriaComment"><textarea class="form-control" rows="" name=Comments[' + key + '].Comment id="comment" , maxlength = 500 }></textarea></td>'
                         + '<td><input type="hidden" name=Comments[' + key + '].Id value=' + data[key].Id + '></td></tr>');
                 }
             }
