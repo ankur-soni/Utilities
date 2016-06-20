@@ -551,7 +551,7 @@ namespace Silicus.EncourageWithAzureAd.Web.Controllers
             else if(result.DepartmentId!=null)
                 projectOrDept = _nominationService.GetDeptNameOfCurrentNomination(nominationId);
 
-            
+
 
             var reviewNominationViewModel = new ReviewSubmitionViewModel()
             {
@@ -562,7 +562,8 @@ namespace Silicus.EncourageWithAzureAd.Web.Controllers
                 Criterias = _nominationService.GetCriteriaForNomination(nominationId),
                 ReviewerId = _nominationService.GetReviewerIdOfCurrentNomination(userEmailAddress),
                 NominationId = result.Id,
-                ManagerComment = result.Comment
+                ManagerComment = result.Comment,
+                IsPLC = Convert.ToBoolean( result.IsPLC )
             };
 
             return View(reviewNominationViewModel);

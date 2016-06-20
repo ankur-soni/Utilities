@@ -33,12 +33,19 @@
             <table class="table table-hover issue-tracker white-bg" style="width:80%">
                 <thead>
                     <tr>
+
+
+
                         <td>
                             <label> Review For:</label>
                         </td>
 
                         <td>
                             @Html.DisplayFor(modelItem => modelItem.NomineeName)
+                            @if (Model.IsPLC == true)
+                            {
+                                <label style="color:red">(PLC Candidate)</label>
+                            }
                         </td>
                     </tr>
                     <tr>
@@ -59,6 +66,7 @@
                             @Html.DisplayFor(modelItem => modelItem.Manager)
                         </td>
                     </tr>
+
                 </thead>
             </table>
             <br />
@@ -89,8 +97,8 @@
                     </tr>
                 </thead>
                 @{
-                                                                var j = 0;
-                                                                var k = 0;
+                    var j = 0;
+                    var k = 0;
                 }
                 @foreach (var item in Model.Criterias)
                 {
@@ -129,7 +137,7 @@
 
                         </tr>
                     </tbody>
-                            j++;
+                    j++;
                 }
                 @if (Model.ManagerComments != null)
                 {
@@ -158,7 +166,7 @@
                     <input type="button" value="Cancel" class="btn btn-primary btnSameSize" onclick="location.href='@Url.Action("ReviewNominations", "Nomination")'" />
                 </div>
             </div>
-        }
+                    }
     </div>
 </div>
 
@@ -169,14 +177,11 @@
 
 <script>
     var totalCredits = 0;
-    $(".onoffswitch-checkbox").change(function ()
-    {
-        if($(this).is(':checked'))
-        {
+    $(".onoffswitch-checkbox").change(function () {
+        if ($(this).is(':checked')) {
             totalCredits++;
         }
-        else if (!$(this).is(':checked'))
-        {
+        else if (!$(this).is(':checked')) {
             totalCredits--;
         }
 
