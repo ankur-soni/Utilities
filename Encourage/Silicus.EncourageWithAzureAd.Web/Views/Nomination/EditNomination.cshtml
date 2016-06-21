@@ -9,6 +9,17 @@
 <script src="~/Scripts/jquery.validate.unobtrusive.js"></script>
 <script src="//code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
 
+
+<style>
+    .page-heading {
+        margin-left: 0%;
+    }
+
+    .navbar-minimalize {
+        margin-left: 35%;
+    }
+</style>
+
 <div class="row border-bottom">
     <nav class="navbar  " role="navigation" style="margin-bottom: 0">
         <div class="navbar-header">
@@ -24,7 +35,7 @@
 <div class="wrapper wrapper-content animated fadeInRight">
     <div class="row" style="width:80%;padding-top:20px;margin-left:3%;">
         <div style="text-align:center;">
-            <label style="color:#0067AA; font-style:italic;padding-bottom:1%;">For  @String.Format("{0:MMMM}", DateTime.Now) - @DateTime.Now.Year</label>
+            <label style="color:#0067AA;padding-bottom:1%;">For  @String.Format("{0:MMMM}", DateTime.Now) - @DateTime.Now.Year</label>
         </div>
         @using (Html.BeginForm("EditSavedNomination", "Nomination", FormMethod.Post, new { id = "editNominationForm" }))
         {
@@ -98,7 +109,7 @@
             <div class="form-group white-bg" style="padding-bottom:10px;padding-top:10px">
                 @Html.Label("Comment", htmlAttributes: new { @class = "control-label col-md-2 requiredfeild", style = "text-align: left" })
                 <div>
-                    @Html.TextAreaFor(model => model.MainComment, new { htmlAttributes = new { @class = "form-control" }, id = "commentBox", style = "min-width: 70%;margin-left:8%", rows = "7", maxlength = 1000 })
+                    @Html.TextAreaFor(model => model.MainComment, new { htmlAttributes = new { @class = "form-control" }, placeholder = "Maximum 1000 words", id = "commentBox", style = "min-width: 70%;margin-left:8%", rows = "7", maxlength = 1000 })
                     <div style="text-align:right;">
                         @Html.ValidationMessageFor(model => model.MainComment, "", new { @class = "text-danger", id = "managerCommentValidationmessage" })
                     </div>

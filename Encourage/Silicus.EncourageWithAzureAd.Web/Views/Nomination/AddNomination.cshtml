@@ -9,7 +9,9 @@
 <div class="row border-bottom">
     <nav class="navbar  " role="navigation" style="margin-bottom: 0">
         <div class="navbar-header">
+            @*<a class="navbar-minimalize minimalize-styl-2 btn btn-primary " href="#"><i class="fa fa-bars"></i> </a>*@
             <a class="navbar-minimalize minimalize-styl-2 btn btn-primary " href="#"><i class="fa fa-bars"></i> </a>
+
         </div>
     </nav>
 </div>
@@ -18,12 +20,25 @@
         <h1>Add Nomination</h1>
     </div>
 </div>
+
+<style>
+    .page-heading {
+        margin-left:0%;
+    }
+
+    .navbar-minimalize{
+    margin-left:35%;
+    }
+</style>
+
+
+
 <div class="wrapper wrapper-content animated fadeInRight">
 
 
     <div class="row" style="width:80%;padding-top:20px;margin-left:3%;">
         <div style="text-align:center;">
-            <label style="color:#0067AA; font-style:italic;padding-bottom:1%;">For  @String.Format("{0:MMMM}", DateTime.Now) - @DateTime.Now.Year</label>
+            <label style="color:#0067AA; padding-bottom:1%;">For @String.Format("{0:MMMM}", DateTime.Now) - @DateTime.Now.Year</label>
         </div>
 
         @using (Html.BeginForm("AddNomination", "Nomination", FormMethod.Post, new { id = "addNominationForm" }))
@@ -88,7 +103,7 @@
             <div class="form-group white-bg" style="padding-top:10px;padding-left:2%">
                 @Html.Label("Comment", htmlAttributes: new { @class = "control-label col-md-2 requiredfeild", style = "text-align: left" })
                 <div>
-                    @Html.TextAreaFor(model => model.MainComment, new { htmlAttributes = new { @class = "form-control" }, id = "managerComment", style = "min-width: 70%;margin-left:8%", rows = "7" , maxlength = 1000 })
+                    @Html.TextAreaFor(model => model.MainComment, new { htmlAttributes = new { @class = "form-control" }, placeholder = "Maximum 1000 words", id = "managerComment", name = "defaultconfig", style = "min-width: 70%;margin-left:8%", rows = "7", maxlength = 1000 })
                     <div style="text-align:right;">
                         @Html.ValidationMessageFor(model => model.MainComment, "", new { @class = "text-danger", id = "managerCommentValidationmessage" })
                     </div>
@@ -97,13 +112,11 @@
             </div>
             <br />
 
-    <div class="form-group" style="padding-bottom:1%" hidden="hidden" id="disclamer">
-      <span style="font-family:  Arial, Helvetica, sans-serif;color:rgba(255, 0, 0, 0.71)">
-          <label>Disclaimer :</label>  Mention your comments against the criteria your nominee fits in. Please note that it’s NOT mandatory to mention comments against each criteria given below. You can leave the comment area blank for the criteria which are not relevant.
-      </span>
-    </div>
-
-
+            <div class="form-group" style="padding-bottom:1%" hidden="hidden" id="disclamer">
+                <span style="font-family:  Arial, Helvetica, sans-serif;color:rgba(255, 0, 0, 0.71)">
+                    <label>Disclaimer :</label>  Mention your comments against the criteria your nominee fits in. Please note that it’s NOT mandatory to mention comments against each criteria given below. You can leave the comment area blank for the criteria which are not relevant.
+                </span>
+            </div>
             <div class="form-group">
                 <div>
                     <div id="Criterias">
@@ -115,8 +128,6 @@
                 </div>
             </div>
             <br />
-
-
             <div class="form-group">
                 <div style="text-align:center;width:100%;">
                     <input type="button" name="submit" value="Save Draft" id="savebutton" class="btn btn-primary btnSameSize" onclick="return checkValidationOnSaveDraft();" />
@@ -128,17 +139,18 @@
     </div>
 </div>
 
-
 <script src="~/js/jquery-2.1.1.js"></script>
 <script src="~/js/plugins/validate/jquery.validate.min.js"></script>
 <script src="~/Scripts/jquery.validate.unobtrusive.js"></script>
-<script language="javascript" src="jquery.maxlength.js"></script>
+<script src="~/js/bootstrap-maxlength.js"></script>
+<script src="~/js/plugins/metisMenu/jquery.metisMenu.js"></script>
+<script src="~/js/plugins/slimscroll/jquery.slimscroll.min.js"></script>
 
 <script type="text/javascript">
     $(document).ready(function () {
         $('#ProjectRadioButton').prop('checked', true);
         $("#departmentInput").hide();
-        $.noConflict();
+      
     })
 
     $("#ProjectRadioButton").change

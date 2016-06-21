@@ -2,13 +2,25 @@
 @using System.Drawing;
 <!DOCTYPE html>
 <!-- Spell Checked and Validated 02/14-->
-<html>
 
+
+
+<style>
+    .page-heading {
+        margin-left: 0%;
+    }
+
+    .navbar-minimalize {
+        margin-left: 35%;
+    }
+</style>
+
+<html>
 <body class="pace-done">
     <div class="row border-bottom">
         <nav class="navbar  " role="navigation" style="margin-bottom: 0">
             <div class="navbar-header">
-                <a class="navbar-minimalize minimalize-styl-2 btn btn-primary " href="#"><i class="fa fa-bars"></i> </a>
+                <a class="navbar-minimalize minimalize-styl-2 btn btn-primary " href="#"><i class="fa fa-bars" style="margin-left:2px;"></i> </a>
             </div>
         </nav>
     </div>
@@ -27,92 +39,93 @@
             }
             <!-- IT STAFF ROW -->
             <div class="row">
-@if (roles == null)
-{
-
-    <div class="col-md-8">
-      
-                    <span style="font-weight:bold;color:red">You are not authorized to view this page, please contact system administrator.</span>
-                
-    </div>
-}
-
-else
-    { 
-                if (roles.Contains("Manager"))
+                @if (roles == null)
                 {
 
-                    <div class="col-md-3">
-                        <div class="ibox float-e-margins">
-                            <div class="ibox-title text-center">
-                                <i class="fa fa-users fa-5x" aria-hidden="true"></i>
-                            </div>
-                            <div class="ibox-footer text-left">
-                                <a href="@Url.Action("AddNomination", "Nomination")" class="btn btn-primary btn-sm dashboardButtons">
-                                    <span style="font-weight:bold">  Nominate </span>
-                                </a>
-                            </div>
-                        </div>
+                    <div class="col-md-8">
+
+                        <span style="font-weight:bold;color:red">You are not authorized to view this page, please contact system administrator.</span>
 
                     </div>
                 }
-                if (roles.Contains("Reviewer"))
+
+                else
                 {
-                    <div class="col-md-3">
-                        <div class="ibox float-e-margins">
-                            <div class="ibox-title text-center">
-                                <i class="fa fa-search fa-5x" aria-hidden="true"></i>
+                    if (roles.Contains("Manager"))
+                    {
+
+                        <div class="col-md-3">
+                            <div class="ibox float-e-margins">
+                                <div class="ibox-title text-center">
+                                    <i class="fa fa-users fa-5x" aria-hidden="true"></i>
+                                </div>
+                                <div class="ibox-footer text-left">
+                                    <a href="@Url.Action("AddNomination", "Nomination")" class="btn btn-primary btn-sm dashboardButtons">
+                                        <span style="font-weight:bold">  Nominate </span>
+                                    </a>
+                                </div>
                             </div>
 
-                            <div class="ibox-footer text-left">
-                                <a href="@Url.Action("ReviewNominations", "Nomination")" class="btn btn-primary btn-sm dashboardButtons">
-                                    <span style="font-weight:bold">Review </span>
-                                </a>
+                        </div>
+                    }
+                    if (roles.Contains("Reviewer"))
+                    {
+                        <div class="col-md-3">
+                            <div class="ibox float-e-margins">
+                                <div class="ibox-title text-center">
+                                    <i class="fa fa-search fa-5x" aria-hidden="true"></i>
+                                </div>
+
+                                <div class="ibox-footer text-left">
+                                    <a href="@Url.Action("ReviewNominations", "Nomination")" class="btn btn-primary btn-sm dashboardButtons">
+                                        <span style="font-weight:bold">Review </span>
+                                    </a>
+                                </div>
                             </div>
+
                         </div>
 
-                    </div>
+                    }
+                    if (roles.Contains("Admin"))
+                    {
+                        <div class="col-md-3">
+                            <div class="ibox float-e-margins">
+                                <div class="ibox-title text-center">
+                                    <i class="fa fa-lock fa-5x" aria-hidden="true"></i>
+                                </div>
 
-                }
-                if (roles.Contains("Admin"))
-                {
-                    <div class="col-md-3">
-                        <div class="ibox float-e-margins">
-                            <div class="ibox-title text-center">
-                                <i class="fa fa-lock fa-5x" aria-hidden="true"></i>
+                                <div class="ibox-footer text-left">
+                                    <a href="@Url.Action("","")" class="btn btn-primary btn-sm dashboardButtons" id="lockNominations">
+                                        <span style="font-weight:bold">Lock Nominations</span>
+                                    </a>
+                                </div>
                             </div>
 
-                            <div class="ibox-footer text-left">
-                                <a href="@Url.Action("","")" class="btn btn-primary btn-sm dashboardButtons" id="lockNominations">
-                                    <span style="font-weight:bold">Lock Nominations</span>
-                                </a>
-                            </div>
                         </div>
+                        <div class="col-md-3">
+                            <div class="ibox float-e-margins">
+                                <div class="ibox-title text-center">
+                                    <i class="fa fa-unlock-alt fa-5x" aria-hidden="true"></i>
+                                </div>
 
-                    </div>
-                    <div class="col-md-3">
-                        <div class="ibox float-e-margins">
-                            <div class="ibox-title text-center">
-                                <i class="fa fa-unlock-alt fa-5x" aria-hidden="true"></i>
+                                <div class="ibox-footer text-left">
+                                    <a href="@Url.Action("","")" class="btn btn-primary btn-sm dashboardButtons" id="unLockNominations">
+                                        <span style="font-weight:bold">Unlock Nominations</span>
+                                    </a>
+                                </div>
                             </div>
 
-                            <div class="ibox-footer text-left">
-                                <a href="@Url.Action("","")" class="btn btn-primary btn-sm dashboardButtons" id="unLockNominations">
-                                    <span style="font-weight:bold">Unlock Nominations</span>
-                                </a>
-                            </div>
                         </div>
-
-                    </div>
-                }
+                    }
                 }  @*end of Else*@
             </div>
             <div class="wrapper wrapper-content animated fadeInRight">
-                @if (Model.NominationList.Count() > 0)
-                {
-                    <span style="font-weight:bold;color:#0067AA;" class="winners">Winners</span>
-                }
-
+                <div class="row">
+                    @if (Model.NominationList.Count() > 0)
+                    {
+                        <span style="font-weight:bold;color:#0067AA;" class="winners">Wall Of Fame</span>
+                    }
+                </div>
                 <div class="row">&nbsp;</div>
                 <div class="row">
                     @{
