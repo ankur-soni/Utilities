@@ -126,9 +126,16 @@ namespace Silicus.Encourage.Services
         {
             var nomination = GetReviewNomination(nominationId);
             string projectName = string.Empty;
+            string departmentName = string.Empty;
             if (nomination.ProjectID != null)
             {
                 projectName = _commonDataBaseContext.Query<Engagement>().Where(e => e.ID == nomination.ProjectID).FirstOrDefault().Name;
+            }
+
+            if (nomination.DepartmentId != null )
+            {
+                departmentName = _commonDataBaseContext.Query<Department>().Where(e => e.ID == nomination.DepartmentId).FirstOrDefault().Name;
+                return departmentName;
             }
 
             return projectName;

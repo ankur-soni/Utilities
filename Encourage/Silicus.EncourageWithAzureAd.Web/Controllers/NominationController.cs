@@ -151,6 +151,7 @@ namespace Silicus.EncourageWithAzureAd.Web.Controllers
                 currentUserId = _awardService.GetUserIdFromEmail("shailendra.birthare@silicus.com");
                 ViewBag.ManagerId = currentUserId;
             }
+
             ViewBag.DepartmentsUnderCurrentUser = new SelectList(_awardService.GetDepartmentsUnderCurrentUserAsManager("tushar.surve@silicus.com"), "Id", "Name");
 
             if (savedNomination.ProjectID != null)
