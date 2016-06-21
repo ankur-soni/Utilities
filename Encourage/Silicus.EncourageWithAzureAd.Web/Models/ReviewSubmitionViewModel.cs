@@ -21,6 +21,8 @@ namespace Silicus.EncourageWithAzureAd.Web.Models
         public IList<ReviewerCommentViewModel> Comments { get; set; }
         public int TotalCredit { get; set; }
 
+        public bool IsPLC { get; set; }
+
         public ReviewSubmitionViewModel()
         {
             Comments = new List<ReviewerCommentViewModel>();   

@@ -151,6 +151,7 @@ namespace Silicus.EncourageWithAzureAd.Web.Controllers
                 currentUserId = _awardService.GetUserIdFromEmail("shailendra.birthare@silicus.com");
                 ViewBag.ManagerId = currentUserId;
             }
+
             ViewBag.DepartmentsUnderCurrentUser = new SelectList(_awardService.GetDepartmentsUnderCurrentUserAsManager("tushar.surve@silicus.com"), "Id", "Name");
 
             if (savedNomination.ProjectID != null)
@@ -551,7 +552,7 @@ namespace Silicus.EncourageWithAzureAd.Web.Controllers
             else if(result.DepartmentId!=null)
                 projectOrDept = _nominationService.GetDeptNameOfCurrentNomination(nominationId);
 
-            
+
 
             var reviewNominationViewModel = new ReviewSubmitionViewModel()
             {
@@ -562,7 +563,8 @@ namespace Silicus.EncourageWithAzureAd.Web.Controllers
                 Criterias = _nominationService.GetCriteriaForNomination(nominationId),
                 ReviewerId = _nominationService.GetReviewerIdOfCurrentNomination(userEmailAddress),
                 NominationId = result.Id,
-                ManagerComment = result.Comment
+                ManagerComment = result.Comment,
+                IsPLC = Convert.ToBoolean( result.IsPLC )
             };
 
             return View(reviewNominationViewModel);

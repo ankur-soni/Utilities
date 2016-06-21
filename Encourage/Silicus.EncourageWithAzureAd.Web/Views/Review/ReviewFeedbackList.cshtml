@@ -164,9 +164,7 @@
                         <a href="@Url.Action("ViewNominationForShortlist", "Review", item)">
                             <span> <i class="fa fa-file-text-o" title="View Nomination" aria-hidden="true" style="font-size:30px;"></i> </span>
                         </a>
-                        
-                        
-                        
+                                                                        
                     </div>
 
                 </div>
@@ -174,8 +172,12 @@
         }
         <br />
     </div>
+    @if ()
+    {
+
+    }
     <div style="text-align:center;width:80%;">
-        <input type="button" value="Reject All" class="btn btn-primary btnSameSize" id="rejectAll" onclick="return rejectAllNominations()" style=" margin-left 3%;" />
+               <input type="button" value="Reject All" class="btn btn-primary btnSameSize" id="rejectAll" onclick="return rejectAllNominations()" style="margin-left:3%;" />
     </div>
     <div class="row">&nbsp;</div>
     <div class="row">&nbsp;</div>
@@ -191,7 +193,7 @@
     function rejectAllNominations() {
         swal({
             title: "Reject all nominations",
-            text: "Do you want to raject all nominations?",
+            text: "Do you want to reject all nominations?",
             type: "info",
             showCancelButton: true,
             confirmButtonColor: "#88a364",

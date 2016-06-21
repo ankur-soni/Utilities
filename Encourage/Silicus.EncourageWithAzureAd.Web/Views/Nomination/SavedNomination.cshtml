@@ -35,8 +35,15 @@
 </div>
 <div class="wrapper wrapper-content animated fadeInRight" style="margin-left:7%;">
 
-    <div class=" row">
-        @foreach (var item in Model)
+    <div class="row">
+
+        @if (Model.Count() == 0)
+        {
+            <span>Currently, there is no candidate is avilable.</span>
+        }
+        else {
+      
+      foreach (var item in Model)
         {
             var borderColor = string.Empty;
             if (item.IsSubmitted == true)
@@ -96,7 +103,7 @@
             </div>
 
         }
-
+        }
     </div>
 
 </div>
