@@ -13,10 +13,10 @@ namespace Silicus.EncourageWithAzureAd.Web
         public void Configuration(IAppBuilder app)
         {
             ConfigureAuth(app);
-            GlobalConfiguration.Configuration.UseSqlServerStorage(@"Data Source=SILICUS505\SQLEXPRESS;Integrated Security=True;");
-            app.UseHangfireDashboard();
-            app.UseHangfireServer();
-            HangfireConfig.StartBackgroundScheduling();
+            //GlobalConfiguration.Configuration.UseSqlServerStorage(@"Data Source=SILICUS505\SQLEXPRESS;Integrated Security=True;");
+            //app.UseHangfireDashboard();
+            //app.UseHangfireServer();
+            //HangfireConfig.StartBackgroundScheduling();
         }
     }
 }

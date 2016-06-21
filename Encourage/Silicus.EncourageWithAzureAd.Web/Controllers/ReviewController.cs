@@ -1,6 +1,7 @@
 ﻿using Silicus.Encourage.DAL.Interfaces;
 using Silicus.Encourage.Models;
 using Silicus.Encourage.Services.Interface;
+using Silicus.Encourage.Web.Filters;
 using Silicus.EncourageWithAzureAd.Web.Models;
 using Silicus.UtilityContainer.Entities;
 using Silicus.UtilityContainer.Models.DataObjects;
@@ -38,7 +39,7 @@ namespace Silicus.EncourageWithAzureAd.Web.Controllers
         }
 
         [HttpGet]
-       // [CustomeAuthorize(AllowedRole = "Admin")]
+        [CustomeAuthorize(AllowedRole = "Admin")]
         public ActionResult ReviewFeedbackList()
         {
             var reviewFeedbacks = new List<ReviewFeedbackListViewModel>();
@@ -92,7 +93,7 @@ namespace Silicus.EncourageWithAzureAd.Web.Controllers
             return View(reviewFeedbacks);
         }
 
-      //  [CustomeAuthorize(AllowedRole = "Admin")]
+        [CustomeAuthorize(AllowedRole = "Admin")]
         public ActionResult RejectAll()
         {
             var rejectAllRviews = _encourageDatabaseContext.Query<Review>().Where(r => r.IsSubmited == true).ToList();
@@ -122,7 +123,7 @@ namespace Silicus.EncourageWithAzureAd.Web.Controllers
 
 
         [HttpGet]
-      //  [CustomeAuthorize(AllowedRole = "Admin")]
+      [CustomeAuthorize(AllowedRole = "Admin")]
         public ActionResult ViewNominationForShortlist(ReviewFeedbackListViewModel nominationModel)
         {
             var reviews = _reviewService.GetReviewsForNomination(nominationModel.NominationId).ToList();
@@ -177,7 +178,7 @@ namespace Silicus.EncourageWithAzureAd.Web.Controllers
         }
 
         [HttpPost]
-       // [CustomeAuthorize(AllowedRole = "Admin")]
+       [CustomeAuthorize(AllowedRole = "Admin")]
         public bool ShortlistNomination(int nominationId)
         {
             try
@@ -191,7 +192,7 @@ namespace Silicus.EncourageWithAzureAd.Web.Controllers
             }
         }
 
-//[CustomeAuthorize(AllowedRole = "Admin")]
+ [CustomeAuthorize(AllowedRole = "Admin")]
         public ActionResult RemoveShortlistNomination(int nominationId)
         {
             try
@@ -206,7 +207,7 @@ namespace Silicus.EncourageWithAzureAd.Web.Controllers
         }
 
         [HttpPost]
-       // [CustomeAuthorize(AllowedRole = "Admin")]
+       [CustomeAuthorize(AllowedRole = "Admin")]
         public bool SelectWinner(int nominationId,string winningComment)
         {
             try

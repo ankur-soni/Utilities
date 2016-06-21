@@ -272,6 +272,7 @@
     <Compile Include="Controllers\QueryableExtensions.cs" />
     <Compile Include="Controllers\ReviewController.cs" />
     <Compile Include="Controllers\UserProfileController.cs" />
+    <Compile Include="Filters\CustomeAuthorizeAttribute.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
