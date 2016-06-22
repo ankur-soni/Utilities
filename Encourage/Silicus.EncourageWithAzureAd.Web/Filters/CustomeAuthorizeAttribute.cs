@@ -79,7 +79,7 @@ namespace Silicus.Encourage.Web.Filters
 
             }
 
-                        return status;
+            return status;
 
         }
     }

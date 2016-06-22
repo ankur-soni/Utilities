@@ -149,8 +149,22 @@
 
                 }
                 else {
-                    swal("Role added sucessfully!!");
+                   
+                    setTimeout(function () {
+                        swal({
+                            title: "Sucess",
+                            text: "Role added sucessfully.",
+                            type: "success",
+                            confirmButtonText: "OK"
+                        },
+                        function (isConfirm) {
+                            if (isConfirm) {
+                                window.location.href = "@Url.Action("AddRolesToUserForAUtility", "Home")";
+                            }
+                        });
+                    }, 10000)
                 }
+               
 
             });
 
