@@ -15,7 +15,7 @@ namespace Silicus.Encourage.Services.Interface
         List<Engagement> GetProjectsUnderCurrentUserAsManager(string email);
         List<Department> GetDepartmentsUnderCurrentUserAsManager(string email);
         List<Criteria> GetCriteriasForAward(int awardId);
-        List<User> GetResourcesInEngagement(int projectId, int userIdToExcept);
+        List<User> GetResourcesInEngagement(int projectId, int userIdToExcept,int awardId);
         List<User> GetResourcesUnderDepartment(int DepartmentId, int userIdToExcept);
         List<User> GetResourcesForEditInEngagement(int engagementId, int userIdToExcept);
         bool AddNomination(Nomination nomination);

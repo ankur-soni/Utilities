@@ -1,4 +1,5 @@
 ﻿
+
 using Silicus.Encourage.Models;
 using System;
 using System.Collections.Generic;
@@ -22,6 +23,8 @@ namespace Silicus.EncourageWithAzureAd.Web.Models
         public int TotalCredit { get; set; }
 
         public bool IsPLC { get; set; }
+
+        public bool? IsDrafted { get; set; }
 
         public ReviewSubmitionViewModel()
         {

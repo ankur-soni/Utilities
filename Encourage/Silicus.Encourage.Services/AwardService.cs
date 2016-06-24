@@ -17,7 +17,7 @@ namespace Silicus.Encourage.Services
         private readonly Silicus.UtilityContainer.Entities.ICommonDataBaseContext _CommonDbContext;
 
 
-        public AwardService(IDataContextFactory contextFactory, ICommonDbService commonDbService,INominationService nominationService)
+        public AwardService(IDataContextFactory contextFactory, ICommonDbService commonDbService, INominationService nominationService)
         {
             _contextFactory = contextFactory;
             _encourageDbcontext = _contextFactory.CreateEncourageDbContext();
@@ -48,7 +48,7 @@ namespace Silicus.Encourage.Services
         {
             return _encourageDbcontext.Query<Nomination>("Award").Where(nomination => nomination.Id == nominationId).SingleOrDefault().Award;
         }
-        
+
         public List<Engagement> GetProjectsUnderCurrentUserAsManager(string email)
         {
             var currentUser = _CommonDbContext.Query<User>().Where(user => user.EmailAddress.Equals(email)).SingleOrDefault();
@@ -110,7 +110,7 @@ namespace Silicus.Encourage.Services
             return criteriaList;
         }
 
-        public List<User> GetResourcesInEngagement(int engagementId, int userIdToExcept)
+        public List<User> GetResourcesInEngagement(int engagementId, int userIdToExcept, int awardId)
         {
             var userInEngagement = from engagementRole in _CommonDbContext.Query<EngagementRole>()
                                    join resourceHistory in _CommonDbContext.Query<ResourceHistory>() on engagementRole.ResourceHistoryID equals resourceHistory.ID
@@ -119,11 +119,13 @@ namespace Silicus.Encourage.Services
                                    where engagementRole.EngagementID == engagementId
                                    select user;
 
-           
-            
+            var currentAwardName = _encourageDbcontext.Query<Award>().Where(a => a.Id == awardId).FirstOrDefault().Name;
+
             var currentUser = _CommonDbContext.Query<User>().Where(user => user.ID == userIdToExcept);
             var currentUserId = currentUser.FirstOrDefault().ID;
-            var recourcesInEnggementUnderCurrentManger = _encourageDbcontext.Query<Nomination>().Where(n => n.ProjectID == engagementId && n.ManagerId == currentUserId );
+
+            var recourcesInEnggementUnderCurrentManger = _encourageDbcontext.Query<Nomination>().Where(n => n.ProjectID == engagementId && n.ManagerId == currentUserId && n.AwardId == awardId).ToList();
+
             userInEngagement = userInEngagement.Except(currentUser);
             var userList = userInEngagement.ToList();
             foreach (var item in recourcesInEnggementUnderCurrentManger)
@@ -137,12 +139,20 @@ namespace Silicus.Encourage.Services
             foreach (var winner in winners)
             {
                 var noOfMonthsFromLastWinningDate = (DateTime.Now.Year - winner.WinningDate.Value.Year) * 12 + (DateTime.Now.Month - winner.WinningDate.Value.Month);
+                var winnernomination = _nominationService.GetNomination(winner.NominationId);
+
+                var previousAwardName = _encourageDbcontext.Query<Award>().Where(a => a.Id == winnernomination.AwardId).FirstOrDefault().Name;
+
+                var previousAwardId = winnernomination.AwardId;
+
                 if (noOfMonthsFromLastWinningDate <= 12)
                 {
-                    winnersWithin12Months.Add(winner);
-                    winnerNominationsWithin12Months.Add(_nominationService.GetNomination(winner.NominationId));
+                    if (previousAwardId == awardId)
+                    {
+                 
+                        winnerNominationsWithin12Months.Add(_nominationService.GetNomination(winner.NominationId));
+                    }
                 }
-               
 
             }
 
@@ -151,7 +161,7 @@ namespace Silicus.Encourage.Services
                 userList.RemoveAll(user => user.ID == winnerNomination.UserId);
             }
             //End
-            
+
 
             return userList;
         }
@@ -169,7 +179,7 @@ namespace Silicus.Encourage.Services
 
 
             var currentUser = _CommonDbContext.Query<User>().Where(user => user.ID == userIdToExcept);
-           
+
 
 
             userInEngagement = userInEngagement.Except(currentUser);

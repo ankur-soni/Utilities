@@ -9,6 +9,7 @@ using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Web;
 
 namespace Silicus.Encourage.Services
 {
@@ -40,7 +41,7 @@ namespace Silicus.Encourage.Services
 
         public List<Nomination> GetAllSubmitedNonreviewedNominations(int reviewerId)
         {
-            var alreadyReviewedRecords = _encourageDatabaseContext.Query<Review>().Where(r => r.ReviewerId == reviewerId).ToList();
+            var alreadyReviewedRecords = _encourageDatabaseContext.Query<Review>().Where(r => r.ReviewerId == reviewerId && r.IsSubmited == true).ToList();
             var finalNomination = new List<Nomination>();
             var allNominations = _encourageDatabaseContext.Query<Nomination>().Where(N => N.IsSubmitted == true && N.NominationDate.Value.Month == (DateTime.Now.Month) && N.NominationDate.Value.Year == DateTime.Now.Year).ToList();
 
@@ -172,7 +173,7 @@ namespace Silicus.Encourage.Services
 
         public List<Nomination> GetAllSubmitedReviewedNominations(int reviewerId)
         {
-            var alreadyReviewedRecords = _encourageDatabaseContext.Query<Review>().Where(r => r.ReviewerId == reviewerId).ToList();
+            var alreadyReviewedRecords = _encourageDatabaseContext.Query<Review>().Where(r => r.ReviewerId == reviewerId && r.IsSubmited == true).ToList();
             var finalNominations = new List<Nomination>();
 
 
@@ -218,7 +219,12 @@ namespace Silicus.Encourage.Services
             _encourageDatabaseContext.Delete<Nomination>(nominationToDelete);
         }
 
+        public bool checkReviewIsDrafted(int nominationId)
+        {
+            var reviewerId = GetReviewerIdOfCurrentNomination(HttpContext.Current.User.Identity.Name);
+            var data = _encourageDatabaseContext.Query<Review>().Where(review => review.NominationId == nominationId && review.ReviewerId == reviewerId).ToList();
 
-        
+            return data.Count() == 1 ? true:false;
+        }
     }
 }

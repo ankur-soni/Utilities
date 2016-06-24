@@ -262,7 +262,7 @@ namespace Silicus.EncourageWithAzureAd.Web.Controllers
             }
        
 
-            var usersInEngagement = _awardService.GetResourcesInEngagement(engagementID, managerId);
+            var usersInEngagement = _awardService.GetResourcesInEngagement(engagementID, managerId,awardId);
             return Json(usersInEngagement, JsonRequestBehavior.AllowGet);
         }
 
@@ -516,6 +516,10 @@ namespace Silicus.EncourageWithAzureAd.Web.Controllers
            
             foreach (var nomination in nominations)
             {
+
+               
+
+
                 var awardName = _encourageDatabaseContext.Query<Award>().Where(a => a.Id == nomination.AwardId).FirstOrDefault().Code;
                 var nomineeName = _commonDbContext.Query<User>().Where(u => u.ID == nomination.UserId).FirstOrDefault();
                 var nominationTime = _encourageDatabaseContext.Query<Nomination>().Where(n => n.Id == nomination.Id).FirstOrDefault().NominationDate;
@@ -526,8 +530,10 @@ namespace Silicus.EncourageWithAzureAd.Web.Controllers
                     AwardName = awardName,
                     DisplayName = nomineeName.DisplayName,
                     NominationTime = nominationTimeToDisplay,
-                    Id = nomination.Id
-                };
+                    Id = nomination.Id,
+                    IsDrafted = _nominationService.checkReviewIsDrafted(nomination.Id)
+
+            };
                 reviewNominations.Add(reviewNominationViewModel);
             }
             return View(reviewNominations);
@@ -596,6 +602,7 @@ namespace Silicus.EncourageWithAzureAd.Web.Controllers
                 review.IsSubmited = true;
             }
 
+
             _nominationService.AddReviewForCurrentNomination(review);
 
             foreach (var item in model.Comments)
@@ -621,7 +628,6 @@ namespace Silicus.EncourageWithAzureAd.Web.Controllers
         {
 
             var reviewedNominations = new List<NominationListViewModel>();
-            // var nominations = _nominationService.GetAllSubmitedReviewedNominations(_nominationService.GetReviewerIdOfCurrentNomination( Session["UserEmailAddress"] as string));
             var reviewerId = _nominationService.GetReviewerIdOfCurrentNomination(User.Identity.Name);
             if (reviewerId == 0)
             {

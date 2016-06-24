@@ -47,21 +47,29 @@
         }
 
         else {
-       
-        foreach (var item in Model)
-        {
-            Random randomGen = new Random();
-            KnownColor[] names = (KnownColor[])Enum.GetValues(typeof(KnownColor));
-            KnownColor randomColorName = names[randomGen.Next(names.Length)];
-            Color randomColor = Color.FromKnownColor(randomColorName);
 
-            <div class="col-md-3 card white-bg" style="margin-left:2%;">
+            foreach (var item in Model)
+            {
+
+                var myBorderColor = string.Empty;
+                var title = "Review Nomination";
+                var actionname = "ReviewNomination";
+                if (item.IsDrafted == true)
+                {
+                    myBorderColor = "#F8AC59";
+                    actionname = "EditReview";
+                    title = "Edit review";
+                   
+                }
+
+                Random randomGen = new Random();
+                KnownColor[] names = (KnownColor[])Enum.GetValues(typeof(KnownColor));
+                KnownColor randomColorName = names[randomGen.Next(names.Length)];
+                Color randomColor = Color.FromKnownColor(randomColorName);
+
+            <div class="col-md-3 card white-bg" style="margin-left:2%;border-color:@myBorderColor" >
 
                 <div class="cardHeader text-center">
-
-                    @*<div style="background-color:@randomColor.Name;height:60px;margin-top:10px;padding-left:10px;padding-bottom:70px; font-weight:bold;font-size:50px;text-align:left" class="col-md-5">
-                            @Html.DisplayFor(modelItem => item.Intials)
-                        </div>*@
 
                     <div>
                         <label class="cardHeaderEmpName">  @Html.DisplayFor(modelItem => item.DisplayName)</label>
@@ -74,10 +82,10 @@
                     </div>
 
                 </div>
-                <div class="cardFooter text-right">
+                <div class="cardFooter text-right" style="border-color:@myBorderColor">
 
-                    <a href="@Url.Action("ReviewNomination", "Nomination", new { nominationId = item.Id })">
-                        <span> <i class=" fa fa-search" style="font-size:30px;" title="Review Nomination" aria-hidden="true"></i> </span>
+                    <a href="@Url.Action(actionname, "Nomination", new { nominationId = item.Id })">
+                        <span> <i class="fa fa-search" style="font-size:30px;" title="@title" aria-hidden="true"></i> </span>
                     </a>
 
                 </div>

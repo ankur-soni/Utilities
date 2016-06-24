@@ -119,7 +119,7 @@
       <HintPath>..\Silicus.Encourage.Services\bin\Debug\Silicus.Encourage.DAL.dll</HintPath>
     </Reference>
     <Reference Include="Silicus.Encourage.Models">
-      <HintPath>..\Silicus.Encourage.Services\bin\Debug\Silicus.Encourage.Models.dll</HintPath>
+      <HintPath>..\Silicus.Encourage.Models\bin\Debug\Silicus.Encourage.Models.dll</HintPath>
     </Reference>
     <Reference Include="Silicus.Encourage.Services, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>

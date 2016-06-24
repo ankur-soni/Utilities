@@ -33,6 +33,8 @@ namespace Silicus.Encourage.Services.Interface
         void UpdateNomination(Nomination model);
         void DeletePrevoiusManagerComments(int nominationID);
         void DiscardNomination(int nominationId);
+
+        bool checkReviewIsDrafted(int nominationId);
         
     }
 }

@@ -14,5 +14,7 @@ namespace Silicus.EncourageWithAzureAd.Web.Models
         public string Intials { get; set; }
         public int ManagerId { get; set; }
         public bool? IsSubmitted { get; set; }
+        public bool? IsDrafted { get; set; }
+
     }
 }

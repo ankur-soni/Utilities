@@ -68,6 +68,23 @@
 
                         </div>
                     }
+                    if (roles.Contains("Manager"))
+                    {
+
+                        <div class="col-md-3">
+                            <div class="ibox float-e-margins">
+                                <div class="ibox-title text-center">
+                                    <i class="fa fa-users fa-5x" aria-hidden="true"></i>
+                                </div>
+                                <div class="ibox-footer text-left">
+                                    <a href="@Url.Action("SavedNomination", "Nomination")" class="btn btn-primary btn-sm dashboardButtons">
+                                        <span style="font-weight:bold">  Edit nominations </span>
+                                    </a>
+                                </div>
+                            </div>
+
+                        </div>
+                    }
                     if (roles.Contains("Reviewer"))
                     {
                         <div class="col-md-3">
@@ -78,7 +95,25 @@
 
                                 <div class="ibox-footer text-left">
                                     <a href="@Url.Action("ReviewNominations", "Nomination")" class="btn btn-primary btn-sm dashboardButtons">
-                                        <span style="font-weight:bold">Review </span>
+                                        <span style="font-weight:bold">Pending Reviews</span>
+                                    </a>
+                                </div>
+                            </div>
+
+                        </div>
+
+                    }
+                    if (roles.Contains("Reviewer"))
+                    {
+                        <div class="col-md-3">
+                            <div class="ibox float-e-margins">
+                                <div class="ibox-title text-center">
+                                    <i class="fa fa-search fa-5x" aria-hidden="true"></i>
+                                </div>
+
+                                <div class="ibox-footer text-left">
+                                    <a href="@Url.Action("SavedReviews", "Nomination")" class="btn btn-primary btn-sm dashboardButtons">
+                                        <span style="font-weight:bold"> Done Reviews</span>
                                     </a>
                                 </div>
                             </div>
