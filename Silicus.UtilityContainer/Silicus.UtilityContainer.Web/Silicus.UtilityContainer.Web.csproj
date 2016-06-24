@@ -109,7 +109,7 @@
       <HintPath>..\Silicus.UtilityContainer.Security\bin\Debug\Silicus.UtilityContainer.Security.dll</HintPath>
     </Reference>
     <Reference Include="Silicus.UtilityContainer.Services">
-      <HintPath>..\Silicus.UtilityContainer.Service\bin\Debug\Silicus.UtilityContainer.Services.dll</HintPath>
+      <HintPath>..\Silicus.UtilityContainer.Service\obj\Debug\Silicus.UtilityContainer.Services.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
@@ -773,7 +773,7 @@
     <WCFMetadata Include="Service References\" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\HangFireBackgroundTasks\Silicus.UtilityContainer.HangFireBackgroundTasks.csproj">
+    <ProjectReference Include="..\Silicus.UtilityContainer.HangFireBackgroundTasks\Silicus.UtilityContainer.HangFireBackgroundTasks.csproj">
       <Project>{B4C2BF2C-E119-4691-9923-0EDC24BD95E2}</Project>
       <Name>Silicus.UtilityContainer.HangFireBackgroundTasks</Name>
     </ProjectReference>
