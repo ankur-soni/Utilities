@@ -23,6 +23,7 @@ namespace Silicus.EncourageWithAzureAd.Web.Hangfire
                                  "\nSilicus Rewards and Recognition Team\n" +
                                  "This is an auto-generated mail.";
 
+
             var smtp = new SmtpClient
             {
                 Host = "smtp.gmail.com",

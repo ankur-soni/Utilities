@@ -17,5 +17,7 @@ namespace Silicus.UtilityContainer.Services.Interfaces
         User FindUserByEmail(string email);
         //    void AddRoleToUserForAllUtility(User user);
         string FindDisplayNameFromEmail(string email);
+
+       List<String> GetAllManagersEmailAddresses();
     }
 }
