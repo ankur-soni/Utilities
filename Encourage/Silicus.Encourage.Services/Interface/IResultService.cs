@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Silicus.Encourage.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -12,5 +13,7 @@ namespace Silicus.Encourage.Services.Interface
         void UnShortlistNomination(int nominationId);
         void SelectWinner(int nominationId,string winningComment);
         int IsShortlistedOrWinner(int nominationId);
+
+      
     }
 }

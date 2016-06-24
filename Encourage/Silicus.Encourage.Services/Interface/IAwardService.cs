@@ -22,5 +22,7 @@ namespace Silicus.Encourage.Services.Interface
         int GetUserIdFromEmail(string email);
 
 
+
+
     }
 }

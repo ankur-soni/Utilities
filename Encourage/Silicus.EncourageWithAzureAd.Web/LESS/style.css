@@ -2331,7 +2331,7 @@ a.DTTT_button {
 /* SWITCHES */
 .onoffswitch {
     position: relative;
-    width: 54px;
+    width: 66px;
     -webkit-user-select: none;
     -moz-user-select: none;
     -ms-user-select: none;
@@ -2352,7 +2352,7 @@ a.DTTT_button {
 .onoffswitch-inner {
     display: block;
     width: 200%;
-    margin-left: -100%;
+    margin-left: -90%;
     -moz-transition: margin 0.3s ease-in 0s;
     -webkit-transition: margin 0.3s ease-in 0s;
     -o-transition: margin 0.3s ease-in 0s;
@@ -2380,24 +2380,25 @@ a.DTTT_button {
         content: "Remove";
         font-weight:bold;
         padding-left: 2px;
+        padding-right: 7px;
         background-color: #1ab394;
         color: #FFFFFF;
-        font-size:8px;
+        font-size:10px;
     }
 
     .onoffswitch-inner:after {
         content: "ADD";
         font-weight:bold;
-        padding-right: 7px;
+        padding-right: 10px;
         background-color: #FFFFFF;
         color: #1ab394;
         text-align: right;
-        font-size:8px;
+        font-size:10px;
     }
 
 .onoffswitch-switch {
     display: block;
-    width: 18px;
+    width: 23px;
     margin: 0px;
     background: #FFFFFF;
     border: 2px solid #1ab394;

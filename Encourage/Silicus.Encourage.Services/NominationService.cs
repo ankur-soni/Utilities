@@ -217,5 +217,8 @@ namespace Silicus.Encourage.Services
             var nominationToDelete = _encourageDatabaseContext.Query<Nomination>().Where(nomination => nomination.Id == nominationId).SingleOrDefault();
             _encourageDatabaseContext.Delete<Nomination>(nominationToDelete);
         }
+
+
+        
     }
 }

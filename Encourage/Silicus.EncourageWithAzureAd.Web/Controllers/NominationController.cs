@@ -46,7 +46,9 @@ namespace Silicus.EncourageWithAzureAd.Web.Controllers
         {
 
             var userEmailAddress = User.Identity.Name;
-            
+          
+          
+
             ViewBag.Awards = new SelectList(_awardService.GetAllAwards(), "Id", "Name");
 
             var projects = _awardService.GetProjectsUnderCurrentUserAsManager(userEmailAddress);

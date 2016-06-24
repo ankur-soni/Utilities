@@ -150,19 +150,20 @@
                 }
                 else {
                    
-                    setTimeout(function () {
+                    @*setTimeout(function () {
                         swal({
                             title: "Sucess",
                             text: "Role added sucessfully.",
                             type: "success",
                             confirmButtonText: "OK"
                         },
-                        function (isConfirm) {
-                            if (isConfirm) {
-                                window.location.href = "@Url.Action("AddRolesToUserForAUtility", "Home")";
-                            }
-                        });
-                    }, 10000)
+                       function (isConfirm) {
+                           if (isConfirm) {
+                               window.location.href = "@Url.Action("AddRolesToUserForAUtility", "Home")";
+                           }
+                       });
+                    }, 10000);*@
+                    alert("Role to a user added sucessfully.");
                 }
                
 

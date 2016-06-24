@@ -83,5 +83,7 @@ namespace Silicus.Encourage.Services
             else
                 return 0;
         }
+
+        
     }
 }
