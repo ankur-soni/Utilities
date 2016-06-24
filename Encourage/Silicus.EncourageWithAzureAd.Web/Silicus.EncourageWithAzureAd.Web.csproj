@@ -684,6 +684,9 @@
     <Content Include="js\plugins\sparkline\_notes\dwsync.xml" />
     <Content Include="js\plugins\staps\jquery.steps.min.js" />
     <Content Include="js\plugins\staps\_notes\dwsync.xml" />
+    <Content Include="js\plugins\sweetalert2\sweetalert2.css" />
+    <Content Include="js\plugins\sweetalert2\sweetalert2.min.css" />
+    <Content Include="js\plugins\sweetalert2\sweetalert2.min.js" />
     <Content Include="js\plugins\sweetalert\sweetalert.min.js" />
     <Content Include="js\plugins\sweetalert\_notes\dwsync.xml" />
     <Content Include="js\plugins\switchery\switchery.js" />
