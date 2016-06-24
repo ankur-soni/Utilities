@@ -46,6 +46,14 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Hangfire.Core, Version=1.5.8.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Hangfire.Core.1.5.8\lib\net45\Hangfire.Core.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Hangfire.SqlServer, Version=1.5.8.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Hangfire.SqlServer.1.5.8\lib\net45\Hangfire.SqlServer.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="LightInject, Version=3.0.1.7, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\LightInject.3.0.1.7\lib\net45\LightInject.dll</HintPath>
       <Private>True</Private>
@@ -101,7 +109,7 @@
       <HintPath>..\Silicus.UtilityContainer.Security\bin\Debug\Silicus.UtilityContainer.Security.dll</HintPath>
     </Reference>
     <Reference Include="Silicus.UtilityContainer.Services">
-      <HintPath>..\Silicus.UtilityContainer.Service\bin\Debug\Silicus.UtilityContainer.Services.dll</HintPath>
+      <HintPath>..\Silicus.UtilityContainer.Service\obj\Debug\Silicus.UtilityContainer.Services.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
@@ -227,6 +235,7 @@
   <ItemGroup>
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
+    <Compile Include="App_Start\HangfireConfig.cs" />
     <Compile Include="App_Start\LightInjectWebCommon.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\Startup.Auth.cs" />
@@ -762,6 +771,12 @@
   </ItemGroup>
   <ItemGroup>
     <WCFMetadata Include="Service References\" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Silicus.UtilityContainer.HangFireBackgroundTasks\Silicus.UtilityContainer.HangFireBackgroundTasks.csproj">
+      <Project>{B4C2BF2C-E119-4691-9923-0EDC24BD95E2}</Project>
+      <Name>Silicus.UtilityContainer.HangFireBackgroundTasks</Name>
+    </ProjectReference>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

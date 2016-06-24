@@ -47,7 +47,7 @@
 
             <div class="white-bg" style="padding-left:2%">
                 @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-                <div class="form-group" style="padding-top:10px">
+                <div class="form-group row" style="padding-top:10px">
 
                     @Html.Label("Nomination Category", htmlAttributes: new { @class = "control-label col-md-3 requiredfeild", style = "text-align: left" })
                     <div>
@@ -56,7 +56,7 @@
                     </div>
                 </div>
 
-                <div class="form-group">
+                <div class="form-group row">
                     @Html.Label("Resource From", htmlAttributes: new { @class = "control-label col-md-3 requiredfeild", style = "text-align: left" })
                     <div>
                         <label> @Html.RadioButtonFor(model => model.SelectResourcesBy, "Project", new { htmlAttributes = new { @class = "form-control" }, id = "ProjectRadioButton", value = "Project" })Project</label>
@@ -67,7 +67,7 @@
 
                 <input type="hidden" name=ManagerId id="ManagerId" value=@ViewBag.ManagerId>
 
-                <div class="form-group" id="projectInput">
+                <div class="form-group row" id="projectInput">
                     @Html.Label("Project", htmlAttributes: new { @class = "control-label col-md-3 requiredfeild", style = "text-align: left" })
                     <div>
                         @Html.DropDownListFor(model => model.ProjectID, @ViewBag.ProjectsUnderCurrentUser as SelectList, "Select", new { htmlAttributes = new { @class = "form-control" }, id = "SelectedProject", style = "width:25%" })
@@ -75,7 +75,7 @@
                     </div>
                 </div>
 
-                <div class="form-group" id="departmentInput">
+                <div class="form-group row" id="departmentInput">
                     @Html.Label("Department", htmlAttributes: new { @class = "control-label col-md-3 requiredfeild", style = "text-align: left" })
                     <div>
                         @Html.DropDownListFor(model => model.DepartmentId, @ViewBag.DepartmentsUnderCurrentUser as SelectList, "Select", new { htmlAttributes = new { @class = "form-control" }, id = "SelectedDepartment", style = "width:25%" })
@@ -83,7 +83,7 @@
                     </div>
                 </div>
 
-                <div class="form-group">
+                <div class="form-group row">
                     @Html.Label("Resource Name", htmlAttributes: new { @class = "control-label col-md-3 requiredfeild", style = "text-align: left" })
                     <div>
                         @Html.DropDownListFor(model => model.ResourceId, @ViewBag.Resources as SelectList, "Select", new { htmlAttributes = new { @class = "form-control" }, id = "Resources", style = "width:25%" })
@@ -91,7 +91,7 @@
                     </div>
                 </div>
 
-                <div class="form-group" style="padding-bottom:10px">
+                <div class="form-group row" style="padding-bottom:10px">
                     @*@Html.Label("Is PLC ", htmlAttributes: new { @class = "control-label col-md-3", style = "text-align: left" })*@
                     <label class="control-label col-md-3" style="text-align: left">PLC<span style="color:#0067AA;"> <i class="fa fa-question-circle" title="Programmable logic controller" aria-hidden="true"></i></span></label>
                     <div>
@@ -100,14 +100,16 @@
                 </div>
             </div>
             <br />
-            <div class="form-group white-bg" style="padding-top:10px;padding-left:2%">
-                @Html.Label("Comment", htmlAttributes: new { @class = "control-label col-md-2 requiredfeild", style = "text-align: left" })
-                <div>
-                    @Html.TextAreaFor(model => model.MainComment, new { htmlAttributes = new { @class = "form-control" }, placeholder = "Maximum 1000 words", id = "managerComment", name = "defaultconfig", style = "min-width: 70%;margin-left:8%", rows = "7", maxlength = 1000 })
-                    <div style="text-align:right;">
-                        @Html.ValidationMessageFor(model => model.MainComment, "", new { @class = "text-danger", id = "managerCommentValidationmessage" })
+            <div class="form-group white-bg" style="padding-top:10px;padding-left:2%;">
+                <div class="row">
+                    @Html.Label("Comment", htmlAttributes: new { @class = "control-label col-md-2 requiredfeild", style = "text-align: left" })
+                    <div>
+                        @Html.TextAreaFor(model => model.MainComment, new { htmlAttributes = new { @class = "form-control" }, placeholder = "Maximum 1000 words", id = "managerComment", name = "defaultconfig", style = "min-width: 70%;margin-left:8%", rows = "7", maxlength = 1000 })
+                        <div style="text-align:right;">
+                            @Html.ValidationMessageFor(model => model.MainComment, "", new { @class = "text-danger", id = "managerCommentValidationmessage" })
+                        </div>
+                        <div class="row">&nbsp;</div>
                     </div>
-                    <div class="row">&nbsp;</div>
                 </div>
             </div>
             <br />
@@ -128,7 +130,7 @@
                 </div>
             </div>
             <br />
-            <div class="form-group">
+            <div class="form-group row">
                 <div style="text-align:center;width:100%;">
                     <input type="button" name="submit" value="Save Draft" id="savebutton" class="btn btn-primary btnSameSize" onclick="return checkValidationOnSaveDraft();" />
                     <input type="button" name="submit" value="Submit" id="submitButton" class="btn btn-primary btnSameSize" onclick="return checkValidationOnSubmit();" />
@@ -300,7 +302,7 @@
                                },
                                function () {
                                    if (isConfirm) {
-                                       window.location.href = '@Url.Action("Index", "Home")';
+                                       window.location.href = '@Url.Action("SavedNomination", "Nomination")';
                                    }
                                });
                            },
@@ -351,7 +353,7 @@
                            },
                            function () {
                                if (isConfirm) {
-                                   window.location.href = '@Url.Action("Index", "Home")';
+                                   window.location.href = '@Url.Action("SavedNomination", "Nomination")';
                                }
                            });
                        },

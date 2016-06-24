@@ -101,5 +101,19 @@ namespace Silicus.UtilityContainer.Services
             var userDisplayName = _commonDBContext.Query<User>().Where(user => user.EmailAddress == email).FirstOrDefault().DisplayName;
             return userDisplayName;
         }
+
+       public List<string> GetAllManagersEmailAddresses()
+        {
+            var allManagerUseId = _commonDBContext.Query<UtilityUserRoles>().Where(x => x.RoleId == 364).Select(x => x.UserId).ToList();
+            var manageremailAdddresses = new List<string>();
+
+            foreach(var id in allManagerUseId)
+            {
+                manageremailAdddresses.Add(_commonDBContext.Query<User>().Where(user => user.ID == id).SingleOrDefault().EmailAddress);
+            }
+
+            return manageremailAdddresses;
+        }
+
     }
 }
