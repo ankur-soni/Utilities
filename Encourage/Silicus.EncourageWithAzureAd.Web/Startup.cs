@@ -4,7 +4,7 @@ using Microsoft.Owin;
 using Owin;
 using Hangfire;
 using Hangfire.SqlServer;
-using Silicus.EncourageWithAzureAd.Web.App_Start;
+
 
 namespace Silicus.EncourageWithAzureAd.Web
 {
