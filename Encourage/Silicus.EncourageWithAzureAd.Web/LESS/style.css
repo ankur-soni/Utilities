@@ -53,6 +53,7 @@ th {
 .dashboardButtons {
     width:100%;
     text-align:center;
+    font-size:0.7em;
 }
 .requiredfeild:after {
     content: "*";
@@ -769,7 +770,7 @@ body.canvas-menu.mini-navbar nav.navbar-static-side {
 .btnSameSize{
     width:15% !important;
     margin-right:2% !important;
-
+    font-size: 100%;
 }
 
 .float-e-margins .btn {
@@ -4479,11 +4480,11 @@ code {
 }
 
 .ibox-footer {
-    color: inherit;
+     color: inherit;
     border-top: 1px solid #e7eaec;
-    font-size: 90%;
+    font-size: 100%;
     background: #ffffff;
-    padding: 10px 15px;
+    padding: 10px 10px;
 }
 
 table.table-mail tr td {

@@ -52,8 +52,8 @@
 
             @Html.ValidationSummary(true, "", new { @class = "text-danger" })
             <div id="basicFields">
-                <div class="white-bg" style="padding-top:10px;padding-bottom:10px">
-                    <div class="form-group">
+                <div class="white-bg" style="padding-top:10px;padding-bottom:10px;padding-left:2%" >
+                    <div class="form-group row">
                         @Html.Label("Nomination Category", htmlAttributes: new { @class = "control-label col-md-3 requiredfeild", style = "text-align: left" })
                         <div>
                             @Html.DropDownListFor(model => model.AwardId, @ViewBag.Awards as SelectList, "Select", new { htmlAttributes = new { @class = "form-control" }, id = "Award", style = "width:25%" })
@@ -61,7 +61,7 @@
                         </div>
                     </div>
 
-                    <div class="form-group">
+                    <div class="form-group row">
                         @Html.Label("Resource From", htmlAttributes: new { @class = "control-label col-md-3 requiredfeild", style = "text-align: left" })
                         <div>
                             <label> @Html.RadioButtonFor(model => model.SelectResourcesBy, "Project", new { htmlAttributes = new { @class = "form-control" }, id = "ProjectRadioButton" })Project</label>
@@ -71,7 +71,7 @@
                         </div>
                     </div>
 
-                    <div class="form-group" id="projectInput">
+                    <div class="form-group row" id="projectInput">
                         @Html.Label("Project", htmlAttributes: new { @class = "control-label col-md-3 requiredfeild", style = "text-align: left" })
                         <div>
                             @Html.DropDownListFor(model => model.ProjectID, @ViewBag.ProjectsUnderCurrentUser as SelectList, "Select", new { htmlAttributes = new { @class = "form-control" }, id = "SelectedProject", style = "width:25%" })
@@ -79,7 +79,7 @@
                         </div>
                     </div>
 
-                    <div class="form-group" id="departmentInput">
+                    <div class="form-group row" id="departmentInput">
                         @Html.Label("Department", htmlAttributes: new { @class = "control-label col-md-3 requiredfeild", style = "text-align: left" })
                         <div>
                             @Html.DropDownListFor(model => model.DepartmentId, @ViewBag.DepartmentsUnderCurrentUser as SelectList, "Select", new { htmlAttributes = new { @class = "form-control" }, id = "SelectedDepartment", style = "width:25%" })
@@ -87,7 +87,7 @@
                         </div>
                     </div>
 
-                    <div class="form-group">
+                    <div class="form-group row">
                         @Html.Label("Resource", htmlAttributes: new { @class = "control-label col-md-3 requiredfeild", style = "text-align: left" })
                         <div>
                             @Html.DropDownListFor(model => model.ResourceId, @ViewBag.Resources as SelectList, "Select", new { htmlAttributes = new { @class = "form-control" }, id = "Resources", style = "width:25%" })
@@ -95,23 +95,25 @@
                         </div>
                     </div>
 
-                    <div class="form-group">
+                    <div class="form-group row">
                         @*@Html.Label("PLC", htmlAttributes: new { @class = "control-label col-md-3", style = "text-align: left" })*@
                         <label class="control-label col-md-3" style="text-align: left">PLC<span style="color:#0067AA;"> <i class="fa fa-question-circle" title="Programmable logic controller" aria-hidden="true"></i></span></label>
-                            <div>
-                                @Html.CheckBoxFor(model => model.IsPLC, new { htmlAttributes = new { @class = "form-control" } }) Yes
-                                @Html.ValidationMessageFor(model => model.IsPLC, "", new { @class = "text-danger" })
-                            </div>
-</div>
+                        <div>
+                            @Html.CheckBoxFor(model => model.IsPLC, new { htmlAttributes = new { @class = "form-control" } }) Yes
+                            @Html.ValidationMessageFor(model => model.IsPLC, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
                 </div>
             </div>
 
-            <div class="form-group white-bg" style="padding-bottom:10px;padding-top:10px">
-                @Html.Label("Comment", htmlAttributes: new { @class = "control-label col-md-2 requiredfeild", style = "text-align: left" })
-                <div>
-                    @Html.TextAreaFor(model => model.MainComment, new { htmlAttributes = new { @class = "form-control" }, placeholder = "Maximum 1000 words", id = "commentBox", style = "min-width: 70%;margin-left:8%", rows = "7", maxlength = 1000 })
-                    <div style="text-align:right;">
-                        @Html.ValidationMessageFor(model => model.MainComment, "", new { @class = "text-danger", id = "managerCommentValidationmessage" })
+            <div class="form-group white-bg" style="padding-bottom:10px;padding-top:10px;padding-left:2%;">
+                <div class="row">
+                    @Html.Label("Comment", htmlAttributes: new { @class = "control-label col-md-2 requiredfeild", style = "text-align: left" })
+                    <div>
+                        @Html.TextAreaFor(model => model.MainComment, new { htmlAttributes = new { @class = "form-control" }, placeholder = "Maximum 1000 words", id = "commentBox", style = "min-width: 70%;margin-left:8%", rows = "7", maxlength = 1000 })
+                        <div style="text-align:right;">
+                            @Html.ValidationMessageFor(model => model.MainComment, "", new { @class = "text-danger", id = "managerCommentValidationmessage" })
+                        </div>
                     </div>
                 </div>
             </div>
@@ -145,7 +147,7 @@
 
             <br />
 
-            <div class="form-group">
+            <div class="form-group row">
                 @if (Model.IsSubmitted != true)
                 {
                     <div style="text-align:center;">
