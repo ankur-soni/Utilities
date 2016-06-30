@@ -84,6 +84,13 @@ namespace Silicus.Encourage.Services
                 return 0;
         }
 
-        
+        public string GetAwardComments(int WinnerId)
+        {
+            var abc = _encourageDatabaseContext.Query<Shortlist>().Where(model => model.NominationId == WinnerId).FirstOrDefault().WinningComment;
+
+            return abc;
+        }
+
+
     }
 }

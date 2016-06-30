@@ -20,13 +20,15 @@ namespace Silicus.EncourageWithAzureAd.Web.Controllers
         private readonly IEncourageDatabaseContext _encourageDatabaseContext;
         private readonly Silicus.Encourage.DAL.Interfaces.IDataContextFactory _dataContextFactory;
         private readonly INominationService _nominationService;
-        public HomeController(IAwardService awardService, ICommonDbService commonDbService, Silicus.Encourage.DAL.Interfaces.IDataContextFactory dataContextFactory, INominationService nominationService)
+        private readonly IResultService _resultService;
+        public HomeController(IAwardService awardService, ICommonDbService commonDbService, Silicus.Encourage.DAL.Interfaces.IDataContextFactory dataContextFactory, INominationService nominationService,IResultService resultService)
         {
             _awardService = awardService;
             _commonDbService = commonDbService;
             _dataContextFactory = dataContextFactory;
             _encourageDatabaseContext = _dataContextFactory.CreateEncourageDbContext();
             _nominationService = nominationService;
+            _resultService = resultService;
         }
 
         //  [CustomeAuthorize(AllowedRole = "User,Manager,Admin,Reviewer")]
@@ -62,7 +64,8 @@ namespace Silicus.EncourageWithAzureAd.Web.Controllers
                 var winnerName = _nominationService.GetNomineeNameOfCurrentNomination(winner.NominationId);
                 var awardMonthYear = _nominationService.GetAwardMonthAndYear(winner.NominationId);
                 var awardName = _nominationService.GetAwardName(winner.NominationId);
-                listOfWinners.Add(new NominationListViewModel() { DisplayName = winnerName, NominationTime = awardMonthYear, AwardName = awardName });
+                var awardComment = _resultService.GetAwardComments(winner.NominationId);
+                listOfWinners.Add(new NominationListViewModel() { DisplayName = winnerName, NominationTime = awardMonthYear, AwardName = awardName ,AwardComment=awardComment});
 
             }
             dashboard.NominationList = listOfWinners;

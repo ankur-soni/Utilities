@@ -44,11 +44,7 @@ namespace Silicus.EncourageWithAzureAd.Web.Controllers
          [CustomeAuthorize(AllowedRole = "Manager")]
         public ActionResult AddNomination()
         {
-
             var userEmailAddress = User.Identity.Name;
-          
-          
-
             ViewBag.Awards = new SelectList(_awardService.GetAllAwards(), "Id", "Name");
 
             var projects = _awardService.GetProjectsUnderCurrentUserAsManager(userEmailAddress);
@@ -63,8 +59,18 @@ namespace Silicus.EncourageWithAzureAd.Web.Controllers
                 ViewBag.ManagerId = _awardService.GetUserIdFromEmail("shailendra.birthare@silicus.com");
             }
 
-           
-            ViewBag.DepartmentsUnderCurrentUser = new SelectList(_awardService.GetDepartmentsUnderCurrentUserAsManager("tushar.surve@silicus.com"), "Id", "Name");
+
+            var depts = _awardService.GetDepartmentsUnderCurrentUserAsManager(userEmailAddress);
+            if(depts.Count>0)
+            {
+                ViewBag.DepartmentsUnderCurrentUser = new SelectList(_awardService.GetDepartmentsUnderCurrentUserAsManager(userEmailAddress), "Id", "Name");
+                ViewBag.ManagerId = _awardService.GetUserIdFromEmail(userEmailAddress);
+            }
+            else
+            {
+                ViewBag.DepartmentsUnderCurrentUser = new SelectList(_awardService.GetDepartmentsUnderCurrentUserAsManager("tushar.surve@silicus.com"), "Id", "Name");
+                ViewBag.ManagerId= _awardService.GetUserIdFromEmail("tushar.surve@silicus.com");
+            }
            
             ViewBag.Resources = new SelectList(new List<User>(), "Id", "DisplayName");
             return View();
@@ -165,7 +171,7 @@ namespace Silicus.EncourageWithAzureAd.Web.Controllers
             else if (savedNomination.DepartmentId != null)
             {
                 nominationViewModel.SelectResourcesBy = "Department";
-                ViewBag.Resources = new SelectList(_awardService.GetResourcesUnderDepartment(savedNomination.DepartmentId.Value, _awardService.GetUserIdFromEmail("tushar.surve@silicus.com")), "Id", "DisplayName");
+                ViewBag.Resources = new SelectList(_awardService.GetResourcesForEditInDepartment(savedNomination.DepartmentId.Value, _awardService.GetUserIdFromEmail("tushar.surve@silicus.com")), "Id", "DisplayName");
             }
 
             //IN FUTURE GOING TO USE MAPPER
@@ -268,7 +274,7 @@ namespace Silicus.EncourageWithAzureAd.Web.Controllers
 
 
         [HttpGet]
-        public JsonResult ResourcesInDepartment(int departmentID)
+        public JsonResult ResourcesInDepartment(int departmentID,int awardId)
         {
             //var userIdToExcept = _awardService.GetUserIdFromEmail(Session["UserEmailAddress"] as string);
             var userIdToExcept = _awardService.GetUserIdFromEmail("tushar.surve@silicus.com");
@@ -286,6 +292,9 @@ namespace Silicus.EncourageWithAzureAd.Web.Controllers
             //  var projects = _awardService.GetProjectsUnderCurrentUserAsManager(Session["UserEmailAddress"] as string);
             var email = User.Identity.Name;
             var projects = _awardService.GetProjectsUnderCurrentUserAsManager(email);
+            var depts = _awardService.GetDepartmentsUnderCurrentUserAsManager(email);
+
+
             var managerId = 0;
             if (projects.Count>0)
             {
@@ -296,7 +305,17 @@ namespace Silicus.EncourageWithAzureAd.Web.Controllers
             {
                 managerId = _awardService.GetUserIdFromEmail("shailendra.birthare@silicus.com");
             }
-          
+
+            if (depts.Count > 0)
+            {
+                // managerId = _awardService.GetUserIdFromEmail(Session["UserEmailAddress"] as string); 
+                managerId = _awardService.GetUserIdFromEmail(User.Identity.Name);
+            }
+            else
+            {
+                managerId = _awardService.GetUserIdFromEmail("tushar.surve@silicus.com");
+            }
+
             var nominations = _nominationService.GetAllSubmittedAndSavedNominationsByCurrentUser(managerId);
             var savedNominations = new List<NominationListViewModel>();
 

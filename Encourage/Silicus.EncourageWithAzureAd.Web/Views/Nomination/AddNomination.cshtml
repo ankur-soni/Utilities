@@ -232,20 +232,27 @@
     });
 
     $("#SelectedDepartment").change(function () {
+        debugger;
         var selectedDept = $("#SelectedDepartment").val();
-        var ServiceUrl = "/Nomination/ResourcesInDepartment?departmentID=" + selectedDept;
+        var selectedAward = $("#Award").val();
+        //var ServiceUrl = "/Nomination/ResourcesInDepartment?departmentID=" + selectedDept +""+ selectedAward;
         $('#Resources').empty();
         $('#Resources').append($("<option selected></option>").val(null).html("Select"));
 
         $.ajax({
             type: 'GET',
-            url: ServiceUrl,
+            // url: ServiceUrl,
+            url: "/Nomination/ResourcesInDepartment",
+            data: { departmentID: selectedDept, awardId: selectedAward },
             contentType: "application/json; charset=utf-8",
             success: function (data) {
                 for (var key in data) {
                     $('#Resources')
                         .append($("<option></option>").val(data[key].ID).html(data[key].DisplayName));
                 }
+            },
+            error: function(xhr){
+                alert(xhr.toString());
             }
         });
     });
