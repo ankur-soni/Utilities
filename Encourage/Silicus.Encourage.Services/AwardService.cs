@@ -134,6 +134,7 @@ namespace Silicus.Encourage.Services
             var currentUser = _CommonDbContext.Query<User>().Where(user => user.ID == userIdToExcept);
             var currentUserId = currentUser.FirstOrDefault().ID;
 
+       
             var recourcesInEnggementUnderCurrentManger = _encourageDbcontext.Query<Nomination>().Where(n => n.ProjectID == engagementId && n.ManagerId == currentUserId && n.AwardId == awardId).ToList();
 
             userInEngagement = userInEngagement.Except(currentUser);
@@ -159,7 +160,7 @@ namespace Silicus.Encourage.Services
                 {
                     if (previousAwardId == awardId)
                     {
-                 
+
                         winnerNominationsWithin12Months.Add(_nominationService.GetNomination(winner.NominationId));
                     }
                 }
@@ -186,16 +187,8 @@ namespace Silicus.Encourage.Services
                                    where engagementRole.EngagementID == engagementId
                                    select user;
 
-
-
             var currentUser = _CommonDbContext.Query<User>().Where(user => user.ID == userIdToExcept);
-
-
-
             userInEngagement = userInEngagement.Except(currentUser);
-
-
-
             return userInEngagement.ToList();
         }
 

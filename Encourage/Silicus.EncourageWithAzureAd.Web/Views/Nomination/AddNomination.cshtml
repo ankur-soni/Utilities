@@ -5,7 +5,6 @@
 
 }
 
-
 <div class="row border-bottom">
     <nav class="navbar  " role="navigation" style="margin-bottom: 0">
         <div class="navbar-header">
@@ -30,8 +29,6 @@
     margin-left:35%;
     }
 </style>
-
-
 
 <div class="wrapper wrapper-content animated fadeInRight">
 
@@ -65,7 +62,7 @@
                     </div>
                 </div>
 
-                <input type="hidden" name=ManagerId id="ManagerId" value=@ViewBag.ManagerId>
+                <input type="hidden" name=ManagerId id="ManagerId" value="@ViewBag.ManagerId">
 
                 <div class="form-group row" id="projectInput">
                     @Html.Label("Project", htmlAttributes: new { @class = "control-label col-md-3 requiredfeild", style = "text-align: left" })
@@ -152,7 +149,7 @@
     $(document).ready(function () {
         $('#ProjectRadioButton').prop('checked', true);
         $("#departmentInput").hide();
-      
+
     })
 
     $("#ProjectRadioButton").change
@@ -164,6 +161,8 @@
              $('#Resources').append($("<option selected></option>").val(null).html("Select"));
              $("#projectInput").show();
              $('#IsPlcCheckbox').prop('checked', false);
+             debugger;
+             $("#ManagerId").val('@ViewBag.ManagerIdByProject');
          });
 
     $("#DepartmentRadioButton").change
@@ -175,6 +174,8 @@
               $('#Resources').append($("<option selected></option>").val(null).html("Select"));
               $("#departmentInput").show();
               $('#IsPlcCheckbox').prop('checked', false);
+              debugger;
+             $("#ManagerId").val('@ViewBag.ManagerIdByDepartment');
           });
 
     $("#Award").change(function () {
@@ -232,7 +233,6 @@
     });
 
     $("#SelectedDepartment").change(function () {
-        debugger;
         var selectedDept = $("#SelectedDepartment").val();
         var selectedAward = $("#Award").val();
         //var ServiceUrl = "/Nomination/ResourcesInDepartment?departmentID=" + selectedDept +""+ selectedAward;
@@ -309,7 +309,10 @@
                                },
                                function () {
                                    if (isConfirm) {
-                                       window.location.href = '@Url.Action("SavedNomination", "Nomination")';
+                                    
+                                       var managerId = $("#ManagerId").val();
+
+                                       window.location.href = '/Nomination/SavedNomination?managerId='+managerId;
                                    }
                                });
                            },
@@ -360,7 +363,10 @@
                            },
                            function () {
                                if (isConfirm) {
-                                   window.location.href = '@Url.Action("SavedNomination", "Nomination")';
+                                   var managerId = $("#ManagerId").val();
+
+                                   window.location.href = '/Nomination/SavedNomination?managerId=' + managerId;
+                                   @*//window.location.href = '@Url.Action("SavedNomination", "Nomination")';*@
                                }
                            });
                        },
