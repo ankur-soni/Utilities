@@ -74,7 +74,7 @@
                         <div class="col-md-3">
                             <div class="ibox float-e-margins">
                                 <div class="ibox-title text-center">
-                                    <i class="fa fa-users fa-5x" aria-hidden="true"></i>
+                                    <i class="fa fa-user-times fa-5x" aria-hidden="true"></i>
                                 </div>
                                 <div class="ibox-footer text-left">
                                     <a href="@Url.Action("SavedNomination", "Nomination")" class="btn btn-primary btn-sm dashboardButtons">
@@ -155,10 +155,10 @@
                 }  @*end of Else*@
             </div>
             <div class="wrapper wrapper-content animated fadeInRight">
-                <div class="row">
+                <div class="row text-center">
                     @if (Model.NominationList.Count() > 0)
                     {
-                        <span style="font-weight:bold;color:#0067AA;" class="winners">Wall Of Fame</span>
+                        <span style="font-weight:bold;color:#0067AA;" class="winners">Silicus Wall Of Fame</span>
                     }
                 </div>
                 <div class="row">&nbsp;</div>
@@ -182,7 +182,7 @@
 
                         <div class="col-md-12 card white-bg" id="@index" style="display:none;border:none;font-weight:bold">
 
-                            <div class="cardHeader col-md-12 text-center">
+                            @*<div class="cardHeader col-md-12 text-center">
                                 <div>
                                     @Html.DisplayFor(modelItem => item.DisplayName)
                                 </div>
@@ -191,6 +191,21 @@
                                     @Html.DisplayFor(modelItem => item.AwardName)
 
                                     @Html.DisplayFor(modelItem => item.NominationTime)
+                                </div>
+
+                            </div>*@
+                            <div class="cardHeader col-md-12 text-center">
+                                <div class="text-center">
+                                    <span class="font-bold">@Html.LabelFor(modelItem => item.DisplayName): </span> <span class="font-noraml"> @Html.DisplayFor(modelItem => item.DisplayName)</span>
+                                </div>
+                                <div class="text-center">
+                                    <span class="font-bold">@Html.LabelFor(modelItem => item.AwardName): </span> <span class="font-noraml"> @Html.DisplayFor(modelItem => item.AwardName)</span>
+                                </div>
+                                <div class="text-center">
+                                    <span class="font-bold">@Html.LabelFor(modelItem => item.NominationTime): </span> <span class="font-noraml"> @Html.DisplayFor(modelItem => item.NominationTime)</span>
+                                </div>
+                                <div class="text-center">
+                                    <span class="font-bold">@Html.LabelFor(modelItem => item.AwardComment): </span> <span class="font-noraml"> @Html.DisplayFor(modelItem => item.AwardComment)</span>
                                 </div>
 
                             </div>

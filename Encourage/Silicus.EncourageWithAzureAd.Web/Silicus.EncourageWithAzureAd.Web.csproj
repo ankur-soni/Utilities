@@ -115,16 +115,6 @@
       <HintPath>..\packages\RazorEngine.3.4.1\lib\net45\RazorEngine.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Silicus.Encourage.DAL">
-      <HintPath>..\Silicus.Encourage.Services\bin\Debug\Silicus.Encourage.DAL.dll</HintPath>
-    </Reference>
-    <Reference Include="Silicus.Encourage.Models">
-      <HintPath>..\Silicus.Encourage.Models\bin\Debug\Silicus.Encourage.Models.dll</HintPath>
-    </Reference>
-    <Reference Include="Silicus.Encourage.Services, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\Silicus.Encourage.Services\bin\Debug\Silicus.Encourage.Services.dll</HintPath>
-    </Reference>
     <Reference Include="Silicus.UtilityContainer.Entities">
       <HintPath>..\..\Silicus.UtilityContainer\Silicus.UtilityContainer.Entities\bin\Debug\Silicus.UtilityContainer.Entities.dll</HintPath>
     </Reference>
@@ -812,6 +802,20 @@
   </ItemGroup>
   <ItemGroup>
     <WCFMetadata Include="Service References\" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Silicus.Encourage.DAL\Silicus.Encourage.DAL.csproj">
+      <Project>{e96c89c4-0ed3-4c21-94eb-93a11d022573}</Project>
+      <Name>Silicus.Encourage.DAL</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Silicus.Encourage.Models\Silicus.Encourage.Models.csproj">
+      <Project>{ed67f947-0d14-4706-8e40-054ae932df36}</Project>
+      <Name>Silicus.Encourage.Models</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Silicus.Encourage.Services\Silicus.Encourage.Services.csproj">
+      <Project>{b478df7f-933c-4edd-accd-7050f1fa88cd}</Project>
+      <Name>Silicus.Encourage.Services</Name>
+    </ProjectReference>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

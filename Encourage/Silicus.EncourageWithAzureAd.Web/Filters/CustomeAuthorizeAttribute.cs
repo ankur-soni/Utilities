@@ -1,16 +1,11 @@
-﻿using Silicus.Encourage.DAL.Interfaces;
-using Silicus.Encourage.Services;
-using Silicus.Encourage.Services.Interface;
+﻿using Silicus.Encourage.Services;
 using Silicus.UtilityContainer.Entities;
 using Silicus.UtilityContainer.Security;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Net.Http;
 using System.Web;
 using System.Web.Configuration;
 using System.Web.Mvc;
-using System.Web.Security;
 
 namespace Silicus.Encourage.Web.Filters
 {

@@ -5,6 +5,7 @@ using Silicus.UtilityContainer.Models.DataObjects;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Web;
 
 namespace Silicus.Encourage.Services
 {
@@ -79,9 +80,18 @@ namespace Silicus.Encourage.Services
                                      join department in _CommonDbContext.Query<Department>() on title.DepartmentID equals department.ID
                                      where department.ID == DepartmentId
                                      select user;
-
+            int awardId = 1;
+            //
             var currentUser = _CommonDbContext.Query<User>().Where(user => user.ID == userIdToExcept);
+            var currentUserId = currentUser.FirstOrDefault().ID;
+            var recourcesInDepartmentUnderCurrentManger = _encourageDbcontext.Query<Nomination>().Where(n => n.DepartmentId == DepartmentId && n.ManagerId == currentUserId && n.AwardId == awardId).ToList();
             resourcesUnderDept = resourcesUnderDept.Except(currentUser);
+            var userList = resourcesUnderDept.ToList();
+            foreach (var item in recourcesInDepartmentUnderCurrentManger)
+            {
+                userList.RemoveAll(u => u.ID == item.UserId);
+            }
+            ////
             var winners = _encourageDbcontext.Query<Shortlist>().Where(w => w.IsWinner == true).ToList();
             var winnersWithin12Months = new List<Shortlist>();
             var winnerNominationsWithin12Months = new List<Nomination>();
@@ -98,10 +108,10 @@ namespace Silicus.Encourage.Services
 
             foreach (var winnerNomination in winnerNominationsWithin12Months)
             {
-                resourcesUnderDept.ToList().RemoveAll(user => user.ID == winnerNomination.UserId);
+                userList.RemoveAll(user => user.ID == winnerNomination.UserId);
             }
 
-            return resourcesUnderDept.ToList();
+            return userList;
         }
 
         public List<Criteria> GetCriteriasForAward(int awardId)
@@ -124,6 +134,7 @@ namespace Silicus.Encourage.Services
             var currentUser = _CommonDbContext.Query<User>().Where(user => user.ID == userIdToExcept);
             var currentUserId = currentUser.FirstOrDefault().ID;
 
+       
             var recourcesInEnggementUnderCurrentManger = _encourageDbcontext.Query<Nomination>().Where(n => n.ProjectID == engagementId && n.ManagerId == currentUserId && n.AwardId == awardId).ToList();
 
             userInEngagement = userInEngagement.Except(currentUser);
@@ -149,7 +160,7 @@ namespace Silicus.Encourage.Services
                 {
                     if (previousAwardId == awardId)
                     {
-                 
+
                         winnerNominationsWithin12Months.Add(_nominationService.GetNomination(winner.NominationId));
                     }
                 }
@@ -176,17 +187,32 @@ namespace Silicus.Encourage.Services
                                    where engagementRole.EngagementID == engagementId
                                    select user;
 
+            var currentUser = _CommonDbContext.Query<User>().Where(user => user.ID == userIdToExcept);
+            userInEngagement = userInEngagement.Except(currentUser);
+            return userInEngagement.ToList();
+        }
+
+        public List<User> GetResourcesForEditInDepartment(int DepartmentId, int userIdToExcept)
+        {
+            var resourcesUnderDept = from user in _CommonDbContext.Query<User>()
+                                     join resource in _CommonDbContext.Query<Resource>() on user.ID equals resource.UserID
+                                     join resourceHistory in _CommonDbContext.Query<ResourceHistory>() on resource.ID equals resourceHistory.ResourceID
+                                     join title in _CommonDbContext.Query<Title>() on resourceHistory.TitleID equals title.ID
+                                     join department in _CommonDbContext.Query<Department>() on title.DepartmentID equals department.ID
+                                     where department.ID == DepartmentId
+                                     select user;
+
 
 
             var currentUser = _CommonDbContext.Query<User>().Where(user => user.ID == userIdToExcept);
 
 
 
-            userInEngagement = userInEngagement.Except(currentUser);
+            resourcesUnderDept = resourcesUnderDept.Except(currentUser);
 
 
 
-            return userInEngagement.ToList();
+            return resourcesUnderDept.ToList();
         }
 
 

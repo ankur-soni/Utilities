@@ -14,6 +14,7 @@ namespace Silicus.Encourage.Services.Interface
         void SelectWinner(int nominationId,string winningComment);
         int IsShortlistedOrWinner(int nominationId);
 
-      
+        string GetAwardComments(int Id);
+
     }
 }

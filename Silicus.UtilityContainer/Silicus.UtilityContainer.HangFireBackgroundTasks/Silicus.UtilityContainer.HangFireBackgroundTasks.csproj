@@ -31,10 +31,10 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Silicus.Encourage.DAL">
-      <HintPath>..\..\Encourage\Silicus.Encourage.Services\bin\Debug\Silicus.Encourage.DAL.dll</HintPath>
+      <HintPath>..\..\Encourage\Silicus.Encourage.DAL\bin\Debug\Silicus.Encourage.DAL.dll</HintPath>
     </Reference>
     <Reference Include="Silicus.Encourage.Models">
-      <HintPath>..\..\Encourage\Silicus.Encourage.Services\bin\Debug\Silicus.Encourage.Models.dll</HintPath>
+      <HintPath>..\..\Encourage\Silicus.Encourage.Models\bin\Debug\Silicus.Encourage.Models.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
