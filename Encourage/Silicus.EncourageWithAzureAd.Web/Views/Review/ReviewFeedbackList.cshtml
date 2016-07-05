@@ -17,13 +17,13 @@
         padding-right: 10px;
     }
 
-        
+
     .page-heading {
-        margin-left:0%;
+        margin-left: 0%;
     }
 
-    .navbar-minimalize{
-    margin-left:35%;
+    .navbar-minimalize {
+        margin-left: 35%;
     }
 </style>
 
@@ -31,7 +31,7 @@
 <div class="row border-bottom">
     <nav class="navbar  " role="navigation" style="margin-bottom: 0">
         <div class="navbar-header">
-            <a class="navbar-minimalize minimalize-styl-2 btn btn-primary " href="#" ><i class="fa fa-bars"></i> </a>
+            <a class="navbar-minimalize minimalize-styl-2 btn btn-primary " href="#"><i class="fa fa-bars"></i> </a>
         </div>
     </nav>
 </div>
@@ -55,8 +55,8 @@ else
             <input type="button" value="Team Awesome" class="btn btn-primary btnSameSize" onclick="location.href=''" />
         </div>
         <br />
-
-        <div style="font-weight:bold;color:#0070B9">ALL</div>
+       
+            <div style="font-weight:bold;color:#0070B9">ALL</div>
 
         <hr style="margin-top:0px;height:2px;margin-left:0px; width:85%;" />
         foreach (var item in Model)
@@ -66,39 +66,32 @@ else
             KnownColor randomColorName = names[randomGen.Next(names.Length)];
             Color randomColor = Color.FromKnownColor(randomColorName);
 
-            <div class="col-md-3 card white-bg">
-                <div class="cardHeader text-center">
-                    @*<div style="background-color:@randomColor.Name;height:60px;margin-top:10px;padding-left:10px;padding-bottom:70px; font-weight:bold;font-size:50px;text-align:left" class="col-md-5">
-                            @Html.DisplayFor(modelItem => item.Intials)
-                        </div>*@
-                    <div>
-                        <label >@Html.DisplayFor(modelItem => item.DisplayName)</label>
+                <div class="col-md-3 card white-bg">
+                    <div class="cardHeader text-center">
+
+                        <div>
+                            <label>@Html.DisplayFor(modelItem => item.DisplayName)</label>
+                        </div>
+                        <div>
+                            For
+                            @Html.DisplayFor(modelItem => item.AwardName)
+                            @Html.DisplayFor(modelItem => item.NominationTime)
+
+                            <table align="center" style="border: 1px solid rgba(178, 176, 176, 0.96);margin-top:2%;">
+                                <tr>
+                                    <th>Credits</th>
+                                    <th>Reviews</th>
+                                    <th>Average</th>
+                                </tr>
+                                <tr>
+                                    <td>@Html.DisplayFor(modelItem => item.Credits)</td>
+                                    <td>@Html.DisplayFor(modelItem => item.numberOfReviews)</td>
+                                    <td>@Html.DisplayFor(modelItem => item.averageCredits)</td>
+                                </tr>
+                            </table>
+                        </div>
                     </div>
-                    <div>
-                        For
-                        @Html.DisplayFor(modelItem => item.AwardName)
-                        @Html.DisplayFor(modelItem => item.NominationTime)
-                        @*<br />
-                            Total Credits:@Html.DisplayFor(modelItem => item.Credits)
-                            <br />
-                            Total Reviews: @Html.DisplayFor(modelItem => item.numberOfReviews)
-                            <br />
-                            Average Credits:@Html.DisplayFor(modelItem => item.averageCredits)*@
-                        <table align="center" style="border: 1px solid rgba(178, 176, 176, 0.96);margin-top:2%;">
-                            <tr>
-                                <th>Credits</th>
-                                <th>Reviews</th>
-                                <th>Average</th>
-                            </tr>
-                            <tr>
-                                <td>@Html.DisplayFor(modelItem => item.Credits)</td>
-                                <td>@Html.DisplayFor(modelItem => item.numberOfReviews)</td>
-                                <td>@Html.DisplayFor(modelItem => item.averageCredits)</td>
-                            </tr>
-                        </table>
-                    </div>
-                </div>
-                <div class="cardFooter text-right" style="padding-top:5px">
+                    <div class="cardFooter text-right" style="padding-top:5px">
 
                   @if (item.IsShortlisted)
                   {
@@ -119,11 +112,11 @@ else
         <br />
     </div>
 
-
+@if (Model.Count() != 0)
+{
     <div class="row" style="margin-left:2%;">
         <div class="row">&nbsp;</div>
         <div style="font-weight:bold; color:#0070B9">SHORTLISTED</div>
-
         <hr style="margin-top:0px;height:2px;margin-left:0px; width:85%;" />
         @foreach (var item in Model)
         {
@@ -139,7 +132,7 @@ else
                                 @Html.DisplayFor(modelItem => item.Intials)
                             </div>*@
                         <div>
-                            <label > @Html.DisplayFor(modelItem => item.DisplayName)</label>
+                            <label> @Html.DisplayFor(modelItem => item.DisplayName)</label>
                         </div>
 
                         <div>
@@ -147,8 +140,8 @@ else
                             @Html.DisplayFor(modelItem => item.AwardName)
                             @Html.DisplayFor(modelItem => item.NominationTime)
                             @*<br />
-                            @Html.Label("Credits:")
-                            @Html.DisplayFor(modelItem => item.Credits)*@
+                                @Html.Label("Credits:")
+                                @Html.DisplayFor(modelItem => item.Credits)*@
                             <table align="center" style="border: 1px solid rgba(178, 176, 176, 0.96);margin-top:2%;">
                                 <tr>
                                     <th>Credits</th>
@@ -167,22 +160,24 @@ else
                         <a href="@Url.Action("RemoveShortlistNomination", "Review", new { nominationId = item.NominationId })">
                             <span> <i class="glyphicon glyphicon-remove" title="Remove From Shortlist" aria-hidden="true" style="font-size:25px;margin-right:1%;"></i> </span>
                         </a>
-                        
+
                         <a href="@Url.Action("ViewNominationForShortlist", "Review", item)">
                             <span> <i class="fa fa-file-text-o" title="View Nomination" aria-hidden="true" style="font-size:30px;"></i> </span>
                         </a>
-                                                                        
+
                     </div>
 
                 </div>
             }
         }
+       
         <br />
     </div>
-   
+
     <div style="text-align:center;width:80%;">
-               <input type="button" value="Reject All" class="btn btn-primary btnSameSize" id="rejectAll" onclick="return rejectAllNominations()" style="margin-left:3%;" />
+        <input type="button" value="Reject All" class="btn btn-primary btnSameSize" id="rejectAll" onclick="return rejectAllNominations()" style="margin-left:3%;" />
     </div>
+}
     <div class="row">&nbsp;</div>
     <div class="row">&nbsp;</div>
 </div>
