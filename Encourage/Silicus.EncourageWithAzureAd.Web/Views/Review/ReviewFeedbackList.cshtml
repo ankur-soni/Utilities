@@ -42,6 +42,12 @@
 </div>
 <div class="wrapper wrapper-content animated fadeInRight">
     <div class="row" style="margin-left: 2%;">
+@if (Model.Count() <= 0)
+{
+    <span class="text-danger" style="font-size:20px">No reviewes are submitted as of now.</span>
+}
+else
+{
         <div style="text-align:left;width:80%;">
             <input type="button" value="ALL" class="btn btn-primary btnSameSize" onclick="location.href=''" />
             <input type="button" value="SOM" class="btn btn-primary btnSameSize" onclick="location.href=''" />
@@ -53,7 +59,7 @@
         <div style="font-weight:bold;color:#0070B9">ALL</div>
 
         <hr style="margin-top:0px;height:2px;margin-left:0px; width:85%;" />
-        @foreach (var item in Model)
+        foreach (var item in Model)
         {
             Random randomGen = new Random();
             KnownColor[] names = (KnownColor[])Enum.GetValues(typeof(KnownColor));
@@ -95,13 +101,13 @@
                 <div class="cardFooter text-right" style="padding-top:5px">
 
                   @if (item.IsShortlisted)
-                        {
+                  {
                             <span style="color:#0067AA"><i class="fa fa-star fa-2x" title="Shortlisted" aria-hidden="true"></i></span>
-                        }
-                   else if (item.IsWinner)
-                        {
+                  }
+                  else if (item.IsWinner)
+                  {
                             <span style="color:#0067AA"><i class="fa fa-trophy fa-2x" title="Winner" aria-hidden="true"></i></span>
-                        }
+                  }
                     <a href="@Url.Action("ViewNominationForShortlist", "Review", item)">
                         <span> <i class="fa fa-file-text-o" title="View Nomination" aria-hidden="true" style="font-size:30px;"></i> </span>
                     </a>
@@ -109,6 +115,7 @@
 
             </div>
         }
+}
         <br />
     </div>
 
