@@ -283,7 +283,7 @@
             text: "Do you want to discard this nomination?",
             type: "info",
             showCancelButton: true,
-            confirmButtonColor: "#88a364",
+            confirmButtonColor: "#0070b9",
             confirmButtonText: "Yes!",
             cancelButtonText: "No!",
             closeOnConfirm: false,
@@ -310,7 +310,7 @@
                                },
                                function () {
                                    if (isConfirm) {
-                                       window.location.href = '@Url.Action("SavedNomination", "Nomination")';
+                                       window.location.href = '@Url.Action("GetNominationList", "Nomination")';
                                    }
                                });
                            },
@@ -321,7 +321,7 @@
                    }
                    else {
                        swal("Cancelled", "Not Discard");
-                       window.location.href = '@Url.Action("SavedNomination", "Nomination")';
+                       window.location.href = '@Url.Action("GetNominationList", "Nomination")';
                    }
                });
     });
@@ -349,7 +349,7 @@
                     text: "Do you want to nominate this candidate?",
                     type: "info",
                     showCancelButton: true,
-                    confirmButtonColor: "#88a364",
+                    confirmButtonColor: "#0070b9",
                     confirmButtonText: "Yes!",
                     cancelButtonText: "No!",
                     closeOnConfirm: false,
@@ -375,7 +375,7 @@
                                },
                                function () {
                                    if (isConfirm) {
-                                       window.location.href = '@Url.Action("SavedNomination", "Nomination")';
+                                       window.location.href = '@Url.Action("GetNominationList", "Nomination")';
                                    }
                                });
                            },
@@ -385,7 +385,7 @@
                        });
                    } else {
                        swal("Cancelled", "Nomination Cancelled");
-                       window.location.href = '@Url.Action("SavedNomination", "Nomination")';
+                       window.location.href = '@Url.Action("GetNominationList", "Nomination")';
                    }
                });
             }
@@ -402,7 +402,7 @@
                 text: "Do you want to save this nomination?",
                 type: "info",
                 showCancelButton: true,
-                confirmButtonColor: "#88a364",
+                confirmButtonColor: "#0070b9",
                 confirmButtonText: "Yes!",
                 cancelButtonText: "No!",
                 closeOnConfirm: false,
@@ -425,7 +425,7 @@
                            },
                            function () {
                                if (isConfirm) {
-                                   window.location.href = '@Url.Action("SavedNomination", "Nomination")';
+                                   window.location.href = '@Url.Action("GetNominationList", "Nomination")';
                                }
                            });
                        },
@@ -435,7 +435,7 @@
                    });
                } else {
                    swal("Cancelled", "Nomination Save Cancelled");
-                   window.location.href = '@Url.Action("SavedNomination", "Nomination")';
+                   window.location.href = '@Url.Action("GetNominationList", "Nomination")';
                }
            });
         }

@@ -1,7 +1,6 @@
 ﻿@model Silicus.EncourageWithAzureAd.Web.Models.ViewShortlistDetailsViewModel
 
 
-
 @{
     ViewBag.Title = "ShortlistNomination";
 }
@@ -228,14 +227,14 @@
                 text: "Are you sure you want to shortlist this candidate?",
                 type: "warning",
                 showCancelButton: true,
-                confirmButtonColor: "#88a364",
+                confirmButtonColor: "#0070b9",
                 confirmButtonText: "Yes!",
                 cancelButtonText: "No!",
                 closeOnConfirm: false,
                 closeOnCancel: false
             },
                  function (isConfirm, inputValue) {
-                     debugger;
+     
                      var a = inputValue;
                      if (isConfirm) {
                          var nominationIdToShortlist = $("#nominationId").val();
@@ -352,7 +351,7 @@
                             swal({
                                 title: "Winner Selected",
                                 showCancelButton: false,
-                                confirmButtonColor: "#88a364",
+                                confirmButtonColor: "#0070b9",
                                 confirmButtonText: "Ok"
                             },
                             function (isConfirm) {

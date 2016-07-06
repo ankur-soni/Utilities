@@ -392,19 +392,23 @@ namespace Silicus.EncourageWithAzureAd.Web.Controllers
             {
                 managerId = _awardService.GetUserIdFromEmail("shailendra.birthare@silicus.com");
             }
-
-            //if (depts.Count > 0)
-            //{
-            //    // managerId = _awardService.GetUserIdFromEmail(Session["UserEmailAddress"] as string); 
-            //    managerId = _awardService.GetUserIdFromEmail(User.Identity.Name);
-            //}
-            //else
-            //{
-            //    managerId = _awardService.GetUserIdFromEmail("tushar.surve@silicus.com");
-            //}
-            #endregion
-
             var nominations = _nominationService.GetAllSubmittedAndSavedNominationsByCurrentUser(managerId);
+            if (depts.Count > 0)
+            {
+                // managerid = _awardservice.getuseridfromemail(session["useremailaddress"] as string); 
+                managerId = _awardService.GetUserIdFromEmail(User.Identity.Name);
+            }
+            else
+            {
+                managerId = _awardService.GetUserIdFromEmail("tushar.surve@silicus.com");
+            }
+            #endregion
+            
+            //var nominations = _nominationService.GetAllSubmittedAndSavedNominationsByCurrentUser(managerId);
+            var departmentNominations = _nominationService.GetAllSubmittedAndSavedNominationsByCurrentUser(managerId);
+            if(departmentNominations != null)
+            nominations.AddRange(departmentNominations);
+
             var savedNominations = new List<NominationListViewModel>();
 
             foreach (var nomination in nominations)
