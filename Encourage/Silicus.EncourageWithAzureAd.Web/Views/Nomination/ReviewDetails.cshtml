@@ -43,6 +43,10 @@
 
                         <td>
                             @Html.DisplayFor(modelItem => modelItem.FirstOrDefault().NomineeName)
+                            @if (Model.FirstOrDefault().IsPLC == true)
+                            {
+                                <label style="color:red">(PLC Candidate)</label>
+                            }
                         </td>
                     </tr>
                     <tr>
