@@ -35,7 +35,7 @@
 
     <div class="row" style="width:80%;padding-top:20px;margin-left:3%;">
         <div style="text-align:center;">
-            <label style="color:#0067AA; padding-bottom:1%;">For @String.Format("{0:MMMM}", DateTime.Now) - @DateTime.Now.Year</label>
+            <label style="color:#0067AA;font-size:18px;padding-bottom:1%;">Nomination For @String.Format("{0:MMMM}", DateTime.Now.AddMonths(-1)) - @DateTime.Now.Year</label>
         </div>
 
         @using (Html.BeginForm("AddNomination", "Nomination", FormMethod.Post, new { id = "addNominationForm" }))
