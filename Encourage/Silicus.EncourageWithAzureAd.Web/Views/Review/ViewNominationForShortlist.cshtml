@@ -47,6 +47,10 @@
                         <label>
                             Review For:
                             @Html.DisplayFor(modelItem => modelItem.userName)
+                            @if (Model.IsPLC == true)
+                            {
+                                <label style="color:red">(PLC Candidate)</label>
+                            }
                         </label>
                     </td>
                 </tr>
@@ -99,7 +103,7 @@
                     @Html.Label("Review Comments By : " + reviewer.FirstOrDefault().ReviewerName, new { style = "margin-left:3%;color: #0067AA;" })
                     <div class="row">&nbsp;</div>
                 </div>
-                <a class="header"><div>Expand the Comments</div></a>
+                <a class="header"><div>Collapse the Comments</div></a>
 
                 <table class="table table-hover issue-tracker white-bg content">
                     <thead>

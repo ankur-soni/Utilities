@@ -320,8 +320,8 @@
                        });
                    }
                    else {
-                       swal("Cancelled", "Not Discard");
-                       window.location.href = '@Url.Action("GetNominationList", "Nomination")';
+                       swal("Cancelled", "Cancel Discard");
+                      @*// window.location.href = '@Url.Action("GetNominationList", "Nomination")';*@
                    }
                });
     });
@@ -385,7 +385,7 @@
                        });
                    } else {
                        swal("Cancelled", "Nomination Cancelled");
-                       window.location.href = '@Url.Action("GetNominationList", "Nomination")';
+                      @*// window.location.href = '@Url.Action("GetNominationList", "Nomination")';*@
                    }
                });
             }
@@ -435,7 +435,7 @@
                    });
                } else {
                    swal("Cancelled", "Nomination Save Cancelled");
-                   window.location.href = '@Url.Action("GetNominationList", "Nomination")';
+                   @*//window.location.href = '@Url.Action("GetNominationList", "Nomination")';*@
                }
            });
         }

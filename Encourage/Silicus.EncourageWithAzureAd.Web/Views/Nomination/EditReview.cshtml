@@ -42,6 +42,10 @@
 
                 <td>
                     @Html.DisplayFor(modelItem => modelItem.NomineeName)
+                    @if (Model.IsPLC == true)
+                    {
+                        <label style="color:red">(PLC Candidate)</label>
+                    }
                 </td>
             </tr>
             <tr>
@@ -227,7 +231,7 @@
                    });
                } else {
                    swal("Cancelled", "Review Cancelled");
-                   window.location.href = '@Url.Action("SavedReviews", "Nomination")';
+                   @*window.location.href = '@Url.Action("SavedReviews", "Nomination")';*@
                }
            });
 
@@ -277,7 +281,7 @@
                    });
                } else {
                    swal("Cancelled", "Review Cancelled");
-                   window.location.href = '@Url.Action("SavedReviews", "Nomination")';
+                   @*window.location.href = '@Url.Action("SavedReviews", "Nomination")';*@
                }
            });
 
@@ -328,7 +332,7 @@
                    });
                } else {
                    swal("Cancelled", "Discard Cancelled");
-                   window.location.href = '@Url.Action("SavedReviews", "Nomination")';
+                   @*window.location.href = '@Url.Action("SavedReviews", "Nomination")';*@
                }
            });
 

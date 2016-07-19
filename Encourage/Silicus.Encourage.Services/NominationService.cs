@@ -43,7 +43,7 @@ namespace Silicus.Encourage.Services
         {
             var alreadyReviewedRecords = _encourageDatabaseContext.Query<Review>().Where(r => r.ReviewerId == reviewerId && r.IsSubmited == true).ToList();
             var finalNomination = new List<Nomination>();
-            var allNominations = _encourageDatabaseContext.Query<Nomination>().Where(N => N.IsSubmitted == true && N.NominationDate.Value.Month == (DateTime.Now.Month) && N.NominationDate.Value.Year == DateTime.Now.Year).ToList();
+            var allNominations = _encourageDatabaseContext.Query<Nomination>().Where(N => N.IsSubmitted == true && N.NominationDate.Value.Month == (DateTime.Now.Month - 1) && N.NominationDate.Value.Year == DateTime.Now.Year).ToList();
 
             foreach (var item in alreadyReviewedRecords)
             {
