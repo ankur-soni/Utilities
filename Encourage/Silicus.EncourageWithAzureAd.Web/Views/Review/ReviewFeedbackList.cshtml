@@ -71,6 +71,16 @@ else
 
                         <div>
                             <label>@Html.DisplayFor(modelItem => item.DisplayName)</label>
+                            <div id="winningBadge">
+                                @if (item.IsShortlisted)
+                                {
+                                    <span style="color:#0067AA"><i class="fa fa-star fa-2x" title="Shortlisted" aria-hidden="true"></i></span>
+                                }
+                                else if (item.IsWinner)
+                                {
+                                    <span style="color:#0067AA"><i class="fa fa-trophy fa-2x" title="Winner" aria-hidden="true"></i></span>
+                                }
+                            </div>
                         </div>
                         <div>
                             For
@@ -133,6 +143,7 @@ else
                             </div>*@
                         <div>
                             <label> @Html.DisplayFor(modelItem => item.DisplayName)</label>
+                            <label> @Html.DisplayFor(modelItem => item.DisplayName)</label>
                         </div>
 
                         <div>
@@ -152,6 +163,7 @@ else
                                     <td>@Html.DisplayFor(modelItem => item.Credits)</td>
                                     <td>@Html.DisplayFor(modelItem => item.numberOfReviews)</td>
                                     <td>@Html.DisplayFor(modelItem => item.averageCredits)</td>
+                                    
                                 </tr>
                             </table>
                         </div>
@@ -174,15 +186,42 @@ else
         <br />
     </div>
 
-    <div style="text-align:center;width:80%;">
-        <input type="button" value="Reject All" class="btn btn-primary btnSameSize" id="rejectAll" onclick="return rejectAllNominations()" style="margin-left:3%;" />
-    </div>
+
+    bool _disabled = false;
+    foreach (var item in Model)
+    {
+        if (item.IsWinner == true)
+        {
+            _disabled = true;
+            break;
+        }
+    }
+
+    //var data = Model.Select(m => m.IsWinner == true).SingleOrDefault();
+
+    if (_disabled == false)
+    {
+        <div style="text-align:center;width:80%;">
+            <input type="button" value="Reject All" class="btn btn-primary btnSameSize" id="rejectAll" onclick="return rejectAllNominations()" style="margin-left:3%;" />
+        </div>
+    }
+    else
+    {
+        <div style="text-align:center;width:80%;">
+            <input type="button" value="Reject All" disabled class="btn btn-primary btnSameSize" id="rejectAll" onclick="return rejectAllNominations()" style="margin-left:3%;" />
+        </div>
+    }
 }
+
     <div class="row">&nbsp;</div>
     <div class="row">&nbsp;</div>
 </div>
 <script src="~/js/jquery-2.1.1.js"></script>
 <script>
+    $(document).ready(function () {
+
+    });
+    
     $(function () {
 
         $('.fa-trophy').tooltip();
