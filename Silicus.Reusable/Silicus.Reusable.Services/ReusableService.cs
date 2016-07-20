@@ -23,13 +23,13 @@ namespace Silicus.Reusable.Services
             _reusableDatabaseContext = _dataContextFactory.CreateReusableDbContext();
         }
 
-        public List<Framework> GetAllFrameworks()
+        public List<Frameworx> GetAllFrameworks()
         {
-            return _reusableDatabaseContext.Query<Framework>().ToList();
+            return _reusableDatabaseContext.Query<Frameworx>().ToList();
         }
-        public Framework FrameworkDetail(int id)
+        public Frameworx FrameworkDetail(int id)
         {
-            return _reusableDatabaseContext.Query<Framework>().Where(m => m.Id == id).SingleOrDefault();
+            return _reusableDatabaseContext.Query<Frameworx>().Where(m => m.Id == id).SingleOrDefault();
         }
     }
 }

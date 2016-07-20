@@ -43,7 +43,7 @@ namespace Silicus.Reusable.Web.Controllers
         // GET: Reusable/Details/5
         public ActionResult Details(int id)
         {
-            Framework framework = _reusableService.FrameworkDetail(id);
+            Frameworx framework = _reusableService.FrameworkDetail(id);
 
             return View(framework);
         }

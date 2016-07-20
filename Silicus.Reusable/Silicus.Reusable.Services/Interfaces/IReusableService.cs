@@ -10,7 +10,7 @@ namespace Silicus.Reusable.Services.Interfaces
 {
    public interface IReusableService
     {
-        List<Framework> GetAllFrameworks();
-        Framework FrameworkDetail(int id);
+        List<Frameworx> GetAllFrameworks();
+        Frameworx FrameworkDetail(int id);
     }
 }

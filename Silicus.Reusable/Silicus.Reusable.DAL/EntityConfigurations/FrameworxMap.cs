@@ -8,9 +8,9 @@ using System.Threading.Tasks;
 
 namespace Silicus.Reusable.DAL.EntityConfigurations
 {
-    internal class FrameworkMap : EntityTypeConfiguration<Framework>
+    internal class FrameworxMap : EntityTypeConfiguration<Frameworx>
     {
-        public FrameworkMap()
+        public FrameworxMap()
         {
             HasKey(o => o.Id);
         }

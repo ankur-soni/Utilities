@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Silicus.Reusable.Models
 {
-    public class Framework
+    public class Frameworx
     {
         public int Id { get; set; }
         public string Title { get; set; }

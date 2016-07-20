@@ -53,7 +53,7 @@
     <Compile Include="CommonDatabaseContext.cs" />
     <Compile Include="DataContextBase.cs" />
     <Compile Include="DataContextFactory.cs" />
-    <Compile Include="EntityConfigurations\FrameworkMap.cs" />
+    <Compile Include="EntityConfigurations\FrameworxMap.cs" />
     <Compile Include="Interfaces\ICommonDatabaseContext.cs" />
     <Compile Include="Interfaces\IDataContextFactory.cs" />
     <Compile Include="Interfaces\IReusableDatabaseContext.cs" />

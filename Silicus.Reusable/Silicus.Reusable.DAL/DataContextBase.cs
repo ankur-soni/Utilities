@@ -20,7 +20,7 @@ namespace Silicus.Reusable.DAL
             //  Disable the default PluralizingTableNameConvention 
             modelBuilder.Conventions.Remove<PluralizingTableNameConvention>();
 
-            modelBuilder.Configurations.Add(new FrameworkMap());
+            modelBuilder.Configurations.Add(new FrameworxMap());
         }
     }
 }
