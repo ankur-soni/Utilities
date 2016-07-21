@@ -53,6 +53,7 @@
     <Compile Include="CommonDatabaseContext.cs" />
     <Compile Include="DataContextBase.cs" />
     <Compile Include="DataContextFactory.cs" />
+    <Compile Include="EntityConfigurations\CategoryMap.cs" />
     <Compile Include="EntityConfigurations\FrameworxMap.cs" />
     <Compile Include="Interfaces\ICommonDatabaseContext.cs" />
     <Compile Include="Interfaces\IDataContextFactory.cs" />
@@ -60,6 +61,7 @@
     <Compile Include="QueryableExtensions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ReusableDatabaseContext.cs" />
+    <Compile Include="ReusableDBInitializer.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

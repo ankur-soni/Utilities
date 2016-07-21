@@ -21,6 +21,7 @@ namespace Silicus.Reusable.DAL
             modelBuilder.Conventions.Remove<PluralizingTableNameConvention>();
 
             modelBuilder.Configurations.Add(new FrameworxMap());
+            modelBuilder.Configurations.Add(new CategoryMap());
         }
     }
 }

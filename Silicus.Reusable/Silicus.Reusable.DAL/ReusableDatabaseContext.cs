@@ -5,6 +5,7 @@ using System.Linq;
 using System.Data.Entity;
 using System.Text;
 using System.Threading.Tasks;
+using Silicus.Reusable.Models;
 
 namespace Silicus.Reusable.DAL
 {
@@ -13,8 +14,12 @@ namespace Silicus.Reusable.DAL
         public ReusableDatabaseContext(string connectionString)
             : base(connectionString)
         {
-            Database.SetInitializer<ReusableDatabaseContext>(null);
+            Database.SetInitializer<ReusableDatabaseContext>(new ReusableDBInitializer());
+            //Database.SetInitializer<ReusableDatabaseContext>(null);
         }
+
+        public DbSet<Frameworx> Frameworxs { get; set; }
+        public DbSet<Category> Categories { get; set; }
 
         public int Update<T>(T item) where T : class
         {

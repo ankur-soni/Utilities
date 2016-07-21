@@ -1,11 +1,6 @@
-﻿using Silicus.Reusable.DAL.Interfaces;
-using Silicus.Reusable.Models;
-using Silicus.Reusable.Services;
+﻿using Silicus.Reusable.Models;
 using Silicus.Reusable.Services.Interfaces;
-using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Web;
 using System.Web.Mvc;
 
 
@@ -15,14 +10,11 @@ namespace Silicus.Reusable.Web.Controllers
     public class ReusableController : Controller
     {
         private readonly IReusableService _reusableService;
-        private readonly IReusableDatabaseContext _encourageDatabaseContext;
-        private readonly Silicus.Reusable.DAL.Interfaces.IDataContextFactory _dataContextFactory;
+        
         //private readonly TextInfo textInfo;
 
-        public ReusableController(IReusableService reusableService, Silicus.Reusable.DAL.Interfaces.IDataContextFactory dataContextFactory)
+        public ReusableController(IReusableService reusableService)
         {
-            _dataContextFactory = dataContextFactory;
-            _encourageDatabaseContext = _dataContextFactory.CreateReusableDbContext();
             _reusableService = reusableService;
             //textInfo = new CultureInfo("en-US", false).TextInfo;
         }
@@ -34,10 +26,22 @@ namespace Silicus.Reusable.Web.Controllers
             return View();
         }
 
-        public ActionResult GetAllList()
+        public ActionResult GetAllList(int id)
         {
-            var frameworkList = _reusableService.GetAllFrameworks();
+            if (_reusableService == null)
+                return RedirectToAction("Index");
+
+            var frameworkList = _reusableService.GetAllFrameworks(id);
             return View(frameworkList.ToList());
+        }
+
+        public ActionResult GetAllCategories()
+        {
+            if (_reusableService == null)
+                return RedirectToAction("Index");
+
+            var CategoryList = _reusableService.GetAllCategories();
+            return View(CategoryList.ToList());
         }
 
         // GET: Reusable/Details/5

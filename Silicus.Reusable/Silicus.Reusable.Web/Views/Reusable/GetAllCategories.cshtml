@@ -1,10 +1,10 @@
-﻿@model IEnumerable<Silicus.Reusable.Models.Frameworx>
+﻿@model IEnumerable<Silicus.Reusable.Models.Category>
 
 @{
     ViewBag.Title = "Index";
 }
 
-<h2>Silicus Templates</h2>
+<h2>Silicus Category</h2>
 <style>
     .TitleDiv {
         height: 250px;
@@ -37,38 +37,14 @@
     <div class="row">
         @foreach (var item in Model)
         {
-            var myid = item.Id;
+            //var myid = item.Id;
             <div class="col-sm-4">
-                <div class="TitleDiv" data-toggle="modal" data-target="#myModal" onclick="getdetail('@(item.Id)')">
-                    <h3 class="maintitle">@Html.DisplayFor(modelItem => item.Title)</h3>
-                </div>
+                <a href='@Url.Action("GetAllList", "Reusable", new { id=item.Id })'>
+                    <div class="TitleDiv">
+                        <h3 class="maintitle">@Html.DisplayFor(modelItem => item.Name)</h3>
+                    </div>
+                </a>
             </div>
         }
     </div>
 </div>
-
-<!-- Modal -->
-<div class="modal fade" id="myModal" role="dialog">
-    <div class="modal-dialog">
-
-        <!-- Modal content-->
-        <div class="modal-content">
-
-        </div>
-
-    </div>
-</div>
-
-
-<script src="~/Scripts/jquery-1.10.2.min.js"></script>
-<script>
-    function getdetail(id) {
-
-        var url = "/Reusable/Details";
-        $.get(url, { id:id }, function (data) {
-
-            $(".modal-content").html(data);
-        });
-    }
-
-</script>
