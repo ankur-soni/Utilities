@@ -130,12 +130,23 @@
                                 </div>
 
                                 <div class="ibox-footer text-left">
-                                    <a href="@Url.Action("","")" class="btn btn-primary btn-sm dashboardButtons" id="lockNominations">
+                                    @*<a href="@Url.Action("LockNomination","Review")" class="btn btn-primary btn-sm dashboardButtons" id="lockNominations">
                                         <span style="font-weight:bold">Lock Nominations</span>
-                                    </a>
+                                    </a>*@
+                                    @Ajax.ActionLink("Lock Nominations",
+                                    "LockNomination","Review", new { },
+                                    new AjaxOptions
+                                    {
+                                        HttpMethod = "GET"
+                                    },
+                                        new { id = "lockNominations" , @class="btn btn-primary btn-sm dashboardButtons"  }
+                                    )
+                          
+                                        
                                 </div>
                             </div>
 
+                            
                         </div>
                         <div class="col-md-3">
                             <div class="ibox float-e-margins">
@@ -144,9 +155,20 @@
                                 </div>
 
                                 <div class="ibox-footer text-left">
-                                    <a href="@Url.Action("","")" class="btn btn-primary btn-sm dashboardButtons" id="unLockNominations">
+                                    @*<a href="@Url.Action("","")" class="btn btn-primary btn-sm dashboardButtons" id="unLockNominations">
                                         <span style="font-weight:bold">Unlock Nominations</span>
-                                    </a>
+                                    </a>*@
+
+                                    @Ajax.ActionLink("Unlock Nominations", "UnlockNomination", "Review", new { }, new AjaxOptions { HttpMethod = "GET" }, new { @class = "btn btn-primary btn-sm dashboardButtons and111", id = "unLockNominations" })
+
+                                    @*@Ajax.ActionLink("Unlock Nominations",
+                                    "UnlockNomination", "Review",
+                                    new AjaxOptions
+                                    {
+                                        HttpMethod = "GET"
+                                    },
+                                        new  { id = "unLockNominations", @class = "btn btn-primary btn-sm dashboardButtons" }
+                                    )*@
                                 </div>
                             </div>
 
@@ -240,19 +262,22 @@
 
 </html>
 
+
+<script src="~/Scripts/jquery.unobtrusive-ajax.js"></script>
+
 <script>
 
     $("#lockNominations").click(function (e) {
-        debugger;
-        e.preventDefault();
-        $("#lockNominations").addClass('disabled');
-        $("#unLockNominations").removeClass('disabled')
-    })
+        //    debugger;
+        //   e.preventDefault();
+        sweetAlert("The Nomination is Successfully Locked");
+        //    $("#lockNominations").addClass('disabled');
+        //    $("#unLockNominations").removeClass('disabled')
+    });
     $("#unLockNominations").click(function (e) {
-        e.preventDefault();
-        $("#unLockNominations").addClass('disabled');
-        $("#lockNominations").removeClass('disabled');
-    })
+        sweetAlert("The Nomination is Successfully unlocked");
+        return true;
+    });
     var winnerCardIndex = 0;
     $("#0").delay(1000).fadeIn();
     $("#1").delay(1000).fadeIn();

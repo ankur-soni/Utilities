@@ -30,6 +30,14 @@ namespace Silicus.Encourage.Services
             var reviews = _encourageDatabaseContext.Query<Review>("ReviewerComments").Where(review => review.NominationId == nominationID && review.IsSubmited==true).ToList();
             return reviews;
         }
-       
+        public void UpdateReview(Review model)
+        {
+           _encourageDatabaseContext.Update<Review>(model);
+        }
+        public List<Review> GetAllReview()
+        {
+            return _encourageDatabaseContext.Query<Review>("ReviewerComments").ToList();
+        }
+
     }
 }

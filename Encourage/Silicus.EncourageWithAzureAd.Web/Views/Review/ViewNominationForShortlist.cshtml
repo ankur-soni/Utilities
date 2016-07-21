@@ -1,6 +1,5 @@
 ﻿@model Silicus.EncourageWithAzureAd.Web.Models.ViewShortlistDetailsViewModel
 
-
 @{
     ViewBag.Title = "ShortlistNomination";
 }
@@ -120,8 +119,8 @@
                         {
                             <tr>
                                 <td class="col-md-3">@item.Title</td>
-
-                                <td class="col-md-3">
+                               <td class="more" style="word-break:break-all">
+                                @*<td class="col-md-3">*@
                                     @{
                             var commentObj = Model.ManagerComments.Where(model => model.CriteriaId == @item.Id).FirstOrDefault();
                             if (commentObj != null && !string.IsNullOrEmpty(commentObj.Comment))
@@ -130,14 +129,14 @@
                             }
                                     }
                                 </td>
-
-                                <td class="col-md-3">
+                                <td class="more" style="word-break:break-all">
+                                    @*<td class="col-md-3">*@
                                     @{
-                            var reviewObj = reviewer.Where(model => model.CriteriaID == @item.Id).FirstOrDefault();
-                            if (reviewObj != null && !string.IsNullOrEmpty(reviewObj.Comment))
-                            {
-                                @Html.Label(reviewObj.Comment, new { style = "font-weight: 500;" });
-                            }
+                                        var reviewObj = reviewer.Where(model => model.CriteriaID == @item.Id).FirstOrDefault();
+                                        if (reviewObj != null && !string.IsNullOrEmpty(reviewObj.Comment))
+                                        {
+                                            @Html.Label(reviewObj.Comment, new { style = "font-weight: 500;" });
+                                        }
                                     }
                                 </td>
 
@@ -187,6 +186,8 @@
 
         <div class="form-group">
             <div style="text-align:center;width:80%;">
+                @*<input type="button" value="Back" class="btn btn-primary back btnSameSize" onclick="location.href='#'"/>*@
+                <input type="button" value="Back" class="btn btn-primary btnSameSize " onclick="location.href='@Url.Action("ReviewFeedbackList", "Review")'" />
                 <input type="button" value="Shortlist" class="btn btn-primary shortlist btnSameSize" onclick="location.href='#'"
                      @{  
                          if (Model.IsShortlisted || Model.IsWinner) 
@@ -211,7 +212,7 @@
 <script src="~/js/jquery-2.1.1.js"></script>
 
 <script>
-  
+
     $(".header").click(function () {
         $header = $(this);
         $content = $header.next();
@@ -225,7 +226,18 @@
 
 
     $(document).ready(function () {
+        @*$('.back').click(function () {
+            window.location.href = '@Url.Action("ReviewFeedbackList", "Review")';
+        },*@
         $('.shortlist').click(function () {
+
+            var isLocked = @Html.Raw(Json.Encode(Model.IsLocked));
+            if(isLocked==false)
+            {
+                sweetAlert("Please lock the nomination from dashboard before proceed.");
+                return false;
+            }
+
             swal({
                 title: "Shortlist Nomination",
                 text: "Are you sure you want to shortlist this candidate?",
@@ -238,7 +250,7 @@
                 closeOnCancel: false
             },
                  function (isConfirm, inputValue) {
-     
+
                      var a = inputValue;
                      if (isConfirm) {
                          var nominationIdToShortlist = $("#nominationId").val();
@@ -321,7 +333,12 @@
             //    }
             //});
 
-
+            var isLocked = @Html.Raw(Json.Encode(Model.IsLocked));
+            if(isLocked==false)
+            {
+                sweetAlert("Please lock the nomination from dashboard before proceed.");
+                return false;
+            }
 
             swal({
                 title: "Select Winner",
@@ -337,7 +354,7 @@
             function (inputValue)
             {
                 if (inputValue === false) {
-                                      
+
                 }
                 else if (inputValue === "")
                 {
@@ -367,7 +384,7 @@
                     });
                 }
 
-               
+
             });
 
         });

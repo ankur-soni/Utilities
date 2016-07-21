@@ -20,5 +20,6 @@ namespace Silicus.EncourageWithAzureAd.Web.Models
         public bool IsPLC { get; set; }
         public List<Criteria> Criterias { get; set; }
         public List<List<ReviewerCommentViewModel>> reviewerComments { get; set; }
+        public bool IsLocked { get; set; }
     }
 }

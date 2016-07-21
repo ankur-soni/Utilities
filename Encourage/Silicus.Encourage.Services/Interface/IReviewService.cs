@@ -10,5 +10,7 @@ namespace Silicus.Encourage.Services.Interface
    public interface IReviewService
     {
         IEnumerable<Review> GetReviewsForNomination(int nominationID);
+        void UpdateReview(Review model);
+        List<Review> GetAllReview();
     }
 }

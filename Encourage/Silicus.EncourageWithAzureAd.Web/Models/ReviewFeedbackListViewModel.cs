@@ -17,5 +17,6 @@ namespace Silicus.EncourageWithAzureAd.Web.Models
         public bool IsWinner { get; set; }
         public int numberOfReviews { get; set; }
         public float averageCredits { get; set; }
+    
     }
 }
