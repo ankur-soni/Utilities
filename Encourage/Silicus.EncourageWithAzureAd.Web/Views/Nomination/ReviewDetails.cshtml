@@ -124,12 +124,13 @@
 
                                     @if (k < item.ManagerComments.Count() && item.ManagerComments[k].CriteriaId == criteria.Id)
                                     {
-                                        <td class="col-md-4">@item.ManagerComments[k].Comment</td>
+                                        @*<td class="col-md-4">@item.ManagerComments[k].Comment</td>*@
+                                        <td class="more" style="word-break:break-all">@item.ManagerComments[k].Comment</td>
                                         k++;
                                     }
                                     else
                                     {
-                                        <td class="col-md-4"></td>
+                                        <td class="more"></td>
                                     }
 
 

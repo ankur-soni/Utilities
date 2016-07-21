@@ -32,9 +32,15 @@
 
 <div class="wrapper wrapper-content animated fadeInRight">
 
+    @if (Model.IsLocked)
+    {
+        <div class="row" style="color:red">The nominations period was closed.</div>
+    }
+    else
+    { 
 
     <div class="row" style="width:80%;padding-top:20px;margin-left:3%;">
-        <div style="text-align:center;">
+        <div  style="text-align:center;"id="label">
             <label style="color:#0067AA;font-size:18px;padding-bottom:1%;">Nomination For @String.Format("{0:MMMM}", DateTime.Now.AddMonths(-1)) - @DateTime.Now.Year</label>
         </div>
 
@@ -101,7 +107,8 @@
                 <div class="row">
                     @Html.Label("Comment", htmlAttributes: new { @class = "control-label col-md-2 requiredfeild", style = "text-align: left" })
                     <div>
-                        @Html.TextAreaFor(model => model.MainComment, new { htmlAttributes = new { @class = "form-control" }, placeholder = "Maximum 1000 words", id = "managerComment", name = "defaultconfig", style = "min-width: 70%;margin-left:8%", rows = "7", maxlength = 1000 })
+                        @Html.TextAreaFor(model => model.MainComment, new { htmlAttributes = new { @class = "form-control"}, placeholder = "Maximum 500 words", id = "managerComment", name = "defaultconfig", style = "min-width: 70%;margin-left:8%", rows = "7", maxlength = 500 })
+                        @*@Html.TextAreaFor(model => model.MainComment, new { htmlAttributes = new { @class = "form-control" }, placeholder = "", id = "managerComment", name = "defaultconfig", style = "min-width: 70%;margin-left:8%", rows = "7", maxlength = 200 })*@
                         <div style="text-align:right;">
                             @Html.ValidationMessageFor(model => model.MainComment, "", new { @class = "text-danger", id = "managerCommentValidationmessage" })
                         </div>
@@ -136,6 +143,9 @@
             </div>
         }
     </div>
+
+    }
+
 </div>
 
 <script src="~/js/jquery-2.1.1.js"></script>
@@ -149,7 +159,7 @@
     $(document).ready(function () {
         $('#ProjectRadioButton').prop('checked', true);
         $("#departmentInput").hide();
-
+        $("#label").hide();   
     })
 
     $("#ProjectRadioButton").change
@@ -179,6 +189,13 @@
           });
 
     $("#Award").change(function () {
+
+        if (this.value == '1' || this.value == '2' || this.value == '5') {
+            $("#label").show();
+        } else {
+            $("#label").hide();
+        }
+
         $('#ProjectRadioButton').prop('checked', true);
         $('#DepartmentRadioButton').prop('checked', false);
         $("#projectInput").show();
@@ -204,12 +221,44 @@
                 for (var key in data) {
                     $('#criteriaTable tr:last')
                         .after('<tr><td class="col-md-6" style="padding-left:2%"><label>' + data[key].Title + '</label></td>'
-                        + '<td class="col-md-6 criteriaComment"><textarea class="form-control" rows="" name=Comments[' + key + '].Comment id="comment" , maxlength = 500 }></textarea></td>'
+                        + '<td class="col-md-6 criteriaComment"><textarea class="form-control"  onblur = "return hideRemainingCharacterText(' + key + ')" onKeyUp="edValueKeyPress(' + key + ')"  rows="" name=Comments[' + key + '].Comment id="comment' + key + '" maxlength="500"}></textarea><div class="textarea' + key + '"></div></td>'
                         + '<td><input type="hidden" name=Comments[' + key + '].Id value=' + data[key].Id + '></td></tr>');
+                    var text_max = 500;
+                    $('div.textarea' + key + '').html(text_max + ' characters remaining').hide();
+
+                    //$('#comment').keyup(function () {
+                    //    var text_length = $('#comment').val().length;
+                    //    var text_remaining = text_max - text_length;
+                    //    debugger;
+                    //    $('div.textarea'+ key +'').html(text_remaining + ' characters remaining');
+                    //});
                 }
             }
         });
+     
+
     });
+
+    function edValueKeyPress(key)
+    {
+      //  $('#' + key.id).siblings("div.textarea").css('display', 'block');
+        $('div.textarea' + key + '').html(text_remaining + ' characters remaining').show();
+            var text_max = 500;
+        
+            var text_length = $('#comment'+ key +'').val().length;
+            var text_remaining = text_max - text_length;         
+            $('div.textarea' + key + '').html(text_remaining + ' characters remaining');
+    }
+
+    function hideRemainingCharacterText(key) {
+        debugger;
+        var text_max = 500;
+
+        var text_length = $('#comment' + key + '').val().length;
+        var text_remaining = text_max - text_length;
+        $('div.textarea' + key + '').html(text_remaining + ' characters remaining').hide();
+    }
+
 
     $("#SelectedProject").change(function () {
         var selectedProject = $("#SelectedProject").val();

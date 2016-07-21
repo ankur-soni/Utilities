@@ -26,6 +26,8 @@ namespace Silicus.EncourageWithAzureAd.Web.Models
 
         public bool IsPLC { get; set; }
 
+        public bool IsLocked { get; set; }
+
         public bool? IsSubmitted { get; set; }
 
         public string MainComment { get; set; }

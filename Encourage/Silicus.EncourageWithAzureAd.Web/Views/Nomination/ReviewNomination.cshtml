@@ -4,7 +4,6 @@
     ViewBag.Title = "ReviewNomination";
 }
 
-
 <style>
     .container .content {
         display: none;
@@ -116,16 +115,17 @@
 
                             @if (k < Model.ManagerComments.Count() && Model.ManagerComments[k].CriteriaId == item.Id)
                             {
-                                <td class="col-md-4">@Model.ManagerComments[k].Comment</td>
+                                <td class="more" style="word-break:break-all">@Model.ManagerComments[k].Comment</td>
                                 k++;
                             }
                             else
                             {
-                                <td class="col-md-4"></td>
+                                <td class="more"></td>
                             }
 
-
-                            <td class="col-md-3">@Html.TextArea("Comments[" + @j + "].Comment")</td>
+                            
+                            @*<td class="col-md-3">@Html.TextArea("Comments[" + @j + "].Comment", new {name="reviewercomment",maxlength = "50", onKeyUp= "onkeyevent(  Comments[" + @j + "].Comment )" })<div class="textarea"></div></td>*@              
+                           <td class="col-md-3">@Html.TextArea("Comments[" + @j + "].Comment", new {name="reviewercomment",maxlength = "100", onKeyUp= "return onkeyevent(this);", onblur = "return hideRemainingCharacterText(this);" })<div class="textarea"></div></td>
 
                             @Html.Hidden("Comments[" + @j + "].Id", item.Id)
                             <td class="col-md-1">
@@ -133,7 +133,7 @@
                                     <div class="onoffswitch">
                                         <input type="checkbox" value="true" length="0" class="onoffswitch-checkbox" id='example @j' name="Comments[@j].Credit">
 
-                                        <label class=" onoffswitch-label" for="example @j">
+                                        <label class="onoffswitch-label" for="example @j">
                                             <span class="onoffswitch-inner"></span>
                                             <span class="onoffswitch-switch"></span>
                                         </label>
@@ -144,7 +144,10 @@
                         </tr>
                     </tbody>
                     j++;
+                    
                 }
+               
+                
                 @if (Model.ManagerComments != null)
                 {
                     for (int i = 0; i < Model.ManagerComments.Count; i++)
@@ -152,6 +155,7 @@
                         @Html.HiddenFor(model => Model.ManagerComments[i].Comment)
                     }
                 }
+
                 <tr>
                     <td></td>
                     <td></td>
@@ -173,6 +177,7 @@
                 </div>
             </div>
                     }
+        
     </div>
 </div>
 
@@ -182,6 +187,21 @@
 <script src="~/Scripts/jquery.validate.unobtrusive.js"></script>
 
 <script>
+    
+    function onkeyevent(self)
+    {
+        $('#' + self.id).siblings("div.textarea").css('display', 'block');
+        var text_max = 100;
+        var text_length = self.value.length;
+        var text_remaining = text_max - text_length;
+        $('#' + self.id).siblings("div.textarea").html(text_remaining + ' characters remaining');
+    }
+
+    function hideRemainingCharacterText(self)
+    {
+        $('#' + self.id).siblings("div.textarea").css('display', 'none');
+    }
+
     var totalCredits = 0;
     $(".onoffswitch-checkbox").change(function () {
         if ($(this).is(':checked')) {
