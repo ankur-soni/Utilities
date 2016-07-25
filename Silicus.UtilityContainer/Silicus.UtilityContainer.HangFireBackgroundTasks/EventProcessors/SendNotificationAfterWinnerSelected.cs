@@ -17,6 +17,7 @@ namespace Silicus.UtilityContainer.HangFireBackgroundTasks.EventProcessors
         public void Process()
         {
             var allWinners = new EncourageDataService().GetWinnerData().FirstOrDefault(); //getting only first user
+            //var htmlPagePath = @"C:\Users\aajadhav\Source\Repos\UtilitiesDeployedOnAzure\Silicus.UtilityContainer\HangFireBackgroundTasks\View\SendMailAfterWinnerSelected.html";
             var htmlPagePath = @"C:\Users\aajadhav\Source\Repos\UtilitiesDeployedOnAzure\Silicus.UtilityContainer\HangFireBackgroundTasks\View\SendMailAfterWinnerSelected.html";
 
             IDictionary<string, string> map = new Dictionary<string, string>()

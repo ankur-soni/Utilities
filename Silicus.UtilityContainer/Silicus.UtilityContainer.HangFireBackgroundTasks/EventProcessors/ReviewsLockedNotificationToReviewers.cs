@@ -14,7 +14,9 @@ namespace Silicus.UtilityContainer.HangFireBackgroundTasks.EventProcessors
         {
             var reviewerEmailAddresses = GetEmailAddress.GetEmailAddressForRoles(367);
             var subject = "Review Process Locked";
-            var emailBodyPath = @"C:\Users\aajadhav\Source\Repos\UtilitiesDeployedOnAzure\Silicus.UtilityContainer\HangFireBackgroundTasks\View\ReviewsLockedNotificationToReviewer.html";
+            //var emailBodyPath = @"C:\Users\aajadhav\Source\Repos\UtilitiesDeployedOnAzure\Silicus.UtilityContainer\HangFireBackgroundTasks\View\ReviewsLockedNotificationToReviewer.html";
+            var emailBodyPath = @"C:\Users\IKadam.SILICUS\Source\Repos\Utilities3\Silicus.UtilityContainer\Silicus.UtilityContainer.HangFireBackgroundTasks\View\ReviewsLockedNotificationToReviewer.html";
+
             new EmailService().SendEmail(emailBodyPath, reviewerEmailAddresses, subject);
         }
     }

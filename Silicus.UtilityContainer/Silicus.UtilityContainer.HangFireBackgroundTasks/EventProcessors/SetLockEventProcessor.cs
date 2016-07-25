@@ -1,35 +1,30 @@
-﻿using Silicus.Encourage.Services.Interface;
+﻿using HangFireBackgroundTasks.Interface;
+using Silicus.Encourage.Services;
+using Silicus.Encourage.Services.Interface;
+using Silicus.UtilityContainer.HangFireBackgroundTasks.EventProcessors;
 using System;
+using System.Collections.Generic;
 using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
-namespace Silicus.EncourageWithAzureAd.Web.Hangfire
+namespace HangFireBackgroundTasks.EventProcessors
 {
-    public class Locker 
+    public class SetLockEventProcessor : ILockingEventProcessor 
     {
         private INominationService _nominationService;
         private IReviewService _reviewService;
-        public Locker(INominationService nominationService,IReviewService reviewService)
+
+        public SetLockEventProcessor(INominationService nominationService, IReviewService reviewService)
         {
-            if (nominationService == null)
-            {
-                throw new ArgumentNullException("nominationService");
-            }
-            else if(reviewService == null)
-            {
-                throw new ArgumentNullException("reviewService");
-            }
-            
             _nominationService = nominationService;
             _reviewService = reviewService;
         }
-        /// <summary>
-        /// Method for locking nomination and review period.
-        /// </summary>
         public void setLockForNomination()
         {
             DateTime currentDate = System.DateTime.Now;
             var firstDayOfMonth = new DateTime(System.DateTime.Now.Year, System.DateTime.Now.Month, 1);
-            
+
             #region Manager
 
             var expireDateManager = firstDayOfMonth.AddDays(Convert.ToDouble(System.Configuration.ConfigurationManager.AppSettings["NoOfDaysManager"].ToString()));
@@ -50,7 +45,8 @@ namespace Silicus.EncourageWithAzureAd.Web.Hangfire
                     {
                         nomination.IsLocked = true;
                         _nominationService.UpdateNomination(nomination);
-
+                        ReviewsLockedNotificationToReviewers reviewsLockedNotificationToReviewers = new ReviewsLockedNotificationToReviewers();
+                        reviewsLockedNotificationToReviewers.Process();
                         //emmail to manager
 
                     }
@@ -77,13 +73,17 @@ namespace Silicus.EncourageWithAzureAd.Web.Hangfire
                     {
                         var reviewrow = _nominationService.GetAllNominations().Where(x => x.Id.Equals(review.NominationId)).ToList().First().NominationDate;
 
+
                         if ((DateTime.Now.Month - 1).Equals(reviewrow.Value.Month))
                         {
                             review.IsLocked = true;
                             _reviewService.UpdateReview(review);
+                            ReviewsLockedNotificationToAdmin reviewsLockedNotificationToAdmin = new ReviewsLockedNotificationToAdmin();
+                            reviewsLockedNotificationToAdmin.Process();
+                            //email to reviewer
                         }
 
-                       //  review.NominationId
+                        //  review.NominationId
 
                     }
                 }
@@ -96,4 +96,5 @@ namespace Silicus.EncourageWithAzureAd.Web.Hangfire
 
         }
     }
+    
 }

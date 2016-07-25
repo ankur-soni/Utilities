@@ -19,7 +19,8 @@ namespace Silicus.UtilityContainer.HangFireBackgroundTasks.EventProcessors
         {
             var managerEmailAddresses = GetEmailAddress.GetEmailAddressForRoles(364);
             var subject = "Submit Your Nominations";
-            var emailBodyPath = @"C:\Users\aajadhav\Source\Repos\UtilitiesDeployedOnAzure\Silicus.UtilityContainer\HangFireBackgroundTasks\View\EmailToManagerBody.html";
+            var emailBodyPath = @"C:\Users\IKadam.SILICUS\Source\Repos\Utilities3\Silicus.UtilityContainer\Silicus.UtilityContainer.HangFireBackgroundTasks\View\EmailToManagerBody.html";
+            //var emailBodyPath = @"C:\Users\aajadhav\Source\Repos\UtilitiesDeployedOnAzure\Silicus.UtilityContainer\HangFireBackgroundTasks\View\EmailToManagerBody.html";
             new EmailService().SendEmail(emailBodyPath, managerEmailAddresses, subject);
         }
     }

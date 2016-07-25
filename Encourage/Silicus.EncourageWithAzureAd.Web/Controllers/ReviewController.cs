@@ -39,30 +39,41 @@ namespace Silicus.EncourageWithAzureAd.Web.Controllers
         }
 
         #region Test
-        public ActionResult setLockForNomination()
-        {
-            DateTime currentDate = System.DateTime.Now;
-            var firstDayOfMonth = new DateTime(System.DateTime.Now.Year, System.DateTime.Now.Month, 1);
-            var expireDateReviewer = firstDayOfMonth.AddDays(Convert.ToDouble(System.Configuration.ConfigurationManager.AppSettings["NoOfDaysManager"].ToString()) + Convert.ToDouble(System.Configuration.ConfigurationManager.AppSettings["NoOfDaysReviewer"].ToString()));
+        //public ActionResult setLockForNomination()
+        //{
+        //    DateTime currentDate = System.DateTime.Now;
+        //    var firstDayOfMonth = new DateTime(System.DateTime.Now.Year, System.DateTime.Now.Month, 1);
+        //    var expireDateReviewer = firstDayOfMonth.AddDays(Convert.ToDouble(System.Configuration.ConfigurationManager.AppSettings["NoOfDaysManager"].ToString()) + Convert.ToDouble(System.Configuration.ConfigurationManager.AppSettings["NoOfDaysReviewer"].ToString()));
 
-            //set IsLocked = true for "Reviewer" Table
-            if (currentDate == expireDateReviewer || currentDate < expireDateReviewer)
-            {
-                var reviews = _reviewService.GetAllReview();
-                foreach (var review in reviews)
-                {
-                    if (review != null)
-                    {
-                        review.IsLocked = true;
-                        _reviewService.UpdateReview(review);
-                    }
-                }
+        //    //set IsLocked = true for "Reviewer" Table
+        //    if (currentDate == expireDateReviewer || currentDate > expireDateReviewer)
+        //    {
+        //        var reviews = _reviewService.GetAllReview();
+                
+
+        //        foreach (var review in reviews)
+        //        {
+        //            if (review != null)
+        //            {
+        //               var reviewrow = _nominationService.GetAllNominations().Where(x => x.Id.Equals(review.NominationId)).ToList().First().NominationDate;
+                        
+                       
+        //                if ((DateTime.Now.Month -1).Equals(reviewrow.Value.Month))
+        //                {
+        //                    review.IsLocked = true;
+        //                    _reviewService.UpdateReview(review);
+        //                }
+
+        //              //  review.NominationId
+                      
+        //            }
+        //        }
 
 
-            }
-            else { }
-            return null;
-        }
+        //    }
+        //    else { }
+        //    return null;
+        //}
 
         #endregion
 
@@ -157,7 +168,6 @@ namespace Silicus.EncourageWithAzureAd.Web.Controllers
             var reviews = _reviewService.GetReviewsForNomination(nominationModel.NominationId).ToList();
             var nomination = _nominationService.GetNomination(reviews.FirstOrDefault().NominationId);
             var allReviewerComments = new List<List<ReviewerCommentViewModel>>();
-
 
             foreach (var review in reviews)
             {
@@ -255,8 +265,28 @@ namespace Silicus.EncourageWithAzureAd.Web.Controllers
         [HttpGet]
         public ActionResult LockNomination()
         {
-            var nominations = _nominationService.GetAllNominations();
-            foreach (var nomination in nominations)
+            //var nominations = _nominationService.GetAllNominations();
+            //foreach (var nomination in nominations)
+            //{
+            //    if (nomination != null)
+            //    {
+            //        nomination.IsLocked = true;
+            //        _nominationService.UpdateNomination(nomination);
+            //    }
+            //}
+            //var reviews = _reviewService.GetAllReview();
+            //foreach (var review in reviews)
+            //{
+            //    if (review != null)
+            //    {
+            //        review.IsLocked = true;
+            //        _reviewService.UpdateReview(review);
+            //    }
+            //}
+            var allNominations = _nominationService.GetAllNominations();
+            var nominations = allNominations.Where(x => x.NominationDate.Value.Month.Equals(DateTime.Now.Month - 1)).ToList();
+
+            foreach (var nomination in allNominations)
             {
                 if (nomination != null)
                 {
@@ -269,8 +299,16 @@ namespace Silicus.EncourageWithAzureAd.Web.Controllers
             {
                 if (review != null)
                 {
-                    review.IsLocked = true;
-                    _reviewService.UpdateReview(review);
+                    var reviewrow = _nominationService.GetAllNominations().Where(x => x.Id.Equals(review.NominationId)).ToList().First().NominationDate;
+
+
+                    if ((DateTime.Now.Month - 1).Equals(reviewrow.Value.Month))
+                    {
+                        review.IsLocked = true;
+                        _reviewService.UpdateReview(review);
+                    }
+                    //  review.NominationId
+
                 }
             }
 
@@ -282,7 +320,27 @@ namespace Silicus.EncourageWithAzureAd.Web.Controllers
         [HttpGet]
         public ActionResult UnlockNomination()
         {
-            var nominations = _nominationService.GetAllNominations();
+            //var nominations = _nominationService.GetAllNominations();
+            //foreach (var nomination in nominations)
+            //{
+            //    if (nomination != null)
+            //    {
+            //        nomination.IsLocked = false;
+            //        _nominationService.UpdateNomination(nomination);
+            //    }
+            //}
+            //var reviews = _reviewService.GetAllReview();
+            //foreach (var review in reviews)
+            //{
+            //    if (review != null)
+            //    {
+            //        review.IsLocked = false;
+            //        _reviewService.UpdateReview(review);
+            //    }
+            //}
+            var allNominations = _nominationService.GetAllNominations();
+            var nominations = allNominations.Where(x => x.NominationDate.Value.Month.Equals(DateTime.Now.Month - 1)).ToList();
+
             foreach (var nomination in nominations)
             {
                 if (nomination != null)
@@ -296,11 +354,17 @@ namespace Silicus.EncourageWithAzureAd.Web.Controllers
             {
                 if (review != null)
                 {
-                    review.IsLocked = false;
-                    _reviewService.UpdateReview(review);
+                    var reviewrow = _nominationService.GetAllNominations().Where(x => x.Id.Equals(review.NominationId)).ToList().First().NominationDate;
+
+                    if ((DateTime.Now.Month - 1).Equals(reviewrow.Value.Month))
+                    {
+                        review.IsLocked = false;
+                        _reviewService.UpdateReview(review);
+                    }
+                    //  review.NominationId
+
                 }
             }
-
             return new EmptyResult();
         }
     }

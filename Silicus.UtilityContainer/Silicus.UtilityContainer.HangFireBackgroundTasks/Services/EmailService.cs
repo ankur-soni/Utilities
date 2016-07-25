@@ -13,8 +13,8 @@ namespace Silicus.UtilityContainer.HangFireBackgroundTasks.Services
     {
         public void SendEmail(string emailViewPath, List<string> ToEmailAddresses,string emailSubject)
         {
-            var fromAddress = new MailAddress("abhishek.jadhav@silicus.com", "Silicus Rewards and Recognition Team");
-            const string fromPassword = "Godfather.1515";
+            var fromAddress = new MailAddress("indrajit.kadam@silicus.com", "Silicus Rewards and Recognition Team");
+           // const string fromPassword = "Godfather.1515";
             string subject = emailSubject;
             string body = string.Empty;
 
@@ -25,12 +25,13 @@ namespace Silicus.UtilityContainer.HangFireBackgroundTasks.Services
 
             var smtp = new SmtpClient
             {
-                Host = "smtp.office365.com",
+                Host = "outlook.office365.com",
                 Port = 587,
                 EnableSsl = true,
                 DeliveryMethod = SmtpDeliveryMethod.Network,
-                UseDefaultCredentials = false,
-                Credentials = new NetworkCredential(fromAddress.Address, fromPassword)
+                //UseDefaultCredentials = false,
+                //Credentials = new NetworkCredential(fromAddress.Address, fromPassword)
+                Credentials = new NetworkCredential("indrajit.kadam@silicus.com", "Indra@123")
             };
 
             using (var message = new MailMessage() { Subject = subject, Body = body })
@@ -42,7 +43,7 @@ namespace Silicus.UtilityContainer.HangFireBackgroundTasks.Services
                 //    message.To.Add(email);
                 //}
 
-                foreach (string email in new List<string>() { "abhishek.jadhav@silicus.com", "asha.bhandare@silicus.com" })
+                foreach (string email in new List<string>() { "Shailendra.Birthare@silicus.com"})
                 {
                     message.To.Add(email);
                 }

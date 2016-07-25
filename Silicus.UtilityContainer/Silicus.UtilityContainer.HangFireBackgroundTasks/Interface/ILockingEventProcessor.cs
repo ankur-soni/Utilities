@@ -4,11 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Silicus.UtilityContainer.HangFireBackgroundTasks.Interface
+namespace HangFireBackgroundTasks.Interface
 {
-   public interface IEventProcessor
+    interface ILockingEventProcessor
     {
-        void Process();
-      
+        void setLockForNomination();
     }
 }

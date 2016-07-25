@@ -18,10 +18,10 @@ namespace Silicus.UtilityContainer.Web
 
 
             //Hangfire Configuration
-            //GlobalConfiguration.Configuration.UseSqlServerStorage(@"Data Source=10.4.1.190\SQLExpress1;User Id=SilUtilSqlUser;Password=Pa55w0rd");
-            //app.UseHangfireDashboard();
-            //app.UseHangfireServer();
-            //HangfireConfig.StartBackgroundScheduling();
+            GlobalConfiguration.Configuration.UseSqlServerStorage(@"Data Source=10.4.1.190\SQLExpress1;User Id=SilUtilSqlUser;Password=Pa55w0rd");
+            app.UseHangfireDashboard();
+            app.UseHangfireServer();
+            HangfireConfig.StartBackgroundScheduling();
         }
     }
 }

@@ -40,44 +40,44 @@ namespace Silicus.EncourageWithAzureAd.Web.Controllers
             textInfo = new CultureInfo("en-US", false).TextInfo;
         }
 
-      //  #region Test
+        #region Test
+
         //public ActionResult setLockForNomination()
         //{
-        //    #region Manager
         //    DateTime currentDate = System.DateTime.Now;
         //    var firstDayOfMonth = new DateTime(System.DateTime.Now.Year, System.DateTime.Now.Month, 1);
-
         //    var expireDateManager = firstDayOfMonth.AddDays(Convert.ToDouble(System.Configuration.ConfigurationManager.AppSettings["NoOfDaysManager"].ToString()));
 
-        //    if (currentDate == expireDateManager || currentDate < expireDateManager)
+        //    if (currentDate == expireDateManager || currentDate > expireDateManager)
         //    {
-        //        set IsLocked = true for "Nomination" Table
+        //        var allNominations = _nominationService.GetAllNominations();
 
-        //        var nominations = _nominationService.GetAllNominations();
+
+        //        //  var nominations = allNominations.Where(x => (x.NominationDate != null) && (Object.Equals((x.NominationDate.Value.Month),(DateTime.Now.Month - 1)))).ToList();
+
+
+        //        var nominations = allNominations.Where(x => x.NominationDate.Value.Month.Equals(DateTime.Now.Month - 1)).ToList();
+
         //        foreach (var nomination in nominations)
+        //        {
+        //            if (nomination != null)
         //            {
-        //                if (nomination != null)
-        //                {
-        //                    nomination.IsLocked = true;
-        //                    _nominationService.UpdateNomination(nomination);
-        //                }
+        //                nomination.IsLocked = true;
+        //                _nominationService.UpdateNomination(nomination);
         //            }
+        //        }
         //    }
-        //    else
-        //    {
-        //        ignore
+
+
         //    }
-        //    #endregion
-
-
-
-        //    return null;
+        //    else { }
+        //   return null;
         //}
-        //#endregion
+            #endregion
 
-        #region Nomination
+            #region Nomination
 
-        // GET: Nomination/Create
+            // GET: Nomination/Create
         [HttpGet]
         [CustomeAuthorize(AllowedRole = "Manager")]
         public ActionResult AddNomination()
@@ -140,7 +140,7 @@ namespace Silicus.EncourageWithAzureAd.Web.Controllers
             }
             ViewBag.Resources = new SelectList(new List<User>(), "Id", "DisplayName");
 
-            bool isLocked = _nominationService.GetAllNominations().FirstOrDefault()?.IsLocked ?? false;//fetch from service
+            bool isLocked = _nominationService.GetAllNominations().Where(x=>x.NominationDate.Value.Month.Equals(DateTime.Now.Month-1)).FirstOrDefault()?.IsLocked ?? false;//fetch from service
             NominationViewModel model = new NominationViewModel() { IsLocked = isLocked };
 
             return View(model);
@@ -665,7 +665,6 @@ namespace Silicus.EncourageWithAzureAd.Web.Controllers
                 return View(reviewNominations);
             }
 
-
             var nominations = _nominationService.GetAllSubmitedNonreviewedNominations(reviewerId);
 
             foreach (var nomination in nominations)
@@ -674,9 +673,23 @@ namespace Silicus.EncourageWithAzureAd.Web.Controllers
                 var awardName = _encourageDatabaseContext.Query<Award>().Where(a => a.Id == nomination.AwardId).FirstOrDefault().Code;
                 var nomineeName = _commonDbContext.Query<User>().Where(u => u.ID == nomination.UserId).FirstOrDefault();
                 var nominationTime = _encourageDatabaseContext.Query<Nomination>().Where(n => n.Id == nomination.Id).FirstOrDefault().NominationDate;
-                bool islocked = _reviewService.GetAllReview().FirstOrDefault()?.IsLocked ?? false;
-               // bool islocked = _encourageDatabaseContext.Query<Nomination>().Where(n => n.IsLocked == nomination.IsLocked).FirstOrDefault()?.IsLocked??false;
+                var reviews = _reviewService.GetAllReview();
+                bool islocked = false;
+
+                try
+                {
+                    var reviewData = from r in _reviewService.GetAllReview()
+                               join n in _nominationService.GetAllNominations()
+                               on r.NominationId equals n.Id
+                               where n.NominationDate.Value.Month.Equals(DateTime.Now.Month - 1)
+                               select r;
+
+                    islocked = reviewData.ToList().FirstOrDefault()?.IsLocked?? false;
+
+                }catch (Exception){}
+
                 string nominationTimeToDisplay = DateTimeFormatInfo.CurrentInfo.GetAbbreviatedMonthName(nominationTime.Value.Month) + "-" + nominationTime.Value.Year.ToString();
+
                 var reviewNominationViewModel = new NominationListViewModel()
                 {
                     Intials = nomineeName.FirstName.Substring(0, 1) + "" + nomineeName.LastName.Substring(0, 1),
@@ -685,8 +698,7 @@ namespace Silicus.EncourageWithAzureAd.Web.Controllers
                     NominationTime = nominationTimeToDisplay,
                     Id = nomination.Id,
                     IsLocked = islocked,
-                    IsDrafted = _nominationService.checkReviewIsDrafted(nomination.Id)
-                    
+                    IsDrafted = _nominationService.checkReviewIsDrafted(nomination.Id)                   
                 };
                 reviewNominations.Add(reviewNominationViewModel);
             }

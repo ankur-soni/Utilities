@@ -739,7 +739,9 @@
     <Content Include="font-awesome\scss\_variables.scss" />
     <Content Include="js\plugins\chartist\chartist.min.js.map" />
     <Content Include="LESS\.crunch" />
+    <None Include="Properties\PublishProfiles\SilicusEncourageWithAzureAdWeb - FTP %282%29.pubxml" />
     <None Include="Properties\PublishProfiles\SilicusEncourageWithAzureAdWeb - FTP.pubxml" />
+    <None Include="Properties\PublishProfiles\SilicusEncourageWithAzureAdWeb - Web Deploy %282%29.pubxml" />
     <None Include="Properties\PublishProfiles\SilicusEncourageWithAzureAdWeb - Web Deploy.pubxml" />
     <None Include="Properties\PublishProfiles\SilicusEncourageWithAzureAdWeb.pubxml" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
