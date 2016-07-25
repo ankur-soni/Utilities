@@ -44,6 +44,14 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="LightInject, Version=4.0.11.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\LightInject.4.0.11\lib\net45\LightInject.dll</HintPath>
       <Private>True</Private>
@@ -167,7 +175,7 @@
     <Compile Include="App_Start\LightInjectWebCommon.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Controllers\HomeController.cs" />
-    <Compile Include="Controllers\ReusableController.cs" />
+    <Compile Include="Controllers\FrameworxProjectController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -187,6 +195,8 @@
     <Content Include="ApplicationInsights.config">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <None Include="Properties\PublishProfiles\Reusable - FTP.pubxml" />
+    <None Include="Properties\PublishProfiles\Reusable - Web Deploy.pubxml" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />
     <Content Include="Scripts\jquery-1.10.2.min.js" />
@@ -199,7 +209,9 @@
     <Content Include="Scripts\respond.js" />
     <Content Include="Scripts\respond.min.js" />
     <Content Include="Scripts\_references.js" />
-    <Content Include="Web.config" />
+    <Content Include="Web.config">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </Content>
@@ -213,9 +225,10 @@
     <Content Include="Views\Home\About.cshtml" />
     <Content Include="Views\Home\Contact.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
-    <Content Include="Views\Reusable\GetAllList.cshtml" />
-    <Content Include="Views\Reusable\Index.cshtml" />
-    <Content Include="Views\Reusable\Details.cshtml" />
+    <Content Include="Views\FrameworxProject\GetAllList.cshtml" />
+    <Content Include="Views\FrameworxProject\Index.cshtml" />
+    <Content Include="Views\FrameworxProject\Details.cshtml" />
+    <Content Include="Views\FrameworxProject\GetAllCategories.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -230,17 +243,17 @@
     <Content Include="Scripts\jquery-1.10.2.min.map" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Silicus.Reusable.DAL\Silicus.Reusable.DAL.csproj">
+    <ProjectReference Include="..\Silicus.Reusable.DAL\Silicus.FrameworxProject.DAL.csproj">
       <Project>{c7afb3b0-aaa6-42a2-9c99-fedb692cc607}</Project>
-      <Name>Silicus.Reusable.DAL</Name>
+      <Name>Silicus.FrameworxProject.DAL</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Silicus.Reusable.Models\Silicus.Reusable.Models.csproj">
+    <ProjectReference Include="..\Silicus.Reusable.Models\Silicus.FrameworxProject.Models.csproj">
       <Project>{dae53d33-7bae-481b-8de2-6b61a51e3727}</Project>
-      <Name>Silicus.Reusable.Models</Name>
+      <Name>Silicus.FrameworxProject.Models</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Silicus.Reusable.Services\Silicus.Reusable.Services.csproj">
+    <ProjectReference Include="..\Silicus.Reusable.Services\Silicus.FrameworxProject.Services.csproj">
       <Project>{4301edf0-bc1b-46a0-b4a2-550e2dcfb75c}</Project>
-      <Name>Silicus.Reusable.Services</Name>
+      <Name>Silicus.FrameworxProject.Services</Name>
     </ProjectReference>
   </ItemGroup>
   <PropertyGroup>

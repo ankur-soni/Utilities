@@ -1,17 +1,15 @@
-﻿using Silicus.Reusable.Web.App_Start;
+﻿using Silicus.FrameworxProject.Web.App_Start;
 using LightInject;
-using Silicus.Reusable.DAL;
-using Silicus.Reusable.DAL.Interfaces;
+using Silicus.FrameworxProject.DAL;
+using Silicus.FrameworxProject.DAL.Interfaces;
 using System.Reflection;
 
-using Silicus.Reusable.Services;
-using Silicus.Reusable.Services.Interfaces;
-
-using Silicus.Reusable.Web;
+using Silicus.FrameworxProject.Services.Interfaces;
+using Silicus.FrameworxProject.Services;
 
 [assembly: WebActivatorEx.PostApplicationStartMethod(typeof(LightInjectWebCommon), "CreateContainer")]
 
-namespace Silicus.Reusable.Web.App_Start
+namespace Silicus.FrameworxProject.Web.App_Start
 {
     public static class LightInjectWebCommon
     {
@@ -28,7 +26,7 @@ namespace Silicus.Reusable.Web.App_Start
         private static void InitializeContainer(IServiceContainer container)
         {
             container.Register<IDataContextFactory, DataContextFactory>();
-            container.Register<IReusableService, ReusableService>();
+            container.Register<IFrameworxProjectService, FrameworxProjectService>();
             container.Register<Silicus.UtilityContainer.Entities.IDataContextFactory, Silicus.UtilityContainer.Entities.DataContextFactory>();
         }
 

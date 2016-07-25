@@ -1,4 +1,4 @@
-﻿using Silicus.Reusable.DAL.Interfaces;
+﻿using Silicus.FrameworxProject.DAL.Interfaces;
 using System.Configuration;
 using System;
 using System.Collections.Generic;
@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Silicus.Reusable.DAL
+namespace Silicus.FrameworxProject.DAL
 {
     public class DataContextFactory : IDataContextFactory
     {
@@ -23,7 +23,7 @@ namespace Silicus.Reusable.DAL
 
         }
 
-        public IReusableDatabaseContext CreateReusableDbContext()
+        public IFrameworxProjectDatabaseContext CreateFrameworxProjectDbContext()
         {
             //IReusableDatabaseContext dataContext = null;
 
@@ -31,7 +31,7 @@ namespace Silicus.Reusable.DAL
 
             //return dataContext;
             //return new ReusableDatabaseContext(@"Data Source=SILICUS512\SQLEXPRESS;Integrated Security=True;Initial Catalog=ReusableDB");
-            return new ReusableDatabaseContext(ConfigurationManager.ConnectionStrings["ReusableDataBaseConnection"].ConnectionString);
+            return new FrameworxProjectDatabaseContext(ConfigurationManager.ConnectionStrings["FrameworxProjectDataBaseConnection"].ConnectionString);
         }
 
     }

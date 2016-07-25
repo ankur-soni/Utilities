@@ -1,20 +1,25 @@
-﻿using Silicus.Reusable.DAL.Interfaces;
+﻿using Silicus.FrameworxProject.DAL.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Data.Entity;
 using System.Text;
 using System.Threading.Tasks;
+using Silicus.FrameworxProject.Models;
 
-namespace Silicus.Reusable.DAL
+namespace Silicus.FrameworxProject.DAL
 {
-    public class ReusableDatabaseContext : DataContextBase, IReusableDatabaseContext
+    public class FrameworxProjectDatabaseContext : DataContextBase, IFrameworxProjectDatabaseContext
     {
-        public ReusableDatabaseContext(string connectionString)
+        public FrameworxProjectDatabaseContext(string connectionString)
             : base(connectionString)
         {
-            Database.SetInitializer<ReusableDatabaseContext>(null);
+            Database.SetInitializer<FrameworxProjectDatabaseContext>(new FrameworxProjectDBInitializer());
+            //Database.SetInitializer<ReusableDatabaseContext>(null);
         }
+
+        public DbSet<Frameworx> Frameworxs { get; set; }
+        public DbSet<Category> Categories { get; set; }
 
         public int Update<T>(T item) where T : class
         {

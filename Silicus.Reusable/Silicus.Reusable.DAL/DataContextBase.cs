@@ -3,9 +3,9 @@
 using System.Data.Entity;
 using System.Data.Entity.ModelConfiguration.Conventions;
 
-using Silicus.Reusable.DAL.EntityConfigurations;
+using Silicus.FrameworxProject.DAL.EntityConfigurations;
 
-namespace Silicus.Reusable.DAL
+namespace Silicus.FrameworxProject.DAL
 {
     public class DataContextBase: DbContext
     {
@@ -21,6 +21,7 @@ namespace Silicus.Reusable.DAL
             modelBuilder.Conventions.Remove<PluralizingTableNameConvention>();
 
             modelBuilder.Configurations.Add(new FrameworxMap());
+            modelBuilder.Configurations.Add(new CategoryMap());
         }
     }
 }

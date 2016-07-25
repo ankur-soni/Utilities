@@ -4,11 +4,11 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{DAE53D33-7BAE-481B-8DE2-6B61A51E3727}</ProjectGuid>
+    <ProjectGuid>{4301EDF0-BC1B-46A0-B4A2-550E2DCFB75C}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Silicus.Reusable.Models</RootNamespace>
-    <AssemblyName>Silicus.Reusable.Models</AssemblyName>
+    <RootNamespace>Silicus.Reusable.Services</RootNamespace>
+    <AssemblyName>Silicus.Reusable.Services</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -40,8 +40,19 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Frameworx.cs" />
+    <Compile Include="Interfaces\IFrameworxProjectService.cs" />
+    <Compile Include="FrameworxProjectService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Silicus.Reusable.DAL\Silicus.FrameworxProject.DAL.csproj">
+      <Project>{C7AFB3B0-AAA6-42A2-9C99-FEDB692CC607}</Project>
+      <Name>Silicus.FrameworxProject.DAL</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Silicus.Reusable.Models\Silicus.FrameworxProject.Models.csproj">
+      <Project>{dae53d33-7bae-481b-8de2-6b61a51e3727}</Project>
+      <Name>Silicus.FrameworxProject.Models</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

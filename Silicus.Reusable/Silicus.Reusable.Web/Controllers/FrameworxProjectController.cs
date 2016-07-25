@@ -1,29 +1,21 @@
-﻿using Silicus.Reusable.DAL.Interfaces;
-using Silicus.Reusable.Models;
-using Silicus.Reusable.Services;
-using Silicus.Reusable.Services.Interfaces;
-using System;
-using System.Collections.Generic;
+﻿using Silicus.FrameworxProject.Models;
+using Silicus.FrameworxProject.Services.Interfaces;
 using System.Linq;
-using System.Web;
 using System.Web.Mvc;
 
 
 
-namespace Silicus.Reusable.Web.Controllers
+namespace Silicus.FrameworxDashboard.Web.Controllers
 {
-    public class ReusableController : Controller
+    public class FrameworxProjectController : Controller
     {
-        private readonly IReusableService _reusableService;
-        private readonly IReusableDatabaseContext _encourageDatabaseContext;
-        private readonly Silicus.Reusable.DAL.Interfaces.IDataContextFactory _dataContextFactory;
+        private readonly IFrameworxProjectService _frameworxProjectService;
+        
         //private readonly TextInfo textInfo;
 
-        public ReusableController(IReusableService reusableService, Silicus.Reusable.DAL.Interfaces.IDataContextFactory dataContextFactory)
+        public FrameworxProjectController(IFrameworxProjectService frameworxProjectService)
         {
-            _dataContextFactory = dataContextFactory;
-            _encourageDatabaseContext = _dataContextFactory.CreateReusableDbContext();
-            _reusableService = reusableService;
+            _frameworxProjectService = frameworxProjectService;
             //textInfo = new CultureInfo("en-US", false).TextInfo;
         }
 
@@ -34,16 +26,28 @@ namespace Silicus.Reusable.Web.Controllers
             return View();
         }
 
-        public ActionResult GetAllList()
+        public ActionResult GetAllList(int id)
         {
-            var frameworkList = _reusableService.GetAllFrameworks();
+            if (_frameworxProjectService == null)
+                return RedirectToAction("Index");
+
+            var frameworkList = _frameworxProjectService.GetAllFrameworks(id);
             return View(frameworkList.ToList());
+        }
+
+        public ActionResult GetAllCategories()
+        {
+            if (_frameworxProjectService == null)
+                return RedirectToAction("Index");
+
+            var CategoryList = _frameworxProjectService.GetAllCategories();
+            return View(CategoryList.ToList());
         }
 
         // GET: Reusable/Details/5
         public ActionResult Details(int id)
         {
-            Frameworx framework = _reusableService.FrameworkDetail(id);
+            Frameworx framework = _frameworxProjectService.FrameworkDetail(id);
 
             return View(framework);
         }

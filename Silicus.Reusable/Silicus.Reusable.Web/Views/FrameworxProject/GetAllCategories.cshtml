@@ -1,0 +1,50 @@
+﻿@model IEnumerable<Silicus.FrameworxProject.Models.Category>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Silicus Category</h2>
+<style>
+    .TitleDiv {
+        height: 250px;
+        text-align: center;
+        background-color: crimson;
+        position: relative;
+        cursor: pointer;
+        background: -webkit-linear-gradient(top, #34696f, #2f5f63);
+        background: -moz-linear-gradient(top, #34696f, #2f5f63);
+        background: -o-linear-gradient(top, #34696f, #2f5f63);
+        background: -ms-linear-gradient(top, #34696f, #2f5f63);
+        background: linear-gradient(top, #34696f, #2f5f63);
+        -webkit-box-shadow: 0 8px 0 #1b383b;
+        -moz-box-shadow: 0 8px 0 #1b383b;
+        box-shadow: 0 8px 0 #1b383b;
+    }
+
+    .maintitle {
+        color: black;
+        position: inherit;
+        top: 50%;
+        left: 50%;
+        margin-right: -50%;
+        transform: translate(-50%, -50%);
+    }
+
+    }
+</style>
+<div class="container">
+    <div class="row">
+        @foreach (var item in Model)
+        {
+            //var myid = item.Id;
+            <div class="col-sm-4">
+                <a href='@Url.Action("GetAllList", "FrameworxProject", new { id=item.Id })'>
+                    <div class="TitleDiv">
+                        <h3 class="maintitle">@Html.DisplayFor(modelItem => item.Name)</h3>
+                    </div>
+                </a>
+            </div>
+        }
+    </div>
+</div>

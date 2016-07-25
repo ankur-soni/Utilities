@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Silicus.Reusable.DAL.Interfaces
+namespace Silicus.FrameworxProject.DAL.Interfaces
 {
-    public interface IReusableDatabaseContext : IDisposable
+    public interface IFrameworxProjectDatabaseContext : IDisposable
     {
         T Add<T>(T item) where T : class;
         int Update<T>(T item) where T : class;
