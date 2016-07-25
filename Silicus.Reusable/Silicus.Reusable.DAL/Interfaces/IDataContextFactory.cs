@@ -4,11 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Silicus.Reusable.DAL.Interfaces
+namespace Silicus.FrameworxProject.DAL.Interfaces
 {
     public interface IDataContextFactory
     {
         ICommonDatabaseContext CreateCommonDbContext();
-        IReusableDatabaseContext CreateReusableDbContext();
+        IFrameworxProjectDatabaseContext CreateFrameworxProjectDbContext();
     }
 }

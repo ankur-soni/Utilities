@@ -1,21 +1,21 @@
-﻿using Silicus.Reusable.Models;
-using Silicus.Reusable.Services.Interfaces;
+﻿using Silicus.FrameworxProject.Models;
+using Silicus.FrameworxProject.Services.Interfaces;
 using System.Linq;
 using System.Web.Mvc;
 
 
 
-namespace Silicus.Reusable.Web.Controllers
+namespace Silicus.FrameworxDashboard.Web.Controllers
 {
-    public class ReusableController : Controller
+    public class FrameworxProjectController : Controller
     {
-        private readonly IReusableService _reusableService;
+        private readonly IFrameworxProjectService _frameworxProjectService;
         
         //private readonly TextInfo textInfo;
 
-        public ReusableController(IReusableService reusableService)
+        public FrameworxProjectController(IFrameworxProjectService frameworxProjectService)
         {
-            _reusableService = reusableService;
+            _frameworxProjectService = frameworxProjectService;
             //textInfo = new CultureInfo("en-US", false).TextInfo;
         }
 
@@ -28,26 +28,26 @@ namespace Silicus.Reusable.Web.Controllers
 
         public ActionResult GetAllList(int id)
         {
-            if (_reusableService == null)
+            if (_frameworxProjectService == null)
                 return RedirectToAction("Index");
 
-            var frameworkList = _reusableService.GetAllFrameworks(id);
+            var frameworkList = _frameworxProjectService.GetAllFrameworks(id);
             return View(frameworkList.ToList());
         }
 
         public ActionResult GetAllCategories()
         {
-            if (_reusableService == null)
+            if (_frameworxProjectService == null)
                 return RedirectToAction("Index");
 
-            var CategoryList = _reusableService.GetAllCategories();
+            var CategoryList = _frameworxProjectService.GetAllCategories();
             return View(CategoryList.ToList());
         }
 
         // GET: Reusable/Details/5
         public ActionResult Details(int id)
         {
-            Frameworx framework = _reusableService.FrameworkDetail(id);
+            Frameworx framework = _frameworxProjectService.FrameworkDetail(id);
 
             return View(framework);
         }

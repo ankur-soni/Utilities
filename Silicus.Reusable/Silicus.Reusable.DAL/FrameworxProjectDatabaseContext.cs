@@ -1,20 +1,20 @@
-﻿using Silicus.Reusable.DAL.Interfaces;
+﻿using Silicus.FrameworxProject.DAL.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Data.Entity;
 using System.Text;
 using System.Threading.Tasks;
-using Silicus.Reusable.Models;
+using Silicus.FrameworxProject.Models;
 
-namespace Silicus.Reusable.DAL
+namespace Silicus.FrameworxProject.DAL
 {
-    public class ReusableDatabaseContext : DataContextBase, IReusableDatabaseContext
+    public class FrameworxProjectDatabaseContext : DataContextBase, IFrameworxProjectDatabaseContext
     {
-        public ReusableDatabaseContext(string connectionString)
+        public FrameworxProjectDatabaseContext(string connectionString)
             : base(connectionString)
         {
-            Database.SetInitializer<ReusableDatabaseContext>(new ReusableDBInitializer());
+            Database.SetInitializer<FrameworxProjectDatabaseContext>(new FrameworxProjectDBInitializer());
             //Database.SetInitializer<ReusableDatabaseContext>(null);
         }
 

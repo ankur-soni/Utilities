@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Silicus.Reusable.Models
+namespace Silicus.FrameworxProject.Models
 {
     public class Category
     {

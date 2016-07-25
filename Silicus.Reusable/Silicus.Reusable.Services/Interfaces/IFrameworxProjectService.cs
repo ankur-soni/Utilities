@@ -1,4 +1,4 @@
-﻿using Silicus.Reusable.Models;
+﻿using Silicus.FrameworxProject.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -6,9 +6,9 @@ using System.Text;
 using System.Threading.Tasks;
 
 
-namespace Silicus.Reusable.Services.Interfaces
+namespace Silicus.FrameworxProject.Services.Interfaces
 {
-   public interface IReusableService
+   public interface IFrameworxProjectService
     {
         List<Frameworx> GetAllFrameworks(int id);
         Frameworx FrameworkDetail(int id);

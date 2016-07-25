@@ -3,9 +3,9 @@
 using System.Data.Entity;
 using System.Data.Entity.ModelConfiguration.Conventions;
 
-using Silicus.Reusable.DAL.EntityConfigurations;
+using Silicus.FrameworxProject.DAL.EntityConfigurations;
 
-namespace Silicus.Reusable.DAL
+namespace Silicus.FrameworxProject.DAL
 {
     public class DataContextBase: DbContext
     {

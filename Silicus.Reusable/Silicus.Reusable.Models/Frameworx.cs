@@ -1,4 +1,4 @@
-﻿namespace Silicus.Reusable.Models
+﻿namespace Silicus.FrameworxProject.Models
 {
     public class Frameworx
     {

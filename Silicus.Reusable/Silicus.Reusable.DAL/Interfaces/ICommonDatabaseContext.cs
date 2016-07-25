@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Silicus.Reusable.DAL.Interfaces
+namespace Silicus.FrameworxProject.DAL.Interfaces
 {
    public interface ICommonDatabaseContext : IDisposable
     {

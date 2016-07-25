@@ -1,4 +1,4 @@
-﻿@model IEnumerable<Silicus.Reusable.Models.Category>
+﻿@model IEnumerable<Silicus.FrameworxProject.Models.Category>
 
 @{
     ViewBag.Title = "Index";
@@ -39,7 +39,7 @@
         {
             //var myid = item.Id;
             <div class="col-sm-4">
-                <a href='@Url.Action("GetAllList", "Reusable", new { id=item.Id })'>
+                <a href='@Url.Action("GetAllList", "FrameworxProject", new { id=item.Id })'>
                     <div class="TitleDiv">
                         <h3 class="maintitle">@Html.DisplayFor(modelItem => item.Name)</h3>
                     </div>
