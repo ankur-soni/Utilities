@@ -1,26 +1,25 @@
-﻿using HangFireBackgroundTasks.Interface;
-using Silicus.Encourage.Services;
-using Silicus.Encourage.Services.Interface;
+﻿using Silicus.Encourage.Services.Interface;
 using Silicus.UtilityContainer.HangFireBackgroundTasks.EventProcessors;
+using Silicus.UtilityContainer.HangFireBackgroundTasks.Interface;
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Silicus.UtilityContainer.Models;
 
 namespace HangFireBackgroundTasks.EventProcessors
 {
-    public class SetLockEventProcessor : ILockingEventProcessor 
+    public class SetLockEventProcessor : IEventProcessor 
     {
         private INominationService _nominationService;
         private IReviewService _reviewService;
 
         public SetLockEventProcessor(INominationService nominationService, IReviewService reviewService)
         {
+            
             _nominationService = nominationService;
             _reviewService = reviewService;
         }
-        public void setLockForNomination()
+
+        public void Process(EventType eventType)
         {
             DateTime currentDate = System.DateTime.Now;
             var firstDayOfMonth = new DateTime(System.DateTime.Now.Year, System.DateTime.Now.Month, 1);
@@ -93,8 +92,8 @@ namespace HangFireBackgroundTasks.EventProcessors
                 //ignore
             }
             #endregion
-
         }
+
     }
     
 }

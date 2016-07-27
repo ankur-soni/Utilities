@@ -1,10 +1,7 @@
 ﻿using Hangfire;
 using HangFireBackgroundTasks.EventProcessors;
-using Silicus.UtilityContainer.HangFireBackgroundTasks.EventProcessors;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
+using Silicus.UtilityContainer.Models;
 
 namespace Silicus.UtilityContainer.Web.App_Start
 {
@@ -14,13 +11,14 @@ namespace Silicus.UtilityContainer.Web.App_Start
         {
             try
             {
-                RecurringJob.AddOrUpdate<SetLockEventProcessor>(mailProcessor => mailProcessor.setLockForNomination(), Cron.Minutely);
+                //RecurringJob.AddOrUpdate<EncourageEmailProcessor>(eventProcessor => eventProcessor.Process(EventType.SendNominationEmail), Cron.Minutely);
+                //RecurringJob.AddOrUpdate<EncourageEventProcessor>(processor => processor.Process(EventType.LockNomination), Cron.Minutely);
+
                 //RecurringJob.AddOrUpdate<SendNominationEventProcessor>(mailProcessor => mailProcessor.Process(), Cron.Minutely);  //CRON expression that Run once a month at midnight of the first day of the month 
 
             }
             catch (Exception ex)
             {
-
                 throw ex;
             }
            // RecurringJob.AddOrUpdate<SendNominationEventProcessor>(mailProcessor => mailProcessor.Process(), "0 0 1 * *");  //CRON expression that Run once a month at midnight of the first day of the month 

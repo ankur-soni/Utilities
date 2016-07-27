@@ -1,6 +1,7 @@
 ﻿using Silicus.UtilityContainer.Entities;
 using Silicus.UtilityContainer.HangFireBackgroundTasks.Interface;
 using Silicus.UtilityContainer.HangFireBackgroundTasks.Services;
+using Silicus.UtilityContainer.Models;
 using Silicus.UtilityContainer.Models.DataObjects;
 using System;
 using System.Collections.Generic;
@@ -22,6 +23,11 @@ namespace Silicus.UtilityContainer.HangFireBackgroundTasks.EventProcessors
             var emailBodyPath = @"C:\Users\IKadam.SILICUS\Source\Repos\Utilities3\Silicus.UtilityContainer\Silicus.UtilityContainer.HangFireBackgroundTasks\View\EmailToManagerBody.html";
             //var emailBodyPath = @"C:\Users\aajadhav\Source\Repos\UtilitiesDeployedOnAzure\Silicus.UtilityContainer\HangFireBackgroundTasks\View\EmailToManagerBody.html";
             new EmailService().SendEmail(emailBodyPath, managerEmailAddresses, subject);
+        }
+
+        public void Process(EventType eventType)
+        {
+            throw new NotImplementedException();
         }
     }
 }

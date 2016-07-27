@@ -7,9 +7,9 @@ using System.Threading.Tasks;
 
 namespace Silicus.UtilityContainer.HangFireBackgroundTasks.Interface
 {
-   public interface IEventProcessor
+    public interface IEmailProcessor
     {
+        void Process();
         void Process(EventType eventType);
-      
     }
 }

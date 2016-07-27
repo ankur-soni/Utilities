@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Silicus.UtilityContainer.HangFireBackgroundTasks.EventProcessors
 {
-    public class ReviewsLockedNotificationToAdmin:IEventProcessor
+    public class ReviewsLockedNotificationToAdmin//:IEventProcessor
     {
         public void Process()
         {

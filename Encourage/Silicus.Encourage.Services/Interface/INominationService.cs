@@ -35,6 +35,8 @@ namespace Silicus.Encourage.Services.Interface
         void DiscardNomination(int nominationId);
 
         bool checkReviewIsDrafted(int nominationId);
+
+        bool LockNominations();
         
     }
 }

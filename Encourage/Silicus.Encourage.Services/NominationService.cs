@@ -5,6 +5,7 @@ using Silicus.Encourage.Services.Interface;
 using Silicus.UtilityContainer.Models.DataObjects;
 using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Globalization;
 using System.Linq;
 using System.Text;
@@ -32,6 +33,11 @@ namespace Silicus.Encourage.Services
         public List<Nomination> GetAllNominations()
         {
             return _encourageDatabaseContext.Query<Nomination>("ManagerComments").ToList();
+        }
+
+        private List<Nomination> GetCurrentNominations()
+        {
+            return _encourageDatabaseContext.Query<Nomination>("ManagerComments").Where(x => x.NominationDate.Value.Month.Equals(DateTime.Now.Month - 1)).ToList();
         }
 
         public List<Nomination> GetAllSubmittedAndSavedNominationsByCurrentUser(int managerID)
@@ -83,9 +89,9 @@ namespace Silicus.Encourage.Services
             _encourageDatabaseContext.SaveChanges();
         }
 
-       public List<Review> GetAllSubmitedReviewsForCurrentNomination(int nominationId)
+        public List<Review> GetAllSubmitedReviewsForCurrentNomination(int nominationId)
         {
-          var data =  _encourageDatabaseContext.Query<Review>().Where(r => r.NominationId == nominationId && r.IsSubmited == true).ToList();
+            var data = _encourageDatabaseContext.Query<Review>().Where(r => r.NominationId == nominationId && r.IsSubmited == true).ToList();
 
             return data;
         }
@@ -133,7 +139,7 @@ namespace Silicus.Encourage.Services
                 projectName = _commonDataBaseContext.Query<Engagement>().Where(e => e.ID == nomination.ProjectID).FirstOrDefault().Name;
             }
 
-            if (nomination.DepartmentId != null )
+            if (nomination.DepartmentId != null)
             {
                 departmentName = _commonDataBaseContext.Query<Department>().Where(e => e.ID == nomination.DepartmentId).FirstOrDefault().Name;
                 return departmentName;
@@ -167,7 +173,7 @@ namespace Silicus.Encourage.Services
                 reviewerId = reviewer.Id;
                 return reviewerId;
             }
-          
+
             return reviewerId;
         }
 
@@ -200,7 +206,6 @@ namespace Silicus.Encourage.Services
 
         public void UpdateNomination(Nomination model)
         {
-
             _encourageDatabaseContext.Update<Nomination>(model);
         }
 
@@ -224,7 +229,21 @@ namespace Silicus.Encourage.Services
             var reviewerId = GetReviewerIdOfCurrentNomination(HttpContext.Current.User.Identity.Name);
             var data = _encourageDatabaseContext.Query<Review>().Where(review => review.NominationId == nominationId && review.ReviewerId == reviewerId).ToList();
 
-            return data.Count() == 1 ? true:false;
+            return data.Count() == 1 ? true : false;
+        }
+
+        public bool LockNominations()
+        {
+            var currentNominations = GetCurrentNominations();
+
+            foreach (var nomination in currentNominations)
+            {
+                nomination.IsLocked = true;
+                UpdateNomination(nomination);
+                return true;
+            }
+            return false;
+
         }
     }
 }
