@@ -1,12 +1,6 @@
 ﻿using Silicus.UtilityContainer.HangFireBackgroundTasks.Interface;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Silicus.UtilityContainer.Models;
-using Silicus.Encourage.Services.Interface;
-using Silicus.Encourage.Models;
 using System.Net.Http;
 using System.Net.Http.Headers;
 
@@ -14,9 +8,7 @@ namespace HangFireBackgroundTasks.EventProcessors
 {
     public class EncourageEventProcessor : IEventProcessor
     {
-        //private INominationService _nominationService;
-        //private IReviewService _reviewService;
-        
+       
         public void Process(EventType eventType)
         {
             switch (eventType)
