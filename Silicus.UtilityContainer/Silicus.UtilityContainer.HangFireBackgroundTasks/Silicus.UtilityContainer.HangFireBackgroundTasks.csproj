@@ -34,11 +34,11 @@
       <HintPath>..\..\Encourage\Silicus.Encourage.DAL\bin\Debug\Silicus.Encourage.DAL.dll</HintPath>
     </Reference>
     <Reference Include="Silicus.Encourage.Models">
-      <HintPath>..\..\Encourage\Silicus.Encourage.DAL\bin\Debug\Silicus.Encourage.Models.dll</HintPath>
+      <HintPath>..\..\Encourage\Silicus.Encourage.Models\bin\Debug\Silicus.Encourage.Models.dll</HintPath>
     </Reference>
     <Reference Include="Silicus.Encourage.Services, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>bin\Debug\Silicus.Encourage.Services.dll</HintPath>
+      <HintPath>..\..\Encourage\Silicus.Encourage.Services\bin\Debug\Silicus.Encourage.Services.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.configuration" />
@@ -51,14 +51,16 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="EventProcessors\EncourageEmailProcessor.cs" />
+    <Compile Include="EventProcessors\EncourageEventProcessor.cs" />
     <Compile Include="EventProcessors\ReviewNominationEventProcessor.cs" />
     <Compile Include="EventProcessors\ReviewsLockedNotificationToAdmin.cs" />
     <Compile Include="EventProcessors\ReviewsLockedNotificationToReviewers.cs" />
     <Compile Include="EventProcessors\SendNominationEventProcessor.cs" />
     <Compile Include="EventProcessors\SendNotificationAfterWinnerSelected.cs" />
     <Compile Include="EventProcessors\SetLockEventProcessor.cs" />
+    <Compile Include="Interface\IEmailProcessor.cs" />
     <Compile Include="Interface\IEventProcessor.cs" />
-    <Compile Include="Interface\ILockingEventProcessor.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\EmailService.cs" />
     <Compile Include="Services\EncourageDataService.cs" />

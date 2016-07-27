@@ -13,7 +13,7 @@ using System.Threading.Tasks;
 
 namespace Silicus.UtilityContainer.HangFireBackgroundTasks.EventProcessors
 {
-    public class ReviewNominationEventProcessor : IEventProcessor
+    public class ReviewNominationEventProcessor //: IEventProcessor
     {
         public void Process()
         {

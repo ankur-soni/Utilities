@@ -99,11 +99,11 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
+    <Reference Include="Silicus.Encourage.Services">
+      <HintPath>..\..\Encourage\Silicus.Encourage.Services\bin\Release\Silicus.Encourage.Services.dll</HintPath>
+    </Reference>
     <Reference Include="Silicus.UtilityContainer.Entities">
       <HintPath>..\Silicus.UtilityContainer.Service\bin\Debug\Silicus.UtilityContainer.Entities.dll</HintPath>
-    </Reference>
-    <Reference Include="Silicus.UtilityContainer.Models">
-      <HintPath>..\Silicus.UtilityContainer.Service\bin\Debug\Silicus.UtilityContainer.Models.dll</HintPath>
     </Reference>
     <Reference Include="Silicus.UtilityContainer.Security">
       <HintPath>..\Silicus.UtilityContainer.Security\bin\Debug\Silicus.UtilityContainer.Security.dll</HintPath>
@@ -239,6 +239,7 @@
     <Compile Include="App_Start\LightInjectWebCommon.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\Startup.Auth.cs" />
+    <Compile Include="ContainerJobActivator.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\UserProfileController.cs" />
@@ -776,6 +777,10 @@
     <ProjectReference Include="..\Silicus.UtilityContainer.HangFireBackgroundTasks\Silicus.UtilityContainer.HangFireBackgroundTasks.csproj">
       <Project>{B4C2BF2C-E119-4691-9923-0EDC24BD95E2}</Project>
       <Name>Silicus.UtilityContainer.HangFireBackgroundTasks</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Silicus.UtilityContainer.Models\Silicus.UtilityContainer.Models.csproj">
+      <Project>{d5a36dcc-faeb-46bd-bc1c-c24e18d9e587}</Project>
+      <Name>Silicus.UtilityContainer.Models</Name>
     </ProjectReference>
   </ItemGroup>
   <PropertyGroup>
