@@ -7,6 +7,8 @@ using LightInject;
 using Silicus.UtilityContainer.Web;
 using Silicus.UtilityContainer.Security.Interface;
 using Silicus.UtilityContainer.Security;
+using HangFireBackgroundTasks.EventProcessors;
+using HangFireBackgroundTasks.Interface;
 
 [assembly: WebActivatorEx.PostApplicationStartMethod(typeof(LightInjectWebCommon), "CreateContainer")]
 
@@ -34,6 +36,8 @@ namespace Silicus.UtilityContainer.Web
             container.Register<IRoleService, RoleService>();
             container.Register<IUserService, UserService>();
             container.Register<IUserSecurityService, UserSecurityService>();
+            container.Register<ILockingEventProcessor, SetLockEventProcessor>();
+
         }
 
     }

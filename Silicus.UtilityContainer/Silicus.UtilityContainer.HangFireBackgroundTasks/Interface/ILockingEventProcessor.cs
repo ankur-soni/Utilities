@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace HangFireBackgroundTasks.Interface
 {
-    interface ILockingEventProcessor
+    public interface ILockingEventProcessor
     {
         void setLockForNomination();
     }

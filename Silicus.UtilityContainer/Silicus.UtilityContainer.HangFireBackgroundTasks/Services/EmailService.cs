@@ -22,7 +22,6 @@ namespace Silicus.UtilityContainer.HangFireBackgroundTasks.Services
             {
                 body = reader.ReadToEnd();
             }
-
             var smtp = new SmtpClient
             {
                 Host = "outlook.office365.com",
@@ -43,7 +42,7 @@ namespace Silicus.UtilityContainer.HangFireBackgroundTasks.Services
                 //    message.To.Add(email);
                 //}
 
-                foreach (string email in new List<string>() { "Shailendra.Birthare@silicus.com"})
+                foreach (string email in new List<string>() { "indrajit.kadam@silicus.com"})
                 {
                     message.To.Add(email);
                 }

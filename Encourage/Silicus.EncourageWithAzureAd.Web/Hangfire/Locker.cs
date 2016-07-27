@@ -37,12 +37,10 @@ namespace Silicus.EncourageWithAzureAd.Web.Hangfire
             if (currentDate == expireDateManager || currentDate < expireDateManager)
             {
                 //set IsLocked = true for "Nomination" Table
-
                 var allNominations = _nominationService.GetAllNominations();
-                //nominations = nominations.Where(x => x.NominationDate!=null &&  Object.Equals((x.NominationDate.Value.Month), (DateTime.Now.Month - 1)));
-
-                // var nominations = allNominations.Where(x => (x.NominationDate != null) && (Object.Equals((x.NominationDate.Value.Month), (DateTime.Now.Month - 1))));
-                var nominations = allNominations.Where(x => x.NominationDate.Value.Month.Equals(DateTime.Now.Month - 1)).ToList();
+                var nominations = allNominations.Where(x => (x.NominationDate.Value.Month.Equals(currentDate.Month - 1) && x.NominationDate.Value.Year.Equals(currentDate.Month > 1 ? currentDate.Year : currentDate.Year - 1))).ToList();
+                        
+                //var nominations = allNominations.Where(x => x.NominationDate.Value.Month.Equals(DateTime.Now.Month - 1)).ToList();
                 //nominations = nominations.Where(x => x.NominationDate !=null && (x.NominationDate.Value.Month == (DateTime.Now.Month - 1)));
                 foreach (var nomination in nominations)
                 {
@@ -77,14 +75,13 @@ namespace Silicus.EncourageWithAzureAd.Web.Hangfire
                     {
                         var reviewrow = _nominationService.GetAllNominations().Where(x => x.Id.Equals(review.NominationId)).ToList().First().NominationDate;
 
-                        if ((DateTime.Now.Month - 1).Equals(reviewrow.Value.Month))
+                        //if ((DateTime.Now.Month - 1).Equals(reviewrow.Value.Month))
+                        //{
+                        if ((currentDate.Month - 1).Equals(reviewrow.Value.Month) && (currentDate.Month > 1 ? (currentDate.Year).Equals(reviewrow.Value.Year) : (currentDate.Year - 1).Equals(reviewrow.Value.Year)))
                         {
                             review.IsLocked = true;
                             _reviewService.UpdateReview(review);
                         }
-
-                       //  review.NominationId
-
                     }
                 }
             }

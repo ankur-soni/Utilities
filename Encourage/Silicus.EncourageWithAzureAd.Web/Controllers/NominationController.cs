@@ -42,43 +42,48 @@ namespace Silicus.EncourageWithAzureAd.Web.Controllers
 
         #region Test
 
-        //public ActionResult setLockForNomination()
-        //{
-        //    DateTime currentDate = System.DateTime.Now;
-        //    var firstDayOfMonth = new DateTime(System.DateTime.Now.Year, System.DateTime.Now.Month, 1);
-        //    var expireDateManager = firstDayOfMonth.AddDays(Convert.ToDouble(System.Configuration.ConfigurationManager.AppSettings["NoOfDaysManager"].ToString()));
+        public ActionResult setLockForNomination()
+        {
+            DateTime currentDate = System.DateTime.Now;
+            var firstDayOfMonth = new DateTime(System.DateTime.Now.Year, System.DateTime.Now.Month, 1);
+            var expireDateManager = firstDayOfMonth.AddDays(Convert.ToDouble(System.Configuration.ConfigurationManager.AppSettings["NoOfDaysManager"].ToString()));
 
-        //    if (currentDate == expireDateManager || currentDate > expireDateManager)
-        //    {
-        //        var allNominations = _nominationService.GetAllNominations();
-
-
-        //        //  var nominations = allNominations.Where(x => (x.NominationDate != null) && (Object.Equals((x.NominationDate.Value.Month),(DateTime.Now.Month - 1)))).ToList();
+            if (currentDate == expireDateManager || currentDate > expireDateManager)
+            {
+                var allNominations = _nominationService.GetAllNominations();
 
 
-        //        var nominations = allNominations.Where(x => x.NominationDate.Value.Month.Equals(DateTime.Now.Month - 1)).ToList();
+                //  var nominations = allNominations.Where(x => (x.NominationDate != null) && (Object.Equals((x.NominationDate.Value.Month),(DateTime.Now.Month - 1)))).ToList();
 
-        //        foreach (var nomination in nominations)
-        //        {
-        //            if (nomination != null)
-        //            {
-        //                nomination.IsLocked = true;
-        //                _nominationService.UpdateNomination(nomination);
-        //            }
-        //        }
-        //    }
+                
+                //var nominations = allNominations.Where(x => x.NominationDate.Value.Month.Equals(DateTime.Now.Month - 1)).ToList();
+                var nominations = allNominations.Where(x => (x.NominationDate.Value.Month.Equals(currentDate.Month - 1) && x.NominationDate.Value.Year.Equals(currentDate.Month>1 ? currentDate.Year : currentDate.Year-1))).ToList();
 
+                foreach (var nomination in nominations)
+                {
+                    if (nomination != null)
+                    {
+                        nomination.IsLocked = true;
+                        _nominationService.UpdateNomination(nomination);
+                    }
+                }
+            }
+            else
+            {
 
-        //    }
-        //    else { }
-        //   return null;
-        //}
-            #endregion
+            }
+            return null;
 
-            #region Nomination
+        }
+            
+           
+        
+    #endregion
 
-            // GET: Nomination/Create
-        [HttpGet]
+    #region Nomination
+
+    // GET: Nomination/Create
+    [HttpGet]
         [CustomeAuthorize(AllowedRole = "Manager")]
         public ActionResult AddNomination()
         {
@@ -140,7 +145,14 @@ namespace Silicus.EncourageWithAzureAd.Web.Controllers
             }
             ViewBag.Resources = new SelectList(new List<User>(), "Id", "DisplayName");
 
-            bool isLocked = _nominationService.GetAllNominations().Where(x=>x.NominationDate.Value.Month.Equals(DateTime.Now.Month-1)).FirstOrDefault()?.IsLocked ?? false;//fetch from service
+            bool isLocked = _nominationService.GetAllNominations().Where(x=>(x.NominationDate.Value.Month.Equals(DateTime.Now.Month-1) 
+                                                                                && 
+                                                                                (DateTime.Now.Month > 1 ? 
+                                                                                    (DateTime.Now.Year).Equals(x.NominationDate.Value.Year) : (DateTime.Now.Year - 1).Equals(x.NominationDate.Value.Year)
+                                                                                )
+                                                                            )
+                                                                         )
+                                                                            .FirstOrDefault()?.IsLocked ?? false;//fetch from service
             NominationViewModel model = new NominationViewModel() { IsLocked = isLocked };
 
             return View(model);
@@ -681,7 +693,10 @@ namespace Silicus.EncourageWithAzureAd.Web.Controllers
                     var reviewData = from r in _reviewService.GetAllReview()
                                join n in _nominationService.GetAllNominations()
                                on r.NominationId equals n.Id
-                               where n.NominationDate.Value.Month.Equals(DateTime.Now.Month - 1)
+                               where (  n.NominationDate.Value.Month.Equals(DateTime.Now.Month - 1)
+                                        && 
+                                        (DateTime.Now.Month > 1 ? (DateTime.Now.Year).Equals(n.NominationDate.Value.Year) : (DateTime.Now.Year - 1).Equals(n.NominationDate.Value.Year))
+                                      )
                                select r;
 
                     islocked = reviewData.ToList().FirstOrDefault()?.IsLocked?? false;
