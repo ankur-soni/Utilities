@@ -4,10 +4,10 @@ using System.Reflection;
 using LightInject;
 using Silicus.Encourage.Services.Interface;
 using Silicus.Encourage.Services;
+using Silicus.EncourageWithAzureAd.Web;
 using Silicus.UtilityContainer.Security.Interface;
 using Silicus.UtilityContainer.Security;
-using Silicus.EncourageWithAzureAd.Web;
-using Silicus.EncourageWithAzureAd.Web.API;
+using System.Web.Http;
 
 [assembly: WebActivatorEx.PostApplicationStartMethod(typeof(LightInjectWebCommon), "CreateContainer")]
 
@@ -18,9 +18,11 @@ namespace Silicus.EncourageWithAzureAd.Web
         public static IServiceContainer CreateContainer()
         {
             IServiceContainer container = new ServiceContainer();
-            container.Register<IServiceContainer, ServiceContainer>();            
+            container.RegisterApiControllers(typeof(MvcApplication).Assembly);
+            container.Register<IServiceContainer, ServiceContainer>();
             InitializeContainer(container);
             container.RegisterControllers(Assembly.GetExecutingAssembly());
+            container.EnableWebApi(GlobalConfiguration.Configuration);
             container.EnableMvc();
             return container;
         }
@@ -36,8 +38,7 @@ namespace Silicus.EncourageWithAzureAd.Web
             container.Register<INominationService, NominationService>();
             container.Register<IEncourageDatabaseContext, EncourageDatabaseContext>();
             container.Register<IReviewService, ReviewService>();
-            container.Register<IResultService, ResultService>(); 
-                       
+            container.Register<IResultService, ResultService>();
         }
 
     }

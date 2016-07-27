@@ -13,7 +13,7 @@ namespace Silicus.UtilityContainer.Web.App_Start
             {
                 //RecurringJob.AddOrUpdate<EncourageEmailProcessor>(eventProcessor => eventProcessor.Process(EventType.SendNominationEmail), Cron.Minutely);
                 RecurringJob.AddOrUpdate<EncourageEventProcessor>(processor => processor.Process(EventType.LockNomination), Cron.Minutely);
-              //  "0 0 / 5 * ***"
+
                 //RecurringJob.AddOrUpdate<SendNominationEventProcessor>(mailProcessor => mailProcessor.Process(), Cron.Minutely);  //CRON expression that Run once a month at midnight of the first day of the month 
 
             }
