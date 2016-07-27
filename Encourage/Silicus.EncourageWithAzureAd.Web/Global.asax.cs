@@ -20,10 +20,9 @@ namespace Silicus.EncourageWithAzureAd.Web
             GlobalConfiguration.Configure(WebApiConfig.Register);
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             BundleConfig.RegisterBundles(BundleTable.Bundles);
-            
-
 
         }
+       
 
         public string getCurrentUserName()
         {
