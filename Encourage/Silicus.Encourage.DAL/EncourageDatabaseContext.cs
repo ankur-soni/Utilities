@@ -18,7 +18,7 @@ namespace Silicus.Encourage.DAL
         {
 
             if (Entry(item).State == EntityState.Detached)
-                Set<T>().Add(item);
+                Set<T>().Attach(item);
                 
              //Entry(item).CurrentValues.SetValues(item);
             // Calling State on an entity in the Detached state will call DetectChanges() 

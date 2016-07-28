@@ -37,7 +37,7 @@ namespace Silicus.Encourage.Services
 
         private List<Nomination> GetCurrentNominations()
         {
-            return _encourageDatabaseContext.Query<Nomination>("ManagerComments").Where(x => x.NominationDate.Value.Month.Equals(DateTime.Now.Month - 1)).ToList();
+            return _encourageDatabaseContext.Query<Nomination>("ManagerComments").Where(x => x.NominationDate.Value.Month.Equals(DateTime.Now.Month - 1) && x.IsLocked == false).ToList();
         }
 
         public List<Nomination> GetAllSubmittedAndSavedNominationsByCurrentUser(int managerID)
@@ -240,9 +240,10 @@ namespace Silicus.Encourage.Services
             {
                 nomination.IsLocked = true;
                 UpdateNomination(nomination);
-                return true;
+                
             }
-            return false;
+
+            return true;
 
         }
     }
