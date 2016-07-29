@@ -20,7 +20,7 @@ namespace HangFireBackgroundTasks.EventProcessors
                 case EventType.SendNominationEmail:
                     //SendNominationEmail();
                     break;
-                case EventType.ReviewNominationEmail:
+                case EventType.SendReviewNominationEmail:
                     break;
                 default:
                     break;

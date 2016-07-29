@@ -23,7 +23,7 @@ namespace Silicus.EncourageWithAzureAd.Web
             InitializeContainer(container);
             container.RegisterControllers(Assembly.GetExecutingAssembly());
             container.EnableWebApi(GlobalConfiguration.Configuration);
-            container.EnableMvc();
+            container.EnableMvc();           
             return container;
         }
 

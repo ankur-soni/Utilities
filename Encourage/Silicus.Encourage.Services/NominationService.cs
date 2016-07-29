@@ -242,6 +242,7 @@ namespace Silicus.Encourage.Services
                 nomination.IsLocked = true;
                 UpdateNomination(nomination);
                 return true;
+                
             }
             return false;
 

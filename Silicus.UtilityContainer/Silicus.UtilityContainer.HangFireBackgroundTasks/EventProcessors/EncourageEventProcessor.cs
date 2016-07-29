@@ -3,6 +3,7 @@ using System;
 using Silicus.UtilityContainer.Models;
 using System.Net.Http;
 using System.Net.Http.Headers;
+using System.Configuration;
 
 namespace HangFireBackgroundTasks.EventProcessors
 {
@@ -14,17 +15,52 @@ namespace HangFireBackgroundTasks.EventProcessors
             switch (eventType)
             {
                 case EventType.LockNomination:
-                    LockNomination();
+
+                    DateTime currentDate = System.DateTime.Now;
+                    var firstDayOfMonth = new DateTime(System.DateTime.Now.Year, System.DateTime.Now.Month, 1);
+                    var rersult = ConfigurationManager.AppSettings["NoOfDaysManager"];
+                    var expireDateManager = firstDayOfMonth.AddDays(Convert.ToDouble(ConfigurationManager.AppSettings["NoOfDaysManager"].ToString()));
+                    if (currentDate == expireDateManager || currentDate < expireDateManager)
+                    {
+                        LockNomination();
+                    }
+
                     break;
+                case EventType.LockReview:
+                   LockReview();
+                   break;
                 default:
                     break;
             }
-
         }
-
+        
         private void LockNomination()
         {
             const string URL = @"https://localhost:44324/api/nominationapi/lock";
+
+            HttpClient client = new HttpClient();
+            client.BaseAddress = new Uri(URL);
+
+            // Add an Accept header for JSON format.
+            client.DefaultRequestHeaders.Accept.Add(
+            new MediaTypeWithQualityHeaderValue("application/json"));
+
+            // List data response.
+            var response = client.PostAsync(URL, null).Result;
+            if (response.IsSuccessStatusCode)
+            {
+                // Parse the response body. Blocking!
+                var result = response.Content.ReadAsStringAsync().Result;
+
+            }
+            else
+            {
+
+            }
+        }
+        private void LockReview()
+        {
+            const string URL = @"https://localhost:44324/api/nominationapi/reviewlock";
 
             HttpClient client = new HttpClient();
             client.BaseAddress = new Uri(URL);

@@ -11,11 +11,12 @@ namespace Silicus.UtilityContainer.Web.App_Start
         {
             try
             {
-                //RecurringJob.AddOrUpdate<EncourageEmailProcessor>(eventProcessor => eventProcessor.Process(EventType.SendNominationEmail), Cron.Minutely);
-                RecurringJob.AddOrUpdate<EncourageEventProcessor>(processor => processor.Process(EventType.LockNomination), Cron.Minutely);
 
+               //RecurringJob.AddOrUpdate<EncourageEventProcessor>(processor => processor.Process(EventType.LockNomination), Cron.Minutely);
+                 RecurringJob.AddOrUpdate<EncourageEventProcessor>(processor => processor.Process(EventType.LockReview), Cron.Weekly);
+                //  "0 0 / 5 * ***"
                 //RecurringJob.AddOrUpdate<SendNominationEventProcessor>(mailProcessor => mailProcessor.Process(), Cron.Minutely);  //CRON expression that Run once a month at midnight of the first day of the month 
-
+                //RecurringJob.AddOrUpdate<EncourageEmailProcessor>(mailProcessor => mailProcessor.Process(), Cron.Weekly);
             }
             catch (Exception ex)
             {

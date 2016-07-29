@@ -9,21 +9,23 @@ namespace Silicus.EncourageWithAzureAd.Web.API
     public class NominationApiController : ApiController
     {
         private  INominationService _nominationService;
-        public NominationApiController(INominationService nominationService)
+        private IReviewService _reviewService;
+        public NominationApiController(INominationService nominationService, IReviewService reviewService)
         {
-           this._nominationService = nominationService;
+           _nominationService = nominationService;
+            _reviewService = reviewService;
         }
 
-        //[HttpGet, AttributeRouting.Web.Mvc.Route("lock")]
-        //public bool LockNominations()
-        //{            
-        //    return _nominationService.LockNominations();
-        //}
 
         [HttpPost, AttributeRouting.Web.Mvc.Route("lock")]
         public bool LockNominations()
         {
             return _nominationService.LockNominations();
+        }
+        [HttpPost, AttributeRouting.Web.Mvc.Route("reviewlock")]
+        public bool LockReview()
+        {
+            return _reviewService.LockReview();
         }
     }
 }
