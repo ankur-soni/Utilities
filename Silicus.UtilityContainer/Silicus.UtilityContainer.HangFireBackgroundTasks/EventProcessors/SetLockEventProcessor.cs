@@ -30,21 +30,26 @@ namespace HangFireBackgroundTasks.EventProcessors
 
             if (currentDate == expireDateManager || currentDate < expireDateManager)
             {
+                //set IsLocked = true for "Nomination" Table
+
                 var allNominations = _nominationService.GetAllNominations();
-                var nominations = _nominationService.LockNominations();
+                //nominations = nominations.Where(x => x.NominationDate!=null &&  Object.Equals((x.NominationDate.Value.Month), (DateTime.Now.Month - 1)));
+
+                // var nominations = allNominations.Where(x => (x.NominationDate != null) && (Object.Equals((x.NominationDate.Value.Month), (DateTime.Now.Month - 1))));
+                var nominations = allNominations.Where(x => x.NominationDate.Value.Month.Equals(DateTime.Now.Month - 1)).ToList();
                 //nominations = nominations.Where(x => x.NominationDate !=null && (x.NominationDate.Value.Month == (DateTime.Now.Month - 1)));
-                //foreach (var nomination in nominations)
-                //{
-                //    if (nomination != null)
-                //    {
-                //        nomination.IsLocked = true;
-                //        _nominationService.UpdateNomination(nomination);              
-                //ReviewsLockedNotificationToReviewers reviewsLockedNotificationToReviewers = new ReviewsLockedNotificationToReviewers();
-                //reviewsLockedNotificationToReviewers.Process();
-                //emmail to manager  
-                //}                
-                EncourageEmailProcessor email = new EncourageEmailProcessor();
-                email.Process(EventType.ReviewNominationEmail);
+                foreach (var nomination in nominations)
+                {
+                    if (nomination != null)
+                    {
+                        nomination.IsLocked = true;
+                        _nominationService.UpdateNomination(nomination);
+                        ReviewsLockedNotificationToReviewers reviewsLockedNotificationToReviewers = new ReviewsLockedNotificationToReviewers();
+                        reviewsLockedNotificationToReviewers.Process();
+                        //emmail to manager
+
+                    }
+                }
             }
             else
             {

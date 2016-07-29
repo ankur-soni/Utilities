@@ -17,10 +17,11 @@ namespace Silicus.EncourageWithAzureAd.Web
     {
         public static IServiceContainer CreateContainer()
         {
-            IServiceContainer container = new ServiceContainer();
+            var container = new ServiceContainer();
             container.RegisterApiControllers(typeof(MvcApplication).Assembly);
             container.Register<IServiceContainer, ServiceContainer>();
             InitializeContainer(container);
+            container.EnablePerWebRequestScope();
             container.RegisterControllers(Assembly.GetExecutingAssembly());
             container.EnableWebApi(GlobalConfiguration.Configuration);
             container.EnableMvc();           

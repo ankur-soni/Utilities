@@ -16,12 +16,11 @@ namespace Silicus.Encourage.DAL
 
         public int Update<T>(T item) where T : class
         {
-            //if (Entry(item).State == EntityState.Detached)
-            //    Set<T>().Add(item);
 
-            Set<T>().Attach(item);
-
-            //Entry(item).CurrentValues.SetValues(item);
+            if (Entry(item).State == EntityState.Detached)
+                Set<T>().Attach(item);
+                
+             //Entry(item).CurrentValues.SetValues(item);
             // Calling State on an entity in the Detached state will call DetectChanges() 
             // which is required to force an update. 
             Entry(item).State = EntityState.Modified;
