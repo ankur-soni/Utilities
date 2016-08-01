@@ -30,16 +30,6 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Silicus.Encourage.DAL">
-      <HintPath>..\..\Encourage\Silicus.Encourage.DAL\bin\Debug\Silicus.Encourage.DAL.dll</HintPath>
-    </Reference>
-    <Reference Include="Silicus.Encourage.Models">
-      <HintPath>..\..\Encourage\Silicus.Encourage.Models\bin\Debug\Silicus.Encourage.Models.dll</HintPath>
-    </Reference>
-    <Reference Include="Silicus.Encourage.Services, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\Encourage\Silicus.Encourage.Services\bin\Debug\Silicus.Encourage.Services.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.configuration" />
     <Reference Include="System.Core" />

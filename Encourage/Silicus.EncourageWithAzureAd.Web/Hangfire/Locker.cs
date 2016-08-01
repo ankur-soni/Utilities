@@ -6,8 +6,8 @@ namespace Silicus.EncourageWithAzureAd.Web.Hangfire
 {
     public class Locker 
     {
-        private INominationService _nominationService;
-        private IReviewService _reviewService;
+        private readonly INominationService _nominationService;
+        private readonly IReviewService _reviewService;
         public Locker(INominationService nominationService,IReviewService reviewService)
         {
             if (nominationService == null)
@@ -25,7 +25,7 @@ namespace Silicus.EncourageWithAzureAd.Web.Hangfire
         /// <summary>
         /// Method for locking nomination and review period.
         /// </summary>
-        public void setLockForNomination()
+        public void SetLockForNomination()
         {
             DateTime currentDate = System.DateTime.Now;
             var firstDayOfMonth = new DateTime(System.DateTime.Now.Year, System.DateTime.Now.Month, 1);
