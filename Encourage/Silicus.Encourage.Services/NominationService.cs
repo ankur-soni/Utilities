@@ -38,7 +38,7 @@ namespace Silicus.Encourage.Services
         private List<Nomination> GetCurrentNominations()
         {
             return _encourageDatabaseContext.Query<Nomination>("ManagerComments").Where(x => x.NominationDate.Value.Month.Equals(DateTime.Now.Month - 1)
-            && (x.NominationDate.Value.Year.Equals(DateTime.Now.Month > 1 ? DateTime.Now.Year : DateTime.Now.Year - 1)) && x.IsLocked == false).ToList();
+            && (x.NominationDate.Value.Year.Equals(DateTime.Now.Month > 1 ? DateTime.Now.Year : DateTime.Now.Year - 1))).ToList();
         }
         private List<Nomination> GetCurrentLockNominations()
         {
@@ -240,7 +240,7 @@ namespace Silicus.Encourage.Services
 
         public bool LockNominations()
         {
-            var currentNominations = GetCurrentNominations();
+            var currentNominations = GetCurrentNominations().Where(n => n.IsLocked == false);
 
             foreach (var nomination in currentNominations)
             {

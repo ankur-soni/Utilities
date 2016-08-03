@@ -89,35 +89,37 @@ namespace Silicus.EncourageWithAzureAd.Web.Controllers
             if (projects.Any())
             {
                 ViewBag.ProjectsUnderCurrentUser = new SelectList(projects, "Id", "Name");
+                ViewBag.ManagerId = _awardService.GetUserIdFromEmail(userEmailAddress);
+                ViewBag.ManagerIdByProject = _awardService.GetUserIdFromEmail(userEmailAddress);
             }
             else
             {
                 ViewBag.ProjectsUnderCurrentUser = new SelectList(_awardService.GetProjectsUnderCurrentUserAsManager("shailendra.birthare@silicus.com"), "Id", "Name");
-                userEmailAddress = "shailendra.birthare@silicus.com";
+                ViewBag.ManagerId = _awardService.GetUserIdFromEmail("shailendra.birthare@silicus.com");
+                ViewBag.ManagerIdByProject = _awardService.GetUserIdFromEmail("shailendra.birthare@silicus.com");
             }
 
-            var userId = _awardService.GetUserIdFromEmail(userEmailAddress);
-            ViewBag.ManagerId = userId;
-            ViewBag.ManagerIdByProject = userId;
-
+            
             var depts = _awardService.GetDepartmentsUnderCurrentUserAsManager(userEmailAddress);
             if (depts.Count > 0)
             {
                 ViewBag.DepartmentsUnderCurrentUser = new SelectList(depts, "Id", "Name");
+                //ViewBag.ManagerId = _awardService.GetUserIdFromEmail(userEmailAddress);
                 ViewBag.ManagerIdByDepartment = _awardService.GetUserIdFromEmail(userEmailAddress);
             }
             else
             {
                 ViewBag.DepartmentsUnderCurrentUser = new SelectList(_awardService.GetDepartmentsUnderCurrentUserAsManager("tushar.surve@silicus.com"), "Id", "Name");
+                //ViewBag.ManagerId = _awardService.GetUserIdFromEmail("tushar.surve@silicus.com");
                 ViewBag.ManagerIdByDepartment = _awardService.GetUserIdFromEmail("tushar.surve@silicus.com");
             }
 
             ViewBag.Resources = new SelectList(new List<User>(), "Id", "DisplayName");
 
-            bool isLocked = _nominationService.IsNominationLocked();
-            var model = new NominationViewModel() { IsLocked = isLocked };
+            //bool isLocked = _nominationService.IsNominationLocked();
+            //var model = new NominationViewModel() { IsLocked = isLocked };
 
-            return View(model);
+            return View(new NominationViewModel());
         }
 
         [HttpPost]
