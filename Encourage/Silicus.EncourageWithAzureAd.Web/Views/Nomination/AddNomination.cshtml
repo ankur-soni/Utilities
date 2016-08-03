@@ -347,7 +347,8 @@
                            async: false,
                            data: modelbjectToSend,
                            success: function (success) {
-                               debugger;
+                               console.log(success);
+                               //swal(success.ErrorMessage);
                                swal({
                                    title: "Nomination Submitted!",
                                    text: "",
@@ -363,8 +364,15 @@
                                    }
                                });
                            },
-                           error: function () {
-                               swal("Error", "Oops! Something wrong happened..");
+                           error: function (error) {
+                               if (error.responseText != null && error.responseText != undefined && error.responseText != '')
+                               {
+                                   swal("Error", error.responseText.replace(/['"]+/g, ''));
+                               }
+                               else
+                               {
+                                   swal("Error", "Oops! Something wrong happened..");
+                               }
                            }
                        });
                    } else {
@@ -417,7 +425,9 @@
                                }
                            });
                        },
-                       error: function () {
+                       error: function (data) {
+                           alert("2");
+                           swal(data.ErrorMessage);
                            swal("Error", "Oops! Something wrong happened..");
                        }
                    });

@@ -55,10 +55,30 @@ namespace Silicus.Encourage.Services
                     {
                         review.IsLocked = true;
                         UpdateReview(review);
-                        return true;
+                        //return true;
                     }
                 }
 
+            }
+            return false;
+        }
+        public bool UnLockReview()
+        {
+            DateTime currentDate = System.DateTime.Now;
+            var currentReview = GetAllReview();
+            foreach (var review in currentReview)
+            {
+                if (review != null)
+                {
+                   // var reviewrow = _nominationService.GetAllNominations().Where(x => x.Id.Equals(review.NominationId)).ToList().First().NominationDate;
+                    var reviewrow = _nominationService.GetAllNominations().Where(x => x.Id.Equals(review.NominationId)).ToList().First().NominationDate;
+                    if ((currentDate.Month - 1).Equals(reviewrow.Value.Month) && (currentDate.Month > 1 ? (currentDate.Year).Equals(reviewrow.Value.Year) : (currentDate.Year - 1).Equals(reviewrow.Value.Year)))
+                    {
+                        review.IsLocked = false;
+                        UpdateReview(review);
+                       // return true;
+                    }
+                }
             }
             return false;
         }

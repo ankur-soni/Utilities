@@ -17,7 +17,6 @@ namespace Silicus.Encourage.Services
         private readonly INominationService _nominationService;
         private readonly Silicus.UtilityContainer.Entities.ICommonDataBaseContext _CommonDbContext;
 
-
         public AwardService(IDataContextFactory contextFactory, ICommonDbService commonDbService, INominationService nominationService)
         {
             _contextFactory = contextFactory;
@@ -219,6 +218,45 @@ namespace Silicus.Encourage.Services
         public int GetUserIdFromEmail(string email)
         {
             return _CommonDbContext.Query<User>().Where(user => user.EmailAddress == email).FirstOrDefault().ID;
+        }
+
+        public List<WinnerData> GetWinnerData()
+        {
+
+            var allWinners = _encourageDbcontext.Query<Shortlist>().Where(shortlist => shortlist.IsWinner == true && shortlist.WinningDate.Value.Month == DateTime.Now.Month && shortlist.WinningDate.Value.Year == DateTime.Now.Year).ToList();
+            var winnersList = new List<WinnerData>();
+            //using (Silicus.Encourage.DAL.Interfaces.ICommonDatabaseContext _commonDbContext = new Silicus.Encourage.DAL.DataContextFactory().CreateCommonDbContext())
+            //{
+                foreach (var winner in allWinners)
+                {
+                    var nominationOfWinnner = _encourageDbcontext.Query<Nomination>().Where(nomination => nomination.Id == winner.NominationId).FirstOrDefault();
+
+                    var userName = _CommonDbContext.Query<User>().Where(user => user.ID == nominationOfWinnner.UserId).FirstOrDefault().DisplayName;
+                    var awardName = _encourageDbcontext.Query<Award>().Where(award => award.Id == nominationOfWinnner.AwardId).FirstOrDefault().Name;
+                    var managerName = _CommonDbContext.Query<User>().Where(user => user.ID == nominationOfWinnner.ManagerId).FirstOrDefault().DisplayName;
+                    var projectName = _CommonDbContext.Query<Engagement>().Where(enagegement => enagegement.ID == nominationOfWinnner.ProjectID).FirstOrDefault().Name;
+
+                    var awardPeriod = nominationOfWinnner.NominationDate.Value.ToString("MMMM") + " - " + nominationOfWinnner.NominationDate.Value.Year.ToString();
+                    var winnerData = new WinnerData()
+                    {
+                        Name = userName,
+                        AwardName = awardName,
+                        AwardPeriod = awardPeriod,
+                        ManagerName = managerName,
+                        ProjectName = projectName
+                    };
+
+                    winnersList.Add(winnerData);
+                }
+           // }
+
+            return winnersList;
+        }
+        public List<string> GetEmailAddressesOfAllUsers()
+        {
+            //IDataContextFactory dataContextFactory = new DataContextFactory();
+            var allUsersEmailAddresses = _CommonDbContext.Query<User>().Select(user => user.EmailAddress).ToList();
+            return allUsersEmailAddresses;
         }
 
     }

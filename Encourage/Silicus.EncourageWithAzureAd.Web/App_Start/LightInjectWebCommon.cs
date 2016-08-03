@@ -40,6 +40,7 @@ namespace Silicus.EncourageWithAzureAd.Web
             container.Register<IEncourageDatabaseContext, EncourageDatabaseContext>();
             container.Register<IReviewService, ReviewService>();
             container.Register<IResultService, ResultService>();
+            container.Register<IEmailNotificationOfWinner, EmailNotificationOfWinnerService>();
         }
 
     }

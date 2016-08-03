@@ -2,18 +2,17 @@
 using AttributeRouting.Web.Mvc;
 using Silicus.Encourage.Services;
 using Silicus.Encourage.Services.Interface;
-
 namespace Silicus.EncourageWithAzureAd.Web.API
 {
 
     public class NominationApiController : ApiController
     {
-        private  INominationService _nominationService;
-        private IReviewService _reviewService;
-        public NominationApiController(INominationService nominationService, IReviewService reviewService)
+        private INominationService _nominationService;
+        //private IReviewService _reviewService;
+        public NominationApiController(INominationService nominationService )
         {
-           _nominationService = nominationService;
-            _reviewService = reviewService;
+            _nominationService = nominationService;
+            //_reviewService = reviewService;
         }
 
 
@@ -22,10 +21,10 @@ namespace Silicus.EncourageWithAzureAd.Web.API
         {
             return _nominationService.LockNominations();
         }
-        [HttpPost, AttributeRouting.Web.Mvc.Route("reviewlock")]
-        public bool LockReview()
-        {
-            return _reviewService.LockReview();
-        }
-    }
+        //[HttpPost, AttributeRouting.Web.Mvc.Route("reviewlock")]
+        //public bool LockReview()
+        //{
+        //    return _reviewService.LockReview();
+        //}
+     }
 }

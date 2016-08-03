@@ -9,8 +9,11 @@ using Silicus.UtilityContainer.Entities;
 using Silicus.UtilityContainer.Models.DataObjects;
 using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Globalization;
 using System.Linq;
+using System.Net;
+using System.Net.Mime;
 using System.Web;
 using System.Web.Mvc;
 
@@ -42,48 +45,48 @@ namespace Silicus.EncourageWithAzureAd.Web.Controllers
 
         #region Test
 
-        public ActionResult setLockForNomination()
-        {
-            DateTime currentDate = System.DateTime.Now;
-            var firstDayOfMonth = new DateTime(System.DateTime.Now.Year, System.DateTime.Now.Month, 1);
-            var expireDateManager = firstDayOfMonth.AddDays(Convert.ToDouble(System.Configuration.ConfigurationManager.AppSettings["NoOfDaysManager"].ToString()));
+        //public ActionResult setLockForNomination()
+        //{
+        //    DateTime currentDate = System.DateTime.Now;
+        //    var firstDayOfMonth = new DateTime(System.DateTime.Now.Year, System.DateTime.Now.Month, 1);
+        //    var expireDateManager = firstDayOfMonth.AddDays(Convert.ToDouble(System.Configuration.ConfigurationManager.AppSettings["NoOfDaysManager"].ToString()));
 
-            if (currentDate == expireDateManager || currentDate > expireDateManager)
-            {
-                var allNominations = _nominationService.GetAllNominations();
+        //    if (currentDate == expireDateManager || currentDate > expireDateManager)
+        //    {
+        //        var allNominations = _nominationService.GetAllNominations();
 
 
-                //  var nominations = allNominations.Where(x => (x.NominationDate != null) && (Object.Equals((x.NominationDate.Value.Month),(DateTime.Now.Month - 1)))).ToList();
+        //        //  var nominations = allNominations.Where(x => (x.NominationDate != null) && (Object.Equals((x.NominationDate.Value.Month),(DateTime.Now.Month - 1)))).ToList();
 
-                
-                //var nominations = allNominations.Where(x => x.NominationDate.Value.Month.Equals(DateTime.Now.Month - 1)).ToList();
-                var nominations = allNominations.Where(x => (x.NominationDate.Value.Month.Equals(currentDate.Month - 1) && x.NominationDate.Value.Year.Equals(currentDate.Month>1 ? currentDate.Year : currentDate.Year-1))).ToList();
 
-                foreach (var nomination in nominations)
-                {
-                    if (nomination != null)
-                    {
-                        nomination.IsLocked = true;
-                        _nominationService.UpdateNomination(nomination);
-                    }
-                }
-            }
-            else
-            {
+        //        //var nominations = allNominations.Where(x => x.NominationDate.Value.Month.Equals(DateTime.Now.Month - 1)).ToList();
+        //        var nominations = allNominations.Where(x => (x.NominationDate.Value.Month.Equals(currentDate.Month - 1) && x.NominationDate.Value.Year.Equals(currentDate.Month>1 ? currentDate.Year : currentDate.Year-1))).ToList();
 
-            }
-            return null;
+        //        foreach (var nomination in nominations)
+        //        {
+        //            if (nomination != null)
+        //            {
+        //                nomination.IsLocked = true;
+        //                _nominationService.UpdateNomination(nomination);
+        //            }
+        //        }
+        //    }
+        //    else
+        //    {
 
-        }
-            
-           
-        
-    #endregion
+        //    }
+        //    return null;
 
-    #region Nomination
+        //}
 
-    // GET: Nomination/Create
-    [HttpGet]
+
+
+        #endregion
+
+        #region Nomination
+
+        // GET: Nomination/Create
+        [HttpGet]
         [CustomeAuthorize(AllowedRole = "Manager")]
         public ActionResult AddNomination()
         {
@@ -145,9 +148,9 @@ namespace Silicus.EncourageWithAzureAd.Web.Controllers
             }
             ViewBag.Resources = new SelectList(new List<User>(), "Id", "DisplayName");
 
-            bool isLocked = _nominationService.GetAllNominations().Where(x=>(x.NominationDate.Value.Month.Equals(DateTime.Now.Month-1) 
-                                                                                && 
-                                                                                (DateTime.Now.Month > 1 ? 
+            bool isLocked = _nominationService.GetAllNominations().Where(x => (x.NominationDate.Value.Month.Equals(DateTime.Now.Month - 1)
+                                                                                &&
+                                                                                (DateTime.Now.Month > 1 ?
                                                                                     (DateTime.Now.Year).Equals(x.NominationDate.Value.Year) : (DateTime.Now.Year - 1).Equals(x.NominationDate.Value.Year)
                                                                                 )
                                                                             )
@@ -162,6 +165,22 @@ namespace Silicus.EncourageWithAzureAd.Web.Controllers
         [CustomeAuthorize(AllowedRole = "Manager")]
         public ActionResult AddNomination(NominationViewModel model, string submit)
         {
+            var result = Convert.ToInt32(ConfigurationManager.AppSettings["noOfNominationForManager"]);
+
+            var today = DateTime.Today;
+            var month = new DateTime(today.Year, today.Month, 1);
+            var first = month.AddMonths(-1);
+            var last = month.AddDays(-1);
+
+            var getCountOfNomination = _encourageDatabaseContext.Query<Nomination>()
+                                       .Where(x => x.ManagerId == model.ManagerId && (x.NominationDate >= first && x.NominationDate <= last)).Count();
+
+            if (result > getCountOfNomination)
+            {
+                Response.StatusCode = (int)HttpStatusCode.BadRequest;
+                return Json("Only "+ result.ToString()+" nominations are allowed per month!", MediaTypeNames.Text.Plain);
+            }
+
             var nomination = new Nomination();
             nomination.AwardId = model.AwardId;
             nomination.ManagerId = model.ManagerId;
@@ -691,17 +710,18 @@ namespace Silicus.EncourageWithAzureAd.Web.Controllers
                 try
                 {
                     var reviewData = from r in _reviewService.GetAllReview()
-                               join n in _nominationService.GetAllNominations()
-                               on r.NominationId equals n.Id
-                               where (  n.NominationDate.Value.Month.Equals(DateTime.Now.Month - 1)
-                                        && 
-                                        (DateTime.Now.Month > 1 ? (DateTime.Now.Year).Equals(n.NominationDate.Value.Year) : (DateTime.Now.Year - 1).Equals(n.NominationDate.Value.Year))
-                                      )
-                               select r;
+                                     join n in _nominationService.GetAllNominations()
+                                     on r.NominationId equals n.Id
+                                     where (n.NominationDate.Value.Month.Equals(DateTime.Now.Month - 1)
+                                              &&
+                                              (DateTime.Now.Month > 1 ? (DateTime.Now.Year).Equals(n.NominationDate.Value.Year) : (DateTime.Now.Year - 1).Equals(n.NominationDate.Value.Year))
+                                            )
+                                     select r;
 
-                    islocked = reviewData.ToList().FirstOrDefault()?.IsLocked?? false;
+                    islocked = reviewData.ToList().FirstOrDefault()?.IsLocked ?? false;
 
-                }catch (Exception){}
+                }
+                catch (Exception) { }
 
                 string nominationTimeToDisplay = DateTimeFormatInfo.CurrentInfo.GetAbbreviatedMonthName(nominationTime.Value.Month) + "-" + nominationTime.Value.Year.ToString();
 
@@ -713,7 +733,7 @@ namespace Silicus.EncourageWithAzureAd.Web.Controllers
                     NominationTime = nominationTimeToDisplay,
                     Id = nomination.Id,
                     IsLocked = islocked,
-                    IsDrafted = _nominationService.checkReviewIsDrafted(nomination.Id)                   
+                    IsDrafted = _nominationService.checkReviewIsDrafted(nomination.Id)
                 };
                 reviewNominations.Add(reviewNominationViewModel);
             }
@@ -841,7 +861,7 @@ namespace Silicus.EncourageWithAzureAd.Web.Controllers
         }
         #endregion
 
-      
+
     }
 }
 #endregion

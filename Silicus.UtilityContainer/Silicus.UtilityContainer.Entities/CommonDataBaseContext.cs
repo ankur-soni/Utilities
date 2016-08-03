@@ -8,7 +8,7 @@ namespace Silicus.UtilityContainer.Entities
         public CommonDataBaseContext(string connectionString)
             : base(connectionString)
          {
-            
+            //Database.SetInitializer<CommonDataBaseContext>(null);
         }
 
         public int Update<T>(T item) where T : class

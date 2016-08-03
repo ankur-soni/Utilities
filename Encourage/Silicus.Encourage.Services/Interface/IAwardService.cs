@@ -21,6 +21,8 @@ namespace Silicus.Encourage.Services.Interface
         List<User> GetResourcesForEditInDepartment(int DepartmentId, int userIdToExcept);
         bool AddNomination(Nomination nomination);
         int GetUserIdFromEmail(string email);
+        List<WinnerData> GetWinnerData();
+        List<string> GetEmailAddressesOfAllUsers();
 
 
 
