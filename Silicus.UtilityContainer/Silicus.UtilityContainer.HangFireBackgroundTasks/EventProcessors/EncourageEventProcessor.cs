@@ -22,18 +22,18 @@ namespace HangFireBackgroundTasks.EventProcessors
             switch (eventType)
             {
                 case EventType.LockNomination:
-                    var result = Convert.ToInt32(ConfigurationManager.AppSettings["NoOfDaysManager"]);
+                    var managerDays = Convert.ToInt32(ConfigurationManager.AppSettings["NoOfDaysManager"]);
                     DateTime expireDateManager = firstDayOfMonth.AddDays(Convert.ToDouble(ConfigurationManager.AppSettings["NoOfDaysManager"].ToString()));                 
                     HolidayService holidayService = new HolidayService();
                     var holidayData = holidayService.GetCurrentMonthHolidays();
 
                     if (holidayData.Any())
                     {
-                        var fallingHolidays = from temp in holidayData
-                                              where temp <= result
+                        var fallingHolidaysformanager = from temp in holidayData
+                                              where temp <= managerDays
                                               select temp;
 
-                        var count2 = fallingHolidays.Count();
+                        var count2 = fallingHolidaysformanager.Count();
                         expireDateManager = expireDateManager.AddDays(count2);
                     }
 
@@ -48,40 +48,40 @@ namespace HangFireBackgroundTasks.EventProcessors
                     int count = 0;
                     var noOfDaysManager = Convert.ToInt32(ConfigurationManager.AppSettings["NoOfDaysManager"]);
 
-                    HolidayService holidayService1 = new HolidayService();
-                    var holidayData1 = holidayService1.GetCurrentMonthHolidays();
+                    HolidayService holiday = new HolidayService();
+                    var days = holiday.GetCurrentMonthHolidays();
 
-                    if (holidayData1.Any())
+                    if (days.Any())
                     {
-                        var fallingHolidays1 = from temp in holidayData1
-                                               where temp <= noOfDaysManager
+                        var fallingHoliday = from temp in days
+                                             where temp <= noOfDaysManager
                                                select temp;
 
-                        count = fallingHolidays1.Count();
+                        count = fallingHoliday.Count();
                     }
-                    var count1 = 0;
+                    var dayCount = 0;
                     noOfDaysManager += count;
                     var noOfDaysReviewer = Convert.ToInt32(ConfigurationManager.AppSettings["NoOfDaysReviewer"]);
-                    var expireDateReviewer2 = firstDayOfMonth.AddDays(Convert.ToDouble(System.Configuration.ConfigurationManager.AppSettings["NoOfDaysReviewer"].ToString()) + noOfDaysManager);
-                    var reviewercount = expireDateReviewer2.Day;
-                    var reviewercount2 = reviewercount - noOfDaysReviewer;
-                    HolidayService holidayService2 = new HolidayService();
-                    var holidayData2 = holidayService1.GetCurrentMonthHolidays();
+                    var expireDateReviewer = firstDayOfMonth.AddDays(Convert.ToDouble(System.Configuration.ConfigurationManager.AppSettings["NoOfDaysReviewer"].ToString()) + noOfDaysManager);
+                    var reviewercount = expireDateReviewer.Day;
+                    var reviewerdays = reviewercount - noOfDaysReviewer;
+                    //HolidayService holidayService2 = new HolidayService();
+                    var holidays = holiday.GetCurrentMonthHolidays();
 
-                    if (holidayData2.Any())
+                    if (holidays.Any())
                     {
-                        var fallingHolidays2 = from temp in holidayData2
-                                               where temp <= reviewercount && temp >= reviewercount2
-                                               select temp;
+                        var fallingHolidaysReviewer = from temp in holidays
+                                               where temp <= reviewercount && temp >= reviewerdays
+                                                      select temp;
 
-                        if (fallingHolidays2.Any())
+                        if (fallingHolidaysReviewer.Any())
                         {
-                         count1 = fallingHolidays2.Count();
+                            dayCount = fallingHolidaysReviewer.Count();
                         }
-                        expireDateReviewer2 = expireDateReviewer2.AddDays(count1);
+                        expireDateReviewer = expireDateReviewer.AddDays(dayCount);
                     }
 
-                    if (currentDate == expireDateReviewer2 || currentDate > expireDateReviewer2)
+                    if (currentDate == expireDateReviewer || currentDate > expireDateReviewer)
                     {
                         LockReview();
                     }
