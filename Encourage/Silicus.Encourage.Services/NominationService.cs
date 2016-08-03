@@ -235,7 +235,7 @@ namespace Silicus.Encourage.Services
             var reviewerId = GetReviewerIdOfCurrentNomination(HttpContext.Current.User.Identity.Name);
             var data = _encourageDatabaseContext.Query<Review>().Where(review => review.NominationId == nominationId && review.ReviewerId == reviewerId).ToList();
 
-            return data.Count() == 1 ? true : false;
+            return data.Count == 1;
         }
 
         public bool LockNominations()
@@ -246,6 +246,15 @@ namespace Silicus.Encourage.Services
             {
                 nomination.IsLocked = true;
                 UpdateNomination(nomination);
+             }
+            return true;
+
+        }
+
+        public bool IsNominationLocked()
+        {
+            var currentNominations = GetCurrentNominations();
+            return currentNominations.Count > 0 && currentNominations.TrueForAll(cn => Convert.ToBoolean(cn.IsLocked));
                 //return true;
                 
             }

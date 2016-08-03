@@ -212,7 +212,6 @@ namespace Silicus.EncourageWithAzureAd.Web.Controllers
                 reviewerComments = allReviewerComments,
                 Criterias = _nominationService.GetCriteriaForNomination(nomination.Id),
                 ManagerComments = nomination.ManagerComments.ToList(),
-                IsPLC = Convert.ToBoolean(nomination.IsPLC),
                 IsLocked = isLocked
             };
 

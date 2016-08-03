@@ -24,8 +24,6 @@ namespace Silicus.EncourageWithAzureAd.Web.Models
         [Required(ErrorMessage = "Select Department")]
         public int? DepartmentId { get; set; }
 
-        public bool IsPLC { get; set; }
-
         public bool IsLocked { get; set; }
 
         public bool? IsSubmitted { get; set; }
