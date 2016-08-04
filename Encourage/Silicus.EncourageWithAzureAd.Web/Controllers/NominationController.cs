@@ -10,6 +10,8 @@ using System.Collections.Generic;
 using System.Configuration;
 using System.Globalization;
 using System.Linq;
+using System.Net;
+using System.Net.Mime;
 using System.Web.Mvc;
 
 namespace Silicus.EncourageWithAzureAd.Web.Controllers
@@ -116,8 +118,8 @@ namespace Silicus.EncourageWithAzureAd.Web.Controllers
 
             ViewBag.Resources = new SelectList(new List<User>(), "Id", "DisplayName");
 
-            //bool isLocked = _nominationService.IsNominationLocked();
-            //var model = new NominationViewModel() { IsLocked = isLocked };
+            bool isLocked = _nominationService.IsNominationLocked();
+            var model = new NominationViewModel() { IsLocked = isLocked };
 
             return View(new NominationViewModel());
         }
@@ -126,6 +128,20 @@ namespace Silicus.EncourageWithAzureAd.Web.Controllers
         [CustomeAuthorize(AllowedRole = "Manager")]
         public ActionResult AddNomination(NominationViewModel model, string submit)
         {
+            #region RestrictManagerLogic
+            var noOfNominationForManager = Convert.ToInt32(ConfigurationManager.AppSettings["noOfNominationForManager"]);
+            var firstDateOfCurrentMonth = new DateTime(DateTime.Today.Year, DateTime.Today.Month, 1);
+            var firstDateOfLastMonth = firstDateOfCurrentMonth.AddMonths(-1);
+            var lastDateOfLastMonth = firstDateOfCurrentMonth.AddDays(-1);
+            var countOfNomination = _nominationService.GetNominationCountByManagerId(model.ManagerId, firstDateOfLastMonth, lastDateOfLastMonth);
+
+            if (noOfNominationForManager > countOfNomination)
+            {
+                Response.StatusCode = (int)HttpStatusCode.BadRequest;
+                return Json("Only " + noOfNominationForManager.ToString() + " nominations are allowed per month!", MediaTypeNames.Text.Plain);
+            }
+            #endregion
+
             var nomination = new Nomination
             {
                 AwardId = model.AwardId,

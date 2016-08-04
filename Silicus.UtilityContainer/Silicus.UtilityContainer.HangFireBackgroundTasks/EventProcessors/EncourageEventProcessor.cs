@@ -11,84 +11,11 @@ namespace HangFireBackgroundTasks.EventProcessors
 {
     public class EncourageEventProcessor : IEventProcessor
     {
-        EncourageEmailProcessor emial = new EncourageEmailProcessor();
-
+        EncourageEmailProcessor emailProcessor = new EncourageEmailProcessor();
 
         public void Process(EventType eventType)
         {
-
-            DateTime currentDate = System.DateTime.Now;
-            var firstDayOfMonth = new DateTime(System.DateTime.Now.Year, System.DateTime.Now.Month, 1);
-            switch (eventType)
-            {
-                case EventType.LockNomination:
-                    var managerDays = Convert.ToInt32(ConfigurationManager.AppSettings["NoOfDaysManager"]);
-                    DateTime expireDateManager = firstDayOfMonth.AddDays(Convert.ToDouble(ConfigurationManager.AppSettings["NoOfDaysManager"].ToString()));                 
-                    HolidayService holidayService = new HolidayService();
-                    var holidayData = holidayService.GetCurrentMonthHolidays();
-
-                    if (holidayData.Any())
-                    {
-                        var fallingHolidaysformanager = from temp in holidayData
-                                              where temp <= managerDays
-                                              select temp;
-
-                        var count2 = fallingHolidaysformanager.Count();
-                        expireDateManager = expireDateManager.AddDays(count2);
-                    }
-
-                    if (currentDate == expireDateManager || currentDate > expireDateManager)
-                    {
-                        LockNomination();
-                    }
-
-                    break;
-                case EventType.LockReview:
-
-                    int count = 0;
-                    var noOfDaysManager = Convert.ToInt32(ConfigurationManager.AppSettings["NoOfDaysManager"]);
-
-                    HolidayService holiday = new HolidayService();
-                    var days = holiday.GetCurrentMonthHolidays();
-
-                    if (days.Any())
-                    {
-                        var fallingHoliday = from temp in days
-                                             where temp <= noOfDaysManager
-                                               select temp;
-
-                        count = fallingHoliday.Count();
-                    }
-                    var dayCount = 0;
-                    noOfDaysManager += count;
-                    var noOfDaysReviewer = Convert.ToInt32(ConfigurationManager.AppSettings["NoOfDaysReviewer"]);
-                    var expireDateReviewer = firstDayOfMonth.AddDays(Convert.ToDouble(System.Configuration.ConfigurationManager.AppSettings["NoOfDaysReviewer"].ToString()) + noOfDaysManager);
-                    var reviewercount = expireDateReviewer.Day;
-                    var reviewerdays = reviewercount - noOfDaysReviewer;
-                    //HolidayService holidayService2 = new HolidayService();
-                    var holidays = holiday.GetCurrentMonthHolidays();
-
-                    if (holidays.Any())
-                    {
-                        var fallingHolidaysReviewer = from temp in holidays
-                                               where temp <= reviewercount && temp >= reviewerdays
-                                                      select temp;
-
-                        if (fallingHolidaysReviewer.Any())
-                        {
-                            dayCount = fallingHolidaysReviewer.Count();
-                        }
-                        expireDateReviewer = expireDateReviewer.AddDays(dayCount);
-                    }
-
-                    if (currentDate == expireDateReviewer || currentDate > expireDateReviewer)
-                    {
-                        LockReview();
-                    }
-                    break;
-                default:
-                    break;
-            }
+            LockEvent(eventType);
         }
 
         private void LockNomination()
@@ -108,7 +35,7 @@ namespace HangFireBackgroundTasks.EventProcessors
             {
                 // Parse the response body. Blocking!
                 var result = response.Content.ReadAsStringAsync().Result;
-                emial.Process(EventType.SendReviewNominationEmail);
+                emailProcessor.Process(EventType.SendReviewNominationEmail);
 
             }
             else
@@ -116,6 +43,7 @@ namespace HangFireBackgroundTasks.EventProcessors
 
             }
         }
+
         private void LockReview()
         {
             const string URL = @"https://localhost:44324/api/reviewnominationapi/reviewlock";
@@ -133,7 +61,7 @@ namespace HangFireBackgroundTasks.EventProcessors
             {
                 // Parse the response body. Blocking!
                 var result = response.Content.ReadAsStringAsync().Result;
-                emial.Process(EventType.SendAdminNominationEmail);
+                emailProcessor.Process(EventType.SendAdminNominationEmail);
             }
             else
             {
@@ -141,80 +69,84 @@ namespace HangFireBackgroundTasks.EventProcessors
             }
         }
 
+        #region Lock Nominations/Review
+        private void LockEvent(EventType eventType)
+        {
+            var firstDayOfCurrentMonth = new DateTime(System.DateTime.Now.Year, System.DateTime.Now.Month, 1);
+            
+            using (HolidayService holidayService = new HolidayService())
+            {
+                var holidays = holidayService.GetCurrentMonthHolidays();
+                switch (eventType)
+                {
+                    #region Lock Nomination
+                    case EventType.LockNomination:
+                        var managerDays = Convert.ToInt32(ConfigurationManager.AppSettings["NoOfDaysManager"]);
+                        DateTime lastDateForNomination = firstDayOfCurrentMonth.AddDays(Convert.ToDouble(ConfigurationManager.AppSettings["NoOfDaysManager"].ToString()));
 
-        //private void LockNomination()
-        //{
-        //    DateTime currentDate = System.DateTime.Now;
-        //    var firstDayOfMonth = new DateTime(System.DateTime.Now.Year, System.DateTime.Now.Month, 1);
+                        if (holidays.Any())
+                        {
+                            var fallingHolidaysForManager = from holidaysInRange in holidays
+                                                            where holidaysInRange <= managerDays
+                                                            select holidaysInRange;
 
-        //    #region Manager
+                            var count2 = fallingHolidaysForManager.Count();
+                            lastDateForNomination = lastDateForNomination.AddDays(count2);
+                        }
 
-        //    var expireDateManager = firstDayOfMonth.AddDays(Convert.ToDouble(System.Configuration.ConfigurationManager.AppSettings["NoOfDaysManager"].ToString()));
+                        if (System.DateTime.Now == lastDateForNomination || System.DateTime.Now > lastDateForNomination)
+                        {
+                            LockNomination();
+                        }
+                        break;
+                    #endregion
 
-        //    if (currentDate == expireDateManager || currentDate < expireDateManager)
-        //    {
-        //        //set IsLocked = true for "Nomination" Table
+                    #region Lock Review
+                    case EventType.LockReview:
+                        int count = 0;
+                        var noOfDaysManager = Convert.ToInt32(ConfigurationManager.AppSettings["NoOfDaysManager"]);
 
-        //        var allNominations = _nominationService.GetAllNominations();
-        //        //nominations = nominations.Where(x => x.NominationDate!=null &&  Object.Equals((x.NominationDate.Value.Month), (DateTime.Now.Month - 1)));
+                        if (holidays.Any())
+                        {
+                            var fallingHoliday = from holidaysInRange in holidays
+                                                 where holidaysInRange <= noOfDaysManager
+                                                 select holidaysInRange;
 
-        //        // var nominations = allNominations.Where(x => (x.NominationDate != null) && (Object.Equals((x.NominationDate.Value.Month), (DateTime.Now.Month - 1))));
-        //        var nominations = allNominations.Where(x => x.NominationDate.Value.Month.Equals(DateTime.Now.Month - 1)).ToList();
-        //        //nominations = nominations.Where(x => x.NominationDate !=null && (x.NominationDate.Value.Month == (DateTime.Now.Month - 1)));
-        //        foreach (var nomination in nominations)
-        //        {
-        //            if (nomination != null)
-        //            {
-        //                nomination.IsLocked = true;
-        //                _nominationService.UpdateNomination(nomination);
-        //                //ReviewsLockedNotificationToReviewers reviewsLockedNotificationToReviewers = new ReviewsLockedNotificationToReviewers();
-        //                //reviewsLockedNotificationToReviewers.Process();
-        //                //emmail to manager
+                            count = fallingHoliday.Count();
+                        }
 
-        //            }
-        //        }
-        //    }
-        //    else
-        //    {
-        //        //ignore
-        //    }
-        //    #endregion
+                        var dayCount = 0;
+                        noOfDaysManager += count;
+                        var noOfDaysReviewer = Convert.ToInt32(ConfigurationManager.AppSettings["NoOfDaysReviewer"]);
+                        var expireDateReviewer = firstDayOfCurrentMonth.AddDays(Convert.ToDouble(System.Configuration.ConfigurationManager.AppSettings["NoOfDaysReviewer"].ToString()) + noOfDaysManager);
+                        var reviewercount = expireDateReviewer.Day;
+                        var reviewerdays = reviewercount - noOfDaysReviewer;
 
-        //    #region Reviewer
+                        if (holidays.Any())
+                        {
+                            var fallingHolidaysReviewer = from fallingHolidaysReviewerInRange in holidays
+                                                          where fallingHolidaysReviewerInRange <= reviewercount && fallingHolidaysReviewerInRange >= reviewerdays
+                                                          select fallingHolidaysReviewerInRange;
 
-        //    var expireDateReviewer = firstDayOfMonth.AddDays(Convert.ToDouble(System.Configuration.ConfigurationManager.AppSettings["NoOfDaysManager"].ToString()) + Convert.ToDouble(System.Configuration.ConfigurationManager.AppSettings["NoOfDaysReviewer"].ToString()));
+                            if (fallingHolidaysReviewer.Any())
+                            {
+                                dayCount = fallingHolidaysReviewer.Count();
+                            }
 
-        //    if (currentDate == expireDateReviewer || currentDate < expireDateReviewer)
-        //    {
-        //        var reviews = _reviewService.GetAllReview();
+                            expireDateReviewer = expireDateReviewer.AddDays(dayCount);
+                        }
 
-
-        //        foreach (var review in reviews)
-        //        {
-        //            if (review != null)
-        //            {
-        //                var reviewrow = _nominationService.GetAllNominations().Where(x => x.Id.Equals(review.NominationId)).ToList().First().NominationDate;
-
-
-        //                if ((DateTime.Now.Month - 1).Equals(reviewrow.Value.Month))
-        //                {
-        //                    review.IsLocked = true;
-        //                    _reviewService.UpdateReview(review);
-        //                    //ReviewsLockedNotificationToAdmin reviewsLockedNotificationToAdmin = new ReviewsLockedNotificationToAdmin();
-        //                    //reviewsLockedNotificationToAdmin.Process();
-        //                    //email to reviewer
-        //                }
-
-        //                //  review.NominationId
-
-        //            }
-        //        }
-        //    }
-        //    else
-        //    {
-        //        //ignore
-        //    }
-        //    #endregion
-        //}
+                        if (System.DateTime.Now == expireDateReviewer || System.DateTime.Now > expireDateReviewer)
+                        {
+                            LockReview();
+                        }
+                        break;
+                    #endregion
+                    default:
+                        break;
+                }
+            }
+        }
+        #endregion
     }
 }

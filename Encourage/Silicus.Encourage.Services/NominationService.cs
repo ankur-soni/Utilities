@@ -274,11 +274,10 @@ namespace Silicus.Encourage.Services
             return false;
 
         }
-        //public void getCountOfNomination()
-        //{
-        //    return _encourageDatabaseContext.Query<Nomination>()
-        //                               .Where(x => x.ManagerId == model.ManagerId && (x.NominationDate >= first && x.NominationDate <= last)).Count();
 
-        //}
+        public int GetNominationCountByManagerId(int managerId, DateTime startDate, DateTime endDate)
+        {
+            return _encourageDatabaseContext.Query<Nomination>().Where(x => x.ManagerId == managerId && (x.NominationDate >= startDate && x.NominationDate <= endDate)).Count();
+        }
     }
 }

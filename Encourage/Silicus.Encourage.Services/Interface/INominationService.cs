@@ -36,10 +36,7 @@ namespace Silicus.Encourage.Services.Interface
         bool checkReviewIsDrafted(int nominationId);
         bool LockNominations();
         bool IsNominationLocked();
-
         bool UnLockNominations();
-        //void getCountOfNomination();
-
-
+        int GetNominationCountByManagerId(int managerId, DateTime startDate, DateTime endDate);
     }
 }
