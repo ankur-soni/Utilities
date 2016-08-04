@@ -91,13 +91,13 @@ namespace Silicus.EncourageWithAzureAd.Web.Controllers
             if (projects.Any())
             {
                 ViewBag.ProjectsUnderCurrentUser = new SelectList(projects, "Id", "Name");
-                ViewBag.ManagerId = _awardService.GetUserIdFromEmail(userEmailAddress);
+               // ViewBag.ManagerId = _awardService.GetUserIdFromEmail(userEmailAddress);
                 ViewBag.ManagerIdByProject = _awardService.GetUserIdFromEmail(userEmailAddress);
             }
             else
             {
                 ViewBag.ProjectsUnderCurrentUser = new SelectList(_awardService.GetProjectsUnderCurrentUserAsManager("shailendra.birthare@silicus.com"), "Id", "Name");
-                ViewBag.ManagerId = _awardService.GetUserIdFromEmail("shailendra.birthare@silicus.com");
+                //ViewBag.ManagerId = _awardService.GetUserIdFromEmail("shailendra.birthare@silicus.com");
                 ViewBag.ManagerIdByProject = _awardService.GetUserIdFromEmail("shailendra.birthare@silicus.com");
             }
 
