@@ -251,7 +251,7 @@ namespace Silicus.EncourageWithAzureAd.Web.Controllers
         [HttpPost]
         [CustomeAuthorize(AllowedRole = "Admin")]
         public bool SelectWinner(int nominationId, string winningComment)
-        {
+          {
             try
             {
                 _resultService.SelectWinner(nominationId, winningComment);

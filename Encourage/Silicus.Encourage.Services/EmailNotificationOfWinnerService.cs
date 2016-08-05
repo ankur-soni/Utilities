@@ -25,7 +25,7 @@ namespace Silicus.EncourageWithAzureAd.Web
 
             foreach (WinnerData winnerData in allWinners)
             {
-                IDictionary<string, string> map = new Dictionary<string, string>()
+                IDictionary<string, string> mergeFields = new Dictionary<string, string>()
                 {
                     {"ENCOURAGE_WINNER_NAME", winnerData.Name},
                     {"ENCOURAGE_WINNER_PROJECT_NAME", winnerData.ProjectName},
@@ -34,9 +34,9 @@ namespace Silicus.EncourageWithAzureAd.Web
                     {"ENCOURAGE_WINNER_MANAGER_NAME", winnerData.ManagerName},
                 };
 
-                var regex = new Regex(String.Join("|", map.Keys));
-                var newStr = regex.Replace(File.ReadAllText(htmlPagePath), m => map[m.Value]);
-                var allUsersEmailAddresses = _awardService.GetEmailAddressesOfAllUsers();
+                var regex = new Regex(String.Join("|", mergeFields.Keys));
+                var mailBody = regex.Replace(File.ReadAllText(htmlPagePath), m => mergeFields[m.Value]);
+                var winnerManagerEmailAddresses = _awardService.GetEmailAddressOfManager(winnerData.ManagerName);
                 var winnerName = winnerData.Name;
                 var awardName = winnerData.AwardName;
                 var awardPeriod = winnerData.AwardPeriod;
@@ -46,7 +46,7 @@ namespace Silicus.EncourageWithAzureAd.Web
                 const string fromPassword = "Indra@123";
                 string body = string.Empty;
 
-                body = newStr;
+                body = mailBody;
                 var smtp = new SmtpClient
                 {
                     Host = "smtp.office365.com",
@@ -61,14 +61,9 @@ namespace Silicus.EncourageWithAzureAd.Web
                 {
                     message.From = fromAddress;
 
-                    //foreach(string email in ToEmailAddresses)
-                    //{
-                    //    message.To.Add(email);
-                    //}
-
-                    foreach (string email in new List<string>() { "indrajit.kadam@silicus.com", "gajanan.annamwar@silicus.com" })
+                    foreach (string email in winnerManagerEmailAddresses )
                     {
-                        message.To.Add(email);
+                        message.To.Add("indrajit.kadam@silicus.com");
                     }
 
                     message.IsBodyHtml = true;

@@ -22,7 +22,7 @@ namespace Silicus.Encourage.Services.Interface
         bool AddNomination(Nomination nomination);
         int GetUserIdFromEmail(string email);
         List<WinnerData> GetWinnerData();
-        List<string> GetEmailAddressesOfAllUsers();
+        List<string> GetEmailAddressOfManager(string name);
 
 
 
