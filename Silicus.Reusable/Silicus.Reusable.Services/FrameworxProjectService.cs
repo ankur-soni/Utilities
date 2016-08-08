@@ -23,10 +23,16 @@ namespace Silicus.FrameworxProject.Services
             _FrameworxProjectDatabaseContext = _dataContextFactory.CreateFrameworxProjectDbContext();
         }
 
-        public List<Frameworx> GetAllFrameworks(int id)
+        public List<Frameworx> GetAllFrameworxs(int id)
         {
             return _FrameworxProjectDatabaseContext.Query<Frameworx>().Where(m=>m.CategoryId == id).ToList();
         }
+
+        public List<Frameworx> GetAllFrameworx()
+        {
+            return _FrameworxProjectDatabaseContext.Query<Frameworx>().ToList();
+        }
+
         public Frameworx FrameworkDetail(int id)
         {
             return _FrameworxProjectDatabaseContext.Query<Frameworx>().Where(m => m.Id == id).SingleOrDefault();
@@ -34,7 +40,17 @@ namespace Silicus.FrameworxProject.Services
 
         public List<Category> GetAllCategories()
         {
-            return _FrameworxProjectDatabaseContext.Query<Category>().ToList();
+            return _FrameworxProjectDatabaseContext.Query<Category>().ToList();//Poulate Business Model h
+        }
+
+        public void AddCategory(Category category)
+        {
+            _FrameworxProjectDatabaseContext.Add(category);
+        }
+
+        public void AddFrameworx(Frameworx frameworx)
+        {
+            _FrameworxProjectDatabaseContext.Add(frameworx);
         }
     }
 }

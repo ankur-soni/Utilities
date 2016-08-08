@@ -1,6 +1,5 @@
 ﻿body {
-    padding-top: 50px;
-    padding-bottom: 20px;
+    background-color:#ECECEC;
 }
 
 /* Set padding to keep content from hitting the edges */
@@ -21,4 +20,19 @@ input,
 select,
 textarea {
     max-width: 280px;
+}
+.navbar-inverse {
+    background:#fff;
+    color:#ccc;
+    border:none;
+    box-shadow:1px 1px 2px lightgrey;
+}
+.navbar-header img {
+    padding:7%;
+}
+.carousel-control.left, .carousel-control.right {
+    background:none !important;
+}
+.glyphicon-chevron-right, .glyphicon-chevron-left {
+    color:#000;
 }

@@ -1,17 +1,19 @@
 ﻿using Silicus.FrameworxProject.Models;
 using Silicus.FrameworxProject.Services.Interfaces;
+using Silicus.Reusable.Web.Models;
+using System.Collections.Generic;
 using System.Linq;
 using System.Web.Mvc;
+using System.Data.Entity.Infrastructure;
 
 
 
 namespace Silicus.FrameworxDashboard.Web.Controllers
 {
+
     public class FrameworxProjectController : Controller
     {
         private readonly IFrameworxProjectService _frameworxProjectService;
-        
-        //private readonly TextInfo textInfo;
 
         public FrameworxProjectController(IFrameworxProjectService frameworxProjectService)
         {
@@ -19,20 +21,56 @@ namespace Silicus.FrameworxDashboard.Web.Controllers
             //textInfo = new CultureInfo("en-US", false).TextInfo;
         }
 
-        // GET: Reusable
-        public ActionResult Index()
+        [HttpGet]
+        public ActionResult AddCategory()
         {
-
             return View();
         }
 
-        public ActionResult GetAllList(int id)
+        [HttpPost]
+        public ActionResult AddCategory(Category category)
         {
-            if (_frameworxProjectService == null)
-                return RedirectToAction("Index");
+            try
+            {
+                _frameworxProjectService.AddCategory(category);
+                return RedirectToAction("AddComponent");
+            }
+            catch (DbUpdateException ex)
+            {
+                ViewBag.message = "Category Name already exists";
+                return View();
+            }
+            catch
+            {
+                return View();
+            }
+        }
 
-            var frameworkList = _frameworxProjectService.GetAllFrameworks(id);
-            return View(frameworkList.ToList());
+        [HttpGet]
+        public ActionResult AddComponent()
+        {
+            ViewData["Categories"] = new MultiSelectList(_frameworxProjectService.GetAllCategories(), "Id", "Name");
+            return View();
+        }
+
+        // POST: Employee/Create
+        [HttpPost]
+        public ActionResult AddComponent(Frameworx newFrameworx)
+        {
+            try
+            {
+                _frameworxProjectService.AddFrameworx(newFrameworx);
+                return RedirectToAction("GetAllCategories");
+            }
+            catch (DbUpdateException ex)
+            {
+                ViewBag.message = "Category Name already exists";
+                return View(ex);
+            }
+            catch
+            {
+                return View();
+            }
         }
 
         public ActionResult GetAllCategories()
@@ -44,78 +82,57 @@ namespace Silicus.FrameworxDashboard.Web.Controllers
             return View(CategoryList.ToList());
         }
 
-        // GET: Reusable/Details/5
+        public ActionResult GetAllList(int id)
+        {
+            if (_frameworxProjectService == null)
+                return RedirectToAction("Index");
+
+            var frameworkList = _frameworxProjectService.GetAllFrameworxs(id);
+            return View(frameworkList.ToList());
+        }
+
         public ActionResult Details(int id)
         {
-            Frameworx framework = _frameworxProjectService.FrameworkDetail(id);
+            List<Frameworx> frameworkList = _frameworxProjectService.GetAllFrameworx();
+            var CategoryList = _frameworxProjectService.GetAllCategories();
 
-            return View(framework);
+            FrameworxViewModel frameworxViewModel = new FrameworxViewModel();
+            var results = frameworkList.Join(CategoryList,
+                wo => wo.CategoryId,
+                p => p.Id,
+                (order, plan) => new { order.Id, order.Title, order.SourceCodeLink, order.DemoLink, order.HtmlDescription, plan.Name }
+                ).ToList();
+
+            var result = results.Where(p => p.Id == id).FirstOrDefault();
+
+            frameworxViewModel.Name = result.Name;
+            frameworxViewModel.Title = result.Title;
+            frameworxViewModel.HtmlDescription = result.HtmlDescription;
+
+            frameworxViewModel.DemoLink = result.DemoLink;
+            frameworxViewModel.SourceCodeLink = result.SourceCodeLink;
+
+            return View(frameworxViewModel);
         }
 
-        // GET: Reusable/Create
-        public ActionResult Create()
+        public ActionResult SearchComponent(string searchString)
         {
-            return View();
-        }
+            searchString = searchString.ToLower();
+            List<Frameworx> frameworkList = _frameworxProjectService.GetAllFrameworx();
+            var CategoryList = _frameworxProjectService.GetAllCategories();
+            frameworkList = frameworkList.Where(s => s.Title.ToLower().Contains(searchString)).ToList();
 
-        // POST: Reusable/Create
-        [HttpPost]
-        public ActionResult Create(FormCollection collection)
-        {
-            try
+            var query = (from frameworx in frameworkList
+                         join catagory in CategoryList
+                         on frameworx.CategoryId equals catagory.Id
+                         where frameworx.CategoryId == catagory.Id
+                         select catagory).Distinct().ToList();
+
+            foreach (var item in query)
             {
-                // TODO: Add insert logic here
-
-                return RedirectToAction("Index");
+                item.Frameworxs = frameworkList.Where(s => s.CategoryId == item.Id).ToList();
             }
-            catch
-            {
-                return View();
-            }
-        }
-
-        // GET: Reusable/Edit/5
-        public ActionResult Edit(int id)
-        {
-            return View();
-        }
-
-        // POST: Reusable/Edit/5
-        [HttpPost]
-        public ActionResult Edit(int id, FormCollection collection)
-        {
-            try
-            {
-                // TODO: Add update logic here
-
-                return RedirectToAction("Index");
-            }
-            catch
-            {
-                return View();
-            }
-        }
-
-        // GET: Reusable/Delete/5
-        public ActionResult Delete(int id)
-        {
-            return View();
-        }
-
-        // POST: Reusable/Delete/5
-        [HttpPost]
-        public ActionResult Delete(int id, FormCollection collection)
-        {
-            try
-            {
-                // TODO: Add delete logic here
-
-                return RedirectToAction("Index");
-            }
-            catch
-            {
-                return View();
-            }
+            return View("SearchComponent", query.ToList());
         }
     }
 }

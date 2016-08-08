@@ -1,0 +1,14 @@
+﻿@model IEnumerable<Silicus.FrameworxProject.Models.Category>
+@{
+    Layout = null;
+}
+
+@foreach (var item in Model)
+{
+    <div class="col-sm-12 col-lg-12 col-md-12 col-xs-12">
+        <div>
+            <h3>@Html.DisplayFor(modelItem => item.Name)</h3>
+            @Html.Partial("GetAllList",item.Frameworxs)
+        </div>
+    </div>
+                }
