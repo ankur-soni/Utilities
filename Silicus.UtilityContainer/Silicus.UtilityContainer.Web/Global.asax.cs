@@ -1,5 +1,8 @@
-﻿using System;
+﻿using Hangfire;
+using Silicus.UtilityContainer.Web.App_Start;
+using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
@@ -16,6 +19,8 @@ namespace Silicus.UtilityContainer.Web
             FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             BundleConfig.RegisterBundles(BundleTable.Bundles);
+            LightInjectWebCommon.CreateContainer();
+
         }
     }
 }

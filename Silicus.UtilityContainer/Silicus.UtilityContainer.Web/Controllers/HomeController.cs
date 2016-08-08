@@ -1,20 +1,18 @@
-﻿using Silicus.UtilityContainer.Models.DataObjects;
+﻿using System;
+using System.Linq;
+using System.Web.Mvc;
+using Silicus.UtilityContainer.Models.DataObjects;
 using Silicus.UtilityContainer.Models.ViewModels;
 using Silicus.UtilityContainer.Services.Interfaces;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using System.Web.Mvc;
 
 namespace Silicus.UtilityContainer.Web.Controllers
 {
     [Authorize]
     public class HomeController : Controller
     {
-        private readonly IUtilityService _utilityService;
         private readonly IRoleService _roleService;
         private readonly IUserService _userService;
+        private readonly IUtilityService _utilityService;
 
         public HomeController(IUtilityService utilityService, IRoleService roleService, IUserService userService)
         {
@@ -34,7 +32,7 @@ namespace Silicus.UtilityContainer.Web.Controllers
 
         public FileContentResult GetImg(int id)
         {
-            byte[] byteArray = _utilityService.FindUtility(id).UtilityIcon;
+            var byteArray = _utilityService.FindUtility(id).UtilityIcon;
             return byteArray != null
                 ? new FileContentResult(byteArray, "image/jpeg")
                 : null;
@@ -42,11 +40,13 @@ namespace Silicus.UtilityContainer.Web.Controllers
 
         public ActionResult AddRolesToUserForAUtility()
         {
-
             var newUserRole = new UtilityUserRoleViewModel();
             // ViewData["User"] = new SelectList(_userService.GetAllUsers(), "ID", "DisplayName", "Select");
 
-            var selectListItems = _userService.GetAllUsers().Select(u => new SelectListItem() { Text = u.ID.ToString(), Value = u.DisplayName }).ToList();
+            var selectListItems =
+                _userService.GetAllUsers()
+                    .Select(u => new SelectListItem {Text = u.ID.ToString(), Value = u.DisplayName})
+                    .ToList();
 
             ViewData["User"] = selectListItems;
 
@@ -59,10 +59,14 @@ namespace Silicus.UtilityContainer.Web.Controllers
         [HttpPost]
         public ActionResult AddRolesToUserForAUtility(UtilityUserRoleViewModel newUserRole)
         {
-
             if (newUserRole.RoleId != 0)
             {
-                _userService.AddRolesToUserForAUtility(new UtilityUserRoleViewModel { UtilityId = newUserRole.UtilityId, RoleId = newUserRole.RoleId, UserId = newUserRole.UserId });
+                _userService.AddRolesToUserForAUtility(new UtilityUserRoleViewModel
+                {
+                    UtilityId = newUserRole.UtilityId,
+                    RoleId = newUserRole.RoleId,
+                    UserId = newUserRole.UserId
+                });
                 return RedirectToAction("Index");
             }
 
@@ -91,26 +95,21 @@ namespace Silicus.UtilityContainer.Web.Controllers
         [HttpGet]
         public ActionResult FillRoles(int utilityId)
         {
-
             var roles = _utilityService.GetAllRolesForAnUtility(utilityId);
             //SelectList obgroles = new SelectList(roles, "Id", "RoleName", 0);
-            var roleData = roles.Select(m => new SelectListItem()
+            var roleData = roles.Select(m => new SelectListItem
             {
                 Text = _roleService.GetRoleName(m.RoleID),
-                Value = m.RoleID.ToString(),
+                Value = m.RoleID.ToString()
             });
             return Json(roleData, JsonRequestBehavior.AllowGet);
         }
 
 
-
         [HttpGet]
         public string GetUserByID(string userId)
         {
-
-
             var user = _userService.GetUserByID(Convert.ToInt32(userId));
-
 
 
             return user.DisplayName;

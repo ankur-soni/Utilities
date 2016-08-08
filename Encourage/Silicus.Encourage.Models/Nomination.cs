@@ -31,7 +31,6 @@ namespace Silicus.Encourage.Models
         public Nullable<int> DepartmentId { get; set; }
         public Nullable<System.DateTime> NominationDate { get; set; }
         public Nullable<System.DateTime> CreatedDate { get; set; }
-        public Nullable<bool> IsPLC { get; set; }
         public Nullable<bool> IsLocked { get; set; }
         public Nullable<bool> IsSubmitted { get; set; }
         public byte[] UserImage { get; set; }

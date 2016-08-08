@@ -1,7 +1,11 @@
-﻿using Silicus.UtilityContainer.Security;
+﻿using LightInject;
+using Silicus.Encourage.Services;
+using Silicus.Encourage.Services.Interface;
+using Silicus.UtilityContainer.Security;
 using System.Collections.Generic;
 using System.Web;
 using System.Web.Configuration;
+using System.Web.Http;
 using System.Web.Mvc;
 using System.Web.Optimization;
 using System.Web.Routing;
@@ -12,12 +16,22 @@ namespace Silicus.EncourageWithAzureAd.Web
     {
         protected void Application_Start()
         {
-           
+
+            //var container = new ServiceContainer();
+            //container.RegisterApiControllers(typeof(MvcApplication).Assembly);
+            //container.Register<INominationService, NominationService>();
+            ////container.EnablePerWebRequestScope();
+            //container.EnableWebApi(GlobalConfiguration.Configuration);
+
             AreaRegistration.RegisterAllAreas();
             FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
+            AttributeRoutingConfig.RegisterRoutes(RouteTable.Routes);
+            GlobalConfiguration.Configure(WebApiConfig.Register);
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             BundleConfig.RegisterBundles(BundleTable.Bundles);
+
             
+
         }
 
         public string getCurrentUserName()

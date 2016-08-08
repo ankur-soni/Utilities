@@ -34,10 +34,10 @@
 
     @if (Model.IsLocked)
     {
-        <div class="row" style="color:red">The nominations period was closed.</div>
+        <span class="text-danger" style="font-size:20px;margin-left:7%">The nominations period was closed..</span>
     }
     else
-    { 
+    {
 
     <div class="row" style="width:80%;padding-top:20px;margin-left:3%;">
         <div  style="text-align:center;"id="label">
@@ -89,16 +89,8 @@
                 <div class="form-group row">
                     @Html.Label("Resource Name", htmlAttributes: new { @class = "control-label col-md-3 requiredfeild", style = "text-align: left" })
                     <div>
-                        @Html.DropDownListFor(model => model.ResourceId, @ViewBag.Resources as SelectList, "Select", new { htmlAttributes = new { @class = "form-control" }, id = "Resources", style = "width:25%" })
+                        @Html.DropDownListFor(model => model.ResourceId, ViewBag.Resources as SelectList, "Select", new { htmlAttributes = new { @class = "form-control" }, id = "Resources", style = "width:25%" })
                         @Html.ValidationMessageFor(model => model.ResourceId, "", new { @class = "text-danger" })
-                    </div>
-                </div>
-
-                <div class="form-group row" style="padding-bottom:10px">
-                    @*@Html.Label("Is PLC ", htmlAttributes: new { @class = "control-label col-md-3", style = "text-align: left" })*@
-                    <label class="control-label col-md-3" style="text-align: left">PLC<span style="color:#0067AA;"> <i class="fa fa-question-circle" title="Programmable logic controller" aria-hidden="true"></i></span></label>
-                    <div>
-                        @Html.CheckBoxFor(model => model.IsPLC, new { htmlAttributes = new { @class = "form-control" }, id = "IsPlcCheckbox" }) Yes
                     </div>
                 </div>
             </div>
@@ -170,7 +162,7 @@
              $('#Resources').empty();
              $('#Resources').append($("<option selected></option>").val(null).html("Select"));
              $("#projectInput").show();
-             $('#IsPlcCheckbox').prop('checked', false);
+             
              debugger;
              $("#ManagerId").val('@ViewBag.ManagerIdByProject');
          });
@@ -183,7 +175,7 @@
               $('#Resources').empty();
               $('#Resources').append($("<option selected></option>").val(null).html("Select"));
               $("#departmentInput").show();
-              $('#IsPlcCheckbox').prop('checked', false);
+              
               debugger;
              $("#ManagerId").val('@ViewBag.ManagerIdByDepartment');
           });
@@ -204,8 +196,7 @@
         $("#SelectedDepartment").prop('selectedIndex', 0);
         $('#Resources').empty();
         $('#Resources').append($("<option selected></option>").val(null).html("Select"));
-        $('#IsPlcCheckbox').prop('checked', false);
-
+        
         $('#disclamer').prop('hidden', false);
 
         var selectdAward = $("#Award").val();
@@ -347,7 +338,8 @@
                            async: false,
                            data: modelbjectToSend,
                            success: function (success) {
-                               debugger;
+                               console.log(success);
+                               //swal(success.ErrorMessage);
                                swal({
                                    title: "Nomination Submitted!",
                                    text: "",
@@ -363,8 +355,15 @@
                                    }
                                });
                            },
-                           error: function () {
-                               swal("Error", "Oops! Something wrong happened..");
+                           error: function (error) {
+                               if (error.responseText != null && error.responseText != undefined && error.responseText != '')
+                               {
+                                   swal("Error", error.responseText.replace(/['"]+/g, ''));
+                               }
+                               else
+                               {
+                                   swal("Error", "Oops! Something wrong happened..");
+                               }
                            }
                        });
                    } else {
@@ -417,7 +416,9 @@
                                }
                            });
                        },
-                       error: function () {
+                       error: function (data) {
+                           alert("2");
+                           swal(data.ErrorMessage);
                            swal("Error", "Oops! Something wrong happened..");
                        }
                    });

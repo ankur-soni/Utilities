@@ -48,8 +48,7 @@
             @Html.HiddenFor(model => model.ProjectID)
             @Html.HiddenFor(model => model.DepartmentId)
             @Html.HiddenFor(model => model.ResourceId)
-            @Html.HiddenFor(model => model.IsPLC)
-
+            
             @Html.ValidationSummary(true, "", new { @class = "text-danger" })
             <div id="basicFields">
                 <div class="white-bg" style="padding-top:10px;padding-bottom:10px;padding-left:2%" >
@@ -95,14 +94,7 @@
                         </div>
                     </div>
 
-                    <div class="form-group row">
-                        @*@Html.Label("PLC", htmlAttributes: new { @class = "control-label col-md-3", style = "text-align: left" })*@
-                        <label class="control-label col-md-3" style="text-align: left">PLC<span style="color:#0067AA;"> <i class="fa fa-question-circle" title="Programmable logic controller" aria-hidden="true"></i></span></label>
-                        <div>
-                            @Html.CheckBoxFor(model => model.IsPLC, new { htmlAttributes = new { @class = "form-control" } }) Yes
-                            @Html.ValidationMessageFor(model => model.IsPLC, "", new { @class = "text-danger" })
-                        </div>
-                    </div>
+                    
                 </div>
             </div>
 

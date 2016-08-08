@@ -67,6 +67,7 @@
     <Compile Include="EntityConfigurations\EngagementRoleMap.cs" />
     <Compile Include="EntityConfigurations\EngagementTypeMap.cs" />
     <Compile Include="EntityConfigurations\EngagementUserPermissionsMap.cs" />
+    <Compile Include="EntityConfigurations\HolidaysMap.cs" />
     <Compile Include="EntityConfigurations\ResourceHistoryMap.cs" />
     <Compile Include="EntityConfigurations\ResourceMap.cs" />
     <Compile Include="EntityConfigurations\ResourceSkillLevelMap.cs" />

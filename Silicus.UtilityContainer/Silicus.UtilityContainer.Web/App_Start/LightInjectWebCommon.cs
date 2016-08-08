@@ -7,8 +7,10 @@ using LightInject;
 using Silicus.UtilityContainer.Web;
 using Silicus.UtilityContainer.Security.Interface;
 using Silicus.UtilityContainer.Security;
+using Silicus.Encourage.Services.Interface;
+using Silicus.Encourage.Services;
 
-[assembly: WebActivatorEx.PostApplicationStartMethod(typeof(LightInjectWebCommon), "CreateContainer")]
+//[assembly: WebActivatorEx.PostApplicationStartMethod(typeof(LightInjectWebCommon), "CreateContainer")]
 
 namespace Silicus.UtilityContainer.Web
 {
@@ -34,6 +36,7 @@ namespace Silicus.UtilityContainer.Web
             container.Register<IRoleService, RoleService>();
             container.Register<IUserService, UserService>();
             container.Register<IUserSecurityService, UserSecurityService>();
+            container.Register<INominationService, NominationService>();
         }
 
     }

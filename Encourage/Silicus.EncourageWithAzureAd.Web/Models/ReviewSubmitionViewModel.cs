@@ -21,9 +21,6 @@ namespace Silicus.EncourageWithAzureAd.Web.Models
         public List<Criteria> Criterias { get; set; }
         public IList<ReviewerCommentViewModel> Comments { get; set; }
         public int TotalCredit { get; set; }
-
-        public bool IsPLC { get; set; }
-
         public bool? IsDrafted { get; set; }
 
         public ReviewSubmitionViewModel()

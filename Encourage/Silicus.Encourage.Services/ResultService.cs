@@ -86,9 +86,9 @@ namespace Silicus.Encourage.Services
 
         public string GetAwardComments(int WinnerId)
         {
-            var abc = _encourageDatabaseContext.Query<Shortlist>().Where(model => model.NominationId == WinnerId).FirstOrDefault().WinningComment;
+            var comments = _encourageDatabaseContext.Query<Shortlist>().Where(model => model.NominationId == WinnerId).FirstOrDefault().WinningComment;
 
-            return abc;
+            return comments;
         }
 
 

@@ -12,5 +12,7 @@ namespace Silicus.Encourage.Services.Interface
         IEnumerable<Review> GetReviewsForNomination(int nominationID);
         void UpdateReview(Review model);
         List<Review> GetAllReview();
+        bool LockReview();
+        bool UnLockReview();
     }
 }

@@ -12,7 +12,7 @@ namespace Silicus.Encourage.DAL
         public CommonDatabaseContext(string connectionString)
             : base(connectionString)
         {
-
+            
         }
 
         public IQueryable<T> Query<T>() where T : class
