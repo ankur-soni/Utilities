@@ -121,7 +121,7 @@ namespace Silicus.EncourageWithAzureAd.Web.Controllers
             bool isLocked = _nominationService.IsNominationLocked();
             var model = new NominationViewModel() { IsLocked = isLocked };
 
-            return View(new NominationViewModel());
+            return View(model);
         }
 
         [HttpPost]
