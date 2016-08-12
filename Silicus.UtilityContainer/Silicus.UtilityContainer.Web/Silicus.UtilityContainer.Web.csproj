@@ -737,6 +737,9 @@
     <Content Include="Scripts\respond.js" />
     <Content Include="Scripts\respond.min.js" />
     <Content Include="Scripts\_references.js" />
+    <Content Include="Views\EmailBody\EmailBodyToReviewer.html" />
+    <Content Include="Views\EmailBody\EmailToManagerBody.html" />
+    <Content Include="Views\EmailBody\ReviewsLockedNotificationToAdmin.html" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>

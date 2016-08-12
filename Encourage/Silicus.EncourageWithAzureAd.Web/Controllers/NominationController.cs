@@ -94,12 +94,16 @@ namespace Silicus.EncourageWithAzureAd.Web.Controllers
                // ViewBag.ManagerId = _awardService.GetUserIdFromEmail(userEmailAddress);
                 ViewBag.ManagerIdByProject = _awardService.GetUserIdFromEmail(userEmailAddress);
             }
-            else
-            {
-                ViewBag.ProjectsUnderCurrentUser = new SelectList(_awardService.GetProjectsUnderCurrentUserAsManager("shailendra.birthare@silicus.com"), "Id", "Name");
-                //ViewBag.ManagerId = _awardService.GetUserIdFromEmail("shailendra.birthare@silicus.com");
-                ViewBag.ManagerIdByProject = _awardService.GetUserIdFromEmail("shailendra.birthare@silicus.com");
-            }
+            //else
+            //{
+            //    ViewBag.ProjectsUnderCurrentUser = string.Empty;
+            //}
+            //else
+            //{
+            //    ViewBag.ProjectsUnderCurrentUser = new SelectList(_awardService.GetProjectsUnderCurrentUserAsManager("shailendra.birthare@silicus.com"), "Id", "Name");
+            //    //ViewBag.ManagerId = _awardService.GetUserIdFromEmail("shailendra.birthare@silicus.com");
+            //    ViewBag.ManagerIdByProject = _awardService.GetUserIdFromEmail("shailendra.birthare@silicus.com");
+            //}
 
             
             var depts = _awardService.GetDepartmentsUnderCurrentUserAsManager(userEmailAddress);
@@ -109,12 +113,16 @@ namespace Silicus.EncourageWithAzureAd.Web.Controllers
                 //ViewBag.ManagerId = _awardService.GetUserIdFromEmail(userEmailAddress);
                 ViewBag.ManagerIdByDepartment = _awardService.GetUserIdFromEmail(userEmailAddress);
             }
-            else
-            {
-                ViewBag.DepartmentsUnderCurrentUser = new SelectList(_awardService.GetDepartmentsUnderCurrentUserAsManager("tushar.surve@silicus.com"), "Id", "Name");
-                //ViewBag.ManagerId = _awardService.GetUserIdFromEmail("tushar.surve@silicus.com");
-                ViewBag.ManagerIdByDepartment = _awardService.GetUserIdFromEmail("tushar.surve@silicus.com");
-            }
+            //else
+            //{
+            //    ViewBag.DepartmentsUnderCurrentUser = string.Empty;
+            //}
+            //else
+            //{
+            //    ViewBag.DepartmentsUnderCurrentUser = new SelectList(_awardService.GetDepartmentsUnderCurrentUserAsManager("tushar.surve@silicus.com"), "Id", "Name");
+            //    //ViewBag.ManagerId = _awardService.GetUserIdFromEmail("tushar.surve@silicus.com");
+            //    ViewBag.ManagerIdByDepartment = _awardService.GetUserIdFromEmail("tushar.surve@silicus.com");
+            //}
 
             ViewBag.Resources = new SelectList(new List<User>(), "Id", "DisplayName");
 
@@ -135,7 +143,7 @@ namespace Silicus.EncourageWithAzureAd.Web.Controllers
             var lastDateOfLastMonth = firstDateOfCurrentMonth.AddDays(-1);
             var countOfNomination = _nominationService.GetNominationCountByManagerId(model.ManagerId, firstDateOfLastMonth, lastDateOfLastMonth);
 
-            if (noOfNominationForManager > countOfNomination)
+            if (noOfNominationForManager < countOfNomination)
             {
                 Response.StatusCode = (int)HttpStatusCode.BadRequest;
                 return Json("Only " + noOfNominationForManager.ToString() + " nominations are allowed per month!", MediaTypeNames.Text.Plain);
@@ -205,7 +213,7 @@ namespace Silicus.EncourageWithAzureAd.Web.Controllers
             // var userEmailAddress = Session["UserEmailAddress"] as string;
             var userEmailAddress = User.Identity.Name;
             ViewBag.Awards = new SelectList(_awardService.GetAllAwards(), "Id", "Name");
-            int currentUserId;
+            int currentUserId=0;
             var projects = _awardService.GetProjectsUnderCurrentUserAsManager(userEmailAddress);
             if (projects.Count > 0)
             {
@@ -214,15 +222,15 @@ namespace Silicus.EncourageWithAzureAd.Web.Controllers
                 currentUserId = _awardService.GetUserIdFromEmail(userEmailAddress);
                 ViewBag.ManagerId = currentUserId;
             }
-            else
-            {
-                ViewBag.ProjectsUnderCurrentUser
-                    = new SelectList(_awardService.GetProjectsUnderCurrentUserAsManager("shailendra.birthare@silicus.com"), "Id", "Name");
-                currentUserId = _awardService.GetUserIdFromEmail("shailendra.birthare@silicus.com");
-                ViewBag.ManagerId = currentUserId;
-            }
+            //else
+            //{
+            //    ViewBag.ProjectsUnderCurrentUser
+            //        = new SelectList(_awardService.GetProjectsUnderCurrentUserAsManager("shailendra.birthare@silicus.com"), "Id", "Name");
+            //    currentUserId = _awardService.GetUserIdFromEmail("shailendra.birthare@silicus.com");
+            //    ViewBag.ManagerId = currentUserId;
+            //}
 
-            ViewBag.DepartmentsUnderCurrentUser = new SelectList(_awardService.GetDepartmentsUnderCurrentUserAsManager("tushar.surve@silicus.com"), "Id", "Name");
+            ViewBag.DepartmentsUnderCurrentUser = new SelectList(_awardService.GetDepartmentsUnderCurrentUserAsManager(userEmailAddress), "Id", "Name");
 
             if (savedNomination.ProjectID != null)
             {
@@ -232,7 +240,7 @@ namespace Silicus.EncourageWithAzureAd.Web.Controllers
             else if (savedNomination.DepartmentId != null)
             {
                 nominationViewModel.SelectResourcesBy = "Department";
-                ViewBag.Resources = new SelectList(_awardService.GetResourcesForEditInDepartment(savedNomination.DepartmentId.Value, _awardService.GetUserIdFromEmail("tushar.surve@silicus.com")), "Id", "DisplayName");
+                ViewBag.Resources = new SelectList(_awardService.GetResourcesForEditInDepartment(savedNomination.DepartmentId.Value, _awardService.GetUserIdFromEmail(Convert.ToString(currentUserId))), "Id", "DisplayName");
             }
 
             //IN FUTURE GOING TO USE MAPPER
@@ -311,7 +319,7 @@ namespace Silicus.EncourageWithAzureAd.Web.Controllers
         public JsonResult ResourcesInProject(int engagementId, int awardId)
         {
             var projects = _awardService.GetProjectsUnderCurrentUserAsManager(User.Identity.Name);
-            var managerId = _awardService.GetUserIdFromEmail(projects.Count > 0 ? User.Identity.Name : "shailendra.birthare@silicus.com");
+            var managerId = _awardService.GetUserIdFromEmail(User.Identity.Name );
 
 
             var usersInEngagement = _awardService.GetResourcesInEngagement(engagementId, managerId, awardId);
@@ -323,8 +331,8 @@ namespace Silicus.EncourageWithAzureAd.Web.Controllers
         public JsonResult ResourcesInDepartment(int departmentId, int awardId)
         {
             //var userIdToExcept = _awardService.GetUserIdFromEmail(Session["UserEmailAddress"] as string);
-
-            var userIdToExcept = _awardService.GetUserIdFromEmail("tushar.surve@silicus.com");
+            var email = User.Identity.Name;
+            var userIdToExcept = _awardService.GetUserIdFromEmail(email);
 
             var usersInDepartment = _awardService.GetResourcesUnderDepartment(departmentId, userIdToExcept);
             return Json(usersInDepartment, JsonRequestBehavior.AllowGet);
@@ -406,7 +414,7 @@ namespace Silicus.EncourageWithAzureAd.Web.Controllers
             }
             else
             {
-                managerId = _awardService.GetUserIdFromEmail("shailendra.birthare@silicus.com");
+                managerId = _awardService.GetUserIdFromEmail(email);
             }
             var nominations = _nominationService.GetAllSubmittedAndSavedNominationsByCurrentUser(managerId);
             //if (depts.Count > 0)

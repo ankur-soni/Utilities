@@ -2,6 +2,7 @@
 using HangFireBackgroundTasks.EventProcessors;
 using System;
 using Silicus.UtilityContainer.Models;
+using System.Configuration;
 
 namespace Silicus.UtilityContainer.Web.App_Start
 {
@@ -11,9 +12,10 @@ namespace Silicus.UtilityContainer.Web.App_Start
         {
             try
             {
-                RecurringJob.AddOrUpdate<EncourageEmailProcessor>(mailProcessor => mailProcessor.Process(EventType.SendNominationEmail), "0 0 1 * *"); //CRON expression that Run once a month at midnight of the first day of the month     
-                RecurringJob.AddOrUpdate<EncourageEventProcessor>(processor => processor.Process(EventType.LockNomination), "0 0 8 * *");
-                RecurringJob.AddOrUpdate<EncourageEventProcessor>(processor => processor.Process(EventType.LockReview), "0 0 10 * *");                        
+                // RecurringJob.AddOrUpdate<EncourageEmailProcessor>(mailProcessor => mailProcessor.Process(EventType.SendNominationEmail),Cron.Minutely);
+                RecurringJob.AddOrUpdate<EncourageEmailProcessor>(mailProcessor => mailProcessor.Process(EventType.SendNominationEmail), ConfigurationManager.AppSettings["CronExpressionForNominationMail"]); //CRON expression that Run once a month at midnight of the first day of the month     
+                RecurringJob.AddOrUpdate<EncourageEventProcessor>(processor => processor.Process(EventType.LockNomination), ConfigurationManager.AppSettings["CronExpressionForNominationLockMail"]);
+                RecurringJob.AddOrUpdate<EncourageEventProcessor>(processor => processor.Process(EventType.LockReview), ConfigurationManager.AppSettings["CronExpressionForReviewLockMail"]);
             }
             catch (Exception ex)
             {

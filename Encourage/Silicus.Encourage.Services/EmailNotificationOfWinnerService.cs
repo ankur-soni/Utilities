@@ -2,6 +2,7 @@
 using Silicus.Encourage.Services.Interface;
 using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.IO;
 using System.Linq;
 using System.Net;
@@ -21,8 +22,8 @@ namespace Silicus.EncourageWithAzureAd.Web
         public void Process()
         {
             var allWinners = _awardService.GetWinnerData();
-            var htmlPagePath = @"C:\Users\IKadam.SILICUS\Source\Repos\Utilities3\Encourage\Silicus.EncourageWithAzureAd.Web\Views\SendMailAfterWinnerSelected.html";
-
+           // var htmlPagePath = @"C:\Users\IKadam.SILICUS\Source\Repos\Utilities3\Encourage\Silicus.EncourageWithAzureAd.Web\Views\SendMailAfterWinnerSelected.html";
+            var emailBodyPath = System.Web.Hosting.HostingEnvironment.MapPath(@"~/Views/SendMailAfterWinnerSelected.html");
             foreach (WinnerData winnerData in allWinners)
             {
                 IDictionary<string, string> mergeFields = new Dictionary<string, string>()
@@ -35,26 +36,28 @@ namespace Silicus.EncourageWithAzureAd.Web
                 };
 
                 var regex = new Regex(String.Join("|", mergeFields.Keys));
-                var mailBody = regex.Replace(File.ReadAllText(htmlPagePath), m => mergeFields[m.Value]);
+                var mailBody = regex.Replace(File.ReadAllText(emailBodyPath), m => mergeFields[m.Value]);
                 var winnerManagerEmailAddresses = _awardService.GetEmailAddressOfManager(winnerData.ManagerName);
                 var winnerName = winnerData.Name;
                 var awardName = winnerData.AwardName;
                 var awardPeriod = winnerData.AwardPeriod;
                 var subject = " " + winnerName + " : " + awardName + " - " + awardPeriod;
 
-                var fromAddress = new MailAddress("indrajit.kadam@silicus.com", "Silicus Rewards and Recognition Team");
-                const string fromPassword = "Indra@123";
+                var fromAddress = new MailAddress(ConfigurationManager.AppSettings["UserName"], "Silicus Rewards and Recognition Team");
+              //  const string fromPassword = "Indra@123";
+              //  var fromAddress = new MailAddress(ConfigurationManager.AppSettings["UserName"], "Silicus Rewards and Recognition Team");
+                //const string fromPassword = ConfigurationManager.AppSettings["Password"];
                 string body = string.Empty;
 
                 body = mailBody;
                 var smtp = new SmtpClient
                 {
-                    Host = "smtp.office365.com",
+                    Host = "smtp.gmail.com",
                     Port = 587,
                     EnableSsl = true,
                     DeliveryMethod = SmtpDeliveryMethod.Network,
                     UseDefaultCredentials = false,
-                    Credentials = new NetworkCredential(fromAddress.Address, fromPassword)
+                    Credentials = new NetworkCredential(ConfigurationManager.AppSettings["UserName"], ConfigurationManager.AppSettings["Password"])
                 };
 
                 using (var message = new MailMessage() { Subject = subject, Body = body })
@@ -63,7 +66,7 @@ namespace Silicus.EncourageWithAzureAd.Web
 
                     foreach (string email in winnerManagerEmailAddresses )
                     {
-                        message.To.Add("indrajit.kadam@silicus.com");
+                        message.To.Add(email);
                     }
 
                     message.IsBodyHtml = true;

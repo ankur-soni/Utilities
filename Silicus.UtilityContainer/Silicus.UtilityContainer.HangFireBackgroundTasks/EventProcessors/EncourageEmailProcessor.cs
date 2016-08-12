@@ -3,6 +3,8 @@ using Silicus.UtilityContainer.HangFireBackgroundTasks.Interface;
 using Silicus.UtilityContainer.Models;
 using Silicus.UtilityContainer.HangFireBackgroundTasks.Services;
 using System.Collections.Generic;
+using System.Web;
+using System.IO;
 
 namespace HangFireBackgroundTasks.EventProcessors
 {
@@ -15,10 +17,10 @@ namespace HangFireBackgroundTasks.EventProcessors
 
         public void Process(EventType eventType)
         {
-            switch(eventType)
+            switch (eventType)
             {
                 case EventType.SendNominationEmail:
-                    //SendNominationEmail();
+                    SendNominationEmail();
                     break;
                 case EventType.SendReviewNominationEmail:
                     SendReviewNominationEmail();
@@ -34,29 +36,51 @@ namespace HangFireBackgroundTasks.EventProcessors
 
         private void SendNominationEmail()
         {
-            var managerEmailAddresses = new List<string>(); //GetEmailAddress.GetEmailAddressForRoles(364);
-            managerEmailAddresses.Add("Indrajit.kadam@silicus.com");
+            //Role Id - 369 - Manager
+            var managerEmailAddresses = GetEmailAddress.GetEmailAddressForRoles(369);
+
+            if (managerEmailAddresses.Count <= 0)
+            {
+                return;
+            }
+
+            var emailBodyPath = System.Web.Hosting.HostingEnvironment.MapPath(@"~/Views/EmailBody/EmailToManagerBody.html");
             var subject = "Submit Your Nominations";
-            var emailBodyPath = @"C:\Users\IKadam.SILICUS\Source\Repos\Utilities3\Silicus.UtilityContainer\Silicus.UtilityContainer.HangFireBackgroundTasks\View\EmailToManagerBody.html";
-            //var emailBodyPath = @"C:\Projects\Silicus-Online\Utilities\Utilities\Silicus.UtilityContainer\Silicus.UtilityContainer.HangFireBackgroundTasks\View\EmailToManagerBody.html";
-            //var emailBodyPath = @"C:\Users\aajadhav\Source\Repos\UtilitiesDeployedOnAzure\Silicus.UtilityContainer\HangFireBackgroundTasks\View\EmailToManagerBody.html";
+            //var emailBodyPath =   @"C:\Users\IKadam.SILICUS\Source\Repos\Utilities3\Silicus.UtilityContainer\Silicus.UtilityContainer.HangFireBackgroundTasks\View\EmailToManagerBody.html";
+            //var emailBodyPath =     @"C:\Users\IKadam.SILICUS\Source\Repos\Utilities3\Silicus.UtilityContainer\Silicus.UtilityContainer.Web\Views\EmailBody\EmailToManagerBody.html";
             new EmailService().SendEmail(emailBodyPath, managerEmailAddresses, subject);
         }
 
         private void SendReviewNominationEmail()
         {
-            var reviewerEmailAddresses =  GetEmailAddress.GetEmailAddressForRoles(367);
-            //reviewerEmailAddresses.Add("indrajit.kadam@silicus.com");
+           
+            var reviewerEmailAddresses = GetEmailAddress.GetEmailAddressForRoles(371);
+
+            if (reviewerEmailAddresses.Count <= 0)
+            {
+                return;
+            }
+            var emailBodyPath = System.Web.Hosting.HostingEnvironment.MapPath(@"~/Views/EmailBody/EmailBodyToReviewer.html");
             var subject = "Nominations Submitted For Your Review.";
-            var emailBodyPath = @"C:\Users\IKadam.SILICUS\Source\Repos\Utilities3\Silicus.UtilityContainer\Silicus.UtilityContainer.HangFireBackgroundTasks\View\EmailBodyToReviewer.html";
+           // var emailBodyPath = @"C:\Users\IKadam.SILICUS\Source\Repos\Utilities3\Silicus.UtilityContainer\Silicus.UtilityContainer.HangFireBackgroundTasks\View\EmailBodyToReviewer.html";
             new EmailService().SendEmail(emailBodyPath, reviewerEmailAddresses, subject);
         }
+
         private void SendAdminNominationEmail()
         {
-            var adminEmailAddresses = GetEmailAddress.GetEmailAddressForRoles(366);
+            
+            var adminEmailAddresses = GetEmailAddress.GetEmailAddressForRoles(370);
+
+            if(adminEmailAddresses.Count <= 0)
+            {
+                return;
+            }
+
+            var emailBodyPath = System.Web.Hosting.HostingEnvironment.MapPath(@"~/Views/EmailBody/ReviewsLockedNotificationToAdmin.html");
+            //var mappath = System.Web.HttpContext.Current.Server.MapPath("~/View/EmailBodyToReviewer.html");
+
             var subject = "Review Process Locked";
-            //var emailBodyPath = @"C:\Users\aajadhav\Source\Repos\UtilitiesDeployedOnAzure\Silicus.UtilityContainer\HangFireBackgroundTasks\View\ReviewsLockedNotificationToAdmin.html";
-            var emailBodyPath = @"C:\Users\IKadam.SILICUS\Source\Repos\Utilities3\Silicus.UtilityContainer\Silicus.UtilityContainer.HangFireBackgroundTasks\View\ReviewsLockedNotificationToAdmin.html";
+           // var emailBodyPath = @"C:\Users\IKadam.SILICUS\Source\Repos\Utilities3\Silicus.UtilityContainer\Silicus.UtilityContainer.HangFireBackgroundTasks\View\ReviewsLockedNotificationToAdmin.html";
             new EmailService().SendEmail(emailBodyPath, adminEmailAddresses, subject);
         }
     }
