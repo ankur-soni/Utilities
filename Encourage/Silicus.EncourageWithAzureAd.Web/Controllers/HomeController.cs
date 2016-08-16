@@ -41,9 +41,9 @@ namespace Silicus.EncourageWithAzureAd.Web.Controllers
 
 
              var commonRoles = authorizationService.GetRoleForUtility(User.Identity.Name, utility);
-              
-           
-            var dashboard = new Dashboard();
+
+            //ViewBag.IdName = commonRoles.Count;
+             var dashboard = new Dashboard();
             if ((commonRoles.Count > 0))
             {
                 dashboard.userRoles = commonRoles;
