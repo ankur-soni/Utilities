@@ -2,6 +2,7 @@
 using Silicus.Encourage.Models;
 using Silicus.Encourage.Services.Interface;
 using Silicus.EncourageWithAzureAd.Web.Models;
+using Silicus.FrameWorx.Logger;
 using Silicus.UtilityContainer.Security;
 using System;
 using System.Collections.Generic;
@@ -21,7 +22,8 @@ namespace Silicus.EncourageWithAzureAd.Web.Controllers
         private readonly Silicus.Encourage.DAL.Interfaces.IDataContextFactory _dataContextFactory;
         private readonly INominationService _nominationService;
         private readonly IResultService _resultService;
-        public HomeController(IAwardService awardService, ICommonDbService commonDbService, Silicus.Encourage.DAL.Interfaces.IDataContextFactory dataContextFactory, INominationService nominationService,IResultService resultService)
+        private readonly ILogger _logger;
+        public HomeController(IAwardService awardService, ICommonDbService commonDbService, Silicus.Encourage.DAL.Interfaces.IDataContextFactory dataContextFactory, INominationService nominationService,IResultService resultService, ILogger logger)
         {
             _awardService = awardService;
             _commonDbService = commonDbService;
@@ -29,25 +31,34 @@ namespace Silicus.EncourageWithAzureAd.Web.Controllers
             _encourageDatabaseContext = _dataContextFactory.CreateEncourageDbContext();
             _nominationService = nominationService;
             _resultService = resultService;
+            _logger = logger;
         }
 
         //  [CustomeAuthorize(AllowedRole = "User,Manager,Admin,Reviewer")]
        
         public ActionResult Index()
         {
+            _logger.Log("Inside Index method");
+
             string utility = WebConfigurationManager.AppSettings["ProductName"];
 
             var authorizationService = new Authorization(_commonDbService.GetCommonDataBaseContext());
 
 
              var commonRoles = authorizationService.GetRoleForUtility(User.Identity.Name, utility);
+            foreach (var item in commonRoles)
+            {
+                _logger.Log("Roles are: " + item);
+
+            }
 
             //ViewBag.IdName = commonRoles.Count;
-             var dashboard = new Dashboard();
+            var dashboard = new Dashboard();
             if ((commonRoles.Count > 0))
             {
                 dashboard.userRoles = commonRoles;
                 ViewBag.currentUserRoles = commonRoles;
+                _logger.Log("No. of roles are:" + commonRoles.Count);
             }
 
             else
@@ -55,6 +66,7 @@ namespace Silicus.EncourageWithAzureAd.Web.Controllers
                 commonRoles.Add("User");
                 dashboard.userRoles = commonRoles;
                 ViewBag.currentUserRoles = commonRoles;
+                _logger.Log("Defalt role "+commonRoles);
             }
            
             var winnersForLastMonth = _encourageDatabaseContext.Query<Shortlist>().Where(w => w.IsWinner == true && w.WinningDate.Value.Month == (DateTime.Now.Month) && w.WinningDate.Value.Year == DateTime.Now.Year).ToList();
