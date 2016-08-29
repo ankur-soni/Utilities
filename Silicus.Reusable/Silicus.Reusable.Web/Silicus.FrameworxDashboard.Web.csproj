@@ -125,6 +125,14 @@
       <HintPath>..\packages\Owin.1.0\lib\net40\Owin.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="PagedList, Version=1.17.0.0, Culture=neutral, PublicKeyToken=abbb863e9397c5e1, processorArchitecture=MSIL">
+      <HintPath>..\packages\PagedList.1.17.0.0\lib\net40\PagedList.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="PagedList.Mvc, Version=4.5.0.0, Culture=neutral, PublicKeyToken=abbb863e9397c5e1, processorArchitecture=MSIL">
+      <HintPath>..\packages\PagedList.Mvc.4.5.0.0\lib\net40\PagedList.Mvc.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="Silicus.UtilityContainer.Entities, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
     <Reference Include="System" />
     <Reference Include="System.Data" />
@@ -210,6 +218,7 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Controllers\ExtensionController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\FrameworxProjectController.cs" />
     <Compile Include="Global.asax.cs">
@@ -220,15 +229,20 @@
     <Compile Include="Startup.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Content\bootstrap-tokenfield.min.css" />
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
+    <Content Include="Content\PagedList.css" />
+    <Content Include="Content\tokenfield-typeahead.min.css" />
     <Content Include="favicon.ico" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
     <Content Include="Images\logo.jpg" />
+    <Content Include="Images\logo.svg" />
     <Content Include="Scripts\ai.0.22.9-build00167.js" />
     <Content Include="Scripts\ai.0.22.9-build00167.min.js" />
+    <Content Include="Scripts\bootstrap-tokenfield.min.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
     <Content Include="ApplicationInsights.config">
@@ -275,6 +289,24 @@
     <Content Include="Views\Shared\_LoginPartial.cshtml" />
     <Content Include="Views\FrameworxProject\AddCategory.cshtml" />
     <Content Include="Views\FrameworxProject\AddComponent.cshtml" />
+    <Content Include="Views\Extension\Index.cshtml" />
+    <Content Include="Views\Extension\ExtensionForm.cshtml" />
+    <Content Include="Views\Extension\Create.cshtml" />
+    <Content Include="Views\Extension\ShowExtensionCode.cshtml" />
+    <Content Include="Views\Extension\OtherUsefullCodeForm.cshtml" />
+    <Content Include="Views\Extension\AddOtherUsefullCode.cshtml" />
+    <Content Include="Views\Extension\AddExtensionCode.cshtml" />
+    <Content Include="Views\Extension\ExtensionDetail.cshtml" />
+    <Content Include="Views\Extension\SearchExtensionMethodByTitle.cshtml" />
+    <Content Include="Views\Extension\ShowOtherCode.cshtml" />
+    <Content Include="Views\Extension\ShowOtherCodeMethodDetail.cshtml" />
+    <Content Include="Views\Extension\SearchExtensionMessage.cshtml" />
+    <Content Include="Views\Extension\SearchOtherCodeMethodByTitle.cshtml" />
+    <Content Include="Views\Extension\EditExtensionCode.cshtml" />
+    <Content Include="Views\Extension\EditOtherUsefullCode.cshtml" />
+    <Content Include="Views\FrameworxProject\SearchComponentMessage.cshtml" />
+    <Content Include="Views\Extension\_ExtensionCodeList.cshtml" />
+    <Content Include="Views\Extension\_OtherCodeList.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

@@ -1,0 +1,9 @@
+﻿@model IEnumerable<Silicus.FrameworxProject.Models.ExtensionSolution>
+
+@foreach (var item in Model)
+{
+    <div class="question-summary">
+        <h3><a href='@Url.Action("ExtensionDetail", "Extension",new { id = item.Id })'>@Html.DisplayFor(modelItem => item.MethodName)</a></h3>
+        <div class="truncate">@Html.DisplayFor(modelItem => item.Description)</div>
+    </div>
+}

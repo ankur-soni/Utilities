@@ -1,0 +1,13 @@
+﻿@model IEnumerable<Silicus.FrameworxProject.Models.OtherCode>
+
+@{
+    Layout = null;
+}
+
+@foreach (var item in Model)
+{
+    <div class="question-summary">
+        <h3><a href='@Url.Action("ShowOtherCodeMethodDetail", "Extension",new { id = item.Id })'>@Html.DisplayFor(modelItem => item.MethodName)</a></h3>
+        <div class="truncate">@Html.DisplayFor(modelItem => item.Description)</div>
+    </div>
+}

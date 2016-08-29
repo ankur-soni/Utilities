@@ -36,3 +36,194 @@ textarea {
 .glyphicon-chevron-right, .glyphicon-chevron-left {
     color:#000;
 }
+
+.form-group.required .control-label:after {
+  content:"*";
+  color:red;
+}
+
+/*custom css for Show Extension Code*/
+#content {
+        min-height: 600px;
+        margin: 0 auto;
+        -webkit-box-sizing: content-box;
+        -moz-box-sizing: content-box;
+        box-sizing: content-box;
+        width: 1060px;
+        padding: 15px;
+        background-color: #FFF;
+    }
+
+    #mainbar, .mainbar {
+        float: left;
+        width: 100%;
+        margin: 0 0 0 0;
+        padding: 0;
+        border: 0;
+        font-size: 100%;
+    }
+
+    .subheader {
+        clear: both;
+        margin-bottom: 10px;
+        height: 40px;
+        border-bottom: 1px solid #e4e6e8;
+    }
+
+        .subheader h1 {
+            color: #242729;
+            font-size: 21px;
+            /*line-height: 2.22;*/
+        }
+
+        .subheader h1, .subheader h2 {
+            float: left;
+            margin-bottom: 0;
+            font-weight: normal;
+        }
+
+    #tabs, .tabs, .newnav .tabs-list-container .tabs-list .intellitab {
+        float: right;
+    }
+
+        #tabs a.youarehere, .tabs a.youarehere, .newnav .tabs-list-container .tabs-list .intellitab a.youarehere {
+            padding-bottom: 14px;
+            font-weight: 400;
+            border-color: #e4e6e8;
+            border-bottom-color: transparent;
+        }
+
+        #tabs a.youarehere, .tabs a.youarehere, .newnav .tabs-list-container .tabs-list .intellitab a.youarehere {
+            font-weight: 700;
+            color: #242729;
+            border-bottom-color: #242729;
+        }
+
+        #tabs a, .tabs a, .newnav .tabs-list-container .tabs-list .intellitab a {
+            position: relative;
+            padding: 13px 10px;
+            background-color: #FFF;
+            border: 1px solid transparent;
+            font-size: 12px;
+        }
+
+        #tabs a, .tabs a, .newnav .tabs-list-container .tabs-list .intellitab a {
+            float: left;
+            margin-right: 8px;
+            padding: 12px 8px 14px;
+            color: #848d95;
+            line-height: 1;
+            text-decoration: none;
+            border-bottom: 2px solid transparent;
+            transition: all .15s ease-in-out;
+        }
+
+    a {
+        color: #07C;
+        text-decoration: none;
+        cursor: pointer;
+    }
+
+    #questions {
+        clear: both;
+        float: left;
+        width: 100%;
+        margin-bottom: 20px;
+    }
+
+    .question-summary {
+        padding: 12px 0 10px 0;
+        border-bottom: 1px solid #e4e6e8;
+    }
+
+    .question-summary {
+        overflow: hidden;
+        padding: 15px 0;
+        float: left;
+        width: 100%;
+        border-bottom: 1px solid #eff0f1;
+    }
+
+    div {
+        display: block;
+    }
+
+    h1 {
+        display: block;
+        font-size: 2em;
+        -webkit-margin-before: 0.67em;
+        -webkit-margin-after: 0.67em;
+        -webkit-margin-start: 0px;
+        -webkit-margin-end: 0px;
+        font-weight: bold;
+    }
+
+   .search-form .form-group {
+  float: right !important;
+  margin-top: 17px;
+  transition: all 0.35s, border-radius 0s;
+  width: 32px;
+  height: 32px;
+  background-color: #fff;
+  box-shadow: 0 1px 1px rgba(0, 0, 0, 0.075) inset;
+  border-radius: 25px;
+  border: 1px solid #ccc;
+}
+.search-form .form-group input.form-control {
+  padding-right: 20px;
+  border: 0 none;
+  background: transparent;
+  box-shadow: none;
+  display:block;
+}
+.search-form .form-group input.form-control::-webkit-input-placeholder {
+  display: none;
+}
+.search-form .form-group input.form-control:-moz-placeholder {
+  /* Firefox 18- */
+  display: none;
+}
+.search-form .form-group input.form-control::-moz-placeholder {
+  /* Firefox 19+ */
+  display: none;
+}
+.search-form .form-group input.form-control:-ms-input-placeholder {
+  display: none;
+}
+.search-form .form-group:hover,
+.search-form .form-group.hover {
+  width: 100%;
+  border-radius: 4px 25px 25px 4px;
+}
+.search-form .form-group span.form-control-feedback {
+  position: absolute;
+  top: -1px;
+  margin-top: 17px;
+  margin-right: 16px;
+  right: -2px;
+  z-index: 2;
+  display: block;
+  width: 34px;
+  height: 34px;
+  line-height: 34px;
+  text-align: center;
+  color: #3596e0;
+  left: initial;
+  font-size: 14px;
+}
+
+    .truncate {
+        width: 850px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+    #searchHeader{
+    margin-left: 0px !important;
+    margin-right: 0px !important;
+    background-color: #81D4FA !important;   
+    }
+    .listdiv{
+        padding: 2% 2.2% 0 0;
+    }
+/* end of Extension Code css*/

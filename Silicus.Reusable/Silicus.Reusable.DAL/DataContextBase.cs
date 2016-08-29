@@ -22,6 +22,7 @@ namespace Silicus.FrameworxProject.DAL
 
             modelBuilder.Configurations.Add(new FrameworxMap());
             modelBuilder.Configurations.Add(new CategoryMap());
+            modelBuilder.Configurations.Add(new ExtensionSolutionMap());
         }
     }
 }

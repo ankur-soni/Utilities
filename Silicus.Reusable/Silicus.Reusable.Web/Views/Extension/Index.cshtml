@@ -1,0 +1,125 @@
+﻿
+<style>
+    .wrapper {
+        text-align: center;
+        background-color: aqua;
+    }
+
+    .button {
+        position: absolute;
+        top: 50%;
+    }
+
+    #myModal {
+    }
+    .textCode{
+        text-align:justify;
+    }
+    #jumbotext{
+            background-color: skyblue;
+    }
+    .headtext{
+        color:black;
+    }
+</style>
+<div class="jumbotron text-center" id="jumbotext">
+    <h1>Add your Solution or Code</h1>
+</div>
+
+<div class="container listdiv">
+    <div class="row">
+        <div class="col-sm-12 col-xs-12 col-lg-12 col-md-12">
+            <div class="wrapper">
+                <div class="col-sm-12 col-xs-12 col-lg-6 col-md-6">
+                    <div class="panel panel-primary">
+                        <div class="panel-heading"><h3 class="headtext">Extension Method</h3></div>
+                        <div class="panel-body">
+                            <p class="textCode">
+                                Extension Method. An extension method has simplified calling syntax. It represents static methods as instance methods. An extension method uses the this-keyword in its parameter list. It must be located in a static class.
+                                Static Class.Example. First, here is a custom extension method defined in a program written in the C# language. Generally, you will want to store your extension method class in a separate source file, such as "ExtensionMethods.cs" in your project.
+                                Example. First, here is a custom extension method defined in a program written in the C# language. Generally, you will want to store your extension method class in a separate source file, such as "ExtensionMethods.cs" in your project.
+
+                            </p>
+                            <p class="textCode">
+                                Example. First, here is a custom extension method defined in a program written in the C# language. Generally, you will want to store your extension method class in a separate source file, such as "ExtensionMethods.cs" in your project.
+                                Example. First, here is a custom extension method defined.
+                            </p>
+                            <button class="btn btn-primary" onclick="location.href='@Url.Action("AddExtensionCode", "Extension")';return false;">ADD</button>
+                        </div>
+                    </div>
+                    
+                    
+                </div>
+                <div class="col-sm-12 col-xs-12 col-lg-6 col-md-6">
+                    <div class="panel panel-primary">
+                        <div class="panel-heading"><h3 class="headtext">Other UseFull Code</h3></div>
+                        <div class="panel-body">
+                            <p class="textCode">
+                                Once you have created objects, you want them to be able to do something.
+                                This is where methods come in. A method in object-oriented programming is a procedure associated with a class.
+                                A method defines the behavior of the objects that are created from the class.
+                                Another way to say this is that a method is an action that an object is able to perform. The association between method and class is called binding. Consider the example of an object of the type 'person,' created using the person class. Methods associated with this class could consist of things like walking and driving. Methods are sometimes confused with functions, but they are distinct.
+                            </p>
+                            <p class="textCode">
+                                A function is a combination of instructions that are combined to achieve some result.
+                                A function typically requires some input (called arguments) and returns some results.
+                                For example, consider the example of driving a car.
+                                To determine the mileage, you need to perform a calculation using the distance driven and the amount of fuel used.
+                            </p>
+
+                            <button class="btn btn-primary" onclick="location.href='@Url.Action("AddOtherUsefullCode", "Extension")';return false;">ADD</button>
+                        </div>
+                    </div>            
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@*<!-- Modal -->
+<div id="myModal" class="modal fade" role="dialog">
+    <div class="modal-dialog modal-lg">
+
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <p>Some text in the modal.</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+
+    </div>
+</div>*@
+
+<script src="~/Scripts/jquery-1.10.2.min.js"></script>
+<script src="~/Scripts/bootstrap.min.js"></script>
+
+@*<script>
+
+    function showExtensionForm() {
+
+        var url = "/Extension/AddExtensionCode";
+        $.get(url, null, function (data) {
+            alert(data);
+            $(".modal-body").html(data);
+
+        });
+
+    }
+
+    function showExtensionFormforUsefullcode() {
+
+        var url = "/Extension/AddOtherUsefullCode";
+        $.get(url, null, function (data) {
+            alert(data);
+            $(".modal-body").html(data);
+
+        });
+
+    }
+</script>*@

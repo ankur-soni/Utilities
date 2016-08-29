@@ -11,6 +11,7 @@ namespace Silicus.FrameworxProject.DAL
 {
     public class FrameworxProjectDatabaseContext : DataContextBase, IFrameworxProjectDatabaseContext
     {
+
         public FrameworxProjectDatabaseContext(string connectionString)
             : base(connectionString)
         {
@@ -20,6 +21,9 @@ namespace Silicus.FrameworxProject.DAL
 
         public DbSet<Frameworx> Frameworxs { get; set; }
         public DbSet<Category> Categories { get; set; }
+        public DbSet<ExtensionSolution> ExtensionSolutions { get; set; }
+        public DbSet<OtherCode> OtherCodes { get; set; }
+        public DbSet<CodeType> CodeTypes { get; set; }
 
         public int Update<T>(T item) where T : class
         {

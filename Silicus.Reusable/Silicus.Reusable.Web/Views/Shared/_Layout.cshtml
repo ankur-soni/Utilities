@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>@ViewBag.Title - My ASP.NET Application</title>
     @Styles.Render("~/Content/css")
-    @Scripts.Render("~/bundles/modernizr")
+    @*@Scripts.Render("~/bundles/modernizr")*@
     <style>
         .top-header {
             background-color: #fff;
@@ -14,6 +14,12 @@
             width: 100%;
             z-index: 2000;
             height: 100px;
+        }
+
+        * {
+            padding:0px;
+            margin:0px;
+
         }
 
         .bbl {
@@ -35,8 +41,7 @@
         }
 
         .body-content {
-            margin: 5% auto;
-            padding-bottom: 3%;
+            margin: 5% 0 0 0;
         }
 
         .footer {
@@ -58,7 +63,6 @@
             position: absolute;
             left: 50%;
             bottom: 1px;
-
         }
     </style>
 </head>
@@ -67,59 +71,72 @@
         <nav class="navbar navbar-inverse navbar-fixed-top">
             <div class="container-fluid">
                 <div class="navbar-header">
-                    <img src="~/Images/logo.jpg" class="img-responsive" alt="logo">
+                    <a href="@Url.Action("GetAllCategories", "Frameworxproject")"><img src="~/Images/logo.svg" class="img-responsive" style="width:200px;" alt="logo"></a>
                 </div>
 
                 @*<ul class="nav navbar-nav pull-right">
-                    @Html.Partial("_LoginPartial")
-                    @if (Request.IsAuthenticated)
-                    {
-                        var userName = @User.Identity.Name;
-                        var data = userName.Split('.', '@');
-                    <li class="dropdown">
-                        
-                        <a class="dropdown-toggle count-info" data-toggle="dropdown" href="#">
-                            <span class="hidden-sm hidden-xs">
-                                <span class="m-r-sm text-muted welcome-message">Welcome Test User</span> <i class="fa fa-chevron-down"></i>
-                            </span>
-                            <span class="hidden-md hidden-lg">
-                                <i class="fa fa-user"></i>
-                            </span>
-                        </a>
-                    </li>
-                </ul>*@
-
-                <ul class="nav navbar-top-links navbar-right">
-                    @Html.Partial("_LoginPartial")
-                    @if (Request.IsAuthenticated)
-                    {
-                        var userName = @User.Identity.Name;
-                        var data = userName.Split('.', '@');
+                        @Html.Partial("_LoginPartial")
+                        @if (Request.IsAuthenticated)
+                        {
+                            var userName = @User.Identity.Name;
+                            var data = userName.Split('.', '@');
                         <li class="dropdown">
+
                             <a class="dropdown-toggle count-info" data-toggle="dropdown" href="#">
                                 <span class="hidden-sm hidden-xs">
-                                    <span class="m-r-sm text-muted welcome-message">Welcome @data[0] @data[1]</span> <i class="fa fa-chevron-down"></i>
+                                    <span class="m-r-sm text-muted welcome-message">Welcome Test User</span> <i class="fa fa-chevron-down"></i>
                                 </span>
                                 <span class="hidden-md hidden-lg">
                                     <i class="fa fa-user"></i>
                                 </span>
                             </a>
-                            <ul class="dropdown-menu dropdown-user-menu">
-                                <li>
-                                    <a href='@Url.Action("SignOut", "Account")'>
-                                        <div>
-                                            LOGOUT
-                                        </div>
-                                    </a>
-                                </li>
-                            </ul>
                         </li>
-                    }
-                </ul>
+                    </ul>*@
+                @* Sign in option below *@
+                @*<ul class="nav navbar-top-links navbar-right">
+                        @Html.Partial("_LoginPartial")
+                        @if (Request.IsAuthenticated)
+                        {
+                            var userName = @User.Identity.Name;
+                            var data = userName.Split('.', '@');
+                            <li class="dropdown">
+                                <a class="dropdown-toggle count-info" data-toggle="dropdown" href="#">
+                                    <span class="hidden-sm hidden-xs">
+                                        <span class="m-r-sm text-muted welcome-message">Welcome @data[0] @data[1]</span> <i class="fa fa-chevron-down"></i>
+                                    </span>
+                                    <span class="hidden-md hidden-lg">
+                                        <i class="fa fa-user"></i>
+                                    </span>
+                                </a>
+                                <ul class="dropdown-menu dropdown-user-menu">
+                                    <li>
+                                        <a href='@Url.Action("SignOut", "Account")'>
+                                            <div>
+                                                LOGOUT
+                                            </div>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </li>
+                        }
+                    </ul>*@
             </div>
         </nav>
         <div class="container-fluid body-content">
-            @RenderBody()
+            <div class="row">
+                <div class="col-lg-2 col-md-2 col-sm-2 col-xs-12 same-bx-height" style="position:fixed;left:0;background:#81D4FA;">
+                    <ul class="nav nav-pills nav-stacked customdivmenu" style="padding-top:15%">
+                        <li id="GetAllCategories"><a href='@Url.Action("GetAllCategories", "FrameworxProject")'>Home</a></li>
+                        <li id="ShowExtensionCode"><a  href='@Url.Action("ShowExtensionCode", "Extension")'>Extension Code List</a></li>
+                        <li id="ShowOtherCode"><a  href='@Url.Action("ShowOtherCode", "Extension")'>Other Usefull Code List</a></li>
+                        <li id="AddExtensionCode"><a  href='@Url.Action("AddExtensionCode", "Extension")'>Add Extension Code</a></li>
+                        <li id="AddOtherUsefullCode"><a  href='@Url.Action("AddOtherUsefullCode", "Extension")'>Add Other Usefull Code</a></li>
+                    </ul>
+                </div>
+                <div class="col-lg-10 col-md-10 col-sm-10 col-xs-10 col-md-offset-2">
+                    @RenderBody()
+                </div>
+            </div>
         </div>
         <div class="footer navbar-fixed-bottom">
             <div>
@@ -130,9 +147,31 @@
 
 
     </div>
-    @Scripts.Render("~/bundles/jquery")
+    @*@Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/bundles/bootstrap")
-    @RenderSection("scripts", required: false)
+    @RenderSection("scripts", required: true)*@
 
-</body>
+    <script src="~/Scripts/jquery-1.10.2.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            var ScreenHeight = $(window).height();
+            var topmargin = $(".navbar-inverse").height();
+            var bxHeight = ScreenHeight - ($(".footer").innerHeight() + $(".navbar-inverse").height());
+            $(".same-bx-height").css("height", bxHeight);
+            $(".same-bx-height").css("top", topmargin);
+            $(".body-content").css("margin-top", topmargin);
+            
+            var url = window.location.pathname;
+            var abc = url.split("/");
+            var action = abc[2];
+            if (action != undefined) {
+                $('#' + action).addClass('active');
+            }
+            else
+            {
+                $('#GetAllCategories').addClass('active');
+            }
+        });
+    </script>
+</body> 
 </html>

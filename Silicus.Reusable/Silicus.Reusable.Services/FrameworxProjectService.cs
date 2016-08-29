@@ -25,7 +25,8 @@ namespace Silicus.FrameworxProject.Services
 
         public List<Frameworx> GetAllFrameworxs(int id)
         {
-            return _FrameworxProjectDatabaseContext.Query<Frameworx>().Where(m=>m.CategoryId == id).ToList();
+          //  _FrameworxProjectDatabaseContext.Query<Frameworx>().Where(m => m.CategoryId.Equals(id)).ToList();
+            return _FrameworxProjectDatabaseContext.Query<Frameworx>().Where(m => m.CategoryId.Equals(id)).ToList();
         }
 
         public List<Frameworx> GetAllFrameworx()

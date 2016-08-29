@@ -38,7 +38,7 @@ namespace Silicus.FrameworxDashboard.Web.Controllers
             catch (DbUpdateException ex)
             {
                 ViewBag.message = "Category Name already exists";
-                return View();
+                return View(ex);
             }
             catch
             {
@@ -132,7 +132,15 @@ namespace Silicus.FrameworxDashboard.Web.Controllers
             {
                 item.Frameworxs = frameworkList.Where(s => s.CategoryId == item.Id).ToList();
             }
-            return View("SearchComponent", query.ToList());
+            if (query.ToList().Count() !=0)
+            {
+                return View("SearchComponent", query.ToList());
+            }
+            else
+            {
+                ViewBag.ErrorMessage = "Oops! There is no such Component";
+                return View("SearchComponentMessage", query.ToList());
+            }
         }
     }
 }

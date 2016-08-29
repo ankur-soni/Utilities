@@ -7,9 +7,11 @@ namespace Silicus.FrameworxProject.Models
     public class Frameworx
     {
         public int Id { get; set; }
-         
+
+        [Required]
         public string Title { get; set; }
 
+        [Required]
         [Display(Name = "Html Description")]
         [AllowHtml]
         public string HtmlDescription { get; set; }
@@ -20,6 +22,7 @@ namespace Silicus.FrameworxProject.Models
         [Display(Name = "Source Code Link")]
         public string SourceCodeLink { get; set; }
 
+        
         public int CategoryId { get; set; }
 
         public virtual Category Category { get; set; }
