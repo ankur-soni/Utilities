@@ -37,6 +37,8 @@ namespace Silicus.Encourage.Services
 
         private List<Nomination> GetCurrentNominations()
         {
+            var data = _encourageDatabaseContext.Query<Nomination>("ManagerComments").Where(x => x.NominationDate.Value.Month.Equals(DateTime.Now.Month - 1)
+            && (x.NominationDate.Value.Year.Equals(DateTime.Now.Month > 1 ? DateTime.Now.Year : DateTime.Now.Year - 1))).ToList();
             return _encourageDatabaseContext.Query<Nomination>("ManagerComments").Where(x => x.NominationDate.Value.Month.Equals(DateTime.Now.Month - 1)
             && (x.NominationDate.Value.Year.Equals(DateTime.Now.Month > 1 ? DateTime.Now.Year : DateTime.Now.Year - 1))).ToList();
         }
@@ -223,7 +225,7 @@ namespace Silicus.Encourage.Services
                 _encourageDatabaseContext.Delete<ManagerComment>(managerComments);
         }
 
-        public void DiscardNomination(int nominationId)
+    public void DiscardNomination(int nominationId)
         {
             DeletePrevoiusManagerComments(nominationId);
             var nominationToDelete = _encourageDatabaseContext.Query<Nomination>().Where(nomination => nomination.Id == nominationId).SingleOrDefault();
@@ -240,37 +242,48 @@ namespace Silicus.Encourage.Services
 
         public bool LockNominations()
         {
-            var currentNominations = GetCurrentNominations().Where(n => n.IsLocked == false);
+            //var currentNominations = GetCurrentNominations().Where(n => n.IsLocked == null || n.IsLocked == false);
 
-            foreach (var nomination in currentNominations)
-            {
-                nomination.IsLocked = true;
-                UpdateNomination(nomination);
-            }
+            //foreach (var nomination in currentNominations)
+            //{
+            //    nomination.IsLocked = true;
+            //    DeletePrevoiusManagerComments(nomination.Id);
+            //    UpdateNomination(nomination);
+            //}
+            var data = _encourageDatabaseContext.Query<Models.Configuration>().Where(x => x.configurationKey == "NominationLock").SingleOrDefault();
+            data.value = true;
+            _encourageDatabaseContext.Update<Models.Configuration>(data);
             return true;
 
         }
 
         public bool IsNominationLocked()
         {
-            var currentNominations = GetCurrentNominations();
-            return currentNominations.Count > 0 && currentNominations.TrueForAll(cn => Convert.ToBoolean(cn.IsLocked));
-            //return true;
+            //var currentNominations = GetCurrentNominations();
+            //return currentNominations.Count > 0 && currentNominations.TrueForAll(cn => Convert.ToBoolean(cn.IsLocked));
+            // //return true;
+
+            var data = _encourageDatabaseContext.Query<Models.Configuration>().Where(x => x.configurationKey == "NominationLock").SingleOrDefault().value;
+            return data == true ? true : false;
 
         }
             
         
         public bool UnLockNominations()
         {
-            var currentNominations = GetCurrentLockNominations();
+            //var currentNominations = GetCurrentLockNominations();
 
-            foreach (var nomination in currentNominations)
-            {
-                nomination.IsLocked = false;
-                UpdateNomination(nomination);
-               // return true;
+            //foreach (var nomination in currentNominations)
+            //{
+            //    nomination.IsLocked = false;
+            //    DeletePrevoiusManagerComments(nomination.Id);
+            //    UpdateNomination(nomination);
+            //   // return true;
 
-            }
+            //}
+            var data = _encourageDatabaseContext.Query<Models.Configuration>().Where(x => x.configurationKey == "NominationLock").SingleOrDefault();
+            data.value = false;
+            _encourageDatabaseContext.Update<Models.Configuration>(data);
             return false;
 
         }

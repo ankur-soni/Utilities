@@ -16,6 +16,7 @@ namespace Silicus.EncourageWithAzureAd.Web.Controllers
             // Send an OpenID Connect sign-in request.
             if (!Request.IsAuthenticated)
             {
+                
                 HttpContext.GetOwinContext().Authentication.Challenge(new AuthenticationProperties { RedirectUri = "/" },
                     OpenIdConnectAuthenticationDefaults.AuthenticationType);
             }
@@ -24,20 +25,7 @@ namespace Silicus.EncourageWithAzureAd.Web.Controllers
         public void SignOut()
         {
             string callbackUrl = Url.Action("SignOutCallback", "Account", routeValues: null, protocol: Request.Url.Scheme);
-
             string[] cookies = HttpContext.Request.Cookies.AllKeys;
-            //foreach (string cookie in cookies)
-            //{
-            //    try
-            //    {
-            //        HttpContext.Response.Cookies[cookie].Expires = DateTime.Now.AddDays(-1);
-            //    }
-            //    catch (Exception ex)
-            //    {
-            //        // Trace Error
-            //    }
-            //}
-
             HttpContext.GetOwinContext().Authentication.SignOut(
                 new AuthenticationProperties { RedirectUri = callbackUrl },
                 OpenIdConnectAuthenticationDefaults.AuthenticationType, CookieAuthenticationDefaults.AuthenticationType);
@@ -47,7 +35,6 @@ namespace Silicus.EncourageWithAzureAd.Web.Controllers
         {
             if (Request.IsAuthenticated)
             {
-                // Redirect to home page if the user is authenticated.
                 return RedirectToAction("Index", "Home");
             }
 

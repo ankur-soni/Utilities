@@ -116,26 +116,33 @@
                         {
                             <tr>
                                 <td class="col-md-3">@item.Title</td>
-                               <td class="more" style="word-break:break-all">
+                             
                                 @*<td class="col-md-3">*@
                                     @{
-                            var commentObj = Model.ManagerComments.Where(model => model.CriteriaId == @item.Id).FirstOrDefault();
-                            if (commentObj != null && !string.IsNullOrEmpty(commentObj.Comment))
-                            {
-                                @Html.Label(commentObj.Comment, new { style = "font-weight: 500;" });
-                            }
+                                        var commentObj = Model.ManagerComments.Where(model => model.CriteriaId == @item.Id).FirstOrDefault();
+                                        if (commentObj != null && !string.IsNullOrEmpty(commentObj.Comment))
+                                        {
+                                            <td class="more col-md-3" style="word-break:break-all">@commentObj.Comment</td>
+
+                                        }
+                                        else
+                                        {
+                                            <td class="more" style="word-break:break-all"></td>
+                                        }
                                     }
-                                </td>
-                                <td class="more" style="word-break:break-all">
                                     @*<td class="col-md-3">*@
                                     @{
                                         var reviewObj = reviewer.Where(model => model.CriteriaID == @item.Id).FirstOrDefault();
                                         if (reviewObj != null && !string.IsNullOrEmpty(reviewObj.Comment))
                                         {
-                                            @Html.Label(reviewObj.Comment, new { style = "font-weight: 500;" });
+                                            <td class="more col-md-3" style="word-break:break-all">@reviewObj.Comment</td>
+
+                                        }
+                                        else
+                                        {
+                                            <td class="more" style="word-break:break-all"></td>
                                         }
                                     }
-                                </td>
 
                                 <td class="col-md-2 ">
                                     @{
@@ -223,11 +230,11 @@
 
 
     $(document).ready(function () {
-        @*$('.back').click(function () {
+        @*$('.back').click(function () { 
             window.location.href = '@Url.Action("ReviewFeedbackList", "Review")';
         },*@
         $('.shortlist').click(function () {
-
+            debugger;
             var isLocked = @Html.Raw(Json.Encode(Model.IsLocked));
             if(isLocked==false)
             {
@@ -268,6 +275,9 @@
                                          window.location.href = '@Url.Action("ReviewFeedbackList", "Review")';
                                      }
                                  });
+                             },
+                             error: function () {
+                                 swal("Error", "Oops! Something wrong happened..");
                              }
                          });
                      } else {
@@ -377,6 +387,10 @@
                                     window.location.href = '@Url.Action("ReviewFeedbackList", "Review")';
                                 }
                             });
+                        },
+                        error: function (data) {
+                            alert(data);
+                            swal("Error", "Oops! Something wrong happened..");
                         }
                     });
                 }
@@ -386,4 +400,34 @@
 
         });
     });
+
+    $(function () {
+        debugger;
+        var showChar = 80, showtxt = "less", hidetxt = "more";
+        $('.more-txt').each(function () {
+            debugger;
+            var content = $(this).text();
+            if (content.length > showChar) {
+                debugger;
+                var con = content.substr(0, showChar);
+                var hcon = content.substr(showChar, content.length - showChar);
+                var txt = con + '<div class="morecontent"><div style="width:50%;max-width:50%;display:none;word-wrap: break-word;">' + hcon + '</div>&nbsp;&nbsp;<a href="" class="moretxt">' + hidetxt + '</a></div>';
+                $(this).html(txt);
+            }
+        });
+        $(".moretxt").click(function () {
+            debugger;
+            if ($(this).hasClass("sample")) {
+                $(this).removeClass("sample");
+                $(this).text(hidetxt);
+            } else {
+                $(this).addClass("sample");
+                $(this).text(showtxt);
+            }
+            $(this).parent().prev().toggle();
+            $(this).prev().toggle();
+            return false;
+        });
+    });
+
 </script>

@@ -42,8 +42,7 @@ namespace Silicus.UtilityContainer.Entities
             modelBuilder.Configurations.Add(new UtilityRoleMap());
             modelBuilder.Configurations.Add(new DepartmentMap());
             modelBuilder.Configurations.Add(new HolidayMap());
-
-
+            modelBuilder.Configurations.Add(new CreditsMap());
 
             // Many-to-many example - can be moved to Map file as well.
             modelBuilder.Entity<Asset>()

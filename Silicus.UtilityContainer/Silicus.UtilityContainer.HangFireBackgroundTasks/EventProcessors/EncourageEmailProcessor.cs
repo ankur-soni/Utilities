@@ -5,11 +5,16 @@ using Silicus.UtilityContainer.HangFireBackgroundTasks.Services;
 using System.Collections.Generic;
 using System.Web;
 using System.IO;
+using Silicus.FrameWorx.Logger;
+using Silicus.UtilityContainer.Models.Enumerations;
 
 namespace HangFireBackgroundTasks.EventProcessors
 {
     public class EncourageEmailProcessor : IEmailProcessor
     {
+        EncourageEventProcessor eventProcessor = new EncourageEventProcessor();
+        ILogger _logger = new DatabaseLogger("name=LoggerDataContext", Type.GetType(string.Empty), (Func<DateTime>)(() => DateTime.UtcNow), string.Empty);
+
         public void Process()
         {
             throw new NotImplementedException();
@@ -17,6 +22,8 @@ namespace HangFireBackgroundTasks.EventProcessors
 
         public void Process(EventType eventType)
         {
+            _logger.Log("EncourageEmailProcessor-Process-EventType-" + eventType);
+
             switch (eventType)
             {
                 case EventType.SendNominationEmail:
@@ -36,7 +43,8 @@ namespace HangFireBackgroundTasks.EventProcessors
 
         private void SendNominationEmail()
         {
-            //Role Id - 369 - Manager
+            _logger.Log("EncourageEmailProcessor-SendNominationEmail");
+          //  eventProcessor.Process(EventType.UnLockNominations,EventProcess.UnLockEvent);
             var managerEmailAddresses = GetEmailAddress.GetEmailAddressForRoles(369);
 
             if (managerEmailAddresses.Count <= 0)
@@ -46,14 +54,12 @@ namespace HangFireBackgroundTasks.EventProcessors
 
             var emailBodyPath = System.Web.Hosting.HostingEnvironment.MapPath(@"~/Views/EmailBody/EmailToManagerBody.html");
             var subject = "Submit Your Nominations";
-            //var emailBodyPath =   @"C:\Users\IKadam.SILICUS\Source\Repos\Utilities3\Silicus.UtilityContainer\Silicus.UtilityContainer.HangFireBackgroundTasks\View\EmailToManagerBody.html";
-            //var emailBodyPath =     @"C:\Users\IKadam.SILICUS\Source\Repos\Utilities3\Silicus.UtilityContainer\Silicus.UtilityContainer.Web\Views\EmailBody\EmailToManagerBody.html";
             new EmailService().SendEmail(emailBodyPath, managerEmailAddresses, subject);
         }
 
         private void SendReviewNominationEmail()
         {
-           
+          //  eventProcessor.Process(EventType.UnLockReviews);
             var reviewerEmailAddresses = GetEmailAddress.GetEmailAddressForRoles(371);
 
             if (reviewerEmailAddresses.Count <= 0)
@@ -62,7 +68,6 @@ namespace HangFireBackgroundTasks.EventProcessors
             }
             var emailBodyPath = System.Web.Hosting.HostingEnvironment.MapPath(@"~/Views/EmailBody/EmailBodyToReviewer.html");
             var subject = "Nominations Submitted For Your Review.";
-           // var emailBodyPath = @"C:\Users\IKadam.SILICUS\Source\Repos\Utilities3\Silicus.UtilityContainer\Silicus.UtilityContainer.HangFireBackgroundTasks\View\EmailBodyToReviewer.html";
             new EmailService().SendEmail(emailBodyPath, reviewerEmailAddresses, subject);
         }
 

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Silicus.FrameWorx.Logger;
+using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.IO;
@@ -12,12 +13,13 @@ namespace Silicus.UtilityContainer.HangFireBackgroundTasks.Services
 {
    public class EmailService
     {
+       
         public void SendEmail(string emailViewPath, List<string> ToEmailAddresses,string emailSubject)
         {
-            //might be coming from configuration file - web.config - set configuration in config e.g - userId - password
+            ILogger _logger = new DatabaseLogger("name=LoggerDataContext", Type.GetType(string.Empty), (Func<DateTime>)(() => DateTime.UtcNow), string.Empty);
+            _logger.Log("EmailService-SendEmail");
+
             var fromAddress = new MailAddress(ConfigurationManager.AppSettings["UserName"], "Silicus Rewards and Recognition Team");
-           // var fromAddress = new MailAddress("Indrajit.kadam@silicus.com", "Silicus Rewards and Recognition Team");
-           // const string fromPassword = "Godfather.1515";
             string subject = emailSubject;
             string body = string.Empty;
                 
@@ -32,12 +34,7 @@ namespace Silicus.UtilityContainer.HangFireBackgroundTasks.Services
                 Port = 587,
                 EnableSsl = true,
                 DeliveryMethod = SmtpDeliveryMethod.Network,
-                //UseDefaultCredentials = false,
-                //Credentials = new NetworkCredential(fromAddress.Address, fromPassword)
-
-                //get this credentials from config
                 Credentials = new NetworkCredential(ConfigurationManager.AppSettings["UserName"], ConfigurationManager.AppSettings["Password"])
-                //Credentials = new NetworkCredential("Indrajit.kadam@silicus.com", "Indra@123")
             };
 
             using (var message = new MailMessage() { Subject = subject, Body = body })
@@ -46,18 +43,17 @@ namespace Silicus.UtilityContainer.HangFireBackgroundTasks.Services
 
                 foreach (string email in ToEmailAddresses)
                 {
-                    message.To.Add(email);
+                    message.To.Add("Asha.Bhandare@silicus.com");
                 }
-              
-
                 message.IsBodyHtml = true;
-
                 try
                 {
+                    _logger.Log("EmailService-SendEmail-try");
                     smtp.Send(message);
                 }
                 catch(Exception ex)
                 {
+                    _logger.Log("EmailService-SendEmail-"+ex.Message);
                     var errorMessage = ex.Message;
                 }
                 

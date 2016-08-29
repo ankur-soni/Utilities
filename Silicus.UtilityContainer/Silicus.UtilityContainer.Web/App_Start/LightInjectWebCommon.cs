@@ -9,6 +9,8 @@ using Silicus.UtilityContainer.Security.Interface;
 using Silicus.UtilityContainer.Security;
 using Silicus.Encourage.Services.Interface;
 using Silicus.Encourage.Services;
+using Silicus.FrameWorx.Logger;
+using System;
 
 //[assembly: WebActivatorEx.PostApplicationStartMethod(typeof(LightInjectWebCommon), "CreateContainer")]
 
@@ -37,6 +39,8 @@ namespace Silicus.UtilityContainer.Web
             container.Register<IUserService, UserService>();
             container.Register<IUserSecurityService, UserSecurityService>();
             container.Register<INominationService, NominationService>();
+            container.Register<ILogger>((factory) => new DatabaseLogger("name=LoggerDataContext", Type.GetType(string.Empty), (Func<DateTime>)(() => DateTime.UtcNow), string.Empty));
+
         }
 
     }

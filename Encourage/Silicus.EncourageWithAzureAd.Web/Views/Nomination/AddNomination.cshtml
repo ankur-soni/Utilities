@@ -68,7 +68,7 @@
                         </div>
                     </div>
 
-                    <input type="hidden" name=ManagerId id="ManagerId" value="@ViewBag.ManagerId">
+                    <input type="hidden" name=ManagerId id="ManagerId" value="@ViewBag.ManagerIdByProject">
                     @{ var projectMessage = "There are no any projects under you."; }
                     @{ var departmentMessage = "There are no any departments under you.";}
                     <div class="form-group row" id="projectInput">
@@ -352,25 +352,46 @@
                            dataType: 'json',
                            async: false,
                            data: modelbjectToSend,
-                           success: function (success) {
-                               console.log(success);
+                           success: function (data) {
+                               //console.log(data);
                                //swal(success.ErrorMessage);
-                               swal({
-                                   title: "Nomination Submitted!",
-                                   text: "",
-                                   type: "info",
-                                   showCancelButton: false,
-                                   confirmButtonColor: "#88a364",
-                                   confirmButtonText: "Ok",
-                               },
-                               function () {
-                                   if (isConfirm) {
-                                       var managerId = $("#ManagerId").val();
-                                       window.location.href = '/Nomination/GetNominationList';
-                                   }
-                               });
+                           if(data.nominationExceed) {
+                                   swal({
+                                       title: "Error",
+                                       text: data.message,
+                                       showCancelButton: false,
+                                       confirmButtonColor: "#88a364",
+                                       confirmButtonText: "Ok",
+                                   },
+                             function () {
+                                 if (isConfirm) {
+                                     var managerId = $("#ManagerId").val();
+                                     window.location.href = '/Nomination/GetNominationList';
+                                 }
+                             });
+
+                           }
+                              else {
+                                   swal({
+                                       title: "Nomination Submitted!",
+                                       text: "",
+                                       type: "info",
+                                       showCancelButton: false,
+                                       confirmButtonColor: "#88a364",
+                                       confirmButtonText: "Ok",
+                                   },
+                              function () {
+                                  if (isConfirm) {
+                                      var managerId = $("#ManagerId").val();
+                                      window.location.href = '/Nomination/GetNominationList';
+                                  }
+                              });
+                               }
+                              
+                              
                            },
                            error: function (error) {
+                               debugger;
                                if (error.responseText != null && error.responseText != undefined && error.responseText != '') {
                                    swal("Error", error.responseText.replace(/['"]+/g, ''));
                                }
@@ -414,25 +435,49 @@
                        url: '@Url.Action("AddNomination", "Nomination")',
                        data: modelbjectToSend,
                        success: function (data) {
-                           swal({
-                               title: "Nomination Saved!",
-                               showCancelButton: false,
-                               confirmButtonColor: "#88a364",
-                               confirmButtonText: "Ok"
-                           },
-                           function () {
-                               if (isConfirm) {
-                                   var managerId = $("#ManagerId").val();
+                           if (data.nominationExceed) {
+                               swal({
+                                   title: "Error",
+                                   text: data.message,
+                                   showCancelButton: false,
+                                   confirmButtonColor: "#88a364",
+                                   confirmButtonText: "Ok"
+                               },
+                     function () {
+                         if (isConfirm) {
+                             var managerId = $("#ManagerId").val();
+                             window.location.href = '/Nomination/GetNominationList';
+                             @*//window.location.href = '@Url.Action("SavedNomination", "Nomination")';*@
+                             }
+                     });
+                       }
+                         else {
+                               swal({
+                                   title: "Nomination Saved!",
+                                   showCancelButton: false,
+                                   confirmButtonColor: "#88a364",
+                                   confirmButtonText: "Ok"
+                               },
+                          function () {
+                              if (isConfirm) {
+                                  var managerId = $("#ManagerId").val();
 
-                                   window.location.href = '/Nomination/GetNominationList';
-                                   @*//window.location.href = '@Url.Action("SavedNomination", "Nomination")';*@
-                               }
-                           });
+                                  window.location.href = '/Nomination/GetNominationList';
+                                  @*//window.location.href = '@Url.Action("SavedNomination", "Nomination")';*@
+                                  }
+                          });
+                           }
+                          
+                          
                        },
                        error: function (data) {
-                           alert("2");
-                           swal(data.ErrorMessage);
-                           swal("Error", "Oops! Something wrong happened..");
+                           debugger;
+                           if (data.responseText != null && data.responseText != undefined && data.responseText != '') {
+                               swal("Error", data.responseText.replace(/['"]+/g, ''));
+                           }
+                           else {
+                               swal("Error", "Oops! Something wrong happened..");
+                           }
                        }
                    });
                } else {

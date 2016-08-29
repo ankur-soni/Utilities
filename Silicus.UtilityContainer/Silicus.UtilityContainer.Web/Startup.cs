@@ -12,7 +12,6 @@ namespace Silicus.UtilityContainer.Web
         {
           
             ConfigureAuth(app);
-
             var connectionString = ConfigurationManager.ConnectionStrings["HangfireDbConnection"].ConnectionString;
             GlobalConfiguration.Configuration.UseSqlServerStorage(connectionString);
             //GlobalConfiguration.Configuration.UseSqlServerStorage(@"Data Source=10.4.1.190\SQLExpress1;User Id=SilUtilSqlUser;Password=Pa55w0rd");

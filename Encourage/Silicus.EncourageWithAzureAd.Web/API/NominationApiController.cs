@@ -15,16 +15,16 @@ namespace Silicus.EncourageWithAzureAd.Web.API
             //_reviewService = reviewService;
         }
 
-
         [HttpPost, AttributeRouting.Web.Mvc.Route("lock")]
         public bool LockNominations()
         {
             return _nominationService.LockNominations();
         }
-        //[HttpPost, AttributeRouting.Web.Mvc.Route("reviewlock")]
-        //public bool LockReview()
+
+        //[HttpPost, AttributeRouting.Web.Mvc.Route("unlock")]
+        //public bool UnLockReview()
         //{
-        //    return _reviewService.LockReview();
+        //    return _nominationService.UnLockNominations();
         //}
      }
 }

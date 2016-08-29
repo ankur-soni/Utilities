@@ -142,29 +142,28 @@
         <nav class="navbar-default navbar-static-side" role="navigation">
             <div class="sidebar-collapse">
                 @{
-                   //  var roles = "Manager,Admin,Reviewer";
+                    //  var roles = "Manager,Admin,Reviewer";
                     List<string> roles = MvcApplication.getCurrentUserRoles();
-
+                    List<string> contributors = MvcApplication.getDevelopersName();
                 }
+               
 
                 @if (roles.Count() != 0)
                 {
-                    
-               
                 <ul class="nav metismenu" id="side-menu">
-                    <li class="active"><a href="@Url.Action("Index","Home")"><i class="fa fa-dashboard"></i> <span class="nav-label">DASHBOARD</span></a></li>
+                    <li class="active"><a href="@Url.Action("Index", "Home")"><i class="fa fa-dashboard"></i> <span class="nav-label">DASHBOARD</span></a></li>
                     <li>
                         <a href="#"><i class="fa fa-user"></i> <span class="nav-label">Nominations</span> <span class="fa arrow"></span></a>
                         <ul class="nav nav-second-level">
                             @if (roles.Contains("Manager"))
                             {
-                                <li><a href="@Url.Action("AddNomination","Nomination")" class="active">Add Nominations</a></li>
+                                <li><a href="@Url.Action("AddNomination", "Nomination")" class="active">Add Nominations</a></li>
                                 <li><a href="@Url.Action("GetNominationList", "Nomination")" class="active">Edit Nominations</a></li>
                             }
                             @if (roles.Contains("Reviewer"))
                             {
-                                <li><a href="@Url.Action("ReviewNominations","Nomination")" class="active">Pending Reviews</a></li>
-                                <li><a href="@Url.Action("SavedReviews","Nomination")" class="active">Done Reviews</a></li>
+                                <li><a href="@Url.Action("ReviewNominations", "Nomination")" class="active">Pending Reviews</a></li>
+                                <li><a href="@Url.Action("SavedReviews", "Nomination")" class="active">Done Reviews</a></li>
 
                             }
                             @if (roles.Contains("Admin"))
@@ -194,14 +193,30 @@
                 <!--End of if-->
             </div>
         </nav>
+                    var data = "";
+                    var count = contributors.Count;
+                    var recentCount = 0;
+                    foreach (var item in contributors)
+                    {
+                        recentCount++;
+                        if (recentCount == count)
+                        {
+                            data += item + ". ";
+                        }
+                        else
+                        {
+                            data += item + ", ";
+                        }
+                    }
+        <div id="credits-data" style="display:none;">
+            @data
+        </div>
                     }
 
         <!-- END LEFT MENU -->
         <!--   START OF CONTENT AREA -->
 
         <div id="page-wrapper" class="gray-bg">
-
-            @*<div class="container body-content">*@
 
                 @RenderBody()
 
@@ -210,14 +225,10 @@
                 <div>
                     <strong>&copy;Copyright</strong> 2000 -
                     <script>document.write(new Date().getFullYear())</script> Silicus Technologies
+                    <span id="credits" style="font-weight:bold;margin-left:80%">Credits</span>
                 </div>
-            </div>
         </div>
-
-
-
     </div>
-
     <!-- Mainly scripts -->
     <script src="~/js/jquery-2.1.1.js"></script>
 
@@ -249,6 +260,7 @@
 
 
 <script>
+    var creditsData =($("div #credits-data").html( "<span style='font-weight : bold'>" +$("div #credits-data").text() +"</span>"));
     $(".fa-chevron-down").click(function () {
         $('.dropdown').toggleClass('open')
     })
@@ -257,7 +269,16 @@
         $(".dropdown").toggleClass('open')
 
     })
-
-
+    $("#credits").css('cursor', 'pointer');
+    $("#credits").click(function () {
+        swal({
+            title: "Contributors",
+            text: "If you like the application, thank these people \n"+$("div #credits-data").text(),
+            showCancelButton: false,
+            confirmButtonColor: "#88a364",
+            confirmButtonText: "Ok"
+        }
+        );
+    });
 </script>
 

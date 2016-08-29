@@ -58,6 +58,9 @@
     <Compile Include="AwardCriteria.cs">
       <DependentUpon>EnCourage.tt</DependentUpon>
     </Compile>
+    <Compile Include="Configuration.cs">
+      <DependentUpon>EnCourage.tt</DependentUpon>
+    </Compile>
     <Compile Include="Criteria.cs">
       <DependentUpon>EnCourage.tt</DependentUpon>
     </Compile>

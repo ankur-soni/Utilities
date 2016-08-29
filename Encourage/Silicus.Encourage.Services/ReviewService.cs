@@ -40,6 +40,15 @@ namespace Silicus.Encourage.Services
         {
             return _encourageDatabaseContext.Query<Review>("ReviewerComments").ToList();
         }
+
+        public void DeletePrevoiusReviewerComments(int reviewerId, int nominationID)
+        {
+            var previousComments = _encourageDatabaseContext.Query<ReviewerComment>().Where(r => r.ReviewerId == reviewerId && r.NominationId == nominationID).ToList();
+            foreach (var previousComment in previousComments)
+            {
+                _encourageDatabaseContext.Delete<ReviewerComment>(previousComment);
+            }
+        }
         public bool LockReview()
         {
             DateTime currentDate = System.DateTime.Now;
@@ -54,6 +63,7 @@ namespace Silicus.Encourage.Services
                     if ((currentDate.Month - 1).Equals(reviewrow.Value.Month) && (currentDate.Month > 1 ? (currentDate.Year).Equals(reviewrow.Value.Year) : (currentDate.Year - 1).Equals(reviewrow.Value.Year)))
                     {
                         review.IsLocked = true;
+                        DeletePrevoiusReviewerComments(review.ReviewerId, review.NominationId);
                         UpdateReview(review);
                         //return true;
                     }
@@ -75,6 +85,7 @@ namespace Silicus.Encourage.Services
                     if ((currentDate.Month - 1).Equals(reviewrow.Value.Month) && (currentDate.Month > 1 ? (currentDate.Year).Equals(reviewrow.Value.Year) : (currentDate.Year - 1).Equals(reviewrow.Value.Year)))
                     {
                         review.IsLocked = false;
+                        DeletePrevoiusReviewerComments(review.ReviewerId, review.NominationId);
                         UpdateReview(review);
                        // return true;
                     }

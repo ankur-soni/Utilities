@@ -38,7 +38,7 @@ namespace Silicus.EncourageWithAzureAd.Web.Controllers
        
         public ActionResult Index()
         {
-            _logger.Log("Inside Index method");
+            _logger.Log("Home-Index");
 
             string utility = WebConfigurationManager.AppSettings["ProductName"];
 
@@ -46,12 +46,6 @@ namespace Silicus.EncourageWithAzureAd.Web.Controllers
 
 
              var commonRoles = authorizationService.GetRoleForUtility(User.Identity.Name, utility);
-            foreach (var item in commonRoles)
-            {
-                _logger.Log("Roles are: " + item);
-
-            }
-
             //ViewBag.IdName = commonRoles.Count;
             var dashboard = new Dashboard();
             if ((commonRoles.Count > 0))
@@ -66,7 +60,7 @@ namespace Silicus.EncourageWithAzureAd.Web.Controllers
                 commonRoles.Add("User");
                 dashboard.userRoles = commonRoles;
                 ViewBag.currentUserRoles = commonRoles;
-                _logger.Log("Defalt role "+commonRoles);
+                _logger.Log("Current user's role is User");
             }
            
             var winnersForLastMonth = _encourageDatabaseContext.Query<Shortlist>().Where(w => w.IsWinner == true && w.WinningDate.Value.Month == (DateTime.Now.Month) && w.WinningDate.Value.Year == DateTime.Now.Year).ToList();

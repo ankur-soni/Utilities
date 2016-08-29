@@ -20,5 +20,11 @@ namespace Silicus.EncourageWithAzureAd.Web.API
         {
             return _reviewService.LockReview();
         }
+
+        //[HttpPost, AttributeRouting.Web.Mvc.Route("unlockreview")]
+        //public bool UnLockReview()
+        //{
+        //    return _reviewService.UnLockReview();
+        //}
     }
 }

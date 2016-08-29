@@ -3,6 +3,7 @@ using Silicus.Encourage.Models;
 using Silicus.Encourage.Services.Interface;
 using Silicus.Encourage.Web.Filters;
 using Silicus.EncourageWithAzureAd.Web.Models;
+using Silicus.FrameWorx.Logger;
 using Silicus.UtilityContainer.Entities;
 using Silicus.UtilityContainer.Models.DataObjects;
 using System;
@@ -25,10 +26,10 @@ namespace Silicus.EncourageWithAzureAd.Web.Controllers
         private readonly ICommonDataBaseContext _commonDbContext;
         private readonly IEncourageDatabaseContext _encourageDatabaseContext;
         private readonly Silicus.Encourage.DAL.Interfaces.IDataContextFactory _dataContextFactory;
-
         private readonly IEmailNotificationOfWinner _emailNotificationOfWinner;
+        private readonly ILogger _logger;
 
-        public ReviewController(IResultService resultService, INominationService nominationService, ICommonDbService commonDbService, Silicus.Encourage.DAL.Interfaces.IDataContextFactory dataContextFactory, IAwardService awardService, IReviewService reviewService, IEmailNotificationOfWinner EmailNotificationOfWinner)
+        public ReviewController(IResultService resultService, INominationService nominationService, ICommonDbService commonDbService, Silicus.Encourage.DAL.Interfaces.IDataContextFactory dataContextFactory, IAwardService awardService, IReviewService reviewService, IEmailNotificationOfWinner EmailNotificationOfWinner, ILogger logger)
         {
             _commonDbService = commonDbService;
             _commonDbContext = _commonDbService.GetCommonDataBaseContext();
@@ -39,6 +40,7 @@ namespace Silicus.EncourageWithAzureAd.Web.Controllers
             _nominationService = nominationService;
             _resultService = resultService;
             _emailNotificationOfWinner = EmailNotificationOfWinner;
+            _logger = logger;
         }
 
         #region Test
@@ -81,6 +83,7 @@ namespace Silicus.EncourageWithAzureAd.Web.Controllers
         [CustomeAuthorize(AllowedRole = "Admin")]
         public ActionResult ReviewFeedbackList()
         {
+            _logger.Log("Review-ReviewFeedbackList-GET");
             var reviewFeedbacks = new List<ReviewFeedbackListViewModel>();
             //if (string.IsNullOrEmpty(rejectAll))
             //{
@@ -135,10 +138,9 @@ namespace Silicus.EncourageWithAzureAd.Web.Controllers
         [CustomeAuthorize(AllowedRole = "Admin")]
         public ActionResult RejectAll()
         {
+            _logger.Log("Review-RejectAll-GET");
             var rejectAllRviews = _encourageDatabaseContext.Query<Review>().Where(r => r.IsSubmited == true).ToList();
-
             var shortlist = _encourageDatabaseContext.Query<Shortlist>().Where(s => s.IsWinner == true);
-
             foreach (var shortListedEmployee in shortlist)
             {
                 rejectAllRviews.RemoveAll(r => r.NominationId == shortListedEmployee.NominationId);
@@ -165,6 +167,7 @@ namespace Silicus.EncourageWithAzureAd.Web.Controllers
         [CustomeAuthorize(AllowedRole = "Admin")]
         public ActionResult ViewNominationForShortlist(ReviewFeedbackListViewModel nominationModel)
         {
+            _logger.Log("Review-ViewNominationForShortlist-GET");
             var reviews = _reviewService.GetReviewsForNomination(nominationModel.NominationId).ToList();
             var nomination = _nominationService.GetNomination(reviews.FirstOrDefault().NominationId);
             var allReviewerComments = new List<List<ReviewerCommentViewModel>>();
@@ -222,10 +225,11 @@ namespace Silicus.EncourageWithAzureAd.Web.Controllers
         [CustomeAuthorize(AllowedRole = "Admin")]
         public bool ShortlistNomination(int nominationId)
         {
+            _logger.Log("Review-ShortlistNomination-POST");
             try
             {
                 _resultService.ShortlistNomination(nominationId);
-              //  _emailNotificationOfWinner.Process();
+                _emailNotificationOfWinner.Process();
                 return true;
             }
             catch
@@ -237,6 +241,7 @@ namespace Silicus.EncourageWithAzureAd.Web.Controllers
         [CustomeAuthorize(AllowedRole = "Admin")]
         public ActionResult RemoveShortlistNomination(int nominationId)
         {
+            _logger.Log("Review-RemoveShortlistNomination");
             try
             {
                 _resultService.UnShortlistNomination(nominationId);
@@ -252,6 +257,7 @@ namespace Silicus.EncourageWithAzureAd.Web.Controllers
         [CustomeAuthorize(AllowedRole = "Admin")]
         public bool SelectWinner(int nominationId, string winningComment)
           {
+            _logger.Log("Review-SelectWinner-POST");
             try
             {
                 _resultService.SelectWinner(nominationId, winningComment);
@@ -269,8 +275,8 @@ namespace Silicus.EncourageWithAzureAd.Web.Controllers
         [HttpGet]
         public ActionResult LockNomination()
         {
-          
-             _nominationService.LockNominations();
+            _logger.Log("Review-LockNomination-GET");
+            _nominationService.LockNominations();
             _reviewService.LockReview();
              // var allNominations = _nominationService.GetAllNominations();
             //var nominations = allNominations.Where(x => (x.NominationDate.Value.Month.Equals(DateTime.Now.Month - 1) && x.NominationDate.Value.Year.Equals(DateTime.Now.Month > 1 ? DateTime.Now.Year : DateTime.Now.Year - 1))).ToList();
@@ -307,7 +313,8 @@ namespace Silicus.EncourageWithAzureAd.Web.Controllers
         [HttpGet]
         public ActionResult UnlockNomination()
         {
-             _nominationService.UnLockNominations();
+            _logger.Log("Review-UnlockNomination-GET");
+            _nominationService.UnLockNominations();
             _reviewService.UnLockReview();
             //var allNominations = _nominationService.GetAllNominations(); 
             //var nominations = allNominations.Where(x => x.NominationDate.Value.Month.Equals(DateTime.Now.Month - 1)).ToList();

@@ -42,11 +42,16 @@ namespace Silicus.EncourageWithAzureAd.Web
         public static List<string> getCurrentUserRoles()
         {
             var authorizationService = new Authorization(new Silicus.UtilityContainer.Entities.CommonDataBaseContext("DefaultConnection"));
-
             string utility = WebConfigurationManager.AppSettings["ProductName"];
-
             var commonRoles = authorizationService.GetRoleForUtility(new MvcApplication().getCurrentUserName(), utility);
             return commonRoles;
+        }
+
+        public static List<string> getDevelopersName()
+        {
+            var authorizationService = new Authorization(new Silicus.UtilityContainer.Entities.CommonDataBaseContext("DefaultConnection"));
+            var developers = authorizationService.GetNameOfContributors();
+            return developers;
         }
 
 
