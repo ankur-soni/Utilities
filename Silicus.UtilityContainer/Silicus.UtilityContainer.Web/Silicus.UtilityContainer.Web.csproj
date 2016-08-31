@@ -102,6 +102,10 @@
     <Reference Include="Silicus.Encourage.Services">
       <HintPath>..\..\Encourage\Silicus.Encourage.Services\bin\Release\Silicus.Encourage.Services.dll</HintPath>
     </Reference>
+    <Reference Include="Silicus.FrameWorx.Logger, Version=1.0.1.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Silicus.FrameWorx.Logger.1.0.1\lib\net45\Silicus.FrameWorx.Logger.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="Silicus.UtilityContainer.Entities">
       <HintPath>..\Silicus.UtilityContainer.Service\bin\Debug\Silicus.UtilityContainer.Entities.dll</HintPath>
     </Reference>
@@ -737,6 +741,15 @@
     <Content Include="Scripts\respond.js" />
     <Content Include="Scripts\respond.min.js" />
     <Content Include="Scripts\_references.js" />
+    <Content Include="Views\EmailBody\EmailBodyToReviewer.html">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Views\EmailBody\EmailToManagerBody.html">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Views\EmailBody\ReviewsLockedNotificationToAdmin.html">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>

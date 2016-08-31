@@ -24,9 +24,7 @@ namespace Silicus.Encourage.Services.Interface
         void AddReviewerCommentsForCurrentNomination(ReviewerComment revrComment);
         string GetAwardMonthAndYear(int nominationId);
         string GetAwardName(int nominationId);
-
         List<Nomination> GetAllSubmitedReviewedNominations(int reviewerId);
-
         List<Review> GetAllSubmitedReviewsForCurrentNomination(int nominationId);
         List<Nomination> GetAllSavedNominations();
         Nomination GetNomination(int nominationId);
@@ -38,5 +36,6 @@ namespace Silicus.Encourage.Services.Interface
         bool IsNominationLocked();
         bool UnLockNominations();
         int GetNominationCountByManagerId(int managerId, DateTime startDate, DateTime endDate);
+        bool GetNominationLockStatus();
     }
 }

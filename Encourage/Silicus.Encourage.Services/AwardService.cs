@@ -229,13 +229,30 @@ namespace Silicus.Encourage.Services
             //{
             foreach (var winner in allWinners)
             {
+                string projectName = string.Empty;
                 var nominationOfWinnner = _encourageDbcontext.Query<Nomination>().Where(nomination => nomination.Id == winner.NominationId).FirstOrDefault();
 
                 var userName = _CommonDbContext.Query<User>().Where(user => user.ID == nominationOfWinnner.UserId).FirstOrDefault().DisplayName;
                 var awardName = _encourageDbcontext.Query<Award>().Where(award => award.Id == nominationOfWinnner.AwardId).FirstOrDefault().Name;
-                var managerName = _CommonDbContext.Query<User>().Where(user => user.ID == nominationOfWinnner.ManagerId).FirstOrDefault().DisplayName;              
-                var projectName = _CommonDbContext.Query<Engagement>().Where(enagegement => enagegement.ID == nominationOfWinnner.ProjectID).FirstOrDefault().Name;              
-               //  var projectName = _CommonDbContext.Query<Engagement>().Where(enagegement => enagegement.ID == nominationOfWinnner.DepartmentId).FirstOrDefault().Name;
+                var managerName = _CommonDbContext.Query<User>().Where(user => user.ID == nominationOfWinnner.ManagerId).FirstOrDefault().DisplayName;
+
+                if (nominationOfWinnner.ProjectID != null)
+                {
+                    var engagement = _CommonDbContext.Query<Engagement>().Where(enagegement => enagegement.ID == nominationOfWinnner.ProjectID).FirstOrDefault();
+                    if (engagement != null)
+                    {
+                        projectName = engagement.Name;
+                    }
+                }
+                else
+                {
+                    var engagement  = _CommonDbContext.Query<Department>().Where(enagegement => enagegement.ID == nominationOfWinnner.DepartmentId).FirstOrDefault();
+                    if(engagement != null)
+                    {
+                        projectName = engagement.Name;
+                    }
+                }
+
                 var awardPeriod = nominationOfWinnner.NominationDate.Value.ToString("MMMM") + " - " + nominationOfWinnner.NominationDate.Value.Year.ToString();
                 var winnerData = new WinnerData()
                 {

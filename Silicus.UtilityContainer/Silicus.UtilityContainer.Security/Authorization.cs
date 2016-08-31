@@ -15,14 +15,14 @@ namespace Silicus.UtilityContainer.Security
             _commonDBContext = commonDBContext;
         }
 
-        
-       
         public List<string> GetRoleForUtility(string email, string utiltyName)
         {
-            
                 return _commonDBContext.Query<UtilityUserRoles>().Where(x => x.User.EmailAddress.ToLower() == email.ToLower() && x.Utility.Name == utiltyName).Select(x => x.Role.Name).ToList();  
-           
-           
+        }
+
+        public List<string> GetNameOfContributors()
+        {
+            return _commonDBContext.Query<Credits>().Where(x => x.UtilityId == 3).OrderBy(x => x.Name).Select(x => x.Name).ToList();
         }
     }
 }

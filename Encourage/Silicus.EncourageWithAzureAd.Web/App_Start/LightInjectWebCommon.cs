@@ -8,6 +8,8 @@ using Silicus.EncourageWithAzureAd.Web;
 using Silicus.UtilityContainer.Security.Interface;
 using Silicus.UtilityContainer.Security;
 using System.Web.Http;
+using Silicus.FrameWorx.Logger;
+using System;
 
 [assembly: WebActivatorEx.PostApplicationStartMethod(typeof(LightInjectWebCommon), "CreateContainer")]
 
@@ -41,6 +43,8 @@ namespace Silicus.EncourageWithAzureAd.Web
             container.Register<IReviewService, ReviewService>();
             container.Register<IResultService, ResultService>();
             container.Register<IEmailNotificationOfWinner, EmailNotificationOfWinnerService>();
+            container.Register<ILogger>((factory) => new DatabaseLogger("name=LoggerDataContext", Type.GetType(string.Empty), (Func<DateTime>)(() => DateTime.UtcNow), string.Empty));
+
         }
 
     }

@@ -131,13 +131,18 @@
       <HintPath>..\packages\RazorEngine.3.4.1\lib\net45\RazorEngine.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="Silicus.FrameWorx.Logger, Version=1.0.1.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Silicus.FrameWorx.Logger.1.0.1\lib\net45\Silicus.FrameWorx.Logger.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="Silicus.UtilityContainer.Entities">
       <HintPath>..\..\Silicus.UtilityContainer\Silicus.UtilityContainer.Entities\bin\Debug\Silicus.UtilityContainer.Entities.dll</HintPath>
     </Reference>
     <Reference Include="Silicus.UtilityContainer.Models">
       <HintPath>..\..\Silicus.UtilityContainer\Silicus.UtilityContainer.Models\bin\Debug\Silicus.UtilityContainer.Models.dll</HintPath>
     </Reference>
-    <Reference Include="Silicus.UtilityContainer.Security">
+    <Reference Include="Silicus.UtilityContainer.Security, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\Silicus.UtilityContainer\Silicus.UtilityContainer.Security\bin\Debug\Silicus.UtilityContainer.Security.dll</HintPath>
     </Reference>
     <Reference Include="StackExchange.Redis.StrongName, Version=1.0.316.0, Culture=neutral, PublicKeyToken=c219ff1ca8c2ce46, processorArchitecture=MSIL">
@@ -776,8 +781,10 @@
     <Content Include="js\plugins\chartist\chartist.min.js.map" />
     <Content Include="LESS\.crunch" />
     <None Include="Properties\PublishProfiles\SilicusEncourageWithAzureAdWeb - FTP %282%29.pubxml" />
+    <None Include="Properties\PublishProfiles\SilicusEncourageWithAzureAdWeb - FTP %283%29.pubxml" />
     <None Include="Properties\PublishProfiles\SilicusEncourageWithAzureAdWeb - FTP.pubxml" />
     <None Include="Properties\PublishProfiles\SilicusEncourageWithAzureAdWeb - Web Deploy %282%29.pubxml" />
+    <None Include="Properties\PublishProfiles\SilicusEncourageWithAzureAdWeb - Web Deploy %283%29.pubxml" />
     <None Include="Properties\PublishProfiles\SilicusEncourageWithAzureAdWeb - Web Deploy.pubxml" />
     <None Include="Properties\PublishProfiles\SilicusEncourageWithAzureAdWeb.pubxml" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
@@ -794,8 +801,12 @@
     <Content Include="Scripts\respond.js" />
     <Content Include="Scripts\respond.min.js" />
     <Content Include="Scripts\_references.js" />
-    <Content Include="Views\SendMailAfterWinnerSelected.html" />
-    <Content Include="Web.config" />
+    <Content Include="Views\SendMailAfterWinnerSelected.html">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Web.config">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </Content>
@@ -874,7 +885,7 @@
     <VisualStudio>
       <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
         <WebProjectProperties>
-          <UseIIS>True</UseIIS>
+          <UseIIS>False</UseIIS>
           <AutoAssignPort>True</AutoAssignPort>
           <DevelopmentServerPort>58057</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>

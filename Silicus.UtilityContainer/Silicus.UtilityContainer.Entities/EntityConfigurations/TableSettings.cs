@@ -20,5 +20,6 @@ namespace Silicus.UtilityContainer.Entities.EntityConfigurations
         public static readonly string UtilityRoles = "UtilityRole";
         public static readonly string Departments = "Department";
         public static readonly string Holidays = "Holiday";
+        public static readonly string Credits = "Credits";
     }
 }

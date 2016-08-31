@@ -7,7 +7,7 @@ $(function () {
             debugger;
             var con = content.substr(0, showChar);
             var hcon = content.substr(showChar, content.length - showChar);
-            var txt = con + '<div class="morecontent"><div style="width:100%;max-width:100%;display: inline-block;word-wrap: break-word;">' + hcon + '</div>&nbsp;&nbsp;<a href="" class="moretxt">' + showtxt + '</a></div>';
+            var txt = con + '<div class="morecontent"><div style="width:100%;max-width:100%;display: none;word-wrap: break-word;">' + hcon + '</div><a href="" class="moretxt">' + hidetxt + '</a></div>';
             $(this).html(txt);
         }
     });
@@ -15,10 +15,10 @@ $(function () {
         debugger;
         if ($(this).hasClass("sample")) {
             $(this).removeClass("sample");
-            $(this).text(showtxt);
+            $(this).text(hidetxt);
         } else {
             $(this).addClass("sample");
-            $(this).text(hidetxt);
+            $(this).text(showtxt);
         }
         $(this).parent().prev().toggle();
         $(this).prev().toggle();

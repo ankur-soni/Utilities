@@ -10,8 +10,10 @@ namespace Silicus.UtilityContainer.Models
     {
         SendNominationEmail,
         LockNomination,
+        UnLockNominations,
         SendReviewNominationEmail,
         LockReview,
+        UnLockReviews,
         SendAdminNominationEmail,
     }
 }

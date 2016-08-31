@@ -47,17 +47,14 @@
             <span class="text-danger" style="font-size:20px;margin-left:7%">No employees are available for review..</span>
         }
         else
-        if (Model?.FirstOrDefault()?.IsLocked == true)
+        if( @ViewBag.ReviewLockStatus)
         {
-            <span class="text-danger" style="font-size:20px;margin-left:7%">The review period was closed.</span>
+        <span class="text-danger" style="font-size:20px;margin-left:7%">The review period was closed..</span>
         }
         else
         {
-
             foreach (var item in Model)
             {
-               
-
                 var myBorderColor = string.Empty;
                 var title = "Review Nomination";
                 var actionname = "ReviewNomination";

@@ -22,119 +22,143 @@
 
 <style>
     .page-heading {
-        margin-left:0%;
+        margin-left: 0%;
     }
 
-    .navbar-minimalize{
-    margin-left:35%;
+    .navbar-minimalize {
+        margin-left: 35%;
     }
 </style>
 
 <div class="wrapper wrapper-content animated fadeInRight">
 
-    @if (Model.IsLocked)
+    @if (ViewBag.NominationLockStatus)
     {
         <span class="text-danger" style="font-size:20px;margin-left:7%">The nominations period was closed..</span>
     }
     else
     {
 
-    <div class="row" style="width:80%;padding-top:20px;margin-left:3%;">
-        <div  style="text-align:center;"id="label">
-            <label style="color:#0067AA;font-size:18px;padding-bottom:1%;">Nomination For @String.Format("{0:MMMM}", DateTime.Now.AddMonths(-1)) - @DateTime.Now.Year</label>
+        <div class="row" style="width:80%;padding-top:20px;margin-left:3%;">
+            <div style="text-align:center;" id="label">
+                <label style="color:#0067AA;font-size:18px;padding-bottom:1%;">Nomination For @String.Format("{0:MMMM}", DateTime.Now.AddMonths(-1)) - @DateTime.Now.Year</label>
+            </div>
+
+            @using (Html.BeginForm("AddNomination", "Nomination", FormMethod.Post, new { id = "addNominationForm" }))
+            {
+                @*@Html.AntiForgeryToken()*@
+
+                <div class="white-bg" style="padding-left:2%">
+                    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                    <div class="form-group row" style="padding-top:10px">
+
+                        @Html.Label("Nomination Category", htmlAttributes: new { @class = "control-label col-md-3 requiredfeild", style = "text-align: left" })
+                        <div>
+                            @Html.DropDownListFor(model => model.AwardId, @ViewBag.Awards as SelectList, "Select", new { htmlAttributes = new { @class = "form-control" }, id = "Award", style = "width:25%" })
+                            @Html.ValidationMessageFor(model => model.AwardId, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+                        @Html.Label("Resource From", htmlAttributes: new { @class = "control-label col-md-3 requiredfeild", style = "text-align: left" })
+                        <div>
+                            <label> @Html.RadioButtonFor(model => model.SelectResourcesBy, "Project", new { htmlAttributes = new { @class = "form-control" }, id = "ProjectRadioButton", value = "Project" })Project</label>
+                            &nbsp;
+                            <label> @Html.RadioButtonFor(model => model.SelectResourcesBy, "Department", new { htmlAttributes = new { @class = "form-control" }, id = "DepartmentRadioButton", value = "Department" })Department</label>
+                        </div>
+                    </div>
+
+                    <input type="hidden" name=ManagerId id="ManagerId" value="@ViewBag.ManagerIdByProject">
+                    @{ var projectMessage = "There are no any projects under you."; }
+                    @{ var departmentMessage = "There are no any departments under you.";}
+                    <div class="form-group row" id="projectInput">
+                        @Html.Label("Project", htmlAttributes: new { @class = "control-label col-md-3 requiredfeild", style = "text-align: left" })
+                        <div>
+                            @if (@ViewBag.ProjectsUnderCurrentUser != null)
+                            {
+                                @Html.DropDownListFor(model => model.ProjectID, @ViewBag.ProjectsUnderCurrentUser as SelectList, "Select", new { htmlAttributes = new { @class = "form-control" }, id = "SelectedProject", style = "width:25%" })
+                                @Html.ValidationMessageFor(model => model.ProjectID, "", new { @class = "text-danger" })
+                            }
+                            else
+                            {
+                              <span style="color:red">@projectMessage</span>  
+                            }
+                        </div>
+                    </div>
+
+                    <div class="form-group row" id="departmentInput">
+                        @Html.Label("Department", htmlAttributes: new { @class = "control-label col-md-3 requiredfeild", style = "text-align: left" })
+                        <div>
+                            
+                            @if (@ViewBag.DepartmentsUnderCurrentUser != null)
+                            {
+                                @Html.DropDownListFor(model => model.DepartmentId, @ViewBag.DepartmentsUnderCurrentUser as SelectList, "Select", new { htmlAttributes = new { @class = "form-control" }, id = "SelectedDepartment", style = "width:25%" })
+                                @Html.ValidationMessageFor(model => model.DepartmentId, "", new { @class = "text-danger" })
+                            }
+                            else
+                            {
+                                <span style="color:red">@departmentMessage</span>
+                            }
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+                        @Html.Label("Resource Name", htmlAttributes: new { @class = "control-label col-md-3 requiredfeild", style = "text-align: left" })
+                        <div>
+                            @Html.DropDownListFor(model => model.ResourceId, ViewBag.Resources as SelectList, "Select", new { htmlAttributes = new { @class = "form-control" }, id = "Resources", style = "width:25%" })
+                            @Html.ValidationMessageFor(model => model.ResourceId, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                </div>
+                <br />
+                <div class="form-group white-bg" style="padding-top:10px;padding-left:2%;">
+                    <div class="row">
+                        @Html.Label("Comment", htmlAttributes: new { @class = "control-label col-md-2 requiredfeild", style = "text-align: left" })
+                        <div>
+                            @Html.TextAreaFor(model => model.MainComment, new { htmlAttributes = new { @class = "form-control" }, placeholder = "Maximum 500 words", id = "managerComment", name = "defaultconfig", style = "min-width: 70%;margin-left:8%", rows = "7", maxlength = 500 })
+                            @*@Html.TextAreaFor(model => model.MainComment, new { htmlAttributes = new { @class = "form-control" }, placeholder = "", id = "managerComment", name = "defaultconfig", style = "min-width: 70%;margin-left:8%", rows = "7", maxlength = 200 })*@
+                            <div style="text-align:right;">
+                                @Html.ValidationMessageFor(model => model.MainComment, "", new { @class = "text-danger", id = "managerCommentValidationmessage" })
+                            </div>
+                            <div class="row">&nbsp;</div>
+                        </div>
+                    </div>
+                </div>
+                <br />
+
+                <div class="form-group" style="padding-bottom:1%" hidden="hidden" id="disclamer">
+                    <span style="font-family:  Arial, Helvetica, sans-serif;color:rgba(255, 0, 0, 0.71)">
+                        <label>Disclaimer :</label>  Mention your comments against the criteria your nominee fits in. Please note that it’s NOT mandatory to mention comments against each criteria given below. You can leave the comment area blank for the criteria which are not relevant.
+                    </span>
+                </div>
+                <div class="form-group">
+                    <div>
+                        <div id="Criterias">
+                            <table class="table table-hover issue-tracker white-bg" id="criteriaTable"></table>
+                            <div style="text-align:right;">
+                                @Html.ValidationMessageFor(model => model.Comments, "", new { @class = "text-danger", id = "criterisCommentValidationmessage" })
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <br />
+                <div class="form-group row">
+                    <div style="text-align:center;width:100%;">
+                        <input type="button" name="submit" value="Save Draft" id="savebutton" class="btn btn-primary btnSameSize" onclick="return checkValidationOnSaveDraft();" />
+                        <input type="button" name="submit" value="Submit" id="submitButton" class="btn btn-primary btnSameSize" onclick="return checkValidationOnSubmit();" 
+                           @{ 
+                               if (ViewBag.NominationLockStatus)
+                               {
+                                   @: disabled="disabled";
+                                   @: title="Nominations are locked"
+                               }
+                           }
+                               />
+                        <input type="button" value="Cancel" class="btn btn-primary btnSameSize" onclick="location.href='@Url.Action("Index", "Home")'" />
+                    </div>
+                </div>
+            }
         </div>
-
-        @using (Html.BeginForm("AddNomination", "Nomination", FormMethod.Post, new { id = "addNominationForm" }))
-        {
-            @*@Html.AntiForgeryToken()*@
-
-            <div class="white-bg" style="padding-left:2%">
-                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-                <div class="form-group row" style="padding-top:10px">
-
-                    @Html.Label("Nomination Category", htmlAttributes: new { @class = "control-label col-md-3 requiredfeild", style = "text-align: left" })
-                    <div>
-                        @Html.DropDownListFor(model => model.AwardId, @ViewBag.Awards as SelectList, "Select", new { htmlAttributes = new { @class = "form-control" }, id = "Award", style = "width:25%" })
-                        @Html.ValidationMessageFor(model => model.AwardId, "", new { @class = "text-danger" })
-                    </div>
-                </div>
-
-                <div class="form-group row">
-                    @Html.Label("Resource From", htmlAttributes: new { @class = "control-label col-md-3 requiredfeild", style = "text-align: left" })
-                    <div>
-                        <label> @Html.RadioButtonFor(model => model.SelectResourcesBy, "Project", new { htmlAttributes = new { @class = "form-control" }, id = "ProjectRadioButton", value = "Project" })Project</label>
-                        &nbsp;
-                        <label> @Html.RadioButtonFor(model => model.SelectResourcesBy, "Department", new { htmlAttributes = new { @class = "form-control" }, id = "DepartmentRadioButton", value = "Department" })Department</label>
-                    </div>
-                </div>
-
-                <input type="hidden" name=ManagerId id="ManagerId" value="@ViewBag.ManagerId">
-
-                <div class="form-group row" id="projectInput">
-                    @Html.Label("Project", htmlAttributes: new { @class = "control-label col-md-3 requiredfeild", style = "text-align: left" })
-                    <div>
-                        @Html.DropDownListFor(model => model.ProjectID, @ViewBag.ProjectsUnderCurrentUser as SelectList, "Select", new { htmlAttributes = new { @class = "form-control" }, id = "SelectedProject", style = "width:25%" })
-                        @Html.ValidationMessageFor(model => model.ProjectID, "", new { @class = "text-danger" })
-                    </div>
-                </div>
-
-                <div class="form-group row" id="departmentInput">
-                    @Html.Label("Department", htmlAttributes: new { @class = "control-label col-md-3 requiredfeild", style = "text-align: left" })
-                    <div>
-                        @Html.DropDownListFor(model => model.DepartmentId, @ViewBag.DepartmentsUnderCurrentUser as SelectList, "Select", new { htmlAttributes = new { @class = "form-control" }, id = "SelectedDepartment", style = "width:25%" })
-                        @Html.ValidationMessageFor(model => model.DepartmentId, "", new { @class = "text-danger" })
-                    </div>
-                </div>
-
-                <div class="form-group row">
-                    @Html.Label("Resource Name", htmlAttributes: new { @class = "control-label col-md-3 requiredfeild", style = "text-align: left" })
-                    <div>
-                        @Html.DropDownListFor(model => model.ResourceId, ViewBag.Resources as SelectList, "Select", new { htmlAttributes = new { @class = "form-control" }, id = "Resources", style = "width:25%" })
-                        @Html.ValidationMessageFor(model => model.ResourceId, "", new { @class = "text-danger" })
-                    </div>
-                </div>
-            </div>
-            <br />
-            <div class="form-group white-bg" style="padding-top:10px;padding-left:2%;">
-                <div class="row">
-                    @Html.Label("Comment", htmlAttributes: new { @class = "control-label col-md-2 requiredfeild", style = "text-align: left" })
-                    <div>
-                        @Html.TextAreaFor(model => model.MainComment, new { htmlAttributes = new { @class = "form-control"}, placeholder = "Maximum 500 words", id = "managerComment", name = "defaultconfig", style = "min-width: 70%;margin-left:8%", rows = "7", maxlength = 500 })
-                        @*@Html.TextAreaFor(model => model.MainComment, new { htmlAttributes = new { @class = "form-control" }, placeholder = "", id = "managerComment", name = "defaultconfig", style = "min-width: 70%;margin-left:8%", rows = "7", maxlength = 200 })*@
-                        <div style="text-align:right;">
-                            @Html.ValidationMessageFor(model => model.MainComment, "", new { @class = "text-danger", id = "managerCommentValidationmessage" })
-                        </div>
-                        <div class="row">&nbsp;</div>
-                    </div>
-                </div>
-            </div>
-            <br />
-
-            <div class="form-group" style="padding-bottom:1%" hidden="hidden" id="disclamer">
-                <span style="font-family:  Arial, Helvetica, sans-serif;color:rgba(255, 0, 0, 0.71)">
-                    <label>Disclaimer :</label>  Mention your comments against the criteria your nominee fits in. Please note that it’s NOT mandatory to mention comments against each criteria given below. You can leave the comment area blank for the criteria which are not relevant.
-                </span>
-            </div>
-            <div class="form-group">
-                <div>
-                    <div id="Criterias">
-                        <table class="table table-hover issue-tracker white-bg" id="criteriaTable"></table>
-                        <div style="text-align:right;">
-                            @Html.ValidationMessageFor(model => model.Comments, "", new { @class = "text-danger", id = "criterisCommentValidationmessage" })
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <br />
-            <div class="form-group row">
-                <div style="text-align:center;width:100%;">
-                    <input type="button" name="submit" value="Save Draft" id="savebutton" class="btn btn-primary btnSameSize" onclick="return checkValidationOnSaveDraft();" />
-                    <input type="button" name="submit" value="Submit" id="submitButton" class="btn btn-primary btnSameSize" onclick="return checkValidationOnSubmit();" />
-                    <input type="button" value="Cancel" class="btn btn-primary btnSameSize" onclick="location.href='@Url.Action("Index", "Home")'" />
-                </div>
-            </div>
-        }
-    </div>
 
     }
 
@@ -151,7 +175,7 @@
     $(document).ready(function () {
         $('#ProjectRadioButton').prop('checked', true);
         $("#departmentInput").hide();
-        $("#label").hide();   
+        $("#label").hide();
     })
 
     $("#ProjectRadioButton").change
@@ -162,7 +186,7 @@
              $('#Resources').empty();
              $('#Resources').append($("<option selected></option>").val(null).html("Select"));
              $("#projectInput").show();
-             
+
              debugger;
              $("#ManagerId").val('@ViewBag.ManagerIdByProject');
          });
@@ -175,9 +199,9 @@
               $('#Resources').empty();
               $('#Resources').append($("<option selected></option>").val(null).html("Select"));
               $("#departmentInput").show();
-              
+
               debugger;
-             $("#ManagerId").val('@ViewBag.ManagerIdByDepartment');
+              $("#ManagerId").val('@ViewBag.ManagerIdByDepartment');
           });
 
     $("#Award").change(function () {
@@ -196,7 +220,7 @@
         $("#SelectedDepartment").prop('selectedIndex', 0);
         $('#Resources').empty();
         $('#Resources').append($("<option selected></option>").val(null).html("Select"));
-        
+
         $('#disclamer').prop('hidden', false);
 
         var selectdAward = $("#Award").val();
@@ -226,19 +250,18 @@
                 }
             }
         });
-     
+
 
     });
 
-    function edValueKeyPress(key)
-    {
-      //  $('#' + key.id).siblings("div.textarea").css('display', 'block');
+    function edValueKeyPress(key) {
+        //  $('#' + key.id).siblings("div.textarea").css('display', 'block');
         $('div.textarea' + key + '').html(text_remaining + ' characters remaining').show();
-            var text_max = 500;
-        
-            var text_length = $('#comment'+ key +'').val().length;
-            var text_remaining = text_max - text_length;         
-            $('div.textarea' + key + '').html(text_remaining + ' characters remaining');
+        var text_max = 500;
+
+        var text_length = $('#comment' + key + '').val().length;
+        var text_remaining = text_max - text_length;
+        $('div.textarea' + key + '').html(text_remaining + ' characters remaining');
     }
 
     function hideRemainingCharacterText(key) {
@@ -291,7 +314,7 @@
                         .append($("<option></option>").val(data[key].ID).html(data[key].DisplayName));
                 }
             },
-            error: function(xhr){
+            error: function (xhr) {
                 alert(xhr.toString());
             }
         });
@@ -337,31 +360,50 @@
                            dataType: 'json',
                            async: false,
                            data: modelbjectToSend,
-                           success: function (success) {
-                               console.log(success);
+                           success: function (data) {
+                               //console.log(data);
                                //swal(success.ErrorMessage);
-                               swal({
-                                   title: "Nomination Submitted!",
-                                   text: "",
-                                   type: "info",
-                                   showCancelButton: false,
-                                   confirmButtonColor: "#88a364",
-                                   confirmButtonText: "Ok",
-                               },
-                               function () {
-                                   if (isConfirm) {
-                                       var managerId = $("#ManagerId").val();
-                                       window.location.href = '/Nomination/GetNominationList';
-                                   }
-                               });
+                           if(data.nominationExceed) {
+                                   swal({
+                                       title: "Error",
+                                       text: data.message,
+                                       showCancelButton: false,
+                                       confirmButtonColor: "#88a364",
+                                       confirmButtonText: "Ok",
+                                   },
+                             function () {
+                                 if (isConfirm) {
+                                     var managerId = $("#ManagerId").val();
+                                     window.location.href = '/Nomination/GetNominationList';
+                                 }
+                             });
+
+                           }
+                              else {
+                                   swal({
+                                       title: "Nomination Submitted!",
+                                       text: "",
+                                       type: "info",
+                                       showCancelButton: false,
+                                       confirmButtonColor: "#88a364",
+                                       confirmButtonText: "Ok",
+                                   },
+                              function () {
+                                  if (isConfirm) {
+                                      var managerId = $("#ManagerId").val();
+                                      window.location.href = '/Nomination/GetNominationList';
+                                  }
+                              });
+                               }
+                              
+                              
                            },
                            error: function (error) {
-                               if (error.responseText != null && error.responseText != undefined && error.responseText != '')
-                               {
+                               debugger;
+                               if (error.responseText != null && error.responseText != undefined && error.responseText != '') {
                                    swal("Error", error.responseText.replace(/['"]+/g, ''));
                                }
-                               else
-                               {
+                               else {
                                    swal("Error", "Oops! Something wrong happened..");
                                }
                            }
@@ -401,25 +443,49 @@
                        url: '@Url.Action("AddNomination", "Nomination")',
                        data: modelbjectToSend,
                        success: function (data) {
-                           swal({
-                               title: "Nomination Saved!",
-                               showCancelButton: false,
-                               confirmButtonColor: "#88a364",
-                               confirmButtonText: "Ok"
-                           },
-                           function () {
-                               if (isConfirm) {
-                                   var managerId = $("#ManagerId").val();
+                           if (data.nominationExceed) {
+                               swal({
+                                   title: "Error",
+                                   text: data.message,
+                                   showCancelButton: false,
+                                   confirmButtonColor: "#88a364",
+                                   confirmButtonText: "Ok"
+                               },
+                     function () {
+                         if (isConfirm) {
+                             var managerId = $("#ManagerId").val();
+                             window.location.href = '/Nomination/GetNominationList';
+                             @*//window.location.href = '@Url.Action("SavedNomination", "Nomination")';*@
+                             }
+                     });
+                       }
+                         else {
+                               swal({
+                                   title: "Nomination Saved!",
+                                   showCancelButton: false,
+                                   confirmButtonColor: "#88a364",
+                                   confirmButtonText: "Ok"
+                               },
+                          function () {
+                              if (isConfirm) {
+                                  var managerId = $("#ManagerId").val();
 
-                                   window.location.href = '/Nomination/GetNominationList';
-                                   @*//window.location.href = '@Url.Action("SavedNomination", "Nomination")';*@
-                               }
-                           });
+                                  window.location.href = '/Nomination/GetNominationList';
+                                  @*//window.location.href = '@Url.Action("SavedNomination", "Nomination")';*@
+                                  }
+                          });
+                           }
+                          
+                          
                        },
                        error: function (data) {
-                           alert("2");
-                           swal(data.ErrorMessage);
-                           swal("Error", "Oops! Something wrong happened..");
+                           debugger;
+                           if (data.responseText != null && data.responseText != undefined && data.responseText != '') {
+                               swal("Error", data.responseText.replace(/['"]+/g, ''));
+                           }
+                           else {
+                               swal("Error", "Oops! Something wrong happened..");
+                           }
                        }
                    });
                } else {

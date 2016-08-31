@@ -1,5 +1,7 @@
-﻿using System;
+﻿using Silicus.FrameWorx.Logger;
+using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.IO;
 using System.Linq;
 using System.Net;
@@ -11,10 +13,13 @@ namespace Silicus.UtilityContainer.HangFireBackgroundTasks.Services
 {
    public class EmailService
     {
+       
         public void SendEmail(string emailViewPath, List<string> ToEmailAddresses,string emailSubject)
         {
-            var fromAddress = new MailAddress("Indrajit.kadam@silicus.com", "Silicus Rewards and Recognition Team");
-           // const string fromPassword = "Godfather.1515";
+            ILogger _logger = new DatabaseLogger("name=LoggerDataContext", Type.GetType(string.Empty), (Func<DateTime>)(() => DateTime.UtcNow), string.Empty);
+            _logger.Log("EmailService-SendEmail");
+
+            var fromAddress = new MailAddress(ConfigurationManager.AppSettings["UserName"], "Silicus Rewards and Recognition Team");
             string subject = emailSubject;
             string body = string.Empty;
                 
@@ -25,36 +30,31 @@ namespace Silicus.UtilityContainer.HangFireBackgroundTasks.Services
 
             var smtp = new SmtpClient
             {
-                Host = "outlook.office365.com",
+                Host = "smtp.gmail.com",
                 Port = 587,
                 EnableSsl = true,
                 DeliveryMethod = SmtpDeliveryMethod.Network,
-                //UseDefaultCredentials = false,
-                //Credentials = new NetworkCredential(fromAddress.Address, fromPassword)
-                Credentials = new NetworkCredential("Indrajit.kadam@silicus.com", "Indra@123")
+                Credentials = new NetworkCredential(ConfigurationManager.AppSettings["UserName"], ConfigurationManager.AppSettings["Password"])
             };
 
             using (var message = new MailMessage() { Subject = subject, Body = body })
             {
                 message.From = fromAddress;
 
-                //foreach(string email in ToEmailAddresses)
-                //{
-                //    message.To.Add(email);
-                //}
-
-                foreach (string email in new List<string>() { "Indrajit.kadam@silicus.com"})
+                foreach (string email in ToEmailAddresses)
                 {
+                    // message.To.Add("Asha.Bhandare@silicus.com");
                     message.To.Add(email);
                 }
-
                 message.IsBodyHtml = true;
                 try
                 {
+                    _logger.Log("EmailService-SendEmail-try");
                     smtp.Send(message);
                 }
                 catch(Exception ex)
                 {
+                    _logger.Log("EmailService-SendEmail-"+ex.Message);
                     var errorMessage = ex.Message;
                 }
                 
