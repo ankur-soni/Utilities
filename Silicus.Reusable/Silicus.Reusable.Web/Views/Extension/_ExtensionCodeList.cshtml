@@ -1,9 +1,15 @@
-﻿@model IEnumerable<Silicus.FrameworxProject.Models.ExtensionSolution>
+﻿@using PagedList.Mvc;
+@model PagedList.IPagedList<Silicus.FrameworxProject.Models.ExtensionSolution>
+
+@*@model IEnumerable<Silicus.FrameworxProject.Models.ExtensionSolution>*@
 
 @foreach (var item in Model)
 {
     <div class="question-summary">
-        <h3><a href='@Url.Action("ExtensionDetail", "Extension",new { id = item.Id })'>@Html.DisplayFor(modelItem => item.MethodName)</a></h3>
+        <div>
+            <h3><a href='@Url.Action("ExtensionDetail", "Extension",new { id = item.Id })'>@Html.DisplayFor(modelItem => item.MethodName)</a></h3>
+        </div>
+        <h2>@Html.DisplayFor(modelItem => item.FrequentSearchedCount)</h2>
         <div class="truncate">@Html.DisplayFor(modelItem => item.Description)</div>
     </div>
 }

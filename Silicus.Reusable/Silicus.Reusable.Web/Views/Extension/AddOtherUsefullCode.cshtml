@@ -1,15 +1,19 @@
 ﻿@model Silicus.FrameworxProject.Models.OtherCode
 
 @{
-    ViewBag.Title = "AddExtensionCode";
+    ViewBag.Title = "addExtensionMethod";
 }
 <style>
+    .serachpanel {
+        margin-top: 1%;
+    }
+
     #extensionform {
         margin-top: 20px;
     }
 
     .form-group .single-line {
-        max-width: 87% !important;
+        max-width: 62.5% !important;
     }
 
     .panel-heading {
@@ -78,86 +82,82 @@
         font: .9em "Verdana", sans-serif;
         padding-bottom: .2em;
     }
+
+    #addExtensionDiv {
+        padding-bottom: 6%;
+    }
 </style>
+<div class="panel panel-primary serachpanel">
+    <div class="panel-heading">
+        <h3>Add OtherUsefull Code Here</h3>
+    </div>
+    <div class="panel-body">
+        @using (Html.BeginForm())
+        {
+            @Html.AntiForgeryToken()
 
+            <div class="form-horizontal">
+                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                <div class="form-group">
+                    @Html.LabelFor(model => model.MethodName, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @Html.EditorFor(model => model.MethodName, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.MethodName, "", new { @class = "text-danger" })
+                    </div>
+                </div>
 
-<div class="container listdiv">
-    <div class="row">
-        <div class="col-sm-12 col-xs-12 col-lg-12 col-md-12">
-            <div class="panel panel-default" id="extensionform">
-                <div class="panel-heading"><h4>Add Other Usefull Code Here</h4></div>
-                <div class="panel-body">
+                <div class="form-group">
+                    @Html.Label("Language", htmlAttributes: new { @class = "control-label col-md-2 required" })
+                    <div class="col-md-10">
+                        @Html.DropDownListFor(model => model.CodeTypeId, (MultiSelectList)ViewData["CodeTypes"], "Select Language", new { style = "color:black;width:100%", @class = "btn btn-default dropdown-toggle" })
+                        @Html.ValidationMessageFor(model => model.CodeTypeId, "", new { @class = "text-danger errormessage" })
+                    </div>
+                </div>
 
-                    @using (Html.BeginForm())
-            {
-                        @Html.AntiForgeryToken()
-
-                        <div class="form-horizontal">
-                            <hr />
-                            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-                            <div class="form-group">
-                                @Html.LabelFor(model => model.MethodName, htmlAttributes: new { @class = "control-label col-md-2 required" })
-                                <div class="col-md-10">
-                                    @Html.EditorFor(model => model.MethodName, new { htmlAttributes = new { @class = "form-control" }, id = "methodnametext" })
-                                    @Html.ValidationMessageFor(model => model.MethodName, "", new { @class = "text-danger" })
-                                </div>
-                            </div>
-
-                            <div class="form-group">
-                                @Html.Label("Language", htmlAttributes: new { @class = "control-label col-md-2 required" })
-                                <div class="col-md-10">
-                                    @Html.DropDownListFor(model => model.CodeTypeId, (MultiSelectList)ViewData["CodeTypes"], "Select Language", new { style = "color:black;width:100%", @class = "btn btn-default dropdown-toggle" })
-                                    @Html.ValidationMessageFor(model => model.CodeTypeId, "", new { @class = "text-danger errormessage" })
-                                </div>
-                            </div>
-
-                            <div class="form-group">
-                                @Html.LabelFor(model => model.Code, htmlAttributes: new { @class = "control-label col-md-2 required" })
-                                <div class="col-md-10">
-                                    @Html.TextAreaFor(model => model.Code, new { htmlAttributes = new { @class = "form-control" }, rows = "10", cols = "110", id = "codetext" })
-                                    @Html.ValidationMessageFor(model => model.Code, "", new { @class = "text-danger errormessage" })
-                                </div>
-                            </div>
-                            <div class="form-group" id="FormattedCode">
-                                @Html.Label("Your Code", htmlAttributes: new { @class = "control-label col-md-2" })
-                                <div class="col-md-10">
-                                    <pre class="prettyprint">
-                                    <code title="The caption for this block">
+                <div class="form-group">
+                    @Html.LabelFor(model => model.Code, htmlAttributes: new { @class = "control-label col-md-2 required" })
+                    <div class="col-md-10">
+                        @Html.TextAreaFor(model => model.Code, new { htmlAttributes = new { @class = "form-control" }, rows = "10", cols = "110", id = "codetext" })
+                        @Html.ValidationMessageFor(model => model.Code, "", new { @class = "text-danger errormessage" })
+                    </div>
+                </div>
+                <div class="form-group" id="FormattedCode" style="display:none">
+                    @Html.Label("Your Code", htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        <pre class="prettyprint">
+                        <code title="The caption for this block">
                                             
-                                        </code>
-                                    </pre>
-                                </div>
-                            </div>
+                            </code>
+                        </pre>
+                    </div>
+                </div>
 
-                            <div class="form-group">
-                                @Html.LabelFor(model => model.Description, htmlAttributes: new { @class = "control-label col-md-2" })
-                                <div class="col-md-10">
-                                    @Html.TextAreaFor(model => model.Description, new { htmlAttributes = new { @class = "form-control" }, rows = "6", cols = "110", id = "Descriptiontext" })
-                                    @Html.ValidationMessageFor(model => model.Description, "", new { @class = "text-danger" })
-                                </div>
-                            </div>
+                <div class="form-group">
+                    @Html.LabelFor(model => model.Description, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @Html.TextAreaFor(model => model.Description, new { htmlAttributes = new { @class = "form-control" }, rows = "6", cols = "110", id = "Descriptiontext" })
+                        @Html.ValidationMessageFor(model => model.Description, "", new { @class = "text-danger" })
+                    </div>
+                </div>
 
-                            <div class="form-group">
-                                @Html.LabelFor(model => model.ExampleUsage, htmlAttributes: new { @class = "control-label col-md-2" })
-                                <div class="col-md-10">
-                                    @Html.TextAreaFor(model => model.ExampleUsage, new { htmlAttributes = new { @class = "form-control" }, rows = "6", cols = "110", id = "ExampleUsagetext" })
-                                    @Html.ValidationMessageFor(model => model.ExampleUsage, "", new { @class = "text-danger" })
-                                </div>
-                            </div>
+                <div class="form-group">
+                    @Html.LabelFor(model => model.ExampleUsage, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @Html.TextAreaFor(model => model.ExampleUsage, new { htmlAttributes = new { @class = "form-control" }, rows = "6", cols = "110", id = "ExampleUsagetext" })
+                        @Html.ValidationMessageFor(model => model.ExampleUsage, "", new { @class = "text-danger" })
+                    </div>
+                </div>
 
-                            <div class="form-group">
-                                <div class="col-md-offset-2 col-md-10">
-                                    <input type="submit" value="Submit" class="btn btn-primary" />
-                                </div>
-                            </div>
-                        </div>
-                    }
+
+                <div class="form-group">
+                    <div class="col-md-offset-2 col-md-10">
+                        <input type="submit" value="Submit" class="btn btn-primary" />
+                    </div>
                 </div>
             </div>
-        </div>
+        }
     </div>
 </div>
-
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
 }
@@ -165,12 +165,19 @@
 <script src="https://cdn.rawgit.com/google/code-prettify/master/loader/run_prettify.js"></script>
 <script>
     $(document).ready(function () {
-        $('#FormattedCode').css("display", "none");
-        $('#codetext').change(function () {
+
+        $('#codetext').keyup(function () {
             $('#FormattedCode').css("display", "block");
             $('pre').addClass("prettyprint");
             var value = $(this).val();
             $("code").text(value);
+
+            if ($('#codetext').val() == "") {
+                $('#FormattedCode').css("display", "none");
+            }
         });
+
     });
+
+
 </script>

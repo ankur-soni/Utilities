@@ -5,20 +5,23 @@
     ViewBag.Title = "ExtenisonCodeList";
 }
 <style>
-    .serachpanel {
-        margin-top: 1%;
+    .serachpanel
+    {   
+        margin-top:1%;
     }
 
-    #serachinput {
-        float: right;
-        width: 349px;
+    #serachinput
+    {
+        float:right;
+        width:349px;
     }
+
 </style>
-<div class="panel panel-primary serachpanel">
+<div class="panel panel-primary serachpanel" >
     <div class="panel-heading">
         <div class="row">
             <div class="col-md-4 col-lg-4 col-sm-4">
-                <h3 class="searchHeading">Search Extension Methods</h3>
+                <h2 class="searchHeading">Search Extension Methods</h2>
             </div>
             <div class="col-md-8 col-lg-8 col-sm-8">
                 <div class="navbar-form" id="serachinput">
@@ -42,35 +45,25 @@
                     <h1 id="h-all-questions">All Extension Methods</h1>
 
                     <div id="tabs">
-                        <a id="newest" class="youarehere" href="@Url.Action("ShowExtensionCode", "Extension", new { sortOrder = ViewBag.DateSortParm })" data-nav-xhref="" title="The most recently added Extension Code" data-value="newest" data-shortcut="N">
+                        <a id="newest" class="youarehere" onclick="getNewestExtension()" href="#" data-nav-xhref="" title="The most recently asked questions" data-value="newest" data-shortcut="N">
                             Newest
                         </a>
-                        <a id="frequent" href="@Url.Action("ShowExtensionCode", "Extension", new { sortOrder = ViewBag.FrequentSearchedCountSortParm })" data-nav-xhref="" title="Most Frequent Searched Extension Code" data-value="frequent" data-shortcut="F">
+                        <a id="frequent" href="#" onclick="getfrequentSearched()" data-nav-xhref="" title="Questions with the most links" data-value="frequent" data-shortcut="F">
                             Frequent Searched
                         </a>
                     </div>
                 </div>
 
                 <div id="questions">
-                    @foreach (var item in Model)
-                    {
-                        <div class="question-summary">
-                            <div>
-                                <h3><a href='@Url.Action("ExtensionDetail", "Extension",new { id = item.Id })'>@Html.DisplayFor(modelItem => item.MethodName)</a></h3>
-                            </div>
-
-                            <div class="truncate">@Html.DisplayFor(modelItem => item.Description)</div>
-                        </div>
-                    }
+                    @Html.Partial("_ExtensionCodeList")
                 </div>
-                Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
-                @Html.PagedListPager(Model, page => Url.Action("ShowExtensionCode", new { page, sortOrder = ViewBag.CurrentSort }))
-
+                <div class="pagenumber">
+                    @Html.PagedListPager(Model, page => Url.Action("ShowExtensionCode", new { page }))
+                </div>
             </div>
         </div>
     </div>
 </div>
-<script src="~/Scripts/jquery-1.10.2.js"></script>
 <script>
     function getdetail() {
 
@@ -82,8 +75,26 @@
             $("#questions").html(data);
         });
     }
-    $(document).ready(function () {
-        var url = window.location.href;
-        if()
-    });
+
+    function getfrequentSearched() {
+        $("#newest").removeClass('youarehere');
+        $("#frequent").addClass('youarehere');
+
+        var url = "/Extension/FrequentSearchedExtension";
+        $.get(url,null, function (data) {
+
+            $("#questions").html(data);
+        });
+    }
+
+    function getNewestExtension() {
+        $("#newest").addClass('youarehere');
+        $("#frequent").removeClass('youarehere');
+
+        var url = "/Extension/newestExtension";
+        $.get(url, null, function (data) {
+
+            $("#questions").html(data);
+        });
+    }
 </script>

@@ -1,4 +1,4 @@
-﻿@model Silicus.FrameworxProject.Models.OtherCode
+﻿@model Silicus.FrameworxProject.Models.ExtensionSolution
 
 @{
     ViewBag.Title = "addExtensionMethod";
@@ -11,49 +11,38 @@
     #extensionform {
         margin-top: 20px;
     }
-
-    .form-group .single-line {
-        max-width: 62.5% !important;
-    }
-
+    .form-group .single-line{
+        max-width:62.5% !important;
+                      }
     .panel-heading {
         background-color: #08B1F4 !important;
     }
-
-        .panel-heading h4 {
+    .panel-heading h4{
             text-align: center;
-        }
+    }
 
     #codetext {
         max-width: 100% !important;
         resize: none;
         resize: vertical;
     }
-
     #Descriptiontext {
         max-width: 100% !important;
         resize: none;
         resize: vertical;
     }
-
     #ExampleUsagetext {
         max-width: 100% !important;
         resize: none;
         resize: vertical;
     }
-
-    #methodnametext {
-        width: 500px;
+    #methodnametext{
+        width:500px;
     }
-
-    .errormessage {
-        display: block;
+    .errormessage{
+        display:block;
     }
-
-    .required:after {
-        content: " *";
-        color: red;
-    }
+    .required:after { content:" *"; color:red; }
 
     .displaycode {
         background-color: #EFF0F1;
@@ -82,14 +71,13 @@
         font: .9em "Verdana", sans-serif;
         padding-bottom: .2em;
     }
-
-    #addExtensionDiv {
-        padding-bottom: 6%;
+    #addExtensionDiv{
+        padding-bottom:6%;
     }
 </style>
 <div class="panel panel-primary serachpanel">
     <div class="panel-heading">
-        <h3>Edit OtherUsefull Code Here</h3>
+        <h3>Add Extension Code Here</h3>
     </div>
     <div class="panel-body">
         @using (Html.BeginForm())
@@ -125,7 +113,7 @@
                     @Html.Label("Your Code", htmlAttributes: new { @class = "control-label col-md-2" })
                     <div class="col-md-10">
                         <pre class="prettyprint">
-                        <code title="The caption for this block">
+                            <code title="The caption for this block">
                                             
                             </code>
                         </pre>
@@ -151,7 +139,7 @@
 
                 <div class="form-group">
                     <div class="col-md-offset-2 col-md-10">
-                        <input type="submit" value="Submit" class="btn btn-primary" />
+                        <input type="submit" value="Create" class="btn btn-primary" />
                     </div>
                 </div>
             </div>
@@ -171,12 +159,12 @@
             $('pre').addClass("prettyprint");
             var value = $(this).val();
             $("code").text(value);
-
+            
             if ($('#codetext').val() == "") {
                 $('#FormattedCode').css("display", "none");
             }
         });
-
+        
     });
 
 

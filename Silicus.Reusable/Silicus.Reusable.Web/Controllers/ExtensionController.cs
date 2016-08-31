@@ -28,7 +28,7 @@ namespace Silicus.FrameworxProject.Web.Controllers
         public ActionResult AddExtensionCode()
         {
             ViewData["CodeTypes"] = new MultiSelectList(_extensionCodeService.GetAllCodeTypes(), "Id", "Name");
-            return View();
+            return View("addExtensionMethod");
         }
 
         [HttpPost]
@@ -131,20 +131,40 @@ namespace Silicus.FrameworxProject.Web.Controllers
             }
         }
 
-        public ActionResult ShowExtensionCode(int? page)
+        public ActionResult ShowExtensionCode(string sortOrder, int? page)
         {
-            var ExtensionList = _extensionCodeService.GetAllExtensionSolution().ToList();
+            ViewBag.CurrentSort = sortOrder;
+            ViewBag.DateSortParm = sortOrder == "date_desc" ?  "Date" : "date_desc";
+            ViewBag.FrequentSearchedCountSortParm = sortOrder == "count_desc" ?  "count" : "count_desc" ;
 
-            var list = ExtensionList.OrderByDescending(x => x.CreationDate).ToPagedList(page ?? 1, 3);
-            return View(list);
-
+            var extensioncodeList = _extensionCodeService.GetAllExtensionSolution().ToList();
+            switch (sortOrder)
+            {
+                case "count":
+                    extensioncodeList = extensioncodeList.OrderBy(s => s.FrequentSearchedCount).ToList();
+                    break;
+                case "count_desc":
+                    extensioncodeList = extensioncodeList.OrderByDescending(s => s.FrequentSearchedCount).ToList();
+                    break;
+                case "Date":
+                    extensioncodeList = extensioncodeList.OrderBy(s => s.CreationDate).ToList();
+                    break;
+                case "date_desc":
+                    extensioncodeList = extensioncodeList.OrderByDescending(s => s.CreationDate).ToList();
+                    break;
+                default:
+                    extensioncodeList = extensioncodeList.OrderByDescending(s => s.CreationDate).ToList();
+                    break;
+            }
+            return View(extensioncodeList.ToList().ToPagedList(page ?? 1, 3));
         }
 
-
-        public PartialViewResult FrequentSearchedExtension()
+        public PartialViewResult FrequentSearchedExtension(int? page)
         {
             var ExtensionList = _extensionCodeService.GetAllExtensionSolution().ToList();
-            var list = ExtensionList.OrderByDescending(x => x.FrequentSearchedCount).ToList();
+            //var list = ExtensionList.OrderByDescending(x => x.FrequentSearchedCount).ToList();
+
+            var list = ExtensionList.OrderByDescending(x => x.FrequentSearchedCount).ToPagedList(page ?? 1, 3);
             return PartialView("_ExtensionCodeList",list);
         }
         
@@ -152,7 +172,7 @@ namespace Silicus.FrameworxProject.Web.Controllers
         public PartialViewResult newestExtension(int? page)
         {
             var ExtensionList = _extensionCodeService.GetAllExtensionSolution().ToList();
-            var list = ExtensionList.OrderByDescending(x => x.CreationDate).ToPagedList(page ?? 1, 3);
+            var list = ExtensionList.OrderByDescending(x => x.CreationDate).ToPagedList(page ?? 1, 6);
             return PartialView("_ExtensionCodeList", list);
         }
 
@@ -165,7 +185,7 @@ namespace Silicus.FrameworxProject.Web.Controllers
             return View(result);
         }
 
-        public ActionResult SearchExtensionMethodByTitle(string searchString)
+        public ActionResult SearchExtensionMethodByTitle(string searchString,int? page)
         {
             searchString = searchString.ToLower();
             var ExtensionMethodList = _extensionCodeService.GetAllExtensionSolution().ToList();
@@ -173,7 +193,7 @@ namespace Silicus.FrameworxProject.Web.Controllers
 
             if (ExtensionMethodList.Count() != 0)
             {
-                return View("SearchExtensionMethodByTitle", ExtensionMethodList.ToList());
+                return View("SearchExtensionMethodByTitle", ExtensionMethodList.ToPagedList(page ?? 1, 3));
             }
             else
             {
@@ -182,11 +202,32 @@ namespace Silicus.FrameworxProject.Web.Controllers
             }
         }
 
-        public ActionResult ShowOtherCode(int? page)
+        public ActionResult ShowOtherCode(string sortOrder , int? page)
         {
-            var OtherCodeList = _extensionCodeService.GetAllOtherCodeList().ToList();
-            var list = OtherCodeList.OrderByDescending(x => x.CreationDate).ToPagedList(page ?? 1, 3);
-            return View(list);
+            ViewBag.CurrentSort = sortOrder;
+            ViewBag.DateSortParm = sortOrder == "date_desc" ? "Date" : "date_desc";
+            ViewBag.FrequentSearchedCountSortParm = sortOrder == "count_desc" ? "count" : "count_desc";
+
+            var othercodeList = _extensionCodeService.GetAllOtherCodeList().ToList();
+            switch (sortOrder)
+            {
+                case "count":
+                    othercodeList = othercodeList.OrderBy(s => s.FrequentSearchedCount).ToList();
+                    break;
+                case "count_desc":
+                    othercodeList = othercodeList.OrderByDescending(s => s.FrequentSearchedCount).ToList();
+                    break;
+                case "Date":
+                    othercodeList = othercodeList.OrderBy(s => s.CreationDate).ToList();
+                    break;
+                case "date_desc":
+                    othercodeList = othercodeList.OrderByDescending(s => s.CreationDate).ToList();
+                    break;
+                default:
+                    othercodeList = othercodeList.OrderByDescending(s => s.CreationDate).ToList();
+                    break;
+            }
+            return View(othercodeList.ToList().ToPagedList(page ?? 1, 3));
         }
 
         public ActionResult ShowOtherCodeMethodDetail(int id)
@@ -197,29 +238,29 @@ namespace Silicus.FrameworxProject.Web.Controllers
             return View(result);
         }
 
-        public PartialViewResult OtherCodeFrequentSearchedExtension()
+        public PartialViewResult OtherCodeFrequentSearched(int? page)
         {
-            var ExtensionList = _extensionCodeService.GetAllExtensionSolution().ToList();
-            var list = ExtensionList.OrderByDescending(x => x.FrequentSearchedCount).ToList();
+            var otherCodeList = _extensionCodeService.GetAllOtherCodeList().ToList();
+            var list = otherCodeList.OrderByDescending(x => x.FrequentSearchedCount).ToPagedList(page ?? 1, 3);
             return PartialView("_OtherCodeList", list);
         }
 
 
-        public PartialViewResult OtherCodenewestExtension(int? page)
+        public PartialViewResult OtherCodenewest(int? page)
         {
-            var ExtensionList = _extensionCodeService.GetAllExtensionSolution().ToList();
-            var list = ExtensionList.OrderByDescending(x => x.CreationDate).ToPagedList(page ?? 1, 3);
+            var otherCodeList = _extensionCodeService.GetAllOtherCodeList().ToList();
+            var list = otherCodeList.OrderByDescending(x => x.CreationDate).ToPagedList(page ?? 1, 3);
             return PartialView("_OtherCodeList", list);
         }
 
-        public ActionResult SearchOtherCodeMethodByTitle(string searchString)
+        public ActionResult SearchOtherCodeMethodByTitle(string searchString, int? page)
         {
             searchString = searchString.ToLower();
             var CodeMethodList = _extensionCodeService.GetAllOtherCodeList().ToList();
             CodeMethodList = CodeMethodList.Where(s => s.MethodName.ToLower().Contains(searchString)).ToList();
             if (CodeMethodList.Count() != 0)
             {
-                return View(CodeMethodList.ToList());
+                return View(CodeMethodList.ToPagedList(page ?? 1, 3));
             }
             else
             {

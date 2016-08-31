@@ -307,6 +307,9 @@
     <Content Include="Views\FrameworxProject\SearchComponentMessage.cshtml" />
     <Content Include="Views\Extension\_ExtensionCodeList.cshtml" />
     <Content Include="Views\Extension\_OtherCodeList.cshtml" />
+    <Content Include="Views\Extension\ExtenisonCodeList.cshtml" />
+    <Content Include="Views\Extension\addExtensionMethod.cshtml" />
+    <Content Include="Views\Extension\TestShowExtensionCode.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

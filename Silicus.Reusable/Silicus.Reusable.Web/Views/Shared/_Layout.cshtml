@@ -64,6 +64,16 @@
             left: 50%;
             bottom: 1px;
         }
+        .customdivmenu li a{
+            background-color:#005c99;
+            color:white;
+        }
+        .customdivmenu li a:hover{
+            color:black;
+        }
+       li .active{
+            background-color:#99d6ff;
+        }
     </style>
 </head>
 <body>
@@ -147,9 +157,9 @@
 
 
     </div>
-    @*@Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/bundles/bootstrap")
-    @RenderSection("scripts", required: true)*@
+    @RenderSection("scripts", required: false)
 
     <script src="~/Scripts/jquery-1.10.2.min.js"></script>
     <script>
