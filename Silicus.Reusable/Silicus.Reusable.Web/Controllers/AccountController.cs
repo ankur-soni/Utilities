@@ -1,5 +1,10 @@
-﻿using System.Web;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Web;
 using System.Web.Mvc;
+
+// The following using statements were added for this sample.
 using Microsoft.Owin.Security.Cookies;
 using Microsoft.Owin.Security.OpenIdConnect;
 using Microsoft.Owin.Security;
@@ -13,42 +18,20 @@ namespace Silicus.Reusable.Web.Controllers
             // Send an OpenID Connect sign-in request.
             if (!Request.IsAuthenticated)
             {
-                HttpContext.GetOwinContext().Authentication.Challenge(new AuthenticationProperties { RedirectUri = "/" },
-                    OpenIdConnectAuthenticationDefaults.AuthenticationType);
+                HttpContext.GetOwinContext().Authentication.Challenge(new AuthenticationProperties { RedirectUri = "/" }, OpenIdConnectAuthenticationDefaults.AuthenticationType);
             }
         }
-
         public void SignOut()
         {
-            string callbackUrl = Url.Action("SignOutCallback", "Account", routeValues: null, protocol: Request.Url.Scheme);
-
-            string[] cookies = HttpContext.Request.Cookies.AllKeys;
-            //foreach (string cookie in cookies)
-            //{
-            //    try
-            //    {
-            //        HttpContext.Response.Cookies[cookie].Expires = DateTime.Now.AddDays(-1);
-            //    }
-            //    catch (Exception ex)
-            //    {
-            //        // Trace Error
-            //    }
-            //}
-
+            // Send an OpenID Connect sign-out request.
             HttpContext.GetOwinContext().Authentication.SignOut(
-                new AuthenticationProperties { RedirectUri = callbackUrl },
                 OpenIdConnectAuthenticationDefaults.AuthenticationType, CookieAuthenticationDefaults.AuthenticationType);
         }
 
-        public ActionResult SignOutCallback()
+        public void EndSession()
         {
-            if (Request.IsAuthenticated)
-            {
-                // Redirect to home page if the user is authenticated.
-                return RedirectToAction("Index", "Home");
-            }
-
-            return View();
+            // If AAD sends a single sign-out message to the app, end the user's session, but don't redirect to AAD for sign out.
+            HttpContext.GetOwinContext().Authentication.SignOut(CookieAuthenticationDefaults.AuthenticationType);
         }
     }
 }

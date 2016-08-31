@@ -12,13 +12,13 @@
 
     th {
     }
-        
+
     .page-heading {
-        margin-left:0%;
+        margin-left: 0%;
     }
 
-    .navbar-minimalize{
-    margin-left:35%;
+    .navbar-minimalize {
+        margin-left: 35%;
     }
 </style>
 <div class="row border-bottom">
@@ -46,7 +46,7 @@
                         <label>
                             Review For:
                             @Html.DisplayFor(modelItem => modelItem.userName)
-                            
+
                         </label>
                     </td>
                 </tr>
@@ -57,7 +57,7 @@
                     <td>
                         @Html.DisplayFor(modelItem => modelItem.projectOrDepartment)
                     </td>
-  
+
                 </tr>
                 <tr>
                     <td>
@@ -116,61 +116,61 @@
                         {
                             <tr>
                                 <td class="col-md-3">@item.Title</td>
-                             
+
                                 @*<td class="col-md-3">*@
-                                    @{
-                                        var commentObj = Model.ManagerComments.Where(model => model.CriteriaId == @item.Id).FirstOrDefault();
-                                        if (commentObj != null && !string.IsNullOrEmpty(commentObj.Comment))
-                                        {
-                                            <td class="more col-md-3" style="word-break:break-all">@commentObj.Comment</td>
+                                @{
+                                    var commentObj = Model.ManagerComments.Where(model => model.CriteriaId == @item.Id).FirstOrDefault();
+                                    if (commentObj != null && !string.IsNullOrEmpty(commentObj.Comment))
+                                    {
+                                        <td class="more col-md-3" style="word-break:break-all">@commentObj.Comment</td>
 
-                                        }
-                                        else
-                                        {
-                                            <td class="more" style="word-break:break-all"></td>
-                                        }
                                     }
-                                    @*<td class="col-md-3">*@
-                                    @{
-                                        var reviewObj = reviewer.Where(model => model.CriteriaID == @item.Id).FirstOrDefault();
-                                        if (reviewObj != null && !string.IsNullOrEmpty(reviewObj.Comment))
-                                        {
-                                            <td class="more col-md-3" style="word-break:break-all">@reviewObj.Comment</td>
+                                    else
+                                    {
+                                        <td class="more" style="word-break:break-all"></td>
+                                    }
+                                }
+                                @*<td class="col-md-3">*@
+                                @{
+                                    var reviewObj = reviewer.Where(model => model.CriteriaID == @item.Id).FirstOrDefault();
+                                    if (reviewObj != null && !string.IsNullOrEmpty(reviewObj.Comment))
+                                    {
+                                        <td class="more col-md-3" style="word-break:break-all">@reviewObj.Comment</td>
 
-                                        }
-                                        else
-                                        {
-                                            <td class="more" style="word-break:break-all"></td>
-                                        }
                                     }
+                                    else
+                                    {
+                                        <td class="more" style="word-break:break-all"></td>
+                                    }
+                                }
 
                                 <td class="col-md-2 ">
                                     @{
-                            if (reviewObj != null && !reviewObj.Credit != null)
-                            {
-                                <div class="switch">
-                                    <div class="onoffswitch">
-                                        @if (reviewObj.Credit == true)
+                                        if (reviewObj != null && !reviewObj.Credit != null)
                                         {
-                                            creditCount++;
-                                            <input type="checkbox" value="true" length="0" disabled="disabled" class="onoffswitch-checkbox" id='example @reviewObj.Id' checked>
-                                        }
-                                        else
-                                        {
-                                            <input type="checkbox" value="true" length="0" disabled="disabled" class="onoffswitch-checkbox" id='example @reviewObj.Id'>
-                                        }
+                                            <div class="switch">
+                                                <div class="onoffswitch">
+                                                    @if (reviewObj.Credit == true)
+                                                    {
+                                                        creditCount++;
+                                                        <input type="checkbox" value="true" length="0" disabled="disabled" class="onoffswitch-checkbox" id='example @reviewObj.Id' checked>
+                                                    }
+                                                    else
+                                                    {
+                                                        <input type="checkbox" value="true" length="0" disabled="disabled" class="onoffswitch-checkbox" id='example @reviewObj.Id'>
+                                                    }
 
-                                        <label class="onoffswitch-label" for="example @reviewObj.Id" style="cursor:not-allowed;">
-                                            <span class="onoffswitch-inner"></span>
-                                            <span class="onoffswitch-switch"></span>
-                                        </label>
-                                    </div>
-                                </div>
-                            }
+                                                    <label class="onoffswitch-label" for="example @reviewObj.Id" style="cursor:not-allowed;">
+                                                        <span class="onoffswitch-inner"></span>
+                                                        <span class="onoffswitch-switch"></span>
+                                                    </label>
+                                                </div>
+                                            </div>
+                                        }
                                     }
                                 </td>
                             </tr>
-                        }
+                                        }
 
                         <tr>
                             <td align="right" colspan="3" style="font-weight:bold">
@@ -184,32 +184,31 @@
                 </table>
             </div>
             <div class="row">&nbsp;</div>
+                                        }
+
+                                        <div class="row">&nbsp;</div>
+
+                                        <div class="form-group">
+                                            <div style="text-align:center;width:80%;">
+                                                @*<input type="button" value="Back" class="btn btn-primary back btnSameSize" onclick="location.href='#'"/>*@
+                                                <input type="button" value="Back" class="btn btn-primary btnSameSize " onclick="location.href='@Url.Action("ReviewFeedbackList", "Review")'" />
+                                                <input type="button" value="Shortlist" class="btn btn-primary shortlist btnSameSize" onclick="location.href='#'"
+                                                       @{ if (Model.IsShortlisted || Model.IsWinner) { @: disabled="disabled"
+                                                                                    } } />
+                                                <input type="button" value="Mark Winner" class="btn btn-primary winner btnSameSize" onclick="location.href='#'"
+                                                       @{ if (Model.IsWinner) { @: disabled="disabled"
+                                                                             } } />
+                                            </div>
+                                        </div>
+    if (ViewBag.NominationLockStatus)
+    {
+        <div style="display:none" id="allow-shortlist">true</div>
+    }
+    else
+    {
+        <div style="display:none" id="allow-shortlist">false</div>
         }
 
-        <div class="row">&nbsp;</div>
-
-        <div class="form-group">
-            <div style="text-align:center;width:80%;">
-                @*<input type="button" value="Back" class="btn btn-primary back btnSameSize" onclick="location.href='#'"/>*@
-                <input type="button" value="Back" class="btn btn-primary btnSameSize " onclick="location.href='@Url.Action("ReviewFeedbackList", "Review")'" />
-                <input type="button" value="Shortlist" class="btn btn-primary shortlist btnSameSize" onclick="location.href='#'"
-                     @{  
-                         if (Model.IsShortlisted || Model.IsWinner) 
-                             {
-                                 @: disabled="disabled"
-                             }
-                      }
-                />
-                <input type="button" value="Mark Winner" class="btn btn-primary winner btnSameSize" onclick="location.href='#'"
-                @{
-                    if (Model.IsWinner)
-                      {  
-                        @: disabled="disabled"
-                      }
-                 }
-               />
-            </div>
-        </div>
     }
 </div>
 
@@ -230,14 +229,14 @@
 
 
     $(document).ready(function () {
-        @*$('.back').click(function () { 
+        @*$('.back').click(function () {
             window.location.href = '@Url.Action("ReviewFeedbackList", "Review")';
         },*@
         $('.shortlist').click(function () {
             debugger;
-            var isLocked = @Html.Raw(Json.Encode(Model.IsLocked));
-            if(isLocked==false)
-            {
+            @*var isLocked = @Html.Raw(Json.Encode(Model.IsLocked));*@
+            var isLocked = $("div #allow-shortlist").text();
+            if (isLocked == false) {
                 sweetAlert("Please lock the nomination from dashboard before proceed.");
                 return false;
             }
@@ -340,9 +339,9 @@
             //    }
             //});
 
-            var isLocked = @Html.Raw(Json.Encode(Model.IsLocked));
-            if(isLocked==false)
-            {
+            @*var isLocked = @Html.Raw(Json.Encode(Model.IsLocked));*@
+            var isLocked = $("div #allow-shortlist").text();
+            if (isLocked == false) {
                 sweetAlert("Please lock the nomination from dashboard before proceed.");
                 return false;
             }
@@ -358,13 +357,11 @@
                 animation: "slide-from-top",
                 inputPlaceholder: "To be shared across the company",
             },
-            function (inputValue)
-            {
+            function (inputValue) {
                 if (inputValue === false) {
 
                 }
-                else if (inputValue === "")
-                {
+                else if (inputValue === "") {
                     swal.showInputError("You need to write something!");
                     return false
                 }

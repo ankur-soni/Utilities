@@ -2,6 +2,8 @@
 using AttributeRouting.Web.Mvc;
 using Silicus.Encourage.Services;
 using Silicus.Encourage.Services.Interface;
+using Silicus.FrameWorx.Logger;
+
 namespace Silicus.EncourageWithAzureAd.Web.API
 {
 
@@ -9,22 +11,24 @@ namespace Silicus.EncourageWithAzureAd.Web.API
     {
         private INominationService _nominationService;
         //private IReviewService _reviewService;
-        public NominationApiController(INominationService nominationService )
+        private readonly ILogger _logger;
+        public NominationApiController(INominationService nominationService,ILogger logger)
         {
             _nominationService = nominationService;
+            _logger = logger;
             //_reviewService = reviewService;
         }
-
-        [HttpPost, AttributeRouting.Web.Mvc.Route("lock")]
+       [HttpGet]
         public bool LockNominations()
         {
+            _logger.Log("NominationApi-LockNominations");
             return _nominationService.LockNominations();
         }
-
-        //[HttpPost, AttributeRouting.Web.Mvc.Route("unlock")]
-        //public bool UnLockReview()
-        //{
-        //    return _nominationService.UnLockNominations();
-        //}
-     }
+        [HttpGet]
+        public bool UnLockNominations()
+        {
+            _logger.Log("NominationApi-UnLockNominations");
+            return _nominationService.UnLockNominations();
+        }
+    }
 }

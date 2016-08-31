@@ -36,5 +36,6 @@ namespace Silicus.Encourage.Services.Interface
         bool IsNominationLocked();
         bool UnLockNominations();
         int GetNominationCountByManagerId(int managerId, DateTime startDate, DateTime endDate);
+        bool GetNominationLockStatus();
     }
 }

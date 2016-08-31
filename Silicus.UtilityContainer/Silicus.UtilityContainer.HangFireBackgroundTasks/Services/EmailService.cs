@@ -43,7 +43,8 @@ namespace Silicus.UtilityContainer.HangFireBackgroundTasks.Services
 
                 foreach (string email in ToEmailAddresses)
                 {
-                    message.To.Add("Asha.Bhandare@silicus.com");
+                    // message.To.Add("Asha.Bhandare@silicus.com");
+                    message.To.Add(email);
                 }
                 message.IsBodyHtml = true;
                 try

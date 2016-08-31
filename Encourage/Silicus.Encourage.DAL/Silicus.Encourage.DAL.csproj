@@ -67,6 +67,7 @@
     <Compile Include="EncourageDatabaseContext.cs" />
     <Compile Include="EntityConfigurations\AwardCriteriaMap.cs" />
     <Compile Include="EntityConfigurations\AwardMap.cs" />
+    <Compile Include="EntityConfigurations\ConfigurationMap.cs" />
     <Compile Include="EntityConfigurations\CriteriaMap.cs" />
     <Compile Include="EntityConfigurations\FrequencyMasterMap.cs" />
     <Compile Include="EntityConfigurations\ManagerCommentMap.cs" />

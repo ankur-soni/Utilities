@@ -32,7 +32,7 @@
 
 <div class="wrapper wrapper-content animated fadeInRight">
 
-    @if (Model.IsLocked)
+    @if (ViewBag.NominationLockStatus)
     {
         <span class="text-danger" style="font-size:20px;margin-left:7%">The nominations period was closed..</span>
     }
@@ -145,7 +145,15 @@
                 <div class="form-group row">
                     <div style="text-align:center;width:100%;">
                         <input type="button" name="submit" value="Save Draft" id="savebutton" class="btn btn-primary btnSameSize" onclick="return checkValidationOnSaveDraft();" />
-                        <input type="button" name="submit" value="Submit" id="submitButton" class="btn btn-primary btnSameSize" onclick="return checkValidationOnSubmit();" />
+                        <input type="button" name="submit" value="Submit" id="submitButton" class="btn btn-primary btnSameSize" onclick="return checkValidationOnSubmit();" 
+                           @{ 
+                               if (ViewBag.NominationLockStatus)
+                               {
+                                   @: disabled="disabled";
+                                   @: title="Nominations are locked"
+                               }
+                           }
+                               />
                         <input type="button" value="Cancel" class="btn btn-primary btnSameSize" onclick="location.href='@Url.Action("Index", "Home")'" />
                     </div>
                 </div>

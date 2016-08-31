@@ -89,7 +89,7 @@ namespace Silicus.EncourageWithAzureAd.Web.Controllers
             _logger.Log("Nomination-AddNomination-GET");
             var userEmailAddress = User.Identity.Name;
             ViewBag.Awards = new SelectList(_awardService.GetAllAwards(), "Id", "Name");
-
+            ViewBag.NominationLockStatus = _nominationService.GetNominationLockStatus();
             var projects = _awardService.GetProjectsUnderCurrentUserAsManager(userEmailAddress);
 
             if (projects.Any())
@@ -229,7 +229,8 @@ namespace Silicus.EncourageWithAzureAd.Web.Controllers
             _logger.Log("Nomination-EditSavedNomination-GET");
             var savedNomination = _nominationService.GetNomination(nominationId);
             var nominationViewModel = new NominationViewModel();
-
+            ViewBag.ReviewLockStatus = _reviewService.GetReviewLockStatus();
+            ViewBag.NominationLockStatus = _nominationService.GetNominationLockStatus();
             // var userEmailAddress = Session["UserEmailAddress"] as string;
             var userEmailAddress = User.Identity.Name;
             ViewBag.Awards = new SelectList(_awardService.GetAllAwards(), "Id", "Name");
@@ -660,6 +661,7 @@ namespace Silicus.EncourageWithAzureAd.Web.Controllers
         public ActionResult ReviewNominations()
         {
             _logger.Log("Nomination-ReviewNominations-GET");
+            ViewBag.ReviewLockStatus = _reviewService.GetReviewLockStatus();
             // var nominations = _nominationService.GetAllSubmitedNonreviewedNominations(_nominationService.GetReviewerIdOfCurrentNomination( Session["UserEmailAddress"] as string));
             var reviewerId = _nominationService.GetReviewerIdOfCurrentNomination(User.Identity.Name);
             var reviewNominations = new List<NominationListViewModel>();

@@ -1,4 +1,5 @@
 ﻿using Silicus.Encourage.Services.Interface;
+using Silicus.FrameWorx.Logger;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,20 +12,24 @@ namespace Silicus.EncourageWithAzureAd.Web.API
     public class ReviewNominationApiController : ApiController
     {
         private IReviewService _reviewService;
-        public ReviewNominationApiController(IReviewService reviewService)
+        private readonly ILogger _logger;
+        public ReviewNominationApiController(IReviewService reviewService,ILogger logger)
         {
             _reviewService = reviewService;
+            _logger = logger;
         }
-        [HttpPost, AttributeRouting.Web.Mvc.Route("reviewlock")]
+        [HttpGet]
         public bool lockreview()
         {
+            _logger.Log("ReviewnominationApi-lockreview");
             return _reviewService.LockReview();
         }
 
-        //[HttpPost, AttributeRouting.Web.Mvc.Route("unlockreview")]
-        //public bool UnLockReview()
-        //{
-        //    return _reviewService.UnLockReview();
-        //}
+        [HttpGet]
+        public bool UnLockReview()
+        {
+            _logger.Log("ReviewNominatioApi-UnLockReview");
+            return _reviewService.UnLockReview();
+        }
     }
 }

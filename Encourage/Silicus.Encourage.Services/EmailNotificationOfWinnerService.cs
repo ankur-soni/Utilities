@@ -75,7 +75,8 @@ namespace Silicus.EncourageWithAzureAd.Web
 
                         foreach (string email in winnerManagerEmailAddresses)
                         {
-                            message.To.Add("asha.bhandare@silicus.com");
+                            // message.To.Add("asha.bhandare@silicus.com");
+                            message.To.Add(email);
                         }
 
                         message.IsBodyHtml = true;

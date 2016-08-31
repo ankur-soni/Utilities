@@ -10,7 +10,7 @@ namespace Silicus.UtilityContainer.HangFireBackgroundTasks.Interface
 {
    public interface IEventProcessor
     {
-        void Process(EventType eventType);
+        void Process(EventType eventType,EventProcess eventProcess);
       
     }
 }

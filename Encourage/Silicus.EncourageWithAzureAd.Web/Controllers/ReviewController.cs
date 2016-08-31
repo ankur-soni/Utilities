@@ -139,7 +139,7 @@ namespace Silicus.EncourageWithAzureAd.Web.Controllers
         public ActionResult RejectAll()
         {
             _logger.Log("Review-RejectAll-GET");
-            var rejectAllRviews = _encourageDatabaseContext.Query<Review>().Where(r => r.IsSubmited == true).ToList();
+            var rejectAllRviews = _encourageDatabaseContext.Query<Review>().Where(r => r.IsSubmited == true && r.ReviewDate.Value.Month == DateTime.Now.Month && r.ReviewDate.Value.Year == DateTime.Now.Year).ToList();
             var shortlist = _encourageDatabaseContext.Query<Shortlist>().Where(s => s.IsWinner == true);
             foreach (var shortListedEmployee in shortlist)
             {
@@ -157,6 +157,7 @@ namespace Silicus.EncourageWithAzureAd.Web.Controllers
                 }
 
                 _encourageDatabaseContext.Delete<Review>(item);
+                _resultService.UnShortlistNomination(item.NominationId);
             }
 
             return RedirectToAction("Index", "Home");
@@ -168,7 +169,8 @@ namespace Silicus.EncourageWithAzureAd.Web.Controllers
         public ActionResult ViewNominationForShortlist(ReviewFeedbackListViewModel nominationModel)
         {
             _logger.Log("Review-ViewNominationForShortlist-GET");
-            var reviews = _reviewService.GetReviewsForNomination(nominationModel.NominationId).ToList();
+            ViewBag.NominationLockStatus = _nominationService.GetNominationLockStatus();
+           var reviews = _reviewService.GetReviewsForNomination(nominationModel.NominationId).ToList();
             var nomination = _nominationService.GetNomination(reviews.FirstOrDefault().NominationId);
             var allReviewerComments = new List<List<ReviewerCommentViewModel>>();
 

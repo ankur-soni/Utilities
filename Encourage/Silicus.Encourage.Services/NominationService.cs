@@ -2,6 +2,7 @@
 using Silicus.Encourage.Models;
 using Silicus.Encourage.Services.Comparer;
 using Silicus.Encourage.Services.Interface;
+using Silicus.FrameWorx.Logger;
 using Silicus.UtilityContainer.Models.DataObjects;
 using System;
 using System.Collections.Generic;
@@ -20,13 +21,14 @@ namespace Silicus.Encourage.Services
         private readonly IEncourageDatabaseContext _encourageDatabaseContext;
         private readonly Silicus.UtilityContainer.Entities.ICommonDataBaseContext _commonDataBaseContext;
         private readonly ICommonDbService _commonDbService;
-
-        public NominationService(Silicus.Encourage.DAL.Interfaces.IDataContextFactory dataContextFactory, ICommonDbService commonDbService)
+        private readonly ILogger _logger;
+        public NominationService(Silicus.Encourage.DAL.Interfaces.IDataContextFactory dataContextFactory, ICommonDbService commonDbService,ILogger logger)
         {
             _dataContextFactory = dataContextFactory;
             _commonDbService = commonDbService;
             _commonDataBaseContext = _commonDbService.GetCommonDataBaseContext();
             _encourageDatabaseContext = _dataContextFactory.CreateEncourageDbContext();
+            _logger = logger;
 
         }
 
@@ -250,6 +252,7 @@ namespace Silicus.Encourage.Services
             //    DeletePrevoiusManagerComments(nomination.Id);
             //    UpdateNomination(nomination);
             //}
+            _logger.Log("NominationService-LockNominations");
             var data = _encourageDatabaseContext.Query<Models.Configuration>().Where(x => x.configurationKey == "NominationLock").SingleOrDefault();
             data.value = true;
             _encourageDatabaseContext.Update<Models.Configuration>(data);
@@ -262,9 +265,8 @@ namespace Silicus.Encourage.Services
             //var currentNominations = GetCurrentNominations();
             //return currentNominations.Count > 0 && currentNominations.TrueForAll(cn => Convert.ToBoolean(cn.IsLocked));
             // //return true;
-
-            var data = _encourageDatabaseContext.Query<Models.Configuration>().Where(x => x.configurationKey == "NominationLock").SingleOrDefault().value;
-            return data == true ? true : false;
+            _logger.Log("NominationService-IsNominationLocked");
+            return GetNominationLockStatus();
 
         }
             
@@ -281,10 +283,11 @@ namespace Silicus.Encourage.Services
             //   // return true;
 
             //}
+            _logger.Log("NominationService-UnLockNominations");
             var data = _encourageDatabaseContext.Query<Models.Configuration>().Where(x => x.configurationKey == "NominationLock").SingleOrDefault();
             data.value = false;
             _encourageDatabaseContext.Update<Models.Configuration>(data);
-            return false;
+            return true;
 
         }
 
@@ -292,5 +295,12 @@ namespace Silicus.Encourage.Services
         {
             return _encourageDatabaseContext.Query<Nomination>().Where(x => x.ManagerId == managerId && (x.NominationDate >= startDate && x.NominationDate <= endDate)).Count();
         }
+
+        public bool GetNominationLockStatus()
+        {
+            var data = _encourageDatabaseContext.Query<Encourage.Models.Configuration>().Where(x => x.configurationKey == "NominationLock").FirstOrDefault().value;
+            return data == true ? true : false;
+        }
+
     }
 }

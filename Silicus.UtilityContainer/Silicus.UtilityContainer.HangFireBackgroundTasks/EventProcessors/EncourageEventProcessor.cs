@@ -7,6 +7,7 @@ using System.Configuration;
 using HangFireBackgroundTasks.Services;
 using System.Linq;
 using Silicus.FrameWorx.Logger;
+using Silicus.UtilityContainer.Models.Enumerations;
 
 namespace HangFireBackgroundTasks.EventProcessors
 {
@@ -16,9 +17,20 @@ namespace HangFireBackgroundTasks.EventProcessors
         ILogger _logger = new DatabaseLogger("name=LoggerDataContext", Type.GetType(string.Empty), (Func<DateTime>)(() => DateTime.UtcNow), string.Empty);
 
 
-        public void Process(EventType eventType)
+        public void Process(EventType eventType,EventProcess eventProcess)
         {
-            LockEvent(eventType);
+            _logger.Log("EncourageEventProcessor-Process");
+            switch (eventProcess)
+            {
+                case EventProcess.LockEvent:
+                    LockEvent(eventType);
+                    break;
+                case EventProcess.UnLockEvent:
+                    UnLockeEvent(eventType);
+                    break;
+                default:
+                    break;
+            }
         }
 
         private void LockNomination()
@@ -26,7 +38,7 @@ namespace HangFireBackgroundTasks.EventProcessors
             try
             {
                 _logger.Log("EncourageEventProcessor-LockNomination-try");
-                const string URL = @"https://silicusencouragewithazureadweb.azurewebsites.net/api/nominationapi/lock";
+                const string URL = @"https://silicusencouragewithazureadweb.azurewebsites.net/api/nominationapi/LockNominations";
 
                 HttpClient client = new HttpClient();
                 client.BaseAddress = new Uri(URL);
@@ -36,18 +48,16 @@ namespace HangFireBackgroundTasks.EventProcessors
                 new MediaTypeWithQualityHeaderValue("application/json"));
 
                 // List data response.
-                var response = client.PostAsync(URL, null).Result;
+                var response = client.GetAsync(URL).Result;
                 if (response.IsSuccessStatusCode)
                 {
                     // Parse the response body. Blocking!
                     var result = response.Content.ReadAsStringAsync().Result;
+                    UnLockReviews();
                     emailProcessor.Process(EventType.SendReviewNominationEmail);
 
                 }
-                else
-                {
-
-                }
+                
             }
             catch (Exception ex)
             {
@@ -57,42 +67,44 @@ namespace HangFireBackgroundTasks.EventProcessors
 
         }
 
-        //private void UnLockNominations()
-        //{
-        //    try
-        //    {
-        //        _logger.Log("EncourageEventProcessor-UnLockNomination-try");
-        //        const string URL = @"https://silicusencouragewithazureadweb.azurewebsites.net/api/nominationapi/unlock";
+        private void UnLockNominations()
+        {
+            try
+            {
+                _logger.Log("EncourageEventProcessor-UnLockNomination-try");
+                const string URL = @"https://silicusencouragewithazureadweb.azurewebsites.net/api/nominationapi/UnLockNominations";
 
-        //        HttpClient client = new HttpClient();
-        //        client.BaseAddress = new Uri(URL);
+                HttpClient client = new HttpClient();
+                client.BaseAddress = new Uri(URL);
 
-        //        // Add an Accept header for JSON format.
-        //        client.DefaultRequestHeaders.Accept.Add(
-        //        new MediaTypeWithQualityHeaderValue("application/json"));
+                // Add an Accept header for JSON format.
+                client.DefaultRequestHeaders.Accept.Add(
+                new MediaTypeWithQualityHeaderValue("application/json"));
 
-        //        // List data response.
-        //        var response = client.PostAsync(URL, null).Result;
-        //        if (response.IsSuccessStatusCode)
-        //        {
-        //            // Parse the response body. Blocking!
-        //            var result = response.Content.ReadAsStringAsync().Result;
-        //            emailProcessor.Process(EventType.SendNominationEmail);
+                // List data response.
+                var response = client.GetAsync(URL).Result;
+                
+                _logger.Log("EncourageEventProcessor-UnlockNomination-statusCode-" + response.IsSuccessStatusCode);
+                if (response.IsSuccessStatusCode)
+                {
+                    // Parse the response body. Blocking!
+                    var result = response.Content.ReadAsStringAsync().Result;
+                    emailProcessor.Process(EventType.SendNominationEmail);
 
-        //        }
+                }
 
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        _logger.Log("EncourageEventProcessor-LockNomination-" + ex.Message);
-        //        throw;
-        //    }
+            }
+            catch (Exception ex)
+            {
+                _logger.Log("EncourageEventProcessor-LockNomination-" + ex.Message);
+                throw;
+            }
 
-        //}
+        }
 
         private void LockReview()
         {
-            const string URL = @"https://silicusencouragewithazureadweb.azurewebsites.net/api/reviewnominationapi/reviewlock";
+            const string URL = @"https://silicusencouragewithazureadweb.azurewebsites.net/api/reviewnominationapi/lockreview";
 
             HttpClient client = new HttpClient();
             client.BaseAddress = new Uri(URL);
@@ -102,77 +114,77 @@ namespace HangFireBackgroundTasks.EventProcessors
             new MediaTypeWithQualityHeaderValue("application/json"));
 
             // List data response.
-            var response = client.PostAsync(URL, null).Result;
+            var response = client.GetAsync(URL).Result;
             if (response.IsSuccessStatusCode)
             {
                 // Parse the response body. Blocking!
                 var result = response.Content.ReadAsStringAsync().Result;
                 emailProcessor.Process(EventType.SendAdminNominationEmail);
             }
-            else
-            {
-
-            }
+            
         }
 
-        //private void UnLockReviews()
-        //{
-        //    const string URL = @"https://silicusencouragewithazureadweb.azurewebsites.net/api/reviewnominationapi/unlockreview";
+        private void UnLockReviews()
+        {
+            const string URL = @"https://silicusencouragewithazureadweb.azurewebsites.net/api/reviewnominationapi/UnLockReview";
 
-        //    HttpClient client = new HttpClient();
-        //    client.BaseAddress = new Uri(URL);
+            HttpClient client = new HttpClient();
+            client.BaseAddress = new Uri(URL);
 
-        //    // Add an Accept header for JSON format.
-        //    client.DefaultRequestHeaders.Accept.Add(
-        //    new MediaTypeWithQualityHeaderValue("application/json"));
+            // Add an Accept header for JSON format.
+            client.DefaultRequestHeaders.Accept.Add(
+            new MediaTypeWithQualityHeaderValue("application/json"));
 
-        //    // List data response.
-        //    var response = client.PostAsync(URL, null).Result;
-        //    if (response.IsSuccessStatusCode)
-        //    {
-        //        // Parse the response body. Blocking!
-        //        var result = response.Content.ReadAsStringAsync().Result;
-        //        emailProcessor.Process(EventType.SendReviewNominationEmail);
-        //    }
+            // List data response.
+            var response = client.GetAsync(URL).Result;
+            if (response.IsSuccessStatusCode)
+            {
+                // Parse the response body. Blocking!
+                var result = response.Content.ReadAsStringAsync().Result;
+               // emailProcessor.Process(EventType.SendReviewNominationEmail);
+            }
 
-        //}
+        }
 
 
-        //private void UnLockeEvent(EventType eventType)
-        //{
-        //    switch (eventType)
-        //    {
+        private void UnLockeEvent(EventType eventType)
+        {
+            _logger.Log("EncourageEventProcessor-UnLockeEvent");
+            switch (eventType)
+            {
 
-        //        case EventType.UnLockNominations:
-        //            try
-        //            {
-        //                UnLockNominations();
+                case EventType.UnLockNominations:
+                    try
+                    {
+                        UnLockNominations();
 
-        //            }
-        //            catch (Exception ex)
-        //            {
-        //                _logger.Log("EncourageEventProcessor-LockEvent-UnLockNominationsEvent " + ex.Message);
-        //            }
-        //            break;
-        //        case EventType.UnLockReviews:
-        //            try
-        //            {
-        //                UnLockReviews();
-        //            }
-        //            catch (Exception ex)
-        //            {
-        //                _logger.Log("EncourageEventProcessor-Event-LockEvent-UnLockReviewsEvent");
-        //            }
-        //            break;
-        //        default:
-        //            break;
-        //    }
-        //}
+                    }
+                    catch (Exception ex)
+                    {
+                        _logger.Log("EncourageEventProcessor-LockEvent-UnLockNominationsEvent " + ex.Message);
+                    }
+                    break;
+                case EventType.UnLockReviews:
+                    try
+                    {
+                        UnLockReviews();
+                    }
+                    catch (Exception ex)
+                    {
+                        _logger.Log("EncourageEventProcessor-Event-LockEvent-UnLockReviewsEvent");
+                    }
+                    break;
+                default:
+                    break;
+            }
+        }
 
         #region Lock Nominations/Review
         private void LockEvent(EventType eventType)
         {
-            var firstDayOfCurrentMonth = new DateTime(System.DateTime.Now.Year, System.DateTime.Now.Month, 26);
+            var day = ConfigurationManager.AppSettings["FirstDayOfCurrentMonth"];
+            var firstDayOfCurrentMonth = new DateTime(System.DateTime.Now.Year, System.DateTime.Now.Month, Convert.ToInt32(day));
+            _logger.Log("EncourageEventProcessor-LockEvent");
 
             using (HolidayService holidayService = new HolidayService())
             {
