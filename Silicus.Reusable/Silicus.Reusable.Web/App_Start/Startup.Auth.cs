@@ -40,7 +40,7 @@ namespace Silicus.Reusable.Web
                     ClientId = clientId,
                     Authority = authority,
                     PostLogoutRedirectUri = postLogoutRedirectUri,
-                    RedirectUri = postLogoutRedirectUri,
+                    //RedirectUri = postLogoutRedirectUri,
                     Notifications = new OpenIdConnectAuthenticationNotifications
                     {
                         AuthenticationFailed = context =>
