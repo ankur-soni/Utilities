@@ -18,9 +18,7 @@ namespace Silicus.UtilityContainer.Web.App_Start
             try
             {
                 _logger.Log("HangfirConfig-StartBackgroundScheduling-try");
-                // EncourageEventProcessor x = new EncourageEventProcessor();
-                // x.Process(EventType.LockNomination, EventProcess.LockEvent);
-                // RecurringJob.AddOrUpdate<EncourageEmailProcessor>("NominationMail", mailProcessor => mailProcessor.Process(EventType.SendNominationEmail), Cron.Minutely); //CRON expression that Run once a month at midnight of the first day of the month                   
+              //  RecurringJob.AddOrUpdate("KeepApplicationRunning",() => MvcApplication.KeepApplicationRunning(),Cron.Minutely);
                 RecurringJob.AddOrUpdate<EncourageEventProcessor>("UnLockNomination", processor => processor.Process(EventType.UnLockNominations, EventProcess.UnLockEvent),  ConfigurationManager.AppSettings["CronExpressionForNominationMail"]);
                 RecurringJob.AddOrUpdate<EncourageEventProcessor>("LockNomination", processor => processor.Process(EventType.LockNomination, EventProcess.LockEvent), () => ConfigurationManager.AppSettings["CronExpressionForNominationLockMail"]);
                 RecurringJob.AddOrUpdate<EncourageEventProcessor>("LockReview", processor => processor.Process(EventType.LockReview, EventProcess.LockEvent), () => ConfigurationManager.AppSettings["CronExpressionForReviewLockMail"]);

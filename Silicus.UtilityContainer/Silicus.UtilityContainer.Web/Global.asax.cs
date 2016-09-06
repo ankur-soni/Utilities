@@ -22,5 +22,9 @@ namespace Silicus.UtilityContainer.Web
             LightInjectWebCommon.CreateContainer();
 
         }
-    }
+        //public static void KeepApplicationRunning()
+        //{
+        // new MvcApplication().Application_Start();
+        //}
+}
 }

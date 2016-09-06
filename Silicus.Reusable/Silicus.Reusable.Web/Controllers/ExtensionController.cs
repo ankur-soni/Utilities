@@ -8,6 +8,7 @@ using PagedList;
 
 namespace Silicus.FrameworxProject.Web.Controllers
 {
+    [Authorize]
     public class ExtensionController : Controller
     {
         private readonly IExtensionCodeService _extensionCodeService;
