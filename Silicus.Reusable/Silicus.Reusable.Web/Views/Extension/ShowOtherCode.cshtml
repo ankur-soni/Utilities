@@ -45,7 +45,7 @@
                         <a id="newest" class="youarehere" onclick="getNewestExtension()" href="@Url.Action("ShowOtherCode", "Extension", new { sortOrder = ViewBag.DateSortParm })" data-nav-xhref="" title="The most recently added Extension Code" data-value="newest" data-shortcut="N">
                             Newest
                         </a>
-                        <a id="frequent" class="youarehere" href="@Url.Action("ShowOtherCode", "Extension", new { sortOrder = ViewBag.FrequentSearchedCountSortParm })" onclick="getfrequentSearched()" data-nav-xhref="" title="Most Frequent Searched Extension Code" data-value="frequent" data-shortcut="F">
+                        <a id="frequent" href="@Url.Action("ShowOtherCode", "Extension", new { sortOrder = ViewBag.FrequentSearchedCountSortParm })" onclick="getfrequentSearched()" data-nav-xhref="" title="Most Frequent Searched Extension Code" data-value="frequent" data-shortcut="F">
                             Frequent Searched
                         </a>
                     </div>
@@ -66,6 +66,7 @@
         </div>
     </div>
 </div>
+<script src="~/Scripts/jquery-1.10.2.js"></script>
 <script>
     function getdetail() {
 
@@ -77,4 +78,18 @@
             $("#questions").html(data);
         });
     }
+
+    $(document).ready(function () {
+        var url = document.location;
+        var y = new String(url);
+
+        if (y.includes("count") || y.includes("count_desc")) {
+            $("#newest").removeClass("youarehere");
+            $("#frequent").addClass("youarehere");
+        }
+        else {
+            $("#newest").addClass("youarehere");
+            $("#frequent").removeClass("youarehere");
+        }
+    });
 </script>

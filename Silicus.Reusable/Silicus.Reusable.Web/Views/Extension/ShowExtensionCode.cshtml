@@ -13,6 +13,7 @@
         float: right;
         width: 349px;
     }
+
 </style>
 <div class="panel panel-primary serachpanel">
     <div class="panel-heading">
@@ -54,13 +55,26 @@
                 <div id="questions">
                     @foreach (var item in Model)
                     {
-                        <div class="question-summary">
-                            <div>
-                                <h3><a href='@Url.Action("ExtensionDetail", "Extension",new { id = item.Id })'>@Html.DisplayFor(modelItem => item.MethodName)</a></h3>
+                        <div class="container">
+                            <div class="row">
+                                <div class="col-lg-2 col-md-2 col-sm-2">
+                                    <div class="views" style="border: 3px solid #73AD21;height:100px;text-align:center;vertical-align:middle;padding-top:21px;">
+                                        <span title="36 views">@Html.DisplayFor(modelItem => item.FrequentSearchedCount)</span>
+                                        <h6>Views</h6>
+                                    </div>
+                                </div>
+                                <div class="col-lg-10 col-md-10 col-sm-10">
+                                    <div class="question-summary">
+                                        <div>
+                                            <h3><a href='@Url.Action("ExtensionDetail", "Extension",new { id = item.Id })'>@Html.DisplayFor(modelItem => item.MethodName)</a></h3>
+                                        </div>
+                                        <div class="truncate">@Html.DisplayFor(modelItem => item.Description)</div>
+                                    </div>
+                                </div>
                             </div>
-
-                            <div class="truncate">@Html.DisplayFor(modelItem => item.Description)</div>
                         </div>
+                        
+                        
                     }
                 </div>
                 Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
@@ -82,8 +96,20 @@
             $("#questions").html(data);
         });
     }
-    $(document).ready(function () {
-        var url = window.location.href;
-        if()
+
+    $(document).ready(function () { 
+        var url = document.location;
+        var y = new String(url);
+        
+        if (y.includes("count") || y.includes("count_desc"))
+        {
+            $("#newest").removeClass("youarehere");
+            $("#frequent").addClass("youarehere");           
+        }
+        else
+        {
+            $("#newest").addClass("youarehere");
+            $("#frequent").removeClass("youarehere");      
+        }
     });
 </script>

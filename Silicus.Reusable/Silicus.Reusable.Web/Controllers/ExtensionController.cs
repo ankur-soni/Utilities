@@ -5,6 +5,8 @@ using System.Data.Entity.Infrastructure;
 using Silicus.FrameworxProject.Services.Interfaces;
 using Silicus.FrameworxProject.Models;
 using PagedList;
+using System.Collections.Generic;
+using Silicus.Reusable.Web.Models.ViewModel;
 
 namespace Silicus.FrameworxProject.Web.Controllers
 {
@@ -65,6 +67,7 @@ namespace Silicus.FrameworxProject.Web.Controllers
         {
             try
             {
+                extensionSolution.CreationDate = System.DateTime.Now;
                 _extensionCodeService.EditExtensionSolution(extensionSolution);
                 return RedirectToAction("ExtensionDetail", new { id = extensionSolution.Id });
             }
@@ -118,6 +121,7 @@ namespace Silicus.FrameworxProject.Web.Controllers
         {
             try
             {
+                otherCode.CreationDate = System.DateTime.Now;
                 _extensionCodeService.EditOtherCode(otherCode);
                 return RedirectToAction("ShowOtherCodeMethodDetail", new { id = otherCode.Id });
             }
@@ -136,8 +140,9 @@ namespace Silicus.FrameworxProject.Web.Controllers
         {
             ViewBag.CurrentSort = sortOrder;
             ViewBag.DateSortParm = sortOrder == "date_desc" ?  "Date" : "date_desc";
-            ViewBag.FrequentSearchedCountSortParm = sortOrder == "count_desc" ?  "count" : "count_desc" ;
+            ViewBag.FrequentSearchedCountSortParm = sortOrder == "count_desc" ?  "count" : "count_desc";
 
+           // List<ExtensionCodeViewModel> myList = new List<ExtensionCodeViewModel>();
             var extensioncodeList = _extensionCodeService.GetAllExtensionSolution().ToList();
             switch (sortOrder)
             {
