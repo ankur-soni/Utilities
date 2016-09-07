@@ -10,7 +10,7 @@ using System.Data.Entity.Infrastructure;
 
 namespace Silicus.FrameworxDashboard.Web.Controllers
 {
-    
+    [Authorize]
     public class FrameworxProjectController : Controller
     {
         private readonly IFrameworxProjectService _frameworxProjectService;

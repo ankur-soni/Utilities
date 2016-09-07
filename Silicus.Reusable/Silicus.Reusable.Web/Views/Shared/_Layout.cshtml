@@ -83,6 +83,7 @@
                 <div class="navbar-header">
                     <a href="@Url.Action("GetAllCategories", "Frameworxproject")"><img src="~/Images/logo.svg" class="img-responsive" style="width:200px;" alt="logo"></a>
                 </div>
+                @Html.Partial("_LoginPartial")
                 @*<ul class="nav navbar-nav pull-right">
                         @Html.Partial("_LoginPartial")
                         @if (Request.IsAuthenticated)
