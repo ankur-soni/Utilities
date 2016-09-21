@@ -70,7 +70,6 @@
                 </div>
                 <div class="panel-body">
                     <div id="navigation">
-                        @Html.ActionLink("Edit", "EditExtensionCode", "Extension", new { id = Model.Id }, new { @class = "btn btn-info" })
                         @Html.ActionLink("Back", "ShowExtensionCode", "", new { @class = "btn btn-info" })
                     </div>
                     <div id="descriptiondiv">
@@ -87,6 +86,9 @@
                     <div id="exampleusage">
                         <h3>Example</h3>
                         @Html.DisplayFor(model => model.ExampleUsage)
+                    </div>
+                    <div id="exampleusage">
+                        <h4>Submitted by : @Html.DisplayFor(model => model.UserDisplayName)</h4>
                     </div>
                     <div id="navigation">
                         @Html.ActionLink("Back", "ShowExtensionCode", "", new { @class = "btn btn-info" })

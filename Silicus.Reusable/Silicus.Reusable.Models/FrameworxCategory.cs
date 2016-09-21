@@ -7,9 +7,9 @@ using System.Threading.Tasks;
 
 namespace Silicus.FrameworxProject.Models
 {
-    public class Category
+    public class FrameworxCategory
     {
-        public Category()
+        public FrameworxCategory()
         {
             Frameworxs = new List<Frameworx>();
         }

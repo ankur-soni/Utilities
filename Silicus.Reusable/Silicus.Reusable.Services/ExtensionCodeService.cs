@@ -1,11 +1,16 @@
 ﻿using Silicus.FrameworxProject.DAL.Interfaces;
 using Silicus.FrameworxProject.Models;
 using Silicus.FrameworxProject.Services.Interfaces;
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+
+
+using System.Net;
+using System.Net.Mail;
 
 namespace Silicus.FrameworxProject.Services
 {
@@ -13,6 +18,7 @@ namespace Silicus.FrameworxProject.Services
     {
         private readonly IDataContextFactory _dataContextFactory;
         private readonly IFrameworxProjectDatabaseContext _FrameworxProjectDatabaseContext;
+        
 
         public ExtensionCodeService(Silicus.FrameworxProject.DAL.Interfaces.IDataContextFactory dataContextFactory)
         {
@@ -25,14 +31,29 @@ namespace Silicus.FrameworxProject.Services
             return _FrameworxProjectDatabaseContext.Query<Frameworx>().ToList();
         }
 
+        public List<ExtensionSolution> GetAllApprovedExtensionSolution()
+        {
+            return _FrameworxProjectDatabaseContext.Query<ExtensionSolution>().Where(a=>a.ReviewFlag==true).ToList();
+        }
+
         public List<ExtensionSolution> GetAllExtensionSolution()
         {
             return _FrameworxProjectDatabaseContext.Query<ExtensionSolution>().ToList();
         }
 
+        public List<ExtensionSolution> GetAllReviewExtensionSolution(int id)
+        {
+            return _FrameworxProjectDatabaseContext.Query<ExtensionSolution>().Where(a => a.ReviewFlag == false && a.reviewerid==id).ToList();
+        }
+
+        public List<ExtensionSolution> GetMyAllExtensionSolution(int id)
+        {
+            return _FrameworxProjectDatabaseContext.Query<ExtensionSolution>().Where(a => a.userid == id).ToList();
+        }
+
         public void AddExtensionSolution(ExtensionSolution extensionSolution)
         {
-             _FrameworxProjectDatabaseContext.Add<ExtensionSolution>(extensionSolution); 
+            _FrameworxProjectDatabaseContext.Add<ExtensionSolution>(extensionSolution); 
         }
 
         public void EditExtensionSolution(ExtensionSolution extensionSolution)
@@ -50,9 +71,9 @@ namespace Silicus.FrameworxProject.Services
             _FrameworxProjectDatabaseContext.Update<OtherCode>(otherCode);
         }
 
-        public List<Category> GetAllCategories()
+        public List<FrameworxCategory> GetAllCategories()
         {
-            return _FrameworxProjectDatabaseContext.Query<Category>().ToList();//Poulate Business Model h
+            return _FrameworxProjectDatabaseContext.Query<FrameworxCategory>().ToList();//Poulate Business Model h
         }
 
         public List<CodeType> GetAllCodeTypes()
@@ -63,6 +84,21 @@ namespace Silicus.FrameworxProject.Services
         public List<OtherCode> GetAllOtherCodeList()
         {
             return _FrameworxProjectDatabaseContext.Query<OtherCode>().ToList();
+        }
+
+        public List<OtherCode> GetAllApprovedOtherCodeList()
+        {
+            return _FrameworxProjectDatabaseContext.Query<OtherCode>().Where(a => a.ReviewFlag == true).ToList();
+        }
+
+        public List<OtherCode> GetMyAllOtherCodeList(int id)
+        {
+            return _FrameworxProjectDatabaseContext.Query<OtherCode>().Where(a => a.userid == id).ToList();
+        }
+
+        public List<OtherCode> GetAllReviewOtherCodeList(int id)
+        {
+            return _FrameworxProjectDatabaseContext.Query<OtherCode>().Where(a => a.ReviewFlag == false && a.reviewerid == id).ToList();
         }
 
         public ExtensionSolution GetExtensionMethodById(int ExtensionId)
@@ -85,6 +121,27 @@ namespace Silicus.FrameworxProject.Services
         public void OtherCodeFrequentSearchedCountUpdate(OtherCode otherCode)
         {
             _FrameworxProjectDatabaseContext.Update<OtherCode>(otherCode);
+        }
+
+        public string EmailSendToReviewer(EmailFormModel model)
+        {
+            MailMessage mail = new MailMessage();
+            SmtpClient SmtpServer = new SmtpClient("smtp.gmail.com");
+            mail.From = new MailAddress("birthare06@gmail.com");
+            mail.To.Add(model.ToEmail);
+            mail.Subject = "One Frameworx Method Review Request";
+            mail.Body =model.Message;
+
+            //System.Net.Mail.Attachment attachment;
+            //attachment = new System.Net.Mail.Attachment("c:/textfile.txt");
+            // mail.Attachments.Add(attachment);
+
+            SmtpServer.Port = 587;
+            SmtpServer.Credentials = new System.Net.NetworkCredential("birthare06@gmail.com", "devdev@123");
+            SmtpServer.EnableSsl = true;
+
+            SmtpServer.Send(mail);
+            return "Email sent";
         }
     }
 }

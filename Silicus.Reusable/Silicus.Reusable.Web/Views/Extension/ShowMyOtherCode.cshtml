@@ -39,13 +39,13 @@
                     @Html.ActionLink("Extension Methods", "ShowExtensionCode", "", new { @class = "btn btn-info" })
                 </div>
                 <div class="subheader">
-                    <h1 id="h-all-questions">All Code Methods</h1>
+                    <h1 id="h-all-questions">My Submmited Code Methods</h1>
 
                     <div id="tabs">
-                        <a id="newest" class="youarehere" href="@Url.Action("ShowOtherCode", "Extension", new { sortOrder = ViewBag.DateSortParm })" data-nav-xhref="" title="The most recently added Extension Code" data-value="newest" data-shortcut="N">
+                        <a id="newest" class="youarehere" href="@Url.Action("ShowMyOtherCode", "Extension", new { sortOrder = ViewBag.DateSortParm })" data-nav-xhref="" title="The most recently added Extension Code" data-value="newest" data-shortcut="N">
                             Newest
                         </a>
-                        <a id="frequent" href="@Url.Action("ShowOtherCode", "Extension", new { sortOrder = ViewBag.FrequentSearchedCountSortParm })" onclick="getfrequentSearched()" data-nav-xhref="" title="Most Frequent Searched Extension Code" data-value="frequent" data-shortcut="F">
+                        <a id="frequent" href="@Url.Action("ShowMyOtherCode", "Extension", new { sortOrder = ViewBag.FrequentSearchedCountSortParm })" onclick="getfrequentSearched()" data-nav-xhref="" title="Most Frequent Searched Extension Code" data-value="frequent" data-shortcut="F">
                             Frequent Searched
                         </a>
                     </div>
@@ -60,7 +60,7 @@
                         </div>
                     }
                 </div>
-                @Html.PagedListPager(Model, page => Url.Action("ShowOtherCode", new { page, sortOrder = ViewBag.CurrentSort }), new PagedListRenderOptions() { Display = PagedListDisplayMode.IfNeeded })
+                @Html.PagedListPager(Model, page => Url.Action("ShowMyOtherCode", new { page, sortOrder = ViewBag.CurrentSort }), new PagedListRenderOptions() { Display = PagedListDisplayMode.IfNeeded })
             </div>
         </div>
     </div>

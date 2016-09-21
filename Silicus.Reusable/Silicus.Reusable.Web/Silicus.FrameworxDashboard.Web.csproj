@@ -133,7 +133,16 @@
       <HintPath>..\packages\PagedList.Mvc.4.5.0.0\lib\net40\PagedList.Mvc.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Silicus.UtilityContainer.Entities, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" />
+    <Reference Include="Silicus.UtilityContainer.Entities, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+      <HintPath>..\..\..\..\..\Desktop\Silicus.UtilityContainer.Entities.dll</HintPath>
+    </Reference>
+    <Reference Include="Silicus.UtilityContainer.Models">
+      <HintPath>..\..\..\..\..\Desktop\Silicus.UtilityContainer.Models.dll</HintPath>
+    </Reference>
+    <Reference Include="Silicus.UtilityContainer.Security, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\Utilities3\Silicus.UtilityContainer\Silicus.UtilityContainer.Security\bin\Debug\Silicus.UtilityContainer.Security.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
@@ -221,6 +230,7 @@
     <Compile Include="Controllers\ExtensionController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\FrameworxProjectController.cs" />
+    <Compile Include="Filters\CustomeAuthorizeAttribute.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -311,9 +321,19 @@
     <Content Include="Views\Extension\ExtenisonCodeList.cshtml" />
     <Content Include="Views\Extension\addExtensionMethod.cshtml" />
     <Content Include="Views\Extension\TestShowExtensionCode.cshtml" />
+    <Content Include="Views\Shared\View.cshtml" />
+    <Content Include="Views\Shared\CustomErrorMessage.cshtml" />
+    <Content Include="Views\Extension\Nolistpage.cshtml" />
+    <Content Include="Views\Extension\ReviewExtensionCode.cshtml" />
+    <Content Include="Views\Extension\ReviewExtensionCodeList.cshtml" />
+    <Content Include="Views\Extension\ShowMyExtensionCode.cshtml" />
+    <Content Include="Views\Extension\ShowMyOtherCode.cshtml" />
+    <Content Include="Views\Extension\ReviewOtherCodeList.cshtml" />
+    <Content Include="Views\Extension\ReviewOtherCodeMethod.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="bin\" />
     <Folder Include="Views\Account\" />
   </ItemGroup>
   <ItemGroup>

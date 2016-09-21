@@ -25,7 +25,7 @@ namespace Silicus.FrameworxProject.Models
         
         public int CategoryId { get; set; }
 
-        public virtual Category Category { get; set; }
+        public virtual FrameworxCategory FrameworxCategory { get; set; }
 
     }
 }

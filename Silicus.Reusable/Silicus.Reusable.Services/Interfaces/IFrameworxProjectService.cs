@@ -16,9 +16,9 @@ namespace Silicus.FrameworxProject.Services.Interfaces
 
         Frameworx FrameworkDetail(int id);
 
-        List<Category> GetAllCategories();
+        List<FrameworxCategory> GetAllCategories();
 
-        void AddCategory(Category category);
+        void AddCategory(FrameworxCategory category);
 
         void AddFrameworx(Frameworx frameworx);
     }

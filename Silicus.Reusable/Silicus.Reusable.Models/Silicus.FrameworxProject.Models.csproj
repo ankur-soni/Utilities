@@ -42,7 +42,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Category.cs" />
+    <Compile Include="EmailFormModel.cs" />
+    <Compile Include="FrameworxCategory.cs" />
     <Compile Include="CodeType.cs" />
     <Compile Include="ExtensionSolution.cs" />
     <Compile Include="Frameworx.cs" />

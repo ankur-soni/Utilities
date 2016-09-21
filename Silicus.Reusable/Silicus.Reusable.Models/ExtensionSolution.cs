@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
@@ -11,11 +12,15 @@ namespace Silicus.FrameworxProject.Models
 {
     public class ExtensionSolution
     {
-        //public ExtensionSolution()
-        //{
-        //    // initialize in ctor so behaviour is the same for freshly created and loaded entities
-        //    CreationDate = DateTime.Now;
-        //}
+
+
+        public ExtensionSolution()
+        {
+            ReviewFlag = false;
+        }
+
+        public bool ReviewFlag { get; set; }
+
         public int Id { get; set; }
 
         [Required(ErrorMessage = "Please Enter the Method Name")]
@@ -37,6 +42,12 @@ namespace Silicus.FrameworxProject.Models
         public int CodeTypeId { get; set; }
 
         public DateTime CreationDate { get; set; }
+
+        public string UserDisplayName { get; set; }
+
+        public int userid { get; set; }
+
+        public int reviewerid { get; set; }
 
         public int FrequentSearchedCount { get; set; }
 

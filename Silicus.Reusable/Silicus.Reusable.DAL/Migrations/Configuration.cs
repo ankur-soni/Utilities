@@ -37,8 +37,8 @@ namespace Silicus.Reusable.DAL.Migrations
                 CategoryId = 2,
                 HtmlDescription = "<h4>Silicus Frameworx Utility</h4><ul><li>Guard - provides input validation against NULL and Empty for various datatypes.</ li><li>BlobService – Provides generic methods to convert an object into binary data back and forth.</li><li>RijndaelEncryptionHelper - provides the ability to encrypt or decrypt plain text.</ li></ul>"
             });
-            context.Categories.Add(new Category { Id = 1, Name = "Templates" });
-            context.Categories.Add(new Category { Id = 2, Name = "Components" });
+            context.Categories.Add(new FrameworxCategory { Id = 1, Name = "Templates" });
+            context.Categories.Add(new FrameworxCategory { Id = 2, Name = "Components" });
 
             context.CodeTypes.Add(new CodeType { Id = 1, Name = "C#" });
             context.CodeTypes.Add(new CodeType { Id = 2, Name = "VB.NET" });

@@ -3,7 +3,7 @@
 @model PagedList.IPagedList<Silicus.FrameworxProject.Models.ExtensionSolution>
 @{
     ViewBag.Title = "ExtenisonCodeList";
-    TempData["ShowExtensionType"] = "ShowAllExtensionCodeList";
+    TempData["ShowExtensionType"] = "ShowMyExtensionCodeList";
 }
 <style>
     .serachpanel {
@@ -14,7 +14,6 @@
         float: right;
         width: 349px;
     }
-
 </style>
 <div class="panel panel-primary serachpanel">
     <div class="panel-heading">
@@ -41,13 +40,13 @@
                     @Html.ActionLink("Other Usefull Methods", "ShowOtherCode", "", new { @class = "btn btn-info" })
                 </div>
                 <div class="subheader">
-                    <h1 id="h-all-questions">All Extension Methods</h1>
+                    <h1 id="h-all-questions">My Submmited Extension Methods</h1>
 
                     <div id="tabs">
-                        <a id="newest" class="youarehere" href="@Url.Action("ShowExtensionCode", "Extension", new { sortOrder = ViewBag.DateSortParm })" data-nav-xhref="" title="The most recently added Extension Code" data-value="newest" data-shortcut="N">
+                        <a id="newest" class="youarehere" href="@Url.Action("ShowMyExtensionCode", "Extension", new { sortOrder = ViewBag.DateSortParm })" data-nav-xhref="" title="The most recently added Extension Code" data-value="newest" data-shortcut="N">
                             Newest
                         </a>
-                        <a id="frequent" href="@Url.Action("ShowExtensionCode", "Extension", new { sortOrder = ViewBag.FrequentSearchedCountSortParm })" data-nav-xhref="" title="Most Frequent Searched Extension Code" data-value="frequent" data-shortcut="F">
+                        <a id="frequent" href="@Url.Action("ShowMyExtensionCode", "Extension", new { sortOrder = ViewBag.FrequentSearchedCountSortParm })" data-nav-xhref="" title="Most Frequent Searched Extension Code" data-value="frequent" data-shortcut="F">
                             Frequent Searched
                         </a>
                     </div>
@@ -68,17 +67,25 @@
                                     <div class="question-summary">
                                         <div>
                                             <h3 style="float:left"><a href='@Url.Action("ExtensionDetail", "Extension",new { id = item.Id })'>@Html.DisplayFor(modelItem => item.MethodName)</a></h3>
+                                            @if (item.ReviewFlag == true)
+                                            {
+                                                <h3 style="float:left;margin-left:30px"><span class="label label-success">Approved</span></h3>
+                                            }
+                                            else
+                                            {
+                                                <h3 style="float:left;margin-left:30px"> <span class="label label-default">Not Approved</span></h3>
+                                            }
                                         </div>
                                         <div class="truncate">@Html.DisplayFor(modelItem => item.Description)</div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                        
-                        
+
+
                     }
                 </div>
-                @Html.PagedListPager(Model, page => Url.Action("ShowExtensionCode", new { page, sortOrder = ViewBag.CurrentSort }),new PagedListRenderOptions() { Display = PagedListDisplayMode.IfNeeded })
+                @Html.PagedListPager(Model, page => Url.Action("ShowMyExtensionCode", new { page, sortOrder = ViewBag.CurrentSort }), new PagedListRenderOptions() { Display = PagedListDisplayMode.IfNeeded })
 
             </div>
         </div>
@@ -97,19 +104,19 @@
         });
     }
 
-    $(document).ready(function () { 
+    $(document).ready(function () {
         var url = document.location;
         var y = new String(url);
-        
+
         if (y.includes("count") || y.includes("count_desc"))
         {
             $("#newest").removeClass("youarehere");
-            $("#frequent").addClass("youarehere");           
+            $("#frequent").addClass("youarehere");
         }
         else
         {
             $("#newest").addClass("youarehere");
-            $("#frequent").removeClass("youarehere");      
+            $("#frequent").removeClass("youarehere");
         }
     });
 </script>
