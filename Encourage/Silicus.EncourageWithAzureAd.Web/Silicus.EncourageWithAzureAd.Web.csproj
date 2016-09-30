@@ -288,6 +288,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="API\NominationApiController.cs" />
+    <Compile Include="API\ReviewerApiController.cs" />
     <Compile Include="API\ReviewNominationApiController.cs" />
     <Compile Include="App_Start\AttributeRoutingConfig.cs" />
     <Compile Include="App_Start\BundleConfig.cs" />
@@ -885,7 +886,7 @@
     <VisualStudio>
       <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
         <WebProjectProperties>
-          <UseIIS>False</UseIIS>
+          <UseIIS>True</UseIIS>
           <AutoAssignPort>True</AutoAssignPort>
           <DevelopmentServerPort>58057</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
