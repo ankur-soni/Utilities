@@ -7,79 +7,106 @@
 }
 <style>
     .serachpanel {
-        margin-top: 1%;
+        margin-top: 3%;
     }
 
     #serachinput {
         float: right;
         width: 349px;
     }
+    .navbar-inverse .navbar-nav > .active > a, .navbar-inverse .navbar-nav > .active > a:hover, .navbar-inverse .navbar-nav > .active > a:focus {
+    color: #ffffff;
+    background-color: #07c !important;
+}
 
+.navbar {
+    border-radius: unset; 
+}
 </style>
-<div class="panel panel-primary serachpanel">
-    <div class="panel-heading">
-        <div class="row">
-            <div class="col-md-4 col-lg-4 col-sm-4">
-                <h3 class="searchHeading">Search Extension Methods</h3>
-            </div>
-            <div class="col-md-8 col-lg-8 col-sm-8">
-                <div class="navbar-form" id="serachinput">
-                    <div class="input-group add-on">
-                        <input class="form-control" placeholder="Search" name="searchString" id="searchString" type="text" onkeyup="getdetail()">
-                        <div class="input-group-btn">
-                            <button class="btn btn-default" type="submit"><i class="glyphicon glyphicon-search"></i></button>
+
+<nav class="navbar navbar-inverse" style="background:#2F4050;position:fixed;width:100%">
+    <div class="container-fluid" id="ExtensionMenu">
+        <ul class="nav navbar-nav"  style="background:#2F4050">
+            <li id="AddExtensionCode"><a href='@Url.Action("AddExtensionCode", "Extension")'>Add Extension Code</a></li>
+            <li id="ShowExtensionCode" class="active"><a href='@Url.Action("ShowExtensionCode", "Extension")'>Published Extension Code </a></li>
+            <li id="ShowMyExtensionCode"><a href='@Url.Action("ShowMyExtensionCode", "Extension")'>My Extension Code List</a></li>
+            <li id="ReviewExtensionCodeList"><a href='@Url.Action("ReviewExtensionCodeList", "Extension")'>Review Extension Code List</a></li>        
+        </ul>
+    </div>
+    <div class="container-fluid" id="OtherCodeMenu">
+        <ul class="nav navbar-nav" style="background:#2F4050">
+            <li id="AddOtherUsefullCode"><a href='@Url.Action("AddOtherUsefullCode", "Extension")'>Add Other Useful Code</a></li>
+            <li id="ShowOtherCode" class="active"><a href='@Url.Action("ShowOtherCode", "Extension")'>Other Useful Code List</a></li>
+            <li id="ShowMyOtherCode"><a href='@Url.Action("ShowMyOtherCode", "Extension")'>My Other Useful Code List</a></li>
+            <li id="ReviewOtherCodeList"><a href='@Url.Action("ReviewOtherCodeList", "Extension")'>Review Other Useful Code List</a></li>
+        </ul>
+    </div>
+</nav>
+
+<div style="padding:15px">
+    <div class="panel panel-primary serachpanel">
+        <div class="panel-heading">
+            <div class="row">
+                <div class="col-md-4 col-lg-4 col-sm-4">
+                    <h3 class="searchHeading">Search Extension Methods</h3>
+                </div>
+                <div class="col-md-8 col-lg-8 col-sm-8">
+                    <div class="navbar-form" id="serachinput">
+                        <div class="input-group add-on">
+                            <input class="form-control" placeholder="Search" name="searchString" id="searchString" type="text" onkeyup="getdetail()">
+                            <div class="input-group-btn">
+                                <button class="btn btn-default" type="submit"><i class="glyphicon glyphicon-search"></i></button>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
-    <div class="panel-body">
-        <div id="content" class="snippet-hidden">
-            <div id="mainbar">
-                <div id="navigation">
-                    @Html.ActionLink("Other Usefull Methods", "ShowOtherCode", "", new { @class = "btn btn-info" })
-                </div>
-                <div class="subheader">
-                    <h1 id="h-all-questions">All Extension Methods</h1>
+        <div class="panel-body">
+            <div id="content" class="snippet-hidden">
+                <div id="mainbar">
+                    @*<div id="navigation">
+                        @Html.ActionLink("Other Usefull Methods", "ShowOtherCode", "", new { @class = "btn btn-info" })
+                    </div>*@
+                    <div class="subheader">
+                        <h1 id="h-all-questions">All Extension Methods</h1>
 
-                    <div id="tabs">
-                        <a id="newest" class="youarehere" href="@Url.Action("ShowExtensionCode", "Extension", new { sortOrder = ViewBag.DateSortParm })" data-nav-xhref="" title="The most recently added Extension Code" data-value="newest" data-shortcut="N">
-                            Newest
-                        </a>
-                        <a id="frequent" href="@Url.Action("ShowExtensionCode", "Extension", new { sortOrder = ViewBag.FrequentSearchedCountSortParm })" data-nav-xhref="" title="Most Frequent Searched Extension Code" data-value="frequent" data-shortcut="F">
-                            Frequent Searched
-                        </a>
+                        <div id="tabs">
+                            <a id="newest" class="youarehere" href="@Url.Action("ShowExtensionCode", "Extension", new { sortOrder = ViewBag.DateSortParm })" data-nav-xhref="" title="The most recently added Extension Code" data-value="newest" data-shortcut="N">
+                                Newest
+                            </a>
+                            <a id="frequent" href="@Url.Action("ShowExtensionCode", "Extension", new { sortOrder = ViewBag.FrequentSearchedCountSortParm })" data-nav-xhref="" title="Most Frequent Searched Extension Code" data-value="frequent" data-shortcut="F">
+                                Frequent Searched
+                            </a>
+                        </div>
                     </div>
-                </div>
 
-                <div id="questions">
-                    @foreach (var item in Model)
-                    {
-                        <div class="container">
-                            <div class="row">
-                                <div class="col-lg-2 col-md-2 col-sm-2">
-                                    <div class="views" style="border: 3px solid #73AD21;height:100px;text-align:center;vertical-align:middle;padding-top:21px;">
-                                        <span title="36 views">@Html.DisplayFor(modelItem => item.FrequentSearchedCount)</span>
-                                        <h6>Views</h6>
-                                    </div>
-                                </div>
-                                <div class="col-lg-10 col-md-10 col-sm-10">
-                                    <div class="question-summary">
-                                        <div>
-                                            <h3 style="float:left"><a href='@Url.Action("ExtensionDetail", "Extension",new { id = item.Id })'>@Html.DisplayFor(modelItem => item.MethodName)</a></h3>
+                    <div id="questions">
+                        @foreach (var item in Model)
+                        {
+                            <div class="container">
+                                <div class="row">
+                                    <div class="col-lg-2 col-md-2 col-sm-2">
+                                        <div class="views" style="border: 3px solid #73AD21;height:100px;text-align:center;vertical-align:middle;padding-top:21px;">
+                                            <span title="36 views">@Html.DisplayFor(modelItem => item.FrequentSearchedCount)</span>
+                                            <h6>Views</h6>
                                         </div>
-                                        <div class="truncate">@Html.DisplayFor(modelItem => item.Description)</div>
+                                    </div>
+                                    <div class="col-lg-10 col-md-10 col-sm-10">
+                                        <div class="question-summary">
+                                            <div>
+                                                <h3 style="float:left"><a href='@Url.Action("ExtensionDetail", "Extension",new { id = item.Id })'>@Html.DisplayFor(modelItem => item.MethodName)</a></h3>
+                                            </div>
+                                            <div class="truncate">@Html.DisplayFor(modelItem => item.Description)</div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                        
-                        
-                    }
-                </div>
-                @Html.PagedListPager(Model, page => Url.Action("ShowExtensionCode", new { page, sortOrder = ViewBag.CurrentSort }),new PagedListRenderOptions() { Display = PagedListDisplayMode.IfNeeded })
+                        }
+                    </div>
+                    @Html.PagedListPager(Model, page => Url.Action("ShowExtensionCode", new { page, sortOrder = ViewBag.CurrentSort }), new PagedListRenderOptions() { Display = PagedListDisplayMode.IfNeeded })
 
+                </div>
             </div>
         </div>
     </div>

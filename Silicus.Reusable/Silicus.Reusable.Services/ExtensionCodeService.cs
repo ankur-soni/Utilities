@@ -10,7 +10,9 @@ using System.Threading.Tasks;
 
 
 using System.Net;
+using System.Web;
 using System.Net.Mail;
+using System.IO;
 
 namespace Silicus.FrameworxProject.Services
 {
@@ -18,7 +20,7 @@ namespace Silicus.FrameworxProject.Services
     {
         private readonly IDataContextFactory _dataContextFactory;
         private readonly IFrameworxProjectDatabaseContext _FrameworxProjectDatabaseContext;
-        
+
 
         public ExtensionCodeService(Silicus.FrameworxProject.DAL.Interfaces.IDataContextFactory dataContextFactory)
         {
@@ -33,7 +35,7 @@ namespace Silicus.FrameworxProject.Services
 
         public List<ExtensionSolution> GetAllApprovedExtensionSolution()
         {
-            return _FrameworxProjectDatabaseContext.Query<ExtensionSolution>().Where(a=>a.ReviewFlag==true).ToList();
+            return _FrameworxProjectDatabaseContext.Query<ExtensionSolution>().Where(a => a.ReviewFlag == true).ToList();
         }
 
         public List<ExtensionSolution> GetAllExtensionSolution()
@@ -43,7 +45,7 @@ namespace Silicus.FrameworxProject.Services
 
         public List<ExtensionSolution> GetAllReviewExtensionSolution(int id)
         {
-            return _FrameworxProjectDatabaseContext.Query<ExtensionSolution>().Where(a => a.ReviewFlag == false && a.reviewerid==id).ToList();
+            return _FrameworxProjectDatabaseContext.Query<ExtensionSolution>().Where(a => a.ReviewFlag == false && a.reviewerid == id).ToList();
         }
 
         public List<ExtensionSolution> GetMyAllExtensionSolution(int id)
@@ -53,7 +55,7 @@ namespace Silicus.FrameworxProject.Services
 
         public void AddExtensionSolution(ExtensionSolution extensionSolution)
         {
-            _FrameworxProjectDatabaseContext.Add<ExtensionSolution>(extensionSolution); 
+            _FrameworxProjectDatabaseContext.Add<ExtensionSolution>(extensionSolution);
         }
 
         public void EditExtensionSolution(ExtensionSolution extensionSolution)
@@ -123,25 +125,62 @@ namespace Silicus.FrameworxProject.Services
             _FrameworxProjectDatabaseContext.Update<OtherCode>(otherCode);
         }
 
-        public string EmailSendToReviewer(EmailFormModel model)
+        public void SendEmail(string userName, string ToEmailAddresses, string emailSubject,string codeType,string link)
         {
-            MailMessage mail = new MailMessage();
-            SmtpClient SmtpServer = new SmtpClient("smtp.gmail.com");
-            mail.From = new MailAddress("birthare06@gmail.com");
-            mail.To.Add(model.ToEmail);
-            mail.Subject = "One Frameworx Method Review Request";
-            mail.Body =model.Message;
+            var fromAddress = new MailAddress("devendra.birthare@silicus.com", "Silicus Rewards and Recognition Team");
+            const string fromPassword = "pinky@123";
+            string subject = emailSubject;
+            string body = string.Empty;
 
-            //System.Net.Mail.Attachment attachment;
-            //attachment = new System.Net.Mail.Attachment("c:/textfile.txt");
-            // mail.Attachments.Add(attachment);
+            body = "<p>Dear Review Committee Member,</p><p>Congratulations for the great efforts put in by you and your team.</p><p>We request you to please login to Frameworx system using below URL and submit your review to the "+ codeType + ". Submitted by "+ userName + ".</p>"+ link+" <p>Keep up the great work.Thank You !</p><p>Best regards,</p><p>Silicus Team </p><p>This is an auto - generated email.</p>";
+            var smtp = new SmtpClient
+            {
+                Host = "smtp.office365.com",
+                Port = 587,
+                EnableSsl = true,
+                DeliveryMethod = SmtpDeliveryMethod.Network,
+                UseDefaultCredentials = false,
+                Credentials = new NetworkCredential(fromAddress.Address, fromPassword)
+            };
 
-            SmtpServer.Port = 587;
-            SmtpServer.Credentials = new System.Net.NetworkCredential("birthare06@gmail.com", "devdev@123");
-            SmtpServer.EnableSsl = true;
+            using (var message = new MailMessage() { Subject = subject, Body = body })
+            {
+                message.From = fromAddress;
+                message.To.Add(ToEmailAddresses);
+                message.IsBodyHtml = true;
+                message.Body = body;
+                smtp.Send(message);
+            }
+        }
 
-            SmtpServer.Send(mail);
-            return "Email sent";
+        public async Task<bool> asyncSendEmail(string userName, string ToEmailAddresses, string emailSubject, string codeType, string link)
+        {
+            var fromAddress = new MailAddress("devendra.birthare@silicus.com", "Silicus Rewards and Recognition Team");
+            const string fromPassword = "pinky@123";
+            string subject = emailSubject;
+            string body = string.Empty;
+
+            body = "<p>Dear Review Committee Member,</p><p>Congratulations for the great efforts put in by you and your team.</p><p>We request you to please login to Frameworx system using below URL and submit your review to the " + codeType + ". Submitted by " + userName + ".</p>" + link + " <p>Keep up the great work.Thank You !</p><p>Best regards,</p><p>Silicus Team </p><p>This is an auto - generated email.</p>";
+            var smtp = new SmtpClient
+            {
+                Host = "smtp.office365.com",
+                Port = 587,
+                EnableSsl = true,
+                DeliveryMethod = SmtpDeliveryMethod.Network,
+                UseDefaultCredentials = false,
+                Credentials = new NetworkCredential(fromAddress.Address, fromPassword)
+            };
+
+            using (var message = new MailMessage() { Subject = subject, Body = body })
+            {
+                message.From = fromAddress;
+                message.To.Add(ToEmailAddresses);
+                message.IsBodyHtml = true;
+                message.Body = body;
+                smtp.Send(message);
+                await Task.Yield();
+                return true;
+            }
         }
     }
 }

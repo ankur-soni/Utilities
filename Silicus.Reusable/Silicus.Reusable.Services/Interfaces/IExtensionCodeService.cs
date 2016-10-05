@@ -33,9 +33,9 @@ namespace Silicus.FrameworxProject.Services.Interfaces
         void EditOtherCode(OtherCode otherCode);
         void ExtensionFrequentSearchedCountUpdate(ExtensionSolution extensionSolution);
         void OtherCodeFrequentSearchedCountUpdate(OtherCode otherCode);
-        string EmailSendToReviewer(EmailFormModel model);
+        void SendEmail(string userName, string ToEmailAddresses, string emailSubject,string codeType,string link);
 
-      //  User GetUtilityUserByEmailId(string userEmailAddress);
-
+        //  User GetUtilityUserByEmailId(string userEmailAddress);
+        Task<bool> asyncSendEmail(string userName, string ToEmailAddresses, string emailSubject, string codeType, string link);
     }
 }

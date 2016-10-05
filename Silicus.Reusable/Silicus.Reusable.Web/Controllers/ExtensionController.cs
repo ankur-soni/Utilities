@@ -12,6 +12,8 @@ using Silicus.UtilityContainer.Models.DataObjects;
 using Silicus.UtilityContainer.Entities;
 using Microsoft.IdentityModel.Protocols;
 using Silicus.FrameworxProject.Web.Filters;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace Silicus.FrameworxProject.Web.Controllers
 {
@@ -57,22 +59,47 @@ namespace Silicus.FrameworxProject.Web.Controllers
                 Reviewers = _commonDataBaseContext.Query<UtilityUserRoles>().Where(u => u.UtilityId == 4 && u.RoleId == 371).ToList();
                 extensionSolution.UserDisplayName = user.DisplayName;
                 extensionSolution.userid = user.ID;
-                _extensionCodeService.AddExtensionSolution(extensionSolution);
 
                 List<ExtensionSolution> ExtensionSolutionList = new List<ExtensionSolution>();
                 ExtensionSolutionList = _extensionCodeService.GetAllExtensionSolution();
 
-                var countofReviewer = ExtensionSolutionList.Count() % Reviewers.Count();
-                var SelectedReviewer = Reviewers.ElementAt(countofReviewer);
+                var lastItem = ExtensionSolutionList.LastOrDefault();
+                UtilityUserRoles SelectedReviewer = new UtilityUserRoles();
+                for (int i = 0; i < Reviewers.Count(); i++)
+                {
+                    if (i == Reviewers.Count - 1 || lastItem.reviewerid == 0)
+                    {
+                        SelectedReviewer = Reviewers[0];
+                        break;
+                    }
+                    else
+                    {
+                        if (lastItem.reviewerid == Reviewers[i].UserId)
+                        {
+                            i = i+1;
+                            SelectedReviewer = Reviewers[i];
+                            break;
+                        }
+                    }
+                }
+                User reviewer = new User();
+                reviewer = _commonDataBaseContext.Query<User>().Where(u => u.ID == SelectedReviewer.UserId).FirstOrDefault();
                 extensionSolution.reviewerid = SelectedReviewer.UserId;
+                _extensionCodeService.AddExtensionSolution(extensionSolution);
 
-                _extensionCodeService.EditExtensionSolution(extensionSolution);
-                EmailFormModel model = new EmailFormModel();
-                model.FromName = "Devendra Birthare";
-                model.FromEmail = "birthare06@gmail.com";
-                model.ToEmail = "devendra.birthare@silicus.com";
-                model.Message = "This is a sample message" + extensionSolution.reviewerid;
-                _extensionCodeService.EmailSendToReviewer(model);
+                var reviewerEmailAddresses = reviewer.EmailAddress;
+                //var reviewerEmailAddresses = "devendra.birthare@silicus.com";
+                var subject = "Review Request for the Extension Code Method.";
+                var userName = user.DisplayName;
+                var codeType = "Extension Code";
+                var link = "https://reusable.azurewebsites.net/Extension/ReviewExtensionCodeList";
+                //_extensionCodeService.SendEmail(userName, reviewerEmailAddresses, subject, codeType,link);
+
+                Task.Factory.StartNew(() => {
+                    _extensionCodeService.SendEmail(userName, reviewerEmailAddresses, subject, codeType, link);
+                });
+
+
                 return RedirectToAction("ShowMyExtensionCode");
             }
             catch (DbUpdateException ex)
@@ -113,6 +140,7 @@ namespace Silicus.FrameworxProject.Web.Controllers
             }
         }
 
+        [CustomeAuthorize(AllowedRole = "Reviewer")]
         public ActionResult ReviewExtensionCode(int id)
         {
             var result = _extensionCodeService.GetExtensionMethodById(id);
@@ -121,6 +149,7 @@ namespace Silicus.FrameworxProject.Web.Controllers
         }
 
         [HttpPost]
+        [CustomeAuthorize(AllowedRole = "Reviewer")]
         public ActionResult ReviewExtensionCode(ExtensionSolution extensionSolution)
         {
             try
@@ -159,9 +188,7 @@ namespace Silicus.FrameworxProject.Web.Controllers
                 otherCode.userid = user.ID;
                 otherCode.CreationDate = System.DateTime.Now;
                 otherCode.FrequentSearchedCount = 0;
-                _extensionCodeService.AddOtherCode(otherCode);
-
-
+                
                 List<UtilityUserRoles> Reviewers = new List<UtilityUserRoles>();
                 Reviewers = _commonDataBaseContext.Query<UtilityUserRoles>().Where(u => u.UtilityId == 4 && u.RoleId == 371).ToList();
 
@@ -169,17 +196,44 @@ namespace Silicus.FrameworxProject.Web.Controllers
                 List<OtherCode> OtherCodeList = new List<OtherCode>();
                 OtherCodeList = _extensionCodeService.GetAllOtherCodeList();
 
-                var countofReviewer = OtherCodeList.Count() % Reviewers.Count();
-                var SelectedReviewer = Reviewers.ElementAt(countofReviewer);
-                otherCode.reviewerid = SelectedReviewer.UserId;
-                _extensionCodeService.EditOtherCode(otherCode);
+                var lastItem = OtherCodeList.LastOrDefault();
+                UtilityUserRoles SelectedReviewer = new UtilityUserRoles();
 
-                EmailFormModel model = new EmailFormModel();
-                model.FromName = "Devendra Birthare";
-                model.FromEmail = "birthare06@gmail.com";
-                model.ToEmail = "devendra.birthare@silicus.com";
-                model.Message = "This is a sample message" + otherCode.reviewerid;
-                _extensionCodeService.EmailSendToReviewer(model);
+                for (int i = 0; i < Reviewers.Count(); i++)
+                {
+                    if (i == Reviewers.Count - 1 || lastItem.reviewerid == 0)
+                    {
+                        SelectedReviewer = Reviewers[0];
+                        break;
+                    }
+                    else
+                    {
+                        if (lastItem.reviewerid == Reviewers[i].UserId)
+                        {
+                            i = i + 1;
+                            SelectedReviewer = Reviewers[i];
+                            break;
+                        }
+                    }
+                }
+
+                User reviewer = new User();
+                reviewer = _commonDataBaseContext.Query<User>().Where(u => u.ID == SelectedReviewer.UserId).FirstOrDefault();
+
+                otherCode.reviewerid = SelectedReviewer.UserId;
+                _extensionCodeService.AddOtherCode(otherCode);
+
+                var reviewerEmailAddresses = reviewer.EmailAddress;
+                var subject = "Review Request for the Other Usefull Code.";
+                var userName = user.DisplayName;
+                var codeType = "Other Usefull Code";
+                var link = "https://reusable.azurewebsites.net/Extension/ReviewOtherCodeList";
+
+                //_extensionCodeService.SendEmail(userName, reviewerEmailAddresses, subject, codeType ,link);
+
+                Task.Factory.StartNew(() => {
+                    _extensionCodeService.SendEmail(userName, reviewerEmailAddresses, subject, codeType, link);
+                });
 
                 return RedirectToAction("ShowMyOtherCode");
             }
@@ -188,8 +242,9 @@ namespace Silicus.FrameworxProject.Web.Controllers
                 ViewBag.message = "Category Name already exists";
                 return View(ex);
             }
-            catch
+            catch (Exception e)
             {
+                ViewBag.message = "there is a problem" + e;
                 return View();
             }
         }
@@ -221,6 +276,7 @@ namespace Silicus.FrameworxProject.Web.Controllers
             }
         }
 
+        [CustomeAuthorize(AllowedRole = "Reviewer")]
         public ActionResult ReviewOtherCodeMethod(int id)
         {
             var result = _extensionCodeService.GetOtherCodeMethodById(id);
@@ -229,6 +285,7 @@ namespace Silicus.FrameworxProject.Web.Controllers
         }
 
         [HttpPost]
+        [CustomeAuthorize(AllowedRole = "Reviewer")]
         public ActionResult ReviewOtherCodeMethod(OtherCode otherCode)
         {
             try
@@ -414,9 +471,13 @@ namespace Silicus.FrameworxProject.Web.Controllers
 
         public ActionResult ExtensionDetail(int id)
         {
-            var result = _extensionCodeService.GetExtensionMethodById(id);
-            result.FrequentSearchedCount++;
-            _extensionCodeService.ExtensionFrequentSearchedCountUpdate(result);
+            string ShowExtensionType = (TempData["ShowExtensionType"]).ToString();
+            var result = _extensionCodeService.GetExtensionMethodById(id);            
+            if (ShowExtensionType == "ShowAllExtensionCodeList")
+            {
+                result.FrequentSearchedCount++;
+                _extensionCodeService.ExtensionFrequentSearchedCountUpdate(result);
+            }    
             return View(result);
         }
 
@@ -428,7 +489,6 @@ namespace Silicus.FrameworxProject.Web.Controllers
             user = _commonDataBaseContext.Query<User>().Where(u => u.EmailAddress == userEmailAddress).FirstOrDefault();
             var ExtensionMethodList = _extensionCodeService.GetAllApprovedExtensionSolution().ToList();
             ExtensionMethodList = ExtensionMethodList.Where(s => s.MethodName.ToLower().Contains(searchString)).ToList();
-
             if (ExtensionMethodList.Count() != 0)
             {
                 return View("SearchExtensionMethodByTitle", ExtensionMethodList.ToPagedList(page ?? 1, 3));
@@ -558,9 +618,14 @@ namespace Silicus.FrameworxProject.Web.Controllers
 
         public ActionResult ShowOtherCodeMethodDetail(int id)
         {
+            string ShowExtensionType = (TempData["ShowotherCodeType"]).ToString();
             var result = _extensionCodeService.GetOtherCodeMethodById(id);
-            result.FrequentSearchedCount++;
-            _extensionCodeService.OtherCodeFrequentSearchedCountUpdate(result);
+            if (ShowExtensionType == "ShowotherCodeList")
+            {           
+                result.FrequentSearchedCount++;
+                _extensionCodeService.OtherCodeFrequentSearchedCountUpdate(result);
+            }
+            
             return View(result);
         }
 
@@ -571,11 +636,11 @@ namespace Silicus.FrameworxProject.Web.Controllers
             User user = new User();
             user = _commonDataBaseContext.Query<User>().Where(u => u.EmailAddress == userEmailAddress).FirstOrDefault();
             List<OtherCode> OtherCodeList = new List<OtherCode>();
-            if (ShowExtensionType == "GetMyAllOtherCodeList")
+            if (ShowExtensionType == "ShowMyotherCodeList")
             {
                 OtherCodeList = _extensionCodeService.GetMyAllOtherCodeList(user.ID).ToList();
             }
-            else if (ShowExtensionType == "GetAllOtherCodeList")
+            else if (ShowExtensionType == "ShowotherCodeList")
             {
                 OtherCodeList = _extensionCodeService.GetAllApprovedOtherCodeList().ToList();
             }
@@ -594,11 +659,11 @@ namespace Silicus.FrameworxProject.Web.Controllers
             User user = new User();
             user = _commonDataBaseContext.Query<User>().Where(u => u.EmailAddress == userEmailAddress).FirstOrDefault();
             List<OtherCode> OtherCodeList = new List<OtherCode>();
-            if (ShowExtensionType == "GetMyAllOtherCodeList")
+            if (ShowExtensionType == "ShowMyotherCodeList")
             {
                 OtherCodeList = _extensionCodeService.GetMyAllOtherCodeList(user.ID).ToList();
             }
-            else if (ShowExtensionType == "GetAllOtherCodeList")
+            else if (ShowExtensionType == "ShowotherCodeList")
             {
                 OtherCodeList = _extensionCodeService.GetAllApprovedOtherCodeList().ToList();
             }
