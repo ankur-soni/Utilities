@@ -1,0 +1,128 @@
+﻿
+@using Kendo.Mvc.UI;
+
+@{
+    var statusData = Html.Partial("/Views/Admin/_partialViewDashboard.cshtml");
+    var sendEmail = Html.Partial("/Views/Admin/_partialViewSendMail.cshtml");
+    ViewBag.Title = "Admin Dashboard";
+    var user = Html.Partial("/Views/Admin/_partialViewUser.cshtml");
+    var roles = Html.Partial("/Views/Admin/_partialViewRoles.cshtml");
+}
+
+<div class="main-content">
+	<div class="header">
+		<h1 class="page-title">
+			<i class="fa fa-dashboard"></i>Dashboard@*<span>Statistics and more</span>*@
+		</h1>
+		<div class="search">
+			<input type="text" placeholder="Search...">
+            <i class="fa fa-search"></i>
+        </div>
+	</div>
+	<div class="intro">
+		<ul class="clearfix">
+			<li>
+				<div class="intro-content">
+					<div class="circle">
+						<i class="fa fa-calendar"></i>
+					</div> <!-- /circle -->
+					<div class="intro-info">
+						June 4, 2013 <span>Tuesday, 12:06</span>
+					</div> <!-- /intro-info -->
+				</div> <!-- /intro-content -->
+			</li>
+			<li>
+				<div class="intro-content">
+					<div class="circle">
+						<div class="arc" id="arc-2"><div class="arc-in green"></div></div>
+						<i class="fa fa-bar-chart-o"></i>
+					</div> <!-- /circle -->
+					<div class="intro-info">
+						$754,28 <span>Total balance</span>
+					</div> <!-- /intro-info -->
+				</div> <!-- /intro-content -->
+			</li>
+			<li>
+				<div class="intro-content">
+					<div class="circle">
+						<div class="arc" id="arc-3"><div class="arc-in blue"></div></div>
+						<i class="fa fa-tag"></i>
+					</div> <!-- /circle -->
+					<div class="intro-info">
+						+364 <span>New orders</span>
+					</div> <!-- /intro-info -->
+				</div> <!-- /intro-content -->
+			</li>
+			<li>
+				<div class="intro-content">
+					<div class="circle">
+						<div class="arc" id="arc-4">
+							<div class="arc-in yellow"></div>
+							<div class="arc-in arc-sec yellow"></div>
+						</div>
+						<i class="fa fa-user"></i>
+					</div> <!-- /circle -->	
+					<div class="intro-info">
+						+1584 <span>New visitors</span>
+					</div> <!-- /intro-info -->
+				</div> <!-- /intro-content -->
+			</li>
+		</ul>
+	</div>
+
+					
+	<div class="fluid mt20">
+        <div class="kendogrid">
+    @(Html.Kendo().TabStrip()
+    .Name("Tabs")
+    .Items(tabstrip =>
+    {
+             
+        tabstrip.Add().Text("Users")
+            .Selected(true)
+           .Content(user.ToString());
+
+        tabstrip.Add().Text("Roles")
+          .Content(roles.ToString());
+    })
+    )
+	    </div> 
+</div>
+</div> <!-- /main-content -->
+<script>
+        //register custom validation rules
+        (function ($, kendo) {
+            $.extend(true, kendo.ui.validator, {
+                rules: { // custom rules
+                    productnamevalidation: function (input, params) {
+                        //check for the rule attribute 
+                        if (input.filter("[data-val-projectnamevalidation]").length && input.val()) {
+                            return /^[A-Z]/.test(input.val());
+                        }
+                        return true;
+                    }
+                },
+                messages: { //custom rules messages
+                    productnamevalidation: function (input) {
+                        // return the message text
+                        return input.attr("data-val-projectnamevalidation");
+                    }
+                }
+            });
+        })(jQuery, kendo);
+
+        //show server errors if any
+        function error_handler(e) {
+            if (e.errors) {
+                var message = "Errors:\n";
+                $.each(e.errors, function (key, value) {
+                    if ('errors' in value) {
+                        $.each(value.errors, function () {
+                            message += this + "\n";
+                        });
+                    }
+                });
+                alert(message);
+            }
+        }
+</script>

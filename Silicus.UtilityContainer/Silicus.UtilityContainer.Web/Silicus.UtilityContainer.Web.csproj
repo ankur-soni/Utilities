@@ -27,6 +27,8 @@
     </NuGetPackageImportStamp>
     <WebProject_DirectoryAccessLevelKey>1</WebProject_DirectoryAccessLevelKey>
     <ApplicationInsightsResourceId>/subscriptions/b88ee5bf-109f-42fa-947d-5fe5c79372b3/resourcegroups/Default-ApplicationInsights-CentralUS/providers/microsoft.insights/components/Silicus.UtilityContainer.Web</ApplicationInsightsResourceId>
+    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
+    <RestorePackages>true</RestorePackages>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -726,6 +728,8 @@
     <Content Include="font-awesome\scss\_variables.scss" />
     <Content Include="js\plugins\chartist\chartist.min.js.map" />
     <Content Include="LESS\.crunch" />
+    <None Include="Properties\PublishProfiles\EnHouse - FTP.pubxml" />
+    <None Include="Properties\PublishProfiles\EnHouse - Web Deploy.pubxml" />
     <None Include="Properties\PublishProfiles\SilicusUtilityContainerWeb7780 - FTP.pubxml" />
     <None Include="Properties\PublishProfiles\SilicusUtilityContainerWeb7780 - Web Deploy.pubxml" />
     <None Include="Properties\PublishProfiles\SilicusUtilityContainerWeb7780.pubxml" />
@@ -830,7 +834,9 @@
     </PropertyGroup>
     <Error Condition="!Exists('..\packages\Microsoft.Net.Compilers.1.0.0\build\Microsoft.Net.Compilers.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.Net.Compilers.1.0.0\build\Microsoft.Net.Compilers.props'))" />
     <Error Condition="!Exists('..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.1.0.0\build\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.1.0.0\build\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props'))" />
+    <Error Condition="!Exists('$(SolutionDir)\.nuget\NuGet.targets')" Text="$([System.String]::Format('$(ErrorText)', '$(SolutionDir)\.nuget\NuGet.targets'))" />
   </Target>
+  <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it.
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">

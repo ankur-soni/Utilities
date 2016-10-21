@@ -1,0 +1,93 @@
+This document contains brief instruction on how to build this template on a machine 
+and also instruction to use this template for a new project.
+
+(1) How to build on local machine:
+
+Prerequisites:
+
+1. The development machine must have Visual Studio (2012 is preferred but any version will work) and .NET framework installed on it.
+2. SQL Server must be installed (preferably SQL Express).
+3. Silicus Nuget Repository is setup in Visual Studio. If not, follow instruction from this link https://github.com/Silicus-Online/Frameworx/wiki/Frameworx-Home#silicus-nuget-store---how-can-i-install-packages-from-silicus-nuget-store.
+
+Instructions:
+
+1. Download the source code from the GitHub. You can clone the master repo or download as a zip file (on right hand side menu).
+2. Open the sln "Silicus.MvcTemplateWithIdentity.sln" file in Visual Studio.
+3. Right click the solution in VS and select "Restore Nuget Packages" from context menu. You can also do it from Package Manager setting
+  window.
+4. While building the solution VS will download required packages and build successfully.
+5. In case of error building one or more projects, build project individually.
+6. Once the project is built successfully, open Web.Config file and make following changes.
+
+6.a Change the connection string as per your SQL Server instance name. You can either create a DB user and add his credential
+into connection string with "Integrated Security=false" or you can use "Integrated Security=true" in which case application
+will connect to SQL Server with windows authentication.
+6.b Since we are using Identity for authentication, the default user will be setup with no code changes.
+
+Following are the users which are created:
+ 
+1)      Username : admin@example.com
+ 
+Password : Admin@123456
+ 
+Role : Admin
+ 
+2)      Username : testuser@test.com
+ 
+Password : testuser@123
+ 
+Role : User
+
+6.c Change following app key values based on DB name selected in connection strings:
+
+  <add key="DBName" value="SilicusMvcTemplateDB" />
+  <add key="MembershipDBName" value="Silicus_ASPNETDB" />
+
+Features:
+
+Following are the features in MVC template:
+ 
+Reuse-able Components
+ 
+While all of the template is designed to be used by any green field project below components can be reused in any other project independently:
+ 
+1.	Silicus.Logger – A simple library that implements a Database Logger which is very simple to use. Maintain log level and does logging asynchronously. Fail safe (never throws, logs in windows event viewer).
+2.	Silicus.Auditing – A simple library provide ability to add business events into database (separate). Audit information can be changed based on project needs.
+3.	Silicus.Core – A class library that provides common core functionality. Guard class provides input validation against NULL and Empty for various datatypes. EncryptionHelper provides ability to encrypt or decrypt strings.
+ 
+Features
+ 
+1.	Authentication (Form based) and Authorization using Identity (http://www.asp.net/identity/overview/getting-started/introduction-to-aspnet-identity).
+2.	Both filter based and explicit logging is demonstrated.
+3.	Filter based auditing is demonstrated.
+4.	Exception Handling (Different error view for different HTTP error code) is demonstrated.
+5.	User Account Management – Added two default users in two different roles. Login, Forgot Password, Change Password, Reset Password, Auto logoff after x hours, etc. 
+6.	Data Access Layer – Fully working and ready to use EntityFramework based library demonstrated.
+7.	CRUD Operation with DB – End to End communication
+8.	Send Email
+9.	Publish profile – two profiles demonstrated with web.config transformations
+10.	Unit test cases added for sample controller and classes.
+
+(2) How to use this template for a new project
+
+Consider following for example:
+
+Old solution name: Silicus.MvcTemplateWithIdentity
+Old namespace name: Silicus.MvcTemplate
+
+New solution name: Finder
+New namespace name: Silicus.Finder
+
+1. Open solution in visual studio.
+2. Select each project and 
+   a. Open properties page and change project name. Even in Assembly Information page.
+   b. Rename project in solution explorer.
+3. Rename the solution.
+4. Change the namespace in whole solution from "ADS.WMS" to "Silicus.Finder".
+5. Change the phrase "ADS" or "ADS.WMS" used anywhere in solution to "Finder".
+6. Clean and rebuild the solution.
+7. Go back to windows explorer. Rename folder name.
+8. Rename physical file name if required (for files not in sln).
+9. Delete old complied files. Use below command in powershell to delete bin and obj folder to clear old dlls:
+      Get-ChildItem .\ -include bin,obj -Recurse | foreach ($_) { remove-item $_.fullname -Force -Recurse }
+10. Build and run the project.

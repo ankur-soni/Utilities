@@ -1,0 +1,54 @@
+﻿@model Silicus.Ensure.Models.DataObjects.User
+@using Kendo.Mvc.UI;
+
+@{
+    ViewBag.Title = "Roles";
+}
+
+<h2>Admin Dashboard</h2>
+
+<div>      
+              
+    @if (Request.IsAuthenticated)
+    { 
+        @(Html.Kendo().Grid<Silicus.Ensure.Models.DataObjects.User>().Name("userGrids")
+         .Columns(columns =>
+              {
+                  columns.Bound(p => p.FirstName).Width(50);
+                  columns.Bound(p => p.LastName).Width(50);
+                  columns.Bound(p => p.Address).Width(100);
+                  columns.Bound(p => p.NewPassword).Format("*********").Width(100);
+                  columns.Bound(p => p.ConfirmPassword).Format("*********").Width(100).Title("ConfirmPassword");
+                  columns.Bound(p => p.isActive).Width(50);
+                  columns.Bound(p => p.Role).Width(110).Title("Role").EditorTemplateName("ComboBox");      
+                  columns.Bound(p => p.Email).Width(50);
+                  //columns.Bound(p => p.IdentityUserId).Hidden();
+          
+                  //columns.Command(command => command.Edit()).Width(200);  
+                  columns.Command(command => { command.Edit(); command.Destroy(); }).Width(160);
+              })      
+        .DataSource(dataSource => dataSource
+                  .Ajax()
+                  .Model(model =>
+                  {
+                      model.Id(p => p.UserId);
+                      model.Field(p => p.UserId).Editable(false);
+                  })
+                   
+                  .Read(read => read.Action("GetUserDetails", "User"))
+                  .Create(update => update.Action("CreateUser", "User"))
+                  .Update(update => update.Action("UpdateUser", "User"))
+                  .Destroy(update => update.Action("DeleteUser", "User"))
+              )
+             
+                   
+              .Pageable()
+              .Sortable()
+              .ToolBar(toolbar => toolbar.Create())
+              .Editable(ed => ed.Mode(GridEditMode.InLine))
+              )
+
+
+    }
+</div>
+
