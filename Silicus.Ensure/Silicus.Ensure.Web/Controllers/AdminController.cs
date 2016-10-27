@@ -7,6 +7,7 @@ using System.Web.Mvc;
 using Microsoft.AspNet.Identity.Owin;
 using Silicus.Ensure.Entities.Identity;
 using Silicus.Ensure.Services.Interfaces;
+using Silicus.Ensure.Models.DataObjects;
 
 namespace Silicus.Ensure.Web.Controllers
 {
@@ -184,6 +185,17 @@ namespace Silicus.Ensure.Web.Controllers
             System.Security.Cryptography.MD5 md5 = new System.Security.Cryptography.MD5CryptoServiceProvider();
             string hashParams = BitConverter.ToString(md5.ComputeHash(bytesofLink));
             return hashParams;
+        }
+
+        public ActionResult AddQuestions()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public ActionResult AddQuestions(Question Question)
+        {
+            return View();
         }
     }
 }

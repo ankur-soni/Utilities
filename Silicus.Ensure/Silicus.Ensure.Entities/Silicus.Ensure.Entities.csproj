@@ -133,6 +133,7 @@
     <Compile Include="EntityConfigurations\OrganizationMap.cs" />
     <Compile Include="EntityConfigurations\ProjectDetailMap.cs" />
     <Compile Include="EntityConfigurations\ProjectMap.cs" />
+    <Compile Include="EntityConfigurations\QuestionMap.cs" />
     <Compile Include="EntityConfigurations\RolesMap.cs" />
     <Compile Include="EntityConfigurations\TableSettings.cs" />
     <Compile Include="EntityConfigurations\UserMap.cs" />

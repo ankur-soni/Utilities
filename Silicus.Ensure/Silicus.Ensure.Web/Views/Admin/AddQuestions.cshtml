@@ -1,0 +1,145 @@
+﻿@model Silicus.Ensure.Models.DataObjects.Question
+@using Kendo.Mvc.UI;
+
+@{
+    ViewBag.Title = "Add Questions";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="main-content">
+    @using (Html.BeginForm("AddQuestions", "Admin"))
+    {
+        <div class="fluid mt20">
+            <div class="row">
+                <div class="col-md-4">
+                    Technology
+                    <div>
+                        @(Html.Kendo().DropDownList()
+            .Name("Technology")
+            .DataTextField("Text")
+            .DataValueField("Value")
+            .BindTo(new List<SelectListItem>() {
+            new SelectListItem(){
+            Text="C Sharp",
+            Value="1"
+            },
+            new SelectListItem(){
+            Text="UI",
+            Value="2"
+            },
+            new SelectListItem(){
+            Text="Java",
+            Value="3"
+            }
+            }))
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    Competency Level
+                    <div>
+                        @(Html.Kendo().DropDownList()
+                    .Name("CompetencyLevel")
+            .BindTo(new List<string>() {
+            "1", "2", "3", "4", "5", "6", "7", "8"
+            }))
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    Question Category
+                    <div>
+                        @(Html.Kendo().DropDownList()
+                    .Name("Category")
+            .DataTextField("Text")
+            .DataValueField("Value")
+            .Events(e => e.Change("Change"))
+            .BindTo(new List<SelectListItem>() {
+            new SelectListItem(){
+            Text="Single Choice",
+            Value="1"
+            },
+            new SelectListItem(){
+            Text="Multi Choice",
+            Value="2"
+            },
+            new SelectListItem(){
+            Text="Practical",
+            Value="3"
+            }
+            }))
+                    </div>
+                </div>
+            </div>
+            <br />
+            <div class="row">
+                <div class="col-md-12">
+                    Question
+                    @Html.TextAreaFor(m => m.QuestionText, new { @class = "hight" })
+                    @*<textarea id="editor" style="height:250px"></textarea>*@
+                </div>
+            </div>
+            <br />
+            <div id="optiondiv">
+                <div class="row">
+                    <div class="col-md-12">Options</div>
+                </div>
+                <br />
+                <div class="row">
+                    <div class="col-md-4">1) <input type="text" /></div>
+                    <div class="col-md-4">2) <input type="text" /></div>
+                    <div class="col-md-4">3) <input type="text" /></div>
+                </div>
+                <div class="row">
+                    <div class="col-md-4">4) <input type="text" /></div>
+                    <div class="col-md-4">5) <input type="text" /></div>
+                    <div class="col-md-4">6) <input type="text" /></div>
+                </div>
+            </div>
+            <br />
+            <div class="row">
+                <div class="col-md-6"></div>
+                <div class="col-md-2 col-md-offset-4">
+                    @(Html.Kendo().Button()
+                            .Name("btnCancel").Icon("cancel")
+            .HtmlAttributes(new { type = "button" })
+            .Content("Cancel"))
+
+                    @(Html.Kendo().Button()
+                            .Name("btnSave").Icon("tick")
+            .HtmlAttributes(new { type = "submit" })
+            .Content("Save"))
+                </div>
+            </div>
+
+            <script>
+                $(document).ready(function () {
+                    // create Editor from textarea HTML element with default set of tools
+                    $("#QuestionText").kendoEditor({
+                        resizable: {
+                            content: true,
+                            toolbar: true
+                        }
+                    });
+                });
+
+                // Drop down change
+
+                function Change() {
+                    var value = $("#Category").val();
+                    if (value == "3") {
+                        $("#optiondiv").fadeOut(1000);
+                    }
+                    else {
+                        $("#optiondiv").fadeIn(1000);
+                    }
+                }
+            </script>
+            <style>
+                .height {
+                    height: 250px;
+                }
+            </style>
+        </div>
+    }
+</div>

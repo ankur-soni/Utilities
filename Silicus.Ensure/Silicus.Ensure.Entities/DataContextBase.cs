@@ -41,6 +41,7 @@ namespace Silicus.Ensure.Entities
             modelBuilder.Configurations.Add(new EmailAvailableMap());
             modelBuilder.Configurations.Add(new UserMap());
             modelBuilder.Configurations.Add(new RolesMap());
+            modelBuilder.Configurations.Add(new QuestionMap());
 
             // Many-to-many example - can be moved to Map file as well.
             modelBuilder.Entity<Asset>()

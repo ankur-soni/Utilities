@@ -92,7 +92,7 @@ namespace Silicus.Ensure.Web.Controllers
                     ModelState.AddModelError("", result.Errors.First());
                     ViewBag.RoleId = new SelectList(await RoleManager.Roles.ToListAsync(), "Name", "Name");
                 }
-                
+
             }
             else
             {
@@ -101,7 +101,7 @@ namespace Silicus.Ensure.Web.Controllers
                 return View();
 
             }
-            
+
             var organizationUserDomainModel =
                               _mappingService.Map<UserViewModel, User>(vuser);
 
@@ -132,6 +132,11 @@ namespace Silicus.Ensure.Web.Controllers
             }
 
             return Json(-1);
+        }
+
+        public ActionResult CandidateTest()
+        {
+            return View();
         }
     }
 }
