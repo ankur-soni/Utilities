@@ -6,6 +6,7 @@
     ViewBag.Title = "Admin Dashboard";
     var user = Html.Partial("/Views/Admin/_partialViewUser.cshtml");
     var roles = Html.Partial("/Views/Admin/_partialViewRoles.cshtml");
+    var tags = Html.Partial("/Views/Admin/_partialViewTags.cshtml");
 }
 
 <div class="main-content">
@@ -83,6 +84,9 @@
 
         tabstrip.Add().Text("Roles")
           .Content(roles.ToString());
+
+        tabstrip.Add().Text("Tags")
+         .Content(tags.ToString());
     })
             )
         </div>

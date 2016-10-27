@@ -10,7 +10,7 @@
         public static readonly string EmailAvailable = "EmailAvailable";
         public static readonly string User = "User";
         public static readonly string Roles = "Roles";
-
         public static readonly string Question = "Question";
+        public static readonly string Tags = "Tags";
     }
 }
