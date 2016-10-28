@@ -1,4 +1,4 @@
-﻿@model Silicus.Ensure.Web.Models.TagViewModel
+﻿@model Silicus.Ensure.Models.DataObjects.Tags
 @using Kendo.Mvc.UI;
 
 @{
@@ -11,7 +11,7 @@
               
     @if (Request.IsAuthenticated)
     { 
-        @(Html.Kendo().Grid<Silicus.Ensure.Web.Models.TagViewModel>().Name("tagsGrids")
+        @(Html.Kendo().Grid<Silicus.Ensure.Models.DataObjects.Tags>().Name("tagsGrids")
          .Columns(columns =>
               {
                   columns.Bound(p => p.TagName).Width(50);                 
