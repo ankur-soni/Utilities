@@ -7,6 +7,7 @@
     var user = Html.Partial("/Views/Admin/_partialViewUser.cshtml");
     var roles = Html.Partial("/Views/Admin/_partialViewRoles.cshtml");
     var tags = Html.Partial("/Views/Admin/_partialViewTags.cshtml");
+    var Skill = Html.Partial("/Views/Admin/_partialViewSkill.cshtml");
 }
 
 <div class="main-content">
@@ -84,6 +85,9 @@
 
         tabstrip.Add().Text("Roles")
           .Content(roles.ToString());
+
+        tabstrip.Add().Text("Skill")
+         .Content(tags.ToString());
 
         tabstrip.Add().Text("Tags")
          .Content(tags.ToString());

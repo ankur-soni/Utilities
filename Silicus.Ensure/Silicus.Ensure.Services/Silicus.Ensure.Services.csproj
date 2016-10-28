@@ -103,6 +103,7 @@
     <Compile Include="Interfaces\IQuestionService.cs" />
     <Compile Include="Interfaces\IRolesService.cs" />
     <Compile Include="Interfaces\ISmtpClient.cs" />
+    <Compile Include="Interfaces\ISkillService.cs" />
     <Compile Include="Interfaces\ITagsService.cs" />
     <Compile Include="Interfaces\IUserService.cs" />
     <Compile Include="ManagerService.cs" />
@@ -112,6 +113,7 @@
     <Compile Include="QuestionService.cs" />
     <Compile Include="RolesService.cs" />
     <Compile Include="SmtpClientWrapper.cs" />
+    <Compile Include="SkillService.cs" />
     <Compile Include="TagService.cs" />
     <Compile Include="UserService.cs" />
   </ItemGroup>

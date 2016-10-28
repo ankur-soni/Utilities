@@ -43,6 +43,7 @@ namespace Silicus.Ensure.Entities
             modelBuilder.Configurations.Add(new RolesMap());
             modelBuilder.Configurations.Add(new QuestionMap());
             modelBuilder.Configurations.Add(new TagsMap());
+            modelBuilder.Configurations.Add(new SkillMap());
 
             // Many-to-many example - can be moved to Map file as well.
             modelBuilder.Entity<Asset>()

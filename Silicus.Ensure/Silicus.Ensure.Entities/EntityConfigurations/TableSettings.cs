@@ -12,5 +12,6 @@
         public static readonly string Roles = "Roles";
         public static readonly string Question = "Question";
         public static readonly string Tags = "Tags";
+        public static readonly string Skill = "SKill";
     }
 }
