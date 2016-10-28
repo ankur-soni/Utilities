@@ -77,7 +77,8 @@ namespace Silicus.Ensure.Web
 
             kernel.Bind<ICookieHelper>().To<CookieHelper>();
 
-            kernel.Bind<IAuditManager>().To<AuditManager>()
+            kernel.Bind<IAuditManager>().To<AuditManager>();
+            kernel.Bind<ITagsService>().To<TagService>()
                 .WithConstructorArgument("connectionString", "name=SilicusAuditingDataContext");
         }
     }
