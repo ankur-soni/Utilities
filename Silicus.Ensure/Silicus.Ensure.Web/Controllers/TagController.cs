@@ -32,16 +32,34 @@ namespace Silicus.Ensure.Web.Controllers
             return Json(tagDetails.ToDataSourceResult(request), JsonRequestBehavior.AllowGet);
         }
 
-        [AcceptVerbs(HttpVerbs.Post)]
-        public ActionResult CreateTag(Tags tag)
+        public ActionResult List()
+        {            
+           return View("../Admin/TagList");
+        }
+
+        public ActionResult Add(Int32 tagId=0)
         {
+            if (tagId == 0)
+                return View("../Admin/TagAdd");
+            else
+                return View("../Admin/TagAdd");            
+        }
+
+        [AcceptVerbs(HttpVerbs.Post)]
+        public ActionResult SaveTag(Tags tag)
+        {
+            var tagDetails = _tagsService.GetTagsDetails().Where(model=>model.TagName==tag.TagName);
+            if (tagDetails.Count() > 0)
+                ModelState.AddModelError(string.Empty, "Tag name is already exists.");
             if (tag != null && ModelState.IsValid)
             {
-                return Json(_tagsService.Add(tag));
+                tag.IsActive = true;
+                _tagsService.Add(tag);
+                return RedirectToAction("List");
             }
 
-            return Json(-1);
-        }
+            return View("../Admin/TagAdd");
+        }        
 
         [AcceptVerbs(HttpVerbs.Post)]
         public ActionResult UpdateTag(Tags tag)

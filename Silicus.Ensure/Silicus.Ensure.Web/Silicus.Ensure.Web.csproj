@@ -321,6 +321,7 @@
     <Compile Include="Controllers\RoleController.cs" />
     <Compile Include="Controllers\SkillController.cs" />
     <Compile Include="Controllers\TagController.cs" />
+    <Compile Include="Controllers\TestSuiteController.cs" />
     <Compile Include="Controllers\UserController.cs" />
     <Compile Include="CookieHelper.cs" />
     <Compile Include="Filters\AuditAttribute.cs" />
@@ -342,7 +343,6 @@
     <Compile Include="Models\LoginModel.cs" />
     <Compile Include="Models\ResetPasswordModel.cs" />
     <Compile Include="Models\RoleViewModel.cs" />
-    <Compile Include="Models\TagViewModel.cs" />
     <Compile Include="Models\UserViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
@@ -662,6 +662,9 @@
     <Content Include="Views\User\CandidateTest.cshtml" />
     <Content Include="Views\Admin\_partialViewTags.cshtml" />
     <Content Include="Views\Admin\_partialViewSkill.cshtml" />
+    <Content Include="Views\Admin\TagAdd.cshtml" />
+    <Content Include="Views\Admin\TestSuiteAdd.cshtml" />
+    <Content Include="Views\Admin\TagList.cshtml" />
     <None Include="Web.Integration.config">
       <DependentUpon>Web.config</DependentUpon>
       <SubType>Designer</SubType>
@@ -673,6 +676,7 @@
     <Folder Include="Scripts\Custom\" />
     <Folder Include="ViewModel\" />
     <Folder Include="Views\Shared\DisplayTemplates\" />
+    <Folder Include="Views\TestSuite\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config">

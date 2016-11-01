@@ -8,6 +8,8 @@ using Microsoft.AspNet.Identity.Owin;
 using Silicus.Ensure.Entities.Identity;
 using Silicus.Ensure.Services.Interfaces;
 using Silicus.Ensure.Models.DataObjects;
+using Silicus.Ensure.Web.Mappings;
+using Kendo.Mvc.UI;
 
 namespace Silicus.Ensure.Web.Controllers
 {
@@ -16,6 +18,9 @@ namespace Silicus.Ensure.Web.Controllers
         private readonly IEmailService _emailService;
 
         private ApplicationUserManager _userManager;
+        private readonly ITagsService _tagsService;
+        private readonly IMappingService _mappingService;
+
         public ApplicationUserManager UserManager
         {
             get
@@ -197,5 +202,10 @@ namespace Silicus.Ensure.Web.Controllers
         {
             return View();
         }
+
+        public ActionResult TestSuiteAdd()
+        {
+            return View("TestSuiteAdd");
+        }        
     }
 }
