@@ -1,13 +1,13 @@
 ﻿@model Silicus.Ensure.Models.DataObjects.TestSuite
 @using Kendo.Mvc.UI;
 @{
-    ViewBag.Title = "TestSuite";
+   ViewBag.Title = "TestSuite";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
 <div class="main-content">
     <h2>New Test Suite</h2>
-    @using (Html.BeginForm("", ""))
+    @using (Html.BeginForm("Save", "TestSuite"))
     {
         @Html.ValidationSummary(true)
         <div class="fluid mt20">
@@ -59,21 +59,12 @@
             <div class="row">
                 <div class="col-md-12">
                     @Html.LabelFor(model => model.PrimaryTags)<b style="color:Red;">*</b>:
-                    @(Html.Kendo().MultiSelectFor(model=>model.PrimaryTags)                    
-                    .BindTo(new List<SelectListItem>() {
-                    new SelectListItem(){
-                    Text="Java",
-                    Value="1"
-                    },
-                    new SelectListItem(){
-                    Text="ASP.Net",
-                    Value="2"
-                    },
-                    new SelectListItem(){
-                    Text="SQL",
-                    Value="3"
-                    }
-                    }))
+                    @(Html.Kendo().MultiSelectFor(model=>model.PrimaryTags)
+                    .BindTo(Model.TagList)
+                    .AutoBind(true)
+                    .DataTextField("TagName")
+                    .DataValueField("TagId")
+                    )
                     @Html.ValidationMessageFor(model => model.PrimaryTags)
                     
                 </div>
