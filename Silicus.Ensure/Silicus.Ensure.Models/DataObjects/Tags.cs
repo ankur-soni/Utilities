@@ -11,6 +11,7 @@ namespace Silicus.Ensure.Models.DataObjects
         [Required(ErrorMessage = "Tag Name is required!")]
         [StringLength(50,ErrorMessage="Tag length should be less than or equal to 50 characters.")]
         [Display(Name="Tag Name")]
+        [RegularExpression(@"^[^\s]+$", ErrorMessage = "Space are not allowd")]
         public string TagName { get; set; }
 
         [Required(ErrorMessage = "Description is required!")]

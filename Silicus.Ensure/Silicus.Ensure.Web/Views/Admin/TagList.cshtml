@@ -1,0 +1,46 @@
+﻿@using Kendo.Mvc.UI;
+
+@{
+    ViewBag.Title = "Tag List";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<div class="main-content">
+    <h2>Tag List</h2>
+    <div class="row" style="padding-top:5px;padding-bottom:5px;">
+        <div class="col-md-6"></div>
+        <div class="col-md-2 col-md-offset-4">
+            @(Html.Kendo().Button()
+                                    .Name("btnNew")
+            .HtmlAttributes(new { type = "button" })
+                    .Content("Add new record")
+            .Events(ev => ev.Click("onAddClick")))          
+        </div>
+    </div>    
+        @if (Request.IsAuthenticated)
+        {
+            @(Html.Kendo().Grid<Silicus.Ensure.Models.DataObjects.Tags>().Name("tagsGrids")
+         .Columns(columns =>
+              {
+                  columns.Bound(p => p.TagName).Width(50);
+                  columns.Bound(p => p.Description).Width(200);
+                  columns.Bound(p => p.IsActive).Width(50);                  
+              })
+        .DataSource(dataSource => dataSource
+                  .Ajax()
+                  .Model(model =>
+                  {
+                      model.Id(p => p.TagId);
+                      model.Field(p => p.TagId).Editable(false);
+                  })
+                  .Read(read => read.Action("GetTagsDetails", "tag"))
+              )              
+              .Pageable()
+              .Sortable()              
+            )
+        }
+    </div>
+<script>
+    function onAddClick() {
+        window.location = '@Url.Action("add", "tag")';
+    }
+</script>

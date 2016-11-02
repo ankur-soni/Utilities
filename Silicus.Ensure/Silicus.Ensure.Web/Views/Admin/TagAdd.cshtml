@@ -54,6 +54,14 @@
                             toolbar: true
                         }
                     });
+
+                    $(function () {
+                        $("#TagName").keypress(function (evt) {
+                            var cc = (evt.charCode) ? evt.charCode : ((evt.which) ? evt.which : evt.keyCode);                                                          
+                                if (cc == 32)
+                                    return false;                           
+                        });
+                    });
                 });
                 function onCancelClick() {
                     window.location = '@Url.Action("list", "tag")';                   
