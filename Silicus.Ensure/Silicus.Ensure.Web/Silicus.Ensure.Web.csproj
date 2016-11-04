@@ -341,6 +341,7 @@
     <Compile Include="Models\EmailModel.cs" />
     <Compile Include="Models\ForgotPassword.cs" />
     <Compile Include="Models\LoginModel.cs" />
+    <Compile Include="Models\QuestionModel.cs" />
     <Compile Include="Models\ResetPasswordModel.cs" />
     <Compile Include="Models\RoleViewModel.cs" />
     <Compile Include="Models\UserViewModel.cs" />
