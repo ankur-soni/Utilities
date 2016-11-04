@@ -136,6 +136,8 @@
     <Compile Include="EntityConfigurations\QuestionMap.cs" />
     <Compile Include="EntityConfigurations\RolesMap.cs" />
     <Compile Include="EntityConfigurations\TableSettings.cs" />
+    <Compile Include="EntityConfigurations\SkillMap.cs" />
+    <Compile Include="EntityConfigurations\TagMap.cs" />
     <Compile Include="EntityConfigurations\UserMap.cs" />
     <Compile Include="Identity\IdentityConfig.cs" />
     <Compile Include="Initializer\BaseDatabaseInitializer.cs" />

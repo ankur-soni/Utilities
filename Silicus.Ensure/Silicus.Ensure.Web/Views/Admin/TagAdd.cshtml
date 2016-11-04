@@ -1,0 +1,77 @@
+﻿@model Silicus.Ensure.Models.DataObjects.Tags
+@using Kendo.Mvc.UI;
+
+@{
+    ViewBag.Title = "Add Tag";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="main-content">
+    <h2>New Tag</h2>
+        
+    @using (Html.BeginForm("SaveTag", "Tag"))
+    {
+        @Html.ValidationSummary(true)        
+        <div class="fluid mt20">
+            <div class="row">
+                <div class="col-md-12">
+                    @Html.LabelFor(model=>model.TagName)<b style="color:Red;">*</b>:
+                    @Html.TextBoxFor(model => model.TagName)  
+                    @Html.ValidationMessageFor(model => model.TagName)           
+                </div>
+            </div>
+            <br />
+            <div class="row">
+                <div class="col-md-12">                    
+                    @Html.LabelFor(model => model.Description)<b style="color:Red;">*</b>:
+                    @Html.TextAreaFor(m => m.Description, new { @class = "hight" })
+                    @Html.ValidationMessageFor(model => model.Description)                    
+                </div>
+            </div>            
+            <br />
+            <div class="row">
+                <div class="col-md-6"></div>
+                <div class="col-md-2 col-md-offset-4">
+                    @(Html.Kendo().Button()
+                            .Name("btnCancel").Icon("cancel")
+            .HtmlAttributes(new { type = "button" })
+            .Content("Cancel")
+            .Events(ev => ev.Click("onCancelClick")))
+
+                    @(Html.Kendo().Button()
+                            .Name("btnSave").Icon("tick")
+            .HtmlAttributes(new { type = "submit" })
+            .Content("Save"))
+                </div>
+            </div>
+
+            <script>
+                $(document).ready(function () {
+                    // create Editor from textarea HTML element with default set of tools
+                    $("#Description").kendoEditor({
+                        resizable: {
+                            content: true,
+                            toolbar: true
+                        }
+                    });
+
+                    $(function () {
+                        $("#TagName").keypress(function (evt) {
+                            var cc = (evt.charCode) ? evt.charCode : ((evt.which) ? evt.which : evt.keyCode);                                                          
+                                if (cc == 32)
+                                    return false;                           
+                        });
+                    });
+                });
+                function onCancelClick() {
+                    window.location = '@Url.Action("list", "tag")';                   
+                }
+</script>
+            <style>
+                .height {
+                    height: 250px;
+                }
+            </style>
+        </div>
+    }
+</div>

@@ -1,0 +1,45 @@
+﻿@model Silicus.Ensure.Models.DataObjects.Skill
+@using Kendo.Mvc.UI;
+
+@{
+    ViewBag.Title = "Skill";
+}
+
+<h2>Admin Dashboard</h2>
+
+<div>      
+              
+    @if (Request.IsAuthenticated)
+    { 
+        @(Html.Kendo().Grid<Silicus.Ensure.Models.DataObjects.Skill>().Name("skillGrids")
+         .Columns(columns =>
+              {
+                  columns.Bound(p => p.SkillName).Width(50);                 
+                  columns.Bound(p => p.IsActive).Width(50);                  
+                  columns.Command(command => { command.Edit(); command.Destroy(); }).Width(160);
+              })      
+        .DataSource(dataSource => dataSource
+                  .Ajax()
+                  .Model(model =>
+                  {
+                      model.Id(p => p.SkillId);
+                      model.Field(p => p.SkillId).Editable(false);
+                  })
+
+                          .Read(read => read.Action("GetSkillDetails", "Skill"))
+                          .Create(update => update.Action("CreateSkill", "Skill"))
+                          .Update(update => update.Action("UpdateSkill", "Skill"))
+                          .Destroy(update => update.Action("DeleteSkill", "Skill"))
+              )
+             
+                   
+              .Pageable()
+              .Sortable()
+              .ToolBar(toolbar => toolbar.Create())
+              .Editable(ed => ed.Mode(GridEditMode.InLine))
+              )
+
+
+    }
+</div>
+

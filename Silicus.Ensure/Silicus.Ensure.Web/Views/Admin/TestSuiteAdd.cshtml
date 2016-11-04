@@ -1,0 +1,145 @@
+﻿@model Silicus.Ensure.Models.DataObjects.TestSuite
+@using Kendo.Mvc.UI;
+@{
+   ViewBag.Title = "TestSuite";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="main-content">
+    <h2>New Test Suite</h2>
+    @using (Html.BeginForm("Save", "TestSuite"))
+    {
+        @Html.ValidationSummary(true)
+        <div class="fluid mt20">
+            <div class="row">
+                <div class="col-md-12">
+                    @Html.LabelFor(model => model.TestSuiteName)<b style="color:Red;">*</b>:
+                    @Html.TextBoxFor(model => model.TestSuiteName)
+                    @Html.ValidationMessageFor(model => model.TestSuiteName)
+                </div>
+            </div>
+            <br />
+            <div class="row">
+                <div class="col-md-12">
+                    @Html.LabelFor(model => model.Duration)<b style="color:Red;">*</b>:
+                    @(Html.Kendo().DropDownListFor(model=>model.Duration)                  
+                    .BindTo(new List<string>() {
+                    "30", "60", "90", "120"
+                    }))         
+                    @Html.ValidationMessageFor(model => model.Duration)      
+                </div>
+            </div>
+            <br />
+            <div class="row">
+                <div class="col-md-12">
+                    @Html.LabelFor(model => model.Position)<b style="color:Red;">*</b>:
+                    @(Html.Kendo().DropDownListFor(model=>model.Position)                  
+                    .BindTo(new List<SelectListItem>() {
+                        new SelectListItem(){
+                    Text="--Select--",
+                    Value=""
+                    },
+                    new SelectListItem(){
+                    Text="Jr. Developer",
+                    Value="1"
+                    },
+                    new SelectListItem(){
+                    Text="Sr. Developer",
+                    Value="2"
+                    },
+                    new SelectListItem(){
+                    Text="SQA",
+                    Value="3"
+                    }
+                    }))
+                    @Html.ValidationMessageFor(model => model.Position)
+                </div>
+            </div>
+            <br />
+            <div class="row">
+                <div class="col-md-12">
+                    @Html.LabelFor(model => model.PrimaryTags)<b style="color:Red;">*</b>:
+                    @(Html.Kendo().MultiSelectFor(model => model.PrimaryTags)
+                    .BindTo(new List<SelectListItem>() {
+                    new SelectListItem(){
+                    Text="Java",
+                    Value="1"
+                    },
+                    new SelectListItem(){
+                    Text="ASP.Net",
+                    Value="2"
+                    },
+                    new SelectListItem(){
+                    Text="SQL",
+                    Value="3"
+                    }
+                    }))
+                    @Html.ValidationMessageFor(model => model.PrimaryTags)
+                    
+                </div>
+            </div>
+            <br/>
+            <div class="row">
+                <div class="col-md-12">
+                    @Html.LabelFor(model => model.SecondaryTag)<b style="color:Red;">*</b>:
+                    @(Html.Kendo().MultiSelectFor(model => model.SecondaryTag)
+                    .BindTo(new List<SelectListItem>() {
+                    new SelectListItem(){
+                    Text="Java",
+                    Value="1"
+                    },
+                    new SelectListItem(){
+                    Text="ASP.Net",
+                    Value="2"
+                    },
+                    new SelectListItem(){
+                    Text="SQL",
+                    Value="3"
+                    }
+                    }))
+                </div>
+            </div>
+
+            <br/>
+            <div class="row">
+                <div class="col-md-12">
+                    IsActive:
+                    @Html.CheckBoxFor(m => m.IsActive)
+                </div>
+            </div>
+            <br />
+            <div class="row">
+                <div class="col-md-6"></div>
+                <div class="col-md-2 col-md-offset-4">
+                    @(Html.Kendo().Button()
+                            .Name("btnCancel").Icon("cancel")
+            .HtmlAttributes(new { type = "button" })
+            .Content("Cancel"))
+
+                    @(Html.Kendo().Button()
+                            .Name("btnSave").Icon("tick")
+            .HtmlAttributes(new { type = "submit" })
+            .Content("Save"))
+                </div>
+            </div>
+
+            <script>
+                $(document).ready(function () {
+                    // create Editor from textarea HTML element with default set of tools
+                    $("#Description").kendoEditor({
+                        resizable: {
+                            content: true,
+                            toolbar: true
+                        }
+                    });
+                });
+            </script>
+            <style>
+                .height {
+                    height: 250px;
+                }
+            </style>
+        </div>
+    }
+</div>
+
