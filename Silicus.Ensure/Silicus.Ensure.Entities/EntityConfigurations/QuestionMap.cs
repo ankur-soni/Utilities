@@ -13,9 +13,9 @@ namespace Silicus.Ensure.Entities.EntityConfigurations
     {
         public QuestionMap()
         {
-            HasKey(o => o.QuestionId);
+            HasKey(o => o.Id);
 
-            Property(p => p.QuestionId).HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity);
+            Property(p => p.Id).HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity);
 
             ToTable(TableSettings.Question, TableSettings.DefaultSchema);
         }

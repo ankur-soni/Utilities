@@ -338,6 +338,7 @@
     <Compile Include="Models\EmailModel.cs" />
     <Compile Include="Models\ForgotPassword.cs" />
     <Compile Include="Models\LoginModel.cs" />
+    <Compile Include="Models\QuestionModel.cs" />
     <Compile Include="Models\ResetPasswordModel.cs" />
     <Compile Include="Models\RoleViewModel.cs" />
     <Compile Include="Models\UserViewModel.cs" />
@@ -656,7 +657,7 @@
     <Content Include="Views\Shared\EditorTemplates\ComboBox.cshtml" />
     <Content Include="Views\Account\ExternalLoginConfirmation.cshtml" />
     <Content Include="Views\Admin\AddQuestions.cshtml" />
-    <Content Include="Views\User\CandidateTest.cshtml" />
+    <Content Include="Views\Admin\QuestionBank.cshtml" />
     <None Include="Web.Integration.config">
       <DependentUpon>Web.config</DependentUpon>
       <SubType>Designer</SubType>
