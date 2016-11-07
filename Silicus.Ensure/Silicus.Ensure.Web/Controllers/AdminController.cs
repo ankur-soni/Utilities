@@ -206,6 +206,15 @@ namespace Silicus.Ensure.Web.Controllers
         public ActionResult TestSuiteAdd()
         {
             return View("TestSuiteAdd");
-        }        
+        }
+
+
+
+        public ActionResult Candidate()
+        {
+            return View();
+        }      
+
+
     }
 }
