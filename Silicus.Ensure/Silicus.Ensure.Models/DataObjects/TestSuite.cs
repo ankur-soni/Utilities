@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Silicus.Ensure.Models.CustomValidations;
+using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
@@ -17,24 +19,22 @@ namespace Silicus.Ensure.Models.DataObjects
         [Required(ErrorMessage="Duration is required!")]
         public Int32 Duration { get; set; }
 
+        [Display(Name = "No. Of Objective Questions")]
+        public string ObjectiveQuestionsCount { get; set; }
+
+        [Display(Name = "No. Of Practical Questions")]
+        public string PracticalQuestionsCount { get; set; }
+
         [Required(ErrorMessage = "Position is required!")]
         public Int32 Position { get; set; }
 
         [Required(ErrorMessage = "Competency is required!")]
         public Int32 Competency { get; set; }
 
-        [Required(ErrorMessage = "Primary Tag is required!")]
-        [StringLength(500, ErrorMessage = "Tag length should be less than or equal to 500 characters.")]
-        [Display(Name="Primary Skill Tags")]
-        public List<Tags> PrimaryTags { get; set; }
+        public string PrimaryTags { get; set; }
         
-        [StringLength(200, ErrorMessage = "Description length should be less than or equal to 50 characters.")]
-        [Display(Name = "Secondary Skill Tags")]
-        public List<Tags> SecondaryTag { get; set; }
-
-        [Required]
-        public bool IsActive { get; set; }
-
-        public List<Tags> TagList { get; set; }
+        public string SecondaryTags { get; set; }        
+        
+        public bool IsDeleted { get; set; }
     }
 }

@@ -10,6 +10,10 @@ using Silicus.Ensure.Services.Interfaces;
 using Silicus.Ensure.Models.DataObjects;
 using Silicus.Ensure.Web.Mappings;
 using Kendo.Mvc.UI;
+using Kendo.Mvc.Extensions;
+using System.Collections.Generic;
+using Silicus.Ensure.Web.Models;
+using Silicus.Ensure.Models.Constants;
 
 namespace Silicus.Ensure.Web.Controllers
 {
@@ -20,6 +24,7 @@ namespace Silicus.Ensure.Web.Controllers
         private ApplicationUserManager _userManager;
         private readonly ITagsService _tagsService;
         private readonly IMappingService _mappingService;
+        private readonly ITestSuiteService _testSuiteService;
 
         public ApplicationUserManager UserManager
         {
@@ -46,9 +51,12 @@ namespace Silicus.Ensure.Web.Controllers
             }
         }
 
-        public AdminController(IEmailService emailService)
+        public AdminController(IEmailService emailService, ITagsService tagService, ITestSuiteService testSuiteService,MappingService mappingService)
         {
             _emailService = emailService;
+            _tagsService = tagService;
+            _testSuiteService = testSuiteService;
+            _mappingService = mappingService;
         }
 
         public ActionResult Dashboard()
@@ -203,9 +211,185 @@ namespace Silicus.Ensure.Web.Controllers
             return View();
         }
 
-        public ActionResult TestSuiteAdd()
+        public ActionResult GetTagsDetails([DataSourceRequest] DataSourceRequest request)
         {
+            var tagDetails = _tagsService.GetTagsDetails().OrderByDescending(model => model.TagId);
+            return Json(tagDetails.ToDataSourceResult(request), JsonRequestBehavior.AllowGet);
+        }
+
+        public ActionResult TagList()
+        {        
+            
+            return View();
+        }
+
+        public ActionResult TagAdd(Int32 tagId = 0)
+        {
+            if (tagId == 0)
+                return View("TagAdd");
+            else
+                return View("TagAdd");
+        }
+
+        [AcceptVerbs(HttpVerbs.Post)]
+        public ActionResult SaveTag(Tags tag)
+        {
+            var tagDetails = _tagsService.GetTagsDetails().Where(model => model.TagName == tag.TagName && model.TagId!=tag.TagId);
+            if (tagDetails.Count() > 0)
+                ModelState.AddModelError(string.Empty, "The Tag already exists, please create with other name.");
+            if (tag != null && ModelState.IsValid)
+            {
+                tag.IsActive = true;
+                _tagsService.Add(tag);
+                TempData.Add("IsNewTag", 1);                
+                return RedirectToAction("TagList");
+            }
+            return View("TagAdd");
+        }
+
+        public ActionResult GetTestSuiteDetails([DataSourceRequest] DataSourceRequest request)
+        {
+            var tags=_tagsService.GetTagsDetails();
+            var testSuiteDetails = _testSuiteService.GetTestSuiteDetails().Where(model=>model.IsDeleted==false).OrderByDescending(model => model.TestSuiteId);
+            List<TestSuiteViewModel> objViewModelList = new List<TestSuiteViewModel>();
+            TestSuiteViewModel objViewModel;            
+            foreach (var item in testSuiteDetails)
+            {
+                objViewModel = new TestSuiteViewModel();
+                objViewModel.TestSuiteId = item.TestSuiteId;
+                objViewModel.TestSuiteName = item.TestSuiteName;
+                objViewModel.PositionName = "Software Engineer";
+                objViewModel.Position = item.Position;
+                objViewModel.Competency = item.Competency;
+                objViewModel.Duration = item.Duration;
+                objViewModel.PrimaryTags = item.PrimaryTags;
+                List<Int32> TagId = objViewModel.PrimaryTags.Split(',').Select(int.Parse).ToList();
+                objViewModel.PrimaryTagNames = string.Join(",", (from a in tags
+                                              where TagId.Contains(a.TagId)
+                                              select a.TagName));
+                objViewModelList.Add(objViewModel);                
+            }
+            return Json(objViewModelList.ToDataSourceResult(request), JsonRequestBehavior.AllowGet);
+        }
+
+        public ActionResult TestSuiteList()
+        {
+            return View();
+        }
+
+        public ActionResult TestSuiteAdd(Int32 testSuiteId = 0)
+        {
+            TestSuiteViewModel testSuite = new TestSuiteViewModel();
+            var tagDetails = _tagsService.GetTagsDetails().OrderByDescending(model => model.TagId);
+            testSuite.TagList = tagDetails.ToList();
+
+            if (testSuiteId == 0)
+            {
+                testSuite.ObjectiveQuestionsCount = "20";
+                testSuite.PracticalQuestionsCount = "1";
+
+                return View(testSuite);
+            }
+            else
+            {
+                var testSuiteDetails = _testSuiteService.GetTestSuiteDetails().Where(model => model.TestSuiteId == testSuiteId && model.IsDeleted == false).SingleOrDefault();
+                if (testSuiteDetails != null)
+                {
+                    testSuite.TestSuiteId = testSuiteDetails.TestSuiteId;
+                    testSuite.TestSuiteName = testSuiteDetails.TestSuiteName;
+                    testSuite.Competency = testSuiteDetails.Competency;
+                    testSuite.Duration = testSuiteDetails.Duration;
+                    testSuite.Position = testSuiteDetails.Position;
+                    testSuite.ObjectiveQuestionsCount = testSuiteDetails.ObjectiveQuestionsCount;
+                    testSuite.PracticalQuestionsCount = testSuiteDetails.PracticalQuestionsCount;
+                    testSuite.PrimaryTagIds = testSuiteDetails.PrimaryTags.Split(',').ToList();
+                    if (!string.IsNullOrWhiteSpace(testSuiteDetails.SecondaryTags))
+                    {
+                        testSuite.SecondaryTagIds = testSuiteDetails.SecondaryTags.Split(',').ToList();
+                    }
+                }
+                return View(testSuite);
+            }
+        }
+
+        [AcceptVerbs(HttpVerbs.Post)]
+        public ActionResult TestSuiteSave(TestSuiteViewModel testSuiteView)
+        {
+            var testSuiteDetails = _testSuiteService.GetTestSuiteDetails().Where(model => model.TestSuiteName == testSuiteView.TestSuiteName && model.TestSuiteId != testSuiteView.TestSuiteId);
+            if(testSuiteDetails.Count()>0)
+                ModelState.AddModelError(string.Empty, "The Test Suite already exists, please create with other name.");
+
+            if (ModelState.IsValid)
+            {
+                var testSuiteDomainModel = _mappingService.Map<TestSuiteViewModel, TestSuite>(testSuiteView);
+                testSuiteDomainModel.PrimaryTags = string.Join(",", testSuiteView.PrimaryTagIds);
+                if (testSuiteView.SecondaryTagIds != null)
+                {
+                    testSuiteDomainModel.SecondaryTags = string.Join(",", testSuiteView.SecondaryTagIds);
+                }
+
+                if (testSuiteView.TestSuiteId == 0 || testSuiteView.IsCopy == true)
+                {                    
+                    _testSuiteService.Add(testSuiteDomainModel);
+                    TempData.Add("IsNewTestSuite", 1);
+                    return RedirectToAction("TestSuiteList");
+                }
+                else
+                {                    
+                    _testSuiteService.Update(testSuiteDomainModel);                    
+                    return RedirectToAction("TestSuiteList");
+                }
+            }
             return View("TestSuiteAdd");
-        }        
+        }
+
+        public ActionResult TestSuiteDelete(int testSuiteId)
+        {           
+            var testSuiteDetails = _testSuiteService.GetTestSuiteDetails().Where(model => model.TestSuiteId == testSuiteId && model.IsDeleted == false).SingleOrDefault();
+            if (testSuiteDetails != null)
+            {
+                testSuiteDetails.IsDeleted = true;
+                _testSuiteService.Update(testSuiteDetails);
+                TempData.Add("IsNewTestSuite", 2);
+            }
+            else
+            {
+                TempData.Add("IsNewTestSuite", 3);
+            }
+            return RedirectToAction("TestSuiteList");
+        }
+
+        public ActionResult TestSuiteCopy(int testSuiteId = 0)
+        {
+            TestSuiteViewModel testSuite = new TestSuiteViewModel();
+            var tagDetails = _tagsService.GetTagsDetails().OrderByDescending(model => model.TagId);
+            testSuite.TagList = tagDetails.ToList();
+
+            if (testSuiteId == 0)
+            {
+                return View(testSuite);
+            }
+            else
+            {
+                var testSuiteDetails = _testSuiteService.GetTestSuiteDetails().Where(model => model.TestSuiteId == testSuiteId && model.IsDeleted == false).SingleOrDefault();
+                if (testSuiteDetails != null)
+                {                    
+                    testSuite.TestSuiteId = testSuiteDetails.TestSuiteId;
+                    testSuite.TestSuiteName = "Copy " + testSuiteDetails.TestSuiteName;
+                    testSuite.Competency = testSuiteDetails.Competency;
+                    testSuite.Duration = testSuiteDetails.Duration;
+                    testSuite.Position = testSuiteDetails.Position;
+                    testSuite.ObjectiveQuestionsCount = testSuiteDetails.ObjectiveQuestionsCount;
+                    testSuite.PracticalQuestionsCount = testSuiteDetails.PracticalQuestionsCount;
+                    testSuite.PrimaryTagIds = testSuiteDetails.PrimaryTags.Split(',').ToList();
+                    testSuite.IsCopy = true;
+                    if (!string.IsNullOrWhiteSpace(testSuiteDetails.SecondaryTags))
+                    {
+                        testSuite.SecondaryTagIds = testSuiteDetails.SecondaryTags.Split(',').ToList();
+                    }
+                }
+                return View("TestSuiteAdd", testSuite);
+            }
+        }
     }
 }

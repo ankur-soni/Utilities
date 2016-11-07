@@ -1,0 +1,86 @@
+﻿@using Kendo.Mvc.UI;
+
+@{
+    ViewBag.Title = "TestSuite List";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<div class="main-content">
+    <h2>Test-Suite List</h2>
+    <div class="row" style="padding-top:5px;padding-bottom:5px;">
+        <div class="alert alert-success k-" id="messageDiv">
+            <strong>Success!</strong> <span id="messageContent">This alert box could indicate successful action.</span>
+        </div>
+        <div class="col-md-6"></div>
+        <div class="col-md-2 col-md-offset-4">
+            @(Html.Kendo().Button()
+                                    .Name("btnNew")
+            .HtmlAttributes(new { type = "button" })
+                    .Content("Add Test Suite")
+            .Events(ev => ev.Click("onAddClick")))
+        </div>
+    </div>
+    @if (Request.IsAuthenticated)
+    {
+        @(Html.Kendo().Grid<Silicus.Ensure.Web.Models.TestSuiteViewModel>().Name("testSuiteGrids")
+         .Columns(columns =>
+              {
+                  columns.Bound(p => p.TestSuiteName).Width(100);
+                  columns.Bound(p => p.Duration).Width(50);
+                  columns.Bound(p => p.PositionName).Width(50);
+                  columns.Bound(p => p.PrimaryTagNames).Width(200);
+                  columns.Bound("").ClientTemplate("<a class='k-button k-button-icontext k-grid-add' href='\\#' data-toggle='modal' data-target='\\#myModal'><span class='k-icon k-add'></span>Activate Test Suite</a><a class='k-button k-button-icontext k-grid-add' href='" + Url.Action("TestSuiteCopy", "Admin") + "?testSuiteId=#=TestSuiteId#'><span class='k-icon k-add'></span>Copy</a><a class='k-button k-button-icontext k-grid-edit' href='" + Url.Action("TestSuiteAdd", "Admin") + "?testSuiteId=#=TestSuiteId#'><span class='k-icon k-edit'></span>Edit</a><a id='testSuiteDel' class='k-button k-button-icontext k-grid-delete' href='" + Url.Action("TestSuiteDelete", "Admin") + "?testSuiteId=#=TestSuiteId#'><span class='k-icon k-delete'></span>Delete</a>");            
+              })
+        .DataSource(dataSource => dataSource
+                  .Ajax()
+                  .Model(model =>
+                  {
+                      model.Id(p => p.TestSuiteId);
+                      model.Field(p => p.TestSuiteId).Editable(false);
+                  })
+                  .Read(read => read.Action("GetTestSuiteDetails", "Admin"))
+                  .PageSize(10)
+              )
+              .Pageable()
+              .Sortable()
+        )
+    }
+</div>
+
+@{Html.RenderPartial("~/Views/Admin/_TestSuiteAssign.cshtml");}
+<script>
+    $(document).ready(function () {
+        $("#messageDiv").hide();
+        $("#FieldFilter").keyup(function () {
+
+            var value = $("#FieldFilter").val();
+            grid = $("#testSuiteGrids").data("kendoGrid");
+
+            if (value.length > 1) {
+                if (value) {
+                    grid.dataSource.filter({ field: "TestSuiteName", operator: "contains", value: value });
+                } else {
+                    grid.dataSource.filter({});
+                }
+            }
+            else if (value == "")
+                grid.dataSource.filter({});
+        });
+        //Show successful message
+        if ('@TempData["IsNewTestSuite"]' == "1") {
+            ShowMessage("Tag saved successfully.", 1);
+        }
+        else if ('@TempData["IsNewTestSuite"]' == "2") {
+            ShowMessage("Tag deleted successfully.", 1);
+        }
+        else if ('@TempData["IsNewTestSuite"]' == "3") {
+            ShowMessage("Record does not exists.", 1);
+        }
+    });
+    function onAddClick() {
+        window.location = '@Url.Action("TestSuiteAdd", "Admin")';
+    }    
+
+    $('#testSuiteDel').on('click', function () {
+        return confirm('Are you sure want to delete?');
+    });
+</script>

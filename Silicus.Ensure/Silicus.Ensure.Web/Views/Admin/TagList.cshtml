@@ -7,12 +7,15 @@
 <div class="main-content">
     <h2>Tag List</h2>
     <div class="row" style="padding-top:5px;padding-bottom:5px;">
+        <div class="alert alert-success" id="messageDiv">
+            <strong>Success!</strong> <span id="messageContent">This alert box could indicate successful action.</span>
+        </div>
         <div class="col-md-6"></div>
-        <div class="col-md-2 col-md-offset-4">
+        <div class="col-md-2 col-md-offset-4"> 
             @(Html.Kendo().Button()
                                     .Name("btnNew")
             .HtmlAttributes(new { type = "button" })
-                    .Content("Add new record")
+                    .Content("Add Tag")
             .Events(ev => ev.Click("onAddClick")))          
         </div>
     </div>    
@@ -22,25 +25,69 @@
          .Columns(columns =>
               {
                   columns.Bound(p => p.TagName).Width(50);
-                  columns.Bound(p => p.Description).Width(200);
-                  columns.Bound(p => p.IsActive).Width(50);                  
+                  columns.Bound(p => p.Description).Width(300);
               })
-        .DataSource(dataSource => dataSource
-                  .Ajax()
-                  .Model(model =>
-                  {
-                      model.Id(p => p.TagId);
-                      model.Field(p => p.TagId).Editable(false);
-                  })
-                  .Read(read => read.Action("GetTagsDetails", "tag"))
-              )              
-              .Pageable()
-              .Sortable()              
+            .DataSource(dataSource => dataSource
+                      .Ajax()
+                      .Model(model =>
+                      {
+                          model.Id(p => p.TagId);
+                          model.Field(p => p.TagId).Editable(false);
+                      })
+                      .Read(read => read.Action("GetTagsDetails", "Admin"))
+                      .PageSize(10)
+                  )
+                  .Pageable()
+                  .Sortable()
+                  .ToolBar(toolbar =>
+                {
+                    toolbar.Template(@<text>
+                        <div class="toolbar">
+
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <div class="input-group">
+                                        <span class="input-group-addon"><span class="glyphicon glyphicon-search" aria-hidden="true"></span></span>
+                                        <input type="text" class="form-control" id='FieldFilter' placeholder="Search for...">
+                                        <span class="input-group-btn">
+                                            <button class="btn btn-default" type="button"><span class="glyphicon glyphicon-refresh" aria-hidden="true"></span></button>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </text>);
+                })
             )
         }
     </div>
 <script>
+    $(document).ready(function () {
+        $("#messageDiv").hide();
+        $("#FieldFilter").keyup(function () {
+
+            var value = $("#FieldFilter").val();
+            grid = $("#tagsGrids").data("kendoGrid");
+
+            if (value.length > 1)
+            {
+                if (value) {
+                    grid.dataSource.filter({ field: "TagName", operator: "contains", value: value });
+                } else {
+                    grid.dataSource.filter({});
+                }
+            }
+            else if (value=="")
+                grid.dataSource.filter({});
+        });
+        //Show successful message
+        if ('@TempData["IsNewTag"]' == "1")
+        {
+            ShowMessage("Tag saved successfully.", 1);
+        }
+    });
+
     function onAddClick() {
-        window.location = '@Url.Action("add", "tag")';
+        window.location = '@Url.Action("TagAdd", "Admin")';
     }
 </script>
