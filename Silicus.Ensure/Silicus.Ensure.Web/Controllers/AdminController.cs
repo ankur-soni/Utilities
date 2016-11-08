@@ -313,7 +313,12 @@ namespace Silicus.Ensure.Web.Controllers
 
         private string GetCompetency(int type)
         {
-            return View();
+            if (type == 1)
+                return "Beginner";
+            else if (type == 2)
+                return "Intermediate";
+            else
+                return "Expert";
         }
 
         public ActionResult GetTagsDetails([DataSourceRequest] DataSourceRequest request)
@@ -417,18 +422,11 @@ namespace Silicus.Ensure.Web.Controllers
             }
         }
 
-        private string GetSkill(string skill)
+        public ActionResult TestSuiteSave(TestSuiteViewModel testSuiteView)
         {
-            string ret = null;
-            if (!string.IsNullOrEmpty(skill))
-            {
-                string[] str = skill.Split(',');
-                List<Skills> skills = Skills();
 
-                foreach (string s in str)
-        {
             var testSuiteDetails = _testSuiteService.GetTestSuiteDetails().Where(model => model.TestSuiteName == testSuiteView.TestSuiteName && model.TestSuiteId != testSuiteView.TestSuiteId);
-            if(testSuiteDetails.Count()>0)
+            if (testSuiteDetails.Count() > 0)
                 ModelState.AddModelError(string.Empty, "The Test Suite already exists, please create with other name.");
 
             if (ModelState.IsValid)
@@ -441,19 +439,20 @@ namespace Silicus.Ensure.Web.Controllers
                 }
 
                 if (testSuiteView.TestSuiteId == 0 || testSuiteView.IsCopy == true)
-                {                    
+                {
                     _testSuiteService.Add(testSuiteDomainModel);
                     TempData.Add("IsNewTestSuite", 1);
                     return RedirectToAction("TestSuiteList");
                 }
                 else
-                {                    
-                    _testSuiteService.Update(testSuiteDomainModel);                    
+                {
+                    _testSuiteService.Update(testSuiteDomainModel);
                     return RedirectToAction("TestSuiteList");
                 }
             }
-            return View("TestSuiteAdd");
-        }        
+            return View("TestSuiteAdd");    
+
+        }
 
         public ActionResult TestSuiteDelete(int testSuiteId)
         {           
@@ -502,6 +501,23 @@ namespace Silicus.Ensure.Web.Controllers
                 }
                 return View("TestSuiteAdd", testSuite);
             }
+        }
+
+        private string GetSkill(string skill)
+        {
+            string ret = null;
+            if (!string.IsNullOrEmpty(skill))
+            {
+                string[] str = skill.Split(',');
+                List<Skills> skills = Skills();
+
+                foreach (string s in str)
+                {
+                    ret += skills.Find(x => x.Value == s).Skill;
+                    ret += " | ";
+                }
+            }
+            return ret;
         }
     }
 }
