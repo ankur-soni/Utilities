@@ -28,6 +28,7 @@ namespace Silicus.Ensure.Web.Controllers
         private readonly ITagsService _tagsService;
         private readonly IMappingService _mappingService;
         private readonly ITestSuiteService _testSuiteService;
+        private readonly IUserService _userService;
 
         public ApplicationUserManager UserManager
         {
@@ -54,13 +55,14 @@ namespace Silicus.Ensure.Web.Controllers
             }
         }
 
-        public AdminController(IEmailService emailService, ITagsService tagService, ITestSuiteService testSuiteService, MappingService mappingService, IQuestionService questionService)
+        public AdminController(IEmailService emailService, ITagsService tagService, ITestSuiteService testSuiteService, MappingService mappingService, IQuestionService questionService, IUserService userService)
         {
             _emailService = emailService;
             _tagsService = tagService;
             _testSuiteService = testSuiteService;
             _mappingService = mappingService;
             _questionService = questionService;
+            _userService = userService;
         }
 
         public ActionResult Dashboard()
@@ -365,7 +367,7 @@ namespace Silicus.Ensure.Web.Controllers
                 objViewModel = new TestSuiteViewModel();
                 objViewModel.TestSuiteId = item.TestSuiteId;
                 objViewModel.TestSuiteName = item.TestSuiteName;
-                objViewModel.PositionName = GetPosition(objViewModel.Position);
+                objViewModel.PositionName = GetPosition(item.Position);
                 objViewModel.Position = item.Position;
                 objViewModel.Competency = item.Competency;
                 objViewModel.Duration = item.Duration;
@@ -374,6 +376,14 @@ namespace Silicus.Ensure.Web.Controllers
                 objViewModel.PrimaryTagNames = string.Join(",", (from a in tags
                                               where TagId.Contains(a.TagId)
                                               select a.TagName));
+                if (!string.IsNullOrWhiteSpace(item.SecondaryTags))
+                {
+                    TagId = item.SecondaryTags.Split(',').Select(int.Parse).ToList();
+                    objViewModel.PrimaryTagNames +=","+ string.Join(",", (from a in tags
+                                                                     where TagId.Contains(a.TagId)
+                                                                     select a.TagName));
+                }
+
                 objViewModelList.Add(objViewModel);                
             }
             return Json(objViewModelList.ToDataSourceResult(request), JsonRequestBehavior.AllowGet);
@@ -457,7 +467,7 @@ namespace Silicus.Ensure.Web.Controllers
                     return RedirectToAction("TestSuiteList");
                 }
             }
-            return View("TestSuiteAdd");    
+            return View("TestSuiteAdd"); 
 
         }
 
@@ -467,6 +477,7 @@ namespace Silicus.Ensure.Web.Controllers
             if (testSuiteDetails != null)
             {
                 testSuiteDetails.IsDeleted = true;
+                testSuiteDetails.DeletedDate = DateTime.UtcNow;
                 _testSuiteService.Update(testSuiteDetails);
                 return Json(1);                
             }
@@ -524,6 +535,27 @@ namespace Silicus.Ensure.Web.Controllers
                 }
             }
             return ret;
+        }
+
+        public ActionResult TestSuitUsers([DataSourceRequest] DataSourceRequest request)
+        {
+            var userlist = _userService.GetUserDetails().Where(model => model.Role == "USER").OrderByDescending(model=>model.UserId).ToArray();
+            var viewModels = _mappingService.Map<User[], UserViewModel[]>(userlist);            
+            DataSourceResult result = viewModels.ToDataSourceResult(request);
+            return Json(result);
+        }
+
+        public ActionResult TestSuiteActivate(string users, int testSuiteId)
+        {           
+            var testSuiteDetails = _testSuiteService.GetTestSuiteDetails().Where(model => model.TestSuiteId == testSuiteId && model.IsDeleted == false).SingleOrDefault();
+            if (testSuiteDetails != null)
+            {               
+                return Json(1);                
+            }
+            else
+            {
+                return Json(-1);               
+            }
         }
     }
 }

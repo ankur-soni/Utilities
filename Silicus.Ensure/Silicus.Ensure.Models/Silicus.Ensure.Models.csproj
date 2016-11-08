@@ -108,6 +108,8 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="DataObjects\User.cs" />
+    <Compile Include="DataObjects\UserTestDetails.cs" />
+    <Compile Include="DataObjects\UserTestSuite.cs" />
     <Compile Include="DocumentBase.cs" />
     <Compile Include="NotificationMessage.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
