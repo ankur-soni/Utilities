@@ -74,6 +74,7 @@ namespace Silicus.Ensure.Web
             kernel.Bind<IMappingService>().To<MappingService>();
             kernel.Bind<ISmtpClient>().To<SmtpClientWrapper>();
             kernel.Bind<IEmailService>().To<EmailService>();
+            kernel.Bind<IQuestionService>().To<QuestionService>();
 
             kernel.Bind<ICookieHelper>().To<CookieHelper>();
 

@@ -12,6 +12,9 @@ namespace Silicus.Ensure.Services.Interfaces
         IEnumerable<Question> GetQuestion();
 
         int Add(Question Question);
-            
+
+        void Update(Question Question);
+
+        void Delete(Question Question);
     }
 }

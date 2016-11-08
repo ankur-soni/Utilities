@@ -1,0 +1,124 @@
+﻿@model List<Silicus.Ensure.Web.Models.QuestionModel>
+@using Kendo.Mvc.UI;
+
+@{
+    ViewBag.Title = "Question Bank";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="main-content">
+    <div class="fluid mt20">
+        <div class="kendogrid">
+            <h2>Question Bank</h2>
+
+            <div>
+
+                @if (Request.IsAuthenticated)
+                {
+                    @(Html.Kendo().Grid(Model).Name("questionGrids")
+         .Columns(columns =>
+              {
+                  columns.Bound(q => q.QuestionDescription).Width(200);
+                  columns.Bound(q => q.QuestionType).Width(100);
+                  columns.Bound(q => q.Skill).Width(150).Title("Tags");
+                  columns.Bound(q => q.Competency).Width(100);
+                  columns.Bound(q => q.QuestionId).ClientTemplate(@"
+                    <a href='/Admin/AddQuestions/#=QuestionId#' class='k-button k-button-icontext k-grid-edit'><span class='k-icon k-edit'></span>Edit</a>
+                    <a href='/Admin/Delete/#=QuestionId#' class='k-button k-button-icontext k-grid-delete'><span class='k-icon k-delete'></span>Delete</a>").Title("Actions").Width(150);
+              })
+              .ToolBar(toolbar =>
+              {
+                  toolbar.Template(@<text>
+                    <div class="toolbar">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="input-group">
+                                    <span class="input-group-addon"><span class="glyphicon glyphicon-search" aria-hidden="true"></span></span>
+                                    <input type="text" class="form-control" id='FieldFilter' placeholder="Search for...">
+                                    <span class="input-group-btn">
+                                        <button class="btn btn-default" type="button" style="height:16px;"><span class="glyphicon glyphicon-refresh" aria-hidden="true"></span></button>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                        <br />
+                        <div class="row">
+                            <div class="col-md-2" style="padding-right:0px; padding-top:5px; width:10%;">
+                                <span>Question Type:</span>
+                            </div>
+                            <div class="col-md-6">
+                                @(Html.Kendo().DropDownList()
+                            .Name("QuestionType")
+                            .DataTextField("Text")
+                            .DataValueField("Value")
+                            .Events(e => e.Change("Change"))
+                                .BindTo(new List<SelectListItem>
+                                () {
+                                new SelectListItem(){
+                                Text="Objective",
+                                Value="1"
+                                },
+                                new SelectListItem(){
+                                Text="Practical",
+                                Value="2"
+                                }
+                                }).HtmlAttributes(new { style = "width: 50%" }))
+                            </div>
+
+                            <div class="col-md-3 col-md-push-1" style="float: right; padding-right: 0px; margin-right: -22px;">
+                                <a href='/Admin/AddQuestions/0' class='k-button k-button-icontext k-grid-add' style="width: 50% !important;"><span class='k-icon k-add'></span>Add Question</a>
+                            </div>
+                        </div>
+                    </div>
+                </text>);
+              })
+                                                                                                                                                                                                                                                                                .Resizable(resizing => resizing.Columns(true))
+                                                                                                                                                                                                                                                                .Sortable(sorting => sorting.Enabled(true))
+                                                                                                                                                                                                                                                                .Reorderable(reorder => reorder.Columns(true))
+                                                                                                                                                                                                                                                                .Pageable()
+                                                                                                                                                                                                                                                                .DataSource(dataSource => dataSource
+                                                                                                                                                                                                                                                                .Ajax()
+                                                                                                                                                                                                                                                                .PageSize(10)
+                                                                                                                                                                                                                                                                .ServerOperation(false)
+                                                                                                                                                                                                                                                                ))
+                }
+            </div>
+
+        </div>
+    </div>
+</div>
+<script>
+    $(document).ready(function () {
+        $("#FieldFilter").keyup(function () {
+
+            var value = $("#FieldFilter").val();
+            grid = $("#questionGrids").data("kendoGrid");
+
+            if (value) {
+                grid.dataSource.filter({ field: "QuestionDescription", operator: "contains", value: value });
+            } else {
+                grid.dataSource.filter({});
+            }
+        });
+    });
+
+    // Drop down change
+    function Change() {
+        var value = $("#QuestionType").val();
+        var que = "";
+        if (value == "2") {
+            que = "Objective";
+        }
+        else {
+            que = "Practical";
+        }
+
+        grid = $("#questionGrids").data("kendoGrid");
+
+        if (value) {
+            grid.dataSource.filter({ field: "QuestionType", operator: "contains", value: que });
+        } else {
+            grid.dataSource.filter({});
+        }
+    }
+</script>

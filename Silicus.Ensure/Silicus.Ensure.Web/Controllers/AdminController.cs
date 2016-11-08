@@ -7,6 +7,8 @@ using System.Web.Mvc;
 using Microsoft.AspNet.Identity.Owin;
 using Silicus.Ensure.Entities.Identity;
 using Silicus.Ensure.Services.Interfaces;
+using Silicus.Ensure.Web.Models;
+using System.Collections.Generic;
 using Silicus.Ensure.Models.DataObjects;
 using Silicus.Ensure.Web.Mappings;
 using Kendo.Mvc.UI;
@@ -20,6 +22,7 @@ namespace Silicus.Ensure.Web.Controllers
     public class AdminController : Controller
     {
         private readonly IEmailService _emailService;
+        private readonly IQuestionService _questionService;
 
         private ApplicationUserManager _userManager;
         private readonly ITagsService _tagsService;
@@ -51,17 +54,18 @@ namespace Silicus.Ensure.Web.Controllers
             }
         }
 
-        public AdminController(IEmailService emailService, ITagsService tagService, ITestSuiteService testSuiteService,MappingService mappingService)
+        public AdminController(IEmailService emailService, ITagsService tagService, ITestSuiteService testSuiteService, MappingService mappingService, IQuestionService questionService)
         {
             _emailService = emailService;
             _tagsService = tagService;
             _testSuiteService = testSuiteService;
             _mappingService = mappingService;
+            _questionService = questionService;
         }
 
         public ActionResult Dashboard()
         {
-            ViewBag.UserRoles = RoleManager.Roles.Select(r => new SelectListItem {Text = r.Name, Value = r.Name}).ToList();
+            ViewBag.UserRoles = RoleManager.Roles.Select(r => new SelectListItem { Text = r.Name, Value = r.Name }).ToList();
             return View();
         }
 
@@ -200,13 +204,114 @@ namespace Silicus.Ensure.Web.Controllers
             return hashParams;
         }
 
-        public ActionResult AddQuestions()
+        public ActionResult AddQuestions(int? QuestionId)
         {
-            return View();
+            QuestionModel Que = new QuestionModel();
+            Que.Success = 0;
+            Que.Skills = Skills();
+            return View(Que);
         }
 
         [HttpPost]
-        public ActionResult AddQuestions(Question Question)
+        public ActionResult AddQuestions(QuestionModel question)
+        {
+            Question Que = new Question
+            {
+                QuestionType = Convert.ToInt32(question.QuestionType),
+                QuestionDescription = HttpUtility.HtmlDecode(question.QuestionDescription),
+                AnswerType = Convert.ToInt32(question.AnswerType),
+                Option1 = question.Option1,
+                Option2 = question.Option2,
+                Option3 = question.Option3,
+                Option4 = question.Option4,
+                CorrectAnswer = InlineList(question.CorrectAnswer),
+                Answer = HttpUtility.HtmlDecode(question.Answer),
+                SkillTag = InlineList(question.SkillTag),
+                Competency = Convert.ToInt32(question.Competency),
+                Duration = question.Duration,
+                IsPublishd = true,
+                IsDeleted = false,
+                CreatedOn = DateTime.Now,
+                CreatedBy = 0,
+                ModifiedOn = DateTime.Now,
+                ModifiedBy = 0
+            };
+
+            int ret = _questionService.Add(Que);
+
+            question = new QuestionModel();
+            question.Success = ret;
+            question.Skills = Skills();
+            return View(question);
+        }
+
+        public ActionResult QuestionBank()
+        {
+            List<QuestionModel> Qmodel = new List<QuestionModel>();
+            QuestionModel model;
+            IEnumerable<Question> Que = _questionService.GetQuestion();
+            foreach (var q in Que)
+            {
+                model = new QuestionModel();
+                model.QuestionId = q.Id;
+                model.QuestionDescription = q.QuestionDescription;
+                model.QuestionType = GetQuestionType(q.QuestionType);
+                model.Skill = GetSkill(q.SkillTag);
+                model.Competency = GetCompetency(q.Competency);
+                Qmodel.Add(model);
+            }
+            return View(Qmodel);
+        }
+
+        public ActionResult EditQuestion(int QuestionId)
+        {
+            QuestionModel Que = new QuestionModel();
+            Que.Skills = Skills();
+
+            return View("AddQuestions", Que);
+        }
+
+        private string InlineList(List<string> list)
+        {
+            string lst = "";
+            if (list != null)
+            {
+                int cnt = list.Count();
+                int commacnt = 0;
+                foreach (string str in list)
+                {
+                    commacnt++;
+                    if (commacnt == cnt)
+                        lst += str;
+                    else
+                        lst += str + ",";
+
+                }
+            }
+
+            return lst;
+        }
+
+        private List<Skills> Skills()
+        {
+            List<Skills> skill = new List<Skills>();
+            skill.Add(new Skills { Skill = "ASP.NET", Value = "1" });
+            skill.Add(new Skills { Skill = "MVC 4", Value = "2" });
+            skill.Add(new Skills { Skill = "MVC 5", Value = "3" });
+            skill.Add(new Skills { Skill = "Java", Value = "4" });
+            skill.Add(new Skills { Skill = "CSS", Value = "5" });
+            return skill;
+        }
+
+        private string GetQuestionType(int type)
+        {
+            if (type == 1)
+                return "Objective";
+            else
+                return "Practical";
+        }
+
+        private string GetCompetency(int type)
         {
             return View();
         }
@@ -312,8 +417,15 @@ namespace Silicus.Ensure.Web.Controllers
             }
         }
 
-        [AcceptVerbs(HttpVerbs.Post)]
-        public ActionResult TestSuiteSave(TestSuiteViewModel testSuiteView)
+        private string GetSkill(string skill)
+        {
+            string ret = null;
+            if (!string.IsNullOrEmpty(skill))
+            {
+                string[] str = skill.Split(',');
+                List<Skills> skills = Skills();
+
+                foreach (string s in str)
         {
             var testSuiteDetails = _testSuiteService.GetTestSuiteDetails().Where(model => model.TestSuiteName == testSuiteView.TestSuiteName && model.TestSuiteId != testSuiteView.TestSuiteId);
             if(testSuiteDetails.Count()>0)
@@ -341,7 +453,7 @@ namespace Silicus.Ensure.Web.Controllers
                 }
             }
             return View("TestSuiteAdd");
-        }
+        }        
 
         public ActionResult TestSuiteDelete(int testSuiteId)
         {           

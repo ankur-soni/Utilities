@@ -26,7 +26,17 @@ namespace Silicus.Ensure.Services
         public int Add(Question Question)
         {
             _context.Add(Question);
-            return Question.QuestionId;
+            return Question.Id;
+        }
+
+        public void Update(Question Question)
+        {       
+                _context.Update(Question);          
+        }
+
+        public void Delete(Question Question)
+        {         
+                _context.Delete(Question);         
         }
     }
 }
