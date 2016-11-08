@@ -328,17 +328,13 @@ namespace Silicus.Ensure.Web.Controllers
         }
 
         public ActionResult TagList()
-        {        
-            
-            return View();
+        {  
+          return View();
         }
 
         public ActionResult TagAdd(Int32 tagId = 0)
         {
-            if (tagId == 0)
-                return View("TagAdd");
-            else
-                return View("TagAdd");
+            return View("TagAdd");
         }
 
         [AcceptVerbs(HttpVerbs.Post)]
@@ -350,6 +346,7 @@ namespace Silicus.Ensure.Web.Controllers
             if (tag != null && ModelState.IsValid)
             {
                 tag.IsActive = true;
+                tag.Description = HttpUtility.HtmlDecode(tag.Description);
                 _tagsService.Add(tag);
                 TempData.Add("IsNewTag", 1);                
                 return RedirectToAction("TagList");
@@ -360,7 +357,7 @@ namespace Silicus.Ensure.Web.Controllers
         public ActionResult GetTestSuiteDetails([DataSourceRequest] DataSourceRequest request)
         {
             var tags=_tagsService.GetTagsDetails();
-            var testSuiteDetails = _testSuiteService.GetTestSuiteDetails().Where(model=>model.IsDeleted==false).OrderByDescending(model => model.TestSuiteId);
+            var testSuiteDetails = _testSuiteService.GetTestSuiteDetails().Where(model=>model.IsDeleted==false).OrderByDescending(model => model.TestSuiteId);            
             List<TestSuiteViewModel> objViewModelList = new List<TestSuiteViewModel>();
             TestSuiteViewModel objViewModel;            
             foreach (var item in testSuiteDetails)
@@ -368,7 +365,7 @@ namespace Silicus.Ensure.Web.Controllers
                 objViewModel = new TestSuiteViewModel();
                 objViewModel.TestSuiteId = item.TestSuiteId;
                 objViewModel.TestSuiteName = item.TestSuiteName;
-                objViewModel.PositionName = "Software Engineer";
+                objViewModel.PositionName = GetPosition(objViewModel.Position);
                 objViewModel.Position = item.Position;
                 objViewModel.Competency = item.Competency;
                 objViewModel.Duration = item.Duration;
@@ -380,6 +377,16 @@ namespace Silicus.Ensure.Web.Controllers
                 objViewModelList.Add(objViewModel);                
             }
             return Json(objViewModelList.ToDataSourceResult(request), JsonRequestBehavior.AllowGet);
+        }
+
+        private string GetPosition(int positionId)
+        {
+            if (positionId == 1)
+                return "Jr. Developer";
+            else if (positionId == 2)
+                return "Sr. Developer";
+            else
+                return "QA";
         }
 
         public ActionResult TestSuiteList()
@@ -461,13 +468,12 @@ namespace Silicus.Ensure.Web.Controllers
             {
                 testSuiteDetails.IsDeleted = true;
                 _testSuiteService.Update(testSuiteDetails);
-                TempData.Add("IsNewTestSuite", 2);
+                return Json(1);                
             }
             else
             {
-                TempData.Add("IsNewTestSuite", 3);
+                return Json(-1);               
             }
-            return RedirectToAction("TestSuiteList");
         }
 
         public ActionResult TestSuiteCopy(int testSuiteId = 0)
