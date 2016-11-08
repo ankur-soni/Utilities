@@ -666,6 +666,7 @@
     <Content Include="Views\Admin\TagAdd.cshtml" />
     <Content Include="Views\Admin\TestSuiteAdd.cshtml" />
     <Content Include="Views\Admin\TagList.cshtml" />
+    <Content Include="Views\Admin\QuestionBank.cshtml" />
     <None Include="Web.Integration.config">
       <DependentUpon>Web.config</DependentUpon>
       <SubType>Designer</SubType>
