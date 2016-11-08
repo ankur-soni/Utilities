@@ -71,7 +71,7 @@ namespace Silicus.Ensure.Web.Controllers
 
         [AcceptVerbs(HttpVerbs.Post)]
         public async Task<ActionResult> SendEmail(FormCollection email)
-        {           
+        {
             string retVal = "failed";
             if (!string.IsNullOrEmpty(email[1]))
             {
@@ -204,123 +204,6 @@ namespace Silicus.Ensure.Web.Controllers
             return hashParams;
         }
 
-        public ActionResult AddQuestions(int? QuestionId)
-        {
-            QuestionModel Que = new QuestionModel();
-            Que.Success = 0;
-            Que.Skills = Skills();
-            return View(Que);
-        }
-
-        [HttpPost]
-        public ActionResult AddQuestions(QuestionModel question)
-        {
-            Question Que = new Question
-            {
-                QuestionType = Convert.ToInt32(question.QuestionType),
-                QuestionDescription = HttpUtility.HtmlDecode(question.QuestionDescription),
-                AnswerType = Convert.ToInt32(question.AnswerType),
-                Option1 = question.Option1,
-                Option2 = question.Option2,
-                Option3 = question.Option3,
-                Option4 = question.Option4,
-                CorrectAnswer = InlineList(question.CorrectAnswer),
-                Answer = HttpUtility.HtmlDecode(question.Answer),
-                SkillTag = InlineList(question.SkillTag),
-                Competency = Convert.ToInt32(question.Competency),
-                Duration = question.Duration,
-                IsPublishd = true,
-                IsDeleted = false,
-                CreatedOn = DateTime.Now,
-                CreatedBy = 0,
-                ModifiedOn = DateTime.Now,
-                ModifiedBy = 0
-            };
-
-            int ret = _questionService.Add(Que);
-
-            question = new QuestionModel();
-            question.Success = ret;
-            question.Skills = Skills();
-            return View(question);
-        }
-
-        public ActionResult QuestionBank()
-        {
-            List<QuestionModel> Qmodel = new List<QuestionModel>();
-            QuestionModel model;
-            IEnumerable<Question> Que = _questionService.GetQuestion();
-            foreach (var q in Que)
-            {
-                model = new QuestionModel();
-                model.QuestionId = q.Id;
-                model.QuestionDescription = q.QuestionDescription;
-                model.QuestionType = GetQuestionType(q.QuestionType);
-                model.Skill = GetSkill(q.SkillTag);
-                model.Competency = GetCompetency(q.Competency);
-                Qmodel.Add(model);
-            }
-            return View(Qmodel);
-        }
-
-        public ActionResult EditQuestion(int QuestionId)
-        {
-            QuestionModel Que = new QuestionModel();
-            Que.Skills = Skills();
-
-            return View("AddQuestions", Que);
-        }
-
-        private string InlineList(List<string> list)
-        {
-            string lst = "";
-            if (list != null)
-            {
-                int cnt = list.Count();
-                int commacnt = 0;
-                foreach (string str in list)
-                {
-                    commacnt++;
-                    if (commacnt == cnt)
-                        lst += str;
-                    else
-                        lst += str + ",";
-
-                }
-            }
-
-            return lst;
-        }
-
-        private List<Skills> Skills()
-        {
-            List<Skills> skill = new List<Skills>();
-            skill.Add(new Skills { Skill = "ASP.NET", Value = "1" });
-            skill.Add(new Skills { Skill = "MVC 4", Value = "2" });
-            skill.Add(new Skills { Skill = "MVC 5", Value = "3" });
-            skill.Add(new Skills { Skill = "Java", Value = "4" });
-            skill.Add(new Skills { Skill = "CSS", Value = "5" });
-            return skill;
-        }
-
-        private string GetQuestionType(int type)
-        {
-            if (type == 1)
-                return "Objective";
-            else
-                return "Practical";
-        }
-
-        private string GetCompetency(int type)
-        {
-            if (type == 1)
-                return "Beginner";
-            else if (type == 2)
-                return "Intermediate";
-            else
-                return "Expert";
-        }
-
         public ActionResult GetTagsDetails([DataSourceRequest] DataSourceRequest request)
         {
             var tagDetails = _tagsService.GetTagsDetails().OrderByDescending(model => model.TagId);
@@ -328,8 +211,8 @@ namespace Silicus.Ensure.Web.Controllers
         }
 
         public ActionResult TagList()
-        {  
-          return View();
+        {
+            return View();
         }
 
         public ActionResult TagAdd(Int32 tagId = 0)
@@ -340,7 +223,7 @@ namespace Silicus.Ensure.Web.Controllers
         [AcceptVerbs(HttpVerbs.Post)]
         public ActionResult SaveTag(Tags tag)
         {
-            var tagDetails = _tagsService.GetTagsDetails().Where(model => model.TagName == tag.TagName && model.TagId!=tag.TagId);
+            var tagDetails = _tagsService.GetTagsDetails().Where(model => model.TagName == tag.TagName && model.TagId != tag.TagId);
             if (tagDetails.Count() > 0)
                 ModelState.AddModelError(string.Empty, "The Tag already exists, please create with other name.");
             if (tag != null && ModelState.IsValid)
@@ -348,7 +231,7 @@ namespace Silicus.Ensure.Web.Controllers
                 tag.IsActive = true;
                 tag.Description = HttpUtility.HtmlDecode(tag.Description);
                 _tagsService.Add(tag);
-                TempData.Add("IsNewTag", 1);                
+                TempData.Add("IsNewTag", 1);
                 return RedirectToAction("TagList");
             }
             return View("TagAdd");
@@ -356,10 +239,10 @@ namespace Silicus.Ensure.Web.Controllers
 
         public ActionResult GetTestSuiteDetails([DataSourceRequest] DataSourceRequest request)
         {
-            var tags=_tagsService.GetTagsDetails();
-            var testSuiteDetails = _testSuiteService.GetTestSuiteDetails().Where(model=>model.IsDeleted==false).OrderByDescending(model => model.TestSuiteId);            
+            var tags = _tagsService.GetTagsDetails();
+            var testSuiteDetails = _testSuiteService.GetTestSuiteDetails().Where(model => model.IsDeleted == false).OrderByDescending(model => model.TestSuiteId);
             List<TestSuiteViewModel> objViewModelList = new List<TestSuiteViewModel>();
-            TestSuiteViewModel objViewModel;            
+            TestSuiteViewModel objViewModel;
             foreach (var item in testSuiteDetails)
             {
                 objViewModel = new TestSuiteViewModel();
@@ -372,9 +255,9 @@ namespace Silicus.Ensure.Web.Controllers
                 objViewModel.PrimaryTags = item.PrimaryTags;
                 List<Int32> TagId = objViewModel.PrimaryTags.Split(',').Select(int.Parse).ToList();
                 objViewModel.PrimaryTagNames = string.Join(",", (from a in tags
-                                              where TagId.Contains(a.TagId)
-                                              select a.TagName));
-                objViewModelList.Add(objViewModel);                
+                                                                 where TagId.Contains(a.TagId)
+                                                                 select a.TagName));
+                objViewModelList.Add(objViewModel);
             }
             return Json(objViewModelList.ToDataSourceResult(request), JsonRequestBehavior.AllowGet);
         }
@@ -457,22 +340,22 @@ namespace Silicus.Ensure.Web.Controllers
                     return RedirectToAction("TestSuiteList");
                 }
             }
-            return View("TestSuiteAdd");    
+            return View("TestSuiteAdd");
 
         }
 
         public ActionResult TestSuiteDelete(int testSuiteId)
-        {           
+        {
             var testSuiteDetails = _testSuiteService.GetTestSuiteDetails().Where(model => model.TestSuiteId == testSuiteId && model.IsDeleted == false).SingleOrDefault();
             if (testSuiteDetails != null)
             {
                 testSuiteDetails.IsDeleted = true;
                 _testSuiteService.Update(testSuiteDetails);
-                return Json(1);                
+                return Json(1);
             }
             else
             {
-                return Json(-1);               
+                return Json(-1);
             }
         }
 
@@ -490,7 +373,7 @@ namespace Silicus.Ensure.Web.Controllers
             {
                 var testSuiteDetails = _testSuiteService.GetTestSuiteDetails().Where(model => model.TestSuiteId == testSuiteId && model.IsDeleted == false).SingleOrDefault();
                 if (testSuiteDetails != null)
-                {                    
+                {
                     testSuite.TestSuiteId = testSuiteDetails.TestSuiteId;
                     testSuite.TestSuiteName = "Copy " + testSuiteDetails.TestSuiteName;
                     testSuite.Competency = testSuiteDetails.Competency;
@@ -509,21 +392,243 @@ namespace Silicus.Ensure.Web.Controllers
             }
         }
 
+        //---------------------------------- Question Bank Section -----------------------------------
+
+        public ActionResult AddQuestions(string QuestionId)
+        {
+            QuestionModel Que = new QuestionModel();
+            Que.QuestionType = "0";
+            Que.Success = 0;
+            Que.Edit = false;
+            Que.Skills = Skills();
+            return View(Que);
+        }
+
+        [HttpPost]
+        public ActionResult AddQuestions(QuestionModel question)
+        {
+            Question Que = new Question
+            {
+                QuestionType = Convert.ToInt32(question.QuestionType),
+                QuestionDescription = HttpUtility.HtmlDecode(question.QuestionDescription),
+                AnswerType = Convert.ToInt32(question.AnswerType),
+                Option1 = question.Option1,
+                Option2 = question.Option2,
+                Option3 = question.Option3,
+                Option4 = question.Option4,
+                CorrectAnswer = InlineList(question.CorrectAnswer),
+                Answer = HttpUtility.HtmlDecode(question.Answer),
+                SkillTag = InlineList(question.SkillTag),
+                Competency = Convert.ToInt32(question.Competency),
+                Duration = question.Duration,
+                IsPublishd = true,
+                IsDeleted = false
+            };
+
+
+            if (question.Edit)
+            {
+                Que.Id = question.QuestionId;
+                Que.CreatedOn = question.CreatedOn;
+                Que.CreatedBy = question.CreatedBy;
+                Que.ModifiedOn = DateTime.Now;
+                Que.ModifiedBy = 0;
+
+                question = new QuestionModel();
+                _questionService.Update(Que);
+                question.Success = 1;
+                question.Edit = true;
+            }
+            else
+            {
+                Que.CreatedOn = DateTime.Now;
+                Que.CreatedBy = 0;
+                Que.ModifiedOn = DateTime.Now;
+                Que.ModifiedBy = 0;
+
+                question = new QuestionModel();
+                int id = _questionService.Add(Que);
+                if (id > 0)
+                {
+                    question.Success = 1;
+                    question.Edit = false;
+                }
+            }
+
+            question.Skills = Skills();
+            question.QuestionType = "0";
+            return View(question);
+        }
+
+        public ActionResult QuestionBank()
+        {
+            List<QuestionModel> Qmodel = new List<QuestionModel>();
+            QuestionModel model;
+            IEnumerable<Question> Que = _questionService.GetQuestion();
+            foreach (var q in Que)
+            {
+                model = new QuestionModel();
+                model.QuestionId = q.Id;
+                model.QuestionDescription = TruncateLongString(q.QuestionDescription, 100);
+                model.QuestionType = GetQuestionType(q.QuestionType);
+                model.Skill = GetSkill(q.SkillTag);
+                model.Competency = GetCompetency(q.Competency);
+                Qmodel.Add(model);
+            }
+            return View(Qmodel);
+        }
+
+        public ActionResult EditQuestion(string QuestionId)
+        {
+            if (!string.IsNullOrEmpty(QuestionId))
+            {
+                Question question = _questionService.GetSingleQuestion(Convert.ToInt32(QuestionId));
+
+                QuestionModel Que = new QuestionModel
+                {
+                    QuestionId = question.Id,
+                    QuestionType = question.QuestionType.ToString(),
+                    QuestionDescription = HttpUtility.HtmlDecode(question.QuestionDescription),
+                    AnswerType = question.AnswerType.ToString(),
+                    Option1 = question.Option1,
+                    Option2 = question.Option2,
+                    Option3 = question.Option3,
+                    Option4 = question.Option4,
+                    CorrectAnswer = CorrectAnswer(question.CorrectAnswer),
+                    Answer = HttpUtility.HtmlDecode(question.Answer),
+                    SkillTag = SkillList(question.SkillTag),
+                    Competency = question.Competency.ToString(),
+                    Duration = question.Duration,
+                    CreatedOn = question.CreatedOn,
+                    CreatedBy = question.CreatedBy,
+                    Success = 0,
+                    Edit = true,
+                    Skills = Skills()
+                };
+                return View("AddQuestions", Que);
+            }
+            return View("AddQuestions", null);
+        }
+
+        [HttpDelete]
+        public JsonResult DeleteQuestion(int QuestionId)
+        {
+            _questionService.Delete(QuestionId);
+            return Json(1);
+        }
+
+        #region Question Bank Private Methods
+        private string InlineList(List<string> list)
+        {
+            string lst = "";
+            if (list != null)
+            {
+                int cnt = list.Count();
+                int commacnt = 0;
+                foreach (string str in list)
+                {
+                    commacnt++;
+                    if (commacnt == cnt)
+                        lst += str;
+                    else
+                        lst += str + ",";
+
+                }
+            }
+
+            return lst;
+        }
+
+        private List<Skills> Skills()
+        {
+            List<Skills> skill = new List<Skills>();
+            skill.Add(new Skills { Skill = "ASP.NET", Value = "1" });
+            skill.Add(new Skills { Skill = "MVC 4", Value = "2" });
+            skill.Add(new Skills { Skill = "MVC 5", Value = "3" });
+            skill.Add(new Skills { Skill = "Java", Value = "4" });
+            skill.Add(new Skills { Skill = "CSS", Value = "5" });
+            return skill;
+        }
+
+        private string GetQuestionType(int type)
+        {
+            if (type == 1)
+                return "Objective";
+            else
+                return "Practical";
+        }
+
+        private string GetCompetency(int type)
+        {
+            if (type == 1)
+                return "Beginner";
+            else if (type == 2)
+                return "Intermediate";
+            else
+                return "Expert";
+        }
+
         private string GetSkill(string skill)
         {
             string ret = null;
             if (!string.IsNullOrEmpty(skill))
             {
                 string[] str = skill.Split(',');
+                int cnt = str.Count();
                 List<Skills> skills = Skills();
-
+                int count = 0;
                 foreach (string s in str)
                 {
-                    ret += skills.Find(x => x.Value == s).Skill;
-                    ret += " | ";
+                    count++;
+                    if (count == cnt)
+                        ret += skills.Find(x => x.Value == s).Skill;
+                    else
+                        ret += skills.Find(x => x.Value == s).Skill + " | ";
                 }
             }
             return ret;
         }
+
+        private List<string> SkillList(string skill)
+        {
+            List<string> skills = new List<string>();
+            List<Skills> TagSkill = Skills();
+            if (!string.IsNullOrEmpty(skill))
+            {
+                string[] str = skill.Split(',');
+                if (str.Count() > 0)
+                {
+                    foreach (string s in str)
+                    {
+                        skills.Add(TagSkill.Find(x => x.Value == s).Value);
+                    }
+                }
+            }
+
+            return skills;
+        }
+
+        private List<string> CorrectAnswer(string Ans)
+        {
+            List<string> answer = new List<string>();
+            if (!string.IsNullOrEmpty(Ans))
+            {
+                string[] str = Ans.Split(',');
+                if (str.Count() > 0)
+                {
+                    foreach (string s in str)
+                    {
+                        answer.Add(s);
+                    }
+                }
+            }
+            return answer;
+        }
+
+        private string TruncateLongString(string str, int maxLength)
+        {
+            return str.Substring(0, Math.Min(str.Length, maxLength));
+        }
+        #endregion
     }
 }
