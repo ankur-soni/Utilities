@@ -70,3 +70,23 @@ function mQuery() {
         $('.nav').addClass('show');
     }
 }
+
+function ShowMessage(content, isSuceess) {
+    if (isSuceess == 0) {
+        $("#messageDiv").removeClass("alert-danger");
+        $("#messageDiv").removeClass("alert-success");
+        $("#messageDiv").addClass("alert-danger");
+    }
+    else {
+        if (isSuceess == 0) {
+            $("#messageDiv").removeClass("alert-danger");
+            $("#messageDiv").removeClass("alert-success");
+            $("#messageDiv").addClass("alert-success");
+        }
+    }
+
+    $("#messageDiv").show();
+    $("#messageContent").text(content);
+    $("html, body").animate({ scrollTop: 0 }, "slow");
+    $("#messageDiv").fadeOut(7000);
+}

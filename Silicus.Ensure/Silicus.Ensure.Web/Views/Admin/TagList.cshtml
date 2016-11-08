@@ -5,42 +5,87 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 <div class="main-content">
-    <h2>Tag List</h2>
-    <div class="row" style="padding-top:5px;padding-bottom:5px;">
-        <div class="col-md-6"></div>
-        <div class="col-md-2 col-md-offset-4">
-            @(Html.Kendo().Button()
-                                    .Name("btnNew")
-            .HtmlAttributes(new { type = "button" })
-                    .Content("Add new record")
-            .Events(ev => ev.Click("onAddClick")))          
+    <div class="fluid mt20">
+        <div class="row" style="padding-top:5px;padding-bottom:5px;">
+            <div class="alert alert-success" id="messageDiv">
+                <strong>Success!</strong> <span id="messageContent">This alert box could indicate successful action.</span>
+            </div>
         </div>
-    </div>    
-        @if (Request.IsAuthenticated)
-        {
-            @(Html.Kendo().Grid<Silicus.Ensure.Models.DataObjects.Tags>().Name("tagsGrids")
+        <div class="kendogrid">
+            <h2>Tag List</h2>
+            <div>
+                @if (Request.IsAuthenticated)
+                {
+                    @(Html.Kendo().Grid<Silicus.Ensure.Models.DataObjects.Tags>().Name("tagsGrids")
          .Columns(columns =>
               {
                   columns.Bound(p => p.TagName).Width(50);
-                  columns.Bound(p => p.Description).Width(200);
-                  columns.Bound(p => p.IsActive).Width(50);                  
+                  columns.Bound(p => p.Description).Width(300);
               })
-        .DataSource(dataSource => dataSource
-                  .Ajax()
-                  .Model(model =>
-                  {
-                      model.Id(p => p.TagId);
-                      model.Field(p => p.TagId).Editable(false);
-                  })
-                  .Read(read => read.Action("GetTagsDetails", "tag"))
-              )              
-              .Pageable()
-              .Sortable()              
-            )
-        }
+            .DataSource(dataSource => dataSource
+                      .Ajax()
+                      .Model(model =>
+                      {
+                          model.Id(p => p.TagId);
+                          model.Field(p => p.TagId).Editable(false);
+                      })
+                      .Read(read => read.Action("GetTagsDetails", "Admin"))
+                      .PageSize(10)
+                  )
+                  .Pageable()
+                  .Sortable()
+                  .ToolBar(toolbar =>
+                {
+                    toolbar.Template(@<text>
+                        <div class="toolbar">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="input-group">
+                                        <span class="input-group-addon"><span class="glyphicon glyphicon-search" aria-hidden="true"></span></span>
+                                        <input type="text" class="form-control" id='FieldFilter' placeholder="Search for...">
+                                        <span class="input-group-btn">
+                                            <button class="btn btn-default" type="button" style="height:16px;"><span class="glyphicon glyphicon-refresh" aria-hidden="true"></span></button>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                            <br />
+                            <div class="row">
+                                <div class="col-md-3 col-md-push-1" style="float: right; padding-right: 0px; margin-right: -22px;">
+                                    <a href='/Admin/TagAdd' class='k-button k-button-icontext k-grid-add'><span class='k-icon k-add'></span>Add Tag</a>
+                                </div>
+                            </div>
+                        </div>
+                    </text>);
+                })
+                    )
+                }
+            </div>
+        </div>
     </div>
-<script>
-    function onAddClick() {
-        window.location = '@Url.Action("add", "tag")';
-    }
-</script>
+</div>
+        <script>
+            $(document).ready(function () {
+                $("#messageDiv").hide();
+
+                $("#FieldFilter").keyup(function () {
+
+                    var value = $("#FieldFilter").val();
+                    grid = $("#tagsGrids").data("kendoGrid");
+
+                    if (value.length > 1) {
+                        if (value) {
+                            grid.dataSource.filter({ field: "TagName", operator: "contains", value: value });
+                        } else {
+                            grid.dataSource.filter({});
+                        }
+                    }
+                    else if (value == "")
+                        grid.dataSource.filter({});
+                });
+                //Show successful message
+                if ('@TempData["IsNewTag"]' == "1") {
+                    ShowMessage("Tag saved successfully.", 1);
+                }
+            });
+        </script>

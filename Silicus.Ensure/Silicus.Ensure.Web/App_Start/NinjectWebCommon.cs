@@ -80,7 +80,7 @@ namespace Silicus.Ensure.Web
 
             kernel.Bind<IAuditManager>().To<AuditManager>();
             kernel.Bind<ITagsService>().To<TagService>();
-            kernel.Bind<ISkillService>().To<SkillService>()
+            kernel.Bind<ITestSuiteService>().To<TestSuiteService>()
                 .WithConstructorArgument("connectionString", "name=SilicusAuditingDataContext");
         }
     }
