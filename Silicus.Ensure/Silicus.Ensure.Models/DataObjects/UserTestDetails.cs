@@ -12,6 +12,6 @@ namespace Silicus.Ensure.Models.DataObjects
 
         public int QuestionId { get; set; }
 
-        public int Mark { get; set; }
+        public int Score { get; set; }
     }
 }

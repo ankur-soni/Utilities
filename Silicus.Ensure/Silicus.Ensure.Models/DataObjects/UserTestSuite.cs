@@ -11,6 +11,12 @@ namespace Silicus.Ensure.Models.DataObjects
 
         public int UserId { get; set; }
 
+        public int ObjectiveCount { get; set; }
+
+        public int MaxScore { get; set; }
+
+        public int Score { get; set; }
+
         public DateTime? CreatedDate { get; set; }
     }
 }
