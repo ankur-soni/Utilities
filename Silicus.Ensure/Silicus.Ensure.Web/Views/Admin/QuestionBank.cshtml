@@ -20,7 +20,7 @@
               {
                   columns.Bound(q => q.QuestionDescription).Encoded(false).Width(200);
                   columns.Bound(q => q.QuestionType).Width(100);
-                  columns.Bound(q => q.Skill).Width(150).Title("Tags");
+                  columns.Bound(q => q.Tag).Width(150).Title("Tags");
                   columns.Bound(q => q.Competency).Width(100);
                   columns.Bound(q => q.QuestionId).ClientTemplate(@"
                     <a href='/Admin/EditQuestion?QuestionId=#=QuestionId#' class='k-button k-button-icontext k-grid-edit'><span class='k-icon k-edit'></span>Edit</a>
@@ -76,31 +76,58 @@
                     </div>
                 </text>);
               })
-                                                                                                                                                                                                                    .Resizable(resizing => resizing.Columns(true))
-                                                                                                                                                                                                    .Sortable(sorting => sorting.Enabled(true))
-                                                                                                                                                                                                    .Reorderable(reorder => reorder.Columns(true))
-                                                                                                                                                                                                    .Pageable()
-                                                                                                                                                                                                    .DataSource(dataSource => dataSource
-                                                                                                                                                                                                    .Ajax()
-                                                                                                                                                                                                    .PageSize(10)
-                                                                                                                                                                                                    .ServerOperation(false)
-                                                                                                                                                                                                    ))
+                                                                                                                                                                                                                                                                                                    .Resizable(resizing => resizing.Columns(true))
+                                                                                                                                                                                                                                                                                    .Sortable(sorting => sorting.Enabled(true))
+                                                                                                                                                                                                                                                                                    .Reorderable(reorder => reorder.Columns(true))
+                                                                                                                                                                                                                                                                                    .Pageable()
+                                                                                                                                                                                                                                                                                    .DataSource(dataSource => dataSource
+                                                                                                                                                                                                                                                                                    .Ajax()
+                                                                                                                                                                                                                                                                                    .PageSize(10)
+                                                                                                                                                                                                                                                                                    .ServerOperation(false)
+                                                                                                                                                                                                                                                                                    ))
                 }
             </div>
         </div>
     </div>
 </div>
 
+<!-- Modal -->
+<div class="modal fade" id="myModal" role="dialog">
+    <div class="modal-dialog">
+
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title"><span id="msgMain">Success!</span></h4>
+            </div>
+            <div class="modal-body">
+                <p id="msgContent">Some text in the modal.</p>
+            </div>
+            <div class="modal-footer">
+                <button id="btnModalOK" type="button" class="btn btn-default" data-dismiss="modal" onclick="OnOK();">OK</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+            </div>
+        </div>
+
+    </div>
+</div>
+
 <script>
     $(document).ready(function () {
-        
+
         // Kendo Grid Filter (Search)
         $("#FieldFilter").keyup(function () {
             var value = $("#FieldFilter").val();
             grid = $("#questionGrids").data("kendoGrid");
 
             if (value) {
-                grid.dataSource.filter({ field: "QuestionDescription", operator: "contains", value: value });
+                var filter = { logic: "or", filters: [] };
+
+                filter.filters.push({ field: "QuestionDescription", operator: "contains", value: value });
+                filter.filters.push({ field: "Tag", operator: "contains", value: value });
+
+                grid.dataSource.query({ filter: filter });
             } else {
                 grid.dataSource.filter({});
             }
@@ -128,29 +155,41 @@
     }
 
     // Delete Question
+    var deleteID = null;
+    var deleteTh = null;
     function DeleteQuestion(id, th) {
-        var r = confirm("Are you sure, you want to delete this question from the application?");
-        if (r == true) {
+        deleteID = id;
+        deleteTh = th;
 
-            $.ajax({
-                url: '/Admin/DeleteQuestion',
-                dataType: "json",
-                type: "DELETE",
-                contentType: 'application/json; charset=utf-8',
-                data: JSON.stringify({ QuestionId: id }),
-                success: function (data) {
-                    if (data == 1) {
-                        var grid = $("#questionGrids").data("kendoGrid");
-                        grid.removeRow($(th).closest('tr'));
-                    }
-                },
-                error: function (xhr) {
-                    alert("Error! Question is not deleted.")
+        $("#myModal").modal();
+        $("#msgMain").text("Warning!");
+        $("#msgContent").text("Are you sure, you want to delete this question from the application?");
+        $("#btnModalOK").show();
+    }
+
+    function OnOK() {
+        $.ajax({
+            url: '/Admin/DeleteQuestion',
+            dataType: "json",
+            type: "DELETE",
+            contentType: 'application/json; charset=utf-8',
+            data: JSON.stringify({ QuestionId: deleteID }),
+            success: function (data) {
+                if (data == 1) {
+                    var grid = $("#questionGrids").data("kendoGrid");
+                    grid.removeRow($(deleteTh).closest('tr'));
+                    $("#myModal").modal();
+                    $("#msgMain").text("Success!");
+                    $("#msgContent").text("Question deleted successfully from the application?");
+                    $("#btnModalOK").hide();
                 }
-            });
-
-
-        }
-
+            },
+            error: function (xhr) {
+                $("#myModal").modal();
+                $("#msgMain").text("Error!");
+                $("#msgContent").text("Question is not deleted.");
+                $("#btnModalOK").hide();
+            }
+        });
     }
 </script>
