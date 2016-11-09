@@ -403,6 +403,11 @@ namespace Silicus.Ensure.Web.Controllers
             }
         }
 
+        public ActionResult AssignSuite(int SuiteId, int Userid)
+        {
+            return View();
+        }
+
         //---------------------------------- Question Bank Section -----------------------------------
 
         public ActionResult AddQuestions(string QuestionId)
@@ -437,13 +442,33 @@ namespace Silicus.Ensure.Web.Controllers
             };
 
 
-                foreach (string s in str)
+            if (question.Edit)
             {
-                    ret += skills.Find(x => x.Value == s).Skill;
-                    ret += " | ";
+                Que.Id = question.QuestionId;
+                Que.CreatedOn = question.CreatedOn;
+                Que.CreatedBy = question.CreatedBy;
+                Que.ModifiedOn = DateTime.Now;
+                Que.ModifiedBy = 0;
+
+                question = new QuestionModel();
+                _questionService.Update(Que);
+                question.Success = 1;
+                question.Edit = true;
             }
+            else
+            {
+                Que.CreatedOn = DateTime.Now;
+                Que.CreatedBy = 0;
+                Que.ModifiedOn = DateTime.Now;
+                Que.ModifiedBy = 0;
+
+                question = new QuestionModel();
+                int id = _questionService.Add(Que);
+                if (id > 0)
+                {
+                    question.Success = 1;
+                    question.Edit = false;
                 }
-            return ret;
             }
 
             question.Tags = Tags();
@@ -469,7 +494,7 @@ namespace Silicus.Ensure.Web.Controllers
             return View(Qmodel);
         }
 
-        public ActionResult TestSuiteActivate(string users, int testSuiteId)
+        public ActionResult EditQuestion(string QuestionId)
         {
             if (!string.IsNullOrEmpty(QuestionId))
             {
@@ -504,8 +529,23 @@ namespace Silicus.Ensure.Web.Controllers
         [HttpDelete]
         public JsonResult DeleteQuestion(int QuestionId)
         {
+            _questionService.Delete(QuestionId);
             return Json(1);
         }
+
+        #region Question Bank Private Methods
+        private string InlineList(List<string> list)
+        {
+            string lst = "";
+            if (list != null)
+            {
+                int cnt = list.Count();
+                int commacnt = 0;
+                foreach (string str in list)
+                {
+                    commacnt++;
+                    if (commacnt == cnt)
+                        lst += str;
                     else
                         lst += str + ",";
 
@@ -523,8 +563,20 @@ namespace Silicus.Ensure.Web.Controllers
 
         private string GetQuestionType(int type)
         {
-                return Json(-1);               
+            if (type == 1)
+                return "Objective";
+            else
+                return "Practical";
         }
+
+        private string GetCompetency(int type)
+        {
+            if (type == 1)
+                return "Beginner";
+            else if (type == 2)
+                return "Intermediate";
+            else
+                return "Expert";
         }
 
         private string GetTags(string tags)
@@ -544,6 +596,9 @@ namespace Silicus.Ensure.Web.Controllers
                     else
                         ret += tagsList.Find(x => x.TagId == Convert.ToInt32(s)).TagName + " | ";
                 }
+            }
+            return ret;
+        }
 
         private List<string> TagList(string tag)
         {
@@ -558,40 +613,33 @@ namespace Silicus.Ensure.Web.Controllers
                     {
                         tags.Add(TagSkill.Find(x => x.TagId == Convert.ToInt32(s)).TagId.ToString());
                     }
+                }
+            }
 
             return tags;
         }
 
-        //    var testsuitlocalList = new List<TestSuiteViewModel>();
-        //    var testsuitlocalObj = new TestSuiteViewModel();
-        //    //testsuitlocalObj.TestSuiteId = 11;          
-        //    //testsuitlocalObj.Duration = "12.30";
-        //    TestSuiteViewModel obj1 = new TestSuiteViewModel
-        //    {
-        //        TestSuiteId=11,
-        //        Duration="10",
-        //        TestSuiteName="Java",
-        //        PositionName="Developer",
-        //        PrimaryTagNames="test",
-        //        userid=1
-        //    };
-        //    testsuitlocalList.Add(obj1);
-        //    TestSuiteViewModel obj2 = new TestSuiteViewModel
-        //    {
-        //        TestSuiteId = 12,
-        //        Duration = "11",
-        //        TestSuiteName = ".net",
-        //        PositionName = "Developer",
-        //        PrimaryTagNames = "test",
-        //        userid = 2
-        //    };
-        //    testsuitlocalList.Add(obj2);
-        //    return Json(testsuitlocalList.ToDataSourceResult(request));
-        //}
-
-        public ActionResult AssignSuite(int SuiteId, int Userid)
+        private List<string> CorrectAnswer(string Ans)
         {
-            return View();
+            List<string> answer = new List<string>();
+            if (!string.IsNullOrEmpty(Ans))
+            {
+                string[] str = Ans.Split(',');
+                if (str.Count() > 0)
+                {
+                    foreach (string s in str)
+                    {
+                        answer.Add(s);
+                    }
+                }
+            }
+            return answer;
         }
+
+        private string TruncateLongString(string str, int maxLength)
+        {
+            return str.Substring(0, Math.Min(str.Length, maxLength));
+        }
+        #endregion
     }
 }
