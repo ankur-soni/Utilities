@@ -206,6 +206,7 @@ namespace Silicus.Ensure.Web.Controllers
             return hashParams;
         }
 
+        #region Tag
         public ActionResult GetTagsDetails([DataSourceRequest] DataSourceRequest request)
         {
             var tagDetails = _tagsService.GetTagsDetails().OrderByDescending(model => model.TagId);
@@ -225,7 +226,7 @@ namespace Silicus.Ensure.Web.Controllers
         [AcceptVerbs(HttpVerbs.Post)]
         public ActionResult SaveTag(Tags tag)
         {
-            var tagDetails = _tagsService.GetTagsDetails().Where(model => model.TagName == tag.TagName && model.TagId!=tag.TagId);
+            var tagDetails = _tagsService.GetTagsDetails().Where(model => model.TagName == tag.TagName && model.TagId != tag.TagId);
             if (tagDetails.Count() > 0)
                 ModelState.AddModelError(string.Empty, "The Tag already exists, please create with other name.");
             if (tag != null && ModelState.IsValid)
@@ -236,40 +237,33 @@ namespace Silicus.Ensure.Web.Controllers
                 TempData.Add("IsNewTag", 1);
                 return RedirectToAction("TagList");
             }
-            return View("TagAdd");
+            return View("TagAdd", tag);
         }
+        
+        #endregion
 
+        #region Test Suite
         public ActionResult GetTestSuiteDetails([DataSourceRequest] DataSourceRequest request)
         {
-            var tags=_tagsService.GetTagsDetails();
-            var testSuiteDetails = _testSuiteService.GetTestSuiteDetails().Where(model=>model.IsDeleted==false).OrderByDescending(model => model.TestSuiteId);            
-            List<TestSuiteViewModel> objViewModelList = new List<TestSuiteViewModel>();
-            TestSuiteViewModel objViewModel;
-            foreach (var item in testSuiteDetails)
+            var tags = _tagsService.GetTagsDetails();
+            var testSuitelist = _testSuiteService.GetTestSuiteDetails().Where(model => model.IsDeleted == false).OrderByDescending(model => model.TestSuiteId).ToArray();
+            var viewModels = _mappingService.Map<TestSuite[], TestSuiteViewModel[]>(testSuitelist);
+            foreach (var item in viewModels)
             {
-                objViewModel = new TestSuiteViewModel();
-                objViewModel.TestSuiteId = item.TestSuiteId;
-                objViewModel.TestSuiteName = item.TestSuiteName;
-                objViewModel.PositionName = GetPosition(item.Position);
-                objViewModel.Position = item.Position;
-                objViewModel.Competency = item.Competency;
-                objViewModel.Duration = item.Duration;
-                objViewModel.PrimaryTags = item.PrimaryTags;
-                List<Int32> TagId = objViewModel.PrimaryTags.Split(',').Select(int.Parse).ToList();
-                objViewModel.PrimaryTagNames = string.Join(",", (from a in tags
-                                                                 where TagId.Contains(a.TagId)
-                                                                 select a.TagName));
+                item.PositionName = GetPosition(item.Position);
+                List<Int32> TagId = item.PrimaryTags.Split(',').Select(int.Parse).ToList();
+                item.PrimaryTagNames = string.Join(",", (from a in tags
+                                                         where TagId.Contains(a.TagId)
+                                                         select a.TagName));
                 if (!string.IsNullOrWhiteSpace(item.SecondaryTags))
                 {
                     TagId = item.SecondaryTags.Split(',').Select(int.Parse).ToList();
-                    objViewModel.PrimaryTagNames +=","+ string.Join(",", (from a in tags
-                                                                     where TagId.Contains(a.TagId)
-                                                                     select a.TagName));
+                    item.PrimaryTagNames += "," + string.Join(",", (from a in tags
+                                                                    where TagId.Contains(a.TagId)
+                                                                    select a.TagName));
                 }
-
-                objViewModelList.Add(objViewModel);
             }
-            return Json(objViewModelList.ToDataSourceResult(request), JsonRequestBehavior.AllowGet);
+            return Json(viewModels.ToDataSourceResult(request), JsonRequestBehavior.AllowGet);
         }
 
         private string GetPosition(int positionId)
@@ -291,10 +285,10 @@ namespace Silicus.Ensure.Web.Controllers
         {
             TestSuiteViewModel testSuite = new TestSuiteViewModel();
             var tagDetails = _tagsService.GetTagsDetails().OrderByDescending(model => model.TagId);
-            testSuite.TagList = tagDetails.ToList();
-
             if (testSuiteId == 0)
             {
+                ViewBag.Type = "New";
+                testSuite.TagList = tagDetails.ToList();
                 testSuite.ObjectiveQuestionsCount = "20";
                 testSuite.PracticalQuestionsCount = "1";
 
@@ -302,32 +296,29 @@ namespace Silicus.Ensure.Web.Controllers
             }
             else
             {
-                var testSuiteDetails = _testSuiteService.GetTestSuiteDetails().Where(model => model.TestSuiteId == testSuiteId && model.IsDeleted == false).SingleOrDefault();
-                if (testSuiteDetails != null)
+                var testSuitelist = _testSuiteService.GetTestSuiteDetails().Where(model => model.TestSuiteId == testSuiteId && model.IsDeleted == false).ToArray();
+                var viewModels = _mappingService.Map<TestSuite[], TestSuiteViewModel[]>(testSuitelist).SingleOrDefault();
+                if (viewModels != null)
                 {
-                    testSuite.TestSuiteId = testSuiteDetails.TestSuiteId;
-                    testSuite.TestSuiteName = testSuiteDetails.TestSuiteName;
-                    testSuite.Competency = testSuiteDetails.Competency;
-                    testSuite.Duration = testSuiteDetails.Duration;
-                    testSuite.Position = testSuiteDetails.Position;
-                    testSuite.ObjectiveQuestionsCount = testSuiteDetails.ObjectiveQuestionsCount;
-                    testSuite.PracticalQuestionsCount = testSuiteDetails.PracticalQuestionsCount;
-                    testSuite.PrimaryTagIds = testSuiteDetails.PrimaryTags.Split(',').ToList();
-                    if (!string.IsNullOrWhiteSpace(testSuiteDetails.SecondaryTags))
+                    ViewBag.Type = "Edit";
+                    viewModels.TagList = tagDetails.ToList();
+                    viewModels.PrimaryTagIds = viewModels.PrimaryTags.Split(',').ToList();
+                    if (!string.IsNullOrWhiteSpace(viewModels.SecondaryTags))
                     {
-                        testSuite.SecondaryTagIds = testSuiteDetails.SecondaryTags.Split(',').ToList();
+                        viewModels.SecondaryTagIds = viewModels.SecondaryTags.Split(',').ToList();
                     }
                 }
-                return View(testSuite);
+                return View(viewModels);
             }
         }
 
         public ActionResult TestSuiteSave(TestSuiteViewModel testSuiteView)
         {
-
             var testSuiteDetails = _testSuiteService.GetTestSuiteDetails().Where(model => model.TestSuiteName == testSuiteView.TestSuiteName && model.TestSuiteId != testSuiteView.TestSuiteId);
             if (testSuiteDetails.Count() > 0)
                 ModelState.AddModelError(string.Empty, "The Test Suite already exists, please create with other name.");
+            if (testSuiteView.PrimaryTagIds.All(testSuiteView.SecondaryTagIds.Contains) || testSuiteView.SecondaryTagIds.All(testSuiteView.PrimaryTagIds.Contains))
+                ModelState.AddModelError(string.Empty, "Tags should unique in primary and secondary field.");
 
             if (ModelState.IsValid)
             {
@@ -350,8 +341,9 @@ namespace Silicus.Ensure.Web.Controllers
                     return RedirectToAction("TestSuiteList");
                 }
             }
-            return View("TestSuiteAdd");
-
+            var tagDetails = _tagsService.GetTagsDetails().OrderByDescending(model => model.TagId);
+            testSuiteView.TagList = tagDetails.ToList();
+            return View("TestSuiteAdd", testSuiteView);
         }
 
         public ActionResult TestSuiteDelete(int testSuiteId)
@@ -382,32 +374,31 @@ namespace Silicus.Ensure.Web.Controllers
             }
             else
             {
-                var testSuiteDetails = _testSuiteService.GetTestSuiteDetails().Where(model => model.TestSuiteId == testSuiteId && model.IsDeleted == false).SingleOrDefault();
-                if (testSuiteDetails != null)
+                var testSuitelist = _testSuiteService.GetTestSuiteDetails().Where(model => model.TestSuiteId == testSuiteId && model.IsDeleted == false).ToArray();
+                var viewModels = _mappingService.Map<TestSuite[], TestSuiteViewModel[]>(testSuitelist).SingleOrDefault();
+                if (viewModels != null)
                 {
-                    testSuite.TestSuiteId = testSuiteDetails.TestSuiteId;
-                    testSuite.TestSuiteName = "Copy " + testSuiteDetails.TestSuiteName;
-                    testSuite.Competency = testSuiteDetails.Competency;
-                    testSuite.Duration = testSuiteDetails.Duration;
-                    testSuite.Position = testSuiteDetails.Position;
-                    testSuite.ObjectiveQuestionsCount = testSuiteDetails.ObjectiveQuestionsCount;
-                    testSuite.PracticalQuestionsCount = testSuiteDetails.PracticalQuestionsCount;
-                    testSuite.PrimaryTagIds = testSuiteDetails.PrimaryTags.Split(',').ToList();
-                    testSuite.IsCopy = true;
-                    if (!string.IsNullOrWhiteSpace(testSuiteDetails.SecondaryTags))
+                    ViewBag.Type = "Copy";
+                    viewModels.IsCopy = true;
+                    viewModels.TestSuiteName = "Copy " + viewModels.TestSuiteName;
+                    viewModels.TagList = tagDetails.ToList();
+                    viewModels.PrimaryTagIds = viewModels.PrimaryTags.Split(',').ToList();
+                    if (!string.IsNullOrWhiteSpace(viewModels.SecondaryTags))
                     {
-                        testSuite.SecondaryTagIds = testSuiteDetails.SecondaryTags.Split(',').ToList();
+                        viewModels.SecondaryTagIds = viewModels.SecondaryTags.Split(',').ToList();
                     }
                 }
-                return View("TestSuiteAdd", testSuite);
+                return View("TestSuiteAdd", viewModels);
             }
         }
 
         public ActionResult AssignSuite(int SuiteId, int Userid)
         {
             return View();
-        }
+        } 
+        #endregion
 
+        #region Question Bank
         //---------------------------------- Question Bank Section -----------------------------------
 
         public ActionResult AddQuestions(string QuestionId)
@@ -640,6 +631,8 @@ namespace Silicus.Ensure.Web.Controllers
         {
             return str.Substring(0, Math.Min(str.Length, maxLength));
         }
+        #endregion
+
         #endregion
     }
 }
