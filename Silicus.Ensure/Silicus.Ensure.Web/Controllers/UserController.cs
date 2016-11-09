@@ -59,6 +59,7 @@ namespace Silicus.Ensure.Web.Controllers
         }
 
         public async Task<ActionResult> GetUserDetails([DataSourceRequest] DataSourceRequest request)
+        
         {
             var userlist = _userService.GetUserDetails().ToArray();
 
@@ -82,10 +83,14 @@ namespace Silicus.Ensure.Web.Controllers
         public async Task<ActionResult> CreateUser(UserViewModel vuser)
         {
             var user = new ApplicationUser { UserName = vuser.Email, Email = vuser.Email };
+            if (vuser.Role.ToLower() == "user")
+            {
+                vuser.TestStatus = "UnAssigned";
+            }
             var userResult = await UserManager.CreateAsync(user, vuser.NewPassword);
             if (userResult.Succeeded)
             {
-                vuser.IdentityUserId = new Guid(user.Id);
+                vuser.IdentityUserId = new Guid(user.Id);                
                 var result = await UserManager.AddToRoleAsync(user.Id, vuser.Role);
                 if (!result.Succeeded)
                 {
@@ -133,10 +138,58 @@ namespace Silicus.Ensure.Web.Controllers
 
             return Json(-1);
         }
+        /// <summary>
+        /// Showing all candidate list in grid
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns></returns>
+        public async Task<ActionResult> GetCandidateDetails([DataSourceRequest] DataSourceRequest request)
+       {
+            var userlist = _userService.GetUserDetails().Where(p => p.Role.ToLower() == "user").ToArray();
 
-        public ActionResult CandidateTest()
-        {
-            return View();
+            var viewModels = _mappingService.Map<User[], UserViewModel[]>(userlist);
+
+            for (int j = 0; j < viewModels.Count(); j++)
+            {
+                var userDetails = await UserManager.FindByEmailAsync(viewModels[j].Email);
+                if (userDetails != null)
+                {
+                    var viewUsersRole = await UserManager.GetRolesAsync(userDetails.Id);
+                    viewModels[j].Role = viewUsersRole.FirstOrDefault();
+                }
+            }
+
+            DataSourceResult result = viewModels.ToDataSourceResult(request);
+            return Json(result);
         }
+
+        /// <summary>
+        /// Searching candidate based on request
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns></returns>
+        public async Task<ActionResult> CandidateTest([DataSourceRequest] DataSourceRequest request)
+        {
+            var userlist = _userService.GetUserDetails().ToArray();
+
+            var viewModels = _mappingService.Map<User[], UserViewModel[]>(userlist);
+
+            for (int j = 0; j < viewModels.Count(); j++)
+            {
+                var userDetails = await UserManager.FindByEmailAsync(viewModels[j].Email);
+                if (userDetails != null)
+                {
+                    var viewUsersRole = await UserManager.GetRolesAsync(userDetails.Id);
+                    viewModels[j].Role = viewUsersRole.FirstOrDefault();
+                }
+            }
+
+            DataSourceResult result = viewModels.ToDataSourceResult(request);
+            return Json(result);
+            //return View();
+        }
+
+       
+       
     }
 }
