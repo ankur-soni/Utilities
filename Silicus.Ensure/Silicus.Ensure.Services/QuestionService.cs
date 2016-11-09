@@ -20,13 +20,34 @@ namespace Silicus.Ensure.Services
 
         public IEnumerable<Question> GetQuestion()
         {
-            return _context.Query<Question>();
+            return _context.Query<Question>().Where(x => x.IsDeleted == false).OrderByDescending(x => x.Id);
+        }
+
+        public Question GetSingleQuestion(int id)
+        {
+            return _context.Query<Question>().Where(x => x.Id == id).FirstOrDefault();
         }
 
         public int Add(Question Question)
         {
             _context.Add(Question);
-            return Question.QuestionId;
+            return Question.Id;
+        }
+
+        public void Update(Question Question)
+        {
+            if (Question != null)
+                _context.Update(Question);
+        }
+
+        public void Delete(int id)
+        {
+            if (id != 0)
+            {
+                Question Que = GetSingleQuestion(id);
+                Que.IsDeleted = true;
+                _context.Update(Que);
+            }
         }
     }
 }

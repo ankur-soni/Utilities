@@ -11,7 +11,12 @@ namespace Silicus.Ensure.Services.Interfaces
     {
         IEnumerable<Question> GetQuestion();
 
+        Question GetSingleQuestion(int id);
+
         int Add(Question Question);
-            
+
+        void Update(Question Question);
+
+        void Delete(int id);
     }
 }

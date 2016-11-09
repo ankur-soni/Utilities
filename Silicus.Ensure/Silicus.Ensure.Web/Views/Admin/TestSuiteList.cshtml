@@ -1,0 +1,119 @@
+﻿@using Kendo.Mvc.UI;
+
+@{
+    ViewBag.Title = "TestSuite List";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<div class="main-content">
+    <div class="fluid mt20">
+        <div class="row" style="padding-top:5px;padding-bottom:5px;">
+            <div class="alert alert-success" id="messageDiv">
+                <strong>Success!</strong> <span id="messageContent">This alert box could indicate successful action.</span>
+            </div>
+        </div>
+        <div class="kendogrid">
+            <h2>Test-Suite List</h2>            
+            <div>               
+                @if (Request.IsAuthenticated)
+                {
+                    @(Html.Kendo().Grid<Silicus.Ensure.Web.Models.TestSuiteViewModel>().Name("testSuiteGrids")
+                .Columns(columns =>
+                  {
+                      columns.Bound(p => p.TestSuiteName).Width(200).Title("Test Suite");
+                      columns.Bound(p => p.Duration).Width(50);
+                      columns.Bound(p => p.PositionName).Width(150).Title("Position");
+                      columns.Bound(p => p.PrimaryTagNames).Width(350).Title("Tags");
+                      columns.Bound("").ClientTemplate("<a class='k-button k-button-icontext k-grid-add' href='\\#' onclick='return getTestSuiteId(#=TestSuiteId#)' data-toggle='modal' data-target='\\#myModal'><span class='k-icon k-add'></span>Activate Test Suite</a><a class='k-button k-button-icontext k-grid-add' href='" + Url.Action("TestSuiteCopy", "Admin") + "?testSuiteId=#=TestSuiteId#'><span class='k-icon k-add'></span>Copy</a><a class='k-button k-button-icontext k-grid-edit' href='" + Url.Action("TestSuiteAdd", "Admin") + "?testSuiteId=#=TestSuiteId#'><span class='k-icon k-edit'></span>Edit</a><a id='testSuiteDel' class='k-button k-button-icontext k-grid-delete' href='\\#' onclick='return deleteTestSuite(#=TestSuiteId#)'><span class='k-icon k-delete'></span>Delete</a>").Title("Actions");       //href='" + Url.Action("TestSuiteDelete", "Admin") + "?testSuiteId=#=TestSuiteId#'
+                  })
+                .DataSource(dataSource => dataSource
+                  .Ajax()
+                  .Model(model =>
+                  {
+                      model.Id(p => p.TestSuiteId);
+                      model.Field(p => p.TestSuiteId).Editable(false);
+                  })
+                  .Read(read => read.Action("GetTestSuiteDetails", "Admin"))
+                  .PageSize(10)
+              )
+              .Pageable()
+              .Sortable()
+              .ToolBar(toolbar =>
+               {
+                    toolbar.Template(@<text>
+                        <div class="toolbar">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="input-group">
+                                        <span class="input-group-addon"><span class="glyphicon glyphicon-search" aria-hidden="true"></span></span>
+                                        <input type="text" class="form-control" id='FieldFilter' placeholder="Search for...">
+                                        <span class="input-group-btn">
+                                            <button class="btn btn-default" type="button" style="height:16px;"><span class="glyphicon glyphicon-refresh" aria-hidden="true"></span></button>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                            <br />
+                            <div class="row">
+                                <div class="col-md-3 col-md-push-1" style="float: right; padding-right: 0px; margin-right: -22px;">
+                                    <a href='/Admin/TestSuiteAdd' class='k-button k-button-icontext k-grid-add'><span class='k-icon k-add'></span>Add Test Suite</a>
+                                </div>
+                            </div>
+                        </div>
+                    </text>);
+                }))
+                }
+            </div>
+        </div>
+    </div>
+</div>
+
+@{Html.RenderPartial("~/Views/Admin/_TestSuiteAssign.cshtml");}
+<script>
+    $(document).ready(function () {
+        $("#messageDiv").hide();
+        $("#FieldFilter").keyup(function () {
+
+            var value = $("#FieldFilter").val();
+            grid = $("#testSuiteGrids").data("kendoGrid");
+
+            if (value.length > 1) {
+                if (value) {
+                    grid.dataSource.filter({ field: "TestSuiteName", operator: "contains", value: value });
+                } else {
+                    grid.dataSource.filter({});
+                }
+            }
+            else if (value == "")
+                grid.dataSource.filter({});
+        });
+        //Show successful message
+        if ('@TempData["IsNewTestSuite"]' == "1") {
+            ShowMessage("Tag saved successfully.", 1);
+        }
+    });
+
+    function deleteTestSuite(testSuiteId) {
+        if (confirm("Are you sure you want to delete this test suite?")) {
+            $.ajax({
+                type: "POST",
+                url: '@Url.Action("TestSuiteDelete", "Admin")',
+                data: { testSuiteId: testSuiteId },
+                success: function (returndata) {
+                    if (returndata == 1) {
+                        $('#testSuiteGrids').data('kendoGrid').dataSource.read();
+                        $('#testSuiteGrids').data('kendoGrid').refresh();
+                        ShowMessage("Tag deleted successfully.", 1);
+                    }
+                    else {
+                        ShowMessage("Error occured while delete operation.", 0);
+                    }
+                }
+            });
+        }
+    }
+
+    function getTestSuiteId(testSuiteId)
+    {       
+        $('#testSuiteId').val(testSuiteId);
+    }
+</script>

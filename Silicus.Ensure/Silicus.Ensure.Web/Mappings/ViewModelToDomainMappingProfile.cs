@@ -3,7 +3,8 @@ using AutoMapper;
 using Silicus.Ensure.Models;
 using Silicus.Ensure.Web.Models;
 using Silicus.Ensure.Models.DataObjects;
-
+using Silicus.Ensure.Models.Constants;
+using System;
 namespace Silicus.Ensure.Web.Mappings
 {
     [ExcludeFromCodeCoverage]
@@ -19,6 +20,9 @@ namespace Silicus.Ensure.Web.Mappings
             Mapper.CreateMap<Model, EntityA>();
             Mapper.CreateMap<UserViewModel, User>();
             Mapper.CreateMap<User,UserViewModel>();
+            Mapper.CreateMap<TestSuiteViewModel, TestSuite>();//.ForMember(o => o., b => b.MapFrom(z => z.FirstName + " " + z.LastName));
+            Mapper.CreateMap<TestSuite, TestSuiteViewModel>();//.ForMember(o => o.PositionName, Enum.Parse(Competency,"1").ToString();
+            //Mapper.CreateMap<TestSuite, TestSuiteViewModel>();
         }
     }
 }
