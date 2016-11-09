@@ -47,5 +47,7 @@ namespace Silicus.Ensure.Web.Models
 
         [Display(Name = "No. Of Practical Questions")]
         public string PracticalQuestionsCount { get; set; }
+
+        public int userid { get; set; }
     }
 }
