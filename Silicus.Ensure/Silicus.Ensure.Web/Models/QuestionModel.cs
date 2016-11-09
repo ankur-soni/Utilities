@@ -21,10 +21,13 @@ namespace Silicus.Ensure.Web.Models
         public string Skill { get; set; }
         public string Competency { get; set; }
         public int Duration { get; set; }
+        public DateTime CreatedOn { get; set; }
+        public int CreatedBy { get; set; }
 
         public List<Skills> Skills { get; set; }
 
         public int Success { get; set; }
+        public bool Edit { get; set; }
     }
 
     public class Skills
