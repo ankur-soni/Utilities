@@ -330,8 +330,8 @@ namespace Silicus.Ensure.Web.Controllers
         }
 
         public ActionResult TagList()
-        {  
-          return View();
+        {
+            return View();
         }
 
         public ActionResult TagAdd(Int32 tagId = 0)
@@ -467,7 +467,7 @@ namespace Silicus.Ensure.Web.Controllers
                     return RedirectToAction("TestSuiteList");
                 }
             }
-            return View("TestSuiteAdd"); 
+            return View("TestSuiteAdd");
 
         }
 
@@ -556,6 +556,54 @@ namespace Silicus.Ensure.Web.Controllers
             {
                 return Json(-1);               
             }
+        }        
+
+        public ActionResult Candidates()
+        {
+            ViewBag.UserRoles = RoleManager.Roles.Select(r => new SelectListItem { Text = r.Name, Value = r.Name }).ToList();
+            return View();
+        }
+
+        public ActionResult CandidatesSuit(int UserId)
+        {
+            ViewBag.CurrentUser = UserId;
+            return PartialView("SelectCandidatesSuit");
+        }
+
+        //public JsonResult GetTestSuiteDetails([DataSourceRequest] DataSourceRequest request)
+        //{
+        //    ViewBag.UserRoles = RoleManager.Roles.Select(r => new SelectListItem { Text = r.Name, Value = r.Name }).ToList();
+
+        //    var testsuitlocalList = new List<TestSuiteViewModel>();
+        //    var testsuitlocalObj = new TestSuiteViewModel();
+        //    //testsuitlocalObj.TestSuiteId = 11;          
+        //    //testsuitlocalObj.Duration = "12.30";
+        //    TestSuiteViewModel obj1 = new TestSuiteViewModel
+        //    {
+        //        TestSuiteId=11,
+        //        Duration="10",
+        //        TestSuiteName="Java",
+        //        PositionName="Developer",
+        //        PrimaryTagNames="test",
+        //        userid=1
+        //    };
+        //    testsuitlocalList.Add(obj1);
+        //    TestSuiteViewModel obj2 = new TestSuiteViewModel
+        //    {
+        //        TestSuiteId = 12,
+        //        Duration = "11",
+        //        TestSuiteName = ".net",
+        //        PositionName = "Developer",
+        //        PrimaryTagNames = "test",
+        //        userid = 2
+        //    };
+        //    testsuitlocalList.Add(obj2);
+        //    return Json(testsuitlocalList.ToDataSourceResult(request));
+        //}
+
+        public ActionResult AssignSuite(int SuiteId, int Userid)
+         {
+            return View();
         }
     }
 }

@@ -668,6 +668,9 @@
     <Content Include="Views\Admin\TagAdd.cshtml" />
     <Content Include="Views\Admin\TestSuiteAdd.cshtml" />
     <Content Include="Views\Admin\TagList.cshtml" />
+    <Content Include="Views\Admin\Candidates.cshtml" />
+    <Content Include="Views\Admin\_partialViewCandidates.cshtml" />
+    <Content Include="Views\Admin\SelectCandidatesSuit.cshtml" />
     <Content Include="Views\Admin\_TestSuiteAssign.cshtml" />
     <Content Include="Views\Admin\QuestionBank.cshtml" />
     <None Include="Web.Integration.config">
