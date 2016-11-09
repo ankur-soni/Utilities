@@ -603,6 +603,15 @@ namespace Silicus.Ensure.Web.Controllers
 
         public ActionResult AssignSuite(int SuiteId, int Userid)
          {
+            // var updateCurrentUser = _userService.GetUserDetails().Where(model => model.Role == "USER" && model.UserId==Userid).FirstOrDefault();
+             var updateCurrentUsers = _userService.GetUserDetails().Where(model => model.UserId == Userid).FirstOrDefault();
+             if (updateCurrentUsers != null)
+             {
+                 updateCurrentUsers.TestStatus = "Assigned";
+                 _userService.Update(updateCurrentUsers);
+                 return Json(1);
+
+             }
             return View();
         }
     }
