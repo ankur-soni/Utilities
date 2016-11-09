@@ -239,6 +239,35 @@ namespace Silicus.Ensure.Web.Controllers
             }
             return View("TagAdd", tag);
         }
+
+        #endregion
+
+        #region Candidate
+       
+        public ActionResult Candidates()
+        {
+            ViewBag.UserRoles = RoleManager.Roles.Select(r => new SelectListItem { Text = r.Name, Value = r.Name }).ToList();
+            return View();
+        }
+
+        public ActionResult CandidatesSuit(int UserId)
+        {
+            ViewBag.CurrentUser = UserId;
+            return PartialView("SelectCandidatesSuit");
+        }
+
+        public ActionResult AssignSuite(int SuiteId, int Userid)
+        {
+            var updateCurrentUsers = _userService.GetUserDetails().Where(model => model.UserId == Userid).FirstOrDefault();
+            if (updateCurrentUsers != null)
+            {
+                updateCurrentUsers.TestStatus = "Assigned";
+                _userService.Update(updateCurrentUsers);
+                return Json(1);
+
+            }
+            return View();
+        }
         
         #endregion
 
@@ -392,10 +421,7 @@ namespace Silicus.Ensure.Web.Controllers
             }
         }
 
-        public ActionResult AssignSuite(int SuiteId, int Userid)
-        {
-            return View();
-        } 
+
         #endregion
 
         #region Question Bank
@@ -631,7 +657,7 @@ namespace Silicus.Ensure.Web.Controllers
         {
             return str.Substring(0, Math.Min(str.Length, maxLength));
         }
-        #endregion 
+        #endregion
 
         #endregion
 
