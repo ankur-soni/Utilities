@@ -73,7 +73,7 @@ namespace Silicus.Ensure.Web.Controllers
 
         [AcceptVerbs(HttpVerbs.Post)]
         public async Task<ActionResult> SendEmail(FormCollection email)
-        {           
+        {
             string retVal = "failed";
             if (!string.IsNullOrEmpty(email[1]))
             {
@@ -206,123 +206,7 @@ namespace Silicus.Ensure.Web.Controllers
             return hashParams;
         }
 
-        public ActionResult AddQuestions(int? QuestionId)
-        {
-            QuestionModel Que = new QuestionModel();
-            Que.Success = 0;
-            Que.Skills = Skills();
-            return View(Que);
-        }
-
-        [HttpPost]
-        public ActionResult AddQuestions(QuestionModel question)
-        {
-            Question Que = new Question
-            {
-                QuestionType = Convert.ToInt32(question.QuestionType),
-                QuestionDescription = HttpUtility.HtmlDecode(question.QuestionDescription),
-                AnswerType = Convert.ToInt32(question.AnswerType),
-                Option1 = question.Option1,
-                Option2 = question.Option2,
-                Option3 = question.Option3,
-                Option4 = question.Option4,
-                CorrectAnswer = InlineList(question.CorrectAnswer),
-                Answer = HttpUtility.HtmlDecode(question.Answer),
-                SkillTag = InlineList(question.SkillTag),
-                Competency = Convert.ToInt32(question.Competency),
-                Duration = question.Duration,
-                IsPublishd = true,
-                IsDeleted = false,
-                CreatedOn = DateTime.Now,
-                CreatedBy = 0,
-                ModifiedOn = DateTime.Now,
-                ModifiedBy = 0
-            };
-
-            int ret = _questionService.Add(Que);
-
-            question = new QuestionModel();
-            question.Success = ret;
-            question.Skills = Skills();
-            return View(question);
-        }
-
-        public ActionResult QuestionBank()
-        {
-            List<QuestionModel> Qmodel = new List<QuestionModel>();
-            QuestionModel model;
-            IEnumerable<Question> Que = _questionService.GetQuestion();
-            foreach (var q in Que)
-            {
-                model = new QuestionModel();
-                model.QuestionId = q.Id;
-                model.QuestionDescription = q.QuestionDescription;
-                model.QuestionType = GetQuestionType(q.QuestionType);
-                model.Skill = GetSkill(q.SkillTag);
-                model.Competency = GetCompetency(q.Competency);
-                Qmodel.Add(model);
-            }
-            return View(Qmodel);
-        }
-
-        public ActionResult EditQuestion(int QuestionId)
-        {
-            QuestionModel Que = new QuestionModel();
-            Que.Skills = Skills();
-
-            return View("AddQuestions", Que);
-        }
-
-        private string InlineList(List<string> list)
-        {
-            string lst = "";
-            if (list != null)
-            {
-                int cnt = list.Count();
-                int commacnt = 0;
-                foreach (string str in list)
-                {
-                    commacnt++;
-                    if (commacnt == cnt)
-                        lst += str;
-                    else
-                        lst += str + ",";
-
-                }
-            }
-
-            return lst;
-        }
-
-        private List<Skills> Skills()
-        {
-            List<Skills> skill = new List<Skills>();
-            skill.Add(new Skills { Skill = "ASP.NET", Value = "1" });
-            skill.Add(new Skills { Skill = "MVC 4", Value = "2" });
-            skill.Add(new Skills { Skill = "MVC 5", Value = "3" });
-            skill.Add(new Skills { Skill = "Java", Value = "4" });
-            skill.Add(new Skills { Skill = "CSS", Value = "5" });
-            return skill;
-        }
-
-        private string GetQuestionType(int type)
-        {
-            if (type == 1)
-                return "Objective";
-            else
-                return "Practical";
-        }
-
-        private string GetCompetency(int type)
-        {
-            if (type == 1)
-                return "Beginner";
-            else if (type == 2)
-                return "Intermediate";
-            else
-                return "Expert";
-        }
-
+        #region Tag
         public ActionResult GetTagsDetails([DataSourceRequest] DataSourceRequest request)
         {
             var tagDetails = _tagsService.GetTagsDetails().OrderByDescending(model => model.TagId);
@@ -342,7 +226,7 @@ namespace Silicus.Ensure.Web.Controllers
         [AcceptVerbs(HttpVerbs.Post)]
         public ActionResult SaveTag(Tags tag)
         {
-            var tagDetails = _tagsService.GetTagsDetails().Where(model => model.TagName == tag.TagName && model.TagId!=tag.TagId);
+            var tagDetails = _tagsService.GetTagsDetails().Where(model => model.TagName == tag.TagName && model.TagId != tag.TagId);
             if (tagDetails.Count() > 0)
                 ModelState.AddModelError(string.Empty, "The Tag already exists, please create with other name.");
             if (tag != null && ModelState.IsValid)
@@ -350,43 +234,36 @@ namespace Silicus.Ensure.Web.Controllers
                 tag.IsActive = true;
                 tag.Description = HttpUtility.HtmlDecode(tag.Description);
                 _tagsService.Add(tag);
-                TempData.Add("IsNewTag", 1);                
+                TempData.Add("IsNewTag", 1);
                 return RedirectToAction("TagList");
             }
-            return View("TagAdd");
+            return View("TagAdd", tag);
         }
+        
+        #endregion
 
+        #region Test Suite
         public ActionResult GetTestSuiteDetails([DataSourceRequest] DataSourceRequest request)
         {
-            var tags=_tagsService.GetTagsDetails();
-            var testSuiteDetails = _testSuiteService.GetTestSuiteDetails().Where(model=>model.IsDeleted==false).OrderByDescending(model => model.TestSuiteId);            
-            List<TestSuiteViewModel> objViewModelList = new List<TestSuiteViewModel>();
-            TestSuiteViewModel objViewModel;            
-            foreach (var item in testSuiteDetails)
+            var tags = _tagsService.GetTagsDetails();
+            var testSuitelist = _testSuiteService.GetTestSuiteDetails().Where(model => model.IsDeleted == false).OrderByDescending(model => model.TestSuiteId).ToArray();
+            var viewModels = _mappingService.Map<TestSuite[], TestSuiteViewModel[]>(testSuitelist);
+            foreach (var item in viewModels)
             {
-                objViewModel = new TestSuiteViewModel();
-                objViewModel.TestSuiteId = item.TestSuiteId;
-                objViewModel.TestSuiteName = item.TestSuiteName;
-                objViewModel.PositionName = GetPosition(item.Position);
-                objViewModel.Position = item.Position;
-                objViewModel.Competency = item.Competency;
-                objViewModel.Duration = item.Duration;
-                objViewModel.PrimaryTags = item.PrimaryTags;
-                List<Int32> TagId = objViewModel.PrimaryTags.Split(',').Select(int.Parse).ToList();
-                objViewModel.PrimaryTagNames = string.Join(",", (from a in tags
-                                              where TagId.Contains(a.TagId)
-                                              select a.TagName));
+                item.PositionName = GetPosition(item.Position);
+                List<Int32> TagId = item.PrimaryTags.Split(',').Select(int.Parse).ToList();
+                item.PrimaryTagNames = string.Join(",", (from a in tags
+                                                         where TagId.Contains(a.TagId)
+                                                         select a.TagName));
                 if (!string.IsNullOrWhiteSpace(item.SecondaryTags))
                 {
                     TagId = item.SecondaryTags.Split(',').Select(int.Parse).ToList();
-                    objViewModel.PrimaryTagNames +=","+ string.Join(",", (from a in tags
-                                                                     where TagId.Contains(a.TagId)
-                                                                     select a.TagName));
+                    item.PrimaryTagNames += "," + string.Join(",", (from a in tags
+                                                                    where TagId.Contains(a.TagId)
+                                                                    select a.TagName));
                 }
-
-                objViewModelList.Add(objViewModel);                
             }
-            return Json(objViewModelList.ToDataSourceResult(request), JsonRequestBehavior.AllowGet);
+            return Json(viewModels.ToDataSourceResult(request), JsonRequestBehavior.AllowGet);
         }
 
         private string GetPosition(int positionId)
@@ -408,10 +285,10 @@ namespace Silicus.Ensure.Web.Controllers
         {
             TestSuiteViewModel testSuite = new TestSuiteViewModel();
             var tagDetails = _tagsService.GetTagsDetails().OrderByDescending(model => model.TagId);
-            testSuite.TagList = tagDetails.ToList();
-
             if (testSuiteId == 0)
             {
+                ViewBag.Type = "New";
+                testSuite.TagList = tagDetails.ToList();
                 testSuite.ObjectiveQuestionsCount = "20";
                 testSuite.PracticalQuestionsCount = "1";
 
@@ -419,32 +296,29 @@ namespace Silicus.Ensure.Web.Controllers
             }
             else
             {
-                var testSuiteDetails = _testSuiteService.GetTestSuiteDetails().Where(model => model.TestSuiteId == testSuiteId && model.IsDeleted == false).SingleOrDefault();
-                if (testSuiteDetails != null)
+                var testSuitelist = _testSuiteService.GetTestSuiteDetails().Where(model => model.TestSuiteId == testSuiteId && model.IsDeleted == false).ToArray();
+                var viewModels = _mappingService.Map<TestSuite[], TestSuiteViewModel[]>(testSuitelist).SingleOrDefault();
+                if (viewModels != null)
                 {
-                    testSuite.TestSuiteId = testSuiteDetails.TestSuiteId;
-                    testSuite.TestSuiteName = testSuiteDetails.TestSuiteName;
-                    testSuite.Competency = testSuiteDetails.Competency;
-                    testSuite.Duration = testSuiteDetails.Duration;
-                    testSuite.Position = testSuiteDetails.Position;
-                    testSuite.ObjectiveQuestionsCount = testSuiteDetails.ObjectiveQuestionsCount;
-                    testSuite.PracticalQuestionsCount = testSuiteDetails.PracticalQuestionsCount;
-                    testSuite.PrimaryTagIds = testSuiteDetails.PrimaryTags.Split(',').ToList();
-                    if (!string.IsNullOrWhiteSpace(testSuiteDetails.SecondaryTags))
+                    ViewBag.Type = "Edit";
+                    viewModels.TagList = tagDetails.ToList();
+                    viewModels.PrimaryTagIds = viewModels.PrimaryTags.Split(',').ToList();
+                    if (!string.IsNullOrWhiteSpace(viewModels.SecondaryTags))
                     {
-                        testSuite.SecondaryTagIds = testSuiteDetails.SecondaryTags.Split(',').ToList();
+                        viewModels.SecondaryTagIds = viewModels.SecondaryTags.Split(',').ToList();
                     }
                 }
-                return View(testSuite);
+                return View(viewModels);
             }
         }
 
         public ActionResult TestSuiteSave(TestSuiteViewModel testSuiteView)
         {
-
             var testSuiteDetails = _testSuiteService.GetTestSuiteDetails().Where(model => model.TestSuiteName == testSuiteView.TestSuiteName && model.TestSuiteId != testSuiteView.TestSuiteId);
             if (testSuiteDetails.Count() > 0)
                 ModelState.AddModelError(string.Empty, "The Test Suite already exists, please create with other name.");
+            if (testSuiteView.PrimaryTagIds.All(testSuiteView.SecondaryTagIds.Contains) || testSuiteView.SecondaryTagIds.All(testSuiteView.PrimaryTagIds.Contains))
+                ModelState.AddModelError(string.Empty, "Tags should unique in primary and secondary field.");
 
             if (ModelState.IsValid)
             {
@@ -467,23 +341,24 @@ namespace Silicus.Ensure.Web.Controllers
                     return RedirectToAction("TestSuiteList");
                 }
             }
-            return View("TestSuiteAdd");
-
+            var tagDetails = _tagsService.GetTagsDetails().OrderByDescending(model => model.TagId);
+            testSuiteView.TagList = tagDetails.ToList();
+            return View("TestSuiteAdd", testSuiteView);
         }
 
         public ActionResult TestSuiteDelete(int testSuiteId)
-        {           
+        {
             var testSuiteDetails = _testSuiteService.GetTestSuiteDetails().Where(model => model.TestSuiteId == testSuiteId && model.IsDeleted == false).SingleOrDefault();
             if (testSuiteDetails != null)
             {
                 testSuiteDetails.IsDeleted = true;
                 testSuiteDetails.DeletedDate = DateTime.UtcNow;
                 _testSuiteService.Update(testSuiteDetails);
-                return Json(1);                
+                return Json(1);
             }
             else
             {
-                return Json(-1);               
+                return Json(-1);
             }
         }
 
@@ -499,120 +374,266 @@ namespace Silicus.Ensure.Web.Controllers
             }
             else
             {
-                var testSuiteDetails = _testSuiteService.GetTestSuiteDetails().Where(model => model.TestSuiteId == testSuiteId && model.IsDeleted == false).SingleOrDefault();
-                if (testSuiteDetails != null)
-                {                    
-                    testSuite.TestSuiteId = testSuiteDetails.TestSuiteId;
-                    testSuite.TestSuiteName = "Copy " + testSuiteDetails.TestSuiteName;
-                    testSuite.Competency = testSuiteDetails.Competency;
-                    testSuite.Duration = testSuiteDetails.Duration;
-                    testSuite.Position = testSuiteDetails.Position;
-                    testSuite.ObjectiveQuestionsCount = testSuiteDetails.ObjectiveQuestionsCount;
-                    testSuite.PracticalQuestionsCount = testSuiteDetails.PracticalQuestionsCount;
-                    testSuite.PrimaryTagIds = testSuiteDetails.PrimaryTags.Split(',').ToList();
-                    testSuite.IsCopy = true;
-                    if (!string.IsNullOrWhiteSpace(testSuiteDetails.SecondaryTags))
+                var testSuitelist = _testSuiteService.GetTestSuiteDetails().Where(model => model.TestSuiteId == testSuiteId && model.IsDeleted == false).ToArray();
+                var viewModels = _mappingService.Map<TestSuite[], TestSuiteViewModel[]>(testSuitelist).SingleOrDefault();
+                if (viewModels != null)
+                {
+                    ViewBag.Type = "Copy";
+                    viewModels.IsCopy = true;
+                    viewModels.TestSuiteName = "Copy " + viewModels.TestSuiteName;
+                    viewModels.TagList = tagDetails.ToList();
+                    viewModels.PrimaryTagIds = viewModels.PrimaryTags.Split(',').ToList();
+                    if (!string.IsNullOrWhiteSpace(viewModels.SecondaryTags))
                     {
-                        testSuite.SecondaryTagIds = testSuiteDetails.SecondaryTags.Split(',').ToList();
+                        viewModels.SecondaryTagIds = viewModels.SecondaryTags.Split(',').ToList();
                     }
                 }
-                return View("TestSuiteAdd", testSuite);
+                return View("TestSuiteAdd", viewModels);
             }
         }
 
-        private string GetSkill(string skill)
+        public ActionResult AssignSuite(int SuiteId, int Userid)
+        {
+            return View();
+        } 
+        #endregion
+
+        #region Question Bank
+        //---------------------------------- Question Bank Section -----------------------------------
+
+        public ActionResult AddQuestions(string QuestionId)
+        {
+            QuestionModel Que = new QuestionModel();
+            Que.QuestionType = "0";
+            Que.Success = 0;
+            Que.Edit = false;
+            Que.Tags = Tags();
+            return View(Que);
+        }
+
+        [HttpPost]
+        public ActionResult AddQuestions(QuestionModel question)
+        {
+            Question Que = new Question
+            {
+                QuestionType = Convert.ToInt32(question.QuestionType),
+                QuestionDescription = HttpUtility.HtmlDecode(question.QuestionDescription),
+                AnswerType = Convert.ToInt32(question.AnswerType),
+                Option1 = question.Option1,
+                Option2 = question.Option2,
+                Option3 = question.Option3,
+                Option4 = question.Option4,
+                CorrectAnswer = InlineList(question.CorrectAnswer),
+                Answer = HttpUtility.HtmlDecode(question.Answer),
+                Tags = InlineList(question.SkillTag),
+                Competency = Convert.ToInt32(question.Competency),
+                Duration = question.Duration,
+                IsPublishd = true,
+                IsDeleted = false
+            };
+
+
+            if (question.Edit)
+            {
+                Que.Id = question.QuestionId;
+                Que.CreatedOn = question.CreatedOn;
+                Que.CreatedBy = question.CreatedBy;
+                Que.ModifiedOn = DateTime.Now;
+                Que.ModifiedBy = 0;
+
+                question = new QuestionModel();
+                _questionService.Update(Que);
+                question.Success = 1;
+                question.Edit = true;
+            }
+            else
+            {
+                Que.CreatedOn = DateTime.Now;
+                Que.CreatedBy = 0;
+                Que.ModifiedOn = DateTime.Now;
+                Que.ModifiedBy = 0;
+
+                question = new QuestionModel();
+                int id = _questionService.Add(Que);
+                if (id > 0)
+                {
+                    question.Success = 1;
+                    question.Edit = false;
+                }
+            }
+
+            question.Tags = Tags();
+            question.QuestionType = "0";
+            return View(question);
+        }
+
+        public ActionResult QuestionBank()
+        {
+            List<QuestionModel> Qmodel = new List<QuestionModel>();
+            QuestionModel model;
+            IEnumerable<Question> Que = _questionService.GetQuestion();
+            foreach (var q in Que)
+            {
+                model = new QuestionModel();
+                model.QuestionId = q.Id;
+                model.QuestionDescription = TruncateLongString(q.QuestionDescription, 100);
+                model.QuestionType = GetQuestionType(q.QuestionType);
+                model.Tag = GetTags(q.Tags);
+                model.Competency = GetCompetency(q.Competency);
+                Qmodel.Add(model);
+            }
+            return View(Qmodel);
+        }
+
+        public ActionResult EditQuestion(string QuestionId)
+        {
+            if (!string.IsNullOrEmpty(QuestionId))
+            {
+                Question question = _questionService.GetSingleQuestion(Convert.ToInt32(QuestionId));
+
+                QuestionModel Que = new QuestionModel
+                {
+                    QuestionId = question.Id,
+                    QuestionType = question.QuestionType.ToString(),
+                    QuestionDescription = HttpUtility.HtmlDecode(question.QuestionDescription),
+                    AnswerType = question.AnswerType.ToString(),
+                    Option1 = question.Option1,
+                    Option2 = question.Option2,
+                    Option3 = question.Option3,
+                    Option4 = question.Option4,
+                    CorrectAnswer = CorrectAnswer(question.CorrectAnswer),
+                    Answer = HttpUtility.HtmlDecode(question.Answer),
+                    SkillTag = TagList(question.Tags),
+                    Competency = question.Competency.ToString(),
+                    Duration = question.Duration,
+                    CreatedOn = question.CreatedOn,
+                    CreatedBy = question.CreatedBy,
+                    Success = 0,
+                    Edit = true,
+                    Tags = Tags()
+                };
+                return View("AddQuestions", Que);
+            }
+            return View("AddQuestions", null);
+        }
+
+        [HttpDelete]
+        public JsonResult DeleteQuestion(int QuestionId)
+        {
+            _questionService.Delete(QuestionId);
+            return Json(1);
+        }
+
+        #region Question Bank Private Methods
+        private string InlineList(List<string> list)
+        {
+            string lst = "";
+            if (list != null)
+            {
+                int cnt = list.Count();
+                int commacnt = 0;
+                foreach (string str in list)
+                {
+                    commacnt++;
+                    if (commacnt == cnt)
+                        lst += str;
+                    else
+                        lst += str + ",";
+
+                }
+            }
+
+            return lst;
+        }
+
+        private List<Tags> Tags()
+        {
+            List<Tags> tags = _tagsService.GetTagsDetails().ToList();
+            return tags;
+        }
+
+        private string GetQuestionType(int type)
+        {
+            if (type == 1)
+                return "Objective";
+            else
+                return "Practical";
+        }
+
+        private string GetCompetency(int type)
+        {
+            if (type == 1)
+                return "Beginner";
+            else if (type == 2)
+                return "Intermediate";
+            else
+                return "Expert";
+        }
+
+        private string GetTags(string tags)
         {
             string ret = null;
-            if (!string.IsNullOrEmpty(skill))
+            if (!string.IsNullOrEmpty(tags))
             {
-                string[] str = skill.Split(',');
-                List<Skills> skills = Skills();
-
+                string[] str = tags.Split(',');
+                int cnt = str.Count();
+                List<Tags> tagsList = Tags();
+                int count = 0;
                 foreach (string s in str)
                 {
-                    ret += skills.Find(x => x.Value == s).Skill;
-                    ret += " | ";
+                    count++;
+                    if (count == cnt)
+                        ret += tagsList.Find(x => x.TagId == Convert.ToInt32(s)).TagName;
+                    else
+                        ret += tagsList.Find(x => x.TagId == Convert.ToInt32(s)).TagName + " | ";
                 }
             }
             return ret;
         }
 
-        public ActionResult TestSuitUsers([DataSourceRequest] DataSourceRequest request)
+        private List<string> TagList(string tag)
         {
-            var userlist = _userService.GetUserDetails().Where(model => model.Role == "USER").OrderByDescending(model=>model.UserId).ToArray();
-            var viewModels = _mappingService.Map<User[], UserViewModel[]>(userlist);            
-            DataSourceResult result = viewModels.ToDataSourceResult(request);
-            return Json(result);
-        }
-
-        public ActionResult TestSuiteActivate(string users, int testSuiteId)
-        {           
-            var testSuiteDetails = _testSuiteService.GetTestSuiteDetails().Where(model => model.TestSuiteId == testSuiteId && model.IsDeleted == false).SingleOrDefault();
-            if (testSuiteDetails != null)
-            {               
-                return Json(1);                
-            }
-            else
+            List<string> tags = new List<string>();
+            List<Tags> TagSkill = Tags();
+            if (!string.IsNullOrEmpty(tag))
             {
-                return Json(-1);               
+                string[] str = tag.Split(',');
+                if (str.Count() > 0)
+                {
+                    foreach (string s in str)
+                    {
+                        tags.Add(TagSkill.Find(x => x.TagId == Convert.ToInt32(s)).TagId.ToString());
+                    }
+                }
             }
-        }        
 
-        public ActionResult Candidates()
+            return tags;
+        }
+
+        private List<string> CorrectAnswer(string Ans)
         {
-            ViewBag.UserRoles = RoleManager.Roles.Select(r => new SelectListItem { Text = r.Name, Value = r.Name }).ToList();
-            return View();
+            List<string> answer = new List<string>();
+            if (!string.IsNullOrEmpty(Ans))
+            {
+                string[] str = Ans.Split(',');
+                if (str.Count() > 0)
+                {
+                    foreach (string s in str)
+                    {
+                        answer.Add(s);
+                    }
+                }
+            }
+            return answer;
         }
 
-        public ActionResult CandidatesSuit(int UserId)
+        private string TruncateLongString(string str, int maxLength)
         {
-            ViewBag.CurrentUser = UserId;
-            return PartialView("SelectCandidatesSuit");
+            return str.Substring(0, Math.Min(str.Length, maxLength));
         }
+        #endregion 
 
-        //public JsonResult GetTestSuiteDetails([DataSourceRequest] DataSourceRequest request)
-        //{
-        //    ViewBag.UserRoles = RoleManager.Roles.Select(r => new SelectListItem { Text = r.Name, Value = r.Name }).ToList();
+        #endregion
 
-        //    var testsuitlocalList = new List<TestSuiteViewModel>();
-        //    var testsuitlocalObj = new TestSuiteViewModel();
-        //    //testsuitlocalObj.TestSuiteId = 11;          
-        //    //testsuitlocalObj.Duration = "12.30";
-        //    TestSuiteViewModel obj1 = new TestSuiteViewModel
-        //    {
-        //        TestSuiteId=11,
-        //        Duration="10",
-        //        TestSuiteName="Java",
-        //        PositionName="Developer",
-        //        PrimaryTagNames="test",
-        //        userid=1
-        //    };
-        //    testsuitlocalList.Add(obj1);
-        //    TestSuiteViewModel obj2 = new TestSuiteViewModel
-        //    {
-        //        TestSuiteId = 12,
-        //        Duration = "11",
-        //        TestSuiteName = ".net",
-        //        PositionName = "Developer",
-        //        PrimaryTagNames = "test",
-        //        userid = 2
-        //    };
-        //    testsuitlocalList.Add(obj2);
-        //    return Json(testsuitlocalList.ToDataSourceResult(request));
-        //}
-
-        public ActionResult AssignSuite(int SuiteId, int Userid)
-         {
-            // var updateCurrentUser = _userService.GetUserDetails().Where(model => model.Role == "USER" && model.UserId==Userid).FirstOrDefault();
-             var updateCurrentUsers = _userService.GetUserDetails().Where(model => model.UserId == Userid).FirstOrDefault();
-             if (updateCurrentUsers != null)
-             {
-                 updateCurrentUsers.TestStatus = "Assigned";
-                 _userService.Update(updateCurrentUsers);
-                 return Json(1);
-
-             }
-            return View();
-        }
     }
 }
