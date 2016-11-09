@@ -65,20 +65,9 @@
                 <div class="col-md-8">
                     @(Html.Kendo().DropDownListFor(model => model.Position)
                     .OptionLabel("--Select--")
-                    .BindTo(new List<SelectListItem>() {
-                    new SelectListItem(){
-                    Text="Jr. Developer",
-                    Value="1"
-                    },
-                    new SelectListItem(){
-                    Text="Sr. Developer",
-                    Value="2"
-                    },
-                    new SelectListItem(){
-                    Text="QA",
-                    Value="3"
-                    }
-                    }))
+                    .BindTo(Model.PositionList)
+                    .DataTextField("PositionName")
+                    .DataValueField("PositionId"))
                 </div>                
             </div>
             <br />

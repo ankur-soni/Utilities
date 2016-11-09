@@ -131,6 +131,7 @@
     <Compile Include="EntityConfigurations\EmailAvailableMap.cs" />
     <Compile Include="EntityConfigurations\ManagerMap.cs" />
     <Compile Include="EntityConfigurations\OrganizationMap.cs" />
+    <Compile Include="EntityConfigurations\PositionMap.cs" />
     <Compile Include="EntityConfigurations\ProjectDetailMap.cs" />
     <Compile Include="EntityConfigurations\ProjectMap.cs" />
     <Compile Include="EntityConfigurations\QuestionMap.cs" />
