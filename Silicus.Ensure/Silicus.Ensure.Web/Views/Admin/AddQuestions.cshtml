@@ -170,10 +170,10 @@
 
                 <div class="col-md-8">
                     @(Html.Kendo().MultiSelectFor(m => m.SkillTag)
-                .DataTextField("Skill")
-                .DataValueField("Value")
+                .DataTextField("TagName")
+                .DataValueField("TagId")
                 .Placeholder("Select skill set...")
-                .BindTo(Model.Skills)
+                .BindTo(Model.Tags)
                 .Value(Model.SkillTag)
                 .HtmlAttributes(new { style = "width: 100%" }))
                 </div>
@@ -266,16 +266,19 @@
                     $("#durationRequired").hide();
                     $("#practicalAns").hide();
 
+
                     var success =@Model.Success;
                     if(success==1)
                     {
                         var edit="@Model.Edit";
-                        if(edit=="True")
-                            alert("Question updated successfully.");
-                        else
-                            alert("Question added successfully in the application.");
-
-                        window.location.href = "/Admin/QuestionBank";
+                        if(edit=="True"){
+                            $("#myModal").modal();
+                            $("#msgContent").text("Question updated successfully.");
+                        }
+                        else{
+                            $("#myModal").modal();
+                            $("#msgContent").text("Question added successfully in the application.");
+                        }
                     }
 
                     // Check Question Type on Edit.
@@ -393,4 +396,25 @@
             </style>
         </div>
     }
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="myModal" role="dialog" onclick="OnCancel();">
+    <div class="modal-dialog">
+
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" onclick="OnCancel();">&times;</button>
+                <h4 class="modal-title"><span id="msgMain">Success!</span></h4>
+            </div>
+            <div class="modal-body">
+                <p id="msgContent">Some text in the modal.</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal" onclick="OnCancel();">Close</button>
+            </div>
+        </div>
+
+    </div>
 </div>

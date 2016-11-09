@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Silicus.Ensure.Models.DataObjects;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -18,13 +19,13 @@ namespace Silicus.Ensure.Web.Models
         public List<string> CorrectAnswer { get; set; }
         public string Answer { get; set; }
         public List<string> SkillTag { get; set; }
-        public string Skill { get; set; }
+        public string Tag { get; set; }
         public string Competency { get; set; }
         public int Duration { get; set; }
         public DateTime CreatedOn { get; set; }
         public int CreatedBy { get; set; }
 
-        public List<Skills> Skills { get; set; }
+        public List<Tags> Tags { get; set; }
 
         public int Success { get; set; }
         public bool Edit { get; set; }

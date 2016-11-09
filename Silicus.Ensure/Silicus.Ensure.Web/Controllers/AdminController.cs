@@ -400,7 +400,7 @@ namespace Silicus.Ensure.Web.Controllers
             Que.QuestionType = "0";
             Que.Success = 0;
             Que.Edit = false;
-            Que.Skills = Skills();
+            Que.Tags = Tags();
             return View(Que);
         }
 
@@ -418,7 +418,7 @@ namespace Silicus.Ensure.Web.Controllers
                 Option4 = question.Option4,
                 CorrectAnswer = InlineList(question.CorrectAnswer),
                 Answer = HttpUtility.HtmlDecode(question.Answer),
-                SkillTag = InlineList(question.SkillTag),
+                Tags = InlineList(question.SkillTag),
                 Competency = Convert.ToInt32(question.Competency),
                 Duration = question.Duration,
                 IsPublishd = true,
@@ -455,7 +455,7 @@ namespace Silicus.Ensure.Web.Controllers
                 }
             }
 
-            question.Skills = Skills();
+            question.Tags = Tags();
             question.QuestionType = "0";
             return View(question);
         }
@@ -471,7 +471,7 @@ namespace Silicus.Ensure.Web.Controllers
                 model.QuestionId = q.Id;
                 model.QuestionDescription = TruncateLongString(q.QuestionDescription, 100);
                 model.QuestionType = GetQuestionType(q.QuestionType);
-                model.Skill = GetSkill(q.SkillTag);
+                model.Tag = GetTags(q.Tags);
                 model.Competency = GetCompetency(q.Competency);
                 Qmodel.Add(model);
             }
@@ -496,14 +496,14 @@ namespace Silicus.Ensure.Web.Controllers
                     Option4 = question.Option4,
                     CorrectAnswer = CorrectAnswer(question.CorrectAnswer),
                     Answer = HttpUtility.HtmlDecode(question.Answer),
-                    SkillTag = SkillList(question.SkillTag),
+                    SkillTag = TagList(question.Tags),
                     Competency = question.Competency.ToString(),
                     Duration = question.Duration,
                     CreatedOn = question.CreatedOn,
                     CreatedBy = question.CreatedBy,
                     Success = 0,
                     Edit = true,
-                    Skills = Skills()
+                    Tags = Tags()
                 };
                 return View("AddQuestions", Que);
             }
@@ -539,15 +539,10 @@ namespace Silicus.Ensure.Web.Controllers
             return lst;
         }
 
-        private List<Skills> Skills()
+        private List<Tags> Tags()
         {
-            List<Skills> skill = new List<Skills>();
-            skill.Add(new Skills { Skill = "ASP.NET", Value = "1" });
-            skill.Add(new Skills { Skill = "MVC 4", Value = "2" });
-            skill.Add(new Skills { Skill = "MVC 5", Value = "3" });
-            skill.Add(new Skills { Skill = "Java", Value = "4" });
-            skill.Add(new Skills { Skill = "CSS", Value = "5" });
-            return skill;
+            List<Tags> tags = _tagsService.GetTagsDetails().ToList();
+            return tags;
         }
 
         private string GetQuestionType(int type)
@@ -568,44 +563,44 @@ namespace Silicus.Ensure.Web.Controllers
                 return "Expert";
         }
 
-        private string GetSkill(string skill)
+        private string GetTags(string tags)
         {
             string ret = null;
-            if (!string.IsNullOrEmpty(skill))
+            if (!string.IsNullOrEmpty(tags))
             {
-                string[] str = skill.Split(',');
+                string[] str = tags.Split(',');
                 int cnt = str.Count();
-                List<Skills> skills = Skills();
+                List<Tags> tagsList = Tags();
                 int count = 0;
                 foreach (string s in str)
                 {
                     count++;
                     if (count == cnt)
-                        ret += skills.Find(x => x.Value == s).Skill;
+                        ret += tagsList.Find(x => x.TagId == Convert.ToInt32(s)).TagName;
                     else
-                        ret += skills.Find(x => x.Value == s).Skill + " | ";
+                        ret += tagsList.Find(x => x.TagId == Convert.ToInt32(s)).TagName + " | ";
                 }
             }
             return ret;
         }
 
-        private List<string> SkillList(string skill)
+        private List<string> TagList(string tag)
         {
-            List<string> skills = new List<string>();
-            List<Skills> TagSkill = Skills();
-            if (!string.IsNullOrEmpty(skill))
+            List<string> tags = new List<string>();
+            List<Tags> TagSkill = Tags();
+            if (!string.IsNullOrEmpty(tag))
             {
-                string[] str = skill.Split(',');
+                string[] str = tag.Split(',');
                 if (str.Count() > 0)
                 {
                     foreach (string s in str)
                     {
-                        skills.Add(TagSkill.Find(x => x.Value == s).Value);
+                        tags.Add(TagSkill.Find(x => x.TagId == Convert.ToInt32(s)).TagId.ToString());
                     }
                 }
             }
 
-            return skills;
+            return tags;
         }
 
         private List<string> CorrectAnswer(string Ans)
