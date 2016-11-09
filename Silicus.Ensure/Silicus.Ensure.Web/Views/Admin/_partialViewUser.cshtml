@@ -25,7 +25,7 @@
                   //columns.Bound(p => p.IdentityUserId).Hidden();
           
                   //columns.Command(command => command.Edit()).Width(200);  
-                  columns.Command(command => { command.Edit(); command.Destroy(); }).Width(160);
+                  columns.Command(command => { command.Edit(); command.Destroy(); }).Width(160).Title("Actions");
               })      
         .DataSource(dataSource => dataSource
                   .Ajax()

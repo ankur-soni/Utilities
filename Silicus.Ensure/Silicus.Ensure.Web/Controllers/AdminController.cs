@@ -28,6 +28,7 @@ namespace Silicus.Ensure.Web.Controllers
         private readonly ITagsService _tagsService;
         private readonly IMappingService _mappingService;
         private readonly ITestSuiteService _testSuiteService;
+        private readonly IUserService _userService;
 
         public ApplicationUserManager UserManager
         {
@@ -54,13 +55,14 @@ namespace Silicus.Ensure.Web.Controllers
             }
         }
 
-        public AdminController(IEmailService emailService, ITagsService tagService, ITestSuiteService testSuiteService, MappingService mappingService, IQuestionService questionService)
+        public AdminController(IEmailService emailService, ITagsService tagService, ITestSuiteService testSuiteService, MappingService mappingService, IQuestionService questionService, IUserService userService)
         {
             _emailService = emailService;
             _tagsService = tagService;
             _testSuiteService = testSuiteService;
             _mappingService = mappingService;
             _questionService = questionService;
+            _userService = userService;
         }
 
         public ActionResult Dashboard()
@@ -223,7 +225,7 @@ namespace Silicus.Ensure.Web.Controllers
         [AcceptVerbs(HttpVerbs.Post)]
         public ActionResult SaveTag(Tags tag)
         {
-            var tagDetails = _tagsService.GetTagsDetails().Where(model => model.TagName == tag.TagName && model.TagId != tag.TagId);
+            var tagDetails = _tagsService.GetTagsDetails().Where(model => model.TagName == tag.TagName && model.TagId!=tag.TagId);
             if (tagDetails.Count() > 0)
                 ModelState.AddModelError(string.Empty, "The Tag already exists, please create with other name.");
             if (tag != null && ModelState.IsValid)
@@ -239,8 +241,8 @@ namespace Silicus.Ensure.Web.Controllers
 
         public ActionResult GetTestSuiteDetails([DataSourceRequest] DataSourceRequest request)
         {
-            var tags = _tagsService.GetTagsDetails();
-            var testSuiteDetails = _testSuiteService.GetTestSuiteDetails().Where(model => model.IsDeleted == false).OrderByDescending(model => model.TestSuiteId);
+            var tags=_tagsService.GetTagsDetails();
+            var testSuiteDetails = _testSuiteService.GetTestSuiteDetails().Where(model=>model.IsDeleted==false).OrderByDescending(model => model.TestSuiteId);            
             List<TestSuiteViewModel> objViewModelList = new List<TestSuiteViewModel>();
             TestSuiteViewModel objViewModel;
             foreach (var item in testSuiteDetails)
@@ -248,7 +250,7 @@ namespace Silicus.Ensure.Web.Controllers
                 objViewModel = new TestSuiteViewModel();
                 objViewModel.TestSuiteId = item.TestSuiteId;
                 objViewModel.TestSuiteName = item.TestSuiteName;
-                objViewModel.PositionName = GetPosition(objViewModel.Position);
+                objViewModel.PositionName = GetPosition(item.Position);
                 objViewModel.Position = item.Position;
                 objViewModel.Competency = item.Competency;
                 objViewModel.Duration = item.Duration;
@@ -257,6 +259,14 @@ namespace Silicus.Ensure.Web.Controllers
                 objViewModel.PrimaryTagNames = string.Join(",", (from a in tags
                                                                  where TagId.Contains(a.TagId)
                                                                  select a.TagName));
+                if (!string.IsNullOrWhiteSpace(item.SecondaryTags))
+                {
+                    TagId = item.SecondaryTags.Split(',').Select(int.Parse).ToList();
+                    objViewModel.PrimaryTagNames +=","+ string.Join(",", (from a in tags
+                                                                     where TagId.Contains(a.TagId)
+                                                                     select a.TagName));
+                }
+
                 objViewModelList.Add(objViewModel);
             }
             return Json(objViewModelList.ToDataSourceResult(request), JsonRequestBehavior.AllowGet);
@@ -350,6 +360,7 @@ namespace Silicus.Ensure.Web.Controllers
             if (testSuiteDetails != null)
             {
                 testSuiteDetails.IsDeleted = true;
+                testSuiteDetails.DeletedDate = DateTime.UtcNow;
                 _testSuiteService.Update(testSuiteDetails);
                 return Json(1);
             }
@@ -426,33 +437,13 @@ namespace Silicus.Ensure.Web.Controllers
             };
 
 
-            if (question.Edit)
+                foreach (string s in str)
             {
-                Que.Id = question.QuestionId;
-                Que.CreatedOn = question.CreatedOn;
-                Que.CreatedBy = question.CreatedBy;
-                Que.ModifiedOn = DateTime.Now;
-                Que.ModifiedBy = 0;
-
-                question = new QuestionModel();
-                _questionService.Update(Que);
-                question.Success = 1;
-                question.Edit = true;
+                    ret += skills.Find(x => x.Value == s).Skill;
+                    ret += " | ";
             }
-            else
-            {
-                Que.CreatedOn = DateTime.Now;
-                Que.CreatedBy = 0;
-                Que.ModifiedOn = DateTime.Now;
-                Que.ModifiedBy = 0;
-
-                question = new QuestionModel();
-                int id = _questionService.Add(Que);
-                if (id > 0)
-                {
-                    question.Success = 1;
-                    question.Edit = false;
                 }
+            return ret;
             }
 
             question.Tags = Tags();
@@ -478,7 +469,7 @@ namespace Silicus.Ensure.Web.Controllers
             return View(Qmodel);
         }
 
-        public ActionResult EditQuestion(string QuestionId)
+        public ActionResult TestSuiteActivate(string users, int testSuiteId)
         {
             if (!string.IsNullOrEmpty(QuestionId))
             {
@@ -513,23 +504,8 @@ namespace Silicus.Ensure.Web.Controllers
         [HttpDelete]
         public JsonResult DeleteQuestion(int QuestionId)
         {
-            _questionService.Delete(QuestionId);
             return Json(1);
         }
-
-        #region Question Bank Private Methods
-        private string InlineList(List<string> list)
-        {
-            string lst = "";
-            if (list != null)
-            {
-                int cnt = list.Count();
-                int commacnt = 0;
-                foreach (string str in list)
-                {
-                    commacnt++;
-                    if (commacnt == cnt)
-                        lst += str;
                     else
                         lst += str + ",";
 
@@ -547,20 +523,8 @@ namespace Silicus.Ensure.Web.Controllers
 
         private string GetQuestionType(int type)
         {
-            if (type == 1)
-                return "Objective";
-            else
-                return "Practical";
+                return Json(-1);               
         }
-
-        private string GetCompetency(int type)
-        {
-            if (type == 1)
-                return "Beginner";
-            else if (type == 2)
-                return "Intermediate";
-            else
-                return "Expert";
         }
 
         private string GetTags(string tags)
@@ -580,9 +544,6 @@ namespace Silicus.Ensure.Web.Controllers
                     else
                         ret += tagsList.Find(x => x.TagId == Convert.ToInt32(s)).TagName + " | ";
                 }
-            }
-            return ret;
-        }
 
         private List<string> TagList(string tag)
         {
@@ -597,33 +558,40 @@ namespace Silicus.Ensure.Web.Controllers
                     {
                         tags.Add(TagSkill.Find(x => x.TagId == Convert.ToInt32(s)).TagId.ToString());
                     }
-                }
-            }
 
             return tags;
         }
 
-        private List<string> CorrectAnswer(string Ans)
-        {
-            List<string> answer = new List<string>();
-            if (!string.IsNullOrEmpty(Ans))
-            {
-                string[] str = Ans.Split(',');
-                if (str.Count() > 0)
-                {
-                    foreach (string s in str)
-                    {
-                        answer.Add(s);
-                    }
-                }
-            }
-            return answer;
-        }
+        //    var testsuitlocalList = new List<TestSuiteViewModel>();
+        //    var testsuitlocalObj = new TestSuiteViewModel();
+        //    //testsuitlocalObj.TestSuiteId = 11;          
+        //    //testsuitlocalObj.Duration = "12.30";
+        //    TestSuiteViewModel obj1 = new TestSuiteViewModel
+        //    {
+        //        TestSuiteId=11,
+        //        Duration="10",
+        //        TestSuiteName="Java",
+        //        PositionName="Developer",
+        //        PrimaryTagNames="test",
+        //        userid=1
+        //    };
+        //    testsuitlocalList.Add(obj1);
+        //    TestSuiteViewModel obj2 = new TestSuiteViewModel
+        //    {
+        //        TestSuiteId = 12,
+        //        Duration = "11",
+        //        TestSuiteName = ".net",
+        //        PositionName = "Developer",
+        //        PrimaryTagNames = "test",
+        //        userid = 2
+        //    };
+        //    testsuitlocalList.Add(obj2);
+        //    return Json(testsuitlocalList.ToDataSourceResult(request));
+        //}
 
-        private string TruncateLongString(string str, int maxLength)
+        public ActionResult AssignSuite(int SuiteId, int Userid)
         {
-            return str.Substring(0, Math.Min(str.Length, maxLength));
+            return View();
         }
-        #endregion
     }
 }

@@ -36,5 +36,7 @@ namespace Silicus.Ensure.Models.DataObjects
         public string SecondaryTags { get; set; }        
         
         public bool IsDeleted { get; set; }
+
+        public DateTime? DeletedDate { get; set; }
     }
 }
