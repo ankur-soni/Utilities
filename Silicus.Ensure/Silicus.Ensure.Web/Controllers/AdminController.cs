@@ -408,6 +408,7 @@ namespace Silicus.Ensure.Web.Controllers
             return View();
         }
 
+        #region Question Bank
         //---------------------------------- Question Bank Section -----------------------------------
 
         public ActionResult AddQuestions(string QuestionId)
@@ -640,6 +641,8 @@ namespace Silicus.Ensure.Web.Controllers
         {
             return str.Substring(0, Math.Min(str.Length, maxLength));
         }
+        #endregion 
+
         #endregion
     }
 }
