@@ -243,7 +243,7 @@ namespace Silicus.Ensure.Web.Controllers
         #endregion
 
         #region Candidate
-       
+
         public ActionResult Candidates()
         {
             ViewBag.UserRoles = RoleManager.Roles.Select(r => new SelectListItem { Text = r.Name, Value = r.Name }).ToList();
@@ -268,7 +268,7 @@ namespace Silicus.Ensure.Web.Controllers
             }
             return View();
         }
-        
+
         #endregion
 
         #region Test Suite
@@ -429,86 +429,60 @@ namespace Silicus.Ensure.Web.Controllers
 
         public ActionResult AddQuestions(string QuestionId)
         {
-            QuestionModel Que = new QuestionModel();
-            Que.QuestionType = "0";
-            Que.Success = 0;
-            Que.Edit = false;
-            Que.Tags = Tags();
+            QuestionModel Que = new QuestionModel { QuestionType = "0", SkillTagsList = Tags() };
             return View(Que);
         }
 
         [HttpPost]
         public ActionResult AddQuestions(QuestionModel question)
         {
-            Question Que = new Question
+            if (ModelState.IsValid)
             {
-                QuestionType = Convert.ToInt32(question.QuestionType),
-                QuestionDescription = HttpUtility.HtmlDecode(question.QuestionDescription),
-                AnswerType = Convert.ToInt32(question.AnswerType),
-                Option1 = question.Option1,
-                Option2 = question.Option2,
-                Option3 = question.Option3,
-                Option4 = question.Option4,
-                CorrectAnswer = InlineList(question.CorrectAnswer),
-                Answer = HttpUtility.HtmlDecode(question.Answer),
-                Tags = InlineList(question.SkillTag),
-                Competency = Convert.ToInt32(question.Competency),
-                Duration = question.Duration,
-                IsPublishd = true,
-                IsDeleted = false
-            };
-
-
-            if (question.Edit)
-            {
-                Que.Id = question.QuestionId;
-                Que.CreatedOn = question.CreatedOn;
-                Que.CreatedBy = question.CreatedBy;
+                Question Que = _mappingService.Map<QuestionModel, Question>(question);
+                Que.QuestionDescription = HttpUtility.HtmlDecode(question.QuestionDescription);
+                Que.CorrectAnswer = InlineList(question.CorrectAnswer);
+                Que.Answer = HttpUtility.HtmlDecode(question.Answer);
+                Que.Tags = InlineList(question.SkillTag);
+                Que.IsPublishd = true;
                 Que.ModifiedOn = DateTime.Now;
                 Que.ModifiedBy = 0;
+                bool isEdit = false;
 
-                question = new QuestionModel();
-                _questionService.Update(Que);
-                question.Success = 1;
-                question.Edit = true;
+
+                if (question.Edit)
+                {
+                    isEdit = true;
+                    Que.CreatedOn = question.CreatedOn;
+                    Que.CreatedBy = question.CreatedBy;
+                    _questionService.Update(Que);
+                }
+                else
+                {
+                    Que.CreatedOn = DateTime.Now;
+                    Que.CreatedBy = 0;
+                    _questionService.Add(Que);
+                }
+                question = new QuestionModel() { Success = 1, Edit = isEdit, QuestionType = "0", SkillTagsList = Tags() };
             }
             else
             {
-                Que.CreatedOn = DateTime.Now;
-                Que.CreatedBy = 0;
-                Que.ModifiedOn = DateTime.Now;
-                Que.ModifiedBy = 0;
-
-                question = new QuestionModel();
-                int id = _questionService.Add(Que);
-                if (id > 0)
-                {
-                    question.Success = 1;
-                    question.Edit = false;
-                }
+                question = new QuestionModel { QuestionType = "0", SkillTagsList = Tags() };
             }
-
-            question.Tags = Tags();
-            question.QuestionType = "0";
             return View(question);
         }
 
         public ActionResult QuestionBank()
         {
-            List<QuestionModel> Qmodel = new List<QuestionModel>();
-            QuestionModel model;
-            IEnumerable<Question> Que = _questionService.GetQuestion();
-            foreach (var q in Que)
+            var Que = _questionService.GetQuestion().ToList();
+            var QueModel = _mappingService.Map<List<Question>, List<QuestionModel>>(Que);
+            foreach (var q in QueModel)
             {
-                model = new QuestionModel();
-                model.QuestionId = q.Id;
-                model.QuestionDescription = TruncateLongString(q.QuestionDescription, 100);
-                model.QuestionType = GetQuestionType(q.QuestionType);
-                model.Tag = GetTags(q.Tags);
-                model.Competency = GetCompetency(q.Competency);
-                Qmodel.Add(model);
+                q.QuestionDescription = TruncateLongString(q.QuestionDescription, 100);
+                q.QuestionType = GetQuestionType(q.QuestionType);
+                q.Tag = GetTags(Que.Where(x => x.Id == q.Id).Select(p => p.Tags).FirstOrDefault().ToString());
+                q.Competency = GetCompetency(q.Competency);
             }
-            return View(Qmodel);
+            return View(QueModel);
         }
 
         public ActionResult EditQuestion(string QuestionId)
@@ -516,29 +490,15 @@ namespace Silicus.Ensure.Web.Controllers
             if (!string.IsNullOrEmpty(QuestionId))
             {
                 Question question = _questionService.GetSingleQuestion(Convert.ToInt32(QuestionId));
-
-                QuestionModel Que = new QuestionModel
-                {
-                    QuestionId = question.Id,
-                    QuestionType = question.QuestionType.ToString(),
-                    QuestionDescription = HttpUtility.HtmlDecode(question.QuestionDescription),
-                    AnswerType = question.AnswerType.ToString(),
-                    Option1 = question.Option1,
-                    Option2 = question.Option2,
-                    Option3 = question.Option3,
-                    Option4 = question.Option4,
-                    CorrectAnswer = CorrectAnswer(question.CorrectAnswer),
-                    Answer = HttpUtility.HtmlDecode(question.Answer),
-                    SkillTag = TagList(question.Tags),
-                    Competency = question.Competency.ToString(),
-                    Duration = question.Duration,
-                    CreatedOn = question.CreatedOn,
-                    CreatedBy = question.CreatedBy,
-                    Success = 0,
-                    Edit = true,
-                    Tags = Tags()
-                };
-                return View("AddQuestions", Que);
+                QuestionModel QueModel = _mappingService.Map<Question, QuestionModel>(question);
+                QueModel.QuestionDescription = HttpUtility.HtmlDecode(question.QuestionDescription);
+                QueModel.CorrectAnswer = CorrectAnswer(question.CorrectAnswer);
+                QueModel.Answer = HttpUtility.HtmlDecode(question.Answer);
+                QueModel.SkillTag = TagList(question.Tags);
+                QueModel.Success = 0;
+                QueModel.Edit = true;
+                QueModel.SkillTagsList = Tags();               
+                return View("AddQuestions", QueModel);
             }
             return View("AddQuestions", null);
         }
@@ -578,19 +538,19 @@ namespace Silicus.Ensure.Web.Controllers
             return tags;
         }
 
-        private string GetQuestionType(int type)
+        private string GetQuestionType(string type)
         {
-            if (type == 1)
+            if (type == "1")
                 return "Objective";
             else
                 return "Practical";
         }
 
-        private string GetCompetency(int type)
+        private string GetCompetency(string type)
         {
-            if (type == 1)
+            if (type == "1")
                 return "Beginner";
-            else if (type == 2)
+            else if (type == "2")
                 return "Intermediate";
             else
                 return "Expert";

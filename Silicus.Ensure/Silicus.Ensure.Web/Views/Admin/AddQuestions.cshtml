@@ -60,7 +60,7 @@
                     .Name("AnswerType")
                     .DataTextField("Text")
                     .DataValueField("Value")
-                    .Value(Model.AnswerType)
+                    .Value(Model.AnswerType.ToString())
                         .BindTo(new List<SelectListItem>
                         () {
                         new SelectListItem(){
@@ -173,7 +173,7 @@
                 .DataTextField("TagName")
                 .DataValueField("TagId")
                 .Placeholder("Select skill set...")
-                .BindTo(Model.Tags)
+                .BindTo(Model.SkillTagsList)
                 .Value(Model.SkillTag)
                 .HtmlAttributes(new { style = "width: 100%" }))
                 </div>
@@ -257,7 +257,7 @@
             </div>
             @Html.HiddenFor(m => m.CreatedOn, new { Value = @Model.CreatedOn })
             @Html.HiddenFor(m => m.CreatedBy, new { Value = @Model.CreatedBy })
-            @Html.HiddenFor(m => m.QuestionId, new { Value = @Model.QuestionId })
+            @Html.HiddenFor(m => m.Id, new { Value = @Model.Id })
             @Html.HiddenFor(m => m.Edit, new { Value = @Model.Edit })
 
             <script>
