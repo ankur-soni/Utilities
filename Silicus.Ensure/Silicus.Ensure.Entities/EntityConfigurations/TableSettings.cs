@@ -12,6 +12,10 @@
         public static readonly string Roles = "Roles";
         public static readonly string Question = "Question";
         public static readonly string Tags = "Tags";
-        public static readonly string Skill = "SKill";
+        public static readonly string TestSuite = "TestSuite";
+        public static readonly string UserTestSuite = "UserTestSuite";
+        public static readonly string UserTestDetails = "UserTestDetails";
+
+        public static readonly string Position = "Position";        
     }
 }

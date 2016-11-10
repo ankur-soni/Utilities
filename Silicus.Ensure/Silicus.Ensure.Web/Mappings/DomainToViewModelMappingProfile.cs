@@ -2,7 +2,8 @@
 
 using System.Diagnostics.CodeAnalysis;
 using AutoMapper;
-using Silicus.Ensure.Models;
+using Silicus.Ensure.Web.Models;
+using Silicus.Ensure.Models.DataObjects;
 
 namespace Silicus.Ensure.Web.Mappings
 {
@@ -16,15 +17,8 @@ namespace Silicus.Ensure.Web.Mappings
 
         protected override void Configure()
         {
-            Mapper.CreateMap<EntityA, Model>();
-
-            // Example for member to member mapping
-            //Mapper.CreateMap<OrganizationUser, OrganizationUserDataAccessViewModel>()
-            //    .ForMember(o => o.Name, b => b.MapFrom(z => z.FirstName + " " + z.LastName));
-            //Mapper.CreateMap<Order, OrderViewModel>()
-            //    .ForMember(o => o.OrderDescription, b => b.MapFrom(z => z.Description))
-            //                .ForMember(o => o.OrderId, b => b.MapFrom(z =>
-            //                z.Id));
+            Mapper.CreateMap<User, UserViewModel>();
+            Mapper.CreateMap<TestSuite, TestSuiteViewModel>();
         }
     }
 }

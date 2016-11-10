@@ -34,6 +34,18 @@ namespace Silicus.Ensure.Web.Models
         [Required]
         public string Email { get; set; }
 
+        [Required]
+        public string Gender { get; set; }
+
+        //[Required]
+        public string Position { get; set; }
+
+        public string Experience { get; set; }
+        // [Required]
+        public string Department { get; set; }
+
+        public string TestStatus { get; set; }
+
         public Guid IdentityUserId { get; set; } 
     }
 }

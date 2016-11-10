@@ -1,12 +1,11 @@
 ﻿@using Kendo.Mvc.UI;
 
 @{
-    var statusData = Html.Partial("/Views/Admin/_partialViewDashboard.cshtml");
-    var sendEmail = Html.Partial("/Views/Admin/_partialViewSendMail.cshtml");
-    ViewBag.Title = "Admin Dashboard";
-    var user = Html.Partial("/Views/Admin/_partialViewUser.cshtml");
+    //var statusData = Html.Partial("/Views/Admin/_partialViewDashboard.cshtml");
+    //var sendEmail = Html.Partial("/Views/Admin/_partialViewSendMail.cshtml");
+    ViewBag.Title = "Candidate Dashboard";
+    var user = Html.Partial("/Views/Admin/_partialViewCandidates.cshtml");
     var roles = Html.Partial("/Views/Admin/_partialViewRoles.cshtml");
-    var positions = Html.Partial("/Views/Admin/positions.cshtml");
 }
 
 <div class="main-content">
@@ -84,15 +83,20 @@
 
         tabstrip.Add().Text("Roles")
           .Content(roles.ToString());
-
-        tabstrip.Add().Text("Positions")
-          .Content(positions.ToString());
     })
             )
         </div>
     </div>
-</div> <!-- /main-content -->
+</div>
+<div id="divCandidateSuit" style="display: none; margin-left: -129px ! important;">
+
+</div>
+
+<!-- /main-content -->
 <script>
+    $(document).ready(function () {
+       
+    });
     //register custom validation rules
     (function ($, kendo) {
         $.extend(true, kendo.ui.validator, {
@@ -125,7 +129,10 @@
                     });
                 }
             });
-            alert(message);
+            // alert(message);
         }
     }
 </script>
+<div id="modalWrapper">
+    @* Inject form here *@
+</div>

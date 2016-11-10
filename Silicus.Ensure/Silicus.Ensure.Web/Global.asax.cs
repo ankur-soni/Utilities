@@ -43,7 +43,7 @@ namespace Silicus.Ensure.Web
             //    ConfigurationManager.ConnectionStrings["SilicusLoggerDataContext"].ToString(),
             //    this.GetType());
 
-            //var httpContext = ((MvcApplication) sender).Context;
+            //var httpContext = ((MvcApplication)sender).Context;
 
             //var currentRouteData = RouteTable.Routes.GetRouteData(new HttpContextWrapper(httpContext));
             //var currentController = " ";
@@ -132,7 +132,7 @@ namespace Silicus.Ensure.Web
             //routeData.Values["action"] = action;
 
             //controller.ViewData.Model = new HandleErrorInfo(ex, currentController, currentAction);
-            //((IController) controller).Execute(new RequestContext(new HttpContextWrapper(httpContext), routeData));
+            //((IController)controller).Execute(new RequestContext(new HttpContextWrapper(httpContext), routeData));
 	    }
     }
 }

@@ -74,12 +74,14 @@ namespace Silicus.Ensure.Web
             kernel.Bind<IMappingService>().To<MappingService>();
             kernel.Bind<ISmtpClient>().To<SmtpClientWrapper>();
             kernel.Bind<IEmailService>().To<EmailService>();
+            kernel.Bind<IQuestionService>().To<QuestionService>();
 
             kernel.Bind<ICookieHelper>().To<CookieHelper>();
 
             kernel.Bind<IAuditManager>().To<AuditManager>();
             kernel.Bind<ITagsService>().To<TagService>();
-            kernel.Bind<ISkillService>().To<SkillService>()
+            kernel.Bind<ITestSuiteService>().To<TestSuiteService>();
+            kernel.Bind<IPositionService>().To<PositionService>()
                 .WithConstructorArgument("connectionString", "name=SilicusAuditingDataContext");
         }
     }

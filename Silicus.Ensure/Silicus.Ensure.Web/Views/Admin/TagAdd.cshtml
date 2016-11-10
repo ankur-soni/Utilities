@@ -7,25 +7,31 @@
 }
 
 <div class="main-content">
-    <h2>New Tag</h2>
-        
-    @using (Html.BeginForm("SaveTag", "Tag"))
-    {
-        @Html.ValidationSummary(true)        
+    <h2>New Tag</h2>        
+    @using (Html.BeginForm("SaveTag", "Admin"))
+    {                
         <div class="fluid mt20">
             <div class="row">
-                <div class="col-md-12">
-                    @Html.LabelFor(model=>model.TagName)<b style="color:Red;">*</b>:
-                    @Html.TextBoxFor(model => model.TagName)  
-                    @Html.ValidationMessageFor(model => model.TagName)           
+                <div class="alert alert-success" id="messageDiv">
+                    <strong>Error!</strong> <span id="messageContent">@Html.ValidationSummary(true)</span>
+                </div>
+                <div class="col-md-4">
+                    @Html.LabelFor(model => model.TagName)<b style="color:Red;">*</b>:
+                </div>
+                <div class="col-md-8">
+                    @Html.TextBoxFor(model => model.TagName, new { @class = "form-control" })                    
+                </div>
                 </div>
             </div>
             <br />
             <div class="row">
-                <div class="col-md-12">                    
-                    @Html.LabelFor(model => model.Description)<b style="color:Red;">*</b>:
-                    @Html.TextAreaFor(m => m.Description, new { @class = "hight" })
-                    @Html.ValidationMessageFor(model => model.Description)                    
+                <div class="col-md-12"> 
+                    <div class="col-md-4">
+                        @Html.LabelFor(model => model.Description)<b style="color:Red;">*</b>:
+                    </div>
+                    <div class="col-md-8">
+                        @Html.Kendo().EditorFor(m => m.Description).Encode(true).HtmlAttributes(Html.GetUnobtrusiveValidationAttributes("Description"))                        
+                    </div>
                 </div>
             </div>            
             <br />
@@ -47,11 +53,15 @@
 
             <script>
                 $(document).ready(function () {
-                    // create Editor from textarea HTML element with default set of tools
-                    $("#Description").kendoEditor({
-                        resizable: {
-                            content: true,
-                            toolbar: true
+                    if ($('.validation-summary-errors>ul>li').is(':empty')) { $("#messageDiv").hide(); }
+                    else if ($('.validation-summary-errors>ul>li').text() != "")
+                    { ShowMessage($('.validation-summary-errors>ul>li').text(), 0); }
+                    else { $("#messageDiv").hide(); }
+
+                    $("#btnSave").click(function (e) {                       
+                        if(validateTag()==false)
+                        {
+                            e.preventDefault();
                         }
                     });
 
@@ -63,15 +73,30 @@
                         });
                     });
                 });
+
                 function onCancelClick() {
-                    window.location = '@Url.Action("list", "tag")';                   
+                    window.location = '@Url.Action("TagList", "Admin")';                   
+                }                
+
+                function validateTag()
+                {
+                    if ($("#TagName").val().trim().length == 0) {
+                        $("#TagName").focus();
+                        ShowMessage("Tag Name cann't be blank.",0);
+                        return false;
+                    }
+                    else if ($("#Description").val().trim().length == 0) {                        
+                        $("#Description").focus();
+                        ShowMessage("Tag description cann't be blank.", 0);                        
+                        return false;
+                    }
                 }
-</script>
+        </script>
+        
             <style>
                 .height {
                     height: 250px;
                 }
             </style>
-        </div>
     }
 </div>

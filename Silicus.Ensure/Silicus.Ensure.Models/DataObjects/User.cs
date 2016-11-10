@@ -36,7 +36,17 @@ namespace Silicus.Ensure.Models.DataObjects
 
         [Required]
         public string Email { get; set; }
-        
+
+        public string Gender { get; set; }
+
+        public string Position { get; set; }
+
+        public string Experience { get; set; }
+
+        public string Department { get; set; }
+
+        public string TestStatus { get; set; }
+
         public Guid IdentityUserId { get; set; }
     }
 }

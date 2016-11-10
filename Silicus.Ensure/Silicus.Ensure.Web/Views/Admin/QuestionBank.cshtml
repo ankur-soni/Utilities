@@ -1,0 +1,195 @@
+﻿@model List<Silicus.Ensure.Web.Models.QuestionModel>
+@using Kendo.Mvc.UI;
+
+@{
+    ViewBag.Title = "Question Bank";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="main-content" id="main">
+    <div class="fluid mt20">
+        <div class="kendogrid">
+            <h2>Question Bank</h2>
+
+            <div>
+
+                @if (Request.IsAuthenticated)
+                {
+                    @(Html.Kendo().Grid(Model).Name("questionGrids")
+         .Columns(columns =>
+              {
+                  columns.Bound(q => q.QuestionDescription).Encoded(false).Width(200);
+                  columns.Bound(q => q.QuestionType).Width(100);
+                  columns.Bound(q => q.Tag).Width(150).Title("Tags");
+                  columns.Bound(q => q.Competency).Width(100);
+                  columns.Bound(q => q.Id).ClientTemplate(@"
+                    <a href='/Admin/EditQuestion?QuestionId=#=Id#' class='k-button k-button-icontext k-grid-edit'><span class='k-icon k-edit'></span>Edit</a>
+                    <button onclick='DeleteQuestion(#=Id#,this)' class='k-button k-button-icontext k-grid-delete'><span class='k-icon k-delete'></span>Delete</button>").Title("Actions").Width(150);
+              })
+              .ToolBar(toolbar =>
+              {
+                  toolbar.Template(@<text>
+                    <div class="toolbar">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="input-group">
+                                    <span class="input-group-addon"><span class="glyphicon glyphicon-search" aria-hidden="true"></span></span>
+                                    <input type="text" class="form-control" id='FieldFilter' placeholder="Search for...">
+                                    <span class="input-group-btn">
+                                        <button class="btn btn-default" type="button" style="height:16px;"><span class="glyphicon glyphicon-refresh" aria-hidden="true"></span></button>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                        <br />
+                        <div class="row">
+                            <div class="col-md-2" style="padding-right:0px; padding-top:5px; width:10%;">
+                                <span>Question Type:</span>
+                            </div>
+                            <div class="col-md-6">
+                                @(Html.Kendo().DropDownList()
+                            .Name("QuestionType")
+                            .DataTextField("Text")
+                            .DataValueField("Value")
+                            .Events(e => e.Change("QuestionTypeChange"))
+                                .BindTo(new List<SelectListItem>
+                                () {
+                                    new SelectListItem(){
+                                Text="All",
+                                Value="0"
+                                },
+                                new SelectListItem(){
+                                Text="Objective",
+                                Value="1"
+                                },
+                                new SelectListItem(){
+                                Text="Practical",
+                                Value="2"
+                                }
+                                }).HtmlAttributes(new { style = "width: 50%" }))
+                            </div>
+
+                            <div class="col-md-3 col-md-push-1" style="float: right; padding-right: 0px; margin-right: -22px;">
+                                <a href='/Admin/AddQuestions?QuestionId=0' class='k-button k-button-icontext k-grid-add' style="width: 50% !important;"><span class='k-icon k-add'></span>Add Question</a>
+                            </div>
+                        </div>
+                    </div>
+                </text>);
+              })
+                                                                                                                                                                                                                                                                                                    .Resizable(resizing => resizing.Columns(true))
+                                                                                                                                                                                                                                                                                    .Sortable(sorting => sorting.Enabled(true))
+                                                                                                                                                                                                                                                                                    .Reorderable(reorder => reorder.Columns(true))
+                                                                                                                                                                                                                                                                                    .Pageable()
+                                                                                                                                                                                                                                                                                    .DataSource(dataSource => dataSource
+                                                                                                                                                                                                                                                                                    .Ajax()
+                                                                                                                                                                                                                                                                                    .PageSize(10)
+                                                                                                                                                                                                                                                                                    .ServerOperation(false)
+                                                                                                                                                                                                                                                                                    ))
+                }
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="myModal" role="dialog">
+    <div class="modal-dialog">
+
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title"><span id="msgMain">Success!</span></h4>
+            </div>
+            <div class="modal-body">
+                <p id="msgContent">Some text in the modal.</p>
+            </div>
+            <div class="modal-footer">
+                <button id="btnModalOK" type="button" class="btn btn-default" data-dismiss="modal" onclick="OnOK();">OK</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<script>
+    $(document).ready(function () {
+
+        // Kendo Grid Filter (Search)
+        $("#FieldFilter").keyup(function () {
+            var value = $("#FieldFilter").val();
+            grid = $("#questionGrids").data("kendoGrid");
+
+            if (value) {
+                var filter = { logic: "or", filters: [] };
+
+                filter.filters.push({ field: "QuestionDescription", operator: "contains", value: value });
+                filter.filters.push({ field: "Tag", operator: "contains", value: value });
+
+                grid.dataSource.query({ filter: filter });
+            } else {
+                grid.dataSource.filter({});
+            }
+        });
+    });
+
+    // Display Question By Question Type.
+    function QuestionTypeChange() {
+        var value = $("#QuestionType").val();
+        var que = "";
+        if (value == "1") {
+            que = "Objective";
+        }
+        else if (value == "2") {
+            que = "Practical";
+        }
+
+        grid = $("#questionGrids").data("kendoGrid");
+
+        if (value) {
+            grid.dataSource.filter({ field: "QuestionType", operator: "contains", value: que });
+        } else {
+            grid.dataSource.filter({});
+        }
+    }
+
+    // Delete Question
+    var deleteID = null;
+    var deleteTh = null;
+    function DeleteQuestion(id, th) {
+        deleteID = id;
+        deleteTh = th;
+
+        $("#myModal").modal();
+        $("#msgMain").text("Warning!");
+        $("#msgContent").text("Are you sure, you want to delete this question from the application?");
+        $("#btnModalOK").show();
+    }
+
+    function OnOK() {
+        $.ajax({
+            url: '/Admin/DeleteQuestion',
+            dataType: "json",
+            type: "DELETE",
+            contentType: 'application/json; charset=utf-8',
+            data: JSON.stringify({ QuestionId: deleteID }),
+            success: function (data) {
+                if (data == 1) {
+                    var grid = $("#questionGrids").data("kendoGrid");
+                    grid.removeRow($(deleteTh).closest('tr'));
+                    $("#myModal").modal();
+                    $("#msgMain").text("Success!");
+                    $("#msgContent").text("Question deleted successfully from the application?");
+                    $("#btnModalOK").hide();
+                }
+            },
+            error: function (xhr) {
+                $("#myModal").modal();
+                $("#msgMain").text("Error!");
+                $("#msgContent").text("Question is not deleted.");
+                $("#btnModalOK").hide();
+            }
+        });
+    }
+</script>
