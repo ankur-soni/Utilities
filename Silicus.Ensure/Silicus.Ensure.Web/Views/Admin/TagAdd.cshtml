@@ -9,12 +9,11 @@
 <div class="main-content">
     <h2>New Tag</h2>        
     @using (Html.BeginForm("SaveTag", "Admin"))
-    {
-        @Html.ValidationSummary(true)        
+    {                
         <div class="fluid mt20">
             <div class="row">
                 <div class="alert alert-success" id="messageDiv">
-                    <strong>Error!</strong> <span id="messageContent">This alert box could indicate a dangerous or potentially negative action.</span>
+                    <strong>Error!</strong> <span id="messageContent">@Html.ValidationSummary(true)</span>
                 </div>
                 <div class="col-md-4">
                     @Html.LabelFor(model => model.TagName)<b style="color:Red;">*</b>:
@@ -54,7 +53,11 @@
 
             <script>
                 $(document).ready(function () {
-                    $("#messageDiv").hide();
+                    if ($('.validation-summary-errors>ul>li').is(':empty')) { $("#messageDiv").hide(); }
+                    else if ($('.validation-summary-errors>ul>li').text() != "")
+                    { ShowMessage($('.validation-summary-errors>ul>li').text(), 0); }
+                    else { $("#messageDiv").hide(); }
+
                     $("#btnSave").click(function (e) {                       
                         if(validateTag()==false)
                         {
