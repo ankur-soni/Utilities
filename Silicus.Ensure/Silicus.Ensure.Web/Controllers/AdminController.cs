@@ -29,6 +29,7 @@ namespace Silicus.Ensure.Web.Controllers
         private readonly IMappingService _mappingService;
         private readonly ITestSuiteService _testSuiteService;
         private readonly IUserService _userService;
+        private readonly IPositionService _positionService;
 
         public ApplicationUserManager UserManager
         {
@@ -55,7 +56,7 @@ namespace Silicus.Ensure.Web.Controllers
             }
         }
 
-        public AdminController(IEmailService emailService, ITagsService tagService, ITestSuiteService testSuiteService, MappingService mappingService, IQuestionService questionService, IUserService userService)
+        public AdminController(IEmailService emailService, ITagsService tagService, ITestSuiteService testSuiteService, MappingService mappingService, IQuestionService questionService, IUserService userService, IPositionService positionService)
         {
             _emailService = emailService;
             _tagsService = tagService;
@@ -63,6 +64,7 @@ namespace Silicus.Ensure.Web.Controllers
             _mappingService = mappingService;
             _questionService = questionService;
             _userService = userService;
+            _positionService = positionService;
         }
 
         public ActionResult Dashboard()
@@ -325,12 +327,7 @@ namespace Silicus.Ensure.Web.Controllers
 
         private string GetPosition(int positionId)
         {
-            if (positionId == 1)
-                return "Jr. Developer";
-            else if (positionId == 2)
-                return "Sr. Developer";
-            else
-                return "QA";
+            return _positionService.GetPositionById(positionId).PositionName;
         }
 
         public ActionResult TestSuiteList()
@@ -342,10 +339,12 @@ namespace Silicus.Ensure.Web.Controllers
         {
             TestSuiteViewModel testSuite = new TestSuiteViewModel();
             var tagDetails = _tagsService.GetTagsDetails().OrderByDescending(model => model.TagId);
+            var positionDetails = _positionService.GetPositionDetails().OrderBy(model => model.PositionName);
             if (testSuiteId == 0)
             {
                 ViewBag.Type = "New";
                 testSuite.TagList = tagDetails.ToList();
+                testSuite.PositionList = positionDetails.ToList();
                 testSuite.ObjectiveQuestionsCount = "20";
                 testSuite.PracticalQuestionsCount = "1";
 
@@ -359,6 +358,7 @@ namespace Silicus.Ensure.Web.Controllers
                 {
                     ViewBag.Type = "Edit";
                     viewModels.TagList = tagDetails.ToList();
+                    viewModels.PositionList = positionDetails.ToList();                    
                     viewModels.PrimaryTagIds = viewModels.PrimaryTags.Split(',').ToList();
                     if (!string.IsNullOrWhiteSpace(viewModels.SecondaryTags))
                     {
@@ -374,8 +374,11 @@ namespace Silicus.Ensure.Web.Controllers
             var testSuiteDetails = _testSuiteService.GetTestSuiteDetails().Where(model => model.TestSuiteName == testSuiteView.TestSuiteName && model.TestSuiteId != testSuiteView.TestSuiteId);
             if (testSuiteDetails.Count() > 0)
                 ModelState.AddModelError(string.Empty, "The Test Suite already exists, please create with other name.");
-            if (testSuiteView.PrimaryTagIds.All(testSuiteView.SecondaryTagIds.Contains) || testSuiteView.SecondaryTagIds.All(testSuiteView.PrimaryTagIds.Contains))
-                ModelState.AddModelError(string.Empty, "Tags should unique in primary and secondary field.");
+            if (testSuiteView.SecondaryTagIds != null)
+            { 
+                if (testSuiteView.PrimaryTagIds.All(testSuiteView.SecondaryTagIds.Contains) || testSuiteView.SecondaryTagIds.All(testSuiteView.PrimaryTagIds.Contains))
+                    ModelState.AddModelError(string.Empty, "Tags should unique in primary and secondary field.");
+            }
 
             if (ModelState.IsValid)
             {
@@ -423,6 +426,7 @@ namespace Silicus.Ensure.Web.Controllers
         {
             TestSuiteViewModel testSuite = new TestSuiteViewModel();
             var tagDetails = _tagsService.GetTagsDetails().OrderByDescending(model => model.TagId);
+            var positionDetails = _positionService.GetPositionDetails().OrderBy(model => model.PositionName);
             testSuite.TagList = tagDetails.ToList();
 
             if (testSuiteId == 0)
@@ -439,6 +443,7 @@ namespace Silicus.Ensure.Web.Controllers
                     viewModels.IsCopy = true;
                     viewModels.TestSuiteName = "Copy " + viewModels.TestSuiteName;
                     viewModels.TagList = tagDetails.ToList();
+                    viewModels.PositionList = positionDetails.ToList();
                     viewModels.PrimaryTagIds = viewModels.PrimaryTags.Split(',').ToList();
                     if (!string.IsNullOrWhiteSpace(viewModels.SecondaryTags))
                     {
@@ -687,6 +692,35 @@ namespace Silicus.Ensure.Web.Controllers
         }
         #endregion
 
+        #endregion
+
+        #region Position
+
+        public ActionResult GetPositionDetails([DataSourceRequest] DataSourceRequest request)
+        {
+            var positionlist = _positionService.GetPositionDetails().OrderByDescending(model => model.PositionId);            
+            return Json(positionlist.ToDataSourceResult(request), JsonRequestBehavior.AllowGet);
+        }
+
+        public ActionResult Positions()
+        {
+            return PartialView();
+        }
+
+        public ActionResult PositionSave(Position position)
+        {
+            if (ModelState.IsValid)
+            {
+                if (position.PositionId == 0)
+                    return Json(_positionService.Add(position));
+                else
+                {
+                    _positionService.Update(position);
+                    return Json(1);
+                }
+            }
+            return View("TestSuiteAdd", position);
+        }
         #endregion
 
     }

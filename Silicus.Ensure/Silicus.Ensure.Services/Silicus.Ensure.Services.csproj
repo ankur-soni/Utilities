@@ -98,6 +98,7 @@
     <Compile Include="EmailService.cs" />
     <Compile Include="Interfaces\IEmailService.cs" />
     <Compile Include="Interfaces\IManager.cs" />
+    <Compile Include="Interfaces\IPositionService.cs" />
     <Compile Include="Interfaces\IProjectDetailService.cs" />
     <Compile Include="Interfaces\IProjectService.cs" />
     <Compile Include="Interfaces\IQuestionService.cs" />
@@ -107,6 +108,7 @@
     <Compile Include="Interfaces\ITestSuiteService.cs" />
     <Compile Include="Interfaces\IUserService.cs" />
     <Compile Include="ManagerService.cs" />
+    <Compile Include="PositionService.cs" />
     <Compile Include="ProjectDetailService.cs" />
     <Compile Include="ProjectService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
