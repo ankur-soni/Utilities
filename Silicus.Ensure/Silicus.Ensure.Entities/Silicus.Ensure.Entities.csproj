@@ -140,6 +140,8 @@
     <Compile Include="EntityConfigurations\TagMap.cs" />
     <Compile Include="EntityConfigurations\TestSuiteMap.cs" />
     <Compile Include="EntityConfigurations\UserMap.cs" />
+    <Compile Include="EntityConfigurations\UserTestDetailsMap.cs" />
+    <Compile Include="EntityConfigurations\UserTestSuiteMap.cs" />
     <Compile Include="Identity\IdentityConfig.cs" />
     <Compile Include="Initializer\BaseDatabaseInitializer.cs" />
     <Compile Include="Initializer\IdentityDbInitializer.cs" />

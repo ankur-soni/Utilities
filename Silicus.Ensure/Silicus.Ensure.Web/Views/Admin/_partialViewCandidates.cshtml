@@ -129,8 +129,12 @@
                 cache: false,
                 data: { SuiteId: checkvals, Userid: uId },
                 contenttype: "application/json; charset=utf-8",
-                success: function (data) {
-                  
+                success: function (returndata) {
+                    if (returndata == 1) {
+                        $('#userGrids').data('kendoGrid').dataSource.read();
+                        $('#userGrids').data('kendoGrid').refresh();
+                        ShowMessage("Tag deleted successfully.", 1);
+                    }
                 },
                 error: function (er) {
                                    
