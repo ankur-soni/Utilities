@@ -41,5 +41,32 @@ namespace Silicus.Ensure.Services
                 _context.Delete(TestSuite);
             }
         }
+
+        public  IEnumerable<UserTestSuite> GetUserTestSuite()
+        {
+            return _context.Query<UserTestSuite>();
+        }
+
+        public int AddUserTestSuite(UserTestSuite UserTestSuite)
+        {
+            _context.Add(UserTestSuite);
+            return UserTestSuite.UserTestSuiteId;
+        }
+
+        public void UpdateUserTestSuite(UserTestSuite UserTestSuite)
+        {
+            if (UserTestSuite.UserId > 0)
+            {
+                _context.Update(UserTestSuite);
+            }
+        }
+
+        public void DeleteUserTestSuite(UserTestSuite UserTestSuite)
+        {
+            if (UserTestSuite.UserId > 0)
+            {
+                _context.Delete(UserTestSuite);
+            }
+        }
     }
 }

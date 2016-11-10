@@ -49,5 +49,7 @@ namespace Silicus.Ensure.Web.Models
         public string PracticalQuestionsCount { get; set; }
 
         public int userid { get; set; }
+
+        public IList<Position> PositionList { get; set; }
     }
 }
