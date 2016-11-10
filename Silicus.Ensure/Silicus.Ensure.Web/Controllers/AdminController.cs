@@ -239,6 +239,7 @@ namespace Silicus.Ensure.Web.Controllers
                 TempData.Add("IsNewTag", 1);
                 return RedirectToAction("TagList");
             }
+            tag.Description = HttpUtility.HtmlDecode(tag.Description);
             return View("TagAdd", tag);
         }
 
@@ -401,8 +402,11 @@ namespace Silicus.Ensure.Web.Controllers
                     return RedirectToAction("TestSuiteList");
                 }
             }
+            //ViewBag.ModelError = 1;
             var tagDetails = _tagsService.GetTagsDetails().OrderByDescending(model => model.TagId);
+            var positionDetails = _positionService.GetPositionDetails().OrderBy(model => model.PositionName);
             testSuiteView.TagList = tagDetails.ToList();
+            testSuiteView.PositionList = positionDetails.ToList();
             return View("TestSuiteAdd", testSuiteView);
         }
 
@@ -454,7 +458,33 @@ namespace Silicus.Ensure.Web.Controllers
             }
         }
 
+        public ActionResult TestSuitUsers([DataSourceRequest] DataSourceRequest request)
+        {           
+            int testSuiteId=Convert.ToInt32(TempData["TesSuiteId"]);
+            var userlist = _userService.GetUserDetails().Where(model => model.Role == "USER").OrderByDescending(model => model.UserId).ToArray();           
+            var viewModels = _mappingService.Map<User[], UserViewModel[]>(userlist);
+            DataSourceResult result = viewModels.ToDataSourceResult(request);
+            return Json(result);
+        }
 
+        public ActionResult TestSuiteActivate(string users, int testSuiteId)
+        {
+            var testSuiteDetails = _testSuiteService.GetTestSuiteDetails().Where(model => model.TestSuiteId == testSuiteId && model.IsDeleted == false).SingleOrDefault();
+            if (testSuiteDetails != null)
+            {
+                return Json(1);
+            }
+            else
+            {
+                return Json(-1);
+            }
+        }
+
+        public ActionResult TestSuiteUserView(int testSuiteId=0)
+        {
+            TempData["TesSuiteId"] = testSuiteId;
+            return PartialView("_TestSuiteAssign");
+        }
         #endregion
 
         #region Question Bank
