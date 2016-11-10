@@ -12,5 +12,13 @@ namespace Silicus.Ensure.Services.Interfaces
         void Update(TestSuite TestSuite);
 
         void Delete(TestSuite TestSuite);
+
+        IEnumerable<UserTestSuite> GetUserTestSuite();
+
+        int AddUserTestSuite(UserTestSuite UserTestSuite);
+
+        void UpdateUserTestSuite(UserTestSuite UserTestSuite);
+
+        void DeleteUserTestSuite(UserTestSuite UserTestSuite);
     }
 }

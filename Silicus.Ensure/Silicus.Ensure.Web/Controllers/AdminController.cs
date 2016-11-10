@@ -243,7 +243,7 @@ namespace Silicus.Ensure.Web.Controllers
         #endregion
 
         #region Candidate
-       
+
         public ActionResult Candidates()
         {
             ViewBag.UserRoles = RoleManager.Roles.Select(r => new SelectListItem { Text = r.Name, Value = r.Name }).ToList();
@@ -258,17 +258,45 @@ namespace Silicus.Ensure.Web.Controllers
 
         public ActionResult AssignSuite(int SuiteId, int Userid)
         {
+           
+            DataSourceRequest DataSourceRequest = new Kendo.Mvc.UI.DataSourceRequest();
+            DataSourceRequest.Page = 1;
+            DataSourceRequest.PageSize = 10; 
+            
             var updateCurrentUsers = _userService.GetUserDetails().Where(model => model.UserId == Userid).FirstOrDefault();
             if (updateCurrentUsers != null)
             {
-                updateCurrentUsers.TestStatus = "Assigned";
-                _userService.Update(updateCurrentUsers);
-                return Json(1);
+                
+               // return Json(1);
 
+                if (SuiteId > 0 && Userid > 0)
+                {
+                    UserTestSuite newusertestsuit = new UserTestSuite
+                    {
+                        UserId = Userid,
+                        TestSuiteId = SuiteId,
+                        ObjectiveCount = 5,
+                        Score = 50,
+                        MaxScore = 70,
+                        CreatedDate = DateTime.Now,
+                    };
+
+                    _testSuiteService.AddUserTestSuite(newusertestsuit);
+                    updateCurrentUsers.TestStatus = "Assigned";
+                    _userService.Update(updateCurrentUsers);
+                    return Json(1);
+                   // TempData.Add("IsNewTestSuite", 1);
+                   // return RedirectToAction("GetCandidateDetails", "User", DataSourceRequest);
+                }
+                else
+                {
+                    //return RedirectToAction("GetCandidateDetails", "User", DataSourceRequest);
+                    return Json(-1);
+                }
             }
             return View();
         }
-        
+
         #endregion
 
         #region Test Suite
