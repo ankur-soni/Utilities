@@ -75,7 +75,7 @@ namespace Silicus.Ensure.Web.Controllers
 
         [AcceptVerbs(HttpVerbs.Post)]
         public async Task<ActionResult> SendEmail(FormCollection email)
-        {
+        {           
             string retVal = "failed";
             if (!string.IsNullOrEmpty(email[1]))
             {
@@ -261,16 +261,16 @@ namespace Silicus.Ensure.Web.Controllers
 
         public ActionResult AssignSuite(int SuiteId, int Userid)
         {
-           
+
             DataSourceRequest DataSourceRequest = new Kendo.Mvc.UI.DataSourceRequest();
             DataSourceRequest.Page = 1;
-            DataSourceRequest.PageSize = 10; 
-            
+            DataSourceRequest.PageSize = 10;
+
             var updateCurrentUsers = _userService.GetUserDetails().Where(model => model.UserId == Userid).FirstOrDefault();
             if (updateCurrentUsers != null)
             {
-                
-               // return Json(1);
+
+                // return Json(1);
 
                 if (SuiteId > 0 && Userid > 0)
                 {
@@ -288,8 +288,8 @@ namespace Silicus.Ensure.Web.Controllers
                     updateCurrentUsers.TestStatus = "Assigned";
                     _userService.Update(updateCurrentUsers);
                     return Json(1);
-                   // TempData.Add("IsNewTestSuite", 1);
-                   // return RedirectToAction("GetCandidateDetails", "User", DataSourceRequest);
+                    // TempData.Add("IsNewTestSuite", 1);
+                    // return RedirectToAction("GetCandidateDetails", "User", DataSourceRequest);
                 }
                 else
                 {
@@ -359,7 +359,7 @@ namespace Silicus.Ensure.Web.Controllers
                 {
                     ViewBag.Type = "Edit";
                     viewModels.TagList = tagDetails.ToList();
-                    viewModels.PositionList = positionDetails.ToList();                    
+                    viewModels.PositionList = positionDetails.ToList();
                     viewModels.PrimaryTagIds = viewModels.PrimaryTags.Split(',').ToList();
                     if (!string.IsNullOrWhiteSpace(viewModels.SecondaryTags))
                     {
@@ -376,7 +376,7 @@ namespace Silicus.Ensure.Web.Controllers
             if (testSuiteDetails.Count() > 0)
                 ModelState.AddModelError(string.Empty, "The Test Suite already exists, please create with other name.");
             if (testSuiteView.SecondaryTagIds != null)
-            { 
+            {
                 if (testSuiteView.PrimaryTagIds.All(testSuiteView.SecondaryTagIds.Contains) || testSuiteView.SecondaryTagIds.All(testSuiteView.PrimaryTagIds.Contains))
                     ModelState.AddModelError(string.Empty, "Tags should unique in primary and secondary field.");
             }
@@ -519,9 +519,9 @@ namespace Silicus.Ensure.Web.Controllers
             {
                 Question Que = _mappingService.Map<QuestionModel, Question>(question);
                 Que.QuestionDescription = HttpUtility.HtmlDecode(question.QuestionDescription);
-                Que.CorrectAnswer = InlineList(question.CorrectAnswer);
+                Que.CorrectAnswer = (question.CorrectAnswer != null) ? string.Join(",", question.CorrectAnswer) : null;
                 Que.Answer = HttpUtility.HtmlDecode(question.Answer);
-                Que.Tags = InlineList(question.SkillTag);
+                Que.Tags = string.Join(",", question.SkillTag);
                 Que.IsPublishd = true;
                 Que.ModifiedOn = DateTime.Now;
                 Que.ModifiedBy = 0;
@@ -556,9 +556,9 @@ namespace Silicus.Ensure.Web.Controllers
             var QueModel = _mappingService.Map<List<Question>, List<QuestionModel>>(Que);
             foreach (var q in QueModel)
             {
-                q.QuestionDescription = TruncateLongString(q.QuestionDescription, 100);
+                q.QuestionDescription = q.QuestionDescription.Substring(0, Math.Min(q.QuestionDescription.Length, 100));
                 q.QuestionType = GetQuestionType(q.QuestionType);
-                q.Tag = GetTags(Que.Where(x => x.Id == q.Id).Select(p => p.Tags).FirstOrDefault().ToString());
+                q.Tag = string.Join(" | ", Tags().Where(t => Que.Where(x => x.Id == q.Id).Select(p => p.Tags).FirstOrDefault().ToString().Split(',').Contains(t.TagId.ToString())).Select(l => l.TagName).ToList());
                 q.Competency = GetCompetency(q.Competency);
             }
             return View(QueModel);
@@ -571,12 +571,12 @@ namespace Silicus.Ensure.Web.Controllers
                 Question question = _questionService.GetSingleQuestion(Convert.ToInt32(QuestionId));
                 QuestionModel QueModel = _mappingService.Map<Question, QuestionModel>(question);
                 QueModel.QuestionDescription = HttpUtility.HtmlDecode(question.QuestionDescription);
-                QueModel.CorrectAnswer = CorrectAnswer(question.CorrectAnswer);
+                QueModel.CorrectAnswer = (question.CorrectAnswer != null) ? question.CorrectAnswer.Split(',').ToList() : null;
                 QueModel.Answer = HttpUtility.HtmlDecode(question.Answer);
-                QueModel.SkillTag = TagList(question.Tags);
+                QueModel.SkillTag = question.Tags.Split(',').ToList();
                 QueModel.Success = 0;
                 QueModel.Edit = true;
-                QueModel.SkillTagsList = Tags();               
+                QueModel.SkillTagsList = Tags();
                 return View("AddQuestions", QueModel);
             }
             return View("AddQuestions", null);
@@ -590,26 +590,6 @@ namespace Silicus.Ensure.Web.Controllers
         }
 
         #region Question Bank Private Methods
-        private string InlineList(List<string> list)
-        {
-            string lst = "";
-            if (list != null)
-            {
-                int cnt = list.Count();
-                int commacnt = 0;
-                foreach (string str in list)
-                {
-                    commacnt++;
-                    if (commacnt == cnt)
-                        lst += str;
-                    else
-                        lst += str + ",";
-
-                }
-            }
-
-            return lst;
-        }
 
         private List<Tags> Tags()
         {
@@ -635,67 +615,6 @@ namespace Silicus.Ensure.Web.Controllers
                 return "Expert";
         }
 
-        private string GetTags(string tags)
-        {
-            string ret = null;
-            if (!string.IsNullOrEmpty(tags))
-            {
-                string[] str = tags.Split(',');
-                int cnt = str.Count();
-                List<Tags> tagsList = Tags();
-                int count = 0;
-                foreach (string s in str)
-                {
-                    count++;
-                    if (count == cnt)
-                        ret += tagsList.Find(x => x.TagId == Convert.ToInt32(s)).TagName;
-                    else
-                        ret += tagsList.Find(x => x.TagId == Convert.ToInt32(s)).TagName + " | ";
-                }
-            }
-            return ret;
-        }
-
-        private List<string> TagList(string tag)
-        {
-            List<string> tags = new List<string>();
-            List<Tags> TagSkill = Tags();
-            if (!string.IsNullOrEmpty(tag))
-            {
-                string[] str = tag.Split(',');
-                if (str.Count() > 0)
-                {
-                    foreach (string s in str)
-                    {
-                        tags.Add(TagSkill.Find(x => x.TagId == Convert.ToInt32(s)).TagId.ToString());
-                    }
-                }
-            }
-
-            return tags;
-        }
-
-        private List<string> CorrectAnswer(string Ans)
-        {
-            List<string> answer = new List<string>();
-            if (!string.IsNullOrEmpty(Ans))
-            {
-                string[] str = Ans.Split(',');
-                if (str.Count() > 0)
-                {
-                    foreach (string s in str)
-                    {
-                        answer.Add(s);
-                    }
-                }
-            }
-            return answer;
-        }
-
-        private string TruncateLongString(string str, int maxLength)
-        {
-            return str.Substring(0, Math.Min(str.Length, maxLength));
-        }
         #endregion
 
         #endregion
@@ -704,7 +623,7 @@ namespace Silicus.Ensure.Web.Controllers
 
         public ActionResult GetPositionDetails([DataSourceRequest] DataSourceRequest request)
         {
-            var positionlist = _positionService.GetPositionDetails().OrderByDescending(model => model.PositionId);            
+            var positionlist = _positionService.GetPositionDetails().OrderByDescending(model => model.PositionId);
             return Json(positionlist.ToDataSourceResult(request), JsonRequestBehavior.AllowGet);
         }
 
@@ -720,14 +639,45 @@ namespace Silicus.Ensure.Web.Controllers
                 if (position.PositionId == 0)
                     return Json(_positionService.Add(position));
                 else
-                {
+        {
                     _positionService.Update(position);
                     return Json(1);
                 }
             }
             return View("TestSuiteAdd", position);
         }
-        #endregion
+        #endregion Position
 
+        public ActionResult ViewQuestion()
+        {
+            List<Question> QList = new List<Question>()
+            {
+                new Question { Id=1, QuestionDescription="First Question", Option1="Option1", Option2="Option2", Option3="Option3", Option4="Option4" },
+                new Question { Id=1, QuestionDescription="First Question", Option1="Option1", Option2="Option2", Option3="Option3", Option4="Option4" },
+                new Question { Id=1, QuestionDescription="First Question", Option1="Option1", Option2="Option2", Option3="Option3", Option4="Option4" }
+            };
+
+            return View(QList);
+        }
+
+        public ActionResult CreatePDF()
+        {
+            List<Question> QList = new List<Question>()
+            {
+                new Question { Id=1, QuestionDescription="First Question", Option1="Option1", Option2="Option2", Option3="Option3", Option4="Option4" },
+                new Question { Id=1, QuestionDescription="First Question", Option1="Option1", Option2="Option2", Option3="Option3", Option4="Option4" },
+                new Question { Id=1, QuestionDescription="First Question", Option1="Option1", Option2="Option2", Option3="Option3", Option4="Option4" }
+            };
+
+            var pdf = new RazorPDF.PdfResult(QList, "CreatePDF");
+
+            // Add to the view bag
+           // pdf.ViewBag.Title = "Title from ViewBag";
+
+            return pdf;
+
+          //  return View(QList);
+        }
     }
+
 }
