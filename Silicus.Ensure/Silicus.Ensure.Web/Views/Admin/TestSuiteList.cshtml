@@ -93,7 +93,6 @@
     </div>
 </div>
 
-@*@{Html.RenderPartial("~/Views/Admin/_TestSuiteAssign.cshtml");}*@
 <div id="DivUsers">
 
 </div>
@@ -150,8 +149,7 @@
     }
 
     function getTestSuiteId(testSuiteId)
-    {        
-        $('#testSuiteId').val(testSuiteId);
+    {                 
         $('#DivUsers').html('');
         $.ajax({
             type: "POST",
@@ -159,10 +157,7 @@
             data: { testSuiteId: testSuiteId },
             success: function (returndata) {                                 
                     $('#DivUsers').html(returndata);
-                    $("#myModal").modal();
-                    //$('#testSuiteGrids').data('kendoGrid').dataSource.read();
-                    //$('#testSuiteGrids').data('kendoGrid').refresh();
-                    //ShowMessage("Tag deleted successfully.", 1);                
+                    $("#myModal").modal();                                
             }
         });
 

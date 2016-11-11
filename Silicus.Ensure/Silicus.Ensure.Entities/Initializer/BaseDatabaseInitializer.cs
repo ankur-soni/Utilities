@@ -76,6 +76,48 @@ namespace Silicus.Ensure.Entities.Initializer
                 ManagerName = "Sulekha"
             });
 
+            context.Add(new Position
+            {
+                PositionName = "Dot Net Developer"                
+            });            
+
+            context.Add(new Tags
+            {
+                TagName = "ASP.NET",
+                Description = "ASP.Net related questions",
+                IsActive=true
+            });
+
+            context.Add(new Tags
+            {
+                TagName = "MVC5",
+                Description = "ASP.Net MVC related questions.",
+                IsActive = true
+            });
+
+            context.Add(new TestSuite
+            {
+                TestSuiteName = "Dot Net Developer",
+                Position=1,
+                Duration=30,
+                Competency=2,
+                IsDeleted=false,
+                PrimaryTags="1",
+                SecondaryTags="2",
+                
+            });
+
+            context.Add(new TestSuite
+            {
+                TestSuiteName = "MVC Developer",
+                Position = 1,
+                Duration = 30,
+                Competency = 2,
+                IsDeleted = false,
+                PrimaryTags = "1,2",
+                SecondaryTags = ""
+            });
+
             context.Add(new Question
             {
                 QuestionType = 1,
@@ -131,7 +173,7 @@ namespace Silicus.Ensure.Entities.Initializer
 
             context.Database.ExecuteSqlCommand(modifiedSqlScript);
         }
-
+        
         private static void DropExistingConnectionToDatabase(SilicusIpDataContext context, string databaseName)
         {
             var sqlContent = Content(DropConnectionScript);

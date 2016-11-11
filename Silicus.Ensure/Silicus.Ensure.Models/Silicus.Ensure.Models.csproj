@@ -100,6 +100,7 @@
     <Compile Include="DataObjects\Manager.cs" />
     <Compile Include="DataObjects\Organization.cs" />
     <Compile Include="DataObjects\Position.cs" />
+    <Compile Include="DataObjects\Product.cs" />
     <Compile Include="DataObjects\Project.cs" />
     <Compile Include="DataObjects\ProjectDetail.cs" />
     <Compile Include="DataObjects\Question.cs" />
