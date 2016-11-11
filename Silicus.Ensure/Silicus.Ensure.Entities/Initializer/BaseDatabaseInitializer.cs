@@ -74,6 +74,48 @@ namespace Silicus.Ensure.Entities.Initializer
             {
                 ManagerName = "Sulekha"
             });
+
+            context.Add(new Position
+            {
+                PositionName = "Dot Net Developer"                
+            });            
+
+            context.Add(new Tags
+            {
+                TagName = "ASP.NET",
+                Description = "ASP.Net related questions",
+                IsActive=true
+            });
+
+            context.Add(new Tags
+            {
+                TagName = "MVC5",
+                Description = "ASP.Net MVC related questions.",
+                IsActive = true
+            });
+
+            context.Add(new TestSuite
+            {
+                TestSuiteName = "Dot Net Developer",
+                Position=1,
+                Duration=30,
+                Competency=2,
+                IsDeleted=false,
+                PrimaryTags="1",
+                SecondaryTags="2",
+                
+            });
+
+            context.Add(new TestSuite
+            {
+                TestSuiteName = "MVC Developer",
+                Position = 1,
+                Duration = 30,
+                Competency = 2,
+                IsDeleted = false,
+                PrimaryTags = "1,2",
+                SecondaryTags = ""
+            });
         }
 
         private static void AddIndexes(SilicusIpDataContext context, string databaseName)
