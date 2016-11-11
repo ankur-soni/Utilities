@@ -38,7 +38,9 @@ namespace Silicus.Ensure.Services
         {
             if (TestSuite.TestSuiteName != null)
             {
-                _context.Delete(TestSuite);
+                TestSuite.IsDeleted = true;
+                TestSuite.DeletedDate = System.DateTime.UtcNow;
+                _context.Update(TestSuite);
             }
         }
 

@@ -390,10 +390,10 @@ namespace Silicus.Ensure.Web.Controllers
                     testSuiteDomainModel.SecondaryTags = string.Join(",", testSuiteView.SecondaryTagIds);
                 }
 
+                TempData.Add("IsNewTestSuite", 1);
                 if (testSuiteView.TestSuiteId == 0 || testSuiteView.IsCopy == true)
                 {
-                    _testSuiteService.Add(testSuiteDomainModel);
-                    TempData.Add("IsNewTestSuite", 1);
+                    _testSuiteService.Add(testSuiteDomainModel);                    
                     return RedirectToAction("TestSuiteList");
                 }
                 else
@@ -414,10 +414,8 @@ namespace Silicus.Ensure.Web.Controllers
         {
             var testSuiteDetails = _testSuiteService.GetTestSuiteDetails().Where(model => model.TestSuiteId == testSuiteId && model.IsDeleted == false).SingleOrDefault();
             if (testSuiteDetails != null)
-            {
-                testSuiteDetails.IsDeleted = true;
-                testSuiteDetails.DeletedDate = DateTime.UtcNow;
-                _testSuiteService.Update(testSuiteDetails);
+            {               
+                _testSuiteService.Delete(testSuiteDetails);
                 return Json(1);
             }
             else
@@ -470,10 +468,18 @@ namespace Silicus.Ensure.Web.Controllers
         public ActionResult TestSuiteActivate(string users, int testSuiteId)
         {
             var testSuiteDetails = _testSuiteService.GetTestSuiteDetails().Where(model => model.TestSuiteId == testSuiteId && model.IsDeleted == false).SingleOrDefault();
-            if (testSuiteDetails != null)
+            UserTestSuite userTestSuite;
+            if(!string.IsNullOrWhiteSpace(users))
             {
+                foreach(var item in users.Split(','))
+                {
+                    userTestSuite = new UserTestSuite();
+                    userTestSuite.UserId = Convert.ToInt32(item);
+                    userTestSuite.TestSuiteId = testSuiteId;
+                    ActiveteSuite(userTestSuite, testSuiteDetails);
+                }
                 return Json(1);
-            }
+            }            
             else
             {
                 return Json(-1);
@@ -484,6 +490,16 @@ namespace Silicus.Ensure.Web.Controllers
         {
             TempData["TesSuiteId"] = testSuiteId;
             return PartialView("_TestSuiteAssign");
+        }
+
+        public void ActiveteSuite(UserTestSuite userTestSuite, TestSuite testSuite)
+        {
+            Int32 userTestSuiteId=_testSuiteService.AddUserTestSuite(userTestSuite);
+            if (!string.IsNullOrWhiteSpace(testSuite.SecondaryTags))
+                testSuite.PrimaryTags += "," + testSuite.SecondaryTags;
+            Int32[] tags = testSuite.PrimaryTags.Split(',').Select(Int32.Parse).ToArray();
+            //Question question = from a in _questionService.GetQuestion()
+            //                    where a.tag
         }
         #endregion
 
