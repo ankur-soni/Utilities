@@ -710,6 +710,39 @@ namespace Silicus.Ensure.Web.Controllers
                 }
             }
             return View("TestSuiteAdd", position);
-        }        
+        }
+        #endregion Position
+
+        public ActionResult ViewQuestion()
+        {
+            List<Question> QList = new List<Question>()
+            {
+                new Question { Id=1, QuestionDescription="First Question", Option1="Option1", Option2="Option2", Option3="Option3", Option4="Option4" },
+                new Question { Id=1, QuestionDescription="First Question", Option1="Option1", Option2="Option2", Option3="Option3", Option4="Option4" },
+                new Question { Id=1, QuestionDescription="First Question", Option1="Option1", Option2="Option2", Option3="Option3", Option4="Option4" }
+            };
+
+            return View(QList);
+        }
+
+        public ActionResult CreatePDF()
+        {
+            List<Question> QList = new List<Question>()
+            {
+                new Question { Id=1, QuestionDescription="First Question", Option1="Option1", Option2="Option2", Option3="Option3", Option4="Option4" },
+                new Question { Id=1, QuestionDescription="First Question", Option1="Option1", Option2="Option2", Option3="Option3", Option4="Option4" },
+                new Question { Id=1, QuestionDescription="First Question", Option1="Option1", Option2="Option2", Option3="Option3", Option4="Option4" }
+            };
+
+            var pdf = new RazorPDF.PdfResult(QList, "CreatePDF");
+
+            // Add to the view bag
+           // pdf.ViewBag.Title = "Title from ViewBag";
+
+            return pdf;
+
+          //  return View(QList);
+        }
     }
+
 }
