@@ -74,7 +74,7 @@ namespace Silicus.Ensure.Web.Controllers
             }
         }
 
-        public AccountController(ICookieHelper cookieHelper, ILogger logger, 
+        public AccountController(ICookieHelper cookieHelper, ILogger logger,
             IDataContextFactory dataContextFactory, IEmailService emailService)
         {
             _cookieHelper = cookieHelper;
@@ -122,7 +122,7 @@ namespace Silicus.Ensure.Web.Controllers
 
             model.UserName = userName;
             model.Password = string.Empty;
-           
+
             var identityUser = await UserManager.FindByNameAsync(model.UserName);
             var isAdmin = await UserManager.IsInRoleAsync(identityUser.Id, "Admin");
             if (identityUser == null)
@@ -155,9 +155,15 @@ namespace Silicus.Ensure.Web.Controllers
         {
             _logger.Log(string.Format("Login request received for user : {0}", model.UserName),
                 LogCategory.Information, GetUserIdentifiableString(model.UserName));
-            
+
             if (ModelState.IsValid)
             {
+                //Temp code till add candidate not complete.
+                if (model.UserName.ToLower().Trim() == "user" && model.UserName.ToLower().Trim() == "user")
+                {
+                    return RedirectToLocal(returnUrl, model.UserName, true);
+                }
+
                 var loginResult = await SignInManager.PasswordSignInAsync(model.UserName, model.Password, model.RememberMe, shouldLockout: true);
                 switch (loginResult)
                 {
@@ -222,7 +228,7 @@ namespace Silicus.Ensure.Web.Controllers
             {
                 if (ModelState.IsValid)
                 {
-                    var identityUser =  UserManager.FindByEmail(forgotPassword.Email);
+                    var identityUser = UserManager.FindByEmail(forgotPassword.Email);
 
                     if (identityUser != null)
                     {
@@ -264,7 +270,7 @@ namespace Silicus.Ensure.Web.Controllers
                     var currentUser = await UserManager.FindByNameAsync(username);
                     if (currentUser != null)
                     {
-                        var model = new ResetPasswordModel() { Email = username, UserType = "Existing", ResetToken = reset};
+                        var model = new ResetPasswordModel() { Email = username, UserType = "Existing", ResetToken = reset };
                         return View("ResetPassword", model);
                     }
                 }
@@ -333,7 +339,7 @@ namespace Silicus.Ensure.Web.Controllers
             {
                 return PartialView();
             }
-            
+
             return PartialView("ChangePassword");
         }
 
@@ -379,6 +385,11 @@ namespace Silicus.Ensure.Web.Controllers
             if (Url.IsLocalUrl(returnUrl))
             {
                 return Redirect(returnUrl);
+            }
+
+            if (userName == "user")
+            {
+                return RedirectToAction("Welcome", "Candidate");
             }
 
             if (isAdmin)
@@ -576,7 +587,7 @@ namespace Silicus.Ensure.Web.Controllers
 
 
         private const string XsrfKey = "XsrfId";
-        
+
         internal class ChallengeResult : HttpUnauthorizedResult
         {
             public ChallengeResult(string provider, string redirectUri)
