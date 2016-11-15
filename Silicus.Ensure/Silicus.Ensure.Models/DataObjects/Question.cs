@@ -18,6 +18,7 @@ namespace Silicus.Ensure.Models.DataObjects
         public string Tags { get; set; }
         public int Competency { get; set; }
         public int Duration { get; set; }
+        public int Marks { get; set; }
         public bool IsPublishd { get; set; }
         public bool IsDeleted { get; set; }
         public DateTime CreatedOn { get; set; }

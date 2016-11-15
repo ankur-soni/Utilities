@@ -324,9 +324,11 @@
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\AdminController.cs" />
+    <Compile Include="Controllers\CandidateController.cs" />
     <Compile Include="Controllers\ErrorController.cs" />
     <Compile Include="Controllers\PositionsController.cs" />
     <Compile Include="Controllers\ProjectController.cs" />
+    <Compile Include="Controllers\QuestionBankController.cs" />
     <Compile Include="Controllers\RoleController.cs" />
     <Compile Include="Controllers\UserController.cs" />
     <Compile Include="CookieHelper.cs" />
@@ -669,7 +671,7 @@
     <Content Include="Views\Admin\_partialViewUser.cshtml" />
     <Content Include="Views\Shared\EditorTemplates\ComboBox.cshtml" />
     <Content Include="Views\Account\ExternalLoginConfirmation.cshtml" />
-    <Content Include="Views\Admin\AddQuestions.cshtml" />
+    <Content Include="Views\QuestionBank\AddQuestions.cshtml" />
     <Content Include="Views\User\CandidateTest.cshtml" />
     <Content Include="Views\Admin\_partialViewTags.cshtml" />
     <Content Include="Views\Admin\_partialViewSkill.cshtml" />
@@ -680,10 +682,13 @@
     <Content Include="Views\Admin\_partialViewCandidates.cshtml" />
     <Content Include="Views\Admin\SelectCandidatesSuit.cshtml" />
     <Content Include="Views\Admin\_TestSuiteAssign.cshtml" />
-    <Content Include="Views\Admin\QuestionBank.cshtml" />
+    <Content Include="Views\QuestionBank\QuestionBank.cshtml" />
     <Content Include="Views\Admin\Positions.cshtml" />
     <Content Include="Views\Admin\ViewQuestion.cshtml" />
     <Content Include="Views\Shared\_PdfLayout.cshtml" />
+    <Content Include="Views\Shared\_LayoutCandidate.cshtml" />
+    <Content Include="Views\Candidate\OnlineTest.cshtml" />
+    <Content Include="Views\Candidate\Welcome.cshtml" />
     <Content Include="Views\Positions\Positions.cshtml" />
     <None Include="Web.Integration.config">
       <DependentUpon>Web.config</DependentUpon>
