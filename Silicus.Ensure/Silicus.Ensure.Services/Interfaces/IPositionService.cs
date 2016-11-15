@@ -9,9 +9,13 @@ namespace Silicus.Ensure.Services.Interfaces
         IEnumerable<Position> GetPositionDetails();
 
         Position GetPositionById(int PositionId);
+
+        Position GetPositionByName(string PositionName);
         
         int Add(Position Position);
 
         void Update(Position Position);
+
+        void Delete(Position Position);
     }
 }

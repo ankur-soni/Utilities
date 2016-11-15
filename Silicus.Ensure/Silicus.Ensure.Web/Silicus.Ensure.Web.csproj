@@ -110,6 +110,10 @@
     <Reference Include="Glimpse.Mvc4">
       <HintPath>..\packages\Glimpse.Mvc4.1.5.3\lib\net40\Glimpse.Mvc4.dll</HintPath>
     </Reference>
+    <Reference Include="itextsharp, Version=5.0.5.0, Culture=neutral, PublicKeyToken=8354ae6d2174ddca, processorArchitecture=MSIL">
+      <HintPath>..\packages\iTextSharp.5.0.5\lib\itextsharp.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="Kendo.Mvc, Version=2013.3.1324.440, Culture=neutral, PublicKeyToken=121fae78165ba3d4, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\Dependencies\Kendo.Mvc.dll</HintPath>
@@ -185,6 +189,10 @@
     </Reference>
     <Reference Include="Owin, Version=1.0.0.0, Culture=neutral, PublicKeyToken=f0ebd12fd5e55cc5, processorArchitecture=MSIL">
       <HintPath>..\packages\Owin.1.0\lib\net40\Owin.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="RazorPDF, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\RazorPDF.1.0.0\lib\net45\RazorPDF.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Silicus.FrameWorx.Auditing">
@@ -316,8 +324,11 @@
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\AdminController.cs" />
+    <Compile Include="Controllers\CandidateController.cs" />
     <Compile Include="Controllers\ErrorController.cs" />
+    <Compile Include="Controllers\PositionsController.cs" />
     <Compile Include="Controllers\ProjectController.cs" />
+    <Compile Include="Controllers\QuestionBankController.cs" />
     <Compile Include="Controllers\RoleController.cs" />
     <Compile Include="Controllers\UserController.cs" />
     <Compile Include="CookieHelper.cs" />
@@ -660,7 +671,7 @@
     <Content Include="Views\Admin\_partialViewUser.cshtml" />
     <Content Include="Views\Shared\EditorTemplates\ComboBox.cshtml" />
     <Content Include="Views\Account\ExternalLoginConfirmation.cshtml" />
-    <Content Include="Views\Admin\AddQuestions.cshtml" />
+    <Content Include="Views\QuestionBank\AddQuestions.cshtml" />
     <Content Include="Views\User\CandidateTest.cshtml" />
     <Content Include="Views\Admin\_partialViewTags.cshtml" />
     <Content Include="Views\Admin\_partialViewSkill.cshtml" />
@@ -671,8 +682,14 @@
     <Content Include="Views\Admin\_partialViewCandidates.cshtml" />
     <Content Include="Views\Admin\SelectCandidatesSuit.cshtml" />
     <Content Include="Views\Admin\_TestSuiteAssign.cshtml" />
-    <Content Include="Views\Admin\QuestionBank.cshtml" />
+    <Content Include="Views\QuestionBank\QuestionBank.cshtml" />
     <Content Include="Views\Admin\Positions.cshtml" />
+    <Content Include="Views\Admin\ViewQuestion.cshtml" />
+    <Content Include="Views\Shared\_PdfLayout.cshtml" />
+    <Content Include="Views\Shared\_LayoutCandidate.cshtml" />
+    <Content Include="Views\Candidate\OnlineTest.cshtml" />
+    <Content Include="Views\Candidate\Welcome.cshtml" />
+    <Content Include="Views\Positions\Positions.cshtml" />
     <Content Include="Views\Admin\CandidateAdd.cshtml" />
     <None Include="Web.Integration.config">
       <DependentUpon>Web.config</DependentUpon>
@@ -738,7 +755,7 @@
     <VisualStudio>
       <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
         <WebProjectProperties>
-          <UseIIS>True</UseIIS>
+          <UseIIS>False</UseIIS>
           <AutoAssignPort>True</AutoAssignPort>
           <DevelopmentServerPort>53393</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
