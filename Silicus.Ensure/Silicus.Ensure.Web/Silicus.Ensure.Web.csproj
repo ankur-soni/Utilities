@@ -399,6 +399,7 @@
     <Content Include="Content\css\Kendo\2014.1.416\Default\loading.gif" />
     <Content Include="Content\css\Kendo\2014.1.416\Default\loading-image.gif" />
     <Content Include="Content\css\Kendo\2014.1.416\Default\sprite.png" />
+    <Content Include="Content\Images\digits.png" />
     <Content Include="Content\Images\profile.png" />
     <Content Include="Content\Images\spriteicons.png" />
     <Content Include="Content\themes\base\accordion.css" />
@@ -447,6 +448,7 @@
     <Content Include="Scripts\jquery-ui-1.11.4.js" />
     <Content Include="Scripts\jquery-ui-1.11.4.min.js" />
     <None Include="Scripts\jquery.validate-vsdoc.js" />
+    <Content Include="Scripts\jquery.countdown.js" />
     <Content Include="Scripts\jquery.unobtrusive-ajax.js" />
     <Content Include="Scripts\jquery.unobtrusive-ajax.min.js" />
     <Content Include="Scripts\jquery.validate.js" />
@@ -688,6 +690,7 @@
     <Content Include="Views\Shared\_LayoutCandidate.cshtml" />
     <Content Include="Views\Candidate\OnlineTest.cshtml" />
     <Content Include="Views\Candidate\Welcome.cshtml" />
+    <Content Include="Views\Candidate\_partialViewQuestion.cshtml" />
     <None Include="Web.Integration.config">
       <DependentUpon>Web.config</DependentUpon>
       <SubType>Designer</SubType>
