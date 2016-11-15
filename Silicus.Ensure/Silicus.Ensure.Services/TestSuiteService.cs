@@ -39,7 +39,7 @@ namespace Silicus.Ensure.Services
             if (TestSuite.TestSuiteName != null)
             {
                 TestSuite.IsDeleted = true;
-                TestSuite.DeletedDate = System.DateTime.UtcNow;
+                TestSuite.ModifiedDate = System.DateTime.UtcNow;
                 _context.Update(TestSuite);
             }
         }
