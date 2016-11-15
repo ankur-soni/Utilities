@@ -1,0 +1,119 @@
+﻿@using Kendo.Mvc.UI;
+
+@{
+    ViewBag.Title = "Online Test";
+    Layout = "~/Views/Shared/_LayoutCandidate.cshtml";
+}
+
+<div class="main-content" id="main">
+    <div class="fluid mt20">
+        <div class="row">
+            <div class="col-md-6">
+                <div class="row">
+                    <div class="col-md-6">
+                        <label class="control-label" for="obj"><strong>No. of Objective Question:</strong></label>
+                    </div>
+                    <div class="col-md-6">
+                        <label class="control-label" for="obj">20</label>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <label class="control-label" for="prac"><strong>No. of Practical Question:</strong></label>
+                    </div>
+
+                    <div class="col-md-6">
+                        <label class="control-label" for="prac">5</label>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <label class="control-label" for="total"><strong>Total Question:</strong></label>
+                    </div>
+                    <div class="col-md-6">
+                        <label class="control-label" for="total">25</label>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <label class="control-label" for="duration"><strong>Total Duration (Mins):</strong></label>
+                    </div>
+                    <div class="col-md-6">
+                        <label class="control-label" for="duration">60</label>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="row">
+                    <div class="col-md-9">
+                        <div id="counter"></div>
+                        <div class="desc">
+                            <div>Hours</div>
+                            <div>Minutes</div>
+                            <div>Seconds</div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        @(Html.Kendo().Button()
+                .Name("btnAddMoreTime")
+                .HtmlAttributes(new { type = "button" }).Content("Add More Time").HtmlAttributes(new { style = "margin-top: 25%;" }))
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-12" style="border-bottom-width:1px; border-bottom-style:solid; border-bottom-color:black;">
+            </div>
+        </div>
+
+        <div class="row">
+
+        </div>
+    </div>
+</div>
+
+<script>
+    $(document).ready(function () {
+        $('#counter').countdown({
+            startTime: '01:02:10',
+            format: 'hh:mm:ss',
+            digitWidth: 53,
+            digitHeight: 77,
+            timerEnd: function () { alert('end!'); },
+            image: '../../Content/Images/digits.png'
+        });
+
+        //Later to redure counter digit
+        //Make png to 30px
+        //digitWidth: 30,
+        //digitHeight: 40.15,
+        //$('.cntDigit').each(function (i, v) { $(v).css('background-size', '30px') })
+    });
+</script>
+
+<style type="text/css">
+    br {
+        clear: both;
+    }
+
+    .cntSeparator {
+        font-size: 54px;
+        margin: 10px 7px;
+        color: #000;
+    }
+
+    .desc {
+        margin: 7px 3px;
+    }
+
+        .desc div {
+            float: left;
+            font-family: Arial;
+            width: 70px;
+            margin-right: 65px;
+            font-size: 13px;
+            font-weight: bold;
+            color: #000;
+        }
+</style>

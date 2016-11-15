@@ -63,6 +63,10 @@ namespace Silicus.Ensure.Web
                         "~/Scripts/toastr.min.js",
                         "~/Scripts/prefixfree.min.js",
                         "~/Scripts/commonjs.js"));
+
+            //Count Down Timer js
+            bundles.Add(new ScriptBundle("~/bundles/Timer").Include(
+                        "~/Scripts/jquery.countdown.js"));
         }
 
     }
