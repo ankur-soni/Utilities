@@ -101,22 +101,22 @@
             }
         });
     }
-  
+
 
     $(function () {
-        $('body').on('click', '#Savebtn', function () {           
+        $('body').on('click', '#Savebtn', function () {
             var myClone = myBackup.clone();
             $('body').append(myClone);
         });
 
         $("#Savebtn").bind("click", function () {
-           
+
             // var checksvalues = $("#testSuiteGrids").find("[class='check']").attr("value");
             var uId = $("#CurrentUser").val();
             //alert(uId);
             var checkvals = $("[class='check']:checked").attr("value")
             //  alert(checksvalues);
-           // alert(checkvals);
+            // alert(checkvals);
             // var checksUservalues = $("#testSuiteGrids").find("[class='textu']").attr("value");
             // var usey = $("#testSuiteGrids").find("[class='check']:checked").attr("value");
             // alert(checksUservalues);
@@ -137,11 +137,11 @@
                     }
                 },
                 error: function (er) {
-                                   
+
                 }
             });
         });
-        
+
     });
 
     function Change() {
@@ -247,7 +247,7 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal">&times;</button>
-                    <h4 class="modal-title">Test-Suite List</h4>                    
+                    <h4 class="modal-title">Test-Suite List</h4>
                 </div>
                 <div class="modal-body" id="CandidateInfo">
                     @if (Request.IsAuthenticated)
