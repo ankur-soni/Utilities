@@ -300,6 +300,11 @@ namespace Silicus.Ensure.Web.Controllers
             return View();
         }
 
+        public ActionResult CandidateAdd()
+        {
+            return View();
+        }
+
         #endregion
 
         #region Test Suite
