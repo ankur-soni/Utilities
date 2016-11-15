@@ -673,6 +673,7 @@
     <Content Include="Views\Admin\_TestSuiteAssign.cshtml" />
     <Content Include="Views\Admin\QuestionBank.cshtml" />
     <Content Include="Views\Admin\Positions.cshtml" />
+    <Content Include="Views\Admin\CandidateAdd.cshtml" />
     <None Include="Web.Integration.config">
       <DependentUpon>Web.config</DependentUpon>
       <SubType>Designer</SubType>
@@ -680,6 +681,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="CandidateResume\" />
     <Folder Include="Content\js\" />
     <Folder Include="Scripts\Custom\" />
     <Folder Include="ViewModel\" />

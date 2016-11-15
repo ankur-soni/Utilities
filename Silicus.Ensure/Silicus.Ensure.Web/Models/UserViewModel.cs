@@ -32,6 +32,7 @@ namespace Silicus.Ensure.Web.Models
         public string Role { get; set; }
 
         [Required]
+        [RegularExpression(@"[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}", ErrorMessage = "Please enter correct email")]
         public string Email { get; set; }
 
         [Required]
@@ -46,6 +47,8 @@ namespace Silicus.Ensure.Web.Models
 
         public string TestStatus { get; set; }
 
-        public Guid IdentityUserId { get; set; } 
+        public Guid IdentityUserId { get; set; }
+
+        public string ResumePath { get; set; }
     }
 }
