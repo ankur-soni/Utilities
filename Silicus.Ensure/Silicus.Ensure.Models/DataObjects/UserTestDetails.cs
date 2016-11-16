@@ -12,12 +12,6 @@ namespace Silicus.Ensure.Models.DataObjects
 
         public int QuestionId { get; set; }
 
-        public int Answer { get; set; }
-
         public int Score { get; set; }
-
-        public int? ScoreGivenBy { get; set; }
-
-        public DateTime? ScoreGivenDate { get; set; }
     }
 }

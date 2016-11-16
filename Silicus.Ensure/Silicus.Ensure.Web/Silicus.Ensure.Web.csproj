@@ -330,8 +330,6 @@
     <Compile Include="Controllers\ProjectController.cs" />
     <Compile Include="Controllers\QuestionBankController.cs" />
     <Compile Include="Controllers\RoleController.cs" />
-    <Compile Include="Controllers\TagController.cs" />
-    <Compile Include="Controllers\TestSuiteController.cs" />
     <Compile Include="Controllers\UserController.cs" />
     <Compile Include="CookieHelper.cs" />
     <Compile Include="Filters\AuditAttribute.cs" />
@@ -354,6 +352,7 @@
     <Compile Include="Models\QuestionModel.cs" />
     <Compile Include="Models\ResetPasswordModel.cs" />
     <Compile Include="Models\RoleViewModel.cs" />
+    <Compile Include="Models\SubmittedTestViewModel.cs" />
     <Compile Include="Models\TestSuiteViewModel.cs" />
     <Compile Include="Models\UserViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -634,7 +633,7 @@
     <Content Include="Scripts\toastr.js" />
     <Content Include="Scripts\toastr.min.js" />
     <Content Include="Scripts\_references.js" />
-    <Content Include="Views\TestSuite\List.cshtml">
+    <Content Include="Views\Admin\TestSuiteList.cshtml">
       <SubType>Code</SubType>
     </Content>
     <Content Include="Web.config">
@@ -679,15 +678,13 @@
     <Content Include="Views\User\CandidateTest.cshtml" />
     <Content Include="Views\Admin\_partialViewTags.cshtml" />
     <Content Include="Views\Admin\_partialViewSkill.cshtml" />
-    <Content Include="Views\Tag\Add.cshtml" />
-    <Content Include="Views\TestSuite\Add.cshtml" />
-    <Content Include="Views\Tag\List.cshtml" />
+    <Content Include="Views\Admin\TagAdd.cshtml" />
+    <Content Include="Views\Admin\TestSuiteAdd.cshtml" />
+    <Content Include="Views\Admin\TagList.cshtml" />
     <Content Include="Views\Admin\Candidates.cshtml" />
     <Content Include="Views\Admin\_partialViewCandidates.cshtml" />
     <Content Include="Views\Admin\SelectCandidatesSuit.cshtml" />
-    <Content Include="Views\TestSuite\_TestSuiteAssign.cshtml" />
-    <Content Include="Views\Admin\QuestionBank.cshtml" />
-
+    <Content Include="Views\Admin\_TestSuiteAssign.cshtml" />
     <Content Include="Views\QuestionBank\QuestionBank.cshtml" />
     <Content Include="Views\Admin\Positions.cshtml" />
     <Content Include="Views\Admin\ViewQuestion.cshtml" />
@@ -696,6 +693,7 @@
     <Content Include="Views\Candidate\OnlineTest.cshtml" />
     <Content Include="Views\Candidate\Welcome.cshtml" />
     <Content Include="Views\Positions\Positions.cshtml" />
+    <Content Include="Views\Admin\SubmittedTest.cshtml" />
     <Content Include="Views\Admin\CandidateAdd.cshtml" />
     <Content Include="Views\Candidate\_partialViewQuestion.cshtml" />
     <None Include="Web.Integration.config">
