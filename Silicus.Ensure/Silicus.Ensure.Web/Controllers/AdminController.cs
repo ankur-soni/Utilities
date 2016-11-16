@@ -278,8 +278,7 @@ namespace Silicus.Ensure.Web.Controllers
                     {
                         UserId = Userid,
                         TestSuiteId = SuiteId,
-                        ObjectiveCount = 5,
-                        Score = 50,
+                        ObjectiveCount = 5,                        
                         MaxScore = 70,
                         CreatedDate = DateTime.Now,
                     };
