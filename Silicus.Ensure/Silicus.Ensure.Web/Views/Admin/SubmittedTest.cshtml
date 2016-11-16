@@ -1,0 +1,28 @@
+﻿@model Silicus.Ensure.Web.Models.SubmittedTestViewModel
+@using Silicus.Ensure.Models.Constants
+@using Kendo.Mvc.UI;
+@{
+    ViewBag.Title = "Submitted Test";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+<div class="main-content">
+    <h2>Submitted test result of @Model.FirstName @Model.LastName</h2>
+    <div class="fluid mt20">
+        <fieldset>
+            <legend>Personalia:</legend>
+            <div class="row">
+                <div class="alert alert-success" id="messageDiv">
+                    <strong>Error!</strong> <span id="messageContent">@Html.ValidationSummary(true)</span>
+                </div>
+                <div class="col-md-4">
+                    @Html.LabelFor(m => m.TestSuitName)<b style="color:Red;">*</b>:
+                </div>
+                <div class="col-md-8">
+                    @Html.DisplayFor(m => m.TestSuitName, new { @class = "form-control" })
+                </div>
+            </div>
+        </fieldset>
+    </div>
+</div>

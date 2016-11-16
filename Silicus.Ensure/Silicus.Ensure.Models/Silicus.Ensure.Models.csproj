@@ -113,6 +113,7 @@
     <Compile Include="DataObjects\TestSuite.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="DataObjects\TestSuiteTag.cs" />
     <Compile Include="DataObjects\User.cs" />
     <Compile Include="DataObjects\UserTestDetails.cs" />
     <Compile Include="DataObjects\UserTestSuite.cs" />

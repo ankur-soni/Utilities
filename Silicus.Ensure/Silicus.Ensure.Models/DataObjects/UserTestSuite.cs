@@ -13,9 +13,17 @@ namespace Silicus.Ensure.Models.DataObjects
 
         public int ObjectiveCount { get; set; }
 
+        public int PracticalCount { get; set; }
+
         public int MaxScore { get; set; }
 
-        public int Score { get; set; }
+        public int EvaluatedMark { get; set; }
+
+        public string FeedBack { get; set; }
+
+        public int Duration { get; set; }
+
+        public bool IsActive { get; set; }
 
         public DateTime? CreatedDate { get; set; }
     }
