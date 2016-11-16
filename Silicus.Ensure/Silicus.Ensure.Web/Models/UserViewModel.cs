@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Silicus.Ensure.Models.DataObjects;
+using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
 namespace Silicus.Ensure.Web.Models
@@ -50,5 +52,7 @@ namespace Silicus.Ensure.Web.Models
         public Guid IdentityUserId { get; set; }
 
         public string ResumePath { get; set; }
+
+        public IList<Position> PositionList { get; set; }
     }
 }
