@@ -48,6 +48,7 @@
     <Compile Include="ExtensionSolution.cs" />
     <Compile Include="Frameworx.cs" />
     <Compile Include="OtherCode.cs" />
+    <Compile Include="ProductBacklog.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

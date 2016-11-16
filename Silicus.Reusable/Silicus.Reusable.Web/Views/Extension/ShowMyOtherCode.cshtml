@@ -114,7 +114,7 @@
 
             var searchString = $("#searchString").val();
 
-            var url = "/Extension/SearchOtherCodeMethodByTitle";
+            var url = "/Extension/SearchMyOtherCodeMethodByTitle";
             $.get(url, { searchString: searchString }, function (data) {
 
                 $("#questions").html(data);

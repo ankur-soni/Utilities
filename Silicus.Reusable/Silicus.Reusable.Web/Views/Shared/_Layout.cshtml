@@ -29,31 +29,28 @@
             -o-transition: all 0.5s;
             transition: all 0.5s;
         }
+
         .nav > li > a:hover, .nav > li > a:focus {
-    text-decoration: none !important;
-    background-color: #07C !important;
-    color:#a7b1c2;
-}
+            text-decoration: none !important;
+            background-color: #07C !important;
+            color: #a7b1c2;
+        }
 
         .navbar-default {
             background-color: transparent;
             border-color: #006cb6;
         }
+
         .nav > li.active > a {
             color: #ffffff;
         }
+
         .nav > li > a {
             color: #a7b1c2;
             font-weight: 600;
             padding: 14px 20px 14px 25px;
         }
         /* End this is side bar theme css*/
-
-
-
-
-
-
         .top-header {
             background-color: #fff;
             position: fixed;
@@ -121,7 +118,6 @@
             background-color:#99d6ff;
         }*/
         .nav > li.active {
-           
             background: #0063a7;
         }
 
@@ -132,7 +128,89 @@
         .navbar-fixed-top, .navbar-static-top {
             background: white;
         }
+
+        .menu ul li ul {
+            display: none;
+        }
+
+        .metismenu .plus-minus,
+        .metismenu .plus-times {
+            float: right;
+        }
+
+        .metismenu .arrow {
+            float: right;
+            line-height: 1.42857;
+        }
+
+        .metismenu .glyphicon.arrow:before {
+            content: "\e079";
+        }
+
+        .metismenu .active > a > .glyphicon.arrow:before {
+            content: "\e114";
+        }
+
+        .metismenu .fa.arrow:before {
+            content: "\f104";
+        }
+
+        .metismenu .active > a > .fa.arrow:before {
+            content: "\f107";
+        }
+
+        .metismenu .ion.arrow:before {
+            content: "\f3d2";
+        }
+
+        .metismenu .active > a > .ion.arrow:before {
+            content: "\f3d0";
+        }
+
+        .metismenu .fa.plus-minus:before,
+        .metismenu .fa.plus-times:before {
+            content: "\f067";
+        }
+
+        .metismenu .active > a > .fa.plus-times {
+            -webkit-transform: rotate(45deg);
+            -ms-transform: rotate(45deg);
+            transform: rotate(45deg);
+        }
+
+        .metismenu .active > a > .fa.plus-minus:before {
+            content: "\f068";
+        }
+
+        .metismenu .collapse {
+            display: none;
+        }
+
+            .metismenu .collapse.in {
+                display: block;
+            }
+
+        .metismenu .collapsing {
+            position: relative;
+            height: 0;
+            overflow: hidden;
+            -webkit-transition-timing-function: ease;
+            transition-timing-function: ease;
+            -webkit-transition-duration: .35s;
+            transition-duration: .35s;
+            -webkit-transition-property: height, visibility;
+            transition-property: height, visibility;
+        }
+
+        #ExtesionMenu {
+            display: block;
+        }
+
+        #side-menu li>ul{
+            display:none;
+        }
     </style>
+    @*<script src="https://ajax.aspnetcdn.com/ajax/jQuery/jquery-1.12.4.min.js"></script>*@
 </head>
 <body>
     <div class="container-fluid">
@@ -190,31 +268,32 @@
                     </ul>*@
             </div>
         </nav>
-        <div class="container-fluid body-content">
+        <div class="container-fluid body-content" style="margin-top:75px">
             <div class="row">
                 @*<div class="col-lg-2 col-md-2 col-sm-2 col-xs-12 same-bx-height" style="position:fixed;left:0;background:#81D4FA;">
-        @*<ul class="nav nav-pills nav-stacked customdivmenu" style="padding-top:15%">
-            <li id="GetAllCategories"><a href='@Url.Action("GetAllCategories", "FrameworxProject")'>Home</a></li>
-            <li id="ShowExtensionCode"><a  href='@Url.Action("ShowExtensionCode", "Extension")'>Extension Code List</a></li>
-            <li id="ShowMyExtensionCode"><a href='@Url.Action("ShowMyExtensionCode", "Extension")'>My Extension Code List</a></li>
-            <li id="ReviewExtensionCodeList"><a href='@Url.Action("ReviewExtensionCodeList", "Extension")'>Review Extension Code List</a></li>
-            <li id="ShowOtherCode"><a  href='@Url.Action("ShowOtherCode", "Extension")'>Other Usefull Code List</a></li>
-            <li id="ShowMyOtherCode"><a href='@Url.Action("ShowMyOtherCode", "Extension")'>My Other Usefull Code List</a></li>
-            <li id="ReviewOtherCodeList"><a href='@Url.Action("ReviewOtherCodeList", "Extension")'>Review Other Usefull Code List</a></li>
-            <li id="AddExtensionCode"><a  href='@Url.Action("AddExtensionCode", "Extension")'>Add Extension Code</a></li>
-            <li id="AddOtherUsefullCode"><a  href='@Url.Action("AddOtherUsefullCode", "Extension")'>Add Other Usefull Code</a></li>
-        </ul>
-        <!-- START LEFT MENU -->
-        <!-- END LEFT MENU  background:#2F4050;-->
-    </div>*@
+                        @*<ul class="nav nav-pills nav-stacked customdivmenu" style="padding-top:15%">
+                            <li id="GetAllCategories"><a href='@Url.Action("GetAllCategories", "FrameworxProject")'>Home</a></li>
+                            <li id="ShowExtensionCode"><a  href='@Url.Action("ShowExtensionCode", "Extension")'>Extension Code List</a></li>
+                            <li id="ShowMyExtensionCode"><a href='@Url.Action("ShowMyExtensionCode", "Extension")'>My Extension Code List</a></li>
+                            <li id="ReviewExtensionCodeList"><a href='@Url.Action("ReviewExtensionCodeList", "Extension")'>Review Extension Code List</a></li>
+                            <li id="ShowOtherCode"><a  href='@Url.Action("ShowOtherCode", "Extension")'>Other Usefull Code List</a></li>
+                            <li id="ShowMyOtherCode"><a href='@Url.Action("ShowMyOtherCode", "Extension")'>My Other Usefull Code List</a></li>
+                            <li id="ReviewOtherCodeList"><a href='@Url.Action("ReviewOtherCodeList", "Extension")'>Review Other Usefull Code List</a></li>
+                            <li id="AddExtensionCode"><a  href='@Url.Action("AddExtensionCode", "Extension")'>Add Extension Code</a></li>
+                            <li id="AddOtherUsefullCode"><a  href='@Url.Action("AddOtherUsefullCode", "Extension")'>Add Other Usefull Code</a></li>
+                        </ul>
+                        <!-- START LEFT MENU -->
+                        <!-- END LEFT MENU  background:#2F4050;-->
+                    </div>*@
                 <div class="col-lg-2 col-md-2 col-sm-2 col-xs-12 same-bx-height" style="position:fixed;left:0;background:#FFFFFF;left: 0px;background:#2F4050;height: 100vh;top: 75px;padding: 0;">
                     <nav class="navbar-default navbar-static-side" role="navigation">
-                        <div class="sidebar-collapse">
+                        <div class="sidebar-collapse" id="main-navi">
                             <ul class="nav metismenu" id="side-menu">
+                                @*<ul class="nav metismenu menu" >*@
                                 <li>
                                     <a href='@Url.Action("GetAllCategories", "FrameworxProject")'><i class="fa fa-user"></i> <span class="nav-label">Frameworx</span> <i class="fa fa-caret-down" style="float:right; font-size:1.2em" class="pull-right" aria-hidden="true"></i></a>
                                     <ul class="nav nav-second-level">
-                                        <li id="GetAllCategories" class="icon-dashboard"><a  href='@Url.Action("GetAllCategories", "FrameworxProject")' class="active">Dashboard</a></li>
+                                        <li id="GetAllCategories" class="icon-dashboard active"><a href='@Url.Action("GetAllCategories", "FrameworxProject")' class="active">Dashboard</a></li>
                                         <li><a href="account-company.html">Product Backlog</a></li>
                                     </ul>
                                 </li>
@@ -230,8 +309,8 @@
                         </div>
                     </nav>
                 </div>
-                <div class="col-lg-10 col-md-10 col-sm-10 col-xs-10 col-lg-offset-2" style="padding:0px">              
-                    <div  class="gray-bg same-bx-height" style="width:100%;min-height:40vh !important;">
+                <div class="col-lg-10 col-md-10 col-sm-10 col-xs-10 col-lg-offset-2" style="padding:0px">
+                    <div class="gray-bg same-bx-height" style="width:100%;min-height:40vh !important;">
                         @RenderBody()
                     </div>
                 </div>
@@ -250,26 +329,29 @@
     @Scripts.Render("~/bundles/bootstrap")
     @RenderSection("scripts", required: false)
 
-    <script src="~/Scripts/jquery-1.10.2.min.js"></script>
+    @*<script src="~/Scripts/jquery-1.10.2.min.js"></script>*@
 
     <!-- Silicus Template scripts Start-->
-    @*<script src="js/jquery-2.1.1.js"></script>*@
-    <script src="~/Scripts/Template-js/bootstrap.min.js"></script>
+
+    @*<script src="~/Scripts/Template-js/bootstrap.min.js"></script>
     <script src="~/Scripts/Template-js/plugins/metisMenu/jquery.metisMenu.js"></script>
+
     <script src="~/Scripts/Template-js/plugins/slimscroll/jquery.slimscroll.min.js"></script>
+    <script src="~/Scripts/Template-js/inspinia.js"></script>*@
+    @*
 
-    <!-- Custom and plugin javascript -->
-    <script src="~/Scripts/Template-js/inspinia.js"></script>
-    <script src="~/Scripts/Template-js/plugins/pace/pace.min.js"></script>
+        <!-- Custom and plugin javascript -->
 
-    <!-- Sweet alert -->
-    <script src="~/Scripts/Template-js/plugins/sweetalert/sweetalert.min.js"></script>
-    <!-- Toastr -->
-    <script src="~/Scripts/Template-js/plugins/toastr/toastr.min.js"></script>
-    <!-- Switchery -->
-    <script src="~/Scripts/Template-js/plugins/switchery/switchery.js"></script>
-    <!-- searchable drop downs -->
-    <script type="text/javascript" src="~/Scripts/Template-js/plugins/selectize/selectize.js"></script>
+        <script src="~/Scripts/Template-js/plugins/pace/pace.min.js"></script>
+
+        <!-- Sweet alert -->
+        <script src="~/Scripts/Template-js/plugins/sweetalert/sweetalert.min.js"></script>
+        <!-- Toastr -->
+        <script src="~/Scripts/Template-js/plugins/toastr/toastr.min.js"></script>
+        <!-- Switchery -->
+        <script src="~/Scripts/Template-js/plugins/switchery/switchery.js"></script>
+        <!-- searchable drop downs -->
+        <script type="text/javascript" src="~/Scripts/Template-js/plugins/selectize/selectize.js"></script>*@
     <!-- Silicus Template scripts end -->
 
     <script>
@@ -280,23 +362,20 @@
             $(".same-bx-height").css("min-height", bxHeight);
             $(".same-bx-height").css("top", topmargin);
             $(".body-content").css("margin-top", topmargin);
-            
+
             var url = window.location.pathname;
             var abc = url.split("/");
             var action = abc[2];
             if (action != undefined) {
                 $('#' + action).addClass('active');
-                if (action == "AddExtensionCode" || action == "ShowMyExtensionCode" || action == "ShowExtensionCode" || action == "ReviewExtensionCodeList")
-                {
-                    $("#ExtesionMenu").css("display","block");
+                if (action == "AddExtensionCode" || action == "ShowMyExtensionCode" || action == "ShowExtensionCode" || action == "ReviewExtensionCodeList") {
+                    $("#ExtesionMenu").css("display", "block");
                 }
-                else
-                {
+                else {
                     $("#OtherCodeMenu").css("display", "block");
                 }
             }
-            else
-            {
+            else {
                 $('#GetAllCategories').addClass('active');
             }
 
@@ -315,6 +394,14 @@
 
             }, 1300);
         });
+
+        $('#side-menu li').find('ul').hide();
+        $('#side-menu li').hover(function () {
+                $(this).find('ul').show(500);
+            },
+            function () {
+                $(this).find('ul').hide();
+            });
     </script>
 </body>
 </html>

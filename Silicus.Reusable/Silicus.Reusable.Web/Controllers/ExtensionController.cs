@@ -500,6 +500,45 @@ namespace Silicus.FrameworxProject.Web.Controllers
             }
         }
 
+        public ActionResult SearchReviewExtensionMethodByTitle(string searchString, int? page)
+        {
+            searchString = searchString.ToLower();
+            var userEmailAddress = User.Identity.Name;
+            User user = new User();
+            user = _commonDataBaseContext.Query<User>().Where(u => u.EmailAddress == userEmailAddress).FirstOrDefault();
+            var ExtensionMethodList = _extensionCodeService.GetAllReviewExtensionSolution(user.ID).ToList();
+            ExtensionMethodList = ExtensionMethodList.Where(s => s.MethodName.ToLower().Contains(searchString)).ToList();
+
+            if (ExtensionMethodList.Count() != 0)
+            {
+                return View("SearchExtensionMethodByTitle", ExtensionMethodList.ToPagedList(page ?? 1, 3));
+            }
+            else
+            {
+                ViewBag.ErrorMessage = "Oops! There is no such Extension Method";
+                return View("SearchExtensionMessage");
+            }
+        }
+
+        public ActionResult SearchMyExtensionMethodByTitle(string searchString, int? page)
+        {
+            searchString = searchString.ToLower();
+            var userEmailAddress = User.Identity.Name;
+            User user = new User();
+            user = _commonDataBaseContext.Query<User>().Where(u => u.EmailAddress == userEmailAddress).FirstOrDefault();
+            var ExtensionMethodList = _extensionCodeService.GetMyAllExtensionSolution(user.ID).ToList();
+            ExtensionMethodList = ExtensionMethodList.Where(s => s.MethodName.ToLower().Contains(searchString)).ToList();
+            if (ExtensionMethodList.Count() != 0)
+            {
+                return View("SearchMyExtensionMethodByTitle", ExtensionMethodList.ToPagedList(page ?? 1, 3));
+            }
+            else
+            {
+                ViewBag.ErrorMessage = "Oops! There is no such Extension Method";
+                return View("SearchExtensionMessage");
+            }
+        }
+
         public ActionResult ShowOtherCode(string sortOrder, int? page)
         {
             ViewBag.CurrentSort = sortOrder;
@@ -679,6 +718,46 @@ namespace Silicus.FrameworxProject.Web.Controllers
         {
             searchString = searchString.ToLower();
             var CodeMethodList = _extensionCodeService.GetAllApprovedOtherCodeList().ToList();
+            CodeMethodList = CodeMethodList.Where(s => s.MethodName.ToLower().Contains(searchString)).ToList();
+            if (CodeMethodList.Count() != 0)
+            {
+                return View(CodeMethodList.ToPagedList(page ?? 1, 3));
+            }
+            else
+            {
+                ViewBag.ErrorMessage = "Oops! There is no such Code Method";
+                return View("SearchExtensionMessage");
+            }
+        }
+
+        public ActionResult SearchMyOtherCodeMethodByTitle(string searchString, int? page)
+        {
+            var userEmailAddress = User.Identity.Name;
+            User user = new User();
+            user = _commonDataBaseContext.Query<User>().Where(u => u.EmailAddress == userEmailAddress).FirstOrDefault();
+
+            searchString = searchString.ToLower();
+            var CodeMethodList = _extensionCodeService.GetMyAllOtherCodeList(user.ID).ToList();
+            CodeMethodList = CodeMethodList.Where(s => s.MethodName.ToLower().Contains(searchString)).ToList();
+            if (CodeMethodList.Count() != 0)
+            {
+                return View(CodeMethodList.ToPagedList(page ?? 1, 3));
+            }
+            else
+            {
+                ViewBag.ErrorMessage = "Oops! There is no such Code Method";
+                return View("SearchExtensionMessage");
+            }
+        }
+
+        public ActionResult SearchReviewOtherCodeMethodByTitle(string searchString, int? page)
+        {
+            searchString = searchString.ToLower();
+            var userEmailAddress = User.Identity.Name;
+            User user = new User();
+            user = _commonDataBaseContext.Query<User>().Where(u => u.EmailAddress == userEmailAddress).FirstOrDefault();
+
+            var CodeMethodList = _extensionCodeService.GetAllReviewOtherCodeList(user.ID).ToList();
             CodeMethodList = CodeMethodList.Where(s => s.MethodName.ToLower().Contains(searchString)).ToList();
             if (CodeMethodList.Count() != 0)
             {
