@@ -29,7 +29,7 @@
                           model.Id(p => p.TagId);
                           model.Field(p => p.TagId).Editable(false);
                       })
-                      .Read(read => read.Action("GetTagsDetails", "Admin"))
+                      .Read(read => read.Action("GetTagsDetails", "Tag"))
                       .PageSize(10)
                   )
                   .Pageable()
@@ -52,7 +52,7 @@
                             <br />
                             <div class="row">
                                 <div class="col-md-3 col-md-push-1" style="float: right; padding-right: 0px; margin-right: -22px;">
-                                    <a href='/Admin/TagAdd' class='k-button k-button-icontext k-grid-add'><span class='k-icon k-add'></span>Add Tag</a>
+                                    <a href='/Tag/Add' class='k-button k-button-icontext k-grid-add'><span class='k-icon k-add'></span>Add Tag</a>
                                 </div>
                             </div>
                         </div>

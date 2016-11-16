@@ -156,6 +156,13 @@
             grid.dataSource.filter({ field: "TestStatus", operator: "eq", value: value });
         }
     }
+
+    function AddNew()
+    {
+        window.location.href = "/User/CandidateAdd";
+
+        return false;
+    }
 </script>
 <div>
 
@@ -202,7 +209,7 @@
                   })
 
                       .Read(read => read.Action("GetCandidateDetails", "User"))
-                  .Create(update => update.Action("CreateUser", "User"))
+            //.Create(update => update.Action("CreateUser", "User"))
                   .Update(update => update.Action("UpdateUser", "User"))
                   .Destroy(update => update.Action("DeleteUser", "User"))
               )
@@ -228,10 +235,16 @@
                                     </div>
                                 </div>
                             </div>
+                            <div class="row">
+                                <div class="col-md-3 col-md-push-1" style="float: right; padding-right: 0px; margin-right: -22px;">
+                                    <a href='#' onclick='AddNew();' class='k-button k-button-icontext k-grid-add'><span class='k-icon k-add'></span>Add Candidate</a>
+                                </div>
+                            </div>
+
                         </div>
 
                     </text>);
-                }).Editable(ed => ed.Mode(GridEditMode.InLine))
+                })
 
         )
 

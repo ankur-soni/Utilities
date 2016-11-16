@@ -8,7 +8,7 @@
 
 <div class="main-content">
     <h2>New Tag</h2>        
-    @using (Html.BeginForm("SaveTag", "Admin"))
+    @using (Html.BeginForm("Save", "Tag"))
     {                
         <div class="fluid mt20">
             <div class="row">
@@ -75,7 +75,7 @@
                 });
 
                 function onCancelClick() {
-                    window.location = '@Url.Action("TagList", "Admin")';                   
+                    window.location = '@Url.Action("List", "Tag")';                   
                 }                
 
                 function validateTag()

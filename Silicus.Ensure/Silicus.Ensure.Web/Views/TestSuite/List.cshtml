@@ -23,7 +23,7 @@
                       columns.Bound(p => p.Duration).Width(50);
                       columns.Bound(p => p.PositionName).Width(150).Title("Position");
                       columns.Bound(p => p.PrimaryTagNames).Width(350).Title("Tags");
-                      columns.Bound("").ClientTemplate("<a class='k-button k-button-icontext k-grid-add' href='\\#' onclick='return getTestSuiteId(#=TestSuiteId#)' data-toggle='modal' data-target='\\#myModal'><span class='k-icon k-add'></span>Activate Test Suite</a><a class='k-button k-button-icontext k-grid-add' href='" + Url.Action("TestSuiteCopy", "Admin") + "?testSuiteId=#=TestSuiteId#'><span class='k-icon k-add'></span>Copy</a><a class='k-button k-button-icontext k-grid-edit' href='" + Url.Action("TestSuiteAdd", "Admin") + "?testSuiteId=#=TestSuiteId#'><span class='k-icon k-edit'></span>Edit</a><a id='testSuiteDel' class='k-button k-button-icontext k-grid-delete' href='\\#' onclick='return deleteTestSuite(#=TestSuiteId#)'><span class='k-icon k-delete'></span>Delete</a>").Title("Actions");       //href='" + Url.Action("TestSuiteDelete", "Admin") + "?testSuiteId=#=TestSuiteId#'
+                      columns.Bound("").ClientTemplate("<a class='k-button k-button-icontext k-grid-add' href='\\#' onclick='return getTestSuiteId(#=TestSuiteId#)' data-toggle='modal' data-target='\\#myModal'><span class='k-icon k-add'></span>Activate Test Suite</a><a class='k-button k-button-icontext k-grid-add' href='" + Url.Action("Copy", "TestSuite") + "?testSuiteId=#=TestSuiteId#'><span class='k-icon k-add'></span>Copy</a><a class='k-button k-button-icontext k-grid-edit' href='" + Url.Action("Add", "TestSuite") + "?testSuiteId=#=TestSuiteId#'><span class='k-icon k-edit'></span>Edit</a><a id='testSuiteDel' class='k-button k-button-icontext k-grid-delete' href='\\#' onclick='return deleteTestSuite(#=TestSuiteId#)'><span class='k-icon k-delete'></span>Delete</a>").Title("Actions");       //href='" + Url.Action("TestSuiteDelete", "Admin") + "?testSuiteId=#=TestSuiteId#'
                   })
                 .DataSource(dataSource => dataSource
                   .Ajax()
@@ -32,7 +32,7 @@
                       model.Id(p => p.TestSuiteId);
                       model.Field(p => p.TestSuiteId).Editable(false);
                   })
-                  .Read(read => read.Action("GetTestSuiteDetails", "Admin"))
+                  .Read(read => read.Action("GetTestSuiteDetails", "TestSuite"))
                   .PageSize(10)
               )
               .Pageable()
@@ -55,7 +55,7 @@
                             <br />
                             <div class="row">
                                 <div class="col-md-3 col-md-push-1" style="float: right; padding-right: 0px; margin-right: -22px;">
-                                    <a href='/Admin/TestSuiteAdd' class='k-button k-button-icontext k-grid-add'><span class='k-icon k-add'></span>Add Test Suite</a>
+                                    <a href='/TestSuite/Add' class='k-button k-button-icontext k-grid-add'><span class='k-icon k-add'></span>Add Test Suite</a>
                                 </div>
                             </div>
                         </div>
@@ -153,7 +153,7 @@
         $('#DivUsers').html('');
         $.ajax({
             type: "POST",
-            url: '@Url.Action("TestSuiteUserView", "Admin")',
+            url: '@Url.Action("TestSuiteUserView", "TestSuite")',
             data: { testSuiteId: testSuiteId },
             success: function (returndata) {                                 
                     $('#DivUsers').html(returndata);
