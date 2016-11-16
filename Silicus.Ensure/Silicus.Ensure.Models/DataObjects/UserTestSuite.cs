@@ -15,7 +15,7 @@ namespace Silicus.Ensure.Models.DataObjects
 
         public int PracticalCount { get; set; }
 
-        public int MaxMarks { get; set; }
+        public int MaxScore { get; set; }
 
         public int EvaluatedMark { get; set; }
 
@@ -26,11 +26,5 @@ namespace Silicus.Ensure.Models.DataObjects
         public bool IsActive { get; set; }
 
         public DateTime? CreatedDate { get; set; }
-
-        public int? CreatedBy { get; set; }
-
-        public DateTime? ModifiedDate { get; set; }
-
-        public int? ModifiedBy { get; set; }
     }
 }
