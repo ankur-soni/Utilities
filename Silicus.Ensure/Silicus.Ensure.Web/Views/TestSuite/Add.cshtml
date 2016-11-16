@@ -9,7 +9,7 @@
 
 <div class="main-content">
     <h2>@ViewBag.Type Test Suite</h2>
-    @using (Html.BeginForm("TestSuiteSave", "Admin"))
+    @using (Html.BeginForm("Save", "TestSuite"))
     {
         @Html.HiddenFor(model => model.TestSuiteId)
         @Html.HiddenFor(model => model.IsCopy)
@@ -38,7 +38,7 @@
                     }).Events(ev => ev.Change("onDurationChange")))
                 </div>  
             </div>
-            <br />
+            @*<br />
             <div class="row">
                 <div class="col-md-4">
                     @Html.LabelFor(model => model.ObjectiveQuestionsCount):
@@ -55,7 +55,7 @@
                 <div class="col-md-8">
                     @Html.TextBoxFor(model => model.PracticalQuestionsCount, new { @class = "form-control", @readonly = "readonly" })
                 </div>
-            </div>
+            </div>*@
             <br />
             <div class="row">
                 <div class="col-md-4">
@@ -108,7 +108,7 @@
                 </div>
             </div>
             <br/>
-            <div class="row">
+            @*<div class="row">
                 <div class="col-md-4">
                     @Html.LabelFor(model => model.SecondaryTagIds):
                 </div>
@@ -121,7 +121,7 @@
                     .HtmlAttributes(new { style = "width: 100%" }))
                 </div>
             </div>
-            <br />
+            <br />*@
             <div class="row">
                 <div class="col-md-6"></div>
                 <div class="col-md-2 col-md-offset-4">
@@ -155,7 +155,7 @@
     });
 
     function onCancelClick() {
-        window.location = '@Url.Action("TestSuiteList", "Admin")';
+        window.location = '@Url.Action("List", "TestSuite")';
     }
 
     function onDurationChange() {

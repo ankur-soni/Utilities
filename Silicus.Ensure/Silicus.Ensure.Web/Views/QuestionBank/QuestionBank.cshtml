@@ -23,7 +23,7 @@
                   columns.Bound(q => q.Tag).Width(150).Title("Tags");
                   columns.Bound(q => q.Competency).Width(100);
                   columns.Bound(q => q.Id).ClientTemplate(@"
-                    <a href='/Admin/EditQuestion?QuestionId=#=Id#' class='k-button k-button-icontext k-grid-edit'><span class='k-icon k-edit'></span>Edit</a>
+                    <a href='/QuestionBank/EditQuestion?QuestionId=#=Id#' class='k-button k-button-icontext k-grid-edit'><span class='k-icon k-edit'></span>Edit</a>
                     <button onclick='DeleteQuestion(#=Id#,this)' class='k-button k-button-icontext k-grid-delete'><span class='k-icon k-delete'></span>Delete</button>").Title("Actions").Width(150);
               })
               .ToolBar(toolbar =>
@@ -70,7 +70,7 @@
                             </div>
 
                             <div class="col-md-3 col-md-push-1" style="float: right; padding-right: 0px; margin-right: -22px;">
-                                <a href='/Admin/AddQuestions?QuestionId=0' class='k-button k-button-icontext k-grid-add' style="width: 50% !important;"><span class='k-icon k-add'></span>Add Question</a>
+                                <a href='/QuestionBank/AddQuestions?QuestionId=0' class='k-button k-button-icontext k-grid-add' style="width: 50% !important;"><span class='k-icon k-add'></span>Add Question</a>
                             </div>
                         </div>
                     </div>
@@ -169,7 +169,7 @@
 
     function OnOK() {
         $.ajax({
-            url: '/Admin/DeleteQuestion',
+            url: '/QuestionBank/DeleteQuestion',
             dataType: "json",
             type: "DELETE",
             contentType: 'application/json; charset=utf-8',

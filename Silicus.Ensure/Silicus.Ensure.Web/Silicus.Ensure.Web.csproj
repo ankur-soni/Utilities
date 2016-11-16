@@ -324,9 +324,14 @@
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\AdminController.cs" />
+    <Compile Include="Controllers\CandidateController.cs" />
     <Compile Include="Controllers\ErrorController.cs" />
+    <Compile Include="Controllers\PositionsController.cs" />
     <Compile Include="Controllers\ProjectController.cs" />
+    <Compile Include="Controllers\QuestionBankController.cs" />
     <Compile Include="Controllers\RoleController.cs" />
+    <Compile Include="Controllers\TagController.cs" />
+    <Compile Include="Controllers\TestSuiteController.cs" />
     <Compile Include="Controllers\UserController.cs" />
     <Compile Include="CookieHelper.cs" />
     <Compile Include="Filters\AuditAttribute.cs" />
@@ -397,6 +402,7 @@
     <Content Include="Content\css\Kendo\2014.1.416\Default\loading.gif" />
     <Content Include="Content\css\Kendo\2014.1.416\Default\loading-image.gif" />
     <Content Include="Content\css\Kendo\2014.1.416\Default\sprite.png" />
+    <Content Include="Content\Images\digits.png" />
     <Content Include="Content\Images\profile.png" />
     <Content Include="Content\Images\spriteicons.png" />
     <Content Include="Content\themes\base\accordion.css" />
@@ -445,6 +451,7 @@
     <Content Include="Scripts\jquery-ui-1.11.4.js" />
     <Content Include="Scripts\jquery-ui-1.11.4.min.js" />
     <None Include="Scripts\jquery.validate-vsdoc.js" />
+    <Content Include="Scripts\jquery.countdown.js" />
     <Content Include="Scripts\jquery.unobtrusive-ajax.js" />
     <Content Include="Scripts\jquery.unobtrusive-ajax.min.js" />
     <Content Include="Scripts\jquery.validate.js" />
@@ -627,7 +634,7 @@
     <Content Include="Scripts\toastr.js" />
     <Content Include="Scripts\toastr.min.js" />
     <Content Include="Scripts\_references.js" />
-    <Content Include="Views\Admin\TestSuiteList.cshtml">
+    <Content Include="Views\TestSuite\List.cshtml">
       <SubType>Code</SubType>
     </Content>
     <Content Include="Web.config">
@@ -668,21 +675,29 @@
     <Content Include="Views\Admin\_partialViewUser.cshtml" />
     <Content Include="Views\Shared\EditorTemplates\ComboBox.cshtml" />
     <Content Include="Views\Account\ExternalLoginConfirmation.cshtml" />
-    <Content Include="Views\Admin\AddQuestions.cshtml" />
+    <Content Include="Views\QuestionBank\AddQuestions.cshtml" />
     <Content Include="Views\User\CandidateTest.cshtml" />
     <Content Include="Views\Admin\_partialViewTags.cshtml" />
     <Content Include="Views\Admin\_partialViewSkill.cshtml" />
-    <Content Include="Views\Admin\TagAdd.cshtml" />
-    <Content Include="Views\Admin\TestSuiteAdd.cshtml" />
-    <Content Include="Views\Admin\TagList.cshtml" />
+    <Content Include="Views\Tag\Add.cshtml" />
+    <Content Include="Views\TestSuite\Add.cshtml" />
+    <Content Include="Views\Tag\List.cshtml" />
     <Content Include="Views\Admin\Candidates.cshtml" />
     <Content Include="Views\Admin\_partialViewCandidates.cshtml" />
     <Content Include="Views\Admin\SelectCandidatesSuit.cshtml" />
-    <Content Include="Views\Admin\_TestSuiteAssign.cshtml" />
+    <Content Include="Views\TestSuite\_TestSuiteAssign.cshtml" />
     <Content Include="Views\Admin\QuestionBank.cshtml" />
+
+    <Content Include="Views\QuestionBank\QuestionBank.cshtml" />
     <Content Include="Views\Admin\Positions.cshtml" />
     <Content Include="Views\Admin\ViewQuestion.cshtml" />
     <Content Include="Views\Shared\_PdfLayout.cshtml" />
+    <Content Include="Views\Shared\_LayoutCandidate.cshtml" />
+    <Content Include="Views\Candidate\OnlineTest.cshtml" />
+    <Content Include="Views\Candidate\Welcome.cshtml" />
+    <Content Include="Views\Positions\Positions.cshtml" />
+    <Content Include="Views\Admin\CandidateAdd.cshtml" />
+    <Content Include="Views\Candidate\_partialViewQuestion.cshtml" />
     <None Include="Web.Integration.config">
       <DependentUpon>Web.config</DependentUpon>
       <SubType>Designer</SubType>
@@ -690,6 +705,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="CandidateResume\" />
     <Folder Include="Content\js\" />
     <Folder Include="Scripts\Custom\" />
     <Folder Include="ViewModel\" />

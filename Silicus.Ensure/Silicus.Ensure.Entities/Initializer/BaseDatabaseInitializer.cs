@@ -78,14 +78,14 @@ namespace Silicus.Ensure.Entities.Initializer
 
             context.Add(new Position
             {
-                PositionName = "Dot Net Developer"                
-            });            
+                PositionName = "Dot Net Developer"
+            });
 
             context.Add(new Tags
             {
                 TagName = "ASP.NET",
                 Description = "ASP.Net related questions",
-                IsActive=true
+                IsActive = true
             });
 
             context.Add(new Tags
@@ -98,13 +98,13 @@ namespace Silicus.Ensure.Entities.Initializer
             context.Add(new TestSuite
             {
                 TestSuiteName = "Dot Net Developer",
-                Position=1,
-                Duration=30,
-                Competency=2,
-                IsDeleted=false,
-                PrimaryTags="1",
-                SecondaryTags="2",
-                
+                Position = 1,
+                Duration = 30,
+                Competency = 2,
+                IsDeleted = false,
+                PrimaryTags = "1",
+                SecondaryTags = "2",
+
             });
 
             context.Add(new TestSuite
@@ -132,6 +132,7 @@ namespace Silicus.Ensure.Entities.Initializer
                 Tags = "1,2",
                 Competency = 1,
                 Duration = 1,
+                Marks = 1,
                 IsPublishd = true,
                 IsDeleted = false,
                 CreatedOn = DateTime.Now,
@@ -154,6 +155,7 @@ namespace Silicus.Ensure.Entities.Initializer
                 Tags = "1",
                 Competency = 1,
                 Duration = 1,
+                Marks = 2,
                 IsPublishd = true,
                 IsDeleted = false,
                 CreatedOn = DateTime.Now,
@@ -173,7 +175,7 @@ namespace Silicus.Ensure.Entities.Initializer
 
             context.Database.ExecuteSqlCommand(modifiedSqlScript);
         }
-        
+
         private static void DropExistingConnectionToDatabase(SilicusIpDataContext context, string databaseName)
         {
             var sqlContent = Content(DropConnectionScript);
