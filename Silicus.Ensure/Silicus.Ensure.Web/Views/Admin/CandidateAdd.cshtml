@@ -1,4 +1,4 @@
-﻿@model Silicus.Ensure.Models.DataObjects.User
+﻿@model Silicus.Ensure.Web.Models.UserViewModel
 @using Kendo.Mvc.UI;
 @{
     ViewBag.Title = "CandidateAdd";
@@ -52,6 +52,7 @@
             </div>
             <div class="col-md-8">
                 @(Html.Kendo().DropDownListFor(m => m.Gender)
+             .OptionLabel("--Select--")
                     .Name("Gender")
                     .DataTextField("Text")
                     .DataValueField("Value")
@@ -68,7 +69,7 @@
                         }).HtmlAttributes(new { style = "width: 100%" }))
             </div>
         </div>
-        <br/>
+        <br />
         <div class="col-md-4">
             @Html.LabelFor(model => model.Department)<b style="color:Red;">*</b>:
         </div>
@@ -76,11 +77,23 @@
             @Html.TextBoxFor(model => model.Department, new { @class = "form-control" })
         </div>
         <br />
-        <div class="col-md-4">
-            @Html.LabelFor(model => model.Position)<b style="color:Red;">*</b>:
-        </div>
-        <div class="col-md-8">
-            @Html.TextBoxFor(model => model.Position, new { @class = "form-control" })
+        @*<div class="col-md-4">
+                @Html.LabelFor(model => model.Position)<b style="color:Red;">*</b>:
+            </div>
+            <div class="col-md-8">
+                @Html.TextBoxFor(model => model.Position, new { @class = "form-control" })
+            </div>*@
+        <div class="row">
+            <div class="col-md-4">
+                @Html.LabelFor(model => model.Position)<b style="color:Red;">*</b>:
+            </div>
+            <div class="col-md-8">
+                @(Html.Kendo().DropDownListFor(model => model.Position)
+                    .OptionLabel("--Select--")
+                    .BindTo(Model.PositionList)
+                    .DataTextField("PositionName")
+                .DataValueField("PositionName"))
+            </div>
         </div>
         <br />
         <div class="col-md-4">
@@ -90,7 +103,13 @@
             @Html.TextBoxFor(model => model.Experience, new { @class = "form-control" })
         </div>
         <br />
-
+        <div class="col-md-4">
+            @Html.LabelFor(model => model.Address)<b style="color:Red;">*</b>:
+        </div>
+        <div class="col-md-8">
+            @Html.TextBoxFor(model => model.Address, new { @class = "form-control" })
+        </div>
+        <br />
         <div class="col-md-8">
             Upload Resume:
         </div>
@@ -124,7 +143,6 @@
 
                 $("#btnSave").click(function (e) {
 
-                    debugger;
                     if (validateTag() == false) {
                         e.preventDefault();
                     }
@@ -192,9 +210,3 @@
         </style>
     }
 </div>
-
-
-
-
-
-

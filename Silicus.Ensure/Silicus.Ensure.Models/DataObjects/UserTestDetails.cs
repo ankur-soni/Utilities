@@ -8,10 +8,16 @@ namespace Silicus.Ensure.Models.DataObjects
         [Key]
         public int TestDetailId { get; set; }
 
+        public int UserTestSuiteId { get; set; }
+
         public int QuestionId { get; set; }
 
-        public int Score { get; set; }
+        public int Answer { get; set; }
 
-        public virtual UserTestSuite userTestSuite { get; set; }
+        public int Mark { get; set; }
+
+        public int? MarkGivenBy { get; set; }
+
+        public DateTime? MarkGivenDate { get; set; }
     }
 }

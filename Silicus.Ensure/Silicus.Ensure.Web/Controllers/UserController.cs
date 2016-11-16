@@ -204,7 +204,7 @@ namespace Silicus.Ensure.Web.Controllers
                 vuser.TestStatus = "UnAssigned";
             }
             vuser.NewPassword = vuser.FirstName.ToUpper() + vuser.LastName + "@123456";
-            vuser.ConfirmPassword = vuser.FirstName + vuser.LastName + "@123456";
+            vuser.ConfirmPassword = vuser.FirstName.ToUpper() + vuser.LastName + "@123456";
             vuser.Address = "Pune";
             var userResult = await UserManager.CreateAsync(user, vuser.NewPassword);
             if (userResult.Succeeded)

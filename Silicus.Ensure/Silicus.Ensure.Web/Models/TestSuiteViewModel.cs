@@ -25,6 +25,7 @@ namespace Silicus.Ensure.Web.Models
         [Required(ErrorMessage = "Competency is required!")]
         public Int32 Competency { get; set; }
 
+        [Display(Name="Tags")]
         public List<string> PrimaryTagIds { get; set; }
 
         public List<string> SecondaryTagIds { get; set; }

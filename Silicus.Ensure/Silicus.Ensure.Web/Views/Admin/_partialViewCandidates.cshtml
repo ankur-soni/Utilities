@@ -183,7 +183,7 @@
                   //columns.Bound(p => p.isActive).Width(50);
                   columns.Bound(p => p.Email).Width(50);
                   columns.Bound(p => p.TestStatus).Width(50);
-                  columns.Bound(p => p.Role).Width(110).Title("Role").EditorTemplateName("ComboBox").HtmlAttributes(new { value = "User" });
+                  //columns.Bound(p => p.Role).Width(110).Title("Role").EditorTemplateName("ComboBox").HtmlAttributes(new { value = "User" });
                   columns.Command(command => { command.Edit(); command.Destroy(); }).Width(160);
                   columns.Bound(c => c.UserId).ClientTemplate(@"
 

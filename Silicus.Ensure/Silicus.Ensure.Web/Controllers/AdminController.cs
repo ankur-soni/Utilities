@@ -266,6 +266,7 @@ namespace Silicus.Ensure.Web.Controllers
             DataSourceRequest.Page = 1;
             DataSourceRequest.PageSize = 10;
 
+            var objectiveCount = new object();
             var updateCurrentUsers = _userService.GetUserDetails().Where(model => model.UserId == Userid).FirstOrDefault();
             if (updateCurrentUsers != null)
             {
@@ -274,6 +275,18 @@ namespace Silicus.Ensure.Web.Controllers
 
                 if (SuiteId > 0 && Userid > 0)
                 {
+                    var ViewPrimaryTagList = _testSuiteService.GetTestSuiteDetails().Where(q => q.TestSuiteId == SuiteId).Select(p => p.PrimaryTags).ToList();
+
+                    foreach (var tagid in ViewPrimaryTagList)
+                    {
+                        string[] values = tagid.Split(',');
+                        for (int i = 0; i < values.Length; i++)
+                        {
+                            values[i] = values[i].Trim();
+                            objectiveCount = _questionService.GetQuestion().Where(p => p.Tags.Contains(values[i]) && p.QuestionType == 1).ToList().Count();
+                        }
+                    }
+
                     UserTestSuite newusertestsuit = new UserTestSuite
                     {
                         UserId = Userid,
@@ -283,6 +296,25 @@ namespace Silicus.Ensure.Web.Controllers
                         MaxScore = 70,
                         CreatedDate = DateTime.Now,
                     };
+                    foreach(var tagid in ViewPrimaryTagList)
+                    {
+                        string[] values = tagid.Split(',');
+                        for (int i = 0; i < values.Length; i++)
+                        {
+                            values[i] = values[i].Trim();
+                           var questionList = _questionService.GetQuestion().Where(p => p.Tags.Contains(values[i])).Select(q=>q.Id).ToList();
+                           foreach (var questionId in questionList)
+                           {
+                               UserTestDetails userTestDetails = new UserTestDetails
+                               {
+                                   UserTestSuiteId = SuiteId,
+                                   QuestionId = Convert.ToInt32(questionId),
+                                   Score = 30
+                               };
+                           }
+                        }
+                    }
+                    
 
                     _testSuiteService.AddUserTestSuite(newusertestsuit);
                     updateCurrentUsers.TestStatus = "Assigned";
@@ -302,7 +334,10 @@ namespace Silicus.Ensure.Web.Controllers
 
         public ActionResult CandidateAdd()
         {
-            return View();
+            UserViewModel currUser = new UserViewModel();
+            var positionDetails = _positionService.GetPositionDetails().OrderBy(model => model.PositionName);
+            currUser.PositionList = positionDetails.ToList();
+            return View(currUser);
         }
 
         #endregion
@@ -463,7 +498,7 @@ namespace Silicus.Ensure.Web.Controllers
 
         public ActionResult TestSuitUsers([DataSourceRequest] DataSourceRequest request)
         {           
-            int testSuiteId=Convert.ToInt32(TempData["TesSuiteId"]);
+            int testSuiteId = Convert.ToInt32(TempData["TesSuiteId"]);
             var userlist = _userService.GetUserDetails().Where(model => model.Role == "USER").OrderByDescending(model => model.UserId).ToArray();           
             var viewModels = _mappingService.Map<User[], UserViewModel[]>(userlist);
             DataSourceResult result = viewModels.ToDataSourceResult(request);
@@ -474,9 +509,9 @@ namespace Silicus.Ensure.Web.Controllers
         {
             var testSuiteDetails = _testSuiteService.GetTestSuiteDetails().Where(model => model.TestSuiteId == testSuiteId && model.IsDeleted == false).SingleOrDefault();
             UserTestSuite userTestSuite;
-            if(!string.IsNullOrWhiteSpace(users))
+            if (!string.IsNullOrWhiteSpace(users))
             {
-                foreach(var item in users.Split(','))
+                foreach (var item in users.Split(','))
                 {
                     userTestSuite = new UserTestSuite();
                     userTestSuite.UserId = Convert.ToInt32(item);
@@ -491,7 +526,7 @@ namespace Silicus.Ensure.Web.Controllers
             }
         }
 
-        public ActionResult TestSuiteUserView(int testSuiteId=0)
+        public ActionResult TestSuiteUserView(int testSuiteId = 0)
         {
             TempData["TesSuiteId"] = testSuiteId;
             return PartialView("_TestSuiteAssign");
@@ -499,7 +534,7 @@ namespace Silicus.Ensure.Web.Controllers
 
         public void ActiveteSuite(UserTestSuite userTestSuite, TestSuite testSuite)
         {
-            Int32 userTestSuiteId=_testSuiteService.AddUserTestSuite(userTestSuite);
+            Int32 userTestSuiteId = _testSuiteService.AddUserTestSuite(userTestSuite);
             if (!string.IsNullOrWhiteSpace(testSuite.SecondaryTags))
                 testSuite.PrimaryTags += "," + testSuite.SecondaryTags;
             Int32[] tags = testSuite.PrimaryTags.Split(',').Select(Int32.Parse).ToArray();
@@ -566,6 +601,16 @@ namespace Silicus.Ensure.Web.Controllers
             return pdf;
 
           //  return View(QList);
+        }
+
+        public ActionResult SubmittedTest(int canditateId)
+        {
+            var userDetails = _userService.GetUserDetails().Where(x => x.UserId == canditateId).FirstOrDefault();
+            //var testSuitDetails=_testSuiteService.GetTestSuiteDetails().Where(x=>x.)
+            SubmittedTestViewModel submittedTestViewModel = new Models.SubmittedTestViewModel();
+            submittedTestViewModel.FirstName = userDetails.FirstName;
+            submittedTestViewModel.LastName = userDetails.LastName;
+            return View(submittedTestViewModel);
         }
     }
 
