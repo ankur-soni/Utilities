@@ -14,10 +14,10 @@ namespace Silicus.Ensure.Models.DataObjects
 
         public int Answer { get; set; }
 
-        public int Score { get; set; }
+        public int Mark { get; set; }
 
-        public int? ScoreGivenBy { get; set; }
+        public int? MarkGivenBy { get; set; }
 
-        public DateTime? ScoreGivenDate { get; set; }
+        public DateTime? MarkGivenDate { get; set; }
     }
 }
