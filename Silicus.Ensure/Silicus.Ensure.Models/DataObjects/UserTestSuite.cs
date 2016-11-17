@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 namespace Silicus.Ensure.Models.DataObjects
 {
@@ -26,5 +27,7 @@ namespace Silicus.Ensure.Models.DataObjects
         public bool IsActive { get; set; }
 
         public DateTime? CreatedDate { get; set; }
+
+        public virtual ICollection<UserTestDetails> userTestDetailsCollection { get; set; }
     }
 }

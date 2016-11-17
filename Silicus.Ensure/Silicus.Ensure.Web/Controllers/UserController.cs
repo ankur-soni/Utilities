@@ -145,7 +145,7 @@ namespace Silicus.Ensure.Web.Controllers
         /// <returns></returns>
         public async Task<ActionResult> GetCandidateDetails([DataSourceRequest] DataSourceRequest request)
         {
-            var userlist = _userService.GetUserDetails().Where(p => p.Role.ToLower() == "candidate").ToArray();
+            var userlist = _userService.GetUserDetails().Where(p => p.Role.ToLower() == "user").ToArray();
 
             var viewModels = _mappingService.Map<User[], UserViewModel[]>(userlist);
 
@@ -221,7 +221,7 @@ namespace Silicus.Ensure.Web.Controllers
                     string fl = path.Substring(path.LastIndexOf("\\"));
                     string[] split = fl.Split('\\');
                     string newpath = split[1];
-                    string resumepath = "/CandidateResume/" + newpath;                    
+                    string resumepath = "/CandidateResume/" + newpath;
                     vuser.ResumePath = resumepath;
                 }
                 // }

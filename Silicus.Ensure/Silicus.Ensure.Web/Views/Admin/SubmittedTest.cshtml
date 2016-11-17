@@ -4,25 +4,218 @@
 @{
     ViewBag.Title = "Submitted Test";
     Layout = "~/Views/Shared/_Layout.cshtml";
+    int i = 0;
 }
 
 
 <div class="main-content">
-    <h2>Submitted test result of @Model.FirstName @Model.LastName</h2>
-    <div class="fluid mt20">
-        <fieldset>
-            <legend>Personalia:</legend>
-            <div class="row">
-                <div class="alert alert-success" id="messageDiv">
-                    <strong>Error!</strong> <span id="messageContent">@Html.ValidationSummary(true)</span>
-                </div>
-                <div class="col-md-4">
-                    @Html.LabelFor(m => m.TestSuitName)<b style="color:Red;">*</b>:
-                </div>
-                <div class="col-md-8">
-                    @Html.DisplayFor(m => m.TestSuitName, new { @class = "form-control" })
-                </div>
+    <div style="overflow:hidden">
+        @using (Html.BeginForm("AddQuestions", "QuestionBank"))
+        {
+            <h2>Submitted test result of @Model.FirstName @Model.LastName</h2>
+            <div class="fluid mt20">
+                <fieldset>
+                    <legend>Test suit details:</legend>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="col-md-6">
+                                <div class="col-md-6">
+                                    @Html.LabelFor(m => m.TestSuitName):
+                                </div>
+                                <div class="col-md-6">
+                                    @Html.DisplayFor(m => m.TestSuitName, new { @class = "form-control" })
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="col-md-6">
+                                    @Html.LabelFor(m => m.Postion):
+                                </div>
+                                <div class="col-md-6">
+                                    @Html.DisplayFor(m => m.Postion, new { @class = "form-control" })
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="col-md-6">
+                                <div class="col-md-6">
+                                    @Html.LabelFor(m => m.TotalMakrs):
+                                </div>
+                                <div class="col-md-6">
+                                    @Html.DisplayFor(m => m.TotalMakrs, new { @class = "form-control" })
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="col-md-6">
+                                    @Html.LabelFor(m => m.Duration):
+                                </div>
+                                <div class="col-md-6">
+                                    @Html.DisplayFor(m => m.Duration, new { @class = "form-control" })
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </fieldset>
             </div>
-        </fieldset>
+            <div class="fluid mt20">
+                <fieldset>
+                    <legend>Objective question Result:</legend>
+                    <div class="row">
+
+                        <div class="col-md-12">
+                            <div class="col-md-4">
+                                Objective question result:
+                            </div>
+                            <div class="col-md-7">
+                                <input class="form-control valid" data-val="true"
+                                       id="ObjectiveQuestionResult" name="ObjectiveQuestionResult" type="text"
+                                       value="34" tyle="width:87%;" readonly="readonly" />
+                            </div>
+                            <div class="col-md-4">
+                                Objective question Marks:
+                            </div>
+                            <div class="col-md-7">
+                                <input class="form-control valid" data-val="true"
+                                       id="ObjectiveQuestionMarks" name="ObjectiveQuestionMarks" type="text"
+                                       value="34" tyle="width:87%;" readonly="readonly" />
+                            </div>
+                        </div>
+                    </div>
+                </fieldset>
+            </div>
+            <div class="fluid mt20">
+                <fieldset>
+                    <legend>Objective question set:</legend>
+                    <div class="row">
+                        <table class="table table-bordered" style="width: 96%;    margin-left: 2%;">
+                            <thead>
+                                <tr>
+                                    <th>Question Description</th>
+                                    <th>Submitted Answer</th>
+                                    <th>Correct Answer</th>
+                                    <th>Result</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var oQuestion in Model.objectiveQuestionList)
+                                {
+                                <tr>
+                                    <td>@Html.Raw(@oQuestion.QuestionDescription)</td>
+                                    <td>@oQuestion.SubmittedAnswer</td>
+                                    <td>@oQuestion.CorrectAnswer</td>
+                                    <td>@oQuestion.Result</td>
+                                </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </fieldset>
+            </div>
+
+            <div class="fluid mt20">
+                <fieldset>
+                    <legend>Practicle question set:</legend>
+                    <div class="row">
+                        @foreach (var pQuestion in Model.practicalQuestionList)
+                        {
+                            i = i + 1;
+
+                        <div class="col-md-12">
+                            <div class="col-md-4">
+                                Practical question @i:
+                            </div>
+                            <div class="col-md-8">
+                                @Html.Raw(pQuestion.QuestionDescription)
+                            </div>
+                        </div>
+
+                        <div class="col-md-12">
+                            <div class="col-md-4">
+                                Submitted Answer
+                            </div>
+                            <div class="col-md-8">
+                                <textarea cols="20" id="@Html.Raw(pQuestion.SubmittedAnswer + i)" name="@Html.Raw(pQuestion.SubmittedAnswer + i)"
+                                          rows="5" data-role="editor" disabled="disabled" readonly="readonly" autocomplete="off" style="width:87%" class="k-content k-raw-content">
+                                    @pQuestion.SubmittedAnswer
+                                </textarea>
+
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="col-md-4">
+                                Weightage Marks
+                            </div>
+                            <div class="col-md-8">
+                                <input class="form-control valid" data-val="true"
+                                       id="@Html.Raw("Weightage" + i)" name="@Html.Raw("Weightage" + i)" type="text"
+                                       value="@pQuestion.Weightage" aria-required="true" style="width:87%;" readonly="readonly"
+                                       aria-invalid="false" aria-describedby="Emarks-error">
+
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="col-md-4">
+                                Evaluated Marks
+                            </div>
+                            <div class="col-md-8">
+                                <input class="form-control valid" data-val="true" data-val-required="Evaluated marks is required!"
+                                       id="@Html.Raw("Emarks"+i)" name="@Html.Raw("Emarks"+i)" type="text"
+                                       value="" aria-required="true" style="width:87%"
+                                       aria-invalid="false" aria-describedby="Emarks-error">
+
+                            </div>
+                        </div>
+
+                        }
+                    </div>
+                </fieldset>
+            </div>
+            <div class="fluid mt20">
+                <fieldset>
+                    <legend>Evaluation Result:</legend>
+                    <div class="row">
+
+                        <div class="col-md-12">
+                            <div class="col-md-4">
+                                Total marks obtained:
+                            </div>
+                            <div class="col-md-8">
+                                35
+                            </div>
+                        </div>
+
+                        <div class="col-md-12">
+                            <div class="col-md-4">
+                                Evaluation Feedback
+                            </div>
+                            <div class="col-md-7">
+                                @Html.Kendo().EditorFor(m => m.TestSuitName).Name("TestSuitName").Encode(true).Value(Model.TestSuitName)
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row" style="  margin-top: 1%; ">
+                        <div class="col-md-6"></div>
+                        <div class="col-md-2 col-md-offset-4">
+                            @(Html.Kendo().Button()
+                                .Name("btnCancel").Icon("cancel")
+                                .HtmlAttributes(new { type = "button" })
+                                .Events(e => e.Click("OnCancel"))
+                                .Content("Cancel"))
+
+                            @(Html.Kendo().Button()
+                                .Name("btnSave").Icon("tick")
+                                .HtmlAttributes(new { type = "submit" })
+                                .Content("Save"))
+                        </div>
+                    </div>
+                </fieldset>
+            </div>
+        }
+
     </div>
 </div>
+<script>
+    function OnCancel() {
+        window.location.href = "/QuestionBank/QuestionBank";
+    }
+</script>
