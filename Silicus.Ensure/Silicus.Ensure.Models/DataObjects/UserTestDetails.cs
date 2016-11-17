@@ -8,6 +8,8 @@ namespace Silicus.Ensure.Models.DataObjects
         [Key]
         public int TestDetailId { get; set; }
 
+        public int UserTestSuiteId { get; set; }
+
         public int QuestionId { get; set; }
 
         public string Answer { get; set; }
@@ -18,6 +20,6 @@ namespace Silicus.Ensure.Models.DataObjects
 
         public DateTime? MarkGivenDate { get; set; }
 
-        public virtual UserTestSuite userTestSuite { get; set; }
+        public virtual UserTestSuite UserTestSuite { get; set; }
     }
 }

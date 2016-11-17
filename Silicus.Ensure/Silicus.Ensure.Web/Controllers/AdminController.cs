@@ -291,8 +291,7 @@ namespace Silicus.Ensure.Web.Controllers
                     {
                         UserId = Userid,
                         TestSuiteId = SuiteId,
-                        ObjectiveCount = 5,
-                        EvaluatedMark = 50,
+                        ObjectiveCount = 5,                        
                         MaxScore = 70,
                         CreatedDate = DateTime.Now,
                     };
@@ -303,18 +302,18 @@ namespace Silicus.Ensure.Web.Controllers
                         {
                             values[i] = values[i].Trim();
                             var questionList = _questionService.GetQuestion().Where(p => p.Tags.Contains(values[i])).Select(q => q.Id).ToList();
-                            foreach (var questionId in questionList)
-                            {
-                                UserTestDetails userTestDetails = new UserTestDetails
-                                {
+                           foreach (var questionId in questionList)
+                           {
+                               UserTestDetails userTestDetails = new UserTestDetails
+                               {
                                     userTestSuite = _testSuiteService.GetUserTestSuiteId(SuiteId),
-                                    QuestionId = Convert.ToInt32(questionId),
-                                    Mark = 30
-                                };
-                            }
+                                    QuestionId = Convert.ToInt32(questionId)
+                                    
+                               };
+                           }
                         }
                     }
-
+                    
 
                     _testSuiteService.AddUserTestSuite(newusertestsuit);
                     updateCurrentUsers.TestStatus = "Assigned";
@@ -620,7 +619,7 @@ namespace Silicus.Ensure.Web.Controllers
             submittedTestViewModel.TestSuitName = testSuitDetails.TestSuiteName;
             submittedTestViewModel.Postion = _positionService.GetPositionById(testSuitDetails.Position) != null ? _positionService.GetPositionById(testSuitDetails.Position).PositionName : "";
 
-            foreach (var questionId in userTestSuitDetails.userTestDetailsCollection)
+            foreach (var questionId in userTestSuitDetails.UserTestDetails)
             {
 
                 var question = _questionService.GetSingleQuestion(questionId.QuestionId);

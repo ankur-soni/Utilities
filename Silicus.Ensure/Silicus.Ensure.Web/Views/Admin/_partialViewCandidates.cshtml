@@ -270,7 +270,7 @@
                   columns.Bound(p => p.Duration).Width(50);
                   columns.Bound(p => p.PositionName).Width(50);
                   columns.Bound(p => p.PrimaryTagNames).Width(200);
-                  columns.Bound(p => p.userid).ClientTemplate("<input type='text' class='textu' id='txtUser' value='#=userid#'/>").Hidden();
+                  columns.Bound(p => p.Userid).ClientTemplate("<input type='text' class='textu' id='txtUser' value='#=userid#'/>").Hidden();
                   //columns.Bound("").ClientTemplate("<a class='k-button k-button-icontext k-grid-add' href='\\#' data-toggle='modal' data-target='\\#myModal'><span class='k-icon k-add'></span>Activate Test Suite</a><a class='k-button k-button-icontext k-grid-add' href='" + Url.Action("TestSuiteCopy", "Admin") + "?testSuiteId=#=TestSuiteId#'><span class='k-icon k-add'></span>Copy</a><a class='k-button k-button-icontext k-grid-edit' href='" + Url.Action("TestSuiteAdd", "Admin") + "?testSuiteId=#=TestSuiteId#'><span class='k-icon k-edit'></span>Edit</a><a class='k-button k-button-icontext k-grid-delete' href='" + Url.Action("TestSuiteDelete", "Admin") + "?testSuiteId=#=TestSuiteId#'><span class='k-icon k-delete'></span>Delete</a>");
               })
         .DataSource(dataSource => dataSource

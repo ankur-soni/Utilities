@@ -57,11 +57,11 @@ namespace Silicus.Ensure.Entities
                 cs.MapLeftKey("AssetId");
                 cs.MapRightKey("CategoryId");
                 cs.ToTable("AssetCategory");
-            });            
+            });
 
-            modelBuilder.Entity<UserTestSuite>()
-    .HasMany<UserTestDetails>(u => u.userTestDetailsCollection)
-    .WithRequired(x => x.userTestSuite).Map(x => x.MapKey("UserTestSuiteId"));
+            //modelBuilder.Entity<UserTestSuite>()
+            //    .HasMany<UserTestDetails>(u => u.userTestDetailsCollection)
+            //    .WithRequired(x => x.userTestSuite).Map(x => x.MapKey("UserTestSuiteId"));
         }
     }
 }

@@ -29,7 +29,7 @@ namespace Silicus.Ensure.Models.DataObjects
         public string Address { get; set; }
         
         //[Required]
-        public bool isActive { get; set; }
+        public bool IsActive { get; set; }
         
         //[Required]
         public string Role { get; set; }
