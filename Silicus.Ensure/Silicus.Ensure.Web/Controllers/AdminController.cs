@@ -291,30 +291,30 @@ namespace Silicus.Ensure.Web.Controllers
                     {
                         UserId = Userid,
                         TestSuiteId = SuiteId,
-                        ObjectiveCount = 5,                        
-                        Score = 50,
+                        ObjectiveCount = 5,
+                        EvaluatedMark = 50,
                         MaxScore = 70,
                         CreatedDate = DateTime.Now,
                     };
-                    foreach(var tagid in ViewPrimaryTagList)
+                    foreach (var tagid in ViewPrimaryTagList)
                     {
                         string[] values = tagid.Split(',');
                         for (int i = 0; i < values.Length; i++)
                         {
                             values[i] = values[i].Trim();
-                           var questionList = _questionService.GetQuestion().Where(p => p.Tags.Contains(values[i])).Select(q=>q.Id).ToList();
-                           foreach (var questionId in questionList)
-                           {
-                               UserTestDetails userTestDetails = new UserTestDetails
-                               {
-                                   UserTestSuiteId = SuiteId,
-                                   QuestionId = Convert.ToInt32(questionId),
-                                   Score = 30
-                               };
-                           }
+                            var questionList = _questionService.GetQuestion().Where(p => p.Tags.Contains(values[i])).Select(q => q.Id).ToList();
+                            foreach (var questionId in questionList)
+                            {
+                                UserTestDetails userTestDetails = new UserTestDetails
+                                {
+                                    userTestSuite = _testSuiteService.GetUserTestSuiteId(SuiteId),
+                                    QuestionId = Convert.ToInt32(questionId),
+                                    Mark = 30
+                                };
+                            }
                         }
                     }
-                    
+
 
                     _testSuiteService.AddUserTestSuite(newusertestsuit);
                     updateCurrentUsers.TestStatus = "Assigned";
@@ -622,15 +622,22 @@ namespace Silicus.Ensure.Web.Controllers
 
             foreach (var questionId in userTestSuitDetails.userTestDetailsCollection)
             {
+
                 var question = _questionService.GetSingleQuestion(questionId.QuestionId);
                 if (question.QuestionType == 1)
                 {
+                    if (questionId.Mark != null && questionId.Mark > 0)
+                    {
+                        submittedTestViewModel.ObjectiveQuestionResult += question.Marks;
+                    }
+                    submittedTestViewModel.ObjectiveQuestionMarks += question.Marks;
+
                     objectiveQuestionList.Insert(0, new ObjectiveQuestionList()
                     {
                         QuestionDescription = question.QuestionDescription,
-                        CorrectAnswer = question.CorrectAnswer,
-                        SubmittedAnswer = questionId.Answer.ToString(),
-                        Result = question.CorrectAnswer == questionId.Answer.ToString() ? "" : "",
+                        CorrectAnswer = GetOption(question.CorrectAnswer),
+                        SubmittedAnswer = GetOption(questionId.Answer),
+                        Result = questionId.Mark != null && questionId.Mark > 0 ? "Correct" : "Incorrect",
                     });
                 }
                 else
@@ -639,17 +646,44 @@ namespace Silicus.Ensure.Web.Controllers
                     {
                         QuestionDescription = question.QuestionDescription,
                         SubmittedAnswer = questionId.Answer.ToString(),
-                        Weightage = "",
+                        Weightage = question.Marks,
                     });
 
                 }
 
             }
 
+            submittedTestViewModel.TotalMarksObtained = submittedTestViewModel.ObjectiveQuestionResult;
             submittedTestViewModel.objectiveQuestionList = objectiveQuestionList;
             submittedTestViewModel.practicalQuestionList = practicalQuestionList;
 
             return View(submittedTestViewModel);
+        }
+
+        private string GetOption(string p)
+        {
+            string optionSelect = "";
+            switch (p)
+            {
+                case "1":
+                    optionSelect = "Option1";
+                    break;
+                case "2":
+                    optionSelect = "Option2";
+                    break;
+                case "3":
+                    optionSelect = "Option3";
+                    break;
+                case "4":
+                    optionSelect = "Option4";
+                    break;
+            }
+            return optionSelect;
+        }
+
+        public ActionResult SubmittedTestResult(FormCollection fm)
+        {
+            return View();
         }
     }
 

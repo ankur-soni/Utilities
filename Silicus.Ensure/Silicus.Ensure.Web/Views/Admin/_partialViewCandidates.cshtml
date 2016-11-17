@@ -157,8 +157,7 @@
         }
     }
 
-    function AddNew()
-    {
+    function AddNew() {
         window.location.href = "/User/CandidateAdd";
 
         return false;
@@ -186,18 +185,16 @@
                   //columns.Bound(p => p.Role).Width(110).Title("Role").EditorTemplateName("ComboBox").HtmlAttributes(new { value = "User" });
                   columns.Command(command => { command.Edit(); command.Destroy(); }).Width(160);
                   columns.Bound(c => c.UserId).ClientTemplate(@"
-
-   <a onclick=showTest('#=UserId#')>Assign Test</a>|
-    <a href='/DiagnosisTest/Edit/#=UserId#' class = 'dialog-window'  >Preview Question Set</a> |
-    <a href='/DiagnosisTest/Delete/#=UserId#' class = 'dialog-window'>View Submitted Test</a>
-            ").Title("Actions");
-                  //   <a href='/Admin/CandidatesSuit?UserId=#=UserId#' class = 'dialog-window'>Assign Test</a> |
-                  //              columns.Bound(x => x.UserId).ClientTemplate(
-                  //      "# if (TestStatus == 'UnAssigned') { #" +
-                  //    "<a href='/DiagnosisTest/Details/#=UserId#' class = 'dialog-window'>Assign Test</a>" +
-                  //"# } else { #" +
-                  //    "<a href='#' class = 'dialog-window'></a>" +
-                  //"# } #").Title("State");
+                                <a onclick=showTest('#=UserId#')>Assign Test</a>|
+                                <a href='/DiagnosisTest/Edit/#=UserId#' class = 'dialog-window'  >Preview Question Set</a> |
+                                <a href='/DiagnosisTest/Delete/#=UserId#' class = 'dialog-window'>View Submitted Test</a>").Title("Actions");
+                                //   <a href='/Admin/CandidatesSuit?UserId=#=UserId#' class = 'dialog-window'>Assign Test</a> |
+                                //              columns.Bound(x => x.UserId).ClientTemplate(
+                                //      "# if (TestStatus == 'UnAssigned') { #" +
+                                //    "<a href='/DiagnosisTest/Details/#=UserId#' class = 'dialog-window'>Assign Test</a>" +
+                                //"# } else { #" +
+                                //    "<a href='#' class = 'dialog-window'></a>" +
+                                //"# } #").Title("State");
 
               })
         .DataSource(dataSource => dataSource
@@ -209,9 +206,9 @@
                   })
 
                       .Read(read => read.Action("GetCandidateDetails", "User"))
-            //.Create(update => update.Action("CreateUser", "User"))
-                  .Update(update => update.Action("UpdateUser", "User"))
-                  .Destroy(update => update.Action("DeleteUser", "User"))
+                      .Create(update => update.Action("CreateUser", "User"))
+                      .Update(update => update.Action("UpdateUser", "User"))
+                      .Destroy(update => update.Action("DeleteUser", "User"))
               )
 
 

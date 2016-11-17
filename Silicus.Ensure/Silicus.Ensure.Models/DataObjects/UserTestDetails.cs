@@ -10,9 +10,9 @@ namespace Silicus.Ensure.Models.DataObjects
 
         public int QuestionId { get; set; }
 
-        public int Answer { get; set; }
+        public string Answer { get; set; }
 
-        public int Mark { get; set; }
+        public int? Mark { get; set; }
 
         public int? MarkGivenBy { get; set; }
 

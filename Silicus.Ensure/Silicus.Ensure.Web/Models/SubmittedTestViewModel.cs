@@ -27,6 +27,12 @@ namespace Silicus.Ensure.Web.Models
         [Display(Name = "Postion")]
         public string Postion { get; set; }
 
+        public int ObjectiveQuestionResult { get; set; }
+
+        public int ObjectiveQuestionMarks { get; set; }
+
+        public int TotalMarksObtained { get; set; }
+
         public List<ObjectiveQuestionList> objectiveQuestionList { get; set; }
 
         public List<PracticalQuestionList> practicalQuestionList { get; set; }
@@ -51,6 +57,6 @@ namespace Silicus.Ensure.Web.Models
 
         public string SubmittedAnswer { get; set; }
 
-        public string Weightage { get; set; }
+        public int Weightage { get; set; }
     }
 }

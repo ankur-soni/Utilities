@@ -76,5 +76,11 @@ namespace Silicus.Ensure.Services
             return _context.Query<TestSuite>().Where(x => x.TestSuiteId == testSuiteId).FirstOrDefault();
         }
 
+
+
+        public UserTestSuite GetUserTestSuiteId(int userTestSuiteId)
+        {
+            return _context.Query<UserTestSuite>().Where(x => x.UserTestSuiteId == userTestSuiteId).FirstOrDefault();
+        }
     }
 }
