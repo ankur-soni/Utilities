@@ -618,7 +618,7 @@ namespace Silicus.Ensure.Web.Controllers
             submittedTestViewModel.TestSuitName = testSuitDetails.TestSuiteName;
             submittedTestViewModel.Postion = _positionService.GetPositionById(testSuitDetails.Position) != null ? _positionService.GetPositionById(testSuitDetails.Position).PositionName : "";
 
-            foreach (var questionId in userTestSuitDetails.userTestDetailsCollection)
+            foreach (var questionId in userTestSuitDetails.UserTestDetails)
             {
                 var question = _questionService.GetSingleQuestion(questionId.QuestionId);
                 if (question.QuestionType == 1)
