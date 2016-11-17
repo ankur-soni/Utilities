@@ -291,8 +291,7 @@ namespace Silicus.Ensure.Web.Controllers
                     {
                         UserId = Userid,
                         TestSuiteId = SuiteId,
-                        ObjectiveCount = 5,
-                        Score = 50,
+                        ObjectiveCount = 5,                       
                         MaxScore = 70,
                         CreatedDate = DateTime.Now,
                     };
@@ -308,8 +307,7 @@ namespace Silicus.Ensure.Web.Controllers
                                UserTestDetails userTestDetails = new UserTestDetails
                                {
                                    UserTestSuiteId = SuiteId,
-                                   QuestionId = Convert.ToInt32(questionId),
-                                   Score = 30
+                                   QuestionId = Convert.ToInt32(questionId)                                   
                                };
                            }
                         }
