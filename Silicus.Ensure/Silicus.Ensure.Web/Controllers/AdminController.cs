@@ -306,7 +306,7 @@ namespace Silicus.Ensure.Web.Controllers
                            {
                                UserTestDetails userTestDetails = new UserTestDetails
                                {
-                                    userTestSuite = _testSuiteService.GetUserTestSuiteId(SuiteId),
+                                    UserTestSuite = _testSuiteService.GetUserTestSuiteId(SuiteId),
                                     QuestionId = Convert.ToInt32(questionId)
                                     
                                };
