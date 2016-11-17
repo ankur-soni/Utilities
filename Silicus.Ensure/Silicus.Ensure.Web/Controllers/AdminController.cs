@@ -291,7 +291,7 @@ namespace Silicus.Ensure.Web.Controllers
                     {
                         UserId = Userid,
                         TestSuiteId = SuiteId,
-                        ObjectiveCount = 5,                       
+                        ObjectiveCount = 5,
                         MaxScore = 70,
                         CreatedDate = DateTime.Now,
                     };
@@ -603,11 +603,50 @@ namespace Silicus.Ensure.Web.Controllers
 
         public ActionResult SubmittedTest(int canditateId)
         {
+            List<ObjectiveQuestionList> objectiveQuestionList = new List<ObjectiveQuestionList>();
+            List<PracticalQuestionList> practicalQuestionList = new List<PracticalQuestionList>();
+
             var userDetails = _userService.GetUserDetails().Where(x => x.UserId == canditateId).FirstOrDefault();
-            //var testSuitDetails=_testSuiteService.GetTestSuiteDetails().Where(x=>x.)
+            var userTestSuitDetails = _testSuiteService.GetUserTestSuite().Where(x => x.UserId == canditateId).FirstOrDefault();
+            var testSuitDetails = _testSuiteService.GetTestSuitById(userTestSuitDetails.TestSuiteId);
+
             SubmittedTestViewModel submittedTestViewModel = new Models.SubmittedTestViewModel();
             submittedTestViewModel.FirstName = userDetails.FirstName;
             submittedTestViewModel.LastName = userDetails.LastName;
+            submittedTestViewModel.Duration = userTestSuitDetails.Duration;
+            submittedTestViewModel.TotalMakrs = userTestSuitDetails.MaxScore;
+            submittedTestViewModel.TestSuitName = testSuitDetails.TestSuiteName;
+            submittedTestViewModel.Postion = _positionService.GetPositionById(testSuitDetails.Position) != null ? _positionService.GetPositionById(testSuitDetails.Position).PositionName : "";
+
+            foreach (var questionId in userTestSuitDetails.userTestDetailsCollection)
+            {
+                var question = _questionService.GetSingleQuestion(questionId.QuestionId);
+                if (question.QuestionType == 1)
+                {
+                    objectiveQuestionList.Insert(0, new ObjectiveQuestionList()
+                    {
+                        QuestionDescription = question.QuestionDescription,
+                        CorrectAnswer = question.CorrectAnswer,
+                        SubmittedAnswer = questionId.Answer.ToString(),
+                        Result = question.CorrectAnswer == questionId.Answer.ToString() ? "" : "",
+                    });
+                }
+                else
+                {
+                    practicalQuestionList.Insert(0, new PracticalQuestionList()
+                    {
+                        QuestionDescription = question.QuestionDescription,
+                        SubmittedAnswer = questionId.Answer.ToString(),
+                        Weightage = "",
+                    });
+
+                }
+
+            }
+
+            submittedTestViewModel.objectiveQuestionList = objectiveQuestionList;
+            submittedTestViewModel.practicalQuestionList = practicalQuestionList;
+
             return View(submittedTestViewModel);
         }
     }

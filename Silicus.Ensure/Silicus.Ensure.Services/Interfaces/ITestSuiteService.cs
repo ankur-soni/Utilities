@@ -7,6 +7,8 @@ namespace Silicus.Ensure.Services.Interfaces
     {
         IEnumerable<TestSuite> GetTestSuiteDetails();
 
+        TestSuite GetTestSuitById(int testSuiteId);
+
         int Add(TestSuite TestSuite);
 
         void Update(TestSuite TestSuite);
