@@ -7,6 +7,17 @@
 
 <div class="main-content" id="main">
     <div class="fluid mt20">
+
+        <div class="row">
+            <div class="col-md-12" style="text-align:center;">
+                <strong>This test is window protected, please do not move away from the window or refresh.</strong>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12" style="border-bottom-width:1px; border-bottom-style:solid; border-bottom-color:black;">
+            </div>
+        </div>
+        <br />
         <div class="row">
             <div class="col-md-6">
                 <div class="row">
@@ -47,16 +58,22 @@
                 <div class="row">
                     <div class="col-md-9">
                         <div id="counter"></div>
-                        <div class="desc">
-                            <div>Hours</div>
-                            <div>Minutes</div>
-                            <div>Seconds</div>
-                        </div>
                     </div>
                     <div class="col-md-3">
                         @(Html.Kendo().Button()
-                .Name("btnAddMoreTime")
-                .HtmlAttributes(new { type = "button" }).Content("Add More Time").HtmlAttributes(new { style = "margin-top: 25%;" }))
+                        .Name("btnAddMoreTime").Events(e => e.Click("AddMoreTime"))
+                .HtmlAttributes(new { type = "button" }).Content("Add More Time").HtmlAttributes(new { style = "margin-top: 15%;" }))
+
+                        @Html.Hidden("TimerIncCount", 0)
+                    </div>
+                </div>
+                <div class="row">
+                    <span>Test Progress</span>
+                    <div class="progress">
+                        <div id="progressBar" class="progress-bar progress-bar-info" role="progressbar" aria-valuenow="50"
+                             aria-valuemin="0" aria-valuemax="100" style="width:50%">
+                            <span id="progressInfo">50%</span> Complete
+                        </div>
                     </div>
                 </div>
             </div>
@@ -67,53 +84,147 @@
             </div>
         </div>
 
-        <div class="row">
+        <div class="row" id="QuestionDetails">
 
+        </div>
+
+        <div class="row">
+            <div class="col-md-9 col-md-offset-2" style="margin-top:1%;">
+                @(Html.Kendo().Button()
+                .Name("btnNext")
+                    .HtmlAttributes(new { type = "button" }).Events(e => e.Click("OnNext"))
+                        .Content("Next").HtmlAttributes(new { style = "float: right;" }))
+
+                @(Html.Kendo().Button()
+                .Name("btnPrevious")
+                        .HtmlAttributes(new { type = "button" }).Events(e => e.Click("OnPrevious"))
+                                .Content("Previous").HtmlAttributes(new { style = "float: right;" }))
+            </div>
         </div>
     </div>
 </div>
 
+<!-- Modal -->
+<div class="modal fade" id="myModal" role="dialog">
+    <div class="modal-dialog">
+
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title"><span id="msgMain">Success!</span></h4>
+            </div>
+            <div class="modal-body">
+                <p id="msgContent">Some text in the modal.</p>
+            </div>
+            <div class="modal-footer">
+                <button id="btnModalOK" type="button" class="btn btn-default" data-dismiss="modal" onclick="OnOK();">OK</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+            </div>
+        </div>
+
+    </div>
+</div>
+
 <script>
+    var clock;
+    var totalTime;
     $(document).ready(function () {
-        $('#counter').countdown({
-            startTime: '01:02:10',
-            format: 'hh:mm:ss',
-            digitWidth: 53,
-            digitHeight: 77,
-            timerEnd: function () { alert('end!'); },
-            image: '../../Content/Images/digits.png'
+
+        // Load First Question On page Load.
+        $('#QuestionDetails').load('/Candidate/LoadQuestion?Id=' + 1);
+
+        // Timer
+        clock = $('#counter').FlipClock({
+            clockFace: 'HourlyCounter',
+            autoStart: false,
+            callbacks: {
+                stop: function () {
+
+                },
+                interval: ProgressBar
+            }
         });
 
-        //Later to redure counter digit
-        //Make png to 30px
-        //digitWidth: 30,
-        //digitHeight: 40.15,
-        //$('.cntDigit').each(function (i, v) { $(v).css('background-size', '30px') })
+        // Initialize progress bar.
+        totalTime = 1800;
+        $('#progressBar').attr('aria-valuemax', totalTime).css('width', '0%');
+        $('#progressInfo').text('0%');
+
+        // Set counter time and start.
+        clock.setTime(1800);
+        clock.setCountdown(true);
+        clock.start();
     });
-</script>
 
-<style type="text/css">
-    br {
-        clear: both;
-    }
-
-    .cntSeparator {
-        font-size: 54px;
-        margin: 10px 7px;
-        color: #000;
-    }
-
-    .desc {
-        margin: 7px 3px;
-    }
-
-        .desc div {
-            float: left;
-            font-family: Arial;
-            width: 70px;
-            margin-right: 65px;
-            font-size: 13px;
-            font-weight: bold;
-            color: #000;
+    function AddMoreTime() {
+        $("#myModal").modal();
+        $("#msgMain").text("Warning!");
+        var TimerCnt = $("#TimerIncCount").val();
+        if (TimerCnt == 0) {
+            $("#msgContent").text("You have only 2 chances. Are you sure, you want to increase time limit by 10 Mins?");
+        } else {
+            $("#msgContent").text("This is the last chance. Are you sure, you want to increase time limit by 10 Mins?");
         }
-</style>
+    }
+
+    function OnOK() {
+        var TimerCnt = $("#TimerIncCount").val();
+        $.ajax({
+            url: '/Candidate/AddMoreTime',
+            dataType: "json",
+            type: "POST",
+            contentType: 'application/json; charset=utf-8',
+            data: JSON.stringify({ count: TimerCnt }),
+            success: function (data) {
+                if (data < 3) {
+                    // Add time in counter
+                    var newtm = parseInt(clock.getTime()) + parseInt(60 * 10);
+                    clock.setTime(newtm);
+
+                    // Assign reduced chance
+                    $("#TimerIncCount").val(data);
+
+                    // Update Progress bar
+                    totalTime = parseInt(totalTime) + parseInt(60 * 10);
+                    var leftTm = parseInt(totalTime) - clock.getTime();
+                    var newprogress = parseInt((parseInt(leftTm) / parseInt(totalTime)) * 100);
+                    $('#progressBar').attr('aria-valuemax', totalTime).css('width', newprogress + "%");
+                    $('#progressBar').attr('aria-valuenow', clock.getTime()).css('width', newprogress + "%");
+                    $('#progressInfo').text(newprogress + "%");
+
+                    // Hide Add more time button.
+                    if (data == 2) {
+                        $("#btnAddMoreTime").hide();
+                    }
+
+                }
+            },
+            error: function (xhr) {
+
+            }
+        });
+    }
+
+    function ProgressBar() {
+        var time = clock.getTime().time;
+        if (time % 60 == 0) {
+            var leftTm = parseInt(totalTime) - clock.getTime();
+            var newprogress = parseInt((parseInt(leftTm) / parseInt(totalTime)) * 100);
+            $('#progressBar').attr('aria-valuenow', clock.getTime()).css('width', newprogress + "%");
+            $('#progressInfo').text(newprogress + "%");
+        }
+    }
+
+    function OnNext() {
+        var checkedradio = $('[name="optradio"]:radio:checked').val();
+
+        $('#QuestionDetails').load('/Candidate/LoadQuestion?Ans=' + checkedradio);
+        return false;
+    }
+
+    function OnPrevious() {
+        $('#QuestionDetails').load('/Candidate/LoadQuestion?Ans=' + checkedradio);
+        return false;
+    }
+</script>

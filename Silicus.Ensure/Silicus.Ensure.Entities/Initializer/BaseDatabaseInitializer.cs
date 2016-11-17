@@ -44,6 +44,25 @@ namespace Silicus.Ensure.Entities.Initializer
                 isActive = true
 
             });
+
+            context.Add(new User
+            {
+                FirstName = "Test",
+                LastName = "Candidate",
+                NewPassword = "testadmin@123",
+                ConfirmPassword = "testadmin@123",
+                Address = "Test",
+                Email = "testcandidate@test.com",
+                IdentityUserId = new System.Guid("2D3B545B-50F6-45D4-B916-23D276BA4B00"),
+                Role = "Candidate",
+                Gender = "Male",
+                Department = "Delivery",
+                TestStatus = "UnAssigned",
+                Position = "Sr.Developer",
+                Experience = "5",
+                isActive = true
+
+            });
             context.Add(new Project
             {
                 ProjectDescription = "Landmark"

@@ -64,9 +64,11 @@ namespace Silicus.Ensure.Web
                         "~/Scripts/prefixfree.min.js",
                         "~/Scripts/commonjs.js"));
 
-            //Count Down Timer js
+            //Count Down Timer js and CSS
             bundles.Add(new ScriptBundle("~/bundles/Timer").Include(
-                        "~/Scripts/jquery.countdown.js"));
+                        "~/Scripts/flipclock.js"));
+            bundles.Add(new StyleBundle("~/Content/TimerCSS").Include(
+            "~/Content/flipclock.css"));
         }
 
     }

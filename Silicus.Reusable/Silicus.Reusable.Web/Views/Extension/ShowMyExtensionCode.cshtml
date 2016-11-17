@@ -113,7 +113,7 @@
 
         var searchString = $("#searchString").val();
 
-        var url = "/Extension/SearchExtensionMethodByTitle";
+        var url = "/Extension/SearchMyExtensionMethodByTitle";
         $.get(url, { searchString: searchString }, function (data) {
 
             $("#questions").html(data);

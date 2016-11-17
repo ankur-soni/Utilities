@@ -1,1 +1,31 @@
-﻿
+﻿@model Silicus.Ensure.Models.DataObjects.Question
+
+<div class="fluid mt20">
+    <div class="row">
+        <div class="col-md-9 col-md-offset-2">
+            <p><strong>Section 1 (Objective Question)</strong></p>
+            <p><strong>Question 1: (2 Marks)</strong></p>
+            @Html.Raw(HttpUtility.HtmlDecode(Model.QuestionDescription))
+        </div>
+        <div class="col-md-9 col-md-offset-2" style="border-bottom-width:1px; border-bottom-style:solid; border-bottom-color:black;">
+        </div>
+        <div class="col-md-9 col-md-offset-2">
+
+            <div class="radio">
+                <label><input type="radio" name="optradio" value="1">@Model.Option1</label>
+            </div>
+            <div class="radio">
+                <label><input type="radio" name="optradio" value="2">@Model.Option2</label>
+            </div>
+            <div class="radio">
+                <label><input type="radio" name="optradio" value="3">@Model.Option3</label>
+            </div>
+            <div class="radio">
+                <label><input type="radio" name="optradio" value="4">@Model.Option4</label>
+            </div>
+
+        </div>
+        <div class="col-md-9 col-md-offset-2" style="border-bottom-width:1px; border-bottom-style:solid; border-bottom-color:black;">
+        </div>
+    </div>
+</div>

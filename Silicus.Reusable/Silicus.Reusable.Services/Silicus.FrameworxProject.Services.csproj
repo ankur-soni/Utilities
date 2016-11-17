@@ -52,6 +52,8 @@
     <Compile Include="Interfaces\IExtensionCodeService.cs" />
     <Compile Include="Interfaces\IFrameworxProjectService.cs" />
     <Compile Include="FrameworxProjectService.cs" />
+    <Compile Include="Interfaces\IProductBacklogService.cs" />
+    <Compile Include="ProductBacklogService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

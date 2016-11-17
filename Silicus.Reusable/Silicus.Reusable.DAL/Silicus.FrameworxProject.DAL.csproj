@@ -71,6 +71,7 @@
     <Compile Include="EntityConfigurations\ExtensionSolutionMap.cs" />
     <Compile Include="EntityConfigurations\FrameworxMap.cs" />
     <Compile Include="EntityConfigurations\OtherCodeMap.cs" />
+    <Compile Include="EntityConfigurations\ProductBacklogMap.cs" />
     <Compile Include="Interfaces\ICommonDatabaseContext.cs" />
     <Compile Include="Interfaces\IDataContextFactory.cs" />
     <Compile Include="Interfaces\IFrameworxProjectDatabaseContext.cs" />
