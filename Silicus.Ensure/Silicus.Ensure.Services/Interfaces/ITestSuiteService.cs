@@ -9,6 +9,8 @@ namespace Silicus.Ensure.Services.Interfaces
 
         TestSuite GetTestSuitById(int testSuiteId);
 
+        UserTestSuite GetUserTestSuiteId(int userTestSuiteId);
+
         int Add(TestSuite TestSuite);
 
         void Update(TestSuite TestSuite);

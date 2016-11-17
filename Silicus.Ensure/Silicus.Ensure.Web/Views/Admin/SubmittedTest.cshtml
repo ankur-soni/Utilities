@@ -10,7 +10,7 @@
 
 <div class="main-content">
     <div style="overflow:hidden">
-        @using (Html.BeginForm("AddQuestions", "QuestionBank"))
+        @using (Html.BeginForm("SubmittedTestResult", "Admin", FormMethod.Post))
         {
             <h2>Submitted test result of @Model.FirstName @Model.LastName</h2>
             <div class="fluid mt20">
@@ -69,7 +69,7 @@
                             <div class="col-md-7">
                                 <input class="form-control valid" data-val="true"
                                        id="ObjectiveQuestionResult" name="ObjectiveQuestionResult" type="text"
-                                       value="34" tyle="width:87%;" readonly="readonly" />
+                                       value="@Model.ObjectiveQuestionResult" tyle="width:87%;" readonly="readonly" />
                             </div>
                             <div class="col-md-4">
                                 Objective question Marks:
@@ -77,7 +77,7 @@
                             <div class="col-md-7">
                                 <input class="form-control valid" data-val="true"
                                        id="ObjectiveQuestionMarks" name="ObjectiveQuestionMarks" type="text"
-                                       value="34" tyle="width:87%;" readonly="readonly" />
+                                       value="@Model.ObjectiveQuestionMarks" tyle="width:87%;" readonly="readonly" />
                             </div>
                         </div>
                     </div>
@@ -99,12 +99,12 @@
                             <tbody>
                                 @foreach (var oQuestion in Model.objectiveQuestionList)
                                 {
-                                <tr>
-                                    <td>@Html.Raw(@oQuestion.QuestionDescription)</td>
-                                    <td>@oQuestion.SubmittedAnswer</td>
-                                    <td>@oQuestion.CorrectAnswer</td>
-                                    <td>@oQuestion.Result</td>
-                                </tr>
+                                    <tr>
+                                        <td>@Html.Raw(@oQuestion.QuestionDescription)</td>
+                                        <td>@oQuestion.SubmittedAnswer</td>
+                                        <td>@oQuestion.CorrectAnswer</td>
+                                        <td>@oQuestion.Result</td>
+                                    </tr>
                                 }
                             </tbody>
                         </table>
@@ -120,51 +120,51 @@
                         {
                             i = i + 1;
 
-                        <div class="col-md-12">
-                            <div class="col-md-4">
-                                Practical question @i:
+                            <div class="col-md-12">
+                                <div class="col-md-4">
+                                    Practical question @i:
+                                </div>
+                                <div class="col-md-8">
+                                    @Html.Raw(pQuestion.QuestionDescription)
+                                </div>
                             </div>
-                            <div class="col-md-8">
-                                @Html.Raw(pQuestion.QuestionDescription)
-                            </div>
-                        </div>
 
-                        <div class="col-md-12">
-                            <div class="col-md-4">
-                                Submitted Answer
-                            </div>
-                            <div class="col-md-8">
-                                <textarea cols="20" id="@Html.Raw(pQuestion.SubmittedAnswer + i)" name="@Html.Raw(pQuestion.SubmittedAnswer + i)"
-                                          rows="5" data-role="editor" disabled="disabled" readonly="readonly" autocomplete="off" style="width:87%" class="k-content k-raw-content">
-                                    @pQuestion.SubmittedAnswer
-                                </textarea>
+                            <div class="col-md-12">
+                                <div class="col-md-4">
+                                    Submitted Answer
+                                </div>
+                                <div class="col-md-8">
+                                    <textarea cols="20" id="@Html.Raw(pQuestion.SubmittedAnswer + i)" name="@Html.Raw(pQuestion.SubmittedAnswer + i)"
+                                              rows="5" data-role="editor" disabled="disabled" readonly="readonly" autocomplete="off" style="width:87%;background: #CCC; color: #333;" class="k-content k-raw-content">
+                                        @pQuestion.SubmittedAnswer
+                                    </textarea>
 
+                                </div>
                             </div>
-                        </div>
-                        <div class="col-md-12">
-                            <div class="col-md-4">
-                                Weightage Marks
-                            </div>
-                            <div class="col-md-8">
-                                <input class="form-control valid" data-val="true"
-                                       id="@Html.Raw("Weightage" + i)" name="@Html.Raw("Weightage" + i)" type="text"
-                                       value="@pQuestion.Weightage" aria-required="true" style="width:87%;" readonly="readonly"
-                                       aria-invalid="false" aria-describedby="Emarks-error">
+                            <div class="col-md-12">
+                                <div class="col-md-4">
+                                    Weightage Marks
+                                </div>
+                                <div class="col-md-8">
+                                    <input class="form-control valid" data-val="true"
+                                           id="@Html.Raw("Weightage" + i)" name="@Html.Raw("Weightage" + i)" type="text"
+                                           value="@pQuestion.Weightage" aria-required="true" style="width:87%;" readonly="readonly"
+                                           aria-invalid="false" aria-describedby="Emarks-error">
 
+                                </div>
                             </div>
-                        </div>
-                        <div class="col-md-12">
-                            <div class="col-md-4">
-                                Evaluated Marks
-                            </div>
-                            <div class="col-md-8">
-                                <input class="form-control valid" data-val="true" data-val-required="Evaluated marks is required!"
-                                       id="@Html.Raw("Emarks"+i)" name="@Html.Raw("Emarks"+i)" type="text"
-                                       value="" aria-required="true" style="width:87%"
-                                       aria-invalid="false" aria-describedby="Emarks-error">
+                            <div class="col-md-12">
+                                <div class="col-md-4">
+                                    Evaluated Marks
+                                </div>
+                                <div class="col-md-8">
+                                    <input class="PracticalMarks form-control valid" data-val="true" data-val-required="Practical question @i evaluated marks is required!"
+                                           id="@Html.Raw("Emarks"+i)" name="@Html.Raw("Emarks"+i)" type="text" onchange="EvaluateTotalResult(this);"
+                                           value="" aria-required="true" style="width:87%"
+                                           aria-invalid="false" aria-describedby="Emarks-error">
 
+                                </div>
                             </div>
-                        </div>
 
                         }
                     </div>
@@ -180,7 +180,9 @@
                                 Total marks obtained:
                             </div>
                             <div class="col-md-8">
-                                35
+                                <input class="form-control valid" data-val="true"
+                                       id="TotalMarksObtained" name="TotalMarksObtained" type="text"
+                                       value="@Model.TotalMarksObtained" tyle="width:87%;" readonly="readonly" />
                             </div>
                         </div>
 
@@ -215,6 +217,17 @@
     </div>
 </div>
 <script>
+    function EvaluateTotalResult() {
+        var mark = 0;
+        $(".PracticalMarks").each(function () {
+            mark += $(this).val();
+            alert($(this).val());
+        });
+
+        mark = mark + $('#ObjectiveQuestionResult').val();
+
+        $('#TotalMarksObtained').val(mark)
+    }
     function OnCancel() {
         window.location.href = "/QuestionBank/QuestionBank";
     }
