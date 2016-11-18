@@ -291,7 +291,7 @@ namespace Silicus.Ensure.Web.Controllers
                     {
                         UserId = Userid,
                         TestSuiteId = SuiteId,
-                        ObjectiveCount = 5,                        
+                        ObjectiveCount = 5,
                         MaxScore = 70,
                         CreatedDate = DateTime.Now,
                     };
@@ -302,18 +302,18 @@ namespace Silicus.Ensure.Web.Controllers
                         {
                             values[i] = values[i].Trim();
                             var questionList = _questionService.GetQuestion().Where(p => p.Tags.Contains(values[i])).Select(q => q.Id).ToList();
-                           foreach (var questionId in questionList)
-                           {
-                               UserTestDetails userTestDetails = new UserTestDetails
-                               {
+                            foreach (var questionId in questionList)
+                            {
+                                UserTestDetails userTestDetails = new UserTestDetails
+                                {
                                     UserTestSuite = _testSuiteService.GetUserTestSuiteId(SuiteId),
                                     QuestionId = Convert.ToInt32(questionId)
-                                    
-                               };
-                           }
+
+                                };
+                            }
                         }
                     }
-                    
+
 
                     _testSuiteService.AddUserTestSuite(newusertestsuit);
                     updateCurrentUsers.TestStatus = "Assigned";
@@ -617,6 +617,7 @@ namespace Silicus.Ensure.Web.Controllers
             submittedTestViewModel.Duration = userTestSuitDetails.Duration;
             submittedTestViewModel.TotalMakrs = userTestSuitDetails.MaxScore;
             submittedTestViewModel.TestSuitName = testSuitDetails.TestSuiteName;
+            submittedTestViewModel.UserTestSuiteId = userTestSuitDetails.UserTestSuiteId;
             submittedTestViewModel.Postion = _positionService.GetPositionById(testSuitDetails.Position) != null ? _positionService.GetPositionById(testSuitDetails.Position).PositionName : "";
 
             foreach (var questionId in userTestSuitDetails.UserTestDetails)
@@ -643,15 +644,17 @@ namespace Silicus.Ensure.Web.Controllers
                 {
                     practicalQuestionList.Insert(0, new PracticalQuestionList()
                     {
+                        QuestionId = questionId.QuestionId,
                         QuestionDescription = question.QuestionDescription,
                         SubmittedAnswer = questionId.Answer.ToString(),
                         Weightage = question.Marks,
+                        EvaluatedMark = questionId.Mark,
                     });
 
                 }
 
             }
-
+            submittedTestViewModel.EvaluatedFeedBack = userTestSuitDetails.FeedBack;
             submittedTestViewModel.TotalMarksObtained = submittedTestViewModel.ObjectiveQuestionResult;
             submittedTestViewModel.objectiveQuestionList = objectiveQuestionList;
             submittedTestViewModel.practicalQuestionList = practicalQuestionList;
@@ -680,9 +683,28 @@ namespace Silicus.Ensure.Web.Controllers
             return optionSelect;
         }
 
-        public ActionResult SubmittedTestResult(FormCollection fm)
+        [HttpPost]
+        public ActionResult SubmittedTest(FormCollection fm)
         {
-            return View();
+            int count = 1;
+
+            var userTestSuitDetails = _testSuiteService.GetUserTestSuiteId(Convert.ToInt32(Convert.ToString(Request.Form["UserTestSuiteId"])));
+
+            userTestSuitDetails.EvaluatedMark = Convert.ToInt32(Request.Form["TotalMarksObtained"].ToString());
+            userTestSuitDetails.FeedBack = Convert.ToString(Request.Form["EvaluatedFeedBack"]);
+
+            foreach (var userTestDetails in userTestSuitDetails.UserTestDetails.Where(x => x.QuestionId == Convert.ToInt32(Request.Form["PractileQuesionId" + count])).ToList())
+            {
+                userTestDetails.Mark = Convert.ToInt32(Request.Form["Emarks" + count]);
+                userTestDetails.MarkGivenDate = DateTime.Now;
+
+                _testSuiteService.UpdateUserTestDetails(userTestDetails);
+                count++;
+            }
+
+            _testSuiteService.UpdateUserTestSuite(userTestSuitDetails);
+
+            return RedirectToAction("Candidates");
         }
     }
 
