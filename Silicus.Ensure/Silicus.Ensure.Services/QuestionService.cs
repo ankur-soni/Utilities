@@ -1,4 +1,5 @@
 ﻿using Silicus.Ensure.Entities;
+using Silicus.Ensure.Models.Constants;
 using Silicus.Ensure.Models.DataObjects;
 using Silicus.Ensure.Services.Interfaces;
 using System;
@@ -48,6 +49,11 @@ namespace Silicus.Ensure.Services
                 Que.IsDeleted = true;
                 _context.Update(Que);
             }
+        }
+
+        public IList<string> GenerateQuestionList(string tag, long duration, Competency competency)
+        {
+            throw new NotImplementedException();
         }
     }
 }
