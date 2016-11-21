@@ -17,7 +17,7 @@ namespace Silicus.Ensure.Web.Models
         public string Option3 { get; set; }
         public string Option4 { get; set; }
         public List<string> CorrectAnswer { get; set; }
-        public string Answer { get; set; }        
+        public string Answer { get; set; }
         public string Tag { get; set; }
         public string Competency { get; set; }
         public int Duration { get; set; }
