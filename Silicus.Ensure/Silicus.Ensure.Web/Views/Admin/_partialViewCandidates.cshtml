@@ -187,14 +187,14 @@
                   columns.Bound(c => c.UserId).ClientTemplate(@"
                                 <a onclick=showTest('#=UserId#')>Assign Test</a>|
                                 <a href='/DiagnosisTest/Edit/#=UserId#' class = 'dialog-window'  >Preview Question Set</a> |
-                                <a href='/DiagnosisTest/Delete/#=UserId#' class = 'dialog-window'>View Submitted Test</a>").Title("Actions");
-                                //   <a href='/Admin/CandidatesSuit?UserId=#=UserId#' class = 'dialog-window'>Assign Test</a> |
-                                //              columns.Bound(x => x.UserId).ClientTemplate(
-                                //      "# if (TestStatus == 'UnAssigned') { #" +
-                                //    "<a href='/DiagnosisTest/Details/#=UserId#' class = 'dialog-window'>Assign Test</a>" +
-                                //"# } else { #" +
-                                //    "<a href='#' class = 'dialog-window'></a>" +
-                                //"# } #").Title("State");
+                                <a href='/admin/SubmittedTest?canditateId=#=UserId#' class = 'dialog-window'>View Submitted Test</a>").Title("Actions");
+                  //   <a href='/Admin/CandidatesSuit?UserId=#=UserId#' class = 'dialog-window'>Assign Test</a> |
+                  //              columns.Bound(x => x.UserId).ClientTemplate(
+                  //      "# if (TestStatus == 'UnAssigned') { #" +
+                  //    "<a href='/DiagnosisTest/Details/#=UserId#' class = 'dialog-window'>Assign Test</a>" +
+                  //"# } else { #" +
+                  //    "<a href='#' class = 'dialog-window'></a>" +
+                  //"# } #").Title("State");
 
               })
         .DataSource(dataSource => dataSource

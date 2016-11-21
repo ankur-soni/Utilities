@@ -10,8 +10,10 @@
 
 <div class="main-content">
     <div style="overflow:hidden">
-        @using (Html.BeginForm("SubmittedTestResult", "Admin", FormMethod.Post))
+        ()
+        @using (Html.BeginForm("SubmittedTest", "Admin", FormMethod.Post))
         {
+            @Html.HiddenFor(x => x.UserTestSuiteId)
             <h2>Submitted test result of @Model.FirstName @Model.LastName</h2>
             <div class="fluid mt20">
                 <fieldset>
@@ -99,12 +101,12 @@
                             <tbody>
                                 @foreach (var oQuestion in Model.objectiveQuestionList)
                                 {
-                                    <tr>
-                                        <td>@Html.Raw(@oQuestion.QuestionDescription)</td>
-                                        <td>@oQuestion.SubmittedAnswer</td>
-                                        <td>@oQuestion.CorrectAnswer</td>
-                                        <td>@oQuestion.Result</td>
-                                    </tr>
+                                <tr>
+                                    <td>@Html.Raw(@oQuestion.QuestionDescription)</td>
+                                    <td>@oQuestion.SubmittedAnswer</td>
+                                    <td>@oQuestion.CorrectAnswer</td>
+                                    <td>@oQuestion.Result</td>
+                                </tr>
                                 }
                             </tbody>
                         </table>
@@ -119,7 +121,7 @@
                         @foreach (var pQuestion in Model.practicalQuestionList)
                         {
                             i = i + 1;
-
+                            <input type="hidden" id="@Html.Raw("PractileQuesionId" + i)" name="@Html.Raw("PractileQuesionId" + i)" value="@pQuestion.QuestionId" />
                             <div class="col-md-12">
                                 <div class="col-md-4">
                                     Practical question @i:
@@ -135,7 +137,7 @@
                                 </div>
                                 <div class="col-md-8">
                                     <textarea cols="20" id="@Html.Raw(pQuestion.SubmittedAnswer + i)" name="@Html.Raw(pQuestion.SubmittedAnswer + i)"
-                                              rows="5" data-role="editor" disabled="disabled" readonly="readonly" autocomplete="off" style="width:87%;background: #CCC; color: #333;" class="k-content k-raw-content">
+                                              rows="5" data-role="editor" disabled="disabled" readonly="readonly" autocomplete="off" style="width:87%;background: #eee; color: #333;" class="k-content k-raw-content">
                                         @pQuestion.SubmittedAnswer
                                     </textarea>
 
@@ -160,7 +162,7 @@
                                 <div class="col-md-8">
                                     <input class="PracticalMarks form-control valid" data-val="true" data-val-required="Practical question @i evaluated marks is required!"
                                            id="@Html.Raw("Emarks"+i)" name="@Html.Raw("Emarks"+i)" type="text" onchange="EvaluateTotalResult(this);"
-                                           value="" aria-required="true" style="width:87%"
+                                           value="@pQuestion.EvaluatedMark" aria-required="true" style="width:87%"
                                            aria-invalid="false" aria-describedby="Emarks-error">
 
                                 </div>
@@ -182,7 +184,7 @@
                             <div class="col-md-8">
                                 <input class="form-control valid" data-val="true"
                                        id="TotalMarksObtained" name="TotalMarksObtained" type="text"
-                                       value="@Model.TotalMarksObtained" tyle="width:87%;" readonly="readonly" />
+                                       value="@Model.TotalMarksObtained" style="width:87%;" readonly="readonly" />
                             </div>
                         </div>
 
@@ -191,7 +193,7 @@
                                 Evaluation Feedback
                             </div>
                             <div class="col-md-7">
-                                @Html.Kendo().EditorFor(m => m.TestSuitName).Name("TestSuitName").Encode(true).Value(Model.TestSuitName)
+                                @Html.Kendo().EditorFor(m => m.EvaluatedFeedBack).Name("EvaluatedFeedBack").Encode(true).Value(Model.EvaluatedFeedBack)
                             </div>
                         </div>
                     </div>
@@ -204,10 +206,7 @@
                                 .Events(e => e.Click("OnCancel"))
                                 .Content("Cancel"))
 
-                            @(Html.Kendo().Button()
-                                .Name("btnSave").Icon("tick")
-                                .HtmlAttributes(new { type = "submit" })
-                                .Content("Save"))
+                            <input type="submit" value="Save" class="k-button k-button-icontext" id="btnSave" />
                         </div>
                     </div>
                 </fieldset>
@@ -217,18 +216,21 @@
     </div>
 </div>
 <script>
+    $(document).ready(function () {
+        EvaluateTotalResult();
+    });
+
     function EvaluateTotalResult() {
         var mark = 0;
         $(".PracticalMarks").each(function () {
-            mark += $(this).val();
-            alert($(this).val());
+            mark = parseInt(mark) + parseInt($(this).val());
         });
 
-        mark = mark + $('#ObjectiveQuestionResult').val();
+        mark = parseInt(mark) + parseInt($('#ObjectiveQuestionResult').val());
 
         $('#TotalMarksObtained').val(mark)
     }
     function OnCancel() {
-        window.location.href = "/QuestionBank/QuestionBank";
+        window.location.href = "/Admin/Candidates";
     }
 </script>

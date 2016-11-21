@@ -11,6 +11,8 @@ namespace Silicus.Ensure.Web.Models
     {
         public int UserId { get; set; }
 
+        public int UserTestSuiteId { get; set; }
+
         public string FirstName { get; set; }
 
         public string LastName { get; set; }
@@ -33,6 +35,8 @@ namespace Silicus.Ensure.Web.Models
 
         public int TotalMarksObtained { get; set; }
 
+        public string EvaluatedFeedBack { get; set; }
+
         public List<ObjectiveQuestionList> objectiveQuestionList { get; set; }
 
         public List<PracticalQuestionList> practicalQuestionList { get; set; }
@@ -53,10 +57,14 @@ namespace Silicus.Ensure.Web.Models
 
     public class PracticalQuestionList
     {
+        public int QuestionId { get; set; }
+
         public string QuestionDescription { get; set; }
 
         public string SubmittedAnswer { get; set; }
 
         public int Weightage { get; set; }
+
+        public int? EvaluatedMark { get; set; }
     }
 }
