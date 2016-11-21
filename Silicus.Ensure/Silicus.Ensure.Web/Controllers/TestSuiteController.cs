@@ -66,8 +66,15 @@ namespace Silicus.Ensure.Web.Controllers
         public ActionResult Add(Int32 testSuiteId = 0)
         {
             TestSuiteViewModel testSuite = new TestSuiteViewModel();
+            TestSuiteTagViewModel tagView = new TestSuiteTagViewModel();
+            List<TestSuiteTagViewModel> tags = new List<TestSuiteTagViewModel>();            
+            tagView.TagId = 0;
+            tagView.TagName = "";            
+            tags.Add(tagView);
+            testSuite.Tags = tags;
             var tagDetails = _tagsService.GetTagsDetails().OrderByDescending(model => model.TagId);
-            var positionDetails = _positionService.GetPositionDetails().OrderBy(model => model.PositionName);
+            var positionDetails = _positionService.GetPositionDetails().OrderBy(model => model.PositionName);            
+
             if (testSuiteId == 0)
             {
                 ViewBag.Type = "New";
@@ -230,6 +237,19 @@ namespace Silicus.Ensure.Web.Controllers
             //Question question = from a in _questionService.GetQuestion()
             //                    where a.Tags.Contains()//.Split(',').Select(Int32.Parse).ToArray().Contains(tags)
             //                    select a;
+        }
+
+        [HttpPost]
+        public ActionResult Read()
+        {
+            var tagDetails = _tagsService.GetTagsDetails().OrderByDescending(model => model.TagId);
+            return Json(tagDetails);
+        }
+
+        public ActionResult GetTags(string term)
+        {
+            var tagDetails = _tagsService.GetTagsDetails().OrderBy(model => model.TagName);
+            return Json(tagDetails);
         }
     }
 }

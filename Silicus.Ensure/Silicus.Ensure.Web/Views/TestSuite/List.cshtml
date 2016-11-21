@@ -47,7 +47,7 @@
                                         <span class="input-group-addon"><span class="glyphicon glyphicon-search" aria-hidden="true"></span></span>
                                         <input type="text" class="form-control" id='FieldFilter' placeholder="Search for...">
                                         <span class="input-group-btn">
-                                            <button class="btn btn-default" type="button" style="height:16px;"><span class="glyphicon glyphicon-refresh" aria-hidden="true"></span></button>
+                                            <button id="testSuiteSearch"  class="btn btn-default" type="button" style="height:16px;"><span class="glyphicon glyphicon-refresh" aria-hidden="true"></span></button>
                                         </span>
                                     </div>
                                 </div>
@@ -106,7 +106,11 @@
 
             if (value.length > 1) {
                 if (value) {
-                    grid.dataSource.filter({ field: "TestSuiteName", operator: "contains", value: value });
+                    var filter = { logic: "or", filters: [] };
+                    filter.filters.push({ field: "TestSuiteName", operator: "contains", value: value });                    
+                    filter.filters.push({ field: "PositionName", operator: "contains", value: value });
+                    filter.filters.push({ field: "PrimaryTagNames", operator: "contains", value: value });                   
+                    grid.dataSource.query({ filter: filter });
                 } else {
                     grid.dataSource.filter({});
                 }
@@ -160,6 +164,13 @@
                     $("#myModal").modal();                                
             }
         });
-
     }
+
+    $("#testSuiteSearch").click(function (e) {
+        e.preventDefault();
+        var datasource = $("#testSuiteGrids").data("kendoGrid").dataSource;
+        //Clear filters:
+        datasource.filter([]);
+        $("#FieldFilter").val('');
+    });
 </script>

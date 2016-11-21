@@ -533,12 +533,22 @@ namespace Silicus.Ensure.Web.Controllers
 
         public void ActiveteSuite(UserTestSuite userTestSuite, TestSuite testSuite)
         {
+            UserTestDetails userTestDetail;
+            List<UserTestDetails> userTestDetailList = new List<UserTestDetails>();
+            var question = _questionService.GetQuestion();            
+            foreach(var item in question)
+            {
+                userTestDetail = new UserTestDetails();
+                userTestDetail.QuestionId = item.Id;
+                userTestDetailList.Add(userTestDetail);
+            }
+            userTestSuite.UserTestDetails = userTestDetailList;
             Int32 userTestSuiteId = _testSuiteService.AddUserTestSuite(userTestSuite);
-            if (!string.IsNullOrWhiteSpace(testSuite.SecondaryTags))
-                testSuite.PrimaryTags += "," + testSuite.SecondaryTags;
-            Int32[] tags = testSuite.PrimaryTags.Split(',').Select(Int32.Parse).ToArray();
-            //Question question = from a in _questionService.GetQuestion()
-            //                    where a.tag
+            var questions = _questionService.GetQuestion();
+            //if (!string.IsNullOrWhiteSpace(testSuite.SecondaryTags))
+            //    testSuite.PrimaryTags += "," + testSuite.SecondaryTags;
+            //Int32[] tags = testSuite.PrimaryTags.Split(',').Select(Int32.Parse).ToArray();
+           
         }
         #endregion
 
