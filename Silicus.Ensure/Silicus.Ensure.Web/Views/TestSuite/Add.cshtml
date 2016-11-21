@@ -6,7 +6,6 @@
    ViewBag.Title = "TestSuite";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
-
 <div class="main-content">
     <h2>@ViewBag.Type Test Suite</h2>
     @using (Html.BeginForm("Save", "TestSuite"))
@@ -35,7 +34,7 @@
                     @(Html.Kendo().DropDownListFor(model => model.Duration)
                     .BindTo(new List<string>() {
                     "30", "60", "90", "120"
-                    }).Events(ev => ev.Change("onDurationChange")))
+                    })) @*.Events(ev => ev.Change("onDurationChange"))*@
                 </div>  
             </div>
             @*<br />
@@ -122,6 +121,8 @@
                 </div>
             </div>
             <br />*@
+    <table align='center' id="tag_table" role="grid" cellspacing="40"></table>
+        <br/>
             <div class="row">
                 <div class="col-md-6"></div>
                 <div class="col-md-2 col-md-offset-4">
@@ -139,11 +140,65 @@
             </div>           
     }
 </div>
-
 <script>
-    $(document).ready(function () {       
+    $(document).ready((function () {
+        $(document).ready((function () {
+            var TagList = [];
+            $.ajax({
+                type: 'POST',
+                url: '@Url.Action("GetTags", "TestSuite")',               
+                dataType: "json",               
+                success: function (data) {                   
+                    $.each(data, function (i, tag) {
+                        TagList.push(tag["TagName"]);
+                    });
+                    $(".autocomplete").kendoAutoComplete({
+                        dataSource: TagList,
+                        filter: "contains",
+                        minLength: 2,
+                        placeholder: "Select Tag",
+                        seperator: ","
+                    });
+                },
+                error: function (errorMsg) {                    
+                    alert(errorMsg);
+                }
+            });
+            
+        }));
+    }));
+
+        //Table JS
+        var tags=''
+    $(document).ready(function () {
+        if ($("#tag_table").html() === "") {
+            $('#tag_table').append('<tr><td id="tag_title_row">Skill Tag 1:</td><td id="tag_name_row"><input type="text" id="tag_name" class="autocomplete"></td><td id="weight_title_row">Weightage Percentage 1:</td><td id="weight_name_row"><input type="text" id="weight_name"></td><td><input type="button" onclick="add_row();" style="width:60px;" value="Add"></td></tr>')
+        }
+    });
+
+    function add_row() {
+        var tag_name = document.getElementById("tag_name").value;
+        var weight_name = document.getElementById("weight_name").value;
+
+        var table = document.getElementById("tag_table");
+        var table_len = (table.rows.length) - 1;
+        var rowindex = table.rows.length;
+
+        var row = table.insertRow(table_len).outerHTML = "<tr id='row" + table_len + "'><td id='tag_title_row" + table_len + "'>" + "Skill Tag " + rowindex + ":" + "</td><td id='tag_name_row" + table_len + "'>" + "<input type='text' class='autocomplete' id='name_text" + table_len + "' value='" + tag_name + "'>" + "</td><td id='weight_title_row" + table_len + "'>" + "Weightage Percentage " + rowindex + ":" + "</td><td id='weight_name_row" + table_len + "'>" + "<input type='text' id='name_text" + table_len + "' value='" + weight_name + "'>" + "</td><td><input type='button' value='Delete' style='width:60px;' onclick='delete_row(" + table_len + ")'></td></tr>";
+        $("#tag_name").val('');
+        $("#weight_name").val('');
+        $('#tag_title_row').html("Skill Tag " + (parseInt(rowindex) + parseInt('1')) + ":");
+        $("#weight_title_row").html("Weightage Percentage " + (parseInt(rowindex) + parseInt('1')) + ":")
+    }
+
+    function delete_row(no) {
+        document.getElementById("row" + no + "").outerHTML = "";
+    }
+    //Table JS End
+
+    $(document).ready(function () {
         if ($('.validation-summary-errors>ul>li').is(':empty')) { $("#messageDiv").hide(); }
-        else if ($('.validation-summary-errors>ul>li').text()!="")
+        else if ($('.validation-summary-errors>ul>li').text() != "")
         { ShowMessage($('.validation-summary-errors>ul>li').text(), 0); }
         else { $("#messageDiv").hide(); }
 
@@ -159,8 +214,7 @@
     }
 
     function onDurationChange() {
-        if($("#Duration").val()=="30")
-        {
+        if ($("#Duration").val() == "30") {
             $("#ObjectiveQuestionsCount").val("20");
             $("#PracticalQuestionsCount").val("1");
         }
@@ -206,6 +260,10 @@
         }
     }
 </script>
+<style>
+    #tag_table td {padding:5px;}
+     #tag_table input {width:172px;}
+</style>
 
 
 
