@@ -25,7 +25,7 @@ namespace Silicus.Ensure.Entities
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
             //  Disable the default PluralizingTableNameConvention 
-            modelBuilder.Conventions.Remove<PluralizingTableNameConvention>(); 
+            modelBuilder.Conventions.Remove<PluralizingTableNameConvention>();
 
             // Register Entities.
             Guard.ArgumentNotNull(modelBuilder, "modelBuilder");
@@ -58,11 +58,6 @@ namespace Silicus.Ensure.Entities
                 cs.MapRightKey("CategoryId");
                 cs.ToTable("AssetCategory");
             });
-
-
-            modelBuilder.Entity<UserTestSuite>()
-                .HasMany<UserTestDetails>(u => u.userTestDetailsCollection)
-                .WithRequired(x => x.userTestSuite).Map(x => x.MapKey("UserTestSuiteId"));
         }
     }
 }

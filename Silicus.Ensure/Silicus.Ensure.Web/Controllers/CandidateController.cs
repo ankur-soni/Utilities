@@ -29,8 +29,8 @@ namespace Silicus.Ensure.Web.Controllers
 
         public ActionResult LoadQuestion()
         {
-            int QuestionId = 1;
-            Question question = _questionService.GetSingleQuestion(Convert.ToInt32(QuestionId));
+            List<Question> questions = _questionService.GetQuestion().ToList();
+            Question question = questions[0];
             return PartialView("_partialViewQuestion", question);
         }
 
