@@ -21,6 +21,7 @@ namespace Silicus.Ensure.Web.Models
         public string Tag { get; set; }
         public string Competency { get; set; }
         public int Duration { get; set; }
+        public int Marks { get; set; }
         public bool IsPublishd { get; set; }
         public bool IsDeleted { get; set; }
         public DateTime CreatedOn { get; set; }
@@ -35,11 +36,5 @@ namespace Silicus.Ensure.Web.Models
         private bool _edit = false;
         public int Success { get { return _success; } set { _success = value; } }
         public bool Edit { get { return _edit; } set { _edit = value; } }
-    }
-
-    public class Skills
-    {
-        public string Skill { get; set; }
-        public string Value { get; set; }
     }
 }

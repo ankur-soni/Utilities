@@ -7,7 +7,7 @@
 }
 
 <div class="main-content">
-    @using (Html.BeginForm("AddQuestions", "Admin"))
+    @using (Html.BeginForm("AddQuestions", "QuestionBank"))
     {
         <div class="fluid mt20">
             <div class="row">
@@ -232,6 +232,10 @@
                     Value="2"
                     },
                     new SelectListItem(){
+                    Text="3",
+                    Value="3"
+                    },
+                    new SelectListItem(){
                     Text="5",
                     Value="5"
                     },
@@ -246,18 +250,52 @@
                     new SelectListItem(){
                     Text="20",
                     Value="20"
+                    }
+                    }).HtmlAttributes(new { style = "width: 100%" }))
+                </div>
+            </div>
+            <br />
+
+            <div class="row">
+                <div class="col-md-4">
+                    <span>Marks:</span><span style="color:red">*</span>
+                </div>
+
+                <div class="col-md-8">
+                    @(Html.Kendo().DropDownListFor(m => m.Marks)
+                .Name("Marks")
+                .DataTextField("Text")
+                .DataValueField("Value")
+                .Value(Model.Marks.ToString())
+                .BindTo(new List<SelectListItem>
+                    () {
+                    new SelectListItem(){
+                    Text="1",
+                    Value="1"
                     },
                     new SelectListItem(){
-                    Text="30",
-                    Value="30"
+                    Text="2",
+                    Value="2"
                     },
                     new SelectListItem(){
-                    Text="45",
-                    Value="45"
+                    Text="3",
+                    Value="3"
                     },
                     new SelectListItem(){
-                    Text="60",
-                    Value="60"
+                    Text="5",
+                    Value="5"
+                    },
+                    new SelectListItem(){
+                    Text="10",
+                    Value="10"
+                    },
+                    new SelectListItem(){
+                    Text="15",
+                    Value="15"
+                    },
+                    new SelectListItem(){
+                    Text="20",
+                    Value="20"
                     }
                     }).HtmlAttributes(new { style = "width: 100%" }))
                 </div>
@@ -406,7 +444,7 @@
                 }
 
                 function OnCancel() {
-                    window.location.href = "/Admin/QuestionBank";
+                    window.location.href = "/QuestionBank/QuestionBank";
                 }
             </script>
             <style>

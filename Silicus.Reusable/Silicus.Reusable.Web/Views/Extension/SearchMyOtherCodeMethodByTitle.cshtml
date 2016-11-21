@@ -1,0 +1,35 @@
+﻿@model IEnumerable<Silicus.FrameworxProject.Models.OtherCode>
+
+@{
+    Layout = null;
+}
+
+@foreach (var item in Model)
+{
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-2 col-md-2 col-sm-2">
+                <div class="views" style="border: 3px solid #73AD21;height:100px;text-align:center;vertical-align:middle;padding-top:21px;">
+                    <span title="36 views">@Html.DisplayFor(modelItem => item.FrequentSearchedCount)</span>
+                    <h6>Views</h6>
+                </div>
+            </div>
+            <div class="col-lg-10 col-md-10 col-sm-10">
+                <div class="question-summary">
+                    <div>
+                        <h3 style="float:left"><a href='@Url.Action("ShowOtherCodeMethodDetail", "Extension",new { id = item.Id })'>@Html.DisplayFor(modelItem => item.MethodName)</a></h3>
+                        @if (item.ReviewFlag == true)
+                        {
+                            <h3 style="float:left;margin-left:30px"><span class="label label-success">Approved</span></h3>
+                        }
+                        else
+                        {
+                            <h3 style="float:left;margin-left:30px"> <span class="label label-default">Not Approved</span></h3>
+                        }
+                    </div>
+                    <div class="truncate">@Html.DisplayFor(modelItem => item.Description)</div>
+                </div>
+            </div>
+        </div>
+    </div>
+}

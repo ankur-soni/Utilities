@@ -6,7 +6,7 @@ using Silicus.Ensure.Services.Interfaces;
 
 namespace Silicus.Ensure.Services
 {
-    public class TestSuiteService:ITestSuiteService
+    public class TestSuiteService : ITestSuiteService
     {
         private readonly IDataContext _context;
 
@@ -39,12 +39,12 @@ namespace Silicus.Ensure.Services
             if (TestSuite.TestSuiteName != null)
             {
                 TestSuite.IsDeleted = true;
-                TestSuite.DeletedDate = System.DateTime.UtcNow;
+                TestSuite.ModifiedDate = System.DateTime.UtcNow;
                 _context.Update(TestSuite);
             }
         }
 
-        public  IEnumerable<UserTestSuite> GetUserTestSuite()
+        public IEnumerable<UserTestSuite> GetUserTestSuite()
         {
             return _context.Query<UserTestSuite>();
         }
@@ -69,6 +69,25 @@ namespace Silicus.Ensure.Services
             {
                 _context.Delete(UserTestSuite);
             }
+        }
+
+        public TestSuite GetTestSuitById(int testSuiteId)
+        {
+            return _context.Query<TestSuite>().Where(x => x.TestSuiteId == testSuiteId).FirstOrDefault();
+        }
+
+
+
+        public UserTestSuite GetUserTestSuiteId(int userTestSuiteId)
+        {
+            return _context.Query<UserTestSuite>().Where(x => x.UserTestSuiteId == userTestSuiteId).FirstOrDefault();
+        }
+
+
+        public void UpdateUserTestDetails(UserTestDetails UserTestDetails)
+        {
+            _context.Update(UserTestDetails);
+
         }
     }
 }

@@ -25,6 +25,7 @@ namespace Silicus.Ensure.Web.Models
         [Required(ErrorMessage = "Competency is required!")]
         public Int32 Competency { get; set; }
 
+        [Display(Name="Tags")]
         public List<string> PrimaryTagIds { get; set; }
 
         public List<string> SecondaryTagIds { get; set; }
@@ -48,7 +49,7 @@ namespace Silicus.Ensure.Web.Models
         [Display(Name = "No. Of Practical Questions")]
         public string PracticalQuestionsCount { get; set; }
 
-        public int userid { get; set; }
+        public int Userid { get; set; }
 
         public IList<Position> PositionList { get; set; }
     }

@@ -106,6 +106,7 @@
     <Compile Include="Interfaces\ISmtpClient.cs" />
     <Compile Include="Interfaces\ITagsService.cs" />
     <Compile Include="Interfaces\ITestSuiteService.cs" />
+    <Compile Include="Interfaces\ITestSuiteTagService.cs" />
     <Compile Include="Interfaces\IUserService.cs" />
     <Compile Include="ManagerService.cs" />
     <Compile Include="PositionService.cs" />
@@ -117,6 +118,7 @@
     <Compile Include="SmtpClientWrapper.cs" />
     <Compile Include="TagService.cs" />
     <Compile Include="TestSuiteService.cs" />
+    <Compile Include="TestSuiteTagService.cs" />
     <Compile Include="UserService.cs" />
   </ItemGroup>
   <ItemGroup>

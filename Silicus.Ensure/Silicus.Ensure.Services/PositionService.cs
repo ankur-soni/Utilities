@@ -25,8 +25,13 @@ namespace Silicus.Ensure.Services
             return _context.Query<Position>().Where(x => x.PositionId == PositionId).FirstOrDefault();
         }
 
+        public Position GetPositionByName(string PositionName)
+        {
+            return _context.Query<Position>().Where(x => x.PositionName.ToLower() == PositionName.ToLower()).FirstOrDefault();
+        }
+
         public int Add(Position Position)
-        {            
+        {
             _context.Add(Position);
             return Position.PositionId;
         }
@@ -37,6 +42,14 @@ namespace Silicus.Ensure.Services
             {
                 _context.Update(Position);
             }
-        }        
+        }
+
+        public void Delete(Position Position)
+        {
+            if (Position.PositionId > 0)
+            {
+                _context.Delete(Position);
+            }
+        }
     }
 }

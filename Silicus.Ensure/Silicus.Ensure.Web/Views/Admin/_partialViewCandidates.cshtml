@@ -101,22 +101,22 @@
             }
         });
     }
-  
+
 
     $(function () {
-        $('body').on('click', '#Savebtn', function () {           
+        $('body').on('click', '#Savebtn', function () {
             var myClone = myBackup.clone();
             $('body').append(myClone);
         });
 
         $("#Savebtn").bind("click", function () {
-           
+
             // var checksvalues = $("#testSuiteGrids").find("[class='check']").attr("value");
             var uId = $("#CurrentUser").val();
             //alert(uId);
             var checkvals = $("[class='check']:checked").attr("value")
             //  alert(checksvalues);
-           // alert(checkvals);
+            // alert(checkvals);
             // var checksUservalues = $("#testSuiteGrids").find("[class='textu']").attr("value");
             // var usey = $("#testSuiteGrids").find("[class='check']:checked").attr("value");
             // alert(checksUservalues);
@@ -137,11 +137,11 @@
                     }
                 },
                 error: function (er) {
-                                   
+
                 }
             });
         });
-        
+
     });
 
     function Change() {
@@ -155,6 +155,12 @@
         else {
             grid.dataSource.filter({ field: "TestStatus", operator: "eq", value: value });
         }
+    }
+
+    function AddNew() {
+        window.location.href = "/User/CandidateAdd";
+
+        return false;
     }
 </script>
 <div>
@@ -176,14 +182,12 @@
                   //columns.Bound(p => p.isActive).Width(50);
                   columns.Bound(p => p.Email).Width(50);
                   columns.Bound(p => p.TestStatus).Width(50);
-                  columns.Bound(p => p.Role).Width(110).Title("Role").EditorTemplateName("ComboBox").HtmlAttributes(new { value = "User" });
+                  //columns.Bound(p => p.Role).Width(110).Title("Role").EditorTemplateName("ComboBox").HtmlAttributes(new { value = "User" });
                   columns.Command(command => { command.Edit(); command.Destroy(); }).Width(160);
                   columns.Bound(c => c.UserId).ClientTemplate(@"
-
-   <a onclick=showTest('#=UserId#')>Assign Test</a>|
-    <a href='/DiagnosisTest/Edit/#=UserId#' class = 'dialog-window'  >Preview Question Set</a> |
-    <a href='/DiagnosisTest/Delete/#=UserId#' class = 'dialog-window'>View Submitted Test</a>
-            ").Title("Actions");
+                                <a onclick=showTest('#=UserId#')>Assign Test</a>|
+                                <a href='/DiagnosisTest/Edit/#=UserId#' class = 'dialog-window'  >Preview Question Set</a> |
+                                <a href='/admin/SubmittedTest?canditateId=#=UserId#' class = 'dialog-window'>View Submitted Test</a>").Title("Actions");
                   //   <a href='/Admin/CandidatesSuit?UserId=#=UserId#' class = 'dialog-window'>Assign Test</a> |
                   //              columns.Bound(x => x.UserId).ClientTemplate(
                   //      "# if (TestStatus == 'UnAssigned') { #" +
@@ -202,9 +206,9 @@
                   })
 
                       .Read(read => read.Action("GetCandidateDetails", "User"))
-                  .Create(update => update.Action("CreateUser", "User"))
-                  .Update(update => update.Action("UpdateUser", "User"))
-                  .Destroy(update => update.Action("DeleteUser", "User"))
+                      .Create(update => update.Action("CreateUser", "User"))
+                      .Update(update => update.Action("UpdateUser", "User"))
+                      .Destroy(update => update.Action("DeleteUser", "User"))
               )
 
 
@@ -228,10 +232,16 @@
                                     </div>
                                 </div>
                             </div>
+                            <div class="row">
+                                <div class="col-md-3 col-md-push-1" style="float: right; padding-right: 0px; margin-right: -22px;">
+                                    <a href='#' onclick='AddNew();' class='k-button k-button-icontext k-grid-add'><span class='k-icon k-add'></span>Add Candidate</a>
+                                </div>
+                            </div>
+
                         </div>
 
                     </text>);
-                }).Editable(ed => ed.Mode(GridEditMode.InLine))
+                })
 
         )
 
@@ -247,7 +257,7 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal">&times;</button>
-                    <h4 class="modal-title">Test-Suite List</h4>                    
+                    <h4 class="modal-title">Test-Suite List</h4>
                 </div>
                 <div class="modal-body" id="CandidateInfo">
                     @if (Request.IsAuthenticated)
@@ -260,7 +270,7 @@
                   columns.Bound(p => p.Duration).Width(50);
                   columns.Bound(p => p.PositionName).Width(50);
                   columns.Bound(p => p.PrimaryTagNames).Width(200);
-                  columns.Bound(p => p.userid).ClientTemplate("<input type='text' class='textu' id='txtUser' value='#=userid#'/>").Hidden();
+                  columns.Bound(p => p.Userid).ClientTemplate("<input type='text' class='textu' id='txtUser' value='#=userid#'/>").Hidden();
                   //columns.Bound("").ClientTemplate("<a class='k-button k-button-icontext k-grid-add' href='\\#' data-toggle='modal' data-target='\\#myModal'><span class='k-icon k-add'></span>Activate Test Suite</a><a class='k-button k-button-icontext k-grid-add' href='" + Url.Action("TestSuiteCopy", "Admin") + "?testSuiteId=#=TestSuiteId#'><span class='k-icon k-add'></span>Copy</a><a class='k-button k-button-icontext k-grid-edit' href='" + Url.Action("TestSuiteAdd", "Admin") + "?testSuiteId=#=TestSuiteId#'><span class='k-icon k-edit'></span>Edit</a><a class='k-button k-button-icontext k-grid-delete' href='" + Url.Action("TestSuiteDelete", "Admin") + "?testSuiteId=#=TestSuiteId#'><span class='k-icon k-delete'></span>Delete</a>");
               })
         .DataSource(dataSource => dataSource

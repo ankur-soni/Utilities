@@ -10,31 +10,31 @@ namespace Silicus.Ensure.Models.DataObjects
         [Key]
         public int UserId { get; set; }
 
-        [Required(ErrorMessage = "Name is required!")]
+        //[Required(ErrorMessage = "Name is required!")]
         public string FirstName { get; set; }
 
-        [Required(ErrorMessage = "Last name is required")]
+       // [Required(ErrorMessage = "Last name is required")]
         public string LastName { get; set; }
 
-        [Required(ErrorMessage = "This field is required.")]
+        //[Required(ErrorMessage = "This field is required.")]
         [DataType(DataType.Password)]
         public string NewPassword { get; set; }
 
-        [Required(ErrorMessage = "This field is required.")]
+        //[Required(ErrorMessage = "This field is required.")]
         [CompareAttribute("NewPassword", ErrorMessage = "Passwords don't match.")]
         [DataType(DataType.Password)]
         public string ConfirmPassword { get; set; }
         
-        [Required]
+        //[Required]
         public string Address { get; set; }
         
-        [Required]
-        public bool isActive { get; set; }
+        //[Required]
+        public bool IsActive { get; set; }
         
-        [Required]
+        //[Required]
         public string Role { get; set; }
 
-        [Required]
+       // [Required]
         public string Email { get; set; }
 
         public string Gender { get; set; }
@@ -47,6 +47,7 @@ namespace Silicus.Ensure.Models.DataObjects
 
         public string TestStatus { get; set; }
 
+        public string ResumePath { get; set; }
         public Guid IdentityUserId { get; set; }
     }
 }

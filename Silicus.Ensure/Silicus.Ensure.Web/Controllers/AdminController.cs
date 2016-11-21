@@ -81,7 +81,7 @@ namespace Silicus.Ensure.Web.Controllers
 
         [AcceptVerbs(HttpVerbs.Post)]
         public async Task<ActionResult> SendEmail(FormCollection email)
-        {           
+        {
             string retVal = "failed";
             if (!string.IsNullOrEmpty(email[1]))
             {
@@ -272,6 +272,7 @@ namespace Silicus.Ensure.Web.Controllers
             DataSourceRequest.Page = 1;
             DataSourceRequest.PageSize = 10;
 
+            var objectiveCount = new object();
             var updateCurrentUsers = _userService.GetUserDetails().Where(model => model.UserId == Userid).FirstOrDefault();
             if (updateCurrentUsers != null)
             {
@@ -280,15 +281,45 @@ namespace Silicus.Ensure.Web.Controllers
 
                 if (SuiteId > 0 && Userid > 0)
                 {
+                    var ViewPrimaryTagList = _testSuiteService.GetTestSuiteDetails().Where(q => q.TestSuiteId == SuiteId).Select(p => p.PrimaryTags).ToList();
+
+                    foreach (var tagid in ViewPrimaryTagList)
+                    {
+                        string[] values = tagid.Split(',');
+                        for (int i = 0; i < values.Length; i++)
+                        {
+                            values[i] = values[i].Trim();
+                            objectiveCount = _questionService.GetQuestion().Where(p => p.Tags.Contains(values[i]) && p.QuestionType == 1).ToList().Count();
+                        }
+                    }
+
                     UserTestSuite newusertestsuit = new UserTestSuite
                     {
                         UserId = Userid,
                         TestSuiteId = SuiteId,
                         ObjectiveCount = 5,
-                        Score = 50,
                         MaxScore = 70,
                         CreatedDate = DateTime.Now,
                     };
+                    foreach (var tagid in ViewPrimaryTagList)
+                    {
+                        string[] values = tagid.Split(',');
+                        for (int i = 0; i < values.Length; i++)
+                        {
+                            values[i] = values[i].Trim();
+                            var questionList = _questionService.GetQuestion().Where(p => p.Tags.Contains(values[i])).Select(q => q.Id).ToList();
+                            foreach (var questionId in questionList)
+                            {
+                                UserTestDetails userTestDetails = new UserTestDetails
+                                {
+                                    UserTestSuite = _testSuiteService.GetUserTestSuiteId(SuiteId),
+                                    QuestionId = Convert.ToInt32(questionId)
+
+                                };
+                            }
+                        }
+                    }
+
 
                     _testSuiteService.AddUserTestSuite(newusertestsuit);
                     updateCurrentUsers.TestStatus = "Assigned";
@@ -304,6 +335,14 @@ namespace Silicus.Ensure.Web.Controllers
                 }
             }
             return View();
+        }
+
+        public ActionResult CandidateAdd()
+        {
+            UserViewModel currUser = new UserViewModel();
+            var positionDetails = _positionService.GetPositionDetails().OrderBy(model => model.PositionName);
+            currUser.PositionList = positionDetails.ToList();
+            return View(currUser);
         }
 
         #endregion
@@ -399,7 +438,7 @@ namespace Silicus.Ensure.Web.Controllers
                 TempData.Add("IsNewTestSuite", 1);
                 if (testSuiteView.TestSuiteId == 0 || testSuiteView.IsCopy == true)
                 {
-                    _testSuiteService.Add(testSuiteDomainModel);                    
+                    _testSuiteService.Add(testSuiteDomainModel);
                     return RedirectToAction("TestSuiteList");
                 }
                 else
@@ -420,7 +459,7 @@ namespace Silicus.Ensure.Web.Controllers
         {
             var testSuiteDetails = _testSuiteService.GetTestSuiteDetails().Where(model => model.TestSuiteId == testSuiteId && model.IsDeleted == false).SingleOrDefault();
             if (testSuiteDetails != null)
-            {               
+            {
                 _testSuiteService.Delete(testSuiteDetails);
                 return Json(1);
             }
@@ -463,9 +502,9 @@ namespace Silicus.Ensure.Web.Controllers
         }
 
         public ActionResult TestSuitUsers([DataSourceRequest] DataSourceRequest request)
-        {           
-            int testSuiteId=Convert.ToInt32(TempData["TesSuiteId"]);
-            var userlist = _userService.GetUserDetails().Where(model => model.Role == "USER").OrderByDescending(model => model.UserId).ToArray();           
+        {
+            int testSuiteId = Convert.ToInt32(TempData["TesSuiteId"]);
+            var userlist = _userService.GetUserDetails().Where(model => model.Role == "USER").OrderByDescending(model => model.UserId).ToArray();
             var viewModels = _mappingService.Map<User[], UserViewModel[]>(userlist);
             DataSourceResult result = viewModels.ToDataSourceResult(request);
             return Json(result);
@@ -475,9 +514,9 @@ namespace Silicus.Ensure.Web.Controllers
         {
             var testSuiteDetails = _testSuiteService.GetTestSuiteDetails().Where(model => model.TestSuiteId == testSuiteId && model.IsDeleted == false).SingleOrDefault();
             UserTestSuite userTestSuite;
-            if(!string.IsNullOrWhiteSpace(users))
+            if (!string.IsNullOrWhiteSpace(users))
             {
-                foreach(var item in users.Split(','))
+                foreach (var item in users.Split(','))
                 {
                     userTestSuite = new UserTestSuite();
                     userTestSuite.UserId = Convert.ToInt32(item);
@@ -485,14 +524,14 @@ namespace Silicus.Ensure.Web.Controllers
                     ActiveteSuite(userTestSuite, testSuiteDetails);
                 }
                 return Json(1);
-            }            
+            }
             else
             {
                 return Json(-1);
             }
         }
 
-        public ActionResult TestSuiteUserView(int testSuiteId=0)
+        public ActionResult TestSuiteUserView(int testSuiteId = 0)
         {
             TempData["TesSuiteId"] = testSuiteId;
             return PartialView("_TestSuiteAssign");
@@ -500,129 +539,13 @@ namespace Silicus.Ensure.Web.Controllers
 
         public void ActiveteSuite(UserTestSuite userTestSuite, TestSuite testSuite)
         {
-            Int32 userTestSuiteId=_testSuiteService.AddUserTestSuite(userTestSuite);
+            Int32 userTestSuiteId = _testSuiteService.AddUserTestSuite(userTestSuite);
             if (!string.IsNullOrWhiteSpace(testSuite.SecondaryTags))
                 testSuite.PrimaryTags += "," + testSuite.SecondaryTags;
             Int32[] tags = testSuite.PrimaryTags.Split(',').Select(Int32.Parse).ToArray();
             //Question question = from a in _questionService.GetQuestion()
             //                    where a.tag
         }
-        #endregion
-
-        #region Question Bank
-        //---------------------------------- Question Bank Section -----------------------------------
-
-        public ActionResult AddQuestions(string QuestionId)
-        {
-            QuestionModel Que = new QuestionModel { QuestionType = "0", SkillTagsList = Tags() };
-            return View(Que);
-        }
-
-        [HttpPost]
-        public ActionResult AddQuestions(QuestionModel question)
-        {
-            if (ModelState.IsValid)
-            {
-                Question Que = _mappingService.Map<QuestionModel, Question>(question);
-                Que.QuestionDescription = HttpUtility.HtmlDecode(question.QuestionDescription);
-                Que.CorrectAnswer = (question.CorrectAnswer != null) ? string.Join(",", question.CorrectAnswer) : null;
-                Que.Answer = HttpUtility.HtmlDecode(question.Answer);
-                Que.Tags = string.Join(",", question.SkillTag);
-                Que.IsPublishd = true;
-                Que.ModifiedOn = DateTime.Now;
-                Que.ModifiedBy = 0;
-                bool isEdit = false;
-
-
-                if (question.Edit)
-                {
-                    isEdit = true;
-                    Que.CreatedOn = question.CreatedOn;
-                    Que.CreatedBy = question.CreatedBy;
-                    _questionService.Update(Que);
-                }
-                else
-                {
-                    Que.CreatedOn = DateTime.Now;
-                    Que.CreatedBy = 0;
-                    _questionService.Add(Que);
-                }
-                question = new QuestionModel() { Success = 1, Edit = isEdit, QuestionType = "0", SkillTagsList = Tags() };
-            }
-            else
-            {
-                question = new QuestionModel { QuestionType = "0", SkillTagsList = Tags() };
-            }
-            return View(question);
-        }
-
-        public ActionResult QuestionBank()
-        {
-            var Que = _questionService.GetQuestion().ToList();
-            var QueModel = _mappingService.Map<List<Question>, List<QuestionModel>>(Que);
-            foreach (var q in QueModel)
-            {
-                q.QuestionDescription = q.QuestionDescription.Substring(0, Math.Min(q.QuestionDescription.Length, 100));
-                q.QuestionType = GetQuestionType(q.QuestionType);
-                q.Tag = string.Join(" | ", Tags().Where(t => Que.Where(x => x.Id == q.Id).Select(p => p.Tags).FirstOrDefault().ToString().Split(',').Contains(t.TagId.ToString())).Select(l => l.TagName).ToList());
-                q.Competency = GetCompetency(q.Competency);
-            }
-            return View(QueModel);
-        }
-
-        public ActionResult EditQuestion(string QuestionId)
-        {
-            if (!string.IsNullOrEmpty(QuestionId))
-            {
-                Question question = _questionService.GetSingleQuestion(Convert.ToInt32(QuestionId));
-                QuestionModel QueModel = _mappingService.Map<Question, QuestionModel>(question);
-                QueModel.QuestionDescription = HttpUtility.HtmlDecode(question.QuestionDescription);
-                QueModel.CorrectAnswer = (question.CorrectAnswer != null) ? question.CorrectAnswer.Split(',').ToList() : null;
-                QueModel.Answer = HttpUtility.HtmlDecode(question.Answer);
-                QueModel.SkillTag = question.Tags.Split(',').ToList();
-                QueModel.Success = 0;
-                QueModel.Edit = true;
-                QueModel.SkillTagsList = Tags();
-                return View("AddQuestions", QueModel);
-            }
-            return View("AddQuestions", null);
-        }
-
-        [HttpDelete]
-        public JsonResult DeleteQuestion(int QuestionId)
-        {
-            _questionService.Delete(QuestionId);
-            return Json(1);
-        }
-
-        #region Question Bank Private Methods
-
-        private List<Tags> Tags()
-        {
-            List<Tags> tags = _tagsService.GetTagsDetails().ToList();
-            return tags;
-        }
-
-        private string GetQuestionType(string type)
-        {
-            if (type == "1")
-                return "Objective";
-            else
-                return "Practical";
-        }
-
-        private string GetCompetency(string type)
-        {
-            if (type == "1")
-                return "Beginner";
-            else if (type == "2")
-                return "Intermediate";
-            else
-                return "Expert";
-        }
-
-        #endregion
-
         #endregion
 
         #region Position
@@ -645,7 +568,7 @@ namespace Silicus.Ensure.Web.Controllers
                 if (position.PositionId == 0)
                     return Json(_positionService.Add(position));
                 else
-        {
+                {
                     _positionService.Update(position);
                     return Json(1);
                 }
@@ -692,11 +615,116 @@ namespace Silicus.Ensure.Web.Controllers
 
             
             // Add to the view bag
-           // pdf.ViewBag.Title = "Title from ViewBag";
+            // pdf.ViewBag.Title = "Title from ViewBag";
 
             return pdf;
 
-          //  return View(QList);
+            //  return View(QList);
+        }
+
+        public ActionResult SubmittedTest(int canditateId)
+        {
+            List<ObjectiveQuestionList> objectiveQuestionList = new List<ObjectiveQuestionList>();
+            List<PracticalQuestionList> practicalQuestionList = new List<PracticalQuestionList>();
+
+            var userDetails = _userService.GetUserDetails().Where(x => x.UserId == canditateId).FirstOrDefault();
+            var userTestSuitDetails = _testSuiteService.GetUserTestSuite().Where(x => x.UserId == canditateId).FirstOrDefault();
+            var testSuitDetails = _testSuiteService.GetTestSuitById(userTestSuitDetails.TestSuiteId);
+
+            SubmittedTestViewModel submittedTestViewModel = new Models.SubmittedTestViewModel();
+            submittedTestViewModel.FirstName = userDetails.FirstName;
+            submittedTestViewModel.LastName = userDetails.LastName;
+            submittedTestViewModel.Duration = userTestSuitDetails.Duration;
+            submittedTestViewModel.TotalMakrs = userTestSuitDetails.MaxScore;
+            submittedTestViewModel.TestSuitName = testSuitDetails.TestSuiteName;
+            submittedTestViewModel.UserTestSuiteId = userTestSuitDetails.UserTestSuiteId;
+            submittedTestViewModel.Postion = _positionService.GetPositionById(testSuitDetails.Position) != null ? _positionService.GetPositionById(testSuitDetails.Position).PositionName : "";
+
+            foreach (var questionId in userTestSuitDetails.UserTestDetails)
+            {
+
+                var question = _questionService.GetSingleQuestion(questionId.QuestionId);
+                if (question.QuestionType == 1)
+                {
+                    if (questionId.Mark != null && questionId.Mark > 0)
+                    {
+                        submittedTestViewModel.ObjectiveQuestionResult += question.Marks;
+                    }
+                    submittedTestViewModel.ObjectiveQuestionMarks += question.Marks;
+
+                    objectiveQuestionList.Insert(0, new ObjectiveQuestionList()
+                    {
+                        QuestionDescription = question.QuestionDescription,
+                        CorrectAnswer = GetOption(question.CorrectAnswer),
+                        SubmittedAnswer = GetOption(questionId.Answer),
+                        Result = questionId.Mark != null && questionId.Mark > 0 ? "Correct" : "Incorrect",
+                    });
+                }
+                else
+                {
+                    practicalQuestionList.Insert(0, new PracticalQuestionList()
+                    {
+                        QuestionId = questionId.QuestionId,
+                        QuestionDescription = question.QuestionDescription,
+                        SubmittedAnswer = questionId.Answer.ToString(),
+                        Weightage = question.Marks,
+                        EvaluatedMark = questionId.Mark,
+                    });
+
+                }
+
+            }
+            submittedTestViewModel.EvaluatedFeedBack = userTestSuitDetails.FeedBack;
+            submittedTestViewModel.TotalMarksObtained = submittedTestViewModel.ObjectiveQuestionResult;
+            submittedTestViewModel.objectiveQuestionList = objectiveQuestionList;
+            submittedTestViewModel.practicalQuestionList = practicalQuestionList;
+
+            return View(submittedTestViewModel);
+        }
+
+        private string GetOption(string p)
+        {
+            string optionSelect = "";
+            switch (p)
+            {
+                case "1":
+                    optionSelect = "Option1";
+                    break;
+                case "2":
+                    optionSelect = "Option2";
+                    break;
+                case "3":
+                    optionSelect = "Option3";
+                    break;
+                case "4":
+                    optionSelect = "Option4";
+                    break;
+            }
+            return optionSelect;
+        }
+
+        [HttpPost]
+        public ActionResult SubmittedTest(FormCollection fm)
+        {
+            int count = 1;
+
+            var userTestSuitDetails = _testSuiteService.GetUserTestSuiteId(Convert.ToInt32(Convert.ToString(Request.Form["UserTestSuiteId"])));
+
+            userTestSuitDetails.EvaluatedMark = Convert.ToInt32(Request.Form["TotalMarksObtained"].ToString());
+            userTestSuitDetails.FeedBack = Convert.ToString(Request.Form["EvaluatedFeedBack"]);
+
+            foreach (var userTestDetails in userTestSuitDetails.UserTestDetails.Where(x => x.QuestionId == Convert.ToInt32(Request.Form["PractileQuesionId" + count])).ToList())
+            {
+                userTestDetails.Mark = Convert.ToInt32(Request.Form["Emarks" + count]);
+                userTestDetails.MarkGivenDate = DateTime.Now;
+
+                _testSuiteService.UpdateUserTestDetails(userTestDetails);
+                count++;
+            }
+
+            _testSuiteService.UpdateUserTestSuite(userTestSuitDetails);
+
+            return RedirectToAction("Candidates");
         }
 
         public ActionResult SendMail()
