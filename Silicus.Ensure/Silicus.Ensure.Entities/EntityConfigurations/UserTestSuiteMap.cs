@@ -12,8 +12,8 @@ namespace Silicus.Ensure.Entities.EntityConfigurations
 
             Property(p => p.UserTestSuiteId).HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity);
 
-            ToTable(TableSettings.UserTestSuite, TableSettings.DefaultSchema);
-
+            ToTable(TableSettings.UserTestSuite, TableSettings.DefaultSchema);             
+            
         }
     }
 }

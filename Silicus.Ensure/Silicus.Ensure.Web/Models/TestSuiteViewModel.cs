@@ -49,8 +49,19 @@ namespace Silicus.Ensure.Web.Models
         [Display(Name = "No. Of Practical Questions")]
         public string PracticalQuestionsCount { get; set; }
 
-        public int userid { get; set; }
+        public int Userid { get; set; }
 
         public IList<Position> PositionList { get; set; }
+
+        public IList<TestSuiteTagViewModel> Tags { get; set; }
+    }
+
+    public class TestSuiteTagViewModel
+    { 
+        public string TagName { get; set; }
+
+        public int TagId { get; set; }       
+
+        public string Weightage { get; set; }
     }
 }

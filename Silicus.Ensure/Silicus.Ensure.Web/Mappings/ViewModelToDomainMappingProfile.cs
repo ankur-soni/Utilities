@@ -24,6 +24,8 @@ namespace Silicus.Ensure.Web.Mappings
             Mapper.CreateMap<TestSuite, TestSuiteViewModel>();//.ForMember(o => o.PositionName, Enum.Parse(Competency,"1").ToString();
             Mapper.CreateMap<QuestionModel, Question>();
             Mapper.CreateMap<Question, QuestionModel>();
+            Mapper.CreateMap<TestSuiteQuestionModel, Question>();
+            Mapper.CreateMap<Question, TestSuiteQuestionModel>();
         }
     }
 }

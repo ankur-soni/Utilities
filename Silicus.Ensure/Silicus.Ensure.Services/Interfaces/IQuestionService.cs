@@ -1,4 +1,5 @@
-﻿using Silicus.Ensure.Models.DataObjects;
+﻿using Silicus.Ensure.Models.Constants;
+using Silicus.Ensure.Models.DataObjects;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,5 +19,7 @@ namespace Silicus.Ensure.Services.Interfaces
         void Update(Question Question);
 
         void Delete(int id);
+
+        IList<string> GenerateQuestionList(string tag, long duration, Competency competency);
     }
 }

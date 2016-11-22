@@ -1,5 +1,4 @@
 ﻿@using Kendo.Mvc.UI;
-<!-- Modal -->
 <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" style="height:500px;">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
@@ -25,12 +24,12 @@
                       model.Id(p => p.UserId);
                       model.Field(p => p.UserId).Editable(false);
                   })
-                                   .Read(read => read.Action("TestSuitUsers", "Admin"))
+                  .Read(read => read.Action("TestSuitUsers", "Admin"))
                   .PageSize(10)
               )
               .Pageable()
               .Sortable()
-              @*.ToolBar(toolbar =>
+              .ToolBar(toolbar =>
                {
                    toolbar.Template(@<text>
                     <div class="toolbar">
@@ -47,12 +46,12 @@
                         </div>                      
                     </div>
                 </text>);
-               })*@
+               })
 )
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                <button id="btnAssign" type="button" class="btn btn-primary">Save changes</button>
+                <button id="btnAssign" type="button" class="btn btn-primary">Assign</button>
             </div>
         </div>
     </div>
@@ -69,15 +68,12 @@
                 var testSuiteId = $('#testSuiteId').val();              
                 $.ajax({
                     type: "POST",
-                    url: '@Url.Action("TestSuiteActivate", "Admin")',
+                    url: '@Url.Action("TestSuiteActivate", "TestSuite")',
                     data: { users: users,testSuiteId:testSuiteId },
                     success: function (returndata) {
-                        if (returndata == 1) {
-                            //$('#userGrids').data('kendoGrid').dataSource.read();
-                            //$('#userGrids').data('kendoGrid').refresh();
+                        if (returndata == 1) {                          
                             $('#myModal').modal().hide();
-                            ShowMessage("Activated test suite.", 1);                           
-                                                        
+                            ShowMessage("Activated test suite.", 1);                                                         
                         }
                         else {
                             ShowMessage("Error occured while activating test suite.", 0);
@@ -87,20 +83,20 @@
             }
         });
 
-        //$("#FieldFilter").keyup(function () {
+        $("#FieldFilter").keyup(function () {
 
-        //    var value = $("#FieldFilter").val();
-        //    grid = $("#userGrids").data("kendoGrid");
+            var value = $("#FieldFilter").val();
+            grid = $("#userGrids").data("kendoGrid");
 
-        //    if (value.length > 1) {
-        //        if (value) {
-        //            grid.dataSource.filter({ field: "FirstName", operator: "contains", value: value });
-        //        } else {
-        //            grid.dataSource.filter({});
-        //        }
-        //    }
-        //    else if (value == "")
-        //        grid.dataSource.filter({});
-        //});
+            if (value.length > 1) {
+                if (value) {
+                    grid.dataSource.filter({ field: "FirstName", operator: "contains", value: value });
+                } else {
+                    grid.dataSource.filter({});
+                }
+            }
+            else if (value == "")
+                grid.dataSource.filter({});
+        });
     });
 </script>

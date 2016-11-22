@@ -207,13 +207,14 @@
 
     function OnNext() {
         var checkedradio = $('[name="optradio"]:radio:checked').val();
-
-        $('#QuestionDetails').load('/Candidate/LoadQuestion?Ans=' + checkedradio);
+        var questionNumber = $("#QuestionNumber").val();
+        $('#QuestionDetails').load('/Candidate/OnNextPrevious?Qnumber=' + questionNumber + '&Move=N');
         return false;
     }
 
     function OnPrevious() {
-        $('#QuestionDetails').load('/Candidate/LoadQuestion?Ans=' + checkedradio);
+        var questionNumber = $("#QuestionNumber").val();
+        $('#QuestionDetails').load('/Candidate/OnNextPrevious?Qnumber=' + questionNumber + '&Move=P');
         return false;
     }
 </script>

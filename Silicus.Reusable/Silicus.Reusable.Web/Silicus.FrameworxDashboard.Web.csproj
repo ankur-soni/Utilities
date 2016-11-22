@@ -230,6 +230,7 @@
     <Compile Include="Controllers\ExtensionController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\FrameworxProjectController.cs" />
+    <Compile Include="Controllers\ProductBacklogController.cs" />
     <Compile Include="Filters\CustomeAuthorizeAttribute.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -695,6 +696,9 @@
     <Content Include="Views\Extension\ReviewOtherCodeList.cshtml" />
     <Content Include="Views\Extension\ReviewOtherCodeMethod.cshtml" />
     <Content Include="Scripts\Template-js\plugins\chartist\chartist.min.js.map" />
+    <Content Include="Views\ProductBacklog\ShowAllProductBacklog.cshtml" />
+    <Content Include="Views\Extension\SearchMyExtensionMethodByTitle.cshtml" />
+    <Content Include="Views\Extension\SearchMyOtherCodeMethodByTitle.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
