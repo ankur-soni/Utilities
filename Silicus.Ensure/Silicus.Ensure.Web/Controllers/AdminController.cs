@@ -262,21 +262,18 @@ namespace Silicus.Ensure.Web.Controllers
         public ActionResult AssignSuite(int SuiteId, int Userid)
         {
 
-            DataSourceRequest DataSourceRequest = new Kendo.Mvc.UI.DataSourceRequest();
-            DataSourceRequest.Page = 1;
-            DataSourceRequest.PageSize = 10;
+            DataSourceRequest dataSourceRequest = new Kendo.Mvc.UI.DataSourceRequest();
+            dataSourceRequest.Page = 1;
+            dataSourceRequest.PageSize = 10;
 
             var objectiveCount = new object();
             var updateCurrentUsers = _userService.GetUserDetails().Where(model => model.UserId == Userid).FirstOrDefault();
+
             if (updateCurrentUsers != null)
             {
-
-                // return Json(1);
-
                 if (SuiteId > 0 && Userid > 0)
                 {
                     var ViewPrimaryTagList = _testSuiteService.GetTestSuiteDetails().Where(q => q.TestSuiteId == SuiteId).Select(p => p.PrimaryTags).ToList();
-
                     foreach (var tagid in ViewPrimaryTagList)
                     {
                         string[] values = tagid.Split(',');
@@ -295,6 +292,7 @@ namespace Silicus.Ensure.Web.Controllers
                         MaxScore = 70,
                         CreatedDate = DateTime.Now,
                     };
+
                     foreach (var tagid in ViewPrimaryTagList)
                     {
                         string[] values = tagid.Split(',');
@@ -314,26 +312,31 @@ namespace Silicus.Ensure.Web.Controllers
                         }
                     }
 
-
                     _testSuiteService.AddUserTestSuite(newusertestsuit);
                     updateCurrentUsers.TestStatus = "Assigned";
                     _userService.Update(updateCurrentUsers);
                     return Json(1);
-                    // TempData.Add("IsNewTestSuite", 1);
-                    // return RedirectToAction("GetCandidateDetails", "User", DataSourceRequest);
                 }
                 else
                 {
-                    //return RedirectToAction("GetCandidateDetails", "User", DataSourceRequest);
                     return Json(-1);
                 }
             }
             return View();
         }
 
-        public ActionResult CandidateAdd()
+        public ActionResult CandidateAdd(int UserId)
         {
+
             UserViewModel currUser = new UserViewModel();
+            currUser.UserId = UserId;
+
+            if (UserId != 0)
+            {
+                var user = _userService.GetUserById(UserId);
+                currUser = _mappingService.Map<User, UserViewModel>(user);
+            }
+
             var positionDetails = _positionService.GetPositionDetails().OrderBy(model => model.PositionName);
             currUser.PositionList = positionDetails.ToList();
             return View(currUser);

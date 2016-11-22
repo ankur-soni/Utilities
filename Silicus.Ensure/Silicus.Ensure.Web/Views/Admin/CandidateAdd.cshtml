@@ -6,9 +6,17 @@
 }
 
 <div class="main-content">
-    <h2>Add Candidate</h2>
+    @if (Model.UserId != 0)
+    {
+        <h2>Edit Candidate</h2>
+    }
+    else
+    {
+        <h2>Add Candidate</h2>
+    }
     @using (Html.BeginForm("CandidateSave", "User", FormMethod.Post, new { id = "frmSearchAllNdc", EncType = "multipart/form-data" }))
     {
+        @Html.HiddenFor(m => m.UserId)
         <div class="fluid mt20">
             <div class="row">
                 <div class="alert alert-success" id="messageDiv">
@@ -21,38 +29,30 @@
                     @Html.TextBoxFor(model => model.FirstName, new { @class = "form-control" })
                 </div>
             </div>
-        </div>
-        <br />
-        <div class="col-md-4">
-            @Html.LabelFor(model => model.LastName)<b style="color:Red;">*</b>:
-        </div>
-        <div class="col-md-8">
-            @Html.TextBoxFor(model => model.LastName, new { @class = "form-control" })
-        </div>
-
-        <br />
-        <div class="col-md-4">
-            @Html.LabelFor(model => model.Email)<b style="color:Red;">*</b>:
-        </div>
-        <div class="col-md-8">
-            @Html.TextBoxFor(model => model.Email, new { @class = "form-control" })
-            @Html.ValidationMessageFor(m => m.Email)
-        </div>
-        <br />
-        @*<div class="col-md-4">
-                @Html.LabelFor(model => model.Gender)<b style="color:Red;">*</b>:
+            <div class="row">
+                <div class="col-md-4">
+                    @Html.LabelFor(model => model.LastName)<b style="color:Red;">*</b>:
+                </div>
+                <div class="col-md-8">
+                    @Html.TextBoxFor(model => model.LastName, new { @class = "form-control" })
+                </div>
             </div>
-            <div class="col-md-8">
-                @Html.TextBoxFor(model => model.Gender, new { @class = "form-control" })
-            </div>*@
-        <br />
-        <div class="row">
-            <div class="col-md-4">
-                <span>Gender:</span><span style="color:red">*</span>
+            <div class="row">
+                <div class="col-md-4">
+                    @Html.LabelFor(model => model.Email)<b style="color:Red;">*</b>:
+                </div>
+                <div class="col-md-8">
+                    @Html.TextBoxFor(model => model.Email, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(m => m.Email)
+                </div>
             </div>
-            <div class="col-md-8">
-                @(Html.Kendo().DropDownListFor(m => m.Gender)
-             .OptionLabel("--Select--")
+            <div class="row" style="margin-bottom:10px;">
+                <div class="col-md-4">
+                    <span>Gender:</span><span style="color:red">*</span>
+                </div>
+                <div class="col-md-8">
+                    @(Html.Kendo().DropDownListFor(m => m.Gender)
+                    .OptionLabel("--Select--")
                     .Name("Gender")
                     .DataTextField("Text")
                     .DataValueField("Value")
@@ -67,73 +67,72 @@
                         Value="Female"
                         }
                         }).HtmlAttributes(new { style = "width: 100%" }))
+                </div>
             </div>
-        </div>
-        <br />
-        <div class="col-md-4">
-            @Html.LabelFor(model => model.Department)<b style="color:Red;">*</b>:
-        </div>
-        <div class="col-md-8">
-            @Html.TextBoxFor(model => model.Department, new { @class = "form-control" })
-        </div>
-        <br />
-        @*<div class="col-md-4">
-                @Html.LabelFor(model => model.Position)<b style="color:Red;">*</b>:
+            <div class="row">
+                <div class="col-md-4">
+                    @Html.LabelFor(model => model.Department)<b style="color:Red;">*</b>:
+                </div>
+                <div class="col-md-8">
+                    @Html.TextBoxFor(model => model.Department, new { @class = "form-control" })
+                </div>
             </div>
-            <div class="col-md-8">
-                @Html.TextBoxFor(model => model.Position, new { @class = "form-control" })
-            </div>*@
-        <div class="row">
-            <div class="col-md-4">
-                @Html.LabelFor(model => model.Position)<b style="color:Red;">*</b>:
-            </div>
-            <div class="col-md-8">
-                @(Html.Kendo().DropDownListFor(model => model.Position)
-                    .OptionLabel("--Select--")
-                    .BindTo(Model.PositionList)
-                    .DataTextField("PositionName")
-                .DataValueField("PositionName"))
-            </div>
-        </div>
-        <br />
-        <div class="col-md-4">
-            @Html.LabelFor(model => model.Experience)<b style="color:Red;">*</b>:
-        </div>
-        <div class="col-md-8">
-            @Html.TextBoxFor(model => model.Experience, new { @class = "form-control" })
-        </div>
-        <br />
-        <div class="col-md-4">
-            @Html.LabelFor(model => model.Address)<b style="color:Red;">*</b>:
-        </div>
-        <div class="col-md-8">
-            @Html.TextBoxFor(model => model.Address, new { @class = "form-control" })
-        </div>
-        <br />
-        <div class="col-md-8">
-            Upload Resume:
-        </div>
-        <div class="col-md-4">
-            <input type="file" id="IDbtnUpload" name="files" />
-        </div>
+            <div class="row" style=" margin-bottom:10px;">
+                <div class="col-md-4">
+                    @Html.LabelFor(model => model.Position)<b style="color:Red;">*</b>:
+                </div>
+                <div class="col-md-8">
+                    @(Html.Kendo().DropDownListFor(model => model.Position)
+                            .OptionLabel("--Select--")
+                            .BindTo(Model.PositionList)
+                            .DataTextField("PositionName")
+                            .DataValueField("PositionName")
+                            .Value(Model.Position)
+                            .HtmlAttributes(new { style = "width: 100%;border-color: #c5c5c5;" })
+                    )
 
-
-        <div class="row">
-            <div class="col-md-6"></div>
-            <div class="col-md-2 col-md-offset-4">
-                @(Html.Kendo().Button()
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-4">
+                    @Html.LabelFor(model => model.Experience)<b style="color:Red;">*</b>:
+                </div>
+                <div class="col-md-8">
+                    @Html.TextBoxFor(model => model.Experience, new { @class = "form-control" })
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-4">
+                    @Html.LabelFor(model => model.Address)<b style="color:Red;">*</b>:
+                </div>
+                <div class="col-md-8">
+                    @Html.TextBoxFor(model => model.Address, new { @class = "form-control" })
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-8">
+                    Upload Resume:
+                </div>
+                <div class="col-md-4">
+                    <input type="file" id="IDbtnUpload" name="files" />
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6"></div>
+                <div class="col-md-2 col-md-offset-4">
+                    @(Html.Kendo().Button()
                             .Name("btnCancel").Icon("cancel")
             .HtmlAttributes(new { type = "button" })
             .Content("Cancel")
             .Events(ev => ev.Click("onCancelClick")))
 
-                @(Html.Kendo().Button()
+                    @(Html.Kendo().Button()
                             .Name("btnSave").Icon("tick")
             .HtmlAttributes(new { type = "submit" })
             .Content("Save"))
+                </div>
             </div>
         </div>
-
         <script>
             $(document).ready(function () {
                 if ($('.validation-summary-errors>ul>li').is(':empty')) { $("#messageDiv").hide(); }
@@ -142,7 +141,6 @@
                 else { $("#messageDiv").hide(); }
 
                 $("#btnSave").click(function (e) {
-
                     if (validateTag() == false) {
                         e.preventDefault();
                     }
@@ -150,7 +148,6 @@
                         $("#frmSearchAllNdc").submit();
                     }
                 });
-
                 $(function () {
                     $("#FirstName").keypress(function (evt) {
                         var cc = (evt.charCode) ? evt.charCode : ((evt.which) ? evt.which : evt.keyCode);

@@ -92,9 +92,8 @@
             contenttype: "application/json; charset=utf-8",
             success: function (data) {
 
-                $("#Candy").html(data);
+                $("#CandidateInfo").html(data);
                 $('#myModal').modal();
-                $("#Candy").show();
                 //$("#Candy").show().center(); // This should be an empty div where you can inject your new html (the partial view)
                 //$(".blurSec2").show();
                 //$(".blurSec1").show();
@@ -104,22 +103,16 @@
 
 
     $(function () {
-        $('body').on('click', '#Savebtn', function () {
-            var myClone = myBackup.clone();
-            $('body').append(myClone);
-        });
+        //$('body').on('click', '#Savebtn', function () {
+        //    var myClone = myBackup.clone();
+        //    $('body').append(myClone);
+        //});
 
         $("#Savebtn").bind("click", function () {
 
-            // var checksvalues = $("#testSuiteGrids").find("[class='check']").attr("value");
             var uId = $("#CurrentUser").val();
-            //alert(uId);
             var checkvals = $("[class='check']:checked").attr("value")
-            //  alert(checksvalues);
-            // alert(checkvals);
-            // var checksUservalues = $("#testSuiteGrids").find("[class='textu']").attr("value");
-            // var usey = $("#testSuiteGrids").find("[class='check']:checked").attr("value");
-            // alert(checksUservalues);
+
             $('#myModal').find('input[type=checkbox]:checked').removeAttr('checked');
             $.ajax({
                 type: 'post',
@@ -146,7 +139,6 @@
 
     function Change() {
         var value = $("#TestStatus").val();
-        //alert(value);
         grid = $("#userGrids").data("kendoGrid");
 
         if (value == "All") {
@@ -158,9 +150,29 @@
     }
 
     function AddNew() {
-        window.location.href = "/User/CandidateAdd";
+        window.location.href = "/Admin/CandidateAdd?UserId=0";
 
         return false;
+    }
+
+    function deleteUser(userId) {
+        if (confirm('Are you sure, do you want to delete user?')) {
+            $.ajax({
+                type: "POST",
+                url: '@Url.Action("DeleteUser", "User")',
+                data: { UserId: userId },
+                success: function (returndata) {
+                    if (returndata == 1) {
+                        $('#userGrids').data('kendoGrid').dataSource.read();
+                        $('#userGrids').data('kendoGrid').refresh();
+                        ShowMessage("User deleted successfully.", 1);
+                    }
+                    else {
+                        ShowMessage("Error occured while delete operation.", 0);
+                    }
+                }
+            });
+        }
     }
 </script>
 <div>
@@ -172,133 +184,80 @@
               {
                   columns.Bound(p => p.FirstName).Width(50);
                   columns.Bound(p => p.LastName).Width(50);
-                  //columns.Bound(p => p.Address).Width(100);
-                  //columns.Bound(p => p.NewPassword).Format("*********").Width(100);
-                  //columns.Bound(p => p.ConfirmPassword).Format("*********").Width(100).Title("ConfirmPassword");
                   columns.Bound(p => p.Gender).Width(50);
                   columns.Bound(p => p.Position).Width(50);
                   columns.Bound(p => p.Department).Width(50);
                   columns.Bound(p => p.Experience).Width(50);
-                  //columns.Bound(p => p.isActive).Width(50);
                   columns.Bound(p => p.Email).Width(50);
                   columns.Bound(p => p.TestStatus).Width(50);
-                  //columns.Bound(p => p.Role).Width(110).Title("Role").EditorTemplateName("ComboBox").HtmlAttributes(new { value = "User" });
-                  columns.Command(command => { command.Edit(); command.Destroy(); }).Width(160);
+                  columns.Bound(c => c.UserId).ClientTemplate(@"<a class='k-button k-button-icontext k-grid-edit' href='" + Url.Action("CandidateAdd", "Admin") + "?UserId=#=UserId#'><span class='k-icon k-edit'></span>Edit</a><a id='testSuiteDel' class='k-button k-button-icontext k-grid-delete' href='\\#' onclick='return deleteUser(#=UserId#)'><span class='k-icon k-delete'></span>Delete</a>").Width(160);
                   columns.Bound(c => c.UserId).ClientTemplate(@"
                                 <a onclick=showTest('#=UserId#')>Assign Test</a>|
                                 <a href='/DiagnosisTest/Edit/#=UserId#' class = 'dialog-window'  >Preview Question Set</a> |
                                 <a href='/admin/SubmittedTest?canditateId=#=UserId#' class = 'dialog-window'>View Submitted Test</a>").Title("Actions");
-                  //   <a href='/Admin/CandidatesSuit?UserId=#=UserId#' class = 'dialog-window'>Assign Test</a> |
-                  //              columns.Bound(x => x.UserId).ClientTemplate(
-                  //      "# if (TestStatus == 'UnAssigned') { #" +
-                  //    "<a href='/DiagnosisTest/Details/#=UserId#' class = 'dialog-window'>Assign Test</a>" +
-                  //"# } else { #" +
-                  //    "<a href='#' class = 'dialog-window'></a>" +
-                  //"# } #").Title("State");
-
               })
-        .DataSource(dataSource => dataSource
-                  .Ajax()
-                  .Model(model =>
-                  {
-                      model.Id(p => p.UserId);
-                      model.Field(p => p.UserId).Editable(false);
-                  })
+            .DataSource(dataSource => dataSource
+                      .Ajax()
+                      .Model(model =>
+                      {
+                          model.Id(p => p.UserId);
+                          model.Field(p => p.UserId).Editable(false);
+                      })
 
-                      .Read(read => read.Action("GetCandidateDetails", "User"))
-                      .Create(update => update.Action("CreateUser", "User"))
-                      .Update(update => update.Action("UpdateUser", "User"))
-                      .Destroy(update => update.Action("DeleteUser", "User"))
-              )
+                          .Read(read => read.Action("GetCandidateDetails", "User"))
+                          .Create(update => update.Action("CreateUser", "User"))
+                          .Update(update => update.Action("UpdateUser", "User"))
+                          .Destroy(update => update.Action("DeleteUser", "User"))
+                     )
 
 
                   .Pageable()
                   .Sortable()
                       .Resizable(resizing => resizing.Columns(true))
-            //.ToolBar(toolbar => toolbar.Create())
-            .ToolBar(toolbar =>
-                {
-                    toolbar.Template(@<text>
-                        <div class="toolbar">
-
-                            <div class="row">
-                                <div class="col-md-4">
-                                    <div class="input-group">
-                                        <span class="input-group-addon"><span class="glyphicon glyphicon-search" aria-hidden="true"></span></span>
-                                        <input type="text" class="form-control" id='FieldFilter' placeholder="Search for...">
-                                        <span class="input-group-btn">
-                                            <button class="btn btn-default" style="height:16px;" type="button"><span class="glyphicon glyphicon-refresh" aria-hidden="true"></span></button>
-                                        </span>
+                 .ToolBar(toolbar =>
+                    {
+                        toolbar.Template(@<text>
+                            <div class="toolbar">
+                                <div class="row">
+                                    <div class="col-md-4">
+                                        <div class="input-group">
+                                            <span class="input-group-addon"><span class="glyphicon glyphicon-search" aria-hidden="true"></span></span>
+                                            <input type="text" class="form-control" id='FieldFilter' placeholder="Search for...">
+                                            <span class="input-group-btn">
+                                                <button class="btn btn-default" style="height:16px;" type="button"><span class="glyphicon glyphicon-refresh" aria-hidden="true"></span></button>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-3 col-md-push-1" style="float: right; padding-right: 0px; margin-right: -22px;">
+                                        <a href='#' onclick='AddNew();' class='k-button k-button-icontext k-grid-add'><span class='k-icon k-add'></span>Add Candidate</a>
                                     </div>
                                 </div>
                             </div>
-                            <div class="row">
-                                <div class="col-md-3 col-md-push-1" style="float: right; padding-right: 0px; margin-right: -22px;">
-                                    <a href='#' onclick='AddNew();' class='k-button k-button-icontext k-grid-add'><span class='k-icon k-add'></span>Add Candidate</a>
-                                </div>
-                            </div>
-
-                        </div>
-
-                    </text>);
-                })
+                        </text>);
+                    })
 
         )
 
 
     }
-    <div id="Candy" style="margin-top:0px;">
-        @*@{Html.RenderPartial("~/Views/Admin/SelectCandidatesSuit.cshtml");}*@
-    </div>
-    <div class="modal fade" id="myModal" role="dialog">
-        <div class="modal-dialog">
 
-            <!-- Modal content-->
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal">&times;</button>
-                    <h4 class="modal-title">Test-Suite List</h4>
-                </div>
-                <div class="modal-body" id="CandidateInfo">
-                    @if (Request.IsAuthenticated)
-                    {
-                        @(Html.Kendo().Grid<Silicus.Ensure.Web.Models.TestSuiteViewModel>().Name("testSuiteGrids")
-         .Columns(columns =>
-              {
-                  columns.Bound(p => p.TestSuiteId).ClientTemplate("<input type='checkbox' class='check' id='chkHeader' value='#=TestSuiteId#'/>").Title("");
-                  columns.Bound(p => p.TestSuiteName).Width(100);
-                  columns.Bound(p => p.Duration).Width(50);
-                  columns.Bound(p => p.PositionName).Width(50);
-                  columns.Bound(p => p.PrimaryTagNames).Width(200);
-                  columns.Bound(p => p.Userid).ClientTemplate("<input type='text' class='textu' id='txtUser' value='#=userid#'/>").Hidden();
-                  //columns.Bound("").ClientTemplate("<a class='k-button k-button-icontext k-grid-add' href='\\#' data-toggle='modal' data-target='\\#myModal'><span class='k-icon k-add'></span>Activate Test Suite</a><a class='k-button k-button-icontext k-grid-add' href='" + Url.Action("TestSuiteCopy", "Admin") + "?testSuiteId=#=TestSuiteId#'><span class='k-icon k-add'></span>Copy</a><a class='k-button k-button-icontext k-grid-edit' href='" + Url.Action("TestSuiteAdd", "Admin") + "?testSuiteId=#=TestSuiteId#'><span class='k-icon k-edit'></span>Edit</a><a class='k-button k-button-icontext k-grid-delete' href='" + Url.Action("TestSuiteDelete", "Admin") + "?testSuiteId=#=TestSuiteId#'><span class='k-icon k-delete'></span>Delete</a>");
-              })
-        .DataSource(dataSource => dataSource
-                  .Ajax()
-                  .Model(model =>
-                  {
-                      model.Id(p => p.TestSuiteId);
-                      model.Field(p => p.TestSuiteId).Editable(false);
-                  })
-                  .Read(read => read.Action("GetTestSuiteDetails", "Admin"))
-                  .PageSize(10)
-              )
-              .Pageable()
-              .Sortable()
-
-                        )
-
-                    }
-
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-primary" data-dismiss="modal" onclick="ClosePopUp();" id="Savebtn">Save</button>
-                    </div>
-                </div>
-                @*<div class="modal-footer">
-                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                    </div>*@
+</div>
+<div class="modal fade" id="myModal" role="dialog">
+    <div class="modal-dialog">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Test-Suite List</h4>
             </div>
+            <div class="modal-body" id="CandidateInfo">
 
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" data-dismiss="modal" onclick="ClosePopUp();" id="Savebtn">Save</button>
+            </div>
         </div>
     </div>
 </div>
