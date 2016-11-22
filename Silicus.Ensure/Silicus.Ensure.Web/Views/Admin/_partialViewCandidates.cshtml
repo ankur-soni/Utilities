@@ -193,7 +193,7 @@
                   columns.Bound(c => c.UserId).ClientTemplate(@"<a class='k-button k-button-icontext k-grid-edit' href='" + Url.Action("CandidateAdd", "Admin") + "?UserId=#=UserId#'><span class='k-icon k-edit'></span>Edit</a><a id='testSuiteDel' class='k-button k-button-icontext k-grid-delete' href='\\#' onclick='return deleteUser(#=UserId#)'><span class='k-icon k-delete'></span>Delete</a>").Width(160);
                   columns.Bound(c => c.UserId).ClientTemplate(@"
                                 <a onclick=showTest('#=UserId#')>Assign Test</a>|
-                                <a href='/DiagnosisTest/Edit/#=UserId#' class = 'dialog-window'  >Preview Question Set</a> |
+                                <a href='/Admin/ViewQuestion' class = 'dialog-window'  >Preview Question Set</a> |
                                 <a href='/admin/SubmittedTest?canditateId=#=UserId#' class = 'dialog-window'>View Submitted Test</a>").Title("Actions");
               })
             .DataSource(dataSource => dataSource

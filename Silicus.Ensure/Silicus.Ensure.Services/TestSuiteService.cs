@@ -89,5 +89,17 @@ namespace Silicus.Ensure.Services
             _context.Update(UserTestDetails);
 
         }
+
+        public int AddUserTestDetails(UserTestDetails UserTestDetails)
+        {
+            _context.Add(UserTestDetails);
+            return UserTestDetails.TestDetailId;
+        }
+
+
+        public UserTestDetails GetUserTestDetailsId(int userTestDetailsId)
+        {
+            return _context.Query<UserTestDetails>().Where(x => x.TestDetailId == userTestDetailsId).FirstOrDefault();
+        }
     }
 }

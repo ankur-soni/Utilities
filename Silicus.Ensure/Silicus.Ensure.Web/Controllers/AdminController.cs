@@ -272,7 +272,9 @@ namespace Silicus.Ensure.Web.Controllers
             dataSourceRequest.Page = 1;
             dataSourceRequest.PageSize = 10;
 
-            var objectiveCount = new object();
+            int objectiveCount = 0;
+            int maxScore = 0;
+            List<UserTestDetails> userTestDetailsList = new List<UserTestDetails>();
             var updateCurrentUsers = _userService.GetUserDetails().Where(model => model.UserId == Userid).FirstOrDefault();
 
             if (updateCurrentUsers != null)
@@ -286,7 +288,14 @@ namespace Silicus.Ensure.Web.Controllers
                         for (int i = 0; i < values.Length; i++)
                         {
                             values[i] = values[i].Trim();
-                            objectiveCount = _questionService.GetQuestion().Where(p => p.Tags.Contains(values[i]) && p.QuestionType == 1).ToList().Count();
+                            var questionList = _questionService.GetQuestion();
+                            objectiveCount += questionList.Where(p => p.Tags.Contains(values[i]) && p.QuestionType == 1).ToList().Count();
+
+                            foreach (var question in questionList)
+                            {
+                                maxScore += question.Marks;
+                            }
+
                         }
                     }
 
@@ -294,10 +303,15 @@ namespace Silicus.Ensure.Web.Controllers
                     {
                         UserId = Userid,
                         TestSuiteId = SuiteId,
-                        ObjectiveCount = 5,
-                        MaxScore = 70,
+                        ObjectiveCount = objectiveCount,
+                        MaxScore = maxScore,
                         CreatedDate = DateTime.Now,
                     };
+
+                    _testSuiteService.AddUserTestSuite(newusertestsuit);
+                    updateCurrentUsers.TestStatus = "Assigned";
+                    _userService.Update(updateCurrentUsers);
+
 
                     foreach (var tagid in ViewPrimaryTagList)
                     {
@@ -305,22 +319,25 @@ namespace Silicus.Ensure.Web.Controllers
                         for (int i = 0; i < values.Length; i++)
                         {
                             values[i] = values[i].Trim();
-                            var questionList = _questionService.GetQuestion().Where(p => p.Tags.Contains(values[i])).Select(q => q.Id).ToList();
+                            var questionList = _questionService.GetQuestion().Where(p => p.Tags.Contains(values[i])).ToList();
                             foreach (var questionId in questionList)
                             {
-                                UserTestDetails userTestDetails = new UserTestDetails
+                                if (newusertestsuit.UserTestDetails==null || (!newusertestsuit.UserTestDetails.Any(x => x.QuestionId == questionId.Id)))
                                 {
-                                    UserTestSuite = _testSuiteService.GetUserTestSuiteId(SuiteId),
-                                    QuestionId = Convert.ToInt32(questionId)
+                                    UserTestDetails userTestDetails = new UserTestDetails
+                                    {
+                                        UserTestSuite = newusertestsuit,
+                                        QuestionId = Convert.ToInt32(questionId.Id),
+                                        Answer = questionId.Answer,
+                                    };
 
-                                };
+                                    _testSuiteService.AddUserTestDetails(userTestDetails);
+                                }
+
                             }
                         }
                     }
 
-                    _testSuiteService.AddUserTestSuite(newusertestsuit);
-                    updateCurrentUsers.TestStatus = "Assigned";
-                    _userService.Update(updateCurrentUsers);
                     return Json(1);
                 }
                 else
@@ -544,8 +561,8 @@ namespace Silicus.Ensure.Web.Controllers
         {
             UserTestDetails userTestDetail;
             List<UserTestDetails> userTestDetailList = new List<UserTestDetails>();
-            var question = _questionService.GetQuestion();            
-            foreach(var item in question)
+            var question = _questionService.GetQuestion();
+            foreach (var item in question)
             {
                 userTestDetail = new UserTestDetails();
                 userTestDetail.QuestionId = item.Id;
@@ -557,7 +574,7 @@ namespace Silicus.Ensure.Web.Controllers
             //if (!string.IsNullOrWhiteSpace(testSuite.SecondaryTags))
             //    testSuite.PrimaryTags += "," + testSuite.SecondaryTags;
             //Int32[] tags = testSuite.PrimaryTags.Split(',').Select(Int32.Parse).ToArray();
-           
+
         }
         #endregion
 
@@ -591,14 +608,14 @@ namespace Silicus.Ensure.Web.Controllers
         #endregion Position
 
         public ActionResult ViewQuestion()
-        {   
+        {
             List<Question> Que = _questionService.GetQuestion().ToList();
             //Question ques = new Question();
             User user = new User();
             Que = Que.OrderBy(x => x.Id).ToList();
-            
 
-           
+
+
             return View(Que);
         }
 
@@ -624,9 +641,9 @@ namespace Silicus.Ensure.Web.Controllers
 
             var pdf = new RazorPDF.PdfResult(QList, "CreatePDF");
 
-           // RazorPDF.PdfResult obj = new RazorPDF.PdfResult();
+            // RazorPDF.PdfResult obj = new RazorPDF.PdfResult();
 
-            
+
             // Add to the view bag
             // pdf.ViewBag.Title = "Title from ViewBag";
 
@@ -859,7 +876,7 @@ namespace Silicus.Ensure.Web.Controllers
                 }
 
             }
-           // return View(Que);
+            // return View(Que);
             return RedirectToAction("ViewQuestion", "Admin");
 
 
@@ -867,7 +884,7 @@ namespace Silicus.Ensure.Web.Controllers
 
         }
 
-      
+
     }
 
 }

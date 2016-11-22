@@ -182,6 +182,94 @@ namespace Silicus.Ensure.Entities.Initializer
                 ModifiedOn = DateTime.Now,
                 ModifiedBy = 0
             });
+            context.Add(new Question
+            {
+                QuestionType = 1,
+                QuestionDescription = "Web.config file is used...",
+                AnswerType = 1,
+                Option1 = "Configures the time that the server-side codebehind module is called",
+                Option2 = "To store the global information and variable definitions for the application",
+                Option3 = "To configure the web server",
+                Option4 = "To configure the web browser",
+                CorrectAnswer = "2",
+                Answer = null,
+                Tags = "1",
+                Competency = 2,
+                Duration = 1,
+                Marks = 2,
+                IsPublishd = true,
+                IsDeleted = false,
+                CreatedOn = DateTime.Now,
+                CreatedBy = 0,
+                ModifiedOn = DateTime.Now,
+                ModifiedBy = 0
+            });
+            context.Add(new Question
+            {
+                QuestionType = 1,
+                QuestionDescription = "Which of the following object is not an ASP component?",
+                AnswerType = 1,
+                Option1 = "LinkCounter",
+                Option2 = "Counter",
+                Option3 = "AdRotator",
+                Option4 = "File Access",
+                CorrectAnswer = "1,2",
+                Answer = null,
+                Tags = "1",
+                Competency = 2,
+                Duration = 1,
+                Marks = 1,
+                IsPublishd = true,
+                IsDeleted = false,
+                CreatedOn = DateTime.Now,
+                CreatedBy = 0,
+                ModifiedOn = DateTime.Now,
+                ModifiedBy = 0
+            });
+            context.Add(new Question
+            {
+                QuestionType = 1,
+                QuestionDescription = "The first event triggers in an aspx page is.",
+                AnswerType = 1,
+                Option1 = "Page_Init()",
+                Option2 = "Page_Load()",
+                Option3 = "Page_click()",
+                Option4 = "Page_load()",
+                CorrectAnswer = "1",
+                Answer = null,
+                Tags = "1",
+                Competency = 2,
+                Duration = 1,
+                Marks = 1,
+                IsPublishd = true,
+                IsDeleted = false,
+                CreatedOn = DateTime.Now,
+                CreatedBy = 0,
+                ModifiedOn = DateTime.Now,
+                ModifiedBy = 0
+            });
+            context.Add(new Question
+            {
+                QuestionType = 2,
+                QuestionDescription = "How do we create a FileSystemObject?",
+                AnswerType = 1,
+                Option1 = null,
+                Option2 = null,
+                Option3 = null,
+                Option4 = null,
+                CorrectAnswer = null,
+                Answer = "Server.CreateObject('Scripting.FileSystemObject')",
+                Tags = "1,2",
+                Competency = 1,
+                Duration = 1,
+                Marks = 2,
+                IsPublishd = true,
+                IsDeleted = false,
+                CreatedOn = DateTime.Now,
+                CreatedBy = 0,
+                ModifiedOn = DateTime.Now,
+                ModifiedBy = 0
+            });
         }
 
         private static void AddIndexes(SilicusIpDataContext context, string databaseName)
