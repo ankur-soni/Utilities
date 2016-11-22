@@ -10,6 +10,8 @@ namespace Silicus.Ensure.Services.Interfaces
 
         int Add(User User);
 
+        User GetUserById(int userId);
+
         void Update(User User);
 
         void Delete(User User);

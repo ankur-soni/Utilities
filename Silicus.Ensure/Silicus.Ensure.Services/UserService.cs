@@ -41,6 +41,11 @@ namespace Silicus.Ensure.Services
                 _context.Delete(User);
             }
         }
+
+        public User GetUserById(int userId)
+        {
+            return _context.Query<User>().FirstOrDefault(x => x.UserId == userId);
+        }
     }
 }
 
