@@ -52,5 +52,16 @@ namespace Silicus.Ensure.Web.Models
         public int Userid { get; set; }
 
         public IList<Position> PositionList { get; set; }
+
+        public IList<TestSuiteTagViewModel> Tags { get; set; }
+    }
+
+    public class TestSuiteTagViewModel
+    { 
+        public string TagName { get; set; }
+
+        public int TagId { get; set; }       
+
+        public string Weightage { get; set; }
     }
 }
