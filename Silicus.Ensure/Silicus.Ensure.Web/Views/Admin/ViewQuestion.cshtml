@@ -1,5 +1,5 @@
 ﻿@model List<Silicus.Ensure.Models.DataObjects.Question>
-@*@model List<Silicus.Ensure.Web.Models.QuestionModel>*@
+
 @using Kendo.Mvc.UI;
 @{
     ViewBag.Title = "Candidate";
@@ -7,209 +7,126 @@
 }
 
 <div class="main-content">
-    <div id="DivIdToPrint">
-        @foreach (var q in Model)
+    <div>
+        @if (TempData["Success"] != null)
         {
+            <div class="success">
+                <p style="color:green">@TempData["Success"].ToString()</p>
+            </div>
+        }
+    </div>
+    <div class="col-md-4 col-md-offset-1" style="float:right">
+        <button type="button" class="btn btn-white" aria-label="Left Align" onclick="window.open('/Admin/CreatePDF?target=_blank')">
+            <span class="glyphicon glyphicon-file" aria-hidden="true"> PDF</span>
+        </button>
+        <button type="submit" name="btnMail" class="btn btn-white" aria-label="Left Align" onclick="location.href='@Url.Action("SendMail", "Admin")'">
+            <span class="glyphicon glyphicon-envelope" aria-hidden="true" id='mailDiv'> Mail</span>
+        </button>
+        <button type="button" class="btn btn-white" aria-label="Left Align">
+            <span class="glyphicon glyphicon-print" aria-hidden="true" onclick="printDiv();"> Print</span>
+        </button>
+    </div>
 
-            <div class="fluid mt20">
-                @if (q.QuestionType == 1)
+    <div id="DivIdToPrint">
+        <div class="fluid mt20">
+            <div class="col-md-12">
+                <h4>
+                    <span>Objective Question Set</span>
+                    <input type="checkbox" id="chkObjQuestions" onclick="ViewQuestion('#dvObjQuestions',this);" />
+                </h4>
+            </div>
+            <div id="dvObjQuestions" class="box" style="margin-left:5%;">
+                @foreach (var q in Model.Where(x => x.QuestionType == 1))
                 {
                     <div class="row">
-                        <div class="col-md-6">
-                            <h4><span>Objective Question Set</span></h4>
 
-                            <label for="chkQuestions">
-                                <input type="checkbox" id="chkQuestions" />
-                            </label>
-
-                        </div>
-                        <div class="col-md-4 col-md-offset-1">
-
-                            @*<button type="button" class="btn btn-white" aria-label="Left Align">
-                                    <span class="glyphicon glyphicon-file" aria-hidden="true"> PDF</span>
-                                </button>*@
-
-                            <button type="button" class="btn btn-white" aria-label="Left Align" onclick="window.open('/Admin/CreatePDF?target=_blank')">
-
-                                <span class="glyphicon glyphicon-file" aria-hidden="true"> PDF</span>
-                            </button>
-
-
-                            @*<button type="button" class="btn btn-white" aria-label="Left Align">
-                                    <span class="glyphicon glyphicon-file" aria-hidden="true"> Excel</span>
-                                </button>*@
-
-                            <button type="submit" name="btnMail" class="btn btn-white" aria-label="Left Align" onclick="location.href='@Url.Action("SendMail", "Admin")'">
-                                <span class="glyphicon glyphicon-envelope" aria-hidden="true" id='mailDiv'> Mail</span>
-                            </button>
-
-                            <button type="button" class="btn btn-white" aria-label="Left Align">
-                                <span class="glyphicon glyphicon-print" aria-hidden="true" onclick='printDiv();'> Print</span>
-                            </button>
-
-                            @*@(Html.Kendo().Button()
-                                .Name("btnMail").Icon("pencil")
-                                .HtmlAttributes(new { type = "button" })
-                                .Content("Mail"))
-
-                                    @(Html.Kendo().Button()
-                                .Name("btnPrint").Icon("maximize")
-                                .HtmlAttributes(new { type = "submit" })
-                                .Content("Print"))*@
-                        </div>
-                    </div>
-
-
-                    <div id="dvQuestions" class="box">
-                        @*@foreach (var q in Model)
-                            {*@
                         <div class="row">
                             <div class="col-md-8" style="margin-top:30px">
                                 <strong>Question @q.Id:</strong>  &nbsp;&nbsp;
-                                @*<div class="float">*@
-                                @*<input type="text" maxlength="100" size="80" value="@q.QuestionDescription">*@
                                 @Html.Raw(q.QuestionDescription)
-                                @*</div>*@
-
                             </div>
                         </div>
 
                         <div class="row">
-                            <div class="col-md-4" style="margin-top:20px">
+                            <div class="col-md-8" style="margin-top:20px">
                                 <strong>Option 1:</strong> &nbsp;&nbsp;
-                                @*<div class="float">*@
-                                @*<input type="text" maxlength="100" size="80" value="@q.Option1">*@
                                 @Html.Raw(q.Option1)
-                                @*</div>*@
                             </div>
                         </div>
 
                         <div class="row">
-                            <div class="col-md-4" style="margin-top:20px">
+                            <div class="col-md-8" style="margin-top:20px">
                                 <strong>Option 2:</strong> &nbsp;&nbsp;
-                                @*<div class="float">*@
-                                @*<input type="text" maxlength="100" size="80" value="@q.Option2">*@
                                 @Html.Raw(q.Option2)
-                                @*</div>*@
                             </div>
                         </div>
 
                         <div class="row">
-                            <div class="col-md-4" style="margin-top:20px">
+                            <div class="col-md-8" style="margin-top:20px">
                                 <strong>Option 3:</strong> &nbsp;&nbsp;
-                                @*<div class="float">*@
-                                @*<input type="text" maxlength="100" size="80" value="@q.Option3">*@
                                 @Html.Raw(q.Option3)
-                                @*</div>*@
                             </div>
                         </div>
 
                         <div class="row">
-                            <div class="col-md-4" style="margin-top:20px">
+                            <div class="col-md-8" style="margin-top:20px">
                                 <strong>Option 4:</strong> &nbsp; &nbsp;
-                                @*<div class="float">*@
-                                @*<input type="text" maxlength="100" size="80" value="@q.Option4">*@
                                 @Html.Raw(q.Option4)
-                                @*</div>*@
                             </div>
                         </div>
 
                         <div class="row">
-                            <div class="col-md-6" style="margin-top:20px">
+                            <div class="col-md-8" style="margin-top:20px">
                                 <strong>Correct Answer:</strong> &nbsp;&nbsp;
-                                @*<div class="float">*@
-                                @*<select style="width:580px">
-                                        <option value="Option 1">Option 1</option>
-                                        <option value="Option 2">Option 2</option>
-                                        <option value="Option 3">Option 3</option>
-                                        <option value="Option 4">Option 4</option>
-                                    </select>*@
-                                @*<input type="text" maxlength="100" size="80">*@
                                 Option: @q.CorrectAnswer
-                                @*</div>*@
                             </div>
                         </div>
                     </div>
-                }
-                else
-                {
-                    <div class="row">
-                        <div class="col-md-6" style="margin-top:30px">
-                            <h4><span>Practical Question Set</span></h4>
-
-                            <label for="chkPQuestions">
-                                <input type="checkbox" id="chkPQuestions" />
-                            </label>
-
-                        </div>
-                    </div>
-
-                    <div id="dvpques" class="box1">
-
-                        <div class="row">
-                            <div class="col-md-9" style="margin-top:30px">
-                                <strong>Question @q.Id:</strong>
-                                @*<div class="float">*@
-                                @*<input type="text" maxlength="100" size="80">*@
-                                @Html.Raw(q.QuestionDescription)
-                                @*</div>*@
-
-                            </div>
-                        </div>
-
-                        <div class="row">
-                            <div class="col-md-9" style="margin-top:30px">
-                                <strong>Answer:</strong>
-                                @*<div class="float">*@
-                                <textarea rows="5" cols="79">
-                                    @HttpUtility.HtmlDecode(q.Answer)
-                                </textarea>
-                                @*</div>*@
-
-                            </div>
-                        </div>
-                    </div>
-
                 }
             </div>
-        }
-
+        </div>
+        <div class="fluid mt20">
+            <div class="col-md-12" style="margin-top:30px">
+                <h4>
+                    <span>Practical Question Set</span>
+                    <input type="checkbox" id="chkPQuestions" onclick="ViewQuestion('#dvQuestions',this);" />
+                </h4>
+            </div>
+            <div id="dvQuestions" class="box" style="margin-left:5%;">
+                @foreach (var q in Model.Where(x => x.QuestionType == 2))
+                {
+                    <div class="row">
+                        <div class="col-md-9" style="margin-top:30px">
+                            <strong>Question @q.Id:</strong>
+                            @Html.Raw(q.QuestionDescription)
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-9" style="margin-top:30px">
+                            <strong>Answer:</strong>
+                            <textarea rows="5" cols="79">
+                                @HttpUtility.HtmlDecode(q.Answer)
+                            </textarea>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
     </div>
 </div>
 
 <script>
     $(document).ready(function () {
-
         $(".box").hide();
-        $(".box1").hide();
-
-
-        //$('#btnPrint').click(function () {
-        //    window.print("main-content");
-        //});
-
-        //$('#mailDiv').click(function () {
-        //    window.open('mailto:ensure@silicus.com');
-        //});
-
-
-        $("#chkQuestions").click(function () {
-            if ($(this).is(":checked")) {
-                $("#dvQuestions").show();
-            } else {
-                $("#dvQuestions").hide();
-            }
-        });
-
-        $("#chkPQuestions").click(function () {
-            if ($(this).is(":checked")) {
-                $("#dvpques").show();
-            } else {
-                $("#dvpques").hide();
-            }
-        });
-
     });
+
+    function ViewQuestion(divID, chkID) {
+        if ($(chkID).is(":checked")) {
+            $(divID).show();
+        } else {
+            $(divID).hide();
+        }
+    }
 
     function printDiv() {
         var divToPrint = document.getElementById('DivIdToPrint');
@@ -225,4 +142,3 @@
         setTimeout(function () { newWin.close(); }, 10);
     }
 </script>
-

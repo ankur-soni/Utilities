@@ -1,31 +1,101 @@
-﻿@model Silicus.Ensure.Models.DataObjects.Question
+﻿@model Silicus.Ensure.Web.Models.TestSuiteQuestionModel
 
-<div class="fluid mt20">
-    <div class="row">
-        <div class="col-md-9 col-md-offset-2">
-            <p><strong>Section 1 (Objective Question)</strong></p>
-            <p><strong>Question 1: (2 Marks)</strong></p>
-            @Html.Raw(HttpUtility.HtmlDecode(Model.QuestionDescription))
-        </div>
-        <div class="col-md-9 col-md-offset-2" style="border-bottom-width:1px; border-bottom-style:solid; border-bottom-color:black;">
-        </div>
-        <div class="col-md-9 col-md-offset-2">
+@using Kendo.Mvc.UI;
 
-            <div class="radio">
-                <label><input type="radio" name="optradio" value="1">@Model.Option1</label>
+<div class="row">
+    <div class="fluid mt20">
+        <div class="row">
+            <div class="col-md-9 col-md-offset-2">
+                @if (Model.QuestionType == 1)
+                {
+                    <p><strong>Section 1 (Objective Question)</strong></p>
+                }
+                else
+                {
+                    <p><strong>Section 2 (Practical Question)</strong></p>
+                }
+                <p><strong>Question @Model.QuestionNumber: (@Model.Marks Marks)</strong></p>
+                @Html.Raw(HttpUtility.HtmlDecode(Model.QuestionDescription))
             </div>
-            <div class="radio">
-                <label><input type="radio" name="optradio" value="2">@Model.Option2</label>
+            <div class="col-md-9 col-md-offset-2" style="border-bottom-width:1px; border-bottom-style:solid; border-bottom-color:black;">
             </div>
-            <div class="radio">
-                <label><input type="radio" name="optradio" value="3">@Model.Option3</label>
-            </div>
-            <div class="radio">
-                <label><input type="radio" name="optradio" value="4">@Model.Option4</label>
-            </div>
+            @Html.HiddenFor(model => model.QuestionNumber, new { id = "QuestionNumber" })
 
+            @if (Model.QuestionType == 1 && Model.AnswerType == 1)
+            {
+                <div class="col-md-9 col-md-offset-2">
+                    <div class="radio">
+                        <label><input type="radio" name="optradio" value="1">@Model.Option1</label>
+                    </div>
+                    <div class="radio">
+                        <label><input type="radio" name="optradio" value="2">@Model.Option2</label>
+                    </div>
+                    <div class="radio">
+                        <label><input type="radio" name="optradio" value="3">@Model.Option3</label>
+                    </div>
+                    <div class="radio">
+                        <label><input type="radio" name="optradio" value="4">@Model.Option4</label>
+                    </div>
+                </div>
+            }
+            else if (Model.QuestionType == 1 && Model.AnswerType == 2)
+            {
+                <div class="col-md-9 col-md-offset-2">
+                    <div class="checkbox">
+                        <label><input type="checkbox" name="optcheckbox" value="1">@Model.Option1</label>
+                    </div>
+                    <div class="checkbox">
+                        <label><input type="checkbox" name="optcheckbox" value="2">@Model.Option2</label>
+                    </div>
+                    <div class="checkbox">
+                        <label><input type="checkbox" name="optcheckbox" value="3">@Model.Option3</label>
+                    </div>
+                    <div class="checkbox">
+                        <label><input type="checkbox" name="optcheckbox" value="4">@Model.Option4</label>
+                    </div>
+                </div>
+            }
+            else if (Model.QuestionType == 2)
+            {
+                <div class="col-md-9 col-md-offset-2">
+                    @Html.Kendo().Editor().Name("PracticalAnswer")
+                </div>
+            }
+
+            <div class="col-md-9 col-md-offset-2" style="border-bottom-width:1px; border-bottom-style:solid; border-bottom-color:black;">
+            </div>
         </div>
-        <div class="col-md-9 col-md-offset-2" style="border-bottom-width:1px; border-bottom-style:solid; border-bottom-color:black;">
-        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-9 col-md-offset-2" style="margin-top:1%;">
+        @if (Model.IsFirst == false)
+        {
+            @(Html.Kendo().Button()
+                .Name("btnNext")
+                    .HtmlAttributes(new { type = "button" }).Events(e => e.Click("OnNext"))
+                        .Content("Next").HtmlAttributes(new { style = "float: right;" }))
+        }
+
+        @if (Model.IsLast == false)
+        {
+            @(Html.Kendo().Button()
+                .Name("btnPrevious")
+                        .HtmlAttributes(new { type = "button" }).Events(e => e.Click("OnPrevious"))
+                                .Content("Previous").HtmlAttributes(new { style = "float: right;" }))
+        }
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-9 col-md-offset-2" style="margin-top:1%;">
+        @if (Model.IsFirst == true)
+        {
+            @(Html.Kendo().Button()
+                .Name("btnSubmit")
+                    .HtmlAttributes(new { type = "button" })
+                        .Content("Submit Test").HtmlAttributes(new { style = "float: right;" }))
+        }
     </div>
 </div>

@@ -158,19 +158,14 @@ namespace Silicus.Ensure.Web.Controllers
 
             if (ModelState.IsValid)
             {
-                //Temp code till add candidate not complete.
-                if (model.UserName.ToLower().Trim() == "user" && model.UserName.ToLower().Trim() == "user")
-                {
-                    return RedirectToLocal(returnUrl, model.UserName, true);
-                }
-
                 var loginResult = await SignInManager.PasswordSignInAsync(model.UserName, model.Password, model.RememberMe, shouldLockout: true);
                 switch (loginResult)
                 {
                     case SignInStatus.Success:
                         var user = await UserManager.FindByNameAsync(model.UserName);
                         var isAdmin = await UserManager.IsInRoleAsync(user.Id, "Admin");
-                        return RedirectToLocal(returnUrl, model.UserName, isAdmin);
+                        var isCandidate = await UserManager.IsInRoleAsync(user.Id, "Candidate");
+                        return RedirectToLocal(returnUrl, model.UserName, isAdmin, isCandidate);
                     case SignInStatus.LockedOut:
                         ModelState.AddModelError("", "User account is locked out. Please contact administrator.");
                         return View(model);
@@ -380,14 +375,14 @@ namespace Silicus.Ensure.Web.Controllers
             return View();
         }
 
-        private ActionResult RedirectToLocal(string returnUrl, string userName = "", bool isAdmin = false)
+        private ActionResult RedirectToLocal(string returnUrl, string userName = "", bool isAdmin = false, bool isCandidate = false)
         {
             if (Url.IsLocalUrl(returnUrl))
             {
                 return Redirect(returnUrl);
             }
 
-            if (userName == "user")
+            if (isCandidate)
             {
                 return RedirectToAction("Welcome", "Candidate");
             }

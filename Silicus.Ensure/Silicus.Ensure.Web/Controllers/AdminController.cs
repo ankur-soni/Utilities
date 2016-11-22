@@ -268,28 +268,34 @@ namespace Silicus.Ensure.Web.Controllers
         public ActionResult AssignSuite(int SuiteId, int Userid)
         {
 
-            DataSourceRequest DataSourceRequest = new Kendo.Mvc.UI.DataSourceRequest();
-            DataSourceRequest.Page = 1;
-            DataSourceRequest.PageSize = 10;
+            DataSourceRequest dataSourceRequest = new Kendo.Mvc.UI.DataSourceRequest();
+            dataSourceRequest.Page = 1;
+            dataSourceRequest.PageSize = 10;
 
-            var objectiveCount = new object();
+            int objectiveCount = 0;
+            int maxScore = 0;
+            List<UserTestDetails> userTestDetailsList = new List<UserTestDetails>();
             var updateCurrentUsers = _userService.GetUserDetails().Where(model => model.UserId == Userid).FirstOrDefault();
+
             if (updateCurrentUsers != null)
             {
-
-                // return Json(1);
-
                 if (SuiteId > 0 && Userid > 0)
                 {
                     var ViewPrimaryTagList = _testSuiteService.GetTestSuiteDetails().Where(q => q.TestSuiteId == SuiteId).Select(p => p.PrimaryTags).ToList();
-
                     foreach (var tagid in ViewPrimaryTagList)
                     {
                         string[] values = tagid.Split(',');
                         for (int i = 0; i < values.Length; i++)
                         {
                             values[i] = values[i].Trim();
-                            objectiveCount = _questionService.GetQuestion().Where(p => p.Tags.Contains(values[i]) && p.QuestionType == 1).ToList().Count();
+                            var questionList = _questionService.GetQuestion();
+                            objectiveCount += questionList.Where(p => p.Tags.Contains(values[i]) && p.QuestionType == 1).ToList().Count();
+
+                            foreach (var question in questionList)
+                            {
+                                maxScore += question.Marks;
+                            }
+
                         }
                     }
 
@@ -297,49 +303,63 @@ namespace Silicus.Ensure.Web.Controllers
                     {
                         UserId = Userid,
                         TestSuiteId = SuiteId,
-                        ObjectiveCount = 5,
-                        MaxScore = 70,
+                        ObjectiveCount = objectiveCount,
+                        MaxScore = maxScore,
                         CreatedDate = DateTime.Now,
                     };
+
+                    _testSuiteService.AddUserTestSuite(newusertestsuit);
+                    updateCurrentUsers.TestStatus = "Assigned";
+                    _userService.Update(updateCurrentUsers);
+
+
                     foreach (var tagid in ViewPrimaryTagList)
                     {
                         string[] values = tagid.Split(',');
                         for (int i = 0; i < values.Length; i++)
                         {
                             values[i] = values[i].Trim();
-                            var questionList = _questionService.GetQuestion().Where(p => p.Tags.Contains(values[i])).Select(q => q.Id).ToList();
+                            var questionList = _questionService.GetQuestion().Where(p => p.Tags.Contains(values[i])).ToList();
                             foreach (var questionId in questionList)
                             {
-                                UserTestDetails userTestDetails = new UserTestDetails
+                                if (newusertestsuit.UserTestDetails == null || (!newusertestsuit.UserTestDetails.Any(x => x.QuestionId == questionId.Id)))
                                 {
-                                    UserTestSuite = _testSuiteService.GetUserTestSuiteId(SuiteId),
-                                    QuestionId = Convert.ToInt32(questionId)
+                                    UserTestDetails userTestDetails = new UserTestDetails
+                                    {
+                                        UserTestSuite = newusertestsuit,
+                                        QuestionId = Convert.ToInt32(questionId.Id),
+                                        Answer = questionId.Answer,
+                                    };
 
-                                };
+                                    _testSuiteService.AddUserTestDetails(userTestDetails);
+                                }
+
                             }
                         }
                     }
 
-
-                    _testSuiteService.AddUserTestSuite(newusertestsuit);
-                    updateCurrentUsers.TestStatus = "Assigned";
-                    _userService.Update(updateCurrentUsers);
                     return Json(1);
-                    // TempData.Add("IsNewTestSuite", 1);
-                    // return RedirectToAction("GetCandidateDetails", "User", DataSourceRequest);
                 }
                 else
                 {
-                    //return RedirectToAction("GetCandidateDetails", "User", DataSourceRequest);
                     return Json(-1);
                 }
             }
             return View();
         }
 
-        public ActionResult CandidateAdd()
+        public ActionResult CandidateAdd(int UserId)
         {
+
             UserViewModel currUser = new UserViewModel();
+            currUser.UserId = UserId;
+
+            if (UserId != 0)
+            {
+                var user = _userService.GetUserById(UserId);
+                currUser = _mappingService.Map<User, UserViewModel>(user);
+            }
+
             var positionDetails = _positionService.GetPositionDetails().OrderBy(model => model.PositionName);
             currUser.PositionList = positionDetails.ToList();
             return View(currUser);
@@ -541,8 +561,8 @@ namespace Silicus.Ensure.Web.Controllers
         {
             UserTestDetails userTestDetail;
             List<UserTestDetails> userTestDetailList = new List<UserTestDetails>();
-            var question = _questionService.GetQuestion();            
-            foreach(var item in question)
+            var question = _questionService.GetQuestion();
+            foreach (var item in question)
             {
                 userTestDetail = new UserTestDetails();
                 userTestDetail.QuestionId = item.Id;
@@ -554,7 +574,7 @@ namespace Silicus.Ensure.Web.Controllers
             //if (!string.IsNullOrWhiteSpace(testSuite.SecondaryTags))
             //    testSuite.PrimaryTags += "," + testSuite.SecondaryTags;
             //Int32[] tags = testSuite.PrimaryTags.Split(',').Select(Int32.Parse).ToArray();
-           
+
         }
         #endregion
 
@@ -587,49 +607,28 @@ namespace Silicus.Ensure.Web.Controllers
         }
         #endregion Position
 
-        public ActionResult ViewQuestion()
-        {   
-            List<Question> Que = _questionService.GetQuestion().ToList();
-            //Question ques = new Question();
-            User user = new User();
-            Que = Que.OrderBy(x => x.Id).ToList();
-            
+        public ActionResult ViewQuestion(int UserId)
+        {
+            var userDetails = _userService.GetUserDetails().Where(x => x.UserId == UserId).FirstOrDefault();
+            var userTestSuitDetails = _testSuiteService.GetUserTestSuite().Where(x => x.UserId == UserId).FirstOrDefault().UserTestDetails;
 
-           
+            ViewBag.FNameLName = userDetails.FirstName + userDetails.LastName;
+
+            List<Question> Que = (from question in _questionService.GetQuestion().ToList()
+                                  join userTest in userTestSuitDetails.ToList()
+                                      on question.Id equals userTest.QuestionId
+                                  select question).ToList();
+
+            Que = Que.OrderBy(x => x.Id).ToList();
             return View(Que);
         }
 
         public ActionResult CreatePDF()
         {
-            //List<Question> QList = new List<Question>()
-            //{
-            //    new Question { Id=1, QuestionDescription="First Question", Option1="Option1", Option2="Option2", Option3="Option3", Option4="Option4" },
-            //    new Question { Id=1, QuestionDescription="First Question", Option1="Option1", Option2="Option2", Option3="Option3", Option4="Option4" },
-            //    new Question { Id=1, QuestionDescription="First Question", Option1="Option1", Option2="Option2", Option3="Option3", Option4="Option4" }
-            //};
-
             List<Question> QList = _questionService.GetQuestion().ToList();
             QList = QList.OrderBy(x => x.Id).ToList();
-            //var QueModel = _mappingService.Map<List<Question>, List<QuestionModel>>(QList);
-            //foreach (var q in QueModel)
-            //{
-            //    q.QuestionDescription = q.QuestionDescription.Substring(0, Math.Min(q.QuestionDescription.Length, 100));
-            //    q.QuestionType = GetQuestionType(q.QuestionType);
-            //    q.Tag = string.Join(" | ", Tags().Where(t => QList.Where(x => x.Id == q.Id).Select(p => p.Tags).FirstOrDefault().ToString().Split(',').Contains(t.TagId.ToString())).Select(l => l.TagName).ToList());
-            //    q.Competency = GetCompetency(q.Competency);
-            //}
-
             var pdf = new RazorPDF.PdfResult(QList, "CreatePDF");
-
-           // RazorPDF.PdfResult obj = new RazorPDF.PdfResult();
-
-            
-            // Add to the view bag
-            // pdf.ViewBag.Title = "Title from ViewBag";
-
             return pdf;
-
-            //  return View(QList);
         }
 
         public ActionResult SubmittedTest(int canditateId)
@@ -694,23 +693,13 @@ namespace Silicus.Ensure.Web.Controllers
 
         private string GetOption(string p)
         {
-            string optionSelect = "";
+            string optionSelect = "Option:";
             switch (p)
             {
-                case "1":
-                    optionSelect = "Option1";
-                    break;
-                case "2":
-                    optionSelect = "Option2";
-                    break;
-                case "3":
-                    optionSelect = "Option3";
-                    break;
-                case "4":
-                    optionSelect = "Option4";
+                default: optionSelect += p;
                     break;
             }
-            return optionSelect;
+            return p == null ? "" : optionSelect;
         }
 
         [HttpPost]
@@ -740,131 +729,85 @@ namespace Silicus.Ensure.Web.Controllers
         public ActionResult SendMail()
         {
             List<Question> Que = _questionService.GetQuestion().ToList();
-            //Question ques = new Question();
             User user = new User();
             Que = Que.OrderBy(x => x.Id).ToList();
 
             if (ModelState.IsValid)
             {
-
-                var body = "<p>Email From: <strong>{0} {1}</strong></p><p>Message:</p><p>Mail Body</p>";
-                var message = new MailMessage();
-                message.To.Add(new MailAddress("Nishant.Lohakare@silicus.com"));  // replace with valid value 
-                message.From = new MailAddress("nish89.cse@gmail.com");  // replace with valid value
-                message.Subject = "Candidate Question Set";
-                message.Body = string.Format(body, user.FirstName = "Nishant", user.LastName = "Lohakare");
-
-                System.IO.FileStream fs = new FileStream(Server.MapPath("~\\Attachment") + "\\" + "First PDF document.pdf", FileMode.Create);
-                // Create an instance of the document class which represents the PDF document itself.
-                Document document = new Document(PageSize.A4, 25, 25, 30, 30);
-                // Create an instance to the PDF file by creating an instance of the PDF 
-                // Writer class using the document and the filestrem in the constructor.
-                PdfWriter writer = PdfWriter.GetInstance(document, fs);
-                // Add meta information to the document
-                //document.AddAuthor("Micke Blomquist");
-                //document.AddCreator("Sample application using iTextSharp");
-                //document.AddKeywords("PDF tutorial education");
-                //document.AddSubject("Document subject - Describing the steps creating a PDF document");
-                //document.AddTitle("The document title - PDF creation using iTextSharp");
-                // Open the document to enable you to write to the document
-                document.Open();
-                //Add a simple and wellknown phrase to the document in a flow layout manner
-                //document.Add(new Paragraph("Hello World!"));
-
-                PdfPTable table1 = new PdfPTable(2);
-                PdfPTable table2 = new PdfPTable(2);
-                foreach (var i in Que)
+                try
                 {
-                    PdfPCell cell;// = new PdfPCell(new Phrase("Objective Question Set"));
+                    var body = "<p>Email From: <strong>{0} {1}</strong></p><p>Message:</p><p>Mail Body</p>";
+                    var message = new MailMessage();
+                    message.To.Add(new MailAddress("Nishant.Lohakare@silicus.com"));
+                    message.From = new MailAddress("nish89.cse@gmail.com");
+                    message.Subject = "Candidate Question Set";
+                    message.Body = string.Format(body, user.FirstName = "Nishant", user.LastName = "Lohakare");
 
-                    // we add a cell with colspan 3
-                    //cell = new PdfPCell(new Phrase("Objective Question Set"));
-                    //cell.Colspan = 3;
-                    //table.AddCell(cell);
+                    string fileName = Path.GetRandomFileName();
 
-
-
-                    if (i.QuestionType == 1)
+                    System.IO.FileStream fs = new FileStream(Server.MapPath("~\\Attachment") + "\\" + fileName + ".pdf", FileMode.Create);
+                    // Create an instance of the document class which represents the PDF document itself.
+                    Document document = new Document(PageSize.A4, 25, 25, 30, 30);
+                    // Create an instance to the PDF file by creating an instance of the PDF 
+                    // Writer class using the document and the filestrem in the constructor.
+                    PdfWriter writer = PdfWriter.GetInstance(document, fs);
+                    document.Open();
+                    PdfPTable table1 = new PdfPTable(2);
+                    PdfPTable table2 = new PdfPTable(2);
+                    foreach (var i in Que)
                     {
-                        document.Add(new Paragraph("Objective Question Set"));
-                        // now we add a cell with rowspan 2
+                        PdfPCell cell;
 
-                        cell = new PdfPCell(new Phrase("Question " + i.QuestionDescription));
+                        if (i.QuestionType == 1)
+                        {
+                            document.Add(new Paragraph("Objective Question Set"));
 
-                        cell.Rowspan = 4;
-                        table1.AddCell(cell);
-                        // we add the four remaining cells with addCell()
-                        table1.AddCell(i.Option1);
-                        table1.AddCell(i.Option2);
-                        table1.AddCell(i.Option3);
-                        table1.AddCell(i.Option4);
+                            cell = new PdfPCell(new Phrase("Question " + i.QuestionDescription));
+                            cell.Rowspan = 4;
+                            table1.AddCell(cell);
+                            table1.AddCell(i.Option1);
+                            table1.AddCell(i.Option2);
+                            table1.AddCell(i.Option3);
+                            table1.AddCell(i.Option4);
+                            cell = new PdfPCell(new Phrase("Correct Answer"));
+                            table1.AddCell(cell);
+                            table1.AddCell(i.CorrectAnswer);
 
-                        cell = new PdfPCell(new Phrase("Correct Answer"));
-                        table1.AddCell(cell);
-                        table1.AddCell(i.CorrectAnswer);
+                            document.Add(table1);
+                        }
+                        else
+                        {
+                            document.Add(new Paragraph("Practical Question Set"));
+                            cell = new PdfPCell(new Phrase("Question " + i.QuestionDescription));
+                            table2.AddCell(cell);
+                            table2.AddCell(i.Answer);
 
-                        document.Add(table1);
+                            document.Add(table2);
+                        }
                     }
-                    else
+                    // Close the document
+                    document.Close();
+                    // Close the writer instance
+                    writer.Close();
+                    // Always close open filehandles explicity
+                    fs.Close();
+
+                    Attachment attachment = new Attachment(Server.MapPath("~\\Attachment") + "\\" + fileName + ".pdf");
+                    message.Attachments.Add(attachment);
+                    message.IsBodyHtml = true;
+
+                    using (var smtp = new SmtpClient())
                     {
-                        document.Add(new Paragraph("Practical Question Set"));
-                        cell = new PdfPCell(new Phrase("Question " + i.QuestionDescription));
-                        //cell.Rowspan = 2;
-                        //table2.AddCell(i.Answer);
-
-                        //cell = new PdfPCell(new Phrase("Answer"));
-                        table2.AddCell(cell);
-                        table2.AddCell(i.Answer);
-
-                        document.Add(table2);
+                        smtp.Send(message);
+                        TempData["Success"] = "Mail Send Successfully";
                     }
                 }
-                // Close the document
-                document.Close();
-                // Close the writer instance
-                writer.Close();
-                // Always close open filehandles explicity
-                fs.Close();
-
-
-
-
-                Attachment attachment = new Attachment(Server.MapPath("~\\Attachment") + "\\" + "First PDF document.pdf");
-                message.Attachments.Add(attachment);
-                message.IsBodyHtml = true;
-
-                //if (model.Upload != null && model.Upload.ContentLength > 0)
-                //{
-                //    message.Attachments.Add(new Attachment(model.Upload.InputStream, Path.GetFileName(model.Upload.FileName)));
-                //}
-
-                using (var smtp = new SmtpClient())
+                catch (Exception ex)
                 {
-                    //var credential = new NetworkCredential
-                    //{
-                    //    UserName = "nish89.cse@gmail.com",  // replace with valid value
-                    //    Password = "nishant123"  // replace with valid value
-                    //};
-                    //smtp.Credentials = credential;
-                    //smtp.Host = "smtp.gmail.com";
-                    //smtp.Port = 587;
-                    //smtp.EnableSsl = true;
-                    //smtp.SendMailAsync(message);
-                    smtp.Send(message);
-                    //smtp.SendMailAsync(message);
-                    //   return RedirectToAction("Sent");
+                    throw new Exception(ex.Message);
                 }
-
             }
-           // return View(Que);
             return RedirectToAction("ViewQuestion", "Admin");
-
-
-
-
         }
-
-      
     }
-
 }
