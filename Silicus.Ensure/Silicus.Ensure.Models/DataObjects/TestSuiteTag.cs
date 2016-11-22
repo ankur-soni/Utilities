@@ -9,12 +9,12 @@ namespace Silicus.Ensure.Models.DataObjects
     public class TestSuiteTag
     {
         [Key]
-        public int TestSuiteTagId { get; set; }
-
-        public int TestSuiteId { get; set; }
+        public int TestSuiteTagId { get; set; }        
 
         public int TagId { get; set; }
 
         public int Weightage { get; set; }
+
+        public virtual TestSuite TestSuite { get; set; }
     }
 }
