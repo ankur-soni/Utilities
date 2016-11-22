@@ -162,6 +162,29 @@ namespace Silicus.Ensure.Entities.Initializer
 
             context.Add(new Question
             {
+                QuestionType = 1,
+                QuestionDescription = "Which Objective component handle <strong>Memory management</strong> in ASP.NET?",
+                AnswerType = 1,
+                Option1 = "CLR1",
+                Option2 = "CTS1",
+                Option3 = "CLS1",
+                Option4 = "BCL1",
+                CorrectAnswer = "1",
+                Answer = null,
+                Tags = "1,2",
+                Competency = 1,
+                Duration = 1,
+                Marks = 1,
+                IsPublishd = true,
+                IsDeleted = false,
+                CreatedOn = DateTime.Now,
+                CreatedBy = 0,
+                ModifiedOn = DateTime.Now,
+                ModifiedBy = 0
+            });
+
+            context.Add(new Question
+            {
                 QuestionType = 2,
                 QuestionDescription = "Write program of get name of employee from id from list using <strong>lymbda expression</strong>.",
                 AnswerType = 1,
@@ -182,6 +205,30 @@ namespace Silicus.Ensure.Entities.Initializer
                 ModifiedOn = DateTime.Now,
                 ModifiedBy = 0
             });
+
+            context.Add(new Question
+            {
+                QuestionType = 2,
+                QuestionDescription = "Write new Practical program of get name of employee from id from list using <strong>lymbda expression</strong>.",
+                AnswerType = 1,
+                Option1 = null,
+                Option2 = null,
+                Option3 = null,
+                Option4 = null,
+                CorrectAnswer = null,
+                Answer = "List&lt;Emp&gt; emp = emp.Select(x=&gt;x.Id==2).Name;",
+                Tags = "1",
+                Competency = 1,
+                Duration = 1,
+                Marks = 2,
+                IsPublishd = true,
+                IsDeleted = false,
+                CreatedOn = DateTime.Now,
+                CreatedBy = 0,
+                ModifiedOn = DateTime.Now,
+                ModifiedBy = 0
+            });
+
         }
 
         private static void AddIndexes(SilicusIpDataContext context, string databaseName)
