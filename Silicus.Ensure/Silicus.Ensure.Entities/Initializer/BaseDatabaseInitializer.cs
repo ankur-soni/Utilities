@@ -47,14 +47,14 @@ namespace Silicus.Ensure.Entities.Initializer
 
             context.Add(new User
             {
-                FirstName = "Test",
-                LastName = "Candidate",
-                NewPassword = "testadmin@123",
-                ConfirmPassword = "testadmin@123",
-                Address = "Test",
-                Email = "testcandidate@test.com",
-                IdentityUserId = new System.Guid("2D3B545B-50F6-45D4-B916-23D276BA4B00"),
-                Role = "Candidate",
+                FirstName = "Lorem",
+                LastName = "Lipsum",
+                NewPassword = "Candidate@123",
+                ConfirmPassword = "Candidate@123",
+                Address = "Pune",
+                Email = "lorem@gmail.com",
+                IdentityUserId = new System.Guid("50cad72d-4ff3-48ce-ba32-44675cfd2744"),
+                Role = "CANDIDATE",
                 Gender = "Male",
                 Department = "Delivery",
                 TestStatus = "UnAssigned",
