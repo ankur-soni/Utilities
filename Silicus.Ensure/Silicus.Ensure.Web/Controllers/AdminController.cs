@@ -294,9 +294,9 @@ namespace Silicus.Ensure.Web.Controllers
                             foreach (var question in questionList)
                             {
                                 maxScore += question.Marks;
-                        }
+                            }
 
-                    }
+                        }
                     }
 
                     UserTestSuite newusertestsuit = new UserTestSuite
@@ -322,10 +322,10 @@ namespace Silicus.Ensure.Web.Controllers
                             var questionList = _questionService.GetQuestion().Where(p => p.Tags.Contains(values[i])).ToList();
                             foreach (var questionId in questionList)
                             {
-                                if (newusertestsuit.UserTestDetails==null || (!newusertestsuit.UserTestDetails.Any(x => x.QuestionId == questionId.Id)))
+                                if (newusertestsuit.UserTestDetails == null || (!newusertestsuit.UserTestDetails.Any(x => x.QuestionId == questionId.Id)))
                                 {
-                                UserTestDetails userTestDetails = new UserTestDetails
-                                {
+                                    UserTestDetails userTestDetails = new UserTestDetails
+                                    {
                                         UserTestSuite = newusertestsuit,
                                         QuestionId = Convert.ToInt32(questionId.Id),
                                         Answer = questionId.Answer,
@@ -561,7 +561,7 @@ namespace Silicus.Ensure.Web.Controllers
         {
             UserTestDetails userTestDetail;
             List<UserTestDetails> userTestDetailList = new List<UserTestDetails>();
-            var question = _questionService.GetQuestion();            
+            var question = _questionService.GetQuestion();
             foreach (var item in question)
             {
                 userTestDetail = new UserTestDetails();
@@ -574,7 +574,7 @@ namespace Silicus.Ensure.Web.Controllers
             //if (!string.IsNullOrWhiteSpace(testSuite.SecondaryTags))
             //    testSuite.PrimaryTags += "," + testSuite.SecondaryTags;
             //Int32[] tags = testSuite.PrimaryTags.Split(',').Select(Int32.Parse).ToArray();
-           
+
         }
         #endregion
 
@@ -607,9 +607,18 @@ namespace Silicus.Ensure.Web.Controllers
         }
         #endregion Position
 
-        public ActionResult ViewQuestion()
-        {   
-            List<Question> Que = _questionService.GetQuestion().ToList();
+        public ActionResult ViewQuestion(int UserId)
+        {
+            var userDetails = _userService.GetUserDetails().Where(x => x.UserId == UserId).FirstOrDefault();
+            var userTestSuitDetails = _testSuiteService.GetUserTestSuite().Where(x => x.UserId == UserId).FirstOrDefault().UserTestDetails;
+
+            ViewBag.FNameLName = userDetails.FirstName + userDetails.LastName;
+
+            List<Question> Que = (from question in _questionService.GetQuestion().ToList()
+                                  join userTest in userTestSuitDetails.ToList()
+                                      on question.Id equals userTest.QuestionId
+                                  select question).ToList();
+
             Que = Que.OrderBy(x => x.Id).ToList();
             return View(Que);
         }
@@ -684,23 +693,13 @@ namespace Silicus.Ensure.Web.Controllers
 
         private string GetOption(string p)
         {
-            string optionSelect = "";
+            string optionSelect = "Option:";
             switch (p)
             {
-                case "1":
-                    optionSelect = "Option1";
-                    break;
-                case "2":
-                    optionSelect = "Option2";
-                    break;
-                case "3":
-                    optionSelect = "Option3";
-                    break;
-                case "4":
-                    optionSelect = "Option4";
+                default: optionSelect += p;
                     break;
             }
-            return optionSelect;
+            return p == null ? "" : optionSelect;
         }
 
         [HttpPost]
@@ -737,75 +736,75 @@ namespace Silicus.Ensure.Web.Controllers
             {
                 try
                 {
-                var body = "<p>Email From: <strong>{0} {1}</strong></p><p>Message:</p><p>Mail Body</p>";
-                var message = new MailMessage();
+                    var body = "<p>Email From: <strong>{0} {1}</strong></p><p>Message:</p><p>Mail Body</p>";
+                    var message = new MailMessage();
                     message.To.Add(new MailAddress("Nishant.Lohakare@silicus.com"));
                     message.From = new MailAddress("nish89.cse@gmail.com");
-                message.Subject = "Candidate Question Set";
-                message.Body = string.Format(body, user.FirstName = "Nishant", user.LastName = "Lohakare");
+                    message.Subject = "Candidate Question Set";
+                    message.Body = string.Format(body, user.FirstName = "Nishant", user.LastName = "Lohakare");
 
                     string fileName = Path.GetRandomFileName();
 
                     System.IO.FileStream fs = new FileStream(Server.MapPath("~\\Attachment") + "\\" + fileName + ".pdf", FileMode.Create);
-                // Create an instance of the document class which represents the PDF document itself.
-                Document document = new Document(PageSize.A4, 25, 25, 30, 30);
-                // Create an instance to the PDF file by creating an instance of the PDF 
-                // Writer class using the document and the filestrem in the constructor.
-                PdfWriter writer = PdfWriter.GetInstance(document, fs);
-                document.Open();
-                PdfPTable table1 = new PdfPTable(2);
-                PdfPTable table2 = new PdfPTable(2);
-                foreach (var i in Que)
-                {
+                    // Create an instance of the document class which represents the PDF document itself.
+                    Document document = new Document(PageSize.A4, 25, 25, 30, 30);
+                    // Create an instance to the PDF file by creating an instance of the PDF 
+                    // Writer class using the document and the filestrem in the constructor.
+                    PdfWriter writer = PdfWriter.GetInstance(document, fs);
+                    document.Open();
+                    PdfPTable table1 = new PdfPTable(2);
+                    PdfPTable table2 = new PdfPTable(2);
+                    foreach (var i in Que)
+                    {
                         PdfPCell cell;
 
-                    if (i.QuestionType == 1)
-                    {
-                        document.Add(new Paragraph("Objective Question Set"));
+                        if (i.QuestionType == 1)
+                        {
+                            document.Add(new Paragraph("Objective Question Set"));
 
-                        cell = new PdfPCell(new Phrase("Question " + i.QuestionDescription));
-                        cell.Rowspan = 4;
-                        table1.AddCell(cell);
-                        table1.AddCell(i.Option1);
-                        table1.AddCell(i.Option2);
-                        table1.AddCell(i.Option3);
-                        table1.AddCell(i.Option4);
-                        cell = new PdfPCell(new Phrase("Correct Answer"));
-                        table1.AddCell(cell);
-                        table1.AddCell(i.CorrectAnswer);
+                            cell = new PdfPCell(new Phrase("Question " + i.QuestionDescription));
+                            cell.Rowspan = 4;
+                            table1.AddCell(cell);
+                            table1.AddCell(i.Option1);
+                            table1.AddCell(i.Option2);
+                            table1.AddCell(i.Option3);
+                            table1.AddCell(i.Option4);
+                            cell = new PdfPCell(new Phrase("Correct Answer"));
+                            table1.AddCell(cell);
+                            table1.AddCell(i.CorrectAnswer);
 
-                        document.Add(table1);
+                            document.Add(table1);
+                        }
+                        else
+                        {
+                            document.Add(new Paragraph("Practical Question Set"));
+                            cell = new PdfPCell(new Phrase("Question " + i.QuestionDescription));
+                            table2.AddCell(cell);
+                            table2.AddCell(i.Answer);
+
+                            document.Add(table2);
+                        }
                     }
-                    else
-                    {
-                        document.Add(new Paragraph("Practical Question Set"));
-                        cell = new PdfPCell(new Phrase("Question " + i.QuestionDescription));
-                        table2.AddCell(cell);
-                        table2.AddCell(i.Answer);
-
-                        document.Add(table2);
-                    }
-                }
-                // Close the document
-                document.Close();
-                // Close the writer instance
-                writer.Close();
-                // Always close open filehandles explicity
-                fs.Close();
+                    // Close the document
+                    document.Close();
+                    // Close the writer instance
+                    writer.Close();
+                    // Always close open filehandles explicity
+                    fs.Close();
 
                     Attachment attachment = new Attachment(Server.MapPath("~\\Attachment") + "\\" + fileName + ".pdf");
-                message.Attachments.Add(attachment);
-                message.IsBodyHtml = true;
+                    message.Attachments.Add(attachment);
+                    message.IsBodyHtml = true;
 
-                using (var smtp = new SmtpClient())
-                {
-                    smtp.Send(message);
+                    using (var smtp = new SmtpClient())
+                    {
+                        smtp.Send(message);
                         TempData["Success"] = "Mail Send Successfully";
                     }
                 }
                 catch (Exception ex)
                 {
-                    throw new Exception(ex.Message);                    
+                    throw new Exception(ex.Message);
                 }
             }
             return RedirectToAction("ViewQuestion", "Admin");
