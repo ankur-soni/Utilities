@@ -237,18 +237,11 @@ namespace Silicus.Ensure.Web.Controllers
             //Question question = from a in _questionService.GetQuestion()
             //                    where a.Tags.Contains()//.Split(',').Select(Int32.Parse).ToArray().Contains(tags)
             //                    select a;
-        }
-
-        [HttpPost]
-        public ActionResult Read()
-        {
-            var tagDetails = _tagsService.GetTagsDetails().OrderByDescending(model => model.TagId);
-            return Json(tagDetails);
-        }
+        }       
 
         public ActionResult GetTags(string term)
         {
-            var tagDetails = _tagsService.GetTagsDetails().OrderBy(model => model.TagName);
+            var tagDetails = _tagsService.GetTagsDetails();
             return Json(tagDetails);
         }
     }

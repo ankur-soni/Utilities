@@ -81,7 +81,7 @@ namespace Silicus.Ensure.Web.Controllers
 
         [AcceptVerbs(HttpVerbs.Post)]
         public async Task<ActionResult> SendEmail(FormCollection email)
-        {           
+        {
             string retVal = "failed";
             if (!string.IsNullOrEmpty(email[1]))
             {
@@ -268,21 +268,18 @@ namespace Silicus.Ensure.Web.Controllers
         public ActionResult AssignSuite(int SuiteId, int Userid)
         {
 
-            DataSourceRequest DataSourceRequest = new Kendo.Mvc.UI.DataSourceRequest();
-            DataSourceRequest.Page = 1;
-            DataSourceRequest.PageSize = 10;
+            DataSourceRequest dataSourceRequest = new Kendo.Mvc.UI.DataSourceRequest();
+            dataSourceRequest.Page = 1;
+            dataSourceRequest.PageSize = 10;
 
             var objectiveCount = new object();
             var updateCurrentUsers = _userService.GetUserDetails().Where(model => model.UserId == Userid).FirstOrDefault();
+
             if (updateCurrentUsers != null)
             {
-
-                // return Json(1);
-
                 if (SuiteId > 0 && Userid > 0)
                 {
                     var ViewPrimaryTagList = _testSuiteService.GetTestSuiteDetails().Where(q => q.TestSuiteId == SuiteId).Select(p => p.PrimaryTags).ToList();
-
                     foreach (var tagid in ViewPrimaryTagList)
                     {
                         string[] values = tagid.Split(',');
@@ -301,6 +298,7 @@ namespace Silicus.Ensure.Web.Controllers
                         MaxScore = 70,
                         CreatedDate = DateTime.Now,
                     };
+
                     foreach (var tagid in ViewPrimaryTagList)
                     {
                         string[] values = tagid.Split(',');
@@ -308,38 +306,43 @@ namespace Silicus.Ensure.Web.Controllers
                         {
                             values[i] = values[i].Trim();
                             var questionList = _questionService.GetQuestion().Where(p => p.Tags.Contains(values[i])).Select(q => q.Id).ToList();
-                           foreach (var questionId in questionList)
-                           {
-                               UserTestDetails userTestDetails = new UserTestDetails
-                               {
+                            foreach (var questionId in questionList)
+                            {
+                                UserTestDetails userTestDetails = new UserTestDetails
+                                {
                                     UserTestSuite = _testSuiteService.GetUserTestSuiteId(SuiteId),
                                     QuestionId = Convert.ToInt32(questionId)
 
-                               };
-                           }
+                                };
+                            }
                         }
                     }
-                    
 
                     _testSuiteService.AddUserTestSuite(newusertestsuit);
                     updateCurrentUsers.TestStatus = "Assigned";
                     _userService.Update(updateCurrentUsers);
                     return Json(1);
-                    // TempData.Add("IsNewTestSuite", 1);
-                    // return RedirectToAction("GetCandidateDetails", "User", DataSourceRequest);
                 }
                 else
                 {
-                    //return RedirectToAction("GetCandidateDetails", "User", DataSourceRequest);
                     return Json(-1);
                 }
             }
             return View();
         }
 
-        public ActionResult CandidateAdd()
+        public ActionResult CandidateAdd(int UserId)
         {
+
             UserViewModel currUser = new UserViewModel();
+            currUser.UserId = UserId;
+
+            if (UserId != 0)
+            {
+                var user = _userService.GetUserById(UserId);
+                currUser = _mappingService.Map<User, UserViewModel>(user);
+            }
+
             var positionDetails = _positionService.GetPositionDetails().OrderBy(model => model.PositionName);
             currUser.PositionList = positionDetails.ToList();
             return View(currUser);
@@ -438,7 +441,7 @@ namespace Silicus.Ensure.Web.Controllers
                 TempData.Add("IsNewTestSuite", 1);
                 if (testSuiteView.TestSuiteId == 0 || testSuiteView.IsCopy == true)
                 {
-                    _testSuiteService.Add(testSuiteDomainModel);                    
+                    _testSuiteService.Add(testSuiteDomainModel);
                     return RedirectToAction("TestSuiteList");
                 }
                 else
@@ -459,7 +462,7 @@ namespace Silicus.Ensure.Web.Controllers
         {
             var testSuiteDetails = _testSuiteService.GetTestSuiteDetails().Where(model => model.TestSuiteId == testSuiteId && model.IsDeleted == false).SingleOrDefault();
             if (testSuiteDetails != null)
-            {               
+            {
                 _testSuiteService.Delete(testSuiteDetails);
                 return Json(1);
             }
@@ -502,9 +505,9 @@ namespace Silicus.Ensure.Web.Controllers
         }
 
         public ActionResult TestSuitUsers([DataSourceRequest] DataSourceRequest request)
-        {           
+        {
             int testSuiteId = Convert.ToInt32(TempData["TesSuiteId"]);
-            var userlist = _userService.GetUserDetails().Where(model => model.Role == "USER").OrderByDescending(model => model.UserId).ToArray();           
+            var userlist = _userService.GetUserDetails().Where(model => model.Role == "USER").OrderByDescending(model => model.UserId).ToArray();
             var viewModels = _mappingService.Map<User[], UserViewModel[]>(userlist);
             DataSourceResult result = viewModels.ToDataSourceResult(request);
             return Json(result);
@@ -524,7 +527,7 @@ namespace Silicus.Ensure.Web.Controllers
                     ActiveteSuite(userTestSuite, testSuiteDetails);
                 }
                 return Json(1);
-            }            
+            }
             else
             {
                 return Json(-1);
@@ -557,7 +560,7 @@ namespace Silicus.Ensure.Web.Controllers
            
         }
         #endregion
-                
+
         #region Position
 
         public ActionResult GetPositionDetails([DataSourceRequest] DataSourceRequest request)
@@ -578,7 +581,7 @@ namespace Silicus.Ensure.Web.Controllers
                 if (position.PositionId == 0)
                     return Json(_positionService.Add(position));
                 else
-        {
+                {
                     _positionService.Update(position);
                     return Json(1);
                 }
@@ -588,14 +591,14 @@ namespace Silicus.Ensure.Web.Controllers
         #endregion Position
 
         public ActionResult ViewQuestion()
-        {
+        {   
             List<Question> Que = _questionService.GetQuestion().ToList();
             //Question ques = new Question();
             User user = new User();
             Que = Que.OrderBy(x => x.Id).ToList();
             
 
-
+           
             return View(Que);
         }
 
@@ -625,11 +628,11 @@ namespace Silicus.Ensure.Web.Controllers
 
             
             // Add to the view bag
-           // pdf.ViewBag.Title = "Title from ViewBag";
+            // pdf.ViewBag.Title = "Title from ViewBag";
 
             return pdf;
 
-          //  return View(QList);
+            //  return View(QList);
         }
 
         public ActionResult SubmittedTest(int canditateId)

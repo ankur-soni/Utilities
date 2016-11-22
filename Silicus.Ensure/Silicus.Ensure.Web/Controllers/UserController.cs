@@ -128,11 +128,15 @@ namespace Silicus.Ensure.Web.Controllers
         }
 
         [AcceptVerbs(HttpVerbs.Post)]
-        public ActionResult DeleteUser(User user)
+        public ActionResult DeleteUser(int UserId)
         {
-            if (user != null && ModelState.IsValid)
+            if (UserId != null && ModelState.IsValid)
             {
-                _userService.Delete(user);
+                var user = _userService.GetUserById(UserId);
+                if (user != null)
+                {
+                    _userService.Delete(user);
+                }
                 return Json(1);
             }
 
@@ -145,7 +149,7 @@ namespace Silicus.Ensure.Web.Controllers
         /// <returns></returns>
         public async Task<ActionResult> GetCandidateDetails([DataSourceRequest] DataSourceRequest request)
         {
-            var userlist = _userService.GetUserDetails().Where(p => p.Role.ToLower() == "user").ToArray();
+            var userlist = _userService.GetUserDetails().Where(p => p.Role.ToLower() == "candidate").ToArray();
 
             var viewModels = _mappingService.Map<User[], UserViewModel[]>(userlist);
 
@@ -197,21 +201,9 @@ namespace Silicus.Ensure.Web.Controllers
         [HttpPost]
         public async Task<ActionResult> CandidateSave(UserViewModel vuser, HttpPostedFileBase files)
         {
-            var user = new ApplicationUser { UserName = vuser.Email, Email = vuser.Email };
-            vuser.Role = "candidate";
-            if (vuser.Role.ToLower() == "candidate")
+            if (vuser.UserId != 0)
             {
-                vuser.TestStatus = "UnAssigned";
-            }
-            vuser.NewPassword = vuser.FirstName.ToUpper() + vuser.LastName + "@123456";
-            vuser.ConfirmPassword = vuser.FirstName.ToUpper() + vuser.LastName + "@123456";
-            vuser.Address = "Pune";
-            var userResult = await UserManager.CreateAsync(user, vuser.NewPassword);
-            if (userResult.Succeeded)
-            {
-                vuser.IdentityUserId = new Guid(user.Id);
-                //foreach (HttpPostedFileBase file in files)
-                //{
+                var user = _userService.GetUserById(vuser.UserId);
                 if (files != null)
                 {
                     var fileName = Path.GetFileName(files.FileName);
@@ -224,29 +216,64 @@ namespace Silicus.Ensure.Web.Controllers
                     string resumepath = "/CandidateResume/" + newpath;
                     vuser.ResumePath = resumepath;
                 }
-                // }
-                var result = await UserManager.AddToRoleAsync(user.Id, vuser.Role);
-                if (!result.Succeeded)
+                if (user != null)
                 {
-                    ModelState.AddModelError("", result.Errors.First());
-                    ViewBag.RoleId = new SelectList(await RoleManager.Roles.ToListAsync(), "Name", "Name");
+                    var organizationUserDomainModel = _mappingService.Map<UserViewModel, User>(vuser);
+                    organizationUserDomainModel.Role = user.Role;
+                    _userService.Update(organizationUserDomainModel);
                 }
-
             }
             else
             {
-                ModelState.AddModelError("", userResult.Errors.First());
-                ViewBag.RoleId = new SelectList(RoleManager.Roles, "Name", "Name");
-                return RedirectToAction("CandidateAdd", "User");
+                var user = new ApplicationUser { UserName = vuser.Email, Email = vuser.Email };
+                vuser.Role = "candidate";
+                if (vuser.Role.ToLower() == "candidate")
+                {
+                    vuser.TestStatus = "UnAssigned";
+                }
+                vuser.NewPassword = vuser.FirstName.ToUpper() + vuser.LastName + "@123456";
+                vuser.ConfirmPassword = vuser.FirstName.ToUpper() + vuser.LastName + "@123456";
+                //vuser.Address = "Pune";
+                var userResult = await UserManager.CreateAsync(user, vuser.NewPassword);
+                if (userResult.Succeeded)
+                {
+                    vuser.IdentityUserId = new Guid(user.Id);
+                    //foreach (HttpPostedFileBase file in files)
+                    //{
+                    if (files != null)
+                    {
+                        var fileName = Path.GetFileName(files.FileName);
+                        //var guid = Guid.NewGuid().ToString();
+                        var path = Path.Combine(Server.MapPath("~/CandidateResume"), fileName);
+                        files.SaveAs(path);
+                        string fl = path.Substring(path.LastIndexOf("\\"));
+                        string[] split = fl.Split('\\');
+                        string newpath = split[1];
+                        string resumepath = "/CandidateResume/" + newpath;
+                        vuser.ResumePath = resumepath;
+                    }
+                    // }
+                    var result = await UserManager.AddToRoleAsync(user.Id, vuser.Role);
+                    if (!result.Succeeded)
+                    {
+                        ModelState.AddModelError("", result.Errors.First());
+                        ViewBag.RoleId = new SelectList(await RoleManager.Roles.ToListAsync(), "Name", "Name");
+                    }
 
+                }
+                else
+                {
+                    ModelState.AddModelError("", userResult.Errors.First());
+                    ViewBag.RoleId = new SelectList(RoleManager.Roles, "Name", "Name");
+                    return RedirectToAction("CandidateAdd", "User");
+
+                }
+                var organizationUserDomainModel = _mappingService.Map<UserViewModel, User>(vuser);
+
+                int Add = _userService.Add(organizationUserDomainModel);
             }
 
-            var organizationUserDomainModel =
-                              _mappingService.Map<UserViewModel, User>(vuser);
 
-            //ModelState.SetModelValue("IdentityUserId", new ValueProviderResult(i.ToString(),i.ToString(),new CultureInfo("en-US")));
-            int Add = _userService.Add(organizationUserDomainModel);
-            //return Json(_userService.Add(organizationUserDomainModel));
 
             ViewBag.UserRoles = RoleManager.Roles.Select(r => new SelectListItem { Text = r.Name, Value = r.Name }).ToList();
             return RedirectToAction("Candidates", "Admin");
