@@ -62,6 +62,10 @@ namespace Silicus.Ensure.Entities
             modelBuilder.Entity<UserTestSuite>()
                 .HasMany<UserTestDetails>(u => u.UserTestDetails)
                 .WithRequired(x => x.UserTestSuite).Map(x => x.MapKey("UserTestSuiteId"));
+
+            modelBuilder.Entity<TestSuite>()
+                .HasMany<TestSuiteTag>(u => u.TestSuiteTags)
+                .WithRequired(x => x.TestSuite).Map(x => x.MapKey("UserTestSuiteId"));
         }
     }
 }

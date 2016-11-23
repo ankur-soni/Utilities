@@ -182,7 +182,6 @@ namespace Silicus.Ensure.Entities.Initializer
                 ModifiedOn = DateTime.Now,
                 ModifiedBy = 0
             });
-
             context.Add(new Question
             {
                 QuestionType = 1,
@@ -209,7 +208,7 @@ namespace Silicus.Ensure.Entities.Initializer
             {
                 QuestionType = 1,
                 QuestionDescription = "Which of the following object is not an ASP component?",
-                AnswerType = 2,
+                AnswerType = 1,
                 Option1 = "LinkCounter",
                 Option2 = "Counter",
                 Option3 = "AdRotator",

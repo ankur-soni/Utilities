@@ -130,7 +130,7 @@ namespace Silicus.Ensure.Web.Controllers
         [AcceptVerbs(HttpVerbs.Post)]
         public ActionResult DeleteUser(int UserId)
         {
-            if (UserId != null && ModelState.IsValid)
+            if (ModelState.IsValid)
             {
                 var user = _userService.GetUserById(UserId);
                 if (user != null)

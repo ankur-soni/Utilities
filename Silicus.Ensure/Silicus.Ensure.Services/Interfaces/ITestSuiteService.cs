@@ -11,6 +11,8 @@ namespace Silicus.Ensure.Services.Interfaces
 
         UserTestSuite GetUserTestSuiteId(int userTestSuiteId);
 
+        UserTestDetails GetUserTestDetailsId(int userTestDetailsId);
+
         int Add(TestSuite TestSuite);
 
         void Update(TestSuite TestSuite);
@@ -22,6 +24,8 @@ namespace Silicus.Ensure.Services.Interfaces
         int AddUserTestSuite(UserTestSuite UserTestSuite);
 
         void UpdateUserTestSuite(UserTestSuite UserTestSuite);
+
+        int AddUserTestDetails(UserTestDetails UserTestDetails);
 
         void UpdateUserTestDetails(UserTestDetails UserTestDetails);
 
