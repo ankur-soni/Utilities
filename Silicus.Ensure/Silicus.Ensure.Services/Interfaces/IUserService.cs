@@ -15,5 +15,7 @@ namespace Silicus.Ensure.Services.Interfaces
         void Update(User User);
 
         void Delete(User User);
+
+        User GetUserByEmail(string email);
     }
 }

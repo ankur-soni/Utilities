@@ -30,5 +30,7 @@ namespace Silicus.Ensure.Services.Interfaces
         void UpdateUserTestDetails(UserTestDetails UserTestDetails);
 
         void DeleteUserTestSuite(UserTestSuite UserTestSuite);
+
+        UserTestSuite GetUserTestSuiteByUserId(int userId);
     }
 }

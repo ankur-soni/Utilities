@@ -15,21 +15,47 @@ namespace Silicus.Ensure.Web.Controllers
         private readonly IEmailService _emailService;
         private readonly IQuestionService _questionService;
         private readonly IMappingService _mappingService;
+        private readonly IUserService _userService;
+        private readonly ITestSuiteService _testSuiteService;
 
-        public CandidateController(IEmailService emailService, IQuestionService questionService, MappingService mappingService)
+        public CandidateController(IEmailService emailService, IQuestionService questionService, MappingService mappingService, IUserService userService, ITestSuiteService testSuiteService)
         {
             _emailService = emailService;
             _questionService = questionService;
             _mappingService = mappingService;
+            _userService = userService;
+            _testSuiteService = testSuiteService;
         }
 
         public ActionResult Welcome()
         {
+            ViewBag.Status = 0;
             return View();
         }
 
         public ActionResult OnlineTest()
         {
+            //var userEmail = User.Identity.Name.Trim();
+            //User user = _userService.GetUserByEmail(userEmail);
+            //if (user == null)
+            //{
+            //    ViewBag.Status = 1;
+            //    ViewBag.Msg = "User not found for online test, Kindly contact admin.";
+            //    return View("Welcome");
+            //}
+
+            //UserTestSuite userTestSuite = _testSuiteService.GetUserTestSuiteByUserId(user.UserId);
+            //if (userTestSuite == null)
+            //{
+            //    ViewBag.Status = 1;
+            //    ViewBag.Msg = "Test suite is not assigned for you, Kindly contact admin.";
+            //    return View("Welcome");
+            //}
+
+            //TestSuiteCandidateModel testSuiteCandidateModel = _mappingService.Map<UserTestSuite, TestSuiteCandidateModel>(userTestSuite);
+            //testSuiteCandidateModel.TotalCount = testSuiteCandidateModel.PracticalCount + testSuiteCandidateModel.ObjectiveCount;
+            //testSuiteCandidateModel.DurationInMin = testSuiteCandidateModel.Duration / 60;
+
             return View();
         }
 
