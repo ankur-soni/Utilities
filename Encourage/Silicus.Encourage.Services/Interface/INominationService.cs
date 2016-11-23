@@ -1,4 +1,5 @@
 ﻿using Silicus.Encourage.Models;
+using Silicus.UtilityContainer.Models.DataObjects;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -24,7 +25,7 @@ namespace Silicus.Encourage.Services.Interface
         void AddReviewerCommentsForCurrentNomination(ReviewerComment revrComment);
         string GetAwardMonthAndYear(int nominationId);
         string GetAwardName(int nominationId);
-        List<Nomination> GetAllSubmitedReviewedNominations(int reviewerId);
+        List<Nomination> GetAllSubmitedReviewedNominations(int reviewerId, bool forCurrentMonth);
         List<Review> GetAllSubmitedReviewsForCurrentNomination(int nominationId);
         List<Nomination> GetAllSavedNominations();
         Nomination GetNomination(int nominationId);
@@ -37,5 +38,13 @@ namespace Silicus.Encourage.Services.Interface
         bool UnLockNominations();
         int GetNominationCountByManagerId(int managerId, DateTime startDate, DateTime endDate);
         bool GetNominationLockStatus();
+
+        #region Saved Nominations List
+
+        string GetAwardNameByAwardId(int awardId);
+        User GetNomineeDetails(int userId);
+        List<Nomination> GetAllSubmittedAndSavedNominationsByCurrentUserAndMonth(int managerID, bool forCurrentMonth);
+
+        #endregion
     }
 }
