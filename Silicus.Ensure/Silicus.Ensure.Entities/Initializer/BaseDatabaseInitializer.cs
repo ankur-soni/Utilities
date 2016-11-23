@@ -121,8 +121,8 @@ namespace Silicus.Ensure.Entities.Initializer
                 Duration = 30,
                 Competency = 2,
                 IsDeleted = false,
-                PrimaryTags = "1",
-                SecondaryTags = "2",
+                PrimaryTags = "1,2",
+                Weights = "70,30",
 
             });
 
@@ -134,7 +134,7 @@ namespace Silicus.Ensure.Entities.Initializer
                 Competency = 2,
                 IsDeleted = false,
                 PrimaryTags = "1,2",
-                SecondaryTags = ""
+                Weights = "30,70",
             });
 
             context.Add(new Question

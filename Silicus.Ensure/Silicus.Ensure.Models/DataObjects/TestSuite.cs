@@ -35,6 +35,8 @@ namespace Silicus.Ensure.Models.DataObjects
         
         public string SecondaryTags { get; set; }
 
+        public string Weights { get; set; }
+
         public int Status { get; set; }
         
         public bool IsDeleted { get; set; }
@@ -47,6 +49,6 @@ namespace Silicus.Ensure.Models.DataObjects
 
         public int? CreatedBy { get; set; }
 
-        public virtual ICollection<TestSuiteTag> TestSuiteTags { get; set; }
+        //public virtual ICollection<TestSuiteTag> TestSuiteTags { get; set; }
     }
 }

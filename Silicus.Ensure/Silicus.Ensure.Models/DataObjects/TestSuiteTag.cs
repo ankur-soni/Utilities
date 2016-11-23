@@ -15,6 +15,6 @@ namespace Silicus.Ensure.Models.DataObjects
 
         public int Weightage { get; set; }
 
-        public virtual TestSuite TestSuite { get; set; }
+        //public virtual TestSuite TestSuite { get; set; }
     }
 }

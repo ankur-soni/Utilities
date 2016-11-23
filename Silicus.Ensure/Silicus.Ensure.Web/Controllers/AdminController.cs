@@ -295,7 +295,6 @@ namespace Silicus.Ensure.Web.Controllers
                             {
                                 maxScore += question.Marks;
                             }
-
                         }
                     }
 
