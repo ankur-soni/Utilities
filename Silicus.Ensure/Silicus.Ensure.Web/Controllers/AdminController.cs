@@ -750,7 +750,7 @@ namespace Silicus.Ensure.Web.Controllers
                                   select question).ToList();
 
             Que = Que.OrderBy(x => x.Id).ToList();
-        //    return View(Que);
+            //    return View(Que);
 
 
             //List<Question> Que = _questionService.GetQuestion().ToList();
@@ -780,35 +780,51 @@ namespace Silicus.Ensure.Web.Controllers
                         // Writer class using the document and the filestrem in the constructor.
                         PdfWriter writer = PdfWriter.GetInstance(document, fs);
                         document.Open();
-                        PdfPTable table1 = new PdfPTable(2);
-                        PdfPTable table2 = new PdfPTable(2);
-                        foreach (var i in Que)
-                        {
-                            PdfPCell cell;
+                        Font Verdana = FontFactory.GetFont("Verdana", 10F, Font.NORMAL, Color.BLACK);
+                        document.Add(new Paragraph("Question Set for " + userDetails.FirstName + " " + userDetails.LastName));
 
+                        PdfPTable table1; 
+                        
+                        
+                        PdfPTable table2; 
+                        
+                        PdfPCell cell;
+                        PdfPCell cell2;
+
+                        document.Add(new Paragraph("Objective Question Set"));
+                        foreach (var i in Que)
+                        {                          
                             if (i.QuestionType == 1)
                             {
-                                document.Add(new Paragraph("Objective Question Set"));
-
-                                cell = new PdfPCell(new Phrase("Question " + i.QuestionDescription));
+                                table1= new PdfPTable(2);
+                                table1.SpacingBefore = 20;
+                                cell = new PdfPCell(new Phrase(i.QuestionDescription));
                                 cell.Rowspan = 4;
                                 table1.AddCell(cell);
                                 table1.AddCell(i.Option1);
                                 table1.AddCell(i.Option2);
                                 table1.AddCell(i.Option3);
                                 table1.AddCell(i.Option4);
-                                cell = new PdfPCell(new Phrase("Correct Answer"));
-                                table1.AddCell(cell);
+                                cell2 = new PdfPCell(new Phrase("Correct Answer"));
+                                table1.AddCell(cell2);
                                 table1.AddCell(i.CorrectAnswer);
-
                                 document.Add(table1);
+                                
                             }
-                            else
+                            
+                        }
+
+                        document.Add(new Paragraph("Practical Question Set"));
+                        foreach (var i in Que)
+                        {
+                            if (i.QuestionType == 2)
                             {
-                                document.Add(new Paragraph("Practical Question Set"));
-                                cell = new PdfPCell(new Phrase("Question " + i.QuestionDescription));
-                                table2.AddCell(cell);
-                                table2.AddCell(i.Answer);
+                                table2 = new PdfPTable(2);
+                                table2.SpacingBefore = 20;
+                                cell = new PdfPCell(new Phrase(i.QuestionDescription));
+                                cell.Rowspan = 1;
+                                table2.AddCell(cell);                                
+                                table2.AddCell(i.Answer);                                
 
                                 document.Add(table2);
                             }
@@ -837,7 +853,7 @@ namespace Silicus.Ensure.Web.Controllers
                     throw new Exception(ex.Message);
                 }
             }
-            return RedirectToAction("ViewQuestion", "Admin", new { id = UserId});
+            return RedirectToAction("ViewQuestion", "Admin", new { id = UserId });
         }
     }
 }
