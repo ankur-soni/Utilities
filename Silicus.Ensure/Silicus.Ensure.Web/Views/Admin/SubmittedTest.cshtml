@@ -223,7 +223,9 @@
     function EvaluateTotalResult() {
         var mark = 0;
         $(".PracticalMarks").each(function () {
-            mark = parseInt(mark) + parseInt($(this).val());
+            if ($(this).val() != '') {
+                mark = parseInt(mark) + parseInt($(this).val());
+            }
         });
 
         mark = parseInt(mark) + parseInt($('#ObjectiveQuestionResult').val());

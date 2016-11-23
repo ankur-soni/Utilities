@@ -6,76 +6,61 @@
 }
 
 
+
+<div class="col-md-6">
+    <h2><span><strong>Objective Question Set</strong></span></h2>
+</div>
+
 @foreach (var q in Model)
+{
+    if (q.QuestionType == 1)
     {
-        if (q.Id == 1)
-                {
+        <table width="100%" cellpadding="0.5" cellspacing="0.5" widths="30;60" borderwidth="1.0" left="false" right="false" top="false" bottom="false" red="0" green="0" blue="0">
+            <row>
+                <cell>
+                    <chunk style="font-weight:bold;">Question @q.Id:</chunk>
+                </cell>
+                <cell>
+                    <chunk style="">@Html.Raw(@q.QuestionDescription)</chunk>
+                </cell>
+            </row>
+            <row>
+                <cell>
+                    <chunk style="font-weight:bold;">Answer :</chunk>
+                </cell>
+                <cell>
+                    <chunk style="">@q.CorrectAnswer</chunk>
+                </cell>
+            </row>
+        </table>
+    }
+}
+
 <div class="col-md-6">
-    <h4><span>Objective Question Set</span></h4>
+    <h2 style="margin-top:30px"><span><strong>Practical Question Set</strong></span></h2>
 </div>
 
-<table width="100%" cellpadding="0.5" cellspacing="0.5" widths="30;60" borderwidth="1.0" left="false" right="false" top="false" bottom="false" red="0" green="0" blue="0">
-  
-        <row>
-            <cell>
-                <chunk style="font-weight:bold;">Question @q.Id:</chunk>
-            </cell>
-            <cell>
-                <chunk style="">@Html.Raw(@q.QuestionDescription)</chunk>
-            </cell>
-        </row>
-        <row>
-            <cell>
-                <chunk style="font-weight:bold;">Answer :</chunk>
-            </cell>
-            <cell>
-                <chunk style="">@q.CorrectAnswer</chunk>
-            </cell>
-        </row>
-       
-           
-   
-</table>
+@foreach (var q in Model)
+{
+    if (q.QuestionType == 2)
+    {
+        <table width="100%" cellpadding="0.5" cellspacing="0.5" widths="30;60" borderwidth="1.0" left="false" right="false" top="false" bottom="false" red="0" green="0" blue="0">
+            <row>
+                <cell>
+                    <chunk style="font-weight:bold;">Question @q.Id:</chunk>
+                </cell>
+                <cell>
+                    <chunk style="">@Html.Raw(@q.QuestionDescription)</chunk>
+                </cell>
+            </row>
+            <row>
+                <cell>
+                    <chunk style="font-weight:bold;">Answer :</chunk>
+                </cell>
+                <cell>
+                    <chunk style="">@HttpUtility.HtmlDecode(@q.Answer)</chunk>
+                </cell>
+            </row>
+        </table>
+    }
 }
-else{
-
-            
-<div class="col-md-6">
-    <h4 style="margin-top:30px"><span>Practical Question Set</span></h4>
-</div>
-    
-
-<table width="100%" cellpadding="0.5" cellspacing="0.5" widths="30;60" borderwidth="1.0" left="false" right="false" top="false" bottom="false" red="0" green="0" blue="0">
-   
-        <row>
-            <cell>
-                <chunk style="font-weight:bold;">Question @q.Id:</chunk>
-            </cell>
-            <cell>
-                <chunk style="">@Html.Raw(@q.QuestionDescription)</chunk>
-            </cell>
-        </row>
-        <row>
-            <cell>
-                <chunk style="font-weight:bold;">Answer :</chunk>
-            </cell>
-            <cell>
-                <chunk style="">@HttpUtility.HtmlDecode(@q.Answer)</chunk>
-            </cell>
-        </row>
-
-    
-</table>
-    
-}
-
-}
-
-
-
-
-
-
-
-
-

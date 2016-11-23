@@ -42,163 +42,130 @@
 </div>
 <div class="wrapper wrapper-content animated fadeInRight">
     <div class="row" style="margin-left: 2%;">
-@if (Model.Count() <= 0)
-{
-    <span class="text-danger" style="font-size:20px">No reviewes are submitted as of now.</span>
-}
-else
-{
-        <div style="text-align:left;width:80%;">
-            <input type="button" value="ALL" class="btn btn-primary btnSameSize" onclick="location.href=''" disabled="disabled"/>
-            <input type="button" value="SOM" class="btn btn-primary btnSameSize" onclick="location.href=''" disabled="disabled"/>
-            <input type="button" value="Pinnacle" class="btn btn-primary btnSameSize" onclick="location.href=''" disabled="disabled"/>
-            <input type="button" value="Team Awesome" class="btn btn-primary btnSameSize" onclick="location.href=''" disabled="disabled"/>
-        </div>
-        <br />
-       
+        @if (Model.Count() <= 0)
+        {
+            <span class="text-danger" style="font-size:20px">No reviewes are submitted as of now.</span>
+        }
+        else
+        {
+            <div style="text-align:left;width:80%;">
+                <input type="button" value="ALL" class="btn btn-primary btnSameSize" onclick="location.href=''" disabled="disabled" />
+                <input type="button" value="SOM" class="btn btn-primary btnSameSize" onclick="location.href=''" disabled="disabled" />
+                <input type="button" value="Pinnacle" class="btn btn-primary btnSameSize" onclick="location.href=''" disabled="disabled" />
+                <input type="button" value="Team Awesome" class="btn btn-primary btnSameSize" onclick="location.href=''" disabled="disabled" />
+            </div>
+            <br />
+
             <div style="font-weight:bold;color:#0070B9">ALL</div>
 
-        <hr style="margin-top:0px;height:2px;margin-left:0px; width:85%;" />
-        foreach (var item in Model)
-        {
-            Random randomGen = new Random();
-            KnownColor[] names = (KnownColor[])Enum.GetValues(typeof(KnownColor));
-            KnownColor randomColorName = names[randomGen.Next(names.Length)];
-            Color randomColor = Color.FromKnownColor(randomColorName);
+            <div>
+                <ul class="nav nav-tabs">
+                    <li class="active"><a id="current-tab" data-toggle="tab" href="#currentMonth">Current</a></li>
+                    <li><a id="historical-tab" data-toggle="tab" href="#historical">Historical</a></li>
+                </ul>
+            </div>
+            <div class="tab-content">
+                <hr style="margin-top:0px;height:2px;margin-left:0px; width:85%;" />
 
-                <div class="col-md-3 card white-bg">
-                    <div class="cardHeader text-center">
-
-                        <div>
-                            <label>@Html.DisplayFor(modelItem => item.DisplayName)</label>
-                        </div>
-                        <div>
-                            For
-                            @Html.DisplayFor(modelItem => item.AwardName)
-                            @Html.DisplayFor(modelItem => item.NominationTime)
-
-                            <table align="center" style="border: 1px solid rgba(178, 176, 176, 0.96);margin-top:2%;">
-                                <tr>
-                                    <th>Credits</th>
-                                    <th>Reviews</th>
-                                    <th>Average</th>
-                                </tr>
-                                <tr>
-                                    <td>@Html.DisplayFor(modelItem => item.Credits)</td>
-                                    <td>@Html.DisplayFor(modelItem => item.numberOfReviews)</td>
-                                    <td>@Html.DisplayFor(modelItem => item.averageCredits)</td>
-                                </tr>
-                            </table>
-                        </div>
-                    </div>
-                    <div class="cardFooter text-right" style="padding-top:5px">
-
-                  @if (item.IsShortlisted)
-                  {
-                            <span style="color:#0067AA"><i class="fa fa-star fa-2x" title="Shortlisted" aria-hidden="true"></i></span>
-                  }
-                  else if (item.IsWinner)
-                  {
-                            <span style="color:#0067AA"><i class="fa fa-trophy fa-2x" title="Winner" aria-hidden="true"></i></span>
-                  }
-                    <a href="@Url.Action("ViewNominationForShortlist", "Review", item)">
-                        <span> <i class="fa fa-file-text-o" title="View Nomination" aria-hidden="true" style="font-size:30px;"></i> </span>
-                    </a>
+                <div id="currentMonth" class="tab-pane fade in active">
+                    @Html.Partial("~/Views/Review/Shared/_reviewFeedbackList.cshtml", Model)
                 </div>
 
+                <div id="historical" class="tab-pane fade">
+                    This is Empty currently
+                </div>
             </div>
         }
-}
         <br />
     </div>
 
-@if (Model.Count() != 0)
-{
-    <div class="row" style="margin-left:2%;">
-        <div class="row">&nbsp;</div>
-        <div style="font-weight:bold; color:#0070B9">SHORTLISTED</div>
-        <hr style="margin-top:0px;height:2px;margin-left:0px; width:85%;" />
-        @foreach (var item in Model)
-        {
-            Random randomGen = new Random();
-            KnownColor[] names = (KnownColor[])Enum.GetValues(typeof(KnownColor));
-            KnownColor randomColorName = names[randomGen.Next(names.Length)];
-            Color randomColor = Color.FromKnownColor(randomColorName);
-            if (item.IsShortlisted)
+    @if (Model.Count() != 0)
+    {
+        <div class="row" style="margin-left:2%;">
+            <div class="row">&nbsp;</div>
+            <div style="font-weight:bold; color:#0070B9">SHORTLISTED</div>
+            <hr style="margin-top:0px;height:2px;margin-left:0px; width:85%;" />
+            @foreach (var item in Model)
             {
-                <div class="col-md-3 card white-bg">
-                    <div class="cardHeader text-center">
-                        @*<div style="background-color:@randomColor.Name;height:60px;margin-top:10px;padding-left:10px;padding-bottom:70px; font-weight:bold;font-size:50px;text-align:left" class="col-md-5">
-                                @Html.DisplayFor(modelItem => item.Intials)
-                            </div>*@
-                        <div>
-                            <label> @Html.DisplayFor(modelItem => item.DisplayName)</label>
+                Random randomGen = new Random();
+                KnownColor[] names = (KnownColor[])Enum.GetValues(typeof(KnownColor));
+                KnownColor randomColorName = names[randomGen.Next(names.Length)];
+                Color randomColor = Color.FromKnownColor(randomColorName);
+                if (item.IsShortlisted)
+                {
+                    <div class="col-md-3 card white-bg">
+                        <div class="cardHeader text-center">
+                            @*<div style="background-color:@randomColor.Name;height:60px;margin-top:10px;padding-left:10px;padding-bottom:70px; font-weight:bold;font-size:50px;text-align:left" class="col-md-5">
+                                    @Html.DisplayFor(modelItem => item.Intials)
+                                </div>*@
+                            <div>
+                                <label> @Html.DisplayFor(modelItem => item.DisplayName)</label>
+                            </div>
+
+                            <div>
+                                For
+                                @Html.DisplayFor(modelItem => item.AwardName)
+                                @Html.DisplayFor(modelItem => item.NominationTime)
+                                @*<br />
+                                    @Html.Label("Credits:")
+                                    @Html.DisplayFor(modelItem => item.Credits)*@
+                                <table align="center" style="border: 1px solid rgba(178, 176, 176, 0.96);margin-top:2%;">
+                                    <tr>
+                                        <th>Credits</th>
+                                        <th>Reviews</th>
+                                        <th>Average</th>
+                                    </tr>
+                                    <tr>
+                                        <td>@Html.DisplayFor(modelItem => item.Credits)</td>
+                                        <td>@Html.DisplayFor(modelItem => item.numberOfReviews)</td>
+                                        <td>@Html.DisplayFor(modelItem => item.averageCredits)</td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+                        <div class="cardFooter text-right">
+                            <a href="@Url.Action("RemoveShortlistNomination", "Review", new { nominationId = item.NominationId })">
+                                <span> <i class="glyphicon glyphicon-remove" title="Remove From Shortlist" aria-hidden="true" style="font-size:25px;margin-right:1%;"></i> </span>
+                            </a>
+
+                            <a href="@Url.Action("ViewNominationForShortlist", "Review", item)">
+                                <span> <i class="fa fa-file-text-o" title="View Nomination" aria-hidden="true" style="font-size:30px;"></i> </span>
+                            </a>
+
                         </div>
 
-                        <div>
-                            For
-                            @Html.DisplayFor(modelItem => item.AwardName)
-                            @Html.DisplayFor(modelItem => item.NominationTime)
-                            @*<br />
-                                @Html.Label("Credits:")
-                                @Html.DisplayFor(modelItem => item.Credits)*@
-                            <table align="center" style="border: 1px solid rgba(178, 176, 176, 0.96);margin-top:2%;">
-                                <tr>
-                                    <th>Credits</th>
-                                    <th>Reviews</th>
-                                    <th>Average</th>
-                                </tr>
-                                <tr>
-                                    <td>@Html.DisplayFor(modelItem => item.Credits)</td>
-                                    <td>@Html.DisplayFor(modelItem => item.numberOfReviews)</td>
-                                    <td>@Html.DisplayFor(modelItem => item.averageCredits)</td>
-                                </tr>
-                            </table>
-                        </div>
                     </div>
-                    <div class="cardFooter text-right">
-                        <a href="@Url.Action("RemoveShortlistNomination", "Review", new { nominationId = item.NominationId })">
-                            <span> <i class="glyphicon glyphicon-remove" title="Remove From Shortlist" aria-hidden="true" style="font-size:25px;margin-right:1%;"></i> </span>
-                        </a>
+                }
+            }
 
-                        <a href="@Url.Action("ViewNominationForShortlist", "Review", item)">
-                            <span> <i class="fa fa-file-text-o" title="View Nomination" aria-hidden="true" style="font-size:30px;"></i> </span>
-                        </a>
+            <br />
+        </div>
 
-                    </div>
-
+            bool _disabled = false;
+            foreach (var item in Model)
+            {
+                if (item.IsWinner == true)
+                {
+                    _disabled = true;
+                    break;
+                }
+            }
+            if (_disabled == false)
+            {
+                <div style="text-align:center;width:80%;">
+                    <input type="button" value="Reject All" class="btn btn-primary btnSameSize" id="rejectAll" onclick="return rejectAllNominations()" style="margin-left:3%;" />
                 </div>
             }
-        }
-       
-        <br />
-    </div>
-
-    bool _disabled = false;
-    foreach (var item in Model)
-    {
-        if (item.IsWinner == true)
-        {
-            _disabled = true;
-            break;
-        }
+            else
+            {
+                <div style="text-align:center;width:80%;">
+                    <input type="button" value="Reject All" disabled class="btn btn-primary btnSameSize" id="rejectAll" onclick="return rejectAllNominations()" style="margin-left:3%;" />
+                </div>
+            }
+            @*<div style="text-align:center;width:80%;">
+                    <input type="button" value="Reject All" class="btn btn-primary btnSameSize" id="rejectAll" onclick="return rejectAllNominations()" style="margin-left:3%;" />
+                </div>*@
     }
-    if (_disabled == false)
-    {
-        <div style="text-align:center;width:80%;">
-            <input type="button" value="Reject All" class="btn btn-primary btnSameSize" id="rejectAll" onclick="return rejectAllNominations()" style="margin-left:3%;" />
-        </div>
-    }
-    else
-    {
-        <div style="text-align:center;width:80%;">
-            <input type="button" value="Reject All" disabled class="btn btn-primary btnSameSize" id="rejectAll" onclick="return rejectAllNominations()" style="margin-left:3%;" />
-        </div>
-    }
-    @*<div style="text-align:center;width:80%;">
-        <input type="button" value="Reject All" class="btn btn-primary btnSameSize" id="rejectAll" onclick="return rejectAllNominations()" style="margin-left:3%;" />
-    </div>*@
-}
     <div class="row">&nbsp;</div>
     <div class="row">&nbsp;</div>
 </div>
@@ -252,6 +219,33 @@ else
 
     }
 
+    var _urlReviewFeedbackListForActiveMonth = '@Url.Action("GetReviewFeedbackListPartialView", "Review", new { forCurrentMonth = true })';
+    var _urlReviewFeedbackListForHistoricalMonths = '@Url.Action("GetReviewFeedbackListPartialView", "Review", new { forCurrentMonth = false })';
 
+    $("#historical-tab").on("click", function () {
+        $.ajax({
+            type: "GET",
+            url: _urlReviewFeedbackListForHistoricalMonths,
+            success: function (response) {
+                $("#historical").html(response);
+            },
+            error: function (error) {
+                console.log(error);
+            }
+        });
+    })
+
+    $("#current-tab").on("click", function () {
+        $.ajax({
+            type: "GET",
+            url: _urlReviewFeedbackListForActiveMonth,
+            success: function (response) {
+                $("#currentMonth").html(response);
+            },
+            error: function (error) {
+                console.log(error);
+            }
+        });
+    })
 
 </script>

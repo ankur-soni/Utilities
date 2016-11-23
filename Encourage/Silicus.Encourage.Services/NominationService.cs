@@ -1,16 +1,12 @@
 ﻿using Silicus.Encourage.DAL.Interfaces;
 using Silicus.Encourage.Models;
-using Silicus.Encourage.Services.Comparer;
 using Silicus.Encourage.Services.Interface;
 using Silicus.FrameWorx.Logger;
 using Silicus.UtilityContainer.Models.DataObjects;
 using System;
 using System.Collections.Generic;
-using System.Configuration;
 using System.Globalization;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Web;
 
 namespace Silicus.Encourage.Services
@@ -22,14 +18,14 @@ namespace Silicus.Encourage.Services
         private readonly Silicus.UtilityContainer.Entities.ICommonDataBaseContext _commonDataBaseContext;
         private readonly ICommonDbService _commonDbService;
         private readonly ILogger _logger;
-        public NominationService(Silicus.Encourage.DAL.Interfaces.IDataContextFactory dataContextFactory, ICommonDbService commonDbService,ILogger logger)
+
+        public NominationService(Silicus.Encourage.DAL.Interfaces.IDataContextFactory dataContextFactory, ICommonDbService commonDbService, ILogger logger)
         {
             _dataContextFactory = dataContextFactory;
             _commonDbService = commonDbService;
             _commonDataBaseContext = _commonDbService.GetCommonDataBaseContext();
             _encourageDatabaseContext = _dataContextFactory.CreateEncourageDbContext();
             _logger = logger;
-
         }
 
         public List<Nomination> GetAllNominations()
@@ -44,6 +40,7 @@ namespace Silicus.Encourage.Services
             return _encourageDatabaseContext.Query<Nomination>("ManagerComments").Where(x => x.NominationDate.Value.Month.Equals(DateTime.Now.Month - 1)
             && (x.NominationDate.Value.Year.Equals(DateTime.Now.Month > 1 ? DateTime.Now.Year : DateTime.Now.Year - 1))).ToList();
         }
+
         private List<Nomination> GetCurrentLockNominations()
         {
             return _encourageDatabaseContext.Query<Nomination>("ManagerComments").Where(x => x.NominationDate.Value.Month.Equals(DateTime.Now.Month - 1)
@@ -64,26 +61,22 @@ namespace Silicus.Encourage.Services
             foreach (var item in alreadyReviewedRecords)
             {
                 finalNomination.Add(_encourageDatabaseContext.Query<Nomination>().Where(N => N.IsSubmitted == true && N.Id == item.NominationId).FirstOrDefault());
-
             }
             foreach (var item in finalNomination)
             {
                 allNominations.RemoveAll(r => r.Id == item.Id);
             }
 
-
             return allNominations;
         }
 
         public Nomination GetReviewNomination(int nominationId)
         {
-
             return _encourageDatabaseContext.Query<Nomination>().Where(n => n.Id == nominationId).FirstOrDefault();
         }
 
         public List<ManagerComment> GetManagerCommentsForNomination(int nominationId)
         {
-
             return _encourageDatabaseContext.Query<ManagerComment>().Where(c => c.NominationId == nominationId).ToList();
         }
 
@@ -120,7 +113,6 @@ namespace Silicus.Encourage.Services
 
         public string GetAwardName(int nominationId)
         {
-
             var nomination = GetReviewNomination(nominationId);
 
             return _encourageDatabaseContext.Query<Award>().Where(a => a.Id == nomination.AwardId).FirstOrDefault().Code;
@@ -170,11 +162,8 @@ namespace Silicus.Encourage.Services
             return deptName;
         }
 
-
-
         public int GetReviewerIdOfCurrentNomination(string email)
         {
-
             var reviewersUserId = _commonDataBaseContext.Query<User>().Where(u => u.EmailAddress == email).FirstOrDefault().ID;
             var reviewer = _encourageDatabaseContext.Query<Reviewer>().Where(r => r.UserId == reviewersUserId).FirstOrDefault();
             var reviewerId = 0;
@@ -187,18 +176,19 @@ namespace Silicus.Encourage.Services
             return reviewerId;
         }
 
-        public List<Nomination> GetAllSubmitedReviewedNominations(int reviewerId)
+        public List<Nomination> GetAllSubmitedReviewedNominations(int reviewerId,bool forCurrentMonth)
         {
-            var alreadyReviewedRecords = _encourageDatabaseContext.Query<Review>().Where(r => r.ReviewerId == reviewerId && r.IsSubmited == true).ToList();
-            var finalNominations = new List<Nomination>();
+            var today = DateTime.Today;
+            var prevMonth = new DateTime(today.Year, today.Month, 1).AddMonths(-1);
 
+            var alreadyReviewedRecords = _encourageDatabaseContext.Query<Review>().Where(r => r.ReviewerId == reviewerId && r.IsSubmited == true && (forCurrentMonth ? (r.Nomination.NominationDate >= prevMonth) : (r.Nomination.NominationDate < prevMonth))).ToList();
+            var finalNominations = new List<Nomination>();
 
             foreach (var item in alreadyReviewedRecords)
             {
                 var nomination = _encourageDatabaseContext.Query<Nomination>().Where(N => N.IsSubmitted == true && N.Id == item.NominationId).FirstOrDefault();
                 nomination.IsSubmitted = item.IsSubmited;
                 finalNominations.Add(nomination);
-
             }
 
             return finalNominations;
@@ -227,7 +217,7 @@ namespace Silicus.Encourage.Services
                 _encourageDatabaseContext.Delete<ManagerComment>(managerComments);
         }
 
-    public void DiscardNomination(int nominationId)
+        public void DiscardNomination(int nominationId)
         {
             DeletePrevoiusManagerComments(nominationId);
             var nominationToDelete = _encourageDatabaseContext.Query<Nomination>().Where(nomination => nomination.Id == nominationId).SingleOrDefault();
@@ -257,7 +247,6 @@ namespace Silicus.Encourage.Services
             data.value = true;
             _encourageDatabaseContext.Update<Models.Configuration>(data);
             return true;
-
         }
 
         public bool IsNominationLocked()
@@ -267,10 +256,8 @@ namespace Silicus.Encourage.Services
             // //return true;
             _logger.Log("NominationService-IsNominationLocked");
             return GetNominationLockStatus();
-
         }
-            
-        
+
         public bool UnLockNominations()
         {
             //var currentNominations = GetCurrentLockNominations();
@@ -288,7 +275,6 @@ namespace Silicus.Encourage.Services
             data.value = false;
             _encourageDatabaseContext.Update<Models.Configuration>(data);
             return true;
-
         }
 
         public int GetNominationCountByManagerId(int managerId, DateTime startDate, DateTime endDate)
@@ -302,5 +288,26 @@ namespace Silicus.Encourage.Services
             return data == true ? true : false;
         }
 
+        #region Get Saved Nominations Details
+
+        public string GetAwardNameByAwardId(int awardId)
+        {
+            return _encourageDatabaseContext.Query<Award>().Where(a => a.Id == awardId).FirstOrDefault().Code;
+        }
+
+        public User GetNomineeDetails(int userId)
+        {
+            return _commonDataBaseContext.Query<User>().Where(u => u.ID == userId).FirstOrDefault();
+        }
+
+        public List<Nomination> GetAllSubmittedAndSavedNominationsByCurrentUserAndMonth(int managerID, bool forCurrentMonth)
+        {
+            var today = DateTime.Today;
+            var prevMonth = new DateTime(today.Year, today.Month, 1).AddMonths(-1);
+
+            return _encourageDatabaseContext.Query<Nomination>("ManagerComments").Where(model => model.ManagerId == managerID && (forCurrentMonth ? (model.NominationDate >= prevMonth) : (model.NominationDate < prevMonth))).ToList();
+        }
+
+        #endregion Get Saved Nominations Details
     }
 }

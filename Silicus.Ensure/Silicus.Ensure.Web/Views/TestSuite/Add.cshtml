@@ -35,27 +35,9 @@
                     @(Html.Kendo().DropDownListFor(model => model.Duration)
                     .BindTo(new List<string>() {
                     "30", "60", "90", "120"
-                    })) @*.Events(ev => ev.Change("onDurationChange"))*@
+                    })) 
                 </div>  
-            </div>
-            @*<br />
-            <div class="row">
-                <div class="col-md-4">
-                    @Html.LabelFor(model => model.ObjectiveQuestionsCount):
-                </div>
-                <div class="col-md-8">
-                   @Html.TextBoxFor(model => model.ObjectiveQuestionsCount, new { @class = "form-control",@readonly="readonly" })
-                </div>
-            </div>
-            <br />
-            <div class="row">
-                <div class="col-md-4">
-                    @Html.LabelFor(model => model.PracticalQuestionsCount):
-                </div>
-                <div class="col-md-8">
-                    @Html.TextBoxFor(model => model.PracticalQuestionsCount, new { @class = "form-control", @readonly = "readonly" })
-                </div>
-            </div>*@
+            </div>            
             <br />
             <div class="row">
                 <div class="col-md-4">
@@ -111,9 +93,9 @@
                                 {
                                     <tr id="@rowId">
                                         <td id="tag_title_row @Convert.ToString(i)">Skill Tag @Convert.ToString(i + 1)<b style="color:Red;">*</b>:</td>
-                                        <td id="tag_name_row @Convert.ToString(i)"><input type="text" class="autocomplete tagName" id="name_text @Convert.ToString(i)" value="@Model.Tags[i].TagName"></td>
+                                        <td id="tag_name_row @Convert.ToString(i)"><input type="text" class="autocomplete" name="tagName" id="name_text @Convert.ToString(i)" value="@Model.Tags[i].TagName"></td>
                                         <td id="weight_title_row @Convert.ToString(i)">Weightage Percentage @Convert.ToString(i + 1)<b style="color:Red;">*</b>:</td>
-                                        <td id="weight_name_row @Convert.ToString(i)"><input type="text" class="WeightName" id="name_text @Convert.ToString(i)" value="@Model.Tags[i].Weightage"></td>
+                                        <td id="weight_name_row @Convert.ToString(i)"><input type="text" name="WeightName" id="name_text @Convert.ToString(i)" value="@Model.Tags[i].Weightage"></td>
                                         <td><input type="button" onclick="delete_row(@Convert.ToString(i));" style="width:60px;" value="Delete"></td>
                                     </tr>
                                 }
@@ -121,9 +103,9 @@
                                 {
                                     <tr id="@rowId">
                                         <td id="tag_title_row @Convert.ToString(i)">Skill Tag @Convert.ToString(i + 1)<b style="color:Red;">*</b>:</td>
-                                        <td id="tag_name_row @Convert.ToString(i)"><input type="text" class="autocomplete tagName" id="tag_name" value="@Model.Tags[i].TagName"></td>
+                                        <td id="tag_name_row @Convert.ToString(i)"><input type="text" class="autocomplete" name="tagName" id="tag_name" value="@Model.Tags[i].TagName"></td>
                                         <td id="weight_title_row @Convert.ToString(i)">Weightage Percentage @Convert.ToString(i + 1)<b style="color:Red;">*</b>:</td>
-                                        <td id="weight_name_row @Convert.ToString(i)"><input type="text" class="WeightName" id="weight_name" value="@Model.Tags[i].Weightage"></td>
+                                        <td id="weight_name_row @Convert.ToString(i)"><input type="text" name="WeightName" id="weight_name" value="@Model.Tags[i].Weightage"></td>
                                         <td><input type="button" onclick="add_row();" style="width:60px;" value="Add"></td>
                                     </tr>
                                 }
@@ -223,7 +205,8 @@
             });
 
         $("#btnSave").click(function () {            
-            if (validateTestSuite()) {                
+            if (validateTestSuite()) {  
+                tags = '';
                 var TestSuiteId = $("#TestSuiteId").val();
                 var IsCopy = $("#IsCopy").val();
                 var TestSuiteName = $("#TestSuiteName").val();
@@ -280,7 +263,7 @@
 
     $(document).ready(function () {
         if (@Model.TestSuiteId== 0) {
-            $('#tag_table').append('<tr><td id="tag_title_row">Skill Tag 1<b style="color:Red;">*</b>:</td><td id="tag_name_row"><input type="text" id="tag_name" class="autocomplete"></td><td id="weight_title_row">Weightage Percentage 1<b style="color:Red;">*</b>:</td><td id="weight_name_row"><input type="text" id="weight_name"></td><td><input type="button" onclick="add_row();" style="width:60px;" value="Add"><span class="k-icon k-add></span></td></tr>')
+            $('#tag_table').append('<tr><td id="tag_title_row">Skill Tag 1<b style="color:Red;">*</b>:</td><td id="tag_name_row"><input type="text" name="tagName" id="tag_name" class="autocomplete"></td><td id="weight_title_row">Weightage Percentage 1<b style="color:Red;">*</b>:</td><td id="weight_name_row"><input type="text" name="WeightName" id="weight_name"></td><td><input type="button" onclick="add_row();" style="width:60px;" value="Add"><span class="k-icon k-add></span></td></tr>')
         }
     });
 
@@ -292,7 +275,7 @@
         var table_len = (table.rows.length) - 1;
         var rowindex = table.rows.length;
 
-        var row = table.insertRow(table_len).outerHTML = "<tr id='row" + table_len + "'><td id='tag_title_row" + table_len + "'>" + "Skill Tag " + rowindex + "<b style='color:Red;'>*</b>:" + "</td><td id='tag_name_row" + table_len + "'>" + "<input type='text' class='autocomplete tagName' id='name_text" + table_len + "' value='" + tag_name + "'>" + "</td><td id='weight_title_row" + table_len + "'>" + "Weightage Percentage " + rowindex + "<b style='color:Red;'>*</b>:" + "</td><td id='weight_name_row" + table_len + "'>" + "<input type='text' class='WeightName' id='name_text" + table_len + "' value='" + weight_name + "'>" + "</td><td><input type='button' value='Delete' style='width:60px;' onclick='delete_row(" + table_len + ")'></td></tr>";
+        var row = table.insertRow(table_len).outerHTML = "<tr id='row" + table_len + "'><td id='tag_title_row" + table_len + "'>" + "Skill Tag " + rowindex + "<b style='color:Red;'>*</b>:" + "</td><td id='tag_name_row" + table_len + "'>" + "<input type='text' class='autocomplete' name='tagName' id='name_text" + table_len + "' value='" + tag_name + "'>" + "</td><td id='weight_title_row" + table_len + "'>" + "Weightage Percentage " + rowindex + "<b style='color:Red;'>*</b>:" + "</td><td id='weight_name_row" + table_len + "'>" + "<input type='text' name='WeightName'  id='name_text" + table_len + "' value='" + weight_name + "'>" + "</td><td><input type='button' value='Delete' style='width:60px;' onclick='delete_row(" + table_len + ")'></td></tr>";
         $("#tag_name").val('');
         $("#weight_name").val('');
         $('#tag_title_row').html("Skill Tag " + (parseInt(rowindex) + parseInt('1')) + "<b style='color:Red;'>*</b>:");
@@ -325,7 +308,7 @@
             if (validateTestSuite() == false) {
                 e.preventDefault();
             }
-        });
+        });        
     });
 
     function onCancelClick()
@@ -334,6 +317,20 @@
     }
 
     function validateTestSuite() {
+        var isError="0";        
+        $('#tag_table').find('tr').each(function () {           
+            if($(this).find('td input[type=text][name=tagName]').val()=='')
+            {                
+                isError = "tagBlank";
+                return false;
+            }
+            if($(this).find('td input[type=text][name=WeightName]').val()=='')
+            {                
+                isError = "weightBlank";
+                return false;
+            }
+        });
+       
         if ($("#TestSuiteName").val().trim().length == 0) {
             $("#TestSuiteName").focus();
             ShowMessage("Test suite name cann't be blank.", 0);
@@ -352,6 +349,16 @@
         else if ($("#Competency").val().trim().length == 0) {
             $("#Competency").focus();
             ShowMessage("Competency cann't be blank.", 0);
+            return false;
+        }  
+        else if(isError=="tagBlank")
+        {
+            ShowMessage("Test suite tag cann't be blank.", 0);
+            return false;
+        }
+        else if(isError=="weightBlank")
+        {
+            ShowMessage("Test suite weighatage cann't be blank.", 0);
             return false;
         }
         return true;   
