@@ -178,7 +178,7 @@
     function CheckAssign(status, id, UserId) {
 
         if (status == 'Assigned' && id == 1) {
-            window.location.href = "/Admin/ViewQuestion?UserId=" + UserId;
+            window.location.href = "/Admin/ViewQuestion?id=" + UserId;
             return false;
         }
         else if (status == 'Assigned' && id == 2) {
