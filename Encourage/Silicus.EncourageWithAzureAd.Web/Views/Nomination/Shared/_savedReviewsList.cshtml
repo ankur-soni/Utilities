@@ -1,0 +1,59 @@
+﻿@model IEnumerable<Silicus.EncourageWithAzureAd.Web.Models.NominationListViewModel>
+@using System.Drawing;
+
+<div>
+    @foreach (var item in Model)
+    {
+        Random randomGen = new Random();
+        KnownColor[] names = (KnownColor[])Enum.GetValues(typeof(KnownColor));
+        KnownColor randomColorName = names[randomGen.Next(names.Length)];
+        Color randomColor = Color.FromKnownColor(randomColorName);
+        var myBorderColor = string.Empty;
+        var myButtonText = string.Empty;
+
+        if (item.IsSubmitted == true)
+        {
+            myBorderColor = "#0070B9";
+            myButtonText = "Details";
+        }
+        else
+        {
+            myBorderColor = "#F8AC59";
+            myButtonText = "Edit";
+        }
+
+        <div class="col-md-3 card white-bg" style="border-color:@myBorderColor;">
+
+            <div class="cardHeader text-center">
+                @*<div style="background-color:@randomColor.Name;height:60px;padding-left:10px;padding-bottom:70px; font-weight:bold;font-size:40px;text-align:left" class="col-md-5">
+                    @Html.DisplayFor(modelItem => item.Intials)
+                    </div>*@
+                <div>
+                    <label class="cardHeaderEmpName"> @Html.DisplayFor(modelItem => item.DisplayName)</label>
+                </div>
+
+                <div>
+                    @Html.DisplayFor(modelItem => item.AwardName)
+
+                    @Html.DisplayFor(modelItem => item.NominationTime)
+                </div>
+            </div>
+            <div class="cardFooter text-right" style="border-color:@myBorderColor">
+
+                @if (!string.IsNullOrEmpty(myButtonText) && myButtonText == "Edit")
+                {
+                    <a href="@Url.Action("EditReview", "Nomination", new { nominationId = item.Id})">
+                        <span> <i class="fa fa-pencil fa-2x" title="Edit Review" aria-hidden="true" style="color:@myBorderColor;font-size:30px;"></i> </span>
+                    </a>
+                }
+                else
+                {
+                    <a href="@Url.Action("ReviewDetails", "Nomination", new { nominationId = item.Id, details = myButtonText})">
+                        <span>  <i class="fa fa-file-text-o" style="font-size:30px;" title="Review Deatils" aria-hidden="true"></i></span>
+                    </a>
+                }
+            </div>
+        </div>
+
+    }
+</div>
