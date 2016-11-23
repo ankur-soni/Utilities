@@ -71,6 +71,9 @@
 
 
     <div class="fluid mt20">
+        <div class="alert alert-success" id="messageDiv">
+            <strong>Error!</strong> <span id="messageContent">@Html.ValidationSummary(true)</span>
+        </div>
         <div class="kendogrid">
             @(Html.Kendo().TabStrip()
     .Name("Tabs")
@@ -95,7 +98,12 @@
 <!-- /main-content -->
 <script>
     $(document).ready(function () {
-       
+        if ('@Convert.ToString(TempData["ErrorMsg"])' != '') {
+            ShowMessage("@Convert.ToString(TempData["ErrorMsg"])", 0);
+        }
+        else {
+            $("#messageDiv").hide();
+        }
     });
     //register custom validation rules
     (function ($, kendo) {

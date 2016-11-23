@@ -328,7 +328,7 @@ namespace Silicus.Ensure.Web.Controllers
                                     {
                                         UserTestSuite = newusertestsuit,
                                         QuestionId = Convert.ToInt32(questionId.Id),
-                                        Answer = questionId.Answer,
+                                        //Answer = questionId.Answer,
                                     };
 
                                     _testSuiteService.AddUserTestDetails(userTestDetails);
@@ -358,6 +358,10 @@ namespace Silicus.Ensure.Web.Controllers
             {
                 var user = _userService.GetUserById(UserId);
                 currUser = _mappingService.Map<User, UserViewModel>(user);
+            }
+            else if (TempData["UserViewModel"] != null)
+            {
+                currUser = TempData["UserViewModel"] as UserViewModel;
             }
 
             var positionDetails = _positionService.GetPositionDetails().OrderBy(model => model.PositionName);
@@ -633,62 +637,87 @@ namespace Silicus.Ensure.Web.Controllers
 
         public ActionResult SubmittedTest(int canditateId)
         {
-            List<ObjectiveQuestionList> objectiveQuestionList = new List<ObjectiveQuestionList>();
-            List<PracticalQuestionList> practicalQuestionList = new List<PracticalQuestionList>();
-
-            var userDetails = _userService.GetUserDetails().Where(x => x.UserId == canditateId).FirstOrDefault();
-            var userTestSuitDetails = _testSuiteService.GetUserTestSuite().Where(x => x.UserId == canditateId).FirstOrDefault();
-            var testSuitDetails = _testSuiteService.GetTestSuitById(userTestSuitDetails.TestSuiteId);
-
-            SubmittedTestViewModel submittedTestViewModel = new Models.SubmittedTestViewModel();
-            submittedTestViewModel.FirstName = userDetails.FirstName;
-            submittedTestViewModel.LastName = userDetails.LastName;
-            submittedTestViewModel.Duration = userTestSuitDetails.Duration;
-            submittedTestViewModel.TotalMakrs = userTestSuitDetails.MaxScore;
-            submittedTestViewModel.TestSuitName = testSuitDetails.TestSuiteName;
-            submittedTestViewModel.UserTestSuiteId = userTestSuitDetails.UserTestSuiteId;
-            submittedTestViewModel.Postion = _positionService.GetPositionById(testSuitDetails.Position) != null ? _positionService.GetPositionById(testSuitDetails.Position).PositionName : "";
-
-            foreach (var questionId in userTestSuitDetails.UserTestDetails)
+            try
             {
 
-                var question = _questionService.GetSingleQuestion(questionId.QuestionId);
-                if (question.QuestionType == 1)
+                List<ObjectiveQuestionList> objectiveQuestionList = new List<ObjectiveQuestionList>();
+                List<PracticalQuestionList> practicalQuestionList = new List<PracticalQuestionList>();
+
+                var userDetails = _userService.GetUserDetails().Where(x => x.UserId == canditateId).FirstOrDefault();
+
+                var userTestSuitDetailsList = _testSuiteService.GetUserTestSuite();
+                if (!userTestSuitDetailsList.Any())
                 {
-                    if (questionId.Mark != null && questionId.Mark > 0)
+
+
+                    TempData["ErrorMsg"] = userDetails == null ? "User id can not be null !" : "Test suit is not assigned to user !";
+                    return RedirectToAction("Candidates");
+                }
+
+                var userTestSuitDetails = userTestSuitDetailsList.Where(x => x.UserId == canditateId).FirstOrDefault();
+                var testSuitDetails = _testSuiteService.GetTestSuitById(userTestSuitDetails.TestSuiteId);
+
+                if (testSuitDetails == null)
+                {
+                    TempData["ErrorMsg"] = "Test suit is not assigned to user !";
+                    return RedirectToAction("Candidates");
+                }
+
+                SubmittedTestViewModel submittedTestViewModel = new Models.SubmittedTestViewModel();
+                submittedTestViewModel.FirstName = userDetails.FirstName;
+                submittedTestViewModel.LastName = userDetails.LastName;
+                submittedTestViewModel.Duration = userTestSuitDetails.Duration;
+                submittedTestViewModel.TotalMakrs = userTestSuitDetails.MaxScore;
+                submittedTestViewModel.TestSuitName = testSuitDetails.TestSuiteName;
+                submittedTestViewModel.UserTestSuiteId = userTestSuitDetails.UserTestSuiteId;
+                submittedTestViewModel.Postion = _positionService.GetPositionById(testSuitDetails.Position) != null ? _positionService.GetPositionById(testSuitDetails.Position).PositionName : "";
+
+                foreach (var questionId in userTestSuitDetails.UserTestDetails)
+                {
+
+                    var question = _questionService.GetSingleQuestion(questionId.QuestionId);
+                    if (question.QuestionType == 1)
                     {
-                        submittedTestViewModel.ObjectiveQuestionResult += question.Marks;
+                        if (questionId.Mark != null && questionId.Mark > 0)
+                        {
+                            submittedTestViewModel.ObjectiveQuestionResult += question.Marks;
+                        }
+                        submittedTestViewModel.ObjectiveQuestionMarks += question.Marks;
+
+                        objectiveQuestionList.Insert(0, new ObjectiveQuestionList()
+                        {
+                            QuestionDescription = question.QuestionDescription,
+                            CorrectAnswer = GetOption(question.CorrectAnswer),
+                            SubmittedAnswer = GetOption(questionId.Answer),
+                            Result = questionId.Mark != null && questionId.Mark > 0 ? "Correct" : "Incorrect",
+                        });
                     }
-                    submittedTestViewModel.ObjectiveQuestionMarks += question.Marks;
+                    else
+                    {
+                        practicalQuestionList.Insert(0, new PracticalQuestionList()
+                        {
+                            QuestionId = questionId.QuestionId,
+                            QuestionDescription = question.QuestionDescription,
+                            SubmittedAnswer = questionId.Answer,
+                            Weightage = question.Marks,
+                            EvaluatedMark = questionId.Mark,
+                        });
 
-                    objectiveQuestionList.Insert(0, new ObjectiveQuestionList()
-                    {
-                        QuestionDescription = question.QuestionDescription,
-                        CorrectAnswer = GetOption(question.CorrectAnswer),
-                        SubmittedAnswer = GetOption(questionId.Answer),
-                        Result = questionId.Mark != null && questionId.Mark > 0 ? "Correct" : "Incorrect",
-                    });
-                }
-                else
-                {
-                    practicalQuestionList.Insert(0, new PracticalQuestionList()
-                    {
-                        QuestionId = questionId.QuestionId,
-                        QuestionDescription = question.QuestionDescription,
-                        SubmittedAnswer = questionId.Answer.ToString(),
-                        Weightage = question.Marks,
-                        EvaluatedMark = questionId.Mark,
-                    });
+                    }
 
                 }
+                submittedTestViewModel.EvaluatedFeedBack = userTestSuitDetails.FeedBack;
+                submittedTestViewModel.TotalMarksObtained = submittedTestViewModel.ObjectiveQuestionResult;
+                submittedTestViewModel.objectiveQuestionList = objectiveQuestionList;
+                submittedTestViewModel.practicalQuestionList = practicalQuestionList;
 
+                return View(submittedTestViewModel);
             }
-            submittedTestViewModel.EvaluatedFeedBack = userTestSuitDetails.FeedBack;
-            submittedTestViewModel.TotalMarksObtained = submittedTestViewModel.ObjectiveQuestionResult;
-            submittedTestViewModel.objectiveQuestionList = objectiveQuestionList;
-            submittedTestViewModel.practicalQuestionList = practicalQuestionList;
-
-            return View(submittedTestViewModel);
+            catch (Exception ex)
+            {
+                TempData["ErrorMsg"] = ex.Message;
+                return RedirectToAction("Candidates");
+            }
         }
 
         private string GetOption(string p)
