@@ -48,7 +48,5 @@ namespace Silicus.Ensure.Models.DataObjects
         public DateTime? CreatedDate { get; set; }
 
         public int? CreatedBy { get; set; }
-
-        //public virtual ICollection<TestSuiteTag> TestSuiteTags { get; set; }
     }
 }

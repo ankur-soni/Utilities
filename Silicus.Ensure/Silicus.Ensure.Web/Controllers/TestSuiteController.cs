@@ -87,9 +87,7 @@ namespace Silicus.Ensure.Web.Controllers
         }
 
         public ActionResult Save(TestSuiteViewModel testSuiteView)
-        {
-            //var tagId=0;
-            //TestSuiteTag tagView;
+        {          
             List<TestSuiteTag> tagModel = new List<TestSuiteTag>();
             string errorMessage = string.Empty;
             var tags = _tagsService.GetTagsDetails();
@@ -98,68 +96,48 @@ namespace Silicus.Ensure.Web.Controllers
             { 
                 errorMessage = "The Test Suite already exists, please create with other name.\n"; 
             }
-                //string[] arr = testSuiteView.PrimaryTagNames.Split(',');
-                //testSuiteView.PrimaryTagNames = string.Empty;
-                //for (int i = 1; i < arr.Length;i=i+2 )
-                //{
-                //    tagView = new TestSuiteTag();
-                //    tagId = tags.Where(x => x.TagName == arr[i - 1]).Select(x => x.TagId).SingleOrDefault();
-                //    if (testSuiteView.PrimaryTagNames==string.Empty)
-                //    {
-                //        tagView.TagId = tagId;
-                //        tagView.Weightage = Convert.ToInt32(arr[i]);
-                //        testSuiteView.PrimaryTagNames += tagId;                                             
-                //    }
-                //    else
-                //    {
-                //        tagView.TagId = tagId;
-                //        tagView.Weightage = Convert.ToInt32(arr[i]);
-                //        testSuiteView.PrimaryTagNames += ","+ tagId;
-                //    }
-                //    tagModel.Add(tagView);
-                //}
-                string[] tagArry = testSuiteView.PrimaryTagNames.Split(',');
-                string tagId;
-                for (int i = 0; i < tagArry.Length; i = i + 2)
+            string[] tagArry = testSuiteView.PrimaryTagNames.Split(',');
+            string tagId;
+            for (int i = 0; i < tagArry.Length; i = i + 2)
+            {
+                tagId = tags.Where(x => x.TagName == tagArry[i]).Select(x => x.TagId).SingleOrDefault().ToString();
+                if (string.IsNullOrWhiteSpace(testSuiteView.PrimaryTags))
                 {
-                    tagId=tags.Where(x=>x.TagName==tagArry[i]).Select(x=>x.TagId).SingleOrDefault().ToString();
-                    if (string.IsNullOrWhiteSpace(testSuiteView.PrimaryTags))
-                    {
-                        testSuiteView.PrimaryTags = tagId;                        
-                    }
-                    else
-                    {
-                        testSuiteView.PrimaryTags += ","+ tagId;
-                    }
-                    if (string.IsNullOrWhiteSpace(testSuiteView.Weights))
-                    {
-                        testSuiteView.Weights = tagArry[i+1];
-                    }
-                    else
-                    {
-                        testSuiteView.Weights += "," + tagArry[i + 1];
-                    }
-                }
-                var testSuiteDomainModel = _mappingService.Map<TestSuiteViewModel, TestSuite>(testSuiteView);            
-                if (string.IsNullOrWhiteSpace(errorMessage))
-                {
-                    if (testSuiteView.TestSuiteId == 0 || testSuiteView.IsCopy == true)
-                    {
-                        _testSuiteService.Add(testSuiteDomainModel);                      
-                    }
-                    else
-                    {
-                        _testSuiteService.Update(testSuiteDomainModel);                    
-                    }
-                }          
-                if (string.IsNullOrWhiteSpace(errorMessage))
-                {
-                    return Json(new { status = "success", message =""}, JsonRequestBehavior.AllowGet);
+                    testSuiteView.PrimaryTags = tagId;
                 }
                 else
                 {
-                    return Json(new { status = "error", message = errorMessage }, JsonRequestBehavior.AllowGet);
-                }          
+                    testSuiteView.PrimaryTags += "," + tagId;
+                }
+                if (string.IsNullOrWhiteSpace(testSuiteView.Weights))
+                {
+                    testSuiteView.Weights = tagArry[i + 1];
+                }
+                else
+                {
+                    testSuiteView.Weights += "," + tagArry[i + 1];
+                }
+            }
+            var testSuiteDomainModel = _mappingService.Map<TestSuiteViewModel, TestSuite>(testSuiteView);
+            if (string.IsNullOrWhiteSpace(errorMessage))
+            {
+                if (testSuiteView.TestSuiteId == 0 || testSuiteView.IsCopy == true)
+                {
+                    _testSuiteService.Add(testSuiteDomainModel);
+                }
+                else
+                {
+                    _testSuiteService.Update(testSuiteDomainModel);
+                }
+            }
+            if (string.IsNullOrWhiteSpace(errorMessage))
+            {
+                return Json(new { status = "success", message = "" }, JsonRequestBehavior.AllowGet);
+            }
+            else
+            {
+                return Json(new { status = "error", message = errorMessage }, JsonRequestBehavior.AllowGet);
+            }              
         }
 
         public ActionResult Delete(int testSuiteId)
@@ -339,17 +317,16 @@ namespace Silicus.Ensure.Web.Controllers
                             }
                         }
                     }
-                }
-                //Attach Questions
-                foreach (var question in questions)
-                {
-                    testSuiteDetail = new UserTestDetails();
-                    testSuiteDetail.QuestionId = question.Id;
-                    testSuiteDetails.Add(testSuiteDetail);
-                }
-                userTestSuite.UserTestDetails = testSuiteDetails;  
-                              
+                }                               
             }
+            //Attach Questions
+            foreach (var question in questions)
+            {
+                testSuiteDetail = new UserTestDetails();
+                testSuiteDetail.QuestionId = question.Id;
+                testSuiteDetails.Add(testSuiteDetail);
+            }
+            userTestSuite.UserTestDetails = testSuiteDetails;  
             _testSuiteService.AddUserTestSuite(userTestSuite);
         }
 

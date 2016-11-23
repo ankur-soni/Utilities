@@ -35,27 +35,9 @@
                     @(Html.Kendo().DropDownListFor(model => model.Duration)
                     .BindTo(new List<string>() {
                     "30", "60", "90", "120"
-                    })) @*.Events(ev => ev.Change("onDurationChange"))*@
+                    })) 
                 </div>  
-            </div>
-            @*<br />
-            <div class="row">
-                <div class="col-md-4">
-                    @Html.LabelFor(model => model.ObjectiveQuestionsCount):
-                </div>
-                <div class="col-md-8">
-                   @Html.TextBoxFor(model => model.ObjectiveQuestionsCount, new { @class = "form-control",@readonly="readonly" })
-                </div>
-            </div>
-            <br />
-            <div class="row">
-                <div class="col-md-4">
-                    @Html.LabelFor(model => model.PracticalQuestionsCount):
-                </div>
-                <div class="col-md-8">
-                    @Html.TextBoxFor(model => model.PracticalQuestionsCount, new { @class = "form-control", @readonly = "readonly" })
-                </div>
-            </div>*@
+            </div>            
             <br />
             <div class="row">
                 <div class="col-md-4">
