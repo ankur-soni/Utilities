@@ -106,7 +106,8 @@
                 <p id="msgContent">Some text in the modal.</p>
             </div>
             <div class="modal-footer">
-                <button id="btnModalOK" type="button" class="btn btn-default" data-dismiss="modal" onclick="OnOK();">OK</button>
+                <button id="btnModalOK" type="button" class="btn btn-default" data-dismiss="modal" onclick="OnAddMoreTimeOK();">OK</button>
+                <button id="btnSubmitTestOK" type="button" class="btn btn-default" data-dismiss="modal" onclick="OnSubmitTestOK();">OK</button>
                 <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
             </div>
         </div>
@@ -117,8 +118,10 @@
 <script>
     var clock;
     var totalTime;
-    var testTime;
     $(document).ready(function () {
+
+        // Hide Submit button of popup. Show when to want submit test.
+        $("#btnSubmitTestOK").hide();
 
         // Load First Question On page Load.
         $('#QuestionDetails').load('/Candidate/LoadQuestion?Id=' + 1);
@@ -129,7 +132,7 @@
             autoStart: false,
             callbacks: {
                 stop: function () {
-
+                    OnSubmitTestOK();
                 },
                 interval: ProgressBar
             }
@@ -147,17 +150,14 @@
     });
 
     function AddMoreTime() {
-        $("#myModal").modal();
-        $("#msgMain").text("Warning!");
         var TimerCnt = $("#TimerIncCount").val();
-        if (TimerCnt == 0) {
-            $("#msgContent").text("You have only 2 chances. Are you sure, you want to increase time limit by 10 Mins?");
-        } else {
-            $("#msgContent").text("This is the last chance. Are you sure, you want to increase time limit by 10 Mins?");
-        }
+        if (TimerCnt == 0)
+            ShowProgressPopUp(true, "You have only 2 chances. Are you sure, you want to increase time limit by 10 Mins?");
+        else
+            ShowProgressPopUp(true, "This is the last chance. Are you sure, you want to increase time limit by 10 Mins?");
     }
 
-    function OnOK() {
+    function OnAddMoreTimeOK() {
         var TimerCnt = $("#TimerIncCount").val();
         $.ajax({
             url: '/Candidate/AddMoreTime',
@@ -202,7 +202,36 @@
             var newprogress = parseInt((parseInt(leftTm) / parseInt(totalTime)) * 100);
             $('#progressBar').attr('aria-valuenow', clock.getTime()).css('width', newprogress + "%");
             $('#progressInfo').text(newprogress + "%");
+
+            if (time == 60) {
+                var TimerCntVal = $("#TimerIncCount").val();
+                if (TimerCntVal == 0)
+                    ShowProgressPopUp(true, "Please click on 'Add More Time' button in order to add 10 more minutes to Test duration.");
+                else if (TimerCntVal == 1)
+                    ShowProgressPopUp(true, "Please click on 'Add More Time' button for the last time to add 10 more minutes to Test duration.");
+                else
+                    ShowProgressPopUp(false, "1 minute remaining to complete the test.");
+            }
+            else if (time == 900 && totalTime > 1799)
+                ShowProgressPopUp(false, "15 minute remaining to complete the test.");
+            else if (time == 1800 && totalTime != 1800)
+                ShowProgressPopUp(false, "30 minute remaining to complete the test.");
+            else if (time == 3600 && totalTime != 3600)
+                ShowProgressPopUp(false, "60 minute remaining to complete the test.");
         }
+    }
+
+    function ShowProgressPopUp(bl, msg) {
+        $("#myModal").modal();
+        $("#btnSubmitTestOK").hide();
+
+        if (bl)
+            $("#btnModalOK").show();
+        else
+            $("#btnModalOK").hide();
+
+        $("#msgMain").text("Warning!");
+        $("#msgContent").text(msg);
     }
 
     function OnNext() {
@@ -216,5 +245,15 @@
         var questionNumber = $("#QuestionNumber").val();
         $('#QuestionDetails').load('/Candidate/OnNextPrevious?Qnumber=' + questionNumber + '&Move=P');
         return false;
+    }
+
+    function OnSubmitTest() {
+        ShowProgressPopUp(true, "Are you sure, you want to Submit the Test? Once you submit the Test, you cannot revisit to view the Questions and their Answers.");
+        $("#btnModalOK").hide();
+        $("#btnSubmitTestOK").show();
+    }
+
+    function OnSubmitTestOK() {
+        window.location.href = "/Candidate/OnSubmitTest";
     }
 </script>

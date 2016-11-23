@@ -54,5 +54,7 @@ namespace Silicus.Ensure.Web.Models
         public string ResumePath { get; set; }
 
         public IList<Position> PositionList { get; set; }
+
+        public string ErrorMessage { get; set; }
     }
 }

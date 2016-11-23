@@ -1,0 +1,61 @@
+﻿@model IEnumerable<Silicus.EncourageWithAzureAd.Web.Models.NominationListViewModel>
+@using System.Drawing;
+
+<div>
+    @foreach (var item in Model)
+    {
+        var borderColor = string.Empty;
+        if (item.IsSubmitted == true)
+        {
+            borderColor = "#0067AA";
+        }
+        else
+        {
+            borderColor = "#F8AC59";
+        }
+
+        Random randomGen = new Random();
+        KnownColor[] names = (KnownColor[])Enum.GetValues(typeof(KnownColor));
+        KnownColor randomColorName = names[randomGen.Next(names.Length)];
+        Color randomColor = Color.FromKnownColor(randomColorName);
+
+        <div class="col-md-3 white-bg card" style="border-color:@borderColor">
+
+            <div class="cardHeader text-center">
+                @*<div style="background-color:pink;font-weight:bold;font-size:large" class="col-md-5">
+                        @Html.DisplayFor(modelItem => item.Intials)
+                    </div>*@
+                @*<div style="background-color:gray;height:60px;padding-left:10px;padding-bottom:70px; font-weight:bold;font-size:50px;text-align:center" class="col-md-6">
+                        @Html.DisplayFor(modelItem => item.Intials)
+                    </div>*@
+                <div>
+
+                    <div>
+                        <label class="cardHeaderEmpName"> @Html.DisplayFor(modelItem => item.DisplayName)</label>
+                    </div>
+                    <div>
+                        @Html.DisplayFor(modelItem => item.AwardName)
+
+                        @Html.DisplayFor(modelItem => item.NominationTime)
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="cardFooter text-right" style="border-color:@borderColor">
+                @if (item.IsSubmitted == false)
+                {
+                    <a href="@Url.Action("EditSavedNomination", "Nomination", new { nominationId = item.Id })">
+                        <span> <i class="fa fa-pencil fa-2x" title="Edit Nomination" aria-hidden="true" style="color:@borderColor;font-size:30px;"></i> </span>
+                    </a>
+                }
+                else
+                {
+                    <a href="@Url.Action("EditSavedNomination", "Nomination", new { nominationId = item.Id })">
+                        <span> <i class="fa fa-file-text-o" title="Nomination Deatils" aria-hidden="true" style="color:@borderColor;font-size:30px;"></i> </span>
+                    </a>
+                }
+            </div>
+        </div>
+    }
+</div>

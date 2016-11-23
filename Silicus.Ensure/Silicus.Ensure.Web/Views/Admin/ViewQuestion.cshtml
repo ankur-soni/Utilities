@@ -19,7 +19,7 @@
         <button type="button" class="btn btn-white" aria-label="Left Align" onclick="window.open('/Admin/CreatePDF?target=_blank')">
             <span class="glyphicon glyphicon-file" aria-hidden="true"> PDF</span>
         </button>
-        <button type="submit" name="btnMail" class="btn btn-white" aria-label="Left Align" onclick="location.href='@Url.Action("SendMail", "Admin")'">
+        <button type="submit" name="btnMail" class="btn btn-white" aria-label="Left Align" onclick="location.href='@Url.Action("SendMail", "Admin", new { id = ViewBag.UserId })'">
             <span class="glyphicon glyphicon-envelope" aria-hidden="true" id='mailDiv'> Mail</span>
         </button>
         <button type="button" class="btn btn-white" aria-label="Left Align">

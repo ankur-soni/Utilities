@@ -327,7 +327,7 @@ namespace Silicus.Ensure.Web.Controllers
                                     {
                                         UserTestSuite = newusertestsuit,
                                         QuestionId = Convert.ToInt32(questionId.Id),
-                                        Answer = questionId.Answer,
+                                        //Answer = questionId.Answer,
                                     };
 
                                     _testSuiteService.AddUserTestDetails(userTestDetails);
@@ -357,6 +357,10 @@ namespace Silicus.Ensure.Web.Controllers
             {
                 var user = _userService.GetUserById(UserId);
                 currUser = _mappingService.Map<User, UserViewModel>(user);
+            }
+            else if (TempData["UserViewModel"] != null)
+            {
+                currUser = TempData["UserViewModel"] as UserViewModel;
             }
 
             var positionDetails = _positionService.GetPositionDetails().OrderBy(model => model.PositionName);
@@ -606,8 +610,13 @@ namespace Silicus.Ensure.Web.Controllers
         }
         #endregion Position
 
-        public ActionResult ViewQuestion(int UserId)
+        public ActionResult ViewQuestion(int? id)
         {
+            int UserId = 0;
+            if (id != null)
+            {
+                UserId = Convert.ToInt32(id);
+            }
             var userDetails = _userService.GetUserDetails().Where(x => x.UserId == UserId).FirstOrDefault();
             var userTestSuitDetails = _testSuiteService.GetUserTestSuite().Where(x => x.UserId == UserId).FirstOrDefault().UserTestDetails;
 
@@ -619,6 +628,7 @@ namespace Silicus.Ensure.Web.Controllers
                                   select question).ToList();
 
             Que = Que.OrderBy(x => x.Id).ToList();
+            ViewBag.UserId = UserId;
             return View(Que);
         }
 
@@ -632,62 +642,87 @@ namespace Silicus.Ensure.Web.Controllers
 
         public ActionResult SubmittedTest(int canditateId)
         {
-            List<ObjectiveQuestionList> objectiveQuestionList = new List<ObjectiveQuestionList>();
-            List<PracticalQuestionList> practicalQuestionList = new List<PracticalQuestionList>();
-
-            var userDetails = _userService.GetUserDetails().Where(x => x.UserId == canditateId).FirstOrDefault();
-            var userTestSuitDetails = _testSuiteService.GetUserTestSuite().Where(x => x.UserId == canditateId).FirstOrDefault();
-            var testSuitDetails = _testSuiteService.GetTestSuitById(userTestSuitDetails.TestSuiteId);
-
-            SubmittedTestViewModel submittedTestViewModel = new Models.SubmittedTestViewModel();
-            submittedTestViewModel.FirstName = userDetails.FirstName;
-            submittedTestViewModel.LastName = userDetails.LastName;
-            submittedTestViewModel.Duration = userTestSuitDetails.Duration;
-            submittedTestViewModel.TotalMakrs = userTestSuitDetails.MaxScore;
-            submittedTestViewModel.TestSuitName = testSuitDetails.TestSuiteName;
-            submittedTestViewModel.UserTestSuiteId = userTestSuitDetails.UserTestSuiteId;
-            submittedTestViewModel.Postion = _positionService.GetPositionById(testSuitDetails.Position) != null ? _positionService.GetPositionById(testSuitDetails.Position).PositionName : "";
-
-            foreach (var questionId in userTestSuitDetails.UserTestDetails)
+            try
             {
 
-                var question = _questionService.GetSingleQuestion(questionId.QuestionId);
-                if (question.QuestionType == 1)
+                List<ObjectiveQuestionList> objectiveQuestionList = new List<ObjectiveQuestionList>();
+                List<PracticalQuestionList> practicalQuestionList = new List<PracticalQuestionList>();
+
+                var userDetails = _userService.GetUserDetails().Where(x => x.UserId == canditateId).FirstOrDefault();
+
+                var userTestSuitDetailsList = _testSuiteService.GetUserTestSuite();
+                if (!userTestSuitDetailsList.Any())
                 {
-                    if (questionId.Mark != null && questionId.Mark > 0)
+
+
+                    TempData["ErrorMsg"] = userDetails == null ? "User id can not be null !" : "Test suit is not assigned to user !";
+                    return RedirectToAction("Candidates");
+                }
+
+                var userTestSuitDetails = userTestSuitDetailsList.Where(x => x.UserId == canditateId).FirstOrDefault();
+                var testSuitDetails = _testSuiteService.GetTestSuitById(userTestSuitDetails.TestSuiteId);
+
+                if (testSuitDetails == null)
+                {
+                    TempData["ErrorMsg"] = "Test suit is not assigned to user !";
+                    return RedirectToAction("Candidates");
+                }
+
+                SubmittedTestViewModel submittedTestViewModel = new Models.SubmittedTestViewModel();
+                submittedTestViewModel.FirstName = userDetails.FirstName;
+                submittedTestViewModel.LastName = userDetails.LastName;
+                submittedTestViewModel.Duration = userTestSuitDetails.Duration;
+                submittedTestViewModel.TotalMakrs = userTestSuitDetails.MaxScore;
+                submittedTestViewModel.TestSuitName = testSuitDetails.TestSuiteName;
+                submittedTestViewModel.UserTestSuiteId = userTestSuitDetails.UserTestSuiteId;
+                submittedTestViewModel.Postion = _positionService.GetPositionById(testSuitDetails.Position) != null ? _positionService.GetPositionById(testSuitDetails.Position).PositionName : "";
+
+                foreach (var questionId in userTestSuitDetails.UserTestDetails)
+                {
+
+                    var question = _questionService.GetSingleQuestion(questionId.QuestionId);
+                    if (question.QuestionType == 1)
                     {
-                        submittedTestViewModel.ObjectiveQuestionResult += question.Marks;
+                        if (questionId.Mark != null && questionId.Mark > 0)
+                        {
+                            submittedTestViewModel.ObjectiveQuestionResult += question.Marks;
+                        }
+                        submittedTestViewModel.ObjectiveQuestionMarks += question.Marks;
+
+                        objectiveQuestionList.Insert(0, new ObjectiveQuestionList()
+                        {
+                            QuestionDescription = question.QuestionDescription,
+                            CorrectAnswer = GetOption(question.CorrectAnswer),
+                            SubmittedAnswer = GetOption(questionId.Answer),
+                            Result = questionId.Mark != null && questionId.Mark > 0 ? "Correct" : "Incorrect",
+                        });
                     }
-                    submittedTestViewModel.ObjectiveQuestionMarks += question.Marks;
+                    else
+                    {
+                        practicalQuestionList.Insert(0, new PracticalQuestionList()
+                        {
+                            QuestionId = questionId.QuestionId,
+                            QuestionDescription = question.QuestionDescription,
+                            SubmittedAnswer = questionId.Answer,
+                            Weightage = question.Marks,
+                            EvaluatedMark = questionId.Mark,
+                        });
 
-                    objectiveQuestionList.Insert(0, new ObjectiveQuestionList()
-                    {
-                        QuestionDescription = question.QuestionDescription,
-                        CorrectAnswer = GetOption(question.CorrectAnswer),
-                        SubmittedAnswer = GetOption(questionId.Answer),
-                        Result = questionId.Mark != null && questionId.Mark > 0 ? "Correct" : "Incorrect",
-                    });
-                }
-                else
-                {
-                    practicalQuestionList.Insert(0, new PracticalQuestionList()
-                    {
-                        QuestionId = questionId.QuestionId,
-                        QuestionDescription = question.QuestionDescription,
-                        SubmittedAnswer = questionId.Answer.ToString(),
-                        Weightage = question.Marks,
-                        EvaluatedMark = questionId.Mark,
-                    });
+                    }
 
                 }
+                submittedTestViewModel.EvaluatedFeedBack = userTestSuitDetails.FeedBack;
+                submittedTestViewModel.TotalMarksObtained = submittedTestViewModel.ObjectiveQuestionResult;
+                submittedTestViewModel.objectiveQuestionList = objectiveQuestionList;
+                submittedTestViewModel.practicalQuestionList = practicalQuestionList;
 
+                return View(submittedTestViewModel);
             }
-            submittedTestViewModel.EvaluatedFeedBack = userTestSuitDetails.FeedBack;
-            submittedTestViewModel.TotalMarksObtained = submittedTestViewModel.ObjectiveQuestionResult;
-            submittedTestViewModel.objectiveQuestionList = objectiveQuestionList;
-            submittedTestViewModel.practicalQuestionList = practicalQuestionList;
-
-            return View(submittedTestViewModel);
+            catch (Exception ex)
+            {
+                TempData["ErrorMsg"] = ex.Message;
+                return RedirectToAction("Candidates");
+            }
         }
 
         private string GetOption(string p)
@@ -725,88 +760,112 @@ namespace Silicus.Ensure.Web.Controllers
             return RedirectToAction("Candidates");
         }
 
-        public ActionResult SendMail()
+        public ActionResult SendMail(int? id)
         {
-            List<Question> Que = _questionService.GetQuestion().ToList();
-            User user = new User();
+            int UserId = 0;
+            if (id != null)
+            {
+                UserId = Convert.ToInt32(id);
+            }
+            var userDetails = _userService.GetUserDetails().Where(x => x.UserId == UserId).FirstOrDefault();
+            var userTestSuitDetails = _testSuiteService.GetUserTestSuite().Where(x => x.UserId == UserId).FirstOrDefault().UserTestDetails;
+
+            ViewBag.FNameLName = userDetails.FirstName + userDetails.LastName;
+
+            List<Question> Que = (from question in _questionService.GetQuestion().ToList()
+                                  join userTest in userTestSuitDetails.ToList()
+                                      on question.Id equals userTest.QuestionId
+                                  select question).ToList();
+
             Que = Que.OrderBy(x => x.Id).ToList();
+        //    return View(Que);
+
+
+            //List<Question> Que = _questionService.GetQuestion().ToList();
+            //User user = new User();
+            //Que = Que.OrderBy(x => x.Id).ToList();
 
             if (ModelState.IsValid)
             {
                 try
                 {
-                    var body = "<p>Email From: <strong>{0} {1}</strong></p><p>Message:</p><p>Mail Body</p>";
+                    //user.FirstName = "Nishant";
+                    //user.LastName = "Lohakare";
+                    var body = "<p>Dear Admin,</p><p>The Online Test has been submitted for <strong>{0} {1}</strong> on " + DateTime.Now + ".</p> Please review, evatuate and add your valuable feedback of the Test in order to conduct first round of interview.<br /><p>Regards,</p><p>Ensure, IT Support</p><p>This is an auto-generated mail sent by Ensure. Please do not reply to this email.</p>";
                     var message = new MailMessage();
                     message.To.Add(new MailAddress("Nishant.Lohakare@silicus.com"));
-                    message.From = new MailAddress("nish89.cse@gmail.com");
-                    message.Subject = "Candidate Question Set";
-                    message.Body = string.Format(body, user.FirstName = "Nishant", user.LastName = "Lohakare");
+                    message.From = new MailAddress("nish89.cse@gmail.com", "Ensure Team");
+                    message.Subject = "Test Submitted for " + userDetails.FirstName + " " + userDetails.LastName;
+                    message.Body = string.Format(body, userDetails.FirstName, userDetails.LastName);
 
-                    string fileName = Path.GetRandomFileName();
+                    string fileName = userDetails.FirstName + "_" + userDetails.FirstName + "_" + userDetails.UserId + "_" + DateTime.Now.ToString("yyyyMMddHHmmss");
 
-                    System.IO.FileStream fs = new FileStream(Server.MapPath("~\\Attachment") + "\\" + fileName + ".pdf", FileMode.Create);
-                    // Create an instance of the document class which represents the PDF document itself.
-                    Document document = new Document(PageSize.A4, 25, 25, 30, 30);
-                    // Create an instance to the PDF file by creating an instance of the PDF 
-                    // Writer class using the document and the filestrem in the constructor.
-                    PdfWriter writer = PdfWriter.GetInstance(document, fs);
-                    document.Open();
-                    PdfPTable table1 = new PdfPTable(2);
-                    PdfPTable table2 = new PdfPTable(2);
-                    foreach (var i in Que)
+                    using (System.IO.FileStream fs = new FileStream(Server.MapPath("~\\Attachment") + "\\" + fileName + ".pdf", FileMode.Create))
                     {
-                        PdfPCell cell;
-
-                        if (i.QuestionType == 1)
+                        // Create an instance of the document class which represents the PDF document itself.
+                        Document document = new Document(PageSize.A4, 25, 25, 30, 30);
+                        // Create an instance to the PDF file by creating an instance of the PDF 
+                        // Writer class using the document and the filestrem in the constructor.
+                        PdfWriter writer = PdfWriter.GetInstance(document, fs);
+                        document.Open();
+                        PdfPTable table1 = new PdfPTable(2);
+                        PdfPTable table2 = new PdfPTable(2);
+                        foreach (var i in Que)
                         {
-                            document.Add(new Paragraph("Objective Question Set"));
+                            PdfPCell cell;
 
-                            cell = new PdfPCell(new Phrase("Question " + i.QuestionDescription));
-                            cell.Rowspan = 4;
-                            table1.AddCell(cell);
-                            table1.AddCell(i.Option1);
-                            table1.AddCell(i.Option2);
-                            table1.AddCell(i.Option3);
-                            table1.AddCell(i.Option4);
-                            cell = new PdfPCell(new Phrase("Correct Answer"));
-                            table1.AddCell(cell);
-                            table1.AddCell(i.CorrectAnswer);
+                            if (i.QuestionType == 1)
+                            {
+                                document.Add(new Paragraph("Objective Question Set"));
 
-                            document.Add(table1);
+                                cell = new PdfPCell(new Phrase("Question " + i.QuestionDescription));
+                                cell.Rowspan = 4;
+                                table1.AddCell(cell);
+                                table1.AddCell(i.Option1);
+                                table1.AddCell(i.Option2);
+                                table1.AddCell(i.Option3);
+                                table1.AddCell(i.Option4);
+                                cell = new PdfPCell(new Phrase("Correct Answer"));
+                                table1.AddCell(cell);
+                                table1.AddCell(i.CorrectAnswer);
+
+                                document.Add(table1);
+                            }
+                            else
+                            {
+                                document.Add(new Paragraph("Practical Question Set"));
+                                cell = new PdfPCell(new Phrase("Question " + i.QuestionDescription));
+                                table2.AddCell(cell);
+                                table2.AddCell(i.Answer);
+
+                                document.Add(table2);
+                            }
                         }
-                        else
-                        {
-                            document.Add(new Paragraph("Practical Question Set"));
-                            cell = new PdfPCell(new Phrase("Question " + i.QuestionDescription));
-                            table2.AddCell(cell);
-                            table2.AddCell(i.Answer);
+                        // Close the document
+                        document.Close();
+                        // Close the writer instance
+                        writer.Close();
+                        // Always close open filehandles explicity
+                        fs.Close();
 
-                            document.Add(table2);
+                        Attachment attachment = new Attachment(Server.MapPath("~\\Attachment") + "\\" + fileName + ".pdf");
+                        message.Attachments.Add(attachment);
+                        message.IsBodyHtml = true;
+
+                        using (var smtp = new SmtpClient())
+                        {
+                            smtp.Send(message);
+                            TempData["Success"] = "Mail Send Successfully";
                         }
                     }
-                    // Close the document
-                    document.Close();
-                    // Close the writer instance
-                    writer.Close();
-                    // Always close open filehandles explicity
-                    fs.Close();
 
-                    Attachment attachment = new Attachment(Server.MapPath("~\\Attachment") + "\\" + fileName + ".pdf");
-                    message.Attachments.Add(attachment);
-                    message.IsBodyHtml = true;
-
-                    using (var smtp = new SmtpClient())
-                    {
-                        smtp.Send(message);
-                        TempData["Success"] = "Mail Send Successfully";
-                    }
                 }
                 catch (Exception ex)
                 {
                     throw new Exception(ex.Message);
                 }
             }
-            return RedirectToAction("ViewQuestion", "Admin");
+            return RedirectToAction("ViewQuestion", "Admin", new { id = UserId});
         }
     }
 }

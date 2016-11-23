@@ -135,11 +135,17 @@
         </div>
         <script>
             $(document).ready(function () {
-                if ($('.validation-summary-errors>ul>li').is(':empty')) { $("#messageDiv").hide(); }
-                else if ($('.validation-summary-errors>ul>li').text() != "")
-                { ShowMessage($('.validation-summary-errors>ul>li').text(), 0); }
-                else { $("#messageDiv").hide(); }
+                if ('@Model.ErrorMessage' != '') {
+                    ShowMessage("@Model.ErrorMessage", 0);
+                }
+                else {
 
+                    if ($('.validation-summary-errors>ul>li').is(':empty')) { $("#messageDiv").hide(); }
+                    else if ($('.validation-summary-errors>ul>li').text() != "")
+                    { ShowMessage($('.validation-summary-errors>ul>li').text(), 0); }
+                    else { $("#messageDiv").hide(); }
+
+                }
                 $("#btnSave").click(function (e) {
                     if (validateTag() == false) {
                         e.preventDefault();
