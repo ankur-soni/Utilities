@@ -8,9 +8,9 @@ namespace Silicus.Ensure.Entities.EntityConfigurations
     {
         public TestSuiteTagMap()
         {
-            HasKey(o => o.TestSuiteId);
+            HasKey(o => o.TestSuiteTagId);
 
-            Property(p => p.TestSuiteId).HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity);
+            Property(p => p.TestSuiteTagId).HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity);
 
             ToTable(TableSettings.TestSuite, TableSettings.DefaultSchema);
         }

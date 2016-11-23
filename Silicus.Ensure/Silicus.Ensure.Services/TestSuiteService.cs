@@ -30,6 +30,7 @@ namespace Silicus.Ensure.Services
         {
             if (TestSuite.TestSuiteName != null)
             {
+                var testSuiteTags = _context.Query<TestSuite>().Where(x => x.TestSuiteId == TestSuite.TestSuiteId).Select(x => x.TestSuiteTags).SingleOrDefault();
                 _context.Update(TestSuite);
             }
         }
@@ -58,7 +59,7 @@ namespace Silicus.Ensure.Services
         public void UpdateUserTestSuite(UserTestSuite UserTestSuite)
         {
             if (UserTestSuite.UserId > 0)
-            {
+            {                
                 _context.Update(UserTestSuite);
             }
         }

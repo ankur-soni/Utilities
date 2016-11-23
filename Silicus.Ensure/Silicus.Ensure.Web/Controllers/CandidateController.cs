@@ -12,11 +12,13 @@ namespace Silicus.Ensure.Web.Controllers
 {
     public class CandidateController : Controller
     {
+        private readonly IEmailService _emailService;
         private readonly IQuestionService _questionService;
         private readonly IMappingService _mappingService;
 
-        public CandidateController(IQuestionService questionService, MappingService mappingService)
+        public CandidateController(IEmailService emailService, IQuestionService questionService, MappingService mappingService)
         {
+            _emailService = emailService;
             _questionService = questionService;
             _mappingService = mappingService;
         }
@@ -52,6 +54,11 @@ namespace Silicus.Ensure.Web.Controllers
             return PartialView("_partialViewQuestion", testSuiteQuestionModel);
         }
 
+        public ActionResult OnSubmitTest()
+        {
+            return RedirectToAction("LogOff", "Account");
+        }
+
         [HttpPost]
         public JsonResult AddMoreTime(int count)
         {
@@ -76,6 +83,19 @@ namespace Silicus.Ensure.Web.Controllers
             if (Qnumber == totalQCount)
                 TQuestion.IsFirst = true;
             return TQuestion;
+        }
+
+        private void SendSubmittedTestMail(string email, string fullname)
+        {
+            string subject = "Test Submitted for " + fullname;
+
+            string body = "Dear " + fullname + "," +
+                          "The Online Test has been submitted for <Candidate First Name + Last Name> on <DD/MM/YYYY HH:MM>. Please review, evatuate and add your valuable feedback of the Test in order to conduct first round of interview." +
+                          "This is an auto-generated email sent by Ensure. Please do not reply to this email." +
+                          "Regards," +
+                          "Ensure, IT Support";
+
+            _emailService.SendEmailAsync(email, subject, body);
         }
     }
 }

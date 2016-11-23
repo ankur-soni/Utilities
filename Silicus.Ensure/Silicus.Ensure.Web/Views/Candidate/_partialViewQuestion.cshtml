@@ -94,7 +94,7 @@
         {
             @(Html.Kendo().Button()
                 .Name("btnSubmit")
-                    .HtmlAttributes(new { type = "button" })
+                        .HtmlAttributes(new { type = "button" }).Events(e => e.Click("OnSubmitTest"))
                         .Content("Submit Test").HtmlAttributes(new { style = "float: right;" }))
         }
     </div>
