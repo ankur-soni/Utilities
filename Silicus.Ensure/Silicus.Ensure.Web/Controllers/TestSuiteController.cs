@@ -8,6 +8,7 @@ using Silicus.Ensure.Models.DataObjects;
 using Silicus.Ensure.Web.Mappings;
 using Kendo.Mvc.UI;
 using Kendo.Mvc.Extensions;
+using System.Configuration;
 
 namespace Silicus.Ensure.Web.Controllers
 {
@@ -41,14 +42,7 @@ namespace Silicus.Ensure.Web.Controllers
                 List<Int32> TagId = item.PrimaryTags.Split(',').Select(int.Parse).ToList();
                 item.PrimaryTagNames = string.Join(",", (from a in tags
                                                          where TagId.Contains(a.TagId)
-                                                         select a.TagName));
-                if (!string.IsNullOrWhiteSpace(item.SecondaryTags))
-                {
-                    TagId = item.SecondaryTags.Split(',').Select(int.Parse).ToList();
-                    item.PrimaryTagNames += "," + string.Join(",", (from a in tags
-                                                                    where TagId.Contains(a.TagId)
-                                                                    select a.TagName));
-                }
+                                                         select a.TagName));                
             }
             return Json(viewModels.ToDataSourceResult(request), JsonRequestBehavior.AllowGet);
         }
@@ -66,7 +60,6 @@ namespace Silicus.Ensure.Web.Controllers
         public ActionResult Add(Int32 testSuiteId = 0)
         {
             TestSuiteViewModel testSuite = new TestSuiteViewModel();
-            TestSuiteTagViewModel tagView;
             List<TestSuiteTagViewModel> tags = new List<TestSuiteTagViewModel>();     
             var tagDetails = _tagsService.GetTagsDetails().OrderByDescending(model => model.TagId);
             var positionDetails = _positionService.GetPositionDetails().OrderBy(model => model.PositionName);            
@@ -84,25 +77,17 @@ namespace Silicus.Ensure.Web.Controllers
                 if (viewModels != null)
                 {
                     ViewBag.Type = "Edit";                 
-                    viewModels.PositionList = positionDetails.ToList();                  
-                     foreach(var tag in testSuitelist.SingleOrDefault().TestSuiteTags)
-                     {
-                         tagView = new TestSuiteTagViewModel();
-                         tagView.TagId = tag.TagId;
-                         tagView.TagName = tagDetails.Where(x => x.TagId == tag.TagId).Select(y => y.TagName).SingleOrDefault();
-                         tagView.Weightage = Convert.ToString(tag.Weightage);
-                         tags.Add(tagView);
-                     }
-                     viewModels.Tags = tags;                 
+                    viewModels.PositionList = positionDetails.ToList();
+                    List<TestSuiteTagViewModel> testSuiteTags;
+                    GetTestSuiteTags(testSuitelist.SingleOrDefault(), out testSuiteTags);
+                    viewModels.Tags = testSuiteTags;
                 }
                 return View(viewModels);
             }
         }
 
         public ActionResult Save(TestSuiteViewModel testSuiteView)
-        {
-            var tagId=0;
-            TestSuiteTag tagView;
+        {          
             List<TestSuiteTag> tagModel = new List<TestSuiteTag>();
             string errorMessage = string.Empty;
             var tags = _tagsService.GetTagsDetails();
@@ -111,49 +96,48 @@ namespace Silicus.Ensure.Web.Controllers
             { 
                 errorMessage = "The Test Suite already exists, please create with other name.\n"; 
             }
-                string[] arr = testSuiteView.PrimaryTagNames.Split(',');
-                testSuiteView.PrimaryTagNames = string.Empty;
-                for (int i = 1; i < arr.Length;i=i+2 )
+            string[] tagArry = testSuiteView.PrimaryTagNames.Split(',');
+            string tagId;
+            for (int i = 0; i < tagArry.Length; i = i + 2)
+            {
+                tagId = tags.Where(x => x.TagName == tagArry[i]).Select(x => x.TagId).SingleOrDefault().ToString();
+                if (string.IsNullOrWhiteSpace(testSuiteView.PrimaryTags))
                 {
-                    tagView = new TestSuiteTag();
-                    tagId = tags.Where(x => x.TagName == arr[i - 1]).Select(x => x.TagId).SingleOrDefault();
-                    if (testSuiteView.PrimaryTagNames==string.Empty)
-                    {
-                        tagView.TagId = tagId;
-                        tagView.Weightage = Convert.ToInt32(arr[i]);
-                        testSuiteView.PrimaryTagNames += tagId;                                             
-                    }
-                    else
-                    {
-                        tagView.TagId = tagId;
-                        tagView.Weightage = Convert.ToInt32(arr[i]);
-                        testSuiteView.PrimaryTagNames += ","+ tagId;
-                    }
-                    tagModel.Add(tagView);
-                }
-
-                var testSuiteDomainModel = _mappingService.Map<TestSuiteViewModel, TestSuite>(testSuiteView);
-                testSuiteDomainModel.TestSuiteTags = tagModel;
-                testSuiteDomainModel.PrimaryTags = testSuiteView.PrimaryTagNames;               
-                if (string.IsNullOrWhiteSpace(errorMessage))
-                {
-                    if (testSuiteView.TestSuiteId == 0 || testSuiteView.IsCopy == true)
-                    {
-                        _testSuiteService.Add(testSuiteDomainModel);                      
-                    }
-                    else
-                    {
-                        _testSuiteService.Update(testSuiteDomainModel);                    
-                    }
-                }          
-                if (string.IsNullOrWhiteSpace(errorMessage))
-                {
-                    return Json(new { status = "success", message =""}, JsonRequestBehavior.AllowGet);
+                    testSuiteView.PrimaryTags = tagId;
                 }
                 else
                 {
-                    return Json(new { status = "error", message = errorMessage }, JsonRequestBehavior.AllowGet);
-                }          
+                    testSuiteView.PrimaryTags += "," + tagId;
+                }
+                if (string.IsNullOrWhiteSpace(testSuiteView.Weights))
+                {
+                    testSuiteView.Weights = tagArry[i + 1];
+                }
+                else
+                {
+                    testSuiteView.Weights += "," + tagArry[i + 1];
+                }
+            }
+            var testSuiteDomainModel = _mappingService.Map<TestSuiteViewModel, TestSuite>(testSuiteView);
+            if (string.IsNullOrWhiteSpace(errorMessage))
+            {
+                if (testSuiteView.TestSuiteId == 0 || testSuiteView.IsCopy == true)
+                {
+                    _testSuiteService.Add(testSuiteDomainModel);
+                }
+                else
+                {
+                    _testSuiteService.Update(testSuiteDomainModel);
+                }
+            }
+            if (string.IsNullOrWhiteSpace(errorMessage))
+            {
+                return Json(new { status = "success", message = "" }, JsonRequestBehavior.AllowGet);
+            }
+            else
+            {
+                return Json(new { status = "error", message = errorMessage }, JsonRequestBehavior.AllowGet);
+            }              
         }
 
         public ActionResult Delete(int testSuiteId)
@@ -172,8 +156,7 @@ namespace Silicus.Ensure.Web.Controllers
 
         public ActionResult Copy(int testSuiteId = 0)
         {
-            TestSuiteViewModel testSuite = new TestSuiteViewModel();
-            TestSuiteTagViewModel tagView;
+            TestSuiteViewModel testSuite = new TestSuiteViewModel();            
             List<TestSuiteTagViewModel> tags = new List<TestSuiteTagViewModel>(); 
             var tagDetails = _tagsService.GetTagsDetails().OrderByDescending(model => model.TagId);
             var positionDetails = _positionService.GetPositionDetails().OrderBy(model => model.PositionName);       
@@ -190,15 +173,9 @@ namespace Silicus.Ensure.Web.Controllers
                     ViewBag.Type = "Copy";
                     viewModels.IsCopy = true;
                     viewModels.TestSuiteName = "Copy " + viewModels.TestSuiteName;
-                    foreach (var tag in testSuitelist.SingleOrDefault().TestSuiteTags)
-                    {
-                        tagView = new TestSuiteTagViewModel();
-                        tagView.TagId = tag.TagId;
-                        tagView.TagName = tagDetails.Where(x => x.TagId == tag.TagId).Select(y => y.TagName).SingleOrDefault();
-                        tagView.Weightage = Convert.ToString(tag.Weightage);
-                        tags.Add(tagView);
-                    }
-                    viewModels.Tags = tags;            
+                    List<TestSuiteTagViewModel> testSuiteTags;
+                    GetTestSuiteTags(testSuitelist.SingleOrDefault(), out testSuiteTags);
+                    viewModels.Tags = testSuiteTags;            
                     viewModels.PositionList = positionDetails.ToList();                
                 }
                 return View("Add", viewModels);
@@ -243,17 +220,139 @@ namespace Silicus.Ensure.Web.Controllers
 
         public void ActiveteSuite(UserTestSuite userTestSuite, TestSuite testSuite)
         {
-            Int32 userTestSuiteId = _testSuiteService.AddUserTestSuite(userTestSuite);
-            if (!string.IsNullOrWhiteSpace(testSuite.SecondaryTags))
-                testSuite.PrimaryTags += "," + testSuite.SecondaryTags;
-            Int32[] tags = testSuite.PrimaryTags.Split(',').Select(Int32.Parse).ToArray();
-            _questionService.GetQuestion().Select(x => x.Tags.Split(',').ToArray());       
+            int optionalQuestions = Convert.ToInt32(ConfigurationManager.AppSettings["OptionalQuestion"]);
+            int practicalQuestions = Convert.ToInt32(ConfigurationManager.AppSettings["PracticalQuestion"]);
+            int index=0,requiredMinutes=0,minutes=0,tryCount=0;
+            UserTestDetails testSuiteDetail;            
+            List<TestSuiteTagViewModel> testSuiteTags;
+            List<UserTestDetails> testSuiteDetails = new List<UserTestDetails>();
+            List<Question> questions = new List<Question>();
+            var questionBank = _questionService.GetQuestion();
+            GetTestSuiteTags(testSuite, out testSuiteTags);
+            foreach(var tag in testSuiteTags)
+            {                
+                var questionList = questionBank.Where(p => p.Tags.Split(',').Contains(Convert.ToString(tag.TagId))).ToList();
+                if(questionList.Sum(x=>x.Duration) > tag.Minutes)
+                {
+                    //Optional Questions
+                    var optionalQuestion = questionList.Where(x => !questions.Any(y => y.Id == x.Id) && x.QuestionType == 1 && x.Competency == testSuite.Competency);
+                    requiredMinutes = tag.Minutes * Convert.ToInt32(optionalQuestions) / 100;
+                    if (optionalQuestion.Sum(x => x.Duration) >= requiredMinutes)
+                    {
+                        Random random = new Random();
+                        do
+                        {
+                            optionalQuestion = questionList.Where(x => !questions.Any(y => y.Id == x.Id) && x.QuestionType == 1 && x.Competency == testSuite.Competency);                         
+                            index = random.Next(optionalQuestion.Count());
+                            if (index != 0)
+                            {
+                                Question question = optionalQuestion.ElementAt(index);
+                                if (!questions.Exists(x => x.Id == question.Id))
+                                {
+                                    questions.Add(question);
+                                    minutes += question.Duration;
+                                }
+                            }
+                            tryCount += 1;
+                            if (tryCount > 3)
+                            {
+                                break;
+                            }                           
+                                
+                        } while (requiredMinutes >= minutes);
+                    }
+                    else
+                    {
+                        foreach (var question in questionList.Where(x => !questions.Any(y => y.Id == x.Id) && x.QuestionType == 1 && x.Competency == testSuite.Competency))
+                        {
+                            questions.Add(question);
+                            minutes += question.Duration;
+                        }
+                    }
+                    
+                    //Practical Questions
+                    minutes = 0;
+                    var practicalQuestion = questionList.Where(x => !questions.Any(y => y.Id == x.Id) && x.QuestionType == 2 && x.Competency == testSuite.Competency);
+                    if (practicalQuestion.Sum(x=>x.Duration) >= requiredMinutes)
+                    {
+                        Random random = new Random();
+                        do
+                        {
+                            practicalQuestion = questionList.Where(x => !questions.Any(y => y.Id == x.Id) && x.QuestionType == 2 && x.Competency == testSuite.Competency);
+                            index = random.Next(practicalQuestion.Count());
+                            if (index != 0)
+                            {
+                                Question question = practicalQuestion.ElementAt(index);
+                                if (!questions.Exists(x => x.Id == question.Id))
+                                {
+                                    questions.Add(question);
+                                    minutes += question.Duration;
+                                }
+                            }
+                            tryCount += 1;
+                            if (tryCount > 3)
+                            {
+                                break;
+                            }  
+                        } while (requiredMinutes >= minutes);
+                    }
+                    else
+                    {
+                        foreach (var question in practicalQuestion.Where(x => !questions.Any(y => y.Id == x.Id) && x.QuestionType == 2 && x.Competency == testSuite.Competency))
+                        {
+                            questions.Add(question);
+                            minutes += question.Duration;
+                        }
+                    }
+                    var allQuestions = questionList.Where(x => !questions.Any(y => y.Id == x.Id));
+                    if(minutes < tag.Minutes)
+                    {
+                        foreach(var question in allQuestions)
+                        {
+                            questions.Add(question);
+                            minutes += question.Duration;
+                            if (minutes >= tag.Minutes)
+                            {
+                                break;
+                            }
+                        }
+                    }
+                }                               
+            }
+            //Attach Questions
+            foreach (var question in questions)
+            {
+                testSuiteDetail = new UserTestDetails();
+                testSuiteDetail.QuestionId = question.Id;
+                testSuiteDetails.Add(testSuiteDetail);
+            }
+            userTestSuite.UserTestDetails = testSuiteDetails;  
+            _testSuiteService.AddUserTestSuite(userTestSuite);
         }
 
         public ActionResult GetTags(string term)
         {
             var tagDetails = _tagsService.GetTagsDetails();
             return Json(tagDetails);
+        }
+
+        private void GetTestSuiteTags(TestSuite testSuite, out List<TestSuiteTagViewModel> testSuiteTags)
+        {
+            TestSuiteTagViewModel testSuiteTagViewModel;
+            testSuiteTags = new List<TestSuiteTagViewModel>();
+            var tagList = _tagsService.GetTagsDetails();
+            string[] tags = testSuite.PrimaryTags.Split(',');
+            string[] weights = testSuite.Weights.Split(',');
+
+            for (int i = 0; i < tags.Length; i++)
+            {
+                testSuiteTagViewModel = new TestSuiteTagViewModel();
+                testSuiteTagViewModel.TagId = Convert.ToInt32(tags[i]);
+                testSuiteTagViewModel.TagName = tagList.Where(x => x.TagId == testSuiteTagViewModel.TagId).Select(x => x.TagName).SingleOrDefault();
+                testSuiteTagViewModel.Weightage = weights[i];
+                testSuiteTagViewModel.Minutes = testSuite.Duration * Convert.ToInt32(weights[i]) / 100;
+                testSuiteTags.Add(testSuiteTagViewModel);
+            }
         }
     }
 }

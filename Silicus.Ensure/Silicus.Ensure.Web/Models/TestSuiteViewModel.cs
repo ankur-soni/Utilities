@@ -49,6 +49,8 @@ namespace Silicus.Ensure.Web.Models
         [Display(Name = "No. Of Practical Questions")]
         public string PracticalQuestionsCount { get; set; }
 
+        public string Weights { get; set; }
+
         public int Userid { get; set; }
 
         public IList<Position> PositionList { get; set; }
@@ -60,8 +62,10 @@ namespace Silicus.Ensure.Web.Models
     { 
         public string TagName { get; set; }
 
-        public int TagId { get; set; }       
+        public int TagId { get; set; }
 
         public string Weightage { get; set; }
+
+        public int Minutes { get; set; }
     }
 }
