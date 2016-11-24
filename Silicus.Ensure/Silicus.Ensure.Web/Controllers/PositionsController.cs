@@ -66,14 +66,22 @@ namespace Silicus.Ensure.Web.Controllers
 
         public ActionResult PositionSave(Position position)
         {
+            var result = 0;
+            var positionList = _positionService.GetPositionDetails().Where(x => x.PositionName.ToLower() == position.PositionName.ToLower()).ToList();
+            if (positionList.Any())
+                result = positionList.Count;
+
             if (ModelState.IsValid)
             {
-                if (position.PositionId == 0)
-                    return Json(_positionService.Add(position));
-                else
+                if (position.PositionId == 0 && Convert.ToInt32(result) == 0)
+                {
+                    _positionService.Add(position);
+                    return Json(_positionService.GetPositionDetails().LastOrDefault().PositionId);
+                }
+                else if (position.PositionId != 0 && Convert.ToInt32(result) == 1)
                 {
                     _positionService.Update(position);
-                    return Json(1);
+                    return Json(position.PositionId);
                 }
             }
             return null;

@@ -665,6 +665,7 @@ namespace Silicus.Ensure.Web.Controllers
                 }
 
                 SubmittedTestViewModel submittedTestViewModel = new Models.SubmittedTestViewModel();
+                submittedTestViewModel.TestStatus = userDetails.TestStatus;
                 submittedTestViewModel.FirstName = userDetails.FirstName;
                 submittedTestViewModel.LastName = userDetails.LastName;
                 submittedTestViewModel.Duration = userTestSuitDetails.Duration;

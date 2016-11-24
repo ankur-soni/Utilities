@@ -65,13 +65,14 @@
                         </div>
                     </text>);
                 })
-                                .Editable(ed => ed.Mode(GridEditMode.InLine))
+                                                                                                    .Editable(ed => ed.Mode(GridEditMode.InLine))
                 )
             }
         </div>
     </div>
 </div>
 <script>
+
     $(document).ready(function () {
         $("#FieldFilter").keyup(function () {
 
@@ -97,36 +98,39 @@
             $("#FieldFilter").val('');
         });
     });
-    ////register custom validation rules
-    //(function ($, kendo) {
-    //    $.extend(true, kendo.ui.validator, {
-    //        rules: { // custom rules
-    //            mvcremotevalidation: function (input, params) {
-    //                var ret = true;
-    //                if (input.is("[data-val-remote]") && input.val() != "") {
-    //                    var url = input.attr("data-val-remote-url");
-    //                    $.ajax({
-    //                        type: "POST",
-    //                        url: url,
-    //                        data: JSON.stringify({ 'positionName': input.val() }),
-    //                        contentType: "application/json; charset=utf-8",
-    //                        dataType: "json",
-    //                        success: function (data) {
-    //                            if (data == false) {
-    //                                return data;
-    //                            }
-    //                        }
-    //                    });
-    //                }
-    //                return ret;
-    //            }
-    //        },
-    //        messages: { //custom rules messages
-    //            mvcremotevalidation: function (input) {
-    //                return input.attr("data-val-remote");
-    //            }
-    //        }
-    //    });
-    //})(jQuery, kendo);
+
+    (function ($, kendo) {
+        $.extend(true, kendo.ui.validator, {
+            rules: {
+                //define custom validation rule to match remote validation:
+                mvcremotevalidation: function (input) {
+                    if (input.is("[data-val-remote]") && input.val() != "") {
+                        var remoteURL = input.attr("data-val-remote-url");
+                        var valid;
+                        $.ajax({
+                            async: false,
+                            type: "POST",
+                            url: remoteURL,
+                            data: JSON.stringify({ 'positionName': input.val() }),
+                            contentType: "application/json; charset=utf-8",
+                            dataType: "json",
+                            success: function (data) {
+                                valid = data;
+                            }
+                        });
+                        return valid;
+
+                    }
+                    return true;
+                }
+            },
+            messages: {
+                mvcremotevalidation: function (input) {
+                    return input.attr("data-val-remote");
+                }
+            }
+        });
+
+    })(jQuery, kendo);
 
 </script>
