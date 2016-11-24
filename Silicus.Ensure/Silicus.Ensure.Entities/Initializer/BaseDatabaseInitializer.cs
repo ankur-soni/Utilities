@@ -123,6 +123,7 @@ namespace Silicus.Ensure.Entities.Initializer
                 IsDeleted = false,
                 PrimaryTags = "1,2",
                 Weights = "70,30",
+                Status=1,
 
             });
 
@@ -135,6 +136,7 @@ namespace Silicus.Ensure.Entities.Initializer
                 IsDeleted = false,
                 PrimaryTags = "1,2",
                 Weights = "30,70",
+                Status = 1,
             });
 
             context.Add(new Question

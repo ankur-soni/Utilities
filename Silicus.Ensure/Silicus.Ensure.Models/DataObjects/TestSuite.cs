@@ -32,8 +32,6 @@ namespace Silicus.Ensure.Models.DataObjects
         public Int32 Competency { get; set; }
 
         public string PrimaryTags { get; set; }
-        
-        public string SecondaryTags { get; set; }
 
         public string Weights { get; set; }
 
@@ -43,10 +41,10 @@ namespace Silicus.Ensure.Models.DataObjects
 
         public DateTime? ModifiedDate { get; set; }
 
-        public int? ModifiedBy { get; set; }
+        public string ModifiedBy { get; set; }
 
         public DateTime? CreatedDate { get; set; }
 
-        public int? CreatedBy { get; set; }
+        public string CreatedBy { get; set; }
     }
 }

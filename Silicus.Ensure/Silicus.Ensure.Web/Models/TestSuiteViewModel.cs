@@ -53,6 +53,10 @@ namespace Silicus.Ensure.Web.Models
 
         public int Userid { get; set; }
 
+        public int Status { get; set; }
+
+        public string StatusName { get; set; }
+
         public IList<Position> PositionList { get; set; }
 
         public IList<TestSuiteTagViewModel> Tags { get; set; }
