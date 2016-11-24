@@ -184,9 +184,10 @@ namespace Silicus.Ensure.Web.Controllers
 
         public ActionResult TestSuitUsers([DataSourceRequest] DataSourceRequest request)
         {
-            int testSuiteId = Convert.ToInt32(TempData["TesSuiteId"]);
-            var userlist = _userService.GetUserDetails().Where(model => model.Role == "USER").OrderByDescending(model => model.UserId).ToArray();
+            var userlist = _userService.GetUserDetails().Where(p => p.Role.ToLower() == "candidate").ToArray();
             var viewModels = _mappingService.Map<User[], UserViewModel[]>(userlist);
+
+            int testSuiteId = Convert.ToInt32(TempData["TesSuiteId"]);           
             DataSourceResult result = viewModels.ToDataSourceResult(request);
             return Json(result);
         }
@@ -203,6 +204,9 @@ namespace Silicus.Ensure.Web.Controllers
                     userTestSuite.UserId = Convert.ToInt32(item);
                     userTestSuite.TestSuiteId = testSuiteId;
                     ActiveteSuite(userTestSuite, testSuiteDetails);
+                    var selectUser = _userService.GetUserDetails().Where(model => model.UserId == Convert.ToInt32(item)).FirstOrDefault();
+                    selectUser.TestStatus = "Assigned";
+                    _userService.Update(selectUser);
                 }
                 return Json(1);
             }
