@@ -11,6 +11,8 @@ namespace Silicus.Ensure.Web.Models
     {
         public int UserId { get; set; }
 
+        public string TestStatus { get; set; }
+
         public int UserTestSuiteId { get; set; }
 
         public string FirstName { get; set; }

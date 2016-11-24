@@ -669,6 +669,7 @@ namespace Silicus.Ensure.Web.Controllers
                 }
 
                 SubmittedTestViewModel submittedTestViewModel = new Models.SubmittedTestViewModel();
+                submittedTestViewModel.TestStatus = userDetails.TestStatus;
                 submittedTestViewModel.FirstName = userDetails.FirstName;
                 submittedTestViewModel.LastName = userDetails.LastName;
                 submittedTestViewModel.Duration = userTestSuitDetails.Duration;
@@ -778,7 +779,7 @@ namespace Silicus.Ensure.Web.Controllers
                                   select question).ToList();
 
             Que = Que.OrderBy(x => x.Id).ToList();
-        //    return View(Que);
+            //    return View(Que);
 
 
             //List<Question> Que = _questionService.GetQuestion().ToList();
@@ -865,7 +866,7 @@ namespace Silicus.Ensure.Web.Controllers
                     throw new Exception(ex.Message);
                 }
             }
-            return RedirectToAction("ViewQuestion", "Admin", new { id = UserId});
+            return RedirectToAction("ViewQuestion", "Admin", new { id = UserId });
         }
     }
 }

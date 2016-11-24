@@ -1,4 +1,5 @@
 ﻿@model Silicus.Ensure.Models.DataObjects.User
+@using Silicus.Ensure.Web.Application;
 @using Kendo.Mvc.UI;
 
 @{
@@ -22,16 +23,16 @@
                     Value="All"
                     },
                     new SelectListItem(){
-                    Text="Assigned",
-                    Value="Assigned"
+                    Text=AppConstants.TestStatusAssigned,
+                    Value=AppConstants.TestStatusAssigned
                     },
                     new SelectListItem(){
-                    Text="UnAssigned",
-                    Value="UnAssigned"
+                    Text=AppConstants.TestStatusUnAssigned,
+                    Value=AppConstants.TestStatusUnAssigned
                     },
                     new SelectListItem(){
-                    Text="Submitted",
-                    Value="Submitted"
+                    Text=AppConstants.TestStatusSubmitted,
+                    Value=AppConstants.TestStatusSubmitted
                     }
                     }).HtmlAttributes(new { style = "width: 100%" }))
     </div>
@@ -126,7 +127,7 @@
                     if (returndata == 1) {
                         $('#userGrids').data('kendoGrid').dataSource.read();
                         $('#userGrids').data('kendoGrid').refresh();
-                        ShowMessage("Tag deleted successfully.", 1);
+                        ShowMessage("Test suit assigned successfully.", 1);
                     }
                 },
                 error: function (er) {
