@@ -46,6 +46,16 @@ namespace Silicus.Ensure.Services
         {
             return _context.Query<User>().FirstOrDefault(x => x.UserId == userId);
         }
+
+        public User GetUserByEmail(string email)
+        {
+            return _context.Query<User>().FirstOrDefault(x => x.Email == email);
+        }
+
+        public IEnumerable<User> GetUserByRole(string role)
+        {
+            return _context.Query<User>().Where(x => x.Role == role);
+        }
     }
 }
 

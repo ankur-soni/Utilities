@@ -96,6 +96,8 @@
       <Link>Properties\SharedAssemblyInfo.cs</Link>
     </Compile>
     <Compile Include="Constants\Competency.cs" />
+    <Compile Include="Constants\TestStatus.cs" />
+    <Compile Include="Constants\TestSuiteStatus.cs" />
     <Compile Include="CustomValidations\EnsureOneElementAttribute.cs" />
     <Compile Include="DataAccessEntityBase.cs" />
     <Compile Include="DataObjects\Asset.cs" />
