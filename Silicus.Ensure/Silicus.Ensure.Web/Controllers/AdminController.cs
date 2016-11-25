@@ -265,6 +265,7 @@ namespace Silicus.Ensure.Web.Controllers
             return PartialView("SelectCandidatesSuit");
         }
 
+
         public ActionResult AssignSuite(int SuiteId, int Userid)
         {
 
@@ -749,6 +750,8 @@ namespace Silicus.Ensure.Web.Controllers
 
             foreach (var userTestDetails in userTestSuitDetails.UserTestDetails.Where(x => x.QuestionId == Convert.ToInt32(Request.Form["PractileQuesionId" + count])).ToList())
             {
+                userTestDetails.MarkGivenByName = User.Identity.Name;
+                userTestDetails.MarkGivenBy = UserManager.FindByEmailAsync(userTestDetails.MarkGivenByName).Id;
                 userTestDetails.Mark = Convert.ToInt32(Request.Form["Emarks" + count]);
                 userTestDetails.MarkGivenDate = DateTime.Now;
 
@@ -812,20 +815,20 @@ namespace Silicus.Ensure.Web.Controllers
                         Font Verdana = FontFactory.GetFont("Verdana", 10F, Font.NORMAL, Color.BLACK);
                         document.Add(new Paragraph("Question Set for " + userDetails.FirstName + " " + userDetails.LastName));
 
-                        PdfPTable table1; 
-                        
-                        
-                        PdfPTable table2; 
-                        
+                        PdfPTable table1;
+
+
+                        PdfPTable table2;
+
                         PdfPCell cell;
                         PdfPCell cell2;
 
                         document.Add(new Paragraph("Objective Question Set"));
                         foreach (var i in Que)
-                        {                          
+                        {
                             if (i.QuestionType == 1)
                             {
-                                table1= new PdfPTable(2);
+                                table1 = new PdfPTable(2);
                                 table1.SpacingBefore = 20;
                                 cell = new PdfPCell(new Phrase(i.QuestionDescription));
                                 cell.Rowspan = 4;
@@ -838,9 +841,9 @@ namespace Silicus.Ensure.Web.Controllers
                                 table1.AddCell(cell2);
                                 table1.AddCell(i.CorrectAnswer);
                                 document.Add(table1);
-                                
+
                             }
-                            
+
                         }
 
                         document.Add(new Paragraph("Practical Question Set"));
@@ -852,8 +855,8 @@ namespace Silicus.Ensure.Web.Controllers
                                 table2.SpacingBefore = 20;
                                 cell = new PdfPCell(new Phrase(i.QuestionDescription));
                                 cell.Rowspan = 1;
-                                table2.AddCell(cell);                                
-                                table2.AddCell(i.Answer);                                
+                                table2.AddCell(cell);
+                                table2.AddCell(i.Answer);
 
                                 document.Add(table2);
                             }
