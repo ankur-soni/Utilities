@@ -1,5 +1,6 @@
 ﻿@model Silicus.Ensure.Web.Models.SubmittedTestViewModel
 @using Silicus.Ensure.Models.Constants
+@using Silicus.Ensure.Web.Application;
 @using Kendo.Mvc.UI;
 @{
     ViewBag.Title = "Submitted Test";
@@ -101,12 +102,12 @@
                             <tbody>
                                 @foreach (var oQuestion in Model.objectiveQuestionList)
                                 {
-                                <tr>
-                                    <td>@Html.Raw(@oQuestion.QuestionDescription)</td>
-                                    <td>@oQuestion.SubmittedAnswer</td>
-                                    <td>@oQuestion.CorrectAnswer</td>
-                                    <td>@oQuestion.Result</td>
-                                </tr>
+                                    <tr>
+                                        <td>@Html.Raw(@oQuestion.QuestionDescription)</td>
+                                        <td>@oQuestion.SubmittedAnswer</td>
+                                        <td>@oQuestion.CorrectAnswer</td>
+                                        <td>@oQuestion.Result</td>
+                                    </tr>
                                 }
                             </tbody>
                         </table>
@@ -205,8 +206,10 @@
                                 .HtmlAttributes(new { type = "button" })
                                 .Events(e => e.Click("OnCancel"))
                                 .Content("Cancel"))
-
-                            <input type="submit" value="Save" class="k-button k-button-icontext" id="btnSave" />
+                            @if (Model.TestStatus == AppConstants.TestStatusSubmitted)
+                            {
+                                <input type="submit" value="Save" class="k-button k-button-icontext" id="btnSave" />
+                            }
                         </div>
                     </div>
                 </fieldset>

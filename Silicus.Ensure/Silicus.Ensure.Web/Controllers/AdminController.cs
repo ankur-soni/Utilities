@@ -453,11 +453,7 @@ namespace Silicus.Ensure.Web.Controllers
             {
                 var testSuiteDomainModel = _mappingService.Map<TestSuiteViewModel, TestSuite>(testSuiteView);
                 testSuiteDomainModel.PrimaryTags = string.Join(",", testSuiteView.PrimaryTagIds);
-                if (testSuiteView.SecondaryTagIds != null)
-                {
-                    testSuiteDomainModel.SecondaryTags = string.Join(",", testSuiteView.SecondaryTagIds);
-                }
-
+                
                 TempData.Add("IsNewTestSuite", 1);
                 if (testSuiteView.TestSuiteId == 0 || testSuiteView.IsCopy == true)
                 {
@@ -669,6 +665,7 @@ namespace Silicus.Ensure.Web.Controllers
                 }
 
                 SubmittedTestViewModel submittedTestViewModel = new Models.SubmittedTestViewModel();
+                submittedTestViewModel.TestStatus = userDetails.TestStatus;
                 submittedTestViewModel.FirstName = userDetails.FirstName;
                 submittedTestViewModel.LastName = userDetails.LastName;
                 submittedTestViewModel.Duration = userTestSuitDetails.Duration;

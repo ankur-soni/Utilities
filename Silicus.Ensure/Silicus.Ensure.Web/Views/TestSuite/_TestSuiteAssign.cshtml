@@ -24,7 +24,7 @@
                       model.Id(p => p.UserId);
                       model.Field(p => p.UserId).Editable(false);
                   })
-                  .Read(read => read.Action("TestSuitUsers", "Admin"))
+                  .Read(read => read.Action("TestSuitUsers", "TestSuite"))
                   .PageSize(10)
               )
               .Pageable()
