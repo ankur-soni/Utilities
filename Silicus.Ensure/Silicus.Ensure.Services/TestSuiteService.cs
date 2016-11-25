@@ -79,7 +79,10 @@ namespace Silicus.Ensure.Services
             return _context.Query<TestSuite>().Where(x => x.TestSuiteId == testSuiteId).FirstOrDefault();
         }
 
-
+        public UserTestSuite GetUserTestSuiteByUserId(int userId)
+        {
+            return _context.Query<UserTestSuite>().Where(x => x.UserId == userId).FirstOrDefault();
+        }
 
         public UserTestSuite GetUserTestSuiteId(int userTestSuiteId)
         {
@@ -100,9 +103,32 @@ namespace Silicus.Ensure.Services
         }
 
 
-        public UserTestDetails GetUserTestDetailsId(int userTestDetailsId)
+        public UserTestDetails GetUserTestDetailsId(int? userTestDetailsId)
         {
             return _context.Query<UserTestDetails>().Where(x => x.TestDetailId == userTestDetailsId).FirstOrDefault();
+        }
+
+        public dynamic GetUserTestDetailsByUserTestSuitId(int? userTestSuitId)
+        {
+            var result = (from a in _context.Query<UserTestDetails>()
+                              .Where(x => x.UserTestSuite.UserTestSuiteId == userTestSuitId)
+                          join b in _context.Query<Question>()
+                          on a.QuestionId equals b.Id
+                          select new
+                          {
+                              a.TestDetailId,
+                              a.Answer,
+                              b.Id,
+                              b.QuestionType,
+                              b.AnswerType,
+                              b.QuestionDescription,
+                              b.Option1,
+                              b.Option2,
+                              b.Option3,
+                              b.Option4,
+                              b.Marks,
+                          }).OrderBy(o => o.QuestionType).ToList();
+            return result;
         }
 
         public int ActiveteSuite(UserTestSuite userTestSuite, TestSuite testSuite)
@@ -311,5 +337,5 @@ namespace Silicus.Ensure.Services
                 testSuiteTags.Add(testSuiteTagViewModel);
             }
         }
-    }    
+    }
 }
