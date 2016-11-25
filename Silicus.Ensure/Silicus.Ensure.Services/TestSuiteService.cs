@@ -316,6 +316,7 @@ namespace Silicus.Ensure.Services
             userTestSuite.ObjectiveCount = questions.Where(x => x.QuestionType == 1).Count();
             userTestSuite.PracticalCount = questions.Where(x => x.QuestionType == 2).Count();
             userTestSuite.MaxScore = questions.Sum(x => x.Marks);
+            userTestSuite.Duration = testSuite.Duration;
             userTestSuite.StatusId = Convert.ToInt32(TestStatus.Assigned);
             return AddUserTestSuite(userTestSuite);
         }
