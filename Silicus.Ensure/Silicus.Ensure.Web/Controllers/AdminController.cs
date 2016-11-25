@@ -259,84 +259,36 @@ namespace Silicus.Ensure.Web.Controllers
             return View();
         }
 
-        public ActionResult CandidatesSuit(int UserId)
+        public ActionResult CandidatesSuit(int UserId, int IsReassign=0)
         {
             ViewBag.CurrentUser = UserId;
+            ViewBag.IsReassign = IsReassign;
             return PartialView("SelectCandidatesSuit");
         }
 
-        public ActionResult AssignSuite(int SuiteId, int Userid)
+        public ActionResult AssignSuite(int SuiteId, int UserId, int IsReAssign=0)
         {
-
-            DataSourceRequest dataSourceRequest = new Kendo.Mvc.UI.DataSourceRequest();
-            dataSourceRequest.Page = 1;
-            dataSourceRequest.PageSize = 10;
-
-            int objectiveCount = 0;
-            int maxScore = 0;
-            List<UserTestDetails> userTestDetailsList = new List<UserTestDetails>();
-            var updateCurrentUsers = _userService.GetUserDetails().Where(model => model.UserId == Userid).FirstOrDefault();
-
+            var updateCurrentUsers = _userService.GetUserDetails().Where(model => model.UserId == UserId).FirstOrDefault();
             if (updateCurrentUsers != null)
             {
-                if (SuiteId > 0 && Userid > 0)
+                if (SuiteId > 0 && UserId > 0)
                 {
-                    var ViewPrimaryTagList = _testSuiteService.GetTestSuiteDetails().Where(q => q.TestSuiteId == SuiteId).Select(p => p.PrimaryTags).ToList();
-                    foreach (var tagid in ViewPrimaryTagList)
+                    if (IsReAssign == 1)
                     {
-                        string[] values = tagid.Split(',');
-                        for (int i = 0; i < values.Length; i++)
+                        var userTest = _testSuiteService.GetUserTestSuite().Where(x => x.UserId == UserId && x.StatusId == Convert.ToInt32(TestStatus.Assigned)).SingleOrDefault();
+                        if (userTest != null)
                         {
-                            values[i] = values[i].Trim();
-                            var questionList = _questionService.GetQuestion();
-                            objectiveCount += questionList.Where(p => p.Tags.Contains(values[i]) && p.QuestionType == 1).ToList().Count();
-
-                            foreach (var question in questionList)
-                            {
-                                maxScore += question.Marks;
-                            }
+                            _testSuiteService.DeleteUserTestSuite(userTest);
                         }
                     }
-
-                    UserTestSuite newusertestsuit = new UserTestSuite
-                    {
-                        UserId = Userid,
-                        TestSuiteId = SuiteId,
-                        ObjectiveCount = objectiveCount,
-                        MaxScore = maxScore,
-                        CreatedDate = DateTime.Now,
-                    };
-
-                    _testSuiteService.AddUserTestSuite(newusertestsuit);
-                    updateCurrentUsers.TestStatus = "Assigned";
-                    _userService.Update(updateCurrentUsers);
-
-
-                    foreach (var tagid in ViewPrimaryTagList)
-                    {
-                        string[] values = tagid.Split(',');
-                        for (int i = 0; i < values.Length; i++)
-                        {
-                            values[i] = values[i].Trim();
-                            var questionList = _questionService.GetQuestion().Where(p => p.Tags.Contains(values[i])).ToList();
-                            foreach (var questionId in questionList)
-                            {
-                                if (newusertestsuit.UserTestDetails == null || (!newusertestsuit.UserTestDetails.Any(x => x.QuestionId == questionId.Id)))
-                                {
-                                    UserTestDetails userTestDetails = new UserTestDetails
-                                    {
-                                        UserTestSuite = newusertestsuit,
-                                        QuestionId = Convert.ToInt32(questionId.Id),
-                                        //Answer = questionId.Answer,
-                                    };
-
-                                    _testSuiteService.AddUserTestDetails(userTestDetails);
-                                }
-
-                            }
-                        }
-                    }
-
+                    var testSuiteDetails = _testSuiteService.GetTestSuiteDetails().Where(model => model.TestSuiteId == SuiteId && model.IsDeleted == false).SingleOrDefault();
+                    UserTestSuite userTestSuite = new UserTestSuite();
+                    userTestSuite.UserId = UserId;
+                    userTestSuite.TestSuiteId = SuiteId;
+                    _testSuiteService.ActiveteSuite(userTestSuite, testSuiteDetails);
+                    var selectUser = _userService.GetUserDetails().Where(model => model.UserId == UserId).FirstOrDefault();
+                    selectUser.TestStatus = Convert.ToString(TestStatus.Assigned);
+                    _userService.Update(selectUser);
                     return Json(1);
                 }
                 else

@@ -4,9 +4,8 @@
     {
         NotAssigned = 1,
         Assigned = 2,
-        ReAssigned = 3,
-        Submitted = 4,
-        Evaluating = 5,
-        Completed = 6
+        Submitted = 3,
+        Evaluating = 4,
+        Completed = 5
     }
 }
