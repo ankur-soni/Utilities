@@ -11,7 +11,7 @@ namespace Silicus.Ensure.Services.Interfaces
 
         UserTestSuite GetUserTestSuiteId(int userTestSuiteId);
 
-        UserTestDetails GetUserTestDetailsId(int userTestDetailsId);
+        UserTestDetails GetUserTestDetailsId(int? userTestDetailsId);
 
         int Add(TestSuite TestSuite);
 
@@ -32,5 +32,7 @@ namespace Silicus.Ensure.Services.Interfaces
         void DeleteUserTestSuite(UserTestSuite UserTestSuite);
 
         UserTestSuite GetUserTestSuiteByUserId(int userId);
+
+        dynamic GetUserTestDetailsByUserTestSuitId(int? userTestSuitId);
     }
 }

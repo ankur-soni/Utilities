@@ -28,6 +28,8 @@ namespace Silicus.Ensure.Web.Mappings
             Mapper.CreateMap<Question, TestSuiteQuestionModel>();
             Mapper.CreateMap<TestSuiteCandidateModel, UserTestSuite>();
             Mapper.CreateMap<UserTestSuite, TestSuiteCandidateModel>();
+            Mapper.CreateMap<TestSuiteQuestionModel, object>();
+            Mapper.CreateMap<object, TestSuiteQuestionModel>();
         }
     }
 }

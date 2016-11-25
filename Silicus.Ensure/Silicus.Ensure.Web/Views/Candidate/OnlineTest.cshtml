@@ -17,8 +17,8 @@
         <div class="row">
             <div class="col-md-12" style="border-bottom-width:1px; border-bottom-style:solid; border-bottom-color:black;">
             </div>
-            @*@Html.HiddenFor(model => model.UserTestSuiteId, new { id = "UserTestSuiteId" })
-            @Html.HiddenFor(model => model.UserId, new { id = "UserId" })*@
+            @Html.HiddenFor(model => model.UserTestSuiteId, new { id = "UserTestSuiteId" })
+            @Html.HiddenFor(model => model.UserId, new { id = "UserId" })
         </div>
         <br />
         <div class="row">
@@ -28,7 +28,7 @@
                         <label class="control-label" for="obj"><strong>No. of Objective Question:</strong></label>
                     </div>
                     <div class="col-md-6">
-                        <label class="control-label" for="obj">@*@Model.ObjectiveCount*@20</label>
+                        <label class="control-label" for="obj">@Model.ObjectiveCount</label>
                     </div>
                 </div>
                 <div class="row">
@@ -37,7 +37,7 @@
                     </div>
 
                     <div class="col-md-6">
-                        <label class="control-label" for="prac">@*@Model.PracticalCount*@5</label>
+                        <label class="control-label" for="prac">@Model.PracticalCount</label>
                     </div>
                 </div>
                 <div class="row">
@@ -45,7 +45,7 @@
                         <label class="control-label" for="total"><strong>Total Question:</strong></label>
                     </div>
                     <div class="col-md-6">
-                        <label class="control-label" for="total">@*@Model.TotalCount*@25</label>
+                        <label class="control-label" for="total">@Model.TotalCount</label>
                     </div>
                 </div>
                 <div class="row">
@@ -53,7 +53,7 @@
                         <label class="control-label" for="duration"><strong>Total Duration (Mins):</strong></label>
                     </div>
                     <div class="col-md-6">
-                        <label class="control-label" for="duration">@*@Model.DurationInMin*@30</label>
+                        <label class="control-label" for="duration">@Model.DurationInMin</label>
                     </div>
                 </div>
             </div>
@@ -118,16 +118,43 @@
     </div>
 </div>
 
+<!-- Modal Submit Test On Time Complete-->
+<div class="modal fade" id="myModalTC" role="dialog" onclick="TestDurationComplete();">
+    <div class="modal-dialog">
+
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" onclick="TestDurationComplete();">&times;</button>
+                <h4 class="modal-title"><span id="msgMainTC">Warning!</span></h4>
+            </div>
+            <div class="modal-body">
+                <p id="msgContentTC">The Test duration is over, thank you for your participation. Further, the Recruitment team will contact you for the update.</p>
+            </div>
+            <div class="modal-footer">
+                <button id="btnModalOKTC" type="button" class="btn btn-default" data-dismiss="modal" onclick="TestDurationComplete();">OK</button>
+            </div>
+        </div>
+
+    </div>
+</div>
+
 <script>
     var clock;
     var totalTime;
-    $(document).ready(function () {
 
+    window.onbeforeunload = function () {
+        return false;
+    }
+        
+    $(document).ready(function () {
+        
         // Hide Submit button of popup. Show when to want submit test.
         $("#btnSubmitTestOK").hide();
 
         // Load First Question On page Load.
-        $('#QuestionDetails').load('/Candidate/LoadQuestion?Id=' + 1);
+        var userTestSuiteId = $("#UserTestSuiteId").val();
+        $('#QuestionDetails').load('/Candidate/LoadQuestion?userTestSuiteId=' + userTestSuiteId);
 
         // Timer
         clock = $('#counter').FlipClock({
@@ -135,7 +162,7 @@
             autoStart: false,
             callbacks: {
                 stop: function () {
-                    OnSubmitTestOK();
+                    $("#myModalTC").modal();
                 },
                 interval: ProgressBar
             }
@@ -238,16 +265,44 @@
     }
 
     function OnNext() {
-        var checkedradio = $('[name="optradio"]:radio:checked').val();
+        var answer = GetAnswer();
         var questionNumber = $("#QuestionNumber").val();
-        $('#QuestionDetails').load('/Candidate/OnNextPrevious?Qnumber=' + questionNumber + '&Move=N');
+        var userTestSuiteId = $("#UserTestSuiteId").val();
+        var userTestDetailId = $("#UserTestDetailId").val();
+        $('#QuestionDetails').load('/Candidate/OnNextPrevious?Qnumber=' + questionNumber + '&Move=N&userTestSuiteId=' + userTestSuiteId + '&userTestDetailId=' + userTestDetailId + '&answer=' + answer);
         return false;
     }
 
     function OnPrevious() {
+        var answer = GetAnswer();
         var questionNumber = $("#QuestionNumber").val();
-        $('#QuestionDetails').load('/Candidate/OnNextPrevious?Qnumber=' + questionNumber + '&Move=P');
+        var userTestSuiteId = $("#UserTestSuiteId").val();
+        var userTestDetailId = $("#UserTestDetailId").val();
+        $('#QuestionDetails').load('/Candidate/OnNextPrevious?Qnumber=' + questionNumber + '&Move=P&userTestSuiteId=' + userTestSuiteId + '&userTestDetailId=' + userTestDetailId + '&answer=' + answer);
         return false;
+    }
+
+    function GetAnswer() {
+        var answer = "";
+        if ($("#QuestionType").val().trim() == "1") {
+            if ($("#AnswerType").val().trim() == "1") {
+                answer = $('[name="optradio"]:radio:checked').val();
+            }
+            else {
+                $("input:checkbox[name=optcheckbox]:checked").each(function () {
+                    answer = answer + $(this).val() + ",";
+                });
+
+                answer = answer.slice(0, -1);
+            }
+        }
+        else {
+            answer = $("#PracticalAnswer").val();
+            answer = encodeURIComponent(answer);
+        }
+        if (answer == "undefined")
+            answer = null;
+        return answer;
     }
 
     function OnSubmitTest() {
@@ -257,6 +312,17 @@
     }
 
     function OnSubmitTestOK() {
-        window.location.href = "/Candidate/OnSubmitTest";
+        var answer = GetAnswer();
+        var userTestDetailId = $("#UserTestDetailId").val();
+        var userId = $("#UserId").val();
+        window.location.href = '/Candidate/OnSubmitTest?userTestDetailId=' + userTestDetailId + '&userId=' + userId + '&answer=' + answer;
     }
+
+    function TestDurationComplete() {
+        var answer = GetAnswer();
+        var userTestDetailId = $("#UserTestDetailId").val();
+        var userId = $("#UserId").val();
+        window.location.href = '/Candidate/OnSubmitTest?userTestDetailId=' + userTestDetailId + '&userId=' + userId + '&answer=' + answer;
+    }
+
 </script>

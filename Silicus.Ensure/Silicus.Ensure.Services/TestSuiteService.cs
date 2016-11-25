@@ -29,7 +29,7 @@ namespace Silicus.Ensure.Services
         public void Update(TestSuite TestSuite)
         {
             if (TestSuite.TestSuiteName != null)
-            {                
+            {
                 _context.Update(TestSuite);
             }
         }
@@ -58,7 +58,7 @@ namespace Silicus.Ensure.Services
         public void UpdateUserTestSuite(UserTestSuite UserTestSuite)
         {
             if (UserTestSuite.UserId > 0)
-            {                
+            {
                 _context.Update(UserTestSuite);
             }
         }
@@ -100,9 +100,32 @@ namespace Silicus.Ensure.Services
         }
 
 
-        public UserTestDetails GetUserTestDetailsId(int userTestDetailsId)
+        public UserTestDetails GetUserTestDetailsId(int? userTestDetailsId)
         {
             return _context.Query<UserTestDetails>().Where(x => x.TestDetailId == userTestDetailsId).FirstOrDefault();
+        }
+
+        public dynamic GetUserTestDetailsByUserTestSuitId(int? userTestSuitId)
+        {
+            var result = (from a in _context.Query<UserTestDetails>()
+                              .Where(x => x.UserTestSuite.UserTestSuiteId == userTestSuitId)
+                          join b in _context.Query<Question>()
+                          on a.QuestionId equals b.Id
+                          select new
+                          {
+                              a.TestDetailId,
+                              a.Answer,
+                              b.Id,
+                              b.QuestionType,
+                              b.AnswerType,
+                              b.QuestionDescription,
+                              b.Option1,
+                              b.Option2,
+                              b.Option3,
+                              b.Option4,
+                              b.Marks,
+                          }).OrderBy(o => o.QuestionType).ToList();
+            return result;
         }
     }
 }
