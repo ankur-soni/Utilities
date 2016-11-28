@@ -9,10 +9,12 @@ namespace Silicus.Encourage.Services.Interface
 {
     public interface IResultService
     {
-        void ShortlistNomination(int nominationId);
+        void ShortlistNomination(int nominationId, int adminId);
         void UnShortlistNomination(int nominationId);
-        void SelectWinner(int nominationId,string winningComment);
+        void SelectWinner(int nominationId,string winningComment, string HrAdminsFeedback, int AdminId);
         int IsShortlistedOrWinner(int nominationId);
         string GetAwardComments(int Id);
+        string GetHrAdminsFeedbackForEmployee(int loggedInAdminsId, int nominationId);
+        string GetLoggedInUserName(string emailId);
     }
 }

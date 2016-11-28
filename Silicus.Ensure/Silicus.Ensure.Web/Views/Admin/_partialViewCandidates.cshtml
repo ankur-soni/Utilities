@@ -48,11 +48,8 @@
 <h2>Candidates List</h2>
 <script>
     $(document).ready(function () {
-        $(".blurSec2").hide();
-        $(".blurSec1").hide();
-        $("#Candy").hide();
-        $("#FieldFilter").keyup(function () {
 
+        $("#FieldFilter").keyup(function () {
             var value = $("#FieldFilter").val();
             grid = $("#userGrids").data("kendoGrid");
 
@@ -71,11 +68,6 @@
             }
         });
     });
-    function ClosePopUp() {
-        $(".blurSec2").hide();
-        $(".blurSec1").hide();
-        $("#Candy").hide();
-    }
     function showTest(UserId, TestStatus) {
         if (TestStatus == '@TestStatus.NotAssigned.ToString()') {
             $.ajax({
@@ -87,12 +79,12 @@
                 contenttype: "application/json; charset=utf-8",
                 success: function (data) {
                     $("#CandidateInfo").html(data);
+                    $('#myModal').fadeIn();
                     $('#myModal').modal();                   
                 }
             });
         }
-        else
-        {
+        else {
             alert("Sorry! Cann't perform this operation.");
         }
     }
@@ -104,25 +96,29 @@
                 async: false,
                 url: "/Admin/CandidatesSuit",
                 cache: false,
-                data: { UserId: UserId, IsReassign:1 },
+                data: { UserId: UserId, IsReassign: 1 },
                 contenttype: "application/json; charset=utf-8",
                 success: function (data) {
                     $("#CandidateInfo").html(data);
+                    $('#myModal').fadeIn();
                     $('#myModal').modal();
                 }
             });
         }
-        else {
-            alert("Sorry! Cann't perform this operation.");
         }
-    }
 
 
     $(function () {
         $("#Savebtn").bind("click", function () {
-
+            var chkCheck = false;
+            $('input:checkbox').each(function () {
+                if ($(this).is(':checked')) {
+                    chkCheck = true;
+                }
+            });
+            if (chkCheck) {
             var uId = $("#CurrentUser").val();
-            var IsReAssign = $("#IsReAssign").val();            
+            var IsReAssign = $("#IsReAssign").val();
             var checkvals = $("[class='check']:checked").attr("value")
 
             $('#myModal').find('input[type=checkbox]:checked').removeAttr('checked');
@@ -138,12 +134,17 @@
                         $('#userGrids').data('kendoGrid').dataSource.read();
                         $('#userGrids').data('kendoGrid').refresh();
                         ShowMessage("Test suit assigned successfully.", 1);
+                            $('#myModal').fadeOut();
                     }
                 },
                 error: function (er) {
 
                 }
             });
+            }
+            else {
+                alert('Please select at least one test suit !')
+            }
         });
 
     });
@@ -151,7 +152,6 @@
     function Change() {
         var value = $("#TestStatus").val();
         grid = $("#userGrids").data("kendoGrid");
-
         if (value == "All") {
             grid.dataSource.filter([]);
         }
@@ -162,7 +162,6 @@
 
     function AddNew() {
         window.location.href = "/Admin/CandidateAdd?UserId=0";
-
         return false;
     }
 
@@ -187,7 +186,6 @@
     }
 
     function CheckAssign(status, id, UserId) {
-
         if (status == 'Assigned' && id == 1) {
             window.location.href = "/Admin/ViewQuestion?id=" + UserId;
             return false;
@@ -231,7 +229,7 @@
                           model.Field(p => p.UserId).Editable(false);
                       })
 
-                          .Read(read => read.Action("GetCandidateDetails", "User"))
+                          .Read(read => read.Action("GetCandidateDetails", "User", new { RoleName = "Candidate" }))
                           .Create(update => update.Action("CreateUser", "User"))
                           .Update(update => update.Action("UpdateUser", "User"))
                           .Destroy(update => update.Action("DeleteUser", "User"))
@@ -265,7 +263,7 @@
     }
 
 </div>
-<div class="modal fade" id="myModal" role="dialog">
+<div class="modal fade" id="myModal" data-backdrop="static" role="dialog">
     <div class="modal-dialog">
         <!-- Modal content-->
         <div class="modal-content">
@@ -277,7 +275,7 @@
 
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-primary" data-dismiss="modal" onclick="ClosePopUp();" id="Savebtn">Save</button>
+                <button type="button" class="btn btn-primary" id="Savebtn">Save</button>
             </div>
         </div>
     </div>

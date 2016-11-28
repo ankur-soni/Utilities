@@ -259,14 +259,14 @@ namespace Silicus.Ensure.Web.Controllers
             return View();
         }
 
-        public ActionResult CandidatesSuit(int UserId, int IsReassign=0)
+        public ActionResult CandidatesSuit(int UserId, int IsReassign = 0)
         {
             ViewBag.CurrentUser = UserId;
             ViewBag.IsReassign = IsReassign;
             return PartialView("SelectCandidatesSuit");
         }
 
-        public ActionResult AssignSuite(int SuiteId, int UserId, int IsReAssign=0)
+        public ActionResult AssignSuite(int SuiteId, int UserId, int IsReAssign = 0)
         {
             var updateCurrentUsers = _userService.GetUserDetails().Where(model => model.UserId == UserId).FirstOrDefault();
             if (updateCurrentUsers != null)
@@ -405,7 +405,7 @@ namespace Silicus.Ensure.Web.Controllers
             {
                 var testSuiteDomainModel = _mappingService.Map<TestSuiteViewModel, TestSuite>(testSuiteView);
                 testSuiteDomainModel.PrimaryTags = string.Join(",", testSuiteView.PrimaryTagIds);
-                
+
                 TempData.Add("IsNewTestSuite", 1);
                 if (testSuiteView.TestSuiteId == 0 || testSuiteView.IsCopy == true)
                 {
@@ -697,6 +697,8 @@ namespace Silicus.Ensure.Web.Controllers
 
             foreach (var userTestDetails in userTestSuitDetails.UserTestDetails.Where(x => x.QuestionId == Convert.ToInt32(Request.Form["PractileQuesionId" + count])).ToList())
             {
+                userTestDetails.MarkGivenByName = User.Identity.Name;
+                userTestDetails.MarkGivenBy = UserManager.FindByEmailAsync(userTestDetails.MarkGivenByName).Id;
                 userTestDetails.Mark = Convert.ToInt32(Request.Form["Emarks" + count]);
                 userTestDetails.MarkGivenDate = DateTime.Now;
 
@@ -773,7 +775,7 @@ namespace Silicus.Ensure.Web.Controllers
                         {                          
                             if (i.QuestionType == 1)
                             {
-                                table1= new PdfPTable(2);
+                                table1 = new PdfPTable(2);
                                 table1.SpacingBefore = 20;
                                 cell = new PdfPCell(new Phrase(i.QuestionDescription));
                                 cell.Rowspan = 4;

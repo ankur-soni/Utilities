@@ -19,6 +19,7 @@ using Silicus.Ensure.Models.Constants;
 
 namespace Silicus.Ensure.Web.Controllers
 {
+    [Authorize]
     public class PositionsController : Controller
     {
         private readonly IPositionService _positionService;
@@ -87,6 +88,12 @@ namespace Silicus.Ensure.Web.Controllers
             return null;
         }
         #endregion Position
+
+
+        public ActionResult LocalStorage()
+        {
+            return View();
+        }
 
     }
 }

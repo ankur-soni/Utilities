@@ -39,3 +39,10 @@
 <input type="hidden" value="@ViewBag.CurrentUser" id="CurrentUser" />
 <input type="hidden" value="@ViewBag.IsReassign" id="IsReAssign" />
 
+<script>
+    $("#testSuiteGrids").on("change", "input.check", function (e) {
+        var v = $(this).is(":checked");
+        $("input.check", "#testSuiteGrids").prop("checked", false);
+        $(this).prop("checked", v);
+    });
+</script>

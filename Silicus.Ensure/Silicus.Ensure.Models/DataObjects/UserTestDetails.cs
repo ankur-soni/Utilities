@@ -6,7 +6,7 @@ namespace Silicus.Ensure.Models.DataObjects
     public class UserTestDetails
     {
         [Key]
-        public int TestDetailId { get; set; }        
+        public int TestDetailId { get; set; }
 
         public int QuestionId { get; set; }
 
@@ -15,6 +15,8 @@ namespace Silicus.Ensure.Models.DataObjects
         public int? Mark { get; set; }
 
         public int? MarkGivenBy { get; set; }
+
+        public string MarkGivenByName { get; set; }
 
         public DateTime? MarkGivenDate { get; set; }
 

@@ -6,7 +6,6 @@
     ViewBag.Title = "Admin Dashboard";
     var user = Html.Partial("/Views/Admin/_partialViewUser.cshtml");
     var roles = Html.Partial("/Views/Admin/_partialViewRoles.cshtml");
-    var positions = Html.Partial("/Views/Admin/positions.cshtml");
 }
 
 <div class="main-content">
@@ -77,16 +76,12 @@
     .Name("Tabs")
     .Items(tabstrip =>
     {
-
         tabstrip.Add().Text("Users")
             .Selected(true)
            .Content(user.ToString());
 
         tabstrip.Add().Text("Roles")
           .Content(roles.ToString());
-
-        tabstrip.Add().Text("Positions")
-          .Content(positions.ToString());
     })
             )
         </div>

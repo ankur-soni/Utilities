@@ -5,7 +5,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Silicus.Ensure.Web.Models
 {
-    public class UserViewModel
+    public class UserViewModel    
     {
         public int UserId { get; set; }
 
@@ -34,6 +34,7 @@ namespace Silicus.Ensure.Web.Models
         public string Role { get; set; }
 
         [Required]
+        [System.Web.Mvc.Remote("IsDuplicateEmail", "User", AdditionalFields = "UserId", ErrorMessage = "Email already name exist !")]
         [RegularExpression(@"[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}", ErrorMessage = "Please enter correct email")]
         public string Email { get; set; }
 
