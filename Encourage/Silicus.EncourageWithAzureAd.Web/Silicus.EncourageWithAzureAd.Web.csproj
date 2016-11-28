@@ -290,6 +290,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="API\NominationApiController.cs" />
+    <Compile Include="API\ReviewerApiController.cs" />
     <Compile Include="API\ReviewNominationApiController.cs" />
     <Compile Include="App_Start\AttributeRoutingConfig.cs" />
     <Compile Include="App_Start\BundleConfig.cs" />
@@ -494,7 +495,6 @@
     <Content Include="Css\style.css" />
     <Content Include="Css\style.min.css" />
     <Content Include="Css\_notes\dwsync.xml" />
-    <Content Include="favicon.ico" />
     <Content Include="font-awesome\css\font-awesome.css" />
     <Content Include="font-awesome\css\font-awesome.min.css" />
     <Content Include="font-awesome\css\_notes\dwsync.xml" />
@@ -736,6 +736,9 @@
     <Content Include="js\_notes\dwsync.xml" />
     <Content Include="LESS\style.css" />
     <Content Include="LESS\_notes\dwsync.xml" />
+    <Content Include="favicon.ico">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Scripts\ai.0.22.9-build00167.js" />
     <Content Include="Scripts\ai.0.22.9-build00167.min.js" />
     <Content Include="Scripts\bootstrap.js" />
