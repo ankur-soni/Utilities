@@ -68,28 +68,23 @@
             }
         });
     });
-    function ClosePopUp() {
-        $(".blurSec2").hide();
-        $(".blurSec1").hide();
-        $("#Candy").hide();
-    }
     function showTest(UserId, TestStatus) {
         if (TestStatus == '@TestStatus.NotAssigned.ToString()') {
-        $.ajax({
-            type: 'post',
-            async: false,
-            url: "/Admin/CandidatesSuit",
-            cache: false,
-            data: { UserId: UserId },
-            contenttype: "application/json; charset=utf-8",
-            success: function (data) {
+            $.ajax({
+                type: 'post',
+                async: false,
+                url: "/Admin/CandidatesSuit",
+                cache: false,
+                data: { UserId: UserId },
+                contenttype: "application/json; charset=utf-8",
+                success: function (data) {
                     $("#CandidateInfo").html(data);
-                    $('#myModal').modal();                   
+                    $('#myModal').fadeIn();
+                    $('#myModal').modal();
                 }
             });
         }
-        else
-        {
+        else {
             alert("Sorry! Cann't perform this operation.");
         }
     }
@@ -101,22 +96,19 @@
                 async: false,
                 url: "/Admin/CandidatesSuit",
                 cache: false,
-                data: { UserId: UserId, IsReassign:1 },
+                data: { UserId: UserId, IsReassign: 1 },
                 contenttype: "application/json; charset=utf-8",
                 success: function (data) {
-                $("#CandidateInfo").html(data);
-                $('#myModal').modal();
-            }
-        });
+                    $("#CandidateInfo").html(data);
+                    $('#myModal').fadeIn();
+                    $('#myModal').modal();
+                }
+            });
+        }
     }
 
 
     $(function () {
-        //$('body').on('click', '#Savebtn', function () {
-        //    var myClone = myBackup.clone();
-        //    $('body').append(myClone);
-        //});
-
         $("#Savebtn").bind("click", function () {
             var chkCheck = false;
             $('input:checkbox').each(function () {
@@ -125,32 +117,30 @@
                 }
             });
             if (chkCheck) {
-            var uId = $("#CurrentUser").val();
-            var IsReAssign = $("#IsReAssign").val();
-            alert(IsReAssign);
-            alert(uId);
-            var checkvals = $("[class='check']:checked").attr("value")
+                var uId = $("#CurrentUser").val();
+                var IsReAssign = $("#IsReAssign").val();
+                var checkvals = $("[class='check']:checked").attr("value")
 
-            $('#myModal').find('input[type=checkbox]:checked').removeAttr('checked');
-            $.ajax({
-                type: 'post',
-                async: false,
-                url: "/Admin/AssignSuite",
-                cache: false,
-                data: { SuiteId: checkvals, UserId: uId, IsReAssign: IsReAssign },
-                contenttype: "application/json; charset=utf-8",
-                success: function (returndata) {
-                    if (returndata == 1) {
-                        $('#userGrids').data('kendoGrid').dataSource.read();
-                        $('#userGrids').data('kendoGrid').refresh();
-                        ShowMessage("Test suit assigned successfully.", 1);
+                $('#myModal').find('input[type=checkbox]:checked').removeAttr('checked');
+                $.ajax({
+                    type: 'post',
+                    async: false,
+                    url: "/Admin/AssignSuite",
+                    cache: false,
+                    data: { SuiteId: checkvals, UserId: uId, IsReAssign: IsReAssign },
+                    contenttype: "application/json; charset=utf-8",
+                    success: function (returndata) {
+                        if (returndata == 1) {
+                            $('#userGrids').data('kendoGrid').dataSource.read();
+                            $('#userGrids').data('kendoGrid').refresh();
+                            ShowMessage("Test suit assigned successfully.", 1);
                             $('#myModal').fadeOut();
-                    }
-                },
-                error: function (er) {
+                        }
+                    },
+                    error: function (er) {
 
-                }
-            });
+                    }
+                });
             }
             else {
                 alert('Please select at least one test suit !')
@@ -162,7 +152,6 @@
     function Change() {
         var value = $("#TestStatus").val();
         grid = $("#userGrids").data("kendoGrid");
-
         if (value == "All") {
             grid.dataSource.filter([]);
         }
@@ -173,7 +162,6 @@
 
     function AddNew() {
         window.location.href = "/Admin/CandidateAdd?UserId=0";
-
         return false;
     }
 
@@ -198,7 +186,6 @@
     }
 
     function CheckAssign(status, id, UserId) {
-
         if (status == 'Assigned' && id == 1) {
             window.location.href = "/Admin/ViewQuestion?id=" + UserId;
             return false;
