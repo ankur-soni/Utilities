@@ -434,6 +434,10 @@
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
     <Content Include="Images\Enable Logo.PNG" />
+    <Content Include="Images\encourageLogo.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\Frameworx.jpg" />
     <Content Include="Images\loginbackground.jpg" />
     <Content Include="Images\logo.jpg" />
     <Content Include="Images\PROVARE-logo.jpg" />
@@ -730,7 +734,9 @@
     <Content Include="LESS\.crunch" />
     <None Include="Properties\PublishProfiles\EnHouse - FTP.pubxml" />
     <None Include="Properties\PublishProfiles\EnHouse - Web Deploy.pubxml" />
+    <None Include="Properties\PublishProfiles\SilicusUtilityContainerWeb7780 - FTP %282%29.pubxml" />
     <None Include="Properties\PublishProfiles\SilicusUtilityContainerWeb7780 - FTP.pubxml" />
+    <None Include="Properties\PublishProfiles\SilicusUtilityContainerWeb7780 - Web Deploy %282%29.pubxml" />
     <None Include="Properties\PublishProfiles\SilicusUtilityContainerWeb7780 - Web Deploy.pubxml" />
     <None Include="Properties\PublishProfiles\SilicusUtilityContainerWeb7780.pubxml" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
@@ -754,7 +760,9 @@
     <Content Include="Views\EmailBody\ReviewsLockedNotificationToAdmin.html">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="Web.config" />
+    <Content Include="Web.config">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </Content>

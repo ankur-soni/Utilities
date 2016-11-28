@@ -1,0 +1,42 @@
+﻿@model IEnumerable<Silicus.Encourage.Models.Criteria>
+
+<link href="~/css/star-rating.css" rel="stylesheet" />
+@*<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>*@
+<script src="~/js/star-rating.js"></script>  
+
+<tr>
+    <th> <span style="text-align:center">Criteria</span></th>
+    <th style="text-align:center">Rating</th>
+    <th style="text-align:center">Manager Comment</th>
+</tr>
+@{ int i = 0;}
+@foreach (var criteria in Model)
+{
+    <tr>
+        <td>
+            <div class="col-md-4" style="padding-left:2%">
+                <label> @criteria.Title</label>
+            </div>
+        </td>
+        <td>
+            <div class="col-md-4">
+                <input id="input-21a" value="0" type="number" data-star-captions="{}" data-default-caption="{rating} Stars" class="rating rating-loading" data-show-clear="false" data-show-caption="false" data-symbol="*" min=0 max=5 step=1 data-size="xs" name="Comments[@i].Rating">
+            </div>
+        </td>
+        <td class="col-md-4 criteriaComment">
+            <div class="col-md-4 criteriaComment">
+                <textarea class="form-control" onblur="return hideRemainingCharacterText(@i)"
+                          onkeyup="edValueKeyPress(@i)"
+                          rows=""
+                          name=Comments[@i].Comment
+                          id="@("comment"+i)"
+                          maxlength="500"></textarea>
+                <div class="@("textarea"+i)"></div>
+            </div>
+        </td>
+        <td>
+            <input type="hidden" name=Comments[@i].Id value="@criteria.Id">
+            <span class="hide">@(i++)</span>
+        </td>
+    </tr>
+}

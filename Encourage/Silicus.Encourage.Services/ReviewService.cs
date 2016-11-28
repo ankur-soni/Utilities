@@ -110,6 +110,9 @@ namespace Silicus.Encourage.Services
             return data == true ? true : false;
         }
 
-            
+        //public string GetHrAdminsCommentForEmployee(int loggedInAdminsId, int nominatedEmployeeId)
+        //{
+        //    var data = _encourageDatabaseContext.Query<Shortlist>().Where( s => s.)
+        //}
     }
 }
