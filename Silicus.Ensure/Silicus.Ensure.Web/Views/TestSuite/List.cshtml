@@ -24,7 +24,7 @@
                       columns.Bound(p => p.PositionName).Width(150).Title("Position");
                       columns.Bound(p => p.PrimaryTagNames).Width(300).Title("Tags");
                       columns.Bound(p => p.StatusName).Width(50).Title("Status");
-                      columns.Bound("").ClientTemplate("<a class='k-button k-button-icontext k-grid-add' href='\\#' onclick='return getTestSuiteId(#=TestSuiteId#)' data-toggle='modal' data-target='\\#myModal'><span class='k-icon k-add'></span>Activate Test Suite</a><a class='k-button k-button-icontext k-grid-add' href='" + Url.Action("Copy", "TestSuite") + "?testSuiteId=#=TestSuiteId#'><span class='k-icon k-add'></span>Copy</a><a class='k-button k-button-icontext k-grid-edit' href='" + Url.Action("Add", "TestSuite") + "?testSuiteId=#=TestSuiteId#'><span class='k-icon k-edit'></span>Edit</a><a id='testSuiteDel' class='k-button k-button-icontext k-grid-delete' href='\\#' onclick='return deleteTestSuite(#=TestSuiteId#)'><span class='k-icon k-delete'></span>Delete</a>").Title("Actions");       //href='" + Url.Action("TestSuiteDelete", "Admin") + "?testSuiteId=#=TestSuiteId#'
+                      columns.Bound("").ClientTemplate(@"<a class='k-button k-button-icontext k-grid-add' href='\\#' onclick= getTestSuiteId('#=TestSuiteId#','#=StatusName#') data-toggle='modal' data-target='\\#myModal'><span class='k-icon k-add'></span>Activate Test Suite</a><a class='k-button k-button-icontext k-grid-add' href='" + Url.Action("Copy", "TestSuite") + "?testSuiteId=#=TestSuiteId#'><span class='k-icon k-add'></span>Copy</a><a class='k-button k-button-icontext k-grid-edit' href='" + Url.Action("Add", "TestSuite") + "?testSuiteId=#=TestSuiteId#'><span class='k-icon k-edit'></span>Edit</a><a id='testSuiteDel' class='k-button k-button-icontext k-grid-delete' href='\\#' onclick='return deleteTestSuite(#=TestSuiteId#)'><span class='k-icon k-delete'></span>Delete</a>").Title("Actions");
                   })
                 .DataSource(dataSource => dataSource
                   .Ajax()
@@ -153,18 +153,23 @@
         });
     }
 
-    function getTestSuiteId(testSuiteId)
-    {       
-        $('#DivUsers').html('');
-        $.ajax({
-            type: "POST",
-            url: '@Url.Action("TestSuiteUserView", "TestSuite")',
-            data: { testSuiteId: testSuiteId },
-            success: function (returndata) {                                 
+    function getTestSuiteId(testSuiteId, statusName) {
+        if (statusName != '@Convert.ToString(Silicus.Ensure.Models.Constants.TestSuiteStatus.Pending)') {
+            $('#DivUsers').html('');
+            $.ajax({
+                type: "POST",
+                url: '@Url.Action("TestSuiteUserView", "TestSuite")',
+                data: { testSuiteId: testSuiteId },
+                success: function (returndata) {
                     $('#DivUsers').html(returndata);
-                    $("#myModal").modal();                                
-            }
-        });
+                    $("#myModal").modal();
+                }
+            });
+        }
+        else
+        {
+            alert("Test suite in pending status.");
+        }
     }
 
     $("#testSuiteSearch").click(function (e) {

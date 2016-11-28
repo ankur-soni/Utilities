@@ -1,9 +1,10 @@
 ﻿@model Silicus.Ensure.Web.Models.TestSuiteViewModel
 @using Silicus.Ensure.Models.Constants
 @using Kendo.Mvc.UI;
+@using Newtonsoft.Json;
 
 @{
-   ViewBag.Title = "TestSuite";
+    ViewBag.Title = "TestSuite";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 <div class="main-content">
@@ -19,45 +20,45 @@
                     <strong>Error!</strong> <span id="messageContent">@Html.ValidationSummary(true)</span>
                 </div>
                 <div class="col-md-4">
-                    @Html.LabelFor(model=>model.TestSuiteName)<b style="color:Red;">*</b>:
+                    @Html.LabelFor(model => model.TestSuiteName)<b style="color:Red;">*</b>:
                 </div>
                 <div class="col-md-8">
                     @Html.TextBoxFor(model => model.TestSuiteName, new { @class = "form-control" })
                 </div>
-                </div>
             </div>
-            <br />
-            <div class="row">
-                <div class="col-md-4">
-                    @Html.LabelFor(model => model.Duration)<b style="color:Red;">*</b>:
-                </div>
-                <div class="col-md-8">
-                    @(Html.Kendo().DropDownListFor(model => model.Duration)
+        </div>
+        <br />
+        <div class="row">
+            <div class="col-md-4">
+                @Html.LabelFor(model => model.Duration)<b style="color:Red;">*</b>:
+            </div>
+            <div class="col-md-8">
+                @(Html.Kendo().DropDownListFor(model => model.Duration)
                     .BindTo(new List<string>() {
                     "30", "60", "90", "120"
-                    })) 
-                </div>  
-            </div>            
-            <br />
-            <div class="row">
-                <div class="col-md-4">
-                    @Html.LabelFor(model => model.Position)<b style="color:Red;">*</b>:
-                </div>
-                <div class="col-md-8">
-                    @(Html.Kendo().DropDownListFor(model => model.Position)
+                    }))
+            </div>
+        </div>
+        <br />
+        <div class="row">
+            <div class="col-md-4">
+                @Html.LabelFor(model => model.Position)<b style="color:Red;">*</b>:
+            </div>
+            <div class="col-md-8">
+                @(Html.Kendo().DropDownListFor(model => model.Position)
                     .OptionLabel("--Select--")
                     .BindTo(Model.PositionList)
                     .DataTextField("PositionName")
                     .DataValueField("PositionId"))
-                </div>                
             </div>
-            <br />
-            <div class="row">
-                <div class="col-md-4">
-                    @Html.LabelFor(model => model.Competency)<b style="color:Red;">*</b>:
-                </div>
-                <div class="col-md-8">
-                    @(Html.Kendo().DropDownListFor(model => model.Competency)
+        </div>
+        <br />
+        <div class="row">
+            <div class="col-md-4">
+                @Html.LabelFor(model => model.Competency)<b style="color:Red;">*</b>:
+            </div>
+            <div class="col-md-8">
+                @(Html.Kendo().DropDownListFor(model => model.Competency)
                     .OptionLabel("--Select--")
                     .BindTo(new List<SelectListItem>() {
                     new SelectListItem(){
@@ -73,15 +74,15 @@
                     Value=Convert.ToString((Int32)Competency.Expert)
                     }
                     }))
-                </div>
             </div>
-            <br />            
+        </div>
+        <br />
         <div class="row">
             <div class="col-md-2">
                 Skill Tags:
             </div>
             <div class="col-md-10">
-                <table align='center' id="tag_table" role="grid" cellspacing="40">
+                <table align='center' class="tag-list" id="tag_table" role="grid" cellspacing="40">
                     @if (Model.Tags != null)
                     {
                         if (Model.Tags.Count() > 0)
@@ -94,8 +95,9 @@
                                     <tr id="@rowId">
                                         <td id="tag_title_row @Convert.ToString(i)">Skill Tag @Convert.ToString(i + 1)<b style="color:Red;">*</b>:</td>
                                         <td id="tag_name_row @Convert.ToString(i)"><input type="text" class="autocomplete" name="tagName" id="name_text @Convert.ToString(i)" value="@Model.Tags[i].TagName"></td>
-                                        <td id="weight_title_row @Convert.ToString(i)">Weightage Percentage @Convert.ToString(i + 1)<b style="color:Red;">*</b>:</td>
+                                        <td id="weight_title_row @Convert.ToString(i)">Weightage % @Convert.ToString(i + 1)<b style="color:Red;">*</b>:</td>
                                         <td id="weight_name_row @Convert.ToString(i)"><input type="text" name="WeightName" id="name_text @Convert.ToString(i)" value="@Model.Tags[i].Weightage"></td>
+                                        <td id="efficiency_name_row @Convert.ToString(i)"><input name="efficiency" id="efficiency_name @Convert.ToString(i)" class="efficiency" style="width:100px;"></td>
                                         <td><input type="button" onclick="delete_row(@Convert.ToString(i));" style="width:60px;" value="Delete"></td>
                                     </tr>
                                 }
@@ -104,16 +106,18 @@
                                     <tr id="@rowId">
                                         <td id="tag_title_row @Convert.ToString(i)">Skill Tag @Convert.ToString(i + 1)<b style="color:Red;">*</b>:</td>
                                         <td id="tag_name_row @Convert.ToString(i)"><input type="text" class="autocomplete" name="tagName" id="tag_name" value="@Model.Tags[i].TagName"></td>
-                                        <td id="weight_title_row @Convert.ToString(i)">Weightage Percentage @Convert.ToString(i + 1)<b style="color:Red;">*</b>:</td>
+                                        <td id="weight_title_row @Convert.ToString(i)">Weightage % @Convert.ToString(i + 1)<b style="color:Red;">*</b>:</td>
                                         <td id="weight_name_row @Convert.ToString(i)"><input type="text" name="WeightName" id="weight_name" value="@Model.Tags[i].Weightage"></td>
+                                        <td id="efficiency_name_row @Convert.ToString(i)"><input name="efficiency" id="efficiency_name" class="efficiency" style="width:100px;"></td>
                                         <td><input type="button" onclick="add_row();" style="width:60px;" value="Add"></td>
                                     </tr>
                                 }
                             }
                         }
-                    }</table>
+                    }
+                </table>
             </div>
-         </div>
+        </div>
         <br />
         <div class="row">
             <div class="col-md-6"></div>
@@ -130,7 +134,7 @@
                     .Content("Save"))
             </div>
         </div>
-     <div id="modalConfirmYesNo" class="modal fade">
+        <div id="modalConfirmYesNo" class="modal fade">
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
@@ -157,55 +161,55 @@
             </div>
         </div>
 
-     <div class="modal fade" id="SuccessModel" role="dialog" onclick="onCancelClick();">
-        <div class="modal-dialog">
+        <div class="modal fade" id="SuccessModel" role="dialog" onclick="onCancelClick();">
+            <div class="modal-dialog">
 
-            <!-- Modal content-->
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" onclick="onCancelClick();">&times;</button>
-                    <h4 class="modal-title"><span id="msgMain">Success!</span></h4>
+                <!-- Modal content-->
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" onclick="onCancelClick();">&times;</button>
+                        <h4 class="modal-title"><span id="msgMain">Success!</span></h4>
+                    </div>
+                    <div class="modal-body">
+                        <p id="msgContent">Some text in the modal.</p>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal" onclick="onCancelClick();">Close</button>
+                    </div>
                 </div>
-                <div class="modal-body">
-                    <p id="msgContent">Some text in the modal.</p>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-default" data-dismiss="modal" onclick="onCancelClick();">Close</button>
-                </div>
+
             </div>
-
         </div>
-    </div>
     }
-    </div>
+</div>
 
 <script>
-    $(document).ready((function () {       
-        var TagList = [];
+    var TagList = [];
+    $(document).ready((function () {
         var tags = '';
-            $.ajax({
-                type: 'POST',
-                url: '@Url.Action("GetTags", "TestSuite")',               
-                dataType: "json",               
-                success: function (data) {                   
-                    $.each(data, function (i, tag) {
-                        TagList.push(tag["TagName"]);
-                    });
-                    $(".autocomplete").kendoAutoComplete({
-                        dataSource: TagList,
-                        filter: "contains",
-                        minLength: 2,
-                        placeholder: "Select Tag",
-                        seperator: ","
-                    });
-                },
-                error: function (errorMsg) {                    
-                    alert(errorMsg);
-                }
-            });
+        $.ajax({
+            type: 'POST',
+            url: '@Url.Action("GetTags", "TestSuite")',
+            dataType: "json",
+            success: function (data) {
+                $.each(data, function (i, tag) {
+                    TagList.push(tag["TagName"]);
+                });
+                $(".autocomplete").kendoAutoComplete({
+                    dataSource: TagList,
+                    filter: "contains",
+                    minLength: 2,
+                    placeholder: "Select Tag",
+                    seperator: ","
+                });
+            },
+            error: function (errorMsg) {
+                alert(errorMsg);
+            }
+        });
 
-        $("#btnSave").click(function () {            
-            if (validateTestSuite()) {  
+        $("#btnSave").click(function () {
+            if (validateTestSuite()) {
                 tags = '';
                 var TestSuiteId = $("#TestSuiteId").val();
                 var IsCopy = $("#IsCopy").val();
@@ -254,47 +258,97 @@
                         }
                     },
                     error: function (response) {
-                        alert("error!");  // 
+                        alert("error!");  //
                     }
                 });
             }
+            else
+            {
+                e.preventDefault();
+            }
         });
-    }));
+    }
+    ));
 
     $(document).ready(function () {
         if (@Model.TestSuiteId== 0) {
-            $('#tag_table').append('<tr><td id="tag_title_row">Skill Tag 1<b style="color:Red;">*</b>:</td><td id="tag_name_row"><input type="text" name="tagName" id="tag_name" class="autocomplete"></td><td id="weight_title_row">Weightage Percentage 1<b style="color:Red;">*</b>:</td><td id="weight_name_row"><input type="text" name="WeightName" id="weight_name"></td><td><input type="button" onclick="add_row();" style="width:60px;" value="Add"><span class="k-icon k-add></span></td></tr>')
+            $('#tag_table').append('<tr><td id="tag_title_row">Skill Tag 1<b style="color:Red;">*</b>:</td><td id="tag_name_row"><input type="text" name="tagName" id="tag_name" class="autocomplete"></td><td id="weight_title_row">Weightage % 1<b style="color:Red;">*</b>:</td><td id="weight_name_row"><input type="text" name="WeightName" id="weight_name"></td><td id="efficiency_name_row"><input id="efficiency_name" name="efficiency" id="efficiency_name" class="efficiency" style="width:100px;"></td><td><input type="button" onclick="add_row();" style="width:60px;" value="Add"><span class="k-icon k-add></span></td></tr>')
+            $(".efficiency").kendoDropDownList({
+                dataTextField: "name",
+                dataValueField: "id",
+                dataSource: [
+                    { name: '@Convert.ToString(Competency.Beginner)', id: '@Convert.ToInt32(Competency.Beginner)' },
+                    { name: '@Convert.ToString(Competency.Intermediate)', id: '@Convert.ToInt32(Competency.Intermediate)' },
+                    { name: '@Convert.ToString(Competency.Expert)', id: '@Convert.ToInt32(Competency.Intermediate)' }
+                ]
+            });
         }
     });
 
     function add_row() {
+        alert(1);
         var tag_name = document.getElementById("tag_name").value;
         var weight_name = document.getElementById("weight_name").value;
+        var weight_name = document.getElementById("weight_name").value;
+        var efficiency_name = document.getElementById("efficiency_name").value;
 
         var table = document.getElementById("tag_table");
         var table_len = (table.rows.length) - 1;
         var rowindex = table.rows.length;
 
-        var row = table.insertRow(table_len).outerHTML = "<tr id='row" + table_len + "'><td id='tag_title_row" + table_len + "'>" + "Skill Tag " + rowindex + "<b style='color:Red;'>*</b>:" + "</td><td id='tag_name_row" + table_len + "'>" + "<input type='text' class='autocomplete' name='tagName' id='name_text" + table_len + "' value='" + tag_name + "'>" + "</td><td id='weight_title_row" + table_len + "'>" + "Weightage Percentage " + rowindex + "<b style='color:Red;'>*</b>:" + "</td><td id='weight_name_row" + table_len + "'>" + "<input type='text' name='WeightName'  id='name_text" + table_len + "' value='" + weight_name + "'>" + "</td><td><input type='button' value='Delete' style='width:60px;' onclick='delete_row(" + table_len + ")'></td></tr>";
+        var row = table.insertRow(table_len).outerHTML = "<tr id='row" + table_len + "'><td id='tag_title_row" + table_len + "'>" + "Skill Tag " + rowindex + "<b style='color:Red;'>*</b>:" + "</td><td id='tag_name_row" + table_len + "'>" + "<input type='text' class='autocomplete' name='tagName' id='name_text" + table_len + "' value='" + tag_name + "'>" + "</td><td id='weight_title_row" + table_len + "'>" + "Weightage % " + rowindex + "<b style='color:Red;'>*</b>:" + "</td><td id='weight_name_row" + table_len + "'>" + "<input type='text' name='WeightName'  id='name_text" + table_len + "' value='" + weight_name + "'>" + "</td><td id='efficiency_name_row" + table_len + "'><input id='name_text" + table_len + "' id='efficiency_name' value='" + efficiency_name + "' name='efficiency' class='efficiency' style='width:100px;'></td><td><input type='button' value='Delete' style='width:60px;' onclick='delete_row(" + table_len + ")'></td></tr>";
         $("#tag_name").val('');
         $("#weight_name").val('');
+        $("#efficiency_name").val('');
         $('#tag_title_row').html("Skill Tag " + (parseInt(rowindex) + parseInt('1')) + "<b style='color:Red;'>*</b>:");
-        $("#weight_title_row").html("Weightage Percentage " + (parseInt(rowindex) + parseInt('1')) + "<b style='color:Red;'>*</b>:")
+        $("#weight_title_row").html("Weightage % " + (parseInt(rowindex) + parseInt('1')) + "<b style='color:Red;'>*</b>:")
+
+        //var autocomplete = $(".autocomplete").data("kendoAutoComplete");
+        //autocomplete.destroy();
+
+        $(".autocomplete").kendoAutoComplete({
+            dataSource: TagList,
+            filter: "contains",
+            minLength: 2,
+            placeholder: "Select Tag",
+            seperator: ","
+        });
+
+        $(".efficiency").kendoDropDownList({
+            dataTextField: "name",
+            dataValueField: "id",
+            dataSource: [
+                { name: '@Convert.ToString(Competency.Beginner)', id: '@Convert.ToInt32(Competency.Beginner)' },
+                { name: '@Convert.ToString(Competency.Intermediate)', id: '@Convert.ToInt32(Competency.Intermediate)' },
+                { name: '@Convert.ToString(Competency.Expert)', id: '@Convert.ToInt32(Competency.Intermediate)' }
+            ]
+        });
     }
 
-    function delete_row(no) {          
-            var $confirm = $("#modalConfirmYesNo");
-            $confirm.modal('show');
-            $("#lblTitleConfirmYesNo").html("Delete Confirmation!");
-            $("#lblMsgConfirmYesNo").html("Are you sure want to delete the tag?");
-            $("#btnYesConfirmYesNo").off('click').click(function () {
-                $confirm.modal("hide");
-                document.getElementById("row" + no + "").outerHTML = "";
-            });
-            $("#btnNoConfirmYesNo").off('click').click(function () {
-                $confirm.modal("hide");
-            });
-        }
+    function delete_row(no) {
+        var $confirm = $("#modalConfirmYesNo");
+        $confirm.modal('show');
+        $("#lblTitleConfirmYesNo").html("Delete Confirmation!");
+        $("#lblMsgConfirmYesNo").html("Are you sure want to delete the tag?");
+        $("#btnYesConfirmYesNo").off('click').click(function () {
+            $confirm.modal("hide");
+            document.getElementById("row" + no + "").outerHTML = "";
+        });
+        $("#btnNoConfirmYesNo").off('click').click(function () {
+            $confirm.modal("hide");
+        });
+
+        var autocomplete = $(".autocomplete").data("kendoAutoComplete");
+        autocomplete.destroy();
+
+        $(".autocomplete").kendoAutoComplete({
+            dataSource: TagList,
+            filter: "contains",
+            minLength: 2,
+            placeholder: "Select Tag",
+            seperator: ","
+        });
+    }
 
     //Table JS End
 
@@ -303,12 +357,6 @@
         else if ($('.validation-summary-errors>ul>li').text() != "")
         { ShowMessage($('.validation-summary-errors>ul>li').text(), 0); }
         else { $("#messageDiv").hide(); }
-
-        $("#btnSave").click(function (e) {
-            if (validateTestSuite() == false) {
-                e.preventDefault();
-            }
-        });        
     });
 
     function onCancelClick()
@@ -319,19 +367,23 @@
     function validateTestSuite() {
         var isError="0";
         var totalWeight=0;
-        $('#tag_table').find('tr').each(function () {           
+        $('#tag_table').find('tr').each(function () {
             if($(this).find('td input[type=text][name=tagName]').val()=='')
-            {                
+            {
                 isError = "tagBlank";
                 return false;
             }
             if($(this).find('td input[type=text][name=WeightName]').val()=='')
-            {                
+            {
                 isError = "weightBlank";
                 return false;
             }
         });
-       
+
+        $('#tag_table tr td input[type=text][name=WeightName]').each(function () {
+            totalWeight+=parseInt($(this).val());
+        })
+
         if ($("#TestSuiteName").val().trim().length == 0) {
             $("#TestSuiteName").focus();
             ShowMessage("Test suite name cann't be blank.", 0);
@@ -351,7 +403,7 @@
             $("#Competency").focus();
             ShowMessage("Competency cann't be blank.", 0);
             return false;
-        }  
+        }
         else if(isError=="tagBlank")
         {
             ShowMessage("Test suite tag cann't be blank.", 0);
@@ -362,14 +414,24 @@
             ShowMessage("Test suite weighatage cann't be blank.", 0);
             return false;
         }
-        return true;   
+        else if(totalWeight != '100')
+        {
+            ShowMessage("Test suite weighatage should be 100 percent.", 0);
+            return false;
+        }
+        return true;
     }
 </script>
 <style>
-    #tag_table td {padding:5px;}
-    #tag_table input {width:172px;}
-    input[type=text]{width:172px;}
+    #tag_table td {
+        padding: 5px;
+    }
+
+    #tag_table input {
+        width: 172px;
+    }
+
+    input[type=text] {
+        width: 172px;
+    }
 </style>
-
-
-
