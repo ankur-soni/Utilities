@@ -417,6 +417,7 @@
     <Content Include="Scripts\Bootstrap\3.3.1\bootstrap.min.js" />
     <Content Include="Content\toastr.scss" />
     <Content Include="Content\toastr.less" />
+    <None Include="Properties\PublishProfiles\Ensure.pubxml" />
     <None Include="Scripts\jquery-2.1.4.intellisense.js" />
     <Content Include="Scripts\flipclock.js" />
     <Content Include="Scripts\flipclock.min.js" />
@@ -461,7 +462,6 @@
       <DependentUpon>font-awesome.css</DependentUpon>
     </Content>
     <Compile Include="App_Start\Startup.Auth.cs" />
-    <None Include="Properties\PublishProfiles\RDBI_Sisense07_Integration.pubxml" />
     <None Include="Properties\PublishProfiles\Local_WebDeploy.pubxml" />
     <None Include="Properties\PublishProfiles\Local_WebDeployPackage.pubxml" />
     <Content Include="favicon.ico" />
