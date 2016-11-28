@@ -5,7 +5,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Silicus.Ensure.Web.Models
 {
-    public class UserViewModel
+    public class UserViewModel    
     {
         public int UserId { get; set; }
 

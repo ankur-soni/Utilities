@@ -8,4 +8,11 @@
         Evaluating = 4,
         Completed = 5
     }
+
+    public enum RoleName
+    {
+        Candidate = 1,
+        Panel = 2,
+        Admin = 3
+    }
 }
