@@ -109,5 +109,10 @@ namespace Silicus.Encourage.Services
             var data = _encourageDatabaseContext.Query<Models.Configuration>().Where(x => x.configurationKey == "ReviewLock").SingleOrDefault().value;
             return data == true ? true : false;
         }
+
+        //public string GetHrAdminsCommentForEmployee(int loggedInAdminsId, int nominatedEmployeeId)
+        //{
+        //    var data = _encourageDatabaseContext.Query<Shortlist>().Where( s => s.)
+        //}
     }
 }

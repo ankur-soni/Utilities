@@ -77,7 +77,6 @@ namespace Silicus.Encourage.Services
 
         public Nomination GetReviewNomination(int nominationId)
         {
-
             return _encourageDatabaseContext.Query<Nomination>().Where(n => n.Id == nominationId).FirstOrDefault();
         }
 

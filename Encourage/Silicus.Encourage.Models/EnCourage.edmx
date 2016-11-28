@@ -520,6 +520,8 @@
           <Property Name="WinningDate" Type="DateTime" Precision="3" />
           <NavigationProperty Name="Nomination" Relationship="Self.FK_Shortlist_NominationId" FromRole="Shortlist" ToRole="Nomination" />
           <Property Name="WinningComment" Type="String" MaxLength="150" FixedLength="false" Unicode="false" />
+          <Property Name="HrAdminsFeedback" Type="String" Nullable="false" />
+          <Property Name="AdminId" Type="Int32" Nullable="false" />
         </EntityType>
         <EntityType Name="sysdiagram">
           <Key>
@@ -929,6 +931,11 @@
                 <ScalarProperty Name="value" ColumnName="value" />
                 <ScalarProperty Name="configurationKey" ColumnName="configurationKey" />
               </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="sysdiagrams">
+            <EntityTypeMapping TypeName="IsTypeOf(EnCourageModel.sysdiagram)">
+              <MappingFragment StoreEntitySet="Shortlist" />
             </EntityTypeMapping>
           </EntitySetMapping>
         </EntityContainerMapping>
