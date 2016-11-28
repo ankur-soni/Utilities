@@ -259,14 +259,14 @@ namespace Silicus.Ensure.Web.Controllers
             return View();
         }
 
-        public ActionResult CandidatesSuit(int UserId, int IsReassign=0)
+        public ActionResult CandidatesSuit(int UserId, int IsReassign = 0)
         {
             ViewBag.CurrentUser = UserId;
             ViewBag.IsReassign = IsReassign;
             return PartialView("SelectCandidatesSuit");
         }
 
-        public ActionResult AssignSuite(int SuiteId, int Userid)
+        public ActionResult AssignSuite(int SuiteId, int UserId, int IsReAssign = 0)
         {
             var updateCurrentUsers = _userService.GetUserDetails().Where(model => model.UserId == UserId).FirstOrDefault();
             if (updateCurrentUsers != null)
@@ -279,8 +279,8 @@ namespace Silicus.Ensure.Web.Controllers
                         if (userTest != null)
                         {
                             _testSuiteService.DeleteUserTestSuite(userTest);
-                            }
                         }
+                    }
                     var testSuiteDetails = _testSuiteService.GetTestSuiteDetails().Where(model => model.TestSuiteId == SuiteId && model.IsDeleted == false).SingleOrDefault();
                     UserTestSuite userTestSuite = new UserTestSuite();
                     userTestSuite.UserId = UserId;
