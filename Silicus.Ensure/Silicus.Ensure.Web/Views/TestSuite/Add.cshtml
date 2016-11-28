@@ -1,0 +1,375 @@
+﻿@model Silicus.Ensure.Web.Models.TestSuiteViewModel
+@using Silicus.Ensure.Models.Constants
+@using Kendo.Mvc.UI;
+
+@{
+   ViewBag.Title = "TestSuite";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<div class="main-content">
+    <h2>@ViewBag.Type Test Suite</h2>
+    @using (Html.BeginForm("Save", "TestSuite"))
+    {
+        @Html.HiddenFor(model => model.TestSuiteId)
+        @Html.HiddenFor(model => model.IsCopy)
+        @Html.HiddenFor(model => model.PrimaryTagNames)
+        <div class="fluid mt20">
+            <div class="row">
+                <div class="alert alert-success" id="messageDiv">
+                    <strong>Error!</strong> <span id="messageContent">@Html.ValidationSummary(true)</span>
+                </div>
+                <div class="col-md-4">
+                    @Html.LabelFor(model=>model.TestSuiteName)<b style="color:Red;">*</b>:
+                </div>
+                <div class="col-md-8">
+                    @Html.TextBoxFor(model => model.TestSuiteName, new { @class = "form-control" })
+                </div>
+                </div>
+            </div>
+            <br />
+            <div class="row">
+                <div class="col-md-4">
+                    @Html.LabelFor(model => model.Duration)<b style="color:Red;">*</b>:
+                </div>
+                <div class="col-md-8">
+                    @(Html.Kendo().DropDownListFor(model => model.Duration)
+                    .BindTo(new List<string>() {
+                    "30", "60", "90", "120"
+                    })) 
+                </div>  
+            </div>            
+            <br />
+            <div class="row">
+                <div class="col-md-4">
+                    @Html.LabelFor(model => model.Position)<b style="color:Red;">*</b>:
+                </div>
+                <div class="col-md-8">
+                    @(Html.Kendo().DropDownListFor(model => model.Position)
+                    .OptionLabel("--Select--")
+                    .BindTo(Model.PositionList)
+                    .DataTextField("PositionName")
+                    .DataValueField("PositionId"))
+                </div>                
+            </div>
+            <br />
+            <div class="row">
+                <div class="col-md-4">
+                    @Html.LabelFor(model => model.Competency)<b style="color:Red;">*</b>:
+                </div>
+                <div class="col-md-8">
+                    @(Html.Kendo().DropDownListFor(model => model.Competency)
+                    .OptionLabel("--Select--")
+                    .BindTo(new List<SelectListItem>() {
+                    new SelectListItem(){
+                    Text=Convert.ToString(Competency.Beginner),
+                    Value=Convert.ToString((Int32)Competency.Beginner)
+                    },
+                    new SelectListItem(){
+                    Text=Convert.ToString(Competency.Intermediate),
+                    Value=Convert.ToString((Int32)Competency.Intermediate)
+                    },
+                    new SelectListItem(){
+                    Text=Convert.ToString(Competency.Expert),
+                    Value=Convert.ToString((Int32)Competency.Expert)
+                    }
+                    }))
+                </div>
+            </div>
+            <br />            
+        <div class="row">
+            <div class="col-md-2">
+                Skill Tags:
+            </div>
+            <div class="col-md-10">
+                <table align='center' id="tag_table" role="grid" cellspacing="40">
+                    @if (Model.Tags != null)
+                    {
+                        if (Model.Tags.Count() > 0)
+                        {
+                            for (int i = 0; i < Model.Tags.Count(); i++)
+                            {
+                                var rowId = "row" + Convert.ToString(i);
+                                if (i != Model.Tags.Count() - 1)
+                                {
+                                    <tr id="@rowId">
+                                        <td id="tag_title_row @Convert.ToString(i)">Skill Tag @Convert.ToString(i + 1)<b style="color:Red;">*</b>:</td>
+                                        <td id="tag_name_row @Convert.ToString(i)"><input type="text" class="autocomplete" name="tagName" id="name_text @Convert.ToString(i)" value="@Model.Tags[i].TagName"></td>
+                                        <td id="weight_title_row @Convert.ToString(i)">Weightage Percentage @Convert.ToString(i + 1)<b style="color:Red;">*</b>:</td>
+                                        <td id="weight_name_row @Convert.ToString(i)"><input type="text" name="WeightName" id="name_text @Convert.ToString(i)" value="@Model.Tags[i].Weightage"></td>
+                                        <td><input type="button" onclick="delete_row(@Convert.ToString(i));" style="width:60px;" value="Delete"></td>
+                                    </tr>
+                                }
+                                else
+                                {
+                                    <tr id="@rowId">
+                                        <td id="tag_title_row @Convert.ToString(i)">Skill Tag @Convert.ToString(i + 1)<b style="color:Red;">*</b>:</td>
+                                        <td id="tag_name_row @Convert.ToString(i)"><input type="text" class="autocomplete" name="tagName" id="tag_name" value="@Model.Tags[i].TagName"></td>
+                                        <td id="weight_title_row @Convert.ToString(i)">Weightage Percentage @Convert.ToString(i + 1)<b style="color:Red;">*</b>:</td>
+                                        <td id="weight_name_row @Convert.ToString(i)"><input type="text" name="WeightName" id="weight_name" value="@Model.Tags[i].Weightage"></td>
+                                        <td><input type="button" onclick="add_row();" style="width:60px;" value="Add"></td>
+                                    </tr>
+                                }
+                            }
+                        }
+                    }</table>
+            </div>
+         </div>
+        <br />
+        <div class="row">
+            <div class="col-md-6"></div>
+            <div class="col-md-2 col-md-offset-4">
+                @(Html.Kendo().Button()
+                    .Name("btnCancel").Icon("cancel")
+                    .HtmlAttributes(new { type = "button" })
+                    .Content("Cancel")
+                    .Events(ev => ev.Click("onCancelClick")))
+
+                @(Html.Kendo().Button()
+                    .Name("btnSave").Icon("tick")
+                .HtmlAttributes(new { type = "button" })
+                    .Content("Save"))
+            </div>
+        </div>
+     <div id="modalConfirmYesNo" class="modal fade">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button"
+                                class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                        <h4 id="lblTitleConfirmYesNo" class="modal-title">Confirmation</h4>
+                    </div>
+                    <div class="modal-body">
+                        <p id="lblMsgConfirmYesNo"></p>
+                    </div>
+                    <div class="modal-footer">
+                        <button id="btnYesConfirmYesNo"
+                                type="button" class="btn btn-primary">
+                            Yes
+                        </button>
+                        <button id="btnNoConfirmYesNo"
+                                type="button" class="btn btn-default">
+                            No
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+     <div class="modal fade" id="SuccessModel" role="dialog" onclick="onCancelClick();">
+        <div class="modal-dialog">
+
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" onclick="onCancelClick();">&times;</button>
+                    <h4 class="modal-title"><span id="msgMain">Success!</span></h4>
+                </div>
+                <div class="modal-body">
+                    <p id="msgContent">Some text in the modal.</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal" onclick="onCancelClick();">Close</button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+    }
+    </div>
+
+<script>
+    $(document).ready((function () {       
+        var TagList = [];
+        var tags = '';
+            $.ajax({
+                type: 'POST',
+                url: '@Url.Action("GetTags", "TestSuite")',               
+                dataType: "json",               
+                success: function (data) {                   
+                    $.each(data, function (i, tag) {
+                        TagList.push(tag["TagName"]);
+                    });
+                    $(".autocomplete").kendoAutoComplete({
+                        dataSource: TagList,
+                        filter: "contains",
+                        minLength: 2,
+                        placeholder: "Select Tag",
+                        seperator: ","
+                    });
+                },
+                error: function (errorMsg) {                    
+                    alert(errorMsg);
+                }
+            });
+
+        $("#btnSave").click(function () {            
+            if (validateTestSuite()) {  
+                tags = '';
+                var TestSuiteId = $("#TestSuiteId").val();
+                var IsCopy = $("#IsCopy").val();
+                var TestSuiteName = $("#TestSuiteName").val();
+                var Duration = $("#Duration").val();
+                var Position = $("#Position").val();
+                var Competency = $("#Competency").val();
+                $('#tag_table tr td input[type=text]').each(function () {
+                    if (tags == '')
+                    {
+                        tags += $(this).val();
+                    }
+                    else
+                    {
+                        tags += "," + $(this).val();
+                    }
+                })
+
+                $.ajax(
+                {
+                    type: "POST",
+                    url: "Save",
+                    data: {
+                        TestSuiteId: TestSuiteId,
+                        IsCopy: IsCopy,
+                        TestSuiteName: TestSuiteName,
+                        Duration: Duration,
+                        Position: Position,
+                        Competency: Competency,
+                        PrimaryTagNames: tags
+                    },
+                    success: function (response) {
+                        if (response != null && response.status == "success") {
+                            $("#SuccessModel").modal();
+                            if (IsCopy == "True") {
+                                $("#msgContent").text("Test Suite copy created successfully.");
+                            }
+                            else if (TestSuiteId == 0) {
+                                $("#msgContent").text("Test Suite created successfully.");
+                            }
+                            else {
+                                $("#msgContent").text("Test Suite updated successfully.");
+                            }
+                        } else {
+                            ShowMessage(response.message, 0);
+                        }
+                    },
+                    error: function (response) {
+                        alert("error!");  // 
+                    }
+                });
+            }
+        });
+    }));
+
+    $(document).ready(function () {
+        if (@Model.TestSuiteId== 0) {
+            $('#tag_table').append('<tr><td id="tag_title_row">Skill Tag 1<b style="color:Red;">*</b>:</td><td id="tag_name_row"><input type="text" name="tagName" id="tag_name" class="autocomplete"></td><td id="weight_title_row">Weightage Percentage 1<b style="color:Red;">*</b>:</td><td id="weight_name_row"><input type="text" name="WeightName" id="weight_name"></td><td><input type="button" onclick="add_row();" style="width:60px;" value="Add"><span class="k-icon k-add></span></td></tr>')
+        }
+    });
+
+    function add_row() {
+        var tag_name = document.getElementById("tag_name").value;
+        var weight_name = document.getElementById("weight_name").value;
+
+        var table = document.getElementById("tag_table");
+        var table_len = (table.rows.length) - 1;
+        var rowindex = table.rows.length;
+
+        var row = table.insertRow(table_len).outerHTML = "<tr id='row" + table_len + "'><td id='tag_title_row" + table_len + "'>" + "Skill Tag " + rowindex + "<b style='color:Red;'>*</b>:" + "</td><td id='tag_name_row" + table_len + "'>" + "<input type='text' class='autocomplete' name='tagName' id='name_text" + table_len + "' value='" + tag_name + "'>" + "</td><td id='weight_title_row" + table_len + "'>" + "Weightage Percentage " + rowindex + "<b style='color:Red;'>*</b>:" + "</td><td id='weight_name_row" + table_len + "'>" + "<input type='text' name='WeightName'  id='name_text" + table_len + "' value='" + weight_name + "'>" + "</td><td><input type='button' value='Delete' style='width:60px;' onclick='delete_row(" + table_len + ")'></td></tr>";
+        $("#tag_name").val('');
+        $("#weight_name").val('');
+        $('#tag_title_row').html("Skill Tag " + (parseInt(rowindex) + parseInt('1')) + "<b style='color:Red;'>*</b>:");
+        $("#weight_title_row").html("Weightage Percentage " + (parseInt(rowindex) + parseInt('1')) + "<b style='color:Red;'>*</b>:")
+    }
+
+    function delete_row(no) {          
+            var $confirm = $("#modalConfirmYesNo");
+            $confirm.modal('show');
+            $("#lblTitleConfirmYesNo").html("Delete Confirmation!");
+            $("#lblMsgConfirmYesNo").html("Are you sure want to delete the tag?");
+            $("#btnYesConfirmYesNo").off('click').click(function () {
+                $confirm.modal("hide");
+                document.getElementById("row" + no + "").outerHTML = "";
+            });
+            $("#btnNoConfirmYesNo").off('click').click(function () {
+                $confirm.modal("hide");
+            });
+        }
+
+    //Table JS End
+
+    $(document).ready(function () {
+        if ($('.validation-summary-errors>ul>li').is(':empty')) { $("#messageDiv").hide(); }
+        else if ($('.validation-summary-errors>ul>li').text() != "")
+        { ShowMessage($('.validation-summary-errors>ul>li').text(), 0); }
+        else { $("#messageDiv").hide(); }
+
+        $("#btnSave").click(function (e) {
+            if (validateTestSuite() == false) {
+                e.preventDefault();
+            }
+        });        
+    });
+
+    function onCancelClick()
+    {
+        window.location = '@Url.Action("List", "TestSuite")';
+    }
+
+    function validateTestSuite() {
+        var isError="0";
+        var totalWeight=0;
+        $('#tag_table').find('tr').each(function () {           
+            if($(this).find('td input[type=text][name=tagName]').val()=='')
+            {                
+                isError = "tagBlank";
+                return false;
+            }
+            if($(this).find('td input[type=text][name=WeightName]').val()=='')
+            {                
+                isError = "weightBlank";
+                return false;
+            }
+        });
+       
+        if ($("#TestSuiteName").val().trim().length == 0) {
+            $("#TestSuiteName").focus();
+            ShowMessage("Test suite name cann't be blank.", 0);
+            return false;
+        }
+        else if ($("#Position").val().trim().length == 0) {
+            $("#Position").focus();
+            ShowMessage("Position cann't be blank.", 0);
+            return false;
+        }
+        else if ($("#Competency").val().trim().length == 0) {
+            $("#Competency").focus();
+            ShowMessage("Competency cann't be blank.", 0);
+            return false;
+        }
+        else if ($("#Competency").val().trim().length == 0) {
+            $("#Competency").focus();
+            ShowMessage("Competency cann't be blank.", 0);
+            return false;
+        }  
+        else if(isError=="tagBlank")
+        {
+            ShowMessage("Test suite tag cann't be blank.", 0);
+            return false;
+        }
+        else if(isError=="weightBlank")
+        {
+            ShowMessage("Test suite weighatage cann't be blank.", 0);
+            return false;
+        }
+        return true;   
+    }
+</script>
+<style>
+    #tag_table td {padding:5px;}
+    #tag_table input {width:172px;}
+    input[type=text]{width:172px;}
+</style>
+
+
+

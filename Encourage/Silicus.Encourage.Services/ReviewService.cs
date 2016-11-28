@@ -2,11 +2,8 @@
 using Silicus.Encourage.Models;
 using Silicus.Encourage.Services.Interface;
 using Silicus.FrameWorx.Logger;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Silicus.Encourage.Services
 {
@@ -19,7 +16,7 @@ namespace Silicus.Encourage.Services
         private readonly INominationService _nominationService;
         private readonly ILogger _logger;
 
-        public ReviewService(Silicus.Encourage.DAL.Interfaces.IDataContextFactory dataContextFactory, ICommonDbService commonDbService, INominationService nominationService,ILogger logger)
+        public ReviewService(Silicus.Encourage.DAL.Interfaces.IDataContextFactory dataContextFactory, ICommonDbService commonDbService, INominationService nominationService, ILogger logger)
         {
             _dataContextFactory = dataContextFactory;
             _commonDbService = commonDbService;
@@ -27,7 +24,6 @@ namespace Silicus.Encourage.Services
             _encourageDatabaseContext = _dataContextFactory.CreateEncourageDbContext();
             _nominationService = nominationService;
             _logger = logger;
-
         }
 
         public IEnumerable<Review> GetReviewsForNomination(int nominationID)
@@ -35,10 +31,12 @@ namespace Silicus.Encourage.Services
             var reviews = _encourageDatabaseContext.Query<Review>("ReviewerComments").Where(review => review.NominationId == nominationID && review.IsSubmited == true).ToList();
             return reviews;
         }
+
         public void UpdateReview(Review model)
         {
             _encourageDatabaseContext.Update<Review>(model);
         }
+
         public List<Review> GetAllReview()
         {
             return _encourageDatabaseContext.Query<Review>("ReviewerComments").ToList();
@@ -52,6 +50,7 @@ namespace Silicus.Encourage.Services
                 _encourageDatabaseContext.Delete<ReviewerComment>(previousComment);
             }
         }
+
         public bool LockReview()
         {
             //DateTime currentDate = System.DateTime.Now;
@@ -61,7 +60,6 @@ namespace Silicus.Encourage.Services
             //    if (review != null)
             //    {
             //        var reviewrow = _nominationService.GetAllNominations().Where(x => x.Id.Equals(review.NominationId)).ToList().First().NominationDate;
-
 
             //        if ((currentDate.Month - 1).Equals(reviewrow.Value.Month) && (currentDate.Month > 1 ? (currentDate.Year).Equals(reviewrow.Value.Year) : (currentDate.Year - 1).Equals(reviewrow.Value.Year)))
             //        {
@@ -79,6 +77,7 @@ namespace Silicus.Encourage.Services
             _encourageDatabaseContext.Update<Models.Configuration>(data);
             return true;
         }
+
         public bool UnLockReview()
         {
             //DateTime currentDate = System.DateTime.Now;
@@ -104,6 +103,7 @@ namespace Silicus.Encourage.Services
             _encourageDatabaseContext.Update<Models.Configuration>(data);
             return true;
         }
+
         public bool GetReviewLockStatus()
         {
             var data = _encourageDatabaseContext.Query<Models.Configuration>().Where(x => x.configurationKey == "ReviewLock").SingleOrDefault().value;

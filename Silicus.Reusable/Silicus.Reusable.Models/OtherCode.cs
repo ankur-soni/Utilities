@@ -10,6 +10,13 @@ namespace Silicus.FrameworxProject.Models
 {
     public class OtherCode
     {
+        public OtherCode()
+        {
+            ReviewFlag = false;
+        }
+
+        public bool ReviewFlag { get; set; }
+
         public int Id { get; set; }
 
         [Required(ErrorMessage = "Please Enter the Method Name")]
@@ -35,5 +42,11 @@ namespace Silicus.FrameworxProject.Models
         public int FrequentSearchedCount { get; set; }
 
         public virtual CodeType CodeType { get; set; }
+
+        public string UserDisplayName { get; set; }
+
+        public int userid { get; set; }
+
+        public int reviewerid { get; set; }
     }
 }

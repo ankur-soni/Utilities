@@ -21,7 +21,7 @@ namespace Silicus.FrameworxProject.DAL
             modelBuilder.Conventions.Remove<PluralizingTableNameConvention>();
 
             modelBuilder.Configurations.Add(new FrameworxMap());
-            modelBuilder.Configurations.Add(new CategoryMap());
+            modelBuilder.Configurations.Add(new FrameworxCategoryMap());
             modelBuilder.Configurations.Add(new ExtensionSolutionMap());
         }
     }

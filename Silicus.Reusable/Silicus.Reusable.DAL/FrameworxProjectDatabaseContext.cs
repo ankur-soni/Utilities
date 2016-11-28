@@ -20,10 +20,11 @@ namespace Silicus.FrameworxProject.DAL
         }
 
         public DbSet<Frameworx> Frameworxs { get; set; }
-        public DbSet<Category> Categories { get; set; }
+        public DbSet<FrameworxCategory> Categories { get; set; }
         public DbSet<ExtensionSolution> ExtensionSolutions { get; set; }
         public DbSet<OtherCode> OtherCodes { get; set; }
         public DbSet<CodeType> CodeTypes { get; set; }
+        public DbSet<ProductBacklog> ProductBacklogs { get; set; }
 
         public int Update<T>(T item) where T : class
         {

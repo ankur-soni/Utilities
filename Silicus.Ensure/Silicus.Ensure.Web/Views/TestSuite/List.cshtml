@@ -1,0 +1,177 @@
+﻿@using Kendo.Mvc.UI;
+
+@{
+    ViewBag.Title = "TestSuite List";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<div class="main-content">
+    <div class="fluid mt20">
+        <div class="row" style="padding-top:5px;padding-bottom:5px;">
+            <div class="alert alert-success" id="messageDiv">
+                <strong>Success!</strong> <span id="messageContent">This alert box could indicate successful action.</span>
+            </div>
+        </div>
+        <div class="kendogrid">
+            <h2>Test Suite</h2>            
+            <div>               
+                @if (Request.IsAuthenticated)
+                {
+                    @(Html.Kendo().Grid<Silicus.Ensure.Web.Models.TestSuiteViewModel>().Name("testSuiteGrids")
+                .Columns(columns =>
+                  {
+                      columns.Bound(p => p.TestSuiteName).Width(200).Title("Test Suite");
+                      columns.Bound(p => p.Duration).Width(50);
+                      columns.Bound(p => p.PositionName).Width(150).Title("Position");
+                      columns.Bound(p => p.PrimaryTagNames).Width(300).Title("Tags");
+                      columns.Bound(p => p.StatusName).Width(50).Title("Status");
+                      columns.Bound("").ClientTemplate("<a class='k-button k-button-icontext k-grid-add' href='\\#' onclick='return getTestSuiteId(#=TestSuiteId#)' data-toggle='modal' data-target='\\#myModal'><span class='k-icon k-add'></span>Activate Test Suite</a><a class='k-button k-button-icontext k-grid-add' href='" + Url.Action("Copy", "TestSuite") + "?testSuiteId=#=TestSuiteId#'><span class='k-icon k-add'></span>Copy</a><a class='k-button k-button-icontext k-grid-edit' href='" + Url.Action("Add", "TestSuite") + "?testSuiteId=#=TestSuiteId#'><span class='k-icon k-edit'></span>Edit</a><a id='testSuiteDel' class='k-button k-button-icontext k-grid-delete' href='\\#' onclick='return deleteTestSuite(#=TestSuiteId#)'><span class='k-icon k-delete'></span>Delete</a>").Title("Actions");       //href='" + Url.Action("TestSuiteDelete", "Admin") + "?testSuiteId=#=TestSuiteId#'
+                  })
+                .DataSource(dataSource => dataSource
+                  .Ajax()
+                  .Model(model =>
+                  {
+                      model.Id(p => p.TestSuiteId);
+                      model.Field(p => p.TestSuiteId).Editable(false);
+                  })
+                  .Read(read => read.Action("GetTestSuiteDetails", "TestSuite"))
+                  .PageSize(10)
+              )
+              .Pageable()
+              .Sortable()
+              .ToolBar(toolbar =>
+               {
+                    toolbar.Template(@<text>
+                        <div class="toolbar">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="input-group">
+                                        <span class="input-group-addon"><span class="glyphicon glyphicon-search" aria-hidden="true"></span></span>
+                                        <input type="text" class="form-control" id='FieldFilter' placeholder="Search for...">
+                                        <span class="input-group-btn">
+                                            <button id="testSuiteSearch"  class="btn btn-default" type="button" style="height:16px;"><span class="glyphicon glyphicon-refresh" aria-hidden="true"></span></button>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                            <br />
+                            <div class="row">
+                                <div class="col-md-3 col-md-push-1" style="float: right; padding-right: 0px; margin-right: -22px;">
+                                    <a href='/TestSuite/Add' class='k-button k-button-icontext k-grid-add'><span class='k-icon k-add'></span>Add Test Suite</a>
+                                </div>
+                            </div>
+                        </div>
+                    </text>);
+                }))
+                }
+            </div>
+        </div>
+    </div>
+</div>
+<div id="modalConfirmYesNo" class="modal fade">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button"
+                        class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h4 id="lblTitleConfirmYesNo" class="modal-title">Confirmation</h4>
+            </div>
+            <div class="modal-body">
+                <p id="lblMsgConfirmYesNo"></p>
+            </div>
+            <div class="modal-footer">
+                <button id="btnYesConfirmYesNo"
+                        type="button" class="btn btn-primary">
+                    Yes
+                </button>
+                <button id="btnNoConfirmYesNo"
+                        type="button" class="btn btn-default">
+                    No
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="DivUsers">
+
+</div>
+<script>
+    $(document).ready(function () {
+        $("#messageDiv").hide();
+        $("#FieldFilter").keyup(function () {
+
+            var value = $("#FieldFilter").val();
+            grid = $("#testSuiteGrids").data("kendoGrid");
+
+            if (value.length > 1) {
+                if (value) {
+                    var filter = { logic: "or", filters: [] };
+                    filter.filters.push({ field: "TestSuiteName", operator: "contains", value: value });                    
+                    filter.filters.push({ field: "PositionName", operator: "contains", value: value });
+                    filter.filters.push({ field: "PrimaryTagNames", operator: "contains", value: value });                   
+                    grid.dataSource.query({ filter: filter });
+                } else {
+                    grid.dataSource.filter({});
+                }
+            }
+            else if (value == "")
+                grid.dataSource.filter({});
+        });
+        //Show successful message
+        if ('@TempData["IsNewTestSuite"]' == "1") {
+            ShowMessage("Tag saved successfully.", 1);
+        }
+    });
+
+    function deleteTestSuite(testSuiteId) {
+        var $confirm = $("#modalConfirmYesNo");
+        $confirm.modal('show');
+        $("#lblTitleConfirmYesNo").html("Delete Confirmation!");
+        $("#lblMsgConfirmYesNo").html("Are you sure want to delete the test suite?");
+        $("#btnYesConfirmYesNo").off('click').click(function () {
+            $confirm.modal("hide");
+            $.ajax({
+                type: "POST",
+                url: '@Url.Action("TestSuiteDelete", "Admin")',
+                data: { testSuiteId: testSuiteId },
+                success: function (returndata) {
+                    if (returndata == 1) {
+                        $('#testSuiteGrids').data('kendoGrid').dataSource.read();
+                        $('#testSuiteGrids').data('kendoGrid').refresh();
+                        ShowMessage("Tag deleted successfully.", 1);
+                    }
+                    else {
+                        ShowMessage("Error occured while delete operation.", 0);
+                    }
+                }
+            });
+        });
+        $("#btnNoConfirmYesNo").off('click').click(function () {
+            $confirm.modal("hide");            
+        });
+    }
+
+    function getTestSuiteId(testSuiteId)
+    {       
+        $('#DivUsers').html('');
+        $.ajax({
+            type: "POST",
+            url: '@Url.Action("TestSuiteUserView", "TestSuite")',
+            data: { testSuiteId: testSuiteId },
+            success: function (returndata) {                                 
+                    $('#DivUsers').html(returndata);
+                    $("#myModal").modal();                                
+            }
+        });
+    }
+
+    $("#testSuiteSearch").click(function (e) {
+        e.preventDefault();
+        var datasource = $("#testSuiteGrids").data("kendoGrid").dataSource;
+        //Clear filters:
+        datasource.filter([]);
+        $("#FieldFilter").val('');
+    });
+</script>

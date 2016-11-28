@@ -39,12 +39,12 @@ namespace Silicus.FrameworxProject.Services
             return _FrameworxProjectDatabaseContext.Query<Frameworx>().Where(m => m.Id == id).SingleOrDefault();
         }
 
-        public List<Category> GetAllCategories()
+        public List<FrameworxCategory> GetAllCategories()
         {
-            return _FrameworxProjectDatabaseContext.Query<Category>().ToList();//Poulate Business Model h
+            return _FrameworxProjectDatabaseContext.Query<FrameworxCategory>().ToList();//Poulate Business Model h
         }
 
-        public void AddCategory(Category category)
+        public void AddCategory(FrameworxCategory category)
         {
             _FrameworxProjectDatabaseContext.Add(category);
         }

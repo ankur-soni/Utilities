@@ -1,0 +1,197 @@
+﻿@model Silicus.Ensure.Web.Models.TestSuiteQuestionModel
+
+@using Kendo.Mvc.UI;
+
+<div class="row">
+    <div class="fluid mt20">
+        <div class="row">
+            <div class="col-md-9 col-md-offset-2">
+                @if (Model.QuestionType == 1)
+                {
+                    <p><strong>Section 1 (Objective Question)</strong></p>
+                }
+                else
+                {
+                    <p><strong>Section 2 (Practical Question)</strong></p>
+                }
+                <p><strong>Question @Model.QuestionNumber: (@Model.Marks Marks)</strong></p>
+                @Html.Raw(HttpUtility.HtmlDecode(Model.QuestionDescription))
+            </div>
+            <div class="col-md-9 col-md-offset-2" style="border-bottom-width:1px; border-bottom-style:solid; border-bottom-color:black;">
+            </div>
+            <input type="hidden" value="@Model.QuestionNumber" id="QuestionNumber" />
+            <input type="hidden" value="@Model.UserTestDetailId" id="UserTestDetailId" />
+            <input type="hidden" value="@Model.QuestionType" id="QuestionType" />
+            <input type="hidden" value="@Model.AnswerType" id="AnswerType" />
+
+            @if (Model.QuestionType == 1 && Model.AnswerType == 1)
+            {
+                if (string.IsNullOrEmpty(Model.Answer))
+                {
+                    <div class="col-md-9 col-md-offset-2">
+                        <div class="radio">
+                            <label><input type="radio" name="optradio" value="1">@Model.Option1</label>
+                        </div>
+                        <div class="radio">
+                            <label><input type="radio" name="optradio" value="2">@Model.Option2</label>
+                        </div>
+                        <div class="radio">
+                            <label><input type="radio" name="optradio" value="3">@Model.Option3</label>
+                        </div>
+                        <div class="radio">
+                            <label><input type="radio" name="optradio" value="4">@Model.Option4</label>
+                        </div>
+                    </div>
+                }
+                else
+                {
+                    <div class="col-md-9 col-md-offset-2">
+
+                        <div class="radio">
+                            @if (Model.Answer.Trim() == "1")
+                            {
+                                <label><input type="radio" name="optradio" value="1" checked="checked">@Model.Option1</label>
+                            }
+                            else
+                            {
+                                <label><input type="radio" name="optradio" value="1">@Model.Option1</label>
+                            }
+
+                        </div>
+                        <div class="radio">
+                            @if (Model.Answer.Trim() == "2")
+                            {
+                                <label><input type="radio" name="optradio" value="2" checked="checked">@Model.Option2</label>
+                            }
+                            else
+                            {
+                                <label><input type="radio" name="optradio" value="2">@Model.Option2</label>
+                            }
+                        </div>
+                        <div class="radio">
+                            @if (Model.Answer.Trim() == "3")
+                            {
+                                <label><input type="radio" name="optradio" value="3" checked="checked">@Model.Option3</label>
+                            }
+                            else
+                            {
+                                <label><input type="radio" name="optradio" value="3">@Model.Option3</label>
+                            }
+                        </div>
+                        <div class="radio">
+                            @if (Model.Answer.Trim() == "4")
+                            {
+                                <label><input type="radio" name="optradio" value="4" checked="checked">@Model.Option4</label>
+                            }
+                            else
+                            {
+                                <label><input type="radio" name="optradio" value="4">@Model.Option4</label>
+                            }
+                        </div>
+                    </div>
+                }
+            }
+            else if (Model.QuestionType == 1 && Model.AnswerType == 2)
+            {
+
+                if (string.IsNullOrEmpty(Model.Answer))
+                {
+                    <div class="col-md-9 col-md-offset-2">
+                        <div class="checkbox">
+                            <label><input type="checkbox" name="optcheckbox" value="1">@Model.Option1</label>
+                        </div>
+                        <div class="checkbox">
+                            <label><input type="checkbox" name="optcheckbox" value="2">@Model.Option2</label>
+                        </div>
+                        <div class="checkbox">
+                            <label><input type="checkbox" name="optcheckbox" value="3">@Model.Option3</label>
+                        </div>
+                        <div class="checkbox">
+                            <label><input type="checkbox" name="optcheckbox" value="4">@Model.Option4</label>
+                        </div>
+                    </div>
+                }
+                else
+                {
+                    <div class="col-md-9 col-md-offset-2">
+                        <div class="checkbox">
+                            <label><input id="optcheckbox1" type="checkbox" name="optcheckbox" value="1">@Model.Option1</label>
+                        </div>
+                        <div class="checkbox">
+                            <label><input id="optcheckbox2" type="checkbox" name="optcheckbox" value="2">@Model.Option2</label>
+                        </div>
+                        <div class="checkbox">
+                            <label><input id="optcheckbox3" type="checkbox" name="optcheckbox" value="3">@Model.Option3</label>
+                        </div>
+                        <div class="checkbox">
+                            <label><input id="optcheckbox4" type="checkbox" name="optcheckbox" value="4">@Model.Option4</label>
+                        </div>
+                    </div>
+                    foreach (string str in Model.Answer.Split(','))
+                    {
+                        <script>
+                            if(@str=="1")
+                            {
+                                $('#optcheckbox1').prop('checked', true);
+                            }
+                            if(@str=="2")
+                            {
+                                $('#optcheckbox2').prop('checked', true);
+                            }
+                            if(@str=="3")
+                            {
+                                $('#optcheckbox3').prop('checked', true);
+                            }
+                            if(@str=="4")
+                            {
+                                $('#optcheckbox4').prop('checked', true);
+                            }
+                        </script>
+                    }
+                }
+            }
+
+            else if (Model.QuestionType == 2)
+            {
+                <div class="col-md-9 col-md-offset-2">
+                    @Html.Kendo().EditorFor(m => m.Answer).Name("PracticalAnswer").Encode(true).Value(Model.Answer)
+                </div>
+            }
+
+            <div class="col-md-9 col-md-offset-2" style="border-bottom-width:1px; border-bottom-style:solid; border-bottom-color:black;">
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-9 col-md-offset-2" style="margin-top:1%;">
+        @if (Model.IsFirst == false)
+        {
+            @(Html.Kendo().Button()
+                .Name("btnNext")
+                    .HtmlAttributes(new { type = "button" }).Events(e => e.Click("OnNext"))
+                        .Content("Next").HtmlAttributes(new { style = "float: right;" }))
+        }
+
+        @if (Model.IsLast == false)
+        {
+            @(Html.Kendo().Button()
+                .Name("btnPrevious")
+                        .HtmlAttributes(new { type = "button" }).Events(e => e.Click("OnPrevious"))
+                                .Content("Previous").HtmlAttributes(new { style = "float: right;" }))
+        }
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-9 col-md-offset-2" style="margin-top:1%;">
+        @if (Model.IsFirst == true)
+        {
+            @(Html.Kendo().Button()
+                .Name("btnSubmit")
+                        .HtmlAttributes(new { type = "button" }).Events(e => e.Click("OnSubmitTest"))
+                        .Content("Submit Test").HtmlAttributes(new { style = "float: right;" }))
+        }
+    </div>
+</div>

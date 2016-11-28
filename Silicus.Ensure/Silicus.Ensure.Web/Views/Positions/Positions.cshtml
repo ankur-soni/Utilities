@@ -1,0 +1,136 @@
+﻿@model Silicus.Ensure.Models.DataObjects.Position
+
+@using Kendo.Mvc.UI;
+@{
+    ViewBag.Title = "Positions List";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<div class="main-content">
+    <div class="fluid mt20">
+    </div>
+    <div class="kendogrid">
+        <h2>Positions</h2>
+
+        <div>
+
+            @if (Request.IsAuthenticated)
+            {
+                @(Html.Kendo().Grid<Silicus.Ensure.Models.DataObjects.Position>().Name("positionGrids")
+            .DataSource(dataSource => dataSource
+            .Ajax()
+            .Model(model =>
+                    {
+                        model.Id(p => p.PositionId);
+                        model.Field(p => p.PositionId).Editable(false);
+
+                    })
+                     .Read(read => read.Action("GetPositionDetails", "Positions"))
+                     .Create(update => update.Action("PositionSave", "Positions"))
+                     .Update(update => update.Action("PositionSave", "Positions"))
+                     .Destroy(delete => delete.Action("PositionDelete", "Positions"))
+                )
+                .Columns(columns =>
+                {
+                    columns.Bound(p => p.PositionName).Width(250);
+                    columns.Command(command =>
+                    {
+                        command.Edit();
+                        command.Destroy();
+                    }).Title("Actions").Width(160);
+
+                })
+                .Pageable()
+                .Sortable()
+                .ToolBar(toolbar =>
+                {
+                    toolbar.Template(@<text>
+                        <div class="toolbar">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="input-group">
+                                        <span class="input-group-addon"><span class="glyphicon glyphicon-search" aria-hidden="true"></span></span>
+                                        <input type="text" class="form-control" id='FieldFilter' placeholder="Search for...">
+                                        <span class="input-group-btn">
+                                            <button id="postionSearch" class="btn btn-default" type="button" style="height:16px;"><span class="glyphicon glyphicon-refresh" aria-hidden="true"></span></button>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                            <br />
+                            <div class="row">
+                                <div class="col-md-3 col-md-push-1" style="float: right; padding-right: 0px; margin-right: -22px;">
+                                    <a href='/Positions/PositionSave' class='k-button k-button-icontext k-grid-add'><span class='k-icon k-add'></span>Add new postion</a>
+                                </div>
+                            </div>
+                        </div>
+                    </text>);
+                })
+                                                                                                    .Editable(ed => ed.Mode(GridEditMode.InLine))
+                )
+            }
+        </div>
+    </div>
+</div>
+<script>
+
+    $(document).ready(function () {
+        $("#FieldFilter").keyup(function () {
+
+            var value = $("#FieldFilter").val();
+            grid = $("#positionGrids").data("kendoGrid");
+
+            if (value.length > 1) {
+                if (value) {
+                    grid.dataSource.filter({ field: "PositionName", operator: "contains", value: value });
+                } else {
+                    grid.dataSource.filter({});
+                }
+            }
+            else if (value == "")
+                grid.dataSource.filter({});
+        });
+
+        $("#postionSearch").click(function (e) {
+            e.preventDefault();
+            var datasource = $("#positionGrids").data("kendoGrid").dataSource;
+            //Clear filters:
+            datasource.filter([]);
+            $("#FieldFilter").val('');
+        });
+    });
+
+    (function ($, kendo) {
+        $.extend(true, kendo.ui.validator, {
+            rules: {
+                //define custom validation rule to match remote validation:
+                mvcremotevalidation: function (input) {
+                    if (input.is("[data-val-remote]") && input.val() != "") {
+                        var remoteURL = input.attr("data-val-remote-url");
+                        var valid;
+                        $.ajax({
+                            async: false,
+                            type: "POST",
+                            url: remoteURL,
+                            data: JSON.stringify({ 'positionName': input.val() }),
+                            contentType: "application/json; charset=utf-8",
+                            dataType: "json",
+                            success: function (data) {
+                                valid = data;
+                            }
+                        });
+                        return valid;
+
+                    }
+                    return true;
+                }
+            },
+            messages: {
+                mvcremotevalidation: function (input) {
+                    return input.attr("data-val-remote");
+                }
+            }
+        });
+
+    })(jQuery, kendo);
+
+</script>

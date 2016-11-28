@@ -1,0 +1,295 @@
+﻿@model Silicus.Ensure.Models.DataObjects.User
+@using Silicus.Ensure.Models.Constants;
+@using Kendo.Mvc.UI;
+
+@{
+    ViewBag.Title = "Roles";
+}
+
+<div class="row">
+    <div class="col-sm-3">
+        <span>Test Status</span>
+    </div>
+    <div class="col-sm-3">
+        @(Html.Kendo().DropDownListFor(m => m.TestStatus)
+                .Name("TestStatus")
+                .DataTextField("Text")
+                .DataValueField("Value")
+                .Events(e => e.Change("Change"))
+                    .BindTo(new List<SelectListItem>
+                    () {
+                        new SelectListItem(){
+                    Text="All",
+                    Value="All"
+                    },
+                    new SelectListItem(){
+                    Text=Convert.ToString(TestStatus.NotAssigned),
+                    Value=Convert.ToString(TestStatus.NotAssigned)
+                    },
+                    new SelectListItem(){
+                    Text=Convert.ToString(TestStatus.Assigned),
+                    Value=Convert.ToString(TestStatus.Assigned)
+                    },
+                    new SelectListItem(){
+                    Text=Convert.ToString(TestStatus.Submitted),
+                    Value=Convert.ToString(TestStatus.Submitted)
+                    },
+                    new SelectListItem(){
+                    Text=Convert.ToString(TestStatus.Evaluating),
+                    Value=Convert.ToString(TestStatus.Evaluating)
+                    },
+                    new SelectListItem(){
+                    Text=Convert.ToString(TestStatus.Completed),
+                    Value=Convert.ToString(TestStatus.Completed)
+                    }
+                    }).HtmlAttributes(new { style = "width: 100%" }))
+    </div>
+</div>
+<h2>Candidates List</h2>
+<script>
+    $(document).ready(function () {
+
+        $("#FieldFilter").keyup(function () {
+            var value = $("#FieldFilter").val();
+            grid = $("#userGrids").data("kendoGrid");
+
+            if (value) {
+                var filter = { logic: "or", filters: [] };
+                var supplierValue = value;
+                filter.filters.push({ field: "FirstName", operator: "eq", value: value });
+                filter.filters.push({ field: "LastName", operator: "eq", value: value });
+                filter.filters.push({ field: "Position", operator: "eq", value: value });
+                filter.filters.push({ field: "Department", operator: "eq", value: value });
+                grid.dataSource.query({ filter: filter });
+
+
+            } else {
+                grid.dataSource.filter({});
+            }
+        });
+    });
+    function ClosePopUp() {
+        $(".blurSec2").hide();
+        $(".blurSec1").hide();
+        $("#Candy").hide();
+    }
+    function showTest(UserId, TestStatus) {
+        if (TestStatus == '@TestStatus.NotAssigned.ToString()') {
+        $.ajax({
+            type: 'post',
+            async: false,
+            url: "/Admin/CandidatesSuit",
+            cache: false,
+            data: { UserId: UserId },
+            contenttype: "application/json; charset=utf-8",
+            success: function (data) {
+                    $("#CandidateInfo").html(data);
+                    $('#myModal').modal();                   
+                }
+            });
+        }
+        else
+        {
+            alert("Sorry! Cann't perform this operation.");
+        }
+    }
+
+    function ReAssign(UserId, TestStatus) {
+        if (TestStatus == '@TestStatus.Assigned.ToString()') {
+            $.ajax({
+                type: 'post',
+                async: false,
+                url: "/Admin/CandidatesSuit",
+                cache: false,
+                data: { UserId: UserId, IsReassign:1 },
+                contenttype: "application/json; charset=utf-8",
+                success: function (data) {
+                $("#CandidateInfo").html(data);
+                $('#myModal').modal();
+            }
+        });
+    }
+
+
+    $(function () {
+        //$('body').on('click', '#Savebtn', function () {
+        //    var myClone = myBackup.clone();
+        //    $('body').append(myClone);
+        //});
+
+        $("#Savebtn").bind("click", function () {
+            var chkCheck = false;
+            $('input:checkbox').each(function () {
+                if ($(this).is(':checked')) {
+                    chkCheck = true;
+                }
+            });
+            if (chkCheck) {
+            var uId = $("#CurrentUser").val();
+            var IsReAssign = $("#IsReAssign").val();
+            alert(IsReAssign);
+            alert(uId);
+            var checkvals = $("[class='check']:checked").attr("value")
+
+            $('#myModal').find('input[type=checkbox]:checked').removeAttr('checked');
+            $.ajax({
+                type: 'post',
+                async: false,
+                url: "/Admin/AssignSuite",
+                cache: false,
+                data: { SuiteId: checkvals, UserId: uId, IsReAssign: IsReAssign },
+                contenttype: "application/json; charset=utf-8",
+                success: function (returndata) {
+                    if (returndata == 1) {
+                        $('#userGrids').data('kendoGrid').dataSource.read();
+                        $('#userGrids').data('kendoGrid').refresh();
+                        ShowMessage("Test suit assigned successfully.", 1);
+                            $('#myModal').fadeOut();
+                    }
+                },
+                error: function (er) {
+
+                }
+            });
+            }
+            else {
+                alert('Please select at least one test suit !')
+            }
+        });
+
+    });
+
+    function Change() {
+        var value = $("#TestStatus").val();
+        grid = $("#userGrids").data("kendoGrid");
+
+        if (value == "All") {
+            grid.dataSource.filter([]);
+        }
+        else {
+            grid.dataSource.filter({ field: "TestStatus", operator: "eq", value: value });
+        }
+    }
+
+    function AddNew() {
+        window.location.href = "/Admin/CandidateAdd?UserId=0";
+
+        return false;
+    }
+
+    function deleteUser(userId) {
+        if (confirm('Are you sure, do you want to delete user?')) {
+            $.ajax({
+                type: "POST",
+                url: '@Url.Action("DeleteUser", "User")',
+                data: { UserId: userId },
+                success: function (returndata) {
+                    if (returndata == 1) {
+                        $('#userGrids').data('kendoGrid').dataSource.read();
+                        $('#userGrids').data('kendoGrid').refresh();
+                        ShowMessage("User deleted successfully.", 1);
+                    }
+                    else {
+                        ShowMessage("Error occured while delete operation.", 0);
+                    }
+                }
+            });
+        }
+    }
+
+    function CheckAssign(status, id, UserId) {
+
+        if (status == 'Assigned' && id == 1) {
+            window.location.href = "/Admin/ViewQuestion?id=" + UserId;
+            return false;
+        }
+        else if (status == 'Assigned' && id == 2) {
+            window.location.href = "/admin/SubmittedTest?canditateId=" + UserId;
+            return false;
+        }
+        else {
+            alert('Please assign the test suit first');
+        }
+    }
+</script>
+<div>
+
+    @if (Request.IsAuthenticated)
+    {
+        @(Html.Kendo().Grid<Silicus.Ensure.Models.DataObjects.User>().Name("userGrids")
+         .Columns(columns =>
+              {
+                  columns.Bound(p => p.FirstName).Width(50);
+                  columns.Bound(p => p.LastName).Width(50);
+                  columns.Bound(p => p.Gender).Width(50);
+                  columns.Bound(p => p.Position).Width(50);
+                  columns.Bound(p => p.Department).Width(50);
+                  columns.Bound(p => p.Experience).Width(50);
+                  columns.Bound(p => p.Email).Width(50);
+                  columns.Bound(p => p.TestStatus).Width(50);
+                  columns.Bound(c => c.UserId).ClientTemplate(@"<a class='k-button k-button-icontext k-grid-edit' href='" + Url.Action("CandidateAdd", "Admin") + "?UserId=#=UserId#'><span class='k-icon k-edit'></span>Edit</a><a id='testSuiteDel' class='k-button k-button-icontext k-grid-delete' href='\\#' onclick='return deleteUser(#=UserId#)'><span class='k-icon k-delete'></span>Delete</a>").Width(160);
+                  columns.Bound(c => c.UserId).ClientTemplate(@"
+                                <a onclick=showTest('#=UserId#','#=TestStatus#')>Assign Test</a>|
+                                <a  class ='dialog-window' onclick=CheckAssign('#=TestStatus#',1,'#=UserId#') >Preview Question Set</a> |
+                                <a  class ='dialog-window' onclick=CheckAssign('#=TestStatus#',2,'#=UserId#') >View Submitted Test</a> |
+                                <a  class ='dialog-window' onclick=ReAssign('#=UserId#','#=TestStatus#') >Reassign Test</a>").Title("Actions");
+              })
+            .DataSource(dataSource => dataSource
+                      .Ajax()
+                      .Model(model =>
+                      {
+                          model.Id(p => p.UserId);
+                          model.Field(p => p.UserId).Editable(false);
+                      })
+
+                          .Read(read => read.Action("GetCandidateDetails", "User"))
+                          .Create(update => update.Action("CreateUser", "User"))
+                          .Update(update => update.Action("UpdateUser", "User"))
+                          .Destroy(update => update.Action("DeleteUser", "User"))
+                     )
+                  .Pageable()
+                  .Sortable()
+                      .Resizable(resizing => resizing.Columns(true))
+                 .ToolBar(toolbar =>
+                    {
+                        toolbar.Template(@<text>
+                            <div class="toolbar">
+                                <div class="row">
+                                    <div class="col-md-4">
+                                        <div class="input-group">
+                                            <span class="input-group-addon"><span class="glyphicon glyphicon-search" aria-hidden="true"></span></span>
+                                            <input type="text" class="form-control" id='FieldFilter' placeholder="Search for...">
+                                            <span class="input-group-btn">
+                                                <button class="btn btn-default" style="height:16px;" type="button"><span class="glyphicon glyphicon-refresh" aria-hidden="true"></span></button>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-3 col-md-push-1" style="float: right; padding-right: 0px; margin-right: -22px;">
+                                        <a href='#' onclick='AddNew();' class='k-button k-button-icontext k-grid-add'><span class='k-icon k-add'></span>Add Candidate</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </text>);
+                    }))
+    }
+
+</div>
+<div class="modal fade" id="myModal" data-backdrop="static" role="dialog">
+    <div class="modal-dialog">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Test-Suite List</h4>
+            </div>
+            <div class="modal-body" id="CandidateInfo">
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" id="Savebtn">Save</button>
+            </div>
+        </div>
+    </div>
+</div>

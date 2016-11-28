@@ -58,65 +58,24 @@
 
             <div style="font-weight:bold;color:#0070B9">ALL</div>
 
-            <hr style="margin-top:0px;height:2px;margin-left:0px; width:85%;" />
-            foreach (var item in Model)
-            {
-                Random randomGen = new Random();
-                KnownColor[] names = (KnownColor[])Enum.GetValues(typeof(KnownColor));
-                KnownColor randomColorName = names[randomGen.Next(names.Length)];
-                Color randomColor = Color.FromKnownColor(randomColorName);
-                var borderColor = string.Empty;
-                if (item.IsWinner == true)
-                {
-                    borderColor = "#0067AA";
-                }
-                if (item.IsShortlisted)
-                {
-                    borderColor = "#F8AC59";
-                }
-                <div class="col-md-3 card white-bg" style="border-color:@borderColor">
-                    <div class="cardHeader text-center">
+            <div>
+                <ul class="nav nav-tabs">
+                    <li class="active"><a id="current-tab" data-toggle="tab" href="#currentMonth">Current</a></li>
+                    <li><a id="historical-tab" data-toggle="tab" href="#historical">Historical</a></li>
+                </ul>
+            </div>
+            <div class="tab-content">
+                <hr style="margin-top:0px;height:2px;margin-left:0px; width:85%;" />
 
-                        <div>
-                            <label>@Html.DisplayFor(modelItem => item.DisplayName)</label>
-                        </div>
-                        <div>
-                            For
-                            @Html.DisplayFor(modelItem => item.AwardName)
-                            @Html.DisplayFor(modelItem => item.NominationTime)
+                <div id="currentMonth" class="tab-pane fade in active">
+                    @Html.Partial("~/Views/Review/Shared/_reviewFeedbackList.cshtml", Model)
+                </div>
 
-                            <table align="center" style="border: 1px solid rgba(178, 176, 176, 0.96);margin-top:2%;">
-                                <tr>
-                                    <th>Credits</th>
-                                    <th>Reviews</th>
-                                    <th>Average</th>
-                                </tr>
-                                <tr>
-                                    <td>@Html.DisplayFor(modelItem => item.Credits)</td>
-                                    <td>@Html.DisplayFor(modelItem => item.numberOfReviews)</td>
-                                    <td>@Html.DisplayFor(modelItem => item.averageCredits)</td>
-                                </tr>
-                            </table>
-                        </div>
+                <div id="historical" class="tab-pane fade">
+                    This is Empty currently
                     </div>
-                    <div class="cardFooter text-right" style="padding-top:5px;border-color:@borderColor">
-
-                        @if (item.IsShortlisted)
-                        {
-                            <span><i class="fa fa-star fa-2x" style="color:@borderColor" title="Shortlisted" aria-hidden="true"></i></span>
-                        }
-                        else if (item.IsWinner)
-                        {
-                            <span><i class="fa fa-trophy fa-2x" style="color:@borderColor" title="Winner" aria-hidden="true"></i></span>
-                        }
-                        <a href="@Url.Action("ViewNominationForShortlist", "Review", item)">
-                            <span> <i class="fa fa-file-text-o" title="View Nomination" aria-hidden="true" style="font-size:30px;"></i> </span>
-                        </a>
-                    </div>
-
                 </div>
             }
-        }
         <br />
     </div>
 
@@ -182,30 +141,30 @@
             <br />
         </div>
 
-        bool _disabled = false;
-        foreach (var item in Model)
-        {
-            if (item.IsWinner == true)
+            bool _disabled = false;
+            foreach (var item in Model)
             {
-                _disabled = true;
-                break;
+                if (item.IsWinner == true)
+                {
+                    _disabled = true;
+                    break;
+                }
             }
-        }
-        if (_disabled == false)
-        {
-            <div style="text-align:center;width:80%;">
-                <input type="button" value="Reject All" class="btn btn-primary btnSameSize" id="rejectAll" onclick="return rejectAllNominations()" style="margin-left:3%;" />
-            </div>
-        }
-        else
-        {
-            <div style="text-align:center;width:80%;">
-                <input type="button" value="Reject All" disabled class="btn btn-primary btnSameSize" id="rejectAll" onclick="return rejectAllNominations()" style="margin-left:3%;" />
-            </div>
-        }
-        @*<div style="text-align:center;width:80%;">
-                <input type="button" value="Reject All" class="btn btn-primary btnSameSize" id="rejectAll" onclick="return rejectAllNominations()" style="margin-left:3%;" />
-            </div>*@
+            if (_disabled == false)
+            {
+                <div style="text-align:center;width:80%;">
+                    <input type="button" value="Reject All" class="btn btn-primary btnSameSize" id="rejectAll" onclick="return rejectAllNominations()" style="margin-left:3%;" />
+                </div>
+            }
+            else
+            {
+                <div style="text-align:center;width:80%;">
+                    <input type="button" value="Reject All" disabled class="btn btn-primary btnSameSize" id="rejectAll" onclick="return rejectAllNominations()" style="margin-left:3%;" />
+                </div>
+            }
+            @*<div style="text-align:center;width:80%;">
+                    <input type="button" value="Reject All" class="btn btn-primary btnSameSize" id="rejectAll" onclick="return rejectAllNominations()" style="margin-left:3%;" />
+                </div>*@
     }
     <div class="row">&nbsp;</div>
     <div class="row">&nbsp;</div>
@@ -260,6 +219,33 @@
 
     }
 
+    var _urlReviewFeedbackListForActiveMonth = '@Url.Action("GetReviewFeedbackListPartialView", "Review", new { forCurrentMonth = true })';
+    var _urlReviewFeedbackListForHistoricalMonths = '@Url.Action("GetReviewFeedbackListPartialView", "Review", new { forCurrentMonth = false })';
 
+    $("#historical-tab").on("click", function () {
+        $.ajax({
+            type: "GET",
+            url: _urlReviewFeedbackListForHistoricalMonths,
+            success: function (response) {
+                $("#historical").html(response);
+            },
+            error: function (error) {
+                console.log(error);
+            }
+        });
+    })
+
+    $("#current-tab").on("click", function () {
+        $.ajax({
+            type: "GET",
+            url: _urlReviewFeedbackListForActiveMonth,
+            success: function (response) {
+                $("#currentMonth").html(response);
+            },
+            error: function (error) {
+                console.log(error);
+            }
+        });
+    })
 
 </script>

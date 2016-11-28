@@ -1,0 +1,482 @@
+﻿@model Silicus.Ensure.Web.Models.QuestionModel
+@using Kendo.Mvc.UI;
+
+@{
+    ViewBag.Title = "Add Questions";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="main-content">
+    @using (Html.BeginForm("AddQuestions", "QuestionBank"))
+    {
+        <div class="fluid mt20">
+            <div class="row">
+                <div class="alert alert-danger" id="errorDiv">
+                    <strong>Error!</strong> <span id="errorContent">This alert box could indicate a dangerous or potentially negative action.</span>
+                </div>
+                <div class="col-md-4">
+                    <span>Question Type:</span><span style="color:red">*</span>
+                </div>
+                <div class="col-md-8">
+                    @(Html.Kendo().DropDownListFor(m => m.QuestionType)
+                .Name("QuestionType")
+                .DataTextField("Text")
+                .DataValueField("Value")
+                .Value(Model.QuestionType)
+                .Events(e => e.Change("QuestionTypeChange"))
+                    .BindTo(new List<SelectListItem>
+                    () {
+                    new SelectListItem(){
+                    Text="Objective",
+                    Value="1"
+                    },
+                    new SelectListItem(){
+                    Text="Practical",
+                    Value="2"
+                    }
+                    }).HtmlAttributes(new { style = "width: 100%" }))
+                </div>
+            </div>
+            <br />
+
+            <div class="row">
+                <div class="col-md-4">
+                    <span>Question Description:</span><span style="color:red">*</span>
+                </div>
+                <div class="col-md-8">
+                    @Html.Kendo().EditorFor(m => m.QuestionDescription).Name("QuestionDescription").Encode(true).Value(Model.QuestionDescription)
+                </div>
+            </div>
+            <br />
+
+            <div id="practical">
+
+                <div class="row">
+                    <div class="col-md-4">
+                        <span>Answer Type:</span><span style="color:red">*</span>
+                    </div>
+                    <div class="col-md-8">
+                        @(Html.Kendo().DropDownListFor(m => m.AnswerType)
+                    .Name("AnswerType")
+                    .DataTextField("Text")
+                    .DataValueField("Value")
+                    .Value(Model.AnswerType.ToString())
+                        .BindTo(new List<SelectListItem>
+                        () {
+                        new SelectListItem(){
+                        Text="Single Choice",
+                        Value="1"
+                        },
+                        new SelectListItem(){
+                        Text="Multiple Choice",
+                        Value="2"
+                        }
+                        }).HtmlAttributes(new { style = "width: 100%" }))
+                    </div>
+                </div>
+                <br />
+
+                <div class="row">
+                    <div class="col-md-4">
+                        <span>Multiple Answer Questions</span>
+                    </div>
+                </div>
+                <br />
+
+                <div class="row">
+                    <div class="col-md-4">
+                        <span>Option 1:</span><span style="color:red">*</span>
+                    </div>
+                    <div class="col-md-8">
+                        @Html.TextBoxFor(m => m.Option1, new { @class = "form-control", Value = @Model.Option1 })
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-4">
+                        <span>Option 2:</span><span style="color:red">*</span>
+                    </div>
+                    <div class="col-md-8">
+                        @Html.TextBoxFor(m => m.Option2, new { @class = "form-control", Value = @Model.Option2 })
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-4">
+                        <span>Option 3:</span><span style="color:red">*</span>
+                    </div>
+                    <div class="col-md-8">
+                        @Html.TextBoxFor(m => m.Option3, new { @class = "form-control", Value = @Model.Option3 })
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-4">
+                        <span>Option 4:</span><span style="color:red">*</span>
+                    </div>
+                    <div class="col-md-8">
+                        @Html.TextBoxFor(m => m.Option4, new { @class = "form-control", Value = @Model.Option4 })
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-4">
+                        <span>Correct Answer:</span><span style="color:red">*</span>
+                    </div>
+
+                    <div class="col-md-8">
+                        @(Html.Kendo().MultiSelectFor(m => m.CorrectAnswer)
+                    .Name("CorrectAnswer")
+                    .DataTextField("Text")
+                    .DataValueField("Value")
+                    .Placeholder("Select correct option(s)...")
+                    .BindTo(new List<SelectListItem>() {
+                    new SelectListItem(){
+                    Text="Option 1",
+                    Value="1"
+                    },
+                    new SelectListItem(){
+                    Text="Option 2",
+                    Value="2"
+                    },
+                    new SelectListItem(){
+                    Text="Option 3",
+                    Value="3"
+                    },
+                    new SelectListItem(){
+                    Text="Option 4",
+                    Value="4"
+                    }
+                    }).Value(Model.CorrectAnswer).HtmlAttributes(new { style = "width: 100%" }))
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="row" id="practicalAns">
+                <div class="col-md-4">
+                    <span>Answer:</span>
+                </div>
+                <div class="col-md-8">
+                    @Html.Kendo().EditorFor(m => m.Answer).Name("Answer").Encode(true).Value(Model.Answer)
+                </div>
+            </div>
+            <br />
+
+            <div class="row">
+                <div class="col-md-4">
+                    <span>Skill Tags:</span><span style="color:red">*</span>
+                </div>
+
+                <div class="col-md-8">
+                    @(Html.Kendo().MultiSelectFor(m => m.SkillTag)
+                .DataTextField("TagName")
+                .DataValueField("TagId")
+                .Placeholder("Select skill set...")
+                .BindTo(Model.SkillTagsList)
+                .Value(Model.SkillTag)
+                .HtmlAttributes(new { style = "width: 100%" }))
+                </div>
+            </div>
+            <br />
+
+            <div class="row">
+                <div class="col-md-4">
+                    <span>Competency:</span><span style="color:red">*</span>
+                </div>
+
+                <div class="col-md-8">
+                    @(Html.Kendo().DropDownListFor(m => m.Competency)
+                .Name("Competency")
+                .DataTextField("Text")
+                .DataValueField("Value")
+                .Value(Model.Competency)
+                .BindTo(new List<SelectListItem>
+                    () {
+                    new SelectListItem(){
+                    Text="Beginner",
+                    Value="1"
+                    },
+                    new SelectListItem(){
+                    Text="Intermediate",
+                    Value="2"
+                    },
+                    new SelectListItem(){
+                    Text="Expert",
+                    Value="3"
+                    }
+                    }).HtmlAttributes(new { style = "width: 100%" }))
+                </div>
+            </div>
+            <br />
+
+            <div class="row">
+                <div class="col-md-4">
+                    <span>Duration (Min):</span><span id="durationRequired" style="color:red">*</span>
+                </div>
+
+                <div class="col-md-8">
+                    @(Html.Kendo().DropDownListFor(m => m.Duration)
+                .Name("Duration")
+                .DataTextField("Text")
+                .DataValueField("Value")
+                .Value(Model.Duration.ToString())
+                .BindTo(new List<SelectListItem>
+                    () {
+                    new SelectListItem(){
+                    Text="1",
+                    Value="1"
+                    },
+                    new SelectListItem(){
+                    Text="2",
+                    Value="2"
+                    },
+                    new SelectListItem(){
+                    Text="3",
+                    Value="3"
+                    },
+                    new SelectListItem(){
+                    Text="5",
+                    Value="5"
+                    },
+                    new SelectListItem(){
+                    Text="10",
+                    Value="10"
+                    },
+                    new SelectListItem(){
+                    Text="15",
+                    Value="15"
+                    },
+                    new SelectListItem(){
+                    Text="20",
+                    Value="20"
+                    }
+                    }).HtmlAttributes(new { style = "width: 100%" }))
+                </div>
+            </div>
+            <br />
+
+            <div class="row">
+                <div class="col-md-4">
+                    <span>Marks:</span><span style="color:red">*</span>
+                </div>
+
+                <div class="col-md-8">
+                    @(Html.Kendo().DropDownListFor(m => m.Marks)
+                .Name("Marks")
+                .DataTextField("Text")
+                .DataValueField("Value")
+                .Value(Model.Marks.ToString())
+                .BindTo(new List<SelectListItem>
+                    () {
+                    new SelectListItem(){
+                    Text="1",
+                    Value="1"
+                    },
+                    new SelectListItem(){
+                    Text="2",
+                    Value="2"
+                    },
+                    new SelectListItem(){
+                    Text="3",
+                    Value="3"
+                    },
+                    new SelectListItem(){
+                    Text="5",
+                    Value="5"
+                    },
+                    new SelectListItem(){
+                    Text="10",
+                    Value="10"
+                    },
+                    new SelectListItem(){
+                    Text="15",
+                    Value="15"
+                    },
+                    new SelectListItem(){
+                    Text="20",
+                    Value="20"
+                    }
+                    }).HtmlAttributes(new { style = "width: 100%" }))
+                </div>
+            </div>
+            <br />
+
+            <div class="row">
+                <div class="col-md-6"></div>
+                <div class="col-md-2 col-md-offset-4">
+                    @(Html.Kendo().Button()
+                .Name("btnCancel").Icon("cancel")
+                .HtmlAttributes(new { type = "button" })
+                .Events(e => e.Click("OnCancel"))
+                .Content("Cancel"))
+
+                    @(Html.Kendo().Button()
+                .Name("btnSave").Icon("tick")
+                .HtmlAttributes(new { type = "submit" })
+                .Content("Save"))
+                </div>
+            </div>
+            @Html.HiddenFor(m => m.CreatedOn, new { Value = @Model.CreatedOn })
+            @Html.HiddenFor(m => m.CreatedBy, new { Value = @Model.CreatedBy })
+            @Html.HiddenFor(m => m.Id, new { Value = @Model.Id })
+            @Html.HiddenFor(m => m.Edit, new { Value = @Model.Edit })
+
+            <script>
+                $(document).ready(function () {
+                    $("#errorDiv").hide();
+                    $("#durationRequired").hide();
+                    $("#practicalAns").hide();
+
+
+                    var success =@Model.Success;
+                    if(success==1)
+                    {
+                        var edit="@Model.Edit";
+                        if(edit=="True"){
+                            $("#myModal").modal();
+                            $("#msgContent").text("Question updated successfully.");
+                        }
+                        else{
+                            $("#myModal").modal();
+                            $("#msgContent").text("Question added successfully in the application.");
+                        }
+                    }
+
+                    // Check Question Type on Edit.
+                    var Qtype=@Model.QuestionType;
+                    if(Qtype=="2")
+                    {
+                        $("#practical").hide();
+                        $("#practicalAns").show();
+                        $("#durationRequired").show();
+                    }
+
+                    // Save and Edit Activity Validation.
+                    $("#btnSave").click(function () {
+
+                        var qType = $('#QuestionType').val();
+
+                        if ($("#QuestionDescription").val().trim().length == 0) {
+                            $("#QuestionDescription").focus();
+                            ShowError("Question description cann't be blank.");
+                            return false;
+                        }
+                        else {
+
+                            if (qType == 1) {
+                                if ($("#Option1").val().trim().length == 0) {
+                                    $("#Option1").focus();
+                                    ShowError("Option 1 cann't be blank.");
+                                    return false;
+                                }
+                                else if ($("#Option2").val().trim().length == 0) {
+                                    $("#Option2").focus();
+                                    ShowError("Option 2 cann't be blank.");
+                                    return false;
+                                }
+                                else if ($("#Option3").val().trim().length == 0) {
+                                    $("#Option3").focus();
+                                    ShowError("Option 3 cann't be blank.");
+                                    return false;
+                                }
+                                else if ($("#Option4").val().trim().length == 0) {
+                                    $("#Option4").focus();
+                                    ShowError("Option 4 cann't be blank.");
+                                    return false;
+                                }
+                                else if ($("#CorrectAnswer :selected").length == 0) {
+                                    $("#CorrectAnswer").focus();
+                                    ShowError("Select at least 1 correct answer.");
+                                    return false;
+                                }
+                            }
+
+                            if ($("#SkillTag :selected").length == 0) {
+                                $("#SkillTag").focus();
+                                ShowError("Select at least 1 skill tag.");
+                                return false;
+                            }
+                        }
+                    });
+
+                });
+
+                // Show Error Animation
+                function ShowError(content) {
+                    $("#errorDiv").show();
+                    $("#errorContent").text(content);
+                    $("html, body").animate({ scrollTop: 0 }, "slow");
+                    $("#errorDiv").fadeOut(10000);
+                }
+
+                // Question Type Change
+                function QuestionTypeChange() {
+                    var value = $("#QuestionType").val();
+                    if (value == "2") {
+                        $("#practical").hide();
+                        $("#practicalAns").show();
+                        $("#durationRequired").show();
+                    }
+                    else {
+                        $("#practical").show();
+                        $("#practicalAns").hide();
+                        $("#durationRequired").hide();
+
+                    }
+
+                    $("#Option1").val("");
+                    $("#Option2").val("");
+                    $("#Option3").val("");
+                    $("#Option4").val("");
+                    var Answer = $("#Answer").data("kendoEditor");
+                    Answer.value("");
+                    var CorrectAnswer = $('#CorrectAnswer').data("kendoMultiSelect");
+                    CorrectAnswer.value([]);
+                    var SkillTag = $('#SkillTag').data("kendoMultiSelect");
+                    SkillTag.value([]);
+                    var AnswerType = $("#AnswerType").data("kendoDropDownList");
+                    AnswerType.value("1");
+                    var Competency = $("#Competency").data("kendoDropDownList");
+                    Competency.value("1");
+                    var Duration = $("#Duration").data("kendoDropDownList");
+                    Duration.value("1");
+                }
+
+                function OnCancel() {
+                    window.location.href = "/QuestionBank/QuestionBank";
+                }
+            </script>
+            <style>
+                .height {
+                    height: 250px;
+                }
+
+                .required {
+                    color: red;
+                }
+            </style>
+        </div>
+    }
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="myModal" role="dialog" onclick="OnCancel();">
+    <div class="modal-dialog">
+
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" onclick="OnCancel();">&times;</button>
+                <h4 class="modal-title"><span id="msgMain">Success!</span></h4>
+            </div>
+            <div class="modal-body">
+                <p id="msgContent">Some text in the modal.</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal" onclick="OnCancel();">Close</button>
+            </div>
+        </div>
+
+    </div>
+</div>

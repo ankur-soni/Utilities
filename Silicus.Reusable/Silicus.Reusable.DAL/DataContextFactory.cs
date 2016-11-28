@@ -17,7 +17,9 @@ namespace Silicus.FrameworxProject.DAL
 
             ICommonDatabaseContext dataContext = null;
 
-            dataContext = new CommonDatabaseContext("DefaultConnection");
+            dataContext =
+                new CommonDatabaseContext(
+                    ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString);
 
             return dataContext;
 

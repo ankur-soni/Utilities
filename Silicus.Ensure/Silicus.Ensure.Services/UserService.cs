@@ -1,0 +1,61 @@
+﻿using System.Collections.Generic;
+using System.Linq;
+using Silicus.Ensure.Entities;
+using Silicus.Ensure.Models.DataObjects;
+using Silicus.Ensure.Services.Interfaces;
+
+namespace Silicus.Ensure.Services
+{
+    public class UserService : IUserService
+    {
+        private readonly IDataContext _context;
+
+        public UserService(IDataContextFactory dataContextFactory)
+        {
+            _context = dataContextFactory.Create(ConnectionType.Ip);
+        }
+
+        public IEnumerable<User> GetUserDetails()
+        {
+            return _context.Query<User>();
+        }
+
+        public int Add(User User)
+        {
+            _context.Add(User);
+            return User.UserId;
+        }
+
+        public void Update(User User)
+        {
+            if (User.FirstName != null && User.Address != null && User.LastName != null && User.Role != null)
+            {
+                _context.Update(User);
+            }
+        }
+
+        public void Delete(User User)
+        {
+            if (User.FirstName != null && User.Address != null && User.LastName != null && User.Role != null)
+            {
+                _context.Delete(User);
+            }
+        }
+
+        public User GetUserById(int userId)
+        {
+            return _context.Query<User>().FirstOrDefault(x => x.UserId == userId);
+        }
+
+        public User GetUserByEmail(string email)
+        {
+            return _context.Query<User>().FirstOrDefault(x => x.Email == email);
+        }
+
+        public IEnumerable<User> GetUserByRole(string role)
+        {
+            return _context.Query<User>().Where(x => x.Role == role);
+        }
+    }
+}
+

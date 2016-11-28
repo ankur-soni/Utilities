@@ -1,0 +1,48 @@
+﻿@*@model List<Silicus.Ensure.Web.Models.TestSuiteViewModel>*@
+@using Kendo.Mvc.UI;
+
+
+@{
+    ViewBag.Title = "TestSuite List";
+
+}
+
+@if (Request.IsAuthenticated)
+{
+    @(Html.Kendo().Grid<Silicus.Ensure.Web.Models.TestSuiteViewModel>().Name("testSuiteGrids")
+                     .Columns(columns =>
+                          {
+                              columns.Bound(p => p.TestSuiteId).ClientTemplate("<input type='checkbox' class='check' id='chkHeader' value='#=TestSuiteId#'/>").Title("");
+                              columns.Bound(p => p.TestSuiteName).Width(100);
+                              columns.Bound(p => p.Duration).Width(50);
+                              columns.Bound(p => p.PositionName).Width(50);
+                              columns.Bound(p => p.PrimaryTagNames).Width(200);
+                              columns.Bound(p => p.Userid).ClientTemplate("<input type='text' class='textu' id='txtUser' value='#=Userid#'/>").Hidden();
+                              //columns.Bound("").ClientTemplate("<a class='k-button k-button-icontext k-grid-add' href='\\#' data-toggle='modal' data-target='\\#myModal'><span class='k-icon k-add'></span>Activate Test Suite</a><a class='k-button k-button-icontext k-grid-add' href='" + Url.Action("TestSuiteCopy", "Admin") + "?testSuiteId=#=TestSuiteId#'><span class='k-icon k-add'></span>Copy</a><a class='k-button k-button-icontext k-grid-edit' href='" + Url.Action("TestSuiteAdd", "Admin") + "?testSuiteId=#=TestSuiteId#'><span class='k-icon k-edit'></span>Edit</a><a class='k-button k-button-icontext k-grid-delete' href='" + Url.Action("TestSuiteDelete", "Admin") + "?testSuiteId=#=TestSuiteId#'><span class='k-icon k-delete'></span>Delete</a>");
+                          })
+                              .DataSource(dataSource => dataSource
+                                  .Ajax()
+                                  .Model(model =>
+                                  {
+                                      model.Id(p => p.TestSuiteId);
+                                      model.Field(p => p.TestSuiteId).Editable(false);
+                                  })
+                                  .Read(read => read.Action("GetTestSuiteDetails", "Admin"))
+                                  .PageSize(10)
+                          )
+                          .Pageable()
+                          .Sortable()
+
+    )
+
+}
+<input type="hidden" value="@ViewBag.CurrentUser" id="CurrentUser" />
+<input type="hidden" value="@ViewBag.IsReassign" id="IsReAssign" />
+
+<script>
+    $("#testSuiteGrids").on("change", "input.check", function (e) {
+        var v = $(this).is(":checked");
+        $("input.check", "#testSuiteGrids").prop("checked", false);
+        $(this).prop("checked", v);
+    });
+</script>

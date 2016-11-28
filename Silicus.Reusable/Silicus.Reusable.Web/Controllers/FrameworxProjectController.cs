@@ -28,7 +28,7 @@ namespace Silicus.FrameworxDashboard.Web.Controllers
         }
 
         [HttpPost]
-        public ActionResult AddCategory(Category category)
+        public ActionResult AddCategory(FrameworxCategory category)
         {
             try
             {

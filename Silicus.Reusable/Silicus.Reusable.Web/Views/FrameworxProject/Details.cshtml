@@ -8,6 +8,12 @@
 {
 
 }
+    .btn-primary{
+        background:#286090;
+    }
+    .btn-primary :hover{
+        background:#286090;
+    }
 </style>
 <div class="modal-header">
 
@@ -17,8 +23,9 @@
     @Html.Raw(Server.HtmlDecode(Model.HtmlDescription))
     <a href="@Model.DemoLink" class="btn btn-info" role="button" target="_blank">How to Use this?</a>
     <a href="@Model.SourceCodeLink" class="btn btn-info" role="button" target="_blank">Source Code</a>
+    <a href="@Model.SourceCodeLink" class="btn btn-info" role="button" target="_blank">Demo</a>
     
 </div>
 <div class="modal-footer">
-    <button type="button" class="btn btn-default" id="closebtn" data-dismiss="modal">Close</button>
+    <button type="button" class="btn btn-primary" id="closebtn" data-dismiss="modal">Close</button>
 </div>

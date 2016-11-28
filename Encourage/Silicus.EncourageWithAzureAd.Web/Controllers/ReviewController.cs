@@ -79,15 +79,36 @@ namespace Silicus.EncourageWithAzureAd.Web.Controllers
         //}
 
         #endregion
+
         [HttpGet]
         [CustomeAuthorize(AllowedRole = "Admin")]
         public ActionResult ReviewFeedbackList()
         {
             _logger.Log("Review-ReviewFeedbackList-GET");
+            var reviewFeedbackList = ReviewFeedbackList(true);
+
+            return View(reviewFeedbackList);
+        }
+
+        [HttpGet]
+        [CustomeAuthorize(AllowedRole = "Admin")]
+        public ActionResult GetReviewFeedbackListPartialView(bool forCurrentMonth)
+        {
+            _logger.Log("Review-ReviewFeedbackList-GET");
+            var reviewFeedbackList = ReviewFeedbackList(forCurrentMonth);
+            // }
+            return PartialView("~/Views/Review/Shared/_reviewFeedbackList.cshtml", reviewFeedbackList);
+        }
+
+        private List<ReviewFeedbackListViewModel> ReviewFeedbackList(bool forCurrentMonth)
+        {
+            _logger.Log("Review-ReviewFeedbackList-private-GET");
             var reviewFeedbacks = new List<ReviewFeedbackListViewModel>();
-            //if (string.IsNullOrEmpty(rejectAll))
-            //{
-            var uniqueReviewedNomination = _encourageDatabaseContext.Query<Review>().Where(r => r.IsSubmited == true).GroupBy(x => x.NominationId).Select(group => group.FirstOrDefault()).ToList();
+
+            var today = DateTime.Today;
+            var prevMonth = new DateTime(today.Year, today.Month, 1).AddMonths(-1);
+
+            var uniqueReviewedNomination = _encourageDatabaseContext.Query<Review>().Where(r => r.IsSubmited == true && (forCurrentMonth ? (r.Nomination.NominationDate >= prevMonth) : (r.Nomination.NominationDate < prevMonth))).GroupBy(x => x.NominationId).Select(group => group.FirstOrDefault()).ToList();
 
             foreach (var reviewNomination in uniqueReviewedNomination)
             {
@@ -127,12 +148,14 @@ namespace Silicus.EncourageWithAzureAd.Web.Controllers
                          IsShortlisted = isShortlisted,
                          IsWinner = isWinner,
                          numberOfReviews = totalReviews,
-                         averageCredits = averageCredits
+                         averageCredits = averageCredits,
+                         NominatedMonth = nominationTime.Value != null ? nominationTime.Value.Month : 0
                      }
                     );
             }
-            // }
-            return View(reviewFeedbacks);
+
+            var reviewFeedbackList = reviewFeedbacks.OrderByDescending(o => o.NominatedMonth).ToList();
+            return reviewFeedbackList;
         }
 
         [CustomeAuthorize(AllowedRole = "Admin")]
@@ -198,7 +221,7 @@ namespace Silicus.EncourageWithAzureAd.Web.Controllers
                 allReviewerComments.Add(reviewerCommentList);
             }
             //var isLocked = _nominationService.GetAllNominations().Where(x => x.NominationDate.Value.Month.Equals(DateTime.Now.Month - 1)).FirstOrDefault()?.IsLocked ?? false;
-            var isLocked = _nominationService.GetAllNominations().Where(x => (x.NominationDate.Value.Month.Equals(DateTime.Now.Month - 1) && x.NominationDate.Value.Year.Equals(DateTime.Now.Month > 1 ? DateTime.Now.Year : DateTime.Now.Year - 1))).FirstOrDefault()?.IsLocked ?? false;
+            var isLocked = _nominationService.GetAllNominations().Where(x => (x.NominationDate.Value.Month.Equals(DateTime.Now.Month - 1) && x.NominationDate.Value.Year.Equals(DateTime.Now.Month > 1 ? DateTime.Now.Year : DateTime.Now.Year - 1))).FirstOrDefault().IsLocked ?? false;
 
             //var isLocked = _nominationService?.GetAllNominations()?.FirstOrDefault()?.IsLocked?? false;
             var loggedInAdminId = _awardService.GetUserIdFromEmail(User.Identity.Name);

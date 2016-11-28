@@ -1,0 +1,39 @@
+﻿<style>
+    .navbar-inverse .navbar-nav > .active > a, .navbar-inverse .navbar-nav > .active > a:hover, .navbar-inverse .navbar-nav > .active > a:focus {
+    color: #ffffff;
+    background-color: #07c !important;
+}
+
+.navbar {
+    border-radius: unset; 
+}
+</style>
+@{
+    ViewBag.Title = "Nolistpage";
+}
+<nav class="navbar navbar-inverse" id="ExtesionMenu" style="background:#2F4050;position:fixed;width:100%;display:none">
+    <div class="container-fluid">
+        <ul class="nav navbar-nav" style="background:#2F4050">
+            <li id="AddExtensionCode"><a href='@Url.Action("AddExtensionCode", "Extension")'>Add Extension Code</a></li>
+            <li id="ShowExtensionCode"><a href='@Url.Action("ShowExtensionCode", "Extension")'>Published Extension Code </a></li>
+            <li id="ShowMyExtensionCode"><a href='@Url.Action("ShowMyExtensionCode", "Extension")'>My Extension Code List</a></li>
+            <li id="ReviewExtensionCodeList"><a href='@Url.Action("ReviewExtensionCodeList", "Extension")'>Review Extension Code List</a></li>
+        </ul>
+    </div>
+</nav>
+<nav class="navbar navbar-inverse" id="OtherCodeMenu" style="background:#2F4050;position:fixed;width:100%;display:none">
+    <div class="container-fluid">
+        <ul class="nav navbar-nav" style="background:#2F4050">
+            <li id="AddOtherUsefullCode"><a href='@Url.Action("AddOtherUsefullCode", "Extension")'>Add Other Useful Code</a></li>
+            <li id="ShowOtherCode"><a href='@Url.Action("ShowOtherCode", "Extension")'>Other Useful Code List</a></li>
+            <li id="ShowMyOtherCode"><a href='@Url.Action("ShowMyOtherCode", "Extension")'>My Other Useful Code List</a></li>
+            <li id="ReviewOtherCodeList"><a href='@Url.Action("ReviewOtherCodeList", "Extension")'>Review Other Useful Code List</a></li>
+        </ul>
+    </div>
+</nav>
+<div class="container">
+    <div class="alert alert-danger" style="margin-top: 90px;">
+        <h3><strong>Sorry !</strong> There is no @ViewBag.CodeData.</h3>
+    </div>
+</div>
+

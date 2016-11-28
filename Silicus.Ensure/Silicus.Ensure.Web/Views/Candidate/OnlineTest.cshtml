@@ -1,0 +1,328 @@
+﻿@model Silicus.Ensure.Web.Models.TestSuiteCandidateModel
+@using Kendo.Mvc.UI;
+
+@{
+    ViewBag.Title = "Online Test";
+    Layout = "~/Views/Shared/_LayoutCandidate.cshtml";
+}
+
+<div class="main-content" id="main">
+    <div class="fluid mt20">
+
+        <div class="row">
+            <div class="col-md-12" style="text-align:center;">
+                <strong>This test is window protected, please do not move away from the window or refresh.</strong>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12" style="border-bottom-width:1px; border-bottom-style:solid; border-bottom-color:black;">
+            </div>
+            @Html.HiddenFor(model => model.UserTestSuiteId, new { id = "UserTestSuiteId" })
+            @Html.HiddenFor(model => model.UserId, new { id = "UserId" })
+        </div>
+        <br />
+        <div class="row">
+            <div class="col-md-6">
+                <div class="row">
+                    <div class="col-md-6">
+                        <label class="control-label" for="obj"><strong>No. of Objective Question:</strong></label>
+                    </div>
+                    <div class="col-md-6">
+                        <label class="control-label" for="obj">@Model.ObjectiveCount</label>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <label class="control-label" for="prac"><strong>No. of Practical Question:</strong></label>
+                    </div>
+
+                    <div class="col-md-6">
+                        <label class="control-label" for="prac">@Model.PracticalCount</label>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <label class="control-label" for="total"><strong>Total Question:</strong></label>
+                    </div>
+                    <div class="col-md-6">
+                        <label class="control-label" for="total">@Model.TotalCount</label>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <label class="control-label" for="duration"><strong>Total Duration (Mins):</strong></label>
+                    </div>
+                    <div class="col-md-6">
+                        <label class="control-label" for="duration">@Model.DurationInMin</label>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="row">
+                    <div class="col-md-9">
+                        <div id="counter"></div>
+                    </div>
+                    <div class="col-md-3">
+                        @(Html.Kendo().Button()
+                        .Name("btnAddMoreTime").Events(e => e.Click("AddMoreTime"))
+                .HtmlAttributes(new { type = "button" }).Content("Add More Time").HtmlAttributes(new { style = "margin-top: 15%;" }))
+
+                        @Html.Hidden("TimerIncCount", 0)
+                    </div>
+                </div>
+                <div class="row">
+                    <span>Test Progress</span>
+                    <div class="progress">
+                        <div id="progressBar" class="progress-bar progress-bar-info" role="progressbar" aria-valuenow="50"
+                             aria-valuemin="0" aria-valuemax="100" style="width:50%">
+                            <span id="progressInfo">50%</span> Complete
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-12" style="border-bottom-width:1px; border-bottom-style:solid; border-bottom-color:black;">
+            </div>
+        </div>
+
+        <div id="QuestionDetails">
+
+        </div>
+
+
+    </div>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="myModal" role="dialog">
+    <div class="modal-dialog">
+
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title"><span id="msgMain">Success!</span></h4>
+            </div>
+            <div class="modal-body">
+                <p id="msgContent">Some text in the modal.</p>
+            </div>
+            <div class="modal-footer">
+                <button id="btnModalOK" type="button" class="btn btn-default" data-dismiss="modal" onclick="OnAddMoreTimeOK();">OK</button>
+                <button id="btnSubmitTestOK" type="button" class="btn btn-default" data-dismiss="modal" onclick="OnSubmitTestOK();">OK</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<!-- Modal Submit Test On Time Complete-->
+<div class="modal fade" id="myModalTC" role="dialog" onclick="TestDurationComplete();">
+    <div class="modal-dialog">
+
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" onclick="TestDurationComplete();">&times;</button>
+                <h4 class="modal-title"><span id="msgMainTC">Warning!</span></h4>
+            </div>
+            <div class="modal-body">
+                <p id="msgContentTC">The Test duration is over, thank you for your participation. Further, the Recruitment team will contact you for the update.</p>
+            </div>
+            <div class="modal-footer">
+                <button id="btnModalOKTC" type="button" class="btn btn-default" data-dismiss="modal" onclick="TestDurationComplete();">OK</button>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<script>
+    var clock;
+    var totalTime;
+
+    window.onbeforeunload = function () {
+        return false;
+    }
+        
+    $(document).ready(function () {
+        
+        // Hide Submit button of popup. Show when to want submit test.
+        $("#btnSubmitTestOK").hide();
+
+        // Load First Question On page Load.
+        var userTestSuiteId = $("#UserTestSuiteId").val();
+        $('#QuestionDetails').load('/Candidate/LoadQuestion?userTestSuiteId=' + userTestSuiteId);
+
+        // Timer
+        clock = $('#counter').FlipClock({
+            clockFace: 'HourlyCounter',
+            autoStart: false,
+            callbacks: {
+                stop: function () {
+                    $("#myModalTC").modal();
+                },
+                interval: ProgressBar
+            }
+        });
+
+        // Initialize progress bar.
+        totalTime = 1800;
+        $('#progressBar').attr('aria-valuemax', totalTime).css('width', '0%');
+        $('#progressInfo').text('0%');
+
+        // Set counter time and start.
+        clock.setTime(1800);
+        clock.setCountdown(true);
+        clock.start();
+    });
+
+    function AddMoreTime() {
+        var TimerCnt = $("#TimerIncCount").val();
+        if (TimerCnt == 0)
+            ShowProgressPopUp(true, "You have only 2 chances. Are you sure, you want to increase time limit by 10 Mins?");
+        else
+            ShowProgressPopUp(true, "This is the last chance. Are you sure, you want to increase time limit by 10 Mins?");
+    }
+
+    function OnAddMoreTimeOK() {
+        var TimerCnt = $("#TimerIncCount").val();
+        $.ajax({
+            url: '/Candidate/AddMoreTime',
+            dataType: "json",
+            type: "POST",
+            contentType: 'application/json; charset=utf-8',
+            data: JSON.stringify({ count: TimerCnt }),
+            success: function (data) {
+                if (data < 3) {
+                    // Add time in counter
+                    var newtm = parseInt(clock.getTime()) + parseInt(60 * 10);
+                    clock.setTime(newtm);
+
+                    // Assign reduced chance
+                    $("#TimerIncCount").val(data);
+
+                    // Update Progress bar
+                    totalTime = parseInt(totalTime) + parseInt(60 * 10);
+                    var leftTm = parseInt(totalTime) - clock.getTime();
+                    var newprogress = parseInt((parseInt(leftTm) / parseInt(totalTime)) * 100);
+                    $('#progressBar').attr('aria-valuemax', totalTime).css('width', newprogress + "%");
+                    $('#progressBar').attr('aria-valuenow', clock.getTime()).css('width', newprogress + "%");
+                    $('#progressInfo').text(newprogress + "%");
+
+                    // Hide Add more time button.
+                    if (data == 2) {
+                        $("#btnAddMoreTime").hide();
+                    }
+
+                }
+            },
+            error: function (xhr) {
+
+            }
+        });
+    }
+
+    function ProgressBar() {
+        var time = clock.getTime().time;
+        if (time % 60 == 0) {
+            var leftTm = parseInt(totalTime) - clock.getTime();
+            var newprogress = parseInt((parseInt(leftTm) / parseInt(totalTime)) * 100);
+            $('#progressBar').attr('aria-valuenow', clock.getTime()).css('width', newprogress + "%");
+            $('#progressInfo').text(newprogress + "%");
+
+            if (time == 60) {
+                var TimerCntVal = $("#TimerIncCount").val();
+                if (TimerCntVal == 0)
+                    ShowProgressPopUp(true, "Please click on 'Add More Time' button in order to add 10 more minutes to Test duration.");
+                else if (TimerCntVal == 1)
+                    ShowProgressPopUp(true, "Please click on 'Add More Time' button for the last time to add 10 more minutes to Test duration.");
+                else
+                    ShowProgressPopUp(false, "1 minute remaining to complete the test.");
+            }
+            else if (time == 900 && totalTime > 1799)
+                ShowProgressPopUp(false, "15 minute remaining to complete the test.");
+            else if (time == 1800 && totalTime != 1800)
+                ShowProgressPopUp(false, "30 minute remaining to complete the test.");
+            else if (time == 3600 && totalTime != 3600)
+                ShowProgressPopUp(false, "60 minute remaining to complete the test.");
+        }
+    }
+
+    function ShowProgressPopUp(bl, msg) {
+        $("#myModal").modal();
+        $("#btnSubmitTestOK").hide();
+
+        if (bl)
+            $("#btnModalOK").show();
+        else
+            $("#btnModalOK").hide();
+
+        $("#msgMain").text("Warning!");
+        $("#msgContent").text(msg);
+    }
+
+    function OnNext() {
+        var answer = GetAnswer();
+        var questionNumber = $("#QuestionNumber").val();
+        var userTestSuiteId = $("#UserTestSuiteId").val();
+        var userTestDetailId = $("#UserTestDetailId").val();
+        $('#QuestionDetails').load('/Candidate/OnNextPrevious?Qnumber=' + questionNumber + '&Move=N&userTestSuiteId=' + userTestSuiteId + '&userTestDetailId=' + userTestDetailId + '&answer=' + answer);
+        return false;
+    }
+
+    function OnPrevious() {
+        var answer = GetAnswer();
+        var questionNumber = $("#QuestionNumber").val();
+        var userTestSuiteId = $("#UserTestSuiteId").val();
+        var userTestDetailId = $("#UserTestDetailId").val();
+        $('#QuestionDetails').load('/Candidate/OnNextPrevious?Qnumber=' + questionNumber + '&Move=P&userTestSuiteId=' + userTestSuiteId + '&userTestDetailId=' + userTestDetailId + '&answer=' + answer);
+        return false;
+    }
+
+    function GetAnswer() {
+        var answer = "";
+        if ($("#QuestionType").val().trim() == "1") {
+            if ($("#AnswerType").val().trim() == "1") {
+                answer = $('[name="optradio"]:radio:checked').val();
+            }
+            else {
+                $("input:checkbox[name=optcheckbox]:checked").each(function () {
+                    answer = answer + $(this).val() + ",";
+                });
+
+                answer = answer.slice(0, -1);
+            }
+        }
+        else {
+            answer = $("#PracticalAnswer").val();
+            answer = encodeURIComponent(answer);
+        }
+        if (answer == "undefined")
+            answer = null;
+        return answer;
+    }
+
+    function OnSubmitTest() {
+        ShowProgressPopUp(true, "Are you sure, you want to Submit the Test? Once you submit the Test, you cannot revisit to view the Questions and their Answers.");
+        $("#btnModalOK").hide();
+        $("#btnSubmitTestOK").show();
+    }
+
+    function OnSubmitTestOK() {
+        var answer = GetAnswer();
+        var userTestDetailId = $("#UserTestDetailId").val();
+        var userId = $("#UserId").val();
+        window.location.href = '/Candidate/OnSubmitTest?userTestDetailId=' + userTestDetailId + '&userId=' + userId + '&answer=' + answer;
+    }
+
+    function TestDurationComplete() {
+        var answer = GetAnswer();
+        var userTestDetailId = $("#UserTestDetailId").val();
+        var userId = $("#UserId").val();
+        window.location.href = '/Candidate/OnSubmitTest?userTestDetailId=' + userTestDetailId + '&userId=' + userId + '&answer=' + answer;
+    }
+
+</script>

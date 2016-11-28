@@ -30,6 +30,12 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Silicus.UtilityContainer.Entities">
+      <HintPath>..\..\..\..\..\Desktop\Silicus.UtilityContainer.Entities.dll</HintPath>
+    </Reference>
+    <Reference Include="Silicus.UtilityContainer.Models">
+      <HintPath>..\..\..\..\..\Desktop\Silicus.UtilityContainer.Models.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -40,10 +46,14 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CommonDbService.cs" />
     <Compile Include="ExtensionCodeService.cs" />
+    <Compile Include="Interfaces\ICommonDbService.cs" />
     <Compile Include="Interfaces\IExtensionCodeService.cs" />
     <Compile Include="Interfaces\IFrameworxProjectService.cs" />
     <Compile Include="FrameworxProjectService.cs" />
+    <Compile Include="Interfaces\IProductBacklogService.cs" />
+    <Compile Include="ProductBacklogService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
