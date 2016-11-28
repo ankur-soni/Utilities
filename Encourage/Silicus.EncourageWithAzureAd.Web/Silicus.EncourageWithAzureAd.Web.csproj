@@ -490,6 +490,7 @@
     <Content Include="Css\plugins\switchery\_notes\dwsync.xml" />
     <Content Include="Css\plugins\toastr\toastr.min.css" />
     <Content Include="Css\plugins\toastr\_notes\dwsync.xml" />
+    <Content Include="Css\star-rating.css" />
     <Content Include="Css\style.css" />
     <Content Include="Css\style.min.css" />
     <Content Include="Css\_notes\dwsync.xml" />
@@ -731,6 +732,7 @@
     <Content Include="js\plugins\toastr\_notes\dwsync.xml" />
     <Content Include="js\plugins\validate\jquery.validate.min.js" />
     <Content Include="js\plugins\validate\_notes\dwsync.xml" />
+    <Content Include="js\star-rating.js" />
     <Content Include="js\_notes\dwsync.xml" />
     <Content Include="LESS\style.css" />
     <Content Include="LESS\_notes\dwsync.xml" />
@@ -846,6 +848,7 @@
     <Content Include="Views\Nomination\Shared\_savednominationList.cshtml" />
     <Content Include="Views\Nomination\Shared\_savedReviewsList.cshtml" />
     <Content Include="Views\Review\Shared\_reviewFeedbackList.cshtml" />
+    <Content Include="Views\Nomination\Shared\_criteriaForAwards.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

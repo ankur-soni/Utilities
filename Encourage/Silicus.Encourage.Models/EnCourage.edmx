@@ -447,6 +447,7 @@
           <Property Name="Comment" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
           <NavigationProperty Name="Criterion" Relationship="Self.FK_dbo_ManagerComment_dbo_Criteria_CriteriaId" FromRole="ManagerComment" ToRole="Criteria" />
           <NavigationProperty Name="Nomination" Relationship="Self.FK_dbo_ManagerComment_dbo_Nomination_NominationId" FromRole="ManagerComment" ToRole="Nomination" />
+          <Property Name="Rating" Type="Int32" Nullable="false" />
         </EntityType>
         <EntityType Name="Nomination">
           <Key>
