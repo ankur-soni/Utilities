@@ -175,7 +175,7 @@ namespace Silicus.EncourageWithAzureAd.Web.Controllers
 
                 foreach (var criteria in model.Comments)
                 {
-                    if (criteria.Comment != null)
+                    if (criteria.Comment != null || criteria.Rating != 0)
                     {
                         nomination.ManagerComments.Add(
                             new ManagerComment()
@@ -236,7 +236,12 @@ namespace Silicus.EncourageWithAzureAd.Web.Controllers
             ViewBag.ReviewLockStatus = _reviewService.GetReviewLockStatus();
             ViewBag.NominationLockStatus = _nominationService.GetNominationLockStatus();
             // var userEmailAddress = Session["UserEmailAddress"] as string;
-            var userEmailAddress = User.Identity.Name;
+            
+            
+            //var userEmailAddress = User.Identity.Name;
+
+            //To be deleted
+            var userEmailAddress = "Shailendra.Birthare@silicus.com";
             ViewBag.Awards = new SelectList(_awardService.GetAllAwards(), "Id", "Name");
             int currentUserId = 0;
             var projects = _awardService.GetProjectsUnderCurrentUserAsManager(userEmailAddress);
@@ -326,13 +331,14 @@ namespace Silicus.EncourageWithAzureAd.Web.Controllers
 
             foreach (var comment in model.Comments)
             {
-                if (comment.Comment != null)
+                if (comment.Comment != null || comment.Rating != 0)
                 {
                     nomination.ManagerComments.Add(new ManagerComment()
                     {
                         CriteriaId = comment.Id,
                         Comment = comment.Comment != null ? _textInfo.ToTitleCase(comment.Comment) : "",
-                        NominationId = model.NominationId
+                        NominationId = model.NominationId,
+                        Rating = comment.Rating
                     });
                 }
             }
