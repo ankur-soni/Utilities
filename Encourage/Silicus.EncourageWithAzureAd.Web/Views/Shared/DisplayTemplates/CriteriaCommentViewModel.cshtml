@@ -4,11 +4,13 @@
     <td>
         @Html.HiddenFor(modelItem => modelItem.Id)
     </td>
-    <td class="col-md-6">
+    <td class="col-md-4">
         @Html.DisplayFor(modelItem => modelItem.title)
     </td>
-
-    <td class="col-md-6">
+    <td class="col-md-4">
+        <input id="input-21a" value="@Model.Rating" type="number" data-star-captions="{}" data-default-caption="{rating} Stars" class="rating rating-loading" data-show-clear="false" data-readonly="true" data-show-caption="false" data-symbol="*" min=0 max=5 step=1 data-size="xs" name="@(Model.Rating)">
+    </td>
+    <td class="col-md-4">
         @Html.TextAreaFor(modelItem => modelItem.Comment, htmlAttributes: new { @class = "col-md-12" ,@readonly="readonly" })
     </td>
 </tr>

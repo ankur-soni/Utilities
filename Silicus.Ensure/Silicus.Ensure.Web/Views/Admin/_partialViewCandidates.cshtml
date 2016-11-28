@@ -229,7 +229,7 @@
                           model.Field(p => p.UserId).Editable(false);
                       })
 
-                          .Read(read => read.Action("GetCandidateDetails", "User"))
+                          .Read(read => read.Action("GetCandidateDetails", "User", new { RoleName = "Candidate" }))
                           .Create(update => update.Action("CreateUser", "User"))
                           .Update(update => update.Action("UpdateUser", "User"))
                           .Destroy(update => update.Action("DeleteUser", "User"))
