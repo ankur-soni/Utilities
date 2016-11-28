@@ -1,4 +1,5 @@
 ﻿@model Silicus.Ensure.Web.Models.UserViewModel
+@using Silicus.Ensure.Models.Constants
 @using Kendo.Mvc.UI;
 @{
     ViewBag.Title = "CandidateAdd";
@@ -8,15 +9,14 @@
 <div class="main-content">
     @if (Model.UserId != 0)
     {
-        <h2>Edit Candidate</h2>
+        <h2>Edit Panel</h2>
     }
     else
     {
-        <h2>Add Candidate</h2>
+        <h2>Add Panel</h2>
     }
     @using (Html.BeginForm("CandidateSave", "User", FormMethod.Post, new { id = "frmSearchAllNdc", EncType = "multipart/form-data" }))
     {
-        <input type="hidden" id="Role" name="Role" value="@Silicus.Ensure.Models.Constants.RoleName.Candidate.ToString()" />
         @Html.HiddenFor(m => m.UserId)
         <div class="fluid mt20">
             <div class="row">
@@ -45,6 +45,22 @@
                 <div class="col-md-8">
                     @Html.TextBoxFor(model => model.Email, new { @class = "form-control" })
                     @Html.ValidationMessageFor(m => m.Email, "", new { @class = "redText" })
+                </div>
+            </div>
+            <div class="row" style=" margin-bottom:10px;">
+                <div class="col-md-4">
+                    @Html.LabelFor(model => model.Role)<b style="color:Red;">*</b>:
+                </div>
+                <div class="col-md-8">
+                    @(Html.Kendo().DropDownListFor(model => model.Role)
+                                    .OptionLabel("--Select--")
+                                    .BindTo(EnumHelper.GetSelectList((typeof(RoleName)))
+                                    .Select(x => new SelectListItem { Text = x.Text, Value = x.Text })
+                                    .Skip(1))
+                                    .Value(Model.Role)
+                                    .HtmlAttributes(new { style = "width: 100%;border-color: #c5c5c5;" })
+                    )
+
                 </div>
             </div>
             <div class="row" style="margin-bottom:10px;">
@@ -108,14 +124,6 @@
                 </div>
                 <div class="col-md-8">
                     @Html.TextBoxFor(model => model.Address, new { @class = "form-control" })
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-md-8">
-                    Upload Resume:
-                </div>
-                <div class="col-md-4">
-                    <input type="file" id="IDbtnUpload" name="files" />
                 </div>
             </div>
             <div class="row">
