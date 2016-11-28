@@ -3,6 +3,7 @@ using System.IO;
 using System.Reflection;
 using Silicus.Ensure.Models.DataObjects;
 using System;
+using Silicus.Ensure.Models.Constants;
 
 namespace Silicus.Ensure.Entities.Initializer
 {
@@ -57,7 +58,7 @@ namespace Silicus.Ensure.Entities.Initializer
                 Role = "CANDIDATE",
                 Gender = "Male",
                 Department = "Delivery",
-                TestStatus = "UnAssigned",
+                TestStatus = Convert.ToString(TestStatus.NotAssigned),
                 Position = "Sr.Developer",
                 Experience = "5",
                 IsActive = true

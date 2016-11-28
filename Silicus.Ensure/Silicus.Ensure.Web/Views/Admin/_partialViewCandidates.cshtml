@@ -1,5 +1,5 @@
 ﻿@model Silicus.Ensure.Models.DataObjects.User
-@using Silicus.Ensure.Web.Application;
+@using Silicus.Ensure.Models.Constants;
 @using Kendo.Mvc.UI;
 
 @{
@@ -23,16 +23,24 @@
                     Value="All"
                     },
                     new SelectListItem(){
-                    Text=AppConstants.TestStatusAssigned,
-                    Value=AppConstants.TestStatusAssigned
+                    Text=Convert.ToString(TestStatus.NotAssigned),
+                    Value=Convert.ToString(TestStatus.NotAssigned)
                     },
                     new SelectListItem(){
-                    Text=AppConstants.TestStatusUnAssigned,
-                    Value=AppConstants.TestStatusUnAssigned
+                    Text=Convert.ToString(TestStatus.Assigned),
+                    Value=Convert.ToString(TestStatus.Assigned)
                     },
                     new SelectListItem(){
-                    Text=AppConstants.TestStatusSubmitted,
-                    Value=AppConstants.TestStatusSubmitted
+                    Text=Convert.ToString(TestStatus.Submitted),
+                    Value=Convert.ToString(TestStatus.Submitted)
+                    },
+                    new SelectListItem(){
+                    Text=Convert.ToString(TestStatus.Evaluating),
+                    Value=Convert.ToString(TestStatus.Evaluating)
+                    },
+                    new SelectListItem(){
+                    Text=Convert.ToString(TestStatus.Completed),
+                    Value=Convert.ToString(TestStatus.Completed)
                     }
                     }).HtmlAttributes(new { style = "width: 100%" }))
     </div>
@@ -40,32 +48,17 @@
 <h2>Candidates List</h2>
 <script>
     $(document).ready(function () {
-        $(".blurSec2").hide();
-        $(".blurSec1").hide();
-        $("#Candy").hide();
-        $("#FieldFilter").keyup(function () {
 
+        $("#FieldFilter").keyup(function () {
             var value = $("#FieldFilter").val();
             grid = $("#userGrids").data("kendoGrid");
 
             if (value) {
-                //grid.dataSource.filter({ field: "FirstName", operator: "eq", value: value });
-                //grid.dataSource.filter({ field: "Email", operator: "contains", value: value });
-
-                //             grid.dataSource.push([
-                // { field: "FirstName", operator: "eq", value: value },
-                //{ field: "Email", operator: "contains", value: value }
-                //             ]);
-
                 var filter = { logic: "or", filters: [] };
                 var supplierValue = value;
-
                 filter.filters.push({ field: "FirstName", operator: "eq", value: value });
-                //  filter.filters.push({ field: "Email", operator: "contains", value: value });
                 filter.filters.push({ field: "LastName", operator: "eq", value: value });
-                // filter.filters.push({ field: "Address", operator: "eq", value: value });
                 filter.filters.push({ field: "Position", operator: "eq", value: value });
-                //  filter.filters.push({ field: "Experience", operator: "eq", value: value });
                 filter.filters.push({ field: "Department", operator: "eq", value: value });
                 grid.dataSource.query({ filter: filter });
 
@@ -75,65 +68,83 @@
             }
         });
     });
-    function ClosePopUp() {
-        $(".blurSec2").hide();
-        $(".blurSec1").hide();
-        $("#Candy").hide();
+    function showTest(UserId, TestStatus) {
+        if (TestStatus == '@TestStatus.NotAssigned.ToString()') {
+            $.ajax({
+                type: 'post',
+                async: false,
+                url: "/Admin/CandidatesSuit",
+                cache: false,
+                data: { UserId: UserId },
+                contenttype: "application/json; charset=utf-8",
+                success: function (data) {
+                    $("#CandidateInfo").html(data);
+                    $('#myModal').fadeIn();
+                    $('#myModal').modal();
+                }
+            });
+        }
+        else {
+            alert("Sorry! Cann't perform this operation.");
+        }
     }
-    function showTest(UserId) {
 
-        //alert(UserId);
-        $.ajax({
-            type: 'post',
-            async: false,
-            //url: "/PatientInfo/getZipFromStateCity",
-            url: "/Admin/CandidatesSuit",
-            cache: false,
-            data: { UserId: UserId },
-            contenttype: "application/json; charset=utf-8",
-            success: function (data) {
-
-                $("#CandidateInfo").html(data);
-                $('#myModal').modal();
-                //$("#Candy").show().center(); // This should be an empty div where you can inject your new html (the partial view)
-                //$(".blurSec2").show();
-                //$(".blurSec1").show();
-            }
-        });
+    function ReAssign(UserId, TestStatus) {
+        if (TestStatus == '@TestStatus.Assigned.ToString()') {
+            $.ajax({
+                type: 'post',
+                async: false,
+                url: "/Admin/CandidatesSuit",
+                cache: false,
+                data: { UserId: UserId, IsReassign: 1 },
+                contenttype: "application/json; charset=utf-8",
+                success: function (data) {
+                    $("#CandidateInfo").html(data);
+                    $('#myModal').fadeIn();
+                    $('#myModal').modal();
+                }
+            });
+        }
     }
 
 
     $(function () {
-        //$('body').on('click', '#Savebtn', function () {
-        //    var myClone = myBackup.clone();
-        //    $('body').append(myClone);
-        //});
-
         $("#Savebtn").bind("click", function () {
-
-            var uId = $("#CurrentUser").val();
-            var checkvals = $("[class='check']:checked").attr("value")
-
-            $('#myModal').find('input[type=checkbox]:checked').removeAttr('checked');
-            $.ajax({
-                type: 'post',
-                async: false,
-                //url: "/PatientInfo/getZipFromStateCity",
-                url: "/Admin/AssignSuite",
-                cache: false,
-                data: { SuiteId: checkvals, Userid: uId },
-                contenttype: "application/json; charset=utf-8",
-                success: function (returndata) {
-                    if (returndata == 1) {
-                        $('#userGrids').data('kendoGrid').dataSource.read();
-                        $('#userGrids').data('kendoGrid').refresh();
-                        ShowMessage("Test suit assigned successfully.", 1);
-                    }
-                },
-                error: function (er) {
-
+            var chkCheck = false;
+            $('input:checkbox').each(function () {
+                if ($(this).is(':checked')) {
+                    chkCheck = true;
                 }
             });
+            if (chkCheck) {
+                var uId = $("#CurrentUser").val();
+                var IsReAssign = $("#IsReAssign").val();
+                var checkvals = $("[class='check']:checked").attr("value")
+
+                $('#myModal').find('input[type=checkbox]:checked').removeAttr('checked');
+                $.ajax({
+                    type: 'post',
+                    async: false,
+                    url: "/Admin/AssignSuite",
+                    cache: false,
+                    data: { SuiteId: checkvals, UserId: uId, IsReAssign: IsReAssign },
+                    contenttype: "application/json; charset=utf-8",
+                    success: function (returndata) {
+                        if (returndata == 1) {
+                            $('#userGrids').data('kendoGrid').dataSource.read();
+                            $('#userGrids').data('kendoGrid').refresh();
+                            ShowMessage("Test suit assigned successfully.", 1);
+                            $('#myModal').fadeOut();
+                        }
+                    },
+                    error: function (er) {
+
+                    }
+                });
+            }
+            else {
+                alert('Please select at least one test suit !')
+            }
         });
 
     });
@@ -141,7 +152,6 @@
     function Change() {
         var value = $("#TestStatus").val();
         grid = $("#userGrids").data("kendoGrid");
-
         if (value == "All") {
             grid.dataSource.filter([]);
         }
@@ -152,7 +162,6 @@
 
     function AddNew() {
         window.location.href = "/Admin/CandidateAdd?UserId=0";
-
         return false;
     }
 
@@ -177,7 +186,6 @@
     }
 
     function CheckAssign(status, id, UserId) {
-
         if (status == 'Assigned' && id == 1) {
             window.location.href = "/Admin/ViewQuestion?id=" + UserId;
             return false;
@@ -208,9 +216,10 @@
                   columns.Bound(p => p.TestStatus).Width(50);
                   columns.Bound(c => c.UserId).ClientTemplate(@"<a class='k-button k-button-icontext k-grid-edit' href='" + Url.Action("CandidateAdd", "Admin") + "?UserId=#=UserId#'><span class='k-icon k-edit'></span>Edit</a><a id='testSuiteDel' class='k-button k-button-icontext k-grid-delete' href='\\#' onclick='return deleteUser(#=UserId#)'><span class='k-icon k-delete'></span>Delete</a>").Width(160);
                   columns.Bound(c => c.UserId).ClientTemplate(@"
-                                <a onclick=showTest('#=UserId#')>Assign Test</a>|
+                                <a onclick=showTest('#=UserId#','#=TestStatus#')>Assign Test</a>|
                                 <a  class ='dialog-window' onclick=CheckAssign('#=TestStatus#',1,'#=UserId#') >Preview Question Set</a> |
-                                <a  class ='dialog-window' onclick=CheckAssign('#=TestStatus#',2,'#=UserId#') >View Submitted Test</a>").Title("Actions");
+                                <a  class ='dialog-window' onclick=CheckAssign('#=TestStatus#',2,'#=UserId#') >View Submitted Test</a> |
+                                <a  class ='dialog-window' onclick=ReAssign('#=UserId#','#=TestStatus#') >Reassign Test</a>").Title("Actions");
               })
             .DataSource(dataSource => dataSource
                       .Ajax()
@@ -225,8 +234,6 @@
                           .Update(update => update.Action("UpdateUser", "User"))
                           .Destroy(update => update.Action("DeleteUser", "User"))
                      )
-
-
                   .Pageable()
                   .Sortable()
                       .Resizable(resizing => resizing.Columns(true))
@@ -252,15 +259,11 @@
                                 </div>
                             </div>
                         </text>);
-                    })
-
-        )
-
-
+                    }))
     }
 
 </div>
-<div class="modal fade" id="myModal" role="dialog">
+<div class="modal fade" id="myModal" data-backdrop="static" role="dialog">
     <div class="modal-dialog">
         <!-- Modal content-->
         <div class="modal-content">
@@ -272,7 +275,7 @@
 
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-primary" data-dismiss="modal" onclick="ClosePopUp();" id="Savebtn">Save</button>
+                <button type="button" class="btn btn-primary" id="Savebtn">Save</button>
             </div>
         </div>
     </div>

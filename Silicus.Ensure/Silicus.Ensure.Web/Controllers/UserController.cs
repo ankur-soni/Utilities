@@ -142,6 +142,7 @@ namespace Silicus.Ensure.Web.Controllers
 
             return Json(-1);
         }
+
         /// <summary>
         /// Showing all candidate list in grid
         /// </summary>
@@ -192,6 +193,26 @@ namespace Silicus.Ensure.Web.Controllers
             return Json(result);
             //return View();
         }
+
+
+        public JsonResult IsDuplicateEmail(string Email, int UserId)
+        {
+            bool flag = true;
+            var userDetails = _userService.GetUserDetails();
+            if (UserId == 0 && UserManager.FindByEmailAsync(Email).Result != null || userDetails.Any(x => x.Email == Email))
+            {
+                flag = false;
+            }
+            else
+            {
+                if (UserManager.FindByEmailAsync(Email).Result != null && userDetails.Any(x => x.Email == Email) && userDetails.Where(x => x.Email == Email).Count() > 1)
+                {
+                    flag = false;
+                }
+            }
+            return Json(flag, JsonRequestBehavior.AllowGet); ;
+        }
+
         [HttpGet]
         public ActionResult CandidateAdd()
         {
@@ -221,6 +242,7 @@ namespace Silicus.Ensure.Web.Controllers
                     if (user != null)
                     {
                         var organizationUserDomainModel = _mappingService.Map<UserViewModel, User>(vuser);
+                        organizationUserDomainModel.TestStatus = user.TestStatus;
                         organizationUserDomainModel.Role = user.Role;
                         _userService.Update(organizationUserDomainModel);
                     }
@@ -233,8 +255,8 @@ namespace Silicus.Ensure.Web.Controllers
                     {
                         vuser.TestStatus = "UnAssigned";
                     }
-                    vuser.NewPassword = vuser.FirstName.ToUpper() + vuser.LastName + "@123456";
-                    vuser.ConfirmPassword = vuser.FirstName.ToUpper() + vuser.LastName + "@123456";
+                    vuser.NewPassword = vuser.FirstName.ToUpper() + vuser.LastName.ToLower() + "@123456";
+                    vuser.ConfirmPassword = vuser.FirstName.ToUpper() + vuser.LastName.ToLower() + "@123456";
                     //vuser.Address = "Pune";
                     var userResult = await UserManager.CreateAsync(user, vuser.NewPassword);
                     if (userResult.Succeeded)

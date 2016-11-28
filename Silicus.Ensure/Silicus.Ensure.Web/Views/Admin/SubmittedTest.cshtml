@@ -206,10 +206,10 @@
                                 .HtmlAttributes(new { type = "button" })
                                 .Events(e => e.Click("OnCancel"))
                                 .Content("Cancel"))
-                            @if (Model.TestStatus == AppConstants.TestStatusSubmitted)
-                            {
+                            @*@if (Model.TestStatus == AppConstants.TestStatusSubmitted)
+                            {*@
                                 <input type="submit" value="Save" class="k-button k-button-icontext" id="btnSave" />
-                            }
+                            @*}*@
                         </div>
                     </div>
                 </fieldset>
