@@ -59,8 +59,8 @@ namespace Silicus.Ensure.Web.Controllers
             }
 
             TestSuiteCandidateModel testSuiteCandidateModel = _mappingService.Map<UserTestSuite, TestSuiteCandidateModel>(userTestSuite);
-            testSuiteCandidateModel.TotalCount = testSuiteCandidateModel.PracticalCount + testSuiteCandidateModel.ObjectiveCount;
-            testSuiteCandidateModel.DurationInMin = testSuiteCandidateModel.Duration / 60;
+            testSuiteCandidateModel.TotalQuestionCount = testSuiteCandidateModel.PracticalCount + testSuiteCandidateModel.ObjectiveCount;
+            testSuiteCandidateModel.DurationInMin = testSuiteCandidateModel.Duration;
 
             return View(testSuiteCandidateModel);
         }
@@ -84,7 +84,7 @@ namespace Silicus.Ensure.Web.Controllers
             return PartialView("_partialViewQuestion", testSuiteQuestionModel);
         }
 
-        public ActionResult OnSubmitTest(int? userTestDetailId, int userId, string answer)
+        public ActionResult OnSubmitTest(int testSuiteId, int userTestSuiteId, int? userTestDetailId, int userId, string answer)
         {
             answer = HttpUtility.HtmlDecode(answer);
             UpdateAnswer(answer, userTestDetailId);
@@ -94,6 +94,11 @@ namespace Silicus.Ensure.Web.Controllers
             candidate.TestStatus = "Test Submitted";
             _userService.Update(candidate);
 
+            TestSuite suite = _testSuiteService.GetTestSuitById(testSuiteId);
+            UserTestSuite testSuit = _testSuiteService.GetUserTestSuiteId(userTestSuiteId);
+            testSuit.Duration = suite.Duration + (testSuit.ExtraCount * 10);
+            _testSuiteService.UpdateUserTestSuite(testSuit);
+
             if (userAdmin != null)
                 SendSubmittedTestMail(userAdmin, candidate.FirstName + " " + candidate.LastName);
 
@@ -101,10 +106,22 @@ namespace Silicus.Ensure.Web.Controllers
         }
 
         [HttpPost]
-        public JsonResult AddMoreTime(int count)
+        public JsonResult AddMoreTime(int count, int userTestSuiteId)
         {
-            count++;
+            count = count + 1;
+            UserTestSuite userTestSuite = _testSuiteService.GetUserTestSuiteId(userTestSuiteId);
+            userTestSuite.ExtraCount = count;
+            _testSuiteService.UpdateUserTestSuite(userTestSuite);
             return Json(count);
+        }
+
+        [HttpPost]
+        public JsonResult UpdateTimeCounter(int time, int userTestSuiteId)
+        {
+            UserTestSuite userTestSuite = _testSuiteService.GetUserTestSuiteId(userTestSuiteId);
+            userTestSuite.Duration = time / 60;
+            _testSuiteService.UpdateUserTestSuite(userTestSuite);
+            return Json(1);
         }
 
         private void UpdateAnswer(string answer, int? userTestDetailId)
