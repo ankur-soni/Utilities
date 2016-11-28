@@ -238,10 +238,8 @@ namespace Silicus.EncourageWithAzureAd.Web.Controllers
             // var userEmailAddress = Session["UserEmailAddress"] as string;
             
             
-            //var userEmailAddress = User.Identity.Name;
+            var userEmailAddress = User.Identity.Name;
 
-            //To be deleted
-            var userEmailAddress = "Shailendra.Birthare@silicus.com";
             ViewBag.Awards = new SelectList(_awardService.GetAllAwards(), "Id", "Name");
             int currentUserId = 0;
             var projects = _awardService.GetProjectsUnderCurrentUserAsManager(userEmailAddress);
