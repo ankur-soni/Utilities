@@ -68,7 +68,7 @@
                 <h4 class="modal-title"><span id="msgMain">Warning!</span></h4>
             </div>
             <div class="modal-body">
-                <p id="msgContent">Please agree with the Terms & Conditions of Online Test Instructions.</p>
+                <p id="msgContent"></p>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal">Ok</button>
@@ -79,11 +79,20 @@
 </div>
 
 <script>
+    $(document).ready(function () {
+
+        if(@ViewBag.Status==1){
+            $("#myModal").modal();
+            $("#msgContent").text("@ViewBag.Msg");
+        }
+    });
+
     function OnClick() {
         if ($("#Terms").prop('checked') == true) {
             window.location.href = "/Candidate/OnlineTest";
         } else {
             $("#myModal").modal();
+            $("#msgContent").text("Please agree with the Terms & Conditions of Online Test Instructions.");
         }
 
     }

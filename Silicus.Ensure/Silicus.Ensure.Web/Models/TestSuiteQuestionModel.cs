@@ -8,6 +8,7 @@ namespace Silicus.Ensure.Web.Models
     public class TestSuiteQuestionModel
     {
         public int QuestionNumber { get; set; }
+        public int UserTestDetailId { get; set; }
         public int Id { get; set; }
         public int QuestionType { get; set; }
         public string QuestionDescription { get; set; }

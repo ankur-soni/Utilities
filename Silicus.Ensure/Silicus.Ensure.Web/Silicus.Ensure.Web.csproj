@@ -317,6 +317,7 @@
     <Compile Include="..\SharedAssemblyInfo.cs">
       <Link>Properties\SharedAssemblyInfo.cs</Link>
     </Compile>
+    <Compile Include="Application\AppConstants.cs" />
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\NinjectWebCommon.cs" />
@@ -355,6 +356,7 @@
     <Compile Include="Models\ResetPasswordModel.cs" />
     <Compile Include="Models\RoleViewModel.cs" />
     <Compile Include="Models\SubmittedTestViewModel.cs" />
+    <Compile Include="Models\TestSuiteCandidateModel.cs" />
     <Compile Include="Models\TestSuiteQuestionModel.cs" />
     <Compile Include="Models\TestSuiteViewModel.cs" />
     <Compile Include="Models\UserViewModel.cs" />
@@ -673,6 +675,7 @@
     <Content Include="Views\TestSuite\_TestSuiteAssign.cshtml" />
     <Content Include="Views\Admin\CreatePDF.cshtml" />
     <Content Include="Views\TestSuite\_TestSuiteAssign.cshtml" />
+    <Content Include="Views\Positions\LocalStorage.cshtml" />
     <None Include="Web.Integration.config">
       <DependentUpon>Web.config</DependentUpon>
       <SubType>Designer</SubType>
@@ -680,8 +683,8 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="CandidateResume\" />
     <Folder Include="Attachment\" />
+    <Folder Include="CandidateResume\" />
     <Folder Include="Content\js\" />
     <Folder Include="Scripts\Custom\" />
     <Folder Include="ViewModel\" />

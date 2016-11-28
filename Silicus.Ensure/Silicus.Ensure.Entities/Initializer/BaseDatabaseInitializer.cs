@@ -3,6 +3,7 @@ using System.IO;
 using System.Reflection;
 using Silicus.Ensure.Models.DataObjects;
 using System;
+using Silicus.Ensure.Models.Constants;
 
 namespace Silicus.Ensure.Entities.Initializer
 {
@@ -57,7 +58,7 @@ namespace Silicus.Ensure.Entities.Initializer
                 Role = "CANDIDATE",
                 Gender = "Male",
                 Department = "Delivery",
-                TestStatus = "UnAssigned",
+                TestStatus = Convert.ToString(TestStatus.NotAssigned),
                 Position = "Sr.Developer",
                 Experience = "5",
                 IsActive = true
@@ -123,6 +124,7 @@ namespace Silicus.Ensure.Entities.Initializer
                 IsDeleted = false,
                 PrimaryTags = "1,2",
                 Weights = "70,30",
+                Status=1,
 
             });
 
@@ -135,6 +137,7 @@ namespace Silicus.Ensure.Entities.Initializer
                 IsDeleted = false,
                 PrimaryTags = "1,2",
                 Weights = "30,70",
+                Status = 1,
             });
 
             context.Add(new Question

@@ -26,6 +26,8 @@ namespace Silicus.Ensure.Models.DataObjects
 
         public bool IsActive { get; set; }
 
+        public int StatusId { get; set; }
+
         public DateTime? CreatedDate { get; set; }
 
         public virtual ICollection<UserTestDetails> UserTestDetails { get; set; }

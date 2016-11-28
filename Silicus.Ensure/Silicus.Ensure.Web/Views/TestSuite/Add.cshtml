@@ -317,7 +317,8 @@
     }
 
     function validateTestSuite() {
-        var isError="0";        
+        var isError="0";
+        var totalWeight=0;
         $('#tag_table').find('tr').each(function () {           
             if($(this).find('td input[type=text][name=tagName]').val()=='')
             {                

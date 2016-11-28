@@ -11,7 +11,7 @@ namespace Silicus.Ensure.Models.DataObjects
 
         [StringLength(50)]
         [Required(ErrorMessage = "Position Name is required!")]
-        [Remote("IsDuplicatePositionName", "Admin", ErrorMessage = "Position name exist !")]
+        [Remote("IsDuplicatePositionName", "Positions", ErrorMessage = "Position already name exist !")]
         [Display(Name = "Position Name")]
         public string PositionName { get; set; }
     }
