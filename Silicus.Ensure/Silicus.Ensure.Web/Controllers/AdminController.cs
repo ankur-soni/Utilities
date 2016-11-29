@@ -13,11 +13,8 @@ using Silicus.Ensure.Models.DataObjects;
 using Silicus.Ensure.Web.Mappings;
 using Kendo.Mvc.UI;
 using Kendo.Mvc.Extensions;
-using System.Collections.Generic;
-using Silicus.Ensure.Web.Models;
 using Silicus.Ensure.Models.Constants;
 using System.Data.Entity;
-
 using System.Net.Mail;
 using System.IO;
 using iTextSharp.text;
@@ -570,7 +567,8 @@ namespace Silicus.Ensure.Web.Controllers
             var userDetails = _userService.GetUserDetails().Where(x => x.UserId == UserId).FirstOrDefault();
             var userTestSuitDetails = _testSuiteService.GetUserTestSuite().Where(x => x.UserId == UserId).FirstOrDefault().UserTestDetails;
 
-            ViewBag.FNameLName = userDetails.FirstName + userDetails.LastName;
+            ViewBag.FirstName = userDetails.FirstName;
+            ViewBag.LastName = userDetails.LastName;
 
             List<Question> Que = (from question in _questionService.GetQuestion().ToList()
                                   join userTest in userTestSuitDetails.ToList()
