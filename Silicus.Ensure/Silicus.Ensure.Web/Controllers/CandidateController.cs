@@ -1,4 +1,5 @@
-﻿using Silicus.Ensure.Models.DataObjects;
+﻿using Silicus.Ensure.Models.Constants;
+using Silicus.Ensure.Models.DataObjects;
 using Silicus.Ensure.Services.Interfaces;
 using Silicus.Ensure.Web.Mappings;
 using Silicus.Ensure.Web.Models;
@@ -91,7 +92,7 @@ namespace Silicus.Ensure.Web.Controllers
             List<User> userAdmin = _userService.GetUserByRole("ADMIN").ToList();
 
             User candidate = _userService.GetUserById(userId);
-            candidate.TestStatus = "Test Submitted";
+            candidate.TestStatus = TestStatus.Submitted.ToString();
             _userService.Update(candidate);
 
             TestSuite suite = _testSuiteService.GetTestSuitById(testSuiteId);
