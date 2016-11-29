@@ -224,8 +224,7 @@ namespace Silicus.EncourageWithAzureAd.Web.Controllers
             var isLocked = _nominationService.GetAllNominations().Where(x => (x.NominationDate.Value.Month.Equals(DateTime.Now.Month - 1) && x.NominationDate.Value.Year.Equals(DateTime.Now.Month > 1 ? DateTime.Now.Year : DateTime.Now.Year - 1))).FirstOrDefault().IsLocked ?? false;
 
             //var isLocked = _nominationService?.GetAllNominations()?.FirstOrDefault()?.IsLocked?? false;
-            var loggedInAdminId = _awardService.GetUserIdFromEmail(User.Identity.Name);
-            var hrAdminsFeedback = _resultService.GetHrAdminsFeedbackForEmployee(loggedInAdminId, nomination.Id);
+
             var shortlistViewModel = new ViewShortlistDetailsViewModel()
             {
                 nominationId = nomination.Id,
@@ -241,10 +240,7 @@ namespace Silicus.EncourageWithAzureAd.Web.Controllers
                 reviewerComments = allReviewerComments,
                 Criterias = _nominationService.GetCriteriaForNomination(nomination.Id),
                 ManagerComments = nomination.ManagerComments.ToList(),
-                IsLocked = isLocked,
-                HrAdminsfeedback = hrAdminsFeedback,
-                HrAdminName = _resultService.GetLoggedInUserName(User.Identity.Name)
-
+                IsLocked = isLocked
             };
 
             return View(shortlistViewModel);
@@ -254,11 +250,10 @@ namespace Silicus.EncourageWithAzureAd.Web.Controllers
         [CustomeAuthorize(AllowedRole = "Admin")]
         public bool ShortlistNomination(int nominationId)
         {
-            var adminId = _awardService.GetUserIdFromEmail(User.Identity.Name);
             _logger.Log("Review-ShortlistNomination-POST");
             try
             {
-                _resultService.ShortlistNomination(nominationId,adminId);
+                _resultService.ShortlistNomination(nominationId);
                 _emailNotificationOfWinner.Process();
                 return true;
             }
@@ -285,13 +280,12 @@ namespace Silicus.EncourageWithAzureAd.Web.Controllers
 
         [HttpPost]
         [CustomeAuthorize(AllowedRole = "Admin")]
-        public bool SelectWinner(int nominationId, string winningComment, string feedback)
+        public bool SelectWinner(int nominationId, string winningComment)
           {
             _logger.Log("Review-SelectWinner-POST");
-            var adminId = _awardService.GetUserIdFromEmail(User.Identity.Name);
             try
             {
-                _resultService.SelectWinner(nominationId, winningComment, feedback,adminId);
+                _resultService.SelectWinner(nominationId, winningComment);
                 _emailNotificationOfWinner.Process();
 
                 return true;
