@@ -16,7 +16,7 @@
         }
     </div>
     <div class="col-md-4 col-md-offset-1" style="float:right">
-        <button type="button" class="btn btn-white" aria-label="Left Align" onclick="window.open('/Admin/CreatePDF?target=_blank')">
+        <button type="button" class="btn btn-white" aria-label="Left Align" onclick="window.open('@Url.Action("CreatePDF", "Admin", new { id = ViewBag.UserId })','_blank')">
             <span class="glyphicon glyphicon-file" aria-hidden="true"> PDF</span>
         </button>
         <button type="submit" name="btnMail" class="btn btn-white" aria-label="Left Align" onclick="location.href='@Url.Action("SendMail", "Admin", new { id = ViewBag.UserId })'">

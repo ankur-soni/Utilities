@@ -22,8 +22,8 @@ using System.Net.Mail;
 using System.IO;
 using iTextSharp.text;
 using iTextSharp.text.pdf;
-using System.Text;
 using iTextSharp.text.html.simpleparser;
+using System.Text;
 
 namespace Silicus.Ensure.Web.Controllers
 {
@@ -261,84 +261,36 @@ namespace Silicus.Ensure.Web.Controllers
             return View();
         }
 
-        public ActionResult CandidatesSuit(int UserId)
+        public ActionResult CandidatesSuit(int UserId, int IsReassign = 0)
         {
             ViewBag.CurrentUser = UserId;
+            ViewBag.IsReassign = IsReassign;
             return PartialView("SelectCandidatesSuit");
         }
 
-        public ActionResult AssignSuite(int SuiteId, int Userid)
+        public ActionResult AssignSuite(int SuiteId, int UserId, int IsReAssign = 0)
         {
-
-            DataSourceRequest dataSourceRequest = new Kendo.Mvc.UI.DataSourceRequest();
-            dataSourceRequest.Page = 1;
-            dataSourceRequest.PageSize = 10;
-
-            int objectiveCount = 0;
-            int maxScore = 0;
-            List<UserTestDetails> userTestDetailsList = new List<UserTestDetails>();
-            var updateCurrentUsers = _userService.GetUserDetails().Where(model => model.UserId == Userid).FirstOrDefault();
-
+            var updateCurrentUsers = _userService.GetUserDetails().Where(model => model.UserId == UserId).FirstOrDefault();
             if (updateCurrentUsers != null)
             {
-                if (SuiteId > 0 && Userid > 0)
+                if (SuiteId > 0 && UserId > 0)
                 {
-                    var ViewPrimaryTagList = _testSuiteService.GetTestSuiteDetails().Where(q => q.TestSuiteId == SuiteId).Select(p => p.PrimaryTags).ToList();
-                    foreach (var tagid in ViewPrimaryTagList)
+                    if (IsReAssign == 1)
                     {
-                        string[] values = tagid.Split(',');
-                        for (int i = 0; i < values.Length; i++)
+                        var userTest = _testSuiteService.GetUserTestSuite().Where(x => x.UserId == UserId && x.StatusId == Convert.ToInt32(TestStatus.Assigned)).SingleOrDefault();
+                        if (userTest != null)
                         {
-                            values[i] = values[i].Trim();
-                            var questionList = _questionService.GetQuestion();
-                            objectiveCount += questionList.Where(p => p.Tags.Contains(values[i]) && p.QuestionType == 1).ToList().Count();
-
-                            foreach (var question in questionList)
-                            {
-                                maxScore += question.Marks;
-                            }
+                            _testSuiteService.DeleteUserTestSuite(userTest);
                         }
                     }
-
-                    UserTestSuite newusertestsuit = new UserTestSuite
-                    {
-                        UserId = Userid,
-                        TestSuiteId = SuiteId,
-                        ObjectiveCount = objectiveCount,
-                        MaxScore = maxScore,
-                        CreatedDate = DateTime.Now,
-                    };
-
-                    _testSuiteService.AddUserTestSuite(newusertestsuit);
-                    updateCurrentUsers.TestStatus = "Assigned";
-                    _userService.Update(updateCurrentUsers);
-
-
-                    foreach (var tagid in ViewPrimaryTagList)
-                    {
-                        string[] values = tagid.Split(',');
-                        for (int i = 0; i < values.Length; i++)
-                        {
-                            values[i] = values[i].Trim();
-                            var questionList = _questionService.GetQuestion().Where(p => p.Tags.Contains(values[i])).ToList();
-                            foreach (var questionId in questionList)
-                            {
-                                if (newusertestsuit.UserTestDetails == null || (!newusertestsuit.UserTestDetails.Any(x => x.QuestionId == questionId.Id)))
-                                {
-                                    UserTestDetails userTestDetails = new UserTestDetails
-                                    {
-                                        UserTestSuite = newusertestsuit,
-                                        QuestionId = Convert.ToInt32(questionId.Id),
-                                        //Answer = questionId.Answer,
-                                    };
-
-                                    _testSuiteService.AddUserTestDetails(userTestDetails);
-                                }
-
-                            }
-                        }
-                    }
-
+                    var testSuiteDetails = _testSuiteService.GetTestSuiteDetails().Where(model => model.TestSuiteId == SuiteId && model.IsDeleted == false).SingleOrDefault();
+                    UserTestSuite userTestSuite = new UserTestSuite();
+                    userTestSuite.UserId = UserId;
+                    userTestSuite.TestSuiteId = SuiteId;
+                    _testSuiteService.ActiveteSuite(userTestSuite, testSuiteDetails);
+                    var selectUser = _userService.GetUserDetails().Where(model => model.UserId == UserId).FirstOrDefault();
+                    selectUser.TestStatus = Convert.ToString(TestStatus.Assigned);
+                    _userService.Update(selectUser);
                     return Json(1);
                 }
                 else
@@ -376,7 +328,7 @@ namespace Silicus.Ensure.Web.Controllers
         public ActionResult GetTestSuiteDetails([DataSourceRequest] DataSourceRequest request)
         {
             var tags = _tagsService.GetTagsDetails();
-            var testSuitelist = _testSuiteService.GetTestSuiteDetails().Where(model => model.IsDeleted == false).OrderByDescending(model => model.TestSuiteId).ToArray();
+            var testSuitelist = _testSuiteService.GetTestSuiteDetails().Where(model => model.IsDeleted == false && model.Status == Convert.ToUInt32(TestSuiteStatus.Ready)).OrderByDescending(model => model.TestSuiteId).ToArray();
             var viewModels = _mappingService.Map<TestSuite[], TestSuiteViewModel[]>(testSuitelist);
             foreach (var item in viewModels)
             {
@@ -455,10 +407,6 @@ namespace Silicus.Ensure.Web.Controllers
             {
                 var testSuiteDomainModel = _mappingService.Map<TestSuiteViewModel, TestSuite>(testSuiteView);
                 testSuiteDomainModel.PrimaryTags = string.Join(",", testSuiteView.PrimaryTagIds);
-                if (testSuiteView.SecondaryTagIds != null)
-                {
-                    testSuiteDomainModel.SecondaryTags = string.Join(",", testSuiteView.SecondaryTagIds);
-                }
 
                 TempData.Add("IsNewTestSuite", 1);
                 if (testSuiteView.TestSuiteId == 0 || testSuiteView.IsCopy == true)
@@ -808,6 +756,7 @@ namespace Silicus.Ensure.Web.Controllers
                 }
 
                 SubmittedTestViewModel submittedTestViewModel = new Models.SubmittedTestViewModel();
+                submittedTestViewModel.TestStatus = userDetails.TestStatus;
                 submittedTestViewModel.FirstName = userDetails.FirstName;
                 submittedTestViewModel.LastName = userDetails.LastName;
                 submittedTestViewModel.Duration = userTestSuitDetails.Duration;
@@ -887,6 +836,8 @@ namespace Silicus.Ensure.Web.Controllers
 
             foreach (var userTestDetails in userTestSuitDetails.UserTestDetails.Where(x => x.QuestionId == Convert.ToInt32(Request.Form["PractileQuesionId" + count])).ToList())
             {
+                userTestDetails.MarkGivenByName = User.Identity.Name;
+                userTestDetails.MarkGivenBy = UserManager.FindByEmailAsync(userTestDetails.MarkGivenByName).Id;
                 userTestDetails.Mark = Convert.ToInt32(Request.Form["Emarks" + count]);
                 userTestDetails.MarkGivenDate = DateTime.Now;
 
@@ -938,15 +889,15 @@ namespace Silicus.Ensure.Web.Controllers
                     file.Close();
                     ms.Close();
 
-                        Attachment attachment = new Attachment(Server.MapPath("~\\Attachment") + "\\" + filename);
-                        message.Attachments.Add(attachment);
-                        message.IsBodyHtml = true;
+                    Attachment attachment = new Attachment(Server.MapPath("~\\Attachment") + "\\" + filename);
+                    message.Attachments.Add(attachment);
+                    message.IsBodyHtml = true;
 
-                        using (var smtp = new SmtpClient())
-                        {
-                            smtp.Send(message);
-                            TempData["Success"] = "Mail Sent Successfully";
-                        }
+                    using (var smtp = new SmtpClient())
+                    {
+                        smtp.Send(message);
+                        TempData["Success"] = "Mail Sent Successfully";
+                    }
                 }
                 catch (Exception ex)
                 {
