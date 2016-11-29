@@ -15,13 +15,9 @@
             </div>
         }
     </div>
-
-    <h3>Question Set for <strong>@ViewBag.FirstName @ViewBag.LastName</strong></h3>
-    <hr />
-
     <div class="col-md-4 col-md-offset-1" style="float:right">
         @*<button type="button" class="btn btn-white" aria-label="Left Align" onclick="window.open('/Admin/CreatePDF?id=ViewBag.UserId')" >*@
-        <button type="button" class="btn btn-white" aria-label="Left Align" onclick="window.open('@Url.Action("CreatePDF", "Admin", new { id = ViewBag.UserId })','_blank')">
+        <button type="button" class="btn btn-white" aria-label="Left Align" onclick="location.href='@Url.Action("CreatePDF", "Admin", new { id = ViewBag.UserId })'">
             <span class="glyphicon glyphicon-file" aria-hidden="true"> PDF</span>
         </button>
         <button type="submit" name="btnMail" class="btn btn-white" aria-label="Left Align" onclick="location.href='@Url.Action("SendMail", "Admin", new { id = ViewBag.UserId })'">
@@ -118,7 +114,7 @@
             </div>
         </div>
     </div>
-<div/>
+</div>
 
 <script>
     $(document).ready(function () {
