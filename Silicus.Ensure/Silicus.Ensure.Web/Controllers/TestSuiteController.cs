@@ -45,7 +45,7 @@ namespace Silicus.Ensure.Web.Controllers
                 int duration = _questionService.GetQuestion().Where(x => userTestSuite.UserTestDetails.Any(y => y.QuestionId == x.Id)).Sum(x => x.Duration);
                 if (testSuite.Duration <= duration)
                 {
-                    testSuite.Status = 2;
+                     testSuite.Status = Convert.ToInt32(TestSuiteStatus.Ready);
                     _testSuiteService.Update(testSuite);
                 }
             }
@@ -138,6 +138,7 @@ namespace Silicus.Ensure.Web.Controllers
             {
                 if (testSuiteView.TestSuiteId == 0 || testSuiteView.IsCopy == true)
                 {
+                    testSuiteDomainModel.Status = Convert.ToInt32(TestSuiteStatus.Pending);
                     _testSuiteService.Add(testSuiteDomainModel);
                 }
                 else
