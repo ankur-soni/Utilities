@@ -15,13 +15,14 @@
               {
                   columns.Bound(p => p.FirstName).Width(50);
                   columns.Bound(p => p.LastName).Width(50);
+                  columns.Bound(p => p.Role).Width(50);
                   columns.Bound(p => p.Gender).Width(50);
                   columns.Bound(p => p.Position).Width(50);
                   columns.Bound(p => p.Department).Width(50);
                   columns.Bound(p => p.Experience).Width(50);
                   columns.Bound(p => p.Email).Width(50);
                   columns.Bound(p => p.TestStatus).Width(50);
-                  columns.Bound(c => c.UserId).ClientTemplate(@"<a class='k-button k-button-icontext k-grid-edit' href='" + Url.Action("CandidateAdd", "Admin") + "?UserId=#=UserId#'><span class='k-icon k-edit'></span>Edit</a><a id='testSuiteDel' class='k-button k-button-icontext k-grid-delete' href='\\#' onclick='return deleteUser(#=UserId#)'><span class='k-icon k-delete'></span>Delete</a>").Width(160);
+                  columns.Bound(c => c.UserId).ClientTemplate(@"<a class='k-button k-button-icontext k-grid-edit' href='" + Url.Action("PanelAdd", "Panel") + "?UserId=#=UserId#'><span class='k-icon k-edit'></span>Edit</a><a id='testSuiteDel' class='k-button k-button-icontext k-grid-delete' href='\\#' onclick='return deleteUser(#=UserId#)'><span class='k-icon k-delete'></span>Delete</a>").Width(160);
                   columns.Bound(c => c.UserId).ClientTemplate(@"
                                 <a onclick=showTest('#=UserId#','#=TestStatus#')>Assign Test</a>|
                                 <a  class ='dialog-window' onclick=CheckAssign('#=TestStatus#',1,'#=UserId#') >Preview Question Set</a> |
@@ -36,7 +37,7 @@
                           model.Field(p => p.UserId).Editable(false);
                       })
 
-                          .Read(read => read.Action("GetUserDetails", "User", new { RoleName = "Panel" }))
+                              .Read(read => read.Action("GetUserDetails", "User", new { RoleName = RoleName.Candidate.ToString() }))
                           .Create(update => update.Action("CreateUser", "User"))
                           .Update(update => update.Action("UpdateUser", "User"))
                           .Destroy(update => update.Action("DeleteUser", "User"))

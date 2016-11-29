@@ -58,9 +58,48 @@
                                     .Select(x => new SelectListItem { Text = x.Text, Value = x.Text })
                                     .Skip(1))
                                     .Value(Model.Role)
+                                    .Events(e =>
+                                    {
+                                        e.Change("onSelect");
+                                        e.DataBound("onDataBound");
+                                    })
                                     .HtmlAttributes(new { style = "width: 100%;border-color: #c5c5c5;" })
                     )
+                    <script>
+                        function onDataBound() {
+                            var dataItem = this.dataItem();
+                            if (dataItem['Text'] == '@RoleName.Panel') {
+                                $('#AssignCandidate').fadeIn();
+                            }
+                            else {
+                                $('#AssignCandidate').fadeOut();
+                            }
+                        }
+                        function onSelect(e) {
+                            var dataItem = this.dataItem();
+                            if (dataItem['Text'] == '@RoleName.Panel') {
+                                $('#AssignCandidate').fadeIn();
+                            }
+                            else {
+                                $('#AssignCandidate').fadeOut();
+                            }
+                        };
+                    </script>
 
+                </div>
+            </div>
+            <div id="AssignCandidate" class="row" style="margin-bottom:10px;display:none">
+                <div class="col-md-4">
+                    <span>Assign Candidate:</span><span style="color:red">*</span>
+                </div>
+
+                <div class="col-md-8">
+                    @(Html.Kendo().MultiSelectFor(x => x.CandidateList)
+                            .Name("CandidateList")
+                            .BindTo(new SelectList(ViewBag.CandidateList, "Value", "Text"))
+                            .Value(Model.CandidateList)
+                            .HtmlAttributes(new { style = "width: 100%" })
+                    )
                 </div>
             </div>
             <div class="row" style="margin-bottom:10px;">
@@ -148,15 +187,13 @@
                     ShowMessage("Email can't be blank.", 0);
                 }
                 $('.redText').css('display', 'none')
-                if ($('.redText').find("span").html() != '');
-                {
+                if ($('.redText').find("span").html() != undefined && $('.redText').find("span").html() != '') {
                     ShowMessage($('.redText').find("span").html(), 0);
                 }
             });
             $(document).ajaxComplete(function () {
                 $('.redText').css('display', 'none')
-                if ($('.redText').find("span").html() != '');
-                {
+                if ($('.redText').find("span").html() != undefined && $('.redText').find("span").html() != '') {
                     ShowMessage($('.redText').find("span").html(), 0);
                 }
             });
@@ -190,7 +227,7 @@
             });
 
             function onCancelClick() {
-                window.location = '@Url.Action("Candidates", "Admin")';
+                window.location = '@Url.Action("Dashboard", "Admin")';
             }
 
             function validateTag() {
