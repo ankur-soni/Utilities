@@ -33,7 +33,6 @@ namespace Silicus.EncourageWithAzureAd.Web
         private static void InitializeContainer(IServiceContainer container)
         {
             container.Register<IDataContextFactory, DataContextFactory>();
-            container.Register<IReviewerService, ReviewerService>();
             container.Register<IAwardService, AwardService>();
             container.Register<IAuthentication, Authentication>();
             container.Register<IUserSecurityService,UserSecurityService>();

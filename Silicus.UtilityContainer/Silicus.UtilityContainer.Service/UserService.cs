@@ -7,8 +7,6 @@ using System.Text;
 using System.Threading.Tasks;
 using Silicus.UtilityContainer.Entities;
 using Silicus.UtilityContainer.Models.ViewModels;
-using System.Net.Http;
-using System.Configuration;
 
 namespace Silicus.UtilityContainer.Services
 {
@@ -67,17 +65,10 @@ namespace Silicus.UtilityContainer.Services
             {
 
                 var userRole = _commonDBContext.Query<UtilityUserRoles>().Where(x => x.UserId == item && x.UtilityId == newUserRole.UtilityId).ToList();
-                if (newUserRole.RoleId == Convert.ToInt32(ConfigurationManager.AppSettings["Reviewer"]))
-                {
-                    foreach (var userid in newUserRole.UserId)
-                    {
-                        string url = ConfigurationManager.AppSettings["Addreviewer"] + userid;
-                        HttpClient client = new HttpClient();
-                        client.BaseAddress = new Uri(url);
-                        var response = client.GetAsync(url).Result;
-                    }
-                    
-                }
+                //if (userRole != null)
+                //{
+                //    _commonDBContext.Delete(userRole);
+                //}
 
                 myNewUserRole.UtilityId = newUserRole.UtilityId;
                 myNewUserRole.RoleId = newUserRole.RoleId;
