@@ -326,7 +326,7 @@ namespace Silicus.Ensure.Web.Controllers
         public ActionResult GetTestSuiteDetails([DataSourceRequest] DataSourceRequest request)
         {
             var tags = _tagsService.GetTagsDetails();
-            var testSuitelist = _testSuiteService.GetTestSuiteDetails().Where(model => model.IsDeleted == false).OrderByDescending(model => model.TestSuiteId).ToArray();
+            var testSuitelist = _testSuiteService.GetTestSuiteDetails().Where(model => model.IsDeleted == false && model.Status == Convert.ToUInt32(TestSuiteStatus.Ready)).OrderByDescending(model => model.TestSuiteId).ToArray();
             var viewModels = _mappingService.Map<TestSuite[], TestSuiteViewModel[]>(testSuitelist);
             foreach (var item in viewModels)
             {
