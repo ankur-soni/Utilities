@@ -85,7 +85,9 @@
                 </th>
             </tr>
             <tr class="white-bg">
-                <td class="more" style="word-wrap: break-word;"><div>@Model.nominationComment</div></td>
+                <td class="more" style="word-wrap: break-word;">
+                    <div>@Model.nominationComment</div>
+                </td>
             </tr>
         </table>
 
@@ -183,19 +185,7 @@
             </div>
             <div class="row">&nbsp;</div>
                                         }
-                                        if (!String.IsNullOrEmpty(Model.HrAdminsfeedback))
-                                        {
-                                            <table class="table table-hover issue-tracker " style="width:80%;table-layout:fixed">
-                                                <tr>
-                                                    <th>
-                                                        @Html.DisplayFor(modelItem => modelItem.HrAdminName) Says:
-                                                    </th>
-                                                </tr>
-                                                <tr class="white-bg">
-                                                    <td class="more" style="word-wrap: break-word;"><div>@Model.HrAdminsfeedback</div></td>
-                                                </tr>
-                                            </table>
-                                        }
+
                                         <div class="row">&nbsp;</div>
 
                                         <div class="form-group">
@@ -205,7 +195,7 @@
                                                 <input type="button" value="Shortlist" class="btn btn-primary shortlist btnSameSize" onclick="location.href='#'"
                                                        @{ if (Model.IsShortlisted || Model.IsWinner) { @: disabled="disabled"
                                                                                     } } />
-                                                <input type="button" value="Mark Winner" class="btn btn-primary btnSameSize" data-toggle="modal" data-target="#myModal"
+                                                <input type="button" value="Mark Winner" class="btn btn-primary winner btnSameSize" onclick="location.href='#'"
                                                        @{ if (Model.IsWinner) { @: disabled="disabled"
                                                                              } } />
                                             </div>
@@ -217,34 +207,9 @@
     else
     {
         <div style="display:none" id="allow-shortlist">false</div>
-    }
+        }
 
     }
-</div>
-
-<div class="modal fade" id="myModal" role="dialog">
-    <div class="modal-dialog">
-        <!-- Modal content-->
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal">&times;</button>
-                <h4 class="modal-title">Select Winner</h4>
-            </div>
-            <div class="modal-body">
-                <span class="requiredfeild">Feedback:</span>
-                <textarea rows="3" id="feedback" style="width:100%;max-width:100%" placeholder="Why this employee shoulde be the winner?" required="required"></textarea>
-                <span style="color:red;display:none" id="feedbackRequired"></span>
-                <span class="requiredfeild">Comment:</span>
-                <textarea rows="3" id="comment" style="width:100%;max-width:100%" placeholder="To be shared across the company" required="required"></textarea>
-                <span style="color:red;display:none" id="commentRequired"></span>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn winner btn-default" id="selectWinner">Submit</button>
-                <button type="button" class="btn btn-danger" id="cancel" data-dismiss="modal">Cancel</button>
-            </div>
-        </div>
-
-    </div>
 </div>
 
 <script src="~/js/jquery-2.1.1.js"></script>
@@ -271,7 +236,7 @@
             debugger;
             @*var isLocked = @Html.Raw(Json.Encode(Model.IsLocked));*@
             var isLocked = $("div #allow-shortlist").text();
-            if (isLocked == "false") {
+            if (isLocked == false) {
                 sweetAlert("Please lock the nomination from dashboard before proceed.");
                 return false;
             }
@@ -320,68 +285,67 @@
                  });
         });
 
-        $("#comment").keypress(function () { $("#commentRequired").css("display", "none") });
-        $("#feedback").keypress(function () { $("#feedbackRequired").css("display", "none") });
-        $("#cancel").click(function () { $("#comment").val(""); $("#feedback").val(""); $("#commentRequired").text(""); $("#feedbackRequired").text("") });
+
 
         $('.winner').click(function () {
-            debugger;
-            var isLocked = $("div #allow-shortlist").text();
-            if (isLocked == "false") {
-                sweetAlert("Please lock the nomination from dashboard before proceed.");
-                return false;
-            }
-            var nominationIdToShortlist = $("#nominationId").val();
-            var commentForWinner = $("#comment").val();
-            var feedbackForWinner = $("#feedback").val();
-            if (commentForWinner != "" && feedbackForWinner != "") {
-                $("#selectWinner").attr("data-dismiss", "modal");
-            }
-            else {
-                if (commentForWinner == "") {
-                    $("#commentRequired").text("You must enter a comment!");
-                    $("#commentRequired").css("display", "block");
-                }
-                if (feedbackForWinner == "") {
-                    $("#feedbackRequired").text("You must enter feedback!");
-                    $("#feedbackRequired").css("display", "block");
-                }
-                return false;
-            }
-            $.ajax({
-                type: 'post',
-                url: '@Url.Action("SelectWinner", "Review")',
-                data: JSON.stringify({ nominationId: nominationIdToShortlist, winningComment: commentForWinner, feedback: feedbackForWinner }),
-                contentType: "application/json; charset=utf-8",
-                success: function (data) {
-                    swal({
-                        title: "Winner Selected",
-                        showCancelButton: false,
-                        confirmButtonColor: "#0070b9",
-                        confirmButtonText: "Ok"
-                    },
-                    function (isConfirm) {
-                        if (isConfirm) {
-                            window.location.href = '@Url.Action("ReviewFeedbackList", "Review")';
-                        }
-                    });
-                },
-                error: function (data) {
-                    alert(data);
-                    swal("Error", "Oops! Something wrong happened..");
-                }
-            });
 
-        });
+            @*swal({
+                title: "Select Winner",
+                text: "Are you sure you want to select this candidate as Winner?",
+               type: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#88a364",
+                confirmButtonText: "Yes!",
+                cancelButtonText: "No!",
+                closeOnConfirm: false,
+                closeOnCancel: false
+            },
+                 function (isConfirm) {
+                     if (isConfirm) {
+                         debugger;
+                         var nominationIdToShortlist = $("#nominationId").val();
+                         $.ajax({
+                             type: 'post',
+                             url: '@Url.Action("SelectWinner", "Review")',
+                             data: JSON.stringify({ nominationId: nominationIdToShortlist }),
+                             contentType: "application/json; charset=utf-8",
+                             success: function (data) {
+                                 swal({
+                                     title: "Winner Selected",
+                                     showCancelButton: false,
+                                     confirmButtonColor: "#88a364",
+                                     confirmButtonText: "Ok"
+                                 },
+                                 function () {
+                                     if (isConfirm) {
+                                         window.location.href = '@Url.Action("ReviewFeedbackList", "Review")';
+                                     }
+                                 });
+                             }
+                         });
+                     } else {
+                         swal("Cancelled", "This candidate has not been selected as Winner");
+                     }
+                 });
+        });*@
 
-        @*$('.winner').click(function () {
-    
-            var commentForWinner = "";
+
+            //swal({
+            //    input: 'textarea',
+            //    showCancelButton: true
+            //}).then(function (text) {
+            //    if (text) {
+            //        swal(text);
+            //    }
+            //});
+
+            @*var isLocked = @Html.Raw(Json.Encode(Model.IsLocked));*@
             var isLocked = $("div #allow-shortlist").text();
             if (isLocked == false) {
                 sweetAlert("Please lock the nomination from dashboard before proceed.");
                 return false;
             }
+
             swal({
                 title: "Select Winner",
                 text: "Are you sure you want to select this candidate as Winner?",
@@ -402,59 +366,36 @@
                     return false
                 }
                 else {
-                    commentForWinner = inputValue;
-                    swal({
-                        title: "Select Winner",
-                        text: "Enter your feedback.",
-                        type: "input",
-                        confirmButtonText: "Yes!",
-                        cancelButtonText: "No!",
-                        showCancelButton: true,
-                        closeOnConfirm: false,
-                        animation: "slide-from-top",
-                        inputPlaceholder: "Why you think this employee should be the winner?",
-                    }, function (inputValue) {
-                        if (inputValue === false) {
-
-                        }
-                        else if (inputValue === "") {
-                            swal.showInputError("You need to write something!");
-                            return false;
-                        }
-                        else {
-                            var nominationIdToShortlist = $("#nominationId").val();
-                            $.ajax({
-                                type: 'post',
-                                url: '@Url.Action("SelectWinner", "Review")',
-                                data: JSON.stringify({ nominationId: nominationIdToShortlist, winningComment: commentForWinner, feedback: inputValue }),
-                                contentType: "application/json; charset=utf-8",
-                                success: function (data) {
-                                    swal({
-                                        title: "Winner Selected",
-                                        showCancelButton: false,
-                                        confirmButtonColor: "#0070b9",
-                                        confirmButtonText: "Ok"
-                                    },
-                                    function (isConfirm) {
-                                        if (isConfirm) {
-                                            window.location.href = '@Url.Action("ReviewFeedbackList", "Review")';
-                                        }
-                                    });
-                                },
-                                error: function (data) {
-                                    alert(data);
-                                    swal("Error", "Oops! Something wrong happened..");
+                    var nominationIdToShortlist = $("#nominationId").val();
+                    $.ajax({
+                        type: 'post',
+                        url: '@Url.Action("SelectWinner", "Review")',
+                        data: JSON.stringify({ nominationId: nominationIdToShortlist, winningComment: inputValue }),
+                        contentType: "application/json; charset=utf-8",
+                        success: function (data) {
+                            swal({
+                                title: "Winner Selected",
+                                showCancelButton: false,
+                                confirmButtonColor: "#0070b9",
+                                confirmButtonText: "Ok"
+                            },
+                            function (isConfirm) {
+                                if (isConfirm) {
+                                    window.location.href = '@Url.Action("ReviewFeedbackList", "Review")';
                                 }
                             });
+                        },
+                        error: function (data) {
+                            alert(data);
+                            swal("Error", "Oops! Something wrong happened..");
                         }
                     });
-                    
                 }
 
 
             });
 
-        });*@
+        });
     });
 
     $(function () {

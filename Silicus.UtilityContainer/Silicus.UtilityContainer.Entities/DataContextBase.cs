@@ -41,6 +41,7 @@ namespace Silicus.UtilityContainer.Entities
             modelBuilder.Configurations.Add(new ResourceTypeMap());
             modelBuilder.Configurations.Add(new UtilityRoleMap());
             modelBuilder.Configurations.Add(new DepartmentMap());
+            modelBuilder.Configurations.Add(new ClientMap());
             modelBuilder.Configurations.Add(new HolidayMap());
             modelBuilder.Configurations.Add(new CreditsMap());
 

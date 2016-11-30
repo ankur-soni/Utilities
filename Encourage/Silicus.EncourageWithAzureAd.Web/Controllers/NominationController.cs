@@ -80,9 +80,7 @@ namespace Silicus.EncourageWithAzureAd.Web.Controllers
         public ActionResult AddNomination()
         {
             _logger.Log("Nomination-AddNomination-GET");
-
             var userEmailAddress = User.Identity.Name;
-
             ViewBag.Awards = new SelectList(_awardService.GetAllAwards(), "Id", "Name");
             ViewBag.NominationLockStatus = _nominationService.GetNominationLockStatus();
             var projects = _awardService.GetProjectsUnderCurrentUserAsManager(userEmailAddress);
@@ -175,14 +173,13 @@ namespace Silicus.EncourageWithAzureAd.Web.Controllers
 
                 foreach (var criteria in model.Comments)
                 {
-                    if (criteria.Comment != null || criteria.Rating != 0)
+                    if (criteria.Comment != null)
                     {
                         nomination.ManagerComments.Add(
                             new ManagerComment()
                             {
                                 CriteriaId = criteria.Id,
-                                Comment = criteria.Comment != null ? _textInfo.ToTitleCase(criteria.Comment) : "",
-                                Rating = criteria.Rating 
+                                Comment = criteria.Comment != null ? _textInfo.ToTitleCase(criteria.Comment) : ""
                             }
                             );
                     }
@@ -210,14 +207,6 @@ namespace Silicus.EncourageWithAzureAd.Web.Controllers
         }
 
         [HttpPost]
-        public ActionResult CriteriasForAwardPartialView(int awardId)
-        {
-            _logger.Log("Nomination-CriteriasForAward-POST");
-            var criteriaList = _awardService.GetCriteriasForAward(awardId);
-            return PartialView("~/Views/Nomination/Shared/_criteriaForAwards.cshtml",criteriaList);
-        }
-
-        [HttpPost]
         [CustomeAuthorize(AllowedRole = "Manager")]
         public ActionResult DiscardNomination(int nominationId)
         {
@@ -236,10 +225,7 @@ namespace Silicus.EncourageWithAzureAd.Web.Controllers
             ViewBag.ReviewLockStatus = _reviewService.GetReviewLockStatus();
             ViewBag.NominationLockStatus = _nominationService.GetNominationLockStatus();
             // var userEmailAddress = Session["UserEmailAddress"] as string;
-            
-            
             var userEmailAddress = User.Identity.Name;
-
             ViewBag.Awards = new SelectList(_awardService.GetAllAwards(), "Id", "Name");
             int currentUserId = 0;
             var projects = _awardService.GetProjectsUnderCurrentUserAsManager(userEmailAddress);
@@ -289,22 +275,19 @@ namespace Silicus.EncourageWithAzureAd.Web.Controllers
             foreach (var criteria in criterias)
             {
                 string addedComment = string.Empty;
-                int rating = 0;
 
                 foreach (var comment in savedNomination.ManagerComments)
                 {
                     if (criteria.Id == comment.CriteriaId)
                     {
                         addedComment = comment.Comment;
-                        rating = comment.Rating;
                     }
                 }
                 nominationViewModel.Comments.Add(new CriteriaCommentViewModel()
                 {
                     Id = criteria.Id,
                     title = criteria.Title,
-                    Comment = addedComment,
-                    Rating = rating
+                    Comment = addedComment
                 });
             }
             return View("EditNomination", nominationViewModel);
@@ -329,14 +312,13 @@ namespace Silicus.EncourageWithAzureAd.Web.Controllers
 
             foreach (var comment in model.Comments)
             {
-                if (comment.Comment != null || comment.Rating != 0)
+                if (comment.Comment != null)
                 {
                     nomination.ManagerComments.Add(new ManagerComment()
                     {
                         CriteriaId = comment.Id,
                         Comment = comment.Comment != null ? _textInfo.ToTitleCase(comment.Comment) : "",
-                        NominationId = model.NominationId,
-                        Rating = comment.Rating
+                        NominationId = model.NominationId
                     });
                 }
             }
@@ -353,11 +335,8 @@ namespace Silicus.EncourageWithAzureAd.Web.Controllers
         public JsonResult ResourcesInProject(int engagementId, int awardId)
         {
             _logger.Log("Nomination-ResourcesInProject-POST");
-            
-            var name = User.Identity.Name;
-
-            var projects = _awardService.GetProjectsUnderCurrentUserAsManager(name);
-            var managerId = _awardService.GetUserIdFromEmail(name);
+            var projects = _awardService.GetProjectsUnderCurrentUserAsManager(User.Identity.Name);
+            var managerId = _awardService.GetUserIdFromEmail(User.Identity.Name);
             var usersInEngagement = _awardService.GetResourcesInEngagement(engagementId, managerId, awardId);
             return Json(usersInEngagement, JsonRequestBehavior.AllowGet);
         }
