@@ -63,16 +63,16 @@
                     .OptionLabel("--Select--")
                     .BindTo(new List<SelectListItem>() {
                     new SelectListItem(){
-                    Text=Convert.ToString(Competency.Beginner),
-                    Value=Convert.ToString((Int32)Competency.Beginner)
+                    Text=Convert.ToString(Proficiency.Beginner),
+                    Value=Convert.ToString((Int32)Proficiency.Beginner)
                     },
                     new SelectListItem(){
-                    Text=Convert.ToString(Competency.Intermediate),
-                    Value=Convert.ToString((Int32)Competency.Intermediate)
+                    Text=Convert.ToString(Proficiency.Intermediate),
+                    Value=Convert.ToString((Int32)Proficiency.Intermediate)
                     },
                     new SelectListItem(){
-                    Text=Convert.ToString(Competency.Expert),
-                    Value=Convert.ToString((Int32)Competency.Expert)
+                    Text=Convert.ToString(Proficiency.Expert),
+                    Value=Convert.ToString((Int32)Proficiency.Expert)
                     }
                     }))
             </div>
@@ -451,9 +451,9 @@
             dataValueField: "id",
             dataSource: [
                 { name: '--Select--', id: '0' },
-                { name: '@Convert.ToString(Competency.Beginner)', id: '@Convert.ToInt32(Competency.Beginner)' },
-                { name: '@Convert.ToString(Competency.Intermediate)', id: '@Convert.ToInt32(Competency.Intermediate)' },
-                { name: '@Convert.ToString(Competency.Expert)', id: '@Convert.ToInt32(Competency.Expert)' }
+                { name: '@Convert.ToString(Proficiency.Beginner)', id: '@Convert.ToInt32(Proficiency.Beginner)' },
+                { name: '@Convert.ToString(Proficiency.Intermediate)', id: '@Convert.ToInt32(Proficiency.Intermediate)' },
+                { name: '@Convert.ToString(Proficiency.Expert)', id: '@Convert.ToInt32(Proficiency.Expert)' }
             ]
         });
         $('.key-numeric').keypress(function(e) {
