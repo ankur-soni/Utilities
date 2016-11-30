@@ -134,20 +134,20 @@ namespace Silicus.Encourage.Services
         public List<User> GetResourcesInEngagement(int engagementId, int userIdToExcept, int awardId)
         {
             var currentAwardName = _encourageDbcontext.Query<Award>().Where(a => a.Id == awardId).FirstOrDefault().Name;
-
             var currentUser = _CommonDbContext.Query<User>().Where(user => user.ID == userIdToExcept);
             var currentUserId = currentUser.FirstOrDefault().ID;
             var closedProject = ConfigurationManager.AppSettings["ClosedEngagementStage"];
-            var clientId = _CommonDbContext.Query<Engagement>().Where( engagement => engagement.PrimaryProjectManagerID == currentUserId && engagement.ID == engagementId).FirstOrDefault().ClientID;
+            var engagementForClient = _CommonDbContext.Query<Engagement>().Where(engagement => engagement.PrimaryProjectManagerID == currentUserId && engagement.ID == engagementId).FirstOrDefault();
+            var clientId = engagementForClient != null ? engagementForClient.ClientID : 0;
+            var allEngagementIds = _CommonDbContext.Query<Engagement>().Where(engagement => engagement.PrimaryProjectManagerID == currentUserId && engagement.ClientID == clientId && engagement.Stage != closedProject).Select(c => c.ID).ToList();
 
             var userInEngagement = from engagement in _CommonDbContext.Query<Engagement>()
                                    join engagementRole in _CommonDbContext.Query<EngagementRole>() on engagement.ID equals engagementRole.EngagementID
                                    join resourceHistory in _CommonDbContext.Query<ResourceHistory>() on engagementRole.ResourceHistoryID equals resourceHistory.ID
                                    join resource in _CommonDbContext.Query<Resource>() on resourceHistory.ResourceID equals resource.ID
                                    join user in _CommonDbContext.Query<User>() on resource.UserID equals user.ID
-                                   where engagement.ClientID == clientId && engagement.Stage != closedProject && engagement.ID == engagementId
+                                   where engagement.ClientID == clientId && engagement.Stage != closedProject && allEngagementIds.Contains(engagement.ID)
                                    select user;
-           
 
             var recourcesInEnggementUnderCurrentManger = _encourageDbcontext.Query<Nomination>().Where(n => n.ProjectID == engagementId && n.ManagerId == currentUserId && n.AwardId == awardId).ToList();
             userInEngagement = userInEngagement.Except(currentUser);
@@ -175,7 +175,6 @@ namespace Silicus.Encourage.Services
                 {
                     if (previousAwardId == awardId)
                     {
-
                         winnerNominationsWithin12Months.Add(_nominationService.GetNomination(winner.NominationId));
                     }
                 }
@@ -186,93 +185,27 @@ namespace Silicus.Encourage.Services
             {
                 userList.RemoveAll(user => user.ID == winnerNomination.UserId);
             }
-
-            
             //End
-
 
             return userList;
         }
 
-        //public List<User> GetResourcesInEngagement(int engagementId, int userIdToExcept, int awardId)
-        //{
-        //    var userInEngagement = from engagementRole in _CommonDbContext.Query<EngagementRole>()
-        //                           join resourceHistory in _CommonDbContext.Query<ResourceHistory>() on engagementRole.ResourceHistoryID equals resourceHistory.ID
-        //                           join resource in _CommonDbContext.Query<Resource>() on resourceHistory.ResourceID equals resource.ID
-        //                           join user in _CommonDbContext.Query<User>() on resource.UserID equals user.ID
-        //                           where engagementRole.EngagementID == engagementId
-        //                           select user;
-
-        //    var currentAwardName = _encourageDbcontext.Query<Award>().Where(a => a.Id == awardId).FirstOrDefault().Name;
-
-        //    var currentUser = _CommonDbContext.Query<User>().Where(user => user.ID == userIdToExcept);
-        //    var currentUserId = currentUser.FirstOrDefault().ID;
-
-
-        //    var recourcesInEnggementUnderCurrentManger = _encourageDbcontext.Query<Nomination>().Where(n => n.ProjectID == engagementId && n.ManagerId == currentUserId && n.AwardId == awardId).ToList();
-
-        //    userInEngagement = userInEngagement.Except(currentUser);
-        //    var userList = userInEngagement.ToList();
-        //    foreach (var item in recourcesInEnggementUnderCurrentManger)
-        //    {
-        //        userList.RemoveAll(u => u.ID == item.UserId);
-        //    }
-        //    //Start-Winner can not be nominated for next one year.
-        //    var winners = _encourageDbcontext.Query<Shortlist>().Where(w => w.IsWinner == true).ToList();
-        //    var winnersWithin12Months = new List<Shortlist>();
-        //    var winnerNominationsWithin12Months = new List<Nomination>();
-        //    foreach (var winner in winners)
-        //    {
-        //        var noOfMonthsFromLastWinningDate = (DateTime.Now.Year - winner.WinningDate.Value.Year) * 12 + (DateTime.Now.Month - winner.WinningDate.Value.Month);
-        //        var winnernomination = _nominationService.GetNomination(winner.NominationId);
-
-        //        var previousAwardName = _encourageDbcontext.Query<Award>().Where(a => a.Id == winnernomination.AwardId).FirstOrDefault().Name;
-
-        //        var previousAwardId = winnernomination.AwardId;
-
-        //        if (noOfMonthsFromLastWinningDate <= 12)
-        //        {
-        //            if (previousAwardId == awardId)
-        //            {
-
-        //                winnerNominationsWithin12Months.Add(_nominationService.GetNomination(winner.NominationId));
-        //            }
-        //        }
-
-        //    }
-
-        //    foreach (var winnerNomination in winnerNominationsWithin12Months)
-        //    {
-        //        userList.RemoveAll(user => user.ID == winnerNomination.UserId);
-        //    }
-        //    //End
-
-
-        //    return userList;
-        //}
-
-
         public List<User> GetResourcesForEditInEngagement(int engagementId, int userIdToExcept)
         {
-
             var currentUser = _CommonDbContext.Query<User>().Where(user => user.ID == userIdToExcept);
             var currentUserId = currentUser.FirstOrDefault().ID;
             var closedProject = ConfigurationManager.AppSettings["ClosedEngagementStage"];
-            var clientId = _CommonDbContext.Query<Engagement>().Where(engagement => engagement.PrimaryProjectManagerID == currentUserId && engagement.ID == engagementId).FirstOrDefault().ClientID;
+            var engagementForClient = _CommonDbContext.Query<Engagement>().Where(engagement => engagement.PrimaryProjectManagerID == currentUserId && engagement.ID == engagementId).FirstOrDefault();
+            var clientId = engagementForClient != null ? engagementForClient.ClientID : 0;
+            var allEngagementIds = _CommonDbContext.Query<Engagement>().Where(engagement => engagement.PrimaryProjectManagerID == currentUserId && engagement.ClientID == clientId && engagement.Stage != closedProject).Select(c => c.ID).ToList();
 
             var userInEngagement = from engagement in _CommonDbContext.Query<Engagement>()
                                    join engagementRole in _CommonDbContext.Query<EngagementRole>() on engagement.ID equals engagementRole.EngagementID
                                    join resourceHistory in _CommonDbContext.Query<ResourceHistory>() on engagementRole.ResourceHistoryID equals resourceHistory.ID
                                    join resource in _CommonDbContext.Query<Resource>() on resourceHistory.ResourceID equals resource.ID
                                    join user in _CommonDbContext.Query<User>() on resource.UserID equals user.ID
-                                   where engagement.ClientID == clientId && engagement.Stage != closedProject && engagement.ID == engagementId
+                                   where engagement.ClientID == clientId && engagement.Stage != closedProject && allEngagementIds.Contains(engagement.ID)
                                    select user;
-            //var userInEngagement = from engagementRole in _CommonDbContext.Query<EngagementRole>()
-            //                       join resourceHistory in _CommonDbContext.Query<ResourceHistory>() on engagementRole.ResourceHistoryID equals resourceHistory.ID
-            //                       join resource in _CommonDbContext.Query<Resource>() on resourceHistory.ResourceID equals resource.ID
-            //                       join user in _CommonDbContext.Query<User>() on resource.UserID equals user.ID
-            //                       where engagementRole.EngagementID == engagementId
-            //                       select user;
 
             userInEngagement = userInEngagement.Except(currentUser);
             return userInEngagement.ToList();
@@ -288,16 +221,8 @@ namespace Silicus.Encourage.Services
                                      where department.ID == DepartmentId
                                      select user;
 
-
-
             var currentUser = _CommonDbContext.Query<User>().Where(user => user.ID == userIdToExcept);
-
-
-
             resourcesUnderDept = resourcesUnderDept.Except(currentUser);
-
-
-
             return resourcesUnderDept.ToList();
         }
 
