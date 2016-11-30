@@ -17,8 +17,9 @@
         <div class="row">
             <div class="col-md-12" style="border-bottom-width:1px; border-bottom-style:solid; border-bottom-color:black;">
             </div>
-            @Html.HiddenFor(model => model.UserTestSuiteId, new { id = "UserTestSuiteId" })
-            @Html.HiddenFor(model => model.UserId, new { id = "UserId" })
+            <input type="hidden" value="@Model.TestSuiteId" id="TestSuiteId" />
+            <input type="hidden" value="@Model.UserTestSuiteId" id="UserTestSuiteId" />
+            <input type="hidden" value="@Model.UserId" id="UserId" />
         </div>
         <br />
         <div class="row">
@@ -45,7 +46,7 @@
                         <label class="control-label" for="total"><strong>Total Question:</strong></label>
                     </div>
                     <div class="col-md-6">
-                        <label class="control-label" for="total">@Model.TotalCount</label>
+                        <label class="control-label" for="total">@Model.TotalQuestionCount</label>
                     </div>
                 </div>
                 <div class="row">
@@ -67,7 +68,7 @@
                         .Name("btnAddMoreTime").Events(e => e.Click("AddMoreTime"))
                 .HtmlAttributes(new { type = "button" }).Content("Add More Time").HtmlAttributes(new { style = "margin-top: 15%;" }))
 
-                        @Html.Hidden("TimerIncCount", 0)
+                        @Html.Hidden("TimerIncCount", Model.ExtraCount)
                     </div>
                 </div>
                 <div class="row">
@@ -143,12 +144,12 @@
     var clock;
     var totalTime;
 
-    window.onbeforeunload = function () {
-        return false;
-    }
-        
+    //window.onbeforeunload = function () {
+    //    return false;
+    //}
+
     $(document).ready(function () {
-        
+
         // Hide Submit button of popup. Show when to want submit test.
         $("#btnSubmitTestOK").hide();
 
@@ -168,13 +169,16 @@
             }
         });
 
+        var tm =@Model.Duration
+        tm = parseInt(tm) * 60;
+
         // Initialize progress bar.
-        totalTime = 1800;
+        totalTime = tm;
         $('#progressBar').attr('aria-valuemax', totalTime).css('width', '0%');
         $('#progressInfo').text('0%');
 
         // Set counter time and start.
-        clock.setTime(1800);
+        clock.setTime(tm);
         clock.setCountdown(true);
         clock.start();
     });
@@ -189,12 +193,15 @@
 
     function OnAddMoreTimeOK() {
         var TimerCnt = $("#TimerIncCount").val();
+        if (TimerCnt == null || TimerCnt == "")
+            TimerCnt = 0;
+        var userTestSuiteId = $("#UserTestSuiteId").val();
         $.ajax({
             url: '/Candidate/AddMoreTime',
             dataType: "json",
             type: "POST",
             contentType: 'application/json; charset=utf-8',
-            data: JSON.stringify({ count: TimerCnt }),
+            data: JSON.stringify({ count: TimerCnt, userTestSuiteId: userTestSuiteId }),
             success: function (data) {
                 if (data < 3) {
                     // Add time in counter
@@ -233,6 +240,8 @@
             $('#progressBar').attr('aria-valuenow', clock.getTime()).css('width', newprogress + "%");
             $('#progressInfo').text(newprogress + "%");
 
+            UpdateTimeDB(time);
+
             if (time == 60) {
                 var TimerCntVal = $("#TimerIncCount").val();
                 if (TimerCntVal == 0)
@@ -262,6 +271,21 @@
 
         $("#msgMain").text("Warning!");
         $("#msgContent").text(msg);
+    }
+
+    function UpdateTimeDB(tm) {
+        var userTestSuiteId = $("#UserTestSuiteId").val();
+        $.ajax({
+            url: '/Candidate/UpdateTimeCounter',
+            dataType: "json",
+            type: "POST",
+            contentType: 'application/json; charset=utf-8',
+            data: JSON.stringify({ time: tm, userTestSuiteId: userTestSuiteId }),
+            success: function (data) {
+            },
+            error: function (xhr) {
+            }
+        });
     }
 
     function OnNext() {
@@ -313,9 +337,11 @@
 
     function OnSubmitTestOK() {
         var answer = GetAnswer();
+        var testSuiteId = $("#TestSuiteId").val();
+        var userTestSuiteId = $("#UserTestSuiteId").val();
         var userTestDetailId = $("#UserTestDetailId").val();
         var userId = $("#UserId").val();
-        window.location.href = '/Candidate/OnSubmitTest?userTestDetailId=' + userTestDetailId + '&userId=' + userId + '&answer=' + answer;
+        window.location.href = '/Candidate/OnSubmitTest?testSuiteId=' + testSuiteId + '&userTestSuiteId=' + userTestSuiteId + '&userTestDetailId=' + userTestDetailId + '&userId=' + userId + '&answer=' + answer;
     }
 
     function TestDurationComplete() {

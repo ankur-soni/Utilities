@@ -32,11 +32,11 @@ namespace Silicus.Ensure.Web
             AutoMapperConfiguration.Configure();
             ViewEngines.Engines.Clear();
             ViewEngines.Engines.Add(new RazorViewEngine());
-         
+
         }
 
-	    protected void Application_Error(object sender, EventArgs e)
-	    {
+        protected void Application_Error(object sender, EventArgs e)
+        {
             System.Diagnostics.Trace.WriteLine("Enter - Application_Error");
 
             var logger = new DatabaseLogger(
@@ -133,6 +133,6 @@ namespace Silicus.Ensure.Web
 
             controller.ViewData.Model = new HandleErrorInfo(ex, currentController, currentAction);
             ((IController)controller).Execute(new RequestContext(new HttpContextWrapper(httpContext), routeData));
-	    }
+        }
     }
 }

@@ -214,13 +214,12 @@
                   columns.Bound(p => p.Experience).Width(50);
                   columns.Bound(p => p.Email).Width(50);
                   columns.Bound(p => p.TestStatus).Width(50);
-                  columns.Bound(p => p.PanelName).Width(50);
                   columns.Bound(c => c.UserId).ClientTemplate(@"<a class='k-button k-button-icontext k-grid-edit' href='" + Url.Action("CandidateAdd", "Admin") + "?UserId=#=UserId#'><span class='k-icon k-edit'></span>Edit</a><a id='testSuiteDel' class='k-button k-button-icontext k-grid-delete' href='\\#' onclick='return deleteUser(#=UserId#)'><span class='k-icon k-delete'></span>Delete</a>").Width(160);
                   columns.Bound(c => c.UserId).ClientTemplate(@"
-                                <a onclick=showTest('#=UserId#','#=TestStatus#') style='cursor:pointer'>Assign Test</a>|
-                                <a  class ='dialog-window' onclick=CheckAssign('#=TestStatus#',1,'#=UserId#') style='cursor:pointer'>Preview Question Set</a> |
-                                <a  class ='dialog-window' onclick=CheckAssign('#=TestStatus#',2,'#=UserId#') style='cursor:pointer'>View Submitted Test</a> |
-                                <a  class ='dialog-window' onclick=ReAssign('#=UserId#','#=TestStatus#') style='cursor:pointer'>Reassign Test</a>").Title("Actions");
+                                <a onclick=showTest('#=UserId#','#=TestStatus#')>Assign Test</a>|
+                                <a  class ='dialog-window' onclick=CheckAssign('#=TestStatus#',1,'#=UserId#') >Preview Question Set</a> |
+                                <a  class ='dialog-window' onclick=CheckAssign('#=TestStatus#',2,'#=UserId#') >View Submitted Test</a> |
+                                <a  class ='dialog-window' onclick=ReAssign('#=UserId#','#=TestStatus#') >Reassign Test</a>").Title("Actions");
               })
             .DataSource(dataSource => dataSource
                       .Ajax()
@@ -230,7 +229,7 @@
                           model.Field(p => p.UserId).Editable(false);
                       })
 
-                              .Read(read => read.Action("GetCandidateDetails", "User", new { RoleName = RoleName.Candidate.ToString() }))
+                          .Read(read => read.Action("GetCandidateDetails", "User", new { RoleName = "Candidate" }))
                           .Create(update => update.Action("CreateUser", "User"))
                           .Update(update => update.Action("UpdateUser", "User"))
                           .Destroy(update => update.Action("DeleteUser", "User"))

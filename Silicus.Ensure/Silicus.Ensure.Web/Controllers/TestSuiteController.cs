@@ -251,13 +251,13 @@ namespace Silicus.Ensure.Web.Controllers
                 if(questionList.Sum(x=>x.Duration) >= tag.Minutes)
                 {
                     //Optional Questions
-                    var optionalQuestion = questionList.Where(x => !questions.Any(y => y.Id == x.Id) && x.QuestionType == 1 && x.Competency == testSuite.Competency);
+                    var optionalQuestion = questionList.Where(x => !questions.Any(y => y.Id == x.Id) && x.QuestionType == 1 && x.ProficiencyLevel == testSuite.Competency);
                     requiredMinutes = tag.Minutes * Convert.ToInt32(optionalQuestions) / 100;
                     if (optionalQuestion.Sum(x => x.Duration) > requiredMinutes)
                     {                        
                         do
                         {
-                            optionalQuestion = questionList.Where(x => !questions.Any(y => y.Id == x.Id) && x.QuestionType == 1 && x.Competency == testSuite.Competency);                         
+                            optionalQuestion = questionList.Where(x => !questions.Any(y => y.Id == x.Id) && x.QuestionType == 1 && x.ProficiencyLevel == testSuite.Competency);                         
                             index = random.Next(optionalQuestion.Count());
                             if (index != 0)
                             {
@@ -278,7 +278,7 @@ namespace Silicus.Ensure.Web.Controllers
                     }
                     else
                     {
-                        optionalQuestion = questionList.Where(x => !questions.Any(y => y.Id == x.Id) && x.QuestionType == 1 && x.Competency == testSuite.Competency);
+                        optionalQuestion = questionList.Where(x => !questions.Any(y => y.Id == x.Id) && x.QuestionType == 1 && x.ProficiencyLevel == testSuite.Competency);
                         foreach (var question in optionalQuestion)
                         {
                             questions.Add(question);
@@ -289,7 +289,7 @@ namespace Silicus.Ensure.Web.Controllers
                         {
                             do
                             {
-                                optionalQuestion = questionList.Where(x => !questions.Any(y => y.Id == x.Id) && x.QuestionType == 1 && x.Competency != testSuite.Competency);
+                                optionalQuestion = questionList.Where(x => !questions.Any(y => y.Id == x.Id) && x.QuestionType == 1 && x.ProficiencyLevel != testSuite.Competency);
                                 index = random.Next(optionalQuestion.Count());
                                 if (index != 0)
                                 {
@@ -318,13 +318,13 @@ namespace Silicus.Ensure.Web.Controllers
                     //Practical Questions
                     currentTagDuration += minutes;
                     requiredMinutes = tag.Minutes - minutes;
-                    minutes = 0; tryCount = 0;                    
-                    var practicalQuestion = questionList.Where(x => !questions.Any(y => y.Id == x.Id) && x.QuestionType == 2 && x.Competency == testSuite.Competency);
+                    minutes = 0; tryCount = 0;
+                    var practicalQuestion = questionList.Where(x => !questions.Any(y => y.Id == x.Id) && x.QuestionType == 2 && x.ProficiencyLevel == testSuite.Competency);
                     if (practicalQuestion.Sum(x=>x.Duration) > requiredMinutes)
                     {                        
                         do
                         {
-                            practicalQuestion = questionList.Where(x => !questions.Any(y => y.Id == x.Id) && x.QuestionType == 2 && x.Competency == testSuite.Competency);
+                            practicalQuestion = questionList.Where(x => !questions.Any(y => y.Id == x.Id) && x.QuestionType == 2 && x.ProficiencyLevel == testSuite.Competency);
                             index = random.Next(practicalQuestion.Count());
                             if (index != 0)
                             {
@@ -344,7 +344,7 @@ namespace Silicus.Ensure.Web.Controllers
                     }
                     else
                     {
-                        foreach (var question in practicalQuestion.Where(x => !questions.Any(y => y.Id == x.Id) && x.QuestionType == 2 && x.Competency == testSuite.Competency))
+                        foreach (var question in practicalQuestion.Where(x => !questions.Any(y => y.Id == x.Id) && x.QuestionType == 2 && x.ProficiencyLevel == testSuite.Competency))
                         {
                             questions.Add(question);
                             minutes += question.Duration;
@@ -354,7 +354,7 @@ namespace Silicus.Ensure.Web.Controllers
                         {
                             do
                             {
-                                practicalQuestion = questionList.Where(x => !questions.Any(y => y.Id == x.Id) && x.QuestionType == 2 && x.Competency != testSuite.Competency);
+                                practicalQuestion = questionList.Where(x => !questions.Any(y => y.Id == x.Id) && x.QuestionType == 2 && x.ProficiencyLevel != testSuite.Competency);
                                 index = random.Next(optionalQuestion.Count());
                                 if (index != 0)
                                 {

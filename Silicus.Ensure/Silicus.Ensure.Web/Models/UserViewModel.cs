@@ -5,7 +5,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Silicus.Ensure.Web.Models
 {
-    public class UserViewModel
+    public class UserViewModel    
     {
         public int UserId { get; set; }
 
@@ -57,9 +57,5 @@ namespace Silicus.Ensure.Web.Models
         public IList<Position> PositionList { get; set; }
 
         public string ErrorMessage { get; set; }
-
-        public string PanelName { get; set; }
-
-        public IList<int?> CandidateList { get; set; }
     }
 }
