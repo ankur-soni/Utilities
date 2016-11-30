@@ -68,6 +68,7 @@
   <ItemGroup>
     <Compile Include="DataObjects\Asset.cs" />
     <Compile Include="DataObjects\Category.cs" />
+    <Compile Include="DataObjects\Client.cs" />
     <Compile Include="DataObjects\Credits.cs" />
     <Compile Include="DataObjects\Department.cs" />
     <Compile Include="DataObjects\Engagement.cs" />

@@ -22,6 +22,8 @@ using System.Net.Mail;
 using System.IO;
 using iTextSharp.text;
 using iTextSharp.text.pdf;
+using iTextSharp.text.html.simpleparser;
+using System.Text;
 
 namespace Silicus.Ensure.Web.Controllers
 {
@@ -580,13 +582,150 @@ namespace Silicus.Ensure.Web.Controllers
             return View(Que);
         }
 
-        public ActionResult CreatePDF()
+        #region Create PDF
+
+        public ActionResult CreatePDF(int? id)
         {
-            List<Question> QList = _questionService.GetQuestion().ToList();
-            QList = QList.OrderBy(x => x.Id).ToList();
-            var pdf = new RazorPDF.PdfResult(QList, "CreatePDF");
-            return pdf;
+            var filename = "";
+            byte[] byteInfo = generatePDF(id, out filename);
+            Response.ContentType = "application/pdf";
+            Response.AddHeader("Content-Disposition", "inline;filename=" + filename);
+            Response.BinaryWrite(byteInfo);
+            return new EmptyResult();
         }
+
+        public Byte[] generatePDF(int? id, out string filename)
+        {
+            int UserId = 0;
+            int QuesId = 0;
+            if (id != null)
+            {
+                UserId = Convert.ToInt32(id);
+            }
+
+            var userDetails = _userService.GetUserDetails().Where(x => x.UserId == UserId).FirstOrDefault();
+            var userTestSuitDetails = _testSuiteService.GetUserTestSuite().Where(x => x.UserId == UserId).FirstOrDefault().UserTestDetails;
+
+            ViewBag.FNameLName = userDetails.FirstName + userDetails.LastName;
+
+            List<Question> Que = (from question in _questionService.GetQuestion().ToList()
+                                  join userTest in userTestSuitDetails.ToList()
+                                      on question.Id equals userTest.QuestionId
+                                  select question).ToList();
+
+            Que = Que.OrderBy(x => x.Id).ToList();
+
+            StringBuilder sb = new StringBuilder();
+
+            sb.Append("<h2>Question Set for " + "<strong>" + userDetails.FirstName + " " + userDetails.LastName + "</strong></h2>");
+            sb.Append("<br />");
+            sb.Append("<div></div>");
+            sb.Append("<strong>Date: </strong>" + DateTime.Now.ToString("dd-MM-yyyy"));
+            sb.Append("<br />");
+            sb.Append("<br />");
+            sb.Append("<table border='5' cellpadding='0' cellspacing='10' width='100%'><tr><td>&nbsp;</td></tr></table>");
+            sb.Append("<br />");
+            sb.Append("<br />");
+            sb.Append("<div>");
+            sb.Append("</div>");
+            sb.Append("<br />");
+            sb.Append("<table border='1' cellpadding='0' cellspacing='0' width='100%'><tr><td>&nbsp;</td></tr></table>");
+            sb.Append("<h3><strong>Objective Question Set</strong></h3>");
+            sb.Append("<br />");
+            sb.Append("<table border='1' cellpadding='0' cellspacing='0' width='100%'><tr><td>&nbsp;</td></tr></table>");
+
+            foreach (var q in Que)
+            {
+                if (q.QuestionType == 1)
+                {
+                    QuesId += 1;
+                    sb.Append("  <div class='col-md-8' style='margin-top:30px'>");
+                    sb.Append("  <strong>Question " + QuesId + ":</strong> &nbsp;&nbsp;");
+                    sb.Append("" + q.QuestionDescription + "");
+                    sb.Append(" </div>");
+                    sb.Append(" </div>");
+                    sb.Append("  <div class='row'>");
+                    sb.Append("   <div class='col-md-8' style='margin-top:20px'>");
+                    sb.Append("  <strong>Option 1:</strong> &nbsp;&nbsp;");
+                    sb.Append("" + q.Option1 + "");
+                    sb.Append(" </div>");
+                    sb.Append(" </div>");
+                    sb.Append(" <div class='row'>");
+                    sb.Append("<div class='col-md-8' style='margin-top:20px'>");
+                    sb.Append("  <strong>Option 2:</strong> &nbsp;&nbsp;");
+                    sb.Append("" + q.Option2 + "");
+                    sb.Append("  </div>");
+                    sb.Append(" </div>");
+                    sb.Append(" <div class='row'>");
+                    sb.Append(" <div class='col-md-8' style='margin-top:20px'>");
+                    sb.Append("  <strong>Option 3:</strong> &nbsp;&nbsp;");
+                    sb.Append("" + q.Option3 + "");
+                    sb.Append("  </div>");
+                    sb.Append("  </div>");
+                    sb.Append("   <div class='row'>");
+                    sb.Append(" <div class='col-md-8' style='margin-top:20px'>");
+                    sb.Append("  <strong>Option 4:</strong> &nbsp; &nbsp;");
+                    sb.Append("" + q.Option4 + "");
+                    sb.Append("  </div>");
+                    sb.Append("  </div>");
+                    sb.Append("  <div class='row'>");
+                    sb.Append("  <div class='col-md-8' style='margin-top:20px'>");
+                    sb.Append("   <strong>Correct Answer:</strong> &nbsp;&nbsp;");
+                    sb.Append("" + q.CorrectAnswer + "");
+                    sb.Append("<br />");
+                    sb.Append("   </div>");
+                    sb.Append(" </div>");
+                }
+            }
+
+            sb.Append("<div></div><div></div>");
+            sb.Append("<br />");
+            sb.Append("<br />");
+            sb.Append("<table border='1' cellpadding='0' cellspacing='0' width='100%'><tr><td>&nbsp;</td></tr></table>");
+            sb.Append("<h3><strong>Practical Question Set</strong></h3>");
+            sb.Append("<br />");
+            sb.Append("<table border='1' cellpadding='0' cellspacing='0' width='100%'><tr><td>&nbsp;</td></tr></table>");
+            sb.Append("<br />");
+
+            QuesId = 0;
+            foreach (var q in Que)
+            {
+                if (q.QuestionType == 2)
+                {
+                    QuesId += 1;
+                    sb.Append("<div class='row'>");
+                    sb.Append("<div class='col-md-9' style='margin-top:30px'>");
+                    sb.Append("<strong>Question " + QuesId + ":</strong>&nbsp;");
+                    sb.Append("" + q.QuestionDescription + "");
+                    sb.Append("</div>");
+                    sb.Append("</div>");
+                    sb.Append("<div class='row'>");
+                    sb.Append("<div class='col-md-9' style='margin-top:30px'>");
+                    sb.Append("<strong>Answer:</strong> &nbsp;&nbsp;&nbsp;&nbsp;");
+                    sb.Append("" + HttpUtility.HtmlDecode(q.Answer) + "");
+                    sb.Append("<br />");
+                    sb.Append("<br />");
+                    sb.Append("</div>");
+                    sb.Append("</div>");
+                }
+            }
+            sb.Append("<br />");
+            sb.Append("<br />");
+            sb.Append("<div style='text-align:center'>***********************************************End***********************************************</div>");
+
+            StringReader sr = new StringReader(sb.ToString());
+            filename = userDetails.FirstName + "_" + userDetails.FirstName + "_" + userDetails.UserId + "_" + DateTime.Now.ToString("yyyyMMddHHmmss") + ".pdf";
+            Document pdfDoc = new Document(PageSize.A4, 10f, 10f, 10f, 0f);
+            HTMLWorker htmlparser = new HTMLWorker(pdfDoc);
+            MemoryStream memoryStream = new MemoryStream();
+            PdfWriter writer = PdfWriter.GetInstance(pdfDoc, memoryStream);
+            pdfDoc.Open();
+            htmlparser.Parse(sr);
+            pdfDoc.Close();
+            return memoryStream.ToArray();
+        }
+
+        #endregion
 
         public ActionResult SubmittedTest(int canditateId)
         {
@@ -711,6 +850,7 @@ namespace Silicus.Ensure.Web.Controllers
             return RedirectToAction("Candidates");
         }
 
+        # region Mail Send
         public ActionResult SendMail(int? id)
         {
             int UserId = 0;
@@ -729,19 +869,11 @@ namespace Silicus.Ensure.Web.Controllers
                                   select question).ToList();
 
             Que = Que.OrderBy(x => x.Id).ToList();
-            //    return View(Que);
-
-
-            //List<Question> Que = _questionService.GetQuestion().ToList();
-            //User user = new User();
-            //Que = Que.OrderBy(x => x.Id).ToList();
 
             if (ModelState.IsValid)
             {
                 try
                 {
-                    //user.FirstName = "Nishant";
-                    //user.LastName = "Lohakare";
                     var body = "<p>Dear Admin,</p><p>The Online Test has been submitted for <strong>{0} {1}</strong> on " + DateTime.Now + ".</p> Please review, evatuate and add your valuable feedback of the Test in order to conduct first round of interview.<br /><p>Regards,</p><p>Ensure, IT Support</p><p>This is an auto-generated mail sent by Ensure. Please do not reply to this email.</p>";
                     var message = new MailMessage();
                     message.To.Add(new MailAddress("Nishant.Lohakare@silicus.com"));
@@ -749,83 +881,23 @@ namespace Silicus.Ensure.Web.Controllers
                     message.Subject = "Test Submitted for " + userDetails.FirstName + " " + userDetails.LastName;
                     message.Body = string.Format(body, userDetails.FirstName, userDetails.LastName);
 
-                    string fileName = userDetails.FirstName + "_" + userDetails.FirstName + "_" + userDetails.UserId + "_" + DateTime.Now.ToString("yyyyMMddHHmmss");
+                    string filename = "";
+                    byte[] byteInfo = generatePDF(id, out filename);
+                    MemoryStream ms = new MemoryStream(byteInfo);
+                    FileStream file = new FileStream(Server.MapPath("~\\Attachment") + "\\" + filename, FileMode.Create, FileAccess.Write);
+                    ms.WriteTo(file);
+                    file.Close();
+                    ms.Close();
 
-                    using (System.IO.FileStream fs = new FileStream(Server.MapPath("~\\Attachment") + "\\" + fileName + ".pdf", FileMode.Create))
+                    Attachment attachment = new Attachment(Server.MapPath("~\\Attachment") + "\\" + filename);
+                    message.Attachments.Add(attachment);
+                    message.IsBodyHtml = true;
+
+                    using (var smtp = new SmtpClient())
                     {
-                        // Create an instance of the document class which represents the PDF document itself.
-                        Document document = new Document(PageSize.A4, 25, 25, 30, 30);
-                        // Create an instance to the PDF file by creating an instance of the PDF 
-                        // Writer class using the document and the filestrem in the constructor.
-                        PdfWriter writer = PdfWriter.GetInstance(document, fs);
-                        document.Open();
-                        Font Verdana = FontFactory.GetFont("Verdana", 10F, Font.NORMAL, Color.BLACK);
-                        document.Add(new Paragraph("Question Set for " + userDetails.FirstName + " " + userDetails.LastName));
-
-                        PdfPTable table1; 
-                        
-                        
-                        PdfPTable table2; 
-                        
-                        PdfPCell cell;
-                        PdfPCell cell2;
-
-                        document.Add(new Paragraph("Objective Question Set"));
-                        foreach (var i in Que)
-                        {                          
-                            if (i.QuestionType == 1)
-                            {
-                                table1 = new PdfPTable(2);
-                                table1.SpacingBefore = 20;
-                                cell = new PdfPCell(new Phrase(i.QuestionDescription));
-                                cell.Rowspan = 4;
-                                table1.AddCell(cell);
-                                table1.AddCell(i.Option1);
-                                table1.AddCell(i.Option2);
-                                table1.AddCell(i.Option3);
-                                table1.AddCell(i.Option4);
-                                cell2 = new PdfPCell(new Phrase("Correct Answer"));
-                                table1.AddCell(cell2);
-                                table1.AddCell(i.CorrectAnswer);
-                                document.Add(table1);
-                                
-                            }
-                            
-                        }
-
-                        document.Add(new Paragraph("Practical Question Set"));
-                        foreach (var i in Que)
-                        {
-                            if (i.QuestionType == 2)
-                            {
-                                table2 = new PdfPTable(2);
-                                table2.SpacingBefore = 20;
-                                cell = new PdfPCell(new Phrase(i.QuestionDescription));
-                                cell.Rowspan = 1;
-                                table2.AddCell(cell);                                
-                                table2.AddCell(i.Answer);                                
-
-                                document.Add(table2);
-                            }
-                        }
-                        // Close the document
-                        document.Close();
-                        // Close the writer instance
-                        writer.Close();
-                        // Always close open filehandles explicity
-                        fs.Close();
-
-                        Attachment attachment = new Attachment(Server.MapPath("~\\Attachment") + "\\" + fileName + ".pdf");
-                        message.Attachments.Add(attachment);
-                        message.IsBodyHtml = true;
-
-                        using (var smtp = new SmtpClient())
-                        {
-                            smtp.Send(message);
-                            TempData["Success"] = "Mail Send Successfully";
-                        }
+                        smtp.Send(message);
+                        TempData["Success"] = "Mail Sent Successfully";
                     }
-
                 }
                 catch (Exception ex)
                 {
@@ -834,5 +906,7 @@ namespace Silicus.Ensure.Web.Controllers
             }
             return RedirectToAction("ViewQuestion", "Admin", new { id = UserId });
         }
+
+        #endregion 
     }
 }

@@ -4,11 +4,13 @@
 @*<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>*@
 <script src="~/js/star-rating.js"></script>  
 
-<tr>
-    <th> <span style="text-align:center">Criteria</span></th>
-    <th style="text-align:center">Rating</th>
-    <th style="text-align:center">Manager Comment</th>
-</tr>
+<thead>
+    <tr>
+        <th><div style="text-align:center; font-weight:bold;color:#0067AA" class="col-md-4">Criteria</div></th>
+        <th><div style="text-align:center; font-weight:bold;color:#0067AA" class="col-md-2">Rating</div></th>
+        <th><div style="text-align:center; font-weight:bold;color:#0067AA" class="col-md-6">Manager Comment</div></th>
+    </tr>
+</thead>
 @{ int i = 0;}
 @foreach (var criteria in Model)
 {
@@ -19,12 +21,12 @@
             </div>
         </td>
         <td>
-            <div class="col-md-4">
+            <div class="col-md-2">
                 <input id="input-21a" value="0" type="number" data-star-captions="{}" data-default-caption="{rating} Stars" class="rating rating-loading" data-show-clear="false" data-show-caption="false" data-symbol="*" min=0 max=5 step=1 data-size="xs" name="Comments[@i].Rating">
             </div>
         </td>
-        <td class="col-md-4 criteriaComment">
-            <div class="col-md-4 criteriaComment">
+        <td class="col-md-6 criteriaComment">
+            <div class="col-md-6 criteriaComment">
                 <textarea class="form-control" onblur="return hideRemainingCharacterText(@i)"
                           onkeyup="edValueKeyPress(@i)"
                           rows=""

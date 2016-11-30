@@ -5,6 +5,7 @@ using Silicus.FrameWorx.Logger;
 using Silicus.UtilityContainer.Models.DataObjects;
 using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Globalization;
 using System.Linq;
 using System.Web;
@@ -136,9 +137,13 @@ namespace Silicus.Encourage.Services
             var nomination = GetReviewNomination(nominationId);
             string projectName = string.Empty;
             string departmentName = string.Empty;
+
+            var closedProject = ConfigurationManager.AppSettings["ClosedEngagementStage"];
             if (nomination.ProjectID != null)
             {
-                projectName = _commonDataBaseContext.Query<Engagement>().Where(e => e.ID == nomination.ProjectID).FirstOrDefault().Name;
+                var clientId = _commonDataBaseContext.Query<Engagement>().Where(engagement => engagement.PrimaryProjectManagerID == nomination.ManagerId && engagement.ID == nomination.ProjectID).FirstOrDefault().ClientID;
+                // projectName = _commonDataBaseContext.Query<Engagement>().Where(e => e.ID == nomination.ProjectID).FirstOrDefault().Name;
+                projectName = _commonDataBaseContext.Query<Client>().Where(client => client.ID == clientId).FirstOrDefault().Code;
             }
 
             if (nomination.DepartmentId != null)

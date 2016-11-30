@@ -1,9 +1,11 @@
 ﻿using Microsoft.AspNet.Identity.Owin;
 using Silicus.Ensure.Entities.Identity;
+using Silicus.Ensure.Models.Constants;
 using Silicus.Ensure.Models.DataObjects;
 using Silicus.Ensure.Services.Interfaces;
 using Silicus.Ensure.Web.Mappings;
 using Silicus.Ensure.Web.Models;
+using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
@@ -72,8 +74,20 @@ namespace Silicus.Ensure.Web.Controllers
 
             if (UserId != 0)
             {
-                var user = _userService.GetUserById(UserId);
+                var userList = _userService.GetUserDetails();
+                var user = userList.FirstOrDefault(x => x.UserId == UserId);
                 currUser = _mappingService.Map<User, UserViewModel>(user);
+
+                if (userList.Any(x => x.PanelId != null && x.PanelId == user.UserId))
+                {
+                    currUser.CandidateList = new List<int?>();
+                    foreach (var itemUser in userList.Where(x => x.PanelId == user.UserId).ToList())
+                    {
+
+                        currUser.CandidateList.Add(itemUser.UserId);
+                    }
+                }
+
             }
             else if (TempData["UserViewModel"] != null)
             {
@@ -82,6 +96,13 @@ namespace Silicus.Ensure.Web.Controllers
 
             var positionDetails = _positionService.GetPositionDetails().OrderBy(model => model.PositionName);
             currUser.PositionList = positionDetails.ToList();
+            ViewBag.candidateList = (from item in _userService.GetUserDetails().Where(x => x.Role.ToLower() == RoleName.Candidate.ToString().ToLower())
+                                     .OrderBy(m => m.FirstName + m.LastName).ToList()
+                                     select new SelectListItem()
+                                     {
+                                         Text = item.FirstName + " " + item.LastName,
+                                         Value = item.UserId.ToString()
+                                     }).ToList();
             return View(currUser);
         }
     }
