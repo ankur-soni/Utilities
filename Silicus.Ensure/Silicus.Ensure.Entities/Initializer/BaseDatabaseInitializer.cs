@@ -124,6 +124,7 @@ namespace Silicus.Ensure.Entities.Initializer
                 IsDeleted = false,
                 PrimaryTags = "1,2",
                 Weights = "70,30",
+                Proficiency = "1,2",
                 Status=1,
 
             });
@@ -137,6 +138,7 @@ namespace Silicus.Ensure.Entities.Initializer
                 IsDeleted = false,
                 PrimaryTags = "1,2",
                 Weights = "30,70",
+                Proficiency = "1,2",
                 Status = 1,
             });
 

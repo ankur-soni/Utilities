@@ -13,6 +13,7 @@
     {
         @Html.HiddenFor(model => model.TestSuiteId)
         @Html.HiddenFor(model => model.IsCopy)
+        @Html.HiddenFor(model => model.Status)
         @Html.HiddenFor(model => model.PrimaryTagNames)
         <div class="fluid mt20">
             <div class="row">
@@ -96,8 +97,9 @@
                                         <td id="tag_title_row @Convert.ToString(i)">Skill Tag @Convert.ToString(i + 1)<b style="color:Red;">*</b>:</td>
                                         <td id="tag_name_row @Convert.ToString(i)"><input type="text" class="autocomplete" name="tagName" id="name_text @Convert.ToString(i)" value="@Model.Tags[i].TagName"></td>
                                         <td id="weight_title_row @Convert.ToString(i)">Weightage % @Convert.ToString(i + 1)<b style="color:Red;">*</b>:</td>
-                                        <td id="weight_name_row @Convert.ToString(i)"><input type="text" name="WeightName" id="name_text @Convert.ToString(i)" value="@Model.Tags[i].Weightage"></td>
-                                        <td id="efficiency_name_row @Convert.ToString(i)"><input name="efficiency" id="efficiency_name @Convert.ToString(i)" class="efficiency" style="width:100px;"></td>
+                                        <td id="weight_name_row @Convert.ToString(i)"><input type="text" name="WeightName" id="name_text @Convert.ToString(i)" value="@Model.Tags[i].Weightage" class="key-numeric" maxlength="3"></td>
+                                        <td id="efficiency_title_row @Convert.ToString(i)">Efficiency @Convert.ToString(i + 1)<b style="color:Red;">*</b>:</td>
+                                        <td id="efficiency_name_row @Convert.ToString(i)"><input name="efficiency" id="efficiency_name @Convert.ToString(i)" value="@Model.Tags[i].Proficiency" class="efficiency" style="width:130px;"></td>
                                         <td><input type="button" onclick="delete_row(@Convert.ToString(i));" style="width:60px;" value="Delete"></td>
                                     </tr>
                                 }
@@ -107,9 +109,10 @@
                                         <td id="tag_title_row @Convert.ToString(i)">Skill Tag @Convert.ToString(i + 1)<b style="color:Red;">*</b>:</td>
                                         <td id="tag_name_row @Convert.ToString(i)"><input type="text" class="autocomplete" name="tagName" id="tag_name" value="@Model.Tags[i].TagName"></td>
                                         <td id="weight_title_row @Convert.ToString(i)">Weightage % @Convert.ToString(i + 1)<b style="color:Red;">*</b>:</td>
-                                        <td id="weight_name_row @Convert.ToString(i)"><input type="text" name="WeightName" id="weight_name" value="@Model.Tags[i].Weightage"></td>
-                                        <td id="efficiency_name_row @Convert.ToString(i)"><input name="efficiency" id="efficiency_name" class="efficiency" style="width:100px;"></td>
-                                        <td><input type="button" onclick="add_row();" style="width:60px;" value="Add"></td>
+                                        <td id="weight_name_row @Convert.ToString(i)"><input type="text" name="WeightName" id="weight_name" value="@Model.Tags[i].Weightage" class="key-numeric" maxlength="3"></td>
+                                        <td id="efficiency_title_row @Convert.ToString(i)">Efficiency @Convert.ToString(i + 1)<b style="color:Red;">*</b>:</td>
+                                        <td id="efficiency_name_row @Convert.ToString(i)"><input name="efficiency" id="efficiency_name" value="@Model.Tags[i].Proficiency" class="efficiency" style="width:130px;"></td>
+                                        <td><input type="button" onclick="delete_row(@Convert.ToString(i));" style="width:60px;" value="Delete"> <input type="button" onclick="add_row();" style="width:60px;" value="Add"></td>
                                     </tr>
                                 }
                             }
@@ -194,14 +197,8 @@
             success: function (data) {
                 $.each(data, function (i, tag) {
                     TagList.push(tag["TagName"]);
-                });
-                $(".autocomplete").kendoAutoComplete({
-                    dataSource: TagList,
-                    filter: "contains",
-                    minLength: 2,
-                    placeholder: "Select Tag",
-                    seperator: ","
-                });
+                });  
+                loadCommon();             
             },
             error: function (errorMsg) {
                 alert(errorMsg);
@@ -217,7 +214,10 @@
                 var Duration = $("#Duration").val();
                 var Position = $("#Position").val();
                 var Competency = $("#Competency").val();
-                $('#tag_table tr td input[type=text]').each(function () {
+                var Status = $("#Status").val();
+                var Weights ='';
+                var Proficiency='';
+                $('#tag_table tr td input[type=text][name=tagName]').each(function () {
                     if (tags == '')
                     {
                         tags += $(this).val();
@@ -225,6 +225,28 @@
                     else
                     {
                         tags += "," + $(this).val();
+                    }
+                })
+
+                $('#tag_table tr td input[type=text][name=WeightName]').each(function () {
+                    if(Weights == '')
+                    {
+                        Weights += $(this).val();
+                    }
+                    else
+                    {
+                        Weights += "," + $(this).val();
+                    }
+                })
+
+                $('#tag_table tr td input[name=efficiency]').each(function () {
+                    if(Proficiency == '')
+                    {
+                        Proficiency += $(this).val();
+                    }
+                    else
+                    {
+                        Proficiency += "," + $(this).val();
                     }
                 })
 
@@ -239,7 +261,10 @@
                         Duration: Duration,
                         Position: Position,
                         Competency: Competency,
-                        PrimaryTagNames: tags
+                        PrimaryTagNames: tags,
+                        Weights: Weights,
+                        Proficiency: Proficiency,
+                        Status: Status
                     },
                     success: function (response) {
                         if (response != null && response.status == "success") {
@@ -258,70 +283,33 @@
                         }
                     },
                     error: function (response) {
-                        alert("error!");  //
+                        alert("error!");
                     }
                 });
             }
-            else
-            {
-                e.preventDefault();
-            }
-        });
+        });        
     }
     ));
 
     $(document).ready(function () {
         if (@Model.TestSuiteId== 0) {
-            $('#tag_table').append('<tr><td id="tag_title_row">Skill Tag 1<b style="color:Red;">*</b>:</td><td id="tag_name_row"><input type="text" name="tagName" id="tag_name" class="autocomplete"></td><td id="weight_title_row">Weightage % 1<b style="color:Red;">*</b>:</td><td id="weight_name_row"><input type="text" name="WeightName" id="weight_name"></td><td id="efficiency_name_row"><input id="efficiency_name" name="efficiency" id="efficiency_name" class="efficiency" style="width:100px;"></td><td><input type="button" onclick="add_row();" style="width:60px;" value="Add"><span class="k-icon k-add></span></td></tr>')
-            $(".efficiency").kendoDropDownList({
-                dataTextField: "name",
-                dataValueField: "id",
-                dataSource: [
-                    { name: '@Convert.ToString(Competency.Beginner)', id: '@Convert.ToInt32(Competency.Beginner)' },
-                    { name: '@Convert.ToString(Competency.Intermediate)', id: '@Convert.ToInt32(Competency.Intermediate)' },
-                    { name: '@Convert.ToString(Competency.Expert)', id: '@Convert.ToInt32(Competency.Intermediate)' }
-                ]
-            });
-        }
+            $('#tag_table').append('<tr><td id="tag_title_row">Skill Tag 1<b style="color:Red;">*</b>:</td><td id="tag_name_row"><input type="text" name="tagName" id="tag_name" class="autocomplete"></td><td id="weight_title_row">Weightage % 1<b style="color:Red;">*</b>:</td><td id="weight_name_row"><input type="text" name="WeightName" id="weight_name" class="key-numeric" maxlength="3"></td><td id="efficiency_title_row">Efficiency 1<b style="color:Red;">*</b>:</td><td id="efficiency_name_row"><input id="efficiency_name" name="efficiency" id="efficiency_name" class="efficiency" style="width:130px;"></td><td><input type="button" onclick="add_row();" style="width:60px;" value="Add"></td></tr>')
+        }        
     });
 
     function add_row() {
-        var tag_name = document.getElementById("tag_name").value;
-        var weight_name = document.getElementById("weight_name").value;
-        var weight_name = document.getElementById("weight_name").value;
-        var efficiency_name = document.getElementById("efficiency_name").value;
-
-        var table = document.getElementById("tag_table");
-        var table_len = (table.rows.length) - 1;
-        var rowindex = table.rows.length;
-
-        var row = table.insertRow(table_len).outerHTML = "<tr id='row" + table_len + "'><td id='tag_title_row" + table_len + "'>" + "Skill Tag " + rowindex + "<b style='color:Red;'>*</b>:" + "</td><td id='tag_name_row" + table_len + "'>" + "<input type='text' class='autocomplete' name='tagName' id='name_text" + table_len + "' value='" + tag_name + "'>" + "</td><td id='weight_title_row" + table_len + "'>" + "Weightage % " + rowindex + "<b style='color:Red;'>*</b>:" + "</td><td id='weight_name_row" + table_len + "'>" + "<input type='text' name='WeightName'  id='name_text" + table_len + "' value='" + weight_name + "'>" + "</td><td id='efficiency_name_row" + table_len + "'><input id='name_text" + table_len + "' id='efficiency_name' value='" + efficiency_name + "' name='efficiency' class='efficiency' style='width:100px;'></td><td><input type='button' value='Delete' style='width:60px;' onclick='delete_row(" + table_len + ")'></td></tr>";
-        $("#tag_name").val('');
-        $("#weight_name").val('');
-        $("#efficiency_name").val('');
-        $('#tag_title_row').html("Skill Tag " + (parseInt(rowindex) + parseInt('1')) + "<b style='color:Red;'>*</b>:");
-        $("#weight_title_row").html("Weightage % " + (parseInt(rowindex) + parseInt('1')) + "<b style='color:Red;'>*</b>:")
-
-        //var autocomplete = $(".autocomplete").data("kendoAutoComplete");
-        //autocomplete.destroy();
-
-        $(".autocomplete").kendoAutoComplete({
-            dataSource: TagList,
-            filter: "contains",
-            minLength: 2,
-            placeholder: "Select Tag",
-            seperator: ","
-        });
-
-        $(".efficiency").kendoDropDownList({
-            dataTextField: "name",
-            dataValueField: "id",
-            dataSource: [
-                { name: '@Convert.ToString(Competency.Beginner)', id: '@Convert.ToInt32(Competency.Beginner)' },
-                { name: '@Convert.ToString(Competency.Intermediate)', id: '@Convert.ToInt32(Competency.Intermediate)' },
-                { name: '@Convert.ToString(Competency.Expert)', id: '@Convert.ToInt32(Competency.Intermediate)' }
-            ]
-        });
+        var rowNum=0;
+        var tableContent='';
+        $('#tag_table tr').each(function () {
+            var tagName = $(this).find("td input[type=text][name=tagName]").val();
+            var weightName = $(this).find("td input[type=text][name=WeightName]").val();
+            var efficiencyValue = $(this).find("td input[name=efficiency]").val();
+            tableContent += "<tr id='row" + rowNum + "'><td id='tag_title_row" + rowNum + "'>" + "Skill Tag " + (parseInt(rowNum)+1) + "<b style='color:Red;'>*</b>:" + "</td><td id='tag_name_row" + rowNum + "'>" + "<input type='text' class='autocomplete' name='tagName' id='name_text" + rowNum + "' value='" + tagName + "'>" + "</td><td id='weight_title_row" + rowNum + "'>" + "Weightage % " + (parseInt(rowNum)+1) + "<b style='color:Red;'>*</b>:" + "</td><td id='weight_name_row" + rowNum + "'>" + "<input type='text' class='key-numeric' maxlength='3' name='WeightName'  id='name_text" + rowNum + "' value='" + weightName + "'>" + "</td><td id='efficiency_title_row" + rowNum + "'>" + "Efficiency " + (parseInt(rowNum)+1) + "<b style='color:Red;'>*</b>:" + "</td><td id='efficiency_name_row" + rowNum + "'><input id='name_text" + rowNum + "' id='efficiency_name' value='" + efficiencyValue + "' name='efficiency' class='efficiency' style='width:130px;'></td><td><input type='button' value='Delete' style='width:60px;' onclick='delete_row(" + rowNum + ")'></td></tr>";
+            rowNum=rowNum + 1;
+        })
+        tableContent += "<tr id='row" + rowNum + "'><td id='tag_title_row" + rowNum + "'>" + "Skill Tag " + (parseInt(rowNum)+1) + "<b style='color:Red;'>*</b>:" + "</td><td id='tag_name_row" + rowNum + "'>" + "<input type='text' class='autocomplete' name='tagName' id='name_text" + rowNum + "' value='" + '' + "'>" + "</td><td id='weight_title_row" + rowNum + "'>" + "Weightage % " + (parseInt(rowNum)+1) + "<b style='color:Red;'>*</b>:" + "</td><td id='weight_name_row" + rowNum + "'>" + "<input type='text' class='key-numeric' maxlength='3' name='WeightName'  id='name_text" + rowNum + "' value='" + '' + "'>" + "</td><td id='efficiency_title_row" + rowNum + "'>" + "Efficiency " + (parseInt(rowNum)+1) + "<b style='color:Red;'>*</b>:" + "</td><td id='efficiency_name_row" + rowNum + "'><input id='name_text" + rowNum + "' id='efficiency_name' value='" + '' + "' name='efficiency' class='efficiency' style='width:130px;'></td><td><input type='button' onclick='delete_row("+rowNum+");' style='width:60px;' value='Delete'> <input type='button' onclick='add_row();' style='width:60px;' value='Add'></td></tr>";
+        $("#tag_table > tbody").html(tableContent)
+        loadCommon();
     }
 
     function delete_row(no) {
@@ -332,21 +320,36 @@
         $("#btnYesConfirmYesNo").off('click').click(function () {
             $confirm.modal("hide");
             document.getElementById("row" + no + "").outerHTML = "";
+            var table_len = (document.getElementById("tag_table").rows.length) - 1;
+            var rowNum=0;
+            var tableContent='';
+            $('#tag_table tr').each(function () {
+                var tagName = $(this).find("td input[type=text][name=tagName]").val();
+                var weightName = $(this).find("td input[type=text][name=WeightName]").val();
+                var efficiencyValue = $(this).find("td input[name=efficiency]").val();
+                if(rowNum == table_len)
+                {
+                    if(table_len != 0)
+                    {
+                        tableContent += "<tr id='row" + rowNum + "'><td id='tag_title_row" + rowNum + "'>" + "Skill Tag " + (parseInt(rowNum)+1) + "<b style='color:Red;'>*</b>:" + "</td><td id='tag_name_row" + rowNum + "'>" + "<input type='text' class='autocomplete' name='tagName' id='name_text" + rowNum + "' value='" + tagName + "'>" + "</td><td id='weight_title_row" + rowNum + "'>" + "Weightage % " + (parseInt(rowNum)+1) + "<b style='color:Red;'>*</b>:" + "</td><td id='weight_name_row" + rowNum + "'>" + "<input type='text' class='key-numeric' maxlength='3' name='WeightName'  id='name_text" + rowNum + "' value='" + weightName + "'>" + "</td><td id='efficiency_title_row" + rowNum + "'>" + "Efficiency " + (parseInt(rowNum)+1) + "<b style='color:Red;'>*</b>:" + "</td><td id='efficiency_name_row" + rowNum + "'><input id='name_text" + rowNum + "' id='efficiency_name' value='" + efficiencyValue + "' name='efficiency' class='efficiency' style='width:130px;'></td><td><input type='button' value='Delete' style='width:60px;' onclick='delete_row(" + rowNum + ")'> <input type='button' onclick='add_row();' style='width:60px;' value='Add'></td></tr>";
+                    }
+                    else
+                    {
+                        tableContent += "<tr id='row" + rowNum + "'><td id='tag_title_row" + rowNum + "'>" + "Skill Tag " + (parseInt(rowNum)+1) + "<b style='color:Red;'>*</b>:" + "</td><td id='tag_name_row" + rowNum + "'>" + "<input type='text' class='autocomplete' name='tagName' id='name_text" + rowNum + "' value='" + tagName + "'>" + "</td><td id='weight_title_row" + rowNum + "'>" + "Weightage % " + (parseInt(rowNum)+1) + "<b style='color:Red;'>*</b>:" + "</td><td id='weight_name_row" + rowNum + "'>" + "<input type='text' class='key-numeric' maxlength='3' name='WeightName'  id='name_text" + rowNum + "' value='" + weightName + "'>" + "</td><td id='efficiency_title_row" + rowNum + "'>" + "Efficiency " + (parseInt(rowNum)+1) + "<b style='color:Red;'>*</b>:" + "</td><td id='efficiency_name_row" + rowNum + "'><input id='name_text" + rowNum + "' id='efficiency_name' value='" + efficiencyValue + "' name='efficiency' class='efficiency' style='width:130px;'></td><td><input type='button' onclick='add_row();' style='width:60px;' value='Add'></td></tr>";
+                    }                    
+                }
+                else
+                {
+                    tableContent += "<tr id='row" + rowNum + "'><td id='tag_title_row" + rowNum + "'>" + "Skill Tag " + (parseInt(rowNum)+1) + "<b style='color:Red;'>*</b>:" + "</td><td id='tag_name_row" + rowNum + "'>" + "<input type='text' class='autocomplete' name='tagName' id='name_text" + rowNum + "' value='" + tagName + "'>" + "</td><td id='weight_title_row" + rowNum + "'>" + "Weightage % " + (parseInt(rowNum)+1) + "<b style='color:Red;'>*</b>:" + "</td><td id='weight_name_row" + rowNum + "'>" + "<input type='text' class='key-numeric' maxlength='3' name='WeightName'  id='name_text" + rowNum + "' value='" + weightName + "'>" + "</td><td id='efficiency_title_row" + rowNum + "'>" + "Efficiency " + (parseInt(rowNum)+1) + "<b style='color:Red;'>*</b>:" + "</td><td id='efficiency_name_row" + rowNum + "'><input id='name_text" + rowNum + "' id='efficiency_name' value='" + efficiencyValue + "' name='efficiency' class='efficiency' style='width:130px;'></td><td><input type='button' value='Delete' style='width:60px;' onclick='delete_row(" + rowNum + ")'></td></tr>";
+                }
+                rowNum=rowNum + 1;
+            })
+            $("#tag_table > tbody").html(tableContent)
+            loadCommon();
         });
         $("#btnNoConfirmYesNo").off('click').click(function () {
             $confirm.modal("hide");
-        });
-
-        var autocomplete = $(".autocomplete").data("kendoAutoComplete");
-        autocomplete.destroy();
-
-        $(".autocomplete").kendoAutoComplete({
-            dataSource: TagList,
-            filter: "contains",
-            minLength: 2,
-            placeholder: "Select Tag",
-            seperator: ","
-        });
+        });        
     }
 
     //Table JS End
@@ -366,7 +369,9 @@
     function validateTestSuite() {
         var isError="0";
         var totalWeight=0;
+
         $('#tag_table').find('tr').each(function () {
+
             if($(this).find('td input[type=text][name=tagName]').val()=='')
             {
                 isError = "tagBlank";
@@ -375,6 +380,11 @@
             if($(this).find('td input[type=text][name=WeightName]').val()=='')
             {
                 isError = "weightBlank";
+                return false;
+            }
+            if($(this).find('td input[name=efficiency]').val()=='0')
+            {
+                isError = "efficiencyBlank";
                 return false;
             }
         });
@@ -390,12 +400,12 @@
         }
         else if ($("#Position").val().trim().length == 0) {
             $("#Position").focus();
-            ShowMessage("Position cann't be blank.", 0);
+            ShowMessage("Role cann't be blank.", 0);
             return false;
         }
         else if ($("#Competency").val().trim().length == 0) {
             $("#Competency").focus();
-            ShowMessage("Competency cann't be blank.", 0);
+            ShowMessage("Overall Proficiency cann't be blank.", 0);
             return false;
         }
         else if ($("#Competency").val().trim().length == 0) {
@@ -413,12 +423,43 @@
             ShowMessage("Test suite weighatage cann't be blank.", 0);
             return false;
         }
+        else if(isError=="efficiencyBlank")
+        {
+            ShowMessage("Please select tag's efficiency.", 0);
+            return false;
+        }
         else if(totalWeight != '100')
         {
             ShowMessage("Test suite weighatage should be 100 percent.", 0);
             return false;
         }
         return true;
+    }
+
+    function loadCommon()
+    {
+        $(".autocomplete").kendoAutoComplete({
+            dataSource: TagList,
+            filter: "contains",
+            minLength: 2,
+            placeholder: "Select Tag",
+            seperator: ","
+        });
+
+        $(".efficiency").kendoDropDownList({
+            dataTextField: "name",
+            dataValueField: "id",
+            dataSource: [
+                { name: '--Select--', id: '0' },
+                { name: '@Convert.ToString(Competency.Beginner)', id: '@Convert.ToInt32(Competency.Beginner)' },
+                { name: '@Convert.ToString(Competency.Intermediate)', id: '@Convert.ToInt32(Competency.Intermediate)' },
+                { name: '@Convert.ToString(Competency.Expert)', id: '@Convert.ToInt32(Competency.Expert)' }
+            ]
+        });
+        $('.key-numeric').keypress(function(e) {
+            var verified = (e.which == 8 || e.which == undefined || e.which == 0) ? null : String.fromCharCode(e.which).match(/[^0-9]/);
+            if (verified) {e.preventDefault();}
+        });
     }
 </script>
 <style>
