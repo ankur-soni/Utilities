@@ -41,7 +41,7 @@ namespace Silicus.Ensure.Entities.Initializer
                 Address = "Test",
                 Email = "testuser@test.com",
                 IdentityUserId = new System.Guid("88B34980-EDD3-420C-8387-621B629A4E9B"),
-                Role = "CANDIDATE",
+                Role = "USER",
                 IsActive = true
 
             });
