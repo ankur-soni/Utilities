@@ -21,7 +21,7 @@
                   columns.Bound(q => q.QuestionDescription).Encoded(false).Width(200);
                   columns.Bound(q => q.QuestionType).Width(100);
                   columns.Bound(q => q.Tag).Width(150).Title("Tags");
-                  columns.Bound(q => q.Competency).Width(100);
+                  columns.Bound(q => q.ProficiencyLevel).Width(100);
                   columns.Bound(q => q.Id).ClientTemplate(@"
                     <a href='/QuestionBank/EditQuestion?QuestionId=#=Id#' class='k-button k-button-icontext k-grid-edit'><span class='k-icon k-edit'></span>Edit</a>
                     <button onclick='DeleteQuestion(#=Id#,this)' class='k-button k-button-icontext k-grid-delete'><span class='k-icon k-delete'></span>Delete</button>").Title("Actions").Width(150);

@@ -87,19 +87,26 @@ namespace Silicus.Ensure.Web.Controllers
 
         public ActionResult OnSubmitTest(int testSuiteId, int userTestSuiteId, int? userTestDetailId, int userId, string answer)
         {
+            // Update last question answer of test.
             answer = HttpUtility.HtmlDecode(answer);
             UpdateAnswer(answer, userTestDetailId);
-            List<User> userAdmin = _userService.GetUserByRole("ADMIN").ToList();
 
+            // Update candidate status as Test "Submitted".
             User candidate = _userService.GetUserById(userId);
             candidate.TestStatus = TestStatus.Submitted.ToString();
             _userService.Update(candidate);
 
+            // Update total time utilization for test back to UserTestSuite.
             TestSuite suite = _testSuiteService.GetTestSuitById(testSuiteId);
             UserTestSuite testSuit = _testSuiteService.GetUserTestSuiteId(userTestSuiteId);
             testSuit.Duration = suite.Duration + (testSuit.ExtraCount * 10);
             _testSuiteService.UpdateUserTestSuite(testSuit);
 
+            // Calculate marks on test submit.
+            CalculateMarks(userTestSuiteId);
+
+            // Get All admin to send mail.
+            List<User> userAdmin = _userService.GetUserByRole("ADMIN").ToList();
             if (userAdmin != null)
                 SendSubmittedTestMail(userAdmin, candidate.FirstName + " " + candidate.LastName);
 
@@ -149,10 +156,15 @@ namespace Silicus.Ensure.Web.Controllers
                 model.QuestionType = obj.GetType().GetProperty("QuestionType").GetValue(obj);
                 model.AnswerType = obj.GetType().GetProperty("AnswerType").GetValue(obj);
                 model.QuestionDescription = obj.GetType().GetProperty("QuestionDescription").GetValue(obj);
+                model.OptionCount = obj.GetType().GetProperty("OptionCount").GetValue(obj);
                 model.Option1 = obj.GetType().GetProperty("Option1").GetValue(obj);
                 model.Option2 = obj.GetType().GetProperty("Option2").GetValue(obj);
                 model.Option3 = obj.GetType().GetProperty("Option3").GetValue(obj);
                 model.Option4 = obj.GetType().GetProperty("Option4").GetValue(obj);
+                model.Option5 = obj.GetType().GetProperty("Option5").GetValue(obj);
+                model.Option6 = obj.GetType().GetProperty("Option6").GetValue(obj);
+                model.Option7 = obj.GetType().GetProperty("Option7").GetValue(obj);
+                model.Option8 = obj.GetType().GetProperty("Option8").GetValue(obj);
                 model.Marks = obj.GetType().GetProperty("Marks").GetValue(obj);
                 testSuiteQuestionModel.Add(model);
             }
@@ -180,6 +192,24 @@ namespace Silicus.Ensure.Web.Controllers
 
 
                 _emailService.SendEmailAsync(usr.Email, subject, body);
+            }
+        }
+
+        private void CalculateMarks(int userTestSuiteId)
+        {
+            List<UserTestDetails> userTestDetails = _testSuiteService.GetUserTestDetailsListByUserTestSuitId(userTestSuiteId).ToList();
+            foreach (UserTestDetails testDetail in userTestDetails)
+            {
+                Question question = _questionService.GetSingleQuestion(testDetail.QuestionId);
+                if (question.QuestionType == 1)
+                {
+                    if (question.CorrectAnswer.Trim() == testDetail.Answer.Trim())
+                        testDetail.Mark = question.Marks;
+                    else
+                        testDetail.Mark = 0;
+
+                    _testSuiteService.UpdateUserTestDetails(testDetail);
+                }
             }
         }
     }

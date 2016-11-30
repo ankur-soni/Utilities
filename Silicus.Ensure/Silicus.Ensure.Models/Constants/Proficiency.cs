@@ -8,7 +8,7 @@ using System.Web.Mvc;
 
 namespace Silicus.Ensure.Models.Constants
 {
-    public enum Competency
+    public enum Proficiency
     {
         Beginner = 1,
         Intermediate = 2,

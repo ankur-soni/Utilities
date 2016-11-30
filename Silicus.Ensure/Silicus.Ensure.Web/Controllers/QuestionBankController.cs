@@ -25,7 +25,7 @@ namespace Silicus.Ensure.Web.Controllers
 
         public ActionResult AddQuestions(string QuestionId)
         {
-            QuestionModel Que = new QuestionModel { QuestionType = "0", SkillTagsList = Tags() };
+            QuestionModel Que = new QuestionModel { QuestionType = "0", OptionCount = 2, SkillTagsList = Tags() };
             return View(Que);
         }
 
@@ -76,7 +76,7 @@ namespace Silicus.Ensure.Web.Controllers
                 q.QuestionDescription = q.QuestionDescription.Substring(0, Math.Min(q.QuestionDescription.Length, 100));
                 q.QuestionType = GetQuestionType(q.QuestionType);
                 q.Tag = string.Join(" | ", Tags().Where(t => Que.Where(x => x.Id == q.Id).Select(p => p.Tags).FirstOrDefault().ToString().Split(',').Contains(t.TagId.ToString())).Select(l => l.TagName).ToList());
-                q.Competency = GetCompetency(q.Competency);
+                q.ProficiencyLevel = GetCompetency(q.ProficiencyLevel);
             }
             return View(QueModel);
         }

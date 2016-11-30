@@ -51,7 +51,7 @@ namespace Silicus.Ensure.Services
             }
         }
 
-        public IList<string> GenerateQuestionList(string tag, long duration, Competency competency)
+        public IList<string> GenerateQuestionList(string tag, long duration, Proficiency competency)
         {
             throw new NotImplementedException();
         }

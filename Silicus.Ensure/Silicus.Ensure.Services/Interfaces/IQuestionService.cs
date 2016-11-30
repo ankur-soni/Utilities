@@ -20,6 +20,6 @@ namespace Silicus.Ensure.Services.Interfaces
 
         void Delete(int id);
 
-        IList<string> GenerateQuestionList(string tag, long duration, Competency competency);
+        IList<string> GenerateQuestionList(string tag, long duration, Proficiency competency);
     }
 }

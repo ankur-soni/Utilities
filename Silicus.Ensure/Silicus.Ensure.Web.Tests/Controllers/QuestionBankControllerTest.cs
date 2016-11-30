@@ -19,63 +19,63 @@ namespace Silicus.Ensure.Web.Tests.Controllers
             {
                 new Question
                 {
-                  Competency=(int)Competency.Expert,
+                  ProficiencyLevel=(int)Proficiency.Expert,
                   QuestionType=1,
                   Duration=1,
                   Tags="1"
                 },
                 new Question
                 {
-                  Competency=(int)Competency.Expert,
+                  ProficiencyLevel=(int)Proficiency.Expert,
                   QuestionType=1,
                   Duration=2,
                   Tags="2"
                 },
                 new Question
                 {
-                  Competency=(int)Competency.Expert,
+                  ProficiencyLevel=(int)Proficiency.Expert,
                   QuestionType=1,
                   Duration=5,
                   Tags="1"
                 },
                 new Question
                 {
-                  Competency=(int)Competency.Intermediate,
+                  ProficiencyLevel=(int)Proficiency.Intermediate,
                   QuestionType=1,
                   Duration=1,
                   Tags="3"
                 },
                 new Question
                 {
-                  Competency=(int)Competency.Intermediate,
+                  ProficiencyLevel=(int)Proficiency.Intermediate,
                   QuestionType=2,
                   Duration=2,
                   Tags="5"
                 },
                 new Question
                 {
-                  Competency=(int)Competency.Intermediate,
+                  ProficiencyLevel=(int)Proficiency.Intermediate,
                   QuestionType=1,
                   Duration=10,
                   Tags="2"
                 },
                 new Question
                 {
-                  Competency=(int)Competency.Beginner,
+                  ProficiencyLevel=(int)Proficiency.Beginner,
                   QuestionType=2,
                   Duration=5,
                   Tags="1"
                 },
                 new Question
                 {
-                  Competency=(int)Competency.Beginner,
+                  ProficiencyLevel=(int)Proficiency.Beginner,
                   QuestionType=1,
                   Duration=3,
                   Tags="2"
                 }
             };
         string tag = "1";
-        int competency = (int)Competency.Expert;
+        int competency = (int)Proficiency.Expert;
         int minutes = 10;
 
         [TestMethod]
@@ -96,7 +96,7 @@ namespace Silicus.Ensure.Web.Tests.Controllers
         [TestMethod]
         public void QuestionBank_ExistsQuesionByTagAndCompetency()
         {
-            var questions = questinBank.FindAll(x => x.Tags == tag && x.Competency == competency);
+            var questions = questinBank.FindAll(x => x.Tags == tag && x.ProficiencyLevel == competency);
             //Assert
             Assert.AreNotEqual(0, questions.Count, "Questions are not available for selected tag and competency.");
         }
@@ -122,7 +122,7 @@ namespace Silicus.Ensure.Web.Tests.Controllers
         [TestMethod]
         public void QuestionBank_AboveOrEqualDuration_ByTagAndCompetency()
         {
-            var totalDuration = questinBank.Where(x => x.Tags == tag && x.Competency == competency).Select(x => x.Duration).Sum();
+            var totalDuration = questinBank.Where(x => x.Tags == tag && x.ProficiencyLevel == competency).Select(x => x.Duration).Sum();
 
             //Assert
             Assert.IsTrue(totalDuration >= minutes, "Questions are not availabe to above duration.");
@@ -131,7 +131,7 @@ namespace Silicus.Ensure.Web.Tests.Controllers
         [TestMethod]
         public void QuestionBank_BelowOrEqualDuration_ByTagAndCompetency()
         {
-            var totalDuration = questinBank.Where(x => x.Tags == tag && x.Competency == competency).Select(x => x.Duration).Sum();
+            var totalDuration = questinBank.Where(x => x.Tags == tag && x.ProficiencyLevel == competency).Select(x => x.Duration).Sum();
 
             //Assert
             Assert.IsTrue(totalDuration >= minutes - (minutes * 15 / 100), "Questions are not availabe to below needed duration.");
