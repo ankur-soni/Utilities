@@ -35,6 +35,8 @@ namespace Silicus.Ensure.Models.DataObjects
 
         public string Weights { get; set; }
 
+        public string Proficiency { get; set; }
+
         public int Status { get; set; }
         
         public bool IsDeleted { get; set; }

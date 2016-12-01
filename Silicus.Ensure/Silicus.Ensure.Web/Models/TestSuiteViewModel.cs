@@ -53,6 +53,8 @@ namespace Silicus.Ensure.Web.Models
 
         public string Weights { get; set; }
 
+        public string Proficiency { get; set; }
+
         public int Userid { get; set; }
 
         public int Status { get; set; }
@@ -70,7 +72,9 @@ namespace Silicus.Ensure.Web.Models
 
         public int TagId { get; set; }
 
-        public string Weightage { get; set; }
+        public int Weightage { get; set; }
+
+        public int Proficiency { get; set; }
 
         public int Minutes { get; set; }
     }
