@@ -4,12 +4,25 @@
 <div>
     @foreach (var item in Model)
     {
+        var borderColor = string.Empty;
+        if (item.IsWinner == true)
+        {
+            borderColor = "#0067AA";
+        }
+        if (item.IsShortlisted)
+        {
+            borderColor = "#F8AC59";
+        }
+        if (!item.IsShortlisted && !item.IsWinner)
+        {
+            borderColor = "#676A6C";
+        }
         Random randomGen = new Random();
         KnownColor[] names = (KnownColor[])Enum.GetValues(typeof(KnownColor));
         KnownColor randomColorName = names[randomGen.Next(names.Length)];
         Color randomColor = Color.FromKnownColor(randomColorName);
 
-        <div class="col-md-3 card white-bg">
+        <div class="col-md-3 card white-bg"   style="border-color:@borderColor">
             <div class="cardHeader text-center">
 
                 <div>
@@ -22,9 +35,9 @@
 
                     <table align="center" style="border: 1px solid rgba(178, 176, 176, 0.96);margin-top:2%;">
                         <tr>
-                            <th>Credits</th>
-                            <th>Reviews</th>
-                            <th>Average</th>
+                            <th style="color:@borderColor">Credits</th>
+                            <th style="color:@borderColor">Reviews</th>
+                            <th style="color:@borderColor">Average</th>
                         </tr>
                         <tr>
                             <td>@Html.DisplayFor(modelItem => item.Credits)</td>
@@ -34,18 +47,18 @@
                     </table>
                 </div>
             </div>
-            <div class="cardFooter text-right" style="padding-top:5px">
+            <div class="cardFooter text-right" style="padding-top:5px;border-color:@borderColor">
 
                 @if (item.IsShortlisted)
                 {
-                    <span style="color:#0067AA"><i class="fa fa-star fa-2x" title="Shortlisted" aria-hidden="true"></i></span>
+                    <span ><i class="fa fa-star fa-2x" title="Shortlisted" aria-hidden="true" style="color:@borderColor;font-size:30px;"></i></span>
                 }
                 else if (item.IsWinner)
                 {
-                    <span style="color:#0067AA"><i class="fa fa-trophy fa-2x" title="Winner" aria-hidden="true"></i></span>
+                    <span><i class="fa fa-trophy fa-2x" title="Winner" aria-hidden="true" style="color:@borderColor;font-size:30px;"></i></span>
                 }
                 <a href="@Url.Action("ViewNominationForShortlist", "Review", item)">
-                    <span> <i class="fa fa-file-text-o" title="View Nomination" aria-hidden="true" style="font-size:30px;"></i> </span>
+                    <span> <i class="fa fa-file-text-o" title="View Nomination" aria-hidden="true" style="font-size:30px;color:@borderColor;"></i> </span>
                 </a>
             </div>
 

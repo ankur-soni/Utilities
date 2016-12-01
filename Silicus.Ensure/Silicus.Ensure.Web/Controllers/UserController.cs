@@ -14,8 +14,6 @@ using System.Web;
 using System.Web.Mvc;
 using System.IO;
 using Silicus.Ensure.Models.Constants;
-using Silicus.Ensure.Entities;
-using System.Configuration;
 
 namespace Silicus.Ensure.Web.Controllers
 {
@@ -69,7 +67,7 @@ namespace Silicus.Ensure.Web.Controllers
         /// <returns></returns>
         public async Task<ActionResult> GetUserDetails([DataSourceRequest] DataSourceRequest request, string RoleName)
         {
-            var userlist = _userService.GetUserDetails().Where(x => x.Role.ToLower() != RoleName.ToLower()).ToArray();
+            var userlist = _userService.GetUserDetails().Where(x => x.Role != RoleName).ToArray();
 
             var viewModels = _mappingService.Map<User[], UserViewModel[]>(userlist);
 
@@ -85,7 +83,7 @@ namespace Silicus.Ensure.Web.Controllers
 
             DataSourceResult result = viewModels.ToDataSourceResult(request);
             return Json(result);
-        }
+        }        
 
         /// <summary>
         /// Deletes the user
@@ -132,7 +130,7 @@ namespace Silicus.Ensure.Web.Controllers
             DataSourceResult result = viewModels.ToDataSourceResult(request);
             return Json(result);
         }
-
+        
         /// <summary>
         /// Check for duplicate mail id in identity table as well as user table in the application
         /// </summary>
@@ -182,19 +180,7 @@ namespace Silicus.Ensure.Web.Controllers
                     if (!string.IsNullOrWhiteSpace(vuser.ErrorMessage)) { return RedirectToAction(actionErrorName, controllerName, new { UserId = vuser.UserId }); }
 
                     var organizationUserDomainModel = _mappingService.Map<UserViewModel, User>(vuser);
-                    vuser.UserId = _userService.Add(organizationUserDomainModel);
-
-                }
-
-                if (vuser.CandidateList.Any())
-                {
-                    foreach (int i in vuser.CandidateList)
-                    {
-                        var updateUser = _userService.GetUserById(i);
-                        updateUser.PanelId = vuser.UserId;
-                        updateUser.PanelName = vuser.FirstName + " " + vuser.LastName;
-                        _userService.Update(updateUser);
-                    }
+                    int Add = _userService.Add(organizationUserDomainModel);
                 }
 
             }

@@ -41,7 +41,7 @@ namespace Silicus.Ensure.Entities.Initializer
                 Address = "Test",
                 Email = "testuser@test.com",
                 IdentityUserId = new System.Guid("88B34980-EDD3-420C-8387-621B629A4E9B"),
-                Role = "CANDIDATE",
+                Role = "USER",
                 IsActive = true
 
             });
@@ -124,7 +124,8 @@ namespace Silicus.Ensure.Entities.Initializer
                 IsDeleted = false,
                 PrimaryTags = "1,2",
                 Weights = "70,30",
-                Status = 1,
+                Proficiency = "1,2",
+                Status=1,
 
             });
 
@@ -137,6 +138,7 @@ namespace Silicus.Ensure.Entities.Initializer
                 IsDeleted = false,
                 PrimaryTags = "1,2",
                 Weights = "30,70",
+                Proficiency = "1,2",
                 Status = 1,
             });
 
