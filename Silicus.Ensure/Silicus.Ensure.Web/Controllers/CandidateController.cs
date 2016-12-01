@@ -72,15 +72,11 @@ namespace Silicus.Ensure.Web.Controllers
             return PartialView("_partialViewQuestion", testSuiteQuestionModel);
         }
 
-        public ActionResult OnNextPrevious(int Qnumber, char Move, int? userTestSuiteId, int? userTestDetailId, string answer)
+        public ActionResult OnNextPrevious(int qNumber, char move, int? userTestSuiteId, int? userTestDetailId, string answer)
         {
             answer = HttpUtility.HtmlDecode(answer);
             UpdateAnswer(answer, userTestDetailId);
-            TestSuiteQuestionModel testSuiteQuestionModel = new TestSuiteQuestionModel();
-            if (Move == 'N')
-                testSuiteQuestionModel = TestSuiteQuestion(Qnumber += 1, userTestSuiteId);
-            else
-                testSuiteQuestionModel = TestSuiteQuestion(Qnumber -= 1, userTestSuiteId);
+            var testSuiteQuestionModel = (move == 'N') ? TestSuiteQuestion(qNumber += 1, userTestSuiteId) : TestSuiteQuestion(qNumber -= 1, userTestSuiteId);
 
             return PartialView("_partialViewQuestion", testSuiteQuestionModel);
         }
@@ -107,8 +103,7 @@ namespace Silicus.Ensure.Web.Controllers
 
             // Get All admin to send mail.
             List<User> userAdmin = _userService.GetUserByRole("ADMIN").ToList();
-            if (userAdmin != null)
-                SendSubmittedTestMail(userAdmin, candidate.FirstName + " " + candidate.LastName);
+            SendSubmittedTestMail(userAdmin, candidate.FirstName + " " + candidate.LastName);
 
             return RedirectToAction("LogOff", "Account");
         }
@@ -139,9 +134,9 @@ namespace Silicus.Ensure.Web.Controllers
             _testSuiteService.UpdateUserTestDetails(userTestDetails);
         }
 
-        private TestSuiteQuestionModel TestSuiteQuestion(int Qnumber, int? userTestSuiteId)
+        private TestSuiteQuestionModel TestSuiteQuestion(int qNumber, int? userTestSuiteId)
         {
-            int Count = 0;
+            var count = 0;
             dynamic userTestDetails = _testSuiteService.GetUserTestDetailsByUserTestSuitId(userTestSuiteId);
             List<TestSuiteQuestionModel> testSuiteQuestionModel = new List<TestSuiteQuestionModel>();
             TestSuiteQuestionModel model;
@@ -149,7 +144,7 @@ namespace Silicus.Ensure.Web.Controllers
             foreach (var obj in userTestDetails)
             {
                 model = new TestSuiteQuestionModel();
-                model.QuestionNumber = Count += 1;
+                model.QuestionNumber = count += 1;
                 model.UserTestDetailId = obj.GetType().GetProperty("TestDetailId").GetValue(obj);
                 model.Answer = obj.GetType().GetProperty("Answer").GetValue(obj);
                 model.Id = obj.GetType().GetProperty("Id").GetValue(obj);
@@ -170,12 +165,12 @@ namespace Silicus.Ensure.Web.Controllers
             }
 
             int totalQCount = testSuiteQuestionModel.Count;
-            TestSuiteQuestionModel TQuestion = testSuiteQuestionModel.Where(p => p.QuestionNumber == Qnumber).First();
-            if (Qnumber == 1)
-                TQuestion.IsLast = true;
-            if (Qnumber == totalQCount)
-                TQuestion.IsFirst = true;
-            return TQuestion;
+            TestSuiteQuestionModel tQuestion = testSuiteQuestionModel.Where(p => p.QuestionNumber == qNumber).First();
+            if (qNumber == 1)
+                tQuestion.IsLast = true;
+            if (qNumber == totalQCount)
+                tQuestion.IsFirst = true;
+            return tQuestion;
         }
 
         private void SendSubmittedTestMail(List<User> userAdmin, string fullname)

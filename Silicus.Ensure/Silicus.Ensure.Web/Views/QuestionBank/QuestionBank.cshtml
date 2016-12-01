@@ -23,7 +23,7 @@
                   columns.Bound(q => q.Tag).Width(150).Title("Tags");
                   columns.Bound(q => q.ProficiencyLevel).Width(100);
                   columns.Bound(q => q.Id).ClientTemplate(@"
-                    <a href='/QuestionBank/EditQuestion?QuestionId=#=Id#' class='k-button k-button-icontext k-grid-edit'><span class='k-icon k-edit'></span>Edit</a>
+                    <a href='/QuestionBank/EditQuestion?questionId=#=Id#' class='k-button k-button-icontext k-grid-edit'><span class='k-icon k-edit'></span>Edit</a>
                     <button onclick='DeleteQuestion(#=Id#,this)' class='k-button k-button-icontext k-grid-delete'><span class='k-icon k-delete'></span>Delete</button>").Title("Actions").Width(150);
               })
               .ToolBar(toolbar =>
@@ -43,10 +43,10 @@
                         </div>
                         <br />
                         <div class="row">
-                            <div class="col-md-2" style="padding-right:0px; padding-top:5px; width:10%;">
+                            <div class="col-md-2" style="padding-right:0; padding-top:5px; width:10%;">
                                 <span>Question Type:</span>
                             </div>
-                            <div class="col-md-6">
+                            <div class="col-md-2">
                                 @(Html.Kendo().DropDownList()
                             .Name("QuestionType")
                             .DataTextField("Text")
@@ -66,25 +66,33 @@
                                 Text="Practical",
                                 Value="2"
                                 }
-                                }).HtmlAttributes(new { style = "width: 50%" }))
+                                }).HtmlAttributes(new { style = "width: 80%" }))
                             </div>
-
-                            <div class="col-md-3 col-md-push-1" style="float: right; padding-right: 0px; margin-right: -22px;">
-                                <a href='/QuestionBank/AddQuestions?QuestionId=0' class='k-button k-button-icontext k-grid-add' style="width: 50% !important;"><span class='k-icon k-add'></span>Add Question</a>
+                            <div class="col-md-2" style="padding-right:0; padding-top:5px;">
+                                <span style="float:right;">Questions Per Page:</span>
+                            </div>
+                            <div class="col-md-2">
+                                @(Html.Kendo().NumericTextBox<int>().Name("QuestionPerPage")
+                                .Min(0).Max(9999).Value(10).Format("#").Decimals(0)
+                                .Placeholder("Questions Per Page")
+                                        .Events(e => e.Change("QuestionPerPageChange")))
+                            </div>
+                            <div class="col-md-3 col-md-push-1" style="float: right; padding-right: 0; margin-right: -22px;">
+                                <a href='/QuestionBank/AddQuestions?questionId=0' class='k-button k-button-icontext k-grid-add' style="width: 50% !important;"><span class='k-icon k-add'></span>Add Question</a>
                             </div>
                         </div>
                     </div>
                 </text>);
               })
-                                                                                                                                                                                                                                                                                                                        .Resizable(resizing => resizing.Columns(true))
-                                                                                                                                                                                                                                                                                                        .Sortable(sorting => sorting.Enabled(true))
-                                                                                                                                                                                                                                                                                                        .Reorderable(reorder => reorder.Columns(true))
-                                                                                                                                                                                                                                                                                                        .Pageable()
-                                                                                                                                                                                                                                                                                                        .DataSource(dataSource => dataSource
-                                                                                                                                                                                                                                                                                                        .Ajax()
-                                                                                                                                                                                                                                                                                                        .PageSize(10)
-                                                                                                                                                                                                                                                                                                        .ServerOperation(false)
-                                                                                                                                                                                                                                                                                                        ))
+                                                                                                                                                                                                                                                                                                                                                                                                                            .Resizable(resizing => resizing.Columns(true))
+                                                                                                                                                                                                                                                                                                                                                                                                            .Sortable(sorting => sorting.Enabled(true))
+                                                                                                                                                                                                                                                                                                                                                                                                            .Reorderable(reorder => reorder.Columns(true))
+                                                                                                                                                                                                                                                                                                                                                                                                            .Pageable()
+                                                                                                                                                                                                                                                                                                                                                                                                            .DataSource(dataSource => dataSource
+                                                                                                                                                                                                                                                                                                                                                                                                            .Ajax()
+                                                                                                                                                                                                                                                                                                                                                                                                            .PageSize(10)
+                                                                                                                                                                                                                                                                                                                                                                                                            .ServerOperation(false)
+                                                                                                                                                                                                                                                                                                                                                                                                            ))
                 }
             </div>
         </div>
@@ -119,7 +127,7 @@
         // Kendo Grid Filter (Search)
         $("#FieldFilter").keyup(function () {
             var value = $("#FieldFilter").val();
-            grid = $("#questionGrids").data("kendoGrid");
+            var grid = $("#questionGrids").data("kendoGrid");
 
             if (value) {
                 var filter = { logic: "or", filters: [] };
@@ -145,13 +153,21 @@
             que = "Practical";
         }
 
-        grid = $("#questionGrids").data("kendoGrid");
+        var grid = $("#questionGrids").data("kendoGrid");
 
         if (value) {
             grid.dataSource.filter({ field: "QuestionType", operator: "contains", value: que });
         } else {
             grid.dataSource.filter({});
         }
+    }
+
+    function QuestionPerPageChange()
+    {
+        var value = $("#QuestionPerPage").val();
+        var grid = $("#questionGrids").data("kendoGrid");
+        grid.dataSource.pageSize(value);
+        grid.refresh();
     }
 
     // Delete Question
@@ -173,7 +189,7 @@
             dataType: "json",
             type: "DELETE",
             contentType: 'application/json; charset=utf-8',
-            data: JSON.stringify({ QuestionId: deleteID }),
+            data: JSON.stringify({ questionId: deleteID }),
             success: function (data) {
                 if (data == 1) {
                     var grid = $("#questionGrids").data("kendoGrid");
@@ -184,7 +200,7 @@
                     $("#btnModalOK").hide();
                 }
             },
-            error: function (xhr) {
+            error: function () {
                 $("#myModal").modal();
                 $("#msgMain").text("Error!");
                 $("#msgContent").text("Question is not deleted.");
