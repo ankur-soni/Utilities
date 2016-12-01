@@ -96,7 +96,6 @@
       <Link>Properties\SharedAssemblyInfo.cs</Link>
     </Compile>
     <Compile Include="Constants\AnswerType.cs" />
-    <Compile Include="Constants\DurationMarks.cs" />
     <Compile Include="Constants\Options.cs" />
     <Compile Include="Constants\Proficiency.cs" />
     <Compile Include="Constants\QuestionType.cs" />

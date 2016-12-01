@@ -1,10 +1,6 @@
 ﻿using Silicus.Ensure.Models.Constants;
 using Silicus.Ensure.Models.DataObjects;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Silicus.Ensure.Services.Interfaces
 {
@@ -14,9 +10,9 @@ namespace Silicus.Ensure.Services.Interfaces
 
         Question GetSingleQuestion(int id);
 
-        int Add(Question Question);
+        int Add(Question question);
 
-        void Update(Question Question);
+        void Update(Question question);
 
         void Delete(int id);
 

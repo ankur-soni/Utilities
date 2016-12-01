@@ -253,7 +253,7 @@
 
 <div class="row">
     <div class="col-md-9 col-md-offset-2" style="margin-top:1%;">
-        @if (Model.IsFirst == false)
+        @if (!Model.IsFirst)
         {
             @(Html.Kendo().Button()
         .Name("btnNext")
@@ -261,7 +261,7 @@
         .Content("Next").HtmlAttributes(new { style = "float: right;" }))
         }
 
-        @if (Model.IsLast == false)
+        @if (!Model.IsLast)
         {
             @(Html.Kendo().Button()
         .Name("btnPrevious")
@@ -273,7 +273,7 @@
 
 <div class="row">
     <div class="col-md-9 col-md-offset-2" style="margin-top:1%;">
-        @if (Model.IsFirst == true)
+        @if (Model.IsFirst)
         {
             @(Html.Kendo().Button()
         .Name("btnSubmit")

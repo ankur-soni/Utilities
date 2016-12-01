@@ -5,8 +5,6 @@ using Silicus.Ensure.Services.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Silicus.Ensure.Services
 {
@@ -26,28 +24,28 @@ namespace Silicus.Ensure.Services
 
         public Question GetSingleQuestion(int id)
         {
-            return _context.Query<Question>().Where(x => x.Id == id).FirstOrDefault();
+            return _context.Query<Question>().Where(x => x.Id == id).First();
         }
 
-        public int Add(Question Question)
+        public int Add(Question question)
         {
-            _context.Add(Question);
-            return Question.Id;
+            _context.Add(question);
+            return question.Id;
         }
 
-        public void Update(Question Question)
+        public void Update(Question question)
         {
-            if (Question != null)
-                _context.Update(Question);
+            if (question != null)
+                _context.Update(question);
         }
 
         public void Delete(int id)
         {
             if (id != 0)
             {
-                Question Que = GetSingleQuestion(id);
-                Que.IsDeleted = true;
-                _context.Update(Que);
+                Question que = GetSingleQuestion(id);
+                que.IsDeleted = true;
+                _context.Update(que);
             }
         }
 

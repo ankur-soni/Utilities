@@ -102,6 +102,7 @@
                                 @*<th>Id</th>*@
                                 <th>Criteria</th>
                                 <th>Manager Comment</th>
+                                <th>Rating</th>
                                 <th>Reviewer Comment</th>
                                 <th>Credits</th>
                             </tr>
@@ -123,11 +124,17 @@
                                     {
                                         @*<td class="col-md-4">@item.ManagerComments[k].Comment</td>*@
                                         <td class="more" style="word-break:break-all">@item.ManagerComments[k].Comment</td>
+                                        <td class="col-md-1">
+                                            <input id="input-21a" value="@item.ManagerComments[k].Rating" type="number" data-star-captions="{}" data-default-caption="{rating} Stars" class="rating rating-loading" data-show-clear="false" data-show-caption="false" data-symbol="*" min=0 max=5 step=1 data-size="xs" readonly="readonly">
+                                        </td>
                                         k++;
                                     }
                                     else
                                     {
                                         <td class="more"></td>
+                                        <td class="col-md-1">
+                                            <input id="input-21a" value="0" type="number" data-star-captions="{}" data-default-caption="{rating} Stars" class="rating rating-loading" data-show-clear="false" data-show-caption="false" data-symbol="*" min=0 max=5 step=1 data-size="xs" readonly="readonly">
+                                        </td>
                                     }
 
 

@@ -26,35 +26,35 @@
             <div class="col-md-6">
                 <div class="row">
                     <div class="col-md-6">
-                        <label class="control-label" for="obj"><strong>No. of Objective Question:</strong></label>
+                        <label class="control-label"><strong>No. of Objective Question:</strong></label>
                     </div>
                     <div class="col-md-6">
-                        <label class="control-label" for="obj">@Model.ObjectiveCount</label>
+                        <label class="control-label">@Model.ObjectiveCount</label>
                     </div>
                 </div>
                 <div class="row">
                     <div class="col-md-6">
-                        <label class="control-label" for="prac"><strong>No. of Practical Question:</strong></label>
+                        <label class="control-label"><strong>No. of Practical Question:</strong></label>
                     </div>
 
                     <div class="col-md-6">
-                        <label class="control-label" for="prac">@Model.PracticalCount</label>
+                        <label class="control-label">@Model.PracticalCount</label>
                     </div>
                 </div>
                 <div class="row">
                     <div class="col-md-6">
-                        <label class="control-label" for="total"><strong>Total Question:</strong></label>
+                        <label class="control-label"><strong>Total Question:</strong></label>
                     </div>
                     <div class="col-md-6">
-                        <label class="control-label" for="total">@Model.TotalQuestionCount</label>
+                        <label class="control-label">@Model.TotalQuestionCount</label>
                     </div>
                 </div>
                 <div class="row">
                     <div class="col-md-6">
-                        <label class="control-label" for="duration"><strong>Total Duration (Mins):</strong></label>
+                        <label class="control-label"><strong>Total Duration (Mins):</strong></label>
                     </div>
                     <div class="col-md-6">
-                        <label class="control-label" for="duration">@Model.DurationInMin</label>
+                        <label class="control-label">@Model.DurationInMin</label>
                     </div>
                 </div>
             </div>
@@ -157,6 +157,11 @@
         var userTestSuiteId = $("#UserTestSuiteId").val();
         $('#QuestionDetails').load('/Candidate/LoadQuestion?userTestSuiteId=' + userTestSuiteId);
 
+        // Hide "Add More Time" if used 2 times
+        var timerCnt = $("#TimerIncCount").val();
+        if (timerCnt >= 2)
+            $("#btnAddMoreTime").hide();
+
         // Timer
         clock = $('#counter').FlipClock({
             clockFace: 'HourlyCounter',
@@ -184,24 +189,24 @@
     });
 
     function AddMoreTime() {
-        var TimerCnt = $("#TimerIncCount").val();
-        if (TimerCnt == 0)
+        var timerCnt = $("#TimerIncCount").val();
+        if (timerCnt == 0)
             ShowProgressPopUp(true, "You have only 2 chances. Are you sure, you want to increase time limit by 10 Mins?");
         else
             ShowProgressPopUp(true, "This is the last chance. Are you sure, you want to increase time limit by 10 Mins?");
     }
 
     function OnAddMoreTimeOK() {
-        var TimerCnt = $("#TimerIncCount").val();
-        if (TimerCnt == null || TimerCnt == "")
-            TimerCnt = 0;
+        var timerCnt = $("#TimerIncCount").val();
+        if (timerCnt == null || timerCnt == "")
+            timerCnt = 0;
         var userTestSuiteId = $("#UserTestSuiteId").val();
         $.ajax({
             url: '/Candidate/AddMoreTime',
             dataType: "json",
             type: "POST",
             contentType: 'application/json; charset=utf-8',
-            data: JSON.stringify({ count: TimerCnt, userTestSuiteId: userTestSuiteId }),
+            data: JSON.stringify({ count: timerCnt, userTestSuiteId: userTestSuiteId }),
             success: function (data) {
                 if (data < 3) {
                     // Add time in counter
@@ -226,7 +231,7 @@
 
                 }
             },
-            error: function (xhr) {
+            error: function () {
 
             }
         });
@@ -243,10 +248,10 @@
             UpdateTimeDB(time);
 
             if (time == 60) {
-                var TimerCntVal = $("#TimerIncCount").val();
-                if (TimerCntVal == 0)
+                var timerCntVal = $("#TimerIncCount").val();
+                if (timerCntVal == 0)
                     ShowProgressPopUp(true, "Please click on 'Add More Time' button in order to add 10 more minutes to Test duration.");
-                else if (TimerCntVal == 1)
+                else if (timerCntVal == 1)
                     ShowProgressPopUp(true, "Please click on 'Add More Time' button for the last time to add 10 more minutes to Test duration.");
                 else
                     ShowProgressPopUp(false, "1 minute remaining to complete the test.");
@@ -281,9 +286,9 @@
             type: "POST",
             contentType: 'application/json; charset=utf-8',
             data: JSON.stringify({ time: tm, userTestSuiteId: userTestSuiteId }),
-            success: function (data) {
+            success: function () {
             },
-            error: function (xhr) {
+            error: function () {
             }
         });
     }
@@ -293,7 +298,7 @@
         var questionNumber = $("#QuestionNumber").val();
         var userTestSuiteId = $("#UserTestSuiteId").val();
         var userTestDetailId = $("#UserTestDetailId").val();
-        $('#QuestionDetails').load('/Candidate/OnNextPrevious?Qnumber=' + questionNumber + '&Move=N&userTestSuiteId=' + userTestSuiteId + '&userTestDetailId=' + userTestDetailId + '&answer=' + answer);
+        $('#QuestionDetails').load('/Candidate/OnNextPrevious?qNumber=' + questionNumber + '&move=N&userTestSuiteId=' + userTestSuiteId + '&userTestDetailId=' + userTestDetailId + '&answer=' + answer);
         return false;
     }
 
@@ -302,7 +307,7 @@
         var questionNumber = $("#QuestionNumber").val();
         var userTestSuiteId = $("#UserTestSuiteId").val();
         var userTestDetailId = $("#UserTestDetailId").val();
-        $('#QuestionDetails').load('/Candidate/OnNextPrevious?Qnumber=' + questionNumber + '&Move=P&userTestSuiteId=' + userTestSuiteId + '&userTestDetailId=' + userTestDetailId + '&answer=' + answer);
+        $('#QuestionDetails').load('/Candidate/OnNextPrevious?qNumber=' + questionNumber + '&move=P&userTestSuiteId=' + userTestSuiteId + '&userTestDetailId=' + userTestDetailId + '&answer=' + answer);
         return false;
     }
 
@@ -346,9 +351,11 @@
 
     function TestDurationComplete() {
         var answer = GetAnswer();
+        var testSuiteId = $("#TestSuiteId").val();
+        var userTestSuiteId = $("#UserTestSuiteId").val();
         var userTestDetailId = $("#UserTestDetailId").val();
         var userId = $("#UserId").val();
-        window.location.href = '/Candidate/OnSubmitTest?userTestDetailId=' + userTestDetailId + '&userId=' + userId + '&answer=' + answer;
+        window.location.href = '/Candidate/OnSubmitTest?testSuiteId=' + testSuiteId + '&userTestSuiteId=' + userTestSuiteId + '&userTestDetailId=' + userTestDetailId + '&userId=' + userId + '&answer=' + answer;
     }
 
 </script>

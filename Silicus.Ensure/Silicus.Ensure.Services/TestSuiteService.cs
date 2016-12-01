@@ -103,7 +103,7 @@ namespace Silicus.Ensure.Services
 
         public UserTestDetails GetUserTestDetailsId(int? userTestDetailsId)
         {
-            return _context.Query<UserTestDetails>().Where(x => x.TestDetailId == userTestDetailsId).FirstOrDefault();
+            return _context.Query<UserTestDetails>().Where(x => x.TestDetailId == userTestDetailsId).First();
         }
 
         public IEnumerable<UserTestDetails> GetUserTestDetailsListByUserTestSuitId(int userTestSuitId)
