@@ -336,6 +336,7 @@ namespace Silicus.Ensure.Services
             var tagList = _context.Query<Tags>();
             string[] tags = testSuite.PrimaryTags.Split(',');
             string[] weights = testSuite.Weights.Split(',');
+            string[] proficiency = testSuite.Proficiency.Split(',');
 
             for (int i = 0; i < tags.Length; i++)
             {
@@ -343,8 +344,85 @@ namespace Silicus.Ensure.Services
                 testSuiteTagViewModel.TagId = Convert.ToInt32(tags[i]);
                 testSuiteTagViewModel.Weightage = Convert.ToInt32(weights[i]);
                 testSuiteTagViewModel.Minutes = testSuite.Duration * Convert.ToInt32(weights[i]) / 100;
+                testSuiteTagViewModel.Proficiency = Convert.ToInt32(proficiency[i]);
                 testSuiteTags.Add(testSuiteTagViewModel);
             }
+        }
+
+        public void TestSuiteActivation()
+        {           
+            int optionalQuestions = Convert.ToInt32(ConfigurationManager.AppSettings["OptionalQuestion"]);
+            int practicalQuestions = Convert.ToInt32(ConfigurationManager.AppSettings["PracticalQuestion"]);
+            List<TestSuite> updateList = new List<TestSuite>();
+            List<TestSuiteTag> testSuiteTags;
+            bool isReady = true;
+            Random random;
+            int requiredMinutes = 0, minutes = 0, index = 0;
+            List<Question> questions;
+
+            var testSuites = _context.Query<TestSuite>().Where(x=>x.IsDeleted == false);
+
+            var questionBank = _context.Query<Question>().ToList();
+            foreach(var testSuite in testSuites)
+            {
+                isReady = true;
+                questions = new List<Question>();
+                GetTestSuiteTags(testSuite, out testSuiteTags);               
+                foreach (var tag in testSuiteTags)
+                {
+                    minutes = 0;
+                    requiredMinutes = tag.Minutes * Convert.ToInt32(optionalQuestions) / 100;
+                    var optionalQuestion = questionBank.Where(x => !questions.Any(y => y.Id == x.Id) && x.QuestionType == 1 && x.ProficiencyLevel == tag.Proficiency && x.Tags.Split(',').Contains(Convert.ToString(tag.TagId)));
+                    if (optionalQuestion.Sum(x => x.Duration) >= requiredMinutes)
+                    {
+                        do
+                        {
+                            random = new Random();
+                            optionalQuestion = questionBank.Where(x => !questions.Any(y => y.Id == x.Id) && x.QuestionType == 1 && x.ProficiencyLevel == tag.Proficiency && x.Tags.Split(',').Contains(Convert.ToString(tag.TagId)));
+                            index = random.Next(optionalQuestion.Count());
+                            Question question = optionalQuestion.ElementAtOrDefault(index);
+                            questions.Add(question);
+                            minutes += question.Duration;
+                        } while (minutes < requiredMinutes);
+
+                        minutes = 0;
+                        requiredMinutes = tag.Minutes * Convert.ToInt32(practicalQuestions) / 100;
+                        var practicalQuestion = questionBank.Where(x => !questions.Any(y => y.Id == x.Id) && x.QuestionType == 2 && x.ProficiencyLevel == tag.Proficiency && x.Tags.Split(',').Contains(Convert.ToString(tag.TagId)));
+                        if(practicalQuestion.Sum(x=>x.Duration) >= requiredMinutes)
+                        {
+                            do
+                            {
+                                random = new Random();
+                                practicalQuestion = questionBank.Where(x => !questions.Any(y => y.Id == x.Id) && x.QuestionType == 2 && x.ProficiencyLevel == tag.Proficiency && x.Tags.Split(',').Contains(Convert.ToString(tag.TagId)));
+                                index = random.Next(practicalQuestion.Count());
+                                Question question = practicalQuestion.ElementAtOrDefault(index);
+                                questions.Add(question);
+                                minutes += question.Duration;
+                            } while (minutes < requiredMinutes);
+                        }
+                        else
+                        {
+                            testSuite.Status = Convert.ToInt32(TestSuiteStatus.Pending);
+                            isReady = false;
+                            break;
+                        }
+                    }
+                    else
+                    {                       
+                        testSuite.Status = Convert.ToInt32(TestSuiteStatus.Pending);
+                        isReady = false;           
+                        break;
+                    }
+                }
+
+                if(isReady == true)
+                {
+                   testSuite.Status = Convert.ToInt32(TestSuiteStatus.Ready);
+                }
+                
+                updateList.Add(testSuite);
+            }
+            _context.UpdateAll(updateList);
         }
     }
 }

@@ -34,21 +34,9 @@ namespace Silicus.Ensure.Web.Controllers
 
         public ActionResult GetTestSuiteDetails([DataSourceRequest] DataSourceRequest request)
         {
-            UserTestSuite userTestSuite;
+            _testSuiteService.TestSuiteActivation();         
             var tags = _tagsService.GetTagsDetails();
-            var testSuitelist = _testSuiteService.GetTestSuiteDetails().Where(model => model.IsDeleted == false).OrderByDescending(model => model.TestSuiteId).ToArray();
-            //Test Suite Status
-            foreach (var testSuite in testSuitelist)
-            {
-                userTestSuite = new UserTestSuite();
-                ActiveteSuite(ref userTestSuite, testSuite);
-                int duration = _questionService.GetQuestion().Where(x => userTestSuite.UserTestDetails.Any(y => y.QuestionId == x.Id)).Sum(x => x.Duration);
-                if (testSuite.Duration <= duration)
-                {
-                     testSuite.Status = Convert.ToInt32(TestSuiteStatus.Ready);
-                    _testSuiteService.Update(testSuite);
-                }
-            }
+            var testSuitelist = _testSuiteService.GetTestSuiteDetails().Where(model => model.IsDeleted == false).OrderByDescending(model => model.TestSuiteId).ToArray();           
             var viewModels = _mappingService.Map<TestSuite[], TestSuiteViewModel[]>(testSuitelist);
             foreach (var item in viewModels)
             {

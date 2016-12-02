@@ -38,5 +38,7 @@ namespace Silicus.Ensure.Services.Interfaces
         dynamic GetUserTestDetailsByUserTestSuitId(int? userTestSuitId);
 
         int ActiveteSuite(UserTestSuite userTestSuite, TestSuite testSuite);
+
+        void TestSuiteActivation();
     }
 }

@@ -15,7 +15,7 @@ namespace Silicus.Ensure.Models.DataObjects
 
         public int Weightage { get; set; }
 
-        public string Proficiency { get; set; }
+        public int Proficiency { get; set; }
 
         public int Minutes { get; set; }
     }
