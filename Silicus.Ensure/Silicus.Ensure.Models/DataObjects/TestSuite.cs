@@ -38,6 +38,12 @@ namespace Silicus.Ensure.Models.DataObjects
         public string Proficiency { get; set; }
 
         public int Status { get; set; }
+
+        public string ProjectName { get; set; }
+
+        public string CustomerName { get; set; }
+
+        public string ExperienceRange { get; set; }
         
         public bool IsDeleted { get; set; }
 

@@ -79,7 +79,11 @@ namespace Silicus.Ensure.Web.Controllers
                 var viewModels = _mappingService.Map<TestSuite[], TestSuiteViewModel[]>(testSuitelist).SingleOrDefault();
                 if (viewModels != null)
                 {
-                    ViewBag.Type = "Edit";                 
+                    ViewBag.Type = "Edit";
+                    if (!string.IsNullOrWhiteSpace(viewModels.ExperienceRange))
+                    {
+                        viewModels.ExperienceRangeId = viewModels.ExperienceRange.Split(',').ToList();
+                    }                    
                     viewModels.PositionList = positionDetails.ToList();
                     List<TestSuiteTagViewModel> testSuiteTags;
                     GetTestSuiteTags(testSuitelist.SingleOrDefault(), out testSuiteTags);
@@ -99,7 +103,15 @@ namespace Silicus.Ensure.Web.Controllers
             { 
                 errorMessage = "The Test Suite already exists, please create with other name.\n"; 
             }
-            string[] tagArry = testSuiteView.PrimaryTagNames.Split(',');            
+            string[] tagArry = testSuiteView.PrimaryTagNames.Split(',');
+            foreach(var tag in tagArry)
+            {
+                if(!tags.Any(x=>x.TagName == tag))
+                {
+                    errorMessage += "Please enter correct tag name.\n";
+                    break;
+                }
+            }
             string tagId;
             for (int i = 0; i < tagArry.Length; i++)
             {
@@ -112,7 +124,7 @@ namespace Silicus.Ensure.Web.Controllers
                 {
                     testSuiteView.PrimaryTags += "," + tagId;
                 }
-            }
+            }            
             var testSuiteDomainModel = _mappingService.Map<TestSuiteViewModel, TestSuite>(testSuiteView);
             if (string.IsNullOrWhiteSpace(errorMessage))
             {
@@ -166,8 +178,12 @@ namespace Silicus.Ensure.Web.Controllers
                 var viewModels = _mappingService.Map<TestSuite[], TestSuiteViewModel[]>(testSuitelist).SingleOrDefault();
                 if (viewModels != null)
                 {
+                    if (!string.IsNullOrWhiteSpace(viewModels.ExperienceRange))
+                    {
+                        viewModels.ExperienceRangeId = viewModels.ExperienceRange.Split(',').ToList();
+                    }
                     ViewBag.Type = "Copy";
-                    viewModels.IsCopy = true;
+                    viewModels.IsCopy = true;                    
                     viewModels.TestSuiteName = "Copy " + viewModels.TestSuiteName;
                     List<TestSuiteTagViewModel> testSuiteTags;
                     GetTestSuiteTags(testSuitelist.SingleOrDefault(), out testSuiteTags);
