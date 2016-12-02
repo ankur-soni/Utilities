@@ -6,7 +6,7 @@
     ViewBag.Title = "Roles";
 }
 
-<h2>Employee List</h2>
+<h2>User Management</h2>
 
 @if (Request.IsAuthenticated)
 {
@@ -21,7 +21,6 @@
                   columns.Bound(p => p.Department).Width(50);
                   columns.Bound(p => p.Experience).Width(50);
                   columns.Bound(p => p.Email).Width(50);
-                  columns.Bound(p => p.TestStatus).Width(50);
                   columns.Bound(c => c.UserId).ClientTemplate(@"<a class='k-button k-button-icontext k-grid-edit' href='" + Url.Action("PanelAdd", "Panel") + "?UserId=#=UserId#'><span class='k-icon k-edit'></span>Edit</a><a id='testSuiteDel' class='k-button k-button-icontext k-grid-delete' href='\\#' onclick='return deleteUser(#=UserId#)'><span class='k-icon k-delete'></span>Delete</a>").Width(160);
                   columns.Bound(c => c.UserId).ClientTemplate(@"
                                 <a onclick=showTest('#=UserId#','#=TestStatus#')>Assign Test</a>|
@@ -62,7 +61,7 @@
                                 </div>
                                 <div class="row">
                                     <div class="col-md-3 col-md-push-1" style="float: right; padding-right: 0px; margin-right: -22px;">
-                                        <a href='/Panel/PanelAdd?UserId=0' class='k-button k-button-icontext k-grid-add'><span class='k-icon k-add'></span>Add Panel</a>
+                                        <a href='/Panel/PanelAdd?UserId=0' class='k-button k-button-icontext k-grid-add'><span class='k-icon k-add'></span>Add user</a>
                                     </div>
                                 </div>
                             </div>

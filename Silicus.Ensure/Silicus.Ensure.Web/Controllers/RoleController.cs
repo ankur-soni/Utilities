@@ -54,13 +54,14 @@ namespace Silicus.Ensure.Web.Controllers
             var userdetails = RoleManager.Roles.ToList();
 
             IList<RoleViewModel> modelList = userdetails.Select(userdetail => new RoleViewModel()
-            {
-                RoleName = userdetail.Name, Description = userdetail.Name
+            {   
+                RoleName = userdetail.Name,
+                Description = userdetail.Name
             }).ToList();
 
             return Json(modelList.ToDataSourceResult(request), JsonRequestBehavior.AllowGet);
         }
-        
+
         [AcceptVerbs(HttpVerbs.Post)]
         public async Task<ActionResult> CreateRole(Role role)
         {
@@ -96,7 +97,7 @@ namespace Silicus.Ensure.Web.Controllers
         {
             if (role != null && ModelState.IsValid)
             {
-                
+                //var role = _rolesService.GetRoleDetails().FirstOrDefault(x => x.RoleId == roleId);
                 _rolesService.Delete(role);
                 return Json(1);
             }

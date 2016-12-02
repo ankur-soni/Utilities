@@ -12,6 +12,9 @@ namespace Silicus.Ensure.Web.Models
         [Required(ErrorMessage = "Name is required!")]
         public string FirstName { get; set; }
 
+        [Required(ErrorMessage = "Name is required!")]
+        public string MiddleName { get; set; }
+
         [Required(ErrorMessage = "Last name is required")]
         public string LastName { get; set; }
 
@@ -45,6 +48,12 @@ namespace Silicus.Ensure.Web.Models
         public string Position { get; set; }
 
         public string Experience { get; set; }
+
+        public string CurrentEmployer { get; set; }
+
+        public string PrimaryMobileNumber { get; set; }
+
+        public string SecondaryMobileNumber { get; set; }
         // [Required]
         public string Department { get; set; }
 
@@ -59,7 +68,5 @@ namespace Silicus.Ensure.Web.Models
         public string ErrorMessage { get; set; }
 
         public string PanelName { get; set; }
-
-        public IList<int?> CandidateList { get; set; }
     }
 }

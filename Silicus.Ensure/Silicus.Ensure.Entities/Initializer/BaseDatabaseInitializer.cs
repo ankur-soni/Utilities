@@ -34,18 +34,17 @@ namespace Silicus.Ensure.Entities.Initializer
            });
             context.Add(new User
             {
-                FirstName = "Test",
-                LastName = "User",
-                NewPassword = "testuser@123",
-                ConfirmPassword = "testuser@123",
-                Address = "Test",
-                Email = "testuser@test.com",
+                FirstName = "Nilkanth",
+                LastName = "Kapale",
+                NewPassword = "Nilkanth@123",
+                ConfirmPassword = "Nilkanth@123",
+                Address = "Sangvi",
+                Email = "nilkanthKapale10@gmail.com",
                 IdentityUserId = new System.Guid("88B34980-EDD3-420C-8387-621B629A4E9B"),
-                Role = "CANDIDATE",
+                Role = "Panel",
                 IsActive = true
 
             });
-
             context.Add(new User
             {
                 FirstName = "Lorem",
@@ -124,7 +123,7 @@ namespace Silicus.Ensure.Entities.Initializer
                 IsDeleted = false,
                 PrimaryTags = "1,2",
                 Weights = "70,30",
-                Status=1,
+                Status = 1,
 
             });
 

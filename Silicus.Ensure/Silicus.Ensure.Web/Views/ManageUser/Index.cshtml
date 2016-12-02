@@ -1,0 +1,25 @@
+﻿@using Kendo.Mvc.UI;
+@{
+    ViewBag.Title = "Dashboard";
+    var user = Html.Partial("/Views/ManageUser/_GetUserListPartialView.cshtml");
+}
+<div class="main-content">
+    <div class="fluid mt20">
+        <div class="alert alert-success" id="messageDiv">
+            <strong>Success!</strong> <span id="messageContent">@Html.ValidationSummary(true)</span>
+        </div>
+        <div class="kendogrid">
+            @(user)
+        </div>
+    </div>
+</div>
+<script>
+    $(document).ready(function () {
+        if ('@Convert.ToString(TempData["ErrorMsg"])' != '') {
+            ShowMessage("@Convert.ToString(TempData["ErrorMsg"])", 0);
+        }
+        else {
+            $("#messageDiv").hide();
+        }
+    });
+</script>
