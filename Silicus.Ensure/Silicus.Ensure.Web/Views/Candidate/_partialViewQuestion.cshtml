@@ -35,13 +35,31 @@
                         <div class="radio">
                             <label><input type="radio" name="optradio" value="2">@Model.Option2</label>
                         </div>
-                        <div class="radio">
+                        <div class="radio" id="radio3">
                             <label><input type="radio" name="optradio" value="3">@Model.Option3</label>
                         </div>
-                        <div class="radio">
+                        <div class="radio" id="radio4">
                             <label><input type="radio" name="optradio" value="4">@Model.Option4</label>
                         </div>
+                        <div class="radio" id="radio5">
+                            <label><input type="radio" name="optradio" value="5">@Model.Option5</label>
+                        </div>
+                        <div class="radio" id="radio6">
+                            <label><input type="radio" name="optradio" value="6">@Model.Option6</label>
+                        </div>
+                        <div class="radio" id="radio7">
+                            <label><input type="radio" name="optradio" value="7">@Model.Option7</label>
+                        </div>
+                        <div class="radio" id="radio8">
+                            <label><input type="radio" name="optradio" value="8">@Model.Option8</label>
+                        </div>
                     </div>
+                    <script>
+                        for(var i=@Model.OptionCount+1; i<=8;i++)
+                        {
+                            $("#radio"+i).hide();
+                        }
+                    </script>
                 }
                 else
                 {
@@ -68,7 +86,7 @@
                                 <label><input type="radio" name="optradio" value="2">@Model.Option2</label>
                             }
                         </div>
-                        <div class="radio">
+                        <div class="radio" id="radio3">
                             @if (Model.Answer.Trim() == "3")
                             {
                                 <label><input type="radio" name="optradio" value="3" checked="checked">@Model.Option3</label>
@@ -78,7 +96,7 @@
                                 <label><input type="radio" name="optradio" value="3">@Model.Option3</label>
                             }
                         </div>
-                        <div class="radio">
+                        <div class="radio" id="radio4">
                             @if (Model.Answer.Trim() == "4")
                             {
                                 <label><input type="radio" name="optradio" value="4" checked="checked">@Model.Option4</label>
@@ -88,7 +106,53 @@
                                 <label><input type="radio" name="optradio" value="4">@Model.Option4</label>
                             }
                         </div>
+                        <div class="radio" id="radio5">
+                            @if (Model.Answer.Trim() == "5")
+                            {
+                                <label><input type="radio" name="optradio" value="5" checked="checked">@Model.Option5</label>
+                            }
+                            else
+                            {
+                                <label><input type="radio" name="optradio" value="5">@Model.Option5</label>
+                            }
+                        </div>
+                        <div class="radio" id="radio6">
+                            @if (Model.Answer.Trim() == "6")
+                            {
+                                <label><input type="radio" name="optradio" value="6" checked="checked">@Model.Option6</label>
+                            }
+                            else
+                            {
+                                <label><input type="radio" name="optradio" value="6">@Model.Option6</label>
+                            }
+                        </div>
+                        <div class="radio" id="radio7">
+                            @if (Model.Answer.Trim() == "7")
+                            {
+                                <label><input type="radio" name="optradio" value="7" checked="checked">@Model.Option7</label>
+                            }
+                            else
+                            {
+                                <label><input type="radio" name="optradio" value="7">@Model.Option7</label>
+                            }
+                        </div>
+                        <div class="radio" id="radio8">
+                            @if (Model.Answer.Trim() == "8")
+                            {
+                                <label><input type="radio" name="optradio" value="8" checked="checked">@Model.Option8</label>
+                            }
+                            else
+                            {
+                                <label><input type="radio" name="optradio" value="8">@Model.Option8</label>
+                            }
+                        </div>
                     </div>
+                    <script>
+                        for(var i=@Model.OptionCount+1; i<=8;i++)
+                        {
+                            $("#radio"+i).hide();
+                        }
+                    </script>
                 }
             }
             else if (Model.QuestionType == 1 && Model.AnswerType == 2)
@@ -103,13 +167,32 @@
                         <div class="checkbox">
                             <label><input type="checkbox" name="optcheckbox" value="2">@Model.Option2</label>
                         </div>
-                        <div class="checkbox">
+                        <div class="checkbox" id="checkbox3">
                             <label><input type="checkbox" name="optcheckbox" value="3">@Model.Option3</label>
                         </div>
-                        <div class="checkbox">
+                        <div class="checkbox" id="checkbox4">
                             <label><input type="checkbox" name="optcheckbox" value="4">@Model.Option4</label>
                         </div>
+                        <div class="checkbox" id="checkbox5">
+                            <label><input type="checkbox" name="optcheckbox" value="5">@Model.Option5</label>
+                        </div>
+                        <div class="checkbox" id="checkbox6">
+                            <label><input type="checkbox" name="optcheckbox" value="6">@Model.Option6</label>
+                        </div>
+                        <div class="checkbox" id="checkbox7">
+                            <label><input type="checkbox" name="optcheckbox" value="7">@Model.Option7</label>
+                        </div>
+                        <div class="checkbox" id="checkbox8">
+                            <label><input type="checkbox" name="optcheckbox" value="8">@Model.Option8</label>
+                        </div>
                     </div>
+
+                    <script>
+                        for(var i=@Model.OptionCount+1; i<=8;i++)
+                        {
+                            $("#checkbox"+i).hide();
+                        }
+                    </script>
                 }
                 else
                 {
@@ -120,34 +203,38 @@
                         <div class="checkbox">
                             <label><input id="optcheckbox2" type="checkbox" name="optcheckbox" value="2">@Model.Option2</label>
                         </div>
-                        <div class="checkbox">
+                        <div class="checkbox" id="checkbox3">
                             <label><input id="optcheckbox3" type="checkbox" name="optcheckbox" value="3">@Model.Option3</label>
                         </div>
-                        <div class="checkbox">
+                        <div class="checkbox" id="checkbox4">
                             <label><input id="optcheckbox4" type="checkbox" name="optcheckbox" value="4">@Model.Option4</label>
+                        </div>
+                        <div class="checkbox" id="checkbox5">
+                            <label><input id="optcheckbox5" type="checkbox" name="optcheckbox" value="5">@Model.Option5</label>
+                        </div>
+                        <div class="checkbox" id="checkbox6">
+                            <label><input id="optcheckbox6" type="checkbox" name="optcheckbox" value="6">@Model.Option6</label>
+                        </div>
+                        <div class="checkbox" id="checkbox7">
+                            <label><input id="optcheckbox7" type="checkbox" name="optcheckbox" value="7">@Model.Option7</label>
+                        </div>
+                        <div class="checkbox" id="checkbox8">
+                            <label><input id="optcheckbox8" type="checkbox" name="optcheckbox" value="8">@Model.Option8</label>
                         </div>
                     </div>
                     foreach (string str in Model.Answer.Split(','))
                     {
                         <script>
-                            if(@str=="1")
-                            {
-                                $('#optcheckbox1').prop('checked', true);
-                            }
-                            if(@str=="2")
-                            {
-                                $('#optcheckbox2').prop('checked', true);
-                            }
-                            if(@str=="3")
-                            {
-                                $('#optcheckbox3').prop('checked', true);
-                            }
-                            if(@str=="4")
-                            {
-                                $('#optcheckbox4').prop('checked', true);
-                            }
+                            $('#optcheckbox'+@str).prop('checked', true);
                         </script>
                     }
+
+                    <script>
+                        for(var i=@Model.OptionCount+1; i<=8;i++)
+                        {
+                            $("#checkbox"+i).hide();
+                        }
+                    </script>
                 }
             }
 
@@ -166,32 +253,32 @@
 
 <div class="row">
     <div class="col-md-9 col-md-offset-2" style="margin-top:1%;">
-        @if (Model.IsFirst == false)
+        @if (!Model.IsFirst)
         {
             @(Html.Kendo().Button()
-                .Name("btnNext")
-                    .HtmlAttributes(new { type = "button" }).Events(e => e.Click("OnNext"))
-                        .Content("Next").HtmlAttributes(new { style = "float: right;" }))
+        .Name("btnNext")
+        .HtmlAttributes(new { type = "button" }).Events(e => e.Click("OnNext"))
+        .Content("Next").HtmlAttributes(new { style = "float: right;" }))
         }
 
-        @if (Model.IsLast == false)
+        @if (!Model.IsLast)
         {
             @(Html.Kendo().Button()
-                .Name("btnPrevious")
-                        .HtmlAttributes(new { type = "button" }).Events(e => e.Click("OnPrevious"))
-                                .Content("Previous").HtmlAttributes(new { style = "float: right;" }))
+        .Name("btnPrevious")
+        .HtmlAttributes(new { type = "button" }).Events(e => e.Click("OnPrevious"))
+        .Content("Previous").HtmlAttributes(new { style = "float: right;" }))
         }
     </div>
 </div>
 
 <div class="row">
     <div class="col-md-9 col-md-offset-2" style="margin-top:1%;">
-        @if (Model.IsFirst == true)
+        @if (Model.IsFirst)
         {
             @(Html.Kendo().Button()
-                .Name("btnSubmit")
-                        .HtmlAttributes(new { type = "button" }).Events(e => e.Click("OnSubmitTest"))
-                        .Content("Submit Test").HtmlAttributes(new { style = "float: right;" }))
+        .Name("btnSubmit")
+        .HtmlAttributes(new { type = "button" }).Events(e => e.Click("OnSubmitTest"))
+        .Content("Submit Test").HtmlAttributes(new { style = "float: right;" }))
         }
     </div>
 </div>

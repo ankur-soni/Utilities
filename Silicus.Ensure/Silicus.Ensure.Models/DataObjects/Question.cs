@@ -1,5 +1,4 @@
 ﻿using System;
-using System.ComponentModel.DataAnnotations;
 
 namespace Silicus.Ensure.Models.DataObjects
 {
@@ -9,14 +8,19 @@ namespace Silicus.Ensure.Models.DataObjects
         public int QuestionType { get; set; }
         public string QuestionDescription { get; set; }
         public int AnswerType { get; set; }
+        public int OptionCount { get; set; }
         public string Option1 { get; set; }
         public string Option2 { get; set; }
         public string Option3 { get; set; }
         public string Option4 { get; set; }
+        public string Option5 { get; set; }
+        public string Option6 { get; set; }
+        public string Option7 { get; set; }
+        public string Option8 { get; set; }
         public string CorrectAnswer { get; set; }
         public string Answer { get; set; }
         public string Tags { get; set; }
-        public int Competency { get; set; }
+        public int ProficiencyLevel { get; set; }
         public int Duration { get; set; }
         public int Marks { get; set; }
         public bool IsPublishd { get; set; }

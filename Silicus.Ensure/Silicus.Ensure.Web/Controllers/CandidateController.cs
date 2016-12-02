@@ -1,4 +1,5 @@
-﻿using Silicus.Ensure.Models.DataObjects;
+﻿using Silicus.Ensure.Models.Constants;
+using Silicus.Ensure.Models.DataObjects;
 using Silicus.Ensure.Services.Interfaces;
 using Silicus.Ensure.Web.Mappings;
 using Silicus.Ensure.Web.Models;
@@ -59,8 +60,8 @@ namespace Silicus.Ensure.Web.Controllers
             }
 
             TestSuiteCandidateModel testSuiteCandidateModel = _mappingService.Map<UserTestSuite, TestSuiteCandidateModel>(userTestSuite);
-            testSuiteCandidateModel.TotalCount = testSuiteCandidateModel.PracticalCount + testSuiteCandidateModel.ObjectiveCount;
-            testSuiteCandidateModel.DurationInMin = testSuiteCandidateModel.Duration / 60;
+            testSuiteCandidateModel.TotalQuestionCount = testSuiteCandidateModel.PracticalCount + testSuiteCandidateModel.ObjectiveCount;
+            testSuiteCandidateModel.DurationInMin = testSuiteCandidateModel.Duration;
 
             return View(testSuiteCandidateModel);
         }
@@ -71,40 +72,59 @@ namespace Silicus.Ensure.Web.Controllers
             return PartialView("_partialViewQuestion", testSuiteQuestionModel);
         }
 
-        public ActionResult OnNextPrevious(int Qnumber, char Move, int? userTestSuiteId, int? userTestDetailId, string answer)
+        public ActionResult OnNextPrevious(int qNumber, char move, int? userTestSuiteId, int? userTestDetailId, string answer)
         {
             answer = HttpUtility.HtmlDecode(answer);
             UpdateAnswer(answer, userTestDetailId);
-            TestSuiteQuestionModel testSuiteQuestionModel = new TestSuiteQuestionModel();
-            if (Move == 'N')
-                testSuiteQuestionModel = TestSuiteQuestion(Qnumber += 1, userTestSuiteId);
-            else
-                testSuiteQuestionModel = TestSuiteQuestion(Qnumber -= 1, userTestSuiteId);
+            var testSuiteQuestionModel = (move == 'N') ? TestSuiteQuestion(qNumber += 1, userTestSuiteId) : TestSuiteQuestion(qNumber -= 1, userTestSuiteId);
 
             return PartialView("_partialViewQuestion", testSuiteQuestionModel);
         }
 
-        public ActionResult OnSubmitTest(int? userTestDetailId, int userId, string answer)
+        public ActionResult OnSubmitTest(int testSuiteId, int userTestSuiteId, int? userTestDetailId, int userId, string answer)
         {
+            // Update last question answer of test.
             answer = HttpUtility.HtmlDecode(answer);
             UpdateAnswer(answer, userTestDetailId);
-            List<User> userAdmin = _userService.GetUserByRole("ADMIN").ToList();
 
+            // Update candidate status as Test "Submitted".
             User candidate = _userService.GetUserById(userId);
-            candidate.TestStatus = "Test Submitted";
+            candidate.TestStatus = TestStatus.Submitted.ToString();
             _userService.Update(candidate);
 
-            if (userAdmin != null)
-                SendSubmittedTestMail(userAdmin, candidate.FirstName + " " + candidate.LastName);
+            // Update total time utilization for test back to UserTestSuite.
+            TestSuite suite = _testSuiteService.GetTestSuitById(testSuiteId);
+            UserTestSuite testSuit = _testSuiteService.GetUserTestSuiteId(userTestSuiteId);
+            testSuit.Duration = suite.Duration + (testSuit.ExtraCount * 10);
+            _testSuiteService.UpdateUserTestSuite(testSuit);
+
+            // Calculate marks on test submit.
+            CalculateMarks(userTestSuiteId);
+
+            // Get All admin to send mail.
+            List<User> userAdmin = _userService.GetUserByRole("ADMIN").ToList();
+            SendSubmittedTestMail(userAdmin, candidate.FirstName + " " + candidate.LastName);
 
             return RedirectToAction("LogOff", "Account");
         }
 
         [HttpPost]
-        public JsonResult AddMoreTime(int count)
+        public JsonResult AddMoreTime(int count, int userTestSuiteId)
         {
-            count++;
+            count = count + 1;
+            UserTestSuite userTestSuite = _testSuiteService.GetUserTestSuiteId(userTestSuiteId);
+            userTestSuite.ExtraCount = count;
+            _testSuiteService.UpdateUserTestSuite(userTestSuite);
             return Json(count);
+        }
+
+        [HttpPost]
+        public JsonResult UpdateTimeCounter(int time, int userTestSuiteId)
+        {
+            UserTestSuite userTestSuite = _testSuiteService.GetUserTestSuiteId(userTestSuiteId);
+            userTestSuite.Duration = time / 60;
+            _testSuiteService.UpdateUserTestSuite(userTestSuite);
+            return Json(1);
         }
 
         private void UpdateAnswer(string answer, int? userTestDetailId)
@@ -114,9 +134,9 @@ namespace Silicus.Ensure.Web.Controllers
             _testSuiteService.UpdateUserTestDetails(userTestDetails);
         }
 
-        private TestSuiteQuestionModel TestSuiteQuestion(int Qnumber, int? userTestSuiteId)
+        private TestSuiteQuestionModel TestSuiteQuestion(int qNumber, int? userTestSuiteId)
         {
-            int Count = 0;
+            var count = 0;
             dynamic userTestDetails = _testSuiteService.GetUserTestDetailsByUserTestSuitId(userTestSuiteId);
             List<TestSuiteQuestionModel> testSuiteQuestionModel = new List<TestSuiteQuestionModel>();
             TestSuiteQuestionModel model;
@@ -124,28 +144,33 @@ namespace Silicus.Ensure.Web.Controllers
             foreach (var obj in userTestDetails)
             {
                 model = new TestSuiteQuestionModel();
-                model.QuestionNumber = Count += 1;
+                model.QuestionNumber = count += 1;
                 model.UserTestDetailId = obj.GetType().GetProperty("TestDetailId").GetValue(obj);
                 model.Answer = obj.GetType().GetProperty("Answer").GetValue(obj);
                 model.Id = obj.GetType().GetProperty("Id").GetValue(obj);
                 model.QuestionType = obj.GetType().GetProperty("QuestionType").GetValue(obj);
                 model.AnswerType = obj.GetType().GetProperty("AnswerType").GetValue(obj);
                 model.QuestionDescription = obj.GetType().GetProperty("QuestionDescription").GetValue(obj);
+                model.OptionCount = obj.GetType().GetProperty("OptionCount").GetValue(obj);
                 model.Option1 = obj.GetType().GetProperty("Option1").GetValue(obj);
                 model.Option2 = obj.GetType().GetProperty("Option2").GetValue(obj);
                 model.Option3 = obj.GetType().GetProperty("Option3").GetValue(obj);
                 model.Option4 = obj.GetType().GetProperty("Option4").GetValue(obj);
+                model.Option5 = obj.GetType().GetProperty("Option5").GetValue(obj);
+                model.Option6 = obj.GetType().GetProperty("Option6").GetValue(obj);
+                model.Option7 = obj.GetType().GetProperty("Option7").GetValue(obj);
+                model.Option8 = obj.GetType().GetProperty("Option8").GetValue(obj);
                 model.Marks = obj.GetType().GetProperty("Marks").GetValue(obj);
                 testSuiteQuestionModel.Add(model);
             }
 
             int totalQCount = testSuiteQuestionModel.Count;
-            TestSuiteQuestionModel TQuestion = testSuiteQuestionModel.Where(p => p.QuestionNumber == Qnumber).First();
-            if (Qnumber == 1)
-                TQuestion.IsLast = true;
-            if (Qnumber == totalQCount)
-                TQuestion.IsFirst = true;
-            return TQuestion;
+            TestSuiteQuestionModel tQuestion = testSuiteQuestionModel.Where(p => p.QuestionNumber == qNumber).First();
+            if (qNumber == 1)
+                tQuestion.IsLast = true;
+            if (qNumber == totalQCount)
+                tQuestion.IsFirst = true;
+            return tQuestion;
         }
 
         private void SendSubmittedTestMail(List<User> userAdmin, string fullname)
@@ -162,6 +187,24 @@ namespace Silicus.Ensure.Web.Controllers
 
 
                 _emailService.SendEmailAsync(usr.Email, subject, body);
+            }
+        }
+
+        private void CalculateMarks(int userTestSuiteId)
+        {
+            List<UserTestDetails> userTestDetails = _testSuiteService.GetUserTestDetailsListByUserTestSuitId(userTestSuiteId).ToList();
+            foreach (UserTestDetails testDetail in userTestDetails)
+            {
+                Question question = _questionService.GetSingleQuestion(testDetail.QuestionId);
+                if (question.QuestionType == 1)
+                {
+                    if (question.CorrectAnswer.Trim() == testDetail.Answer.Trim())
+                        testDetail.Mark = question.Marks;
+                    else
+                        testDetail.Mark = 0;
+
+                    _testSuiteService.UpdateUserTestDetails(testDetail);
+                }
             }
         }
     }

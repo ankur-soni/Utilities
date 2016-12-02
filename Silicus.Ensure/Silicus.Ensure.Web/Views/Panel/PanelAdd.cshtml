@@ -65,21 +65,34 @@
                                     })
                                     .HtmlAttributes(new { style = "width: 100%;border-color: #c5c5c5;" })
                     )
+                    <script>
+                        function onDataBound() {
+                            var dataItem = this.dataItem();
+                            if (dataItem['Text'] == '@RoleName.Panel') {
+                                $('#AssignCandidate').fadeIn();
+                            }
+                            else {
+                                $('#AssignCandidate').fadeOut();
+                            }
+                        }
+                        function onSelect(e) {
+                            var dataItem = this.dataItem();
+                            if (dataItem['Text'] == '@RoleName.Panel') {
+                                $('#AssignCandidate').fadeIn();
+                            }
+                            else {
+                                $('#AssignCandidate').fadeOut();
+                            }
+                        };
+                    </script>
 
                 </div>
             </div>
             <div id="AssignCandidate" class="row" style="margin-bottom:10px;display:none">
                 <div class="col-md-4">
-                    <span>Assign Candidate:</span><span style="color:red"></span>
+                    <span>Assign Candidate:</span><span style="color:red">*</span>
                 </div>
 
-                <div class="col-md-8">
-                    @(Html.Kendo().MultiSelectFor(x => x.CandidateList)
-                            .Name("CandidateList")
-                            .BindTo(new SelectList(ViewBag.CandidateList, "Value", "Text"))
-                            .Value(Model.CandidateList)
-                            .HtmlAttributes(new { style = "width: 100%" })
-                    )
                 </div>
             </div>
             <div class="row" style="margin-bottom:10px;">
@@ -289,7 +302,7 @@
                             if(!data) {
                                 ShowMessage('Email id already exists!', 0);
                                 return false;
-                            }
+                }
                             else
                             {
                                 return true;

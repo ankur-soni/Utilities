@@ -1,11 +1,9 @@
 ﻿using Microsoft.AspNet.Identity.Owin;
 using Silicus.Ensure.Entities.Identity;
-using Silicus.Ensure.Models.Constants;
 using Silicus.Ensure.Models.DataObjects;
 using Silicus.Ensure.Services.Interfaces;
 using Silicus.Ensure.Web.Mappings;
 using Silicus.Ensure.Web.Models;
-using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;

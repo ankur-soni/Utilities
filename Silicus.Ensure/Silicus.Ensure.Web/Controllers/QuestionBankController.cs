@@ -23,10 +23,10 @@ namespace Silicus.Ensure.Web.Controllers
             _mappingService = mappingService;
         }
 
-        public ActionResult AddQuestions(string QuestionId)
+        public ActionResult AddQuestions(string questionId)
         {
-            QuestionModel Que = new QuestionModel { QuestionType = "0", SkillTagsList = Tags() };
-            return View(Que);
+            QuestionModel que = new QuestionModel { QuestionType = "0", OptionCount = 2, SkillTagsList = Tags() };
+            return View(que);
         }
 
         [HttpPost]
@@ -34,29 +34,29 @@ namespace Silicus.Ensure.Web.Controllers
         {
             if (ModelState.IsValid)
             {
-                Question Que = _mappingService.Map<QuestionModel, Question>(question);
-                Que.QuestionDescription = HttpUtility.HtmlDecode(question.QuestionDescription);
-                Que.CorrectAnswer = (question.CorrectAnswer != null) ? string.Join(",", question.CorrectAnswer) : null;
-                Que.Answer = HttpUtility.HtmlDecode(question.Answer);
-                Que.Tags = string.Join(",", question.SkillTag);
-                Que.IsPublishd = true;
-                Que.ModifiedOn = DateTime.Now;
-                Que.ModifiedBy = 0;
+                Question que = _mappingService.Map<QuestionModel, Question>(question);
+                que.QuestionDescription = HttpUtility.HtmlDecode(question.QuestionDescription);
+                que.CorrectAnswer = (question.CorrectAnswer != null) ? string.Join(",", question.CorrectAnswer) : null;
+                que.Answer = HttpUtility.HtmlDecode(question.Answer);
+                que.Tags = string.Join(",", question.SkillTag);
+                que.IsPublishd = true;
+                que.ModifiedOn = DateTime.Now;
+                que.ModifiedBy = 0;
                 bool isEdit = false;
 
 
                 if (question.Edit)
                 {
                     isEdit = true;
-                    Que.CreatedOn = question.CreatedOn;
-                    Que.CreatedBy = question.CreatedBy;
-                    _questionService.Update(Que);
+                    que.CreatedOn = question.CreatedOn;
+                    que.CreatedBy = question.CreatedBy;
+                    _questionService.Update(que);
                 }
                 else
                 {
-                    Que.CreatedOn = DateTime.Now;
-                    Que.CreatedBy = 0;
-                    _questionService.Add(Que);
+                    que.CreatedOn = DateTime.Now;
+                    que.CreatedBy = 0;
+                    _questionService.Add(que);
                 }
                 question = new QuestionModel() { Success = 1, Edit = isEdit, QuestionType = "0", SkillTagsList = Tags() };
             }
@@ -69,40 +69,40 @@ namespace Silicus.Ensure.Web.Controllers
 
         public ActionResult QuestionBank()
         {
-            var Que = _questionService.GetQuestion().ToList();
-            var QueModel = _mappingService.Map<List<Question>, List<QuestionModel>>(Que);
-            foreach (var q in QueModel)
+            var que = _questionService.GetQuestion().ToList();
+            var queModel = _mappingService.Map<List<Question>, List<QuestionModel>>(que);
+            foreach (var q in queModel)
             {
                 q.QuestionDescription = q.QuestionDescription.Substring(0, Math.Min(q.QuestionDescription.Length, 100));
                 q.QuestionType = GetQuestionType(q.QuestionType);
-                q.Tag = string.Join(" | ", Tags().Where(t => Que.Where(x => x.Id == q.Id).Select(p => p.Tags).FirstOrDefault().ToString().Split(',').Contains(t.TagId.ToString())).Select(l => l.TagName).ToList());
-                q.Competency = GetCompetency(q.Competency);
+                q.Tag = string.Join(" | ", Tags().Where(t => que.Where(x => x.Id == q.Id).Select(p => p.Tags).First().ToString().Split(',').Contains(t.TagId.ToString())).Select(l => l.TagName).ToList());
+                q.ProficiencyLevel = GetCompetency(q.ProficiencyLevel);
             }
-            return View(QueModel);
+            return View(queModel);
         }
 
-        public ActionResult EditQuestion(string QuestionId)
+        public ActionResult EditQuestion(string questionId)
         {
-            if (!string.IsNullOrEmpty(QuestionId))
+            if (!string.IsNullOrEmpty(questionId))
             {
-                Question question = _questionService.GetSingleQuestion(Convert.ToInt32(QuestionId));
-                QuestionModel QueModel = _mappingService.Map<Question, QuestionModel>(question);
-                QueModel.QuestionDescription = HttpUtility.HtmlDecode(question.QuestionDescription);
-                QueModel.CorrectAnswer = (question.CorrectAnswer != null) ? question.CorrectAnswer.Split(',').ToList() : null;
-                QueModel.Answer = HttpUtility.HtmlDecode(question.Answer);
-                QueModel.SkillTag = question.Tags.Split(',').ToList();
-                QueModel.Success = 0;
-                QueModel.Edit = true;
-                QueModel.SkillTagsList = Tags();
-                return View("AddQuestions", QueModel);
+                Question question = _questionService.GetSingleQuestion(Convert.ToInt32(questionId));
+                QuestionModel queModel = _mappingService.Map<Question, QuestionModel>(question);
+                queModel.QuestionDescription = HttpUtility.HtmlDecode(question.QuestionDescription);
+                queModel.CorrectAnswer = (question.CorrectAnswer != null) ? question.CorrectAnswer.Split(',').ToList() : null;
+                queModel.Answer = HttpUtility.HtmlDecode(question.Answer);
+                queModel.SkillTag = question.Tags.Split(',').ToList();
+                queModel.Success = 0;
+                queModel.Edit = true;
+                queModel.SkillTagsList = Tags();
+                return View("AddQuestions", queModel);
             }
             return View("AddQuestions", null);
         }
 
         [HttpDelete]
-        public JsonResult DeleteQuestion(int QuestionId)
+        public JsonResult DeleteQuestion(int questionId)
         {
-            _questionService.Delete(QuestionId);
+            _questionService.Delete(questionId);
             return Json(1);
         }
 

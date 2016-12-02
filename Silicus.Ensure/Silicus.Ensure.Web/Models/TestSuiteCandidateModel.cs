@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-
+﻿
 namespace Silicus.Ensure.Web.Models
 {
     public class TestSuiteCandidateModel
@@ -13,7 +9,8 @@ namespace Silicus.Ensure.Web.Models
         public int ObjectiveCount { get; set; }
         public int PracticalCount { get; set; }
         public int Duration { get; set; }
-        public int TotalCount { get; set; }
+        public int TotalQuestionCount { get; set; }
         public int DurationInMin { get; set; }
+        public int ExtraCount { get; set; }
     }
 }

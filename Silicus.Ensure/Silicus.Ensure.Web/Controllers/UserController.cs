@@ -14,8 +14,6 @@ using System.Web;
 using System.Web.Mvc;
 using System.IO;
 using Silicus.Ensure.Models.Constants;
-using Silicus.Ensure.Entities;
-using System.Configuration;
 
 namespace Silicus.Ensure.Web.Controllers
 {
@@ -23,6 +21,7 @@ namespace Silicus.Ensure.Web.Controllers
     {
         private readonly IUserService _userService;
         private readonly IMappingService _mappingService;
+        private readonly ITestSuiteService _testSuiteService;
 
         private ApplicationUserManager _userManager;
         public ApplicationUserManager UserManager
@@ -50,10 +49,11 @@ namespace Silicus.Ensure.Web.Controllers
             }
         }
 
-        public UserController(IUserService userService, MappingService mappingService)
+        public UserController(IUserService userService, MappingService mappingService, ITestSuiteService testSuiteService)
         {
             _userService = userService;
             _mappingService = mappingService;
+            _testSuiteService = testSuiteService;
         }
 
         public ActionResult Dashboard()
@@ -115,6 +115,8 @@ namespace Silicus.Ensure.Web.Controllers
         /// <returns></returns>
         public async Task<ActionResult> GetCandidateDetails([DataSourceRequest] DataSourceRequest request, string RoleName)
         {
+            _testSuiteService.TestSuiteActivation(); 
+
             var userlist = _userService.GetUserDetails().Where(p => p.Role.ToLower() == RoleName.ToLower()).ToArray();
 
             var viewModels = _mappingService.Map<User[], UserViewModel[]>(userlist);
@@ -182,8 +184,7 @@ namespace Silicus.Ensure.Web.Controllers
                     if (!string.IsNullOrWhiteSpace(vuser.ErrorMessage)) { return RedirectToAction(actionErrorName, controllerName, new { UserId = vuser.UserId }); }
 
                     var organizationUserDomainModel = _mappingService.Map<UserViewModel, User>(vuser);
-                    vuser.UserId = _userService.Add(organizationUserDomainModel);
-
+                    int Add = _userService.Add(organizationUserDomainModel);
                 }
 
             }

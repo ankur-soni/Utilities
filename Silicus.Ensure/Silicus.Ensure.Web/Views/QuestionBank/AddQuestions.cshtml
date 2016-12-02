@@ -1,5 +1,6 @@
 ﻿@model Silicus.Ensure.Web.Models.QuestionModel
 @using Kendo.Mvc.UI;
+@using Silicus.Ensure.Models.Constants;
 
 @{
     ViewBag.Title = "Add Questions";
@@ -20,21 +21,10 @@
                 <div class="col-md-8">
                     @(Html.Kendo().DropDownListFor(m => m.QuestionType)
                 .Name("QuestionType")
-                .DataTextField("Text")
-                .DataValueField("Value")
                 .Value(Model.QuestionType)
                 .Events(e => e.Change("QuestionTypeChange"))
-                    .BindTo(new List<SelectListItem>
-                    () {
-                    new SelectListItem(){
-                    Text="Objective",
-                    Value="1"
-                    },
-                    new SelectListItem(){
-                    Text="Practical",
-                    Value="2"
-                    }
-                    }).HtmlAttributes(new { style = "width: 100%" }))
+                .BindTo(EnumHelper.GetSelectList(typeof(QuestionType)))
+                .HtmlAttributes(new { style = "width: 100%" }))
                 </div>
             </div>
             <br />
@@ -58,20 +48,9 @@
                     <div class="col-md-8">
                         @(Html.Kendo().DropDownListFor(m => m.AnswerType)
                     .Name("AnswerType")
-                    .DataTextField("Text")
-                    .DataValueField("Value")
                     .Value(Model.AnswerType.ToString())
-                        .BindTo(new List<SelectListItem>
-                        () {
-                        new SelectListItem(){
-                        Text="Single Choice",
-                        Value="1"
-                        },
-                        new SelectListItem(){
-                        Text="Multiple Choice",
-                        Value="2"
-                        }
-                        }).HtmlAttributes(new { style = "width: 100%" }))
+                    .BindTo(EnumHelper.GetSelectList(typeof(AnswerType)))
+                    .HtmlAttributes(new { style = "width: 100%" }))
                     </div>
                 </div>
                 <br />
@@ -87,35 +66,97 @@
                     <div class="col-md-4">
                         <span>Option 1:</span><span style="color:red">*</span>
                     </div>
-                    <div class="col-md-8">
+                    <div class="col-md-6">
                         @Html.TextBoxFor(m => m.Option1, new { @class = "form-control", Value = @Model.Option1 })
                     </div>
                 </div>
 
-                <div class="row">
+                <div class="row" id="rowOpt2">
                     <div class="col-md-4">
                         <span>Option 2:</span><span style="color:red">*</span>
                     </div>
-                    <div class="col-md-8">
+                    <div class="col-md-6">
                         @Html.TextBoxFor(m => m.Option2, new { @class = "form-control", Value = @Model.Option2 })
                     </div>
+                    <div class="col-md-2">
+                        @(Html.Kendo().Button().Name("btnAddOpt2").Icon("plus").HtmlAttributes(new { type = "button", param = "2" }).Events(e => e.Click("OptionAdd")).Content("Add"))
+                    </div>
                 </div>
 
-                <div class="row">
+                <div class="row" id="rowOpt3">
                     <div class="col-md-4">
-                        <span>Option 3:</span><span style="color:red">*</span>
+                        <span>Option 3:</span>
                     </div>
-                    <div class="col-md-8">
+                    <div class="col-md-6">
                         @Html.TextBoxFor(m => m.Option3, new { @class = "form-control", Value = @Model.Option3 })
                     </div>
+                    <div class="col-md-2">
+                        @(Html.Kendo().Button().Name("btnAddOpt3").Icon("plus").HtmlAttributes(new { type = "button", param = "3" }).Events(e => e.Click("OptionAdd")).Content("Add"))
+                        @(Html.Kendo().Button().Name("btnDelOpt3").Icon("close").HtmlAttributes(new { type = "button", param = "3" }).Events(e => e.Click("OptionDelete")).Content("Delete"))
+                    </div>
                 </div>
 
-                <div class="row">
+                <div class="row" id="rowOpt4">
                     <div class="col-md-4">
-                        <span>Option 4:</span><span style="color:red">*</span>
+                        <span>Option 4:</span>
                     </div>
-                    <div class="col-md-8">
+                    <div class="col-md-6">
                         @Html.TextBoxFor(m => m.Option4, new { @class = "form-control", Value = @Model.Option4 })
+                    </div>
+                    <div class="col-md-2">
+                        @(Html.Kendo().Button().Name("btnAddOpt4").Icon("plus").HtmlAttributes(new { type = "button", param = "4" }).Events(e => e.Click("OptionAdd")).Content("Add"))
+                        @(Html.Kendo().Button().Name("btnDelOpt4").Icon("close").HtmlAttributes(new { type = "button", param = "4" }).Events(e => e.Click("OptionDelete")).Content("Delete"))
+                    </div>
+                </div>
+
+                <div class="row" id="rowOpt5">
+                    <div class="col-md-4">
+                        <span>Option 5:</span>
+                    </div>
+                    <div class="col-md-6">
+                        @Html.TextBoxFor(m => m.Option5, new { @class = "form-control", Value = @Model.Option5 })
+                    </div>
+                    <div class="col-md-2">
+                        @(Html.Kendo().Button().Name("btnAddOpt5").Icon("plus").HtmlAttributes(new { type = "button", param = "5" }).Events(e => e.Click("OptionAdd")).Content("Add"))
+                        @(Html.Kendo().Button().Name("btnDelOpt5").Icon("close").HtmlAttributes(new { type = "button", param = "5" }).Events(e => e.Click("OptionDelete")).Content("Delete"))
+                    </div>
+                </div>
+
+                <div class="row" id="rowOpt6">
+                    <div class="col-md-4">
+                        <span>Option 6:</span>
+                    </div>
+                    <div class="col-md-6">
+                        @Html.TextBoxFor(m => m.Option6, new { @class = "form-control", Value = @Model.Option6 })
+                    </div>
+                    <div class="col-md-2">
+                        @(Html.Kendo().Button().Name("btnAddOpt6").Icon("plus").HtmlAttributes(new { type = "button", param = "6" }).Events(e => e.Click("OptionAdd")).Content("Add"))
+                        @(Html.Kendo().Button().Name("btnDelOpt6").Icon("close").HtmlAttributes(new { type = "button", param = "6" }).Events(e => e.Click("OptionDelete")).Content("Delete"))
+                    </div>
+                </div>
+
+                <div class="row" id="rowOpt7">
+                    <div class="col-md-4">
+                        <span>Option 7:</span>
+                    </div>
+                    <div class="col-md-6">
+                        @Html.TextBoxFor(m => m.Option7, new { @class = "form-control", Value = @Model.Option7 })
+                    </div>
+                    <div class="col-md-2">
+                        @(Html.Kendo().Button().Name("btnAddOpt7").Icon("plus").HtmlAttributes(new { type = "button", param = "7" }).Events(e => e.Click("OptionAdd")).Content("Add"))
+                        @(Html.Kendo().Button().Name("btnDelOpt7").Icon("close").HtmlAttributes(new { type = "button", param = "7" }).Events(e => e.Click("OptionDelete")).Content("Delete"))
+                    </div>
+                </div>
+
+                <div class="row" id="rowOpt8">
+                    <div class="col-md-4">
+                        <span>Option 8:</span>
+                    </div>
+                    <div class="col-md-6">
+                        @Html.TextBoxFor(m => m.Option8, new { @class = "form-control", Value = @Model.Option8 })
+                    </div>
+                    <div class="col-md-2">
+                        @(Html.Kendo().Button().Name("btnDelOpt8").Icon("close").HtmlAttributes(new { type = "button", param = "8" }).Events(e => e.Click("OptionDelete")).Content("Delete"))
                     </div>
                 </div>
 
@@ -127,27 +168,9 @@
                     <div class="col-md-8">
                         @(Html.Kendo().MultiSelectFor(m => m.CorrectAnswer)
                     .Name("CorrectAnswer")
-                    .DataTextField("Text")
-                    .DataValueField("Value")
                     .Placeholder("Select correct option(s)...")
-                    .BindTo(new List<SelectListItem>() {
-                    new SelectListItem(){
-                    Text="Option 1",
-                    Value="1"
-                    },
-                    new SelectListItem(){
-                    Text="Option 2",
-                    Value="2"
-                    },
-                    new SelectListItem(){
-                    Text="Option 3",
-                    Value="3"
-                    },
-                    new SelectListItem(){
-                    Text="Option 4",
-                    Value="4"
-                    }
-                    }).Value(Model.CorrectAnswer).HtmlAttributes(new { style = "width: 100%" }))
+                    .BindTo(EnumHelper.GetSelectList(typeof(Options)))
+                    .Value(Model.CorrectAnswer).HtmlAttributes(new { style = "width: 100%" }))
                     </div>
                 </div>
             </div>
@@ -182,30 +205,15 @@
 
             <div class="row">
                 <div class="col-md-4">
-                    <span>Competency:</span><span style="color:red">*</span>
+                    <span>Proficiency Level:</span><span style="color:red">*</span>
                 </div>
 
                 <div class="col-md-8">
-                    @(Html.Kendo().DropDownListFor(m => m.Competency)
-                .Name("Competency")
-                .DataTextField("Text")
-                .DataValueField("Value")
-                .Value(Model.Competency)
-                .BindTo(new List<SelectListItem>
-                    () {
-                    new SelectListItem(){
-                    Text="Beginner",
-                    Value="1"
-                    },
-                    new SelectListItem(){
-                    Text="Intermediate",
-                    Value="2"
-                    },
-                    new SelectListItem(){
-                    Text="Expert",
-                    Value="3"
-                    }
-                    }).HtmlAttributes(new { style = "width: 100%" }))
+                    @(Html.Kendo().DropDownListFor(m => m.ProficiencyLevel)
+                .Name("ProficiencyLevel")
+                .Value(Model.ProficiencyLevel)
+                .BindTo(EnumHelper.GetSelectList(typeof(Proficiency)))
+                .HtmlAttributes(new { style = "width: 100%" }))
                 </div>
             </div>
             <br />
@@ -221,8 +229,7 @@
                 .DataTextField("Text")
                 .DataValueField("Value")
                 .Value(Model.Duration.ToString())
-                .BindTo(new List<SelectListItem>
-                    () {
+                .BindTo(new List<SelectListItem>() {
                     new SelectListItem(){
                     Text="1",
                     Value="1"
@@ -251,7 +258,8 @@
                     Text="20",
                     Value="20"
                     }
-                    }).HtmlAttributes(new { style = "width: 100%" }))
+                    })
+                .HtmlAttributes(new { style = "width: 100%" }))
                 </div>
             </div>
             <br />
@@ -267,8 +275,7 @@
                 .DataTextField("Text")
                 .DataValueField("Value")
                 .Value(Model.Marks.ToString())
-                .BindTo(new List<SelectListItem>
-                    () {
+                .BindTo(new List<SelectListItem>() {
                     new SelectListItem(){
                     Text="1",
                     Value="1"
@@ -297,7 +304,8 @@
                     Text="20",
                     Value="20"
                     }
-                    }).HtmlAttributes(new { style = "width: 100%" }))
+                    })
+                .HtmlAttributes(new { style = "width: 100%" }))
                 </div>
             </div>
             <br />
@@ -317,6 +325,7 @@
                 .Content("Save"))
                 </div>
             </div>
+            @Html.HiddenFor(m => m.OptionCount, new { Value = @Model.OptionCount })
             @Html.HiddenFor(m => m.CreatedOn, new { Value = @Model.CreatedOn })
             @Html.HiddenFor(m => m.CreatedBy, new { Value = @Model.CreatedBy })
             @Html.HiddenFor(m => m.Id, new { Value = @Model.Id })
@@ -324,15 +333,24 @@
 
             <script>
                 $(document).ready(function () {
+
+                    // Hide More Than 2 Options.
+                    for(var i=3; i<=8; i++)
+                    {
+                        $("#rowOpt"+i).hide();
+                    }
+
+                    ShowRequiredOptionInCorrectAnswerDropDown();
+
                     $("#errorDiv").hide();
                     $("#durationRequired").hide();
                     $("#practicalAns").hide();
 
 
                     var success =@Model.Success;
+                    var edit="@Model.Edit";
                     if(success==1)
                     {
-                        var edit="@Model.Edit";
                         if(edit=="True"){
                             $("#myModal").modal();
                             $("#msgContent").text("Question updated successfully.");
@@ -342,63 +360,67 @@
                             $("#msgContent").text("Question added successfully in the application.");
                         }
                     }
+                    else
+                    {
+                        if(edit=="True"){
+                            var optCnt=@Model.OptionCount;
+                            OptionDispalyOnEdit(optCnt);
+                            ShowRequiredOptionInCorrectAnswerDropDown();
+                        }
+                    }
+
+
 
                     // Check Question Type on Edit.
-                    var Qtype=@Model.QuestionType;
-                    if(Qtype=="2")
-                    {
+                    var qtype=@Model.QuestionType;
+                    if (qtype == "2") {
                         $("#practical").hide();
                         $("#practicalAns").show();
                         $("#durationRequired").show();
                     }
 
                     // Save and Edit Activity Validation.
-                    $("#btnSave").click(function () {
+                    $("#btnSave")
+                        .click(function() {
 
-                        var qType = $('#QuestionType').val();
+                            var qType = $('#QuestionType').val();
 
-                        if ($("#QuestionDescription").val().trim().length == 0) {
-                            $("#QuestionDescription").focus();
-                            ShowError("Question description cann't be blank.");
-                            return false;
-                        }
-                        else {
-
-                            if (qType == 1) {
-                                if ($("#Option1").val().trim().length == 0) {
-                                    $("#Option1").focus();
-                                    ShowError("Option 1 cann't be blank.");
-                                    return false;
-                                }
-                                else if ($("#Option2").val().trim().length == 0) {
-                                    $("#Option2").focus();
-                                    ShowError("Option 2 cann't be blank.");
-                                    return false;
-                                }
-                                else if ($("#Option3").val().trim().length == 0) {
-                                    $("#Option3").focus();
-                                    ShowError("Option 3 cann't be blank.");
-                                    return false;
-                                }
-                                else if ($("#Option4").val().trim().length == 0) {
-                                    $("#Option4").focus();
-                                    ShowError("Option 4 cann't be blank.");
-                                    return false;
-                                }
-                                else if ($("#CorrectAnswer :selected").length == 0) {
-                                    $("#CorrectAnswer").focus();
-                                    ShowError("Select at least 1 correct answer.");
-                                    return false;
-                                }
-                            }
-
-                            if ($("#SkillTag :selected").length == 0) {
-                                $("#SkillTag").focus();
-                                ShowError("Select at least 1 skill tag.");
+                            if ($("#QuestionDescription").val().trim().length == 0) {
+                                $("#QuestionDescription").focus();
+                                ShowError("Question description cann't be blank.");
                                 return false;
+                            } else {
+
+                                if (qType == 1) {
+                                    if ($("#Option1").val().trim().length == 0) {
+                                        $("#Option1").focus();
+                                        ShowError("Option 1 cann't be blank.");
+                                        return false;
+                                    } else if ($("#Option2").val().trim().length == 0) {
+                                        $("#Option2").focus();
+                                        ShowError("Option 2 cann't be blank.");
+                                        return false;
+                                    } else if ($("#CorrectAnswer :selected").length == 0) {
+                                        $("#CorrectAnswer").focus();
+                                        ShowError("Select at least 1 correct answer.");
+                                        return false;
+                                    } else if ($("#AnswerType").val() == "1") {
+                                        var item = $("#CorrectAnswer :selected").length;
+                                        if (item > 1) {
+                                            $("#CorrectAnswer").focus();
+                                            ShowError("Select only one option for single choice question.");
+                                            return false;
+                                        }
+                                    }
+                                }
+
+                                if ($("#SkillTag :selected").length == 0) {
+                                    $("#SkillTag").focus();
+                                    ShowError("Select at least 1 skill tag.");
+                                    return false;
+                                }
                             }
-                        }
-                    });
+                        });
 
                 });
 
@@ -410,15 +432,14 @@
                     $("#errorDiv").fadeOut(10000);
                 }
 
-                // Question Type Change
+                // Question Type Change - > Set default values of controls.
                 function QuestionTypeChange() {
                     var value = $("#QuestionType").val();
                     if (value == "2") {
                         $("#practical").hide();
                         $("#practicalAns").show();
                         $("#durationRequired").show();
-                    }
-                    else {
+                    } else {
                         $("#practical").show();
                         $("#practicalAns").hide();
                         $("#durationRequired").hide();
@@ -429,23 +450,125 @@
                     $("#Option2").val("");
                     $("#Option3").val("");
                     $("#Option4").val("");
-                    var Answer = $("#Answer").data("kendoEditor");
-                    Answer.value("");
-                    var CorrectAnswer = $('#CorrectAnswer').data("kendoMultiSelect");
-                    CorrectAnswer.value([]);
-                    var SkillTag = $('#SkillTag').data("kendoMultiSelect");
-                    SkillTag.value([]);
-                    var AnswerType = $("#AnswerType").data("kendoDropDownList");
-                    AnswerType.value("1");
-                    var Competency = $("#Competency").data("kendoDropDownList");
-                    Competency.value("1");
-                    var Duration = $("#Duration").data("kendoDropDownList");
-                    Duration.value("1");
+                    $("#Option5").val("");
+                    $("#Option6").val("");
+                    $("#Option7").val("");
+                    $("#Option8").val("");
+                    var answer = $("#Answer").data("kendoEditor");
+                    answer.value("");
+                    var correctAnswer = $('#CorrectAnswer').data("kendoMultiSelect");
+                    correctAnswer.value([]);
+                    var skillTag = $('#SkillTag').data("kendoMultiSelect");
+                    skillTag.value([]);
+                    var answerType = $("#AnswerType").data("kendoDropDownList");
+                    answerType.value("1");
+                    var proficiency = $("#ProficiencyLevel").data("kendoDropDownList");
+                    proficiency.value("1");
+                    var duration = $("#Duration").data("kendoDropDownList");
+                    duration.value("1");
                 }
 
                 function OnCancel() {
                     window.location.href = "/QuestionBank/QuestionBank";
                 }
+
+                // On Click Of "Add" button of any Option
+                function OptionAdd() {
+                    var param = this.element.attr("param");
+                    OptionDispaly('A', param);
+                }
+
+                // On Click Of "Delete" button of any Option
+                function OptionDelete() {
+                    var param = this.element.attr("param");
+                    OptionDispaly('D', param);
+                }
+
+                // Display Option Method For "Add" and "Delete" button Click.
+                function OptionDispaly(task, opt) {
+                    var op = parseInt(opt);
+                    if (task == 'A') {
+                        $("#OptionCount").val(op + 1);
+                        if (op == 2 || op == 7) {
+                            $("#btnAddOpt" + op).hide();
+                        }
+                        for (var i = op; i <= op + 1; i++) {
+                            $("#rowOpt" + i).show();
+                            $("#btnDelOpt" + i).show();
+                        }
+                        if (op != 7) {
+                            for (var i = op + 2; i <= 8; i++) {
+                                $("#rowOpt" + i).hide();
+                                $("#btnAddOpt" + op).hide();
+                            }
+                        }
+                    } else {
+                        var opCnt = parseInt($("#OptionCount").val());
+                        $("#Option" + opCnt).val("");
+                        $("#rowOpt" + opCnt).hide();
+                        $("#btnAddOpt" + (opCnt - 1)).show();
+                        $("#OptionCount").val(opCnt - 1);
+                    }
+
+                    ShowRequiredOptionInCorrectAnswerDropDown();
+                }
+
+                // Display Option On Edit Question
+                function OptionDispalyOnEdit(opt) {
+                    var op = parseInt(opt);
+                    if (op > 2) {
+                        $("#btnAddOpt2").hide();
+                        for (var i = 3; i <= op; i++) {
+                            $("#rowOpt" + i).show();
+                            $("#btnDelOpt" + i).show();
+
+                            if (i != op)
+                                $("#btnAddOpt" + i).hide();
+                        }
+                    }
+                }
+
+                // Show Option in Correct Answer Drop Down i.e. If 3 option then 3 item in drop down list.
+                function ShowRequiredOptionInCorrectAnswerDropDown() {
+                    var item = $("#OptionCount").val();
+                    var ans = $("#CorrectAnswer :selected").length;
+                    if(ans>0)
+                    {
+                        var correctAnswer = $('#CorrectAnswer').data("kendoMultiSelect");
+                        correctAnswer.value([]);
+                    }
+
+                    var dataOp = [];
+                    for (var j = 1; j <= parseInt(item); j++) {
+                        var arrItem = {};
+                        arrItem["Text"] = "Option" + j;
+                        arrItem["Value"] = j;
+
+                        dataOp.push(arrItem);
+                    }
+                    var multiselect = $("#CorrectAnswer").data("kendoMultiSelect");
+                    multiselect.setDataSource(new kendo.data.DataSource({ data: dataOp }));
+
+                    var success =@Model.Success;
+                    var edit = "@Model.Edit";
+
+                    if (edit == "True") {
+                        if (success == 0) {
+                            var arr = [];
+
+                            @if (Model.CorrectAnswer != null)
+                            {
+                                foreach (var stOp in Model.CorrectAnswer)
+                                {
+                                    @: arr.push(@stOp);
+                                }
+                            }
+                            var correctAnswer1 = $('#CorrectAnswer').data("kendoMultiSelect");
+                            correctAnswer1.value(arr);
+                        }
+                    }
+                }
+
             </script>
             <style>
                 .height {
@@ -459,7 +582,6 @@
         </div>
     }
 </div>
-
 <!-- Modal -->
 <div class="modal fade" id="myModal" role="dialog" onclick="OnCancel();">
     <div class="modal-dialog">

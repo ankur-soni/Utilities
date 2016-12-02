@@ -95,7 +95,10 @@
     <Compile Include="..\SharedAssemblyInfo.cs">
       <Link>Properties\SharedAssemblyInfo.cs</Link>
     </Compile>
-    <Compile Include="Constants\Competency.cs" />
+    <Compile Include="Constants\AnswerType.cs" />
+    <Compile Include="Constants\Options.cs" />
+    <Compile Include="Constants\Proficiency.cs" />
+    <Compile Include="Constants\QuestionType.cs" />
     <Compile Include="Constants\TestStatus.cs" />
     <Compile Include="Constants\TestSuiteStatus.cs" />
     <Compile Include="CustomValidations\EnsureOneElementAttribute.cs" />

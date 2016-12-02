@@ -57,8 +57,6 @@ namespace Silicus.Ensure.Models.DataObjects
 
         public int? PanelId { get; set; }
 
-        public string PanelName { get; set; }
-
         public string ResumePath { get; set; }
         public Guid IdentityUserId { get; set; }
     }
