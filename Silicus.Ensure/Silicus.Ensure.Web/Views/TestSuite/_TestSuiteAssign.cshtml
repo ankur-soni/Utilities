@@ -68,7 +68,7 @@
                 var testSuiteId = $('#testSuiteId').val();              
                 $.ajax({
                     type: "POST",
-                    url: '@Url.Action("TestSuiteActivate", "TestSuite")',
+                    url: '@Url.Action("AssignTest", "TestSuite")',
                     data: { users: users,testSuiteId:testSuiteId },
                     success: function (returndata) {
                         if (returndata == 1) {                          

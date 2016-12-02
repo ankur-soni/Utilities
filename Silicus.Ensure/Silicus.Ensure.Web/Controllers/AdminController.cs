@@ -285,7 +285,7 @@ namespace Silicus.Ensure.Web.Controllers
                     UserTestSuite userTestSuite = new UserTestSuite();
                     userTestSuite.UserId = UserId;
                     userTestSuite.TestSuiteId = SuiteId;
-                    _testSuiteService.ActiveteSuite(userTestSuite, testSuiteDetails);
+                    _testSuiteService.AssignSuite(userTestSuite, testSuiteDetails);
                     var selectUser = _userService.GetUserDetails().Where(model => model.UserId == UserId).FirstOrDefault();
                     selectUser.TestStatus = Convert.ToString(TestStatus.Assigned);
                     _userService.Update(selectUser);
@@ -326,7 +326,7 @@ namespace Silicus.Ensure.Web.Controllers
         public ActionResult GetTestSuiteDetails([DataSourceRequest] DataSourceRequest request)
         {
             var tags = _tagsService.GetTagsDetails();
-            var testSuitelist = _testSuiteService.GetTestSuiteDetails().Where(model => model.IsDeleted == false).OrderByDescending(model => model.TestSuiteId).ToArray();
+            var testSuitelist = _testSuiteService.GetTestSuiteDetails().Where(model => model.IsDeleted == false && model.Status == Convert.ToInt32(TestSuiteStatus.Ready)).OrderByDescending(model => model.TestSuiteId).ToArray();
             var viewModels = _mappingService.Map<TestSuite[], TestSuiteViewModel[]>(testSuitelist);
             foreach (var item in viewModels)
             {
