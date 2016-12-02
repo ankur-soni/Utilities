@@ -103,7 +103,8 @@ namespace Silicus.Ensure.Web.Controllers
             if (testSuiteDetails.Count() > 0)
             { 
                 errorMessage = "The Test Suite already exists, please create with other name.\n"; 
-            }            
+            }
+            string[] tagArry = testSuiteView.PrimaryTagNames.Split(',');
             foreach(var tag in tagArry)
             {
                 if(!tags.Any(x=>x.TagName == tag))

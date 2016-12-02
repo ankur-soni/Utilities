@@ -304,7 +304,7 @@
                     {
                         Proficiency += "," + $(this).val();
                     }
-                })
+                })                
 
                 $.ajax(
                 {
@@ -427,7 +427,7 @@
 
     function validateTestSuite() {
         var isError="0";
-        var totalWeight=0;
+        var totalWeight=0;      
 
         $('#tag_table').find('tr').each(function () {
 
@@ -490,6 +490,11 @@
         else if(totalWeight != '100')
         {
             ShowMessage("Test suite weighatage should be 100 percent.", 0);
+            return false;
+        }
+        else if(isError == "duplicateTag")
+        {
+            ShowMessage("Tag name should be unique in skill tags.", 0);
             return false;
         }
         return true;
