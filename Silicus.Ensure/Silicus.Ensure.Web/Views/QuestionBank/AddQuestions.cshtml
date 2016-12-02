@@ -531,8 +531,12 @@
                 // Show Option in Correct Answer Drop Down i.e. If 3 option then 3 item in drop down list.
                 function ShowRequiredOptionInCorrectAnswerDropDown() {
                     var item = $("#OptionCount").val();
-                    var correctAnswer = $('#CorrectAnswer').data("kendoMultiSelect");
-                    correctAnswer.value([]);
+                    var ans = $("#CorrectAnswer :selected").length;
+                    if(ans>0)
+                    {
+                        var correctAnswer = $('#CorrectAnswer').data("kendoMultiSelect");
+                        correctAnswer.value([]);
+                    }
 
                     var dataOp = [];
                     for (var j = 1; j <= parseInt(item); j++) {
@@ -544,6 +548,25 @@
                     }
                     var multiselect = $("#CorrectAnswer").data("kendoMultiSelect");
                     multiselect.setDataSource(new kendo.data.DataSource({ data: dataOp }));
+
+                    var success =@Model.Success;
+                    var edit = "@Model.Edit";
+
+                    if (edit == "True") {
+                        if (success == 0) {
+                            var arr = [];
+
+                            @if (Model.CorrectAnswer != null)
+                            {
+                                foreach (var stOp in Model.CorrectAnswer)
+                                {
+                                    @: arr.push(@stOp);
+                                }
+                            }
+                            var correctAnswer1 = $('#CorrectAnswer').data("kendoMultiSelect");
+                            correctAnswer1.value(arr);
+                        }
+                    }
                 }
 
             </script>
