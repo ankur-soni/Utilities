@@ -269,7 +269,7 @@
                 var Competency = $("#Competency").val();
                 var ProjectName = $("#ProjectName").val();
                 var CustomerName = $("#CustomerName").val();
-                var ExperienceRange = $("#ExperienceRangeId").data("kendoMultiSelect").value()               
+                var ExperienceRange = $("#ExperienceRangeId").data("kendoMultiSelect").value()                          
                 var Status = $("#Status").val();
                 var Weights ='';
                 var Proficiency='';
@@ -322,7 +322,7 @@
                         Proficiency: Proficiency,
                         ProjectName: ProjectName,
                         CustomerName: CustomerName,
-                        ExperienceRange: ExperienceRange,
+                        ExperienceRangeId: ExperienceRange,
                         Status: Status
                     },
                     success: function (response) {

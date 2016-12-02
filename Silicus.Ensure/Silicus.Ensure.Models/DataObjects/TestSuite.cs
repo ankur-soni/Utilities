@@ -17,13 +17,7 @@ namespace Silicus.Ensure.Models.DataObjects
         public string TestSuiteName { get; set; }
 
         [Required(ErrorMessage="Duration is required!")]
-        public Int32 Duration { get; set; }
-
-        [Display(Name = "No. Of Objective Questions")]
-        public string ObjectiveQuestionsCount { get; set; }
-
-        [Display(Name = "No. Of Practical Questions")]
-        public string PracticalQuestionsCount { get; set; }
+        public Int32 Duration { get; set; }        
 
         [Required(ErrorMessage = "Position is required!")]
         public Int32 Position { get; set; }

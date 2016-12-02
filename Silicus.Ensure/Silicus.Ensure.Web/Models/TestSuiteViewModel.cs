@@ -44,13 +44,7 @@ namespace Silicus.Ensure.Web.Models
         public string PositionName { get; set; }
 
         [Display(Name = "Primary Tag")]
-        public string PrimaryTagNames { get; set; }
-
-        [Display(Name = "No. Of Objective Questions(Max)")]
-        public string ObjectiveQuestionsCount { get; set; }
-
-        [Display(Name = "No. Of Practical Questions")]
-        public string PracticalQuestionsCount { get; set; }
+        public string PrimaryTagNames { get; set; }        
 
         public string Weights { get; set; }
 

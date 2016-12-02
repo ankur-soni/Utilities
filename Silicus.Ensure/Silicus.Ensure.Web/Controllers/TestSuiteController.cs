@@ -97,13 +97,13 @@ namespace Silicus.Ensure.Web.Controllers
         {          
             List<TestSuiteTag> tagModel = new List<TestSuiteTag>();
             string errorMessage = string.Empty;
+            string tagId;
             var tags = _tagsService.GetTagsDetails();
             var testSuiteDetails = _testSuiteService.GetTestSuiteDetails().Where(model => model.TestSuiteName == testSuiteView.TestSuiteName && model.TestSuiteId != testSuiteView.TestSuiteId);
             if (testSuiteDetails.Count() > 0)
             { 
                 errorMessage = "The Test Suite already exists, please create with other name.\n"; 
-            }
-            string[] tagArry = testSuiteView.PrimaryTagNames.Split(',');
+            }            
             foreach(var tag in tagArry)
             {
                 if(!tags.Any(x=>x.TagName == tag))
@@ -111,8 +111,7 @@ namespace Silicus.Ensure.Web.Controllers
                     errorMessage += "Please enter correct tag name.\n";
                     break;
                 }
-            }
-            string tagId;
+            }            
             for (int i = 0; i < tagArry.Length; i++)
             {
                 tagId = tags.Where(x => x.TagName == tagArry[i]).Select(x => x.TagId).SingleOrDefault().ToString();
@@ -124,7 +123,8 @@ namespace Silicus.Ensure.Web.Controllers
                 {
                     testSuiteView.PrimaryTags += "," + tagId;
                 }
-            }            
+            }
+            testSuiteView.ExperienceRange = string.Join(",", testSuiteView.ExperienceRangeId);
             var testSuiteDomainModel = _mappingService.Map<TestSuiteViewModel, TestSuite>(testSuiteView);
             if (string.IsNullOrWhiteSpace(errorMessage))
             {

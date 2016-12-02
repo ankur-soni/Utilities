@@ -24,7 +24,11 @@
                       columns.Bound(p => p.PositionName).Width(150).Title("Position");
                       columns.Bound(p => p.PrimaryTagNames).Width(300).Title("Tags");
                       columns.Bound(p => p.StatusName).Width(50).Title("Status");
-                      columns.Bound("").ClientTemplate(@"<a class='k-button k-button-icontext k-grid-add' href='\\#' onclick= getTestSuiteId('#=TestSuiteId#','#=StatusName#') data-toggle='modal' data-target='\\#myModal'><span class='k-icon k-add'></span>Assign Test</a><a class='k-button k-button-icontext k-grid-add' href='" + Url.Action("Copy", "TestSuite") + "?testSuiteId=#=TestSuiteId#'><span class='k-icon k-add'></span>Copy</a><a class='k-button k-button-icontext k-grid-edit' href='" + Url.Action("Add", "TestSuite") + "?testSuiteId=#=TestSuiteId#'><span class='k-icon k-edit'></span>Edit</a><a id='testSuiteDel' class='k-button k-button-icontext k-grid-delete' href='\\#' onclick='return deleteTestSuite(#=TestSuiteId#)'><span class='k-icon k-delete'></span>Delete</a>").Title("Actions");
+                      columns.Bound("").ClientTemplate(@"                                                        
+                                                        <a class='k-button k-button-icontext k-grid-add' href='\\#' onclick= getTestSuiteId('#=TestSuiteId#','#=StatusName#') data-toggle='modal' data-target='\\#myModal'><span class='k-icon k-add'></span>Assign Test</a>
+                                                        <a class='k-button k-button-icontext k-grid-add' href='" + Url.Action("Copy", "TestSuite") + "?testSuiteId=#=TestSuiteId#'><span class='k-icon k-add'></span>Copy</a>"+
+                                                        "<a class='k-button k-button-icontext k-grid-edit' href='" + Url.Action("Add", "TestSuite") + "?testSuiteId=#=TestSuiteId#'><span class='k-icon k-edit'></span>Edit</a>"+
+                                                        "<a id='testSuiteDel' class='k-button k-button-icontext k-grid-delete' href='\\#' onclick='return deleteTestSuite(#=TestSuiteId#)'><span class='k-icon k-delete'></span>Delete</a>").Title("Actions");
                   })
                 .DataSource(dataSource => dataSource
                   .Ajax()
