@@ -7,7 +7,6 @@ using Silicus.UtilityContainer.Security;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Web;
 using System.Web.Configuration;
 using System.Web.Mvc;
 
@@ -23,7 +22,8 @@ namespace Silicus.EncourageWithAzureAd.Web.Controllers
         private readonly INominationService _nominationService;
         private readonly IResultService _resultService;
         private readonly ILogger _logger;
-        public HomeController(IAwardService awardService, ICommonDbService commonDbService, Silicus.Encourage.DAL.Interfaces.IDataContextFactory dataContextFactory, INominationService nominationService,IResultService resultService, ILogger logger)
+
+        public HomeController(IAwardService awardService, ICommonDbService commonDbService, Silicus.Encourage.DAL.Interfaces.IDataContextFactory dataContextFactory, INominationService nominationService, IResultService resultService, ILogger logger)
         {
             _awardService = awardService;
             _commonDbService = commonDbService;
@@ -34,8 +34,6 @@ namespace Silicus.EncourageWithAzureAd.Web.Controllers
             _logger = logger;
         }
 
-        //  [CustomeAuthorize(AllowedRole = "User,Manager,Admin,Reviewer")]
-       
         public ActionResult Index()
         {
             _logger.Log("Home-Index");
@@ -44,9 +42,7 @@ namespace Silicus.EncourageWithAzureAd.Web.Controllers
 
             var authorizationService = new Authorization(_commonDbService.GetCommonDataBaseContext());
 
-
-             var commonRoles = authorizationService.GetRoleForUtility(User.Identity.Name, utility);
-            //ViewBag.IdName = commonRoles.Count;
+            var commonRoles = authorizationService.GetRoleForUtility(User.Identity.Name, utility);
             var dashboard = new Dashboard();
             if ((commonRoles.Count > 0))
             {
@@ -54,7 +50,6 @@ namespace Silicus.EncourageWithAzureAd.Web.Controllers
                 ViewBag.currentUserRoles = commonRoles;
                 _logger.Log("No. of roles are:" + commonRoles.Count);
             }
-
             else
             {
                 commonRoles.Add("User");
@@ -62,8 +57,8 @@ namespace Silicus.EncourageWithAzureAd.Web.Controllers
                 ViewBag.currentUserRoles = commonRoles;
                 _logger.Log("Current user's role is User");
             }
-           
-            var winnersForLastMonth = _encourageDatabaseContext.Query<Shortlist>().Where(w => w.IsWinner == true && w.WinningDate.Value.Month == (DateTime.Now.Month) && w.WinningDate.Value.Year == DateTime.Now.Year).ToList();
+
+            var winnersForLastMonth = _encourageDatabaseContext.Query<Shortlist>().Where(w => w.IsWinner == true && w.WinningDate.Value.Month <= (DateTime.Now.Month) && w.WinningDate.Value.Year == DateTime.Now.Year).ToList();
             var listOfWinners = new List<NominationListViewModel>();
             foreach (var winner in winnersForLastMonth)
             {
@@ -71,8 +66,7 @@ namespace Silicus.EncourageWithAzureAd.Web.Controllers
                 var awardMonthYear = _nominationService.GetAwardMonthAndYear(winner.NominationId);
                 var awardName = _nominationService.GetAwardName(winner.NominationId);
                 var awardComment = _resultService.GetAwardComments(winner.NominationId);
-                listOfWinners.Add(new NominationListViewModel() { DisplayName = winnerName, NominationTime = awardMonthYear, AwardName = awardName ,AwardComment=awardComment});
-
+                listOfWinners.Add(new NominationListViewModel() { DisplayName = winnerName, NominationTime = awardMonthYear, AwardName = awardName, AwardComment = awardComment });
             }
             dashboard.NominationList = listOfWinners;
             return View("Dashboard", dashboard);

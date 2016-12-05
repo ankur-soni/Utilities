@@ -1,4 +1,5 @@
-﻿using Silicus.Ensure.Models.DataObjects;
+﻿using Silicus.Ensure.Models.Constants;
+using Silicus.Ensure.Models.DataObjects;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -43,23 +44,28 @@ namespace Silicus.Ensure.Web.Models
         public string PositionName { get; set; }
 
         [Display(Name = "Primary Tag")]
-        public string PrimaryTagNames { get; set; }
-
-        [Display(Name = "No. Of Objective Questions(Max)")]
-        public string ObjectiveQuestionsCount { get; set; }
-
-        [Display(Name = "No. Of Practical Questions")]
-        public string PracticalQuestionsCount { get; set; }
+        public string PrimaryTagNames { get; set; }        
 
         public string Weights { get; set; }
 
         public string Proficiency { get; set; }
+
+        [Display(Name="Project Name")]
+        public string ProjectName { get; set; }
+
+        [Display(Name = "Customer Name")]
+        public string CustomerName { get; set; }
 
         public int Userid { get; set; }
 
         public int Status { get; set; }
 
         public string StatusName { get; set; }
+
+        [Display(Name = "Experience Range")]
+        public List<string> ExperienceRangeId { get; set; }
+
+        public string ExperienceRange { get; set; }       
 
         public IList<Position> PositionList { get; set; }
 

@@ -3364,10 +3364,10 @@ video {
   margin-top: 0;
 }
 /* WRAPPERS */
-#wrapper {
+/*#wrapper {
   width: 100%;
   overflow-x: hidden;
-}
+}*/
 .wrapper {
   padding: 0 20px;
 }
@@ -3411,6 +3411,12 @@ ol.unstyled {
   font-size: 160px !important;
   color: #e5e6e7;
 }
+#comment-section{
+padding:0px 10px 40px;
+}
+
+
+
 /* FOOTER */
 .footer {
   background: none repeat scroll 0 0 white;
@@ -3418,7 +3424,7 @@ ol.unstyled {
   bottom: 0;
   left: 0;
   padding: 10px 20px;
-  position: absolute;
+  position:fixed;
   right: 0;
 }
 .footer.fixed_full {
