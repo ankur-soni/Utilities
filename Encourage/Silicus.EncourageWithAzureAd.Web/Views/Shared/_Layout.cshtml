@@ -48,7 +48,7 @@
                                     <li>
                                         <a href='@Url.Action("SignOut", "Account")'>
                                             <div>
-                                                LOGOUT
+                                                Logout
                                             </div>
                                         </a>
                                     </li>
@@ -75,7 +75,7 @@
                         @if (roles.Count() != 0)
                 {
                             <ul class="nav metismenu" id="side-menu">
-                                <li class="active"><a href="@Url.Action("Index", "Home")"><i class="fa fa-dashboard"></i> <span class="nav-label">DASHBOARD</span></a></li>
+                                <li class="active"><a href="@Url.Action("Index", "Home")"><i class="fa fa-dashboard"></i> <span class="nav-label">Dashboard</span></a></li>
                                 <li>
                                     <a href="#"><i class="fa fa-user"></i> <span class="nav-label">Nominations</span> <span class="fa arrow"></span></a>
                                     <ul class="nav nav-second-level">
@@ -101,7 +101,7 @@
                                 @if (roles.Contains("Admin"))
                     {
                                     <li>
-                                        <a href="#"><i class="fa fa-cogs"></i> <span class="nav-label">ADMIN</span> <span class="fa arrow"></span></a>
+                                        <a href="#"><i class="fa fa-cogs"></i> <span class="nav-label">Admin</span> <span class="fa arrow"></span></a>
                                         <ul class="nav nav-second-level">
                                             <li><a href="#" class="active">Edit Users</a></li>
                                         </ul>
