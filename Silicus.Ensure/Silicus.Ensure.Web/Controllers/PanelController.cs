@@ -64,25 +64,44 @@ namespace Silicus.Ensure.Web.Controllers
             return View();
         }
 
-        public ActionResult PanelAdd(int UserId)
-        {
+        //public ActionResult PanelAdd(int UserId)
+        //{
 
-            UserViewModel currUser = new UserViewModel();
-            currUser.UserId = UserId;
+        //    UserViewModel currUser = new UserViewModel();
+        //    currUser.UserId = UserId;
 
-            if (UserId != 0)
-            {
-                var user = _userService.GetUserById(UserId);
-                currUser = _mappingService.Map<User, UserViewModel>(user);
-            }
-            else if (TempData["UserViewModel"] != null)
-            {
-                currUser = TempData["UserViewModel"] as UserViewModel;
-            }
+        //    if (UserId != 0)
+        //    {
+        //        var userList = _userService.GetUserDetails();
+        //        var user = userList.FirstOrDefault(x => x.UserId == UserId);
+        //        currUser = _mappingService.Map<User, UserViewModel>(user);
 
-            var positionDetails = _positionService.GetPositionDetails().OrderBy(model => model.PositionName);
-            currUser.PositionList = positionDetails.ToList();
-            return View(currUser);
-        }
+        //        if (userList.Any(x => x.PanelId != null && x.PanelId == user.UserId))
+        //        {
+        //            currUser.CandidateList = new List<int?>();
+        //            foreach (var itemUser in userList.Where(x => x.PanelId == user.UserId).ToList())
+        //            {
+
+        //                currUser.CandidateList.Add(itemUser.UserId);
+        //            }
+        //        }
+
+        //    }
+        //    else if (TempData["UserViewModel"] != null)
+        //    {
+        //        currUser = TempData["UserViewModel"] as UserViewModel;
+        //    }
+
+        //    var positionDetails = _positionService.GetPositionDetails().OrderBy(model => model.PositionName);
+        //    currUser.PositionList = positionDetails.ToList();
+        //    ViewBag.candidateList = (from item in _userService.GetUserDetails().Where(x => x.Role.ToLower() == RoleName.Candidate.ToString().ToLower())
+        //                             .OrderBy(m => m.FirstName + m.LastName).ToList()
+        //                             select new SelectListItem()
+        //                             {
+        //                                 Text = item.FirstName + " " + item.LastName,
+        //                                 Value = item.UserId.ToString()
+        //                             }).ToList();
+        //    return View(currUser);
+        //}
     }
 }

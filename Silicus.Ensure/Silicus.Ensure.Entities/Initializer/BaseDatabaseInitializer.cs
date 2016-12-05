@@ -34,28 +34,27 @@ namespace Silicus.Ensure.Entities.Initializer
            });
             context.Add(new User
             {
-                FirstName = "Test",
-                LastName = "User",
-                NewPassword = "testuser@123",
-                ConfirmPassword = "testuser@123",
-                Address = "Test",
-                Email = "testuser@test.com",
+                FirstName = "Nilkanth",
+                LastName = "Kapale",
+                NewPassword = "Nilkanth@123",
+                ConfirmPassword = "Nilkanth@123",
+                Address = "Sangvi",
+                Email = "nilkanthKapale10@gmail.com",
                 IdentityUserId = new System.Guid("88B34980-EDD3-420C-8387-621B629A4E9B"),
-                Role = "USER",
+                Role = "Panel",
                 IsActive = true
 
             });
-
             context.Add(new User
             {
-                FirstName = "demo",
-                LastName = "demo",
-                NewPassword = "DEMOdemo@123456",
-                ConfirmPassword = "DEMOdemo@123456",
+                FirstName = "Lorem",
+                LastName = "Lipsum",
+                NewPassword = "Candidate@123",
+                ConfirmPassword = "Candidate@123",
                 Address = "Pune",
-                Email = "demo@gmail.com",
-                IdentityUserId = new System.Guid("0d36c472-b399-4774-91c5-6da14bad7318"),
-                Role = "Candidate",
+                Email = "lorem@gmail.com",
+                IdentityUserId = new System.Guid("50cad72d-4ff3-48ce-ba32-44675cfd2744"),
+                Role = "CANDIDATE",
                 Gender = "Male",
                 Department = "Delivery",
                 TestStatus = Convert.ToString(TestStatus.NotAssigned),

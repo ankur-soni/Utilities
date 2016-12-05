@@ -13,6 +13,8 @@ namespace Silicus.Ensure.Models.DataObjects
         //[Required(ErrorMessage = "Name is required!")]
         public string FirstName { get; set; }
 
+        public string MiddleName { get; set; }
+
         // [Required(ErrorMessage = "Last name is required")]
         public string LastName { get; set; }
 
@@ -42,6 +44,12 @@ namespace Silicus.Ensure.Models.DataObjects
         public string Position { get; set; }
 
         public string Experience { get; set; }
+
+        public string CurrentEmployer { get; set; }
+
+        public string PrimaryMobileNumber { get; set; }
+
+        public string SecondaryMobileNumber { get; set; }
 
         public string Department { get; set; }
 

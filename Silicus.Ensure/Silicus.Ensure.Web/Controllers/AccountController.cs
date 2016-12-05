@@ -18,6 +18,7 @@ using Silicus.Ensure.Models.DataObjects;
 using Silicus.Ensure.Services.Interfaces;
 using Silicus.Ensure.Web.Filters;
 using Silicus.Ensure.Web.Models;
+using Silicus.Ensure.Models.Constants;
 
 namespace Silicus.Ensure.Web.Controllers
 {
@@ -165,7 +166,8 @@ namespace Silicus.Ensure.Web.Controllers
                         var user = await UserManager.FindByNameAsync(model.UserName);
                         var isAdmin = await UserManager.IsInRoleAsync(user.Id, "Admin");
                         var isCandidate = await UserManager.IsInRoleAsync(user.Id, "Candidate");
-                        return RedirectToLocal(returnUrl, model.UserName, isAdmin, isCandidate);
+                        var isPanel = await UserManager.IsInRoleAsync(user.Id, RoleName.Panel.ToString());
+                        return RedirectToLocal(returnUrl, model.UserName, isAdmin, isCandidate, isPanel);
                     case SignInStatus.LockedOut:
                         ModelState.AddModelError("", "User account is locked out. Please contact administrator.");
                         return View(model);
@@ -375,7 +377,7 @@ namespace Silicus.Ensure.Web.Controllers
             return View();
         }
 
-        private ActionResult RedirectToLocal(string returnUrl, string userName = "", bool isAdmin = false, bool isCandidate = false)
+        private ActionResult RedirectToLocal(string returnUrl, string userName = "", bool isAdmin = false, bool isCandidate = false, bool isPanel = false)
         {
             if (Url.IsLocalUrl(returnUrl))
             {
@@ -384,14 +386,20 @@ namespace Silicus.Ensure.Web.Controllers
 
             if (isCandidate)
             {
+                Session["UserRole"] = RoleName.Candidate.ToString();
                 return RedirectToAction("Welcome", "Candidate");
             }
 
             if (isAdmin)
             {
+                Session["UserRole"] = RoleName.Admin.ToString();
                 return RedirectToAction("Dashboard", "Admin");
             }
-
+            if (isPanel)
+            {
+                Session["UserRole"] = RoleName.Panel.ToString();
+                return RedirectToAction("Candidates", "Admin");
+            }
             return RedirectToAction("Dashboard", "User");
         }
 

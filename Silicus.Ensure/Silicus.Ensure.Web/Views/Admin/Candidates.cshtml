@@ -76,17 +76,22 @@
         </div>
         <div class="kendogrid">
             @(Html.Kendo().TabStrip()
-    .Name("Tabs")
-    .Items(tabstrip =>
-    {
+                .Name("Tabs")
+                .Items(tabstrip =>
+                {
 
-        tabstrip.Add().Text("Users")
-            .Selected(true)
-           .Content(user.ToString());
-
-        tabstrip.Add().Text("Roles")
-          .Content(roles.ToString());
-    })
+                    tabstrip.Add().Text("Users")
+                        .Selected(true)
+                       .Content(user.ToString());
+                    //if (Session["UserRole"] != null)
+                    //{
+                    //    if (Session["UserRole"].ToString() == Silicus.Ensure.Models.Constants.RoleName.Admin.ToString())
+                    //    {
+                    //        tabstrip.Add().Text("Roles")
+                    //          .Content(roles.ToString());
+                    //    }
+                    //}
+                })
             )
         </div>
     </div>
