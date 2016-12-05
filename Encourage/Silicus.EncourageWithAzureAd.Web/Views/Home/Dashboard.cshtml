@@ -289,3 +289,77 @@
         <br />
     </div>
 </div>
+<script src="~/js/jquery-2.1.1.js"></script>
+
+<script src="~/js/bootstrap.min.js"></script>
+
+<script src="~/js/plugins/metisMenu/jquery.metisMenu.js"></script>
+<script src="~/js/plugins/slimscroll/jquery.slimscroll.min.js"></script>
+
+<!-- Custom and plugin javascript -->
+<script src="~/js/inspinia.js"></script>
+<script src="~/js/plugins/pace/pace.min.js"></script>
+
+<!-- FooTable -->
+<script src="~/js/plugins/footable/footable.all.min.js"></script>
+
+<script src="~/Scripts/jquery.unobtrusive-ajax.js"></script>
+
+<script>
+
+    @*$(document).ready(function () {
+        debugger;
+        console.log("ready!");
+        var data = '@ViewBag.IdName';
+
+    });*@
+
+
+    $("#lockNominations").click(function (e) {
+        //    debugger;
+        //   e.preventDefault();
+        sweetAlert("The Nomination is Successfully Locked");
+        //    $("#lockNominations").addClass('disabled');
+        //    $("#unLockNominations").removeClass('disabled')
+    });
+    $("#unLockNominations").click(function (e) {
+        sweetAlert("The Nomination is Successfully unlocked");
+        return true;
+    });
+    var winnerCardIndex = 0;
+    $("#0").delay(1000).fadeIn();
+    $("#1").delay(1000).fadeIn();
+    $("#2").delay(1000).fadeIn();
+    $("#3").delay(1000).fadeIn();
+    $("#4").delay(1000).fadeIn();
+
+    @*$(".card").click(function winnerCards()
+    {
+
+        debugger;
+        if (winnerCardIndex <= (@Model.Count()))
+        {
+            debugger;
+            $("#"+winnerCardIndex).css("display", "none");
+            winnerCardIndex++;
+            if (winnerCardIndex == (@Model.Count())) {
+                winnerCardIndex = 0;
+            }
+            $("#"+winnerCardIndex).delay(1000).fadeIn();
+
+        }
+
+
+    });*@
+
+
+    //$(".winners").click(function(){
+
+
+
+    //    sweetAlert("Asha");
+
+
+    //});
+
+</script>
