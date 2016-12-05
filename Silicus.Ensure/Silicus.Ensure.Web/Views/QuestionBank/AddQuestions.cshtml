@@ -226,8 +226,39 @@
                 <div class="col-md-8">
                     @(Html.Kendo().DropDownListFor(m => m.Duration)
                 .Name("Duration")
+                .DataTextField("Text")
+                .DataValueField("Value")
                 .Value(Model.Duration.ToString())
-                .BindTo(EnumHelper.GetSelectList(typeof(DurationMarks)))
+                .BindTo(new List<SelectListItem>() {
+                    new SelectListItem(){
+                    Text="1",
+                    Value="1"
+                    },
+                    new SelectListItem(){
+                    Text="2",
+                    Value="2"
+                    },
+                    new SelectListItem(){
+                    Text="3",
+                    Value="3"
+                    },
+                    new SelectListItem(){
+                    Text="5",
+                    Value="5"
+                    },
+                    new SelectListItem(){
+                    Text="10",
+                    Value="10"
+                    },
+                    new SelectListItem(){
+                    Text="15",
+                    Value="15"
+                    },
+                    new SelectListItem(){
+                    Text="20",
+                    Value="20"
+                    }
+                    })
                 .HtmlAttributes(new { style = "width: 100%" }))
                 </div>
             </div>
@@ -241,8 +272,39 @@
                 <div class="col-md-8">
                     @(Html.Kendo().DropDownListFor(m => m.Marks)
                 .Name("Marks")
+                .DataTextField("Text")
+                .DataValueField("Value")
                 .Value(Model.Marks.ToString())
-                .BindTo(EnumHelper.GetSelectList(typeof(DurationMarks)))
+                .BindTo(new List<SelectListItem>() {
+                    new SelectListItem(){
+                    Text="1",
+                    Value="1"
+                    },
+                    new SelectListItem(){
+                    Text="2",
+                    Value="2"
+                    },
+                    new SelectListItem(){
+                    Text="3",
+                    Value="3"
+                    },
+                    new SelectListItem(){
+                    Text="5",
+                    Value="5"
+                    },
+                    new SelectListItem(){
+                    Text="10",
+                    Value="10"
+                    },
+                    new SelectListItem(){
+                    Text="15",
+                    Value="15"
+                    },
+                    new SelectListItem(){
+                    Text="20",
+                    Value="20"
+                    }
+                    })
                 .HtmlAttributes(new { style = "width: 100%" }))
                 </div>
             </div>
@@ -278,6 +340,8 @@
                         $("#rowOpt"+i).hide();
                     }
 
+                    ShowRequiredOptionInCorrectAnswerDropDown();
+
                     $("#errorDiv").hide();
                     $("#durationRequired").hide();
                     $("#practicalAns").hide();
@@ -301,57 +365,62 @@
                         if(edit=="True"){
                             var optCnt=@Model.OptionCount;
                             OptionDispalyOnEdit(optCnt);
+                            ShowRequiredOptionInCorrectAnswerDropDown();
                         }
                     }
 
 
 
                     // Check Question Type on Edit.
-                    var Qtype=@Model.QuestionType;
-                    if(Qtype=="2")
-                    {
+                    var qtype=@Model.QuestionType;
+                    if (qtype == "2") {
                         $("#practical").hide();
                         $("#practicalAns").show();
                         $("#durationRequired").show();
                     }
 
                     // Save and Edit Activity Validation.
-                    $("#btnSave").click(function () {
+                    $("#btnSave")
+                        .click(function() {
 
-                        var qType = $('#QuestionType').val();
+                            var qType = $('#QuestionType').val();
 
-                        if ($("#QuestionDescription").val().trim().length == 0) {
-                            $("#QuestionDescription").focus();
-                            ShowError("Question description cann't be blank.");
-                            return false;
-                        }
-                        else {
-
-                            if (qType == 1) {
-                                if ($("#Option1").val().trim().length == 0) {
-                                    $("#Option1").focus();
-                                    ShowError("Option 1 cann't be blank.");
-                                    return false;
-                                }
-                                else if ($("#Option2").val().trim().length == 0) {
-                                    $("#Option2").focus();
-                                    ShowError("Option 2 cann't be blank.");
-                                    return false;
-                                }
-                                else if ($("#CorrectAnswer :selected").length == 0) {
-                                    $("#CorrectAnswer").focus();
-                                    ShowError("Select at least 1 correct answer.");
-                                    return false;
-                                }
-                            }
-
-                            if ($("#SkillTag :selected").length == 0) {
-                                $("#SkillTag").focus();
-                                ShowError("Select at least 1 skill tag.");
+                            if ($("#QuestionDescription").val().trim().length == 0) {
+                                $("#QuestionDescription").focus();
+                                ShowError("Question description cann't be blank.");
                                 return false;
+                            } else {
+
+                                if (qType == 1) {
+                                    if ($("#Option1").val().trim().length == 0) {
+                                        $("#Option1").focus();
+                                        ShowError("Option 1 cann't be blank.");
+                                        return false;
+                                    } else if ($("#Option2").val().trim().length == 0) {
+                                        $("#Option2").focus();
+                                        ShowError("Option 2 cann't be blank.");
+                                        return false;
+                                    } else if ($("#CorrectAnswer :selected").length == 0) {
+                                        $("#CorrectAnswer").focus();
+                                        ShowError("Select at least 1 correct answer.");
+                                        return false;
+                                    } else if ($("#AnswerType").val() == "1") {
+                                        var item = $("#CorrectAnswer :selected").length;
+                                        if (item > 1) {
+                                            $("#CorrectAnswer").focus();
+                                            ShowError("Select only one option for single choice question.");
+                                            return false;
+                                        }
+                                    }
+                                }
+
+                                if ($("#SkillTag :selected").length == 0) {
+                                    $("#SkillTag").focus();
+                                    ShowError("Select at least 1 skill tag.");
+                                    return false;
+                                }
                             }
-                        }
-                    });
+                        });
 
                 });
 
@@ -363,15 +432,14 @@
                     $("#errorDiv").fadeOut(10000);
                 }
 
-                // Question Type Change
+                // Question Type Change - > Set default values of controls.
                 function QuestionTypeChange() {
                     var value = $("#QuestionType").val();
                     if (value == "2") {
                         $("#practical").hide();
                         $("#practicalAns").show();
                         $("#durationRequired").show();
-                    }
-                    else {
+                    } else {
                         $("#practical").show();
                         $("#practicalAns").hide();
                         $("#durationRequired").hide();
@@ -382,82 +450,125 @@
                     $("#Option2").val("");
                     $("#Option3").val("");
                     $("#Option4").val("");
-                    var Answer = $("#Answer").data("kendoEditor");
-                    Answer.value("");
-                    var CorrectAnswer = $('#CorrectAnswer').data("kendoMultiSelect");
-                    CorrectAnswer.value([]);
-                    var SkillTag = $('#SkillTag').data("kendoMultiSelect");
-                    SkillTag.value([]);
-                    var AnswerType = $("#AnswerType").data("kendoDropDownList");
-                    AnswerType.value("1");
-                    var Competency = $("#Competency").data("kendoDropDownList");
-                    Competency.value("1");
-                    var Duration = $("#Duration").data("kendoDropDownList");
-                    Duration.value("1");
+                    $("#Option5").val("");
+                    $("#Option6").val("");
+                    $("#Option7").val("");
+                    $("#Option8").val("");
+                    var answer = $("#Answer").data("kendoEditor");
+                    answer.value("");
+                    var correctAnswer = $('#CorrectAnswer').data("kendoMultiSelect");
+                    correctAnswer.value([]);
+                    var skillTag = $('#SkillTag').data("kendoMultiSelect");
+                    skillTag.value([]);
+                    var answerType = $("#AnswerType").data("kendoDropDownList");
+                    answerType.value("1");
+                    var proficiency = $("#ProficiencyLevel").data("kendoDropDownList");
+                    proficiency.value("1");
+                    var duration = $("#Duration").data("kendoDropDownList");
+                    duration.value("1");
                 }
 
                 function OnCancel() {
                     window.location.href = "/QuestionBank/QuestionBank";
                 }
 
-                function OptionAdd(e){
+                // On Click Of "Add" button of any Option
+                function OptionAdd() {
                     var param = this.element.attr("param");
-                    OptionDispaly('A',param);
+                    OptionDispaly('A', param);
                 }
 
-                function OptionDelete(e){
+                // On Click Of "Delete" button of any Option
+                function OptionDelete() {
                     var param = this.element.attr("param");
-                    OptionDispaly('D',param);
+                    OptionDispaly('D', param);
                 }
 
-                function OptionDispaly(task, opt)
-                {
-                    var op=parseInt(opt);
-                    if(task=='A'){
-                        $("#OptionCount").val(op+1);
-                        if(op==2||op==7)
-                        {
-                            $("#btnAddOpt"+op).hide();
+                // Display Option Method For "Add" and "Delete" button Click.
+                function OptionDispaly(task, opt) {
+                    var op = parseInt(opt);
+                    if (task == 'A') {
+                        $("#OptionCount").val(op + 1);
+                        if (op == 2 || op == 7) {
+                            $("#btnAddOpt" + op).hide();
                         }
-                        for(var i=op; i<=op+1; i++)
-                        {
-                            $("#rowOpt"+i).show();
-                            $("#btnDelOpt"+i).show();
+                        for (var i = op; i <= op + 1; i++) {
+                            $("#rowOpt" + i).show();
+                            $("#btnDelOpt" + i).show();
                         }
-                        if(op!=7)
-                        {
-                            for(var i=op+2; i<=8; i++)
-                            {
-                                $("#rowOpt"+i).hide();
-                                $("#btnAddOpt"+op).hide();
+                        if (op != 7) {
+                            for (var i = op + 2; i <= 8; i++) {
+                                $("#rowOpt" + i).hide();
+                                $("#btnAddOpt" + op).hide();
                             }
                         }
-                    }
-                    else{
+                    } else {
                         var opCnt = parseInt($("#OptionCount").val());
-                        $("#Option"+opCnt).val("");
-                        $("#rowOpt"+opCnt).hide();
-                        $("#btnAddOpt"+(opCnt-1)).show();
-                        $("#OptionCount").val(opCnt-1)
+                        $("#Option" + opCnt).val("");
+                        $("#rowOpt" + opCnt).hide();
+                        $("#btnAddOpt" + (opCnt - 1)).show();
+                        $("#OptionCount").val(opCnt - 1);
                     }
+
+                    ShowRequiredOptionInCorrectAnswerDropDown();
                 }
 
-                function OptionDispalyOnEdit(opt)
-                {
-                    var op=parseInt(opt);
-                    if(op>2)
-                    {
+                // Display Option On Edit Question
+                function OptionDispalyOnEdit(opt) {
+                    var op = parseInt(opt);
+                    if (op > 2) {
                         $("#btnAddOpt2").hide();
-                        for(var i=3; i<=op; i++)
-                        {
-                            $("#rowOpt"+i).show();
-                            $("#btnDelOpt"+i).show();
+                        for (var i = 3; i <= op; i++) {
+                            $("#rowOpt" + i).show();
+                            $("#btnDelOpt" + i).show();
 
-                            if(i!=op)
-                                $("#btnAddOpt"+i).hide();
+                            if (i != op)
+                                $("#btnAddOpt" + i).hide();
                         }
                     }
                 }
+
+                // Show Option in Correct Answer Drop Down i.e. If 3 option then 3 item in drop down list.
+                function ShowRequiredOptionInCorrectAnswerDropDown() {
+                    var item = $("#OptionCount").val();
+                    var ans = $("#CorrectAnswer :selected").length;
+                    if(ans>0)
+                    {
+                        var correctAnswer = $('#CorrectAnswer').data("kendoMultiSelect");
+                        correctAnswer.value([]);
+                    }
+
+                    var dataOp = [];
+                    for (var j = 1; j <= parseInt(item); j++) {
+                        var arrItem = {};
+                        arrItem["Text"] = "Option" + j;
+                        arrItem["Value"] = j;
+
+                        dataOp.push(arrItem);
+                    }
+                    var multiselect = $("#CorrectAnswer").data("kendoMultiSelect");
+                    multiselect.setDataSource(new kendo.data.DataSource({ data: dataOp }));
+
+                    var success =@Model.Success;
+                    var edit = "@Model.Edit";
+
+                    if (edit == "True") {
+                        if (success == 0) {
+                            var arr = [];
+
+                            @if (Model.CorrectAnswer != null)
+                            {
+                                foreach (var stOp in Model.CorrectAnswer)
+                                {
+                                    @: arr.push(@stOp);
+                                }
+                            }
+                            var correctAnswer1 = $('#CorrectAnswer').data("kendoMultiSelect");
+                            correctAnswer1.value(arr);
+                        }
+                    }
+                }
+
             </script>
             <style>
                 .height {

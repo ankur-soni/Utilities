@@ -1,13 +1,16 @@
 ﻿using Silicus.Ensure.Models.DataObjects;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Web;
 
 namespace Silicus.Ensure.Web.Models
 {
     public class QuestionModel
     {
+        public QuestionModel()
+        {
+            Edit = false;
+            Success = 0;
+        }
         public int Id { get; set; }
         public string QuestionType { get; set; }
         public string QuestionDescription { get; set; }
@@ -36,10 +39,8 @@ namespace Silicus.Ensure.Web.Models
 
         public List<Tags> SkillTagsList { get; set; }
         public List<string> SkillTag { get; set; }
-
-        private int _success = 0;
-        private bool _edit = false;
-        public int Success { get { return _success; } set { _success = value; } }
-        public bool Edit { get { return _edit; } set { _edit = value; } }
+       
+        public int Success { get; set; }
+        public bool Edit { get; set; }
     }
 }
