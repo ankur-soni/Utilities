@@ -336,6 +336,7 @@
     <Content Include="Css\bootstrap-switch.css" />
     <Content Include="Css\bootstrap.css" />
     <Content Include="Css\bootstrap.min.css" />
+    <Content Include="Css\custom-style.css" />
     <Content Include="Css\patterns\1.png" />
     <Content Include="Css\patterns\2.png" />
     <Content Include="Css\patterns\3.png" />

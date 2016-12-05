@@ -63,7 +63,7 @@ namespace Silicus.EncourageWithAzureAd.Web.Controllers
                 _logger.Log("Current user's role is User");
             }
            
-            var winnersForLastMonth = _encourageDatabaseContext.Query<Shortlist>().Where(w => w.IsWinner == true && w.WinningDate.Value.Month == (DateTime.Now.Month) && w.WinningDate.Value.Year == DateTime.Now.Year).ToList();
+            var winnersForLastMonth = _encourageDatabaseContext.Query<Shortlist>().Where(w => w.IsWinner == true && w.WinningDate.Value.Month == (DateTime.Now.Month - 1) && w.WinningDate.Value.Year == DateTime.Now.Year).ToList();
             var listOfWinners = new List<NominationListViewModel>();
             foreach (var winner in winnersForLastMonth)
             {
