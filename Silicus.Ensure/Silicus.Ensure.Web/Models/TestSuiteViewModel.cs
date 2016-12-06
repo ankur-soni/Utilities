@@ -28,7 +28,7 @@ namespace Silicus.Ensure.Web.Models
         [Display(Name = "Overall Proficiency")]
         public Int32 Competency { get; set; }
 
-        [Display(Name="Tags")]
+        [Display(Name = "Tags")]
         public List<string> PrimaryTagIds { get; set; }
 
         public List<string> SecondaryTagIds { get; set; }
@@ -44,13 +44,13 @@ namespace Silicus.Ensure.Web.Models
         public string PositionName { get; set; }
 
         [Display(Name = "Primary Tag")]
-        public string PrimaryTagNames { get; set; }        
+        public string PrimaryTagNames { get; set; }
 
         public string Weights { get; set; }
 
         public string Proficiency { get; set; }
 
-        [Display(Name="Project Name")]
+        [Display(Name = "Project Name")]
         public string ProjectName { get; set; }
 
         [Display(Name = "Customer Name")]
@@ -65,15 +65,17 @@ namespace Silicus.Ensure.Web.Models
         [Display(Name = "Experience Range")]
         public List<string> ExperienceRangeId { get; set; }
 
-        public string ExperienceRange { get; set; }       
+        public string ExperienceRange { get; set; }
 
         public IList<Position> PositionList { get; set; }
 
         public IList<TestSuiteTagViewModel> Tags { get; set; }
+
+        public bool UserInRole { get; set; }
     }
 
     public class TestSuiteTagViewModel
-    { 
+    {
         public string TagName { get; set; }
 
         public int TagId { get; set; }
