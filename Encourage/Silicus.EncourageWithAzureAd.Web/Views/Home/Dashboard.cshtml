@@ -136,7 +136,7 @@
                                 Value = i.ToString(),
                                 Text = System.Globalization.CultureInfo.InvariantCulture.DateTimeFormat.GetMonthName(i)
                             }),
-                            "-- Month --", new { @selectedIndex = DateTime.Now.Month })
+                            "-- Month --")
 
                 @Html.DropDownList("filterYear",
                             Enumerable.Range(2010, (DateTime.Now.Year + 1) - 2010).
@@ -175,6 +175,11 @@
 <script>
     var _urlGetWinnersListPartialView = "@Url.Action("GetWinnersListPartialView", "Home")";
 
+    $(document).ready(function () {
+        $("#filterMonth").val(@DateTime.Now.Month);
+        $("#filterYear").val(@DateTime.Now.Year);
+    });
+
     $("#lockNominations").click(function (e) {
         sweetAlert("The Nomination is Successfully Locked");
     });
@@ -202,11 +207,14 @@
     });
 
     function filterByData(month, year) {
+        $("#wofWinnersList").html('');
+        $("#wofWinnersList").addClass("loader margin-left-40");
         $.ajax({
             type: "GET",
             url: _urlGetWinnersListPartialView,
             data: { month: month, year: year },
             success: function (result) {
+                $("#wofWinnersList").removeClass("loader margin-left-40");
                 $("#wofWinnersList").html(result);
             },
             error: function (error) {

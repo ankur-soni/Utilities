@@ -3,10 +3,11 @@
 
 @foreach (var award in Model.Awards)
 {
-    <div class="row">
-        <span class="media-heading font-noraml">@Html.DisplayFor(model => award.AwardTitle)</span>
-    </div>
-    <div class="row">
+    @*<div class="row">
+        
+    </div>*@
+    <div class="row col-lg-6">
+        <span class="media-heading font-noraml">@Html.DisplayFor(model => award.AwardTitle)</span><br />
         @if (award.NominationList.Count() > 0)
         {
             var index = 0;
@@ -24,7 +25,7 @@
                 KnownColor randomColorName = names[randomGen.Next(names.Length)];
                 Color randomColor = Color.FromKnownColor(randomColorName);
 
-                <div class="outer-wrapperWell well-section col-lg-6" id="@index">
+                <div class="outer-wrapperWell well-section" id="@index">
                     <div class="well">
                         <div class="media">
                             <a class="pull-left" href="#">
