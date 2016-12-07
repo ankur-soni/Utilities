@@ -36,7 +36,6 @@ namespace Silicus.Encourage.Models
         public virtual DbSet<Reviewer> Reviewers { get; set; }
         public virtual DbSet<ReviewerComment> ReviewerComments { get; set; }
         public virtual DbSet<Shortlist> Shortlists { get; set; }
-        public virtual DbSet<sysdiagram> sysdiagrams { get; set; }
         public virtual DbSet<Configuration> Configurations { get; set; }
     }
 }

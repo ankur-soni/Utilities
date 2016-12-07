@@ -36,6 +36,8 @@ namespace Silicus.Encourage.Models
         public Nullable<bool> IsSubmitted { get; set; }
         public byte[] UserImage { get; set; }
         public string Comment { get; set; }
+        public bool Other { get; set; }
+        public string OtherNominationReason { get; set; }
     
         public virtual Award Award { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
