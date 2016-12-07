@@ -28,7 +28,7 @@ namespace Silicus.Ensure.Entities.Initializer
             const string name = "admin@example.com";
             const string password = "Admin@123456";
             const string roleName = "Admin";
-                        
+
             //Create Role Admin if it does not exist
             var role = roleManager.FindByName(roleName);
             if (role == null)
@@ -77,6 +77,33 @@ namespace Silicus.Ensure.Entities.Initializer
             if (!rolesForUser1.Contains(role1.Name))
             {
                 var result = userManager.AddToRole(user1.Id, role1.Name);
+            }
+
+            const string namePanel = "nilkanth@gmail.com";
+            const string passwordPanel = "Panel@123";
+            const string roleNamePanel = "Panel";
+
+            //Create Role Panel if it does not exist
+            var rolePanle = roleManager.FindByName(roleNamePanel);
+            if (rolePanle == null)
+            {
+                rolePanle = new IdentityRole(roleNamePanel);
+                var roleresult = roleManager.Create(rolePanle);
+            }
+
+            var userPanel = userManager.FindByName(namePanel);
+            if (userPanel == null)
+            {
+                userPanel = new ApplicationUser { UserName = namePanel, Email = namePanel };
+                var result = userManager.Create(userPanel, passwordPanel);
+                result = userManager.SetLockoutEnabled(userPanel.Id, false);
+            }
+
+            // Add user Panel to Role Panel if not already added
+            var rolesForUserPanel = userManager.GetRoles(userPanel.Id);
+            if (!rolesForUserPanel.Contains(rolePanle.Name))
+            {
+                var result = userManager.AddToRole(userPanel.Id, rolePanle.Name);
             }
         }
     }

@@ -285,35 +285,6 @@ namespace Silicus.Ensure.Web.Controllers
 
         #endregion
 
-        #region Position
-
-        public ActionResult GetPositionDetails([DataSourceRequest] DataSourceRequest request)
-        {
-            var positionlist = _positionService.GetPositionDetails().OrderByDescending(model => model.PositionId);
-            return Json(positionlist.ToDataSourceResult(request), JsonRequestBehavior.AllowGet);
-        }
-
-        public ActionResult Positions()
-        {
-            return PartialView();
-        }
-
-        public ActionResult PositionSave(Position position)
-        {
-            if (ModelState.IsValid)
-            {
-                if (position.PositionId == 0)
-                    return Json(_positionService.Add(position));
-                else
-                {
-                    _positionService.Update(position);
-                    return Json(1);
-                }
-            }
-            return View("TestSuiteAdd", position);
-        }
-        #endregion Position
-
         public ActionResult ViewQuestion(int? id)
         {
             int UserId = 0;

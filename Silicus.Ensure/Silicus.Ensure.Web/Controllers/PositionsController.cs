@@ -42,10 +42,10 @@ namespace Silicus.Ensure.Web.Controllers
             return PartialView();
         }
 
-        public ActionResult PositionDelete(int PositionId)
+        public ActionResult PositionDelete(Position position)
         {
-            var position = _positionService.GetPositionDetails().Where(model => model.PositionId == PositionId).SingleOrDefault();
-            if (position != null)
+            //var position = _positionService.GetPositionDetails().Where(model => model.PositionId == PositionId).SingleOrDefault();
+            if (position != null && ModelState.IsValid)
             {
                 _positionService.Delete(position);
                 return Json(1);

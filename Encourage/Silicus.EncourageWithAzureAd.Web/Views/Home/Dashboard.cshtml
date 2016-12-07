@@ -50,7 +50,7 @@
                     </div>
                     <div class="ibox-footer text-left">
                         <a href="@Url.Action("AddNomination","Nomination")" class="btn btn-primary btn-sm dashboardButtons">
-                            <span style="font-weight:bold">  Add nomination </span>
+                            <span style="font-weight:bold">  Add Nomination </span>
                         </a>
                     </div>
                 </div>
@@ -306,21 +306,8 @@
 <script src="~/Scripts/jquery.unobtrusive-ajax.js"></script>
 
 <script>
-
-    @*$(document).ready(function () {
-        debugger;
-        console.log("ready!");
-        var data = '@ViewBag.IdName';
-
-    });*@
-
-
     $("#lockNominations").click(function (e) {
-        //    debugger;
-        //   e.preventDefault();
         sweetAlert("The Nomination is Successfully Locked");
-        //    $("#lockNominations").addClass('disabled');
-        //    $("#unLockNominations").removeClass('disabled')
     });
     $("#unLockNominations").click(function (e) {
         sweetAlert("The Nomination is Successfully unlocked");
@@ -332,34 +319,5 @@
     $("#2").delay(1000).fadeIn();
     $("#3").delay(1000).fadeIn();
     $("#4").delay(1000).fadeIn();
-
-    @*$(".card").click(function winnerCards()
-    {
-
-        debugger;
-        if (winnerCardIndex <= (@Model.Count()))
-        {
-            debugger;
-            $("#"+winnerCardIndex).css("display", "none");
-            winnerCardIndex++;
-            if (winnerCardIndex == (@Model.Count())) {
-                winnerCardIndex = 0;
-            }
-            $("#"+winnerCardIndex).delay(1000).fadeIn();
-
-        }
-
-
-    });*@
-
-
-    //$(".winners").click(function(){
-
-
-
-    //    sweetAlert("Asha");
-
-
-    //});
 
 </script>

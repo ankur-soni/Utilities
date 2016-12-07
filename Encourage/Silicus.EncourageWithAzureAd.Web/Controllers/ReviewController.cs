@@ -10,7 +10,6 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
-using System.Web;
 using System.Web.Mvc;
 
 namespace Silicus.EncourageWithAzureAd.Web.Controllers
@@ -42,43 +41,6 @@ namespace Silicus.EncourageWithAzureAd.Web.Controllers
             _emailNotificationOfWinner = EmailNotificationOfWinner;
             _logger = logger;
         }
-
-        #region Test
-        //public ActionResult setLockForNomination()
-        //{
-        //    DateTime currentDate = System.DateTime.Now;
-        //    var firstDayOfMonth = new DateTime(System.DateTime.Now.Year, System.DateTime.Now.Month, 1);
-        //    var expireDateReviewer = firstDayOfMonth.AddDays(Convert.ToDouble(System.Configuration.ConfigurationManager.AppSettings["NoOfDaysManager"].ToString()) + Convert.ToDouble(System.Configuration.ConfigurationManager.AppSettings["NoOfDaysReviewer"].ToString()));
-
-        //    //set IsLocked = true for "Reviewer" Table
-        //    if (currentDate == expireDateReviewer || currentDate > expireDateReviewer)
-        //    {
-        //        var reviews = _reviewService.GetAllReview();
-
-
-        //        foreach (var review in reviews)
-        //        {
-        //            if (review != null)
-        //            {
-        //                var reviewrow = _nominationService.GetAllNominations().Where(x => x.Id.Equals(review.NominationId)).ToList().First().NominationDate;
-
-
-        //                if ((currentDate.Month - 1).Equals(reviewrow.Value.Month) && (currentDate.Month > 1 ? (currentDate.Year).Equals(reviewrow.Value.Year) : (currentDate.Year - 1).Equals(reviewrow.Value.Year)))
-        //                {
-        //                    review.IsLocked = true;
-        //                    _reviewService.UpdateReview(review);
-        //                }
-
-        //                //  review.NominationId
-
-        //            }
-        //        }
-        //    }
-        //    else { }
-        //    return null;
-        //}
-
-        #endregion
 
         [HttpGet]
         [CustomeAuthorize(AllowedRole = "Admin")]
@@ -171,7 +133,6 @@ namespace Silicus.EncourageWithAzureAd.Web.Controllers
 
             foreach (var item in rejectAllRviews)
             {
-
                 var Comments = _encourageDatabaseContext.Query<ReviewerComment>().Where(rc => rc.ReviewId == item.Id).ToList();
 
                 foreach (var reviewComment in Comments)
@@ -186,14 +147,13 @@ namespace Silicus.EncourageWithAzureAd.Web.Controllers
             return RedirectToAction("Index", "Home");
         }
 
-
         [HttpGet]
         [CustomeAuthorize(AllowedRole = "Admin")]
         public ActionResult ViewNominationForShortlist(ReviewFeedbackListViewModel nominationModel)
         {
             _logger.Log("Review-ViewNominationForShortlist-GET");
             ViewBag.NominationLockStatus = _nominationService.GetNominationLockStatus();
-           var reviews = _reviewService.GetReviewsForNomination(nominationModel.NominationId).ToList();
+            var reviews = _reviewService.GetReviewsForNomination(nominationModel.NominationId).ToList();
             var nomination = _nominationService.GetNomination(reviews.FirstOrDefault().NominationId);
             var allReviewerComments = new List<List<ReviewerCommentViewModel>>();
 
@@ -203,27 +163,22 @@ namespace Silicus.EncourageWithAzureAd.Web.Controllers
                 var reviewer = _encourageDatabaseContext.Query<Reviewer>().Where(model => model.Id == review.ReviewerId).FirstOrDefault();
                 var reviewerObj = _commonDbContext.Query<User>().Where(u => u.ID == reviewer.UserId).FirstOrDefault();
 
-
                 var reviewerCommentList = new List<ReviewerCommentViewModel>();
                 foreach (var reviewerComment in allreviewerComment)
                 {
-
                     var singleReviewerComent = new ReviewerCommentViewModel()
                     {
                         CriteriaID = reviewerComment.CriteriaId,
                         Comment = reviewerComment.Comment,
                         Credit = Convert.ToBoolean(reviewerComment.Credit.Value),
                         ReviewerName = reviewerObj.DisplayName
-
                     };
                     reviewerCommentList.Add(singleReviewerComent);
                 }
                 allReviewerComments.Add(reviewerCommentList);
             }
-            //var isLocked = _nominationService.GetAllNominations().Where(x => x.NominationDate.Value.Month.Equals(DateTime.Now.Month - 1)).FirstOrDefault()?.IsLocked ?? false;
             var isLocked = _nominationService.GetAllNominations().Where(x => (x.NominationDate.Value.Month.Equals(DateTime.Now.Month - 1) && x.NominationDate.Value.Year.Equals(DateTime.Now.Month > 1 ? DateTime.Now.Year : DateTime.Now.Year - 1))).FirstOrDefault().IsLocked ?? false;
 
-            //var isLocked = _nominationService?.GetAllNominations()?.FirstOrDefault()?.IsLocked?? false;
             var loggedInAdminId = _awardService.GetUserIdFromEmail(User.Identity.Name);
             var hrAdminsFeedback = _resultService.GetHrAdminsFeedbackForEmployee(loggedInAdminId, nomination.Id);
             var shortlistViewModel = new ViewShortlistDetailsViewModel()
@@ -244,7 +199,6 @@ namespace Silicus.EncourageWithAzureAd.Web.Controllers
                 IsLocked = isLocked,
                 HrAdminsfeedback = hrAdminsFeedback,
                 HrAdminName = _resultService.GetLoggedInUserName(User.Identity.Name)
-
             };
 
             return View(shortlistViewModel);
@@ -258,7 +212,7 @@ namespace Silicus.EncourageWithAzureAd.Web.Controllers
             _logger.Log("Review-ShortlistNomination-POST");
             try
             {
-                _resultService.ShortlistNomination(nominationId,adminId);
+                _resultService.ShortlistNomination(nominationId, adminId);
                 _emailNotificationOfWinner.Process();
                 return true;
             }
@@ -286,20 +240,19 @@ namespace Silicus.EncourageWithAzureAd.Web.Controllers
         [HttpPost]
         [CustomeAuthorize(AllowedRole = "Admin")]
         public bool SelectWinner(int nominationId, string winningComment, string feedback)
-          {
+        {
             _logger.Log("Review-SelectWinner-POST");
             var adminId = _awardService.GetUserIdFromEmail(User.Identity.Name);
             try
             {
-                _resultService.SelectWinner(nominationId, winningComment, feedback,adminId);
+                _resultService.SelectWinner(nominationId, winningComment, feedback, adminId);
                 _emailNotificationOfWinner.Process();
 
                 return true;
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 throw ex;
-               // return false;
             }
         }
 
@@ -309,73 +262,17 @@ namespace Silicus.EncourageWithAzureAd.Web.Controllers
             _logger.Log("Review-LockNomination-GET");
             _nominationService.LockNominations();
             _reviewService.LockReview();
-             // var allNominations = _nominationService.GetAllNominations();
-            //var nominations = allNominations.Where(x => (x.NominationDate.Value.Month.Equals(DateTime.Now.Month - 1) && x.NominationDate.Value.Year.Equals(DateTime.Now.Month > 1 ? DateTime.Now.Year : DateTime.Now.Year - 1))).ToList();
-
-
-            //foreach (var nomination in allNominations)
-            //{
-            //    if (nomination != null)
-            //    {
-            //        nomination.IsLocked = true;
-            //        _nominationService.UpdateNomination(nomination);
-            //    }
-            //}
-            // var reviews = _reviewService.GetAllReview();
-            //foreach (var review in reviews)
-            // {
-            //    if (review != null)
-            //    {
-            //        var reviewrow = _nominationService.GetAllNominations().Where(x => x.Id.Equals(review.NominationId)).ToList().First().NominationDate;
-
-
-            //        if ((DateTime.Now.Month - 1).Equals(reviewrow.Value.Month) && (DateTime.Now.Month > 1 ? (DateTime.Now.Year).Equals(reviewrow.Value.Year) : (DateTime.Now.Year - 1).Equals(reviewrow.Value.Year)))
-            //        {
-            //            review.IsLocked = true;
-            //            _reviewService.UpdateReview(review);
-            //        }
-            //  review.NominationId
-
-            //  }
-            // }
 
             return new EmptyResult();
         }
+
         [HttpGet]
         public ActionResult UnlockNomination()
         {
             _logger.Log("Review-UnlockNomination-GET");
             _nominationService.UnLockNominations();
             _reviewService.UnLockReview();
-            //var allNominations = _nominationService.GetAllNominations(); 
-            //var nominations = allNominations.Where(x => x.NominationDate.Value.Month.Equals(DateTime.Now.Month - 1)).ToList();
-            //var nominations = allNominations.Where(x => (x.NominationDate.Value.Month.Equals(DateTime.Now.Month - 1) && x.NominationDate.Value.Year.Equals(DateTime.Now.Month > 1 ? DateTime.Now.Year : DateTime.Now.Year - 1))).ToList();
 
-            //foreach (var nomination in nominations)
-            //{
-            //    if (nomination != null)
-            //    {   
-            //        nomination.IsLocked = false;
-            //        _nominationService.UpdateNomination(nomination);
-            //    }
-            //}
-            //var reviews = _reviewService.GetAllReview();
-            //foreach (var review in reviews)
-            //{
-            //    if (review != null)
-            //    {
-            //        var reviewrow = _nominationService.GetAllNominations().Where(x => x.Id.Equals(review.NominationId)).ToList().First().NominationDate;
-
-            //        //  if ((DateTime.Now.Month - 1).Equals(reviewrow.Value.Month))
-            //        if ((DateTime.Now.Month - 1).Equals(reviewrow.Value.Month) && (DateTime.Now.Month > 1 ? (DateTime.Now.Year).Equals(reviewrow.Value.Year) : (DateTime.Now.Year - 1).Equals(reviewrow.Value.Year)))
-            //        {
-            //            review.IsLocked = false;
-            //            _reviewService.UpdateReview(review);
-            //        }
-            //        //  review.NominationId
-
-            //    }
-            //}
             return new EmptyResult();
         }
     }

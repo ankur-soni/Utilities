@@ -1,0 +1,130 @@
+﻿@model Silicus.Ensure.Models.DataObjects.User
+@using Silicus.Ensure.Models.Constants;
+@using Kendo.Mvc.UI;
+
+@{
+    ViewBag.Title = "Roles";
+}
+
+<h2>User Management</h2>
+
+<div class="row" style="margin-bottom:20px">
+    <div class="col-sm-3">
+        <span style="float:right;    margin-top: 2px;"><b>User Role</b></span>
+    </div>
+    <div class="col-sm-3">
+        @(Html.Kendo().DropDownListFor(m => m.Role)
+                        .Name("Role")
+                        .DataTextField("Text")
+                        .DataValueField("Value")
+                        .Events(e => e.Change("onSelect"))
+                        .BindTo(EnumHelper.GetSelectList((typeof(RoleName)))
+                        .Select(x => new SelectListItem { Text = x.Text, Value = x.Text }).OrderBy(x => x.Text))
+                        .HtmlAttributes(new { style = "width: 100%" })
+                        .OptionLabel("All")
+        )
+    </div>
+</div>
+@if (Request.IsAuthenticated)
+{
+    @(Html.Kendo().Grid<Silicus.Ensure.Models.DataObjects.User>().Name("UserGrids")
+         .Columns(columns =>
+              {
+                  columns.Bound(c => c.FirstName).ClientTemplate(@"#=FirstName#  #=LastName#").Title("Username").Width(200);
+                  columns.Bound(p => p.Role).Width(50);
+                  columns.Bound(p => p.Email).Width(50);
+                  columns.Bound(c => c.UserId).ClientTemplate(@"<a class='k-button k-button-icontext k-grid-edit' href='" + Url.Action("AddUser", "ManageUser") + "?UserId=#=UserId#'><span class='k-icon k-edit'></span>Edit</a><a id='testSuiteDel' class='k-button k-button-icontext k-grid-delete' href='\\#' onclick='return deleteUser(#=UserId#)'><span class='k-icon k-delete'></span>Delete</a>").Title("Action").Width(160);
+              })
+            .DataSource(dataSource => dataSource.Ajax().Model(model =>
+                                                              {
+                                                                  model.Id(p => p.UserId);
+                                                                  model.Field(p => p.UserId).Editable(false);
+                                                              })
+
+                                                              .Read(read => read.Action("GetUserDetails", "User"))
+                                                              .Create(update => update.Action("CreateUser", "User"))
+                                                              .Update(update => update.Action("UpdateUser", "User"))
+                                                              .Destroy(update => update.Action("DeleteUser", "User")))
+            .Pageable()
+            .Sortable()
+                .Resizable(resizing => resizing.Columns(true))
+            .ToolBar(toolbar =>
+            {
+                toolbar.Template(@<text>
+                    <div class="toolbar">
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class="input-group">
+                                    <span class="input-group-addon"><span class="glyphicon glyphicon-search" aria-hidden="true"></span></span>
+                                    <input type="text" class="form-control" id='FieldFilter' placeholder="Search for...">
+                                    <span class="input-group-btn">
+                                        <button class="btn btn-default" style="height:16px;" type="button"><span class="glyphicon glyphicon-refresh" aria-hidden="true"></span></button>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-3 col-md-push-1" style="float: right; padding-right: 0px; margin-right: -22px;">
+                                <a href='/ManageUser/AddUser?UserId=0' class='k-button k-button-icontext k-grid-add'><span class='k-icon k-add'></span>Add user</a>
+                            </div>
+                        </div>
+                    </div>
+                </text>);
+            }))
+}
+
+
+<script>
+    function onSelect() {
+        var dataItem = this.dataItem();
+        var value = dataItem['Text'];
+        grid = $("#UserGrids").data("kendoGrid");
+        if (value == "All") {
+            grid.dataSource.filter([]);
+        }
+        else {
+            grid.dataSource.filter({ field: "Role", operator: "eq", value: value });
+        }
+    }
+    $(document).ready(function () {
+        $("#FieldFilter").keyup(function () {
+            var value = $("#FieldFilter").val();
+            grid = $("#UserGrids").data("kendoGrid");
+            if (value.length > 1) {
+                if (value) {
+                    grid.dataSource.filter({ field: "Role", operator: "contains", value: value });
+                    grid.dataSource.filter({ field: "Email", operator: "contains", value: value });
+                } else {
+                    grid.dataSource.filter({});
+                }
+            }
+            else if (value == "")
+                grid.dataSource.filter({});
+        });
+    });
+    function AddNew() {
+        window.location.href = "/Admin/CandidateAdd?UserId=0";
+        return false;
+    }
+
+    function deleteUser(userId) {
+        if (confirm('Are you sure, do you want to delete user?')) {
+            $.ajax({
+                type: "POST",
+                url: '@Url.Action("DeleteUser", "User")',
+                data: { UserId: userId },
+                success: function (returndata) {
+                    if (returndata == 1) {
+                        $('#UserGrids').data('kendoGrid').dataSource.read();
+                        $('#userGrids').data('kendoGrid').refresh();
+                        ShowMessage("User deleted successfully.", 1);
+                    }
+                    else {
+                        ShowMessage("Error occured while delete operation.", 0);
+                    }
+                }
+            });
+        }
+    }
+
+</script>

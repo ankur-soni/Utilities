@@ -67,9 +67,9 @@ namespace Silicus.Ensure.Web.Controllers
         /// <param name="request"></param>
         /// <param name="RoleName"></param>
         /// <returns></returns>
-        public async Task<ActionResult> GetUserDetails([DataSourceRequest] DataSourceRequest request, string RoleName)
+        public async Task<ActionResult> GetUserDetails([DataSourceRequest] DataSourceRequest request)
         {
-            var userlist = _userService.GetUserDetails().Where(x => x.Role != RoleName).ToArray();
+            var userlist = _userService.GetUserDetails().ToArray();
 
             var viewModels = _mappingService.Map<User[], UserViewModel[]>(userlist);
 
@@ -85,7 +85,7 @@ namespace Silicus.Ensure.Web.Controllers
 
             DataSourceResult result = viewModels.ToDataSourceResult(request);
             return Json(result);
-        }        
+        }
 
         /// <summary>
         /// Deletes the user
@@ -134,7 +134,7 @@ namespace Silicus.Ensure.Web.Controllers
             DataSourceResult result = viewModels.ToDataSourceResult(request);
             return Json(result);
         }
-        
+
         /// <summary>
         /// Check for duplicate mail id in identity table as well as user table in the application
         /// </summary>
@@ -145,7 +145,7 @@ namespace Silicus.Ensure.Web.Controllers
         {
             bool flag = true;
             var userDetails = _userService.GetUserDetails();
-            if (UserId == 0 && UserManager.FindByEmailAsync(Email).Result != null || userDetails.Any(x => x.Email == Email))
+            if (UserId == 0 && (UserManager.FindByEmailAsync(Email).Result != null || userDetails.Any(x => x.Email == Email)))
             {
                 flag = false;
             }
