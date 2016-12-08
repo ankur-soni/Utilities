@@ -37,13 +37,32 @@ namespace Silicus.EncourageWithAzureAd.Web.Controllers
         public ActionResult Index()
         {
             _logger.Log("Home-Index");
+            Dashboard dashboard = GetWinnersList(DateTime.Now.Month, DateTime.Now.Year);
+            return View("Dashboard", dashboard);
+        }
+
+        public ActionResult GetWinnersListPartialView(int month, int year)
+        {
+            _logger.Log("Home-GetWinnersListPartialView");
+            Dashboard dashboard = GetWinnersList(month, year);
+            return PartialView("_winnersList", dashboard);
+        }
+
+        private Dashboard GetWinnersList(int month, int year)
+        {
+            _logger.Log("Home-GetWinnersList");
+            int requiredMonth = month != 0 ? month : DateTime.Now.Month;
+            int requiredYear = year != 0 ? year : DateTime.Now.Year;
 
             string utility = WebConfigurationManager.AppSettings["ProductName"];
 
             var authorizationService = new Authorization(_commonDbService.GetCommonDataBaseContext());
 
             var commonRoles = authorizationService.GetRoleForUtility(User.Identity.Name, utility);
+
             var dashboard = new Dashboard();
+            var listOfAwardsAndWinners = new List<DashboardAwardsAndNominations>();
+
             if ((commonRoles.Count > 0))
             {
                 dashboard.userRoles = commonRoles;
@@ -58,18 +77,34 @@ namespace Silicus.EncourageWithAzureAd.Web.Controllers
                 _logger.Log("Current user's role is User");
             }
 
-            var winnersForLastMonth = _encourageDatabaseContext.Query<Shortlist>().Where(w => w.IsWinner == true && w.WinningDate.Value.Month <= (DateTime.Now.Month) && w.WinningDate.Value.Year == DateTime.Now.Year).ToList();
-            var listOfWinners = new List<NominationListViewModel>();
-            foreach (var winner in winnersForLastMonth)
+            var typesOfAwards = _encourageDatabaseContext.Query<Award>().ToList();
+
+            foreach (var award in typesOfAwards)
             {
-                var winnerName = _nominationService.GetNomineeNameOfCurrentNomination(winner.NominationId);
-                var awardMonthYear = _nominationService.GetAwardMonthAndYear(winner.NominationId);
-                var awardName = _nominationService.GetAwardName(winner.NominationId);
-                var awardComment = _resultService.GetAwardComments(winner.NominationId);
-                listOfWinners.Add(new NominationListViewModel() { DisplayName = winnerName, NominationTime = awardMonthYear, AwardName = awardName, AwardComment = awardComment });
+                var awardsAndNominations = new DashboardAwardsAndNominations();
+                awardsAndNominations.AwardId = award.Id;
+                awardsAndNominations.AwardTitle = award.Name;
+                awardsAndNominations.AwardCode = award.Code;
+
+                var winnersForLastMonth = _encourageDatabaseContext.Query<Shortlist>()
+                    .Where(w => w.IsWinner == true && w.WinningDate.Value.Month == requiredMonth && w.WinningDate.Value.Year == requiredYear && w.Nomination.AwardId == award.Id)
+                    .ToList();
+
+                var listOfWinners = new List<NominationListViewModel>();
+                foreach (var winner in winnersForLastMonth)
+                {
+                    var winnerName = _nominationService.GetNomineeNameOfCurrentNomination(winner.NominationId);
+                    var awardMonthYear = _nominationService.GetAwardMonthAndYear(winner.NominationId);
+                    var awardName = _nominationService.GetAwardName(winner.NominationId);
+                    var awardComment = _resultService.GetAwardComments(winner.NominationId);
+                    listOfWinners.Add(new NominationListViewModel() { DisplayName = winnerName, NominationTime = awardMonthYear, AwardName = awardName, AwardComment = awardComment });
+                }
+                awardsAndNominations.NominationList = listOfWinners;
+                listOfAwardsAndWinners.Add(awardsAndNominations);
             }
-            dashboard.NominationList = listOfWinners;
-            return View("Dashboard", dashboard);
+            dashboard.Awards.AddRange(listOfAwardsAndWinners);
+
+            return dashboard;
         }
 
         public ActionResult About()

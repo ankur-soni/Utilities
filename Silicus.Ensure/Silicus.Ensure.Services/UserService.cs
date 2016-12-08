@@ -56,6 +56,47 @@ namespace Silicus.Ensure.Services
         {
             return _context.Query<User>().Where(x => x.Role == role);
         }
+
+        public dynamic GetTestSuiteDetailsOfUser(int? userId)
+        {
+            var result = (from ts in _context.Query<UserTestSuite>().Where(x => x.UserId == userId)
+                          join t in _context.Query<TestSuite>() on ts.TestSuiteId equals t.TestSuiteId
+                          select new
+                          {
+                              t.TestSuiteName,
+                              ts.UserTestSuiteId,
+                              ts.ObjectiveCount,
+                              ts.PracticalCount,
+                              ts.MaxScore,
+                              ts.Duration
+                          }).FirstOrDefault();
+            return result;
+        }
+
+        public dynamic GetTestSuiteDetailsWithQuestions(int? userTestSuiteId)
+        {
+            var result = (from td in _context.Query<UserTestDetails>().Where(x => x.UserTestSuite.TestSuiteId == userTestSuiteId)
+                          join q in _context.Query<Question>() on td.QuestionId equals q.Id
+                          select new
+                          {
+                              q.Id,
+                              q.QuestionDescription,
+                              q.QuestionType,
+                              q.OptionCount,
+                              q.Option1,
+                              q.Option2,
+                              q.Option3,
+                              q.Option4,
+                              q.Option5,
+                              q.Option6,
+                              q.Option7,
+                              q.Option8,
+                              q.Marks,
+                              q.CorrectAnswer,
+                              q.Answer
+                          }).ToList();
+            return result;
+        }
     }
 }
 
