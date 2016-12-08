@@ -419,7 +419,9 @@
     <Content Include="Scripts\Bootstrap\3.3.1\bootstrap.min.js" />
     <Content Include="Content\toastr.scss" />
     <Content Include="Content\toastr.less" />
-    <None Include="Properties\PublishProfiles\Ensure.pubxml" />
+    <None Include="Properties\PublishProfiles\Ensure - FTP.pubxml" />
+    <None Include="Properties\PublishProfiles\Ensure - Web Deploy.pubxml" />
+    <Content Include="Properties\PublishProfiles\Ensure.PublishSettings" />
     <None Include="Scripts\jquery-2.1.4.intellisense.js" />
     <Content Include="Scripts\flipclock.js" />
     <Content Include="Scripts\flipclock.min.js" />
@@ -464,8 +466,6 @@
       <DependentUpon>font-awesome.css</DependentUpon>
     </Content>
     <Compile Include="App_Start\Startup.Auth.cs" />
-    <None Include="Properties\PublishProfiles\Local_WebDeploy.pubxml" />
-    <None Include="Properties\PublishProfiles\Local_WebDeployPackage.pubxml" />
     <Content Include="favicon.ico" />
     <Content Include="Images\accent.png" />
     <Content Include="Images\activitylandingbg.jpg" />
@@ -649,16 +649,11 @@
     <Content Include="Views\Shared\EditorTemplates\ComboBox.cshtml" />
     <Content Include="Views\Account\ExternalLoginConfirmation.cshtml" />
     <Content Include="Views\QuestionBank\AddQuestions.cshtml" />
-    <Content Include="Views\User\CandidateTest.cshtml" />
     <Content Include="Views\Admin\_partialViewTags.cshtml" />
     <Content Include="Views\Admin\_partialViewSkill.cshtml" />
-    <Content Include="Views\Admin\TagAdd.cshtml" />
-    <Content Include="Views\Admin\TestSuiteAdd.cshtml" />
-    <Content Include="Views\Admin\TagList.cshtml" />
     <Content Include="Views\Admin\Candidates.cshtml" />
     <Content Include="Views\Admin\_partialViewCandidates.cshtml" />
     <Content Include="Views\Admin\SelectCandidatesSuit.cshtml" />
-    <Content Include="Views\Admin\_TestSuiteAssign.cshtml" />
     <Content Include="Views\QuestionBank\QuestionBank.cshtml" />
     <Content Include="Views\Admin\Positions.cshtml" />
     <Content Include="Views\Admin\ViewQuestion.cshtml" />
@@ -681,7 +676,12 @@
     <Content Include="Views\Panel\PanelAdd.cshtml" />
     <Content Include="Views\ManageUser\Index.cshtml" />
     <Content Include="Views\ManageUser\_GetUserListPartialView.cshtml" />
-    <Content Include="Views\ManageUser\AddUser.cshtml" />
+    <None Include="Web.Azure.config">
+      <DependentUpon>Web.config</DependentUpon>
+    </None>
+    <None Include="Web.Beta.config">
+      <DependentUpon>Web.config</DependentUpon>
+    </None>
     <None Include="Web.Integration.config">
       <DependentUpon>Web.config</DependentUpon>
       <SubType>Designer</SubType>
@@ -731,6 +731,15 @@
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Integration|AnyCPU'">
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Azure|AnyCPU'">
     <OutputPath>bin\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <Optimize>true</Optimize>

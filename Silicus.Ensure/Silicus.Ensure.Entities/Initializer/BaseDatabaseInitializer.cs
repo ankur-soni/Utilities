@@ -27,7 +27,7 @@ namespace Silicus.Ensure.Entities.Initializer
                ConfirmPassword = "testadmin@123",
                Address = "Test",
                Email = "testadmin@test.com",
-               IdentityUserId = new System.Guid("2D3B545B-50F6-45D4-B916-23D276B3DB00"),
+               IdentityUserId = new System.Guid("5C9DE1BA-083E-425F-AE0B-FCB222E9DBDF"),
                Role = "ADMIN",
                IsActive = true
 

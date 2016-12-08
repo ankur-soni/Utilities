@@ -176,8 +176,18 @@ namespace Silicus.Ensure.Web.Controllers
                         return View(model);
                     case SignInStatus.Failure:
                     default:
+                    {
+                        _logger.Log(string.Format("Login request failed for user : {0}", model.UserName),
+                            LogCategory.Information, GetUserIdentifiableString(model.UserName));
+
+                        var user1 = await UserManager.FindByNameAsync(model.UserName);
+
+                        _logger.Log(string.Format("User Id is: {0}", user1.Id),
+                            LogCategory.Information, GetUserIdentifiableString(model.UserName));
+
                         ModelState.AddModelError("", "Invalid login attempt.");
                         return View(model);
+                    }
                 }
             }
 
