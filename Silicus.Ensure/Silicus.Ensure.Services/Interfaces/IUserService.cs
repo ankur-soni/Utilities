@@ -19,5 +19,9 @@ namespace Silicus.Ensure.Services.Interfaces
         User GetUserByEmail(string email);
 
         IEnumerable<User> GetUserByRole(string role);
+
+        dynamic GetTestSuiteDetailsOfUser(int? userId);
+
+        dynamic GetTestSuiteDetailsWithQuestions(int? userTestSuiteId);
     }
 }
