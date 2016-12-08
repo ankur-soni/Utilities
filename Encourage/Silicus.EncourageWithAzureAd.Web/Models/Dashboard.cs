@@ -22,6 +22,8 @@ namespace Silicus.EncourageWithAzureAd.Web.Models
 
         public string AwardTitle { get; set; }
 
+        public string AwardCode { get; set; }
+
         public List<NominationListViewModel> NominationList { get; set; }
     }
 }

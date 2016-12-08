@@ -84,6 +84,7 @@ namespace Silicus.EncourageWithAzureAd.Web.Controllers
                 var awardsAndNominations = new DashboardAwardsAndNominations();
                 awardsAndNominations.AwardId = award.Id;
                 awardsAndNominations.AwardTitle = award.Name;
+                awardsAndNominations.AwardCode = award.Code;
 
                 var winnersForLastMonth = _encourageDatabaseContext.Query<Shortlist>()
                     .Where(w => w.IsWinner == true && w.WinningDate.Value.Month == requiredMonth && w.WinningDate.Value.Year == requiredYear && w.Nomination.AwardId == award.Id)
