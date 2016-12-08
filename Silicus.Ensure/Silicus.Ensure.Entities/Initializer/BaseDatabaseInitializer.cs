@@ -39,7 +39,7 @@ namespace Silicus.Ensure.Entities.Initializer
                 NewPassword = "Nilkanth@123",
                 ConfirmPassword = "Nilkanth@123",
                 Address = "Sangvi",
-                Email = "nilkanthKapale10@gmail.com",
+                Email = "nilkanth@gmail.com",
                 IdentityUserId = new System.Guid("88B34980-EDD3-420C-8387-621B629A4E9B"),
                 Role = "Panel",
                 IsActive = true

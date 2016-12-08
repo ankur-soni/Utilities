@@ -229,6 +229,77 @@ namespace Silicus.Ensure.Web.Controllers
             return PartialView("SelectCandidatesSuit");
         }
 
+        public ActionResult GetPanelDetails([DataSourceRequest] DataSourceRequest request)
+        {
+            try
+            {
+                bool isAssignedPanel = false;
+                var userList = _userService.GetUserDetails();
+                var panelList = new List<PanelViewModel>();
+
+                if (userList != null && userList.Any())
+                {
+                    var panelUserlist = userList.Where(p => p.Role.ToLower() == RoleName.Panel.ToString().ToLower()).ToArray();
+
+                    foreach (var item in panelUserlist)
+                    {
+                        if (userList.Any(x => x.PanelId != null && x.PanelId.Contains(item.UserId.ToString())))
+                        {
+                            isAssignedPanel = true;
+                        }
+
+                        panelList.Add(new PanelViewModel()
+                            {
+                                PanelId = item.UserId,
+                                PanelName = item.FirstName + " " + item.LastName,
+                                IsAssignedPanel = isAssignedPanel
+                            });
+                    }
+                    panelList.OrderBy(x => x.IsAssignedPanel == true);
+                }
+
+                DataSourceResult result = panelList.ToDataSourceResult(request);
+                return Json(result);
+            }
+            catch
+            {
+                return Json(-1);
+            }
+        }
+
+        public ActionResult AssignPanel(int UserId, int IsReassign = 0)
+        {
+            ViewBag.CurrentUser = UserId;
+            ViewBag.IsReassign = IsReassign;
+            return PartialView("_partialSelctPanelList");
+        }
+
+        public ActionResult AssignPanelCandidate(string[] PUserId, int UserId, int IsReAssign = 0)
+        {
+            try
+            {
+                var panelName = new List<string>(); ;
+                foreach (var userId in PUserId)
+                {
+                    var user = _userService.GetUserById(Convert.ToInt32(userId));
+                    if (user != null)
+                    {
+                        panelName.Add(user.FirstName + " " + user.LastName);
+                    }
+                }
+
+                var updateUser = _userService.GetUserById(UserId);
+                updateUser.PanelId = Convert.ToString(string.Join(",", PUserId));
+                updateUser.PanelName = Convert.ToString(string.Join(",", panelName));
+                _userService.Update(updateUser);
+                return Json(1);
+            }
+            catch
+            {
+                return Json(-1);
+            }
+        }
+
         public ActionResult AssignSuite(int SuiteId, int UserId, int IsReAssign = 0)
         {
             var updateCurrentUsers = _userService.GetUserDetails().Where(model => model.UserId == UserId).FirstOrDefault();
@@ -424,8 +495,9 @@ namespace Silicus.Ensure.Web.Controllers
 
             foreach (var userTestDetails in userTestSuitDetails.UserTestDetails.Where(x => x.QuestionId == Convert.ToInt32(Request.Form["PractileQuesionId" + count])).ToList())
             {
-                userTestDetails.MarkGivenByName = User.Identity.Name;
-                userTestDetails.MarkGivenBy = UserManager.FindByEmailAsync(userTestDetails.MarkGivenByName).Id;
+                var currentUser = _userService.GetUserByEmail(User.Identity.Name);
+                userTestDetails.MarkGivenByName = currentUser != null ? currentUser.FirstName + " " + currentUser.LastName : "";
+                userTestDetails.MarkGivenBy = currentUser != null ? currentUser.UserId : 0;
                 userTestDetails.Mark = Convert.ToInt32(Request.Form["Emarks" + count]);
                 userTestDetails.MarkGivenDate = DateTime.Now;
 
@@ -489,17 +561,17 @@ namespace Silicus.Ensure.Web.Controllers
                         Font Verdana = FontFactory.GetFont("Verdana", 10F, Font.NORMAL, Color.BLACK);
                         document.Add(new Paragraph("Question Set for " + userDetails.FirstName + " " + userDetails.LastName));
 
-                        PdfPTable table1; 
-                        
-                        
-                        PdfPTable table2; 
-                        
+                        PdfPTable table1;
+
+
+                        PdfPTable table2;
+
                         PdfPCell cell;
                         PdfPCell cell2;
 
                         document.Add(new Paragraph("Objective Question Set"));
                         foreach (var i in Que)
-                        {                          
+                        {
                             if (i.QuestionType == 1)
                             {
                                 table1 = new PdfPTable(2);
@@ -515,9 +587,9 @@ namespace Silicus.Ensure.Web.Controllers
                                 table1.AddCell(cell2);
                                 table1.AddCell(i.CorrectAnswer);
                                 document.Add(table1);
-                                
+
                             }
-                            
+
                         }
 
                         document.Add(new Paragraph("Practical Question Set"));
@@ -529,8 +601,8 @@ namespace Silicus.Ensure.Web.Controllers
                                 table2.SpacingBefore = 20;
                                 cell = new PdfPCell(new Phrase(i.QuestionDescription));
                                 cell.Rowspan = 1;
-                                table2.AddCell(cell);                                
-                                table2.AddCell(i.Answer);                                
+                                table2.AddCell(cell);
+                                table2.AddCell(i.Answer);
 
                                 document.Add(table2);
                             }

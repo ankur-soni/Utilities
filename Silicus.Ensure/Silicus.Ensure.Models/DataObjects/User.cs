@@ -55,7 +55,7 @@ namespace Silicus.Ensure.Models.DataObjects
 
         public string TestStatus { get; set; }
 
-        public int? PanelId { get; set; }
+        public string PanelId { get; set; }
 
         public string PanelName { get; set; }
 

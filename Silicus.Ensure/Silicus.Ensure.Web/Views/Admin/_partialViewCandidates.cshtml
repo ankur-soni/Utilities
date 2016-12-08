@@ -1,4 +1,4 @@
-﻿@model Silicus.Ensure.Models.DataObjects.User
+﻿@model Silicus.Ensure.Web.Models.UserViewModel
 @using Silicus.Ensure.Models.Constants;
 @using Kendo.Mvc.UI;
 
@@ -53,26 +53,32 @@
             var value = $("#FieldFilter").val();
             grid = $("#userGrids").data("kendoGrid");
 
-            if (value) {          
-                var filter = { logic: "or", filters: [] };
-                var supplierValue = value;
-                filter.filters.push({ field: "FirstName", operator: "eq", value: value });              
-                filter.filters.push({ field: "LastName", operator: "eq", value: value });             
-                filter.filters.push({ field: "Position", operator: "eq", value: value });              
-                filter.filters.push({ field: "Department", operator: "eq", value: value });
-                grid.dataSource.query({ filter: filter });
-
-
-            } else {
-                grid.dataSource.filter({});
+            if (value.length > 1) {
+                if (value) {
+                    grid.dataSource.filter({ field: "FirstName", operator: "contains", value: value });
+                    grid.dataSource.filter({ field: "LastName", operator: "contains", value: value });
+                    grid.dataSource.filter({ field: "Position", operator: "contains", value: value });
+                    grid.dataSource.filter({ field: "Department", operator: "contains", value: value });
+                } else {
+                    grid.dataSource.filter({});
+                }
             }
+            else if (value == "")
+                grid.dataSource.filter({});
+        });
+        $("#candidateSearch").click(function (e) {
+            e.preventDefault();
+            var datasource = $("#userGrids").data("kendoGrid").dataSource;
+            //Clear filters:
+            datasource.filter([]);
+            $("#FieldFilter").val('');
         });
     });
     function showTest(UserId, TestStatus) {
         if (TestStatus == '@TestStatus.NotAssigned.ToString()') {
             $.ajax({
                 type: 'post',
-                async: false,              
+                async: false,
                 url: "/Admin/CandidatesSuit",
                 cache: false,
                 data: { UserId: UserId },
@@ -80,13 +86,31 @@
                 success: function (data) {
                     $("#CandidateInfo").html(data);
                     $('#myModal').fadeIn();
-                    $('#myModal').modal();                   
+                    $('#myModal').modal();
                 }
             });
         }
         else {
             alert("Sorry! Cann't perform this operation.");
         }
+    }
+
+    function ReAssignPanel(UserId) {
+        //if (TestStatus == '@TestStatus.NotAssigned.ToString()') {
+        $.ajax({
+            type: 'post',
+            async: false,
+            url: "/Admin/AssignPanel",
+            cache: false,
+            data: { UserId: UserId, IsReassign: 1 },
+            contenttype: "application/json; charset=utf-8",
+            success: function (data) {
+                $("#PanelInfo").html(data);
+                $('#myModal1').fadeIn();
+                $('#myModal1').modal();
+            }
+        });
+        //}
     }
 
     function ReAssign(UserId, TestStatus) {
@@ -105,7 +129,7 @@
                 }
             });
         }
-        }
+    }
 
 
     $(function () {
@@ -117,33 +141,79 @@
                 }
             });
             if (chkCheck) {
-            var uId = $("#CurrentUser").val();
-            var IsReAssign = $("#IsReAssign").val();
-            var checkvals = $("[class='check']:checked").attr("value")
+                var uId = $("#CurrentUser").val();
+                var IsReAssign = $("#IsReAssign").val();
+                var checkvals = $("[class='check']:checked").attr("value")
 
-            $('#myModal').find('input[type=checkbox]:checked').removeAttr('checked');
-            $.ajax({
-                type: 'post',
-                async: false,            
-                url: "/Admin/AssignSuite",
-                cache: false,
-                data: { SuiteId: checkvals, UserId: uId, IsReAssign: IsReAssign },
-                contenttype: "application/json; charset=utf-8",
-                success: function (returndata) {
-                    if (returndata == 1) {
-                        $('#userGrids').data('kendoGrid').dataSource.read();
-                        $('#userGrids').data('kendoGrid').refresh();
-                        ShowMessage("Test suit assigned successfully.", 1);
+                $('#myModal').find('input[type=checkbox]:checked').removeAttr('checked');
+                $.ajax({
+                    type: 'post',
+                    async: false,
+                    url: "/Admin/AssignSuite",
+                    cache: false,
+                    data: { SuiteId: checkvals, UserId: uId, IsReAssign: IsReAssign },
+                    contenttype: "application/json; charset=utf-8",
+                    success: function (returndata) {
+                        if (returndata == 1) {
+                            $('#userGrids').data('kendoGrid').dataSource.read();
+                            $('#userGrids').data('kendoGrid').refresh();
+                            ShowMessage("Test suit assigned successfully.", 1);
                             $('#myModal').fadeOut();
-                    }
-                },
-                error: function (er) {
+                        }
+                    },
+                    error: function (er) {
 
-                }
-            });
+                    }
+                });
             }
             else {
                 alert('Please select at least one test suit !')
+            }
+        });
+
+    });
+
+    $(function () {
+        $("#SavePanlebtn").bind("click", function () {
+            var chkCheck = false;
+            $('input:checkbox').each(function () {
+                if ($(this).is(':checked')) {
+                    chkCheck = true;
+                }
+            });
+            if (chkCheck) {
+                var uId = $("#CurrentUser").val();
+                var IsReAssign = $("#IsReAssign").val();
+                var checkvals = [];
+                $('input:checkbox').each(function () {
+                    if ($(this).is(':checked')) {
+                        checkvals.push($(this).val());
+                    }
+                });
+                JSON.stringify(checkvals);
+                alert(checkvals);
+                $.ajax({
+                    type: 'post',
+                    async: false,
+                    url: "/Admin/AssignPanelCandidate",
+                    cache: false,
+                    data: { PUserId: checkvals, UserId: uId, IsReAssign: IsReAssign },
+                    contenttype: "application/json; charset=utf-8",
+                    success: function (returndata) {
+                        if (returndata == 1) {
+                            $('#userGrids').data('kendoGrid').dataSource.read();
+                            $('#userGrids').data('kendoGrid').refresh();
+                            ShowMessage("Test suit assigned successfully.", 1);
+                            $('#myModal1').fadeOut();
+                        }
+                    },
+                    error: function (er) {
+                        $('#myModal1').fadeOut();
+                    }
+                });
+            }
+            else {
+                alert('Please select at least one panel !')
             }
         });
 
@@ -203,7 +273,7 @@
 
     @if (Request.IsAuthenticated)
     {
-        @(Html.Kendo().Grid<Silicus.Ensure.Models.DataObjects.User>().Name("userGrids")
+        @(Html.Kendo().Grid<Silicus.Ensure.Web.Models.UserViewModel>().Name("userGrids")
          .Columns(columns =>
               {
                   columns.Bound(p => p.FirstName).Width(50);
@@ -217,14 +287,20 @@
                   columns.Bound(p => p.PanelName).Title("Panel").Width(50);
                   columns.Bound(c => c.UserId).ClientTemplate(@"<a class='k-button k-button-icontext k-grid-edit' href='" + Url.Action("CandidateAdd", "Admin") + "?UserId=#=UserId#'><span class='k-icon k-edit'></span>Edit</a><a id='testSuiteDel' class='k-button k-button-icontext k-grid-delete' href='\\#' onclick='return deleteUser(#=UserId#)'><span class='k-icon k-delete'></span>Delete</a>").Width(160);
                   columns.Bound(c => c.UserId).ClientTemplate(@"
-                                
-                                #if (Role=='Admin'){#
-                                <a onclick=showTest('#=UserId#','#=TestStatus#') style='cursor:pointer'>Assign Test</a>|
+
+                                #if (IsAdmin){#
+                                    #if(TestStatus=='NotAssigned'){#
+                                        <a onclick=showTest('#=UserId#','#=TestStatus#') style='cursor:pointer'>Assign Test</a>
+                                    #}
+                                    else if(TestStatus=='Assigned') {#
+                                        <a  class ='dialog-window' onclick=ReAssignPanel('#=UserId#') style='cursor:pointer'>Assign Panel</a> |
+                                        <a  class ='dialog-window' onclick=ReAssign('#=UserId#','#=TestStatus#') style='cursor:pointer'>Reassign Test</a> 
+                                    #}#
                                 #}#
-                                <a  class ='dialog-window' onclick=CheckAssign('#=TestStatus#',1,'#=UserId#') style='cursor:pointer'>Preview Question Set</a> |
-                                <a  class ='dialog-window' onclick=CheckAssign('#=TestStatus#',2,'#=UserId#') style='cursor:pointer'>View Submitted Test</a> 
-                                #if (Role=='Admin'){#|
-                                <a  class ='dialog-window' onclick=ReAssign('#=UserId#','#=TestStatus#') style='cursor:pointer'>Reassign Test</a>
+
+                                #if(TestStatus!='NotAssigned'){#
+                                | <a  class ='dialog-window' onclick=CheckAssign('#=TestStatus#',1,'#=UserId#') style='cursor:pointer'>Preview Question Set</a> |
+                                 <a  class ='dialog-window' onclick=CheckAssign('#=TestStatus#',2,'#=UserId#') style='cursor:pointer'>View Submitted Test</a>
                                 #}#").Title("Actions");
               })
             .DataSource(dataSource => dataSource
@@ -253,7 +329,7 @@
                                             <span class="input-group-addon"><span class="glyphicon glyphicon-search" aria-hidden="true"></span></span>
                                             <input type="text" class="form-control" id='FieldFilter' placeholder="Search for...">
                                             <span class="input-group-btn">
-                                                <button class="btn btn-default" style="height:16px;" type="button"><span class="glyphicon glyphicon-refresh" aria-hidden="true"></span></button>
+                                                <button id="candidateSearch" class="btn btn-default" style="height:16px;" type="button"><span class="glyphicon glyphicon-refresh" aria-hidden="true"></span></button>
                                             </span>
                                         </div>
                                     </div>
@@ -282,6 +358,24 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-primary" id="Savebtn">Save</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="myModal1" data-backdrop="static" role="dialog">
+    <div class="modal-dialog">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Assign Panel List</h4>
+            </div>
+            <div class="modal-body" id="PanelInfo">
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" id="SavePanlebtn">Save</button>
             </div>
         </div>
     </div>
