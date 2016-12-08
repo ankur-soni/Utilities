@@ -16,7 +16,6 @@
         <EntityTypeShape EntityType="EnCourageModel.Reviewer" Width="1.5" PointX="8.25" PointY="19.5" IsExpanded="true" />
         <EntityTypeShape EntityType="EnCourageModel.ReviewerComment" Width="1.5" PointX="10.5" PointY="10.25" IsExpanded="true" />
         <EntityTypeShape EntityType="EnCourageModel.Shortlist" Width="1.5" PointX="7.5" PointY="15.875" IsExpanded="true" />
-        <EntityTypeShape EntityType="EnCourageModel.sysdiagram" Width="1.5" PointX="2.75" PointY="0.75" IsExpanded="true" />
         <AssociationConnector Association="EnCourageModel.FK_dbo_Award_dbo_FrequencyMaster_FrequencyId" ManuallyRouted="false" />
         <AssociationConnector Association="EnCourageModel.FK_dbo_AwardCriteria_dbo_Award_AwardId" ManuallyRouted="false" />
         <AssociationConnector Association="EnCourageModel.FK_dbo_Criteria_dbo_Award_Award_Id" ManuallyRouted="false" />

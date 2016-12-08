@@ -1,8 +1,6 @@
 ﻿@model Silicus.EncourageWithAzureAd.Web.Models.Dashboard
-@using System.Drawing;
 <!-- Spell Checked and Validated 02/14-->
 <div class="row white-bg header-row">
-
     <nav class="" role="navigation" style="margin-bottom: 0">
         <div class="navbar-header">
             <a class="navbar-minimalize minimalize-styl-2 btn btn-primary" id="menu-toggle" style="margin-left:15px;" href="#"><i class="fa fa-bars"></i> </a>
@@ -42,7 +40,6 @@
         }
         if (roles.Contains("Manager"))
         {
-
             <div class="col-lg-2 col-md-2 col-sm-3">
                 <div class="ibox float-e-margins">
                     <div class="ibox-title text-center">
@@ -54,7 +51,6 @@
                         </a>
                     </div>
                 </div>
-
             </div>
         }
         if (roles.Contains("Reviewer"))
@@ -71,9 +67,7 @@
                         </a>
                     </div>
                 </div>
-
             </div>
-
         }
         if (roles.Contains("Reviewer"))
         {
@@ -91,7 +85,6 @@
                 </div>
 
             </div>
-
         }
         if (roles.Contains("Admin"))
         {
@@ -102,23 +95,16 @@
                     </div>
 
                     <div class="ibox-footer text-left">
-                        @*<a href="@Url.Action("LockNomination","Review")" class="btn btn-primary btn-sm dashboardButtons" id="lockNominations">
-                                <span style="font-weight:bold">Lock Nominations</span>
-                            </a>*@
                         @Ajax.ActionLink("Lock Nominations",
                                     "LockNomination", "Review", new { },
                                     new AjaxOptions
                                     {
                                         HttpMethod = "GET"
                                     },
-                                        new { id = "lockNominations", @class = "btn btn-primary btn-sm dashboardButtons",@style= "font-weight:bold" }
+                                        new { id = "lockNominations", @class = "btn btn-primary btn-sm dashboardButtons", @style = "font-weight:bold" }
                                     )
-
-
                     </div>
                 </div>
-
-
             </div>
             <div class="col-lg-2 col-md-2 col-sm-3">
                 <div class="ibox float-e-margins">
@@ -127,20 +113,7 @@
                     </div>
 
                     <div class="ibox-footer text-left">
-                        @*<a href="@Url.Action("","")" class="btn btn-primary btn-sm dashboardButtons" id="unLockNominations">
-                                <span style="font-weight:bold">Unlock Nominations</span>
-                            </a>*@
-
                         @Ajax.ActionLink("Unlock Nominations", "UnlockNomination", "Review", new { }, new AjaxOptions { HttpMethod = "GET" }, new { @class = "btn btn-primary btn-sm dashboardButtons and111", @style = "font-weight:bold", id = "unLockNominations" })
-
-                        @*@Ajax.ActionLink("Unlock Nominations",
-                            "UnlockNomination", "Review",
-                            new AjaxOptions
-                            {
-                                HttpMethod = "GET"
-                            },
-                                new  { id = "unLockNominations", @class = "btn btn-primary btn-sm dashboardButtons" }
-                            )*@
                     </div>
                 </div>
 
@@ -152,143 +125,37 @@
 
 <div class="wrapper wrapper-content animated fadeInRight" style="padding:0px 10px 40px;">
     <div class="row">
-        @if (Model.NominationList.Count() > 0)
+        @if (Model.Awards.Count() > 0)
         {
-            <div class="header-walloffame"><span>Silicus Wall Of Fame</span></div>
+        <div class="header-walloffame">
+            <span>Silicus Wall Of Fame</span>
+            <span style="float:right;">
+                @Html.DropDownList("filterMonth", Enumerable.Range(1, 12).
+                            Select(i => new SelectListItem
+                            {
+                                Value = i.ToString(),
+                                Text = System.Globalization.CultureInfo.InvariantCulture.DateTimeFormat.GetMonthName(i)
+                            }),
+                            "-- Month --")
+
+                @Html.DropDownList("filterYear",
+                            Enumerable.Range(2010, (DateTime.Now.Year + 1) - 2010).
+                            Select(i => new SelectListItem
+                            {
+                                Value = i.ToString(),
+                                Text = i.ToString()
+                            }),
+                            "-- Year --", new { value = DateTime.Now.Year })
+            </span>
+        </div>
         }
     </div>
-    
-    <div class="row">
-        @{
-            var index = 0;
-            var winnerIndex = 0;
-        }
 
-        @foreach (var item in @Model.NominationList.ToList())
-        {
-            <input type="hidden" value="@item.DisplayName" id="winner @winnerIndex" />
-        }
-
-        @foreach (var item in Model.NominationList)
-        {
-            Random randomGen = new Random();
-            KnownColor[] names = (KnownColor[])Enum.GetValues(typeof(KnownColor));
-            KnownColor randomColorName = names[randomGen.Next(names.Length)];
-            Color randomColor = Color.FromKnownColor(randomColorName);
-
-            <div class="outer-wrapperWell well-section">
-                <div class="well">
-                    <div class="media">
-                        <a class="pull-left" href="#">
-                            <img class="media-object" src="http://placekitten.com/150/150">
-                        </a>
-                        <div class="media-body">
-                            <span class="font-bold txt-color">@Html.LabelFor(modelItem => item.DisplayName): </span><span class="media-heading font-noraml">@Html.DisplayFor(modelItem => item.DisplayName)</span>
-
-                            <div class="">
-                                <span class="font-bold txt-color">@Html.LabelFor(modelItem => item.AwardName): </span> <span class="font-noraml"> @Html.DisplayFor(modelItem => item.AwardName)</span>
-                            </div>
-                            <div class="">
-                                <span class="font-bold txt-color">@Html.LabelFor(modelItem => item.NominationTime): </span> <span class="font-noraml"> @Html.DisplayFor(modelItem => item.NominationTime)</span>
-                            </div>
-                            <div class="">
-                                <span class="font-bold txt-color">@Html.LabelFor(modelItem => item.AwardComment): </span> <span class="font-noraml"> @Html.DisplayFor(modelItem => item.AwardComment)</span>
-                            </div>
-
-
-                            <p>
-                                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis pharetra varius quam sit amet vulputate.
-                                Quisque mauris augue, molestie tincidunt condimentum vitae, gravida a libero. Aenean sit amet felis
-                                dolor, in sagittis nisi. Sed ac orci quis tortor imperdiet venenatis. Duis elementum auctor accumsan.
-                                Aliquam in felis sit amet augue.
-                            </p>
-                            <ul class="list-inline list-unstyled">
-                                <li><span><i class="glyphicon glyphicon-calendar"></i> 2 days, 8 hours </span></li>
-                                <li>|</li>
-                                <span><i class="glyphicon glyphicon-comment"></i> 2 comments</span>
-                                <li>|</li>
-                                <li>
-                                    <span class="glyphicon glyphicon-star"></span>
-                                    <span class="glyphicon glyphicon-star"></span>
-                                    <span class="glyphicon glyphicon-star"></span>
-                                    <span class="glyphicon glyphicon-star"></span>
-                                    <span class="glyphicon glyphicon-star-empty"></span>
-                                </li>
-
-
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="well">
-                    <div class="media">
-                        <a class="pull-left" href="#">
-                            <img class="media-object" src="http://placekitten.com/150/150">
-                        </a>
-                        <div class="media-body">
-                            <span class="font-bold txt-color">@Html.LabelFor(modelItem => item.DisplayName): </span><span class="media-heading font-noraml">@Html.DisplayFor(modelItem => item.DisplayName)</span>
-
-                            <div class="">
-                                <span class="font-bold txt-color">@Html.LabelFor(modelItem => item.AwardName): </span> <span class="font-noraml"> @Html.DisplayFor(modelItem => item.AwardName)</span>
-                            </div>
-                            <div class="">
-                                <span class="font-bold txt-color">@Html.LabelFor(modelItem => item.NominationTime): </span> <span class="font-noraml"> @Html.DisplayFor(modelItem => item.NominationTime)</span>
-                            </div>
-                            <div class="">
-                                <span class="font-bold txt-color">@Html.LabelFor(modelItem => item.AwardComment): </span> <span class="font-noraml"> @Html.DisplayFor(modelItem => item.AwardComment)</span>
-                            </div>
-
-
-                            <p>
-                                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis pharetra varius quam sit amet vulputate.
-                                Quisque mauris augue, molestie tincidunt condimentum vitae, gravida a libero. Aenean sit amet felis
-                                dolor, in sagittis nisi. Sed ac orci quis tortor imperdiet venenatis. Duis elementum auctor accumsan.
-                                Aliquam in felis sit amet augue.
-                            </p>
-                           
-
-                            <ul class="list-inline list-unstyled">
-                                <li><span><i class="glyphicon glyphicon-calendar"></i> 2 days, 8 hours </span></li>
-                                <li>|</li>
-                                <span><i class="glyphicon glyphicon-comment"></i> 2 comments</span>
-                                <li>|</li>
-                                <li>
-                                    <span class="glyphicon glyphicon-star"></span>
-                                    <span class="glyphicon glyphicon-star"></span>
-                                    <span class="glyphicon glyphicon-star"></span>
-                                    <span class="glyphicon glyphicon-star"></span>
-                                    <span class="glyphicon glyphicon-star-empty"></span>
-                                </li>
-
-
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            @*<div class="col-md-12 card white-bg" id="@index">
-                <div class="cardHeader col-md-12 text-center">
-                    <div class="text-center">
-                        <span class="font-bold">@Html.LabelFor(modelItem => item.DisplayName): </span> <span class="font-noraml"> @Html.DisplayFor(modelItem => item.DisplayName)</span>
-                    </div>
-                    <div class="text-center">
-                        <span class="font-bold">@Html.LabelFor(modelItem => item.AwardName): </span> <span class="font-noraml"> @Html.DisplayFor(modelItem => item.AwardName)</span>
-                    </div>
-                    <div class="text-center">
-                        <span class="font-bold">@Html.LabelFor(modelItem => item.NominationTime): </span> <span class="font-noraml"> @Html.DisplayFor(modelItem => item.NominationTime)</span>
-                    </div>
-                    <div class="text-center">
-                        <span class="font-bold">@Html.LabelFor(modelItem => item.AwardComment): </span> <span class="font-noraml"> @Html.DisplayFor(modelItem => item.AwardComment)</span>
-                    </div>
-
-                </div>
-            </div>*@
-            index++;
-        }
-        <br />
+    <div id="wofWinnersList">
+        @Html.Partial("_winnersList", Model)
     </div>
 </div>
+
 <script src="~/js/jquery-2.1.1.js"></script>
 
 <script src="~/js/bootstrap.min.js"></script>
@@ -306,6 +173,13 @@
 <script src="~/Scripts/jquery.unobtrusive-ajax.js"></script>
 
 <script>
+    var _urlGetWinnersListPartialView = "@Url.Action("GetWinnersListPartialView", "Home")";
+
+    $(document).ready(function () {
+        $("#filterMonth").val(@DateTime.Now.Month);
+        $("#filterYear").val(@DateTime.Now.Year);
+    });
+
     $("#lockNominations").click(function (e) {
         sweetAlert("The Nomination is Successfully Locked");
     });
@@ -320,4 +194,33 @@
     $("#3").delay(1000).fadeIn();
     $("#4").delay(1000).fadeIn();
 
+    $("#filterMonth").on("change", function () {
+        var month = +$(this).val();
+        var year = +$("#filterYear").val();
+        filterByData(month, year)
+    });
+
+    $("#filterYear").on("change", function () {
+        var month = +$("#filterMonth").val();
+        var year = +$(this).val();
+        filterByData(month, year)
+    });
+
+    function filterByData(month, year) {
+        $("#wofWinnersList").html('');
+        $("#wofWinnersList").addClass("loader margin-left-40");
+        $.ajax({
+            type: "GET",
+            url: _urlGetWinnersListPartialView,
+            data: { month: month, year: year },
+            success: function (result) {
+                $("#wofWinnersList").removeClass("loader margin-left-40");
+                $("#wofWinnersList").html(result);
+            },
+            error: function (error) {
+                console.log(error);
+            }
+
+        });
+    }
 </script>

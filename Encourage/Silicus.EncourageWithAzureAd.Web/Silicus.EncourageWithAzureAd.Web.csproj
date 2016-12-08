@@ -507,6 +507,7 @@
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
     <Content Include="Images\logo.jpg" />
+    <Content Include="Images\loader_small.gif" />
     <Content Include="Images\View details Icon.png" />
     <Content Include="img\logo_large.png" />
     <Content Include="img\logo_sm.png" />
@@ -853,6 +854,7 @@
     <Content Include="Views\Nomination\Shared\_savedReviewsList.cshtml" />
     <Content Include="Views\Review\Shared\_reviewFeedbackList.cshtml" />
     <Content Include="Views\Nomination\Shared\_criteriaForAwards.cshtml" />
+    <Content Include="Views\Shared\_winnersList.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

@@ -390,26 +390,17 @@ namespace Silicus.Ensure.Web.Controllers
         private ActionResult RedirectToLocal(string returnUrl, string userName = "", bool isAdmin = false, bool isCandidate = false, bool isPanel = false)
         {
             if (Url.IsLocalUrl(returnUrl))
-            {
                 return Redirect(returnUrl);
-            }
 
             if (isCandidate)
-            {
-                Session["UserRole"] = RoleName.Candidate.ToString();
                 return RedirectToAction("Welcome", "Candidate");
-            }
 
             if (isAdmin)
-            {
-                Session["UserRole"] = RoleName.Admin.ToString();
                 return RedirectToAction("Dashboard", "Admin");
-            }
+
             if (isPanel)
-            {
-                Session["UserRole"] = RoleName.Panel.ToString();
                 return RedirectToAction("Candidates", "Admin");
-            }
+
             return RedirectToAction("Dashboard", "User");
         }
 

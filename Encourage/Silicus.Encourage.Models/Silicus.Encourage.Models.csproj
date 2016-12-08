@@ -104,9 +104,6 @@
     <Compile Include="Shortlist.cs">
       <DependentUpon>EnCourage.tt</DependentUpon>
     </Compile>
-    <Compile Include="sysdiagram.cs">
-      <DependentUpon>EnCourage.tt</DependentUpon>
-    </Compile>
   </ItemGroup>
   <ItemGroup>
     <EntityDeploy Include="EnCourage.edmx">

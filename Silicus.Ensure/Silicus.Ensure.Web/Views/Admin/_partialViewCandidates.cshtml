@@ -217,10 +217,15 @@
                   columns.Bound(p => p.PanelName).Title("Panel").Width(50);
                   columns.Bound(c => c.UserId).ClientTemplate(@"<a class='k-button k-button-icontext k-grid-edit' href='" + Url.Action("CandidateAdd", "Admin") + "?UserId=#=UserId#'><span class='k-icon k-edit'></span>Edit</a><a id='testSuiteDel' class='k-button k-button-icontext k-grid-delete' href='\\#' onclick='return deleteUser(#=UserId#)'><span class='k-icon k-delete'></span>Delete</a>").Width(160);
                   columns.Bound(c => c.UserId).ClientTemplate(@"
+                                
+                                #if (Role=='Admin'){#
                                 <a onclick=showTest('#=UserId#','#=TestStatus#') style='cursor:pointer'>Assign Test</a>|
+                                #}#
                                 <a  class ='dialog-window' onclick=CheckAssign('#=TestStatus#',1,'#=UserId#') style='cursor:pointer'>Preview Question Set</a> |
-                                <a  class ='dialog-window' onclick=CheckAssign('#=TestStatus#',2,'#=UserId#') style='cursor:pointer'>View Submitted Test</a> |
-                                <a  class ='dialog-window' onclick=ReAssign('#=UserId#','#=TestStatus#') style='cursor:pointer'>Reassign Test</a>").Title("Actions");
+                                <a  class ='dialog-window' onclick=CheckAssign('#=TestStatus#',2,'#=UserId#') style='cursor:pointer'>View Submitted Test</a> 
+                                #if (Role=='Admin'){#|
+                                <a  class ='dialog-window' onclick=ReAssign('#=UserId#','#=TestStatus#') style='cursor:pointer'>Reassign Test</a>
+                                #}#").Title("Actions");
               })
             .DataSource(dataSource => dataSource
                       .Ajax()

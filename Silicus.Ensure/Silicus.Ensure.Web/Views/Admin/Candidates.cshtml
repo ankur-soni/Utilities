@@ -1,10 +1,8 @@
 ﻿@using Kendo.Mvc.UI;
 
 @{
-    //var statusData = Html.Partial("/Views/Admin/_partialViewDashboard.cshtml");
-    //var sendEmail = Html.Partial("/Views/Admin/_partialViewSendMail.cshtml");
     ViewBag.Title = "Candidate Dashboard";
-    var user = Html.Partial("/Views/Admin/_partialViewCandidates.cshtml");
+    var users = Html.Partial("/Views/Admin/_partialViewCandidates.cshtml");
     var roles = Html.Partial("/Views/Admin/_partialViewRoles.cshtml");
 }
 
@@ -78,20 +76,7 @@
             @(Html.Kendo().TabStrip()
                 .Name("Tabs")
                 .Items(tabstrip =>
-                {
-
-                    tabstrip.Add().Text("Users")
-                        .Selected(true)
-                       .Content(user.ToString());
-                    //if (Session["UserRole"] != null)
-                    //{
-                    //    if (Session["UserRole"].ToString() == Silicus.Ensure.Models.Constants.RoleName.Admin.ToString())
-                    //    {
-                    //        tabstrip.Add().Text("Roles")
-                    //          .Content(roles.ToString());
-                    //    }
-                    //}
-                })
+                { tabstrip.Add().Text("Users").Selected(true).Content(users.ToString()); })
             )
         </div>
     </div>
