@@ -1,0 +1,73 @@
+﻿@using Kendo.Mvc.UI;
+@{    ViewBag.Title = "Panle List";    }
+
+@if (Request.IsAuthenticated)
+{
+    @(Html.Kendo().Grid<Silicus.Ensure.Web.Models.PanelViewModel>().Name("panelGrids")
+                     .Columns(columns =>
+                          {
+                              columns.Bound(p => p.PanelId).ClientTemplate(@"<input type='checkbox' #if(IsAssignedPanel){# checked='checked' #}# class='check' id='chkHeader' value='#=PanelId#'/>").Title("").Width(100);
+                              columns.Bound(p => p.PanelName).Width(200);
+                          })
+                              .DataSource(dataSource => dataSource
+                                  .Ajax()
+                                  .Model(model =>
+                                  {
+                                      model.Id(p => p.PanelId);
+                                      model.Field(p => p.PanelId).Editable(false);
+                                  })
+                                  .Read(read => read.Action("GetPanelDetails", "Admin"))
+                                  .PageSize(10)
+                          )
+                          .Pageable()
+                          .Sortable()
+                          .ToolBar(toolbar =>
+                                {
+                                    toolbar.Template(@<text>
+                                        <div class="toolbar">
+                                            <div class="row">
+                                                <div class="col-md-4">
+                                                    <div class="input-group">
+                                                        <span class="input-group-addon"><span class="glyphicon glyphicon-search" aria-hidden="true"></span></span>
+                                                        <input type="text" class="form-control" id='FieldFilterPanel' placeholder="Search for...">
+                                                        <span class="input-group-btn">
+                                                            <button id="panelSearch" class="btn btn-default" style="height:16px;" type="button"><span class="glyphicon glyphicon-refresh" aria-hidden="true"></span></button>
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </text>);
+                                })
+
+    )
+
+}
+<input type="hidden" value="@ViewBag.CurrentUser" id="CurrentUser" />
+<input type="hidden" value="@ViewBag.IsReassign" id="IsReAssign" />
+<script>
+    $(document).ready(function () {
+
+        $("#FieldFilterPanel").keyup(function () {
+            var value = $("#FieldFilterPanel").val();
+            grid = $("#panelGrids").data("kendoGrid");
+
+            if (value.length > 1) {
+                if (value) {
+                    grid.dataSource.filter({ field: "PanelName", operator: "contains", value: value });
+                } else {
+                    grid.dataSource.filter({});
+                }
+            }
+            else if (value == "")
+                grid.dataSource.filter({});
+        });
+        $("#panelSearch").click(function (e) {
+            e.preventDefault();
+            var datasource = $("#panelGrids").data("kendoGrid").dataSource;
+            //Clear filters:
+            datasource.filter([]);
+            $("#FieldFilterPanel").val('');
+        });
+    });
+</script>

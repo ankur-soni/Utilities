@@ -68,5 +68,8 @@ namespace Silicus.Ensure.Web.Models
         public string ErrorMessage { get; set; }
 
         public string PanelName { get; set; }
+
+        public bool IsAdmin { get; set; }
+
     }
 }
