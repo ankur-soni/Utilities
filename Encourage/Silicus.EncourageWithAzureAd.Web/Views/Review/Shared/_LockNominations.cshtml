@@ -1,0 +1,31 @@
+﻿@model IEnumerable<Silicus.EncourageWithAzureAd.Web.Models.AwardViewModel>
+<style>
+    td {
+        text-align:center;
+    }
+    th {
+        text-align:center;
+    }
+</style>
+
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayName("Status")
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Name)
+        </th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.CheckBoxFor(modelItem => item.Status,htmlAttributes: new { style = "display:block;height:20px;width:20px" , id = item.Id})
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Name)
+        </td>
+    </tr>
+}
+</table>

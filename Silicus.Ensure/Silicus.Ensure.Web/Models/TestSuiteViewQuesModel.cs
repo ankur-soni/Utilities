@@ -7,14 +7,14 @@ namespace Silicus.Ensure.Web.Models
 {
     public class TestSuiteViewQuesModel
     {
-        public int QuestionNumber { get; set; }
-        //public int UserTestDetailId { get; set; }       
+        public int QuestionNumber { get; set; }     
         public int Duration { get; set; }
         public string TestSuiteName { get; set; }
         public int Proficiency { get; set; }
         public int ObjectiveCount { get; set; }
         public int PracticalCount { get; set; }
         public int MaxScore { get; set; }
+        public string ErrorMessage{ get; set; }
 
         public virtual List<TestSuiteQuestion> TestSuiteQuestion { get; set; }
     }
