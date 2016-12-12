@@ -24,11 +24,11 @@ namespace Silicus.EncourageWithAzureAd.Web.API
        //     _logger.Log("NominationApi-LockNominations");
        //     return _nominationService.LockNominations();
         //}
-        [HttpGet]
-        public bool UnLockNominations()
-        {
-            _logger.Log("NominationApi-UnLockNominations");
-            return _nominationService.UnLockNominations();
-        }
+        //[HttpGet]
+        //public bool UnLockNominations()
+        //{
+        //    _logger.Log("NominationApi-UnLockNominations");
+        //    return _nominationService.UnLockNominations();
+        //}
     }
 }

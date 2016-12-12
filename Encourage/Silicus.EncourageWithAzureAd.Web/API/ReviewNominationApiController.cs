@@ -25,11 +25,11 @@ namespace Silicus.EncourageWithAzureAd.Web.API
         //    return _reviewService.LockReview();
         //}
 
-        [HttpGet]
-        public bool UnLockReview()
-        {
-            _logger.Log("ReviewNominatioApi-UnLockReview");
-            return _reviewService.UnLockReview();
-        }
+        //[HttpGet]
+        //public bool UnLockReview()
+        //{
+        //    _logger.Log("ReviewNominatioApi-UnLockReview");
+        //    return _reviewService.UnLockReview();
+        //}
     }
 }
