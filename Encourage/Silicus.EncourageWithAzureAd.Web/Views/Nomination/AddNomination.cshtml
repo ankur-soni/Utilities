@@ -72,8 +72,8 @@
                 </div>
 
                 <input type="hidden" name=ManagerId id="ManagerId" value="@ViewBag.ManagerIdByProject">
-                @{ var projectMessage = "There are no any projects under you."; }
-                @{ var departmentMessage = "There are no any departments under you.";}
+                @{ var projectMessage = "There are no projects under you."; }
+                @{ var departmentMessage = "There are no departments under you.";}
                 <div class="form-group row" id="projectInput">
                     @Html.Label("Project", htmlAttributes: new { @class = "control-label col-md-3 requiredfeild", style = "text-align: left" })
                     <div>
@@ -148,7 +148,7 @@
                 <div style="text-align:center;width:100%;">
                     <input type="button" name="submit" value="Save Draft" id="savebutton" class="btn btn-primary btnSameSize" onclick="return checkValidationOnSaveDraft();" />
                     <input type="button" name="submit" value="Submit" id="submitButton" class="btn btn-primary btnSameSize" onclick="return checkValidationOnSubmit();"
-                           @{  if (ViewBag.NominationLockStatus) { @: disabled="disabled" ;
+                           @{  if (ViewBag.NominationLockStatus) { @: disabled="disabled" 
                                                               @: title="Nominations are locked"
                                                           } } />
                     <input type="button" value="Cancel" class="btn btn-primary btnSameSize" onclick="location.href='@Url.Action("Index", "Home")'" />
