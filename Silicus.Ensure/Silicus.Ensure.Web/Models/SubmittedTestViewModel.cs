@@ -13,7 +13,7 @@ namespace Silicus.Ensure.Web.Models
 
         public string TestStatus { get; set; }
 
-        public int UserTestSuiteId { get; set; }
+        public int TestSuiteId { get; set; }
 
         public string FirstName { get; set; }
 
@@ -38,6 +38,8 @@ namespace Silicus.Ensure.Web.Models
         public int TotalMarksObtained { get; set; }
 
         public string EvaluatedFeedBack { get; set; }
+         
+        public int PracticalQuestionCount   { get; set; }
 
         public List<ObjectiveQuestionList> objectiveQuestionList { get; set; }
 

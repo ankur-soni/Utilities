@@ -255,13 +255,13 @@
         }
     }
 
-    function CheckAssign(status, id, UserId) {
-        if (status == 'Assigned' && id == 1) {
-            window.location.href = "/Admin/ViewQuestion?id=" + UserId;
+    function CheckAssign(status, id, TestSuiteId, UserId) {
+        if (status == '@TestStatus.Submitted.ToString()' && id == 1) {
+            window.location.href = "/Admin/ViewQuestion?UserId=" + UserId + '&TestSuiteId=' + TestSuiteId;
             return false;
         }
-        else if (status == 'Assigned' && id == 2) {
-            window.location.href = "/admin/SubmittedTest?canditateId=" + UserId;
+        else if (status == '@TestStatus.Submitted.ToString()' && id == 2) {
+            window.location.href = "/admin/SubmittedTest?UserId=" + UserId + '&TestSuiteId=' + TestSuiteId;
             return false;
         }
         else {
@@ -294,13 +294,13 @@
                                     #}
                                     else if(TestStatus=='Assigned') {#
                                         <a  class ='dialog-window' onclick=ReAssignPanel('#=UserId#') style='cursor:pointer'>Assign Panel</a> |
-                                        <a  class ='dialog-window' onclick=ReAssign('#=UserId#','#=TestStatus#') style='cursor:pointer'>Reassign Test</a> 
+                                        <a  class ='dialog-window' onclick=ReAssign('#=UserId#','#=TestStatus#') style='cursor:pointer'>Reassign Test</a>
                                     #}#
                                 #}#
 
                                 #if(TestStatus!='NotAssigned'){#
-                                | <a  class ='dialog-window' onclick=CheckAssign('#=TestStatus#',1,'#=UserId#') style='cursor:pointer'>Preview Question Set</a> |
-                                 <a  class ='dialog-window' onclick=CheckAssign('#=TestStatus#',2,'#=UserId#') style='cursor:pointer'>View Submitted Test</a>
+                                | <a  class ='dialog-window' onclick=CheckAssign('#=TestStatus#',1,#=TestSuiteId#,'#=UserId#') style='cursor:pointer'>Preview Question Set</a> |
+                                 <a  class ='dialog-window' onclick=CheckAssign('#=TestStatus#',2,#=TestSuiteId#,'#=UserId#') style='cursor:pointer'>View Submitted Test</a>
                                 #}#").Title("Actions");
               })
             .DataSource(dataSource => dataSource
