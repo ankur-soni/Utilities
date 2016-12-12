@@ -33,9 +33,10 @@ namespace Silicus.Encourage.Services.Interface
         void DeletePrevoiusManagerComments(int nominationID);
         void DiscardNomination(int nominationId);
         bool checkReviewIsDrafted(int nominationId);
-        bool LockNominations();
+        List<Award> LockNominations(List<int> awardIds);
         bool IsNominationLocked();
-        bool UnLockNominations();
+        List<Award> UnLockNominations(List<int> awardIds);
+        List<Award> GetAwardstoUnLockOrUnlock(string status);
         int GetNominationCountByManagerId(int managerId, DateTime startDate, DateTime endDate);
         bool GetNominationLockStatus();
 

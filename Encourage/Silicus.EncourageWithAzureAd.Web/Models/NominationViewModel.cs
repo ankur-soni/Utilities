@@ -8,14 +8,14 @@ namespace Silicus.EncourageWithAzureAd.Web.Models
 {
     public class NominationViewModel
     {
-        [Required(ErrorMessage = "Select Award")]
+        [Required(ErrorMessage = "Select Nomination Category")]
         public int AwardId { get; set; }
 
         public int NominationId { get; set; }
         
         public int ManagerId { get; set; }
 
-        [Required(ErrorMessage = "Select Resource")]
+        [Required(ErrorMessage = "Select Employee")]
         public int ResourceId { get; set; }
 
         [Required(ErrorMessage = "Select Project")]
@@ -28,6 +28,7 @@ namespace Silicus.EncourageWithAzureAd.Web.Models
 
         public bool? IsSubmitted { get; set; }
 
+        [Required(ErrorMessage ="Please provide Comment")]
         public string MainComment { get; set; }
 
         [Required(ErrorMessage = "Select Project or Department")]

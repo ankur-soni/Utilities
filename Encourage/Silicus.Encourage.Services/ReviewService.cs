@@ -4,6 +4,7 @@ using Silicus.Encourage.Services.Interface;
 using Silicus.FrameWorx.Logger;
 using System.Collections.Generic;
 using System.Linq;
+using System.Web.Configuration;
 
 namespace Silicus.Encourage.Services
 {
@@ -51,57 +52,60 @@ namespace Silicus.Encourage.Services
             }
         }
 
-        public bool LockReview()
+        public bool LockReview(List<int> awardIds)
         {
-            //DateTime currentDate = System.DateTime.Now;
-            //var currentReview = GetAllReview();
-            //foreach (var review in currentReview)
-            //{
-            //    if (review != null)
-            //    {
-            //        var reviewrow = _nominationService.GetAllNominations().Where(x => x.Id.Equals(review.NominationId)).ToList().First().NominationDate;
-
-            //        if ((currentDate.Month - 1).Equals(reviewrow.Value.Month) && (currentDate.Month > 1 ? (currentDate.Year).Equals(reviewrow.Value.Year) : (currentDate.Year - 1).Equals(reviewrow.Value.Year)))
-            //        {
-            //            review.IsLocked = true;
-            //            DeletePrevoiusReviewerComments(review.ReviewerId, review.NominationId);
-            //            UpdateReview(review);
-            //            //return true;
-            //        }
-            //    }
-
-            //}
             _logger.Log("ReviewService-LockReview");
-            var data = _encourageDatabaseContext.Query<Models.Configuration>().Where(x => x.configurationKey == "ReviewLock").SingleOrDefault();
-            data.value = true;
-            _encourageDatabaseContext.Update<Models.Configuration>(data);
-            return true;
+            var lockKey = WebConfigurationManager.AppSettings["ReviewLockKey"];
+            if (awardIds.Count > 0)
+            {
+                foreach (var awardId in awardIds)
+                {
+                    var data = _encourageDatabaseContext.Query<Models.Configuration>().Where(x => x.configurationKey == lockKey && x.AwardId == awardId).FirstOrDefault();
+                    if (data != null)
+                    {
+                        data.value = true;
+                        _encourageDatabaseContext.Update<Models.Configuration>(data);
+                    }
+                }
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+
         }
 
-        public bool UnLockReview()
+        //public bool UnLockReview()
+        //{
+        //    _logger.Log("reviewService-unLockReview");
+        //    var data = _encourageDatabaseContext.Query<Models.Configuration>().Where(x => x.configurationKey == "ReviewLock").SingleOrDefault();
+        //    data.value = false;
+        //    _encourageDatabaseContext.Update<Models.Configuration>(data);
+        //    return true;
+        //}
+        public bool UnLockReview(List<int> awardIds)
         {
-            //DateTime currentDate = System.DateTime.Now;
-            //var currentReview = GetAllReview();
-            //foreach (var review in currentReview)
-            //{
-            //    if (review != null)
-            //    {
-            //       // var reviewrow = _nominationService.GetAllNominations().Where(x => x.Id.Equals(review.NominationId)).ToList().First().NominationDate;
-            //        var reviewrow = _nominationService.GetAllNominations().Where(x => x.Id.Equals(review.NominationId)).ToList().First().NominationDate;
-            //        if ((currentDate.Month - 1).Equals(reviewrow.Value.Month) && (currentDate.Month > 1 ? (currentDate.Year).Equals(reviewrow.Value.Year) : (currentDate.Year - 1).Equals(reviewrow.Value.Year)))
-            //        {
-            //            review.IsLocked = false;
-            //            DeletePrevoiusReviewerComments(review.ReviewerId, review.NominationId);
-            //            UpdateReview(review);
-            //           // return true;
-            //        }
-            //    }
-            //}
             _logger.Log("reviewService-unLockReview");
-            var data = _encourageDatabaseContext.Query<Models.Configuration>().Where(x => x.configurationKey == "ReviewLock").SingleOrDefault();
-            data.value = false;
-            _encourageDatabaseContext.Update<Models.Configuration>(data);
-            return true;
+            var lockKey = WebConfigurationManager.AppSettings["ReviewLockKey"];
+            if (awardIds.Count > 0)
+            {
+                foreach (var awardId in awardIds)
+                {
+                    var data = _encourageDatabaseContext.Query<Models.Configuration>().Where(x => x.configurationKey == lockKey && x.value == true && x.AwardId == awardId).FirstOrDefault();
+                    if (data != null)
+                    {
+                        data.value = false;
+                        _encourageDatabaseContext.Update<Models.Configuration>(data);
+                    }
+
+                }
+                return true;
+            }
+            else
+            {
+                return false;
+            }
         }
 
         public bool GetReviewLockStatus()

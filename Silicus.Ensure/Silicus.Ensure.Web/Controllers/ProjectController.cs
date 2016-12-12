@@ -6,6 +6,7 @@ using Silicus.Ensure.Services.Interfaces;
 
 namespace Silicus.Ensure.Web.Controllers
 {
+    [Authorize]
     public class ProjectController : Controller
     {
         private readonly IProjectDetailService _projectDetailService;
@@ -20,7 +21,7 @@ namespace Silicus.Ensure.Web.Controllers
             var projectDetails = _projectDetailService.GetProjectDetails();
             return Json(projectDetails.ToDataSourceResult(request), JsonRequestBehavior.AllowGet);
         }
-        
+
         [AcceptVerbs(HttpVerbs.Post)]
         public ActionResult CreateProject(ProjectDetail projectDetail)
         {

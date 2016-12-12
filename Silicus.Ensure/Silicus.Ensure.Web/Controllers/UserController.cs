@@ -17,6 +17,8 @@ using Silicus.Ensure.Models.Constants;
 
 namespace Silicus.Ensure.Web.Controllers
 {
+
+    [Authorize]
     public class UserController : Controller
     {
         private readonly IUserService _userService;
@@ -72,6 +74,7 @@ namespace Silicus.Ensure.Web.Controllers
             var userlist = _userService.GetUserDetails().ToArray();
 
             var viewModels = _mappingService.Map<User[], UserViewModel[]>(userlist);
+            bool userInRole = User.IsInRole(Silicus.Ensure.Models.Constants.RoleName.Admin.ToString());
 
             for (int j = 0; j < viewModels.Count(); j++)
             {
@@ -80,6 +83,7 @@ namespace Silicus.Ensure.Web.Controllers
                 {
                     var viewUsersRole = await UserManager.GetRolesAsync(userDetails.Id);
                     viewModels[j].Role = viewUsersRole.FirstOrDefault();
+                    viewModels[j].IsAdmin = userInRole;
                 }
             }
 
@@ -115,11 +119,20 @@ namespace Silicus.Ensure.Web.Controllers
         /// <returns></returns>
         public async Task<ActionResult> GetCandidateDetails([DataSourceRequest] DataSourceRequest request, string RoleName)
         {
-            _testSuiteService.TestSuiteActivation(); 
+            _testSuiteService.TestSuiteActivation();
 
             var userlist = _userService.GetUserDetails().Where(p => p.Role.ToLower() == RoleName.ToLower()).ToArray();
-
+            if (User.IsInRole(Silicus.Ensure.Models.Constants.RoleName.Panel.ToString()))
+            {
+                var currentUser = _userService.GetUserByEmail(User.Identity.Name);
+                if (currentUser != null)
+                {
+                    string currentUserId = Convert.ToString(currentUser.UserId);
+                    userlist = userlist.Where(x => x.PanelId != null && x.PanelId.Contains(currentUserId)).ToArray();
+                }
+            }
             var viewModels = _mappingService.Map<User[], UserViewModel[]>(userlist);
+            bool userInRole = User.IsInRole(Silicus.Ensure.Models.Constants.RoleName.Admin.ToString());
 
             for (int j = 0; j < viewModels.Count(); j++)
             {
@@ -127,7 +140,10 @@ namespace Silicus.Ensure.Web.Controllers
                 if (userDetails != null)
                 {
                     var viewUsersRole = await UserManager.GetRolesAsync(userDetails.Id);
+                    var testSuitId = _testSuiteService.GetUserTestSuiteByUserId(viewModels[j].UserId);
                     viewModels[j].Role = viewUsersRole.FirstOrDefault();
+                    viewModels[j].IsAdmin = userInRole;
+                    viewModels[j].TestSuiteId = testSuitId != null ? testSuitId.TestSuiteId : 0;
                 }
             }
 

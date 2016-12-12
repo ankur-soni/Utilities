@@ -26,7 +26,8 @@ namespace Silicus.EncourageWithAzureAd.Web.Controllers
         private readonly TextInfo _textInfo;
         private readonly ILogger _logger;
 
-        public NominationController(INominationService nominationService, Encourage.DAL.Interfaces.IDataContextFactory dataContextFactory, ICommonDbService commonDbService, IAwardService awardService, IReviewService reviewService, ILogger logger)
+        public NominationController(INominationService nominationService, Encourage.DAL.Interfaces.IDataContextFactory dataContextFactory, 
+            ICommonDbService commonDbService, IAwardService awardService, IReviewService reviewService, ILogger logger)
         {
             _nominationService = nominationService;
             _commonDbContext = commonDbService.GetCommonDataBaseContext();

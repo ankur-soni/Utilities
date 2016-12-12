@@ -11,6 +11,7 @@ using System.Web.Mvc;
 
 namespace Silicus.Ensure.Web.Controllers
 {
+    [Authorize]
     public class CandidateController : Controller
     {
         private readonly IEmailService _emailService;
@@ -96,6 +97,7 @@ namespace Silicus.Ensure.Web.Controllers
             TestSuite suite = _testSuiteService.GetTestSuitById(testSuiteId);
             UserTestSuite testSuit = _testSuiteService.GetUserTestSuiteId(userTestSuiteId);
             testSuit.Duration = suite.Duration + (testSuit.ExtraCount * 10);
+            testSuit.StatusId = Convert.ToInt32(TestStatus.Submitted);
             _testSuiteService.UpdateUserTestSuite(testSuit);
 
             // Calculate marks on test submit.

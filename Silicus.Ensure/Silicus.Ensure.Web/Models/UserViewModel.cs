@@ -59,6 +59,8 @@ namespace Silicus.Ensure.Web.Models
 
         public string TestStatus { get; set; }
 
+        public int TestSuiteId { get; set; }
+
         public Guid IdentityUserId { get; set; }
 
         public string ResumePath { get; set; }
@@ -68,5 +70,8 @@ namespace Silicus.Ensure.Web.Models
         public string ErrorMessage { get; set; }
 
         public string PanelName { get; set; }
+
+        public bool IsAdmin { get; set; }
+
     }
 }

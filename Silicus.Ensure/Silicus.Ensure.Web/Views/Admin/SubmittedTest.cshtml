@@ -14,7 +14,8 @@
         ()
         @using (Html.BeginForm("SubmittedTest", "Admin", FormMethod.Post))
         {
-            @Html.HiddenFor(x => x.UserTestSuiteId)
+            @Html.HiddenFor(x => x.UserId)
+            @Html.HiddenFor(x => x.TestSuiteId)
             <h2>Submitted test result of @Model.FirstName @Model.LastName</h2>
             <div class="fluid mt20">
                 <fieldset>
@@ -122,7 +123,6 @@
                         @foreach (var pQuestion in Model.practicalQuestionList)
                         {
                             i = i + 1;
-                            <input type="hidden" id="@Html.Raw("PractileQuesionId" + i)" name="@Html.Raw("PractileQuesionId" + i)" value="@pQuestion.QuestionId" />
                             <div class="col-md-12">
                                 <div class="col-md-4">
                                     Practical question @i:

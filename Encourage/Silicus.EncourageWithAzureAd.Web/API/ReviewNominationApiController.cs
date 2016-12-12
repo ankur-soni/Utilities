@@ -18,18 +18,18 @@ namespace Silicus.EncourageWithAzureAd.Web.API
             _reviewService = reviewService;
             _logger = logger;
         }
-        [HttpGet]
-        public bool lockreview()
-        {
-            _logger.Log("ReviewnominationApi-lockreview");
-            return _reviewService.LockReview();
-        }
+        //[HttpGet]
+        //public bool lockreview()
+        //{
+        //    _logger.Log("ReviewnominationApi-lockreview");
+        //    return _reviewService.LockReview();
+        //}
 
-        [HttpGet]
-        public bool UnLockReview()
-        {
-            _logger.Log("ReviewNominatioApi-UnLockReview");
-            return _reviewService.UnLockReview();
-        }
+        //[HttpGet]
+        //public bool UnLockReview()
+        //{
+        //    _logger.Log("ReviewNominatioApi-UnLockReview");
+        //    return _reviewService.UnLockReview();
+        //}
     }
 }

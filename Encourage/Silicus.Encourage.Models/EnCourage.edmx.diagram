@@ -31,6 +31,7 @@
         <AssociationConnector Association="EnCourageModel.FK_Review_Reviewer_Id" ManuallyRouted="false" />
         <AssociationConnector Association="EnCourageModel.FK_dbo_ReviewerComment_dbo_Reviewer_ReviewerId" ManuallyRouted="false" />
         <EntityTypeShape EntityType="EnCourageModel.Configuration" Width="1.5" PointX="0.75" PointY="3.75" />
+        <AssociationConnector Association="EnCourageModel.FK__Configura__Award__51300E55" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

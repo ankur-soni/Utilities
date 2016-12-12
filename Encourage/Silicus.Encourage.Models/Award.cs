@@ -20,6 +20,7 @@ namespace Silicus.Encourage.Models
             this.AwardCriterias = new HashSet<AwardCriteria>();
             this.Criteria = new HashSet<Criteria>();
             this.Nominations = new HashSet<Nomination>();
+            this.Configurations = new HashSet<Configuration>();
         }
     
         public int Id { get; set; }
@@ -34,5 +35,7 @@ namespace Silicus.Encourage.Models
         public virtual ICollection<Criteria> Criteria { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Nomination> Nominations { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Configuration> Configurations { get; set; }
     }
 }
