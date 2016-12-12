@@ -1,4 +1,4 @@
-﻿@model List<Silicus.Ensure.Models.DataObjects.Question>
+﻿@model Silicus.Ensure.Web.Models.TestSuiteViewQuesModel
 
 @using Kendo.Mvc.UI;
 @{
@@ -16,7 +16,7 @@
         }
     </div>
     <div class="col-md-4 col-md-offset-1" style="float:right">
-        <button type="button" class="btn btn-white" aria-label="Left Align" onclick="window.open('/Admin/CreatePDF?target=_blank')">
+        <button type="button" class="btn btn-white" aria-label="Left Align" onclick="window.open('@Url.Action("CreatePDF", "Admin", new { id = ViewBag.UserId })','_blank')">
             <span class="glyphicon glyphicon-file" aria-hidden="true"> PDF</span>
         </button>
         <button type="submit" name="btnMail" class="btn btn-white" aria-label="Left Align" onclick="location.href='@Url.Action("SendMail", "Admin", new { id = ViewBag.UserId })'">
@@ -26,93 +26,158 @@
             <span class="glyphicon glyphicon-print" aria-hidden="true" onclick="printDiv();"> Print</span>
         </button>
     </div>
-
-    <div id="DivIdToPrint">
-        <div class="fluid mt20">
-            <div class="col-md-12">
-                <h4>
-                    <span>Objective Question Set</span>
-                    <input type="checkbox" id="chkObjQuestions" onclick="ViewQuestion('#dvObjQuestions',this);" />
-                </h4>
-            </div>
-            <div id="dvObjQuestions" class="box" style="margin-left:5%;">
-                @foreach (var q in Model.Where(x => x.QuestionType == 1))
-                {
-                    <div class="row">
-
+    @if (string.IsNullOrWhiteSpace(Model.ErrorMessage))
+    {
+        <div id="DivIdToPrint">
+            <div class="fluid mt20">
+                <div class="col-md-12">
+                    <h4>
+                        <span>Objective Question Set</span>
+                        <input type="checkbox" id="chkObjQuestions" onclick="ViewQuestion('#dvObjQuestions',this);" />
+                    </h4>
+                </div>
+                <div id="dvObjQuestions" class="box" style="margin-left:5%;">
+                    @{int i = 0;}
+                    @foreach (var q in Model.TestSuiteQuestion.Where(x => x.QuestionType == 1))
+                    {
+                        i++;
                         <div class="row">
-                            <div class="col-md-8" style="margin-top:30px">
-                                <strong>Question @q.Id:</strong>  &nbsp;&nbsp;
+
+                            <div class="row">
+                                <div class="col-md-8" style="margin-top:30px">
+                                    <strong>Question @i:</strong>  &nbsp;&nbsp;
+                                    @Html.Raw(q.QuestionDescription)
+                                </div>
+                            </div>
+
+                            @if (q.Option1 != null)
+                            {
+                                <div class="row">
+                                    <div class="col-md-8" style="margin-top:20px">
+                                        <strong>Option 1:</strong> &nbsp;&nbsp;
+                                        @Html.Raw(q.Option1)
+                                    </div>
+                                </div>
+                            }
+
+                            @if (q.Option2 != null)
+                            {
+                                <div class="row">
+                                    <div class="col-md-8" style="margin-top:20px">
+                                        <strong>Option 2:</strong> &nbsp;&nbsp;
+                                        @Html.Raw(q.Option2)
+                                    </div>
+                                </div>
+                            }
+
+                            @if (q.Option3 != null)
+                            {
+                                <div class="row">
+                                    <div class="col-md-8" style="margin-top:20px">
+                                        <strong>Option 3:</strong> &nbsp;&nbsp;
+                                        @Html.Raw(q.Option3)
+                                    </div>
+                                </div>
+                            }
+
+                            @if (q.Option4 != null)
+                            {
+                                <div class="row">
+                                    <div class="col-md-8" style="margin-top:20px">
+                                        <strong>Option 4:</strong> &nbsp; &nbsp;
+                                        @Html.Raw(q.Option4)
+                                    </div>
+                                </div>
+                            }
+
+                            @if (q.Option5 != null)
+                            {
+                                <div class="row">
+                                    <div class="col-md-8" style="margin-top:20px">
+                                        <strong>Option 5:</strong> &nbsp;&nbsp;
+                                        @Html.Raw(q.Option1)
+                                    </div>
+                                </div>
+                            }
+
+                            @if (q.Option6 != null)
+                            {
+                                <div class="row">
+                                    <div class="col-md-8" style="margin-top:20px">
+                                        <strong>Option 6:</strong> &nbsp;&nbsp;
+                                        @Html.Raw(q.Option2)
+                                    </div>
+                                </div>
+                            }
+
+                            @if (q.Option7 != null)
+                            {
+                                <div class="row">
+                                    <div class="col-md-8" style="margin-top:20px">
+                                        <strong>Option 7:</strong> &nbsp;&nbsp;
+                                        @Html.Raw(q.Option3)
+                                    </div>
+                                </div>
+                            }
+
+                            @if (q.Option8 != null)
+                            {
+                                <div class="row">
+                                    <div class="col-md-8" style="margin-top:20px">
+                                        <strong>Option 8:</strong> &nbsp; &nbsp;
+                                        @Html.Raw(q.Option4)
+                                    </div>
+                                </div>
+                            }
+
+                            <div class="row">
+                                <div class="col-md-8" style="margin-top:20px">
+                                    <strong>Correct Answer:</strong> &nbsp;&nbsp;
+                                    Option: @q.CorrectAnswer
+                                </div>
+                            </div>
+                        </div>
+                    }
+                </div>
+            </div>
+            <div class="fluid mt20">
+                <div class="col-md-12" style="margin-top:30px">
+                    <h4>
+                        <span>Practical Question Set</span>
+                        <input type="checkbox" id="chkPQuestions" onclick="ViewQuestion('#dvQuestions',this);" />
+                    </h4>
+                </div>
+                <div id="dvQuestions" class="box" style="margin-left:5%;">
+                    @{int j = 0;}
+                    @foreach (var q in Model.TestSuiteQuestion.Where(x => x.QuestionType == 2))
+                    {
+                        j++;
+                        <div class="row">
+                            <div class="col-md-9" style="margin-top:30px">
+                                <strong>Question @j:</strong>
                                 @Html.Raw(q.QuestionDescription)
                             </div>
                         </div>
-
                         <div class="row">
-                            <div class="col-md-8" style="margin-top:20px">
-                                <strong>Option 1:</strong> &nbsp;&nbsp;
-                                @Html.Raw(q.Option1)
+                            <div class="col-md-9" style="margin-top:30px">
+                                <strong>Answer:</strong>
+                                <textarea rows="5" cols="79">
+                                    @HttpUtility.HtmlDecode(q.Answer)
+                                </textarea>
                             </div>
                         </div>
-
-                        <div class="row">
-                            <div class="col-md-8" style="margin-top:20px">
-                                <strong>Option 2:</strong> &nbsp;&nbsp;
-                                @Html.Raw(q.Option2)
-                            </div>
-                        </div>
-
-                        <div class="row">
-                            <div class="col-md-8" style="margin-top:20px">
-                                <strong>Option 3:</strong> &nbsp;&nbsp;
-                                @Html.Raw(q.Option3)
-                            </div>
-                        </div>
-
-                        <div class="row">
-                            <div class="col-md-8" style="margin-top:20px">
-                                <strong>Option 4:</strong> &nbsp; &nbsp;
-                                @Html.Raw(q.Option4)
-                            </div>
-                        </div>
-
-                        <div class="row">
-                            <div class="col-md-8" style="margin-top:20px">
-                                <strong>Correct Answer:</strong> &nbsp;&nbsp;
-                                Option: @q.CorrectAnswer
-                            </div>
-                        </div>
-                    </div>
-                }
+                    }
+                </div>
             </div>
         </div>
-        <div class="fluid mt20">
-            <div class="col-md-12" style="margin-top:30px">
-                <h4>
-                    <span>Practical Question Set</span>
-                    <input type="checkbox" id="chkPQuestions" onclick="ViewQuestion('#dvQuestions',this);" />
-                </h4>
-            </div>
-            <div id="dvQuestions" class="box" style="margin-left:5%;">
-                @foreach (var q in Model.Where(x => x.QuestionType == 2))
-                {
-                    <div class="row">
-                        <div class="col-md-9" style="margin-top:30px">
-                            <strong>Question @q.Id:</strong>
-                            @Html.Raw(q.QuestionDescription)
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-9" style="margin-top:30px">
-                            <strong>Answer:</strong>
-                            <textarea rows="5" cols="79">
-                                @HttpUtility.HtmlDecode(q.Answer)
-                            </textarea>
-                        </div>
-                    </div>
-                }
-            </div>
+    }
+    else
+    {
+        <div class="error">
+            <p style="color:red">@Model.ErrorMessage</p>
         </div>
-    </div>
+    }
+
 </div>
 
 <script>

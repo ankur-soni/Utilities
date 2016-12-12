@@ -10,6 +10,7 @@ using System.Web.Mvc;
 
 namespace Silicus.Ensure.Web.Controllers
 {
+    [Authorize]
     public class QuestionBankController : Controller
     {
         private readonly IQuestionService _questionService;

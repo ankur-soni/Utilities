@@ -5,18 +5,18 @@ using System.Web;
 
 namespace Silicus.EncourageWithAzureAd.Web.Models
 {
-    public class Dashboard
+    public class DashboardViewModel
     {
-        public Dashboard()
+        public DashboardViewModel()
         {
-            Awards = new List<DashboardAwardsAndNominations>();
+            Awards = new List<AwardViewModel>();
         }
         public List<string> userRoles { get; set; }
 
-        public List<DashboardAwardsAndNominations> Awards { get; set; }
+        public List<AwardViewModel> Awards { get; set; }
     }
 
-    public class DashboardAwardsAndNominations
+    public class AwardViewModel
     {
         public int AwardId { get; set; }
 

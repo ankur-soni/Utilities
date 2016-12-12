@@ -176,18 +176,18 @@ namespace Silicus.Ensure.Web.Controllers
                         return View(model);
                     case SignInStatus.Failure:
                     default:
-                    {
-                        _logger.Log(string.Format("Login request failed for user : {0}", model.UserName),
-                            LogCategory.Information, GetUserIdentifiableString(model.UserName));
+                        {
+                            _logger.Log(string.Format("Login request failed for user : {0}", model.UserName),
+                                LogCategory.Information, GetUserIdentifiableString(model.UserName));
 
-                        var user1 = await UserManager.FindByNameAsync(model.UserName);
+                            var user1 = await UserManager.FindByNameAsync(model.UserName);
 
-                        _logger.Log(string.Format("User Id is: {0}", user1.Id),
-                            LogCategory.Information, GetUserIdentifiableString(model.UserName));
+                            _logger.Log(string.Format("User Id is: {0}", user1.Id),
+                                LogCategory.Information, GetUserIdentifiableString(model.UserName));
 
-                        ModelState.AddModelError("", "Invalid login attempt.");
-                        return View(model);
-                    }
+                            ModelState.AddModelError("", "Invalid login attempt.");
+                            return View(model);
+                        }
                 }
             }
 
@@ -240,7 +240,10 @@ namespace Silicus.Ensure.Web.Controllers
                     if (identityUser != null)
                     {
                         var code = await UserManager.GeneratePasswordResetTokenAsync(identityUser.Id);
-                        SendForgotPasswordMail(identityUser.Email, identityUser.UserName, code);
+                        //var newcode = code.Replace("+", "N"); // " ", "+");
+
+                        var newcode = HttpUtility.UrlEncode(code);
+                        SendForgotPasswordMail(identityUser.Email, identityUser.UserName, newcode);
                         ViewBag.IsEmailSent = true;
 
                         _logger.Log(string.Format("ForgotPassword request processed successfully for user : {0}", forgotPassword.Email),
@@ -319,6 +322,9 @@ namespace Silicus.Ensure.Web.Controllers
                         }
                     }
 
+                    model.ResetToken = HttpUtility.UrlDecode(model.ResetToken);
+                    model.ResetToken = model.ResetToken.Replace(" ", "+");
+
                     var resultReset = await UserManager.ResetPasswordAsync(currentUser.Id, model.ResetToken, model.Password);
                     if (!resultReset.Succeeded)
                     {
@@ -326,9 +332,12 @@ namespace Silicus.Ensure.Web.Controllers
                         {
                             ModelState.AddModelError("", error);
                         }
+
                         return View("ResetPassword", model);
                     }
 
+                    SendResetPasswordMail(currentUser.Email, currentUser.UserName, model.Password);
+                    ViewBag.IsEmailSent = true;
                 }
             }
             catch (Exception ex)
@@ -412,8 +421,7 @@ namespace Silicus.Ensure.Web.Controllers
                 string subject = ConfigurationManager.AppSettings["ProductNameLong"] + ": " + ConfigurationManager.AppSettings["SmtpMailSubjectForgotPassword"];
                 string baseUrl = ConfigurationManager.AppSettings["SmtpMailbaseUrl"];
 
-                string link = baseUrl + "/Account/ResetPassword/?username=" + urlEncodedUserName +
-                    "&reset=" + GenerateEncodedKey(userName, key.ToString());
+                string link = baseUrl + "/Account/ResetPassword/?username=" + urlEncodedUserName + "&reset=" + key.ToString(); //GenerateEncodedKey(userName, key.ToString());
 
                 string body = "<html>" +
                        "<body>" +
@@ -435,7 +443,7 @@ namespace Silicus.Ensure.Web.Controllers
                        "<li style='list-style-type:disc; width: 470px;'>" +
                        "Click to set your Password: " +
                        "<a href='" + link + "' target='blank' style='color: #00698E; text-decoration: underline; width: 450px; -ms-word-wrap:break-word; word-wrap:break-word;'>" +
-                       link +
+                       "Click here!!!" +
                        "</a>" +
                        "</span> " +
                        "</li>" +
@@ -480,6 +488,62 @@ namespace Silicus.Ensure.Web.Controllers
             System.Security.Cryptography.MD5 md5 = new System.Security.Cryptography.MD5CryptoServiceProvider();
             string HashParams = BitConverter.ToString(md5.ComputeHash(bytesofLink));
             return HashParams;
+        }
+
+        private void SendResetPasswordMail(string email, string userName, string Password)
+        {
+            try
+            {
+                string urlEncodedUserName = System.Web.HttpUtility.UrlEncode(userName); // url encoded
+                string subject = "Reset Password";
+
+                string body = "<html>" +
+                       "<body>" +
+                      "<table style='width: 590px; border: none;'><tr><td><table style='border: 1px solid #5C666F; align: left; width: 590px; font-family: arial; font-size: 14px; height: auto;border-spacing: 0;'>" +
+                       "<tr style='width: 590px; height: 44px; border-bottom: 1px solid #5C666F;'>" +
+                       "<td style=' background-color: #00263D; height: 44px; width: 195px; border-bottom: 5px solid #55A51C; margin: 0 auto;'></td>" +
+                       "<td style='background-color: #5C666F; width: 395px; height: 44px; border-bottom: 5px solid #A3A9AC;vertical-align: middle;'>" +
+                       "<p style='font-size: 19px; margin-left: 20px; color: #fff; font-weight: bold; padding: 0; width: 100%;'>" +
+                       "Password Reset" +
+                       "</p>" +
+                       "</td>" +
+                       "</tr>" +
+                       "<tr>" +
+                       "<td colspan='2' style='width: 590px; width: auto; border: 4px solid #D1D3D4; border-top: none; padding: 30px; margin-top: 4px;'>" +
+                       "<p style='font-size: 14px; color: #000; margin-top: 20px!important;'>" +
+                       "Your password has been reset successfully. Below is your new password to access the application. You will be prompted to enter a new password on your initial login." +
+                       "</p>" +
+                       "<ul>" +
+                       "<li style='list-style-type:disc; width: 470px;'>" +
+                       "User Name: " +
+                       "<a href='" + userName + "' target='blank' style='color: #00698E; text-decoration: underline; width: 450px; -ms-word-wrap:break-word; word-wrap:break-word;'>" + userName +
+                       "</a>" +
+                       "</span> " +
+                       "</li>" +
+                       "<li style='list-style-type:disc; width: 470px;'>" +
+                       "Reset Password: <span style='color: #000; text-decoration: none!important; font-family: arial; font-size: 14px;'>" + Password +
+                       "</span></li>" +
+                       "</ul>" +
+                       "<p style='font-size: 14px; color: #000;'>" +
+                       "This is an auto-generated email, please do not reply." +
+                       "</p>" +
+                       "<p style='font-size: 14px; color: #000; margin-bottom: 10px !important;'>" +
+                       "<span style='font-weight: bold;'>" + "Regards," +
+                       "<br />" +
+                       "<span style='color: #000; text-decoration: none!important; font-family: arial; font-size: 14px;'>Ensure IT Support " +
+                       "<span style='color: #000;text-decoration: none !important; font-family: arial; font-size: 14px;'>" +
+                       "</span></p>" +
+                        "<p style='text-align:right;margin-bottom: -15px; margin-right: -10px'></p></td></tr>" +
+                       "</table><table style='border: none; width: 590px; border-spacing: 0; align: left; margin: 0; padding: 0;'><tr><td colspan='2' style='border-top: 5px solid #00263D;'>&nbsp;</td></tr></table>" +
+                       "</td></tr></table></body>" +
+                       "</html>";
+
+                _emailService.SendEmailAsync(email, subject, body);
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Trace.WriteLine(ex);
+            }
         }
 
         private async Task<ActionResult> LogUserOut()

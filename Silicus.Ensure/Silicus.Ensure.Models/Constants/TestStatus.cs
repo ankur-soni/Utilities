@@ -5,7 +5,7 @@
         NotAssigned = 1,
         Assigned = 2,
         Submitted = 3,
-        Evaluating = 4,
+        Evaluated = 4,
         Completed = 5
     }
 

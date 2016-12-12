@@ -14,6 +14,7 @@ using System.Collections.Generic;
 
 namespace Silicus.Ensure.Web.Controllers
 {
+    [Authorize]
     public class RoleController : Controller
     {
         private readonly IRolesService _rolesService;
