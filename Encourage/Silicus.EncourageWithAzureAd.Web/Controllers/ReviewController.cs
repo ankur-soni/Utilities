@@ -273,10 +273,10 @@ namespace Silicus.EncourageWithAzureAd.Web.Controllers
         {
             _logger.Log("Review-LockNomination-GET");
            var awards = _nominationService.GetAwardstoUnLockOrUnlock(ConfigurationManager.AppSettings["Lock"]);
-            var awardsToLock = new List<AwardViewModel>();
+            var awardsToLock = new List<LockAwardViewModel>();
             foreach (var award in awards)
             {
-                awardsToLock.Add(new AwardViewModel { Id = award.Id, Code = award.Code, Name = award.Name, FrequencyId = award.FrequencyId});
+                awardsToLock.Add(new LockAwardViewModel { Id = award.Id, Code = award.Code, Name = award.Name, FrequencyId = award.FrequencyId});
             }
             return PartialView("~/Views/Review/Shared/_LockNominations.cshtml", awardsToLock);
         }
@@ -296,10 +296,10 @@ namespace Silicus.EncourageWithAzureAd.Web.Controllers
         {
             _logger.Log("Review-UnlockNomination-GET");
            var awards = _nominationService.GetAwardstoUnLockOrUnlock(ConfigurationManager.AppSettings["UnLock"]);
-            var awardsToUnlock = new List<AwardViewModel>();
+            var awardsToUnlock = new List<LockAwardViewModel>();
             foreach (var award in awards)
             {
-                awardsToUnlock.Add(new AwardViewModel { Code = award.Code, FrequencyId = award.FrequencyId, Id = award.Id, Name = award.Name});
+                awardsToUnlock.Add(new LockAwardViewModel { Code = award.Code, FrequencyId = award.FrequencyId, Id = award.Id, Name = award.Name});
             }
             return PartialView("~/Views/Review/Shared/_LockNominations.cshtml", awardsToUnlock);
         }
