@@ -12,6 +12,7 @@ using System.Web;
 
 namespace Silicus.Ensure.Web.Controllers
 {
+    [Authorize]
     public class TagController : Controller
     {
         private readonly ITagsService _tagsService;

@@ -81,7 +81,10 @@ namespace Silicus.Ensure.Services
 
         public UserTestSuite GetUserTestSuiteByUserId(int userId)
         {
-            return _context.Query<UserTestSuite>().Where(x => x.UserId == userId).FirstOrDefault();
+            return _context.Query<UserTestSuite>().Where(x => x.UserId == userId
+                && (x.StatusId == Convert.ToUInt32(TestStatus.Assigned) ||
+                x.StatusId == Convert.ToUInt32(TestStatus.Submitted) ||
+                x.StatusId == Convert.ToUInt32(TestStatus.Evaluated))).FirstOrDefault();
         }
 
         public UserTestSuite GetUserTestSuiteId(int userTestSuiteId)
@@ -167,7 +170,7 @@ namespace Silicus.Ensure.Services
                         do
                         {
                             optionalQuestion = questionList.Where(x => !questions.Any(y => y.Id == x.Id) && x.QuestionType == 1 && x.ProficiencyLevel == tag.Proficiency);
-                            index = random.Next(optionalQuestion.Count());                            
+                            index = random.Next(optionalQuestion.Count());
                             Question question = optionalQuestion.ElementAtOrDefault(index);
                             questions.Add(question);
                             minutes += question.Duration;
@@ -183,12 +186,12 @@ namespace Silicus.Ensure.Services
                         do
                         {
                             practicalQuestion = questionList.Where(x => !questions.Any(y => y.Id == x.Id) && x.QuestionType == 2 && x.ProficiencyLevel == tag.Proficiency);
-                            index = random.Next(practicalQuestion.Count());                            
+                            index = random.Next(practicalQuestion.Count());
                             Question question = practicalQuestion.ElementAtOrDefault(index);
                             questions.Add(question);
                             minutes += question.Duration;
                         } while (minutes < requiredMinutes);
-                    }                    
+                    }
                 }
             }
             //Attach Questions
@@ -228,7 +231,7 @@ namespace Silicus.Ensure.Services
         }
 
         public void TestSuiteActivation()
-        {           
+        {
             int optionalQuestions = Convert.ToInt32(ConfigurationManager.AppSettings["OptionalQuestion"]);
             int practicalQuestions = Convert.ToInt32(ConfigurationManager.AppSettings["PracticalQuestion"]);
             List<TestSuite> updateList = new List<TestSuite>();
@@ -238,14 +241,14 @@ namespace Silicus.Ensure.Services
             int requiredMinutes = 0, minutes = 0, index = 0;
             List<Question> questions;
 
-            var testSuites = _context.Query<TestSuite>().Where(x=>x.IsDeleted == false);
+            var testSuites = _context.Query<TestSuite>().Where(x => x.IsDeleted == false);
             var questionBank = _context.Query<Question>().ToList();
 
-            foreach(var testSuite in testSuites)
+            foreach (var testSuite in testSuites)
             {
                 isReady = true;
                 questions = new List<Question>();
-                GetTestSuiteTags(testSuite, out testSuiteTags);               
+                GetTestSuiteTags(testSuite, out testSuiteTags);
                 foreach (var tag in testSuiteTags)
                 {
                     minutes = 0;
@@ -266,7 +269,7 @@ namespace Silicus.Ensure.Services
                         minutes = 0;
                         requiredMinutes = tag.Minutes * Convert.ToInt32(practicalQuestions) / 100;
                         var practicalQuestion = questionBank.Where(x => !questions.Any(y => y.Id == x.Id) && x.QuestionType == 2 && x.ProficiencyLevel == tag.Proficiency && x.Tags.Split(',').Contains(Convert.ToString(tag.TagId)));
-                        if(practicalQuestion.Sum(x=>x.Duration) >= requiredMinutes)
+                        if (practicalQuestion.Sum(x => x.Duration) >= requiredMinutes)
                         {
                             do
                             {
@@ -286,21 +289,27 @@ namespace Silicus.Ensure.Services
                         }
                     }
                     else
-                    {                       
+                    {
                         testSuite.Status = Convert.ToInt32(TestSuiteStatus.Pending);
-                        isReady = false;           
+                        isReady = false;
                         break;
                     }
                 }
 
-                if(isReady == true)
+                if (isReady == true)
                 {
-                   testSuite.Status = Convert.ToInt32(TestSuiteStatus.Ready);
+                    testSuite.Status = Convert.ToInt32(TestSuiteStatus.Ready);
                 }
-                
+
                 updateList.Add(testSuite);
             }
             _context.UpdateAll(updateList);
+        }
+
+
+        public UserTestSuite GetUserTestSuiteByUdi_TestSuitId(int userId, int testsuitId)
+        {
+            return _context.Query<UserTestSuite>().Where(x => x.UserId == userId && x.TestSuiteId == testsuitId).FirstOrDefault();
         }
     }
 }
