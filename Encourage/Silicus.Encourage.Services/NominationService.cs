@@ -9,6 +9,7 @@ using System.Configuration;
 using System.Globalization;
 using System.Linq;
 using System.Web;
+using System.Web.Configuration;
 
 namespace Silicus.Encourage.Services
 {
@@ -237,21 +238,30 @@ namespace Silicus.Encourage.Services
             return data.Count == 1;
         }
 
-        public bool LockNominations()
+        public List<Award> LockNominations(List<int> awardIds)
         {
-            //var currentNominations = GetCurrentNominations().Where(n => n.IsLocked == null || n.IsLocked == false);
-
-            //foreach (var nomination in currentNominations)
-            //{
-            //    nomination.IsLocked = true;
-            //    DeletePrevoiusManagerComments(nomination.Id);
-            //    UpdateNomination(nomination);
-            //}
             _logger.Log("NominationService-LockNominations");
-            var data = _encourageDatabaseContext.Query<Models.Configuration>().Where(x => x.configurationKey == "NominationLock").SingleOrDefault();
-            data.value = true;
-            _encourageDatabaseContext.Update<Models.Configuration>(data);
-            return true;
+            var lockedAwards = new List<Award>();
+            var lockKey = WebConfigurationManager.AppSettings["NominationLockKey"];
+            if (awardIds.Count > 0)
+            {
+                foreach (var awardId in awardIds)
+                {
+                    var data = _encourageDatabaseContext.Query<Models.Configuration>().Where(x => x.configurationKey == lockKey  && x.AwardId == awardId).FirstOrDefault();
+                    if (data != null)
+                    {
+                        data.value = true;
+                        _encourageDatabaseContext.Update<Models.Configuration>(data);
+                        lockedAwards.Add(_encourageDatabaseContext.Query<Award>().Where(a => a.Id == awardId).FirstOrDefault());
+                    }
+                }
+                return lockedAwards;
+            }
+            else
+            {
+                return new List<Award>();
+            }
+           
         }
 
         public bool IsNominationLocked()

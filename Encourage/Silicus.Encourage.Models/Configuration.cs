@@ -17,5 +17,8 @@ namespace Silicus.Encourage.Models
         public string configurationKey { get; set; }
         public Nullable<bool> value { get; set; }
         public int Id { get; set; }
+        public int AwardId { get; set; }
+    
+        public virtual Award Award { get; set; }
     }
 }
