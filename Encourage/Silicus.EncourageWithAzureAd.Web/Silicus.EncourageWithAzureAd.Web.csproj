@@ -301,9 +301,7 @@
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
-    <Compile Include="Controllers\IIncluder.cs" />
     <Compile Include="Controllers\NominationController.cs" />
-    <Compile Include="Controllers\QueryableExtensions.cs" />
     <Compile Include="Controllers\ReviewController.cs" />
     <Compile Include="Controllers\UserProfileController.cs" />
     <Compile Include="Filters\CustomeAuthorizeAttribute.cs" />
@@ -318,7 +316,7 @@
     <Compile Include="Models\AdalTokenCache.cs" />
     <Compile Include="Models\ApplicationDbContext.cs" />
     <Compile Include="Models\CriteriaCommentViewModel.cs" />
-    <Compile Include="Models\Dashboard.cs" />
+    <Compile Include="Models\DashboardViewModel.cs" />
     <Compile Include="Models\NominationListViewModel.cs" />
     <Compile Include="Models\NominationViewModel.cs" />
     <Compile Include="Models\ReviewerCommentViewModel.cs" />
