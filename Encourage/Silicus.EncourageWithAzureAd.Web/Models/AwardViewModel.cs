@@ -5,7 +5,7 @@ using System.Web;
 
 namespace Silicus.EncourageWithAzureAd.Web.Models
 {
-    public class AwardViewModel
+    public class LockAwardViewModel
     {
         public int Id { get; set; }
         public string Name { get; set; }
