@@ -256,14 +256,44 @@ namespace Silicus.EncourageWithAzureAd.Web.Controllers
             }
         }
 
+        //[HttpGet]
+        //public ActionResult LockNomination()
+        //{
+        //    _logger.Log("Review-LockNomination-GET");
+        //    _nominationService.LockNominations();
+        //    _reviewService.LockReview();
+
+        //    return new EmptyResult();
+        //}
+
+
         [HttpGet]
         public ActionResult LockNomination()
         {
             _logger.Log("Review-LockNomination-GET");
-            _nominationService.LockNominations();
-            _reviewService.LockReview();
+           var awards = _awardService.GetAllAwards();
+            var awardsToLock = new List<AwardViewModel>();
+            foreach (var award in awards)
+            {
+                awardsToLock.Add(new AwardViewModel { Id = award.Id, Code = award.Code, Name = award.Name, FrequencyId = award.FrequencyId});
+            }
+            return PartialView("~/Views/Review/Shared/_LockNominations.cshtml", awardsToLock);
+        }
 
-            return new EmptyResult();
+            [HttpPost]
+            public JsonResult LockNomination(int[] awardIds)
+            {
+            _logger.Log("Review-LockNomi-Post");
+            if (awardIds != null)
+            {
+                var data = _nominationService.LockNominations(awardIds.ToList());
+                _reviewService.LockReview(awardIds.ToList());
+                return Json(data, JsonRequestBehavior.AllowGet);
+            }
+            else
+            {
+                return Json(new Award {Name = "You haven't selected a nomination to lock."}, JsonRequestBehavior.AllowGet);
+            }
         }
 
         [HttpGet]

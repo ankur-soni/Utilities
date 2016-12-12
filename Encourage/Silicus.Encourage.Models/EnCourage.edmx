@@ -39,6 +39,7 @@
           <Property Name="configurationKey" Type="varchar" MaxLength="50" />
           <Property Name="value" Type="bit" />
           <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="AwardId" Type="int" Nullable="false" />
         </EntityType>
         <EntityType Name="Criteria">
           <Key>
@@ -128,6 +129,18 @@
           <Property Name="HrAdminsFeedback" Type="varchar" MaxLength="500" Nullable="false" />
           <Property Name="AdminId" Type="int" Nullable="false" />
         </EntityType>
+        <Association Name="FK__Configura__Award__51300E55">
+          <End Role="Award" Type="Self.Award" Multiplicity="1" />
+          <End Role="Configurations" Type="Self.Configurations" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Award">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Configurations">
+              <PropertyRef Name="AwardId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK__ReviewerC__Revie__52593CB8">
           <End Role="Review" Type="Self.Review" Multiplicity="1" />
           <End Role="ReviewerComment" Type="Self.ReviewerComment" Multiplicity="*" />
@@ -327,6 +340,10 @@
           <EntitySet Name="Reviewer" EntityType="Self.Reviewer" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ReviewerComment" EntityType="Self.ReviewerComment" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Shortlist" EntityType="Self.Shortlist" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK__Configura__Award__51300E55" Association="Self.FK__Configura__Award__51300E55">
+            <End Role="Award" EntitySet="Award" />
+            <End Role="Configurations" EntitySet="Configurations" />
+          </AssociationSet>
           <AssociationSet Name="FK__ReviewerC__Revie__52593CB8" Association="Self.FK__ReviewerC__Revie__52593CB8">
             <End Role="Review" EntitySet="Review" />
             <End Role="ReviewerComment" EntitySet="ReviewerComment" />
@@ -410,6 +427,7 @@
           <NavigationProperty Name="AwardCriterias" Relationship="Self.FK_dbo_AwardCriteria_dbo_Award_AwardId" FromRole="Award" ToRole="AwardCriteria" />
           <NavigationProperty Name="Criteria" Relationship="Self.FK_dbo_Criteria_dbo_Award_Award_Id" FromRole="Award" ToRole="Criteria" />
           <NavigationProperty Name="Nominations" Relationship="Self.FK_dbo_Nomination_dbo_Award_AwardId" FromRole="Award" ToRole="Nomination" />
+          <NavigationProperty Name="Configurations" Relationship="EnCourageModel.FK__Configura__Award__51300E55" FromRole="Award" ToRole="Configuration" />
         </EntityType>
         <EntityType Name="AwardCriteria">
           <Key>
@@ -477,7 +495,7 @@
           <NavigationProperty Name="Reviews" Relationship="Self.FK_Review_NominationId" FromRole="Nomination" ToRole="Review" />
           <NavigationProperty Name="Shortlists" Relationship="Self.FK_Shortlist_NominationId" FromRole="Nomination" ToRole="Shortlist" />
           <Property Name="Other" Type="Boolean" Nullable="false" />
-          <Property Name="OtherNominationReason" Type="String" Nullable="true" MaxLength="500" />
+          <Property Name="OtherNominationReason" Type="String" Nullable="true" MaxLength="500" Unicode="false" FixedLength="false" />
         </EntityType>
         <EntityType Name="Review">
           <Key>
@@ -786,6 +804,10 @@
             <End Role="ReviewerComment" EntitySet="ReviewerComments" />
           </AssociationSet>
           <EntitySet Name="Configurations" EntityType="EnCourageModel.Configuration" />
+          <AssociationSet Name="FK__Configura__Award__51300E55" Association="EnCourageModel.FK__Configura__Award__51300E55">
+            <End Role="Award" EntitySet="Awards" />
+            <End Role="Configuration" EntitySet="Configurations" />
+          </AssociationSet>
         </EntityContainer>
         <EntityType Name="Configuration">
           <Key>
@@ -794,7 +816,21 @@
           <Property Name="configurationKey" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <Property Name="value" Type="Boolean" />
           <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="AwardId" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Award" Relationship="EnCourageModel.FK__Configura__Award__51300E55" FromRole="Configuration" ToRole="Award" />
         </EntityType>
+        <Association Name="FK__Configura__Award__51300E55">
+          <End Type="EnCourageModel.Award" Role="Award" Multiplicity="1" />
+          <End Type="EnCourageModel.Configuration" Role="Configuration" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Award">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Configuration">
+              <PropertyRef Name="AwardId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -929,6 +965,7 @@
           <EntitySetMapping Name="Configurations">
             <EntityTypeMapping TypeName="EnCourageModel.Configuration">
               <MappingFragment StoreEntitySet="Configurations">
+                <ScalarProperty Name="AwardId" ColumnName="AwardId" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="value" ColumnName="value" />
                 <ScalarProperty Name="configurationKey" ColumnName="configurationKey" />
