@@ -2,43 +2,57 @@
 
 <link href="~/css/star-rating.css" rel="stylesheet" />
 @*<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>*@
-<script src="~/js/star-rating.js"></script>  
+<script src="~/js/star-rating.js"></script>
 
-<thead>
-    <tr>
-        <th><div style="text-align:center; font-weight:bold;color:#0067AA" class="col-md-4">Criteria</div></th>
-        <th><div style="text-align:center; font-weight:bold;color:#0067AA" class="col-md-2">Rating</div></th>
-        <th><div style="text-align:center; font-weight:bold;color:#0067AA" class="col-md-6">Manager Comment</div></th>
-    </tr>
-</thead>
-@{ int i = 0;}
-@foreach (var criteria in Model)
-{
-    <tr>
-        <td>
-            <div class="col-md-4" style="padding-left:2%">
-                <label> @criteria.Title</label>
+<div class="wizard-box" style="margin-top:10px;" id="criterias">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="table-responsive">
+                <table class="table table-hover" id="criteriaTable">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Criteria</th>
+                            <th>Rating</th>
+                            <th>Manager Comments</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @{ int i = 0;}
+                        @foreach (var criteria in Model)
+                        {
+                            <tr>
+                                <td>
+                                    @i
+                                </td>
+                                <td>
+                                    <label> @criteria.Title</label>
+                                </td>
+                                <td>
+                                    <input id="rating-@i" value="0" type="number" data-star-captions="{clearRating}" data-default-caption="{rating} Stars" class="rating rating-loading" data-show-clear="true" data-show-caption="false" data-symbol="*" min=0 max=5 step=1 data-size="xs" name="Comments[@i].Rating">
+                                </td>
+                                <td>
+                                    <textarea class="form-control" onblur="return hideRemainingCharacterText(@i)"
+                                              onkeyup="edValueKeyPress(@i)"
+                                              rows=""
+                                              name=Comments[@i].Comment
+                                              id="@("comment"+i)"
+                                              maxlength="500"></textarea>
+                                    <div class="@("textarea"+i)"></div>
+
+                                    <div class="col-md-5 criteriaComment">
+                                        
+                                    </div>
+                                </td>
+                                <td>
+                                    <input type="hidden" name=Comments[@i].Id value="@criteria.Id">
+                                    <span class="hide">@(i++)</span>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
             </div>
-        </td>
-        <td>
-            <div class="col-md-2">
-                <input id="input-21a" value="0" type="number" data-star-captions="{}" data-default-caption="{rating} Stars" class="rating rating-loading" data-show-clear="false" data-show-caption="false" data-symbol="*" min=0 max=5 step=1 data-size="xs" name="Comments[@i].Rating">
-            </div>
-        </td>
-        <td class="col-md-6 criteriaComment">
-            <div class="col-md-6 criteriaComment">
-                <textarea class="form-control" onblur="return hideRemainingCharacterText(@i)"
-                          onkeyup="edValueKeyPress(@i)"
-                          rows=""
-                          name=Comments[@i].Comment
-                          id="@("comment"+i)"
-                          maxlength="500"></textarea>
-                <div class="@("textarea"+i)"></div>
-            </div>
-        </td>
-        <td>
-            <input type="hidden" name=Comments[@i].Id value="@criteria.Id">
-            <span class="hide">@(i++)</span>
-        </td>
-    </tr>
-}
+        </div>
+    </div>
+</div>

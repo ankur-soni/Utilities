@@ -8,6 +8,7 @@ using Silicus.UtilityContainer.Entities;
 using Silicus.UtilityContainer.Models.DataObjects;
 using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Globalization;
 using System.Linq;
 using System.Web.Mvc;
@@ -271,11 +272,11 @@ namespace Silicus.EncourageWithAzureAd.Web.Controllers
         public ActionResult LockNomination()
         {
             _logger.Log("Review-LockNomination-GET");
-           var awards = _awardService.GetAllAwards();
-            var awardsToLock = new List<AwardViewModel>();
+           var awards = _nominationService.GetAwardstoUnLockOrUnlock(ConfigurationManager.AppSettings["Lock"]);
+            var awardsToLock = new List<LockAwardViewModel>();
             foreach (var award in awards)
             {
-                awardsToLock.Add(new AwardViewModel { Id = award.Id, Code = award.Code, Name = award.Name, FrequencyId = award.FrequencyId});
+                awardsToLock.Add(new LockAwardViewModel { Id = award.Id, Code = award.Code, Name = award.Name, FrequencyId = award.FrequencyId});
             }
             return PartialView("~/Views/Review/Shared/_LockNominations.cshtml", awardsToLock);
         }
@@ -284,26 +285,34 @@ namespace Silicus.EncourageWithAzureAd.Web.Controllers
             public JsonResult LockNomination(int[] awardIds)
             {
             _logger.Log("Review-LockNomi-Post");
-            if (awardIds != null)
-            {
                 var data = _nominationService.LockNominations(awardIds.ToList());
                 _reviewService.LockReview(awardIds.ToList());
-                return Json(data, JsonRequestBehavior.AllowGet);
+                return Json(data);
+           
             }
-            else
-            {
-                return Json(new Award {Name = "You haven't selected a nomination to lock."}, JsonRequestBehavior.AllowGet);
-            }
-        }
 
         [HttpGet]
         public ActionResult UnlockNomination()
         {
             _logger.Log("Review-UnlockNomination-GET");
-            _nominationService.UnLockNominations();
-            _reviewService.UnLockReview();
-
-            return new EmptyResult();
+           var awards = _nominationService.GetAwardstoUnLockOrUnlock(ConfigurationManager.AppSettings["UnLock"]);
+            var awardsToUnlock = new List<LockAwardViewModel>();
+            foreach (var award in awards)
+            {
+                awardsToUnlock.Add(new LockAwardViewModel { Code = award.Code, FrequencyId = award.FrequencyId, Id = award.Id, Name = award.Name});
+            }
+            return PartialView("~/Views/Review/Shared/_LockNominations.cshtml", awardsToUnlock);
         }
+
+        [HttpPost]
+        public JsonResult UnlockNomination(int[] awardIds)
+        {
+            _logger.Log("Review-UnlockNomination-GET");
+            var lockedNominations = _nominationService.UnLockNominations(awardIds.ToList());
+            var lockedReviews = _reviewService.UnLockReview(awardIds.ToList());
+            return Json(lockedNominations);
+        }
+
+
     }
 }

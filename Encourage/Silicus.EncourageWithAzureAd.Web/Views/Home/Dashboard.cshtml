@@ -1,4 +1,4 @@
-﻿@model Silicus.EncourageWithAzureAd.Web.Models.Dashboard
+﻿@model Silicus.EncourageWithAzureAd.Web.Models.DashboardViewModel
 <!-- Spell Checked and Validated 02/14-->
 <div class="row white-bg header-row">
     <nav class="" role="navigation" style="margin-bottom: 0">
@@ -95,14 +95,9 @@
                     </div>
 
                     <div class="ibox-footer text-left">
-                        @Ajax.ActionLink("Lock Nominations",
-                                    "LockNomination", "Review", new { },
-                                    new AjaxOptions
-                                    {
-                                        HttpMethod = "GET"
-                                    },
-                                        new { id = "lockNominations", @class = "btn btn-primary btn-sm dashboardButtons", @style = "font-weight:bold" }
-                                    )
+                        <a href="javascript:void(0)" class="btn btn-primary btn-sm dashboardButtons" id="lockNominations">
+                            <span style="font-weight:bold"> Lock Nominations</span>
+                        </a>
                     </div>
                 </div>
             </div>
@@ -113,7 +108,9 @@
                     </div>
 
                     <div class="ibox-footer text-left">
-                        @Ajax.ActionLink("Unlock Nominations", "UnlockNomination", "Review", new { }, new AjaxOptions { HttpMethod = "GET" }, new { @class = "btn btn-primary btn-sm dashboardButtons and111", @style = "font-weight:bold", id = "unLockNominations" })
+                        <a href="javascript:void(0)" class="btn btn-primary btn-sm dashboardButtons" id="unLockNominations">
+                            <span style="font-weight:bold"> UnLock Nominations</span>
+                        </a>
                     </div>
                 </div>
 
@@ -267,13 +264,105 @@
                });
     });
 
+
+
+    //*****
+    $("#unLockNominations").click(function (e) {
+        swal({
+            title: "Do you want to unlock nominations?",
+            showCancelButton: true,
+            type: "warning",
+            confirmButtonColor: "#0070b9",
+            confirmButtonText: "Yes",
+            cancelButtonText: "No",
+            closeOnConfirm: true,
+            closeOnCancel: false
+        },
+               function (isConfirm) {
+                   if (isConfirm) {
+                       debugger;
+                       $.ajax({
+                           type: 'GET',
+                           url: '@Url.Action("UnlockNomination", "Review")',
+                           dataType: 'html',
+                           success: function (data) {
+                               swal({
+                                   title: "Unlock Nominations",
+                                   html: true,
+                                   text: data,
+                                   confirmButtonColor: "#0070b9",
+                                   confirmButtonText: "Submit",
+                                   showCancelButton: true,
+                                   cancelButtonText: "Cancle",
+                                   closeOnConfirm: false,
+                                   closeOnCancel: true
+                               },
+                               function (isConfirm) {
+                                   if (isConfirm) {
+                                       var awardId = [];
+                                       $("input:checkbox").each(function () {
+                                           if ($(this).prop("checked")) {
+                                               awardId.push(parseInt($(this).prop("id")));
+                                           }
+                                       });
+
+                                       $("input:checkbox").change(function () {
+                                           if ($(this).prop("checked")) {
+                                               $(".sa-error-container").removeClass("show");
+                                           }
+                                       });
+
+                                       if (awardId.length <= 0) {
+                                           swal.showInputError("Please select at least one award category.");
+                                           $(".sa-input-error").removeClass("show");
+                                           return false;
+                                       }
+                                       else {
+                                           $.ajax({
+                                               type: 'POST',
+                                               url: '@Url.Action("UnlockNomination", "Review")',
+                                               data: { awardIds: awardId },
+                                               dataType: "JSON",
+                                               success: function (data) {
+                                                   var lockedAwardNames = "";
+                                                   for (var i = 0; i < data.length; i++) {
+                                                       lockedAwardNames += data[i].Name + "</br>";
+                                                   }
+                                                   swal({
+                                                       title: "Following Awards unlocked sucessfully",
+                                                       html: true,
+                                                       text: lockedAwardNames + "<br/>"
+                                                   })
+                                               },
+                                               error: function () {
+                                                   swal("Error", "Oops! Something wrong happened..");
+                                               }
+                                           });
+
+                                       }
+                                   }
+
+                               });
+                           },
+                           error: function (data) {
+                               swal("Error", "Oops! Something wrong happened..");
+                           }
+                       });
+                   } else {
+                       swal("Cancelled", "Nomination Cancelled");
+                   }
+               });
+    });
+    //***
+
+
     //$("#lockNominations").click(function (e) {
     //    sweetAlert("The Nomination is Successfully Locked");
     //});
-    $("#unLockNominations").click(function (e) {
-        sweetAlert("The Nomination is Successfully unlocked");
-        return true;
-    });
+    //$("#unLockNominations").click(function (e) {
+    //    sweetAlert("The Nomination is Successfully unlocked");
+    //    return true;
+    //});
     var winnerCardIndex = 0;
     $("#0").delay(1000).fadeIn();
     $("#1").delay(1000).fadeIn();
