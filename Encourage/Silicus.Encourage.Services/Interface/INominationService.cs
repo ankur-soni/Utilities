@@ -39,6 +39,7 @@ namespace Silicus.Encourage.Services.Interface
         List<Award> GetAwardstoUnLockOrUnlock(string status);
         int GetNominationCountByManagerId(int managerId, DateTime startDate, DateTime endDate);
         bool GetNominationLockStatus();
+        FrequencyMaster GetAwardFrequencyByFrequencyCode(string frequencyCode);
 
         #region Saved Nominations List
 
