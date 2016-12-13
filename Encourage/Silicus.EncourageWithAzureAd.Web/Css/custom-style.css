@@ -9,11 +9,6 @@
 
 
 
-
-
-
-
-
 .asterisk{color:red;font-size:11px;}
 .themeColorBlue{color:#337ab7;}
 .btn-nav{
@@ -126,6 +121,7 @@ span.font-bold.txt-color label{font-weight:bold;color:#337ab7;}
     height:auto;
     box-shadow:1px 1px 3px #888888;
 }
+
 .wrapper-content-new{
     padding:15px 0px 15px 0px;
 }
@@ -227,15 +223,6 @@ span.font-bold.txt-color label{font-weight:bold;color:#337ab7;}
   transform: rotate(-90deg);
 }
 
-/* Common classes*/
-.M-B0{margin-bottom:0px;}
-.M-T10{margin-top:10px;}
-.M-T15{margin-top:15px;}
-.M-B15{margin-bottom:15px!important;}
-.boxShadow{box-shadow:1px 1px 3px #888888;}
-
-.asterisk{color:red;font-size:11px;}
-.themeColorBlue{color:#337ab7;}
 
 .page-heading {
     margin-left: 0%;
@@ -247,21 +234,10 @@ span.font-bold.txt-color label{font-weight:bold;color:#337ab7;}
 .rating-xs {
   font-size: 1em;
 }
-.box{
-    background:#fff;
-    padding:10px;
-    width:auto;
-    height:auto;
-    box-shadow:1px 1px 3px #888888;
-}
-.wrapper-content-new{
-    padding:15px 0px 15px 0px;
-}
+
+
 .header-name{margin-top:15px;margin-left:15px;}
 
-.page-wrapper{
-    background:#edf1f5!important;
-}
 
 /* Add Nominations page css*/
 .f1 {
@@ -376,7 +352,9 @@ label {
     margin-bottom: 0;
     vertical-align: middle;
 }
-
+textarea {
+    resize: none;
+}
 
 .form-control {
   background-color: #ffffff;
