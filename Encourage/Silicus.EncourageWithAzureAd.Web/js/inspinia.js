@@ -115,26 +115,26 @@ $(document).ready(function () {
     $('.modal').appendTo("body");
 
     // Full height of sidebar
-    function fix_height() {
-        var heightWithoutNavbar = $("body > #wrapper").height() - 61;
-        $(".sidebard-panel").css("min-height", heightWithoutNavbar + "px");
+    //function fix_height() {
+    //    var heightWithoutNavbar = $("body > #wrapper").height() - 61;
+    //    $(".sidebard-panel").css("min-height", heightWithoutNavbar + "px");
 
-        var navbarHeigh = $('nav.navbar-default').height();
-        var wrapperHeigh = $('#page-wrapper').height();
+    //    var navbarHeigh = $('nav.navbar-default').height();
+    //    var wrapperHeigh = $('#page-wrapper').height();
 
-        if (navbarHeigh > wrapperHeigh) {
-            $('#page-wrapper').css("min-height", navbarHeigh + "px");
-        }
+    //    if (navbarHeigh > wrapperHeigh) {
+    //        $('#page-wrapper').css("min-height", navbarHeigh + "px");
+    //    }
 
-        if (navbarHeigh < wrapperHeigh) {
-            $('#page-wrapper').css("min-height", $(window).height() + "px");
-        }
+    //    if (navbarHeigh < wrapperHeigh) {
+    //        $('#page-wrapper').css("min-height", $(window).height() + "px");
+    //    }
 
-        if ($('body').hasClass('fixed-nav')) {
-            $('#page-wrapper').css("min-height", $(window).height() - 60 + "px");
-        }
+    //    if ($('body').hasClass('fixed-nav')) {
+    //        $('#page-wrapper').css("min-height", $(window).height() - 60 + "px");
+    //    }
 
-    }
+    //}
 
     //fix_height();
 
