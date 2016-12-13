@@ -8,6 +8,7 @@ using HangFireBackgroundTasks.Services;
 using System.Linq;
 using Silicus.FrameWorx.Logger;
 using Silicus.UtilityContainer.Models.Enumerations;
+using HangFireBackgroundTasks.Enums;
 
 namespace HangFireBackgroundTasks.EventProcessors
 {
@@ -17,28 +18,28 @@ namespace HangFireBackgroundTasks.EventProcessors
         ILogger _logger = new DatabaseLogger("name=LoggerDataContext", Type.GetType(string.Empty), (Func<DateTime>)(() => DateTime.UtcNow), string.Empty);
 
 
-        public void Process(EventType eventType,EventProcess eventProcess)
+        public void Process(EventType eventType,EventProcess eventProcess,FrequencyCode frequencyCode)
         {
             _logger.Log("EncourageEventProcessor-Process");
             switch (eventProcess)
             {
                 case EventProcess.LockEvent:
-                    LockEvent(eventType);
+                    LockEvent(eventType, frequencyCode);
                     break;
                 case EventProcess.UnLockEvent:
-                    UnLockeEvent(eventType);
+                    UnLockeEvent(eventType, frequencyCode);
                     break;
                 default:
                     break;
             }
         }
 
-        private void LockNomination()
+        private void LockNomination(FrequencyCode frequencyCode)
         {
             try
             {
                 _logger.Log("EncourageEventProcessor-LockNomination-try");
-                const string URL = @"https://silicusencouragewithazureadweb.azurewebsites.net/api/nominationapi/LockNominations";
+                 string URL = @"https://silicusencouragewithazureadweb.azurewebsites.net/api/nominationapi/LockNominations?frequencyCode=" + frequencyCode.ToString();
 
                 HttpClient client = new HttpClient();
                 client.BaseAddress = new Uri(URL);
@@ -53,7 +54,7 @@ namespace HangFireBackgroundTasks.EventProcessors
                 {
                     // Parse the response body. Blocking!
                     var result = response.Content.ReadAsStringAsync().Result;
-                    UnLockReviews();
+                    UnLockReviews(frequencyCode);
                     emailProcessor.Process(EventType.SendReviewNominationEmail);
 
                 }
@@ -67,12 +68,12 @@ namespace HangFireBackgroundTasks.EventProcessors
 
         }
 
-        private void UnLockNominations()
+        private void UnLockNominations(FrequencyCode frequencyCode)
         {
             try
             {
                 _logger.Log("EncourageEventProcessor-UnLockNomination-try");
-                const string URL = @"https://silicusencouragewithazureadweb.azurewebsites.net/api/nominationapi/UnLockNominations";
+               string URL = @"https://silicusencouragewithazureadweb.azurewebsites.net/api/nominationapi/UnLockNominations?frequencyCode=" + frequencyCode;
 
                 HttpClient client = new HttpClient();
                 client.BaseAddress = new Uri(URL);
@@ -102,9 +103,9 @@ namespace HangFireBackgroundTasks.EventProcessors
 
         }
 
-        private void LockReview()
+        private void LockReview(FrequencyCode frequencyCode)
         {
-            const string URL = @"https://silicusencouragewithazureadweb.azurewebsites.net/api/reviewnominationapi/lockreview";
+            string URL = @"https://silicusencouragewithazureadweb.azurewebsites.net/api/reviewnominationapi/lockreview?frequencyCode=" + frequencyCode;
 
             HttpClient client = new HttpClient();
             client.BaseAddress = new Uri(URL);
@@ -124,9 +125,9 @@ namespace HangFireBackgroundTasks.EventProcessors
             
         }
 
-        private void UnLockReviews()
+        private void UnLockReviews(FrequencyCode frequencyCode)
         {
-            const string URL = @"https://silicusencouragewithazureadweb.azurewebsites.net/api/reviewnominationapi/UnLockReview";
+            string URL = @"https://silicusencouragewithazureadweb.azurewebsites.net/api/reviewnominationapi/UnLockReview?frequencyCode=" + frequencyCode;
 
             HttpClient client = new HttpClient();
             client.BaseAddress = new Uri(URL);
@@ -147,7 +148,7 @@ namespace HangFireBackgroundTasks.EventProcessors
         }
 
 
-        private void UnLockeEvent(EventType eventType)
+        private void UnLockeEvent(EventType eventType, FrequencyCode frequencyCode)
         {
             _logger.Log("EncourageEventProcessor-UnLockeEvent");
             switch (eventType)
@@ -156,7 +157,7 @@ namespace HangFireBackgroundTasks.EventProcessors
                 case EventType.UnLockNominations:
                     try
                     {
-                        UnLockNominations();
+                        UnLockNominations(frequencyCode);
 
                     }
                     catch (Exception ex)
@@ -167,7 +168,7 @@ namespace HangFireBackgroundTasks.EventProcessors
                 case EventType.UnLockReviews:
                     try
                     {
-                        UnLockReviews();
+                        UnLockReviews(frequencyCode);
                     }
                     catch (Exception ex)
                     {
@@ -180,7 +181,7 @@ namespace HangFireBackgroundTasks.EventProcessors
         }
 
         #region Lock Nominations/Review
-        private void LockEvent(EventType eventType)
+        private void LockEvent(EventType eventType,FrequencyCode frequencyCode)
         {
             var day = ConfigurationManager.AppSettings["FirstDayOfCurrentMonth"];
             var firstDayOfCurrentMonth = new DateTime(System.DateTime.Now.Year, System.DateTime.Now.Month, Convert.ToInt32(day));
@@ -208,7 +209,7 @@ namespace HangFireBackgroundTasks.EventProcessors
 
                         if (System.DateTime.Now == lastDateForNomination || System.DateTime.Now > lastDateForNomination)
                         {
-                            LockNomination();
+                            LockNomination(frequencyCode);
                         }
                         break;
                     #endregion
@@ -250,7 +251,7 @@ namespace HangFireBackgroundTasks.EventProcessors
 
                         if (System.DateTime.Now == expireDateReviewer || System.DateTime.Now > expireDateReviewer)
                         {
-                            LockReview();
+                            LockReview(frequencyCode);
                         }
                         break;
                     #endregion

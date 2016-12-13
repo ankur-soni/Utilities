@@ -365,6 +365,11 @@ namespace Silicus.Encourage.Services
             return _encourageDatabaseContext.Query<Nomination>("ManagerComments").Where(model => model.ManagerId == managerID && (forCurrentMonth ? (model.NominationDate >= prevMonth) : (model.NominationDate < prevMonth))).ToList();
         }
 
+        public FrequencyMaster GetAwardFrequencyByFrequencyCode(string frequencyCode)
+        {
+            return _encourageDatabaseContext.Query<FrequencyMaster>().Where(x => x.Code == frequencyCode).FirstOrDefault();
+        }
+
         #endregion Get Saved Nominations Details
     }
 }
