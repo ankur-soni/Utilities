@@ -1,109 +1,105 @@
-﻿@model Silicus.EncourageWithAzureAd.Web.Models.Dashboard
+﻿@model Silicus.EncourageWithAzureAd.Web.Models.DashboardViewModel
 @using System.Drawing;
 
 
-<div class="col-sm-12">
-    <div class="col-xs-3">
-        @{
+<div class="col-lg-12 col-md-12 col-sm-12">
+    <div class="box" style="margin-bottom:50px;">
+        <div class="row">
+        <div class="col-lg-2 col-md-3 col-sm-4 col-xs-4">
+            @{
             var aIndex = 0;
-        }
-        <!-- required for floating -->
-        <!-- Nav tabs -->
-        <ul class="nav nav-tabs tabs-left">
-            @foreach (var award in Model.Awards)
+            }
+            <!-- required for floating -->
+            <!-- Nav tabs -->
+            <ul id="tabs" class="nav nav-tabs tabs-left">
+                @foreach (var award in Model.Awards)
             {
-                <li class="@(aIndex == 0 ? "active" : "")">
-                    <a href="@("#" + award.AwardCode.ToLower())" data-toggle="tab">
-                        @award.AwardTitle
-                    </a>
-                </li>
+                    <li class="@(aIndex == 0 ? "active" : "")">
+                        <a href="@("#" + award.AwardCode.ToLower())" data-toggle="tab">
+                            @award.AwardTitle
+                        </a>
+                    </li>
                 aIndex++;
             }
-        </ul>
-    </div>
-
-
-    <div class="tab-content">
-        @{
-            var index = 0;
-            var winnerIndex = 0;
-        }
-        @foreach (var award in Model.Awards)
-        {
-            <div class="row col-xs-9 tab-pane @(winnerIndex == 0 ? "active" : "")" id="@award.AwardCode.ToLower()">
-                <span class="media-heading font-noraml">@Html.DisplayFor(model => award.AwardTitle)</span><br />
-                @if (award.NominationList.Count() > 0)
-                {
-                    foreach (var item in award.NominationList.ToList())
-                    {
-                        <input type="hidden" value="@item.DisplayName" id="winner @winnerIndex" />
+            </ul>
+        </div>
+            <div class="col-lg-10 col-md-9 col-sm-8 col-xs-8 wrap" style="margin-left:-15px;">
+                <div class="tab-content">
+                    @{
+                        var index = 0;
+                        var winnerIndex = 0;
                     }
-
-                    foreach (var item in award.NominationList)
+                    @foreach (var award in Model.Awards)
                     {
-                        Random randomGen = new Random();
-                        KnownColor[] names = (KnownColor[])Enum.GetValues(typeof(KnownColor));
-                        KnownColor randomColorName = names[randomGen.Next(names.Length)];
-                        Color randomColor = Color.FromKnownColor(randomColorName);
+                        <div class="tab-pane @(winnerIndex == 0 ? "active" : "")" id="@award.AwardCode.ToLower()">
 
-                        <div class="outer-wrapperWell well-section" id="@index">
-                            <div class="well">
-                                <div class="media">
-                                    <a class="pull-left" href="#">
-                                        <img class="media-object" src="http://placekitten.com/150/150">
-                                    </a>
-                                    <div class="media-body">
-                                        <span class="font-bold txt-color">@Html.LabelFor(modelItem => item.DisplayName): </span><span class="media-heading font-noraml">@Html.DisplayFor(modelItem => item.DisplayName)</span>
+                            @if (award.NominationList.Count() > 0)
+                            {
+                                foreach (var item in award.NominationList.ToList())
+                                {
+                                    <input type="hidden" value="@item.DisplayName" id="winner @winnerIndex" />
+                                }
 
-                                        <div class="">
-                                            <span class="font-bold txt-color">@Html.LabelFor(modelItem => item.AwardName): </span> <span class="font-noraml"> @Html.DisplayFor(modelItem => item.AwardName)</span>
+                                foreach (var item in award.NominationList)
+                                {
+                                    Random randomGen = new Random();
+                                    KnownColor[] names = (KnownColor[])Enum.GetValues(typeof(KnownColor));
+                                    KnownColor randomColorName = names[randomGen.Next(names.Length)];
+                                    Color randomColor = Color.FromKnownColor(randomColorName);
+
+                                    <div class="outer-wrapperWell well-section" id="@index">
+                                        <div class="well">
+                                            <div class="media">
+                                                <a class="pull-left" href="#">
+                                                    <img class="media-object" src="~/Images/user2.png" />
+                                                </a>
+                                                <div class="media-body">
+                                                    <span class="font-bold txt-color">@Html.LabelFor(modelItem => item.DisplayName): </span><span class="media-heading font-normal">@Html.DisplayFor(modelItem => item.DisplayName)</span>
+
+                                                    <div class="">
+                                                        <span class="font-bold txt-color">@Html.LabelFor(modelItem => item.AwardName): </span> <span class="font-normal"> @Html.DisplayFor(modelItem => item.AwardName)</span>
+                                                    </div>
+                                                    <div class="">
+                                                        <span class="font-bold txt-color">@Html.LabelFor(modelItem => item.NominationTime): </span> <span class="font-normal"> @Html.DisplayFor(modelItem => item.NominationTime)</span>
+                                                    </div>
+                                                    <div class="">
+                                                        <span class="font-bold txt-color">@Html.LabelFor(modelItem => item.AwardComment): </span> <span class="font-normal"> @Html.DisplayFor(modelItem => item.AwardComment)</span>
+                                                    </div>
+
+                                                    <ul class="list-inline list-unstyled">
+                                                        <li><span><i class="fa fa-calendar" aria-hidden="true"></i> 2 days, 8 hours </span></li>
+                                                        <li>|</li>
+                                                        <span><i class="glyphicon glyphicon-comment"></i> 2 comments</span>
+                                                        <li>|</li>
+                                                        <li>
+                                                            <span class="glyphicon glyphicon-star"></span>
+                                                            <span class="glyphicon glyphicon-star"></span>
+                                                            <span class="glyphicon glyphicon-star"></span>
+                                                            <span class="glyphicon glyphicon-star"></span>
+                                                            <span class="glyphicon glyphicon-star-empty"></span>
+                                                        </li>
+                                                    </ul>
+                                                </div>
+                                            </div>
                                         </div>
-                                        <div class="">
-                                            <span class="font-bold txt-color">@Html.LabelFor(modelItem => item.NominationTime): </span> <span class="font-noraml"> @Html.DisplayFor(modelItem => item.NominationTime)</span>
-                                        </div>
-                                        <div class="">
-                                            <span class="font-bold txt-color">@Html.LabelFor(modelItem => item.AwardComment): </span> <span class="font-noraml"> @Html.DisplayFor(modelItem => item.AwardComment)</span>
-                                        </div>
-
-
-                                        <p>
-                                            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis pharetra varius quam sit amet vulputate.
-                                            Quisque mauris augue, molestie tincidunt condimentum vitae, gravida a libero. Aenean sit amet felis
-                                            dolor, in sagittis nisi. Sed ac orci quis tortor imperdiet venenatis. Duis elementum auctor accumsan.
-                                            Aliquam in felis sit amet augue.
-                                        </p>
-                                        <ul class="list-inline list-unstyled">
-                                            <li><span><i class="glyphicon glyphicon-calendar"></i> 2 days, 8 hours </span></li>
-                                            <li>|</li>
-                                            <span><i class="glyphicon glyphicon-comment"></i> 2 comments</span>
-                                            <li>|</li>
-                                            <li>
-                                                <span class="glyphicon glyphicon-star"></span>
-                                                <span class="glyphicon glyphicon-star"></span>
-                                                <span class="glyphicon glyphicon-star"></span>
-                                                <span class="glyphicon glyphicon-star"></span>
-                                                <span class="glyphicon glyphicon-star-empty"></span>
-                                            </li>
-
-
-                                        </ul>
                                     </div>
-                                </div>
-                            </div>
+                                    index++;
+                                }
+                                <br />
+                            }
+                            else
+                            {
+                                <span>
+                                    No Winners found!!
+                                </span>
+                            }
                         </div>
-                        index++;
+                            winnerIndex++;
                     }
-                    <br />
-                }
-                else
-                {
-                    <span>
-                        No Winners found!!
-                    </span>
-                }
+                </div>
             </div>
-            winnerIndex++;
-        }
+        <div class="clearfix"></div>
+        </div>
     </div>
-    <div class="clearfix"></div>
+    
 </div>

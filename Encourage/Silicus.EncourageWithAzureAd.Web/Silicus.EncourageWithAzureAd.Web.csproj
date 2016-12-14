@@ -15,7 +15,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Silicus.EncourageWithAzureAd.Web</RootNamespace>
     <AssemblyName>Silicus.EncourageWithAzureAd.Web</AssemblyName>
-    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <MvcBuildViews>false</MvcBuildViews>
     <UseIISExpress>true</UseIISExpress>
     <IISExpressSSLPort>44324</IISExpressSSLPort>
@@ -301,9 +301,7 @@
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
-    <Compile Include="Controllers\IIncluder.cs" />
     <Compile Include="Controllers\NominationController.cs" />
-    <Compile Include="Controllers\QueryableExtensions.cs" />
     <Compile Include="Controllers\ReviewController.cs" />
     <Compile Include="Controllers\UserProfileController.cs" />
     <Compile Include="Filters\CustomeAuthorizeAttribute.cs" />
@@ -319,7 +317,7 @@
     <Compile Include="Models\ApplicationDbContext.cs" />
     <Compile Include="Models\AwardViewModel.cs" />
     <Compile Include="Models\CriteriaCommentViewModel.cs" />
-    <Compile Include="Models\Dashboard.cs" />
+    <Compile Include="Models\DashboardViewModel.cs" />
     <Compile Include="Models\NominationListViewModel.cs" />
     <Compile Include="Models\NominationViewModel.cs" />
     <Compile Include="Models\ReviewerCommentViewModel.cs" />
@@ -334,6 +332,7 @@
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="Css\animate.css" />
+    <Content Include="Css\bars-square.css" />
     <Content Include="Css\bootstrap-switch.css" />
     <Content Include="Css\bootstrap.css" />
     <Content Include="Css\bootstrap.min.css" />
@@ -354,6 +353,8 @@
     <Content Include="Css\patterns\shattered.png" />
     <Content Include="Css\patterns\triangular.png" />
     <Content Include="Css\patterns\_notes\dwsync.xml" />
+    <Content Include="Css\perfect-scrollbar.css" />
+    <Content Include="Css\perfect-scrollbar.min.css" />
     <Content Include="Css\plugins\awesome-bootstrap-checkbox\awesome-bootstrap-checkbox.css" />
     <Content Include="Css\plugins\awesome-bootstrap-checkbox\_notes\dwsync.xml" />
     <Content Include="Css\plugins\blueimp\css\blueimp-gallery-indicator.css" />
@@ -509,6 +510,8 @@
     <Content Include="Content\Site.css" />
     <Content Include="Images\logo.jpg" />
     <Content Include="Images\loader_small.gif" />
+    <Content Include="Images\user.png" />
+    <Content Include="Images\user2.png" />
     <Content Include="Images\View details Icon.png" />
     <Content Include="img\logo_large.png" />
     <Content Include="img\logo_sm.png" />
@@ -522,6 +525,11 @@
     <Content Include="js\jquery-2.1.1.js" />
     <Content Include="js\jquery-ui-1.10.4.min.js" />
     <Content Include="js\jquery-ui.custom.min.js" />
+    <Content Include="js\jquery.barrating.min.js" />
+    <Content Include="js\perfect-scrollbar.jquery.js" />
+    <Content Include="js\perfect-scrollbar.jquery.min.js" />
+    <Content Include="js\perfect-scrollbar.js" />
+    <Content Include="js\perfect-scrollbar.min.js" />
     <Content Include="js\plugins\chartist\chartist.min.js" />
     <Content Include="js\plugins\chartist\_notes\dwsync.xml" />
     <Content Include="js\plugins\chartJs\Chart.min.js" />

@@ -35,9 +35,11 @@ namespace Silicus.Encourage.Services.Interface
         bool checkReviewIsDrafted(int nominationId);
         List<Award> LockNominations(List<int> awardIds);
         bool IsNominationLocked();
-        bool UnLockNominations();
+        List<Award> UnLockNominations(List<int> awardIds);
+        List<Award> GetAwardstoUnLockOrUnlock(string status);
         int GetNominationCountByManagerId(int managerId, DateTime startDate, DateTime endDate);
         bool GetNominationLockStatus();
+        FrequencyMaster GetAwardFrequencyByFrequencyCode(string frequencyCode);
 
         #region Saved Nominations List
 

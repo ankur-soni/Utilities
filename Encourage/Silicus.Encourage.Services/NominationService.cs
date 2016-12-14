@@ -143,7 +143,6 @@ namespace Silicus.Encourage.Services
             if (nomination.ProjectID != null)
             {
                 var clientId = _commonDataBaseContext.Query<Engagement>().Where(engagement => engagement.PrimaryProjectManagerID == nomination.ManagerId && engagement.ID == nomination.ProjectID).FirstOrDefault().ClientID;
-                // projectName = _commonDataBaseContext.Query<Engagement>().Where(e => e.ID == nomination.ProjectID).FirstOrDefault().Name;
                 projectName = _commonDataBaseContext.Query<Client>().Where(client => client.ID == clientId).FirstOrDefault().Code;
             }
 
@@ -182,7 +181,7 @@ namespace Silicus.Encourage.Services
             return reviewerId;
         }
 
-        public List<Nomination> GetAllSubmitedReviewedNominations(int reviewerId,bool forCurrentMonth)
+        public List<Nomination> GetAllSubmitedReviewedNominations(int reviewerId, bool forCurrentMonth)
         {
             var today = DateTime.Today;
             var prevMonth = new DateTime(today.Year, today.Month, 1).AddMonths(-1);
@@ -247,7 +246,7 @@ namespace Silicus.Encourage.Services
             {
                 foreach (var awardId in awardIds)
                 {
-                    var data = _encourageDatabaseContext.Query<Models.Configuration>().Where(x => x.configurationKey == lockKey  && x.AwardId == awardId).FirstOrDefault();
+                    var data = _encourageDatabaseContext.Query<Models.Configuration>().Where(x => x.configurationKey == lockKey && x.AwardId == awardId).FirstOrDefault();
                     if (data != null)
                     {
                         data.value = true;
@@ -261,37 +260,80 @@ namespace Silicus.Encourage.Services
             {
                 return new List<Award>();
             }
-           
+
         }
 
         public bool IsNominationLocked()
         {
-            //var currentNominations = GetCurrentNominations();
-            //return currentNominations.Count > 0 && currentNominations.TrueForAll(cn => Convert.ToBoolean(cn.IsLocked));
-            // //return true;
             _logger.Log("NominationService-IsNominationLocked");
             return GetNominationLockStatus();
         }
 
-        public bool UnLockNominations()
+        //public bool UnLockNominations()
+        //{
+        //    _logger.Log("NominationService-UnLockNominations");
+        //    var data = _encourageDatabaseContext.Query<Models.Configuration>().Where(x => x.configurationKey == "NominationLock").SingleOrDefault();
+        //    data.value = false;
+        //    _encourageDatabaseContext.Update<Models.Configuration>(data);
+        //    return true;
+        //}
+
+        public List<Award> UnLockNominations(List<int> awardIds)
         {
-            //var currentNominations = GetCurrentLockNominations();
-
-            //foreach (var nomination in currentNominations)
-            //{
-            //    nomination.IsLocked = false;
-            //    DeletePrevoiusManagerComments(nomination.Id);
-            //    UpdateNomination(nomination);
-            //   // return true;
-
-            //}
             _logger.Log("NominationService-UnLockNominations");
-            var data = _encourageDatabaseContext.Query<Models.Configuration>().Where(x => x.configurationKey == "NominationLock").SingleOrDefault();
-            data.value = false;
-            _encourageDatabaseContext.Update<Models.Configuration>(data);
-            return true;
+
+            var unLockedAwards = new List<Award>();
+            var lockKey = WebConfigurationManager.AppSettings["NominationLockKey"];
+            if (awardIds.Count > 0)
+            {
+                foreach (var awardId in awardIds)
+                {
+                    var data = _encourageDatabaseContext.Query<Models.Configuration>().Where(x => x.configurationKey == lockKey && x.AwardId == awardId && x.value == true).FirstOrDefault();
+                    if (data != null)
+                    {
+                        data.value = false;
+                        _encourageDatabaseContext.Update<Models.Configuration>(data);
+                        unLockedAwards.Add(_encourageDatabaseContext.Query<Award>().Where(a => a.Id == awardId).FirstOrDefault());
+                    }
+                }
+                return unLockedAwards;
+            }
+            else
+            {
+                return new List<Award>();
+            }
         }
 
+        public List<Award> GetAwardstoUnLockOrUnlock(string status)
+        {
+            _logger.Log("NominationService-GetAwardstoUnLock");
+            var lockKey = WebConfigurationManager.AppSettings["NominationLockKey"];
+            var data = new List<Models.Configuration>();
+            if (status == ConfigurationManager.AppSettings["Lock"])
+            {
+                 data = _encourageDatabaseContext.Query<Models.Configuration>().Where(x => x.configurationKey == lockKey && x.value == false ).ToList();
+            }
+            else
+            {
+                data = _encourageDatabaseContext.Query<Models.Configuration>().Where(x => x.configurationKey == lockKey && x.value == true ).ToList();
+
+            }
+            var awardsToUnlock = new List<Award>();
+            foreach (var awardconfiguration in data)
+            {
+                awardsToUnlock.Add(_encourageDatabaseContext.Query<Award>().Where(x => x.Id == awardconfiguration.AwardId).FirstOrDefault());
+            }
+            if (awardsToUnlock.Count() > 0)
+            {
+                return awardsToUnlock;
+            }
+            else
+            {
+                return new List<Award>();
+            }
+        }
+
+       
         public int GetNominationCountByManagerId(int managerId, DateTime startDate, DateTime endDate)
         {
             return _encourageDatabaseContext.Query<Nomination>().Where(x => x.ManagerId == managerId && (x.NominationDate >= startDate && x.NominationDate <= endDate)).Count();
@@ -321,6 +363,11 @@ namespace Silicus.Encourage.Services
             var prevMonth = new DateTime(today.Year, today.Month, 1).AddMonths(-1);
 
             return _encourageDatabaseContext.Query<Nomination>("ManagerComments").Where(model => model.ManagerId == managerID && (forCurrentMonth ? (model.NominationDate >= prevMonth) : (model.NominationDate < prevMonth))).ToList();
+        }
+
+        public FrequencyMaster GetAwardFrequencyByFrequencyCode(string frequencyCode)
+        {
+            return _encourageDatabaseContext.Query<FrequencyMaster>().Where(x => x.Code == frequencyCode).FirstOrDefault();
         }
 
         #endregion Get Saved Nominations Details

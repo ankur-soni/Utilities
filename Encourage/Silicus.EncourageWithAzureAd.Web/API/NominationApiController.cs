@@ -3,6 +3,7 @@ using AttributeRouting.Web.Mvc;
 using Silicus.Encourage.Services;
 using Silicus.Encourage.Services.Interface;
 using Silicus.FrameWorx.Logger;
+using System.Collections.Generic;
 
 namespace Silicus.EncourageWithAzureAd.Web.API
 {
@@ -10,25 +11,54 @@ namespace Silicus.EncourageWithAzureAd.Web.API
     public class NominationApiController : ApiController
     {
         private INominationService _nominationService;
-        //private IReviewService _reviewService;
         private readonly ILogger _logger;
-        public NominationApiController(INominationService nominationService,ILogger logger)
+        private readonly IAwardService _awardService;
+        public NominationApiController(INominationService nominationService, ILogger logger,IAwardService awardService)
         {
             _nominationService = nominationService;
             _logger = logger;
-            //_reviewService = reviewService;
+            _awardService = awardService;
         }
-       //[HttpGet]
-       // public bool LockNominations()
-       // {
-       //     _logger.Log("NominationApi-LockNominations");
-       //     return _nominationService.LockNominations();
-        //}
         [HttpGet]
-        public bool UnLockNominations()
+        public bool LockNominations(string frequencyCode)
+        {
+            _logger.Log("NominationApi-LockNominations");
+            var awards = _awardService.GetAllAwards();
+            var awardIds = new List<int>();
+            var awardFrequency = _nominationService.GetAwardFrequencyByFrequencyCode(frequencyCode);
+            foreach (var award in awards)
+            {
+                if (award.FrequencyId == awardFrequency.Id)
+                {
+                    awardIds.Add(award.Id);
+                }
+            }
+            if (awardIds.Count > 0)
+            {
+                _nominationService.LockNominations(awardIds);
+            }
+            return true;
+        }
+        [HttpGet]
+        public bool UnLockNominations(string frequencyCode)
         {
             _logger.Log("NominationApi-UnLockNominations");
-            return _nominationService.UnLockNominations();
+            var awards = _awardService.GetAllAwards();
+            var awardIds = new List<int>();
+            var awardFrequency = _nominationService.GetAwardFrequencyByFrequencyCode(frequencyCode);
+
+            foreach (var award in awards)
+            {
+                if (award.FrequencyId == awardFrequency.Id)
+                {
+                    awardIds.Add(award.Id);
+                }
+            }
+            if (awardIds.Count > 0)
+            {
+                _nominationService.UnLockNominations(awardIds);
+            }
+            return true;
         }
     }
 }

@@ -11,15 +11,17 @@
     <link href="~/LESS/style.css" rel="stylesheet" />
     <link href="~/css/plugins/sweetalert/sweetalert.css" rel="stylesheet" />
 
+    <link href="~/Css/perfect-scrollbar.min.css" rel="stylesheet" />
     <!-- FooTable -->
     <link href="~/css/plugins/footable/footable.core.css" rel="stylesheet" />
     <link href="~/css/bootstrap-switch.css" rel="stylesheet" />
 
     <link href="~/Css/custom-style.css" rel="stylesheet" />
 
-    <link href="~/css/star-rating.css" rel="stylesheet" />
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
-    <script src="~/js/star-rating.js"></script>
+    <link href="~/Css/bars-square.css" rel="stylesheet" />
+    
+    <script src="~/js/jquery-2.1.1.js"></script>
+    @*<script src="~/js/jquery.barrating.min.js"></script>*@
 </head>
 <body class="container-fluid">
     <div class="row top-header bbl">
@@ -62,56 +64,58 @@
     </div>
 
     <div class="row">
-        <div id="wrapper">
+        <div id="wrapper" class="wrapper">
             <!-- START LEFT MENU -->
             @if (Request.IsAuthenticated)
             {
-                <nav class="navbar-default navbar-static-side" role="navigation">
-                    <div class="sidebar-collapse">
-                        @{
-                            List<string> roles = MvcApplication.getCurrentUserRoles();
-                            List<string> contributors = MvcApplication.getDevelopersName();
-                        }
-                        @if (roles.Count() != 0)
-                {
-                            <ul class="nav metismenu" id="side-menu">
-                                <li class="active"><a href="@Url.Action("Index", "Home")"><i class="fa fa-dashboard"></i> <span class="nav-label">Dashboard</span></a></li>
-                                <li>
-                                    <a href="#"><i class="fa fa-user"></i> <span class="nav-label">Nominations</span> <span class="fa arrow"></span></a>
-                                    <ul class="nav nav-second-level">
-                                        @if (roles.Contains("Manager"))
-                                        {
-                                            <li><a href="@Url.Action("AddNomination", "Nomination")" class="active">Add Nominations</a></li>
-                                            <li><a href="@Url.Action("GetNominationList", "Nomination")" class="active">Edit Nominations</a></li>
-                                        }
-                                        @if (roles.Contains("Reviewer"))
-                                        {
-                                            <li><a href="@Url.Action("ReviewNominations", "Nomination")" class="active">Pending Reviews</a></li>
-                                            <li><a href="@Url.Action("SavedReviews", "Nomination")" class="active">Done Reviews</a></li>
-
-                                        }
-                                        @if (roles.Contains("Admin"))
-                                        {
-                                            <li><a href="@Url.Action("ReviewFeedbackList", "Review")" class="active">Submitted Reviews</a></li>
-                                        }
-                                    </ul>
-                                </li>
-
-                                <!-- admin role only -->
-                                @if (roles.Contains("Admin"))
-                    {
+                <div class="sidebar-wrapper">
+                    <nav class="navbar-default navbar-static-side sidebar" role="navigation">
+                        <div class="sidebar-collapse">
+                            @{
+                List<string> roles = MvcApplication.getCurrentUserRoles();
+                List<string> contributors = MvcApplication.getDevelopersName();
+                            }
+                            @if (roles.Count() != 0)
+                            {
+                                <ul class="nav metismenu" id="side-menu">
+                                    <li class="active"><a href="@Url.Action("Index", "Home")"><i class="fa fa-dashboard"></i> <span class="nav-label">Dashboard</span></a></li>
                                     <li>
-                                        <a href="#"><i class="fa fa-cogs"></i> <span class="nav-label">Admin</span> <span class="fa arrow"></span></a>
+                                        <a href="#"><i class="fa fa-user"></i> <span class="nav-label">Nominations</span> <span class="fa arrow"></span></a>
                                         <ul class="nav nav-second-level">
-                                            <li><a href="#" class="active">Edit Users</a></li>
+                                            @if (roles.Contains("Manager"))
+                                            {
+                                                <li><a href="@Url.Action("AddNomination", "Nomination")" class="active">Add Nominations</a></li>
+                                                <li><a href="@Url.Action("GetNominationList", "Nomination")" class="active">Edit Nominations</a></li>
+                                            }
+                                            @if (roles.Contains("Reviewer"))
+                                            {
+                                                <li><a href="@Url.Action("ReviewNominations", "Nomination")" class="active">Pending Reviews</a></li>
+                                                <li><a href="@Url.Action("SavedReviews", "Nomination")" class="active">Done Reviews</a></li>
+
+                                            }
+                                            @if (roles.Contains("Admin"))
+                                            {
+                                                <li><a href="@Url.Action("ReviewFeedbackList", "Review")" class="active">Submitted Reviews</a></li>
+                                            }
                                         </ul>
                                     </li>
-                                }
-                            </ul>
-                        }
-                        <!--End of if-->
-                    </div>
-                </nav>
+
+                                    <!-- admin role only -->
+                                    @if (roles.Contains("Admin"))
+                                    {
+                                        <li>
+                                            <a href="#"><i class="fa fa-cogs"></i> <span class="nav-label">Admin</span> <span class="fa arrow"></span></a>
+                                            <ul class="nav nav-second-level">
+                                                <li><a href="#" class="active">Edit Users</a></li>
+                                            </ul>
+                                        </li>
+                                    }
+                                </ul>
+                            }
+                            <!--End of if-->
+                        </div>
+                    </nav>
+                </div>
                             var data = "";
                             var count = contributors.Count;
                             var recentCount = 0;
@@ -133,7 +137,7 @@
                             }
             <!-- END LEFT MENU -->
             <!--   START OF CONTENT AREA -->
-            <div id="page-wrapper" class="gray-bg">
+            <div id="page-wrapper" class="page-wrapper">
                 @RenderBody()
             </div>
 
@@ -143,11 +147,13 @@
         <div>
             <strong>&copy;Copyright</strong> 2000 -
             <script>document.write(new Date().getFullYear())</script> Silicus Technologies
-            <span id="credits" style="font-weight:bold;margin-left:80%">Credits</span>
+            <span id="credits" class="pull-right" style="font-weight:bold;">Credits</span>
         </div>
     </div>
     <!-- Mainly scripts -->
     <script src="~/js/jquery-2.1.1.js"></script>
+    
+    <script src="~/js/perfect-scrollbar.jquery.js"></script>
 
     <script src="~/js/plugins/validate/jquery.validate.min.js"></script>
 
@@ -167,11 +173,25 @@
     <script src="~/js/plugins/footable/footable.all.min.js"></script>
     <script src="~/js/plugins/sweetalert/sweetalert.min.js"></script>
     <script src="~/js/bootstrap-switch.js"></script>
+    
 </body>
 </html>
 
-
 <script>
+
+    function sidebarautoheight() {
+        var sidebarheight = 0;
+        sidebarheight = $(window).height() - $(".bbl").outerHeight() - $("footer").outerHeight();
+        $(".wrapper .page-wrapper").css("min-height", sidebarheight);
+    };
+    
+
+
+    $("#menu-toggle").click(function () {
+        $("body").toggleClass("mini-navbar");
+    });
+
+
     var creditsData =($("div #credits-data").html( "<span style='font-weight : bold'>" +$("div #credits-data").text() +"</span>"));
     $(".fa-chevron-down").click(function () {
         $('.dropdown').toggleClass('open')
@@ -194,3 +214,15 @@
     });
 </script>
 
+<script>
+    $(document).ready(function () {
+        $('.wrap').perfectScrollbar();
+
+        sidebarautoheight();
+        //pageWrapperautoheight();
+    });
+    $(window).resize(function () {
+        sidebarautoheight();
+        //pageWrapperautoheight();
+    });
+</script>

@@ -41,10 +41,10 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="Silicus.UtilityContainer.Entities">
-      <HintPath>..\..\Silicus.UtilityContainer\Silicus.UtilityContainer.Entities\bin\Debug\Silicus.UtilityContainer.Entities.dll</HintPath>
+      <HintPath>Dependencies\Silicus.UtilityContainer.Entities.dll</HintPath>
     </Reference>
     <Reference Include="Silicus.UtilityContainer.Models">
-      <HintPath>..\..\Silicus.UtilityContainer\Silicus.UtilityContainer.Models\bin\Debug\Silicus.UtilityContainer.Models.dll</HintPath>
+      <HintPath>Dependencies\Silicus.UtilityContainer.Models.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
@@ -90,6 +90,9 @@
   <ItemGroup>
     <None Include="App.config" />
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Dependencies\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />

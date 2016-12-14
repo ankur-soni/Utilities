@@ -55,10 +55,6 @@ namespace Silicus.Encourage.Services
         public bool LockReview(List<int> awardIds)
         {
             _logger.Log("ReviewService-LockReview");
-            //var data = _encourageDatabaseContext.Query<Models.Configuration>().Where(x => x.configurationKey == "ReviewLock").SingleOrDefault();
-            //data.value = true;
-            //_encourageDatabaseContext.Update<Models.Configuration>(data);
-
             var lockKey = WebConfigurationManager.AppSettings["ReviewLockKey"];
             if (awardIds.Count > 0)
             {
@@ -80,13 +76,36 @@ namespace Silicus.Encourage.Services
 
         }
 
-        public bool UnLockReview()
+        //public bool UnLockReview()
+        //{
+        //    _logger.Log("reviewService-unLockReview");
+        //    var data = _encourageDatabaseContext.Query<Models.Configuration>().Where(x => x.configurationKey == "ReviewLock").SingleOrDefault();
+        //    data.value = false;
+        //    _encourageDatabaseContext.Update<Models.Configuration>(data);
+        //    return true;
+        //}
+        public bool UnLockReview(List<int> awardIds)
         {
             _logger.Log("reviewService-unLockReview");
-            var data = _encourageDatabaseContext.Query<Models.Configuration>().Where(x => x.configurationKey == "ReviewLock").SingleOrDefault();
-            data.value = false;
-            _encourageDatabaseContext.Update<Models.Configuration>(data);
-            return true;
+            var lockKey = WebConfigurationManager.AppSettings["ReviewLockKey"];
+            if (awardIds.Count > 0)
+            {
+                foreach (var awardId in awardIds)
+                {
+                    var data = _encourageDatabaseContext.Query<Models.Configuration>().Where(x => x.configurationKey == lockKey && x.value == true && x.AwardId == awardId).FirstOrDefault();
+                    if (data != null)
+                    {
+                        data.value = false;
+                        _encourageDatabaseContext.Update<Models.Configuration>(data);
+                    }
+
+                }
+                return true;
+            }
+            else
+            {
+                return false;
+            }
         }
 
         public bool GetReviewLockStatus()
