@@ -39,8 +39,9 @@ namespace HangFireBackgroundTasks.EventProcessors
             try
             {
                 _logger.Log("EncourageEventProcessor-LockNomination-try");
-                 string URL = @"https://silicusencouragewithazureadweb.azurewebsites.net/api/nominationapi/LockNominations?frequencyCode=" + frequencyCode.ToString();
+                //string URL = @"https://silicusencouragewithazureadweb.azurewebsites.net/api/nominationapi/LockNominations?frequencyCode=" + frequencyCode.ToString();
 
+                string URL = @"https://localhost:44324/api/nominationapi/LockNominations?frequencyCode=" + frequencyCode.ToString();
                 HttpClient client = new HttpClient();
                 client.BaseAddress = new Uri(URL);
 
@@ -73,7 +74,9 @@ namespace HangFireBackgroundTasks.EventProcessors
             try
             {
                 _logger.Log("EncourageEventProcessor-UnLockNomination-try");
-               string URL = @"https://silicusencouragewithazureadweb.azurewebsites.net/api/nominationapi/UnLockNominations?frequencyCode=" + frequencyCode;
+               //string URL = @"https://silicusencouragewithazureadweb.azurewebsites.net/api/nominationapi/UnLockNominations?frequencyCode=" + frequencyCode;
+
+                string URL = @"https://localhost:44324/api/nominationapi/UnLockNominations?frequencyCode=" + frequencyCode;
 
                 HttpClient client = new HttpClient();
                 client.BaseAddress = new Uri(URL);
@@ -105,7 +108,9 @@ namespace HangFireBackgroundTasks.EventProcessors
 
         private void LockReview(FrequencyCode frequencyCode)
         {
-            string URL = @"https://silicusencouragewithazureadweb.azurewebsites.net/api/reviewnominationapi/lockreview?frequencyCode=" + frequencyCode;
+            //string URL = @"https://silicusencouragewithazureadweb.azurewebsites.net/api/reviewnominationapi/lockreview?frequencyCode=" + frequencyCode;
+
+            string URL = @"https://localhost:44324/api/reviewnominationapi/lockreview?frequencyCode=" + frequencyCode;
 
             HttpClient client = new HttpClient();
             client.BaseAddress = new Uri(URL);
@@ -127,7 +132,9 @@ namespace HangFireBackgroundTasks.EventProcessors
 
         private void UnLockReviews(FrequencyCode frequencyCode)
         {
-            string URL = @"https://silicusencouragewithazureadweb.azurewebsites.net/api/reviewnominationapi/UnLockReview?frequencyCode=" + frequencyCode;
+            //string URL = @"https://silicusencouragewithazureadweb.azurewebsites.net/api/reviewnominationapi/UnLockReview?frequencyCode=" + frequencyCode;
+
+            string URL = @"https://localhost:44324/api/reviewnominationapi/UnLockReview?frequencyCode=" + frequencyCode;
 
             HttpClient client = new HttpClient();
             client.BaseAddress = new Uri(URL);
