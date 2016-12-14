@@ -128,13 +128,12 @@
         $("#FieldFilter").keyup(function () {
             var value = $("#FieldFilter").val();
             var grid = $("#questionGrids").data("kendoGrid");
-
             if (value) {
                 var filter = { logic: "or", filters: [] };
-
                 filter.filters.push({ field: "QuestionDescription", operator: "contains", value: value });
+                filter.filters.push({ field: "QuestionType", operator: "contains", value: value });
                 filter.filters.push({ field: "Tag", operator: "contains", value: value });
-
+                filter.filters.push({ field: "ProficiencyLevel", operator: "contains", value: value });
                 grid.dataSource.query({ filter: filter });
             } else {
                 grid.dataSource.filter({});

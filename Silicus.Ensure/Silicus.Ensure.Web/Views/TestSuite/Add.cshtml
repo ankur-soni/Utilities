@@ -50,7 +50,7 @@
                     .BindTo(Model.PositionList)
                     .DataTextField("PositionName")
                     .DataValueField("PositionId"))
-</div>
+            </div>
         </div>
         <br />
         <div class="row">
@@ -76,8 +76,8 @@
                     }))
             </div>
         </div>
-        <br/>
-        <div class="row">        
+        <br />
+        <div class="row">
             <div class="col-md-4">
                 @Html.LabelFor(model => model.ProjectName):
             </div>
@@ -94,13 +94,13 @@
                 @Html.TextBoxFor(model => model.CustomerName, new { @class = "form-control" })
             </div>
         </div>
-        <br/>
-    <div class="row">
-        <div class="col-md-4">
-            @Html.LabelFor(model => model.ExperienceRangeId):
-        </div>
-        <div class="col-md-8">
-            @(Html.Kendo().MultiSelectFor(m => m.ExperienceRangeId)
+        <br />
+        <div class="row">
+            <div class="col-md-4">
+                @Html.LabelFor(model => model.ExperienceRangeId):
+            </div>
+            <div class="col-md-8">
+                @(Html.Kendo().MultiSelectFor(m => m.ExperienceRangeId)
                 .DataTextField("Text")
                 .DataValueField("Value")
                 .Placeholder("Select skill set...")
@@ -128,9 +128,9 @@
                     })
                 .Value(Model.ExperienceRangeId)
                 .HtmlAttributes(new { style = "width: 100%" }))
+            </div>
         </div>
-    </div>
-        <br/>
+        <br />
         <div class="row">
             <div class="col-md-2">
                 Skill Tags:
@@ -153,7 +153,7 @@
                                         <td id="weight_name_row @Convert.ToString(i)"><input type="text" name="WeightName" id="name_text @Convert.ToString(i)" value="@Model.Tags[i].Weightage" class="key-numeric" maxlength="3"></td>
                                         <td id="efficiency_title_row @Convert.ToString(i)">Efficiency @Convert.ToString(i + 1)<b style="color:Red;">*</b>:</td>
                                         <td id="efficiency_name_row @Convert.ToString(i)"><input name="efficiency" id="efficiency_name @Convert.ToString(i)" value="@Model.Tags[i].Proficiency" class="efficiency" style="width:130px;"></td>
-                                        <td><input type="button" onclick="delete_row(@Convert.ToString(i));" style="width:60px;" value="Delete"></td>
+                                        <td><a href="#" style="color:black;" onclick="delete_row('@Convert.ToString(i)');"><span class="glyphicon glyphicon-minus"></span></a></td>
                                     </tr>
                                 }
                                 else
@@ -165,7 +165,7 @@
                                         <td id="weight_name_row @Convert.ToString(i)"><input type="text" name="WeightName" id="weight_name" value="@Model.Tags[i].Weightage" class="key-numeric" maxlength="3"></td>
                                         <td id="efficiency_title_row @Convert.ToString(i)">Efficiency @Convert.ToString(i + 1)<b style="color:Red;">*</b>:</td>
                                         <td id="efficiency_name_row @Convert.ToString(i)"><input name="efficiency" id="efficiency_name" value="@Model.Tags[i].Proficiency" class="efficiency" style="width:130px;"></td>
-                                        <td><input type="button" onclick="delete_row(@Convert.ToString(i));" style="width:60px;" value="Delete"> <input type="button" onclick="add_row();" style="width:60px;" value="Add"></td>
+                                        <td><a href="#" style="color:black;" onclick="delete_row('@Convert.ToString(i)');"><span class="glyphicon glyphicon-minus"></span></a> <a href="#" style="color:black;" onclick="    add_row();"><span class="glyphicon glyphicon-plus" /></a>  </td>
                                     </tr>
                                 }
                             }
@@ -250,16 +250,16 @@
             success: function (data) {
                 $.each(data, function (i, tag) {
                     TagList.push(tag["TagName"]);
-                });  
-                loadCommon();             
+                });
+                loadCommon();
             },
             error: function (errorMsg) {
                 alert(errorMsg);
             }
         });
 
-        $("#btnSave").click(function () {            
-            if (validateTestSuite()) {                
+        $("#btnSave").click(function () {
+            if (validateTestSuite()) {
                 tags = '';
                 var TestSuiteId = $("#TestSuiteId").val();
                 var IsCopy = $("#IsCopy").val();
@@ -269,7 +269,7 @@
                 var Competency = $("#Competency").val();
                 var ProjectName = $("#ProjectName").val();
                 var CustomerName = $("#CustomerName").val();
-                var ExperienceRange = $("#ExperienceRangeId").data("kendoMultiSelect").value()                          
+                var ExperienceRange = $("#ExperienceRangeId").data("kendoMultiSelect").value()
                 var Status = $("#Status").val();
                 var Weights ='';
                 var Proficiency='';
@@ -304,7 +304,7 @@
                     {
                         Proficiency += "," + $(this).val();
                     }
-                })                
+                })
 
                 $.ajax(
                 {
@@ -346,14 +346,14 @@
                     }
                 });
             }
-        });        
+        });
     }
     ));
 
     $(document).ready(function () {
         if (@Model.TestSuiteId== 0) {
-            $('#tag_table').append('<tr><td id="tag_title_row">Skill Tag 1<b style="color:Red;">*</b>:</td><td id="tag_name_row"><input type="text" name="tagName" id="tag_name" class="autocomplete"></td><td id="weight_title_row">Weightage % 1<b style="color:Red;">*</b>:</td><td id="weight_name_row"><input type="text" name="WeightName" id="weight_name" class="key-numeric" maxlength="3"></td><td id="efficiency_title_row">Efficiency 1<b style="color:Red;">*</b>:</td><td id="efficiency_name_row"><input id="efficiency_name" name="efficiency" id="efficiency_name" class="efficiency" style="width:130px;"></td><td><input type="button" onclick="add_row();" style="width:60px;" value="Add"></td></tr>')
-        }        
+            $('#tag_table').append('<tr><td id="tag_title_row">Skill Tag 1<b style="color:Red;">*</b>:</td><td id="tag_name_row"><input type="text" name="tagName" id="tag_name" class="autocomplete"></td><td id="weight_title_row">Weightage % 1<b style="color:Red;">*</b>:</td><td id="weight_name_row"><input type="text" name="WeightName" id="weight_name" class="key-numeric" maxlength="3"></td><td id="efficiency_title_row">Efficiency 1<b style="color:Red;">*</b>:</td><td id="efficiency_name_row"><input id="efficiency_name" name="efficiency" id="efficiency_name" class="efficiency" style="width:130px;"></td><td><a href="#" style="color:black"  onclick="add_row();"><span class="glyphicon glyphicon-plus" /></a>  </td></tr>')
+        }
     });
 
     function add_row() {
@@ -363,10 +363,10 @@
             var tagName = $(this).find("td input[type=text][name=tagName]").val();
             var weightName = $(this).find("td input[type=text][name=WeightName]").val();
             var efficiencyValue = $(this).find("td input[name=efficiency]").val();
-            tableContent += "<tr id='row" + rowNum + "'><td id='tag_title_row" + rowNum + "'>" + "Skill Tag " + (parseInt(rowNum)+1) + "<b style='color:Red;'>*</b>:" + "</td><td id='tag_name_row" + rowNum + "'>" + "<input type='text' class='autocomplete' name='tagName' id='name_text" + rowNum + "' value='" + tagName + "'>" + "</td><td id='weight_title_row" + rowNum + "'>" + "Weightage % " + (parseInt(rowNum)+1) + "<b style='color:Red;'>*</b>:" + "</td><td id='weight_name_row" + rowNum + "'>" + "<input type='text' class='key-numeric' maxlength='3' name='WeightName'  id='name_text" + rowNum + "' value='" + weightName + "'>" + "</td><td id='efficiency_title_row" + rowNum + "'>" + "Efficiency " + (parseInt(rowNum)+1) + "<b style='color:Red;'>*</b>:" + "</td><td id='efficiency_name_row" + rowNum + "'><input id='name_text" + rowNum + "' id='efficiency_name' value='" + efficiencyValue + "' name='efficiency' class='efficiency' style='width:130px;'></td><td><input type='button' value='Delete' style='width:60px;' onclick='delete_row(" + rowNum + ")'></td></tr>";
+            tableContent += "<tr id='row" + rowNum + "'><td id='tag_title_row" + rowNum + "'>" + "Skill Tag " + (parseInt(rowNum)+1) + "<b style='color:Red;'>*</b>:" + "</td><td id='tag_name_row" + rowNum + "'>" + "<input type='text' class='autocomplete' name='tagName' id='name_text" + rowNum + "' value='" + tagName + "'>" + "</td><td id='weight_title_row" + rowNum + "'>" + "Weightage % " + (parseInt(rowNum)+1) + "<b style='color:Red;'>*</b>:" + "</td><td id='weight_name_row" + rowNum + "'>" + "<input type='text' class='key-numeric' maxlength='3' name='WeightName'  id='name_text" + rowNum + "' value='" + weightName + "'>" + "</td><td id='efficiency_title_row" + rowNum + "'>" + "Efficiency " + (parseInt(rowNum)+1) + "<b style='color:Red;'>*</b>:" + "</td><td id='efficiency_name_row" + rowNum + "'><input id='name_text" + rowNum + "' id='efficiency_name' value='" + efficiencyValue + "' name='efficiency' class='efficiency' style='width:130px;'></td><td><a href='#' style='color:black'  onclick='delete_row("+rowNum+");'><span class='glyphicon glyphicon-minus'></span></a></td></tr>";
             rowNum=rowNum + 1;
         })
-        tableContent += "<tr id='row" + rowNum + "'><td id='tag_title_row" + rowNum + "'>" + "Skill Tag " + (parseInt(rowNum)+1) + "<b style='color:Red;'>*</b>:" + "</td><td id='tag_name_row" + rowNum + "'>" + "<input type='text' class='autocomplete' name='tagName' id='name_text" + rowNum + "' value='" + '' + "'>" + "</td><td id='weight_title_row" + rowNum + "'>" + "Weightage % " + (parseInt(rowNum)+1) + "<b style='color:Red;'>*</b>:" + "</td><td id='weight_name_row" + rowNum + "'>" + "<input type='text' class='key-numeric' maxlength='3' name='WeightName'  id='name_text" + rowNum + "' value='" + '' + "'>" + "</td><td id='efficiency_title_row" + rowNum + "'>" + "Efficiency " + (parseInt(rowNum)+1) + "<b style='color:Red;'>*</b>:" + "</td><td id='efficiency_name_row" + rowNum + "'><input id='name_text" + rowNum + "' id='efficiency_name' value='" + '' + "' name='efficiency' class='efficiency' style='width:130px;'></td><td><input type='button' onclick='delete_row("+rowNum+");' style='width:60px;' value='Delete'> <input type='button' onclick='add_row();' style='width:60px;' value='Add'></td></tr>";
+        tableContent += "<tr id='row" + rowNum + "'><td id='tag_title_row" + rowNum + "'>" + "Skill Tag " + (parseInt(rowNum)+1) + "<b style='color:Red;'>*</b>:" + "</td><td id='tag_name_row" + rowNum + "'>" + "<input type='text' class='autocomplete' name='tagName' id='name_text" + rowNum + "' value='" + '' + "'>" + "</td><td id='weight_title_row" + rowNum + "'>" + "Weightage % " + (parseInt(rowNum)+1) + "<b style='color:Red;'>*</b>:" + "</td><td id='weight_name_row" + rowNum + "'>" + "<input type='text' class='key-numeric' maxlength='3' name='WeightName'  id='name_text" + rowNum + "' value='" + '' + "'>" + "</td><td id='efficiency_title_row" + rowNum + "'>" + "Efficiency " + (parseInt(rowNum)+1) + "<b style='color:Red;'>*</b>:" + "</td><td id='efficiency_name_row" + rowNum + "'><input id='name_text" + rowNum + "' id='efficiency_name' value='" + '' + "' name='efficiency' class='efficiency' style='width:130px;'></td><td><a href='#' style='color:black'  onclick='delete_row("+rowNum+");;'><span class='glyphicon glyphicon-minus'></span></a> <a href='#'  style='color:black'  onclick='add_row();'><span class='glyphicon glyphicon-plus' ></span></a>  </td></tr>";
         $("#tag_table > tbody").html(tableContent)
         loadCommon();
     }
@@ -390,16 +390,16 @@
                 {
                     if(table_len != 0)
                     {
-                        tableContent += "<tr id='row" + rowNum + "'><td id='tag_title_row" + rowNum + "'>" + "Skill Tag " + (parseInt(rowNum)+1) + "<b style='color:Red;'>*</b>:" + "</td><td id='tag_name_row" + rowNum + "'>" + "<input type='text' class='autocomplete' name='tagName' id='name_text" + rowNum + "' value='" + tagName + "'>" + "</td><td id='weight_title_row" + rowNum + "'>" + "Weightage % " + (parseInt(rowNum)+1) + "<b style='color:Red;'>*</b>:" + "</td><td id='weight_name_row" + rowNum + "'>" + "<input type='text' class='key-numeric' maxlength='3' name='WeightName'  id='name_text" + rowNum + "' value='" + weightName + "'>" + "</td><td id='efficiency_title_row" + rowNum + "'>" + "Efficiency " + (parseInt(rowNum)+1) + "<b style='color:Red;'>*</b>:" + "</td><td id='efficiency_name_row" + rowNum + "'><input id='name_text" + rowNum + "' id='efficiency_name' value='" + efficiencyValue + "' name='efficiency' class='efficiency' style='width:130px;'></td><td><input type='button' value='Delete' style='width:60px;' onclick='delete_row(" + rowNum + ")'> <input type='button' onclick='add_row();' style='width:60px;' value='Add'></td></tr>";
+                        tableContent += "<tr id='row" + rowNum + "'><td id='tag_title_row" + rowNum + "'>" + "Skill Tag " + (parseInt(rowNum)+1) + "<b style='color:Red;'>*</b>:" + "</td><td id='tag_name_row" + rowNum + "'>" + "<input type='text' class='autocomplete' name='tagName' id='name_text" + rowNum + "' value='" + tagName + "'>" + "</td><td id='weight_title_row" + rowNum + "'>" + "Weightage % " + (parseInt(rowNum)+1) + "<b style='color:Red;'>*</b>:" + "</td><td id='weight_name_row" + rowNum + "'>" + "<input type='text' class='key-numeric' maxlength='3' name='WeightName'  id='name_text" + rowNum + "' value='" + weightName + "'>" + "</td><td id='efficiency_title_row" + rowNum + "'>" + "Efficiency " + (parseInt(rowNum)+1) + "<b style='color:Red;'>*</b>:" + "</td><td id='efficiency_name_row" + rowNum + "'><input id='name_text" + rowNum + "' id='efficiency_name' value='" + efficiencyValue + "' name='efficiency' class='efficiency' style='width:130px;'></td><td><a href='#' style='color:black' onclick='delete_row("+rowNum+");'><span class='glyphicon glyphicon-minus'></span></a> <a href='#' style='color:black;' onclick='add_row();'><span class='glyphicon glyphicon-plus' ></span></a></td></tr>";
                     }
                     else
                     {
-                        tableContent += "<tr id='row" + rowNum + "'><td id='tag_title_row" + rowNum + "'>" + "Skill Tag " + (parseInt(rowNum)+1) + "<b style='color:Red;'>*</b>:" + "</td><td id='tag_name_row" + rowNum + "'>" + "<input type='text' class='autocomplete' name='tagName' id='name_text" + rowNum + "' value='" + tagName + "'>" + "</td><td id='weight_title_row" + rowNum + "'>" + "Weightage % " + (parseInt(rowNum)+1) + "<b style='color:Red;'>*</b>:" + "</td><td id='weight_name_row" + rowNum + "'>" + "<input type='text' class='key-numeric' maxlength='3' name='WeightName'  id='name_text" + rowNum + "' value='" + weightName + "'>" + "</td><td id='efficiency_title_row" + rowNum + "'>" + "Efficiency " + (parseInt(rowNum)+1) + "<b style='color:Red;'>*</b>:" + "</td><td id='efficiency_name_row" + rowNum + "'><input id='name_text" + rowNum + "' id='efficiency_name' value='" + efficiencyValue + "' name='efficiency' class='efficiency' style='width:130px;'></td><td><input type='button' onclick='add_row();' style='width:60px;' value='Add'></td></tr>";
-                    }                    
+                        tableContent += "<tr id='row" + rowNum + "'><td id='tag_title_row" + rowNum + "'>" + "Skill Tag " + (parseInt(rowNum)+1) + "<b style='color:Red;'>*</b>:" + "</td><td id='tag_name_row" + rowNum + "'>" + "<input type='text' class='autocomplete' name='tagName' id='name_text" + rowNum + "' value='" + tagName + "'>" + "</td><td id='weight_title_row" + rowNum + "'>" + "Weightage % " + (parseInt(rowNum)+1) + "<b style='color:Red;'>*</b>:" + "</td><td id='weight_name_row" + rowNum + "'>" + "<input type='text' class='key-numeric' maxlength='3' name='WeightName'  id='name_text" + rowNum + "' value='" + weightName + "'>" + "</td><td id='efficiency_title_row" + rowNum + "'>" + "Efficiency " + (parseInt(rowNum)+1) + "<b style='color:Red;'>*</b>:" + "</td><td id='efficiency_name_row" + rowNum + "'><input id='name_text" + rowNum + "' id='efficiency_name' value='" + efficiencyValue + "' name='efficiency' class='efficiency' style='width:130px;'></td><td> <a href='#' style='color:black'  onclick='add_row();'><span class='glyphicon glyphicon-plus' ></span></a></td></tr>";
+                    }
                 }
                 else
                 {
-                    tableContent += "<tr id='row" + rowNum + "'><td id='tag_title_row" + rowNum + "'>" + "Skill Tag " + (parseInt(rowNum)+1) + "<b style='color:Red;'>*</b>:" + "</td><td id='tag_name_row" + rowNum + "'>" + "<input type='text' class='autocomplete' name='tagName' id='name_text" + rowNum + "' value='" + tagName + "'>" + "</td><td id='weight_title_row" + rowNum + "'>" + "Weightage % " + (parseInt(rowNum)+1) + "<b style='color:Red;'>*</b>:" + "</td><td id='weight_name_row" + rowNum + "'>" + "<input type='text' class='key-numeric' maxlength='3' name='WeightName'  id='name_text" + rowNum + "' value='" + weightName + "'>" + "</td><td id='efficiency_title_row" + rowNum + "'>" + "Efficiency " + (parseInt(rowNum)+1) + "<b style='color:Red;'>*</b>:" + "</td><td id='efficiency_name_row" + rowNum + "'><input id='name_text" + rowNum + "' id='efficiency_name' value='" + efficiencyValue + "' name='efficiency' class='efficiency' style='width:130px;'></td><td><input type='button' value='Delete' style='width:60px;' onclick='delete_row(" + rowNum + ")'></td></tr>";
+                    tableContent += "<tr id='row" + rowNum + "'><td id='tag_title_row" + rowNum + "'>" + "Skill Tag " + (parseInt(rowNum)+1) + "<b style='color:Red;'>*</b>:" + "</td><td id='tag_name_row" + rowNum + "'>" + "<input type='text' class='autocomplete' name='tagName' id='name_text" + rowNum + "' value='" + tagName + "'>" + "</td><td id='weight_title_row" + rowNum + "'>" + "Weightage % " + (parseInt(rowNum)+1) + "<b style='color:Red;'>*</b>:" + "</td><td id='weight_name_row" + rowNum + "'>" + "<input type='text' class='key-numeric' maxlength='3' name='WeightName'  id='name_text" + rowNum + "' value='" + weightName + "'>" + "</td><td id='efficiency_title_row" + rowNum + "'>" + "Efficiency " + (parseInt(rowNum)+1) + "<b style='color:Red;'>*</b>:" + "</td><td id='efficiency_name_row" + rowNum + "'><input id='name_text" + rowNum + "' id='efficiency_name' value='" + efficiencyValue + "' name='efficiency' class='efficiency' style='width:130px;'></td><td><a href='#' style='color:black'  onclick='delete_row("+rowNum+");'><span class='glyphicon glyphicon-minus'></span></a></td></tr>";
                 }
                 rowNum=rowNum + 1;
             })
@@ -408,7 +408,7 @@
         });
         $("#btnNoConfirmYesNo").off('click').click(function () {
             $confirm.modal("hide");
-        });        
+        });
     }
 
     //Table JS End
@@ -427,7 +427,7 @@
 
     function validateTestSuite() {
         var isError="0";
-        var totalWeight=0;      
+        var totalWeight=0;
 
         $('#tag_table').find('tr').each(function () {
 

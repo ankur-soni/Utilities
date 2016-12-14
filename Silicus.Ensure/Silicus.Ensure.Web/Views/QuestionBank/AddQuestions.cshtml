@@ -79,72 +79,72 @@
                         @Html.TextBoxFor(m => m.Option2, new { @class = "form-control", Value = @Model.Option2 })
                     </div>
                     <div class="col-md-2">
-                        @(Html.Kendo().Button().Name("btnAddOpt2").Icon("plus").HtmlAttributes(new { type = "button", param = "2" }).Events(e => e.Click("OptionAdd")).Content("Add"))
+                        @(Html.Kendo().Button().Name("btnAddOpt2").HtmlAttributes(new { type = "button", param = "2", @class = "glyphicon glyphicon-plus" }).Events(e => e.Click("OptionAdd")))
                     </div>
                 </div>
 
                 <div class="row" id="rowOpt3">
                     <div class="col-md-4">
-                        <span>Option 3:</span>
+                        <span>Option 3:</span><span style="color:red">*</span>
                     </div>
                     <div class="col-md-6">
                         @Html.TextBoxFor(m => m.Option3, new { @class = "form-control", Value = @Model.Option3 })
                     </div>
                     <div class="col-md-2">
-                        @(Html.Kendo().Button().Name("btnAddOpt3").Icon("plus").HtmlAttributes(new { type = "button", param = "3" }).Events(e => e.Click("OptionAdd")).Content("Add"))
-                        @(Html.Kendo().Button().Name("btnDelOpt3").Icon("close").HtmlAttributes(new { type = "button", param = "3" }).Events(e => e.Click("OptionDelete")).Content("Delete"))
+                        @(Html.Kendo().Button().Name("btnAddOpt3").HtmlAttributes(new { type = "button", param = "3", @class = "glyphicon glyphicon-plus" }).Events(e => e.Click("OptionAdd")))
+                        @(Html.Kendo().Button().Name("btnDelOpt3").HtmlAttributes(new { type = "button", param = "3", @class = "glyphicon glyphicon-minus" }).Events(e => e.Click("OptionDelete")))
                     </div>
                 </div>
 
                 <div class="row" id="rowOpt4">
                     <div class="col-md-4">
-                        <span>Option 4:</span>
+                        <span>Option 4:</span><span style="color:red">*</span>
                     </div>
                     <div class="col-md-6">
                         @Html.TextBoxFor(m => m.Option4, new { @class = "form-control", Value = @Model.Option4 })
                     </div>
                     <div class="col-md-2">
-                        @(Html.Kendo().Button().Name("btnAddOpt4").Icon("plus").HtmlAttributes(new { type = "button", param = "4" }).Events(e => e.Click("OptionAdd")).Content("Add"))
-                        @(Html.Kendo().Button().Name("btnDelOpt4").Icon("close").HtmlAttributes(new { type = "button", param = "4" }).Events(e => e.Click("OptionDelete")).Content("Delete"))
+                        @(Html.Kendo().Button().Name("btnAddOpt4").HtmlAttributes(new { type = "button", param = "4", @class = "glyphicon glyphicon-plus" }).Events(e => e.Click("OptionAdd")))
+                        @(Html.Kendo().Button().Name("btnDelOpt4").HtmlAttributes(new { type = "button", param = "4", @class = "glyphicon glyphicon-minus" }).Events(e => e.Click("OptionDelete")))
                     </div>
                 </div>
 
                 <div class="row" id="rowOpt5">
                     <div class="col-md-4">
-                        <span>Option 5:</span>
+                        <span>Option 5:</span><span style="color:red">*</span>
                     </div>
                     <div class="col-md-6">
                         @Html.TextBoxFor(m => m.Option5, new { @class = "form-control", Value = @Model.Option5 })
                     </div>
                     <div class="col-md-2">
-                        @(Html.Kendo().Button().Name("btnAddOpt5").Icon("plus").HtmlAttributes(new { type = "button", param = "5" }).Events(e => e.Click("OptionAdd")).Content("Add"))
-                        @(Html.Kendo().Button().Name("btnDelOpt5").Icon("close").HtmlAttributes(new { type = "button", param = "5" }).Events(e => e.Click("OptionDelete")).Content("Delete"))
+                        @(Html.Kendo().Button().Name("btnAddOpt5").HtmlAttributes(new { type = "button", param = "5", @class = "glyphicon glyphicon-plus" }).Events(e => e.Click("OptionAdd")))
+                        @(Html.Kendo().Button().Name("btnDelOpt5").HtmlAttributes(new { type = "button", param = "5", @class = "glyphicon glyphicon-minus" }).Events(e => e.Click("OptionDelete")))
                     </div>
                 </div>
 
                 <div class="row" id="rowOpt6">
                     <div class="col-md-4">
-                        <span>Option 6:</span>
+                        <span>Option 6:</span><span style="color:red">*</span>
                     </div>
                     <div class="col-md-6">
                         @Html.TextBoxFor(m => m.Option6, new { @class = "form-control", Value = @Model.Option6 })
                     </div>
                     <div class="col-md-2">
-                        @(Html.Kendo().Button().Name("btnAddOpt6").Icon("plus").HtmlAttributes(new { type = "button", param = "6" }).Events(e => e.Click("OptionAdd")).Content("Add"))
-                        @(Html.Kendo().Button().Name("btnDelOpt6").Icon("close").HtmlAttributes(new { type = "button", param = "6" }).Events(e => e.Click("OptionDelete")).Content("Delete"))
+                        @(Html.Kendo().Button().Name("btnAddOpt6").HtmlAttributes(new { type = "button", param = "6", @class = "glyphicon glyphicon-plus" }).Events(e => e.Click("OptionAdd")))
+                        @(Html.Kendo().Button().Name("btnDelOpt6").HtmlAttributes(new { type = "button", param = "6", @class = "glyphicon glyphicon-minus" }).Events(e => e.Click("OptionDelete")))
                     </div>
                 </div>
 
                 <div class="row" id="rowOpt7">
                     <div class="col-md-4">
-                        <span>Option 7:</span>
+                        <span>Option 7:</span><span style="color:red">*</span>
                     </div>
                     <div class="col-md-6">
                         @Html.TextBoxFor(m => m.Option7, new { @class = "form-control", Value = @Model.Option7 })
                     </div>
                     <div class="col-md-2">
-                        @(Html.Kendo().Button().Name("btnAddOpt7").Icon("plus").HtmlAttributes(new { type = "button", param = "7" }).Events(e => e.Click("OptionAdd")).Content("Add"))
-                        @(Html.Kendo().Button().Name("btnDelOpt7").Icon("close").HtmlAttributes(new { type = "button", param = "7" }).Events(e => e.Click("OptionDelete")).Content("Delete"))
+                        @(Html.Kendo().Button().Name("btnAddOpt7").HtmlAttributes(new { type = "button", param = "7", @class = "glyphicon glyphicon-plus" }).Events(e => e.Click("OptionAdd")))
+                        @(Html.Kendo().Button().Name("btnDelOpt7").HtmlAttributes(new { type = "button", param = "7", @class = "glyphicon glyphicon-minus" }).Events(e => e.Click("OptionDelete")))
                     </div>
                 </div>
 
@@ -156,7 +156,7 @@
                         @Html.TextBoxFor(m => m.Option8, new { @class = "form-control", Value = @Model.Option8 })
                     </div>
                     <div class="col-md-2">
-                        @(Html.Kendo().Button().Name("btnDelOpt8").Icon("close").HtmlAttributes(new { type = "button", param = "8" }).Events(e => e.Click("OptionDelete")).Content("Delete"))
+                        @(Html.Kendo().Button().Name("btnDelOpt8").HtmlAttributes(new { type = "button", param = "8", @class = "glyphicon glyphicon-minus" }).Events(e => e.Click("OptionDelete")))
                     </div>
                 </div>
 
@@ -382,7 +382,12 @@
                     // Save and Edit Activity Validation.
                     $("#btnSave")
                         .click(function() {
-
+                            var count =0;
+                            $('.otherOption').each(function(){
+                                if($(this).val()==''){
+                                    count++
+                                }
+                            });
                             var qType = $('#QuestionType').val();
 
                             if ($("#QuestionDescription").val().trim().length == 0) {
@@ -400,7 +405,42 @@
                                         $("#Option2").focus();
                                         ShowError("Option 2 cann't be blank.");
                                         return false;
-                                    } else if ($("#CorrectAnswer :selected").length == 0) {
+                                    } else if(count>0){
+                                        var id;
+                                        $('.otherOption').each(function(){
+                                            if($(this).val()=='')
+                                            {
+                                                id=$(this).attr('id');
+                                                return this;
+                                            }
+                                        });
+                                        if(id=='Option3'){
+                                            $("#Option3").focus();
+                                            ShowError("Option 3 cann't be blank.");
+                                            return false;
+                                        }
+                                        else if(id=='Option4'){
+                                            $("#Option4").focus();
+                                            ShowError("Option 4 cann't be blank.");
+                                            return false;
+                                        }
+                                        else if(id=='Option5'){
+                                            $("#Option5").focus();
+                                            ShowError("Option 5 cann't be blank.");
+                                            return false;
+                                        }
+                                        else if(id=='Option6'){
+                                            $("#Option6").focus();
+                                            ShowError("Option 6 cann't be blank.");
+                                            return false;
+                                        }
+                                        else if(id=='Option7'){
+                                            $("#Option7").focus();
+                                            ShowError("Option 7 cann't be blank.");
+                                            return false;
+                                        }
+                                    }
+                                    else if ($("#CorrectAnswer :selected").length == 0) {
                                         $("#CorrectAnswer").focus();
                                         ShowError("Select at least 1 correct answer.");
                                         return false;
@@ -489,11 +529,13 @@
                     var op = parseInt(opt);
                     if (task == 'A') {
                         $("#OptionCount").val(op + 1);
+                        var opCnt = parseInt($("#OptionCount").val());
                         if (op == 2 || op == 7) {
                             $("#btnAddOpt" + op).hide();
                         }
                         for (var i = op; i <= op + 1; i++) {
                             $("#rowOpt" + i).show();
+                            $("#Option" + opCnt).addClass('otherOption');
                             $("#btnDelOpt" + i).show();
                         }
                         if (op != 7) {
@@ -505,6 +547,8 @@
                     } else {
                         var opCnt = parseInt($("#OptionCount").val());
                         $("#Option" + opCnt).val("");
+                        $("#Option" + opCnt).removeClass('otherOption');
+                        ;
                         $("#rowOpt" + opCnt).hide();
                         $("#btnAddOpt" + (opCnt - 1)).show();
                         $("#OptionCount").val(opCnt - 1);
@@ -561,7 +605,7 @@
                                 foreach (var stOp in Model.CorrectAnswer)
                                 {
                                     @: arr.push(@stOp);
-                                }
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            }
                             }
                             var correctAnswer1 = $('#CorrectAnswer').data("kendoMultiSelect");
                             correctAnswer1.value(arr);
