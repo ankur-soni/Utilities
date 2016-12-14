@@ -66,7 +66,7 @@
                             @Html.ValidationSummary(true, "", new { @class = "text-danger" })
                             <div class="wizard-box" id="nominationCategory" nomination-step="1">
                                 <div class="row">
-                                    <div class="col-md-4">
+                                    <div class="col-lg-3 col-md-4 col-sm-5">
                                         <div class="form-group">
                                             @Html.Label("Nomination Category", htmlAttributes: new { @class = "control-label" })<span class="asterisk">*</span>
                                             @Html.DropDownListFor(model => model.AwardId, @ViewBag.Awards as SelectList, "Select", new { @class = "form-control", id = "Award" })
@@ -77,13 +77,13 @@
                                 </div>
                                 <div class="row">
                                     <div class="form-actions pull-right">
-                                        <button type="button" class="btn btn-success btn-nav" onclick="moveToNominationStep(2, true);">Next&nbsp;<i class="fa fa-chevron-circle-right" aria-hidden="true"></i></button>
+                                        <button type="button" class="btn btn-success btn-nav" onclick="moveToNominationStep(2, true);">Next&nbsp;&nbsp;<i class="fa fa-chevron-circle-right" aria-hidden="true"></i></button>
                                     </div>
                                 </div>
                             </div>
                             <div class="wizard-box" id="project-Dept-Resource" style="display:none;" nomination-step="2">
                                 <div class="row">
-                                    <div class="col-md-4">
+                                    <div class="col-md-5">
                                         <div class="form-group M-B15">
                                             @Html.Label("Employee From", htmlAttributes: new { @class = "control-label requiredfeild" })
                                             <div class="radio-list">
@@ -148,7 +148,7 @@
                                     </div>
                                 </div>
                                 <div class="row">
-                                    <div class="col-md-4">
+                                    <div class="col-lg-3 col-md-4 col-sm-5">
                                         <div class="form-group">
                                             @Html.Label("Employee Name", htmlAttributes: new { @class = "control-label requiredfeild" })
                                             @Html.DropDownListFor(model => model.ResourceId, ViewBag.Resources as SelectList, "Select", new { @class = "form-control", id = "Resources" })
@@ -159,10 +159,10 @@
                                 </div>
                                 <div class="row">
                                     <div class="form-actions pull-left">
-                                        <button type="button" class="btn btn-success btn-nav" onclick="moveToNominationStep(1, false);"><i class="fa fa-chevron-circle-left" aria-hidden="true"></i>&nbsp;Prev</button>
+                                        <button type="button" class="btn btn-success btn-nav" onclick="moveToNominationStep(1, false);"><i class="fa fa-chevron-circle-left" aria-hidden="true"></i>&nbsp;&nbsp;Prev</button>
                                     </div>
                                     <div class="form-actions pull-right">
-                                        <button type="button" class="btn btn-success btn-nav" onclick="moveToNominationStep(3, true);">Next &nbsp;<i class="fa fa-chevron-circle-right" aria-hidden="true"></i></button>
+                                        <button type="button" class="btn btn-success btn-nav" onclick="moveToNominationStep(3, true);">Next &nbsp;&nbsp;<i class="fa fa-chevron-circle-right" aria-hidden="true"></i></button>
                                     </div>
                                 </div>
                             </div>
@@ -187,10 +187,10 @@
                                 </div>
                                 <div class="row">
                                     <div class="form-actions pull-left">
-                                        <button type="button" class="btn btn-success btn-nav" onclick="moveToNominationStep(2, false);"><i class="fa fa-chevron-circle-left" aria-hidden="true"></i>&nbsp;Prev</button>
+                                        <button type="button" class="btn btn-success btn-nav" onclick="moveToNominationStep(2, false);"><i class="fa fa-chevron-circle-left" aria-hidden="true"></i>&nbsp;&nbsp;Prev</button>
                                     </div>
                                     <div class="form-actions pull-right">
-                                        <button type="button" class="btn btn-success btn-nav" onclick="moveToNominationStep(4, true);">Next&nbsp;<i class="fa fa-chevron-circle-right" aria-hidden="true"></i></button>
+                                        <button type="button" class="btn btn-success btn-nav" onclick="moveToNominationStep(4, true);">Next&nbsp;&nbsp;<i class="fa fa-chevron-circle-right" aria-hidden="true"></i></button>
                                     </div>
                                 </div>
                             </div>
@@ -213,7 +213,7 @@
 
                                 <div class="row M-T15">
                                     <div class="form-actions pull-left">
-                                        <button type="button" class="btn btn-success btn-nav" onclick="moveToNominationStep(3,false);"><i class="fa fa-chevron-circle-left" aria-hidden="true"></i>&nbsp;Prev</button>
+                                        <button type="button" class="btn btn-success btn-nav" onclick="moveToNominationStep(3,false);"><i class="fa fa-chevron-circle-left" aria-hidden="true"></i>&nbsp;&nbsp;Prev</button>
                                     </div>
                                     <div class="pull-right btn-nav">
                                         <input type="button" name="submit" value="Save Draft" id="savebutton" class="btn btn-primary" onclick="return checkValidationOnSaveDraft();" />
