@@ -836,7 +836,8 @@ label {
     box-shadow: 1px 1px 3px #888888;
 }
 .r-icon-stats i {
-   
+    width:65px;
+    height:65px;
     padding: 20px;
     text-align: center;
     color: #ffffff;
