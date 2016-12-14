@@ -29,152 +29,101 @@
         {
             <div class="col-lg-2 col-md-4 col-sm-5 col-xs-6 cust-width">
                 <a href="@Url.Action("GetNominationList", "Nomination")" class="">
-                <div class="white-box">
-                    <div class="r-icon-stats">
-                        <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
-                        <div class="bodystate">
-                            <span class="text-muted">Nominations</span>
+                    <div class="white-box">
+                        <div class="r-icon-stats">
+                            <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+                            <div class="bodystate">
+                                <span class="text-muted">Nominations</span>
+                            </div>
                         </div>
                     </div>
-                </div>
                 </a>
-                @*<div class="ibox float-e-margins">
-                        <div class="ibox-title text-center">
-                            <i class="fa fa-users fa-3x" aria-hidden="true"></i>
-                        </div>
-                        <div class="ibox-footer text-left">
-                            <a href="@Url.Action("GetNominationList", "Nomination")" class="btn btn-primary btn-sm dashboardButtons">
-                                <span style="font-weight:bold">  Nominations </span>
-                            </a>
-                        </div>
-                    </div>*@
             </div>
         }
         if (roles.Contains("Manager"))
         {
             <div class="col-lg-2 col-md-4 col-sm-5 col-xs-6 cust-width">
                 <a href="@Url.Action("AddNomination","Nomination")" class="">
-                <div class="white-box">
-                    <div class="r-icon-stats">
-                        <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
-                        <div class="bodystate">
-                            <span class="text-muted">Add Nominations</span>
+                    <div class="white-box">
+                        <div class="r-icon-stats">
+                            <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+                            <div class="bodystate">
+                                <span class="text-muted">Add Nominations</span>
+                            </div>
                         </div>
                     </div>
-                </div>
                 </a>
-                @*<div class="ibox float-e-margins">
-                        <div class="ibox-title text-center">
-                            <i class="fa fa-users fa-3x" aria-hidden="true"></i>
-                        </div>
-                        <div class="ibox-footer text-left">
-                            <a href="@Url.Action("AddNomination","Nomination")" class="btn btn-primary btn-sm dashboardButtons">
-                                <span style="font-weight:bold">  Add Nomination </span>
-                            </a>
-                        </div>
-                    </div>*@
             </div>
         }
         if (roles.Contains("Reviewer"))
         {
             <div class="col-lg-2 col-md-4 col-sm-5 col-xs-6 cust-width">
                 <a href="@Url.Action("ReviewNominations", "Nomination")" class="">
-                <div class="white-box">
-                    <div class="r-icon-stats">
-                        <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
-                        <div class="bodystate">
+                    <div class="white-box">
+                        <div class="r-icon-stats">
+                            <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+                            <div class="bodystate">
                                 <span class="text-muted">Pending Reviews</span>
+                            </div>
                         </div>
                     </div>
-                </div>
                 </a>
-                @*<div class="ibox float-e-margins">
-                        <div class="ibox-title text-center">
-                            <i class="fa fa-search fa-3x" aria-hidden="true"></i>
-                        </div>
-
-                        <div class="ibox-footer text-left">
-                            <a href="@Url.Action("ReviewNominations", "Nomination")" class="btn btn-primary btn-sm dashboardButtons">
-                                <span style="font-weight:bold">Pending Reviews</span>
-                            </a>
-                        </div>
-                    </div>*@
             </div>
         }
         if (roles.Contains("Reviewer"))
         {
             <div class="col-lg-2 col-md-4 col-sm-5 col-xs-6 cust-width">
                 <a href="@Url.Action("SavedReviews", "Nomination")" class="">
-                <div class="white-box">
-                    <div class="r-icon-stats">
-                        <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
-                        <div class="bodystate">
+                    <div class="white-box">
+                        <div class="r-icon-stats">
+                            <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+                            <div class="bodystate">
                                 <span class="text-muted">Done Reviews</span>
+                            </div>
                         </div>
                     </div>
-                </div>
                 </a>
-                @*<div class="ibox float-e-margins">
-                        <div class="ibox-title text-center">
-                            <i class="fa fa-search fa-3x" aria-hidden="true"></i>
-                        </div>
-
-                        <div class="ibox-footer text-left">
-                            <a href="@Url.Action("SavedReviews", "Nomination")" class="btn btn-primary btn-sm dashboardButtons">
-                                <span style="font-weight:bold"> Done Reviews</span>
-                            </a>
-                        </div>
-                    </div>*@
-
             </div>
         }
         if (roles.Contains("Admin"))
         {
             <div class="col-lg-2 col-md-4 col-sm-5 col-xs-6 cust-width">
                 <a href="javascript:void(0)" class="" id="lockNominations">
-                <div class="white-box">
-                    <div class="r-icon-stats">
-                        <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
-                        <div class="bodystate">
+                    <div class="white-box">
+                        <div class="r-icon-stats">
+                            <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+                            <div class="bodystate">
                                 <span class="text-muted">Lock Nominations</span>
+                            </div>
                         </div>
                     </div>
-                </div>
                 </a>
-                @*<div class="ibox float-e-margins">
-                        <div class="ibox-title text-center">
-                            <i class="fa fa-lock fa-3x" aria-hidden="true"></i>
-                        </div>
+            </div>
     <div class="col-lg-2 col-md-4 col-sm-5 col-xs-6 cust-width">
         <a href="javascript:void(0)" class="" id="unLockNominations">
-        <div class="white-box">
-            <div class="r-icon-stats">
-                <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
-                <div class="bodystate">
+            <div class="white-box">
+                <div class="r-icon-stats">
+                    <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+                    <div class="bodystate">
                         <span class="text-muted">UnLock Nominations</span>
                     </div>
                 </div>
-        </div>
+            </div>
         </a>
-        @*<div class="ibox float-e-margins">
-                <div class="ibox-title text-center">
-                    <i class="fa fa-unlock-alt fa-3x" aria-hidden="true"></i>
-                </div>
-                </div>
     </div>
-        }
-    }  
 
-</div>
-<div class="row">
-    <div class="col-lg-12 col-md-12 col-sm-12">
-        <div class="box header-box">
-            @if (Model.Awards.Count() > 0)
+        }
+    }
+
+            <div class="row">
+                <div class="col-lg-12 col-md-12 col-sm-12">
+                    <div class="box header-box">
+                        @if (Model.Awards.Count() > 0)
             {
-                <div class="header-walloffame">
-                    <span>Silicus Wall Of Fame</span>
-                    <div class="pull-right">
-                        @Html.DropDownList("filterMonth", Enumerable.Range(1, 12).
+                            <div class="header-walloffame">
+                                <span>Silicus Wall Of Fame</span>
+                                <div class="pull-right">
+                                    @Html.DropDownList("filterMonth", Enumerable.Range(1, 12).
                             Select(i => new SelectListItem
                             {
                                 Value = i.ToString(),
@@ -182,7 +131,7 @@
                             }),
                          "-- Month --", new { @class = "" })
 
-                        @Html.DropDownList("filterYear",
+                                    @Html.DropDownList("filterYear",
                             Enumerable.Range(2010, (DateTime.Now.Year + 1) - 2010).
                             Select(i => new SelectListItem
                             {
@@ -190,263 +139,263 @@
                                 Text = i.ToString()
                             }),
                             "-- Year --", new { value = DateTime.Now.Year })
+                                </div>
+                            </div>
+            }
                     </div>
                 </div>
-            }
-        </div>
-    </div>
-</div>
-<div class="row">
-        <div id="wofWinnersList">
-            @Html.Partial("_winnersList", Model)
-        </div>
-</div>
+            </div>
+            <div class="row">
+                <div id="wofWinnersList">
+                    @Html.Partial("_winnersList", Model)
+                </div>
+            </div>
 
 
-<script src="~/js/jquery-2.1.1.js"></script>
+            <script src="~/js/jquery-2.1.1.js"></script>
 
-<script src="~/js/bootstrap.min.js"></script>
+            <script src="~/js/bootstrap.min.js"></script>
 
-<script src="~/js/plugins/metisMenu/jquery.metisMenu.js"></script>
-<script src="~/js/plugins/slimscroll/jquery.slimscroll.min.js"></script>
+            <script src="~/js/plugins/metisMenu/jquery.metisMenu.js"></script>
+            <script src="~/js/plugins/slimscroll/jquery.slimscroll.min.js"></script>
 
-<!-- Custom and plugin javascript -->
-<script src="~/js/inspinia.js"></script>
-<script src="~/js/plugins/pace/pace.min.js"></script>
+            <!-- Custom and plugin javascript -->
+            <script src="~/js/inspinia.js"></script>
+            <script src="~/js/plugins/pace/pace.min.js"></script>
 
-<!-- FooTable -->
-<script src="~/js/plugins/footable/footable.all.min.js"></script>
+            <!-- FooTable -->
+            <script src="~/js/plugins/footable/footable.all.min.js"></script>
 
-<script src="~/Scripts/jquery.unobtrusive-ajax.js"></script>
+            <script src="~/Scripts/jquery.unobtrusive-ajax.js"></script>
 
-<script>
-    var _urlGetWinnersListPartialView = "@Url.Action("GetWinnersListPartialView", "Home")";
-    $(document).ready(function () {
-        $("#filterMonth").val(@DateTime.Now.Month);
-        $("#filterYear").val(@DateTime.Now.Year);
-       
-    });
+            <script>
+                var _urlGetWinnersListPartialView = "@Url.Action("GetWinnersListPartialView", "Home")";
+                $(document).ready(function () {
+                    $("#filterMonth").val(@DateTime.Now.Month);
+                    $("#filterYear").val(@DateTime.Now.Year);
 
-    $("#lockNominations").click(function (e) {
-        swal({
-            title: "Do you want to lock nominations?",
-            showCancelButton: true,
-            type: "warning",
-            confirmButtonColor: "#0070b9",
-            confirmButtonText: "Yes",
-            cancelButtonText: "No",
-            closeOnConfirm: true,
-            closeOnCancel: false
-        },
-               function (isConfirm) {
-                   if (isConfirm) {
-                       debugger;
-                       $.ajax({
-                           type: 'GET',
-                           url: '@Url.Action("LockNomination", "Review")',
-                           dataType: 'html',
-                           success: function (data) {
-                               swal({
-                                   title: "Lock Nominations",
-                                   html: true,
-                                   text: data,
-                                   confirmButtonColor: "#0070b9",
-                                   confirmButtonText: "Submit",
-                                   showCancelButton: true,
-                                   cancelButtonText: "Cancle",
-                                   closeOnConfirm: false,
-                                   closeOnCancel: true
-                               },
-                               function (isConfirm) {
-                                   if (isConfirm) {
-                                       var awardId = [];
-                                       $("input:checkbox").each(function () {
-                                           if ($(this).prop("checked")) {
-                                               awardId.push(parseInt($(this).prop("id")));
-                                           }
-                                       });
-                                     
-                                       $("input:checkbox").change(function () {
-                                           if ($(this).prop("checked")) {
-                                               $(".sa-error-container").removeClass("show");
-                                           } 
-                                       });
-                                       
-                                       if (awardId.length <= 0) {
-                                           swal.showInputError("Please select at least one award category.");
-                                           $(".sa-input-error").removeClass("show");
-                                           return false;
-                                       }
-                                       else {
-                                           $.ajax({
-                                               type: 'POST',
-                                               url: '@Url.Action("LockNomination", "Review")',
-                                               data: { awardIds: awardId },
-                                               dataType: "JSON",
-                                               success: function (data) {
-                                                   var lockedAwardNames = "";
-                                                   for (var i = 0; i < data.length; i++) {
-                                                       lockedAwardNames += data[i].Name + "</br>";
+                });
+
+                $("#lockNominations").click(function (e) {
+                    swal({
+                        title: "Do you want to lock nominations?",
+                        showCancelButton: true,
+                        type: "warning",
+                        confirmButtonColor: "#0070b9",
+                        confirmButtonText: "Yes",
+                        cancelButtonText: "No",
+                        closeOnConfirm: true,
+                        closeOnCancel: false
+                    },
+                           function (isConfirm) {
+                               if (isConfirm) {
+                                   debugger;
+                                   $.ajax({
+                                       type: 'GET',
+                                       url: '@Url.Action("LockNomination", "Review")',
+                                       dataType: 'html',
+                                       success: function (data) {
+                                           swal({
+                                               title: "Lock Nominations",
+                                               html: true,
+                                               text: data,
+                                               confirmButtonColor: "#0070b9",
+                                               confirmButtonText: "Submit",
+                                               showCancelButton: true,
+                                               cancelButtonText: "Cancle",
+                                               closeOnConfirm: false,
+                                               closeOnCancel: true
+                                           },
+                                           function (isConfirm) {
+                                               if (isConfirm) {
+                                                   var awardId = [];
+                                                   $("input:checkbox").each(function () {
+                                                       if ($(this).prop("checked")) {
+                                                           awardId.push(parseInt($(this).prop("id")));
+                                                       }
+                                                   });
+
+                                                   $("input:checkbox").change(function () {
+                                                       if ($(this).prop("checked")) {
+                                                           $(".sa-error-container").removeClass("show");
+                                                       }
+                                                   });
+
+                                                   if (awardId.length <= 0) {
+                                                       swal.showInputError("Please select at least one award category.");
+                                                       $(".sa-input-error").removeClass("show");
+                                                       return false;
                                                    }
-                                                   swal({
-                                                       title: "Following awards locked sucessfully",
-                                                       html: true,
-                                                       text: lockedAwardNames + "<br/>"
-                                                   })
-                                               },
-                                               error: function () {
-                                                   swal("Error", "Oops! Something wrong happened..");
-                                               }
-                                           });
+                                                   else {
+                                                       $.ajax({
+                                                           type: 'POST',
+                                                           url: '@Url.Action("LockNomination", "Review")',
+                                                           data: { awardIds: awardId },
+                                                           dataType: "JSON",
+                                                           success: function (data) {
+                                                               var lockedAwardNames = "";
+                                                               for (var i = 0; i < data.length; i++) {
+                                                                   lockedAwardNames += data[i].Name + "</br>";
+                                                               }
+                                                               swal({
+                                                                   title: "Following awards locked sucessfully",
+                                                                   html: true,
+                                                                   text: lockedAwardNames + "<br/>"
+                                                               })
+                                                           },
+                                                           error: function () {
+                                                               swal("Error", "Oops! Something wrong happened..");
+                                                           }
+                                                       });
 
-                                       }
-                                   }
-                                
-                               });
-                           },
-                           error: function (data) {
-                               swal("Error", "Oops! Something wrong happened..");
-                           }
-                       });
-                   } else {
-                       swal("Cancelled", "Nomination Cancelled");
-                      }
-               });
-    });
-
-
-
-    //*****
-    $("#unLockNominations").click(function (e) {
-        swal({
-            title: "Do you want to unlock nominations?",
-            showCancelButton: true,
-            type: "warning",
-            confirmButtonColor: "#0070b9",
-            confirmButtonText: "Yes",
-            cancelButtonText: "No",
-            closeOnConfirm: true,
-            closeOnCancel: false
-        },
-               function (isConfirm) {
-                   if (isConfirm) {
-                       debugger;
-                       $.ajax({
-                           type: 'GET',
-                           url: '@Url.Action("UnlockNomination", "Review")',
-                           dataType: 'html',
-                           success: function (data) {
-                               swal({
-                                   title: "Unlock Nominations",
-                                   html: true,
-                                   text: data,
-                                   confirmButtonColor: "#0070b9",
-                                   confirmButtonText: "Submit",
-                                   showCancelButton: true,
-                                   cancelButtonText: "Cancle",
-                                   closeOnConfirm: false,
-                                   closeOnCancel: true
-                               },
-                               function (isConfirm) {
-                                   if (isConfirm) {
-                                       var awardId = [];
-                                       $("input:checkbox").each(function () {
-                                           if ($(this).prop("checked")) {
-                                               awardId.push(parseInt($(this).prop("id")));
-                                           }
-                                       });
-
-                                       $("input:checkbox").change(function () {
-                                           if ($(this).prop("checked")) {
-                                               $(".sa-error-container").removeClass("show");
-                                           }
-                                       });
-
-                                       if (awardId.length <= 0) {
-                                           swal.showInputError("Please select at least one award category.");
-                                           $(".sa-input-error").removeClass("show");
-                                           return false;
-                                       }
-                                       else {
-                                           $.ajax({
-                                               type: 'POST',
-                                               url: '@Url.Action("UnlockNomination", "Review")',
-                                               data: { awardIds: awardId },
-                                               dataType: "JSON",
-                                               success: function (data) {
-                                                   var lockedAwardNames = "";
-                                                   for (var i = 0; i < data.length; i++) {
-                                                       lockedAwardNames += data[i].Name + "</br>";
                                                    }
-                                                   swal({
-                                                       title: "Following Awards unlocked sucessfully",
-                                                       html: true,
-                                                       text: lockedAwardNames + "<br/>"
-                                                   })
-                                               },
-                                               error: function () {
-                                                   swal("Error", "Oops! Something wrong happened..");
                                                }
+
                                            });
-
+                                       },
+                                       error: function (data) {
+                                           swal("Error", "Oops! Something wrong happened..");
                                        }
-                                   }
-
-                               });
-                           },
-                           error: function (data) {
-                               swal("Error", "Oops! Something wrong happened..");
-                           }
-                       });
-                   } else {
-                       swal("Cancelled", "Nomination Cancelled");
-                   }
-               });
-    });
-    //***
+                                   });
+                               } else {
+                                   swal("Cancelled", "Nomination Cancelled");
+                               }
+                           });
+                });
 
 
-    //$("#lockNominations").click(function (e) {
-    //    sweetAlert("The Nomination is Successfully Locked");
-    //});
-    //$("#unLockNominations").click(function (e) {
-    //    sweetAlert("The Nomination is Successfully unlocked");
-    //    return true;
-    //});
-    var winnerCardIndex = 0;
-    $("#0").delay(1000).fadeIn();
-    $("#1").delay(1000).fadeIn();
-    $("#2").delay(1000).fadeIn();
-    $("#3").delay(1000).fadeIn();
-    $("#4").delay(1000).fadeIn();
 
-    $("#filterMonth").on("change", function () {
-        var month = +$(this).val();
-        var year = +$("#filterYear").val();
-        filterByData(month, year)
-    });
+                //*****
+                $("#unLockNominations").click(function (e) {
+                    swal({
+                        title: "Do you want to unlock nominations?",
+                        showCancelButton: true,
+                        type: "warning",
+                        confirmButtonColor: "#0070b9",
+                        confirmButtonText: "Yes",
+                        cancelButtonText: "No",
+                        closeOnConfirm: true,
+                        closeOnCancel: false
+                    },
+                           function (isConfirm) {
+                               if (isConfirm) {
+                                   debugger;
+                                   $.ajax({
+                                       type: 'GET',
+                                       url: '@Url.Action("UnlockNomination", "Review")',
+                                       dataType: 'html',
+                                       success: function (data) {
+                                           swal({
+                                               title: "Unlock Nominations",
+                                               html: true,
+                                               text: data,
+                                               confirmButtonColor: "#0070b9",
+                                               confirmButtonText: "Submit",
+                                               showCancelButton: true,
+                                               cancelButtonText: "Cancle",
+                                               closeOnConfirm: false,
+                                               closeOnCancel: true
+                                           },
+                                           function (isConfirm) {
+                                               if (isConfirm) {
+                                                   var awardId = [];
+                                                   $("input:checkbox").each(function () {
+                                                       if ($(this).prop("checked")) {
+                                                           awardId.push(parseInt($(this).prop("id")));
+                                                       }
+                                                   });
 
-    $("#filterYear").on("change", function () {
-        var month = +$("#filterMonth").val();
-        var year = +$(this).val();
-        filterByData(month, year)
-    });
+                                                   $("input:checkbox").change(function () {
+                                                       if ($(this).prop("checked")) {
+                                                           $(".sa-error-container").removeClass("show");
+                                                       }
+                                                   });
 
-    function filterByData(month, year) {
-        $("#wofWinnersList").html('');
-        $("#wofWinnersList").addClass("loader margin-left-40");
-        $.ajax({
-            type: "GET",
-            url: _urlGetWinnersListPartialView,
-            data: { month: month, year: year },
-            success: function (result) {
-                $("#wofWinnersList").removeClass("loader margin-left-40");
-                $("#wofWinnersList").html(result);
-            },
-            error: function (error) {
-                console.log(error);
-            }
+                                                   if (awardId.length <= 0) {
+                                                       swal.showInputError("Please select at least one award category.");
+                                                       $(".sa-input-error").removeClass("show");
+                                                       return false;
+                                                   }
+                                                   else {
+                                                       $.ajax({
+                                                           type: 'POST',
+                                                           url: '@Url.Action("UnlockNomination", "Review")',
+                                                           data: { awardIds: awardId },
+                                                           dataType: "JSON",
+                                                           success: function (data) {
+                                                               var lockedAwardNames = "";
+                                                               for (var i = 0; i < data.length; i++) {
+                                                                   lockedAwardNames += data[i].Name + "</br>";
+                                                               }
+                                                               swal({
+                                                                   title: "Following Awards unlocked sucessfully",
+                                                                   html: true,
+                                                                   text: lockedAwardNames + "<br/>"
+                                                               })
+                                                           },
+                                                           error: function () {
+                                                               swal("Error", "Oops! Something wrong happened..");
+                                                           }
+                                                       });
 
-        });
-    }
-</script>
+                                                   }
+                                               }
+
+                                           });
+                                       },
+                                       error: function (data) {
+                                           swal("Error", "Oops! Something wrong happened..");
+                                       }
+                                   });
+                               } else {
+                                   swal("Cancelled", "Nomination Cancelled");
+                               }
+                           });
+                });
+                //***
+
+
+                //$("#lockNominations").click(function (e) {
+                //    sweetAlert("The Nomination is Successfully Locked");
+                //});
+                //$("#unLockNominations").click(function (e) {
+                //    sweetAlert("The Nomination is Successfully unlocked");
+                //    return true;
+                //});
+                var winnerCardIndex = 0;
+                $("#0").delay(1000).fadeIn();
+                $("#1").delay(1000).fadeIn();
+                $("#2").delay(1000).fadeIn();
+                $("#3").delay(1000).fadeIn();
+                $("#4").delay(1000).fadeIn();
+
+                $("#filterMonth").on("change", function () {
+                    var month = +$(this).val();
+                    var year = +$("#filterYear").val();
+                    filterByData(month, year)
+                });
+
+                $("#filterYear").on("change", function () {
+                    var month = +$("#filterMonth").val();
+                    var year = +$(this).val();
+                    filterByData(month, year)
+                });
+
+                function filterByData(month, year) {
+                    $("#wofWinnersList").html('');
+                    $("#wofWinnersList").addClass("loader margin-left-40");
+                    $.ajax({
+                        type: "GET",
+                        url: _urlGetWinnersListPartialView,
+                        data: { month: month, year: year },
+                        success: function (result) {
+                            $("#wofWinnersList").removeClass("loader margin-left-40");
+                            $("#wofWinnersList").html(result);
+                        },
+                        error: function (error) {
+                            console.log(error);
+                        }
+
+                    });
+                }
+            </script>
