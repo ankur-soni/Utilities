@@ -1,8 +1,6 @@
 ﻿@model IEnumerable<Silicus.Encourage.Models.Criteria>
 
-<link href="~/css/star-rating.css" rel="stylesheet" />
-@*<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>*@
-<script src="~/js/star-rating.js"></script>
+<script src="~/js/jquery.barrating.min.js"></script>
 
 <div class="wizard-box" style="margin-top:10px;" id="criterias">
     <div class="row">
@@ -31,20 +29,28 @@
                                 </td>
                                 <td>
                                     @{
-                                        var selectList = new List<SelectListItem>();
+                                    var selectList = new List<selectlistitem>
+                                        ();
                                         for (int weightageStep = 0; weightageStep <= 100; weightageStep = weightageStep + 5)
                                         {
-                                            selectList.Add(new SelectListItem
-                                            {
-                                                Text = weightageStep.ToString(),
-                                                Value = weightageStep.ToString()
-                                            });
+                                        selectList.Add(new SelectListItem
+                                        {
+                                        Text = weightageStep.ToString(),
+                                        Value = weightageStep.ToString()
+                                        });
                                         }
-                                    }
-                                    @Html.DropDownList("Comments[" + @i + "].Weightage", selectList, new {@class="form-control ddlWeightage"})
+                                        }
+                                        @Html.DropDownList("Comments[" + @i + "].Weightage", selectList, new {@class="form-control ddlWeightage"})
                                 </td>
                                 <td>
-                                    <input id="rating-@i" value="0" type="number" data-star-captions="{clearRating}" data-default-caption="{rating} Stars" class="rating rating-loading" data-show-clear="true" data-show-caption="false" data-symbol="*" min=0 max=5 step=1 data-size="xs" name="Comments[@i].Rating">
+                                    <select id="rating-@i" class="example-square" name="Comments[@i].Rating" autocomplete="off" value="">
+                                        <option value=""></option>
+                                        <option value="1">1</option>
+                                        <option value="2">2</option>
+                                        <option value="3">3</option>
+                                        <option value="4">4</option>
+                                        <option value="5">5</option>
+                                    </select>
                                 </td>
                                 <td>
                                     <textarea class="form-control" onblur="return hideRemainingCharacterText(@i)"
@@ -71,3 +77,22 @@
         </div>
     </div>
 </div>
+
+<script>
+    $(document).ready(function () {
+        var ratings = $('.example-square');
+        
+        $.each(ratings, function (index) {
+            var id = "#"+this.id;
+            var rating = +this.getAttribute("value");
+            
+            $(id).barrating('show', {
+                theme: 'bars-square',
+                showValues: true,
+                showSelectedRating: false
+            });
+
+            $(id).barrating('set',rating);
+        })
+    });
+</script>

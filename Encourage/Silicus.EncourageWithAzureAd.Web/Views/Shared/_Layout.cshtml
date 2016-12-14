@@ -18,9 +18,10 @@
 
     <link href="~/Css/custom-style.css" rel="stylesheet" />
 
-    <link href="~/css/star-rating.css" rel="stylesheet" />
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
-    <script src="~/js/star-rating.js"></script>
+    <link href="~/Css/bars-square.css" rel="stylesheet" />
+    
+    <script src="~/js/jquery-2.1.1.js"></script>
+    @*<script src="~/js/jquery.barrating.min.js"></script>*@
 </head>
 <body class="container-fluid">
     <div class="row top-header bbl">
@@ -63,7 +64,7 @@
     </div>
 
     <div class="row">
-        <div id="wrapper">
+        <div id="wrapper" class="wrapper">
             <!-- START LEFT MENU -->
             @if (Request.IsAuthenticated)
             {
@@ -176,14 +177,14 @@
 </body>
 </html>
 
-
 <script>
 
     function sidebarautoheight() {
         var sidebarheight = 0;
-        sidebarheight = $(window).height() - $("header").outerHeight() - $("footer").outerHeight() - 110;
-        $(".navbar-default").css("height", sidebarheight);
+        sidebarheight = $(window).height() - $(".bbl").outerHeight() - $("footer").outerHeight();
+        $(".wrapper .page-wrapper").css("min-height", sidebarheight);
     };
+    
 
 
     $("#menu-toggle").click(function () {
@@ -218,8 +219,10 @@
         $('.wrap').perfectScrollbar();
 
         sidebarautoheight();
+        //pageWrapperautoheight();
     });
     $(window).resize(function () {
         sidebarautoheight();
+        //pageWrapperautoheight();
     });
 </script>
