@@ -9,74 +9,53 @@
             <a class="navbar-minimalize minimalize-styl-2 btn btn-primary " href="#"><i class="fa fa-bars"></i> </a>
         </div>
     </nav>
-</div>
 <div class="col-lg-11 col-md-11 col-sm-11">
     <h1 class="header-name">Add Nomination</h1>
 </div>
-@*<div class="row wrapper border-bottom white-bg page-heading border-bottom" style="width:90%;">
+</div>
 
-    </div>*@
-
-<style>
-    .page-heading {
-        margin-left: 0%;
-    }
-
-    .navbar-minimalize {
-        margin-left: 35%;
-    }
-
-    .rating-xs {
-        font-size: 1em;
-    }
-</style>
-
-<div class="wrapper wrapper-content-new animated fadeInRight">
+<div class="">
 
     @if (ViewBag.NominationLockStatus)
     {
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="box M-T15">
         <span class="text-danger" style="font-size:20px;margin-left:7%">The nominations period was closed..</span>
-    }
-    else
-    {
-        <div class="box">
+                </div>
+            </div>
+        </div>
+        
+    } else {
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="box M-T15 M-B60">
             <div class="f1">
                 @using (Html.BeginForm("AddNomination", "Nomination", FormMethod.Post, new { id = "addNominationForm" }))
                 {
-                    <div class="">
+                            <div class="wizard-">
                         <div class="f1-steps" id="nomination-steps">
-                            @*<div class="f1-progress">
-                                    <div class="f1-progress-line" data-now-value="20" data-number-of-steps="5" style="width: 20%;"></div>
-                                </div>*@
-                            <div class="f1-step active" step="1">
-                                <div class="f1-step-icon" style="cursor:pointer;" onclick="moveToNominationStep(1, false);"><strong class="ico-num">1</strong></div>
                                 <div class="f1-progress">
-                                    <div class="f1-progress-line" data-now-value="20" data-number-of-steps="5" style="width: 100%;"></div>
+                                        <div class="f1-progress-line" data-now-value="25" data-number-of-steps="4" style="width:25%;"></div>
                                 </div>
+                                    <div class="f1-step active" step="1">
+                                        <div class="f1-step-icon" style="cursor:pointer;" onclick="moveToNominationStep(1, false);"><strong class="ico-num">1</strong></div>
+
                                 <p>Nomination Category</p>
                             </div>
                             <div class="f1-step" step="2">
-                                <div class="f1-progress">
-                                    <div class="f1-progress-line" data-now-value="20" data-number-of-steps="5" style="width: 100%;"></div>
-                                </div>
+
                                 <div class="f1-step-icon" style="cursor:pointer;" onclick="moveToNominationStep(2, false);"><strong class="ico-num">2</strong></div>
+
                                 <p>Employee</p>
                             </div>
-                            @*<div class="f1-step" step="3">
-                                    <div class="f1-step-icon"><strong class="ico-num">3</strong></div>
-                                    <p>Project</p>
-                                </div>*@
                             <div class="f1-step" step="3">
-                                <div class="f1-progress">
-                                    <div class="f1-progress-line" data-now-value="20" data-number-of-steps="5" style="width: 100%;"></div>
-                                </div>
+
                                 <div class="f1-step-icon" style="cursor:pointer;" onclick="moveToNominationStep(3, false);"><strong class="ico-num">3</strong></div>
                                 <p>Comments</p>
                             </div>
                             <div class="f1-step" step="4">
-                                <div class="f1-progress">
-                                    <div class="f1-progress-line" data-now-value="20" data-number-of-steps="5" style="width: 100%;"></div>
-                                </div>
+
                                 <div class="f1-step-icon" style="cursor:pointer;" onclick="moveToNominationStep(4, false);"><strong class="ico-num">4</strong></div>
                                 <p>Criteria & Ratings</p>
                             </div>
@@ -96,7 +75,7 @@
                         </div>
                         <div class="row">
                             <div class="form-actions pull-right">
-                                <button type="submit" class="btn btn-success" onclick="moveToNominationStep(2, true);"><i class="fa fa-check"></i>&nbsp;Next</button>
+                                        <button type="submit" class="btn btn-success btn-nav" onclick="moveToNominationStep(2, true);">Next&nbsp;<i class="fa fa-chevron-circle-right" aria-hidden="true"></i></button>
                             </div>
                         </div>
                     </div>
@@ -108,12 +87,16 @@
                                     <div class="radio-list">
                                         <label class="radio-inline p-0" style="padding-left:0px;">
                                             <div class="radio radio-info">
-                                                @Html.RadioButtonFor(model => model.SelectResourcesBy, "Project", new { id = "ProjectRadioButton", value = "Project" })Project
+                                                        @*@Html.RadioButtonFor(model => model.SelectResourcesBy, "Project", new { id = "ProjectRadioButton", value = "Project" })Project*@
+                                                        <input type="radio" name="SelectResourcesBy" id="ProjectRadioButton" value="Project">
+                                                        <label for="radio1">Project</label>
                                             </div>
                                         </label>
                                         <label class="radio-inline">
                                             <div class="radio radio-info">
-                                                @Html.RadioButtonFor(model => model.SelectResourcesBy, "Department", new { id = "DepartmentRadioButton", value = "Department" })Department
+                                                        @*@Html.RadioButtonFor(model => model.SelectResourcesBy, "Department", new { id = "DepartmentRadioButton", value = "Department" })Department*@
+                                                        <input type="radio" name="SelectResourcesBy" id="DepartmentRadioButton" value="Department">
+                                                        <label for="radio1">Department</label>
                                             </div>
                                         </label>
                                     </div>
@@ -122,8 +105,8 @@
                         </div>
 
                         <input type="hidden" name=ManagerId id="ManagerId" value="@ViewBag.ManagerIdByProject">
-                        @{ var projectMessage = "There are no any projects under you."; }
-                        @{ var departmentMessage = "There are no any departments under you.";}
+                        @{ var projectMessage = "There are no projects under you."; }
+                        @{ var departmentMessage = "There are no departments under you.";}
                         <div class="row">
                             <div class="col-md-4">
                                 <div class="form-group" id="projectInput">
@@ -174,24 +157,27 @@
                         </div>
                         <div class="row">
                             <div class="form-actions pull-left">
-                                <button type="button" class="btn btn-success" onclick="moveToNominationStep(1, false);"><i class="fa fa-check"></i>&nbsp;Prev</button>
+                                        <button type="button" class="btn btn-success btn-nav" onclick="moveToNominationStep(1, false);"><i class="fa fa-chevron-circle-left" aria-hidden="true"></i>&nbsp;Prev</button>
                             </div>
                             <div class="form-actions pull-right">
-                                <button type="button" class="btn btn-success" onclick="moveToNominationStep(3, true);"> <i class="fa fa-check"></i>&nbsp;Next</button>
+                                        <button type="button" class="btn btn-success btn-nav" onclick="moveToNominationStep(3, true);">Next &nbsp;<i class="fa fa-chevron-circle-right" aria-hidden="true"></i></button>
                             </div>
                         </div>
                     </div>
-                    <div class="wizard-box" style="padding:30px; display:none;" id="comments" nomination-step="3">
+                            <div class="wizard-box" style="display:none;" id="comments" nomination-step="3">
                         <div class="row">
                             <div class="col-md-6">
                                 <div class="row">
                                     <div class="form-group">
                                         @Html.Label("Comment", htmlAttributes: new { @class = "col-md-12 control-label requiredfeild" })
                                         <div class="col-md-12">
-                                            @Html.TextAreaFor(model => model.MainComment, new { @class = "form-control" , placeholder = "Maximum 500 words", id = "managerComment", name = "defaultconfig", rows = "5", maxlength = 500 })
+                                                    <div class="form-group">
+                                                        @Html.TextAreaFor(model => model.MainComment, new { @class = "form-control", placeholder = "Maximum 500 words", id = "managerComment", name = "defaultconfig", rows = "5", maxlength = 500 })
                                             <div style="text-align:right;">
                                                 @Html.ValidationMessageFor(model => model.MainComment, "", new { @class = "text-danger", id = "managerCommentValidationmessage" })
                                             </div>
+                                                    </div>
+
                                         </div>
                                     </div>
                                 </div>
@@ -199,10 +185,10 @@
                         </div>
                         <div class="row">
                             <div class="form-actions pull-left">
-                                <button type="button" class="btn btn-success" onclick="moveToNominationStep(2, false);"><i class="fa fa-check"></i>&nbsp;Prev</button>
+                                        <button type="button" class="btn btn-success btn-nav" onclick="moveToNominationStep(2, false);"><i class="fa fa-chevron-circle-left" aria-hidden="true"></i>&nbsp;Prev</button>
                             </div>
                             <div class="form-actions pull-right">
-                                <button type="button" class="btn btn-success" onclick="moveToNominationStep(4, true);"><i class="fa fa-check"></i>&nbsp;Next</button>
+                                        <button type="button" class="btn btn-success btn-nav" onclick="moveToNominationStep(4, true);">Next&nbsp;<i class="fa fa-chevron-circle-right" aria-hidden="true"></i></button>
                             </div>
                         </div>
                     </div>
@@ -213,29 +199,36 @@
                                     <strong>Disclaimer :</strong> Mention your comments against the criteria your nominee fits in. Please note that it’s NOT mandatory to mention comments against each criteria given below. You can leave the comment area blank for the criteria which are not relevant.
                                 </div>
                             </div>
+                                    <div class="col-sm-12">
                             <div class="alert alert-danger">
                                 @Html.ValidationMessageFor(model => model.Comments, "", new { @class = "text-danger", id = "criterisCommentValidationmessage" })
                             </div>
                         </div>
+                                </div>
 
                         <div id="criteria-rating">
                         </div>
-                        <div class="row">
+
+                                <div class="row M-T15">
                             <div class="form-actions pull-left">
-                                <button type="button" class="btn btn-success" onclick="moveToNominationStep(1,false);"><i class="fa fa-check"></i>&nbsp;Prev</button>
+                                        <button type="button" class="btn btn-success btn-nav" onclick="moveToNominationStep(1,false);"><i class="fa fa-chevron-circle-left" aria-hidden="true"></i>&nbsp;Prev</button>
                             </div>
+                                    <div class="pull-right btn-nav">
+                                        <input type="button" name="submit" value="Save Draft" id="savebutton" class="btn btn-primary" onclick="return checkValidationOnSaveDraft();" />
+                                        @if (ViewBag.NominationLockStatus) { 
+                                        <input type="button" name="submit" value="Submit" id="submitButton" class="btn btn-primary" onclick="return checkValidationOnSubmit();" disabled = "disabled" />
+                                        }else{
+                                        <input type="button" name="submit" value="Submit" id="submitButton" class="btn btn-primary" onclick="return checkValidationOnSubmit();" />
+                                        }
+                                        <input type="button" value="Cancel" class="btn btn-primary" onclick="location.href='@Url.Action("Index", "Home")'" />
                         </div>
-                        <div style="text-align:center;width:100%;">
-                            <input type="button" name="submit" value="Save Draft" id="savebutton" class="btn btn-primary btnSameSize" onclick="return checkValidationOnSaveDraft();" />
-                            <input type="button" name="submit" value="Submit" id="submitButton" class="btn btn-primary btnSameSize" onclick="return checkValidationOnSubmit();"
-                                   @{  if (ViewBag.NominationLockStatus) { @: disabled="disabled" ;
-                                                                        @: title="Nominations are locked"
-                                                                                                                                                                                                                                                               } } />
-                            <input type="button" value="Cancel" class="btn btn-primary btnSameSize" onclick="location.href='@Url.Action("Index", "Home")'" />
                         </div>
                         
                     </div>
     }
+            </div>
+                    <div class="clearfix"></div>
+                </div>
             </div>
         </div>
     }
