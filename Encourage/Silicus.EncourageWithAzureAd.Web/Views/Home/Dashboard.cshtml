@@ -28,15 +28,16 @@
         if (roles.Contains("Manager"))
         {
             <div class="col-lg-2 col-md-4 col-sm-5 col-xs-6 cust-width">
-                <div class="white-box">
-                    <div class="r-icon-stats">
-                        <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
-                        <div class="bodystate">
-
-                            <span class="text-muted">Nominations</span>
+                <a href="@Url.Action("GetNominationList", "Nomination")" class="">
+                    <div class="white-box">
+                        <div class="r-icon-stats">
+                            <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+                            <div class="bodystate">
+                                <span class="text-muted">Nominations</span>
+                            </div>
                         </div>
                     </div>
-                </div>
+                </a>
                 @*<div class="ibox float-e-margins">
                         <div class="ibox-title text-center">
                             <i class="fa fa-users fa-3x" aria-hidden="true"></i>
@@ -52,14 +53,16 @@
         if (roles.Contains("Manager"))
         {
             <div class="col-lg-2 col-md-4 col-sm-5 col-xs-6 cust-width">
-                <div class="white-box">
-                    <div class="r-icon-stats">
-                        <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
-                        <div class="bodystate">
-                            <span class="text-muted">Add Nominations</span>
+                <a href="@Url.Action("AddNomination","Nomination")" class="">
+                    <div class="white-box">
+                        <div class="r-icon-stats">
+                            <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+                            <div class="bodystate">
+                                <span class="text-muted">Add Nominations</span>
+                            </div>
                         </div>
                     </div>
-                </div>
+                </a>
                 @*<div class="ibox float-e-margins">
                         <div class="ibox-title text-center">
                             <i class="fa fa-users fa-3x" aria-hidden="true"></i>
@@ -75,15 +78,16 @@
         if (roles.Contains("Reviewer"))
         {
             <div class="col-lg-2 col-md-4 col-sm-5 col-xs-6 cust-width">
-                <div class="white-box">
-                    <div class="r-icon-stats">
-                        <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
-                        <div class="bodystate">
-
-                            <span class="text-muted">Nominations</span>
+                <a href="@Url.Action("ReviewNominations", "Nomination")" class="">
+                    <div class="white-box">
+                        <div class="r-icon-stats">
+                            <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+                            <div class="bodystate">
+                                <span class="text-muted">Pending Reviews</span>
+                            </div>
                         </div>
                     </div>
-                </div>
+                </a>
                 @*<div class="ibox float-e-margins">
                         <div class="ibox-title text-center">
                             <i class="fa fa-search fa-3x" aria-hidden="true"></i>
@@ -100,15 +104,16 @@
         if (roles.Contains("Reviewer"))
         {
             <div class="col-lg-2 col-md-4 col-sm-5 col-xs-6 cust-width">
-                <div class="white-box">
-                    <div class="r-icon-stats">
-                        <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
-                        <div class="bodystate">
-
-                            <span class="text-muted">Nominations</span>
+                <a href="@Url.Action("SavedReviews", "Nomination")" class="">
+                    <div class="white-box">
+                        <div class="r-icon-stats">
+                            <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+                            <div class="bodystate">
+                                <span class="text-muted">Done Reviews</span>
+                            </div>
                         </div>
                     </div>
-                </div>
+                </a>
                 @*<div class="ibox float-e-margins">
                         <div class="ibox-title text-center">
                             <i class="fa fa-search fa-3x" aria-hidden="true"></i>
@@ -126,15 +131,16 @@
         if (roles.Contains("Admin"))
         {
             <div class="col-lg-2 col-md-4 col-sm-5 col-xs-6 cust-width">
-                <div class="white-box">
-                    <div class="r-icon-stats">
-                        <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
-                        <div class="bodystate">
-
-                            <span class="text-muted">Nominations</span>
+                <a href="javascript:void(0)" class="" id="lockNominations">
+                    <div class="white-box">
+                        <div class="r-icon-stats">
+                            <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+                            <div class="bodystate">
+                                <span class="text-muted">Lock Nominations</span>
+                            </div>
                         </div>
                     </div>
-                </div>
+                </a>
                 @*<div class="ibox float-e-margins">
                         <div class="ibox-title text-center">
                             <i class="fa fa-lock fa-3x" aria-hidden="true"></i>
@@ -148,15 +154,16 @@
                     </div>*@
             </div>
     <div class="col-lg-2 col-md-4 col-sm-5 col-xs-6 cust-width">
-        <div class="white-box">
-            <div class="r-icon-stats">
-                <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
-                <div class="bodystate">
-
-                    <span class="text-muted">Nominations</span>
+        <a href="javascript:void(0)" class="" id="unLockNominations">
+            <div class="white-box">
+                <div class="r-icon-stats">
+                    <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+                    <div class="bodystate">
+                        <span class="text-muted">UnLock Nominations</span>
+                    </div>
                 </div>
             </div>
-        </div>
+        </a>
         @*<div class="ibox float-e-margins">
                 <div class="ibox-title text-center">
                     <i class="fa fa-unlock-alt fa-3x" aria-hidden="true"></i>
