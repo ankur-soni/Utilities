@@ -70,9 +70,9 @@ namespace Silicus.Ensure.Web.Controllers
 
         public ActionResult QuestionBank()
         {
-            var que = _questionService.GetQuestion().ToList();
+            var que = _questionService.GetQuestion().Reverse().ToList();
             var queModel = _mappingService.Map<List<Question>, List<QuestionModel>>(que);
-            foreach (var q in queModel)
+            foreach (var q in queModel.OrderByDescending(x => x.ModifiedOn))
             {
                 q.QuestionDescription = q.QuestionDescription.Substring(0, Math.Min(q.QuestionDescription.Length, 100));
                 q.QuestionType = GetQuestionType(q.QuestionType);
