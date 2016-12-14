@@ -371,13 +371,13 @@
             //url: "/Nomination/ResourcesInDepartment",
             data: { departmentID: selectedDept, awardId: selectedAward },
             contentType: "application/json; charset=utf-8",
-            success: function (data) {
+            success: function(data) {
                 for (var key in data) {
                     $('#Resources')
                         .append($("<option></option>").val(data[key].ID).html(data[key].DisplayName));
                 }
             },
-            error: function (xhr) {
+            error: function(xhr) {
                 alert(xhr.toString());
             }
         });
@@ -387,83 +387,92 @@
 
         if ($('#addNominationForm').valid()) {
             var comments = 0;
-            $("#criteriaTable").find("textarea").each(function (data) {
+            $("#criteriaTable").find("textarea").each(function(data) {
                 if ($(this).val().trim())
                     comments++;
             });
+            var weightage = 0;
+            $("#criteriaTable .ddlWeightage").each(function(data) {
+                if ($(this).val().trim()) {
+                    weightage = weightage + parseInt($(this).val());
+                }
+            });
+            //console.log(weightage);
+            if (weightage == 0 || weightage > 100) {
+                swal("Error", "Sum of total weightages assigned to criteria should be 100%");
+                return false;
+            }
+
 
             if (!$("#managerComment").val()) {
-                $("#managerCommentValidationmessage").text("Enter main comment")
+                $("#managerCommentValidationmessage").text("Enter main comment");
                 return false;
-            }
-            else if (comments < 1) {
-                $("#criterisCommentValidationmessage").text("Enter at least one criteria comment")
+            } else if (comments < 1) {
+                $("#criterisCommentValidationmessage").text("Enter at least one criteria comment");
                 return false;
-            }
-            else {
+            } else {
                 swal({
-                    title: "Submit Nomination",
-                    text: "Do you want to nominate this candidate?",
-                    type: "info",
-                    showCancelButton: true,
-                    confirmButtonColor: "#0070b9",
-                    confirmButtonText: "Yes!",
-                    cancelButtonText: "No!",
-                    closeOnConfirm: false,
-                    closeOnCancel: false
-                },
-               function (isConfirm) {
-                   if (isConfirm) {
-                       var modelbjectToSend = $('#addNominationForm').serialize() + '&' + $.param({ 'submit': "Submit" }, true);
+                        title: "Submit Nomination",
+                        text: "Do you want to nominate this candidate?",
+                        type: "info",
+                        showCancelButton: true,
+                        confirmButtonColor: "#0070b9",
+                        confirmButtonText: "Yes!",
+                        cancelButtonText: "No!",
+                        closeOnConfirm: false,
+                        closeOnCancel: false
+                    },
+                    function(isConfirm) {
+                        if (isConfirm) {
+                            var modelbjectToSend = $('#addNominationForm').serialize() + '&' + $.param({ 'submit': "Submit" }, true);
 
-                       $.ajax({
-                           type: 'post',
-                           url: '@Url.Action("AddNomination", "Nomination")',
-                           dataType: 'json',
-                           async: false,
-                           data: modelbjectToSend,
-                           success: function (data) {
-                               swal(data.ErrorMessage);
-                               if (data.nominationExceed) {
-                                   swal({
-                                       title: "Error",
-                                       text: data.message,
-                                       showCancelButton: false,
-                                       confirmButtonColor: "#88a364",
-                                       confirmButtonText: "Ok",
-                                   },
-                             function () {
-                                 if (isConfirm) {
-                                     var managerId = $("#ManagerId").val();
-                                     window.location.href = '/Nomination/GetNominationList';
-                                 }
-                             });
+                            $.ajax({
+                                type: 'post',
+                                url: '@Url.Action("AddNomination", "Nomination")',
+                                dataType: 'json',
+                                async: false,
+                                data: modelbjectToSend,
+                                success: function(data) {
+                                    swal(data.ErrorMessage);
+                                    if (data.nominationExceed) {
+                                        swal({
+                                                title: "Error",
+                                                text: data.message,
+                                                showCancelButton: false,
+                                                confirmButtonColor: "#88a364",
+                                                confirmButtonText: "Ok",
+                                            },
+                                            function() {
+                                                if (isConfirm) {
+                                                    var managerId = $("#ManagerId").val();
+                                                    window.location.href = '/Nomination/GetNominationList';
+                                                }
+                                            });
 
-                               }
-                               else {
-                                   swal({
-                                       title: "Nomination Submitted!",
-                                       text: "",
-                                       type: "info",
-                                       showCancelButton: false,
-                                       confirmButtonColor: "#88a364",
-                                       confirmButtonText: "Ok",
-                                   },
-                              function () {
-                                  if (isConfirm) {
-                                      var managerId = $("#ManagerId").val();
-                                      window.location.href = '/Nomination/GetNominationList';
-                                  }
-                              });
-                               }
+                                    } else {
+                                        swal({
+                                                title: "Nomination Submitted!",
+                                                text: "",
+                                                type: "info",
+                                                showCancelButton: false,
+                                                confirmButtonColor: "#88a364",
+                                                confirmButtonText: "Ok",
+                                            },
+                                            function() {
+                                                if (isConfirm) {
+                                                    var managerId = $("#ManagerId").val();
+                                                    window.location.href = '/Nomination/GetNominationList';
+                                                }
+                                            });
+                                    }
 
 
-                           },
-                           error: function (error) {
-                               debugger;
-                               if (error.responseText != null && error.responseText != undefined && error.responseText != '') {
-                                   swal("Error", error.responseText.replace(/['"]+/g, ''));
-                               }
+                                },
+                                error: function(error) {
+                                    debugger;
+                                    if (error.responseText != null && error.responseText != undefined && error.responseText != '') {
+                                        swal("Error", error.responseText.replace(/['"]+/g, ''));
+                                    }
                                else {
                                    swal("Error", "Oops! Something wrong happened..");
                                }

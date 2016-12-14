@@ -13,6 +13,7 @@
                         <tr>
                             <th>#</th>
                             <th>Criteria</th>
+                            <th>Weightage</th>
                             <th>Rating</th>
                             <th>Manager Comments</th>
                         </tr>
@@ -23,10 +24,24 @@
                         {
                             <tr>
                                 <td>
-                                    @i
+                                    @i+1
                                 </td>
                                 <td>
                                     <label> @criteria.Title</label>
+                                </td>
+                                <td>
+                                    @{
+                                        var selectList = new List<SelectListItem>();
+                                        for (int weightageStep = 0; weightageStep <= 100; weightageStep = weightageStep + 5)
+                                        {
+                                            selectList.Add(new SelectListItem
+                                            {
+                                                Text = weightageStep.ToString(),
+                                                Value = weightageStep.ToString()
+                                            });
+                                        }
+                                    }
+                                    @Html.DropDownList("Comments[" + @i + "].Weightage", selectList, new {@class="form-control ddlWeightage"})
                                 </td>
                                 <td>
                                     <input id="rating-@i" value="0" type="number" data-star-captions="{clearRating}" data-default-caption="{rating} Stars" class="rating rating-loading" data-show-clear="true" data-show-caption="false" data-symbol="*" min=0 max=5 step=1 data-size="xs" name="Comments[@i].Rating">
@@ -35,7 +50,7 @@
                                     <textarea class="form-control" onblur="return hideRemainingCharacterText(@i)"
                                               onkeyup="edValueKeyPress(@i)"
                                               rows=""
-                                              name=Comments[@i].Comment
+                                              name="Comments[@i].Comment"
                                               id="@("comment"+i)"
                                               maxlength="500"></textarea>
                                     <div class="@("textarea"+i)"></div>
@@ -45,7 +60,7 @@
                                     </div>
                                 </td>
                                 <td>
-                                    <input type="hidden" name=Comments[@i].Id value="@criteria.Id">
+                                    <input type="hidden" name="Comments[@i].Id" value="@criteria.Id">
                                     <span class="hide">@(i++)</span>
                                 </td>
                             </tr>

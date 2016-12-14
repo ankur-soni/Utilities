@@ -161,7 +161,8 @@ namespace Silicus.EncourageWithAzureAd.Web.Controllers
                             {
                                 CriteriaId = criteria.Id,
                                 Comment = criteria.Comment != null ? _textInfo.ToTitleCase(criteria.Comment) : "",
-                                Rating = criteria.Rating 
+                                Rating = criteria.Rating,
+                                //Weightage = criteria.Weightage
                             }
                             );
                     }
