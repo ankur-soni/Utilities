@@ -84,7 +84,7 @@
                     var value = $("#FieldFilter").val();
                     grid = $("#tagsGrids").data("kendoGrid");
 
-                    if (value.length > 1) {
+                    if (value.length > 0) {
                         if (value) {
                             var filter = { logic: "or", filters: [] };
                             filter.filters.push({ field: "TagName", operator: "contains", value: value });

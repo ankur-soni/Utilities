@@ -26,8 +26,9 @@
                     })
                      .Read(read => read.Action("GetPositionDetails", "Positions"))
                      .Create(update => update.Action("PositionSave", "Positions"))
-                     .Update(update => update.Action("PositionSave", "Positions"))
+                     .Update(update => update.Action("PositionUpdate", "Positions"))
                      .Destroy(delete => delete.Action("PositionDelete", "Positions"))
+                     .Events(events => events.Error("error_handler").RequestEnd("requestend_handler"))
                 )
                 .Columns(columns =>
                     {
@@ -80,7 +81,7 @@
             var value = $("#FieldFilter").val();
             grid = $("#positionGrids").data("kendoGrid");
 
-            if (value.length > 1) {
+            if (value.length > 0) {
                 if (value) {
                     grid.dataSource.filter({ field: "PositionName", operator: "contains", value: value });
                 } else {
@@ -133,5 +134,26 @@
         });
 
     })(jQuery, kendo);
+
+    function requestend_handler(e) {
+        if (e.type == "destroy" && !e.response.Errors) {
+            //toastr.success("Auto Pays details has been deleted successfully!");
+            ShowMessage("Tag saved successfully.", 1);
+        }
+
+        if (e.type == "update" && !e.response.Errors) {
+            //toastr.success("Auto Pays details has been saved successfully!");
+            ShowMessage("Tag Updated successfully.", 1);
+        }
+
+        if (e.type == "create" && !e.response.Errors) {
+            ShowMessage("Tag Created successfully.", 1);
+        }
+
+    }
+
+    function error_handler(e) {
+        ShowMessage(getErrorMessage(e, 0));
+    }
 
 </script>
