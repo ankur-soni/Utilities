@@ -21,7 +21,7 @@ namespace Silicus.Ensure.Web.Models
         public Int32 Duration { get; set; }
 
         [Required(ErrorMessage = "Position is required!")]
-        [Display(Name = "Role")]
+        [Display(Name = "Position")]
         public Int32 Position { get; set; }
 
         [Required(ErrorMessage = "Competency is required!")]
