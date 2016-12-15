@@ -685,6 +685,7 @@
     <Content Include="Views\ManageUser\_GetUserListPartialView.cshtml" />
     <Content Include="Views\ManageUser\AddUser.cshtml" />
     <Content Include="Views\Admin\_partialSelctPanelList.cshtml" />
+    <Content Include="Views\Shared\EditorTemplates\TagEditorTemplate.cshtml" />
     <None Include="Web.Azure.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
