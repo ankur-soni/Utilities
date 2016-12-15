@@ -28,16 +28,16 @@
                                     <label> @criteria.Title</label>
                                 </td>
                                 <td>
-                                    @Html.DropDownList("Comments[" + @i + "].Weightage", 
+                                    @Html.DropDownList("Comments[" + @i + "].Weightage",
                                     Enumerable.Range(0, 21).Select(x => x * 5).
-                                   Select(j => new SelectListItem
-                                   {
-                                       Value = j.ToString(),
-                                       Text = j.ToString()
-                                   }), new { @class = "form-control ddlWeightage" })
+                                    Select(j => new SelectListItem
+                                    {
+                                    Value = j.ToString(),
+                                    Text = j.ToString()
+                                    }), new { @class = "form-control ddlWeightage" })
                                 </td>
                                 <td>
-                                    <select id="rating-@i" class="example-square" name="Comments[@i].Rating" autocomplete="off" value="">
+                                    <select id="rating-@i" class="example-square" name="Comments[@i].Rating" autocomplete="off" value="" row-id="@i">
                                         <option value=""></option>
                                         <option value="1">1</option>
                                         <option value="2">2</option>
@@ -52,11 +52,12 @@
                                               rows=""
                                               name="Comments[@i].Comment"
                                               id="@("comment"+i)"
-                                              maxlength="500"></textarea>
+                                              maxlength="500"
+                                              isCommentRequired="false"></textarea>
                                     <div class="@("textarea"+i)"></div>
 
                                     <div class="col-md-5 criteriaComment">
-                                        
+
                                     </div>
                                 </td>
                                 <td>
@@ -83,7 +84,22 @@
             $(id).barrating('show', {
                 theme: 'bars-square',
                 showValues: true,
-                showSelectedRating: false
+                showSelectedRating: false,
+                onSelect: function(value, text,event) {
+                    var element = this.$elem[0];
+                    var rowId = +element.getAttribute("row-id");
+
+                    var commentId = "#comment"+rowId;
+                    if (+value != 0) {
+                        $(commentId).attr("isCommentRequired", true);
+                        if ($(commentId).val() == "") {
+                            $(commentId).addClass("noCommentError");
+                        }
+                    }else{
+                        $(commentId).attr("isCommentRequired", false);
+                        $(commentId).removeClass("noCommentError");
+                    }
+                }
             });
 
             $(id).barrating('set',rating);

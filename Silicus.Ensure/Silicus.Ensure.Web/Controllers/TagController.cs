@@ -55,5 +55,17 @@ namespace Silicus.Ensure.Web.Controllers
             tag.Description = HttpUtility.HtmlDecode(tag.Description);
             return View("Add", tag);
         }
+
+        [AcceptVerbs(HttpVerbs.Post)]
+        public ActionResult Update([DataSourceRequest] DataSourceRequest dsRequest,Tags tag)
+        {
+            if (tag != null && ModelState.IsValid)
+            {
+                tag.IsActive = true;
+                tag.Description = HttpUtility.HtmlDecode(tag.Description);
+                _tagsService.Update(tag);
+            }
+            return Json(ModelState.ToDataSourceResult());
+        }
     }
 }

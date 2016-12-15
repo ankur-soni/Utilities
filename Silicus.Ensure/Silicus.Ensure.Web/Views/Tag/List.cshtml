@@ -17,10 +17,15 @@
                 @if (Request.IsAuthenticated)
                 {
                     @(Html.Kendo().Grid<Silicus.Ensure.Models.DataObjects.Tags>().Name("tagsGrids")
+                    .Events(e => e.Edit("gvTag_onRowEdit"))
          .Columns(columns =>
               {
                   columns.Bound(p => p.TagName).Width(50);
-                  columns.Bound(p => p.Description).Width(300);
+                  columns.Bound(p => p.Description);
+                  columns.Command(cmd =>
+                  {
+                          cmd.Edit().Text("Edit");
+                  }).Title("Actions");
               })
             .DataSource(dataSource => dataSource
                       .Ajax()
@@ -30,13 +35,19 @@
                           model.Field(p => p.TagId).Editable(false);
                       })
                       .Read(read => read.Action("GetTagsDetails", "Tag"))
+                              .Create(update => update.Action("Save", "Tag"))
+                      .Events(events => events.Error("error_handler").RequestEnd("requestend_handler"))
+                              .Update(up => up.Action("Update", "Tag"))
                       .PageSize(10)
                   )
                   .Pageable()
                   .Sortable()
+                  //.HtmlAttributes(new { style = "height:400px;" })
+                  .Editable(ed => ed.Mode(GridEditMode.PopUp).TemplateName("TagEditorTemplate"))
                   .ToolBar(toolbar =>
                 {
                     toolbar.Template(@<text>
+
                         <div class="toolbar">
                             <div class="row">
                                 <div class="col-md-6">
@@ -52,7 +63,7 @@
                             <br />
                             <div class="row">
                                 <div class="col-md-3 col-md-push-1" style="float: right; padding-right: 0px; margin-right: -22px;">
-                                    <a href='/Tag/Add' class='k-button k-button-icontext k-grid-add'><span class='k-icon k-add'></span>Add Tag</a>
+                                    <a href='/#' class='k-button k-button-icontext k-grid-add'><span class='k-icon k-add'></span>Add Tag</a>
                                 </div>
                             </div>
                         </div>
@@ -73,7 +84,7 @@
                     var value = $("#FieldFilter").val();
                     grid = $("#tagsGrids").data("kendoGrid");
 
-                    if (value.length > 1) {
+                    if (value.length > 0) {
                         if (value) {
                             var filter = { logic: "or", filters: [] };
                             filter.filters.push({ field: "TagName", operator: "contains", value: value });
@@ -99,4 +110,39 @@
                 datasource.filter([]);
                 $("#FieldFilter").val('');
             });
+
+
+            function gvTag_onRowEdit(e)
+            {
+                if (e.model.isNew()) {
+                    $(".k-window-title").html("Add New Tag");
+                }
+                else {
+                    $(".k-window-title").html("Edit Tag");
+                    $("#TagName").attr('disabled', true);
+                }
+
+            }
+
+            function requestend_handler(e) {
+                if (e.type == "destroy" && !e.response.Errors) {
+                    //toastr.success("Auto Pays details has been deleted successfully!");
+                    ShowMessage("Tag saved successfully.", 1);
+                }
+
+                if (e.type == "update" && !e.response.Errors) {
+                    //toastr.success("Auto Pays details has been saved successfully!");
+                    ShowMessage("Tag Updated successfully.", 1);
+                }
+
+                if (e.type == "create" && !e.response.Errors) {
+                    ShowMessage("Tag Created successfully.", 1);
+                }
+
+            }
+
+            function error_handler(e) {
+                ShowMessage(getErrorMessage(e, 0));
+            }
+
         </script>
