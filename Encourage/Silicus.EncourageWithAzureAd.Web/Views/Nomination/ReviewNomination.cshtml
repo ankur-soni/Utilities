@@ -115,7 +115,14 @@
                             {
                                 <td class="more" style="word-break:break-all">@Model.ManagerComments[k].Comment</td>
                                 <td class="col-md-1">
-                                    <input id="input-21a" value="@Model.ManagerComments[k].Rating" type="number" data-star-captions="{}" data-default-caption="{rating} Stars" class="rating rating-loading" data-show-clear="false" data-show-caption="false" data-symbol="*" min=0 max=5 step=1 data-size="xs" readonly="readonly">
+                                    @*<input id="input-21a" value="@Model.ManagerComments[k].Rating" type="number" data-star-captions="{}" data-default-caption="{rating} Stars" class="rating rating-loading" data-show-clear="false" data-show-caption="false" data-symbol="*" min=0 max=5 step=1 data-size="xs" readonly="readonly">*@
+                                    @Html.DropDownListFor(modelItem => modelItem.ManagerComments[k].Rating,
+                                                   Enumerable.Range(1, 5).
+                                                   Select(r => new SelectListItem
+                                                   {
+                                                       Value = r.ToString(),
+                                                       Text = r.ToString()
+                                                   }), "", new { @class = "example-square", @autocomplete = "off",@value= Model.ManagerComments[k].Rating })
                                 </td>
                                 k++;
                             }
@@ -123,7 +130,15 @@
                             {
                                 <td class="more"></td>
                                 <td class="col-md-1">
-                                    <input id="input-21a" value="0" type="number" data-star-captions="{}" data-default-caption="{rating} Stars" class="rating rating-loading" data-show-clear="false" data-show-caption="false" data-symbol="*" min=0 max=5 step=1 data-size="xs" readonly="readonly">
+                                    @*<input id="input-21a" value="0" type="number" data-star-captions="{}" data-default-caption="{rating} Stars" class="rating rating-loading" data-show-clear="false" data-show-caption="false" data-symbol="*" min=0 max=5 step=1 data-size="xs" readonly="readonly">*@
+                                    @Html.DropDownListFor(r => Model.ManagerComments[k].Rating,
+                                                   Enumerable.Range(1, 5).
+                                                   Select(r => new SelectListItem
+                                                   {
+                                                       Value = r.ToString(),
+                                                       Text = r.ToString()
+                                                   }), "", new { @class = "example-square", @autocomplete = "off",@value=0 })
+                                    k++;
                                 </td>
                             }
 
@@ -189,6 +204,7 @@
 <script src="~/js/jquery-2.1.1.js"></script>
 <script src="~/js/plugins/validate/jquery.validate.min.js"></script>
 <script src="~/Scripts/jquery.validate.unobtrusive.js"></script>
+<script src="~/js/jquery.barrating.min.js"></script>
 
 <script>
     
@@ -319,6 +335,19 @@
         }
     }
 
+    var ratings = $('.example-square');
 
+    $.each(ratings, function (index) {
+        var id = "#" + this.id;
+        var rating = +this.getAttribute("value");
 
+        $(id).barrating('show', {
+            theme: 'bars-square',
+            showValues: true,
+            showSelectedRating: false,
+            readonly:true
+        });
+
+        $(id).barrating('set', rating);
+    });
 </script>

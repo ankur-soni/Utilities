@@ -21,6 +21,7 @@ using iTextSharp.text;
 using iTextSharp.text.pdf;
 using iTextSharp.text.html.simpleparser;
 using System.Text;
+using Silicus.FrameWorx.Logger;
 
 namespace Silicus.Ensure.Web.Controllers
 {
@@ -29,7 +30,7 @@ namespace Silicus.Ensure.Web.Controllers
     {
         private readonly IEmailService _emailService;
         private readonly IQuestionService _questionService;
-
+        private readonly ILogger _logger;
         private ApplicationUserManager _userManager;
         private readonly ITagsService _tagsService;
         private readonly IMappingService _mappingService;
@@ -62,7 +63,7 @@ namespace Silicus.Ensure.Web.Controllers
             }
         }
 
-        public AdminController(IEmailService emailService, ITagsService tagService, ITestSuiteService testSuiteService, MappingService mappingService, IQuestionService questionService, IUserService userService, IPositionService positionService)
+        public AdminController(IEmailService emailService, ITagsService tagService, ITestSuiteService testSuiteService, MappingService mappingService, IQuestionService questionService, IUserService userService, IPositionService positionService,ILogger logger)
         {
             _emailService = emailService;
             _tagsService = tagService;
@@ -71,11 +72,18 @@ namespace Silicus.Ensure.Web.Controllers
             _questionService = questionService;
             _userService = userService;
             _positionService = positionService;
+            _logger = logger;
         }
 
         public ActionResult Dashboard()
         {
+            _logger.Log("Admin-Dashboard-Get");
             ViewBag.UserRoles = RoleManager.Roles.Select(r => new SelectListItem { Text = r.Name, Value = r.Name }).ToList();
+            _logger.Log("UserRoles:");
+            foreach (var item in ViewBag.UserRoles)
+            {
+                _logger.Log("Admid-Dashboard-Get-Roles- "+ item.Text );
+            }
             return View();
         }
 

@@ -55,7 +55,7 @@ namespace HangFireBackgroundTasks.EventProcessors
             var emailBodyPath = System.Web.Hosting.HostingEnvironment.MapPath(@"~/Views/EmailBody/EmailToManagerBody.html");
             var subject = "Submit Your Nominations";
             //new EmailService().SendEmail(emailBodyPath, managerEmailAddresses, subject);
-            new EmailService().SendEmail(emailBodyPath, new List<string>() { "shailendra.birthare@silicus.com" }, subject);
+            new EmailService().SendEmail(emailBodyPath, new List<string>() { "asha.bhandare@silicus.com" }, subject);
         }
 
         private void SendReviewNominationEmail()
@@ -70,7 +70,7 @@ namespace HangFireBackgroundTasks.EventProcessors
             var emailBodyPath = System.Web.Hosting.HostingEnvironment.MapPath(@"~/Views/EmailBody/EmailBodyToReviewer.html");
             var subject = "Nominations Submitted For Your Review.";
             //new EmailService().SendEmail(emailBodyPath, reviewerEmailAddresses, subject);
-            new EmailService().SendEmail(emailBodyPath, new List<string>() { "shailendra.birthare@silicus.com" },subject);
+            new EmailService().SendEmail(emailBodyPath, new List<string>() { "asha.bhandare@silicus.com" },subject);
         }
 
         private void SendAdminNominationEmail()
@@ -89,7 +89,7 @@ namespace HangFireBackgroundTasks.EventProcessors
             var subject = "Review Process Locked";
             // var emailBodyPath = @"C:\Users\IKadam.SILICUS\Source\Repos\Utilities3\Silicus.UtilityContainer\Silicus.UtilityContainer.HangFireBackgroundTasks\View\ReviewsLockedNotificationToAdmin.html";
             //new EmailService().SendEmail(emailBodyPath, adminEmailAddresses, subject);
-            new EmailService().SendEmail(emailBodyPath, new List<string>() { "shailendra.birthare@silicus.com" },subject);
+            new EmailService().SendEmail(emailBodyPath, new List<string>() { "asha.bhandare@silicus.com" },subject);
         }
     }
 }
