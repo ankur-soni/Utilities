@@ -21,6 +21,7 @@ using iTextSharp.text;
 using iTextSharp.text.pdf;
 using iTextSharp.text.html.simpleparser;
 using System.Text;
+using Silicus.FrameWorx.Logger;
 
 namespace Silicus.Ensure.Web.Controllers
 {
@@ -29,7 +30,7 @@ namespace Silicus.Ensure.Web.Controllers
     {
         private readonly IEmailService _emailService;
         private readonly IQuestionService _questionService;
-
+        private readonly ILogger _logger;
         private ApplicationUserManager _userManager;
         private readonly ITagsService _tagsService;
         private readonly IMappingService _mappingService;
@@ -62,7 +63,7 @@ namespace Silicus.Ensure.Web.Controllers
             }
         }
 
-        public AdminController(IEmailService emailService, ITagsService tagService, ITestSuiteService testSuiteService, MappingService mappingService, IQuestionService questionService, IUserService userService, IPositionService positionService)
+        public AdminController(IEmailService emailService, ITagsService tagService, ITestSuiteService testSuiteService, MappingService mappingService, IQuestionService questionService, IUserService userService, IPositionService positionService,ILogger logger)
         {
             _emailService = emailService;
             _tagsService = tagService;
@@ -71,11 +72,18 @@ namespace Silicus.Ensure.Web.Controllers
             _questionService = questionService;
             _userService = userService;
             _positionService = positionService;
+            _logger = logger;
         }
 
         public ActionResult Dashboard()
         {
+            _logger.Log("Admin-Dashboard-Get");
             ViewBag.UserRoles = RoleManager.Roles.Select(r => new SelectListItem { Text = r.Name, Value = r.Name }).ToList();
+            _logger.Log("UserRoles:");
+            foreach (var item in ViewBag.UserRoles)
+            {
+                _logger.Log("Admid-Dashboard-Get-Roles- "+ item.Text );
+            }
             return View();
         }
 
@@ -390,8 +398,9 @@ namespace Silicus.Ensure.Web.Controllers
 
         private TestSuiteViewQuesModel TestSuiteViewQues(int UserId, int TestSuiteId)
         {
-
+            int count = 0;
             TestSuiteViewQuesModel testSuiteViewQuesModel = new Models.TestSuiteViewQuesModel();
+            List<TestSuiteQuestion> testSuiteQuestionList = new List<Models.TestSuiteQuestion>();
             try
             {
                 dynamic testSuitDetails = _testSuiteService.GetTestSuitById(TestSuiteId);
@@ -400,15 +409,40 @@ namespace Silicus.Ensure.Web.Controllers
                 if (testSuitDetails != null && userTestSuitDetails != null && userTestSuitDetails.UserTestDetails.Any())
                 {
                     var questionList = (from uDetails in userTestSuitDetails.UserTestDetails
-                                        join question in _questionService.GetQuestion().Where(X => X.QuestionType == 2)
+                                        join question in _questionService.GetQuestion().Where(X => X.QuestionType == 2 || X.QuestionType == 1)
                                         on uDetails.QuestionId equals question.Id
                                         select question).ToList();
-                    testSuiteViewQuesModel.TestSuiteQuestion = _mappingService.Map<List<Question>, List<TestSuiteQuestion>>(questionList);
+
+                    foreach (var pQuestion in questionList)
+                    {
+                        count++;
+                        testSuiteQuestionList.Add(new TestSuiteQuestion()
+                            {
+                                QuestionType = pQuestion.QuestionType,
+                                QuestionNumber = count,
+                                QuestionDescription = pQuestion.QuestionDescription,
+                                OptionCount = pQuestion.OptionCount,
+                                Answer = pQuestion.Answer,
+                                CorrectAnswer = pQuestion.CorrectAnswer,
+                                Id = pQuestion.Id,
+                                Marks = pQuestion.Marks,
+                                Option1 = pQuestion.Option1,
+                                Option2 = pQuestion.Option2,
+                                Option3 = pQuestion.Option3,
+                                Option4 = pQuestion.Option4,
+                                Option5 = pQuestion.Option5,
+                                Option6 = pQuestion.Option6,
+                                Option7 = pQuestion.Option7,
+                                Option8 = pQuestion.Option8,
+                            });
+                    }
+
+                    testSuiteViewQuesModel.TestSuiteQuestion = testSuiteQuestionList;
                     testSuiteViewQuesModel.TestSuiteName = testSuitDetails.GetType().GetProperty("TestSuiteName").GetValue(testSuitDetails);
                     testSuiteViewQuesModel.Duration = testSuitDetails.GetType().GetProperty("Duration").GetValue(testSuitDetails);
-                    testSuiteViewQuesModel.ObjectiveCount = testSuitDetails.GetType().GetProperty("ObjectiveCount").GetValue(testSuitDetails);
-                    testSuiteViewQuesModel.PracticalCount = testSuitDetails.GetType().GetProperty("PracticalCount").GetValue(testSuitDetails);
-                    testSuiteViewQuesModel.MaxScore = testSuitDetails.GetType().GetProperty("MaxScore").GetValue(testSuitDetails);
+                    testSuiteViewQuesModel.ObjectiveCount = questionList.Where(x => x.QuestionType == 1).ToList().Count;
+                    testSuiteViewQuesModel.PracticalCount = questionList.Where(x => x.QuestionType == 2).ToList().Count;
+                    testSuiteViewQuesModel.MaxScore = userTestSuitDetails.MaxScore;
                 }
             }
             catch
@@ -576,7 +610,7 @@ namespace Silicus.Ensure.Web.Controllers
                 var userDetails = _userService.GetUserDetails().Where(x => x.UserId == UserId).FirstOrDefault();
 
                 var userTestSuitDetails = _testSuiteService.GetUserTestSuiteByUdi_TestSuitId(UserId, TestSuiteId);
-                if (userTestSuitDetails != null)
+                if (userTestSuitDetails == null)
                 {
                     TempData["ErrorMsg"] = userDetails == null ? "User id can not be null !" : "Test suit is not assigned to user !";
                     return RedirectToAction("Candidates");
@@ -662,33 +696,40 @@ namespace Silicus.Ensure.Web.Controllers
         [HttpPost]
         public ActionResult SubmittedTest(FormCollection fm)
         {
-            int count = 1;
-
-            var userTestSuitDetails = _testSuiteService.GetUserTestSuiteByUdi_TestSuitId(Convert.ToInt32(Convert.ToString(Request.Form["UserId"])), Convert.ToInt32(Convert.ToString(Request.Form["TestSuiteId"])));
-
-            userTestSuitDetails.EvaluatedMark = Convert.ToInt32(Request.Form["TotalMarksObtained"].ToString());
-            userTestSuitDetails.FeedBack = Convert.ToString(Request.Form["EvaluatedFeedBack"]);
-            userTestSuitDetails.StatusId = Convert.ToInt32(TestStatus.Evaluated);
-            var userTestDetails = (from uDetails in userTestSuitDetails.UserTestDetails
-                                   join question in _questionService.GetQuestion().Where(X => X.QuestionType == 2)
-                                   on uDetails.QuestionId equals question.Id
-                                   select uDetails).ToList();
-
-            foreach (var userTestDetail in userTestDetails)
+            try
             {
-                var currentUser = _userService.GetUserByEmail(User.Identity.Name);
-                userTestDetail.MarkGivenByName = currentUser != null ? currentUser.FirstName + " " + currentUser.LastName : "";
-                userTestDetail.MarkGivenBy = currentUser != null ? currentUser.UserId : 0;
-                userTestDetail.Mark = Convert.ToInt32(Request.Form["Emarks" + count]);
-                userTestDetail.MarkGivenDate = DateTime.Now;
+                int count = 1;
 
-                _testSuiteService.UpdateUserTestDetails(userTestDetail);
-                count++;
+                var userTestSuitDetails = _testSuiteService.GetUserTestSuiteByUdi_TestSuitId(Convert.ToInt32(Convert.ToString(Request.Form["UserId"])), Convert.ToInt32(Convert.ToString(Request.Form["TestSuiteId"])));
+
+                userTestSuitDetails.EvaluatedMark = Convert.ToInt32(Request.Form["TotalMarksObtained"].ToString());
+                userTestSuitDetails.FeedBack = Convert.ToString(Request.Form["EvaluatedFeedBack"]);
+                userTestSuitDetails.StatusId = Convert.ToInt32(TestStatus.Evaluated);
+                var userTestDetails = (from uDetails in userTestSuitDetails.UserTestDetails
+                                       join question in _questionService.GetQuestion().Where(X => X.QuestionType == 2)
+                                       on uDetails.QuestionId equals question.Id
+                                       select uDetails).ToList();
+
+                foreach (var userTestDetail in userTestDetails)
+                {
+                    var currentUser = _userService.GetUserByEmail(User.Identity.Name);
+                    userTestDetail.MarkGivenByName = currentUser != null ? currentUser.FirstName + " " + currentUser.LastName : "";
+                    userTestDetail.MarkGivenBy = currentUser != null ? currentUser.UserId : 0;
+                    userTestDetail.Mark = Convert.ToInt32(Request.Form["Emarks" + count]);
+                    userTestDetail.MarkGivenDate = DateTime.Now;
+
+                    _testSuiteService.UpdateUserTestDetails(userTestDetail);
+                    count++;
+                }
+
+                _testSuiteService.UpdateUserTestSuite(userTestSuitDetails);
+                var user = _userService.GetUserById(Convert.ToInt32(Convert.ToString(Request.Form["UserId"])));
+                user.TestStatus = TestStatus.Evaluated.ToString();
+                _userService.Update(user);
             }
-
-            _testSuiteService.UpdateUserTestSuite(userTestSuitDetails);
-            var user = _userService.GetUserById(Convert.ToInt32(Convert.ToString(Request.Form["UserId"])));
-            user.TestStatus = TestStatus.Evaluated.ToString();
+            catch
+            {
+            }
             return RedirectToAction("Candidates");
         }
 
