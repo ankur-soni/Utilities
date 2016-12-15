@@ -3,7 +3,6 @@
 @{
     ViewBag.Title = "EditNomination";
 }
-
 <script src="~/js/jquery-2.1.1.js"></script>
 <script src="~/js/plugins/validate/jquery.validate.min.js"></script>
 <script src="~/Scripts/jquery.validate.unobtrusive.js"></script>
@@ -115,12 +114,18 @@
                     <label>Disclaimer :</label>  Mention your comments against the criteria your nominee fits in. Please note that it’s NOT mandatory to mention comments against each criteria given below. You can leave the comment area blank for the criteria which are not relevant.
                 </span>
             </div>
-
+    
             <div>
                 <br />
                 <div>
                     <table class="table table-hover issue-tracker white-bg" id="criteriaTable">
-                        <tr><th></th><th style="text-align:center">Criteria</th><th style="text-align:center">Rating</th><th style="text-align:center">Manager Comment</th></tr>
+                        <tr>
+                            <th></th>
+                            <th style="text-align:center">Criteria</th>
+                            <th style="text-align:center">Weightage</th>
+                            <th style="text-align:center">Rating</th>
+                            <th style="text-align:center">Manager Comment</th>
+                        </tr>
                         @if (Model.IsSubmitted == true)
                         {
                             @Html.DisplayFor(model => model.Comments)

@@ -8,6 +8,9 @@
     <td class="col-md-4">
         @Html.DisplayFor(modelItem => modelItem.title)
     </td>
+    <td>
+        @Html.HiddenFor(modelItem => modelItem.Weightage)
+    </td>
     <td class="col-md-4">
         @Html.DropDownListFor(modelItem => modelItem.Rating,
        Enumerable.Range(1, 5).

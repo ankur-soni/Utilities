@@ -389,12 +389,12 @@
                     weightage = weightage + parseInt($(this).val());
                 }
             });
-            //console.log(weightage);
-            if (weightage == 0 || weightage > 100) {
+            
+            if (weightage > 100 || weightage < 100) {
                 swal("Error", "Sum of total weightages assigned to criteria should be 100%");
                 return false;
             }
-
+            console.log(weightage + ", " + comments);
 
             if (!$("#managerComment").val()) {
                 $("#managerCommentValidationmessage").text("Enter main comment");

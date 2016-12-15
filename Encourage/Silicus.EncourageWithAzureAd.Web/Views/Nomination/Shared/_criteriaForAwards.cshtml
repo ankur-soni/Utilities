@@ -22,25 +22,19 @@
                         {
                             <tr>
                                 <td>
-                                    @i+1
+                                    @(i+1)
                                 </td>
                                 <td>
                                     <label> @criteria.Title</label>
                                 </td>
                                 <td>
-                                    @{
-                                    var selectList = new List<selectlistitem>
-                                        ();
-                                        for (int weightageStep = 0; weightageStep <= 100; weightageStep = weightageStep + 5)
-                                        {
-                                        selectList.Add(new SelectListItem
-                                        {
-                                        Text = weightageStep.ToString(),
-                                        Value = weightageStep.ToString()
-                                        });
-                                        }
-                                        }
-                                        @Html.DropDownList("Comments[" + @i + "].Weightage", selectList, new {@class="form-control ddlWeightage"})
+                                    @Html.DropDownList("Comments[" + @i + "].Weightage", 
+                                    Enumerable.Range(0, 21).Select(x => x * 5).
+                                   Select(j => new SelectListItem
+                                   {
+                                       Value = j.ToString(),
+                                       Text = j.ToString()
+                                   }), new { @class = "form-control ddlWeightage" })
                                 </td>
                                 <td>
                                     <select id="rating-@i" class="example-square" name="Comments[@i].Rating" autocomplete="off" value="">

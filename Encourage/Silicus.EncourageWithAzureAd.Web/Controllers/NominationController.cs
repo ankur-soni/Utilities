@@ -162,7 +162,7 @@ namespace Silicus.EncourageWithAzureAd.Web.Controllers
                                 CriteriaId = criteria.Id,
                                 Comment = criteria.Comment != null ? _textInfo.ToTitleCase(criteria.Comment) : "",
                                 Rating = criteria.Rating,
-                                //Weightage = criteria.Weightage
+                                Weightage = criteria.Weightage
                             }
                             );
                     }
@@ -304,7 +304,8 @@ namespace Silicus.EncourageWithAzureAd.Web.Controllers
                         CriteriaId = comment.Id,
                         Comment = comment.Comment != null ? _textInfo.ToTitleCase(comment.Comment) : "",
                         NominationId = model.NominationId,
-                        Rating = comment.Rating
+                        Rating = comment.Rating,
+                        Weightage = comment.Weightage
                     });
                 }
             }

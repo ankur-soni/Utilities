@@ -13,5 +13,6 @@ namespace Silicus.EncourageWithAzureAd.Web.Models
         public string title { get; set; }
         public bool Credit { get; set; }
         public string ReviewerName { get; set; }
+        public int Weightage { get; set; }
     }
 }
