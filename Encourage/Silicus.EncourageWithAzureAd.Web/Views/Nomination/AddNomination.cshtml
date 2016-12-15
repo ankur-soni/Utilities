@@ -26,7 +26,9 @@
             </div>
         </div>
         
-    } else {
+    }
+    else
+    {
         <div class="row">
             <div class="col-sm-12">
                 <div class="box M-T15 M-B60">
@@ -64,7 +66,7 @@
                     @Html.ValidationSummary(true, "", new { @class = "text-danger" })
                     <div class="wizard-box" id="nominationCategory" nomination-step="1">
                         <div class="row">
-                            <div class="col-md-4">
+                                    <div class="col-lg-3 col-md-4 col-sm-5">
                                 <div class="form-group">
                                     @Html.Label("Nomination Category", htmlAttributes: new { @class = "control-label" })<span class="asterisk">*</span>
                                     @Html.DropDownListFor(model => model.AwardId, @ViewBag.Awards as SelectList, "Select", new { @class = "form-control", id = "Award" })
@@ -75,13 +77,13 @@
                         </div>
                         <div class="row">
                             <div class="form-actions pull-right">
-                                        <button type="submit" class="btn btn-success btn-nav" onclick="moveToNominationStep(2, true);">Next&nbsp;<i class="fa fa-chevron-circle-right" aria-hidden="true"></i></button>
+                                        <button type="button" class="btn btn-success btn-nav" onclick="moveToNominationStep(2, true);">Next&nbsp;&nbsp;<i class="fa fa-chevron-circle-right" aria-hidden="true"></i></button>
                             </div>
                         </div>
                     </div>
                     <div class="wizard-box" id="project-Dept-Resource" style="display:none;" nomination-step="2">
                         <div class="row">
-                            <div class="col-md-4">
+                                    <div class="col-md-5">
                                 <div class="form-group M-B15">
                                     @Html.Label("Employee From", htmlAttributes: new { @class = "control-label requiredfeild" })
                                     <div class="radio-list">
@@ -108,7 +110,7 @@
                         @{ var projectMessage = "There are no projects under you."; }
                         @{ var departmentMessage = "There are no departments under you.";}
                         <div class="row">
-                            <div class="col-md-4">
+                                    <div class="col-lg-3 col-md-4 col-sm-5">
                                 <div class="form-group" id="projectInput">
                                     @Html.Label("Project", htmlAttributes: new { @class = "control-label requiredfeild" })
                                     <div>
@@ -146,7 +148,7 @@
                             </div>
                         </div>
                         <div class="row">
-                            <div class="col-md-4">
+                                    <div class="col-lg-3 col-md-4 col-sm-5">
                                 <div class="form-group">
                                     @Html.Label("Employee Name", htmlAttributes: new { @class = "control-label requiredfeild" })
                                     @Html.DropDownListFor(model => model.ResourceId, ViewBag.Resources as SelectList, "Select", new { @class = "form-control", id = "Resources" })
@@ -157,10 +159,10 @@
                         </div>
                         <div class="row">
                             <div class="form-actions pull-left">
-                                        <button type="button" class="btn btn-success btn-nav" onclick="moveToNominationStep(1, false);"><i class="fa fa-chevron-circle-left" aria-hidden="true"></i>&nbsp;Prev</button>
+                                        <button type="button" class="btn btn-success btn-nav" onclick="moveToNominationStep(1, false);"><i class="fa fa-chevron-circle-left" aria-hidden="true"></i>&nbsp;&nbsp;Prev</button>
                             </div>
                             <div class="form-actions pull-right">
-                                        <button type="button" class="btn btn-success btn-nav" onclick="moveToNominationStep(3, true);">Next &nbsp;<i class="fa fa-chevron-circle-right" aria-hidden="true"></i></button>
+                                        <button type="button" class="btn btn-success btn-nav" onclick="moveToNominationStep(3, true);">Next &nbsp;&nbsp;<i class="fa fa-chevron-circle-right" aria-hidden="true"></i></button>
                             </div>
                         </div>
                     </div>
@@ -185,10 +187,10 @@
                         </div>
                         <div class="row">
                             <div class="form-actions pull-left">
-                                        <button type="button" class="btn btn-success btn-nav" onclick="moveToNominationStep(2, false);"><i class="fa fa-chevron-circle-left" aria-hidden="true"></i>&nbsp;Prev</button>
+                                        <button type="button" class="btn btn-success btn-nav" onclick="moveToNominationStep(2, false);"><i class="fa fa-chevron-circle-left" aria-hidden="true"></i>&nbsp;&nbsp;Prev</button>
                             </div>
                             <div class="form-actions pull-right">
-                                        <button type="button" class="btn btn-success btn-nav" onclick="moveToNominationStep(4, true);">Next&nbsp;<i class="fa fa-chevron-circle-right" aria-hidden="true"></i></button>
+                                        <button type="button" class="btn btn-success btn-nav" onclick="moveToNominationStep(4, true);">Next&nbsp;&nbsp;<i class="fa fa-chevron-circle-right" aria-hidden="true"></i></button>
                             </div>
                         </div>
                     </div>
@@ -200,7 +202,7 @@
                                 </div>
                             </div>
                                     <div class="col-sm-12">
-                            <div class="alert alert-danger">
+                                        <div class="alert alert-danger" style="display:none">
                                 @Html.ValidationMessageFor(model => model.Comments, "", new { @class = "text-danger", id = "criterisCommentValidationmessage" })
                             </div>
                         </div>
@@ -211,13 +213,16 @@
 
                                 <div class="row M-T15">
                             <div class="form-actions pull-left">
-                                        <button type="button" class="btn btn-success btn-nav" onclick="moveToNominationStep(1,false);"><i class="fa fa-chevron-circle-left" aria-hidden="true"></i>&nbsp;Prev</button>
+                                        <button type="button" class="btn btn-success btn-nav" onclick="moveToNominationStep(3,false);"><i class="fa fa-chevron-circle-left" aria-hidden="true"></i>&nbsp;&nbsp;Prev</button>
                             </div>
                                     <div class="pull-right btn-nav">
                                         <input type="button" name="submit" value="Save Draft" id="savebutton" class="btn btn-primary" onclick="return checkValidationOnSaveDraft();" />
-                                        @if (ViewBag.NominationLockStatus) { 
-                                        <input type="button" name="submit" value="Submit" id="submitButton" class="btn btn-primary" onclick="return checkValidationOnSubmit();" disabled = "disabled" />
-                                        }else{
+                                        @if (ViewBag.NominationLockStatus)
+                                        {
+                                            <input type="button" name="submit" value="Submit" id="submitButton" class="btn btn-primary" onclick="return checkValidationOnSubmit();" disabled="disabled" />
+                                        }
+                                        else
+                                        {
                                         <input type="button" name="submit" value="Submit" id="submitButton" class="btn btn-primary" onclick="return checkValidationOnSubmit();" />
                                         }
                                         <input type="button" value="Cancel" class="btn btn-primary" onclick="location.href='@Url.Action("Index", "Home")'" />
@@ -389,7 +394,7 @@
                     weightage = weightage + parseInt($(this).val());
                 }
             });
-            
+
             if (weightage > 100 || weightage < 100) {
                 swal("Error", "Sum of total weightages assigned to criteria should be 100%");
                 return false;
@@ -399,72 +404,74 @@
             if (!$("#managerComment").val()) {
                 $("#managerCommentValidationmessage").text("Enter main comment");
                 return false;
-            } else if (comments < 1) {
-                $("#criterisCommentValidationmessage").text("Enter at least one criteria comment");
+            }
+            else if (comments < 1) {
+                $("#criterisCommentValidationmessage").parent().show();
+                $("#criterisCommentValidationmessage").text("Enter at least one criteria comment")
                 return false;
             } else {
                 swal({
-                        title: "Submit Nomination",
-                        text: "Do you want to nominate this candidate?",
-                        type: "info",
-                        showCancelButton: true,
-                        confirmButtonColor: "#0070b9",
-                        confirmButtonText: "Yes!",
-                        cancelButtonText: "No!",
-                        closeOnConfirm: false,
-                        closeOnCancel: false
-                    },
+                    title: "Submit Nomination",
+                    text: "Do you want to nominate this candidate?",
+                    type: "info",
+                    showCancelButton: true,
+                    confirmButtonColor: "#0070b9",
+                    confirmButtonText: "Yes!",
+                    cancelButtonText: "No!",
+                    closeOnConfirm: false,
+                    closeOnCancel: false
+                },
                     function(isConfirm) {
-                        if (isConfirm) {
-                            var modelbjectToSend = $('#addNominationForm').serialize() + '&' + $.param({ 'submit': "Submit" }, true);
+                   if (isConfirm) {
+                       var modelbjectToSend = $('#addNominationForm').serialize() + '&' + $.param({ 'submit': "Submit" }, true);
 
-                            $.ajax({
-                                type: 'post',
-                                url: '@Url.Action("AddNomination", "Nomination")',
-                                dataType: 'json',
-                                async: false,
-                                data: modelbjectToSend,
+                       $.ajax({
+                           type: 'post',
+                           url: '@Url.Action("AddNomination", "Nomination")',
+                           dataType: 'json',
+                           async: false,
+                           data: modelbjectToSend,
                                 success: function(data) {
-                                    swal(data.ErrorMessage);
-                                    if (data.nominationExceed) {
-                                        swal({
-                                                title: "Error",
-                                                text: data.message,
-                                                showCancelButton: false,
-                                                confirmButtonColor: "#88a364",
-                                                confirmButtonText: "Ok",
-                                            },
+                               swal(data.ErrorMessage);
+                               if (data.nominationExceed) {
+                                   swal({
+                                       title: "Error",
+                                       text: data.message,
+                                       showCancelButton: false,
+                                       confirmButtonColor: "#88a364",
+                                       confirmButtonText: "Ok",
+                                   },
                                             function() {
-                                                if (isConfirm) {
-                                                    var managerId = $("#ManagerId").val();
-                                                    window.location.href = '/Nomination/GetNominationList';
-                                                }
-                                            });
+                                 if (isConfirm) {
+                                     var managerId = $("#ManagerId").val();
+                                     window.location.href = '/Nomination/GetNominationList';
+                                 }
+                             });
 
                                     } else {
-                                        swal({
-                                                title: "Nomination Submitted!",
-                                                text: "",
-                                                type: "info",
-                                                showCancelButton: false,
-                                                confirmButtonColor: "#88a364",
-                                                confirmButtonText: "Ok",
-                                            },
+                                   swal({
+                                       title: "Nomination Submitted!",
+                                       text: "",
+                                       type: "info",
+                                       showCancelButton: false,
+                                       confirmButtonColor: "#88a364",
+                                       confirmButtonText: "Ok",
+                                   },
                                             function() {
-                                                if (isConfirm) {
-                                                    var managerId = $("#ManagerId").val();
-                                                    window.location.href = '/Nomination/GetNominationList';
-                                                }
-                                            });
-                                    }
+                                  if (isConfirm) {
+                                      var managerId = $("#ManagerId").val();
+                                      window.location.href = '/Nomination/GetNominationList';
+                                  }
+                              });
+                               }
 
 
-                                },
+                           },
                                 error: function(error) {
-                                    debugger;
-                                    if (error.responseText != null && error.responseText != undefined && error.responseText != '') {
-                                        swal("Error", error.responseText.replace(/['"]+/g, ''));
-                                    }
+                               debugger;
+                               if (error.responseText != null && error.responseText != undefined && error.responseText != '') {
+                                   swal("Error", error.responseText.replace(/['"]+/g, ''));
+                               }
                                else {
                                    swal("Error", "Oops! Something wrong happened..");
                                }
@@ -567,6 +574,7 @@
     $("#managerComment").on('click', function () { $("#managerCommentValidationmessage").text("") });
 
     function moveToNominationStep(stepNumber, toBeValidated) {
+        //debugger;
         if (toBeValidated) {
             if (!$('#addNominationForm').valid()) {
                 return false;

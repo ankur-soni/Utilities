@@ -36,8 +36,8 @@
                     Value=Convert.ToString(TestStatus.Submitted)
                     },
                     new SelectListItem(){
-                    Text=Convert.ToString(TestStatus.Evaluating),
-                    Value=Convert.ToString(TestStatus.Evaluating)
+                    Text=Convert.ToString(TestStatus.Evaluated),
+                    Value=Convert.ToString(TestStatus.Evaluated)
                     },
                     new SelectListItem(){
                     Text=Convert.ToString(TestStatus.Completed),
@@ -73,6 +73,7 @@
             datasource.filter([]);
             $("#FieldFilter").val('');
         });
+
     });
     function showTest(UserId, TestStatus) {
         if (TestStatus == '@TestStatus.NotAssigned.ToString()') {
