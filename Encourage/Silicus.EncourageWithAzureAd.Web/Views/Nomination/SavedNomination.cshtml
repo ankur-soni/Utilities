@@ -4,62 +4,51 @@
     ViewBag.Title = "ReviewNominations";
 }
 
-<style>
-    hr {
-        background-color: black;
-        height: 1px;
-        border: 0;
-        padding-left: 0px;
-    }
 
-    .page-heading {
-        margin-left: 0%;
-    }
-
-    .navbar-minimalize {
-        margin-left: 35%;
-    }
-</style>
-<div class="row border-bottom">
-    <nav class="navbar  " role="navigation" style="margin-bottom: 0">
+<div class="row white-bg header-row">
+    <nav class="" role="navigation" style="margin-bottom: 0">
         <div class="navbar-header">
             <a class="navbar-minimalize minimalize-styl-2 btn btn-primary " href="#"><i class="fa fa-bars"></i> </a>
         </div>
     </nav>
-</div>
-<div class="row wrapper border-bottom white-bg page-heading border-bottom" style="width:90%;">
-    <div class="col-sm-12">
-        <h1>Nominated Employees</h1>
+    <div class="col-lg-11 col-md-11 col-sm-11">
+        <h1 class="header-name">Nominated Employees</h1>
     </div>
 </div>
-<div class="wrapper wrapper-content animated fadeInRight" style="margin-left:7%;">
-    <div class="row">
-
-        @if (Model.Count() == 0)
-        {
-            <span class="text-danger" style="font-size:20px">No employees are nominated..</span>
-        }
-        else
-        {
-            <div>
-                <ul class="nav nav-tabs">
-                    <li class="active"><a id="current-tab" data-toggle="tab" href="#currentMonth">Current</a></li>
-                    <li><a id="historical-tab" data-toggle="tab" href="#historical">Historical</a></li>
-                </ul>
-            </div>
-
-            <div class="tab-content">
-                <hr style="margin-top:0px;height:2px;margin-left:0px; width:85%;" />
-
-                <div id="currentMonth" class="tab-pane fade in active">
-                    @Html.Partial("~/Views/Nomination/Shared/_savedNominationList.cshtml", Model)
+<div class="row">
+    <div class="col-lg-12 col-md-12 col-sm-12">
+        <div class="box M-T15">
+            @if (Model.Count() == 0)
+            {
+                <div class="row">
+                    <div class="col-sm-12">
+                        <div class="alert alert-danger">
+                            <span class="text-danger" style="font-size:20px">No employees are nominated..</span>
+                        </div>
+                    </div>
                 </div>
+            }
+            else
+            {
+                <div class="sttabs tabs-style-linebox">
+                    <nav>
+                        <ul>
+                            <li class="active"><a id="current-tab" data-toggle="tab" href="#currentMonth"><span>Current</span></a></li>
+                            <li><a id="historical-tab" data-toggle="tab" href="#historical"><span>Historical</span></a></li>
 
-                <div id="historical" class="tab-pane fade">
-                    Content yet to come..
+                        </ul>
+                    </nav>
+                    <div class="tab-content content-wrap text-center">
+                        <section id="currentMonth" class="tab-pane fade in active">
+                            @Html.Partial("~/Views/Nomination/Shared/_savedNominationList.cshtml", Model)
+                        </section>
+                        <section id="historical" class="tab-pane fade">
+                            <p>Content yet to come..</p>
+                        </section>
+                    </div><!-- /content -->
                 </div>
-            </div>
-        }
+            }
+        </div>
     </div>
 </div>
 
@@ -97,5 +86,5 @@
                 console.log(error);
             }
         });
-    })
+    });
 </script>
