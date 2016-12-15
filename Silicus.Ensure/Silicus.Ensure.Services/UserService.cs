@@ -3,6 +3,7 @@ using System.Linq;
 using Silicus.Ensure.Entities;
 using Silicus.Ensure.Models.DataObjects;
 using Silicus.Ensure.Services.Interfaces;
+using Silicus.Ensure.Models.Constants;
 
 namespace Silicus.Ensure.Services
 {
@@ -28,7 +29,14 @@ namespace Silicus.Ensure.Services
 
         public void Update(User User)
         {
-            if (User.FirstName != null && User.Address != null && User.LastName != null && User.Role != null)
+            if (User.Role != null && User.Role.ToLower() == RoleName.Candidate.ToString().ToLower())
+            {
+                if (User.FirstName != null && User.Address != null && User.LastName != null)
+                {
+                    _context.Update(User);
+                }
+            }
+            else if (User.Role != null && User.Role.ToLower() == RoleName.Admin.ToString().ToLower())
             {
                 _context.Update(User);
             }

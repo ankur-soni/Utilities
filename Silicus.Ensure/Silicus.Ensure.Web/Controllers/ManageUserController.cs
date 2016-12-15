@@ -62,25 +62,43 @@ namespace Silicus.Ensure.Web.Controllers
             return View();
         }
 
+        public ActionResult LoadView(int UserId, string UserRoleName)
+        {
+            string viewName = "";
+            UserViewModel userViewModel = SetUserModel(UserId, UserRoleName);
+            if (UserRoleName.ToLower() == RoleName.Admin.ToString().ToLower() || UserRoleName.ToLower() == RoleName.Panel.ToString().ToLower())
+                viewName = "_partialAddUserView";
+            else if (UserRoleName.ToLower() == RoleName.Candidate.ToString().ToLower())
+                viewName = "_partialAddCandidateUserView";
+
+            return View(viewName, userViewModel);
+        }
+
         public ActionResult AddUser(int UserId, string RoleN)
         {
-            UserViewModel currUser = new UserViewModel();
-            currUser.UserId = UserId;
+            return View(SetUserModel(UserId, RoleN));
+        }
 
-            if (UserId != 0)
+        private UserViewModel SetUserModel(int UserId, string UserRoleName)
+        {
+            UserViewModel userViewModel = new UserViewModel();
+            userViewModel.UserId = UserId;
+
+            if (userViewModel.UserId != 0)
             {
                 var userList = _userService.GetUserDetails();
-                var user = userList.FirstOrDefault(x => x.UserId == UserId);
-                currUser = _mappingService.Map<User, UserViewModel>(user);
+                var user = userList.FirstOrDefault(x => x.UserId == userViewModel.UserId);
+                userViewModel = _mappingService.Map<User, UserViewModel>(user);
             }
             else if (TempData["UserViewModel"] != null)
             {
-                currUser = TempData["UserViewModel"] as UserViewModel;
+                userViewModel = TempData["UserViewModel"] as UserViewModel;
             }
 
             var positionDetails = _positionService.GetPositionDetails().OrderBy(model => model.PositionName);
-            currUser.PositionList = positionDetails.ToList();
-            return View(currUser);
+            userViewModel.PositionList = positionDetails.ToList();
+
+            return userViewModel;
         }
 
         [AcceptVerbs(HttpVerbs.Post)]
@@ -116,7 +134,7 @@ namespace Silicus.Ensure.Web.Controllers
 
             }
             ViewBag.UserRoles = RoleManager.Roles.Select(r => new SelectListItem { Text = r.Name, Value = r.Name }).ToList();
-            return RedirectToAction("Dashboard", "Admin");
+            return RedirectToAction("Index");
         }
 
         /// <summary>

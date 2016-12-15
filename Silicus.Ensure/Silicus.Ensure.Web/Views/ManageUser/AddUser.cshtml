@@ -9,22 +9,19 @@
 <div class="main-content">
     @if (Model.UserId != 0)
     {
-        <h2>Edit Panel</h2>
+        <h2>Edit user</h2>
     }
     else
     {
-        <h2>Add Panel</h2>
+        <h2>Add user</h2>
     }
     @using (Html.BeginForm("SaveUser", "ManageUser", FormMethod.Post, new { id = "frmSearchAllNdc" }))
     {
         @Html.HiddenFor(m => m.UserId)
         <div class="fluid mt20">
             <div class="row" style=" margin-bottom:10px;">
-                <div class="alert alert-success" id="messageDiv">
-                    <strong>Error!</strong> <span id="messageContent">@Html.ValidationSummary(true)</span>
-                </div>
                 <div class="col-md-4">
-                    @Html.LabelFor(model => model.Role)<b style="color:Red;">*</b>:
+                    @Html.LabelFor(model => model.Role)<span style='color:red'> *</span>
                 </div>
                 <div class="col-md-4">
                     @(Html.Kendo().DropDownListFor(model => model.Role)
@@ -40,333 +37,92 @@
                     )
                 </div>
             </div>
-            <div id="loadData">
-                <div class="row">
-                    <div class="col-md-4">
-                        @Html.LabelFor(model => model.FirstName)<b style="color:Red;">*</b>:
-                    </div>
-                    <div class="col-md-4">
-                        @Html.TextBoxFor(model => model.FirstName, new { @class = "form-control" })
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-md-4">
-                        @Html.LabelFor(model => model.MiddleName)<b style="color:Red;">*</b>:
-                    </div>
-                    <div class="col-md-4">
-                        @Html.TextBoxFor(model => model.MiddleName, new { @class = "form-control" })
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-md-4">
-                        @Html.LabelFor(model => model.LastName)<b style="color:Red;">*</b>:
-                    </div>
-                    <div class="col-md-4">
-                        @Html.TextBoxFor(model => model.LastName, new { @class = "form-control" })
-                    </div>
-                </div>
-                <div class="row" style="margin-bottom:10px;">
-                    <div class="col-md-4">
-                        <span>Gender:</span><span style="color:red">*</span>
-                    </div>
-                    <div class="col-md-4">
-                        @(Html.Kendo().DropDownListFor(m => m.Gender)
-                .OptionLabel("--Select--")
-                .Name("Gender")
-                .DataTextField("Text")
-                .DataValueField("Value")
-                .BindTo(new List<SelectListItem>
-                    () {
-                    new SelectListItem(){
-                    Text="Male",
-                    Value="Male"
-                    },
-                    new SelectListItem(){
-                    Text="Female",
-                    Value="Female"
-                    }
-                    }).HtmlAttributes(new { style = "width: 100%" }))
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-md-4">
-                        @Html.LabelFor(model => model.Department)<b style="color:Red;">*</b>:
-                    </div>
-                    <div class="col-md-4">
-                        @Html.TextBoxFor(model => model.Department, new { @class = "form-control" })
-                    </div>
-                </div>
-                <div class="row" style=" margin-bottom:10px;">
-                    <div class="col-md-4">
-                        <label for="Position">Position</label><b style="color:Red;">*</b>:
-                    </div>
-                    <div class="col-md-4">
-                        @(Html.Kendo().DropDownListFor(model => model.Position)
-                .OptionLabel("--Select--")
-                .BindTo(Model.PositionList)
-                .DataTextField("PositionName")
-                .DataValueField("PositionName")
-                .Value(Model.Position)
-                .HtmlAttributes(new { style = "width: 100%;border-color: #c5c5c5;" })
-                        )
 
-                    </div>
-                </div>
-                <div class="row candidate">
-                    <div class="col-md-4">
-                        @Html.LabelFor(model => model.Experience)<b style="color:Red;">*</b>:
-                    </div>
-                    <div class="col-md-4">
-                        @Html.TextBoxFor(model => model.Experience, new { @class = "form-control" })
-                    </div>
-                </div>
-                <div class="row candidate">
-                    <div class="col-md-4">
-                        @Html.LabelFor(model => model.CurrentEmployer)<b style="color:Red;">*</b>:
-                    </div>
-                    <div class="col-md-4">
-                        @Html.TextBoxFor(model => model.CurrentEmployer, new { @class = "form-control" })
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-md-4">
-                        @Html.LabelFor(model => model.Email)<b style="color:Red;">*</b>:
-                    </div>
-                    <div class="col-md-4">
-                        @Html.TextBoxFor(model => model.Email, new { @class = "form-control" })
-                        @Html.ValidationMessageFor(m => m.Email, "", new { @class = "redText" })
-                    </div>
-                </div>
-                <div class="row candidate">
-                    <div class="col-md-4">
-                        @Html.LabelFor(model => model.PrimaryMobileNumber)<b style="color:Red;">*</b>:
-                    </div>
-                    <div class="col-md-4">
-                        @Html.TextBoxFor(model => model.PrimaryMobileNumber, new { @class = "form-control" })
-                    </div>
-                </div>
-                <div class="row candidate">
-                    <div class="col-md-4">
-                        @Html.LabelFor(model => model.SecondaryMobileNumber)<b style="color:Red;">*</b>:
-                    </div>
-                    <div class="col-md-4">
-                        @Html.TextBoxFor(model => model.SecondaryMobileNumber, new { @class = "form-control" })
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-md-4"></div>
-                    <div class="col-md-2 col-md-offset-4">
-                        @(Html.Kendo().Button()
+            <div id="loadView">
+            </div>
+            <div class="row">
+                <div class="col-md-4"></div>
+                <div class="col-md-2 col-md-offset-4">
+                    @(Html.Kendo().Button()
                 .Name("btnCancel").Icon("cancel")
                 .HtmlAttributes(new { type = "button" })
                 .Content("Cancel")
                 .Events(ev => ev.Click("onCancelClick")))
 
-                        @(Html.Kendo().Button()
+                    @(Html.Kendo().Button()
                 .Name("btnSave").Icon("tick")
                 .HtmlAttributes(new { type = "submit" })
                 .Content("Save"))
-                    </div>
                 </div>
             </div>
             <script type="text/javascript">
-                $(document).ready(function(){
-                    $('#loadData').fadeOut();
-                    if("@Model.Role"!='')
-                    {
-                        HideShow("@Model.Role");
+                $(document).ready(function () {
+                    if ("@Model.Role" != '') {
+                        loadView("@Model.Role");
                     }
                 });
 
-                function onDataBound() {
-                    var dataItem = this.dataItem();
-                    HideShow(dataItem['Text']);
-                }
+                //register custom validation rules
+                (function ($, kendo) {
+                    $.extend(true, kendo.ui.validator, {
+                        rules: { // custom rules
+                            experiencevalidation: function (input, params) {
+                                if (input.is("[name='Experience']")) {
+                                    if( input.val() != ""&&input.val() <=30)
+                                    {
+                                        return true;
+                                    }
+                                    input.attr("data-experiencevalidation-msg", "Experience should not be greater than 30!");
+                                    return false;
+                                }
+                                return true;
+                            }
+                        },
+                        messages: { //custom rules messages
+                            experiencevalidation: function (input) {
+                                // return the message text
+                                return input.attr("data-val-experiencevalidation");
+                            }
+                        }
+                    });
+                })(jQuery, kendo);
 
-                function HideShow(Role)
+                $(function () {
+                    $("form").kendoValidator();
+                });
+
+                function loadView(roleName)
                 {
-                    if (Role == '@RoleName.Candidate.ToString()')
-                    {
-                        $('#loadData').fadeIn();
-                        $('.candidate').fadeIn();
-                    }
-                    else
-                    {
-                        $('#loadData').fadeIn();
-                        $('.candidate').fadeOut();
-                    }
-                }
-
-                function onCancelClick() {
-                    window.location = '@Url.Action("Dashboard", "Admin")';
+                    $.ajax({
+                        async:false,
+                        type: "POST",
+                        url: '/ManageUser/LoadView',
+                        contentType: 'application/json',
+                        data: JSON.stringify({ 'UserRoleName':roleName,'UserId':@Model.UserId}),
+                        success: function(data){
+                            $('#loadView').html(data);
+                        },
+                    });
                 }
 
                 function onSelect(e) {
                     var dataItem = this.dataItem();
-                    HideShow(dataItem['Text']);
+                    if(dataItem['Text']!='Select a role')
+                    {loadView(dataItem['Text']);}
+                    else{$('#loadView').html('');}
                 };
 
-                $('#PrimaryMobileNumber').blur(function(e) {
-                    if(!validatePhone($('#PrimaryMobileNumber').val()))
-                    {
-                        ShowMessage('Enter correct primary mobile number!', 0);
-                    }
-                });
-                $('#SecondaryMobileNumber').blur(function(e) {
-                    if(!validatePhone($('#SecondaryMobileNumber').val()))
-                    {
-                        ShowMessage('Enter correct secondary mobile number!', 0);
-                    }
-                });
-
-                $('#Email').blur(function(e) {
-                    $.ajax({
-                        async:false,
-                        type: "POST",
-                        url: '/User/IsDuplicateEmail',
-                        contentType: 'application/json',
-                        data: JSON.stringify({ 'Email':$("#Email").val(),'UserId':@Model.UserId}),
-                        success: function(data){
-                            if(!data)
-                                ShowMessage('Email id already exists!', 0);
-                        },
-                    });
-                });
-                $('#Email').change('input', function (e) {
-                    if ($(this).val() == '') {
-                        ShowMessage("Email can't be blank.", 0);
-                    }
-                    $('.redText').css('display', 'none')
-                    if ($('.redText').find("span").html() != undefined && $('.redText').find("span").html() != '') {
-                        ShowMessage($('.redText').find("span").html(), 0);
-                    }
-                });
-
-                $(document).ajaxComplete(function () {
-                    $('.redText').css('display', 'none')
-                    if ($('.redText').find("span").html() != undefined && $('.redText').find("span").html() != '') {
-                        ShowMessage($('.redText').find("span").html(), 0);
-                    }
-                });
-
-                function validatePhone(txtPhone) {
-                    var filter = /^[0-9-+]+$/;
-                    if (filter.test(txtPhone)) {
-                        return true;
-                    }
-                    else {
-                        return false;
-                    }
+                function onDataBound() {
+                    var dataItem = this.dataItem();
+                    if(dataItem['Text']!='Select a role')
+                    {loadView(dataItem['Text']);}
+                    else{$('#loadView').html('');}
                 }
 
-                $(document).ready(function () {
-                    if ('@Model.ErrorMessage' != '') {
-                        ShowMessage("@Model.ErrorMessage", 0);
-                    }
-                    else {
-
-                        if ($('.validation-summary-errors>ul>li').is(':empty')) { $("#messageDiv").hide(); }
-                        else if ($('.validation-summary-errors>ul>li').text() != "")
-                        { ShowMessage($('.validation-summary-errors>ul>li').text(), 0); }
-                        else { $("#messageDiv").hide(); }
-
-                    }
-                    $("#btnSave").click(function (e) {
-                        if (validateTag() == false) {
-                            e.preventDefault();
-                        }
-                        else {
-                            $("#frmSearchAllNdc").submit();
-                        }
-                    });
-                    $(function () {
-                        $("#FirstName").keypress(function (evt) {
-                            var cc = (evt.charCode) ? evt.charCode : ((evt.which) ? evt.which : evt.keyCode);
-                            if (cc == 32)
-                                return false;
-                        });
-                    });
-                });
-
-                function validateTag() {
-                    if ($("#FirstName").val().trim().length == 0) {
-                        $("#FirstName").focus();
-                        ShowMessage("first name can't be blank.", 0);
-                        return false;
-                    }
-                    else if ($("#MiddleName").val().trim().length == 0) {
-                        $("#MiddleName").focus();
-                        ShowMessage("Middle name  can't be blank.", 0);
-                        return false;
-                    }
-                    else if ($("#LastName").val().trim().length == 0) {
-                        $("#LastName").focus();
-                        ShowMessage("Last name  can't be blank.", 0);
-                        return false;
-                    }
-                    else if ($("#Gender").val().trim().length == 0) {
-                        $("#Gender").focus();
-                        ShowMessage("Gender can't be blank.", 0);
-                        return false;
-                    }
-                    else if ($("#Department").val().trim().length == 0) {
-                        $("#Department").focus();
-                        ShowMessage("Department can't be blank.", 0);
-                        return false;
-                    }
-                    else if ($("#Position").val().trim().length == 0) {
-                        $("#Position").focus();
-                        ShowMessage("Position can't be blank.", 0);
-                        return false;
-                    }
-                    else if ($("#Experience").val().trim().length == 0 &&  $('#Role').val()=="@RoleName.Candidate.ToString()") {
-                        $("#Experience").focus();
-                        ShowMessage("Experience can't be blank.", 0);
-                        return false;
-                    }
-                    else if ($("#CurrentEmployer").val().trim().length == 0 &&  $('#Role').val()=="@RoleName.Candidate.ToString()") {
-                        $("#CurrentEmployer").focus();
-                        ShowMessage("Current employer can't be blank.", 0);
-                        return false;
-                    }
-                    else if ($("#Email").val().trim().length == 0) {
-                        $("#Email").focus();
-                        ShowMessage("Email can't be blank.", 0);
-                        return false;
-                    }
-                    else if ($("#PrimaryMobileNumber").val().trim().length == 0 &&  $('#Role').val()=="@RoleName.Candidate.ToString()") {
-                        $("#PrimaryMobileNumber").focus();
-                        ShowMessage("Primary mobile number can't be blank.", 0);
-                        return false;
-                    }
-                    else if ($("#SecondaryMobileNumber").val().trim().length == 0 &&  $('#Role').val()=="@RoleName.Candidate.ToString()") {
-                        $("#SecondaryMobileNumber").focus();
-                        ShowMessage("Secondary mobile number can't be blank.", 0);
-                        return false;
-                    }
-                    if ($('#Email').val().length != 0) {
-                        $.ajax({
-                            async:false,
-                            type: "POST",
-                            url: '/User/IsDuplicateEmail',
-                            contentType: 'application/json',
-                            data: JSON.stringify({ 'Email':$("#Email").val(),'UserId':@Model.UserId}),
-                            success: function(data){
-                                if(!data) {
-                                    ShowMessage('Email id already exists!', 0);
-                                    return false;
-                                }
-                                else
-                                {
-                                    return true;
-                                }
-                            },
-                        });
-                    }
+                function onCancelClick() {
+                    window.location = '@Url.Action("Index", "ManageUser")';
                 }
-
             </script>
-
             <style>
                 .height {
                     height: 250px;

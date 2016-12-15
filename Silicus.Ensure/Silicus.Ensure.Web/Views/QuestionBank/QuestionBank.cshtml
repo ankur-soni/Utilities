@@ -20,7 +20,7 @@
               {
                   columns.Bound(q => q.QuestionDescription).Encoded(false).Width(200);
                   columns.Bound(q => q.QuestionType).Width(100);
-                  columns.Bound(q => q.Tag).Width(150).Title("Tags");
+                  columns.Bound(q => q.Tag).Title("Tags").Width(150);
                   columns.Bound(q => q.ProficiencyLevel).Width(100);
                   columns.Bound(q => q.Id).ClientTemplate(@"
                     <a href='/QuestionBank/EditQuestion?questionId=#=Id#' class='k-button k-button-icontext k-grid-edit'><span class='k-icon k-edit'></span>Edit</a>
