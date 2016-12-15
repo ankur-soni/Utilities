@@ -104,7 +104,7 @@ namespace Silicus.EncourageWithAzureAd.Web.Controllers
             ViewBag.Resources = new SelectList(new List<User>(), "Id", "DisplayName");
 
             bool isLocked = _nominationService.IsNominationLocked();
-            var model = new NominationViewModel() { IsLocked = isLocked };
+            var model = new NominationViewModel { IsLocked = isLocked };
 
             return View(model);
         }
@@ -130,7 +130,7 @@ namespace Silicus.EncourageWithAzureAd.Web.Controllers
                 {
                     // Response.StatusCode = (int)HttpStatusCode.BadRequest;
                     _logger.Log("Nomination-AddNomination-POST-try-if noOfNominationForManager <= countOfNomination");
-                    return Json(new { success = true, nominationExceed = true, message = "Only " + noOfNominationForManager.ToString() + " nominations are allowed per month!" }, JsonRequestBehavior.AllowGet);
+                    return Json(new { success = true, nominationExceed = true, message = "Only " + noOfNominationForManager + " nominations are allowed per month!" }, JsonRequestBehavior.AllowGet);
                     //      return Json("Only " + noOfNominationForManager.ToString() + " nominations are allowed per month!", MediaTypeNames.Text.Plain);
                 }
 
@@ -256,23 +256,15 @@ namespace Silicus.EncourageWithAzureAd.Web.Controllers
 
             foreach (var criteria in criterias)
             {
-                string addedComment = string.Empty;
-                int rating = 0;
+                var managerComment = savedNomination.ManagerComments.FirstOrDefault(c => c.CriteriaId == criteria.Id);
 
-                foreach (var comment in savedNomination.ManagerComments)
-                {
-                    if (criteria.Id == comment.CriteriaId)
-                    {
-                        addedComment = comment.Comment;
-                        rating = comment.Rating;
-                    }
-                }
-                nominationViewModel.Comments.Add(new CriteriaCommentViewModel()
+                nominationViewModel.Comments.Add(new CriteriaCommentViewModel
                 {
                     Id = criteria.Id,
                     title = criteria.Title,
-                    Comment = addedComment,
-                    Rating = rating
+                    Comment = managerComment != null ? managerComment.Comment : string.Empty,
+                    Rating = managerComment != null ? managerComment.Rating : 0,
+                    Weightage = managerComment != null ? managerComment.Weightage : 0
                 });
             }
             return View("EditNomination", nominationViewModel);
@@ -299,7 +291,7 @@ namespace Silicus.EncourageWithAzureAd.Web.Controllers
             {
                 if (comment.Comment != null || comment.Rating != 0)
                 {
-                    nomination.ManagerComments.Add(new ManagerComment()
+                    nomination.ManagerComments.Add(new ManagerComment
                     {
                         CriteriaId = comment.Id,
                         Comment = comment.Comment != null ? _textInfo.ToTitleCase(comment.Comment) : "",
@@ -324,7 +316,7 @@ namespace Silicus.EncourageWithAzureAd.Web.Controllers
             _logger.Log("Nomination-ResourcesInProject-POST");
             
             var name = User.Identity.Name;
-            var projects = _awardService.GetProjectsUnderCurrentUserAsManager(name);
+            _awardService.GetProjectsUnderCurrentUserAsManager(name);
             var managerId = _awardService.GetUserIdFromEmail(name);
             var usersInEngagement = _awardService.GetResourcesInEngagement(engagementId, managerId, awardId);
             return Json(usersInEngagement, JsonRequestBehavior.AllowGet);
@@ -381,20 +373,27 @@ namespace Silicus.EncourageWithAzureAd.Web.Controllers
 
             foreach (var nomination in nominations)
             {
-                var awardName = _encourageDatabaseContext.Query<Award>().Where(a => a.Id == nomination.AwardId).FirstOrDefault().Code;
-                var nomineeName = _commonDbContext.Query<User>().Where(u => u.ID == nomination.UserId).FirstOrDefault();
-                var nominationTime = _encourageDatabaseContext.Query<Nomination>().Where(n => n.Id == nomination.Id).FirstOrDefault().NominationDate;
-                string nominationTimeToDisplay = DateTimeFormatInfo.CurrentInfo.GetAbbreviatedMonthName(nominationTime.Value.Month) + "-" + nominationTime.Value.Year.ToString();
-                var reviewNominationViewModel = new NominationListViewModel()
+                var award = _encourageDatabaseContext.Query<Award>().FirstOrDefault(a => a.Id == nomination.AwardId);
+                if (award != null)
                 {
-                    Intials = nomineeName.FirstName.Substring(0, 1) + "" + nomineeName.LastName.Substring(0, 1),
-                    AwardName = awardName,
-                    DisplayName = nomineeName.DisplayName,
-                    NominationTime = nominationTimeToDisplay,
-                    Id = nomination.Id,
-                    IsSubmitted = nomination.IsSubmitted
-                };
-                savedNominations.Add(reviewNominationViewModel);
+                    var awardName = award.Code;
+                    var nomineeName = _commonDbContext.Query<User>().FirstOrDefault(u => u.ID == nomination.UserId);
+                        var nominationTime = nomination.NominationDate;
+                        string nominationTimeToDisplay = DateTimeFormatInfo.CurrentInfo.GetAbbreviatedMonthName(nominationTime.Value.Month) + "-" + nominationTime.Value.Year;
+                    if (nomineeName != null)
+                    {
+                        var reviewNominationViewModel = new NominationListViewModel()
+                        {
+                            Intials = nomineeName.FirstName.Substring(0, 1) + "" + nomineeName.LastName.Substring(0, 1),
+                            AwardName = awardName,
+                            DisplayName = nomineeName.DisplayName,
+                            NominationTime = nominationTimeToDisplay,
+                            Id = nomination.Id,
+                            IsSubmitted = nomination.IsSubmitted
+                        };
+                        savedNominations.Add(reviewNominationViewModel);
+                    }
+                }
             }
             return View(savedNominations);
         }
@@ -491,8 +490,9 @@ namespace Silicus.EncourageWithAzureAd.Web.Controllers
                 reviewNominationViewModel.Comments.Add(
                     new ReviewerCommentViewModel()
                     {
+                        CriteriaId = item.CriteriaId,
                         Comment = item.Comment,
-                        Credit = Convert.ToBoolean(item.Credit),
+                        Credit = Convert.ToInt32(item.Credit),
                         Id = item.Id,
                     });
                 if (item.Credit == 1)
@@ -554,7 +554,7 @@ namespace Silicus.EncourageWithAzureAd.Web.Controllers
                         new ReviewerCommentViewModel()
                         {
                             Comment = d.Comment,
-                            Credit = Convert.ToBoolean(d.Credit),
+                            Credit = Convert.ToInt32(d.Credit),
                             Id = d.Id,
                         });
                     if (d.Credit == 1)
@@ -612,7 +612,7 @@ namespace Silicus.EncourageWithAzureAd.Web.Controllers
                     {
                         NominationId = model.NominationId,
                         ReviewerId = model.ReviewerId,
-                        CriteriaId = item.Id,
+                        CriteriaId = item.CriteriaId,
                         Comment = item.Comment != null ? _textInfo.ToTitleCase(item.Comment) : "",
                         Credit = Convert.ToInt32(item.Credit),
                         ReviewId = review.Id
@@ -749,9 +749,9 @@ namespace Silicus.EncourageWithAzureAd.Web.Controllers
                 {
                     NominationId = model.NominationId,
                     ReviewerId = model.ReviewerId,
-                    CriteriaId = item.Id,
+                    CriteriaId = item.CriteriaId,
                     Comment = item.Comment != null ? _textInfo.ToTitleCase(item.Comment) : "",
-                    Credit = Convert.ToInt32(item.Credit),
+                    Credit = item.Credit,
                     ReviewId = review.Id
                 };
                 _nominationService.AddReviewerCommentsForCurrentNomination(revrComment);

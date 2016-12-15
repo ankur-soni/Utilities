@@ -12,11 +12,11 @@ namespace Silicus.EncourageWithAzureAd.Web.Models
         public string NominationTime { get; set; }
         public string AwardName { get; set; }
         public string Intials { get; set; }
-        public int Credits { get; set; }
+        public decimal Credits { get; set; }
         public bool IsShortlisted { get; set; }
         public bool IsWinner { get; set; }
-        public int numberOfReviews { get; set; }
-        public float averageCredits { get; set; }
+        public int NumberOfReviews { get; set; }
+        public decimal AverageCredits { get; set; }
         public int NominatedMonth { get; set; }
     
     }

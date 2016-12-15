@@ -37,7 +37,7 @@
 
     @using (Html.BeginForm())
     {
-        @Html.HiddenFor(model => model.nominationId, htmlAttributes: new { id = "nominationId" })
+        @Html.HiddenFor(model => model.NominationId, htmlAttributes: new { id = "nominationId" })
 
         <table class="table table-hover issue-tracker white-bg" style="width:80%">
             <thead>
@@ -45,7 +45,7 @@
                     <td align="center" colspan="4" style="font-weight:bold">
                         <label>
                             Review For:
-                            @Html.DisplayFor(modelItem => modelItem.userName)
+                            @Html.DisplayFor(modelItem => modelItem.UserName)
 
                         </label>
                     </td>
@@ -55,7 +55,7 @@
                         <label> Project/Department:</label>
                     </td>
                     <td>
-                        @Html.DisplayFor(modelItem => modelItem.projectOrDepartment)
+                        @Html.DisplayFor(modelItem => modelItem.ProjectOrDepartment)
                     </td>
 
                 </tr>
@@ -72,7 +72,7 @@
                         <label>Credits</label>
                     </td>
                     <td>
-                        @Html.DisplayFor(modelItem => modelItem.totalCredits)
+                        @Html.DisplayFor(modelItem => modelItem.TotalCredits)
                     </td>
                 </tr>
             </thead>
@@ -85,11 +85,11 @@
                 </th>
             </tr>
             <tr class="white-bg">
-                <td class="more" style="word-wrap: break-word;"><div>@Model.nominationComment</div></td>
+                <td class="more" style="word-wrap: break-word;"><div>@Model.NominationComment</div></td>
             </tr>
         </table>
 
-        foreach (var reviewer in Model.reviewerComments)
+        foreach (var reviewer in Model.ReviewerComments)
         {
             var creditCount = 0;
             <div class="white-bg" style="width:80%;">
@@ -118,10 +118,10 @@
 
                                 @*<td class="col-md-3">*@
                                 @{
-                                    var commentObj = Model.ManagerComments.Where(model => model.CriteriaId == @item.Id).FirstOrDefault();
+                                    var commentObj = Model.ManagerComments.FirstOrDefault(model => model.CriteriaId == @item.Id);
                                     if (commentObj != null && !string.IsNullOrEmpty(commentObj.Comment))
                                     {
-                                        <td class="more col-md-4" style="word-break:break-all">@commentObj.Comment</td>
+                                        <td class="more col-md-2" style="word-break:break-all">@commentObj.Comment</td>
                                         <td class="col-md-2">
                                             @*<input id="input-21a" value="@commentObj.Rating" type="number" data-star-captions="{}" data-default-caption="{rating} Stars" class="rating rating-loading" data-show-clear="false" data-show-caption="false" data-symbol="*" min=0 max=5 step=1 data-size="xs" readonly="readonly">*@
 
@@ -137,25 +137,25 @@
                                     }
                                     else
                                     {
-                                        <td class="more col-md-4" style="word-break:break-all"></td>
-                                        <td>
-                                            @*<input id="input-21a" value="0" type="number" data-star-captions="{}" data-default-caption="{rating} Stars" class="rating rating-loading" data-show-clear="false" data-show-caption="false" data-symbol="*" min=0 max=5 step=1 data-size="xs" readonly="readonly">*@
-                                            @Html.DropDownList("rating_" + item.Id,
-                                                 Enumerable.Range(1, 5).
-                                                 Select(j => new SelectListItem
-                                                 {
-                                                     Value = j.ToString(),
-                                                     Text = j.ToString()
-                                                 }), "", new { @class = "example-square", @autocomplete = "off", @value = 0 })
-                                        </td>
+                                        <td class="more col-md-2" style="word-break:break-all"></td>
+                                            <td class="col-md-2">
+                                                @*<input id="input-21a" value="0" type="number" data-star-captions="{}" data-default-caption="{rating} Stars" class="rating rating-loading" data-show-clear="false" data-show-caption="false" data-symbol="*" min=0 max=5 step=1 data-size="xs" readonly="readonly">*@
+                                                @Html.DropDownList("rating_" + item.Id,
+                                                                                         Enumerable.Range(1, 5).
+                                                                                         Select(j => new SelectListItem
+                                                                                         {
+                                                                                             Value = j.ToString(),
+                                                                                             Text = j.ToString()
+                                                                                         }), "", new { @class = "example-square", @autocomplete = "off", @value = 0 })
+                                            </td>
                                     }
-                                }
+}
                                 @*<td class="col-md-3">*@
                                 @{
-                                    var reviewObj = reviewer.Where(model => model.CriteriaID == @item.Id).FirstOrDefault();
+                                    var reviewObj = reviewer.FirstOrDefault(model => model.CriteriaId == @item.Id);
                                     if (reviewObj != null && !string.IsNullOrEmpty(reviewObj.Comment))
                                     {
-                                        <td class="more col-md-3" style="word-break:break-all">@reviewObj.Comment</td>
+                                        <td class="more col-md-2" style="word-break:break-all">@reviewObj.Comment</td>
 
                                     }
                                     else
@@ -166,26 +166,15 @@
 
                                 <td class="col-md-2 ">
                                     @{
-                                        if (reviewObj != null && !reviewObj.Credit != null)
+                                        if (reviewObj != null)
                                         {
-                                            <div class="switch">
-                                                <div class="onoffswitch">
-                                                    @if (reviewObj.Credit == true)
-                                                    {
-                                                        creditCount++;
-                                                        <input type="checkbox" value="true" length="0" disabled="disabled" class="onoffswitch-checkbox" id='example @reviewObj.Id' checked>
-                                                    }
-                                                    else
-                                                    {
-                                                        <input type="checkbox" value="true" length="0" disabled="disabled" class="onoffswitch-checkbox" id='example @reviewObj.Id'>
-                                                    }
-
-                                                    <label class="onoffswitch-label" for="example @reviewObj.Id" style="cursor:not-allowed;">
-                                                        <span class="onoffswitch-inner"></span>
-                                                        <span class="onoffswitch-switch"></span>
-                                                    </label>
-                                                </div>
-                                            </div>
+                                            @Html.DropDownList("reviewRating_" + item.Id,
+                                                            Enumerable.Range(1, 5).
+                                                            Select(j => new SelectListItem
+                                                            {
+                                                                Value = j.ToString(),
+                                                                Text = j.ToString()
+                                                            }), "", new { @class = "example-square", @autocomplete = "off", @value = reviewObj.Credit })
                                         }
                                     }
                                 </td>
@@ -193,11 +182,18 @@
                                         }
 
                         <tr>
-                            <td align="right" colspan="3" style="font-weight:bold">
-                                @Html.Label("Total Credits:", new { style = "color: #0067AA;" })
+                            <td align="right" colspan="4" style="font-weight:bold">
+                                @Html.Label("Average Ratings:", new { style = "color: #0067AA;" })
                             </td>
                             <td>
-                                @creditCount
+                                @if (reviewer != null && reviewer.Any())
+                                {
+                                    @(reviewer.Average(a => a.Credit))
+                                }
+                                else
+                                {
+                                    @:0.00
+                                }
                             </td>
                         </tr>
                     </tbody>
