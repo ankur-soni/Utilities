@@ -192,7 +192,7 @@
                     }
                 });
                 JSON.stringify(checkvals);
-                alert(checkvals);
+                //alert(checkvals);
                 $.ajax({
                     type: 'post',
                     async: false,
@@ -257,7 +257,7 @@
     }
 
     function CheckAssign(status, id, TestSuiteId, UserId) {
-        if (status == '@TestStatus.Submitted.ToString()' && id == 1) {
+        if (status == '@TestStatus.Assigned.ToString()' && id == 1) {
             window.location.href = "/Admin/ViewQuestion?UserId=" + UserId + '&TestSuiteId=' + TestSuiteId;
             return false;
         }

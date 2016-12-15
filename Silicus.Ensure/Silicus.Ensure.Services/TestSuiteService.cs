@@ -81,10 +81,10 @@ namespace Silicus.Ensure.Services
 
         public UserTestSuite GetUserTestSuiteByUserId(int userId)
         {
-            return _context.Query<UserTestSuite>().Where(x => x.UserId == userId
-                && (x.StatusId == Convert.ToUInt32(TestStatus.Assigned) ||
-                x.StatusId == Convert.ToUInt32(TestStatus.Submitted) ||
-                x.StatusId == Convert.ToUInt32(TestStatus.Evaluated))).FirstOrDefault();
+            return _context.Query<UserTestSuite>().Where(x => x.UserId == userId).FirstOrDefault();
+                //&& (x.StatusId == Convert.ToUInt32(TestStatus.Assigned) ||
+                //x.StatusId == Convert.ToUInt32(TestStatus.Submitted) ||
+                //x.StatusId == Convert.ToUInt32(TestStatus.Evaluated)
         }
 
         public UserTestSuite GetUserTestSuiteId(int userTestSuiteId)

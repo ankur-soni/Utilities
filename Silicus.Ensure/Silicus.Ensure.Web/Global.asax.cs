@@ -23,8 +23,11 @@ namespace Silicus.Ensure.Web
     {
         protected void Application_Start()
         {
+            var logger = new DatabaseLogger(
+               ConfigurationManager.ConnectionStrings["SilicusLoggerDataContext"].ToString(),
+               this.GetType());
+            logger.Log("Application_Start");
             AreaRegistration.RegisterAllAreas();
-
             WebApiConfig.Register(GlobalConfiguration.Configuration);
             FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
             RouteConfig.RegisterRoutes(RouteTable.Routes);

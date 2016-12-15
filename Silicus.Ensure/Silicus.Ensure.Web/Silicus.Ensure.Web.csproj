@@ -433,9 +433,8 @@
     <Content Include="Scripts\Bootstrap\3.3.1\bootstrap.min.js" />
     <Content Include="Content\toastr.scss" />
     <Content Include="Content\toastr.less" />
-    <None Include="Properties\PublishProfiles\Ensure - FTP.pubxml" />
-    <None Include="Properties\PublishProfiles\Ensure - Web Deploy.pubxml" />
-    <Content Include="Properties\PublishProfiles\Ensure.PublishSettings" />
+    <None Include="Properties\PublishProfiles\ensure - FTP.pubxml" />
+    <None Include="Properties\PublishProfiles\ensure - Web Deploy.pubxml" />
     <None Include="Scripts\jquery-2.1.4.intellisense.js" />
     <Content Include="Scripts\flipclock.js" />
     <Content Include="Scripts\flipclock.min.js" />

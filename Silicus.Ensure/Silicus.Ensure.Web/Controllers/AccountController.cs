@@ -159,14 +159,23 @@ namespace Silicus.Ensure.Web.Controllers
 
             if (ModelState.IsValid)
             {
+                _logger.Log("UserName: "+ model.UserName + "Password: " +  model.Password);
                 var loginResult = await SignInManager.PasswordSignInAsync(model.UserName, model.Password, model.RememberMe, shouldLockout: true);
+                _logger.Log("LoginResult: "+loginResult);
                 switch (loginResult)
                 {
                     case SignInStatus.Success:
+                        _logger.Log("Login-Post-Switch-Sucess");
                         var user = await UserManager.FindByNameAsync(model.UserName);
+                        _logger.Log("User: "+user.Email);
                         var isAdmin = await UserManager.IsInRoleAsync(user.Id, "Admin");
+                        _logger.Log(user.Email + " isAdmin: "+isAdmin);
                         var isCandidate = await UserManager.IsInRoleAsync(user.Id, "Candidate");
+                        _logger.Log(user.Email + " isCandidate: " + isCandidate);
+
                         var isPanel = await UserManager.IsInRoleAsync(user.Id, RoleName.Panel.ToString());
+                        _logger.Log(user.Email + " isPanel: " + isPanel);
+
                         return RedirectToLocal(returnUrl, model.UserName, isAdmin, isCandidate, isPanel);
                     case SignInStatus.LockedOut:
                         ModelState.AddModelError("", "User account is locked out. Please contact administrator.");
