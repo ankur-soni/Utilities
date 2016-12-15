@@ -324,12 +324,20 @@
     }
 
     function hideRemainingCharacterText(key) {
-        debugger;
         var text_max = 500;
 
-        var text_length = $('#comment' + key + '').val().length;
+        var commentTextAreaId = '#comment' + key;
+        var text_length = $(commentTextAreaId).val().length;
         var text_remaining = text_max - text_length;
         $('div.textarea' + key + '').html(text_remaining + ' characters remaining').hide();
+
+        if ($(commentTextAreaId).attr("iscommentrequired") == "true") {
+            if ($(commentTextAreaId).val().trim() == "") {
+                $(commentTextAreaId).addClass("noCommentError");
+            } else {
+                $(commentTextAreaId).removeClass("noCommentError");
+            }
+        }
     }
 
 
@@ -389,13 +397,11 @@
                     comments++;
             });
 
-            if (!$("#managerComment").val()) {
-                $("#managerCommentValidationmessage").text("Enter main comment")
-                return false;
-            }
-            else if (comments < 1) {
+            if (comments < 1) {
                 $("#criterisCommentValidationmessage").parent().show();
-                $("#criterisCommentValidationmessage").text("Enter at least one criteria comment")
+                $("#criterisCommentValidationmessage").text("Enter at least one criteria comment");
+                return false;
+            } else if (!checkIfCommentsAreRequired()) {
                 return false;
             }
             else {
@@ -479,7 +485,6 @@
     }
 
     function checkValidationOnSaveDraft() {
-        debugger;
         if ($('#addNominationForm').valid()) {
             swal({
                 title: "Save Nomination",
@@ -586,5 +591,31 @@
         $(nominationStepId).show();
 
         //To move to the next step -- End
+    }
+
+    function checkIfCommentsAreRequired() {
+        var areAllMandatoryCommentsProvided = false;
+        var countOfEmptyComments = 0;
+        var criteriaComments = $("[isCommentRequired]");
+        $.each(criteriaComments, function () {
+            if ($(this).attr("iscommentrequired") == "true") {
+                if ($(this).val().trim() == "") {
+                    $(this).addClass("noCommentError");
+                    countOfEmptyComments++;
+                } else {
+                    $(this).removeClass("noCommentError");
+                }
+            }
+        });
+
+        if (countOfEmptyComments == 0) {
+            areAllMandatoryCommentsProvided = true;
+            $("#criterisCommentValidationmessage").parent().hide();
+            $("#criterisCommentValidationmessage").text("");
+        } else {
+            $("#criterisCommentValidationmessage").parent().show();
+            $("#criterisCommentValidationmessage").text("Criteria Comment is mandatory if rating is provided for the criteria!");
+        }
+        return areAllMandatoryCommentsProvided;
     }
 </script>
