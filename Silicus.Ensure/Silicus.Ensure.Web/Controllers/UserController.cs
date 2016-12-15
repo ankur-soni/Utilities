@@ -140,10 +140,10 @@ namespace Silicus.Ensure.Web.Controllers
                 if (userDetails != null)
                 {
                     var viewUsersRole = await UserManager.GetRolesAsync(userDetails.Id);
-                   // var testSuitId = _testSuiteService.GetUserTestSuiteByUserId(viewModels[j].UserId);
+                    var testSuitId = _testSuiteService.GetUserTestSuiteByUserId(viewModels[j].UserId);
                     viewModels[j].Role = viewUsersRole.FirstOrDefault();
                     viewModels[j].IsAdmin = userInRole;
-                    //viewModels[j].TestSuiteId = testSuitId != null ? testSuitId.TestSuiteId : 0;
+                    viewModels[j].TestSuiteId = testSuitId != null ? testSuitId.TestSuiteId : 0;
                 }
             }
 
