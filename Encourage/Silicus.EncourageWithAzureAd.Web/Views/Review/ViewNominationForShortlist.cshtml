@@ -159,10 +159,14 @@
                         }
 
                         <tr>
-                            <td align="right" colspan="4" style="font-weight:bold">
-                                @Html.Label("Average Ratings:", new { style = "color: #0067AA;" })
+                            <td></td>
+                            <td></td>
+                            <td style="text-align:center;color:#0063A7;font-weight:bold">Total Points:</td>
+                            <td> @(Model.ManagerComments.Sum(a => (a.Rating * a.Weightage / 100.0))) </td>
+                            <td style="text-align:center;color:#0063A7;font-weight:bold">
+                                Average Ratings:
                             </td>
-                            <td>
+                            <td id="totalCredits" class="col-md-1 text-center font-bold">
                                 @if (reviewer != null && reviewer.Any())
                                 {
                                     @(reviewer.Average(a => a.Credit))
@@ -170,8 +174,9 @@
                                 else
                                 {
                                     @:0.00
-                                }
+                }
                             </td>
+                            <td></td>
                         </tr>
                     </tbody>
                 </table>

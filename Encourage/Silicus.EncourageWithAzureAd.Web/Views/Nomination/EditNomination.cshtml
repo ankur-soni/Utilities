@@ -23,112 +23,113 @@
 
 <div class="row">
     <div class="col-sm-12">
+        @using (Html.BeginForm("EditSavedNomination", "Nomination", FormMethod.Post, new { id = "editNominationForm" }))
+        {
         <div class="box M-T15">
             <div class="row">
                 <div class="col-lg-12 col-md-12 col-sm-12 text-center">
                     <label style="color:#0067AA;padding-bottom:5px;font-weight:bold;font-size:18px;">For  @String.Format("{0:MMMM}", DateTime.Now) - @DateTime.Now.Year</label>
-</div>
-        </div>
-        @using (Html.BeginForm("EditSavedNomination", "Nomination", FormMethod.Post, new { id = "editNominationForm" }))
-        {
+                </div>
+            </div>
+            
             @*@Html.AntiForgeryToken()*@
 
-                @Html.HiddenFor(model => model.NominationId, new { @id = "NominationId" });
+            @Html.HiddenFor(model => model.NominationId, new { @id = "NominationId" });
             @Html.HiddenFor(model => model.ManagerId);
-                @Html.HiddenFor(model => model.IsSubmitted, new { @id = "IsSubmitted" });
+            @Html.HiddenFor(model => model.IsSubmitted, new { @id = "IsSubmitted" });
             @Html.HiddenFor(model => model.AwardId)
             @Html.HiddenFor(model => model.ProjectID)
             @Html.HiddenFor(model => model.DepartmentId)
             @Html.HiddenFor(model => model.ResourceId)
             
             @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-    <div class="f1" style="padding-top:0px;">
-        <div class="wizard-box" style="margin-top:0px;">
-            <div id="basicFields">
-                <div class="row">
-                    <div class="col-lg-3 col-md-4 col-sm-5">
-                        <div class="form-group">
-                            @Html.Label("Nomination Category", htmlAttributes: new { @class = "control-label requirefield", style = "text-align: left" })
-                            @Html.DropDownListFor(model => model.AwardId, @ViewBag.Awards as SelectList, "Select", new { @class = "form-control", id = "Award" })
-                            @Html.ValidationMessageFor(model => model.AwardId, "", new { @class = "text-danger" })
-
-                        </div>
-                    </div>
-
-                        </div>
-                <div class="row">
-                    <div class="col-md-5">
-                        <div class="form-group">
-                            @Html.Label("Employee From", htmlAttributes: new { @class = "control-label requirefield" })
-                            <div class="radio-list">
-                                <label class="radio-inline p-0" style="padding-left:0px;">
-                                    <div class="radio radio-info">
-                                        @Html.RadioButtonFor(model => model.SelectResourcesBy, "Project", new { id = "ProjectRadioButton", value = "Project" })<label for="radio1">Project</label>
-                                        @*<input type="radio" name="SelectResourcesBy" id="ProjectRadioButton" value="Project">*@
-
-                    </div>
-                                </label>
-                                <label class="radio-inline">
-                                    <div class="radio radio-info">
-                                        @Html.RadioButtonFor(model => model.SelectResourcesBy, "Department", new { id = "DepartmentRadioButton", value = "Department" })<label for="radio1">Department</label>
-                                        @*<input type="radio" name="SelectResourcesBy" id="DepartmentRadioButton" value="Department">*@
-
-                        </div>
-                                </label>
-                    </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-lg-3 col-md-4 col-sm-5">
-                        <div class="form-group" id="projectInput">
-                            @Html.Label("Project", htmlAttributes: new { @class = "control-label requirefield" })
-                            @Html.DropDownListFor(model => model.ProjectID, @ViewBag.ProjectsUnderCurrentUser as SelectList, "Select", new { @class = "form-control", id = "SelectedProject" })
-                            @Html.ValidationMessageFor(model => model.ProjectID, "", new { @class = "text-danger" })
-
-                        </div>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-lg-3 col-md-4 col-sm-5">
-                        <div class="form-group" id="departmentInput">
-                            @Html.Label("Department", htmlAttributes: new { @class = "control-label requirefield" })
-                            @Html.DropDownListFor(model => model.DepartmentId, @ViewBag.DepartmentsUnderCurrentUser as SelectList, "Select", new { @class = "form-control", id = "SelectedDepartment" })
-                            @Html.ValidationMessageFor(model => model.DepartmentId, "", new { @class = "text-danger" })
-
-                        </div>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-lg-3 col-md-4 col-sm-5">
-                        <div class="form-group">
-                            @Html.Label("Employee", htmlAttributes: new { @class = "control-label requirefield" })
-                            @Html.DropDownListFor(model => model.ResourceId, @ViewBag.Resources as SelectList, "Select", new { @class = "form-control", id = "Resources" })
-                            @Html.ValidationMessageFor(model => model.ResourceId, "", new { @class = "text-danger" })
-
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-md-6">
-                    <div class="form-group">
-                        @Html.Label("Comment", htmlAttributes: new { @class = "control-label requiredfeild" })
-                <div class="row">
-                            <div class="col-md-6">
+            <div class="f1" style="padding-top:0px;">
+                <div class="wizard-box" style="margin-top:0px;">
+                    <div id="basicFields">
+                        <div class="row">
+                            <div class="col-lg-3 col-md-4 col-sm-5">
                                 <div class="form-group">
-                                    @Html.TextAreaFor(model => model.MainComment, new { @class = "form-control", placeholder = "Maximum 500 words", id = "commentBox", rows = "5", maxlength = 500 })
-                                    @*@Html.TextAreaFor(model => model.MainComment, new { @class = "form-control", placeholder = "Maximum 500 words", id = "commentBox", rows = "5", maxlength = 500 })*@
+                                    @Html.Label("Nomination Category", htmlAttributes: new { @class = "control-label requirefield", style = "text-align: left" })
+                                    @Html.DropDownListFor(model => model.AwardId, @ViewBag.Awards as SelectList, "Select", new { @class = "form-control", id = "Award" })
+                                    @Html.ValidationMessageFor(model => model.AwardId, "", new { @class = "text-danger" })
+
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="row">
+                            <div class="col-md-5">
+                                <div class="form-group">
+                                    @Html.Label("Employee From", htmlAttributes: new { @class = "control-label requirefield" })
+                                    <div class="radio-list">
+                                        <label class="radio-inline p-0" style="padding-left:0px;">
+                                            <div class="radio radio-info">
+                                                @Html.RadioButtonFor(model => model.SelectResourcesBy, "Project", new { id = "ProjectRadioButton", value = "Project" })<label for="radio1">Project</label>
+                                                @*<input type="radio" name="SelectResourcesBy" id="ProjectRadioButton" value="Project">*@
+
+                                            </div>
+                                        </label>
+                                        <label class="radio-inline">
+                                            <div class="radio radio-info">
+                                                @Html.RadioButtonFor(model => model.SelectResourcesBy, "Department", new { id = "DepartmentRadioButton", value = "Department" })<label for="radio1">Department</label>
+                                                @*<input type="radio" name="SelectResourcesBy" id="DepartmentRadioButton" value="Department">*@
+
+                                            </div>
+                                        </label>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                            @Html.ValidationMessageFor(model => model.MainComment, "", new { @class = "text-danger", id = "managerCommentValidationmessage" })
+                        <div class="row">
+                            <div class="col-lg-3 col-md-4 col-sm-5">
+                                <div class="form-group" id="projectInput">
+                                    @Html.Label("Project", htmlAttributes: new { @class = "control-label requirefield" })
+                                    @Html.DropDownListFor(model => model.ProjectID, @ViewBag.ProjectsUnderCurrentUser as SelectList, "Select", new { @class = "form-control", id = "SelectedProject" })
+                                    @Html.ValidationMessageFor(model => model.ProjectID, "", new { @class = "text-danger" })
+
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-lg-3 col-md-4 col-sm-5">
+                                <div class="form-group" id="departmentInput">
+                                    @Html.Label("Department", htmlAttributes: new { @class = "control-label requirefield" })
+                                    @Html.DropDownListFor(model => model.DepartmentId, @ViewBag.DepartmentsUnderCurrentUser as SelectList, "Select", new { @class = "form-control", id = "SelectedDepartment" })
+                                    @Html.ValidationMessageFor(model => model.DepartmentId, "", new { @class = "text-danger" })
+
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-lg-3 col-md-4 col-sm-5">
+                                <div class="form-group">
+                                    @Html.Label("Employee", htmlAttributes: new { @class = "control-label requirefield" })
+                                    @Html.DropDownListFor(model => model.ResourceId, @ViewBag.Resources as SelectList, "Select", new { @class = "form-control", id = "Resources" })
+                                    @Html.ValidationMessageFor(model => model.ResourceId, "", new { @class = "text-danger" })
+
+                                </div>
+                            </div>
                         </div>
                     </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                @Html.Label("Comment", htmlAttributes: new { @class = "control-label requiredfeild" })
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            @Html.TextAreaFor(model => model.MainComment, new { @class = "form-control", placeholder = "Maximum 500 words", id = "commentBox", rows = "5", maxlength = 500 })
+                                            @*@Html.TextAreaFor(model => model.MainComment, new { @class = "form-control", placeholder = "Maximum 500 words", id = "commentBox", rows = "5", maxlength = 500 })*@
+                                        </div>
+                                    </div>
+                                </div>
+                                @Html.ValidationMessageFor(model => model.MainComment, "", new { @class = "text-danger", id = "managerCommentValidationmessage" })
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
-        </div>
-    </div>
-            }
+            
         </div>
         <div class="row M-T15" id="disclaimer">
             <div class="col-sm-12">
@@ -141,7 +142,7 @@
                     @Html.ValidationMessageFor(model => model.Comments, "", new { @class = "text-danger", id = "criterisCommentValidationmessage" })
                 </div>
             </div>
-            </div>
+        </div>
 
         <div class="box M-B60">
             <div class="f1" style="padding-top:15px;">
@@ -160,54 +161,71 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                        @if (Model.IsSubmitted == true)
-                        {
-                            @Html.DisplayFor(model => model.Comments)
-                        }
-                        else
-                        {
-                            @Html.EditorFor(model => model.Comments)
-                        }
+                                        @if (Model.IsSubmitted == true)
+                                        {
+                                            @Html.DisplayFor(model => model.Comments)
+                                        }
+                                        else
+                                        {
+                                            @Html.EditorFor(model => model.Comments)
+                                        }
 
                                     </tbody>
-                    </table>
-                    <div style="text-align:right;">
-                        @Html.ValidationMessageFor(model => model.Comments, "", new { @class = "text-danger", id = "criterisCommentValidationmessage" })
-                    </div>
-                    <span id="criteriaCommentValidationMsg"></span>
-                </div>
-            </div>
+                                </table>
+                                <div style="text-align:right;">
+                                    @Html.ValidationMessageFor(model => model.Comments, "", new { @class = "text-danger", id = "criterisCommentValidationmessage" })
+                                </div>
+                                <span id="criteriaCommentValidationMsg"></span>
+                            </div>
+                        </div>
                     </div>
                 </div>
                 <div class="row M-T15">
-                @if (Model.IsSubmitted != true)
-                {
+                    @if (Model.IsSubmitted != true)
+                    {
                         <div class="pull-right btn-nav">
                             <input type="button" value="Discard" id="discardButton" class="btn btn-primary" />
                             <input type="button" name="submit" value="Save Draft" id="saveButton" class="btn btn-primary" onclick="return checkValidationOnSaveDraft();" />
                             <input type="button" name="button" value="Submit" class="btn btn-primary" onclick="return checkValidationOnSubmit();"
-                                   @{  if (ViewBag.NominationLockStatus) {  @: disabled="disabled"
-                                   @: title="Nominations are locked"
-                                                                                                                                                }  } />
+                                @{  if (ViewBag.NominationLockStatus) {  @: disabled="disabled"
+                                        @: title="Nominations are locked"
+                                    }  } />
                             <input type="button" value="Back" class="btn btn-primary" onclick="location.href='@Url.Action("GetNominationList", "Nomination")'" />
 
-                    </div>
-                }
-                else
-                {
-                    <div style="text-align:center;">
+                        </div>
+                    }
+                    else
+                    {
+                        <div style="text-align:center;">
                             <input type="button" value="Back" class="btn btn-primary" onclick="location.href='@Url.Action("GetNominationList", "Nomination")'" />
-                    </div>
+                        </div>
 
-                }
+                    }
+                </div>
             </div>
+        </div>
+
+
+        }
     </div>
 </div>
-
-
-
-    </div>
-</div>
+<script src="~/js/jquery.barrating.min.js"></script>
+<script>
+    @if (Model.IsSubmitted == true)
+    {
+        @:var isReadonly = true;
+    }
+    else
+    {
+        @:var isReadonly = false;
+    }
+    $(".example-square").barrating('show', {
+        theme: 'bars-square',
+        showValues: true,
+        showSelectedRating: false,
+        readonly: isReadonly
+    });
+</script>
 <script type="text/javascript">
     $(document).ready(function () {
         var selectedProject = $("#SelectedProject").val();
@@ -216,7 +234,7 @@
 
         $('#basicFields').find('*').prop('disabled', true);
         if (selectedProject != "")
-                                $("#departmentInput").show();
+            $("#departmentInput").show();
         else if (selectedDept != "")
             $("#projectInput").hide();
 
@@ -229,24 +247,24 @@
     })
 
     $("#ProjectRadioButton").change
-        (
-         function () {
-             $("#departmentInput").hide();
-             $("#SelectedProject").prop('selectedIndex', 0);
-             $('#Resources').empty();
-             $('#Resources').append($("<option selected></option>").val(null).html("Select"));
-             $("#projectInput").show();
-         });
+    (
+        function () {
+            $("#departmentInput").hide();
+            $("#SelectedProject").prop('selectedIndex', 0);
+            $('#Resources').empty();
+            $('#Resources').append($("<option selected></option>").val(null).html("Select"));
+            $("#projectInput").show();
+        });
 
     $("#DepartmentRadioButton").change
-        (
-          function () {
-              $("#projectInput").hide();
-              $("#SelectedDepartment").prop('selectedIndex', 0);
-              $('#Resources').empty();
-              $('#Resources').append($("<option selected></option>").val(null).html("Select"));
-              $("#departmentInput").show();
-          });
+    (
+        function () {
+            $("#projectInput").hide();
+            $("#SelectedDepartment").prop('selectedIndex', 0);
+            $('#Resources').empty();
+            $('#Resources').append($("<option selected></option>").val(null).html("Select"));
+            $("#departmentInput").show();
+        });
 
     $("#SelectedProject").change(function () {
         var selectedProject = $("#SelectedProject").val();
@@ -294,51 +312,51 @@
     $("#discardButton").click(function () {
 
         swal({
-            title: "Discard Nomination",
-            text: "Do you want to discard this nomination?",
-            type: "info",
-            showCancelButton: true,
-            confirmButtonColor: "#0070b9",
-            confirmButtonText: "Yes!",
-            cancelButtonText: "No!",
-            closeOnConfirm: false,
-            closeOnCancel: false
-        },
-               function (isConfirm) {
-                   if (isConfirm) {
-                       var nominationId = $("#NominationId").val();
+                title: "Discard Nomination",
+                text: "Do you want to discard this nomination?",
+                type: "info",
+                showCancelButton: true,
+                confirmButtonColor: "#0070b9",
+                confirmButtonText: "Yes!",
+                cancelButtonText: "No!",
+                closeOnConfirm: false,
+                closeOnCancel: false
+            },
+            function (isConfirm) {
+                if (isConfirm) {
+                    var nominationId = $("#NominationId").val();
 
-                       $.ajax({
-                           url: '@Url.Action("DiscardNomination", "Nomination")',
-                           type: "POST",
-                           data: JSON.stringify({ nominationId: nominationId }),
-                           datatype: "JSON",
-                           contentType: "application/json; charset=utf-8",
-                           success: function (data) {
-                               swal({
-                                   title: "Nomination Discarded!",
-                                   text: "",
-                                   type: "info",
-                                   showCancelButton: false,
-                                   confirmButtonColor: "#88a364",
-                                   confirmButtonText: "Ok",
-                               },
-                               function () {
-                                   if (isConfirm) {
-                                       window.location.href = '@Url.Action("GetNominationList", "Nomination")';
-                                   }
-                               });
-                           },
-                           error: function () {
-                               swal("Error", "Oops! Something wrong happened..");
-                           }
-                       });
-                   }
-                   else {
-                       swal("Cancelled", "Cancel Discard");
-                      @*// window.location.href = '@Url.Action("GetNominationList", "Nomination")';*@
-                   }
-               });
+                    $.ajax({
+                        url: '@Url.Action("DiscardNomination", "Nomination")',
+                        type: "POST",
+                        data: JSON.stringify({ nominationId: nominationId }),
+                        datatype: "JSON",
+                        contentType: "application/json; charset=utf-8",
+                        success: function (data) {
+                            swal({
+                                    title: "Nomination Discarded!",
+                                    text: "",
+                                    type: "info",
+                                    showCancelButton: false,
+                                    confirmButtonColor: "#88a364",
+                                    confirmButtonText: "Ok",
+                                },
+                                function () {
+                                    if (isConfirm) {
+                                        window.location.href = '@Url.Action("GetNominationList", "Nomination")';
+                                    }
+                                });
+                        },
+                        error: function () {
+                            swal("Error", "Oops! Something wrong happened..");
+                        }
+                    });
+                }
+                else {
+                    swal("Cancelled", "Cancel Discard");
+                    @*// window.location.href = '@Url.Action("GetNominationList", "Nomination")';*@
+                }
+            });
     });
 
 
@@ -360,49 +378,49 @@
             }
             else {
                 swal({
-                    title: "Submit Nomination",
-                    text: "Do you want to nominate this candidate?",
-                    type: "info",
-                    showCancelButton: true,
-                    confirmButtonColor: "#0070b9",
-                    confirmButtonText: "Yes!",
-                    cancelButtonText: "No!",
-                    closeOnConfirm: false,
-                    closeOnCancel: false
-                },
-               function (isConfirm) {
-                   if (isConfirm) {
-                       debugger;
-                       var modelbjectToSend = $('#editNominationForm').serialize() + '&' + $.param({ 'submit': "Submit" }, true);
-
-                       $.ajax({
-                           type: 'post',
-                           url: '@Url.Action("EditSavedNomination", "Nomination")',
-                           data: modelbjectToSend,
-                           success: function (data) {
-                               swal({
-                                   title: "Nomination Submitted!",
-                                   text: "",
-                                   type: "info",
-                                   showCancelButton: false,
-                                   confirmButtonColor: "#88a364",
-                                   confirmButtonText: "Ok",
-                               },
-                               function () {
-                                   if (isConfirm) {
-                                       window.location.href = '@Url.Action("GetNominationList", "Nomination")';
-                                   }
-                               });
-                           },
-                           error: function () {
-                               swal("Error", "Oops! Something wrong happened..");
-                           }
-                       });
-                   } else {
-                       swal("Cancelled", "Nomination Cancelled");
-                      @*// window.location.href = '@Url.Action("GetNominationList", "Nomination")';*@
-                   }
-               });
+                        title: "Submit Nomination",
+                        text: "Do you want to nominate this candidate?",
+                        type: "info",
+                        showCancelButton: true,
+                        confirmButtonColor: "#0070b9",
+                        confirmButtonText: "Yes!",
+                        cancelButtonText: "No!",
+                        closeOnConfirm: false,
+                        closeOnCancel: false
+                    },
+                    function (isConfirm) {
+                        if (isConfirm) {
+                            debugger;
+                            var modelbjectToSend = $('#editNominationForm').serialize() + '&' + $.param({ 'submit': "Submit" }, true);
+                           
+                            $.ajax({
+                                type: 'post',
+                                url: '@Url.Action("EditSavedNomination", "Nomination")',
+                                data: modelbjectToSend,
+                                success: function (data) {
+                                    swal({
+                                            title: "Nomination Submitted!",
+                                            text: "",
+                                            type: "info",
+                                            showCancelButton: false,
+                                            confirmButtonColor: "#88a364",
+                                            confirmButtonText: "Ok",
+                                        },
+                                        function () {
+                                            if (isConfirm) {
+                                                window.location.href = '@Url.Action("GetNominationList", "Nomination")';
+                                            }
+                                        });
+                                },
+                                error: function () {
+                                    swal("Error", "Oops! Something wrong happened..");
+                                }
+                            });
+                        } else {
+                            swal("Cancelled", "Nomination Cancelled");
+                            @*// window.location.href = '@Url.Action("GetNominationList", "Nomination")';*@
+                        }
+                    });
             }
         }
         else {
@@ -413,46 +431,46 @@
     function checkValidationOnSaveDraft() {
         if ($('#editNominationForm').valid()) {
             swal({
-                title: "Save Nomination",
-                text: "Do you want to save this nomination?",
-                type: "info",
-                showCancelButton: true,
-                confirmButtonColor: "#0070b9",
-                confirmButtonText: "Yes!",
-                cancelButtonText: "No!",
-                closeOnConfirm: false,
-                closeOnCancel: false
-            },
-           function (isConfirm) {
-               if (isConfirm) {
-                   var modelbjectToSend = $('#editNominationForm').serialize() + '&' + $.param({ 'submit': "Save" }, true);
+                    title: "Save Nomination",
+                    text: "Do you want to save this nomination?",
+                    type: "info",
+                    showCancelButton: true,
+                    confirmButtonColor: "#0070b9",
+                    confirmButtonText: "Yes!",
+                    cancelButtonText: "No!",
+                    closeOnConfirm: false,
+                    closeOnCancel: false
+                },
+                function (isConfirm) {
+                    if (isConfirm) {
+                        var modelbjectToSend = $('#editNominationForm').serialize() + '&' + $.param({ 'submit': "Save" }, true);
 
-                   $.ajax({
-                       type: 'post',
-                       url: '@Url.Action("EditSavedNomination", "Nomination")',
-                       data: modelbjectToSend,
-                       success: function (data) {
-                           swal({
-                               title: "Nomination Saved!",
-                               showCancelButton: false,
-                               confirmButtonColor: "#88a364",
-                               confirmButtonText: "Ok"
-                           },
-                           function () {
-                               if (isConfirm) {
-                                   window.location.href = '@Url.Action("GetNominationList", "Nomination")';
-                               }
-                           });
-                       },
-                       error: function () {
-                           swal("Error", "Oops! Something wrong happened..");
-                       }
-                   });
-               } else {
-                   swal("Cancelled", "Nomination Save Cancelled");
-                   @*//window.location.href = '@Url.Action("GetNominationList", "Nomination")';*@
-               }
-           });
+                        $.ajax({
+                            type: 'post',
+                            url: '@Url.Action("EditSavedNomination", "Nomination")',
+                            data: modelbjectToSend,
+                            success: function (data) {
+                                swal({
+                                        title: "Nomination Saved!",
+                                        showCancelButton: false,
+                                        confirmButtonColor: "#88a364",
+                                        confirmButtonText: "Ok"
+                                    },
+                                    function () {
+                                        if (isConfirm) {
+                                            window.location.href = '@Url.Action("GetNominationList", "Nomination")';
+                                        }
+                                    });
+                            },
+                            error: function () {
+                                swal("Error", "Oops! Something wrong happened..");
+                            }
+                        });
+                    } else {
+                        swal("Cancelled", "Nomination Save Cancelled");
+                        @*//window.location.href = '@Url.Action("GetNominationList", "Nomination")';*@
+                    }
+                });
         }
         else {
             return false;

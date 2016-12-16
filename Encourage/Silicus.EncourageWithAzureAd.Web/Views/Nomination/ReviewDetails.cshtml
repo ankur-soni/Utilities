@@ -85,7 +85,7 @@
 
                  var reviewerIndex = 1;
                
-                foreach (var item in Model)
+                foreach (var review in Model)
                 {
                 <div class="white-bg" style="width:80%">
               
@@ -96,105 +96,94 @@
                     </div>
                     <a class="header"><div>Expand the Comments</div></a>
 
-                    <table class="table table-hover issue-tracker content">
+                    <table class="table table-hover issue-tracker white-bg" style="width:80%">
                         <thead>
                             <tr>
-                                @*<th>Id</th>*@
                                 <th>Criteria</th>
-                                <th>Manager Comment</th>
+                                <th>Weightage</th>
                                 <th>Rating</th>
+                                <th>Points</th>
+                                <th>Manager Comment</th>
+                                <th>Reviewer Ratings</th>
                                 <th>Reviewer Comment</th>
-                                <th>Credits</th>
                             </tr>
                         </thead>
                         @{
-                            var j = 0;
-                            var k = 0;
+                    var j = 0;
                         }
-                        <tbody>
-                            @foreach (var criteria in item.Criterias)
-                            {
-
+                        @foreach (var managerComment in review.ManagerComments)
+                        {
+                            <tbody>
                                 <tr>
-                                    @*<td class="col-md-1">@item.Id</td>*@
-                                    @Html.Hidden("CriteriaId", @criteria.Id)
-                                    <td class="col-md-4">@criteria.Title</td>
-
-                                    @if (k < item.ManagerComments.Count() && item.ManagerComments[k].CriteriaId == criteria.Id)
-                                    {
-                                        @*<td class="col-md-4">@item.ManagerComments[k].Comment</td>*@
-                                        <td class="more col-md-4" style="word-break:break-all">@item.ManagerComments[k].Comment</td>
-                                        <td class="col-md-2">
-                                            @*<input id="input-21a" value="@item.ManagerComments[k].Rating" type="number" data-star-captions="{}" data-default-caption="{rating} Stars" class="rating rating-loading" data-show-clear="false" data-show-caption="false" data-symbol="*" min=0 max=5 step=1 data-size="xs" readonly="readonly">*@
-                                            @Html.DropDownListFor(r => item.ManagerComments[k].Rating,
-                                                   Enumerable.Range(1, 5).
-                                                   Select(r => new SelectListItem
-                                                   {
-                                                       Value = r.ToString(),
-                                                       Text = r.ToString()
-                                                   }), "", new { @class = "example-square", @autocomplete = "off", @value = item.ManagerComments[k].Rating })
-                                        </td>
-                                        k++;
+                                    @Html.Hidden("CriteriaId", @managerComment.CriteriaId)
+                                    @{
+                            var criteria = review.Criterias.FirstOrDefault(mc => mc.Id == managerComment.CriteriaId);
                                     }
-                                    else
-                                    {
-                                        <td class="more"></td>
-                                        <td class="col-md-2">
-                                            @Html.DropDownListFor(r => item.ManagerComments[k].Rating,
-                                                   Enumerable.Range(1, 5).
-                                                   Select(r => new SelectListItem
-                                                   {
-                                                       Value = r.ToString(),
-                                                       Text = r.ToString()
-                                                   }), "", new { @class = "example-square", @autocomplete = "off",@value=0 })
-                                        </td>
-                                        k++;
+                                    <td class="col-md-4">@(criteria != null ? criteria.Title : "")</td>
+                                    <td class="col-md-1">@managerComment.Weightage</td>
+                                    <td class="col-md-2">
+                                        @Html.DropDownList("Comments[" + @j + "].Rating",
+                                    Enumerable.Range(1, 5).
+                                        Select(r => new SelectListItem
+                                        {
+                                            Value = r.ToString(),
+                                            Text = r.ToString()
+                                        }), "", new { @class = "example-square", @autocomplete = "off", @value = managerComment.Rating })
+                                    </td>
+                                    <td class="col-md-1">@(managerComment.Weightage * managerComment.Rating / 100.0)</td>
+                                    <td class="more" style="word-break:break-all">@managerComment.Comment</td>
+                                    @{
+                            var reviewwrComment = review.Comments.FirstOrDefault(c => c.CriteriaId == managerComment.CriteriaId);
                                     }
-
-
-                                    <td class="col-md-3">@Html.TextArea("Comments[" + @j + "].Comment", item.Comments[j].Comment, htmlAttributes: new { @class = "col-md-12", @readonly = "readonly" })</td>
-
-                                    @Html.Hidden("Comments[" + @j + "].Id", criteria.Id)
-                                    <td class="col-md-1">
-                                        <div class="switch">
-                                            <div class="onoffswitch">
-                                                @if (item.Comments[j].Credit == true)
-                                                {
-                                                    <input type="checkbox" value="true" length="0" disabled="disabled" class="onoffswitch-checkbox" id='example @j' name="Comments[@j].Credit" checked>
-                                                }
-                                                else
-                                                {
-                                                    <input type="checkbox" value="true" length="0" disabled="disabled" class="onoffswitch-checkbox" id='example @j' name="Comments[@j].Credit">
-                                                }
-
-                                                <label class="onoffswitch-label" for="example @j" style="cursor:not-allowed;">
-                                                    <span class="onoffswitch-inner"></span>
-                                                    <span class="onoffswitch-switch"></span>
-                                                </label>
-                                            </div>
-                                        </div>
+                                    <td class="col-md-2">
+                                        @Html.DropDownList("Comments[" + @j + "].Credit",
+                                    Enumerable.Range(1, 5).
+                                        Select(r => new SelectListItem
+                                        {
+                                            Value = r.ToString(),
+                                            Text = r.ToString()
+                                        }), "", new { @class = "example-square", @autocomplete = "off", @value = (reviewwrComment != null ? reviewwrComment.Credit : 0) })
                                     </td>
 
+                                    <td class="col-md-3">@(reviewwrComment != null ? reviewwrComment.Comment : "")<div class="textarea"></div></td>
+
+                                    @Html.Hidden("Comments[" + @j + "].CriteriaId", managerComment.CriteriaId)
                                 </tr>
+                            </tbody>
+                            j++;
 
-                                j++;
-                            }
-                            <tr>
+                        }
 
-                                <td></td>
-                                <td></td>
-                                <th>Total Credits</th>
-                                @*<td class="text-center">@ViewBag.creditGiven</td>*@
-                                <td class="text-center">@item.TotalCredit</td>
-                            </tr>
-                        </tbody>
-                        @if (item.ManagerComments != null)
+
+                        @if (review.ManagerComments != null)
                         {
-                            for (int i = 0; i < item.ManagerComments.Count; i++)
+                            for (int i = 0; i < review.ManagerComments.Count; i++)
                             {
-                                @Html.HiddenFor(model => item.ManagerComments[i].Comment)
+                                @Html.HiddenFor(model => review.ManagerComments[i].Comment)
                             }
                         }
+
+                        <tr>
+                            <td></td>
+                            <td></td>
+                            <td style="text-align:center;color:#0063A7;font-weight:bold">Total Points:</td>
+                            <td> @(review.ManagerComments.Sum(a => (a.Rating * a.Weightage / 100.0))) </td>
+                            <td style="text-align:center;color:#0063A7;font-weight:bold">
+                                Average Ratings:
+                            </td>
+                            <td id="totalCredits" class="col-md-1 text-center font-bold">
+                                @if (review.Comments != null && review.Comments.Any())
+                                {
+                                    @(review.Comments.Average(a => a.Credit))
+                                }
+                                else
+                                {
+                                    @:0.00
+                }
+                            </td>
+                            <td></td>
+                        </tr>
+
                     </table>
                 </div>
                 <div class="row">&nbsp;</div>
