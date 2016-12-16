@@ -264,7 +264,7 @@ th {
 }
 
 .nav > li.active {
-    border-left: 4px solid #006aaf;
+    border-left: 4px solid #01afeb!important;
     background: #0063a7;
 }
 
