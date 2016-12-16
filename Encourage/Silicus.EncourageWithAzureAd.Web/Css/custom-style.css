@@ -573,17 +573,7 @@ textarea.noCommentError {
   background-color: #fb9678;
 }
 
-@media (max-width:768px) {
 
-    .header-name{
-    margin-top: 15px;
-    margin-left: 55px;
-    font-size: 25px;
-    }
-    #wrapper{
-        background:#
-    }
-}
 
 /*Form Style*/
 /**********Bootstrap overight**********/
@@ -1288,12 +1278,21 @@ label {
 }
 @media (max-width:768px) 
 {
-
+    .header-name{
+    margin-top: 15px;
+    margin-left: 55px;
+    font-size: 25px;
+    }
+    #wrapper{
+        background:#
+    }
 
 }
 @media (max-width:767px) 
 {
-	
+	.table-responsive>.table>tbody>tr>td, .table-responsive>.table>tbody>tr>th, .table-responsive>.table>tfoot>tr>td, .table-responsive>.table>tfoot>tr>th, .table-responsive>.table>thead>tr>td, .table-responsive>.table>thead>tr>th{
+        white-space:normal;
+	}
 }
 
 @media (max-width:639px) 
