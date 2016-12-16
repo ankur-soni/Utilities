@@ -472,7 +472,7 @@
 
                            },
                                 error: function(error) {
-                               debugger;
+                               
                                if (error.responseText != null && error.responseText != undefined && error.responseText != '') {
                                    swal("Error", error.responseText.replace(/['"]+/g, ''));
                                }
@@ -507,7 +507,7 @@
             },
            function (isConfirm) {
                if (isConfirm) {
-                   debugger;
+                   
                    var modelbjectToSend = $('#addNominationForm').serialize() + '&' + $.param({ 'submit': "Save" }, true);
 
                    $.ajax({
@@ -551,7 +551,7 @@
 
                        },
                        error: function (data) {
-                           debugger;
+                           
                            if (data.responseText != null && data.responseText != undefined && data.responseText != '') {
                                swal("Error", data.responseText.replace(/['"]+/g, ''));
                            }
@@ -579,7 +579,7 @@
     function moveToNominationStep(stepNumber, toBeValidated) {
 
         var progressLineWidth = 25 * stepNumber;
-        //debugger;
+        //
         if (toBeValidated) {
             if (!$('#addNominationForm').valid()) {
                 return false;

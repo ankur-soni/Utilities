@@ -1,42 +1,31 @@
 ﻿@model Silicus.EncourageWithAzureAd.Web.Models.CriteriaCommentViewModel
-
-<script src="~/js/jquery.barrating.min.js"></script>
 <tr>
     <td>
         @Html.HiddenFor(modelItem => modelItem.Id)
     </td>
     <td class="col-lg-5 col-md-4 col-sm-4 col-xs-4">
-        @Html.DisplayFor(modelItem => modelItem.title)
+        @Html.DisplayFor(modelItem => modelItem.Title)
     </td>
     <td class="col-lg-1 col-md-2 col-sm-3 col-xs-2">
         @Html.DropDownListFor(i => i.Weightage,
-       Enumerable.Range(0, 20).Select(x => x * 5).
-       Select(j => new SelectListItem
-       {
-           Value = j.ToString(),
-           Text = j.ToString()
-       }), new { @class = "form-control ddlWeightage" })
+            Enumerable.Range(0, 20).Select(x => x * 5).
+                Select(j => new SelectListItem
+                {
+                    Value = j.ToString(),
+                    Text = j.ToString()
+                }), new { @class = "form-control ddlWeightage" })
     </td>
     <td class="col-lg-3 col-md-4 col-sm-6 col-xs-4">
         @Html.DropDownListFor(i => i.Rating,
-       Enumerable.Range(1, 5).
-       Select(j => new SelectListItem
-       {
-           Value = j.ToString(),
-           Text = j.ToString()
-       }), "", new { @class = "example-square", @autocomplete = "off" })
+            Enumerable.Range(1, 5).
+                Select(j => new SelectListItem
+                {
+                    Value = j.ToString(),
+                    Text = j.ToString()
+                }), "", new { @class = "example-square", @autocomplete = "off" })
     </td>
 
     <td class="col-lg-3 col-md-4 col-sm-3 col-xs-3 criteriaComment">
         @Html.TextAreaFor(modelItem => modelItem.Comment, htmlAttributes: new { @class = "col-md-12", maxlength = 500 })
     </td>
 </tr>
-<script>
-    $(".example-square").barrating('show', {
-        theme: 'bars-square',
-        showValues: true,
-        showSelectedRating: false
-    });
-</script>
-
-

@@ -261,7 +261,7 @@ namespace Silicus.EncourageWithAzureAd.Web.Controllers
                 nominationViewModel.Comments.Add(new CriteriaCommentViewModel
                 {
                     Id = criteria.Id,
-                    title = criteria.Title,
+                    Title = criteria.Title,
                     Comment = managerComment != null ? managerComment.Comment : string.Empty,
                     Rating = managerComment != null ? managerComment.Rating : 0,
                     Weightage = managerComment != null ? managerComment.Weightage : 0
@@ -551,8 +551,9 @@ namespace Silicus.EncourageWithAzureAd.Web.Controllers
                 foreach (var d in data)
                 {
                     reviewNominationViewModel.Comments.Add(
-                        new ReviewerCommentViewModel()
+                        new ReviewerCommentViewModel
                         {
+                            CriteriaId = d.CriteriaId,
                             Comment = d.Comment,
                             Credit = Convert.ToInt32(d.Credit),
                             Id = d.Id,
