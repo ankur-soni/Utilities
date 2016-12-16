@@ -92,7 +92,8 @@ namespace Silicus.Ensure.Web.Controllers
             }
             else if (TempData["UserViewModel"] != null)
             {
-                userViewModel = TempData["UserViewModel"] as UserViewModel;
+                userViewModel = TempData.Peek("UserViewModel") as UserViewModel;
+                TempData["UserViewModel"] = userViewModel;
             }
 
             var positionDetails = _positionService.GetPositionDetails().OrderBy(model => model.PositionName);
@@ -120,6 +121,7 @@ namespace Silicus.Ensure.Web.Controllers
 
                     var organizationUserDomainModel = _mappingService.Map<UserViewModel, User>(userViewModel);
                     userViewModel.UserId = _userService.Add(organizationUserDomainModel);
+                    TempData["Success"] = "User created successfully!";
 
                 }
 
@@ -151,9 +153,11 @@ namespace Silicus.Ensure.Web.Controllers
             }
             if (user != null)
             {
+                vuser.Role = user.Role;
                 var organizationUserDomainModel = _mappingService.Map<UserViewModel, User>(vuser);
                 organizationUserDomainModel.TestStatus = user.TestStatus;
                 _userService.Update(organizationUserDomainModel);
+                TempData["Success"] = "User updated successfully!";
             }
 
         }
