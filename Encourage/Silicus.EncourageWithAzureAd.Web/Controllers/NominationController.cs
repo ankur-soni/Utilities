@@ -74,6 +74,11 @@ namespace Silicus.EncourageWithAzureAd.Web.Controllers
         #endregion Test
 
         #region Nomination
+        [HttpGet]
+        public ActionResult GetLockedAwardCategories()
+        {
+         return   Json( _nominationService.GetNominationLockStatus(),JsonRequestBehavior.AllowGet);
+        }
 
         // GET: Nomination/Create
         [HttpGet]
@@ -86,6 +91,7 @@ namespace Silicus.EncourageWithAzureAd.Web.Controllers
 
             ViewBag.Awards = new SelectList(_awardService.GetAllAwards(), "Id", "Name");
             ViewBag.NominationLockStatus = _nominationService.GetNominationLockStatus();
+            ViewBag.LockedAwardCategories = _nominationService.GetNominationLockStatus();
             var projects = _awardService.GetProjectsUnderCurrentUserAsManager(userEmailAddress);
 
             if (projects.Any())
@@ -103,8 +109,8 @@ namespace Silicus.EncourageWithAzureAd.Web.Controllers
 
             ViewBag.Resources = new SelectList(new List<User>(), "Id", "DisplayName");
 
-            bool isLocked = _nominationService.IsNominationLocked();
-            var model = new NominationViewModel { IsLocked = isLocked };
+            //bool isLocked = _nominationService.IsNominationLocked();
+            var model = new NominationViewModel { };
 
             return View(model);
         }
@@ -215,6 +221,7 @@ namespace Silicus.EncourageWithAzureAd.Web.Controllers
             var nominationViewModel = new NominationViewModel();
             ViewBag.ReviewLockStatus = _reviewService.GetReviewLockStatus();
             ViewBag.NominationLockStatus = _nominationService.GetNominationLockStatus();
+            ViewBag.LockedAwardCategories = _nominationService.GetNominationLockStatus();
             var userEmailAddress = User.Identity.Name;
 
             ViewBag.Awards = new SelectList(_awardService.GetAllAwards(), "Id", "Name");

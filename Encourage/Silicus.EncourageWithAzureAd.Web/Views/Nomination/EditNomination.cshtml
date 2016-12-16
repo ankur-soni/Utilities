@@ -185,10 +185,10 @@
                         <div class="pull-right btn-nav">
                             <input type="button" value="Discard" id="discardButton" class="btn btn-primary" />
                             <input type="button" name="submit" value="Save Draft" id="saveButton" class="btn btn-primary" onclick="return checkValidationOnSaveDraft();" />
-                            <input type="button" name="button" value="Submit" class="btn btn-primary" onclick="return checkValidationOnSubmit();"
-                                   @{  if (ViewBag.NominationLockStatus) {  @: disabled="disabled"
+                            <input type="button" name="button" value="Submit" class="btn btn-primary" onclick="return checkValidationOnSubmit();" id="submit"
+                                   @*@{  if (ViewBag.NominationLockStatus) {  @: disabled="disabled"
                                    @: title="Nominations are locked"
-                                                                                                                                                }  } />
+                                                                                                                                                }  }*@ />
                             <input type="button" value="Back" class="btn btn-primary" onclick="location.href='@Url.Action("GetNominationList", "Nomination")'" />
 
                     </div>
@@ -226,6 +226,24 @@
             $('#commentBox').prop('disabled', true);
             $('#heading').text("Nomination Details")
         }
+
+        $.ajax({
+            type: 'GET',
+            url: '@Url.Action("GetLockedAwardCategories","Nomination")',
+            success: function (data) {
+                debugger;
+                var index = 0;
+                $.each(data, function () {
+                    if (data[index].Id == $('#Award option:selected').val()) {
+                        $('#submit').attr('title', 'Nominations are locked').prop('disabled', 'disabled');
+                    }
+                    index++;
+                });
+            },
+            error: function () {
+                sweetAlert("Error", "Oops something went wrong!");
+            }
+        });
     })
 
     $("#ProjectRadioButton").change

@@ -310,11 +310,11 @@ namespace Silicus.Encourage.Services
 
         }
 
-        public bool IsNominationLocked()
-        {
-            _logger.Log("NominationService-IsNominationLocked");
-            return GetNominationLockStatus();
-        }
+        //public bool IsNominationLocked()
+        //{
+        //    _logger.Log("NominationService-IsNominationLocked");
+        //    return GetNominationLockStatus();
+        //}
 
         //public bool UnLockNominations()
         //{
@@ -383,15 +383,34 @@ namespace Silicus.Encourage.Services
             return _encourageDatabaseContext.Query<Nomination>().Count(x => x.ManagerId == managerId && (x.NominationDate >= startDate && x.NominationDate <= endDate));
         }
 
-        public bool GetNominationLockStatus()
+        public List<Award> GetNominationLockStatus()
         {
-            var config = _encourageDatabaseContext.Query<Encourage.Models.Configuration>().FirstOrDefault(x => x.configurationKey == "NominationLock");
-            if (config != null)
+
+            var lockKey = WebConfigurationManager.AppSettings["NominationLockKey"];
+            var allAwards = _encourageDatabaseContext.Query<Award>().ToList();
+            var lockedAwards = new List<Award>();
+            foreach (var award in allAwards)
             {
-                var data = config.value;
-                return data == true;
+                var result = _encourageDatabaseContext.Query<Encourage.Models.Configuration>().Where(x => x.configurationKey == lockKey && x.AwardId == award.Id ).FirstOrDefault();
+                if (result != null)
+                {
+                    lockedAwards.Add(award);
+                }
             }
-            return false;
+
+            return lockedAwards;
+
+
+
+
+            //var config = _encourageDatabaseContext.Query<Encourage.Models.Configuration>().FirstOrDefault(x => x.configurationKey == "NominationLock" && x.AwardId);
+
+            //if (config != null)
+            //{
+            //    var data = config.value;
+            //    return data == true;
+            //}
+            //return false;
         }
 
         #region Get Saved Nominations Details
