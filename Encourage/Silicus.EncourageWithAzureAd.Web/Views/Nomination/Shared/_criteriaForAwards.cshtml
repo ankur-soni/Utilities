@@ -11,6 +11,7 @@
                         <tr>
                             <th>#</th>
                             <th>Criteria</th>
+                            <th>Weightage</th>
                             <th>Rating</th>
                             <th>Manager Comments</th>
                         </tr>
@@ -21,10 +22,19 @@
                         {
                             <tr>
                                 <td>
-                                    @i
+                                    @(i+1)
                                 </td>
                                 <td>
                                     <label> @criteria.Title</label>
+                                </td>
+                                <td>
+                                    @Html.DropDownList("Comments[" + @i + "].Weightage",
+                                    Enumerable.Range(0, 21).Select(x => x * 5).
+                                    Select(j => new SelectListItem
+                                    {
+                                    Value = j.ToString(),
+                                    Text = j.ToString()
+                                    }), new { @class = "form-control ddlWeightage" })
                                 </td>
                                 <td>
                                     <select id="rating-@i" class="example-square" name="Comments[@i].Rating" autocomplete="off" value="" row-id="@i">
@@ -40,7 +50,7 @@
                                     <textarea class="form-control" onblur="return hideRemainingCharacterText(@i)"
                                               onkeyup="edValueKeyPress(@i)"
                                               rows=""
-                                              name=Comments[@i].Comment
+                                              name="Comments[@i].Comment"
                                               id="@("comment"+i)"
                                               maxlength="500"
                                               isCommentRequired="false"></textarea>
@@ -51,7 +61,7 @@
                                     </div>
                                 </td>
                                 <td>
-                                    <input type="hidden" name=Comments[@i].Id value="@criteria.Id">
+                                    <input type="hidden" name="Comments[@i].Id" value="@criteria.Id">
                                     <span class="hide">@(i++)</span>
                                 </td>
                             </tr>

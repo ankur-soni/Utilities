@@ -8,6 +8,15 @@
     <td class="col-md-4">
         @Html.DisplayFor(modelItem => modelItem.title)
     </td>
+    <td>
+        @Html.DropDownListFor(i => i.Weightage,
+       Enumerable.Range(0,20).Select(x => x * 5).
+       Select(j => new SelectListItem
+       {
+           Value = j.ToString(),
+           Text = j.ToString()
+       }), new { @class = "form-control ddlWeightage" })
+    </td>
     <td class="col-md-4">
         @Html.DropDownListFor(i => i.Rating,
        Enumerable.Range(1, 5).

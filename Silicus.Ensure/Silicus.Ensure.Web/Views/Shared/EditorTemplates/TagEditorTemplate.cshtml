@@ -1,0 +1,33 @@
+﻿@using Kendo.Mvc.UI;
+@model Silicus.Ensure.Models.DataObjects.Tags
+
+<div class="container-fluid model-550">
+    <div class="autopay-popup">
+        <div class="row marginbottom">
+            <div class="col-lg-4 col-md-4 col-sm-6 col-xs-6">
+                @Html.LabelFor(m => m.TagId, "TagName")
+            </div>
+
+            <div class="col-lg-8 col-md-8 col-sm-6 col-xs-6">
+                @Html.TextBoxFor(model => model.TagName, new {@class = "form-control" })
+                <div class="validation">
+                    @Html.ValidationMessageFor(m => m.TagName)
+                </div>
+            </div>
+        </div>
+        <div class="row marginbottom">
+            <div class="col-lg-4 col-md-4 col-sm-6 col-xs-6">
+                @Html.LabelFor(m => m.Description, "Description")
+            </div>
+
+            <div class="col-lg-8 col-md-8 col-sm-6 col-xs-6">
+                @Html.TextAreaFor(model => model.Description,new {@class = "form-control",@rows="5"})
+                <div class="validation">
+                    @Html.ValidationMessageFor(m => m.Description)
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+

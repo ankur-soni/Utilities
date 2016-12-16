@@ -3,7 +3,6 @@
 @{
     ViewBag.Title = "EditNomination";
 }
-
 <script src="~/js/jquery-2.1.1.js"></script>
 <script src="~/js/plugins/validate/jquery.validate.min.js"></script>
 <script src="~/Scripts/jquery.validate.unobtrusive.js"></script>
@@ -18,8 +17,8 @@
     </nav>
     <div class="col-lg-11 col-md-11 col-sm-11">
         <h1 class="header-name">Edit Nomination</h1>
-    </div>
 </div>
+    </div>
 
 
 <div class="row">
@@ -28,21 +27,21 @@
             <div class="row">
                 <div class="col-lg-12 col-md-12 col-sm-12 text-center">
                     <label style="color:#0067AA;padding-bottom:5px;font-weight:bold;font-size:18px;">For  @String.Format("{0:MMMM}", DateTime.Now) - @DateTime.Now.Year</label>
-                </div>
-            </div>
-            @using (Html.BeginForm("EditSavedNomination", "Nomination", FormMethod.Post, new { id = "editNominationForm" }))
-            {
-                @*@Html.AntiForgeryToken()*@
+</div>
+        </div>
+        @using (Html.BeginForm("EditSavedNomination", "Nomination", FormMethod.Post, new { id = "editNominationForm" }))
+        {
+            @*@Html.AntiForgeryToken()*@
 
                 @Html.HiddenFor(model => model.NominationId, new { @id = "NominationId" });
-                @Html.HiddenFor(model => model.ManagerId);
+            @Html.HiddenFor(model => model.ManagerId);
                 @Html.HiddenFor(model => model.IsSubmitted, new { @id = "IsSubmitted" });
-                @Html.HiddenFor(model => model.AwardId)
-                @Html.HiddenFor(model => model.ProjectID)
-                @Html.HiddenFor(model => model.DepartmentId)
-                @Html.HiddenFor(model => model.ResourceId)
-
-                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+            @Html.HiddenFor(model => model.AwardId)
+            @Html.HiddenFor(model => model.ProjectID)
+            @Html.HiddenFor(model => model.DepartmentId)
+            @Html.HiddenFor(model => model.ResourceId)
+            
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
     <div class="f1" style="padding-top:0px;">
         <div class="wizard-box" style="margin-top:0px;">
             <div id="basicFields">
@@ -56,7 +55,7 @@
                         </div>
                     </div>
 
-                </div>
+                        </div>
                 <div class="row">
                     <div class="col-md-5">
                         <div class="form-group">
@@ -67,16 +66,16 @@
                                         @Html.RadioButtonFor(model => model.SelectResourcesBy, "Project", new { id = "ProjectRadioButton", value = "Project" })<label for="radio1">Project</label>
                                         @*<input type="radio" name="SelectResourcesBy" id="ProjectRadioButton" value="Project">*@
 
-                                    </div>
+                    </div>
                                 </label>
                                 <label class="radio-inline">
                                     <div class="radio radio-info">
                                         @Html.RadioButtonFor(model => model.SelectResourcesBy, "Department", new { id = "DepartmentRadioButton", value = "Department" })<label for="radio1">Department</label>
                                         @*<input type="radio" name="SelectResourcesBy" id="DepartmentRadioButton" value="Department">*@
 
-                                    </div>
+                        </div>
                                 </label>
-                            </div>
+                    </div>
                         </div>
                     </div>
                 </div>
@@ -115,7 +114,7 @@
                 <div class="col-md-6">
                     <div class="form-group">
                         @Html.Label("Comment", htmlAttributes: new { @class = "control-label requiredfeild" })
-                        <div class="row">
+                <div class="row">
                             <div class="col-md-6">
                                 <div class="form-group">
                                     @Html.TextAreaFor(model => model.MainComment, new { @class = "form-control", placeholder = "Maximum 500 words", id = "commentBox", rows = "5", maxlength = 500 })
@@ -123,9 +122,9 @@
                                 </div>
                             </div>
                         </div>
-                        @Html.ValidationMessageFor(model => model.MainComment, "", new { @class = "text-danger", id = "managerCommentValidationmessage" })
+                            @Html.ValidationMessageFor(model => model.MainComment, "", new { @class = "text-danger", id = "managerCommentValidationmessage" })
+                        </div>
                     </div>
-                </div>
             </div>
         </div>
     </div>
@@ -142,7 +141,7 @@
                     @Html.ValidationMessageFor(model => model.Comments, "", new { @class = "text-danger", id = "criterisCommentValidationmessage" })
                 </div>
             </div>
-        </div>
+            </div>
 
         <div class="box M-B60">
             <div class="f1" style="padding-top:15px;">
@@ -154,311 +153,312 @@
                                     <thead>
                                         <tr>
                                             <th>#</th>
+                                            <th>Weightage</th>
                                             <th>Criteria</th>
                                             <th>Rating</th>
                                             <th>Manager Comments</th>
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        @if (Model.IsSubmitted == true)
-                                {
-                                            @Html.DisplayFor(model => model.Comments)
-                                }
-                                else
-                                {
-                                            @Html.EditorFor(model => model.Comments)
-                                }
+                        @if (Model.IsSubmitted == true)
+                        {
+                            @Html.DisplayFor(model => model.Comments)
+                        }
+                        else
+                        {
+                            @Html.EditorFor(model => model.Comments)
+                        }
 
                                     </tbody>
-                                </table>
-                                <div style="text-align:right;">
-                                    @Html.ValidationMessageFor(model => model.Comments, "", new { @class = "text-danger", id = "criterisCommentValidationmessage" })
-                                </div>
-                                <span id="criteriaCommentValidationMsg"></span>
-                            </div>
-                        </div>
+                    </table>
+                    <div style="text-align:right;">
+                        @Html.ValidationMessageFor(model => model.Comments, "", new { @class = "text-danger", id = "criterisCommentValidationmessage" })
+                    </div>
+                    <span id="criteriaCommentValidationMsg"></span>
+                </div>
+            </div>
                     </div>
                 </div>
                 <div class="row M-T15">
-                    @if (Model.IsSubmitted != true)
-                    {
+                @if (Model.IsSubmitted != true)
+                {
                         <div class="pull-right btn-nav">
                             <input type="button" value="Discard" id="discardButton" class="btn btn-primary" />
                             <input type="button" name="submit" value="Save Draft" id="saveButton" class="btn btn-primary" onclick="return checkValidationOnSaveDraft();" />
                             <input type="button" name="button" value="Submit" class="btn btn-primary" onclick="return checkValidationOnSubmit();"
                                    @{  if (ViewBag.NominationLockStatus) {  @: disabled="disabled"
-                                                                                                                                                    @: title="Nominations are locked"
+                                   @: title="Nominations are locked"
                                                                                                                                                 }  } />
                             <input type="button" value="Back" class="btn btn-primary" onclick="location.href='@Url.Action("GetNominationList", "Nomination")'" />
 
-                        </div>
-                    }
-                    else
-                    {
-                        <div style="text-align:center;">
+                    </div>
+                }
+                else
+                {
+                    <div style="text-align:center;">
                             <input type="button" value="Back" class="btn btn-primary" onclick="location.href='@Url.Action("GetNominationList", "Nomination")'" />
-                        </div>
+                    </div>
 
-                    }
-                </div>
+                }
             </div>
-        </div>
+    </div>
+</div>
 
 
 
     </div>
 </div>
-                    <script type="text/javascript">
-                        $(document).ready(function () {
-                            var selectedProject = $("#SelectedProject").val();
-                            var selectedDept = $("#SelectedDepartment").val();
-                            var isSubmitted = $("#IsSubmitted").val();
+<script type="text/javascript">
+    $(document).ready(function () {
+        var selectedProject = $("#SelectedProject").val();
+        var selectedDept = $("#SelectedDepartment").val();
+        var isSubmitted = $("#IsSubmitted").val();
 
-                            $('#basicFields').find('*').prop('disabled', true);
-                            if (selectedProject != "")
+        $('#basicFields').find('*').prop('disabled', true);
+        if (selectedProject != "")
                                 $("#departmentInput").show();
-                            else if (selectedDept != "")
-                                $("#projectInput").hide();
+        else if (selectedDept != "")
+            $("#projectInput").hide();
 
-                            if (isSubmitted == "True") {
-                                $('#basicFields').find('*').prop('disabled', true);
-                                $('#commentBox').removeAttr('placeholder');
-                                $('#commentBox').prop('disabled', true);
-                                $('#heading').text("Nomination Details")
-                            }
-                        })
+        if (isSubmitted == "True") {
+            $('#basicFields').find('*').prop('disabled', true);
+            $('#commentBox').removeAttr('placeholder');
+            $('#commentBox').prop('disabled', true);
+            $('#heading').text("Nomination Details")
+        }
+    })
 
-                        $("#ProjectRadioButton").change
-                            (
-                             function () {
-                                 $("#departmentInput").hide();
-                                 $("#SelectedProject").prop('selectedIndex', 0);
-                                 $('#Resources').empty();
-                                 $('#Resources').append($("<option selected></option>").val(null).html("Select"));
-                                 $("#projectInput").show();
-                             });
+    $("#ProjectRadioButton").change
+        (
+         function () {
+             $("#departmentInput").hide();
+             $("#SelectedProject").prop('selectedIndex', 0);
+             $('#Resources').empty();
+             $('#Resources').append($("<option selected></option>").val(null).html("Select"));
+             $("#projectInput").show();
+         });
 
-                        $("#DepartmentRadioButton").change
-                            (
-                              function () {
-                                  $("#projectInput").hide();
-                                  $("#SelectedDepartment").prop('selectedIndex', 0);
-                                  $('#Resources').empty();
-                                  $('#Resources').append($("<option selected></option>").val(null).html("Select"));
-                                  $("#departmentInput").show();
-                              });
+    $("#DepartmentRadioButton").change
+        (
+          function () {
+              $("#projectInput").hide();
+              $("#SelectedDepartment").prop('selectedIndex', 0);
+              $('#Resources').empty();
+              $('#Resources').append($("<option selected></option>").val(null).html("Select"));
+              $("#departmentInput").show();
+          });
 
-                        $("#SelectedProject").change(function () {
-                            var selectedProject = $("#SelectedProject").val();
-                            var selectedAward = $("#Award").val();
+    $("#SelectedProject").change(function () {
+        var selectedProject = $("#SelectedProject").val();
+        var selectedAward = $("#Award").val();
 
-                            $('#Resources').empty();
-                            $('#Resources').append($("<option selected></option>").val(null).html("Select"));
+        $('#Resources').empty();
+        $('#Resources').append($("<option selected></option>").val(null).html("Select"));
 
-                            var ServiceUrl = "/Nomination/ResourcesInProject?engagementID=" + selectedProject;
-                            $.ajax({
-                                type: 'post',
-                                url: '@Url.Action("ResourcesInProject", "Nomination")',
-                                data: JSON.stringify({ engagementID: selectedProject, awardId: selectedAward }),
-                                contentType: "application/json; charset=utf-8",
-                                success: function (data) {
+        var ServiceUrl = "/Nomination/ResourcesInProject?engagementID=" + selectedProject;
+        $.ajax({
+            type: 'post',
+            url: '@Url.Action("ResourcesInProject", "Nomination")',
+            data: JSON.stringify({ engagementID: selectedProject, awardId: selectedAward }),
+            contentType: "application/json; charset=utf-8",
+            success: function (data) {
 
-                                    for (var key in data) {
-                                        $('#Resources')
-                                            .append($("<option></option>").val(data[key].ID).html(data[key].DisplayName));
-                                    }
-                                }
-                            });
-                        });
+                for (var key in data) {
+                    $('#Resources')
+                        .append($("<option></option>").val(data[key].ID).html(data[key].DisplayName));
+                }
+            }
+        });
+    });
 
-                        $("#SelectedDepartment").change(function () {
-                            var selectedDept = $("#SelectedDepartment").val();
-                            var ServiceUrl = "/Nomination/ResourcesInDepartment?departmentID=" + selectedDept;
-                            $('#Resources').empty();
-                            $('#Resources').append($("<option selected></option>").val(null).html("Select"));
+    $("#SelectedDepartment").change(function () {
+        var selectedDept = $("#SelectedDepartment").val();
+        var ServiceUrl = "/Nomination/ResourcesInDepartment?departmentID=" + selectedDept;
+        $('#Resources').empty();
+        $('#Resources').append($("<option selected></option>").val(null).html("Select"));
 
-                            $.ajax({
-                                type: 'GET',
-                                url: ServiceUrl,
-                                contentType: "application/json; charset=utf-8",
-                                success: function (data) {
-                                    for (var key in data) {
-                                        $('#Resources')
-                                            .append($("<option></option>").val(data[key].ID).html(data[key].DisplayName));
-                                    }
-                                }
-                            });
-                        });
-
-
-                        $("#discardButton").click(function () {
-
-                            swal({
-                                title: "Discard Nomination",
-                                text: "Do you want to discard this nomination?",
-                                type: "info",
-                                showCancelButton: true,
-                                confirmButtonColor: "#0070b9",
-                                confirmButtonText: "Yes!",
-                                cancelButtonText: "No!",
-                                closeOnConfirm: false,
-                                closeOnCancel: false
-                            },
-                                   function (isConfirm) {
-                                       if (isConfirm) {
-                                           var nominationId = $("#NominationId").val();
-
-                                           $.ajax({
-                                               url: '@Url.Action("DiscardNomination", "Nomination")',
-                                               type: "POST",
-                                               data: JSON.stringify({ nominationId: nominationId }),
-                                               datatype: "JSON",
-                                               contentType: "application/json; charset=utf-8",
-                                               success: function (data) {
-                                                   swal({
-                                                       title: "Nomination Discarded!",
-                                                       text: "",
-                                                       type: "info",
-                                                       showCancelButton: false,
-                                                       confirmButtonColor: "#88a364",
-                                                       confirmButtonText: "Ok",
-                                                   },
-                                                   function () {
-                                                       if (isConfirm) {
-                                                           window.location.href = '@Url.Action("GetNominationList", "Nomination")';
-                                                       }
-                                                   });
-                                               },
-                                               error: function () {
-                                                   swal("Error", "Oops! Something wrong happened..");
-                                               }
-                                           });
-                                       }
-                                       else {
-                                           swal("Cancelled", "Cancel Discard");
-                                           @*// window.location.href = '@Url.Action("GetNominationList", "Nomination")';*@
-                                       }
-                                   });
-                        });
+        $.ajax({
+            type: 'GET',
+            url: ServiceUrl,
+            contentType: "application/json; charset=utf-8",
+            success: function (data) {
+                for (var key in data) {
+                    $('#Resources')
+                        .append($("<option></option>").val(data[key].ID).html(data[key].DisplayName));
+                }
+            }
+        });
+    });
 
 
-                        function checkValidationOnSubmit() {
-                            if ($('#editNominationForm').valid()) {
-                                var comments = 0;
-                                $(".criteriaComment").children("textarea").each(function (data) {
-                                    if ($(this).val().trim())
-                                        comments++;
-                                });
+    $("#discardButton").click(function () {
 
-                                if (!$("#commentBox").val()) {
-                                    $("#managerCommentValidationmessage").text("Enter main comment")
-                                    return false;
-                                }
-                                else if (comments < 1) {
-                                    $("#criterisCommentValidationmessage").text("Enter at least one criteria comment")
-                                    return false;
-                                }
-                                else {
-                                    swal({
-                                        title: "Submit Nomination",
-                                        text: "Do you want to nominate this candidate?",
-                                        type: "info",
-                                        showCancelButton: true,
-                                        confirmButtonColor: "#0070b9",
-                                        confirmButtonText: "Yes!",
-                                        cancelButtonText: "No!",
-                                        closeOnConfirm: false,
-                                        closeOnCancel: false
-                                    },
-                                   function (isConfirm) {
-                                       if (isConfirm) {
-                                           debugger;
-                                           var modelbjectToSend = $('#editNominationForm').serialize() + '&' + $.param({ 'submit': "Submit" }, true);
+        swal({
+            title: "Discard Nomination",
+            text: "Do you want to discard this nomination?",
+            type: "info",
+            showCancelButton: true,
+            confirmButtonColor: "#0070b9",
+            confirmButtonText: "Yes!",
+            cancelButtonText: "No!",
+            closeOnConfirm: false,
+            closeOnCancel: false
+        },
+               function (isConfirm) {
+                   if (isConfirm) {
+                       var nominationId = $("#NominationId").val();
 
-                                           $.ajax({
-                                               type: 'post',
-                                               url: '@Url.Action("EditSavedNomination", "Nomination")',
-                                               data: modelbjectToSend,
-                                               success: function (data) {
-                                                   swal({
-                                                       title: "Nomination Submitted!",
-                                                       text: "",
-                                                       type: "info",
-                                                       showCancelButton: false,
-                                                       confirmButtonColor: "#88a364",
-                                                       confirmButtonText: "Ok",
-                                                   },
-                                                   function () {
-                                                       if (isConfirm) {
-                                                           window.location.href = '@Url.Action("GetNominationList", "Nomination")';
-                                                       }
-                                                   });
-                                               },
-                                               error: function () {
-                                                   swal("Error", "Oops! Something wrong happened..");
-                                               }
-                                           });
-                                       } else {
-                                           swal("Cancelled", "Nomination Cancelled");
-                                           @*// window.location.href = '@Url.Action("GetNominationList", "Nomination")';*@
-                                       }
-                                   });
-                                }
-                            }
-                            else {
-                                return false;
-                            }
-                        }
-
-                        function checkValidationOnSaveDraft() {
-                            if ($('#editNominationForm').valid()) {
-                                swal({
-                                    title: "Save Nomination",
-                                    text: "Do you want to save this nomination?",
-                                    type: "info",
-                                    showCancelButton: true,
-                                    confirmButtonColor: "#0070b9",
-                                    confirmButtonText: "Yes!",
-                                    cancelButtonText: "No!",
-                                    closeOnConfirm: false,
-                                    closeOnCancel: false
-                                },
-                               function (isConfirm) {
+                       $.ajax({
+                           url: '@Url.Action("DiscardNomination", "Nomination")',
+                           type: "POST",
+                           data: JSON.stringify({ nominationId: nominationId }),
+                           datatype: "JSON",
+                           contentType: "application/json; charset=utf-8",
+                           success: function (data) {
+                               swal({
+                                   title: "Nomination Discarded!",
+                                   text: "",
+                                   type: "info",
+                                   showCancelButton: false,
+                                   confirmButtonColor: "#88a364",
+                                   confirmButtonText: "Ok",
+                               },
+                               function () {
                                    if (isConfirm) {
-                                       var modelbjectToSend = $('#editNominationForm').serialize() + '&' + $.param({ 'submit': "Save" }, true);
-
-                                       $.ajax({
-                                           type: 'post',
-                                           url: '@Url.Action("EditSavedNomination", "Nomination")',
-                                           data: modelbjectToSend,
-                                           success: function (data) {
-                                               swal({
-                                                   title: "Nomination Saved!",
-                                                   showCancelButton: false,
-                                                   confirmButtonColor: "#88a364",
-                                                   confirmButtonText: "Ok"
-                                               },
-                                               function () {
-                                                   if (isConfirm) {
-                                                       window.location.href = '@Url.Action("GetNominationList", "Nomination")';
-                                                   }
-                                               });
-                                           },
-                                           error: function () {
-                                               swal("Error", "Oops! Something wrong happened..");
-                                           }
-                                       });
-                                   } else {
-                                       swal("Cancelled", "Nomination Save Cancelled");
-                                       @*//window.location.href = '@Url.Action("GetNominationList", "Nomination")';*@
+                                       window.location.href = '@Url.Action("GetNominationList", "Nomination")';
                                    }
                                });
-                            }
-                            else {
-                                return false;
-                            }
-                        }
+                           },
+                           error: function () {
+                               swal("Error", "Oops! Something wrong happened..");
+                           }
+                       });
+                   }
+                   else {
+                       swal("Cancelled", "Cancel Discard");
+                      @*// window.location.href = '@Url.Action("GetNominationList", "Nomination")';*@
+                   }
+               });
+    });
 
-                        $("#criteriaTable").on('click', function () { $("#criterisCommentValidationmessage").text("") });
-                        $("#commentBox").on('click', function () { $("#managerCommentValidationmessage").text("") });
-                    </script>
+
+    function checkValidationOnSubmit() {
+        if ($('#editNominationForm').valid()) {
+            var comments = 0;
+            $(".criteriaComment").children("textarea").each(function (data) {
+                if ($(this).val().trim())
+                    comments++;
+            });
+
+            if (!$("#commentBox").val()) {
+                $("#managerCommentValidationmessage").text("Enter main comment")
+                return false;
+            }
+            else if (comments < 1) {
+                $("#criterisCommentValidationmessage").text("Enter at least one criteria comment")
+                return false;
+            }
+            else {
+                swal({
+                    title: "Submit Nomination",
+                    text: "Do you want to nominate this candidate?",
+                    type: "info",
+                    showCancelButton: true,
+                    confirmButtonColor: "#0070b9",
+                    confirmButtonText: "Yes!",
+                    cancelButtonText: "No!",
+                    closeOnConfirm: false,
+                    closeOnCancel: false
+                },
+               function (isConfirm) {
+                   if (isConfirm) {
+                       debugger;
+                       var modelbjectToSend = $('#editNominationForm').serialize() + '&' + $.param({ 'submit': "Submit" }, true);
+
+                       $.ajax({
+                           type: 'post',
+                           url: '@Url.Action("EditSavedNomination", "Nomination")',
+                           data: modelbjectToSend,
+                           success: function (data) {
+                               swal({
+                                   title: "Nomination Submitted!",
+                                   text: "",
+                                   type: "info",
+                                   showCancelButton: false,
+                                   confirmButtonColor: "#88a364",
+                                   confirmButtonText: "Ok",
+                               },
+                               function () {
+                                   if (isConfirm) {
+                                       window.location.href = '@Url.Action("GetNominationList", "Nomination")';
+                                   }
+                               });
+                           },
+                           error: function () {
+                               swal("Error", "Oops! Something wrong happened..");
+                           }
+                       });
+                   } else {
+                       swal("Cancelled", "Nomination Cancelled");
+                      @*// window.location.href = '@Url.Action("GetNominationList", "Nomination")';*@
+                   }
+               });
+            }
+        }
+        else {
+            return false;
+        }
+    }
+
+    function checkValidationOnSaveDraft() {
+        if ($('#editNominationForm').valid()) {
+            swal({
+                title: "Save Nomination",
+                text: "Do you want to save this nomination?",
+                type: "info",
+                showCancelButton: true,
+                confirmButtonColor: "#0070b9",
+                confirmButtonText: "Yes!",
+                cancelButtonText: "No!",
+                closeOnConfirm: false,
+                closeOnCancel: false
+            },
+           function (isConfirm) {
+               if (isConfirm) {
+                   var modelbjectToSend = $('#editNominationForm').serialize() + '&' + $.param({ 'submit': "Save" }, true);
+
+                   $.ajax({
+                       type: 'post',
+                       url: '@Url.Action("EditSavedNomination", "Nomination")',
+                       data: modelbjectToSend,
+                       success: function (data) {
+                           swal({
+                               title: "Nomination Saved!",
+                               showCancelButton: false,
+                               confirmButtonColor: "#88a364",
+                               confirmButtonText: "Ok"
+                           },
+                           function () {
+                               if (isConfirm) {
+                                   window.location.href = '@Url.Action("GetNominationList", "Nomination")';
+                               }
+                           });
+                       },
+                       error: function () {
+                           swal("Error", "Oops! Something wrong happened..");
+                       }
+                   });
+               } else {
+                   swal("Cancelled", "Nomination Save Cancelled");
+                   @*//window.location.href = '@Url.Action("GetNominationList", "Nomination")';*@
+               }
+           });
+        }
+        else {
+            return false;
+        }
+    }
+
+    $("#criteriaTable").on('click', function () { $("#criterisCommentValidationmessage").text("") });
+    $("#commentBox").on('click', function () { $("#managerCommentValidationmessage").text("") });
+</script>

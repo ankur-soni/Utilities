@@ -28,7 +28,7 @@ namespace Silicus.Ensure.Entities.Initializer
                Address = "Test",
                Email = "testadmin@test.com",
                IdentityUserId = new System.Guid("5C9DE1BA-083E-425F-AE0B-FCB222E9DBDF"),
-               Role = "ADMIN",
+               Role = RoleName.Admin.ToString(),
                IsActive = true
 
            });
@@ -41,7 +41,7 @@ namespace Silicus.Ensure.Entities.Initializer
                 Address = "Sangvi",
                 Email = "nilkanth@gmail.com",
                 IdentityUserId = new System.Guid("88B34980-EDD3-420C-8387-621B629A4E9B"),
-                Role = "Panel",
+                Role = RoleName.Panel.ToString(),
                 IsActive = true
 
             });
@@ -54,7 +54,7 @@ namespace Silicus.Ensure.Entities.Initializer
                 Address = "Pune",
                 Email = "lorem@gmail.com",
                 IdentityUserId = new System.Guid("50cad72d-4ff3-48ce-ba32-44675cfd2744"),
-                Role = "CANDIDATE",
+                Role = RoleName.Candidate.ToString(),
                 Gender = "Male",
                 Department = "Delivery",
                 TestStatus = Convert.ToString(TestStatus.NotAssigned),
@@ -124,7 +124,7 @@ namespace Silicus.Ensure.Entities.Initializer
                 PrimaryTags = "1,2",
                 Weights = "70,30",
                 Proficiency = "1,2",
-                Status=1,
+                Status = 1,
 
             });
 

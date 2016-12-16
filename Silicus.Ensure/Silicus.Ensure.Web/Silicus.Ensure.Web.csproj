@@ -651,8 +651,6 @@
     <Content Include="Views\User\Dashboard.cshtml" />
     <Content Include="Views\User\Create.cshtml" />
     <Content Include="Views\Shared\EditorTemplates\productDetailsGrid.cshtml" />
-    <Content Include="Views\Admin\Dashboard.cshtml" />
-    <Content Include="Views\Admin\_partialViewDashboard.cshtml" />
     <Content Include="Views\Admin\SendEmail.cshtml" />
     <Content Include="Views\Admin\_partialViewSendMail.cshtml" />
     <Content Include="Views\Admin\ComboBox.cshtml" />
@@ -685,6 +683,9 @@
     <Content Include="Views\ManageUser\_GetUserListPartialView.cshtml" />
     <Content Include="Views\ManageUser\AddUser.cshtml" />
     <Content Include="Views\Admin\_partialSelctPanelList.cshtml" />
+    <Content Include="Views\ManageUser\_partialAddCandidateUserView.cshtml" />
+    <Content Include="Views\ManageUser\_partialAddUserView.cshtml" />
+    <Content Include="Views\Shared\EditorTemplates\TagEditorTemplate.cshtml" />
     <None Include="Web.Azure.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

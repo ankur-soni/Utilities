@@ -66,6 +66,7 @@
           <Property Name="CriteriaId" Type="int" Nullable="false" />
           <Property Name="Comment" Type="nvarchar" MaxLength="500" />
           <Property Name="Rating" Type="int" Nullable="false" />
+          <Property Name="Weightage" Type="int" Nullable="false" />
         </EntityType>
         <EntityType Name="Nomination">
           <Key>
@@ -471,6 +472,7 @@
           <NavigationProperty Name="Criterion" Relationship="Self.FK_dbo_ManagerComment_dbo_Criteria_CriteriaId" FromRole="ManagerComment" ToRole="Criteria" />
           <NavigationProperty Name="Nomination" Relationship="Self.FK_dbo_ManagerComment_dbo_Nomination_NominationId" FromRole="ManagerComment" ToRole="Nomination" />
           <Property Name="Rating" Type="Int32" Nullable="false" />
+          <Property Name="Weightage" Type="Int32" Nullable="false" />
         </EntityType>
         <EntityType Name="Nomination">
           <Key>
@@ -887,6 +889,7 @@
           <EntitySetMapping Name="ManagerComments">
             <EntityTypeMapping TypeName="EnCourageModel.ManagerComment">
               <MappingFragment StoreEntitySet="ManagerComment">
+                <ScalarProperty Name="Weightage" ColumnName="Weightage" />
                 <ScalarProperty Name="Rating" ColumnName="Rating" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="NominationId" ColumnName="NominationId" />
