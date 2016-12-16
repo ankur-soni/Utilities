@@ -44,7 +44,7 @@
                                 <div class="col-md-6">
                                     <div class="input-group">
                                         <span class="input-group-addon"><span class="glyphicon glyphicon-search" aria-hidden="true"></span></span>
-                                        <input type="text" class="form-control" id='FieldFilter' placeholder="Search for...">
+                                        <input type="text" class="form-control" id='PositionFieldFilter' placeholder="Search for...">
                                         <span class="input-group-btn">
                                             <button id="postionSearch" class="btn btn-default" type="button" style="height:16px;"><span class="glyphicon glyphicon-refresh" aria-hidden="true"></span></button>
                                         </span>
@@ -68,9 +68,9 @@
 <script>
 
     $(document).ready(function () {
-        $("#FieldFilter").keyup(function () {
+        $("#PositionFieldFilter").keyup(function () {
 
-            var value = $("#FieldFilter").val();
+            var value = $("#PositionFieldFilter").val();
             grid = $("#positionGrids").data("kendoGrid");
 
             if (value.length > 0) {
@@ -89,7 +89,7 @@
             var datasource = $("#positionGrids").data("kendoGrid").dataSource;
             //Clear filters:
             datasource.filter([]);
-            $("#FieldFilter").val('');
+            $("#PositionFieldFilter").val('');
         });
     });
 

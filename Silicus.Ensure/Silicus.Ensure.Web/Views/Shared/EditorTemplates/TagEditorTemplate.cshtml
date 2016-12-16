@@ -1,31 +1,34 @@
 ﻿@using Kendo.Mvc.UI;
 @model Silicus.Ensure.Models.DataObjects.Tags
+<form>
+    <div class="container-fluid model-550">
+        <div class="row">
+            <div class="col-md-4">
+                @Html.LabelFor(m => m.TagName) <span>*</span>
+            </div>
 
-<div class="col-md-12">
-    <div class="row">
-        <div class="col-md-4">
-            @Html.LabelFor(m => m.TagName)
-        </div>
+            <div class="col-lg-8 col-md-8 col-sm-12 col-xs-12">
+                @Html.TextBoxFor(model => model.TagName, new { @class = "form-control " })
+                <div class="validation">
+                    @Html.ValidationMessageFor(m => m.TagName)
+                </div>
+            </div>
 
-        <div class="col-md-4">
-            @Html.TextBoxFor(model => model.TagName)
         </div>
-        <div class="col-md-4">
-            @Html.ValidationMessageFor(m => m.TagName)
+        <div class="row">
+            <div class="col-md-4">
+                @Html.LabelFor(m => m.Description) <span>*</span>
+            </div>
+
+            <div class="col-lg-8 col-md-8 col-sm-12 col-xs-12">
+                @Html.TextAreaFor(model => model.Description, new { @rows = "5", @class = "form-control " })
+                <div class="validation">
+                    @Html.ValidationMessageFor(m => m.Description)
+                </div>
+            </div>
+
         </div>
     </div>
-    <div class="row">
-        <div class="col-md-4">
-            @Html.LabelFor(m => m.Description)
-        </div>
-
-        <div class="col-md-4">
-            @Html.TextAreaFor(model => model.Description, new { @rows = "5" })
-        </div>
-        <div class="col-md-4">
-            @Html.ValidationMessageFor(m => m.Description)
-        </div>
-    </div>
-</div>
 
 
+</form>
