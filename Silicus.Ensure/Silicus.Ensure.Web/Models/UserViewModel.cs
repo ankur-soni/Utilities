@@ -35,7 +35,7 @@ namespace Silicus.Ensure.Web.Models
         [Required]
         [StringLength(100)]
         [System.Web.Mvc.Remote("IsDuplicateEmail", "User", AdditionalFields = "UserId", ErrorMessage = "Email already name exist !")]
-        [RegularExpression(@"[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}", ErrorMessage = "Please enter correct email")]
+        [RegularExpression(@"[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}", ErrorMessage = "Please enter correct email!")]
         public string Email { get; set; }
 
         [Display(Name = "Gender")]
@@ -59,12 +59,12 @@ namespace Silicus.Ensure.Web.Models
         [StringLength(10)]
         [Display(Name = "Primary Mobile Number")]
         [Required(ErrorMessage = "Primary mobile number is required!")]
-        [RegularExpression(@"^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$", ErrorMessage = "Primary mobile number is not a valid phone number")]
+        [RegularExpression(@"^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$", ErrorMessage = "Primary mobile number is not a valid phone number!")]
         public string PrimaryMobileNumber { get; set; }
 
         [StringLength(10)]
         [Display(Name = "Secondary Mobile Number")]
-        [RegularExpression(@"^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$", ErrorMessage = "Secondary mobile number is not a valid phone number")]
+        [RegularExpression(@"^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$", ErrorMessage = "Secondary mobile number is not a valid phone number!")]
         [Required(ErrorMessage = "Secondary mobile number is required!")]
         public string SecondaryMobileNumber { get; set; }
 
@@ -90,7 +90,7 @@ namespace Silicus.Ensure.Web.Models
         [DataType(DataType.Password)]
         public string NewPassword { get; set; }
 
-        [Compare("NewPassword", ErrorMessage = "Passwords don't match.")]
+        [Compare("NewPassword", ErrorMessage = "Passwords don't match.!")]
         [DataType(DataType.Password)]
         public string ConfirmPassword { get; set; }
     }

@@ -31,10 +31,10 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Silicus.UtilityContainer.Entities">
-      <HintPath>..\..\..\..\..\Desktop\Silicus.UtilityContainer.Entities.dll</HintPath>
+      <HintPath>..\Dependencies\Silicus.UtilityContainer.Entities.dll</HintPath>
     </Reference>
     <Reference Include="Silicus.UtilityContainer.Models">
-      <HintPath>..\..\..\..\..\Desktop\Silicus.UtilityContainer.Models.dll</HintPath>
+      <HintPath>..\Dependencies\Silicus.UtilityContainer.Models.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />

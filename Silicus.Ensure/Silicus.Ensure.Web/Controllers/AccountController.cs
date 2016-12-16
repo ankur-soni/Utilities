@@ -414,7 +414,7 @@ namespace Silicus.Ensure.Web.Controllers
                 return RedirectToAction("Welcome", "Candidate");
 
             if (isAdmin)
-                return RedirectToAction("Dashboard", "Admin");
+                return RedirectToAction("Index", "ManageUser");
 
             if (isPanel)
                 return RedirectToAction("Candidates", "Admin");

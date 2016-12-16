@@ -25,6 +25,8 @@
     <UseGlobalApplicationHostFile />
     <NuGetPackageImportStamp>
     </NuGetPackageImportStamp>
+    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
+    <RestorePackages>true</RestorePackages>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -133,15 +135,16 @@
       <HintPath>..\packages\PagedList.Mvc.4.5.0.0\lib\net40\PagedList.Mvc.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Silicus.UtilityContainer.Entities, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
-      <HintPath>..\..\..\..\..\Desktop\Silicus.UtilityContainer.Entities.dll</HintPath>
-    </Reference>
-    <Reference Include="Silicus.UtilityContainer.Models">
-      <HintPath>..\..\..\..\..\Desktop\Silicus.UtilityContainer.Models.dll</HintPath>
-    </Reference>
-    <Reference Include="Silicus.UtilityContainer.Security, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="Silicus.UtilityContainer.Entities, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\Utilities3\Silicus.UtilityContainer\Silicus.UtilityContainer.Security\bin\Debug\Silicus.UtilityContainer.Security.dll</HintPath>
+      <HintPath>..\Dependencies\Silicus.UtilityContainer.Entities.dll</HintPath>
+    </Reference>
+    <Reference Include="Silicus.UtilityContainer.Models, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Dependencies\Silicus.UtilityContainer.Models.dll</HintPath>
+    </Reference>
+    <Reference Include="Silicus.UtilityContainer.Security">
+      <HintPath>..\Dependencies\Silicus.UtilityContainer.Security.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
@@ -381,9 +384,6 @@
     <Content Include="Scripts\bootstrap-tokenfield.min.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
-    <Content Include="ApplicationInsights.config">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
     <Content Include="Content\Template-css\bootstrap.css.map" />
     <Content Include="Content\Template-css\plugins\bootstrap-rtl\bootstrap-rtl.css.map" />
     <Content Include="Content\Template-css\plugins\footable\fonts\footable.eot" />
@@ -423,6 +423,7 @@
     <Content Include="Content\font-awesome\scss\_rotated-flipped.scss" />
     <Content Include="Content\font-awesome\scss\_stacked.scss" />
     <Content Include="Content\font-awesome\scss\_variables.scss" />
+    <Content Include="ApplicationInsights.config" />
     <None Include="Properties\PublishProfiles\Reusable - FTP.pubxml" />
     <None Include="Properties\PublishProfiles\Reusable - Web Deploy.pubxml" />
     <None Include="Properties\PublishProfiles\Reusable.pubxml" />
@@ -848,7 +849,9 @@
     </PropertyGroup>
     <Error Condition="!Exists('..\packages\Microsoft.Net.Compilers.1.0.0\build\Microsoft.Net.Compilers.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.Net.Compilers.1.0.0\build\Microsoft.Net.Compilers.props'))" />
     <Error Condition="!Exists('..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.1.0.0\build\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.1.0.0\build\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props'))" />
+    <Error Condition="!Exists('$(SolutionDir)\.nuget\NuGet.targets')" Text="$([System.String]::Format('$(ErrorText)', '$(SolutionDir)\.nuget\NuGet.targets'))" />
   </Target>
+  <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it.
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">

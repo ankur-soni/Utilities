@@ -77,8 +77,8 @@
             @(Html.Kendo().DropDownListFor(model => model.Position)
                             .OptionLabel("--Select--")
                             .BindTo(Model.PositionList)
-                            .DataTextField("PositionName")
-                            .DataValueField("PositionName")
+                            .DataTextField("Text")
+                            .DataValueField("Value")
                             .Value(Model.Position)
                 .HtmlAttributes(new { style = "width: 100%;border-color: #c5c5c5;" })
             )
@@ -144,7 +144,7 @@
     </div>
     <div class="row">
         <div class="col-md-4">
-            @Html.LabelFor(model => model.Address)<b style="color:Red;">*</b>:
+            @Html.LabelFor(model => model.Address)<b style="color:Red;"> *</b>
         </div>
         <div class="col-md-4">
             @Html.TextBoxFor(model => model.Address, new { @class = "form-control" })

@@ -60,6 +60,12 @@
                     if ("@Model.Role" != '') {
                         loadView("@Model.Role");
                     }
+                    else
+                    {
+                        $("#btnSave").kendoButton({
+                            enable: false
+                        });
+                    }
                 });
 
                 //register custom validation rules
@@ -108,15 +114,35 @@
                 function onSelect(e) {
                     var dataItem = this.dataItem();
                     if(dataItem['Text']!='Select a role')
-                    {loadView(dataItem['Text']);}
-                    else{$('#loadView').html('');}
+                    {
+                        $("#btnSave").removeClass('k-state-disabled');
+                        $("#btnSave").removeAttr('disabled');
+                        $("#btnSave").attr('aria-disabled','false');
+                        loadView(dataItem['Text']);
+                    }
+                    else{
+                        $('#loadView').html('');
+                        $("#btnSave").kendoButton({
+                            enable: false
+                        });
+                    }
                 };
 
                 function onDataBound() {
                     var dataItem = this.dataItem();
                     if(dataItem['Text']!='Select a role')
-                    {loadView(dataItem['Text']);}
-                    else{$('#loadView').html('');}
+                    {
+                        $("#btnSave").removeClass('k-state-disabled');
+                        $("#btnSave").removeAttr('disabled');
+                        $("#btnSave").attr('aria-disabled','false');
+                        loadView(dataItem['Text']);
+                    }
+                    else{
+                        $('#loadView').html('');
+                        $("#btnSave").kendoButton({
+                            enable: false
+                        });
+                    }
                 }
 
                 function onCancelClick() {
