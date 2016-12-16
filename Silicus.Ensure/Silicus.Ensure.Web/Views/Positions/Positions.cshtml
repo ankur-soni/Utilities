@@ -1,14 +1,7 @@
 ﻿@model Silicus.Ensure.Models.DataObjects.Position
 
 @using Kendo.Mvc.UI;
-@{
-    ViewBag.Title = "Positions List";
-    Layout = "~/Views/Shared/_Layout.cshtml";
-}
-<div class="main-content">
-    <div class="fluid mt20">
-    </div>
-    <div class="kendogrid">
+
         <h2>Positions</h2>
 
         <div>
@@ -38,10 +31,11 @@
                         {
                             command.Edit();
                             command.Destroy();
+                            //command.Custom(" ").Click("ConfirmDeleteRow").HtmlAttributes(new { @class = "k-button k-button-icontext k-grid-delete" });
                         }).Title("Actions").Width(160);
 
                     })
-                .Pageable()
+                .Pageable(pager => { pager.PageSizes(true); })
                 .Sortable()
                 .ToolBar(toolbar =>
                 {
@@ -51,7 +45,7 @@
                                 <div class="col-md-6">
                                     <div class="input-group">
                                         <span class="input-group-addon"><span class="glyphicon glyphicon-search" aria-hidden="true"></span></span>
-                                        <input type="text" class="form-control" id='FieldFilter' placeholder="Search for...">
+                                        <input type="text" class="form-control" id='PositionFieldFilter' placeholder="Search for...">
                                         <span class="input-group-btn">
                                             <button id="postionSearch" class="btn btn-default" type="button" style="height:16px;"><span class="glyphicon glyphicon-refresh" aria-hidden="true"></span></button>
                                         </span>
@@ -71,14 +65,13 @@
                 )
             }
         </div>
-    </div>
-</div>
+
 <script>
 
     $(document).ready(function () {
-        $("#FieldFilter").keyup(function () {
+        $("#PositionFieldFilter").keyup(function () {
 
-            var value = $("#FieldFilter").val();
+            var value = $("#PositionFieldFilter").val();
             grid = $("#positionGrids").data("kendoGrid");
 
             if (value.length > 0) {
@@ -97,7 +90,7 @@
             var datasource = $("#positionGrids").data("kendoGrid").dataSource;
             //Clear filters:
             datasource.filter([]);
-            $("#FieldFilter").val('');
+            $("#PositionFieldFilter").val('');
         });
     });
 
@@ -154,6 +147,28 @@
 
     function error_handler(e) {
         ShowMessage(getErrorMessage(e, 0));
+    }
+
+    function ConfirmDeleteRow(userId) {
+        $.when(showConfirmationWindow('Are you sure, do you want to delete this record?', 'Delete')).then(function (confirmed) {
+            if (confirmed) {
+                @*$.ajax({
+                    type: "POST",
+                    url: '@Url.Action("DeleteUser", "User")',
+                    data: { UserId: userId },
+                    success: function (returndata) {
+                        if (returndata == 1) {
+                            $('#UserGrids').data('kendoGrid').dataSource.read();
+                            $('#userGrids').data('kendoGrid').refresh();
+                            ShowMessage("User deleted successfully.", 1);
+                        }
+                        else {
+                            ShowMessage("Error occured while delete operation.", 0);
+                        }
+                    }
+                });*@
+            }
+        });
     }
 
 </script>

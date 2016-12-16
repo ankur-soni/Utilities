@@ -48,7 +48,8 @@ namespace Silicus.Ensure.Services
         {
             if (Position.PositionId > 0)
             {
-                _context.Delete(Position);
+                Position.IsDeleted = true;
+                _context.Update(Position);
             }
         }
     }

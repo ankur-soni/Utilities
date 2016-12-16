@@ -41,5 +41,14 @@ namespace Silicus.Ensure.Services
                 _context.Delete(Tags);
             }
         }
+
+        public Tags GetTagDetailsByName(string tagName)
+        {
+            if (!string.IsNullOrWhiteSpace(tagName))
+            {
+               return _context.Query<Tags>().FirstOrDefault(y=>y.TagName==tagName);                
+            }
+            return null;
+        }
     }
 }

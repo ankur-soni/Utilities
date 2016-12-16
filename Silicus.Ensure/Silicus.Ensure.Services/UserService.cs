@@ -36,7 +36,7 @@ namespace Silicus.Ensure.Services
                     _context.Update(User);
                 }
             }
-            else if (User.Role != null && User.Role.ToLower() == RoleName.Admin.ToString().ToLower())
+            else if (User.Role != null && (User.Role.ToLower() == RoleName.Admin.ToString().ToLower() || User.Role.ToLower() == RoleName.Panel.ToString().ToLower()))
             {
                 _context.Update(User);
             }
@@ -44,7 +44,7 @@ namespace Silicus.Ensure.Services
 
         public void Delete(User User)
         {
-            if (User.FirstName != null && User.Address != null && User.LastName != null && User.Role != null)
+            if (User.FirstName != null && User.LastName != null && User.Role != null)
             {
                 _context.Delete(User);
             }
