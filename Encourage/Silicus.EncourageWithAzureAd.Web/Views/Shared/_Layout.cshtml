@@ -24,9 +24,7 @@
     @*<script src="~/js/jquery.barrating.min.js"></script>*@
 </head>
 <body class="container-fluid">
-    <div class="preloader">
-    <div class="cssload-speeding-wheel"></div>
-    </div>
+   
     <div class="row top-header bbl">
         <div class="col-sm-4">
             <div class="pll ptm pbs"><img src="~/Images/logo.jpg" class="mts mbs" alt="Silicus Logo" title="Silicus Encloud" /></div>
@@ -98,7 +96,7 @@
                                                 @if (roles.Contains("Reviewer"))
                                                 {
                                                     <li><a href="@Url.Action("ReviewNominations", "Nomination")" class="active">Pending Reviews</a></li>
-                                                    <li><a href="@Url.Action("ReviewFeedbackList", "Review")" class="active">Submitted Reviews</a></li>
+                                                    <li><a href="@Url.Action("SavedReviews", "Nomination")" class="active">Submitted Reviews</a></li>
 
 
                                                 }
@@ -114,7 +112,7 @@
                                             <ul class="nav nav-second-level">
                                                 @if (roles.Contains("Admin"))
                                                 {
-                                                    <li><a href="@Url.Action("SavedReviews", "Nomination")" class="active">Nomination Reviews</a></li>
+                                                    <li><a href="@Url.Action("ReviewFeedbackList", "Review")" class="active">Nomination Reviews</a></li>
                                                 }
                                             </ul>
                                         </li>
