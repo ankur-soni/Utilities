@@ -277,7 +277,7 @@
     <Content Include="Content\Template-css\plugins\blueimp\css\demo.css" />
     <Content Include="Content\Template-css\plugins\blueimp\img\error.png" />
     <Content Include="Content\Template-css\plugins\blueimp\img\error.svg" />
-    <Content Include="Content\Template-css\plugins\blueimp\img\loading.gif" />
+	    <Content Include="Content\Template-css\plugins\blueimp\img\loading.gif" />
     <Content Include="Content\Template-css\plugins\blueimp\img\play-pause.png" />
     <Content Include="Content\Template-css\plugins\blueimp\img\play-pause.svg" />
     <Content Include="Content\Template-css\plugins\blueimp\img\video-play.png" />
@@ -428,9 +428,11 @@
     <None Include="Properties\PublishProfiles\Reusable - Web Deploy.pubxml" />
     <None Include="Properties\PublishProfiles\Reusable.pubxml" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
+    <Content Include="Scripts\Custom\getAllCategories.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />
     <Content Include="Scripts\jquery-1.10.2.min.js" />
     <None Include="Scripts\jquery.validate-vsdoc.js" />
+    <Content Include="Scripts\jquery.blockUI.js" />
     <Content Include="Scripts\jquery.unobtrusive-ajax.js" />
     <Content Include="Scripts\jquery.unobtrusive-ajax.min.js" />
     <Content Include="Scripts\jquery.validate.js" />
