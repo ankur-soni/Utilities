@@ -77,7 +77,7 @@
                                 </div>
                                 <div class="row">
                                     <div class="form-actions pull-right">
-                                        <button type="button" class="btn btn-success btn-nav" onclick="moveToNominationStep(2, true);">Next&nbsp;&nbsp;<i class="fa fa-chevron-circle-right" aria-hidden="true"></i></button>
+                                        <button type="button" class="btn btn-success btn-nav btn-next" onclick="moveToNominationStep(2, true);">Next&nbsp;&nbsp;<i class="fa fa-chevron-circle-right" aria-hidden="true"></i></button>
                                     </div>
                                 </div>
                             </div>
@@ -129,7 +129,7 @@
                                     </div>
                                 </div>
                                 <div class="row" id="departmentInput">
-                                    <div class="col-md-4">
+                                    <div class="col-lg-3 col-md-4 col-sm-5">
                                         <div class="form-group" id="projectInput">
                                             @Html.Label("Department", htmlAttributes: new { @class = "control-label requiredfeild" })
                                             <div>
@@ -159,10 +159,10 @@
                                 </div>
                                 <div class="row">
                                     <div class="form-actions pull-left">
-                                        <button type="button" class="btn btn-success btn-nav" onclick="moveToNominationStep(1, false);"><i class="fa fa-chevron-circle-left" aria-hidden="true"></i>&nbsp;&nbsp;Prev</button>
+                                        <button type="button" class="btn btn-success btn-nav btn-prev" onclick="moveToNominationStep(1, false);"><i class="fa fa-chevron-circle-left" aria-hidden="true"></i>&nbsp;&nbsp;Prev</button>
                                     </div>
                                     <div class="form-actions pull-right">
-                                        <button type="button" class="btn btn-success btn-nav" onclick="moveToNominationStep(3, true);">Next &nbsp;&nbsp;<i class="fa fa-chevron-circle-right" aria-hidden="true"></i></button>
+                                        <button type="button" class="btn btn-success btn-nav btn-next" onclick="moveToNominationStep(3, true);">Next &nbsp;&nbsp;<i class="fa fa-chevron-circle-right" aria-hidden="true"></i></button>
                                     </div>
                                 </div>
                             </div>
@@ -190,7 +190,7 @@
                                         <button type="button" class="btn btn-success btn-nav" onclick="moveToNominationStep(2, false);"><i class="fa fa-chevron-circle-left" aria-hidden="true"></i>&nbsp;&nbsp;Prev</button>
                                     </div>
                                     <div class="form-actions pull-right">
-                                        <button type="button" class="btn btn-success btn-nav" onclick="moveToNominationStep(4, true);">Next&nbsp;&nbsp;<i class="fa fa-chevron-circle-right" aria-hidden="true"></i></button>
+                                        <button type="button" class="btn btn-success btn-nav btn-next" onclick="moveToNominationStep(4, true);">Next&nbsp;&nbsp;<i class="fa fa-chevron-circle-right" aria-hidden="true"></i></button>
                                     </div>
                                 </div>
                             </div>
@@ -577,6 +577,8 @@
     $("#managerComment").on('click', function () { $("#managerCommentValidationmessage").text("") });
 
     function moveToNominationStep(stepNumber, toBeValidated) {
+
+        var progressLineWidth = 25 * stepNumber;
         //debugger;
         if (toBeValidated) {
             if (!$('#addNominationForm').valid()) {
@@ -590,6 +592,8 @@
         $("#nomination-steps").find(".f1-step.active").removeClass("active");
         $("#nomination-steps").find(stepId).addClass("active");
 
+
+        $(".f1-progress-line").css('width', progressLineWidth+"%");
         //To move the number grid on the Top -- End
 
         //To move to the next step -- Start
