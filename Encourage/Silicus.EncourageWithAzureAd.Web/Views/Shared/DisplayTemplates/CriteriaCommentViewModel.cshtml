@@ -1,17 +1,16 @@
 ﻿@model Silicus.EncourageWithAzureAd.Web.Models.CriteriaCommentViewModel
-<script src="~/js/jquery.barrating.min.js"></script>
 
 <tr>
     <td>
         @Html.HiddenFor(modelItem => modelItem.Id)
     </td>
-    <td class="col-md-4">
-        @Html.DisplayFor(modelItem => modelItem.title)
+    <td class="col-lg-5 col-md-4 col-sm-4 col-xs-4">
+        @Html.DisplayFor(modelItem => modelItem.Title)
     </td>
-    <td>
+    <td class="col-lg-1 col-md-2 col-sm-3 col-xs-2">
         @Html.HiddenFor(modelItem => modelItem.Weightage)
     </td>
-    <td class="col-md-4">
+    <td class="col-lg-3 col-md-4 col-sm-6 col-xs-4">
         @Html.DropDownListFor(modelItem => modelItem.Rating,
        Enumerable.Range(1, 5).
        Select(j => new SelectListItem
@@ -20,16 +19,8 @@
            Text = j.ToString()
        }), "", new { @class = "example-square", @autocomplete = "off" })
     </td>
-    <td class="col-md-4">
-        @Html.TextAreaFor(modelItem => modelItem.Comment, htmlAttributes: new { @class = "col-md-12" ,@readonly="readonly" })
+    <td class="col-lg-3 col-md-4 col-sm-3 col-xs-3">
+        @Html.TextAreaFor(modelItem => modelItem.Comment, htmlAttributes: new { @class = "col-md-12", @readonly = "readonly" })
     </td>
 </tr>
-<script>
-    $(".example-square").barrating('show', {
-        theme: 'bars-square',
-        showValues: true,
-        showSelectedRating: false,
-        readonly: true
-    });
-</script>
 
