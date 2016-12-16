@@ -1,21 +1,19 @@
 ﻿@model Silicus.EncourageWithAzureAd.Web.Models.CriteriaCommentViewModel
-
-<script src="~/js/jquery.barrating.min.js"></script>
 <tr>
     <td>
         @Html.HiddenFor(modelItem => modelItem.Id)
     </td>
     <td class="col-lg-5 col-md-4 col-sm-4 col-xs-4">
-        @Html.DisplayFor(modelItem => modelItem.title)
+        @Html.DisplayFor(modelItem => modelItem.Title)
     </td>
     <td class="col-lg-1 col-md-2 col-sm-3 col-xs-2">
         @Html.DropDownListFor(i => i.Weightage,
-       Enumerable.Range(0, 20).Select(x => x * 5).
-       Select(j => new SelectListItem
-       {
-           Value = j.ToString(),
-           Text = j.ToString()
-       }), new { @class = "form-control ddlWeightage" })
+            Enumerable.Range(0, 20).Select(x => x * 5).
+                Select(j => new SelectListItem
+                {
+                    Value = j.ToString(),
+                    Text = j.ToString()
+                }), new { @class = "form-control ddlWeightage" })
     </td>
     <td class="col-lg-3 col-md-4 col-sm-6 col-xs-4">
         @Html.DropDownListFor(i => i.Rating,

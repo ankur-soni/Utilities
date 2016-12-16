@@ -104,88 +104,69 @@
                         <tr></tr>
                         <tr>
                             <th>Criteria</th>
-                            <th>Manager Comment</th>
+                            <th>Weightage</th>
                             <th>Rating</th>
+                            <th>Points</th>
+                            <th>Manager Comment</th>
+                            <th>Reviewer Ratings</th>
                             <th>Reviewer Comment</th>
-                            <th>Credits</th>
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach (var item in Model.Criterias)
+                        @foreach (var managerComment in Model.ManagerComments)
                         {
                             <tr>
-                                <td class="col-md-3">@item.Title</td>
-
-                                @*<td class="col-md-3">*@
                                 @{
-                                    var commentObj = Model.ManagerComments.FirstOrDefault(model => model.CriteriaId == @item.Id);
-                                    if (commentObj != null && !string.IsNullOrEmpty(commentObj.Comment))
+                                    var criteria = Model.Criterias.FirstOrDefault(c => c.Id == managerComment.CriteriaId);
+                                }
+                                <td class="col-md-3">
+                                    @if (criteria != null)
                                     {
-                                        <td class="more col-md-2" style="word-break:break-all">@commentObj.Comment</td>
-                                        <td class="col-md-2">
-                                            @*<input id="input-21a" value="@commentObj.Rating" type="number" data-star-captions="{}" data-default-caption="{rating} Stars" class="rating rating-loading" data-show-clear="false" data-show-caption="false" data-symbol="*" min=0 max=5 step=1 data-size="xs" readonly="readonly">*@
-
-                                            @Html.DropDownList("rating_"+item.Id,
-                                                Enumerable.Range(1, 5).
+                                        @criteria.Title
+                                    }
+                                </td>
+                                @{
+                            var commentObj = Model.ManagerComments.FirstOrDefault(model => model.CriteriaId == @managerComment.CriteriaId);
+                                }
+                                <td class="col-md-1">@(commentObj != null ? commentObj.Weightage.ToString() : "-")</td>
+                                <td class="col-md-2">
+                                    @Html.DropDownList("rating_" + managerComment.CriteriaId,
+                                        Enumerable.Range(1, 5).
+                                            Select(j => new SelectListItem
+                                            {
+                                                Value = j.ToString(),
+                                                Text = j.ToString()
+                                            }), "", new { @class = "example-square", @autocomplete = "off", @value = (commentObj != null ? commentObj.Rating : 0) })
+                                </td>
+                                <td class="col-md-1">@(commentObj != null ? (commentObj.Weightage * commentObj.Rating / 100.0) : 0)</td>
+                                <td class="more col-md-2" style="word-break:break-all">@(commentObj != null ? commentObj.Comment : "-")</td>
+                                <td class="col-md-2 ">
+                                    @{
+                                        var reviewObj = reviewer.FirstOrDefault(model => model.CriteriaId == @managerComment.CriteriaId);
+                                        if (reviewObj != null)
+                                        {
+                                            @Html.DropDownList("reviewRating_" + managerComment.CriteriaId, Enumerable.Range(1, 5).
                                                 Select(j => new SelectListItem
                                                 {
                                                     Value = j.ToString(),
                                                     Text = j.ToString()
-                                                }), "", new { @class = "example-square", @autocomplete = "off", @value = commentObj.Rating })
-                                        </td>
-
-                                    }
-                                    else
-                                    {
-                                        <td class="more col-md-2" style="word-break:break-all"></td>
-                                            <td class="col-md-2">
-                                                @*<input id="input-21a" value="0" type="number" data-star-captions="{}" data-default-caption="{rating} Stars" class="rating rating-loading" data-show-clear="false" data-show-caption="false" data-symbol="*" min=0 max=5 step=1 data-size="xs" readonly="readonly">*@
-                                                @Html.DropDownList("rating_" + item.Id,
-                                                                                         Enumerable.Range(1, 5).
-                                                                                         Select(j => new SelectListItem
-                                                                                         {
-                                                                                             Value = j.ToString(),
-                                                                                             Text = j.ToString()
-                                                                                         }), "", new { @class = "example-square", @autocomplete = "off", @value = 0 })
-                                            </td>
-                                    }
-}
-                                @*<td class="col-md-3">*@
-                                @{
-                                    var reviewObj = reviewer.FirstOrDefault(model => model.CriteriaId == @item.Id);
-                                    if (reviewObj != null && !string.IsNullOrEmpty(reviewObj.Comment))
-                                    {
-                                        <td class="more col-md-2" style="word-break:break-all">@reviewObj.Comment</td>
-
-                                    }
-                                    else
-                                    {
-                                        <td class="more" style="word-break:break-all"></td>
-                                    }
-                                }
-
-                                <td class="col-md-2 ">
-                                    @{
-                                        if (reviewObj != null)
-                                        {
-                                            @Html.DropDownList("reviewRating_" + item.Id,
-                                                            Enumerable.Range(1, 5).
-                                                            Select(j => new SelectListItem
-                                                            {
-                                                                Value = j.ToString(),
-                                                                Text = j.ToString()
-                                                            }), "", new { @class = "example-square", @autocomplete = "off", @value = reviewObj.Credit })
+                                                }), "", new { @class = "example-square", @autocomplete = "off", @value = reviewObj.Credit })
                                         }
                                     }
                                 </td>
+                                <td class="more col-md-2" style="word-break:break-all">@(reviewObj != null ?  reviewObj.Comment : "")</td>
                             </tr>
-                                        }
+                        }
 
                         <tr>
-                            <td align="right" colspan="4" style="font-weight:bold">
-                                @Html.Label("Average Ratings:", new { style = "color: #0067AA;" })
+                            <td></td>
+                            <td></td>
+                            <td style="text-align:center;color:#0063A7;font-weight:bold">Total Points:</td>
+                            <td> @(Model.ManagerComments.Sum(a => (a.Rating * a.Weightage / 100.0))) </td>
+                            <td style="text-align:center;color:#0063A7;font-weight:bold">
+                                Average Ratings:
                             </td>
-                            <td>
+                            <td id="totalCredits" class="col-md-1 text-center font-bold">
                                 @if (reviewer != null && reviewer.Any())
                                 {
                                     @(reviewer.Average(a => a.Credit))
@@ -193,48 +174,49 @@
                                 else
                                 {
                                     @:0.00
-                                }
+                }
                             </td>
+                            <td></td>
                         </tr>
                     </tbody>
                 </table>
             </div>
             <div class="row">&nbsp;</div>
-            }
-    if (!String.IsNullOrEmpty(Model.HrAdminsfeedback))
-    {
-        <table class="table table-hover issue-tracker " style="width:80%;table-layout:fixed">
-            <tr>
-                <th>
-                    @Html.DisplayFor(modelItem => modelItem.HrAdminName) Says:
-                </th>
-            </tr>
-            <tr class="white-bg">
-                <td class="more" style="word-wrap: break-word;"><div>@Model.HrAdminsfeedback</div></td>
-            </tr>
-        </table>
-    }
-    <div class="row">&nbsp;</div>
+        }
+        if (!String.IsNullOrEmpty(Model.HrAdminsfeedback))
+        {
+            <table class="table table-hover issue-tracker " style="width:80%;table-layout:fixed">
+                <tr>
+                    <th>
+                        @Html.DisplayFor(modelItem => modelItem.HrAdminName) Says:
+                    </th>
+                </tr>
+                <tr class="white-bg">
+                    <td class="more" style="word-wrap: break-word;"><div>@Model.HrAdminsfeedback</div></td>
+                </tr>
+            </table>
+        }
+        <div class="row">&nbsp;</div>
 
-    <div class="form-group">
-        <div style="text-align:center;width:80%;">
-            @*<input type="button" value="Back" class="btn btn-primary back btnSameSize" onclick="location.href='#'"/>*@
-            <input type="button" value="Back" class="btn btn-primary btnSameSize " onclick="location.href='@Url.Action("ReviewFeedbackList", "Review")'" />
-            <input type="button" value="Shortlist" class="btn btn-primary shortlist btnSameSize" onclick="location.href='#'"
-                    @{ if (Model.IsShortlisted || Model.IsWinner) { @: disabled="disabled"
-                                                                                                                                                                } } />
-            <input type="button" value="Mark Winner" class="btn btn-primary btnSameSize" data-toggle="modal" data-target="#myModal"
-                    @{ if (Model.IsWinner) { @: disabled="disabled"
-                                                                                                                                                        } } />
+        <div class="form-group">
+            <div style="text-align:center;width:80%;">
+                @*<input type="button" value="Back" class="btn btn-primary back btnSameSize" onclick="location.href='#'"/>*@
+                <input type="button" value="Back" class="btn btn-primary btnSameSize " onclick="location.href='@Url.Action("ReviewFeedbackList", "Review")'" />
+                <input type="button" value="Shortlist" class="btn btn-primary shortlist btnSameSize" onclick="location.href='#'"
+                       @{ if (Model.IsShortlisted || Model.IsWinner) { @: disabled="disabled"
+                                                                                                                                                                                       } } />
+                <input type="button" value="Mark Winner" class="btn btn-primary btnSameSize" data-toggle="modal" data-target="#myModal"
+                       @{ if (Model.IsWinner) { @: disabled="disabled"
+                                                                                                                                                                               } } />
+            </div>
         </div>
-    </div>
-    if (ViewBag.NominationLockStatus)
-    {
-        <div style="display:none" id="allow-shortlist">true</div>
-    }
-    else
-    {
-        <div style="display:none" id="allow-shortlist">false</div>
+        if (ViewBag.NominationLockStatus)
+        {
+            <div style="display:none" id="allow-shortlist">true</div>
+        }
+        else
+        {
+            <div style="display:none" id="allow-shortlist">false</div>
         }
 
     }
@@ -302,7 +284,7 @@
             window.location.href = '@Url.Action("ReviewFeedbackList", "Review")';
         },*@
         $('.shortlist').click(function () {
-            debugger;
+            
             @*var isLocked = @Html.Raw(Json.Encode(Model.IsLocked));*@
             var isLocked = $("div #allow-shortlist").text();
             if (isLocked == "false") {
@@ -359,7 +341,7 @@
         $("#cancel").click(function () { $("#comment").val(""); $("#feedback").val(""); $("#commentRequired").text(""); $("#feedbackRequired").text("") });
 
         $('.winner').click(function () {
-            debugger;
+            
             var isLocked = $("div #allow-shortlist").text();
             if (isLocked == "false") {
                 sweetAlert("Please lock the nomination from dashboard before proceed.");
@@ -494,7 +476,7 @@
     $(function () {
         var showChar = 80, showtxt = "less", hidetxt = "more";
         $('.more-txt').each(function () {
-            debugger;
+            
             var content = $(this).text();
             if (content.length > showChar) {
                 var con = content.substr(0, showChar);
