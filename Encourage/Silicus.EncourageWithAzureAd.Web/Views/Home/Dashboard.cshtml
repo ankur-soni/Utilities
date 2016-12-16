@@ -123,22 +123,30 @@
                             <div class="header-walloffame">
                                 <span>Silicus Wall Of Fame</span>
                                 <div class="pull-right">
-                                    @Html.DropDownList("filterMonth", Enumerable.Range(1, 12).
+                                    <ul>
+                                        <li>
+                                            @Html.DropDownList("filterMonth", Enumerable.Range(1, 12).
                             Select(i => new SelectListItem
                             {
                                 Value = i.ToString(),
                                 Text = System.Globalization.CultureInfo.InvariantCulture.DateTimeFormat.GetMonthName(i)
                             }),
-                         "-- Month --", new { @class = "" })
-
-                                    @Html.DropDownList("filterYear",
+                         "-- Month --", new { @class = "form-group form-control" })
+                                        </li>
+                                        <li>
+                                            @Html.DropDownList("filterYear",
                             Enumerable.Range(2010, (DateTime.Now.Year + 1) - 2010).
                             Select(i => new SelectListItem
                             {
                                 Value = i.ToString(),
                                 Text = i.ToString()
                             }),
-                            "-- Year --", new { value = DateTime.Now.Year })
+             "-- Year --", new { value = DateTime.Now.Year, @class = "form-group form-control" })
+                                        </li>
+                                    </ul>
+                                    
+
+                                   
                                 </div>
                             </div>
             }

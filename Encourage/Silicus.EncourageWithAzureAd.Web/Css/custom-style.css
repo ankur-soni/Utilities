@@ -15,7 +15,7 @@
     margin-right:15px;
     margin-left:15px;
 }
-
+.cust-width .white-box{border-left: 4px solid #337ab7;}
 span.font-bold.txt-color label{font-weight:bold;color:#337ab7;}
 .dashboard-name{margin-top:15px;}
 .well-section{
@@ -63,6 +63,7 @@ span.font-bold.txt-color label{font-weight:bold;color:#337ab7;}
 .pull-right ul li{
     display:inline-block;
     padding-right:5px;
+    height:40px;
 }
 .ibox{
     border-color: none!important;
