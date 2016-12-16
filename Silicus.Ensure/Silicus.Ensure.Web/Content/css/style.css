@@ -2,7 +2,7 @@
 *** little RESET ***
 ********************/
     .k-widget > span.k-invalid,
-input.k-invalid,textarea.k-invalid
+input.k-invalid,textarea.k-invalid,select.k-invalid
 {
   border: 1px solid red !important;
 }

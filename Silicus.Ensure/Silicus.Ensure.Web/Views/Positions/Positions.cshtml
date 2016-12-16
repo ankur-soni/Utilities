@@ -31,6 +31,7 @@
                         {
                             command.Edit();
                             command.Destroy();
+                            //command.Custom(" ").Click("ConfirmDeleteRow").HtmlAttributes(new { @class = "k-button k-button-icontext k-grid-delete" });
                         }).Title("Actions").Width(160);
 
                     })
@@ -146,6 +147,28 @@
 
     function error_handler(e) {
         ShowMessage(getErrorMessage(e, 0));
+    }
+
+    function ConfirmDeleteRow(userId) {
+        $.when(showConfirmationWindow('Are you sure, do you want to delete this record?', 'Delete')).then(function (confirmed) {
+            if (confirmed) {
+                @*$.ajax({
+                    type: "POST",
+                    url: '@Url.Action("DeleteUser", "User")',
+                    data: { UserId: userId },
+                    success: function (returndata) {
+                        if (returndata == 1) {
+                            $('#UserGrids').data('kendoGrid').dataSource.read();
+                            $('#userGrids').data('kendoGrid').refresh();
+                            ShowMessage("User deleted successfully.", 1);
+                        }
+                        else {
+                            ShowMessage("Error occured while delete operation.", 0);
+                        }
+                    }
+                });*@
+            }
+        });
     }
 
 </script>
