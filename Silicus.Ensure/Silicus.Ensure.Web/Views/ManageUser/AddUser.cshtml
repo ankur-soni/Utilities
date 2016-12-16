@@ -9,16 +9,22 @@
 <div class="main-content">
     @if (Model.UserId != 0)
     {
-        <h2>Edit user</h2>
+        <h2>Edit User</h2>
     }
     else
     {
-        <h2>Add user</h2>
+        <h2>Add User</h2>
     }
     @using (Html.BeginForm("SaveUser", "ManageUser", FormMethod.Post, new { id = "frmSearchAllNdc" }))
     {
         @Html.HiddenFor(m => m.UserId)
         <div class="fluid mt20">
+            @if (!string.IsNullOrWhiteSpace(Model.ErrorMessage))
+            {
+                <div class="alert alert-error" style="color: #D8000C; background-color: #FFBABA;" id="messageDiv">
+                    <strong>Error!</strong> <span id="messageContent">@Model.ErrorMessage</span>
+                </div>
+            }
             <div class="row" style=" margin-bottom:10px;">
                 <div class="col-md-4">
                     @Html.LabelFor(model => model.Role)<span style='color:red'> *</span>
@@ -68,6 +74,9 @@
                     }
                 });
 
+                $(document).ready(function () {
+                    $('#messageDiv').fadeOut(5000);
+                });
                 //register custom validation rules
                 (function ($, kendo) {
                     $.extend(true, kendo.ui.validator, {
@@ -78,8 +87,24 @@
                                     {
                                         return true;
                                     }
-                                    input.attr("data-experiencevalidation-msg", "Experience should not be greater than 30!");
+                                    else
+                                        input.attr("data-experiencevalidation-msg", "Experience should not be greater than 30!");
                                     return false;
+                                }
+                                if (input.is("[name='Position']")) {
+                                    if( !(input.val() != "" && input.val()!="--Select--"))
+                                    {
+                                        input.attr("data-experiencevalidation-msg", "Position is required!");
+                                        return false;
+                                    }
+                                }
+                                if (input.is("[data-val-remote]") && input.val() != "") {
+                                    var remoteURL = input.attr("data-val-remote-url");
+                                    if(!checkMail(input.val(),remoteURL))
+                                    {
+                                        input.attr("data-experiencevalidation-msg", "Email is already exist!");
+                                        return false;
+                                    }
                                 }
                                 return true;
                             }
@@ -96,7 +121,22 @@
                 $(function () {
                     $("form").kendoValidator();
                 });
-
+                function checkMail(email,remoteURL)
+                {
+                    var valid;
+                    $.ajax({
+                        async: false,
+                        type: "POST",
+                        url: remoteURL,
+                        data: JSON.stringify({ 'Email': email,'UserId':@Model.UserId }),
+                        contentType: "application/json; charset=utf-8",
+                        dataType: "json",
+                        success: function (data) {
+                            valid = data;
+                        }
+                    });
+                    return valid;
+                }
                 function loadView(roleName)
                 {
                     $.ajax({
@@ -109,6 +149,9 @@
                             $('#loadView').html(data);
                         },
                     });
+                    if (parseInt("@Model.UserId") != 0) {
+                        $("#Role").data("kendoDropDownList").enable(false);
+                    }
                 }
 
                 function onSelect(e) {

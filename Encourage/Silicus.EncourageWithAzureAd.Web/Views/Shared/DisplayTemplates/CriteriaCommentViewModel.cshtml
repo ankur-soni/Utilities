@@ -1,12 +1,11 @@
 ﻿@model Silicus.EncourageWithAzureAd.Web.Models.CriteriaCommentViewModel
-<script src="~/js/jquery.barrating.min.js"></script>
 
 <tr>
     <td>
         @Html.HiddenFor(modelItem => modelItem.Id)
     </td>
     <td class="col-lg-5 col-md-4 col-sm-4 col-xs-4">
-        @Html.DisplayFor(modelItem => modelItem.title)
+        @Html.DisplayFor(modelItem => modelItem.Title)
     </td>
     <td class="col-lg-1 col-md-2 col-sm-3 col-xs-2">
         @Html.HiddenFor(modelItem => modelItem.Weightage)
@@ -24,12 +23,4 @@
         @Html.TextAreaFor(modelItem => modelItem.Comment, htmlAttributes: new { @class = "col-md-12", @readonly = "readonly" })
     </td>
 </tr>
-<script>
-    $(".example-square").barrating('show', {
-        theme: 'bars-square',
-        showValues: true,
-        showSelectedRating: false,
-        readonly: true
-    });
-</script>
 

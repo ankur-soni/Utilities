@@ -245,7 +245,7 @@
     }
 
     function SaveDraftReview() {
-        debugger;
+        
         if ($('#editReviewForm').valid()) {
             swal({
                 title: "Save Review",
@@ -346,7 +346,7 @@
     }
 
     function DiscardReview() {
-        debugger;
+        
         swal({
             title: "Discard Review",
             text: "Do you want to discard this review ?",
@@ -374,7 +374,7 @@
                                 confirmButtonText: "Ok"
                             },
                                 function (isConfirm) {
-                                    debugger;
+                                    
                                     if (isConfirm) {
                                         window.location.href = '@Url.Action("SavedReviews", "Nomination")';
                                     }

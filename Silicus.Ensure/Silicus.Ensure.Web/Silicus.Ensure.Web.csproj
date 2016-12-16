@@ -430,6 +430,7 @@
     <Content Include="Content\toastr.css" />
     <Content Include="Content\toastr.min.css" />
     <Content Include="Images\silicus\logo.png" />
+    <Content Include="Scripts\bootbox.min.js" />
     <Content Include="Scripts\Bootstrap\3.3.1\bootstrap.js" />
     <Content Include="Scripts\Bootstrap\3.3.1\bootstrap.min.js" />
     <Content Include="Content\toastr.scss" />
