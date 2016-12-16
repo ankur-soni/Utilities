@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 14
-VisualStudioVersion = 14.0.25420.1
+# Visual Studio 2013
+VisualStudioVersion = 12.0.40629.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Silicus.FrameworxProject.DAL", "Silicus.Reusable.DAL\Silicus.FrameworxProject.DAL.csproj", "{C7AFB3B0-AAA6-42A2-9C99-FEDB692CC607}"
 EndProject
@@ -10,6 +10,13 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Silicus.FrameworxProject.Services", "Silicus.Reusable.Services\Silicus.FrameworxProject.Services.csproj", "{4301EDF0-BC1B-46A0-B4A2-550E2DCFB75C}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Silicus.FrameworxDashboard.Web", "Silicus.Reusable.Web\Silicus.FrameworxDashboard.Web.csproj", "{D6C0CC53-DC27-4BA7-A361-46CCA5869BD7}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{2F6371EE-95CD-4190-85F2-46AB89326F6E}"
+	ProjectSection(SolutionItems) = preProject
+		.nuget\NuGet.Config = .nuget\NuGet.Config
+		.nuget\NuGet.exe = .nuget\NuGet.exe
+		.nuget\NuGet.targets = .nuget\NuGet.targets
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
