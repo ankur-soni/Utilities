@@ -336,6 +336,7 @@
     <Compile Include="Controllers\CandidateController.cs" />
     <Compile Include="Controllers\ErrorController.cs" />
     <Compile Include="Controllers\ManageUserController.cs" />
+    <Compile Include="Controllers\MasterController.cs" />
     <Compile Include="Controllers\PositionsController.cs" />
     <Compile Include="Controllers\ProjectController.cs" />
     <Compile Include="Controllers\QuestionBankController.cs" />
@@ -686,6 +687,7 @@
     <Content Include="Views\ManageUser\_partialAddCandidateUserView.cshtml" />
     <Content Include="Views\ManageUser\_partialAddUserView.cshtml" />
     <Content Include="Views\Shared\EditorTemplates\TagEditorTemplate.cshtml" />
+    <Content Include="Views\Master\Index.cshtml" />
     <None Include="Web.Azure.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

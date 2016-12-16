@@ -1,0 +1,20 @@
+﻿@using Kendo.Mvc.UI;
+@{
+    ViewBag.Title = "Index";
+}
+
+@{
+    ViewBag.Title = "Candidate Dashboard";
+    var users = Html.Partial("~/Views/Tag/List.cshtml");
+    var roles = Html.Partial("~/Views/Positions/Positions.cshtml");
+}
+<div class="main-content">
+    <div class="kendogrid">
+        @(Html.Kendo().TabStrip()
+                .Name("Tabs")
+                .Items(tabstrip =>
+               { tabstrip.Add().Text("Users").Selected(true).Content(users.ToString());tabstrip.Add().Text("Postions").Selected(false).Content(roles.ToString()); })
+        )
+
+    </div>
+</div>

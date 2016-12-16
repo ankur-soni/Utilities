@@ -1,14 +1,7 @@
 ﻿@model Silicus.Ensure.Models.DataObjects.Position
 
 @using Kendo.Mvc.UI;
-@{
-    ViewBag.Title = "Positions List";
-    Layout = "~/Views/Shared/_Layout.cshtml";
-}
-<div class="main-content">
-    <div class="fluid mt20">
-    </div>
-    <div class="kendogrid">
+
         <h2>Positions</h2>
 
         <div>
@@ -41,7 +34,7 @@
                         }).Title("Actions").Width(160);
 
                     })
-                .Pageable()
+                .Pageable(pager => { pager.PageSizes(true); })
                 .Sortable()
                 .ToolBar(toolbar =>
                 {
@@ -71,8 +64,7 @@
                 )
             }
         </div>
-    </div>
-</div>
+
 <script>
 
     $(document).ready(function () {

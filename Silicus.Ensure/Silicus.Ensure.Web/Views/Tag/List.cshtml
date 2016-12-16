@@ -1,11 +1,4 @@
 ﻿@using Kendo.Mvc.UI;
-
-@{
-    ViewBag.Title = "Tag List";
-    Layout = "~/Views/Shared/_Layout.cshtml";
-}
-<div class="main-content">
-    <div class="fluid mt20">
         <div class="row" style="padding-top:5px;padding-bottom:5px;">
             <div class="alert alert-success" id="messageDiv">
                 <strong>Success!</strong> <span id="messageContent">This alert box could indicate successful action.</span>
@@ -20,7 +13,7 @@
                     .Events(e => e.Edit("gvTag_onRowEdit"))
          .Columns(columns =>
               {
-                  columns.Bound(p => p.TagName).Width(50);
+                  columns.Bound(p => p.TagName).Width(100);
                   columns.Bound(p => p.Description);
                   columns.Command(cmd =>
                   {
@@ -40,7 +33,7 @@
                               .Update(up => up.Action("Update", "Tag"))
                       .PageSize(10)
                   )
-                  .Pageable()
+                           .Pageable(pager => { pager.PageSizes(true); })
                   .Sortable()
                   //.HtmlAttributes(new { style = "height:400px;" })
                   .Editable(ed => ed.Mode(GridEditMode.PopUp).TemplateName("TagEditorTemplate"))
@@ -73,8 +66,7 @@
                 }
             </div>
         </div>
-    </div>
-</div>
+
         <script>
             $(document).ready(function () {
                 $("#messageDiv").hide();
@@ -114,6 +106,7 @@
 
             function gvTag_onRowEdit(e)
             {
+                e.sender.editable.validatable._errorTemplate = kendo.template($('#tooltip-template').html());
                 if (e.model.isNew()) {
                     $(".k-window-title").html("Add New Tag");
                 }
@@ -145,4 +138,14 @@
                 ShowMessage(getErrorMessage(e, 0));
             }
 
+            function TagPerPageChange() {
+                var value = $("#TagPerPage").val();
+                var grid = $("#tagsGrids").data("kendoGrid");
+                grid.dataSource.pageSize(value);
+                grid.refresh();
+            }
+
         </script>
+<script id="tooltip-template" type="text/x-kendo-template">
+    <span class="k-widget k-tooltip k-tooltip-validation k-invalid-msg"> <span class="k-icon k-warning"> </span>#=message#</span>
+</script>
