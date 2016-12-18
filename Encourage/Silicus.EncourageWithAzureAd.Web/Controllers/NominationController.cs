@@ -637,7 +637,7 @@ namespace Silicus.EncourageWithAzureAd.Web.Controllers
         public ActionResult ReviewNominations()
         {
             _logger.Log("Nomination-ReviewNominations-GET");
-            ViewBag.ReviewLockStatus = _reviewService.GetReviewLockStatus();
+            //ViewBag.ReviewLockStatus = _reviewService.GetReviewLockStatus();
             // var nominations = _nominationService.GetAllSubmitedNonreviewedNominations(_nominationService.GetReviewerIdOfCurrentNomination( Session["UserEmailAddress"] as string));
             var reviewerId = _nominationService.GetReviewerIdOfCurrentNomination(User.Identity.Name);
             var reviewNominations = new List<NominationListViewModel>();
@@ -704,6 +704,17 @@ namespace Silicus.EncourageWithAzureAd.Web.Controllers
             else if (result.DepartmentId != null)
                 projectOrDept = _nominationService.GetDeptNameOfCurrentNomination(nominationId);
 
+            var lockedAwards = _nominationService.GetNominationLockStatus();
+            var isLocked = false;
+            var awardOfCurrentNomination = _awardService.GetAwardFromNominationId(nominationId);
+            foreach (var lockedAward in lockedAwards)
+            {
+                if (lockedAward.Id == awardOfCurrentNomination.Id)
+                {
+                    isLocked = true;
+                }
+            }
+
             var reviewNominationViewModel = new ReviewSubmitionViewModel()
             {
                 ManagerComments = _nominationService.GetManagerCommentsForNomination(nominationId),
@@ -713,7 +724,8 @@ namespace Silicus.EncourageWithAzureAd.Web.Controllers
                 Criterias = _nominationService.GetCriteriaForNomination(nominationId),
                 ReviewerId = _nominationService.GetReviewerIdOfCurrentNomination(userEmailAddress),
                 NominationId = result.Id,
-                ManagerComment = result.Comment
+                ManagerComment = result.Comment,
+                IsLocked = isLocked
             };
 
             return View(reviewNominationViewModel);
