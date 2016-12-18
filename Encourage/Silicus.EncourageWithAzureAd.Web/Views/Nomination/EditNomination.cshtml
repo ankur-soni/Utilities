@@ -34,9 +34,9 @@
             
             @*@Html.AntiForgeryToken()*@
 
-            @Html.HiddenFor(model => model.NominationId, new { @id = "NominationId" });
-            @Html.HiddenFor(model => model.ManagerId);
-            @Html.HiddenFor(model => model.IsSubmitted, new { @id = "IsSubmitted" });
+            @Html.HiddenFor(model => model.NominationId, new { @id = "NominationId" })
+            @Html.HiddenFor(model => model.ManagerId)
+            @Html.HiddenFor(model => model.IsSubmitted, new { @id = "IsSubmitted" })
             @Html.HiddenFor(model => model.AwardId)
             @Html.HiddenFor(model => model.ProjectID)
             @Html.HiddenFor(model => model.DepartmentId)

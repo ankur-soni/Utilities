@@ -403,6 +403,7 @@ namespace Silicus.EncourageWithAzureAd.Web.Controllers
             foreach (var nomination in nominations)
             {
                 var award = _encourageDatabaseContext.Query<Award>().FirstOrDefault(a => a.Id == nomination.AwardId);
+                var awardFrequencyCode = _nominationService.GetAwardFrequencyById(award.FrequencyId);
                 if (award != null)
                 {
                     var awardName = award.Code;
@@ -418,7 +419,8 @@ namespace Silicus.EncourageWithAzureAd.Web.Controllers
                             DisplayName = nomineeName.DisplayName,
                             NominationTime = nominationTimeToDisplay,
                             Id = nomination.Id,
-                            IsSubmitted = nomination.IsSubmitted
+                            IsSubmitted = nomination.IsSubmitted,
+                            AwardFrequencyCode = awardFrequencyCode.Code
                         };
                         savedNominations.Add(reviewNominationViewModel);
                     }
@@ -468,11 +470,12 @@ namespace Silicus.EncourageWithAzureAd.Web.Controllers
 
             foreach (var nomination in nominations)
             {
-                var awardName = _nominationService.GetAwardNameByAwardId(nomination.AwardId);
+                var award = _encourageDatabaseContext.Query<Award>().FirstOrDefault(a => a.Id == nomination.AwardId);
+                var awardName = award.Code;
                 var nominee = _nominationService.GetNomineeDetails(nomination.UserId);
                 var nominationTime = nomination.NominationDate; //_encourageDatabaseContext.Query<Nomination>().Where(n => n.Id == nomination.Id).FirstOrDefault().NominationDate;
-
-                string nominationTimeToDisplay = DateTimeFormatInfo.CurrentInfo.GetAbbreviatedMonthName(nominationTime.Value.Month) + "-" + nominationTime.Value.Year.ToString();
+                var awardFrequency = _nominationService.GetAwardFrequencyById(award.FrequencyId);
+                string nominationTimeToDisplay = DateTimeFormatInfo.CurrentInfo.GetAbbreviatedMonthName(nominationTime.Value.Month) + "-" + nominationTime.Value.Year;
 
                 var reviewNominationViewModel = new NominationListViewModel()
                 {
@@ -481,7 +484,8 @@ namespace Silicus.EncourageWithAzureAd.Web.Controllers
                     DisplayName = nominee.DisplayName,
                     NominationTime = nominationTimeToDisplay,
                     Id = nomination.Id,
-                    IsSubmitted = nomination.IsSubmitted
+                    IsSubmitted = nomination.IsSubmitted,
+                    AwardFrequencyCode = awardFrequency.Code
                 };
                 savedNominations.Add(reviewNominationViewModel);
             }
