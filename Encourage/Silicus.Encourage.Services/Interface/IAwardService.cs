@@ -12,6 +12,7 @@ namespace Silicus.Encourage.Services.Interface
     {
         Award GetAwardFromNominationId(int nominationId);
         IEnumerable<Award> GetAllAwards();
+        Award GetAwardById(int awardId);
         List<Engagement> GetProjectsUnderCurrentUserAsManager(string email);
         List<Department> GetDepartmentsUnderCurrentUserAsManager(string email);
         List<Criteria> GetCriteriasForAward(int awardId);

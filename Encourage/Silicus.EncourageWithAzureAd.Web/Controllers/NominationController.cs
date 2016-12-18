@@ -2,6 +2,7 @@
 using Silicus.Encourage.Models;
 using Silicus.Encourage.Services.Interface;
 using Silicus.Encourage.Web.Filters;
+using Silicus.EncourageWithAzureAd.Web.Enums;
 using Silicus.EncourageWithAzureAd.Web.Models;
 using Silicus.FrameWorx.Logger;
 using Silicus.UtilityContainer.Entities;
@@ -123,20 +124,33 @@ namespace Silicus.EncourageWithAzureAd.Web.Controllers
             try
             {
                 _logger.Log("Nomination-AddNomination-POST-try");
-
+                var awardOfCurrentNomination = _awardService.GetAwardById(model.AwardId);
+                var currentAwardFrequency = _nominationService.GetAwardFrequencyById(awardOfCurrentNomination.FrequencyId);
                 #region RestrictManagerLogic
 
                 var noOfNominationForManager = Convert.ToInt32(ConfigurationManager.AppSettings["noOfNominationForManager"]);
-                var firstDateOfCurrentMonth = new DateTime(DateTime.Today.Year, DateTime.Today.Month, 1);
-                var firstDateOfLastMonth = firstDateOfCurrentMonth.AddMonths(-1);
-                var lastDateOfLastMonth = firstDateOfCurrentMonth.AddDays(-1);
-                var countOfNomination = _nominationService.GetNominationCountByManagerId(model.ManagerId, firstDateOfLastMonth, lastDateOfLastMonth);
+                var startDate = new DateTime();
+                var endDate = new DateTime();
+                var countOfNomination = 0;
+                if (currentAwardFrequency.Code == FrequencyCode.MON.ToString())
+                {
+                    var firstDateOfCurrentMonth = new DateTime(DateTime.Today.Year, DateTime.Today.Month, 1);
+                    startDate = firstDateOfCurrentMonth.AddMonths(-1);
+                    endDate = firstDateOfCurrentMonth.AddDays(-1);
+                    countOfNomination = _nominationService.GetNominationCountByManagerIdForSOM(model.ManagerId, startDate, endDate, model.AwardId);
+                }
+                else if (currentAwardFrequency.Code == FrequencyCode.YEAR.ToString())
+                {
+                    var firstDateOfCurrentYear = new DateTime(DateTime.Today.Year, 1 , 1);
+                    startDate = firstDateOfCurrentYear;
+                    countOfNomination = _nominationService.GetNominationCountByManagerIdForPINNACLE(model.ManagerId, startDate, model.AwardId);
+                }
 
                 if (noOfNominationForManager <= countOfNomination)
                 {
                     // Response.StatusCode = (int)HttpStatusCode.BadRequest;
                     _logger.Log("Nomination-AddNomination-POST-try-if noOfNominationForManager <= countOfNomination");
-                    return Json(new { success = true, nominationExceed = true, message = "Only " + noOfNominationForManager + " nominations are allowed per month!" }, JsonRequestBehavior.AllowGet);
+                    return Json(new { success = true, nominationExceed = true, message = "Only " + noOfNominationForManager + " nominations are allowed for "+ awardOfCurrentNomination.Name + " !" }, JsonRequestBehavior.AllowGet);
                     //      return Json("Only " + noOfNominationForManager.ToString() + " nominations are allowed per month!", MediaTypeNames.Text.Plain);
                 }
 
@@ -154,7 +168,15 @@ namespace Silicus.EncourageWithAzureAd.Web.Controllers
                 else if (model.SelectResourcesBy.Equals("Department"))
                     nomination.DepartmentId = model.DepartmentId;
 
-                nomination.NominationDate = DateTime.Now.Date.AddMonths(-1);
+                if (currentAwardFrequency.Code == FrequencyCode.YEAR.ToString())
+                {
+                    nomination.NominationDate = DateTime.Now;
+                }
+                else
+                {
+                    nomination.NominationDate = DateTime.Now.Date.AddMonths(-1);
+
+                }
 
                 nomination.IsSubmitted = submit.Equals("Submit");
 
