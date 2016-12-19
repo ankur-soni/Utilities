@@ -83,5 +83,14 @@ namespace Silicus.Ensure.Web.Controllers
             return Json(isAvailable, JsonRequestBehavior.AllowGet); 
         }
 
+        public JsonResult IsTagAssosiatedWithQuetion(string tagName)
+        {
+            bool isTagAssosiatedWithQuetion = false;
+            if (!string.IsNullOrWhiteSpace(tagName))
+            {
+                isTagAssosiatedWithQuetion = _tagsService.isTagAssociatedWithQuetion(tagName);
+            }
+            return Json(isTagAssosiatedWithQuetion, JsonRequestBehavior.AllowGet);
+        }
     }
 }
