@@ -69,7 +69,7 @@ namespace Silicus.Ensure.Web.Controllers
             return Json(ModelState.ToDataSourceResult());
         }
 
-        public JsonResult IsDuplicateTagName([Bind(Prefix = "positionName")]string tagName)
+        public JsonResult IsDuplicateTagName(string tagName)
         {
             bool isAvailable = true;
             if (!string.IsNullOrWhiteSpace(tagName) && ModelState.IsValid)
@@ -83,5 +83,14 @@ namespace Silicus.Ensure.Web.Controllers
             return Json(isAvailable, JsonRequestBehavior.AllowGet); 
         }
 
+        public JsonResult IsTagAssosiatedWithQuetion(string tagName)
+        {
+            bool isTagAssosiatedWithQuetion = false;
+            if (!string.IsNullOrWhiteSpace(tagName))
+            {
+                isTagAssosiatedWithQuetion = _tagsService.isTagAssociatedWithQuetion(tagName);
+            }
+            return Json(isTagAssosiatedWithQuetion, JsonRequestBehavior.AllowGet);
+        }
     }
 }
