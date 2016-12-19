@@ -20,196 +20,7 @@
     <!-- Swtiches -->
     <link href="~/Content/Template-css/plugins/switchery/switchery.css" rel="stylesheet">
     <!-- Searchable drop down -->
-    <link rel="stylesheet" type="text/css" href="~/Content/Template-css/plugins/selectize/selectize.css" />
-    <style>
-        /*Start this is side bar theme css*/
-        .pace-done .navbar-static-side, .pace-done .nav-header, .pace-done li.active, .pace-done #page-wrapper, .pace-done .footer {
-            -webkit-transition: all 0.5s;
-            -moz-transition: all 0.5s;
-            -o-transition: all 0.5s;
-            transition: all 0.5s;
-        }
-
-        .nav > li > a:hover, .nav > li > a:focus {
-            text-decoration: none !important;
-            background-color: #07C !important;
-            color: #a7b1c2;
-        }
-
-        .navbar-default {
-            background-color: transparent;
-            border-color: #006cb6;
-        }
-
-        .nav > li.active > a {
-            color: #ffffff;
-        }
-
-        .nav > li > a {
-            color: #a7b1c2;
-            font-weight: 600;
-            padding: 14px 20px 14px 25px;
-        }
-        /* End this is side bar theme css*/
-        .top-header {
-            background-color: #fff;
-            position: fixed;
-            top: 0;
-            width: 100%;
-            z-index: 2000;
-            height: 100px;
-        }
-
-        * {
-            padding: 0px;
-            margin: 0px;
-        }
-
-        .bbl {
-            border-bottom: 3px solid #e7eaec;
-        }
-
-        .mbs, .mvs, .mas {
-            margin-bottom: 5px;
-        }
-
-        .mts, .mvs, .mas {
-            margin-left: 40px;
-            margin-top: 5px;
-        }
-
-        img {
-            vertical-align: middle;
-            border: 0;
-        }
-
-        .body-content {
-            margin: 5% 0 0 0;
-        }
-
-        .footer {
-            background: none repeat scroll 0 0 white;
-            border-top: 1px solid #e7eaec;
-            bottom: 0;
-            left: 0;
-            padding: 10px 20px;
-            right: 0;
-        }
-
-        .welcome-message {
-            font-size: 14px;
-            font-weight: 600;
-            margin-right: 20px;
-        }
-
-        #closebtn {
-            position: absolute;
-            left: 50%;
-            bottom: 1px;
-        }
-        /*.customdivmenu li a{
-            background-color:#005c99;
-            color:white;
-        }
-        .customdivmenu li a:hover{
-            color:black;
-        }*/
-        /*li .active{
-            background-color:#99d6ff;
-        }*/
-        .nav > li.active {
-            background: #0063a7;
-        }
-
-        #signout a:hover {
-            color: #99AACB;
-        }
-
-        .navbar-fixed-top, .navbar-static-top {
-            background: white;
-        }
-
-        .menu ul li ul {
-            display: none;
-        }
-
-        .metismenu .plus-minus,
-        .metismenu .plus-times {
-            float: right;
-        }
-
-        .metismenu .arrow {
-            float: right;
-            line-height: 1.42857;
-        }
-
-        .metismenu .glyphicon.arrow:before {
-            content: "\e079";
-        }
-
-        .metismenu .active > a > .glyphicon.arrow:before {
-            content: "\e114";
-        }
-
-        .metismenu .fa.arrow:before {
-            content: "\f104";
-        }
-
-        .metismenu .active > a > .fa.arrow:before {
-            content: "\f107";
-        }
-
-        .metismenu .ion.arrow:before {
-            content: "\f3d2";
-        }
-
-        .metismenu .active > a > .ion.arrow:before {
-            content: "\f3d0";
-        }
-
-        .metismenu .fa.plus-minus:before,
-        .metismenu .fa.plus-times:before {
-            content: "\f067";
-        }
-
-        .metismenu .active > a > .fa.plus-times {
-            -webkit-transform: rotate(45deg);
-            -ms-transform: rotate(45deg);
-            transform: rotate(45deg);
-        }
-
-        .metismenu .active > a > .fa.plus-minus:before {
-            content: "\f068";
-        }
-
-        .metismenu .collapse {
-            display: none;
-        }
-
-            .metismenu .collapse.in {
-                display: block;
-            }
-
-        .metismenu .collapsing {
-            position: relative;
-            height: 0;
-            overflow: hidden;
-            -webkit-transition-timing-function: ease;
-            transition-timing-function: ease;
-            -webkit-transition-duration: .35s;
-            transition-duration: .35s;
-            -webkit-transition-property: height, visibility;
-            transition-property: height, visibility;
-        }
-
-        #ExtesionMenu {
-            display: block;
-        }
-
-        #side-menu li>ul{
-            display:none;
-        }
-    </style>
+    <link rel="stylesheet" type="text/css" href="~/Content/Template-css/plugins/selectize/selectize.css" />    
     @*<script src="https://ajax.aspnetcdn.com/ajax/jQuery/jquery-1.12.4.min.js"></script>*@
 </head>
 <body>
@@ -327,17 +138,17 @@
     </div>
     @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/bundles/bootstrap")
+    @Scripts.Render("~/bundles/jqueryBlockUI")    
     @RenderSection("scripts", required: false)
 
     @*<script src="~/Scripts/jquery-1.10.2.min.js"></script>*@
 
     <!-- Silicus Template scripts Start-->
-
     @*<script src="~/Scripts/Template-js/bootstrap.min.js"></script>
-    <script src="~/Scripts/Template-js/plugins/metisMenu/jquery.metisMenu.js"></script>
+        <script src="~/Scripts/Template-js/plugins/metisMenu/jquery.metisMenu.js"></script>
 
-    <script src="~/Scripts/Template-js/plugins/slimscroll/jquery.slimscroll.min.js"></script>
-    <script src="~/Scripts/Template-js/inspinia.js"></script>*@
+        <script src="~/Scripts/Template-js/plugins/slimscroll/jquery.slimscroll.min.js"></script>
+        <script src="~/Scripts/Template-js/inspinia.js"></script>*@
     @*
 
         <!-- Custom and plugin javascript -->
@@ -397,8 +208,8 @@
 
         $('#side-menu li').find('ul').hide();
         $('#side-menu li').hover(function () {
-                $(this).find('ul').show(500);
-            },
+            $(this).find('ul').show(500);
+        },
             function () {
                 $(this).find('ul').hide();
             });

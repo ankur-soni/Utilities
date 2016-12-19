@@ -108,10 +108,23 @@ namespace Silicus.Encourage.Services
             }
         }
 
-        public bool GetReviewLockStatus()
+        public List<Award> GetReviewLockStatus()
         {
-            var data = _encourageDatabaseContext.Query<Models.Configuration>().Where(x => x.configurationKey == "ReviewLock").SingleOrDefault().value;
-            return data == true ? true : false;
+            var lockKey = WebConfigurationManager.AppSettings["ReviewLockKey"];
+            var allAwards = _encourageDatabaseContext.Query<Award>().ToList();
+            var lockedAwards = new List<Award>();
+            foreach (var award in allAwards)
+            {
+                var result = _encourageDatabaseContext.Query<Encourage.Models.Configuration>().Where(x => x.configurationKey == lockKey && x.AwardId == award.Id && x.value == true).FirstOrDefault();
+                if (result != null)
+                {
+                    lockedAwards.Add(award);
+                }
+            }
+
+            return lockedAwards;
+            //var data = _encourageDatabaseContext.Query<Models.Configuration>().Where(x => x.configurationKey == lockKey).SingleOrDefault().value;
+            //return data == true ? true : false;
         }
 
         //public string GetHrAdminsCommentForEmployee(int loggedInAdminsId, int nominatedEmployeeId)
