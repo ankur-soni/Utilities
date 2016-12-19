@@ -112,6 +112,7 @@
                 e.sender.editable.validatable._errorTemplate = kendo.template($('#tooltip-template').html());
                 if (e.model.isNew()) {
                     $(".k-window-title").html("Add New Tag");
+                    $("#existingTagName").val('');
                 }
                 else {
                     $(".k-window-title").html("Edit Tag");
