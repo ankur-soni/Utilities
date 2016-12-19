@@ -69,22 +69,17 @@ namespace Silicus.Ensure.Web.Controllers
         /// <param name="request"></param>
         /// <param name="RoleName"></param>
         /// <returns></returns>
-        public async Task<ActionResult> GetUserDetails([DataSourceRequest] DataSourceRequest request)
+        public ActionResult GetUserDetails([DataSourceRequest] DataSourceRequest request)
         {
-            var userlist = _userService.GetUserDetails().ToArray();
+            var userlist = _userService.GetUserDetails().Reverse().ToArray();
 
             var viewModels = _mappingService.Map<User[], UserViewModel[]>(userlist);
             bool userInRole = User.IsInRole(Silicus.Ensure.Models.Constants.RoleName.Admin.ToString());
 
             for (int j = 0; j < viewModels.Count(); j++)
             {
-                var userDetails = await UserManager.FindByEmailAsync(viewModels[j].Email);
-                if (userDetails != null)
-                {
-                    var viewUsersRole = await UserManager.GetRolesAsync(userDetails.Id);
-                    viewModels[j].Role = viewUsersRole.FirstOrDefault();
-                    viewModels[j].IsAdmin = userInRole;
-                }
+                viewModels[j].IsAdmin = userInRole;
+                viewModels[j].FirstName = viewModels[j].FirstName + " " + viewModels[j].LastName;
             }
 
             DataSourceResult result = viewModels.ToDataSourceResult(request);

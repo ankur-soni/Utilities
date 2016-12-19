@@ -1,7 +1,7 @@
 ﻿@model IEnumerable<Silicus.EncourageWithAzureAd.Web.Models.NominationListViewModel>
 @using System.Drawing;
-
-<div>
+@using Silicus.EncourageWithAzureAd.Web.Enums;
+@*<div>
     @foreach (var item in Model)
     {
         Random randomGen = new Random();
@@ -30,8 +30,16 @@
 
                 <div>
                     @Html.DisplayFor(modelItem => item.AwardName)
+                    @if (item.AwardFrequencyCode == FrequencyCode.YEAR.ToString())
+                    {
+                        var nominationYear = Convert.ToInt32(item.NominationTime.Substring(item.NominationTime.LastIndexOf('-') + 1)) - 1;
+                        @Html.Label("-" + Convert.ToInt32(nominationYear))
 
+                    }
+                    else
+                    {
                     @Html.DisplayFor(modelItem => item.NominationTime)
+                    }
                 </div>
             </div>
             <div class="cardFooter text-right" style="border-color:@myBorderColor">
@@ -51,5 +59,50 @@
             </div>
         </div>
 
+    }
+</div>*@
+
+
+<div>
+    @foreach (var item in Model)
+    {
+        <div class="el-element-overlay m-b-40">
+            <div class="col-lg-2 col-md-3 col-sm-4 col-xs-12">
+                <div class="@(item.IsSubmitted == true ? "blue-box" : "white-box")">
+                    <div class="el-card-item">
+                        <div class="el-card-avatar el-overlay-1">
+                            <img src="~/Images/1.jpg" />
+                            <div class="el-overlay">
+                                <ul class="el-info">
+                                    <li>
+                                       
+                                          @if (!Convert.ToBoolean(item.IsSubmitted))
+                                          {
+                                            <a class="btn default btn-outline image-popup-vertical-fit" href="@Url.Action("EditReview", "Nomination", new { nominationId = item.Id})">
+                                                <i class="fa fa-pencil-square-o fa-2x" aria-hidden="true"></i>
+                                            </a>
+                                           }
+                                           else
+                                           {
+                                            <a class="btn default btn-outline image-popup-vertical-fit" href="@Url.Action("ReviewDetails", "Nomination", new { nominationId = item.Id})">
+                                                
+                                                <i class="fa fa-file-text-o fa-2x" aria-hidden="true"></i>
+                                            </a>
+                                           }
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="el-card-content">
+                            <h3 class="box-title">@Html.DisplayFor(modelItem => item.DisplayName)</h3>
+                            <small>
+                                @Html.DisplayFor(modelItem => item.AwardName)
+                                @Html.DisplayFor(modelItem => item.NominationTime)
+                            </small><br>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     }
 </div>

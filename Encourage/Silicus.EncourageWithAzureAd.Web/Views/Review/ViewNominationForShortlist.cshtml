@@ -126,7 +126,7 @@
                                     }
                                 </td>
                                 @{
-                            var commentObj = Model.ManagerComments.FirstOrDefault(model => model.CriteriaId == @managerComment.CriteriaId);
+                                    var commentObj = Model.ManagerComments.FirstOrDefault(model => model.CriteriaId == @managerComment.CriteriaId);
                                 }
                                 <td class="col-md-1">@(commentObj != null ? commentObj.Weightage.ToString() : "-")</td>
                                 <td class="col-md-2">
@@ -156,7 +156,7 @@
                                 </td>
                                 <td class="more col-md-2" style="word-break:break-all">@(reviewObj != null ?  reviewObj.Comment : "")</td>
                             </tr>
-                        }
+                                        }
 
                         <tr>
                             <td></td>
@@ -182,42 +182,50 @@
                 </table>
             </div>
             <div class="row">&nbsp;</div>
-        }
-        if (!String.IsNullOrEmpty(Model.HrAdminsfeedback))
-        {
-            <table class="table table-hover issue-tracker " style="width:80%;table-layout:fixed">
-                <tr>
-                    <th>
-                        @Html.DisplayFor(modelItem => modelItem.HrAdminName) Says:
-                    </th>
-                </tr>
-                <tr class="white-bg">
-                    <td class="more" style="word-wrap: break-word;"><div>@Model.HrAdminsfeedback</div></td>
-                </tr>
-            </table>
-        }
-        <div class="row">&nbsp;</div>
+                                        }
+                                        if (!String.IsNullOrEmpty(Model.HrAdminsfeedback))
+                                        {
+                                            <table class="table table-hover issue-tracker " style="width:80%;table-layout:fixed">
+                                                <tr>
+                                                    <th>
+                                                        @Html.DisplayFor(modelItem => modelItem.HrAdminName) Says:
+                                                    </th>
+                                                </tr>
+                                                <tr class="white-bg">
+                                                    <td class="more" style="word-wrap: break-word;"><div>@Model.HrAdminsfeedback</div></td>
+                                                </tr>
+                                            </table>
+                                        }
+                                        <div class="row">&nbsp;</div>
 
-        <div class="form-group">
-            <div style="text-align:center;width:80%;">
-                @*<input type="button" value="Back" class="btn btn-primary back btnSameSize" onclick="location.href='#'"/>*@
-                <input type="button" value="Back" class="btn btn-primary btnSameSize " onclick="location.href='@Url.Action("ReviewFeedbackList", "Review")'" />
-                <input type="button" value="Shortlist" class="btn btn-primary shortlist btnSameSize" onclick="location.href='#'"
-                       @{ if (Model.IsShortlisted || Model.IsWinner) { @: disabled="disabled"
-                                                                                                                                                                                       } } />
-                <input type="button" value="Mark Winner" class="btn btn-primary btnSameSize" data-toggle="modal" data-target="#myModal"
-                       @{ if (Model.IsWinner) { @: disabled="disabled"
-                                                                                                                                                                               } } />
-            </div>
-        </div>
-        if (ViewBag.NominationLockStatus)
-        {
-            <div style="display:none" id="allow-shortlist">true</div>
-        }
-        else
-        {
-            <div style="display:none" id="allow-shortlist">false</div>
-        }
+                                        <div class="form-group">
+                                            <div style="text-align:center;width:80%;">
+                                                @*<input type="button" value="Back" class="btn btn-primary back btnSameSize" onclick="location.href='#'"/>*@
+                                                <input type="button" value="Back" class="btn btn-primary btnSameSize " onclick="location.href='@Url.Action("ReviewFeedbackList", "Review")'" />
+                                                <input type="button" value="Shortlist" class="btn btn-primary shortlist btnSameSize" onclick="location.href='#'"
+                                                       @{ if (Model.IsShortlisted || Model.IsWinner) { @: disabled="disabled"
+                                                                                                                                                                                                                                              } } />
+                                                <input type="button" value="Mark Winner" class="btn btn-primary btnSameSize" data-toggle="modal" data-target="#myModal"
+                                                       @{ if (Model.IsWinner) { @: disabled="disabled"
+                                                                                                                                                                                                                                      } } />
+                                            </div>
+                                        </div>
+    if (Model.IsLocked)
+    {
+        <div style="display:none" id="allow-shortlist">true</div>
+    }
+    else
+    {
+        <div style="display:none" id="allow-shortlist">false</div>
+    }
+    @*if (ViewBag.nominationlockstatus)
+    {
+        <div style="display:none" id="allow-shortlist">true</div>
+    }
+    else
+    {
+        <div style="display:none" id="allow-shortlist">false</div>
+        }*@
 
     }
 </div>
@@ -284,7 +292,7 @@
             window.location.href = '@Url.Action("ReviewFeedbackList", "Review")';
         },*@
         $('.shortlist').click(function () {
-            
+
             @*var isLocked = @Html.Raw(Json.Encode(Model.IsLocked));*@
             var isLocked = $("div #allow-shortlist").text();
             if (isLocked == "false") {
@@ -341,7 +349,7 @@
         $("#cancel").click(function () { $("#comment").val(""); $("#feedback").val(""); $("#commentRequired").text(""); $("#feedbackRequired").text("") });
 
         $('.winner').click(function () {
-            
+
             var isLocked = $("div #allow-shortlist").text();
             if (isLocked == "false") {
                 sweetAlert("Please lock the nomination from dashboard before proceed.");
@@ -476,7 +484,7 @@
     $(function () {
         var showChar = 80, showtxt = "less", hidetxt = "more";
         $('.more-txt').each(function () {
-            
+
             var content = $(this).text();
             if (content.length > showChar) {
                 var con = content.substr(0, showChar);

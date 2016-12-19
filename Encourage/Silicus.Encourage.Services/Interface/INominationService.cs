@@ -34,12 +34,14 @@ namespace Silicus.Encourage.Services.Interface
         void DiscardNomination(int nominationId);
         bool checkReviewIsDrafted(int nominationId);
         List<Award> LockNominations(List<int> awardIds);
-        bool IsNominationLocked();
+        //bool IsNominationLocked();
         List<Award> UnLockNominations(List<int> awardIds);
         List<Award> GetAwardstoUnLockOrUnlock(string status);
-        int GetNominationCountByManagerId(int managerId, DateTime startDate, DateTime endDate);
-        bool GetNominationLockStatus();
+        int GetNominationCountByManagerIdForSOM(int managerId, DateTime startDate, DateTime endDate, int awardId);
+        int GetNominationCountByManagerIdForPINNACLE(int managerId, DateTime startDate, int awardId);
+        List<Award> GetNominationLockStatus();
         FrequencyMaster GetAwardFrequencyByFrequencyCode(string frequencyCode);
+        FrequencyMaster GetAwardFrequencyById(int id);
 
         #region Saved Nominations List
 

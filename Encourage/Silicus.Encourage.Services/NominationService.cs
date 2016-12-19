@@ -310,11 +310,11 @@ namespace Silicus.Encourage.Services
 
         }
 
-        public bool IsNominationLocked()
-        {
-            _logger.Log("NominationService-IsNominationLocked");
-            return GetNominationLockStatus();
-        }
+        //public bool IsNominationLocked()
+        //{
+        //    _logger.Log("NominationService-IsNominationLocked");
+        //    return GetNominationLockStatus();
+        //}
 
         //public bool UnLockNominations()
         //{
@@ -378,22 +378,49 @@ namespace Silicus.Encourage.Services
         }
 
        
-        public int GetNominationCountByManagerId(int managerId, DateTime startDate, DateTime endDate)
+        public int GetNominationCountByManagerIdForSOM(int managerId, DateTime startDate, DateTime endDate, int awardId)
         {
-            return _encourageDatabaseContext.Query<Nomination>().Count(x => x.ManagerId == managerId && (x.NominationDate >= startDate && x.NominationDate <= endDate));
+            return _encourageDatabaseContext.Query<Nomination>().Count(x => x.ManagerId == managerId && (x.NominationDate >= startDate && x.NominationDate <= endDate && x.AwardId == awardId));
         }
 
-        public bool GetNominationLockStatus()
+        public int GetNominationCountByManagerIdForPINNACLE(int managerId, DateTime startDate, int awardId)
         {
-            var config = _encourageDatabaseContext.Query<Encourage.Models.Configuration>().FirstOrDefault(x => x.configurationKey == "NominationLock");
-            if (config != null)
+            return _encourageDatabaseContext.Query<Nomination>().Count(x => x.ManagerId == managerId && (x.NominationDate.Value.Year == startDate.Year && x.AwardId == awardId));
+        }
+
+        public List<Award> GetNominationLockStatus()
+        {
+
+            var lockKey = WebConfigurationManager.AppSettings["NominationLockKey"];
+            var allAwards = _encourageDatabaseContext.Query<Award>().ToList();
+            var lockedAwards = new List<Award>();
+            foreach (var award in allAwards)
             {
-                var data = config.value;
-                return data == true;
+                var result = _encourageDatabaseContext.Query<Encourage.Models.Configuration>().Where(x => x.configurationKey == lockKey && x.AwardId == award.Id && x.value == true ).FirstOrDefault();
+                if (result != null)
+                {
+                    lockedAwards.Add(award);
+                }
             }
-            return false;
-        }
 
+            return lockedAwards;
+
+
+
+
+            //var config = _encourageDatabaseContext.Query<Encourage.Models.Configuration>().FirstOrDefault(x => x.configurationKey == "NominationLock" && x.AwardId);
+
+            //if (config != null)
+            //{
+            //    var data = config.value;
+            //    return data == true;
+            //}
+            //return false;
+        }
+        public List<FrequencyMaster> GetAllAwardFrequencies()
+        {
+            return _encourageDatabaseContext.Query<FrequencyMaster>().ToList();
+        }
         #region Get Saved Nominations Details
 
         public string GetAwardNameByAwardId(int awardId)
@@ -417,6 +444,11 @@ namespace Silicus.Encourage.Services
         public FrequencyMaster GetAwardFrequencyByFrequencyCode(string frequencyCode)
         {
             return _encourageDatabaseContext.Query<FrequencyMaster>().Where(x => x.Code == frequencyCode).FirstOrDefault();
+        }
+
+        public FrequencyMaster GetAwardFrequencyById(int id)
+        {
+            return _encourageDatabaseContext.Query<FrequencyMaster>().Where(x => x.Id == id).FirstOrDefault();
         }
 
         #endregion Get Saved Nominations Details

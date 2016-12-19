@@ -13,5 +13,9 @@ namespace Silicus.Ensure.Services.Interfaces
         void Update(Tags Tag);
 
         void Delete(Tags Tag);
+
+        Tags GetTagDetailsByName(string tagName);
+
+        bool isTagAssociatedWithQuetion(string tagName);
     }
 }

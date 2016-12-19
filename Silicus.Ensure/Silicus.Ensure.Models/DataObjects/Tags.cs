@@ -1,5 +1,7 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+using System.Web.Mvc;
 
 namespace Silicus.Ensure.Models.DataObjects
 {
@@ -12,6 +14,7 @@ namespace Silicus.Ensure.Models.DataObjects
         [StringLength(50,ErrorMessage="Tag length should be less than or equal to 50 characters.")]
         [Display(Name="Tag Name")]
         [RegularExpression(@"^[^\s]+$", ErrorMessage = "Space are not allowd")]
+        //[Remote("IsDuplicateTagName", "Tag", ErrorMessage = "Tag name already exist !")]
         public string TagName { get; set; }
 
         [Required(ErrorMessage = "Description is required!")]
@@ -28,5 +31,6 @@ namespace Silicus.Ensure.Models.DataObjects
         public DateTime? CreatedDate { get; set; }
 
         public int? CreatedBy { get; set; }
+
     }
 }

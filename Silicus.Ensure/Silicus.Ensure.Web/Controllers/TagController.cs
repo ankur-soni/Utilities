@@ -9,6 +9,7 @@ using Silicus.Ensure.Web.Mappings;
 using Kendo.Mvc.UI;
 using Kendo.Mvc.Extensions;
 using System.Web;
+using System.Web.UI;
 
 namespace Silicus.Ensure.Web.Controllers
 {
@@ -66,6 +67,30 @@ namespace Silicus.Ensure.Web.Controllers
                 _tagsService.Update(tag);
             }
             return Json(ModelState.ToDataSourceResult());
+        }
+
+        public JsonResult IsDuplicateTagName(string tagName)
+        {
+            bool isAvailable = true;
+            if (!string.IsNullOrWhiteSpace(tagName) && ModelState.IsValid)
+            {
+                var tag = _tagsService.GetTagDetailsByName(tagName);
+                if(tag!=null)
+                {
+                    isAvailable = false;
+                }
+            }
+            return Json(isAvailable, JsonRequestBehavior.AllowGet); 
+        }
+
+        public JsonResult IsTagAssosiatedWithQuetion(string tagName)
+        {
+            bool isTagAssosiatedWithQuetion = false;
+            if (!string.IsNullOrWhiteSpace(tagName))
+            {
+                isTagAssosiatedWithQuetion = _tagsService.isTagAssociatedWithQuetion(tagName);
+            }
+            return Json(isTagAssosiatedWithQuetion, JsonRequestBehavior.AllowGet);
         }
     }
 }

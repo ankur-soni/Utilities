@@ -192,10 +192,11 @@
                         <div class="pull-right btn-nav">
                             <input type="button" value="Discard" id="discardButton" class="btn btn-primary" />
                             <input type="button" name="submit" value="Save Draft" id="saveButton" class="btn btn-primary" onclick="return checkValidationOnSaveDraft();" />
-                            <input type="button" name="button" value="Submit" class="btn btn-primary" onclick="return checkValidationOnSubmit();"
-                                @{  if (ViewBag.NominationLockStatus) {  @: disabled="disabled"
+                            <input type="button" name="button" value="Submit" class="btn btn-primary" onclick="return checkValidationOnSubmit();" id="submit"
+                                   @*@{  if (ViewBag.NominationLockStatus) {  @: disabled="disabled"
                                         @: title="Nominations are locked"
-                                    }  } />
+                                   @: title="Nominations are locked"
+                                                                                                                                                }  }*@ />
                             <input type="button" value="Back" class="btn btn-primary" onclick="location.href='@Url.Action("GetNominationList", "Nomination")'" />
 
                         </div>
@@ -250,6 +251,24 @@
             $('#commentBox').prop('disabled', true);
             $('#heading').text("Nomination Details")
         }
+
+        $.ajax({
+            type: 'GET',
+            url: '@Url.Action("GetLockedAwardCategories","Nomination")',
+            success: function (data) {
+                debugger;
+                var index = 0;
+                $.each(data, function () {
+                    if (data[index].Id == $('#Award option:selected').val()) {
+                        $('#submit').attr('title', 'Nominations are locked').prop('disabled', 'disabled');
+                    }
+                    index++;
+                });
+            },
+            error: function () {
+                sweetAlert("Error", "Oops something went wrong!");
+            }
+        });
     })
 
     $("#ProjectRadioButton").change
@@ -322,7 +341,7 @@
                 text: "Do you want to discard this nomination?",
                 type: "info",
                 showCancelButton: true,
-                confirmButtonColor: "#0070b9",
+                confirmButtonColor: "#337ab7",
                 confirmButtonText: "Yes!",
                 cancelButtonText: "No!",
                 closeOnConfirm: false,
@@ -344,7 +363,7 @@
                                     text: "",
                                     type: "info",
                                     showCancelButton: false,
-                                    confirmButtonColor: "#88a364",
+                                    confirmButtonColor: "#337ab7",
                                     confirmButtonText: "Ok",
                                 },
                                 function () {
@@ -390,7 +409,7 @@
                         text: "Do you want to nominate this candidate?",
                         type: "info",
                         showCancelButton: true,
-                        confirmButtonColor: "#0070b9",
+                        confirmButtonColor: "#337ab7",
                         confirmButtonText: "Yes!",
                         cancelButtonText: "No!",
                         closeOnConfirm: false,
@@ -411,7 +430,7 @@
                                             text: "",
                                             type: "info",
                                             showCancelButton: false,
-                                            confirmButtonColor: "#88a364",
+                                            confirmButtonColor: "#337ab7",
                                             confirmButtonText: "Ok",
                                         },
                                         function () {
@@ -443,7 +462,7 @@
                     text: "Do you want to save this nomination?",
                     type: "info",
                     showCancelButton: true,
-                    confirmButtonColor: "#0070b9",
+                    confirmButtonColor: "#337ab7",
                     confirmButtonText: "Yes!",
                     cancelButtonText: "No!",
                     closeOnConfirm: false,
@@ -461,7 +480,7 @@
                                 swal({
                                         title: "Nomination Saved!",
                                         showCancelButton: false,
-                                        confirmButtonColor: "#88a364",
+                                        confirmButtonColor: "#337ab7",
                                         confirmButtonText: "Ok"
                                     },
                                     function () {
