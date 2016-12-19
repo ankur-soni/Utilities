@@ -1,6 +1,11 @@
 ﻿/*******************
 *** little RESET ***
 ********************/
+    .k-widget > span.k-invalid,
+input.k-invalid,textarea.k-invalid,select.k-invalid
+{
+  border: 1px solid red !important;
+}
 
 *:not(body), *:not(body)::before, *:not(body)::after {
     -moz-box-sizing: border-box;

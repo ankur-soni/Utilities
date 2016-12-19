@@ -62,12 +62,13 @@
         margin-top: 400px;
     }
 </style>
+
 <div class="container">
     <div class="row">
         @foreach (var item in Model)
         {
             <div class="col-sm-4">
-                <div class="TitleDivTemplate TitleDiv" data-toggle="modal" data-target="#myModal" onclick="getdetail('@(item.Id)','@(item.Title)')" my-data="@item.Id" my-title ="@item.Title">
+                <div class="TitleDivTemplate TitleDiv" data-toggle="modal" data-target="#myModal" onclick="getdetail('@(item.Id)','@(item.Title)')" my-data="@item.Id" my-title="@item.Title">
                     <h3 class="maintitle">@Html.DisplayFor(modelItem => item.Title)</h3>
                 </div>
             </div>
@@ -99,4 +100,5 @@
         </a>
     </div>
 </div>
+
 

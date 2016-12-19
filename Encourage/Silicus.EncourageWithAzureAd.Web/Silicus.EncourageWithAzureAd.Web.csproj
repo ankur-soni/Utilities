@@ -303,6 +303,7 @@
     <Compile Include="Controllers\NominationController.cs" />
     <Compile Include="Controllers\ReviewController.cs" />
     <Compile Include="Controllers\UserProfileController.cs" />
+    <Compile Include="Enums\FrequencyCode.cs" />
     <Compile Include="Filters\CustomeAuthorizeAttribute.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -802,7 +803,6 @@
     <None Include="Properties\PublishProfiles\SilicusEncourageWithAzureAdWeb - Web Deploy %282%29.pubxml" />
     <None Include="Properties\PublishProfiles\SilicusEncourageWithAzureAdWeb - Web Deploy %283%29.pubxml" />
     <None Include="Properties\PublishProfiles\SilicusEncourageWithAzureAdWeb - Web Deploy.pubxml" />
-    <Content Include="Properties\PublishProfiles\SilicusEncourageWithAzureAdWeb.PublishSettings" />
     <None Include="Properties\PublishProfiles\SilicusEncourageWithAzureAdWeb.pubxml" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />

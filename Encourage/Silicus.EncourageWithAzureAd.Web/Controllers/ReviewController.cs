@@ -79,6 +79,7 @@ namespace Silicus.EncourageWithAzureAd.Web.Controllers
                 var isWinner = false;
                 var nomination = _encourageDatabaseContext.Query<Nomination>().SingleOrDefault(x => x.Id == reviewNomination.NominationId);
                 var award = _encourageDatabaseContext.Query<Award>().SingleOrDefault(a => a.Id == nomination.AwardId);
+                var awardFrequency = _nominationService.GetAwardFrequencyById(award.FrequencyId);
                 if (award != null && nomination!= null)
                 {
                     var awardCode = award.Code;
@@ -120,7 +121,8 @@ namespace Silicus.EncourageWithAzureAd.Web.Controllers
                             IsWinner = isWinner,
                             NumberOfReviews = totalReviews,
                             AverageCredits = averageCredits,
-                            NominatedMonth = nominationTime.Value != null ? nominationTime.Value.Month : 0
+                            NominatedMonth = nominationTime.Value != null ? nominationTime.Value.Month : 0,
+                            AwardFrequencyCode = awardFrequency.Code
                         }
                         );
                 }
@@ -187,7 +189,17 @@ namespace Silicus.EncourageWithAzureAd.Web.Controllers
                 }
                 allReviewerComments.Add(reviewerCommentList);
             }
-            var isLocked = _nominationService.GetAllNominations().FirstOrDefault(x => (x.NominationDate.Value.Month.Equals(DateTime.Now.Month - 1) && x.NominationDate.Value.Year.Equals(DateTime.Now.Month > 1 ? DateTime.Now.Year : DateTime.Now.Year - 1))).IsLocked ?? false;
+            //  var isLocked = _nominationService.GetAllNominations().FirstOrDefault(x => (x.NominationDate.Value.Month.Equals(DateTime.Now.Month - 1) && x.NominationDate.Value.Year.Equals(DateTime.Now.Month > 1 ? DateTime.Now.Year : DateTime.Now.Year - 1))).IsLocked ?? false;
+            var lockedAwards = _nominationService.GetNominationLockStatus();
+            var isLocked = false;
+            var awardOfCurrentNomination = _awardService.GetAwardFromNominationId(nominationModel.NominationId);
+            foreach (var lockedAward in lockedAwards)
+            {
+                if (lockedAward.Id == awardOfCurrentNomination.Id)
+                {
+                    isLocked = true;
+                }
+            }
 
             var loggedInAdminId = _awardService.GetUserIdFromEmail(User.Identity.Name);
             var hrAdminsFeedback = _resultService.GetHrAdminsFeedbackForEmployee(loggedInAdminId, nomination.Id);

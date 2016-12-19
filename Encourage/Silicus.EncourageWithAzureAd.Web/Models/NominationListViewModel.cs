@@ -22,6 +22,7 @@ namespace Silicus.EncourageWithAzureAd.Web.Models
         public bool? IsDrafted { get; set; }
         [DisplayName("Feedback")]
         public string AwardComment { get; set; }
+        public string AwardFrequencyCode { get; set; }
 
     }
 }
