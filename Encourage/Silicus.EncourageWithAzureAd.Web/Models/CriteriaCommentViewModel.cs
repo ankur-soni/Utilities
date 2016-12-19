@@ -12,5 +12,6 @@ namespace Silicus.EncourageWithAzureAd.Web.Models
         public string Comment { get; set; }
         public int Rating { get; set; }
         public string Title { get; set; }
+        public int IndexId { get; set; }
     }
 }

@@ -254,6 +254,7 @@ namespace Silicus.EncourageWithAzureAd.Web.Controllers
 
             var criterias = _awardService.GetCriteriasForAward(nominationViewModel.AwardId);
 
+            int index = 1;
             foreach (var criteria in criterias)
             {
                 var managerComment = savedNomination.ManagerComments.FirstOrDefault(c => c.CriteriaId == criteria.Id);
@@ -264,8 +265,10 @@ namespace Silicus.EncourageWithAzureAd.Web.Controllers
                     Title = criteria.Title,
                     Comment = managerComment != null ? managerComment.Comment : string.Empty,
                     Rating = managerComment != null ? managerComment.Rating : 0,
-                    Weightage = managerComment != null ? managerComment.Weightage : 0
+                    Weightage = managerComment != null ? managerComment.Weightage : 0,
+                    IndexId = index
                 });
+                index++;
             }
             return View("EditNomination", nominationViewModel);
         }

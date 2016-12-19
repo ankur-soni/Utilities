@@ -3,12 +3,13 @@
 <tr>
     <td>
         @Html.HiddenFor(modelItem => modelItem.Id)
+        @Html.DisplayFor(modelItem => modelItem.IndexId) 
     </td>
     <td class="col-lg-5 col-md-4 col-sm-4 col-xs-4">
         @Html.DisplayFor(modelItem => modelItem.Title)
     </td>
     <td class="col-lg-1 col-md-2 col-sm-3 col-xs-2">
-        @Html.HiddenFor(modelItem => modelItem.Weightage)
+        @Html.DisplayFor(modelItem => modelItem.Weightage)
     </td>
     <td class="col-lg-3 col-md-4 col-sm-6 col-xs-4">
         @Html.DropDownListFor(modelItem => modelItem.Rating,
