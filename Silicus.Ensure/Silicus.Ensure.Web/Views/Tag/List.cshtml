@@ -116,6 +116,7 @@
                 else {
                     $(".k-window-title").html("Edit Tag");
                     //$("#TagName").attr('disabled', true);
+                    $("#existingTagName").val(e.model.TagName);
                 }
 
             }
@@ -186,9 +187,52 @@
                         }
                     }
                 });
-
-                
             }
+
+            function isTagNameAvailable(existingName,updatedName)
+            {
+                var isAvailable = true;
+                if (existingName != updatedName) {
+                    $.ajax({
+                        type: "POST",
+                        url: '/Tag/IsDuplicateTagName',
+                        async: false,
+                        data: { existingTagName: existingName, tagName: updatedName },
+                        success: function (returndata) {
+                            debugger;
+                            if (returndata == true) {
+                                isAvailable = true;
+                            }
+                            else {
+                                isAvailable = false;
+                            }
+                        }
+                    });
+                }
+                return isAvailable;
+            }
+
+            (function ($, kendo) {
+                $.extend(true, kendo.ui.validator, {
+                    rules: { // custom rules
+                        tagNamevalidation: function (input, params) {
+                            if (input.is("[name='TagName']") && input.val() != "") {
+                                input.attr("data-tagNamevalidation-msg", "Tag name already exist !");
+                                return isTagNameAvailable($("#existingTagName").val(), input.val());
+                                //return /^[A-Z]/.test(input.val());
+                            }
+
+                            return true;
+                        }
+                    },
+                    messages: { //custom rules messages
+                        tagName: function (input) {
+                            // return the message text
+                            return input.attr("data-val-tagNamevalidation");
+                        }
+                    }
+                });
+            })(jQuery, kendo);
 
         </script>
 <script id="tooltip-template" type="text/x-kendo-template">
@@ -196,23 +240,3 @@
 </script>
 
 
-<div id="confirmEdit" class="modal fade" role="dialog">
-    <div class="modal-dialog">
-
-        <!-- Modal content-->
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal">&times;</button>
-                <h4 class="modal-title">Confirm</h4>
-            </div>
-            <div class="modal-body">
-                <p>This tag is already associated with a question. Are you sure you want to edit this?</p>
-            </div>
-            <div class="modal-footer">
-                <button type="button" onclick="editTag()" class="btn btn-default" data-dismiss="modal">Yes</button>
-                <button type="button" class="btn btn-default" data-dismiss="modal">No</button>
-            </div>
-        </div>
-
-    </div>
-</div>

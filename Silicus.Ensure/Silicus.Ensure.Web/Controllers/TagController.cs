@@ -69,7 +69,7 @@ namespace Silicus.Ensure.Web.Controllers
             return Json(ModelState.ToDataSourceResult());
         }
 
-        public JsonResult IsDuplicateTagName([Bind(Prefix = "positionName")]string tagName)
+        public JsonResult IsDuplicateTagName(string tagName)
         {
             bool isAvailable = true;
             if (!string.IsNullOrWhiteSpace(tagName) && ModelState.IsValid)
