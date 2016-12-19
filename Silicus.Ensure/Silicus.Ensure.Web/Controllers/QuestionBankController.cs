@@ -131,5 +131,10 @@ namespace Silicus.Ensure.Web.Controllers
                 return "Expert";
         }
 
+        public string GetProfetiancyLevelDescription(int type)
+        {
+            return ((ProficiencyLevel)type).ToString();
+        }
+
     }
 }
