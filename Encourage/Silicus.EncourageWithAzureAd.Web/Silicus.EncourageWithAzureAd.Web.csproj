@@ -864,6 +864,7 @@
     <Content Include="Views\Nomination\Shared\_criteriaForAwards.cshtml" />
     <Content Include="Views\Shared\_winnersList.cshtml" />
     <Content Include="Views\Review\Shared\_LockNominations.cshtml" />
+    <Content Include="Views\Review\ConsolidatedNominations.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
