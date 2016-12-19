@@ -9,6 +9,7 @@ namespace Silicus.EncourageWithAzureAd.Web.Models
     {
         public int Id { get; set; }
         public int CriteriaId { get; set; }
+        public int ReviewerId { get; set; }
         public string Comment { get; set; }
         public string Title { get; set; }
         public int Credit { get; set; }

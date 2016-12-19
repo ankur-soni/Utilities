@@ -1,4 +1,4 @@
-﻿
+﻿@model Silicus.EncourageWithAzureAd.Web.Models.ConsolidatedNominationsViewModel
 @{
     ViewBag.Title = "Consolidated Nominations";
 }
@@ -14,6 +14,112 @@
     </div>
 </div>
 
-<div class="">
-
+<div class="" style="overflow: scroll">
+    <table class="table table-hover issue-tracker white-bg content">
+        <thead>
+        <tr>
+            <th rowspan="2">Employee Name</th>
+            <th rowspan="2">Rating By</th>
+            <th rowspan="2">All Criteria</th>
+            @foreach (var criteria in Model.Criterias)
+            {
+                <th colspan="@Model.Reviewers.Count">@criteria.Title</th>
+            }
+        </tr>
+            <tr>
+                @foreach (var criteria in Model.Criterias)
+                {
+                    for (var revCount = 1; revCount <= Model.Reviewers.Count; revCount++)
+                     {
+                         <th> @("R" + revCount)</th>
+                     }
+                }
+            </tr>
+        </thead>
+        <tbody>
+        
+            @foreach (var nomination in Model.Nominations)
+            {
+                <tr>
+                    <td rowspan="4">@nomination.UserName</td>
+                    <td>
+                        Manager
+                    </td>
+                    <td>
+                        @(nomination.ManagerComments.Any() ? nomination.ManagerComments.Average(a => (a.Rating * a.Weightage / 100.0)) : 0)
+                    </td>
+                    @foreach (var criteria in Model.Criterias)
+                    {
+                        var managerComment = nomination.ManagerComments.FirstOrDefault(mc => mc.CriteriaId == criteria.Id);
+                        <td colspan="@Model.Reviewers.Count"> @(managerComment != null ? managerComment.Rating * managerComment.Weightage / 100m : 0)</td>
+                    }
+                </tr>
+                <tr>
+                    
+                    <td>
+                        Reviewer
+                    </td>
+                    <td>
+                        @(nomination.ReviewerComments.Any() ? nomination.ReviewerComments.Average(a => (a.Credit * a.Weightage / 100.0)) : 0)
+                    </td>
+                    @foreach (var criteria in Model.Criterias)
+                    {
+                        foreach (var reviewer in Model.Reviewers)
+                        {
+                            var reviewerComment = nomination.ReviewerComments.FirstOrDefault(rc => rc.ReviewerId == reviewer.Id && rc.CriteriaId == criteria.Id);
+                            <td>
+                               @(reviewerComment != null? (reviewerComment.Credit * reviewerComment.Weightage / 100m).ToString("F"): "-")
+                            </td>
+                        }
+                    }
+                </tr>
+                <tr>
+                    
+                    <td>
+                        Consolidated
+                    </td>
+                    <td>
+                        @(((nomination.ReviewerComments.Any() ? nomination.ReviewerComments.Average(a => (a.Credit * a.Weightage / 100.0)) : 0) + (nomination.ManagerComments.Any() ? nomination.ManagerComments.Average(a => (a.Rating * a.Weightage / 100.0)) : 0))/2.0)
+                    </td>
+                    @foreach (var criteria in Model.Criterias)
+                    {
+                        var managerComment = nomination.ManagerComments.FirstOrDefault(mc => mc.CriteriaId == criteria.Id);
+                        foreach (var reviewer in Model.Reviewers)
+                        {
+                            var reviewerComment = nomination.ReviewerComments.FirstOrDefault(rc => rc.ReviewerId == reviewer.Id && rc.CriteriaId == criteria.Id);
+                            <td>
+                                @(reviewerComment != null ? (((reviewerComment.Credit * reviewerComment.Weightage / 100.0 ) + (managerComment != null ? managerComment.Rating * managerComment.Weightage / 100.0 : 0))/2.0).ToString("F") : "-")
+                            </td>
+                        }
+                    }
+                </tr>
+                <tr>
+                    
+                    <td>
+                        Final Score
+                    </td>
+                    <td>
+                        @(((nomination.ReviewerComments.Any() ? nomination.ReviewerComments.Average(a => (a.Credit * a.Weightage / 100.0)) : 0) + (nomination.ManagerComments.Any() ? nomination.ManagerComments.Average(a => (a.Rating * a.Weightage / 100.0)) : 0)) / 2.0)
+                    </td>
+                    @foreach (var criteria in Model.Criterias)
+                    {
+                        var managerComment = nomination.ManagerComments.FirstOrDefault(mc => mc.CriteriaId == criteria.Id);
+                        var managerScore = managerComment != null ? managerComment.Rating * managerComment.Weightage / 100.0 : 0;
+                        
+                        var reviewerComments = nomination.ReviewerComments.Where(rc => rc.CriteriaId == criteria.Id);
+                        var reviewerScore = 0.0;
+                        if (reviewerComments.Any())
+                        {
+                            reviewerScore = reviewerComments.Average(r => r.Credit);
+                        }
+                        <td colspan="@Model.Reviewers.Count">
+                            @((managerScore + reviewerScore)/2.0)
+                        </td>
+                        
+                    }
+                </tr>
+            }
+        
+        </tbody>
+    </table>
 </div>

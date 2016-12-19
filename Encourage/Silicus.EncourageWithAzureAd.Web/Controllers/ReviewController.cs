@@ -334,6 +334,34 @@ namespace Silicus.EncourageWithAzureAd.Web.Controllers
             return Json(lockedNominations);
         }
 
+        public ActionResult ConsolidatedNominations(int awardId = 1)
+        {
+            var consolidatedNominations = new ConsolidatedNominationsViewModel
+            {
+                Criterias = _encourageDatabaseContext.Query<Criteria>().Where(c => c.AwardId == awardId).ToList(),
+                Reviewers = _encourageDatabaseContext.Query<Reviewer>().ToList(),
+                Nominations = new List<SubmittedNomination>()
+            };
 
+            var nominations = _encourageDatabaseContext.Query<Nomination>().Where(N => N.IsSubmitted == true && N.NominationDate.Value.Month == (DateTime.Now.Month - 1) && N.NominationDate.Value.Year == DateTime.Now.Year).ToList();
+            foreach (var nomination in nominations)
+            {
+                var nominee = _commonDbContext.Query<User>().FirstOrDefault(u => u.ID == nomination.UserId);
+                consolidatedNominations.Nominations.Add(new SubmittedNomination
+                {
+                    NominationId = nomination.Id,
+                    UserName = nominee != null ? nominee.FirstName + " " + nominee.LastName : "",
+                    ManagerComments = nomination.ManagerComments.ToList(),
+                    ReviewerComments = nomination.ReviewerComments.ToList().Select(rc => new ReviewerCommentViewModel()
+                    {
+                        CriteriaId = rc.CriteriaId,
+                        Comment = rc.Comment,
+                        Credit = Convert.ToInt32(rc.Credit),
+                        ReviewerId = rc.ReviewerId
+                    }).ToList()
+                });
+            }
+            return View("ConsolidatedNominations", consolidatedNominations);
+        }
     }
 }
