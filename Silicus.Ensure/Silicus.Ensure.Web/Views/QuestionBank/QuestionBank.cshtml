@@ -1,4 +1,5 @@
 ﻿@model List<Silicus.Ensure.Web.Models.QuestionModel>
+
 @using Kendo.Mvc.UI;
 
 @{
@@ -16,6 +17,7 @@
                 @if (Request.IsAuthenticated)
                 {
                     @(Html.Kendo().Grid(Model).Name("questionGrids")
+                         .Pageable(pager => { pager.PageSizes(true); })
          .Columns(columns =>
               {
                   columns.Bound(q => q.QuestionDescription).Encoded(false).Width(200);
@@ -24,7 +26,7 @@
                   columns.Bound(q => q.ProficiencyLevel).Width(100);
                   columns.Bound(q => q.Id).ClientTemplate(@"
                     <a href='/QuestionBank/EditQuestion?questionId=#=Id#' class='k-button k-button-icontext k-grid-edit'><span class='k-icon k-edit'></span>Edit</a>
-                    <button onclick='DeleteQuestion(#=Id#,this)' class='k-button k-button-icontext k-grid-delete'><span class='k-icon k-delete'></span>Delete</button>").Title("Actions").Width(150);
+                    <button onclick='DeleteQuestion(#=Id#,this)' class='k-button k-button-icontext k-grid-delete'><span class='k-icon k-delete'></span>Delete</button>").Title("Actions").Width(150).Sortable(false);
               })
               .ToolBar(toolbar =>
               {
@@ -44,7 +46,7 @@
                         <br />
                         <div class="row">
                             <div class="col-md-2" style="padding-right:0; padding-top:5px; width:10%;">
-                                <span>Question Type:</span>
+                                <span>Type:</span>
                             </div>
                             <div class="col-md-2">
                                 @(Html.Kendo().DropDownList()
@@ -56,26 +58,36 @@
                                 () {
                                     new SelectListItem(){
                                 Text="All",
-                                Value="0"
+                                Value=""
                                 },
                                 new SelectListItem(){
                                 Text="Objective",
-                                Value="1"
+                                Value="Objective"
                                 },
                                 new SelectListItem(){
                                 Text="Practical",
-                                Value="2"
+                                Value="Practical"
                                 }
                                 }).HtmlAttributes(new { style = "width: 80%" }))
                             </div>
                             <div class="col-md-2" style="padding-right:0; padding-top:5px;">
-                                <span style="float:right;">Questions Per Page:</span>
+                                <span style="float:right;">Proficiency Level:</span>
                             </div>
                             <div class="col-md-2">
-                                @(Html.Kendo().NumericTextBox<int>().Name("QuestionPerPage")
-                                .Min(0).Max(9999).Value(10).Format("#").Decimals(0)
-                                .Placeholder("Questions Per Page")
-                                        .Events(e => e.Change("QuestionPerPageChange")))
+                                @{
+                                    var levelList = new List<SelectListItem>();
+                                    levelList.Add(new SelectListItem() { Text = "All", Value = "" });
+                                    foreach (var level in Enum.GetValues(typeof(Silicus.Ensure.Web.Models.ProficiencyLevel)))
+                                    {
+                                        levelList.Add(new SelectListItem() { Text = level.ToString(), Value = level.ToString() });
+                                    }
+                                }
+                                @(Html.Kendo().DropDownList()
+                                    .Name("ProficiencyLevelDropDown")
+                                    .DataTextField("Text")
+                                    .DataValueField("Value")
+                                    .Events(e => e.Change("ProficiencyLevelDropDownChange"))
+                                                                .BindTo(levelList).HtmlAttributes(new { style = "width: 80%" }))
                             </div>
                             <div class="col-md-3 col-md-push-1" style="float: right; padding-right: 0; margin-right: -22px;">
                                 <a href='/QuestionBank/AddQuestions?questionId=0' class='k-button k-button-icontext k-grid-add' style="width: 50% !important;"><span class='k-icon k-add'></span>Add Question</a>
@@ -84,15 +96,15 @@
                     </div>
                 </text>);
               })
-                                                                                                                                                                                                                                                                                                                                                                                                                            .Resizable(resizing => resizing.Columns(true))
-                                                                                                                                                                                                                                                                                                                                                                                                            .Sortable(sorting => sorting.Enabled(true))
-                                                                                                                                                                                                                                                                                                                                                                                                            .Reorderable(reorder => reorder.Columns(true))
-                                                                                                                                                                                                                                                                                                                                                                                                            .Pageable()
-                                                                                                                                                                                                                                                                                                                                                                                                            .DataSource(dataSource => dataSource
-                                                                                                                                                                                                                                                                                                                                                                                                            .Ajax()
-                                                                                                                                                                                                                                                                                                                                                                                                            .PageSize(10)
-                                                                                                                                                                                                                                                                                                                                                                                                            .ServerOperation(false)
-                                                                                                                                                                                                                                                                                                                                                                                                            ))
+                                                                                                                                                                                                                                                                                                                                                                                                                                                .Resizable(resizing => resizing.Columns(true))
+                                                                                                                                                                                                                                                                                                                                                                                                                                .Sortable(sorting => sorting.Enabled(true))
+                                                                                                                                                                                                                                                                                                                                                                                                                                .Reorderable(reorder => reorder.Columns(true))
+                                                                                                                                                                                                                                                                                                                                                                                                                                .Pageable()
+                                                                                                                                                                                                                                                                                                                                                                                                                                .DataSource(dataSource => dataSource
+                                                                                                                                                                                                                                                                                                                                                                                                                                .Ajax()
+                                                                                                                                                                                                                                                                                                                                                                                                                                .PageSize(10)
+                                                                                                                                                                                                                                                                                                                                                                                                                                .ServerOperation(false)
+                                                                                                                                                                                                                                                                                                                                                                                                                                ))
                 }
             </div>
         </div>
@@ -141,28 +153,28 @@
         });
     });
 
-    // Display Question By Question Type.
-    function QuestionTypeChange() {
-        var value = $("#QuestionType").val();
-        var que = "";
-        if (value == "1") {
-            que = "Objective";
-        }
-        else if (value == "2") {
-            que = "Practical";
-        }
+    function ProficiencyLevelAndQuetiontype()
+    {
+        var queType = $("#QuestionType").val();
+        var level = $("#ProficiencyLevelDropDown").val();
 
         var grid = $("#questionGrids").data("kendoGrid");
+        var filterArray = new Array();
 
-        if (value) {
-            grid.dataSource.filter({ field: "QuestionType", operator: "contains", value: que });
-        } else {
-            grid.dataSource.filter({});
-        }
+        filterArray.push({ field: "QuestionType", operator: "contains", value: queType });
+        filterArray.push({ field: "ProficiencyLevel", operator: "contains", value: level });
+        grid.dataSource.filter(filterArray);
+    }
+    // Display Question By Question Type.
+    function QuestionTypeChange() {
+        ProficiencyLevelAndQuetiontype();
     }
 
-    function QuestionPerPageChange()
-    {
+    function ProficiencyLevelDropDownChange() {
+        ProficiencyLevelAndQuetiontype();
+    }
+
+    function QuestionPerPageChange() {
         var value = $("#QuestionPerPage").val();
         var grid = $("#questionGrids").data("kendoGrid");
         grid.dataSource.pageSize(value);

@@ -3,6 +3,7 @@
 <form>
     <div class="container-fluid model-550">
         <div class="row">
+            @Html.Hidden("existingTagName")
             <div class="col-md-4">
                 @Html.LabelFor(m => m.TagName) <span>*</span>
             </div>

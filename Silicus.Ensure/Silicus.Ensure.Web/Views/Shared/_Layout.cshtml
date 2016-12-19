@@ -128,9 +128,19 @@
         </div>
     </div>
     @RenderSection("scripts", required: false)
+
+
+    <script id="confirmationTemplate" type="text/x-kendo-template">
+        <div class="popupMessage"></div>
+        </br>
+        <hr />
+        <div class="dialog_buttons">
+            <input type="button" class="confirm_yes k-button" value="Yes" style="width: 70px" />
+            &nbsp;
+            <input type="button" class="confirm_no k-button" value="No" style="width: 70px" />
+        </div>
+    </script>
     <script>
-
-
         function showConfirmationWindow(message, header) {
             return showWindow('#confirmationTemplate', message, header)
         };
