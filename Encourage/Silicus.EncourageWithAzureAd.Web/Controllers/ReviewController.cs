@@ -79,6 +79,7 @@ namespace Silicus.EncourageWithAzureAd.Web.Controllers
                 var isWinner = false;
                 var nomination = _encourageDatabaseContext.Query<Nomination>().SingleOrDefault(x => x.Id == reviewNomination.NominationId);
                 var award = _encourageDatabaseContext.Query<Award>().SingleOrDefault(a => a.Id == nomination.AwardId);
+                var awardFrequency = _nominationService.GetAwardFrequencyById(award.FrequencyId);
                 if (award != null && nomination!= null)
                 {
                     var awardCode = award.Code;
@@ -120,7 +121,8 @@ namespace Silicus.EncourageWithAzureAd.Web.Controllers
                             IsWinner = isWinner,
                             NumberOfReviews = totalReviews,
                             AverageCredits = averageCredits,
-                            NominatedMonth = nominationTime.Value != null ? nominationTime.Value.Month : 0
+                            NominatedMonth = nominationTime.Value != null ? nominationTime.Value.Month : 0,
+                            AwardFrequencyCode = awardFrequency.Code
                         }
                         );
                 }

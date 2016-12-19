@@ -1,4 +1,5 @@
 ﻿@model IEnumerable<Silicus.EncourageWithAzureAd.Web.Models.NominationListViewModel>
+@using Silicus.EncourageWithAzureAd.Web.Enums;
 @using System.Drawing;
 @{
     ViewBag.Title = "ReviewNominations";
@@ -81,8 +82,15 @@
 
                     <div>
                         @Html.DisplayFor(modelItem => item.AwardName)
-
-                        @Html.DisplayFor(modelItem => item.NominationTime)
+                        @if (item.AwardFrequencyCode == FrequencyCode.YEAR.ToString())
+                        {
+                            var nominationYear = Convert.ToInt32(item.NominationTime.Substring(item.NominationTime.LastIndexOf('-') + 1)) - 1;
+                            @Html.Label("-" + Convert.ToInt32(nominationYear))
+                        }
+                        else
+                        {
+                            @Html.DisplayFor(modelItem => item.NominationTime)
+                        }
                     </div>
 
                 </div>

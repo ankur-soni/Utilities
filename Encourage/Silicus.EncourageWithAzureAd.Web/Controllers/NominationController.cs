@@ -663,8 +663,6 @@ namespace Silicus.EncourageWithAzureAd.Web.Controllers
         public ActionResult ReviewNominations()
         {
             _logger.Log("Nomination-ReviewNominations-GET");
-            //ViewBag.ReviewLockStatus = _reviewService.GetReviewLockStatus();
-            // var nominations = _nominationService.GetAllSubmitedNonreviewedNominations(_nominationService.GetReviewerIdOfCurrentNomination( Session["UserEmailAddress"] as string));
             var reviewerId = _nominationService.GetReviewerIdOfCurrentNomination(User.Identity.Name);
             var reviewNominations = new List<NominationListViewModel>();
             if (reviewerId == 0)
@@ -677,6 +675,8 @@ namespace Silicus.EncourageWithAzureAd.Web.Controllers
 
             foreach (var nomination in nominations)
             {
+                var award = _encourageDatabaseContext.Query<Award>().FirstOrDefault(a => a.Id == nomination.AwardId);
+                var awardFrequency = _nominationService.GetAwardFrequencyById(award.FrequencyId);
                 var awardName = _encourageDatabaseContext.Query<Award>().Where(a => a.Id == nomination.AwardId).FirstOrDefault().Code;
                 var nomineeName = _commonDbContext.Query<User>().Where(u => u.ID == nomination.UserId).FirstOrDefault();
                 var nominationTime = _encourageDatabaseContext.Query<Nomination>().Where(n => n.Id == nomination.Id).FirstOrDefault().NominationDate;
@@ -708,7 +708,8 @@ namespace Silicus.EncourageWithAzureAd.Web.Controllers
                     NominationTime = nominationTimeToDisplay,
                     Id = nomination.Id,
                     IsLocked = islocked,
-                    IsDrafted = _nominationService.checkReviewIsDrafted(nomination.Id)
+                    IsDrafted = _nominationService.checkReviewIsDrafted(nomination.Id),
+                    AwardFrequencyCode = awardFrequency.Code
                 };
                 reviewNominations.Add(reviewNominationViewModel);
             }
@@ -841,8 +842,9 @@ namespace Silicus.EncourageWithAzureAd.Web.Controllers
                 var awardName = _nominationService.GetAwardNameByAwardId(nomination.AwardId);
                 var nominee = _nominationService.GetNomineeDetails(nomination.UserId);
                 var nominationTime = nomination.NominationDate;
+                var award = _encourageDatabaseContext.Query<Award>().FirstOrDefault(a => a.Id == nomination.AwardId);
+                var awardFrequency = _nominationService.GetAwardFrequencyById(award.FrequencyId);
                 string nominationTimeToDisplay = DateTimeFormatInfo.CurrentInfo.GetAbbreviatedMonthName(nominationTime.Value.Month) + "-" + nominationTime.Value.Year.ToString();
-
                 var reviewNominationViewModel = new NominationListViewModel()
                 {
                     Intials = nominee.FirstName.Substring(0, 1) + "" + nominee.LastName.Substring(0, 1),
@@ -850,7 +852,8 @@ namespace Silicus.EncourageWithAzureAd.Web.Controllers
                     DisplayName = nominee.DisplayName,
                     NominationTime = nominationTimeToDisplay,
                     Id = nomination.Id,
-                    IsSubmitted = nomination.IsSubmitted
+                    IsSubmitted = nomination.IsSubmitted,
+                    AwardFrequencyCode = awardFrequency.Code
                 };
                 reviewedNominations.Add(reviewNominationViewModel);
             }
