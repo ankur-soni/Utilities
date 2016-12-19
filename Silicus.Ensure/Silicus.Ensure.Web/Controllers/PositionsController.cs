@@ -33,7 +33,7 @@ namespace Silicus.Ensure.Web.Controllers
 
         public ActionResult GetPositionDetails([DataSourceRequest] DataSourceRequest request)
         {
-            var positionlist = _positionService.GetPositionDetails().OrderByDescending(model => model.PositionId);
+            var positionlist = _positionService.GetPositionDetails().Where(y=>y.IsDeleted!=true).OrderByDescending(model => model.PositionId);
             return Json(positionlist.ToDataSourceResult(request), JsonRequestBehavior.AllowGet);
         }
 

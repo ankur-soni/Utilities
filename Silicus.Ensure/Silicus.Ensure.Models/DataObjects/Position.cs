@@ -6,6 +6,7 @@ namespace Silicus.Ensure.Models.DataObjects
 {
     public class Position
     {
+
         [Key]
         public int PositionId { get; set; }
 
@@ -14,5 +15,11 @@ namespace Silicus.Ensure.Models.DataObjects
         [Remote("IsDuplicatePositionName", "Positions", ErrorMessage = "Position already name exist !")]
         [Display(Name = "Position Name")]
         public string PositionName { get; set; }
+        public bool IsDeleted { get; set; }
+
+        public Position()
+        {
+            IsDeleted = false;
+        }
     }
 }

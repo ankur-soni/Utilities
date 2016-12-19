@@ -336,6 +336,7 @@
     <Compile Include="Controllers\CandidateController.cs" />
     <Compile Include="Controllers\ErrorController.cs" />
     <Compile Include="Controllers\ManageUserController.cs" />
+    <Compile Include="Controllers\MasterController.cs" />
     <Compile Include="Controllers\PositionsController.cs" />
     <Compile Include="Controllers\ProjectController.cs" />
     <Compile Include="Controllers\QuestionBankController.cs" />
@@ -429,6 +430,7 @@
     <Content Include="Content\toastr.css" />
     <Content Include="Content\toastr.min.css" />
     <Content Include="Images\silicus\logo.png" />
+    <Content Include="Scripts\bootbox.min.js" />
     <Content Include="Scripts\Bootstrap\3.3.1\bootstrap.js" />
     <Content Include="Scripts\Bootstrap\3.3.1\bootstrap.min.js" />
     <Content Include="Content\toastr.scss" />
@@ -686,6 +688,7 @@
     <Content Include="Views\ManageUser\_partialAddCandidateUserView.cshtml" />
     <Content Include="Views\ManageUser\_partialAddUserView.cshtml" />
     <Content Include="Views\Shared\EditorTemplates\TagEditorTemplate.cshtml" />
+    <Content Include="Views\Master\Index.cshtml" />
     <None Include="Web.Azure.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

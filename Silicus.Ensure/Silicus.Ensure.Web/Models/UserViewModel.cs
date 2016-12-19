@@ -52,6 +52,7 @@ namespace Silicus.Ensure.Web.Models
         [RegularExpression(@"^[0-9]{2}$", ErrorMessage = "Experience is not a valid")]
         public string Experience { get; set; }
 
+        [StringLength(50)]
         [Display(Name = "Current Employer")]
         [Required(ErrorMessage = "Current employer is required!")]
         public string CurrentEmployer { get; set; }
@@ -68,6 +69,7 @@ namespace Silicus.Ensure.Web.Models
         [Required(ErrorMessage = "Secondary mobile number is required!")]
         public string SecondaryMobileNumber { get; set; }
 
+        [StringLength(50)]
         public string Department { get; set; }
 
         public string TestStatus { get; set; }

@@ -1,6 +1,6 @@
 ﻿@model IEnumerable<Silicus.EncourageWithAzureAd.Web.Models.ReviewFeedbackListViewModel>
 @using System.Drawing;
-
+@using Silicus.EncourageWithAzureAd.Web.Enums;
 <div>
     @foreach (var item in Model)
     {
@@ -22,7 +22,7 @@
         KnownColor randomColorName = names[randomGen.Next(names.Length)];
         Color randomColor = Color.FromKnownColor(randomColorName);
 
-        <div class="col-md-3 card white-bg"   style="border-color:@borderColor">
+        <div class="col-md-3 card white-bg" style="border-color:@borderColor">
             <div class="cardHeader text-center">
 
                 <div>
@@ -31,37 +31,45 @@
                 <div>
                     For
                     @Html.DisplayFor(modelItem => item.AwardName)
-                    @Html.DisplayFor(modelItem => item.NominationTime)
+                    @if (item.AwardFrequencyCode == FrequencyCode.YEAR.ToString())
+                    {
+                        var nominationYear = Convert.ToInt32(item.NominationTime.Substring(item.NominationTime.LastIndexOf('-') + 1)) - 1;
+                        @Html.Label("-" + Convert.ToInt32(nominationYear))
 
-                    <table align="center" style="border: 1px solid rgba(178, 176, 176, 0.96);margin-top:2%;">
-                        <tr>
-                            <th style="color:@borderColor">Credits</th>
-                            <th style="color:@borderColor">Reviews</th>
-                            <th style="color:@borderColor">Average</th>
-                        </tr>
-                        <tr>
-                            <td>@Html.DisplayFor(modelItem => item.Credits)</td>
-                            <td>@Html.DisplayFor(modelItem => item.NumberOfReviews)</td>
-                            <td>@Html.DisplayFor(modelItem => item.AverageCredits)</td>
-                        </tr>
-                    </table>
+                    }
+                    else
+                    {
+                        @Html.DisplayFor(modelItem => item.NominationTime)
+                    }
+                        <table align="center" style="border: 1px solid rgba(178, 176, 176, 0.96);margin-top:2%;">
+                            <tr>
+                                <th style="color:@borderColor">Credits</th>
+                                <th style="color:@borderColor">Reviews</th>
+                                <th style="color:@borderColor">Average</th>
+                            </tr>
+                            <tr>
+                                <td>@Html.DisplayFor(modelItem => item.Credits)</td>
+                                <td>@Html.DisplayFor(modelItem => item.NumberOfReviews)</td>
+                                <td>@Html.DisplayFor(modelItem => item.AverageCredits)</td>
+                            </tr>
+                        </table>
+                    </div>
                 </div>
-            </div>
-            <div class="cardFooter text-right" style="padding-top:5px;border-color:@borderColor">
+                <div class="cardFooter text-right" style="padding-top:5px;border-color:@borderColor">
 
-                @if (item.IsShortlisted)
-                {
-                    <span ><i class="fa fa-star fa-2x" title="Shortlisted" aria-hidden="true" style="color:@borderColor;font-size:30px;"></i></span>
-                }
-                else if (item.IsWinner)
-                {
-                    <span><i class="fa fa-trophy fa-2x" title="Winner" aria-hidden="true" style="color:@borderColor;font-size:30px;"></i></span>
-                }
-                <a href="@Url.Action("ViewNominationForShortlist", "Review", item)">
-                    <span> <i class="fa fa-file-text-o" title="View Nomination" aria-hidden="true" style="font-size:30px;color:@borderColor;"></i> </span>
-                </a>
-            </div>
+                    @if (item.IsShortlisted)
+                    {
+                        <span><i class="fa fa-star fa-2x" title="Shortlisted" aria-hidden="true" style="color:@borderColor;font-size:30px;"></i></span>
+                    }
+                    else if (item.IsWinner)
+                    {
+                        <span><i class="fa fa-trophy fa-2x" title="Winner" aria-hidden="true" style="color:@borderColor;font-size:30px;"></i></span>
+                    }
+                    <a href="@Url.Action("ViewNominationForShortlist", "Review", item)">
+                        <span> <i class="fa fa-file-text-o" title="View Nomination" aria-hidden="true" style="font-size:30px;color:@borderColor;"></i> </span>
+                    </a>
+                </div>
 
-        </div>
-    }
-</div>
+            </div>
+                    }
+                </div>

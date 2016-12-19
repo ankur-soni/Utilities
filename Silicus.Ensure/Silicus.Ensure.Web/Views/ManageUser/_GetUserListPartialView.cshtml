@@ -30,7 +30,7 @@
     @(Html.Kendo().Grid<Silicus.Ensure.Models.DataObjects.User>().Name("UserGrids")
          .Columns(columns =>
               {
-                  columns.Bound(c => c.FirstName).ClientTemplate(@"#=FirstName#  #=LastName#").Title("Username").Width(200);
+                  columns.Bound(c => c.FirstName).Title("Name").Width(200);
                   columns.Bound(p => p.Role).Width(50);
                   columns.Bound(p => p.Email).Width(50);
                   columns.Bound(c => c.UserId).ClientTemplate(@"<a class='k-button k-button-icontext k-grid-edit' href='" + Url.Action("AddUser", "ManageUser") + "?UserId=#=UserId#'><span class='k-icon k-edit'></span>Edit</a><a id='testSuiteDel' class='k-button k-button-icontext k-grid-delete' href='\\#' onclick='return deleteUser(#=UserId#)'><span class='k-icon k-delete'></span>Delete</a>").Title("Action").Width(160);
@@ -75,6 +75,12 @@
 
 
 <script>
+    $(".k-grid-header .k-link").click(function (e) {
+        e.preventDefault();
+        if ($(this).text() === 'Action') {
+            e.stopPropagation();
+        }
+    });
     function onSelect() {
         var dataItem = this.dataItem();
         var value = dataItem['Text'];
@@ -90,10 +96,11 @@
         $("#FieldFilter").keyup(function () {
             var value = $("#FieldFilter").val();
             grid = $("#UserGrids").data("kendoGrid");
-            if (value.length > 1) {
+            if (value.length >= 1) {
                 if (value) {
                     grid.dataSource.filter({ field: "Role", operator: "contains", value: value });
                     grid.dataSource.filter({ field: "Email", operator: "contains", value: value });
+                    grid.dataSource.filter({ field: "FirstName", operator: "contains", value: value });
                 } else {
                     grid.dataSource.filter({});
                 }
@@ -108,23 +115,25 @@
     }
 
     function deleteUser(userId) {
-        if (confirm('Are you sure, do you want to delete user?')) {
-            $.ajax({
-                type: "POST",
-                url: '@Url.Action("DeleteUser", "User")',
-                data: { UserId: userId },
-                success: function (returndata) {
-                    if (returndata == 1) {
-                        $('#UserGrids').data('kendoGrid').dataSource.read();
-                        $('#userGrids').data('kendoGrid').refresh();
-                        ShowMessage("User deleted successfully.", 1);
+        $.when(showConfirmationWindow('Are you sure, do you want to delete this record?', 'Delete')).then(function (confirmed) {
+            if (confirmed) {
+                $.ajax({
+                    type: "POST",
+                    url: '@Url.Action("DeleteUser", "User")',
+                    data: { UserId: userId },
+                    success: function (returndata) {
+                        if (returndata == 1) {
+                            $('#UserGrids').data('kendoGrid').dataSource.read();
+                            $('#userGrids').data('kendoGrid').refresh();
+                            ShowMessage("User deleted successfully.", 1);
+                        }
+                        else {
+                            ShowMessage("Error occured while delete operation.", 0);
+                        }
                     }
-                    else {
-                        ShowMessage("Error occured while delete operation.", 0);
-                    }
-                }
-            });
-        }
+                });
+            }
+        });
     }
 
 </script>

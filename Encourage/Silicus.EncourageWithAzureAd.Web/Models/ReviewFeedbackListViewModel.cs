@@ -18,6 +18,7 @@ namespace Silicus.EncourageWithAzureAd.Web.Models
         public int NumberOfReviews { get; set; }
         public decimal AverageCredits { get; set; }
         public int NominatedMonth { get; set; }
-    
+        public string AwardFrequencyCode { get; set; }
+
     }
 }

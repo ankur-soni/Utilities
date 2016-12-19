@@ -1,11 +1,12 @@
 ﻿@model IEnumerable<Silicus.EncourageWithAzureAd.Web.Models.NominationListViewModel>
+@using Silicus.EncourageWithAzureAd.Web.Enums;
 @using System.Drawing;
 @{
     ViewBag.Title = "ReviewNominations";
 }
 
 
-
+        
 <div class="row white-bg header-row">
     <nav class="" role="navigation" style="margin-bottom: 0">
         <div class="navbar-header">
@@ -23,13 +24,13 @@
 
         @if (Model.Count() == 0)
         {
-        <span class="text-danger" style="font-size:20px;margin-left:7%">No employees are available for review..</span>
+            <span class="text-danger" style="font-size:20px;margin-left:7%">No employees are available for review..</span>
         }
-        else
+        @*else
         if( @ViewBag.ReviewLockStatus)
         {
         <span class="text-danger" style="font-size:20px;margin-left:7%">The review period was closed..</span>
-        }
+        }*@
         else
         {
             foreach (var item in Model)
@@ -52,32 +53,39 @@
 
         <div class="col-md-3 card white-bg" style="margin-left:2%;border-color:@myBorderColor">
 
-            <div class="cardHeader text-center">
+                <div class="cardHeader text-center">
 
-                <div>
-                    <label class="cardHeaderEmpName">  @Html.DisplayFor(modelItem => item.DisplayName)</label>
+                    <div>
+                        <label class="cardHeaderEmpName">  @Html.DisplayFor(modelItem => item.DisplayName)</label>
+                    </div>
+
+                    <div>
+                        @Html.DisplayFor(modelItem => item.AwardName)
+                        @if (item.AwardFrequencyCode == FrequencyCode.YEAR.ToString())
+                        {
+                            var nominationYear = Convert.ToInt32(item.NominationTime.Substring(item.NominationTime.LastIndexOf('-') + 1)) - 1;
+                            @Html.Label("-" + Convert.ToInt32(nominationYear))
+                        }
+                        else
+                        {
+                        @Html.DisplayFor(modelItem => item.NominationTime)
+                        }
+                    </div>
+
                 </div>
+                <div class="cardFooter text-right" style="border-color:@myBorderColor">
 
-                <div>
-                    @Html.DisplayFor(modelItem => item.AwardName)
+                    <a href="@Url.Action(actionname, "Nomination", new { nominationId = item.Id })">
+                        <span> <i class="fa fa-search" style="font-size:30px;" title="@title" aria-hidden="true"></i> </span>
+                    </a>
 
-                    @Html.DisplayFor(modelItem => item.NominationTime)
                 </div>
-
             </div>
-            <div class="cardFooter text-right" style="border-color:@myBorderColor">
-
-                <a href="@Url.Action(actionname, "Nomination", new { nominationId = item.Id })">
-                    <span> <i class="fa fa-search" style="font-size:30px;" title="@title" aria-hidden="true"></i> </span>
-                </a>
-
-            </div>
-        </div>
 
         }
         }
         <br />
-
+   
     </div>
 </div>*@
 
@@ -157,15 +165,15 @@
         }
             <div class="clearfix"></div>
 
-        </div>
-    </div>
+</div>
+</div>
 </div>
 
-            <script src="~/js/jquery-2.1.1.js"></script>
-            <script>
-                $(function () {
+<script src="~/js/jquery-2.1.1.js"></script>
+<script>
+    $(function () {
 
-                    $(".fa-circle").tooltip();
-                })
+        $(".fa-circle").tooltip();
+    })
 
-            </script>
+</script>

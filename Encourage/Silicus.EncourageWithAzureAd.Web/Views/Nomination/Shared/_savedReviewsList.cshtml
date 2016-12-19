@@ -1,7 +1,7 @@
 ﻿@model IEnumerable<Silicus.EncourageWithAzureAd.Web.Models.NominationListViewModel>
 @using System.Drawing;
-
-@*<div>
+@using Silicus.EncourageWithAzureAd.Web.Enums;
+<div>
     @foreach (var item in Model)
     {
         Random randomGen = new Random();
@@ -30,8 +30,16 @@
 
                 <div>
                     @Html.DisplayFor(modelItem => item.AwardName)
+                    @if (item.AwardFrequencyCode == FrequencyCode.YEAR.ToString())
+                    {
+                        var nominationYear = Convert.ToInt32(item.NominationTime.Substring(item.NominationTime.LastIndexOf('-') + 1)) - 1;
+                        @Html.Label("-" + Convert.ToInt32(nominationYear))
 
+                    }
+                    else
+                    {
                     @Html.DisplayFor(modelItem => item.NominationTime)
+                    }
                 </div>
             </div>
             <div class="cardFooter text-right" style="border-color:@myBorderColor">
