@@ -1,16 +1,5 @@
 ﻿(function () {
     'use strict';
-
-    function getdetail(id, categoryId) {
-        $("#currentTile").val(id);
-        var url = "/FrameworxProject/Details";
-        $.get(url, { id: id }, function (data) {
-            $(".carousel-inner").html(data);
-            $("#devendra").html(categoryname);
-
-        });
-    }
-
     function getsearchContain(searchString) {
 
         var url = "/FrameworxProject/Details";
@@ -28,41 +17,6 @@
         });
     }
 
-
-    function nextSlide() {
-        var selects = $(".TitleDivTemplate");
-        selects.each(function myfunction(index) {
-            var id = $(this).attr("my-data");
-            var currentId = $("#currentTile").val();
-            if (id == currentId) {
-                if (index !== selects.length - 1) {
-                    // select the next span
-                    getdetail(selects.eq(index + 1).attr('my-data'), selects.eq(index + 1).attr('my-title'));
-                    return false;
-                } else {
-                    getdetail(selects.eq(0).attr('my-data'), selects.eq(index + 1).attr('my-title'));
-                }
-            }
-        });
-    }
-
-    function prevSlide() {
-        var selects = $(".TitleDivTemplate");
-        selects.each(function myfunction(index) {
-
-            var id = $(this).attr("my-data");
-            var currentId = $("#currentTile").val();
-            if (id == currentId) {
-                if (index !== selects.length - 1) {
-                    // select the next span
-                    getdetail(selects.eq(index - 1).attr('my-data'), selects.eq(index - 1).attr('my-title'));
-                    return false;
-                } else {
-                    getdetail(selects.eq(index - 1).attr('my-data'), selects.eq(index - 1).attr('my-title'));
-                }
-            }
-        });
-    }
     $(document).ready(
         function () {
             var timer;
