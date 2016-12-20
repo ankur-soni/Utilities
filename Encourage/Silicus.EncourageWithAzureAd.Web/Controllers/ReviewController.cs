@@ -340,10 +340,21 @@ namespace Silicus.EncourageWithAzureAd.Web.Controllers
             var consolidatedNominations = new ConsolidatedNominationsViewModel
             {
                 Criterias = _encourageDatabaseContext.Query<Criteria>().Where(c => c.AwardId == awardId).ToList(),
-                Reviewers = _encourageDatabaseContext.Query<Reviewer>().ToList(),
+                Reviewers = new List<ReviewerViewModel>(),
                 Nominations = new List<SubmittedNomination>()
             };
 
+            var reviewers = _encourageDatabaseContext.Query<Reviewer>().ToList();
+            foreach (var reviewer in reviewers)
+            {
+                var reviewerObj = _commonDbContext.Query<User>().FirstOrDefault(u => u.ID == reviewer.UserId);
+                consolidatedNominations.Reviewers.Add(new ReviewerViewModel
+                {
+                    Id = reviewer.Id,
+                    UserId = reviewer.UserId,
+                    ReviewerName = reviewerObj != null ? reviewerObj.FirstName + " " + reviewerObj.LastName : ""
+                });
+            }
             var nominations = _encourageDatabaseContext.Query<Nomination>().Include(a => a.ManagerComments).Include(b => b.ReviewerComments).Where(N => N.IsSubmitted == true && N.NominationDate.Value.Month == (DateTime.Now.Month - 1) && N.NominationDate.Value.Year == DateTime.Now.Year).ToList();
             foreach (var nomination in nominations)
             {

@@ -393,6 +393,17 @@
                     comments++;
             });
 
+            var weightage = 0;
+            $("#criteriaTable .ddlWeightage").each(function (data) {
+                if ($(this).val().trim()) {
+                    weightage = weightage + parseInt($(this).val());
+                }
+            });
+            if (weightage > 100 || weightage < 100) {
+                swal("Error", "Sum of total weightages assigned to criteria should be 100%");
+                return false;
+            }
+
             if (!$("#commentBox").val()) {
                 $("#managerCommentValidationmessage").text("Enter main comment")
                 return false;
