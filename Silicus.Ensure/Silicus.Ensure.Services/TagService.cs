@@ -50,5 +50,18 @@ namespace Silicus.Ensure.Services
             }
             return null;
         }
+
+        public bool isTagAssociatedWithQuetion(string tagName)
+        {
+            if (!string.IsNullOrWhiteSpace(tagName))
+            {
+                var tag = _context.Query<Tags>().FirstOrDefault(y => y.TagName == tagName);
+                if (tag != null)
+                {
+                    return _context.Query<Question>().Any(y => y.Tags.Contains(tag.TagId.ToString()));
+                }
+            }
+            return false;
+        }
     }
 }
