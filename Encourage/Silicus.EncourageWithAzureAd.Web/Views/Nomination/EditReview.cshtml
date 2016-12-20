@@ -288,7 +288,7 @@
                                         }), "", new { @class = "reviewer-rating", @autocomplete = "off", @value = (reviewwrComment != null ? reviewwrComment.Credit : 0) })
                                         </td>
 
-                                        <td class="col-md-3">@Html.TextArea("Comments[" + @j + "].Comment", reviewwrComment != null ? reviewwrComment.Comment : "", new { name = "reviewercomment", maxlength = "100", onKeyUp = "return onkeyevent(this);", onblur = "return hideRemainingCharacterText(this);"})<div class="textarea"></div></td>
+                                        <td class="col-md-3">@Html.TextArea("Comments[" + @j + "].Comment", reviewwrComment != null ? reviewwrComment.Comment : "", new { name = "reviewercomment", maxlength = "100", onKeyUp = "return onkeyevent(this);", onblur = "return hideRemainingCharacterText(this);",@class="form-control"})<div class="textarea"></div></td>
 
                                         @Html.Hidden("Comments[" + @j + "].CriteriaId", managerComment.CriteriaId)
                                     </tr>
