@@ -1,10 +1,39 @@
 ﻿/* Common classes*/
+@import "spinners.css";
 .M-B0{margin-bottom:0px;}
 .M-T10{margin-top:10px;}
 .M-T15{margin-top:15px;}
 .M-B15{margin-bottom:15px!important;}
 .M-B60{margin-bottom:60px!important;}
 .boxShadow{box-shadow:1px 1px 3px #888888;}
+
+/*Spinner css*/
+.preloader {
+  width: 100%;
+  height: 100%;
+  top: 0px;
+  position: fixed;
+  z-index: 99999;
+  background: #fff;
+}
+.preloader .cssload-speeding-wheel {
+  position: absolute;
+  top: calc(50% - 3.5px);
+  left: calc(50% - 3.5px);
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -75,6 +104,10 @@ span.font-bold.txt-color label{font-weight:bold;color:#337ab7;}
 /*.loader {
     background-image: url('../Images/loader_small.gif');
 }*/
+
+
+
+
 
 .margin-left-40{
     margin-left:40%;
