@@ -1,6 +1,7 @@
 ﻿using Silicus.Ensure.Models.DataObjects;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 
 namespace Silicus.Ensure.Web.Models
 {
@@ -12,7 +13,9 @@ namespace Silicus.Ensure.Web.Models
             Success = 0;
         }
         public int Id { get; set; }
+        [DisplayName("Type")]
         public string QuestionType { get; set; }
+        [DisplayName("Question")]
         public string QuestionDescription { get; set; }
         public int AnswerType { get; set; }
         public int OptionCount { get; set; }
@@ -42,5 +45,12 @@ namespace Silicus.Ensure.Web.Models
        
         public int Success { get; set; }
         public bool Edit { get; set; }
+    }
+
+    public enum ProficiencyLevel
+    {
+        Beginner,
+        Intermediate,
+        Expert
     }
 }

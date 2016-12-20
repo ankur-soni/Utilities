@@ -50,7 +50,7 @@
                     <div class="col-lg-3 col-md-4 col-sm-5">
                         <div class="form-group">
                             @Html.Label("Nomination Category", htmlAttributes: new { @class = "control-label requiredfeild", style = "text-align: left" })
-                            @Html.DropDownListFor(model => model.AwardId, @ViewBag.Awards as SelectList, "Select", new { @class = "form-control", id = "Award" })
+                            @Html.DropDownListFor(model => model.AwardId, Model.ListOfAwards as SelectList, "Select", new { @class = "form-control", id = "Award" })
                             @Html.ValidationMessageFor(model => model.AwardId, "", new { @class = "text-danger" })
 
                                 </div>
@@ -86,7 +86,7 @@
                     <div class="col-lg-3 col-md-4 col-sm-5">
                         <div class="form-group" id="projectInput">
                             @Html.Label("Project", htmlAttributes: new { @class = "control-label requiredfeild" })
-                            @Html.DropDownListFor(model => model.ProjectID, @ViewBag.ProjectsUnderCurrentUser as SelectList, "Select", new { @class = "form-control", @id = "SelectedProject" })
+                            @Html.DropDownListFor(model => model.ProjectID, Model.ProjectsUnderCurrentUser as SelectList, "Select", new { @class = "form-control", @id = "SelectedProject" })
                             @Html.ValidationMessageFor(model => model.ProjectID, "", new { @class = "text-danger" })
 
                         </div>
@@ -99,7 +99,7 @@
                         <div class="col-lg-3 col-md-4 col-sm-5">
                             <div class="form-group" id="departmentInput">
                                 @Html.Label("Department", htmlAttributes: new { @class = "control-label requiredfeild" })
-                                @Html.DropDownListFor(model => model.DepartmentId, @ViewBag.DepartmentsUnderCurrentUser as SelectList, "Select", new { @class = "form-control", @id = "SelectedDepartment" })
+                                @Html.DropDownListFor(model => model.DepartmentId, Model.DepartmentsUnderCurrentUser as SelectList, "Select", new { @class = "form-control", @id = "SelectedDepartment" })
                                 @Html.ValidationMessageFor(model => model.DepartmentId, "", new { @class = "text-danger" })
 
                             </div>
@@ -110,7 +110,7 @@
                     <div class="col-lg-3 col-md-4 col-sm-5">
                         <div class="form-group">
                             @Html.Label("Employee", htmlAttributes: new { @class = "control-label requiredfeild" })
-                            @Html.DropDownListFor(model => model.ResourceId, @ViewBag.Resources as SelectList, "Select", new { @class = "form-control", id = "Resources" })
+                            @Html.DropDownListFor(model => model.ResourceId, Model.Resources as SelectList, "Select", new { @class = "form-control", id = "Resources" })
                             @Html.ValidationMessageFor(model => model.ResourceId, "", new { @class = "text-danger" })
 
                                 </div>
