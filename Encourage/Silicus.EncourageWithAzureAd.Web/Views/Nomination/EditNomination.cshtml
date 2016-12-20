@@ -291,6 +291,8 @@
         var selectedProject = $("#SelectedProject").val();
         var selectedAward = $("#Award").val();
 
+        $(".overlay").show();
+
         $('#Resources').empty();
         $('#Resources').append($("<option selected></option>").val(null).html("Select"));
 
@@ -301,11 +303,16 @@
             data: JSON.stringify({ engagementID: selectedProject, awardId: selectedAward }),
             contentType: "application/json; charset=utf-8",
             success: function (data) {
+                $(".overlay").hide();
 
                 for (var key in data) {
                     $('#Resources')
                         .append($("<option></option>").val(data[key].ID).html(data[key].DisplayName));
                 }
+            },
+            error: function (error) {
+                $(".loader-overlay").hide();
+                console.log(error);
             }
         });
     });
@@ -315,16 +322,21 @@
         var ServiceUrl = "/Nomination/ResourcesInDepartment?departmentID=" + selectedDept;
         $('#Resources').empty();
         $('#Resources').append($("<option selected></option>").val(null).html("Select"));
-
+        $(".loader-overlay").show();
         $.ajax({
             type: 'GET',
             url: ServiceUrl,
             contentType: "application/json; charset=utf-8",
             success: function (data) {
+                $(".loader-overlay").hide();
                 for (var key in data) {
                     $('#Resources')
                         .append($("<option></option>").val(data[key].ID).html(data[key].DisplayName));
                 }
+            },
+            error: function (error) {
+                $(".loader-overlay").hide();
+                console.log(error);
             }
         });
     });
@@ -346,6 +358,7 @@
             function (isConfirm) {
                 if (isConfirm) {
                     var nominationId = $("#NominationId").val();
+                    $(".loader-overlay").show();
 
                     $.ajax({
                         url: '@Url.Action("DiscardNomination", "Nomination")',
@@ -354,6 +367,7 @@
                         datatype: "JSON",
                         contentType: "application/json; charset=utf-8",
                         success: function (data) {
+                            $(".loader-overlay").hide();
                             swal({
                                     title: "Nomination Discarded!",
                                     text: "",
@@ -369,6 +383,7 @@
                                 });
                         },
                         error: function () {
+                            $(".loader-overlay").hide();
                             swal("Error", "Oops! Something wrong happened..");
                         }
                     });
@@ -424,6 +439,7 @@
                     },
                     function (isConfirm) {
                         if (isConfirm) {
+                            $(".loader-overlay").show();
                             
                             var modelbjectToSend = $('#editNominationForm').serialize() + '&' + $.param({ 'submit': "Submit" }, true);
                            
@@ -432,6 +448,7 @@
                                 url: '@Url.Action("EditSavedNomination", "Nomination")',
                                 data: modelbjectToSend,
                                 success: function (data) {
+                                    $(".loader-overlay").hide();
                                     swal({
                                             title: "Nomination Submitted!",
                                             text: "",
@@ -447,6 +464,7 @@
                                         });
                                 },
                                 error: function () {
+                                    $(".loader-overlay").hide();
                                     swal("Error", "Oops! Something wrong happened..");
                                 }
                             });
@@ -477,6 +495,7 @@
                 },
                 function (isConfirm) {
                     if (isConfirm) {
+                        $(".loader-overlay").show();
                         var modelbjectToSend = $('#editNominationForm').serialize() + '&' + $.param({ 'submit': "Save" }, true);
 
                         $.ajax({
@@ -484,6 +503,7 @@
                             url: '@Url.Action("EditSavedNomination", "Nomination")',
                             data: modelbjectToSend,
                             success: function (data) {
+                                $(".loader-overlay").hide();
                                 swal({
                                         title: "Nomination Saved!",
                                         showCancelButton: false,
@@ -497,6 +517,7 @@
                                     });
                             },
                             error: function () {
+                                $(".loader-overlay").hide();
                                 swal("Error", "Oops! Something wrong happened..");
                             }
                         });
