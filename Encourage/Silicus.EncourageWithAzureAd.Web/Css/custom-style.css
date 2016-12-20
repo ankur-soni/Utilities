@@ -7,35 +7,31 @@
 .M-B60{margin-bottom:60px!important;}
 .boxShadow{box-shadow:1px 1px 3px #888888;}
 
-/*Loader css*/
-.mini-loader{
-    border: 5px solid #f3f3f3;
-    border-radius: 50%;
-    border-top: 5px solid #3498db;
-    width: 25px;
-    height: 25px;
-    -webkit-animation: spin 2s linear infinite;
-    animation: spin 2s linear infinite;
-}
+/*Loader css - Start*/
 .loader {
-  border: 16px solid #f3f3f3;
+  border: 10px solid #f3f3f3;
   border-radius: 50%;
-  border-top: 16px solid #3498db;
-  width: 120px;
-  height: 120px;
+  border-top: 10px solid #337ab7;
+  width: 60px;
+  height: 60px;
   -webkit-animation: spin 2s linear infinite;
   animation: spin 2s linear infinite;
-}
-.medium-loader{
-     border: 10px solid #f3f3f3;
-    border-radius: 50%;
-    border-top: 10px solid #3498db;
-    width: 60px;
-    height: 60px;
-    -webkit-animation: spin 2s linear infinite;
-    animation: spin 2s linear infinite;
+  top:50%;
+  position:relative;
+  margin:0 auto;
 }
 
+.loader-overlay {
+    position: relative;
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    background: rgba(0,0,0,.8);
+    z-index:999999;
+}
+/*Loader css - End*/
 
 .asterisk{color:red;font-size:11px;}
 .themeColorBlue{color:#337ab7;}
@@ -99,13 +95,6 @@ span.font-bold.txt-color label{font-weight:bold;color:#337ab7;}
     border-style: none!important;
     box-shadow:1px 1px 3px #888888;
 }
-/*.loader {
-    background-image: url('../Images/loader_small.gif');
-}*/
-
-
-
-
 
 .margin-left-40{
     margin-left:40%;

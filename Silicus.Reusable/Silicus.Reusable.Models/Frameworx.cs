@@ -25,7 +25,12 @@ namespace Silicus.FrameworxProject.Models
         
         public int CategoryId { get; set; }
 
-        public virtual FrameworxCategory FrameworxCategory { get; set; }
+        public int OwnerId { get; set; }
+
+        public virtual FrameworxCategory Category { get; set; }
+
+        public virtual ICollection<FrameworxLike> Likes { get; set; }
+
 
     }
 }

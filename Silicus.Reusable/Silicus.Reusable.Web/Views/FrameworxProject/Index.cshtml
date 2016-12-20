@@ -125,7 +125,7 @@
                 @foreach (var item in Model)
                 {
                     <li category="@item.Name" id="@item.id" title="@item.Title">
-                        <a class="icon-@(item.Name) TitleDivTemplate" data-toggle="modal" data-target="#component-modal" my-data="@item.id" my-title="@item.Title">@item.Title</a>
+                        <a class="icon-@(item.Name) TitleDivTemplate" data-toggle="modal" data-target="#component-modal"  my-data="@item.id" my-title="@item.Title">@item.Title</a>
                     </li>
                 }
             </ul>           
@@ -154,14 +154,13 @@
             <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
             <span class="sr-only">Previous</span>
         </a>
-        <a class="right carousel-control" href="#myCarousel" role="button" data-slide="next" id="next-slide-button" ">
+        <a class="right carousel-control" href="#myCarousel" role="button" data-slide="next" id="next-slide-button">
             <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
             <span class="sr-only">Next</span>
         </a>
     </div>
 </div>
 
-@section scripts{
-    <script src="~/Scripts/jquery.unobtrusive-ajax.min.js"></script>
+@section scripts{    
     <script src="~/Scripts/Custom/componentIndex.js"></script>
 }

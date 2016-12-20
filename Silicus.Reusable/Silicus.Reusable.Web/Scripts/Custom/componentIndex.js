@@ -136,9 +136,9 @@
         $('#containerDiv').html(htmlString);
     }
 
-    function getComponentdetail(id) {
-        debugger;
+    function getComponentdetail(id) {        
         $("#currentTile").val(id);
+        blockUI('body');
         $.ajax({
             url: "/FrameworxProject/Details",
             type: "get",
@@ -149,6 +149,9 @@
             },
             error: function () {
                 // connectionError();
+            },
+            complete:function(){
+                unblockUI('body');
             }
         });
     }
@@ -192,26 +195,24 @@
                
             });
 
-
-            Array.prototype.getUnique = function () {
-                var u = {}, a = [];
-                for (var i = 0, l = this.length; i < l; ++i) {
-                    if (u.hasOwnProperty(this[i])) {
-                        continue;
-                    }
-                    a.push(this[i]);
-                    u[this[i]] = 1;
-                }
-                return a;
-            }
-
             $('body').on('click', '.TitleDivTemplate', function () {
                 var id = $(this).attr('my-data');
                 getComponentdetail(id);
             });
 
             $('#prev-slide-button').on('click', function () { prevSlide();});
-            $('#next-slide-button').on('click', function () { nextSlide(); });           
+            $('#next-slide-button').on('click', function () { nextSlide(); });
+
+            $('body').on('click', '.like', function () {
+                var text = $('.like span').text();
+                if (text == "Like") {
+                    $('.like span').text('Unlike');
+                    $('.like').addClass('liked');
+                } else {
+                    $('.like span').text('Like');
+                    $('.like').removeClass('liked');
+                }
+            });
         }
         );
 
