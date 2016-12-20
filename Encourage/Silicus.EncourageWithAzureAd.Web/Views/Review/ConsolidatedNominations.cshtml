@@ -1,0 +1,152 @@
+﻿@model Silicus.EncourageWithAzureAd.Web.Models.ConsolidatedNominationsViewModel
+@{
+    ViewBag.Title = "Consolidated Nominations";
+    Layout = null;
+}
+<link href="~/Css/plugins/dataTables/jquery.dataTables.min.css" rel="stylesheet" />
+<link href="~/Css/plugins/dataTables/fixedColumns.dataTables.min.css" rel="stylesheet" />
+<script type="text/javascript" language="javascript" src="https://code.jquery.com/jquery-1.12.3.min.js">
+</script>
+<script src="~/js/jquery.dataTables.min.js" type="text/javascript"></script>
+<script src="~/js/dataTables.fixedColumns.min.js" type="text/javascript"></script>
+<style>
+    th, td { white-space: nowrap; }
+    div.dataTables_wrapper {
+        width: 800px;
+        margin: 0 auto;
+    }
+</style>
+<div class="row white-bg header-row">
+    <nav class="" role="navigation" style="margin-bottom: 0">
+        <div class="navbar-header">
+            <a class="navbar-minimalize minimalize-styl-2 btn btn-primary " href="#"><i class="fa fa-bars"></i> </a>
+        </div>
+    </nav>
+    <div class="col-lg-11 col-md-11 col-sm-11">
+        <h1 class="header-name">Consolidated Nominations</h1>
+    </div>
+</div>
+
+<div class="" style="overflow: scroll">
+    <table class="table table-hover issue-tracker white-bg content" id="consolidatedHrView">
+        <thead>
+        <tr>
+            <th rowspan="2">Employee Name</th>
+            <th rowspan="2">Rating By</th>
+            <th rowspan="2">All Criteria</th>
+            @foreach (var criteria in Model.Criterias)
+            {
+                <th colspan="@Model.Reviewers.Count">@criteria.Title</th>
+            }
+        </tr>
+        <tr>
+            @foreach (var criteria in Model.Criterias)
+            {
+                for (var revCount = 1; revCount <= Model.Reviewers.Count; revCount++)
+                {
+                    <th> @("R" + revCount)</th>
+                }
+            }
+        </tr>
+        </thead>
+        <tbody>
+        
+        @foreach (var nomination in Model.Nominations)
+        {
+            <tr>
+                <td rowspan="4">@nomination.UserName</td>
+                <td>
+                    Manager
+                </td>
+                <td>
+                    @(nomination.ManagerComments.Any() ? nomination.ManagerComments.Average(a => (a.Rating * a.Weightage / 100.0)) : 0)
+                </td>
+                @foreach (var criteria in Model.Criterias)
+                {
+                    var managerComment = nomination.ManagerComments.FirstOrDefault(mc => mc.CriteriaId == criteria.Id);
+                    <td colspan="@Model.Reviewers.Count"> @(managerComment != null ? managerComment.Rating * managerComment.Weightage / 100m : 0)</td>
+                }
+            </tr>
+            <tr>
+                    
+                <td>
+                    Reviewer
+                </td>
+                <td>
+                    @(nomination.ReviewerComments.Any() ? nomination.ReviewerComments.Average(a => (a.Credit * a.Weightage / 100.0)) : 0)
+                </td>
+                @foreach (var criteria in Model.Criterias)
+                {
+                    foreach (var reviewer in Model.Reviewers)
+                    {
+                        var reviewerComment = nomination.ReviewerComments.FirstOrDefault(rc => rc.ReviewerId == reviewer.Id && rc.CriteriaId == criteria.Id);
+                        <td>
+                            @(reviewerComment != null? (reviewerComment.Credit * reviewerComment.Weightage / 100m).ToString("F"): "-")
+                        </td>
+                    }
+                }
+            </tr>
+            <tr>
+                    
+                <td>
+                    Consolidated
+                </td>
+                <td>
+                    @(((nomination.ReviewerComments.Any() ? nomination.ReviewerComments.Average(a => (a.Credit * a.Weightage / 100.0)) : 0) + (nomination.ManagerComments.Any() ? nomination.ManagerComments.Average(a => (a.Rating * a.Weightage / 100.0)) : 0))/2.0)
+                </td>
+                @foreach (var criteria in Model.Criterias)
+                {
+                    var managerComment = nomination.ManagerComments.FirstOrDefault(mc => mc.CriteriaId == criteria.Id);
+                    foreach (var reviewer in Model.Reviewers)
+                    {
+                        var reviewerComment = nomination.ReviewerComments.FirstOrDefault(rc => rc.ReviewerId == reviewer.Id && rc.CriteriaId == criteria.Id);
+                        <td>
+                            @(reviewerComment != null ? (((reviewerComment.Credit * reviewerComment.Weightage / 100.0 ) + (managerComment != null ? managerComment.Rating * managerComment.Weightage / 100.0 : 0))/2.0).ToString("F") : "-")
+                        </td>
+                    }
+                }
+            </tr>
+            <tr>
+                    
+                <td>
+                    Final Score
+                </td>
+                <td>
+                    @(((nomination.ReviewerComments.Any() ? nomination.ReviewerComments.Average(a => (a.Credit * a.Weightage / 100.0)) : 0) + (nomination.ManagerComments.Any() ? nomination.ManagerComments.Average(a => (a.Rating * a.Weightage / 100.0)) : 0)) / 2.0)
+                </td>
+                @foreach (var criteria in Model.Criterias)
+                {
+                    var managerComment = nomination.ManagerComments.FirstOrDefault(mc => mc.CriteriaId == criteria.Id);
+                    var managerScore = managerComment != null ? managerComment.Rating * managerComment.Weightage / 100.0 : 0;
+                        
+                    var reviewerComments = nomination.ReviewerComments.Where(rc => rc.CriteriaId == criteria.Id);
+                    var reviewerScore = 0.0;
+                    if (reviewerComments.Any())
+                    {
+                        reviewerScore = reviewerComments.Average(r => r.Credit);
+                    }
+                    <td colspan="@Model.Reviewers.Count">
+                        @((managerScore + reviewerScore)/2.0)
+                    </td>
+                        
+                }
+            </tr>
+        }
+        
+        </tbody>
+    </table>
+</div>
+
+<script>
+    $(document).ready(function () {
+        var table = $('#consolidatedHrView').DataTable({
+            scrollY: "300px",
+            scrollX: true,
+            scrollCollapse: true,
+            paging: false,
+            fixedColumns: {
+                leftColumns: 3
+            }
+        });       
+    });
+</script>
