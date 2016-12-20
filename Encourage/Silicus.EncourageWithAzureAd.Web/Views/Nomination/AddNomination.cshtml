@@ -15,20 +15,6 @@
 </div>
 
 <div class="">
-
-    @*@if (ViewBag.NominationLockStatus)
-    {
-        <div class="row">
-            <div class="col-sm-12">
-                <div class="box M-T15">
-                    <span class="text-danger" style="font-size:20px;margin-left:7%">The nominations period was closed..</span>
-                </div>
-            </div>
-        </div>
-
-    }*@
-    @*else
-    {*@
         <div class="row">
             <div class="col-sm-12">
                 <div class="box M-T15 M-B60">
@@ -216,14 +202,7 @@
                                     </div>
                                     <div class="pull-right btn-nav">
                                         <input type="button" name="submit" value="Save Draft" id="savebutton" class="btn btn-primary" onclick="return checkValidationOnSaveDraft();" />
-                                        @*@if (ViewBag.NominationLockStatus)
-                                        {
-                                            <input type="button" name="submit" value="Submit" id="submitButton" class="btn btn-primary" onclick="return checkValidationOnSubmit();" disabled="disabled" />
-                                        }
-                                        else
-                                        {*@
                                             <input type="button" name="submit" value="Submit" id="submitButton" class="btn btn-primary" onclick="return checkValidationOnSubmit();" />
-                                       @*  }*@
                                         <input type="button" value="Cancel" class="btn btn-primary" onclick="location.href='@Url.Action("Index", "Home")'" />
                                     </div>
                                 </div>
@@ -235,8 +214,6 @@
                 </div>
             </div>
         </div>
-                                 @*}*@
-
 </div>
 
 <script src="~/js/plugins/validate/jquery.validate.min.js"></script>
@@ -404,13 +381,13 @@
             //url: "/Nomination/ResourcesInDepartment",
             data: { departmentID: selectedDept, awardId: selectedAward },
             contentType: "application/json; charset=utf-8",
-            success: function(data) {
+            success: function (data) {
                 for (var key in data) {
                     $('#Resources')
                         .append($("<option></option>").val(data[key].ID).html(data[key].DisplayName));
                 }
             },
-            error: function(xhr) {
+            error: function (xhr) {
                 alert(xhr.toString());
             }
         });
@@ -420,12 +397,12 @@
 
         if ($('#addNominationForm').valid()) {
             var comments = 0;
-            $("#criteriaTable").find("textarea").each(function(data) {
+            $("#criteriaTable").find("textarea").each(function (data) {
                 if ($(this).val().trim())
                     comments++;
             });
             var weightage = 0;
-            $("#criteriaTable .ddlWeightage").each(function(data) {
+            $("#criteriaTable .ddlWeightage").each(function (data) {
                 if ($(this).val().trim()) {
                     weightage = weightage + parseInt($(this).val());
                 }
@@ -453,7 +430,7 @@
                     closeOnConfirm: false,
                     closeOnCancel: false
                 },
-                    function(isConfirm) {
+                    function (isConfirm) {
                    if (isConfirm) {
                        var modelbjectToSend = $('#addNominationForm').serialize() + '&' + $.param({ 'submit': "Submit" }, true);
 
@@ -463,7 +440,7 @@
                            dataType: 'json',
                            async: false,
                            data: modelbjectToSend,
-                                success: function(data) {
+                                success: function (data) {
                                swal(data.ErrorMessage);
                                if (data.nominationExceed) {
                                    swal({
@@ -473,7 +450,7 @@
                                        confirmButtonColor: "#337ab7",
                                        confirmButtonText: "Ok",
                                    },
-                                            function() {
+                                                 function () {
                                  if (isConfirm) {
                                      var managerId = $("#ManagerId").val();
                                      window.location.href = '/Nomination/GetNominationList';
@@ -489,7 +466,7 @@
                                        confirmButtonColor: "#337ab7",
                                        confirmButtonText: "Ok",
                                    },
-                                            function() {
+                                                 function () {
                                   if (isConfirm) {
                                       var managerId = $("#ManagerId").val();
                                       window.location.href = '/Nomination/GetNominationList';
@@ -499,7 +476,7 @@
 
 
                            },
-                                error: function(error) {
+                                error: function (error) {
                                
                                if (error.responseText != null && error.responseText != undefined && error.responseText != '') {
                                    swal("Error", error.responseText.replace(/['"]+/g, ''));
@@ -621,7 +598,7 @@
         $("#nomination-steps").find(stepId).addClass("active");
 
 
-        $(".f1-progress-line").css('width', progressLineWidth+"%");
+        $(".f1-progress-line").css('width', progressLineWidth + "%");
         //To move the number grid on the Top -- End
 
         //To move to the next step -- Start

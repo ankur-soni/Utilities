@@ -316,6 +316,7 @@
     <Compile Include="Models\AdalTokenCache.cs" />
     <Compile Include="Models\ApplicationDbContext.cs" />
     <Compile Include="Models\AwardViewModel.cs" />
+    <Compile Include="Models\ConsolidatedNominationsViewModel.cs" />
     <Compile Include="Models\CriteriaCommentViewModel.cs" />
     <Compile Include="Models\DashboardViewModel.cs" />
     <Compile Include="Models\NominationListViewModel.cs" />
@@ -332,6 +333,7 @@
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="Css\animate.css" />
+    <Content Include="Css\bars-square.css" />
     <Content Include="Css\bootstrap-switch.css" />
     <Content Include="Css\bootstrap.css" />
     <Content Include="Css\bootstrap.min.css" />
@@ -393,6 +395,8 @@
     <Content Include="Css\plugins\dataTables\dataTables.bootstrap.css" />
     <Content Include="Css\plugins\dataTables\dataTables.responsive.css" />
     <Content Include="Css\plugins\dataTables\dataTables.tableTools.min.css" />
+    <Content Include="Css\plugins\dataTables\fixedColumns.dataTables.min.css" />
+    <Content Include="Css\plugins\dataTables\jquery.dataTables.min.css" />
     <Content Include="Css\plugins\dataTables\_notes\dwsync.xml" />
     <Content Include="Css\plugins\daterangepicker\daterangepicker-bs3.css" />
     <Content Include="Css\plugins\daterangepicker\_notes\dwsync.xml" />
@@ -521,11 +525,13 @@
     <Content Include="js\bootstrap-switch.js" />
     <Content Include="js\bootstrap.js" />
     <Content Include="js\bootstrap.min.js" />
+    <Content Include="js\dataTables.fixedColumns.min.js" />
     <Content Include="js\Elipsis.js" />
     <Content Include="js\inspinia.js" />
     <Content Include="js\jquery-2.1.1.js" />
     <Content Include="js\jquery-ui-1.10.4.min.js" />
     <Content Include="js\jquery-ui.custom.min.js" />
+    <Content Include="js\jquery.dataTables.min.js" />
     <Content Include="js\perfect-scrollbar.jquery.js" />
     <Content Include="js\perfect-scrollbar.jquery.min.js" />
     <Content Include="js\perfect-scrollbar.js" />
@@ -865,6 +871,7 @@
     <Content Include="Views\Nomination\Shared\_criteriaForAwards.cshtml" />
     <Content Include="Views\Shared\_winnersList.cshtml" />
     <Content Include="Views\Review\Shared\_LockNominations.cshtml" />
+    <Content Include="Views\Review\ConsolidatedNominations.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
