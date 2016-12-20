@@ -192,11 +192,7 @@
                         <div class="pull-right btn-nav">
                             <input type="button" value="Discard" id="discardButton" class="btn btn-primary" />
                             <input type="button" name="submit" value="Save Draft" id="saveButton" class="btn btn-primary" onclick="return checkValidationOnSaveDraft();" />
-                            <input type="button" name="button" value="Submit" class="btn btn-primary" onclick="return checkValidationOnSubmit();" id="submit"
-                                   @*@{  if (ViewBag.NominationLockStatus) {  @: disabled="disabled"
-                                        @: title="Nominations are locked"
-                                   @: title="Nominations are locked"
-                                                                                                                                                }  }*@ />
+                            <input type="button" name="button" value="Submit" class="btn btn-primary" onclick="return checkValidationOnSubmit();" id="submit"/>
                             <input type="button" value="Back" class="btn btn-primary" onclick="location.href='@Url.Action("GetNominationList", "Nomination")'" />
 
                         </div>
