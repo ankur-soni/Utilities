@@ -1,4 +1,5 @@
 ﻿/* Common classes*/
+@import "spinners.css";
 .M-B0{margin-bottom:0px;}
 .M-T10{margin-top:10px;}
 .M-T15{margin-top:15px;}
@@ -6,8 +7,34 @@
 .M-B60{margin-bottom:60px!important;}
 .boxShadow{box-shadow:1px 1px 3px #888888;}
 
-
-
+/*Loader css*/
+.mini-loader{
+    border: 5px solid #f3f3f3;
+    border-radius: 50%;
+    border-top: 5px solid #3498db;
+    width: 25px;
+    height: 25px;
+    -webkit-animation: spin 2s linear infinite;
+    animation: spin 2s linear infinite;
+}
+.loader {
+  border: 16px solid #f3f3f3;
+  border-radius: 50%;
+  border-top: 16px solid #3498db;
+  width: 120px;
+  height: 120px;
+  -webkit-animation: spin 2s linear infinite;
+  animation: spin 2s linear infinite;
+}
+.medium-loader{
+     border: 10px solid #f3f3f3;
+    border-radius: 50%;
+    border-top: 10px solid #3498db;
+    width: 60px;
+    height: 60px;
+    -webkit-animation: spin 2s linear infinite;
+    animation: spin 2s linear infinite;
+}
 
 
 .asterisk{color:red;font-size:11px;}
@@ -76,21 +103,17 @@ span.font-bold.txt-color label{font-weight:bold;color:#337ab7;}
     background-image: url('../Images/loader_small.gif');
 }*/
 
+
+
+
+
 .margin-left-40{
     margin-left:40%;
 }
 .navbar-right{
     margin-right:0px;
 }
-.loader {
-  border: 16px solid #f3f3f3;
-  border-radius: 50%;
-  border-top: 16px solid #3498db;
-  width: 120px;
-  height: 120px;
-  -webkit-animation: spin 2s linear infinite;
-  animation: spin 2s linear infinite;
-}
+
 
 @-webkit-keyframes spin {
     0% {

@@ -28,21 +28,6 @@
         if (roles.Contains("Manager"))
         {
             <div class="col-lg-2 col-md-4 col-sm-5 col-xs-6 cust-width">
-                <a href="@Url.Action("GetNominationList", "Nomination")" class="">
-                    <div class="white-box">
-                        <div class="r-icon-stats">
-                            <i class="fa fa-user" aria-hidden="true"></i>
-                            <div class="bodystate">
-                                <span class="text-muted">Nominations</span>
-                            </div>
-                        </div>
-                    </div>
-                </a>
-            </div>
-        }
-        if (roles.Contains("Manager"))
-        {
-            <div class="col-lg-2 col-md-4 col-sm-5 col-xs-6 cust-width">
                 <a href="@Url.Action("AddNomination","Nomination")" class="">
                     <div class="white-box">
                         <div class="r-icon-stats">
@@ -53,6 +38,22 @@
                         </div>
                     </div>
                 </a>
+            </div>
+        }
+        if (roles.Contains("Manager"))
+        {
+            <div class="col-lg-2 col-md-4 col-sm-5 col-xs-6 cust-width">
+                <a href="@Url.Action("GetNominationList", "Nomination")" class="">
+                    <div class="white-box">
+                        <div class="r-icon-stats">
+                            <i class="fa fa-user" aria-hidden="true"></i>
+                            <div class="bodystate">
+                                <span class="text-muted">Edit Nominations</span>
+                            </div>
+                        </div>
+                    </div>
+                </a>
+               
             </div>
         }
         if (roles.Contains("Reviewer"))
@@ -78,7 +79,8 @@
                         <div class="r-icon-stats">
                             <i class="fa fa-address-card" aria-hidden="true"></i>
                             <div class="bodystate">
-                                <span class="text-muted">Done Reviews</span>
+                                <span class="text-muted">Done</span>
+                                <span class="text-muted">Reviews</span>
                             </div>
                         </div>
                     </div>
@@ -105,7 +107,7 @@
                 <div class="r-icon-stats">
                     <i class="fa fa-unlock-alt" aria-hidden="true"></i>
                     <div class="bodystate">
-                        <span class="text-muted">UnLock Nominations</span>
+                        <span class="text-muted">Unlock Nominations</span>
                     </div>
                 </div>
             </div>
