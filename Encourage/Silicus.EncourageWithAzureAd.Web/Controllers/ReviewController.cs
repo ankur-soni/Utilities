@@ -9,6 +9,7 @@ using Silicus.UtilityContainer.Models.DataObjects;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
+using System.Data.Entity;
 using System.Globalization;
 using System.Linq;
 using System.Web.Mvc;
@@ -343,23 +344,36 @@ namespace Silicus.EncourageWithAzureAd.Web.Controllers
                 Nominations = new List<SubmittedNomination>()
             };
 
-            var nominations = _encourageDatabaseContext.Query<Nomination>().Where(N => N.IsSubmitted == true && N.NominationDate.Value.Month == (DateTime.Now.Month - 1) && N.NominationDate.Value.Year == DateTime.Now.Year).ToList();
+            var nominations = _encourageDatabaseContext.Query<Nomination>().Include(a => a.ManagerComments).Include(b => b.ReviewerComments).Where(N => N.IsSubmitted == true && N.NominationDate.Value.Month == (DateTime.Now.Month - 1) && N.NominationDate.Value.Year == DateTime.Now.Year).ToList();
             foreach (var nomination in nominations)
             {
                 var nominee = _commonDbContext.Query<User>().FirstOrDefault(u => u.ID == nomination.UserId);
-                consolidatedNominations.Nominations.Add(new SubmittedNomination
+
+                var submittednomination = new SubmittedNomination
                 {
                     NominationId = nomination.Id,
                     UserName = nominee != null ? nominee.FirstName + " " + nominee.LastName : "",
                     ManagerComments = nomination.ManagerComments.ToList(),
-                    ReviewerComments = nomination.ReviewerComments.ToList().Select(rc => new ReviewerCommentViewModel()
+                    ReviewerComments = new List<ReviewerCommentViewModel>()
+                };
+                
+
+                foreach (var reviewerComment in nomination.ReviewerComments)
+                {
+                    var managerComment = nomination.ManagerComments.FirstOrDefault(m => m.CriteriaId == reviewerComment.CriteriaId);
+                    var reviewComment = new ReviewerCommentViewModel()
                     {
-                        CriteriaId = rc.CriteriaId,
-                        Comment = rc.Comment,
-                        Credit = Convert.ToInt32(rc.Credit),
-                        ReviewerId = rc.ReviewerId
-                    }).ToList()
-                });
+                        CriteriaId = reviewerComment.CriteriaId,
+                        Comment = reviewerComment.Comment,
+                        Credit = Convert.ToInt32(reviewerComment.Credit),
+                        ReviewerId = reviewerComment.ReviewerId,
+                        Weightage = managerComment != null ? managerComment.Weightage : 0
+                    };
+
+                    submittednomination.ReviewerComments.Add(reviewComment);
+                }
+
+                consolidatedNominations.Nominations.Add(submittednomination);
             }
             return View("ConsolidatedNominations", consolidatedNominations);
         }
