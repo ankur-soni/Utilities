@@ -21,6 +21,28 @@ namespace Silicus.FrameworxDashboard.Web.Controllers
             //textInfo = new CultureInfo("en-US", false).TextInfo;
         }
 
+        public ActionResult Index()
+        {
+            List<Frameworx> frameworkList = _frameworxProjectService.GetAllFrameworx();
+            var CategoryList = _frameworxProjectService.GetAllCategories();
+
+            var allComponents = frameworkList.Join(CategoryList,
+                wo => wo.CategoryId,
+                p => p.Id,
+                (order, plan) => new { order.Id, order.Title, order.SourceCodeLink, order.DemoLink, order.HtmlDescription, plan.Name }
+                ).Select(m => new FrameworxViewModel
+                {
+                    id = m.Id,
+                    Name = m.Name,
+                    Title = m.Title,
+                    HtmlDescription = m.HtmlDescription,
+                    DemoLink = m.DemoLink,
+                    SourceCodeLink = m.SourceCodeLink
+
+                }).ToList();
+            return View(allComponents);
+        }
+
         [HttpGet]
         public ActionResult AddCategory()
         {
@@ -132,7 +154,7 @@ namespace Silicus.FrameworxDashboard.Web.Controllers
             {
                 item.Frameworxs = frameworkList.Where(s => s.CategoryId == item.Id).ToList();
             }
-            if (query.ToList().Count() !=0)
+            if (query.ToList().Count() != 0)
             {
                 return View("SearchComponent", query.ToList());
             }
@@ -142,5 +164,6 @@ namespace Silicus.FrameworxDashboard.Web.Controllers
                 return View("SearchComponentMessage", query.ToList());
             }
         }
+
     }
 }
