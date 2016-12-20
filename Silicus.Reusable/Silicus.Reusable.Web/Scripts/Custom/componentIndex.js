@@ -9,6 +9,41 @@
 
     }
 
+    function nextSlide() {        
+        var selects = $(".TitleDivTemplate");
+        selects.each(function myfunction(index) {
+            var id = $(this).attr("my-data");
+            var currentId = $("#currentTile").val();
+            if (id == currentId) {
+                if (index !== selects.length - 1) {
+                    // select the next span
+                    getComponentdetail(selects.eq(index + 1).attr('my-data'), selects.eq(index + 1).attr('my-title'));
+                    return false;
+                } else {
+                    getComponentdetail(selects.eq(0).attr('my-data'), selects.eq(index + 1).attr('my-title'));
+                }
+            }
+        });
+    }
+
+    function prevSlide() {
+        var selects = $(".TitleDivTemplate");
+        selects.each(function myfunction(index) {
+
+            var id = $(this).attr("my-data");
+            var currentId = $("#currentTile").val();
+            if (id == currentId) {
+                if (index !== selects.length - 1) {
+                    // select the next span
+                    getComponentdetail(selects.eq(index - 1).attr('my-data'), selects.eq(index - 1).attr('my-title'));
+                    return false;
+                } else {
+                    getComponentdetail(selects.eq(index - 1).attr('my-data'), selects.eq(index - 1).attr('my-title'));
+                }
+            }
+        });
+    }
+
    
     function searchComponent(value) {       
         var filter = value;
@@ -40,15 +75,6 @@
                     noResult = false;
                 }               
             });
-
-            //$(".category-container").each(function () {
-            //    if ($(this).children().children(':visible').length == 0) {
-            //        $(this).prev().hide();
-            //    } else {
-            //        $(this).prev().show();
-            //    }
-            //});
-            
         }
 
         if (noResult) {
@@ -77,7 +103,7 @@
                 var id = value.attributes['id'].value, title = value.attributes['title'].value;
                 var style = title.search(new RegExp(filter, "i")) < 0 ? "display: none;" : "";
                 itemHtmlString += '<div class="col-sm-4" style="' + style + '"> <div category="' + category + '" id="' + id + '" title="' + title +
-                    '" class="TitleDivTemplate TitleDiv" data-toggle="modal" data-target="#myModal"  onclick="getdetail(' + id + ',' + title + ')" my-data="' + id + '" my-title="'
+                    '" class="TitleDivTemplate TitleDiv" data-toggle="modal" data-target="#component-modal"  my-data="' + id + '" my-title="'
                     + title + '">' +
                     '<h3 class="maintitle"> ' + title + '</h3>   </div> </div>';
             });
@@ -85,7 +111,7 @@
             htmlString += itemHtmlString;
 
             if (thisCatItems.length) {
-                htmlString += '</div> <div id="divTiles" style="display:none"> <input type="text" id="currentTile" name="currentTile" value="" /></div></div>';
+                htmlString += '</div></div>';
             }            
 
             itemHtmlString = '';
@@ -102,12 +128,31 @@
             var id = value.attributes['id'].value, title = value.attributes['title'].value, category = value.attributes['category'].value;
             var style = title.search(new RegExp(filter, "i")) < 0? "display: none;":"";
             itemHtmlString += ' <li category="' + category + '" id="' + id + '" title="' + title + '" style="' + style + '">' +
-                    '<a class="icon-'+ category+'" data-toggle="modal" data-target="#myModal" onclick="getdetail('+ id+','+ title+')">'+ title+'</a></li>';
+                    '<a class="icon-' + category + ' TitleDivTemplate" data-toggle="modal" data-target="#component-modal"  my-data="' + id + '" my-title="'
+                    + title + '">' + title + '</a></li>';
         });
         htmlString += itemHtmlString + ' </ul>';
         $('#containerDiv').html('');
         $('#containerDiv').html(htmlString);
     }
+
+    function getComponentdetail(id) {
+        debugger;
+        $("#currentTile").val(id);
+        $.ajax({
+            url: "/FrameworxProject/Details",
+            type: "get",
+            async: false,
+            data: { id: id},
+            success: function (data) {
+                $(".carousel-inner").html(data);
+            },
+            error: function () {
+                // connectionError();
+            }
+        });
+    }
+
 
     $(document).ready(
         function () {
@@ -137,12 +182,14 @@
                 $('#component-list-view').attr('disabled', false);
                 $(this).attr('disabled', true);
                 showTileView();
+                
             });
 
             $('#component-list-view').click(function () {
                 $('#component-tile-view').attr('disabled', false);
                 $(this).attr('disabled', true);                
                 showListView();
+               
             });
 
 
@@ -157,6 +204,14 @@
                 }
                 return a;
             }
+
+            $('body').on('click', '.TitleDivTemplate', function () {
+                var id = $(this).attr('my-data');
+                getComponentdetail(id);
+            });
+
+            $('#prev-slide-button').on('click', function () { prevSlide();});
+            $('#next-slide-button').on('click', function () { nextSlide(); });           
         }
         );
 

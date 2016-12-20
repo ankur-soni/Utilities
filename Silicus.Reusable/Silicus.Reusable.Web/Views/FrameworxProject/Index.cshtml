@@ -88,54 +88,8 @@
 
 
 <script>
-    function getdetail(id, categoryId) {
-        debugger;
-        $("#currentTile").val(id);
-        var url = "/FrameworxProject/Details";
-        $.get(url, { id: id }, function (data) {
-            try{
-                $(".carousel-inner").html(data);
-            }catch(e){
+   
 
-            }
-            // $("#devendra").html(categoryname);
-        });
-    }
-
-    function nextSlide() {
-        var selects = $(".TitleDivTemplate");
-        selects.each(function myfunction(index) {
-            var id = $(this).attr("my-data");
-            var currentId = $("#currentTile").val();
-            if (id == currentId) {
-                if (index !== selects.length - 1) {
-                    // select the next span
-                    getdetail(selects.eq(index + 1).attr('my-data'), selects.eq(index + 1).attr('my-title'));
-                    return false;
-                } else {
-                    getdetail(selects.eq(0).attr('my-data'), selects.eq(index + 1).attr('my-title'));
-                }
-            }
-        });
-    }
-
-    function prevSlide() {
-        var selects = $(".TitleDivTemplate");
-        selects.each(function myfunction(index) {
-
-            var id = $(this).attr("my-data");
-            var currentId = $("#currentTile").val();
-            if (id == currentId) {
-                if (index !== selects.length - 1) {
-                    // select the next span
-                    getdetail(selects.eq(index - 1).attr('my-data'), selects.eq(index - 1).attr('my-title'));
-                    return false;
-                } else {
-                    getdetail(selects.eq(index - 1).attr('my-data'), selects.eq(index - 1).attr('my-title'));
-                }
-            }
-        });
-    }
 </script>
 
 <div class="container" id="ComponentContainer">
@@ -165,19 +119,20 @@
             </span>
         </div>
     </div>
-    <div class="row" id="containerDiv1">
+    <div class="row">
         <div id="containerDiv">
             <ul class="list-wrapper">
                 @foreach (var item in Model)
-            {
+                {
                     <li category="@item.Name" id="@item.id" title="@item.Title">
-                        <a class="icon-@(item.Name)" data-toggle="modal" data-target="#myModal" onclick="getdetail('@(item.id)','@(item.Title)')">@item.Title</a>
+                        <a class="icon-@(item.Name) TitleDivTemplate" data-toggle="modal" data-target="#component-modal" my-data="@item.id" my-title="@item.Title">@item.Title</a>
                     </li>
                 }
-            </ul>
-
+            </ul>           
         </div>
-
+        <div id="divTiles" style="display:none">
+            <input type="text" id="currentTile" name="currentTile" value="" />
+        </div>
         <div class="alert alert-danger" id="noResultMsg" style="@(Model.Count() > 0?"display:none":"")">
             <strong>Oops! There is no such Component</strong>
         </div>
@@ -185,7 +140,7 @@
 </div>
 
 <!-- Modal -->
-<div class="modal fade" id="myModal" role="dialog">
+<div class="modal fade" id="component-modal" role="dialog">
     <div class="modal-dialog">
 
         <!-- Wrapper for slides -->
@@ -195,11 +150,11 @@
             </div>
         </div>
         <!-- Left and right controls -->
-        <a class="left carousel-control" href="#myCarousel" role="button" data-slide="prev" onclick="prevSlide()">
+        <a class="left carousel-control" href="#myCarousel" role="button" data-slide="prev" id="prev-slide-button">
             <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
             <span class="sr-only">Previous</span>
         </a>
-        <a class="right carousel-control" href="#myCarousel" role="button" data-slide="next" onclick="nextSlide()">
+        <a class="right carousel-control" href="#myCarousel" role="button" data-slide="next" id="next-slide-button" ">
             <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
             <span class="sr-only">Next</span>
         </a>
