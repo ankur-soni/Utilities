@@ -6,10 +6,10 @@ using System.Threading.Tasks;
 
 namespace HangFireBackgroundTasks.Enums
 {
-   public enum FrequencyCode
+   public enum Award
     {
-        MON,
-        YEAR,
-        SIXMON
+        SOM,
+        Pinnacle,
+
     }
 }
