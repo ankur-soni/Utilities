@@ -455,7 +455,7 @@ namespace Silicus.EncourageWithAzureAd.Web.Controllers
             var managerId = 0;
             if (projects.Count > 0)
             {
-                managerId = _awardService.GetUserIdFromEmail(User.Identity.Name);
+                managerId = _awardService.GetUserIdFromEmail(email);
             }
             else
             {
@@ -531,7 +531,7 @@ namespace Silicus.EncourageWithAzureAd.Web.Controllers
                 }
             }
 
-            ViewBag.creditGiven = totalCredit;
+            reviewNominationViewModel.TotalCredit = totalCredit;
 
             if (details == "Details")
             {
@@ -590,8 +590,6 @@ namespace Silicus.EncourageWithAzureAd.Web.Controllers
                         });
                     if (d.Credit == 1)
                     {
-                        //  totalCredit = totalCredit + Convert.ToInt32(d.Credit);
-                        // ViewBag.creditGiven = totalCredit;
                         reviewNominationViewModel.TotalCredit = reviewNominationViewModel.TotalCredit + Convert.ToInt32(d.Credit);
                     }
                 }
