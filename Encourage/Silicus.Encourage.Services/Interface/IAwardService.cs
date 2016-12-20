@@ -24,9 +24,7 @@ namespace Silicus.Encourage.Services.Interface
         int GetUserIdFromEmail(string email);
         List<WinnerData> GetWinnerData();
         List<string> GetEmailAddressOfManager(string name);
-
-
-
+        Award GetAwardByCode(string awardCode);
 
     }
 }
