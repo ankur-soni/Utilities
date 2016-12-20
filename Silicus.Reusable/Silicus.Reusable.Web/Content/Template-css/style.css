@@ -8091,3 +8091,8 @@ body.md-skin {
     display: none;
   }
 }
+
+
+.hidden-item{
+    display:none!important;
+}

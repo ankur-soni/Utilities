@@ -10,5 +10,7 @@ namespace Silicus.FrameworxProject.Services.Interfaces
     {
         Silicus.UtilityContainer.Entities.ICommonDataBaseContext GetCommonDataBaseContext();
         string FindDisplayNameFromEmail(string email);
+
+        int FindUserIdFromEmail(string userName);
     }
 }

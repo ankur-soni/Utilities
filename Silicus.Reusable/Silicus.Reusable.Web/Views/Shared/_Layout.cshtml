@@ -5,14 +5,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>FRAMEWORX</title>
     <link rel="shortcut icon" href="~/Images/favicon.ico" />
-    @Styles.Render("~/Content/css")
-    @*@Scripts.Render("~/bundles/modernizr")*@
-
+    @Styles.Render("~/Content/css")  
     <link href="~/Content/font-awesome/css/font-awesome.css" rel="stylesheet">
 
     <link href="~/Content/Template-css/animate.css" rel="stylesheet">
-    @*<link href="~/Content/Template-css/style.css" rel="stylesheet">*@
-
+   
     <!-- Sweet Alert -->
     <link href="~/Content/Template-css/plugins/sweetalert/sweetalert.css" rel="stylesheet">
     <!-- Toastr style -->
@@ -20,8 +17,7 @@
     <!-- Swtiches -->
     <link href="~/Content/Template-css/plugins/switchery/switchery.css" rel="stylesheet">
     <!-- Searchable drop down -->
-    <link rel="stylesheet" type="text/css" href="~/Content/Template-css/plugins/selectize/selectize.css" />    
-    @*<script src="https://ajax.aspnetcdn.com/ajax/jQuery/jquery-1.12.4.min.js"></script>*@
+    <link rel="stylesheet" type="text/css" href="~/Content/Template-css/plugins/selectize/selectize.css" />        
 </head>
 <body>
     <div class="container-fluid">
@@ -136,9 +132,7 @@
 
 
     </div>
-    @Scripts.Render("~/bundles/jquery")
-    @Scripts.Render("~/bundles/bootstrap")
-    @Scripts.Render("~/bundles/jqueryBlockUI")    
+    @Scripts.Render("~/bundles/requiredJS")     
     @RenderSection("scripts", required: false)
 
     @*<script src="~/Scripts/jquery-1.10.2.min.js"></script>*@

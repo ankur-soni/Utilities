@@ -88,30 +88,27 @@ namespace Silicus.EncourageWithAzureAd.Web.Controllers
         {
             _logger.Log("Nomination-AddNomination-GET");
 
+            var model = new NominationViewModel();
+
             var userEmailAddress = User.Identity.Name;
-
-            ViewBag.Awards = new SelectList(_awardService.GetAllAwards(), "Id", "Name");
-            ViewBag.NominationLockStatus = _nominationService.GetNominationLockStatus();
-            ViewBag.LockedAwardCategories = _nominationService.GetNominationLockStatus();
             var projects = _awardService.GetProjectsUnderCurrentUserAsManager(userEmailAddress);
-
             if (projects.Any())
             {
-                ViewBag.ProjectsUnderCurrentUser = new SelectList(projects, "Id", "Name");
-                ViewBag.ManagerIdByProject = _awardService.GetUserIdFromEmail(userEmailAddress);
+                model.ProjectsUnderCurrentUser = new SelectList(projects, "Id", "Name");
             }
 
             var depts = _awardService.GetDepartmentsUnderCurrentUserAsManager(userEmailAddress);
             if (depts.Count > 0)
             {
-                ViewBag.DepartmentsUnderCurrentUser = new SelectList(depts, "Id", "Name");
-                ViewBag.ManagerIdByDepartment = _awardService.GetUserIdFromEmail(userEmailAddress);
+                model.DepartmentsUnderCurrentUser = new SelectList(depts, "Id", "Name");
             }
 
-            ViewBag.Resources = new SelectList(new List<User>(), "Id", "DisplayName");
+            model.Resources = new SelectList(new List<User>(), "Id", "DisplayName");
 
             //bool isLocked = _nominationService.IsNominationLocked();
-            var model = new NominationViewModel { };
+            
+            model.ListOfAwards = new SelectList(_awardService.GetAllAwards(), "Id", "Name");
+            model.ManagerId = _awardService.GetUserIdFromEmail(userEmailAddress);
 
             return View(model);
         }
@@ -241,34 +238,31 @@ namespace Silicus.EncourageWithAzureAd.Web.Controllers
             _logger.Log("Nomination-EditSavedNomination-GET");
             var savedNomination = _nominationService.GetNomination(nominationId);
             var nominationViewModel = new NominationViewModel();
-            ViewBag.ReviewLockStatus = _reviewService.GetReviewLockStatus();
-            ViewBag.NominationLockStatus = _nominationService.GetNominationLockStatus();
-            ViewBag.LockedAwardCategories = _nominationService.GetNominationLockStatus();
             var userEmailAddress = User.Identity.Name;
 
-            ViewBag.Awards = new SelectList(_awardService.GetAllAwards(), "Id", "Name");
+            nominationViewModel.ListOfAwards = new SelectList(_awardService.GetAllAwards(), "Id", "Name");
             int currentUserId = 0;
             var projects = _awardService.GetProjectsUnderCurrentUserAsManager(userEmailAddress);
             
             if (projects.Count > 0)
             {
-                ViewBag.ProjectsUnderCurrentUser
+                nominationViewModel.ProjectsUnderCurrentUser
                                     = new SelectList(_awardService.GetProjectsUnderCurrentUserAsManager(userEmailAddress), "Id", "Name");
                 currentUserId = _awardService.GetUserIdFromEmail(userEmailAddress);
-                ViewBag.ManagerId = currentUserId;
+                nominationViewModel.ManagerId = currentUserId;
             }
-            
-            ViewBag.DepartmentsUnderCurrentUser = new SelectList(_awardService.GetDepartmentsUnderCurrentUserAsManager(userEmailAddress), "Id", "Name");
+
+            nominationViewModel.DepartmentsUnderCurrentUser = new SelectList(_awardService.GetDepartmentsUnderCurrentUserAsManager(userEmailAddress), "Id", "Name");
 
             if (savedNomination.ProjectID != null)
             {
                 nominationViewModel.SelectResourcesBy = "Project";
-                ViewBag.Resources = new SelectList(_awardService.GetResourcesForEditInEngagement(savedNomination.ProjectID.Value, currentUserId), "Id", "DisplayName");
+                nominationViewModel.Resources = new SelectList(_awardService.GetResourcesForEditInEngagement(savedNomination.ProjectID.Value, currentUserId), "Id", "DisplayName");
             }
             else if (savedNomination.DepartmentId != null)
             {
                 nominationViewModel.SelectResourcesBy = "Department";
-                ViewBag.Resources = new SelectList(_awardService.GetResourcesForEditInDepartment(savedNomination.DepartmentId.Value, currentUserId), "Id", "DisplayName");
+                nominationViewModel.Resources = new SelectList(_awardService.GetResourcesForEditInDepartment(savedNomination.DepartmentId.Value, currentUserId), "Id", "DisplayName");
             }
 
             //IN FUTURE GOING TO USE MAPPER
@@ -461,7 +455,7 @@ namespace Silicus.EncourageWithAzureAd.Web.Controllers
             var managerId = 0;
             if (projects.Count > 0)
             {
-                managerId = _awardService.GetUserIdFromEmail(User.Identity.Name);
+                managerId = _awardService.GetUserIdFromEmail(email);
             }
             else
             {
@@ -537,7 +531,7 @@ namespace Silicus.EncourageWithAzureAd.Web.Controllers
                 }
             }
 
-            ViewBag.creditGiven = totalCredit;
+            reviewNominationViewModel.TotalCredit = totalCredit;
 
             if (details == "Details")
             {
@@ -596,8 +590,6 @@ namespace Silicus.EncourageWithAzureAd.Web.Controllers
                         });
                     if (d.Credit == 1)
                     {
-                        //  totalCredit = totalCredit + Convert.ToInt32(d.Credit);
-                        // ViewBag.creditGiven = totalCredit;
                         reviewNominationViewModel.TotalCredit = reviewNominationViewModel.TotalCredit + Convert.ToInt32(d.Credit);
                     }
                 }

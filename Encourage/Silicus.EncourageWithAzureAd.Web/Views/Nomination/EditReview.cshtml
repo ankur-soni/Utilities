@@ -1,33 +1,17 @@
 ﻿@model Silicus.EncourageWithAzureAd.Web.Models.ReviewSubmitionViewModel
 
 
-<style>
-    .container .content {
-        display: none;
-        padding: 5px;
-    }
-
-    .page-heading {
-        margin-left: 0%;
-    }
-
-    .navbar-minimalize {
-        margin-left: 35%;
-    }
-</style>
-<div class="row border-bottom">
-    <nav class="navbar  " role="navigation" style="margin-bottom: 0">
+<div class="row white-bg header-row">
+    <nav class="" role="navigation" style="margin-bottom: 0">
         <div class="navbar-header">
             <a class="navbar-minimalize minimalize-styl-2 btn btn-primary " href="#"><i class="fa fa-bars"></i> </a>
         </div>
     </nav>
+    <div class="col-lg-11 col-md-11 col-sm-11">
+        <h1 class="header-name">Edit Review</h1>
+    </div>
 </div>
-<div class="row wrapper border-bottom white-bg page-heading border-bottom" style="width:90%;">
-    <div class=" col-sm-12">
-    <h1>Edit Review</h1>
-</div>
-</div>
-<div class="wrapper wrapper-content animated fadeInRight">
+@*<div class="wrapper wrapper-content animated fadeInRight">
     <div class="row" style="margin-left:4%">
         @using (Html.BeginForm("EditReview", "Nomination", FormMethod.Post, new { id = "editReviewForm" }))
         {
@@ -37,17 +21,17 @@
         <thead>
             <tr>
                 <td>
-                  <label> Review For:</label> 
+                  <label> Review For:</label>
                 </td>
 
                 <td>
                     @Html.DisplayFor(modelItem => modelItem.NomineeName)
-                    
+
                 </td>
             </tr>
             <tr>
                 <td>
-                 <label> Project/Department:</label>  
+                 <label> Project/Department:</label>
                 </td>
 
                 <td>
@@ -56,7 +40,7 @@
             </tr>
             <tr>
                 <td>
-                   <label>Manager:</label> 
+                   <label>Manager:</label>
                 </td>
 
                 <td>
@@ -180,215 +164,397 @@
             </div>
         }
        </div>
+    </div>*@
+
+
+@using (Html.BeginForm("EditReview", "Nomination", FormMethod.Post, new { id = "editReviewForm" }))
+        {
+    @Html.HiddenFor(modelItem => modelItem.ReviewerId)
+    @Html.HiddenFor(modelItem => modelItem.NominationId);
+
+    <div class="row">
+        <div class="col-lg-12 col-md-12 col-sm-12">
+            <div class="panel panel-info M-T15">
+                <div class="panel-heading"> <span>Review For:&nbsp; @Html.DisplayFor(modelItem => modelItem.NomineeName)</span></div>
+                <div class="panel-wrapper collapse in" aria-expanded="true">
+                    <div class="panel-body">
+                        <table class="table table-hover issue-tracker white-bg" style="width:80%">
+                            <thead>
+
+                                <tr>
+                                    <td>
+                                        <label> Project/Department:</label>
+                                    </td>
+
+                                    <td>
+                                        @Html.DisplayFor(modelItem => modelItem.ProjectOrDepartment)
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <label>Manager:</label>
+                                    </td>
+
+                                    <td>
+                                        @Html.DisplayFor(modelItem => modelItem.Manager)
+                                    </td>
+                                </tr>
+                            </thead>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
- 
-<script src="~/js/jquery-2.1.1.js"></script>
-@*<script src="http://ajax.googleapis.com/ajax/libs/jquery/2.0.0/jquery.min.js"></script>*@
-<script src="~/js/plugins/validate/jquery.validate.min.js"></script>
-<script src="~/Scripts/jquery.validate.unobtrusive.js"></script>
-<script src="~/js/jquery.barrating.min.js"></script>
-<script>
-    var ratings = $('.example-square');
 
-    $.each(ratings, function (index) {
-        var id = "#" + this.id;
-        var rating = +this.getAttribute("value");
+    <div class="row">
+        <div class="col-lg-12 col-md-12 col-sm-12">
+            <div class="panel panel-info">
+                <div class="panel-heading"> <span>@Html.DisplayFor(modelItem => modelItem.Manager) Says:</span></div>
+                <div class="panel-wrapper collapse in" aria-expanded="true">
+                    <div class="panel-body">
+                        <table class="table table-hover issue-tracker">
 
-        $(id).barrating('show', {
-            theme: 'bars-square',
-            showValues: true,
-            showSelectedRating: false,
-            readonly: true
-        });
+                            <tr>
+                                <td class="more white-bg" style="word-wrap: break-word;">
 
-        $(id).barrating('set', rating);
-    });
+                                    @Model.ManagerComment
 
-    var reviewerRatings = $('.reviewer-rating');
-    
-    $.each(reviewerRatings, function (index) {
-        var id = "#" + this.id;
-        var rating = +this.getAttribute("value");
+                                </td>
+                            </tr>
+                        </table>
 
-        $(id).barrating('show', {
-            theme: 'bars-square',
-            showValues: true,
-            showSelectedRating: false
-        });
-
-        $(id).barrating('set', rating);
-    });
-
-    $(".reviewer-rating").change(function () {
-        var criteriaCount = 0;
-        var totalCredits = 0;
-        $(".reviewer-rating").each(function (idx, el) {
-            if ($.isNumeric($(el).val())) {
-                totalCredits = totalCredits + parseInt($(el).val());
-                criteriaCount++;
-            }
-        });
-
-        $("#totalCredits").text((totalCredits / criteriaCount).toFixed(2));
-    });
-
-    function onkeyevent(self) {
-        $('#' + self.id).siblings("div.textarea").css('display', 'block');
-        var text_max = 100;
-        var text_length = self.value.length;
-        var text_remaining = text_max - text_length;
-        $('#' + self.id).siblings("div.textarea").html(text_remaining + ' characters remaining');
-    }
-
-    function hideRemainingCharacterText(self) {
-        $('#' + self.id).siblings("div.textarea").css('display', 'none');
-    }
-
-    function SaveDraftReview() {
-        
-        if ($('#editReviewForm').valid()) {
-            swal({
-                title: "Save Review",
-                text: "Do you want to save this review for nomination?",
-                type: "info",
-                showCancelButton: true,
-                confirmButtonColor: "#88a364",
-                confirmButtonText: "Yes!",
-                cancelButtonText: "No!",
-                closeOnConfirm: false,
-                closeOnCancel: false
-            },
-                function (isConfirm) {
-                    if (isConfirm) {
-                        var modelbjectToSend = $('#editReviewForm').serialize() + '&' + $.param({ 'Submit': "Save Draft" }, true);
-
-                        $.ajax({
-                            type: 'post',
-                            url: '@Url.Action("EditReview", "Nomination")',
-                            data: modelbjectToSend,
-                            success: function (data) {
-                                swal({
-                                    title: "Review Saved!",
-                                    showCancelButton: false,
-                                    confirmButtonColor: "#88a364",
-                                    confirmButtonText: "Ok"
-                                },
-                                    function (isConfirm) {
-                                        if (isConfirm) {
-                                            window.location.href = '@Url.Action("ReviewNominations", "Nomination")';
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-lg-12 col-md-12 col-sm-12">
+            <div class="box M-B60">
+                <div class="f1">
+                    <div class="wizard-box" style="margin-top:0px;">
+                        <table class="table issue-tracker">
+                            <thead>
+                                <tr>
+                                    <th>Criteria</th>
+                                    <th colspan="4">Manager</th>
+                                    <th colspan="2">Reviewer</th>
+                                </tr>
+                                <tr>
+                                    <th></th>
+                                    <th>Weightage</th>
+                                    <th>Rating</th>
+                                    <th>Points</th>
+                                    <th>Comments</th>
+                                    <th>Rating</th>
+                                    <th>Comments</th>
+                                </tr>
+                            </thead>
+                            @{
+                             var j = 0;
+                            }
+                            @foreach (var managerComment in Model.ManagerComments)
+                            {
+                                <tbody>
+                                    <tr>
+                                        @Html.Hidden("CriteriaId", @managerComment.CriteriaId)
+                                        @{
+                                var criteria = Model.Criterias.FirstOrDefault(mc => mc.Id == managerComment.CriteriaId);
                                         }
-                                    });
-                            },
-                            error: function () {
-                                swal("Error", "Oops! Something wrong happened..");
+                                        <td class="col-md-4">@(criteria != null ? criteria.Title : "")</td>
+                                        <td class="col-md-1">@managerComment.Weightage</td>
+                                        <td class="col-md-2">
+                                            @Html.DropDownList("Comments[" + @j + "].Rating",
+                                    Enumerable.Range(1, 5).
+                                        Select(r => new SelectListItem
+                                        {
+                                            Value = r.ToString(),
+                                            Text = r.ToString()
+                                        }), "", new { @class = "example-square", @autocomplete = "off", @value = managerComment.Rating })
+                                        </td>
+                                        <td class="col-md-1">@(managerComment.Weightage * managerComment.Rating / 100.0)</td>
+                                        <td class="more" style="word-break:break-all">@managerComment.Comment</td>
+                                        @{
+                                var reviewwrComment = Model.Comments.FirstOrDefault(c => c.CriteriaId == managerComment.CriteriaId);
+                                        }
+                                        <td class="col-md-2">
+                                            @Html.DropDownList("Comments[" + @j + "].Credit",
+                                    Enumerable.Range(1, 5).
+                                        Select(r => new SelectListItem
+                                        {
+                                            Value = r.ToString(),
+                                            Text = r.ToString()
+                                        }), "", new { @class = "reviewer-rating", @autocomplete = "off", @value = (reviewwrComment != null ? reviewwrComment.Credit : 0) })
+                                        </td>
+
+                                        <td class="col-md-3">@Html.TextArea("Comments[" + @j + "].Comment", reviewwrComment != null ? reviewwrComment.Comment : "", new { name = "reviewercomment", maxlength = "100", onKeyUp = "return onkeyevent(this);", onblur = "return hideRemainingCharacterText(this);",@class="form-control"})<div class="textarea"></div></td>
+
+                                        @Html.Hidden("Comments[" + @j + "].CriteriaId", managerComment.CriteriaId)
+                                    </tr>
+                                </tbody>
+                                j++;
+
+                            }
+
+
+                            @if (Model.ManagerComments != null)
+                            {
+                                for (int i = 0; i < Model.ManagerComments.Count; i++)
+                                {
+                                    @Html.HiddenFor(model => Model.ManagerComments[i].Comment)
+                                }
+                            }
+
+                            <tr>
+                                <td></td>
+                                <td></td>
+                                <td style="color:#0063A7;font-weight:bold">Total Points:</td>
+                                <td> @(Model.ManagerComments.Sum(a => (a.Rating * a.Weightage / 100.0))) </td>
+                                <td style="text-align:center;color:#0063A7;font-weight:bold">
+                                    Average Ratings:
+                                </td>
+                                <td id="totalCredits" class="col-md-1 text-center font-bold">
+                                    @if (Model.Comments != null && Model.Comments.Any())
+                                    {
+                                        @(Model.Comments.Average(a => a.Credit))
+                                    }
+                                    else
+                                    {
+                                        @:0.00
+                                    }
+                                </td>
+                                <td></td>
+                            </tr>
+
+                        </table>
+                       
+                        
+                    </div>
+                    <div class="row M-T15">
+
+                        <div class="pull-right btn-nav">
+
+                            <input type="button" name="submit" value="Discard Review" id="saveButton" class="btn btn-primary" onclick="return DiscardReview()" />
+                            <input type="button" name="submit" value="Save Draft" id="saveButton" class="btn btn-primary" onclick="return SaveDraftReview()" />
+                            <input type="button" name="submit" value="Submit" id="submitButton" class="btn btn-primary" onclick="return SubmitReview()" />
+                            <input type="button" value="Back" class="btn btn-primary" onclick="location.href='@Url.Action("ReviewNominations", "Nomination")'" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+      </div>
+    </div>
+                }
+
+
+                <script src="~/js/jquery-2.1.1.js"></script>
+                @*<script src="http://ajax.googleapis.com/ajax/libs/jquery/2.0.0/jquery.min.js"></script>*@
+                <script src="~/js/plugins/validate/jquery.validate.min.js"></script>
+                <script src="~/Scripts/jquery.validate.unobtrusive.js"></script>
+                <script src="~/js/jquery.barrating.min.js"></script>
+                <script>
+                    var ratings = $('.example-square');
+
+                    $.each(ratings, function (index) {
+                        var id = "#" + this.id;
+                        var rating = +this.getAttribute("value");
+
+                        $(id).barrating('show', {
+                            theme: 'bars-square',
+                            showValues: true,
+                            showSelectedRating: false,
+                            readonly: true
+                        });
+
+                        $(id).barrating('set', rating);
+                    });
+
+                    var reviewerRatings = $('.reviewer-rating');
+
+                    $.each(reviewerRatings, function (index) {
+                        var id = "#" + this.id;
+                        var rating = +this.getAttribute("value");
+
+                        $(id).barrating('show', {
+                            theme: 'bars-square',
+                            showValues: true,
+                            showSelectedRating: false
+                        });
+
+                        $(id).barrating('set', rating);
+                    });
+
+                    $(".reviewer-rating").change(function () {
+                        var criteriaCount = 0;
+                        var totalCredits = 0;
+                        $(".reviewer-rating").each(function (idx, el) {
+                            if ($.isNumeric($(el).val())) {
+                                totalCredits = totalCredits + parseInt($(el).val());
+                                criteriaCount++;
                             }
                         });
-                    } else {
-                        swal("Cancelled", "Review Cancelled");
-                        @*window.location.href = '@Url.Action("SavedReviews", "Nomination")';*@
+
+                        $("#totalCredits").text((totalCredits / criteriaCount).toFixed(2));
+                    });
+
+                    function onkeyevent(self) {
+                        $('#' + self.id).siblings("div.textarea").css('display', 'block');
+                        var text_max = 100;
+                        var text_length = self.value.length;
+                        var text_remaining = text_max - text_length;
+                        $('#' + self.id).siblings("div.textarea").html(text_remaining + ' characters remaining');
                     }
-                });
 
-        }
-        else {
-            return false;
-        }
-    }
-
-    function SubmitReview() {
-        if ($('#editReviewForm').valid()) {
-            swal({
-                title: "Submit Review",
-                text: "Do you want to submit this review for nomination?",
-                type: "info",
-                showCancelButton: true,
-                confirmButtonColor: "#88a364",
-                confirmButtonText: "Yes!",
-                cancelButtonText: "No!",
-                closeOnConfirm: false,
-                closeOnCancel: false
-            },
-                function (isConfirm) {
-                    if (isConfirm) {
-                        var modelbjectToSend = $('#editReviewForm').serialize() + '&' + $.param({ 'Submit': "Submit" }, true);
-
-                        $.ajax({
-                            type: 'post',
-                            url: '@Url.Action("EditReview", "Nomination")',
-                            data: modelbjectToSend,
-                            success: function (data) {
-                                swal({
-                                    title: "Review Submitted!",
-                                    showCancelButton: false,
-                                    confirmButtonColor: "#88a364",
-                                    confirmButtonText: "Ok"
-                                },
-                                    function () {
-                                        if (isConfirm) {
-                                            window.location.href = '@Url.Action("SavedReviews", "Nomination")';
-                                        }
-                                    });
-                            },
-                            error: function () {
-                                swal("Error", "Oops! Something wrong happened..");
-                            }
-                        });
-                    } else {
-                        swal("Cancelled", "Review Cancelled");
-                        @*window.location.href = '@Url.Action("SavedReviews", "Nomination")';*@
+                    function hideRemainingCharacterText(self) {
+                        $('#' + self.id).siblings("div.textarea").css('display', 'none');
                     }
-                });
 
-        }
-        else {
-            return false;
-        }
-    }
+                    function SaveDraftReview() {
 
-    function DiscardReview() {
-        
-        swal({
-            title: "Discard Review",
-            text: "Do you want to discard this review ?",
-            type: "info",
-            showCancelButton: true,
-            confirmButtonColor: "#88a364",
-            confirmButtonText: "Yes!",
-            cancelButtonText: "No!",
-            closeOnConfirm: false,
-            closeOnCancel: false
-        },
-            function (isConfirm) {
-                if (isConfirm) {
-                    var modelbjectToSend = $('#editReviewForm').serialize() + '&' + $.param({ 'Submit': "Discard Review" }, true);
-
-                    $.ajax({
-                        type: 'post',
-                        url: '@Url.Action("EditReview", "Nomination")',
-                        data: modelbjectToSend,
-                        success: function (data) {
+                        if ($('#editReviewForm').valid()) {
                             swal({
-                                title: "Review Discarded!",
-                                showCancelButton: false,
-                                confirmButtonColor: "#88a364",
-                                confirmButtonText: "Ok"
+                                title: "Save Review",
+                                text: "Do you want to save this review for nomination?",
+                                type: "info",
+                                showCancelButton: true,
+                                confirmButtonColor: "#337ab7",
+                                confirmButtonText: "Yes!",
+                                cancelButtonText: "No!",
+                                closeOnConfirm: false,
+                                closeOnCancel: false
                             },
                                 function (isConfirm) {
-                                    
                                     if (isConfirm) {
-                                        window.location.href = '@Url.Action("SavedReviews", "Nomination")';
+                                        var modelbjectToSend = $('#editReviewForm').serialize() + '&' + $.param({ 'Submit': "Save Draft" }, true);
+
+                                        $.ajax({
+                                            type: 'post',
+                                            url: '@Url.Action("EditReview", "Nomination")',
+                                            data: modelbjectToSend,
+                                            success: function (data) {
+                                                swal({
+                                                    title: "Review Saved!",
+                                                    showCancelButton: false,
+                                                    confirmButtonColor: "#337ab7",
+                                                    confirmButtonText: "Ok"
+                                                },
+                                                    function (isConfirm) {
+                                                        if (isConfirm) {
+                                                            window.location.href = '@Url.Action("ReviewNominations", "Nomination")';
+                                                        }
+                                                    });
+                                            },
+                                            error: function () {
+                                                swal("Error", "Oops! Something wrong happened..");
+                                            }
+                                        });
+                                    } else {
+                                        swal("Cancelled", "Review Cancelled");
+                                        @*window.location.href = '@Url.Action("SavedReviews", "Nomination")';*@
                                     }
                                 });
-                        },
-                        error: function () {
-                            swal("Error", "Oops! Something wrong happened..");
-                        }
-                    });
-                } else {
-                    swal("Cancelled", "Discard Cancelled");
-                    @*window.location.href = '@Url.Action("SavedReviews", "Nomination")';*@
-                }
-            });
 
-    }
-</script>
+                        }
+                        else {
+                            return false;
+                        }
+                    }
+
+                    function SubmitReview() {
+                        if ($('#editReviewForm').valid()) {
+                            swal({
+                                title: "Submit Review",
+                                text: "Do you want to submit this review for nomination?",
+                                type: "info",
+                                showCancelButton: true,
+                                confirmButtonColor: "#337ab7",
+                                confirmButtonText: "Yes!",
+                                cancelButtonText: "No!",
+                                closeOnConfirm: false,
+                                closeOnCancel: false
+                            },
+                                function (isConfirm) {
+                                    if (isConfirm) {
+                                        var modelbjectToSend = $('#editReviewForm').serialize() + '&' + $.param({ 'Submit': "Submit" }, true);
+
+                                        $.ajax({
+                                            type: 'post',
+                                            url: '@Url.Action("EditReview", "Nomination")',
+                                            data: modelbjectToSend,
+                                            success: function (data) {
+                                                swal({
+                                                    title: "Review Submitted!",
+                                                    showCancelButton: false,
+                                                    confirmButtonColor: "#337ab7",
+                                                    confirmButtonText: "Ok"
+                                                },
+                                                    function () {
+                                                        if (isConfirm) {
+                                                            window.location.href = '@Url.Action("SavedReviews", "Nomination")';
+                                                        }
+                                                    });
+                                            },
+                                            error: function () {
+                                                swal("Error", "Oops! Something wrong happened..");
+                                            }
+                                        });
+                                    } else {
+                                        swal("Cancelled", "Review Cancelled");
+                                        @*window.location.href = '@Url.Action("SavedReviews", "Nomination")';*@
+                                    }
+                                });
+
+                        }
+                        else {
+                            return false;
+                        }
+                    }
+
+                    function DiscardReview() {
+
+                        swal({
+                            title: "Discard Review",
+                            text: "Do you want to discard this review ?",
+                            type: "info",
+                            showCancelButton: true,
+                            confirmButtonColor: "#337ab7",
+                            confirmButtonText: "Yes!",
+                            cancelButtonText: "No!",
+                            closeOnConfirm: false,
+                            closeOnCancel: false
+                        },
+                            function (isConfirm) {
+                                if (isConfirm) {
+                                    var modelbjectToSend = $('#editReviewForm').serialize() + '&' + $.param({ 'Submit': "Discard Review" }, true);
+
+                                    $.ajax({
+                                        type: 'post',
+                                        url: '@Url.Action("EditReview", "Nomination")',
+                                        data: modelbjectToSend,
+                                        success: function (data) {
+                                            swal({
+                                                title: "Review Discarded!",
+                                                showCancelButton: false,
+                                                confirmButtonColor: "#337ab7",
+                                                confirmButtonText: "Ok"
+                                            },
+                                                function (isConfirm) {
+
+                                                    if (isConfirm) {
+                                                        window.location.href = '@Url.Action("SavedReviews", "Nomination")';
+                                                    }
+                                                });
+                                        },
+                                        error: function () {
+                                            swal("Error", "Oops! Something wrong happened..");
+                                        }
+                                    });
+                                } else {
+                                    swal("Cancelled", "Discard Cancelled");
+                                    @*window.location.href = '@Url.Action("SavedReviews", "Nomination")';*@
+                                }
+                            });
+
+                    }
+                </script>
