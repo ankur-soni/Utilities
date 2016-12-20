@@ -392,14 +392,14 @@
                 });
 
                 function filterByData(month, year) {
-                    $("#wofWinnersList").html('');
-                    $("#wofWinnersList").addClass("loader margin-left-40");
+                    $(".loader-overlay").show();
                     $.ajax({
                         type: "GET",
                         url: _urlGetWinnersListPartialView,
                         data: { month: month, year: year },
                         success: function (result) {
-                            $("#wofWinnersList").removeClass("loader margin-left-40");
+                            $("#wofWinnersList").html('');
+                            $(".loader-overlay").hide();
                             $("#wofWinnersList").html(result);
                         },
                         error: function (error) {
