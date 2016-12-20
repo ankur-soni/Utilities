@@ -47,6 +47,7 @@
     <Compile Include="CodeType.cs" />
     <Compile Include="ExtensionSolution.cs" />
     <Compile Include="Frameworx.cs" />
+    <Compile Include="FrameworxLike.cs" />
     <Compile Include="OtherCode.cs" />
     <Compile Include="ProductBacklog.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
