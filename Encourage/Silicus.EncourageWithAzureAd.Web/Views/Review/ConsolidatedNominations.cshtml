@@ -30,28 +30,29 @@
     </div>
 </div>
 
-<div class="" style="overflow: scroll">
-    <table class="table table-hover white-bg content" id="consolidatedHrView">
-        <thead>
-        <tr>
-            <th rowspan="2">Employee Name</th>
-            <th rowspan="2">Rating By</th>
-            <th rowspan="2">All Criteria</th>
-            @{
+<div class="box M-T15">
+    <div class="" style="overflow: scroll">
+        <table class="table table-hover white-bg content" id="consolidatedHrView">
+            <thead>
+                <tr>
+                    <th rowspan="2">Employee Name</th>
+                    <th rowspan="2">Rating By</th>
+                    <th rowspan="2">All Criteria</th>
+                    @{
                 var ccCount = 1;
-            }
-            @foreach (var criteria in Model.Criterias)
+                    }
+                    @foreach (var criteria in Model.Criterias)
             {
-                <th colspan="@Model.Reviewers.Count" style="text-align: center;">
-                    <a href="#" title="@criteria.Title">
-                       @("Criteria "+ccCount)
-                    </a>  
-                </th>
+                        <th colspan="@Model.Reviewers.Count" style="text-align: center;">
+                            <a href="#" title="@criteria.Title">
+                                @("Criteria "+ccCount)
+                            </a>
+                        </th>
                 ccCount++;
             }
-        </tr>
-        <tr>
-            @foreach (var criteria in Model.Criterias)
+                </tr>
+                <tr>
+                    @foreach (var criteria in Model.Criterias)
             {
                 var revCount = 1;
                 foreach (var reviewer in Model.Reviewers)
@@ -64,23 +65,23 @@
                     revCount++;
                 }
             }
-        </tr>
-        </thead>
-        <tbody>
-        
-        @foreach (var nomination in Model.Nominations)
+                </tr>
+            </thead>
+            <tbody>
+
+                @foreach (var nomination in Model.Nominations)
         {
-            <tr>
-                <td rowspan="4">
-                @nomination.UserName
-                </td>
-                <td>
-                    Manager
-                </td>
-                <td class="averagePoints">
-                    @((nomination.ManagerComments.Any() ? nomination.ManagerComments.Average(a => (a.Rating * a.Weightage / 100.0)) : 0).ToString("F"))
-                </td>
-                @foreach (var criteria in Model.Criterias)
+                    <tr>
+                        <td rowspan="4">
+                            @nomination.UserName
+                        </td>
+                        <td>
+                            Manager
+                        </td>
+                        <td class="averagePoints">
+                            @((nomination.ManagerComments.Any() ? nomination.ManagerComments.Average(a => (a.Rating * a.Weightage / 100.0)) : 0).ToString("F"))
+                        </td>
+                        @foreach (var criteria in Model.Criterias)
                 {
                     var managerComment = nomination.ManagerComments.FirstOrDefault(mc => mc.CriteriaId == criteria.Id);
                     if (managerComment != null)
@@ -94,15 +95,15 @@
                         </td>
                     }
                 }
-            </tr>
-            <tr>
-                <td>
-                    Reviewer
-                </td>
-                <td class="averagePoints">
-                    @((nomination.ReviewerComments.Any() ? nomination.ReviewerComments.Average(a => (a.Credit * a.Weightage / 100.0)) : 0).ToString("F"))
-                </td>
-                @foreach (var criteria in Model.Criterias)
+                    </tr>
+                    <tr>
+                        <td>
+                            Reviewer
+                        </td>
+                        <td class="averagePoints">
+                            @((nomination.ReviewerComments.Any() ? nomination.ReviewerComments.Average(a => (a.Credit * a.Weightage / 100.0)) : 0).ToString("F"))
+                        </td>
+                        @foreach (var criteria in Model.Criterias)
                 {
                     var managerComment = nomination.ManagerComments.FirstOrDefault(mc => mc.CriteriaId == criteria.Id);
                     if (managerComment != null)
@@ -116,16 +117,16 @@
                         }
                     }
                 }
-            </tr>
-            <tr>
-                    
-                <td>
-                    Consolidated
-                </td>
-                <td class="averagePoints">
-                    @((((nomination.ReviewerComments.Any() ? nomination.ReviewerComments.Average(a => (a.Credit * a.Weightage / 100.0)) : 0) + (nomination.ManagerComments.Any() ? nomination.ManagerComments.Average(a => (a.Rating * a.Weightage / 100.0)) : 0))/2.0).ToString("F"))
-                </td>
-                @foreach (var criteria in Model.Criterias)
+                    </tr>
+                    <tr>
+
+                        <td>
+                            Consolidated
+                        </td>
+                        <td class="averagePoints">
+                            @((((nomination.ReviewerComments.Any() ? nomination.ReviewerComments.Average(a => (a.Credit * a.Weightage / 100.0)) : 0) + (nomination.ManagerComments.Any() ? nomination.ManagerComments.Average(a => (a.Rating * a.Weightage / 100.0)) : 0))/2.0).ToString("F"))
+                        </td>
+                        @foreach (var criteria in Model.Criterias)
                 {
                     var managerComment = nomination.ManagerComments.FirstOrDefault(mc => mc.CriteriaId == criteria.Id);
                     if (managerComment != null)
@@ -139,18 +140,18 @@
                         }
                     }
                 }
-            </tr>
-            <tr>
-                    
-                <td>
-                    Final Score
-                </td>
-                <td class="averagePoints">
-                    <span class="averagePoints finalAverageScore_@nomination.NominationId">
-                        @((((nomination.ReviewerComments.Any() ? nomination.ReviewerComments.Average(a => (a.Credit * a.Weightage / 100.0)) : 0) + (nomination.ManagerComments.Any() ? nomination.ManagerComments.Average(a => (a.Rating * a.Weightage / 100.0)) : 0)) / 2.0).ToString("F"))
-                    </span>
-                </td>
-                @foreach (var criteria in Model.Criterias)
+                    </tr>
+                    <tr>
+
+                        <td>
+                            Final Score
+                        </td>
+                        <td class="averagePoints">
+                            <span class="averagePoints finalAverageScore_@nomination.NominationId">
+                                @((((nomination.ReviewerComments.Any() ? nomination.ReviewerComments.Average(a => (a.Credit * a.Weightage / 100.0)) : 0) + (nomination.ManagerComments.Any() ? nomination.ManagerComments.Average(a => (a.Rating * a.Weightage / 100.0)) : 0)) / 2.0).ToString("F"))
+                            </span>
+                        </td>
+                        @foreach (var criteria in Model.Criterias)
                 {
                     var managerComment = nomination.ManagerComments.FirstOrDefault(mc => mc.CriteriaId == criteria.Id);
                     var managerScore = managerComment != null ? managerComment.Rating * managerComment.Weightage / 100.0 : 0;
@@ -170,13 +171,13 @@
                         </td>
                     }
                 }
-            </tr>
+                    </tr>
         }
-        
-        </tbody>
-    </table>
-</div>
 
+            </tbody>
+        </table>
+    </div>
+</div>
 
 <script>
     function RecalculateFinalScore(nominationId) {
