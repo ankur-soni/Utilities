@@ -6,8 +6,6 @@ using System.Linq;
 using System.Web.Mvc;
 using System.Data.Entity.Infrastructure;
 
-
-
 namespace Silicus.FrameworxDashboard.Web.Controllers
 {
     [Authorize]
@@ -115,24 +113,25 @@ namespace Silicus.FrameworxDashboard.Web.Controllers
 
         public ActionResult Details(int id)
         {
-            List<Frameworx> frameworkList = _frameworxProjectService.GetAllFrameworx();
-            var CategoryList = _frameworxProjectService.GetAllCategories();
-
+            Frameworx framework = _frameworxProjectService.FrameworkDetail(id);
+            //  var CategoryList = _frameworxProjectService.GetAllCategories();                        
             FrameworxViewModel frameworxViewModel = new FrameworxViewModel();
-            var results = frameworkList.Join(CategoryList,
-                wo => wo.CategoryId,
-                p => p.Id,
-                (order, plan) => new { order.Id, order.Title, order.SourceCodeLink, order.DemoLink, order.HtmlDescription, plan.Name }
-                ).ToList();
+            //var results = frameworkList.Join(CategoryList,
+            //    wo => wo.CategoryId,
+            //    p => p.Id,
+            //    (order, plan) => new { order.Id, order.Title, order.SourceCodeLink, order.DemoLink, order.HtmlDescription, plan.Name}
+            //    ).ToList();
 
-            var result = results.Where(p => p.Id == id).FirstOrDefault();
+            //var result = results.Where(p => p.Id == id).FirstOrDefault();
 
-            frameworxViewModel.Name = result.Name;
-            frameworxViewModel.Title = result.Title;
-            frameworxViewModel.HtmlDescription = result.HtmlDescription;
+            frameworxViewModel.Name = framework.Category.Name;
+            frameworxViewModel.Title = framework.Title;
+            frameworxViewModel.HtmlDescription = framework.HtmlDescription;
 
-            frameworxViewModel.DemoLink = result.DemoLink;
-            frameworxViewModel.SourceCodeLink = result.SourceCodeLink;
+            frameworxViewModel.DemoLink = framework.DemoLink;
+            frameworxViewModel.SourceCodeLink = framework.SourceCodeLink;
+
+            frameworxViewModel.Likes = framework.Likes.Count;
 
             return View(frameworxViewModel);
         }

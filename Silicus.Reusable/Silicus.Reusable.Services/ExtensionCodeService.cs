@@ -30,7 +30,7 @@ namespace Silicus.FrameworxProject.Services
 
         public List<Frameworx> GetAllFrameworx()
         {
-            return _FrameworxProjectDatabaseContext.Query<Frameworx>().ToList();
+            return _FrameworxProjectDatabaseContext.Query<Frameworx>("Likes").ToList();
         }
 
         public List<ExtensionSolution> GetAllApprovedExtensionSolution()
