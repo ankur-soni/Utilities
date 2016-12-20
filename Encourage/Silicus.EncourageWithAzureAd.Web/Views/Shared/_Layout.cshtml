@@ -17,14 +17,18 @@
     <link href="~/css/bootstrap-switch.css" rel="stylesheet" />
 
     <link href="~/Css/custom-style.css" rel="stylesheet" />
-
+    
     <link href="~/Css/bars-square.css" rel="stylesheet" />
     
     <script src="~/js/jquery-2.1.1.js"></script>
     @*<script src="~/js/jquery.barrating.min.js"></script>*@
+   
 </head>
 <body class="container-fluid">
-   
+    <!-- Preloader -->
+    @*<div class="preloader">
+        <div class="cssload-speeding-wheel"></div>
+    </div>*@
     <div class="row top-header bbl">
         <div class="col-sm-4">
             <div class="pll ptm pbs"><img src="~/Images/logo.jpg" class="mts mbs" alt="Silicus Logo" title="Silicus Encloud" /></div>
@@ -112,7 +116,7 @@
                                             <ul class="nav nav-second-level">
                                                 @if (roles.Contains("Admin"))
                                                 {
-                                                    <li><a href="@Url.Action("ReviewFeedbackList", "Review")" class="active">Nomination Reviews</a></li>
+                                                    <li><a href="@Url.Action("ReviewFeedbackList", "Review")" class="active">Shortlisted Nominations</a></li>
                                                 }
                                             </ul>
                                         </li>
