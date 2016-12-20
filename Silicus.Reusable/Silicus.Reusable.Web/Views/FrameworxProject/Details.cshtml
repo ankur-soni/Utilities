@@ -14,6 +14,10 @@
         .btn-primary :hover {
             background: #286090;
         }
+
+    .btn-details-close {
+        margin-right: 42px!important;
+    }
 </style>
 <div class="modal-header">
 
@@ -27,7 +31,7 @@
     <a href="@Model.DemoLink" class="btn btn-info pull-left" role="button" target="_blank">How to Use this?</a>
     <a href="@Model.SourceCodeLink" class="btn btn-info pull-left" role="button" target="_blank">Source Code</a>
     <a href="@Model.SourceCodeLink" class="btn btn-info pull-left" role="button" target="_blank">Demo</a>
-    <a class="like @(Model.IsLiked?"liked":"") pull-left" href="#"><i class="fa fa-thumbs-o-up"></i> <span>Like</span>(@Model.Likes)</a>
-    <button type="button" class="btn btn-primary" id="" data-dismiss="modal">Close</button>
+    <a class="like @(Model.IsLiked?"liked":"") pull-left" href="#"><i class="fa fa-thumbs-o-up"></i> <span id="like-text">@(Model.IsLiked ? "UnLike" : "Like")</span> (<span id="like-count">@Model.Likes</span>)</a>
+    @Html.HiddenFor(m => m.LikeId)
+    <button type="button" class="btn btn-primary btn-details-close" data-dismiss="modal">Close</button>
 </div>
-

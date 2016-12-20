@@ -25,7 +25,7 @@ namespace Silicus.FrameworxProject.Services
 
         public List<Frameworx> GetAllFrameworxs(int id)
         {
-          //  _FrameworxProjectDatabaseContext.Query<Frameworx>().Where(m => m.CategoryId.Equals(id)).ToList();
+            //  _FrameworxProjectDatabaseContext.Query<Frameworx>().Where(m => m.CategoryId.Equals(id)).ToList();
             return _FrameworxProjectDatabaseContext.Query<Frameworx>().Where(m => m.CategoryId.Equals(id)).ToList();
         }
 
@@ -52,6 +52,16 @@ namespace Silicus.FrameworxProject.Services
         public void AddFrameworx(Frameworx frameworx)
         {
             _FrameworxProjectDatabaseContext.Add(frameworx);
+        }
+
+        public int AddFrameworxLike(FrameworxLike frameworxLike)
+        {
+            return _FrameworxProjectDatabaseContext.Add(frameworxLike).Id;
+        }
+
+        public void RemoveFrameworxLike(FrameworxLike frameworxLike)
+        {
+            _FrameworxProjectDatabaseContext.Delete(frameworxLike);
         }
     }
 }
