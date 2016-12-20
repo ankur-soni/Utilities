@@ -493,6 +493,7 @@
     <Content Include="Css\plugins\switchery\_notes\dwsync.xml" />
     <Content Include="Css\plugins\toastr\toastr.min.css" />
     <Content Include="Css\plugins\toastr\_notes\dwsync.xml" />
+    <Content Include="Css\spinners.css" />
     <Content Include="Css\star-rating.css" />
     <Content Include="Css\style.css" />
     <Content Include="Css\style.min.css" />
