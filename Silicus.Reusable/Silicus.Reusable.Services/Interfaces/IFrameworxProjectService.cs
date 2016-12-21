@@ -21,5 +21,9 @@ namespace Silicus.FrameworxProject.Services.Interfaces
         void AddCategory(FrameworxCategory category);
 
         void AddFrameworx(Frameworx frameworx);
+
+        int AddFrameworxLike(FrameworxLike FrameworxLike);
+
+        void RemoveFrameworxLike(FrameworxLike FrameworxLike);        
     }
 }

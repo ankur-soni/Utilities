@@ -1,11 +1,7 @@
 ﻿using Silicus.FrameworxProject.DAL.Interfaces;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Data.Entity;
-using System.Text;
-using System.Threading.Tasks;
 using Silicus.FrameworxProject.Models;
+using System.Data.Entity;
+using System.Linq;
 
 namespace Silicus.FrameworxProject.DAL
 {
@@ -25,7 +21,7 @@ namespace Silicus.FrameworxProject.DAL
         public DbSet<OtherCode> OtherCodes { get; set; }
         public DbSet<CodeType> CodeTypes { get; set; }
         public DbSet<ProductBacklog> ProductBacklogs { get; set; }
-
+        public DbSet<FrameworxLike> FrameworxLikes { get; set; }        
         public int Update<T>(T item) where T : class
         {
 
@@ -56,7 +52,7 @@ namespace Silicus.FrameworxProject.DAL
 
         public IQueryable<T> Query<T>() where T : class
         {
-            return Set<T>().AsNoTracking();
+             return Set<T>().AsNoTracking();
         }
 
         public IQueryable<T> Query<T>(string property) where T : class

@@ -14,6 +14,7 @@ namespace Silicus.FrameworxProject.Models
             Frameworxs = new List<Frameworx>();
         }
 
+        [Key]
         public int Id { get; set; }
 
         [Required]

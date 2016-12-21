@@ -23,6 +23,7 @@ namespace Silicus.FrameworxProject.DAL
                 DemoLink = "https://github.com/Silicus-Online/Frameworx/blob/master/Silicus.FrameWorx.Auditor/Silicus.FrameWorx.Auditing.v11.suo",
                 SourceCodeLink = "https://github.com/Silicus-Online/Frameworx/tree/master/Silicus.FrameWorx.Auditor",
                 CategoryId = 2 ,
+                OwnerId= 3873,
                 HtmlDescription = "<h4>Silicus Frameworx Auditor</h4><ul><li>A simple library that provides the ability to add business events into a database.</ li><li>AuditManager insert audit entry into SQL DB.</ li><li>Extensible</ li></ul>"
             });
             context.Frameworxs.Add(new Frameworx
@@ -32,6 +33,7 @@ namespace Silicus.FrameworxProject.DAL
                 DemoLink = "https://github.com/Silicus-Online/Frameworx/tree/master/Silicus.FrameWorx.Utility",
                 SourceCodeLink = "https://github.com/Silicus-Online/Frameworx/tree/master/Silicus.FrameWorx.Utility",
                 CategoryId = 2 ,
+                OwnerId = 3873,
                 HtmlDescription = "<h4>Silicus Frameworx Utility</h4><ul><li>Guard - provides input validation against NULL and Empty for various datatypes.</ li><li>BlobService – Provides generic methods to convert an object into binary data back and forth.</li><li>RijndaelEncryptionHelper - provides the ability to encrypt or decrypt plain text.</ li></ul>"
             });
 
@@ -40,6 +42,7 @@ namespace Silicus.FrameworxProject.DAL
                 Id = 7,
                 Title = "Cloud Search",
                 CategoryId = 2,
+                OwnerId = 3873,
                 HtmlDescription = "<h4>Cloud Search</h4><ul><li>Search framework for .NET based on Amazon Search 2013-01-01 API.</ li></ul>"
             });
 
@@ -48,6 +51,7 @@ namespace Silicus.FrameworxProject.DAL
                 Id = 8,
                 Title = "Cloud Storage",
                 CategoryId = 2,
+                OwnerId = 3873,
                 HtmlDescription = "<h4>Cloud Storage</h4><ul><li>Azure Storage framework provide access the Microsoft Azure Cloud Storage services including Blob, Queue, Table and File.</ li></ul>"
             });
 
@@ -56,6 +60,7 @@ namespace Silicus.FrameworxProject.DAL
                 Id = 9,
                 Title = "Cryptography Framework",
                 CategoryId = 2,
+                OwnerId = 3873,
                 HtmlDescription = "<h4>Cryptography Framework</h4><ul><li>Cryptography library that wraps complex hashing algorithms for password hashing with quick and simple usage.</ li></ul>"
             });
 
@@ -64,6 +69,7 @@ namespace Silicus.FrameworxProject.DAL
                 Id = 10,
                 Title = "WebAPI Client Framework",
                 CategoryId = 2,
+                OwnerId = 3873,
                 HtmlDescription = "<h4>WebAPI Client Framework</h4><ul><li>A simple wrapper around RestSharp and Json.NET.</ li></ul>"
             });
 
@@ -72,6 +78,7 @@ namespace Silicus.FrameworxProject.DAL
                 Id = 11,
                 Title = "File Encryption",
                 CategoryId = 2,
+                OwnerId = 3873,
                 HtmlDescription = "<h4>File Encryption</h4><ul><li>File Encryption is a file encryption library available for C# .NET framework that uses the industry standard Advanced Encryption Standard to easily and securely encrypt files.</ li></ul>"
             });
 
@@ -80,6 +87,7 @@ namespace Silicus.FrameworxProject.DAL
                 Id = 12,
                 Title = "Cache Provider",
                 CategoryId = 2,
+                OwnerId = 3873,
                 HtmlDescription = "<h4>Cache Provider</h4><ul><li>Cache Provider is caching abstraction layer for .NET written in C#. It supports various cache providers.</ li></ul>"
             });
 
@@ -88,6 +96,7 @@ namespace Silicus.FrameworxProject.DAL
                 Id = 13,
                 Title = "Extension Methods",
                 CategoryId = 2,
+                OwnerId = 3873,
                 HtmlDescription = "<h4>Extension Methods</h4><ul><li>A Home of 500+ Extension for C# .net.</ li></ul>"
             });
 
@@ -96,6 +105,7 @@ namespace Silicus.FrameworxProject.DAL
                 Id = 14,
                 Title = ".NET Logging Libraries",
                 CategoryId = 2,
+                OwnerId = 3873,
                 HtmlDescription = "<h4>.NET Logging Libraries</h4><ul><li>Simple, pretty and powerful logger for .net.</ li></ul>"
             });
 
@@ -104,6 +114,7 @@ namespace Silicus.FrameworxProject.DAL
                 Id = 15,
                 Title = "Interceptor",
                 CategoryId = 2,
+                OwnerId = 3873,
                 HtmlDescription = "<h4>Interceptor</h4><ul><li>A Framework to do the Logging and Intercepting Database Operations for Entity Framework.</ li></ul>"
             });
 
@@ -112,6 +123,7 @@ namespace Silicus.FrameworxProject.DAL
                 Id = 16,
                 Title = "Simple Email",
                 CategoryId = 2,
+                OwnerId = 3873,
                 HtmlDescription = "<h4>Simple Email</h4><ul><li>A Simple SMTP Email Library with Email template engine to send templated emails.</ li></ul>"
             });
 
@@ -120,6 +132,7 @@ namespace Silicus.FrameworxProject.DAL
                 Id = 17,
                 Title = "API Email",
                 CategoryId = 2,
+                OwnerId = 3873,
                 HtmlDescription = "<h4>API Email</h4><ul><li>A Simple Emails library to send emails using Sendgrid, MailChimp etc.</ li></ul>"
             });
 
@@ -128,6 +141,7 @@ namespace Silicus.FrameworxProject.DAL
                 Id = 18,
                 Title = "SMS Messaging",
                 CategoryId = 2,
+                OwnerId = 3873,
                 HtmlDescription = "<h4>Sms Messaging</h4><ul><li>A simple messaging library to send SMS using provider such as Twilo, Pilivo.</ li></ul>"
             });
 
@@ -136,6 +150,7 @@ namespace Silicus.FrameworxProject.DAL
                 Id = 19,
                 Title = "PayPal Payment Processing",
                 CategoryId = 2,
+                OwnerId = 3873,
                 HtmlDescription = "<h4>PayPal Payment Processing Framework</h4>"
             });
 
@@ -144,6 +159,7 @@ namespace Silicus.FrameworxProject.DAL
                 Id = 20,
                 Title = "Delimited File Reader",
                 CategoryId = 2,
+                OwnerId = 3873,
                 HtmlDescription = "<h4>Delimited File Reader</h4><ul><li>A powerful delimited file reader for reading the records line by line.</ li></ul>"
             });
 
@@ -152,6 +168,7 @@ namespace Silicus.FrameworxProject.DAL
                 Id = 21,
                 Title = "Data Auditing for EF",
                 CategoryId = 2,
+                OwnerId = 3873,
                 HtmlDescription = "<h4>Data Auditing for Entity Framework</h4><ul><li>Data Auditing Framework Lets you easily implement auditing on your application entities.</li><li> An audit record is written whenever an update of delete operation is applied to an entity and stores the time of the change and the user making the change along with the original entity values. </li><li>Complete audit trail changes to your entity are being saved</li></ul>"
             });
 
@@ -160,6 +177,7 @@ namespace Silicus.FrameworxProject.DAL
                 Id = 22,
                 Title = "Domain Validation Framework",
                 CategoryId = 2,
+                OwnerId = 3873,
                 HtmlDescription = "<h4>Domain Validation Framework</h4><ul><li>A simple validation library made up of validation and lambda expression  to create rules that will help to validate the model classes.</ li></ul>"
             });
 
@@ -168,6 +186,7 @@ namespace Silicus.FrameworxProject.DAL
                 Id = 23,
                 Title = "Application Configuration",
                 CategoryId = 2,
+                OwnerId = 3873,
                 HtmlDescription = "<h4>Application Configuration Framework</h4><ul><li>A Simple framework provides various data store to store the application related configuration.</ li></ul>"
             });
 
@@ -176,6 +195,7 @@ namespace Silicus.FrameworxProject.DAL
                 Id = 24,
                 Title = "Transient Execution Framework",
                 CategoryId = 2,
+                OwnerId = 3873,
                 HtmlDescription = "<h4>Transient Execution Framework</h4><ul><li>Transient Execution Framework can apply retry policies to operations that your application performs against database operations that may exhibit transient faults.</ li></ul>"
             });
 
@@ -184,6 +204,7 @@ namespace Silicus.FrameworxProject.DAL
                 Id = 25,
                 Title = "Transient Fault Detection",
                 CategoryId = 2,
+                OwnerId = 3873,
                 HtmlDescription = "<h4>Transient Fault Detection Framework</h4><ul><li>Transient Fault Detection Framework Provides the transient error detection logic that can recognize transient faults when dealing with Windows Azure Caching, Windows Azure Service Bus, SQL Database, Windows Azure storage services.</ li></ul>"
             });
 

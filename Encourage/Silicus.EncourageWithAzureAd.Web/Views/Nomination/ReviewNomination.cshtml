@@ -4,191 +4,200 @@
     ViewBag.Title = "ReviewNomination";
 }
 
-<style>
-    .container .content {
-        display: none;
-        padding: 5px;
-    }
-
-        
-    .page-heading {
-        margin-left:0%;
-    }
-
-    .navbar-minimalize{
-    margin-left:35%;
-    }
-</style>
-<div class="row border-bottom">
-    <nav class="navbar  " role="navigation" style="margin-bottom: 0">
+<div class="row white-bg header-row">
+    <nav class="" role="navigation" style="margin-bottom: 0">
         <div class="navbar-header">
             <a class="navbar-minimalize minimalize-styl-2 btn btn-primary " href="#"><i class="fa fa-bars"></i> </a>
         </div>
     </nav>
-</div>
-<div class="row wrapper border-bottom white-bg page-heading border-bottom" style="width:90%;">
-    <div class="col-sm-12">
-        <h1>Review Nomination</h1>
+    <div class="col-lg-11 col-md-11 col-sm-11">
+        <h1 class="header-name">Review Nomination</h1>
     </div>
 </div>
-<div class="wrapper wrapper-content animated fadeInRight">
+@using (Html.BeginForm("ReviewNomination", "Nomination", FormMethod.Post, new {id = "reviewNominationForm"}))
+{
+    @Html.HiddenFor(modelItem => modelItem.ReviewerId)
+    @Html.HiddenFor(modelItem => modelItem.NominationId)
+    <div class="row">
+        <div class="col-lg-12 col-md-12 col-sm-12">
+            <div class="panel panel-info M-T15">
+                <div class="panel-heading"> <span>Review For:&nbsp; @Html.DisplayFor(modelItem => modelItem.NomineeName)</span>
+                </div>
+                <div class="panel-wrapper collapse in" aria-expanded="true">
+                    <div class="panel-body">
 
-    <div class="row" style="padding-top:20px;margin-left:3%;">
-        @using (Html.BeginForm("ReviewNomination", "Nomination", FormMethod.Post, new { id = "reviewNominationForm" }))
-        {
-            @Html.HiddenFor(modelItem => modelItem.ReviewerId)
-            @Html.HiddenFor(modelItem => modelItem.NominationId);
-            <table class="table table-hover issue-tracker white-bg" style="width:80%">
-                <thead>
-                    <tr>
-                        <td>
-                            <label> Review For:</label>
-                        </td>
-
-                        <td>
-                            @Html.DisplayFor(modelItem => modelItem.NomineeName)
+                        
+                        <table class="table issue-tracker">
+                            <thead>
                             
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <label> Project/Department:</label>
-                        </td>
+                            <tr>
+                                <td class="col-lg-4 col-md-4 col-sm-4">
+                                    <label> Project/Department:</label>
+                                </td>
 
-                        <td>
-                            @Html.DisplayFor(modelItem => modelItem.ProjectOrDepartment)
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <label> Manager:</label>
-                        </td>
+                                <td class="col-lg-8 col-md-8 col-sm-8">
+                                    @Html.DisplayFor(modelItem => modelItem.ProjectOrDepartment)
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="col-lg-4 col-md-4 col-sm-4">
+                                    <label> Manager:</label>
+                                </td>
 
-                        <td>
-                            @Html.DisplayFor(modelItem => modelItem.Manager)
-                        </td>
-                    </tr>
+                                <td class="col-lg-8 col-md-8 col-sm-8">
+                                    @Html.DisplayFor(modelItem => modelItem.Manager)
+                                </td>
+                            </tr>
 
-                </thead>
-            </table>
-            <br />
-            <table class="table table-hover issue-tracker" style="width:80%;table-layout:fixed">
-                <tr>
+                            </thead>
+                        </table>
 
-                    <th>
-                        @Html.DisplayFor(modelItem => modelItem.Manager) Says:
-                    </th>
-                </tr>
-                <tr class="white-bg">
-                    <td class="more" style="word-wrap: break-word;">
-
-                        @Model.ManagerComment
-
-                    </td>
-                </tr>
-            </table>
-            <br />
-            <table class="table table-hover issue-tracker white-bg" style="width:80%">
-                <thead>
-                    <tr>
-                        <th>Criteria</th>
-                        <th>Weightage</th>
-                        <th>Rating</th>
-                        <th>Points</th>
-                        <th>Manager Comment</th>
-                        <th>Reviewer Ratings</th>
-                        <th>Reviewer Comment</th>
-                    </tr>
-                </thead>
-                @{
-                    var j = 0;
-                }
-                @foreach (var managerComment in Model.ManagerComments)
-                {
-                    <tbody>
-                        <tr>
-                            @Html.Hidden("CriteriaId", @managerComment.CriteriaId)
-                            @{
-                                var criteria = Model.Criterias.FirstOrDefault(mc => mc.Id == managerComment.CriteriaId);
-                            }
-                            <td class="col-md-4">@(criteria != null ? criteria.Title : "")</td>
-                            <td class="col-md-1">@managerComment.Weightage</td>
-                            <td class="col-md-2">
-                                @Html.DropDownList("Comments[" + @j + "].Rating",
-                                    Enumerable.Range(1, 5).
-                                        Select(r => new SelectListItem
-                                        {
-                                            Value = r.ToString(),
-                                            Text = r.ToString()
-                                        }), "", new { @class = "example-square", @autocomplete = "off", @value = managerComment.Rating })
-                            </td>
-                            <td class="col-md-1">@(managerComment.Weightage * managerComment.Rating / 100.0)</td>
-                            <td class="more" style="word-break:break-all">@managerComment.Comment</td>
-                            
-                            <td class="col-md-2">
-                                @Html.DropDownList("Comments[" + @j + "].Credit",
-                                    Enumerable.Range(1, 5).
-                                        Select(r => new SelectListItem
-                                        {
-                                            Value = r.ToString(),
-                                            Text = r.ToString()
-                                        }),"", new { @class = "reviewer-rating", @autocomplete = "off" })
-                            </td>
-
-                            <td class="col-md-3">@Html.TextArea("Comments[" + @j + "].Comment", new {name="reviewercomment",maxlength = "100", onKeyUp= "return onkeyevent(this);", onblur = "return hideRemainingCharacterText(this);" })<div class="textarea"></div></td>
-
-                            @Html.Hidden("Comments[" + @j + "].CriteriaId", managerComment.CriteriaId)
-                        </tr>
-                    </tbody>
-                    j++;
-                    
-                }
-               
-                
-                @if (Model.ManagerComments != null)
-                {
-                    for (int i = 0; i < Model.ManagerComments.Count; i++)
-                    {
-                        @Html.HiddenFor(model => Model.ManagerComments[i].Comment)
-                    }
-                }
-
-                <tr>
-                    <td></td>
-                    <td></td>
-                    <td style="text-align:center;color:#0063A7;font-weight:bold">Total Points:</td>
-                    <td> @(Model.ManagerComments.Sum(a=>(a.Rating * a.Weightage/100.0))) </td>
-                    <td style="text-align:center;color:#0063A7;font-weight:bold" >
-                        Average Ratings:
-                    </td>
-                    <td id="totalCredits" class="col-md-1 text-center font-bold">
-                        0
-                    </td>
-                    <td></td>
-                </tr>
-
-            </table>
-            <div class="form-group">
-                <div style="text-align:center;width:80%;">
-                    @if (Model.IsLocked)
-                    {
-                        <input type="button" name="submit" value="Save Draft" id="saveButton" class="btn btn-primary btnSameSize" onclick="return SaveDraftReview()"  title="Review process is locked." disabled/>
-                        <input type="button" name="submit" value="Submit" id="submitButton" class="btn btn-primary btnSameSize" onclick="return SubmitReview()" title="Review process is locked." disabled/>
-                    }
-                    else
-                    {
-                        <input type="button" name="submit" value="Save Draft" id="saveButton" class="btn btn-primary btnSameSize" onclick="return SaveDraftReview()" />
-                        <input type="button" name="submit" value="Submit" id="submitButton" class="btn btn-primary btnSameSize" onclick="return SubmitReview()" />
-                    }
-                    <input type="button" value="Cancel" class="btn btn-primary btnSameSize" onclick="location.href='@Url.Action("ReviewNominations", "Nomination")'" />
+                    </div>
                 </div>
             </div>
-                    }
-        
+        </div>
     </div>
-</div>
+    <div class="row">
+        <div class="col-lg-12 col-md-12 col-sm-12">
+            <div class="panel panel-info">
+                <div class="panel-heading"> <span>@Html.DisplayFor(modelItem => modelItem.Manager) Says:</span>
+                </div>
+                <div class="panel-wrapper collapse in" aria-expanded="true">
+                    <div class="panel-body">
+                        <table class="table issue-tracker">
+
+                            <tr class="">
+                                <td class="more">
+
+                                    @Model.ManagerComment
+
+                                </td>
+                            </tr>
+
+                        </table>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-lg-12 col-md-12 col-sm-12">
+            <div class="box M-B60">
+                <div class="f1">
+                    <div class="wizard-box" style="margin-top: 0px;">
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="table-responsive">
 
 
+                                            <table class="table issue-tracker">
+                                                <thead>
+                                                    <tr>
+                                                        <th>Criteria</th>
+                                                        <th colspan="4">Manager</th>
+                                                        <th colspan="2">Reviewer</th>
+                                                    </tr>
+                                                    <tr>
+                                                        <th></th>
+                                                        <th>Weightage</th>
+                                                        <th>Rating</th>
+                                                        <th>Points</th>
+                                                        <th>Comments</th>
+                                                        <th>Rating</th>
+                                                        <th>Comments</th>
+                                                    </tr>
+                                                </thead>
+                                                @{
+                                        var j = 0;
+                                                }
+                                                @foreach (var managerComment in Model.ManagerComments)
+                                    {
+                                    <tbody>
+                                        <tr>
+                                            @Html.Hidden("CriteriaId", @managerComment.CriteriaId)
+                                            @{
+                                                var criteria = Model.Criterias.FirstOrDefault(mc => mc.Id == managerComment.CriteriaId);
+                                            }
+                                            <td class="col-lg-2 col-md-2 col-sm-2">@(criteria != null ? criteria.Title : "")</td>
+                                            <td class="col-lg-1 col-md-1 col-sm-1">@managerComment.Weightage</td>
+                                            <td class="col-lg-2 col-md-2 col-sm-2">
+                                                @Html.DropDownList("Comments[" + @j + "].Rating",
+                                                    Enumerable.Range(1, 5).
+                                                        Select(r => new SelectListItem
+                                                        {
+                                                            Value = r.ToString(),
+                                                            Text = r.ToString()
+                                                        }), "", new { @class = "example-square", @autocomplete = "off", @value = managerComment.Rating })
+                                            </td>
+                                            <td class="col-lg-1 col-md-1 col-sm-1">@(managerComment.Weightage * managerComment.Rating / 100.0)</td>
+                                            <td class="more col-lg-1 col-md-1 col-sm-1" style="word-break: break-all">@managerComment.Comment</td>
+
+                                            <td class="col-lg-2 col-md-2 col-sm-2">
+                                                @Html.DropDownList("Comments[" + @j + "].Credit",
+                                                    Enumerable.Range(1, 5).
+                                                        Select(r => new SelectListItem
+                                                        {
+                                                            Value = r.ToString(),
+                                                            Text = r.ToString()
+                                                        }), "", new { @class = "reviewer-rating", @autocomplete = "off" })
+                                            </td>
+
+                                            <td class="col-lg-3 col-md-3 col-sm-3">@Html.TextArea("Comments[" + @j + "].Comment", new { name = "reviewercomment", maxlength = "100", onKeyUp = "return onkeyevent(this);", onblur = "return hideRemainingCharacterText(this);" })<div class="textarea"></div></td>
+
+                                            @Html.Hidden("Comments[" + @j + "].CriteriaId", managerComment.CriteriaId)
+                                        </tr>
+                                    </tbody>
+                                        j++;
+
+                                    }
+
+
+                                                @if (Model.ManagerComments != null)
+                                    {
+                                        for (int i = 0; i < Model.ManagerComments.Count; i++)
+                                        {
+                                    @Html.HiddenFor(model => Model.ManagerComments[i].Comment)
+                                        }
+                                    }
+                                                <tr>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td style="text-align: center; color: #0063A7; font-weight: bold">Total Points:</td>
+                                                    <td> @(Model.ManagerComments.Sum(a => (a.Rating * a.Weightage / 100.0))) </td>
+                                                    <td style="text-align: center; color: #0063A7; font-weight: bold">
+                                                        Average Ratings:
+                                                    </td>
+                                                    <td id="totalCredits" class="col-md-1 text-center font-bold">
+                                                        0
+                                                    </td>
+                                                    <td></td>
+                                                </tr>
+                                            </table>
+
+                                        </div>
+                                    </div>
+                                </div>
+                    </div>
+                                <div class="row M-T15">
+
+                                    <div class="pull-right btn-nav">
+
+                                        <input type="button" name="submit" value="Save Draft" id="saveButton" class="btn btn-primary" onclick="return SaveDraftReview();" />
+                                        <input type="button" name="submit" value="Submit" id="submitButton" class="btn btn-primary" onclick="return SubmitReview();" />
+                                        <input type="button" value="Cancel" class="btn btn-primary" onclick="location.href = '@Url.Action("ReviewNominations", "Nomination")'">
+                                    </div>
+
+
+
+                                </div>
+
+                            </div>
+
+                        </div>
+                    </div>
+    </div>
+}
 <script src="~/js/jquery-2.1.1.js"></script>
 <script src="~/js/plugins/validate/jquery.validate.min.js"></script>
 <script src="~/Scripts/jquery.validate.unobtrusive.js"></script>
@@ -231,7 +240,7 @@
                 text: "Do you want to save this review for nomination?",
                 type: "info",
                 showCancelButton: true,
-                confirmButtonColor: "#0070b9",
+                confirmButtonColor: "#337ab7",
                 confirmButtonText: "Yes!",
                 cancelButtonText: "No!",
                 closeOnConfirm: false,
@@ -239,6 +248,7 @@
             },
            function (isConfirm) {
                if (isConfirm) {
+                   $(".loader-overlay").show();
                    var modelbjectToSend = $('#reviewNominationForm').serialize() + '&' + $.param({ 'Submit': "Save" }, true);
 
                    $.ajax({
@@ -246,10 +256,11 @@
                        url: '@Url.Action("ReviewNomination", "Nomination")',
                        data: modelbjectToSend,
                        success: function (data) {
+                           $(".loader-overlay").hide();
                            swal({
                                title: "Review saved successfully",
                                showCancelButton: false,
-                               confirmButtonColor: "#88a364",
+                               confirmButtonColor: "#337ab7",
                                confirmButtonText: "Ok"
                            },
                            function () {
@@ -259,6 +270,7 @@
                            });
                        },
                        error: function () {
+                           $(".loader-overlay").hide();
                            swal("Error", "Oops! Something wrong happened..");
                        }
                    });
@@ -281,7 +293,7 @@
                 text: "Do you want to submit this review for nomination?",
                 type: "info",
                 showCancelButton: true,
-                confirmButtonColor: "#0070b9",
+                confirmButtonColor: "#337ab7",
                 confirmButtonText: "Yes!",
                 cancelButtonText: "No!",
                 closeOnConfirm: false,
@@ -289,6 +301,7 @@
             },
            function (isConfirm) {
                if (isConfirm) {
+                   $(".loader-overlay").show();
                    var modelbjectToSend = $('#reviewNominationForm').serialize() + '&' + $.param({ 'Submit': "Submit" }, true);
 
                    $.ajax({
@@ -296,10 +309,11 @@
                        url: '@Url.Action("ReviewNomination", "Nomination")',
                        data: modelbjectToSend,
                        success: function (data) {
+                           $(".loader-overlay").hide();
                            swal({
                                title: "Review submitted successfully",
                                showCancelButton: false,
-                               confirmButtonColor: "#88a364",
+                               confirmButtonColor: "#337ab7",
                                confirmButtonText: "Ok"
                            },
                            function () {
@@ -309,6 +323,7 @@
                            });
                        },
                        error: function () {
+                           $(".loader-overlay").hide();
                            swal("Error", "Oops! Something wrong happened..");
                        }
                    });

@@ -315,6 +315,7 @@
 
                      var a = inputValue;
                      if (isConfirm) {
+                         $(".loader-overlay").show();
                          var nominationIdToShortlist = $("#nominationId").val();
                          $.ajax({
                              type: 'post',
@@ -322,6 +323,7 @@
                              data: JSON.stringify({ nominationId: nominationIdToShortlist }),
                              contentType: "application/json; charset=utf-8",
                              success: function (data) {
+                                 $(".loader-overlay").hide();
                                  swal({
                                      title: "Nomination Shortlisted",
                                      showCancelButton: false,
@@ -335,6 +337,7 @@
                                  });
                              },
                              error: function () {
+                                 $(".loader-overlay").hide();
                                  swal("Error", "Oops! Something wrong happened..");
                              }
                          });
@@ -372,12 +375,14 @@
                 }
                 return false;
             }
+            $(".loader-overlay").show();
             $.ajax({
                 type: 'post',
                 url: '@Url.Action("SelectWinner", "Review")',
                 data: JSON.stringify({ nominationId: nominationIdToShortlist, winningComment: commentForWinner, feedback: feedbackForWinner }),
                 contentType: "application/json; charset=utf-8",
                 success: function (data) {
+                    $(".loader-overlay").hide();
                     swal({
                         title: "Winner Selected",
                         showCancelButton: false,
@@ -391,94 +396,13 @@
                     });
                 },
                 error: function (data) {
+                    $(".loader-overlay").hide();
                     alert(data);
                     swal("Error", "Oops! Something wrong happened..");
                 }
             });
 
         });
-
-        @*$('.winner').click(function () {
-
-            var commentForWinner = "";
-            var isLocked = $("div #allow-shortlist").text();
-            if (isLocked == false) {
-                sweetAlert("Please lock the nomination from dashboard before proceed.");
-                return false;
-            }
-            swal({
-                title: "Select Winner",
-                text: "Are you sure you want to select this candidate as Winner?",
-                type: "input",
-                confirmButtonText: "Yes!",
-                cancelButtonText: "No!",
-                showCancelButton: true,
-                closeOnConfirm: false,
-                animation: "slide-from-top",
-                inputPlaceholder: "To be shared across the company",
-            },
-            function (inputValue) {
-                if (inputValue === false) {
-
-                }
-                else if (inputValue === "") {
-                    swal.showInputError("You need to write something!");
-                    return false
-                }
-                else {
-                    commentForWinner = inputValue;
-                    swal({
-                        title: "Select Winner",
-                        text: "Enter your feedback.",
-                        type: "input",
-                        confirmButtonText: "Yes!",
-                        cancelButtonText: "No!",
-                        showCancelButton: true,
-                        closeOnConfirm: false,
-                        animation: "slide-from-top",
-                        inputPlaceholder: "Why you think this employee should be the winner?",
-                    }, function (inputValue) {
-                        if (inputValue === false) {
-
-                        }
-                        else if (inputValue === "") {
-                            swal.showInputError("You need to write something!");
-                            return false;
-                        }
-                        else {
-                            var nominationIdToShortlist = $("#nominationId").val();
-                            $.ajax({
-                                type: 'post',
-                                url: '@Url.Action("SelectWinner", "Review")',
-                                data: JSON.stringify({ nominationId: nominationIdToShortlist, winningComment: commentForWinner, feedback: inputValue }),
-                                contentType: "application/json; charset=utf-8",
-                                success: function (data) {
-                                    swal({
-                                        title: "Winner Selected",
-                                        showCancelButton: false,
-                                        confirmButtonColor: "#0070b9",
-                                        confirmButtonText: "Ok"
-                                    },
-                                    function (isConfirm) {
-                                        if (isConfirm) {
-                                            window.location.href = '@Url.Action("ReviewFeedbackList", "Review")';
-                                        }
-                                    });
-                                },
-                                error: function (data) {
-                                    alert(data);
-                                    swal("Error", "Oops! Something wrong happened..");
-                                }
-                            });
-                        }
-                    });
-
-                }
-
-
-            });
-
-        });*@
     });
 
     $(function () {

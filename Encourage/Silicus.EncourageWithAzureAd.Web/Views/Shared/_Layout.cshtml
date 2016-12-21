@@ -17,14 +17,18 @@
     <link href="~/css/bootstrap-switch.css" rel="stylesheet" />
 
     <link href="~/Css/custom-style.css" rel="stylesheet" />
-
+    
     <link href="~/Css/bars-square.css" rel="stylesheet" />
     
     <script src="~/js/jquery-2.1.1.js"></script>
     @*<script src="~/js/jquery.barrating.min.js"></script>*@
+   
 </head>
 <body class="container-fluid">
-   
+    <!-- Preloader -->
+    @*<div class="preloader">
+        <div class="cssload-speeding-wheel"></div>
+    </div>*@
     <div class="row top-header bbl">
         <div class="col-sm-4">
             <div class="pll ptm pbs"><img src="~/Images/logo.jpg" class="mts mbs" alt="Silicus Logo" title="Silicus Encloud" /></div>
@@ -63,7 +67,11 @@
             </div><!-- pad -->
         </div>
     </div>
+    <div class="loader-overlay" style="display:none;">
+        <div class="loader">
 
+        </div>
+    </div>
     <div class="row">
         <div id="wrapper" class="wrapper">
             <!-- START LEFT MENU -->
@@ -112,7 +120,8 @@
                                             <ul class="nav nav-second-level">
                                                 @if (roles.Contains("Admin"))
                                                 {
-                                                    <li><a href="@Url.Action("ReviewFeedbackList", "Review")" class="active">Nomination Reviews</a></li>
+                                                    <li><a href="@Url.Action("ReviewFeedbackList", "Review")" class="active">Shortlisted Nominations</a></li>
+                                                    <li><a href="@Url.Action("ConsolidatedNominations", "Review" )" class="active">Consolidated Nominations</a></li>
                                                 }
                                             </ul>
                                         </li>
@@ -147,7 +156,6 @@
             <div id="page-wrapper" class="page-wrapper">
                 @RenderBody()
             </div>
-
         </div>
     </div>
     <div class="footer fixed_full">
@@ -164,9 +172,11 @@
 
     <script src="~/js/plugins/validate/jquery.validate.min.js"></script>
 
-    <script src="~/Scripts/jquery.validate.unobtrusive.js"></script>
+<script src="~/Scripts/jquery.validate.unobtrusive.js"></script>
+    
+    <script src="~/Scripts/jquery.unobtrusive-ajax.min.js"></script>
 
-    <script src="~/js/plugins/metisMenu/jquery.metisMenu.js"></script>
+<script src="~/js/plugins/metisMenu/jquery.metisMenu.js"></script>
 
     <script src="~/js/plugins/slimscroll/jquery.slimscroll.min.js"></script>
 
@@ -219,9 +229,7 @@
         }
         );
     });
-</script>
 
-<script>
     $(document).ready(function () {
         $('.wrap').perfectScrollbar();
         sidebarautoheight();
@@ -229,4 +237,14 @@
     $(window).resize(function () {
         sidebarautoheight();
     });
+
+    function ShowCustomLoader() {
+        console.log("show");
+        $(".loader-overlay").show();
+    }
+
+    function HideCustomLoader() {
+        console.log("hide");
+        $(".loader-overlay").hide();
+    }
 </script>

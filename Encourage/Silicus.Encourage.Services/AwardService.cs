@@ -52,7 +52,7 @@ namespace Silicus.Encourage.Services
 
         public List<Engagement> GetProjectsUnderCurrentUserAsManager(string email)
         {
-            var currentUser = _CommonDbContext.Query<User>().Where(user => user.EmailAddress.Equals(email)).SingleOrDefault();
+            var currentUser = _CommonDbContext.Query<User>().SingleOrDefault(user => user.EmailAddress.Equals(email));
             // var projectUnderCurrentUser = _CommonDbContext.Query<Engagement>().Where(engagement => engagement.PrimaryProjectManagerID == currentUser.ID).ToList()
             //  return projectUnderCurrentUser;
             var projectUnderCurrentUser = new List<Engagement>();
@@ -60,7 +60,7 @@ namespace Silicus.Encourage.Services
             var distinctClientIdsUnderCurrentManager = _CommonDbContext.Query<Engagement>().Where(engagement => engagement.PrimaryProjectManagerID == currentUser.ID).GroupBy(engagement => engagement.ClientID).ToList();
             foreach (var clientid in distinctClientIdsUnderCurrentManager)
             {
-                var data = _CommonDbContext.Query<Engagement>().Where(engagement => engagement.PrimaryProjectManagerID == currentUser.ID && engagement.ClientID == clientid.Key && engagement.Stage != closedProject).FirstOrDefault();
+                var data = _CommonDbContext.Query<Engagement>().FirstOrDefault(engagement => engagement.PrimaryProjectManagerID == currentUser.ID && engagement.ClientID == clientid.Key && engagement.Stage != closedProject);
                 data.Name = _CommonDbContext.Query<Client>().Where(client => client.ID == clientid.Key).FirstOrDefault().Code;
                 projectUnderCurrentUser.Add(data);
 

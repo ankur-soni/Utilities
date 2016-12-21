@@ -4,15 +4,19 @@
     Layout = null;
 }
 <style>
-    .arrow
-{
-
-}
-    .btn-primary{
-        background:#286090;
+    .arrow {
     }
-    .btn-primary :hover{
-        background:#286090;
+
+    .btn-primary {
+        background: #286090;
+    }
+
+        .btn-primary :hover {
+            background: #286090;
+        }
+
+    .btn-details-close {
+        margin-right: 42px!important;
     }
 </style>
 <div class="modal-header">
@@ -21,11 +25,13 @@
 </div>
 <div class="modal-body">
     @Html.Raw(Server.HtmlDecode(Model.HtmlDescription))
-    <a href="@Model.DemoLink" class="btn btn-info" role="button" target="_blank">How to Use this?</a>
-    <a href="@Model.SourceCodeLink" class="btn btn-info" role="button" target="_blank">Source Code</a>
-    <a href="@Model.SourceCodeLink" class="btn btn-info" role="button" target="_blank">Demo</a>
-    
+
 </div>
 <div class="modal-footer">
-    <button type="button" class="btn btn-primary" id="closebtn" data-dismiss="modal">Close</button>
+    <a href="@Model.DemoLink" class="btn btn-info pull-left" role="button" target="_blank">How to Use this?</a>
+    <a href="@Model.SourceCodeLink" class="btn btn-info pull-left" role="button" target="_blank">Source Code</a>
+    <a href="@Model.SourceCodeLink" class="btn btn-info pull-left" role="button" target="_blank">Demo</a>
+    <a class="like @(Model.IsLiked?"liked":"") pull-left" href="#"><i class="fa fa-thumbs-o-up"></i> <span id="like-text">@(Model.IsLiked ? "UnLike" : "Like")</span> (<span id="like-count">@Model.Likes</span>)</a>
+    @Html.HiddenFor(m => m.LikeId)
+    <button type="button" class="btn btn-primary btn-details-close" data-dismiss="modal">Close</button>
 </div>

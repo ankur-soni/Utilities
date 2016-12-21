@@ -441,6 +441,22 @@ namespace Silicus.Encourage.Services
             return _encourageDatabaseContext.Query<Nomination>("ManagerComments").Where(model => model.ManagerId == managerID && (forCurrentMonth ? (model.NominationDate >= prevMonth) : (model.NominationDate < prevMonth))).ToList();
         }
 
+        public void UpdateFinalScore(int nominationId)
+        {
+            var managerComments = _encourageDatabaseContext.Query<ManagerComment>().Where(m => m.NominationId == nominationId).ToList();
+
+            foreach (var managerComment in managerComments)
+            {
+                var reviewersComments = _encourageDatabaseContext.Query<ReviewerComment>().Where(r => r.CriteriaId == managerComment.CriteriaId && r.NominationId == managerComment.NominationId).ToList();
+                if (reviewersComments.Any())
+                {
+                    managerComment.FinalScore = (Convert.ToDecimal(reviewersComments.Average(r => r.Credit)) * managerComment.Weightage) / 100m;
+                }
+
+                _encourageDatabaseContext.Update(managerComment);
+            }
+        }
+
         public FrequencyMaster GetAwardFrequencyByFrequencyCode(string frequencyCode)
         {
             return _encourageDatabaseContext.Query<FrequencyMaster>().Where(x => x.Code == frequencyCode).FirstOrDefault();

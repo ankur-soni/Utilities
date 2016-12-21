@@ -15,61 +15,47 @@
 </div>
 
 <div class="">
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="box M-T15 M-B60">
+                <div class="f1">
+                    @using (Html.BeginForm("AddNomination", "Nomination", FormMethod.Post, new { id = "addNominationForm" }))
+                    {
+                        <div class="wizard-">
+                            <div class="f1-steps" id="nomination-steps">
+                                <div class="f1-progress">
+                                    <div class="f1-progress-line" data-now-value="25" data-number-of-steps="4" style="width:25%;"></div>
+                                </div>
+                                <div class="f1-step active" step="1">
+                                    <div class="f1-step-icon" style="cursor:pointer;" onclick="moveToNominationStep(1, false);"><strong class="ico-num">1</strong></div>
 
-    @*@if (ViewBag.NominationLockStatus)
-    {
-        <div class="row">
-            <div class="col-sm-12">
-                <div class="box M-T15">
-                    <span class="text-danger" style="font-size:20px;margin-left:7%">The nominations period was closed..</span>
-                </div>
-            </div>
-        </div>
+                                    <p>Nomination Category</p>
+                                </div>
+                                <div class="f1-step" step="2">
 
-    }*@
-    @*else
-    {*@
-        <div class="row">
-            <div class="col-sm-12">
-                <div class="box M-T15 M-B60">
-                    <div class="f1">
-                        @using (Html.BeginForm("AddNomination", "Nomination", FormMethod.Post, new { id = "addNominationForm" }))
-                {
-                            <div class="wizard-">
-                                <div class="f1-steps" id="nomination-steps">
-                                    <div class="f1-progress">
-                                        <div class="f1-progress-line" data-now-value="25" data-number-of-steps="4" style="width:25%;"></div>
-                                    </div>
-                                    <div class="f1-step active" step="1">
-                                        <div class="f1-step-icon" style="cursor:pointer;" onclick="moveToNominationStep(1, false);"><strong class="ico-num">1</strong></div>
+                                    <div class="f1-step-icon" style="cursor:pointer;" onclick="moveToNominationStep(2, false);"><strong class="ico-num">2</strong></div>
 
-                                        <p>Nomination Category</p>
-                                    </div>
-                                    <div class="f1-step" step="2">
+                                    <p>Employee</p>
+                                </div>
+                                <div class="f1-step" step="3">
 
-                                        <div class="f1-step-icon" style="cursor:pointer;" onclick="moveToNominationStep(2, false);"><strong class="ico-num">2</strong></div>
+                                    <div class="f1-step-icon" style="cursor:pointer;" onclick="moveToNominationStep(3, false);"><strong class="ico-num">3</strong></div>
+                                    <p>Comments</p>
+                                </div>
+                                <div class="f1-step" step="4">
 
-                                        <p>Employee</p>
-                                    </div>
-                                    <div class="f1-step" step="3">
-
-                                        <div class="f1-step-icon" style="cursor:pointer;" onclick="moveToNominationStep(3, false);"><strong class="ico-num">3</strong></div>
-                                        <p>Comments</p>
-                                    </div>
-                                    <div class="f1-step" step="4">
-
-                                        <div class="f1-step-icon" style="cursor:pointer;" onclick="moveToNominationStep(4, false);"><strong class="ico-num">4</strong></div>
-                                        <p>Criteria & Ratings</p>
-                                    </div>
+                                    <div class="f1-step-icon" style="cursor:pointer;" onclick="moveToNominationStep(4, false);"><strong class="ico-num">4</strong></div>
+                                    <p>Criteria & Ratings</p>
                                 </div>
                             </div>
+                        </div>
                             @Html.ValidationSummary(true, "", new { @class = "text-danger" })
                             <div class="wizard-box" id="nominationCategory" nomination-step="1">
                                 <div class="row">
                                     <div class="col-lg-3 col-md-4 col-sm-5">
                                         <div class="form-group">
                                             @Html.Label("Nomination Category", htmlAttributes: new { @class = "control-label" })<span class="asterisk">*</span>
-                                            @Html.DropDownListFor(model => model.AwardId, @ViewBag.Awards as SelectList, "Select", new { @class = "form-control", id = "Award" })
+                                            @Html.DropDownListFor(model => model.AwardId, Model.ListOfAwards as SelectList, "Select", new { @class = "form-control", id = "Award" })
                                             @Html.ValidationMessageFor(model => model.AwardId, "", new { @class = "text-danger" })
                                         </div>
                                     </div>
@@ -105,7 +91,7 @@
                                     </div>
                                 </div>
 
-                                <input type="hidden" name=ManagerId id="ManagerId" value="@ViewBag.ManagerIdByProject">
+                                <input type="hidden" name=ManagerId id="ManagerId" value="@Model.ManagerId">
                                 @{ var projectMessage = "There are no projects under you."; }
                                 @{ var departmentMessage = "There are no departments under you.";}
                                 <div class="row">
@@ -113,9 +99,9 @@
                                         <div class="form-group" id="projectInput">
                                             @Html.Label("Project", htmlAttributes: new { @class = "control-label requiredfeild" })
                                             <div>
-                                                @if (@ViewBag.ProjectsUnderCurrentUser != null)
+                                                @if (Model.ProjectsUnderCurrentUser != null)
                                                 {
-                                                    @Html.DropDownListFor(model => model.ProjectID, @ViewBag.ProjectsUnderCurrentUser as SelectList, "Select", new { @class = "form-control", id = "SelectedProject" })
+                                                    @Html.DropDownListFor(model => model.ProjectID, Model.ProjectsUnderCurrentUser as SelectList, "Select", new { @class = "form-control", id = "SelectedProject" })
                                                     @*<span class="help-block themeColorBlue"> Select your Project </span>*@
                                                     @Html.ValidationMessageFor(model => model.ProjectID, "", new { @class = "text-danger" })
                                                 }
@@ -132,9 +118,9 @@
                                         <div class="form-group" id="projectInput">
                                             @Html.Label("Department", htmlAttributes: new { @class = "control-label requiredfeild" })
                                             <div>
-                                                @if (@ViewBag.DepartmentsUnderCurrentUser != null)
+                                                @if (Model.DepartmentsUnderCurrentUser != null)
                                                 {
-                                                    @Html.DropDownListFor(model => model.DepartmentId, @ViewBag.DepartmentsUnderCurrentUser as SelectList, "Select", new { @class = "form-control", id = "SelectedDepartment" })
+                                                    @Html.DropDownListFor(model => model.DepartmentId, Model.DepartmentsUnderCurrentUser as SelectList, "Select", new { @class = "form-control", id = "SelectedDepartment" })
                                                     @*<span class="help-block themeColorBlue"> Select your Department </span>*@
                                                     @Html.ValidationMessageFor(model => model.DepartmentId, "", new { @class = "text-danger" })
                                                 }
@@ -150,7 +136,7 @@
                                     <div class="col-lg-3 col-md-4 col-sm-5">
                                         <div class="form-group">
                                             @Html.Label("Employee Name", htmlAttributes: new { @class = "control-label requiredfeild" })
-                                            @Html.DropDownListFor(model => model.ResourceId, ViewBag.Resources as SelectList, "Select", new { @class = "form-control", id = "Resources" })
+                                            @Html.DropDownListFor(model => model.ResourceId, Model.Resources as SelectList, "Select", new { @class = "form-control", id = "Resources" })
                                             @Html.ValidationMessageFor(model => model.ResourceId, "", new { @class = "text-danger" })
                                             @*<span class="help-block themeColorBlue"> Select your Employee</span>*@
                                         </div>
@@ -216,27 +202,18 @@
                                     </div>
                                     <div class="pull-right btn-nav">
                                         <input type="button" name="submit" value="Save Draft" id="savebutton" class="btn btn-primary" onclick="return checkValidationOnSaveDraft();" />
-                                        @*@if (ViewBag.NominationLockStatus)
-                                        {
-                                            <input type="button" name="submit" value="Submit" id="submitButton" class="btn btn-primary" onclick="return checkValidationOnSubmit();" disabled="disabled" />
-                                        }
-                                        else
-                                        {*@
-                                            <input type="button" name="submit" value="Submit" id="submitButton" class="btn btn-primary" onclick="return checkValidationOnSubmit();" />
-                                       @*  }*@
+                                        <input type="button" name="submit" value="Submit" id="submitButton" class="btn btn-primary" onclick="return checkValidationOnSubmit();" />
                                         <input type="button" value="Cancel" class="btn btn-primary" onclick="location.href='@Url.Action("Index", "Home")'" />
                                     </div>
                                 </div>
 
                             </div>
                                     }
-                    </div>
-                    <div class="clearfix"></div>
                 </div>
+                <div class="clearfix"></div>
             </div>
         </div>
-                                 @*}*@
-
+    </div>
 </div>
 
 <script src="~/js/plugins/validate/jquery.validate.min.js"></script>
@@ -280,7 +257,7 @@
             }
         })
     });
-   
+
     $("#ProjectRadioButton").change
         (
          function () {
@@ -290,7 +267,7 @@
              $('#Resources').append($("<option selected></option>").val(null).html("Select"));
              $("#projectInput").show();
 
-             $("#ManagerId").val('@ViewBag.ManagerIdByProject');
+             $("#ManagerId").val('@Model.ManagerId');
          });
 
     $("#DepartmentRadioButton").change
@@ -302,7 +279,7 @@
               $('#Resources').append($("<option selected></option>").val(null).html("Select"));
               $("#departmentInput").show();
 
-              $("#ManagerId").val('@ViewBag.ManagerIdByDepartment');
+              $("#ManagerId").val('@Model.ManagerId');
           });
 
     $("#Award").change(function () {
@@ -364,12 +341,13 @@
                 $(commentTextAreaId).addClass("noCommentError");
             } else {
                 $(commentTextAreaId).removeClass("noCommentError");
-    }
+            }
         }
     }
 
 
     $("#SelectedProject").change(function () {
+        $(".loader-overlay").show();
         var selectedProject = $("#SelectedProject").val();
         var selectedAward = $("#Award").val();
         $('#Resources').empty();
@@ -381,16 +359,21 @@
             data: JSON.stringify({ engagementID: selectedProject, awardId: selectedAward }),
             contentType: "application/json; charset=utf-8",
             success: function (data) {
-
+                $(".loader-overlay").hide();
                 for (var key in data) {
                     $('#Resources')
                         .append($("<option></option>").val(data[key].ID).html(data[key].DisplayName));
                 }
+            },
+            error: function (error) {
+                $(".loader-overlay").hide();
+                console.log(error);
             }
         });
     });
 
     $("#SelectedDepartment").change(function () {
+        $(".loader-overlay").show();
         var selectedDept = $("#SelectedDepartment").val();
         var selectedAward = $("#Award").val();
         //var ServiceUrl = "/Nomination/ResourcesInDepartment?departmentID=" + selectedDept +""+ selectedAward;
@@ -404,14 +387,17 @@
             //url: "/Nomination/ResourcesInDepartment",
             data: { departmentID: selectedDept, awardId: selectedAward },
             contentType: "application/json; charset=utf-8",
-            success: function(data) {
+            success: function (data) {
+                $(".loader-overlay").hide();
                 for (var key in data) {
                     $('#Resources')
                         .append($("<option></option>").val(data[key].ID).html(data[key].DisplayName));
                 }
             },
-            error: function(xhr) {
-                alert(xhr.toString());
+            error: function (xhr) {
+                $(".loader-overlay").hide();
+                //alert(xhr.toString());
+                console.log(xhr);
             }
         });
     });
@@ -420,12 +406,12 @@
 
         if ($('#addNominationForm').valid()) {
             var comments = 0;
-            $("#criteriaTable").find("textarea").each(function(data) {
+            $("#criteriaTable").find("textarea").each(function (data) {
                 if ($(this).val().trim())
                     comments++;
             });
             var weightage = 0;
-            $("#criteriaTable .ddlWeightage").each(function(data) {
+            $("#criteriaTable .ddlWeightage").each(function (data) {
                 if ($(this).val().trim()) {
                     weightage = weightage + parseInt($(this).val());
                 }
@@ -447,72 +433,75 @@
                     text: "Do you want to nominate this candidate?",
                     type: "info",
                     showCancelButton: true,
-                    confirmButtonColor: "#0070b9",
+                    confirmButtonColor: "#337ab7",
                     confirmButtonText: "Yes!",
                     cancelButtonText: "No!",
                     closeOnConfirm: false,
                     closeOnCancel: false
                 },
-                    function(isConfirm) {
-                   if (isConfirm) {
-                       var modelbjectToSend = $('#addNominationForm').serialize() + '&' + $.param({ 'submit': "Submit" }, true);
+                    function (isConfirm) {
+                        if (isConfirm) {
+                            var modelbjectToSend = $('#addNominationForm').serialize() + '&' + $.param({ 'submit': "Submit" }, true);
 
-                       $.ajax({
-                           type: 'post',
-                           url: '@Url.Action("AddNomination", "Nomination")',
-                           dataType: 'json',
-                           async: false,
-                           data: modelbjectToSend,
-                                success: function(data) {
-                               swal(data.ErrorMessage);
-                               if (data.nominationExceed) {
-                                   swal({
-                                       title: "Error",
-                                       text: data.message,
-                                       showCancelButton: false,
-                                       confirmButtonColor: "#88a364",
-                                       confirmButtonText: "Ok",
-                                   },
-                                            function() {
-                                 if (isConfirm) {
-                                     var managerId = $("#ManagerId").val();
-                                     window.location.href = '/Nomination/GetNominationList';
-                                 }
-                             });
+                            $(".loader-overlay").show();
 
+                            $.ajax({
+                                type: 'post',
+                                url: '@Url.Action("AddNomination", "Nomination")',
+                                dataType: 'json',
+                                async: false,
+                                data: modelbjectToSend,
+                                success: function (data) {
+                                    $(".loader-overlay").hide();
+                                    swal(data.ErrorMessage);
+                                    if (data.nominationExceed) {
+                                        swal({
+                                            title: "Error",
+                                            text: data.message,
+                                            showCancelButton: false,
+                                            confirmButtonColor: "#337ab7",
+                                            confirmButtonText: "Ok",
+                                        },
+                                                      function () {
+                                                          if (isConfirm) {
+                                                              var managerId = $("#ManagerId").val();
+                                                              window.location.href = '/Nomination/GetNominationList';
+                                                          }
+                                                      });
                                     } else {
-                                   swal({
-                                       title: "Nomination Submitted!",
-                                       text: "",
-                                       type: "info",
-                                       showCancelButton: false,
-                                       confirmButtonColor: "#88a364",
-                                       confirmButtonText: "Ok",
-                                   },
-                                            function() {
-                                  if (isConfirm) {
-                                      var managerId = $("#ManagerId").val();
-                                      window.location.href = '/Nomination/GetNominationList';
-                                  }
-                              });
-                               }
+                                        swal({
+                                            title: "Nomination Submitted!",
+                                            text: "",
+                                            type: "info",
+                                            showCancelButton: false,
+                                            confirmButtonColor: "#337ab7",
+                                            confirmButtonText: "Ok",
+                                        },
+                                                      function () {
+                                                          if (isConfirm) {
+                                                              var managerId = $("#ManagerId").val();
+                                                              window.location.href = '/Nomination/GetNominationList';
+                                                          }
+                                                      });
+                                    }
 
 
-                           },
-                                error: function(error) {
-                               
-                               if (error.responseText != null && error.responseText != undefined && error.responseText != '') {
-                                   swal("Error", error.responseText.replace(/['"]+/g, ''));
-                               }
-                               else {
-                                   swal("Error", "Oops! Something wrong happened..");
-                               }
-                           }
-                       });
-                   } else {
-                       swal("Cancelled", "Nomination Cancelled");
-                   }
-               });
+                                },
+                                error: function (error) {
+                                    $(".loader-overlay").hide();
+                                    if (error.responseText != null && error.responseText != undefined && error.responseText != '') {
+                                        swal("Error", error.responseText.replace(/['"]+/g, ''));
+                                    }
+                                    else {
+                                        swal("Error", "Oops! Something wrong happened..");
+                                    }
+                                }
+                            });
+                        } else {
+                            $(".loader-overlay").hide();
+                            swal("Cancelled", "Nomination Cancelled");
+                        }
+                    });
             }
         }
         else {
@@ -535,7 +524,7 @@
             },
            function (isConfirm) {
                if (isConfirm) {
-                   
+                   $(".loader-overlay").show();
                    var modelbjectToSend = $('#addNominationForm').serialize() + '&' + $.param({ 'submit': "Save" }, true);
 
                    $.ajax({
@@ -543,12 +532,13 @@
                        url: '@Url.Action("AddNomination", "Nomination")',
                        data: modelbjectToSend,
                        success: function (data) {
+                           $(".loader-overlay").hide();
                            if (data.nominationExceed) {
                                swal({
                                    title: "Error",
                                    text: data.message,
                                    showCancelButton: false,
-                                   confirmButtonColor: "#88a364",
+                                   confirmButtonColor: "#337ab7",
                                    confirmButtonText: "Ok"
                                },
                      function () {
@@ -563,7 +553,7 @@
                                swal({
                                    title: "Nomination Saved!",
                                    showCancelButton: false,
-                                   confirmButtonColor: "#88a364",
+                                   confirmButtonColor: "#337ab7",
                                    confirmButtonText: "Ok"
                                },
                           function () {
@@ -579,7 +569,7 @@
 
                        },
                        error: function (data) {
-                           
+                           $(".loader-overlay").hide();
                            if (data.responseText != null && data.responseText != undefined && data.responseText != '') {
                                swal("Error", data.responseText.replace(/['"]+/g, ''));
                            }
@@ -621,7 +611,7 @@
         $("#nomination-steps").find(stepId).addClass("active");
 
 
-        $(".f1-progress-line").css('width', progressLineWidth+"%");
+        $(".f1-progress-line").css('width', progressLineWidth + "%");
         //To move the number grid on the Top -- End
 
         //To move to the next step -- Start

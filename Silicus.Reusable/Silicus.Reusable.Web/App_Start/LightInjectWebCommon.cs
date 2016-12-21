@@ -28,6 +28,7 @@ namespace Silicus.FrameworxProject.Web.App_Start
             container.Register<IDataContextFactory, DataContextFactory>();
             container.Register<IFrameworxProjectService, FrameworxProjectService>();
             container.Register<IExtensionCodeService, ExtensionCodeService>();
+            container.Register<ICommonDbService, CommonDbService>();
             //container.Register<Silicus.UtilityContainer.Entities.ICommonDataBaseContext, Silicus.UtilityContainer.Entities.CommonDataBaseContext>();
             container.Register<Silicus.UtilityContainer.Entities.IDataContextFactory, Silicus.UtilityContainer.Entities.DataContextFactory>();
         }

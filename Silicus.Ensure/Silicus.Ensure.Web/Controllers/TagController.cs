@@ -40,7 +40,7 @@ namespace Silicus.Ensure.Web.Controllers
         }
 
         [AcceptVerbs(HttpVerbs.Post)]
-        public ActionResult Save(Tags tag)
+        public ActionResult Save([DataSourceRequest] DataSourceRequest dsRequest, Tags tag)
         {
             var tagDetails = _tagsService.GetTagsDetails().Where(model => model.TagName == tag.TagName && model.TagId != tag.TagId);
             if (tagDetails.Count() > 0)
@@ -50,11 +50,12 @@ namespace Silicus.Ensure.Web.Controllers
                 tag.IsActive = true;
                 tag.Description = HttpUtility.HtmlDecode(tag.Description);
                 _tagsService.Add(tag);
-                TempData.Add("IsNewTag", 1);
-                return RedirectToAction("List");
+                //TempData.Add("IsNewTag", 1);
+                return Json(tag);
             }
-            tag.Description = HttpUtility.HtmlDecode(tag.Description);
-            return View("Add", tag);
+            //tag.Description = HttpUtility.HtmlDecode(tag.Description);
+            //return View("Add", tag);
+            return Json(ModelState.ToDataSourceResult());
         }
 
         [AcceptVerbs(HttpVerbs.Post)]
@@ -69,7 +70,7 @@ namespace Silicus.Ensure.Web.Controllers
             return Json(ModelState.ToDataSourceResult());
         }
 
-        public JsonResult IsDuplicateTagName([Bind(Prefix = "positionName")]string tagName)
+        public JsonResult IsDuplicateTagName(string tagName)
         {
             bool isAvailable = true;
             if (!string.IsNullOrWhiteSpace(tagName) && ModelState.IsValid)
@@ -83,5 +84,14 @@ namespace Silicus.Ensure.Web.Controllers
             return Json(isAvailable, JsonRequestBehavior.AllowGet); 
         }
 
+        public JsonResult IsTagAssosiatedWithQuetion(string tagName)
+        {
+            bool isTagAssosiatedWithQuetion = false;
+            if (!string.IsNullOrWhiteSpace(tagName))
+            {
+                isTagAssosiatedWithQuetion = _tagsService.isTagAssociatedWithQuetion(tagName);
+            }
+            return Json(isTagAssosiatedWithQuetion, JsonRequestBehavior.AllowGet);
+        }
     }
 }

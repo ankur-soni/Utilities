@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Web;
+using System.Web.Mvc;
 
 namespace Silicus.EncourageWithAzureAd.Web.Models
 {
@@ -36,6 +37,14 @@ namespace Silicus.EncourageWithAzureAd.Web.Models
 
         [Required(ErrorMessage = "Please provide comment against criteria")]
         public IList<CriteriaCommentViewModel> Comments { get; set; }
+
+        public SelectList ListOfAwards { get; set; }
+
+        public SelectList ProjectsUnderCurrentUser { get; set; }
+
+        public SelectList DepartmentsUnderCurrentUser { get; set; }
+
+        public SelectList Resources { get; set; }
 
         public NominationViewModel()
         {
