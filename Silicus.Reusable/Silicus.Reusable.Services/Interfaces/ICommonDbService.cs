@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Silicus.UtilityContainer.Models.DataObjects;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -10,7 +11,7 @@ namespace Silicus.FrameworxProject.Services.Interfaces
     {
         Silicus.UtilityContainer.Entities.ICommonDataBaseContext GetCommonDataBaseContext();
         string FindDisplayNameFromEmail(string email);
-
         int FindUserIdFromEmail(string userName);
+        User GetUser(int userId);
     }
 }

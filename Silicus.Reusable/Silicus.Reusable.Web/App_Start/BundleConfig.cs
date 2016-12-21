@@ -10,7 +10,8 @@ namespace Silicus.Reusable.Web
         {
             bundles.Add(new StyleBundle("~/Content/css").Include(
                       "~/Content/bootstrap.css",
-                      "~/Content/site.css"));
+                      "~/Content/site.css",
+                      "~/Content/sweetalert.css"));
 
             bundles.Add(new ScriptBundle("~/bundles/requiredJS").Include(
                         "~/Scripts/jquery-{version}.js",
@@ -20,7 +21,8 @@ namespace Silicus.Reusable.Web
                         "~/Scripts/respond.js",
                         "~/Scripts/jquery.unobtrusive-ajax.min.js",
                         "~/Scripts/jquery.blockUI.js",
-                         "~/Scripts/Custom/common.js"
+                         "~/Scripts/Custom/common.js",
+                         "~/Scripts/sweetalert.min.js"
                       ));
         }
     }

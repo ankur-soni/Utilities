@@ -32,5 +32,11 @@ namespace Silicus.FrameworxProject.Services
             var userId = _dataContextFactory.CreateCommonDBContext().Query<User>().Where(user => user.EmailAddress == emailAddress).FirstOrDefault().ID;
             return userId;
         }
+
+        public User GetUser(int userId)
+        {
+            var user = _dataContextFactory.CreateCommonDBContext().Query<User>().Where(usr => usr.ID == userId).FirstOrDefault();
+            return user;
+        }
     }
 }

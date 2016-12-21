@@ -1,0 +1,89 @@
+﻿@model Silicus.Reusable.Web.Models.ViewModel.BootstrapModalTemplateViewModel
+@{
+    if (string.IsNullOrWhiteSpace(Model.Id))
+    {
+        throw new Exception("modal id cannot be empty!");
+    }
+
+    if (!Model.SaveButtonVisible.HasValue)
+    {
+        Model.SaveButtonVisible = true;
+    }
+    if (!Model.CloseButtonVisible.HasValue)
+    {
+        Model.CloseButtonVisible = true;
+    }
+  
+    if (!Model.DismissModalOnCloseClick.HasValue)
+    {
+        Model.DismissModalOnCloseClick = true;
+    }
+    if (!Model.DismissModalOnSaveClick.HasValue)
+    {
+        Model.DismissModalOnSaveClick = true;
+    }
+      
+    if (string.IsNullOrWhiteSpace(Model.SaveButtonText))
+    {
+        Model.SaveButtonText = "Save";
+    }
+    if (string.IsNullOrWhiteSpace(Model.CloseButtonText))
+    {
+        Model.CloseButtonText = "Cancel";
+    }
+}
+
+<div class="modal fade" id="@Model.Id" role="dialog" tabindex='-1' data-keyboard="false" data-backdrop="static">
+    <div class="vertical-alignment-helper">
+        <div class="modal-dialog vertical-align-center">
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <div class="popup-header-wrapper dashboard-header-bgcolor mainheading txt-color-white">
+                        <div class="container-fluid">
+                            <div class="row">
+                                <div class=" pull-left">
+                                    <h5 id="modal-header-title">@(string.IsNullOrWhiteSpace(Model.Title) ? "Title" : Model.Title)</h5>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-body">
+                    @if (!string.IsNullOrWhiteSpace(Model.ContentHtml))
+                    {
+                        @Html.Raw(Model.ContentHtml);
+
+                    }
+                </div>
+                @if (Model.CloseButtonVisible.Value || Model.SaveButtonVisible.Value)
+                {
+                    <div class="modal-footer">                        
+
+                        @if (Model.SaveButtonVisible.Value)
+                        {
+                            if (string.IsNullOrWhiteSpace(Model.SaveButtonOnlickEvent))
+                            {
+                                <button type="button" @(string.IsNullOrWhiteSpace(Model.SaveButtonId) ? "" : "id = " + Model.SaveButtonId) class="btn primary-bt" @(Model.DismissModalOnSaveClick.Value ? "data-dismiss=modal" : "")>@Html.Raw(Model.SaveButtonText)</button>
+                            }
+                            else
+                            {
+                                <button type="button" @(string.IsNullOrWhiteSpace(Model.SaveButtonId) ? "" : "id = " + Model.SaveButtonId) onclick="@Model.SaveButtonOnlickEvent" class="btn primary-bt" @(Model.DismissModalOnSaveClick.Value ? "data-dismiss=modal" : "")>@Html.Raw(Model.SaveButtonText)</button>
+                            }
+
+                        }
+                        @if (Model.CloseButtonVisible.Value)
+                        {
+
+                            <button type="button" @(string.IsNullOrWhiteSpace(Model.CloseButtonId) ? "" : "id = " + Model.CloseButtonId + "") class="btn second-primary-bt" @(Model.DismissModalOnCloseClick.Value ? "data-dismiss=modal" : "")>@Html.Raw(Model.CloseButtonText)</button>
+
+
+                        }
+                    </div>
+                }
+            </div>
+        </div>
+    </div> @*End vertical-alignment-helper*@
+</div>
+

@@ -138,11 +138,10 @@
 
     function getComponentdetail(id) {
         $("#currentTile").val(id);
-        blockUI('body');
+        blockUI();
         $.ajax({
             url: "/FrameworxProject/Details",
-            type: "get",
-            async: false,
+            type: "get",            
             data: { id: id },
             success: function (data) {
                 $(".carousel-inner").html(data);
@@ -151,7 +150,7 @@
                 // connectionError();
             },
             complete: function () {
-                unblockUI('body');
+                unblockUI();
             }
         });
     }

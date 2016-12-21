@@ -10,22 +10,18 @@
     return a;
 }
 
-function blockUI(selector) {
-    $(selector).block({
-        css: {
-            border: 'none',
-            padding: '15px',
-            backgroundColor: '#000',
-            '-webkit-border-radius': '10px',
-            '-moz-border-radius': '10px',
-            opacity: .5,
-            color: '#fff'
-        }, message: null
-    });
-
+function blockUI() {
+    document.getElementById("loader").style.display = "block";
 };
 
-function unblockUI(selector) {
-    $(selector).unblock();
+function unblockUI() {
+    document.getElementById("loader").style.display = "none";
 };
+
+function rebindValidation(formId) {
+    $form = $(formId);
+    $form.removeData('validator');
+    $form.removeData('unobtrusiveValidation');
+    $.validator.unobtrusive.parse($form);
+}
 

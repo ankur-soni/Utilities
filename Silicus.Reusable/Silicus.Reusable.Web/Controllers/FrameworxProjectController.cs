@@ -124,7 +124,8 @@ namespace Silicus.FrameworxDashboard.Web.Controllers
                 HtmlDescription = framework.HtmlDescription,
                 SourceCodeLink = framework.SourceCodeLink,
                 Likes = framework.Likes.Count,
-                IsLiked = framework.Likes.Any(l => l.UserId == userId)
+                IsLiked = framework.Likes.Any(l => l.UserId == userId),
+                OwnerId = framework.OwnerId
             };
 
             if (frameworxViewModel.IsLiked)
