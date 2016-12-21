@@ -27,7 +27,7 @@
     </td>
 
     <td class="col-lg-3 col-md-4 col-sm-3 col-xs-3 criteriaComment">
-        @Html.TextAreaFor(modelItem => modelItem.Comment, htmlAttributes: new { @class = Model.Rating != 0 && Model.Comment == "" ? "col-md-12 noCommentError" : "col-md-12", maxlength = 500 , @iscommentrequired = Model.Rating != 0 ? "true" : "false", @onblur = "return hideRemainingCharacterText('"+ Html.IdFor(i => i.Rating).ToString() + "')", onkeyup = "edValueKeyPress('"+ Html.IdFor(i => i.Rating).ToString() + "')" })
+        @Html.TextAreaFor(modelItem => modelItem.Comment, htmlAttributes: new { @class = Model.Rating != 0 && Model.Comment == "" ? "col-md-12 noCommentError form-control" : "col-md-12", maxlength = 500, @iscommentrequired = Model.Rating != 0 ? "true" : "false", @onblur = "return hideRemainingCharacterText('" + Html.IdFor(i => i.Rating).ToString() + "')", onkeyup = "edValueKeyPress('" + Html.IdFor(i => i.Rating).ToString() + "')" })
         <div class="@(Html.IdFor(modelItem => modelItem.Comment))"></div>
     </td>
 </tr>

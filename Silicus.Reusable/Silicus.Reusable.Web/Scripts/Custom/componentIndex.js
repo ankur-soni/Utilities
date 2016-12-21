@@ -9,7 +9,7 @@
 
     }
 
-    function nextSlide() {        
+    function nextSlide() {
         var selects = $(".TitleDivTemplate");
         selects.each(function myfunction(index) {
             var id = $(this).attr("my-data");
@@ -44,8 +44,8 @@
         });
     }
 
-   
-    function searchComponent(value) {       
+
+    function searchComponent(value) {
         var filter = value;
         var viewType = $('#component-list-view').is(':disabled') ? 'list' : 'tile';
         var noResult = true;
@@ -56,7 +56,7 @@
 
                 // If the list item does not contain the text phrase fade it out
                 if ($(this).text().search(new RegExp(filter, "i")) < 0) {
-                    $(this).fadeOut();                   
+                    $(this).fadeOut();
                     // Show the list item if the phrase matches and increase the count by 1
                 } else {
                     $(this).show();
@@ -65,15 +65,15 @@
             });
         } else {
             // Loop through the comment list
-            $(".TitleDivTemplate").each(function () {                
+            $(".TitleDivTemplate").each(function () {
                 // If the list item does not contain the text phrase fade it out
-                if ($(this).text().search(new RegExp(filter, "i")) < 0) {                    
-                    $(this).parent().fadeOut();                   
+                if ($(this).text().search(new RegExp(filter, "i")) < 0) {
+                    $(this).parent().fadeOut();
                     // Show the list item if the phrase matches and increase the count by 1
                 } else {
                     $(this).parent().show();
                     noResult = false;
-                }               
+                }
             });
         }
 
@@ -85,7 +85,7 @@
     }
 
 
-    function showTileView() {        
+    function showTileView() {
         var listItems = $(".list-wrapper>li").toArray();
         var categories = listItems.map(function (a) { return a.attributes['category'].value; });
         var filter = $('#searchString').val().trim();
@@ -112,7 +112,7 @@
 
             if (thisCatItems.length) {
                 htmlString += '</div></div>';
-            }            
+            }
 
             itemHtmlString = '';
         });
@@ -120,13 +120,13 @@
         $('#containerDiv').html(htmlString);
     }
 
-    function showListView() {        
-        var listItems = $(".TitleDivTemplate").toArray();        
+    function showListView() {
+        var listItems = $(".TitleDivTemplate").toArray();
         var htmlString = ' <ul class="list-wrapper">', itemHtmlString = '';
         var filter = $('#searchString').val().trim();
         listItems.forEach(function (value, index) {
             var id = value.attributes['id'].value, title = value.attributes['title'].value, category = value.attributes['category'].value;
-            var style = title.search(new RegExp(filter, "i")) < 0? "display: none;":"";
+            var style = title.search(new RegExp(filter, "i")) < 0 ? "display: none;" : "";
             itemHtmlString += ' <li category="' + category + '" id="' + id + '" title="' + title + '" style="' + style + '">' +
                     '<a class="icon-' + category + ' TitleDivTemplate" data-toggle="modal" data-target="#component-modal"  my-data="' + id + '" my-title="'
                     + title + '">' + title + '</a></li>';
@@ -136,31 +136,48 @@
         $('#containerDiv').html(htmlString);
     }
 
-    function getComponentdetail(id) {        
+    function getComponentdetail(id) {
         $("#currentTile").val(id);
         blockUI('body');
         $.ajax({
             url: "/FrameworxProject/Details",
             type: "get",
             async: false,
-            data: { id: id},
+            data: { id: id },
             success: function (data) {
                 $(".carousel-inner").html(data);
             },
             error: function () {
                 // connectionError();
             },
-            complete:function(){
+            complete: function () {
                 unblockUI('body');
             }
         });
     }
 
+    function likeComponent() {
+        $.get("/FrameworxProject/LikeComponent", { componentId: $("#currentTile").val() }, function (data) {
+            $('#like-count').text(parseInt($('#like-count').text()) + 1);
+            $('#like-text').text('Unlike');
+            $('.like').addClass('liked');
+            $("#LikeId").val(data.likeId);
+        });
+    }
+
+
+    function unLikeComponent() {
+        $.get("/FrameworxProject/UnLikeComponent", { likeId: $("#LikeId").val() }, function (data) {
+            $('#like-count').text(parseInt($('#like-count').text()) - 1);
+            $('#like-text').text('Like');
+            $('.like').removeClass('liked');
+        });
+    }
 
     $(document).ready(
         function () {
             var timer;
-            $("#searchString").on('keyup', function () {              
+            $("#searchString").on('keyup', function () {
                 clearTimeout(timer);
                 var ms = 1000; // milliseconds
                 var val = this.value.trim();
@@ -185,14 +202,14 @@
                 $('#component-list-view').attr('disabled', false);
                 $(this).attr('disabled', true);
                 showTileView();
-                
+
             });
 
             $('#component-list-view').click(function () {
                 $('#component-tile-view').attr('disabled', false);
-                $(this).attr('disabled', true);                
+                $(this).attr('disabled', true);
                 showListView();
-               
+
             });
 
             $('body').on('click', '.TitleDivTemplate', function () {
@@ -200,17 +217,15 @@
                 getComponentdetail(id);
             });
 
-            $('#prev-slide-button').on('click', function () { prevSlide();});
+            $('#prev-slide-button').on('click', function () { prevSlide(); });
             $('#next-slide-button').on('click', function () { nextSlide(); });
 
             $('body').on('click', '.like', function () {
-                var text = $('.like span').text();
+                var text = $('#like-text').text();
                 if (text == "Like") {
-                    $('.like span').text('Unlike');
-                    $('.like').addClass('liked');
+                    likeComponent();
                 } else {
-                    $('.like span').text('Like');
-                    $('.like').removeClass('liked');
+                    unLikeComponent();
                 }
             });
         }

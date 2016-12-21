@@ -16,6 +16,8 @@
 </div>
 @using (Html.BeginForm("ReviewNomination", "Nomination", FormMethod.Post, new {id = "reviewNominationForm"}))
 {
+    @Html.HiddenFor(modelItem => modelItem.ReviewerId)
+    @Html.HiddenFor(modelItem => modelItem.NominationId)
     <div class="row">
         <div class="col-lg-12 col-md-12 col-sm-12">
             <div class="panel panel-info M-T15">
@@ -24,20 +26,10 @@
                 <div class="panel-wrapper collapse in" aria-expanded="true">
                     <div class="panel-body">
 
-                        @Html.HiddenFor(modelItem => modelItem.ReviewerId)
-                        @Html.HiddenFor(modelItem => modelItem.NominationId)
+                        
                         <table class="table issue-tracker">
                             <thead>
-                            <tr>
-                                <td class="col-lg-4 col-md-4 col-sm-4">
-                                    <label> Review For:</label>
-                                </td>
-
-                                <td class="col-lg-8 col-md-8 col-sm-8">
-                                    @Html.DisplayFor(modelItem => modelItem.NomineeName)
-
-                                </td>
-                            </tr>
+                            
                             <tr>
                                 <td class="col-lg-4 col-md-4 col-sm-4">
                                     <label> Project/Department:</label>
@@ -94,108 +86,116 @@
             <div class="box M-B60">
                 <div class="f1">
                     <div class="wizard-box" style="margin-top: 0px;">
-                        <table class="table issue-tracker">
-                            <thead>
-                            <tr>
-                                <th>Criteria</th>
-                                <th colspan="4">Manager</th>
-                                <th colspan="2">Reviewer</th>
-                            </tr>
-                            <tr>
-                                <th></th>
-                                <th>Weightage</th>
-                                <th>Rating</th>
-                                <th>Points</th>
-                                <th>Comments</th>
-                                <th>Rating</th>
-                                <th>Comments</th>
-                            </tr>
-                            </thead>
-                            @{
-                                var j = 0;
-                            }
-                            @foreach (var managerComment in Model.ManagerComments)
-                            {
-                                <tbody>
-                                <tr>
-                                    @Html.Hidden("CriteriaId", @managerComment.CriteriaId)
-                                    @{
-                                        var criteria = Model.Criterias.FirstOrDefault(mc => mc.Id == managerComment.CriteriaId);
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="table-responsive">
+
+
+                                            <table class="table issue-tracker">
+                                                <thead>
+                                                    <tr>
+                                                        <th>Criteria</th>
+                                                        <th colspan="4">Manager</th>
+                                                        <th colspan="2">Reviewer</th>
+                                                    </tr>
+                                                    <tr>
+                                                        <th></th>
+                                                        <th>Weightage</th>
+                                                        <th>Rating</th>
+                                                        <th>Points</th>
+                                                        <th>Comments</th>
+                                                        <th>Rating</th>
+                                                        <th>Comments</th>
+                                                    </tr>
+                                                </thead>
+                                                @{
+                                        var j = 0;
+                                                }
+                                                @foreach (var managerComment in Model.ManagerComments)
+                                    {
+                                    <tbody>
+                                        <tr>
+                                            @Html.Hidden("CriteriaId", @managerComment.CriteriaId)
+                                            @{
+                                                var criteria = Model.Criterias.FirstOrDefault(mc => mc.Id == managerComment.CriteriaId);
+                                            }
+                                            <td class="col-lg-2 col-md-2 col-sm-2">@(criteria != null ? criteria.Title : "")</td>
+                                            <td class="col-lg-1 col-md-1 col-sm-1">@managerComment.Weightage</td>
+                                            <td class="col-lg-2 col-md-2 col-sm-2">
+                                                @Html.DropDownList("Comments[" + @j + "].Rating",
+                                                    Enumerable.Range(1, 5).
+                                                        Select(r => new SelectListItem
+                                                        {
+                                                            Value = r.ToString(),
+                                                            Text = r.ToString()
+                                                        }), "", new { @class = "example-square", @autocomplete = "off", @value = managerComment.Rating })
+                                            </td>
+                                            <td class="col-lg-1 col-md-1 col-sm-1">@(managerComment.Weightage * managerComment.Rating / 100.0)</td>
+                                            <td class="more col-lg-1 col-md-1 col-sm-1" style="word-break: break-all">@managerComment.Comment</td>
+
+                                            <td class="col-lg-2 col-md-2 col-sm-2">
+                                                @Html.DropDownList("Comments[" + @j + "].Credit",
+                                                    Enumerable.Range(1, 5).
+                                                        Select(r => new SelectListItem
+                                                        {
+                                                            Value = r.ToString(),
+                                                            Text = r.ToString()
+                                                        }), "", new { @class = "reviewer-rating", @autocomplete = "off" })
+                                            </td>
+
+                                            <td class="col-lg-3 col-md-3 col-sm-3">@Html.TextArea("Comments[" + @j + "].Comment", new { name = "reviewercomment", maxlength = "100", onKeyUp = "return onkeyevent(this);", onblur = "return hideRemainingCharacterText(this);" })<div class="textarea"></div></td>
+
+                                            @Html.Hidden("Comments[" + @j + "].CriteriaId", managerComment.CriteriaId)
+                                        </tr>
+                                    </tbody>
+                                        j++;
+
                                     }
-                                    <td class="col-md-4">@(criteria != null ? criteria.Title : "")</td>
-                                    <td class="col-md-1">@managerComment.Weightage</td>
-                                    <td class="col-md-2">
-                                        @Html.DropDownList("Comments[" + @j + "].Rating",
-                                            Enumerable.Range(1, 5).
-                                                Select(r => new SelectListItem
-                                                {
-                                                    Value = r.ToString(),
-                                                    Text = r.ToString()
-                                                }), "", new {@class = "example-square", @autocomplete = "off", @value = managerComment.Rating})
-                                    </td>
-                                    <td class="col-md-1">@(managerComment.Weightage * managerComment.Rating / 100.0)</td>
-                                    <td class="more" style="word-break: break-all">@managerComment.Comment</td>
-
-                                    <td class="col-md-2">
-                                        @Html.DropDownList("Comments[" + @j + "].Credit",
-                                            Enumerable.Range(1, 5).
-                                                Select(r => new SelectListItem
-                                                {
-                                                    Value = r.ToString(),
-                                                    Text = r.ToString()
-                                                }), "", new {@class = "reviewer-rating", @autocomplete = "off"})
-                                    </td>
-
-                                    <td class="col-md-3">@Html.TextArea("Comments[" + @j + "].Comment", new {name = "reviewercomment", maxlength = "100", onKeyUp = "return onkeyevent(this);", onblur = "return hideRemainingCharacterText(this);"})<div class="textarea"></div></td>
-
-                                    @Html.Hidden("Comments[" + @j + "].CriteriaId", managerComment.CriteriaId)
-                                </tr>
-                                </tbody>
-                                j++;
-
-                            }
 
 
-                            @if (Model.ManagerComments != null)
-                            {
-                                for (int i = 0; i < Model.ManagerComments.Count; i++)
-                                {
+                                                @if (Model.ManagerComments != null)
+                                    {
+                                        for (int i = 0; i < Model.ManagerComments.Count; i++)
+                                        {
                                     @Html.HiddenFor(model => Model.ManagerComments[i].Comment)
-                                }
-                            }
-                            <tr>
-                                <td></td>
-                                <td></td>
-                                <td style="text-align: center; color: #0063A7; font-weight: bold">Total Points:</td>
-                                <td> @(Model.ManagerComments.Sum(a => (a.Rating * a.Weightage / 100.0))) </td>
-                                <td style="text-align: center; color: #0063A7; font-weight: bold">
-                                    Average Ratings:
-                                </td>
-                                <td id="totalCredits" class="col-md-1 text-center font-bold">
-                                    0
-                                </td>
-                                <td></td>
-                            </tr>
-                        </table>
+                                        }
+                                    }
+                                                <tr>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td style="text-align: center; color: #0063A7; font-weight: bold">Total Points:</td>
+                                                    <td> @(Model.ManagerComments.Sum(a => (a.Rating * a.Weightage / 100.0))) </td>
+                                                    <td style="text-align: center; color: #0063A7; font-weight: bold">
+                                                        Average Ratings:
+                                                    </td>
+                                                    <td id="totalCredits" class="col-md-1 text-center font-bold">
+                                                        0
+                                                    </td>
+                                                    <td></td>
+                                                </tr>
+                                            </table>
 
+                                        </div>
+                                    </div>
+                                </div>
                     </div>
-                    <div class="row M-T15">
+                                <div class="row M-T15">
 
-                        <div class="pull-right btn-nav">
+                                    <div class="pull-right btn-nav">
 
-                            <input type="button" name="submit" value="Save Draft" id="saveButton" class="btn btn-primary" onclick="return SaveDraftReview();"/>
-                            <input type="button" name="submit" value="Submit" id="submitButton" class="btn btn-primary" onclick="return SubmitReview();"/>
-                            <input type="button" value="Cancel" class="btn btn-primary" onclick="location.href = '@Url.Action("ReviewNominations", "Nomination")'">
+                                        <input type="button" name="submit" value="Save Draft" id="saveButton" class="btn btn-primary" onclick="return SaveDraftReview();" />
+                                        <input type="button" name="submit" value="Submit" id="submitButton" class="btn btn-primary" onclick="return SubmitReview();" />
+                                        <input type="button" value="Cancel" class="btn btn-primary" onclick="location.href = '@Url.Action("ReviewNominations", "Nomination")'">
+                                    </div>
+
+
+
+                                </div>
+
+                            </div>
+
                         </div>
-
-
-
                     </div>
-
-                </div>
-
-            </div>
-        </div>
     </div>
 }
 <script src="~/js/jquery-2.1.1.js"></script>
@@ -248,6 +248,7 @@
             },
            function (isConfirm) {
                if (isConfirm) {
+                   $(".loader-overlay").show();
                    var modelbjectToSend = $('#reviewNominationForm').serialize() + '&' + $.param({ 'Submit': "Save" }, true);
 
                    $.ajax({
@@ -255,6 +256,7 @@
                        url: '@Url.Action("ReviewNomination", "Nomination")',
                        data: modelbjectToSend,
                        success: function (data) {
+                           $(".loader-overlay").hide();
                            swal({
                                title: "Review saved successfully",
                                showCancelButton: false,
@@ -268,6 +270,7 @@
                            });
                        },
                        error: function () {
+                           $(".loader-overlay").hide();
                            swal("Error", "Oops! Something wrong happened..");
                        }
                    });
@@ -298,6 +301,7 @@
             },
            function (isConfirm) {
                if (isConfirm) {
+                   $(".loader-overlay").show();
                    var modelbjectToSend = $('#reviewNominationForm').serialize() + '&' + $.param({ 'Submit': "Submit" }, true);
 
                    $.ajax({
@@ -305,6 +309,7 @@
                        url: '@Url.Action("ReviewNomination", "Nomination")',
                        data: modelbjectToSend,
                        success: function (data) {
+                           $(".loader-overlay").hide();
                            swal({
                                title: "Review submitted successfully",
                                showCancelButton: false,
@@ -318,6 +323,7 @@
                            });
                        },
                        error: function () {
+                           $(".loader-overlay").hide();
                            swal("Error", "Oops! Something wrong happened..");
                        }
                    });
