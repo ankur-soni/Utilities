@@ -6,7 +6,7 @@ namespace Silicus.UtilityContainer.HangFireBackgroundTasks.Interface
 {
     public interface IEventProcessor
     {
-        void Process(EventType eventType,EventProcess eventProcess, FrequencyCode  frequencyCode);
+        void Process(EventType eventType,EventProcess eventProcess, string  awardName);
       
     }
 }

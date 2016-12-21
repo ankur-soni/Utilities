@@ -7,6 +7,8 @@ using System.Web;
 using System.IO;
 using Silicus.FrameWorx.Logger;
 using Silicus.UtilityContainer.Models.Enumerations;
+using System.Reflection;
+using System.Configuration;
 
 namespace HangFireBackgroundTasks.EventProcessors
 {
@@ -20,20 +22,20 @@ namespace HangFireBackgroundTasks.EventProcessors
             throw new NotImplementedException();
         }
 
-        public void Process(EventType eventType)
+        public void Process(EventType eventType,string awardName)
         {
             _logger.Log("EncourageEmailProcessor-Process-EventType-" + eventType);
 
             switch (eventType)
             {
                 case EventType.SendNominationEmail:
-                    SendNominationEmail();
+                    SendNominationEmail(awardName, System.Web.Hosting.HostingEnvironment.MapPath(ConfigurationManager.AppSettings["ManagersEmailTemlate"]));
                     break;
                 case EventType.SendReviewNominationEmail:
-                    SendReviewNominationEmail();
+                    SendReviewNominationEmail(awardName, System.Web.Hosting.HostingEnvironment.MapPath(ConfigurationManager.AppSettings["ReviewersEmailTemplate"]));
                     break;
                 case EventType.SendAdminNominationEmail:
-                    SendAdminNominationEmail();
+                    SendAdminNominationEmail(awardName, System.Web.Hosting.HostingEnvironment.MapPath(ConfigurationManager.AppSettings["AdminsEmailtemplate"]));
                     break;
                 default:
                     break;
@@ -41,10 +43,20 @@ namespace HangFireBackgroundTasks.EventProcessors
             }
         }
 
-        private void SendNominationEmail()
+        private string getEmailBody(string awardName,string templatePath)
+        {
+            string emailTemplate = "";
+            using (StreamReader reader = new StreamReader(templatePath))
+            {
+                emailTemplate = reader.ReadToEnd();
+                emailTemplate = emailTemplate.Replace("{awardname}", awardName);
+            }
+
+            return emailTemplate;
+        }
+        private void SendNominationEmail(string awardName, string templatePath)
         {
             _logger.Log("EncourageEmailProcessor-SendNominationEmail");
-            //eventProcessor.Process(EventType.UnLockNominations,EventProcess.UnLockEvent);
             var managerEmailAddresses = GetEmailAddress.GetEmailAddressForRoles(369);
 
             if (managerEmailAddresses.Count <= 0)
@@ -52,28 +64,28 @@ namespace HangFireBackgroundTasks.EventProcessors
                 return;
             }
 
-            var emailBodyPath = System.Web.Hosting.HostingEnvironment.MapPath(@"~/Views/EmailBody/EmailToManagerBody.html");
+            var emailBody = getEmailBody(awardName,templatePath);
             var subject = "Submit Your Nominations";
             //new EmailService().SendEmail(emailBodyPath, managerEmailAddresses, subject);
-            new EmailService().SendEmail(emailBodyPath, new List<string>() { "asha.bhandare@silicus.com" }, subject);
+            new EmailService().SendEmail(emailBody, new List<string>() { "asha.bhandare@silicus.com" }, subject);
         }
 
-        private void SendReviewNominationEmail()
+        private void SendReviewNominationEmail(string awardName, string templatePath)
         {
-           // eventProcessor.Process(EventType.UnLockReviews,EventProcess.UnLockEvent);
             var reviewerEmailAddresses = GetEmailAddress.GetEmailAddressForRoles(371);
 
             if (reviewerEmailAddresses.Count <= 0)
             {
                 return;
             }
-            var emailBodyPath = System.Web.Hosting.HostingEnvironment.MapPath(@"~/Views/EmailBody/EmailBodyToReviewer.html");
+
+            var emailBody = getEmailBody(awardName, templatePath);
             var subject = "Nominations Submitted For Your Review.";
             //new EmailService().SendEmail(emailBodyPath, reviewerEmailAddresses, subject);
-            new EmailService().SendEmail(emailBodyPath, new List<string>() { "asha.bhandare@silicus.com" },subject);
+            new EmailService().SendEmail(emailBody, new List<string>() { "asha.bhandare@silicus.com" },subject);
         }
 
-        private void SendAdminNominationEmail()
+        private void SendAdminNominationEmail(string awardName, string templatePath)
         {
             
             var adminEmailAddresses = GetEmailAddress.GetEmailAddressForRoles(370);
@@ -83,13 +95,11 @@ namespace HangFireBackgroundTasks.EventProcessors
                 return;
             }
 
-            var emailBodyPath = System.Web.Hosting.HostingEnvironment.MapPath(@"~/Views/EmailBody/ReviewsLockedNotificationToAdmin.html");
-            //var mappath = System.Web.HttpContext.Current.Server.MapPath("~/View/EmailBodyToReviewer.html");
+            var emailBody = getEmailBody(awardName, templatePath);
 
             var subject = "Review Process Locked";
-            // var emailBodyPath = @"C:\Users\IKadam.SILICUS\Source\Repos\Utilities3\Silicus.UtilityContainer\Silicus.UtilityContainer.HangFireBackgroundTasks\View\ReviewsLockedNotificationToAdmin.html";
             //new EmailService().SendEmail(emailBodyPath, adminEmailAddresses, subject);
-            new EmailService().SendEmail(emailBodyPath, new List<string>() { "asha.bhandare@silicus.com" },subject);
+            new EmailService().SendEmail(emailBody, new List<string>() { "asha.bhandare@silicus.com" },subject);
         }
     }
 }

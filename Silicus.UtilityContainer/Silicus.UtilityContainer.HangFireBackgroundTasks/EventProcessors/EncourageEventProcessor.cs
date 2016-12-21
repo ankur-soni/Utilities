@@ -18,30 +18,30 @@ namespace HangFireBackgroundTasks.EventProcessors
         ILogger _logger = new DatabaseLogger("name=LoggerDataContext", Type.GetType(string.Empty), (Func<DateTime>)(() => DateTime.UtcNow), string.Empty);
 
 
-        public void Process(EventType eventType,EventProcess eventProcess,FrequencyCode frequencyCode)
+        public void Process(EventType eventType,EventProcess eventProcess,string awardName)
         {
             _logger.Log("EncourageEventProcessor-Process");
             switch (eventProcess)
             {
                 case EventProcess.LockEvent:
-                    LockEvent(eventType, frequencyCode);
+                    LockEvent(eventType, awardName);
                     break;
                 case EventProcess.UnLockEvent:
-                    UnLockeEvent(eventType, frequencyCode);
+                    UnLockeEvent(eventType, awardName);
                     break;
                 default:
                     break;
             }
         }
 
-        private void LockNomination(FrequencyCode frequencyCode)
+        private void LockNomination(string awardName)
         {
             try
             {
                 _logger.Log("EncourageEventProcessor-LockNomination-try");
-                //string URL = @"https://silicusencouragewithazureadweb.azurewebsites.net/api/nominationapi/LockNominations?frequencyCode=" + frequencyCode.ToString();
+                // string URL = @"https://silicusencouragewithazureadweb.azurewebsites.net/api/nominationapi/LockNominations?frequencyCode=" + frequencyCode.ToString();
 
-                string URL = @"https://localhost:44324/api/nominationapi/LockNominations?frequencyCode=" + frequencyCode.ToString();
+                string URL = @"https://localhost:44324/api/nominationapi/LockNominations?awardName=" + awardName;
                 HttpClient client = new HttpClient();
                 client.BaseAddress = new Uri(URL);
 
@@ -55,8 +55,8 @@ namespace HangFireBackgroundTasks.EventProcessors
                 {
                     // Parse the response body. Blocking!
                     var result = response.Content.ReadAsStringAsync().Result;
-                    UnLockReviews(frequencyCode);
-                    emailProcessor.Process(EventType.SendReviewNominationEmail);
+                    UnLockReviews(awardName);
+                    emailProcessor.Process(EventType.SendReviewNominationEmail,awardName);
 
                 }
                 
@@ -69,14 +69,14 @@ namespace HangFireBackgroundTasks.EventProcessors
 
         }
 
-        private void UnLockNominations(FrequencyCode frequencyCode)
+        private void UnLockNominations(string awardName)
         {
             try
             {
                 _logger.Log("EncourageEventProcessor-UnLockNomination-try");
-               //string URL = @"https://silicusencouragewithazureadweb.azurewebsites.net/api/nominationapi/UnLockNominations?frequencyCode=" + frequencyCode;
+              // string URL = @"https://silicusencouragewithazureadweb.azurewebsites.net/api/nominationapi/UnLockNominations?frequencyCode=" + frequencyCode.ToString();
 
-                string URL = @"https://localhost:44324/api/nominationapi/UnLockNominations?frequencyCode=" + frequencyCode;
+                string URL = @"https://localhost:44324/api/nominationapi/UnLockNominations?awardName=" + awardName;
 
                 HttpClient client = new HttpClient();
                 client.BaseAddress = new Uri(URL);
@@ -93,7 +93,7 @@ namespace HangFireBackgroundTasks.EventProcessors
                 {
                     // Parse the response body. Blocking!
                     var result = response.Content.ReadAsStringAsync().Result;
-                    emailProcessor.Process(EventType.SendNominationEmail);
+                    emailProcessor.Process(EventType.SendNominationEmail,awardName);
 
                 }
 
@@ -106,11 +106,11 @@ namespace HangFireBackgroundTasks.EventProcessors
 
         }
 
-        private void LockReview(FrequencyCode frequencyCode)
+        private void LockReview(string awardName)
         {
-            //string URL = @"https://silicusencouragewithazureadweb.azurewebsites.net/api/reviewnominationapi/lockreview?frequencyCode=" + frequencyCode;
+           // string URL = @"https://silicusencouragewithazureadweb.azurewebsites.net/api/reviewnominationapi/lockreview?frequencyCode=" + frequencyCode.ToString();
 
-            string URL = @"https://localhost:44324/api/reviewnominationapi/lockreview?frequencyCode=" + frequencyCode;
+            string URL = @"https://localhost:44324/api/reviewnominationapi/lockreview?awardName=" + awardName;
 
             HttpClient client = new HttpClient();
             client.BaseAddress = new Uri(URL);
@@ -125,16 +125,16 @@ namespace HangFireBackgroundTasks.EventProcessors
             {
                 // Parse the response body. Blocking!
                 var result = response.Content.ReadAsStringAsync().Result;
-                emailProcessor.Process(EventType.SendAdminNominationEmail);
+                emailProcessor.Process(EventType.SendAdminNominationEmail,awardName);
             }
             
         }
 
-        private void UnLockReviews(FrequencyCode frequencyCode)
+        private void UnLockReviews(string awardName)
         {
-            //string URL = @"https://silicusencouragewithazureadweb.azurewebsites.net/api/reviewnominationapi/UnLockReview?frequencyCode=" + frequencyCode;
+            //string URL = @"https://silicusencouragewithazureadweb.azurewebsites.net/api/reviewnominationapi/UnLockReview?frequencyCode=" + frequencyCode.ToString();
 
-            string URL = @"https://localhost:44324/api/reviewnominationapi/UnLockReview?frequencyCode=" + frequencyCode;
+            string URL = @"https://localhost:44324/api/reviewnominationapi/UnLockReview?awardName=" + awardName;
 
             HttpClient client = new HttpClient();
             client.BaseAddress = new Uri(URL);
@@ -155,7 +155,7 @@ namespace HangFireBackgroundTasks.EventProcessors
         }
 
 
-        private void UnLockeEvent(EventType eventType, FrequencyCode frequencyCode)
+        private void UnLockeEvent(EventType eventType, string awardName)
         {
             _logger.Log("EncourageEventProcessor-UnLockeEvent");
             switch (eventType)
@@ -164,7 +164,7 @@ namespace HangFireBackgroundTasks.EventProcessors
                 case EventType.UnLockNominations:
                     try
                     {
-                        UnLockNominations(frequencyCode);
+                        UnLockNominations(awardName);
 
                     }
                     catch (Exception ex)
@@ -175,7 +175,7 @@ namespace HangFireBackgroundTasks.EventProcessors
                 case EventType.UnLockReviews:
                     try
                     {
-                        UnLockReviews(frequencyCode);
+                        UnLockReviews(awardName);
                     }
                     catch (Exception ex)
                     {
@@ -188,7 +188,7 @@ namespace HangFireBackgroundTasks.EventProcessors
         }
 
         #region Lock Nominations/Review
-        private void LockEvent(EventType eventType,FrequencyCode frequencyCode)
+        private void LockEvent(EventType eventType,string awardName)
         {
             var day = ConfigurationManager.AppSettings["FirstDayOfCurrentMonth"];
             var firstDayOfCurrentMonth = new DateTime(System.DateTime.Now.Year, System.DateTime.Now.Month, Convert.ToInt32(day));
@@ -216,7 +216,7 @@ namespace HangFireBackgroundTasks.EventProcessors
 
                         if (System.DateTime.Now == lastDateForNomination || System.DateTime.Now > lastDateForNomination)
                         {
-                            LockNomination(frequencyCode);
+                            LockNomination(awardName);
                         }
                         break;
                     #endregion
@@ -258,7 +258,7 @@ namespace HangFireBackgroundTasks.EventProcessors
 
                         if (System.DateTime.Now == expireDateReviewer || System.DateTime.Now > expireDateReviewer)
                         {
-                            LockReview(frequencyCode);
+                            LockReview(awardName);
                         }
                         break;
                     #endregion

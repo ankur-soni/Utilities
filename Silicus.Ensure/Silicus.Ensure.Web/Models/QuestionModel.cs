@@ -27,6 +27,16 @@ namespace Silicus.Ensure.Web.Models
         public string Option6 { get; set; }
         public string Option7 { get; set; }
         public string Option8 { get; set; }
+
+        public bool IsAnsOption1 { get; set; }
+        public bool IsAnsOption2 { get; set; }
+        public bool IsAnsOption3 { get; set; }
+        public bool IsAnsOption4 { get; set; }
+        public bool IsAnsOption5 { get; set; }
+        public bool IsAnsOption6 { get; set; }
+        public bool IsAnsOption7 { get; set; }
+        public bool IsAnsOption8 { get; set; }
+
         public List<string> CorrectAnswer { get; set; }
         public string Answer { get; set; }
         public string Tag { get; set; }

@@ -182,14 +182,16 @@ namespace Silicus.EncourageWithAzureAd.Web.Controllers
                     if (criteria.Comment != null || criteria.Rating != 0)
                     {
                         nomination.ManagerComments.Add(
-                            new ManagerComment()
+                            new ManagerComment
                             {
                                 CriteriaId = criteria.Id,
                                 Comment = criteria.Comment != null ? _textInfo.ToTitleCase(criteria.Comment) : "",
                                 Rating = criteria.Rating,
-                                Weightage = criteria.Weightage
+                                Weightage = criteria.Weightage,
+                                FinalScore = 0,
+                                AdminComment = ""
                             }
-                            );
+                        );
                     }
                 }
                 nomination.Comment = model.MainComment != null ? _textInfo.ToTitleCase(model.MainComment) : "";
@@ -323,7 +325,9 @@ namespace Silicus.EncourageWithAzureAd.Web.Controllers
                         Comment = comment.Comment != null ? _textInfo.ToTitleCase(comment.Comment) : "",
                         NominationId = model.NominationId,
                         Rating = comment.Rating,
-                        Weightage = comment.Weightage
+                        Weightage = comment.Weightage,
+                        FinalScore = 0,
+                        AdminComment = ""
                     });
                 }
             }
@@ -648,6 +652,10 @@ namespace Silicus.EncourageWithAzureAd.Web.Controllers
                     };
                     _nominationService.AddReviewerCommentsForCurrentNomination(revrComment);
                 }
+                if (review.IsSubmited == true)
+                {
+                    _nominationService.UpdateFinalScore(model.NominationId);
+                }
             }
 
             return RedirectToAction("Index", "Home");
@@ -797,6 +805,10 @@ namespace Silicus.EncourageWithAzureAd.Web.Controllers
                     ReviewId = review.Id
                 };
                 _nominationService.AddReviewerCommentsForCurrentNomination(revrComment);
+                if (review.IsSubmited == true)
+                {
+                    _nominationService.UpdateFinalScore(model.NominationId);
+                }
             }
             return RedirectToAction("Index", "Home");
         }
