@@ -97,26 +97,15 @@
             </td>
             <td class="averagePoints">
                 <span class="averagePoints finalAverageScore_@nomination.NominationId">
-                    @((nomination.ReviewerComments.Any() ? nomination.ReviewerComments.Average(a => (a.Credit * a.Weightage / 100.0)) : 0).ToString("F"))
+                    @((nomination.ManagerComments.Any() ? nomination.ManagerComments.Average(a => a.FinalScore) : 0).ToString("F"))
                 </span>
             </td>
             @{ var criteriaCount = 0; }
             @foreach (var criteria in Model.Criterias)
             {
-                var managerComment = nomination.ManagerComments.FirstOrDefault(mc => mc.CriteriaId == criteria.Id);
-                var reviewerComments = nomination.ReviewerComments.Where(rc => rc.CriteriaId == criteria.Id);
-                var reviewerScore = 0.0;
-                if (reviewerComments.Any())
-                {
-                    var averageRatings = reviewerComments.Average(r => r.Credit);
-                    reviewerScore = managerComment != null ? averageRatings * managerComment.Weightage / 100.0 : 0;
-                }
+                var managerComment = nomination.ManagerComments.FirstOrDefault(mc => mc.CriteriaId == criteria.Id);    
                 if (managerComment != null)
                 {
-                    if (managerComment.FinalScore == 0)
-                    {
-                        managerComment.FinalScore = Convert.ToDecimal(reviewerScore);
-                    }
                     <td colspan="@Model.Reviewers.Count" class="points">
                         @Html.Hidden("Nominations[" + nominationCount + "].ManagerComments[" + criteriaCount + "].NominationId", nomination.NominationId)
                         @Html.Hidden("Nominations[" + nominationCount + "].ManagerComments[" + criteriaCount + "].CriteriaId", criteria.Id)
