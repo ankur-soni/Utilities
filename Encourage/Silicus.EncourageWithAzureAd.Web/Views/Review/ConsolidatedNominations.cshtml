@@ -3,180 +3,119 @@
     ViewBag.Title = "Consolidated Nominations";
 }
 <style>
-  #consolidatedHrView td,th {
-      border: 1px solid black;
-      color: black;
-  }  
-  .notNominated {
-  background-color: #ccffcc;
-      text-align: center;
-}
-  .points {
-      text-align: center;
-      width: 50px !important;
-  }
-  .averagePoints {
-      font-weight: bold;
-  }
+    #consolidatedHrView td,th {
+        border: 1px solid gray;
+        color: black;
+    }  
+    .notNominated {
+        background-color: #ccffcc;
+        text-align: center;
+    }
+    .points {
+        text-align: center;
+        width: 50px !important;
+    }
+    .averagePoints {
+        font-weight: bold;
+    }
 </style>
-<div class="row white-bg header-row">
-    <nav class="" role="navigation" style="margin-bottom: 0">
-        <div class="navbar-header">
-            <a class="navbar-minimalize minimalize-styl-2 btn btn-primary " href="#"><i class="fa fa-bars"></i> </a>
+@using (Ajax.BeginForm("ConsolidatedNominations", "Review",
+    new AjaxOptions
+    {
+        HttpMethod = "POST",
+        InsertionMode = InsertionMode.Replace,
+        UpdateTargetId = "dvConsolidatedNominations",
+        OnBegin = "ShowCustomLoader()",
+        OnComplete = "HideCustomLoader()"
+    },
+    new {id="nominationsFilterForm"}
+    ))
+{
+    <div class="row white-bg header-row">
+        <nav class="" role="navigation" style="margin-bottom: 0">
+            <div class="navbar-header">
+                <a class="navbar-minimalize minimalize-styl-2 btn btn-primary " href="#"><i class="fa fa-bars"></i> </a>
+            </div>
+        </nav>
+        <div class="col-lg-11 col-md-11 col-sm-11">
+            <h1 class="header-name">Consolidated Nominations</h1>
+            <div class="pull-right">
+                <div class="pull-right">
+                    <ul>
+                        <li>
+                            @Html.DropDownListFor(b => b.AwardId, Model.ListOfAwards, new {@class = "form-control filterChanged"})
+                        </li>
+                        <li>
+                            @Html.DropDownListFor(a => a.AwardMonth, Enumerable.Range(1, 12).
+                                Select(i => new SelectListItem
+                                {
+                                    Value = i.ToString(),
+                                    Text = System.Globalization.CultureInfo.InvariantCulture.DateTimeFormat.GetMonthName(i)
+                                })
+                                , new {@class = "form-group form-control filterChanged" })
+                        </li>
+                        <li>
+                            @Html.DropDownListFor(a => a.AwardYear,
+                                Enumerable.Range(2010, (DateTime.Now.Year + 1) - 2010).
+                                    Select(i => new SelectListItem
+                                    {
+                                        Value = i.ToString(),
+                                        Text = i.ToString()
+                                    }),
+                                new {@class = "form-group form-control filterChanged" })
+                        </li>
+                    </ul>
+                </div>
+            </div>
         </div>
-    </nav>
-    <div class="col-lg-11 col-md-11 col-sm-11">
-        <h1 class="header-name">Consolidated Nominations</h1>
+    </div>
+}
+@using (Ajax.BeginForm("SaveFinalScore", "Review",
+    new AjaxOptions
+    {
+        HttpMethod = "POST",
+        OnBegin = "ShowCustomLoader()",
+        OnComplete = "HideCustomLoader()",
+        OnSuccess = "FinalScoreSave",
+        OnFailure = "FinalScoreFailure"
+    },
+    new {id = "frmSaveFinalScore" }
+    ))
+{
+    <div class="" style="overflow: scroll" id="dvConsolidatedNominations">
+        @Html.Partial("_ConsolidatedNominationsPartialView", Model)
+    </div>
+    <input type="submit" name="submit" value="Submit" id="submitButton" class="btn btn-primary" />
+}
+
+<div class="modal fade" id="hrCommentModal" role="dialog">
+    <div class="modal-dialog modal-sm">
+        <form id="frmHrComments">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">HR Comments</h4>
+                </div>
+                <div class="modal-body">
+
+                    <div class="form-group">
+                        <label for="txtHrPoints" class="form-control-label">Points:<span class="asterisk">*</span></label>
+                        <input type="number" class="form-control" min="0.0" max="5.0" name="txtHrPoints" id="txtHrPoints" required />
+                    </div>
+                    <div class="form-group">
+                        <label for="txtHrComment" class="form-control-label">Comments:<span class="asterisk">*</span></label>
+                        <textarea class="form-control" id="txtHrComment" name="txtHrComment" required></textarea>
+                    </div>
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="button" onclick="saveHrCommentsPoints()" id="btnSubmitHrComments" class="btn btn-primary">Submit</button>
+                </div>
+            </div>
+        </form>
     </div>
 </div>
-
-<div class="" style="overflow: scroll">
-    <table class="table table-hover white-bg content" id="consolidatedHrView">
-        <thead>
-        <tr>
-            <th rowspan="2">Employee Name</th>
-            <th rowspan="2">Rating By</th>
-            <th rowspan="2">All Criteria</th>
-            @{
-                var ccCount = 1;
-            }
-            @foreach (var criteria in Model.Criterias)
-            {
-                <th colspan="@Model.Reviewers.Count" style="text-align: center;">
-                    <a href="#" title="@criteria.Title">
-                       @("Criteria "+ccCount)
-                    </a>  
-                </th>
-                ccCount++;
-            }
-        </tr>
-        <tr>
-            @foreach (var criteria in Model.Criterias)
-            {
-                var revCount = 1;
-                foreach (var reviewer in Model.Reviewers)
-                {
-                    <th>
-                        <a href="#" title="@reviewer.ReviewerName">
-                            @("R" + revCount)
-                        </a>
-                    </th>
-                    revCount++;
-                }
-            }
-        </tr>
-        </thead>
-        <tbody>
-        
-        @foreach (var nomination in Model.Nominations)
-        {
-            <tr>
-                <td rowspan="4">
-                @nomination.UserName
-                </td>
-                <td>
-                    Manager
-                </td>
-                <td class="averagePoints">
-                    @((nomination.ManagerComments.Any() ? nomination.ManagerComments.Average(a => (a.Rating * a.Weightage / 100.0)) : 0).ToString("F"))
-                </td>
-                @foreach (var criteria in Model.Criterias)
-                {
-                    var managerComment = nomination.ManagerComments.FirstOrDefault(mc => mc.CriteriaId == criteria.Id);
-                    if (managerComment != null)
-                    {
-                        <td class="points" colspan="@Model.Reviewers.Count"> @((managerComment != null ? managerComment.Rating * managerComment.Weightage / 100m : 0).ToString("F"))</td>
-                    }
-                    else
-                    {
-                        <td colspan="@Model.Reviewers.Count" rowspan="4" class="notNominated">
-                            Not nominated for this criteria
-                        </td>
-                    }
-                }
-            </tr>
-            <tr>
-                <td>
-                    Reviewer
-                </td>
-                <td class="averagePoints">
-                    @((nomination.ReviewerComments.Any() ? nomination.ReviewerComments.Average(a => (a.Credit * a.Weightage / 100.0)) : 0).ToString("F"))
-                </td>
-                @foreach (var criteria in Model.Criterias)
-                {
-                    var managerComment = nomination.ManagerComments.FirstOrDefault(mc => mc.CriteriaId == criteria.Id);
-                    if (managerComment != null)
-                    {
-                        foreach (var reviewer in Model.Reviewers)
-                        {
-                            var reviewerComment = nomination.ReviewerComments.FirstOrDefault(rc => rc.ReviewerId == reviewer.Id && rc.CriteriaId == criteria.Id);
-                            <td class="points">
-                                @(reviewerComment != null ? (reviewerComment.Credit * reviewerComment.Weightage / 100m).ToString("F") : "-")
-                            </td>
-                        }
-                    }
-                }
-            </tr>
-            <tr>
-                    
-                <td>
-                    Consolidated
-                </td>
-                <td class="averagePoints">
-                    @((((nomination.ReviewerComments.Any() ? nomination.ReviewerComments.Average(a => (a.Credit * a.Weightage / 100.0)) : 0) + (nomination.ManagerComments.Any() ? nomination.ManagerComments.Average(a => (a.Rating * a.Weightage / 100.0)) : 0))/2.0).ToString("F"))
-                </td>
-                @foreach (var criteria in Model.Criterias)
-                {
-                    var managerComment = nomination.ManagerComments.FirstOrDefault(mc => mc.CriteriaId == criteria.Id);
-                    if (managerComment != null)
-                    {
-                        foreach (var reviewer in Model.Reviewers)
-                        {
-                            var reviewerComment = nomination.ReviewerComments.FirstOrDefault(rc => rc.ReviewerId == reviewer.Id && rc.CriteriaId == criteria.Id);
-                            <td class="points">
-                                @(reviewerComment != null ? (((reviewerComment.Credit * reviewerComment.Weightage / 100.0) + (managerComment != null ? managerComment.Rating * managerComment.Weightage / 100.0 : 0)) / 2.0).ToString("F") : "-")
-                            </td>
-                        }
-                    }
-                }
-            </tr>
-            <tr>
-                    
-                <td>
-                    Final Score
-                </td>
-                <td class="averagePoints">
-                    <span class="averagePoints finalAverageScore_@nomination.NominationId">
-                        @((((nomination.ReviewerComments.Any() ? nomination.ReviewerComments.Average(a => (a.Credit * a.Weightage / 100.0)) : 0) + (nomination.ManagerComments.Any() ? nomination.ManagerComments.Average(a => (a.Rating * a.Weightage / 100.0)) : 0)) / 2.0).ToString("F"))
-                    </span>
-                </td>
-                @foreach (var criteria in Model.Criterias)
-                {
-                    var managerComment = nomination.ManagerComments.FirstOrDefault(mc => mc.CriteriaId == criteria.Id);
-                    var managerScore = managerComment != null ? managerComment.Rating * managerComment.Weightage / 100.0 : 0;
-
-                    var reviewerComments = nomination.ReviewerComments.Where(rc => rc.CriteriaId == criteria.Id);
-                    var averageRatings = 0.0;
-                    var reviewerScore = 0.0;
-                    if (reviewerComments.Any())
-                    {
-                        averageRatings = reviewerComments.Average(r => r.Credit);
-                        reviewerScore = managerComment != null ? averageRatings * managerComment.Weightage / 100.0 : 0;
-                    }
-                    if (managerComment != null)
-                    {
-                        <td colspan="@Model.Reviewers.Count" class="points">
-                            @Html.TextBox("txtFinalPoints", ((managerScore + reviewerScore) / 2.0).ToString("F"), new {@class = "form-control finalScore_" + nomination.NominationId, @onchange = "RecalculateFinalScore(" + nomination.NominationId + ")"})
-                        </td>
-                    }
-                }
-            </tr>
-        }
-        
-        </tbody>
-    </table>
-</div>
-
 
 <script>
     function RecalculateFinalScore(nominationId) {
@@ -194,6 +133,74 @@
             }
         });
 
-        $(".finalAverageScore_" + nominationId).text((points/count).toFixed(2));
+        $(".finalAverageScore_" + nominationId).text((points / count).toFixed(2));
+    }
+
+    $(".filterChanged").change(function() {
+        $("#nominationsFilterForm").submit();
+    });
+    var criteriaId;
+    var nominationId;
+    var finalScrore;
+    var adminComment;
+    var g_criteriaIndex;
+    var g_nominationIndex;
+    function openCommentPointEditor(nominationIndex, criteriaIndex) {
+        g_nominationIndex = nominationIndex;
+        g_criteriaIndex = criteriaIndex;
+        criteriaId = $("input[name='Nominations[" + nominationIndex + "].ManagerComments[" + criteriaIndex + "].CriteriaId']").val();
+        nominationId = $("input[name='Nominations[" + nominationIndex + "].ManagerComments[" + criteriaIndex + "].NominationId']").val();
+        finalScrore = $("input[name='Nominations[" + nominationIndex + "].ManagerComments[" + criteriaIndex + "].FinalScore']").val();
+        adminComment = $("input[name='Nominations[" + nominationIndex + "].ManagerComments[" + criteriaIndex + "].AdminComment']").val();
+        console.log(nominationIndex + ", " + criteriaIndex + ", " + criteriaId + ", " + nominationId + ", " + finalScrore + ", " + adminComment);
+        $("#txtHrPoints").val(finalScrore);
+        $("#txtHrComment").val(adminComment);
+        $('#hrCommentModal').modal('show');
+    }
+
+    function saveHrCommentsPoints() {
+        $("#frmHrComments").validate({
+            rules: {
+                "txtHrPoints": {
+                    required: true,
+                    number:true
+                },
+                "txtHrComment": {
+                    required: true,
+                    minlength:5
+                }
+            }
+        });
+        if ($("#frmHrComments").valid()) {
+            //console.log("save hr comm");
+            var hrPoints = $("#txtHrPoints").val();
+            var hrComment =  $("#txtHrComment").val();
+            $("#spnFinalPoints_" + nominationId + "_" + criteriaId).text(hrPoints);
+            //console.log(hrPoints + ", " + hrComment);
+            $("input[name='Nominations[" + g_nominationIndex + "].ManagerComments[" + g_criteriaIndex + "].FinalScore']").val(hrPoints);
+            $("input[name='Nominations[" + g_nominationIndex + "].ManagerComments[" + g_criteriaIndex + "].AdminComment']").val(hrComment);
+
+            RecalculateFinalScore(nominationId);
+            $("#frmHrComments")[0].reset();
+            $('#hrCommentModal').modal('hide');
+
+            criteriaId = null;
+            nominationId = null;
+            finalScrore = null;
+            adminComment = null;
+            g_criteriaIndex = null;
+            g_nominationIndex = null;
+        }
+    }
+
+    function FinalScoreSave(data) {
+        //console.log(data);
+        if (data) {
+            swal("Final scores updated successfully.");
+        }
+    }
+
+    function FinalScoreFailure() {
+        
     }
 </script>
