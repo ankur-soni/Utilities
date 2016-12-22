@@ -478,7 +478,7 @@ img {
 /* Absolute Center Spinner */
 #loader {
     position: fixed;
-    z-index: 999;
+    z-index: 99999;
     height: 2em;
     width: 2em;
     overflow: show;
@@ -489,17 +489,17 @@ img {
     right: 0;
 }
 
-    /* Transparent Overlay */
-    #loader:before {
-        content: '';
-        display: block;
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background-color: rgba(0,0,0,0.3);
-    }
+/* Transparent Overlay */
+#loader:before {
+content: '';
+display: block;
+position: fixed;
+top: 0;
+left: 0;
+width: 100%;
+height: 100%;
+background-color: rgba(0,0,0,0.6);
+}
 
     /* :not(:required) hides these rules from IE9 and below */
     #loader:not(:required) {

@@ -136,7 +136,7 @@
         $('#containerDiv').html(htmlString);
     }
 
-    function getComponentdetail(showModel,id) {
+    function getComponentdetail(id, showModel) {
         $("#currentTile").val(id);
         blockUI();
         $.ajax({
@@ -149,8 +149,8 @@
                     $('#component-modal').modal('show');
                 }
             },
-            error: function () {
-                swal("Error", "Error occurred while getting details.", "error");
+            error: function () {                
+                showAlert({ title: 'Error', text: 'Error occurred while getting details.', type: 'error'});
             },
             complete: function () {
                 unblockUI();
@@ -159,32 +159,42 @@
     }
 
     function likeComponent() {
+        blockUI();
         $.get("/FrameworxProject/LikeComponent", { componentId: $("#currentTile").val() }, function (data) {
             $('#like-count').text(parseInt($('#like-count').text()) + 1);
             $('#like-text').text('Unlike');
             $('.like').addClass('liked');
             $("#LikeId").val(data.likeId);
+            showAlert({ title: 'Liked', text: '', type: 'success' });
+        }).done(function () {
+            unblockUI();
         });
     }
 
 
     function unLikeComponent() {
+        blockUI();
         $.get("/FrameworxProject/UnLikeComponent", { likeId: $("#LikeId").val() }, function (data) {
             $('#like-count').text(parseInt($('#like-count').text()) - 1);
             $('#like-text').text('Like');
             $('.like').removeClass('liked');
+            showAlert({ title: 'Unliked', text: '', type: 'success' });
+        }).done(function () {
+            unblockUI();
         });
     }
 
     $(document).ready(
         function () {
             var timer;
-            $("#searchString").on('keyup', function () {
+            $("#searchString").on('keyup', function () {               
                 clearTimeout(timer);
                 var ms = 1000; // milliseconds
                 var val = this.value.trim();
                 timer = setTimeout(function () {
+                    blockUI();
                     searchComponent(val);
+                    unblockUI();
                 }, ms);
             });
 
@@ -216,7 +226,7 @@
 
             $('body').on('click', '.TitleDivTemplate', function () {
                 var id = $(this).attr('my-data');
-                getComponentdetail(true, id);                
+                getComponentdetail(id,true);                
             });
 
             $('#prev-slide-button').on('click', function () { prevSlide(); });

@@ -25,3 +25,13 @@ function rebindValidation(formId) {
     $.validator.unobtrusive.parse($form);
 }
 
+function showAlert(options) {
+    swal({
+        title: options.title,
+        text: options.text,
+        type: options.type,
+        timer: options.timer || 1000,
+        showConfirmButton: options.showConfirmButton || false
+    });
+}
+

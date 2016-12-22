@@ -2,6 +2,7 @@
 //Function to open feedbcak form using ajax call 
 function openFeedbackForm() {
     //Ajax call for controller's OpenFeedbackForm action method to get bulletin details to open dialog 
+    blockUI();
     $.ajax({
         url: '/FrameworxFeedback/OpenFeedbackForm/',
         data: { OwnerId: $('#OwnerId').val(), Title: $('#Title').val(), Id: $("#currentTile").val() },
@@ -13,6 +14,9 @@ function openFeedbackForm() {
         },
         error: function (e) {
             toastr.error(getErrorMessage(e));
+        },
+        complete: function () {
+            unblockUI();
         }
     });
 }
@@ -25,7 +29,7 @@ function SaveFeedback() {
 }
 
 function OnFailureFeedback(e) {
-    swal("Error", "Error occurred while updating feedback details.", "error");
+    showAlert({ title: 'Error', text: 'Error occurred while updating feedback details.', type: 'error'});   
 }
 
 
@@ -33,8 +37,8 @@ function onSuccessFeedback(data) {
     if (data == true) {
         //Hide Feedback form if details have beed saved to database
         $('#feedbackFormModal').modal('hide');
-    }
-    swal("Submitted successfully!", "Feedback has been submitted successfully!", "success");
+        showAlert({ title: 'Submitted successfully!', text: 'Feedback has been submitted successfully!', type: 'success'});
+    }    
 }
 
 function placholderTxt() {
