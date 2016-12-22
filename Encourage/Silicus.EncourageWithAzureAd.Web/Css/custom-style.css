@@ -370,7 +370,7 @@ textarea {
     resize: none;
 }
 
-textarea.noCommentError {
+.noCommentError {
     border:1px solid red !important;
 }
 

@@ -11,8 +11,8 @@
                         <tr>
                             <th>#</th>
                             <th>Criteria</th>
-                            <th>Weightage</th>
                             <th>Rating</th>
+                            <th>Weightage</th>
                             <th>Manager Comments</th>
                         </tr>
                     </thead>
@@ -27,17 +27,8 @@
                                 <td class="col-lg-5 col-md-4 col-sm-4 col-xs-4">
                                     <label> @criteria.Title</label>
                                 </td>
-                                <td class="col-lg-1 col-md-1 col-sm-1 col-xs-1">
-                                    @Html.DropDownList("Comments[" + @i + "].Weightage",
-                                    Enumerable.Range(0, 21).Select(x => x * 5).
-                                    Select(j => new SelectListItem
-                                    {
-                                        Value = j.ToString(),
-                                        Text = j.ToString()
-                                    }), new { @class = "form-control ddlWeightage" })
-                                </td>
                                 <td class="col-lg-3 col-md-4 col-sm-6 col-xs-4">
-                                    <select id="rating-@i" class="example-square" name="Comments[@i].Rating" autocomplete="off" value="" row-id="@i">
+                                    <select id="rating-@i" class="example-square" name="Comments[@i].Rating" autocomplete="off" value="" row-id="@i" isRequiredForCriteria>
                                         <option value=""></option>
                                         <option value="1">1</option>
                                         <option value="2">2</option>
@@ -46,6 +37,22 @@
                                         <option value="5">5</option>
                                     </select>
                                 </td>
+                                <td class="col-lg-1 col-md-1 col-sm-1 col-xs-1">
+                                    @Html.DropDownList("Comments[" + @i + "].Weightage",
+                                    Enumerable.Range(0, 21).Select(x => x * 5).
+                                    Select(j => new SelectListItem
+                                    {
+                                        Value = j.ToString(),
+                                        Text = j.ToString()
+                                    }), new
+                                    {
+                                        @class = "form-control ddlWeightage",
+                                        @disabled = "disabled",
+                                        @isRequiredForCriteria = "false",
+                                        @onchange = "checkIfWeightageExceeds(this,"+i+");",
+                                        @row_id = i
+                                    })
+                                </td>
                                 <td class="col-lg-3 col-md-4 col-sm-3 col-xs-3">
                                     <textarea class="form-control" onblur="return hideRemainingCharacterText(@i)"
                                               onkeyup="edValueKeyPress(@i)"
@@ -53,7 +60,9 @@
                                               name="Comments[@i].Comment"
                                               id="@("comment"+i)"
                                               maxlength="500"
-                                              iscommentrequired="false"></textarea>
+                                              isRequiredForCriteria="false" 
+                                              row-id = @i
+                                              disabled="disabled"></textarea>
                                     <div class="@("textarea"+i)"></div>
 
                                     <div class="col-md-5 criteriaComment">
@@ -90,14 +99,28 @@
                     var rowId = +element.getAttribute("row-id");
 
                     var commentId = "#comment"+rowId;
+                    var weightageId = "#Comments_"+rowId+"__Weightage";
                     if (+value != 0) {
-                        $(commentId).attr("isCommentRequired", true);
+                        $(commentId).attr("isRequiredForCriteria", true);
+                        $(weightageId).attr("isRequiredForCriteria", true);
                         if ($(commentId).val() == "") {
+                            $(commentId).removeAttr("disabled");
+                            $(weightageId).removeAttr("disabled");
+
                             $(commentId).addClass("noCommentError");
+                            $(weightageId).addClass("noCommentError");
                         }
                     }else{
-                        $(commentId).attr("isCommentRequired", false);
+                        $(commentId).attr("isRequiredForCriteria", false);
                         $(commentId).removeClass("noCommentError");
+                        $(commentId).attr("disabled", "disabled");
+                        $(commentId).val("");
+
+
+                        $(weightageId).attr("isRequiredForCriteria", false);
+                        $(weightageId).removeClass("noCommentError");
+                        $(weightageId).attr("disabled", "disabled");
+                        $(weightageId).val(0);
                     }
                 }
             });
@@ -105,4 +128,36 @@
             $(id).barrating('set',rating);
         })
     });
+
+    function checkIfWeightageExceeds(dd,rowId){
+        if(dd.value > 0){
+            $(dd).removeClass("noCommentError");
+        }else {
+            $(dd).addClass("noCommentError");
+        }
+
+        if(checkWeightage() >= 100)
+        {
+            var currentRowId = 0;
+            //currentRowId = this.attributes.getNamedItem("row-id").value;
+            var skipDisabling = false;
+            var allRequiredFields = $("[isRequiredForCriteria]");
+            $.each(allRequiredFields,function(){
+                //debugger;
+                if (this.classList.contains("example-square")) {
+                    var rating = this.value;
+                    if (rating > 0) {
+                        skipDisabling = true;
+                    } else {
+                        skipDisabling = false;
+                    }
+                }
+
+                if(!skipDisabling)
+                {
+                    $(this).attr("disabled", "disabled");
+                }
+            });
+        }
+    }
 </script>
