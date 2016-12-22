@@ -16,18 +16,23 @@
                             <div class="el-overlay">
                                 <ul class="el-info">
                                     <li>
-                                        @if (item.IsShortlisted)
+                                                                                @if (item.IsShortlisted)
                                         {
-                                            <span><i class="fa fa-star fa-2x" title="Shortlisted" aria-hidden="true"></i></span>
-                                        }
-                                        else if (item.IsWinner)
-                                        {
-                                            <span><i class="fa fa-trophy fa-2x" title="Winner" aria-hidden="true"></i></span>
-                                        }
-                                        <a class="btn default btn-outline image-popup-vertical-fit" href="@Url.Action("ViewNominationForShortlist", "Review", item)">
-                                            <span> <i class="fa fa-file-text-o fa-2x" title="View Nomination" aria-hidden="true"></i> </span>
-                                        </a>
-                                    </li>
+                                                                                        <a class="btn default btn-outline image-popup-vertical-fit" href="#">
+                                                                                            <span><i class="fa fa-star fa-2x" title="Shortlisted" aria-hidden="true"></i></span>
+                                                                                        </a>
+                                                                                        }
+                                                                                        else if (item.IsWinner)
+
+                                                                                        {
+                                                                                            <a class="btn default btn-outline image-popup-vertical-fit" href="#">
+                                                                                                <span><i class="fa fa-trophy fa-2x" title="Winner" aria-hidden="true"></i></span>
+                                                                                            </a>
+                                                                                        }
+                                                                                        <a class="btn default btn-outline image-popup-vertical-fit" href="@Url.Action("ViewNominationForShortlist", "Review", item)">
+                                                                                          <span> <i class="fa fa-file-text-o fa-2x" title="View Nomination" aria-hidden="true"></i> </span>
+                                                                                        </a>
+</li>
                                 </ul>
                             </div>
                         </div>

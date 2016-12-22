@@ -16,7 +16,7 @@
   height: 60px;
   -webkit-animation: spin 2s linear infinite;
   animation: spin 2s linear infinite;
-  top:50%;
+  top:40%;
   position:relative;
   margin:0 auto;
 }
@@ -39,16 +39,16 @@
 .label1{font-size:13px;font-weight:bold;}
 .tbl-box{
     padding: 5px!important;
-    background: #2f4050!important;
+    background: #0063a7!important;
     color: #fff;
-    border-top: 5px solid #fff;
+    border-top: 1px solid #fff;
     margin-top: 10px;
     box-shadow:none!important;
 }
 .tbl-box .info{list-style: none;padding: 10px 0px;margin-bottom: 0px;}
 .tbl-box .info li{padding: 0px 0px 10px 0px;}
 #feedback .el-card-content{text-align:left!important;}
-#feedback .el-card-item{padding-bottom:15px!important;}
+#feedback .el-card-item{padding-bottom:0px!important;}
 #feedback .el-card-content{padding:0px 20px!important;}
 .btn-nav{
     margin-right:15px;
