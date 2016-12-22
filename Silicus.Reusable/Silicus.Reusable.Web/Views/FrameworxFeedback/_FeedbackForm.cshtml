@@ -2,7 +2,7 @@
 
 @using (Ajax.BeginForm("SaveFeedback", "FrameworxFeedback", null, new AjaxOptions { HttpMethod = "POST", OnFailure = "OnFailureFeedback", OnBegin = "blockUI('#frmFeedback')", OnComplete = "unblockUI('#frmFeedback')", OnSuccess = "onSuccessFeedback" }, new { id = "frmFeedback" }))
 {
-    @Html.HiddenFor(m=>m.FrameworxId)
+    @Html.HiddenFor(m => m.FrameworxId)
     @Html.HiddenFor(m => m.FeedBackFor)
     <div class="Section-three form-wrapper">
         <p class="mr-bt-25 mr-tp-25 fontSize14 textaligncenter marginTop10 ">Please tell us what do you think, any kind of feedback is highly appreciated.</p>
@@ -80,10 +80,11 @@
                     Feedback For : @Html.DisplayFor(m => m.FeedBackFor)
                 </p>
             </div>
+            @Html.ValidationSummary(true)
 
-            <div class="clearfix"> </div>
-        </div> <!-- End form-horizontal -->
+        <div class="clearfix"> </div>
+    </div> <!-- End form-horizontal -->
 
 
-    </div>
+</div>
 }

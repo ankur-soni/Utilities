@@ -32,14 +32,10 @@ namespace Silicus.Reusable.Web.Controllers
         {
             FrameworxFeedbackViewModel frameworxFeedbackViewModel = new FrameworxFeedbackViewModel();
             Silicus.UtilityContainer.Models.DataObjects.User user = _commonDbService.GetUser(frameworxViewModel.OwnerId);
-            if (user != null)
-            {
-                frameworxFeedbackViewModel.OwnerName = user.DisplayName;
-                frameworxFeedbackViewModel.OwnerEmail = user.EmailAddress;
-            }
-
+            frameworxFeedbackViewModel.OwnerName = user != null ? user.DisplayName : Constants.InformationNotAvailableText;
+            frameworxFeedbackViewModel.OwnerEmail = user != null ? user.EmailAddress : Constants.InformationNotAvailableText;
             frameworxFeedbackViewModel.FrameworxId = frameworxViewModel.id;
-            frameworxFeedbackViewModel.FeedBackFor = frameworxViewModel.Title;
+            frameworxFeedbackViewModel.FeedBackFor = string.IsNullOrWhiteSpace(frameworxViewModel.Title) ? Constants.InformationNotAvailableText : frameworxViewModel.Title;
             return PartialView("_FeedbackForm", frameworxFeedbackViewModel);
         }
 

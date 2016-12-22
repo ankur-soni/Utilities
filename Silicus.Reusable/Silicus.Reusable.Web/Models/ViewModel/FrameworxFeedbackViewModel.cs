@@ -27,7 +27,7 @@ namespace Silicus.Reusable.Web.Models.ViewModel
         public string Type { get; set; }
 
         public string FeedBackFor { get; set; }
-
+                
         public string OwnerName { get; set; }
 
         [EmailAddress]
