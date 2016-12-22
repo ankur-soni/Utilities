@@ -1,6 +1,6 @@
 ﻿@model Silicus.Reusable.Web.Models.ViewModel.FrameworxFeedbackViewModel
 
-@using (Ajax.BeginForm("SaveFeedback", "FrameworxFeedback", null, new AjaxOptions { HttpMethod = "POST", OnFailure = "OnFailureFeedback", OnBegin = "blockUI('#frmFeedback')", OnComplete = "unblockUI('#frmFeedback')", OnSuccess = "onSuccessFeedback" }, new { id = "frmFeedback" }))
+@using (Ajax.BeginForm("SaveFeedback", "FrameworxFeedback", null, new AjaxOptions { HttpMethod = "POST", OnFailure = "OnFailureFeedback", OnBegin = "blockUI()", OnComplete = "unblockUI()", OnSuccess = "onSuccessFeedback" }, new { id = "frmFeedback" }))
 {
     @Html.HiddenFor(m => m.FrameworxId)
     @Html.HiddenFor(m => m.FeedBackFor)
@@ -79,8 +79,7 @@
                 <p>
                     Feedback For : @Html.DisplayFor(m => m.FeedBackFor)
                 </p>
-            </div>
-            @Html.ValidationSummary(true)
+            </div>          
 
         <div class="clearfix"> </div>
     </div> <!-- End form-horizontal -->

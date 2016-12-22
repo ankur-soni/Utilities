@@ -2,23 +2,23 @@
 @{
     ViewBag.Title = "Consolidated Nominations";
 }
-<style>
-    #consolidatedHrView td,th {
-        border: 1px solid gray;
-        color: black;
-    }  
-    .notNominated {
-        background-color: #ccffcc;
-        text-align: center;
-    }
-    .points {
-        text-align: center;
-        width: 50px !important;
-    }
-    .averagePoints {
-        font-weight: bold;
-    }
-</style>
+@*<style>
+        #consolidatedHrView td,th {
+            border: 1px solid gray;
+            color: black;
+        }
+        .notNominated {
+            background-color: #ccffcc;
+            text-align: center;
+        }
+        .points {
+            text-align: center;
+            width: 50px !important;
+        }
+        .averagePoints {
+            font-weight: bold;
+        }
+    </style>*@
 @using (Ajax.BeginForm("ConsolidatedNominations", "Review",
     new AjaxOptions
     {
@@ -31,6 +31,7 @@
     new {id="nominationsFilterForm"}
     ))
 {
+
     <div class="row white-bg header-row">
         <nav class="" role="navigation" style="margin-bottom: 0">
             <div class="navbar-header">
@@ -39,11 +40,15 @@
         </nav>
         <div class="col-lg-11 col-md-11 col-sm-11">
             <h1 class="header-name">Consolidated Nominations</h1>
-            <div class="pull-right">
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-lg-12 col-md-12 col-sm-12">
+            <div class="box M-T15">
                 <div class="pull-right">
-                    <ul>
+                    <ul style="margin-top:0px;">
                         <li>
-                            @Html.DropDownListFor(b => b.AwardId, Model.ListOfAwards, new {@class = "form-control filterChanged"})
+                            @Html.DropDownListFor(b => b.AwardId, Model.ListOfAwards, new { @class = "form-control filterChanged" })
                         </li>
                         <li>
                             @Html.DropDownListFor(a => a.AwardMonth, Enumerable.Range(1, 12).
@@ -52,7 +57,7 @@
                                     Value = i.ToString(),
                                     Text = System.Globalization.CultureInfo.InvariantCulture.DateTimeFormat.GetMonthName(i)
                                 })
-                                , new {@class = "form-group form-control filterChanged" })
+                                , new { @class = "form-group form-control filterChanged" })
                         </li>
                         <li>
                             @Html.DropDownListFor(a => a.AwardYear,
@@ -62,10 +67,11 @@
                                         Value = i.ToString(),
                                         Text = i.ToString()
                                     }),
-                                new {@class = "form-group form-control filterChanged" })
+                                new { @class = "form-group form-control filterChanged" })
                         </li>
                     </ul>
                 </div>
+                <div class="clearfix"></div>
             </div>
         </div>
     </div>
@@ -82,55 +88,61 @@
     new {id = "frmSaveFinalScore" }
     ))
 {
-    <div class="" style="overflow: scroll" id="dvConsolidatedNominations">
-        @Html.Partial("_ConsolidatedNominationsPartialView", Model)
-    </div>
-    <input type="submit" name="submit" value="Submit" id="submitButton" class="btn btn-primary" />
-}
 
-<div class="modal fade" id="hrCommentModal" role="dialog">
-    <div class="modal-dialog modal-sm">
-        <form id="frmHrComments">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal">&times;</button>
-                    <h4 class="modal-title">HR Comments</h4>
+    <div class="row">
+        <div class="col-lg-12 col-md-12 col-sm-12">
+            <div class="box">
+                <div class="" id="dvConsolidatedNominations">
+                    @Html.Partial("_ConsolidatedNominationsPartialView", Model)
                 </div>
-                <div class="modal-body">
 
-                    <div class="form-group">
-                        <label for="txtHrPoints" class="form-control-label">Points:<span class="asterisk">*</span></label>
-                        <input type="number" class="form-control" min="0.0" max="5.0" name="txtHrPoints" id="txtHrPoints" required />
+                <div class="modal fade" id="hrCommentModal" role="dialog">
+                    <div class="modal-dialog modal-sm">
+                        <form id="frmHrComments">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                    <h4 class="modal-title">HR Comments</h4>
+                                </div>
+                                <div class="modal-body">
+
+                                    <div class="form-group">
+                                        <label for="txtHrPoints" class="form-control-label">Points:<span class="asterisk">*</span></label>
+                                        <input type="number" class="form-control" min="0.0" max="5.0" name="txtHrPoints" id="txtHrPoints" required />
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="txtHrComment" class="form-control-label">Comments:<span class="asterisk">*</span></label>
+                                        <textarea class="form-control" id="txtHrComment" name="txtHrComment" required></textarea>
+                                    </div>
+
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                    <button type="button" onclick="saveHrCommentsPoints()" id="btnSubmitHrComments" class="btn btn-primary">Save</button>
+                                </div>
+                            </div>
+                        </form>
                     </div>
-                    <div class="form-group">
-                        <label for="txtHrComment" class="form-control-label">Comments:<span class="asterisk">*</span></label>
-                        <textarea class="form-control" id="txtHrComment" name="txtHrComment" required></textarea>
-                    </div>
-
                 </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    <button type="button" onclick="saveHrCommentsPoints()" id="btnSubmitHrComments" class="btn btn-primary">Save</button>
-                </div>
+                
             </div>
-        </form>
+
+        </div>
     </div>
-</div>
-<script src="~/js/jquery.dataTables.min.js"></script>
-<script src="~/js/dataTables.fixedColumns.min.js"></script>
-<script>
-    $(document).ready(function () {
-        var table = $('#consolidatedHrView').DataTable({
-            scrollY: "300px",
-            scrollX: true,
-            ordering:  false,
-            scrollCollapse: true,
-            paging: false,
-            fixedColumns: {
-                leftColumns: 3
-            }
-        });
-    });
+    <div class="row">
+        <div class="col-lg-12 col-md-12 col-sm-12">
+            <div class="box M-B60">
+
+                <input type="submit" name="submit" value="Submit" id="submitButton" class="btn btn-primary pull-right" />
+                <div class="clearfix"></div>
+            </div>
+            
+        </div>
+    </div>
+
+
+                }
+                <script>
     function RecalculateFinalScore(nominationId) {
         var points = 0.0;
         var count = 0;
@@ -214,6 +226,6 @@
     }
 
     function FinalScoreFailure() {
-        
+
     }
-</script>
+                </script>
