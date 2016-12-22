@@ -248,6 +248,7 @@
             },
            function (isConfirm) {
                if (isConfirm) {
+                   $(".loader-overlay").show();
                    var modelbjectToSend = $('#reviewNominationForm').serialize() + '&' + $.param({ 'Submit': "Save" }, true);
 
                    $.ajax({
@@ -255,6 +256,7 @@
                        url: '@Url.Action("ReviewNomination", "Nomination")',
                        data: modelbjectToSend,
                        success: function (data) {
+                           $(".loader-overlay").hide();
                            swal({
                                title: "Review saved successfully",
                                showCancelButton: false,
@@ -268,6 +270,7 @@
                            });
                        },
                        error: function () {
+                           $(".loader-overlay").hide();
                            swal("Error", "Oops! Something wrong happened..");
                        }
                    });
@@ -298,6 +301,7 @@
             },
            function (isConfirm) {
                if (isConfirm) {
+                   $(".loader-overlay").show();
                    var modelbjectToSend = $('#reviewNominationForm').serialize() + '&' + $.param({ 'Submit': "Submit" }, true);
 
                    $.ajax({
@@ -305,6 +309,7 @@
                        url: '@Url.Action("ReviewNomination", "Nomination")',
                        data: modelbjectToSend,
                        success: function (data) {
+                           $(".loader-overlay").hide();
                            swal({
                                title: "Review submitted successfully",
                                showCancelButton: false,
@@ -318,6 +323,7 @@
                            });
                        },
                        error: function () {
+                           $(".loader-overlay").hide();
                            swal("Error", "Oops! Something wrong happened..");
                        }
                    });

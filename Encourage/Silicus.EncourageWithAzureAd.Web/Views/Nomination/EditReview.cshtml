@@ -13,7 +13,7 @@
 </div>
 
 @using (Html.BeginForm("EditReview", "Nomination", FormMethod.Post, new { id = "editReviewForm" }))
-        {
+{
     @Html.HiddenFor(modelItem => modelItem.ReviewerId)
     @Html.HiddenFor(modelItem => modelItem.NominationId);
 
@@ -143,7 +143,7 @@
                                             </tbody>
                                 j++;
 
-                            }
+                                            }
 
 
                                         @if (Model.ManagerComments != null)
@@ -195,216 +195,225 @@
                     </div>
       </div>
     </div>
-                }
-
-
-                <script src="~/js/jquery-2.1.1.js"></script>
-                @*<script src="http://ajax.googleapis.com/ajax/libs/jquery/2.0.0/jquery.min.js"></script>*@
-                <script src="~/js/plugins/validate/jquery.validate.min.js"></script>
-                <script src="~/Scripts/jquery.validate.unobtrusive.js"></script>
-                <script src="~/js/jquery.barrating.min.js"></script>
-                <script>
-                    var ratings = $('.example-square');
-
-                    $.each(ratings, function (index) {
-                        var id = "#" + this.id;
-                        var rating = +this.getAttribute("value");
-
-                        $(id).barrating('show', {
-                            theme: 'bars-square',
-                            showValues: true,
-                            showSelectedRating: false,
-                            readonly: true
-                        });
-
-                        $(id).barrating('set', rating);
-                    });
-
-                    var reviewerRatings = $('.reviewer-rating');
-
-                    $.each(reviewerRatings, function (index) {
-                        var id = "#" + this.id;
-                        var rating = +this.getAttribute("value");
-
-                        $(id).barrating('show', {
-                            theme: 'bars-square',
-                            showValues: true,
-                            showSelectedRating: false
-                        });
-
-                        $(id).barrating('set', rating);
-                    });
-
-                    $(".reviewer-rating").change(function () {
-                        var criteriaCount = 0;
-                        var totalCredits = 0;
-                        $(".reviewer-rating").each(function (idx, el) {
-                            if ($.isNumeric($(el).val())) {
-                                totalCredits = totalCredits + parseInt($(el).val());
-                                criteriaCount++;
-                            }
-                        });
-
-                        $("#totalCredits").text((totalCredits / criteriaCount).toFixed(2));
-                    });
-
-                    function onkeyevent(self) {
-                        $('#' + self.id).siblings("div.textarea").css('display', 'block');
-                        var text_max = 100;
-                        var text_length = self.value.length;
-                        var text_remaining = text_max - text_length;
-                        $('#' + self.id).siblings("div.textarea").html(text_remaining + ' characters remaining');
-                    }
-
-                    function hideRemainingCharacterText(self) {
-                        $('#' + self.id).siblings("div.textarea").css('display', 'none');
-                    }
-
-                    function SaveDraftReview() {
-
-                        if ($('#editReviewForm').valid()) {
-                            swal({
-                                title: "Save Review",
-                                text: "Do you want to save this review for nomination?",
-                                type: "info",
-                                showCancelButton: true,
-                                confirmButtonColor: "#337ab7",
-                                confirmButtonText: "Yes!",
-                                cancelButtonText: "No!",
-                                closeOnConfirm: false,
-                                closeOnCancel: false
-                            },
-                                function (isConfirm) {
-                                    if (isConfirm) {
-                                        var modelbjectToSend = $('#editReviewForm').serialize() + '&' + $.param({ 'Submit': "Save Draft" }, true);
-
-                                        $.ajax({
-                                            type: 'post',
-                                            url: '@Url.Action("EditReview", "Nomination")',
-                                            data: modelbjectToSend,
-                                            success: function (data) {
-                                                swal({
-                                                    title: "Review Saved!",
-                                                    showCancelButton: false,
-                                                    confirmButtonColor: "#337ab7",
-                                                    confirmButtonText: "Ok"
-                                                },
-                                                    function (isConfirm) {
-                                                        if (isConfirm) {
-                                                            window.location.href = '@Url.Action("ReviewNominations", "Nomination")';
-                                                        }
-                                                    });
-                                            },
-                                            error: function () {
-                                                swal("Error", "Oops! Something wrong happened..");
                                             }
-                                        });
-                                    } else {
-                                        swal("Cancelled", "Review Cancelled");
-                                        @*window.location.href = '@Url.Action("SavedReviews", "Nomination")';*@
-                                    }
-                                });
 
-                        }
-                        else {
-                            return false;
-                        }
-                    }
 
-                    function SubmitReview() {
-                        if ($('#editReviewForm').valid()) {
-                            swal({
-                                title: "Submit Review",
-                                text: "Do you want to submit this review for nomination?",
-                                type: "info",
-                                showCancelButton: true,
-                                confirmButtonColor: "#337ab7",
-                                confirmButtonText: "Yes!",
-                                cancelButtonText: "No!",
-                                closeOnConfirm: false,
-                                closeOnCancel: false
-                            },
-                                function (isConfirm) {
-                                    if (isConfirm) {
-                                        var modelbjectToSend = $('#editReviewForm').serialize() + '&' + $.param({ 'Submit': "Submit" }, true);
+<script src="~/js/jquery-2.1.1.js"></script>
+@*<script src="http://ajax.googleapis.com/ajax/libs/jquery/2.0.0/jquery.min.js"></script>*@
+<script src="~/js/plugins/validate/jquery.validate.min.js"></script>
+<script src="~/Scripts/jquery.validate.unobtrusive.js"></script>
+<script src="~/js/jquery.barrating.min.js"></script>
+<script>
+    var ratings = $('.example-square');
 
-                                        $.ajax({
-                                            type: 'post',
-                                            url: '@Url.Action("EditReview", "Nomination")',
-                                            data: modelbjectToSend,
-                                            success: function (data) {
-                                                swal({
-                                                    title: "Review Submitted!",
-                                                    showCancelButton: false,
-                                                    confirmButtonColor: "#337ab7",
-                                                    confirmButtonText: "Ok"
-                                                },
-                                                    function () {
-                                                        if (isConfirm) {
-                                                            window.location.href = '@Url.Action("SavedReviews", "Nomination")';
-                                                        }
-                                                    });
-                                            },
-                                            error: function () {
-                                                swal("Error", "Oops! Something wrong happened..");
-                                            }
-                                        });
-                                    } else {
-                                        swal("Cancelled", "Review Cancelled");
-                                        @*window.location.href = '@Url.Action("SavedReviews", "Nomination")';*@
-                                    }
-                                });
+    $.each(ratings, function (index) {
+        var id = "#" + this.id;
+        var rating = +this.getAttribute("value");
 
-                        }
-                        else {
-                            return false;
-                        }
-                    }
+        $(id).barrating('show', {
+            theme: 'bars-square',
+            showValues: true,
+            showSelectedRating: false,
+            readonly: true
+        });
 
-                    function DiscardReview() {
+        $(id).barrating('set', rating);
+    });
 
-                        swal({
-                            title: "Discard Review",
-                            text: "Do you want to discard this review ?",
-                            type: "info",
-                            showCancelButton: true,
-                            confirmButtonColor: "#337ab7",
-                            confirmButtonText: "Yes!",
-                            cancelButtonText: "No!",
-                            closeOnConfirm: false,
-                            closeOnCancel: false
-                        },
-                            function (isConfirm) {
-                                if (isConfirm) {
-                                    var modelbjectToSend = $('#editReviewForm').serialize() + '&' + $.param({ 'Submit': "Discard Review" }, true);
+    var reviewerRatings = $('.reviewer-rating');
 
-                                    $.ajax({
-                                        type: 'post',
-                                        url: '@Url.Action("EditReview", "Nomination")',
-                                        data: modelbjectToSend,
-                                        success: function (data) {
-                                            swal({
-                                                title: "Review Discarded!",
-                                                showCancelButton: false,
-                                                confirmButtonColor: "#337ab7",
-                                                confirmButtonText: "Ok"
-                                            },
-                                                function (isConfirm) {
+    $.each(reviewerRatings, function (index) {
+        var id = "#" + this.id;
+        var rating = +this.getAttribute("value");
 
-                                                    if (isConfirm) {
-                                                        window.location.href = '@Url.Action("SavedReviews", "Nomination")';
-                                                    }
-                                                });
-                                        },
-                                        error: function () {
-                                            swal("Error", "Oops! Something wrong happened..");
+        $(id).barrating('show', {
+            theme: 'bars-square',
+            showValues: true,
+            showSelectedRating: false
+        });
+
+        $(id).barrating('set', rating);
+    });
+
+    $(".reviewer-rating").change(function () {
+        var criteriaCount = 0;
+        var totalCredits = 0;
+        $(".reviewer-rating").each(function (idx, el) {
+            if ($.isNumeric($(el).val())) {
+                totalCredits = totalCredits + parseInt($(el).val());
+                criteriaCount++;
+            }
+        });
+
+        $("#totalCredits").text((totalCredits / criteriaCount).toFixed(2));
+    });
+
+    function onkeyevent(self) {
+        $('#' + self.id).siblings("div.textarea").css('display', 'block');
+        var text_max = 100;
+        var text_length = self.value.length;
+        var text_remaining = text_max - text_length;
+        $('#' + self.id).siblings("div.textarea").html(text_remaining + ' characters remaining');
+    }
+
+    function hideRemainingCharacterText(self) {
+        $('#' + self.id).siblings("div.textarea").css('display', 'none');
+    }
+
+    function SaveDraftReview() {
+
+        if ($('#editReviewForm').valid()) {
+            swal({
+                title: "Save Review",
+                text: "Do you want to save this review for nomination?",
+                type: "info",
+                showCancelButton: true,
+                confirmButtonColor: "#337ab7",
+                confirmButtonText: "Yes!",
+                cancelButtonText: "No!",
+                closeOnConfirm: false,
+                closeOnCancel: false
+            },
+                function (isConfirm) {
+                    if (isConfirm) {
+                        $(".loader-overlay").show();
+                        var modelbjectToSend = $('#editReviewForm').serialize() + '&' + $.param({ 'Submit': "Save Draft" }, true);
+
+                        $.ajax({
+                            type: 'post',
+                            url: '@Url.Action("EditReview", "Nomination")',
+                            data: modelbjectToSend,
+                            success: function (data) {
+                                $(".loader-overlay").hide();
+                                swal({
+                                    title: "Review Saved!",
+                                    showCancelButton: false,
+                                    confirmButtonColor: "#337ab7",
+                                    confirmButtonText: "Ok"
+                                },
+                                    function (isConfirm) {
+                                        if (isConfirm) {
+                                            window.location.href = '@Url.Action("ReviewNominations", "Nomination")';
                                         }
                                     });
-                                } else {
-                                    swal("Cancelled", "Discard Cancelled");
-                                    @*window.location.href = '@Url.Action("SavedReviews", "Nomination")';*@
-                                }
-                            });
-
+                            },
+                            error: function () {
+                                $(".loader-overlay").hide();
+                                swal("Error", "Oops! Something wrong happened..");
+                            }
+                        });
+                    } else {
+                        swal("Cancelled", "Review Cancelled");
+                        @*window.location.href = '@Url.Action("SavedReviews", "Nomination")';*@
                     }
-                </script>
+                });
+
+        }
+        else {
+            return false;
+        }
+    }
+
+    function SubmitReview() {
+        if ($('#editReviewForm').valid()) {
+            swal({
+                title: "Submit Review",
+                text: "Do you want to submit this review for nomination?",
+                type: "info",
+                showCancelButton: true,
+                confirmButtonColor: "#337ab7",
+                confirmButtonText: "Yes!",
+                cancelButtonText: "No!",
+                closeOnConfirm: false,
+                closeOnCancel: false
+            },
+                function (isConfirm) {
+                    if (isConfirm) {
+                        $(".loader-overlay").show();
+                        var modelbjectToSend = $('#editReviewForm').serialize() + '&' + $.param({ 'Submit': "Submit" }, true);
+
+                        $.ajax({
+                            type: 'post',
+                            url: '@Url.Action("EditReview", "Nomination")',
+                            data: modelbjectToSend,
+                            success: function (data) {
+                                $(".loader-overlay").hide();
+                                swal({
+                                    title: "Review Submitted!",
+                                    showCancelButton: false,
+                                    confirmButtonColor: "#337ab7",
+                                    confirmButtonText: "Ok"
+                                },
+                                    function () {
+                                        if (isConfirm) {
+                                            window.location.href = '@Url.Action("SavedReviews", "Nomination")';
+                                        }
+                                    });
+                            },
+                            error: function () {
+                                $(".loader-overlay").hide();
+                                swal("Error", "Oops! Something wrong happened..");
+                            }
+                        });
+                    } else {
+                        swal("Cancelled", "Review Cancelled");
+                        @*window.location.href = '@Url.Action("SavedReviews", "Nomination")';*@
+                    }
+                });
+
+        }
+        else {
+            return false;
+        }
+    }
+
+    function DiscardReview() {
+
+        swal({
+            title: "Discard Review",
+            text: "Do you want to discard this review ?",
+            type: "info",
+            showCancelButton: true,
+            confirmButtonColor: "#337ab7",
+            confirmButtonText: "Yes!",
+            cancelButtonText: "No!",
+            closeOnConfirm: false,
+            closeOnCancel: false
+        },
+            function (isConfirm) {
+                if (isConfirm) {
+                    $(".loader-overlay").show();
+                    var modelbjectToSend = $('#editReviewForm').serialize() + '&' + $.param({ 'Submit': "Discard Review" }, true);
+
+                    $.ajax({
+                        type: 'post',
+                        url: '@Url.Action("EditReview", "Nomination")',
+                        data: modelbjectToSend,
+                        success: function (data) {
+                            $(".loader-overlay").hide();
+                            swal({
+                                title: "Review Discarded!",
+                                showCancelButton: false,
+                                confirmButtonColor: "#337ab7",
+                                confirmButtonText: "Ok"
+                            },
+                                function (isConfirm) {
+
+                                    if (isConfirm) {
+                                        window.location.href = '@Url.Action("SavedReviews", "Nomination")';
+                                    }
+                                });
+                        },
+                        error: function () {
+                            $(".loader-overlay").hide();
+                            swal("Error", "Oops! Something wrong happened..");
+                        }
+                    });
+                } else {
+                    swal("Cancelled", "Discard Cancelled");
+                    @*window.location.href = '@Url.Action("SavedReviews", "Nomination")';*@
+                }
+            });
+
+    }
+</script>

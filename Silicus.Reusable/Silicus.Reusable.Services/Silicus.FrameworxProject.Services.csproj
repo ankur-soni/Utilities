@@ -47,8 +47,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CommonDbService.cs" />
+    <Compile Include="FrameworxFeedbackService.cs" />
     <Compile Include="ExtensionCodeService.cs" />
     <Compile Include="Interfaces\ICommonDbService.cs" />
+    <Compile Include="Interfaces\IFrameworxFeedbackService.cs" />
     <Compile Include="Interfaces\IExtensionCodeService.cs" />
     <Compile Include="Interfaces\IFrameworxProjectService.cs" />
     <Compile Include="FrameworxProjectService.cs" />

@@ -172,9 +172,11 @@
 
     <script src="~/js/plugins/validate/jquery.validate.min.js"></script>
 
-    <script src="~/Scripts/jquery.validate.unobtrusive.js"></script>
+<script src="~/Scripts/jquery.validate.unobtrusive.js"></script>
+    
+    <script src="~/Scripts/jquery.unobtrusive-ajax.min.js"></script>
 
-    <script src="~/js/plugins/metisMenu/jquery.metisMenu.js"></script>
+<script src="~/js/plugins/metisMenu/jquery.metisMenu.js"></script>
 
     <script src="~/js/plugins/slimscroll/jquery.slimscroll.min.js"></script>
 
@@ -227,9 +229,7 @@
         }
         );
     });
-</script>
 
-<script>
     $(document).ready(function () {
         $('.wrap').perfectScrollbar();
         $('body').perfectScrollbar();
@@ -238,4 +238,14 @@
     $(window).resize(function () {
         sidebarautoheight();
     });
+
+    function ShowCustomLoader() {
+        console.log("show");
+        $(".loader-overlay").show();
+    }
+
+    function HideCustomLoader() {
+        console.log("hide");
+        $(".loader-overlay").hide();
+    }
 </script>

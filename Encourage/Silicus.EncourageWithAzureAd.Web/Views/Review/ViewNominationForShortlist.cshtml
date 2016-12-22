@@ -10,12 +10,12 @@
     </nav>
     <div class="col-lg-11 col-md-11 col-sm-11">
         <h1 class="header-name">View Nomination</h1>
-    </div>
 </div>
+    </div>
 
-@using (Html.BeginForm())
-{
-    @Html.HiddenFor(model => model.NominationId, htmlAttributes: new { id = "nominationId" })
+    @using (Html.BeginForm())
+    {
+        @Html.HiddenFor(model => model.NominationId, htmlAttributes: new { id = "nominationId" })
     <div class="row">
         <div class="col-lg-12 col-md-12 col-sm-12">
             <div class="panel panel-info M-T15">
@@ -23,33 +23,33 @@
                 <div class="panel-wrapper collapse in" aria-expanded="true">
                     <div class="panel-body">
                         <table class="table table-hover issue-tracker white-bg">
-                            <thead>
-                                <tr>
+            <thead>
+                <tr>
                                     <td class="col-sm-4">
-                                        <label> Project/Department:</label>
-                                    </td>
-                                    <td>
-                                        @Html.DisplayFor(modelItem => modelItem.ProjectOrDepartment)
-                                    </td>
-                                </tr>
-                                <tr>
+                        <label> Project/Department:</label>
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => modelItem.ProjectOrDepartment)
+                    </td>
+                </tr>
+                <tr>
                                     <td class="col-sm-4">
-                                        <label> Manager:</label>
-                                    </td>
-                                    <td>
-                                        @Html.DisplayFor(modelItem => modelItem.Manager)
-                                    </td>
-                                </tr>
-                                <tr>
+                        <label> Manager:</label>
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => modelItem.Manager)
+                    </td>
+                </tr>
+                <tr>
                                     <td class="col-sm-4">
-                                        <label>Credits</label>
-                                    </td>
-                                    <td>
-                                        @Html.DisplayFor(modelItem => modelItem.TotalCredits)
-                                    </td>
-                                </tr>
-                            </thead>
-                        </table>
+                        <label>Credits</label>
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => modelItem.TotalCredits)
+                    </td>
+                </tr>
+            </thead>
+        </table>
                     </div>
                 </div>
             </div>
@@ -66,7 +66,7 @@
                                 <td class="more" style="word-wrap: break-word;">
                                     <div>@Model.NominationComment</div>
                                 </td>
-                            </tr>
+            </tr>
                         </table>
                     </div>
                 </div>
@@ -84,12 +84,12 @@
                             <div class="table-responsive">
                                 <table class="table table-hover issue-tracker">
 
-                                    <tr class="white-bg">
+            <tr class="white-bg">
                                         <td class="more" style="word-wrap: break-word;">
                                             <div>@Model.HrAdminsfeedback</div>
                                         </td>
-                                    </tr>
-                                </table>
+            </tr>
+        </table>
                             </div>
                         </div>
                     </div>
@@ -106,112 +106,112 @@
                             <div class="col-md-12">
                                 <div class="table-responsive">
                                     @foreach (var reviewer in Model.ReviewerComments)
-                                    {
-                                        var creditCount = 0;
+        {
+            var creditCount = 0;
                                         var reviewerName = reviewer.FirstOrDefault();
                                        
 
                                         <table class="table issue-tracker">
-                                            <thead>
-                                                <tr>
-                                                    <th>Criteria</th>
+                    <thead>
+                        <tr>
+                            <th>Criteria</th>
                                                     <th colspan="4">Manager</th>
                                                     <th colspan="2">Reviewer</th>
                                                 </tr>
                                                 <tr>
                                                     <th></th>
-                                                    <th>Weightage</th>
-                                                    <th>Rating</th>
-                                                    <th>Points</th>
+                            <th>Weightage</th>
+                            <th>Rating</th>
+                            <th>Points</th>
                                                     <th>Comments</th>
                                                     <th>Rating</th>
                                                     <th>Comments</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                @foreach (var managerComment in Model.ManagerComments)
-                                                {
-                                                    <tr>
-                                                        @{
-                                                    var criteria = Model.Criterias.FirstOrDefault(c => c.Id == managerComment.CriteriaId);
-                                                        }
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var managerComment in Model.ManagerComments)
+                        {
+                            <tr>
+                                @{
+                                    var criteria = Model.Criterias.FirstOrDefault(c => c.Id == managerComment.CriteriaId);
+                                }
                                                         <td class="col-lg-2 col-md-2 col-sm-2">
-                                                            @if (criteria != null)
-                                                            {
-                                                                @criteria.Title
-                                                            }
-                                                        </td>
-                                                        @{
-                                                    var commentObj = Model.ManagerComments.FirstOrDefault(model => model.CriteriaId == @managerComment.CriteriaId);
-                                                        }
+                                    @if (criteria != null)
+                                    {
+                                        @criteria.Title
+                                    }
+                                </td>
+                                @{
+                                    var commentObj = Model.ManagerComments.FirstOrDefault(model => model.CriteriaId == @managerComment.CriteriaId);
+                                }
                                                         <td class="col-lg-1 col-md-1 col-sm-1">@(commentObj != null ? commentObj.Weightage.ToString() : "-")</td>
                                                         <td class="col-lg-2 col-md-2 col-sm-2">
-                                                            @Html.DropDownList("rating_" + managerComment.CriteriaId,
-                                    Enumerable.Range(1, 5).
-                                    Select(j => new SelectListItem
-                                    {
-                                        Value = j.ToString(),
-                                        Text = j.ToString()
-                                    }), "", new { @class = "example-square", @autocomplete = "off", @value = (commentObj != null ? commentObj.Rating : 0) })
-                                                        </td>
+                                    @Html.DropDownList("rating_" + managerComment.CriteriaId,
+                                        Enumerable.Range(1, 5).
+                                            Select(j => new SelectListItem
+                                            {
+                                                Value = j.ToString(),
+                                                Text = j.ToString()
+                                            }), "", new { @class = "example-square", @autocomplete = "off", @value = (commentObj != null ? commentObj.Rating : 0) })
+                                </td>
                                                         <td class="col-lg-1 col-md-1 col-sm-1">@(commentObj != null ? (commentObj.Weightage * commentObj.Rating / 100.0) : 0)</td>
                                                         <td class="more col-lg-1 col-md-1 col-sm-1" style="word-break:break-all">@(commentObj != null ? commentObj.Comment : "-")</td>
                                                         <td class="col-lg-2 col-md-2 col-sm-2">
-                                                            @{
-                                                    var reviewObj = reviewer.FirstOrDefault(model => model.CriteriaId == @managerComment.CriteriaId);
-                                                    if (reviewObj != null)
-                                                    {
-                                                        @Html.DropDownList("reviewRating_" + managerComment.CriteriaId, Enumerable.Range(1, 5).
-                                    Select(j => new SelectListItem
-                                    {
-                                        Value = j.ToString(),
-                                        Text = j.ToString()
-                                    }), "", new { @class = "example-square", @autocomplete = "off", @value = reviewObj.Credit })
-                                                    }
-                                                            }
-                                                        </td>
-                                                        <td class="more col-lg-3 col-md-3 col-sm-3" style="word-break:break-all">@(reviewObj != null ? reviewObj.Comment : "")</td>
-                                                    </tr>
-                                                }
-                                                <tr>
-                                                    <td></td>
-                                                    <td></td>
-                                                    <td style="text-align:center;color:#0063A7;font-weight:bold">Total Points:</td>
-                                                    <td> @(Model.ManagerComments.Sum(a => (a.Rating * a.Weightage / 100.0))) </td>
-                                                    <td style="text-align:center;color:#0063A7;font-weight:bold">
-                                                        Average Ratings:
-                                                    </td>
-                                                    <td id="totalCredits" class="col-md-1 text-center font-bold">
-                                                        @if (reviewer != null && reviewer.Any())
-                                                        {
-                                                            @(reviewer.Average(a => a.Credit))
-                                                        }
-                                                        else
-                                                        {
-                                                            @:0.00
-                                                        }
-                                                    </td>
-                                                    <td></td>
-                                                </tr>
-                                            </tbody>
-                                        </table>
+                                    @{
+                                        var reviewObj = reviewer.FirstOrDefault(model => model.CriteriaId == @managerComment.CriteriaId);
+                                        if (reviewObj != null)
+                                        {
+                                            @Html.DropDownList("reviewRating_" + managerComment.CriteriaId, Enumerable.Range(1, 5).
+                                                Select(j => new SelectListItem
+                                                {
+                                                    Value = j.ToString(),
+                                                    Text = j.ToString()
+                                                }), "", new { @class = "example-square", @autocomplete = "off", @value = reviewObj.Credit })
+                                        }
                                     }
+                                </td>
+                                                        <td class="more col-lg-3 col-md-3 col-sm-3" style="word-break:break-all">@(reviewObj != null ? reviewObj.Comment : "")</td>
+                            </tr>
+                                        }
+                        <tr>
+                            <td></td>
+                            <td></td>
+                            <td style="text-align:center;color:#0063A7;font-weight:bold">Total Points:</td>
+                            <td> @(Model.ManagerComments.Sum(a => (a.Rating * a.Weightage / 100.0))) </td>
+                            <td style="text-align:center;color:#0063A7;font-weight:bold">
+                                Average Ratings:
+                            </td>
+                            <td id="totalCredits" class="col-md-1 text-center font-bold">
+                                @if (reviewer != null && reviewer.Any())
+                                {
+                                    @(reviewer.Average(a => a.Credit))
+                                }
+                                else
+                                {
+                                    @:0.00
+                }
+                            </td>
+                            <td></td>
+                        </tr>
+                    </tbody>
+                </table>
+                                        }
                                 </div>
                             </div>
                         </div>
                     </div>
                     <div class="row M-T15">
                         <div class="pull-right btn-nav">
-                         
+
                             <input type="button" value="Back" class="btn btn-primary" onclick="location.href='@Url.Action("ReviewFeedbackList", "Review")'" />
                             <input type="button" value="Shortlist" class="btn btn-primary shortlist" onclick="location.href='#'"
-                                   @{ if (Model.IsShortlisted || Model.IsWinner) { @: disabled="disabled"
-                                                                                                                                                                                                                        } } />
+                                                       @{ if (Model.IsShortlisted || Model.IsWinner) { @: disabled="disabled"
+                                                                                                                                                                                                                                              } } />
                             <input type="button" value="Mark Winner" class="btn btn-primary" data-toggle="modal" data-target="#myModal"
-                                   @{ if (Model.IsWinner) { @: disabled="disabled"
-                                                                                                                                                                                                                        } } />
-                        </div>
-                    </div>
+                                                       @{ if (Model.IsWinner) { @: disabled="disabled"
+                                                                                                                                                                                                                                      } } />
+                                            </div>
+                                        </div>
                 </div>
             </div>
         </div>
@@ -220,287 +220,211 @@
    
                             
                             
-                            if (Model.IsLocked)
-                            {
-                            <div style="display:none" id="allow-shortlist">true</div>
-                            }
-                            else
-                            {
-                            <div style="display:none" id="allow-shortlist">false</div>
-                            }
-                          
-                            }
-                            <div class="modal fade" id="myModal" role="dialog">
-                                <div class="modal-dialog">
-                                    <!-- Modal content-->
-                                    <div class="modal-content">
-                                        <div class="modal-header">
-                                            <button type="button" class="close" data-dismiss="modal">&times;</button>
-                                            <h4 class="modal-title">Select Winner</h4>
-                                        </div>
-                                        <div class="modal-body">
-                                            <span class="requiredfeild">Feedback:</span>
+    if (Model.IsLocked)
+    {
+        <div style="display:none" id="allow-shortlist">true</div>
+    }
+    else
+    {
+        <div style="display:none" id="allow-shortlist">false</div>
+    }
+
+    }
+<div class="modal fade" id="myModal" role="dialog">
+    <div class="modal-dialog">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Select Winner</h4>
+            </div>
+            <div class="modal-body">
+                <span class="requiredfeild">Feedback:</span>
                                             <textarea class="form-control M-T15" rows="3" id="feedback" style="width:100%;max-width:100%" placeholder="Why this employee shoulde be the winner?" required="required"></textarea>
                                             <span style="color:red;display:none" id="feedbackRequired"></span><br />
-                                            <span class="requiredfeild">Comment:</span>
+                <span class="requiredfeild">Comment:</span>
                                             <textarea class="form-control M-T15" rows="3" id="comment" style="width:100%;max-width:100%" placeholder="To be shared across the company" required="required"></textarea>
-                                            <span style="color:red;display:none" id="commentRequired"></span>
-                                        </div>
+                <span style="color:red;display:none" id="commentRequired"></span>
+            </div>
                                         <div class="modal-footer" style="border:none;">
-                                            <button type="button" class="btn winner btn-default" id="selectWinner">Submit</button>
+                <button type="button" class="btn winner btn-default" id="selectWinner">Submit</button>
                                             <button type="button" class="btn btn-default btn-nav" id="cancel" data-dismiss="modal">Cancel</button>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <script src="~/js/jquery-2.1.1.js"></script>
-                            <script src="~/js/jquery.barrating.min.js"></script>
-                            <script>
-                                $(".header").click(function () {
-                                    $header = $(this);
-                                    $content = $header.next();
-                                    $content.slideToggle(100, function () {
-                                        $header.text(function () {
-                                            //change text based on condition
-                                            return $content.is(":visible") ? "Collapse the Comments" : "Expand the Comments";
-                                        });
-                                    });
-                                });
+            </div>
+        </div>
+    </div>
+</div>
+<script src="~/js/jquery-2.1.1.js"></script>
+<script src="~/js/jquery.barrating.min.js"></script>
+<script>
+    $(".header").click(function () {
+        $header = $(this);
+        $content = $header.next();
+        $content.slideToggle(100, function () {
+            $header.text(function () {
+                //change text based on condition
+                return $content.is(":visible") ? "Collapse the Comments" : "Expand the Comments";
+            });
+        });
+    });
 
-                                var ratings = $('.example-square');
+    var ratings = $('.example-square');
 
-                                $.each(ratings, function (index) {
-                                    var id = "#" + this.id;
-                                    var rating = +this.getAttribute("value");
+    $.each(ratings, function (index) {
+        var id = "#" + this.id;
+        var rating = +this.getAttribute("value");
 
-                                    $(id).barrating('show', {
-                                        theme: 'bars-square',
-                                        showValues: true,
-                                        showSelectedRating: false,
-                                        readonly: true
-                                    });
+        $(id).barrating('show', {
+            theme: 'bars-square',
+            showValues: true,
+            showSelectedRating: false,
+            readonly: true
+        });
 
-                                    $(id).barrating('set', rating);
-                                });
+        $(id).barrating('set', rating);
+    });
 
-                                $(document).ready(function () {
-                                    @*$('.back').click(function () {
-   window.location.href = '@Url.Action("ReviewFeedbackList", "Review")';
-   },*@
-                                    $('.shortlist').click(function () {
+    $(document).ready(function () {
+        @*$('.back').click(function () {
+            window.location.href = '@Url.Action("ReviewFeedbackList", "Review")';
+        },*@
+        $('.shortlist').click(function () {
 
-                                        @*var isLocked = @Html.Raw(Json.Encode(Model.IsLocked));*@
-                                        var isLocked = $("div #allow-shortlist").text();
-                                        if (isLocked == "false") {
-                                            sweetAlert("Please lock the nomination from dashboard before proceed.");
-                                            return false;
-                                        }
+            @*var isLocked = @Html.Raw(Json.Encode(Model.IsLocked));*@
+            var isLocked = $("div #allow-shortlist").text();
+            if (isLocked == "false") {
+                sweetAlert("Please lock the nomination from dashboard before proceed.");
+                return false;
+            }
 
-                                        swal({
-                                            title: "Shortlist Nomination",
-                                            text: "Are you sure you want to shortlist this candidate?",
-                                            type: "warning",
-                                            showCancelButton: true,
+            swal({
+                title: "Shortlist Nomination",
+                text: "Are you sure you want to shortlist this candidate?",
+                type: "warning",
+                showCancelButton: true,
                                             confirmButtonColor: "#337ab7",
-                                            confirmButtonText: "Yes!",
-                                            cancelButtonText: "No!",
-                                            closeOnConfirm: false,
-                                            closeOnCancel: false
-                                        },
-                                             function (isConfirm, inputValue) {
+                confirmButtonText: "Yes!",
+                cancelButtonText: "No!",
+                closeOnConfirm: false,
+                closeOnCancel: false
+            },
+                 function (isConfirm, inputValue) {
 
-                                                 var a = inputValue;
-                                                 if (isConfirm) {
-                                                     var nominationIdToShortlist = $("#nominationId").val();
-                                                     $.ajax({
-                                                         type: 'post',
-                                                         url: '@Url.Action("ShortlistNomination", "Review")',
-                                                         data: JSON.stringify({ nominationId: nominationIdToShortlist }),
-                                                         contentType: "application/json; charset=utf-8",
-                                                         success: function (data) {
-                                                             swal({
-                                                                 title: "Nomination Shortlisted",
-                                                                 showCancelButton: false,
+                     var a = inputValue;
+                     if (isConfirm) {
+                         $(".loader-overlay").show();
+                         var nominationIdToShortlist = $("#nominationId").val();
+                         $.ajax({
+                             type: 'post',
+                             url: '@Url.Action("ShortlistNomination", "Review")',
+                             data: JSON.stringify({ nominationId: nominationIdToShortlist }),
+                             contentType: "application/json; charset=utf-8",
+                             success: function (data) {
+                                 $(".loader-overlay").hide();
+                                 swal({
+                                     title: "Nomination Shortlisted",
+                                     showCancelButton: false,
                                                                  confirmButtonColor: "#337ab7",
-                                                                 confirmButtonText: "Ok",
-                                                             },
-                                                             function () {
-                                                                 if (isConfirm) {
-                                                                     window.location.href = '@Url.Action("ReviewFeedbackList", "Review")';
-                                                                 }
-                                                             });
-                                                         },
-                                                         error: function () {
-                                                             swal("Error", "Oops! Something wrong happened..");
-                                                         }
-                                                     });
-                                                 } else {
-                                                     swal("Cancelled", "This candidate has not been shortlisted");
-                                                 }
-                                             });
-                                    });
+                                     confirmButtonText: "Ok",
+                                 },
+                                 function () {
+                                     if (isConfirm) {
+                                         window.location.href = '@Url.Action("ReviewFeedbackList", "Review")';
+                                     }
+                                 });
+                             },
+                             error: function () {
+                                 $(".loader-overlay").hide();
+                                 swal("Error", "Oops! Something wrong happened..");
+                             }
+                         });
+                     } else {
+                         swal("Cancelled", "This candidate has not been shortlisted");
+                     }
+                 });
+        });
 
-                                    $("#comment").keypress(function () { $("#commentRequired").css("display", "none") });
-                                    $("#feedback").keypress(function () { $("#feedbackRequired").css("display", "none") });
-                                    $("#cancel").click(function () { $("#comment").val(""); $("#feedback").val(""); $("#commentRequired").text(""); $("#feedbackRequired").text("") });
+        $("#comment").keypress(function () { $("#commentRequired").css("display", "none") });
+        $("#feedback").keypress(function () { $("#feedbackRequired").css("display", "none") });
+        $("#cancel").click(function () { $("#comment").val(""); $("#feedback").val(""); $("#commentRequired").text(""); $("#feedbackRequired").text("") });
 
-                                    $('.winner').click(function () {
+        $('.winner').click(function () {
 
-                                        var isLocked = $("div #allow-shortlist").text();
-                                        if (isLocked == "false") {
-                                            sweetAlert("Please lock the nomination from dashboard before proceed.");
-                                            return false;
-                                        }
-                                        var nominationIdToShortlist = $("#nominationId").val();
-                                        var commentForWinner = $("#comment").val();
-                                        var feedbackForWinner = $("#feedback").val();
-                                        if (commentForWinner != "" && feedbackForWinner != "") {
-                                            $("#selectWinner").attr("data-dismiss", "modal");
-                                        }
-                                        else {
-                                            if (commentForWinner == "") {
-                                                $("#commentRequired").text("You must enter a comment!");
-                                                $("#commentRequired").css("display", "block");
-                                            }
-                                            if (feedbackForWinner == "") {
-                                                $("#feedbackRequired").text("You must enter feedback!");
-                                                $("#feedbackRequired").css("display", "block");
-                                            }
-                                            return false;
-                                        }
-                                        $.ajax({
-                                            type: 'post',
-                                            url: '@Url.Action("SelectWinner", "Review")',
-                                            data: JSON.stringify({ nominationId: nominationIdToShortlist, winningComment: commentForWinner, feedback: feedbackForWinner }),
-                                            contentType: "application/json; charset=utf-8",
-                                            success: function (data) {
-                                                swal({
-                                                    title: "Winner Selected",
-                                                    showCancelButton: false,
+            var isLocked = $("div #allow-shortlist").text();
+            if (isLocked == "false") {
+                sweetAlert("Please lock the nomination from dashboard before proceed.");
+                return false;
+            }
+            var nominationIdToShortlist = $("#nominationId").val();
+            var commentForWinner = $("#comment").val();
+            var feedbackForWinner = $("#feedback").val();
+            if (commentForWinner != "" && feedbackForWinner != "") {
+                $("#selectWinner").attr("data-dismiss", "modal");
+            }
+            else {
+                if (commentForWinner == "") {
+                    $("#commentRequired").text("You must enter a comment!");
+                    $("#commentRequired").css("display", "block");
+                }
+                if (feedbackForWinner == "") {
+                    $("#feedbackRequired").text("You must enter feedback!");
+                    $("#feedbackRequired").css("display", "block");
+                }
+                return false;
+            }
+            $(".loader-overlay").show();
+            $.ajax({
+                type: 'post',
+                url: '@Url.Action("SelectWinner", "Review")',
+                data: JSON.stringify({ nominationId: nominationIdToShortlist, winningComment: commentForWinner, feedback: feedbackForWinner }),
+                contentType: "application/json; charset=utf-8",
+                success: function (data) {
+                    $(".loader-overlay").hide();
+                    swal({
+                        title: "Winner Selected",
+                        showCancelButton: false,
                                                     confirmButtonColor: "#337ab7",
-                                                    confirmButtonText: "Ok"
-                                                },
-                                                function (isConfirm) {
-                                                    if (isConfirm) {
-                                                        window.location.href = '@Url.Action("ReviewFeedbackList", "Review")';
-                                                    }
-                                                });
-                                            },
-                                            error: function (data) {
-                                                alert(data);
-                                                swal("Error", "Oops! Something wrong happened..");
-                                            }
-                                        });
+                        confirmButtonText: "Ok"
+                    },
+                    function (isConfirm) {
+                        if (isConfirm) {
+                            window.location.href = '@Url.Action("ReviewFeedbackList", "Review")';
+                        }
+                    });
+                },
+                error: function (data) {
+                    $(".loader-overlay").hide();
+                                    alert(data);
+                                    swal("Error", "Oops! Something wrong happened..");
+                                }
+                            });
 
-                                    });
+            });
+    });
 
-                                    @*$('.winner').click(function () {
+    $(function () {
+        var showChar = 80, showtxt = "less", hidetxt = "more";
+        $('.more-txt').each(function () {
 
-   var commentForWinner = "";
-   var isLocked = $("div #allow-shortlist").text();
-   if (isLocked == false) {
-   sweetAlert("Please lock the nomination from dashboard before proceed.");
-   return false;
-   }
-   swal({
-   title: "Select Winner",
-   text: "Are you sure you want to select this candidate as Winner?",
-   type: "input",
-   confirmButtonText: "Yes!",
-   cancelButtonText: "No!",
-   showCancelButton: true,
-   closeOnConfirm: false,
-   animation: "slide-from-top",
-   inputPlaceholder: "To be shared across the company",
-   },
-   function (inputValue) {
-   if (inputValue === false) {
+            var content = $(this).text();
+            if (content.length > showChar) {
+                var con = content.substr(0, showChar);
+                var hcon = content.substr(showChar, content.length - showChar);
+                var txt = con + '<div class="morecontent"><div style="width:50%;max-width:50%;display:none;word-wrap: break-word;">' + hcon + '</div>&nbsp;&nbsp;<a href="" class="moretxt">' + hidetxt + '</a></div>';
+                $(this).html(txt);
+            }
+        });
+        $(".moretxt").click(function () {
+            if ($(this).hasClass("sample")) {
+                $(this).removeClass("sample");
+                $(this).text(hidetxt);
+            } else {
+                $(this).addClass("sample");
+                $(this).text(showtxt);
+            }
+            $(this).parent().prev().toggle();
+            $(this).prev().toggle();
+            return false;
+        });
+    });
 
-   }
-   else if (inputValue === "") {
-   swal.showInputError("You need to write something!");
-   return false
-   }
-   else {
-   commentForWinner = inputValue;
-   swal({
-   title: "Select Winner",
-   text: "Enter your feedback.",
-   type: "input",
-   confirmButtonText: "Yes!",
-   cancelButtonText: "No!",
-   showCancelButton: true,
-   closeOnConfirm: false,
-   animation: "slide-from-top",
-   inputPlaceholder: "Why you think this employee should be the winner?",
-   }, function (inputValue) {
-   if (inputValue === false) {
-
-   }
-   else if (inputValue === "") {
-   swal.showInputError("You need to write something!");
-   return false;
-   }
-   else {
-   var nominationIdToShortlist = $("#nominationId").val();
-   $.ajax({
-       type: 'post',
-       url: '@Url.Action("SelectWinner", "Review")',
-       data: JSON.stringify({ nominationId: nominationIdToShortlist, winningComment: commentForWinner, feedback: inputValue }),
-       contentType: "application/json; charset=utf-8",
-       success: function (data) {
-           swal({
-               title: "Winner Selected",
-               showCancelButton: false,
-               confirmButtonColor: "#0070b9",
-               confirmButtonText: "Ok"
-           },
-           function (isConfirm) {
-               if (isConfirm) {
-                   window.location.href = '@Url.Action("ReviewFeedbackList", "Review")';
-               }
-           });
-       },
-       error: function (data) {
-           alert(data);
-           swal("Error", "Oops! Something wrong happened..");
-       }
-   });
-   }
-   });
-
-   }
-
-
-   });
-
-   });*@
-                                });
-
-                                $(function () {
-                                    var showChar = 80, showtxt = "less", hidetxt = "more";
-                                    $('.more-txt').each(function () {
-
-                                        var content = $(this).text();
-                                        if (content.length > showChar) {
-                                            var con = content.substr(0, showChar);
-                                            var hcon = content.substr(showChar, content.length - showChar);
-                                            var txt = con + '<div class="morecontent"><div style="width:50%;max-width:50%;display:none;word-wrap: break-word;">' + hcon + '</div>&nbsp;&nbsp;<a href="" class="moretxt">' + hidetxt + '</a></div>';
-                                            $(this).html(txt);
-                                        }
-                                    });
-                                    $(".moretxt").click(function () {
-                                        if ($(this).hasClass("sample")) {
-                                            $(this).removeClass("sample");
-                                            $(this).text(hidetxt);
-                                        } else {
-                                            $(this).addClass("sample");
-                                            $(this).text(showtxt);
-                                        }
-                                        $(this).parent().prev().toggle();
-                                        $(this).prev().toggle();
-                                        return false;
-                                    });
-                                });
-
-                            </script>
+</script>

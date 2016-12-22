@@ -31,7 +31,12 @@
     <a href="@Model.DemoLink" class="btn btn-info pull-left" role="button" target="_blank">How to Use this?</a>
     <a href="@Model.SourceCodeLink" class="btn btn-info pull-left" role="button" target="_blank">Source Code</a>
     <a href="@Model.SourceCodeLink" class="btn btn-info pull-left" role="button" target="_blank">Demo</a>
-    <a class="like @(Model.IsLiked?"liked":"") pull-left" href="#"><i class="fa fa-thumbs-o-up"></i> <span id="like-text">@(Model.IsLiked ? "UnLike" : "Like")</span> (<span id="like-count">@Model.Likes</span>)</a>
+    <button class="btn btn-info pull-left"  onclick="openFeedbackForm()">
+        <i class="fa fa-comments" aria-hidden="true"></i>&nbsp;Feedback
+    </button>
+    <button class="like @(Model.IsLiked?"liked":"") btn btn-info pull-left" href="#"><i class="fa fa-thumbs-o-up"></i> <span id="like-text">@(Model.IsLiked ? "UnLike" : "Like")</span> (<span id="like-count">@Model.Likes</span>)</button>
     @Html.HiddenFor(m => m.LikeId)
-    <button type="button" class="btn btn-primary btn-details-close" data-dismiss="modal">Close</button>
+    @Html.HiddenFor(m => m.OwnerId)
+    @Html.HiddenFor(m => m.Title)
+    <button type="button" class="btn btn-info btn-details-close" data-dismiss="modal">Close</button>
 </div>

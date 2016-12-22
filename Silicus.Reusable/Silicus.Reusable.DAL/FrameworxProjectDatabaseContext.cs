@@ -21,7 +21,8 @@ namespace Silicus.FrameworxProject.DAL
         public DbSet<OtherCode> OtherCodes { get; set; }
         public DbSet<CodeType> CodeTypes { get; set; }
         public DbSet<ProductBacklog> ProductBacklogs { get; set; }
-        public DbSet<FrameworxLike> FrameworxLikes { get; set; }        
+        public DbSet<FrameworxLike> FrameworxLikes { get; set; }
+        public DbSet<FrameworxFeedback> FrameworxFeedbacks { get; set; }
         public int Update<T>(T item) where T : class
         {
 
@@ -52,7 +53,7 @@ namespace Silicus.FrameworxProject.DAL
 
         public IQueryable<T> Query<T>() where T : class
         {
-             return Set<T>().AsNoTracking();
+            return Set<T>().AsNoTracking();
         }
 
         public IQueryable<T> Query<T>(string property) where T : class
