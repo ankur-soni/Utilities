@@ -16,9 +16,14 @@ namespace Silicus.Ensure.Services
             _context = dataContextFactory.Create(ConnectionType.Ip);
         }
 
-        public IEnumerable<User> GetUserDetails()
+        public IEnumerable<User> GetUserDetailsAll()
         {
             return _context.Query<User>();
+        }
+
+        public IEnumerable<User> GetUserDetails()
+        {
+            return _context.Query<User>().Where(x => x.IsDeleted == false);
         }
 
         public int Add(User User)
@@ -52,17 +57,17 @@ namespace Silicus.Ensure.Services
 
         public User GetUserById(int userId)
         {
-            return _context.Query<User>().FirstOrDefault(x => x.UserId == userId);
+            return _context.Query<User>().FirstOrDefault(x => x.UserId == userId && x.IsDeleted == false);
         }
 
         public User GetUserByEmail(string email)
         {
-            return _context.Query<User>().FirstOrDefault(x => x.Email == email);
+            return _context.Query<User>().FirstOrDefault(x => x.Email == email && x.IsDeleted == false);
         }
 
         public IEnumerable<User> GetUserByRole(string role)
         {
-            return _context.Query<User>().Where(x => x.Role == role);
+            return _context.Query<User>().Where(x => x.Role == role && x.IsDeleted == false);
         }
 
         public dynamic GetTestSuiteDetailsOfUser(int? userId)
