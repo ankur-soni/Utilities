@@ -49,7 +49,12 @@ namespace Silicus.Reusable.Web.Controllers
         {
             if (ModelState.IsValid)
             {
-                frameworxFeedbackViewModel.UserId = _commonDbService.FindUserIdFromEmail(User.Identity.Name);
+                var userId = _commonDbService.FindUserIdFromEmail(User.Identity.Name);
+                if (userId == null)
+                {
+                    throw new Exception("Error while submiiting feedback");
+                }
+                frameworxFeedbackViewModel.UserId = userId.Value;
                 var newFeedbackDetailsModel = _mapper.Map<FrameworxFeedbackViewModel, FrameworxFeedback>(frameworxFeedbackViewModel);
                 //Call service's SaveFeedbackDetails method to save feedback details 
                 _frameworxFeedbackService.SaveFeedbackDetails(newFeedbackDetailsModel);

@@ -166,10 +166,11 @@ namespace Silicus.FrameworxDashboard.Web.Controllers
 
         public ActionResult LikeComponent(int componentId)
         {
+            var userId = _commonDbService.FindUserIdFromEmail(User.Identity.Name);
             int likeId = _frameworxProjectService.AddFrameworxLike(new FrameworxLike()
             {
                 FrameworxId = componentId,
-                UserId = _commonDbService.FindUserIdFromEmail(User.Identity.Name)
+                UserId = userId.Value
 
             });
             return Json(new { likeId = likeId }, JsonRequestBehavior.AllowGet);

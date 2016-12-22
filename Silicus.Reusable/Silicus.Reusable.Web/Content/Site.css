@@ -474,6 +474,7 @@ img {
     display: none;
 }
 
+/*Loader Start*/
 /* Absolute Center Spinner */
 #loader {
     position: fixed;
@@ -600,3 +601,71 @@ img {
         transform: rotate(360deg);
     }
 }
+/*Loader end*/
+
+/*Feedback form start*/
+.radio_item {
+    display: none !important;
+}
+
+.label_item {
+    opacity: 0.3;
+    background: none;
+}
+
+.radio_item:checked + label {
+    opacity: 1;
+    outline: #eee solid 7px !important;
+}
+
+.customRadio input[type=radio]:checked + label {
+    background: none;
+    box-shadow: none;
+    border-radius: 0px;
+}
+
+.customRadio input[type=radio] + label {
+    background: none;
+    box-shadow: none;
+    border: none;
+}
+
+label.label_item {
+    /*margin-bottom: 10px !important;
+    margin-right: 30px !important;
+    margin-top: 10px !important;
+    min-height: 100px !important;*/
+    min-width: 140px !important;
+    /*padding-top: 15px !important;*/
+    margin: 0 auto !important;
+    padding: 20px !important;
+}
+
+.customRadio input[type=radio] + label span {
+    color: #333;
+}
+/*Custom Radio CSS End */
+/*Theme Change CSS Start Here */
+
+.centerText {
+    text-align: center;
+}
+
+.color-boxes {
+    display: inline-block;
+    position: relative;
+    margin: 1%;
+    margin-right: 15px;
+    margin-left: 15px;
+    width: 80px;
+    height: 80px;
+    background-color: lightgrey;
+    transition: 0.5s ease-in-out;
+}
+
+    .color-boxes:hover {
+        outline: solid 15px #ddd;
+    }
+/*Feedback form end*/
+
+
