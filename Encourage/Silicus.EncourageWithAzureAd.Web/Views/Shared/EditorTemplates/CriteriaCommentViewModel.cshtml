@@ -7,15 +7,6 @@
     <td class="col-lg-5 col-md-4 col-sm-4 col-xs-4">
         @Html.DisplayFor(modelItem => modelItem.Title)
     </td>
-    <td class="col-lg-1 col-md-2 col-sm-3 col-xs-2">
-        @Html.DropDownListFor(i => i.Weightage,
-            Enumerable.Range(0, 20).Select(x => x * 5).
-                Select(j => new SelectListItem
-                {
-                    Value = j.ToString(),
-                    Text = j.ToString()
-                }), new { @class = "form-control ddlWeightage" })
-    </td>
     <td class="col-lg-3 col-md-4 col-sm-6 col-xs-4">
         @Html.DropDownListFor(i => i.Rating,
        Enumerable.Range(1, 5).
@@ -23,42 +14,120 @@
        {
            Value = j.ToString(),
            Text = j.ToString()
-       }), "", new { @class = "example-square", @autocomplete = "off",@row_id = Html.IdFor(i => i.Rating) })
+       }), "", new { @class = "example-square", @autocomplete = "off", @row_id = Html.IdFor(i => i.Rating) })
     </td>
+    <td class="col-lg-1 col-md-2 col-sm-3 col-xs-2">
+        @if (Model.Rating == 0)
+        {
+            @Html.DropDownListFor(i => i.Weightage,
+            Enumerable.Range(0, 20).Select(x => x * 5).
+                Select(j => new SelectListItem
+                {
+                    Value = j.ToString(),
+                    Text = j.ToString()
+                }), new
+                {
+                    @class = "form-control ddlWeightage",
+                    disabled = "disabled",
+                    isRequiredForCriteria = "false",
+                    @onchange = "checkIfWeightageExceeds(this);"
+                })
+        }
+        else
+        {
+            /**/
+            @Html.DropDownListFor(i => i.Weightage,
+            Enumerable.Range(0, 20).Select(x => x * 5).
+                Select(j => new SelectListItem
+                {
+                    Value = j.ToString(),
+                    Text = j.ToString()
+                }), new
+                {
+                    @class = "form-control ddlWeightage",
+                    isRequiredForCriteria = "true",
+                    @onchange = "checkIfWeightageExceeds(this);"
+                })
+        }
 
+    </td>
     <td class="col-lg-3 col-md-4 col-sm-3 col-xs-3 criteriaComment">
-        @Html.TextAreaFor(modelItem => modelItem.Comment, htmlAttributes: new { @class = Model.Rating != 0 && Model.Comment == "" ? "col-md-12 noCommentError form-control" : "col-md-12", maxlength = 500, @iscommentrequired = Model.Rating != 0 ? "true" : "false", @onblur = "return hideRemainingCharacterText('" + Html.IdFor(i => i.Rating).ToString() + "')", onkeyup = "edValueKeyPress('" + Html.IdFor(i => i.Rating).ToString() + "')" })
+        @if (Model.Rating == 0)
+        {
+            @Html.TextAreaFor(modelItem => modelItem.Comment, htmlAttributes: new
+       {
+           @class = Model.Rating != 0 && Model.Comment == "" ? "col-md-12 noCommentError form-control" : "col-md-12",
+           maxlength = 500,
+           @onblur = "return hideRemainingCharacterText('" + Html.IdFor(i => i.Rating).ToString() + "')",
+           onkeyup = "edValueKeyPress('" + Html.IdFor(i => i.Rating).ToString() + "')",
+           disabled="disabled",
+           isRequiredForCriteria = "false"
+       })
+        }
+        else
+        {
+            @Html.TextAreaFor(modelItem => modelItem.Comment, htmlAttributes: new
+       {
+           @class = Model.Rating != 0 && Model.Comment == "" ? "col-md-12 noCommentError form-control" : "col-md-12",
+           maxlength = 500,
+           @onblur = "return hideRemainingCharacterText('" + Html.IdFor(i => i.Rating).ToString() + "')",
+           onkeyup = "edValueKeyPress('" + Html.IdFor(i => i.Rating).ToString() + "')",
+           isRequiredForCriteria = "true"
+       })
+        }
         <div class="@(Html.IdFor(modelItem => modelItem.Comment))"></div>
     </td>
 </tr>
+<script src="~/js/jquery.barrating.min.js"></script>
 <script>
     var ratings = $('.example-square');
-        
+
     $.each(ratings, function (index) {
-        var id = "#"+this.id;
+        var id = "#" + this.id;
         var rating = +this.getAttribute("value");
-            
+
         $(id).barrating('show', {
             theme: 'bars-square',
             showValues: true,
             showSelectedRating: false,
-            onSelect: function(value, text,event) {
-                var element = this.$elem[0];
-                var rowId = element.getAttribute("row-id");
-
-                var commentId = "#"+ rowId.replace("Rating","Comment") //"#comment"+rowId;
+            onSelect: function (value, text, event) {
+                var elemendtId = this.$elem[0].id;
+                var commentId = "#"+elemendtId.replace("Rating", "Comment");
+                var weightageId = "#"+elemendtId.replace("Rating", "Weightage");
+                
                 if (+value != 0) {
-                    $(commentId).attr("isCommentRequired", true);
+                    $(commentId).attr("isRequiredForCriteria", true);
+                    $(weightageId).attr("isRequiredForCriteria", true);
                     if ($(commentId).val() == "") {
+                        $(commentId).removeAttr("disabled");
+                        $(weightageId).removeAttr("disabled");
+
                         $(commentId).addClass("noCommentError");
+                        $(weightageId).addClass("noCommentError");
                     }
-                }else{
-                    $(commentId).attr("isCommentRequired", false);
+                } else {
+                    $(commentId).attr("isRequiredForCriteria", false);
                     $(commentId).removeClass("noCommentError");
+                    $(commentId).attr("disabled", "disabled");
+                    $(commentId).val("");
+
+
+                    $(weightageId).attr("isRequiredForCriteria", false);
+                    $(weightageId).removeClass("noCommentError");
+                    $(weightageId).attr("disabled", "disabled");
+                    $(weightageId).val(0);
                 }
             }
         });
     });
+
+    function checkIfWeightageExceeds(dd) {
+        if (dd.value > 0) {
+            $(dd).removeClass("noCommentError");
+        } else {
+            $(dd).addClass("noCommentError");
+        }
+    }
 </script>
 
 
