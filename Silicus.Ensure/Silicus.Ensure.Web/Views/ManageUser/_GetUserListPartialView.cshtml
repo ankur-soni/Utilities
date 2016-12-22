@@ -44,10 +44,12 @@
                                                               .Read(read => read.Action("GetUserDetails", "User"))
                                                               .Create(update => update.Action("CreateUser", "User"))
                                                               .Update(update => update.Action("UpdateUser", "User"))
-                                                              .Destroy(update => update.Action("DeleteUser", "User")))
-            .Pageable()
+                                                              .Destroy(update => update.Action("DeleteUser", "User"))
+                                                              .PageSize(10))
+
+            .Pageable(pager => { pager.PageSizes(true); })
             .Sortable()
-                .Resizable(resizing => resizing.Columns(true))
+            .Resizable(resizing => resizing.Columns(true))
             .ToolBar(toolbar =>
             {
                 toolbar.Template(@<text>
@@ -98,9 +100,11 @@
             grid = $("#UserGrids").data("kendoGrid");
             if (value.length >= 1) {
                 if (value) {
-                    grid.dataSource.filter({ field: "Role", operator: "contains", value: value });
-                    grid.dataSource.filter({ field: "Email", operator: "contains", value: value });
-                    grid.dataSource.filter({ field: "FirstName", operator: "contains", value: value });
+                    var filter = { logic: "or", filters: [] };
+                    filter.filters.push({ field: "Role", operator: "contains", value: value });
+                    filter.filters.push({ field: "Email", operator: "contains", value: value });
+                    filter.filters.push({ field: "FirstName", operator: "contains", value: value });
+                    grid.dataSource.query({ filter: filter });
                 } else {
                     grid.dataSource.filter({});
                 }

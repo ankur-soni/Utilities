@@ -116,6 +116,21 @@
                 </div>
                 <div class="col-md-4">
                     <input type="file" id="IDbtnUpload" name="files" />
+                    @if (!string.IsNullOrEmpty(Model.ResumeName))
+                    {
+                        <div id="uploadFileLink" class="postuploadedfilesholder clearfix">
+                            <div class="fileupload">
+                                <a href="@Html.Raw(Url.Content( Model.ResumePath))" targ target="_blank">@Html.Raw(Model.ResumeName)</a>
+                                <span class="deleteupload" title="Delete"><a onclick="DeleteF()">x</a></span>
+                            </div>
+                        </div>
+                        <script type="text/javascript">
+                            function DeleteF() {
+                                $("#uploadFileLink").html("");
+                                $("#ResumeName").val("");
+                            }
+                        </script>
+                    }
                 </div>
             </div>
             <div class="row">

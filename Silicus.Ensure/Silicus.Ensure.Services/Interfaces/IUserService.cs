@@ -6,6 +6,8 @@ namespace Silicus.Ensure.Services.Interfaces
 {
     public interface IUserService
     {
+        IEnumerable<User> GetUserDetailsAll();
+
         IEnumerable<User> GetUserDetails();
 
         int Add(User User);

@@ -82,22 +82,28 @@ namespace Silicus.Ensure.Web.Controllers
         private UserViewModel SetUserModel(int UserId, string UserRoleName)
         {
             UserViewModel userViewModel = new UserViewModel();
-            userViewModel.UserId = UserId;
-
-            if (userViewModel.UserId != 0)
+            try
             {
-                var userList = _userService.GetUserDetails();
-                var user = userList.FirstOrDefault(x => x.UserId == userViewModel.UserId);
-                userViewModel = _mappingService.Map<User, UserViewModel>(user);
-            }
-            else if (TempData["UserViewModel"] != null)
-            {
-                userViewModel = TempData.Peek("UserViewModel") as UserViewModel;
-                TempData["UserViewModel"] = userViewModel;
-            }
+                userViewModel.UserId = UserId;
 
-            var positionDetails = _positionService.GetPositionDetails().OrderBy(model => model.PositionName);
-            userViewModel.PositionList = positionDetails.ToList();
+                if (userViewModel.UserId != 0)
+                {
+                    var userList = _userService.GetUserDetails();
+                    var user = userList.FirstOrDefault(x => x.UserId == userViewModel.UserId);
+                    userViewModel = _mappingService.Map<User, UserViewModel>(user);
+                }
+                else if (TempData["UserViewModel"] != null)
+                {
+                    userViewModel = TempData.Peek("UserViewModel") as UserViewModel;
+                    TempData["UserViewModel"] = userViewModel;
+                }
+                var positionDetails = _positionService.GetPositionDetails().OrderBy(model => model.PositionName);
+                userViewModel.PositionList = positionDetails.ToList();
+            }
+            catch (Exception ex)
+            {
+                userViewModel.ErrorMessage = ex.Message;
+            }
 
             return userViewModel;
         }
@@ -120,6 +126,7 @@ namespace Silicus.Ensure.Web.Controllers
                     if (!string.IsNullOrWhiteSpace(userViewModel.ErrorMessage)) { return RedirectToAction(actionErrorName, controllerName, new { UserId = userViewModel.UserId, RoleN = userViewModel.Role }); }
 
                     var organizationUserDomainModel = _mappingService.Map<UserViewModel, User>(userViewModel);
+                    organizationUserDomainModel.IsDeleted = false;
                     userViewModel.UserId = _userService.Add(organizationUserDomainModel);
                     TempData["Success"] = "User created successfully!";
 
@@ -156,6 +163,7 @@ namespace Silicus.Ensure.Web.Controllers
                 vuser.Role = user.Role;
                 var organizationUserDomainModel = _mappingService.Map<UserViewModel, User>(vuser);
                 organizationUserDomainModel.TestStatus = user.TestStatus;
+                organizationUserDomainModel.IsDeleted = false;
                 _userService.Update(organizationUserDomainModel);
                 TempData["Success"] = "User updated successfully!";
             }
