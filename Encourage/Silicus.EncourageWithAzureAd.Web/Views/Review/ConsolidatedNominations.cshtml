@@ -3,12 +3,20 @@
     ViewBag.Title = "Consolidated Nominations";
 }
 <style>
-    .table {
+    #consolidatedHrView table {
         margin-bottom: 0px!important;
     }
     .notNominated{
-    background-color: aquamarine;
+    background-color:#f5f5f5;
 }
+    #consolidatedHrView td,th {
+        border: 1px solid #e7eaec;
+        color: black;
+    } 
+    .table > thead > tr > th, .table > tbody > tr > th, .table > tfoot > tr > th, .table > thead > tr > td, .table > tbody > tr > td, .table > tfoot > tr > td{
+        border: 1px solid #e7eaec;
+    } 
+    .tblBorder{border: 1px solid #e7eaec;}
 </style>
 @using (Ajax.BeginForm("ConsolidatedNominations", "Review",
                 new AjaxOptions
