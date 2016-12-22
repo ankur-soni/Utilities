@@ -55,13 +55,18 @@ namespace Silicus.Ensure.Models.DataObjects
 
         public string TestStatus { get; set; }
 
-       // public int TestSuiteId { get; set; }
+        // public int TestSuiteId { get; set; }
 
         public string PanelId { get; set; }
 
         public string PanelName { get; set; }
 
         public string ResumePath { get; set; }
+
+        public string ResumeName { get; set; }
+
         public Guid IdentityUserId { get; set; }
+
+        public bool IsDeleted { get; set; }
     }
 }

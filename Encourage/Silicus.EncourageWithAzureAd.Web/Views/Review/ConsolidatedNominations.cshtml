@@ -2,34 +2,25 @@
 @{
     ViewBag.Title = "Consolidated Nominations";
 }
-@*<style>
-        #consolidatedHrView td,th {
-            border: 1px solid gray;
-            color: black;
-        }
-        .notNominated {
-            background-color: #ccffcc;
-            text-align: center;
-        }
-        .points {
-            text-align: center;
-            width: 50px !important;
-        }
-        .averagePoints {
-            font-weight: bold;
-        }
-    </style>*@
+<style>
+    .table {
+        margin-bottom: 0px!important;
+    }
+    .notNominated{
+    background-color: aquamarine;
+}
+</style>
 @using (Ajax.BeginForm("ConsolidatedNominations", "Review",
-    new AjaxOptions
-    {
-        HttpMethod = "POST",
-        InsertionMode = InsertionMode.Replace,
-        UpdateTargetId = "dvConsolidatedNominations",
-        OnBegin = "ShowCustomLoader()",
-        OnComplete = "HideCustomLoader()"
-    },
-    new {id="nominationsFilterForm"}
-    ))
+                new AjaxOptions
+                {
+                    HttpMethod = "POST",
+                    InsertionMode = InsertionMode.Replace,
+                    UpdateTargetId = "dvConsolidatedNominations",
+                    OnBegin = "ShowCustomLoader()",
+                    OnComplete = "HideCustomLoader()"
+                },
+                new { id = "nominationsFilterForm" }
+                ))
 {
 
     <div class="row white-bg header-row">
@@ -77,16 +68,16 @@
     </div>
 }
 @using (Ajax.BeginForm("SaveFinalScore", "Review",
-    new AjaxOptions
-    {
-        HttpMethod = "POST",
-        OnBegin = "ShowCustomLoader()",
-        OnComplete = "HideCustomLoader()",
-        OnSuccess = "FinalScoreSave",
-        OnFailure = "FinalScoreFailure"
-    },
-    new {id = "frmSaveFinalScore" }
-    ))
+                new AjaxOptions
+                {
+                    HttpMethod = "POST",
+                    OnBegin = "ShowCustomLoader()",
+                    OnComplete = "HideCustomLoader()",
+                    OnSuccess = "FinalScoreSave",
+                    OnFailure = "FinalScoreFailure"
+                },
+                new { id = "frmSaveFinalScore" }
+                ))
 {
 
     <div class="row">
@@ -124,7 +115,7 @@
                         </form>
                     </div>
                 </div>
-                
+
             </div>
 
         </div>
@@ -136,17 +127,32 @@
                 <input type="submit" name="submit" value="Submit" id="submitButton" class="btn btn-primary pull-right" />
                 <div class="clearfix"></div>
             </div>
-            
+
         </div>
     </div>
 
 
-                }
-                <script>
+}
+<script src="~/js/jquery.dataTables.min.js"></script>
+<script src="~/js/dataTables.fixedColumns.min.js"></script>
+<script>
+    $(document).ready(function () {
+        var table = $('#consolidatedHrView').DataTable({
+            scrollY: "400px",
+            scrollX: true,
+            ordering: false,
+            scrollCollapse: true,
+            paging: false,
+            searching: false,
+            fixedColumns: {
+                leftColumns: 3
+            }
+        });
+    });
     function RecalculateFinalScore(nominationId) {
         var points = 0.0;
         var count = 0;
-        $(".finalScore_" + nominationId).each(function() {
+        $(".finalScore_" + nominationId).each(function () {
             if ($(this).val().trim()) {
                 var currentPoints = parseFloat($(this).val());
                 if (currentPoints != 0) {
@@ -161,7 +167,7 @@
         $(".finalAverageScore_" + nominationId).text((points / count).toFixed(2));
     }
 
-    $(".filterChanged").change(function() {
+    $(".filterChanged").change(function () {
         $("#nominationsFilterForm").submit();
     });
     var criteriaId;
@@ -188,18 +194,18 @@
             rules: {
                 "txtHrPoints": {
                     required: true,
-                    number:true
+                    number: true
                 },
                 "txtHrComment": {
                     required: true,
-                    minlength:5
+                    minlength: 5
                 }
             }
         });
         if ($("#frmHrComments").valid()) {
             //console.log("save hr comm");
             var hrPoints = $("#txtHrPoints").val();
-            var hrComment =  $("#txtHrComment").val();
+            var hrComment = $("#txtHrComment").val();
             $("#spnFinalPoints_" + nominationId + "_" + criteriaId).text(hrPoints);
             //console.log(hrPoints + ", " + hrComment);
             $("input[name='Nominations[" + g_nominationIndex + "].ManagerComments[" + g_criteriaIndex + "].FinalScore']").val(hrPoints);
@@ -228,4 +234,4 @@
     function FinalScoreFailure() {
 
     }
-                </script>
+</script>
