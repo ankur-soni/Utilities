@@ -20,7 +20,7 @@ namespace Silicus.FrameworxDashboard.Web.Controllers
             _commonDbService = commonDbService;
             //textInfo = new CultureInfo("en-US", false).TextInfo;
         }
-
+        
         public ActionResult Index()
         {
             List<Frameworx> frameworkList = _frameworxProjectService.GetAllFrameworx();

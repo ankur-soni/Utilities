@@ -244,8 +244,8 @@
             $('body').on('click', '.like', function () {
                 var text = $('#like-text').text();
                 if (text == "Like") {
-                    likeComponent();
-                } else {
+                    likeComponent();                                      
+                } else {                   
                     unLikeComponent();
                 }
             });

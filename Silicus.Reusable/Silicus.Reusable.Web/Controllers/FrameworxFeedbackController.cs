@@ -31,9 +31,8 @@ namespace Silicus.Reusable.Web.Controllers
         public ActionResult OpenFeedbackForm(FrameworxViewModel frameworxViewModel)
         {
             FrameworxFeedbackViewModel frameworxFeedbackViewModel = new FrameworxFeedbackViewModel();
-            Silicus.UtilityContainer.Models.DataObjects.User user = _commonDbService.GetUser(frameworxViewModel.OwnerId);
-            frameworxFeedbackViewModel.OwnerName = user != null ? user.DisplayName : Constants.InformationNotAvailableText;
-            frameworxFeedbackViewModel.OwnerEmail = user != null ? user.EmailAddress : Constants.InformationNotAvailableText;
+            frameworxFeedbackViewModel.UserEmail = User.Identity.Name;
+            frameworxFeedbackViewModel.UserName = _commonDbService.FindDisplayNameFromEmail(frameworxFeedbackViewModel.UserEmail);
             frameworxFeedbackViewModel.FrameworxId = frameworxViewModel.id;
             frameworxFeedbackViewModel.FeedBackFor = string.IsNullOrWhiteSpace(frameworxViewModel.Title) ? Constants.InformationNotAvailableText : frameworxViewModel.Title;
             return PartialView("_FeedbackForm", frameworxFeedbackViewModel);
@@ -58,6 +57,16 @@ namespace Silicus.Reusable.Web.Controllers
             }
 
             return Json(false);
+        }
+
+        public ActionResult OpenContactOwnerForm(int ownerId)
+        {
+            Silicus.UtilityContainer.Models.DataObjects.User user = _commonDbService.GetUser(ownerId);
+            FrameworxOwnerViewModel frameworxOwnerViewModel = new FrameworxOwnerViewModel();
+            frameworxOwnerViewModel.Name = user != null ? string.IsNullOrEmpty(user.DisplayName) ? Constants.InformationNotAvailableText : user.DisplayName : Constants.InformationNotAvailableText;
+            frameworxOwnerViewModel.Email = user != null ? string.IsNullOrEmpty(user.EmailAddress) ? Constants.InformationNotAvailableText : user.EmailAddress : Constants.InformationNotAvailableText;
+            frameworxOwnerViewModel.OfficePhone = user != null ? string.IsNullOrEmpty(user.OfficePhone) ? Constants.InformationNotAvailableText : user.OfficePhone : Constants.InformationNotAvailableText;
+            return PartialView("_ContactOwner", frameworxOwnerViewModel);
         }
 
         #endregion
