@@ -217,7 +217,6 @@
                                            },
                                            function (isConfirm) {
                                                if (isConfirm) {
-                                                   $(".loader-overlay").show();
                                                    var awardId = [];
                                                    $("input:checkbox").each(function () {
                                                        if ($(this).prop("checked")) {
@@ -237,6 +236,7 @@
                                                        return false;
                                                    }
                                                    else {
+                                                       $(".loader-overlay").show();
                                                        $.ajax({
                                                            type: 'POST',
                                                            url: '@Url.Action("LockNomination", "Review")',
@@ -331,7 +331,7 @@
                                                        return false;
                                                    }
                                                    else {
-                                                       $(".loader-overlay").hide();
+                                                       $(".loader-overlay").show();
                                                        $.ajax({
                                                            type: 'POST',
                                                            url: '@Url.Action("UnlockNomination", "Review")',
