@@ -10,6 +10,7 @@ using System.Threading.Tasks;
 using Microsoft.Ajax.Utilities;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
+using Microsoft.Owin.Security.OpenIdConnect;
 using Microsoft.Owin.Security;
 using Silicus.FrameWorx.Logger;
 using Silicus.Ensure.Entities;
@@ -19,10 +20,11 @@ using Silicus.Ensure.Services.Interfaces;
 using Silicus.Ensure.Web.Filters;
 using Silicus.Ensure.Web.Models;
 using Silicus.Ensure.Models.Constants;
+using Microsoft.Owin.Security.Cookies;
 
 namespace Silicus.Ensure.Web.Controllers
 {
-    [Authorize]
+   // [Authorize]
     public class AccountController : Controller
     {
         private readonly ICookieHelper _cookieHelper;
@@ -692,6 +694,35 @@ namespace Silicus.Ensure.Web.Controllers
                 }
                 context.HttpContext.GetOwinContext().Authentication.Challenge(properties, LoginProvider);
             }
+        }
+
+        public void SignIn()
+        {
+            // Send an OpenID Connect sign-in request.
+            if (!Request.IsAuthenticated)
+            {
+                HttpContext.GetOwinContext().Authentication.Challenge(new AuthenticationProperties { RedirectUri = "/" },
+                    OpenIdConnectAuthenticationDefaults.AuthenticationType);
+            }
+        }
+
+        public void SignOut()
+        {
+            string callbackUrl = Url.Action("SignOutCallback", "Account", routeValues: null, protocol: Request.Url.Scheme);
+            string[] cookies = HttpContext.Request.Cookies.AllKeys;
+            HttpContext.GetOwinContext().Authentication.SignOut(
+                new AuthenticationProperties { RedirectUri = callbackUrl },
+                OpenIdConnectAuthenticationDefaults.AuthenticationType, CookieAuthenticationDefaults.AuthenticationType);
+        }
+
+        public ActionResult SignOutCallback()
+        {
+            if (Request.IsAuthenticated)
+            {
+                return RedirectToAction("Index", "Home");
+            }
+
+            return View();
         }
     }
 

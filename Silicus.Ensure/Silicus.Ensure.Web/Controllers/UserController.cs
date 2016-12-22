@@ -14,6 +14,7 @@ using System.Web;
 using System.Web.Mvc;
 using System.IO;
 using Silicus.Ensure.Models.Constants;
+using Silicus.Ensure.Services;
 
 namespace Silicus.Ensure.Web.Controllers
 {
@@ -24,6 +25,7 @@ namespace Silicus.Ensure.Web.Controllers
         private readonly IUserService _userService;
         private readonly IMappingService _mappingService;
         private readonly ITestSuiteService _testSuiteService;
+        private readonly IPositionService _positionService;
 
         private ApplicationUserManager _userManager;
         public ApplicationUserManager UserManager
@@ -51,8 +53,9 @@ namespace Silicus.Ensure.Web.Controllers
             }
         }
 
-        public UserController(IUserService userService, MappingService mappingService, ITestSuiteService testSuiteService)
+        public UserController(IUserService userService, MappingService mappingService, ITestSuiteService testSuiteService, PositionService positionService)
         {
+            _positionService = positionService;
             _userService = userService;
             _mappingService = mappingService;
             _testSuiteService = testSuiteService;
@@ -99,7 +102,8 @@ namespace Silicus.Ensure.Web.Controllers
                 var user = _userService.GetUserById(UserId);
                 if (user != null)
                 {
-                    _userService.Delete(user);
+                    user.IsDeleted = true;
+                    _userService.Update(user);
                 }
                 return Json(1);
             }
@@ -141,7 +145,6 @@ namespace Silicus.Ensure.Web.Controllers
                     viewModels[j].TestSuiteId = testSuitId != null ? testSuitId.TestSuiteId : 0;
                 }
             }
-
             DataSourceResult result = viewModels.ToDataSourceResult(request);
             return Json(result);
         }
@@ -195,7 +198,9 @@ namespace Silicus.Ensure.Web.Controllers
                     if (!string.IsNullOrWhiteSpace(vuser.ErrorMessage)) { return RedirectToAction(actionErrorName, controllerName, new { UserId = vuser.UserId }); }
 
                     var organizationUserDomainModel = _mappingService.Map<UserViewModel, User>(vuser);
+                    organizationUserDomainModel.IsDeleted = false;
                     int Add = _userService.Add(organizationUserDomainModel);
+                    TempData["Success"] = "User created successfully!";
                 }
 
             }
@@ -219,16 +224,22 @@ namespace Silicus.Ensure.Web.Controllers
         /// <param name="files"></param>
         private void UpdateUserMethod(UserViewModel vuser, HttpPostedFileBase files)
         {
+            string ResumePath = "";
+            string ResumeName = "";
             var user = _userService.GetUserById(vuser.UserId);
             if (files != null && vuser.Role.ToLower() == RoleName.Candidate.ToString().ToLower())
             {
-                vuser.ResumePath = GetFilePath(files);
+                GetFilePath(files, out ResumePath, out ResumeName);
+                vuser.ResumePath = ResumePath;
+                vuser.ResumeName = ResumeName;
             }
             if (user != null)
             {
                 var organizationUserDomainModel = _mappingService.Map<UserViewModel, User>(vuser);
                 organizationUserDomainModel.TestStatus = user.TestStatus;
+                organizationUserDomainModel.IsDeleted = false;
                 _userService.Update(organizationUserDomainModel);
+                TempData["Success"] = "User updated successfully!";
             }
 
         }
@@ -240,6 +251,8 @@ namespace Silicus.Ensure.Web.Controllers
         /// <returns></returns>
         private async Task<UserViewModel> CreateUserMethod(UserViewModel vuser, HttpPostedFileBase files)
         {
+            string ResumePath = "";
+            string ResumeName = "";
             var user = new ApplicationUser { UserName = vuser.Email, Email = vuser.Email };
             if (vuser.Role.ToLower() == RoleName.Candidate.ToString().ToLower())
             {
@@ -254,7 +267,9 @@ namespace Silicus.Ensure.Web.Controllers
                 vuser.IdentityUserId = new Guid(user.Id);
                 if (files != null)
                 {
-                    vuser.ResumePath = GetFilePath(files);
+                    GetFilePath(files,  out ResumePath, out ResumeName);
+                    vuser.ResumePath = ResumePath;
+                    vuser.ResumeName = ResumeName;
                 }
                 var result = await UserManager.AddToRoleAsync(user.Id, vuser.Role);
                 if (!result.Succeeded)
@@ -273,21 +288,21 @@ namespace Silicus.Ensure.Web.Controllers
             }
             return vuser;
         }
+
         /// <summary>
         /// Return file path
         /// </summary>
         /// <param name="files"></param>
         /// <returns></returns>
-        private string GetFilePath(HttpPostedFileBase files)
+        private void GetFilePath(HttpPostedFileBase files, out string ResumePath, out string ResumeName)
         {
-            var fileName = Path.GetFileName(files.FileName);
-            var path = Path.Combine(Server.MapPath("~/CandidateResume"), fileName);
-            files.SaveAs(path);
-            string fl = path.Substring(path.LastIndexOf("\\"));
+            ResumeName = Guid.NewGuid() + Path.GetFileName(files.FileName);
+            ResumePath = Path.Combine(Server.MapPath("~/CandidateResume"), ResumeName);
+            files.SaveAs(ResumePath);
+            string fl = ResumePath.Substring(ResumePath.LastIndexOf("\\"));
             string[] split = fl.Split('\\');
             string newpath = split[1];
-            string resumepath = "/CandidateResume/" + newpath;
-            return resumepath;
+            ResumePath = "~/CandidateResume/" + newpath;
         }
     }
 }

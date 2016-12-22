@@ -161,8 +161,8 @@
                                         <tr>
                                             <th>#</th>
                                             <th>Criteria</th>
-                                            <th>Weightage</th>
                                             <th>Rating</th>
+                                            <th>Weightage</th>
                                             <th>Manager Comments</th>
                                         </tr>
                                     </thead>
@@ -405,11 +405,8 @@
             });
 
             var weightage = 0;
-            $("#criteriaTable .ddlWeightage").each(function (data) {
-                if ($(this).val().trim()) {
-                    weightage = weightage + parseInt($(this).val());
-                }
-            });
+            weightage = checkWeightage();
+
             if (weightage > 100 || weightage < 100) {
                 swal("Error", "Sum of total weightages assigned to criteria should be 100%");
                 return false;
@@ -558,14 +555,13 @@
         var text_max = 500;
 
         var commentBoxKey = key.replace("Rating", "Comment");
-
         var commentTextAreaId = '#' + commentBoxKey;
 
         var text_length = $(commentTextAreaId).val().length;
         var text_remaining = text_max - text_length;
         $('.' + commentBoxKey).html(text_remaining + ' characters remaining').hide();
 
-        if ($(commentTextAreaId).attr("iscommentrequired") == "true") {
+        if ($(commentTextAreaId).attr("isRequiredForCriteria") == "true") {
             if ($(commentTextAreaId).val().trim() == "") {
                 $(commentTextAreaId).addClass("noCommentError");
             } else {
@@ -577,14 +573,24 @@
     function checkIfCommentsAreRequired() {
         var areAllMandatoryCommentsProvided = false;
         var countOfEmptyComments = 0;
-        var criteriaComments = $("[isCommentRequired]");
+        var criteriaComments = $("[isRequiredForCriteria]");
         $.each(criteriaComments, function () {
-            if ($(this).attr("iscommentrequired") == "true") {
-                if ($(this).val().trim() == "") {
-                    $(this).addClass("noCommentError");
-                    countOfEmptyComments++;
+            if ($(this).attr("isRequiredForCriteria") == "true") {
+                var classes = $(this).attr("class").toString();
+                if (classes.indexOf("ddlWeightage") > 0) {
+                    if ($(this).val() == 0) {
+                        $(this).addClass("noCommentError");
+                        countOfEmptyComments++;
+                    } else {
+                        $(this).removeClass("noCommentError");
+                    }
                 } else {
-                    $(this).removeClass("noCommentError");
+                    if ($(this).val().trim() == "") {
+                        $(this).addClass("noCommentError");
+                        countOfEmptyComments++;
+                    } else {
+                        $(this).removeClass("noCommentError");
+                    }
                 }
             }
         });
@@ -594,9 +600,20 @@
             $("#criterisCommentValidationmessage").parent().hide();
             $("#criterisCommentValidationmessage").text("");
         } else {
+            swal("Error", "Criteria Weightage and Comment are mandatory if rating is provided for the criteria!");
             $("#criterisCommentValidationmessage").parent().show();
-            $("#criterisCommentValidationmessage").text("Criteria Comment is mandatory if rating is provided for the criteria!");
+            $("#criterisCommentValidationmessage").text("Criteria Weightage and Comment are mandatory if rating is provided for the criteria!");
         }
         return areAllMandatoryCommentsProvided;
+    }
+
+    function checkWeightage() {
+        var weightage = 0;
+        $("#criteriaTable .ddlWeightage").each(function (data) {
+            if ($(this).val().trim()) {
+                weightage = weightage + parseInt($(this).val());
+            }
+        });
+        return weightage;
     }
 </script>

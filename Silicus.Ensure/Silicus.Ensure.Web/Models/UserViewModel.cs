@@ -21,7 +21,7 @@ namespace Silicus.Ensure.Web.Models
 
         [StringLength(50)]
         [Display(Name = "Last Name")]
-        [Required(ErrorMessage = "Last name is required")]
+        [Required(ErrorMessage = "Last name is required!")]
         public string LastName { get; set; }
 
         [StringLength(500)]
@@ -49,7 +49,7 @@ namespace Silicus.Ensure.Web.Models
         [StringLength(2)]
         [Display(Name = "Experience")]
         [Required(ErrorMessage = "Experience is required!")]
-        [RegularExpression(@"^[0-9]{2}$", ErrorMessage = "Experience is not a valid")]
+        [RegularExpression(@"^[0-9]{2}$", ErrorMessage = "Experience is not a valid!e.g. 01,11,23")]
         public string Experience { get; set; }
 
         [StringLength(50)]
@@ -79,6 +79,8 @@ namespace Silicus.Ensure.Web.Models
         public Guid IdentityUserId { get; set; }
 
         public string ResumePath { get; set; }
+
+        public string ResumeName { get; set; }
 
         public IList<Position> PositionList { get; set; }
 

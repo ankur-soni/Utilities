@@ -29,7 +29,8 @@ namespace Silicus.Ensure.Entities.Initializer
                Email = "testadmin@test.com",
                IdentityUserId = new System.Guid("5C9DE1BA-083E-425F-AE0B-FCB222E9DBDF"),
                Role = RoleName.Admin.ToString(),
-               IsActive = true
+               IsActive = true,
+               IsDeleted = false
 
            });
             context.Add(new User
@@ -42,7 +43,8 @@ namespace Silicus.Ensure.Entities.Initializer
                 Email = "nilkanth@gmail.com",
                 IdentityUserId = new System.Guid("88B34980-EDD3-420C-8387-621B629A4E9B"),
                 Role = RoleName.Panel.ToString(),
-                IsActive = true
+                IsActive = true,
+                IsDeleted = false
 
             });
             context.Add(new User
@@ -58,9 +60,10 @@ namespace Silicus.Ensure.Entities.Initializer
                 Gender = "Male",
                 Department = "Delivery",
                 TestStatus = Convert.ToString(TestStatus.NotAssigned),
-                Position = "Sr.Developer",
+                Position = "Dot Net Developer",
                 Experience = "5",
-                IsActive = true
+                IsActive = true,
+                IsDeleted = false
 
             });
             context.Add(new Project
