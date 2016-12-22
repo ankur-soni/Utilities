@@ -103,7 +103,7 @@
                 var id = value.attributes['id'].value, title = value.attributes['title'].value;
                 var style = title.search(new RegExp(filter, "i")) < 0 ? "display: none;" : "";
                 itemHtmlString += '<div class="col-sm-4" style="' + style + '"> <div category="' + category + '" id="' + id + '" title="' + title +
-                    '" class="TitleDivTemplate TitleDiv" data-toggle="modal" data-target="#component-modal"  my-data="' + id + '" my-title="'
+                    '" class="TitleDivTemplate TitleDiv"  my-data="' + id + '" my-title="'
                     + title + '">' +
                     '<h3 class="maintitle"> ' + title + '</h3>   </div> </div>';
             });
@@ -128,7 +128,7 @@
             var id = value.attributes['id'].value, title = value.attributes['title'].value, category = value.attributes['category'].value;
             var style = title.search(new RegExp(filter, "i")) < 0 ? "display: none;" : "";
             itemHtmlString += ' <li category="' + category + '" id="' + id + '" title="' + title + '" style="' + style + '">' +
-                    '<a class="icon-' + category + ' TitleDivTemplate" data-toggle="modal" data-target="#component-modal"  my-data="' + id + '" my-title="'
+                    '<a class="icon-' + category + ' TitleDivTemplate"  my-data="' + id + '" my-title="'
                     + title + '">' + title + '</a></li>';
         });
         htmlString += itemHtmlString + ' </ul>';
@@ -136,7 +136,7 @@
         $('#containerDiv').html(htmlString);
     }
 
-    function getComponentdetail(id) {
+    function getComponentdetail(showModel,id) {
         $("#currentTile").val(id);
         blockUI();
         $.ajax({
@@ -145,9 +145,12 @@
             data: { id: id },
             success: function (data) {
                 $(".carousel-inner").html(data);
+                if (showModel) {
+                    $('#component-modal').modal('show');
+                }
             },
             error: function () {
-                // connectionError();
+                swal("Error", "Error occurred while getting details.", "error");
             },
             complete: function () {
                 unblockUI();
@@ -213,7 +216,7 @@
 
             $('body').on('click', '.TitleDivTemplate', function () {
                 var id = $(this).attr('my-data');
-                getComponentdetail(id);
+                getComponentdetail(true, id);                
             });
 
             $('#prev-slide-button').on('click', function () { prevSlide(); });
