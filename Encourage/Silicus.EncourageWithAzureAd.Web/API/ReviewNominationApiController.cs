@@ -24,34 +24,42 @@ namespace Silicus.EncourageWithAzureAd.Web.API
             _awardService = awardService;
         }
         [HttpGet]
-        public bool lockreview(string frequencyCode)
+        public bool lockreview(string awardName)
         {
-            var awards = _awardService.GetAllAwards().ToList();
             _logger.Log("ReviewnominationApi-lockreview");
-            return _reviewService.LockReview(GetAwardsToLock(frequencyCode,awards));
-        }
-
-        private List<int> GetAwardsToLock(string frequencyCode,List<Award> awards)
-        {
-            var awardFrequency = _nominationService.GetAwardFrequencyByFrequencyCode(frequencyCode);
-            var awardIds = new List<int>();
-            foreach (var award in awards)
+            var awarToLock = _awardService.GetAwardByCode(awardName);
+            if (awarToLock != null)
             {
-                if (award.FrequencyId == awardFrequency.Id)
-                {
-                    awardIds.Add(award.Id);
-
-                }
+                _reviewService.LockReview(new List<int> { awarToLock.Id });
             }
-            return awardIds;
+            return true;
         }
+
+        //private List<int> GetAwardsToLock(string frequencyCode,List<Award> awards)
+        //{
+        //    var awardFrequency = _nominationService.GetAwardFrequencyByFrequencyCode(frequencyCode);
+        //    var awardIds = new List<int>();
+        //    foreach (var award in awards)
+        //    {
+        //        if (award.FrequencyId == awardFrequency.Id)
+        //        {
+        //            awardIds.Add(award.Id);
+
+        //        }
+        //    }
+        //    return awardIds;
+        //}
 
         [HttpGet]
-        public bool UnLockReview(string frequencyCode)
+        public bool UnLockReview(string awardCode)
         {
-            var awards = _awardService.GetAllAwards().ToList();
             _logger.Log("ReviewNominatioApi-UnLockReview");
-            return _reviewService.UnLockReview(GetAwardsToLock(frequencyCode,awards));
+            var awarToLock = _awardService.GetAwardByCode(awardCode);
+            if (awarToLock != null)
+            {
+                return _reviewService.UnLockReview(new List<int> { awarToLock.Id });
+            }
+            return false;
         }
     }
 }

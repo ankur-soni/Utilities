@@ -19,5 +19,13 @@ namespace Silicus.Reusable.Web.Models
         public string DemoLink { get; set; }
 
         public string SourceCodeLink { get; set; }
+
+        public int Likes { get; set; }
+
+        public bool IsLiked { get; set; }
+                
+        public int? LikeId { get; set; }
+
+        public int OwnerId { get; set; }
     }
 }

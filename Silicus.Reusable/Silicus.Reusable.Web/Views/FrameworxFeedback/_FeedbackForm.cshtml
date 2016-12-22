@@ -1,0 +1,89 @@
+﻿@model Silicus.Reusable.Web.Models.ViewModel.FrameworxFeedbackViewModel
+
+@using (Ajax.BeginForm("SaveFeedback", "FrameworxFeedback", null, new AjaxOptions { HttpMethod = "POST", OnFailure = "OnFailureFeedback", OnBegin = "blockUI()", OnComplete = "unblockUI()", OnSuccess = "onSuccessFeedback" }, new { id = "frmFeedback" }))
+{
+    @Html.HiddenFor(m => m.FrameworxId)
+    @Html.HiddenFor(m => m.FeedBackFor)
+    <div class="Section-three form-wrapper">
+        <p class="mr-bt-25 mr-tp-25 fontSize14 textaligncenter marginTop10 ">Please tell us what do you think, any kind of feedback is highly appreciated.</p>
+
+        <div class="paddingBottom25 centered">
+
+
+            <div class="Form-section customRadio" onclick="placholderTxt()">
+
+                <input type="radio" name="Type" id="Idea" class="radio_item" value="Idea" checked="checked">
+                <label class="label_item" for="Idea">
+
+                    <span class="icon-ol-arrow-streamline-target fontSize60"></span>
+                    <span class="tag">Idea</span>
+                </label>
+
+                <input type="radio" name="Type" id="Question" class="radio_item" value="Question">
+                <label class="label_item" for="Question">
+                    <span class="icon-ol-speech-streamline-talk-user fontSize60"></span>
+                    <span class="tag">Question</span>
+                </label>
+
+                <input type="radio" name="Type" id="Problem" class="radio_item" value="Problem">
+                <label class="label_item" for="Problem">
+                    <span class="icon-ol-settings-streamline-2 fontSize60"></span>
+                    <span class="tag">Problem</span>
+                </label>
+
+                <input type="radio" name="Type" id="Praise" class="radio_item" value="Praise">
+                <label class="label_item" for="Praise">
+                    <span class="icon-ol-bubble-love-streamline-talk fontSize60"></span>
+                    <span class="tag">Praise</span>
+                </label>
+
+
+
+            </div>
+
+        </div>
+
+        <div class="form-horizontal marginTop10 centerize">
+            <div>
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                    <div class="form-group">
+                        @Html.TextBoxFor(m => m.Summary, new { @class = "form-control", id = "txtSummary", placeholder = "Describe your idea in 2 words... " })
+                    </div>
+                    <div class="validation">
+                        @Html.ValidationMessageFor(m => m.Summary)
+                    </div>
+                </div>
+            </div>
+
+            <div>
+                <div class="form-group">
+                    <div class="col-lg-12 col-md-8 col-sm-12 col-xs-12">
+                        @Html.TextAreaFor(m => m.Description, new { @class = "form-control", id = "txtDescription", @rows = 10, placeholder = "We would love to hear your idea, just type it in..." })
+                    </div>
+                    <div class="validation">
+                        @Html.ValidationMessageFor(m => m.Description)
+                    </div>
+                </div>
+            </div>
+
+            <div class="box  backgroundLight no-border marginTop10 noShadow">
+                <h4>Owner Information </h4>
+                <p class="mr-bt-5">
+                    User Name : @Html.DisplayFor(m => m.OwnerName)
+                </p>
+
+                <p class="mr-bt-5">
+                    Email Id : @Html.DisplayFor(m => m.OwnerEmail)
+                </p>
+
+                <p>
+                    Feedback For : @Html.DisplayFor(m => m.FeedBackFor)
+                </p>
+            </div>          
+
+        <div class="clearfix"> </div>
+    </div> <!-- End form-horizontal -->
+
+
+</div>
+}

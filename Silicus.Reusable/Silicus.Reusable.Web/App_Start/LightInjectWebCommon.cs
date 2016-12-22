@@ -6,6 +6,8 @@ using System.Reflection;
 
 using Silicus.FrameworxProject.Services.Interfaces;
 using Silicus.FrameworxProject.Services;
+using AutoMapper;
+using Silicus.Reusable.Web.Mappings;
 
 [assembly: WebActivatorEx.PostApplicationStartMethod(typeof(LightInjectWebCommon), "CreateContainer")]
 
@@ -25,9 +27,18 @@ namespace Silicus.FrameworxProject.Web.App_Start
 
         private static void InitializeContainer(IServiceContainer container)
         {
+            var mapperConfiguration = new MapperConfiguration(cfg =>
+            {
+                cfg.AddProfile<DomainToViewModelMappingProfile>();
+                cfg.AddProfile<ViewModelToDomainMappingProfile>();
+            });
+          
             container.Register<IDataContextFactory, DataContextFactory>();
             container.Register<IFrameworxProjectService, FrameworxProjectService>();
             container.Register<IExtensionCodeService, ExtensionCodeService>();
+            container.Register<ICommonDbService, CommonDbService>();
+            container.Register<IFrameworxFeedbackService, FrameworxFeedbackService>();
+            container.Register<IMapper>((factory) => mapperConfiguration.CreateMapper());
             //container.Register<Silicus.UtilityContainer.Entities.ICommonDataBaseContext, Silicus.UtilityContainer.Entities.CommonDataBaseContext>();
             container.Register<Silicus.UtilityContainer.Entities.IDataContextFactory, Silicus.UtilityContainer.Entities.DataContextFactory>();
         }

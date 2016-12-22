@@ -67,6 +67,8 @@
           <Property Name="Comment" Type="nvarchar" MaxLength="500" />
           <Property Name="Rating" Type="int" Nullable="false" />
           <Property Name="Weightage" Type="int" Nullable="false" />
+          <Property Name="AdminComment" Type="varchar(max)" Nullable="false" />
+          <Property Name="FinalScore" Type="decimal" Precision="18" Scale="0" Nullable="false" />
         </EntityType>
         <EntityType Name="Nomination">
           <Key>
@@ -473,6 +475,8 @@
           <NavigationProperty Name="Nomination" Relationship="Self.FK_dbo_ManagerComment_dbo_Nomination_NominationId" FromRole="ManagerComment" ToRole="Nomination" />
           <Property Name="Rating" Type="Int32" Nullable="false" />
           <Property Name="Weightage" Type="Int32" Nullable="false" />
+          <Property Name="AdminComment" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="FinalScore" Type="Decimal" Nullable="false" Precision="18" Scale="0" />
         </EntityType>
         <EntityType Name="Nomination">
           <Key>
@@ -889,6 +893,8 @@
           <EntitySetMapping Name="ManagerComments">
             <EntityTypeMapping TypeName="EnCourageModel.ManagerComment">
               <MappingFragment StoreEntitySet="ManagerComment">
+                <ScalarProperty Name="FinalScore" ColumnName="FinalScore" />
+                <ScalarProperty Name="AdminComment" ColumnName="AdminComment" />
                 <ScalarProperty Name="Weightage" ColumnName="Weightage" />
                 <ScalarProperty Name="Rating" ColumnName="Rating" />
                 <ScalarProperty Name="Id" ColumnName="Id" />

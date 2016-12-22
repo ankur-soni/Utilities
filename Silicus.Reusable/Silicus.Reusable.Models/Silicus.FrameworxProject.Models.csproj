@@ -42,11 +42,13 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="FrameworxFeedback.cs" />
     <Compile Include="EmailFormModel.cs" />
     <Compile Include="FrameworxCategory.cs" />
     <Compile Include="CodeType.cs" />
     <Compile Include="ExtensionSolution.cs" />
     <Compile Include="Frameworx.cs" />
+    <Compile Include="FrameworxLike.cs" />
     <Compile Include="OtherCode.cs" />
     <Compile Include="ProductBacklog.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

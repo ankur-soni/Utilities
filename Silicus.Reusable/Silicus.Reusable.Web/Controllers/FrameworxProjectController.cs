@@ -6,19 +6,41 @@ using System.Linq;
 using System.Web.Mvc;
 using System.Data.Entity.Infrastructure;
 
-
-
 namespace Silicus.FrameworxDashboard.Web.Controllers
 {
     [Authorize]
     public class FrameworxProjectController : Controller
     {
         private readonly IFrameworxProjectService _frameworxProjectService;
+        private readonly ICommonDbService _commonDbService;
 
-        public FrameworxProjectController(IFrameworxProjectService frameworxProjectService)
+        public FrameworxProjectController(IFrameworxProjectService frameworxProjectService, ICommonDbService commonDbService)
         {
             _frameworxProjectService = frameworxProjectService;
+            _commonDbService = commonDbService;
             //textInfo = new CultureInfo("en-US", false).TextInfo;
+        }
+
+        public ActionResult Index()
+        {
+            List<Frameworx> frameworkList = _frameworxProjectService.GetAllFrameworx();
+            var CategoryList = _frameworxProjectService.GetAllCategories();
+
+            var allComponents = frameworkList.Join(CategoryList,
+                wo => wo.CategoryId,
+                p => p.Id,
+                (order, plan) => new { order.Id, order.Title, order.SourceCodeLink, order.DemoLink, order.HtmlDescription, plan.Name }
+                ).Select(m => new FrameworxViewModel
+                {
+                    id = m.Id,
+                    Name = m.Name,
+                    Title = m.Title,
+                    HtmlDescription = m.HtmlDescription,
+                    DemoLink = m.DemoLink,
+                    SourceCodeLink = m.SourceCodeLink
+
+                }).ToList();
+            return View(allComponents);
         }
 
         [HttpGet]
@@ -93,24 +115,23 @@ namespace Silicus.FrameworxDashboard.Web.Controllers
 
         public ActionResult Details(int id)
         {
-            List<Frameworx> frameworkList = _frameworxProjectService.GetAllFrameworx();
-            var CategoryList = _frameworxProjectService.GetAllCategories();
+            Frameworx framework = _frameworxProjectService.FrameworkDetail(id);
+            var userId = _commonDbService.FindUserIdFromEmail(User.Identity.Name);
+            FrameworxViewModel frameworxViewModel = new FrameworxViewModel()
+            {
+                Name = framework.Category.Name,
+                Title = framework.Title,
+                HtmlDescription = framework.HtmlDescription,
+                SourceCodeLink = framework.SourceCodeLink,
+                Likes = framework.Likes.Count,
+                IsLiked = framework.Likes.Any(l => l.UserId == userId),
+                OwnerId = framework.OwnerId
+            };
 
-            FrameworxViewModel frameworxViewModel = new FrameworxViewModel();
-            var results = frameworkList.Join(CategoryList,
-                wo => wo.CategoryId,
-                p => p.Id,
-                (order, plan) => new { order.Id, order.Title, order.SourceCodeLink, order.DemoLink, order.HtmlDescription, plan.Name }
-                ).ToList();
-
-            var result = results.Where(p => p.Id == id).FirstOrDefault();
-
-            frameworxViewModel.Name = result.Name;
-            frameworxViewModel.Title = result.Title;
-            frameworxViewModel.HtmlDescription = result.HtmlDescription;
-
-            frameworxViewModel.DemoLink = result.DemoLink;
-            frameworxViewModel.SourceCodeLink = result.SourceCodeLink;
+            if (frameworxViewModel.IsLiked)
+            {
+                frameworxViewModel.LikeId = framework.Likes.FirstOrDefault(l => l.UserId == userId).Id;
+            }
 
             return View(frameworxViewModel);
         }
@@ -132,7 +153,7 @@ namespace Silicus.FrameworxDashboard.Web.Controllers
             {
                 item.Frameworxs = frameworkList.Where(s => s.CategoryId == item.Id).ToList();
             }
-            if (query.ToList().Count() !=0)
+            if (query.ToList().Count() != 0)
             {
                 return View("SearchComponent", query.ToList());
             }
@@ -142,5 +163,29 @@ namespace Silicus.FrameworxDashboard.Web.Controllers
                 return View("SearchComponentMessage", query.ToList());
             }
         }
+
+        public ActionResult LikeComponent(int componentId)
+        {
+            var userId = _commonDbService.FindUserIdFromEmail(User.Identity.Name);
+            int likeId = _frameworxProjectService.AddFrameworxLike(new FrameworxLike()
+            {
+                FrameworxId = componentId,
+                UserId = userId.Value
+
+            });
+            return Json(new { likeId = likeId }, JsonRequestBehavior.AllowGet);
+        }
+
+        public ActionResult UnLikeComponent(int likeId)
+        {
+            _frameworxProjectService.RemoveFrameworxLike(new FrameworxLike()
+            {
+                Id = likeId
+
+            });
+            return Json(true, JsonRequestBehavior.AllowGet);
+        }
+
+
     }
 }

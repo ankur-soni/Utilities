@@ -9,6 +9,7 @@ using Silicus.UtilityContainer.Models.DataObjects;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
+using System.Data.Entity;
 using System.Globalization;
 using System.Linq;
 using System.Web.Mvc;
@@ -334,6 +335,98 @@ namespace Silicus.EncourageWithAzureAd.Web.Controllers
             return Json(lockedNominations);
         }
 
+        public ActionResult ConsolidatedNominations(ConsolidatedNominationsViewModel consolidatedNominationsViewModel)
+        {
+            var awards = _awardService.GetAllAwards();
+            if (consolidatedNominationsViewModel == null || consolidatedNominationsViewModel.AwardId == 0)
+            {
+                consolidatedNominationsViewModel = new ConsolidatedNominationsViewModel();
+                var award = awards.FirstOrDefault(a => a.Code == "SOM");
+                if (award != null)
+                {
+                    consolidatedNominationsViewModel.AwardId = award.Id;
+                    consolidatedNominationsViewModel.AwardMonth = DateTime.Now.AddMonths(-1).Month;
+                    consolidatedNominationsViewModel.AwardYear = DateTime.Now.AddMonths(-1).Year;
+                }
+            }
 
+            consolidatedNominationsViewModel.Criterias = _encourageDatabaseContext.Query<Criteria>().Where(c => c.AwardId == consolidatedNominationsViewModel.AwardId).ToList();
+            consolidatedNominationsViewModel.Reviewers = new List<ReviewerViewModel>();
+            consolidatedNominationsViewModel.Nominations = new List<SubmittedNomination>();
+            consolidatedNominationsViewModel.ListOfAwards = new SelectList(awards, "Id", "Name");
+            
+            var reviewers = _encourageDatabaseContext.Query<Reviewer>().ToList();
+            foreach (var reviewer in reviewers)
+            {
+                var reviewerObj = _commonDbContext.Query<User>().FirstOrDefault(u => u.ID == reviewer.UserId);
+                consolidatedNominationsViewModel.Reviewers.Add(new ReviewerViewModel
+                {
+                    Id = reviewer.Id,
+                    UserId = reviewer.UserId,
+                    ReviewerName = reviewerObj != null ? reviewerObj.FirstName + " " + reviewerObj.LastName : ""
+                });
+            }
+            var nominations = _encourageDatabaseContext.Query<Nomination>().Include(a => a.ManagerComments).Include(b => b.ReviewerComments).Where(N => N.IsSubmitted == true && N.NominationDate.Value.Month == consolidatedNominationsViewModel.AwardMonth && N.NominationDate.Value.Year == consolidatedNominationsViewModel.AwardYear && N.AwardId == consolidatedNominationsViewModel.AwardId).ToList();
+            foreach (var nomination in nominations)
+            {
+                var nominee = _commonDbContext.Query<User>().FirstOrDefault(u => u.ID == nomination.UserId);
+
+                var submittednomination = new SubmittedNomination
+                {
+                    NominationId = nomination.Id,
+                    UserName = nominee != null ? nominee.FirstName + " " + nominee.LastName : "",
+                    ManagerComments = nomination.ManagerComments.ToList(),
+                    ReviewerComments = new List<ReviewerCommentViewModel>()
+                };
+
+                foreach (var reviewerComment in nomination.ReviewerComments)
+                {
+                    var managerComment = nomination.ManagerComments.FirstOrDefault(m => m.CriteriaId == reviewerComment.CriteriaId);
+                    var reviewComment = new ReviewerCommentViewModel()
+                    {
+                        CriteriaId = reviewerComment.CriteriaId,
+                        Comment = reviewerComment.Comment,
+                        Credit = Convert.ToInt32(reviewerComment.Credit),
+                        ReviewerId = reviewerComment.ReviewerId,
+                        Weightage = managerComment != null ? managerComment.Weightage : 0
+                    };
+
+                    submittednomination.ReviewerComments.Add(reviewComment);
+                }
+
+                consolidatedNominationsViewModel.Nominations.Add(submittednomination);
+            }
+
+            if (Request.IsAjaxRequest())
+            {
+                return PartialView("_ConsolidatedNominationsPartialView", consolidatedNominationsViewModel);
+            }
+            else
+            {
+                return View("ConsolidatedNominations", consolidatedNominationsViewModel);
+            }
+        }
+
+        [HttpPost]
+        public ActionResult SaveFinalScore(ConsolidatedNominationsViewModel consolidatedNominationsViewModel)
+        {
+
+            foreach (var nomination in consolidatedNominationsViewModel.Nominations)
+            {
+                foreach (var finalComment in nomination.ManagerComments)
+                {
+                    var commentDb = _encourageDatabaseContext.Query<ManagerComment>().FirstOrDefault(mc => mc.NominationId == finalComment.NominationId && mc.CriteriaId == finalComment.CriteriaId);
+                    if (commentDb != null)
+                    {
+                        commentDb.AdminComment = finalComment.AdminComment;
+                        commentDb.FinalScore = finalComment.FinalScore;
+                    }
+
+                    _encourageDatabaseContext.Update(commentDb);
+                }
+            }
+
+            return Json(true);
+        }
     }
 }

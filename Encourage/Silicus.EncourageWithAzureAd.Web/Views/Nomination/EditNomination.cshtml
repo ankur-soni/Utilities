@@ -50,7 +50,7 @@
                     <div class="col-lg-3 col-md-4 col-sm-5">
                         <div class="form-group">
                             @Html.Label("Nomination Category", htmlAttributes: new { @class = "control-label requiredfeild", style = "text-align: left" })
-                            @Html.DropDownListFor(model => model.AwardId, @ViewBag.Awards as SelectList, "Select", new { @class = "form-control", id = "Award" })
+                            @Html.DropDownListFor(model => model.AwardId, Model.ListOfAwards as SelectList, "Select", new { @class = "form-control", id = "Award" })
                             @Html.ValidationMessageFor(model => model.AwardId, "", new { @class = "text-danger" })
 
                                 </div>
@@ -86,7 +86,7 @@
                     <div class="col-lg-3 col-md-4 col-sm-5">
                         <div class="form-group" id="projectInput">
                             @Html.Label("Project", htmlAttributes: new { @class = "control-label requiredfeild" })
-                            @Html.DropDownListFor(model => model.ProjectID, @ViewBag.ProjectsUnderCurrentUser as SelectList, "Select", new { @class = "form-control", @id = "SelectedProject" })
+                            @Html.DropDownListFor(model => model.ProjectID, Model.ProjectsUnderCurrentUser as SelectList, "Select", new { @class = "form-control", @id = "SelectedProject" })
                             @Html.ValidationMessageFor(model => model.ProjectID, "", new { @class = "text-danger" })
 
                         </div>
@@ -99,7 +99,7 @@
                         <div class="col-lg-3 col-md-4 col-sm-5">
                             <div class="form-group" id="departmentInput">
                                 @Html.Label("Department", htmlAttributes: new { @class = "control-label requiredfeild" })
-                                @Html.DropDownListFor(model => model.DepartmentId, @ViewBag.DepartmentsUnderCurrentUser as SelectList, "Select", new { @class = "form-control", @id = "SelectedDepartment" })
+                                @Html.DropDownListFor(model => model.DepartmentId, Model.DepartmentsUnderCurrentUser as SelectList, "Select", new { @class = "form-control", @id = "SelectedDepartment" })
                                 @Html.ValidationMessageFor(model => model.DepartmentId, "", new { @class = "text-danger" })
 
                             </div>
@@ -110,7 +110,7 @@
                     <div class="col-lg-3 col-md-4 col-sm-5">
                         <div class="form-group">
                             @Html.Label("Employee", htmlAttributes: new { @class = "control-label requiredfeild" })
-                            @Html.DropDownListFor(model => model.ResourceId, @ViewBag.Resources as SelectList, "Select", new { @class = "form-control", id = "Resources" })
+                            @Html.DropDownListFor(model => model.ResourceId, Model.Resources as SelectList, "Select", new { @class = "form-control", id = "Resources" })
                             @Html.ValidationMessageFor(model => model.ResourceId, "", new { @class = "text-danger" })
 
                                 </div>
@@ -161,8 +161,8 @@
                                         <tr>
                                             <th>#</th>
                                             <th>Criteria</th>
-                                            <th>Weightage</th>
                                             <th>Rating</th>
+                                            <th>Weightage</th>
                                             <th>Manager Comments</th>
                                         </tr>
                                     </thead>
@@ -192,11 +192,7 @@
                         <div class="pull-right btn-nav">
                             <input type="button" value="Discard" id="discardButton" class="btn btn-primary" />
                             <input type="button" name="submit" value="Save Draft" id="saveButton" class="btn btn-primary" onclick="return checkValidationOnSaveDraft();" />
-                            <input type="button" name="button" value="Submit" class="btn btn-primary" onclick="return checkValidationOnSubmit();" id="submit"
-                                   @*@{  if (ViewBag.NominationLockStatus) {  @: disabled="disabled"
-                                        @: title="Nominations are locked"
-                                   @: title="Nominations are locked"
-                                                                                                                                                }  }*@ />
+                            <input type="button" name="button" value="Submit" class="btn btn-primary" onclick="return checkValidationOnSubmit();" id="submit"/>
                             <input type="button" value="Back" class="btn btn-primary" onclick="location.href='@Url.Action("GetNominationList", "Nomination")'" />
 
                         </div>
@@ -295,6 +291,8 @@
         var selectedProject = $("#SelectedProject").val();
         var selectedAward = $("#Award").val();
 
+        $(".overlay").show();
+
         $('#Resources').empty();
         $('#Resources').append($("<option selected></option>").val(null).html("Select"));
 
@@ -305,11 +303,16 @@
             data: JSON.stringify({ engagementID: selectedProject, awardId: selectedAward }),
             contentType: "application/json; charset=utf-8",
             success: function (data) {
+                $(".overlay").hide();
 
                 for (var key in data) {
                     $('#Resources')
                         .append($("<option></option>").val(data[key].ID).html(data[key].DisplayName));
                 }
+            },
+            error: function (error) {
+                $(".loader-overlay").hide();
+                console.log(error);
             }
         });
     });
@@ -319,16 +322,21 @@
         var ServiceUrl = "/Nomination/ResourcesInDepartment?departmentID=" + selectedDept;
         $('#Resources').empty();
         $('#Resources').append($("<option selected></option>").val(null).html("Select"));
-
+        $(".loader-overlay").show();
         $.ajax({
             type: 'GET',
             url: ServiceUrl,
             contentType: "application/json; charset=utf-8",
             success: function (data) {
+                $(".loader-overlay").hide();
                 for (var key in data) {
                     $('#Resources')
                         .append($("<option></option>").val(data[key].ID).html(data[key].DisplayName));
                 }
+            },
+            error: function (error) {
+                $(".loader-overlay").hide();
+                console.log(error);
             }
         });
     });
@@ -350,6 +358,7 @@
             function (isConfirm) {
                 if (isConfirm) {
                     var nominationId = $("#NominationId").val();
+                    $(".loader-overlay").show();
 
                     $.ajax({
                         url: '@Url.Action("DiscardNomination", "Nomination")',
@@ -358,6 +367,7 @@
                         datatype: "JSON",
                         contentType: "application/json; charset=utf-8",
                         success: function (data) {
+                            $(".loader-overlay").hide();
                             swal({
                                     title: "Nomination Discarded!",
                                     text: "",
@@ -373,6 +383,7 @@
                                 });
                         },
                         error: function () {
+                            $(".loader-overlay").hide();
                             swal("Error", "Oops! Something wrong happened..");
                         }
                     });
@@ -392,6 +403,14 @@
                 if ($(this).val().trim())
                     comments++;
             });
+
+            var weightage = 0;
+            weightage = checkWeightage();
+
+            if (weightage > 100 || weightage < 100) {
+                swal("Error", "Sum of total weightages assigned to criteria should be 100%");
+                return false;
+            }
 
             if (!$("#commentBox").val()) {
                 $("#managerCommentValidationmessage").text("Enter main comment")
@@ -417,6 +436,7 @@
                     },
                     function (isConfirm) {
                         if (isConfirm) {
+                            $(".loader-overlay").show();
                             
                             var modelbjectToSend = $('#editNominationForm').serialize() + '&' + $.param({ 'submit': "Submit" }, true);
                            
@@ -425,6 +445,7 @@
                                 url: '@Url.Action("EditSavedNomination", "Nomination")',
                                 data: modelbjectToSend,
                                 success: function (data) {
+                                    $(".loader-overlay").hide();
                                     swal({
                                             title: "Nomination Submitted!",
                                             text: "",
@@ -440,6 +461,7 @@
                                         });
                                 },
                                 error: function () {
+                                    $(".loader-overlay").hide();
                                     swal("Error", "Oops! Something wrong happened..");
                                 }
                             });
@@ -470,6 +492,7 @@
                 },
                 function (isConfirm) {
                     if (isConfirm) {
+                        $(".loader-overlay").show();
                         var modelbjectToSend = $('#editNominationForm').serialize() + '&' + $.param({ 'submit': "Save" }, true);
 
                         $.ajax({
@@ -477,6 +500,7 @@
                             url: '@Url.Action("EditSavedNomination", "Nomination")',
                             data: modelbjectToSend,
                             success: function (data) {
+                                $(".loader-overlay").hide();
                                 swal({
                                         title: "Nomination Saved!",
                                         showCancelButton: false,
@@ -490,6 +514,7 @@
                                     });
                             },
                             error: function () {
+                                $(".loader-overlay").hide();
                                 swal("Error", "Oops! Something wrong happened..");
                             }
                         });
@@ -530,14 +555,13 @@
         var text_max = 500;
 
         var commentBoxKey = key.replace("Rating", "Comment");
-
         var commentTextAreaId = '#' + commentBoxKey;
 
         var text_length = $(commentTextAreaId).val().length;
         var text_remaining = text_max - text_length;
         $('.' + commentBoxKey).html(text_remaining + ' characters remaining').hide();
 
-        if ($(commentTextAreaId).attr("iscommentrequired") == "true") {
+        if ($(commentTextAreaId).attr("isRequiredForCriteria") == "true") {
             if ($(commentTextAreaId).val().trim() == "") {
                 $(commentTextAreaId).addClass("noCommentError");
             } else {
@@ -549,14 +573,24 @@
     function checkIfCommentsAreRequired() {
         var areAllMandatoryCommentsProvided = false;
         var countOfEmptyComments = 0;
-        var criteriaComments = $("[isCommentRequired]");
+        var criteriaComments = $("[isRequiredForCriteria]");
         $.each(criteriaComments, function () {
-            if ($(this).attr("iscommentrequired") == "true") {
-                if ($(this).val().trim() == "") {
-                    $(this).addClass("noCommentError");
-                    countOfEmptyComments++;
+            if ($(this).attr("isRequiredForCriteria") == "true") {
+                var classes = $(this).attr("class").toString();
+                if (classes.indexOf("ddlWeightage") > 0) {
+                    if ($(this).val() == 0) {
+                        $(this).addClass("noCommentError");
+                        countOfEmptyComments++;
+                    } else {
+                        $(this).removeClass("noCommentError");
+                    }
                 } else {
-                    $(this).removeClass("noCommentError");
+                    if ($(this).val().trim() == "") {
+                        $(this).addClass("noCommentError");
+                        countOfEmptyComments++;
+                    } else {
+                        $(this).removeClass("noCommentError");
+                    }
                 }
             }
         });
@@ -566,9 +600,20 @@
             $("#criterisCommentValidationmessage").parent().hide();
             $("#criterisCommentValidationmessage").text("");
         } else {
+            swal("Error", "Criteria Weightage and Comment are mandatory if rating is provided for the criteria!");
             $("#criterisCommentValidationmessage").parent().show();
-            $("#criterisCommentValidationmessage").text("Criteria Comment is mandatory if rating is provided for the criteria!");
+            $("#criterisCommentValidationmessage").text("Criteria Weightage and Comment are mandatory if rating is provided for the criteria!");
         }
         return areAllMandatoryCommentsProvided;
+    }
+
+    function checkWeightage() {
+        var weightage = 0;
+        $("#criteriaTable .ddlWeightage").each(function (data) {
+            if ($(this).val().trim()) {
+                weightage = weightage + parseInt($(this).val());
+            }
+        });
+        return weightage;
     }
 </script>
