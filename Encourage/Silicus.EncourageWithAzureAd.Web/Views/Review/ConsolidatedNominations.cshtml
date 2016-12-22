@@ -116,8 +116,21 @@
         </form>
     </div>
 </div>
-
+<script src="~/js/jquery.dataTables.min.js"></script>
+<script src="~/js/dataTables.fixedColumns.min.js"></script>
 <script>
+    $(document).ready(function () {
+        var table = $('#consolidatedHrView').DataTable({
+            scrollY: "300px",
+            scrollX: true,
+            ordering:  false,
+            scrollCollapse: true,
+            paging: false,
+            fixedColumns: {
+                leftColumns: 3
+            }
+        });
+    });
     function RecalculateFinalScore(nominationId) {
         var points = 0.0;
         var count = 0;
