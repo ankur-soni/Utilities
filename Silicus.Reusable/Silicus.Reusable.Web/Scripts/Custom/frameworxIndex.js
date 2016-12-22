@@ -103,7 +103,7 @@
                 var id = value.attributes['id'].value, title = value.attributes['title'].value;
                 var style = title.search(new RegExp(filter, "i")) < 0 ? "display: none;" : "";
                 itemHtmlString += '<div class="col-sm-4" style="' + style + '"> <div category="' + category + '" id="' + id + '" title="' + title +
-                    '" class="TitleDivTemplate TitleDiv" data-toggle="modal" data-target="#component-modal"  my-data="' + id + '" my-title="'
+                    '" class="TitleDivTemplate TitleDiv"  my-data="' + id + '" my-title="'
                     + title + '">' +
                     '<h3 class="maintitle"> ' + title + '</h3>   </div> </div>';
             });
@@ -128,7 +128,7 @@
             var id = value.attributes['id'].value, title = value.attributes['title'].value, category = value.attributes['category'].value;
             var style = title.search(new RegExp(filter, "i")) < 0 ? "display: none;" : "";
             itemHtmlString += ' <li category="' + category + '" id="' + id + '" title="' + title + '" style="' + style + '">' +
-                    '<a class="icon-' + category + ' TitleDivTemplate" data-toggle="modal" data-target="#component-modal"  my-data="' + id + '" my-title="'
+                    '<a class="icon-' + category + ' TitleDivTemplate"  my-data="' + id + '" my-title="'
                     + title + '">' + title + '</a></li>';
         });
         htmlString += itemHtmlString + ' </ul>';
@@ -136,53 +136,65 @@
         $('#containerDiv').html(htmlString);
     }
 
-    function getComponentdetail(id) {
+    function getComponentdetail(id, showModel) {
         $("#currentTile").val(id);
-        blockUI('body');
+        blockUI();
         $.ajax({
             url: "/FrameworxProject/Details",
-            type: "get",
-            async: false,
+            type: "get",            
             data: { id: id },
             success: function (data) {
                 $(".carousel-inner").html(data);
+                if (showModel) {
+                    $('#component-modal').modal('show');
+                }
             },
-            error: function () {
-                // connectionError();
+            error: function () {                
+                showAlert({ title: 'Error', text: 'Error occurred while getting details.', type: 'error'});
             },
             complete: function () {
-                unblockUI('body');
+                unblockUI();
             }
         });
     }
 
     function likeComponent() {
+        blockUI();
         $.get("/FrameworxProject/LikeComponent", { componentId: $("#currentTile").val() }, function (data) {
             $('#like-count').text(parseInt($('#like-count').text()) + 1);
             $('#like-text').text('Unlike');
             $('.like').addClass('liked');
             $("#LikeId").val(data.likeId);
+            showAlert({ title: 'Liked', text: '', type: 'success' });
+        }).done(function () {
+            unblockUI();
         });
     }
 
 
     function unLikeComponent() {
+        blockUI();
         $.get("/FrameworxProject/UnLikeComponent", { likeId: $("#LikeId").val() }, function (data) {
             $('#like-count').text(parseInt($('#like-count').text()) - 1);
             $('#like-text').text('Like');
             $('.like').removeClass('liked');
+            showAlert({ title: 'Unliked', text: '', type: 'success' });
+        }).done(function () {
+            unblockUI();
         });
     }
 
     $(document).ready(
         function () {
             var timer;
-            $("#searchString").on('keyup', function () {
+            $("#searchString").on('keyup', function () {               
                 clearTimeout(timer);
                 var ms = 1000; // milliseconds
                 var val = this.value.trim();
                 timer = setTimeout(function () {
+                    blockUI();
                     searchComponent(val);
+                    unblockUI();
                 }, ms);
             });
 
@@ -214,7 +226,7 @@
 
             $('body').on('click', '.TitleDivTemplate', function () {
                 var id = $(this).attr('my-data');
-                getComponentdetail(id);
+                getComponentdetail(id,true);                
             });
 
             $('#prev-slide-button').on('click', function () { prevSlide(); });

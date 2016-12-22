@@ -309,5 +309,10 @@ namespace Silicus.Encourage.Services
         {
             return _encourageDbcontext.Query<Award>().Where(x => x.Id == awardId).FirstOrDefault();
         }
+
+        public Award GetAwardByCode(string awardName)
+        {
+            return _encourageDbcontext.Query<Award>().Where(x => x.Code == awardName).FirstOrDefault();
+        }
     }
 }

@@ -124,7 +124,8 @@ namespace Silicus.FrameworxDashboard.Web.Controllers
                 HtmlDescription = framework.HtmlDescription,
                 SourceCodeLink = framework.SourceCodeLink,
                 Likes = framework.Likes.Count,
-                IsLiked = framework.Likes.Any(l => l.UserId == userId)
+                IsLiked = framework.Likes.Any(l => l.UserId == userId),
+                OwnerId = framework.OwnerId
             };
 
             if (frameworxViewModel.IsLiked)
@@ -165,10 +166,11 @@ namespace Silicus.FrameworxDashboard.Web.Controllers
 
         public ActionResult LikeComponent(int componentId)
         {
+            var userId = _commonDbService.FindUserIdFromEmail(User.Identity.Name);
             int likeId = _frameworxProjectService.AddFrameworxLike(new FrameworxLike()
             {
                 FrameworxId = componentId,
-                UserId = _commonDbService.FindUserIdFromEmail(User.Identity.Name)
+                UserId = userId.Value
 
             });
             return Json(new { likeId = likeId }, JsonRequestBehavior.AllowGet);

@@ -40,7 +40,7 @@ namespace Silicus.Ensure.Web.Controllers
         }
 
         [AcceptVerbs(HttpVerbs.Post)]
-        public ActionResult Save(Tags tag)
+        public ActionResult Save([DataSourceRequest] DataSourceRequest dsRequest, Tags tag)
         {
             var tagDetails = _tagsService.GetTagsDetails().Where(model => model.TagName == tag.TagName && model.TagId != tag.TagId);
             if (tagDetails.Count() > 0)
@@ -50,11 +50,12 @@ namespace Silicus.Ensure.Web.Controllers
                 tag.IsActive = true;
                 tag.Description = HttpUtility.HtmlDecode(tag.Description);
                 _tagsService.Add(tag);
-                TempData.Add("IsNewTag", 1);
-                return RedirectToAction("List");
+                //TempData.Add("IsNewTag", 1);
+                return Json(tag);
             }
-            tag.Description = HttpUtility.HtmlDecode(tag.Description);
-            return View("Add", tag);
+            //tag.Description = HttpUtility.HtmlDecode(tag.Description);
+            //return View("Add", tag);
+            return Json(ModelState.ToDataSourceResult());
         }
 
         [AcceptVerbs(HttpVerbs.Post)]

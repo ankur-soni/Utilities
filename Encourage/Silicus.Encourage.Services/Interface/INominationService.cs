@@ -50,5 +50,6 @@ namespace Silicus.Encourage.Services.Interface
         List<Nomination> GetAllSubmittedAndSavedNominationsByCurrentUserAndMonth(int managerID, bool forCurrentMonth);
 
         #endregion
+        void UpdateFinalScore(int nominationId);
     }
 }

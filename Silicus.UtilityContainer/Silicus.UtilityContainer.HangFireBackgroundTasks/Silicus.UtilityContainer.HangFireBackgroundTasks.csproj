@@ -54,7 +54,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Enums\FrequencyCode.cs" />
+    <Compile Include="Enums\Award.cs" />
     <Compile Include="EventProcessors\EncourageEmailProcessor.cs" />
     <Compile Include="EventProcessors\EncourageEventProcessor.cs" />
     <Compile Include="EventProcessors\ReviewNominationEventProcessor.cs" />

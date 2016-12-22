@@ -233,8 +233,9 @@
     <Compile Include="App_Start\LightInjectWebCommon.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\Startup.Auth.cs" />
-    <Compile Include="AutoMapperConfiguration.cs" />
+    <Compile Include="Constants.cs" />
     <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Controllers\FrameworxFeedbackController.cs" />
     <Compile Include="Controllers\ExtensionController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\FrameworxProjectController.cs" />
@@ -246,6 +247,8 @@
     <Compile Include="Mappings\DomainToViewModelMappingProfile.cs" />
     <Compile Include="Mappings\ViewModelToDomainMappingProfile.cs" />
     <Compile Include="Models\FrameworxViewModel.cs" />
+    <Compile Include="Models\ViewModel\BootstrapModalTemplateViewModel.cs" />
+    <Compile Include="Models\ViewModel\FrameworxFeedbackViewModel.cs" />
     <Compile Include="Models\ViewModel\ExtensionCodeViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
@@ -257,7 +260,9 @@
     <Content Include="Content\font-awesome\css\font-awesome.css" />
     <Content Include="Content\font-awesome\css\font-awesome.min.css" />
     <Content Include="Content\font-awesome\fonts\fontawesome-webfont.svg" />
+    <Content Include="Content\icon-outlines-style.css" />
     <Content Include="Content\PagedList.css" />
+    <Content Include="Content\sweetalert.css" />
     <Content Include="Content\Template-css\animate.css" />
     <Content Include="Content\Template-css\bootstrap.css" />
     <Content Include="Content\Template-css\bootstrap.min.css" />
@@ -381,6 +386,8 @@
     <Content Include="Content\tokenfield-typeahead.min.css" />
     <Content Include="favicon.ico" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
+    <Content Include="fonts\icomoon.svg" />
+    <Content Include="fonts\icon-outlines.svg" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
     <Content Include="Images\favicon.ico" />
@@ -431,16 +438,23 @@
     <Content Include="Content\font-awesome\scss\_stacked.scss" />
     <Content Include="Content\font-awesome\scss\_variables.scss" />
     <Content Include="ApplicationInsights.config" />
+    <Content Include="fonts\icomoon.eot" />
+    <Content Include="fonts\icomoon.ttf" />
+    <Content Include="fonts\icomoon.woff" />
+    <Content Include="fonts\icon-outline.woff" />
+    <Content Include="fonts\icon-outlines.eot" />
+    <Content Include="fonts\icon-outlines.ttf" />
+    <Content Include="fonts\icon-outlines.woff" />
     <None Include="Properties\PublishProfiles\Reusable - FTP.pubxml" />
     <None Include="Properties\PublishProfiles\Reusable - Web Deploy.pubxml" />
     <None Include="Properties\PublishProfiles\Reusable.pubxml" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\Custom\common.js" />
-    <Content Include="Scripts\Custom\componentIndex.js" />
+    <Content Include="Scripts\Custom\frameworxFeedbackForm.js" />
+    <Content Include="Scripts\Custom\frameworxIndex.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />
     <Content Include="Scripts\jquery-1.10.2.min.js" />
     <None Include="Scripts\jquery.validate-vsdoc.js" />
-    <Content Include="Scripts\jquery.blockUI.js" />
     <Content Include="Scripts\jquery.unobtrusive-ajax.js" />
     <Content Include="Scripts\jquery.unobtrusive-ajax.min.js" />
     <Content Include="Scripts\jquery.validate.js" />
@@ -450,6 +464,7 @@
     <Content Include="Scripts\modernizr-2.6.2.js" />
     <Content Include="Scripts\respond.js" />
     <Content Include="Scripts\respond.min.js" />
+    <Content Include="Scripts\sweetalert.min.js" />
     <Content Include="Scripts\Template-js\bootstrap.js" />
     <Content Include="Scripts\Template-js\bootstrap.min.js" />
     <Content Include="Scripts\Template-js\demo\chartjs-demo.js" />
@@ -710,6 +725,8 @@
     <Content Include="Views\ProductBacklog\ShowAllProductBacklog.cshtml" />
     <Content Include="Views\Extension\SearchMyExtensionMethodByTitle.cshtml" />
     <Content Include="Views\Extension\SearchMyOtherCodeMethodByTitle.cshtml" />
+    <Content Include="Views\Shared\_BootstrapModalTemplate.cshtml" />
+    <Content Include="Views\FrameworxFeedback\_FeedbackForm.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

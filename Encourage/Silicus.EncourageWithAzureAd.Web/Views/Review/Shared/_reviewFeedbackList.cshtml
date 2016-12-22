@@ -9,25 +9,30 @@
     {
         <div class="el-element-overlay m-b-40">
             <div class="col-lg-2 col-md-3 col-sm-4 col-xs-12">
-                <div class="blue-box">
+                <div class="blue-box" id="feedback">
                     <div class="el-card-item">
                         <div class="el-card-avatar el-overlay-1">
                             <img src="~/Images/1.jpg" />
                             <div class="el-overlay">
                                 <ul class="el-info">
                                     <li>
-                                        @if (item.IsShortlisted)
+                                                                                @if (item.IsShortlisted)
                                         {
-                                            <span><i class="fa fa-star fa-2x" title="Shortlisted" aria-hidden="true"></i></span>
-                                        }
-                                        else if (item.IsWinner)
-                                        {
-                                            <span><i class="fa fa-trophy fa-2x" title="Winner" aria-hidden="true"></i></span>
-                                        }
-                                        <a class="btn default btn-outline image-popup-vertical-fit" href="@Url.Action("ViewNominationForShortlist", "Review", item)">
-                                            <span> <i class="fa fa-file-text-o fa-2x" title="View Nomination" aria-hidden="true"></i> </span>
-                                        </a>
-                                    </li>
+                                                                                        <a class="btn default btn-outline image-popup-vertical-fit" href="#">
+                                                                                            <span><i class="fa fa-star fa-2x" title="Shortlisted" aria-hidden="true"></i></span>
+                                                                                        </a>
+                                                                                        }
+                                                                                        else if (item.IsWinner)
+
+                                                                                        {
+                                                                                            <a class="btn default btn-outline image-popup-vertical-fit" href="#">
+                                                                                                <span><i class="fa fa-trophy fa-2x" title="Winner" aria-hidden="true"></i></span>
+                                                                                            </a>
+                                                                                        }
+                                                                                        <a class="btn default btn-outline image-popup-vertical-fit" href="@Url.Action("ViewNominationForShortlist", "Review", item)">
+                                                                                          <span> <i class="fa fa-file-text-o fa-2x" title="View Nomination" aria-hidden="true"></i> </span>
+                                                                                        </a>
+</li>
                                 </ul>
                             </div>
                         </div>
@@ -51,18 +56,33 @@
                         <div class="row">
                             <div class="col-sm-12">
                                 <div class="col-sm-12">
-                                    @*<table class="table-responsive" style="border: 1px solid rgba(178, 176, 176, 0.96);margin-top:2%;width:100%;color:#fff;">
-                                        <tr>
-                                            <th style="color:#fff;">Credits</th>
-                                            <th style="color:#fff;">Reviews</th>
-                                            <th style="color:#fff;">Average</th>
-                                        </tr>
-                                        <tr>
-                                            <td>@Html.DisplayFor(modelItem => item.Credits)</td>
-                                            <td>@Html.DisplayFor(modelItem => item.NumberOfReviews)</td>
-                                            <td>@Html.DisplayFor(modelItem => item.AverageCredits)</td>
-                                        </tr>
-                                    </table>*@
+                                    <div class="box tbl-box">
+                                        <div class="row">
+                                            <div class="col-sm-12" style="text-align:left;">
+                                                <div class="row">
+                                                    <div class="col-sm-12">
+                                                        <ul class="info">
+                                                            <li>
+                                                                <small class="label1">Credits :</small>
+                                                                <small class="">@Html.DisplayFor(modelItem => item.Credits)</small>
+                                                            </li>
+                                                            <li>
+                                                                <small class="label1">Reviews :</small>
+                                                                <small class="">@Html.DisplayFor(modelItem => item.NumberOfReviews)</small>
+                                                            </li>
+                                                            <li>
+                                                                <small class="label1">Average :</small>
+                                                                <small class="">@Html.DisplayFor(modelItem => item.AverageCredits)</small>
+                                                            </li>
+                                                            
+                                                        </ul>
+                                                    </div>
+                                                  </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="clearfix"></div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -70,6 +90,7 @@
                     </div>
                 </div>
             </div>
-        </div>
     }
-</div>
+
+        </div>
+   
