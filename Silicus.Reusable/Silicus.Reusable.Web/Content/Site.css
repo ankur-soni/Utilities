@@ -669,3 +669,62 @@ label.label_item {
 /*Feedback form end*/
 
 
+/*validation*/
+
+.k-widget.k-tooltip-validation
+{
+    font-size: 14px;
+    opacity: 0.9;
+}
+
+#frmFeedback .input-validation-error
+{
+    border-color: #ddd;
+}
+
+.box
+{
+    background-color: #fff;
+    border: solid 1px #e1e5e9;
+    box-shadow: 0px 2px 3px 0px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+}
+
+.form-wrapper .box .form-group:last-child
+{
+    margin-bottom: 0;
+}
+
+.form-wrapper .box h4, .subheader
+{
+    font-family: 'asapregular';
+    font-size: 17px;
+    margin-bottom: 15px;
+    padding-bottom: 10px;
+    border-bottom: solid 1px #c5c5c5;
+}
+
+textarea
+{
+    resize: none;
+}
+
+.noShadow
+{
+    box-shadow: none !important;
+}
+
+.backgroundLight
+{
+    background: #f5f5f5 !important;
+}
+
+.marginTop10
+{
+    margin-top: 10px;
+}
+
+.marginTop20
+{
+    margin-top: 20px;
+}
