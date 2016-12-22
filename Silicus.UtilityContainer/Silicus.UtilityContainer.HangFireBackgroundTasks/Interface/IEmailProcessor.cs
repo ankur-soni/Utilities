@@ -10,6 +10,6 @@ namespace Silicus.UtilityContainer.HangFireBackgroundTasks.Interface
     public interface IEmailProcessor
     {
         void Process();
-        void Process(EventType eventType);
+        void Process(EventType eventType,string awardName);
     }
 }

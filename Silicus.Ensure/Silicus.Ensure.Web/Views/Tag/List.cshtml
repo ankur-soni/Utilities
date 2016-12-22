@@ -11,16 +11,16 @@
         {
             @(Html.Kendo().Grid<Silicus.Ensure.Models.DataObjects.Tags>().Name("tagsGrids")
                     .Events(e => e.Edit("gvTag_onRowEdit"))
-         .Columns(columns =>
-              {
-                  columns.Bound(p => p.TagName).Width(100);
-                  columns.Bound(p => p.Description);
-                  columns.Command(cmd =>
+             .Columns(columns =>
                   {
-                      //cmd.Edit('').Text('.');//.HtmlAttributes(new { @style = "display:none" });
-                      cmd.Custom("Edit").Click("ConfirmEditRow").HtmlAttributes(new { @class = "k-button k-button-icontext k-grid-delete" });
-                  }).Title("Actions");
-              })
+                      columns.Bound(p => p.TagName).Width(100);
+                      columns.Bound(p => p.Description);
+                      columns.Command(cmd =>
+                      {
+                          //cmd.Edit('').Text('.');//.HtmlAttributes(new { @style = "display:none" });
+                          cmd.Custom("Edit").Click("ConfirmEditRow").HtmlAttributes(new { @class = "k-button k-button-icontext k-grid-delete" });
+                      }).Title("Actions");
+                  })
             .DataSource(dataSource => dataSource
                       .Ajax()
                       .Model(model =>
@@ -29,9 +29,9 @@
                           model.Field(p => p.TagId).Editable(false);
                       })
                       .Read(read => read.Action("GetTagsDetails", "Tag"))
-                              .Create(update => update.Action("Save", "Tag"))
+                      .Create(update => update.Action("Save", "Tag"))
                       .Events(events => events.Error("error_handler").RequestEnd("requestend_handler"))
-                              .Update(up => up.Action("Update", "Tag"))
+                      .Update(up => up.Action("Update", "Tag"))
                       .PageSize(10)
                   )
                            .Pageable(pager => { pager.PageSizes(true); })

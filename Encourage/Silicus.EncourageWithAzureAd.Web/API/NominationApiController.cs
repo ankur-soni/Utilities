@@ -19,44 +19,29 @@ namespace Silicus.EncourageWithAzureAd.Web.API
             _logger = logger;
             _awardService = awardService;
         }
+
+     
         [HttpGet]
-        public bool LockNominations(string frequencyCode)
+        public bool LockNominations(string awardName)
         {
             _logger.Log("NominationApi-LockNominations");
-            var awards = _awardService.GetAllAwards();
-            var awardIds = new List<int>();
-            var awardFrequency = _nominationService.GetAwardFrequencyByFrequencyCode(frequencyCode);
-            foreach (var award in awards)
+            var awardToLock = _awardService.GetAwardByCode(awardName);
+            if (awardToLock != null)
             {
-                if (award.FrequencyId == awardFrequency.Id)
-                {
-                    awardIds.Add(award.Id);
-                }
+                _nominationService.LockNominations(new List<int> { awardToLock.Id });
+
             }
-            if (awardIds.Count > 0)
-            {
-                _nominationService.LockNominations(awardIds);
-            }
+
             return true;
         }
         [HttpGet]
-        public bool UnLockNominations(string frequencyCode)
+        public bool UnLockNominations(string awardName)
         {
             _logger.Log("NominationApi-UnLockNominations");
-            var awards = _awardService.GetAllAwards();
-            var awardIds = new List<int>();
-            var awardFrequency = _nominationService.GetAwardFrequencyByFrequencyCode(frequencyCode);
-
-            foreach (var award in awards)
+            var awardToLock = _awardService.GetAwardByCode(awardName);
+            if (awardToLock != null)
             {
-                if (award.FrequencyId == awardFrequency.Id)
-                {
-                    awardIds.Add(award.Id);
-                }
-            }
-            if (awardIds.Count > 0)
-            {
-                _nominationService.UnLockNominations(awardIds);
+                _nominationService.UnLockNominations(new List<int> { awardToLock.Id });
             }
             return true;
         }

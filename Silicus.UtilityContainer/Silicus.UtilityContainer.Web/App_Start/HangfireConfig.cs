@@ -21,14 +21,14 @@ namespace Silicus.UtilityContainer.Web.App_Start
                 _logger.Log("HangfirConfig-StartBackgroundScheduling-try");
 
                 //Adding job for monthly awards
-                RecurringJob.AddOrUpdate<EncourageEventProcessor>("UnLockMonthlyNomination", processor => processor.Process(EventType.UnLockNominations, EventProcess.UnLockEvent, FrequencyCode.MON),  ConfigurationManager.AppSettings["CronExpressionForNominationMailMonthly"]);
-                RecurringJob.AddOrUpdate<EncourageEventProcessor>("LockMonthlyNomination", processor => processor.Process(EventType.LockNomination, EventProcess.LockEvent, FrequencyCode.MON), () => ConfigurationManager.AppSettings["CronExpressionForNominationLockMailMonthly"]);
-                RecurringJob.AddOrUpdate<EncourageEventProcessor>("LockMonthlyReview", processor => processor.Process(EventType.LockReview, EventProcess.LockEvent, FrequencyCode.MON), () => ConfigurationManager.AppSettings["CronExpressionForReviewLockMailMonthly"]);
+                //RecurringJob.AddOrUpdate<EncourageEventProcessor>("UnLockMonthlyNomination", processor => processor.Process(EventType.UnLockNominations, EventProcess.UnLockEvent, FrequencyCode.MON),  ConfigurationManager.AppSettings["CronExpressionForNominationMailMonthly"]);
+                //RecurringJob.AddOrUpdate<EncourageEventProcessor>("LockMonthlyNomination", processor => processor.Process(EventType.LockNomination, EventProcess.LockEvent, FrequencyCode.MON), () => ConfigurationManager.AppSettings["CronExpressionForNominationLockMailMonthly"]);
+                //RecurringJob.AddOrUpdate<EncourageEventProcessor>("LockMonthlyReview", processor => processor.Process(EventType.LockReview, EventProcess.LockEvent, FrequencyCode.MON), () => ConfigurationManager.AppSettings["CronExpressionForReviewLockMailMonthly"]);
 
                 //Adding job for yearly awards
-                RecurringJob.AddOrUpdate<EncourageEventProcessor>("UnLockYearlyNomination", processor => processor.Process(EventType.UnLockNominations, EventProcess.UnLockEvent, FrequencyCode.YEAR), ConfigurationManager.AppSettings["CronExpressionForNominationMailYearly"]);
-                RecurringJob.AddOrUpdate<EncourageEventProcessor>("LockYearlyNomination", processor => processor.Process(EventType.LockNomination, EventProcess.LockEvent, FrequencyCode.YEAR), () => ConfigurationManager.AppSettings["CronExpressionForNominationLockMailYearly"]);
-                RecurringJob.AddOrUpdate<EncourageEventProcessor>("LockYearlyReview", processor => processor.Process(EventType.LockReview, EventProcess.LockEvent, FrequencyCode.YEAR), () => ConfigurationManager.AppSettings["CronExpressionForReviewLockMailYearly"]);
+                RecurringJob.AddOrUpdate<EncourageEventProcessor>("UnLockYearlyNomination", processor => processor.Process(EventType.UnLockNominations, EventProcess.UnLockEvent, Award.Pinnacle.ToString()),() => ConfigurationManager.AppSettings["NominationMailCronForPinnacle"]);
+                RecurringJob.AddOrUpdate<EncourageEventProcessor>("LockYearlyNomination", processor => processor.Process(EventType.LockNomination, EventProcess.LockEvent, Award.Pinnacle.ToString()), () => ConfigurationManager.AppSettings["NominationLockMailCronForPinnacle"]);
+                RecurringJob.AddOrUpdate<EncourageEventProcessor>("LockYearlyReview", processor => processor.Process(EventType.LockReview, EventProcess.LockEvent, Award.Pinnacle.ToString()), () => ConfigurationManager.AppSettings["ReviewLockMailCronForPinnacle"]);
                 _logger.Log("HangfirConfig-StartBackgroundScheduling-done");
 
             }

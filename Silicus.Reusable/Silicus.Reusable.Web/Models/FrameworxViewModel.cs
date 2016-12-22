@@ -24,6 +24,10 @@ namespace Silicus.Reusable.Web.Models
 
         public bool IsLiked { get; set; }
                 
-        public int? LikeId { get; set; }        
+        public int? LikeId { get; set; }
+
+        public int OwnerId { get; set; }
+
+        public string Credits { get; set; }        
     }
 }

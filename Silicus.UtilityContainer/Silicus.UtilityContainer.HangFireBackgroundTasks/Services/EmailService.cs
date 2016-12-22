@@ -22,12 +22,12 @@ namespace Silicus.UtilityContainer.HangFireBackgroundTasks.Services
             var fromAddress = new MailAddress(ConfigurationManager.AppSettings["UserName"], "Silicus Rewards and Recognition Team");
             string subject = emailSubject;
             string body = string.Empty;
-                
-            using ( StreamReader reader = new StreamReader(emailViewPath))
-            {
-                body = reader.ReadToEnd();
-            }
 
+            //using ( StreamReader reader = new StreamReader(emailViewPath))
+            //{
+            //    body = reader.ReadToEnd();
+            //}
+            body = emailViewPath;
             var smtp = new SmtpClient
             {
                 Host = "smtp.gmail.com",

@@ -6,59 +6,26 @@
     ViewBag.Title = "Roles";
 }
 
-<h2>Candidates List</h2>
-<div class="row" style="margin-bottom:20px">
-    <div class="col-sm-3">
-        <span style="float:right"><b> Test Status</b></span>
-    </div>
-    <div class="col-sm-3">
-        @(Html.Kendo().DropDownListFor(m => m.TestStatus)
-                .Name("TestStatus")
-                .DataTextField("Text")
-                .DataValueField("Value")
-                .Events(e => e.Change("Change"))
-                    .BindTo(new List<SelectListItem>
-                    () {
-                        new SelectListItem(){
-                    Text="All",
-                    Value="All"
-                    },
-                    new SelectListItem(){
-                    Text=Convert.ToString(TestStatus.NotAssigned),
-                    Value=Convert.ToString(TestStatus.NotAssigned)
-                    },
-                    new SelectListItem(){
-                    Text=Convert.ToString(TestStatus.Assigned),
-                    Value=Convert.ToString(TestStatus.Assigned)
-                    },
-                    new SelectListItem(){
-                    Text=Convert.ToString(TestStatus.Submitted),
-                    Value=Convert.ToString(TestStatus.Submitted)
-                    },
-                    new SelectListItem(){
-                    Text=Convert.ToString(TestStatus.Evaluated),
-                    Value=Convert.ToString(TestStatus.Evaluated)
-                    },
-                    new SelectListItem(){
-                    Text=Convert.ToString(TestStatus.Completed),
-                    Value=Convert.ToString(TestStatus.Completed)
-                    }
-                    }).HtmlAttributes(new { style = "width: 100%" }))
-    </div>
-</div>
 <script>
+    $(".k-grid-header .k-link").click(function (e) {
+        e.preventDefault();
+        if ($(this).text() === 'Action' || $(this).text() === "") {
+            e.stopPropagation();
+        }
+    });
     $(document).ready(function () {
 
         $("#FieldFilter").keyup(function () {
             var value = $("#FieldFilter").val();
             grid = $("#userGrids").data("kendoGrid");
 
-            if (value.length > 1) {
+            if (value.length > 0) {
                 if (value) {
-                    grid.dataSource.filter({ field: "FirstName", operator: "contains", value: value });
-                    grid.dataSource.filter({ field: "LastName", operator: "contains", value: value });
-                    grid.dataSource.filter({ field: "Position", operator: "contains", value: value });
-                    grid.dataSource.filter({ field: "Department", operator: "contains", value: value });
+                    var filter = { logic: "or", filters: [] };
+                    filter.filters.push({ field: "FirstName", operator: "contains", value: value });
+                    filter.filters.push({ field: "LastName", operator: "contains", value: value });
+                    filter.filters.push({ field: "Email", operator: "contains", value: value });
+                    grid.dataSource.query({ filter: filter });
                 } else {
                     grid.dataSource.filter({});
                 }
@@ -230,6 +197,16 @@
             grid.dataSource.filter({ field: "TestStatus", operator: "eq", value: value });
         }
     }
+    function PositionChange() {
+        var value = $("#Position").val();
+        grid = $("#userGrids").data("kendoGrid");
+        if (value == "") {
+            grid.dataSource.filter([]);
+        }
+        else {
+            grid.dataSource.filter({ field: "Position", operator: "eq", value: value });
+        }
+    }
 
     function AddNew() {
         window.location.href = "/Admin/CandidateAdd?UserId=0";
@@ -316,11 +293,12 @@
                           .Create(update => update.Action("CreateUser", "User"))
                           .Update(update => update.Action("UpdateUser", "User"))
                           .Destroy(update => update.Action("DeleteUser", "User"))
+                          .PageSize(10)
                      )
-                  .Pageable()
+                  .Pageable(p => p.PageSizes(true))
                   .Sortable()
-                      .Resizable(resizing => resizing.Columns(true))
-                 .ToolBar(toolbar =>
+                  .Resizable(resizing => resizing.Columns(true))
+                  .ToolBar(toolbar =>
                     {
                         toolbar.Template(@<text>
                             <div class="toolbar">

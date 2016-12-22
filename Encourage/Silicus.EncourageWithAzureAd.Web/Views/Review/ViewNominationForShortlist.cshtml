@@ -1,66 +1,39 @@
 ﻿@model Silicus.EncourageWithAzureAd.Web.Models.ViewShortlistDetailsViewModel
-
 @{
     ViewBag.Title = "ShortlistNomination";
 }
-
-<style>
-    .container .content {
-        display: none;
-        padding: 5px;
-    }
-
-    th {
-    }
-
-    .page-heading {
-        margin-left: 0%;
-    }
-
-    .navbar-minimalize {
-        margin-left: 35%;
-    }
-</style>
-<div class="row border-bottom">
-    <nav class="navbar  " role="navigation" style="margin-bottom: 0">
+<div class="row white-bg header-row">
+    <nav class="" role="navigation" style="margin-bottom: 0">
         <div class="navbar-header">
             <a class="navbar-minimalize minimalize-styl-2 btn btn-primary " href="#"><i class="fa fa-bars"></i> </a>
         </div>
     </nav>
+    <div class="col-lg-11 col-md-11 col-sm-11">
+        <h1 class="header-name">View Nomination</h1>
 </div>
-<div class="row wrapper border-bottom white-bg page-heading border-bottom" style="width:90%;">
-    <div class="col-md-11">
-        <h1>Nomination</h1>
     </div>
-</div>
-<div class="wrapper wrapper-content animated fadeInRight" style="margin-left:5%">
 
     @using (Html.BeginForm())
     {
         @Html.HiddenFor(model => model.NominationId, htmlAttributes: new { id = "nominationId" })
-
-        <table class="table table-hover issue-tracker white-bg" style="width:80%">
+    <div class="row">
+        <div class="col-lg-12 col-md-12 col-sm-12">
+            <div class="panel panel-info M-T15">
+                <div class="panel-heading"> <span>Review For:&nbsp; @Html.DisplayFor(modelItem => modelItem.UserName)</span></div>
+                <div class="panel-wrapper collapse in" aria-expanded="true">
+                    <div class="panel-body">
+                        <table class="table table-hover issue-tracker white-bg">
             <thead>
                 <tr>
-                    <td align="center" colspan="4" style="font-weight:bold">
-                        <label>
-                            Review For:
-                            @Html.DisplayFor(modelItem => modelItem.UserName)
-
-                        </label>
-                    </td>
-                </tr>
-                <tr>
-                    <td>
+                                    <td class="col-sm-4">
                         <label> Project/Department:</label>
                     </td>
                     <td>
                         @Html.DisplayFor(modelItem => modelItem.ProjectOrDepartment)
                     </td>
-
                 </tr>
                 <tr>
-                    <td>
+                                    <td class="col-sm-4">
                         <label> Manager:</label>
                     </td>
                     <td>
@@ -68,7 +41,7 @@
                     </td>
                 </tr>
                 <tr>
-                    <td>
+                                    <td class="col-sm-4">
                         <label>Credits</label>
                     </td>
                     <td>
@@ -77,39 +50,82 @@
                 </tr>
             </thead>
         </table>
-
-        <table class="table table-hover issue-tracker " style="width:80%;table-layout:fixed">
-            <tr>
-                <th>
-                    @Html.DisplayFor(modelItem => modelItem.Manager) Says:
-                </th>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-lg-12 col-md-12 col-sm-12">
+            <div class="panel panel-info">
+                <div class="panel-heading"> <span>@Html.DisplayFor(modelItem => modelItem.Manager) Says:</span></div>
+                <div class="panel-wrapper collapse in" aria-expanded="true">
+                    <div class="panel-body">
+                        <table class="table table-hover issue-tracker ">
+                            <tr class="white-bg">
+                                <td class="more" style="word-wrap: break-word;">
+                                    <div>@Model.NominationComment</div>
+                                </td>
             </tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    if (!String.IsNullOrEmpty(Model.HrAdminsfeedback))
+    {
+        <div class="row">
+            <div class="col-lg-12 col-md-12 col-sm-12">
+                <div class="panel panel-info M-T15">
+                    <div class="panel-heading"> <span>@Html.DisplayFor(modelItem => modelItem.HrAdminName) Says:</span></div>
+                    <div class="panel-wrapper collapse in" aria-expanded="true">
+                        <div class="panel-body">
+                            <div class="table-responsive">
+                                <table class="table table-hover issue-tracker">
+
             <tr class="white-bg">
-                <td class="more" style="word-wrap: break-word;"><div>@Model.NominationComment</div></td>
+                                        <td class="more" style="word-wrap: break-word;">
+                                            <div>@Model.HrAdminsfeedback</div>
+                                        </td>
             </tr>
         </table>
-
-        foreach (var reviewer in Model.ReviewerComments)
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+    <div class="row">
+        <div class="col-lg-12 col-md-12 col-sm-12">
+            <div class="box M-B60">
+                <div class="f1">
+                    <div class="wizard-box" style="margin-top:0px;">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="table-responsive">
+                                    @foreach (var reviewer in Model.ReviewerComments)
         {
             var creditCount = 0;
-            <div class="white-bg" style="width:80%;">
-                <div class="row col-md-8">
-                    @Html.Label("Review Comments By : " + reviewer.FirstOrDefault().ReviewerName, new { style = "margin-left:3%;color: #0067AA;" })
-                    <div class="row">&nbsp;</div>
-                </div>
-                <a class="header"><div>Collapse the Comments</div></a>
+                                        var reviewerName = reviewer.FirstOrDefault();
+                                       
 
-                <table class="table table-hover issue-tracker white-bg content">
+                                        <table class="table issue-tracker">
                     <thead>
-                        <tr></tr>
                         <tr>
                             <th>Criteria</th>
+                                                    <th colspan="4">Manager</th>
+                                                    <th colspan="2">Reviewer</th>
+                                                </tr>
+                                                <tr>
+                                                    <th></th>
                             <th>Weightage</th>
                             <th>Rating</th>
                             <th>Points</th>
-                            <th>Manager Comment</th>
-                            <th>Reviewer Ratings</th>
-                            <th>Reviewer Comment</th>
+                                                    <th>Comments</th>
+                                                    <th>Rating</th>
+                                                    <th>Comments</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -119,7 +135,7 @@
                                 @{
                                     var criteria = Model.Criterias.FirstOrDefault(c => c.Id == managerComment.CriteriaId);
                                 }
-                                <td class="col-md-3">
+                                                        <td class="col-lg-2 col-md-2 col-sm-2">
                                     @if (criteria != null)
                                     {
                                         @criteria.Title
@@ -128,8 +144,8 @@
                                 @{
                                     var commentObj = Model.ManagerComments.FirstOrDefault(model => model.CriteriaId == @managerComment.CriteriaId);
                                 }
-                                <td class="col-md-1">@(commentObj != null ? commentObj.Weightage.ToString() : "-")</td>
-                                <td class="col-md-2">
+                                                        <td class="col-lg-1 col-md-1 col-sm-1">@(commentObj != null ? commentObj.Weightage.ToString() : "-")</td>
+                                                        <td class="col-lg-2 col-md-2 col-sm-2">
                                     @Html.DropDownList("rating_" + managerComment.CriteriaId,
                                         Enumerable.Range(1, 5).
                                             Select(j => new SelectListItem
@@ -138,9 +154,9 @@
                                                 Text = j.ToString()
                                             }), "", new { @class = "example-square", @autocomplete = "off", @value = (commentObj != null ? commentObj.Rating : 0) })
                                 </td>
-                                <td class="col-md-1">@(commentObj != null ? (commentObj.Weightage * commentObj.Rating / 100.0) : 0)</td>
-                                <td class="more col-md-2" style="word-break:break-all">@(commentObj != null ? commentObj.Comment : "-")</td>
-                                <td class="col-md-2 ">
+                                                        <td class="col-lg-1 col-md-1 col-sm-1">@(commentObj != null ? (commentObj.Weightage * commentObj.Rating / 100.0) : 0)</td>
+                                                        <td class="more col-lg-1 col-md-1 col-sm-1" style="word-break:break-all">@(commentObj != null ? commentObj.Comment : "-")</td>
+                                                        <td class="col-lg-2 col-md-2 col-sm-2">
                                     @{
                                         var reviewObj = reviewer.FirstOrDefault(model => model.CriteriaId == @managerComment.CriteriaId);
                                         if (reviewObj != null)
@@ -154,10 +170,9 @@
                                         }
                                     }
                                 </td>
-                                <td class="more col-md-2" style="word-break:break-all">@(reviewObj != null ?  reviewObj.Comment : "")</td>
+                                                        <td class="more col-lg-3 col-md-3 col-sm-3" style="word-break:break-all">@(reviewObj != null ? reviewObj.Comment : "")</td>
                             </tr>
                                         }
-
                         <tr>
                             <td></td>
                             <td></td>
@@ -180,36 +195,31 @@
                         </tr>
                     </tbody>
                 </table>
-            </div>
-            <div class="row">&nbsp;</div>
                                         }
-                                        if (!String.IsNullOrEmpty(Model.HrAdminsfeedback))
-                                        {
-                                            <table class="table table-hover issue-tracker " style="width:80%;table-layout:fixed">
-                                                <tr>
-                                                    <th>
-                                                        @Html.DisplayFor(modelItem => modelItem.HrAdminName) Says:
-                                                    </th>
-                                                </tr>
-                                                <tr class="white-bg">
-                                                    <td class="more" style="word-wrap: break-word;"><div>@Model.HrAdminsfeedback</div></td>
-                                                </tr>
-                                            </table>
-                                        }
-                                        <div class="row">&nbsp;</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row M-T15">
+                        <div class="pull-right btn-nav">
 
-                                        <div class="form-group">
-                                            <div style="text-align:center;width:80%;">
-                                                @*<input type="button" value="Back" class="btn btn-primary back btnSameSize" onclick="location.href='#'"/>*@
-                                                <input type="button" value="Back" class="btn btn-primary btnSameSize " onclick="location.href='@Url.Action("ReviewFeedbackList", "Review")'" />
-                                                <input type="button" value="Shortlist" class="btn btn-primary shortlist btnSameSize" onclick="location.href='#'"
+                            <input type="button" value="Back" class="btn btn-primary" onclick="location.href='@Url.Action("ReviewFeedbackList", "Review")'" />
+                            <input type="button" value="Shortlist" class="btn btn-primary shortlist" onclick="location.href='#'"
                                                        @{ if (Model.IsShortlisted || Model.IsWinner) { @: disabled="disabled"
                                                                                                                                                                                                                                               } } />
-                                                <input type="button" value="Mark Winner" class="btn btn-primary btnSameSize" data-toggle="modal" data-target="#myModal"
+                            <input type="button" value="Mark Winner" class="btn btn-primary" data-toggle="modal" data-target="#myModal"
                                                        @{ if (Model.IsWinner) { @: disabled="disabled"
                                                                                                                                                                                                                                       } } />
                                             </div>
                                         </div>
+                </div>
+            </div>
+        </div>
+    </div>
+   
+   
+                            
+                            
     if (Model.IsLocked)
     {
         <div style="display:none" id="allow-shortlist">true</div>
@@ -218,18 +228,8 @@
     {
         <div style="display:none" id="allow-shortlist">false</div>
     }
-    @*if (ViewBag.nominationlockstatus)
-    {
-        <div style="display:none" id="allow-shortlist">true</div>
-    }
-    else
-    {
-        <div style="display:none" id="allow-shortlist">false</div>
-        }*@
 
     }
-</div>
-
 <div class="modal fade" id="myModal" role="dialog">
     <div class="modal-dialog">
         <!-- Modal content-->
@@ -240,26 +240,22 @@
             </div>
             <div class="modal-body">
                 <span class="requiredfeild">Feedback:</span>
-                <textarea rows="3" id="feedback" style="width:100%;max-width:100%" placeholder="Why this employee shoulde be the winner?" required="required"></textarea>
-                <span style="color:red;display:none" id="feedbackRequired"></span>
+                                            <textarea class="form-control M-T15" rows="3" id="feedback" style="width:100%;max-width:100%" placeholder="Why this employee shoulde be the winner?" required="required"></textarea>
+                                            <span style="color:red;display:none" id="feedbackRequired"></span><br />
                 <span class="requiredfeild">Comment:</span>
-                <textarea rows="3" id="comment" style="width:100%;max-width:100%" placeholder="To be shared across the company" required="required"></textarea>
+                                            <textarea class="form-control M-T15" rows="3" id="comment" style="width:100%;max-width:100%" placeholder="To be shared across the company" required="required"></textarea>
                 <span style="color:red;display:none" id="commentRequired"></span>
             </div>
-            <div class="modal-footer">
+                                        <div class="modal-footer" style="border:none;">
                 <button type="button" class="btn winner btn-default" id="selectWinner">Submit</button>
-                <button type="button" class="btn btn-danger" id="cancel" data-dismiss="modal">Cancel</button>
+                                            <button type="button" class="btn btn-default btn-nav" id="cancel" data-dismiss="modal">Cancel</button>
             </div>
         </div>
-
     </div>
 </div>
-
 <script src="~/js/jquery-2.1.1.js"></script>
 <script src="~/js/jquery.barrating.min.js"></script>
-
 <script>
-
     $(".header").click(function () {
         $header = $(this);
         $content = $header.next();
@@ -305,7 +301,7 @@
                 text: "Are you sure you want to shortlist this candidate?",
                 type: "warning",
                 showCancelButton: true,
-                confirmButtonColor: "#0070b9",
+                                            confirmButtonColor: "#337ab7",
                 confirmButtonText: "Yes!",
                 cancelButtonText: "No!",
                 closeOnConfirm: false,
@@ -327,7 +323,7 @@
                                  swal({
                                      title: "Nomination Shortlisted",
                                      showCancelButton: false,
-                                     confirmButtonColor: "#88a364",
+                                                                 confirmButtonColor: "#337ab7",
                                      confirmButtonText: "Ok",
                                  },
                                  function () {
@@ -386,7 +382,7 @@
                     swal({
                         title: "Winner Selected",
                         showCancelButton: false,
-                        confirmButtonColor: "#0070b9",
+                                                    confirmButtonColor: "#337ab7",
                         confirmButtonText: "Ok"
                     },
                     function (isConfirm) {
@@ -397,12 +393,12 @@
                 },
                 error: function (data) {
                     $(".loader-overlay").hide();
-                    alert(data);
-                    swal("Error", "Oops! Something wrong happened..");
-                }
-            });
+                                    alert(data);
+                                    swal("Error", "Oops! Something wrong happened..");
+                                }
+                            });
 
-        });
+            });
     });
 
     $(function () {

@@ -1,6 +1,4 @@
-﻿using System;
-using System.ComponentModel.DataAnnotations;
-using Silicus.FrameworxProject.Models;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace Silicus.FrameworxProject.Models
 {

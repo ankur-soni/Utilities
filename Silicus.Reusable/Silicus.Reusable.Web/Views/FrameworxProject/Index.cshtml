@@ -88,7 +88,7 @@
 
 
 <script>
-   
+
 
 </script>
 
@@ -125,10 +125,10 @@
                 @foreach (var item in Model)
                 {
                     <li category="@item.Name" id="@item.id" title="@item.Title">
-                        <a class="icon-@(item.Name) TitleDivTemplate" data-toggle="modal" data-target="#component-modal"  my-data="@item.id" my-title="@item.Title">@item.Title</a>
+                        <a class="icon-@(item.Name) TitleDivTemplate" my-data="@item.id" my-title="@item.Title">@item.Title</a>
                     </li>
                 }
-            </ul>           
+            </ul>
         </div>
         <div id="divTiles" style="display:none">
             <input type="text" id="currentTile" name="currentTile" value="" />
@@ -161,6 +161,27 @@
     </div>
 </div>
 
-@section scripts{    
-    <script src="~/Scripts/Custom/componentIndex.js"></script>
+@Html.Partial("_BootstrapModalTemplate", new Silicus.Reusable.Web.Models.ViewModel.BootstrapModalTemplateViewModel()
+{
+    Id = "feedbackFormModal",
+    Title = "Feedback Form",
+    CloseButtonVisible = false,
+    DismissModalOnSaveClick = true,
+    SaveButtonId = "submitFeedback",
+    SaveButtonOnlickEvent = "SaveFeedback()",
+    SaveButtonText = "Submit Feedback"
+})
+
+@Html.Partial("_BootstrapModalTemplate", new Silicus.Reusable.Web.Models.ViewModel.BootstrapModalTemplateViewModel()
+{
+    Id = "contactOwnerFormModal",
+    Title = "Contact Owner",
+    CloseButtonVisible = true,
+    SaveButtonVisible=false,
+    DismissModalOnSaveClick = true    
+})
+
+@section scripts{
+    <script src="~/Scripts/Custom/frameworxIndex.js"></script>
+    <script src="~/Scripts/Custom/frameworxFeedbackForm.js"></script>
 }
