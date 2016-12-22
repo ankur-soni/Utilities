@@ -1,7 +1,4 @@
-﻿using System.Web.Mvc;
-using System.ComponentModel.DataAnnotations;
-
-namespace Silicus.FrameworxProject.Models
+﻿namespace Silicus.FrameworxProject.Models
 {
     public class ProductBacklog
     {

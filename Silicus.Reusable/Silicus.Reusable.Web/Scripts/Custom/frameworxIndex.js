@@ -150,7 +150,7 @@
                 }
             },
             error: function () {                
-                showAlert({ title: 'Error', text: 'Error occurred while getting details.', type: 'error'});
+                showAlert({ title: 'Error', text: 'Error occurred while getting details.', type: 'error',timer:2000});
             },
             complete: function () {
                 unblockUI();
@@ -165,7 +165,7 @@
             $('#like-text').text('Unlike');
             $('.like').addClass('liked');
             $("#LikeId").val(data.likeId);
-            showAlert({ title: 'Liked', text: '', type: 'success' });
+            showAlert({ title: 'Liked', text: '', type: 'success',timer:2000 });
         }).done(function () {
             unblockUI();
         });
@@ -178,9 +178,18 @@
             $('#like-count').text(parseInt($('#like-count').text()) - 1);
             $('#like-text').text('Like');
             $('.like').removeClass('liked');
-            showAlert({ title: 'Unliked', text: '', type: 'success' });
+            showAlert({ title: 'Unliked', text: '', type: 'success', timer: 2000 });
         }).done(function () {
             unblockUI();
+        });
+    }
+
+    function showCredits() {        
+        showAlert({
+            title: 'Contributors',
+            text: "If you like the component, thank these people \n \n" + $("#Credits").val() + '\n',
+            type: null,
+            showConfirmButton: true          
         });
     }
 
@@ -239,6 +248,10 @@
                 } else {
                     unLikeComponent();
                 }
+            });
+
+            $('body').on('click', '#btn-credits', function () {                
+                showCredits();
             });
         }
         );

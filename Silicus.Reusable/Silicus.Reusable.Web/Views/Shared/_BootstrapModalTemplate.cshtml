@@ -65,18 +65,18 @@
                         {
                             if (string.IsNullOrWhiteSpace(Model.SaveButtonOnlickEvent))
                             {
-                                <button type="button" @(string.IsNullOrWhiteSpace(Model.SaveButtonId) ? "" : "id = " + Model.SaveButtonId) class="btn primary-bt btn btn-info" @(Model.DismissModalOnSaveClick.Value ? "data-dismiss=modal" : "")>@Html.Raw(Model.SaveButtonText)</button>
+                                <button type="button" @(string.IsNullOrWhiteSpace(Model.SaveButtonId) ? "" : "id = " + Model.SaveButtonId) class="btn primary-bt btn btn-primary" @(Model.DismissModalOnSaveClick.Value ? "data-dismiss=modal" : "")>@Html.Raw(Model.SaveButtonText)</button>
                             }
                             else
                             {
-                                <button type="button" @(string.IsNullOrWhiteSpace(Model.SaveButtonId) ? "" : "id = " + Model.SaveButtonId) onclick="@Model.SaveButtonOnlickEvent" class="btn primary-bt btn btn-info" @(Model.DismissModalOnSaveClick.Value ? "data-dismiss=modal" : "")>@Html.Raw(Model.SaveButtonText)</button>
+                                <button type="button" @(string.IsNullOrWhiteSpace(Model.SaveButtonId) ? "" : "id = " + Model.SaveButtonId) onclick="@Model.SaveButtonOnlickEvent" class="btn primary-bt btn btn-primary" @(Model.DismissModalOnSaveClick.Value ? "data-dismiss=modal" : "")>@Html.Raw(Model.SaveButtonText)</button>
                             }
 
                         }
                         @if (Model.CloseButtonVisible.Value)
                         {
 
-                            <button type="button" @(string.IsNullOrWhiteSpace(Model.CloseButtonId) ? "" : "id = " + Model.CloseButtonId + "") class="btn second-primary-bt btn btn-info" @(Model.DismissModalOnCloseClick.Value ? "data-dismiss=modal" : "")>@Html.Raw(Model.CloseButtonText)</button>
+                            <button type="button" @(string.IsNullOrWhiteSpace(Model.CloseButtonId) ? "" : "id = " + Model.CloseButtonId + "") class="btn second-primary-bt btn btn-primary" @(Model.DismissModalOnCloseClick.Value ? "data-dismiss=modal" : "")>@Html.Raw(Model.CloseButtonText)</button>
 
 
                         }

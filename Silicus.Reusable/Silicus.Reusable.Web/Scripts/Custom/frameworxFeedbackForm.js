@@ -29,7 +29,7 @@ function SaveFeedback() {
 }
 
 function OnFailureFeedback(e) {
-    showAlert({ title: 'Error', text: 'Error occurred while updating feedback details.', type: 'error'});   
+    showAlert({ title: 'Error', text: 'Error occurred while updating feedback details.', type: 'error', timer: 2000 });
 }
 
 
@@ -37,7 +37,7 @@ function onSuccessFeedback(data) {
     if (data == true) {
         //Hide Feedback form if details have beed saved to database
         $('#feedbackFormModal').modal('hide');
-        showAlert({ title: 'Submitted successfully!', text: 'Feedback has been submitted successfully!', type: 'success'});
+        showAlert({ title: 'Submitted successfully!', text: 'Feedback has been submitted successfully!', type: 'success',timer:2000});
     }    
 }
 
