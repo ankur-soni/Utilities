@@ -1,4 +1,5 @@
-﻿@model Silicus.EncourageWithAzureAd.Web.Models.ConsolidatedNominationsViewModel
+﻿@using Silicus.Encourage.Models
+@model Silicus.EncourageWithAzureAd.Web.Models.ConsolidatedNominationsViewModel
 @{
     Layout = null;
 }
@@ -55,7 +56,7 @@
                         Manager
                     </td>
                     <td class="averagePoints">
-                        @((nomination.ManagerComments.Any() ? nomination.ManagerComments.Average(a => (a.Rating * a.Weightage / 100.0)) : 0).ToString("F"))
+                        @((nomination.ManagerComments.Any() ? nomination.ManagerComments.Sum(a => (a.Rating * a.Weightage / 100.0)) : 0).ToString("F"))
                     </td>
                     @foreach (var criteria in Model.Criterias)
                     {
@@ -85,7 +86,18 @@
                         Reviewer
                     </td>
                     <td class="averagePoints">
-                        @((nomination.ReviewerComments.Any() ? nomination.ReviewerComments.Average(a => (a.Credit * a.Weightage / 100.0)) : 0).ToString("F"))
+                        @{
+                            var sumOfAverages = 0m;
+                            foreach (var managerComment in nomination.ManagerComments)
+                            {
+                                var reviewersComments = nomination.ReviewerComments.Where(r => r.CriteriaId == managerComment.CriteriaId).ToList();
+                                if (reviewersComments.Any())
+                                {
+                                    sumOfAverages += (Convert.ToDecimal(reviewersComments.Average(r => r.Credit)) * managerComment.Weightage) / 100m;
+                                }
+                            }
+                        }
+                        @(sumOfAverages.ToString("F"))
                     </td>
                     @foreach (var criteria in Model.Criterias)
                     {
@@ -116,7 +128,7 @@
                     </td>
                     <td class="averagePoints">
                         <span class="averagePoints finalAverageScore_@nomination.NominationId">
-                            @((nomination.ManagerComments.Any() ? nomination.ManagerComments.Average(a => a.FinalScore) : 0).ToString("F"))
+                            @((nomination.ManagerComments.Any() ? nomination.ManagerComments.Sum(a => a.FinalScore) : 0).ToString("F"))
                         </span>
                     </td>
                     @{ var criteriaCount = 0; }
