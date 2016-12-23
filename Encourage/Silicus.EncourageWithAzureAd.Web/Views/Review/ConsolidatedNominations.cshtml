@@ -4,26 +4,39 @@
 }
 <style>
     .table {
-        margin-bottom: 0px!important;
+        margin-bottom: 0px !important;
     }
-    .dataTables_wrapper{padding-bottom:0px;}
+
+    .dataTables_wrapper {
+        padding-bottom: 0px;
+    }
+
     #consolidatedHrView table {
-        margin-bottom: 0px!important;
+        margin-bottom: 0px !important;
     }
-    .notNominated{
-    background-color:#f5f5f5;
-}
-    #dvConsolidatedNominations{
-        border-top:1px solid #e7eaec;
+
+    .notNominated {
+        background-color: #f5f5f5;
     }
-    #consolidatedHrView td,th {
+
+    #dvConsolidatedNominations {
+        border-top: 1px solid #e7eaec;
+    }
+
+    #consolidatedHrView td, th {
         border: 1px solid #e7eaec;
         color: black;
-    } 
-    .table > thead > tr > th, .table > tbody > tr > th, .table > tfoot > tr > th, .table > thead > tr > td, .table > tbody > tr > td, .table > tfoot > tr > td{
+    }
+
+    .table > thead > tr > th, .table > tbody > tr > th, .table > tfoot > tr > th, .table > thead > tr > td, .table > tbody > tr > td, .table > tfoot > tr > td {
         border: 1px solid #e7eaec;
-    } 
-    .tblBorder{border: 1px solid #e7eaec;}
+    }
+
+    .tblBorder {
+        border: 1px solid #e7eaec;
+    }
+
+    
 </style>
 @using (Ajax.BeginForm("ConsolidatedNominations", "Review",
                 new AjaxOptions
@@ -160,8 +173,16 @@
             searching: false,
             fixedColumns: {
                 leftColumns: 3
-            }
+            },
+            columnDefs: [
+        { "width": "150px", "targets": 0 },
+      { "width": "65px", "targets": 1 },
+      { "width": "70px", "targets": 2 }
+            ]
         });
+    });
+    $(window).load(function () {
+        $(window).resize();
     });
     function RecalculateFinalScore(nominationId) {
         var points = 0.0;
