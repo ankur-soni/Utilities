@@ -369,8 +369,12 @@
     <Compile Include="Mappings\MappingService.cs" />
     <Compile Include="Mappings\ViewModelToDomainMappingProfile.cs" />
     <Compile Include="Mappings\DomainToViewModelMappingProfile.cs" />
-    <Compile Include="Models\AdalTokenCache.cs" />
-    <Compile Include="Models\ApplicationDbContext.cs" />
+    <Compile Include="Models\AdalTokenCache.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Models\ApplicationDbContext.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="Models\CandidateViewModel.cs" />
     <Compile Include="Models\ChangePasswordModel.cs" />
     <Compile Include="Models\EmailModel.cs" />
