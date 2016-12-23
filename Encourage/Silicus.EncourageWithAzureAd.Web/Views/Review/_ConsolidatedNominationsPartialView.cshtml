@@ -1,4 +1,5 @@
-﻿@model Silicus.EncourageWithAzureAd.Web.Models.ConsolidatedNominationsViewModel
+﻿@using Silicus.Encourage.Models
+@model Silicus.EncourageWithAzureAd.Web.Models.ConsolidatedNominationsViewModel
 @{
     Layout = null;
 }
@@ -14,7 +15,7 @@
                 }
                 @foreach (var criteria in Model.Criterias)
                 {
-                    <th  colspan="@Model.Reviewers.Count" style="text-align: center; width: 80px;">
+                    <th colspan="@Model.Reviewers.Count" style="text-align: center; width: 80px;">
                         <a href="#" title="@criteria.Title">
                             @("Criteria " + ccCount)
                         </a>
@@ -22,24 +23,24 @@
                     ccCount++;
                 }
             </tr>
-        <tr>
-            <td class="tblBorder"></td>
-            <td class="tblBorder"></td>
-            <td class="tblBorder"></td>
-            @foreach (var criteria in Model.Criterias)
-            {
-                var revCount = 1;
-                foreach (var reviewer in Model.Reviewers)
+            <tr>
+                <td class="tblBorder"></td>
+                <td class="tblBorder"></td>
+                <td class="tblBorder"></td>
+                @foreach (var criteria in Model.Criterias)
                 {
-                    <th  >
-                        <a href="#" title="@reviewer.ReviewerName">
-                            @("R" + revCount)
-                        </a>
-                    </th>
-                    revCount++;
+                    var revCount = 1;
+                    foreach (var reviewer in Model.Reviewers)
+                    {
+                        <th>
+                            <a href="#" title="@reviewer.ReviewerName">
+                                @("R" + revCount)
+                            </a>
+                        </th>
+                        revCount++;
+                    }
                 }
-            }
-        </tr>
+            </tr>
         </thead>
         <tbody>
             @{
@@ -55,14 +56,14 @@
                         Manager
                     </td>
                     <td class="averagePoints tblBorder">
-                        @((nomination.ManagerComments.Any() ? nomination.ManagerComments.Average(a => (a.Rating * a.Weightage / 100.0)) : 0).ToString("F"))
+                        @((nomination.ManagerComments.Any() ? nomination.ManagerComments.Sum(a => (a.Rating * a.Weightage / 100.0)) : 0).ToString("F"))
                     </td>
                     @foreach (var criteria in Model.Criterias)
                     {
                         var managerComment = nomination.ManagerComments.FirstOrDefault(mc => mc.CriteriaId == criteria.Id);
                         if (managerComment != null)
                         {
-                            <td class="points tblBorder" > @((managerComment != null ? managerComment.Rating * managerComment.Weightage / 100m : 0).ToString("F"))</td>
+                            <td class="points tblBorder"> @((managerComment != null ? managerComment.Rating * managerComment.Weightage / 100m : 0).ToString("F"))</td>
                             for (int i = 0; i < (Model.Reviewers.Count - 1); i++)
                             {
                                 <td class="tblBorder"></td>
@@ -78,12 +79,32 @@
                     }
                 </tr>
                 <tr>
-                    <td></td>
+                    <td>
+                        @if (!nomination.IsShortListed)
+                        {
+                            <button type="button" onclick="ShortList(@nomination.NominationId)" class="btn btn-primary btn-sm">Shortlist</button>
+                        }
+                        else
+                        {
+                            <button type="button" disabled="disabled" class="btn btn-success-green btn-sm">Shortlisted</button>
+                        }
+                    </td>
                     <td>
                         Reviewer
                     </td>
                     <td class="averagePoints">
-                        @((nomination.ReviewerComments.Any() ? nomination.ReviewerComments.Average(a => (a.Credit * a.Weightage / 100.0)) : 0).ToString("F"))
+                        @{
+                            var sumOfAverages = 0m;
+                            foreach (var managerComment in nomination.ManagerComments)
+                            {
+                                var reviewersComments = nomination.ReviewerComments.Where(r => r.CriteriaId == managerComment.CriteriaId).ToList();
+                                if (reviewersComments.Any())
+                                {
+                                    sumOfAverages += (Convert.ToDecimal(reviewersComments.Average(r => r.Credit)) * managerComment.Weightage) / 100m;
+                                }
+                            }
+                        }
+                        @(sumOfAverages.ToString("F"))
                     </td>
                     @foreach (var criteria in Model.Criterias)
                     {
@@ -114,7 +135,7 @@
                     </td>
                     <td class="averagePoints">
                         <span class="averagePoints finalAverageScore_@nomination.NominationId">
-                            @((nomination.ManagerComments.Any() ? nomination.ManagerComments.Average(a => a.FinalScore) : 0).ToString("F"))
+                            @((nomination.ManagerComments.Any() ? nomination.ManagerComments.Sum(a => a.FinalScore) : 0).ToString("F"))
                         </span>
                     </td>
                     @{ var criteriaCount = 0; }
@@ -133,7 +154,7 @@
                                     <span id="spnFinalPoints_@(nomination.NominationId)_@(criteria.Id)" style="font-weight: bold;">@managerComment.FinalScore.ToString("F") </span>
                                 </a>
                             </td>
-                            for (int i = 0; i < (Model.Reviewers.Count-1); i++)
+                            for (int i = 0; i < (Model.Reviewers.Count - 1); i++)
                             {
                                 <td></td>
                             }
@@ -148,8 +169,8 @@
                         criteriaCount++;
                     }
                 </tr>
-                            nominationCount++;
-                        }
+                    nominationCount++;
+            }
 
         </tbody>
     </table>
