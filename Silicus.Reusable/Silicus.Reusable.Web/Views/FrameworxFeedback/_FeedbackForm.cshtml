@@ -65,25 +65,25 @@
                     </div>
                 </div>
             </div>
-
             <div class="box  backgroundLight no-border marginTop10 noShadow">
-                <h4>Owner Information </h4>
-                <p class="mr-bt-5">
-                    User Name : @Html.DisplayFor(m => m.OwnerName)
-                </p>
+                <div class="box  backgroundLight no-border marginTop10 noShadow">
+                    <h4>User Information </h4>
+                    <p class="mr-bt-5">
+                        User Name : @Html.DisplayFor(m => m.UserName)
+                    </p>
 
-                <p class="mr-bt-5">
-                    Email Id : @Html.DisplayFor(m => m.OwnerEmail)
-                </p>
+                    <p class="mr-bt-5">
+                        Email Id : @Html.DisplayFor(m => m.UserEmail)
+                    </p>
 
-                <p>
-                    Feedback For : @Html.DisplayFor(m => m.FeedBackFor)
-                </p>
-            </div>          
+                    <p>
+                        Feedback For : @Html.DisplayFor(m => m.FeedBackFor)
+                    </p>
+                </div>              
+            </div>
+            <div class="clearfix"> </div>
+        </div> <!-- End form-horizontal -->
 
-        <div class="clearfix"> </div>
-    </div> <!-- End form-horizontal -->
 
-
-</div>
+    </div>
 }

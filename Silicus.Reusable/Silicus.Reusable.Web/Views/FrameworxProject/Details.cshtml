@@ -33,8 +33,11 @@
     <button class="btn btn-primary pull-left"  onclick="openFeedbackForm()">
         <i class="fa fa-comments" aria-hidden="true"></i>&nbsp;Feedback
     </button>
+    <button class="btn btn-primary pull-left" onclick="openContactOwnerForm()">
+        <i class="fa fa-address-card" aria-hidden="true"></i> &nbsp;Contact Owner
+    </button>
     <button class="like @(Model.IsLiked?"liked":"") btn btn-primary pull-left" href="#"><i class="fa fa-thumbs-o-up"></i> <span id="like-text">@(Model.IsLiked ? "UnLike" : "Like")</span> (<span id="like-count">@Model.Likes</span>)</button>
-    <a  role="button" class="btn btn-primary pull-left" id="btn-credits">Credits</a>
+    <a  role="button" class="btn btn-primary pull-left" id="btn-credits"><i class="fa fa-users" aria-hidden="true"></i>&nbsp;Credits</a>
     @Html.HiddenFor(m => m.LikeId)
     @Html.HiddenFor(m => m.OwnerId)
     @Html.HiddenFor(m => m.Title)

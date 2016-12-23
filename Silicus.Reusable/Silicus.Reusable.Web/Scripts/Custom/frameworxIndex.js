@@ -74,16 +74,17 @@
                     $(this).parent().show();
                     noResult = false;
                 }
-            });
+            });            
         }
 
         if (noResult) {
             $('#noResultMsg').show();
-        } else {
+            $('.categoryHeading').hide();
+        } else {            
             $('#noResultMsg').hide();
-        }
-    }
-
+            $('.categoryHeading').show();
+        }       
+    }   
 
     function showTileView() {
         var listItems = $(".list-wrapper>li").toArray();
@@ -193,6 +194,17 @@
         });
     }
 
+    function hideCategoryText() {        
+        $('.category-container').each(function () {
+            if ($(this).find('.row').children(':visible').length == 0) {
+                $(this).prev().find('.categoryHeading').hide();
+            } else {
+                $(this).prev().find('.categoryHeading').show();
+            }
+        });
+    }
+
+
     $(document).ready(
         function () {
             var timer;
@@ -203,8 +215,11 @@
                 timer = setTimeout(function () {
                     blockUI();
                     searchComponent(val);
+                    setTimeout(function () {
+                        hideCategoryText();
+                    }, ms);
                     unblockUI();
-                }, ms);
+                }, ms);               
             });
 
 
@@ -223,7 +238,12 @@
                 $('#component-list-view').attr('disabled', false);
                 $(this).attr('disabled', true);
                 showTileView();
-
+                if ($('#noResultMsg').is(":visible")) {
+                    $('.categoryHeading').hide();                    
+                } else {
+                    $('.categoryHeading').show();
+                    hideCategoryText();
+                }
             });
 
             $('#component-list-view').click(function () {
@@ -244,8 +264,8 @@
             $('body').on('click', '.like', function () {
                 var text = $('#like-text').text();
                 if (text == "Like") {
-                    likeComponent();
-                } else {
+                    likeComponent();                                      
+                } else {                   
                     unLikeComponent();
                 }
             });
