@@ -6,9 +6,9 @@
     <table class="table table-hover white-bg content" id="consolidatedHrView">
         <thead>
             <tr>
-                <th >Employee Name</th>
-                <th >Rating By</th>
-                <th >All Criteria</th>
+                <th class="themeColorBlue">Employee Name</th>
+                <th class="themeColorBlue">Rating By</th>
+                <th class="themeColorBlue">All Criteria</th>
                 @{
                     var ccCount = 1;
                 }
@@ -23,9 +23,9 @@
                 }
             </tr>
         <tr>
-            <td ></td>
-            <td ></td>
-            <td ></td>
+            <td class="tblBorder"></td>
+            <td class="tblBorder"></td>
+            <td class="tblBorder"></td>
             @foreach (var criteria in Model.Criterias)
             {
                 var revCount = 1;
@@ -48,13 +48,13 @@
             @foreach (var nomination in Model.Nominations)
             {
                 <tr>
-                    <td>
+                    <td class="tblBorder">
                         @nomination.UserName
                     </td>
-                    <td>
+                    <td class="tblBorder">
                         Manager
                     </td>
-                    <td class="averagePoints">
+                    <td class="averagePoints tblBorder">
                         @((nomination.ManagerComments.Any() ? nomination.ManagerComments.Average(a => (a.Rating * a.Weightage / 100.0)) : 0).ToString("F"))
                     </td>
                     @foreach (var criteria in Model.Criterias)
@@ -62,19 +62,17 @@
                         var managerComment = nomination.ManagerComments.FirstOrDefault(mc => mc.CriteriaId == criteria.Id);
                         if (managerComment != null)
                         {
-                            <td class="points" > @((managerComment != null ? managerComment.Rating * managerComment.Weightage / 100m : 0).ToString("F"))</td>
+                            <td class="points tblBorder" > @((managerComment != null ? managerComment.Rating * managerComment.Weightage / 100m : 0).ToString("F"))</td>
                             for (int i = 0; i < (Model.Reviewers.Count - 1); i++)
                             {
-                                <td></td>
+                                <td class="tblBorder"></td>
                             }
                         }
                         else
                         {
                             for (int i = 0; i < (Model.Reviewers.Count); i++)
                             {
-                                <td class="notNominated">
-                                    
-                                </td>
+                                <td class="notNominated tblBorder"></td>
                             }
                         }
                     }

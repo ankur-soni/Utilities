@@ -15,7 +15,10 @@
     <!-- FooTable -->
     <link href="~/css/plugins/footable/footable.core.css" rel="stylesheet" />
     <link href="~/css/bootstrap-switch.css" rel="stylesheet" />
-
+    <link href="~/Css/plugins/dataTables/jquery.dataTables.min.css" rel="stylesheet" />
+    @*<link href="~/Css/plugins/dataTables/dataTables.responsive.css" rel="stylesheet" />
+    <link href="~/Css/plugins/dataTables/dataTables.bootstrap.css" rel="stylesheet" />*@
+    <link href="~/Css/plugins/dataTables/fixedColumns.dataTables.min.css" rel="stylesheet" />
     <link href="~/Css/custom-style.css" rel="stylesheet" />
     
     <link href="~/Css/bars-square.css" rel="stylesheet" />
@@ -183,7 +186,8 @@
     <!-- Custom and plugin javascript -->
     <script src="~/js/inspinia.js"></script>
     <script src="~/js/plugins/pace/pace.min.js"></script>
-
+    <script src="~/js/jquery.dataTables.min.js"></script>
+    <script src="~/js/dataTables.fixedColumns.min.js"></script>
     <!-- FooTable -->
     <script src="~/js/plugins/footable/footable.all.min.js"></script>
     <script src="~/js/plugins/sweetalert/sweetalert.min.js"></script>
@@ -229,9 +233,7 @@
     });
 
     $(document).ready(function () {
-        $('.wrap').perfectScrollbar();
-        $('body').perfectScrollbar();
-        
+       
         sidebarautoheight();
     });
     $(window).resize(function () {
@@ -239,12 +241,12 @@
     });
 
     function ShowCustomLoader() {
-        console.log("show");
+        //console.log("show");
         $(".loader-overlay").show();
     }
 
     function HideCustomLoader() {
-        console.log("hide");
+        //console.log("hide");
         $(".loader-overlay").hide();
     }
 </script>

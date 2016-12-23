@@ -23,19 +23,19 @@ namespace Silicus.FrameworxProject.Services
 
         public string FindDisplayNameFromEmail(string email)
         {
-            var user = _dataContextFactory.CreateCommonDBContext().Query<User>().Where(usr => usr.EmailAddress == email);
+            var user = _dataContextFactory.CreateCommonDBContext().Query<User>().Where(usr => usr.EmailAddress == email).ToList();
             return user != null ? user.FirstOrDefault().DisplayName : null;
         }
 
         public int? FindUserIdFromEmail(string emailAddress)
         {
-            var user = _dataContextFactory.CreateCommonDBContext().Query<User>().Where(usr => usr.EmailAddress == emailAddress);
+            var user = _dataContextFactory.CreateCommonDBContext().Query<User>().Where(usr => usr.EmailAddress == emailAddress).ToList();
             return user != null ? user.FirstOrDefault().ID : (int?)null;
         }
 
         public User GetUser(int userId)
         {
-            var user = _dataContextFactory.CreateCommonDBContext().Query<User>().Where(usr => usr.ID == userId);
+            var user = _dataContextFactory.CreateCommonDBContext().Query<User>().Where(usr => usr.ID == userId).ToList();
             return user != null ? user.FirstOrDefault() : null;
         }
     }

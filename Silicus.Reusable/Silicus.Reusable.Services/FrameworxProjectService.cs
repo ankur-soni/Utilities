@@ -36,7 +36,7 @@ namespace Silicus.FrameworxProject.Services
 
         public Frameworx FrameworkDetail(int id)
         {
-            return _FrameworxProjectDatabaseContext.Query<Frameworx>("Likes", "Category").Where(m => m.Id == id).SingleOrDefault();
+            return _FrameworxProjectDatabaseContext.Query<Frameworx>("Likes", "Category", "Credits").Where(m => m.Id == id).SingleOrDefault();
         }
 
         public List<FrameworxCategory> GetAllCategories()

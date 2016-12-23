@@ -166,10 +166,19 @@
     Id = "feedbackFormModal",
     Title = "Feedback Form",
     CloseButtonVisible = false,
-    DismissModalOnSaveClick = false,
+    DismissModalOnSaveClick = true,
     SaveButtonId = "submitFeedback",
     SaveButtonOnlickEvent = "SaveFeedback()",
     SaveButtonText = "Submit Feedback"
+})
+
+@Html.Partial("_BootstrapModalTemplate", new Silicus.Reusable.Web.Models.ViewModel.BootstrapModalTemplateViewModel()
+{
+    Id = "contactOwnerFormModal",
+    Title = "Contact Owner",
+    CloseButtonVisible = true,
+    SaveButtonVisible=false,
+    DismissModalOnSaveClick = true    
 })
 
 @section scripts{

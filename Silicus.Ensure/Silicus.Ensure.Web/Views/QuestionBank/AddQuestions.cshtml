@@ -36,6 +36,7 @@
                 </div>
                 <div class="col-md-8">
                     @Html.Kendo().EditorFor(m => m.QuestionDescription).Name("QuestionDescription").Encode(true).Value(Model.QuestionDescription)
+                    @Html.ValidationMessageFor(m => m.QuestionDescription)
                 </div>
             </div>
             <br />
@@ -238,8 +239,8 @@
                 </div>
 
                 <div class="col-md-8">
-                    @Html.TextBoxFor(y => y.Duration, new {@type="number",@min="1",@max="360" })
-                   
+                    @Html.TextBoxFor(y => y.Duration, new { @type = "number", @min = "1", @max = "360" })
+
                 </div>
             </div>
             <br />
@@ -251,7 +252,7 @@
 
                 <div class="col-md-8">
                     @Html.TextBoxFor(y => y.Marks, new { @type = "number", @min = "1", @max = "100" })
-                   
+
                 </div>
             </div>
             <br />
@@ -265,174 +266,163 @@
                 </div>
             </div>
             @Html.HiddenFor(m => m.OptionCount, new { Value = @Model.OptionCount })
-            @Html.HiddenFor(m => m.CreatedOn, new { Value = @Model.CreatedOn })
+            <input type="hidden" name="CreatedOn" value="@Model.CreatedOn" />
+            @*@Html.HiddenFor(m => m.CreatedOn, new { Value = @Model.CreatedOn })*@
+            @*@Html.TextBoxFor(m => m.CreatedOn, "{0:dd/MM/yyyy}")*@
             @Html.HiddenFor(m => m.CreatedBy, new { Value = @Model.CreatedBy })
             @Html.HiddenFor(m => m.Id, new { Value = @Model.Id })
             @Html.HiddenFor(m => m.Edit, new { Value = @Model.Edit })
 
             <script>
+                function isAnySelectedAns(input)
+                {
+                    var qType = $('#QuestionType').val();
+                    if (input.is("[name=IsAnsOption1]") && qType == 1) {
+                        input.attr("data-IsAnsOption1-msg", "Please select at least single Answer !");
+                        return $(".ansCheckBox:checked").length>0;
+                    }
+                    return true;
+                }
+                function validateOtherOptions(input, params,optionNo)
+                {
+                    var qType = $('#QuestionType').val();
+                    if (input.is("[name=Option"+optionNo+"]") && qType == 1 && input.is(".otherOption")) {
+                        input.attr("data-Option"+optionNo+"-msg", "Option "+optionNo+" cann't be blank !");
+                        return input.val().trim()!="";
+                    }
+                    return true;
+                }
+                function validateOptions(input, params,optionNo)
+                {
+                    var qType = $('#QuestionType').val();
+                    if (input.is("[name=Option"+optionNo+"]") && qType == 1) {
+                        input.attr("data-Option"+optionNo+"-msg", "Option "+optionNo+" cann't be blank !");
+                        return input.val().trim()!="";//?isAnySelectedAns(input,optionNo):false;
+                    }
+                    return true;
+                }
+
                 $(document).ready(function () {
-
+                    $("#IsAnsOption1").removeAttr("data-val-required")
                     $("#AddQuestionForm").kendoValidator({
-                        errorTemplate: "<span>#=message#</span>"
-                    });
-
-                    var $answerType=$("#AnswerType");
-                    if($answerType.val()<2)
-                    {
-                        $answerType.val(1);
-                        $("#IsAllowedmoreThanOneAns").attr("checked",false);
-                    }
-                    else
-                    {
-                        $("#IsAllowedmoreThanOneAns").attr("checked",true);
-                    }
-                    $("#IsAllowedmoreThanOneAns").on("click",function()
-                    {
-                        $("#AnswerType").val($("#IsAllowedmoreThanOneAns").is(":checked")?2:1);
-                        var $ansCheckBoxes=$(".ansCheckBox:checked");
-                        if($ansCheckBoxes.length>1)
-                            $ansCheckBoxes.prop("checked",false);
-                    })
-
-
-                    $(".ansCheckBox").on("click",function()
-                    {
-                        if(!$("#IsAllowedmoreThanOneAns").is(":checked"))
-                        {
-                            //var isCheked=$(this).is(":checked");
-                            $(".ansCheckBox").prop("checked",false);
-                            $(this).prop("checked",true);
-                        }
-                    });
-
-                    // Hide More Than 2 Options.
-                    for(var i=3; i<=8; i++)
-                    {
-                        $("#rowOpt"+i).hide();
-                    }
-
-                    //ShowRequiredOptionInCorrectAnswerDropDown();
-
-                    $("#errorDiv").hide();
-                    $("#durationRequired").hide();
-                    $("#practicalAns").hide();
-
-
-                    var success =@Model.Success;
-                    var edit="@Model.Edit";
-                    if(success==1 || success==2 )
-                    {
-                        if(edit=="True"){
-                            $("#myModal").modal();
-                            $("#msgContent").text("Question updated successfully.");
-                        }
-                        else{
-                            $("#myModal").modal();
-                            $("#msgContent").text("Question added successfully in the application.");
-                        }
-                    }
-                    else
-                    {
-                        if(edit=="True"){
-                            var optCnt=@Model.OptionCount;
-                            OptionDispalyOnEdit(optCnt);
-                            //ShowRequiredOptionInCorrectAnswerDropDown();
-                        }
-                    }
-
-
-
-                    // Check Question Type on Edit.
-                    var qtype=@Model.QuestionType;
-                    if (qtype == "2") {
-                        $("#practical").hide();
-                        $("#practicalAns").show();
-                        $("#durationRequired").show();
-                    }
-
-                    // Save and Edit Activity Validation.
-                    $("#btnSave,#btnSaveAndAddNewQuestion")
-                        .click(function() {
-                            var count =0;
-                            $('.otherOption').each(function(){
-                                if($(this).val()==''){
-                                    count++
-                                }
-                            });
-                            var qType = $('#QuestionType').val();
-
-                            if ($("#QuestionDescription").val().trim().length == 0) {
-                                $("#QuestionDescription").focus();
-                                ShowError("Question description cann't be blank.");
-                                return false;
-                            } else {
-
-                                if (qType == 1) {
-                                    if ($("#Option1").val().trim().length == 0) {
-                                        $("#Option1").focus();
-                                        ShowError("Option 1 cann't be blank.");
-                                        return false;
-                                    } else if ($("#Option2").val().trim().length == 0) {
-                                        $("#Option2").focus();
-                                        ShowError("Option 2 cann't be blank.");
-                                        return false;
-                                    } else if(count>0){
-                                        var id;
-                                        $('.otherOption').each(function(){
-                                            if($(this).val()=='')
-                                            {
-                                                id=$(this).attr('id');
-                                                return this;
-                                            }
-                                        });
-                                        if(id=='Option3'){
-                                            $("#Option3").focus();
-                                            ShowError("Option 3 cann't be blank.");
-                                            return false;
-                                        }
-                                        else if(id=='Option4'){
-                                            $("#Option4").focus();
-                                            ShowError("Option 4 cann't be blank.");
-                                            return false;
-                                        }
-                                        else if(id=='Option5'){
-                                            $("#Option5").focus();
-                                            ShowError("Option 5 cann't be blank.");
-                                            return false;
-                                        }
-                                        else if(id=='Option6'){
-                                            $("#Option6").focus();
-                                            ShowError("Option 6 cann't be blank.");
-                                            return false;
-                                        }
-                                        else if(id=='Option7'){
-                                            $("#Option7").focus();
-                                            ShowError("Option 7 cann't be blank.");
-                                            return false;
-                                        }
-                                    }
-                                    else if ($(".ansCheckBox:checked").length == 0) {
-                                        // $("#CorrectAnswer").focus();
-                                        ShowError("Select at least 1 correct answer.");
-                                        return false;
-                                    } else if ($("#AnswerType").val() == "1") {
-                                        var item = $(".ansCheckBox:checked").length;
-                                        if (item > 1) {
-                                            //$("#CorrectAnswer").focus();
-                                            ShowError("Select only one option for single choice question.");
-                                            return false;
-                                        }
-                                    }
-                                }
-
-                                if ($("#SkillTag :selected").length == 0) {
-                                    $("#SkillTag").focus();
-                                    ShowError("Select at least 1 skill tag.");
-                                    return false;
-                                }
+                        rules: {
+                            Option1: function (input, params) {
+                                return validateOptions(input, params,1);
+                            },
+                            Option2: function (input, params) {
+                                return validateOptions(input, params,2);
+                            },
+                            Option3: function (input, params) {
+                                return validateOtherOptions(input, params,3);
+                            },
+                            Option4: function (input, params) {
+                                return validateOtherOptions(input, params,4);
                             }
-                        });
+                            ,
+                            Option5: function (input, params) {
+                                return validateOtherOptions(input, params,5);
+                            },
+                            Option6: function (input, params) {
+                                return validateOtherOptions(input, params,6);
+                            },
+                            Option7: function (input, params) {
+                                return validateOtherOptions(input, params,7);
+                            },
+                            Option8: function (input, params) {
+                                return validateOtherOptions(input, params,8);
+                            },
+                            IsAnsOption1: function (input, params) {
+                                return isAnySelectedAns(input);
+                            },
+                            Answer:function (input, params) {
+                                var qType = $('#QuestionType').val();
+                                if (input.is("[name=Answer]") && qType == 2) {
+                                    input.attr("data-Answer-msg", "Answer cann't be blank !");
+                                    return input.val().trim()!="";
+                                }
+                                return true;
+                            }
+                        }
+
+                });
+
+
+                var $answerType=$("#AnswerType");
+                if($answerType.val()<2)
+                {
+                    $answerType.val(1);
+                    $("#IsAllowedmoreThanOneAns").attr("checked",false);
+                }
+                else
+                {
+                    $("#IsAllowedmoreThanOneAns").attr("checked",true);
+                }
+                $("#IsAllowedmoreThanOneAns").on("click",function()
+                {
+                    $("#AnswerType").val($("#IsAllowedmoreThanOneAns").is(":checked")?2:1);
+                    var $ansCheckBoxes=$(".ansCheckBox:checked");
+                    if($ansCheckBoxes.length>1)
+                        $ansCheckBoxes.prop("checked",false);
+                })
+
+
+                $(".ansCheckBox").on("click",function()
+                {
+                    if(!$("#IsAllowedmoreThanOneAns").is(":checked"))
+                    {
+                        //var isCheked=$(this).is(":checked");
+                        $(".ansCheckBox").prop("checked",false);
+                        $(this).prop("checked",true);
+                    }
+                });
+
+                // Hide More Than 2 Options.
+                for(var i=3; i<=8; i++)
+                {
+                    $("#rowOpt"+i).hide();
+                }
+
+                //ShowRequiredOptionInCorrectAnswerDropDown();
+
+                $("#errorDiv").hide();
+                $("#durationRequired").hide();
+                $("#practicalAns").hide();
+
+
+                var success =@Model.Success;
+                var edit="@Model.Edit";
+                if(success==1 || success==2 )
+                {
+                    if(edit=="True"){
+                        $("#myModal").modal();
+                        $("#msgContent").text("Question updated successfully.");
+                    }
+                    else{
+                        $("#myModal").modal();
+                        $("#msgContent").text("Question added successfully in the application.");
+                    }
+                }
+                else
+                {
+                    if(edit=="True"){
+                        var optCnt=@Model.OptionCount;
+                        OptionDispalyOnEdit(optCnt);
+                        //ShowRequiredOptionInCorrectAnswerDropDown();
+                    }
+                }
+
+
+
+                // Check Question Type on Edit.
+                var qtype=@Model.QuestionType;
+                if (qtype == "2") {
+                    $("#practical").hide();
+                    $("#practicalAns").show();
+                    $("#durationRequired").show();
+                }
+
+
+
 
                 });
 
@@ -468,12 +458,13 @@
                     $("#Option8").val("");
                     var answer = $("#Answer").data("kendoEditor");
                     answer.value("");
-                    var correctAnswer = $('#CorrectAnswer').data("kendoMultiSelect");
-                    correctAnswer.value([]);
+                    //var correctAnswer = $('#CorrectAnswer').data("kendoMultiSelect");
+                    //correctAnswer.value([]);
+                    $(".ansCheckBox").prop("checked",false);
                     var skillTag = $('#SkillTag').data("kendoMultiSelect");
                     skillTag.value([]);
                     var answerType = $("#AnswerType");
-                    answerType.value("1");
+                    answerType.val("1");
                     var proficiency = $("#ProficiencyLevel").data("kendoDropDownList");
                     proficiency.value("1");
                     var duration = $("#Duration").val('1');
@@ -561,8 +552,6 @@
                             url: '/Tag/Save',
                             data: $('#tagForm').serialize(),
                             success: function (returndata) {
-                                debugger;
-                                //ShowMessage("Tag Created successfully.", 1);
                                 $("#addTagPopup").modal('hide');
                                 var $tagMultiSelect=$('#SkillTag').data('kendoMultiSelect');
                                 var multidata=$tagMultiSelect.dataSource.data();

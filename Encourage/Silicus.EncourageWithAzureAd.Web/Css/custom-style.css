@@ -264,14 +264,6 @@ span.font-bold.txt-color label{font-weight:bold;color:#337ab7;}
   font-size: 1em;
 }
 
-.headcol {
-            position:absolute; 
-            width:5em; 
-            left:0;
-            top:auto;
-           
-        }
-.headcol:before {content: 'Row ';}
 
 .header-name{margin-top:15px;margin-left:15px;}
 
