@@ -250,6 +250,7 @@
     <Compile Include="Models\ViewModel\BootstrapModalTemplateViewModel.cs" />
     <Compile Include="Models\ViewModel\FrameworxFeedbackViewModel.cs" />
     <Compile Include="Models\ViewModel\ExtensionCodeViewModel.cs" />
+    <Compile Include="Models\ViewModel\FrameworxOwnerViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
   </ItemGroup>
@@ -727,6 +728,7 @@
     <Content Include="Views\Extension\SearchMyOtherCodeMethodByTitle.cshtml" />
     <Content Include="Views\Shared\_BootstrapModalTemplate.cshtml" />
     <Content Include="Views\FrameworxFeedback\_FeedbackForm.cshtml" />
+    <Content Include="Views\FrameworxFeedback\_ContactOwner.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

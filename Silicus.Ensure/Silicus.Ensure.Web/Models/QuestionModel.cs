@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 
 namespace Silicus.Ensure.Web.Models
 {
@@ -16,6 +17,7 @@ namespace Silicus.Ensure.Web.Models
         [DisplayName("Type")]
         public string QuestionType { get; set; }
         [DisplayName("Question")]
+        [Required]
         public string QuestionDescription { get; set; }
         public int AnswerType { get; set; }
         public int OptionCount { get; set; }
@@ -41,16 +43,21 @@ namespace Silicus.Ensure.Web.Models
         public string Answer { get; set; }
         public string Tag { get; set; }
         public string ProficiencyLevel { get; set; }
+        [Required]
+        [RegularExpression("([1-9][0-9]*)", ErrorMessage = "Allowd only numbers !")]
         public int Duration { get; set; }
+        [Required]
+        [RegularExpression("([1-9][0-9]*)", ErrorMessage = "Allowd only numbers !")]
         public int Marks { get; set; }
         public bool IsPublishd { get; set; }
         public bool IsDeleted { get; set; }
+
         public DateTime CreatedOn { get; set; }
         public int CreatedBy { get; set; }
         public DateTime ModifiedOn { get; set; }
         public int ModifiedBy { get; set; }
-
         public List<Tags> SkillTagsList { get; set; }
+        [Required]
         public List<string> SkillTag { get; set; }
        
         public int Success { get; set; }

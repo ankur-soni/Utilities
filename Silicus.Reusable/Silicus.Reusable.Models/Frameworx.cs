@@ -22,7 +22,7 @@ namespace Silicus.FrameworxProject.Models
         [Display(Name = "Source Code Link")]
         public string SourceCodeLink { get; set; }
 
-        
+
         public int CategoryId { get; set; }
 
         public int OwnerId { get; set; }
@@ -30,6 +30,8 @@ namespace Silicus.FrameworxProject.Models
         public virtual FrameworxCategory Category { get; set; }
 
         public virtual ICollection<FrameworxLike> Likes { get; set; }
+
+        public virtual ICollection<FrameworxCredits> Credits { get; set; }
 
 
     }

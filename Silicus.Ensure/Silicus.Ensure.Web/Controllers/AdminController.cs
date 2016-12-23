@@ -74,19 +74,7 @@ namespace Silicus.Ensure.Web.Controllers
             _positionService = positionService;
             _logger = logger;
         }
-
-        //public ActionResult Dashboard()
-        //{
-        //    _logger.Log("Admin-Dashboard-Get");
-        //    ViewBag.UserRoles = RoleManager.Roles.Select(r => new SelectListItem { Text = r.Name, Value = r.Name }).ToList();
-        //    _logger.Log("UserRoles:");
-        //    foreach (var item in ViewBag.UserRoles)
-        //    {
-        //        _logger.Log("Admid-Dashboard-Get-Roles- "+ item.Text );
-        //    }
-        //    return View();
-        //}
-
+        
         [AcceptVerbs(HttpVerbs.Post)]
         public async Task<ActionResult> SendEmail(FormCollection email)
         {
