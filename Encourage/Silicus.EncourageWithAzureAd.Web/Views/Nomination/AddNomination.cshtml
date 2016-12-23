@@ -605,6 +605,7 @@
 
         var stepId = "[step=" + stepNumber + "]";
         $("#nomination-steps").find(".f1-step.active").removeClass("active");
+        $("#nomination-steps").find(stepId).prevAll(".f1-step").addClass("active");
         $("#nomination-steps").find(stepId).addClass("active");
 
 

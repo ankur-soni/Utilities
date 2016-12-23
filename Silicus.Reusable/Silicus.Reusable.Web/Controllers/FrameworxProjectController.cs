@@ -20,7 +20,7 @@ namespace Silicus.FrameworxDashboard.Web.Controllers
             _commonDbService = commonDbService;
             //textInfo = new CultureInfo("en-US", false).TextInfo;
         }
-
+        
         public ActionResult Index()
         {
             List<Frameworx> frameworkList = _frameworxProjectService.GetAllFrameworx();
@@ -125,8 +125,11 @@ namespace Silicus.FrameworxDashboard.Web.Controllers
                 SourceCodeLink = framework.SourceCodeLink,
                 Likes = framework.Likes.Count,
                 IsLiked = framework.Likes.Any(l => l.UserId == userId),
-                OwnerId = framework.OwnerId
+                OwnerId = framework.OwnerId,
+                Credits = string.Join(",", framework.Credits.Select(c => c.Name).ToList())
             };
+
+            frameworxViewModel.Credits = string.IsNullOrWhiteSpace(frameworxViewModel.Credits) ? string.Empty : frameworxViewModel.Credits + ".";
 
             if (frameworxViewModel.IsLiked)
             {

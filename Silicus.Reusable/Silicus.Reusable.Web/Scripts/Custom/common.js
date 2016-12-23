@@ -30,8 +30,11 @@ function showAlert(options) {
         title: options.title,
         text: options.text,
         type: options.type,
-        timer: options.timer || 1000,
-        showConfirmButton: options.showConfirmButton || false
+        timer: options.timer || null,
+        showConfirmButton: options.showConfirmButton || false,
+        showCancelButton: options.showCancelButton || false,
+        confirmButtonColor: options.confirmButtonColor || "#337ab7",
+        confirmButtonText: options. confirmButtonText ||  "Ok"
     });
 }
 

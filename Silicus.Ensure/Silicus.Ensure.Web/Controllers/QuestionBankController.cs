@@ -34,12 +34,10 @@ namespace Silicus.Ensure.Web.Controllers
         [HttpPost]
         public ActionResult AddQuestions(QuestionModel question)
         {
-            
             if (ModelState.IsValid)
             {
                 Question que = _mappingService.Map<QuestionModel, Question>(question);
                 que.QuestionDescription = HttpUtility.HtmlDecode(question.QuestionDescription);
-                //que.CorrectAnswer = (question.CorrectAnswer != null) ? string.Join(",", question.CorrectAnswer) : null;
                 que.CorrectAnswer = setCorrectAnswer(question);
                 que.Answer = HttpUtility.HtmlDecode(question.Answer);
                 que.Tags = string.Join(",", question.SkillTag);

@@ -23,6 +23,7 @@ namespace Silicus.FrameworxProject.DAL
         public DbSet<ProductBacklog> ProductBacklogs { get; set; }
         public DbSet<FrameworxLike> FrameworxLikes { get; set; }
         public DbSet<FrameworxFeedback> FrameworxFeedbacks { get; set; }
+        public DbSet<FrameworxCredits> FrameworxCredits { get; set; }
         public int Update<T>(T item) where T : class
         {
 
@@ -64,6 +65,11 @@ namespace Silicus.FrameworxProject.DAL
         public IQueryable<T> Query<T>(string property1, string property2) where T : class
         {
             return Set<T>().Include(property1).Include(property2).AsNoTracking();
+        }
+
+        public IQueryable<T> Query<T>(string property1, string property2,string property3) where T : class
+        {
+            return Set<T>().Include(property1).Include(property2).Include(property3).AsNoTracking();
         }
 
         public void Delete<T>(T item) where T : class

@@ -1,76 +1,84 @@
 ﻿@model Silicus.EncourageWithAzureAd.Web.Models.ConsolidatedNominationsViewModel
-    @{
-        Layout = null;
-    }
-
+@{
+    Layout = null;
+}
 <div class="table-responsive">
     <table class="table table-hover white-bg content" id="consolidatedHrView">
         <thead>
             <tr>
-                <th rowspan="2">Employee Name</th>
-                <th rowspan="2" >Rating By</th>
-                <th rowspan="2">All Criteria</th>
+                <th class="themeColorBlue">Employee Name</th>
+                <th class="themeColorBlue">Rating By</th>
+                <th class="themeColorBlue">All Criteria</th>
                 @{
-            var ccCount = 1;
+                    var ccCount = 1;
                 }
                 @foreach (var criteria in Model.Criterias)
-        {
-                    <th colspan="@Model.Reviewers.Count" style="text-align: center;">
+                {
+                    <th  colspan="@Model.Reviewers.Count" style="text-align: center; width: 80px;">
                         <a href="#" title="@criteria.Title">
                             @("Criteria " + ccCount)
                         </a>
                     </th>
-            ccCount++;
-        }
+                    ccCount++;
+                }
             </tr>
-            <tr>
-                @foreach (var criteria in Model.Criterias)
-        {
-            var revCount = 1;
-            foreach (var reviewer in Model.Reviewers)
+        <tr>
+            <td class="tblBorder"></td>
+            <td class="tblBorder"></td>
+            <td class="tblBorder"></td>
+            @foreach (var criteria in Model.Criterias)
             {
-                <th>
-                    <a href="#" title="@reviewer.ReviewerName">
-                        @("R" + revCount)
-                    </a>
-                </th>
-                revCount++;
+                var revCount = 1;
+                foreach (var reviewer in Model.Reviewers)
+                {
+                    <th  >
+                        <a href="#" title="@reviewer.ReviewerName">
+                            @("R" + revCount)
+                        </a>
+                    </th>
+                    revCount++;
+                }
             }
-        }
-            </tr>
+        </tr>
         </thead>
         <tbody>
             @{
-        var nominationCount = 0;
+                var nominationCount = 0;
             }
             @foreach (var nomination in Model.Nominations)
-    {
+            {
                 <tr>
-                    <td rowspan="3">
+                    <td class="tblBorder">
                         @nomination.UserName
                     </td>
-                    <td>
+                    <td class="tblBorder">
                         Manager
                     </td>
-                    <td class="averagePoints">
+                    <td class="averagePoints tblBorder">
                         @((nomination.ManagerComments.Any() ? nomination.ManagerComments.Average(a => (a.Rating * a.Weightage / 100.0)) : 0).ToString("F"))
                     </td>
                     @foreach (var criteria in Model.Criterias)
-            {
-                var managerComment = nomination.ManagerComments.FirstOrDefault(mc => mc.CriteriaId == criteria.Id);
-                if (managerComment != null)
-                {
-                    <td class="points" colspan="@Model.Reviewers.Count"> @((managerComment != null ? managerComment.Rating * managerComment.Weightage / 100m : 0).ToString("F"))</td>
-                }
-                else
-                {
-                    <td colspan="@Model.Reviewers.Count" rowspan="3" class="notNominated">
-                        Not nominated for this criteria
-                    </td>
-                }
-            }
+                    {
+                        var managerComment = nomination.ManagerComments.FirstOrDefault(mc => mc.CriteriaId == criteria.Id);
+                        if (managerComment != null)
+                        {
+                            <td class="points tblBorder" > @((managerComment != null ? managerComment.Rating * managerComment.Weightage / 100m : 0).ToString("F"))</td>
+                            for (int i = 0; i < (Model.Reviewers.Count - 1); i++)
+                            {
+                                <td class="tblBorder"></td>
+                            }
+                        }
+                        else
+                        {
+                            for (int i = 0; i < (Model.Reviewers.Count); i++)
+                            {
+                                <td class="notNominated tblBorder"></td>
+                            }
+                        }
+                    }
                 </tr>
                 <tr>
+                    <td></td>
                     <td>
                         Reviewer
                     </td>
@@ -78,22 +86,29 @@
                         @((nomination.ReviewerComments.Any() ? nomination.ReviewerComments.Average(a => (a.Credit * a.Weightage / 100.0)) : 0).ToString("F"))
                     </td>
                     @foreach (var criteria in Model.Criterias)
-            {
-                var managerComment = nomination.ManagerComments.FirstOrDefault(mc => mc.CriteriaId == criteria.Id);
-                if (managerComment != null)
-                {
-                    foreach (var reviewer in Model.Reviewers)
                     {
-                        var reviewerComment = nomination.ReviewerComments.FirstOrDefault(rc => rc.ReviewerId == reviewer.Id && rc.CriteriaId == criteria.Id);
-                        <td class="points">
-                            @(reviewerComment != null ? (reviewerComment.Credit * reviewerComment.Weightage / 100m).ToString("F") : "-")
-                        </td>
+                        var managerComment = nomination.ManagerComments.FirstOrDefault(mc => mc.CriteriaId == criteria.Id);
+                        if (managerComment != null)
+                        {
+                            foreach (var reviewer in Model.Reviewers)
+                            {
+                                var reviewerComment = nomination.ReviewerComments.FirstOrDefault(rc => rc.ReviewerId == reviewer.Id && rc.CriteriaId == criteria.Id);
+                                <td class="points">
+                                    @(reviewerComment != null ? (reviewerComment.Credit * reviewerComment.Weightage / 100m).ToString("F") : "-")
+                                </td>
+                            }
+                        }
+                        else
+                        {
+                            for (int i = 0; i < (Model.Reviewers.Count); i++)
+                            {
+                                <td class="notNominated"></td>
+                            }
+                        }
                     }
-                }
-            }
                 </tr>
                 <tr>
-
+                    <td></td>
                     <td>
                         Final Score
                     </td>
@@ -104,23 +119,37 @@
                     </td>
                     @{ var criteriaCount = 0; }
                     @foreach (var criteria in Model.Criterias)
-            {
-                var managerComment = nomination.ManagerComments.FirstOrDefault(mc => mc.CriteriaId == criteria.Id);
-                if (managerComment != null)
-                {
-                    <td colspan="@Model.Reviewers.Count" class="points">
-                        @Html.Hidden("Nominations[" + nominationCount + "].ManagerComments[" + criteriaCount + "].NominationId", nomination.NominationId)
-                        @Html.Hidden("Nominations[" + nominationCount + "].ManagerComments[" + criteriaCount + "].CriteriaId", criteria.Id)
-                        @Html.Hidden("Nominations[" + nominationCount + "].ManagerComments[" + criteriaCount + "].FinalScore", managerComment.FinalScore, new { @class = "finalScore_" + nomination.NominationId })
-                        @Html.Hidden("Nominations[" + nominationCount + "].ManagerComments[" + criteriaCount + "].AdminComment", managerComment.AdminComment )
-                        <button type="button" onclick="openCommentPointEditor(@nominationCount, @criteriaCount)" class="btn btn-primary"><span id="spnFinalPoints_@(nomination.NominationId)_@(criteria.Id)" style="font-weight: bold;">@managerComment.FinalScore.ToString("F") </span>&nbsp; <i class="glyphicon glyphicon-edit"></i></button>
-                    </td>
-                }
-                criteriaCount++;
-            }
+                    {
+                        var managerComment = nomination.ManagerComments.FirstOrDefault(mc => mc.CriteriaId == criteria.Id);
+                        if (managerComment != null)
+                        {
+                            <td class="points">
+                                @Html.Hidden("Nominations[" + nominationCount + "].ManagerComments[" + criteriaCount + "].NominationId", nomination.NominationId)
+                                @Html.Hidden("Nominations[" + nominationCount + "].ManagerComments[" + criteriaCount + "].CriteriaId", criteria.Id)
+                                @Html.Hidden("Nominations[" + nominationCount + "].ManagerComments[" + criteriaCount + "].FinalScore", managerComment.FinalScore, new { @class = "finalScore_" + nomination.NominationId })
+                                @Html.Hidden("Nominations[" + nominationCount + "].ManagerComments[" + criteriaCount + "].AdminComment", managerComment.AdminComment)
+                                @*<button type="button" onclick="openCommentPointEditor(@nominationCount, @criteriaCount)" class="btn btn-primary"><span id="spnFinalPoints_@(nomination.NominationId)_@(criteria.Id)" style="font-weight: bold;">@managerComment.FinalScore.ToString("F") </span></button>*@
+                                <a onclick="openCommentPointEditor(@nominationCount, @criteriaCount)">
+                                    <span id="spnFinalPoints_@(nomination.NominationId)_@(criteria.Id)" style="font-weight: bold;">@managerComment.FinalScore.ToString("F") </span>
+                                </a>
+                            </td>
+                            for (int i = 0; i < (Model.Reviewers.Count-1); i++)
+                            {
+                                <td></td>
+                            }
+                        }
+                        else
+                        {
+                            for (int i = 0; i < (Model.Reviewers.Count); i++)
+                            {
+                                <td class="notNominated"></td>
+                            }
+                        }
+                        criteriaCount++;
+                    }
                 </tr>
-        nominationCount++;
-    }
+                            nominationCount++;
+                        }
 
         </tbody>
     </table>
