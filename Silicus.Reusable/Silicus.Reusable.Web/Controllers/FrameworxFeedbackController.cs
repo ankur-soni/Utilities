@@ -8,6 +8,7 @@ using System.Web.Mvc;
 
 namespace Silicus.Reusable.Web.Controllers
 {
+    [Authorize]
     public class FrameworxFeedbackController : Controller
     {
         #region Private Variables
