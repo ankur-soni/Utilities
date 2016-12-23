@@ -21,7 +21,7 @@ namespace Silicus.FrameworxDashboard.Web.Controllers
             //textInfo = new CultureInfo("en-US", false).TextInfo;
         }
         
-        public ActionResult Index()
+        public ActionResult Dashboard()
         {
             List<Frameworx> frameworkList = _frameworxProjectService.GetAllFrameworx();
             var CategoryList = _frameworxProjectService.GetAllCategories();

@@ -56,19 +56,10 @@ namespace Silicus.Encourage.Services
 
         public List<Nomination> GetAllSubmitedNonreviewedNominations(int reviewerId)
         {
-            var alreadyReviewedRecords = _encourageDatabaseContext.Query<Review>().Where(r => r.ReviewerId == reviewerId && r.IsSubmited == true).ToList();
-            var finalNomination = new List<Nomination>();
-            var allNominations = _encourageDatabaseContext.Query<Nomination>().Where(N => N.IsSubmitted == true && N.NominationDate.Value.Month == (DateTime.Now.Month - 1) && N.NominationDate.Value.Year == DateTime.Now.Year).ToList();
-
-            foreach (var item in alreadyReviewedRecords)
-            {
-                finalNomination.Add(_encourageDatabaseContext.Query<Nomination>().FirstOrDefault(N => N.IsSubmitted == true && N.Id == item.NominationId));
-            }
-            foreach (var item in finalNomination)
-            {
-                allNominations.RemoveAll(r => r.Id == item.Id);
-            }
-
+            var alreadyReviewedNominationIds = _encourageDatabaseContext.Query<Review>().Where(r => r.ReviewerId == reviewerId && r.IsSubmited == true).ToList().Select(r => r.NominationId);
+           
+            var allNominations = _encourageDatabaseContext.Query<Nomination>().Where(N => N.IsSubmitted == true && (!alreadyReviewedNominationIds.Contains(N.Id)) && N.NominationDate.Value.Month == (DateTime.Now.Month - 1) && N.NominationDate.Value.Year == DateTime.Now.Year).ToList();
+            
             return allNominations;
         }
 

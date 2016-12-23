@@ -5,48 +5,18 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>FRAMEWORX</title>
     <link rel="shortcut icon" href="~/Images/favicon.ico" />
-    @Styles.Render("~/Content/css")  
-    <link href="~/Content/font-awesome/css/font-awesome.css" rel="stylesheet">
-
-    <link href="~/Content/Template-css/animate.css" rel="stylesheet">
-   
-    <!-- Sweet Alert -->
-    <link href="~/Content/Template-css/plugins/sweetalert/sweetalert.css" rel="stylesheet">
-    <!-- Toastr style -->
-    <link href="~/Content/Template-css/plugins/toastr/toastr.min.css" rel="stylesheet">
-    <!-- Swtiches -->
-    <link href="~/Content/Template-css/plugins/switchery/switchery.css" rel="stylesheet">
-    <!-- Searchable drop down -->
-    <link rel="stylesheet" type="text/css" href="~/Content/Template-css/plugins/selectize/selectize.css" />        
+    @Styles.Render("~/Content/css")
+    <link href="~/LESS/style.css" rel="stylesheet" />
 </head>
-<body>
-    <div class="container-fluid">
-        <nav class="navbar navbar-inverse navbar-fixed-top">
-            <div class="container-fluid">
-                <div class="navbar-header">
-                    <a href="@Url.Action("GetAllCategories", "Frameworxproject")"><img src="~/Images/logo.svg" class="img-responsive" style="width:200px;" alt="logo"></a>
-                </div>
-                @Html.Partial("_LoginPartial")
-                @*<ul class="nav navbar-nav pull-right">
-                        @Html.Partial("_LoginPartial")
-                        @if (Request.IsAuthenticated)
-                        {
-                            var userName = @User.Identity.Name;
-                            var data = userName.Split('.', '@');
-                        <li class="dropdown">
-
-                            <a class="dropdown-toggle count-info" data-toggle="dropdown" href="#">
-                                <span class="hidden-sm hidden-xs">
-                                    <span class="m-r-sm text-muted welcome-message">Welcome Test User</span> <i class="fa fa-chevron-down"></i>
-                                </span>
-                                <span class="hidden-md hidden-lg">
-                                    <i class="fa fa-user"></i>
-                                </span>
-                            </a>
-                        </li>
-                    </ul>*@
-                @* Sign in option below *@
-                @*<ul class="nav navbar-top-links navbar-right">
+<body class="container-fluid">
+    <div class="row top-header bbl">
+        <div class="col-sm-4">
+            <div class="pll ptm pbs"><img src="~/Images/logo.jpg" class="mts mbs" alt="Silicus Logo" title="Silicus Encloud" /></div>
+        </div>
+        <div class="col-sm-8">
+            <div class="text-center">
+                <nav class="navbar navbar-static-top  " role="navigation" style="margin-bottom: 0">
+                    <ul class="nav navbar-top-links navbar-right">
                         @Html.Partial("_LoginPartial")
                         @if (Request.IsAuthenticated)
                         {
@@ -65,149 +35,60 @@
                                     <li>
                                         <a href='@Url.Action("SignOut", "Account")'>
                                             <div>
-                                                LOGOUT
+                                                Logout
                                             </div>
                                         </a>
                                     </li>
                                 </ul>
                             </li>
                         }
-                    </ul>*@
-            </div>
-        </nav>
-        <div class="container-fluid body-content" style="margin-top:75px">
-            <div class="row">
-                @*<div class="col-lg-2 col-md-2 col-sm-2 col-xs-12 same-bx-height" style="position:fixed;left:0;background:#81D4FA;">
-                        @*<ul class="nav nav-pills nav-stacked customdivmenu" style="padding-top:15%">
-                            <li id="GetAllCategories"><a href='@Url.Action("GetAllCategories", "FrameworxProject")'>Home</a></li>
-                            <li id="ShowExtensionCode"><a  href='@Url.Action("ShowExtensionCode", "Extension")'>Extension Code List</a></li>
-                            <li id="ShowMyExtensionCode"><a href='@Url.Action("ShowMyExtensionCode", "Extension")'>My Extension Code List</a></li>
-                            <li id="ReviewExtensionCodeList"><a href='@Url.Action("ReviewExtensionCodeList", "Extension")'>Review Extension Code List</a></li>
-                            <li id="ShowOtherCode"><a  href='@Url.Action("ShowOtherCode", "Extension")'>Other Usefull Code List</a></li>
-                            <li id="ShowMyOtherCode"><a href='@Url.Action("ShowMyOtherCode", "Extension")'>My Other Usefull Code List</a></li>
-                            <li id="ReviewOtherCodeList"><a href='@Url.Action("ReviewOtherCodeList", "Extension")'>Review Other Usefull Code List</a></li>
-                            <li id="AddExtensionCode"><a  href='@Url.Action("AddExtensionCode", "Extension")'>Add Extension Code</a></li>
-                            <li id="AddOtherUsefullCode"><a  href='@Url.Action("AddOtherUsefullCode", "Extension")'>Add Other Usefull Code</a></li>
-                        </ul>
-                        <!-- START LEFT MENU -->
-                        <!-- END LEFT MENU  background:#2F4050;-->
-                    </div>*@
-                <div class="col-lg-2 col-md-2 col-sm-2 col-xs-12 same-bx-height" style="position:fixed;left:0;background:#FFFFFF;left: 0px;background:#2F4050;height: 100vh;top: 75px;padding: 0;">
-                    <nav class="navbar-default navbar-static-side" role="navigation">
-                        <div class="sidebar-collapse" id="main-navi">
-                            <ul class="nav metismenu" id="side-menu">
-                                @*<ul class="nav metismenu menu" >*@
-                                <li>
-                                    <a href='@Url.Action("GetAllCategories", "FrameworxProject")'><i class="fa fa-user"></i> <span class="nav-label">Frameworx</span> <i class="fa fa-caret-down" style="float:right; font-size:1.2em" class="pull-right" aria-hidden="true"></i></a>
-                                    <ul class="nav nav-second-level">
-                                        <li id="GetAllCategories" class="icon-dashboard active"><a href='@Url.Action("GetAllCategories", "FrameworxProject")' class="active">Dashboard</a></li>
-                                        <li><a href="account-company.html">Product Backlog</a></li>
-                                    </ul>
-                                </li>
-                                <li>
-                                    <a href='@Url.Action("GetAllCategories", "FrameworxProject")'><i class="fa fa-file-code-o"></i> <span class="nav-label">Shared Code</span> <i class="fa fa-caret-down" style="float:right; font-size:1.2em" aria-hidden="true"></i></a>
-                                    <ul class="nav nav-second-level">
-                                        <li id="ShowExtensionCode1"><a href='@Url.Action("ShowExtensionCode", "Extension")' class="active">Extension Method</a></li>
-                                        <li><a href='@Url.Action("ShowOtherCode", "Extension")'>Code Snippets</a></li>
-                                    </ul>
-                                </li>
-                                <!-- admin role only -->
-                            </ul>
-                        </div>
-                    </nav>
-                </div>
-                <div class="col-lg-10 col-md-10 col-sm-10 col-xs-10 col-lg-offset-2" style="padding:0px">
-                    <div class="gray-bg same-bx-height" style="width:100%;min-height:40vh !important;">
-                        @RenderBody()
-                    </div>
-                </div>
-            </div>
+                    </ul>
+                </nav>
+            </div><!-- pad -->
         </div>
-        <div class="footer navbar-fixed-bottom" style="position:fixed">
-            <div>
-                <strong>&copy;Copyright</strong> 2000 -
-                <script>document.write(new Date().getFullYear())</script> Silicus Technologies
-            </div>
-        </div>
-
-
     </div>
-    <div id="loader" style="display:none">Loading&#8230;</div>
-    @Scripts.Render("~/bundles/requiredJS")     
+    <div class="row">
+        <div id="wrapper" class="wrapper">
+            <!-- START LEFT MENU -->
+            <div class="sidebar-wrapper">
+                <nav class="navbar-default navbar-static-side sidebar" role="navigation">
+                    <div class="sidebar-collapse">
+                        <ul class="nav metismenu" id="side-menu">
+                            <li>
+                                <a href="#"><i class="fa fa-user"></i><span class="nav-label">Frameworx</span> <span class="fa arrow"></span></a>
+                                <ul class="nav nav-second-level">
+                                    <li><a href='@Url.Action("Dashboard", "FrameworxProject")' class="active">Dashboard</a></li>
+                                    <li><a href="@Url.Action("ShowAllProductBacklog", "ProductBacklog")" class="active">Product Backlog</a></li>
+                                </ul>
+                            </li>
+                            <li>
+                                <a href="#"><i class="fa fa-file-code-o"></i><span class="nav-label">Shared Code</span><span class="fa arrow"></span></a>
+                                <ul class="nav nav-second-level">
+                                    <li><a href='@Url.Action("ShowExtensionCode", "Extension")' class="active">Extension Method</a></li>
+                                    <li><a href='@Url.Action("ShowOtherCode", "Extension")'class="active">Code Snippets</a></li>
+                                </ul>
+                            </li>                           
+                        </ul>
+                    </div>
+                </nav>
+            </div>
+            <div id="page-wrapper" class="page-wrapper">
+                @RenderBody()
+            </div>
+        </div>
+    </div>
+    <div class="footer fixed_full">
+        <div>
+            <strong>&copy;Copyright</strong> 2000 -
+            <script>document.write(new Date().getFullYear())</script> Silicus Technologies
+        </div>
+    </div>
+    <div class="loader-overlay" style="display:none;">
+        <div class="loader">
+
+        </div>
+    </div>
+    @Scripts.Render("~/bundles/requiredJS")
     @RenderSection("scripts", required: false)
-
-    @*<script src="~/Scripts/jquery-1.10.2.min.js"></script>*@
-
-    <!-- Silicus Template scripts Start-->
-    @*<script src="~/Scripts/Template-js/bootstrap.min.js"></script>
-        <script src="~/Scripts/Template-js/plugins/metisMenu/jquery.metisMenu.js"></script>
-
-        <script src="~/Scripts/Template-js/plugins/slimscroll/jquery.slimscroll.min.js"></script>
-        <script src="~/Scripts/Template-js/inspinia.js"></script>*@
-    @*
-
-        <!-- Custom and plugin javascript -->
-
-        <script src="~/Scripts/Template-js/plugins/pace/pace.min.js"></script>
-
-        <!-- Sweet alert -->
-        <script src="~/Scripts/Template-js/plugins/sweetalert/sweetalert.min.js"></script>
-        <!-- Toastr -->
-        <script src="~/Scripts/Template-js/plugins/toastr/toastr.min.js"></script>
-        <!-- Switchery -->
-        <script src="~/Scripts/Template-js/plugins/switchery/switchery.js"></script>
-        <!-- searchable drop downs -->
-        <script type="text/javascript" src="~/Scripts/Template-js/plugins/selectize/selectize.js"></script>*@
-    <!-- Silicus Template scripts end -->
-
-    <script>
-        $(document).ready(function () {
-            var ScreenHeight = $(window).height();
-            var topmargin = $(".navbar-inverse").height();
-            var bxHeight = ScreenHeight - ($(".footer").innerHeight() + $(".navbar-inverse").height());
-            $(".same-bx-height").css("min-height", bxHeight);
-            $(".same-bx-height").css("top", topmargin);
-            $(".body-content").css("margin-top", topmargin);
-
-            var url = window.location.pathname;
-            var abc = url.split("/");
-            var action = abc[2];
-            if (action != undefined) {
-                $('#' + action).addClass('active');
-                if (action == "AddExtensionCode" || action == "ShowMyExtensionCode" || action == "ShowExtensionCode" || action == "ReviewExtensionCodeList") {
-                    $("#ExtesionMenu").css("display", "block");
-                }
-                else {
-                    $("#OtherCodeMenu").css("display", "block");
-                }
-            }
-            else {
-                $('#GetAllCategories').addClass('active');
-            }
-
-        });
-    </script>
-    <script>
-        $('#example4, #example3, #example2, #example1').click(function () {
-            setTimeout(function () {
-                toastr.options = {
-                    closeButton: true,
-                    progressBar: true,
-                    showMethod: 'slideDown',
-                    timeOut: 4000
-                };
-                toastr.success('Card Status Saved');
-
-            }, 1300);
-        });
-
-        $('#side-menu li').find('ul').hide();
-        $('#side-menu li').hover(function () {
-            $(this).find('ul').show(500);
-        },
-            function () {
-                $(this).find('ul').hide();
-            });
-    </script>
 </body>
 </html>

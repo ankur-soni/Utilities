@@ -10,20 +10,29 @@ namespace Silicus.Reusable.Web
         {
             bundles.Add(new StyleBundle("~/Content/css").Include(
                       "~/Content/bootstrap.css",
-                      "~/Content/site.css",
-                      "~/Content/sweetalert.css",
-                      "~/Content/icon-outlines-style.css"));
+                      //"~/Content/site.css",
+                      "~/Content/icon-outlines-style.css",
+                      "~/Content/animate.css",
+                      "~/Content/custom-style.css",
+                      "~/Content/perfect-scrollbar.css",
+                      "~/Content/style.css",
+                      "~/Content/plugins/sweetalert/sweetalert.css",
+                      "~/Content/font-awesome/css/font-awesome.css",
+                      "~/Content/plugins/switchery/switchery.css",
+                      "~/Content/plugins/selectize/selectize.css"));
 
             bundles.Add(new ScriptBundle("~/bundles/requiredJS").Include(
                         "~/Scripts/jquery-{version}.js",
-                        "~/Scripts/jquery.validate*",
+                        "~/Scripts/plugins/validate/jquery.validate.min.js",
                         "~/Scripts/modernizr-*",
                         "~/Scripts/bootstrap.js",
                         "~/Scripts/respond.js",
                         "~/Scripts/jquery.unobtrusive-ajax.min.js",
-                        "~/Scripts/jquery.blockUI.js",
                          "~/Scripts/Custom/common.js",
-                         "~/Scripts/sweetalert.min.js"
+                         "~/Scripts/plugins/sweetalert/sweetalert.min.js",
+                         "~/Scripts/Custom/layout.js",
+                         "~/Scripts/Custom/perfect-scrollbar.jquery.js",
+                         "~/Scripts/jquery.validate.unobtrusive.js"
                       ));
         }
     }

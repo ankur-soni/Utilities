@@ -805,10 +805,11 @@ namespace Silicus.EncourageWithAzureAd.Web.Controllers
                     ReviewId = review.Id
                 };
                 _nominationService.AddReviewerCommentsForCurrentNomination(revrComment);
-                if (review.IsSubmited == true)
-                {
-                    _nominationService.UpdateFinalScore(model.NominationId);
-                }
+            }
+
+            if (review.IsSubmited == true)
+            {
+                _nominationService.UpdateFinalScore(model.NominationId);
             }
             return RedirectToAction("Index", "Home");
         }

@@ -38,6 +38,7 @@ namespace Silicus.FrameworxProject.Web.App_Start
             container.Register<IExtensionCodeService, ExtensionCodeService>();
             container.Register<ICommonDbService, CommonDbService>();
             container.Register<IFrameworxFeedbackService, FrameworxFeedbackService>();
+            container.Register<IProductBacklogService, ProductBacklogService>();
             container.Register<IMapper>((factory) => mapperConfiguration.CreateMapper());
             //container.Register<Silicus.UtilityContainer.Entities.ICommonDataBaseContext, Silicus.UtilityContainer.Entities.CommonDataBaseContext>();
             container.Register<Silicus.UtilityContainer.Entities.IDataContextFactory, Silicus.UtilityContainer.Entities.DataContextFactory>();

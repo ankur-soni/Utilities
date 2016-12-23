@@ -21,199 +21,200 @@
                 <div class="f1">
                     @using (Html.BeginForm("AddNomination", "Nomination", FormMethod.Post, new { id = "addNominationForm" }))
                     {
-                    <div class="wizard-">
-                        <div class="f1-steps" id="nomination-steps">
-                            <div class="f1-progress">
-                                <div class="f1-progress-line" data-now-value="25" data-number-of-steps="4" style="width:25%;"></div>
-                            </div>
-                            <div class="f1-step active" step="1">
-                                <div class="f1-step-icon" style="cursor:pointer;" onclick="moveToNominationStep(1, false);"><strong class="ico-num">1</strong></div>
+                        <div class="wizard-">
+                            <div class="f1-steps" id="nomination-steps">
+                                <div class="f1-progress">
+                                    <div class="f1-progress-line" data-now-value="25" data-number-of-steps="4" style="width:25%;"></div>
+                                </div>
+                                <div class="f1-step active" step="1">
+                                    <div class="f1-step-icon" style="cursor:pointer;" onclick="moveToNominationStep(1, false);"><strong class="ico-num">1</strong></div>
 
-                                <p>Nomination Category</p>
-                            </div>
-                            <div class="f1-step" step="2">
+                                    <p>Nomination Category</p>
+                                </div>
+                                <div class="f1-step" step="2">
 
-                                <div class="f1-step-icon" style="cursor:pointer;" onclick="moveToNominationStep(2, false);"><strong class="ico-num">2</strong></div>
+                                    <div class="f1-step-icon" style="cursor:pointer;" onclick="moveToNominationStep(2, false);"><strong class="ico-num">2</strong></div>
 
-                                <p>Employee</p>
-                            </div>
-                            <div class="f1-step" step="3">
+                                    <p>Employee</p>
+                                </div>
+                                <div class="f1-step" step="3">
 
-                                <div class="f1-step-icon" style="cursor:pointer;" onclick="moveToNominationStep(3, false);"><strong class="ico-num">3</strong></div>
-                                <p>Comments</p>
-                            </div>
-                            <div class="f1-step" step="4">
+                                    <div class="f1-step-icon" style="cursor:pointer;" onclick="moveToNominationStep(3, false);"><strong class="ico-num">3</strong></div>
+                                    <p>Comments</p>
+                                </div>
+                                <div class="f1-step" step="4">
 
-                                <div class="f1-step-icon" style="cursor:pointer;" onclick="moveToNominationStep(4, false);"><strong class="ico-num">4</strong></div>
-                                <p>Criteria & Ratings</p>
-                            </div>
-                        </div>
-                    </div>
-                    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-                    <div class="wizard-box" id="nominationCategory" nomination-step="1">
-                        <div class="row">
-                            <div class="col-lg-3 col-md-4 col-sm-5">
-                                <div class="form-group">
-                                    @Html.Label("Nomination Category", htmlAttributes: new { @class = "control-label" })<span class="asterisk">*</span>
-                                    @Html.DropDownListFor(model => model.AwardId, Model.ListOfAwards as SelectList, "Select", new { @class = "form-control", id = "Award" })
-                                    @Html.ValidationMessageFor(model => model.AwardId, "", new { @class = "text-danger" })
+                                    <div class="f1-step-icon" style="cursor:pointer;" onclick="moveToNominationStep(4, false);"><strong class="ico-num">4</strong></div>
+                                    <p>Criteria & Ratings</p>
                                 </div>
                             </div>
                         </div>
-                        <div class="row">
-                            <div class="form-actions pull-right">
-                                <button type="button" class="btn btn-success btn-nav btn-next" onclick="moveToNominationStep(2, true);" id="nextButton">Next&nbsp;&nbsp;<i class="fa fa-chevron-circle-right" aria-hidden="true"></i></button>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="wizard-box" id="project-Dept-Resource" style="display:none;" nomination-step="2">
-                        <div class="row">
-                            <div class="col-md-5">
-                                <div class="form-group M-B15">
-                                    @Html.Label("Employee From", htmlAttributes: new { @class = "control-label requiredfeild" })
-                                    <div class="radio-list">
-                                        <label class="radio-inline p-0" style="padding-left:0px;">
-                                            <div class="radio radio-info">
-                                                @*@Html.RadioButtonFor(model => model.SelectResourcesBy, "Project", new { id = "ProjectRadioButton", value = "Project" })Project*@
-                                                <input type="radio" name="SelectResourcesBy" id="ProjectRadioButton" value="Project">
-                                                <label for="radio1">Project</label>
-                                            </div>
-                                        </label>
-                                        <label class="radio-inline">
-                                            <div class="radio radio-info">
-                                                @*@Html.RadioButtonFor(model => model.SelectResourcesBy, "Department", new { id = "DepartmentRadioButton", value = "Department" })Department*@
-                                                <input type="radio" name="SelectResourcesBy" id="DepartmentRadioButton" value="Department">
-                                                <label for="radio1">Department</label>
-                                            </div>
-                                        </label>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <input type="hidden" name=ManagerId id="ManagerId" value="@Model.ManagerId">
-                        @{ var projectMessage = "There are no projects under you."; }
-                        @{ var departmentMessage = "There are no departments under you.";}
-                        <div class="row">
-                            <div class="col-lg-3 col-md-4 col-sm-5">
-                                <div class="form-group" id="projectInput">
-                                    @Html.Label("Project", htmlAttributes: new { @class = "control-label requiredfeild" })
-                                    <div>
-                                        @if (Model.ProjectsUnderCurrentUser != null)
-                                        {
-                                        @Html.DropDownListFor(model => model.ProjectID, Model.ProjectsUnderCurrentUser as SelectList, "Select", new { @class = "form-control", id = "SelectedProject" })
-                                        @*<span class="help-block themeColorBlue"> Select your Project </span>*@
-                                        @Html.ValidationMessageFor(model => model.ProjectID, "", new { @class = "text-danger" })
-                                        }
-                                        else
-                                        {
-                                        <span style="color:red">@projectMessage</span>
-                                        }
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row" id="departmentInput">
-                            <div class="col-lg-3 col-md-4 col-sm-5">
-                                <div class="form-group" id="projectInput">
-                                    @Html.Label("Department", htmlAttributes: new { @class = "control-label requiredfeild" })
-                                    <div>
-                                        @if (Model.DepartmentsUnderCurrentUser != null)
-                                        {
-                                        @Html.DropDownListFor(model => model.DepartmentId, Model.DepartmentsUnderCurrentUser as SelectList, "Select", new { @class = "form-control", id = "SelectedDepartment" })
-                                        @*<span class="help-block themeColorBlue"> Select your Department </span>*@
-                                        @Html.ValidationMessageFor(model => model.DepartmentId, "", new { @class = "text-danger" })
-                                        }
-                                        else
-                                        {
-                                        <span style="color:red">@departmentMessage</span>
-                                        }
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-lg-3 col-md-4 col-sm-5">
-                                <div class="form-group">
-                                    @Html.Label("Employee Name", htmlAttributes: new { @class = "control-label requiredfeild" })
-                                    @Html.DropDownListFor(model => model.ResourceId, Model.Resources as SelectList, "Select", new { @class = "form-control", id = "Resources" })
-                                    @Html.ValidationMessageFor(model => model.ResourceId, "", new { @class = "text-danger" })
-                                    @*<span class="help-block themeColorBlue"> Select your Employee</span>*@
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="form-actions pull-left">
-                                <button type="button" class="btn btn-success btn-nav btn-prev" onclick="moveToNominationStep(1, false);"><i class="fa fa-chevron-circle-left" aria-hidden="true"></i>&nbsp;&nbsp;Prev</button>
-                            </div>
-                            <div class="form-actions pull-right">
-                                <button type="button" class="btn btn-success btn-nav btn-next" onclick="moveToNominationStep(3, true);" id="nextButton">Next &nbsp;&nbsp;<i class="fa fa-chevron-circle-right" aria-hidden="true"></i></button>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="wizard-box" style="display:none;" id="comments" nomination-step="3">
-                        <div class="row">
-                            <div class="col-md-6">
-                                <div class="row">
+                        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                        <div class="wizard-box" id="nominationCategory" nomination-step="1">
+                            <div class="row">
+                                <div class="col-lg-3 col-md-4 col-sm-5">
                                     <div class="form-group">
-                                        @Html.Label("Comment", htmlAttributes: new { @class = "col-md-12 control-label requiredfeild" })
-                                        <div class="col-md-12">
-                                            <div class="form-group">
-                                                @Html.TextAreaFor(model => model.MainComment, new { @class = "form-control", placeholder = "Maximum 500 words", id = "managerComment", name = "defaultconfig", rows = "5", maxlength = 500 })
-                                                <div style="text-align:right;">
-                                                    @Html.ValidationMessageFor(model => model.MainComment, "", new { @class = "text-danger", id = "managerCommentValidationmessage" })
+                                        @Html.Label("Nomination Category", htmlAttributes: new { @class = "control-label" })<span class="asterisk">*</span>
+                                        @Html.DropDownListFor(model => model.AwardId, Model.ListOfAwards as SelectList, "Select", new { @class = "form-control", id = "Award" })
+                                        @Html.ValidationMessageFor(model => model.AwardId, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="form-actions pull-right">
+                                    <button type="button" class="btn btn-success btn-nav btn-next" onclick="moveToNominationStep(2, true);" id="nextButton">Next&nbsp;&nbsp;<i class="fa fa-chevron-circle-right" aria-hidden="true"></i></button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="wizard-box" id="project-Dept-Resource" style="display:none;" nomination-step="2">
+                            <div class="row">
+                                <div class="col-md-5">
+                                    <div class="form-group M-B15">
+                                        @Html.Label("Employee From", htmlAttributes: new { @class = "control-label requiredfeild" })
+                                        <div class="radio-list">
+                                            <label class="radio-inline p-0" style="padding-left:0px;">
+                                                <div class="radio radio-info">
+                                                    @*@Html.RadioButtonFor(model => model.SelectResourcesBy, "Project", new { id = "ProjectRadioButton", value = "Project" })Project*@
+                                                    <input type="radio" name="SelectResourcesBy" id="ProjectRadioButton" value="Project">
+                                                    <label for="radio1">Project</label>
                                                 </div>
-                                            </div>
-
+                                            </label>
+                                            <label class="radio-inline">
+                                                <div class="radio radio-info">
+                                                    @*@Html.RadioButtonFor(model => model.SelectResourcesBy, "Department", new { id = "DepartmentRadioButton", value = "Department" })Department*@
+                                                    <input type="radio" name="SelectResourcesBy" id="DepartmentRadioButton" value="Department">
+                                                    <label for="radio1">Department</label>
+                                                </div>
+                                            </label>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                        <div class="row">
-                            <div class="form-actions pull-left">
-                                <button type="button" class="btn btn-success btn-nav" onclick="moveToNominationStep(2, false);"><i class="fa fa-chevron-circle-left" aria-hidden="true"></i>&nbsp;&nbsp;Prev</button>
-                            </div>
-                            <div class="form-actions pull-right">
-                                <button type="button" class="btn btn-success btn-nav btn-next" onclick="moveToNominationStep(4, true);" id="nextButton">Next&nbsp;&nbsp;<i class="fa fa-chevron-circle-right" aria-hidden="true"></i></button>
-                            </div>
-                        </div>
-                    </div>
-                    <div id="criteriaContainer" style="display:none;" nomination-step="4">
-                        <div class="row M-T15" id="disclaimer">
-                            <div class="col-sm-12">
-                                <div class="alert alert-danger">
-                                    <strong>Disclaimer :</strong> Mention your comments against the criteria your nominee fits in. Please note that it’s NOT mandatory to mention comments against each criteria given below. You can leave the comment area blank for the criteria which are not relevant.
+
+                            <input type="hidden" name=ManagerId id="ManagerId" value="@Model.ManagerId">
+                            @{ var projectMessage = "There are no projects under you."; }
+                            @{ var departmentMessage = "There are no departments under you.";}
+                            <div class="row">
+                                <div class="col-lg-3 col-md-4 col-sm-5">
+                                    <div class="form-group" id="projectInput">
+                                        @Html.Label("Project", htmlAttributes: new { @class = "control-label requiredfeild" })
+                                        <div>
+                                            @if (Model.ProjectsUnderCurrentUser != null)
+                                            {
+                                                @Html.DropDownListFor(model => model.ProjectID, Model.ProjectsUnderCurrentUser as SelectList, "Select", new { @class = "form-control", id = "SelectedProject" })
+                                                @*<span class="help-block themeColorBlue"> Select your Project </span>*@
+                                                @Html.ValidationMessageFor(model => model.ProjectID, "", new { @class = "text-danger" })
+                                            }
+                                            else
+                                            {
+                                                <span style="color:red">@projectMessage</span>
+                                            }
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
-                            <div class="col-sm-12">
-                                <div class="alert alert-danger" style="display:none">
-                                    @Html.ValidationMessageFor(model => model.Comments, "", new { @class = "text-danger", id = "criterisCommentValidationmessage" })
+                            <div class="row" id="departmentInput">
+                                <div class="col-lg-3 col-md-4 col-sm-5">
+                                    <div class="form-group" id="projectInput">
+                                        @Html.Label("Department", htmlAttributes: new { @class = "control-label requiredfeild" })
+                                        <div>
+                                            @if (Model.DepartmentsUnderCurrentUser != null)
+                                            {
+                                                @Html.DropDownListFor(model => model.DepartmentId, Model.DepartmentsUnderCurrentUser as SelectList, "Select", new { @class = "form-control", id = "SelectedDepartment" })
+                                                @*<span class="help-block themeColorBlue"> Select your Department </span>*@
+                                                @Html.ValidationMessageFor(model => model.DepartmentId, "", new { @class = "text-danger" })
+                                            }
+                                            else
+                                            {
+                                                <span style="color:red">@departmentMessage</span>
+                                            }
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-lg-3 col-md-4 col-sm-5">
+                                    <div class="form-group">
+                                        @Html.Label("Employee Name", htmlAttributes: new { @class = "control-label requiredfeild" })
+                                        @Html.DropDownListFor(model => model.ResourceId, Model.Resources as SelectList, "Select", new { @class = "form-control", id = "Resources" })
+                                        @Html.ValidationMessageFor(model => model.ResourceId, "", new { @class = "text-danger" })
+                                        @*<span class="help-block themeColorBlue"> Select your Employee</span>*@
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="form-actions pull-left">
+                                    <button type="button" class="btn btn-success btn-nav btn-prev" onclick="moveToNominationStep(1, false);"><i class="fa fa-chevron-circle-left" aria-hidden="true"></i>&nbsp;&nbsp;Prev</button>
+                                </div>
+                                <div class="form-actions pull-right">
+                                    <button type="button" class="btn btn-success btn-nav btn-next" onclick="moveToNominationStep(3, true);" id="nextButton">Next &nbsp;&nbsp;<i class="fa fa-chevron-circle-right" aria-hidden="true"></i></button>
                                 </div>
                             </div>
                         </div>
+                        <div class="wizard-box" style="display:none;" id="comments" nomination-step="3">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="row">
+                                        <div class="form-group">
+                                            @Html.Label("Comment", htmlAttributes: new { @class = "col-md-12 control-label requiredfeild" })
+                                            <div class="col-md-12">
+                                                <div class="form-group">
+                                                    @Html.TextAreaFor(model => model.MainComment, new { @class = "form-control", placeholder = "Maximum 500 words", id = "managerComment", name = "defaultconfig", rows = "5", maxlength = 500 })
+                                                    <div style="text-align:right;">
+                                                        @Html.ValidationMessageFor(model => model.MainComment, "", new { @class = "text-danger", id = "managerCommentValidationmessage" })
+                                                    </div>
+                                                </div>
 
-                        <div id="criteria-rating">
-                        </div>
-
-                        <div class="row M-T15">
-                            <div class="form-actions pull-left">
-                                <button type="button" class="btn btn-success btn-nav" onclick="moveToNominationStep(3,false);"><i class="fa fa-chevron-circle-left" aria-hidden="true"></i>&nbsp;&nbsp;Prev</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
-                            <div class="pull-right btn-nav">
-                                <input type="button" name="submit" value="Save Draft" id="savebutton" class="btn btn-primary" onclick="return checkValidationOnSaveDraft();" />
-                                <input type="button" name="submit" value="Submit" id="submitButton" class="btn btn-primary" onclick="return checkValidationOnSubmit();" />
-                                <input type="button" value="Cancel" class="btn btn-primary" onclick="location.href='@Url.Action("Index", "Home")'" />
+                            <div class="row">
+                                <div class="form-actions pull-left">
+                                    <button type="button" class="btn btn-success btn-nav" onclick="moveToNominationStep(2, false);"><i class="fa fa-chevron-circle-left" aria-hidden="true"></i>&nbsp;&nbsp;Prev</button>
+                                </div>
+                                <div class="form-actions pull-right">
+                                    <button type="button" class="btn btn-success btn-nav btn-next" onclick="moveToNominationStep(4, true);" id="nextButton">Next&nbsp;&nbsp;<i class="fa fa-chevron-circle-right" aria-hidden="true"></i></button>
+                                </div>
                             </div>
                         </div>
+                        <div id="criteriaContainer" style="display:none;" nomination-step="4">
+                            <div class="row M-T15" id="disclaimer">
+                                <div class="col-sm-12">
+                                    <div class="alert alert-danger">
+                                        <strong>Disclaimer :</strong> Mention your comments against the criteria your nominee fits in. Please note that it’s NOT mandatory to mention comments against each criteria given below. You can leave the comment area blank for the criteria which are not relevant.
+                                    </div>
+                                </div>
+                                <div class="col-sm-12">
+                                    <div class="alert alert-danger" style="display:none">
+                                        @Html.ValidationMessageFor(model => model.Comments, "", new { @class = "text-danger", id = "criterisCommentValidationmessage" })
+                                    </div>
+                                </div>
+                            </div>
 
-                    </div>
-                    }
+                            <div id="criteria-rating">
+                            </div>
+
+                            <div class="row M-T15">
+                                <div class="form-actions pull-left">
+                                    <button type="button" class="btn btn-success btn-nav" onclick="moveToNominationStep(3,false);"><i class="fa fa-chevron-circle-left" aria-hidden="true"></i>&nbsp;&nbsp;Prev</button>
+                                </div>
+                                <div class="pull-right btn-nav">
+                                    <input type="button" name="submit" value="Save Draft" id="savebutton" class="btn btn-primary" onclick="return checkValidationOnSaveDraft();" />
+                                    <input type="button" name="submit" value="Submit" id="submitButton" class="btn btn-primary" onclick="return checkValidationOnSubmit();" />
+                                    <input type="button" value="Cancel" class="btn btn-primary" onclick="location.href='@Url.Action("Index", "Home")'" />
+                                </div>
+                            </div>
+
+                        </div>
+                                }
                 </div>
                 <div class="clearfix"></div>
             </div>
         </div>
     </div>
+    @Html.Hidden("showDataLoseWarning", false)
 </div>
 
 <script src="~/js/plugins/validate/jquery.validate.min.js"></script>
@@ -234,7 +235,6 @@
             type: 'GET',
             url: '@Url.Action("GetLockedAwardCategories","Nomination")',
             success: function (data) {
-                debugger;
                 var index = 0;
                 var lockedCategories = "";
                 $.each(data, function () {
@@ -282,41 +282,70 @@
               $("#ManagerId").val('@Model.ManagerId');
           });
 
-    $("#Award").change(function () {
+    var previousSelectedCategory;
 
-        if (this.value == '1' || this.value == '2' || this.value == '5') {
-            $("#label").show();
-        } else {
-            $("#label").hide();
+    $("#Award").on('focus', function () {
+        // Store the current value on focus and on change
+        previousSelectedCategory = this.value;
+    });
+
+    $("#Award").change(function (event) {
+        var showDataLoseWarning = $("#showDataLoseWarning").val();
+        if (showDataLoseWarning.toLowerCase() == "true") {
+            swal({
+                title: "Are you sure?",
+                text: "All your changes will be lost! Do you want to continue?",
+                type: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#337ab7",
+                confirmButtonText: "Yes",
+                cancelButtonText: "No",
+                closeOnConfirm: true,
+                closeOnCancel: true
+            }, function (isConfirm) {
+                if (isConfirm) {
+                    if (this.value == '1' || this.value == '2' || this.value == '5') {
+                        $("#label").show();
+                    } else {
+                        $("#label").hide();
+                    }
+
+                    $('#ProjectRadioButton').prop('checked', true);
+                    $('#DepartmentRadioButton').prop('checked', false);
+                    $("#projectInput").show();
+                    $("#departmentInput").hide();
+                    $("#SelectedProject").prop('selectedIndex', 0);
+                    $("#SelectedDepartment").prop('selectedIndex', 0);
+                    $('#Resources').empty();
+                    $('#Resources').append($("<option selected></option>").val(null).html("Select"));
+                    $("#managerComment").val('');
+
+                    $('#disclamer').prop('hidden', false);
+
+                    var selectdAward = $("#Award").val();
+                    $('#criteria-rating').empty();
+                    //var ServiceUrl = "/Nomination/CriteriasForAward?awardId=" + selectdAward;
+                    var ServiceUrl = "/Nomination/CriteriasForAwardPartialView?awardId=" + selectdAward;
+
+                    $.ajax({
+                        type: 'post',
+                        url: ServiceUrl,
+                        async: true,
+                        contentType: "application/json; charset=utf-8",
+                        success: function (data) {
+                            $('#criteria-rating').html(data);
+                        }
+                    });
+                } else {
+                    event.stopPropagation();
+                    $("#Award").val(previousSelectedCategory);
+                    return false;
+                }
+
+                // Make sure the previous value is updated
+                previous = this.value;
+            });
         }
-
-        $('#ProjectRadioButton').prop('checked', true);
-        $('#DepartmentRadioButton').prop('checked', false);
-        $("#projectInput").show();
-        $("#departmentInput").hide();
-        $("#SelectedProject").prop('selectedIndex', 0);
-        $("#SelectedDepartment").prop('selectedIndex', 0);
-        $('#Resources').empty();
-        $('#Resources').append($("<option selected></option>").val(null).html("Select"));
-
-        $('#disclamer').prop('hidden', false);
-
-        var selectdAward = $("#Award").val();
-        $('#criteria-rating').empty();
-        //var ServiceUrl = "/Nomination/CriteriasForAward?awardId=" + selectdAward;
-        var ServiceUrl = "/Nomination/CriteriasForAwardPartialView?awardId=" + selectdAward;
-
-        $.ajax({
-            type: 'post',
-            url: ServiceUrl,
-            async: true,
-            contentType: "application/json; charset=utf-8",
-            success: function (data) {
-                $('#criteria-rating').html(data);
-            }
-        });
-
-
     });
 
     function edValueKeyPress(key) {
@@ -592,7 +621,6 @@
     $("#managerComment").on('click', function () { $("#managerCommentValidationmessage").text("") });
 
     function moveToNominationStep(stepNumber, toBeValidated) {
-
         var progressLineWidth = 25 * stepNumber;
         //
         if (toBeValidated) {
@@ -600,6 +628,8 @@
                 return false;
             }
         }
+
+        $("#showDataLoseWarning").val(true);
 
         //To move the number grid on the Top -- Start
 
@@ -627,16 +657,16 @@
         var criteriaComments = $("[isRequiredForCriteria]");
         $.each(criteriaComments, function () {
             if ($(this).attr("isRequiredForCriteria") == "true") {
-            var classes = $(this).attr("class").toString();
-            if (classes.indexOf("ddlWeightage") > 0) {
-                if ($(this).val() == 0) {
+                var classes = $(this).attr("class").toString();
+                if (classes.indexOf("ddlWeightage") > 0) {
+                    if ($(this).val() == 0) {
                         $(this).addClass("noCommentError");
                         countOfEmptyComments++;
                     } else {
                         $(this).removeClass("noCommentError");
                     }
-            } else {
-                if ($(this).val().trim() == "") {
+                } else {
+                    if ($(this).val().trim() == "") {
                         $(this).addClass("noCommentError");
                         countOfEmptyComments++;
                     } else {
@@ -651,7 +681,7 @@
             $("#criterisCommentValidationmessage").parent().hide();
             $("#criterisCommentValidationmessage").text("");
         } else {
-            swal("Error","Criteria Weightage and Comment are mandatory if rating is provided for the criteria!");
+            swal("Error", "Criteria Weightage and Comment are mandatory if rating is provided for the criteria!");
             $("#criterisCommentValidationmessage").parent().show();
             $("#criterisCommentValidationmessage").text("Criteria Weightage and Comment are mandatory if rating is provided for the criteria!");
         }

@@ -1,14 +1,12 @@
 ﻿using Silicus.FrameworxProject.DAL.Interfaces;
 using Silicus.FrameworxProject.Models;
-using System;
+using Silicus.FrameworxProject.Services.Interfaces;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Silicus.FrameworxProject.Services
 {
-    public class ProductBacklogService
+    public class ProductBacklogService: IProductBacklogService
     {
         private readonly IDataContextFactory _dataContextFactory;
         private readonly IFrameworxProjectDatabaseContext _FrameworxProjectDatabaseContext;
