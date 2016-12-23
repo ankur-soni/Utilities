@@ -23,8 +23,10 @@
                 if (value) {
                     var filter = { logic: "or", filters: [] };
                     filter.filters.push({ field: "FirstName", operator: "contains", value: value });
-                    filter.filters.push({ field: "LastName", operator: "contains", value: value });
-                    filter.filters.push({ field: "Email", operator: "contains", value: value });
+                    filter.filters.push({ field: "RequisitionId", operator: "contains", value: value });
+                    filter.filters.push({ field: "ContactNumber", operator: "contains", value: value });
+                    filter.filters.push({ field: "TotalExperience", operator: "contains", value: value });
+                    filter.filters.push({ field: "PanelName", operator: "contains", value: value });
                     grid.dataSource.query({ filter: filter });
                 } else {
                     grid.dataSource.filter({});
@@ -254,14 +256,11 @@
         @(Html.Kendo().Grid<Silicus.Ensure.Web.Models.UserViewModel>().Name("userGrids")
          .Columns(columns =>
               {
-                  columns.Bound(p => p.FirstName).Width(50);
-                  columns.Bound(p => p.LastName).Width(50);
-                  columns.Bound(p => p.Gender).Width(50);
+                  columns.Bound(p => p.FirstName).ClientTemplate("#=FirstName# #=LastName#").Title("Name").Width(50);
+                  columns.Bound(p => p.RequisitionId).Title("Requisition Id").Width(50);
                   columns.Bound(p => p.Position).Width(50);
-                  columns.Bound(p => p.Department).Width(50);
-                  columns.Bound(p => p.Experience).Width(50);
-                  columns.Bound(p => p.Email).Width(50);
-                  columns.Bound(p => p.TestStatus).Width(50);
+                  columns.Bound(p => p.ContactNumber).Title("Contact Number").Width(50);
+                  columns.Bound(p => p.TotalExperience).Title("Total Experience").Width(50);
                   columns.Bound(p => p.PanelName).Title("Panel").Width(50);
                   columns.Bound(c => c.UserId).ClientTemplate(@"<a class='k-button k-button-icontext k-grid-edit' href='" + Url.Action("CandidateAdd", "Admin") + "?UserId=#=UserId#'><span class='k-icon k-edit'></span>Edit</a><a id='testSuiteDel' class='k-button k-button-icontext k-grid-delete' href='\\#' onclick='return deleteUser(#=UserId#)'><span class='k-icon k-delete'></span>Delete</a>").Width(160);
                   columns.Bound(c => c.UserId).ClientTemplate(@"
