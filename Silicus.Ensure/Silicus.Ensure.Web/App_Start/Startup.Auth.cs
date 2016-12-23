@@ -9,13 +9,14 @@ using Silicus.Ensure.Entities;
 using Silicus.Ensure.Entities.Identity;
 using Silicus.Ensure.Models.DataObjects;
 
-using Owin;
 using Microsoft.Owin.Security;
-using Microsoft.Owin.Security.Cookies;
 using Microsoft.Owin.Security.OpenIdConnect;
-using System.Configuration;
 using System.Globalization;
 using System.Threading.Tasks;
+using Silicus.Ensure.Web.Models;
+using Microsoft.IdentityModel.Clients.ActiveDirectory;
+using System.IdentityModel.Claims;
+using System.Web;
 
 namespace Silicus.Ensure.Web
 {
@@ -24,9 +25,11 @@ namespace Silicus.Ensure.Web
 
         private static string clientId = ConfigurationManager.AppSettings["ida:ClientId"];
         private static string aadInstance = ConfigurationManager.AppSettings["ida:AADInstance"];
-        private static string tenant = ConfigurationManager.AppSettings["ida:Tenant"];
+        private static string appKey = ConfigurationManager.AppSettings["ida:ClientSecret"];
+        //private static string tenant = ConfigurationManager.AppSettings["ida:Tenant"];
         private static string postLogoutRedirectUri = ConfigurationManager.AppSettings["ida:PostLogoutRedirectUri"];
-        string authority = String.Format(CultureInfo.InvariantCulture, aadInstance, tenant);
+        string authority = String.Format(CultureInfo.InvariantCulture, aadInstance);
+        string graphResourceId = "https://graph.windows.net";
 
         // For more information on configuring authentication, please visit http://go.microsoft.com/fwlink/?LinkId=301864
         public void ConfigureAuth(IAppBuilder app)
@@ -91,13 +94,19 @@ namespace Silicus.Ensure.Web
                     ClientId = clientId,
                     Authority = authority,
                     PostLogoutRedirectUri = postLogoutRedirectUri,
-                    RedirectUri = postLogoutRedirectUri,
-                    Notifications = new OpenIdConnectAuthenticationNotifications
+
+                    Notifications = new OpenIdConnectAuthenticationNotifications()
                     {
-                        AuthenticationFailed = context =>
+                        // If there is a code in the OpenID Connect response, redeem it for an access token and refresh token, and store those away.
+                        AuthorizationCodeReceived = (context) =>
                         {
-                            context.HandleResponse();
-                            context.Response.Redirect("/Error?message=" + context.Exception.Message);
+                            var code = context.Code;
+                            ClientCredential credential = new ClientCredential(clientId, appKey);
+                            string signedInUserID = context.AuthenticationTicket.Identity.FindFirst(ClaimTypes.NameIdentifier).Value;
+                            AuthenticationContext authContext = new AuthenticationContext(authority, new ADALTokenCache(signedInUserID));
+                            AuthenticationResult result = authContext.AcquireTokenByAuthorizationCode(
+                            code, new Uri(HttpContext.Current.Request.Url.GetLeftPart(UriPartial.Path)), credential, graphResourceId);
+
                             return Task.FromResult(0);
                         }
                     }

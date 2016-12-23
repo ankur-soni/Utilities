@@ -140,10 +140,10 @@
                                                         {
                                                             Value = r.ToString(),
                                                             Text = r.ToString()
-                                                        }), "", new { @class = "reviewer-rating", @autocomplete = "off" })
+                                                        }), "", new { @class = "reviewer-rating", @autocomplete = "off"})
                                             </td>
 
-                                            <td class="col-lg-3 col-md-3 col-sm-3">@Html.TextArea("Comments[" + @j + "].Comment", new { name = "reviewercomment", maxlength = "100", onKeyUp = "return onkeyevent(this);", onblur = "return hideRemainingCharacterText(this);" })<div class="textarea"></div></td>
+                                            <td class="col-lg-3 col-md-3 col-sm-3">@Html.TextArea("Comments[" + @j + "].Comment", new { @class = "reviewer-comment", name = "reviewercomment", maxlength = "100", onKeyUp = "return onkeyevent(this);", onblur = "return hideRemainingCharacterText(this);" })<div class="textarea"></div></td>
 
                                             @Html.Hidden("Comments[" + @j + "].CriteriaId", managerComment.CriteriaId)
                                         </tr>
@@ -287,6 +287,31 @@
     }
 
     function SubmitReview() {
+        var noRatings = false;
+        $(".reviewer-rating").each(function () {
+            //console.log($(this).val());
+            if ($(this).val() === "") {
+                noRatings = true;
+            }
+        });
+        if (noRatings) {
+            swal("Error", "Please provide your ratings for all criterias.");
+            return false;
+        }
+
+        var noComment = false;
+        $(".reviewer-comment").each(function () {
+            //console.log($(this).val());
+            if ($(this).val() === "") {
+                noComment = true;
+            }
+        });
+        if (noComment) {
+            swal("Error", "Please provide your comments for all criterias.");
+            return false;
+        }
+
+
         if ($('#reviewNominationForm').valid()) {
             swal({
                 title: "Submit Review",

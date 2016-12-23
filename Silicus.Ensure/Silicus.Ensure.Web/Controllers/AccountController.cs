@@ -24,7 +24,6 @@ using Microsoft.Owin.Security.Cookies;
 
 namespace Silicus.Ensure.Web.Controllers
 {
-   // [Authorize]
     public class AccountController : Controller
     {
         private readonly ICookieHelper _cookieHelper;
@@ -701,7 +700,7 @@ namespace Silicus.Ensure.Web.Controllers
             // Send an OpenID Connect sign-in request.
             if (!Request.IsAuthenticated)
             {
-                HttpContext.GetOwinContext().Authentication.Challenge(new AuthenticationProperties { RedirectUri = "/" },
+                HttpContext.GetOwinContext().Authentication.Challenge(new AuthenticationProperties { RedirectUri = "/Account/Index" },
                     OpenIdConnectAuthenticationDefaults.AuthenticationType);
             }
         }
@@ -719,9 +718,13 @@ namespace Silicus.Ensure.Web.Controllers
         {
             if (Request.IsAuthenticated)
             {
-                return RedirectToAction("Index", "Home");
+                return RedirectToAction("Index", "Account");
             }
 
+            return View();
+        }
+        public ActionResult Index()
+        {
             return View();
         }
     }
