@@ -1,26 +1,48 @@
 ﻿<style>
     .navbar-inverse .navbar-nav > .active > a, .navbar-inverse .navbar-nav > .active > a:hover, .navbar-inverse .navbar-nav > .active > a:focus {
-    color: #ffffff;
-    background-color: #07c !important;
-}
+        color: #ffffff;
+        background-color: #07c !important;
+    }
 
-.navbar {
-    border-radius: unset; 
-}
+    .navbar {
+        border-radius: unset;
+    }
 </style>
 @{
     ViewBag.Title = "Nolistpage";
 }
-<nav class="navbar navbar-inverse" id="ExtesionMenu" style="background:#2F4050;position:fixed;width:100%;display:none">
-    <div class="container-fluid">
-        <ul class="nav navbar-nav" style="background:#2F4050">
-            <li id="AddExtensionCode"><a href='@Url.Action("AddExtensionCode", "Extension")'>Add Extension Code</a></li>
-            <li id="ShowExtensionCode"><a href='@Url.Action("ShowExtensionCode", "Extension")'>Published Extension Code </a></li>
-            <li id="ShowMyExtensionCode"><a href='@Url.Action("ShowMyExtensionCode", "Extension")'>My Extension Code List</a></li>
-            <li id="ReviewExtensionCodeList"><a href='@Url.Action("ReviewExtensionCodeList", "Extension")'>Review Extension Code List</a></li>
-        </ul>
+<div class="row white-bg header-row">
+    <nav class="" role="navigation" style="margin-bottom: 0">
+        <div class="navbar-header">
+            <a class="navbar-minimalize minimalize-styl-2 btn btn-primary" id="menu-toggle" style="margin-left:15px;" href="#"><i class="fa fa-bars"></i> </a>
+        </div>
+    </nav>
+
+    <div class="col-lg-11 col-md-11 col-sm-11">
+        <h1 class="dashboard-name">Extension Method</h1>
     </div>
-</nav>
+</div>
+
+<div class="row">
+    <div class="col-lg-12 col-md-12 col-sm-12">
+        <div class="box header-box M-T15">
+            <nav class="navbar navbar-inverse" id="ExtesionMenu" style="background:#2F4050;position:fixed;width:100%;display:none">
+                <div class="container-fluid">
+                    <ul class="nav navbar-nav" style="background:#2F4050">
+                        <li id="AddExtensionCode"><a href='@Url.Action("AddExtensionCode", "Extension")'>Add Extension Code</a></li>
+                        <li id="ShowExtensionCode"><a href='@Url.Action("ShowExtensionCode", "Extension")'>Published Extension Code </a></li>
+                        <li id="ShowMyExtensionCode"><a href='@Url.Action("ShowMyExtensionCode", "Extension")'>My Extension Code List</a></li>
+                        <li id="ReviewExtensionCodeList"><a href='@Url.Action("ReviewExtensionCodeList", "Extension")'>Review Extension Code List</a></li>
+                    </ul>
+                </div>
+            </nav>
+            <div class="clearfix">
+            </div>
+        </div>
+    </div>
+</div>
+
+
 <nav class="navbar navbar-inverse" id="OtherCodeMenu" style="background:#2F4050;position:fixed;width:100%;display:none">
     <div class="container-fluid">
         <ul class="nav navbar-nav" style="background:#2F4050">

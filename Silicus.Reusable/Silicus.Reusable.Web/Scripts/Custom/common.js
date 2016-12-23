@@ -11,11 +11,11 @@
 }
 
 function blockUI() {
-    document.getElementById("loader").style.display = "block";
+    $(".loader-overlay").show();
 };
 
 function unblockUI() {
-    document.getElementById("loader").style.display = "none";
+    $(".loader-overlay").hide();
 };
 
 function rebindValidation(formId) {
