@@ -79,7 +79,16 @@
                     }
                 </tr>
                 <tr>
-                    <td></td>
+                    <td>
+                        @if (!nomination.IsShortListed)
+                        {
+                            <button type="button" onclick="ShortList(@nomination.NominationId)" class="btn btn-primary">Shortlist</button>
+                        }
+                        else
+                        {
+                            <button type="button" disabled="disabled" class="btn btn-success-green">Shortlisted</button>
+                        }
+                    </td>
                     <td>
                         Reviewer
                     </td>
