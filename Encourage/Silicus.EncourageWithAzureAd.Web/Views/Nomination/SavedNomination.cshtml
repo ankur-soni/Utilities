@@ -63,26 +63,32 @@
     var _urlGetNominationListForHistoricalMonths = '@Url.Action("GetNominationListPartialView", "Nomination", new { forCurrentMonth = false })';
 
     $("#historical-tab").on("click", function () {
+        $(".loader-overlay").show();
         $.ajax({
             type: "GET",
             url: _urlGetNominationListForHistoricalMonths,
             success: function (response) {
+                $(".loader-overlay").hide();
                 $("#historical").html(response);
             },
             error: function (error) {
+                $(".loader-overlay").hide();
                 console.log(error);
             }
         });
     })
 
     $("#current-tab").on("click", function () {
+        $(".loader-overlay").show();
         $.ajax({
             type: "GET",
             url: _urlGetNominationListForActiveMonth,
             success: function (response) {
+                $(".loader-overlay").hide();
                 $("#currentMonth").html(response);
             },
             error: function (error) {
+                $(".loader-overlay").hide();
                 console.log(error);
             }
         });
