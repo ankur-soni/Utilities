@@ -82,11 +82,11 @@
                     <td>
                         @if (!nomination.IsShortListed)
                         {
-                            <button type="button" onclick="ShortList(@nomination.NominationId)" class="btn btn-primary">Shortlist</button>
+                            <button type="button" onclick="ShortList(@nomination.NominationId)" class="btn btn-primary btn-sm">Shortlist</button>
                         }
                         else
                         {
-                            <button type="button" disabled="disabled" class="btn btn-success-green">Shortlisted</button>
+                            <button type="button" disabled="disabled" class="btn btn-success-green btn-sm">Shortlisted</button>
                         }
                     </td>
                     <td>
