@@ -24,7 +24,7 @@ namespace Silicus.Ensure.Web.Models
         [Display(Name = "Last Name")]
         [Required(ErrorMessage = "Last name is required!")]
         public string LastName { get; set; }
-        
+
         [StringLength(50)]
         [Display(Name = "Requisition Id")]
         [Required(ErrorMessage = "Requisition id is required!")]
@@ -50,7 +50,7 @@ namespace Silicus.Ensure.Web.Models
         [Required(ErrorMessage = "Contact number is required!")]
         [RegularExpression(@"^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$", ErrorMessage = "Contact number is not a valid phone number!")]
         public string ContactNumber { get; set; }
-        
+
         [StringLength(50)]
         [Display(Name = "Client name")]
         [Required(ErrorMessage = "ClientName is required!")]
@@ -78,18 +78,20 @@ namespace Silicus.Ensure.Web.Models
         [Display(Name = "CurrentTitle")]
         [Required(ErrorMessage = "Current title is required!")]
         public string CurrentTitle { get; set; }
-        
+
         public string ResumePath { get; set; }
 
         public string ResumeName { get; set; }
-        
+
         public string Role { get; set; }
-        
+
         [Display(Name = "Gender")]
         [Required(ErrorMessage = "Gender is required!")]
         public string Gender { get; set; }
-        
+
         public string CandidateStatus { get; set; }
+
+        public string TestStatus { get; set; }
 
         public int TestSuiteId { get; set; }
 

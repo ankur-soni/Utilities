@@ -36,7 +36,7 @@ namespace Silicus.Ensure.Services
         {
             if (User.Role != null && User.Role.ToLower() == RoleName.Candidate.ToString().ToLower())
             {
-                if (User.FirstName != null && User.Address != null && User.LastName != null)
+                if (User.FirstName != null && User.LastName != null)
                 {
                     _context.Update(User);
                 }

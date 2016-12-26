@@ -10,52 +10,52 @@ namespace Silicus.Ensure.Models.DataObjects
         [Key]
         public int UserId { get; set; }
 
-        //[Required(ErrorMessage = "Name is required!")]
         public string FirstName { get; set; }
 
         public string MiddleName { get; set; }
 
-        // [Required(ErrorMessage = "Last name is required")]
         public string LastName { get; set; }
 
-        //[Required(ErrorMessage = "This field is required.")]
         [DataType(DataType.Password)]
         public string NewPassword { get; set; }
 
-        //[Required(ErrorMessage = "This field is required.")]
         [CompareAttribute("NewPassword", ErrorMessage = "Passwords don't match.")]
         [DataType(DataType.Password)]
         public string ConfirmPassword { get; set; }
 
-        //[Required]
-        public string Address { get; set; }
-
-        //[Required]
         public bool IsActive { get; set; }
 
-        //[Required]
         public string Role { get; set; }
 
-        // [Required]
         public string Email { get; set; }
 
         public string Gender { get; set; }
 
         public string Position { get; set; }
 
-        public string Experience { get; set; }
+        public string RequisitionId { get; set; }
 
-        public string CurrentEmployer { get; set; }
+        public string CurrentLocation { get; set; }
 
-        public string PrimaryMobileNumber { get; set; }
+        public DateTime DOB { get; set; }
 
-        public string SecondaryMobileNumber { get; set; }
+        public string ContactNumber { get; set; }
 
-        public string Department { get; set; }
+        public string ClientName { get; set; }
+
+        public string Technology { get; set; }
+
+        public string TotalExperience { get; set; }
+
+        public string RelevantExperience { get; set; }
+
+        public string CurrentCompany { get; set; }
+
+        public string CurrentTitle { get; set; }
+
+        public string CandidateStatus { get; set; }
 
         public string TestStatus { get; set; }
-
-        // public int TestSuiteId { get; set; }
 
         public string PanelId { get; set; }
 
