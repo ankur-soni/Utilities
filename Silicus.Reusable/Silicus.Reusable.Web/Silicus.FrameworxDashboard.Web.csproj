@@ -332,6 +332,7 @@
     <Content Include="fonts\icon-outlines.ttf" />
     <Content Include="fonts\icon-outlines.woff" />
     <Content Include="LESS\.crunch" />
+    <Content Include="fonts\glyphicons-halflings-regular.woff2" />
     <None Include="Properties\PublishProfiles\Reusable - FTP.pubxml" />
     <None Include="Properties\PublishProfiles\Reusable - Web Deploy.pubxml" />
     <None Include="Properties\PublishProfiles\Reusable.pubxml" />
