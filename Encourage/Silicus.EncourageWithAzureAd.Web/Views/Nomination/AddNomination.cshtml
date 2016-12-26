@@ -248,15 +248,13 @@
         $("#departmentInput").hide();
         $("#label").hide();
         $('#Award option').css('color:red');
-        //$("#employeeInputForOther").hide();
+        
         $("#Resources").select2();
     });
 
     $("#OtherRadioButton").change(function () {
         $("#projectInput").hide();
         $("#departmentInput").hide();
-        //$("#employeeInput").hide();
-        //$("#employeeInputForOther").show();
 
         var status = $("#OtherRadioButton").prop("checked");
         $('#Resources').empty();
@@ -271,7 +269,6 @@
                 var ab = data;
 
                 for (var key in data) {
-                    //$("#allResources").append("<span id=" + '"' + data[key].ID + '"' + "style=display:none>" + data[key].DisplayName.toUpperCase() + "</span>")
                     $('#Resources').append($("<option></option>").val(data[key].ID).html(data[key].DisplayName));
                 }
                 $(".loader-overlay").hide();
@@ -301,7 +298,6 @@
              $('#Resources').empty();
              $('#Resources').append($("<option selected></option>").val(null).html("Select"));
              $("#projectInput").show();
-             //$("#employeeInput").show();
 
              $("#ManagerId").val('@Model.ManagerId');
          });
@@ -315,7 +311,6 @@
               $('#Resources').empty();
               $('#Resources').append($("<option selected></option>").val(null).html("Select"));
               $("#departmentInput").show();
-              //$("#employeeInput").show();
 
               $("#ManagerId").val('@Model.ManagerId');
           });
@@ -371,38 +366,7 @@
                 closeOnCancel: true
             }, function (isConfirm) {
                 if (isConfirm) {
-                    if (this.value == '1' || this.value == '2' || this.value == '5') {
-                        $("#label").show();
-                    } else {
-                        $("#label").hide();
-                    }
-
-                    $('#ProjectRadioButton').prop('checked', true);
-                    $('#DepartmentRadioButton').prop('checked', false);
-                    $("#projectInput").show();
-                    $("#departmentInput").hide();
-                    $("#SelectedProject").prop('selectedIndex', 0);
-                    $("#SelectedDepartment").prop('selectedIndex', 0);
-                    $('#Resources').empty();
-                    $('#Resources').append($("<option selected></option>").val(null).html("Select"));
-                    $("#managerComment").val('');
-
-                    $('#disclamer').prop('hidden', false);
-
-                    var selectdAward = $("#Award").val();
-                    $('#criteria-rating').empty();
-                    //var ServiceUrl = "/Nomination/CriteriasForAward?awardId=" + selectdAward;
-                    var ServiceUrl = "/Nomination/CriteriasForAwardPartialView?awardId=" + selectdAward;
-
-                    $.ajax({
-                        type: 'post',
-                        url: ServiceUrl,
-                        async: true,
-                        contentType: "application/json; charset=utf-8",
-                        success: function (data) {
-                            $('#criteria-rating').html(data);
-                        }
-                    });
+                    getCriteriaForAwardView();
                 } else {
                     event.stopPropagation();
                     $("#Award").val(previousSelectedCategory);
@@ -412,42 +376,44 @@
                 previous = this.value;
             });
         } else {
-
-            if (this.value == '1' || this.value == '2' || this.value == '5') {
-                $("#label").show();
-            } else {
-                $("#label").hide();
-            }
-
-            $('#ProjectRadioButton').prop('checked', true);
-            $('#DepartmentRadioButton').prop('checked', false);
-            $("#projectInput").show();
-            $("#departmentInput").hide();
-            $("#SelectedProject").prop('selectedIndex', 0);
-            $("#SelectedDepartment").prop('selectedIndex', 0);
-            $('#Resources').empty();
-            $('#Resources').append($("<option selected></option>").val(null).html("Select"));
-            $("#managerComment").val('');
-
-            $('#disclamer').prop('hidden', false);
-
-            var selectdAward = $("#Award").val();
-            $('#criteria-rating').empty();
-            //var ServiceUrl = "/Nomination/CriteriasForAward?awardId=" + selectdAward;
-            var ServiceUrl = "/Nomination/CriteriasForAwardPartialView?awardId=" + selectdAward;
-            
-            $.ajax({
-                type: 'post',
-                url: ServiceUrl,
-                async: true,
-                contentType: "application/json; charset=utf-8",
-                success: function (data) {
-                    $('#criteria-rating').html(data);
-                }
-            });
+            getCriteriaForAwardView();
         }
     });
 
+    function getCriteriaForAwardView() {
+        if (this.value == '1' || this.value == '2' || this.value == '5') {
+            $("#label").show();
+        } else {
+            $("#label").hide();
+        }
+
+        $('#ProjectRadioButton').prop('checked', true);
+        $('#DepartmentRadioButton').prop('checked', false);
+        $("#projectInput").show();
+        $("#departmentInput").hide();
+        $("#SelectedProject").prop('selectedIndex', 0);
+        $("#SelectedDepartment").prop('selectedIndex', 0);
+        $('#Resources').empty();
+        $('#Resources').append($("<option selected></option>").val(null).html("Select"));
+        $("#managerComment").val('');
+
+        $('#disclamer').prop('hidden', false);
+
+        var selectdAward = $("#Award").val();
+        $('#criteria-rating').empty();
+        //var ServiceUrl = "/Nomination/CriteriasForAward?awardId=" + selectdAward;
+        var ServiceUrl = "/Nomination/CriteriasForAwardPartialView?awardId=" + selectdAward;
+
+        $.ajax({
+            type: 'post',
+            url: ServiceUrl,
+            async: true,
+            contentType: "application/json; charset=utf-8",
+            success: function (data) {
+                $('#criteria-rating').html(data);
+            }
+        });
+    }
     function edValueKeyPress(key) {
         $('div.textarea' + key + '').html(text_remaining + ' characters remaining').show();
         var text_max = 500;
