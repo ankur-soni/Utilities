@@ -359,7 +359,6 @@
     $("#Award").change(function (event) {
         var showDataLoseWarning = $("#showDataLoseWarning").val();
         if (showDataLoseWarning.toLowerCase() == "true") {
-            event.stopPropagation();
             swal({
                 title: "Are you sure?",
                 text: "All your changes will be lost! Do you want to continue?",
