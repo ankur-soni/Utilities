@@ -326,6 +326,7 @@ namespace Silicus.Ensure.Web.Controllers
                     _testSuiteService.AssignSuite(userTestSuite, testSuiteDetails);
                     var selectUser = _userService.GetUserDetails().Where(model => model.UserId == UserId).FirstOrDefault();
                     selectUser.TestStatus = Convert.ToString(TestStatus.Assigned);
+                    selectUser.CandidateStatus = Convert.ToString(CandidateStatus.TestAssigned);
                     // selectUser.TestSuiteId = SuiteId;
                     _userService.Update(selectUser);
                     return Json(1);
@@ -721,6 +722,7 @@ namespace Silicus.Ensure.Web.Controllers
                 _testSuiteService.UpdateUserTestSuite(userTestSuitDetails);
                 var user = _userService.GetUserById(Convert.ToInt32(Convert.ToString(Request.Form["UserId"])));
                 user.TestStatus = TestStatus.Evaluated.ToString();
+                user.CandidateStatus = CandidateStatus.UnderEvaluation.ToString();
                 _userService.Update(user);
             }
             catch

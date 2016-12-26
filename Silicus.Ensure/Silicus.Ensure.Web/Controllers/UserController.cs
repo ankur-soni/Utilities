@@ -227,16 +227,26 @@ namespace Silicus.Ensure.Web.Controllers
             string ResumePath = "";
             string ResumeName = "";
             var user = _userService.GetUserById(vuser.UserId);
-            if (files != null && vuser.Role.ToLower() == RoleName.Candidate.ToString().ToLower())
+            if (vuser.Role.ToLower() == RoleName.Candidate.ToString().ToLower())
             {
-                GetFilePath(files, out ResumePath, out ResumeName);
-                vuser.ResumePath = ResumePath;
-                vuser.ResumeName = ResumeName;
+                if (files != null)
+                {
+                    GetFilePath(files, out ResumePath, out ResumeName);
+                    vuser.ResumePath = ResumePath;
+                    vuser.ResumeName = ResumeName;
+                }
+                else
+                {
+                    vuser.ResumePath = user.ResumePath;
+                    vuser.ResumeName = user.ResumeName;
+                }
+
             }
             if (user != null)
             {
                 var organizationUserDomainModel = _mappingService.Map<UserViewModel, User>(vuser);
                 organizationUserDomainModel.TestStatus = user.TestStatus;
+                organizationUserDomainModel.CandidateStatus = user.CandidateStatus;
                 organizationUserDomainModel.IsDeleted = false;
                 _userService.Update(organizationUserDomainModel);
                 TempData["Success"] = "User updated successfully!";
@@ -257,6 +267,7 @@ namespace Silicus.Ensure.Web.Controllers
             if (vuser.Role.ToLower() == RoleName.Candidate.ToString().ToLower())
             {
                 vuser.TestStatus = TestStatus.NotAssigned.ToString();
+                vuser.CandidateStatus = CandidateStatus.New.ToString();
             }
 
             vuser.NewPassword = vuser.FirstName.ToUpper() + vuser.LastName.ToLower() + "@123456";
@@ -267,7 +278,7 @@ namespace Silicus.Ensure.Web.Controllers
                 vuser.IdentityUserId = new Guid(user.Id);
                 if (files != null)
                 {
-                    GetFilePath(files,  out ResumePath, out ResumeName);
+                    GetFilePath(files, out ResumePath, out ResumeName);
                     vuser.ResumePath = ResumePath;
                     vuser.ResumeName = ResumeName;
                 }
