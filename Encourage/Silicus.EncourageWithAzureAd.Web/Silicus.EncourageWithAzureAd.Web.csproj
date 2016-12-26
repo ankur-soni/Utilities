@@ -497,6 +497,7 @@
     <Content Include="Css\plugins\switchery\_notes\dwsync.xml" />
     <Content Include="Css\plugins\toastr\toastr.min.css" />
     <Content Include="Css\plugins\toastr\_notes\dwsync.xml" />
+    <Content Include="Css\select2.css" />
     <Content Include="Css\spinners.css" />
     <Content Include="Css\star-rating.css" />
     <Content Include="Css\style.css" />
@@ -749,6 +750,7 @@
     <Content Include="js\plugins\toastr\_notes\dwsync.xml" />
     <Content Include="js\plugins\validate\jquery.validate.min.js" />
     <Content Include="js\plugins\validate\_notes\dwsync.xml" />
+    <Content Include="js\select2.min.js" />
     <Content Include="js\star-rating.js" />
     <Content Include="js\_notes\dwsync.xml" />
     <Content Include="LESS\style.css" />
