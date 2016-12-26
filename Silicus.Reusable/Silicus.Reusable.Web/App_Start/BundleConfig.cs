@@ -9,8 +9,7 @@ namespace Silicus.Reusable.Web
         public static void RegisterBundles(BundleCollection bundles)
         {
             bundles.Add(new StyleBundle("~/Content/css").Include(
-                      "~/Content/bootstrap.css",
-                      //"~/Content/site.css",
+                      "~/Content/bootstrap.css",                      
                       "~/Content/icon-outlines-style.css",
                       "~/Content/animate.css",
                       "~/Content/custom-style.css",
@@ -31,7 +30,8 @@ namespace Silicus.Reusable.Web
                          "~/Scripts/Custom/common.js",
                          "~/Scripts/plugins/sweetalert/sweetalert.min.js",
                          "~/Scripts/Custom/layout.js",
-                         "~/Scripts/Custom/perfect-scrollbar.jquery.js",
+                         "~/Scripts/plugins/perfect-scrollbar/perfect-scrollbar.js",
+                         "~/Scripts/plugins/perfect-scrollbar/perfect-scrollbar.jquery.js",
                          "~/Scripts/jquery.validate.unobtrusive.js"
                       ));
         }

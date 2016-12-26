@@ -229,10 +229,11 @@
                 $this.siblings('.form-control-clear').toggleClass('hidden', !visible);
             }).trigger('propertychange');
 
-            $('.form-control-clear').click(function () {
+            $('.form-control-clear').click(function () {                
                 $(this).siblings('input[type="text"]').val('')
                   .trigger('propertychange').trigger('keyup').focus();
             });
+            
 
             $('#component-tile-view').click(function () {
                 $('#component-list-view').attr('disabled', false);

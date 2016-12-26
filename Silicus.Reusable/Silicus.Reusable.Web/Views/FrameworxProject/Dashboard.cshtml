@@ -104,20 +104,22 @@
                 <span>Components</span>
                 <div class="pull-right">
                     <ul>
-                        <li>
-                            <input type="text" class="form-control" id="searchString" placeholder="Search">
-                            <span class="form-control-clear glyphicon glyphicon-remove form-control-feedback hidden"></span>
+                        <li class="input-text-wrapper">
+                            <input type="text" class="form-control" id="searchString" placeholder="Search" >
+                            <span class="form-control-clear glyphicon glyphicon-remove hidden"></span>
+                            <div class="clearfix"> </div>
                         </li>
                         <li>
-                            <button class="btn btn-primary btn-lg active" id="component-list-view" disabled>
+                            <button class="btn btn-primary btn-lg active view-button" id="component-list-view" disabled>
                                 <i class="fa fa-list" aria-hidden="true"></i>
                             </button>
+                            
                         </li>
                         <li>
-                            <button class="btn btn-primary btn-lg" id="component-tile-view">
+                            <button class="btn btn-primary btn-lg view-button" id="component-tile-view">
                                 <i class="fa fa-th" aria-hidden="true"></i>
                             </button>
-                        </li>
+                        </li>                        
                     </ul>
                 </div>
             </div>

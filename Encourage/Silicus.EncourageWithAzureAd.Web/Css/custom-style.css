@@ -1697,7 +1697,22 @@ label {
 }
 @media (max-width:991px) 
 {
-	
+	 .nav.navbar-top-links a{
+        font-size:30px;
+    }
+     .nav.navbar-right > li > a {
+    color: #0063a7;
+}
+     .navbar-top-links .dropdown-messages, .navbar-top-links .dropdown-user-menu, .navbar-top-links .dropdown-tasks, .navbar-top-links .dropdown-alerts{
+         width:200px;
+     }
+     .navbar-top-links .dropdown-menu li a div{
+         font-size:16px;
+     }
+     .navbar .dropdown-menu {
+    margin-top: 0px;
+    padding-bottom: 0px;
+}
 
 }
 @media (max-width:800px) 
@@ -1706,6 +1721,12 @@ label {
 }
 @media (max-width:768px) 
 {
+    .navbar-right {
+    float: right;
+}
+    .navbar-top-links .dropdown-user-menu{
+            margin-left: -150px!important;
+    }
     .header-name{
     margin-top: 15px;
     margin-left: 55px;
@@ -1714,10 +1735,13 @@ label {
     #wrapper{
         background:#
     }
-
+    
 }
 @media (max-width:767px) 
-{
+{   
+    .pll{
+        padding-left:0px;
+    }
 	.table-responsive>.table>tbody>tr>td, .table-responsive>.table>tbody>tr>th, .table-responsive>.table>tfoot>tr>td, .table-responsive>.table>tfoot>tr>th, .table-responsive>.table>thead>tr>td, .table-responsive>.table>thead>tr>th{
         white-space:normal;
 	}
