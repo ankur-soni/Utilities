@@ -42,6 +42,7 @@ namespace Silicus.Encourage.Services.Interface
         List<Award> GetNominationLockStatus();
         FrequencyMaster GetAwardFrequencyByFrequencyCode(string frequencyCode);
         FrequencyMaster GetAwardFrequencyById(int id);
+        List<User> GetAllResources();
 
         #region Saved Nominations List
 
