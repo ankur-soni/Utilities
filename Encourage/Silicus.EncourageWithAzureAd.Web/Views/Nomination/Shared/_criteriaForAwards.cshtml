@@ -22,7 +22,7 @@
                         {
                             <tr>
                                 <td>
-                                    @(i+1)
+                                    @(i + 1)
                                 </td>
                                 <td class="col-lg-5 col-md-4 col-sm-4 col-xs-4">
                                     <label> @criteria.Title</label>
@@ -49,7 +49,7 @@
                                         @class = "form-control ddlWeightage",
                                         @disabled = "disabled",
                                         @isRequiredForCriteria = "false",
-                                        @onchange = "checkIfWeightageExceeds(this,"+i+");",
+                                        @onchange = "checkIfWeightageExceeds(this," + i + ");",
                                         @row_id = i
                                     })
                                 </td>
@@ -60,8 +60,8 @@
                                               name="Comments[@i].Comment"
                                               id="@("comment"+i)"
                                               maxlength="500"
-                                              isRequiredForCriteria="false" 
-                                              row-id = @i
+                                              isRequiredForCriteria="false"
+                                              row-id=@i
                                               disabled="disabled"></textarea>
                                     <div class="@("textarea"+i)"></div>
 
@@ -85,11 +85,11 @@
 <script>
     $(document).ready(function () {
         var ratings = $('.example-square');
-        
+
         $.each(ratings, function (index) {
             var id = "#"+this.id;
             var rating = +this.getAttribute("value");
-            
+
             $(id).barrating('show', {
                 theme: 'bars-square',
                 showValues: true,

@@ -61,7 +61,6 @@
   <ItemGroup>
     <Compile Include="AwardService.cs" />
     <Compile Include="CommonDbService.cs" />
-    <Compile Include="Comparer\NominationComaprer.cs" />
     <Compile Include="EmailNotificationOfWinnerService.cs" />
     <Compile Include="Interface\IAwardService.cs" />
     <Compile Include="Interface\ICommonDbService.cs" />

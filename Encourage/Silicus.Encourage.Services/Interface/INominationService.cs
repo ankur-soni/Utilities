@@ -42,13 +42,10 @@ namespace Silicus.Encourage.Services.Interface
         List<Award> GetNominationLockStatus();
         FrequencyMaster GetAwardFrequencyByFrequencyCode(string frequencyCode);
         FrequencyMaster GetAwardFrequencyById(int id);
-
         #region Saved Nominations List
-
         string GetAwardNameByAwardId(int awardId);
         User GetNomineeDetails(int userId);
         List<Nomination> GetAllSubmittedAndSavedNominationsByCurrentUserAndMonth(int managerID, bool forCurrentMonth);
-
         #endregion
         void UpdateFinalScore(int nominationId);
     }

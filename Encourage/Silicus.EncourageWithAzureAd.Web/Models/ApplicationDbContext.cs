@@ -13,7 +13,6 @@ namespace Silicus.EncourageWithAzureAd.Web.Models
             : base("DefaultConnection")
         {
         }
-
         public DbSet<UserTokenCache> UserTokenCacheList { get; set; }
     }
 

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Silicus.Encourage.Services
 {
-   public class WinnerData
+    public class WinnerData
     {
         public string Name { get; set; }
         public string ManagerName { get; set; }

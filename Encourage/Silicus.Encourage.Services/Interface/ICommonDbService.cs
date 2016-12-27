@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 
 namespace Silicus.Encourage.Services.Interface
 {
-  public interface ICommonDbService
+    public interface ICommonDbService
     {
-      Silicus.UtilityContainer.Entities.ICommonDataBaseContext GetCommonDataBaseContext();
-      string FindDisplayNameFromEmail(string email);
+        Silicus.UtilityContainer.Entities.ICommonDataBaseContext GetCommonDataBaseContext();
+        string FindDisplayNameFromEmail(string email);
     }
 }
