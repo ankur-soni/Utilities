@@ -118,6 +118,7 @@
     <Compile Include="DataObjects\IdentityUser.cs" />
     <Compile Include="DataObjects\Manager.cs" />
     <Compile Include="DataObjects\Organization.cs" />
+    <Compile Include="DataObjects\Panel.cs" />
     <Compile Include="DataObjects\Position.cs" />
     <Compile Include="DataObjects\Product.cs" />
     <Compile Include="DataObjects\Project.cs" />

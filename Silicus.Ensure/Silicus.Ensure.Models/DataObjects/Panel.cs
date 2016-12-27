@@ -4,20 +4,20 @@ using System.Web.Mvc;
 
 namespace Silicus.Ensure.Models.DataObjects
 {
-    public class Position
+    public class Panel
     {
 
         [Key]
-        public int PositionId { get; set; }
+        public int PanelId { get; set; } 
 
         [StringLength(50)]
-        [Required(ErrorMessage = "Position Name is required!")]
-        [Remote("IsDuplicatePositionName", "Positions", ErrorMessage = "Position is already name exist !")]
+        [Required(ErrorMessage = "Panel is required!")]
+        [Remote("IsDuplicatePositionName", "Positions", ErrorMessage = "Panel is already name exist !")]
         [Display(Name = "Position Name")]
-        public string PositionName { get; set; }
+        public string PanelName { get; set; } 
         public bool IsDeleted { get; set; }
 
-        public Position()
+        public Panel()
         {
             IsDeleted = false;
         }
