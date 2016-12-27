@@ -11,14 +11,13 @@ namespace Silicus.Encourage.Models
 {
     using System;
     using System.Collections.Generic;
-    
+
     public partial class Configuration
     {
         public string configurationKey { get; set; }
         public Nullable<bool> value { get; set; }
         public int Id { get; set; }
         public int AwardId { get; set; }
-    
         public virtual Award Award { get; set; }
     }
 }
