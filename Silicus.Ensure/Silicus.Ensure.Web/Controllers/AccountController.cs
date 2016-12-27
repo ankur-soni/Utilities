@@ -700,7 +700,7 @@ namespace Silicus.Ensure.Web.Controllers
             // Send an OpenID Connect sign-in request.
             if (!Request.IsAuthenticated)
             {
-                HttpContext.GetOwinContext().Authentication.Challenge(new AuthenticationProperties { RedirectUri = "/Account/Index" },
+                HttpContext.GetOwinContext().Authentication.Challenge(new AuthenticationProperties { RedirectUri = "/Account/SignIn" },
                     OpenIdConnectAuthenticationDefaults.AuthenticationType);
             }
         }
