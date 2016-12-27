@@ -13,7 +13,7 @@ using System.Data.Entity;
 using System.Globalization;
 using System.Linq;
 using System.Web.Mvc;
-
+using Silicus.EncourageWithAzureAd.Web.Models;
 namespace Silicus.EncourageWithAzureAd.Web.Controllers
 {
     [Authorize]
@@ -44,13 +44,36 @@ namespace Silicus.EncourageWithAzureAd.Web.Controllers
             _logger = logger;
         }
 
+        public ActionResult GetProcessesToLockOrUnlock(int awardId, string status)
+        {
+            var processesToLockOrUnlock = new List<Encourage.Models.Configuration>();
+            if (status == ConfigurationManager.AppSettings["Lock"])
+            {
+                processesToLockOrUnlock = _reviewService.GetProcessesToLock(awardId);
+            }
+            else if (status == ConfigurationManager.AppSettings["Unlock"])
+            {
+                processesToLockOrUnlock = _reviewService.GetProcessesToUnlock(awardId);
+            }
+
+            var data = new List<ProcessesToLockOrUnLockViewModel>();
+            if (processesToLockOrUnlock.Count > 0)
+            {
+                foreach (var processToLock in processesToLockOrUnlock)
+                {
+                    data.Add(new ProcessesToLockOrUnLockViewModel() { Id = processToLock.Id, Name = processToLock.configurationKey });
+                }
+            }
+
+            return View("~/Views/Review/Shared/_ProcessesToLockOrUnlock.cshtml", data);
+        }
+
         [HttpGet]
         [CustomeAuthorize(AllowedRole = "Admin")]
         public ActionResult ReviewFeedbackList()
         {
             _logger.Log("Review-ReviewFeedbackList-GET");
             var reviewFeedbackList = ReviewFeedbackList(true);
-
             return View(reviewFeedbackList);
         }
 
@@ -60,7 +83,6 @@ namespace Silicus.EncourageWithAzureAd.Web.Controllers
         {
             _logger.Log("Review-ReviewFeedbackList-GET");
             var reviewFeedbackList = ReviewFeedbackList(forCurrentMonth);
-            // }
             return PartialView("~/Views/Review/Shared/_reviewFeedbackList.cshtml", reviewFeedbackList);
         }
 
@@ -81,7 +103,7 @@ namespace Silicus.EncourageWithAzureAd.Web.Controllers
                 var nomination = _encourageDatabaseContext.Query<Nomination>().SingleOrDefault(x => x.Id == reviewNomination.NominationId);
                 var award = _encourageDatabaseContext.Query<Award>().SingleOrDefault(a => a.Id == nomination.AwardId);
                 var awardFrequency = _nominationService.GetAwardFrequencyById(award.FrequencyId);
-                if (award != null && nomination!= null)
+                if (award != null && nomination != null)
                 {
                     var awardCode = award.Code;
                     var nominee = _commonDbContext.Query<User>().FirstOrDefault(u => u.ID == nomination.UserId);
@@ -100,7 +122,7 @@ namespace Silicus.EncourageWithAzureAd.Web.Controllers
                     foreach (var rc in reviewerComments)
                     {
                         var managerCommnet = managerComments.FirstOrDefault(mc => mc.CriteriaId == rc.CriteriaId);
-                        totalCreditPoints += (Convert.ToInt32(rc.Credit)*(managerCommnet != null ? managerCommnet.Weightage : 0)/100m);
+                        totalCreditPoints += (Convert.ToInt32(rc.Credit) * (managerCommnet != null ? managerCommnet.Weightage : 0) / 100m);
                     }
                     averageCredits = totalCreditPoints / (totalReviews <= 0 ? 1 : totalReviews);
                     var checkResultStatus = _resultService.IsShortlistedOrWinner(nomination.Id);
@@ -190,10 +212,11 @@ namespace Silicus.EncourageWithAzureAd.Web.Controllers
                 }
                 allReviewerComments.Add(reviewerCommentList);
             }
-            //  var isLocked = _nominationService.GetAllNominations().FirstOrDefault(x => (x.NominationDate.Value.Month.Equals(DateTime.Now.Month - 1) && x.NominationDate.Value.Year.Equals(DateTime.Now.Month > 1 ? DateTime.Now.Year : DateTime.Now.Year - 1))).IsLocked ?? false;
+
             var lockedAwards = _nominationService.GetNominationLockStatus();
             var isLocked = false;
             var awardOfCurrentNomination = _awardService.GetAwardFromNominationId(nominationModel.NominationId);
+
             foreach (var lockedAward in lockedAwards)
             {
                 if (lockedAward.Id == awardOfCurrentNomination.Id)
@@ -279,60 +302,82 @@ namespace Silicus.EncourageWithAzureAd.Web.Controllers
             }
         }
 
-        //[HttpGet]
-        //public ActionResult LockNomination()
-        //{
-        //    _logger.Log("Review-LockNomination-GET");
-        //    _nominationService.LockNominations();
-        //    _reviewService.LockReview();
-
-        //    return new EmptyResult();
-        //}
-
-
         [HttpGet]
         public ActionResult LockNomination()
         {
             _logger.Log("Review-LockNomination-GET");
-           var awards = _nominationService.GetAwardstoUnLockOrUnlock(ConfigurationManager.AppSettings["Lock"]);
+            var awards = _nominationService.GetAwardstoUnLockOrUnlock(ConfigurationManager.AppSettings["Lock"]);
             var awardsToLock = new List<LockAwardViewModel>();
+
             foreach (var award in awards)
             {
-                awardsToLock.Add(new LockAwardViewModel { Id = award.Id, Code = award.Code, Name = award.Name, FrequencyId = award.FrequencyId});
+                awardsToLock.Add(new LockAwardViewModel { Id = award.Id, Code = award.Code, Name = award.Name, FrequencyId = award.FrequencyId, ConfigurationKey = award.Configurations.FirstOrDefault().configurationKey });
             }
+
             return PartialView("~/Views/Review/Shared/_LockNominations.cshtml", awardsToLock);
         }
 
-            [HttpPost]
-            public JsonResult LockNomination(int[] awardIds)
-            {
+        [HttpPost]
+        public JsonResult LockNomination(int[] awardIds, int[] processIds)
+        {
             _logger.Log("Review-LockNomi-Post");
-                var data = _nominationService.LockNominations(awardIds.ToList());
-                _reviewService.LockReview(awardIds.ToList());
-                return Json(data);
-           
+            List<string> lockKeys = new List<string>();
+            foreach (var processId in processIds)
+            {
+                lockKeys.Add(_reviewService.GetConfigurationById(processId).configurationKey);
             }
+            var data = new List<Award>();
+
+            foreach (var lockKey in lockKeys)
+            {
+                if (lockKey == ConfigurationManager.AppSettings["NominationLockKey"])
+                {
+                    data = _nominationService.LockNominations(awardIds.ToList());
+                }
+                else if (lockKey == ConfigurationManager.AppSettings["ReviewLockKey"])
+                {
+                    data = _reviewService.LockReview(awardIds.ToList());
+                }
+            }
+
+            return Json(data);
+        }
 
         [HttpGet]
         public ActionResult UnlockNomination()
         {
             _logger.Log("Review-UnlockNomination-GET");
-           var awards = _nominationService.GetAwardstoUnLockOrUnlock(ConfigurationManager.AppSettings["UnLock"]);
+            var awards = _nominationService.GetAwardstoUnLockOrUnlock(ConfigurationManager.AppSettings["UnLock"]);
             var awardsToUnlock = new List<LockAwardViewModel>();
             foreach (var award in awards)
             {
-                awardsToUnlock.Add(new LockAwardViewModel { Code = award.Code, FrequencyId = award.FrequencyId, Id = award.Id, Name = award.Name});
+                awardsToUnlock.Add(new LockAwardViewModel { Code = award.Code, FrequencyId = award.FrequencyId, Id = award.Id, Name = award.Name, ConfigurationKey = award.Configurations.FirstOrDefault().configurationKey });
             }
             return PartialView("~/Views/Review/Shared/_LockNominations.cshtml", awardsToUnlock);
         }
 
         [HttpPost]
-        public JsonResult UnlockNomination(int[] awardIds)
+        public JsonResult UnlockNomination(int[] awardIds, int[] processIds)
         {
             _logger.Log("Review-UnlockNomination-GET");
-            var lockedNominations = _nominationService.UnLockNominations(awardIds.ToList());
-            var lockedReviews = _reviewService.UnLockReview(awardIds.ToList());
-            return Json(lockedNominations);
+            List<string> unlockKeys = new List<string>();
+            foreach (var processId in processIds)
+            {
+                unlockKeys.Add(_reviewService.GetConfigurationById(processId).configurationKey);
+            }
+            var data = new List<Award>();
+            foreach (var unlockKey in unlockKeys)
+            {
+                if (unlockKey == ConfigurationManager.AppSettings["NominationLockKey"])
+                {
+                    data = _nominationService.UnLockNominations(awardIds.ToList());
+                }
+                else if (unlockKey == ConfigurationManager.AppSettings["ReviewLockKey"])
+                {
+                    data = _reviewService.UnLockReview(awardIds.ToList());
+                }
+            }
+            return Json(data);
         }
 
         public ActionResult ConsolidatedNominations(ConsolidatedNominationsViewModel consolidatedNominationsViewModel)
@@ -354,8 +399,8 @@ namespace Silicus.EncourageWithAzureAd.Web.Controllers
             consolidatedNominationsViewModel.Reviewers = new List<ReviewerViewModel>();
             consolidatedNominationsViewModel.Nominations = new List<SubmittedNomination>();
             consolidatedNominationsViewModel.ListOfAwards = new SelectList(awards, "Id", "Name");
-            
             var reviewers = _encourageDatabaseContext.Query<Reviewer>().ToList();
+
             foreach (var reviewer in reviewers)
             {
                 var reviewerObj = _commonDbContext.Query<User>().FirstOrDefault(u => u.ID == reviewer.UserId);
@@ -395,7 +440,6 @@ namespace Silicus.EncourageWithAzureAd.Web.Controllers
 
                     submittednomination.ReviewerComments.Add(reviewComment);
                 }
-
                 consolidatedNominationsViewModel.Nominations.Add(submittednomination);
             }
 

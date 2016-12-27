@@ -9,16 +9,16 @@ using System.Threading.Tasks;
 
 namespace Silicus.Encourage.DAL.EntityConfigurations
 {
-        internal class ShortlistMap : EntityTypeConfiguration<Shortlist>
+    internal class ShortlistMap : EntityTypeConfiguration<Shortlist>
+    {
+        public ShortlistMap()
         {
-            public ShortlistMap()
-            {
-                HasKey(o => o.Id);
+            HasKey(o => o.Id);
 
-                Property(p => p.Id).HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity);
+            Property(p => p.Id).HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity);
 
-                ToTable(TableSettings.Shortlists, TableSettings.DefaultSchema);
-            }
+            ToTable(TableSettings.Shortlists, TableSettings.DefaultSchema);
         }
-  
+    }
+
 }

@@ -16,7 +16,7 @@ namespace Silicus.Encourage.Services.Interface
         List<Engagement> GetProjectsUnderCurrentUserAsManager(string email);
         List<Department> GetDepartmentsUnderCurrentUserAsManager(string email);
         List<Criteria> GetCriteriasForAward(int awardId);
-        List<User> GetResourcesInEngagement(int projectId, int userIdToExcept,int awardId);
+        List<User> GetResourcesInEngagement(int projectId, int userIdToExcept, int awardId);
         List<User> GetResourcesUnderDepartment(int DepartmentId, int userIdToExcept);
         List<User> GetResourcesForEditInEngagement(int engagementId, int userIdToExcept);
         List<User> GetResourcesForEditInDepartment(int DepartmentId, int userIdToExcept);
@@ -25,6 +25,5 @@ namespace Silicus.Encourage.Services.Interface
         List<WinnerData> GetWinnerData();
         List<string> GetEmailAddressOfManager(string name);
         Award GetAwardByCode(string awardCode);
-
     }
 }

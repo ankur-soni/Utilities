@@ -6,8 +6,8 @@ using System.Threading.Tasks;
 
 namespace Silicus.Encourage.Services.Interface
 {
-   public interface IReviewerService
+    public interface IReviewerService
     {
-            bool addReviewer(int userID);
+        bool addReviewer(int userID);
     }
 }

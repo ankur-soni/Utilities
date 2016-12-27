@@ -35,7 +35,7 @@
                                 @if (item.AwardFrequencyCode == FrequencyCode.YEAR.ToString())
                                 {
                                     var nominationYear = Convert.ToInt32(item.NominationTime.Substring(item.NominationTime.LastIndexOf('-') + 1)) - 1;
-                                    @Html.Label( "-"+ Convert.ToInt32(nominationYear))
+                                    @Html.Label("-" + Convert.ToInt32(nominationYear))
 
                                 }
                                 else
