@@ -335,11 +335,11 @@ namespace Silicus.Encourage.Services
             var data = new List<Models.Configuration>();
             if (status == ConfigurationManager.AppSettings["Lock"])
             {
-                data = _encourageDatabaseContext.Query<Models.Configuration>().Where(x => (x.configurationKey == nominationLockKey) && x.value == false).ToList();
+                data = _encourageDatabaseContext.Query<Models.Configuration>().Where(x =>  x.value == false).ToList();
             }
             else
             {
-                data = _encourageDatabaseContext.Query<Models.Configuration>().Where(x => (x.configurationKey == nominationLockKey) && x.value == true).ToList();
+                data = _encourageDatabaseContext.Query<Models.Configuration>().Where(x =>  x.value == true).ToList();
             }
             var awardsToUnlock = new List<Award>();
             foreach (var awardconfiguration in data)
@@ -350,7 +350,7 @@ namespace Silicus.Encourage.Services
             }
             if (awardsToUnlock.Any())
             {
-                return awardsToUnlock;
+                return awardsToUnlock.GroupBy( x => x.Name).Select( group => group.FirstOrDefault()).ToList();
             }
             return new List<Award>();
         }
