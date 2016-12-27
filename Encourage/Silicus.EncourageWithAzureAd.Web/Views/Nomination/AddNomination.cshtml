@@ -142,10 +142,12 @@
                                 <div class="col-lg-3 col-md-4 col-sm-5" id="employeeInput">
                                     <div class="form-group">
                                         @Html.Label("Employee Name", htmlAttributes: new { @class = "control-label requiredfeild" })
-                                        @Html.DropDownListFor(model => model.ResourceId, Model.Resources as SelectList, "Select", new { @class = "form-control", id = "Resources" })
-                                        @Html.ValidationMessageFor(model => model.ResourceId, "", new { @class = "text-danger" })
-                                        @*<span class="help-block themeColorBlue"> Select your Employee</span>*@
-                                    </div>
+                                        <div>
+                                            @Html.DropDownListFor(model => model.ResourceId, Model.Resources as SelectList, "Select", new { @class = "form-control select2-dd", id = "Resources" })
+                                            @Html.ValidationMessageFor(model => model.ResourceId, "", new { @class = "text-danger" })
+                                            @*<span class="help-block themeColorBlue"> Select your Employee</span>*@
+                                        </div>
+                                   </div>
                                 </div>
                             </div>
                             @*<div class="row" id="employeeInputForOther">
