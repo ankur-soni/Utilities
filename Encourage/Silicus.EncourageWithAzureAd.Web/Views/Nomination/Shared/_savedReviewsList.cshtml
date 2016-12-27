@@ -1,73 +1,14 @@
 ﻿@model IEnumerable<Silicus.EncourageWithAzureAd.Web.Models.NominationListViewModel>
 @using System.Drawing;
 @using Silicus.EncourageWithAzureAd.Web.Enums;
-@*<div>
-        @foreach (var item in Model)
-        {
-            Random randomGen = new Random();
-            KnownColor[] names = (KnownColor[])Enum.GetValues(typeof(KnownColor));
-            KnownColor randomColorName = names[randomGen.Next(names.Length)];
-            Color randomColor = Color.FromKnownColor(randomColorName);
-            var myBorderColor = string.Empty;
-            var myButtonText = string.Empty;
 
-            if (item.IsSubmitted == true)
-            {
-                myBorderColor = "#0070B9";
-                myButtonText = "Details";
-            }
-            else
-            {
-                myBorderColor = "#F8AC59";
-                myButtonText = "Edit";
-            }
-
-            <div class="col-md-3 card white-bg" style="border-color:@myBorderColor;">
-                <div class="cardHeader text-center">
-                    <div>
-                        <label class="cardHeaderEmpName"> @Html.DisplayFor(modelItem => item.DisplayName)</label>
-                    </div>
-
-                    <div>
-                        @Html.DisplayFor(modelItem => item.AwardName)
-                        @if (item.AwardFrequencyCode == FrequencyCode.YEAR.ToString())
-                        {
-                            var nominationYear = Convert.ToInt32(item.NominationTime.Substring(item.NominationTime.LastIndexOf('-') + 1)) - 1;
-                            @Html.Label("-" + Convert.ToInt32(nominationYear))
-
-                        }
-                        else
-                        {
-                        @Html.DisplayFor(modelItem => item.NominationTime)
-                        }
-                    </div>
-                </div>
-                <div class="cardFooter text-right" style="border-color:@myBorderColor">
-
-                    @if (!string.IsNullOrEmpty(myButtonText) && myButtonText == "Edit")
-                    {
-                        <a href="@Url.Action("EditReview", "Nomination", new { nominationId = item.Id})">
-                            <span> <i class="fa fa-pencil fa-2x" title="Edit Review" aria-hidden="true" style="color:@myBorderColor;font-size:30px;"></i> </span>
-                        </a>
-                    }
-                    else
-                    {
-                        <a href="@Url.Action("ReviewDetails", "Nomination", new { nominationId = item.Id, details = myButtonText})">
-                            <span>  <i class="fa fa-file-text-o" style="font-size:30px;" title="Review Deatils" aria-hidden="true"></i></span>
-                        </a>
-                    }
-                </div>
-            </div>
-
-        }
-    </div>*@
 
 
 <div>
     @foreach (var item in Model)
     {
         <div class="el-element-overlay m-b-40">
-            <div class="col-lg-2 col-md-3 col-sm-4 col-xs-12">
+            <div class="col-lg-2 col-md-3 col-sm-4 col-xs-4">
                 <div class="@(item.IsSubmitted == true ? "blue-box" : "white-box")">
                     <div class="el-card-item">
                         <div class="el-card-avatar el-overlay-1">
@@ -88,7 +29,7 @@
 
                                                 <i class="fa fa-file-text-o fa-2x" aria-hidden="true"></i>
                                             </a>
-                                        }
+                                           }
                                     </li>
                                 </ul>
                             </div>

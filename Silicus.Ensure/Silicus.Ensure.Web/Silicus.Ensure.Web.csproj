@@ -348,6 +348,7 @@
     <Compile Include="Controllers\ErrorController.cs" />
     <Compile Include="Controllers\ManageUserController.cs" />
     <Compile Include="Controllers\MasterController.cs" />
+    <Compile Include="Controllers\PanelController.cs" />
     <Compile Include="Controllers\PositionsController.cs" />
     <Compile Include="Controllers\ProjectController.cs" />
     <Compile Include="Controllers\QuestionBankController.cs" />
@@ -369,8 +370,12 @@
     <Compile Include="Mappings\MappingService.cs" />
     <Compile Include="Mappings\ViewModelToDomainMappingProfile.cs" />
     <Compile Include="Mappings\DomainToViewModelMappingProfile.cs" />
-    <Compile Include="Models\AdalTokenCache.cs" />
-    <Compile Include="Models\ApplicationDbContext.cs" />
+    <Compile Include="Models\AdalTokenCache.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Models\ApplicationDbContext.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="Models\CandidateViewModel.cs" />
     <Compile Include="Models\ChangePasswordModel.cs" />
     <Compile Include="Models\EmailModel.cs" />

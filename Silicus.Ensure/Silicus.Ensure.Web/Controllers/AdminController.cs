@@ -63,7 +63,7 @@ namespace Silicus.Ensure.Web.Controllers
             }
         }
 
-        public AdminController(IEmailService emailService, ITagsService tagService, ITestSuiteService testSuiteService, MappingService mappingService, IQuestionService questionService, IUserService userService, IPositionService positionService,ILogger logger)
+        public AdminController(IEmailService emailService, ITagsService tagService, ITestSuiteService testSuiteService, MappingService mappingService, IQuestionService questionService, IUserService userService, IPositionService positionService, ILogger logger)
         {
             _emailService = emailService;
             _tagsService = tagService;
@@ -74,7 +74,7 @@ namespace Silicus.Ensure.Web.Controllers
             _positionService = positionService;
             _logger = logger;
         }
-        
+
         [AcceptVerbs(HttpVerbs.Post)]
         public async Task<ActionResult> SendEmail(FormCollection email)
         {
@@ -215,6 +215,14 @@ namespace Silicus.Ensure.Web.Controllers
         public ActionResult Candidates()
         {
             ViewBag.UserRoles = RoleManager.Roles.Select(r => new SelectListItem { Text = r.Name, Value = r.Name }).ToList();
+            var positionDetails = _positionService.GetPositionDetails().OrderBy(model => model.PositionName);
+            ViewBag.PositionListItem = from item in positionDetails
+                                       select new SelectListItem()
+                                       {
+                                           Text = item.PositionName,
+                                           Value = item.PositionName
+
+                                       };
             return View();
         }
 
@@ -318,6 +326,7 @@ namespace Silicus.Ensure.Web.Controllers
                     _testSuiteService.AssignSuite(userTestSuite, testSuiteDetails);
                     var selectUser = _userService.GetUserDetails().Where(model => model.UserId == UserId).FirstOrDefault();
                     selectUser.TestStatus = Convert.ToString(TestStatus.Assigned);
+                    selectUser.CandidateStatus = Convert.ToString(CandidateStatus.TestAssigned);
                     // selectUser.TestSuiteId = SuiteId;
                     _userService.Update(selectUser);
                     return Json(1);
@@ -713,6 +722,7 @@ namespace Silicus.Ensure.Web.Controllers
                 _testSuiteService.UpdateUserTestSuite(userTestSuitDetails);
                 var user = _userService.GetUserById(Convert.ToInt32(Convert.ToString(Request.Form["UserId"])));
                 user.TestStatus = TestStatus.Evaluated.ToString();
+                user.CandidateStatus = CandidateStatus.UnderEvaluation.ToString();
                 _userService.Update(user);
             }
             catch

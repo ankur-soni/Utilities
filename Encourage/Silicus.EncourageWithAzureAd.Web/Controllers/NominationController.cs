@@ -319,6 +319,20 @@ namespace Silicus.EncourageWithAzureAd.Web.Controllers
             return Json(usersInDepartment, JsonRequestBehavior.AllowGet);
         }
 
+        [HttpPost]
+        public JsonResult GetAllResources(bool getAllResources)
+        {
+            _logger.Log("Nomination-GetAllResources-POST");
+            var allResources = new List<User>();
+            if (getAllResources)
+            {
+                allResources = _nominationService.GetAllResources();
+                //ViewBag.AllResources = allResources;
+                //return Json(allResources, JsonRequestBehavior.AllowGet);
+            }
+            return Json(allResources, JsonRequestBehavior.AllowGet);
+        }
+
         [HttpGet]
         [CustomeAuthorize(AllowedRole = "Manager")]
         public ActionResult SavedNomination(int managerId = 0)

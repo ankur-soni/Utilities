@@ -424,6 +424,8 @@ namespace Silicus.EncourageWithAzureAd.Web.Controllers
                     ReviewerComments = new List<ReviewerCommentViewModel>()
                 };
 
+                submittednomination.IsShortListed = _encourageDatabaseContext.Query<Shortlist>().Any(s => s.NominationId == nomination.Id);
+
                 foreach (var reviewerComment in nomination.ReviewerComments)
                 {
                     var managerComment = nomination.ManagerComments.FirstOrDefault(m => m.CriteriaId == reviewerComment.CriteriaId);
@@ -471,6 +473,23 @@ namespace Silicus.EncourageWithAzureAd.Web.Controllers
             }
 
             return Json(true);
+        }
+
+
+        [HttpPost]
+        public ActionResult ShortList(int nominationId)
+        {
+            try
+            {
+                var adminId = _awardService.GetUserIdFromEmail(User.Identity.Name);
+                _resultService.ShortlistNomination(nominationId, adminId);
+                _emailNotificationOfWinner.Process();
+                return Json(true);
+            }
+            catch
+            {
+                return Json(false);
+            }
         }
     }
 }

@@ -299,6 +299,7 @@
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Controllers\EmailController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\NominationController.cs" />
     <Compile Include="Controllers\ReviewController.cs" />
@@ -498,6 +499,7 @@
     <Content Include="Css\plugins\switchery\_notes\dwsync.xml" />
     <Content Include="Css\plugins\toastr\toastr.min.css" />
     <Content Include="Css\plugins\toastr\_notes\dwsync.xml" />
+    <Content Include="Css\select2.css" />
     <Content Include="Css\spinners.css" />
     <Content Include="Css\star-rating.css" />
     <Content Include="Css\style.css" />
@@ -532,6 +534,7 @@
     <Content Include="js\jquery-2.1.1.js" />
     <Content Include="js\jquery-ui-1.10.4.min.js" />
     <Content Include="js\jquery-ui.custom.min.js" />
+    <Content Include="js\jquery.barrating.min.js" />
     <Content Include="js\jquery.dataTables.min.js" />
     <Content Include="js\perfect-scrollbar.jquery.js" />
     <Content Include="js\perfect-scrollbar.jquery.min.js" />
@@ -750,6 +753,7 @@
     <Content Include="js\plugins\toastr\_notes\dwsync.xml" />
     <Content Include="js\plugins\validate\jquery.validate.min.js" />
     <Content Include="js\plugins\validate\_notes\dwsync.xml" />
+    <Content Include="js\select2.min.js" />
     <Content Include="js\star-rating.js" />
     <Content Include="js\_notes\dwsync.xml" />
     <Content Include="LESS\style.css" />
@@ -873,6 +877,7 @@
     <Content Include="Views\Review\ConsolidatedNominations.cshtml" />
     <Content Include="Views\Review\_ConsolidatedNominationsPartialView.cshtml" />
     <Content Include="Views\Review\Shared\_ProcessesToLockOrUnlock.cshtml" />
+    <Content Include="Views\Email\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

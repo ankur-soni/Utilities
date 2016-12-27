@@ -24,13 +24,17 @@ namespace Silicus.Ensure.Web.Models
         [Required(ErrorMessage = "Last name is required!")]
         public string LastName { get; set; }
 
-        [StringLength(500)]
-        public string Address { get; set; }
+        [DataType(DataType.Password)]
+        public string NewPassword { get; set; }
 
-        [Required]
-        public bool isActive { get; set; }
+        [CompareAttribute("NewPassword", ErrorMessage = "Passwords don't match.")]
+        [DataType(DataType.Password)]
+        public string ConfirmPassword { get; set; }
 
-        public string Role { get; set; }
+        [StringLength(50)]
+        [Display(Name = "Requisition Id")]
+        [Required(ErrorMessage = "Requisition id is required!")]
+        public string RequisitionId { get; set; }
 
         [Required]
         [StringLength(100)]
@@ -38,39 +42,60 @@ namespace Silicus.Ensure.Web.Models
         [RegularExpression(@"[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}", ErrorMessage = "Please enter correct email!")]
         public string Email { get; set; }
 
+        [StringLength(500)]
+        [Display(Name = "Current Location")]
+        [Required(ErrorMessage = "Current location is required!")]
+        public string CurrentLocation { get; set; }
+
+        [Display(Name = "Date Of Birth")]
+        [Required(ErrorMessage = "Date of birth is required!")]
+        public DateTime DOB { get; set; }
+
+        [StringLength(10)]
+        [Display(Name = "Contact number")]
+        [Required(ErrorMessage = "Contact number is required!")]
+        [RegularExpression(@"^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$", ErrorMessage = "Contact number is not a valid phone number!")]
+        public string ContactNumber { get; set; }
+
+        [StringLength(50)]
+        [Display(Name = "Client name")]
+        [Required(ErrorMessage = "ClientName is required!")]
+        public string ClientName { get; set; }
+
+        [StringLength(50)]
+        [Display(Name = "Technology")]
+        [Required(ErrorMessage = "Technology is required!")]
+        public string Technology { get; set; }
+
+        [Display(Name = "Total Experience")]
+        [Required(ErrorMessage = "Total experience is required!")]
+        public string TotalExperience { get; set; }
+
+        [Display(Name = "Relevant Experience")]
+        [Required(ErrorMessage = "Relevant experience is required!")]
+        public string RelevantExperience { get; set; }
+
+        [StringLength(50)]
+        [Display(Name = "CurrentCompany")]
+        [Required(ErrorMessage = "Current company is required!")]
+        public string CurrentCompany { get; set; }
+
+        [StringLength(50)]
+        [Display(Name = "CurrentTitle")]
+        [Required(ErrorMessage = "Current title is required!")]
+        public string CurrentTitle { get; set; }
+
+        public string ResumePath { get; set; }
+
+        public string ResumeName { get; set; }
+
+        public string Role { get; set; }
+
         [Display(Name = "Gender")]
         [Required(ErrorMessage = "Gender is required!")]
         public string Gender { get; set; }
 
-        [Display(Name = "Postion")]
-        [Required(ErrorMessage = "Postion is required!")]
-        public string Position { get; set; }
-
-        [StringLength(2)]
-        [Display(Name = "Experience")]
-        [Required(ErrorMessage = "Experience is required!")]
-        [RegularExpression(@"^[0-9]{2}$", ErrorMessage = "Experience is not a valid!e.g. 01,11,23")]
-        public string Experience { get; set; }
-
-        [StringLength(50)]
-        [Display(Name = "Current Employer")]
-        [Required(ErrorMessage = "Current employer is required!")]
-        public string CurrentEmployer { get; set; }
-
-        [StringLength(10)]
-        [Display(Name = "Primary Mobile Number")]
-        [Required(ErrorMessage = "Primary mobile number is required!")]
-        [RegularExpression(@"^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$", ErrorMessage = "Primary mobile number is not a valid phone number!")]
-        public string PrimaryMobileNumber { get; set; }
-
-        [StringLength(10)]
-        [Display(Name = "Secondary Mobile Number")]
-        [RegularExpression(@"^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$", ErrorMessage = "Secondary mobile number is not a valid phone number!")]
-        [Required(ErrorMessage = "Secondary mobile number is required!")]
-        public string SecondaryMobileNumber { get; set; }
-
-        [StringLength(50)]
-        public string Department { get; set; }
+        public string CandidateStatus { get; set; }
 
         public string TestStatus { get; set; }
 
@@ -78,24 +103,14 @@ namespace Silicus.Ensure.Web.Models
 
         public Guid IdentityUserId { get; set; }
 
-        public string ResumePath { get; set; }
-
-        public string ResumeName { get; set; }
-
         public IList<Position> PositionList { get; set; }
+
+        public string Position { get; set; }
 
         public string ErrorMessage { get; set; }
 
         public string PanelName { get; set; }
 
         public bool IsAdmin { get; set; }
-
-
-        [DataType(DataType.Password)]
-        public string NewPassword { get; set; }
-
-        [Compare("NewPassword", ErrorMessage = "Passwords don't match.!")]
-        [DataType(DataType.Password)]
-        public string ConfirmPassword { get; set; }
     }
 }

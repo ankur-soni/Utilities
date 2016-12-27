@@ -19,53 +19,53 @@ namespace Silicus.Ensure.Entities.Initializer
             //DropExistingConnectionToDatabase(context, DatabaseName);
 
             //AddIndexes(context, DatabaseName);
-            context.Add(new User
-           {
-               FirstName = "Test",
-               LastName = "Admin",
-               NewPassword = "testadmin@123",
-               ConfirmPassword = "testadmin@123",
-               Address = "Test",
-               Email = "testadmin@test.com",
-               IdentityUserId = new System.Guid("5C9DE1BA-083E-425F-AE0B-FCB222E9DBDF"),
-               Role = RoleName.Admin.ToString(),
-               IsActive = true,
-               IsDeleted = false
+           // context.Add(new User
+           //{
+           //    FirstName = "Test",
+           //    LastName = "Admin",
+           //    NewPassword = "testadmin@123",
+           //    ConfirmPassword = "testadmin@123",
+           //    // Address = "Test",
+           //    Email = "testadmin@test.com",
+           //    IdentityUserId = new System.Guid("5C9DE1BA-083E-425F-AE0B-FCB222E9DBDF"),
+           //    Role = RoleName.Admin.ToString(),
+           //    IsActive = true,
+           //    IsDeleted = false
 
-           });
-            context.Add(new User
-            {
-                FirstName = "Nilkanth",
-                LastName = "Kapale",
-                NewPassword = "Nilkanth@123",
-                ConfirmPassword = "Nilkanth@123",
-                Address = "Sangvi",
-                Email = "nilkanth@gmail.com",
-                IdentityUserId = new System.Guid("88B34980-EDD3-420C-8387-621B629A4E9B"),
-                Role = RoleName.Panel.ToString(),
-                IsActive = true,
-                IsDeleted = false
+           //});
+           // context.Add(new User
+           // {
+           //     FirstName = "Nilkanth",
+           //     LastName = "Kapale",
+           //     NewPassword = "Nilkanth@123",
+           //     ConfirmPassword = "Nilkanth@123",
+           //     // Address = "Sangvi",
+           //     Email = "nilkanth@gmail.com",
+           //     IdentityUserId = new System.Guid("88B34980-EDD3-420C-8387-621B629A4E9B"),
+           //     Role = RoleName.Panel.ToString(),
+           //     IsActive = true,
+           //     IsDeleted = false
 
-            });
-            context.Add(new User
-            {
-                FirstName = "Lorem",
-                LastName = "Lipsum",
-                NewPassword = "Candidate@123",
-                ConfirmPassword = "Candidate@123",
-                Address = "Pune",
-                Email = "lorem@gmail.com",
-                IdentityUserId = new System.Guid("50cad72d-4ff3-48ce-ba32-44675cfd2744"),
-                Role = RoleName.Candidate.ToString(),
-                Gender = "Male",
-                Department = "Delivery",
-                TestStatus = Convert.ToString(TestStatus.NotAssigned),
-                Position = "Dot Net Developer",
-                Experience = "5",
-                IsActive = true,
-                IsDeleted = false
+           // });
+           // context.Add(new User
+           // {
+           //     FirstName = "Lorem",
+           //     LastName = "Lipsum",
+           //     NewPassword = "Candidate@123",
+           //     ConfirmPassword = "Candidate@123",
+           //     //  Address = "Pune",
+           //     Email = "lorem@gmail.com",
+           //     IdentityUserId = new System.Guid("50cad72d-4ff3-48ce-ba32-44675cfd2744"),
+           //     Role = RoleName.Candidate.ToString(),
+           //     Gender = "Male",
+           //     //  Department = "Delivery",
+           //     TestStatus = Convert.ToString(TestStatus.NotAssigned),
+           //     Position = "Dot Net Developer",
+           //     //  Experience = "5",
+           //     IsActive = true,
+           //     IsDeleted = false
 
-            });
+           // });
             context.Add(new Project
             {
                 ProjectDescription = "Landmark"

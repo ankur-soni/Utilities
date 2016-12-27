@@ -15,290 +15,173 @@
         <h1 class="header-name">Shortlisted Nominations</h1>
     </div>
 </div>
-@*<div class="wrapper wrapper-content animated fadeInRight">
-        <div class="row" style="margin-left: 2%;">
-            @if (Model.Count() <= 0)
-            {
-                <span class="text-danger" style="font-size:20px">No reviewes are submitted as of now.</span>
-            }
-            else
-            {
-                <div style="text-align:left;width:80%;">
-                    <input type="button" value="ALL" class="btn btn-primary btnSameSize" onclick="location.href=''" disabled="disabled" />
-                    <input type="button" value="SOM" class="btn btn-primary btnSameSize" onclick="location.href=''" disabled="disabled" />
-                    <input type="button" value="Pinnacle" class="btn btn-primary btnSameSize" onclick="location.href=''" disabled="disabled" />
-                    <input type="button" value="Team Awesome" class="btn btn-primary btnSameSize" onclick="location.href=''" disabled="disabled" />
-                </div>
-                <br />
 
-                <div style="font-weight:bold;color:#0070B9">ALL</div>
-
-                <div>
-                    <ul class="nav nav-tabs">
-                        <li class="active"><a id="current-tab" data-toggle="tab" href="#currentMonth">Current</a></li>
-                        <li><a id="historical-tab" data-toggle="tab" href="#historical">Historical</a></li>
-                    </ul>
-                </div>
-                <div class="tab-content">
-                    <hr style="margin-top:0px;height:2px;margin-left:0px; width:85%;" />
-
-                    <div id="currentMonth" class="tab-pane fade in active">
-                        @Html.Partial("~/Views/Review/Shared/_reviewFeedbackList.cshtml", Model)
-                    </div>
-
-                    <div id="historical" class="tab-pane fade">
-                        This is Empty currently
-                        </div>
-                    </div>
-                }
-            <br />
-        </div>
-
-        @if (Model.Count() != 0)
-        {
-            <div class="row" style="margin-left:2%;">
-                <div class="row">&nbsp;</div>
-                <div style="font-weight:bold; color:#0070B9">SHORTLISTED</div>
-                <hr style="margin-top:0px;height:2px;margin-left:0px; width:85%;" />
-                @foreach (var item in Model)
-                {
-                    Random randomGen = new Random();
-                    KnownColor[] names = (KnownColor[])Enum.GetValues(typeof(KnownColor));
-                    KnownColor randomColorName = names[randomGen.Next(names.Length)];
-                    Color randomColor = Color.FromKnownColor(randomColorName);
-                    if (item.IsShortlisted)
-                    {
-                        <div class="col-md-3 card white-bg">
-                            <div class="cardHeader text-center">
-                                @*<div style="background-color:@randomColor.Name;height:60px;margin-top:10px;padding-left:10px;padding-bottom:70px; font-weight:bold;font-size:50px;text-align:left" class="col-md-5">
-                                        @Html.DisplayFor(modelItem => item.Intials)
-                                    </div>
-                                <div>
-                                    <label> @Html.DisplayFor(modelItem => item.DisplayName)</label>
-                                </div>
-
-                                <div>
-                                    For
-                                    @Html.DisplayFor(modelItem => item.AwardName)
-                                    @Html.DisplayFor(modelItem => item.NominationTime)
-                                    @*<br />
-                                        @Html.Label("Credits:")
-                                        @Html.DisplayFor(modelItem => item.Credits)
-                                    <table align="center" style="border: 1px solid rgba(178, 176, 176, 0.96);margin-top:2%;">
-                                        <tr>
-                                            <th>Credits</th>
-                                            <th>Reviews</th>
-                                            <th>Average</th>
-                                        </tr>
-                                        <tr>
-                                            <td>@Html.DisplayFor(modelItem => item.Credits)</td>
-                                            <td>@Html.DisplayFor(modelItem => item.NumberOfReviews)</td>
-                                            <td>@Html.DisplayFor(modelItem => item.AverageCredits)</td>
-                                        </tr>
-                                    </table>
-                                </div>
-                            </div>
-                            <div class="cardFooter text-right">
-                                <a href="@Url.Action("RemoveShortlistNomination", "Review", new { nominationId = item.NominationId })">
-                                    <span> <i class="glyphicon glyphicon-remove" title="Remove From Shortlist" aria-hidden="true" style="font-size:25px;margin-right:1%;"></i> </span>
-                                </a>
-
-                                <a href="@Url.Action("ViewNominationForShortlist", "Review", item)">
-                                    <span> <i class="fa fa-file-text-o" title="View Nomination" aria-hidden="true" style="font-size:30px;"></i> </span>
-                                </a>
-
-                            </div>
-
-                        </div>
-                    }
-                }
-
-                <br />
-            </div>
-
-                bool _disabled = false;
-                foreach (var item in Model)
-                {
-                    if (item.IsWinner == true)
-                    {
-                        _disabled = true;
-                        break;
-                    }
-                }
-                if (_disabled == false)
-                {
-                    <div style="text-align:center;width:80%;">
-                        <input type="button" value="Reject All" class="btn btn-primary btnSameSize" id="rejectAll" onclick="return rejectAllNominations()" style="margin-left:3%;" />
-                    </div>
-                }
-                else
-                {
-                    <div style="text-align:center;width:80%;">
-                        <input type="button" value="Reject All" disabled class="btn btn-primary btnSameSize" id="rejectAll" onclick="return rejectAllNominations()" style="margin-left:3%;" />
-                    </div>
-                }
-                @*<div style="text-align:center;width:80%;">
-                        <input type="button" value="Reject All" class="btn btn-primary btnSameSize" id="rejectAll" onclick="return rejectAllNominations()" style="margin-left:3%;" />
-                    </div>
-        }
-        <div class="row">&nbsp;</div>
-        <div class="row">&nbsp;</div>
-    </div>*@
 <div class="row">
     <div class="col-lg-12 col-md-12 col-sm-12">
-        <div class="box M-T15">
+        <div class="box M-T15 M-B60">
             @if (Model.Count() == 0)
             {
-            <div class="row">
-                <div class="col-sm-12">
-                    <div class="alert alert-danger">
-                        <span class="text-danger" style="font-size:20px">No reviewes are submitted as of now.</span>
-                    </div>
-                </div>
-            </div>
-            }
-            else
-            {
-            <div class="sttabs tabs-style-linebox">
-                <nav>
-                    <ul>
-                        <li class="active"><a id="current-tab" data-toggle="tab" href="#currentMonth"><span>All</span></a></li>
-                        <li><a id="historical-tab" data-toggle="tab" href="#historical"><span>SOM</span></a></li>
-                        <li><a id="historical-tab" data-toggle="tab" href="#historical"><span>Pinnacle</span></a></li>
-                        <li><a id="historical-tab" data-toggle="tab" href="#historical"><span>Team Awesome</span></a></li>
-
-                    </ul>
-                </nav>
-                <div class="tab-content content-wrap text-center">
-                    <section id="all" class="tab-pane fade in active">
-                        @Html.Partial("~/Views/Review/Shared/_reviewFeedbackList.cshtml", Model)
-
-                    </section>
-                    <section id="SOM" class="tab-pane fade">
-                        <p>Content yet to come..</p>
-                    </section>
-                    <section id="Pinnacle" class="tab-pane fade">
-                        <p>Content yet to come..</p>
-                    </section>
-                    <section id="team awesome" class="tab-pane fade">
-                        <p>Content yet to come..</p>
-                    </section>
                 <div class="row">
-                    <div class="col-lg-12 col-md-12 col-sm-12">
-                        <div class="pull-right btn-nav">
-                           
-                            @{  bool _disabled = false;
-                              foreach (var item in Model)
-                              {
-                                  if (item.IsWinner == true)
-                                  {
-                                      _disabled = true;
-                                      break;
-                                  }
-                              }
-                              if (_disabled == false)
-                              {
-
-                                <div class="pull-right btn-nav">
-                                    <input type="button" value="Reject All" class="btn btn-primary" id="rejectAll" onclick="return rejectAllNominations()" style="margin-left:3%;" />
-                                </div>
-                              }
-                              else
-                              {
-                                <div class="pull-right btn-nav">
-                                    <input type="button" value="Reject All" disabled class="btn btn-primary" id="rejectAll" onclick="return rejectAllNominations()" style="margin-left:3%;" />
-                                </div>
-                              }
-                            }
-                           
+                    <div class="col-sm-12">
+                        <div class="box">
+                            <div class="alert alert-danger">
+                                <span class="text-danger" style="font-size:20px">No reviewes are submitted as of now.</span>
+                            </div>
                         </div>
                     </div>
                 </div>
-                </div><!-- /content -->
-            </div>
             }
+            else
+            {
+                <div class="sttabs tabs-style-linebox">
+                    <nav>
+                        <ul>
+                            <li class="active"><a id="current-tab" data-toggle="tab" href="#currentMonth"><span>All</span></a></li>
+                            <li><a id="historical-tab" data-toggle="tab" href="#historical"><span>SOM</span></a></li>
+                            <li><a id="historical-tab" data-toggle="tab" href="#historical"><span>Pinnacle</span></a></li>
+                            <li><a id="historical-tab" data-toggle="tab" href="#historical"><span>Team Awesome</span></a></li>
+
+                        </ul>
+                    </nav>
+                    <div class="tab-content content-wrap text-center">
+                        <section id="all" class="tab-pane fade in active">
+                            @Html.Partial("~/Views/Review/Shared/_reviewFeedbackList.cshtml", Model)
+
+                        </section>
+                        <section id="SOM" class="tab-pane fade">
+                            <p>Content yet to come..</p>
+                        </section>
+                        <section id="Pinnacle" class="tab-pane fade">
+                            <p>Content yet to come..</p>
+                        </section>
+                        <section id="team awesome" class="tab-pane fade">
+                            <p>Content yet to come..</p>
+                        </section>
+                        <div class="row">
+                            <div class="col-lg-12 col-md-12 col-sm-12">
+                                <div class="pull-right btn-nav">
+
+                                    @{  bool _disabled = false;
+                                        foreach (var item in Model)
+                                        {
+                                            if (item.IsWinner == true)
+                                            {
+                                                _disabled = true;
+                                                break;
+                                            }
+                                        }
+                                        if (_disabled == false)
+                                        {
+
+                                            <div class="pull-right btn-nav">
+                                                <input type="button" value="Reject All" class="btn btn-primary" id="rejectAll" onclick="return rejectAllNominations()" style="margin-left:3%;" />
+                                            </div>
+                                        }
+                                        else
+                                        {
+                                            <div class="pull-right btn-nav">
+                                                <input type="button" value="Reject All" disabled class="btn btn-primary" id="rejectAll" onclick="return rejectAllNominations()" style="margin-left:3%;" />
+                                            </div>
+                                        }
+                                    }
+
+                                </div>
+                            </div>
+                        </div>
+                    </div><!-- /content -->
+                </div>
+                                        }
         </div>
     </div>
-  
+
 </div>
 
 <script src="~/js/jquery-2.1.1.js"></script>
 <script>
-                                $(function () {
+    $(function () {
 
-                                    $('.fa-trophy').tooltip();
-                                    $('.fa-star').tooltip();
-                                });
+        $('.fa-trophy').tooltip();
+        $('.fa-star').tooltip();
+    });
 
-                                function rejectAllNominations() {
-                                    swal({
-                                        title: "Reject all nominations",
-                                        text: "Do you want to reject all nominations?",
-                                        type: "info",
-                                        showCancelButton: true,
-                                        confirmButtonColor: "#0070b9",
-                                        confirmButtonText: "Yes!",
-                                        cancelButtonText: "No!",
-                                        closeOnConfirm: false,
-                                        closeOnCancel: false
-                                    },
-                                   function (isConfirm) {
-                                       if (isConfirm) {
-                                           $.ajax({
-                                               type: 'post',
-                                               url: '@Url.Action("RejectAll", "Review")',
-                                               success: function (data) {
-                                                   swal({
-                                                       title: "All nominations rejected..",
-                                                       showCancelButton: false,
-                                                       confirmButtonColor: "#88a364",
-                                                       confirmButtonText: "Ok"
-                                                   },
-                                                   function () {
-                                                       if (isConfirm) {
-                                                           window.location.href = '@Url.Action("ReviewFeedbackList", "Review")';
-                                                       }
-                                                   });
-                                               },
-                                               error: function () {
-                                                   swal("Error", "Oops! Something wrong happened..");
-                                               }
-                                           });
-                                       } else {
-                                           swal("Cancelled", "Rejection of all nominations Cancelled");
-                                           window.location.href = '@Url.Action("ReviewFeedbackList", "Review")';
-                                       }
-                                   });
+    function rejectAllNominations() {
+        swal({
+            title: "Reject all nominations",
+            text: "Do you want to reject all nominations?",
+            type: "info",
+            showCancelButton: true,
+            confirmButtonColor: "#0070b9",
+            confirmButtonText: "Yes!",
+            cancelButtonText: "No!",
+            closeOnConfirm: false,
+            closeOnCancel: false
+        },
+       function (isConfirm) {
+           if (isConfirm) {
+               $(".loader-overlay").show();
+               $.ajax({
+                   type: 'post',
+                   url: '@Url.Action("RejectAll", "Review")',
+                   success: function (data) {
+                       $(".loader-overlay").hide();
+                       swal({
+                           title: "All nominations rejected..",
+                           showCancelButton: false,
+                           confirmButtonColor: "#88a364",
+                           confirmButtonText: "Ok"
+                       },
+                       function () {
+                           if (isConfirm) {
+                               window.location.href = '@Url.Action("ReviewFeedbackList", "Review")';
+                           }
+                       });
+                   },
+                   error: function () {
+                       $(".loader-overlay").hide();
+                       swal("Error", "Oops! Something wrong happened..");
+                   }
+               });
+           } else {
+               swal("Cancelled", "Rejection of all nominations Cancelled");
+               window.location.href = '@Url.Action("ReviewFeedbackList", "Review")';
+           }
+       });
 
-                                }
+    }
 
-                                var _urlReviewFeedbackListForActiveMonth = '@Url.Action("GetReviewFeedbackListPartialView", "Review", new { forCurrentMonth = true })';
-                                var _urlReviewFeedbackListForHistoricalMonths = '@Url.Action("GetReviewFeedbackListPartialView", "Review", new { forCurrentMonth = false })';
+    var _urlReviewFeedbackListForActiveMonth = '@Url.Action("GetReviewFeedbackListPartialView", "Review", new { forCurrentMonth = true })';
+    var _urlReviewFeedbackListForHistoricalMonths = '@Url.Action("GetReviewFeedbackListPartialView", "Review", new { forCurrentMonth = false })';
 
-                                $("#historical-tab").on("click", function () {
-                                    $.ajax({
-                                        type: "GET",
-                                        url: _urlReviewFeedbackListForHistoricalMonths,
-                                        success: function (response) {
-                                            $("#historical").html(response);
-                                        },
-                                        error: function (error) {
-                                            console.log(error);
-                                        }
-                                    });
-                                })
+    $("#historical-tab").on("click", function () {
+        $(".loader-overlay").show();
+        $.ajax({
+            type: "GET",
+            url: _urlReviewFeedbackListForHistoricalMonths,
+            success: function (response) {
+                $(".loader-overlay").hide();
+                $("#historical").html(response);
+            },
+            error: function (error) {
+                $(".loader-overlay").hide();
+                console.log(error);
+            }
+        });
+    })
 
-                                $("#current-tab").on("click", function () {
-                                    $.ajax({
-                                        type: "GET",
-                                        url: _urlReviewFeedbackListForActiveMonth,
-                                        success: function (response) {
-                                            $("#currentMonth").html(response);
-                                        },
-                                        error: function (error) {
-                                            console.log(error);
-                                        }
-                                    });
-                                })
+    $("#current-tab").on("click", function () {
+        $(".loader-overlay").show();
+        $.ajax({
+            type: "GET",
+            url: _urlReviewFeedbackListForActiveMonth,
+            success: function (response) {
+                $(".loader-overlay").hide();
+                $("#currentMonth").html(response);
+            },
+            error: function (error) {
+                $(".loader-overlay").hide();
+                console.log(error);
+            }
+        });
+    })
 
 </script>

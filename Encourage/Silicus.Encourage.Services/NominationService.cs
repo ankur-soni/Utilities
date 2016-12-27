@@ -387,6 +387,12 @@ namespace Silicus.Encourage.Services
         {
             return _encourageDatabaseContext.Query<FrequencyMaster>().ToList();
         }
+
+        public List<User> GetAllResources()
+        {
+            return _commonDataBaseContext.Query<User>().ToList();
+        }
+
         #region Get Saved Nominations Details
 
         public string GetAwardNameByAwardId(int awardId)

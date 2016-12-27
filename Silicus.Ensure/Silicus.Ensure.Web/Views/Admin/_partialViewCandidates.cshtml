@@ -23,8 +23,10 @@
                 if (value) {
                     var filter = { logic: "or", filters: [] };
                     filter.filters.push({ field: "FirstName", operator: "contains", value: value });
-                    filter.filters.push({ field: "LastName", operator: "contains", value: value });
-                    filter.filters.push({ field: "Email", operator: "contains", value: value });
+                    filter.filters.push({ field: "RequisitionId", operator: "contains", value: value });
+                    filter.filters.push({ field: "ContactNumber", operator: "contains", value: value });
+                    filter.filters.push({ field: "TotalExperience", operator: "contains", value: value });
+                    filter.filters.push({ field: "PanelName", operator: "contains", value: value });
                     grid.dataSource.query({ filter: filter });
                 } else {
                     grid.dataSource.filter({});
@@ -234,11 +236,11 @@
     }
 
     function CheckAssign(status, id, TestSuiteId, UserId) {
-        if (status == '@TestStatus.Assigned.ToString()' && id == 1) {
+        if (id == 1) {
             window.location.href = "/Admin/ViewQuestion?UserId=" + UserId + '&TestSuiteId=' + TestSuiteId;
             return false;
         }
-        else if (status == '@TestStatus.Submitted.ToString()' && id == 2) {
+        else if (id == 2) {
             window.location.href = "/admin/SubmittedTest?UserId=" + UserId + '&TestSuiteId=' + TestSuiteId;
             return false;
         }
@@ -254,32 +256,51 @@
         @(Html.Kendo().Grid<Silicus.Ensure.Web.Models.UserViewModel>().Name("userGrids")
          .Columns(columns =>
               {
-                  columns.Bound(p => p.FirstName).Width(50);
-                  columns.Bound(p => p.LastName).Width(50);
-                  columns.Bound(p => p.Gender).Width(50);
-                  columns.Bound(p => p.Position).Width(50);
-                  columns.Bound(p => p.Department).Width(50);
-                  columns.Bound(p => p.Experience).Width(50);
-                  columns.Bound(p => p.Email).Width(50);
-                  columns.Bound(p => p.TestStatus).Width(50);
-                  columns.Bound(p => p.PanelName).Title("Panel").Width(50);
-                  columns.Bound(c => c.UserId).ClientTemplate(@"<a class='k-button k-button-icontext k-grid-edit' href='" + Url.Action("CandidateAdd", "Admin") + "?UserId=#=UserId#'><span class='k-icon k-edit'></span>Edit</a><a id='testSuiteDel' class='k-button k-button-icontext k-grid-delete' href='\\#' onclick='return deleteUser(#=UserId#)'><span class='k-icon k-delete'></span>Delete</a>").Width(160);
+                  columns.Bound(p => p.FirstName).ClientTemplate("#=FirstName# #=LastName#").Title("Name").Width(150);
+                  columns.Bound(p => p.RequisitionId).Title("Requisition Id").Width(150);
+                  columns.Bound(p => p.Position).Width(70);
+                  columns.Bound(p => p.ContactNumber).Title("Contact Number").Width(80);
+                  columns.Bound(p => p.TotalExperience).Title("Total Experience").Width(50);
+                  columns.Bound(p => p.PanelName).Title("Panel").Width(150);
+                  columns.Bound(p => p.CandidateStatus).ClientTemplate(@"
+                                                                        #if(CandidateStatus=='TestAssigned'){#
+                                                                            Test Assigned
+                                                                        #}
+                                                                        else if(CandidateStatus=='TestSubmitted') {#
+                                                                            Test Submitted
+                                                                        #}
+                                                                        else if(CandidateStatus=='UnderEvaluation') {#
+                                                                            Under Evaluation
+                                                                        #}
+                                                                        else{#
+                                                                            #=CandidateStatus#
+                                                                        #}
+#").Title("Status").Width(100);
+                  columns.Bound(c => c.UserId).ClientTemplate(@"<a class='k-button k-button-icontext k-grid-edit' href='" + Url.Action("CandidateAdd", "Admin") + "?UserId=#=UserId#'><span class='k-icon k-edit'></span>Edit</a><a id='testSuiteDel' class='k-button k-button-icontext k-grid-delete' href='\\#' onclick='return deleteUser(#=UserId#)'><span class='k-icon k-delete'></span>Delete</a>").Title("Action").Width(160);
                   columns.Bound(c => c.UserId).ClientTemplate(@"
 
-                                #if (IsAdmin){#
-                                    #if(TestStatus=='NotAssigned'){#
-                                        <a onclick=showTest('#=UserId#','#=TestStatus#') style='cursor:pointer'>Assign Test</a>
-                                    #}
-                                    else if(TestStatus=='Assigned') {#
+                                         #if(CandidateStatus=='New'){#
+                                        <a onclick=showTest('#=UserId#','#=TestStatus#') style='cursor:pointer'>Assign Test</a> |
+                                        <a  class ='dialog-window' onclick=ReAssignPanel('#=UserId#') style='cursor:pointer'>Assign Panel</a>
+                                        #}
+                                        else if(CandidateStatus=='TestAssigned') {#
+                                        <a  class ='dialog-window' onclick=ReAssign('#=UserId#','#=TestStatus#') style='cursor:pointer'>Reassign Test</a> |
+                                        <a  class ='dialog-window' onclick=ReAssignPanel('#=UserId#') style='cursor:pointer'>Assign Panel</a>
+                                        #}
+                                        else if(CandidateStatus=='TestSubmitted') {#
                                         <a  class ='dialog-window' onclick=ReAssignPanel('#=UserId#') style='cursor:pointer'>Assign Panel</a> |
-                                        <a  class ='dialog-window' onclick=ReAssign('#=UserId#','#=TestStatus#') style='cursor:pointer'>Reassign Test</a>
-                                    #}#
-                                #}#
+                                        <a  class ='dialog-window' onclick=CheckAssign('#=TestStatus#',1,#=TestSuiteId#,'#=UserId#') style='cursor:pointer'>View Test</a>
+                                        #}
+                                        else if(CandidateStatus=='UnderEvaluation') {#
+                                        <a  class ='dialog-window' onclick=CheckAssign('#=TestStatus#',1,#=TestSuiteId#,'#=UserId#') style='cursor:pointer'>View Test</a> |
+                                        <a  class ='dialog-window' onclick=CheckAssign('#=TestStatus#',2,#=TestSuiteId#,'#=UserId#') style='cursor:pointer'>Add feedback</a>
+                                        #}
+                                        else if(CandidateStatus=='Selected'||CandidateStatus=='Rejected') {#
+                                        <a  class ='dialog-window' onclick=CheckAssign('#=TestStatus#',1,#=TestSuiteId#,'#=UserId#') style='cursor:pointer'>View Test</a>
+                                        #}
 
-                                #if(TestStatus!='NotAssigned'){#
-                                | <a  class ='dialog-window' onclick=CheckAssign('#=TestStatus#',1,#=TestSuiteId#,'#=UserId#') style='cursor:pointer'>Preview Question Set</a> |
-                                 <a  class ='dialog-window' onclick=CheckAssign('#=TestStatus#',2,#=TestSuiteId#,'#=UserId#') style='cursor:pointer'>View Submitted Test</a>
-                                #}#").Title("Actions");
+                                        #").Title("Actions");
+
               })
             .DataSource(dataSource => dataSource
                       .Ajax()

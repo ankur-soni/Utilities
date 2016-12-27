@@ -11,38 +11,49 @@
     #extensionform {
         margin-top: 20px;
     }
-    .form-group .single-line{
-        max-width:62.5% !important;
-                      }
+
+    .form-group .single-line {
+        max-width: 62.5% !important;
+    }
+
     .panel-heading {
         background-color: #08B1F4 !important;
     }
-    .panel-heading h4{
+
+        .panel-heading h4 {
             text-align: center;
-    }
+        }
 
     #codetext {
         max-width: 100% !important;
         resize: none;
         resize: vertical;
     }
+
     #Descriptiontext {
         max-width: 100% !important;
         resize: none;
         resize: vertical;
     }
+
     #ExampleUsagetext {
         max-width: 100% !important;
         resize: none;
         resize: vertical;
     }
-    #methodnametext{
-        width:500px;
+
+    #methodnametext {
+        width: 500px;
     }
-    .errormessage{
-        display:block;
+
+    .errormessage {
+        display: block;
     }
-    .required:after { content:" *"; color:red; }
+
+    .required:after {
+        content: " *";
+        color: red;
+    }
 
     .displaycode {
         background-color: #EFF0F1;
@@ -71,27 +82,48 @@
         font: .9em "Verdana", sans-serif;
         padding-bottom: .2em;
     }
-    #addExtensionDiv{
-        padding-bottom:6%;
+
+    #addExtensionDiv {
+        padding-bottom: 6%;
     }
+
     .navbar-inverse .navbar-nav > .active > a, .navbar-inverse .navbar-nav > .active > a:hover, .navbar-inverse .navbar-nav > .active > a:focus {
-    color: #ffffff;
-    background-color: #07c !important;
-}
+        color: #ffffff;
+        background-color: #07c !important;
+    }
+
     .navbar {
-    border-radius: unset; 
-}
+        border-radius: unset;
+    }
 </style>
-<nav class="navbar navbar-inverse" style="background:#2F4050;position:fixed;width:100%">
-    <div class="container-fluid">
-        <ul class="nav navbar-nav" style="background:#2F4050">
-            <li id="AddExtensionCode" class="active"><a href='@Url.Action("AddExtensionCode", "Extension")'>Add Extension Code</a></li>
-            <li id="ShowExtensionCode"><a href='@Url.Action("ShowExtensionCode", "Extension")'>Published Extension Code </a></li>
-            <li id="ShowMyExtensionCode"><a href='@Url.Action("ShowMyExtensionCode", "Extension")'>My Extension Code List</a></li>
-            <li id="ReviewExtensionCodeList"><a href='@Url.Action("ReviewExtensionCodeList", "Extension")'>Review Extension Code List</a></li>
-        </ul>
+<div class="row white-bg header-row">
+    <nav class="" role="navigation" style="margin-bottom: 0">
+        <div class="navbar-header">
+            <a class="navbar-minimalize minimalize-styl-2 btn btn-primary" id="menu-toggle" style="margin-left:15px;" href="#"><i class="fa fa-bars"></i> </a>
+        </div>
+    </nav>
+
+    <div class="col-lg-11 col-md-11 col-sm-11">
+        <h1 class="dashboard-name">Extension Method</h1>
     </div>
-</nav>
+</div>
+
+<div class="row">
+    <div class="col-lg-12 col-md-12 col-sm-12">
+        <div class="box header-box M-T15">
+            <nav class="navbar navbar-inverse" style="background:#2F4050;position:fixed;width:100%">
+                <div class="container-fluid">
+                    <ul class="nav navbar-nav" style="background:#2F4050">
+                        <li id="AddExtensionCode" class="active"><a href='@Url.Action("AddExtensionCode", "Extension")'>Add Extension Code</a></li>
+                        <li id="ShowExtensionCode"><a href='@Url.Action("ShowExtensionCode", "Extension")'>Published Extension Code </a></li>
+                        <li id="ShowMyExtensionCode"><a href='@Url.Action("ShowMyExtensionCode", "Extension")'>My Extension Code List</a></li>
+                        <li id="ReviewExtensionCodeList"><a href='@Url.Action("ReviewExtensionCodeList", "Extension")'>Review Extension Code List</a></li>
+                    </ul>
+                </div>
+            </nav>
+        </div>
+    </div>
+</div>
 <div style="padding:15px">
     <div class="panel panel-primary serachpanel">
         <div class="panel-heading">
@@ -165,26 +197,26 @@
         </div>
     </div>
 </div>
-    @section Scripts {
-        @Scripts.Render("~/bundles/jqueryval")
-    }
-    <script src="~/Scripts/jquery-1.10.2.min.js"></script>
-    <script src="https://cdn.rawgit.com/google/code-prettify/master/loader/run_prettify.js"></script>
-    <script>
-        $(document).ready(function () {
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}
+<script src="~/Scripts/jquery-1.10.2.min.js"></script>
+<script src="https://cdn.rawgit.com/google/code-prettify/master/loader/run_prettify.js"></script>
+<script>
+    $(document).ready(function () {
 
-            $('#codetext').keyup(function () {
-                $('#FormattedCode').css("display", "block");
-                $('pre').addClass("prettyprint");
-                var value = $(this).val();
-                $("code").text(value);
+        $('#codetext').keyup(function () {
+            $('#FormattedCode').css("display", "block");
+            $('pre').addClass("prettyprint");
+            var value = $(this).val();
+            $("code").text(value);
 
-                if ($('#codetext').val() == "") {
-                    $('#FormattedCode').css("display", "none");
-                }
-            });
-
+            if ($('#codetext').val() == "") {
+                $('#FormattedCode').css("display", "none");
+            }
         });
 
+    });
 
-    </script>
+
+</script>
