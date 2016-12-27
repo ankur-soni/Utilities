@@ -12,18 +12,10 @@ namespace Silicus.Encourage.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class ManagerComment
+    public partial class EmailTemplate
     {
         public int Id { get; set; }
-        public int NominationId { get; set; }
-        public int CriteriaId { get; set; }
-        public string Comment { get; set; }
-        public int Rating { get; set; }
-        public int Weightage { get; set; }
-        public string AdminComment { get; set; }
-        public Nullable<decimal> FinalScore { get; set; }
-    
-        public virtual Criteria Criterion { get; set; }
-        public virtual Nomination Nomination { get; set; }
+        public string TemplateName { get; set; }
+        public string Template { get; set; }
     }
 }
