@@ -5,8 +5,9 @@
 
 @{
     ViewBag.Title = "Candidate Dashboard";
-    var users = Html.Partial("~/Views/Tag/List.cshtml");
-    var roles = Html.Partial("~/Views/Positions/Positions.cshtml");
+    var tagList = Html.Partial("~/Views/Tag/List.cshtml");
+    var positionList = Html.Partial("~/Views/Positions/Positions.cshtml");
+    var panleList = Html.Partial("~/Views/Panel/Panel.cshtml");
 }
 <div class="main-content">
     <h2>Setup</h2>
@@ -14,7 +15,11 @@
         @(Html.Kendo().TabStrip()
                 .Name("Tabs")
                 .Items(tabstrip =>
-               { tabstrip.Add().Text("Tags").Selected(true).Content(users.ToString());tabstrip.Add().Text("Postions").Selected(false).Content(roles.ToString()); })
+               { 
+                   tabstrip.Add().Text("Tags").Selected(true).Content(tagList.ToString());
+                   tabstrip.Add().Text("Postions").Selected(false).Content(positionList.ToString());
+                   tabstrip.Add().Text("Panel").Selected(false).Content(panleList.ToString()); 
+               })
         )
 
     </div>

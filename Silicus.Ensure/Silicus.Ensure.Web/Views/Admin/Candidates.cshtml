@@ -16,11 +16,11 @@
         <h2>Candidates</h2>
         <div class="row" style="margin-bottom:20px">
             <div class="col-sm-3">
-                <span style="float:right"><b> Test Status</b></span>
+                <span style="float:right"><b>Candidate Status</b></span>
             </div>
             <div class="col-sm-3">
-                @(Html.Kendo().DropDownListFor(m => m.TestStatus)
-                .Name("TestStatus")
+                @(Html.Kendo().DropDownListFor(m => m.CandidateStatus)
+                .Name("CandidateStatus")
                 .DataTextField("Text")
                 .DataValueField("Value")
                 .Events(e => e.Change("Change"))
@@ -31,24 +31,28 @@
                     Value="All"
                     },
                     new SelectListItem(){
-                    Text=Convert.ToString(TestStatus.NotAssigned),
-                    Value=Convert.ToString(TestStatus.NotAssigned)
+                    Text=Convert.ToString(CandidateStatus.New),
+                    Value=Convert.ToString(CandidateStatus.New)
                     },
                     new SelectListItem(){
-                    Text=Convert.ToString(TestStatus.Assigned),
-                    Value=Convert.ToString(TestStatus.Assigned)
+                    Text=Convert.ToString(CandidateStatus.TestAssigned),
+                    Value=Convert.ToString(CandidateStatus.TestAssigned)
                     },
                     new SelectListItem(){
-                    Text=Convert.ToString(TestStatus.Submitted),
-                    Value=Convert.ToString(TestStatus.Submitted)
+                    Text=Convert.ToString(CandidateStatus.TestSubmitted),
+                    Value=Convert.ToString(CandidateStatus.TestSubmitted)
                     },
                     new SelectListItem(){
-                    Text=Convert.ToString(TestStatus.Evaluated),
-                    Value=Convert.ToString(TestStatus.Evaluated)
+                    Text=Convert.ToString(CandidateStatus.UnderEvaluation),
+                    Value=Convert.ToString(CandidateStatus.UnderEvaluation)
                     },
                     new SelectListItem(){
-                    Text=Convert.ToString(TestStatus.Completed),
-                    Value=Convert.ToString(TestStatus.Completed)
+                    Text=Convert.ToString(CandidateStatus.Selected),
+                    Value=Convert.ToString(CandidateStatus.Selected)
+                    },
+                    new SelectListItem(){
+                    Text=Convert.ToString(CandidateStatus.Rejected),
+                    Value=Convert.ToString(CandidateStatus.Rejected)
                     }
                     }).HtmlAttributes(new { style = "width: 100%" }))
             </div>
