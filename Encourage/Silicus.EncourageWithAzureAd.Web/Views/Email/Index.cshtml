@@ -3,9 +3,14 @@
     ViewBag.Title = "Index";
 }
 
-<h2>Email Template</h2>
-<div class="container">
-    <div class="row">
-        @Html.DropDownList("Process", new SelectList(Model.ProcessesViewModel,"Id","Name"), "Select", new { @class = "form-control" })
+<div class="white-bg header-row">
+    <div class="col-lg-11 col-md-11 col-sm-11">
+        <h1 class="header-name">Email Template</h1>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-sm-12">
+        @Html.DropDownList("Process", new SelectList(Model.ProcessesViewModel, "Id", "Name"), "Select", new { @class = "form-control col-md-6" })
     </div>
 </div>
