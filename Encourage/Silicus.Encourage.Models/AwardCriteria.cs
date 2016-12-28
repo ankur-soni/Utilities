@@ -11,12 +11,13 @@ namespace Silicus.Encourage.Models
 {
     using System;
     using System.Collections.Generic;
-
+    
     public partial class AwardCriteria
     {
         public int Id { get; set; }
         public int CriteriaId { get; set; }
         public int AwardId { get; set; }
+    
         public virtual Award Award { get; set; }
         public virtual Criteria Criterion { get; set; }
     }

@@ -56,7 +56,7 @@
                         Manager
                     </td>
                     <td class="averagePoints tblBorder">
-                        @((nomination.ManagerComments.Any() ? nomination.ManagerComments.Sum(a => (a.Rating * a.Weightage / 100.0)) : 0).ToString("F"))
+                        @((nomination.ManagerComments != null ? nomination.ManagerComments.Sum(a => (a.Rating * a.Weightage / 100.0)) : 0).ToString("F"))
                     </td>
                     @foreach (var criteria in Model.Criterias)
                     {
@@ -135,7 +135,7 @@
                     </td>
                     <td class="averagePoints">
                         <span class="averagePoints finalAverageScore_@nomination.NominationId">
-                            @((nomination.ManagerComments.Any() ? nomination.ManagerComments.Sum(a => a.FinalScore) : 0).ToString("F"))
+                            @((nomination.ManagerComments != null ? nomination.ManagerComments.Sum(a => a.FinalScore.Value).ToString("F") : "0"))
                         </span>
                     </td>
                     @{ var criteriaCount = 0; }
@@ -151,7 +151,7 @@
                                 @Html.Hidden("Nominations[" + nominationCount + "].ManagerComments[" + criteriaCount + "].AdminComment", managerComment.AdminComment)
                                 @*<button type="button" onclick="openCommentPointEditor(@nominationCount, @criteriaCount)" class="btn btn-primary"><span id="spnFinalPoints_@(nomination.NominationId)_@(criteria.Id)" style="font-weight: bold;">@managerComment.FinalScore.ToString("F") </span></button>*@
                                 <a onclick="openCommentPointEditor(@nominationCount, @criteriaCount)">
-                                    <span id="spnFinalPoints_@(nomination.NominationId)_@(criteria.Id)" style="font-weight: bold;">@managerComment.FinalScore.ToString("F") </span>
+                                    <span id="spnFinalPoints_@(nomination.NominationId)_@(criteria.Id)" style="font-weight: bold;">@managerComment.FinalScore.Value.ToString("F") </span>
                                 </a>
                             </td>
                             for (int i = 0; i < (Model.Reviewers.Count - 1); i++)

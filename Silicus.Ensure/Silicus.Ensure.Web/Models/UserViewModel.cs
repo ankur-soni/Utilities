@@ -67,13 +67,17 @@ namespace Silicus.Ensure.Web.Models
         [Required(ErrorMessage = "Technology is required!")]
         public string Technology { get; set; }
 
-        [Display(Name = "Total Experience")]
-        [Required(ErrorMessage = "Total experience is required!")]
-        public string TotalExperience { get; set; }
+        [Required(ErrorMessage = "Total experience year is required!")]
+        public int TotalExperienceInYear { get; set; }
 
-        [Display(Name = "Relevant Experience")]
-        [Required(ErrorMessage = "Relevant experience is required!")]
-        public string RelevantExperience { get; set; }
+        [Required(ErrorMessage = "Total experience month is required!")]
+        public int TotalExperienceInMonth { get; set; }
+
+        [Required(ErrorMessage = "Relevant experience year is required!")]
+        public int RelevantExperienceInYear { get; set; } 
+
+        [Required(ErrorMessage = "Relevant experience month is required!")]
+        public int RelevantExperienceInMonth { get; set; }
 
         [StringLength(50)]
         [Display(Name = "CurrentCompany")]

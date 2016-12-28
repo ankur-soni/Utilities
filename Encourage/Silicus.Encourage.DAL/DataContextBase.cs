@@ -33,6 +33,7 @@ namespace Silicus.Encourage.DAL
             modelBuilder.Configurations.Add(new AwardCriteriaMap());
             modelBuilder.Configurations.Add(new ShortlistMap());
             modelBuilder.Configurations.Add(new ConfigurationMap());
+            modelBuilder.Configurations.Add(new EmailTemplateMap());
         }
     }
 }
