@@ -11,7 +11,7 @@ namespace Silicus.Encourage.Models
 {
     using System;
     using System.Collections.Generic;
-    
+
     public partial class Shortlist
     {
         public int Id { get; set; }
@@ -21,7 +21,6 @@ namespace Silicus.Encourage.Models
         public string WinningComment { get; set; }
         public string HrAdminsFeedback { get; set; }
         public int AdminId { get; set; }
-    
         public virtual Nomination Nomination { get; set; }
     }
 }

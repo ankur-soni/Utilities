@@ -12,18 +12,14 @@ namespace Silicus.EncourageWithAzureAd.Web.Models
             Awards = new List<AwardViewModel>();
         }
         public List<string> userRoles { get; set; }
-
         public List<AwardViewModel> Awards { get; set; }
     }
 
     public class AwardViewModel
     {
         public int AwardId { get; set; }
-
         public string AwardTitle { get; set; }
-
         public string AwardCode { get; set; }
-
         public List<NominationListViewModel> NominationList { get; set; }
     }
 }

@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace Silicus.Encourage.Services
 {
-    public class ReviewerService: IReviewerService
+    public class ReviewerService : IReviewerService
     {
         private readonly IEncourageDatabaseContext _encourageDatabaseContext;
         private readonly IDataContextFactory _dataContextFactory;
@@ -32,7 +32,7 @@ namespace Silicus.Encourage.Services
             {
                 return false;
             }
-            
+
         }
     }
 }

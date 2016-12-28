@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 
 namespace Silicus.Encourage.DAL.Interfaces
 {
-   public interface IDataContextFactory
+    public interface IDataContextFactory
     {
-       ICommonDatabaseContext CreateCommonDbContext();
-       IEncourageDatabaseContext CreateEncourageDbContext();
+        ICommonDatabaseContext CreateCommonDbContext();
+        IEncourageDatabaseContext CreateEncourageDbContext();
     }
 }

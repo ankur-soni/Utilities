@@ -22,9 +22,7 @@ namespace Silicus.Encourage.DAL
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
-            //  Disable the default PluralizingTableNameConvention 
             modelBuilder.Conventions.Remove<PluralizingTableNameConvention>();
-
             modelBuilder.Configurations.Add(new AwardMap());
             modelBuilder.Configurations.Add(new FrequencyMasterMap());
             modelBuilder.Configurations.Add(new CriteriaMap());

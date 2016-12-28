@@ -10,7 +10,6 @@ namespace Silicus.EncourageWithAzureAd.Web.Models
 {
     public class ReviewSubmitionViewModel
     {
-       
         public int ReviewerId { get; set; }
         public string NomineeName { get; set; }
         public int NominationId { get; set; }
