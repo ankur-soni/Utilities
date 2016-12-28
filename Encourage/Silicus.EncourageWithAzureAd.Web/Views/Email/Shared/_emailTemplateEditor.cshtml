@@ -1,0 +1,22 @@
+﻿@model Silicus.EncourageWithAzureAd.Web.Models.EmailTemplateEditorViewModel
+<div class="col-sm-12">
+    <div class="row">
+        <p>
+            @Html.Label("Send Mail To", new { @class = "control-label" })
+        </p>
+        @Html.DropDownListFor(m => m.Users, new SelectList(Model.Users, "UserId", "Name"), "Select", new { multiple = "multiple", @class = "form-control" })
+    </div>
+    <div class="row">
+        @Html.Label("Template", new { @class = "control-label" })
+        <div id="emailTemplateEditor">
+            @Html.TextAreaFor(m=> m.EmailTemplate, new {@class="form-control" })
+        </div>
+    </div>
+</div>
+
+<script>
+    $(document).ready(function () {
+        $("#Users").select2();
+        $("#EmailTemplate").jqte();
+    });
+</script>
