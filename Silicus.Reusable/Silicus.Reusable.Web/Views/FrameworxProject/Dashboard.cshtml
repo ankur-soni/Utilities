@@ -96,7 +96,7 @@
 <div class="row white-bg header-row">
     <nav class="" role="navigation" style="margin-bottom: 0">
         <div class="navbar-header">
-            <a class="navbar-minimalize minimalize-styl-2 btn btn-primary" id="menu-toggle" style="margin-left:15px;" href="#"><i class="fa fa-bars"></i> </a>
+            <a class="navbar-minimalize minimalize-styl-2 btn btn-primary" id="menu-toggle" style="margin-left:15px;border-radius:0px;" href="#"><i class="fa fa-bars"></i> </a>
         </div>
     </nav>
 
@@ -121,13 +121,13 @@
                             <button class="btn btn-primary btn-lg active view-button" id="component-list-view" disabled>
                                 <i class="fa fa-list" aria-hidden="true"></i>
                             </button>
-
+                            
                         </li>
                         <li>
                             <button class="btn btn-primary btn-lg view-button" id="component-tile-view">
                                 <i class="fa fa-th" aria-hidden="true"></i>
                             </button>
-                        </li>
+                        </li>                        
                     </ul>
                 </div>
             </div>
@@ -143,9 +143,9 @@
                     @foreach (var item in Model)
                     {
                         <li category="@item.Name" id="@item.id" title="@item.Title">
-                            <a class="anchorStyle icon-@(item.Name) TitleDivTemplate" my-data="@item.id" my-title="@item.Title">@item.Title</a>
+                            <a class="icon-@(item.Name) TitleDivTemplate" my-data="@item.id" my-title="@item.Title">@item.Title</a>
                         </li>
-                    }    
+                    }
                 </ul>
             </div>
             <div id="divTiles" style="display:none">

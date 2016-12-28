@@ -134,7 +134,7 @@
             var id = value.attributes['id'].value, title = value.attributes['title'].value, category = value.attributes['category'].value;
             var style = title.search(new RegExp(filter, "i")) < 0 ? "display: none;" : "";
             var className = title.search(new RegExp(filter, "i")) < 0 ? "not-found" : "found";
-            itemHtmlString += ' <li category="' + category + '" id="' + id + '" title="' + title + '" class="anchorStyle ' + className + '" style="' + style + '">' +
+            itemHtmlString += ' <li category="' + category + '" id="' + id + '" title="' + title + '" class="' + className + '" style="' + style + '">' +
                     '<a class="icon-' + category + ' TitleDivTemplate"  my-data="' + id + '" my-title="'
                     + title + '">' + title + '</a></li>';
         });
