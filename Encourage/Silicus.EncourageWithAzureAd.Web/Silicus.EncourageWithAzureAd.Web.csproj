@@ -299,6 +299,7 @@
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Controllers\EmailController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\NominationController.cs" />
     <Compile Include="Controllers\ReviewController.cs" />
@@ -321,6 +322,7 @@
     <Compile Include="Models\DashboardViewModel.cs" />
     <Compile Include="Models\NominationListViewModel.cs" />
     <Compile Include="Models\NominationViewModel.cs" />
+    <Compile Include="Models\ProcessesToLockOrUnLockViewModel.cs" />
     <Compile Include="Models\ReviewerCommentViewModel.cs" />
     <Compile Include="Models\ReviewFeedbackListViewModel.cs" />
     <Compile Include="Models\ReviewSubmitionViewModel.cs" />
@@ -844,8 +846,6 @@
     <Content Include="Views\_ViewStart.cshtml" />
     <Content Include="Views\Shared\Error.cshtml" />
     <Content Include="Views\Shared\_Layout.cshtml" />
-    <Content Include="Views\Home\About.cshtml" />
-    <Content Include="Views\Home\Contact.cshtml" />
     <Content Include="Views\Home\Dashboard.cshtml" />
     <Content Include="Views\Shared\_LoginPartial.cshtml" />
     <Content Include="Views\Account\SignOutCallback.cshtml" />
@@ -866,8 +866,6 @@
     <Content Include="Views\Shared\DisplayTemplates\ReviewerCommentViewModel.cshtml" />
     <Content Include="Views\Shared\EditorTemplates\CriteriaCommentViewModel.cshtml" />
     <Content Include="Views\Shared\EditorTemplates\RvierCommentViewModel.cshtml" />
-    <Content Include="Views\Emails\_ViewStart.cshtml" />
-    <Content Include="Views\Emails\Web.config" />
     <Content Include="Views\Nomination\Shared\_savednominationList.cshtml" />
     <Content Include="Views\Nomination\Shared\_savedReviewsList.cshtml" />
     <Content Include="Views\Review\Shared\_reviewFeedbackList.cshtml" />
@@ -876,6 +874,8 @@
     <Content Include="Views\Review\Shared\_LockNominations.cshtml" />
     <Content Include="Views\Review\ConsolidatedNominations.cshtml" />
     <Content Include="Views\Review\_ConsolidatedNominationsPartialView.cshtml" />
+    <Content Include="Views\Review\Shared\_ProcessesToLockOrUnlock.cshtml" />
+    <Content Include="Views\Email\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

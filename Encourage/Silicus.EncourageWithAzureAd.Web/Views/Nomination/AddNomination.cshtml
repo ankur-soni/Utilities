@@ -27,24 +27,24 @@
                                     <div class="f1-progress-line" data-now-value="25" data-number-of-steps="4" style="width:25%;"></div>
                                 </div>
                                 <div class="f1-step active" step="1">
-                                    <div class="f1-step-icon" style="cursor:pointer;" onclick="moveToNominationStep(1, false);"><strong class="ico-num">1</strong></div>
+                                    <div class="f1-step-icon" style="cursor:pointer;"><strong class="ico-num">1</strong></div>
 
                                     <p>Nomination Category</p>
                                 </div>
                                 <div class="f1-step" step="2">
 
-                                    <div class="f1-step-icon" style="cursor:pointer;" onclick="moveToNominationStep(2, false);"><strong class="ico-num">2</strong></div>
+                                    <div class="f1-step-icon" style="cursor:pointer;"><strong class="ico-num">2</strong></div>
 
                                     <p>Employee</p>
                                 </div>
                                 <div class="f1-step" step="3">
 
-                                    <div class="f1-step-icon" style="cursor:pointer;" onclick="moveToNominationStep(3, false);"><strong class="ico-num">3</strong></div>
+                                    <div class="f1-step-icon" style="cursor:pointer;"><strong class="ico-num">3</strong></div>
                                     <p>Comments</p>
                                 </div>
                                 <div class="f1-step" step="4">
 
-                                    <div class="f1-step-icon" style="cursor:pointer;" onclick="moveToNominationStep(4, false);"><strong class="ico-num">4</strong></div>
+                                    <div class="f1-step-icon" style="cursor:pointer;"><strong class="ico-num">4</strong></div>
                                     <p>Criteria & Ratings</p>
                                 </div>
                             </div>
@@ -142,10 +142,12 @@
                                 <div class="col-lg-3 col-md-4 col-sm-5" id="employeeInput">
                                     <div class="form-group">
                                         @Html.Label("Employee Name", htmlAttributes: new { @class = "control-label requiredfeild" })
-                                        @Html.DropDownListFor(model => model.ResourceId, Model.Resources as SelectList, "Select", new { @class = "form-control", id = "Resources" })
-                                        @Html.ValidationMessageFor(model => model.ResourceId, "", new { @class = "text-danger" })
-                                        @*<span class="help-block themeColorBlue"> Select your Employee</span>*@
-                                    </div>
+                                        <div>
+                                            @Html.DropDownListFor(model => model.ResourceId, Model.Resources as SelectList, "Select", new { @class = "form-control select2-dd", id = "Resources" })
+                                            @Html.ValidationMessageFor(model => model.ResourceId, "", new { @class = "text-danger" })
+                                            @*<span class="help-block themeColorBlue"> Select your Employee</span>*@
+                                        </div>
+                                   </div>
                                 </div>
                             </div>
                             @*<div class="row" id="employeeInputForOther">

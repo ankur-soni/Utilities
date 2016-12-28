@@ -11,7 +11,7 @@ namespace Silicus.Encourage.Models
 {
     using System;
     using System.Collections.Generic;
-    
+
     public partial class ReviewerComment
     {
         public int Id { get; set; }
@@ -21,7 +21,6 @@ namespace Silicus.Encourage.Models
         public string Comment { get; set; }
         public Nullable<int> Credit { get; set; }
         public int ReviewId { get; set; }
-    
         public virtual Criteria Criterion { get; set; }
         public virtual Nomination Nomination { get; set; }
         public virtual Review Review { get; set; }

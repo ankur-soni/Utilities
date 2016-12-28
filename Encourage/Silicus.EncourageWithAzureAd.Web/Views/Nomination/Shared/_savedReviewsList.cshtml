@@ -16,17 +16,17 @@
                             <div class="el-overlay">
                                 <ul class="el-info">
                                     <li>
-                                       
-                                          @if (!Convert.ToBoolean(item.IsSubmitted))
-                                          {
+
+                                        @if (!Convert.ToBoolean(item.IsSubmitted))
+                                        {
                                             <a class="btn default btn-outline image-popup-vertical-fit" href="@Url.Action("EditReview", "Nomination", new { nominationId = item.Id})">
                                                 <i class="fa fa-pencil-square-o fa-2x" aria-hidden="true"></i>
                                             </a>
-                                           }
-                                           else
-                                           {
+                                        }
+                                        else
+                                        {
                                             <a class="btn default btn-outline image-popup-vertical-fit" href="@Url.Action("ReviewDetails", "Nomination", new { nominationId = item.Id})">
-                                                
+
                                                 <i class="fa fa-file-text-o fa-2x" aria-hidden="true"></i>
                                             </a>
                                            }

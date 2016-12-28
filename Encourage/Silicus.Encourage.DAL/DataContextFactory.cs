@@ -20,13 +20,12 @@ namespace Silicus.Encourage.DAL
 
             return dataContext;
         }
-
         public IEncourageDatabaseContext CreateEncourageDbContext()
         {
             IEncourageDatabaseContext dataContext = null;
 
             dataContext =
-                new EncourageDatabaseContext( 
+                new EncourageDatabaseContext(
                     ConfigurationManager.ConnectionStrings["EncourageDataBaseConnection"].ConnectionString);
 
             return dataContext;

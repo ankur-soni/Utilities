@@ -5,6 +5,8 @@ using Silicus.FrameWorx.Logger;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web.Configuration;
+using System;
+using System.Configuration;
 
 namespace Silicus.Encourage.Services
 {
@@ -52,10 +54,11 @@ namespace Silicus.Encourage.Services
             }
         }
 
-        public bool LockReview(List<int> awardIds)
+        public List<Award> LockReview(List<int> awardIds)
         {
             _logger.Log("ReviewService-LockReview");
             var lockKey = WebConfigurationManager.AppSettings["ReviewLockKey"];
+            var lockedAwards = new List<Award>();
             if (awardIds.Count > 0)
             {
                 foreach (var awardId in awardIds)
@@ -65,29 +68,23 @@ namespace Silicus.Encourage.Services
                     {
                         data.value = true;
                         _encourageDatabaseContext.Update<Models.Configuration>(data);
+                        lockedAwards.Add(_encourageDatabaseContext.Query<Award>().FirstOrDefault(a => a.Id == awardId));
                     }
                 }
-                return true;
+                return lockedAwards;
             }
             else
             {
-                return false;
+                return new List<Award>();
             }
 
         }
 
-        //public bool UnLockReview()
-        //{
-        //    _logger.Log("reviewService-unLockReview");
-        //    var data = _encourageDatabaseContext.Query<Models.Configuration>().Where(x => x.configurationKey == "ReviewLock").SingleOrDefault();
-        //    data.value = false;
-        //    _encourageDatabaseContext.Update<Models.Configuration>(data);
-        //    return true;
-        //}
-        public bool UnLockReview(List<int> awardIds)
+        public List<Award> UnLockReview(List<int> awardIds)
         {
             _logger.Log("reviewService-unLockReview");
             var lockKey = WebConfigurationManager.AppSettings["ReviewLockKey"];
+            var unlockedAwards = new List<Award>();
             if (awardIds.Count > 0)
             {
                 foreach (var awardId in awardIds)
@@ -97,14 +94,15 @@ namespace Silicus.Encourage.Services
                     {
                         data.value = false;
                         _encourageDatabaseContext.Update<Models.Configuration>(data);
+                        unlockedAwards.Add(_encourageDatabaseContext.Query<Award>().FirstOrDefault(a => a.Id == awardId));
                     }
 
                 }
-                return true;
+                return unlockedAwards;
             }
             else
             {
-                return false;
+                return new List<Award>();
             }
         }
 
@@ -115,7 +113,7 @@ namespace Silicus.Encourage.Services
             var lockedAwards = new List<Award>();
             foreach (var award in allAwards)
             {
-                var result = _encourageDatabaseContext.Query<Configuration>().FirstOrDefault(x => x.configurationKey == lockKey && x.AwardId == award.Id && x.value == true);
+                var result = _encourageDatabaseContext.Query<Models.Configuration>().FirstOrDefault(x => x.configurationKey == lockKey && x.AwardId == award.Id && x.value == true);
                 if (result != null)
                 {
                     lockedAwards.Add(award);
@@ -123,13 +121,26 @@ namespace Silicus.Encourage.Services
             }
 
             return lockedAwards;
-            //var data = _encourageDatabaseContext.Query<Models.Configuration>().Where(x => x.configurationKey == lockKey).SingleOrDefault().value;
-            //return data == true ? true : false;
+
         }
 
-        //public string GetHrAdminsCommentForEmployee(int loggedInAdminsId, int nominatedEmployeeId)
-        //{
-        //    var data = _encourageDatabaseContext.Query<Shortlist>().Where( s => s.)
-        //}
+        public List<Models.Configuration> GetProcessesToLock(int awardId)
+        {
+
+            return _encourageDatabaseContext.Query<Models.Configuration>().Where(x => x.AwardId == awardId && x.value == false).ToList();
+
+        }
+
+        public List<Models.Configuration> GetProcessesToUnlock(int awardId)
+        {
+
+            return _encourageDatabaseContext.Query<Models.Configuration>().Where(x => x.AwardId == awardId && x.value == true).ToList();
+
+        }
+
+        public Models.Configuration GetConfigurationById(int id)
+        {
+            return _encourageDatabaseContext.Query<Models.Configuration>().Where(x => x.Id == id).FirstOrDefault();
+        }
     }
 }
