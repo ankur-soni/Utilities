@@ -320,9 +320,11 @@
     <Compile Include="Models\ConsolidatedNominationsViewModel.cs" />
     <Compile Include="Models\CriteriaCommentViewModel.cs" />
     <Compile Include="Models\DashboardViewModel.cs" />
+    <Compile Include="Models\EmailTemplateViewModel.cs" />
     <Compile Include="Models\NominationListViewModel.cs" />
     <Compile Include="Models\NominationViewModel.cs" />
     <Compile Include="Models\ProcessesToLockOrUnLockViewModel.cs" />
+    <Compile Include="Models\ProcessesViewModel.cs" />
     <Compile Include="Models\ReviewerCommentViewModel.cs" />
     <Compile Include="Models\ReviewFeedbackListViewModel.cs" />
     <Compile Include="Models\ReviewSubmitionViewModel.cs" />
