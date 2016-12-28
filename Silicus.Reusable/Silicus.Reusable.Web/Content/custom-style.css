@@ -346,7 +346,7 @@ span.font-bold.txt-color label{font-weight:bold;color:#337ab7;}
     height: auto;
     box-shadow: 1px 1px 5px #888888;
 }
-
+#containerDiv .list-wrapper{padding-left:10px;}
 
 
 /*Form Style*/
@@ -628,9 +628,7 @@ textarea {
 label {
   font-weight: 500;
 }
-.btn {
-  border-radius: 0px;
-}
+
 .form-inline .form-group {
     display: inline-block;
     margin-bottom: 0;
@@ -1711,11 +1709,16 @@ li.input-text-wrapper span {
 
 .view-button {
     margin-top: -30px;
+    padding:7px 10px;
 }
 
-
-
-
+.anchorStyle{
+height: 30px;
+    display: block;
+    width: 300px;
+    padding: 5px;
+    box-shadow: 1px 1px 1px #b1afaf;
+    }
 
 
 

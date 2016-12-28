@@ -13,14 +13,13 @@ namespace Silicus.EncourageWithAzureAd.Web.API
         private INominationService _nominationService;
         private readonly ILogger _logger;
         private readonly IAwardService _awardService;
-        public NominationApiController(INominationService nominationService, ILogger logger,IAwardService awardService)
+        public NominationApiController(INominationService nominationService, ILogger logger, IAwardService awardService)
         {
             _nominationService = nominationService;
             _logger = logger;
             _awardService = awardService;
         }
 
-     
         [HttpGet]
         public bool LockNominations(string awardName)
         {
@@ -34,6 +33,7 @@ namespace Silicus.EncourageWithAzureAd.Web.API
 
             return true;
         }
+
         [HttpGet]
         public bool UnLockNominations(string awardName)
         {

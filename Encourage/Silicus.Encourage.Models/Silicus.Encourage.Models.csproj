@@ -67,6 +67,9 @@
     <Compile Include="C__MigrationHistory.cs">
       <DependentUpon>EnCourage.tt</DependentUpon>
     </Compile>
+    <Compile Include="EmailTemplate.cs">
+      <DependentUpon>EnCourage.tt</DependentUpon>
+    </Compile>
     <Compile Include="EnCourage.Context.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
