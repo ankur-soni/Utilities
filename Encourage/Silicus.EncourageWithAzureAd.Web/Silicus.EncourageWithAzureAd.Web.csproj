@@ -866,8 +866,6 @@
     <Content Include="Views\Shared\DisplayTemplates\ReviewerCommentViewModel.cshtml" />
     <Content Include="Views\Shared\EditorTemplates\CriteriaCommentViewModel.cshtml" />
     <Content Include="Views\Shared\EditorTemplates\RvierCommentViewModel.cshtml" />
-    <Content Include="Views\Emails\_ViewStart.cshtml" />
-    <Content Include="Views\Emails\Web.config" />
     <Content Include="Views\Nomination\Shared\_savednominationList.cshtml" />
     <Content Include="Views\Nomination\Shared\_savedReviewsList.cshtml" />
     <Content Include="Views\Review\Shared\_reviewFeedbackList.cshtml" />
