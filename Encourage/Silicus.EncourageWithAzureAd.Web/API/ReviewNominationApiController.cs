@@ -16,7 +16,7 @@ namespace Silicus.EncourageWithAzureAd.Web.API
         private INominationService _nominationService;
         private readonly ILogger _logger;
         private readonly IAwardService _awardService;
-        public ReviewNominationApiController(IReviewService reviewService,ILogger logger,INominationService nominationService,IAwardService awardService)
+        public ReviewNominationApiController(IReviewService reviewService, ILogger logger, INominationService nominationService, IAwardService awardService)
         {
             _reviewService = reviewService;
             _logger = logger;
@@ -35,21 +35,6 @@ namespace Silicus.EncourageWithAzureAd.Web.API
             return true;
         }
 
-        //private List<int> GetAwardsToLock(string frequencyCode,List<Award> awards)
-        //{
-        //    var awardFrequency = _nominationService.GetAwardFrequencyByFrequencyCode(frequencyCode);
-        //    var awardIds = new List<int>();
-        //    foreach (var award in awards)
-        //    {
-        //        if (award.FrequencyId == awardFrequency.Id)
-        //        {
-        //            awardIds.Add(award.Id);
-
-        //        }
-        //    }
-        //    return awardIds;
-        //}
-
         [HttpGet]
         public bool UnLockReview(string awardCode)
         {
@@ -57,9 +42,9 @@ namespace Silicus.EncourageWithAzureAd.Web.API
             var awarToLock = _awardService.GetAwardByCode(awardCode);
             if (awarToLock != null)
             {
-                return _reviewService.UnLockReview(new List<int> { awarToLock.Id });
+                _reviewService.UnLockReview(new List<int> { awarToLock.Id });
             }
-            return false;
+            return true;
         }
     }
 }

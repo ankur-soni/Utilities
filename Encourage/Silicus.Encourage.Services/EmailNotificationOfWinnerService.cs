@@ -31,7 +31,6 @@ namespace Silicus.EncourageWithAzureAd.Web
             {
                 _logger.Log("EmailNotificationOfWinnerService-Process   try");
                 var allWinners = _awardService.GetWinnerData();
-                // var htmlPagePath = @"C:\Users\IKadam.SILICUS\Source\Repos\Utilities3\Encourage\Silicus.EncourageWithAzureAd.Web\Views\SendMailAfterWinnerSelected.html";
                 var emailBodyPath = System.Web.Hosting.HostingEnvironment.MapPath(@"~/Views/SendMailAfterWinnerSelected.html");
                 foreach (WinnerData winnerData in allWinners)
                 {
@@ -51,13 +50,8 @@ namespace Silicus.EncourageWithAzureAd.Web
                     var awardName = winnerData.AwardName;
                     var awardPeriod = winnerData.AwardPeriod;
                     var subject = " " + winnerName + " : " + awardName + " - " + awardPeriod;
-
                     var fromAddress = new MailAddress(ConfigurationManager.AppSettings["UserName"], "Silicus Rewards and Recognition Team");
-                    //  const string fromPassword = "Indra@123";
-                    //  var fromAddress = new MailAddress(ConfigurationManager.AppSettings["UserName"], "Silicus Rewards and Recognition Team");
-                    //const string fromPassword = ConfigurationManager.AppSettings["Password"];
                     string body = string.Empty;
-
                     body = mailBody;
                     var smtp = new SmtpClient
                     {
@@ -75,7 +69,6 @@ namespace Silicus.EncourageWithAzureAd.Web
 
                         foreach (string email in winnerManagerEmailAddresses)
                         {
-                            // message.To.Add("asha.bhandare@silicus.com");
                             message.To.Add(email);
                         }
 

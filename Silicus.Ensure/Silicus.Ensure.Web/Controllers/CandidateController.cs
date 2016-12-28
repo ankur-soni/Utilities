@@ -91,6 +91,7 @@ namespace Silicus.Ensure.Web.Controllers
             // Update candidate status as Test "Submitted".
             User candidate = _userService.GetUserById(userId);
             candidate.TestStatus = TestStatus.Submitted.ToString();
+            candidate.CandidateStatus = CandidateStatus.TestSubmitted.ToString();
             _userService.Update(candidate);
 
             // Update total time utilization for test back to UserTestSuite.

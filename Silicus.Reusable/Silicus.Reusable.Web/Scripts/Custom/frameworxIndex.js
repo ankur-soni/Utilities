@@ -1,5 +1,6 @@
 ﻿(function () {
     'use strict';
+    var listItemHeight = 18;    
     function getsearchContain(searchString) {
 
         var url = "/FrameworxProject/Details";
@@ -57,9 +58,13 @@
                 // If the list item does not contain the text phrase fade it out
                 if ($(this).text().search(new RegExp(filter, "i")) < 0) {
                     $(this).fadeOut();
+                    $(this).addClass('no-found');
+                    $(this).removeClass('found');
                     // Show the list item if the phrase matches and increase the count by 1
                 } else {
                     $(this).show();
+                    $(this).removeClass('no-found');
+                    $(this).addClass('found');
                     noResult = false;
                 }
             });
@@ -74,17 +79,17 @@
                     $(this).parent().show();
                     noResult = false;
                 }
-            });            
+            });
         }
 
         if (noResult) {
             $('#noResultMsg').show();
             $('.categoryHeading').hide();
-        } else {            
+        } else {
             $('#noResultMsg').hide();
             $('.categoryHeading').show();
-        }       
-    }   
+        }
+    }
 
     function showTileView() {
         var listItems = $(".list-wrapper>li").toArray();
@@ -123,12 +128,13 @@
 
     function showListView() {
         var listItems = $(".TitleDivTemplate").toArray();
-        var htmlString = ' <ul class="list-wrapper">', itemHtmlString = '';
+        var htmlString = ' <ul class="list-wrapper" id="list-view-wrapper">', itemHtmlString = '';
         var filter = $('#searchString').val().trim();
         listItems.forEach(function (value, index) {
             var id = value.attributes['id'].value, title = value.attributes['title'].value, category = value.attributes['category'].value;
             var style = title.search(new RegExp(filter, "i")) < 0 ? "display: none;" : "";
-            itemHtmlString += ' <li category="' + category + '" id="' + id + '" title="' + title + '" style="' + style + '">' +
+            var className = title.search(new RegExp(filter, "i")) < 0 ? "not-found" : "found";
+            itemHtmlString += ' <li category="' + category + '" id="' + id + '" title="' + title + '" class="' + className + '" style="' + style + '">' +
                     '<a class="icon-' + category + ' TitleDivTemplate"  my-data="' + id + '" my-title="'
                     + title + '">' + title + '</a></li>';
         });
@@ -142,7 +148,7 @@
         blockUI();
         $.ajax({
             url: "/FrameworxProject/Details",
-            type: "get",            
+            type: "get",
             data: { id: id },
             success: function (data) {
                 $(".carousel-inner").html(data);
@@ -150,8 +156,8 @@
                     $('#component-modal').modal('show');
                 }
             },
-            error: function () {                
-                showAlert({ title: 'Error', text: 'Error occurred while getting details.', type: 'error',timer:2000});
+            error: function () {
+                showAlert({ title: 'Error', text: 'Error occurred while getting details.', type: 'error', timer: 2000 });
             },
             complete: function () {
                 unblockUI();
@@ -166,7 +172,7 @@
             $('#like-text').text('Unlike');
             $('.like').addClass('liked');
             $("#LikeId").val(data.likeId);
-            showAlert({ title: 'Liked', text: '', type: 'success',timer:2000 });
+            showAlert({ title: 'Liked', text: '', type: 'success', timer: 2000 });
         }).done(function () {
             unblockUI();
         });
@@ -185,16 +191,16 @@
         });
     }
 
-    function showCredits() {        
+    function showCredits() {
         showAlert({
             title: 'Contributors',
             text: "If you like the component, thank these people \n \n" + $("#Credits").val() + '\n',
             type: null,
-            showConfirmButton: true          
+            showConfirmButton: true
         });
     }
 
-    function hideCategoryText() {        
+    function hideCategoryText() {
         $('.category-container').each(function () {
             if ($(this).find('.row').children(':visible').length == 0) {
                 $(this).prev().find('.categoryHeading').hide();
@@ -204,22 +210,84 @@
         });
     }
 
+    // get the available width inside an element - can convert % width in pixels!
+    function getInnerWidth(elem) {
+        return parseFloat(window.getComputedStyle(elem).width);
+    }
+
+    // get the total width of borders, padding and margin - basically anything but the inner width
+    function getAirWidth(elem) {
+        return elem.offsetWidth - getInnerWidth(elem);
+    }
+
+    // set the total width of an element (including padding, border and margin)
+    function setTotalWidth(elem, width) {
+        elem.style.width = (width - getAirWidth(elem)) + "px";
+    }
+
+
+    // split a list into columns (scalable size)
+    function splitColumnsPercent(list, nbColumns, itemName) {
+        if (list) {
+            list.style.position = "relative";
+            var items = list.getElementsByTagName(itemName || "li");
+
+            var colHeight = [];
+            for (var i = 0; i < nbColumns; ++i) colHeight[i] = 0;
+
+            for (var i = 0; i < items.length; ++i) {
+                var col = colHeight.indexOf(Math.min.apply(Math, colHeight));
+                items[i].style.position = "absolute";
+                items[i].style.left = (100 * col / nbColumns) + "%";
+                items[i].style.top = colHeight[col] + "px";
+                items[i].style.width = "calc(100% / " + nbColumns + " - " + getAirWidth(items[i]) + "px)";
+                colHeight[col] += items[i].offsetHeight;
+            }
+
+            list.style.height = Math.max.apply(Math, colHeight) + "px";
+        }
+    }
+
+    // split a list into columns (fixed size)
+    function splitColumnsFixed(list, nbColumns, itemName) {
+        if (list) {
+            list.style.position = "relative";
+            var items = typeof itemName != 'undefined' ? list.getElementsByClassName(itemName) : list.getElementsByTagName("li");
+
+            var width = getInnerWidth(list) / nbColumns;
+
+            var colHeight = [];
+            for (var i = 0; i < nbColumns; ++i) colHeight[i] = 0;
+            for (var i = 0; i < items.length; ++i) {
+                var col = colHeight.indexOf(Math.min.apply(Math, colHeight));
+                items[i].style.position = "absolute";
+                items[i].style.left = width * col + "px";
+                items[i].style.top = colHeight[col] + "px";
+                setTotalWidth(items[i], width);
+                colHeight[col] += items[i].offsetHeight;
+            }
+
+           // list.style.height = Math.max.apply(Math, colHeight) + "px";
+        }
+    }
+
 
     $(document).ready(
         function () {
             var timer;
-            $("#searchString").on('keyup', function () {               
+            $("#searchString").on('keyup', function () {
                 clearTimeout(timer);
                 var ms = 1000; // milliseconds
                 var val = this.value.trim();
                 timer = setTimeout(function () {
                     blockUI();
                     searchComponent(val);
+                    splitColumnsFixed(document.getElementById("list-view-wrapper"), Math.ceil(($('.found').length * listItemHeight) / $('#container-box').innerHeight()), 'found');
                     setTimeout(function () {
                         hideCategoryText();
-                    }, ms);
+                    }, ms);                   
                     unblockUI();
-                }, ms);               
+                }, ms);
             });
 
 
@@ -234,12 +302,13 @@
                   .trigger('propertychange').trigger('keyup').focus();
             });
 
+
             $('#component-tile-view').click(function () {
                 $('#component-list-view').attr('disabled', false);
                 $(this).attr('disabled', true);
                 showTileView();
                 if ($('#noResultMsg').is(":visible")) {
-                    $('.categoryHeading').hide();                    
+                    $('.categoryHeading').hide();
                 } else {
                     $('.categoryHeading').show();
                     hideCategoryText();
@@ -250,12 +319,13 @@
                 $('#component-tile-view').attr('disabled', false);
                 $(this).attr('disabled', true);
                 showListView();
-
+                splitColumnsFixed(document.getElementById("list-view-wrapper"), Math.ceil(($('.TitleDivTemplate').length * listItemHeight) / $('#container-box').innerHeight()));
+                splitColumnsFixed(document.getElementById("list-view-wrapper"), Math.ceil(($('.found').length * listItemHeight) / $('#container-box').innerHeight()), 'found');               
             });
 
             $('body').on('click', '.TitleDivTemplate', function () {
                 var id = $(this).attr('my-data');
-                getComponentdetail(id,true);                
+                getComponentdetail(id, true);
             });
 
             $('#prev-slide-button').on('click', function () { prevSlide(); });
@@ -264,15 +334,18 @@
             $('body').on('click', '.like', function () {
                 var text = $('#like-text').text();
                 if (text == "Like") {
-                    likeComponent();                                      
-                } else {                   
+                    likeComponent();
+                } else {
                     unLikeComponent();
                 }
             });
 
-            $('body').on('click', '#btn-credits', function () {                
+            $('body').on('click', '#btn-credits', function () {
                 showCredits();
             });
+                        
+            splitColumnsFixed(document.getElementById("list-view-wrapper"), Math.ceil(($('.TitleDivTemplate').length * listItemHeight) / $('#container-box').innerHeight()));
+
         }
         );
 

@@ -14,7 +14,6 @@ namespace Silicus.Encourage.DAL
         {
             
         }
-
         public IQueryable<T> Query<T>() where T : class
         {
             return Set<T>().AsNoTracking();

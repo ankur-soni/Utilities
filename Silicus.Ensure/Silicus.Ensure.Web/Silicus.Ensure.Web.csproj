@@ -370,6 +370,7 @@
     <Compile Include="Controllers\ErrorController.cs" />
     <Compile Include="Controllers\ManageUserController.cs" />
     <Compile Include="Controllers\MasterController.cs" />
+    <Compile Include="Controllers\PanelController.cs" />
     <Compile Include="Controllers\PositionsController.cs" />
     <Compile Include="Controllers\ProjectController.cs" />
     <Compile Include="Controllers\QuestionBankController.cs" />

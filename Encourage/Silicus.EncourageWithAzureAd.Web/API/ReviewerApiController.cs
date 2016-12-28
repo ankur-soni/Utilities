@@ -9,11 +9,11 @@ using System.Web.Http;
 
 namespace Silicus.EncourageWithAzureAd.Web.API
 {
-    public class ReviewerApiController: ApiController
+    public class ReviewerApiController : ApiController
     {
         private readonly IReviewerService _reviewerService;
         private readonly ILogger _logger;
-        public ReviewerApiController(ILogger logger,IReviewerService reviewerService)
+        public ReviewerApiController(ILogger logger, IReviewerService reviewerService)
         {
             _logger = logger;
             _reviewerService = reviewerService;

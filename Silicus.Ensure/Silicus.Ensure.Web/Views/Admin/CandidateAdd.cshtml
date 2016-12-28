@@ -13,6 +13,13 @@
     else
     {
         <h2>Add Candidate</h2>
+        <script>
+            $(document).ready(function()
+            {
+                $('#file').css('display','block');
+                fileBool=true;
+            })
+        </script>
     }
     @using (Html.BeginForm("CandidateSave", "User", FormMethod.Post, new { id = "frmSearchAllNdc", EncType = "multipart/form-data" }))
     {
@@ -20,9 +27,12 @@
         @Html.HiddenFor(m => m.UserId)
         <div class="fluid mt20">
             <div class="row" style="margin-bottom:10px!important">
-                <div class="alert alert-success" id="messageDiv">
-                    <strong>Error!</strong> <span id="messageContent">@Html.ValidationSummary(true)</span>
-                </div>
+                @if (!string.IsNullOrWhiteSpace(Model.ErrorMessage))
+                {
+                    <div class="alert alert-success" id="messageDiv">
+                        <strong>Error!</strong> <span id="messageContent">@Model.ErrorMessage</span>
+                    </div>
+                }
                 <div class="col-md-6">
                     <div class="col-md-6">
                         @Html.LabelFor(model => model.FirstName)<b style="color:Red;">*</b>
@@ -84,12 +94,15 @@
                     </div>
                     <div class="col-md-6">
                         @(Html.Kendo().DropDownListFor(m => m.Gender)
-                        .OptionLabel("--Select--")
                         .Name("Gender")
                         .DataTextField("Text")
                         .DataValueField("Value")
                             .BindTo(new List<SelectListItem>
                             () {
+                            new SelectListItem(){
+                            Text="--Select--",
+                            Value="--Select--"
+                            },
                             new SelectListItem(){
                             Text="Male",
                             Value="Male"
@@ -212,7 +225,7 @@
                 </div>
                 <div class="col-md-6">
                     <div class="demo-section k-content">
-                        <input name="files" id="file" type="file" />
+                        <input name="files" id="file" style="display:none" type="file" />
                     </div>
                     @if (!string.IsNullOrEmpty(Model.ResumeName))
                     {
@@ -224,6 +237,8 @@
                         </div>
                         <script type="text/javascript">
                             function DeleteF() {
+                                fileBool=true;
+                                $('#file').css('display','block')
                                 $("#uploadFileLink").html("");
                                 $("#ResumeName").val("");
                             }
@@ -250,6 +265,7 @@
     }
 </div>
 <script>
+    var fileBool=false;
     $(document).ready(function () {
         $('#messageDiv').fadeOut(5000);
     });
@@ -292,7 +308,27 @@
                     if (input.is("[name='Position']")) {
                         if ((input.val() != "" && input.val() == "--Select--")) {
                             input.attr("data-experiencevalidation-msg", "Position is required!");
+                            $('span[aria-owns="Position_listbox"]').css('border','1px solid red');
                             return false;
+                        }
+                        else
+                        {
+                            $('span[aria-owns="Position_listbox"]').css('border','none ');
+                            input.attr("data-experiencevalidation-msg", "");
+
+                        }
+                    }
+                    if (input.is("[name='Gender']")) {
+                        if ((input.val() != "" && input.val() == "--Select--")) {
+                            input.attr("data-experiencevalidation-msg", "Gender is required!");
+                            $('span[aria-owns="Gender_listbox"]').css('border','1px solid red');
+                            return false;
+                        }
+                        else
+                        {
+                            $('span[aria-owns="Gender_listbox"]').css('border','none ');
+                            input.attr("data-experiencevalidation-msg", "");
+
                         }
                     }
                     if (input.is("[data-val-remote]") && input.val() != "") {
@@ -302,7 +338,7 @@
                             return false;
                         }
                     }
-                    if (input.is("[id='file']")) {
+                    if (input.is("[id='file']")&&fileBool) {
                         if (!(input.val() != "")) {
                             input.attr("data-experiencevalidation-msg", "File is required!");
                             return false;

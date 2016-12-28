@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Silicus.Encourage.Services.Interface
 {
-   public interface IEmailNotificationOfWinner
+    public interface IEmailNotificationOfWinner
     {
         void Process();
     }

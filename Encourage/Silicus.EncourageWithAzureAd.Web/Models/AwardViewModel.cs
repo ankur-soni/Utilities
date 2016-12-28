@@ -12,5 +12,6 @@ namespace Silicus.EncourageWithAzureAd.Web.Models
         public string Code { get; set; }
         public int FrequencyId { get; set; }
         public bool Status { get; set; }
+        public string ConfigurationKey { get; set; }
     }
 }

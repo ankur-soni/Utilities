@@ -346,7 +346,7 @@ span.font-bold.txt-color label{font-weight:bold;color:#337ab7;}
     height: auto;
     box-shadow: 1px 1px 5px #888888;
 }
-
+#containerDiv .list-wrapper{padding-left:10px;}
 
 
 /*Form Style*/
@@ -628,9 +628,7 @@ textarea {
 label {
   font-weight: 500;
 }
-.btn {
-  border-radius: 0px;
-}
+
 .form-inline .form-group {
     display: inline-block;
     margin-bottom: 0;
@@ -1689,9 +1687,38 @@ label.label_item {
     text-align: center;   
 }
 
+li.input-text-wrapper {
+    background: #fff;
+    border: 1px solid #e5e6e7;
+    border-radius: 1px;
+}
 
+li.input-text-wrapper .form-control {
+    width: 80%;
+    float: left;
+    border: none;
+}
 
+li.input-text-wrapper span {
+    cursor: pointer;
+    float: right;    
+    display: block;
+    padding: 0px 10px;
+    border: none;
+ }
 
+.view-button {
+    margin-top: -30px;
+    padding:7px 10px;
+}
+
+.anchorStyle{
+height: 30px;
+    display: block;
+    width: 300px;
+    padding: 5px;
+    box-shadow: 1px 1px 1px #b1afaf;
+    }
 
 
 

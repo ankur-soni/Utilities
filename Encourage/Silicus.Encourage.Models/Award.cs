@@ -11,7 +11,7 @@ namespace Silicus.Encourage.Models
 {
     using System;
     using System.Collections.Generic;
-    
+
     public partial class Award
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
@@ -22,12 +22,12 @@ namespace Silicus.Encourage.Models
             this.Nominations = new HashSet<Nomination>();
             this.Configurations = new HashSet<Configuration>();
         }
-    
+
         public int Id { get; set; }
         public string Name { get; set; }
         public string Code { get; set; }
         public int FrequencyId { get; set; }
-    
+
         public virtual FrequencyMaster FrequencyMaster { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<AwardCriteria> AwardCriterias { get; set; }
