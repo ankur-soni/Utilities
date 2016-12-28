@@ -84,6 +84,14 @@
     .modal-footer {
         margin-top: 400px;
     }
+
+    /*.anchorStyle {
+        height: 30px;
+        display: block;
+        width: 300px;
+        padding: 5px;
+        box-shadow: 1px 1px 1px #b1afaf;
+    }*/
 </style>
 <div class="row white-bg header-row">
     <nav class="" role="navigation" style="margin-bottom: 0">
@@ -105,7 +113,7 @@
                 <div class="pull-right">
                     <ul>
                         <li class="input-text-wrapper">
-                            <input type="text" class="form-control" id="searchString" placeholder="Search" >
+                            <input type="text" class="form-control" id="searchString" placeholder="Search">
                             <span class="form-control-clear glyphicon glyphicon-remove hidden"></span>
                             <div class="clearfix"> </div>
                         </li>
@@ -113,13 +121,13 @@
                             <button class="btn btn-primary btn-lg active view-button" id="component-list-view" disabled>
                                 <i class="fa fa-list" aria-hidden="true"></i>
                             </button>
-                            
+
                         </li>
                         <li>
                             <button class="btn btn-primary btn-lg view-button" id="component-tile-view">
                                 <i class="fa fa-th" aria-hidden="true"></i>
                             </button>
-                        </li>                        
+                        </li>
                     </ul>
                 </div>
             </div>
@@ -129,15 +137,15 @@
 
 <div class="row">
     <div class="col-sm-12">
-        <div class="box">
+        <div class="box" id="container-box" style="height:650px">
             <div id="containerDiv">
-                <ul class="list-wrapper">
+                <ul class="list-wrapper" id="list-view-wrapper">
                     @foreach (var item in Model)
                     {
                         <li category="@item.Name" id="@item.id" title="@item.Title">
-                            <a class="icon-@(item.Name) TitleDivTemplate" my-data="@item.id" my-title="@item.Title">@item.Title</a>
+                            <a class="anchorStyle icon-@(item.Name) TitleDivTemplate" my-data="@item.id" my-title="@item.Title">@item.Title</a>
                         </li>
-                    }
+                    }    
                 </ul>
             </div>
             <div id="divTiles" style="display:none">
@@ -150,53 +158,6 @@
         </div>
     </div>
 </div>
-
-@*<div class="container" id="ComponentContainer">
-        <div class="row">
-            <div class="col-sm-8 col-lg-8 col-md-8 col-xs-8">
-                <h2 class="componentHeading">Components</h2>
-            </div>
-
-            <div class="col-sm-2 col-lg-2 col-md-2 col-xs-2">
-                <div class="navbar-form">
-                    <div class="input-group add-on searchpadding  input-group">
-                        <div class="form-group has-feedback has-clear">
-                            <input type="text" class="form-control" id="searchString" placeholder="Search">
-                            <span class="form-control-clear glyphicon glyphicon-remove form-control-feedback hidden"></span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-sm-2 col-lg-2 col-md-2 col-xs-2">
-                <span class="list-style-buttons">
-                    <button class="btn btn-primary btn-lg active" id="component-list-view" disabled>
-                        <i class="fa fa-list" aria-hidden="true"></i>
-                    </button>
-                    <button class="btn btn-primary btn-lg" id="component-tile-view">
-                        <i class="fa fa-th" aria-hidden="true"></i>
-                    </button>
-                </span>
-            </div>
-        </div>
-        <div class="row">
-            <div id="containerDiv">
-                <ul class="list-wrapper">
-                    @foreach (var item in Model)
-                    {
-                        <li category="@item.Name" id="@item.id" title="@item.Title">
-                            <a class="icon-@(item.Name) TitleDivTemplate" my-data="@item.id" my-title="@item.Title">@item.Title</a>
-                        </li>
-                    }
-                </ul>
-            </div>
-            <div id="divTiles" style="display:none">
-                <input type="text" id="currentTile" name="currentTile" value="" />
-            </div>
-            <div class="alert alert-danger" id="noResultMsg" style="@(Model.Count() > 0?"display:none":"")">
-                <strong>Oops! There is no such Component</strong>
-            </div>
-        </div>
-    </div>*@
 
 <!-- Modal -->
 <div class="modal fade" id="component-modal" role="dialog">
