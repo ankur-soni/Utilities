@@ -11,7 +11,7 @@ namespace Silicus.Encourage.Models
 {
     using System;
     using System.Collections.Generic;
-
+    
     public partial class Nomination
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
@@ -22,6 +22,7 @@ namespace Silicus.Encourage.Models
             this.Reviews = new HashSet<Review>();
             this.Shortlists = new HashSet<Shortlist>();
         }
+    
         public int Id { get; set; }
         public int AwardId { get; set; }
         public int ManagerId { get; set; }
@@ -37,7 +38,7 @@ namespace Silicus.Encourage.Models
         public string Comment { get; set; }
         public bool Other { get; set; }
         public string OtherNominationReason { get; set; }
-
+    
         public virtual Award Award { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<ManagerComment> ManagerComments { get; set; }
