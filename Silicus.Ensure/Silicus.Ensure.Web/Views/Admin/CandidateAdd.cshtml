@@ -312,7 +312,7 @@
 </div>
 
 <div class="modal fade" id="addPositionPopup" role="dialog">
-    <form id="postionForm" action="/Positions/Save" method="post">
+    <form id="postionForm">
         <div class="modal-dialog">
 
             <!-- Modal content-->
@@ -348,9 +348,11 @@
         });
     });
 
+
+
     function savePostion()
     {
-        if($("#postionForm").valid()&&isTagNameAvailable($('#PositionName').val()))
+        if($("#postionForm").valid())
         {
             $.ajax({
                 type: "POST",
@@ -374,16 +376,18 @@
             $('#postionForm').submit();
         }
     }
+
     function AddPosition()
     {
-        // $("#postionForm").kendoValidator();
+        // $("#tagForm").kendoValidator();
         $("#postionForm").kendoValidator({
             rules: {
-                positionNamevalidation: function (input, params) {
-                    if (input.is("[name='TagName']") && input.val() != "") {
-                        if(!isTagNameAvailable("", input.val()))
+                tagNamevalidation: function (input, params) {
+                    if (input.is("[name='PositionName']") && input.val() != "") {
+                        var bool=isTagNameAvailable("", input.val());
+                        if(!bool)
                         {
-                            input.attr("data-positionNamevalidation-msg", "Tag name already exist !");
+                            input.attr("data-tagNamevalidation-msg", "Position name already exist !");
                             return false;
                         }
                     }
@@ -396,18 +400,28 @@
         $("#addPositionPopup").modal('show');
     }
 
-    function isTagNameAvailable(updatedName)
+    function isTagNameAvailable(existingName,updatedName)
     {
-        $.ajax({
-            type: "POST",
-            url: '/Position/IsDuplicatePositionName',
-            async: false,
-            data: {  PositionName: updatedName },
-            success: function (returndata) {
-                return  returndata;
-            }
-        });
+        var isAvailable = true;
+        if (existingName != updatedName) {
+            $.ajax({
+                type: "POST",
+                url: '/Positions/IsDuplicatePositionName',
+                async: false,
+                data: { PositionName: updatedName },
+                success: function (returndata) {
+                    if (returndata == true) {
+                        isAvailable = true;
+                    }
+                    else {
+                        isAvailable = false;
+                    }
+                }
+            });
+        }
+        return isAvailable;
     }
+
     $(function () {
         $("form").kendoValidator();
         $('.k-invalid').css('margin-bottom','0!important');
