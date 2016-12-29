@@ -25,12 +25,12 @@
     <meta http-equiv="pragma" content="no-cache" />
     <title>Ensure</title>
 
-    <!--Bootstrap css-->
-    <link href="~/Content/css/bootstrap.min.css" rel="stylesheet" />
-
-    <!--Kendo css and JS-->
+    @*@Scripts.Render("~/Content/BootstrapCSS")*@
+    <link href="~/Content/css/Bootstrap/3.3.1/bootstrap.min.css" rel="stylesheet" />
     @Styles.Render("~/Content/kendoCSS")
     @Scripts.Render("~/bundles/kendoJS")
+
+
 
     <!--Font Awesome 4.7.0 css-->
     <link href="~/Content/css/font-awesome-4.7.0/css/font-awesome.css" rel="stylesheet" />
@@ -42,7 +42,9 @@
 
     <!--Perfect scrollbar css-->
     <link href="~/Content/css/perfect-scrollbar.min.css" rel="stylesheet" />
-    <script src="~/Content/js/jquery-2.1.1.js"></script>
+
+    @*@Scripts.Render("~/bundles/BootstrapJS")*@
+    <script src="~/Content/js/bootstrap.min.js"></script>
 </head>
 
 
@@ -66,25 +68,25 @@
                             @if (Request.IsAuthenticated)
                             {
                                 var userName = @User.Identity.Name;
-                            <li class="dropdown">
-                                <a class="dropdown-toggle count-info" data-toggle="dropdown" href="#">
-                                    <span class="hidden-sm hidden-xs">
-                                        <span class="m-r-sm text-muted welcome-message">Welcome @userName</span> <i class="fa fa-chevron-down"></i>
-                                    </span>
-                                    <span class="hidden-md hidden-lg">
-                                        <i class="fa fa-user"></i>
-                                    </span>
-                                </a>
-                                <ul class="dropdown-menu dropdown-user-menu">
-                                    <li>
-                                        <a href=''>
-                                            <div>
-                                                Logout
-                                            </div>
-                                        </a>
-                                    </li>
-                                </ul>
-                            </li>
+                                <li class="dropdown">
+                                    <a class="dropdown-toggle count-info" data-toggle="dropdown" href="#">
+                                        <span class="hidden-sm hidden-xs">
+                                            <span class="m-r-sm text-muted welcome-message">Welcome @userName</span> <i class="fa fa-chevron-down"></i>
+                                        </span>
+                                        <span class="hidden-md hidden-lg">
+                                            <i class="fa fa-user"></i>
+                                        </span>
+                                    </a>
+                                    <ul class="dropdown-menu dropdown-user-menu">
+                                        <li>
+                                            <a href='@Url.Action("SignOut", "Account")'>
+                                                <div>
+                                                    Logout
+                                                </div>
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </li>
                             }
                         </ul>
                     </nav>
@@ -135,9 +137,6 @@
     }
 
     @RenderSection("scripts", required: false)
-    <script src="~/Content/js/jquery-2.1.1.js"></script>
-    <script src="~/Content/js/plugins/metisMenu/jquery.metisMenu.js"></script>
-    <script src="~/Content/js/plugins/pace/pace.min.js"></script>
     <script>
         function showConfirmationWindow(message, header) {
             return showWindow('#confirmationTemplate', message, header)
