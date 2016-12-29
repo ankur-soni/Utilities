@@ -30,5 +30,12 @@ namespace Silicus.EncourageWithAzureAd.Web.Controllers
 
             return View(emailTemplateViewModel);
         }
+
+        public ActionResult GetEmailTemplate(string processName)
+        {
+            var templateOf = processName + "Template";
+            var emailTemplate = _emailTemplateService.GetEmailTemplate(templateOf);
+            return null;
+        }
     }
 }

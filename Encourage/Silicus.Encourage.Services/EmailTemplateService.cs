@@ -23,9 +23,9 @@ namespace Silicus.Encourage.Services
             _logger = logger;
         }
 
-        public List<EmailTemplate> GetEmailTemplates()
+        public EmailTemplate GetEmailTemplate(string templateName)
         {
-            return _encourageDatabaseContext.Query<EmailTemplate>().ToList();
+            return _encourageDatabaseContext.Query<EmailTemplate>().Where(t => t.TemplateName == templateName).FirstOrDefault();
         }
     }
 }

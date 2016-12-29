@@ -9,6 +9,6 @@ namespace Silicus.Encourage.Services.Interface
 {
     public interface IEmailTemplateService
     {
-        List<EmailTemplate> GetEmailTemplates();
+        EmailTemplate GetEmailTemplate(string templateName);
     }
 }
