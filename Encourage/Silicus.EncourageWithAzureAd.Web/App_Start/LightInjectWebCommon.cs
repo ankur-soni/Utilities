@@ -44,6 +44,7 @@ namespace Silicus.EncourageWithAzureAd.Web
             container.Register<IReviewService, ReviewService>();
             container.Register<IResultService, ResultService>();
             container.Register<IEmailNotificationOfWinner, EmailNotificationOfWinnerService>();
+            container.Register<IEmailTemplateService, EmailTemplateService>();
             container.Register<ILogger>((factory) => new DatabaseLogger("name=LoggerDataContext", Type.GetType(string.Empty), (Func<DateTime>)(() => DateTime.UtcNow), string.Empty));
 
         }

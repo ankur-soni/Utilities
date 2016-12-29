@@ -7,12 +7,6 @@
 }
 
 <script>
-    $(".k-grid-header .k-link").click(function (e) {
-        e.preventDefault();
-        if ($(this).text() === 'Action' || $(this).text() === "") {
-            e.stopPropagation();
-        }
-    });
     $(document).ready(function () {
 
         $("#FieldFilter").keyup(function () {
@@ -25,7 +19,7 @@
                     filter.filters.push({ field: "FirstName", operator: "contains", value: value });
                     filter.filters.push({ field: "RequisitionId", operator: "contains", value: value });
                     filter.filters.push({ field: "ContactNumber", operator: "contains", value: value });
-                    filter.filters.push({ field: "TotalExperience", operator: "contains", value: value });
+                    //filter.filters.push({ field: "TotalExperienceInYear", operator: "contains", value: value });
                     filter.filters.push({ field: "PanelName", operator: "contains", value: value });
                     grid.dataSource.query({ filter: filter });
                 } else {
@@ -190,13 +184,13 @@
     });
 
     function Change() {
-        var value = $("#TestStatus").val();
+        var value = $("#CandidateStatus").val();
         grid = $("#userGrids").data("kendoGrid");
         if (value == "All") {
             grid.dataSource.filter([]);
         }
         else {
-            grid.dataSource.filter({ field: "TestStatus", operator: "eq", value: value });
+            grid.dataSource.filter({ field: "CandidateStatus", operator: "eq", value: value });
         }
     }
     function PositionChange() {
@@ -260,7 +254,7 @@
                   columns.Bound(p => p.RequisitionId).Title("Requisition Id").Width(150);
                   columns.Bound(p => p.Position).Width(70);
                   columns.Bound(p => p.ContactNumber).Title("Contact Number").Width(80);
-                  columns.Bound(p => p.TotalExperience).Title("Total Experience").Width(50);
+                  columns.Bound(p => p.TotalExperienceInYear).ClientTemplate("#=TotalExperienceInYear#.#=TotalExperienceInMonth#").Title("Total Experience").Width(50);
                   columns.Bound(p => p.PanelName).Title("Panel").Width(150);
                   columns.Bound(p => p.CandidateStatus).ClientTemplate(@"
                                                                         #if(CandidateStatus=='TestAssigned'){#
@@ -276,7 +270,7 @@
                                                                             #=CandidateStatus#
                                                                         #}
 #").Title("Status").Width(100);
-                  columns.Bound(c => c.UserId).ClientTemplate(@"<a class='k-button k-button-icontext k-grid-edit' href='" + Url.Action("CandidateAdd", "Admin") + "?UserId=#=UserId#'><span class='k-icon k-edit'></span>Edit</a><a id='testSuiteDel' class='k-button k-button-icontext k-grid-delete' href='\\#' onclick='return deleteUser(#=UserId#)'><span class='k-icon k-delete'></span>Delete</a>").Title("Action").Width(160);
+                  columns.Bound(c => c.UserId).ClientTemplate(@"<a class='k-button k-button-icontext k-grid-edit' href='" + Url.Action("CandidateAdd", "Admin") + "?UserId=#=UserId#'><span class='k-icon k-edit'></span>Edit</a><a id='testSuiteDel' class='k-button k-button-icontext k-grid-delete' href='\\#' onclick='return deleteUser(#=UserId#)'><span class='k-icon k-delete'></span>Delete</a>").Title("Action").Width(160).Sortable(false);
                   columns.Bound(c => c.UserId).ClientTemplate(@"
 
                                          #if(CandidateStatus=='New'){#
@@ -299,7 +293,7 @@
                                         <a  class ='dialog-window' onclick=CheckAssign('#=TestStatus#',1,#=TestSuiteId#,'#=UserId#') style='cursor:pointer'>View Test</a>
                                         #}
 
-                                        #").Title("Actions");
+                                        #").Title("Actions").Sortable(false);
 
               })
             .DataSource(dataSource => dataSource

@@ -14,7 +14,7 @@ namespace Silicus.Ensure.Services
         {
             _context = dataContextFactory.Create(ConnectionType.Ip);
         }
-        
+
         public IEnumerable<Panel> GetAllPanelDetails()
         {
             return _context.Query<Panel>();
@@ -22,15 +22,20 @@ namespace Silicus.Ensure.Services
 
         public IEnumerable<Panel> GetPanelDetails()
         {
-            return _context.Query<Panel>().Where(x => x.IsDeleted == false);
+            var panelList = _context.Query<Panel>();
+            if (panelList.Any())
+            {
+                panelList = panelList.Where(x => x.IsDeleted == false);
+            }
+            return panelList;
         }
 
-        Panel IPanelService.GetPositionById(int PanelId)
+        Panel IPanelService.GetPanelById(int PanelId)
         {
-            return _context.Query<Panel>().Where(x => x.PanelId == PanelId&&x.IsDeleted==false).FirstOrDefault();
+            return _context.Query<Panel>().Where(x => x.PanelId == PanelId && x.IsDeleted == false).FirstOrDefault();
         }
 
-        Panel IPanelService.GetPositionByName(string Panel)
+        Panel IPanelService.GetPanelByName(string Panel)
         {
             return _context.Query<Panel>().Where(x => x.PanelName.ToLower() == Panel.ToLower() && x.IsDeleted == false).FirstOrDefault();
         }

@@ -45,9 +45,13 @@ namespace Silicus.Ensure.Models.DataObjects
 
         public string Technology { get; set; }
 
-        public string TotalExperience { get; set; }
+        public int TotalExperienceInYear { get; set; }
 
-        public string RelevantExperience { get; set; }
+        public int TotalExperienceInMonth { get; set; }
+
+        public int RelevantExperienceInYear { get; set; }
+
+        public int RelevantExperienceInMonth { get; set; }
 
         public string CurrentCompany { get; set; }
 
