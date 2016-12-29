@@ -20,7 +20,7 @@
                      .Create(update => update.Action("PositionSave", "Positions"))
                      .Update(update => update.Action("PositionUpdate", "Positions"))
                      .Destroy(delete => delete.Action("PositionDelete", "Positions"))
-                     .Events(events => events.Error("error_handler").RequestEnd("requestend_handler"))
+                         .Events(events => events.Error("error_handler").RequestEnd("requestend_handlerPosition"))
                 )
                 .Columns(columns =>
                     {
@@ -128,10 +128,10 @@
 
     })(jQuery, kendo);
 
-    function requestend_handler(e) {
+    function requestend_handlerPosition(e) {
         if (e.type == "destroy" && !e.response.Errors) {
             //toastr.success("Auto Pays details has been deleted successfully!");
-            ShowMessage("Position saved successfully.", 1);
+            ShowMessage("Position deleted successfully.", 1);
         }
 
         if (e.type == "update" && !e.response.Errors) {

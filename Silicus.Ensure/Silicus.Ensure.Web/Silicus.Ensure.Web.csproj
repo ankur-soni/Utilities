@@ -1000,6 +1000,7 @@
     <Content Include="Views\Account\Login.cshtml" />
     <Content Include="Views\Account\Index.cshtml" />
     <Content Include="Views\Panel\Panel.cshtml" />
+    <Content Include="Views\Shared\EditorTemplates\PostionEditorTemplete.cshtml" />
     <None Include="Web.Azure.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
