@@ -10,17 +10,31 @@
     var panleList = Html.Partial("~/Views/Panel/Panel.cshtml");
 }
 <div class="main-content">
+    <div class="fluid mt20">
+        <div class="row" style="padding-top:5px;padding-bottom:5px;">
+            <div class="alert alert-success" id="messageDiv">
+                <strong>Success!</strong> <span id="messageContent"></span>
+            </div>
+        </div>
+    </div>
     <h2>Setup</h2>
     <div class="kendogrid">
         @(Html.Kendo().TabStrip()
                 .Name("Tabs")
                 .Items(tabstrip =>
-               { 
+               {
                    tabstrip.Add().Text("Tags").Selected(true).Content(tagList.ToString());
                    tabstrip.Add().Text("Postions").Selected(false).Content(positionList.ToString());
-                   tabstrip.Add().Text("Panel").Selected(false).Content(panleList.ToString()); 
+                   tabstrip.Add().Text("Panel").Selected(false).Content(panleList.ToString());
                })
         )
 
     </div>
 </div>
+
+
+<script>
+    $(document).ready(function () {
+        $("#messageDiv").fadeOut();
+    });
+</script>
