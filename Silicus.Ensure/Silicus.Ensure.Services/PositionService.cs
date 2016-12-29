@@ -15,19 +15,24 @@ namespace Silicus.Ensure.Services
             _context = dataContextFactory.Create(ConnectionType.Ip);
         }
 
-        public IEnumerable<Position> GetPositionDetails()
+        public IEnumerable<Position> GetAllPositionDetails()
         {
             return _context.Query<Position>();
         }
 
+        public IEnumerable<Position> GetPositionDetails()
+        {
+            return _context.Query<Position>().Where(x => x.IsDeleted == false).ToList();
+        }
+
         public Position GetPositionById(int PositionId)
         {
-            return _context.Query<Position>().Where(x => x.PositionId == PositionId).FirstOrDefault();
+            return _context.Query<Position>().Where(x => x.PositionId == PositionId && x.IsDeleted == false).FirstOrDefault();
         }
 
         public Position GetPositionByName(string PositionName)
         {
-            return _context.Query<Position>().Where(x => x.PositionName.ToLower() == PositionName.ToLower()).FirstOrDefault();
+            return _context.Query<Position>().Where(x => x.PositionName.ToLower() == PositionName.ToLower()&&x.IsDeleted == false).FirstOrDefault();
         }
 
         public int Add(Position Position)

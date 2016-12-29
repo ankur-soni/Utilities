@@ -1,9 +1,4 @@
 ﻿@using Kendo.Mvc.UI;
-<div class="row" style="padding-top:5px;padding-bottom:5px;">
-    <div class="alert alert-success" id="messageDiv">
-        <strong>Success!</strong> <span id="messageContent">This alert box could indicate successful action.</span>
-    </div>
-</div>
 <div class="kendogrid">
     @*<h2>Tags</h2>*@
     <div>
@@ -125,7 +120,7 @@
     function requestend_handler(e) {
         if (e.type == "destroy" && !e.response.Errors) {
             //toastr.success("Auto Pays details has been deleted successfully!");
-            ShowMessage("Tag saved successfully.", 1);
+            ShowMessage("Tag deleted successfully.", 1);
         }
 
         if (e.type == "update" && !e.response.Errors) {

@@ -19,7 +19,7 @@
                      .Create(update => update.Action("PanelSave", "Panel"))
                      .Update(update => update.Action("PanelUpdate", "Panel"))
                      .Destroy(delete => delete.Action("PanelDelete", "Panel"))
-                     .Events(events => events.Error("error_handler").RequestEnd("requestend_handler"))
+                     .Events(events => events.Error("error_handler").RequestEnd("requestend_handlerPanel"))
                 )
                 .Columns(columns =>
                     {
@@ -61,7 +61,7 @@
                                 .Editable(ed => ed.Mode(GridEditMode.InLine))
                 )
             }
-        </div>
+        </div> 
 
 <script>
 
@@ -125,10 +125,10 @@
 
     })(jQuery, kendo);
 
-    function requestend_handler(e) {
+    function requestend_handlerPanel(e) {
         if (e.type == "destroy" && !e.response.Errors) {
             //toastr.success("Auto Pays details has been deleted successfully!");
-            ShowMessage("Panel saved successfully.", 1);
+            ShowMessage("Panel deleted successfully.", 1);
         }
 
         if (e.type == "update" && !e.response.Errors) {

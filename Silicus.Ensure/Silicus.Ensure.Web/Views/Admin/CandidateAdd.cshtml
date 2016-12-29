@@ -67,15 +67,20 @@
                         @Html.LabelFor(model => model.Position)<b style="color:Red;">*</b>
                     </div>
                     <div class="col-md-6">
-                        @(Html.Kendo().DropDownListFor(model => model.Position)
+                        <div class="col-md-9" style="padding-left:0;padding-right:0;">
+                            @(Html.Kendo().DropDownListFor(model => model.Position)
                             .OptionLabel("--Select--")
                             .BindTo(Model.PositionList)
                             .DataTextField("PositionName")
                             .DataValueField("PositionName")
                             .Value(Model.Position)
                             .HtmlAttributes(new { style = "width: 100%;border-color: #c5c5c5;" })
-                        )
-                        @Html.ValidationMessageFor(m => m.Position)
+                            )
+                            @Html.ValidationMessageFor(m => m.Position)
+                        </div>
+                        <div class="col-md-3">
+                            <a href="#" onclick="AddPosition();">Add Position</a>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -305,6 +310,30 @@
         </div>
     }
 </div>
+
+<div class="modal fade" id="addPositionPopup" role="dialog">
+    <form id="postionForm" action="/Positions/Save" method="post">
+        <div class="modal-dialog">
+
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title"><span>Add Tag</span></h4>
+                </div>
+                <div class="modal-body">
+
+                    @Html.Partial("~/Views/Shared/EditorTemplates/PostionEditorTemplete.cshtml", new Silicus.Ensure.Models.DataObjects.Position())
+                </div>
+                <div class="modal-footer">
+                    <button type="button" onclick="savePostion()" class="btn btn-default">Save</button>
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+
+        </div>
+    </form>
+</div>
 <script>
 
 
@@ -319,6 +348,70 @@
         });
     });
 
+    function savePostion()
+    {
+        if($("#postionForm").valid()&&isTagNameAvailable($('#PositionName').val()))
+        {
+            $.ajax({
+                type: "POST",
+                url: '/Positions/PositionSave',
+                data: $('#postionForm').serialize(),
+                success: function (returndata) {
+                    $("#addPositionPopup").modal('hide');
+                    var $PositionDrpSelect=$('#Position').data('kendoDropDownList');
+                    var multidata=$PositionDrpSelect.dataSource.data();
+                    debugger
+                    multidata.push({ PositionName: returndata.PositionName, PositionName: returndata.PositionName});
+                    var selectedValues=$PositionDrpSelect.value();
+                    selectedValues.push(returndata.PositionName);
+                    $PositionDrpSelect.value(selectedValues);
+                    $("#postionForm").trigger("reset");
+                }
+            });
+        }
+        else
+        {
+            $('#postionForm').submit();
+        }
+    }
+    function AddPosition()
+    {
+        // $("#postionForm").kendoValidator();
+        $("#postionForm").kendoValidator({
+            rules: {
+                //define custom validation rule to match remote validation:
+                mvcremotevalidation: function (input) {
+                    if (input.is("[data-val-remote]") && input.val() != "") {
+                        var remoteURL = input.attr("data-val-remote-url");
+                        
+                        return isTagNameAvailable(input.val());
+
+                    }
+                    return true;
+                }
+            },
+            messages: {
+                mvcremotevalidation: function (input) {
+                    return input.attr("data-val-remote");
+                }
+            }
+        });
+
+        $("#addPositionPopup").modal('show');
+    }
+
+    function isTagNameAvailable(updatedName)
+    {
+        $.ajax({
+            type: "POST",
+            url: '/Position/IsDuplicatePositionName',
+            async: false,
+            data: {  PositionName: updatedName },
+            success: function (returndata) {
+                return  returndata;
+            }
+        });
+    }
     $(function () {
         $("form").kendoValidator();
         $('.k-invalid').css('margin-bottom','0!important');
