@@ -323,7 +323,7 @@
                 </div>
                 <div class="modal-body">
 
-                    @Html.Partial("~/Views/Shared/EditorTemplates/PostionEditorTemplete.cshtml", new Silicus.Ensure.Models.DataObjects.Position())
+                    @Html.Partial("~/Views/Shared/EditorTemplates/PostionEditorTemplete.cshtml", new Silicus.Ensure.Web.Models.PositionViewModel())
                 </div>
                 <div class="modal-footer">
                     <button type="button" onclick="savePostion()" class="btn btn-default">Save</button>
@@ -379,20 +379,16 @@
         // $("#postionForm").kendoValidator();
         $("#postionForm").kendoValidator({
             rules: {
-                //define custom validation rule to match remote validation:
-                mvcremotevalidation: function (input) {
-                    if (input.is("[data-val-remote]") && input.val() != "") {
-                        var remoteURL = input.attr("data-val-remote-url");
-                        
-                        return isTagNameAvailable(input.val());
-
+                positionNamevalidation: function (input, params) {
+                    if (input.is("[name='TagName']") && input.val() != "") {
+                        if(!isTagNameAvailable("", input.val()))
+                        {
+                            input.attr("data-positionNamevalidation-msg", "Tag name already exist !");
+                            return false;
+                        }
                     }
+
                     return true;
-                }
-            },
-            messages: {
-                mvcremotevalidation: function (input) {
-                    return input.attr("data-val-remote");
                 }
             }
         });
