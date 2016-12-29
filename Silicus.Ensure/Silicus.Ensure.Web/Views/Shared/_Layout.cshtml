@@ -66,38 +66,35 @@
                             @if (Request.IsAuthenticated)
                             {
                                 var userName = @User.Identity.Name;
-                                <li class="dropdown">
-                                    <a class="dropdown-toggle count-info" data-toggle="dropdown" href="#">
-                                        <span class="hidden-sm hidden-xs">
-                                            <span class="m-r-sm text-muted welcome-message">Welcome @userName</span> <i class="fa fa-chevron-down"></i>
-                                        </span>
-                                        <span class="hidden-md hidden-lg">
-                                            <i class="fa fa-user"></i>
-                                        </span>
-                                    </a>
-                                    <ul class="dropdown-menu dropdown-user-menu">
-                                        <li>
-                                            <a href='@Url.Action("SignOut", "Account")'>
-                                                <div>
-                                                    Logout
-                                                </div>
-                                            </a>
-                                        </li>
-                                    </ul>
-                                </li>
+                            <li class="dropdown">
+                                <a class="dropdown-toggle count-info" data-toggle="dropdown" href="#">
+                                    <span class="hidden-sm hidden-xs">
+                                        <span class="m-r-sm text-muted welcome-message">Welcome @userName</span> <i class="fa fa-chevron-down"></i>
+                                    </span>
+                                    <span class="hidden-md hidden-lg">
+                                        <i class="fa fa-user"></i>
+                                    </span>
+                                </a>
+                                <ul class="dropdown-menu dropdown-user-menu">
+                                    <li>
+                                        <a href='@Url.Action("SignOut", "Account")'>
+                                            <div>
+                                                Logout
+                                            </div>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </li>
                             }
                         </ul>
                     </nav>
                 </div><!-- pad -->
             </div>
         </div>
-    }
-    <div class="row">
-        <div id="wrapper" class="wrapper">
+        <div class="row">
+            <div id="wrapper" class="wrapper">
 
-            <div class="sidebar-wrapper">
-                @if (actname != "login" && actname != "logoff" && actname != "forgotpassword")
-                {
+                <div class="sidebar-wrapper">
                     <nav class="navbar-default navbar-static-side sidebar" role="navigation">
                         <div class="sidebar-collapse">
                             @if (User.IsInRole(Silicus.Ensure.Models.Constants.RoleName.Panel.ToString()) || User.IsInRole(Silicus.Ensure.Models.Constants.RoleName.Admin.ToString()))
@@ -116,25 +113,28 @@
                             }
                         </div>
                     </nav>
-                }
-            </div>
-
-            <!-- END LEFT MENU -->
-            <!--   START OF CONTENT AREA -->
-            <div id="page-wrapper" class="page-wrapper">
-                @RenderBody()
+                </div>
+                <!-- END LEFT MENU -->
+                <!--   START OF CONTENT AREA -->
+                <div id="page-wrapper" class="page-wrapper">
+                    @RenderBody()
+                </div>
             </div>
         </div>
-    </div>
-    @*@RenderSection("scripts", required: false)*@
-    <div class="footer fixed_full">
-        <div>
-            <strong>&copy;Copyright</strong> 2014 -
-            <script>document.write(new Date().getFullYear())</script> Silicus Technologies
-            <span id="credits" class="pull-right" style="font-weight:bold;">Credits</span>
+        <div class="footer fixed_full">
+            <div>
+                <strong>&copy;Copyright</strong> 2014 -
+                <script>document.write(new Date().getFullYear())</script> Silicus Technologies
+                <span id="credits" class="pull-right" style="font-weight:bold;">Credits</span>
+            </div>
         </div>
-    </div>
+    }
+    else
+    {
+        @RenderBody()
+    }
 
+    @RenderSection("scripts", required: false)
     <script src="~/Content/js/jquery-2.1.1.js"></script>
     <script src="~/Content/js/plugins/metisMenu/jquery.metisMenu.js"></script>
     <script src="~/Content/js/plugins/pace/pace.min.js"></script>
