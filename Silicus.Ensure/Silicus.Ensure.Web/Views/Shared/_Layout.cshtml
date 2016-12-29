@@ -29,11 +29,8 @@
     <link href="~/Content/css/bootstrap.min.css" rel="stylesheet" />
     <link href="~/Content/css/Bootstrap/3.3.1/bootstrap.css" rel="stylesheet" />
     <!--Kendo css and JS-->
-
-    
     @Styles.Render("~/Content/kendoCSS")
     @Scripts.Render("~/bundles/kendoJS")
-    
 
     <!--Font Awesome 4.7.0 css-->
     <link href="~/Content/css/font-awesome-4.7.0/css/font-awesome.css" rel="stylesheet" />
@@ -45,8 +42,6 @@
 
     <!--Perfect scrollbar css-->
     <link href="~/Content/css/perfect-scrollbar.min.css" rel="stylesheet" />
-
-    
 </head>
 
 
@@ -70,25 +65,25 @@
                             @if (Request.IsAuthenticated)
                             {
                                 var userName = @User.Identity.Name;
-                            <li class="dropdown">
-                                <a class="dropdown-toggle count-info" data-toggle="dropdown" href="#">
-                                    <span class="hidden-sm hidden-xs">
-                                        <span class="m-r-sm text-muted welcome-message">Welcome @userName</span> <i class="fa fa-chevron-down"></i>
-                                    </span>
-                                    <span class="hidden-md hidden-lg">
-                                        <i class="fa fa-user"></i>
-                                    </span>
-                                </a>
-                                <ul class="dropdown-menu dropdown-user-menu">
-                                    <li>
-                                        <a href=''>
-                                            <div>
-                                                Logout
-                                            </div>
-                                        </a>
-                                    </li>
-                                </ul>
-                            </li>
+                                <li class="dropdown">
+                                    <a class="dropdown-toggle count-info" data-toggle="dropdown" href="#">
+                                        <span class="hidden-sm hidden-xs">
+                                            <span class="m-r-sm text-muted welcome-message">Welcome @userName</span> <i class="fa fa-chevron-down"></i>
+                                        </span>
+                                        <span class="hidden-md hidden-lg">
+                                            <i class="fa fa-user"></i>
+                                        </span>
+                                    </a>
+                                    <ul class="dropdown-menu dropdown-user-menu">
+                                        <li>
+                                            <a href='@Url.Action("SignOut", "Account")'>
+                                                <div>
+                                                    Logout
+                                                </div>
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </li>
                             }
                         </ul>
                     </nav>
@@ -107,11 +102,11 @@
                                 <ul class="nav metismenu" id="side-menu">
                                     @if (User.IsInRole(Silicus.Ensure.Models.Constants.RoleName.Admin.ToString()))
                                     {
-                                        <li class="active"><a href="/Master/Index"><i class="fa fa-cog" aria-hidden="true"></i><span class="nav-label">Setup</span></a></li>
+                                        <li class="active"><a href="/Master/Index"><i class="fa fa-dashboard"></i> <span class="nav-label">Setup</span></a></li>
                                     }
-                                    <li class=""><a href="/Admin/Candidates"><i class="fa fa-user-circle-o" aria-hidden="true"></i><span class="nav-label">Candidates</span></a></li>
-                                    <li class=""><a href="/QuestionBank/QuestionBank"><i class="fa fa-question-circle" aria-hidden="true"></i><span class="nav-label">Question Bank</span></a></li>
-                                    <li class=""><a href="/TestSuite/List"><i class="fa fa-file-text-o" aria-hidden="true"></i><span class="nav-label">Test Suit</span></a></li>
+                                    <li class=""><a href="/Admin/Candidates"><i class="fa fa-dashboard"></i> <span class="nav-label">Candidates</span></a></li>
+                                    <li class=""><a href="/QuestionBank/QuestionBank"><i class="fa fa-dashboard"></i> <span class="nav-label">Question Bank</span></a></li>
+                                    <li class=""><a href="/TestSuite/List"><i class="fa fa-dashboard"></i> <span class="nav-label">Test Suit</span></a></li>
 
                                 </ul>
                             }
@@ -139,17 +134,9 @@
     }
 
     @RenderSection("scripts", required: false)
-    <script src="~/Content/js/jquery-1.12.4.min.js"></script>
-    <script src="~/Content/js/plugins/metisMenu/jquery.metisMenu.js"></script>
-    <script src="~/Content/js/plugins/pace/pace.min.js"></script>
+    @*<script src="~/Content/js/plugins/metisMenu/jquery.metisMenu.js"></script>
+        <script src="~/Content/js/plugins/pace/pace.min.js"></script>*@
     <script>
-
-        $("#menu-toggle").click(function () {
-            $("body").toggleClass("mini-navbar");
-        });
-
-
-
         function showConfirmationWindow(message, header) {
             return showWindow('#confirmationTemplate', message, header)
         };
@@ -200,6 +187,7 @@
         $(window).resize(function () {
             sidebarautoheight();
         });
+
     </script>
     <script id="confirmationTemplate" type="text/x-kendo-template">
         <div class="popupMessage"></div>
