@@ -441,6 +441,7 @@
     <Content Include="Content\css\font-awesome-4.7.0\HELP-US-OUT.txt" />
     <Content Include="Content\css\fonts\CartoGothicStd-Bold-webfont.svg" />
     <Content Include="Content\css\fonts\CartoGothicStd-Book-webfont.svg" />
+    <Content Include="Content\css\fonts\fontawesome-webfont.svg" />
     <Content Include="Content\css\JQueryUI\1.11.2\images\ui-bg_flat_0_aaaaaa_40x100.png" />
     <Content Include="Content\css\JQueryUI\1.11.2\images\ui-bg_flat_75_ffffff_40x100.png" />
     <Content Include="Content\css\JQueryUI\1.11.2\images\ui-bg_glass_55_fbf9ee_1x400.png" />
@@ -486,6 +487,7 @@
     <Content Include="Content\js\bootstrap.js" />
     <Content Include="Content\js\bootstrap.min.js" />
     <Content Include="Content\js\inspinia.js" />
+    <Content Include="Content\js\jquery-1.12.4.min.js" />
     <Content Include="Content\js\jquery-2.1.1.js" />
     <Content Include="Content\js\plugins\chartist\chartist.min.js" />
     <Content Include="Content\js\plugins\chartist\_notes\dwsync.xml" />
@@ -751,6 +753,11 @@
     <Content Include="ApplicationInsights.config">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="Content\css\fonts\fontawesome-webfont.eot" />
+    <Content Include="Content\css\fonts\fontawesome-webfont.ttf" />
+    <Content Include="Content\css\fonts\fontawesome-webfont.woff" />
+    <Content Include="Content\css\fonts\fontawesome-webfont.woff2" />
+    <Content Include="Content\css\fonts\FontAwesome.otf" />
     <None Include="Properties\PublishProfiles\ensure - FTP.pubxml" />
     <None Include="Properties\PublishProfiles\ensure - Web Deploy.pubxml" />
     <None Include="Scripts\jquery-2.1.4.intellisense.js" />
@@ -917,6 +924,12 @@
     <Content Include="Scripts\Kendo\2014.1.416\kendo.aspnetmvc.min.js" />
     <None Include="Scripts\Kendo\2014.1.416\kendo.dataviz.min.intellisense.js" />
     <Content Include="Scripts\Kendo\2014.1.416\kendo.dataviz.min.js" />
+    <Content Include="Scripts\Kendo\2015.3.1111.340\jquery.min.js" />
+    <Content Include="Scripts\Kendo\2015.3.1111.340\kendo.all.min.js" />
+    <Content Include="Scripts\Kendo\2015.3.1111.340\kendo.aspnetmvc.min.js" />
+    <Content Include="Scripts\Kendo\2015.3.1111.340\kendo.core.min.js" />
+    <Content Include="Scripts\Kendo\2015.3.1111.340\kendo.data.min.js" />
+    <Content Include="Scripts\Kendo\2015.3.1111.340\kendo.dataviz.min.js" />
     <Content Include="Scripts\knockout-3.3.0.debug.js" />
     <Content Include="Scripts\knockout-3.3.0.js" />
     <Content Include="Scripts\Knockout\3.2.0\knockout-3.1.0.debug.js" />
@@ -1001,6 +1014,12 @@
     <Content Include="Views\Account\Index.cshtml" />
     <Content Include="Views\Panel\Panel.cshtml" />
     <Content Include="Views\Shared\EditorTemplates\PostionEditorTemplete.cshtml" />
+    <Content Include="Scripts\Kendo\2015.3.1111.340\jquery.min.map" />
+    <Content Include="Scripts\Kendo\2015.3.1111.340\kendo.all.min.js.map" />
+    <Content Include="Scripts\Kendo\2015.3.1111.340\kendo.aspnetmvc.min.js.map" />
+    <Content Include="Scripts\Kendo\2015.3.1111.340\kendo.core.min.js.map" />
+    <Content Include="Scripts\Kendo\2015.3.1111.340\kendo.data.min.js.map" />
+    <Content Include="Scripts\Kendo\2015.3.1111.340\kendo.dataviz.min.js.map" />
     <None Include="Web.Azure.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -1014,7 +1033,6 @@
     <Folder Include="Attachment\" />
     <Folder Include="CandidateResume\" />
     <Folder Include="Content\CandidateResume\" />
-    <Folder Include="Content\js\" />
     <Folder Include="Scripts\Custom\" />
     <Folder Include="ViewModel\" />
     <Folder Include="Views\Shared\DisplayTemplates\" />
