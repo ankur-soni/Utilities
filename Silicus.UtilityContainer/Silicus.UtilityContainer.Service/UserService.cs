@@ -28,7 +28,19 @@ namespace Silicus.UtilityContainer.Services
             _roleService = roleService;
         }
 
-
+        public List<User> GetAllUsersByRoleInUtility(int utilityId, int roleId)
+        {
+            var users = new List<User>();
+            var utilityUserRoles = _commonDBContext.Query<UtilityUserRoles>().Where(x => x.UtilityId == utilityId && x.RoleId == roleId).ToList();
+            if (utilityUserRoles.Count > 0)
+            {
+                foreach (var utilityUserRole in utilityUserRoles)
+                {
+                    users.Add(_commonDBContext.Query<User>().Where(x => x.ID == utilityUserRole.UserId).FirstOrDefault());
+                }
+            }
+            return users;
+        }
         public List<User> GetAllUsers()
         {
             return _commonDBContext.Query<User>().OrderBy(user => user.DisplayName).ToList();

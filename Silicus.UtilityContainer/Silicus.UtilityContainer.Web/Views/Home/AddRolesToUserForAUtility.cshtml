@@ -5,13 +5,13 @@
 }
 
 
-<div class="row"style="width:80%;padding-bottom:10px;padding-top:25px">
-    <div class="col-md-8 white-bg">
+<div class="row" style="width:80%;padding-bottom:10px;padding-top:25px">
+    <div class="col-md-12 white-bg">
         <h2>Add Role To User For Utility</h2>
 
         @using (Html.BeginForm(null, null, FormMethod.Post, new { name = "form", id = "form" }))
         {
-          //  @Html.AntiForgeryToken()
+            //  @Html.AntiForgeryToken()
 
             <div class="form-horizontal">
                 <hr />
@@ -42,7 +42,7 @@
                     @Html.LabelFor(model => model.User, "User", htmlAttributes: new { @class = "control-label col-md-2 requiredfeild" })
                     <div class="col-md-4">
                         @Html.ListBoxFor(Model => Model.UserId,
-     new MultiSelectList((List<SelectListItem>)ViewData["User"], "Text", "Value"), new { style = "display:block;", @id = "userNames"})
+     new MultiSelectList((List<SelectListItem>)ViewData["User"], "Text", "Value"), new { style = "display:block;", @id = "userNames" })
                         @*@Html.DropDownListFor(model => model.UserId, (SelectList)ViewData["User"], "Select", htmlAttributes: new { @class = "form-control" })*@
                         @Html.ValidationMessage("", new { @class = "text-danger", @id = "userRequired" })
                     </div>
@@ -51,59 +51,77 @@
                         @Html.ListBox("userIds", new MultiSelectList((new List<SelectListItem>()), "Text", "Value"), new { @name = "userId" })
                     </div>
                 </div>
+                <div  class="form-group" id="users" style="display:none">
+                    <h3>Search Available Employees By Name: </h3>
+                    <p>Type letters: <input data-bind="value: filter, valueUpdate: 'afterkeydown'" /></p>
 
-                <p id="asha" style="width:500px;height:50px; color:black;">
+                    <div id='contactsList'>
+                        <div class="col-md-6">
+                            <span data-bind="visible: availableItems().length > 0">Available employees: </span>
 
-                </p>
+                            <ul data-bind="foreach: filteredItems, visible: availableItems().length > 0" style="height:200px;overflow-y:scroll;overflow-x:hidden">
+                                <li>
+                                    <input type="checkbox" data-bind="checkedValue: $data, checked: $root.selectedItems, attr:{id: userId }" />
+                                    <span data-bind="text: title"></span>
+                                </li>
+                            </ul>
 
-                <div class="form-group">
-                    <div class="col-md-3">
-                        <input type="submit" value="Add Role" class="btn btn-primary"  style="width:100%"/>
+                        </div>
+                        <div class="col-md-6">
+
+                            <span data-bind="visible: selectedItems().length > 0">Selected employees: </span>
+
+                            <ul data-bind="foreach: selectedItems, visible: selectedItems().length > 0" style="height:200px;overflow-y:scroll;overflow-x:hidden">
+                                <li>
+                                    <span data-bind="text: title"></span>
+                                    <a href="#" data-bind="click: $parent.removeItem">Delete</a>
+                                </li>
+                            </ul>
+                        </div>
+
                     </div>
-                    <div class="col-md-3">
+                </div>
+                <div class="form-group">
+                    <div class="col-md-6">
+                        <input type="submit" value="Add Role" class="btn btn-primary" style="width:100%" />
+                    </div>
+                    <div class="col-md-6">
                         <input type="button" value="Cancel" onclick="window.location.reload()" class="btn btn-danger" style="width:100%" />
                     </div>
                 </div>
             </div>
         }
         <div class="form-group">
-            
+
         </div>
         <div>
             @Html.ActionLink("Back to Dashboard", "Index", "Home", new { @style = "color:#000aaa;" })
         </div>
     </div>
 </div>
-
 <div id="dialog" title="Dialog Title" style="display:none">I'm in a dialog</div>
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
-
+<script src="~/Scripts/knockout-3.1.0.debug.js"></script>
+<script src="~/Scripts/knockout-3.1.0.js"></script>
+<script src="~/Scripts/knockout.mapping-latest.debug.js"></script>
+<script src="~/Scripts/knockout.mapping-latest.js"></script>
     <script type="text/javascript">
-
-        
-
         $(document).ready(function () {
-
             var lastSelectOption = $("#utilityList option:selected").text();
-            $("#utilityList").click(function(){
+            $("#utilityList").click(function () {
                 lastSelectOption = $("#utilityList option:selected");
             });
 
             $("#utilityList").change(function () {
-               
                 if ($("#utilityList").val().trim() != "" && $("#utilityList").val() != 0 && $("#userNames").val() != null && $("#userNames").val != 0) {
-                   
-
                     if (!confirm("Do you want to change the utility to " + $("#utilityList option:selected").text())) {
-                        
                         lastSelectOption.prop("selected", true);
-                        
                     }
 
                 }
 
-               var uID = $(this).val();
+                var uID = $(this).val();
                 $.getJSON("../Home/FillRoles", { utilityId: uID },
                        function (data) {
                            var select = $("#rolesList");
@@ -118,19 +136,12 @@
                                    value: itemData.Value,
                                    text: itemData.Text
 
-
                                }));
-
-
 
                            });
                        });
 
-                
-
             });
-
-
 
             $('#form').on('submit', function (e) {
                 $("#roleRequired").empty();
@@ -149,43 +160,86 @@
 
                 }
                 else {
-                   
-                    @*setTimeout(function () {
-                        swal({
-                            title: "Sucess",
-                            text: "Role added sucessfully.",
-                            type: "success",
-                            confirmButtonText: "OK"
-                        },
-                       function (isConfirm) {
-                           if (isConfirm) {
-                               window.location.href = "@Url.Action("AddRolesToUserForAUtility", "Home")";
-                           }
-                       });
-                    }, 10000);*@
                     alert("Role to a user added sucessfully.");
                 }
-               
+
 
             });
 
 
             $("#rolesList").change(function (e) {
                 debugger;
+                var currentUtilityId = parseInt($("#utilityList").val());
+                var currentRoleId = parseInt($("#rolesList").val());
                 e.preventDefault();
                 $("#roleRequired").empty();
                 var data = $("#rolesList option:selected").val();
-               
-                //if ($("#rolesList option:selected").val() != 0 && $("#rolesList option:selected").val() != "") {
-                //    //$("#rolesList").attr("disabled", "disabled");
-                //    //$("#userIds").show();
-                //    //$("#userNames").show();
-                //    $("#rolesList option").not(':selected').each(function (index) {
-                //        $(this).prop('disabled', true);
-                //    });
+                $.ajax({
+                    type: 'GET',
+                    url: "@Url.Action("GetAllUsersByRoleInUtility", "Home")",
+                    data: { utilityId: currentUtilityId, roleId: currentRoleId },
+                    dataType: 'json',
+                    success: function (data) {
+                        $("#users").css('display', 'none');
+                        var initialData = [
+                            {
+                                availableItems: data.availableItems
+                           },
+                           {
+                               selectedItems:data.selectedItems
+                           }
+                        ];
+                        function Item(titleText, userId, isSelected) {
+                            this.title = ko.observable(titleText);
+                            this.isSelected = ko.observable(isSelected);
+                            this.userId = ko.observable(userId);
+                        }
 
+                        var SelectableItemViewModel = function (items) {
+                            // Data
+                            var self = this;
+                            self.filter = ko.observable("");
+                            self.availableItems = ko.observableArray(ko.utils.arrayMap(items[0].availableItems, function (item) {
+                                return new Item(item.UserName, item.UserId, item.Status);
+                            }));
 
-                //}
+                            self.selectedItems = ko.observableArray(ko.utils.arrayMap(items[1].selectedItems, function (item) {
+                                return ko.utils.arrayFirst(self.availableItems(), function (itm) {
+                                    return item.UserName == itm.title();
+                                });
+
+                            }));
+
+                            //filter the items using the filter text
+                            self.filteredItems = ko.dependentObservable(function () {
+                                debugger;
+                                var filter = this.filter().toLowerCase();
+                                if (!filter) {
+                                    return this.availableItems();
+                                } else {
+                                    return ko.utils.arrayFilter(this.availableItems(), function (item) {
+                                        return ko.utils.stringStartsWith(item.title().toLowerCase(), filter);
+                                    });
+                                }
+                                alert(this.availableItems());
+                            }, self);
+
+                            // Operations
+
+                            self.removeItem = function (removedItem) {
+                                self.selectedItems.remove(removedItem);
+                            };
+                        }
+
+                        var vm = new SelectableItemViewModel(initialData);
+                        ko.applyBindings(vm);
+                        $("#users").css('display','block');
+
+                    },
+                    error: function (data) {
+                        alert('Oops! something went wrong.');
+                    }
+                });
             })
 
 
@@ -195,7 +249,7 @@
                 $("#userRequired").empty();
                 if ($("#rolesList").val().trim() == "" || $("#rolesList").val() == 0) {
                     $("#roleRequired").empty();
-                   
+
                     $("#roleRequired").append("Please select the role first.")
 
                 }
@@ -222,12 +276,6 @@
                     }
 
                 }
-
-               
-               
-                
-
-
             })
 
             $("#userIds").click(function (e) {
@@ -240,12 +288,7 @@
 
             })
 
-
-
         });
-
-
-
     </script>
 
 }

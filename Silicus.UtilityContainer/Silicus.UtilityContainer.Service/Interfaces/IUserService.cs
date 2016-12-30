@@ -17,7 +17,8 @@ namespace Silicus.UtilityContainer.Services.Interfaces
         User FindUserByEmail(string email);
         //    void AddRoleToUserForAllUtility(User user);
         string FindDisplayNameFromEmail(string email);
+        List<User> GetAllUsersByRoleInUtility(int utilityId, int roleId);
 
-       List<String> GetAllManagersEmailAddresses();
+        List<String> GetAllManagersEmailAddresses();
     }
 }

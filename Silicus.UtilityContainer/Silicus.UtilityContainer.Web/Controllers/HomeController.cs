@@ -4,6 +4,8 @@ using System.Web.Mvc;
 using Silicus.UtilityContainer.Models.DataObjects;
 using Silicus.UtilityContainer.Models.ViewModels;
 using Silicus.UtilityContainer.Services.Interfaces;
+using System.Collections.Generic;
+using Silicus.UtilityContainer.Web.Models;
 
 namespace Silicus.UtilityContainer.Web.Controllers
 {
@@ -56,6 +58,24 @@ namespace Silicus.UtilityContainer.Web.Controllers
             return View(newUserRole);
         }
 
+        public ActionResult GetAllUsersByRoleInUtility(int utilityId,int roleId)
+        {
+           var users = _userService.GetAllUsersByRoleInUtility(utilityId, roleId);
+            var allUsers = _userService.GetAllUsers();
+            var availableUsers = new List<UsersWithRolesPerUtilityViewModel>();
+            var selectedUsers = new List<UsersWithRolesPerUtilityViewModel>();
+            foreach (var item in allUsers)
+            {
+                availableUsers.Add(new UsersWithRolesPerUtilityViewModel { UserName = item.DisplayName, UserId = item.ID});
+            }
+            foreach (var item in users)
+            {
+                selectedUsers.Add(new UsersWithRolesPerUtilityViewModel { UserName = item.DisplayName, UserId = item.ID });
+            }
+            
+            return Json(new { availableItems = availableUsers, selectedItems = selectedUsers }, JsonRequestBehavior.AllowGet);
+        }
+
         [HttpPost]
         public ActionResult AddRolesToUserForAUtility(UtilityUserRoleViewModel newUserRole)
         {
@@ -69,8 +89,6 @@ namespace Silicus.UtilityContainer.Web.Controllers
                 });
                 return RedirectToAction("Index");
             }
-
-
             return RedirectToAction("Index");
         }
 
