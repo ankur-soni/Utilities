@@ -201,30 +201,30 @@ namespace Silicus.EncourageWithAzureAd.Web.Controllers
             var nominationViewModel = new NominationViewModel();
             var userEmailAddress = User.Identity.Name;
 
-            nominationViewModel.ListOfAwards = new SelectList(_awardService.GetAllAwards(), "Id", "Name");
             int currentUserId = 0;
             var projects = _awardService.GetProjectsUnderCurrentUserAsManager(userEmailAddress);
+            var departments = _awardService.GetDepartmentsUnderCurrentUserAsManager(userEmailAddress);
+            var nominatedUser = _awardService.GetUserById(savedNomination.UserId);
 
-            if (projects.Count > 0)
-            {
-                nominationViewModel.ProjectsUnderCurrentUser
-                                    = new SelectList(_awardService.GetProjectsUnderCurrentUserAsManager(userEmailAddress), "Id", "Name");
-                currentUserId = _awardService.GetUserIdFromEmail(userEmailAddress);
-                nominationViewModel.ManagerId = currentUserId;
-            }
-
-            nominationViewModel.DepartmentsUnderCurrentUser = new SelectList(_awardService.GetDepartmentsUnderCurrentUserAsManager(userEmailAddress), "Id", "Name");
+            currentUserId = _awardService.GetUserIdFromEmail(userEmailAddress);
+            nominationViewModel.ManagerId = currentUserId;
 
             if (savedNomination.ProjectID != null)
             {
                 nominationViewModel.SelectResourcesBy = "Project";
-                nominationViewModel.Resources = new SelectList(_awardService.GetResourcesForEditInEngagement(savedNomination.ProjectID.Value, currentUserId), "Id", "DisplayName");
+                nominationViewModel.ProjectOrDeptName = projects.Count() > 0 ? projects.Where(p => p.ID == savedNomination.ProjectID).FirstOrDefault().Name : "";
             }
             else if (savedNomination.DepartmentId != null)
             {
                 nominationViewModel.SelectResourcesBy = "Department";
-                nominationViewModel.Resources = new SelectList(_awardService.GetResourcesForEditInDepartment(savedNomination.DepartmentId.Value, currentUserId), "Id", "DisplayName");
+                nominationViewModel.ProjectOrDeptName = departments.Count() > 0 ? departments.Where(d => d.ID == savedNomination.DepartmentId).FirstOrDefault().Name : "";
             }
+            else
+            {
+                nominationViewModel.SelectResourcesBy = "Other";
+            }
+
+            nominationViewModel.ResourceName = nominatedUser != null ? nominatedUser.DisplayName : "";
 
             //IN FUTURE GOING TO USE MAPPER
             nominationViewModel.AwardId = savedNomination.AwardId;
@@ -235,6 +235,7 @@ namespace Silicus.EncourageWithAzureAd.Web.Controllers
             nominationViewModel.ResourceId = savedNomination.UserId;
             nominationViewModel.IsSubmitted = savedNomination.IsSubmitted;
             nominationViewModel.MainComment = savedNomination.Comment;
+            nominationViewModel.AwardName = _awardService.GetAwardNameById(savedNomination.AwardId);
 
             var criterias = _awardService.GetCriteriasForAward(nominationViewModel.AwardId);
 
@@ -352,7 +353,7 @@ namespace Silicus.EncourageWithAzureAd.Web.Controllers
             //}
             //else
             //{
-            //    managerId = _awardService.GetUserIdFromEmail("shailendra.birthare@silicus.com");
+            //    managerId = _awardService.GetUserIdFromEmail(User.Identity.Name);
             //}
 
             //if (depts.Count > 0)
