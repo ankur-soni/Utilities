@@ -7,6 +7,7 @@
             @if (Request.IsAuthenticated)
             {
                 @(Html.Kendo().Grid<Silicus.Ensure.Models.DataObjects.Panel>().Name("PanelGrids")
+                          .Events(e => e.Edit("gvPanel_onRowEdit"))
             .DataSource(dataSource => dataSource
             .Ajax()
             .Model(model =>
@@ -125,6 +126,12 @@
         });
 
     })(jQuery, kendo);
+
+    function gvPanel_onRowEdit(e) {
+        if (e && e.model && e.model.isNew()) {
+            $(".k-grid-update").html('<span><i class="fa fa-save"></i> Save </span>');
+        }
+    }
 
     function requestend_handlerPanel(e) {
         if (e.type == "destroy" && !e.response.Errors) {
