@@ -1,4 +1,5 @@
 ﻿@model Silicus.Ensure.Web.Models.UserViewModel
+@using Silicus.Ensure.Models.Constants;
 @using Kendo.Mvc.UI;
 @{
     ViewBag.Title = "CandidateAdd";
@@ -66,15 +67,20 @@
                         @Html.LabelFor(model => model.Position)<b style="color:Red;">*</b>
                     </div>
                     <div class="col-md-6">
-                        @(Html.Kendo().DropDownListFor(model => model.Position)
+                        <div class="col-md-9" style="padding-left:0;padding-right:0;">
+                            @(Html.Kendo().DropDownListFor(model => model.Position)
                             .OptionLabel("--Select--")
                             .BindTo(Model.PositionList)
                             .DataTextField("PositionName")
                             .DataValueField("PositionName")
                             .Value(Model.Position)
                             .HtmlAttributes(new { style = "width: 100%;border-color: #c5c5c5;" })
-                        )
-                        @Html.ValidationMessageFor(m => m.Position)
+                            )
+                            @Html.ValidationMessageFor(m => m.Position)
+                        </div>
+                        <div class="col-md-3">
+                            <a href="#" onclick="AddPosition();">Add Position</a>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -180,20 +186,60 @@
             <div class="row" style="margin-bottom:10px!important">
                 <div class="col-md-6">
                     <div class="col-md-6">
-                        @Html.LabelFor(model => model.TotalExperience)<b style="color:Red;">*</b>
+                        <lable>Total Experience <b style="color:Red;">*</b></lable>
                     </div>
                     <div class="col-md-6">
-                        @Html.TextBoxFor(model => model.TotalExperience, new { @class = "form-control" })
-                        @Html.ValidationMessageFor(m => m.TotalExperience)
+                        <div class="col-md-6" style="padding-left:0">
+                            @(Html.Kendo().DropDownListFor(m => m.TotalExperienceInYear)
+                        .DataTextField("Text")
+                        .DataValueField("Value")
+                        .BindTo(EnumHelper.GetSelectList((typeof(Year)))
+                        .Select(x => new SelectListItem { Text = x.Value, Value = x.Value }))
+                        .HtmlAttributes(new { style = "width: 100%" })
+                        .OptionLabel("Year")
+                            )
+                            @Html.ValidationMessageFor(m => m.TotalExperienceInYear)
+                        </div>
+                        <div class="col-md-6" style="padding-right:0">
+                            @(Html.Kendo().DropDownListFor(m => m.TotalExperienceInMonth)
+                        .DataTextField("Text")
+                        .DataValueField("Value")
+                        .BindTo(EnumHelper.GetSelectList((typeof(Month)))
+                        .Select(x => new SelectListItem { Text = x.Value, Value = x.Value }))
+                        .HtmlAttributes(new { style = "width: 100%" })
+                        .OptionLabel("Months")
+                            )
+                            @Html.ValidationMessageFor(m => m.TotalExperienceInMonth)
+                        </div>
                     </div>
                 </div>
                 <div class="col-md-6">
                     <div class="col-md-6">
-                        @Html.LabelFor(model => model.RelevantExperience)<b style="color:Red;">*</b>
+                        <lable>Relevant Experience <b style="color:Red;">*</b></lable>
                     </div>
                     <div class="col-md-6">
-                        @Html.TextBoxFor(model => model.RelevantExperience, new { @class = "form-control" })
-                        @Html.ValidationMessageFor(m => m.RelevantExperience)
+                        <div class="col-md-6" style="padding-left:0">
+                            @(Html.Kendo().DropDownListFor(m => m.RelevantExperienceInYear)
+                            .DataTextField("Text")
+                            .DataValueField("Value")
+                            .BindTo(EnumHelper.GetSelectList((typeof(Year)))
+                            .Select(x => new SelectListItem { Text = x.Value, Value = x.Value }))
+                            .HtmlAttributes(new { style = "width: 100%" })
+                            .OptionLabel("Year")
+                            )
+                            @Html.ValidationMessageFor(m => m.RelevantExperienceInYear)
+                        </div>
+                        <div class="col-md-6" style="padding-right:0">
+                            @(Html.Kendo().DropDownListFor(m => m.RelevantExperienceInMonth)
+                        .DataTextField("Text")
+                        .DataValueField("Value")
+                        .BindTo(EnumHelper.GetSelectList((typeof(Month)))
+                        .Select(x => new SelectListItem { Text = x.Value, Value = x.Value }))
+                        .HtmlAttributes(new { style = "width: 100%" })
+                        .OptionLabel("Months")
+                            )
+                            @Html.ValidationMessageFor(m => m.RelevantExperienceInMonth)
+                        </div>
                     </div>
                 </div>
             </div>
@@ -221,7 +267,7 @@
         <div class="row" style="margin-bottom:10px!important">
             <div class="col-md-6">
                 <div class="col-md-6">
-                    Upload Resume:
+                    Upload Resume<b style="color:Red;">*</b>
                 </div>
                 <div class="col-md-6">
                     <div class="demo-section k-content">
@@ -264,7 +310,33 @@
         </div>
     }
 </div>
+
+<div class="modal fade" id="addPositionPopup" role="dialog">
+    <form id="postionForm">
+        <div class="modal-dialog">
+
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title"><span>Add Tag</span></h4>
+                </div>
+                <div class="modal-body">
+
+                    @Html.Partial("~/Views/Shared/EditorTemplates/PostionEditorTemplete.cshtml", new Silicus.Ensure.Web.Models.PositionViewModel())
+                </div>
+                <div class="modal-footer">
+                    <button type="button" onclick="savePostion()" class="btn btn-default">Save</button>
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+
+        </div>
+    </form>
+</div>
 <script>
+
+
     var fileBool=false;
     $(document).ready(function () {
         $('#messageDiv').fadeOut(5000);
@@ -275,6 +347,80 @@
             format: "dd/MM/yyyy"
         });
     });
+
+
+
+    function savePostion()
+    {
+        if($("#postionForm").valid())
+        {
+            $.ajax({
+                type: "POST",
+                url: '/Positions/PositionSave',
+                data: $('#postionForm').serialize(),
+                success: function (returndata) {
+                    $("#addPositionPopup").modal('hide');
+                    var $PositionDrpSelect=$('#Position').data('kendoDropDownList');
+                    var multidata=$PositionDrpSelect.dataSource.data();
+                    debugger
+                    multidata.push({ PositionName: returndata.PositionName, PositionName: returndata.PositionName});
+                    var selectedValues=$PositionDrpSelect.value();
+                    selectedValues.push(returndata.PositionName);
+                    $PositionDrpSelect.value(selectedValues);
+                    $("#postionForm").trigger("reset");
+                }
+            });
+        }
+        else
+        {
+            $('#postionForm').submit();
+        }
+    }
+
+    function AddPosition()
+    {
+        // $("#tagForm").kendoValidator();
+        $("#postionForm").kendoValidator({
+            rules: {
+                tagNamevalidation: function (input, params) {
+                    if (input.is("[name='PositionName']") && input.val() != "") {
+                        var bool=isTagNameAvailable("", input.val());
+                        if(!bool)
+                        {
+                            input.attr("data-tagNamevalidation-msg", "Position name already exist !");
+                            return false;
+                        }
+                    }
+
+                    return true;
+                }
+            }
+        });
+
+        $("#addPositionPopup").modal('show');
+    }
+
+    function isTagNameAvailable(existingName,updatedName)
+    {
+        var isAvailable = true;
+        if (existingName != updatedName) {
+            $.ajax({
+                type: "POST",
+                url: '/Positions/IsDuplicatePositionName',
+                async: false,
+                data: { PositionName: updatedName },
+                success: function (returndata) {
+                    if (returndata == true) {
+                        isAvailable = true;
+                    }
+                    else {
+                        isAvailable = false;
+                    }
+                }
+            });
+        }
+        return isAvailable;
+    }
 
     $(function () {
         $("form").kendoValidator();
@@ -303,7 +449,6 @@
                                 return false;
                             }
                         }
-
                     }
                     if (input.is("[name='Position']")) {
                         if ((input.val() != "" && input.val() == "--Select--")) {
@@ -315,7 +460,6 @@
                         {
                             $('span[aria-owns="Position_listbox"]').css('border','none ');
                             input.attr("data-experiencevalidation-msg", "");
-
                         }
                     }
                     if (input.is("[name='Gender']")) {
@@ -328,9 +472,56 @@
                         {
                             $('span[aria-owns="Gender_listbox"]').css('border','none ');
                             input.attr("data-experiencevalidation-msg", "");
-
                         }
                     }
+                    //if (input.is("[name='TotalExperienceInYear']")) {
+                    //    if (input.val() == "") {
+                    //        input.attr("data-experiencevalidation-msg", "Total experience in year is required!");
+                    //        $('span[aria-owns="TotalExperienceInYear_listbox"]').css('border','1px solid red');
+                    //        return false;
+                    //    }
+                    //    else
+                    //    {
+                    //        $('span[aria-owns="TotalExperienceInYear_listbox"]').css('border','none ');
+                    //        input.attr("data-experiencevalidation-msg", "");
+                    //    }
+                    //}
+                    //if (input.is("[name='TotalExperienceInMonth']")) {
+                    //    if (input.val() == "") {
+                    //        input.attr("data-experiencevalidation-msg", "Total experience in month is required!");
+                    //        $('span[aria-owns="TotalExperienceInMonth_listbox"]').css('border','1px solid red');
+                    //        return false;
+                    //    }
+                    //    else
+                    //    {
+                    //        $('span[aria-owns="TotalExperienceInMonth_listbox"]').css('border','none ');
+                    //         input.attr("data-experiencevalidation-msg", "");
+                    //    }
+                    //}
+                    //if (input.is("[name='RelevantExperienceInYear']")) {
+                    //    if (input.val() == "") {
+                    //        input.attr("data-experiencevalidation-msg", "Relevant experience in year is required!");
+                    //        $('span[aria-owns="RelevantExperienceInYear_listbox"]').css('border','1px solid red');
+                    //        return false;
+                    //    }
+                    //    else
+                    //    {
+                    //        $('span[aria-owns="RelevantExperienceInYear_listbox"]').css('border','none ');
+                    //        input.attr("data-experiencevalidation-msg", "");
+                    //    }
+                    //}
+                    //if (input.is("[name='RelevantExperienceInMonth']")) {
+                    //    if (input.val() == "" ) {
+                    //        input.attr("data-experiencevalidation-msg", "Relevant experience in month is required!");
+                    //        $('span[aria-owns="RelevantExperienceInMonth_listbox"]').css('border','1px solid red');
+                    //        return false;
+                    //    }
+                    //    else
+                    //    {
+                    //        $('span[aria-owns="RelevantExperienceInMonth_listbox"]').css('border','none ');
+                    //         input.attr("data-experiencevalidation-msg", "");
+                    //    }
+                    //}
                     if (input.is("[data-val-remote]") && input.val() != "") {
                         var remoteURL = input.attr("data-val-remote-url");
                         if (!checkMail(input.val(), remoteURL)) {

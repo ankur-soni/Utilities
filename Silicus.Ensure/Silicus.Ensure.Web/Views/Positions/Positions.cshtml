@@ -1,13 +1,14 @@
 ﻿@model Silicus.Ensure.Models.DataObjects.Position
 @using Kendo.Mvc.UI;
 
-        @*<h2>Positions</h2>*@
+@*<h2>Positions</h2>*@
 
-        <div>
+<div>
 
-            @if (Request.IsAuthenticated)
-            {
-                @(Html.Kendo().Grid<Silicus.Ensure.Models.DataObjects.Position>().Name("positionGrids")
+    @if (Request.IsAuthenticated)
+    {
+        @(Html.Kendo().Grid<Silicus.Ensure.Models.DataObjects.Position>().Name("positionGrids")
+                          .Events(e => e.Edit("gvPosition_onRowEdit"))
             .DataSource(dataSource => dataSource
             .Ajax()
             .Model(model =>
@@ -20,7 +21,7 @@
                      .Create(update => update.Action("PositionSave", "Positions"))
                      .Update(update => update.Action("PositionUpdate", "Positions"))
                      .Destroy(delete => delete.Action("PositionDelete", "Positions"))
-                     .Events(events => events.Error("error_handler").RequestEnd("requestend_handler"))
+                         .Events(events => events.Error("error_handler").RequestEnd("requestend_handlerPosition"))
                 )
                 .Columns(columns =>
                     {
@@ -45,7 +46,7 @@
                                 <div class="col-md-6">
                                     <div class="input-group">
                                         <span class="input-group-addon"><span class="glyphicon glyphicon-search" aria-hidden="true"></span></span>
-                                        <input type="text" class="form-control" id='PositionFieldFilter' placeholder="Search for...">
+                                        <input type="text" class="form-control" id='PositionFieldFilter' placeholder="Search...">
                                         <span class="input-group-btn">
                                             <button id="postionSearch" class="btn btn-default" type="button" style="height:16px;"><span class="glyphicon glyphicon-refresh" aria-hidden="true"></span></button>
                                         </span>
@@ -61,10 +62,10 @@
                         </div>
                     </text>);
                 })
-                                .Editable(ed => ed.Mode(GridEditMode.InLine))
-                )
-            }
-        </div>
+                                    .Editable(ed => ed.Mode(GridEditMode.InLine))
+        )
+    }
+</div>
 
 <script>
 
@@ -128,19 +129,25 @@
 
     })(jQuery, kendo);
 
-    function requestend_handler(e) {
+    function gvPosition_onRowEdit(e) {
+        if (e && e.model && e.model.isNew()) {
+            $(".k-grid-update").html('<span><i class="fa fa-save"></i> Save </span>');
+        }
+    }
+
+    function requestend_handlerPosition(e) {
         if (e.type == "destroy" && !e.response.Errors) {
             //toastr.success("Auto Pays details has been deleted successfully!");
-            ShowMessage("Tag saved successfully.", 1);
+            ShowMessage("Position deleted successfully.", 1);
         }
 
         if (e.type == "update" && !e.response.Errors) {
             //toastr.success("Auto Pays details has been saved successfully!");
-            ShowMessage("Tag Updated successfully.", 1);
+            ShowMessage("Position Updated successfully.", 1);
         }
 
         if (e.type == "create" && !e.response.Errors) {
-            ShowMessage("Tag Created successfully.", 1);
+            ShowMessage("Position Created successfully.", 1);
         }
 
     }

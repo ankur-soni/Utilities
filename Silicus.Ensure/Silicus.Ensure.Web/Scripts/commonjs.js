@@ -1,6 +1,6 @@
 ﻿$(window).load(function(){
 	var mainW = $(window).height() -70;
-	$('.nav').css({ height : mainW })
+	//$('.nav').css({ height : mainW })
 	$('.nav-logo').hide()
 	$('#loading').fadeOut(1000);
 	$('.nav-logo').fadeIn()
@@ -8,8 +8,8 @@
 
 $(window).resize(function() {
     //var mainW = $('.main-content').height();
-    var mainW = $(window).height() - 70;
-    $('.nav').css({ height: mainW + 50 })
+    //var mainW = $(window).height() - 70;
+    //$('.nav').css({ height: mainW + 50 })
     //mQuery();
 
     //Grid Resizing

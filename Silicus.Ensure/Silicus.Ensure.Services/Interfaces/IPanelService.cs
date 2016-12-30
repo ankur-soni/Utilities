@@ -10,9 +10,9 @@ namespace Silicus.Ensure.Services.Interfaces
 
         IEnumerable<Panel> GetPanelDetails();
 
-        Panel GetPositionById(int PanelId);
+        Panel GetPanelById(int PanelId);
 
-        Panel GetPositionByName(string Panel);
+        Panel GetPanelByName(string Panel);
 
         int Add(Panel Panel);
 

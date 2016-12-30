@@ -6,7 +6,7 @@
     ViewBag.Title = "Sign In";
     var loginProviders = Context.GetOwinContext().Authentication.GetExternalAuthenticationTypes();
 }
-<div class="logincontainer">
+<div class="logincontainer" style="margin-top:15%;background-color: #edf1f5!important">
     <div id="loginbox" class="mainbox col-md-6 col-md-offset-3 col-sm-8 col-sm-offset-2">
         <div class="panel panel-default">
             @using (Html.BeginForm("Login", "Account", FormMethod.Post, new { ReturnUrl = ViewBag.ReturnUrl, @id = "loginform", @class = "form-horizontal" }))
@@ -17,7 +17,7 @@
 
                 <div class="p10" style="background-color:#000;"><img src="../../Images/silicus/logo.png" alt="Silicus Technologies, LLC. Logo" /></div>
                 <div class="panel-heading">
-                    <div class="panel-title">Sign in</div>
+                    @Html.ActionLink("Sign in", "SignIn", "Account", routeValues: null, htmlAttributes: new { id = "loginLink" })
                     <div class="floatRight positionrel mt20neg"><a href="@Url.Action("ForgotPassword", "Account")" tabindex="5">Forgot your password?</a></div>
                 </div>
 
