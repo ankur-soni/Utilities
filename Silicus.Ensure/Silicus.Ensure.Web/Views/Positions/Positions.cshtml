@@ -62,7 +62,7 @@
                         </div>
                     </text>);
                 })
-                                    .Editable(ed => ed.Mode(GridEditMode.InLine))
+                                        .Editable(ed => ed.Mode(GridEditMode.InLine))
         )
     }
 </div>
@@ -78,6 +78,7 @@
             if (value.length > 0) {
                 if (value) {
                     grid.dataSource.filter({ field: "PositionName", operator: "contains", value: value });
+                    grid.dataSource.sort({ field: "PositionName", dir: "asc" });
                 } else {
                     grid.dataSource.filter({});
                 }
@@ -139,15 +140,18 @@
         if (e.type == "destroy" && !e.response.Errors) {
             //toastr.success("Auto Pays details has been deleted successfully!");
             ShowMessage("Position deleted successfully.", 1);
+            RefreshKendoGrid('positionGrids');
         }
 
         if (e.type == "update" && !e.response.Errors) {
             //toastr.success("Auto Pays details has been saved successfully!");
             ShowMessage("Position Updated successfully.", 1);
+            RefreshKendoGrid('positionGrids');
         }
 
         if (e.type == "create" && !e.response.Errors) {
             ShowMessage("Position Created successfully.", 1);
+            RefreshKendoGrid('positionGrids');
         }
 
     }
