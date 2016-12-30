@@ -1,13 +1,14 @@
 ﻿@model Silicus.Ensure.Models.DataObjects.Position
 @using Kendo.Mvc.UI;
 
-        @*<h2>Positions</h2>*@
+@*<h2>Positions</h2>*@
 
-        <div>
+<div>
 
-            @if (Request.IsAuthenticated)
-            {
-                @(Html.Kendo().Grid<Silicus.Ensure.Models.DataObjects.Position>().Name("positionGrids")
+    @if (Request.IsAuthenticated)
+    {
+        @(Html.Kendo().Grid<Silicus.Ensure.Models.DataObjects.Position>().Name("positionGrids")
+                          .Events(e => e.Edit("gvPosition_onRowEdit"))
             .DataSource(dataSource => dataSource
             .Ajax()
             .Model(model =>
@@ -45,7 +46,7 @@
                                 <div class="col-md-6">
                                     <div class="input-group">
                                         <span class="input-group-addon"><span class="glyphicon glyphicon-search" aria-hidden="true"></span></span>
-                                        <input type="text" class="form-control" id='PositionFieldFilter' placeholder="Search for...">
+                                        <input type="text" class="form-control" id='PositionFieldFilter' placeholder="Search...">
                                         <span class="input-group-btn">
                                             <button id="postionSearch" class="btn btn-default" type="button" style="height:16px;"><span class="glyphicon glyphicon-refresh" aria-hidden="true"></span></button>
                                         </span>
@@ -61,10 +62,10 @@
                         </div>
                     </text>);
                 })
-                                .Editable(ed => ed.Mode(GridEditMode.InLine))
-                )
-            }
-        </div>
+                                    .Editable(ed => ed.Mode(GridEditMode.InLine))
+        )
+    }
+</div>
 
 <script>
 
@@ -127,6 +128,12 @@
         });
 
     })(jQuery, kendo);
+
+    function gvPosition_onRowEdit(e) {
+        if (e && e.model && e.model.isNew()) {
+            $(".k-grid-update").html('<span><i class="fa fa-save"></i> Save </span>');
+        }
+    }
 
     function requestend_handlerPosition(e) {
         if (e.type == "destroy" && !e.response.Errors) {
