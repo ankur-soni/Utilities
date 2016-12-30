@@ -56,10 +56,43 @@ namespace Silicus.Encourage.Services
 
         public List<Nomination> GetAllSubmitedNonreviewedNominations(int reviewerId)
         {
+            var allNominations = new List<Nomination>();
+
+            var awardsList = _encourageDatabaseContext.Query<Award>().ToList();
+
             var alreadyReviewedNominationIds = _encourageDatabaseContext.Query<Review>().Where(r => r.ReviewerId == reviewerId && r.IsSubmited == true).ToList().Select(r => r.NominationId);
 
-            var allNominations = _encourageDatabaseContext.Query<Nomination>().Where(N => N.IsSubmitted == true && (!alreadyReviewedNominationIds.Contains(N.Id)) && N.NominationDate.Value.Month == (DateTime.Now.Month - 1) && N.NominationDate.Value.Year == DateTime.Now.Year).ToList();
-
+            foreach (var award in awardsList)
+            {
+                switch (award.Code)
+                {
+                    case "SOM":
+                        var somNominations = _encourageDatabaseContext.Query<Nomination>().Where(N =>
+                            N.AwardId == award.Id &&
+                            N.IsSubmitted == true &&
+                            (!alreadyReviewedNominationIds.Contains(N.Id)) &&
+                            N.NominationDate.Value.Month == (DateTime.Now.Month - 1) &&
+                            N.NominationDate.Value.Year == DateTime.Now.Year).ToList();
+                        allNominations.AddRange(somNominations);
+                        break;
+                    case "PINNACLE":
+                        var pinnacleNominations = _encourageDatabaseContext.Query<Nomination>().Where(N =>
+                            N.AwardId == award.Id &&
+                            N.IsSubmitted == true &&
+                            (!alreadyReviewedNominationIds.Contains(N.Id)) &&
+                            N.NominationDate.Value.Year == (DateTime.Now.Year - 1)).ToList();
+                        allNominations.AddRange(pinnacleNominations);
+                        break;
+                    default:
+                        var nominations = _encourageDatabaseContext.Query<Nomination>().Where(N =>
+                            N.AwardId == award.Id &&
+                            N.IsSubmitted == true &&
+                            (!alreadyReviewedNominationIds.Contains(N.Id)) &&
+                            N.NominationDate.Value.Year == DateTime.Now.Year).ToList();
+                        allNominations.AddRange(nominations);
+                        break;
+                }
+            }
             return allNominations;
         }
 
