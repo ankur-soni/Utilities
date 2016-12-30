@@ -214,6 +214,9 @@ namespace Silicus.Ensure.Web.Controllers
 
         public ActionResult Candidates()
         {
+
+            List<string> roles = MvcApplication.getCurrentUserRoles();
+
             ViewBag.UserRoles = RoleManager.Roles.Select(r => new SelectListItem { Text = r.Name, Value = r.Name }).ToList();
             var positionDetails = _positionService.GetPositionDetails().OrderBy(model => model.PositionName);
             ViewBag.PositionListItem = from item in positionDetails

@@ -241,6 +241,21 @@
     <Reference Include="Silicus.FrameWorx.Utility">
       <HintPath>..\packages\Silicus.FrameWorx.Utility.1.0.0\lib\net45\Silicus.FrameWorx.Utility.dll</HintPath>
     </Reference>
+    <Reference Include="Silicus.UtilityContainer.Entities, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>Dependencies\Silicus.UtilityContainer.Entities.dll</HintPath>
+    </Reference>
+    <Reference Include="Silicus.UtilityContainer.Models, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>Dependencies\Silicus.UtilityContainer.Models.dll</HintPath>
+    </Reference>
+    <Reference Include="Silicus.UtilityContainer.Security, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>Dependencies\Silicus.UtilityContainer.Security.dll</HintPath>
+    </Reference>
+    <Reference Include="Silicus.UtilityContainer.Services">
+      <HintPath>Dependencies\Silicus.UtilityContainer.Services.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
@@ -707,6 +722,9 @@
     <Content Include="Content\toastr.css" />
     <Content Include="Content\toastr.min.css" />
     <Content Include="Images\logo.jpg" />
+    <Content Include="Dependencies\Silicus.UtilityContainer.Entities.dll" />
+    <Content Include="Dependencies\Silicus.UtilityContainer.Models.dll" />
+    <Content Include="Dependencies\Silicus.UtilityContainer.Security.dll" />
     <Content Include="Images\silicus\logo.png" />
     <Content Include="LESS\style.css" />
     <Content Include="LESS\_notes\dwsync.xml" />
