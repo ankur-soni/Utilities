@@ -127,7 +127,7 @@ namespace Silicus.EncourageWithAzureAd.Web.Controllers
 
                 if (currentAwardFrequency.Code == FrequencyCode.YEAR.ToString())
                 {
-                    nomination.NominationDate = DateTime.Now;
+                    nomination.NominationDate = DateTime.Now.Date.AddYears(-1);
                 }
                 else
                 {

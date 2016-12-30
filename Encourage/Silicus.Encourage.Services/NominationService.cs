@@ -442,8 +442,40 @@ namespace Silicus.Encourage.Services
         {
             var today = DateTime.Today;
             var prevMonth = new DateTime(today.Year, today.Month, 1).AddMonths(-1);
+            var prevYear = DateTime.Now.Year - 1;
 
-            return _encourageDatabaseContext.Query<Nomination>("ManagerComments").Where(model => model.ManagerId == managerID && (forCurrentMonth ? (model.NominationDate >= prevMonth) : (model.NominationDate < prevMonth))).ToList();
+            var allNominations = new List<Nomination>();
+
+            var awardsList = _encourageDatabaseContext.Query<Award>().ToList();
+
+            foreach (var award in awardsList)
+            {
+                switch (award.Code)
+                {
+                    case "SOM":
+                        var somNominations = _encourageDatabaseContext.Query<Nomination>().Where(N =>
+                            N.ManagerId == managerID &&
+                            N.AwardId == award.Id &&
+                            (forCurrentMonth ? (N.NominationDate >= prevMonth) : (N.NominationDate < prevMonth))).ToList();
+                        allNominations.AddRange(somNominations);
+                        break;
+                    case "PINNACLE":
+                        var pinnacleNominations = _encourageDatabaseContext.Query<Nomination>().Where(N =>
+                            N.ManagerId == managerID &&
+                            N.AwardId == award.Id &&
+                            (forCurrentMonth ? (N.NominationDate.Value.Year >= prevYear) : (N.NominationDate.Value.Year < prevYear))).ToList();
+                        allNominations.AddRange(pinnacleNominations);
+                        break;
+                    default:
+                        var nominations = _encourageDatabaseContext.Query<Nomination>().Where(N =>
+                            N.ManagerId == managerID &&
+                            N.AwardId == award.Id &&
+                            N.NominationDate.Value.Year == DateTime.Now.Year).ToList();
+                        allNominations.AddRange(nominations);
+                        break;
+                }
+            }
+            return allNominations;
         }
 
         public void UpdateFinalScore(int nominationId)
