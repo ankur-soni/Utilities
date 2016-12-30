@@ -67,15 +67,20 @@
                         @Html.LabelFor(model => model.Position)<b style="color:Red;">*</b>
                     </div>
                     <div class="col-md-6">
-                        @(Html.Kendo().DropDownListFor(model => model.Position)
+                        <div class="col-md-9" style="padding-left:0;padding-right:0;">
+                            @(Html.Kendo().DropDownListFor(model => model.Position)
                             .OptionLabel("--Select--")
                             .BindTo(Model.PositionList)
                             .DataTextField("PositionName")
                             .DataValueField("PositionName")
                             .Value(Model.Position)
                             .HtmlAttributes(new { style = "width: 100%;border-color: #c5c5c5;" })
-                        )
-                        @Html.ValidationMessageFor(m => m.Position)
+                            )
+                            @Html.ValidationMessageFor(m => m.Position)
+                        </div>
+                        <div class="col-md-3">
+                            <a href="#" onclick="AddPosition();">Add Position</a>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -305,6 +310,30 @@
         </div>
     }
 </div>
+
+<div class="modal fade" id="addPositionPopup" role="dialog">
+    <form id="postionForm">
+        <div class="modal-dialog">
+
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title"><span>Add Tag</span></h4>
+                </div>
+                <div class="modal-body">
+
+                    @Html.Partial("~/Views/Shared/EditorTemplates/PostionEditorTemplete.cshtml", new Silicus.Ensure.Web.Models.PositionViewModel())
+                </div>
+                <div class="modal-footer">
+                    <button type="button" onclick="savePostion()" class="btn btn-default">Save</button>
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+
+        </div>
+    </form>
+</div>
 <script>
 
 
@@ -318,6 +347,80 @@
             format: "dd/MM/yyyy"
         });
     });
+
+
+
+    function savePostion()
+    {
+        if($("#postionForm").valid())
+        {
+            $.ajax({
+                type: "POST",
+                url: '/Positions/PositionSave',
+                data: $('#postionForm').serialize(),
+                success: function (returndata) {
+                    $("#addPositionPopup").modal('hide');
+                    var $PositionDrpSelect=$('#Position').data('kendoDropDownList');
+                    var multidata=$PositionDrpSelect.dataSource.data();
+                    debugger
+                    multidata.push({ PositionName: returndata.PositionName, PositionName: returndata.PositionName});
+                    var selectedValues=$PositionDrpSelect.value();
+                    selectedValues.push(returndata.PositionName);
+                    $PositionDrpSelect.value(selectedValues);
+                    $("#postionForm").trigger("reset");
+                }
+            });
+        }
+        else
+        {
+            $('#postionForm').submit();
+        }
+    }
+
+    function AddPosition()
+    {
+        // $("#tagForm").kendoValidator();
+        $("#postionForm").kendoValidator({
+            rules: {
+                tagNamevalidation: function (input, params) {
+                    if (input.is("[name='PositionName']") && input.val() != "") {
+                        var bool=isTagNameAvailable("", input.val());
+                        if(!bool)
+                        {
+                            input.attr("data-tagNamevalidation-msg", "Position name already exist !");
+                            return false;
+                        }
+                    }
+
+                    return true;
+                }
+            }
+        });
+
+        $("#addPositionPopup").modal('show');
+    }
+
+    function isTagNameAvailable(existingName,updatedName)
+    {
+        var isAvailable = true;
+        if (existingName != updatedName) {
+            $.ajax({
+                type: "POST",
+                url: '/Positions/IsDuplicatePositionName',
+                async: false,
+                data: { PositionName: updatedName },
+                success: function (returndata) {
+                    if (returndata == true) {
+                        isAvailable = true;
+                    }
+                    else {
+                        isAvailable = false;
+                    }
+                }
+            });
+        }
+        return isAvailable;
+    }
 
     $(function () {
         $("form").kendoValidator();

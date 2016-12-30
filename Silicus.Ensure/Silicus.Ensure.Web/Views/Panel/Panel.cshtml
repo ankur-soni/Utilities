@@ -19,7 +19,7 @@
                      .Create(update => update.Action("PanelSave", "Panel"))
                      .Update(update => update.Action("PanelUpdate", "Panel"))
                      .Destroy(delete => delete.Action("PanelDelete", "Panel"))
-                     .Events(events => events.Error("error_handler").RequestEnd("requestend_handler"))
+                     .Events(events => events.Error("error_handler").RequestEnd("requestend_handlerPanel"))
                 )
                 .Columns(columns =>
                     {
@@ -42,7 +42,7 @@
                                 <div class="col-md-6">
                                     <div class="input-group">
                                         <span class="input-group-addon"><span class="glyphicon glyphicon-search" aria-hidden="true"></span></span>
-                                        <input type="text" class="form-control" id='PanelFieldFilter' placeholder="Search for...">
+                                        <input type="text" class="form-control" id='PanelFieldFilter' placeholder="Search...">
                                         <span class="input-group-btn">
                                             <button id="postionSearch" class="btn btn-default" type="button" style="height:16px;"><span class="glyphicon glyphicon-refresh" aria-hidden="true"></span></button>
                                         </span>
@@ -61,7 +61,7 @@
                                 .Editable(ed => ed.Mode(GridEditMode.InLine))
                 )
             }
-        </div>
+        </div> 
 
 <script>
 
@@ -74,6 +74,7 @@
             if (value.length > 0) {
                 if (value) {
                     grid.dataSource.filter({ field: "PanelName", operator: "contains", value: value });
+                    grid.dataSource.sort({ field: "PanelName", dir: "asc" });
                 } else {
                     grid.dataSource.filter({});
                 }
@@ -125,19 +126,22 @@
 
     })(jQuery, kendo);
 
-    function requestend_handler(e) {
+    function requestend_handlerPanel(e) {
         if (e.type == "destroy" && !e.response.Errors) {
             //toastr.success("Auto Pays details has been deleted successfully!");
-            ShowMessage("Panel saved successfully.", 1);
+            ShowMessage("Panel deleted successfully.", 1);
+            RefreshKendoGrid('PanelGrids');
         }
 
         if (e.type == "update" && !e.response.Errors) {
             //toastr.success("Auto Pays details has been saved successfully!");
             ShowMessage("Panel Updated successfully.", 1);
+            RefreshKendoGrid('PanelGrids');
         }
 
         if (e.type == "create" && !e.response.Errors) {
             ShowMessage("Panel Created successfully.", 1);
+            RefreshKendoGrid('PanelGrids');
         }
 
     }

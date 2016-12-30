@@ -21,6 +21,9 @@ using Silicus.Ensure.Web.Filters;
 using Silicus.Ensure.Web.Models;
 using Silicus.Ensure.Models.Constants;
 using Microsoft.Owin.Security.Cookies;
+using System.Collections.Generic;
+using Silicus.UtilityContainer.Services;
+
 
 namespace Silicus.Ensure.Web.Controllers
 {
@@ -30,6 +33,7 @@ namespace Silicus.Ensure.Web.Controllers
         private readonly ILogger _logger;
         private readonly IDataContextFactory _dataContextFactory;
         private readonly IEmailService _emailService;
+        private readonly IRolesService _rolesService;
 
         private ApplicationUserManager _userManager;
         public ApplicationUserManager UserManager
@@ -77,12 +81,13 @@ namespace Silicus.Ensure.Web.Controllers
         }
 
         public AccountController(ICookieHelper cookieHelper, ILogger logger,
-            IDataContextFactory dataContextFactory, IEmailService emailService)
+            IDataContextFactory dataContextFactory, IEmailService emailService, IRolesService rolesService)
         {
             _cookieHelper = cookieHelper;
             _logger = logger;
             _dataContextFactory = dataContextFactory;
             _emailService = emailService;
+            _rolesService = rolesService;
         }
 
         [HttpGet]
@@ -126,26 +131,29 @@ namespace Silicus.Ensure.Web.Controllers
             model.Password = string.Empty;
 
             var identityUser = await UserManager.FindByNameAsync(model.UserName);
-            var isAdmin = await UserManager.IsInRoleAsync(identityUser.Id, "Admin");
-            if (identityUser == null)
+            bool isAdmin = false;
+            IList<string> userRoles = new List<string>();
+            if (identityUser != null)
             {
-                _logger.Log(string.Format("MembershipUser is found null for user : {0}", userName),
-                    LogCategory.Warning, GetUserIdentifiableString(userName));
-                return View();
+                isAdmin = await UserManager.IsInRoleAsync(identityUser.Id, "Admin");
+                userRoles = await UserManager.GetRolesAsync(identityUser.Id);
+            }
+            else
+            {
+                var role = _rolesService.GetRoleDetails();
+                userRoles = MvcApplication.getCurrentUserRoles();
+                isAdmin = userRoles.Contains("Admin");
             }
 
-            // Setting a cookie value for notification status.
-            _cookieHelper.SetCookie("_notification", "false", new TimeSpan(8, 0, 0));
 
-            var userRoles = await UserManager.GetRolesAsync(identityUser.Id);
             if (userRoles.Count > 0)
             {
                 _logger.Log(string.Format("Redirecting to {1} URL for user : {0}", userName, returnUrl),
                     LogCategory.Verbose, GetUserIdentifiableString(userName));
+                _cookieHelper.SetCookie("_notification", "false", new TimeSpan(8, 0, 0));
 
                 return RedirectToLocal(returnUrl, userName, isAdmin);
             }
-
             return View();
         }
 
@@ -160,17 +168,17 @@ namespace Silicus.Ensure.Web.Controllers
 
             if (ModelState.IsValid)
             {
-                _logger.Log("UserName: "+ model.UserName + "Password: " +  model.Password);
+                _logger.Log("UserName: " + model.UserName + "Password: " + model.Password);
                 var loginResult = await SignInManager.PasswordSignInAsync(model.UserName, model.Password, model.RememberMe, shouldLockout: true);
-                _logger.Log("LoginResult: "+loginResult);
+                _logger.Log("LoginResult: " + loginResult);
                 switch (loginResult)
                 {
                     case SignInStatus.Success:
                         _logger.Log("Login-Post-Switch-Sucess");
                         var user = await UserManager.FindByNameAsync(model.UserName);
-                        _logger.Log("User: "+user.Email);
+                        _logger.Log("User: " + user.Email);
                         var isAdmin = await UserManager.IsInRoleAsync(user.Id, "Admin");
-                        _logger.Log(user.Email + " isAdmin: "+isAdmin);
+                        _logger.Log(user.Email + " isAdmin: " + isAdmin);
                         var isCandidate = await UserManager.IsInRoleAsync(user.Id, "Candidate");
                         _logger.Log(user.Email + " isCandidate: " + isCandidate);
 

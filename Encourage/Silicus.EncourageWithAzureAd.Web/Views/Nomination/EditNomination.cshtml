@@ -50,7 +50,8 @@
                                 <div class="col-lg-3 col-md-4 col-sm-5">
                                     <div class="form-group">
                                         @Html.Label("Nomination Category", htmlAttributes: new { @class = "control-label requiredfeild", style = "text-align: left" })
-                                        @Html.DropDownListFor(model => model.AwardId, Model.ListOfAwards as SelectList, "Select", new { @class = "form-control", id = "Award" })
+                                        @*@Html.DropDownListFor(model => model.AwardId, Model.ListOfAwards as SelectList, "Select", new { @class = "form-control", id = "Award" })*@
+                                        @Html.TextBoxFor(model => model.AwardName, new { @class = "form-control",@disabled="disabled" })
                                         @Html.ValidationMessageFor(model => model.AwardId, "", new { @class = "text-danger" })
 
                                     </div>
@@ -90,7 +91,8 @@
                                     <div class="col-lg-3 col-md-4 col-sm-5">
                                         <div class="form-group" id="projectInput">
                                             @Html.Label("Project", htmlAttributes: new { @class = "control-label requiredfeild" })
-                                            @Html.DropDownListFor(model => model.ProjectID, Model.ProjectsUnderCurrentUser as SelectList, "Select", new { @class = "form-control", @id = "SelectedProject" })
+                                            @*@Html.DropDownListFor(model => model.ProjectID, Model.ProjectsUnderCurrentUser as SelectList, "Select", new { @class = "form-control", @id = "SelectedProject" })*@
+                                            @Html.TextBoxFor(model => model.ProjectOrDeptName, new { @class = "form-control", @disabled = "disabled" })
                                             @Html.ValidationMessageFor(model => model.ProjectID, "", new { @class = "text-danger" })
 
                                         </div>
@@ -103,7 +105,8 @@
                                     <div class="col-lg-3 col-md-4 col-sm-5">
                                         <div class="form-group" id="departmentInput">
                                             @Html.Label("Department", htmlAttributes: new { @class = "control-label requiredfeild" })
-                                            @Html.DropDownListFor(model => model.DepartmentId, Model.DepartmentsUnderCurrentUser as SelectList, "Select", new { @class = "form-control", @id = "SelectedDepartment" })
+                                            @*@Html.DropDownListFor(model => model.DepartmentId, Model.DepartmentsUnderCurrentUser as SelectList, "Select", new { @class = "form-control", @id = "SelectedDepartment" })*@
+                                            @Html.TextBoxFor(model => model.ProjectOrDeptName, new { @class = "form-control", @disabled = "disabled" })
                                             @Html.ValidationMessageFor(model => model.DepartmentId, "", new { @class = "text-danger" })
 
                                         </div>
@@ -121,7 +124,8 @@
                                 <div class="col-lg-3 col-md-4 col-sm-5">
                                     <div class="form-group">
                                         @Html.Label("Employee", htmlAttributes: new { @class = "control-label requiredfeild" })
-                                        @Html.DropDownListFor(model => model.ResourceId, Model.Resources as SelectList, "Select", new { @class = "form-control", id = "Resources" })
+                                        @*@Html.DropDownListFor(model => model.ResourceId, Model.Resources as SelectList, "Select", new { @class = "form-control", id = "Resources" })*@
+                                        @Html.TextBoxFor(model => model.ResourceName, new { @class = "form-control", @disabled = "disabled" })
                                         @Html.ValidationMessageFor(model => model.ResourceId, "", new { @class = "text-danger" })
 
                                     </div>
@@ -151,7 +155,7 @@
             <div class="row M-T15" id="disclaimer">
                 <div class="col-sm-12">
                     <div class="alert alert-danger">
-                        <strong>Disclaimer :</strong> Mention your comments against the criteria your nominee fits in. Please note that it’s NOT mandatory to mention comments against each criteria given below. You can leave the comment area blank for the criteria which are not relevant.
+                        <strong>Disclaimer :</strong> Please select the rating and weightage for the criteria your candidate fits in. Quote the instances of work done by nominee in the ‘Manager Comments’ section to justify the given rating and weightage for that criterion.
                     </div>
                 </div>
                 <div class="col-sm-12">

@@ -7,23 +7,35 @@
     var users = Html.Partial("/Views/Admin/_partialViewCandidates.cshtml");
 }
 
-<div class="main-content">
-
-    <div class="fluid mt20">
-        <div class="alert alert-success" id="messageDiv">
-            <strong>Success!</strong> <span id="messageContent">@Html.ValidationSummary(true)</span>
+<div class="row white-bg header-row">
+    <nav class="" role="navigation" style="margin-bottom: 0">
+        <div class="navbar-header">
+            <a class="navbar-minimalize minimalize-styl-2 btn btn-primary" id="menu-toggle" style="margin-left:15px;" href="#"><i class="fa fa-bars"></i> </a>
         </div>
-        <h2>Candidates</h2>
-        <div class="row" style="margin-bottom:20px">
-            <div class="col-sm-3">
-                <span style="float:right"><b>Candidate Status</b></span>
+    </nav>
+
+    <div class="col-lg-11 col-md-11 col-sm-11">
+        <h1 class="dashboard-name">Candidates</h1>
+    </div>
+</div>
+<div class="row">
+    <div class="col-sm-12">
+        <div class="fluid M-T15">
+            <div class="alert alert-success" id="messageDiv">
+                <span id="messageContent">@Html.ValidationSummary(true)</span>
             </div>
-            <div class="col-sm-3">
-                @(Html.Kendo().DropDownListFor(m => m.CandidateStatus)
-                .Name("CandidateStatus")
-                .DataTextField("Text")
-                .DataValueField("Value")
-                .Events(e => e.Change("Change"))
+            
+            <div class="box">
+                <div class="row">
+                    <div class="col-sm-6 form-group">
+                        <span><b>Candidate Status</b></span>
+                    
+                        @(Html.Kendo().DropDownListFor(m => m.CandidateStatus)
+                    .Name("CandidateStatus")
+                    .DataTextField("Text")
+                    .DataValueField("Value")
+                    .Events(e => e.Change("Change"))
+                    
                     .BindTo(new List<SelectListItem>
                     () {
                         new SelectListItem(){
@@ -54,13 +66,12 @@
                     Text=Convert.ToString(CandidateStatus.Rejected),
                     Value=Convert.ToString(CandidateStatus.Rejected)
                     }
-                    }).HtmlAttributes(new { style = "width: 100%" }))
-            </div>
-            <div class="col-sm-1">
-                <span style="float:right"><b> Positions</b></span>
-            </div>
-            <div class="col-sm-3">
-                @(Html.Kendo().DropDownList()
+                    }))
+                    </div>
+                    <div class="col-sm-6 form-group">
+                        <span><b> Positions</b></span>
+                    
+                        @(Html.Kendo().DropDownList()
                             .Name("Position")
                                     .Events(e => e.Change("PositionChange"))
                             .OptionLabel("All")
@@ -68,15 +79,25 @@
                             .DataTextField("Text")
                             .DataValueField("Value")
                             .SelectedIndex(0)
-                            .HtmlAttributes(new { style = "width: 100%;border-color: #c5c5c5;" })
-                )
+                            
+                        )
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-12">
+                        <div class="kendogrid">
+                            @users
+                        </div>
+                    </div>
+                </div>
             </div>
-        </div>
-        <div class="kendogrid">
-            @users
+
+
         </div>
     </div>
 </div>
+
+
 <script>
     $(document).ready(function () {
         if ('@Convert.ToString(TempData["ErrorMsg"])' != '') {

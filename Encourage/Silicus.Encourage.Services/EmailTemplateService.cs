@@ -2,9 +2,13 @@
 using Silicus.Encourage.Models;
 using Silicus.Encourage.Services.Interface;
 using Silicus.FrameWorx.Logger;
+using Silicus.UtilityContainer.Models.DataObjects;
 using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Linq;
+using System.Net;
+using System.Net.Mail;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -14,18 +18,73 @@ namespace Silicus.Encourage.Services
     {
         private readonly IEncourageDatabaseContext _encourageDatabaseContext;
         private readonly IDataContextFactory _dataContextFactory;
+
+        private readonly UtilityContainer.Entities.ICommonDataBaseContext _commonDataBaseContext;
+        private readonly ICommonDbService _commonDbService;
+
         private readonly ILogger _logger;
 
-        public EmailTemplateService(IDataContextFactory dataContextFactory, ILogger logger)
+        public EmailTemplateService(IDataContextFactory dataContextFactory, ICommonDbService commonDbService, ILogger logger)
         {
             _dataContextFactory = dataContextFactory;
             _encourageDatabaseContext = _dataContextFactory.CreateEncourageDbContext();
+            _commonDbService = commonDbService;
+            _commonDataBaseContext = _commonDbService.GetCommonDataBaseContext();
             _logger = logger;
         }
 
-        public List<EmailTemplate> GetEmailTemplates()
+        public EmailTemplate GetEmailTemplate(string templateName)
         {
-            return _encourageDatabaseContext.Query<EmailTemplate>().ToList();
+            return _encourageDatabaseContext.Query<EmailTemplate>().Where(t => t.TemplateName == templateName).FirstOrDefault();
+        }
+
+        public List<User> GetAllManagers()
+        {
+            var managerRoleId = _commonDataBaseContext.Query<Role>().Where(r => r.Name == "Manager").FirstOrDefault().ID;
+            var utilityId = _commonDataBaseContext.Query<Utility>().Where(r => r.Name == "Encourage").FirstOrDefault().Id;
+            var listOfMangerIds = _commonDataBaseContext.Query<UtilityUserRoles>().Where(u => u.RoleId == managerRoleId && u.UtilityId == utilityId).Select(m => m.UserId).ToList();
+            return _commonDataBaseContext.Query<User>().Where(u => listOfMangerIds.Contains(u.ID)).ToList();
+        }
+
+        public string SendEmail(List<string> ToEmailAddresses,string body, string emailSubject)
+        {
+            ILogger _logger = new DatabaseLogger("name=LoggerDataContext", Type.GetType(string.Empty), (Func<DateTime>)(() => DateTime.UtcNow), string.Empty);
+            _logger.Log("EmailService-SendEmail");
+
+            var fromAddress = new MailAddress(ConfigurationManager.AppSettings["MailUserName"], "Silicus Rewards and Recognition Team");
+            string mailbody = string.Empty;
+
+            var userName = ConfigurationManager.AppSettings["MailUserName"];
+            var password = ConfigurationManager.AppSettings["MailPassword"];
+
+            var smtp = new SmtpClient("smtp.gmail.com", 587)
+            {
+                Credentials = new NetworkCredential(userName, password),
+                EnableSsl = true
+            };
+
+            using (var message = new MailMessage() { Subject = emailSubject, Body = body })
+            {
+                message.From = fromAddress;
+
+                foreach (string email in ToEmailAddresses)
+                {
+                    message.To.Add(email);
+                }
+                message.IsBodyHtml = true;
+                try
+                {
+                    _logger.Log("EmailService-SendEmail-try");
+                    smtp.Send(message);
+                    return "Success";
+                }
+                catch (Exception ex)
+                {
+                    _logger.Log("EmailService-SendEmail-" + ex.Message);
+                    var errorMessage = ex.Message;
+                    return "Error";
+                }
+            }
         }
     }
 }
