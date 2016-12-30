@@ -62,7 +62,7 @@
                         </div>
                     </text>);
                 })
-                                    .Editable(ed => ed.Mode(GridEditMode.InLine))
+                                        .Editable(ed => ed.Mode(GridEditMode.InLine))
         )
     }
 </div>
@@ -139,6 +139,11 @@
         if (e.type == "destroy" && !e.response.Errors) {
             //toastr.success("Auto Pays details has been deleted successfully!");
             ShowMessage("Position deleted successfully.", 1);
+            var grid = $('#positionGrids').data('kendoGrid');
+            if (grid) {
+                grid.dataSource.read();
+                grid.refresh();
+            }
         }
 
         if (e.type == "update" && !e.response.Errors) {
