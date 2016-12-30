@@ -31,6 +31,14 @@ namespace Silicus.EncourageWithAzureAd.Web.Models
         public SelectList ProjectsUnderCurrentUser { get; set; }
         public SelectList DepartmentsUnderCurrentUser { get; set; }
         public SelectList Resources { get; set; }
+
+        #region For Displaying on Edit Nomination
+        public string ResourceName { get; set; }
+        public string AwardName { get; set; }
+        public string ProjectOrDeptName { get; set; }
+        #endregion For Displaying on Edit Nomination
+
+
         public NominationViewModel()
         {
             Comments = new List<CriteriaCommentViewModel>();
