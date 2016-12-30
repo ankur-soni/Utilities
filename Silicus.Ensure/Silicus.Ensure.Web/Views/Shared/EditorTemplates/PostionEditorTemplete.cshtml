@@ -1,0 +1,19 @@
+﻿@using Kendo.Mvc.UI;
+@model Silicus.Ensure.Web.Models.PositionViewModel
+<div class="container-fluid model-550">
+    <div class="row">
+        @Html.Hidden("existingTagName")
+        <div class="col-md-4">
+            @Html.LabelFor(m => m.PositionName) <span>*</span>
+        </div>
+
+        <div class="col-lg-8 col-md-8 col-sm-12 col-xs-12">
+            @Html.TextBoxFor(model => model.PositionName, new { @class = "form-control " })
+            <div class="validation">
+                @Html.ValidationMessageFor(m => m.PositionName)
+            </div>
+        </div>
+
+    </div>
+</div>
+

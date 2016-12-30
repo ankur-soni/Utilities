@@ -307,6 +307,7 @@
                 $('#component-list-view').attr('disabled', false);
                 $(this).attr('disabled', true);
                 showTileView();
+                $('#container-box').height("100%");
                 if ($('#noResultMsg').is(":visible")) {
                     $('.categoryHeading').hide();
                 } else {
@@ -319,6 +320,7 @@
                 $('#component-tile-view').attr('disabled', false);
                 $(this).attr('disabled', true);
                 showListView();
+                $('#container-box').height("680px");
                 splitColumnsFixed(document.getElementById("list-view-wrapper"), Math.ceil(($('.TitleDivTemplate').length * listItemHeight) / $('#container-box').innerHeight()));
                 splitColumnsFixed(document.getElementById("list-view-wrapper"), Math.ceil(($('.found').length * listItemHeight) / $('#container-box').innerHeight()), 'found');               
             });

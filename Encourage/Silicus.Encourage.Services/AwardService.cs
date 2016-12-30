@@ -289,5 +289,15 @@ namespace Silicus.Encourage.Services
         {
             return _encourageDbcontext.Query<Award>().Where(x => x.Code == awardName).FirstOrDefault();
         }
+
+        public string GetAwardNameById(int awardId)
+        {
+            return _encourageDbcontext.Query<Award>().Where(x => x.Id == awardId).FirstOrDefault().Name;
+        }
+
+        public User GetUserById(int userId)
+        {
+            return _CommonDbContext.Query<User>().Where(u => u.ID == userId).FirstOrDefault();
+        }
     }
 }
