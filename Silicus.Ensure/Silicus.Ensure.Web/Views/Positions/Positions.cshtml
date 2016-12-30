@@ -78,6 +78,7 @@
             if (value.length > 0) {
                 if (value) {
                     grid.dataSource.filter({ field: "PositionName", operator: "contains", value: value });
+                    grid.dataSource.sort({ field: "PositionName", dir: "asc" });
                 } else {
                     grid.dataSource.filter({});
                 }

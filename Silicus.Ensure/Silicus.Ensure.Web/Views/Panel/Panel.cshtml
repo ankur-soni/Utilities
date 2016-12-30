@@ -74,6 +74,7 @@
             if (value.length > 0) {
                 if (value) {
                     grid.dataSource.filter({ field: "PanelName", operator: "contains", value: value });
+                    grid.dataSource.sort({ field: "PanelName", dir: "asc" });
                 } else {
                     grid.dataSource.filter({});
                 }
@@ -129,15 +130,18 @@
         if (e.type == "destroy" && !e.response.Errors) {
             //toastr.success("Auto Pays details has been deleted successfully!");
             ShowMessage("Panel deleted successfully.", 1);
+            RefreshKendoGrid('PanelGrids');
         }
 
         if (e.type == "update" && !e.response.Errors) {
             //toastr.success("Auto Pays details has been saved successfully!");
             ShowMessage("Panel Updated successfully.", 1);
+            RefreshKendoGrid('PanelGrids');
         }
 
         if (e.type == "create" && !e.response.Errors) {
             ShowMessage("Panel Created successfully.", 1);
+            RefreshKendoGrid('PanelGrids');
         }
 
     }

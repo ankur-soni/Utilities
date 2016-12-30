@@ -79,6 +79,7 @@
                     filter.filters.push({ field: "TagName", operator: "contains", value: value });
                     filter.filters.push({ field: "Description", operator: "contains", value: value });
                     grid.dataSource.query({ filter: filter });
+                    grid.dataSource.sort({ field: "TagName", dir: "asc" });
                 } else {
                     grid.dataSource.filter({});
                 }
