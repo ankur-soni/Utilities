@@ -1,13 +1,14 @@
 ﻿@model Silicus.Ensure.Models.DataObjects.Position
 @using Kendo.Mvc.UI;
 
-        @*<h2>Positions</h2>*@
+@*<h2>Positions</h2>*@
 
-        <div>
+<div>
 
-            @if (Request.IsAuthenticated)
-            {
-                @(Html.Kendo().Grid<Silicus.Ensure.Models.DataObjects.Position>().Name("positionGrids")
+    @if (Request.IsAuthenticated)
+    {
+        @(Html.Kendo().Grid<Silicus.Ensure.Models.DataObjects.Position>().Name("positionGrids")
+                          .Events(e => e.Edit("gvPosition_onRowEdit"))
             .DataSource(dataSource => dataSource
             .Ajax()
             .Model(model =>
@@ -61,10 +62,10 @@
                         </div>
                     </text>);
                 })
-                                .Editable(ed => ed.Mode(GridEditMode.InLine))
-                )
-            }
-        </div>
+                                    .Editable(ed => ed.Mode(GridEditMode.InLine))
+        )
+    }
+</div>
 
 <script>
 
@@ -127,6 +128,12 @@
         });
 
     })(jQuery, kendo);
+
+    function gvPosition_onRowEdit(e) {
+        if (e && e.model && e.model.isNew()) {
+            $(".k-grid-update").html('<span><i class="fa fa-save"></i> Save </span>');
+        }
+    }
 
     function requestend_handlerPosition(e) {
         if (e.type == "destroy" && !e.response.Errors) {
