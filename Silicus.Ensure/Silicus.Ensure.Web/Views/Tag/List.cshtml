@@ -122,15 +122,18 @@
         if (e.type == "destroy" && !e.response.Errors) {
             //toastr.success("Auto Pays details has been deleted successfully!");
             ShowMessage("Tag deleted successfully.", 1);
+            RefreshKendoGrid('tagsGrids');
         }
 
         if (e.type == "update" && !e.response.Errors) {
             //toastr.success("Auto Pays details has been saved successfully!");
             ShowMessage("Tag Updated successfully.", 1);
+            RefreshKendoGrid('tagsGrids');
         }
 
         if (e.type == "create" && !e.response.Errors) {
             ShowMessage("Tag Created successfully.", 1);
+            RefreshKendoGrid('tagsGrids');
         }
 
     }
