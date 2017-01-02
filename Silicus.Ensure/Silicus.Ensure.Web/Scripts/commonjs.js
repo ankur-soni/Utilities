@@ -93,3 +93,7 @@ function RefreshKendoGrid(gridName) {
         }
     }
 }
+
+function SetNavigationMenuActive(menuId) {
+    $('#' + menuId).addClass('active');
+}
