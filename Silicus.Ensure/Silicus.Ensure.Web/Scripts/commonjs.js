@@ -1,8 +1,9 @@
 ﻿$(window).load(function () {
-    //var mainW = $(window).height() -70;
-    $('.nav-logo').hide()
-    $('#loading').fadeOut(1000);
-    $('.nav-logo').fadeIn()
+    var mainW = $(window).height() - 70;
+    //$('.nav').css({ height : mainW })
+	$('.nav-logo').hide()
+	$('#loading').fadeOut(1000);
+	$('.nav-logo').fadeIn()
 }) // Window load
 
 $(window).resize(function () {
@@ -13,7 +14,7 @@ $(window).resize(function () {
 
     //Grid Resizing
     kendo.resize($(".kendogrid"));
-
+    
 }) // Window resize
 
 $(document).ready(function () {
@@ -46,16 +47,16 @@ $(document).ready(function () {
 
     // $('.nav').hide();
     $('.nav-button').click(function () {
-        // $('.nav').toggleClass('show');
-        $('.nav').toggleClass('show')
-        //$('.nav').fadeToggle(function(){
-
-        //})
-    })
+				// $('.nav').toggleClass('show');
+				$('.nav').toggleClass('show')
+				//$('.nav').fadeToggle(function(){
+					
+				//})
+			})
     $('.collapsible > a').click(function () {
-        $(this).parent().toggleClass('open')
-    })
-
+				$(this).parent().toggleClass('open')
+			})
+    
 }); // Ready
 
 function mQuery() {
@@ -69,4 +70,31 @@ function mQuery() {
         //    $('.nav').removeClass('show');
         $('.nav').addClass('show');
     }
+}
+
+function ShowMessage(content, isSuceess) {
+    $("#messageDiv").removeClass("alert-danger");
+    $("#messageDiv").removeClass("alert-success");
+
+    if (isSuceess == 0) { $("#messageDiv").addClass("alert-danger");}
+    else { $("#messageDiv").addClass("alert-success");}
+
+    $("#messageDiv").show();
+    $("#messageContent").text(content);
+    $("html, body").animate({ scrollTop: 0 }, "slow");
+    $("#messageDiv").fadeOut(9000);
+}
+
+function RefreshKendoGrid(gridName) {
+    if (gridName) {
+        var grid = $('#' + gridName).data('kendoGrid');
+        if (grid) {
+            grid.dataSource.read();
+            grid.refresh();
+        }
+    }
+}
+
+function SetNavigationMenuActive(menuId) {
+    $('#' + menuId).addClass('active');
 }

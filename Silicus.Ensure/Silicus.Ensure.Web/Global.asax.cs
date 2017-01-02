@@ -10,6 +10,11 @@ using System.Web.Routing;
 using Silicus.FrameWorx.Logger;
 using Silicus.Ensure.Web.Controllers;
 using Silicus.Ensure.Web.Mappings;
+using System.Collections.Generic;
+using System.Web.Configuration;
+using Silicus.UtilityContainer.Security;
+using System.Web.Helpers;
+using System.IdentityModel.Claims;
 
 namespace Silicus.Ensure.Web
 {
@@ -35,7 +40,7 @@ namespace Silicus.Ensure.Web
             AutoMapperConfiguration.Configure();
             ViewEngines.Engines.Clear();
             ViewEngines.Engines.Add(new RazorViewEngine());
-
+            AntiForgeryConfig.UniqueClaimTypeIdentifier = ClaimTypes.NameIdentifier;
         }
 
         protected void Application_Error(object sender, EventArgs e)
@@ -136,6 +141,34 @@ namespace Silicus.Ensure.Web
 
             controller.ViewData.Model = new HandleErrorInfo(ex, currentController, currentAction);
             ((IController)controller).Execute(new RequestContext(new HttpContextWrapper(httpContext), routeData));
+        }
+
+        public string getCurrentUserName()
+        {
+            return HttpContext.Current.User.Identity.Name;
+        }
+
+        public static List<string> getCurrentUserRoles()
+        {
+            var authorizationService = new Authorization(new Silicus.UtilityContainer.Entities.CommonDataBaseContext("DefaultConnection"));
+            string utility = WebConfigurationManager.AppSettings["ProductName"];
+            var commonRoles = authorizationService.GetRoleForUtility(new MvcApplication().getCurrentUserName(), utility);
+            return commonRoles;
+        }
+
+        //public static List<string> getUtilityRoles()
+        //{
+        //    var authorizationService = new Authorization(new Silicus.UtilityContainer.Entities.CommonDataBaseContext("DefaultConnection"));
+        //    string utility = WebConfigurationManager.AppSettings["ProductName"];
+        //    var commonRoles = authorizationService.GetRoleForUtility(new MvcApplication().getCurrentUserName(), utility);
+        //    return commonRoles;
+        //}
+
+        public static List<string> getDevelopersName()
+        {
+            var authorizationService = new Authorization(new Silicus.UtilityContainer.Entities.CommonDataBaseContext("DefaultConnection"));
+            var developers = authorizationService.GetNameOfContributors();
+            return developers;
         }
     }
 }

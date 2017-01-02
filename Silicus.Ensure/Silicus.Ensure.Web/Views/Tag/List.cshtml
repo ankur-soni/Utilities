@@ -42,7 +42,7 @@
                                 <div class="col-md-6">
                                     <div class="input-group">
                                         <span class="input-group-addon"><span class="glyphicon glyphicon-search" aria-hidden="true"></span></span>
-                                        <input type="text" class="form-control" id='FieldFilter' placeholder="Search for...">
+                                        <input type="text" class="form-control" id='FieldFilter' placeholder="Search...">
                                         <span class="input-group-btn">
                                             <button id="tagSearch" class="btn btn-default" type="button" style="height:16px;"><span class="glyphicon glyphicon-refresh" aria-hidden="true"></span></button>
                                         </span>
@@ -79,6 +79,7 @@
                     filter.filters.push({ field: "TagName", operator: "contains", value: value });
                     filter.filters.push({ field: "Description", operator: "contains", value: value });
                     grid.dataSource.query({ filter: filter });
+                    grid.dataSource.sort({ field: "TagName", dir: "asc" });
                 } else {
                     grid.dataSource.filter({});
                 }
@@ -108,6 +109,7 @@
         if (e.model.isNew()) {
             $(".k-window-title").html("Add New Tag");
             $("#existingTagName").val('');
+            $(".k-grid-update").html('<span><i class="fa fa-save"></i> Save </span>');
         }
         else {
             $(".k-window-title").html("Edit Tag");
@@ -121,15 +123,18 @@
         if (e.type == "destroy" && !e.response.Errors) {
             //toastr.success("Auto Pays details has been deleted successfully!");
             ShowMessage("Tag deleted successfully.", 1);
+            RefreshKendoGrid('tagsGrids');
         }
 
         if (e.type == "update" && !e.response.Errors) {
             //toastr.success("Auto Pays details has been saved successfully!");
             ShowMessage("Tag Updated successfully.", 1);
+            RefreshKendoGrid('tagsGrids');
         }
 
         if (e.type == "create" && !e.response.Errors) {
             ShowMessage("Tag Created successfully.", 1);
+            RefreshKendoGrid('tagsGrids');
         }
 
     }

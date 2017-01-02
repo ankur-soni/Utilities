@@ -14,139 +14,86 @@
         <h1 class="header-name">Submitted Reviews</h1>
     </div>
 </div>
-@*<div class="wrapper wrapper-content animated fadeInRight">
-        <span style="color:red">@ViewBag.erroMessage</span>
-        <div class="row" style="margin-left:4%">
-            @if (Model.Count() == 0)
-            {
-                <span class="text-danger" style="font-size:20px">No candidates reviewed as of now.</span>
-            }
-            else
-            {
-                <div>
-                    <ul class="nav nav-tabs">
-                        <li class="active"><a id="current-tab" data-toggle="tab" href="#currentMonth">Current</a></li>
-                        <li><a id="historical-tab" data-toggle="tab" href="#historicalMonth">Historical</a></li>
-                    </ul>
-                </div>
-                <div class="tab-content">
-                    <hr style="margin-top:0px;height:2px;margin-left:0px; width:85%;" />
-
-                    <div id="currentMonth" class="tab-pane fade in active">
-                        @Html.Partial("~/Views/Nomination/Shared/_savedReviewsList.cshtml",Model)
-                    </div>
-                    <div id="historicalMonth" class="tab-pane fade">
-                        Yet to come...
-                    </div>
-                </div>
-            }
-        </div>
-
-
-
-        <br />
-    </div>*@
 <div class="row">
     <div class="col-lg-12 col-md-12 col-sm-12">
         <div class="box M-T15">
-@if (Model.Count() == 0)
-            {
-    <div class="row">
-        <div class="col-sm-12">
-            <div class="box">
-                <div class="alert alert-danger">
-                    <span class="text-danger" style="font-size:20px">No candidates reviewed as of now.</span>
-                </div>
+
+            <div class="sttabs tabs-style-linebox">
+                <nav>
+                    <ul>
+                        <li class="active"><a id="current-tab" data-toggle="tab" href="#currentMonth"><span>Current</span></a></li>
+                        <li><a id="historical-tab" data-toggle="tab" href="#historicalMonth"><span>Historical</span></a></li>
+
+                    </ul>
+                </nav>
+                <div class="tab-content content-wrap text-center">
+                    <section id="currentMonth" class="tab-pane fade in active">
+                        @if (Model.Count() == 0)
+                        {
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <div class="box">
+                                        <div class="alert alert-danger">
+                                            <span class="text-danger" style="font-size:20px">No candidates reviewed as of now.</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                        else
+                        {
+                            @Html.Partial("~/Views/Nomination/Shared/_savedReviewsList.cshtml", Model)
+                        }
+
+                    </section>
+                    <section id="historicalMonth" class="tab-pane fade">
+                        @*<p>Content yet to come..</p>*@
+                    </section>
+                </div><!-- /content -->
             </div>
         </div>
     </div>
+</div>
+
+<script src="~/js/jquery-2.1.1.js"></script>
+<script>
+    $(function () {
+        $("fa-pencil").tooltip();
+        $("fa-info-circle").tooltip();
+    })
+
+    var _urlGetSavedReviewsForActiveMonth = '@Url.Action("GetSavedReviewsPartialView", "Nomination", new { forCurrentMonth = true })';
+    var _urlGetSavedReviewsForHistoricalMonths = '@Url.Action("GetSavedReviewsPartialView", "Nomination", new { forCurrentMonth = false })';
+
+    $("#historical-tab").on("click", function () {
+        $(".loader-overlay").show();
+        $.ajax({
+            type: "GET",
+            url: _urlGetSavedReviewsForHistoricalMonths,
+            success: function (response) {
+                $(".loader-overlay").hide();
+                $("#historicalMonth").html(response);
+            },
+            error: function (error) {
+                $(".loader-overlay").hide();
+                console.log(error);
             }
-            else
-            {
-    <div class="sttabs tabs-style-linebox">
-        <nav>
-            <ul>
-                <li class="active"><a id="current-tab" data-toggle="tab" href="#currentMonth"><span>Current</span></a></li>
-                <li><a id="historical-tab" data-toggle="tab" href="#historical"><span>Historical</span></a></li>
+        });
+    })
 
-            </ul>
-        </nav>
-        <div class="tab-content content-wrap text-center">
-            <section id="currentMonth" class="tab-pane fade in active">
-                @Html.Partial("~/Views/Nomination/Shared/_savedReviewsList.cshtml", Model)
-            </section>
-            <section id="historical" class="tab-pane fade">
-                <p>Content yet to come..</p>
-            </section>
-
-        </div><!-- /content -->
-    </div>
-}
-
-            </div>
-        </div>
-    </div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-            <script src="~/js/jquery-2.1.1.js"></script>
-            <script>
-                $(function () {
-                    $("fa-pencil").tooltip();
-                    $("fa-info-circle").tooltip();
-                })
-
-                var _urlGetSavedReviewsForActiveMonth = '@Url.Action("GetSavedReviewsPartialView", "Nomination", new { forCurrentMonth = true })';
-                var _urlGetSavedReviewsForHistoricalMonths = '@Url.Action("GetSavedReviewsPartialView", "Nomination", new { forCurrentMonth = false })';
-
-                $("#historical-tab").on("click", function () {
-                    $.ajax({
-                        type: "GET",
-                        url: _urlGetSavedReviewsForHistoricalMonths,
-                        success: function (response) {
-                            $("#historicalMonth").html(response);
-                        },
-                        error: function (error) {
-                            console.log(error);
-                        }
-                    });
-                })
-
-                $("#current-tab").on("click", function () {
-                    $.ajax({
-                        type: "GET",
-                        url: _urlGetSavedReviewsForActiveMonth,
-                        success: function (response) {
-                            $("#currentMonth").html(response);
-                        },
-                        error: function (error) {
-                            console.log(error);
-                        }
-                    });
-                })
-            </script>
+    $("#current-tab").on("click", function () {
+        $(".loader-overlay").show();
+        $.ajax({
+            type: "GET",
+            url: _urlGetSavedReviewsForActiveMonth,
+            success: function (response) {
+                $(".loader-overlay").hide();
+                $("#currentMonth").html(response);
+            },
+            error: function (error) {
+                $(".loader-overlay").hide();
+                console.log(error);
+            }
+        });
+    })
+</script>

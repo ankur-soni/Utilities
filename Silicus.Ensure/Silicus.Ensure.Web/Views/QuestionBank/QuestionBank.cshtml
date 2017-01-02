@@ -20,7 +20,7 @@
                          .Pageable(pager => { pager.PageSizes(true); })
          .Columns(columns =>
               {
-                  columns.Bound(q => q.QuestionDescription).Encoded(false).Width(200);
+                  columns.Bound(q => q.QuestionDescription).Width(200);
                   columns.Bound(q => q.QuestionType).Width(100);
                   columns.Bound(q => q.Tag).Title("Tags").Width(150);
                   columns.Bound(q => q.ProficiencyLevel).Width(100);
@@ -36,7 +36,7 @@
                             <div class="col-md-6">
                                 <div class="input-group">
                                     <span class="input-group-addon"><span class="glyphicon glyphicon-search" aria-hidden="true"></span></span>
-                                    <input type="text" class="form-control" id='FieldFilter' placeholder="Search for...">
+                                    <input type="text" class="form-control" id='FieldFilter' placeholder="Search...">
                                     <span class="input-group-btn">
                                         <button class="btn btn-default" type="button" style="height:16px;"><span class="glyphicon glyphicon-refresh" aria-hidden="true"></span></button>
                                     </span>
@@ -147,10 +147,12 @@
                 filter.filters.push({ field: "Tag", operator: "contains", value: value });
                 filter.filters.push({ field: "ProficiencyLevel", operator: "contains", value: value });
                 grid.dataSource.query({ filter: filter });
+                grid.dataSource.sort({ field: "QuestionType", dir: "asc" });
             } else {
                 grid.dataSource.filter({});
             }
         });
+        SetNavigationMenuActive('QuestionBank');
     });
 
     function ProficiencyLevelAndQuetiontype()
