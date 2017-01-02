@@ -72,7 +72,6 @@ namespace Silicus.Ensure.Web.Controllers
             if (testSuiteId == 0)
             {
                 ViewBag.Type = "New";
-                testSuite.Duration = 30;
                 testSuite.PositionList = positionDetails.ToList();
                 return View(testSuite);
             }
@@ -83,10 +82,10 @@ namespace Silicus.Ensure.Web.Controllers
                 if (viewModels != null)
                 {
                     ViewBag.Type = "Edit";
-                    if (!string.IsNullOrWhiteSpace(viewModels.ExperienceRange))
-                    {
-                        viewModels.ExperienceRangeId = viewModels.ExperienceRange.Split(',').ToList();
-                    }
+                    //if (!string.IsNullOrWhiteSpace(viewModels.ExperienceRange))
+                    //{
+                    //    viewModels.ExperienceRangeId = viewModels.ExperienceRange.Split(',').ToList();
+                    //}
                     viewModels.PositionList = positionDetails.ToList();
                     List<TestSuiteTagViewModel> testSuiteTags;
                     GetTestSuiteTags(testSuitelist.SingleOrDefault(), out testSuiteTags);
@@ -128,7 +127,14 @@ namespace Silicus.Ensure.Web.Controllers
                     testSuiteView.PrimaryTags += "," + tagId;
                 }
             }
-            testSuiteView.ExperienceRange = string.Join(",", testSuiteView.ExperienceRangeId);
+            if (testSuiteView.FromExperience == null)
+            {
+                testSuiteView.FromExperience = 0;
+            }
+            if (testSuiteView.ToExperience == null)
+            {
+                testSuiteView.ToExperience = 0;
+            }
             var testSuiteDomainModel = _mappingService.Map<TestSuiteViewModel, TestSuite>(testSuiteView);
             if (string.IsNullOrWhiteSpace(errorMessage))
             {
@@ -182,10 +188,10 @@ namespace Silicus.Ensure.Web.Controllers
                 var viewModels = _mappingService.Map<TestSuite[], TestSuiteViewModel[]>(testSuitelist).SingleOrDefault();
                 if (viewModels != null)
                 {
-                    if (!string.IsNullOrWhiteSpace(viewModels.ExperienceRange))
-                    {
-                        viewModels.ExperienceRangeId = viewModels.ExperienceRange.Split(',').ToList();
-                    }
+                    //if (!string.IsNullOrWhiteSpace(viewModels.ExperienceRange))
+                    //{
+                    //    viewModels.ExperienceRangeId = viewModels.ExperienceRange.Split(',').ToList();
+                    //}
                     ViewBag.Type = "Copy";
                     viewModels.IsCopy = true;
                     viewModels.TestSuiteName = "Copy " + viewModels.TestSuiteName;
@@ -264,6 +270,62 @@ namespace Silicus.Ensure.Web.Controllers
                 testSuiteTagViewModel.Minutes = testSuite.Duration * Convert.ToInt32(weights[i]) / 100;
                 testSuiteTags.Add(testSuiteTagViewModel);
             }
+        }
+
+        public ActionResult ViewQuestion(int TestSuitId)
+        {
+            int count = 0;
+            TestSuiteViewQuesModel testSuiteViewQuesModel = new Models.TestSuiteViewQuesModel();
+            List<TestSuiteQuestion> testSuiteQuestionList = new List<Models.TestSuiteQuestion>();
+            try
+            {
+                TestSuite testSuitDetails = _testSuiteService.GetTestSuitById(TestSuitId);
+                if (testSuitDetails != null && testSuitDetails.Status == Convert.ToInt32(TestSuiteStatus.Ready))
+                {
+                    var questionList = _testSuiteService.GetPriview(testSuitDetails);
+                    foreach (var pQuestion in questionList)
+                    {
+                        count++;
+                        testSuiteQuestionList.Add(new TestSuiteQuestion()
+                        {
+                            QuestionType = pQuestion.QuestionType,
+                            QuestionNumber = count,
+                            QuestionDescription = pQuestion.QuestionDescription,
+                            OptionCount = pQuestion.OptionCount,
+                            Answer = pQuestion.Answer,
+                            CorrectAnswer = pQuestion.CorrectAnswer,
+                            Id = pQuestion.Id,
+                            Marks = pQuestion.Marks,
+                            Option1 = pQuestion.Option1,
+                            Option2 = pQuestion.Option2,
+                            Option3 = pQuestion.Option3,
+                            Option4 = pQuestion.Option4,
+                            Option5 = pQuestion.Option5,
+                            Option6 = pQuestion.Option6,
+                            Option7 = pQuestion.Option7,
+                            Option8 = pQuestion.Option8,
+                        });
+                    }
+
+                    testSuiteViewQuesModel.TestSuiteQuestion = testSuiteQuestionList;
+                    testSuiteViewQuesModel.TestSuiteName = testSuitDetails.TestSuiteName;
+                    testSuiteViewQuesModel.Duration = testSuitDetails.Duration;
+                    testSuiteViewQuesModel.ObjectiveCount = questionList.Where(x => x.QuestionType == 1).ToList().Count;
+                    testSuiteViewQuesModel.PracticalCount = questionList.Where(x => x.QuestionType == 2).ToList().Count;
+                }
+                else
+                {
+                    testSuiteViewQuesModel.ErrorMessage = "Test suit is not ready.";
+
+                }
+
+            }
+            catch
+            {
+                testSuiteViewQuesModel.ErrorMessage = "Something went wrong! Please try later.";
+            }
+
+            return View(testSuiteViewQuesModel);
         }
     }
 }
