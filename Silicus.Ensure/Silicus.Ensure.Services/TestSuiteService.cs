@@ -82,9 +82,9 @@ namespace Silicus.Ensure.Services
         public UserTestSuite GetUserTestSuiteByUserId(int userId)
         {
             return _context.Query<UserTestSuite>().Where(x => x.UserId == userId).FirstOrDefault();
-                //&& (x.StatusId == Convert.ToUInt32(TestStatus.Assigned) ||
-                //x.StatusId == Convert.ToUInt32(TestStatus.Submitted) ||
-                //x.StatusId == Convert.ToUInt32(TestStatus.Evaluated)
+            //&& (x.StatusId == Convert.ToUInt32(TestStatus.Assigned) ||
+            //x.StatusId == Convert.ToUInt32(TestStatus.Submitted) ||
+            //x.StatusId == Convert.ToUInt32(TestStatus.Evaluated)
         }
 
         public UserTestSuite GetUserTestSuiteId(int userTestSuiteId)
@@ -144,8 +144,8 @@ namespace Silicus.Ensure.Services
 
         public int AssignSuite(UserTestSuite userTestSuite, TestSuite testSuite)
         {
-            int optionalQuestions = Convert.ToInt32(ConfigurationManager.AppSettings["OptionalQuestion"]);
-            int practicalQuestions = Convert.ToInt32(ConfigurationManager.AppSettings["PracticalQuestion"]);
+            int optionalQuestions = Convert.ToInt32(testSuite.OptionalQuestion);
+            int practicalQuestions = Convert.ToInt32(testSuite.PracticalQuestion);
             Random random = new Random();
             int index = 0, requiredMinutes = 0, minutes = 0;
             UserTestDetails testSuiteDetail;
@@ -208,6 +208,59 @@ namespace Silicus.Ensure.Services
             userTestSuite.Duration = testSuite.Duration;
             userTestSuite.StatusId = Convert.ToInt32(TestStatus.Assigned);
             return AddUserTestSuite(userTestSuite);
+        }
+
+        public IEnumerable<Question> GetPriview(TestSuite testSuite)
+        {
+            int optionalQuestions = Convert.ToInt32(testSuite.OptionalQuestion);
+            int practicalQuestions = Convert.ToInt32(testSuite.PracticalQuestion);
+            Random random = new Random();
+            int index = 0, requiredMinutes = 0, minutes = 0;
+            List<TestSuiteTag> testSuiteTags;
+            List<Question> questions = new List<Question>();
+
+            var questionBank = _context.Query<Question>().ToList();
+            GetTestSuiteTags(testSuite, out testSuiteTags);
+
+            foreach (var tag in testSuiteTags)
+            {
+                minutes = 0;
+                var questionList = questionBank.Where(x => x.Tags.Split(',').Contains(Convert.ToString(tag.TagId)) && !questions.Any(y => y.Id == x.Id)).ToList();
+                if (questionList.Sum(x => x.Duration) >= tag.Minutes)
+                {
+                    //Optional Questions
+                    var optionalQuestion = questionList.Where(x => !questions.Any(y => y.Id == x.Id) && x.QuestionType == 1 && x.ProficiencyLevel == tag.Proficiency);
+                    requiredMinutes = tag.Minutes * Convert.ToInt32(optionalQuestions) / 100;
+                    if (optionalQuestion.Sum(x => x.Duration) >= requiredMinutes)
+                    {
+                        do
+                        {
+                            optionalQuestion = questionList.Where(x => !questions.Any(y => y.Id == x.Id) && x.QuestionType == 1 && x.ProficiencyLevel == tag.Proficiency);
+                            index = random.Next(optionalQuestion.Count());
+                            Question question = optionalQuestion.ElementAtOrDefault(index);
+                            questions.Add(question);
+                            minutes += question.Duration;
+                        } while (minutes < requiredMinutes);
+                    }
+
+                    //Practical Questions                    
+                    requiredMinutes = tag.Minutes - minutes;
+                    minutes = 0;
+                    var practicalQuestion = questionList.Where(x => !questions.Any(y => y.Id == x.Id) && x.QuestionType == 2 && x.ProficiencyLevel == tag.Proficiency);
+                    if (practicalQuestion.Sum(x => x.Duration) > requiredMinutes)
+                    {
+                        do
+                        {
+                            practicalQuestion = questionList.Where(x => !questions.Any(y => y.Id == x.Id) && x.QuestionType == 2 && x.ProficiencyLevel == tag.Proficiency);
+                            index = random.Next(practicalQuestion.Count());
+                            Question question = practicalQuestion.ElementAtOrDefault(index);
+                            questions.Add(question);
+                            minutes += question.Duration;
+                        } while (minutes < requiredMinutes);
+                    }
+                }
+            }
+            return questions;
         }
 
         private void GetTestSuiteTags(TestSuite testSuite, out List<TestSuiteTag> testSuiteTags)

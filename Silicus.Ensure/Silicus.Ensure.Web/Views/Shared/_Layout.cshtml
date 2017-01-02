@@ -49,64 +49,64 @@
     <script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
 
 
-    @{
-        var conname = @ViewContext.RouteData.Values["controller"].ToString().ToLower();
-        var actname = @ViewContext.RouteData.Values["action"].ToString().ToLower();
-    }
+@{
+    var conname = @ViewContext.RouteData.Values["controller"].ToString().ToLower();
+    var actname = @ViewContext.RouteData.Values["action"].ToString().ToLower();
+}
 
-
-    <body class="container-fluid">
-        @if (actname != "login" && actname != "logoff" && actname != "forgotpassword")
-        {
-            <div class="row top-header bbl">
-                <div class="col-sm-4 col-xs-6">
-                    <div class="pll ptm pbs"><img src="~/Images/logo.jpg" class="mts mbs" alt="Silicus Logo" title="Silicus Encloud" /></div>
-                </div>
-                <div class="col-sm-8 col-xs-6">
-                    <div class="text-center">
-                        <nav class="navbar navbar-static-top  " role="navigation" style="margin-bottom: 0">
-                            <ul class="nav navbar-top-links navbar-right">
-                                @if (Request.IsAuthenticated)
-                                {
-                                    var userName = @User.Identity.Name;
-                                    <li class="dropdown">
-                                        <a class="dropdown-toggle count-info" data-toggle="dropdown" href="#">
-                                            <span class="hidden-sm hidden-xs">
-                                                <span class="m-r-sm text-muted welcome-message">Welcome @userName</span> <i class="fa fa-chevron-down"></i>
-                                            </span>
-                                            <span class="hidden-md hidden-lg">
-                                                <i class="fa fa-user"></i>
-                                            </span>
-                                        </a>
-                                        <ul class="dropdown-menu dropdown-user-menu">
-                                            <li>
-                                                <a href='@Url.Action("LogOff", "Account")'>
-                                                    <div>
-                                                        Logout
-                                                    </div>
-                                                </a>
-                                            </li>
-                                        </ul>
-                                    </li>
-                                }
-                            </ul>
-                        </nav>
-                    </div><!-- pad -->
-                </div>
+</head>
+<body class="container-fluid">
+    @if (actname != "login" && actname != "logoff" && actname != "forgotpassword")
+    {
+        <div class="row top-header bbl">
+            <div class="col-sm-4 col-xs-6">
+                <div class="pll ptm pbs"><img src="~/Images/logo.jpg" class="mts mbs" alt="Silicus Logo" title="Silicus Encloud" /></div>
             </div>
-            <div class="row">
-                <div id="wrapper" class="wrapper">
+            <div class="col-sm-8 col-xs-6">
+                <div class="text-center">
+                    <nav class="navbar navbar-static-top  " role="navigation" style="margin-bottom: 0">
+                        <ul class="nav navbar-top-links navbar-right" style="height:0!important">
+                            @if (Request.IsAuthenticated)
+                            {
+                                var userName = @User.Identity.Name;
+                                <li class="dropdown">
+                                    <a class="dropdown-toggle count-info" data-toggle="dropdown" href="#">
+                                        <span class="hidden-sm hidden-xs">
+                                            <span class="m-r-sm text-muted welcome-message">Welcome @userName</span> <i class="fa fa-chevron-down"></i>
+                                        </span>
+                                        <span class="hidden-md hidden-lg">
+                                            <i class="fa fa-user"></i>
+                                        </span>
+                                    </a>
+                                    <ul class="dropdown-menu dropdown-user-menu">
+                                        <li>
+                                                <a href='@Url.Action("LogOff", "Account")'>
+                                                <div>
+                                                    Logout
+                                                </div>
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </li>
+                            }
+                        </ul>
+                    </nav>
+                </div><!-- pad -->
+            </div>
+        </div>
+        <div class="row">
+            <div id="wrapper" class="wrapper">
 
-                    <div class="sidebar-wrapper">
-                        <nav class="navbar-default navbar-static-side sidebar" role="navigation">
-                            <div class="sidebar-collapse">
+                <div class="sidebar-wrapper">
+                    <nav class="navbar-default navbar-static-side sidebar" role="navigation">
+                        <div class="sidebar-collapse">
                                 @{
             var role = Silicus.Ensure.Web.MvcApplication.getCurrentUserRoles();
                                 }
                                 @if (role.Contains(Silicus.Ensure.Models.Constants.RoleName.Admin.ToString()) || role.Contains(Silicus.Ensure.Models.Constants.RoleName.Panel.ToString()))
                                 {
 
-                                    <ul class="nav metismenu" id="side-menu">
+                                <ul class="nav metismenu" id="side-menu">
                                         @if (role.Contains(Silicus.Ensure.Models.Constants.RoleName.Admin.ToString()))
                                         {
                                             <li id="Setup" class="SideBarMenu"><a href="/Master/Index"><i class="fa fa-dashboard"></i> <span class="nav-label">Setup</span></a></li>
@@ -114,93 +114,106 @@
                                         <li id="Candidates" class="SideBarMenu"><a href="/Admin/Candidates"><i class="fa fa-dashboard"></i> <span class="nav-label">Candidates</span></a></li>
                                         <li id="QuestionBank" class="SideBarMenu"><a href="/QuestionBank/QuestionBank"><i class="fa fa-dashboard"></i> <span class="nav-label">Question Bank</span></a></li>
                                         <li id="TestSuite" class="SideBarMenu"><a href="/TestSuite/List"><i class="fa fa-dashboard"></i> <span class="nav-label">Test Suite</span></a></li>
-                                    </ul>
-                                }
-                            </div>
-                        </nav>
-                    </div>
-                    <!-- END LEFT MENU -->
-                    <!--   START OF CONTENT AREA -->
-                    <div id="page-wrapper" class="page-wrapper">
-                        @RenderBody()
-                    </div>
+                                </ul>
+                            }
+                        </div>
+                    </nav>
+                </div>
+                <!-- END LEFT MENU -->
+                <!--   START OF CONTENT AREA -->
+                <div id="page-wrapper" class="page-wrapper">
+                    @RenderBody()
                 </div>
             </div>
-            <div class="footer fixed_full">
-                <div>
-                    <strong>&copy;Copyright</strong> 2014 -
-                    <script>document.write(new Date().getFullYear())</script> Silicus Technologies
-                    <span id="credits" class="pull-right" style="font-weight:bold;">Credits</span>
-                </div>
+        </div>
+        <div class="footer fixed_full">
+            <div>
+                <strong>&copy;Copyright</strong> 2014 -
+                <script>document.write(new Date().getFullYear())</script> Silicus Technologies
+                <span id="credits" class="pull-right" style="font-weight:bold;">Credits</span>
             </div>
-        }
-        else
-        {
-            @RenderBody()
-        }
+        </div>
+    }
+    else
+    {
+        @RenderBody()
+    }
 
-        @RenderSection("scripts", required: false)
-        <script>
-            function showConfirmationWindow(message, header) {
-                return showWindow('#confirmationTemplate', message, header)
-            };
+    @RenderSection("scripts", required: false)
+    <script>
+        function showConfirmationWindow(message, header) {
+            return showWindow('#confirmationTemplate', message, header)
+        };
 
-            function showWindow(template, message, header) {
-                var dfd = new jQuery.Deferred();
-                var result = false;
+        function showWindow(template, message, header) {
+            var dfd = new jQuery.Deferred();
+            var result = false;
 
-                $("<div id='popupWindow'></div>")
-                .appendTo("body")
-                .kendoWindow({
-                    width: "400px",
-                    modal: true,
-                    title: "",
-                    modal: true,
-                    visible: false,
-                    close: function (e) {
-                        this.destroy();
-                        dfd.resolve(result);
-                    }
-                }).data('kendoWindow').content($(template).html()).center().open();
-                $('.k-window-titlebar').html(header);
-                $('.popupMessage').html(message);
-                $('.dialog_buttons').css('float', 'right');
-                $('#popupWindow .confirm_yes').val('Yes');
-                $('#popupWindow .confirm_no').val('No');
+            $("<div id='popupWindow'></div>")
+            .appendTo("body")
+            .kendoWindow({
+                width: "400px",
+                modal: true,
+                title: "",
+                modal: true,
+                visible: false,
+                close: function (e) {
+                    this.destroy();
+                    dfd.resolve(result);
+                }
+            }).data('kendoWindow').content($(template).html()).center().open();
+            $('.k-window-titlebar').html(header);
+            $('.popupMessage').html(message);
+            $('.dialog_buttons').css('float', 'right');
+            $('#popupWindow .confirm_yes').val('Yes');
+            $('#popupWindow .confirm_no').val('No');
 
-                $('#popupWindow .confirm_no').click(function () {
-                    $('#popupWindow').data('kendoWindow').close();
-                });
-
-                $('#popupWindow .confirm_yes').click(function () {
-                    result = true;
-                    $('#popupWindow').data('kendoWindow').close();
-                });
-                return dfd.promise();
-            };
-
-            function sidebarautoheight() {
-                var sidebarheight = 0;
-                sidebarheight = $(window).height() - $(".bbl").outerHeight() - $("footer").outerHeight();
-                $(".wrapper .page-wrapper").css("min-height", sidebarheight);
-            };
-
-            $(document).ready(function () {
-                sidebarautoheight();
+            $('#popupWindow .confirm_no').click(function () {
+                $('#popupWindow').data('kendoWindow').close();
             });
-            $(window).resize(function () {
-                sidebarautoheight();
+
+            $('#popupWindow .confirm_yes').click(function () {
+                result = true;
+                $('#popupWindow').data('kendoWindow').close();
             });
-        </script>
-        <script id="confirmationTemplate" type="text/x-kendo-template">
-            <div class="popupMessage"></div>
-            </br>
-            <hr />
-            <div class="dialog_buttons">
-                <input type="button" class="confirm_yes k-button" value="Yes" style="width: 70px" />
-                &nbsp;
-                <input type="button" class="confirm_no k-button" value="No" style="width: 70px" />
-            </div>
-        </script>
-    </body>
+            return dfd.promise();
+        };
+
+        function sidebarautoheight() {
+            var sidebarheight = 0;
+            sidebarheight = $(window).height() - $(".bbl").outerHeight() - $("footer").outerHeight();
+            $(".wrapper .page-wrapper").css("min-height", sidebarheight);
+        };
+
+        $(document).ready(function () {
+            sidebarautoheight();
+        });
+        $(window).resize(function () {
+            sidebarautoheight();
+        });
+        function ShowMessage(content, isSuceess) {
+            $("#messageDiv").removeClass("alert-danger");
+            $("#messageDiv").removeClass("alert-success");
+
+            if (isSuceess == 0) { $("#messageDiv").addClass("alert-danger"); }
+            else { $("#messageDiv").addClass("alert-success"); }
+
+            $("#messageDiv").show();
+            $("#messageContent").text(content);
+            $("html, body").animate({ scrollTop: 0 }, "slow");
+            $("#messageDiv").fadeOut(9000);
+        }
+
+    </script>
+    <script id="confirmationTemplate" type="text/x-kendo-template">
+        <div class="popupMessage"></div>
+        </br>
+        <hr />
+        <div class="dialog_buttons">
+            <input type="button" class="confirm_yes k-button" value="Yes" style="width: 70px" />
+            &nbsp;
+            <input type="button" class="confirm_no k-button" value="No" style="width: 70px" />
+        </div>
+    </script>
+</body>
 </html>

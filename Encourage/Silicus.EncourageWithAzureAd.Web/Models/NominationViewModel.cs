@@ -19,6 +19,9 @@ namespace Silicus.EncourageWithAzureAd.Web.Models
         public int? ProjectID { get; set; }
         [Required(ErrorMessage = "Select Department")]
         public int? DepartmentId { get; set; }
+        [Required(ErrorMessage = "Please mention the reason")]
+        public string OtherNominationReason { get; set; }
+        public bool IsOther { get; set; }
         public bool IsLocked { get; set; }
         public bool? IsSubmitted { get; set; }
         [Required(ErrorMessage = "Please provide Comment")]

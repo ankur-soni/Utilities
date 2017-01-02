@@ -85,6 +85,7 @@ namespace Silicus.EncourageWithAzureAd.Web.Controllers
                 _logger.Log("Nomination-AddNomination-POST-try");
                 var awardOfCurrentNomination = _awardService.GetAwardById(model.AwardId);
                 var currentAwardFrequency = _nominationService.GetAwardFrequencyById(awardOfCurrentNomination.FrequencyId);
+                
                 #region RestrictManagerLogic
 
                 var noOfNominationForManager = Convert.ToInt32(ConfigurationManager.AppSettings["noOfNominationForManager"]);
@@ -120,10 +121,26 @@ namespace Silicus.EncourageWithAzureAd.Web.Controllers
                     UserId = model.ResourceId
                 };
 
-                if (model.SelectResourcesBy.Equals("Project"))
-                    nomination.ProjectID = model.ProjectID;
-                else if (model.SelectResourcesBy.Equals("Department"))
-                    nomination.DepartmentId = model.DepartmentId;
+                //if (model.SelectResourcesBy.Equals("Project"))
+                //    nomination.ProjectID = model.ProjectID;
+                //else if (model.SelectResourcesBy.Equals("Department"))
+                //    nomination.DepartmentId = model.DepartmentId;
+
+                switch (model.SelectResourcesBy)
+                {
+                    case "Project":
+                        nomination.ProjectID = model.ProjectID;
+                        break;
+                    case "Department":
+                        nomination.DepartmentId = model.DepartmentId;
+                        break;
+                    case "Other":
+                        nomination.Other = true;
+                        nomination.OtherNominationReason = model.OtherNominationReason;
+                        break;
+                    default:
+                        break;
+                }
 
                 if (currentAwardFrequency.Code == FrequencyCode.YEAR.ToString())
                 {
@@ -234,7 +251,9 @@ namespace Silicus.EncourageWithAzureAd.Web.Controllers
             nominationViewModel.DepartmentId = savedNomination.DepartmentId;
             nominationViewModel.ResourceId = savedNomination.UserId;
             nominationViewModel.IsSubmitted = savedNomination.IsSubmitted;
+            nominationViewModel.IsOther = savedNomination.Other;
             nominationViewModel.MainComment = savedNomination.Comment;
+            nominationViewModel.OtherNominationReason = savedNomination.OtherNominationReason;
             nominationViewModel.AwardName = _awardService.GetAwardNameById(savedNomination.AwardId);
 
             var criterias = _awardService.GetCriteriasForAward(nominationViewModel.AwardId);
@@ -272,6 +291,8 @@ namespace Silicus.EncourageWithAzureAd.Web.Controllers
                 IsSubmitted = submit.Equals("Submit"),
                 ManagerId = model.ManagerId,
                 UserId = model.ResourceId,
+                Other = model.IsOther,
+                OtherNominationReason = model.OtherNominationReason
             };
 
             var awardOfCurrentNomination = _awardService.GetAwardById(model.AwardId);
@@ -339,8 +360,6 @@ namespace Silicus.EncourageWithAzureAd.Web.Controllers
             if (getAllResources)
             {
                 allResources = _nominationService.GetAllResources();
-                //ViewBag.AllResources = allResources;
-                //return Json(allResources, JsonRequestBehavior.AllowGet);
             }
             return Json(allResources, JsonRequestBehavior.AllowGet);
         }
