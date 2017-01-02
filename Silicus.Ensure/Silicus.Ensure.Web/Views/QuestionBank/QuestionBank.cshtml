@@ -20,7 +20,7 @@
                          .Pageable(pager => { pager.PageSizes(true); })
          .Columns(columns =>
               {
-                  columns.Bound(q => q.QuestionDescription).Encoded(false).Width(200);
+                  columns.Bound(q => q.QuestionDescription).Width(200);
                   columns.Bound(q => q.QuestionType).Width(100);
                   columns.Bound(q => q.Tag).Title("Tags").Width(150);
                   columns.Bound(q => q.ProficiencyLevel).Width(100);
