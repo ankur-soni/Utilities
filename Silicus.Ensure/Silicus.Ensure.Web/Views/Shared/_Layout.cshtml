@@ -80,7 +80,7 @@
                                     </a>
                                     <ul class="dropdown-menu dropdown-user-menu">
                                         <li>
-                                            <a href='@Url.Action("SignOut", "Account")'>
+                                            <a href='@Url.Action("LogOff", "Account")'>
                                                 <div>
                                                     Logout
                                                 </div>
@@ -100,11 +100,14 @@
                 <div class="sidebar-wrapper">
                     <nav class="navbar-default navbar-static-side sidebar" role="navigation">
                         <div class="sidebar-collapse">
-                            @if (User.IsInRole(Silicus.Ensure.Models.Constants.RoleName.Panel.ToString()) || User.IsInRole(Silicus.Ensure.Models.Constants.RoleName.Admin.ToString()))
+                            @{
+                                var role = Silicus.Ensure.Web.MvcApplication.getCurrentUserRoles();
+                            }
+                            @if (role.Contains(Silicus.Ensure.Models.Constants.RoleName.Admin.ToString()) || role.Contains(Silicus.Ensure.Models.Constants.RoleName.Panel.ToString()))
                             {
 
                                 <ul class="nav metismenu" id="side-menu">
-                                    @if (User.IsInRole(Silicus.Ensure.Models.Constants.RoleName.Admin.ToString()))
+                                    @if (role.Contains(Silicus.Ensure.Models.Constants.RoleName.Admin.ToString()))
                                     {
                                         <li class="active"><a href="/Master/Index"><i class="fa fa-dashboard"></i> <span class="nav-label">Setup</span></a></li>
                                     }

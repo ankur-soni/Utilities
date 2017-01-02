@@ -23,7 +23,8 @@
     {
         Candidate = 1,
         Panel = 2,
-        Admin = 3
+        Admin = 3,
+        Recruiter = 4
     }
 
     public enum Year
