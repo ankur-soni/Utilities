@@ -463,7 +463,7 @@ namespace Silicus.Encourage.Services
                         var pinnacleNominations = _encourageDatabaseContext.Query<Nomination>().Where(N =>
                             N.ManagerId == managerID &&
                             N.AwardId == award.Id &&
-                            (forCurrentMonth ? (N.NominationDate.Value.Year >= prevYear) : (N.NominationDate.Value.Year < prevYear))).ToList();
+                            (forCurrentMonth ? (N.NominationDate.Value.Year == prevYear) : (N.NominationDate.Value.Year < prevYear))).ToList();
                         allNominations.AddRange(pinnacleNominations);
                         break;
                     default:
