@@ -127,7 +127,7 @@ namespace Silicus.EncourageWithAzureAd.Web.Controllers
 
                 if (currentAwardFrequency.Code == FrequencyCode.YEAR.ToString())
                 {
-                    nomination.NominationDate = DateTime.Now;
+                    nomination.NominationDate = DateTime.Now.Date.AddYears(-1);
                 }
                 else
                 {
@@ -272,8 +272,19 @@ namespace Silicus.EncourageWithAzureAd.Web.Controllers
                 IsSubmitted = submit.Equals("Submit"),
                 ManagerId = model.ManagerId,
                 UserId = model.ResourceId,
-                NominationDate = DateTime.Now.Date.AddMonths(-1)
             };
+
+            var awardOfCurrentNomination = _awardService.GetAwardById(model.AwardId);
+            var currentAwardFrequency = _nominationService.GetAwardFrequencyById(awardOfCurrentNomination.FrequencyId);
+
+            if (currentAwardFrequency.Code == FrequencyCode.YEAR.ToString())
+            {
+                nomination.NominationDate = DateTime.Now.Date.AddYears(-1);
+            }
+            else
+            {
+                nomination.NominationDate = DateTime.Now.Date.AddMonths(-1);
+            }
 
             foreach (var comment in model.Comments)
             {

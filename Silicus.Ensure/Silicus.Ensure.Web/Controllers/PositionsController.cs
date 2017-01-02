@@ -44,7 +44,7 @@ namespace Silicus.Ensure.Web.Controllers
             }
         }
 
-        public JsonResult IsDuplicatePositionName(string positionName)
+        public JsonResult IsDuplicatePositionName([Bind(Prefix = "PanelName")]string positionName)
       {
             bool flag = true;
             if (_positionService.GetPositionByName(positionName) != null)
