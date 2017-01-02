@@ -1,23 +1,23 @@
-﻿$(window).load(function(){
-	var mainW = $(window).height() -70;
-	$('.nav').css({ height : mainW })
-	$('.nav-logo').hide()
-	$('#loading').fadeOut(1000);
-	$('.nav-logo').fadeIn()
+﻿$(window).load(function () {
+    //var mainW = $(window).height() -70;
+    $('.nav-logo').hide()
+    $('#loading').fadeOut(1000);
+    $('.nav-logo').fadeIn()
 }) // Window load
 
-$(window).resize(function() {
+$(window).resize(function () {
     //var mainW = $('.main-content').height();
-    var mainW = $(window).height() - 70;
-    $('.nav').css({ height: mainW + 50 })
+    //var mainW = $(window).height() - 70;
+    //$('.nav').css({ height: mainW + 50 })
     //mQuery();
 
     //Grid Resizing
     kendo.resize($(".kendogrid"));
-    
+
 }) // Window resize
 
 $(document).ready(function () {
+    $('.nav').css({ height: 0 })
 
     //toastr.options = {
     //    "closeButton": true,
@@ -45,17 +45,17 @@ $(document).ready(function () {
     mQuery();
 
     // $('.nav').hide();
-			$('.nav-button').click(function(){
-				// $('.nav').toggleClass('show');
-				$('.nav').toggleClass('show')
-				//$('.nav').fadeToggle(function(){
-					
-				//})
-			})
-			$('.collapsible > a').click(function(){
-				$(this).parent().toggleClass('open')
-			})
-    
+    $('.nav-button').click(function () {
+        // $('.nav').toggleClass('show');
+        $('.nav').toggleClass('show')
+        //$('.nav').fadeToggle(function(){
+
+        //})
+    })
+    $('.collapsible > a').click(function () {
+        $(this).parent().toggleClass('open')
+    })
+
 }); // Ready
 
 function mQuery() {
@@ -69,17 +69,4 @@ function mQuery() {
         //    $('.nav').removeClass('show');
         $('.nav').addClass('show');
     }
-}
-
-function ShowMessage(content, isSuceess) {
-    $("#messageDiv").removeClass("alert-danger");
-    $("#messageDiv").removeClass("alert-success");
-
-    if (isSuceess == 0) { $("#messageDiv").addClass("alert-danger");}
-    else { $("#messageDiv").addClass("alert-success");}
-
-    $("#messageDiv").show();
-    $("#messageContent").text(content);
-    $("html, body").animate({ scrollTop: 0 }, "slow");
-    $("#messageDiv").fadeOut(9000);
 }

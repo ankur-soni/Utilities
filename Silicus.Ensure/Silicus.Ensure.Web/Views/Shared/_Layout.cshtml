@@ -49,12 +49,12 @@
     <script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
 
 
-@{
-    var conname = @ViewContext.RouteData.Values["controller"].ToString().ToLower();
-    var actname = @ViewContext.RouteData.Values["action"].ToString().ToLower();
-}
+    @{
+        var conname = @ViewContext.RouteData.Values["controller"].ToString().ToLower();
+        var actname = @ViewContext.RouteData.Values["action"].ToString().ToLower();
+    }
 
-
+</head>
 <body class="container-fluid">
     @if (actname != "login" && actname != "logoff" && actname != "forgotpassword")
     {
@@ -65,7 +65,7 @@
             <div class="col-sm-8 col-xs-6">
                 <div class="text-center">
                     <nav class="navbar navbar-static-top  " role="navigation" style="margin-bottom: 0">
-                        <ul class="nav navbar-top-links navbar-right">
+                        <ul class="nav navbar-top-links navbar-right" style="height:0!important">
                             @if (Request.IsAuthenticated)
                             {
                                 var userName = @User.Identity.Name;
@@ -100,19 +100,14 @@
                 <div class="sidebar-wrapper">
                     <nav class="navbar-default navbar-static-side sidebar" role="navigation">
                         <div class="sidebar-collapse">
-                            @if (User.IsInRole(Silicus.Ensure.Models.Constants.RoleName.Panel.ToString()) || User.IsInRole(Silicus.Ensure.Models.Constants.RoleName.Admin.ToString()))
-                            {
 
-                                <ul class="nav metismenu" id="side-menu">
-                                    @if (User.IsInRole(Silicus.Ensure.Models.Constants.RoleName.Admin.ToString()))
-                                    {
-                                        <li class="active"><a href="/Master/Index"><i class="fa fa-dashboard"></i> <span class="nav-label">Setup</span></a></li>
-                                    }
-                                    <li class=""><a href="/Admin/Candidates"><i class="fa fa-dashboard"></i> <span class="nav-label">Candidates</span></a></li>
-                                    <li class=""><a href="/QuestionBank/QuestionBank"><i class="fa fa-dashboard"></i> <span class="nav-label">Question Bank</span></a></li>
-                                    <li class=""><a href="/TestSuite/List"><i class="fa fa-dashboard"></i> <span class="nav-label">Test Suit</span></a></li>
+                            <ul class="nav metismenu" id="side-menu">
+                                <li class="active"><a href="/Master/Index"><i class="fa fa-dashboard"></i> <span class="nav-label">Setup</span></a></li>
+                                <li class=""><a href="/Admin/Candidates"><i class="fa fa-dashboard"></i> <span class="nav-label">Candidates</span></a></li>
+                                <li class=""><a href="/QuestionBank/QuestionBank"><i class="fa fa-dashboard"></i> <span class="nav-label">Question Bank</span></a></li>
+                                <li class=""><a href="/TestSuite/List"><i class="fa fa-dashboard"></i> <span class="nav-label">Test Suit</span></a></li>
 
-                                </ul>
+                            </ul>
                             }
                         </div>
                     </nav>
@@ -189,6 +184,19 @@
         $(window).resize(function () {
             sidebarautoheight();
         });
+        function ShowMessage(content, isSuceess) {
+            $("#messageDiv").removeClass("alert-danger");
+            $("#messageDiv").removeClass("alert-success");
+
+            if (isSuceess == 0) { $("#messageDiv").addClass("alert-danger"); }
+            else { $("#messageDiv").addClass("alert-success"); }
+
+            $("#messageDiv").show();
+            $("#messageContent").text(content);
+            $("html, body").animate({ scrollTop: 0 }, "slow");
+            $("#messageDiv").fadeOut(9000);
+        }
+
     </script>
     <script id="confirmationTemplate" type="text/x-kendo-template">
         <div class="popupMessage"></div>

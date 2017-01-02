@@ -11,7 +11,7 @@ namespace Silicus.Ensure.Services.Interfaces
 
         UserTestSuite GetUserTestSuiteId(int userTestSuiteId);
 
-        UserTestSuite GetUserTestSuiteByUdi_TestSuitId(int userId,int testsuitId);
+        UserTestSuite GetUserTestSuiteByUdi_TestSuitId(int userId, int testsuitId);
 
         UserTestDetails GetUserTestDetailsId(int? userTestDetailsId);
 
@@ -40,6 +40,8 @@ namespace Silicus.Ensure.Services.Interfaces
         dynamic GetUserTestDetailsByUserTestSuitId(int? userTestSuitId);
 
         int AssignSuite(UserTestSuite userTestSuite, TestSuite testSuite);
+
+        IEnumerable<Question> GetPriview(TestSuite testSuite);
 
         void TestSuiteActivation();
     }

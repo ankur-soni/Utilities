@@ -17,7 +17,7 @@
             @Html.HiddenFor(x => x.UserId)
             @Html.HiddenFor(x => x.TestSuiteId)
             <h2>Submitted test result of @Model.FirstName @Model.LastName</h2>
-            <div class="fluid mt20">
+            <div class="fluid mt20" style="display:none">
                 <fieldset>
                     <legend>Test suit details:</legend>
                     <div class="row">
@@ -61,7 +61,7 @@
 
                 </fieldset>
             </div>
-            <div class="fluid mt20">
+            <div class="fluid mt20" style="display:none">
                 <fieldset>
                     <legend>Objective question Result:</legend>
                     <div class="row">
@@ -103,12 +103,12 @@
                             <tbody>
                                 @foreach (var oQuestion in Model.objectiveQuestionList)
                                 {
-                                    <tr>
-                                        <td>@Html.Raw(@oQuestion.QuestionDescription)</td>
-                                        <td>@oQuestion.SubmittedAnswer</td>
-                                        <td>@oQuestion.CorrectAnswer</td>
-                                        <td>@oQuestion.Result</td>
-                                    </tr>
+                                <tr>
+                                    <td>@Html.Raw(@oQuestion.QuestionDescription)</td>
+                                    <td>@oQuestion.SubmittedAnswer</td>
+                                    <td>@oQuestion.CorrectAnswer</td>
+                                    <td>@oQuestion.Result</td>
+                                </tr>
                                 }
                             </tbody>
                         </table>
@@ -129,6 +129,19 @@
                                 </div>
                                 <div class="col-md-8">
                                     @Html.Raw(pQuestion.QuestionDescription)
+                                </div>
+                            </div>
+
+                            <div class="col-md-12">
+                                <div class="col-md-4">
+                                    Correct Answer
+                                </div>
+                                <div class="col-md-8">
+                                    <textarea cols="20" id="@Html.Raw(pQuestion.CorrectAnwer + i)" name="@Html.Raw(pQuestion.CorrectAnwer + i)"
+                                              rows="5" data-role="editor" disabled="disabled" readonly="readonly" autocomplete="off" style="width:87%;background: #eee; color: #333;" class="k-content k-raw-content">
+                                        @pQuestion.CorrectAnwer
+                                    </textarea>
+
                                 </div>
                             </div>
 
@@ -178,23 +191,50 @@
                     <legend>Evaluation Result:</legend>
                     <div class="row">
 
-                        <div class="col-md-12">
+                        <div class="col-md-12" style="margin-top:10px">
                             <div class="col-md-4">
                                 Total marks obtained:
                             </div>
                             <div class="col-md-8">
-                                <input class="form-control valid" data-val="true"
+                                <input class="form-control"
                                        id="TotalMarksObtained" name="TotalMarksObtained" type="text"
                                        value="@Model.TotalMarksObtained" style="width:87%;" readonly="readonly" />
                             </div>
                         </div>
 
-                        <div class="col-md-12">
+                        <div class="col-md-12" style="margin-top:10px">
                             <div class="col-md-4">
                                 Evaluation Feedback
                             </div>
                             <div class="col-md-7">
                                 @Html.Kendo().EditorFor(m => m.EvaluatedFeedBack).Name("EvaluatedFeedBack").Encode(true).Value(Model.EvaluatedFeedBack)
+                            </div>
+                        </div>
+                        <div class="col-md-12" style="margin-top:10px">
+                            <div class="col-md-4">
+                                Status
+                            </div>
+                            <div class="col-md-7">
+                                @(Html.Kendo().DropDownListFor(m => m.Status)
+                                    .Name("Status")
+                                    .DataTextField("Text")
+                                    .DataValueField("Value")
+                                        .BindTo(new List<SelectListItem>
+                                        () {
+                                        new SelectListItem(){
+                                        Text="--Select--",
+                                        Value="--Select--"
+                                        },
+                                        new SelectListItem(){
+                                        Text=CandidateStatus.Selected.ToString(),
+                                        Value=CandidateStatus.Selected.ToString()
+                                        },
+                                        new SelectListItem(){
+                                        Text=CandidateStatus.Rejected.ToString(),
+                                        Value=CandidateStatus.Rejected.ToString()
+                                        }
+                                        }).HtmlAttributes(new { style = "width: 100%" }))
+                                     @Html.ValidationMessageFor(m => m.Status)
                             </div>
                         </div>
                     </div>
@@ -223,6 +263,9 @@
         EvaluateTotalResult();
     });
 
+    $(function () {
+        $("form").kendoValidator();
+    });
     function EvaluateTotalResult() {
         var mark = 0;
         $(".PracticalMarks").each(function () {
