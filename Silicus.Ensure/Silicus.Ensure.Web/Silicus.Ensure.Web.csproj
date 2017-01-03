@@ -459,7 +459,9 @@
     <Content Include="Content\css\JQueryUI\1.11.2\jquery-ui.min.css" />
     <Content Include="Content\css\JQueryUI\1.11.2\jquery-ui.structure.css" />
     <Content Include="Content\css\JQueryUI\1.11.2\jquery-ui.structure.min.css" />
+    <Content Include="Content\css\Kendo\2014.1.416\custom\sprite.png" />
     <Content Include="Content\css\Kendo\2014.1.416\kendo.common.min.css" />
+    <Content Include="Content\css\Kendo\2014.1.416\kendo.custom.css" />
     <Content Include="Content\css\Kendo\2014.1.416\kendo.dataviz.default.min.css" />
     <Content Include="Content\css\Kendo\2014.1.416\kendo.dataviz.min.css" />
     <Content Include="Content\css\Kendo\2014.1.416\kendo.default.min.css" />
@@ -758,6 +760,8 @@
     <Content Include="Content\css\fonts\fontawesome-webfont.woff" />
     <Content Include="Content\css\fonts\fontawesome-webfont.woff2" />
     <Content Include="Content\css\fonts\FontAwesome.otf" />
+    <Content Include="Content\css\Kendo\2014.1.416\kendo.custom.dataviz.json" />
+    <Content Include="Content\css\Kendo\2014.1.416\kendo.custom.less" />
     <None Include="Properties\PublishProfiles\ensure - FTP.pubxml" />
     <None Include="Properties\PublishProfiles\ensure - Web Deploy.pubxml" />
     <None Include="Scripts\jquery-2.1.4.intellisense.js" />
