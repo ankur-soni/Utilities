@@ -27,17 +27,18 @@
 
     @*@Scripts.Render("~/Content/BootstrapCSS")*@
     <link href="~/Content/css/Bootstrap/3.3.1/bootstrap.min.css" rel="stylesheet" />
+    <link href="~/Content/css/Bootstrap/3.3.1/bootstrap.css" rel="stylesheet" />
+    <!--Kendo css and JS-->
     @Styles.Render("~/Content/kendoCSS")
     @Scripts.Render("~/bundles/kendoJS")
     <script src="~/Scripts/commonjs.js"></script>
-
 
     <!--Font Awesome 4.7.0 css-->
     <link href="~/Content/css/font-awesome-4.7.0/css/font-awesome.css" rel="stylesheet" />
     <link href="~/Content/css/font-awesome-4.7.0/css/font-awesome.min.css" rel="stylesheet" />
 
     <!--Custom css-->
-    <link href="~/Content/css/custom-style.css" rel="stylesheet" />
+    <link href="~/Content/custom-style.css" rel="stylesheet" />
     <link href="~/LESS/style.css" rel="stylesheet" />
 
     <!--Perfect scrollbar css-->
@@ -49,12 +50,12 @@
     <script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
 
 
-@{
-    var conname = @ViewContext.RouteData.Values["controller"].ToString().ToLower();
-    var actname = @ViewContext.RouteData.Values["action"].ToString().ToLower();
-}
+    @{
+        var conname = @ViewContext.RouteData.Values["controller"].ToString().ToLower();
+        var actname = @ViewContext.RouteData.Values["action"].ToString().ToLower();
+    }
 
-
+</head>
 <body class="container-fluid">
     @if (actname != "login" && actname != "logoff" && actname != "forgotpassword")
     {
@@ -65,7 +66,7 @@
             <div class="col-sm-8 col-xs-6">
                 <div class="text-center">
                     <nav class="navbar navbar-static-top  " role="navigation" style="margin-bottom: 0">
-                        <ul class="nav navbar-top-links navbar-right">
+                        <ul class="nav navbar-top-links navbar-right" style="height:0!important">
                             @if (Request.IsAuthenticated)
                             {
                                 var userName = @User.Identity.Name;
@@ -101,7 +102,7 @@
                     <nav class="navbar-default navbar-static-side sidebar" role="navigation">
                         <div class="sidebar-collapse">
                             @{
-                                var role = Silicus.Ensure.Web.MvcApplication.getCurrentUserRoles();
+        var role = Silicus.Ensure.Web.MvcApplication.getCurrentUserRoles();
                             }
                             @if (role.Contains(Silicus.Ensure.Models.Constants.RoleName.Admin.ToString()) || role.Contains(Silicus.Ensure.Models.Constants.RoleName.Panel.ToString()))
                             {
@@ -109,13 +110,13 @@
                                 <ul class="nav metismenu" id="side-menu">
                                     @if (role.Contains(Silicus.Ensure.Models.Constants.RoleName.Admin.ToString()))
                                     {
+                                        <li id="Setup" class="SideBarMenu"><a href="/Master/Index"><i class="fa fa-dashboard"></i> <span class="nav-label">Setup</span></a></li>
                                         <li><a href="/ManageUser/Index"><i class="fa fa-list"></i>User Managemen</a></li>
-                                        <li class="active"><a href="/Master/Index"><i class="fa fa-dashboard"></i> <span class="nav-label">Setup</span></a></li>
-                                    }
-                                    <li class=""><a href="/Admin/Candidates"><i class="fa fa-dashboard"></i> <span class="nav-label">Candidates</span></a></li>
-                                    <li class=""><a href="/QuestionBank/QuestionBank"><i class="fa fa-dashboard"></i> <span class="nav-label">Question Bank</span></a></li>
-                                    <li class=""><a href="/TestSuite/List"><i class="fa fa-dashboard"></i> <span class="nav-label">Test Suit</span></a></li>
 
+                                    }
+                                    <li id="Candidates" class="SideBarMenu"><a href="/Admin/Candidates"><i class="fa fa-dashboard"></i> <span class="nav-label">Candidates</span></a></li>
+                                    <li id="QuestionBank" class="SideBarMenu"><a href="/QuestionBank/QuestionBank"><i class="fa fa-dashboard"></i> <span class="nav-label">Question Bank</span></a></li>
+                                    <li id="TestSuite" class="SideBarMenu"><a href="/TestSuite/List"><i class="fa fa-dashboard"></i> <span class="nav-label">Test Suite</span></a></li>
                                 </ul>
                             }
                         </div>
@@ -142,6 +143,8 @@
     }
 
     @RenderSection("scripts", required: false)
+
+
     <script>
         function showConfirmationWindow(message, header) {
             return showWindow('#confirmationTemplate', message, header)
@@ -193,6 +196,19 @@
         $(window).resize(function () {
             sidebarautoheight();
         });
+        function ShowMessage(content, isSuceess) {
+            $("#messageDiv").removeClass("alert-danger");
+            $("#messageDiv").removeClass("alert-success");
+
+            if (isSuceess == 0) { $("#messageDiv").addClass("alert-danger"); }
+            else { $("#messageDiv").addClass("alert-success"); }
+
+            $("#messageDiv").show();
+            $("#messageContent").text(content);
+            $("html, body").animate({ scrollTop: 0 }, "slow");
+            $("#messageDiv").fadeOut(9000);
+        }
+
     </script>
     <script id="confirmationTemplate" type="text/x-kendo-template">
         <div class="popupMessage"></div>

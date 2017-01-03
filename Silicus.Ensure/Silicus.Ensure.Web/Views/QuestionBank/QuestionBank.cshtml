@@ -7,10 +7,26 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<div class="main-content" id="main">
+
+<div class="row white-bg header-row">
+    <nav class="" role="navigation" style="margin-bottom: 0">
+        <div class="navbar-header">
+            <a class="navbar-minimalize minimalize-styl-2 btn btn-primary" id="menu-toggle" style="margin-left:15px;" href="#"><i class="fa fa-bars"></i> </a>
+        </div>
+    </nav>
+
+    <div class="col-lg-11 col-md-11 col-sm-11">
+        <h1 class="dashboard-name">Question Bank</h1>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-sm-12">
+        <div class="box M-T15">
+            <div id="main">
     <div class="fluid mt20">
         <div class="kendogrid">
-            <h2>Question Bank</h2>
+
 
             <div>
 
@@ -20,7 +36,7 @@
                          .Pageable(pager => { pager.PageSizes(true); })
          .Columns(columns =>
               {
-                  columns.Bound(q => q.QuestionDescription).Encoded(false).Width(200);
+                  columns.Bound(q => q.QuestionDescription).Width(200);
                   columns.Bound(q => q.QuestionType).Width(100);
                   columns.Bound(q => q.Tag).Title("Tags").Width(150);
                   columns.Bound(q => q.ProficiencyLevel).Width(100);
@@ -32,23 +48,29 @@
               {
                   toolbar.Template(@<text>
                     <div class="toolbar">
-                        <div class="row">
-                            <div class="col-md-6">
+                        <div class="">
+                            
+                                <div class="col-sm-12 M-B15">
+                                    <div class="col-md-3 M-T15">
                                 <div class="input-group">
                                     <span class="input-group-addon"><span class="glyphicon glyphicon-search" aria-hidden="true"></span></span>
                                     <input type="text" class="form-control" id='FieldFilter' placeholder="Search...">
                                     <span class="input-group-btn">
-                                        <button class="btn btn-default" type="button" style="height:16px;"><span class="glyphicon glyphicon-refresh" aria-hidden="true"></span></button>
+                                                <button class="btn btn-default" style="height:20px!important;border:1px solid #0070B9!important" type="button"><span class="glyphicon glyphicon-refresh" aria-hidden="true"></span></button>
                                     </span>
                                 </div>
+                                    
                             </div>
                         </div>
-                        <br />
-                        <div class="row">
-                            <div class="col-md-2" style="padding-right:0; padding-top:5px; width:10%;">
-                                <span>Type</span>
                             </div>
-                            <div class="col-md-2">
+                        
+                           <div class="M-B15">
+                                
+                                    <div class="box" style="margin-bottom:-15px;box-shadow:none;">
+                                        <div class="col-sm-1">
+                                            <span style="font-weight:bold;" class="themeColorBlue">Type</span>
+                            </div>
+                                        <div class="col-sm-2">
                                 @(Html.Kendo().DropDownList()
                             .Name("QuestionType")
                             .DataTextField("Text")
@@ -68,12 +90,12 @@
                                 Text="Practical",
                                 Value="Practical"
                                 }
-                                }).HtmlAttributes(new { style = "width: 80%" }))
+                                }).HtmlAttributes(new { style = "width: 93%" }))
                             </div>
-                            <div class="col-md-2" style="padding-right:0; padding-top:5px;">
-                                <span style="float:right;">Proficiency Level</span>
+                                        <div class="col-sm-1">
+                                            <span style="font-weight:bold;" class="themeColorBlue">Proficiency Level</span>
                             </div>
-                            <div class="col-md-2">
+                                        <div class="col-sm-2">
                                 @{
                                     var levelList = new List<SelectListItem>();
                                     levelList.Add(new SelectListItem() { Text = "All", Value = "" });
@@ -87,11 +109,15 @@
                                     .DataTextField("Text")
                                     .DataValueField("Value")
                                     .Events(e => e.Change("ProficiencyLevelDropDownChange"))
-                                                                .BindTo(levelList).HtmlAttributes(new { style = "width: 80%" }))
+                                                                .BindTo(levelList))
+                                        </div>
+                                        <div class="col-sm-2">
+                                            <a href='/QuestionBank/AddQuestions?questionId=0' s class='k-button k-button-icontext k-grid-add'><span class='k-icon k-add'></span>Add Question</a>
                             </div>
-                            <div class="col-md-3 col-md-push-1" style="float: right; padding-right: 0; margin-right: -22px;">
-                                <a href='/QuestionBank/AddQuestions?questionId=0' class='k-button k-button-icontext k-grid-add' style="width: 50% !important;"><span class='k-icon k-add'></span>Add Question</a>
+
+                                        <div class="clearfix"></div>
                             </div>
+                                
                         </div>
                     </div>
                 </text>);
@@ -110,7 +136,9 @@
         </div>
     </div>
 </div>
-
+        </div>
+    </div>
+</div>
 <!-- Modal -->
 <div class="modal fade" id="myModal" role="dialog">
     <div class="modal-dialog">
@@ -152,6 +180,7 @@
                 grid.dataSource.filter({});
             }
         });
+        SetNavigationMenuActive('QuestionBank');
     });
 
     function ProficiencyLevelAndQuetiontype()
