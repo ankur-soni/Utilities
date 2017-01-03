@@ -27,15 +27,16 @@
             
             <div class="box">
                 <div class="row">
-                    <div class="col-sm-6 form-group">
+                    <div class="col-sm-2">
                         <span><b>Candidate Status</b></span>
-                    
+                    </div>
+                    <div class="col-sm-3">
                         @(Html.Kendo().DropDownListFor(m => m.CandidateStatus)
                     .Name("CandidateStatus")
                     .DataTextField("Text")
                     .DataValueField("Value")
                     .Events(e => e.Change("Change"))
-                    
+
                     .BindTo(new List<SelectListItem>
                     () {
                         new SelectListItem(){
@@ -68,9 +69,11 @@
                     }
                     }))
                     </div>
-                    <div class="col-sm-6 form-group">
+
+                    <div class="col-sm-1 form-group">
                         <span><b> Positions</b></span>
-                    
+                    </div>
+                    <div class="col-sm-2">
                         @(Html.Kendo().DropDownList()
                             .Name("Position")
                                     .Events(e => e.Change("PositionChange"))
@@ -79,9 +82,10 @@
                             .DataTextField("Text")
                             .DataValueField("Value")
                             .SelectedIndex(0)
-                            
+
                         )
                     </div>
+
                 </div>
                 <div class="row">
                     <div class="col-sm-12">

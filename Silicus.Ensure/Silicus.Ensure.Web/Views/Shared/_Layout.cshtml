@@ -27,17 +27,17 @@
 
     @*@Scripts.Render("~/Content/BootstrapCSS")*@
     <link href="~/Content/css/Bootstrap/3.3.1/bootstrap.min.css" rel="stylesheet" />
+    <link href="~/Content/css/Bootstrap/3.3.1/bootstrap.css" rel="stylesheet" />
+    <!--Kendo css and JS-->
     @Styles.Render("~/Content/kendoCSS")
     @Scripts.Render("~/bundles/kendoJS")
-
-
 
     <!--Font Awesome 4.7.0 css-->
     <link href="~/Content/css/font-awesome-4.7.0/css/font-awesome.css" rel="stylesheet" />
     <link href="~/Content/css/font-awesome-4.7.0/css/font-awesome.min.css" rel="stylesheet" />
 
     <!--Custom css-->
-    <link href="~/Content/css/custom-style.css" rel="stylesheet" />
+    <link href="~/Content/custom-style.css" rel="stylesheet" />
     <link href="~/LESS/style.css" rel="stylesheet" />
 
     <!--Perfect scrollbar css-->
@@ -137,6 +137,8 @@
     }
 
     @RenderSection("scripts", required: false)
+
+
     <script>
         function showConfirmationWindow(message, header) {
             return showWindow('#confirmationTemplate', message, header)
