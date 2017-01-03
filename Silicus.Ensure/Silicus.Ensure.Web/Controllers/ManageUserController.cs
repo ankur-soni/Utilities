@@ -74,6 +74,7 @@ namespace Silicus.Ensure.Web.Controllers
             return View(viewName, userViewModel);
         }
 
+
         public ActionResult AddUser(int UserId, string RoleN)
         {
             return View(SetUserModel(UserId, RoleN));

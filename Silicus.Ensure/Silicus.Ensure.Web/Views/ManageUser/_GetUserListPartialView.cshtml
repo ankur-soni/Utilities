@@ -1,7 +1,7 @@
 ﻿@model Silicus.Ensure.Models.DataObjects.User
 @using Silicus.Ensure.Models.Constants;
 @using Kendo.Mvc.UI;
-
+@using System.Linq
 @{
     ViewBag.Title = "Roles";
 }
@@ -27,24 +27,24 @@
 </div>
 @if (Request.IsAuthenticated)
 {
-    @(Html.Kendo().Grid<Silicus.Ensure.Models.DataObjects.User>().Name("UserGrids")
+    @(Html.Kendo().Grid<Silicus.Ensure.Web.Models.UserDetailViewModel>().Name("UserGrids")
          .Columns(columns =>
               {
-                  columns.Bound(c => c.FirstName).Title("Name").Width(200);
-                  columns.Bound(p => p.Role).Width(50);
+                  columns.Bound(c => c.FullName).Title("Name").Width(200);
+                  columns.Bound(p => p.RoleName).Width(50);
                   columns.Bound(p => p.Email).Width(50);
-                  columns.Bound(c => c.UserId).ClientTemplate(@"<a class='k-button k-button-icontext k-grid-edit' href='" + Url.Action("AddUser", "ManageUser") + "?UserId=#=UserId#'><span class='k-icon k-edit'></span>Edit</a><a id='testSuiteDel' class='k-button k-button-icontext k-grid-delete' href='\\#' onclick='return deleteUser(#=UserId#)'><span class='k-icon k-delete'></span>Delete</a>").Title("Action").Width(160);
+                  columns.Bound(c => c.RoleId).Title("Action").Width(160).ClientTemplate(" <div align=center> #if(RoleName == 'Recruiter'){#<input type='button' onclick='assignType(event)' value='Assign Type'>#}else if(RoleName == 'Panel') { #<input type='button' onclick='assignPanel(event)' value='Assign Panel'># }else if(RoleName == 'Candidate') { #<input type='button' value='z'># } #");
               })
             .DataSource(dataSource => dataSource.Ajax().Model(model =>
                                                               {
-                                                                  model.Id(p => p.UserId);
-                                                                  model.Field(p => p.UserId).Editable(false);
+                                                                  model.Id(p => p.Email);
+                                                                  model.Field(p => p.Email).Editable(false);
                                                               })
 
-                                                              .Read(read => read.Action("GetUserDetails", "User"))
-                                                              .Create(update => update.Action("CreateUser", "User"))
-                                                              .Update(update => update.Action("UpdateUser", "User"))
-                                                              .Destroy(update => update.Action("DeleteUser", "User"))
+                                                                      .Read(read => read.Action("GetUserDetails", "User")).ServerOperation(false)
+                                                              //.Create(update => update.Action("CreateUser", "User"))
+                                                              //.Update(update => update.Action("UpdateUser", "User"))
+                                                              //.Destroy(update => update.Action("DeleteUser", "User"))
                                                               .PageSize(10))
 
             .Pageable(pager => { pager.PageSizes(true); })
@@ -67,7 +67,7 @@
                         </div>
                         <div class="row">
                             <div class="col-md-3 col-md-push-1" style="float: right; padding-right: 0px; margin-right: -22px;">
-                                <a href='/ManageUser/AddUser?UserId=0' class='k-button k-button-icontext k-grid-add'><span class='k-icon k-add'></span>Add user</a>
+                                @*<a href='/ManageUser/AddUser?UserId=0' class='k-button k-button-icontext k-grid-add'><span class='k-icon k-add'></span>Add user</a>*@
                             </div>
                         </div>
                     </div>
@@ -83,6 +83,20 @@
             e.stopPropagation();
         }
     });
+
+    function assignPanel(e)
+    {
+        var grid = $("#UserGrids").data("kendoGrid");
+        var dataItem = grid.dataItem($(e.currentTarget).closest("tr"));
+        $("#AssignPanelModal").modal('show');
+    }
+
+    function assignType() {
+        var grid = $("#UserGrids").data("kendoGrid");
+        var dataItem = grid.dataItem($(e.currentTarget).closest("tr"));
+        $("#AssignTypeModal").modal('show');
+    }
+
     function onSelect() {
         var dataItem = this.dataItem();
         var value = dataItem['Text'];
@@ -91,7 +105,7 @@
             grid.dataSource.filter([]);
         }
         else {
-            grid.dataSource.filter({ field: "Role", operator: "eq", value: value });
+            grid.dataSource.filter({ field: "RoleName", operator: "eq", value: value });
         }
     }
     $(document).ready(function () {
@@ -101,9 +115,9 @@
             if (value.length >= 1) {
                 if (value) {
                     var filter = { logic: "or", filters: [] };
-                    filter.filters.push({ field: "Role", operator: "contains", value: value });
+                    filter.filters.push({ field: "RoleName", operator: "contains", value: value });
                     filter.filters.push({ field: "Email", operator: "contains", value: value });
-                    filter.filters.push({ field: "FirstName", operator: "contains", value: value });
+                    filter.filters.push({ field: "FullName", operator: "contains", value: value });
                     grid.dataSource.query({ filter: filter });
                 } else {
                     grid.dataSource.filter({});
@@ -141,3 +155,47 @@
     }
 
 </script>
+
+
+<!-- Modal -->
+<div id="AssignPanelModal" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Assign Panel</h4>
+            </div>
+            <div class="modal-body">
+                <p>Some text in the modal.</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default">Save</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<div id="AssignTypeModal" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Assign Panel</h4>
+            </div>
+            <div class="modal-body">
+                <p>Some text in the modal.</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default">Save</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+
+    </div>
+</div>
