@@ -161,9 +161,9 @@ th {
 }
 
 .dropdown-menu {
-    border: medium none;
+    border:1px solid rgba(120, 130, 140, 0.13);
     border-radius: 3px;
-    box-shadow: 0 0 3px rgba(86, 96, 117, 0.7);
+    box-shadow: 0 3px 12px rgba(0, 0, 0, 0.05) !important;
     display: none;
     float: left;
     font-size: 12px;
