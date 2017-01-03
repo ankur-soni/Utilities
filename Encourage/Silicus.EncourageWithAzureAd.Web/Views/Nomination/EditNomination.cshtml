@@ -123,12 +123,12 @@
                                             <div>
                                                 @if (Model.IsSubmitted == true)
                                                 {
-                                                    @Html.TextBoxFor(model => model.OtherNominationReason, new { @class = "form-control", @id = "otherReason", @disabled="disabled" })
-                                                    @Html.ValidationMessageFor(model => model.OtherNominationReason, "", new { @class = "text-danger" })
+                                                    @Html.TextAreaFor(model => model.OtherNominationReason, new { @class = "form-control", @id = "otherReason", @disabled="disabled",rows = "5" })
+                                                    @Html.ValidationMessageFor(model => model.OtherNominationReason, "", new { @class = "text-danger", maxlength = 500 })
                                                 }
                                                 else
                                                 {
-                                                    @Html.TextBoxFor(model => model.OtherNominationReason, new { @class = "form-control", @id = "otherReason" })
+                                                    @Html.TextAreaFor(model => model.OtherNominationReason, new { @class = "form-control", rows = "5", @id = "otherReason" })
                                                     @Html.ValidationMessageFor(model => model.OtherNominationReason, "", new { @class = "text-danger" })
                                                 }
                                             </div>

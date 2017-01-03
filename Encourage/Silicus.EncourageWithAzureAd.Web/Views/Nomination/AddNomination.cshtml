@@ -143,7 +143,7 @@
                                     <div class="form-group" id="otherInput">
                                         @Html.Label("Reason", htmlAttributes: new { @class = "control-label requiredfeild" })
                                         <div>
-                                            @Html.TextBoxFor(model => model.OtherNominationReason, new {@class="form-control",@id="otherReason" })
+                                            @Html.TextAreaFor(model => model.OtherNominationReason, new {@class="form-control",@id="otherReason", maxlength = 500 })
                                             @Html.ValidationMessageFor(model => model.OtherNominationReason, "", new { @class = "text-danger" })
                                         </div>
                                     </div>
