@@ -34,8 +34,8 @@
                       model.Id(p => p.UserId);
                       model.Field(p => p.UserId).Editable(false);
                   })
-                   
-                  .Read(read => read.Action("GetUserDetails", "User"))
+
+                      .Read(read => read.Action("GetUserDetails", "User"))
                   .Create(update => update.Action("CreateUser", "User"))
                   .Update(update => update.Action("UpdateUser", "User"))
                   .Destroy(update => update.Action("DeleteUser", "User"))

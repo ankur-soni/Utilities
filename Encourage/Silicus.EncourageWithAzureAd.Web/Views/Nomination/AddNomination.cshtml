@@ -121,7 +121,7 @@
                             </div>
                             <div class="row" id="departmentInput">
                                 <div class="col-lg-3 col-md-4 col-sm-5">
-                                    <div class="form-group">
+                                    <div class="form-group" id="projectInput">
                                         @Html.Label("Department", htmlAttributes: new { @class = "control-label requiredfeild" })
                                         <div>
                                             @if (Model.DepartmentsUnderCurrentUser != null)
@@ -139,27 +139,26 @@
                                 </div>
                             </div>
                             <div class="row">
-                                <div class="col-lg-3 col-md-4 col-sm-5">
-                                    <div class="form-group" id="otherInput">
-                                        @Html.Label("Reason", htmlAttributes: new { @class = "control-label requiredfeild" })
-                                        <div>
-                                            @Html.TextAreaFor(model => model.OtherNominationReason, new {@class="form-control",@id="otherReason", maxlength = 500 })
-                                            @Html.ValidationMessageFor(model => model.OtherNominationReason, "", new { @class = "text-danger" })
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="row">
                                 <div class="col-lg-3 col-md-4 col-sm-5" id="employeeInput">
                                     <div class="form-group">
                                         @Html.Label("Employee Name", htmlAttributes: new { @class = "control-label requiredfeild" })
                                         <div>
                                             @Html.DropDownListFor(model => model.ResourceId, Model.Resources as SelectList, "Select", new { @class = "form-control select2-dd", id = "Resources" })
                                             @Html.ValidationMessageFor(model => model.ResourceId, "", new { @class = "text-danger" })
+                                            @*<span class="help-block themeColorBlue"> Select your Employee</span>*@
                                         </div>
                                    </div>
                                 </div>
                             </div>
+                            @*<div class="row" id="employeeInputForOther">
+                                    <div class="col-lg-3 col-md-4 col-sm-5" >
+                                        @Html.Label("Employee Name", htmlAttributes: new { @class = "control-label requiredfeild"})
+                                        @Html.DropDownListFor(model => model.ResourceId, Model.Resources as SelectList, "Select", new {  @class = "form-control" , id = "allResources"})
+                                        @Html.ValidationMessageFor(model => model.ResourceId, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>*@
+                            @*<div  class="form-control"></div>*@
+                            @*@Html.TextBoxFor(model => model.ResourceId, new { @class= "form-control" })*@
 
                             <div class="row">
                                 <div class="form-actions pull-left">
@@ -249,8 +248,6 @@
     $(document).ready(function () {
         $('#ProjectRadioButton').prop('checked', true);
         $("#departmentInput").hide();
-        $("#otherInput").hide();
-
         $("#label").hide();
         $('#Award option').css('color:red');
         
@@ -260,10 +257,8 @@
     $("#OtherRadioButton").change(function () {
         $("#projectInput").hide();
         $("#departmentInput").hide();
-        $("#otherInput").show();
 
         var status = $("#OtherRadioButton").prop("checked");
-        $('#otherReason').val('');
         $('#Resources').empty();
         $('#Resources').append($("<option selected></option>").val(null).html("Select"));
         $(".loader-overlay").show();
@@ -300,7 +295,6 @@
         (
          function () {
              $("#departmentInput").hide();
-             $("#otherInput").hide();
              $("#employeeInputForOther").hide();
              $("#SelectedProject").prop('selectedIndex', 0);
              $('#Resources').empty();
@@ -314,7 +308,6 @@
         (
           function () {
               $("#projectInput").hide();
-              $("#otherInput").hide();
               $("#employeeInputForOther").hide();
               $("#SelectedDepartment").prop('selectedIndex', 0);
               $('#Resources').empty();

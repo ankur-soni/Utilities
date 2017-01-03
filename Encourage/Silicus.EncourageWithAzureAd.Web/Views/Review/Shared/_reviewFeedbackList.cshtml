@@ -2,9 +2,10 @@
 @using System.Drawing;
 @using Silicus.EncourageWithAzureAd.Web.Enums;
 
-@if (Model.Count() > 0)
-{
-    foreach (var item in Model)
+
+
+<div>
+    @foreach (var item in Model)
     {
         <div class="el-element-overlay m-b-40">
             <div class="col-lg-2 col-md-3 col-sm-4 col-xs-4">
@@ -15,43 +16,42 @@
                             <div class="el-overlay">
                                 <ul class="el-info">
                                     <li>
-                                        @if (item.IsShortlisted)
+                                                                                @if (item.IsShortlisted)
                                         {
-                                            <a class="btn default btn-outline image-popup-vertical-fit" href="#">
-                                                <span><i class="fa fa-star fa-2x" title="Shortlisted" aria-hidden="true"></i></span>
-                                            </a>
-                                        }
-                                        else if (item.IsWinner)
+                                                                                        <a class="btn default btn-outline image-popup-vertical-fit" href="#">
+                                                                                            <span><i class="fa fa-star fa-2x" title="Shortlisted" aria-hidden="true"></i></span>
+                                                                                        </a>
+                                                                                        }
+                                                                                        else if (item.IsWinner)
 
-                                        {
-                                            <a class="btn default btn-outline image-popup-vertical-fit" href="#">
-                                                <span><i class="fa fa-trophy fa-2x" title="Winner" aria-hidden="true"></i></span>
-                                            </a>
-                                        }
-                                        <a class="btn default btn-outline image-popup-vertical-fit" href="@Url.Action("ViewNominationForShortlist", "Review", item)">
-                                            <span> <i class="fa fa-file-text-o fa-2x" title="View Nomination" aria-hidden="true"></i> </span>
-                                        </a>
-                                    </li>
+                                                                                        {
+                                                                                            <a class="btn default btn-outline image-popup-vertical-fit" href="#">
+                                                                                                <span><i class="fa fa-trophy fa-2x" title="Winner" aria-hidden="true"></i></span>
+                                                                                            </a>
+                                                                                        }
+                                                                                        <a class="btn default btn-outline image-popup-vertical-fit" href="@Url.Action("ViewNominationForShortlist", "Review", item)">
+                                                                                          <span> <i class="fa fa-file-text-o fa-2x" title="View Nomination" aria-hidden="true"></i> </span>
+                                                                                        </a>
+</li>
                                 </ul>
                             </div>
                         </div>
                         <div class="el-card-content">
                             <h3 class="box-title">@Html.DisplayFor(modelItem => item.DisplayName)</h3>
                             <small>
-                                @Html.DisplayFor(modelItem => item.AwardName)
-                                @if (item.AwardFrequencyCode == FrequencyCode.YEAR.ToString())
-                                {
-                                    var nominationYear = Convert.ToInt32(item.NominationTime.Substring(item.NominationTime.LastIndexOf('-') + 1)) - 1;
-                                    @Html.Label("-" + Convert.ToInt32(nominationYear))
+                               @Html.DisplayFor(modelItem => item.AwardName)
+                            @if (item.AwardFrequencyCode == FrequencyCode.YEAR.ToString())
+                            {
+                                var nominationYear = Convert.ToInt32(item.NominationTime.Substring(item.NominationTime.LastIndexOf('-') + 1)) - 1;
+                                @Html.Label("-" + Convert.ToInt32(nominationYear))
 
-                                }
-                                else
-                                {
-                                    @Html.DisplayFor(modelItem => item.NominationTime)
-                                }
+                            }
+                            else
+                            {
+                                @Html.DisplayFor(modelItem => item.NominationTime)
+                            }
 
-                            </small>
-                            <br>
+                            </small><br>
                         </div>
                         <div class="row">
                             <div class="col-sm-12">
@@ -74,31 +74,23 @@
                                                                 <small class="label1">Average :</small>
                                                                 <small class="">@Html.DisplayFor(modelItem => item.AverageCredits)</small>
                                                             </li>
+                                                            
                                                         </ul>
                                                     </div>
+                                                  </div>
                                                 </div>
                                             </div>
                                         </div>
+                                        <div class="clearfix"></div>
                                     </div>
-                                    <div class="clearfix"></div>
                                 </div>
                             </div>
                         </div>
+                       
                     </div>
                 </div>
             </div>
-        </div>
     }
-}
-else
-{
-    <div class="row">
-        <div class="col-sm-12">
-            <div class="box">
-                <div class="alert alert-danger">
-                    <span class="text-danger" style="font-size:20px">No reviewes are submitted as of now.</span>
-                </div>
-            </div>
+
         </div>
-    </div>
-}
+   

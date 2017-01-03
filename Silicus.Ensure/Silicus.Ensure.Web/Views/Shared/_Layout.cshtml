@@ -50,10 +50,10 @@
     <script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
 
 
-@{
-    var conname = @ViewContext.RouteData.Values["controller"].ToString().ToLower();
-    var actname = @ViewContext.RouteData.Values["action"].ToString().ToLower();
-}
+    @{
+        var conname = @ViewContext.RouteData.Values["controller"].ToString().ToLower();
+        var actname = @ViewContext.RouteData.Values["action"].ToString().ToLower();
+    }
 
 </head>
 <body class="container-fluid">
@@ -81,7 +81,7 @@
                                     </a>
                                     <ul class="dropdown-menu dropdown-user-menu">
                                         <li>
-                                                <a href='@Url.Action("LogOff", "Account")'>
+                                            <a href='@Url.Action("LogOff", "Account")'>
                                                 <div>
                                                     Logout
                                                 </div>
@@ -101,20 +101,22 @@
                 <div class="sidebar-wrapper">
                     <nav class="navbar-default navbar-static-side sidebar" role="navigation">
                         <div class="sidebar-collapse">
-                                @{
-            var role = Silicus.Ensure.Web.MvcApplication.getCurrentUserRoles();
-                                }
-                                @if (role.Contains(Silicus.Ensure.Models.Constants.RoleName.Admin.ToString()) || role.Contains(Silicus.Ensure.Models.Constants.RoleName.Panel.ToString()))
+                            @{
+        var role = Silicus.Ensure.Web.MvcApplication.getCurrentUserRoles();
+                            }
+                            @if (role.Contains(Silicus.Ensure.Models.Constants.RoleName.Admin.ToString()) || role.Contains(Silicus.Ensure.Models.Constants.RoleName.Panel.ToString()))
                             {
 
                                 <ul class="nav metismenu" id="side-menu">
-                                        @if (role.Contains(Silicus.Ensure.Models.Constants.RoleName.Admin.ToString()))
+                                    @if (role.Contains(Silicus.Ensure.Models.Constants.RoleName.Admin.ToString()))
                                     {
-                                            <li id="Setup" class="SideBarMenu"><a href="/Master/Index"><i class="fa fa-dashboard"></i> <span class="nav-label">Setup</span></a></li>
+                                        <li id="Setup" class="SideBarMenu"><a href="/Master/Index"><i class="fa fa-dashboard"></i> <span class="nav-label">Setup</span></a></li>
+                                        <li><a href="/ManageUser/Index"><i class="fa fa-list"></i>User Managemen</a></li>
+
                                     }
-                                        <li id="Candidates" class="SideBarMenu"><a href="/Admin/Candidates"><i class="fa fa-dashboard"></i> <span class="nav-label">Candidates</span></a></li>
-                                        <li id="QuestionBank" class="SideBarMenu"><a href="/QuestionBank/QuestionBank"><i class="fa fa-dashboard"></i> <span class="nav-label">Question Bank</span></a></li>
-                                        <li id="TestSuite" class="SideBarMenu"><a href="/TestSuite/List"><i class="fa fa-dashboard"></i> <span class="nav-label">Test Suite</span></a></li>
+                                    <li id="Candidates" class="SideBarMenu"><a href="/Admin/Candidates"><i class="fa fa-dashboard"></i> <span class="nav-label">Candidates</span></a></li>
+                                    <li id="QuestionBank" class="SideBarMenu"><a href="/QuestionBank/QuestionBank"><i class="fa fa-dashboard"></i> <span class="nav-label">Question Bank</span></a></li>
+                                    <li id="TestSuite" class="SideBarMenu"><a href="/TestSuite/List"><i class="fa fa-dashboard"></i> <span class="nav-label">Test Suite</span></a></li>
                                 </ul>
                             }
                         </div>
