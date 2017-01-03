@@ -1,15 +1,15 @@
-﻿$(window).load(function(){
-	var mainW = $(window).height() -70;
-	$('.nav').css({ height : mainW })
+﻿$(window).load(function () {
+    var mainW = $(window).height() - 70;
+    //$('.nav').css({ height : mainW })
 	$('.nav-logo').hide()
 	$('#loading').fadeOut(1000);
 	$('.nav-logo').fadeIn()
 }) // Window load
 
-$(window).resize(function() {
+$(window).resize(function () {
     //var mainW = $('.main-content').height();
-    var mainW = $(window).height() - 70;
-    $('.nav').css({ height: mainW + 50 })
+    //var mainW = $(window).height() - 70;
+    //$('.nav').css({ height: mainW + 50 })
     //mQuery();
 
     //Grid Resizing
@@ -18,6 +18,7 @@ $(window).resize(function() {
 }) // Window resize
 
 $(document).ready(function () {
+    $('.nav').css({ height: 0 })
 
     //toastr.options = {
     //    "closeButton": true,
@@ -45,14 +46,14 @@ $(document).ready(function () {
     mQuery();
 
     // $('.nav').hide();
-			$('.nav-button').click(function(){
+    $('.nav-button').click(function () {
 				// $('.nav').toggleClass('show');
 				$('.nav').toggleClass('show')
 				//$('.nav').fadeToggle(function(){
 					
 				//})
 			})
-			$('.collapsible > a').click(function(){
+    $('.collapsible > a').click(function () {
 				$(this).parent().toggleClass('open')
 			})
     
@@ -82,4 +83,18 @@ function ShowMessage(content, isSuceess) {
     $("#messageContent").text(content);
     $("html, body").animate({ scrollTop: 0 }, "slow");
     $("#messageDiv").fadeOut(9000);
+}
+
+function RefreshKendoGrid(gridName) {
+    if (gridName) {
+        var grid = $('#' + gridName).data('kendoGrid');
+        if (grid) {
+            grid.dataSource.read();
+            grid.refresh();
+        }
+    }
+}
+
+function SetNavigationMenuActive(menuId) {
+    $('#' + menuId).addClass('active');
 }

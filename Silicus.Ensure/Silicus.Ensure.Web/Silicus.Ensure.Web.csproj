@@ -165,7 +165,10 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="Microsoft.IdentityModel.Clients.ActiveDirectory">
-      <HintPath>..\..\Encourage\packages\Microsoft.IdentityModel.Clients.ActiveDirectory.2.14.201151115\lib\net45\Microsoft.IdentityModel.Clients.ActiveDirectory.dll</HintPath>
+      <HintPath>..\packages\Microsoft.IdentityModel.Clients.ActiveDirectory.3.13.8\lib\net45\Microsoft.IdentityModel.Clients.ActiveDirectory.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.IdentityModel.Clients.ActiveDirectory.Platform">
+      <HintPath>..\packages\Microsoft.IdentityModel.Clients.ActiveDirectory.3.13.8\lib\net45\Microsoft.IdentityModel.Clients.ActiveDirectory.Platform.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.IdentityModel.Protocol.Extensions, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.IdentityModel.Protocol.Extensions.1.0.0\lib\net45\Microsoft.IdentityModel.Protocol.Extensions.dll</HintPath>
@@ -240,6 +243,21 @@
     </Reference>
     <Reference Include="Silicus.FrameWorx.Utility">
       <HintPath>..\packages\Silicus.FrameWorx.Utility.1.0.0\lib\net45\Silicus.FrameWorx.Utility.dll</HintPath>
+    </Reference>
+    <Reference Include="Silicus.UtilityContainer.Entities, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>Dependencies\Silicus.UtilityContainer.Entities.dll</HintPath>
+    </Reference>
+    <Reference Include="Silicus.UtilityContainer.Models, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>Dependencies\Silicus.UtilityContainer.Models.dll</HintPath>
+    </Reference>
+    <Reference Include="Silicus.UtilityContainer.Security, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>Dependencies\Silicus.UtilityContainer.Security.dll</HintPath>
+    </Reference>
+    <Reference Include="Silicus.UtilityContainer.Services">
+      <HintPath>Dependencies\Silicus.UtilityContainer.Services.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
@@ -406,6 +424,7 @@
     <Compile Include="Models\ForgotPassword.cs" />
     <Compile Include="Models\LoginModel.cs" />
     <Compile Include="Models\PanelViewModel.cs" />
+    <Compile Include="Models\PositionViewModel.cs" />
     <Compile Include="Models\QuestionModel.cs" />
     <Compile Include="Models\ResetPasswordModel.cs" />
     <Compile Include="Models\RoleViewModel.cs" />
@@ -441,7 +460,6 @@
     <Content Include="Content\css\font-awesome-4.7.0\HELP-US-OUT.txt" />
     <Content Include="Content\css\fonts\CartoGothicStd-Bold-webfont.svg" />
     <Content Include="Content\css\fonts\CartoGothicStd-Book-webfont.svg" />
-    <Content Include="Content\css\fonts\fontawesome-webfont.svg" />
     <Content Include="Content\css\JQueryUI\1.11.2\images\ui-bg_flat_0_aaaaaa_40x100.png" />
     <Content Include="Content\css\JQueryUI\1.11.2\images\ui-bg_flat_75_ffffff_40x100.png" />
     <Content Include="Content\css\JQueryUI\1.11.2\images\ui-bg_glass_55_fbf9ee_1x400.png" />
@@ -488,226 +506,14 @@
     <Content Include="Content\Images\spriteicons.png" />
     <Content Include="Content\js\bootstrap.js" />
     <Content Include="Content\js\bootstrap.min.js" />
-    <Content Include="Content\js\inspinia.js" />
     <Content Include="Content\js\jquery-1.12.4.min.js" />
-    <Content Include="Content\js\jquery-2.1.1.js" />
-    <Content Include="Content\js\plugins\chartist\chartist.min.js" />
-    <Content Include="Content\js\plugins\chartist\_notes\dwsync.xml" />
-    <Content Include="Content\js\plugins\chartJs\Chart.min.js" />
-    <Content Include="Content\js\plugins\chartJs\_notes\dwsync.xml" />
-    <Content Include="Content\js\plugins\chosen\chosen.jquery.js" />
-    <Content Include="Content\js\plugins\chosen\_notes\dwsync.xml" />
-    <Content Include="Content\js\plugins\daterangepicker\daterangepicker.js" />
-    <Content Include="Content\js\plugins\daterangepicker\_notes\dwsync.xml" />
-    <Content Include="Content\js\plugins\easypiechart\easypiechart.js" />
-    <Content Include="Content\js\plugins\easypiechart\jquery.easypiechart.js" />
-    <Content Include="Content\js\plugins\easypiechart\_notes\dwsync.xml" />
-    <Content Include="Content\js\plugins\footable\footable.all.min.js" />
-    <Content Include="Content\js\plugins\footable\_notes\dwsync.xml" />
-    <Content Include="Content\js\plugins\gritter\images\gritter-light.png" />
-    <Content Include="Content\js\plugins\gritter\images\gritter-long.png" />
-    <Content Include="Content\js\plugins\gritter\images\gritter.png" />
-    <Content Include="Content\js\plugins\gritter\images\ie-spacer.gif" />
-    <Content Include="Content\js\plugins\gritter\images\_notes\dwsync.xml" />
-    <Content Include="Content\js\plugins\gritter\jquery.gritter.css" />
-    <Content Include="Content\js\plugins\gritter\jquery.gritter.min.js" />
-    <Content Include="Content\js\plugins\gritter\_notes\dwsync.xml" />
-    <Content Include="Content\js\plugins\jasny\jasny-bootstrap.min.js" />
-    <Content Include="Content\js\plugins\jasny\_notes\dwsync.xml" />
-    <Content Include="Content\js\plugins\jqGrid\i18n\grid.locale-ar.js" />
-    <Content Include="Content\js\plugins\jqGrid\i18n\grid.locale-bg.js" />
-    <Content Include="Content\js\plugins\jqGrid\i18n\grid.locale-bg1251.js" />
-    <Content Include="Content\js\plugins\jqGrid\i18n\grid.locale-cat.js" />
-    <Content Include="Content\js\plugins\jqGrid\i18n\grid.locale-cn.js" />
-    <Content Include="Content\js\plugins\jqGrid\i18n\grid.locale-cs.js" />
-    <Content Include="Content\js\plugins\jqGrid\i18n\grid.locale-da.js" />
-    <Content Include="Content\js\plugins\jqGrid\i18n\grid.locale-de.js" />
-    <Content Include="Content\js\plugins\jqGrid\i18n\grid.locale-dk.js" />
-    <Content Include="Content\js\plugins\jqGrid\i18n\grid.locale-el.js" />
-    <Content Include="Content\js\plugins\jqGrid\i18n\grid.locale-en.js" />
-    <Content Include="Content\js\plugins\jqGrid\i18n\grid.locale-es.js" />
-    <Content Include="Content\js\plugins\jqGrid\i18n\grid.locale-fa.js" />
-    <Content Include="Content\js\plugins\jqGrid\i18n\grid.locale-fi.js" />
-    <Content Include="Content\js\plugins\jqGrid\i18n\grid.locale-fr.js" />
-    <Content Include="Content\js\plugins\jqGrid\i18n\grid.locale-gl.js" />
-    <Content Include="Content\js\plugins\jqGrid\i18n\grid.locale-he.js" />
-    <Content Include="Content\js\plugins\jqGrid\i18n\grid.locale-hr.js" />
-    <Content Include="Content\js\plugins\jqGrid\i18n\grid.locale-hr1250.js" />
-    <Content Include="Content\js\plugins\jqGrid\i18n\grid.locale-hu.js" />
-    <Content Include="Content\js\plugins\jqGrid\i18n\grid.locale-id.js" />
-    <Content Include="Content\js\plugins\jqGrid\i18n\grid.locale-is.js" />
-    <Content Include="Content\js\plugins\jqGrid\i18n\grid.locale-it.js" />
-    <Content Include="Content\js\plugins\jqGrid\i18n\grid.locale-ja.js" />
-    <Content Include="Content\js\plugins\jqGrid\i18n\grid.locale-kr.js" />
-    <Content Include="Content\js\plugins\jqGrid\i18n\grid.locale-lt.js" />
-    <Content Include="Content\js\plugins\jqGrid\i18n\grid.locale-mne.js" />
-    <Content Include="Content\js\plugins\jqGrid\i18n\grid.locale-nl.js" />
-    <Content Include="Content\js\plugins\jqGrid\i18n\grid.locale-no.js" />
-    <Content Include="Content\js\plugins\jqGrid\i18n\grid.locale-pl.js" />
-    <Content Include="Content\js\plugins\jqGrid\i18n\grid.locale-pt-br.js" />
-    <Content Include="Content\js\plugins\jqGrid\i18n\grid.locale-pt.js" />
-    <Content Include="Content\js\plugins\jqGrid\i18n\grid.locale-ro.js" />
-    <Content Include="Content\js\plugins\jqGrid\i18n\grid.locale-ru.js" />
-    <Content Include="Content\js\plugins\jqGrid\i18n\grid.locale-sk.js" />
-    <Content Include="Content\js\plugins\jqGrid\i18n\grid.locale-sr-latin.js" />
-    <Content Include="Content\js\plugins\jqGrid\i18n\grid.locale-sr.js" />
-    <Content Include="Content\js\plugins\jqGrid\i18n\grid.locale-sv.js" />
-    <Content Include="Content\js\plugins\jqGrid\i18n\grid.locale-th.js" />
-    <Content Include="Content\js\plugins\jqGrid\i18n\grid.locale-tr.js" />
-    <Content Include="Content\js\plugins\jqGrid\i18n\grid.locale-tw.js" />
-    <Content Include="Content\js\plugins\jqGrid\i18n\grid.locale-ua.js" />
-    <Content Include="Content\js\plugins\jqGrid\i18n\grid.locale-vi.js" />
-    <Content Include="Content\js\plugins\jqGrid\i18n\_notes\dwsync.xml" />
-    <Content Include="Content\js\plugins\jqGrid\jquery.jqGrid.min.js" />
-    <Content Include="Content\js\plugins\jqGrid\_notes\dwsync.xml" />
-    <Content Include="Content\js\plugins\jquery-ui\i18n\jquery-ui-i18n.min.js" />
-    <Content Include="Content\js\plugins\jquery-ui\i18n\jquery.ui.datepicker-af.min.js" />
-    <Content Include="Content\js\plugins\jquery-ui\i18n\jquery.ui.datepicker-ar-DZ.min.js" />
-    <Content Include="Content\js\plugins\jquery-ui\i18n\jquery.ui.datepicker-ar.min.js" />
-    <Content Include="Content\js\plugins\jquery-ui\i18n\jquery.ui.datepicker-az.min.js" />
-    <Content Include="Content\js\plugins\jquery-ui\i18n\jquery.ui.datepicker-be.min.js" />
-    <Content Include="Content\js\plugins\jquery-ui\i18n\jquery.ui.datepicker-bg.min.js" />
-    <Content Include="Content\js\plugins\jquery-ui\i18n\jquery.ui.datepicker-bs.min.js" />
-    <Content Include="Content\js\plugins\jquery-ui\i18n\jquery.ui.datepicker-ca.min.js" />
-    <Content Include="Content\js\plugins\jquery-ui\i18n\jquery.ui.datepicker-cs.min.js" />
-    <Content Include="Content\js\plugins\jquery-ui\i18n\jquery.ui.datepicker-cy-GB.min.js" />
-    <Content Include="Content\js\plugins\jquery-ui\i18n\jquery.ui.datepicker-da.min.js" />
-    <Content Include="Content\js\plugins\jquery-ui\i18n\jquery.ui.datepicker-de.min.js" />
-    <Content Include="Content\js\plugins\jquery-ui\i18n\jquery.ui.datepicker-el.min.js" />
-    <Content Include="Content\js\plugins\jquery-ui\i18n\jquery.ui.datepicker-en-AU.min.js" />
-    <Content Include="Content\js\plugins\jquery-ui\i18n\jquery.ui.datepicker-en-GB.min.js" />
-    <Content Include="Content\js\plugins\jquery-ui\i18n\jquery.ui.datepicker-en-NZ.min.js" />
-    <Content Include="Content\js\plugins\jquery-ui\i18n\jquery.ui.datepicker-eo.min.js" />
-    <Content Include="Content\js\plugins\jquery-ui\i18n\jquery.ui.datepicker-es.min.js" />
-    <Content Include="Content\js\plugins\jquery-ui\i18n\jquery.ui.datepicker-et.min.js" />
-    <Content Include="Content\js\plugins\jquery-ui\i18n\jquery.ui.datepicker-eu.min.js" />
-    <Content Include="Content\js\plugins\jquery-ui\i18n\jquery.ui.datepicker-fa.min.js" />
-    <Content Include="Content\js\plugins\jquery-ui\i18n\jquery.ui.datepicker-fi.min.js" />
-    <Content Include="Content\js\plugins\jquery-ui\i18n\jquery.ui.datepicker-fo.min.js" />
-    <Content Include="Content\js\plugins\jquery-ui\i18n\jquery.ui.datepicker-fr-CA.min.js" />
-    <Content Include="Content\js\plugins\jquery-ui\i18n\jquery.ui.datepicker-fr-CH.min.js" />
-    <Content Include="Content\js\plugins\jquery-ui\i18n\jquery.ui.datepicker-fr.min.js" />
-    <Content Include="Content\js\plugins\jquery-ui\i18n\jquery.ui.datepicker-gl.min.js" />
-    <Content Include="Content\js\plugins\jquery-ui\i18n\jquery.ui.datepicker-he.min.js" />
-    <Content Include="Content\js\plugins\jquery-ui\i18n\jquery.ui.datepicker-hi.min.js" />
-    <Content Include="Content\js\plugins\jquery-ui\i18n\jquery.ui.datepicker-hr.min.js" />
-    <Content Include="Content\js\plugins\jquery-ui\i18n\jquery.ui.datepicker-hu.min.js" />
-    <Content Include="Content\js\plugins\jquery-ui\i18n\jquery.ui.datepicker-hy.min.js" />
-    <Content Include="Content\js\plugins\jquery-ui\i18n\jquery.ui.datepicker-id.min.js" />
-    <Content Include="Content\js\plugins\jquery-ui\i18n\jquery.ui.datepicker-is.min.js" />
-    <Content Include="Content\js\plugins\jquery-ui\i18n\jquery.ui.datepicker-it.min.js" />
-    <Content Include="Content\js\plugins\jquery-ui\i18n\jquery.ui.datepicker-ja.min.js" />
-    <Content Include="Content\js\plugins\jquery-ui\i18n\jquery.ui.datepicker-ka.min.js" />
-    <Content Include="Content\js\plugins\jquery-ui\i18n\jquery.ui.datepicker-kk.min.js" />
-    <Content Include="Content\js\plugins\jquery-ui\i18n\jquery.ui.datepicker-km.min.js" />
-    <Content Include="Content\js\plugins\jquery-ui\i18n\jquery.ui.datepicker-ko.min.js" />
-    <Content Include="Content\js\plugins\jquery-ui\i18n\jquery.ui.datepicker-ky.min.js" />
-    <Content Include="Content\js\plugins\jquery-ui\i18n\jquery.ui.datepicker-lb.min.js" />
-    <Content Include="Content\js\plugins\jquery-ui\i18n\jquery.ui.datepicker-lt.min.js" />
-    <Content Include="Content\js\plugins\jquery-ui\i18n\jquery.ui.datepicker-lv.min.js" />
-    <Content Include="Content\js\plugins\jquery-ui\i18n\jquery.ui.datepicker-mk.min.js" />
-    <Content Include="Content\js\plugins\jquery-ui\i18n\jquery.ui.datepicker-ml.min.js" />
-    <Content Include="Content\js\plugins\jquery-ui\i18n\jquery.ui.datepicker-ms.min.js" />
-    <Content Include="Content\js\plugins\jquery-ui\i18n\jquery.ui.datepicker-nb.min.js" />
-    <Content Include="Content\js\plugins\jquery-ui\i18n\jquery.ui.datepicker-nl-BE.min.js" />
-    <Content Include="Content\js\plugins\jquery-ui\i18n\jquery.ui.datepicker-nl.min.js" />
-    <Content Include="Content\js\plugins\jquery-ui\i18n\jquery.ui.datepicker-nn.min.js" />
-    <Content Include="Content\js\plugins\jquery-ui\i18n\jquery.ui.datepicker-no.min.js" />
-    <Content Include="Content\js\plugins\jquery-ui\i18n\jquery.ui.datepicker-pl.min.js" />
-    <Content Include="Content\js\plugins\jquery-ui\i18n\jquery.ui.datepicker-pt-BR.min.js" />
-    <Content Include="Content\js\plugins\jquery-ui\i18n\jquery.ui.datepicker-pt.min.js" />
-    <Content Include="Content\js\plugins\jquery-ui\i18n\jquery.ui.datepicker-rm.min.js" />
-    <Content Include="Content\js\plugins\jquery-ui\i18n\jquery.ui.datepicker-ro.min.js" />
-    <Content Include="Content\js\plugins\jquery-ui\i18n\jquery.ui.datepicker-ru.min.js" />
-    <Content Include="Content\js\plugins\jquery-ui\i18n\jquery.ui.datepicker-sk.min.js" />
-    <Content Include="Content\js\plugins\jquery-ui\i18n\jquery.ui.datepicker-sl.min.js" />
-    <Content Include="Content\js\plugins\jquery-ui\i18n\jquery.ui.datepicker-sq.min.js" />
-    <Content Include="Content\js\plugins\jquery-ui\i18n\jquery.ui.datepicker-sr-SR.min.js" />
-    <Content Include="Content\js\plugins\jquery-ui\i18n\jquery.ui.datepicker-sr.min.js" />
-    <Content Include="Content\js\plugins\jquery-ui\i18n\jquery.ui.datepicker-sv.min.js" />
-    <Content Include="Content\js\plugins\jquery-ui\i18n\jquery.ui.datepicker-ta.min.js" />
-    <Content Include="Content\js\plugins\jquery-ui\i18n\jquery.ui.datepicker-th.min.js" />
-    <Content Include="Content\js\plugins\jquery-ui\i18n\jquery.ui.datepicker-tj.min.js" />
-    <Content Include="Content\js\plugins\jquery-ui\i18n\jquery.ui.datepicker-tr.min.js" />
-    <Content Include="Content\js\plugins\jquery-ui\i18n\jquery.ui.datepicker-uk.min.js" />
-    <Content Include="Content\js\plugins\jquery-ui\i18n\jquery.ui.datepicker-vi.min.js" />
-    <Content Include="Content\js\plugins\jquery-ui\i18n\jquery.ui.datepicker-zh-CN.min.js" />
-    <Content Include="Content\js\plugins\jquery-ui\i18n\jquery.ui.datepicker-zh-HK.min.js" />
-    <Content Include="Content\js\plugins\jquery-ui\i18n\jquery.ui.datepicker-zh-TW.min.js" />
-    <Content Include="Content\js\plugins\jquery-ui\i18n\_notes\dwsync.xml" />
-    <Content Include="Content\js\plugins\jquery-ui\images\animated-overlay.gif" />
-    <Content Include="Content\js\plugins\jquery-ui\images\ui-bg_flat_0_aaaaaa_40x100.png" />
-    <Content Include="Content\js\plugins\jquery-ui\images\ui-bg_flat_75_ffffff_40x100.png" />
-    <Content Include="Content\js\plugins\jquery-ui\images\ui-bg_glass_55_fbf9ee_1x400.png" />
-    <Content Include="Content\js\plugins\jquery-ui\images\ui-bg_glass_65_ffffff_1x400.png" />
-    <Content Include="Content\js\plugins\jquery-ui\images\ui-bg_glass_75_dadada_1x400.png" />
-    <Content Include="Content\js\plugins\jquery-ui\images\ui-bg_glass_75_e6e6e6_1x400.png" />
-    <Content Include="Content\js\plugins\jquery-ui\images\ui-bg_glass_95_fef1ec_1x400.png" />
-    <Content Include="Content\js\plugins\jquery-ui\images\ui-bg_highlight-soft_75_cccccc_1x100.png" />
-    <Content Include="Content\js\plugins\jquery-ui\images\ui-icons_222222_256x240.png" />
-    <Content Include="Content\js\plugins\jquery-ui\images\ui-icons_2e83ff_256x240.png" />
-    <Content Include="Content\js\plugins\jquery-ui\images\ui-icons_454545_256x240.png" />
-    <Content Include="Content\js\plugins\jquery-ui\images\ui-icons_888888_256x240.png" />
-    <Content Include="Content\js\plugins\jquery-ui\images\ui-icons_cd0a0a_256x240.png" />
-    <Content Include="Content\js\plugins\jquery-ui\images\_notes\dwsync.xml" />
-    <Content Include="Content\js\plugins\jquery-ui\jquery-ui.css" />
-    <Content Include="Content\js\plugins\jquery-ui\jquery-ui.js" />
-    <Content Include="Content\js\plugins\jquery-ui\jquery-ui.min.css" />
-    <Content Include="Content\js\plugins\jquery-ui\jquery-ui.min.js" />
-    <Content Include="Content\js\plugins\jquery-ui\_notes\dwsync.xml" />
-    <Content Include="Content\js\plugins\jsTree\jstree.min.js" />
-    <Content Include="Content\js\plugins\jsTree\_notes\dwsync.xml" />
-    <Content Include="Content\js\plugins\metisMenu\jquery.metisMenu.js" />
-    <Content Include="Content\js\plugins\metisMenu\_notes\dwsync.xml" />
-    <Content Include="Content\js\plugins\morris\morris.js" />
-    <Content Include="Content\js\plugins\morris\raphael-2.1.0.min.js" />
-    <Content Include="Content\js\plugins\morris\_notes\dwsync.xml" />
-    <Content Include="Content\js\plugins\nestable\jquery.nestable.js" />
-    <Content Include="Content\js\plugins\nestable\_notes\dwsync.xml" />
-    <Content Include="Content\js\plugins\nouslider\jquery.nouislider.min.js" />
-    <Content Include="Content\js\plugins\nouslider\_notes\dwsync.xml" />
-    <Content Include="Content\js\plugins\pace\pace.min.js" />
-    <Content Include="Content\js\plugins\pace\_notes\dwsync.xml" />
-    <Content Include="Content\js\plugins\peity\jquery.peity.min.js" />
-    <Content Include="Content\js\plugins\peity\_notes\dwsync.xml" />
-    <Content Include="Content\js\plugins\rickshaw\rickshaw.min.js" />
-    <Content Include="Content\js\plugins\rickshaw\vendor\d3.v3.js" />
-    <Content Include="Content\js\plugins\rickshaw\vendor\_notes\dwsync.xml" />
-    <Content Include="Content\js\plugins\rickshaw\_notes\dwsync.xml" />
-    <Content Include="Content\js\plugins\select2\New folder\select2.full.min.js" />
-    <Content Include="Content\js\plugins\select2\New folder\_notes\dwsync.xml" />
-    <Content Include="Content\js\plugins\select2\select2.full.js" />
-    <Content Include="Content\js\plugins\select2\select2.full.min.js" />
-    <Content Include="Content\js\plugins\select2\select2.js" />
-    <Content Include="Content\js\plugins\select2\select2.min.js" />
-    <Content Include="Content\js\plugins\select2\_notes\dwsync.xml" />
-    <Content Include="Content\js\plugins\selectize\selectize.js" />
-    <Content Include="Content\js\plugins\selectize\selectize.min.js" />
-    <Content Include="Content\js\plugins\selectize\_notes\dwsync.xml" />
-    <Content Include="Content\js\plugins\slick\slick.min.js" />
-    <Content Include="Content\js\plugins\slick\_notes\dwsync.xml" />
-    <Content Include="Content\js\plugins\slimscroll\jquery.slimscroll.js" />
-    <Content Include="Content\js\plugins\slimscroll\jquery.slimscroll.min.js" />
-    <Content Include="Content\js\plugins\slimscroll\_notes\dwsync.xml" />
-    <Content Include="Content\js\plugins\sparkline\jquery.sparkline.min.js" />
-    <Content Include="Content\js\plugins\sparkline\_notes\dwsync.xml" />
-    <Content Include="Content\js\plugins\staps\jquery.steps.min.js" />
-    <Content Include="Content\js\plugins\staps\_notes\dwsync.xml" />
-    <Content Include="Content\js\plugins\sweetalert2\sweetalert2.css" />
-    <Content Include="Content\js\plugins\sweetalert2\sweetalert2.min.css" />
-    <Content Include="Content\js\plugins\sweetalert2\sweetalert2.min.js" />
-    <Content Include="Content\js\plugins\sweetalert\sweetalert.min.js" />
-    <Content Include="Content\js\plugins\sweetalert\_notes\dwsync.xml" />
-    <Content Include="Content\js\plugins\switchery\switchery.js" />
-    <Content Include="Content\js\plugins\switchery\_notes\dwsync.xml" />
-    <Content Include="Content\js\plugins\toastr\toastr.min.js" />
-    <Content Include="Content\js\plugins\toastr\_notes\dwsync.xml" />
-    <Content Include="Content\js\plugins\validate\jquery.validate.min.js" />
-    <Content Include="Content\js\plugins\validate\_notes\dwsync.xml" />
     <Content Include="Content\style.css" />
     <Content Include="Content\toastr.css" />
     <Content Include="Content\toastr.min.css" />
     <Content Include="Images\logo.jpg" />
+    <Content Include="Dependencies\Silicus.UtilityContainer.Entities.dll" />
+    <Content Include="Dependencies\Silicus.UtilityContainer.Models.dll" />
+    <Content Include="Dependencies\Silicus.UtilityContainer.Security.dll" />
     <Content Include="Images\silicus\logo.png" />
     <Content Include="LESS\style.css" />
     <Content Include="LESS\_notes\dwsync.xml" />
@@ -717,7 +523,6 @@
     <Content Include="Content\toastr.scss" />
     <Content Include="Content\toastr.less" />
     <Content Include="LESS\.crunch" />
-    <Content Include="Content\js\plugins\chartist\chartist.min.js.map" />
     <Content Include="Content\css\bootstrap.css.map" />
     <Content Include="Content\css\font-awesome-4.7.0\fonts\fontawesome-webfont.eot" />
     <Content Include="Content\css\font-awesome-4.7.0\fonts\fontawesome-webfont.ttf" />
@@ -928,12 +733,6 @@
     <Content Include="Scripts\Kendo\2014.1.416\kendo.aspnetmvc.min.js" />
     <None Include="Scripts\Kendo\2014.1.416\kendo.dataviz.min.intellisense.js" />
     <Content Include="Scripts\Kendo\2014.1.416\kendo.dataviz.min.js" />
-    <Content Include="Scripts\Kendo\2015.3.1111.340\jquery.min.js" />
-    <Content Include="Scripts\Kendo\2015.3.1111.340\kendo.all.min.js" />
-    <Content Include="Scripts\Kendo\2015.3.1111.340\kendo.aspnetmvc.min.js" />
-    <Content Include="Scripts\Kendo\2015.3.1111.340\kendo.core.min.js" />
-    <Content Include="Scripts\Kendo\2015.3.1111.340\kendo.data.min.js" />
-    <Content Include="Scripts\Kendo\2015.3.1111.340\kendo.dataviz.min.js" />
     <Content Include="Scripts\knockout-3.3.0.debug.js" />
     <Content Include="Scripts\knockout-3.3.0.js" />
     <Content Include="Scripts\Knockout\3.2.0\knockout-3.1.0.debug.js" />
@@ -1018,12 +817,8 @@
     <Content Include="Views\Account\Index.cshtml" />
     <Content Include="Views\Panel\Panel.cshtml" />
     <Content Include="Views\Shared\EditorTemplates\PostionEditorTemplete.cshtml" />
-    <Content Include="Scripts\Kendo\2015.3.1111.340\jquery.min.map" />
-    <Content Include="Scripts\Kendo\2015.3.1111.340\kendo.all.min.js.map" />
-    <Content Include="Scripts\Kendo\2015.3.1111.340\kendo.aspnetmvc.min.js.map" />
-    <Content Include="Scripts\Kendo\2015.3.1111.340\kendo.core.min.js.map" />
-    <Content Include="Scripts\Kendo\2015.3.1111.340\kendo.data.min.js.map" />
-    <Content Include="Scripts\Kendo\2015.3.1111.340\kendo.dataviz.min.js.map" />
+    <Content Include="Views\TestSuite\ViewQuestion.cshtml" />
+    <Content Include="Views\Admin\PartialTestSuitView.cshtml" />
     <None Include="Web.Azure.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

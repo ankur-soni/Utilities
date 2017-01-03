@@ -7,6 +7,7 @@
             @if (Request.IsAuthenticated)
             {
                 @(Html.Kendo().Grid<Silicus.Ensure.Models.DataObjects.Panel>().Name("PanelGrids")
+                          .Events(e => e.Edit("gvPanel_onRowEdit"))
             .DataSource(dataSource => dataSource
             .Ajax()
             .Model(model =>
@@ -42,7 +43,7 @@
                                 <div class="col-md-6">
                                     <div class="input-group">
                                         <span class="input-group-addon"><span class="glyphicon glyphicon-search" aria-hidden="true"></span></span>
-                                        <input type="text" class="form-control" id='PanelFieldFilter' placeholder="Search for...">
+                                        <input type="text" class="form-control" id='PanelFieldFilter' placeholder="Search...">
                                         <span class="input-group-btn">
                                             <button id="postionSearch" class="btn btn-default" type="button" style="height:16px;"><span class="glyphicon glyphicon-refresh" aria-hidden="true"></span></button>
                                         </span>
@@ -74,6 +75,7 @@
             if (value.length > 0) {
                 if (value) {
                     grid.dataSource.filter({ field: "PanelName", operator: "contains", value: value });
+                    grid.dataSource.sort({ field: "PanelName", dir: "asc" });
                 } else {
                     grid.dataSource.filter({});
                 }
@@ -125,19 +127,28 @@
 
     })(jQuery, kendo);
 
+    function gvPanel_onRowEdit(e) {
+        if (e && e.model && e.model.isNew()) {
+            $(".k-grid-update").html('<span><i class="fa fa-save"></i> Save </span>');
+        }
+    }
+
     function requestend_handlerPanel(e) {
         if (e.type == "destroy" && !e.response.Errors) {
             //toastr.success("Auto Pays details has been deleted successfully!");
             ShowMessage("Panel deleted successfully.", 1);
+            RefreshKendoGrid('PanelGrids');
         }
 
         if (e.type == "update" && !e.response.Errors) {
             //toastr.success("Auto Pays details has been saved successfully!");
             ShowMessage("Panel Updated successfully.", 1);
+            RefreshKendoGrid('PanelGrids');
         }
 
         if (e.type == "create" && !e.response.Errors) {
             ShowMessage("Panel Created successfully.", 1);
+            RefreshKendoGrid('PanelGrids');
         }
 
     }

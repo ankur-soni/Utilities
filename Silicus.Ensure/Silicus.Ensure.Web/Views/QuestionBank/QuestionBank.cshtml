@@ -24,19 +24,19 @@
     <div class="col-sm-12">
         <div class="box M-T15">
             <div id="main">
-                <div class="fluid mt20">
-                    <div class="kendogrid">
+    <div class="fluid mt20">
+        <div class="kendogrid">
 
 
-                        <div>
+            <div>
 
-                            @if (Request.IsAuthenticated)
+                @if (Request.IsAuthenticated)
                 {
-                                @(Html.Kendo().Grid(Model).Name("questionGrids")
+                    @(Html.Kendo().Grid(Model).Name("questionGrids")
                          .Pageable(pager => { pager.PageSizes(true); })
          .Columns(columns =>
               {
-                  columns.Bound(q => q.QuestionDescription).Encoded(false).Width(200);
+                  columns.Bound(q => q.QuestionDescription).Width(200);
                   columns.Bound(q => q.QuestionType).Width(100);
                   columns.Bound(q => q.Tag).Title("Tags").Width(150);
                   columns.Bound(q => q.ProficiencyLevel).Width(100);
@@ -52,16 +52,16 @@
                             
                                 <div class="col-sm-12 M-B15">
                                     <div class="col-md-3 M-T15">
-                                        <div class="input-group">
-                                            <span class="input-group-addon"><span class="glyphicon glyphicon-search" aria-hidden="true"></span></span>
-                                            <input type="text" class="form-control" id='FieldFilter' placeholder="Search for...">
-                                            <span class="input-group-btn">
+                                <div class="input-group">
+                                    <span class="input-group-addon"><span class="glyphicon glyphicon-search" aria-hidden="true"></span></span>
+                                    <input type="text" class="form-control" id='FieldFilter' placeholder="Search...">
+                                    <span class="input-group-btn">
                                                 <button class="btn btn-default" style="height:20px!important;border:1px solid #0070B9!important" type="button"><span class="glyphicon glyphicon-refresh" aria-hidden="true"></span></button>
-                                            </span>
-                                        </div>
-                                    
+                                    </span>
                                 </div>
+                                    
                             </div>
+                        </div>
                             </div>
                         
                            <div class="M-B15">
@@ -69,9 +69,9 @@
                                     <div class="box" style="margin-bottom:-15px;box-shadow:none;">
                                         <div class="col-sm-1">
                                             <span style="font-weight:bold;" class="themeColorBlue">Type</span>
-                                        </div>
+                            </div>
                                         <div class="col-sm-2">
-                                            @(Html.Kendo().DropDownList()
+                                @(Html.Kendo().DropDownList()
                             .Name("QuestionType")
                             .DataTextField("Text")
                             .DataValueField("Value")
@@ -91,20 +91,20 @@
                                 Value="Practical"
                                 }
                                 }).HtmlAttributes(new { style = "width: 93%" }))
-                                        </div>
+                            </div>
                                         <div class="col-sm-1">
                                             <span style="font-weight:bold;" class="themeColorBlue">Proficiency Level</span>
-                                        </div>
+                            </div>
                                         <div class="col-sm-2">
-                                            @{
-                                                var levelList = new List<SelectListItem>();
-                                                levelList.Add(new SelectListItem() { Text = "All", Value = "" });
-                                                foreach (var level in Enum.GetValues(typeof(Silicus.Ensure.Web.Models.ProficiencyLevel)))
-                                                {
-                                                    levelList.Add(new SelectListItem() { Text = level.ToString(), Value = level.ToString() });
-                                                }
-                                            }
-                                            @(Html.Kendo().DropDownList()
+                                @{
+                                    var levelList = new List<SelectListItem>();
+                                    levelList.Add(new SelectListItem() { Text = "All", Value = "" });
+                                    foreach (var level in Enum.GetValues(typeof(Silicus.Ensure.Web.Models.ProficiencyLevel)))
+                                    {
+                                        levelList.Add(new SelectListItem() { Text = level.ToString(), Value = level.ToString() });
+                                    }
+                                }
+                                @(Html.Kendo().DropDownList()
                                     .Name("ProficiencyLevelDropDown")
                                     .DataTextField("Text")
                                     .DataValueField("Value")
@@ -113,12 +113,12 @@
                                         </div>
                                         <div class="col-sm-2">
                                             <a href='/QuestionBank/AddQuestions?questionId=0' s class='k-button k-button-icontext k-grid-add'><span class='k-icon k-add'></span>Add Question</a>
-                                        </div>
+                            </div>
 
                                         <div class="clearfix"></div>
-                                    </div>
-                                
                             </div>
+                                
+                        </div>
                     </div>
                 </text>);
               })
@@ -132,10 +132,10 @@
                                                                                                                                                                                                                                                                                                                                                                                                                                 .ServerOperation(false)
                                                                                                                                                                                                                                                                                                                                                                                                                                 ))
                 }
-                        </div>
-                    </div>
-                </div>
             </div>
+        </div>
+    </div>
+</div>
         </div>
     </div>
 </div>
@@ -175,10 +175,12 @@
                 filter.filters.push({ field: "Tag", operator: "contains", value: value });
                 filter.filters.push({ field: "ProficiencyLevel", operator: "contains", value: value });
                 grid.dataSource.query({ filter: filter });
+                grid.dataSource.sort({ field: "QuestionType", dir: "asc" });
             } else {
                 grid.dataSource.filter({});
             }
         });
+        SetNavigationMenuActive('QuestionBank');
     });
 
     function ProficiencyLevelAndQuetiontype()

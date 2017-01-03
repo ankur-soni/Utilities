@@ -11,9 +11,9 @@ namespace Silicus.Ensure.Models.DataObjects
         public int TagId { get; set; }
 
         [Required(ErrorMessage = "Tag Name is required!")]
-        [StringLength(50,ErrorMessage="Tag length should be less than or equal to 50 characters.")]
-        [Display(Name="Tag Name")]
-        [RegularExpression(@"^[^\s]+$", ErrorMessage = "Space are not allowd")]
+        [StringLength(50, ErrorMessage = "Tag length should be less than or equal to 50 characters.")]
+        [Display(Name = "Tag Name")]
+        //  [RegularExpression(@"^[^\s]+$", ErrorMessage = "Space are not allowd")]
         //[Remote("IsDuplicateTagName", "Tag", ErrorMessage = "Tag name already exist !")]
         public string TagName { get; set; }
 

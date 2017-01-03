@@ -35,10 +35,14 @@ namespace Silicus.Ensure.Models.DataObjects
 
         public string ProjectName { get; set; }
 
-        public string CustomerName { get; set; }
+        public int FromExperience { get; set; }
 
-        public string ExperienceRange { get; set; }
-        
+        public int ToExperience { get; set; }
+
+        public int OptionalQuestion { get; set; }
+
+        public int PracticalQuestion { get; set; }
+                
         public bool IsDeleted { get; set; }
 
         public DateTime? ModifiedDate { get; set; }
