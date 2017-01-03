@@ -30,6 +30,7 @@ namespace Silicus.Ensure.Web.Mappings
             Mapper.CreateMap<UserTestSuite, TestSuiteCandidateModel>();
             Mapper.CreateMap<TestSuiteQuestionModel, object>();
             Mapper.CreateMap<object, TestSuiteQuestionModel>();
+            Mapper.CreateMap<ContainerUserViewModel, Silicus.UtilityContainer.Models.DataObjects.User>();
         }
     }
 }

@@ -15,18 +15,19 @@ using System.Web.Mvc;
 using System.IO;
 using Silicus.Ensure.Models.Constants;
 using Silicus.Ensure.Services;
+using System.Collections.Generic;
 
 namespace Silicus.Ensure.Web.Controllers
 {
 
-    [Authorize]
+    //[Authorize]
     public class UserController : Controller
     {
         private readonly IUserService _userService;
         private readonly IMappingService _mappingService;
         private readonly ITestSuiteService _testSuiteService;
         private readonly IPositionService _positionService;
-
+        private readonly Silicus.UtilityContainer.Services.Interfaces.IUserService _containerService;
         private ApplicationUserManager _userManager;
         public ApplicationUserManager UserManager
         {
@@ -53,12 +54,13 @@ namespace Silicus.Ensure.Web.Controllers
             }
         }
 
-        public UserController(IUserService userService, MappingService mappingService, ITestSuiteService testSuiteService, PositionService positionService)
+        public UserController(IUserService userService, MappingService mappingService, ITestSuiteService testSuiteService, PositionService positionService, Silicus.UtilityContainer.Services.Interfaces.IUserService containerService)
         {
             _positionService = positionService;
             _userService = userService;
             _mappingService = mappingService;
             _testSuiteService = testSuiteService;
+            _containerService = containerService;
         }
 
         public ActionResult Dashboard()
@@ -74,16 +76,16 @@ namespace Silicus.Ensure.Web.Controllers
         /// <returns></returns>
         public ActionResult GetUserDetails([DataSourceRequest] DataSourceRequest request)
         {
-            var userlist = _userService.GetUserDetails().Reverse().ToArray();
+            var userlist = _containerService.GetAllUsers();
 
-            var viewModels = _mappingService.Map<User[], UserViewModel[]>(userlist);
+            var viewModels = _mappingService.Map<List<Silicus.UtilityContainer.Models.DataObjects.User>,List<ContainerUserViewModel>>(userlist);
             bool userInRole = User.IsInRole(Silicus.Ensure.Models.Constants.RoleName.Admin.ToString());
 
-            for (int j = 0; j < viewModels.Count(); j++)
-            {
-                viewModels[j].IsAdmin = userInRole;
-                viewModels[j].FirstName = viewModels[j].FirstName + " " + viewModels[j].LastName;
-            }
+            //for (int j = 0; j < viewModels.Count(); j++)
+            //{
+            //    viewModels[j].IsAdmin = userInRole;
+            //    viewModels[j].FirstName = viewModels[j].FirstName + " " + viewModels[j].LastName;
+            //}
 
             DataSourceResult result = viewModels.ToDataSourceResult(request);
             return Json(result);

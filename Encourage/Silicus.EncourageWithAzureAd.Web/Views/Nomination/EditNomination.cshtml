@@ -41,7 +41,6 @@
                 @Html.HiddenFor(model => model.ProjectID)
                 @Html.HiddenFor(model => model.DepartmentId)
                 @Html.HiddenFor(model => model.ResourceId)
-                @Html.HiddenFor(model => model.IsOther)
 
                 @Html.ValidationSummary(true, "", new { @class = "text-danger" })
                 <div class="f1" style="padding-top:0px;">
@@ -52,7 +51,7 @@
                                     <div class="form-group">
                                         @Html.Label("Nomination Category", htmlAttributes: new { @class = "control-label requiredfeild", style = "text-align: left" })
                                         @*@Html.DropDownListFor(model => model.AwardId, Model.ListOfAwards as SelectList, "Select", new { @class = "form-control", id = "Award" })*@
-                                        @Html.TextBoxFor(model => model.AwardName, new { @class = "form-control", @disabled = "disabled" })
+                                        @Html.TextBoxFor(model => model.AwardName, new { @class = "form-control",@disabled="disabled" })
                                         @Html.ValidationMessageFor(model => model.AwardId, "", new { @class = "text-danger" })
 
                                     </div>
@@ -66,19 +65,19 @@
                                         <div class="radio-list">
                                             <label class="radio-inline p-0" style="padding-left:0px;">
                                                 <div class="radio radio-info">
-                                                    @Html.RadioButtonFor(model => model.SelectResourcesBy, "Project", new { id = "ProjectRadioButton", value = "Project", @disabled = "disabled" })
+                                                    @Html.RadioButtonFor(model => model.SelectResourcesBy, "Project", new { id = "ProjectRadioButton", value = "Project" })
                                                     <label for="radio1">Project</label>
                                                 </div>
                                             </label>
                                             <label class="radio-inline">
                                                 <div class="radio radio-info">
-                                                    @Html.RadioButtonFor(model => model.SelectResourcesBy, "Department", new { id = "DepartmentRadioButton", value = "Department", @disabled = "disabled" })
+                                                    @Html.RadioButtonFor(model => model.SelectResourcesBy, "Department", new { id = "DepartmentRadioButton", value = "Department" })
                                                     <label for="radio1">Department</label>
                                                 </div>
                                             </label>
                                             <label class="radio-inline">
                                                 <div class="radio radio-info">
-                                                    @Html.RadioButtonFor(model => model.SelectResourcesBy, "Other", new { id = "OtherRadioButton", value = "Other", @disabled = "disabled" })
+                                                    @Html.RadioButtonFor(model => model.SelectResourcesBy, "Other", new { id = "OtherRadioButton", value = "Other" })
                                                     <label for="radio1">Other</label>
                                                 </div>
                                             </label>
@@ -100,7 +99,7 @@
                                     </div>
                                 </div>
                             }
-                            else if (Model.DepartmentId != null)
+                            else if(Model.DepartmentId != null)
                             {
                                 <div class="row">
                                     <div class="col-lg-3 col-md-4 col-sm-5">
@@ -116,24 +115,8 @@
                             }
                             else
                             {
-                                <div class="row">
-                                    <div class="col-lg-3 col-md-4 col-sm-5">
-                                        <div class="form-group" id="otherInput">
-                                            @Html.Label("Reason", htmlAttributes: new { @class = "control-label requiredfeild" })
-                                            <div>
-                                                @if (Model.IsSubmitted == true)
-                                                {
-                                                    @Html.TextAreaFor(model => model.OtherNominationReason, new { @class = "form-control", @id = "otherReason", @disabled="disabled",rows = "5" })
-                                                    @Html.ValidationMessageFor(model => model.OtherNominationReason, "", new { @class = "text-danger", maxlength = 500 })
-                                                }
-                                                else
-                                                {
-                                                    @Html.TextAreaFor(model => model.OtherNominationReason, new { @class = "form-control", rows = "5", @id = "otherReason" })
-                                                    @Html.ValidationMessageFor(model => model.OtherNominationReason, "", new { @class = "text-danger" })
-                                                }
-                                            </div>
-                                        </div>
-                                    </div>
+                                <div>
+
                                 </div>
                             }
 
@@ -249,11 +232,11 @@
     @if (Model.IsSubmitted == true)
     {
         @:var isReadonly = true;
-                    }
+                }
     else
     {
         @:var isReadonly = false;
-                    }
+                }
     $(".example-square").barrating('show', {
         theme: 'bars-square',
         showValues: true,
@@ -267,7 +250,7 @@
         var selectedDept = $("#SelectedDepartment").val();
         var isSubmitted = $("#IsSubmitted").val();
 
-        //$('#basicFields').find('*').prop('disabled', true);
+        $('#basicFields').find('*').prop('disabled', true);
         if (selectedProject != "")
             $("#departmentInput").show();
         else if (selectedDept != "")

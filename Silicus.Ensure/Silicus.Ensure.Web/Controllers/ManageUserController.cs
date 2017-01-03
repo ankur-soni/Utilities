@@ -17,7 +17,7 @@ using System.Web.Mvc;
 
 namespace Silicus.Ensure.Web.Controllers
 {
-    [Authorize(Roles = "Admin")]
+    ///[Authorize(Roles = "Admin")]
     public class ManageUserController : Controller
     {
         private readonly IUserService _userService;
