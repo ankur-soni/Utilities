@@ -24,6 +24,7 @@ namespace Silicus.Ensure.Web.Controllers
     //[Authorize]
     public class UserController : Controller
     {
+        private readonly IPanelMemberService _panelMemberService;
         private readonly IUserService _userService;
         private readonly IMappingService _mappingService;
         private readonly ITestSuiteService _testSuiteService;
@@ -58,7 +59,7 @@ namespace Silicus.Ensure.Web.Controllers
         }
 
         public UserController(IUserService userService, MappingService mappingService, ITestSuiteService testSuiteService, PositionService positionService, Silicus.UtilityContainer.Services.Interfaces.IUserService containerService,
-            Silicus.UtilityContainer.Services.Interfaces.IUtilityService utilityService, Silicus.UtilityContainer.Services.Interfaces.IUtilityUserRoleService utilityUserRoleService)
+            Silicus.UtilityContainer.Services.Interfaces.IUtilityService utilityService, Silicus.UtilityContainer.Services.Interfaces.IUtilityUserRoleService utilityUserRoleService, IPanelMemberService panelMemberService)
         {
             _positionService = positionService;
             _userService = userService;
@@ -67,6 +68,7 @@ namespace Silicus.Ensure.Web.Controllers
             _containerService = containerService;
             _utilityService = utilityService;
             _utilityUserRoleService = utilityUserRoleService;
+            _panelMemberService = panelMemberService;
         }
 
         public ActionResult Dashboard()
@@ -109,6 +111,23 @@ namespace Silicus.Ensure.Web.Controllers
             DataSourceResult result = userWithRoles.ToDataSourceResult(request);
             return Json(result);
         }
+
+        private UserDetailViewModel GetAdUserDetails(string email)
+        {
+            var user = _containerService.FindUserByEmail(email);
+            var userViewModel = _mappingService.Map<Silicus.UtilityContainer.Models.DataObjects.User,UserDetailViewModel>(user);
+            var UtilityId = getUtilityId();
+            var userRole = _utilityUserRoleService.GetAllRolesForUser(email);
+
+            var assignedRole = userRole.FirstOrDefault(y => y.Id == userViewModel.UserId);
+
+            if (assignedRole!=null)
+            userViewModel.RoleName = assignedRole.Role.Name;
+
+            return userViewModel;
+        }
+
+       
 
         private int getUtilityId()
         {
