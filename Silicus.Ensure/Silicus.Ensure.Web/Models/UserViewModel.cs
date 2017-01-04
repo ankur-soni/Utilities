@@ -86,12 +86,12 @@ namespace Silicus.Ensure.Web.Models
         public int RelevantExperienceInMonth { get; set; }
 
         [StringLength(50)]
-        [Display(Name = "CurrentCompany")]
+        [Display(Name = "Current Company")]
         [Required(ErrorMessage = "Current company is required!")]
         public string CurrentCompany { get; set; }
 
         [StringLength(50)]
-        [Display(Name = "CurrentTitle")]
+        [Display(Name = "Current Title")]
         [Required(ErrorMessage = "Current title is required!")]
         public string CurrentTitle { get; set; }
 
