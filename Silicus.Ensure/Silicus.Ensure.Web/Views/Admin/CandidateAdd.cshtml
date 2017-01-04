@@ -265,34 +265,34 @@
             </div>
         </div>
         @*<div class="row" style="margin-bottom:10px!important">
-            <div class="col-md-6">
                 <div class="col-md-6">
-                    Upload Resume<b style="color:Red;">*</b>
-                </div>
-                <div class="col-md-6">
-                    <div class="demo-section k-content">
-                        <input name="files" id="file" style="display:none" type="file" />
+                    <div class="col-md-6">
+                        Upload Resume<b style="color:Red;">*</b>
                     </div>
-                    @if (!string.IsNullOrEmpty(Model.ResumeName))
-                    {
-                        <div id="uploadFileLink" class="postuploadedfilesholder clearfix">
-                            <div class="fileupload">
-                                <a href="@Html.Raw(Url.Content(Model.ResumePath))" targ target="_blank">@Html.Raw(Model.ResumeName)</a>
-                                <span class="deleteupload" title="Delete"><a onclick="DeleteF()">x</a></span>
-                            </div>
+                    <div class="col-md-6">
+                        <div class="demo-section k-content">
+                            <input name="files" id="file" style="display:none" type="file" />
                         </div>
-                        <script type="text/javascript">
-                            function DeleteF() {
-                                fileBool=true;
-                                $('#file').css('display','block')
-                                $("#uploadFileLink").html("");
-                                $("#ResumeName").val("");
-                            }
-                        </script>
-                    }
+                        @if (!string.IsNullOrEmpty(Model.ResumeName))
+                        {
+                            <div id="uploadFileLink" class="postuploadedfilesholder clearfix">
+                                <div class="fileupload">
+                                    <a href="@Html.Raw(Url.Content(Model.ResumePath))" targ target="_blank">@Html.Raw(Model.ResumeName)</a>
+                                    <span class="deleteupload" title="Delete"><a onclick="DeleteF()">x</a></span>
+                                </div>
+                            </div>
+                            <script type="text/javascript">
+                                function DeleteF() {
+                                    fileBool=true;
+                                    $('#file').css('display','block')
+                                    $("#uploadFileLink").html("");
+                                    $("#ResumeName").val("");
+                                }
+                            </script>
+                        }
+                    </div>
                 </div>
-            </div>
-        </div>*@
+            </div>*@
         <div class="row" style="margin-bottom:10px!important">
             <div class="col-md-6"></div>
             <div class="col-md-2 col-md-offset-4">
@@ -450,14 +450,16 @@
                         }
                         else if(input.val() != "")
                         {
+                            var today = new Date();
+                            var currentYear = today.getFullYear();
                             try{
                                 var parts = input.val().split("/");
                                 var timestamp= new Date(parts[1]+"/"+parts[0]+"/"+parts[2]);
-                                if (isNaN(timestamp)==true||parts[2]<1900)
+                                if (isNaN(timestamp)==true||parts[2]<1900||parts[2]>=currentYear)
                                 {
                                     input.attr("data-experiencevalidation-msg", "Invalid Date");
                                     return false;
-                        }
+                                }
                             }
                             catch(e){
                                 input.attr("data-experiencevalidation-msg", "Invalid Date");
