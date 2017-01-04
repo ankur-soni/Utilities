@@ -379,15 +379,24 @@ namespace Silicus.Ensure.Web.Controllers
             return View();
         }
 
-        public ActionResult GetTestSuiteDetails([DataSourceRequest] DataSourceRequest request)
+        public ActionResult GetTestSuiteDetails([DataSourceRequest] DataSourceRequest request, int UserId)
         {
             _testSuiteService.TestSuiteActivation();
             var tags = _tagsService.GetTagsDetails();
             var testSuitelist = _testSuiteService.GetTestSuiteDetails().Where(model => model.IsDeleted == false).OrderByDescending(model => model.TestSuiteId).ToArray();
             var viewModels = _mappingService.Map<TestSuite[], TestSuiteViewModel[]>(testSuitelist);
             bool userInRole = User.IsInRole(Silicus.Ensure.Models.Constants.RoleName.Admin.ToString());
+            var testSuitId = _testSuiteService.GetUserTestSuiteByUserId(UserId);
             foreach (var item in viewModels)
             {
+                if (testSuitId != null)
+                {
+                    if (testSuitId.TestSuiteId != 0 && item.TestSuiteId == testSuitId.TestSuiteId)
+                    {
+                        item.IsAssigned = true;
+                    }
+                }
+
                 item.PositionName = GetPosition(item.Position);
                 List<Int32> TagId = item.PrimaryTags.Split(',').Select(int.Parse).ToList();
                 item.PrimaryTagNames = string.Join(",", (from a in tags
@@ -703,9 +712,12 @@ namespace Silicus.Ensure.Web.Controllers
                 submittedTestViewModel.TotalMarksObtained = submittedTestViewModel.ObjectiveQuestionResult;
                 submittedTestViewModel.objectiveQuestionList = objectiveQuestionList;
                 submittedTestViewModel.practicalQuestionList = practicalQuestionList;
-
-                userDetails.CandidateStatus = CandidateStatus.UnderEvaluation.ToString();
-                _userService.Update(userDetails);
+                submittedTestViewModel.Status = userDetails.CandidateStatus;
+                if (userDetails.CandidateStatus == CandidateStatus.TestSubmitted.ToString())
+                {
+                    userDetails.CandidateStatus = CandidateStatus.UnderEvaluation.ToString();
+                    _userService.Update(userDetails);
+                }
                 return View(submittedTestViewModel);
 
             }

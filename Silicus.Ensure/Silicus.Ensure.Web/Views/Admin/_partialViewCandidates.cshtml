@@ -337,21 +337,20 @@
                         toolbar.Template(@<text>
                             <div class="toolbar">
                                 <div class="row">
-                                    <div class="col-md-4">
-                                        <div class="input-group">
-                                            <span class="input-group-addon"><span class="glyphicon glyphicon-search" aria-hidden="true"></span></span>
-                                            <input type="text" class="form-control" id='FieldFilter' placeholder="Search...">
-                                            <span class="input-group-btn">
-                                                <button id="candidateSearch" class="btn btn-default" style="height:16px;" type="button"><span class="glyphicon glyphicon-refresh" aria-hidden="true"></span></button>
-                                            </span>
+                                    <div class="col-sm-12 M-B15">
+                                        <div class="col-sm-3 M-T15">
+                                            <div class="input-group">
+                                                <span class="input-group-addon"><span class="glyphicon glyphicon-search" aria-hidden="true"></span></span>
+                                                <input type="text" class="form-control" id='FieldFilter' placeholder="Search">
+                                                <span class="input-group-btn">
+                                                    <button id="candidateSearch" class="btn btn-default" style="height:20px!important;border:1px solid #0070B9!important" type="button"><span class="glyphicon glyphicon-refresh" aria-hidden="true"></span></button>
+                                                </span>
+                                            </div>
                                         </div>
+                                        <a href='#' onclick='AddNew();' style="margin-top:20px;"  class='k-button k-button-icontext k-grid-add'><span class='k-icon k-add'></span>Add Candidate</a>
                                     </div>
                                 </div>
-                                <div class="row">
-                                    <div class="col-md-3" style="float: right; padding-right: 0px; margin-right: -22px;">
-                                        <a href='#' onclick='AddNew();' class='k-button k-button-icontext k-grid-add'><span class='k-icon k-add'></span>Add Candidate</a>
-                                    </div>
-                                </div>
+                               
                             </div>
                         </text>);
                     }))

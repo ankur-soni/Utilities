@@ -75,8 +75,15 @@ namespace Silicus.Ensure.Web
             kernel.Bind<ISmtpClient>().To<SmtpClientWrapper>();
             kernel.Bind<IEmailService>().To<EmailService>();
             kernel.Bind<IQuestionService>().To<QuestionService>();
-
             kernel.Bind<ICookieHelper>().To<CookieHelper>();
+            kernel.Bind<Silicus.UtilityContainer.Entities.IDataContextFactory>().To<Silicus.UtilityContainer.Entities.DataContextFactory>();
+            kernel.Bind<Silicus.UtilityContainer.Entities.ICommonDataBaseContext>().To<Silicus.UtilityContainer.Entities.CommonDataBaseContext>()
+                .WithConstructorArgument("connectionString", "name=DefaultConnection"); 
+            kernel.Bind<Silicus.UtilityContainer.Services.Interfaces.IRoleService>().To<Silicus.UtilityContainer.Services.RoleService>();
+            kernel.Bind<Silicus.UtilityContainer.Services.Interfaces.IUserService>().To<Silicus.UtilityContainer.Services.UserService>();
+            kernel.Bind<Silicus.UtilityContainer.Services.Interfaces.IUtilityService>().To<Silicus.UtilityContainer.Services.UtilityService>();
+            kernel.Bind<Silicus.UtilityContainer.Services.Interfaces.IUtilityUserRoleService>().To<Silicus.UtilityContainer.Services.UtilityUserRoleService>();
+            kernel.Bind<Silicus.UtilityContainer.Security.Interface.IAuthorization>().To<Silicus.UtilityContainer.Security.Authorization>();
 
             kernel.Bind<IAuditManager>().To<AuditManager>();
             kernel.Bind<ITagsService>().To<TagService>();

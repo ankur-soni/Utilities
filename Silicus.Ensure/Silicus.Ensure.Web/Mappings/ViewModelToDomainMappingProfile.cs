@@ -30,6 +30,11 @@ namespace Silicus.Ensure.Web.Mappings
             Mapper.CreateMap<UserTestSuite, TestSuiteCandidateModel>();
             Mapper.CreateMap<TestSuiteQuestionModel, object>();
             Mapper.CreateMap<object, TestSuiteQuestionModel>();
+            Mapper.CreateMap<ContainerUserViewModel, Silicus.UtilityContainer.Models.DataObjects.User>();
+            Mapper.CreateMap<UserDetailViewModel, Silicus.UtilityContainer.Models.DataObjects.User>()
+                .ForMember(dest => dest.EmailAddress, opt => opt.MapFrom(s => (s.Email)))
+                .ForMember(dest => dest.ID, opt => opt.MapFrom(s => (s.UserId)))
+                .ForMember(dest => dest.PrimaryRoleID, opt => opt.MapFrom(s => (s.RoleId)));
         }
     }
 }
