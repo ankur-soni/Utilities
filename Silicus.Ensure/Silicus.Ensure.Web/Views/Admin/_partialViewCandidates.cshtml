@@ -148,13 +148,7 @@
             if (chkCheck) {
                 var uId = $("#CurrentUser").val();
                 var IsReAssign = $("#IsReAssign").val();
-                var checkvals = [];
-                $('input:checkbox').each(function () {
-                    if ($(this).is(':checked')) {
-                        checkvals.push($(this).val());
-                    }
-                });
-                JSON.stringify(checkvals);
+                var checkvals = $("[class='check']:checked").attr("value")
                 //alert(checkvals);
                 $.ajax({
                     type: 'post',

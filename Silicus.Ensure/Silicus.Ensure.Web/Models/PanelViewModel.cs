@@ -11,6 +11,10 @@ namespace Silicus.Ensure.Web.Models
 
         public string PanelName { get; set; }
 
+        public string Designation { get; set; }
+
+        public string Department { get; set; }
+
         public bool IsAssignedPanel { get; set; }
     }
 }
