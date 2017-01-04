@@ -29,8 +29,8 @@
                                   })
                                           .Read(read => read.Action("GetTestSuiteDetails", "Admin", new { UserId = @ViewBag.CurrentUser }))
                                   .PageSize(10)
-                          )
-                          .Pageable()
+                              )
+                                  .Pageable(x => x.PageSizes(true))
                           .Sortable()
 
     )

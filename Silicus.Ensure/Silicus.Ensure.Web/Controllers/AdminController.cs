@@ -236,29 +236,31 @@ namespace Silicus.Ensure.Web.Controllers
             return PartialView("SelectCandidatesSuit");
         }
 
-        public ActionResult GetPanelDetails([DataSourceRequest] DataSourceRequest request)
+        public ActionResult GetPanelDetails([DataSourceRequest] DataSourceRequest request, int UserId)
         {
             try
             {
                 bool isAssignedPanel = false;
-                var userList = _userService.GetUserDetails();
+                var user = _userService.GetUserById(UserId);
                 var panelList = new List<PanelViewModel>();
 
-                if (userList != null && userList.Any())
+                if (user != null)
                 {
-                    var panelUserlist = userList.Where(p => p.Role.ToLower() == RoleName.Panel.ToString().ToLower()).ToArray();
+                    var panelUserlist = _positionService.GetAllPanelMemberDetails();
 
                     foreach (var item in panelUserlist)
                     {
-                        if (userList.Any(x => x.PanelId != null && x.PanelId.Contains(item.UserId.ToString())))
+                        isAssignedPanel = false;
+                        if (item.UserId == Convert.ToInt32(user.PanelId))
                         {
                             isAssignedPanel = true;
                         }
-
                         panelList.Add(new PanelViewModel()
                             {
                                 PanelId = item.UserId,
                                 PanelName = item.FirstName + " " + item.LastName,
+                                Designation = item.Designation,
+                                Department = item.Department,
                                 IsAssignedPanel = isAssignedPanel
                             });
                     }
@@ -281,24 +283,19 @@ namespace Silicus.Ensure.Web.Controllers
             return PartialView("_partialSelctPanelList");
         }
 
-        public ActionResult AssignPanelCandidate(string[] PUserId, int UserId, int IsReAssign = 0)
+        public ActionResult AssignPanelCandidate(string PUserId, int UserId, int IsReAssign = 0)
         {
             try
             {
-                var panelName = new List<string>(); ;
-                foreach (var userId in PUserId)
+                var user = _positionService.GetAllPanelMemberDetails().FirstOrDefault(x => x.UserId == Convert.ToInt32(PUserId));
+                if (user != null)
                 {
-                    var user = _userService.GetUserById(Convert.ToInt32(userId));
-                    if (user != null)
-                    {
-                        panelName.Add(user.FirstName + " " + user.LastName);
-                    }
+                    var updateUser = _userService.GetUserById(UserId);
+                    updateUser.PanelId = Convert.ToString(user.UserId);
+                    updateUser.PanelName = user.FirstName + " " + user.LastName;
+                    _userService.Update(updateUser);
                 }
 
-                var updateUser = _userService.GetUserById(UserId);
-                updateUser.PanelId = Convert.ToString(string.Join(",", PUserId));
-                updateUser.PanelName = Convert.ToString(string.Join(",", panelName));
-                _userService.Update(updateUser);
                 return Json(1);
             }
             catch
