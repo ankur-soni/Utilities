@@ -23,6 +23,7 @@ namespace Silicus.Ensure.Web.Controllers
         private readonly IUserService _userService;
         private readonly IMappingService _mappingService;
         private readonly IPositionService _positionService;
+        private readonly IPanelMemberService _panelMemberService;
 
         private ApplicationUserManager _userManager;
         public ApplicationUserManager UserManager
@@ -50,11 +51,12 @@ namespace Silicus.Ensure.Web.Controllers
             }
         }
 
-        public ManageUserController(IUserService userService, MappingService mappingService, PositionService positionService)
+        public ManageUserController(IUserService userService, MappingService mappingService, PositionService positionService, IPanelMemberService panelMemberService)
         {
             _positionService = positionService;
             _userService = userService;
             _mappingService = mappingService;
+            _panelMemberService = panelMemberService;
         }
         // GET: ManageUser
         public ActionResult Index()
@@ -72,6 +74,35 @@ namespace Silicus.Ensure.Web.Controllers
                 viewName = "_partialAddCandidateUserView";
 
             return View(viewName, userViewModel);
+        }
+
+        public ActionResult AssignPanelToUserView(UserDetailViewModel userDetailViewModel)
+        {
+            if (userDetailViewModel != null)
+            {
+                var PanelMemberDetails = _panelMemberService.GetPanelMeberDetails(userDetailViewModel.UserId);
+
+                var PanelMemberViewModel = _mappingService.Map<PanelMemberDetail, PanelMemberDetailViewModel>(PanelMemberDetails);
+
+                if (PanelMemberViewModel == null)
+                {
+                    PanelMemberViewModel = _mappingService.Map<UserDetailViewModel, PanelMemberDetailViewModel>(userDetailViewModel);
+                }
+                return PartialView(@"~\Views\ManageUser\_AssignPanel.cshtml", PanelMemberViewModel);
+            }
+            return null;
+        }
+
+        public ActionResult AssignPanelToUser(PanelMemberDetailViewModel panelMemberDetailViewModel)
+        {
+            bool issuccess = false;
+            if (panelMemberDetailViewModel != null)
+            {
+                var panelMember= _mappingService.Map<PanelMemberDetailViewModel,PanelMemberDetail >(panelMemberDetailViewModel);
+                issuccess=_panelMemberService.UpesertPanelMeberDetail(panelMember);
+               // return PartialView(@"~\Views\ManageUser\_AssignPanel.cshtml", PanelMemberViewModel);
+            }
+            return Json(issuccess,JsonRequestBehavior.AllowGet);
         }
 
 

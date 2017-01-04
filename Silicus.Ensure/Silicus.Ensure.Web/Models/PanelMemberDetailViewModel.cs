@@ -10,6 +10,7 @@ namespace Silicus.Ensure.Web.Models
     {
         [Key]
         public int Id { get; set; }
-        public string PanelIds { get; set; }
+        [Required]
+        public List<string> PanelIds { get; set; }
     }
 }

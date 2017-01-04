@@ -110,6 +110,7 @@
     <Compile Include="EmailService.cs" />
     <Compile Include="Interfaces\IEmailService.cs" />
     <Compile Include="Interfaces\IManager.cs" />
+    <Compile Include="Interfaces\IPanelMemberService.cs" />
     <Compile Include="Interfaces\IPanelService.cs" />
     <Compile Include="Interfaces\IPositionService.cs" />
     <Compile Include="Interfaces\IProjectDetailService.cs" />
@@ -122,6 +123,7 @@
     <Compile Include="Interfaces\ITestSuiteTagService.cs" />
     <Compile Include="Interfaces\IUserService.cs" />
     <Compile Include="ManagerService.cs" />
+    <Compile Include="PanelMemberService.cs" />
     <Compile Include="PanelService.cs" />
     <Compile Include="PositionService.cs" />
     <Compile Include="ProjectDetailService.cs" />
