@@ -8,6 +8,8 @@
                           {
                               columns.Bound(p => p.PanelId).ClientTemplate(@"<input type='checkbox' #if(IsAssignedPanel){# checked='checked' #}# class='check' id='chkHeader' value='#=PanelId#'/>").Title("").Width(100);
                               columns.Bound(p => p.PanelName).Width(200);
+                              columns.Bound(p => p.Designation).Width(200);
+                              columns.Bound(p => p.Department).Width(200);
                           })
                               .DataSource(dataSource => dataSource
                                   .Ajax()
@@ -16,10 +18,10 @@
                                       model.Id(p => p.PanelId);
                                       model.Field(p => p.PanelId).Editable(false);
                                   })
-                                  .Read(read => read.Action("GetPanelDetails", "Admin"))
+                                      .Read(read => read.Action("GetPanelDetails", "Admin", new { UserId = @ViewBag.CurrentUser }))
                                   .PageSize(10)
                           )
-                          .Pageable()
+                              .Pageable(x => x.PageSizes(true))
                           .Sortable()
                           .ToolBar(toolbar =>
                                 {

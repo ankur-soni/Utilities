@@ -250,7 +250,7 @@
         $("#departmentInput").hide();
         $("#label").hide();
         $('#Award option').css('color:red');
-        
+
         $("#Resources").select2();
     });
 
@@ -258,18 +258,18 @@
         $("#projectInput").hide();
         $("#departmentInput").hide();
 
+        var _urlGetAllResourcesForOtherReason = '@Url.Action("GetAllResourcesForOtherReason", "Nomination")';
+        var selectedAward = +$("#Award").val();
         var status = $("#OtherRadioButton").prop("checked");
         $('#Resources').empty();
         $('#Resources').append($("<option selected></option>").val(null).html("Select"));
         $(".loader-overlay").show();
         $.ajax({
-            type: 'post',
-            url: '@Url.Action("GetAllResources", "Nomination")',
-            data: JSON.stringify({ getAllResources: status }),
-            contentType: "application/json; charset=utf-8",
+            type: 'GET',
+            url: _urlGetAllResourcesForOtherReason,
+            data: { awardId: selectedAward },
             success: function (data) {
                 var ab = data;
-
                 for (var key in data) {
                     $('#Resources').append($("<option></option>").val(data[key].ID).html(data[key].DisplayName));
                 }

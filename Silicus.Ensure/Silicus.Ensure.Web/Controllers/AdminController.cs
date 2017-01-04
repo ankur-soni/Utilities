@@ -236,29 +236,31 @@ namespace Silicus.Ensure.Web.Controllers
             return PartialView("SelectCandidatesSuit");
         }
 
-        public ActionResult GetPanelDetails([DataSourceRequest] DataSourceRequest request)
+        public ActionResult GetPanelDetails([DataSourceRequest] DataSourceRequest request, int UserId)
         {
             try
             {
                 bool isAssignedPanel = false;
-                var userList = _userService.GetUserDetails();
+                var user = _userService.GetUserById(UserId);
                 var panelList = new List<PanelViewModel>();
 
-                if (userList != null && userList.Any())
+                if (user != null)
                 {
-                    var panelUserlist = userList.Where(p => p.Role.ToLower() == RoleName.Panel.ToString().ToLower()).ToArray();
+                    var panelUserlist = _positionService.GetAllPanelMemberDetails();
 
                     foreach (var item in panelUserlist)
                     {
-                        if (userList.Any(x => x.PanelId != null && x.PanelId.Contains(item.UserId.ToString())))
+                        isAssignedPanel = false;
+                        if (item.UserId == Convert.ToInt32(user.PanelId))
                         {
                             isAssignedPanel = true;
                         }
-
                         panelList.Add(new PanelViewModel()
                             {
                                 PanelId = item.UserId,
                                 PanelName = item.FirstName + " " + item.LastName,
+                                Designation = item.Designation,
+                                Department = item.Department,
                                 IsAssignedPanel = isAssignedPanel
                             });
                     }
@@ -281,24 +283,19 @@ namespace Silicus.Ensure.Web.Controllers
             return PartialView("_partialSelctPanelList");
         }
 
-        public ActionResult AssignPanelCandidate(string[] PUserId, int UserId, int IsReAssign = 0)
+        public ActionResult AssignPanelCandidate(string PUserId, int UserId, int IsReAssign = 0)
         {
             try
             {
-                var panelName = new List<string>(); ;
-                foreach (var userId in PUserId)
+                var user = _positionService.GetAllPanelMemberDetails().FirstOrDefault(x => x.UserId == Convert.ToInt32(PUserId));
+                if (user != null)
                 {
-                    var user = _userService.GetUserById(Convert.ToInt32(userId));
-                    if (user != null)
-                    {
-                        panelName.Add(user.FirstName + " " + user.LastName);
-                    }
+                    var updateUser = _userService.GetUserById(UserId);
+                    updateUser.PanelId = Convert.ToString(user.UserId);
+                    updateUser.PanelName = user.FirstName + " " + user.LastName;
+                    _userService.Update(updateUser);
                 }
 
-                var updateUser = _userService.GetUserById(UserId);
-                updateUser.PanelId = Convert.ToString(string.Join(",", PUserId));
-                updateUser.PanelName = Convert.ToString(string.Join(",", panelName));
-                _userService.Update(updateUser);
                 return Json(1);
             }
             catch
@@ -379,15 +376,24 @@ namespace Silicus.Ensure.Web.Controllers
             return View();
         }
 
-        public ActionResult GetTestSuiteDetails([DataSourceRequest] DataSourceRequest request)
+        public ActionResult GetTestSuiteDetails([DataSourceRequest] DataSourceRequest request, int UserId)
         {
             _testSuiteService.TestSuiteActivation();
             var tags = _tagsService.GetTagsDetails();
             var testSuitelist = _testSuiteService.GetTestSuiteDetails().Where(model => model.IsDeleted == false).OrderByDescending(model => model.TestSuiteId).ToArray();
             var viewModels = _mappingService.Map<TestSuite[], TestSuiteViewModel[]>(testSuitelist);
             bool userInRole = User.IsInRole(Silicus.Ensure.Models.Constants.RoleName.Admin.ToString());
+            var testSuitId = _testSuiteService.GetUserTestSuiteByUserId(UserId);
             foreach (var item in viewModels)
             {
+                if (testSuitId != null)
+                {
+                    if (testSuitId.TestSuiteId != 0 && item.TestSuiteId == testSuitId.TestSuiteId)
+                    {
+                        item.IsAssigned = true;
+                    }
+                }
+
                 item.PositionName = GetPosition(item.Position);
                 List<Int32> TagId = item.PrimaryTags.Split(',').Select(int.Parse).ToList();
                 item.PrimaryTagNames = string.Join(",", (from a in tags
@@ -703,9 +709,12 @@ namespace Silicus.Ensure.Web.Controllers
                 submittedTestViewModel.TotalMarksObtained = submittedTestViewModel.ObjectiveQuestionResult;
                 submittedTestViewModel.objectiveQuestionList = objectiveQuestionList;
                 submittedTestViewModel.practicalQuestionList = practicalQuestionList;
-
-                userDetails.CandidateStatus = CandidateStatus.UnderEvaluation.ToString();
-                _userService.Update(userDetails);
+                submittedTestViewModel.Status = userDetails.CandidateStatus;
+                if (userDetails.CandidateStatus == CandidateStatus.TestSubmitted.ToString())
+                {
+                    userDetails.CandidateStatus = CandidateStatus.UnderEvaluation.ToString();
+                    _userService.Update(userDetails);
+                }
                 return View(submittedTestViewModel);
 
             }

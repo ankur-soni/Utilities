@@ -20,6 +20,11 @@ namespace Silicus.Ensure.Services
             return _context.Query<Position>();
         }
 
+        public IEnumerable<PanelMemberDetail> GetAllPanelMemberDetails()
+        {
+            return _context.Query<PanelMemberDetail>();
+        }
+
         public IEnumerable<Position> GetPositionDetails()
         {
             return _context.Query<Position>().Where(x => x.IsDeleted == false).ToList();
