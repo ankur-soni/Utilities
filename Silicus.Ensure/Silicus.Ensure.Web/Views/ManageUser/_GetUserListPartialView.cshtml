@@ -112,10 +112,28 @@
         
     }
 
-    function assignType() {
+    function assignType(e) {
         var grid = $("#UserGrids").data("kendoGrid");
-        var dataItem = grid.dataItem($(e.currentTarget).closest("tr"));
-        $("#AssignTypeModal").modal('show');
+        var userDetailViewModel = grid.dataItem($(e.currentTarget).closest("tr"));
+        if (userDetailViewModel && userDetailViewModel.UserId) {
+            $.ajax({
+                type: "Post",
+                url: '/ManageUser/AssignTypeToUserView',
+                contentType: "application/json",
+                data: JSON.stringify(userDetailViewModel),
+                success: function (returndata) {
+                    if (returndata) {
+                        debugger
+                        $("#frmAssignType").html(returndata);
+                        $("#AssignTypeModal").modal('show');
+                        $("#frmAssignType").kendoValidator();
+                    }
+                    else {
+                        ShowMessage("Error occured while delete operation.", 0);
+                    }
+                }
+            });
+        }
     }
 
     function onSelect() {
@@ -186,13 +204,129 @@
                 success: function (data) {
                     //  ... do something with the data...
                     $("#AssignPanelModal").modal('hide');
-                    ShowMessage("Panel assigned successfully.", 1);
+                    if (data)
+                        ShowMessage("Panel assigned successfully.", 1);
+                    else
+                        ShowMessage("Problem occured.", 0);
                 }
             });
         }
         else
         {
             $("#PanelIds").blur();
+        }
+    }
+
+    function assignTypeToMeber() {
+        if ($("#TagIds").val()) {
+            $.ajax({
+                url: '/ManageUser/AssignTypeToUser',
+                type: 'post',
+                dataType: 'json',
+                data: $('#frmAssignType').serialize(),
+                success: function (data) {
+                    //  ... do something with the data...
+                    $("#AssignTypeModal").modal('hide');
+                    if(data)
+                        ShowMessage("Type assigned successfully.", 1);
+                    else
+                        ShowMessage("Problem occured.", 0);
+                }
+            });
+        }
+        else {
+            $("#TagIds").blur();
+        }
+    }
+
+    function saveTag() {
+        if ($("#tagForm").valid()) {
+            $.ajax({
+                type: "POST",
+                url: '/Tag/Save',
+                data: $('#tagForm').serialize(),
+                success: function (returndata) {
+                    debugger;
+                    $("#addTagPopup").modal('hide');
+                    var $tagMultiSelect = $('#TagIds').data('kendoMultiSelect');
+                    var multidata = $tagMultiSelect.dataSource.data();
+                    multidata.push({ TagName: returndata.TagName, TagId: returndata.TagId });
+                    var selectedValues = $tagMultiSelect.value();
+                    selectedValues.push(returndata.TagId);
+                    $tagMultiSelect.value(selectedValues);
+                    $("#tagForm").trigger("reset");
+                }
+            });
+        }
+        else {
+            $('#tagForm').submit();
+        }
+    }
+
+    function AddTag() {
+        $("#tagForm").kendoValidator({
+            rules: {
+                tagNamevalidation: function (input, params) {
+                    if (input.is("[name='TagName']") && input.val() != "") {
+                        input.attr("data-tagNamevalidation-msg", "Tag name already exist !");
+                        return isTagNameAvailable("", input.val());
+                    }
+
+                    return true;
+                }
+            }
+        });
+
+        $("#addTagPopup").modal('show');
+    }
+
+    function isTagNameAvailable(existingName, updatedName) {
+        var isAvailable = true;
+        if (existingName != updatedName) {
+            $.ajax({
+                type: "POST",
+                url: '/Tag/IsDuplicateTagName',
+                async: false,
+                data: { existingTagName: existingName, tagName: updatedName },
+                success: function (returndata) {
+                    if (returndata == true) {
+                        isAvailable = true;
+                    }
+                    else {
+                        isAvailable = false;
+                    }
+                }
+            });
+        }
+        return isAvailable;
+    }
+
+    function AddPanel() {
+        $("#addPanelPopup").modal('show');
+    }
+
+    function savePanel()
+    {
+        if ($("#panelForm").valid()) {
+            $.ajax({
+                type: "POST",
+                url: '/Panel/PanelSave',
+                data: $('#panelForm').serialize(),
+                success: function (returndata) {
+                    debugger;
+                    $("#addPanelPopup").modal('hide');
+                    var $panelMultiSelect = $('#PanelIds').data('kendoMultiSelect');
+                    var multidata = $panelMultiSelect.dataSource.data();
+                    multidata.push({ PanelName: returndata.PanelName, PanelId: returndata.PanelId });
+                    var selectedValues = $panelMultiSelect.value();
+                    selectedValues.push(returndata.PanelId);
+                    $panelMultiSelect.value(selectedValues);
+                    $("#panelForm").trigger("reset");
+                }
+            });
+        }
+        else {
+            $('#panelForm').submit();
         }
     }
 
@@ -211,7 +345,7 @@
             </div>
             
             <div class="modal-body">
-                <form id="frmAssignPanel" action="/ManageUser/AssignPanal">
+                <form id="frmAssignPanel">
 
                 </form>
             </div>
@@ -231,16 +365,66 @@
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal">&times;</button>
-                <h4 class="modal-title">Assign Panel</h4>
+                <h4 class="modal-title">Assign Type</h4>
             </div>
             <div class="modal-body">
-                <p>Some text in the modal.</p>
+                <form id="frmAssignType" ></form>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-default">Save</button>
+                <button type="button" class="btn btn-default" onclick="assignTypeToMeber()">Save</button>
                 <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
             </div>
         </div>
 
     </div>
+</div>
+
+<div class="modal fade" id="addTagPopup" role="dialog">
+    <form id="tagForm" action="/Tag/Save" method="post">
+        <div class="modal-dialog">
+
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title"><span>Add Tag</span></h4>
+                </div>
+                <div class="modal-body">
+
+                    @Html.Partial("~/Views/Shared/EditorTemplates/TagEditorTemplate.cshtml", new Silicus.Ensure.Models.DataObjects.Tags())
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" onclick="saveTag()" class="btn btn-default">Save</button>
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+
+        </div>
+    </form>
+</div>
+
+
+<div class="modal fade" id="addPanelPopup" role="dialog">
+    <form id="panelForm" action="/Panel/Save" method="post">
+        <div class="modal-dialog">
+
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title"><span>Add Panel</span></h4>
+                </div>
+                <div class="modal-body">
+
+                    @Html.Partial("~/Views/Panel/AddPanel.cshtml", new Silicus.Ensure.Models.DataObjects.Panel())
+                </div>
+                <div class="modal-footer">
+                    <button type="button" onclick="savePanel()" class="btn btn-default">Save</button>
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+
+        </div>
+    </form>
 </div>

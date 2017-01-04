@@ -148,8 +148,8 @@
                         @Html.LabelFor(model => model.DOB)<b style="color:Red;">*</b>
                     </div>
                     <div class="col-md-6">
-                        <input type="text" style="width:100%" onkeydown="return false" name="DOB" id="DOB" value="@if (Model.UserId != 0)
-                                                                                         { @Model.DOB.ToShortDateString()}" />
+                        <input type="text" style="width:100%" name="DOB" id="DOB" value="@if (Model.UserId != 0)
+                                                                                         { @Model.DOB.ToShortDateString().Replace("-","/")}" />
                         @Html.ValidationMessageFor(m => m.DOB)
                     </div>
                 </div>
@@ -447,6 +447,24 @@
                         if (!(input.val() != "")) {
                             input.attr("data-experiencevalidation-msg", "Date of birth is required!");
                             return false;
+                        }
+                        else if(input.val() != "")
+                        {
+                            var today = new Date();
+                            var currentYear = today.getFullYear();
+                            try{
+                                var parts = input.val().split("/");
+                                var timestamp= new Date(parts[1]+"/"+parts[0]+"/"+parts[2]);
+                                if (isNaN(timestamp)==true||parts[2]<1900||parts[2]>=currentYear)
+                                {
+                                    input.attr("data-experiencevalidation-msg", "Invalid Date");
+                                    return false;
+                                }
+                            }
+                            catch(e){
+                                input.attr("data-experiencevalidation-msg", "Invalid Date");
+                                return false;
+                            }
                         }
                         else if(input.val() != "")
                         {

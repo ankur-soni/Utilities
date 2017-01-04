@@ -1,4 +1,4 @@
-﻿@model Silicus.Ensure.Web.Models.PanelMemberDetailViewModel
+﻿@model Silicus.Ensure.Web.Models.RecruiterMemberDetailViewModel
 @using Kendo.Mvc.UI;
 
 
@@ -38,31 +38,29 @@
 
 
     <div class="form-group">
-        @Html.LabelFor(model => model.PanelIds, "Panel", htmlAttributes: new { @class = "control-label col-md-2" })
+        @Html.LabelFor(model => model.TagIds, "Tag", htmlAttributes: new { @class = "control-label col-md-2" })
         <div class="col-md-8">
-            @(Html.Kendo().MultiSelectFor(m => m.PanelIds)
-                                    .DataTextField("PanelName")
-                                    .DataValueField("PanelId")
-                                    .Placeholder("Select Panels...")
+            @(Html.Kendo().MultiSelectFor(m => m.TagIds)
+                                    .DataTextField("TagName")
+                                    .DataValueField("TagId")
+                                    .Placeholder("Select Tags...")
                                             .DataSource(source =>
                                             {
                                                 source.Read(read =>
                                                 {
-                                                    read.Action("GetPanelDetails", "Common");
+                                                    read.Action("GetAllTagDetails", "Common");
                                                 })
                                                 .ServerFiltering(false);
                                             })
-                                    .Value(Model.PanelIds)
+                                            .Value(Model.TagIds)
                                     .HtmlAttributes(new { style = "width: 100%", required = "required" }))
 
-            @Html.ValidationMessageFor(model => model.PanelIds, "", new { @class = "text-danger" })
+            @Html.ValidationMessageFor(model => model.TagIds, "", new { @class = "text-danger" })
         </div>
-        <div class="col-md-2" >
-            <a style="padding:2px 12px;" class="font-Bold themeColorBlue btn btn-primary" href="#" onclick="AddPanel();">Add Panel</a>
+        <div class="col-md-2">
+            <a style="padding:2px 12px;" class="font-Bold themeColorBlue btn btn-primary" href="#" onclick="AddTag();">Add Tag</a>
         </div>
     </div>
-
-   
 
 </div>
 

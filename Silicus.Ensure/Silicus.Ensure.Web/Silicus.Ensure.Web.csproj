@@ -429,6 +429,7 @@
     <Compile Include="Models\PanelViewModel.cs" />
     <Compile Include="Models\PositionViewModel.cs" />
     <Compile Include="Models\QuestionModel.cs" />
+    <Compile Include="Models\RecruiterMemberDetailViewModel.cs" />
     <Compile Include="Models\ResetPasswordModel.cs" />
     <Compile Include="Models\RoleViewModel.cs" />
     <Compile Include="Models\SubmittedTestViewModel.cs" />
@@ -823,8 +824,9 @@
     <Content Include="Views\Shared\EditorTemplates\PostionEditorTemplete.cshtml" />
     <Content Include="Views\TestSuite\ViewQuestion.cshtml" />
     <Content Include="Views\Admin\PartialTestSuitView.cshtml" />
-    <Content Include="Views\ManageUser\_AssignPanel1.cshtml" />
+    <Content Include="Views\ManageUser\_AssignType.cshtml" />
     <Content Include="Views\ManageUser\_AssignPanel.cshtml" />
+    <Content Include="Views\Panel\AddPanel.cshtml" />
     <None Include="Web.Azure.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
