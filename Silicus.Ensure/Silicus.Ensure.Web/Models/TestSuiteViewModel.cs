@@ -86,6 +86,8 @@ namespace Silicus.Ensure.Web.Models
         public IList<TestSuiteTagViewModel> Tags { get; set; }
 
         public bool UserInRole { get; set; }
+
+        public bool IsAssigned { get; set; }
     }
 
     public class TestSuiteTagViewModel
