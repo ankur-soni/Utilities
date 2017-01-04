@@ -148,7 +148,7 @@
                         @Html.LabelFor(model => model.DOB)<b style="color:Red;">*</b>
                     </div>
                     <div class="col-md-6">
-                        <input type="text" style="width:100%" name="DOB" id="DOB" value="@if (Model.UserId != 0)
+                        <input type="text" style="width:100%" onkeydown="return false" name="DOB" id="DOB" value="@if (Model.UserId != 0)
                                                                                          { @Model.DOB.ToShortDateString()}" />
                         @Html.ValidationMessageFor(m => m.DOB)
                     </div>
@@ -265,34 +265,34 @@
             </div>
         </div>
         @*<div class="row" style="margin-bottom:10px!important">
-            <div class="col-md-6">
                 <div class="col-md-6">
-                    Upload Resume<b style="color:Red;">*</b>
-                </div>
-                <div class="col-md-6">
-                    <div class="demo-section k-content">
-                        <input name="files" id="file" style="display:none" type="file" />
+                    <div class="col-md-6">
+                        Upload Resume<b style="color:Red;">*</b>
                     </div>
-                    @if (!string.IsNullOrEmpty(Model.ResumeName))
-                    {
-                        <div id="uploadFileLink" class="postuploadedfilesholder clearfix">
-                            <div class="fileupload">
-                                <a href="@Html.Raw(Url.Content(Model.ResumePath))" targ target="_blank">@Html.Raw(Model.ResumeName)</a>
-                                <span class="deleteupload" title="Delete"><a onclick="DeleteF()">x</a></span>
-                            </div>
+                    <div class="col-md-6">
+                        <div class="demo-section k-content">
+                            <input name="files" id="file" style="display:none" type="file" />
                         </div>
-                        <script type="text/javascript">
-                            function DeleteF() {
-                                fileBool=true;
-                                $('#file').css('display','block')
-                                $("#uploadFileLink").html("");
-                                $("#ResumeName").val("");
-                            }
-                        </script>
-                    }
+                        @if (!string.IsNullOrEmpty(Model.ResumeName))
+                        {
+                            <div id="uploadFileLink" class="postuploadedfilesholder clearfix">
+                                <div class="fileupload">
+                                    <a href="@Html.Raw(Url.Content(Model.ResumePath))" targ target="_blank">@Html.Raw(Model.ResumeName)</a>
+                                    <span class="deleteupload" title="Delete"><a onclick="DeleteF()">x</a></span>
+                                </div>
+                            </div>
+                            <script type="text/javascript">
+                                function DeleteF() {
+                                    fileBool=true;
+                                    $('#file').css('display','block')
+                                    $("#uploadFileLink").html("");
+                                    $("#ResumeName").val("");
+                                }
+                            </script>
+                        }
+                    </div>
                 </div>
-            </div>
-        </div>*@
+            </div>*@
         <div class="row" style="margin-bottom:10px!important">
             <div class="col-md-6"></div>
             <div class="col-md-2 col-md-offset-4">
@@ -429,7 +429,15 @@
     function onCancelClick() {
         window.location = '@Url.Action("Candidates", "Admin")';
     }
-
+    function GetNewDate() {
+        var date=new Date();
+        var year = date.getFullYear();
+        var month = (1 + date.getMonth()).toString();
+        month = month.length > 1 ? month : '0' + month;
+        var day = date.getDate().toString();
+        day = day.length > 1 ? day : '0' + day;
+        return day + '/' +month  + '/' + year;
+    }
     //register custom validation rules
     (function ($, kendo) {
         $.extend(true, kendo.ui.validator, {
@@ -442,8 +450,7 @@
                         }
                         else if(input.val() != "")
                         {
-                            var d=new Date();
-                            if( $('#DOB').val()>d)
+                            if( $('#DOB').val()>GetNewDate())
                             {
                                 input.attr("data-experiencevalidation-msg", "Date of birth can not be greater than today!");
                                 return false;
