@@ -10,10 +10,12 @@ namespace Silicus.Ensure.Web.Controllers
     public class CommonController : Controller
     {
         private readonly IPanelService _panelService;
+        private readonly ITagsService _tagService;
 
-        public CommonController(IPanelService panelService)
+        public CommonController(IPanelService panelService, ITagsService tagService)
         {
             _panelService = panelService;
+            _tagService = tagService;
         }
 
         public ActionResult GetPanelDetails()
@@ -24,6 +26,16 @@ namespace Silicus.Ensure.Web.Controllers
                 panellist = panellist.OrderByDescending(model => model.PanelId);
             }
             return Json(panellist, JsonRequestBehavior.AllowGet);
+        }
+
+        public ActionResult GetAllTagDetails()
+        {
+            var taglist = _tagService.GetTagsDetails();
+            if (taglist.Any())
+            {
+                taglist = taglist.OrderByDescending(model => model.TagId);
+            }
+            return Json(taglist, JsonRequestBehavior.AllowGet);
         }
     }
 }

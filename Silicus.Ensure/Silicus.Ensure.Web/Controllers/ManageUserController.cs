@@ -24,6 +24,7 @@ namespace Silicus.Ensure.Web.Controllers
         private readonly IMappingService _mappingService;
         private readonly IPositionService _positionService;
         private readonly IPanelMemberService _panelMemberService;
+        private readonly IRecruiterMeberService _recruiterMeberService;
 
         private ApplicationUserManager _userManager;
         public ApplicationUserManager UserManager
@@ -51,12 +52,13 @@ namespace Silicus.Ensure.Web.Controllers
             }
         }
 
-        public ManageUserController(IUserService userService, MappingService mappingService, PositionService positionService, IPanelMemberService panelMemberService)
+        public ManageUserController(IUserService userService, MappingService mappingService, PositionService positionService, IPanelMemberService panelMemberService, IRecruiterMeberService recruiterMeberService)
         {
             _positionService = positionService;
             _userService = userService;
             _mappingService = mappingService;
             _panelMemberService = panelMemberService;
+            _recruiterMeberService = recruiterMeberService;
         }
         // GET: ManageUser
         public ActionResult Index()
@@ -103,6 +105,36 @@ namespace Silicus.Ensure.Web.Controllers
                // return PartialView(@"~\Views\ManageUser\_AssignPanel.cshtml", PanelMemberViewModel);
             }
             return Json(issuccess,JsonRequestBehavior.AllowGet);
+        }
+
+
+        public ActionResult AssignTypeToUserView(UserDetailViewModel userDetailViewModel)
+        {
+            if (userDetailViewModel != null)
+            {
+                var RecruiterMeberDetails = _recruiterMeberService.GetRecruiterMeberDetails(userDetailViewModel.UserId);
+
+                var RecruiterMeberViewModel = _mappingService.Map<RecruiterMembersDetail, RecruiterMemberDetailViewModel>(RecruiterMeberDetails);
+
+                if (RecruiterMeberViewModel == null)
+                {
+                    RecruiterMeberViewModel = _mappingService.Map<UserDetailViewModel, RecruiterMemberDetailViewModel>(userDetailViewModel);
+                }
+                return PartialView(@"~\Views\ManageUser\_AssignType.cshtml", RecruiterMeberViewModel);
+            }
+            return null;
+        }
+
+        public ActionResult AssignTypeToUser(RecruiterMemberDetailViewModel recruiterMeberViewModel)
+        {
+            bool issuccess = false;
+            if (recruiterMeberViewModel != null)
+            {
+                var recruiterMember = _mappingService.Map<RecruiterMemberDetailViewModel, RecruiterMembersDetail>(recruiterMeberViewModel);
+                issuccess = _recruiterMeberService.UpesertRecruiterMeberDetail(recruiterMember);
+                // return PartialView(@"~\Views\ManageUser\_AssignPanel.cshtml", PanelMemberViewModel);
+            }
+            return Json(issuccess, JsonRequestBehavior.AllowGet);
         }
 
 
