@@ -26,6 +26,8 @@ namespace Silicus.Ensure.Services
             return _context.Query<User>().Where(x => x.IsDeleted == false);
         }
 
+       
+
         public int Add(User User)
         {
             _context.Add(User);

@@ -87,8 +87,29 @@
     function assignPanel(e)
     {
         var grid = $("#UserGrids").data("kendoGrid");
-        var dataItem = grid.dataItem($(e.currentTarget).closest("tr"));
-        $("#AssignPanelModal").modal('show');
+        var userDetailViewModel = grid.dataItem($(e.currentTarget).closest("tr"));
+        debugger;
+        if (userDetailViewModel && userDetailViewModel.UserId) {
+            $.ajax({
+                type: "Post",
+                url: '/ManageUser/AssignPanelToUserView',
+                contentType: "application/json",
+                data: JSON.stringify(userDetailViewModel),
+                success: function (returndata) {
+                    if (returndata) {
+                        debugger
+                        $("#frmAssignPanel").html(returndata);
+                        $("#AssignPanelModal").modal('show');
+                        $("#frmAssignPanel").kendoValidator();
+                    }
+                    else {
+                        ShowMessage("Error occured while delete operation.", 0);
+                    }
+                }
+            });
+        }
+
+        
     }
 
     function assignType() {
@@ -154,6 +175,27 @@
         });
     }
 
+    function assignPanelToMeber()
+    {
+        if ($("#PanelIds").val()) {
+            $.ajax({
+                url: '/ManageUser/AssignPanelToUser',
+                type: 'post',
+                dataType: 'json',
+                data: $('#frmAssignPanel').serialize(),
+                success: function (data) {
+                    //  ... do something with the data...
+                    $("#AssignPanelModal").modal('hide');
+                    ShowMessage("Panel assigned successfully.", 1);
+                }
+            });
+        }
+        else
+        {
+            $("#PanelIds").blur();
+        }
+    }
+
 </script>
 
 
@@ -167,11 +209,14 @@
                 <button type="button" class="close" data-dismiss="modal">&times;</button>
                 <h4 class="modal-title">Assign Panel</h4>
             </div>
+            
             <div class="modal-body">
-                <p>Some text in the modal.</p>
+                <form id="frmAssignPanel" action="/ManageUser/AssignPanal">
+
+                </form>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-default">Save</button>
+                <button type="button" class="btn btn-default" onclick="assignPanelToMeber()">Save</button>
                 <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
             </div>
         </div>
