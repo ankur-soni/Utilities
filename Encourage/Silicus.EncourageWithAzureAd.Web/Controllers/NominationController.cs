@@ -365,6 +365,18 @@ namespace Silicus.EncourageWithAzureAd.Web.Controllers
         }
 
         [HttpGet]
+        public JsonResult GetAllResourcesForOtherReason(int awardId)
+        {
+            _logger.Log("Nomination-GetAllResources-POST");
+            var allResources = new List<User>();
+            var email = User.Identity.Name;
+            int managerId = _awardService.GetUserIdFromEmail(User.Identity.Name);
+            var filteredResources = _nominationService.GetAllResourcesForOtherReason(awardId, managerId);
+
+            return Json(filteredResources, JsonRequestBehavior.AllowGet);
+        }
+
+        [HttpGet]
         [CustomeAuthorize(AllowedRole = "Manager")]
         public ActionResult SavedNomination(int managerId = 0)
         {
