@@ -7,6 +7,7 @@
 }) // Window load
 
 $(window).resize(function () {
+
     //var mainW = $('.main-content').height();
     //var mainW = $(window).height() - 70;
     //$('.nav').css({ height: mainW + 50 })
@@ -18,6 +19,10 @@ $(window).resize(function () {
 }) // Window resize
 
 $(document).ready(function () {
+    $(document).on('click','#menu-toggle', function () {        
+        $("body").toggleClass("mini-navbar");
+    });
+   
     $('.nav').css({ height: 0 })
 
     //toastr.options = {

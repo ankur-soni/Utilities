@@ -78,6 +78,9 @@
     <Reference Include="Silicus.FrameWorx.Utility">
       <HintPath>..\packages\Silicus.FrameWorx.Utility.1.0.0\lib\net45\Silicus.FrameWorx.Utility.dll</HintPath>
     </Reference>
+    <Reference Include="Silicus.UtilityContainer.Models">
+      <HintPath>..\..\..\..\Utilities\Silicus.Ensure\Silicus.Ensure.Web\Dependencies\Silicus.UtilityContainer.Models.dll</HintPath>
+    </Reference>
     <Reference Include="SpreadsheetGear2012.Core, Version=7.1.1.119, Culture=neutral, PublicKeyToken=39c186f5904944ec, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\Dependencies\SpreadsheetGear2012.Core.dll</HintPath>

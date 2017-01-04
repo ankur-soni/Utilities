@@ -7,622 +7,632 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<div class="main-content">
+<div class="row white-bg header-row">
+    <nav class="" role="navigation" style="margin-bottom: 0">
+        <div class="navbar-header">
+            <a class="navbar-minimalize minimalize-styl-2 btn btn-primary" id="menu-toggle" style="margin-left:15px;" href="#"><i class="fa fa-bars"></i> </a>
+        </div>
+    </nav>
 
-    @using (Html.BeginForm("AddQuestions", "QuestionBank", FormMethod.Post, new { id = "AddQuestionForm" }))
-    {
-        <div class="fluid mt20">
-            <div class="row">
-                <div class="alert alert-danger" id="errorDiv">
-                    <strong>Error!</strong> <span id="errorContent">This alert box could indicate a dangerous or potentially negative action.</span>
-                </div>
-                <div class="col-md-4">
-                    <span>Question Type</span><span style="color:red">*</span>
-                </div>
-                <div class="col-md-8">
-                    @(Html.Kendo().DropDownListFor(m => m.QuestionType)
-                .Name("QuestionType")
-                .Value(Model.QuestionType)
-                .Events(e => e.Change("QuestionTypeChange"))
-                .BindTo(EnumHelper.GetSelectList(typeof(QuestionType)))
-                .HtmlAttributes(new { style = "width: 100%" }))
-                </div>
-            </div>
-            <br />
+    <div class="col-lg-11 col-md-11 col-sm-11">
+        <h1 class="dashboard-name">Add Question</h1>
+    </div>
+</div>
 
-            <div class="row">
-                <div class="col-md-4">
-                    <span>Question</span><span style="color:red">*</span>
-                </div>
-                <div class="col-md-8">
-                    @Html.Kendo().EditorFor(m => m.QuestionDescription).Name("QuestionDescription").Encode(true).Value(Model.QuestionDescription)
-                    @Html.ValidationMessageFor(m => m.QuestionDescription)
-                </div>
-            </div>
-            <br />
+<div class="row">
+    <div class="col-sm-12">
+    <div class="box M-T15 M-B60">
+        <div class="f1">
 
-            <div id="practical">
-
-
-
-                <div class="row">
-                    <div class="col-md-4">
-                        <span>Answer Choices</span>
-                    </div>
-                </div>
-                <br />
-
-                <div class="row">
-                    @*<div class="col-md-4">
-                            <span>Option 1:</span><span style="color:red">*</span>
-                        </div>*@
-                    <div class="col-md-6">
-                        @Html.CheckBoxFor(y => y.IsAnsOption1, new { @class = "ansCheckBox" })
-                        @Html.TextBoxFor(m => m.Option1, new { @class = "form-control", Value = @Model.Option1 })
-                    </div>
-                </div>
-
-                <div class="row" id="rowOpt2">
-                    @*<div class="col-md-4">
-                            <span>Option 2:</span><span style="color:red">*</span>
-                        </div>*@
-                    <div class="col-md-6">
-                        @Html.CheckBoxFor(y => y.IsAnsOption2, new { @class = "ansCheckBox" })
-                        @Html.TextBoxFor(m => m.Option2, new { @class = "form-control", Value = @Model.Option2 })
-                    </div>
-                    <div class="col-md-2">
-                        @(Html.Kendo().Button().Name("btnAddOpt2").HtmlAttributes(new { type = "button", param = "2", @class = "glyphicon glyphicon-plus" }).Events(e => e.Click("OptionAdd")))
-                    </div>
-                </div>
-
-                <div class="row" id="rowOpt3">
-                    @*<div class="col-md-4">
-                            <span>Option 3:</span><span style="color:red">*</span>
-                        </div>*@
-                    <div class="col-md-6">
-                        @Html.CheckBoxFor(y => y.IsAnsOption3, new { @class = "ansCheckBox" })
-                        @Html.TextBoxFor(m => m.Option3, new { @class = "form-control", Value = @Model.Option3 })
-                    </div>
-                    <div class="col-md-2">
-                        @(Html.Kendo().Button().Name("btnAddOpt3").HtmlAttributes(new { type = "button", param = "3", @class = "glyphicon glyphicon-plus" }).Events(e => e.Click("OptionAdd")))
-                        @(Html.Kendo().Button().Name("btnDelOpt3").HtmlAttributes(new { type = "button", param = "3", @class = "glyphicon glyphicon-minus" }).Events(e => e.Click("OptionDelete")))
-                    </div>
-                </div>
-
-                <div class="row" id="rowOpt4">
-                    @*<div class="col-md-4">
-                            <span>Option 4:</span><span style="color:red">*</span>
-                        </div>*@
-                    <div class="col-md-6">
-                        @Html.CheckBoxFor(y => y.IsAnsOption4, new { @class = "ansCheckBox" })
-                        @Html.TextBoxFor(m => m.Option4, new { @class = "form-control", Value = @Model.Option4 })
-                    </div>
-                    <div class="col-md-2">
-                        @(Html.Kendo().Button().Name("btnAddOpt4").HtmlAttributes(new { type = "button", param = "4", @class = "glyphicon glyphicon-plus" }).Events(e => e.Click("OptionAdd")))
-                        @(Html.Kendo().Button().Name("btnDelOpt4").HtmlAttributes(new { type = "button", param = "4", @class = "glyphicon glyphicon-minus" }).Events(e => e.Click("OptionDelete")))
-                    </div>
-                </div>
-
-                <div class="row" id="rowOpt5">
-                    @*<div class="col-md-4">
-                            <span>Option 5:</span><span style="color:red">*</span>
-                        </div>*@
-                    <div class="col-md-6">
-                        @Html.CheckBoxFor(y => y.IsAnsOption5, new { @class = "ansCheckBox" })
-                        @Html.TextBoxFor(m => m.Option5, new { @class = "form-control", Value = @Model.Option5 })
-                    </div>
-                    <div class="col-md-2">
-                        @(Html.Kendo().Button().Name("btnAddOpt5").HtmlAttributes(new { type = "button", param = "5", @class = "glyphicon glyphicon-plus" }).Events(e => e.Click("OptionAdd")))
-                        @(Html.Kendo().Button().Name("btnDelOpt5").HtmlAttributes(new { type = "button", param = "5", @class = "glyphicon glyphicon-minus" }).Events(e => e.Click("OptionDelete")))
-                    </div>
-                </div>
-
-                <div class="row" id="rowOpt6">
-                    @*<div class="col-md-4">
-                            <span>Option 6:</span><span style="color:red">*</span>
-                        </div>*@
-                    <div class="col-md-6">
-                        @Html.CheckBoxFor(y => y.IsAnsOption6, new { @class = "ansCheckBox" })
-                        @Html.TextBoxFor(m => m.Option6, new { @class = "form-control", Value = @Model.Option6 })
-                    </div>
-                    <div class="col-md-2">
-                        @(Html.Kendo().Button().Name("btnAddOpt6").HtmlAttributes(new { type = "button", param = "6", @class = "glyphicon glyphicon-plus" }).Events(e => e.Click("OptionAdd")))
-                        @(Html.Kendo().Button().Name("btnDelOpt6").HtmlAttributes(new { type = "button", param = "6", @class = "glyphicon glyphicon-minus" }).Events(e => e.Click("OptionDelete")))
-                    </div>
-                </div>
-
-                <div class="row" id="rowOpt7">
-                    @*<div class="col-md-4">
-                            <span>Option 7:</span><span style="color:red">*</span>
-                        </div>*@
-                    <div class="col-md-6">
-                        @Html.CheckBoxFor(y => y.IsAnsOption7, new { @class = "ansCheckBox" })
-                        @Html.TextBoxFor(m => m.Option7, new { @class = "form-control", Value = @Model.Option7 })
-                    </div>
-                    <div class="col-md-2">
-                        @(Html.Kendo().Button().Name("btnAddOpt7").HtmlAttributes(new { type = "button", param = "7", @class = "glyphicon glyphicon-plus" }).Events(e => e.Click("OptionAdd")))
-                        @(Html.Kendo().Button().Name("btnDelOpt7").HtmlAttributes(new { type = "button", param = "7", @class = "glyphicon glyphicon-minus" }).Events(e => e.Click("OptionDelete")))
-                    </div>
-                </div>
-
-                <div class="row" id="rowOpt8">
-                    @*<div class="col-md-4">
-                            <span>Option 8:</span>
-                        </div>*@
-                    <div class="col-md-6">
-                        @Html.CheckBoxFor(y => y.IsAnsOption8, new { @class = "ansCheckBox" })
-                        @Html.TextBoxFor(m => m.Option8, new { @class = "form-control", Value = @Model.Option8 })
-                    </div>
-                    <div class="col-md-2">
-                        @(Html.Kendo().Button().Name("btnDelOpt8").HtmlAttributes(new { type = "button", param = "8", @class = "glyphicon glyphicon-minus" }).Events(e => e.Click("OptionDelete")))
-                    </div>
-                </div>
-
-
-                <div class="row">
-                    <div class="col-md-12">
-                        @*@(Html.Kendo().DropDownListFor(m => m.AnswerType)
-                            .Name("AnswerType")
-                            .Value(Model.AnswerType.ToString())
-                            .BindTo(EnumHelper.GetSelectList(typeof(AnswerType)))
-                            .HtmlAttributes(new { style = "width: 100%" }))*@
-                        @Html.HiddenFor(y => y.AnswerType)
-                        @Html.CheckBox("IsAllowedmoreThanOneAns", new { value = 1 })
-                        Allow more than one answer to this question
-                    </div>
-                </div>
-
-                @*<div class="row">
-                        <div class="col-md-4">
-                            <span>Correct Answer:</span><span style="color:red">*</span>
+            @using (Html.BeginForm("AddQuestions", "QuestionBank", FormMethod.Post, new { id = "AddQuestionForm" }))
+            {
+                <div class="fluid">
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <div class="alert alert-danger" id="errorDiv">
+                                <strong>Error!</strong> <span id="errorContent">This alert box could indicate a dangerous or potentially negative action.</span>
+                            </div>
                         </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-3">
+                            <div class="form-group">
+                                <label class="control-label font-Bold themeColorBlue">Question Type<span style="color:red">*</span></label>
+                                @(Html.Kendo().DropDownListFor(m => m.QuestionType)
+                                    .Name("QuestionType")
+                                    .Value(Model.QuestionType)
+                                    .Events(e => e.Change("QuestionTypeChange"))
+                                    .BindTo(EnumHelper.GetSelectList(typeof(QuestionType)))
+                                    .HtmlAttributes(new { style = "width: 100%" }))
+                            </div>
+                        </div>
+                      
+                    </div>                  
+                    <div class="row">
+                        <div class="col-sm-8">
+                            <div class="form-group">
+                                <label class="control-label font-Bold themeColorBlue">Question<span style="color:red">*</span></label>
+                            
+                            @Html.Kendo().EditorFor(m => m.QuestionDescription).Name("QuestionDescription").Encode(true).Value(Model.QuestionDescription)
+                            @Html.ValidationMessageFor(m => m.QuestionDescription)
+                            </div>
+                       </div>
+                    </div>
+                    
+                    <div id="practical">
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <div class="">
+                                    <label class="control-label font-Bold themeColorBlue">Answer Choices</label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <div class="input-group form-group">                                 
+                                    <div class="input-group-addon">
+                                        @Html.CheckBoxFor(y => y.IsAnsOption1, new { @class = "ansCheckBox" })
+                                    </div>
+                                    @Html.TextBoxFor(m => m.Option1, new { @class = "form-control", Value = @Model.Option1 })
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row" id="rowOpt2">
+                            <div class="col-sm-6">
+                                <div class="input-group form-group">
+                                    <div class="input-group-addon">
+                                        @Html.CheckBoxFor(y => y.IsAnsOption2, new { @class = "ansCheckBox" })
+                                    </div>
+                                    @Html.TextBoxFor(m => m.Option2, new { @class = "form-control", Value = @Model.Option2 }) 
+                                </div>
+                            </div>
+                            <div class="col-sm-2">
+                                @(Html.Kendo().Button().Name("btnAddOpt2").HtmlAttributes(new { type = "button", param = "2", @class = "glyphicon glyphicon-plus" }).Events(e => e.Click("OptionAdd")))
+                                @(Html.Kendo().Button().Name("btnDelOpt2").HtmlAttributes(new { type = "button", param = "2", @class = "glyphicon glyphicon-minus" }).Events(e => e.Click("OptionDelete")))
+                            </div>
+                          
+                        </div>
+                        <div class="row" id="rowOpt3">
+                            <div class="col-sm-6">
+                                <div class="input-group form-group">
+                                    <div class="input-group-addon">
+                                       @Html.CheckBoxFor(y => y.IsAnsOption3, new { @class = "ansCheckBox" })
+                                    </div>
+                                    @Html.TextBoxFor(m => m.Option3, new { @class = "form-control", Value = @Model.Option3 })
+                                </div>
+                            </div>
+                            <div class="col-sm-2">
+                                @(Html.Kendo().Button().Name("btnAddOpt3").HtmlAttributes(new { type = "button", param = "3", @class = "glyphicon glyphicon-plus" }).Events(e => e.Click("OptionAdd")))
+                                @(Html.Kendo().Button().Name("btnDelOpt3").HtmlAttributes(new { type = "button", param = "3", @class = "glyphicon glyphicon-minus" }).Events(e => e.Click("OptionDelete")))
+                            </div>
+                           
+                        </div>
+                        <div class="row" id="rowOpt4">
+                            <div class="col-sm-6">
+                                <div class="input-group form-group">
+                                    <div class="input-group-addon">
+                                       @Html.CheckBoxFor(y => y.IsAnsOption4, new { @class = "ansCheckBox" })
+                                    </div>
+                                   @Html.TextBoxFor(m => m.Option4, new { @class = "form-control", Value = @Model.Option4 })
+                                </div>
+                            </div>
+                            <div class="col-sm-2">
+                                @(Html.Kendo().Button().Name("btnAddOpt4").HtmlAttributes(new { type = "button", param = "4", @class = "glyphicon glyphicon-plus" }).Events(e => e.Click("OptionAdd")))
+                                @(Html.Kendo().Button().Name("btnDelOpt4").HtmlAttributes(new { type = "button", param = "4", @class = "glyphicon glyphicon-minus" }).Events(e => e.Click("OptionDelete")))
+                            </div>
+                           
+                        </div>
+                        <div class="row" id="rowOpt5">
+                            <div class="col-sm-6">
+                                <div class="input-group form-group">
+                                    <div class="input-group-addon">
+                                        @Html.CheckBoxFor(y => y.IsAnsOption5, new { @class = "ansCheckBox" })
+                                    </div>
+                                    @Html.TextBoxFor(m => m.Option5, new { @class = "form-control", Value = @Model.Option5 })
+                                </div>
+                            </div>
+                            <div class="col-sm-2">
+                                @(Html.Kendo().Button().Name("btnAddOpt5").HtmlAttributes(new { type = "button", param = "5", @class = "glyphicon glyphicon-plus" }).Events(e => e.Click("OptionAdd")))
+                                @(Html.Kendo().Button().Name("btnDelOpt5").HtmlAttributes(new { type = "button", param = "5", @class = "glyphicon glyphicon-minus" }).Events(e => e.Click("OptionDelete")))
+                            </div>
+                           
+                        </div>
+                        <div class="row" id="rowOpt6">
+                            <div class="col-sm-6">
+                                <div class="input-group form-group">
+                                    <div class="input-group-addon">
+                                        @Html.CheckBoxFor(y => y.IsAnsOption6, new { @class = "ansCheckBox" })
+                                    </div>
+                                    @Html.TextBoxFor(m => m.Option6, new { @class = "form-control", Value = @Model.Option6 })
+                                </div>
+                            </div>
+                            <div class="col-sm-2">
+                                @(Html.Kendo().Button().Name("btnAddOpt6").HtmlAttributes(new { type = "button", param = "6", @class = "glyphicon glyphicon-plus" }).Events(e => e.Click("OptionAdd")))
+                                @(Html.Kendo().Button().Name("btnDelOpt6").HtmlAttributes(new { type = "button", param = "6", @class = "glyphicon glyphicon-minus" }).Events(e => e.Click("OptionDelete")))
+                            </div>
+                        </div>
+                        <div class="row" id="rowOpt7">
+                            <div class="col-sm-6">
+                                <div class="input-group form-group">
+                                    <div class="input-group-addon">
+                                        @Html.CheckBoxFor(y => y.IsAnsOption7, new { @class = "ansCheckBox" })
+                                    </div>
+                                    @Html.TextBoxFor(m => m.Option7, new { @class = "form-control", Value = @Model.Option7 })
+                                </div>
+                            </div>
+                            <div class="col-sm-2">
+                                @(Html.Kendo().Button().Name("btnAddOpt7").HtmlAttributes(new { type = "button", param = "7", @class = "glyphicon glyphicon-plus" }).Events(e => e.Click("OptionAdd")))
+                                @(Html.Kendo().Button().Name("btnDelOpt7").HtmlAttributes(new { type = "button", param = "7", @class = "glyphicon glyphicon-minus" }).Events(e => e.Click("OptionDelete")))
+                            </div>
+                         </div>
+                        <div class="row" id="rowOpt8">
+                            <div class="col-sm-6">
+                                <div class="input-group form-group">
+                                    <div class="input-group-addon">
+                                       @Html.CheckBoxFor(y => y.IsAnsOption8, new { @class = "ansCheckBox" })
+                                    </div>
+                                    @Html.TextBoxFor(m => m.Option8, new { @class = "form-control", Value = @Model.Option8 })
+                                </div>
+                            </div>
+                            <div class="col-sm-2">
+                                @(Html.Kendo().Button().Name("btnDelOpt8").HtmlAttributes(new { type = "button", param = "8", @class = "glyphicon glyphicon-minus" }).Events(e => e.Click("OptionDelete")))
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <div class="checkbox">
+                                        <input id="IsAllowedmoreThanOneAns" type="checkbox">
+                                        <label for="checkbox33">Allow more than one answer to this question</label>
+                                    </div>
+                                    @Html.HiddenFor(y => y.AnswerType)
+                                </div>
+                               
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row" id="practicalAns">
+                        <div class="col-sm-8">
+                            <div class="form-group">
+                                <label class="control-label font-Bold themeColorBlue">Answer</label>
 
-                        <div class="col-md-8">
-                            @(Html.Kendo().MultiSelectFor(m => m.CorrectAnswer)
-                        .Name("CorrectAnswer")
-                        .Placeholder("Select correct option(s)...")
-                        .BindTo(EnumHelper.GetSelectList(typeof(Options)))
-                        .Value(Model.CorrectAnswer).HtmlAttributes(new { style = "width: 100%" }))
+                                @Html.Kendo().EditorFor(m => m.Answer).Name("Answer").Encode(true).Value(Model.Answer)
+                            </div>
+                        </div>
+                       
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label class="control-label font-Bold themeColorBlue">Tags<span style="color:red">*</span></label>
+                                @(Html.Kendo().MultiSelectFor(m => m.SkillTag)
+                                    .DataTextField("TagName")
+                                    .DataValueField("TagId")
+                                    .Placeholder("Select skill set...")
+                                    .BindTo(Model.SkillTagsList)
+                                    .Value(Model.SkillTag)
+                                    .HtmlAttributes(new { style = "width: 100%" }))
+                            </div>
+                        </div>
+                        <div class="col-sm-2" style="margin-top:23px;">
+                            <a style="padding:2px 12px;" class="font-Bold themeColorBlue btn btn-primary" href="#" onclick="AddTag();">Add Tag</a>
+                        </div>
+                       
+                    </div>                    
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label class="control-label font-Bold themeColorBlue">Proficiency<span style="color:red">*</span></label>
+                                @(Html.Kendo().DropDownListFor(m => m.ProficiencyLevel)
+                                .Name("ProficiencyLevel")
+                                .Value(Model.ProficiencyLevel)
+                                .BindTo(EnumHelper.GetSelectList(typeof(Proficiency)))
+                                .HtmlAttributes(new { style = "width: 100%" }))
+                                
+                            </div>
+
+                        </div>
+                        
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label class="control-label font-Bold themeColorBlue">Duration<span style="color:red">*</span></label>
+                               
+                                @Html.TextBoxFor(y => y.Duration, new { @type = "number", @min = "1", @max = "360" , @class="form-control", @style="width:100%;" })
+                            </div>
+
+                        </div>
+                       
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label class="control-label font-Bold themeColorBlue">Marks<span style="color:red">*</span></label>
+
+                                @Html.TextBoxFor(y => y.Marks, new { @type = "number", @min = "1", @max = "100", @class = "form-control", @style = "width:100%;" })
+                            </div>
+
+                        </div>
+                       
+                    </div>
+                    <div class="row M-T15">
+                       
+                        <div class="pull-right">
+                            <input type="submit" name="btnSaveAndAddNewQuestion" id="btnSaveAndAddNewQuestion" value="Save & Add Another Question" class="btn btn-primary" />
+                            <input type="button" name="btnSave" value="Save" class="btn btn-primary" />
+                            <input type="button" name="btnCancel" value="Cancel" class="btn btn-primary" />
+                        </div>
+                    </div>
+                    @*<div class="row">
+                        <div class="col-md-6"></div>
+                        <div class="col-md-2 col-md-offset-4">
+                            <input type="submit" value="Save & Add Another Question" id="btnSaveAndAddNewQuestion" name="btnSaveAndAddNewQuestion" />
+                            @(Html.Kendo().Button().Name("btnCancel").Icon("cancel").HtmlAttributes(new { type = "button" }).Events(e => e.Click("OnCancel")).Content("Cancel"))
+                            @(Html.Kendo().Button().Name("btnSave").Icon("tick").HtmlAttributes(new { type = "submit" }).Content("Save"))>
                         </div>
                     </div>*@
-            </div>
+                    @Html.HiddenFor(m => m.OptionCount, new { Value = @Model.OptionCount })
+                    <input type="hidden" name="CreatedOn" value="@Model.CreatedOn" />
+                    @*@Html.HiddenFor(m => m.CreatedOn, new { Value = @Model.CreatedOn })*@
+                    @*@Html.TextBoxFor(m => m.CreatedOn, "{0:dd/MM/yyyy}")*@
+                    @Html.HiddenFor(m => m.CreatedBy, new { Value = @Model.CreatedBy })
+                    @Html.HiddenFor(m => m.Id, new { Value = @Model.Id })
+                    @Html.HiddenFor(m => m.Edit, new { Value = @Model.Edit })
 
-
-            <div class="row" id="practicalAns">
-                <div class="col-md-4">
-                    <span>Answer</span>
-                </div>
-                <div class="col-md-8">
-                    @Html.Kendo().EditorFor(m => m.Answer).Name("Answer").Encode(true).Value(Model.Answer)
-                </div>
-            </div>
-            <br />
-
-            <div class="row">
-                <div class="col-md-4">
-                    <span>Tags</span><span style="color:red">*</span>
-                </div>
-
-                <div class="col-md-6">
-                    @(Html.Kendo().MultiSelectFor(m => m.SkillTag)
-                .DataTextField("TagName")
-                .DataValueField("TagId")
-                .Placeholder("Select skill set...")
-                .BindTo(Model.SkillTagsList)
-                .Value(Model.SkillTag)
-                .HtmlAttributes(new { style = "width: 100%" }))
-                </div>
-                <div class="col-md-2">
-                    <a href="#" onclick="AddTag();">Add Tag</a>
-                </div>
-            </div>
-            <br />
-
-            <div class="row">
-                <div class="col-md-4">
-                    <span>Proficiency</span><span style="color:red">*</span>
-                </div>
-
-                <div class="col-md-8">
-                    @(Html.Kendo().DropDownListFor(m => m.ProficiencyLevel)
-                .Name("ProficiencyLevel")
-                .Value(Model.ProficiencyLevel)
-                .BindTo(EnumHelper.GetSelectList(typeof(Proficiency)))
-                .HtmlAttributes(new { style = "width: 100%" }))
-                </div>
-            </div>
-            <br />
-
-            <div class="row">
-                <div class="col-md-4">
-                    <span>Duration</span><span id="durationRequired" style="color:red">*</span>
-                </div>
-
-                <div class="col-md-8">
-                    @Html.TextBoxFor(y => y.Duration, new { @type = "number", @min = "1", @max = "360" })
-
-                </div>
-            </div>
-            <br />
-
-            <div class="row">
-                <div class="col-md-4">
-                    <span>Marks</span><span style="color:red">*</span>
-                </div>
-
-                <div class="col-md-8">
-                    @Html.TextBoxFor(y => y.Marks, new { @type = "number", @min = "1", @max = "100" })
-
-                </div>
-            </div>
-            <br />
-
-            <div class="row">
-                <div class="col-md-6"></div>
-                <div class="col-md-2 col-md-offset-4">
-                    <input type="submit" value="Save & Add Another Question" id="btnSaveAndAddNewQuestion" name="btnSaveAndAddNewQuestion" />
-                    @(Html.Kendo().Button().Name("btnCancel").Icon("cancel").HtmlAttributes(new { type = "button" }).Events(e => e.Click("OnCancel")).Content("Cancel"))
-                    @(Html.Kendo().Button().Name("btnSave").Icon("tick").HtmlAttributes(new { type = "submit" }).Content("Save"))>
-                </div>
-            </div>
-            @Html.HiddenFor(m => m.OptionCount, new { Value = @Model.OptionCount })
-            <input type="hidden" name="CreatedOn" value="@Model.CreatedOn" />
-            @*@Html.HiddenFor(m => m.CreatedOn, new { Value = @Model.CreatedOn })*@
-            @*@Html.TextBoxFor(m => m.CreatedOn, "{0:dd/MM/yyyy}")*@
-            @Html.HiddenFor(m => m.CreatedBy, new { Value = @Model.CreatedBy })
-            @Html.HiddenFor(m => m.Id, new { Value = @Model.Id })
-            @Html.HiddenFor(m => m.Edit, new { Value = @Model.Edit })
-
-            <script>
-                function isAnySelectedAns(input)
-                {
-                    var qType = $('#QuestionType').val();
-                    if (input.is("[name=IsAnsOption1]") && qType == 1) {
-                        input.attr("data-IsAnsOption1-msg", "Please select at least single Answer !");
-                        return $(".ansCheckBox:checked").length>0;
-                    }
-                    return true;
-                }
-                function validateOtherOptions(input, params,optionNo)
-                {
-                    var qType = $('#QuestionType').val();
-                    if (input.is("[name=Option"+optionNo+"]") && qType == 1 && input.is(".otherOption")) {
-                        input.attr("data-Option"+optionNo+"-msg", "Option "+optionNo+" cann't be blank !");
-                        return input.val().trim()!="";
-                    }
-                    return true;
-                }
-                function validateOptions(input, params,optionNo)
-                {
-                    var qType = $('#QuestionType').val();
-                    if (input.is("[name=Option"+optionNo+"]") && qType == 1) {
-                        input.attr("data-Option"+optionNo+"-msg", "Option "+optionNo+" cann't be blank !");
-                        return input.val().trim()!="";//?isAnySelectedAns(input,optionNo):false;
-                    }
-                    return true;
-                }
-
-                $(document).ready(function () {
-                    $("#IsAnsOption1").removeAttr("data-val-required")
-                    $("#AddQuestionForm").kendoValidator({
-                        rules: {
-                            Option1: function (input, params) {
-                                return validateOptions(input, params,1);
-                            },
-                            Option2: function (input, params) {
-                                return validateOptions(input, params,2);
-                            },
-                            Option3: function (input, params) {
-                                return validateOtherOptions(input, params,3);
-                            },
-                            Option4: function (input, params) {
-                                return validateOtherOptions(input, params,4);
+                    <script>
+                        function isAnySelectedAns(input)
+                        {
+                            var qType = $('#QuestionType').val();
+                            if (input.is("[name=IsAnsOption1]") && qType == 1) {
+                                input.attr("data-IsAnsOption1-msg", "Please select at least single Answer !");
+                                return $(".ansCheckBox:checked").length>0;
                             }
-                            ,
-                            Option5: function (input, params) {
-                                return validateOtherOptions(input, params,5);
-                            },
-                            Option6: function (input, params) {
-                                return validateOtherOptions(input, params,6);
-                            },
-                            Option7: function (input, params) {
-                                return validateOtherOptions(input, params,7);
-                            },
-                            Option8: function (input, params) {
-                                return validateOtherOptions(input, params,8);
-                            },
-                            IsAnsOption1: function (input, params) {
-                                return isAnySelectedAns(input);
-                            },
-                            Answer:function (input, params) {
-                                var qType = $('#QuestionType').val();
-                                if (input.is("[name=Answer]") && qType == 2) {
-                                    input.attr("data-Answer-msg", "Answer cann't be blank !");
-                                    return input.val().trim()!="";
+                            return true;
+                        }
+                        function validateOtherOptions(input, params,optionNo)
+                        {
+                            var qType = $('#QuestionType').val();
+                            if (input.is("[name=Option"+optionNo+"]") && qType == 1 && input.is(".otherOption")) {
+                                input.attr("data-Option"+optionNo+"-msg", "Option "+optionNo+" cann't be blank !");
+                                return input.val().trim()!="";
+                            }
+                            return true;
+                        }
+                        function validateOptions(input, params,optionNo)
+                        {
+                            var qType = $('#QuestionType').val();
+                            if (input.is("[name=Option"+optionNo+"]") && qType == 1) {
+                                input.attr("data-Option"+optionNo+"-msg", "Option "+optionNo+" cann't be blank !");
+                                return input.val().trim()!="";//?isAnySelectedAns(input,optionNo):false;
+                            }
+                            return true;
+                        }
+
+                        $(document).ready(function () {
+                            $("#IsAnsOption1").removeAttr("data-val-required")
+                            $("#AddQuestionForm").kendoValidator({
+                                rules: {
+                                    Option1: function (input, params) {
+                                        return validateOptions(input, params,1);
+                                    },
+                                    Option2: function (input, params) {
+                                        return validateOptions(input, params,2);
+                                    },
+                                    Option3: function (input, params) {
+                                        return validateOtherOptions(input, params,3);
+                                    },
+                                    Option4: function (input, params) {
+                                        return validateOtherOptions(input, params,4);
+                                    }
+                                    ,
+                                    Option5: function (input, params) {
+                                        return validateOtherOptions(input, params,5);
+                                    },
+                                    Option6: function (input, params) {
+                                        return validateOtherOptions(input, params,6);
+                                    },
+                                    Option7: function (input, params) {
+                                        return validateOtherOptions(input, params,7);
+                                    },
+                                    Option8: function (input, params) {
+                                        return validateOtherOptions(input, params,8);
+                                    },
+                                    IsAnsOption1: function (input, params) {
+                                        return isAnySelectedAns(input);
+                                    },
+                                    Answer:function (input, params) {
+                                        var qType = $('#QuestionType').val();
+                                        if (input.is("[name=Answer]") && qType == 2) {
+                                            input.attr("data-Answer-msg", "Answer cann't be blank !");
+                                            return input.val().trim()!="";
+                                        }
+                                        return true;
+                                    }
                                 }
-                                return true;
+
+                            });
+
+
+                            var $answerType=$("#AnswerType");
+                            if($answerType.val()<2)
+                            {
+                                $answerType.val(1);
+                                $("#IsAllowedmoreThanOneAns").attr("checked",false);
                             }
-                        }
-
-                });
-
-
-                var $answerType=$("#AnswerType");
-                if($answerType.val()<2)
-                {
-                    $answerType.val(1);
-                    $("#IsAllowedmoreThanOneAns").attr("checked",false);
-                }
-                else
-                {
-                    $("#IsAllowedmoreThanOneAns").attr("checked",true);
-                }
-                $("#IsAllowedmoreThanOneAns").on("click",function()
-                {
-                    $("#AnswerType").val($("#IsAllowedmoreThanOneAns").is(":checked")?2:1);
-                    var $ansCheckBoxes=$(".ansCheckBox:checked");
-                    if($ansCheckBoxes.length>1)
-                        $ansCheckBoxes.prop("checked",false);
-                })
-
-
-                $(".ansCheckBox").on("click",function()
-                {
-                    if(!$("#IsAllowedmoreThanOneAns").is(":checked"))
-                    {
-                        //var isCheked=$(this).is(":checked");
-                        $(".ansCheckBox").prop("checked",false);
-                        $(this).prop("checked",true);
-                    }
-                });
-
-                // Hide More Than 2 Options.
-                for(var i=3; i<=8; i++)
-                {
-                    $("#rowOpt"+i).hide();
-                }
-
-                //ShowRequiredOptionInCorrectAnswerDropDown();
-
-                $("#errorDiv").hide();
-                $("#durationRequired").hide();
-                $("#practicalAns").hide();
-
-
-                var success =@Model.Success;
-                var edit="@Model.Edit";
-                if(success==1 || success==2 )
-                {
-                    if(edit=="True"){
-                        $("#myModal").modal();
-                        $("#msgContent").text("Question updated successfully.");
-                    }
-                    else{
-                        $("#myModal").modal();
-                        $("#msgContent").text("Question added successfully in the application.");
-                    }
-                }
-                else
-                {
-                    if(edit=="True"){
-                        var optCnt=@Model.OptionCount;
-                        OptionDispalyOnEdit(optCnt);
-                        //ShowRequiredOptionInCorrectAnswerDropDown();
-                    }
-                }
-
-
-
-                // Check Question Type on Edit.
-                var qtype=@Model.QuestionType;
-                if (qtype == "2") {
-                    $("#practical").hide();
-                    $("#practicalAns").show();
-                    $("#durationRequired").show();
-                }
-
-
-
-
-                });
-
-                // Show Error Animation
-                function ShowError(content) {
-                    $("#errorDiv").show();
-                    $("#errorContent").text(content);
-                    $("html, body").animate({ scrollTop: 0 }, "slow");
-                    $("#errorDiv").fadeOut(10000);
-                }
-
-                // Question Type Change - > Set default values of controls.
-                function QuestionTypeChange() {
-                    var value = $("#QuestionType").val();
-                    if (value == "2") {
-                        $("#practical").hide();
-                        $("#practicalAns").show();
-                        $("#durationRequired").show();
-                    } else {
-                        $("#practical").show();
-                        $("#practicalAns").hide();
-                        $("#durationRequired").hide();
-
-                    }
-
-                    $("#Option1").val("");
-                    $("#Option2").val("");
-                    $("#Option3").val("");
-                    $("#Option4").val("");
-                    $("#Option5").val("");
-                    $("#Option6").val("");
-                    $("#Option7").val("");
-                    $("#Option8").val("");
-                    var answer = $("#Answer").data("kendoEditor");
-                    answer.value("");
-                    //var correctAnswer = $('#CorrectAnswer').data("kendoMultiSelect");
-                    //correctAnswer.value([]);
-                    $(".ansCheckBox").prop("checked",false);
-                    var skillTag = $('#SkillTag').data("kendoMultiSelect");
-                    skillTag.value([]);
-                    var answerType = $("#AnswerType");
-                    answerType.val("1");
-                    var proficiency = $("#ProficiencyLevel").data("kendoDropDownList");
-                    proficiency.value("1");
-                    var duration = $("#Duration").val('1');
-                }
-
-                function OnCancel() {
-                    var success="@Model.Success";
-                    if(success==2)
-                    {
-                        window.location.href = "/QuestionBank/AddQuestions";
-                    }
-                    else
-                    {
-                        window.location.href = "/QuestionBank/QuestionBank";
-                    }
-
-                }
-
-                // On Click Of "Add" button of any Option
-                function OptionAdd() {
-                    var param = this.element.attr("param");
-                    OptionDispaly('A', param);
-                }
-
-                // On Click Of "Delete" button of any Option
-                function OptionDelete() {
-                    var param = this.element.attr("param");
-                    OptionDispaly('D', param);
-                }
-
-                // Display Option Method For "Add" and "Delete" button Click.
-                function OptionDispaly(task, opt) {
-                    var op = parseInt(opt);
-                    if (task == 'A') {
-                        $("#OptionCount").val(op + 1);
-                        var opCnt = parseInt($("#OptionCount").val());
-                        if (op == 2 || op == 7) {
-                            $("#btnAddOpt" + op).hide();
-                        }
-                        for (var i = op; i <= op + 1; i++) {
-                            $("#rowOpt" + i).show();
-                            $("#Option" + opCnt).addClass('otherOption');
-                            $("#btnDelOpt" + i).show();
-                        }
-                        if (op != 7) {
-                            for (var i = op + 2; i <= 8; i++) {
-                                $("#rowOpt" + i).hide();
-                                $("#btnAddOpt" + op).hide();
+                            else
+                            {
+                                $("#IsAllowedmoreThanOneAns").attr("checked",true);
                             }
-                        }
-                    } else {
-                        var opCnt = parseInt($("#OptionCount").val());
-                        $("#IsAnsOption" + opCnt).prop("checked",false);
-                        $("#Option" + opCnt).val("");
-                        $("#Option" + opCnt).removeClass('otherOption');
-                        ;
-                        $("#rowOpt" + opCnt).hide();
-                        $("#btnAddOpt" + (opCnt - 1)).show();
-                        $("#OptionCount").val(opCnt - 1);
-                    }
+                            $("#IsAllowedmoreThanOneAns").on("click",function()
+                            {
+                                $("#AnswerType").val($("#IsAllowedmoreThanOneAns").is(":checked")?2:1);
+                                var $ansCheckBoxes=$(".ansCheckBox:checked");
+                                if($ansCheckBoxes.length>1)
+                                    $ansCheckBoxes.prop("checked",false);
+                            })
 
-                }
 
-                // Display Option On Edit Question
-                function OptionDispalyOnEdit(opt) {
-                    var op = parseInt(opt);
-                    if (op > 2) {
-                        $("#btnAddOpt2").hide();
-                        for (var i = 3; i <= op; i++) {
-                            $("#rowOpt" + i).show();
-                            $("#btnDelOpt" + i).show();
+                            $(".ansCheckBox").on("click",function()
+                            {
+                                if(!$("#IsAllowedmoreThanOneAns").is(":checked"))
+                                {
+                                    //var isCheked=$(this).is(":checked");
+                                    $(".ansCheckBox").prop("checked",false);
+                                    $(this).prop("checked",true);
+                                }
+                            });
 
-                            if (i != op)
-                                $("#btnAddOpt" + i).hide();
-                        }
-                    }
-                }
-
-                function saveTag()
-                {
-                    if($("#tagForm").valid())
-                    {
-                        $.ajax({
-                            type: "POST",
-                            url: '/Tag/Save',
-                            data: $('#tagForm').serialize(),
-                            success: function (returndata) {
-                                $("#addTagPopup").modal('hide');
-                                var $tagMultiSelect=$('#SkillTag').data('kendoMultiSelect');
-                                var multidata=$tagMultiSelect.dataSource.data();
-                                multidata.push({ TagName: returndata.TagName, TagId: returndata.TagId});
-                                var selectedValues=$tagMultiSelect.value();
-                                selectedValues.push(returndata.TagId);
-                                $tagMultiSelect.value(selectedValues);
-                                $("#tagForm").trigger("reset");
+                            // Hide More Than 2 Options.
+                            for(var i=3; i<=8; i++)
+                            {
+                                $("#rowOpt"+i).hide();
                             }
+
+                            //ShowRequiredOptionInCorrectAnswerDropDown();
+
+                            $("#errorDiv").hide();
+                            $("#durationRequired").hide();
+                            $("#practicalAns").hide();
+
+
+                            var success =@Model.Success;
+                            var edit="@Model.Edit";
+                            if(success==1 || success==2 )
+                            {
+                                if(edit=="True"){
+                                    $("#myModal").modal();
+                                    $("#msgContent").text("Question updated successfully.");
+                                }
+                                else{
+                                    $("#myModal").modal();
+                                    $("#msgContent").text("Question added successfully in the application.");
+                                }
+                            }
+                            else
+                            {
+                                if(edit=="True"){
+                                    var optCnt=@Model.OptionCount;
+                                    OptionDispalyOnEdit(optCnt);
+                                    //ShowRequiredOptionInCorrectAnswerDropDown();
+                                }
+                            }
+
+
+
+                            // Check Question Type on Edit.
+                            var qtype=@Model.QuestionType;
+                            if (qtype == "2") {
+                                $("#practical").hide();
+                                $("#practicalAns").show();
+                                $("#durationRequired").show();
+                            }
+
+
+
+
                         });
-                    }
-                    else
-                    {
-                        $('#tagForm').submit();
-                    }
-                }
 
-                function AddTag()
-                {
-                    // $("#tagForm").kendoValidator();
-                    $("#tagForm").kendoValidator({
-                        rules: {
-                            tagNamevalidation: function (input, params) {
-                                if (input.is("[name='TagName']") && input.val() != "") {
-                                    input.attr("data-tagNamevalidation-msg", "Tag name already exist !");
-                                    return isTagNameAvailable("", input.val());
+                        // Show Error Animation
+                        function ShowError(content) {
+                            $("#errorDiv").show();
+                            $("#errorContent").text(content);
+                            $("html, body").animate({ scrollTop: 0 }, "slow");
+                            $("#errorDiv").fadeOut(10000);
+                        }
+
+                        // Question Type Change - > Set default values of controls.
+                        function QuestionTypeChange() {
+                            var value = $("#QuestionType").val();
+                            if (value == "2") {
+                                $("#practical").hide();
+                                $("#practicalAns").show();
+                                $("#durationRequired").show();
+                            } else {
+                                $("#practical").show();
+                                $("#practicalAns").hide();
+                                $("#durationRequired").hide();
+
+                            }
+
+                            $("#Option1").val("");
+                            $("#Option2").val("");
+                            $("#Option3").val("");
+                            $("#Option4").val("");
+                            $("#Option5").val("");
+                            $("#Option6").val("");
+                            $("#Option7").val("");
+                            $("#Option8").val("");
+                            var answer = $("#Answer").data("kendoEditor");
+                            answer.value("");
+                            //var correctAnswer = $('#CorrectAnswer').data("kendoMultiSelect");
+                            //correctAnswer.value([]);
+                            $(".ansCheckBox").prop("checked",false);
+                            var skillTag = $('#SkillTag').data("kendoMultiSelect");
+                            skillTag.value([]);
+                            var answerType = $("#AnswerType");
+                            answerType.val("1");
+                            var proficiency = $("#ProficiencyLevel").data("kendoDropDownList");
+                            proficiency.value("1");
+                            var duration = $("#Duration").val('1');
+                        }
+
+                        function OnCancel() {
+                            var success="@Model.Success";
+                            if(success==2)
+                            {
+                                window.location.href = "/QuestionBank/AddQuestions";
+                            }
+                            else
+                            {
+                                window.location.href = "/QuestionBank/QuestionBank";
+                            }
+
+                        }
+
+                        // On Click Of "Add" button of any Option
+                        function OptionAdd() {
+                            var param = this.element.attr("param");
+                            OptionDispaly('A', param);
+                        }
+
+                        // On Click Of "Delete" button of any Option
+                        function OptionDelete() {
+                            var param = this.element.attr("param");
+                            OptionDispaly('D', param);
+                        }
+
+                        // Display Option Method For "Add" and "Delete" button Click.
+                        function OptionDispaly(task, opt) {
+                            var op = parseInt(opt);
+                            if (task == 'A') {
+                                $("#OptionCount").val(op + 1);
+                                var opCnt = parseInt($("#OptionCount").val());
+                                if (op == 2 || op == 7) {
+                                    $("#btnAddOpt" + op).hide();
                                 }
+                                for (var i = op; i <= op + 1; i++) {
+                                    $("#rowOpt" + i).show();
+                                    $("#Option" + opCnt).addClass('otherOption');
+                                    $("#btnDelOpt" + i).show();
+                                }
+                                if (op != 7) {
+                                    for (var i = op + 2; i <= 8; i++) {
+                                        $("#rowOpt" + i).hide();
+                                        $("#btnAddOpt" + op).hide();
+                                    }
+                                }
+                            } else {
+                                var opCnt = parseInt($("#OptionCount").val());
+                                $("#IsAnsOption" + opCnt).prop("checked",false);
+                                $("#Option" + opCnt).val("");
+                                $("#Option" + opCnt).removeClass('otherOption');
+                                ;
+                                $("#rowOpt" + opCnt).hide();
+                                $("#btnAddOpt" + (opCnt - 1)).show();
+                                $("#OptionCount").val(opCnt - 1);
+                            }
 
-                                return true;
+                        }
+
+                        // Display Option On Edit Question
+                        function OptionDispalyOnEdit(opt) {
+                            var op = parseInt(opt);
+                            if (op > 2) {
+                                $("#btnAddOpt2").hide();
+                                for (var i = 3; i <= op; i++) {
+                                    $("#rowOpt" + i).show();
+                                    $("#btnDelOpt" + i).show();
+
+                                    if (i != op)
+                                        $("#btnAddOpt" + i).hide();
+                                }
                             }
                         }
-                    });
 
-                    $("#addTagPopup").modal('show');
-                }
-
-                function isTagNameAvailable(existingName,updatedName)
-                {
-                    var isAvailable = true;
-                    if (existingName != updatedName) {
-                        $.ajax({
-                            type: "POST",
-                            url: '/Tag/IsDuplicateTagName',
-                            async: false,
-                            data: { existingTagName: existingName, tagName: updatedName },
-                            success: function (returndata) {
-                                if (returndata == true) {
-                                    isAvailable = true;
-                                }
-                                else {
-                                    isAvailable = false;
-                                }
+                        function saveTag()
+                        {
+                            if($("#tagForm").valid())
+                            {
+                                $.ajax({
+                                    type: "POST",
+                                    url: '/Tag/Save',
+                                    data: $('#tagForm').serialize(),
+                                    success: function (returndata) {
+                                        $("#addTagPopup").modal('hide');
+                                        var $tagMultiSelect=$('#SkillTag').data('kendoMultiSelect');
+                                        var multidata=$tagMultiSelect.dataSource.data();
+                                        multidata.push({ TagName: returndata.TagName, TagId: returndata.TagId});
+                                        var selectedValues=$tagMultiSelect.value();
+                                        selectedValues.push(returndata.TagId);
+                                        $tagMultiSelect.value(selectedValues);
+                                        $("#tagForm").trigger("reset");
+                                    }
+                                });
                             }
-                        });
-                    }
-                    return isAvailable;
-                }
+                            else
+                            {
+                                $('#tagForm').submit();
+                            }
+                        }
+
+                        function AddTag()
+                        {
+                            // $("#tagForm").kendoValidator();
+                            $("#tagForm").kendoValidator({
+                                rules: {
+                                    tagNamevalidation: function (input, params) {
+                                        if (input.is("[name='TagName']") && input.val() != "") {
+                                            input.attr("data-tagNamevalidation-msg", "Tag name already exist !");
+                                            return isTagNameAvailable("", input.val());
+                                        }
+
+                                        return true;
+                                    }
+                                }
+                            });
+
+                            $("#addTagPopup").modal('show');
+                        }
+
+                        function isTagNameAvailable(existingName,updatedName)
+                        {
+                            var isAvailable = true;
+                            if (existingName != updatedName) {
+                                $.ajax({
+                                    type: "POST",
+                                    url: '/Tag/IsDuplicateTagName',
+                                    async: false,
+                                    data: { existingTagName: existingName, tagName: updatedName },
+                                    success: function (returndata) {
+                                        if (returndata == true) {
+                                            isAvailable = true;
+                                        }
+                                        else {
+                                            isAvailable = false;
+                                        }
+                                    }
+                                });
+                            }
+                            return isAvailable;
+                        }
 
 
-            </script>
-            <style>
-                .height {
-                    height: 250px;
-                }
+                    </script>
+                    <style>
+                        .height {
+                            height: 250px;
+                        }
 
-                .required {
-                    color: red;
-                }
-            </style>
-        </div>
-    }
+                        .required {
+                            color: red;
+                        }
+                    </style>
+                </div>
+            }
+    </div>
+</div>
+</div>
 </div>
 <!-- Modal -->
 <div class="modal fade" id="myModal" role="dialog" onclick="OnCancel();">

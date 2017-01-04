@@ -15,19 +15,23 @@ using System.Web.Mvc;
 using System.IO;
 using Silicus.Ensure.Models.Constants;
 using Silicus.Ensure.Services;
+using System.Collections.Generic;
+using System.Web.Configuration;
 
 namespace Silicus.Ensure.Web.Controllers
 {
 
-    [Authorize]
+    //[Authorize]
     public class UserController : Controller
     {
         private readonly IUserService _userService;
         private readonly IMappingService _mappingService;
         private readonly ITestSuiteService _testSuiteService;
         private readonly IPositionService _positionService;
-
+        private readonly Silicus.UtilityContainer.Services.Interfaces.IUserService _containerService;
         private ApplicationUserManager _userManager;
+        private Silicus.UtilityContainer.Services.Interfaces.IUtilityService _utilityService;
+        private Silicus.UtilityContainer.Services.Interfaces.IUtilityUserRoleService _utilityUserRoleService;
         public ApplicationUserManager UserManager
         {
             get
@@ -53,12 +57,16 @@ namespace Silicus.Ensure.Web.Controllers
             }
         }
 
-        public UserController(IUserService userService, MappingService mappingService, ITestSuiteService testSuiteService, PositionService positionService)
+        public UserController(IUserService userService, MappingService mappingService, ITestSuiteService testSuiteService, PositionService positionService, Silicus.UtilityContainer.Services.Interfaces.IUserService containerService,
+            Silicus.UtilityContainer.Services.Interfaces.IUtilityService utilityService, Silicus.UtilityContainer.Services.Interfaces.IUtilityUserRoleService utilityUserRoleService)
         {
             _positionService = positionService;
             _userService = userService;
             _mappingService = mappingService;
             _testSuiteService = testSuiteService;
+            _containerService = containerService;
+            _utilityService = utilityService;
+            _utilityUserRoleService = utilityUserRoleService;
         }
 
         public ActionResult Dashboard()
@@ -74,19 +82,43 @@ namespace Silicus.Ensure.Web.Controllers
         /// <returns></returns>
         public ActionResult GetUserDetails([DataSourceRequest] DataSourceRequest request)
         {
-            var userlist = _userService.GetUserDetails().Reverse().ToArray();
+            var userlist = _containerService.GetAllUsers();
+            var userlistViewModel = _mappingService.Map<List<Silicus.UtilityContainer.Models.DataObjects.User>, List<UserDetailViewModel>>(userlist);
+            var UtilityId = getUtilityId();
+            var userRoles = _utilityUserRoleService.GetAllUserRolesForUtility(UtilityId);
 
-            var viewModels = _mappingService.Map<User[], UserViewModel[]>(userlist);
-            bool userInRole = User.IsInRole(Silicus.Ensure.Models.Constants.RoleName.Admin.ToString());
+            var userWithRoles = (from userinRoles in userRoles
+                          join allUsers in userlistViewModel
+                          on userinRoles.UserId equals allUsers.UserId into temp
+                          from j in temp.DefaultIfEmpty()
+                          select new UserDetailViewModel
+                          {
+                              RoleName = userinRoles.Role.Name,
+                              UserName = j.UserName,
+                              Department = j.Department,
+                              Designation = j.Designation,
+                              Email=j.Email,
+                              FirstName=j.FirstName,
+                              FullName=j.FullName,
+                              LastName=j.LastName,
+                              MiddleName=j.MiddleName,
+                              RoleId=userinRoles.Role.ID,
+                              UserId=j.UserId
+                          }).ToList();
 
-            for (int j = 0; j < viewModels.Count(); j++)
+            DataSourceResult result = userWithRoles.ToDataSourceResult(request);
+            return Json(result);
+        }
+
+        private int getUtilityId()
+        {
+            var utilityProductId = WebConfigurationManager.AppSettings["ProductId"];
+            if (string.IsNullOrWhiteSpace(utilityProductId))
             {
-                viewModels[j].IsAdmin = userInRole;
-                viewModels[j].FirstName = viewModels[j].FirstName + " " + viewModels[j].LastName;
+                throw new ArgumentNullException();
             }
 
-            DataSourceResult result = viewModels.ToDataSourceResult(request);
-            return Json(result);
+            return Convert.ToInt32(utilityProductId);
         }
 
         /// <summary>

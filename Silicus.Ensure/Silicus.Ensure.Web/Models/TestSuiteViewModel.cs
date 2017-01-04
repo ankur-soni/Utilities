@@ -13,6 +13,8 @@ namespace Silicus.Ensure.Web.Models
 
         [Required(ErrorMessage = "Test-Suite Name is required!")]
         [StringLength(50, ErrorMessage = "Test-Suite name length should be less than or equal to 50 characters.")]
+        [RegularExpression(@"^\d*[a-zA-Z][a-zA-Z0-9 _]*$",
+            ErrorMessage = "Name should not contain any special character and should contain atleast one alphabet")]
         [Display(Name = "Test Suite Name")]
         public string TestSuiteName { get; set; }
 

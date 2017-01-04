@@ -141,10 +141,12 @@
     <Compile Include="EntityConfigurations\ManagerMap.cs" />
     <Compile Include="EntityConfigurations\OrganizationMap.cs" />
     <Compile Include="EntityConfigurations\PanelMap.cs" />
+    <Compile Include="EntityConfigurations\PanelMebersDetailMap.cs" />
     <Compile Include="EntityConfigurations\PositionMap.cs" />
     <Compile Include="EntityConfigurations\ProjectDetailMap.cs" />
     <Compile Include="EntityConfigurations\ProjectMap.cs" />
     <Compile Include="EntityConfigurations\QuestionMap.cs" />
+    <Compile Include="EntityConfigurations\RecruiterMembersDetailMap.cs" />
     <Compile Include="EntityConfigurations\RolesMap.cs" />
     <Compile Include="EntityConfigurations\TableSettings.cs" />
     <Compile Include="EntityConfigurations\TagMap.cs" />

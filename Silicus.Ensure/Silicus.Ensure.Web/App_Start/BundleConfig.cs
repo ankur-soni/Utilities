@@ -29,7 +29,8 @@ namespace Silicus.Ensure.Web
 
             bundles.Add(new StyleBundle("~/Content/kendoCSS").Include(
             "~/Content/css/kendo/" + ConfigurationManager.AppSettings["KendoVersion"] + "/kendo.common.min.css",
-            "~/Content/css/kendo/" + ConfigurationManager.AppSettings["KendoVersion"] + "/kendo.default.min.css"));
+            "~/Content/css/kendo/" + ConfigurationManager.AppSettings["KendoVersion"] + "/kendo.custom.css"));
+            
 
             //// Loading latest version of Bootstrap
             bundles.Add(new ScriptBundle("~/bundles/BootstrapJS").Include(
