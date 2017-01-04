@@ -149,7 +149,7 @@
                     </div>
                     <div class="col-md-6">
                         <input type="text" style="width:100%" name="DOB" id="DOB" value="@if (Model.UserId != 0)
-                                                                                         { @Model.DOB.ToShortDateString()}" />
+                                                                                         { @Model.DOB.ToShortDateString().Replace("-","/")}" />
                         @Html.ValidationMessageFor(m => m.DOB)
                     </div>
                 </div>
@@ -429,7 +429,15 @@
     function onCancelClick() {
         window.location = '@Url.Action("Candidates", "Admin")';
     }
-
+    function GetNewDate() {
+        var date=new Date();
+        var year = date.getFullYear();
+        var month = (1 + date.getMonth()).toString();
+        month = month.length > 1 ? month : '0' + month;
+        var day = date.getDate().toString();
+        day = day.length > 1 ? day : '0' + day;
+        return day + '/' +month  + '/' + year;
+    }
     //register custom validation rules
     (function ($, kendo) {
         $.extend(true, kendo.ui.validator, {
@@ -442,8 +450,23 @@
                         }
                         else if(input.val() != "")
                         {
-                            var d=new Date();
-                            if( $('#DOB').val()>d)
+                            try{
+                                var parts = input.val().split("/");
+                                var timestamp= new Date(parts[1]+"/"+parts[0]+"/"+parts[2]);
+                                if (isNaN(timestamp)==true||parts[2]<1900)
+                                {
+                                    input.attr("data-experiencevalidation-msg", "Invalid Date");
+                                    return false;
+                        }
+                            }
+                            catch(e){
+                                input.attr("data-experiencevalidation-msg", "Invalid Date");
+                                return false;
+                            }
+                        }
+                        else if(input.val() != "")
+                        {
+                            if( $('#DOB').val()>GetNewDate())
                             {
                                 input.attr("data-experiencevalidation-msg", "Date of birth can not be greater than today!");
                                 return false;
