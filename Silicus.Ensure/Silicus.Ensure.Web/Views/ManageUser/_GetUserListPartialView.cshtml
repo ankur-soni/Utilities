@@ -259,9 +259,10 @@
                     debugger;
                     $("#addTagPopup").modal('hide');
                     var $tagMultiSelect = $('#TagIds').data('kendoMultiSelect');
-                    var selectedValues = $tagMultiSelect.value();
+                    var selectedValues = $tagMultiSelect.value().slice();
                     var multidata = $tagMultiSelect.dataSource.data();
                     multidata.push({ TagName: returndata.TagName, TagId: returndata.TagId });
+                    $tagMultiSelect.dataSource.data(multidata);
                     selectedValues.push(returndata.TagId);
                     $tagMultiSelect.value(selectedValues);
                     $("#tagForm").trigger("reset");
@@ -328,7 +329,7 @@
                     var $panelMultiSelect = $('#PanelIds').data('kendoMultiSelect');
                     var multidata = $panelMultiSelect.dataSource.data();
                     multidata.push({ PanelName: returndata.PanelName, PanelId: returndata.PanelId });
-                    var selectedValues = $panelMultiSelect.value();
+                    var selectedValues = $panelMultiSelect.value().slice();
                     selectedValues.push(returndata.PanelId);
                     $panelMultiSelect.value(selectedValues);
                     $("#panelForm").trigger("reset");

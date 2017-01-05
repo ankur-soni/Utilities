@@ -563,7 +563,7 @@
                                         var $tagMultiSelect=$('#SkillTag').data('kendoMultiSelect');
                                         var multidata=$tagMultiSelect.dataSource.data();
                                         multidata.push({ TagName: returndata.TagName, TagId: returndata.TagId});
-                                        var selectedValues=$tagMultiSelect.value();
+                                        var selectedValues=$tagMultiSelect.value().slice();
                                         selectedValues.push(returndata.TagId);
                                         $tagMultiSelect.value(selectedValues);
                                         $("#tagForm").trigger("reset");
