@@ -19,7 +19,9 @@
                         .DataValueField("Value")
                         .Events(e => e.Change("onSelect"))
                         .BindTo(EnumHelper.GetSelectList((typeof(RoleName)))
-                        .Select(x => new SelectListItem { Text = x.Text, Value = x.Text }).OrderBy(x => x.Text))
+                        .Select(x => new SelectListItem { Text = x.Text, Value = x.Text })
+                        .Where(y=>y.Text!=RoleName.Candidate.ToString())
+                        .OrderBy(x => x.Text))
                         .HtmlAttributes(new { style = "width: 100%" })
                         .OptionLabel("All")
         )
@@ -257,9 +259,9 @@
                     debugger;
                     $("#addTagPopup").modal('hide');
                     var $tagMultiSelect = $('#TagIds').data('kendoMultiSelect');
+                    var selectedValues = $tagMultiSelect.value();
                     var multidata = $tagMultiSelect.dataSource.data();
                     multidata.push({ TagName: returndata.TagName, TagId: returndata.TagId });
-                    var selectedValues = $tagMultiSelect.value();
                     selectedValues.push(returndata.TagId);
                     $tagMultiSelect.value(selectedValues);
                     $("#tagForm").trigger("reset");
