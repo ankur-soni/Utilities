@@ -72,4 +72,10 @@
             $("#FieldFilterPanel").val('');
         });
     });
+
+    $("#panelGrids").on("change", "input.check", function (e) {
+        var v = $(this).is(":checked");
+        $("input.check", "#panelGrids").prop("checked", false);
+        $(this).prop("checked", v);
+    });
 </script>
