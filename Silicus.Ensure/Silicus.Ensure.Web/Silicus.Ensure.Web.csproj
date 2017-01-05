@@ -826,6 +826,7 @@
     <Content Include="Views\Admin\PartialTestSuitView.cshtml" />
     <Content Include="Views\ManageUser\_AssignType.cshtml" />
     <Content Include="Views\ManageUser\_AssignPanel.cshtml" />
+    <Content Include="Views\Panel\AddPanel.cshtml" />
     <None Include="Web.Azure.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

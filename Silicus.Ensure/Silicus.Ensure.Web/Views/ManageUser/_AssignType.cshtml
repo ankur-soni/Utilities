@@ -39,7 +39,7 @@
 
     <div class="form-group">
         @Html.LabelFor(model => model.TagIds, "Tag", htmlAttributes: new { @class = "control-label col-md-2" })
-        <div class="col-md-10">
+        <div class="col-md-8">
             @(Html.Kendo().MultiSelectFor(m => m.TagIds)
                                     .DataTextField("TagName")
                                     .DataValueField("TagId")
@@ -56,6 +56,9 @@
                                     .HtmlAttributes(new { style = "width: 100%", required = "required" }))
 
             @Html.ValidationMessageFor(model => model.TagIds, "", new { @class = "text-danger" })
+        </div>
+        <div class="col-md-2">
+            <a style="padding:2px 12px;" class="font-Bold themeColorBlue btn btn-primary" href="#" onclick="AddTag();">Add Tag</a>
         </div>
     </div>
 

@@ -329,6 +329,7 @@
     <Compile Include="Models\ReviewerCommentViewModel.cs" />
     <Compile Include="Models\ReviewFeedbackListViewModel.cs" />
     <Compile Include="Models\ReviewSubmitionViewModel.cs" />
+    <Compile Include="Models\ShortlistedNominationViewModel.cs" />
     <Compile Include="Models\UserViewModel.cs" />
     <Compile Include="Models\ViewShortlistDetailsViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
