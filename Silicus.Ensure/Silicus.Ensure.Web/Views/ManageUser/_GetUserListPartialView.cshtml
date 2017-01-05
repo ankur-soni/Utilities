@@ -165,6 +165,14 @@
             else if (value == "")
                 grid.dataSource.filter({});
         });
+
+        $("#UserSearchRefresh").click(function (e) {
+            e.preventDefault();
+            var datasource = $("#UserGrids").data("kendoGrid").dataSource;
+            //Clear filters:
+            datasource.filter([]);
+            $("#FieldFilter").val('');
+        });
     });
     function AddNew() {
         window.location.href = "/Admin/CandidateAdd?UserId=0";
@@ -330,13 +338,6 @@
         }
     }
 
-    $("#UserSearchRefresh").click(function (e) {
-        e.preventDefault();
-        var datasource = $("#UserGrids").data("kendoGrid").dataSource;
-        //Clear filters:
-        datasource.filter([]);
-        $("#FieldFilter").val('');
-    });
 </script>
 
 

@@ -163,7 +163,7 @@
 
 <script>
     $(document).ready(function () {
-
+        SetNavigationMenuActive('QuestionBank');
         // Kendo Grid Filter (Search)
         $("#FieldFilter").keyup(function () {
             var value = $("#FieldFilter").val();
@@ -180,7 +180,14 @@
                 grid.dataSource.filter({});
             }
         });
-        SetNavigationMenuActive('QuestionBank');
+        
+        $("#QuestionSearchRefresh").click(function (e) {
+            e.preventDefault();
+            var datasource = $("#questionGrids").data("kendoGrid").dataSource;
+            //Clear filters:
+            datasource.filter([]);
+            $("#FieldFilter").val('');
+        });
     });
 
     function ProficiencyLevelAndQuetiontype()
@@ -250,11 +257,4 @@
         });
     }
 
-    $("#QuestionSearchRefresh").click(function (e) {
-        e.preventDefault();
-        var datasource = $("#questionGrids").data("kendoGrid").dataSource;
-        //Clear filters:
-        datasource.filter([]);
-        $("#FieldFilter").val('');
-    });
 </script>
