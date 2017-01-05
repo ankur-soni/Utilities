@@ -523,30 +523,42 @@
                     //         input.attr("data-experiencevalidation-msg", "");
                     //    }
                     //}
-                    //if (input.is("[name='RelevantExperienceInYear']")) {
-                    //    if (input.val() == "") {
-                    //        input.attr("data-experiencevalidation-msg", "Relevant experience in year is required!");
-                    //        $('span[aria-owns="RelevantExperienceInYear_listbox"]').css('border','1px solid red');
-                    //        return false;
-                    //    }
-                    //    else
-                    //    {
-                    //        $('span[aria-owns="RelevantExperienceInYear_listbox"]').css('border','none ');
-                    //        input.attr("data-experiencevalidation-msg", "");
-                    //    }
-                    //}
-                    //if (input.is("[name='RelevantExperienceInMonth']")) {
-                    //    if (input.val() == "" ) {
-                    //        input.attr("data-experiencevalidation-msg", "Relevant experience in month is required!");
-                    //        $('span[aria-owns="RelevantExperienceInMonth_listbox"]').css('border','1px solid red');
-                    //        return false;
-                    //    }
-                    //    else
-                    //    {
-                    //        $('span[aria-owns="RelevantExperienceInMonth_listbox"]').css('border','none ');
-                    //         input.attr("data-experiencevalidation-msg", "");
-                    //    }
-                    //}
+                    if (input.is("[name='RelevantExperienceInYear']")) {
+                        if (input.val() == "") {
+                            input.attr("data-experiencevalidation-msg", "Relevant experience in year is required!");
+                            $('span[aria-owns="RelevantExperienceInYear_listbox"]').css('border','1px solid red');
+                            return false;
+                        }
+                        else if (input.val() != ""&& input.val() > $('#TotalExperienceInYear').val()){
+
+                            input.attr("data-experiencevalidation-msg", "Relevant experience in year can not be greater than total experience in year!");
+                            return false;
+
+                        }
+                        else
+                        {
+                            $('span[aria-owns="RelevantExperienceInYear_listbox"]').css('border','none ');
+                            input.attr("data-experiencevalidation-msg", "");
+                        }
+                    }
+                    if (input.is("[name='RelevantExperienceInMonth']")) {
+                        if (input.val() == "" ) {
+                            input.attr("data-experiencevalidation-msg", "Relevant experience in month is required!");
+                            $('span[aria-owns="RelevantExperienceInMonth_listbox"]').css('border','1px solid red');
+                            return false;
+                        }
+                        else if (input.val() != ""&& ($('#RelevantExperienceInYear').val() == $('#TotalExperienceInYear').val()||$('#RelevantExperienceInYear').val() < $('#TotalExperienceInYear').val()) && input.val() > $('#TotalExperienceInMonth').val()){
+
+                            input.attr("data-experiencevalidation-msg", "Relevant experience can not be greater than total experience!");
+                            return false;
+
+                        }
+                        else
+                        {
+                            $('span[aria-owns="RelevantExperienceInMonth_listbox"]').css('border','none ');
+                            input.attr("data-experiencevalidation-msg", "");
+                        }
+                    }
                     if (input.is("[data-val-remote]") && input.val() != "") {
                         var remoteURL = input.attr("data-val-remote-url");
                         if (!checkMail(input.val(), remoteURL)) {
