@@ -261,7 +261,7 @@
                         <div class="pull-right">
                             <input type="submit" name="btnSaveAndAddNewQuestion" id="btnSaveAndAddNewQuestion" value="Save & Add Another Question" class="btn btn-primary" />
                             <input type="submit" name="btnSave" value="Save" class="btn btn-primary" />
-                            <input type="button" name="btnCancel" value="Cancel" class="btn btn-primary" />
+                            <input type="button" name="btnCancel" value="Cancel" onclick="OnCancel()" class="btn btn-primary" />
                         </div>
                     </div>
                     @*<div class="row">
@@ -563,7 +563,7 @@
                                         var $tagMultiSelect=$('#SkillTag').data('kendoMultiSelect');
                                         var multidata=$tagMultiSelect.dataSource.data();
                                         multidata.push({ TagName: returndata.TagName, TagId: returndata.TagId});
-                                        var selectedValues=$tagMultiSelect.value();
+                                        var selectedValues=$tagMultiSelect.value().slice();
                                         selectedValues.push(returndata.TagId);
                                         $tagMultiSelect.value(selectedValues);
                                         $("#tagForm").trigger("reset");

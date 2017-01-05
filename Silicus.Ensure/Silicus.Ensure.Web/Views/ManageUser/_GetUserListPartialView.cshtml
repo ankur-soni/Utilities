@@ -19,7 +19,9 @@
                         .DataValueField("Value")
                         .Events(e => e.Change("onSelect"))
                         .BindTo(EnumHelper.GetSelectList((typeof(RoleName)))
-                        .Select(x => new SelectListItem { Text = x.Text, Value = x.Text }).OrderBy(x => x.Text))
+                        .Select(x => new SelectListItem { Text = x.Text, Value = x.Text })
+                        .Where(y=>y.Text!=RoleName.Candidate.ToString())
+                        .OrderBy(x => x.Text))
                         .HtmlAttributes(new { style = "width: 100%" })
                         .OptionLabel("All")
         )
@@ -257,9 +259,10 @@
                     debugger;
                     $("#addTagPopup").modal('hide');
                     var $tagMultiSelect = $('#TagIds').data('kendoMultiSelect');
+                    var selectedValues = $tagMultiSelect.value().slice();
                     var multidata = $tagMultiSelect.dataSource.data();
                     multidata.push({ TagName: returndata.TagName, TagId: returndata.TagId });
-                    var selectedValues = $tagMultiSelect.value();
+                    $tagMultiSelect.dataSource.data(multidata);
                     selectedValues.push(returndata.TagId);
                     $tagMultiSelect.value(selectedValues);
                     $("#tagForm").trigger("reset");
@@ -326,7 +329,7 @@
                     var $panelMultiSelect = $('#PanelIds').data('kendoMultiSelect');
                     var multidata = $panelMultiSelect.dataSource.data();
                     multidata.push({ PanelName: returndata.PanelName, PanelId: returndata.PanelId });
-                    var selectedValues = $panelMultiSelect.value();
+                    var selectedValues = $panelMultiSelect.value().slice();
                     selectedValues.push(returndata.PanelId);
                     $panelMultiSelect.value(selectedValues);
                     $("#panelForm").trigger("reset");
