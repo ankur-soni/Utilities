@@ -66,7 +66,15 @@ namespace Silicus.UtilityContainer.Web.Controllers
             var selectedUsers = new List<UsersWithRolesPerUtilityViewModel>();
             foreach (var item in allUsers)
             {
-                availableUsers.Add(new UsersWithRolesPerUtilityViewModel { UserName = item.DisplayName, UserId = item.ID});
+                if (users.Find( x => x.ID == item.ID) != null)
+                {
+                    availableUsers.Add(new UsersWithRolesPerUtilityViewModel { UserName = item.DisplayName, UserId = item.ID, Status = true});
+                }
+                else
+                {
+                    availableUsers.Add(new UsersWithRolesPerUtilityViewModel { UserName = item.DisplayName, UserId = item.ID });
+                }
+                
             }
             foreach (var item in users)
             {
@@ -77,15 +85,15 @@ namespace Silicus.UtilityContainer.Web.Controllers
         }
 
         [HttpPost]
-        public ActionResult AddRolesToUserForAUtility(UtilityUserRoleViewModel newUserRole)
+        public ActionResult AddRolesToUserForAUtility(int utilityId, int roleId, int[] userIds)
         {
-            if (newUserRole.RoleId != 0)
+            if (roleId != 0)
             {
                 _userService.AddRolesToUserForAUtility(new UtilityUserRoleViewModel
                 {
-                    UtilityId = newUserRole.UtilityId,
-                    RoleId = newUserRole.RoleId,
-                    UserId = newUserRole.UserId
+                    UtilityId = utilityId,
+                    RoleId = roleId,
+                    UserId = userIds.ToList()
                 });
                 return RedirectToAction("Index");
             }
@@ -97,17 +105,37 @@ namespace Silicus.UtilityContainer.Web.Controllers
         {
             var newUtilityRole = new UtilityRole();
             ViewData["Utilities"] = new SelectList(_utilityService.GetAllUtilities(), "Id", "Name");
-            ViewData["Roles"] = new SelectList(_roleService.GetAllRoles(), "ID", "Name");
+           // ViewData["Roles"] = new SelectList(_roleService.GetAllRoles(), "ID", "Name");
             return View(newUtilityRole);
         }
 
         [HttpPost]
-        public ActionResult AddRoleToUtility(UtilityRole newUtilityRole)
+        public ActionResult AddRoleToUtility(int utilityId, int[] roleIds)
         {
-            ViewData["Utilities"] = new SelectList(_utilityService.GetAllUtilities(), "Id", "Name");
-            ViewData["Roles"] = new SelectList(_roleService.GetAllRoles(), "ID", "Name");
-            _utilityService.SaveUtilityRole(newUtilityRole);
-            return RedirectToAction("Index");
+           // ViewData["Utilities"] = new SelectList(_utilityService.GetAllUtilities(), "Id", "Name");
+            //ViewData["Roles"] = new SelectList(_roleService.GetAllRoles(), "ID", "Name");
+            _utilityService.SaveUtilityRole(new UtilityRoleViewModel { UtilityId = utilityId, RoleIds = roleIds.ToList() });
+            return Json(true, JsonRequestBehavior.AllowGet);
+        }
+
+        public ActionResult GetAllRoles(int utilityId)
+        {
+            var allRoles = _roleService.GetAllRoles();
+            var utilityRoles = _utilityService.GetAllRolesForAnUtility(utilityId);
+            var rolesToSend = new List<RolesViewModel>();
+            foreach (var role in allRoles)
+            {
+                if (utilityRoles.Find( x => x.RoleID == role.ID) != null)
+                {
+                    rolesToSend.Add(new RolesViewModel { Id = role.ID, Name = role.Name, AlreadyExistsInSelectedUtility = true });
+
+                }
+                else
+                {
+                    rolesToSend.Add(new RolesViewModel { Id = role.ID, Name = role.Name });
+                }
+            }
+            return Json(rolesToSend, JsonRequestBehavior.AllowGet);
         }
 
         [HttpGet]

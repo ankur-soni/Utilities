@@ -90,6 +90,7 @@
     <Compile Include="Enumerations\EventProcess.cs" />
     <Compile Include="Enumerations\EventType.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ViewModels\UtilityRoleViewModel.cs" />
     <Compile Include="ViewModels\UtilityUserRoleViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
