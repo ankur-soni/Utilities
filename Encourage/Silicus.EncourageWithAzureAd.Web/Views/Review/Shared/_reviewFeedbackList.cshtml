@@ -28,7 +28,7 @@
                                                 <span><i class="fa fa-trophy fa-2x" title="Winner" aria-hidden="true"></i></span>
                                             </a>
                                         }
-                                        <a class="btn default btn-outline image-popup-vertical-fit" href="@Url.Action("ViewNominationForShortlist", "Review", item)">
+                                        <a class="btn default btn-outline image-popup-vertical-fit" href="@Url.Action("ViewNominationForShortlist", "Review", new { nominationId=item.NominationId })">
                                             <span> <i class="fa fa-file-text-o fa-2x" title="View Nomination" aria-hidden="true"></i> </span>
                                         </a>
                                     </li>
