@@ -35,17 +35,26 @@
                         </div>
                     </div>
                     <div class="row">
-                        <div class="col-sm-3">
-                            <div class="form-group">
-                                <label class="control-label font-Bold themeColorBlue">Question Type<span style="color:red">*</span></label>
-                                @(Html.Kendo().DropDownListFor(m => m.QuestionType)
+                        <div class="col-sm-6">
+                            <div class="row">
+                                <div class="col-sm-6 col-md-5 col-lg-3">
+                                    <div class="form-group">
+                                        <label class="control-label font-Bold themeColorBlue">Question Type<span style="color:red">*</span></label>
+                                    </div>
+                                </div>
+                                <div class="col-sm-6">
+                                    <div class="form-group">
+
+                                        @(Html.Kendo().DropDownListFor(m => m.QuestionType)
                                     .Name("QuestionType")
                                     .Value(Model.QuestionType)
                                     .Events(e => e.Change("QuestionTypeChange"))
                                     .BindTo(EnumHelper.GetSelectList(typeof(QuestionType)))
                                     .HtmlAttributes(new { style = "width: 100%" }))
+                                    </div>
+                                </div>
                             </div>
-                        </div>
+                       </div>
                       
                     </div>                  
                     <div class="row">
@@ -203,58 +212,82 @@
                     </div>
                     <div class="row">
                         <div class="col-sm-6">
-                            <div class="form-group">
-                                <label class="control-label font-Bold themeColorBlue">Tags<span style="color:red">*</span></label>
-                                @(Html.Kendo().MultiSelectFor(m => m.SkillTag)
+                            <div class="row">
+                                <div class="col-sm-3">
+                                    <div class="form-group">
+                                        <label class="control-label font-Bold themeColorBlue">Tags<span style="color:red">*</span></label>
+                                    </div>
+                                </div>
+                                <div class="col-sm-6">
+                                    <div class="form-group">
+
+                                        @(Html.Kendo().MultiSelectFor(m => m.SkillTag)
                                     .DataTextField("TagName")
                                     .DataValueField("TagId")
                                     .Placeholder("Select skill set...")
                                     .BindTo(Model.SkillTagsList)
                                     .Value(Model.SkillTag)
                                     .HtmlAttributes(new { style = "width: 100%" }))
+                                    </div>
+                                </div>
+                                <div class="col-sm-3">
+                                    <a style="padding:2px 12px;" class="font-Bold themeColorBlue btn btn-primary" href="#" onclick="AddTag();">Add Tag</a>
+                                </div>
                             </div>
                         </div>
-                        <div class="col-sm-2" style="margin-top:23px;">
-                            <a style="padding:2px 12px;" class="font-Bold themeColorBlue btn btn-primary" href="#" onclick="AddTag();">Add Tag</a>
-                        </div>
-                       
                     </div>                    
                     <div class="row">
                         <div class="col-sm-6">
-                            <div class="form-group">
-                                <label class="control-label font-Bold themeColorBlue">Proficiency<span style="color:red">*</span></label>
-                                @(Html.Kendo().DropDownListFor(m => m.ProficiencyLevel)
+                            <div class="row">
+                                <div class="col-sm-3">
+                                    <div class="form-group">
+                                        <label class="control-label font-Bold themeColorBlue">Proficiency<span style="color:red">*</span></label>
+                                    </div>
+                                </div>
+                                <div class="col-sm-6">
+                                    <div class="form-group">
+                                        @(Html.Kendo().DropDownListFor(m => m.ProficiencyLevel)
                                 .Name("ProficiencyLevel")
                                 .Value(Model.ProficiencyLevel)
                                 .BindTo(EnumHelper.GetSelectList(typeof(Proficiency)))
                                 .HtmlAttributes(new { style = "width: 100%" }))
-                                
-                            </div>
 
+                                    </div>
+                                </div>
+                            </div>
                         </div>
-                        
                     </div>
                     <div class="row">
                         <div class="col-sm-6">
-                            <div class="form-group">
-                                <label class="control-label font-Bold themeColorBlue">Duration<span style="color:red">*</span></label>
-                               
-                                @Html.TextBoxFor(y => y.Duration, new { @type = "number", @min = "1", @max = "360" , @class="form-control", @style="width:100%;" })
+                            <div class="row">
+                                <div class="col-sm-3">
+                                    <div class="form-group">
+                                        <label class="control-label font-Bold themeColorBlue">Duration<span style="color:red">*</span></label>
+                                    </div>
+                                </div>
+                                <div class="col-sm-6">
+                                    <div class="form-group">
+                                        @Html.TextBoxFor(y => y.Duration, new { @type = "number", @min = "1", @max = "360", @class = "form-control", @style = "width:100%;" })
+                                    </div>
+                                </div>
                             </div>
-
-                        </div>
-                       
+                       </div>
                     </div>
                     <div class="row">
                         <div class="col-sm-6">
-                            <div class="form-group">
-                                <label class="control-label font-Bold themeColorBlue">Marks<span style="color:red">*</span></label>
-
-                                @Html.TextBoxFor(y => y.Marks, new { @type = "number", @min = "1", @max = "100", @class = "form-control", @style = "width:100%;" })
+                            <div class="row">
+                                <div class="col-sm-3">
+                                    <div class="form-group">
+                                        <label class="control-label font-Bold themeColorBlue">Marks<span style="color:red">*</span></label>
+                                    </div>
+                                </div>
+                                <div class="col-sm-6">
+                                    <div class="form-group">
+                                        @Html.TextBoxFor(y => y.Marks, new { @type = "number", @min = "1", @max = "100", @class = "form-control", @style = "width:100%;" })
+                                    </div>
+                                </div>
                             </div>
-
                         </div>
-                       
                     </div>
                     <div class="row M-T15">
                        
@@ -563,7 +596,7 @@
                                         var $tagMultiSelect=$('#SkillTag').data('kendoMultiSelect');
                                         var multidata=$tagMultiSelect.dataSource.data();
                                         multidata.push({ TagName: returndata.TagName, TagId: returndata.TagId});
-                                        var selectedValues=$tagMultiSelect.value();
+                                        var selectedValues=$tagMultiSelect.value().slice();
                                         selectedValues.push(returndata.TagId);
                                         $tagMultiSelect.value(selectedValues);
                                         $("#tagForm").trigger("reset");
