@@ -41,7 +41,7 @@ namespace Silicus.Ensure.Web.Controllers
             bool userInRole = User.IsInRole(Silicus.Ensure.Models.Constants.RoleName.Admin.ToString());
             foreach (var item in viewModels)
             {
-                item.PositionName = GetPosition(item.Position);
+                item.PositionName = GetPosition(item.Position) == null ? "deleted from master" : GetPosition(item.Position).PositionName;
                 List<Int32> TagId = item.PrimaryTags.Split(',').Select(int.Parse).ToList();
                 item.PrimaryTagNames = string.Join(",", (from a in tags
                                                          where TagId.Contains(a.TagId)
@@ -52,9 +52,9 @@ namespace Silicus.Ensure.Web.Controllers
             return Json(viewModels.ToDataSourceResult(request), JsonRequestBehavior.AllowGet);
         }
 
-        private string GetPosition(int positionId)
+        private Position GetPosition(int positionId)
         {
-            return _positionService.GetPositionById(positionId).PositionName;
+            return _positionService.GetPositionById(positionId);
         }
 
         public ActionResult List()
