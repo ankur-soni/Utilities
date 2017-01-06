@@ -167,11 +167,11 @@ namespace Silicus.Ensure.Web.Controllers
         /// </summary>
         /// <param name="request"></param>
         /// <returns></returns>
-        public async Task<ActionResult> GetCandidateDetails([DataSourceRequest] DataSourceRequest request, string RoleName)
+        public ActionResult GetCandidateDetails([DataSourceRequest] DataSourceRequest request, string RoleName)
         {
             _testSuiteService.TestSuiteActivation();
 
-            var userlist = _userService.GetUserDetails().Where(p => p.Role.ToLower() == RoleName.ToLower()).ToArray();
+            var userlist = _userService.GetUserDetails().Where(p => p.Role.ToLower() == RoleName.ToLower()).ToArray().Reverse().ToArray();
             if (MvcApplication.getCurrentUserRoles().Contains(Silicus.Ensure.Models.Constants.RoleName.Panel.ToString()))
             {
                 var currentUserMail = HttpContext.User.Identity.Name;
@@ -186,15 +186,9 @@ namespace Silicus.Ensure.Web.Controllers
 
             for (int j = 0; j < viewModels.Count(); j++)
             {
-                var userDetails = await UserManager.FindByEmailAsync(viewModels[j].Email);
-                if (userDetails != null)
-                {
-                    var viewUsersRole = await UserManager.GetRolesAsync(userDetails.Id);
-                    var testSuitId = _testSuiteService.GetUserTestSuiteByUserId(viewModels[j].UserId);
-                    viewModels[j].Role = viewUsersRole.FirstOrDefault();
-                    viewModels[j].IsAdmin = userInRole;
-                    viewModels[j].TestSuiteId = testSuitId != null ? testSuitId.TestSuiteId : 0;
-                }
+                var testSuitId = _testSuiteService.GetUserTestSuiteByUserId(viewModels[j].UserId);
+                viewModels[j].IsAdmin = userInRole;
+                viewModels[j].TestSuiteId = testSuitId != null ? testSuitId.TestSuiteId : 0;
             }
             DataSourceResult result = viewModels.ToDataSourceResult(request);
             return Json(result);

@@ -1,0 +1,11 @@
+﻿@model IEnumerable<Silicus.UtilityContainer.Web.Models.UsersWithRolesPerUtilityViewModel>
+<div>
+    @foreach (var item in Model)
+    {
+        <div id="user-with-role">
+            @Html.CheckBoxFor( modelItem => item.Status )
+            @Html.DisplayFor( modelItem => item.UserName, "user-name" )
+        </div>
+       
+    }
+</div>

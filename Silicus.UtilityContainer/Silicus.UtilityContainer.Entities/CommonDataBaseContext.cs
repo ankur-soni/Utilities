@@ -46,8 +46,6 @@ namespace Silicus.UtilityContainer.Entities
 
         public void Delete<T>(T item) where T : class
         {
-
-
             Set<T>().Attach(item);
 
             Set<T>().Remove(item);

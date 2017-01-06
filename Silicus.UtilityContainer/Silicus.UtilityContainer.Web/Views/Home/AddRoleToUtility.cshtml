@@ -8,43 +8,210 @@
 @using (Html.BeginForm())
 {
     // @Html.AntiForgeryToken()
-  
+
     <div class="form-horizontal white-bg" style="width:60%;padding-bottom:10px;margin-top:25px;padding-left:10px;padding-top:5px">
         <h2>Add Roles To Utility</h2>
 
         <hr />
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
         <div class="form-group">
-            @Html.LabelFor(model => model.UtilityID, "UtilityId", htmlAttributes: new { @class = "control-label col-md-2" })
+            @Html.Label("Utilities", "UtilityId", htmlAttributes: new { @class = "control-label requiredfeild col-md-2" })
             <div class="col-md-10">
-                @Html.DropDownList("UtilityId", (SelectList)ViewData["Utilities"], htmlAttributes: new { @class = "form-control" })
+                @Html.DropDownList("UtilityId", (SelectList)ViewData["Utilities"], "Select", htmlAttributes: new { @class = "form-control" })
                 @Html.ValidationMessageFor(model => model.UtilityID, "", new { @class = "text-danger" })
             </div>
         </div>
 
-        <div class="form-group">
+        @*<div class="form-group">
             @Html.LabelFor(model => model.RoleID, "RoleId", htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.DropDownList("RoleId", (SelectList)ViewData["Roles"], htmlAttributes: new { @class = "form-control" })
-                @Html.ValidationMessageFor(model => model.RoleID, "", new { @class = "text-danger" })
+                @Html.DropDownListFor(model => model.RoleID, new SelectList(Enumerable.Empty<SelectListItem>(), "ID", "RoleName"), "Select a Role", new { @class = "form-control" })*@
+        @*@Html.DropDownList("RoleId", (SelectList)ViewData["Roles"], htmlAttributes: new { @class = "form-control" })*@
+        @*@Html.ValidationMessageFor(model => model.RoleID, "", new { @class = "text-danger" })
+                </div>
+            </div>*@
+       
+        <div class="form-group">
+            @Html.Label("Roles", htmlAttributes: new { @class = "control-label requiredfeild roles col-md-2", style = "display:none" })
+            <div id="search" class="col-md-10" style="display:none">
+                <div>
+                    <input type="text" id="search-roles" class="form-control col-md-10" placeholder="Search role"/>
+                </div>
             </div>
         </div>
 
-    </div>
 
+        <div class="form-group">
+            <div class="col-md-2"></div>
+            <div id="Roles" class="col-md-10" style="display:none">
+                <div id="available-roles" class="col-md-6" style="height:200px;overflow-y:scroll;overflow-x:hidden"></div>
+                <div id="selected-roles" class="col-md-6" style="height:200px;overflow-y:scroll;overflow-x:hidden"></div>
+            </div>
+        </div>
+    </div>
     <div class="form-group" style="padding-top:20px;">
         <div class="col-md-2">
-            <input type="submit" value="Create" class="btn btn-primary"  style="width:100%;" />
+            <input type="button" value="Add Role" class="btn btn-primary" id="add-role-to-utility" style="width:100%;" />
         </div>
-        <div class="col-md-2" >
+        <div class="col-md-2">
             <a href="@Url.Action("Index", "Home")" class="btn btn-primary" style="width:100%">Back</a>
         </div>
     </div>
 
 }
 
-
-
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
+    <script src="~/Scripts/knockout-3.1.0.debug.js"></script>
+    <script src="~/Scripts/knockout-3.1.0.js"></script>
+    <script src="~/Scripts/knockout.mapping-latest.debug.js"></script>
+    <script src="~/Scripts/knockout.mapping-latest.js"></script>
+    <script type="text/javascript">
+
+        $("#UtilityId").change(function () {
+            debugger;
+            $(".loader-overlay").show();
+            var utilityId = parseInt($("#UtilityId").val());
+
+            if (utilityId > 0) {
+                $.ajax({
+                    type: 'GET',
+                    data: { utilityId: utilityId },
+                    url: "@Url.Action("GetAllRoles", "Home")",
+                    dataType: 'json',
+                    success: function (data) {
+                        $("#search").css("display","block");
+                        $("#Roles").css("display", "block");
+                        $(".roles").css("display", "block");
+
+                        $(".loader-overlay").hide();
+
+                        var availableEmployeeContainer = $('#available-roles');
+                        var selectedEmployeeContainer = $('#selected-roles');
+                        availableEmployeeContainer.empty();
+                        selectedEmployeeContainer.empty();
+
+                        $.each(data, function (index, value) {
+                            addHtmlForAvailableRoles(value.Name, value.Id, value.AlreadyExistsInSelectedUtility, availableEmployeeContainer);
+                            if (value.AlreadyExistsInSelectedUtility) {
+                                addHtmlForSelectedRoles(value.Name, value.Id, value.AlreadyExistsInSelectedUtility, selectedEmployeeContainer);
+                            }
+                        });
+                    },
+                    error: function () {
+                        $(".loader-overlay").hide();
+                    }
+                });
+
+            }
+            else {
+                $(".loader-overlay").hide();
+                $("#Roles").css("display", "none");
+                $(".roles").css("display", "none");
+                $("#search").css("display", "none");
+            }
+
+        });
+
+        //######################################
+
+        function addHtmlForAvailableRoles(name, id, status, container) {
+            debugger;
+            $("<div id='availablerole" + id + "'>").appendTo(container);
+            $('<input />', { type: 'checkbox', id: id, class: 'available', value: name, checked: status }).appendTo('#availablerole' + id + '');
+            $('<span />', { 'id': id, text: name }).appendTo('#availablerole' + id + '');
+            $('<br>').appendTo('#availablerole' + id + '');
+        }
+        function addHtmlForSelectedRoles(name, id, status, container) {
+
+            debugger;
+            $("<div id='selectedrole" + id + "'>").appendTo(container);
+            $('<span />', { 'id': 'selected' + id, text: name }).appendTo('#selectedrole' + id + '');
+            $('<span id="selected' + id + '"><i class="fa fa-times" id="' + id + '" aria-hidden="true"></i></span>').appendTo('#selectedrole' + id + '');
+            $('<br id="' + id + '">').appendTo('#selectedrole' + id + '');
+        }
+
+        $(document).on("click", ".available", function () {
+            debugger;
+            var selectedRoleContainer = $('#selected-roles');
+            var id = $(this).attr('id');
+
+            if ($(this).prop('checked')) {
+                var name = $(this).attr('value');
+
+                $("<div id='selectedrole" + id + "'>").appendTo(selectedRoleContainer);
+                $('<span />', { 'id': 'selected' + id, text: name }).appendTo('#selectedrole' + id + '');
+                $('<span id="selected' + id + '"><i class="fa fa-times" id="' + id + '" aria-hidden="true"></i></span>').appendTo('#selectedrole' + id + '');
+                $('<br id="' + id + '">').appendTo('#selectedrole' + id + '');
+            }
+            else if (parseInt(id) > 0) {
+                $("div[id=selectedrole" + id + "]").remove();
+
+            }
+        });
+
+        $(document).on("click", ".fa-times", function () {
+            debugger;
+            var id = $(this).attr('id');
+            console.log("deselecteCheckbox");
+            $('input:checkbox[id="' + id + '"]').prop('checked', false);
+            $("div[id=selectedrole" + id + "]").remove();
+
+        });
+
+
+
+        $("#search-roles").keyup(function () {
+            debugger;
+            var searchData = $(this).val();
+            $("div[id^=availablerole]").css("display", "none");
+            if (searchData) {
+                var allRoles = $("#Roles");
+                var $found = allRoles.find("div:contains(" + searchData + ")").each(function () { $(this).css("display", "block") });
+            }
+            else {
+                $("div[id^=availablerole]").css("display", "block");
+            }
+        });
+
+        //#####################
+
+        $('#add-role-to-utility').click(
+       function () {
+           debugger;
+           $(".loader-overlay").show();
+           var utilityId = parseInt($("#UtilityId").val());
+           var selectedRoleIds = [];
+           $("input:checkbox[class=available]:checked").each(function () {
+               selectedRoleIds.push(parseInt($(this).attr('id')));
+           });
+           if (utilityId > 0) {
+
+           if (selectedRoleIds.length > 0) {
+               $.ajax({
+                   type: 'POST',
+                   url: "@Url.Action("AddRoleToUtility", "Home")",
+                   data: { utilityId: utilityId, roleIds: selectedRoleIds },
+                   success: function (data) {
+                       $(".loader-overlay").hide();
+                       swal("Success","Roles added successfully.","success");
+                   },
+                   error: function (data) {
+                       $(".loader-overlay").hide()
+                       swal("Error", "OOps! something went wrong.e :)", "error");
+                   }
+               });
+           }
+           else {
+               $(".loader-overlay").hide();
+               swal("Error","Please select at least 1 role.","error");
+           }
+           }
+           else {
+               $(".loader-overlay").hide();
+               swal("Error","Please select utility.","error");
+           }
+
+       });
+    </script>
 }
