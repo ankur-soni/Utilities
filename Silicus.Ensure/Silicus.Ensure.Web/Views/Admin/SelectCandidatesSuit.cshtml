@@ -12,7 +12,7 @@
     @(Html.Kendo().Grid<Silicus.Ensure.Web.Models.TestSuiteViewModel>().Name("testSuiteGrids")
                      .Columns(columns =>
                           {
-                              columns.Bound(p => p.TestSuiteId).ClientTemplate("<input type='checkbox' class='check' id='chkHeader' value='#=TestSuiteId#'/>").Title("");
+                              columns.Bound(p => p.TestSuiteId).ClientTemplate("<input type='checkbox' #if(IsAssigned){# checked='checked' #}# class='check' id='chkHeader' value='#=TestSuiteId#'/>").Title("");
                               columns.Bound(p => p.TestSuiteName).Width(100);
                               columns.Bound(p => p.Duration).Width(50);
                               columns.Bound(p => p.PositionName).Width(50);
@@ -27,10 +27,10 @@
                                       model.Id(p => p.TestSuiteId);
                                       model.Field(p => p.TestSuiteId).Editable(false);
                                   })
-                                  .Read(read => read.Action("GetTestSuiteDetails", "Admin"))
+                                          .Read(read => read.Action("GetTestSuiteDetails", "Admin", new { UserId = @ViewBag.CurrentUser }))
                                   .PageSize(10)
-                          )
-                          .Pageable()
+                              )
+                                  .Pageable(x => x.PageSizes(true))
                           .Sortable()
 
     )

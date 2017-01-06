@@ -131,18 +131,15 @@ namespace Silicus.Ensure.Web.Controllers
             model.Password = string.Empty;
 
             var identityUser = await UserManager.FindByNameAsync(model.UserName);
-            bool isAdmin = false;
             IList<string> userRoles = new List<string>();
             if (identityUser != null)
             {
-                isAdmin = await UserManager.IsInRoleAsync(identityUser.Id, "Admin");
                 userRoles = await UserManager.GetRolesAsync(identityUser.Id);
             }
             else
             {
                 var role = _rolesService.GetRoleDetails();
                 userRoles = MvcApplication.getCurrentUserRoles();
-                isAdmin = userRoles.Contains("Admin");
             }
 
 
@@ -152,9 +149,44 @@ namespace Silicus.Ensure.Web.Controllers
                     LogCategory.Verbose, GetUserIdentifiableString(userName));
                 _cookieHelper.SetCookie("_notification", "false", new TimeSpan(8, 0, 0));
 
-                return RedirectToLocal(returnUrl, userName, isAdmin);
+                return RedirectToLocal(returnUrl, userRoles.FirstOrDefault());
             }
+            else
+            {
+                Session.Abandon();
+                _cookieHelper.ClearAllCookies();
+                AuthenticationManager.SignOut();
+            }
+
+
             return View();
+        }
+
+
+        private ActionResult RedirectToLocal(string returnUrl, string role)
+        {
+            if (Url.IsLocalUrl(returnUrl))
+                return Redirect(returnUrl);
+            RoleName rol;
+            Enum.TryParse(role, out rol);
+            switch (rol)
+            {
+                case RoleName.Candidate:
+                    return RedirectToAction("Welcome", "Candidate");
+                    break;
+                case RoleName.Panel:
+                    return RedirectToAction("Candidates", "Admin");
+                    break;
+                case RoleName.Admin:
+                    return RedirectToAction("Candidates", "Admin");
+                    break;
+                case RoleName.Recruiter:
+                    return RedirectToAction("Candidates", "Admin");
+                    break;
+                default:
+                    return View();
+                    break;
+            }
         }
 
         [HttpPost]
@@ -708,8 +740,12 @@ namespace Silicus.Ensure.Web.Controllers
             // Send an OpenID Connect sign-in request.
             if (!Request.IsAuthenticated)
             {
-                HttpContext.GetOwinContext().Authentication.Challenge(new AuthenticationProperties { RedirectUri = "/Account/SignIn" },
+                HttpContext.GetOwinContext().Authentication.Challenge(new AuthenticationProperties { RedirectUri = "/" },
                     OpenIdConnectAuthenticationDefaults.AuthenticationType);
+            }
+            else
+            {
+                RedirectToAction("Login", "Account");
             }
         }
 

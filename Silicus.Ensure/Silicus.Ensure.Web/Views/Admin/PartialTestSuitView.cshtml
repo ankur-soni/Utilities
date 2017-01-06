@@ -1,0 +1,151 @@
+﻿@model Silicus.Ensure.Web.Models.TestSuiteViewModel
+@using Silicus.Ensure.Models.Constants
+@using Kendo.Mvc.UI;
+
+@{
+    ViewBag.Title = "TestSuite";
+    Layout = null;
+}
+<div class="main-content">
+    @using (Html.BeginForm("Save", "TestSuite"))
+    {
+        <div class="fluid mt20">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="col-md-6">
+                        @Html.LabelFor(model => model.TestSuiteName)
+                    </div>
+                    <div class="col-md-6">
+                        @Html.DisplayFor(model => model.TestSuiteName, new { @class = "form-control" })
+                    </div>
+                </div>
+            </div>
+            <br />
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="col-md-6">
+                        @Html.LabelFor(model => model.Duration)
+                    </div>
+                    <div class="col-md-6">
+                        @Html.DisplayFor(model => model.Duration, new { @class = "form-control" })
+                    </div>
+                </div>
+            </div>
+            <br />
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="col-md-6">
+                        @Html.LabelFor(model => model.Position)
+                    </div>
+                    <div class="col-md-6">
+                        @Html.DisplayFor(model => model.Position, new { @class = "form-control" })
+                    </div>
+                </div>
+            </div>
+            <br />
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="col-md-6">
+                        @Html.LabelFor(model => model.Competency)
+                    </div>
+                    <div class="col-md-6">
+                        @Html.DisplayFor(model => model.Competency, new { @class = "form-control" })
+                    </div>
+                </div>
+            </div>
+            <br />
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="col-md-6">
+                        Question Type
+                    </div>
+                    <div class="col-md-6">
+                        <div class="col-md-6" style="padding-left:0">
+                            <div class="col-md-6" style="padding-left:0">
+                                <span style="vertical-align:central">Optional &nbsp;&nbsp;&nbsp; </span>
+                            </div>
+                            <div class="col-md-6" style="padding-left:0">
+                                @Html.DisplayFor(m => m.OptionalQuestion, new { @class = "form-control" })
+                            </div>
+                        </div>
+                        <div class="col-md-6" style="padding-right:0">
+                            <div class="col-md-6" style="padding-left:0">
+                                <span style="vertical-align:central">Practical&nbsp;&nbsp;&nbsp;</span>
+                            </div>
+                            <div class="col-md-6" style="padding-left:0">
+                                @Html.DisplayFor(m => m.PracticalQuestion, new { @class = "form-control" })
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <br />
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="col-md-6">
+                        @Html.LabelFor(model => model.ProjectName)
+                    </div>
+                    <div class="col-md-6">
+                        @Html.DisplayFor(model => model.ProjectName, new { @class = "form-control" })
+                    </div>
+                </div>
+            </div>
+            <br />
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="col-md-6">
+                        Experience
+                    </div>
+                    <div class="col-md-6">
+                        @Model.FromExperience.@Model.ToExperience
+                    </div>
+                </div>
+            </div>
+            <br />
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="col-md-2">
+                        Skill Tags:
+                    </div>
+                    <div class="col-md-9" style="margin-left:1.6%">
+                        <table align='center' style="margin:0" class="tag-list" id="tag_table" role="grid" cellspacing="40">
+                            @if (Model.Tags != null)
+                            {
+                                if (Model.Tags.Count() > 0)
+                                {
+                                    for (int i = 0; i < Model.Tags.Count(); i++)
+                                    {
+                            <tr style="margin-bottom:5px">
+                                <td id="tag_title_row @Convert.ToString(i)">Skill Tag @Convert.ToString(i + 1)</td>
+                                <td id="tag_name_row @Convert.ToString(i)">@Model.Tags[i].TagName</td>
+                                <td id="weight_title_row @Convert.ToString(i)">Weightage % @Convert.ToString(i + 1)</td>
+                                <td id="weight_name_row @Convert.ToString(i)">@Model.Tags[i].Weightage</td>
+                                <td id="efficiency_title_row @Convert.ToString(i)">Efficiency @Convert.ToString(i + 1)</td>
+                                <td id="efficiency_name_row @Convert.ToString(i)">@Model.Tags[i].Proficiency</td>
+                            </tr>
+
+                                    }
+                                }
+                            }
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <br />
+            <br />
+            <a class="k-button k-button-icontext " href="/Admin/ViewQuestion?TestSuiteId=@Model.TestSuiteId"><span class="k-icon k-edit"></span>Preview</a>
+        </div>
+
+    }
+</div>
+
+<style>
+    #tag_table td {
+        padding: 5px;
+    }
+
+    #tag_table input {
+        width: 172px;
+    }
+</style>
+

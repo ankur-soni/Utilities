@@ -6,8 +6,40 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<div class="main-content">
+<div class="row white-bg header-row">
+    <nav class="" role="navigation" style="margin-bottom: 0">
+        <div class="navbar-header">
+            <a class="navbar-minimalize minimalize-styl-2 btn btn-primary" id="menu-toggle" style="margin-left:15px;" href="#"><i class="fa fa-bars"></i> </a>
+        </div>
+    </nav>
     @if (Model.UserId != 0)
+    {
+        <div class="col-lg-11 col-md-11 col-sm-11">
+            <h1 class="dashboard-name">Edit Candidate</h1>
+        </div>
+    }
+    else
+    {
+        <div class="col-lg-11 col-md-11 col-sm-11">
+            <h1 class="dashboard-name">Add Candidate</h1>
+        </div>
+        <script>
+            $(document).ready(function()
+            {
+                $('#file').css('display','block');
+                fileBool=true;
+            })
+        </script>
+    }
+
+</div>
+
+<div class="row">
+    <div class="col-sm-12">
+        <div class="box M-T15 M-B60">
+            <div class="f1">
+<div class="main-content">
+                    @*@if (Model.UserId != 0)
     {
         <h2>Edit Candidate</h2>
     }
@@ -21,7 +53,7 @@
                 fileBool=true;
             })
         </script>
-    }
+                }*@
     @using (Html.BeginForm("CandidateSave", "User", FormMethod.Post, new { id = "frmSearchAllNdc", EncType = "multipart/form-data" }))
     {
         <input type="hidden" id="Role" name="Role" value="@Silicus.Ensure.Models.Constants.RoleName.Candidate.ToString()" />
@@ -67,7 +99,7 @@
                         @Html.LabelFor(model => model.Position)<b style="color:Red;">*</b>
                     </div>
                     <div class="col-md-6">
-                        <div class="col-md-9" style="padding-left:0;padding-right:0;">
+                                        <div class="col-md-8" style="padding-left:0;padding-right:0;height:30px;">
                             @(Html.Kendo().DropDownListFor(model => model.Position)
                             .OptionLabel("--Select--")
                             .BindTo(Model.PositionList)
@@ -78,8 +110,8 @@
                             )
                             @Html.ValidationMessageFor(m => m.Position)
                         </div>
-                        <div class="col-md-3">
-                            <a href="#" onclick="AddPosition();">Add Position</a>
+                                        <div class="col-md-4">
+                                            <a href="#" class="font-Bold themeColorBlue btn btn-primary" onclick="AddPosition();"><span class="glyphicon glyphicon-plus"></span></a>
                         </div>
                     </div>
                 </div>
@@ -117,7 +149,7 @@
                             Text="Female",
                             Value="Female"
                             }
-                            }).HtmlAttributes(new { style = "width: 100%" }))
+                            }).HtmlAttributes(new { style = "width: 100%;" }))
                         @Html.ValidationMessageFor(m => m.Gender)
                     </div>
                 </div>
@@ -148,7 +180,7 @@
                         @Html.LabelFor(model => model.DOB)<b style="color:Red;">*</b>
                     </div>
                     <div class="col-md-6">
-                        <input type="text" style="width:100%" name="DOB" id="DOB" value="@if (Model.UserId != 0)
+                                        <input type="text" style="width:100%;height:30px;" name="DOB" id="DOB" value="@if (Model.UserId != 0)
                                                                                          { @Model.DOB.ToShortDateString()}" />
                         @Html.ValidationMessageFor(m => m.DOB)
                     </div>
@@ -195,7 +227,7 @@
                         .DataValueField("Value")
                         .BindTo(EnumHelper.GetSelectList((typeof(Year)))
                         .Select(x => new SelectListItem { Text = x.Value, Value = x.Value }))
-                        .HtmlAttributes(new { style = "width: 100%" })
+                        .HtmlAttributes(new { style = "width: 100%;" })
                         .OptionLabel("Year")
                             )
                             @Html.ValidationMessageFor(m => m.TotalExperienceInYear)
@@ -264,7 +296,7 @@
                 </div>
             </div>
         </div>
-        <div class="row" style="margin-bottom:10px!important">
+        @*<div class="row" style="margin-bottom:10px!important">
             <div class="col-md-6">
                 <div class="col-md-6">
                     Upload Resume<b style="color:Red;">*</b>
@@ -292,10 +324,11 @@
                     }
                 </div>
             </div>
-        </div>
+            </div>*@
         <div class="row" style="margin-bottom:10px!important">
-            <div class="col-md-6"></div>
-            <div class="col-md-2 col-md-offset-4">
+                            <div class="col-md-10"></div>
+                            <div class="col-md-2 ">
+                                <div class="pull-right btn-nav">
                 @(Html.Kendo().Button()
                             .Name("btnCancel").Icon("cancel")
             .HtmlAttributes(new { type = "button" })
@@ -308,7 +341,12 @@
                 .Content("Save"))
             </div>
         </div>
+                        </div>
     }
+</div>
+            </div>
+        </div>
+    </div>
 </div>
 
 <div class="modal fade" id="addPositionPopup" role="dialog">
@@ -429,7 +467,15 @@
     function onCancelClick() {
         window.location = '@Url.Action("Candidates", "Admin")';
     }
-
+    function GetNewDate() {
+        var date=new Date();
+        var year = date.getFullYear();
+        var month = (1 + date.getMonth()).toString();
+        month = month.length > 1 ? month : '0' + month;
+        var day = date.getDate().toString();
+        day = day.length > 1 ? day : '0' + day;
+        return day + '/' +month  + '/' + year;
+    }
     //register custom validation rules
     (function ($, kendo) {
         $.extend(true, kendo.ui.validator, {
@@ -442,8 +488,25 @@
                         }
                         else if(input.val() != "")
                         {
-                            var d=new Date();
-                            if( $('#DOB').val()>d)
+                            var today = new Date();
+                            var currentYear = today.getFullYear();
+                            try{
+                                var parts = input.val().split("/");
+                                var timestamp= new Date(parts[1]+"/"+parts[0]+"/"+parts[2]);
+                                if (isNaN(timestamp)==true||parts[2]<1900||parts[2]>=currentYear)
+                            {
+                                    input.attr("data-experiencevalidation-msg", "Invalid Date");
+                                    return false;
+                                }
+                            }
+                            catch(e){
+                                input.attr("data-experiencevalidation-msg", "Invalid Date");
+                                return false;
+                            }
+                        }
+                        else if(input.val() != "")
+                        {
+                            if( $('#DOB').val()>GetNewDate())
                             {
                                 input.attr("data-experiencevalidation-msg", "Date of birth can not be greater than today!");
                                 return false;
@@ -498,30 +561,42 @@
                     //         input.attr("data-experiencevalidation-msg", "");
                     //    }
                     //}
-                    //if (input.is("[name='RelevantExperienceInYear']")) {
-                    //    if (input.val() == "") {
-                    //        input.attr("data-experiencevalidation-msg", "Relevant experience in year is required!");
-                    //        $('span[aria-owns="RelevantExperienceInYear_listbox"]').css('border','1px solid red');
-                    //        return false;
-                    //    }
-                    //    else
-                    //    {
-                    //        $('span[aria-owns="RelevantExperienceInYear_listbox"]').css('border','none ');
-                    //        input.attr("data-experiencevalidation-msg", "");
-                    //    }
-                    //}
-                    //if (input.is("[name='RelevantExperienceInMonth']")) {
-                    //    if (input.val() == "" ) {
-                    //        input.attr("data-experiencevalidation-msg", "Relevant experience in month is required!");
-                    //        $('span[aria-owns="RelevantExperienceInMonth_listbox"]').css('border','1px solid red');
-                    //        return false;
-                    //    }
-                    //    else
-                    //    {
-                    //        $('span[aria-owns="RelevantExperienceInMonth_listbox"]').css('border','none ');
-                    //         input.attr("data-experiencevalidation-msg", "");
-                    //    }
-                    //}
+                    if (input.is("[name='RelevantExperienceInYear']")) {
+                        if (input.val() == "") {
+                            input.attr("data-experiencevalidation-msg", "Relevant experience in year is required!");
+                            $('span[aria-owns="RelevantExperienceInYear_listbox"]').css('border','1px solid red');
+                            return false;
+                        }
+                        else if (input.val() != ""&& input.val() > $('#TotalExperienceInYear').val()){
+
+                            input.attr("data-experiencevalidation-msg", "Relevant experience in year can not be greater than total experience in year!");
+                            return false;
+
+                        }
+                        else
+                        {
+                            $('span[aria-owns="RelevantExperienceInYear_listbox"]').css('border','none ');
+                            input.attr("data-experiencevalidation-msg", "");
+                        }
+                    }
+                    if (input.is("[name='RelevantExperienceInMonth']")) {
+                        if (input.val() == "" ) {
+                            input.attr("data-experiencevalidation-msg", "Relevant experience in month is required!");
+                            $('span[aria-owns="RelevantExperienceInMonth_listbox"]').css('border','1px solid red');
+                            return false;
+                        }
+                        else if (input.val() != ""&& ($('#RelevantExperienceInYear').val() == $('#TotalExperienceInYear').val()||$('#RelevantExperienceInYear').val() < $('#TotalExperienceInYear').val()) && input.val() > $('#TotalExperienceInMonth').val()){
+
+                            input.attr("data-experiencevalidation-msg", "Relevant experience can not be greater than total experience!");
+                            return false;
+
+                        }
+                        else
+                        {
+                            $('span[aria-owns="RelevantExperienceInMonth_listbox"]').css('border','none ');
+                            input.attr("data-experiencevalidation-msg", "");
+                        }
+                    }
                     if (input.is("[data-val-remote]") && input.val() != "") {
                         var remoteURL = input.attr("data-val-remote-url");
                         if (!checkMail(input.val(), remoteURL)) {

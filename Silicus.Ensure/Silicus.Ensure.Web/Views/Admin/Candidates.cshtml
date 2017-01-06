@@ -27,15 +27,17 @@
             
             <div class="box">
                 <div class="row">
-                    <div class="col-sm-6 form-group">
-                        <span><b>Candidate Status</b></span>
-                    
-                        @(Html.Kendo().DropDownListFor(m => m.CandidateStatus)
+                    <div class="col-sm-12">
+                        <div class="col-sm-1">
+                            <span class="themeColorBlue"><b>Candidate Status</b></span>
+                        </div>
+                        <div class="col-sm-3">
+                            @(Html.Kendo().DropDownListFor(m => m.CandidateStatus)
                     .Name("CandidateStatus")
                     .DataTextField("Text")
                     .DataValueField("Value")
                     .Events(e => e.Change("Change"))
-                    
+
                     .BindTo(new List<SelectListItem>
                     () {
                         new SelectListItem(){
@@ -67,11 +69,13 @@
                     Value=Convert.ToString(CandidateStatus.Rejected)
                     }
                     }))
-                    </div>
-                    <div class="col-sm-6 form-group">
-                        <span><b> Positions</b></span>
-                    
-                        @(Html.Kendo().DropDownList()
+                        </div>
+
+                        <div class="col-sm-1 form-group">
+                            <span class="themeColorBlue"><b> Positions</b></span>
+                        </div>
+                        <div class="col-sm-2">
+                            @(Html.Kendo().DropDownList()
                             .Name("Position")
                                     .Events(e => e.Change("PositionChange"))
                             .OptionLabel("All")
@@ -79,8 +83,9 @@
                             .DataTextField("Text")
                             .DataValueField("Value")
                             .SelectedIndex(0)
-                            
-                        )
+
+                            )
+                        </div>
                     </div>
                 </div>
                 <div class="row">

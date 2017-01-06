@@ -1,12 +1,13 @@
 ﻿$(window).load(function () {
     var mainW = $(window).height() - 70;
     //$('.nav').css({ height : mainW })
-    $('.nav-logo').hide()
-    $('#loading').fadeOut(1000);
-    $('.nav-logo').fadeIn()
+	$('.nav-logo').hide()
+	$('#loading').fadeOut(1000);
+	$('.nav-logo').fadeIn()
 }) // Window load
 
 $(window).resize(function () {
+
     //var mainW = $('.main-content').height();
     //var mainW = $(window).height() - 70;
     //$('.nav').css({ height: mainW + 50 })
@@ -14,10 +15,15 @@ $(window).resize(function () {
 
     //Grid Resizing
     kendo.resize($(".kendogrid"));
-
+    
 }) // Window resize
 
 $(document).ready(function () {
+    $(document).on('click','#menu-toggle', function () {        
+        $("body").toggleClass("mini-navbar");
+    });
+   
+    $('.nav').css({ height: 0 })
 
     //toastr.options = {
     //    "closeButton": true,
@@ -46,16 +52,16 @@ $(document).ready(function () {
 
     // $('.nav').hide();
     $('.nav-button').click(function () {
-        // $('.nav').toggleClass('show');
-        $('.nav').toggleClass('show')
-        //$('.nav').fadeToggle(function(){
-
-        //})
-    })
+				// $('.nav').toggleClass('show');
+				$('.nav').toggleClass('show')
+				//$('.nav').fadeToggle(function(){
+					
+				//})
+			})
     $('.collapsible > a').click(function () {
-        $(this).parent().toggleClass('open')
-    })
-
+				$(this).parent().toggleClass('open')
+			})
+    
 }); // Ready
 
 function mQuery() {
@@ -75,8 +81,8 @@ function ShowMessage(content, isSuceess) {
     $("#messageDiv").removeClass("alert-danger");
     $("#messageDiv").removeClass("alert-success");
 
-    if (isSuceess == 0) { $("#messageDiv").addClass("alert-danger"); }
-    else { $("#messageDiv").addClass("alert-success"); }
+    if (isSuceess == 0) { $("#messageDiv").addClass("alert-danger");}
+    else { $("#messageDiv").addClass("alert-success");}
 
     $("#messageDiv").show();
     $("#messageContent").text(content);
@@ -92,4 +98,8 @@ function RefreshKendoGrid(gridName) {
             grid.refresh();
         }
     }
+}
+
+function SetNavigationMenuActive(menuId) {
+    $('#' + menuId).addClass('active');
 }

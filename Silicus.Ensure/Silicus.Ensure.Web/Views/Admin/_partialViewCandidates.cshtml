@@ -8,11 +8,11 @@
 
 <script>
     $(document).ready(function () {
-
+        SetNavigationMenuActive('Candidates');
         $("#FieldFilter").keyup(function () {
             var value = $("#FieldFilter").val();
             grid = $("#userGrids").data("kendoGrid");
-
+            var pageSize = grid.dataSource.pageSize();
             if (value.length > 0) {
                 if (value) {
                     var filter = { logic: "or", filters: [] };
@@ -22,6 +22,7 @@
                     //filter.filters.push({ field: "TotalExperienceInYear", operator: "contains", value: value });
                     filter.filters.push({ field: "PanelName", operator: "contains", value: value });
                     grid.dataSource.query({ filter: filter });
+                    grid.dataSource.pageSize(pageSize);
                 } else {
                     grid.dataSource.filter({});
                 }
@@ -148,13 +149,7 @@
             if (chkCheck) {
                 var uId = $("#CurrentUser").val();
                 var IsReAssign = $("#IsReAssign").val();
-                var checkvals = [];
-                $('input:checkbox').each(function () {
-                    if ($(this).is(':checked')) {
-                        checkvals.push($(this).val());
-                    }
-                });
-                JSON.stringify(checkvals);
+                var checkvals = $("[class='check']:checked").attr("value")
                 //alert(checkvals);
                 $.ajax({
                     type: 'post',
@@ -242,8 +237,27 @@
             alert('Please assign the test suit first');
         }
     }
+    function ViewTest(id) {
+        $.ajax({
+            type: 'post',
+            async: false,
+            url: "/Admin/PartialTestSuitView",
+            cache: false,
+            data: { TestSuitId: id },
+            contenttype: "application/json; charset=utf-8",
+            success: function (returndata) {
+                console.log(returndata);
+                $("#TestSuitInfo").html(returndata);
+                $('#ViewTest').fadeIn();
+                $('#ViewTest').modal();
+            },
+            error: function (er) {
+                $('#ViewTest').fadeOut();
+            }
+        });
+    }
 </script>
-<div>
+<div class="">
 
     @if (Request.IsAuthenticated)
     {
@@ -269,9 +283,9 @@
                                                                         else{#
                                                                             #=CandidateStatus#
                                                                         #}
-#").Title("Status").Width(100);
-                  columns.Bound(c => c.UserId).ClientTemplate(@"<a class='k-button k-button-icontext k-grid-edit' href='" + Url.Action("CandidateAdd", "Admin") + "?UserId=#=UserId#'><span class='k-icon k-edit'></span>Edit</a><a id='testSuiteDel' class='k-button k-button-icontext k-grid-delete' href='\\#' onclick='return deleteUser(#=UserId#)'><span class='k-icon k-delete'></span>Delete</a>").Title("Action").Width(160).Sortable(false);
-                  columns.Bound(c => c.UserId).ClientTemplate(@"
+                                                                        #").Title("Status").Width(100);
+                columns.Bound(c => c.UserId).ClientTemplate(@"<a class='k-button k-button-icontext k-grid-edit' href='" + Url.Action("CandidateAdd", "Admin") + "?UserId=#=UserId#'><span class='k-icon k-edit'></span>Edit</a><a id='testSuiteDel' class='k-button k-button-icontext k-grid-delete' href='\\#' onclick='return deleteUser(#=UserId#)'><span class='k-icon k-delete'></span>Delete</a>").Title("Action").Width(160).Sortable(false);
+                columns.Bound(c => c.UserId).ClientTemplate(@"
 
                                          #if(CandidateStatus=='New'){#
                                         <a onclick=showTest('#=UserId#','#=TestStatus#') style='cursor:pointer'>Assign Test</a> |
@@ -279,18 +293,18 @@
                                         #}
                                         else if(CandidateStatus=='TestAssigned') {#
                                         <a  class ='dialog-window' onclick=ReAssign('#=UserId#','#=TestStatus#') style='cursor:pointer'>Reassign Test</a> |
-                                        <a  class ='dialog-window' onclick=ReAssignPanel('#=UserId#') style='cursor:pointer'>Assign Panel</a>
+                                        <a  class ='dialog-window' onclick=ReAssignPanel('#=UserId#') style='cursor:pointer'>Assign Panel</a> |
+                                        <a  class ='dialog-window' onclick=ViewTest('#=TestSuiteId#') style='cursor:pointer'>View Test</a>
                                         #}
                                         else if(CandidateStatus=='TestSubmitted') {#
                                         <a  class ='dialog-window' onclick=ReAssignPanel('#=UserId#') style='cursor:pointer'>Assign Panel</a> |
-                                        <a  class ='dialog-window' onclick=CheckAssign('#=TestStatus#',1,#=TestSuiteId#,'#=UserId#') style='cursor:pointer'>View Test</a>
+                                        <a  class ='dialog-window' onclick=CheckAssign('#=TestStatus#',2,#=TestSuiteId#,'#=UserId#') style='cursor:pointer'>View Test</a>
                                         #}
                                         else if(CandidateStatus=='UnderEvaluation') {#
-                                        <a  class ='dialog-window' onclick=CheckAssign('#=TestStatus#',1,#=TestSuiteId#,'#=UserId#') style='cursor:pointer'>View Test</a> |
-                                        <a  class ='dialog-window' onclick=CheckAssign('#=TestStatus#',2,#=TestSuiteId#,'#=UserId#') style='cursor:pointer'>Add feedback</a>
+                                        <a  class ='dialog-window' onclick=CheckAssign('#=TestStatus#',2,#=TestSuiteId#,'#=UserId#') style='cursor:pointer'>View Test</a>
                                         #}
                                         else if(CandidateStatus=='Selected'||CandidateStatus=='Rejected') {#
-                                        <a  class ='dialog-window' onclick=CheckAssign('#=TestStatus#',1,#=TestSuiteId#,'#=UserId#') style='cursor:pointer'>View Test</a>
+                                        <a  class ='dialog-window' onclick=CheckAssign('#=TestStatus#',2,#=TestSuiteId#,'#=UserId#') style='cursor:pointer'>View Test</a>
                                         #}
 
                                         #").Title("Actions").Sortable(false);
@@ -318,21 +332,20 @@
                         toolbar.Template(@<text>
                             <div class="toolbar">
                                 <div class="row">
-                                    <div class="col-md-4">
-                                        <div class="input-group">
-                                            <span class="input-group-addon"><span class="glyphicon glyphicon-search" aria-hidden="true"></span></span>
-                                            <input type="text" class="form-control" id='FieldFilter' placeholder="Search...">
-                                            <span class="input-group-btn">
-                                                <button id="candidateSearch" class="btn btn-default" style="height:16px;" type="button"><span class="glyphicon glyphicon-refresh" aria-hidden="true"></span></button>
-                                            </span>
+                                    <div class="col-sm-12 M-B15">
+                                        <div class="col-sm-5 col-md-4 col-lg-3 M-T15">
+                                            <div class="input-group">
+                                                <span class="input-group-addon"><span class="glyphicon glyphicon-search" aria-hidden="true"></span></span>
+                                                <input type="text" class="form-control" id='FieldFilter' placeholder="Search">
+                                                <span class="input-group-btn">
+                                                    <button id="candidateSearch" class="btn btn-default" style="height:20px!important;border:1px solid #0070B9!important" type="button"><span class="glyphicon glyphicon-refresh" aria-hidden="true"></span></button>
+                                                </span>
+                                            </div>
                                         </div>
+                                        <a href='#' onclick='AddNew();' style="margin-top:20px;"  class='k-button k-button-icontext k-grid-add'><span class='k-icon k-add'></span>Add Candidate</a>
                                     </div>
                                 </div>
-                                <div class="row">
-                                    <div class="col-md-3" style="float: right; padding-right: 0px; margin-right: -22px;">
-                                        <a href='#' onclick='AddNew();' class='k-button k-button-icontext k-grid-add'><span class='k-icon k-add'></span>Add Candidate</a>
-                                    </div>
-                                </div>
+                               
                             </div>
                         </text>);
                     }))
@@ -352,6 +365,7 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-primary" id="Savebtn">Save</button>
+                <button type="button" class="btn btn-primary" data-dismiss="modal" >Close</button>
             </div>
         </div>
     </div>
@@ -370,6 +384,22 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-primary" id="SavePanlebtn">Save</button>
+                <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="ViewTest" data-backdrop="static" role="dialog">
+    <div class="modal-dialog">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">View Test Suit</h4>
+            </div>
+            <div class="modal-body" id="TestSuitInfo">
+
             </div>
         </div>
     </div>

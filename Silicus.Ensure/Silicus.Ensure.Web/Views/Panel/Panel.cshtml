@@ -2,11 +2,11 @@
 @using Kendo.Mvc.UI;
 
 
-        <div>
+<div>
 
-            @if (Request.IsAuthenticated)
-            {
-                @(Html.Kendo().Grid<Silicus.Ensure.Models.DataObjects.Panel>().Name("PanelGrids")
+    @if (Request.IsAuthenticated)
+    {
+        @(Html.Kendo().Grid<Silicus.Ensure.Models.DataObjects.Panel>().Name("PanelGrids")
                           .Events(e => e.Edit("gvPanel_onRowEdit"))
             .DataSource(dataSource => dataSource
             .Ajax()
@@ -40,29 +40,29 @@
                     toolbar.Template(@<text>
                         <div class="toolbar">
                             <div class="row">
-                                <div class="col-md-6">
-                                    <div class="input-group">
-                                        <span class="input-group-addon"><span class="glyphicon glyphicon-search" aria-hidden="true"></span></span>
-                                        <input type="text" class="form-control" id='PanelFieldFilter' placeholder="Search...">
-                                        <span class="input-group-btn">
-                                            <button id="postionSearch" class="btn btn-default" type="button" style="height:16px;"><span class="glyphicon glyphicon-refresh" aria-hidden="true"></span></button>
-                                        </span>
+                                <div class="col-sm-12 M-B15">
+                                    <div class="col-sm-3 M-T15">
+                                        <div class="input-group">
+                                            <span class="input-group-addon"><span class="glyphicon glyphicon-search" aria-hidden="true"></span></span>
+                                            <input type="text" class="form-control" id='PanelFieldFilter' placeholder="Search">
+                                            <span class="input-group-btn">
+                                                <button id="PanelSearch" class="btn btn-default" type="button" style="height:20px!important;border:1px solid #0070B9!important"><span class="glyphicon glyphicon-refresh" aria-hidden="true"></span></button>
+                                            </span>
+                                        </div>
                                     </div>
+                                    <a href='/Panels/PanelSave' style="margin-top:20px;" class='k-button k-button-icontext k-grid-add'><span class='k-icon k-add'></span>Add new panel</a>
                                 </div>
+
+
                             </div>
-                            <br />
-                            <div class="row">
-                                <div class="col-md-3 col-md-push-1" style="float: right; padding-right: 0px; margin-right: -22px;">
-                                    <a href='/Panels/PanelSave' class='k-button k-button-icontext k-grid-add'><span class='k-icon k-add'></span>Add new panel</a>
-                                </div>
-                            </div>
+
                         </div>
                     </text>);
                 })
-                                .Editable(ed => ed.Mode(GridEditMode.InLine))
-                )
-            }
-        </div> 
+                            .Editable(ed => ed.Mode(GridEditMode.InLine))
+        )
+    }
+</div>
 
 <script>
 
@@ -71,11 +71,12 @@
 
             var value = $("#PanelFieldFilter").val();
             grid = $("#PanelGrids").data("kendoGrid");
-
+            var pageSize = grid.dataSource.pageSize();
             if (value.length > 0) {
                 if (value) {
                     grid.dataSource.filter({ field: "PanelName", operator: "contains", value: value });
                     grid.dataSource.sort({ field: "PanelName", dir: "asc" });
+                    grid.dataSource.pageSize(pageSize);
                 } else {
                     grid.dataSource.filter({});
                 }
@@ -84,7 +85,7 @@
                 grid.dataSource.filter({});
         });
 
-        $("#postionSearch").click(function (e) {
+        $("#PanelSearch").click(function (e) {
             e.preventDefault();
             var datasource = $("#PanelGrids").data("kendoGrid").dataSource;
             //Clear filters:

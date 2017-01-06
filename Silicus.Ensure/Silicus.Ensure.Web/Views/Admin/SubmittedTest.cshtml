@@ -10,8 +10,7 @@
 
 
 <div class="main-content">
-    <div style="overflow:hidden">
-        ()
+    <div style="height:750px;overflow:scroll">
         @using (Html.BeginForm("SubmittedTest", "Admin", FormMethod.Post))
         {
             @Html.HiddenFor(x => x.UserId)
@@ -134,6 +133,19 @@
 
                             <div class="col-md-12">
                                 <div class="col-md-4">
+                                    Correct Answer
+                                </div>
+                                <div class="col-md-8">
+                                    <textarea cols="20" id="@Html.Raw(pQuestion.CorrectAnwer + i)" name="@Html.Raw(pQuestion.CorrectAnwer + i)"
+                                              rows="5" data-role="editor" disabled="disabled" readonly="readonly" autocomplete="off" style="width:87%;background: #eee; color: #333;" class="k-content k-raw-content">
+                                        @pQuestion.CorrectAnwer
+                                    </textarea>
+
+                                </div>
+                            </div>
+
+                            <div class="col-md-12">
+                                <div class="col-md-4">
                                     Submitted Answer
                                 </div>
                                 <div class="col-md-8">
@@ -150,7 +162,7 @@
                                 </div>
                                 <div class="col-md-8">
                                     <input class="form-control valid" data-val="true"
-                                           id="@Html.Raw("Weightage" + i)" name="@Html.Raw("Weightage" + i)" type="text"
+                                           id="@Html.Raw(" weightage" + i)" name="@Html.Raw(" weightage" + i)" type="text"
                                            value="@pQuestion.Weightage" aria-required="true" style="width:87%;" readonly="readonly"
                                            aria-invalid="false" aria-describedby="Emarks-error">
 
@@ -162,7 +174,7 @@
                                 </div>
                                 <div class="col-md-8">
                                     <input class="PracticalMarks form-control valid" data-val="true" data-val-required="Practical question @i evaluated marks is required!"
-                                           id="@Html.Raw("Emarks"+i)" name="@Html.Raw("Emarks"+i)" type="text" onchange="EvaluateTotalResult(this);"
+                                           id="@Html.Raw(" emarks"+i)" name="@Html.Raw(" emarks"+i)" type="text" onchange="EvaluateTotalResult(this);"
                                            value="@pQuestion.EvaluatedMark" aria-required="true" style="width:87%"
                                            aria-invalid="false" aria-describedby="Emarks-error">
 
@@ -178,18 +190,18 @@
                     <legend>Evaluation Result:</legend>
                     <div class="row">
 
-                        <div class="col-md-12">
+                        <div class="col-md-12" style="margin-top:10px">
                             <div class="col-md-4">
                                 Total marks obtained:
                             </div>
                             <div class="col-md-8">
-                                <input class="form-control valid" data-val="true"
+                                <input class="form-control"
                                        id="TotalMarksObtained" name="TotalMarksObtained" type="text"
                                        value="@Model.TotalMarksObtained" style="width:87%;" readonly="readonly" />
                             </div>
                         </div>
 
-                        <div class="col-md-12">
+                        <div class="col-md-12" style="margin-top:10px">
                             <div class="col-md-4">
                                 Evaluation Feedback
                             </div>
@@ -197,19 +209,46 @@
                                 @Html.Kendo().EditorFor(m => m.EvaluatedFeedBack).Name("EvaluatedFeedBack").Encode(true).Value(Model.EvaluatedFeedBack)
                             </div>
                         </div>
+                        <div class="col-md-12" style="margin-top:10px">
+                            <div class="col-md-4">
+                                Status
+                            </div>
+                            <div class="col-md-7">
+                                @(Html.Kendo().DropDownListFor(m => m.Status)
+                            .Name("Status")
+                            .DataTextField("Text")
+                            .DataValueField("Value")
+                            .BindTo(new List<SelectListItem>
+                                () {
+                                new SelectListItem(){
+                                Text="--Select--",
+                                Value="--Select--"
+                                },
+                                new SelectListItem(){
+                                Text=CandidateStatus.Selected.ToString(),
+                                Value=CandidateStatus.Selected.ToString()
+                                },
+                                new SelectListItem(){
+                                Text=CandidateStatus.Rejected.ToString(),
+                                Value=CandidateStatus.Rejected.ToString()
+                                }
+                                }).HtmlAttributes(new { style = "width: 100%" }))
+                                @Html.ValidationMessageFor(m => m.Status)
+                            </div>
+                        </div>
                     </div>
                     <div class="row" style="  margin-top: 1%; ">
                         <div class="col-md-6"></div>
                         <div class="col-md-2 col-md-offset-4">
                             @(Html.Kendo().Button()
-                                .Name("btnCancel").Icon("cancel")
-                                .HtmlAttributes(new { type = "button" })
-                                .Events(e => e.Click("OnCancel"))
-                                .Content("Cancel"))
-                            @*@if (Model.TestStatus == AppConstants.TestStatusSubmitted)
-                                {*@
-                            <input type="submit" value="Save" class="k-button k-button-icontext" id="btnSave" />
-                            @*}*@
+                        .Name("btnCancel").Icon("cancel")
+                        .HtmlAttributes(new { type = "button" })
+                        .Events(e => e.Click("OnCancel"))
+                        .Content("Cancel"))
+                            @if (Model.Status == CandidateStatus.UnderEvaluation.ToString() || Model.Status == CandidateStatus.TestSubmitted.ToString())
+                            {
+                                <input type="submit" value="Save" class="k-button k-button-icontext" id="btnSave" />
+                            }
                         </div>
                     </div>
                 </fieldset>
@@ -221,8 +260,14 @@
 <script>
     $(document).ready(function () {
         EvaluateTotalResult();
+        if (!('@Model.Status' == '@CandidateStatus.UnderEvaluation.ToString()' || '@Model.Status' == '@CandidateStatus.TestSubmitted.ToString()')) {
+            $('form input[type="text"]').prop("disabled", true);
+            $('textarea').prop("disabled", true);
+        }
     });
-
+    $(function () {
+        $("form").kendoValidator();
+    });
     function EvaluateTotalResult() {
         var mark = 0;
         $(".PracticalMarks").each(function () {
