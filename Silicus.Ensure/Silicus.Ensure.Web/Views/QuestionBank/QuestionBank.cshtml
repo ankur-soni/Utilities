@@ -29,13 +29,19 @@
         <div class="kendogrid">
 
 
+            <div>
+                @{
+
+                    Model.ForEach(y => y.QuestionDescription = Silicus.Ensure.Web.MvcApplication.HtmlToPlainText(y.QuestionDescription));
+                }
+
                 @if (Request.IsAuthenticated)
                 {
                     @(Html.Kendo().Grid(Model).Name("questionGrids")
                          .Pageable(pager => { pager.PageSizes(true); })
          .Columns(columns =>
               {
-                  columns.Bound(q => q.QuestionDescription).Width(200);
+                  columns.Bound(q =>q.QuestionDescription).Width(200);
                   columns.Bound(q => q.QuestionType).Width(100);
                   columns.Bound(q => q.Tag).Title("Tags").Width(150);
                   columns.Bound(q => q.ProficiencyLevel).Width(100);
@@ -174,6 +180,7 @@
         $("#FieldFilter").keyup(function () {
             var value = $("#FieldFilter").val();
             var grid = $("#questionGrids").data("kendoGrid");
+            var pageSize=grid.dataSource.pageSize();
             if (value) {
                 var filter = { logic: "or", filters: [] };
                 filter.filters.push({ field: "QuestionDescription", operator: "contains", value: value });
@@ -182,6 +189,7 @@
                 filter.filters.push({ field: "ProficiencyLevel", operator: "contains", value: value });
                 grid.dataSource.query({ filter: filter });
                 grid.dataSource.sort({ field: "QuestionType", dir: "asc" });
+                grid.dataSource.pageSize(pageSize);
             } else {
                 grid.dataSource.filter({});
             }

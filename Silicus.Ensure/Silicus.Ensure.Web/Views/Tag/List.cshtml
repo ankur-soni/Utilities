@@ -74,7 +74,7 @@
 
             var value = $("#FieldFilter").val();
             grid = $("#tagsGrids").data("kendoGrid");
-
+            var pageSize = grid.dataSource.pageSize();
             if (value.length > 0) {
                 if (value) {
                     var filter = { logic: "or", filters: [] };
@@ -82,6 +82,7 @@
                     filter.filters.push({ field: "Description", operator: "contains", value: value });
                     grid.dataSource.query({ filter: filter });
                     grid.dataSource.sort({ field: "TagName", dir: "asc" });
+                    grid.dataSource.pageSize(pageSize);
                 } else {
                     grid.dataSource.filter({});
                 }
