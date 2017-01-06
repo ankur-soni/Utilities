@@ -178,24 +178,24 @@
     });
 
     function Change() {
-        var value = $("#CandidateStatus").val();
-        grid = $("#userGrids").data("kendoGrid");
-        if (value == "All") {
-            grid.dataSource.filter([]);
-        }
-        else {
-            grid.dataSource.filter({ field: "CandidateStatus", operator: "eq", value: value });
-        }
+        dropFilter();
     }
+
+    function dropFilter() {
+
+        var CandidateStatus = $("#CandidateStatus").val();
+        var Position = $("#Position").val();
+
+        var grid = $("#userGrids").data("kendoGrid");
+        var filterArray = new Array();
+
+        filterArray.push({ field: "CandidateStatus", operator: "contains", value: queType });
+        filterArray.push({ field: "Position", operator: "contains", value: level });
+        grid.dataSource.filter(filterArray);
+    }
+
     function PositionChange() {
-        var value = $("#Position").val();
-        grid = $("#userGrids").data("kendoGrid");
-        if (value == "") {
-            grid.dataSource.filter([]);
-        }
-        else {
-            grid.dataSource.filter({ field: "Position", operator: "eq", value: value });
-        }
+        dropFilter();
     }
 
     function AddNew() {
@@ -283,8 +283,8 @@
                                                                             #=CandidateStatus#
                                                                         #}
                                                                         #").Title("Status").Width(100);
-                columns.Bound(c => c.UserId).ClientTemplate(@"<a class='k-button k-button-icontext k-grid-edit' href='" + Url.Action("CandidateAdd", "Admin") + "?UserId=#=UserId#'><span class='k-icon k-edit'></span>Edit</a><a id='testSuiteDel' class='k-button k-button-icontext k-grid-delete' href='\\#' onclick='return deleteUser(#=UserId#)'><span class='k-icon k-delete'></span>Delete</a>").Title("Action").Width(160).Sortable(false);
-                columns.Bound(c => c.UserId).ClientTemplate(@"
+                  columns.Bound(c => c.UserId).ClientTemplate(@"<a class='k-button k-button-icontext k-grid-edit' href='" + Url.Action("CandidateAdd", "Admin") + "?UserId=#=UserId#'><span class='k-icon k-edit'></span>Edit</a><a id='testSuiteDel' class='k-button k-button-icontext k-grid-delete' href='\\#' onclick='return deleteUser(#=UserId#)'><span class='k-icon k-delete'></span>Delete</a>").Title("Action").Width(160).Sortable(false);
+                  columns.Bound(c => c.UserId).ClientTemplate(@"
 
                                          #if(CandidateStatus=='New'){#
                                         <a onclick=showTest('#=UserId#','#=TestStatus#') style='cursor:pointer'>Assign Test</a> |
@@ -341,10 +341,10 @@
                                                 </span>
                                             </div>
                                         </div>
-                                        <a href='#' onclick='AddNew();' style="margin-top:20px;"  class='k-button k-button-icontext k-grid-add'><span class='k-icon k-add'></span>Add Candidate</a>
+                                        <a href='#' onclick='AddNew();' style="margin-top:20px;" class='k-button k-button-icontext k-grid-add'><span class='k-icon k-add'></span>Add Candidate</a>
                                     </div>
                                 </div>
-                               
+
                             </div>
                         </text>);
                     }))
@@ -364,7 +364,7 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-primary" id="Savebtn">Save</button>
-                <button type="button" class="btn btn-primary" data-dismiss="modal" >Close</button>
+                <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
             </div>
         </div>
     </div>
