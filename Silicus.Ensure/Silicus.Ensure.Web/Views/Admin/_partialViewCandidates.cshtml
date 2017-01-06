@@ -190,8 +190,8 @@
         var grid = $("#userGrids").data("kendoGrid");
         var filterArray = new Array();
 
-        filterArray.push({ field: "CandidateStatus", operator: "contains", value: queType });
-        filterArray.push({ field: "Position", operator: "contains", value: level });
+        filterArray.push({ field: "CandidateStatus", operator: "contains", value: CandidateStatus });
+        filterArray.push({ field: "Position", operator: "contains", value: Position });
         grid.dataSource.filter(filterArray);
     }
 
