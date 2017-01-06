@@ -32,6 +32,10 @@
 
 
             <div>
+                @{
+
+                    Model.ForEach(y => y.QuestionDescription = Silicus.Ensure.Web.MvcApplication.HtmlToPlainText(y.QuestionDescription));
+                }
 
                 @if (Request.IsAuthenticated)
                 {
@@ -39,7 +43,7 @@
                          .Pageable(pager => { pager.PageSizes(true); })
          .Columns(columns =>
               {
-                  columns.Bound(q => q.QuestionDescription).Width(200);
+                  columns.Bound(q =>q.QuestionDescription).Width(200);
                   columns.Bound(q => q.QuestionType).Width(100);
                   columns.Bound(q => q.Tag).Title("Tags").Width(150);
                   columns.Bound(q => q.ProficiencyLevel).Width(100);
