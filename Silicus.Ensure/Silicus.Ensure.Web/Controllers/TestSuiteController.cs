@@ -38,7 +38,7 @@ namespace Silicus.Ensure.Web.Controllers
             var tags = _tagsService.GetTagsDetails();
             var testSuitelist = _testSuiteService.GetTestSuiteDetails().Where(model => model.IsDeleted == false).OrderByDescending(model => model.TestSuiteId).ToArray();
             var viewModels = _mappingService.Map<TestSuite[], TestSuiteViewModel[]>(testSuitelist);
-            bool userInRole = User.IsInRole(Silicus.Ensure.Models.Constants.RoleName.Admin.ToString());
+            bool userInRole = MvcApplication.getCurrentUserRoles().Contains((Silicus.Ensure.Models.Constants.RoleName.Admin.ToString()));
             foreach (var item in viewModels)
             {
                 item.PositionName = GetPosition(item.Position) == null ? "deleted from master" : GetPosition(item.Position).PositionName;
