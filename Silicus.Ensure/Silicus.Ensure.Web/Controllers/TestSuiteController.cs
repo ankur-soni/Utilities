@@ -38,10 +38,10 @@ namespace Silicus.Ensure.Web.Controllers
             var tags = _tagsService.GetTagsDetails();
             var testSuitelist = _testSuiteService.GetTestSuiteDetails().Where(model => model.IsDeleted == false).OrderByDescending(model => model.TestSuiteId).ToArray();
             var viewModels = _mappingService.Map<TestSuite[], TestSuiteViewModel[]>(testSuitelist);
-            bool userInRole = User.IsInRole(Silicus.Ensure.Models.Constants.RoleName.Admin.ToString());
+            bool userInRole = MvcApplication.getCurrentUserRoles().Contains((Silicus.Ensure.Models.Constants.RoleName.Admin.ToString()));
             foreach (var item in viewModels)
             {
-                item.PositionName = GetPosition(item.Position);
+                item.PositionName = GetPosition(item.Position) == null ? "deleted from master" : GetPosition(item.Position).PositionName;
                 List<Int32> TagId = item.PrimaryTags.Split(',').Select(int.Parse).ToList();
                 item.PrimaryTagNames = string.Join(",", (from a in tags
                                                          where TagId.Contains(a.TagId)
@@ -52,9 +52,9 @@ namespace Silicus.Ensure.Web.Controllers
             return Json(viewModels.ToDataSourceResult(request), JsonRequestBehavior.AllowGet);
         }
 
-        private string GetPosition(int positionId)
+        private Position GetPosition(int positionId)
         {
-            return _positionService.GetPositionById(positionId).PositionName;
+            return _positionService.GetPositionById(positionId);
         }
 
         public ActionResult List()

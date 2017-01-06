@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Silicus.UtilityContainer.Models.DataObjects;
+using Silicus.UtilityContainer.Models.ViewModels;
 
 namespace Silicus.UtilityContainer.Services.Interfaces
 {
@@ -12,7 +13,7 @@ namespace Silicus.UtilityContainer.Services.Interfaces
         List<Utility> GetAllUtilities();
         Utility FindUtility(int utilityId);
         List<UtilityRole> GetAllRolesForAnUtility(int utilityId);
-        void SaveUtilityRole(UtilityRole newUtilityRole);
+        void SaveUtilityRole(UtilityRoleViewModel newUtilityRole);
 
     }
 }

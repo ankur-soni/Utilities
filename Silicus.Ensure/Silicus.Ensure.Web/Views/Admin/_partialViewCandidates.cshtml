@@ -12,7 +12,7 @@
         $("#FieldFilter").keyup(function () {
             var value = $("#FieldFilter").val();
             grid = $("#userGrids").data("kendoGrid");
-
+            var pageSize = grid.dataSource.pageSize();
             if (value.length > 0) {
                 if (value) {
                     var filter = { logic: "or", filters: [] };
@@ -22,6 +22,7 @@
                     //filter.filters.push({ field: "TotalExperienceInYear", operator: "contains", value: value });
                     filter.filters.push({ field: "PanelName", operator: "contains", value: value });
                     grid.dataSource.query({ filter: filter });
+                    grid.dataSource.pageSize(pageSize);
                 } else {
                     grid.dataSource.filter({});
                 }
@@ -256,7 +257,7 @@
         });
     }
 </script>
-<div>
+<div class="">
 
     @if (Request.IsAuthenticated)
     {
@@ -332,7 +333,7 @@
                             <div class="toolbar">
                                 <div class="row">
                                     <div class="col-sm-12 M-B15">
-                                        <div class="col-sm-3 M-T15">
+                                        <div class="col-sm-5 col-md-4 col-lg-3 M-T15">
                                             <div class="input-group">
                                                 <span class="input-group-addon"><span class="glyphicon glyphicon-search" aria-hidden="true"></span></span>
                                                 <input type="text" class="form-control" id='FieldFilter' placeholder="Search">

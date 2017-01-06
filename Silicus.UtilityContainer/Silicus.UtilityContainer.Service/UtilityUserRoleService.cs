@@ -22,5 +22,10 @@ namespace Silicus.UtilityContainer.Services
         {
             return _commmonDBContext.Query<UtilityUserRoles>().Where(x => x.User.UserName == userName).ToList();
         }
+
+        public List<UtilityUserRoles> GetAllUserRolesForUtility(int utilityId)
+        {
+            return _commmonDBContext.Query<UtilityUserRoles>().Where(x => x.UtilityId == utilityId).ToList();
+        }
     }
 }

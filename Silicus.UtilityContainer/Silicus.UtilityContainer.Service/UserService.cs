@@ -28,7 +28,19 @@ namespace Silicus.UtilityContainer.Services
             _roleService = roleService;
         }
 
-
+        public List<User> GetAllUsersByRoleInUtility(int utilityId, int roleId)
+        {
+            var users = new List<User>();
+            var utilityUserRoles = _commonDBContext.Query<UtilityUserRoles>().Where(x => x.UtilityId == utilityId && x.RoleId == roleId).ToList();
+            if (utilityUserRoles.Count > 0)
+            {
+                foreach (var utilityUserRole in utilityUserRoles)
+                {
+                    users.Add(_commonDBContext.Query<User>().Where(x => x.ID == utilityUserRole.UserId).FirstOrDefault());
+                }
+            }
+            return users;
+        }
         public List<User> GetAllUsers()
         {
             return _commonDBContext.Query<User>().OrderBy(user => user.DisplayName).ToList();
@@ -60,32 +72,71 @@ namespace Silicus.UtilityContainer.Services
             
         }
 
+        private void RemoveRolesOfUserFromUtility(UtilityUserRoleViewModel utilitiUserRoles)
+        {
+            var existingUtilityUserRoles = _commonDBContext.Query<UtilityUserRoles>().Where(x => x.UtilityId == utilitiUserRoles.UtilityId && x.RoleId == utilitiUserRoles.RoleId).ToList();
+
+            foreach (var existingUtilityUserRole in existingUtilityUserRoles )
+            {
+              var result =  utilitiUserRoles.UserId.Find(x => x.Equals(existingUtilityUserRole.UserId));
+
+                if (result == 0)
+                {
+                    var recordToDelete = _commonDBContext.Query<UtilityUserRoles>().Where(x => x.UserId == existingUtilityUserRole.UserId && x.UtilityId == utilitiUserRoles.UtilityId && x.RoleId == utilitiUserRoles.RoleId).FirstOrDefault();
+                    _commonDBContext.Delete(recordToDelete);
+                }
+            }
+
+        }
+
         public void AddRolesToUserForAUtility(UtilityUserRoleViewModel newUserRole)
         {
             var myNewUserRole = new UtilityUserRoles();
+            var existingUtilityUserRoles = _commonDBContext.Query<UtilityUserRoles>().Where( x => x.UtilityId == newUserRole.UtilityId && x.RoleId == newUserRole.RoleId ).ToList();
+
             foreach (var item in newUserRole.UserId)
             {
 
                 var userRole = _commonDBContext.Query<UtilityUserRoles>().Where(x => x.UserId == item && x.UtilityId == newUserRole.UtilityId).ToList();
-                if (newUserRole.RoleId == Convert.ToInt32(ConfigurationManager.AppSettings["Reviewer"]))
+              
+                 if ( existingUtilityUserRoles.Count() > 0 )
                 {
-                    foreach (var userid in newUserRole.UserId)
+                    var roleToUserAlreadyExists = false;
+
+                    if (existingUtilityUserRoles.Find( x => x.UtilityId == newUserRole.UtilityId && x.RoleId == newUserRole.RoleId && x.UserId == item) != null)
                     {
-                        string url = ConfigurationManager.AppSettings["Addreviewer"] + userid;
-                        HttpClient client = new HttpClient();
-                        client.BaseAddress = new Uri(url);
-                        var response = client.GetAsync(url).Result;
+                        roleToUserAlreadyExists = true;
                     }
-                    
+
+                    if ( !roleToUserAlreadyExists )
+                    {
+                        if (newUserRole.RoleId == Convert.ToInt32(ConfigurationManager.AppSettings["Reviewer"]))
+                        {
+                            foreach (var userid in newUserRole.UserId)
+                            {
+                                string url = ConfigurationManager.AppSettings["Addreviewer"] + userid;
+                                HttpClient client = new HttpClient();
+                                client.BaseAddress = new Uri(url);
+                                var response = client.GetAsync(url).Result;
+                            }
+
+                        }
+                        else
+                        {
+                            myNewUserRole.UtilityId = newUserRole.UtilityId;
+                            myNewUserRole.RoleId = newUserRole.RoleId;
+                            myNewUserRole.UserId = item;
+                            _commonDBContext.Add(myNewUserRole);
+
+                        }
+                       
+                    }
+                   
                 }
 
-                myNewUserRole.UtilityId = newUserRole.UtilityId;
-                myNewUserRole.RoleId = newUserRole.RoleId;
-                myNewUserRole.UserId = item;
-                _commonDBContext.Add(myNewUserRole);
-
             }
-
+            
+                RemoveRolesOfUserFromUtility(newUserRole);
 
         }
 
