@@ -71,11 +71,12 @@
 
             var value = $("#PanelFieldFilter").val();
             grid = $("#PanelGrids").data("kendoGrid");
-
+            var pageSize = grid.dataSource.pageSize();
             if (value.length > 0) {
                 if (value) {
                     grid.dataSource.filter({ field: "PanelName", operator: "contains", value: value });
                     grid.dataSource.sort({ field: "PanelName", dir: "asc" });
+                    grid.dataSource.pageSize(pageSize);
                 } else {
                     grid.dataSource.filter({});
                 }

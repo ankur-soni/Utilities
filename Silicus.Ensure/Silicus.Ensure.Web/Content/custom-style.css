@@ -13,10 +13,9 @@
 /*Kendo override css*/
 .k-pager-wrap>.k-link{border:none!important;}
 .k-grid table{background-color:#e7eaec!important;}
-.k-tabstrip-items .k-state-active, .k-panelbar .k-tabstrip-items .k-state-active{
-    border-bottom:4px solid #00b0ff; 
-}
-
+.k-tabstrip-items .k-state-active, .k-panelbar .k-tabstrip-items .k-state-active{border-bottom:4px solid #00b0ff; }
+#frmSearchAllNdc span.k-dropdown-wrap.k-state-default{height:35px!important;}
+#frmSearchAllNdc span.k-dropdown .k-input, .k-dropdown .k-state-focused .k-input, .k-menu .k-popup{height: 30px;margin-top: 5px;}
 
 
 /*Loader css - Start*/
@@ -1871,6 +1870,9 @@ span.select2.select2-container.select2-container--default{
 }
 @media (max-width:768px) 
 {
+    .sidebar-wrapper{
+        display:none;
+    }
     .navbar-right {
     float: right;
 }

@@ -10,5 +10,6 @@ namespace Silicus.UtilityContainer.Services.Interfaces
     public interface IUtilityUserRoleService
     {
         List<UtilityUserRoles> GetAllRolesForUser(string userName);
+        List<UtilityUserRoles> GetAllUserRolesForUtility(int utilityId);
     }
 }

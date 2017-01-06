@@ -15,7 +15,7 @@
         </div>
     </nav>
 
-    <div class="col-lg-11 col-md-11 col-sm-11">
+    <div class="col-lg-10 col-md-10 col-sm-10">
         <h1 class="dashboard-name">Question Bank</h1>
     </div>
 </div>
@@ -25,9 +25,7 @@
         <span id="messageContent"></span>
     </div>
     <div class="col-sm-12">
-        <div class="box M-T15">
-            <div id="main">
-    <div class="fluid mt20">
+        <div class="box M-T15 M-B60">
         <div class="kendogrid">
 
 
@@ -54,11 +52,13 @@
               .ToolBar(toolbar =>
               {
                   toolbar.Template(@<text>
-                    <div class="toolbar">
-                        <div class="">
                             
-                                <div class="col-sm-12 M-B15">
-                                    <div class="col-md-3 M-T15">
+                        
+                            
+            <div class="M-B15">
+                <div class="row">
+                    <div class="col-sm-12">
+                        <div class="col-sm-4 col-md-4 col-lg-3 M-T15 M-B15">
                                 <div class="input-group">
                                     <span class="input-group-addon"><span class="glyphicon glyphicon-search" aria-hidden="true"></span></span>
                                     <input type="text" class="form-control" id='FieldFilter' placeholder="Search">
@@ -66,18 +66,17 @@
                                         <button id="QuestionSearchRefresh" class="btn btn-default" style="height:20px!important;border:1px solid #0070B9!important" type="button"><span class="glyphicon glyphicon-refresh" aria-hidden="true"></span></button>
                                     </span>
                                 </div>
-                                    
                             </div>
                         </div>
                             </div>
                         
-                           <div class="M-B15">
                                 
-                                    <div class="box" style="margin-bottom:-15px;box-shadow:none;">
-                                        <div class="col-sm-1">
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <div class="col-sm-1 col-md-1 col-lg-1">
                                             <span style="font-weight:bold;" class="themeColorBlue">Type</span>
                             </div>
-                                        <div class="col-sm-2">
+                            <div class="col-sm-2 col-md-2 col-lg-1">
                                 @(Html.Kendo().DropDownList()
                             .Name("QuestionType")
                             .DataTextField("Text")
@@ -97,12 +96,12 @@
                                 Text="Practical",
                                 Value="Practical"
                                 }
-                                }).HtmlAttributes(new { style = "width: 93%" }))
+                                }).HtmlAttributes(new { style = "width: 100%" }))
                             </div>
-                                        <div class="col-sm-1">
+                            <div class="col-sm-1 col-md-1 col-lg-1">
                                             <span style="font-weight:bold;" class="themeColorBlue">Proficiency Level</span>
                             </div>
-                                        <div class="col-sm-2">
+                            <div class="col-sm-2 col-md-2 col-lg-1">
                                 @{
                                     var levelList = new List<SelectListItem>();
                                     levelList.Add(new SelectListItem() { Text = "All", Value = "" });
@@ -116,17 +115,20 @@
                                     .DataTextField("Text")
                                     .DataValueField("Value")
                                     .Events(e => e.Change("ProficiencyLevelDropDownChange"))
-                                                                .BindTo(levelList))
+                                    .BindTo(levelList)
+                                    .HtmlAttributes(new { style = "width: 100%" })
+                                )
                                         </div>
-                                        <div class="col-sm-2">
+                            <div class="col-sm-3 col-md-3 col-lg-2">
                                             <a href='/QuestionBank/AddQuestions?questionId=0' s class='k-button k-button-icontext k-grid-add'><span class='k-icon k-add'></span>Add Question</a>
                             </div>
-
-                                        <div class="clearfix"></div>
-                            </div>
-                                
                         </div>
                     </div>
+
+               
+
+                            </div>
+                                
                 </text>);
               })
                                                                                                                                                                                                                                                                                                                                                                                                                                                 .Resizable(resizing => resizing.Columns(true))
@@ -139,10 +141,10 @@
                                                                                                                                                                                                                                                                                                                                                                                                                                 .ServerOperation(false)
                                                                                                                                                                                                                                                                                                                                                                                                                                 ))
                 }
-            </div>
-        </div>
-    </div>
+            
 </div>
+    
+
         </div>
     </div>
 </div>
@@ -178,6 +180,7 @@
         $("#FieldFilter").keyup(function () {
             var value = $("#FieldFilter").val();
             var grid = $("#questionGrids").data("kendoGrid");
+            var pageSize=grid.dataSource.pageSize();
             if (value) {
                 var filter = { logic: "or", filters: [] };
                 filter.filters.push({ field: "QuestionDescription", operator: "contains", value: value });
@@ -186,6 +189,7 @@
                 filter.filters.push({ field: "ProficiencyLevel", operator: "contains", value: value });
                 grid.dataSource.query({ filter: filter });
                 grid.dataSource.sort({ field: "QuestionType", dir: "asc" });
+                grid.dataSource.pageSize(pageSize);
             } else {
                 grid.dataSource.filter({});
             }
