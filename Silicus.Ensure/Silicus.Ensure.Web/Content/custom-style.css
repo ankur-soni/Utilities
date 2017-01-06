@@ -1756,6 +1756,11 @@ span.select2.select2-container.select2-container--default{
     height: 37px;
 }
 
+.primary-bt, .primary-bt:hover, .primary-bt:visited, .primary-bt:focus {
+    color: #fff;
+    outline: none;
+    background: #0063a7;
+}
 
 
 

@@ -25,5 +25,7 @@ namespace Silicus.Ensure.Services.Interfaces
         dynamic GetTestSuiteDetailsOfUser(int? userId);
 
         dynamic GetTestSuiteDetailsWithQuestions(int? userTestSuiteId);
+
+        
     }
 }

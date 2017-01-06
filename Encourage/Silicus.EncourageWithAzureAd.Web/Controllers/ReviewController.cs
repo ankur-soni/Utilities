@@ -73,28 +73,56 @@ namespace Silicus.EncourageWithAzureAd.Web.Controllers
         public ActionResult ReviewFeedbackList()
         {
             _logger.Log("Review-ReviewFeedbackList-GET");
-            var reviewFeedbackList = ReviewFeedbackList(true);
-            return View(reviewFeedbackList);
+            int awardType = 0;
+            var shortListedNominations = new ShortlistedNominationViewModel();
+            var reviewFeedbackList = ReviewFeedbackList(true, awardType);
+            var awards = _encourageDatabaseContext.Query<Award>().ToList();
+            foreach (var award in awards)
+            {
+                shortListedNominations.Awards.Add(new LockAwardViewModel { Id = award.Id, Code = award.Code, Name = award.Name});
+            }
+            shortListedNominations.ReviewFeedbackList = reviewFeedbackList;
+            return View(shortListedNominations);
         }
 
         [HttpGet]
         [CustomeAuthorize(AllowedRole = "Admin")]
-        public ActionResult GetReviewFeedbackListPartialView(bool forCurrentMonth)
+        public ActionResult GetReviewFeedbackListPartialView(bool forCurrentMonth,int awardType)
         {
             _logger.Log("Review-ReviewFeedbackList-GET");
-            var reviewFeedbackList = ReviewFeedbackList(forCurrentMonth);
+            var reviewFeedbackList = ReviewFeedbackList(forCurrentMonth, awardType);
             return PartialView("~/Views/Review/Shared/_reviewFeedbackList.cshtml", reviewFeedbackList);
         }
 
-        private List<ReviewFeedbackListViewModel> ReviewFeedbackList(bool forCurrentMonth)
+        private List<ReviewFeedbackListViewModel> ReviewFeedbackList(bool forCurrentMonth,int awardType)
         {
             _logger.Log("Review-ReviewFeedbackList-private-GET");
             var reviewFeedbacks = new List<ReviewFeedbackListViewModel>();
 
             var today = DateTime.Today;
             var prevMonth = new DateTime(today.Year, today.Month, 1).AddMonths(-1);
+            List<Review> uniqueReviewedNomination = new List<Review>();
 
-            var uniqueReviewedNomination = _encourageDatabaseContext.Query<Review>().Where(r => r.IsSubmited == true && (forCurrentMonth ? (r.Nomination.NominationDate >= prevMonth) : (r.Nomination.NominationDate < prevMonth))).GroupBy(x => x.NominationId).Select(group => group.FirstOrDefault()).ToList();
+            if (awardType != 0)
+            {
+                uniqueReviewedNomination = _encourageDatabaseContext.Query<Review>()
+                .Where(r =>
+                        r.IsSubmited == true &&
+                        r.Nomination.AwardId == awardType &&
+                        (forCurrentMonth ? (r.Nomination.NominationDate >= prevMonth) : (r.Nomination.NominationDate < prevMonth)))
+                .GroupBy(x => x.NominationId)
+                .Select(group => group.FirstOrDefault()).ToList();
+            }
+            else
+            {
+                uniqueReviewedNomination = _encourageDatabaseContext.Query<Review>()
+                .Where(r =>
+                        r.IsSubmited == true &&
+                        (forCurrentMonth ? (r.Nomination.NominationDate >= prevMonth) : (r.Nomination.NominationDate < prevMonth)))
+                .GroupBy(x => x.NominationId)
+                .Select(group => group.FirstOrDefault()).ToList();
+            }
+            
 
             foreach (var reviewNomination in uniqueReviewedNomination)
             {

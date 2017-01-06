@@ -148,13 +148,7 @@
             if (chkCheck) {
                 var uId = $("#CurrentUser").val();
                 var IsReAssign = $("#IsReAssign").val();
-                var checkvals = [];
-                $('input:checkbox').each(function () {
-                    if ($(this).is(':checked')) {
-                        checkvals.push($(this).val());
-                    }
-                });
-                JSON.stringify(checkvals);
+                var checkvals = $("[class='check']:checked").attr("value")
                 //alert(checkvals);
                 $.ajax({
                     type: 'post',
@@ -341,7 +335,7 @@
                                         <div class="col-sm-5 col-md-4 col-lg-3 M-T15">
                                             <div class="input-group">
                                                 <span class="input-group-addon"><span class="glyphicon glyphicon-search" aria-hidden="true"></span></span>
-                                                <input type="text" class="form-control" id='FieldFilter' placeholder="Search...">
+                                                <input type="text" class="form-control" id='FieldFilter' placeholder="Search">
                                                 <span class="input-group-btn">
                                                     <button id="candidateSearch" class="btn btn-default" style="height:20px!important;border:1px solid #0070B9!important" type="button"><span class="glyphicon glyphicon-refresh" aria-hidden="true"></span></button>
                                                 </span>
@@ -370,6 +364,7 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-primary" id="Savebtn">Save</button>
+                <button type="button" class="btn btn-primary" data-dismiss="modal" >Close</button>
             </div>
         </div>
     </div>
@@ -388,6 +383,7 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-primary" id="SavePanlebtn">Save</button>
+                <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
             </div>
         </div>
     </div>

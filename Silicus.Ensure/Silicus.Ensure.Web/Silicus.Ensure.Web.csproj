@@ -385,6 +385,7 @@
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\AdminController.cs" />
     <Compile Include="Controllers\CandidateController.cs" />
+    <Compile Include="Controllers\CommonController.cs" />
     <Compile Include="Controllers\ErrorController.cs" />
     <Compile Include="Controllers\ManageUserController.cs" />
     <Compile Include="Controllers\MasterController.cs" />
@@ -424,9 +425,11 @@
     <Compile Include="Models\EmailModel.cs" />
     <Compile Include="Models\ForgotPassword.cs" />
     <Compile Include="Models\LoginModel.cs" />
+    <Compile Include="Models\PanelMemberDetailViewModel.cs" />
     <Compile Include="Models\PanelViewModel.cs" />
     <Compile Include="Models\PositionViewModel.cs" />
     <Compile Include="Models\QuestionModel.cs" />
+    <Compile Include="Models\RecruiterMemberDetailViewModel.cs" />
     <Compile Include="Models\ResetPasswordModel.cs" />
     <Compile Include="Models\RoleViewModel.cs" />
     <Compile Include="Models\SubmittedTestViewModel.cs" />
@@ -434,6 +437,7 @@
     <Compile Include="Models\TestSuiteQuestionModel.cs" />
     <Compile Include="Models\TestSuiteViewModel.cs" />
     <Compile Include="Models\TestSuiteViewQuesModel.cs" />
+    <Compile Include="Models\UserDetailViewModel.cs" />
     <Compile Include="Models\UserViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
@@ -820,6 +824,9 @@
     <Content Include="Views\Shared\EditorTemplates\PostionEditorTemplete.cshtml" />
     <Content Include="Views\TestSuite\ViewQuestion.cshtml" />
     <Content Include="Views\Admin\PartialTestSuitView.cshtml" />
+    <Content Include="Views\ManageUser\_AssignType.cshtml" />
+    <Content Include="Views\ManageUser\_AssignPanel.cshtml" />
+    <Content Include="Views\Panel\AddPanel.cshtml" />
     <None Include="Web.Azure.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -835,6 +842,7 @@
     <Folder Include="Content\CandidateResume\" />
     <Folder Include="Scripts\Custom\" />
     <Folder Include="ViewModel\" />
+    <Folder Include="Views\Common\" />
     <Folder Include="Views\Shared\DisplayTemplates\" />
     <Folder Include="Views\Staff\" />
     <Folder Include="Views\UserManagement\" />

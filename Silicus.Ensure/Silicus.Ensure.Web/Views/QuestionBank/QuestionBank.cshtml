@@ -21,10 +21,13 @@
 </div>
 
 <div class="row">
+    <div class="alert alert-success" id="messageDiv">
+        <span id="messageContent"></span>
+    </div>
     <div class="col-sm-12">
         <div class="box M-T15 M-B60">
         <div class="kendogrid">
-           
+
 
                 @if (Request.IsAuthenticated)
                 {
@@ -43,29 +46,29 @@
               .ToolBar(toolbar =>
               {
                   toolbar.Template(@<text>
-                   
+                            
                         
                             
             <div class="M-B15">
                 <div class="row">
                     <div class="col-sm-12">
                         <div class="col-sm-4 col-md-4 col-lg-3 M-T15 M-B15">
-                            <div class="input-group">
-                                <span class="input-group-addon"><span class="glyphicon glyphicon-search" aria-hidden="true"></span></span>
-                                <input type="text" class="form-control" id='FieldFilter' placeholder="Search...">
-                                <span class="input-group-btn">
-                                    <button class="btn btn-default" style="height:20px!important;border:1px solid #0070B9!important" type="button"><span class="glyphicon glyphicon-refresh" aria-hidden="true"></span></button>
-                                </span>
+                                <div class="input-group">
+                                    <span class="input-group-addon"><span class="glyphicon glyphicon-search" aria-hidden="true"></span></span>
+                                    <input type="text" class="form-control" id='FieldFilter' placeholder="Search">
+                                    <span class="input-group-btn">
+                                        <button id="QuestionSearchRefresh" class="btn btn-default" style="height:20px!important;border:1px solid #0070B9!important" type="button"><span class="glyphicon glyphicon-refresh" aria-hidden="true"></span></button>
+                                    </span>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                </div>
-
-               
+                            </div>
+                        
+                                
                     <div class="row">
                         <div class="col-sm-12">
                             <div class="col-sm-1 col-md-1 col-lg-1">
-                                <span style="font-weight:bold;" class="themeColorBlue">Type</span>
+                                            <span style="font-weight:bold;" class="themeColorBlue">Type</span>
                             </div>
                             <div class="col-sm-2 col-md-2 col-lg-1">
                                 @(Html.Kendo().DropDownList()
@@ -90,7 +93,7 @@
                                 }).HtmlAttributes(new { style = "width: 100%" }))
                             </div>
                             <div class="col-sm-1 col-md-1 col-lg-1">
-                                <span style="font-weight:bold;" class="themeColorBlue">Proficiency Level</span>
+                                            <span style="font-weight:bold;" class="themeColorBlue">Proficiency Level</span>
                             </div>
                             <div class="col-sm-2 col-md-2 col-lg-1">
                                 @{
@@ -109,17 +112,17 @@
                                     .BindTo(levelList)
                                     .HtmlAttributes(new { style = "width: 100%" })
                                 )
-                            </div>
+                                        </div>
                             <div class="col-sm-3 col-md-3 col-lg-2">
-                                <a href='/QuestionBank/AddQuestions?questionId=0' s class='k-button k-button-icontext k-grid-add'><span class='k-icon k-add'></span>Add Question</a>
+                                            <a href='/QuestionBank/AddQuestions?questionId=0' s class='k-button k-button-icontext k-grid-add'><span class='k-icon k-add'></span>Add Question</a>
                             </div>
                         </div>
                     </div>
-                   
+
                
 
-            </div>
-                    
+                            </div>
+                                
                 </text>);
               })
                                                                                                                                                                                                                                                                                                                                                                                                                                                 .Resizable(resizing => resizing.Columns(true))
@@ -133,7 +136,7 @@
                                                                                                                                                                                                                                                                                                                                                                                                                                 ))
                 }
             
-        </div>
+</div>
     
 
         </div>
@@ -164,6 +167,9 @@
 <script>
     $(document).ready(function () {
 
+        $("#messageDiv").hide();
+
+        SetNavigationMenuActive('QuestionBank');
         // Kendo Grid Filter (Search)
         $("#FieldFilter").keyup(function () {
             var value = $("#FieldFilter").val();
@@ -180,7 +186,14 @@
                 grid.dataSource.filter({});
             }
         });
-        SetNavigationMenuActive('QuestionBank');
+        
+        $("#QuestionSearchRefresh").click(function (e) {
+            e.preventDefault();
+            var datasource = $("#questionGrids").data("kendoGrid").dataSource;
+            //Clear filters:
+            datasource.filter([]);
+            $("#FieldFilter").val('');
+        });
     });
 
     function ProficiencyLevelAndQuetiontype()
@@ -221,7 +234,7 @@
         $("#myModal").modal();
         $("#msgMain").text("Warning!");
         $("#msgContent").text("Are you sure, you want to delete this question from the application?");
-        $("#btnModalOK").show();
+        //$("#btnModalOK").show();
     }
 
     function OnOK() {
@@ -235,18 +248,13 @@
                 if (data == 1) {
                     var grid = $("#questionGrids").data("kendoGrid");
                     grid.removeRow($(deleteTh).closest('tr'));
-                    $("#myModal").modal();
-                    $("#msgMain").text("Success!");
-                    $("#msgContent").text("Question deleted successfully from the application?");
-                    $("#btnModalOK").hide();
+                    ShowMessage("Question deleted successfully.", 1);
                 }
             },
             error: function () {
-                $("#myModal").modal();
-                $("#msgMain").text("Error!");
-                $("#msgContent").text("Question is not deleted.");
-                $("#btnModalOK").hide();
+                ShowMessage("Problem occured.", 0);
             }
         });
     }
+
 </script>

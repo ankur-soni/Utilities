@@ -67,12 +67,13 @@ namespace Silicus.Encourage.Services
                 switch (award.Code)
                 {
                     case "SOM":
+                        var prevMonth = DateTime.Now.AddMonths(-1);
                         var somNominations = _encourageDatabaseContext.Query<Nomination>().Where(N =>
                             N.AwardId == award.Id &&
                             N.IsSubmitted == true &&
                             (!alreadyReviewedNominationIds.Contains(N.Id)) &&
-                            N.NominationDate.Value.Month == (DateTime.Now.Month - 1) &&
-                            N.NominationDate.Value.Year == DateTime.Now.Year).ToList();
+                            N.NominationDate.Value.Month == prevMonth.Month &&
+                            N.NominationDate.Value.Year == prevMonth.Year).ToList();
                         allNominations.AddRange(somNominations);
                         break;
                     case "PINNACLE":
@@ -424,6 +425,33 @@ namespace Silicus.Encourage.Services
         public List<User> GetAllResources()
         {
             return _commonDataBaseContext.Query<User>().ToList();
+        }
+
+        public List<User> GetAllResourcesForOtherReason(int awardType, int managerId)
+        {
+            var toBeExcludedUserIds = new List<int>();
+            var prevMonth = DateTime.Now.AddMonths(-1);
+            //var currentMonthNominees = _encourageDatabaseContext.Query<Nomination>()
+            //                                .Where(n => 
+            //                                n.ManagerId == managerId &&
+            //                                n.NominationDate.Value.Month == prevMonth.Month && 
+            //                                n.NominationDate.Value.Year == prevMonth.Year &&
+            //                                n.AwardId == awardType)
+            //                                .Select(u => u.UserId).ToList();
+            //toBeExcludedUserIds.AddRange(currentMonthNominees);
+
+            var prevWinnersUserIds = _encourageDatabaseContext.Query<Shortlist>()
+                                        .Where(s => 
+                                            s.IsWinner == true && 
+                                            s.WinningDate.Value.Year == DateTime.Now.Year && 
+                                            s.Nomination.AwardId == awardType &&
+                                            s.Nomination.ManagerId == managerId)
+                                        .Select(n => n.Nomination.UserId).ToList();
+            toBeExcludedUserIds.AddRange(prevWinnersUserIds);
+
+            toBeExcludedUserIds.Add(managerId);
+
+            return _commonDataBaseContext.Query<User>().Where(u => !toBeExcludedUserIds.Contains(u.ID)).ToList();
         }
 
         #region Get Saved Nominations Details

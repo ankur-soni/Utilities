@@ -29,6 +29,7 @@
 
     public enum Year
     {
+        Zero = 0,
         One = 1,
         Two = 2,
         Three = 3,
@@ -58,7 +59,7 @@
         TwentySeven = 27,
         TwentyEight = 28,
         TwentyNine = 29,
-        Thirghty = 30, 
+        Thirghty = 30,
         ThirghtyOne = 31,
         ThirghtyTwo = 32,
         ThirghtThree = 33,
@@ -68,6 +69,7 @@
 
     public enum Month
     {
+        Zero = 0,
         One = 1,
         Two = 2,
         Three = 3,
