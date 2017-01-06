@@ -117,7 +117,7 @@
 
             var value = $("#FieldFilter").val();
             grid = $("#testSuiteGrids").data("kendoGrid");
-
+            var pageSize = grid.dataSource.pageSize();
             if (value.length >= 1) {
                 if (value) {
                     var filter = { logic: "or", filters: [] };
@@ -125,6 +125,8 @@
                     filter.filters.push({ field: "PositionName", operator: "contains", value: value });
                     filter.filters.push({ field: "PrimaryTagNames", operator: "contains", value: value });
                     grid.dataSource.query({ filter: filter });
+                    grid.dataSource.sort({ field: "TestSuiteName", dir: "asc" });
+                    grid.dataSource.pageSize(pageSize);
                 } else {
                     grid.dataSource.filter({});
                 }
