@@ -122,7 +122,7 @@
                         if (returndata == 1) {
                             $('#userGrids').data('kendoGrid').dataSource.read();
                             $('#userGrids').data('kendoGrid').refresh();
-                            ShowMessage("Test suit assigned successfully.", 1);
+                            ShowMessage("Test suite assigned successfully.", 1);
                             $('#myModal').fadeOut();
                         }
                     },
@@ -132,7 +132,7 @@
                 });
             }
             else {
-                alert('Please select at least one test suit !')
+                alert('Please select at least one test suite !')
             }
         });
 
@@ -162,7 +162,7 @@
                         if (returndata == 1) {
                             $('#userGrids').data('kendoGrid').dataSource.read();
                             $('#userGrids').data('kendoGrid').refresh();
-                            ShowMessage("Test suit assigned successfully.", 1);
+                            ShowMessage("Test suite assigned successfully.", 1);
                             $('#myModal1').fadeOut();
                         }
                     },
@@ -234,7 +234,7 @@
             return false;
         }
         else {
-            alert('Please assign the test suit first');
+            alert('Please assign the test suite first');
         }
     }
     function ViewTest(id) {
@@ -396,7 +396,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal">&times;</button>
-                <h4 class="modal-title">View Test Suit</h4>
+                <h4 class="modal-title">View Test Suite</h4>
             </div>
             <div class="modal-body" id="TestSuitInfo">
 
