@@ -315,7 +315,7 @@ namespace Silicus.Ensure.Web.Controllers
                 }
                 else
                 {
-                    testSuiteViewQuesModel.ErrorMessage = "Test suit is not ready.";
+                    testSuiteViewQuesModel.ErrorMessage = "Test suite is not ready.";
 
                 }
 
