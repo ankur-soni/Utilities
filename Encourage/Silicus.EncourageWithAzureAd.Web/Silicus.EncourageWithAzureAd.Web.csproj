@@ -510,6 +510,7 @@
     <Content Include="Css\star-rating.css" />
     <Content Include="Css\style.css" />
     <Content Include="Css\style.min.css" />
+    <Content Include="Css\summernote.css" />
     <Content Include="Css\_notes\dwsync.xml" />
     <Content Include="font-awesome\css\font-awesome.css" />
     <Content Include="font-awesome\css\font-awesome.min.css" />
@@ -763,6 +764,7 @@
     <Content Include="js\plugins\validate\_notes\dwsync.xml" />
     <Content Include="js\select2.min.js" />
     <Content Include="js\star-rating.js" />
+    <Content Include="js\summernote.min.js" />
     <Content Include="js\_notes\dwsync.xml" />
     <Content Include="LESS\style.css" />
     <Content Include="LESS\_notes\dwsync.xml" />

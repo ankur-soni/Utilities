@@ -1,25 +1,34 @@
 ﻿@model Silicus.EncourageWithAzureAd.Web.Models.EmailTemplateEditorViewModel
-<div class="col-sm-12">
-    <div class="row">
-        <p>
+
+
+
+<div class="row M-T15">
+    <div class="col-sm-12">
+        <div class="form-group">
             @Html.Label("Send Mail To", new { @class = "control-label" })
-        </p>
-        @Html.DropDownListFor(m => m.Users, new SelectList(Model.Users, "Email", "Name"), "Select", new { multiple = "multiple", @class = "form-control" })
-    </div>
-    <div class="row">
-        @Html.Label("Template", new { @class = "control-label" })
-        <div id="emailTemplateEditor">
-            @Html.TextAreaFor(m => m.EmailTemplate, new { @class = "form-control" })
+            @Html.DropDownListFor(m => m.Users, new SelectList(Model.Users, "Email", "Name"), "Select", new { multiple = "multiple", @class = "form-control" })
         </div>
     </div>
 </div>
-<div class="pull-right btn btn-nav">
-    <input type="button" name="send" value="Send" id="sendMailButton" class="btn btn-primary" disabled="disabled" />
+<div class="row">
+    <div class="col-sm-12">
+        <div id="emailTemplateEditor">
+            @*@Html.TextAreaFor(m => m.EmailTemplate, new { @class = "form-control" })*@
+                <h3 class="box-title">Template</h3>
+                <div class="summernote">
+                </div>
+        </div>
+    </div>
 </div>
 
+<div class="pull-right">
+    <input type="button" name="send" value="Send" id="sendMailButton" class="btn btn-primary" disabled="disabled" />
+</div>
+<link href="~/Css/custom-style.css" rel="stylesheet" />
 <link href="~/Css/select2.css" rel="stylesheet" />
 <script src="~/js/select2.min.js"></script>
-
+<link href="~/Css/summernote.css" rel="stylesheet" />
+<script src="~/js/summernote.min.js"></script>
 <link href="~/Css/jquery-te-1.4.0.css" rel="stylesheet" />
 <script src="~/js/jquery-te-1.4.0.min.js"></script>
 
@@ -125,5 +134,23 @@
 
     function htmlDecode(value) {
         return $('<div/>').html(value).text();
+    }
+</script>
+<script>
+    jQuery(document).ready(function () {
+        $('.summernote').summernote({
+            height: 350, // set editor height
+            minHeight: null, // set minimum height of editor
+            maxHeight: null, // set maximum height of editor
+            focus: false // set focus to editable area after initializing summernote
+        });
+        $('.inline-editor').summernote({
+            airMode: true
+        });
+    });
+    window.edit = function () {
+        $(".click2edit").summernote()
+    }, window.save = function () {
+        $(".click2edit").destroy()
     }
 </script>
