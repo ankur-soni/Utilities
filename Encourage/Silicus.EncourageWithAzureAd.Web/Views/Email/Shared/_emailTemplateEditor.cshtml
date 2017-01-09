@@ -12,11 +12,9 @@
 </div>
 <div class="row">
     <div class="col-sm-12">
+        @Html.Label("Template", new { @class = "control-label" })
         <div id="emailTemplateEditor">
-            @*@Html.TextAreaFor(m => m.EmailTemplate, new { @class = "form-control" })*@
-                <h3 class="box-title">Template</h3>
-                <div class="summernote">
-                </div>
+            @Html.TextAreaFor(m => m.EmailTemplate, new { @class = "summernote" })
         </div>
     </div>
 </div>
@@ -29,9 +27,6 @@
 <script src="~/js/select2.min.js"></script>
 <link href="~/Css/summernote.css" rel="stylesheet" />
 <script src="~/js/summernote.min.js"></script>
-<link href="~/Css/jquery-te-1.4.0.css" rel="stylesheet" />
-<script src="~/js/jquery-te-1.4.0.min.js"></script>
-
 
 <script>
     var _urlSendMail = '@Url.Action("SendMailToManagers", "Email")';
@@ -48,8 +43,29 @@
         var usersSelect2 = $("#Users").select2();
         usersSelect2.val(toBeSelectedManagers).trigger("change");
 
-        $("#EmailTemplate").jqte();
+        $('.summernote').summernote({
+            height: 350, // set editor height
+            minHeight: null, // set minimum height of editor
+            maxHeight: null, // set maximum height of editor
+            focus: false, // set focus to editable area after initializing summernote
+            toolbar: [
+                ['style', ['bold', 'italic', 'underline', 'clear']],
+                ['font', ['strikethrough', 'superscript', 'subscript']],
+                ['fontsize', ['fontsize']],
+                ['color', ['color']],
+                ['para', ['ul', 'ol', 'paragraph']],
+                ['height', ['height']],
+                ['insert', ['table']],
+                ['misc', ['codeview', 'undo', 'redo']]
+            ]
+        });
     });
+
+    window.edit = function () {
+        $(".click2edit").summernote()
+    }, window.save = function () {
+        $(".click2edit").destroy()
+    }
 
     $("#sendMailButton").on("click", function () {
         if (validateEmailTemplateAndUsers()) {
@@ -100,7 +116,7 @@
                 }
             });
         } else {
-            swal("Please Note", "Template cannot be empty and Managers are compulsary","error");
+            swal("Please Note", "Template cannot be empty and Managers are compulsary", "error");
         }
     });
 
@@ -134,23 +150,5 @@
 
     function htmlDecode(value) {
         return $('<div/>').html(value).text();
-    }
-</script>
-<script>
-    jQuery(document).ready(function () {
-        $('.summernote').summernote({
-            height: 350, // set editor height
-            minHeight: null, // set minimum height of editor
-            maxHeight: null, // set maximum height of editor
-            focus: false // set focus to editable area after initializing summernote
-        });
-        $('.inline-editor').summernote({
-            airMode: true
-        });
-    });
-    window.edit = function () {
-        $(".click2edit").summernote()
-    }, window.save = function () {
-        $(".click2edit").destroy()
     }
 </script>

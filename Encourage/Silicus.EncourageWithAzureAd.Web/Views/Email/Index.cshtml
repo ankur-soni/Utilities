@@ -21,6 +21,7 @@
                 <div class="row">
                     <div class="form-group">
                         <div class="col-sm-4">
+                            @Html.Label("Category", new { @class = "control-label" })
                             @Html.DropDownList("Process", new SelectList(Model.ProcessesViewModel, "Id", "Name"), "Select", new { @class = "form-control" })
                         </div>
                     </div>
