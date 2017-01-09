@@ -323,71 +323,81 @@
           });
 
     var previousSelectedCategory;
-
-
-    $('#Award').change(function () {
-        showCustomLoader();
-        $.ajax({
-            type: 'GET',
-            url: '@Url.Action("GetLockedAwardCategories","Nomination")',
-            success: function (data) {
-                hideCustomLoader();
-                var index = 0;
-                var lockedCategories = "";
-                $.each(data, function () {
-                    if (data[index].Id == $('#Award option:selected').val()) {
-                        lockedCategories = data[index].Name;
-                    }
-                    //$('#Award option[value=' + data[index].Id + ']').attr('title', 'Nomination locked').prop('disabled', 'disabled');
-                    index++;
-                });
-                if (lockedCategories != "") {
-                    $('#nextButton').prop('disabled', 'disabled');
-                    sweetAlert("Error", "Nominations for " + lockedCategories + " are locked.");
-                }
-                else {
-                    $('#nextButton').prop('disabled', '');
-                }
-            },
-            error: function () {
-                hideCustomLoader();
-                sweetAlert("Error", "Oops something went wrong!");
-            }
-        })
-    });
+    var isPreviousSelectedCategoryLocked = false;
 
     $("#Award").on('focus', function () {
         // Store the current value on focus and on change
         previousSelectedCategory = this.value;
     });
 
-    $("#Award").change(function (event) {
-        var showDataLoseWarning = $("#showDataLoseWarning").val();
-        if (showDataLoseWarning.toLowerCase() == "true") {
-            swal({
-                title: "Are you sure?",
-                text: "All your changes will be lost! Do you want to continue?",
-                type: "warning",
-                showCancelButton: true,
-                confirmButtonColor: "#337ab7",
-                confirmButtonText: "Yes",
-                cancelButtonText: "No",
-                closeOnConfirm: true,
-                closeOnCancel: true
-            }, function (isConfirm) {
-                if (isConfirm) {
-                    getCriteriaForAwardView();
-                } else {
-                    event.stopPropagation();
-                    $("#Award").val(previousSelectedCategory);
-                    return false;
+    $('#Award').on("change", function (event) {
+        showCustomLoader();
+        $.ajax({
+            type: 'GET',
+            url: '@Url.Action("GetLockedAwardCategories","Nomination")',
+            success: function (data) {
+                hideCustomLoader();
+                var isLocked = true;
+                var index = 0;
+                var lockedCategories = "";
+                $.each(data, function () {
+                    if (data[index].Id == $('#Award option:selected').val()) {
+                        lockedCategories = data[index].Name;
+                    }
+                    if (this.Id == previousSelectedCategory) {
+                        isPreviousSelectedCategoryLocked = true;
+                    }
+                    //$('#Award option[value=' + data[index].Id + ']').attr('title', 'Nomination locked').prop('disabled', 'disabled');
+                    index++;
+                });
+                if (lockedCategories != "") {
+                    $('#nextButton').prop('disabled', 'disabled');
+                    sweetAlert("Error", "Nominations for " + lockedCategories + " are locked.", "error");
+                    isLocked = true;
                 }
-                // Make sure the previous value is updated
-                previous = this.value;
-            });
-        } else {
-            getCriteriaForAwardView();
-        }
+                else {
+                    $('#nextButton').prop('disabled', '');
+                    isLocked = false;
+                }
+
+                if (!isLocked) {
+                    var showDataLoseWarning = $("#showDataLoseWarning").val();
+                    if (showDataLoseWarning.toLowerCase() == "true") {
+                        swal({
+                            title: "Are you sure?",
+                            text: "All your changes will be lost! Do you want to continue?",
+                            type: "warning",
+                            showCancelButton: true,
+                            confirmButtonColor: "#337ab7",
+                            confirmButtonText: "Yes",
+                            cancelButtonText: "No",
+                            closeOnConfirm: true,
+                            closeOnCancel: true
+                        }, function (isConfirm) {
+                            if (isConfirm) {
+                                getCriteriaForAwardView();
+                            } else {
+                                event.stopPropagation();
+                                //Check if previous value is locked
+                                if (!isPreviousSelectedCategoryLocked) {
+                                    $("#Award").val(previousSelectedCategory);
+                                }
+
+                                return false;
+                            }
+                            // Make sure the previous value is updated
+                            previous = this.value;
+                        });
+                    } else {
+                        getCriteriaForAwardView();
+                    }
+                }
+            },
+            error: function () {
+                hideCustomLoader();
+                sweetAlert("Error", "Oops something went wrong!", "error");
+            }
+        });
     });
 
     function getCriteriaForAwardView() {
