@@ -24,19 +24,19 @@
         var selectedProcess = this.value;
         if (selectedProcess != "") {
             var selectedProcessName = this.selectedOptions[0].innerText;
-            $(".loader-overlay").show();
+            showCustomLoader();
 
             $.ajax({
                 type: "GET",
                 url: _urlGetEmailTemplate,
                 data: { "processName": selectedProcessName },
                 success: function (template) {
-                    $(".loader-overlay").hide();
+                    hideCustomLoader();
                     $("#templateEditorContainer").html(template);
                     $("#sendMailButton").removeAttr("disabled", "disabled");
                 },
                 error: function (error) {
-                    $(".loader-overlay").hide();
+                    hideCustomLoader();
                     console.log(error);
                 }
             });

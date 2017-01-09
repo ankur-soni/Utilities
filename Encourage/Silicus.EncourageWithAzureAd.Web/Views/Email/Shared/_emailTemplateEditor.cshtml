@@ -54,7 +54,7 @@
                 }
             });
 
-            $(".loader-overlay").show();
+            showCustomLoader();
             $.ajax({
                 type: "POST",
                 url: _urlSendMail,
@@ -84,9 +84,9 @@
                             confirmButtonText: "Ok",
                         });
                     }
-                    $(".loader-overlay").hide();
+                    hideCustomLoader();
                 }, error: function (error) {
-                    $(".loader-overlay").hide();
+                    hideCustomLoader();
                     console.log(error);
                 }
             });

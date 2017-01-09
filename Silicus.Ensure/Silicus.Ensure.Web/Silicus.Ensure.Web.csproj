@@ -815,13 +815,6 @@
     <Content Include="Views\Master\Index.cshtml" />
     <Content Include="Views\Account\Login.cshtml" />
     <Content Include="Views\Account\Index.cshtml" />
-    <Content Include="Views\Panel\Panel.cshtml" />
-    <Content Include="Views\Shared\EditorTemplates\PostionEditorTemplete.cshtml" />
-    <Content Include="Views\TestSuite\ViewQuestion.cshtml" />
-    <Content Include="Views\Admin\PartialTestSuitView.cshtml" />
-    <Content Include="Views\ManageUser\_AssignType.cshtml" />
-    <Content Include="Views\ManageUser\_AssignPanel.cshtml" />
-    <Content Include="Views\Panel\AddPanel.cshtml" />
     <None Include="Web.Azure.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
