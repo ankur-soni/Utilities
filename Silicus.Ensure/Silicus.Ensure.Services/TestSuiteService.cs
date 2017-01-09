@@ -82,9 +82,6 @@ namespace Silicus.Ensure.Services
         public UserTestSuite GetUserTestSuiteByUserId(int userId)
         {
             return _context.Query<UserTestSuite>().Where(x => x.UserId == userId).FirstOrDefault();
-            //&& (x.StatusId == Convert.ToUInt32(TestStatus.Assigned) ||
-            //x.StatusId == Convert.ToUInt32(TestStatus.Submitted) ||
-            //x.StatusId == Convert.ToUInt32(TestStatus.Evaluated)
         }
 
         public UserTestSuite GetUserTestSuiteId(int userTestSuiteId)
@@ -174,14 +171,14 @@ namespace Silicus.Ensure.Services
                             Question question = optionalQuestion.ElementAtOrDefault(index);
                             questions.Add(question);
                             minutes += question.Duration;
-                        } while (minutes < requiredMinutes);
+                        } while (minutes <= requiredMinutes);
                     }
 
                     //Practical Questions                    
                     requiredMinutes = tag.Minutes - minutes;
                     minutes = 0;
                     var practicalQuestion = questionList.Where(x => !questions.Any(y => y.Id == x.Id) && x.QuestionType == 2 && x.ProficiencyLevel == tag.Proficiency);
-                    if (practicalQuestion.Sum(x => x.Duration) > requiredMinutes)
+                    if (practicalQuestion.Sum(x => x.Duration) >= requiredMinutes)
                     {
                         do
                         {
@@ -190,7 +187,7 @@ namespace Silicus.Ensure.Services
                             Question question = practicalQuestion.ElementAtOrDefault(index);
                             questions.Add(question);
                             minutes += question.Duration;
-                        } while (minutes < requiredMinutes);
+                        } while (minutes <= requiredMinutes);
                     }
                 }
             }
@@ -240,14 +237,14 @@ namespace Silicus.Ensure.Services
                             Question question = optionalQuestion.ElementAtOrDefault(index);
                             questions.Add(question);
                             minutes += question.Duration;
-                        } while (minutes < requiredMinutes);
+                        } while (minutes <= requiredMinutes);
                     }
 
                     //Practical Questions                    
                     requiredMinutes = tag.Minutes - minutes;
                     minutes = 0;
                     var practicalQuestion = questionList.Where(x => !questions.Any(y => y.Id == x.Id) && x.QuestionType == 2 && x.ProficiencyLevel == tag.Proficiency);
-                    if (practicalQuestion.Sum(x => x.Duration) > requiredMinutes)
+                    if (practicalQuestion.Sum(x => x.Duration) >= requiredMinutes)
                     {
                         do
                         {
@@ -256,7 +253,7 @@ namespace Silicus.Ensure.Services
                             Question question = practicalQuestion.ElementAtOrDefault(index);
                             questions.Add(question);
                             minutes += question.Duration;
-                        } while (minutes < requiredMinutes);
+                        } while (minutes <= requiredMinutes);
                     }
                 }
             }
