@@ -22,9 +22,7 @@ namespace Silicus.Encourage.DAL
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
-            //  Disable the default PluralizingTableNameConvention 
             modelBuilder.Conventions.Remove<PluralizingTableNameConvention>();
-
             modelBuilder.Configurations.Add(new AwardMap());
             modelBuilder.Configurations.Add(new FrequencyMasterMap());
             modelBuilder.Configurations.Add(new CriteriaMap());
@@ -35,6 +33,7 @@ namespace Silicus.Encourage.DAL
             modelBuilder.Configurations.Add(new AwardCriteriaMap());
             modelBuilder.Configurations.Add(new ShortlistMap());
             modelBuilder.Configurations.Add(new ConfigurationMap());
+            modelBuilder.Configurations.Add(new EmailTemplateMap());
         }
     }
 }

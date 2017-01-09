@@ -14,7 +14,7 @@
                   columns.Bound("").ClientTemplate("<input type='checkbox' name='selectUser' value='#= UserId#' />").Width(20);
                   columns.Bound(p => p.FirstName).Width(50);
                   columns.Bound(p => p.LastName).Width(50);
-                  columns.Bound(p => p.Address).Width(100);
+                  columns.Bound(p => p.CurrentLocation).Width(100);
                   columns.Bound(p => p.Email).Width(50);
               })
             .DataSource(dataSource => dataSource
@@ -37,17 +37,17 @@
                             <div class="col-md-6">
                                 <div class="input-group">
                                     <span class="input-group-addon"><span class="glyphicon glyphicon-search" aria-hidden="true"></span></span>
-                                    <input type="text" class="form-control" id='FieldFilter' placeholder="Search for...">
+                                    <input type="text" class="form-control" id='FieldFilter' placeholder="Search">
                                     <span class="input-group-btn">
                                         <button class="btn btn-default" type="button" style="height:16px;"><span class="glyphicon glyphicon-refresh" aria-hidden="true"></span></button>
                                     </span>
                                 </div>
                             </div>
-                        </div>                      
+                        </div>
                     </div>
                 </text>);
                })
-)
+                )
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
@@ -57,7 +57,7 @@
     </div>
 </div>
 
-<script>    
+<script>
     $(document).ready(function () {
         $('#testSuiteId').val('@TempData["TesSuiteId"]');
         $('#btnAssign').click(function () {
@@ -65,15 +65,15 @@
                 var users = $("#userGrids").find("[name='selectUser']:checked").map(function () {
                     return this.value;
                 }).get().join(",");
-                var testSuiteId = $('#testSuiteId').val();              
+                var testSuiteId = $('#testSuiteId').val();
                 $.ajax({
                     type: "POST",
                     url: '@Url.Action("AssignTest", "TestSuite")',
-                    data: { users: users,testSuiteId:testSuiteId },
+                    data: { users: users, testSuiteId: testSuiteId },
                     success: function (returndata) {
-                        if (returndata == 1) {                          
+                        if (returndata == 1) {
                             $('#myModal').modal().hide();
-                            ShowMessage("Activated test suite.", 1);                                                         
+                            ShowMessage("Activated test suite.", 1);
                         }
                         else {
                             ShowMessage("Error occured while activating test suite.", 0);

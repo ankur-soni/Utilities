@@ -78,6 +78,9 @@
     <Reference Include="Silicus.FrameWorx.Utility">
       <HintPath>..\packages\Silicus.FrameWorx.Utility.1.0.0\lib\net45\Silicus.FrameWorx.Utility.dll</HintPath>
     </Reference>
+    <Reference Include="Silicus.UtilityContainer.Models">
+      <HintPath>..\..\..\..\Utilities\Silicus.Ensure\Silicus.Ensure.Web\Dependencies\Silicus.UtilityContainer.Models.dll</HintPath>
+    </Reference>
     <Reference Include="SpreadsheetGear2012.Core, Version=7.1.1.119, Culture=neutral, PublicKeyToken=39c186f5904944ec, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\Dependencies\SpreadsheetGear2012.Core.dll</HintPath>
@@ -107,10 +110,13 @@
     <Compile Include="EmailService.cs" />
     <Compile Include="Interfaces\IEmailService.cs" />
     <Compile Include="Interfaces\IManager.cs" />
+    <Compile Include="Interfaces\IPanelMemberService.cs" />
+    <Compile Include="Interfaces\IPanelService.cs" />
     <Compile Include="Interfaces\IPositionService.cs" />
     <Compile Include="Interfaces\IProjectDetailService.cs" />
     <Compile Include="Interfaces\IProjectService.cs" />
     <Compile Include="Interfaces\IQuestionService.cs" />
+    <Compile Include="Interfaces\IRecruiterMeberService.cs" />
     <Compile Include="Interfaces\IRolesService.cs" />
     <Compile Include="Interfaces\ISmtpClient.cs" />
     <Compile Include="Interfaces\ITagsService.cs" />
@@ -118,11 +124,14 @@
     <Compile Include="Interfaces\ITestSuiteTagService.cs" />
     <Compile Include="Interfaces\IUserService.cs" />
     <Compile Include="ManagerService.cs" />
+    <Compile Include="PanelMemberService.cs" />
+    <Compile Include="PanelService.cs" />
     <Compile Include="PositionService.cs" />
     <Compile Include="ProjectDetailService.cs" />
     <Compile Include="ProjectService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="QuestionService.cs" />
+    <Compile Include="RecruiterMeberService.cs" />
     <Compile Include="RolesService.cs" />
     <Compile Include="SmtpClientWrapper.cs" />
     <Compile Include="TagService.cs" />

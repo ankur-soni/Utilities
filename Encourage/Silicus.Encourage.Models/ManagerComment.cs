@@ -11,7 +11,7 @@ namespace Silicus.Encourage.Models
 {
     using System;
     using System.Collections.Generic;
-    
+
     public partial class ManagerComment
     {
         public int Id { get; set; }
@@ -21,7 +21,7 @@ namespace Silicus.Encourage.Models
         public int Rating { get; set; }
         public int Weightage { get; set; }
         public string AdminComment { get; set; }
-        public decimal FinalScore { get; set; }
+        public Nullable<decimal> FinalScore { get; set; }
     
         public virtual Criteria Criterion { get; set; }
         public virtual Nomination Nomination { get; set; }

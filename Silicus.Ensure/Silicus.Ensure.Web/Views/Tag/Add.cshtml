@@ -40,13 +40,13 @@
                 <div class="col-md-2 col-md-offset-4">
                     @(Html.Kendo().Button()
                             .Name("btnCancel").Icon("cancel")
-            .HtmlAttributes(new { type = "button" })
+            .HtmlAttributes(new { type = "button", @class="btn btn-primary" })
             .Content("Cancel")
             .Events(ev => ev.Click("onCancelClick")))
 
                     @(Html.Kendo().Button()
                             .Name("btnSave").Icon("tick")
-            .HtmlAttributes(new { type = "submit" })
+    .HtmlAttributes(new { type = "submit", @class = "btn btn-primary" })
             .Content("Save"))
                 </div>
             </div>

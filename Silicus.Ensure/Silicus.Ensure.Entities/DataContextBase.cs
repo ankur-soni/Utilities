@@ -47,6 +47,10 @@ namespace Silicus.Ensure.Entities
             modelBuilder.Configurations.Add(new UserTestSuiteMap());
             modelBuilder.Configurations.Add(new UserTestDetailsMap());
             modelBuilder.Configurations.Add(new PositionMap());
+            modelBuilder.Configurations.Add(new PanelMap());
+            modelBuilder.Configurations.Add(new RecruiterMembersDetailMap());
+            modelBuilder.Configurations.Add(new PanelMebersDetailMap());
+
 
             // Many-to-many example - can be moved to Map file as well.
             modelBuilder.Entity<Asset>()

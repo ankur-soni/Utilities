@@ -1,0 +1,48 @@
+﻿@model Silicus.EncourageWithAzureAd.Web.Models.EmailTemplateViewModel
+@{
+    ViewBag.Title = "Index";
+}
+
+<div class="white-bg header-row">
+    <div class="col-lg-11 col-md-11 col-sm-11">
+        <h1 class="header-name">Email Template</h1>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-sm-12">
+        @Html.DropDownList("Process", new SelectList(Model.ProcessesViewModel, "Id", "Name"), "Select", new { @class = "form-control" })
+    </div>
+    <div id="templateEditorContainer" class="col-sm-12">
+        @Html.Partial("~/Views/Email/Shared/_emailTemplateEditor.cshtml", Model.EmailTemplateEditor)
+    </div>
+</div>
+
+<script>
+    var _urlGetEmailTemplate = '@Url.Action("GetEmailTemplate", "Email")';
+    $("#Process").on("change", function () {
+        var selectedProcess = this.value;
+        if (selectedProcess != "") {
+            var selectedProcessName = this.selectedOptions[0].innerText;
+            $(".loader-overlay").show();
+
+            $.ajax({
+                type: "GET",
+                url: _urlGetEmailTemplate,
+                data: { "processName": selectedProcessName },
+                success: function (template) {
+                    $(".loader-overlay").hide();
+                    $("#templateEditorContainer").html(template);
+                    $("#sendMailButton").removeAttr("disabled", "disabled");
+                },
+                error: function (error) {
+                    $(".loader-overlay").hide();
+                    console.log(error);
+                }
+            });
+        } else {
+            $("#templateEditorContainer").html("Please Select a Template!");
+            $("#sendMailButton").attr("disabled", "disabled");
+        }
+    });
+</script>

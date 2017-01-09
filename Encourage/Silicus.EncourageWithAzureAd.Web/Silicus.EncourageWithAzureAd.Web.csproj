@@ -299,6 +299,7 @@
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Controllers\EmailController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\NominationController.cs" />
     <Compile Include="Controllers\ReviewController.cs" />
@@ -319,11 +320,17 @@
     <Compile Include="Models\ConsolidatedNominationsViewModel.cs" />
     <Compile Include="Models\CriteriaCommentViewModel.cs" />
     <Compile Include="Models\DashboardViewModel.cs" />
+    <Compile Include="Models\EmailTemplateEditorViewModel.cs" />
+    <Compile Include="Models\EmailTemplateViewModel.cs" />
     <Compile Include="Models\NominationListViewModel.cs" />
     <Compile Include="Models\NominationViewModel.cs" />
+    <Compile Include="Models\ProcessesToLockOrUnLockViewModel.cs" />
+    <Compile Include="Models\ProcessesViewModel.cs" />
     <Compile Include="Models\ReviewerCommentViewModel.cs" />
     <Compile Include="Models\ReviewFeedbackListViewModel.cs" />
     <Compile Include="Models\ReviewSubmitionViewModel.cs" />
+    <Compile Include="Models\ShortlistedNominationViewModel.cs" />
+    <Compile Include="Models\UserViewModel.cs" />
     <Compile Include="Models\ViewShortlistDetailsViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
@@ -338,6 +345,7 @@
     <Content Include="Css\bootstrap.css" />
     <Content Include="Css\bootstrap.min.css" />
     <Content Include="Css\custom-style.css" />
+    <Content Include="Css\jquery-te-1.4.0.css" />
     <Content Include="Css\patterns\1.png" />
     <Content Include="Css\patterns\2.png" />
     <Content Include="Css\patterns\3.png" />
@@ -514,6 +522,7 @@
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
     <Content Include="Images\1.jpg" />
+    <Content Include="Css\jquery-te.png" />
     <Content Include="Images\logo.jpg" />
     <Content Include="Images\loader_small.gif" />
     <Content Include="Images\user.png" />
@@ -530,6 +539,7 @@
     <Content Include="js\Elipsis.js" />
     <Content Include="js\inspinia.js" />
     <Content Include="js\jquery-2.1.1.js" />
+    <Content Include="js\jquery-te-1.4.0.min.js" />
     <Content Include="js\jquery-ui-1.10.4.min.js" />
     <Content Include="js\jquery-ui.custom.min.js" />
     <Content Include="js\jquery.barrating.min.js" />
@@ -844,8 +854,6 @@
     <Content Include="Views\_ViewStart.cshtml" />
     <Content Include="Views\Shared\Error.cshtml" />
     <Content Include="Views\Shared\_Layout.cshtml" />
-    <Content Include="Views\Home\About.cshtml" />
-    <Content Include="Views\Home\Contact.cshtml" />
     <Content Include="Views\Home\Dashboard.cshtml" />
     <Content Include="Views\Shared\_LoginPartial.cshtml" />
     <Content Include="Views\Account\SignOutCallback.cshtml" />
@@ -866,8 +874,6 @@
     <Content Include="Views\Shared\DisplayTemplates\ReviewerCommentViewModel.cshtml" />
     <Content Include="Views\Shared\EditorTemplates\CriteriaCommentViewModel.cshtml" />
     <Content Include="Views\Shared\EditorTemplates\RvierCommentViewModel.cshtml" />
-    <Content Include="Views\Emails\_ViewStart.cshtml" />
-    <Content Include="Views\Emails\Web.config" />
     <Content Include="Views\Nomination\Shared\_savednominationList.cshtml" />
     <Content Include="Views\Nomination\Shared\_savedReviewsList.cshtml" />
     <Content Include="Views\Review\Shared\_reviewFeedbackList.cshtml" />
@@ -876,6 +882,9 @@
     <Content Include="Views\Review\Shared\_LockNominations.cshtml" />
     <Content Include="Views\Review\ConsolidatedNominations.cshtml" />
     <Content Include="Views\Review\_ConsolidatedNominationsPartialView.cshtml" />
+    <Content Include="Views\Review\Shared\_ProcessesToLockOrUnlock.cshtml" />
+    <Content Include="Views\Email\Index.cshtml" />
+    <Content Include="Views\Email\Shared\_emailTemplateEditor.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

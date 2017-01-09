@@ -22,7 +22,7 @@ namespace Silicus.EncourageWithAzureAd.Web.Controllers
         private readonly IResultService _resultService;
         private readonly ILogger _logger;
 
-        public HomeController(ICommonDbService commonDbService, IDataContextFactory dataContextFactory, 
+        public HomeController(ICommonDbService commonDbService, IDataContextFactory dataContextFactory,
             INominationService nominationService, IResultService resultService, ILogger logger)
         {
             _commonDbService = commonDbService;

@@ -39,7 +39,13 @@ namespace Silicus.Ensure.Web.Models
         [Required]
         [StringLength(100)]
         [System.Web.Mvc.Remote("IsDuplicateEmail", "User", AdditionalFields = "UserId", ErrorMessage = "Email already name exist !")]
-        [RegularExpression(@"[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}", ErrorMessage = "Please enter correct email!")]
+        [RegularExpression(@"^(([\w-]+\.)+[\w-]+|([a-zA-Z]{1}|[\w-]{2,}))@"
+     + @"((([0-1]?[0-9]{1,2}|25[0-5]|2[0-4][0-9])\.([0-1]?
+				[0-9]{1,2}|25[0-5]|2[0-4][0-9])\."
+     + @"([0-1]?[0-9]{1,2}|25[0-5]|2[0-4][0-9])\.([0-1]?
+				[0-9]{1,2}|25[0-5]|2[0-4][0-9])){1}|"
+     + @"([a-zA-Z0-9]+[\w-]+\.)+[a-zA-Z]{1}[a-zA-Z0-9-]{1,23})$",
+     ErrorMessage = "Please enter correct email!")]
         public string Email { get; set; }
 
         [StringLength(500)]
@@ -67,21 +73,25 @@ namespace Silicus.Ensure.Web.Models
         [Required(ErrorMessage = "Technology is required!")]
         public string Technology { get; set; }
 
-        [Display(Name = "Total Experience")]
-        [Required(ErrorMessage = "Total experience is required!")]
-        public string TotalExperience { get; set; }
+        [Required(ErrorMessage = "Total experience year is required!")]
+        public int TotalExperienceInYear { get; set; }
 
-        [Display(Name = "Relevant Experience")]
-        [Required(ErrorMessage = "Relevant experience is required!")]
-        public string RelevantExperience { get; set; }
+        [Required(ErrorMessage = "Total experience month is required!")]
+        public int TotalExperienceInMonth { get; set; }
+
+        [Required(ErrorMessage = "Relevant experience year is required!")]
+        public int RelevantExperienceInYear { get; set; }
+
+        [Required(ErrorMessage = "Relevant experience month is required!")]
+        public int RelevantExperienceInMonth { get; set; }
 
         [StringLength(50)]
-        [Display(Name = "CurrentCompany")]
+        [Display(Name = "Current Company")]
         [Required(ErrorMessage = "Current company is required!")]
         public string CurrentCompany { get; set; }
 
         [StringLength(50)]
-        [Display(Name = "CurrentTitle")]
+        [Display(Name = "Current Title")]
         [Required(ErrorMessage = "Current title is required!")]
         public string CurrentTitle { get; set; }
 

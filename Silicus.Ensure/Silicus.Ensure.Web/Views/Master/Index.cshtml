@@ -5,17 +5,55 @@
 
 @{
     ViewBag.Title = "Candidate Dashboard";
-    var users = Html.Partial("~/Views/Tag/List.cshtml");
-    var roles = Html.Partial("~/Views/Positions/Positions.cshtml");
+    var tagList = Html.Partial("~/Views/Tag/List.cshtml");
+    var positionList = Html.Partial("~/Views/Positions/Positions.cshtml");
+    var panleList = Html.Partial("~/Views/Panel/Panel.cshtml");
 }
-<div class="main-content">
-    <h2>Setup</h2>
-    <div class="kendogrid">
-        @(Html.Kendo().TabStrip()
-                .Name("Tabs")
-                .Items(tabstrip =>
-               { tabstrip.Add().Text("Tags").Selected(true).Content(users.ToString());tabstrip.Add().Text("Postions").Selected(false).Content(roles.ToString()); })
-        )
 
+<div class="row white-bg header-row">
+    <nav class="" role="navigation" style="margin-bottom: 0">
+        <div class="navbar-header">
+            <a class="navbar-minimalize minimalize-styl-2 btn btn-primary" id="menu-toggle" style="margin-left:15px;" href="#"><i class="fa fa-bars"></i> </a>
+        </div>
+    </nav>
+
+    <div class="col-lg-11 col-md-11 col-sm-11">
+        <h1 class="dashboard-name">Setup</h1>
     </div>
 </div>
+<div class="row">
+    <div class="col-sm-12 M-T15">
+        <div class="alert alert-success" id="messageDiv">
+            <span id="messageContent"></span>
+        </div>
+    </div>
+</div>
+
+
+<div class="row">
+    <div class="col-sm-12">
+        <div class="box M-T15 M-B60">
+            <div class="main-content">
+                <div class="kendogrid">
+                    @(Html.Kendo().TabStrip()
+                .Name("Tabs")
+                .Items(tabstrip =>
+               {
+                   tabstrip.Add().Text("Tags").Selected(true).Content(tagList.ToString());
+                   tabstrip.Add().Text("Positions").Selected(false).Content(positionList.ToString());
+                   tabstrip.Add().Text("Panel").Selected(false).Content(panleList.ToString());
+               })
+                    )
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+            <script>
+                $(document).ready(function () {
+                    $("#messageDiv").fadeOut();
+                    SetNavigationMenuActive('Setup');
+                });
+            </script>

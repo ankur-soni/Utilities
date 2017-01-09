@@ -46,17 +46,17 @@ namespace Silicus.EncourageWithAzureAd.Web
                     Notifications = new OpenIdConnectAuthenticationNotifications()
                     {
                         // If there is a code in the OpenID Connect response, redeem it for an access token and refresh token, and store those away.
-                       AuthorizationCodeReceived = (context) => 
-                       {
-                           var code = context.Code;
-                           ClientCredential credential = new ClientCredential(clientId, appKey);
-                           string signedInUserID = context.AuthenticationTicket.Identity.FindFirst(ClaimTypes.NameIdentifier).Value;
-                           AuthenticationContext authContext = new AuthenticationContext(Authority, new ADALTokenCache(signedInUserID));
-                           AuthenticationResult result = authContext.AcquireTokenByAuthorizationCode(
-                           code, new Uri(HttpContext.Current.Request.Url.GetLeftPart(UriPartial.Path)), credential, graphResourceId);
+                        AuthorizationCodeReceived = (context) =>
+                        {
+                            var code = context.Code;
+                            ClientCredential credential = new ClientCredential(clientId, appKey);
+                            string signedInUserID = context.AuthenticationTicket.Identity.FindFirst(ClaimTypes.NameIdentifier).Value;
+                            AuthenticationContext authContext = new AuthenticationContext(Authority, new ADALTokenCache(signedInUserID));
+                            AuthenticationResult result = authContext.AcquireTokenByAuthorizationCode(
+                            code, new Uri(HttpContext.Current.Request.Url.GetLeftPart(UriPartial.Path)), credential, graphResourceId);
 
-                           return Task.FromResult(0);
-                       }
+                            return Task.FromResult(0);
+                        }
                     }
                 });
         }

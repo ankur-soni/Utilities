@@ -17,6 +17,11 @@
         public static readonly string UserTestDetails = "UserTestDetails";
 
         public static readonly string Position = "Position";
+        public static readonly string Panel = "Panel";
         public static readonly string TestSuiteTag = "TestSuiteTag";
+
+        public static readonly string PanelMemberDetail = "PanelMemberDetail";
+        public static readonly string RecruiterMembersDetail = "RecruiterMembersDetail";
+        
     }
 }

@@ -53,8 +53,6 @@ namespace Silicus.Encourage.Services
         public List<Engagement> GetProjectsUnderCurrentUserAsManager(string email)
         {
             var currentUser = _CommonDbContext.Query<User>().SingleOrDefault(user => user.EmailAddress.Equals(email));
-            // var projectUnderCurrentUser = _CommonDbContext.Query<Engagement>().Where(engagement => engagement.PrimaryProjectManagerID == currentUser.ID).ToList()
-            //  return projectUnderCurrentUser;
             var projectUnderCurrentUser = new List<Engagement>();
             var closedProject = ConfigurationManager.AppSettings["ClosedEngagementStage"];
             var distinctClientIdsUnderCurrentManager = _CommonDbContext.Query<Engagement>().Where(engagement => engagement.PrimaryProjectManagerID == currentUser.ID).GroupBy(engagement => engagement.ClientID).ToList();
@@ -92,7 +90,6 @@ namespace Silicus.Encourage.Services
                                      where department.ID == DepartmentId
                                      select user;
             int awardId = 1;
-            //
             var currentUser = _CommonDbContext.Query<User>().Where(user => user.ID == userIdToExcept);
             var currentUserId = currentUser.FirstOrDefault().ID;
             var recourcesInDepartmentUnderCurrentManger = _encourageDbcontext.Query<Nomination>().Where(n => n.DepartmentId == DepartmentId && n.ManagerId == currentUserId && n.AwardId == awardId).ToList();
@@ -102,7 +99,6 @@ namespace Silicus.Encourage.Services
             {
                 userList.RemoveAll(u => u.ID == item.UserId);
             }
-            ////
             var winners = _encourageDbcontext.Query<Shortlist>().Where(w => w.IsWinner == true).ToList();
             var winnersWithin12Months = new List<Shortlist>();
             var winnerNominationsWithin12Months = new List<Nomination>();
@@ -237,8 +233,7 @@ namespace Silicus.Encourage.Services
 
             var allWinners = _encourageDbcontext.Query<Shortlist>().Where(shortlist => shortlist.IsWinner == true && shortlist.WinningDate.Value.Month == DateTime.Now.Month && shortlist.WinningDate.Value.Year == DateTime.Now.Year).ToList();
             var winnersList = new List<WinnerData>();
-            //using (Silicus.Encourage.DAL.Interfaces.ICommonDatabaseContext _commonDbContext = new Silicus.Encourage.DAL.DataContextFactory().CreateCommonDbContext())
-            //{
+
             foreach (var winner in allWinners)
             {
                 string projectName = string.Empty;
@@ -258,8 +253,8 @@ namespace Silicus.Encourage.Services
                 }
                 else
                 {
-                    var engagement  = _CommonDbContext.Query<Department>().Where(enagegement => enagegement.ID == nominationOfWinnner.DepartmentId).FirstOrDefault();
-                    if(engagement != null)
+                    var engagement = _CommonDbContext.Query<Department>().Where(enagegement => enagegement.ID == nominationOfWinnner.DepartmentId).FirstOrDefault();
+                    if (engagement != null)
                     {
                         projectName = engagement.Name;
                     }
@@ -277,32 +272,12 @@ namespace Silicus.Encourage.Services
 
                 winnersList.Add(winnerData);
             }
-            // }
-
             return winnersList;
         }
         public List<string> GetEmailAddressOfManager(string name)
         {
             var emailaddress = _CommonDbContext.Query<User>().Where(user => user.DisplayName == name).Select(u => u.EmailAddress).ToList();
-
-            //#region Getting ManagerId
-            //var lstManagerIds = (from nomination in _encourageDbcontext.Query<Nomination>()
-            //                join shortlist in _encourageDbcontext.Query<Shortlist>()
-            //                on nomination.Id equals shortlist.NominationId
-            //                where shortlist.IsWinner == true && nomination.IsSubmitted == true
-            //                && shortlist.WinningDate.Value.Month == DateTime.Now.Month
-            //                && shortlist.WinningDate.Value.Year == DateTime.Now.Year
-            //                select nomination.ManagerId).ToList();
-
-            //if (lstManagerIds.Any())
-            //{
-            //    var lstManagerEmails = (from user in _CommonDbContext.Query<User>()
-            //                        where lstManagerIds.Contains(user.ID)
-            //                        select user.EmailAddress).ToList();
             return emailaddress;
-            //}
-            //#endregion
-            //return null;
         }
 
         public Award GetAwardById(int awardId)
@@ -313,6 +288,16 @@ namespace Silicus.Encourage.Services
         public Award GetAwardByCode(string awardName)
         {
             return _encourageDbcontext.Query<Award>().Where(x => x.Code == awardName).FirstOrDefault();
+        }
+
+        public string GetAwardNameById(int awardId)
+        {
+            return _encourageDbcontext.Query<Award>().Where(x => x.Id == awardId).FirstOrDefault().Name;
+        }
+
+        public User GetUserById(int userId)
+        {
+            return _CommonDbContext.Query<User>().Where(u => u.ID == userId).FirstOrDefault();
         }
     }
 }

@@ -118,11 +118,14 @@
     <Compile Include="DataObjects\IdentityUser.cs" />
     <Compile Include="DataObjects\Manager.cs" />
     <Compile Include="DataObjects\Organization.cs" />
+    <Compile Include="DataObjects\Panel.cs" />
+    <Compile Include="DataObjects\PanelMemberDetail.cs" />
     <Compile Include="DataObjects\Position.cs" />
     <Compile Include="DataObjects\Product.cs" />
     <Compile Include="DataObjects\Project.cs" />
     <Compile Include="DataObjects\ProjectDetail.cs" />
     <Compile Include="DataObjects\Question.cs" />
+    <Compile Include="DataObjects\RecruiterMembersDetail.cs" />
     <Compile Include="DataObjects\Role.cs" />
     <Compile Include="DataObjects\Tags.cs" />
     <Compile Include="DataObjects\TestSuite.cs">
@@ -130,6 +133,7 @@
     </Compile>
     <Compile Include="DataObjects\TestSuiteTag.cs" />
     <Compile Include="DataObjects\User.cs" />
+    <Compile Include="DataObjects\UserDetails.cs" />
     <Compile Include="DataObjects\UserTestDetails.cs" />
     <Compile Include="DataObjects\UserTestSuite.cs" />
     <Compile Include="DocumentBase.cs" />

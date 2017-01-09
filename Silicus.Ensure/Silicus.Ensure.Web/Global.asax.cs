@@ -10,6 +10,12 @@ using System.Web.Routing;
 using Silicus.FrameWorx.Logger;
 using Silicus.Ensure.Web.Controllers;
 using Silicus.Ensure.Web.Mappings;
+using System.Collections.Generic;
+using System.Web.Configuration;
+using Silicus.UtilityContainer.Security;
+using System.Web.Helpers;
+using System.IdentityModel.Claims;
+using System.Text.RegularExpressions;
 
 namespace Silicus.Ensure.Web
 {
@@ -35,7 +41,7 @@ namespace Silicus.Ensure.Web
             AutoMapperConfiguration.Configure();
             ViewEngines.Engines.Clear();
             ViewEngines.Engines.Add(new RazorViewEngine());
-
+            AntiForgeryConfig.UniqueClaimTypeIdentifier = ClaimTypes.NameIdentifier;
         }
 
         protected void Application_Error(object sender, EventArgs e)
@@ -136,6 +142,57 @@ namespace Silicus.Ensure.Web
 
             controller.ViewData.Model = new HandleErrorInfo(ex, currentController, currentAction);
             ((IController)controller).Execute(new RequestContext(new HttpContextWrapper(httpContext), routeData));
+        }
+
+        public string getCurrentUserName()
+        {
+            return HttpContext.Current.User.Identity.Name;
+        }
+
+        public static List<string> getCurrentUserRoles()
+        {
+            var authorizationService = new Authorization(new Silicus.UtilityContainer.Entities.CommonDataBaseContext("DefaultConnection"));
+            string utility = WebConfigurationManager.AppSettings["ProductName"];
+            var commonRoles = authorizationService.GetRoleForUtility(new MvcApplication().getCurrentUserName(), utility);
+            return commonRoles;
+        }
+
+        //public static List<string> getUtilityRoles()
+        //{
+        //    var authorizationService = new Authorization(new Silicus.UtilityContainer.Entities.CommonDataBaseContext("DefaultConnection"));
+        //    string utility = WebConfigurationManager.AppSettings["ProductName"];
+        //    var commonRoles = authorizationService.GetRoleForUtility(new MvcApplication().getCurrentUserName(), utility);
+        //    return commonRoles;
+        //}
+
+        public static List<string> getDevelopersName()
+        {
+            var authorizationService = new Authorization(new Silicus.UtilityContainer.Entities.CommonDataBaseContext("DefaultConnection"));
+            var developers = authorizationService.GetNameOfContributors();
+            return developers;
+        }
+
+
+        public static string HtmlToPlainText(string html)
+        {
+            const string tagWhiteSpace = @"(>|$)(\W|\n|\r)+<";//matches one or more (white space or line breaks) between '>' and '<'
+            const string stripFormatting = @"<[^>]*(>|$)";//match any character between '<' and '>', even when end tag is missing
+            const string lineBreak = @"<(br|BR)\s{0,1}\/{0,1}>";//matches: <br>,<br/>,<br />,<BR>,<BR/>,<BR />
+            var lineBreakRegex = new Regex(lineBreak, RegexOptions.Multiline);
+            var stripFormattingRegex = new Regex(stripFormatting, RegexOptions.Multiline);
+            var tagWhiteSpaceRegex = new Regex(tagWhiteSpace, RegexOptions.Multiline);
+
+            var text = html;
+            //Decode html specific characters
+            text = System.Net.WebUtility.HtmlDecode(text);
+            //Remove tag whitespace/line breaks
+            text = tagWhiteSpaceRegex.Replace(text, "><");
+            //Replace <br /> with line breaks
+            text = lineBreakRegex.Replace(text, Environment.NewLine);
+            //Strip formatting
+            text = stripFormattingRegex.Replace(text, string.Empty);
+
+            return text;
         }
     }
 }

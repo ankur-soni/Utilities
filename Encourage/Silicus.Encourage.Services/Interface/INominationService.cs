@@ -44,12 +44,11 @@ namespace Silicus.Encourage.Services.Interface
         FrequencyMaster GetAwardFrequencyById(int id);
         List<User> GetAllResources();
 
+        List<User> GetAllResourcesForOtherReason(int awardId,int managerId);
         #region Saved Nominations List
-
         string GetAwardNameByAwardId(int awardId);
         User GetNomineeDetails(int userId);
         List<Nomination> GetAllSubmittedAndSavedNominationsByCurrentUserAndMonth(int managerID, bool forCurrentMonth);
-
         #endregion
         void UpdateFinalScore(int nominationId);
     }

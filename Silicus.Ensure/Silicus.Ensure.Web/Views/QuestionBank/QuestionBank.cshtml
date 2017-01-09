@@ -7,12 +7,33 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<div class="main-content" id="main">
-    <div class="fluid mt20">
+
+<div class="row white-bg header-row">
+    <nav class="" role="navigation" style="margin-bottom: 0">
+        <div class="navbar-header">
+            <a class="navbar-minimalize minimalize-styl-2 btn btn-primary" id="menu-toggle" style="margin-left:15px;" href="#"><i class="fa fa-bars"></i> </a>
+        </div>
+    </nav>
+
+    <div class="col-lg-10 col-md-10 col-sm-10">
+        <h1 class="dashboard-name">Question Bank</h1>
+    </div>
+</div>
+
+<div class="row">
+    <div class="alert alert-success" id="messageDiv">
+        <span id="messageContent"></span>
+    </div>
+    <div class="col-sm-12">
+        <div class="box M-T15 M-B60">
         <div class="kendogrid">
-            <h2>Question Bank</h2>
+
 
             <div>
+                @{
+
+                    Model.ForEach(y => y.QuestionDescription = Silicus.Ensure.Web.MvcApplication.HtmlToPlainText(y.QuestionDescription));
+                }
 
                 @if (Request.IsAuthenticated)
                 {
@@ -20,7 +41,7 @@
                          .Pageable(pager => { pager.PageSizes(true); })
          .Columns(columns =>
               {
-                  columns.Bound(q => q.QuestionDescription).Encoded(false).Width(200);
+                  columns.Bound(q =>q.QuestionDescription).Width(200);
                   columns.Bound(q => q.QuestionType).Width(100);
                   columns.Bound(q => q.Tag).Title("Tags").Width(150);
                   columns.Bound(q => q.ProficiencyLevel).Width(100);
@@ -31,24 +52,31 @@
               .ToolBar(toolbar =>
               {
                   toolbar.Template(@<text>
-                    <div class="toolbar">
-                        <div class="row">
-                            <div class="col-md-6">
+                            
+                        
+                            
+            <div class="M-B15">
+                <div class="row">
+                    <div class="col-sm-12">
+                        <div class="col-sm-4 col-md-4 col-lg-3 M-T15 M-B15">
                                 <div class="input-group">
                                     <span class="input-group-addon"><span class="glyphicon glyphicon-search" aria-hidden="true"></span></span>
-                                    <input type="text" class="form-control" id='FieldFilter' placeholder="Search for...">
+                                    <input type="text" class="form-control" id='FieldFilter' placeholder="Search">
                                     <span class="input-group-btn">
-                                        <button class="btn btn-default" type="button" style="height:16px;"><span class="glyphicon glyphicon-refresh" aria-hidden="true"></span></button>
+                                        <button id="QuestionSearchRefresh" class="btn btn-default" style="height:20px!important;border:1px solid #0070B9!important" type="button"><span class="glyphicon glyphicon-refresh" aria-hidden="true"></span></button>
                                     </span>
                                 </div>
                             </div>
                         </div>
-                        <br />
-                        <div class="row">
-                            <div class="col-md-2" style="padding-right:0; padding-top:5px; width:10%;">
-                                <span>Type</span>
                             </div>
-                            <div class="col-md-2">
+                        
+                                
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <div class="col-sm-1 col-md-1 col-lg-1">
+                                            <span style="font-weight:bold;" class="themeColorBlue">Type</span>
+                            </div>
+                            <div class="col-sm-2 col-md-2 col-lg-1">
                                 @(Html.Kendo().DropDownList()
                             .Name("QuestionType")
                             .DataTextField("Text")
@@ -68,12 +96,12 @@
                                 Text="Practical",
                                 Value="Practical"
                                 }
-                                }).HtmlAttributes(new { style = "width: 80%" }))
+                                }).HtmlAttributes(new { style = "width: 100%" }))
                             </div>
-                            <div class="col-md-2" style="padding-right:0; padding-top:5px;">
-                                <span style="float:right;">Proficiency Level</span>
+                            <div class="col-sm-1 col-md-1 col-lg-1">
+                                            <span style="font-weight:bold;" class="themeColorBlue">Proficiency Level</span>
                             </div>
-                            <div class="col-md-2">
+                            <div class="col-sm-2 col-md-2 col-lg-1">
                                 @{
                                     var levelList = new List<SelectListItem>();
                                     levelList.Add(new SelectListItem() { Text = "All", Value = "" });
@@ -87,13 +115,20 @@
                                     .DataTextField("Text")
                                     .DataValueField("Value")
                                     .Events(e => e.Change("ProficiencyLevelDropDownChange"))
-                                                                .BindTo(levelList).HtmlAttributes(new { style = "width: 80%" }))
-                            </div>
-                            <div class="col-md-3 col-md-push-1" style="float: right; padding-right: 0; margin-right: -22px;">
-                                <a href='/QuestionBank/AddQuestions?questionId=0' class='k-button k-button-icontext k-grid-add' style="width: 50% !important;"><span class='k-icon k-add'></span>Add Question</a>
+                                    .BindTo(levelList)
+                                    .HtmlAttributes(new { style = "width: 100%" })
+                                )
+                                        </div>
+                            <div class="col-sm-3 col-md-3 col-lg-2">
+                                            <a href='/QuestionBank/AddQuestions?questionId=0' s class='k-button k-button-icontext k-grid-add'><span class='k-icon k-add'></span>Add Question</a>
                             </div>
                         </div>
                     </div>
+
+               
+
+                            </div>
+                                
                 </text>);
               })
                                                                                                                                                                                                                                                                                                                                                                                                                                                 .Resizable(resizing => resizing.Columns(true))
@@ -106,11 +141,13 @@
                                                                                                                                                                                                                                                                                                                                                                                                                                 .ServerOperation(false)
                                                                                                                                                                                                                                                                                                                                                                                                                                 ))
                 }
-            </div>
+            
+</div>
+    
+
         </div>
     </div>
 </div>
-
 <!-- Modal -->
 <div class="modal fade" id="myModal" role="dialog">
     <div class="modal-dialog">
@@ -136,10 +173,14 @@
 <script>
     $(document).ready(function () {
 
+        $("#messageDiv").hide();
+
+        SetNavigationMenuActive('QuestionBank');
         // Kendo Grid Filter (Search)
         $("#FieldFilter").keyup(function () {
             var value = $("#FieldFilter").val();
             var grid = $("#questionGrids").data("kendoGrid");
+            var pageSize=grid.dataSource.pageSize();
             if (value) {
                 var filter = { logic: "or", filters: [] };
                 filter.filters.push({ field: "QuestionDescription", operator: "contains", value: value });
@@ -147,9 +188,19 @@
                 filter.filters.push({ field: "Tag", operator: "contains", value: value });
                 filter.filters.push({ field: "ProficiencyLevel", operator: "contains", value: value });
                 grid.dataSource.query({ filter: filter });
+                grid.dataSource.sort({ field: "QuestionDescription", dir: "asc" });
+                grid.dataSource.pageSize(pageSize);
             } else {
                 grid.dataSource.filter({});
             }
+        });
+        
+        $("#QuestionSearchRefresh").click(function (e) {
+            e.preventDefault();
+            var datasource = $("#questionGrids").data("kendoGrid").dataSource;
+            //Clear filters:
+            datasource.filter([]);
+            $("#FieldFilter").val('');
         });
     });
 
@@ -191,7 +242,7 @@
         $("#myModal").modal();
         $("#msgMain").text("Warning!");
         $("#msgContent").text("Are you sure, you want to delete this question from the application?");
-        $("#btnModalOK").show();
+        //$("#btnModalOK").show();
     }
 
     function OnOK() {
@@ -205,18 +256,13 @@
                 if (data == 1) {
                     var grid = $("#questionGrids").data("kendoGrid");
                     grid.removeRow($(deleteTh).closest('tr'));
-                    $("#myModal").modal();
-                    $("#msgMain").text("Success!");
-                    $("#msgContent").text("Question deleted successfully from the application?");
-                    $("#btnModalOK").hide();
+                    ShowMessage("Question deleted successfully.", 1);
                 }
             },
             error: function () {
-                $("#myModal").modal();
-                $("#msgMain").text("Error!");
-                $("#msgContent").text("Question is not deleted.");
-                $("#btnModalOK").hide();
+                ShowMessage("Problem occured.", 0);
             }
         });
     }
+
 </script>

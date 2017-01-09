@@ -1,21 +1,9 @@
-﻿using System;
-using System.Configuration;
-using System.Linq;
-using System.Threading.Tasks;
-using System.Web;
-using System.Web.Mvc;
-using Microsoft.AspNet.Identity.Owin;
-using Silicus.Ensure.Entities.Identity;
-using Silicus.Ensure.Services.Interfaces;
-using Silicus.Ensure.Web.Models;
-using System.Collections.Generic;
-using Silicus.Ensure.Models.DataObjects;
-using Silicus.Ensure.Web.Mappings;
+﻿using Kendo.Mvc.Extensions;
 using Kendo.Mvc.UI;
-using Kendo.Mvc.Extensions;
-using System.Collections.Generic;
-using Silicus.Ensure.Web.Models;
-using Silicus.Ensure.Models.Constants;
+using Silicus.Ensure.Models.DataObjects;
+using Silicus.Ensure.Services.Interfaces;
+using System.Linq;
+using System.Web.Mvc;
 
 namespace Silicus.Ensure.Web.Controllers
 {
@@ -33,7 +21,7 @@ namespace Silicus.Ensure.Web.Controllers
 
         public ActionResult GetPositionDetails([DataSourceRequest] DataSourceRequest request)
         {
-            var positionlist = _positionService.GetPositionDetails().Where(y=>y.IsDeleted!=true).OrderByDescending(model => model.PositionId);
+            var positionlist = _positionService.GetPositionDetails().Where(y => y.IsDeleted != true).OrderByDescending(model => model.PositionId);
             return Json(positionlist.ToDataSourceResult(request), JsonRequestBehavior.AllowGet);
         }
 
@@ -56,8 +44,8 @@ namespace Silicus.Ensure.Web.Controllers
             }
         }
 
-        public JsonResult IsDuplicatePositionName(string positionName)
-        {
+        public JsonResult IsDuplicatePositionName([Bind(Prefix = "PanelName")]string positionName)
+      {
             bool flag = true;
             if (_positionService.GetPositionByName(positionName) != null)
                 flag = false;
@@ -67,11 +55,15 @@ namespace Silicus.Ensure.Web.Controllers
 
         public ActionResult PositionSave([DataSourceRequest] DataSourceRequest dsRequest, Position position)
         {
-            if (ModelState.IsValid)
+            var positionDetails = _positionService.GetPositionDetails().Where(model => model.PositionName == position.PositionName && model.PositionName != position.PositionName);
+            if (positionDetails.Count() > 0)
+                ModelState.AddModelError(string.Empty, "Postion already exists, please create with other name.");
+            else if (ModelState.IsValid )
             {
                 if (position.PositionId == 0)
                 {
                     _positionService.Add(position);
+                    return Json(position);
                 }
             }
             return Json(ModelState.ToDataSourceResult());

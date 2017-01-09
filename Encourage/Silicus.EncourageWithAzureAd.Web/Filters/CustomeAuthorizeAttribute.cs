@@ -20,7 +20,6 @@ namespace Silicus.Encourage.Web.Filters
             base.OnAuthorization(filterContext);
         }
 
-
         protected override void HandleUnauthorizedRequest(AuthorizationContext filterContext)
         {
             var dataContextFactory = new DataContextFactory();
@@ -45,8 +44,6 @@ namespace Silicus.Encourage.Web.Filters
                 }
 
             }
-
-
         }
 
         protected override bool AuthorizeCore(HttpContextBase httpContext)
@@ -66,7 +63,6 @@ namespace Silicus.Encourage.Web.Filters
                 {
                     return true;
                 }
-
                 else
                 {
                     status = false;

@@ -114,5 +114,6 @@ namespace Silicus.Encourage.Services
             var data = _commonDataBaseContext.Query<User>().Where(u => u.EmailAddress == emailId).FirstOrDefault();
             return data.FirstName + " " + data.LastName;
         }
+
     }
 }

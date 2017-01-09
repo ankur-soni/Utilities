@@ -6,6 +6,10 @@ namespace Silicus.Ensure.Services.Interfaces
 {
     public interface IPositionService
     {
+        IEnumerable<Position> GetAllPositionDetails();
+
+        IEnumerable<PanelMemberDetail> GetAllPanelMemberDetails();
+
         IEnumerable<Position> GetPositionDetails();
 
         Position GetPositionById(int PositionId);

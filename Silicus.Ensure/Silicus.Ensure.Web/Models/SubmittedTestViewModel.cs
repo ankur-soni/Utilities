@@ -25,7 +25,7 @@ namespace Silicus.Ensure.Web.Models
         [Display(Name = "Total Makrs")]
         public int TotalMakrs { get; set; }
 
-        [Display(Name = "Test Suit Name")]
+        [Display(Name = "Test Suite Name")]
         public string TestSuitName { get; set; }
 
         [Display(Name = "Postion")]
@@ -37,9 +37,13 @@ namespace Silicus.Ensure.Web.Models
 
         public int TotalMarksObtained { get; set; }
 
+        [Required(ErrorMessage = "Evaluated feed back is required!")]
         public string EvaluatedFeedBack { get; set; }
-         
-        public int PracticalQuestionCount   { get; set; }
+
+        [Required(ErrorMessage = "Status is required!")]
+        public string Status { get; set; }
+
+        public int PracticalQuestionCount { get; set; }
 
         public List<ObjectiveQuestionList> objectiveQuestionList { get; set; }
 
@@ -64,6 +68,8 @@ namespace Silicus.Ensure.Web.Models
         public int QuestionId { get; set; }
 
         public string QuestionDescription { get; set; }
+
+        public string CorrectAnwer { get; set; }
 
         public string SubmittedAnswer { get; set; }
 

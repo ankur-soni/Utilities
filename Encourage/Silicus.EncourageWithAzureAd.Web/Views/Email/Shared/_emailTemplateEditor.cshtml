@@ -1,0 +1,129 @@
+﻿@model Silicus.EncourageWithAzureAd.Web.Models.EmailTemplateEditorViewModel
+<div class="col-sm-12">
+    <div class="row">
+        <p>
+            @Html.Label("Send Mail To", new { @class = "control-label" })
+        </p>
+        @Html.DropDownListFor(m => m.Users, new SelectList(Model.Users, "Email", "Name"), "Select", new { multiple = "multiple", @class = "form-control" })
+    </div>
+    <div class="row">
+        @Html.Label("Template", new { @class = "control-label" })
+        <div id="emailTemplateEditor">
+            @Html.TextAreaFor(m => m.EmailTemplate, new { @class = "form-control" })
+        </div>
+    </div>
+</div>
+<div class="pull-right btn btn-nav">
+    <input type="button" name="send" value="Send" id="sendMailButton" class="btn btn-primary" disabled="disabled" />
+</div>
+
+<link href="~/Css/select2.css" rel="stylesheet" />
+<script src="~/js/select2.min.js"></script>
+
+<link href="~/Css/jquery-te-1.4.0.css" rel="stylesheet" />
+<script src="~/js/jquery-te-1.4.0.min.js"></script>
+
+
+<script>
+    var _urlSendMail = '@Url.Action("SendMailToManagers", "Email")';
+    $(document).ready(function () {
+        var managers = $("#Users")[0].options;
+        var toBeSelectedManagers = [];
+
+        $.each(managers, function (index) {
+            if (this.value != "") {
+                toBeSelectedManagers.push(this.value);
+            }
+        });
+
+        var usersSelect2 = $("#Users").select2();
+        usersSelect2.val(toBeSelectedManagers).trigger("change");
+
+        $("#EmailTemplate").jqte();
+    });
+
+    $("#sendMailButton").on("click", function () {
+        if (validateEmailTemplateAndUsers()) {
+            var selectedManagersList = $("#Users").val();
+
+            var managersList = [];
+            var emailTemplate = htmlEncode($("#EmailTemplate").val());
+            $.each(selectedManagersList, function (index) {
+                if (this.value == "") {
+                    selectedManagersList.pop(this.value);
+                }
+            });
+
+            $(".loader-overlay").show();
+            $.ajax({
+                type: "POST",
+                url: _urlSendMail,
+                data: { managersList: selectedManagersList, emailTemplate: emailTemplate },
+                success: function (result) {
+                    if (result = "Success") {
+                        swal({
+                            title: "Success",
+                            text: "Mail Sent Successfully!!",
+                            type: "success",
+                            showCancelButton: false,
+                            confirmButtonColor: "#337ab7",
+                            confirmButtonText: "Ok",
+                        },
+                        function (isConfirm) {
+                            if (isConfirm) {
+                                window.location.href = '/Home/Index';
+                            }
+                        });
+                    } else {
+                        swal({
+                            title: "Error",
+                            text: "Due to some error failed to send mail :(",
+                            type: "error",
+                            showCancelButton: false,
+                            confirmButtonColor: "#337ab7",
+                            confirmButtonText: "Ok",
+                        });
+                    }
+                    $(".loader-overlay").hide();
+                }, error: function (error) {
+                    $(".loader-overlay").hide();
+                    console.log(error);
+                }
+            });
+        } else {
+            swal("Please Note", "Template cannot be empty and Managers are compulsary","error");
+        }
+    });
+
+    function validateEmailTemplateAndUsers() {
+        var template = $("#EmailTemplate").val();
+        var users = $("#Users").val();
+
+        var areUsersValid = false;
+        var isTemplateValid = false;
+
+        if (users != null && users.length > 0) {
+            $.each(users, function (index) {
+                if (this.value != "") {
+                    areUsersValid = true;
+                }
+            });
+        }
+
+        if (template != "") {
+            isTemplateValid = true;
+        }
+
+        return (areUsersValid && isTemplateValid);
+    }
+
+    function htmlEncode(value) {
+        //create a in-memory div, set it's inner text(which jQuery automatically encodes)
+        //then grab the encoded contents back out.  The div never exists on the page.
+        return $('<div/>').text(value).html();
+    }
+
+    function htmlDecode(value) {
+        return $('<div/>').html(value).text();
+    }
+</script>

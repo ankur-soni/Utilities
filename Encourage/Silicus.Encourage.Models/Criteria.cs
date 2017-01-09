@@ -11,7 +11,7 @@ namespace Silicus.Encourage.Models
 {
     using System;
     using System.Collections.Generic;
-    
+
     public partial class Criteria
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
@@ -21,11 +21,11 @@ namespace Silicus.Encourage.Models
             this.ManagerComments = new HashSet<ManagerComment>();
             this.ReviewerComments = new HashSet<ReviewerComment>();
         }
-    
+
         public int Id { get; set; }
         public string Title { get; set; }
         public int AwardId { get; set; }
-    
+
         public virtual Award Award { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<AwardCriteria> AwardCriterias { get; set; }

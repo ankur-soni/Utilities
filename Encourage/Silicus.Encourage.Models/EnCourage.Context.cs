@@ -37,5 +37,6 @@ namespace Silicus.Encourage.Models
         public virtual DbSet<ReviewerComment> ReviewerComments { get; set; }
         public virtual DbSet<Shortlist> Shortlists { get; set; }
         public virtual DbSet<Configuration> Configurations { get; set; }
+        public virtual DbSet<EmailTemplate> EmailTemplates { get; set; }
     }
 }
