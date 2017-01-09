@@ -125,12 +125,12 @@
         },
        function (isConfirm) {
            if (isConfirm) {
-               $(".loader-overlay").show();
+               showCustomLoader();
                $.ajax({
                    type: 'post',
                    url: '@Url.Action("RejectAll", "Review")',
                    success: function (data) {
-                       $(".loader-overlay").hide();
+                       hideCustomLoader();
                        swal({
                            title: "All nominations rejected..",
                            showCancelButton: false,
@@ -144,7 +144,7 @@
                        });
                    },
                    error: function () {
-                       $(".loader-overlay").hide();
+                       hideCustomLoader();
                        swal("Error", "Oops! Something wrong happened..");
                    }
                });
@@ -161,17 +161,17 @@
 
     $("#pinnacle-tab").on("click", function () {
         var awardId = +$(this).attr("data-awardId");
-        $(".loader-overlay").show();
+        showCustomLoader();
         $.ajax({
             type: "GET",
             url: _urlReviewFeedbackListForActiveMonth,
             data: { awardType: awardId },
             success: function (response) {
-                $(".loader-overlay").hide();
+                hideCustomLoader();
                 $("#pinnacle #pinnacle-currentMonth").html(response);
             },
             error: function (error) {
-                $(".loader-overlay").hide();
+                hideCustomLoader();
                 console.log(error);
             }
         });
@@ -179,17 +179,17 @@
 
     $("#som-tab").on("click", function () {
         var awardId = +$(this).attr("data-awardId");
-        $(".loader-overlay").show();
+        showCustomLoader();
         $.ajax({
             type: "GET",
             url: _urlReviewFeedbackListForActiveMonth,
             data: { awardType: awardId },
             success: function (response) {
-                $(".loader-overlay").hide();
+                hideCustomLoader();
                 $("#som #som-currentMonth").html(response);
             },
             error: function (error) {
-                $(".loader-overlay").hide();
+                hideCustomLoader();
                 console.log(error);
             }
         });
@@ -197,17 +197,17 @@
 
     $("#all-tab").on("click", function () {
         var awardId = +$(this).attr("data-awardId");
-        $(".loader-overlay").show();
+        showCustomLoader();
         $.ajax({
             type: "GET",
             url: _urlReviewFeedbackListForActiveMonth,
             data: { awardType: awardId },
             success: function (response) {
-                $(".loader-overlay").hide();
+                hideCustomLoader();
                 $("#all #currentMonth").html(response);
             },
             error: function (error) {
-                $(".loader-overlay").hide();
+                hideCustomLoader();
                 console.log(error);
             }
         });
@@ -217,17 +217,17 @@
         var awardId = +$("#awards-list li.active a").attr("data-awardid");
         var area = $(element).attr("data-awardtype");
         var someId = "#" + area + " #" + area + "-currentMonth";
-        $(".loader-overlay").show();
+        showCustomLoader();
         $.ajax({
             type: "GET",
             url: _urlReviewFeedbackListForActiveMonth,
             data: { awardType: awardId },
             success: function (response) {
-                $(".loader-overlay").hide();
+                hideCustomLoader();
                 $(someId).html(response);
             },
             error: function (error) {
-                $(".loader-overlay").hide();
+                hideCustomLoader();
                 console.log(error);
             }
         });
@@ -237,17 +237,17 @@
         var awardId = +$("#awards-list li.active a").attr("data-awardid");
         var area = $(element).attr("data-awardtype");
         var someId = "#" + area + " #" + area + "-historical";
-        $(".loader-overlay").show();
+        showCustomLoader();
         $.ajax({
             type: "GET",
             url: _urlReviewFeedbackListForHistoricalMonths,
             data: { awardType: awardId },
             success: function (response) {
-                $(".loader-overlay").hide();
+                hideCustomLoader();
                 $(someId).html(response);
             },
             error: function (error) {
-                $(".loader-overlay").hide();
+                hideCustomLoader();
                 console.log(error);
             }
         });

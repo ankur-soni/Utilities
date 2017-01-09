@@ -266,7 +266,7 @@
         $('#otherReason').val('');
         $('#Resources').empty();
         $('#Resources').append($("<option selected></option>").val(null).html("Select"));
-        $(".loader-overlay").show();
+        showCustomLoader();
         $.ajax({
             type: 'GET',
             url: _urlGetAllResourcesForOtherReason,
@@ -276,10 +276,10 @@
                 for (var key in data) {
                     $('#Resources').append($("<option></option>").val(data[key].ID).html(data[key].DisplayName));
                 }
-                $(".loader-overlay").hide();
+                hideCustomLoader();
             },
             error: function (error) {
-                $(".loader-overlay").hide();
+                hideCustomLoader();
                 console.log(error);
             }
         });
@@ -326,10 +326,12 @@
 
 
     $('#Award').change(function () {
+        showCustomLoader();
         $.ajax({
             type: 'GET',
             url: '@Url.Action("GetLockedAwardCategories","Nomination")',
             success: function (data) {
+                hideCustomLoader();
                 var index = 0;
                 var lockedCategories = "";
                 $.each(data, function () {
@@ -348,6 +350,7 @@
                 }
             },
             error: function () {
+                hideCustomLoader();
                 sweetAlert("Error", "Oops something went wrong!");
             }
         })
@@ -449,7 +452,7 @@
 
 
     $("#SelectedProject").change(function () {
-        $(".loader-overlay").show();
+        showCustomLoader();
         var selectedProject = $("#SelectedProject").val();
         var selectedAward = $("#Award").val();
         $('#Resources').empty();
@@ -461,21 +464,21 @@
             data: JSON.stringify({ engagementID: selectedProject, awardId: selectedAward }),
             contentType: "application/json; charset=utf-8",
             success: function (data) {
-                $(".loader-overlay").hide();
+                hideCustomLoader();
                 for (var key in data) {
                     $('#Resources')
                         .append($("<option></option>").val(data[key].ID).html(data[key].DisplayName));
                 }
             },
             error: function (error) {
-                $(".loader-overlay").hide();
+                hideCustomLoader();
                 console.log(error);
             }
         });
     });
 
     $("#SelectedDepartment").change(function () {
-        $(".loader-overlay").show();
+        showCustomLoader();
         var selectedDept = $("#SelectedDepartment").val();
         var selectedAward = $("#Award").val();
         //var ServiceUrl = "/Nomination/ResourcesInDepartment?departmentID=" + selectedDept +""+ selectedAward;
@@ -490,14 +493,14 @@
             data: { departmentID: selectedDept, awardId: selectedAward },
             contentType: "application/json; charset=utf-8",
             success: function (data) {
-                $(".loader-overlay").hide();
+                hideCustomLoader();
                 for (var key in data) {
                     $('#Resources')
                         .append($("<option></option>").val(data[key].ID).html(data[key].DisplayName));
                 }
             },
             error: function (xhr) {
-                $(".loader-overlay").hide();
+                hideCustomLoader();
                 //alert(xhr.toString());
                 console.log(xhr);
             }
@@ -542,7 +545,7 @@
                         if (isConfirm) {
                             var modelbjectToSend = $('#addNominationForm').serialize() + '&' + $.param({ 'submit': "Submit" }, true);
 
-                            $(".loader-overlay").show();
+                            showCustomLoader();
 
                             $.ajax({
                                 type: 'post',
@@ -551,7 +554,7 @@
                                 async: false,
                                 data: modelbjectToSend,
                                 success: function (data) {
-                                    $(".loader-overlay").hide();
+                                    hideCustomLoader();
                                     swal(data.ErrorMessage);
                                     if (data.nominationExceed) {
                                         swal({
@@ -587,7 +590,7 @@
 
                                 },
                                 error: function (error) {
-                                    $(".loader-overlay").hide();
+                                    hideCustomLoader();
                                     if (error.responseText != null && error.responseText != undefined && error.responseText != '') {
                                         swal("Error", error.responseText.replace(/['"]+/g, ''));
                                     }
@@ -597,7 +600,7 @@
                                 }
                             });
                         } else {
-                            $(".loader-overlay").hide();
+                            hideCustomLoader();
                             swal("Cancelled", "Nomination Cancelled");
                         }
                     });
@@ -623,7 +626,7 @@
             },
            function (isConfirm) {
                if (isConfirm) {
-                   $(".loader-overlay").show();
+                   showCustomLoader();
                    var modelbjectToSend = $('#addNominationForm').serialize() + '&' + $.param({ 'submit': "Save" }, true);
 
                    $.ajax({
@@ -631,7 +634,7 @@
                        url: '@Url.Action("AddNomination", "Nomination")',
                        data: modelbjectToSend,
                        success: function (data) {
-                           $(".loader-overlay").hide();
+                           hideCustomLoader();
                            if (data.nominationExceed) {
                                swal({
                                    title: "Error",
@@ -668,7 +671,7 @@
 
                        },
                        error: function (data) {
-                           $(".loader-overlay").hide();
+                           hideCustomLoader();
                            if (data.responseText != null && data.responseText != undefined && data.responseText != '') {
                                swal("Error", data.responseText.replace(/['"]+/g, ''));
                            }

@@ -44,8 +44,8 @@
                     HttpMethod = "POST",
                     InsertionMode = InsertionMode.Replace,
                     UpdateTargetId = "dvConsolidatedNominations",
-                    OnBegin = "ShowCustomLoader()",
-                    OnComplete = "HideCustomLoader()"
+                    OnBegin = "showCustomLoader()",
+                    OnComplete = "hideCustomLoader()"
                 },
                 new { id = "nominationsFilterForm" }
                 ))
@@ -99,8 +99,8 @@
                 new AjaxOptions
                 {
                     HttpMethod = "POST",
-                    OnBegin = "ShowCustomLoader()",
-                    OnComplete = "HideCustomLoader()",
+                    OnBegin = "showCustomLoader()",
+                    OnComplete = "hideCustomLoader()",
                     OnSuccess = "FinalScoreSave",
                     OnFailure = "FinalScoreFailure"
                 },
@@ -306,10 +306,10 @@
                             swal("Error", "Oops! Something wrong happened..");
                         },
                         beforeSend: function() {
-                            $(".loader-overlay").show();
+                            showCustomLoader();
                         },
                         complete: function() {
-                            $(".loader-overlay").hide();
+                            hideCustomLoader();
                         }
                     });
                 } else {
