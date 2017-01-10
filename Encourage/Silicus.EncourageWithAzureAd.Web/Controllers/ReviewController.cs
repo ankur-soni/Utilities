@@ -212,13 +212,23 @@ namespace Silicus.EncourageWithAzureAd.Web.Controllers
 
         [HttpGet]
         [CustomeAuthorize(AllowedRole = "Admin")]
-        public ActionResult ViewNominationForShortlist(ReviewFeedbackListViewModel nominationModel)
+        public ActionResult ViewNominationForShortlist(int nominationId)
         {
             _logger.Log("Review-ViewNominationForShortlist-GET");
             ViewBag.NominationLockStatus = _nominationService.GetNominationLockStatus();
-            var reviews = _reviewService.GetReviewsForNomination(nominationModel.NominationId).ToList();
+            var reviews = _reviewService.GetReviewsForNomination(nominationId).ToList();
             var nomination = _nominationService.GetNomination(reviews.FirstOrDefault().NominationId);
             var allReviewerComments = new List<List<ReviewerCommentViewModel>>();
+            decimal totalCreditPoints = 0;
+
+            foreach (var r in reviews)
+            {
+                foreach (var rc in r.ReviewerComments)
+                {
+                    var managerCommnet = nomination.ManagerComments.FirstOrDefault(mc => mc.CriteriaId == rc.CriteriaId);
+                    totalCreditPoints += (Convert.ToInt32(rc.Credit) * (managerCommnet != null ? managerCommnet.Weightage : 0) / 100m);
+                }
+            }
 
             foreach (var review in reviews)
             {
@@ -243,7 +253,7 @@ namespace Silicus.EncourageWithAzureAd.Web.Controllers
 
             var lockedAwards = _nominationService.GetNominationLockStatus();
             var isLocked = false;
-            var awardOfCurrentNomination = _awardService.GetAwardFromNominationId(nominationModel.NominationId);
+            var awardOfCurrentNomination = _awardService.GetAwardFromNominationId(nominationId);
 
             foreach (var lockedAward in lockedAwards)
             {
@@ -253,20 +263,29 @@ namespace Silicus.EncourageWithAzureAd.Web.Controllers
                 }
             }
 
+            var isShortlisted = false;
+            var isWinner = false;
+            var checkResultStatus = _resultService.IsShortlistedOrWinner(nomination.Id);
+            if (checkResultStatus == 1)
+                isWinner = true;
+            else if (checkResultStatus == 2)
+                isShortlisted = true;
+
+            var nomineeName = _commonDbContext.Query<User>().FirstOrDefault(u => u.ID == nomination.UserId).DisplayName;
             var loggedInAdminId = _awardService.GetUserIdFromEmail(User.Identity.Name);
             var hrAdminsFeedback = _resultService.GetHrAdminsFeedbackForEmployee(loggedInAdminId, nomination.Id);
             var shortlistViewModel = new ViewShortlistDetailsViewModel()
             {
                 NominationId = nomination.Id,
-                UserName = nominationModel.DisplayName,
-                TotalCredits = nominationModel.Credits,
+                UserName = nomineeName,
+                TotalCredits = totalCreditPoints,
                 Manager = _nominationService.GetManagerNameOfCurrentNomination(reviews.FirstOrDefault().NominationId),
                 ProjectOrDepartment = nomination.ProjectID != null ?
                                            _nominationService.GetProjectNameOfCurrentNomination(nomination.Id) :
                                            _nominationService.GetDeptNameOfCurrentNomination(nomination.Id),
                 NominationComment = nomination.Comment,
-                IsShortlisted = nominationModel.IsShortlisted,
-                IsWinner = nominationModel.IsWinner,
+                IsShortlisted = isShortlisted,
+                IsWinner = isWinner,
                 ReviewerComments = allReviewerComments,
                 Criterias = _nominationService.GetCriteriaForNomination(nomination.Id),
                 ManagerComments = nomination.ManagerComments.ToList(),

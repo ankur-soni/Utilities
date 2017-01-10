@@ -9,11 +9,11 @@
 <div class="main-content">
     @if (Model.UserId != 0)
     {
-        <h2>Edit User</h2>
+        <h2>Edit user</h2>
     }
     else
     {
-        <h2>Add User</h2>
+        <h2>Add user</h2>
     }
     @using (Html.BeginForm("SaveUser", "ManageUser", FormMethod.Post, new { id = "frmSearchAllNdc" }))
     {

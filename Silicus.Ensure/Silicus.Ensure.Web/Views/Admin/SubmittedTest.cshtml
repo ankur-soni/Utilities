@@ -18,7 +18,7 @@
             <h2>Submitted test result of @Model.FirstName @Model.LastName</h2>
             <div class="fluid mt20">
                 <fieldset>
-                    <legend>Test suit details:</legend>
+                    <legend>Test suite details</legend>
                     <div class="row">
                         <div class="col-md-12">
                             <div class="col-md-6">
@@ -62,12 +62,12 @@
             </div>
             <div class="fluid mt20">
                 <fieldset>
-                    <legend>Objective question Result:</legend>
+                    <legend>Objective question result</legend>
                     <div class="row">
 
                         <div class="col-md-12">
                             <div class="col-md-4">
-                                Objective question result:
+                                Objective question result
                             </div>
                             <div class="col-md-7">
                                 <input class="form-control valid" data-val="true"
@@ -75,7 +75,7 @@
                                        value="@Model.ObjectiveQuestionResult" tyle="width:87%;" readonly="readonly" />
                             </div>
                             <div class="col-md-4">
-                                Objective question Marks:
+                                Objective question marks
                             </div>
                             <div class="col-md-7">
                                 <input class="form-control valid" data-val="true"
@@ -88,14 +88,14 @@
             </div>
             <div class="fluid mt20">
                 <fieldset>
-                    <legend>Objective question set:</legend>
+                    <legend>Objective question set</legend>
                     <div class="row">
                         <table class="table table-bordered" style="width: 96%;    margin-left: 2%;">
                             <thead>
                                 <tr>
-                                    <th>Question Description</th>
-                                    <th>Submitted Answer</th>
-                                    <th>Correct Answer</th>
+                                    <th>Question description</th>
+                                    <th>Submitted answer</th>
+                                    <th>Correct answer</th>
                                     <th>Result</th>
                                 </tr>
                             </thead>
@@ -117,7 +117,7 @@
 
             <div class="fluid mt20">
                 <fieldset>
-                    <legend>Practicle question set:</legend>
+                    <legend>Practicle question set</legend>
                     <div class="row">
                         @foreach (var pQuestion in Model.practicalQuestionList)
                         {
@@ -133,7 +133,7 @@
 
                             <div class="col-md-12">
                                 <div class="col-md-4">
-                                    Correct Answer
+                                    Correct answer
                                 </div>
                                 <div class="col-md-8">
                                     <textarea cols="20" id="@Html.Raw(pQuestion.CorrectAnwer + i)" name="@Html.Raw(pQuestion.CorrectAnwer + i)"
@@ -146,7 +146,7 @@
 
                             <div class="col-md-12">
                                 <div class="col-md-4">
-                                    Submitted Answer
+                                    Submitted answer
                                 </div>
                                 <div class="col-md-8">
                                     <textarea cols="20" id="@Html.Raw(pQuestion.SubmittedAnswer + i)" name="@Html.Raw(pQuestion.SubmittedAnswer + i)"
@@ -170,7 +170,7 @@
                             </div>
                             <div class="col-md-12">
                                 <div class="col-md-4">
-                                    Evaluated Marks
+                                    Evaluated marks
                                 </div>
                                 <div class="col-md-8">
                                     <input class="PracticalMarks form-control valid" data-val="true" data-val-required="Practical question @i evaluated marks is required!"
@@ -187,12 +187,12 @@
             </div>
             <div class="fluid mt20">
                 <fieldset>
-                    <legend>Evaluation Result:</legend>
+                    <legend>Evaluation result:</legend>
                     <div class="row">
 
                         <div class="col-md-12" style="margin-top:10px">
                             <div class="col-md-4">
-                                Total marks obtained:
+                                Total marks obtained
                             </div>
                             <div class="col-md-8">
                                 <input class="form-control"

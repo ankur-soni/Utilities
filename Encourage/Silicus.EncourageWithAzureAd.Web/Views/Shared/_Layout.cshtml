@@ -124,8 +124,8 @@
                                                 @if (roles.Contains("Admin"))
                                                 {
                                                     <li><a href="@Url.Action("ReviewFeedbackList", "Review")" class="active">Shortlisted Nominations</a></li>
-                                                    <li><a href="@Url.Action("ConsolidatedNominations", "Review" )" class="active">Consolidated Nominations</a></li>
-                                                    <li><a href="@Url.Action("Index", "Email" )" class="active">Email Template</a></li>
+                                                    <li><a href="@Url.Action("ConsolidatedNominations", "Review" )" >Consolidated Nominations</a></li>
+                                                    <li><a href="@Url.Action("Index", "Email" )">Email Template</a></li>
                                                 }
                                             </ul>
                                         </li>
@@ -234,19 +234,34 @@
     });
 
     $(document).ready(function () {
-       
         sidebarautoheight();
+
+        var pathName = window.location.pathname;
+
+        var allMenuItems = $("#side-menu li");
+        $("#side-menu li").removeClass('active');
+        $("#side-menu li ul").removeClass('in');
+
+        $.each(allMenuItems, function () {
+            var url = $(this).find("a").attr("href");
+            if (pathName == url) {
+                $(this).addClass("active");
+                $(this).parent('ul').addClass('in');
+                $(this).parent('ul').parent('li').addClass('active');
+            }
+        });
     });
+
     $(window).resize(function () {
         sidebarautoheight();
     });
 
-    function ShowCustomLoader() {
+    function showCustomLoader() {
         //console.log("show");
         $(".loader-overlay").show();
     }
 
-    function HideCustomLoader() {
+    function hideCustomLoader() {
         //console.log("hide");
         $(".loader-overlay").hide();
     }
