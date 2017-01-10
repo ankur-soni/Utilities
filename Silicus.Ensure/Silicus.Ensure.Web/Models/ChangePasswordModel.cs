@@ -6,18 +6,18 @@ namespace Silicus.Ensure.Web.Models
     {
         [Required]
         [DataType(DataType.Password)]
-        [Display(Name = "Current Password")]
+        [Display(Name = "Current password")]
         public string OldPassword { get; set; }
 
         [Required]
         [RegularExpression(@"^.*(?=.*[A-Za-z0-9][!@#$%^&*\(\)_\-+=]).*$", ErrorMessage = "Password not too strong.")]
         [StringLength(20, ErrorMessage = "The {0} must be at least {2} and max {1} characters long.", MinimumLength = 8)]
         [DataType(DataType.Password)]
-        [Display(Name = "New Password")]
+        [Display(Name = "New password")]
         public string NewPassword { get; set; }
 
         [DataType(DataType.Password)]
-        [Display(Name = "Re-type New Password")]
+        [Display(Name = "Confirm new password")]
         [System.Web.Mvc.Compare("NewPassword", ErrorMessage = "The new password and confirmation password do not match.")]
         public string ConfirmPassword { get; set; }
 

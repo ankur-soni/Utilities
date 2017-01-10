@@ -91,20 +91,13 @@ namespace Silicus.Ensure.Web.Controllers
         }
 
         [HttpGet]
-        [AllowAnonymous]
+        [Authorize]
         public async Task<ActionResult> Login(string returnUrl, string userName)
         {
-            using (var context = _dataContextFactory.Create(ConnectionType.Ip))
-            {
-                // Hitting database just to let EF create it if it does not
-                // exist based on initializer.
-                context.Query<Organization>().Count();
-            }
 
             if (!Request.IsAuthenticated)
             {
                 _logger.Log(string.Format("Request not authenticated, showing login form."), LogCategory.Information);
-
                 return View();
             }
 
@@ -158,9 +151,22 @@ namespace Silicus.Ensure.Web.Controllers
                 AuthenticationManager.SignOut();
             }
 
-
             return View();
         }
+
+        public async Task<ActionResult> CandidateLogin()
+        {
+            if (!Request.IsAuthenticated)
+            {
+                _logger.Log(string.Format("Request not authenticated, showing login form."), LogCategory.Information);
+                return View("Login");
+            }
+            else
+            {
+                return RedirectToAction("Login");
+            }
+        }
+
 
 
         private ActionResult RedirectToLocal(string returnUrl, string role)

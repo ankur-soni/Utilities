@@ -11,9 +11,9 @@ namespace Silicus.Ensure.Models.DataObjects
         [Key]
         public int TestSuiteId { get; set; }
 
-        [Required(ErrorMessage = "Test-Suite Name is required!")]
-        [StringLength(50, ErrorMessage = "Test-Suite name length should be less than or equal to 50 characters.")]
-        [Display(Name = "TestSuite Name")]
+        [Required(ErrorMessage = "Test suite name is required!")]
+        [StringLength(50, ErrorMessage = "Test suite name length should be less than or equal to 50 characters.")]
+        [Display(Name = "Test suite name")]
         public string TestSuiteName { get; set; }
 
         [Required(ErrorMessage="Duration is required!")]

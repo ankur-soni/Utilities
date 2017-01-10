@@ -2,6 +2,7 @@
 .M-B0{margin-bottom:0px;}
 .M-T10{margin-top:10px;}
 .M-T15{margin-top:15px;}
+.M-B5{margin-bottom:5px;}
 .M-B15{margin-bottom:15px!important;}
 .M-L15{margin-left:15px;}
 .M-B60{margin-bottom:60px!important;}
@@ -17,9 +18,13 @@
 #frmSearchAllNdc span.k-dropdown-wrap.k-state-default{height:35px!important;}
 #frmSearchAllNdc span.k-dropdown .k-input, .k-dropdown .k-state-focused .k-input, .k-menu .k-popup{height: 30px;margin-top: 5px;}
 .k-grid-pager .k-link, .k-grid-pager .k-link:link{color:#fff!important;}
-.k-icon, .k-tool-icon, .k-grouping-dropclue, .k-drop-hint, .k-column-menu .k-sprite, .k-grid-mobile .k-resize-handle-inner:before, .k-grid-mobile .k-resize-handle-inner:after, .k-pager-numbers .k-current-page .k-link:after, .k-scheduler-toolbar > ul.k-scheduler-views > li.k-current-view > .k-link:after, .k-gantt-views > .k-current-view > .k-link:after {
-    background-image: url('css/Kendo/2014.1.416/Default/sprite1.png');
-    background-position:-32px 0;
+#userGrids table{width:100%;overflow-x:auto;display: inherit;}
+.k-icon.k-i-arrow-s {
+    background-image: url('css/Kendo/2014.1.416/Default/sprite.png');
+    background-position:0px -34px;
+}
+span.k-icon.k-add {
+    margin-top: -3px;
 }
 /*Loader css - Start*/
 .loader {
@@ -51,6 +56,7 @@
 .themeColorBlue{color:#337ab7;}
 
 .label1{font-size:13px;font-weight:bold;}
+.toolbar{background:#fafafa;}
 .tbl-box{
     padding: 5px!important;
     background: #0063a7!important;
@@ -1865,6 +1871,9 @@ span.select2.select2-container.select2-container--default{
     margin-top: 0px;
     padding-bottom: 0px;
 }
+     .cust-mar{
+         margin-top:15px;
+     }
 
 }
 @media (max-width:800px) 

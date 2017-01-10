@@ -5,6 +5,7 @@ using AutoMapper;
 using Silicus.Ensure.Web.Models;
 using Silicus.Ensure.Models.DataObjects;
 using System;
+using Silicus.Ensure.Web.Application;
 
 namespace Silicus.Ensure.Web.Mappings
 {
@@ -18,7 +19,13 @@ namespace Silicus.Ensure.Web.Mappings
 
         protected override void Configure()
         {
-            Mapper.CreateMap<User, UserViewModel>();
+            Mapper.CreateMap<User, UserViewModel>()
+                .ForMember(dest => dest.ResumeDisplayName, opt => opt.MapFrom(s =>
+                    !string.IsNullOrWhiteSpace(s.ResumeName) ?
+                    (s.ResumeName.Contains(AppConstants.ResumeNameSeparationCharacter) && s.ResumeName.Length >= s.ResumeName.IndexOf(AppConstants.ResumeNameSeparationCharacter) + 1
+                    ? s.ResumeName.Substring(s.ResumeName.IndexOf(AppConstants.ResumeNameSeparationCharacter) + 1) : "")
+                    : "")
+                    );
             Mapper.CreateMap<TestSuite, TestSuiteViewModel>();
             Mapper.CreateMap<Silicus.UtilityContainer.Models.DataObjects.User, ContainerUserViewModel>();
             Mapper.CreateMap<PanelMemberDetail, PanelMemberDetailViewModel>()
@@ -33,7 +40,7 @@ namespace Silicus.Ensure.Web.Mappings
                 .ForMember(dest => dest.Email, opt => opt.MapFrom(s => (s.EmailAddress)))
                 .ForMember(dest => dest.RoleId, opt => opt.MapFrom(s => (s.PrimaryRoleID)))
                 .ForMember(dest => dest.UserId, opt => opt.MapFrom(s => (s.ID)))
-                .ForMember(dest => dest.FullName, opt => opt.MapFrom(s => (s.LastName+" "+ s.FirstName)));
+                .ForMember(dest => dest.FullName, opt => opt.MapFrom(s => (s.LastName + " " + s.FirstName)));
         }
     }
 }

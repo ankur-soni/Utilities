@@ -11,11 +11,13 @@ namespace Silicus.Ensure.Web.Controllers
     {
         private readonly IPanelService _panelService;
         private readonly ITagsService _tagService;
+        private readonly IPositionService _positionService;
 
-        public CommonController(IPanelService panelService, ITagsService tagService)
+        public CommonController(IPanelService panelService, ITagsService tagService, IPositionService positionService)
         {
             _panelService = panelService;
             _tagService = tagService;
+            _positionService = positionService;
         }
 
         public ActionResult GetPanelDetails()
@@ -36,6 +38,12 @@ namespace Silicus.Ensure.Web.Controllers
                 taglist = taglist.OrderByDescending(model => model.TagId);
             }
             return Json(taglist, JsonRequestBehavior.AllowGet);
+        }
+
+        public ActionResult GetAllPositionDetails()
+        {
+            var positionlist = _positionService.GetPositionDetails().Where(y => y.IsDeleted != true).OrderByDescending(model => model.PositionId);
+            return Json(positionlist, JsonRequestBehavior.AllowGet);
         }
     }
 }
