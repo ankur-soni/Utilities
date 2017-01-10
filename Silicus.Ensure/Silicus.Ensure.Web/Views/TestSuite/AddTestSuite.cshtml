@@ -1,0 +1,256 @@
+﻿@model Silicus.Ensure.Web.Models.TestSuiteViewModel
+@using Silicus.Ensure.Models.Constants
+@using Kendo.Mvc.UI;
+
+@{
+    ViewBag.Title = "AddTestSuite";
+}
+
+<h2>Add new test suite</h2>
+
+
+@using (Html.BeginForm(null, null, FormMethod.Post, new { id = "frmAddTestSuite" }))
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal">
+
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+        @if (Model.TestSuiteId != 0)
+        {
+            @Html.HiddenFor(model => model.TestSuiteId)
+            @Html.HiddenFor(model => model.IsCopy)
+            @Html.HiddenFor(model => model.Status)
+            @Html.HiddenFor(model => model.PrimaryTagNames)
+        }
+
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.TestSuiteName, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.TestSuiteName, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.TestSuiteName, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Duration, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Duration, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Duration, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Position, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-8">
+                @*@Html.EditorFor(model => model.Position, new { htmlAttributes = new { @class = "form-control" } })*@
+                @(Html.Kendo().DropDownListFor(m => m.Position)
+                                    .DataTextField("PositionName")
+                                    .DataValueField("PositionId")
+        //.Placeholder("Select Positions...")
+                                    .OptionLabel("Select Position...")
+                                            .DataSource(source =>
+                                            {
+                                                source.Read(read =>
+                                                {
+                                                    read.Action("GetAllPositionDetails", "Common");
+                                                })
+                                                .ServerFiltering(false);
+                                            })
+        // .Value(Model.Position)
+                                    .HtmlAttributes(new { style = "width: 100%", required = "required" }))
+                @Html.ValidationMessageFor(model => model.Position, "", new { @class = "text-danger" })
+            </div>
+            <div class="col-md-2">
+                <a href="#" onclick="addPosition();">Add Position</a>
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Competency, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @(Html.Kendo().DropDownListFor(model => model.Competency)
+                    .OptionLabel("--Select--")
+                    .BindTo(new List<SelectListItem>() {
+                    new SelectListItem(){
+                    Text=Convert.ToString(Proficiency.Beginner),
+                    Value=Convert.ToString((Int32)Proficiency.Beginner)
+                    },
+                    new SelectListItem(){
+                    Text=Convert.ToString(Proficiency.Intermediate),
+                    Value=Convert.ToString((Int32)Proficiency.Intermediate)
+                    },
+                    new SelectListItem(){
+                    Text=Convert.ToString(Proficiency.Expert),
+                    Value=Convert.ToString((Int32)Proficiency.Expert)
+                    }
+                    })
+                   .HtmlAttributes(new { style = "width: 100%" }))
+                @Html.ValidationMessageFor(model => model.Competency, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="control-label col-md-2">Question Type</label>
+            <div class="col-md-5">
+                <div class="col-md-4">
+                    @Html.LabelFor(model => model.OptionalQuestion, htmlAttributes: new { @class = "control-label " })
+                </div>
+                <div class="col-md-7">
+                    @Html.TextBoxFor(m => m.OptionalQuestion, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(m => m.OptionalQuestion)
+                </div>
+            </div>
+            <div class="col-md-5">
+                <div class="col-md-4">
+                    @Html.LabelFor(model => model.OptionalQuestion, htmlAttributes: new { @class = "control-label" })
+                </div>
+                <div class="col-md-7">
+                    @Html.TextBoxFor(m => m.PracticalQuestion, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(m => m.PracticalQuestion)
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.ProjectName, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.ProjectName, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.ProjectName, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+
+        <div class="form-group">
+            <label class="control-label col-md-2">Experience</label>
+            <div class="col-md-5">
+                @(Html.Kendo().DropDownListFor(m => m.FromExperience)
+                        .DataTextField("Text")
+                        .DataValueField("Value")
+                        .BindTo(EnumHelper.GetSelectList((typeof(Year)))
+                        .Select(x => new SelectListItem { Text = x.Value, Value = x.Value }))
+                        .HtmlAttributes(new { style = "width: 100%" })
+                        .OptionLabel("Year")
+                )
+                @Html.ValidationMessageFor(m => m.FromExperience)
+            </div>
+            <div class="col-md-5">
+                @(Html.Kendo().DropDownListFor(m => m.ToExperience)
+                        .DataTextField("Text")
+                        .DataValueField("Value")
+                        .BindTo(EnumHelper.GetSelectList((typeof(Year)))
+                        .Select(x => new SelectListItem { Text = x.Value, Value = x.Value }))
+                        .HtmlAttributes(new { style = "width: 100%" })
+                        .OptionLabel("Months")
+                )
+                @Html.ValidationMessageFor(m => m.ToExperience)
+            </div>
+        </div>
+
+        <div class="form-group">
+            @(Html.Kendo().Grid(Model.Tags).Name("TagsGrid").Pageable(pager => { pager.PageSizes(true); })
+         .Columns(columns =>
+              {
+                  columns.Bound(q => q.TagName).Width(200);
+                  columns.Bound(q => q.Weightage).Width(150);
+                  columns.Bound(q => q.Proficiency).Width(100);
+                  columns.Command(command => command.Destroy()).Width(150);
+              })
+      .ToolBar(toolbar => { toolbar.Create(); toolbar.Save(); })
+      .Editable(editable => editable.Mode(GridEditMode.InCell))
+      .DataSource(dataSource =>
+                dataSource.Ajax()
+                .Batch(true)
+                .ServerOperation(false)
+                    //.Events(events => events.Error("grid_error")) // Handle the "error" event.
+                  .Model(model =>
+                  {
+                      model.Id(product => product.TagId);
+                      //model.Field(product => product.TagId).Editable(false);
+                  })
+                  .Create(create => create.Action("Products_Create", "Home"))
+                    //.Read(read => read.Action("Products_Read", "Home"))
+                  .Update(update => update.Action("Products_Update", "Home"))
+                  .Destroy(destroy => destroy.Action("Products_Destroy", "Home"))
+            )
+              )
+        </div>
+
+
+
+
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Create" class="btn btn-default" />
+            </div>
+        </div>
+    </div>
+}
+
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}
+
+<script>
+
+    $(function () {
+        $("#frmAddTestSuite").kendoValidator();
+    });
+
+    function addPosition() {
+        $("#PositionForm")[0].reset();
+        $("#addPositionPopup").modal('show');
+    }
+
+    function savePosition() {
+        if ($("#PositionForm").valid()) {
+            $.ajax({
+                type: "POST",
+                url: '/Positions/PositionSave',
+                data: $('#PositionForm').serialize(),
+                success: function (returndata) {
+                    $("#addPositionPopup").modal('hide');
+                    var $PositionMultiSelect = $('#PositionIds').data('kendoMultiSelect');
+                    var multidata = $PositionMultiSelect.dataSource.data();
+                    multidata.push({ PositionName: returndata.PositionName, PositionId: returndata.PositionId });
+                    var selectedValues = $PositionMultiSelect.value().slice();
+                    selectedValues.push(returndata.PositionId);
+                    $PositionMultiSelect.value(selectedValues);
+                    $("#PositionForm").trigger("reset");
+                }
+            });
+        }
+        else {
+            $('#PositionForm').submit();
+        }
+    }
+</script>
+
+
+<div class="modal fade" id="addPositionPopup" role="dialog">
+    <form id="PositionForm" action="/Position/Save" method="post">
+        <div class="modal-dialog">
+
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title"><span>Add Position</span></h4>
+                </div>
+                <div class="modal-body">
+
+                    @Html.Partial("~/Views/Positions/AddPosition.cshtml", new Silicus.Ensure.Models.DataObjects.Position())
+                </div>
+                <div class="modal-footer">
+                    <button type="button" onclick="savePosition()" class="btn btn-default">Save</button>
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+
+        </div>
+    </form>
+</div>
