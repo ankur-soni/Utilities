@@ -814,7 +814,6 @@
     <Content Include="Views\Shared\EditorTemplates\TagEditorTemplate.cshtml" />
     <Content Include="Views\Master\Index.cshtml" />
     <Content Include="Views\Account\Login.cshtml" />
-    <Content Include="Views\Account\Index.cshtml" />
     <None Include="Web.Azure.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
