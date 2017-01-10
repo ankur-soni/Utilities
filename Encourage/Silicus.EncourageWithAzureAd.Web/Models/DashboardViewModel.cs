@@ -10,7 +10,7 @@ namespace Silicus.EncourageWithAzureAd.Web.Models
         public DashboardViewModel()
         {
             Awards = new List<AwardViewModel>();
-            NominationList = List<NominationListViewModel>();
+            NominationList = new List<NominationListViewModel>();
         }
         public List<string> userRoles { get; set; }
         public List<AwardViewModel> Awards { get; set; }
