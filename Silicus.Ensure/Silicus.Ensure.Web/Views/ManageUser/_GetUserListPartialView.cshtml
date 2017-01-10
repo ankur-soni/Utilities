@@ -90,7 +90,6 @@
     {
         var grid = $("#UserGrids").data("kendoGrid");
         var userDetailViewModel = grid.dataItem($(e.currentTarget).closest("tr"));
-        debugger;
         if (userDetailViewModel && userDetailViewModel.UserId) {
             $.ajax({
                 type: "Post",
@@ -99,7 +98,6 @@
                 data: JSON.stringify(userDetailViewModel),
                 success: function (returndata) {
                     if (returndata) {
-                        debugger
                         $("#frmAssignPanel").html(returndata);
                         $("#AssignPanelModal").modal('show');
                         $("#frmAssignPanel").kendoValidator();
@@ -125,7 +123,6 @@
                 data: JSON.stringify(userDetailViewModel),
                 success: function (returndata) {
                     if (returndata) {
-                        debugger
                         $("#frmAssignType").html(returndata);
                         $("#AssignTypeModal").modal('show');
                         $("#frmAssignType").kendoValidator();
@@ -256,7 +253,6 @@
                 url: '/Tag/Save',
                 data: $('#tagForm').serialize(),
                 success: function (returndata) {
-                    debugger;
                     $("#addTagPopup").modal('hide');
                     var $tagMultiSelect = $('#TagIds').data('kendoMultiSelect');
                     var selectedValues = $tagMultiSelect.value().slice();
@@ -324,7 +320,6 @@
                 url: '/Panel/PanelSave',
                 data: $('#panelForm').serialize(),
                 success: function (returndata) {
-                    debugger;
                     $("#addPanelPopup").modal('hide');
                     var $panelMultiSelect = $('#PanelIds').data('kendoMultiSelect');
                     var multidata = $panelMultiSelect.dataSource.data();

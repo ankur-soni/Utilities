@@ -3,7 +3,7 @@
 @model Silicus.Ensure.Web.Models.LoginModel
 
 @{
-    ViewBag.Title = "Sign In";
+    ViewBag.Title = "Sign in";
     var loginProviders = Context.GetOwinContext().Authentication.GetExternalAuthenticationTypes();
 }
 <div class="logincontainer" style="margin-top:15%;background-color: #edf1f5!important">
@@ -27,7 +27,7 @@
                     @Html.ValidationSummary(true)
                     <div class="input-group mb5">
                         <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
-                        @Html.TextBoxFor(m => m.UserName, new { @placeholder = "User Name", @onfocus = "this.placeholder = ''", @onblur = "this.placeholder = 'User Name';", tabindex = 1, @class = "form-control" })
+                        @Html.TextBoxFor(m => m.UserName, new { @placeholder = "User Name", @onfocus = "this.placeholder = ''", @onblur = "this.placeholder = 'User name';", tabindex = 1, @class = "form-control" })
                     </div>
                     <span class="help-block field-validation-error mt10 mb10">@Html.ValidationMessageFor(m => m.UserName)</span>
 
