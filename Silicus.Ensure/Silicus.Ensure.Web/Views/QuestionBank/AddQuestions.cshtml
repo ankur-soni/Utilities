@@ -10,13 +10,16 @@
 <div class="row white-bg header-row">
     <nav class="" role="navigation" style="margin-bottom: 0">
         <div class="navbar-header">
-            <a class="navbar-minimalize minimalize-styl-2 btn btn-primary" id="menu-toggle" style="margin-left:15px;" href="#"><i class="fa fa-bars"></i> </a>
+            <a class="navbar-minimalize minimalize-styl-2 btn btn-primary" id="menu-toggle" style="margin-left:15px;border-radius:0px;" href="#"><i class="fa fa-bars"></i> </a>
         </div>
     </nav>
 
     <div class="col-lg-10 col-md-10 col-sm-10">
         <h1 class="dashboard-name">Add Question</h1>
     </div>
+
+    
+
 </div>
 
 <div class="row">
@@ -35,14 +38,14 @@
                         </div>
                     </div>
                     <div class="row">
-                        <div class="col-sm-6">
+                        <div class="col-sm-6 col-md-6 col-lg-6">
                             <div class="row">
-                                <div class="col-sm-6 col-md-5 col-lg-3">
+                                <div class="col-sm-6 col-md-5 col-lg-4">
                                     <div class="form-group">
-                                        <label class="control-label font-Bold themeColorBlue">Question Type<span style="color:red">*</span></label>
+                                        <label class="control-label font-Bold themeColorBlue">Question Type <span style="color:red">*</span></label>
                                     </div>
                                 </div>
-                                <div class="col-sm-6">
+                                <div class="col-sm-6 col-md-6 col-lg-6">
                                     <div class="form-group">
 
                                         @(Html.Kendo().DropDownListFor(m => m.QuestionType)
@@ -58,27 +61,27 @@
                       
                     </div>                  
                     <div class="row">
-                        <div class="col-sm-8">
+                        <div class="col-sm-8 col-md-8 col-lg-8">
                             <div class="form-group">
-                                <label class="control-label font-Bold themeColorBlue">Question<span style="color:red">*</span></label>
-                            
-                            @Html.Kendo().EditorFor(m => m.QuestionDescription).Name("QuestionDescription").Encode(true).Value(Model.QuestionDescription)
-                            @Html.ValidationMessageFor(m => m.QuestionDescription)
+                                <label class="control-label font-Bold themeColorBlue">Question <span style="color:red">*</span></label>
+
+                                @Html.Kendo().EditorFor(m => m.QuestionDescription).Name("QuestionDescription").Encode(true).Value(Model.QuestionDescription)
+                                @Html.ValidationMessageFor(m => m.QuestionDescription)
                             </div>
-                       </div>
+                        </div>
                     </div>
                     
                     <div id="practical">
                         <div class="row">
-                            <div class="col-sm-12">
+                            <div class="col-sm-12 col-md-12 col-lg-12">
                                 <div class="">
                                     <label class="control-label font-Bold themeColorBlue">Answer Choices</label>
                                 </div>
                             </div>
                         </div>
                         <div class="row">
-                            <div class="col-sm-6">
-                                <div class="input-group form-group">                                 
+                            <div class="col-sm-6 col-md-6 col-lg-6">
+                                <div class="input-group form-group">
                                     <div class="input-group-addon">
                                         @Html.CheckBoxFor(y => y.IsAnsOption1, new { @class = "ansCheckBox" })
                                     </div>
@@ -87,52 +90,52 @@
                             </div>
                         </div>
                         <div class="row" id="rowOpt2">
-                            <div class="col-sm-6">
+                            <div class="col-sm-6 col-md-6 col-lg-6">
                                 <div class="input-group form-group">
                                     <div class="input-group-addon">
                                         @Html.CheckBoxFor(y => y.IsAnsOption2, new { @class = "ansCheckBox" })
                                     </div>
-                                    @Html.TextBoxFor(m => m.Option2, new { @class = "form-control", Value = @Model.Option2 }) 
+                                    @Html.TextBoxFor(m => m.Option2, new { @class = "form-control", Value = @Model.Option2 })
                                 </div>
                             </div>
-                            <div class="col-sm-2">
+                            <div class="col-sm-2 col-md-2 col-lg-2">
                                 @(Html.Kendo().Button().Name("btnAddOpt2").HtmlAttributes(new { type = "button", param = "2", @class = "glyphicon glyphicon-plus" }).Events(e => e.Click("OptionAdd")))
                                 @(Html.Kendo().Button().Name("btnDelOpt2").HtmlAttributes(new { type = "button", param = "2", @class = "glyphicon glyphicon-minus" }).Events(e => e.Click("OptionDelete")))
                             </div>
                           
                         </div>
                         <div class="row" id="rowOpt3">
-                            <div class="col-sm-6">
+                            <div class="col-sm-6 col-md-6 col-lg-6">
                                 <div class="input-group form-group">
                                     <div class="input-group-addon">
-                                       @Html.CheckBoxFor(y => y.IsAnsOption3, new { @class = "ansCheckBox" })
+                                        @Html.CheckBoxFor(y => y.IsAnsOption3, new { @class = "ansCheckBox" })
                                     </div>
                                     @Html.TextBoxFor(m => m.Option3, new { @class = "form-control", Value = @Model.Option3 })
                                 </div>
                             </div>
-                            <div class="col-sm-2">
+                            <div class="col-sm-2 col-md-2 col-lg-2">
                                 @(Html.Kendo().Button().Name("btnAddOpt3").HtmlAttributes(new { type = "button", param = "3", @class = "glyphicon glyphicon-plus" }).Events(e => e.Click("OptionAdd")))
                                 @(Html.Kendo().Button().Name("btnDelOpt3").HtmlAttributes(new { type = "button", param = "3", @class = "glyphicon glyphicon-minus" }).Events(e => e.Click("OptionDelete")))
                             </div>
                            
                         </div>
                         <div class="row" id="rowOpt4">
-                            <div class="col-sm-6">
+                            <div class="col-sm-6 col-md-6 col-lg-6">
                                 <div class="input-group form-group">
                                     <div class="input-group-addon">
-                                       @Html.CheckBoxFor(y => y.IsAnsOption4, new { @class = "ansCheckBox" })
+                                        @Html.CheckBoxFor(y => y.IsAnsOption4, new { @class = "ansCheckBox" })
                                     </div>
-                                   @Html.TextBoxFor(m => m.Option4, new { @class = "form-control", Value = @Model.Option4 })
+                                    @Html.TextBoxFor(m => m.Option4, new { @class = "form-control", Value = @Model.Option4 })
                                 </div>
                             </div>
-                            <div class="col-sm-2">
+                            <div class="col-sm-2 col-md-2 col-lg-2">
                                 @(Html.Kendo().Button().Name("btnAddOpt4").HtmlAttributes(new { type = "button", param = "4", @class = "glyphicon glyphicon-plus" }).Events(e => e.Click("OptionAdd")))
                                 @(Html.Kendo().Button().Name("btnDelOpt4").HtmlAttributes(new { type = "button", param = "4", @class = "glyphicon glyphicon-minus" }).Events(e => e.Click("OptionDelete")))
                             </div>
                            
                         </div>
                         <div class="row" id="rowOpt5">
-                            <div class="col-sm-6">
+                            <div class="col-sm-6 col-md-6 col-lg-6">
                                 <div class="input-group form-group">
                                     <div class="input-group-addon">
                                         @Html.CheckBoxFor(y => y.IsAnsOption5, new { @class = "ansCheckBox" })
@@ -140,14 +143,14 @@
                                     @Html.TextBoxFor(m => m.Option5, new { @class = "form-control", Value = @Model.Option5 })
                                 </div>
                             </div>
-                            <div class="col-sm-2">
+                            <div class="col-sm-2 col-md-2 col-lg-2">
                                 @(Html.Kendo().Button().Name("btnAddOpt5").HtmlAttributes(new { type = "button", param = "5", @class = "glyphicon glyphicon-plus" }).Events(e => e.Click("OptionAdd")))
                                 @(Html.Kendo().Button().Name("btnDelOpt5").HtmlAttributes(new { type = "button", param = "5", @class = "glyphicon glyphicon-minus" }).Events(e => e.Click("OptionDelete")))
                             </div>
                            
                         </div>
                         <div class="row" id="rowOpt6">
-                            <div class="col-sm-6">
+                            <div class="col-sm-6 col-md-6 col-lg-6">
                                 <div class="input-group form-group">
                                     <div class="input-group-addon">
                                         @Html.CheckBoxFor(y => y.IsAnsOption6, new { @class = "ansCheckBox" })
@@ -155,13 +158,13 @@
                                     @Html.TextBoxFor(m => m.Option6, new { @class = "form-control", Value = @Model.Option6 })
                                 </div>
                             </div>
-                            <div class="col-sm-2">
+                            <div class="col-sm-2 col-md-2 col-lg-2">
                                 @(Html.Kendo().Button().Name("btnAddOpt6").HtmlAttributes(new { type = "button", param = "6", @class = "glyphicon glyphicon-plus" }).Events(e => e.Click("OptionAdd")))
                                 @(Html.Kendo().Button().Name("btnDelOpt6").HtmlAttributes(new { type = "button", param = "6", @class = "glyphicon glyphicon-minus" }).Events(e => e.Click("OptionDelete")))
                             </div>
                         </div>
                         <div class="row" id="rowOpt7">
-                            <div class="col-sm-6">
+                            <div class="col-sm-6 col-md-6 col-lg-6">
                                 <div class="input-group form-group">
                                     <div class="input-group-addon">
                                         @Html.CheckBoxFor(y => y.IsAnsOption7, new { @class = "ansCheckBox" })
@@ -169,26 +172,26 @@
                                     @Html.TextBoxFor(m => m.Option7, new { @class = "form-control", Value = @Model.Option7 })
                                 </div>
                             </div>
-                            <div class="col-sm-2">
+                            <div class="col-sm-2 col-md-2 col-lg-2">
                                 @(Html.Kendo().Button().Name("btnAddOpt7").HtmlAttributes(new { type = "button", param = "7", @class = "glyphicon glyphicon-plus" }).Events(e => e.Click("OptionAdd")))
                                 @(Html.Kendo().Button().Name("btnDelOpt7").HtmlAttributes(new { type = "button", param = "7", @class = "glyphicon glyphicon-minus" }).Events(e => e.Click("OptionDelete")))
                             </div>
                          </div>
                         <div class="row" id="rowOpt8">
-                            <div class="col-sm-6">
+                            <div class="col-sm-6 col-md-6 col-lg-6">
                                 <div class="input-group form-group">
                                     <div class="input-group-addon">
-                                       @Html.CheckBoxFor(y => y.IsAnsOption8, new { @class = "ansCheckBox" })
+                                        @Html.CheckBoxFor(y => y.IsAnsOption8, new { @class = "ansCheckBox" })
                                     </div>
                                     @Html.TextBoxFor(m => m.Option8, new { @class = "form-control", Value = @Model.Option8 })
                                 </div>
                             </div>
-                            <div class="col-sm-2">
+                            <div class="col-sm-2 col-md-2 col-lg-2">
                                 @(Html.Kendo().Button().Name("btnDelOpt8").HtmlAttributes(new { type = "button", param = "8", @class = "glyphicon glyphicon-minus" }).Events(e => e.Click("OptionDelete")))
                             </div>
                         </div>
                         <div class="row">
-                            <div class="col-md-12">
+                            <div class="col-sm-12 col-md-12 col-lg-12">
                                 <div class="form-group">
                                     <div class="checkbox">
                                         <input id="IsAllowedmoreThanOneAns" type="checkbox">
@@ -196,12 +199,12 @@
                                     </div>
                                     @Html.HiddenFor(y => y.AnswerType)
                                 </div>
-                               
+
                             </div>
                         </div>
                     </div>
                     <div class="row" id="practicalAns">
-                        <div class="col-sm-8">
+                        <div class="col-sm-8 col-md-8 col-lg-8">
                             <div class="form-group">
                                 <label class="control-label font-Bold themeColorBlue">Answer</label>
 
@@ -211,14 +214,14 @@
                        
                     </div>
                     <div class="row">
-                        <div class="col-sm-6">
+                        <div class="col-sm-6 col-md-6 col-lg-6">
                             <div class="row">
-                                <div class="col-sm-3">
+                                <div class="col-sm-4 col-md-4 col-lg-3">
                                     <div class="form-group">
-                                        <label class="control-label font-Bold themeColorBlue">Tags<span style="color:red">*</span></label>
+                                        <label class="control-label font-Bold themeColorBlue">Tags <span style="color:red">*</span></label>
                                     </div>
                                 </div>
-                                <div class="col-sm-6">
+                                <div class="col-sm-6 col-md-6 col-lg-6">
                                     <div class="form-group">
 
                                         @(Html.Kendo().MultiSelectFor(m => m.SkillTag)
@@ -230,21 +233,21 @@
                                     .HtmlAttributes(new { style = "width: 100%" }))
                                     </div>
                                 </div>
-                                <div class="col-sm-3">
+                                <div class="col-sm-2 col-md-2 col-lg-3">
                                     <a style="padding:2px 12px;" class="themeColorBlue btn btn-primary" href="#" onclick="AddTag();">Add Tag</a>
                                 </div>
                             </div>
                         </div>
                     </div>                    
                     <div class="row">
-                        <div class="col-sm-6">
+                        <div class="col-sm-6 col-md-6 col-lg-6">
                             <div class="row">
-                                <div class="col-sm-3">
+                                <div class="col-sm-4 col-md-4 col-lg-3">
                                     <div class="form-group">
-                                        <label class="control-label font-Bold themeColorBlue">Proficiency<span style="color:red">*</span></label>
+                                        <label class="control-label font-Bold themeColorBlue">Proficiency <span style="color:red">*</span></label>
                                     </div>
                                 </div>
-                                <div class="col-sm-6">
+                                <div class="col-sm-6 col-md-6 col-lg-6">
                                     <div class="form-group">
                                         @(Html.Kendo().DropDownListFor(m => m.ProficiencyLevel)
                                 .Name("ProficiencyLevel")
@@ -258,30 +261,30 @@
                         </div>
                     </div>
                     <div class="row">
-                        <div class="col-sm-6">
+                        <div class="col-sm-6 col-md-6 col-lg-6">
                             <div class="row">
-                                <div class="col-sm-3">
+                                <div class="col-sm-4 col-md-4 col-lg-3">
                                     <div class="form-group">
-                                        <label class="control-label font-Bold themeColorBlue">Duration<span style="color:red">*</span></label>
+                                        <label class="control-label font-Bold themeColorBlue">Duration <span style="color:red">*</span></label>
                                     </div>
                                 </div>
-                                <div class="col-sm-6">
+                                <div class="col-sm-6 col-md-6 col-lg-6">
                                     <div class="form-group">
                                         @Html.TextBoxFor(y => y.Duration, new { @type = "number", @min = "1", @max = "360", @class = "form-control", @style = "width:100%;" })
                                     </div>
                                 </div>
                             </div>
-                       </div>
+                        </div>
                     </div>
                     <div class="row">
-                        <div class="col-sm-6">
+                        <div class="col-sm-6 col-md-6 col-lg-6">
                             <div class="row">
-                                <div class="col-sm-3">
+                                <div class="col-sm-4 col-md-4 col-lg-3">
                                     <div class="form-group">
-                                        <label class="control-label font-Bold themeColorBlue">Marks<span style="color:red">*</span></label>
+                                        <label class="control-label font-Bold themeColorBlue">Marks <span style="color:red">*</span></label>
                                     </div>
                                 </div>
-                                <div class="col-sm-6">
+                                <div class="col-sm-6 col-md-6 col-lg-6">
                                     <div class="form-group">
                                         @Html.TextBoxFor(y => y.Marks, new { @type = "number", @min = "1", @max = "100", @class = "form-control", @style = "width:100%;" })
                                     </div>
