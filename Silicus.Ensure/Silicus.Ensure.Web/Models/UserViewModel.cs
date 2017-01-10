@@ -74,16 +74,16 @@ namespace Silicus.Ensure.Web.Models
         public string Technology { get; set; }
 
         [Required(ErrorMessage = "Total experience year is required!")]
-        public int TotalExperienceInYear { get; set; }
+        public int? TotalExperienceInYear { get; set; }
 
         [Required(ErrorMessage = "Total experience month is required!")]
-        public int TotalExperienceInMonth { get; set; }
+        public int? TotalExperienceInMonth { get; set; }
 
         [Required(ErrorMessage = "Relevant experience year is required!")]
-        public int RelevantExperienceInYear { get; set; }
+        public int? RelevantExperienceInYear { get; set; }
 
         [Required(ErrorMessage = "Relevant experience month is required!")]
-        public int RelevantExperienceInMonth { get; set; }
+        public int? RelevantExperienceInMonth { get; set; }
 
         [StringLength(50)]
         [Display(Name = "Current Company")]
@@ -98,6 +98,8 @@ namespace Silicus.Ensure.Web.Models
         public string ResumePath { get; set; }
 
         public string ResumeName { get; set; }
+
+        public string ResumeDisplayName { get; set; }
 
         public string Role { get; set; }
 

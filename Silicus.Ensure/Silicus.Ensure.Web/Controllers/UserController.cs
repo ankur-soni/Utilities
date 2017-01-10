@@ -17,6 +17,7 @@ using Silicus.Ensure.Models.Constants;
 using Silicus.Ensure.Services;
 using System.Collections.Generic;
 using System.Web.Configuration;
+using Silicus.Ensure.Web.Application;
 
 namespace Silicus.Ensure.Web.Controllers
 {
@@ -183,12 +184,11 @@ namespace Silicus.Ensure.Web.Controllers
             }
             var viewModels = _mappingService.Map<User[], UserViewModel[]>(userlist);
             bool userInRole = User.IsInRole(Silicus.Ensure.Models.Constants.RoleName.Admin.ToString());
-
-            for (int j = 0; j < viewModels.Count(); j++)
+            for (int index = 0; index < viewModels.Count(); index++)
             {
-                var testSuitId = _testSuiteService.GetUserTestSuiteByUserId(viewModels[j].UserId);
-                viewModels[j].IsAdmin = userInRole;
-                viewModels[j].TestSuiteId = testSuitId != null ? testSuitId.TestSuiteId : 0;
+                var testSuitId = _testSuiteService.GetUserTestSuiteByUserId(viewModels[index].UserId);
+                viewModels[index].IsAdmin = userInRole;
+                viewModels[index].TestSuiteId = testSuitId != null ? testSuitId.TestSuiteId : 0;
             }
             DataSourceResult result = viewModels.ToDataSourceResult(request);
             return Json(result);
@@ -350,16 +350,14 @@ namespace Silicus.Ensure.Web.Controllers
         /// </summary>
         /// <param name="files"></param>
         /// <returns></returns>
-        private void GetFilePath(HttpPostedFileBase files, out string ResumePath, out string ResumeName)
+        private void GetFilePath(HttpPostedFileBase files, out string resumePath, out string resumeName)
         {
-            ResumeName = Guid.NewGuid() + Path.GetFileName(files.FileName);
-            ResumePath = Path.Combine(Server.MapPath("~/Content/CandidateResume"), ResumeName);
+            resumeName = Guid.NewGuid() + AppConstants.ResumeNameSeparationCharacter + Path.GetFileName(files.FileName);
+            resumePath = Path.Combine(Server.MapPath("~/Content/CandidateResume"), resumeName);
             Directory.CreateDirectory(Server.MapPath("~/Content/CandidateResume"));
-            files.SaveAs(ResumePath);
-            string fl = ResumePath.Substring(ResumePath.LastIndexOf("\\"));
-            string[] split = fl.Split('\\');
-            string newpath = split[1];
-            ResumePath = "~/Content/CandidateResume/" + newpath;
+            files.SaveAs(resumePath);
+            string newpath = Path.GetFileName(resumePath);
+            resumePath = "~/Content/CandidateResume/" + newpath;
         }
     }
 }
