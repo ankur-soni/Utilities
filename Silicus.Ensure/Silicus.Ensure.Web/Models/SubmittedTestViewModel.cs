@@ -22,10 +22,10 @@ namespace Silicus.Ensure.Web.Models
         [Display(Name = "Duration")]
         public int Duration { get; set; }
 
-        [Display(Name = "Total Makrs")]
+        [Display(Name = "Total makrs")]
         public int TotalMakrs { get; set; }
 
-        [Display(Name = "Test Suite Name")]
+        [Display(Name = "Test suite Name")]
         public string TestSuitName { get; set; }
 
         [Display(Name = "Postion")]

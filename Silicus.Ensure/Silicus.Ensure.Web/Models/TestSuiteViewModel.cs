@@ -11,11 +11,11 @@ namespace Silicus.Ensure.Web.Models
     {
         public int TestSuiteId { get; set; }
 
-        [Required(ErrorMessage = "Test-Suite Name is required!")]
-        [StringLength(50, ErrorMessage = "Test-Suite name length should be less than or equal to 50 characters.")]
+        [Required(ErrorMessage = "Test suite name is required!")]
+        [StringLength(50, ErrorMessage = "Test suite name length should be less than or equal to 50 characters.")]
         [RegularExpression(@"^\d*[a-zA-Z][a-zA-Z0-9 _]*$",
             ErrorMessage = "Name should not contain any special character and should contain atleast one alphabet")]
-        [Display(Name = "Test Suite Name")]
+        [Display(Name = "Test suite name")]
         public string TestSuiteName { get; set; }
 
         [Required(ErrorMessage = "Duration is required!")]
@@ -46,14 +46,14 @@ namespace Silicus.Ensure.Web.Models
 
         public string PositionName { get; set; }
 
-        [Display(Name = "Primary Tag")]
+        [Display(Name = "Primary tag")]
         public string PrimaryTagNames { get; set; }
 
         public string Weights { get; set; }
 
         public string Proficiency { get; set; }
 
-        [Display(Name = "Project Name")]
+        [Display(Name = "Project name")]
         public string ProjectName { get; set; }
 
         public int? FromExperience { get; set; }
