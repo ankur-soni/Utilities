@@ -345,7 +345,6 @@
     <Content Include="Css\bootstrap.css" />
     <Content Include="Css\bootstrap.min.css" />
     <Content Include="Css\custom-style.css" />
-    <Content Include="Css\jquery-te-1.4.0.css" />
     <Content Include="Css\patterns\1.png" />
     <Content Include="Css\patterns\2.png" />
     <Content Include="Css\patterns\3.png" />
@@ -510,6 +509,7 @@
     <Content Include="Css\star-rating.css" />
     <Content Include="Css\style.css" />
     <Content Include="Css\style.min.css" />
+    <Content Include="Css\summernote.css" />
     <Content Include="Css\_notes\dwsync.xml" />
     <Content Include="font-awesome\css\font-awesome.css" />
     <Content Include="font-awesome\css\font-awesome.min.css" />
@@ -522,7 +522,6 @@
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
     <Content Include="Images\1.jpg" />
-    <Content Include="Css\jquery-te.png" />
     <Content Include="Images\logo.jpg" />
     <Content Include="Images\loader_small.gif" />
     <Content Include="Images\user.png" />
@@ -539,7 +538,6 @@
     <Content Include="js\Elipsis.js" />
     <Content Include="js\inspinia.js" />
     <Content Include="js\jquery-2.1.1.js" />
-    <Content Include="js\jquery-te-1.4.0.min.js" />
     <Content Include="js\jquery-ui-1.10.4.min.js" />
     <Content Include="js\jquery-ui.custom.min.js" />
     <Content Include="js\jquery.barrating.min.js" />
@@ -763,6 +761,7 @@
     <Content Include="js\plugins\validate\_notes\dwsync.xml" />
     <Content Include="js\select2.min.js" />
     <Content Include="js\star-rating.js" />
+    <Content Include="js\summernote.min.js" />
     <Content Include="js\_notes\dwsync.xml" />
     <Content Include="LESS\style.css" />
     <Content Include="LESS\_notes\dwsync.xml" />

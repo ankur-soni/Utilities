@@ -341,7 +341,7 @@ $("#SelectedProject").change(function () {
             }
         },
         error: function (error) {
-            $(".loader-overlay").hide();
+            hideCustomLoader();
             console.log(error);
         }
     });
@@ -352,20 +352,20 @@ $("#SelectedDepartment").change(function () {
     var ServiceUrl = "/Nomination/ResourcesInDepartment?departmentID=" + selectedDept;
     $('#Resources').empty();
     $('#Resources').append($("<option selected></option>").val(null).html("Select"));
-    $(".loader-overlay").show();
+    showCustomLoader();
     $.ajax({
         type: 'GET',
         url: ServiceUrl,
         contentType: "application/json; charset=utf-8",
         success: function (data) {
-            $(".loader-overlay").hide();
+            hideCustomLoader();
             for (var key in data) {
                 $('#Resources')
                     .append($("<option></option>").val(data[key].ID).html(data[key].DisplayName));
             }
         },
         error: function (error) {
-            $(".loader-overlay").hide();
+            hideCustomLoader();
             console.log(error);
         }
     });
@@ -388,7 +388,7 @@ $("#discardButton").click(function () {
         function (isConfirm) {
             if (isConfirm) {
                 var nominationId = $("#NominationId").val();
-                $(".loader-overlay").show();
+                showCustomLoader();
 
                 $.ajax({
                     url: '@Url.Action("DiscardNomination", "Nomination")',
@@ -397,7 +397,7 @@ $("#discardButton").click(function () {
                     datatype: "JSON",
                     contentType: "application/json; charset=utf-8",
                     success: function (data) {
-                        $(".loader-overlay").hide();
+                        hideCustomLoader();
                         swal({
                             title: "Nomination Discarded!",
                             text: "",
@@ -413,7 +413,7 @@ $("#discardButton").click(function () {
                             });
                     },
                     error: function () {
-                        $(".loader-overlay").hide();
+                        hideCustomLoader();
                         swal("Error", "Oops! Something wrong happened..");
                     }
                 });
@@ -466,7 +466,7 @@ function checkValidationOnSubmit() {
             },
                 function (isConfirm) {
                     if (isConfirm) {
-                        $(".loader-overlay").show();
+                        showCustomLoader();
 
                         var modelbjectToSend = $('#editNominationForm').serialize() + '&' + $.param({ 'submit': "Submit" }, true);
 
@@ -475,7 +475,7 @@ function checkValidationOnSubmit() {
                             url: '@Url.Action("EditSavedNomination", "Nomination")',
                             data: modelbjectToSend,
                             success: function (data) {
-                                $(".loader-overlay").hide();
+                                hideCustomLoader();
                                 swal({
                                     title: "Nomination Submitted!",
                                     text: "",
@@ -491,7 +491,7 @@ function checkValidationOnSubmit() {
                                     });
                             },
                             error: function () {
-                                $(".loader-overlay").hide();
+                                hideCustomLoader();
                                 swal("Error", "Oops! Something wrong happened..");
                             }
                         });
@@ -522,7 +522,7 @@ function checkValidationOnSaveDraft() {
         },
             function (isConfirm) {
                 if (isConfirm) {
-                    $(".loader-overlay").show();
+                    showCustomLoader();
                     var modelbjectToSend = $('#editNominationForm').serialize() + '&' + $.param({ 'submit': "Save" }, true);
 
                     $.ajax({
@@ -530,7 +530,7 @@ function checkValidationOnSaveDraft() {
                         url: '@Url.Action("EditSavedNomination", "Nomination")',
                         data: modelbjectToSend,
                         success: function (data) {
-                            $(".loader-overlay").hide();
+                            hideCustomLoader();
                             swal({
                                 title: "Nomination Saved!",
                                 showCancelButton: false,
@@ -544,7 +544,7 @@ function checkValidationOnSaveDraft() {
                                 });
                         },
                         error: function () {
-                            $(".loader-overlay").hide();
+                            hideCustomLoader();
                             swal("Error", "Oops! Something wrong happened..");
                         }
                     });

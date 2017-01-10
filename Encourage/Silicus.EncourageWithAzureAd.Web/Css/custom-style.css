@@ -1611,10 +1611,13 @@ label {
   font-size: 10px;
   cursor: pointer;
 }
-
+.btn-default{
+    background:#e4e7ea!important;
+    color:#333;
+}
 span.select2.select2-container.select2-container--default{
     width: 100% !important;
-    margin-bottom:30px !important;
+    margin-bottom:15px !important;
     height: 37px;
 }
 

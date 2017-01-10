@@ -483,6 +483,7 @@
     <Content Include="Content\css\JQueryUI\1.11.2\jquery-ui.min.css" />
     <Content Include="Content\css\JQueryUI\1.11.2\jquery-ui.structure.css" />
     <Content Include="Content\css\JQueryUI\1.11.2\jquery-ui.structure.min.css" />
+    <Content Include="Content\css\Kendo\2014.1.416\Default\sprite1.png" />
     <Content Include="Content\css\Kendo\2014.1.416\kendo.common.min.css" />
     <Content Include="Content\css\Kendo\2014.1.416\kendo.custom.css" />
     <Content Include="Content\css\Kendo\2014.1.416\kendo.dataviz.default.min.css" />
@@ -814,13 +815,6 @@
     <Content Include="Views\Master\Index.cshtml" />
     <Content Include="Views\Account\Login.cshtml" />
     <Content Include="Views\Account\Index.cshtml" />
-    <Content Include="Views\Panel\Panel.cshtml" />
-    <Content Include="Views\Shared\EditorTemplates\PostionEditorTemplete.cshtml" />
-    <Content Include="Views\TestSuite\ViewQuestion.cshtml" />
-    <Content Include="Views\Admin\PartialTestSuitView.cshtml" />
-    <Content Include="Views\ManageUser\_AssignType.cshtml" />
-    <Content Include="Views\ManageUser\_AssignPanel.cshtml" />
-    <Content Include="Views\Panel\AddPanel.cshtml" />
     <None Include="Web.Azure.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
