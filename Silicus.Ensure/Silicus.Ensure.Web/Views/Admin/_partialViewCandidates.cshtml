@@ -287,23 +287,23 @@
                   columns.Bound(c => c.UserId).ClientTemplate(@"
 
                                          #if(CandidateStatus=='New'){#
-                                        <a onclick=showTest('#=UserId#','#=TestStatus#') style='cursor:pointer'>Assign Test</a> |
-                                        <a  class ='dialog-window' onclick=ReAssignPanel('#=UserId#') style='cursor:pointer'>Manage Panel</a>
+                                        <a onclick=showTest('#=UserId#','#=TestStatus#') style='cursor:pointer'>Assign test</a> |
+                                        <a  class ='dialog-window' onclick=ReAssignPanel('#=UserId#') style='cursor:pointer'>Manage panel</a>
                                         #}
                                         else if(CandidateStatus=='TestAssigned') {#
-                                        <a  class ='dialog-window' onclick=ReAssign('#=UserId#','#=TestStatus#') style='cursor:pointer'>Reassign Test</a> |
-                                        <a  class ='dialog-window' onclick=ReAssignPanel('#=UserId#') style='cursor:pointer'>Manage Panel</a> |
-                                        <a  class ='dialog-window' onclick=ViewTest('#=TestSuiteId#') style='cursor:pointer'>View Test</a>
+                                        <a  class ='dialog-window' onclick=ReAssign('#=UserId#','#=TestStatus#') style='cursor:pointer'>Reassign test</a> |
+                                        <a  class ='dialog-window' onclick=ReAssignPanel('#=UserId#') style='cursor:pointer'>Manage panel</a> |
+                                        <a  class ='dialog-window' onclick=ViewTest('#=TestSuiteId#') style='cursor:pointer'>View test</a>
                                         #}
                                         else if(CandidateStatus=='TestSubmitted') {#
-                                        <a  class ='dialog-window' onclick=ReAssignPanel('#=UserId#') style='cursor:pointer'>Manage Panel</a> |
-                                        <a  class ='dialog-window' onclick=CheckAssign('#=TestStatus#',2,#=TestSuiteId#,'#=UserId#') style='cursor:pointer'>View Test</a>
+                                        <a  class ='dialog-window' onclick=ReAssignPanel('#=UserId#') style='cursor:pointer'>Manage panel</a> |
+                                        <a  class ='dialog-window' onclick=CheckAssign('#=TestStatus#',2,#=TestSuiteId#,'#=UserId#') style='cursor:pointer'>View test</a>
                                         #}
                                         else if(CandidateStatus=='UnderEvaluation') {#
-                                        <a  class ='dialog-window' onclick=CheckAssign('#=TestStatus#',2,#=TestSuiteId#,'#=UserId#') style='cursor:pointer'>View Test</a>
+                                        <a  class ='dialog-window' onclick=CheckAssign('#=TestStatus#',2,#=TestSuiteId#,'#=UserId#') style='cursor:pointer'>View test</a>
                                         #}
                                         else if(CandidateStatus=='Selected'||CandidateStatus=='Rejected') {#
-                                        <a  class ='dialog-window' onclick=CheckAssign('#=TestStatus#',2,#=TestSuiteId#,'#=UserId#') style='cursor:pointer'>View Test</a>
+                                        <a  class ='dialog-window' onclick=CheckAssign('#=TestStatus#',2,#=TestSuiteId#,'#=UserId#') style='cursor:pointer'>View test</a>
                                         #}
 
                                         #").Title("Actions").Sortable(false);
@@ -347,7 +347,7 @@
         <div class="row M-B15">
             <div class="col-sm-12">
                 <div class="col-sm-3 col-md-2 col-lg-1">
-                    <span class="themeColorBlue"><b>Candidate Status</b></span>
+                    <span class="themeColorBlue"><b>Candidate status</b></span>
                 </div>
                 <div class="col-sm-2 col-md-2 col-lg-1">
                     @(Html.Kendo().DropDownListFor(m => m.CandidateStatus)
