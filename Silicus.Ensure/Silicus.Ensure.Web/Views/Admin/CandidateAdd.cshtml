@@ -9,18 +9,18 @@
 <div class="row white-bg header-row">
     <nav class="" role="navigation" style="margin-bottom: 0">
         <div class="navbar-header">
-            <a class="navbar-minimalize minimalize-styl-2 btn btn-primary" id="menu-toggle" style="margin-left:15px;" href="#"><i class="fa fa-bars"></i> </a>
+            <a class="navbar-minimalize minimalize-styl-2 btn btn-primary" id="menu-toggle" style="margin-left:15px;border-radius:0px;" href="#"><i class="fa fa-bars"></i> </a>
         </div>
     </nav>
     @if (Model.UserId != 0)
     {
-        <div class="col-lg-11 col-md-11 col-sm-11">
+        <div class="col-lg-10 col-md-10 col-sm-10">
             <h1 class="dashboard-name">Edit Candidate</h1>
         </div>
     }
     else
     {
-        <div class="col-lg-11 col-md-11 col-sm-11">
+        <div class="col-lg-10 col-md-10 col-sm-10">
             <h1 class="dashboard-name">Add Candidate</h1>
         </div>
         <script>
@@ -53,7 +53,7 @@
                 }
                 <div class="col-md-6">
                     <div class="col-md-6">
-                        @Html.LabelFor(model => model.FirstName)<b style="color:Red;">*</b>
+                        @Html.LabelFor(model => model.FirstName) <b style="color:Red;">*</b>
                     </div>
                     <div class="col-md-6">
                         @Html.TextBoxFor(model => model.FirstName, new { @class = "form-control" })
@@ -72,7 +72,7 @@
             <div class="row" style="margin-bottom:10px!important">
                 <div class="col-md-6">
                     <div class="col-md-6">
-                        @Html.LabelFor(model => model.LastName)<b style="color:Red;">*</b>
+                        @Html.LabelFor(model => model.LastName) <b style="color:Red;">*</b>
                     </div>
                     <div class="col-md-6">
                         @Html.TextBoxFor(model => model.LastName, new { @class = "form-control" })
@@ -81,10 +81,10 @@
                 </div>
                 <div class="col-md-6">
                     <div class="col-md-6">
-                        @Html.LabelFor(model => model.Position)<b style="color:Red;">*</b>
+                        @Html.LabelFor(model => model.Position) <b style="color:Red;">*</b>
                     </div>
                     <div class="col-md-6">
-                                        <div class="col-md-8" style="padding-left:0;padding-right:0;height:30px;">
+                        <div class="col-md-8 col-sm-10 col-xs-10" style="padding-left:0;padding-right:0;height:30px;">
                             @(Html.Kendo().DropDownListFor(model => model.Position)
                             .OptionLabel("--Select--")
                             .BindTo(Model.PositionList)
@@ -95,8 +95,8 @@
                             )
                             @Html.ValidationMessageFor(m => m.Position)
                         </div>
-                                        <div class="col-md-4">
-                                            <a href="#" class="font-Bold themeColorBlue btn btn-primary" onclick="AddPosition();"><span class="glyphicon glyphicon-plus"></span></a>
+                        <div class="col-md-4 col-sm-2 col-xs-2">
+                            <a href="#" class="font-Bold themeColorBlue btn btn-primary" onclick="AddPosition();"><span style="font-size: 12px;" class="glyphicon glyphicon-plus"></span></a>
                         </div>
                     </div>
                 </div>
@@ -104,7 +104,7 @@
             <div class="row" style="margin-bottom:10px!important">
                 <div class="col-md-6">
                     <div class="col-md-6">
-                        @Html.LabelFor(model => model.RequisitionId)<b style="color:Red;">*</b>
+                        @Html.LabelFor(model => model.RequisitionId) <b style="color:Red;">*</b>
                     </div>
                     <div class="col-md-6">
                         @Html.TextBoxFor(model => model.RequisitionId, new { @class = "form-control" })
@@ -113,7 +113,7 @@
                 </div>
                 <div class="col-md-6">
                     <div class="col-md-6">
-                        @Html.LabelFor(model => model.Gender)<b style="color:Red;">*</b>
+                        @Html.LabelFor(model => model.Gender) <b style="color:Red;">*</b>
                     </div>
                     <div class="col-md-6">
                         @(Html.Kendo().DropDownListFor(m => m.Gender)
@@ -142,7 +142,7 @@
             <div class="row" style="margin-bottom:10px!important">
                 <div class="col-md-6">
                     <div class="col-md-6">
-                        @Html.LabelFor(model => model.Email)<b style="color:Red;">*</b>
+                        @Html.LabelFor(model => model.Email) <b style="color:Red;">*</b>
                     </div>
                     <div class="col-md-6">
                         @Html.TextBoxFor(model => model.Email, new { @class = "form-control" })
@@ -151,7 +151,7 @@
                 </div>
                 <div class="col-md-6">
                     <div class="col-md-6">
-                        @Html.LabelFor(model => model.CurrentLocation)<b style="color:Red;">*</b>
+                        @Html.LabelFor(model => model.CurrentLocation) <b style="color:Red;">*</b>
                     </div>
                     <div class="col-md-6">
                         @Html.TextBoxFor(model => model.CurrentLocation, new { @class = "form-control" })
@@ -162,7 +162,7 @@
             <div class="row" style="margin-bottom:10px!important">
                 <div class="col-md-6">
                     <div class="col-md-6">
-                        @Html.LabelFor(model => model.DOB)<b style="color:Red;">*</b>
+                        @Html.LabelFor(model => model.DOB) <b style="color:Red;">*</b>
                     </div>
                     <div class="col-md-6">
                                         <input type="text" style="width:100%;height:30px;" name="DOB" id="DOB" value="@if (Model.UserId != 0)
@@ -172,7 +172,7 @@
                 </div>
                 <div class="col-md-6">
                     <div class="col-md-6">
-                        @Html.LabelFor(model => model.ContactNumber)<b style="color:Red;">*</b>
+                        @Html.LabelFor(model => model.ContactNumber) <b style="color:Red;">*</b>
                     </div>
                     <div class="col-md-6">
                         @Html.TextBoxFor(model => model.ContactNumber, new { @class = "form-control" })
@@ -183,7 +183,7 @@
             <div class="row" style="margin-bottom:10px!important">
                 <div class="col-md-6">
                     <div class="col-md-6">
-                        @Html.LabelFor(model => model.ClientName)<b style="color:Red;">*</b>
+                        @Html.LabelFor(model => model.ClientName) <b style="color:Red;">*</b>
                     </div>
                     <div class="col-md-6">
                         @Html.TextBoxFor(model => model.ClientName, new { @class = "form-control" })
@@ -192,7 +192,7 @@
                 </div>
                 <div class="col-md-6">
                     <div class="col-md-6">
-                        @Html.LabelFor(model => model.Technology)<b style="color:Red;">*</b>
+                        @Html.LabelFor(model => model.Technology) <b style="color:Red;">*</b>
                     </div>
                     <div class="col-md-6">
                         @Html.TextBoxFor(model => model.Technology, new { @class = "form-control" })
@@ -202,11 +202,12 @@
             </div>
             <div class="row" style="margin-bottom:10px!important">
                 <div class="col-md-6">
+                   
                     <div class="col-md-6">
                         <lable>Total Experience <b style="color:Red;">*</b></lable>
                     </div>
                     <div class="col-md-6">
-                        <div class="col-md-6" style="padding-left:0">
+                        <div class="col-md-6 col-sm-6 col-xs-6" style="padding-left:0">
                             @(Html.Kendo().DropDownListFor(m => m.TotalExperienceInYear)
                         .DataTextField("Text")
                         .DataValueField("Value")
@@ -217,7 +218,7 @@
                             )
                             @Html.ValidationMessageFor(m => m.TotalExperienceInYear)
                         </div>
-                        <div class="col-md-6" style="padding-right:0">
+                        <div class="col-md-6 col-sm-6 col-xs-6" style="padding-right:0">
                             @(Html.Kendo().DropDownListFor(m => m.TotalExperienceInMonth)
                         .DataTextField("Text")
                         .DataValueField("Value")
@@ -235,7 +236,7 @@
                         <lable>Relevant Experience <b style="color:Red;">*</b></lable>
                     </div>
                     <div class="col-md-6">
-                        <div class="col-md-6" style="padding-left:0">
+                        <div class="col-md-6 col-sm-6 col-xs-6" style="padding-left:0">
                             @(Html.Kendo().DropDownListFor(m => m.RelevantExperienceInYear)
                             .DataTextField("Text")
                             .DataValueField("Value")
@@ -246,7 +247,7 @@
                             )
                             @Html.ValidationMessageFor(m => m.RelevantExperienceInYear)
                         </div>
-                        <div class="col-md-6" style="padding-right:0">
+                        <div class="col-md-6 col-sm-6 col-xs-6" style="padding-right:0">
                             @(Html.Kendo().DropDownListFor(m => m.RelevantExperienceInMonth)
                         .DataTextField("Text")
                         .DataValueField("Value")
@@ -263,7 +264,7 @@
             <div class="row" style="margin-bottom:10px!important">
                 <div class="col-md-6">
                     <div class="col-md-6">
-                        @Html.LabelFor(model => model.CurrentCompany)<b style="color:Red;">*</b>
+                        @Html.LabelFor(model => model.CurrentCompany) <b style="color:Red;">*</b>
                     </div>
                     <div class="col-md-6">
                         @Html.TextBoxFor(model => model.CurrentCompany, new { @class = "form-control" })
@@ -272,7 +273,7 @@
                 </div>
                 <div class="col-md-6">
                     <div class="col-md-6">
-                        @Html.LabelFor(model => model.CurrentTitle)<b style="color:Red;">*</b>
+                        @Html.LabelFor(model => model.CurrentTitle) <b style="color:Red;">*</b>
                     </div>
                     <div class="col-md-6">
                         @Html.TextBoxFor(model => model.CurrentTitle, new { @class = "form-control" })
@@ -282,22 +283,22 @@
             </div>
         </div>
         <div class="row" style="margin-bottom:10px!important">
-                            <div class="col-md-10"></div>
-                            <div class="col-md-2 ">
+                            <div class="col-sm-8"></div>
+                            <div class="col-sm-4">
                                 <div class="pull-right btn-nav">
-                @(Html.Kendo().Button()
-                            .Name("btnCancel").Icon("cancel")
-            .HtmlAttributes(new { type = "button" })
-            .Content("Cancel")
-            .Events(ev => ev.Click("onCancelClick")))
+                                    @(Html.Kendo().Button()
+                                                .Name("btnCancel").Icon("cancel")
+                                .HtmlAttributes(new { type = "button" })
+                                .Content("Cancel")
+                                .Events(ev => ev.Click("onCancelClick")))
 
-                @(Html.Kendo().Button()
-                 .Name("btnSave").Icon("tick")
-                .HtmlAttributes(new { type = "submit" })
-                .Content("Save"))
-            </div>
-        </div>
+                                    @(Html.Kendo().Button()
+                                     .Name("btnSave").Icon("tick")
+                                    .HtmlAttributes(new { type = "submit" })
+                                    .Content("Save"))
+                                </div>
                         </div>
+       </div>
     }
 </div>
             </div>

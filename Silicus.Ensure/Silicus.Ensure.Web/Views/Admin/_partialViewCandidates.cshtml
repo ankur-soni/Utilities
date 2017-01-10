@@ -283,7 +283,7 @@
                                                                             #=CandidateStatus#
                                                                         #}
                                                                         #").Title("Status").Width(100);
-                  columns.Bound(c => c.UserId).ClientTemplate(@"<a class='k-button k-button-icontext k-grid-edit' href='" + Url.Action("CandidateAdd", "Admin") + "?UserId=#=UserId#'><span class='k-icon k-edit'></span>Edit</a><a id='testSuiteDel' class='k-button k-button-icontext k-grid-delete' href='\\#' onclick='return deleteUser(#=UserId#)'><span class='k-icon k-delete'></span>Delete</a>").Title("Action").Width(160).Sortable(false);
+                  columns.Bound(c => c.UserId).ClientTemplate(@"<a class='k-button k-button-icontext k-grid-edit' href='" + Url.Action("CandidateAdd", "Admin") + "?UserId=#=UserId#'><span class='k-icon k-edit'></span>Edit</a><a id='testSuiteDel' class='k-button k-button-icontext k-grid-delete' href='\\#' onclick='return deleteUser(#=UserId#)'><span class='k-icon k-delete'></span>Delete</a>").Title("Action").Width(200).Sortable(false);
                   columns.Bound(c => c.UserId).ClientTemplate(@"
 
                                          #if(CandidateStatus=='New'){#
@@ -331,8 +331,8 @@
                         toolbar.Template(@<text>
                             <div class="toolbar">
                                 <div class="row">
-                                    <div class="col-sm-12 M-B15">
-                                        <div class="col-sm-5 col-md-4 col-lg-3 M-T15">
+                    <div class="col-sm-12">
+                        <div class="col-sm-4 col-md-4 col-lg-3 M-T15 M-B15">
                                             <div class="input-group">
                                                 <span class="input-group-addon"><span class="glyphicon glyphicon-search" aria-hidden="true"></span></span>
                                                 <input type="text" class="form-control" id='FieldFilter' placeholder="Search">
@@ -340,8 +340,72 @@
                                                     <button id="candidateSearch" class="btn btn-default" style="height:20px!important;border:1px solid #0070B9!important" type="button"><span class="glyphicon glyphicon-refresh" aria-hidden="true"></span></button>
                                                 </span>
                                             </div>
+                        </div>
+                        
+                    </div>
+                </div>
+        <div class="row M-B15">
+            <div class="col-sm-12">
+                <div class="col-sm-3 col-md-2 col-lg-1">
+                    <span class="themeColorBlue"><b>Candidate Status</b></span>
+                </div>
+                <div class="col-sm-2 col-md-2 col-lg-1">
+                    @(Html.Kendo().DropDownListFor(m => m.CandidateStatus)
+                    .Name("CandidateStatus")
+                    .DataTextField("Text")
+                    .DataValueField("Value")
+                    .Events(e => e.Change("Change"))
+
+                    .BindTo(new List<SelectListItem>
+                    () {
+                        new SelectListItem(){
+                    Text="All",
+                    Value="All"
+                    },
+                    new SelectListItem(){
+                    Text=Convert.ToString(CandidateStatus.New),
+                    Value=Convert.ToString(CandidateStatus.New)
+                    },
+                    new SelectListItem(){
+                    Text=Convert.ToString(CandidateStatus.TestAssigned),
+                    Value=Convert.ToString(CandidateStatus.TestAssigned)
+                    },
+                    new SelectListItem(){
+                    Text=Convert.ToString(CandidateStatus.TestSubmitted),
+                    Value=Convert.ToString(CandidateStatus.TestSubmitted)
+                    },
+                    new SelectListItem(){
+                    Text=Convert.ToString(CandidateStatus.UnderEvaluation),
+                    Value=Convert.ToString(CandidateStatus.UnderEvaluation)
+                    },
+                    new SelectListItem(){
+                    Text=Convert.ToString(CandidateStatus.Selected),
+                    Value=Convert.ToString(CandidateStatus.Selected)
+                    },
+                    new SelectListItem(){
+                    Text=Convert.ToString(CandidateStatus.Rejected),
+                    Value=Convert.ToString(CandidateStatus.Rejected)
+                    }
+                    }).HtmlAttributes(new { style = "width: 100%" }))
+                </div>
+                <div class="col-sm-1 col-md-1 col-lg-1">
+                    <span class="themeColorBlue"><b> Positions</b></span>
+                </div>
+                <div class="col-sm-2 col-md-2 col-lg-1">
+                    @(Html.Kendo().DropDownList()
+                            .Name("Position")
+                                    .Events(e => e.Change("PositionChange"))
+                            .OptionLabel("All")
+                            .BindTo(ViewBag.PositionListItem)
+                            .DataTextField("Text")
+                            .DataValueField("Value")
+                            .SelectedIndex(0)
+                            .HtmlAttributes(new { style = "width: 100%" })
+                    )
+                </div>
+                <div class="col-sm-3 col-md-2 col-lg-2">
+                    <a href='#' onclick='AddNew();' class='k-button k-button-icontext k-grid-add'><span class='k-icon k-add'></span>Add candidate</a>
                                         </div>
-                                        <a href='#' onclick='AddNew();' style="margin-top:20px;" class='k-button k-button-icontext k-grid-add'><span class='k-icon k-add'></span>Add candidate</a>
                                     </div>
                                 </div>
 
