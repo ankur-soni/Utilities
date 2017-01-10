@@ -39,13 +39,19 @@
                 </div>
             </div>
         </div>
-
-
         <div class="form-group">
             <div class="col-md-2"></div>
-            <div id="Roles" class="col-md-10" style="display:none">
-                <div id="available-roles" class="col-md-6" style="height:200px;overflow-y:scroll;overflow-x:hidden"></div>
-                <div id="selected-roles" class="col-md-6" style="height:200px;overflow-y:scroll;overflow-x:hidden"></div>
+            <div id="Roles" class="col-md-10" style="display:none; padding-left:40px">
+                <div class="col-md-6">
+                    <span style="font-weight:bold" class="available-header">Available Roles</span>
+                    <hr style="margin-top:10px;margin-bottom:10px" />
+                    <div id="available-roles"  style="max-height:200px;overflow-y:auto;overflow-x:hidden"></div>
+                </div>
+                <div class="col-md-6">
+                    <span style="font-weight:bold" class="selected-header">Selected Roles</span>
+                    <hr style="margin-top:10px;margin-bottom:10px" />
+                    <div id="selected-roles"  style="max-height:200px;overflow-y:auto;overflow-x:hidden"></div>
+                </div>
             </div>
         </div>
     </div>
@@ -119,7 +125,7 @@
             debugger;
             $("<div id='availablerole" + id + "'>").appendTo(container);
             $('<input />', { type: 'checkbox', id: id, class: 'available', value: name, checked: status }).appendTo('#availablerole' + id + '');
-            $('<span />', { 'id': id, text: name }).appendTo('#availablerole' + id + '');
+            $('<span />', { 'id': id, text: name, style: "padding-left:10px" }).appendTo('#availablerole' + id + '');
             $('<br>').appendTo('#availablerole' + id + '');
         }
         function addHtmlForSelectedRoles(name, id, status, container) {
@@ -127,7 +133,7 @@
             debugger;
             $("<div id='selectedrole" + id + "'>").appendTo(container);
             $('<span />', { 'id': 'selected' + id, text: name }).appendTo('#selectedrole' + id + '');
-            $('<span id="selected' + id + '"><i class="fa fa-times" id="' + id + '" aria-hidden="true"></i></span>').appendTo('#selectedrole' + id + '');
+            $('<span id="selected' + id + '" style="padding-left:10px"><i class="fa fa-times" id="' + id + '" aria-hidden="true" style="color:#0E69A8"></i></span>').appendTo('#selectedrole' + id + '');
             $('<br id="' + id + '">').appendTo('#selectedrole' + id + '');
         }
 
@@ -141,7 +147,7 @@
 
                 $("<div id='selectedrole" + id + "'>").appendTo(selectedRoleContainer);
                 $('<span />', { 'id': 'selected' + id, text: name }).appendTo('#selectedrole' + id + '');
-                $('<span id="selected' + id + '"><i class="fa fa-times" id="' + id + '" aria-hidden="true"></i></span>').appendTo('#selectedrole' + id + '');
+                $('<span id="selected' + id + '" style="padding-left:10px"><i class="fa fa-times" id="' + id + '" aria-hidden="true" style="color:#0E69A8"></i></span>').appendTo('#selectedrole' + id + '');
                 $('<br id="' + id + '">').appendTo('#selectedrole' + id + '');
             }
             else if (parseInt(id) > 0) {

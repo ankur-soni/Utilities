@@ -256,17 +256,90 @@
         });
     }
 </script>
-    <div class="toolbar">
-                <div class="row">
+<div class="">
+
+    @if (Request.IsAuthenticated)
+    {
+        @(Html.Kendo().Grid<Silicus.Ensure.Web.Models.UserViewModel>().Name("userGrids")
+         .Columns(columns =>
+              {
+                  columns.Bound(p => p.FirstName).ClientTemplate("#=FirstName# #=LastName#").Title("Name").Width(150);
+                  columns.Bound(p => p.RequisitionId).Title("Requisition Id").Width(150);
+                  columns.Bound(p => p.Position).Width(70);
+                  columns.Bound(p => p.ContactNumber).Title("Contact Number").Width(80);
+                  columns.Bound(p => p.TotalExperienceInYear).ClientTemplate("#=TotalExperienceInYear#.#=TotalExperienceInMonth#").Title("Total experience").Width(50);
+                  columns.Bound(p => p.PanelName).Title("Panel").Width(150);
+                  columns.Bound(p => p.CandidateStatus).ClientTemplate(@"
+                                                                        #if(CandidateStatus=='TestAssigned'){#
+                                                                            Test Assigned
+                                                                        #}
+                                                                        else if(CandidateStatus=='TestSubmitted') {#
+                                                                            Test Submitted
+                                                                        #}
+                                                                        else if(CandidateStatus=='UnderEvaluation') {#
+                                                                            Under Evaluation
+                                                                        #}
+                                                                        else{#
+                                                                            #=CandidateStatus#
+                                                                        #}
+                                                                        #").Title("Status").Width(100);
+                  columns.Bound(c => c.UserId).ClientTemplate(@"<a class='k-button k-button-icontext k-grid-edit' href='" + Url.Action("CandidateAdd", "Admin") + "?UserId=#=UserId#'><span class='k-icon k-edit'></span>Edit</a><a id='testSuiteDel' class='k-button k-button-icontext k-grid-delete' href='\\#' onclick='return deleteUser(#=UserId#)'><span class='k-icon k-delete'></span>Delete</a>").Title("Action").Width(200).Sortable(false);
+                  columns.Bound(c => c.UserId).ClientTemplate(@"
+
+                                         #if(CandidateStatus=='New'){#
+                                        <a onclick=showTest('#=UserId#','#=TestStatus#') style='cursor:pointer'>Assign Test</a> |
+                                        <a  class ='dialog-window' onclick=ReAssignPanel('#=UserId#') style='cursor:pointer'>Manage Panel</a>
+                                        #}
+                                        else if(CandidateStatus=='TestAssigned') {#
+                                        <a  class ='dialog-window' onclick=ReAssign('#=UserId#','#=TestStatus#') style='cursor:pointer'>Reassign Test</a> |
+                                        <a  class ='dialog-window' onclick=ReAssignPanel('#=UserId#') style='cursor:pointer'>Manage Panel</a> |
+                                        <a  class ='dialog-window' onclick=ViewTest('#=TestSuiteId#') style='cursor:pointer'>View Test</a>
+                                        #}
+                                        else if(CandidateStatus=='TestSubmitted') {#
+                                        <a  class ='dialog-window' onclick=ReAssignPanel('#=UserId#') style='cursor:pointer'>Manage Panel</a> |
+                                        <a  class ='dialog-window' onclick=CheckAssign('#=TestStatus#',2,#=TestSuiteId#,'#=UserId#') style='cursor:pointer'>View Test</a>
+                                        #}
+                                        else if(CandidateStatus=='UnderEvaluation') {#
+                                        <a  class ='dialog-window' onclick=CheckAssign('#=TestStatus#',2,#=TestSuiteId#,'#=UserId#') style='cursor:pointer'>View Test</a>
+                                        #}
+                                        else if(CandidateStatus=='Selected'||CandidateStatus=='Rejected') {#
+                                        <a  class ='dialog-window' onclick=CheckAssign('#=TestStatus#',2,#=TestSuiteId#,'#=UserId#') style='cursor:pointer'>View Test</a>
+                                        #}
+
+                                        #").Title("Actions").Sortable(false);
+
+              })
+            .DataSource(dataSource => dataSource
+                      .Ajax()
+                      .Model(model =>
+                      {
+                          model.Id(p => p.UserId);
+                          model.Field(p => p.UserId).Editable(false);
+                      })
+
+                          .Read(read => read.Action("GetCandidateDetails", "User", new { RoleName = RoleName.Candidate.ToString() }))
+                          .Create(update => update.Action("CreateUser", "User"))
+                          .Update(update => update.Action("UpdateUser", "User"))
+                          .Destroy(update => update.Action("DeleteUser", "User"))
+                          .PageSize(10)
+                     )
+                  .Pageable(p => p.PageSizes(true))
+                  .Sortable()
+                  .Resizable(resizing => resizing.Columns(true))
+                  .ToolBar(toolbar =>
+                    {
+                        toolbar.Template(@<text>
+                            <div class="toolbar">
+                                <div class="row">
                     <div class="col-sm-12">
             <div class="col-sm-5 col-md-4 col-lg-3 M-T15 M-B15">
-                            <div class="input-group">
-                                <span class="input-group-addon"><span class="glyphicon glyphicon-search" aria-hidden="true"></span></span>
-                                <input type="text" class="form-control" id='FieldFilter' placeholder="Search">
-                                <span class="input-group-btn">
+                                            <div class="input-group">
+                                                <span class="input-group-addon"><span class="glyphicon glyphicon-search" aria-hidden="true"></span></span>
+                                                <input type="text" class="form-control" id='FieldFilter' placeholder="Search">
+                                                <span class="input-group-btn">
                         <button id="candidateSearch" class="btn btn-default" style="border:1px solid #0070B9!important" type="button"><span class="glyphicon glyphicon-refresh" aria-hidden="true"></span></button>
-                                </span>
-                            </div>
+                                                </span>
+                                            </div>
                         </div>
                         
                     </div>
@@ -332,11 +405,11 @@
                 </div>
             <div class="col-sm-4 col-md-3 col-lg-3 cust-mar">
                 <a href='#' onclick='AddNew();' class='k-button k-button-icontext k-grid-add'><span class='k-icon k-add'></span>Add Candidate</a>
-                </div>
-            </div>
-        </div>
+                                        </div>
+                                    </div>
+                                </div>
 
-   </div>
+                            </div>
 <div class="table-responsive">
 
     @if (Request.IsAuthenticated)
@@ -441,7 +514,7 @@
                 <h4 class="modal-title">Panel List</h4>
             </div>
             <div class="modal-body" id="PanelInfo">
-                
+
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-primary" id="SavePanlebtn">Save</button>

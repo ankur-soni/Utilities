@@ -12,21 +12,21 @@ namespace Silicus.Ensure.Web.Models
         public int UserId { get; set; }
 
         [StringLength(50)]
-        [Display(Name = "First Name")]
+        [Display(Name = "First name")]
         [Required(ErrorMessage = "First name is required!")]
         public string FirstName { get; set; }
 
         [StringLength(50)]
-        [Display(Name = "Middle Name")]
+        [Display(Name = "Middle name")]
         public string MiddleName { get; set; }
 
         [StringLength(50)]
-        [Display(Name = "Last Name")]
+        [Display(Name = "Last name")]
         [Required(ErrorMessage = "Last name is required!")]
         public string LastName { get; set; }
 
         [StringLength(50)]
-        [Display(Name = "Requisition Id")]
+        [Display(Name = "Requisition id")]
         [Required(ErrorMessage = "Requisition id is required!")]
         public string RequisitionId { get; set; }
 
@@ -37,11 +37,11 @@ namespace Silicus.Ensure.Web.Models
         public string Email { get; set; }
 
         [StringLength(500)]
-        [Display(Name = "Current Location")]
+        [Display(Name = "Current location")]
         [Required(ErrorMessage = "Current location is required!")]
         public string CurrentLocation { get; set; }
 
-        [Display(Name = "Current Location")]
+        [Display(Name = "Current location")]
         [Required(ErrorMessage = "Date of birth is required!")]
         public DateTime DOB { get; set; }
 
@@ -61,21 +61,21 @@ namespace Silicus.Ensure.Web.Models
         [Required(ErrorMessage = "Technology is required!")]
         public string Technology { get; set; }
 
-        [Display(Name = "Total Experience")]
+        [Display(Name = "Total experience")]
         [Required(ErrorMessage = "Total experience is required!")]
         public string TotalExperience { get; set; }
 
-        [Display(Name = "Relevant Experience")]
+        [Display(Name = "Relevant experience")]
         [Required(ErrorMessage = "Relevant experience is required!")]
         public string RelevantExperience { get; set; }
 
         [StringLength(50)]
-        [Display(Name = "CurrentCompany")]
+        [Display(Name = "Current company")]
         [Required(ErrorMessage = "Current company is required!")]
         public string CurrentCompany { get; set; }
 
         [StringLength(50)]
-        [Display(Name = "CurrentTitle")]
+        [Display(Name = "Current title")]
         [Required(ErrorMessage = "Current title is required!")]
         public string CurrentTitle { get; set; }
 
