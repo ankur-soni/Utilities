@@ -8,6 +8,8 @@
                           {
                               columns.Bound(p => p.PanelId).ClientTemplate(@"<input type='checkbox' #if(IsAssignedPanel){# checked='checked' #}# class='check' id='chkHeader' value='#=PanelId#'/>").Title("").Width(100);
                               columns.Bound(p => p.PanelName).Width(200);
+                              columns.Bound(p => p.Designation).Width(200);
+                              columns.Bound(p => p.Department).Width(200);
                           })
                               .DataSource(dataSource => dataSource
                                   .Ajax()
@@ -16,10 +18,10 @@
                                       model.Id(p => p.PanelId);
                                       model.Field(p => p.PanelId).Editable(false);
                                   })
-                                  .Read(read => read.Action("GetPanelDetails", "Admin"))
+                                      .Read(read => read.Action("GetPanelDetails", "Admin", new { UserId = @ViewBag.CurrentUser }))
                                   .PageSize(10)
                           )
-                          .Pageable()
+                              .Pageable(x => x.PageSizes(true))
                           .Sortable()
                           .ToolBar(toolbar =>
                                 {
@@ -29,7 +31,7 @@
                                                 <div class="col-md-4">
                                                     <div class="input-group">
                                                         <span class="input-group-addon"><span class="glyphicon glyphicon-search" aria-hidden="true"></span></span>
-                                                        <input type="text" class="form-control" id='FieldFilterPanel' placeholder="Search...">
+                                                        <input type="text" class="form-control" id='FieldFilterPanel' placeholder="Search">
                                                         <span class="input-group-btn">
                                                             <button id="panelSearch" class="btn btn-default" style="height:16px;" type="button"><span class="glyphicon glyphicon-refresh" aria-hidden="true"></span></button>
                                                         </span>
@@ -69,5 +71,11 @@
             datasource.filter([]);
             $("#FieldFilterPanel").val('');
         });
+    });
+
+    $("#panelGrids").on("change", "input.check", function (e) {
+        var v = $(this).is(":checked");
+        $("input.check", "#panelGrids").prop("checked", false);
+        $(this).prop("checked", v);
     });
 </script>

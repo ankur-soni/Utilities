@@ -184,13 +184,13 @@
 
     });
     $("#lockNominations").click(function (e) {
-        $(".loader-overlay").show();
+        showCustomLoader();
         $.ajax({
             type: 'GET',
             url: '@Url.Action("LockNomination", "Review")',
             dataType: 'html',
             success: function (result) {
-                $(".loader-overlay").hide();
+                hideCustomLoader();
                 swal({
                     title: "Awards to lock",
                     html: true,
@@ -224,14 +224,14 @@
                             return false;
                         }
                         else {
-                            $(".loader-overlay").show();
+                            showCustomLoader();
                             $.ajax({
                                 type: 'GET',
                                 url: '@Url.Action("GetProcessesToLockOrUnlock","Review")',
                                 data: { awardId: awardId, status: 'Lock' },
                                 dataType: 'html',
                                 success: function (data) {
-                                    $(".loader-overlay").hide();
+                                    hideCustomLoader();
                                     debugger;
                                     swal({
                                         title: "Select process to lock",
@@ -268,14 +268,14 @@
                                               return false;
                                           }
                                           else {
-                                              $(".loader-overlay").show();
+                                              showCustomLoader();
                                               $.ajax({
                                                   type: 'POST',
                                                   url: '@Url.Action("LockNomination", "Review")',
                                                   data: { awardIds: awardId, processIds: processId },
                                                   dataType: "JSON",
                                                   success: function (data) {
-                                                      $(".loader-overlay").hide();
+                                                      hideCustomLoader();
                                                       var lockedAwardNames = "";
                                                       for (var i = 0; i < data.length; i++) {
                                                           lockedAwardNames += data[i].Name + "</br>";
@@ -287,7 +287,7 @@
                                                       })
                                                   },
                                                   error: function () {
-                                                      $(".loader-overlay").hide();
+                                                      hideCustomLoader();
                                                       swal("Error", "Oops! Something wrong happened..");
                                                   }
                                               });
@@ -308,7 +308,7 @@
                 });
             },
             error: function (data) {
-                $(".loader-overlay").hide();
+                hideCustomLoader();
                 swal("Error", "Oops! Something wrong happened..");
             }
         });
@@ -318,13 +318,13 @@
 
     //*****
     $("#unLockNominations").click(function (e) {
-        $(".loader-overlay").show();
+        showCustomLoader();
         $.ajax({
             type: 'GET',
             url: '@Url.Action("UnlockNomination", "Review")',
             dataType: 'html',
             success: function (result) {
-                $(".loader-overlay").hide();
+                hideCustomLoader();
                 swal({
                     title: "Awards to unlock",
                     html: true,
@@ -358,14 +358,14 @@
                                 return false;
                             }
                             else {
-                                $(".loader-overlay").show();
+                                showCustomLoader();
                                 $.ajax({
                                     type: 'GET',
                                     url: '@Url.Action("GetProcessesToLockOrUnlock","Review")',
                                     data: { awardId: awardId, status: 'unLock' },
                                     dataType: 'html',
                                     success: function (data) {
-                                        $(".loader-overlay").hide();
+                                        hideCustomLoader();
                                         debugger;
                                         swal({
                                             title: "Select process to unlock",
@@ -402,14 +402,14 @@
                                                   return false;
                                               }
                                               else {
-                                                  $(".loader-overlay").show();
+                                                  showCustomLoader();
                                                   $.ajax({
                                                       type: 'POST',
                                                       url: '@Url.Action("UnlockNomination", "Review")',
                                                       data: { awardIds: awardId, processIds: processId },
                                                       dataType: "JSON",
                                                       success: function (data) {
-                                                          $(".loader-overlay").hide();
+                                                          hideCustomLoader();
                                                           var lockedAwardNames = "";
                                                           for (var i = 0; i < data.length; i++) {
                                                               lockedAwardNames += data[i].Name + "</br>";
@@ -421,7 +421,7 @@
                                                           })
                                                       },
                                                       error: function () {
-                                                          $(".loader-overlay").hide();
+                                                          hideCustomLoader();
                                                           swal("Error", "Oops! Something wrong happened..");
                                                       }
                                                   });
@@ -442,7 +442,7 @@
                     });
     },
         error: function (data) {
-            $(".loader-overlay").hide();
+            hideCustomLoader();
             swal("Error", "Oops! Something wrong happened..");
         }
     });
@@ -469,18 +469,18 @@
     });
 
     function filterByData(month, year) {
-        $(".loader-overlay").show();
+        showCustomLoader();
         $.ajax({
             type: "GET",
             url: _urlGetWinnersListPartialView,
             data: { month: month, year: year },
             success: function (result) {
                 $("#wofWinnersList").html('');
-                $(".loader-overlay").hide();
+                hideCustomLoader();
                 $("#wofWinnersList").html(result);
             },
             error: function (error) {
-                $(".loader-overlay").hide();
+                hideCustomLoader();
                 console.log(error);
             }
 

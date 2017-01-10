@@ -4,8 +4,9 @@
 
 
 
-<div>
-    @foreach (var item in Model)
+@if (Model.Count() > 0)
+{
+    foreach (var item in Model)
     {
         <div class="el-element-overlay m-b-40">
             <div class="col-lg-2 col-md-3 col-sm-4 col-xs-4">
@@ -19,17 +20,17 @@
 
                                         @if (!Convert.ToBoolean(item.IsSubmitted))
                                         {
-                                            <a class="btn default btn-outline image-popup-vertical-fit" href="@Url.Action("EditReview", "Nomination", new { nominationId = item.Id})">
+                                            <a class="btn default btn-outline image-popup-vertical-fit" href="@Url.Action("EditReview", "Nomination", new { nominationId = item.Id })">
                                                 <i class="fa fa-pencil-square-o fa-2x" aria-hidden="true"></i>
                                             </a>
                                         }
                                         else
                                         {
-                                            <a class="btn default btn-outline image-popup-vertical-fit" href="@Url.Action("ReviewDetails", "Nomination", new { nominationId = item.Id})">
+                                            <a class="btn default btn-outline image-popup-vertical-fit" href="@Url.Action("ReviewDetails", "Nomination", new { nominationId = item.Id })">
 
                                                 <i class="fa fa-file-text-o fa-2x" aria-hidden="true"></i>
                                             </a>
-                                           }
+                                        }
                                     </li>
                                 </ul>
                             </div>
@@ -46,4 +47,14 @@
             </div>
         </div>
     }
-</div>
+}
+else
+{
+    <div class="row" id="noHistoricalData">
+        <div class="col-sm-12">
+            <div class="alert alert-danger">
+                <span class="text-danger" style="font-size:20px">No employees were nominated..</span>
+            </div>
+        </div>
+    </div>
+}

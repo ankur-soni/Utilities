@@ -8,11 +8,11 @@
             <div class="col-md-9 col-md-offset-2">
                 @if (Model.QuestionType == 1)
                 {
-                    <p><strong>Section 1 (Objective Question)</strong></p>
+                    <p><strong>Section 1 (Objective question)</strong></p>
                 }
                 else
                 {
-                    <p><strong>Section 2 (Practical Question)</strong></p>
+                    <p><strong>Section 2 (Practical question)</strong></p>
                 }
                 <p><strong>Question @Model.QuestionNumber: (@Model.Marks Marks)</strong></p>
                 @Html.Raw(HttpUtility.HtmlDecode(Model.QuestionDescription))

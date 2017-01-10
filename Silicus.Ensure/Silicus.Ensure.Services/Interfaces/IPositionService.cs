@@ -8,6 +8,8 @@ namespace Silicus.Ensure.Services.Interfaces
     {
         IEnumerable<Position> GetAllPositionDetails();
 
+        IEnumerable<PanelMemberDetail> GetAllPanelMemberDetails();
+
         IEnumerable<Position> GetPositionDetails();
 
         Position GetPositionById(int PositionId);

@@ -5,12 +5,9 @@
 }
 <div class="main-content">
     <div class="fluid mt20">
-        @if (TempData["Success"] != null && !string.IsNullOrWhiteSpace(Convert.ToString(TempData["Success"])))
-        {
             <div class="alert alert-success" id="messageDiv">
                 <span id="messageContent">@Convert.ToString(TempData["Success"])</span>
             </div>
-        }
         <div class="kendogrid">
             @(user)
         </div>
@@ -20,6 +17,7 @@
 
 <script>
     $(document).ready(function () {
-        $('#messageDiv').fadeOut(5000);
+        SetNavigationMenuActive('ManageUser');
+        $('#messageDiv').hide();
     });
 </script>

@@ -19,6 +19,5 @@ namespace Silicus.EncourageWithAzureAd.Web.Models
         public decimal AverageCredits { get; set; }
         public int NominatedMonth { get; set; }
         public string AwardFrequencyCode { get; set; }
-
     }
 }

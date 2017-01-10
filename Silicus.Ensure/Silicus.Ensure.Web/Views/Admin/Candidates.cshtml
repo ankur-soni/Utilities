@@ -10,11 +10,11 @@
 <div class="row white-bg header-row">
     <nav class="" role="navigation" style="margin-bottom: 0">
         <div class="navbar-header">
-            <a class="navbar-minimalize minimalize-styl-2 btn btn-primary" id="menu-toggle" style="margin-left:15px;" href="#"><i class="fa fa-bars"></i> </a>
+            <a class="navbar-minimalize minimalize-styl-2 btn btn-primary" id="menu-toggle" style="margin-left:15px;border-radius:0px;" href="#"><i class="fa fa-bars"></i> </a>
         </div>
     </nav>
 
-    <div class="col-lg-11 col-md-11 col-sm-11">
+    <div class="col-lg-10 col-md-10 col-sm-10">
         <h1 class="dashboard-name">Candidates</h1>
     </div>
 </div>
@@ -26,67 +26,7 @@
             </div>
             
             <div class="box">
-                <div class="row">
-                    <div class="col-sm-2">
-                        <span><b>Candidate Status</b></span>
-                    </div>
-                    <div class="col-sm-3">
-                        @(Html.Kendo().DropDownListFor(m => m.CandidateStatus)
-                    .Name("CandidateStatus")
-                    .DataTextField("Text")
-                    .DataValueField("Value")
-                    .Events(e => e.Change("Change"))
-
-                    .BindTo(new List<SelectListItem>
-                    () {
-                        new SelectListItem(){
-                    Text="All",
-                    Value="All"
-                    },
-                    new SelectListItem(){
-                    Text=Convert.ToString(CandidateStatus.New),
-                    Value=Convert.ToString(CandidateStatus.New)
-                    },
-                    new SelectListItem(){
-                    Text=Convert.ToString(CandidateStatus.TestAssigned),
-                    Value=Convert.ToString(CandidateStatus.TestAssigned)
-                    },
-                    new SelectListItem(){
-                    Text=Convert.ToString(CandidateStatus.TestSubmitted),
-                    Value=Convert.ToString(CandidateStatus.TestSubmitted)
-                    },
-                    new SelectListItem(){
-                    Text=Convert.ToString(CandidateStatus.UnderEvaluation),
-                    Value=Convert.ToString(CandidateStatus.UnderEvaluation)
-                    },
-                    new SelectListItem(){
-                    Text=Convert.ToString(CandidateStatus.Selected),
-                    Value=Convert.ToString(CandidateStatus.Selected)
-                    },
-                    new SelectListItem(){
-                    Text=Convert.ToString(CandidateStatus.Rejected),
-                    Value=Convert.ToString(CandidateStatus.Rejected)
-                    }
-                    }))
-                    </div>
-
-                    <div class="col-sm-1 form-group">
-                        <span><b> Positions</b></span>
-                    </div>
-                    <div class="col-sm-2">
-                        @(Html.Kendo().DropDownList()
-                            .Name("Position")
-                                    .Events(e => e.Change("PositionChange"))
-                            .OptionLabel("All")
-                            .BindTo(ViewBag.PositionListItem)
-                            .DataTextField("Text")
-                            .DataValueField("Value")
-                            .SelectedIndex(0)
-
-                        )
-                    </div>
-
-                </div>
+                
                 <div class="row">
                     <div class="col-sm-12">
                         <div class="kendogrid">

@@ -2,6 +2,7 @@
 .M-B0{margin-bottom:0px;}
 .M-T10{margin-top:10px;}
 .M-T15{margin-top:15px;}
+.M-B5{margin-bottom:5px;}
 .M-B15{margin-bottom:15px!important;}
 .M-L15{margin-left:15px;}
 .M-B60{margin-bottom:60px!important;}
@@ -13,10 +14,17 @@
 /*Kendo override css*/
 .k-pager-wrap>.k-link{border:none!important;}
 .k-grid table{background-color:#e7eaec!important;}
-
-
-
-
+.k-tabstrip-items .k-state-active, .k-panelbar .k-tabstrip-items .k-state-active{border-bottom:4px solid #00b0ff; }
+#frmSearchAllNdc span.k-dropdown-wrap.k-state-default{height:35px!important;}
+#frmSearchAllNdc span.k-dropdown .k-input, .k-dropdown .k-state-focused .k-input, .k-menu .k-popup{height: 30px;margin-top: 5px;}
+.k-grid-pager .k-link, .k-grid-pager .k-link:link{color:#fff!important;}
+/*.k-edit,.k-delete {
+    background-image: url('css/Kendo/2014.1.416/Default/sprite1.png');
+    background-position:-32px 0;
+}*/
+span.k-icon.k-add{
+   margin-top:-3px;
+}
 /*Loader css - Start*/
 .loader {
   border: 10px solid #f3f3f3;
@@ -1755,6 +1763,11 @@ span.select2.select2-container.select2-container--default{
     height: 37px;
 }
 
+.primary-bt, .primary-bt:hover, .primary-bt:visited, .primary-bt:focus {
+    color: #fff;
+    outline: none;
+    background: #0063a7;
+}
 
 
 
@@ -1856,6 +1869,9 @@ span.select2.select2-container.select2-container--default{
     margin-top: 0px;
     padding-bottom: 0px;
 }
+     .cust-mar{
+         margin-top:15px;
+     }
 
 }
 @media (max-width:800px) 
@@ -1864,6 +1880,9 @@ span.select2.select2-container.select2-container--default{
 }
 @media (max-width:768px) 
 {
+    .sidebar-wrapper{
+        display:none;
+    }
     .navbar-right {
     float: right;
 }

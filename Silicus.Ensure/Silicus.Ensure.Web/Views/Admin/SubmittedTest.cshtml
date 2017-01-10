@@ -10,16 +10,15 @@
 
 
 <div class="main-content">
-    <div style="overflow:hidden">
-        ()
+    <div style="height:750px;overflow:scroll">
         @using (Html.BeginForm("SubmittedTest", "Admin", FormMethod.Post))
         {
             @Html.HiddenFor(x => x.UserId)
             @Html.HiddenFor(x => x.TestSuiteId)
             <h2>Submitted test result of @Model.FirstName @Model.LastName</h2>
-            <div class="fluid mt20" style="display:none">
+            <div class="fluid mt20">
                 <fieldset>
-                    <legend>Test suit details:</legend>
+                    <legend>Test suite details</legend>
                     <div class="row">
                         <div class="col-md-12">
                             <div class="col-md-6">
@@ -61,14 +60,14 @@
 
                 </fieldset>
             </div>
-            <div class="fluid mt20" style="display:none">
+            <div class="fluid mt20">
                 <fieldset>
-                    <legend>Objective question Result:</legend>
+                    <legend>Objective question result</legend>
                     <div class="row">
 
                         <div class="col-md-12">
                             <div class="col-md-4">
-                                Objective question result:
+                                Objective question result
                             </div>
                             <div class="col-md-7">
                                 <input class="form-control valid" data-val="true"
@@ -76,7 +75,7 @@
                                        value="@Model.ObjectiveQuestionResult" tyle="width:87%;" readonly="readonly" />
                             </div>
                             <div class="col-md-4">
-                                Objective question Marks:
+                                Objective question marks
                             </div>
                             <div class="col-md-7">
                                 <input class="form-control valid" data-val="true"
@@ -89,26 +88,26 @@
             </div>
             <div class="fluid mt20">
                 <fieldset>
-                    <legend>Objective question set:</legend>
+                    <legend>Objective question set</legend>
                     <div class="row">
                         <table class="table table-bordered" style="width: 96%;    margin-left: 2%;">
                             <thead>
                                 <tr>
-                                    <th>Question Description</th>
-                                    <th>Submitted Answer</th>
-                                    <th>Correct Answer</th>
+                                    <th>Question description</th>
+                                    <th>Submitted answer</th>
+                                    <th>Correct answer</th>
                                     <th>Result</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 @foreach (var oQuestion in Model.objectiveQuestionList)
                                 {
-                                <tr>
-                                    <td>@Html.Raw(@oQuestion.QuestionDescription)</td>
-                                    <td>@oQuestion.SubmittedAnswer</td>
-                                    <td>@oQuestion.CorrectAnswer</td>
-                                    <td>@oQuestion.Result</td>
-                                </tr>
+                                    <tr>
+                                        <td>@Html.Raw(@oQuestion.QuestionDescription)</td>
+                                        <td>@oQuestion.SubmittedAnswer</td>
+                                        <td>@oQuestion.CorrectAnswer</td>
+                                        <td>@oQuestion.Result</td>
+                                    </tr>
                                 }
                             </tbody>
                         </table>
@@ -118,7 +117,7 @@
 
             <div class="fluid mt20">
                 <fieldset>
-                    <legend>Practicle question set:</legend>
+                    <legend>Practicle question set</legend>
                     <div class="row">
                         @foreach (var pQuestion in Model.practicalQuestionList)
                         {
@@ -134,7 +133,7 @@
 
                             <div class="col-md-12">
                                 <div class="col-md-4">
-                                    Correct Answer
+                                    Correct answer
                                 </div>
                                 <div class="col-md-8">
                                     <textarea cols="20" id="@Html.Raw(pQuestion.CorrectAnwer + i)" name="@Html.Raw(pQuestion.CorrectAnwer + i)"
@@ -147,7 +146,7 @@
 
                             <div class="col-md-12">
                                 <div class="col-md-4">
-                                    Submitted Answer
+                                    Submitted answer
                                 </div>
                                 <div class="col-md-8">
                                     <textarea cols="20" id="@Html.Raw(pQuestion.SubmittedAnswer + i)" name="@Html.Raw(pQuestion.SubmittedAnswer + i)"
@@ -163,7 +162,7 @@
                                 </div>
                                 <div class="col-md-8">
                                     <input class="form-control valid" data-val="true"
-                                           id="@Html.Raw("Weightage" + i)" name="@Html.Raw("Weightage" + i)" type="text"
+                                           id="@Html.Raw(" weightage" + i)" name="@Html.Raw(" weightage" + i)" type="text"
                                            value="@pQuestion.Weightage" aria-required="true" style="width:87%;" readonly="readonly"
                                            aria-invalid="false" aria-describedby="Emarks-error">
 
@@ -171,11 +170,11 @@
                             </div>
                             <div class="col-md-12">
                                 <div class="col-md-4">
-                                    Evaluated Marks
+                                    Evaluated marks
                                 </div>
                                 <div class="col-md-8">
                                     <input class="PracticalMarks form-control valid" data-val="true" data-val-required="Practical question @i evaluated marks is required!"
-                                           id="@Html.Raw("Emarks"+i)" name="@Html.Raw("Emarks"+i)" type="text" onchange="EvaluateTotalResult(this);"
+                                           id="@Html.Raw(" emarks"+i)" name="@Html.Raw(" emarks"+i)" type="text" onchange="EvaluateTotalResult(this);"
                                            value="@pQuestion.EvaluatedMark" aria-required="true" style="width:87%"
                                            aria-invalid="false" aria-describedby="Emarks-error">
 
@@ -188,12 +187,12 @@
             </div>
             <div class="fluid mt20">
                 <fieldset>
-                    <legend>Evaluation Result:</legend>
+                    <legend>Evaluation result:</legend>
                     <div class="row">
 
                         <div class="col-md-12" style="margin-top:10px">
                             <div class="col-md-4">
-                                Total marks obtained:
+                                Total marks obtained
                             </div>
                             <div class="col-md-8">
                                 <input class="form-control"
@@ -216,25 +215,25 @@
                             </div>
                             <div class="col-md-7">
                                 @(Html.Kendo().DropDownListFor(m => m.Status)
-                                    .Name("Status")
-                                    .DataTextField("Text")
-                                    .DataValueField("Value")
-                                        .BindTo(new List<SelectListItem>
-                                        () {
-                                        new SelectListItem(){
-                                        Text="--Select--",
-                                        Value="--Select--"
-                                        },
-                                        new SelectListItem(){
-                                        Text=CandidateStatus.Selected.ToString(),
-                                        Value=CandidateStatus.Selected.ToString()
-                                        },
-                                        new SelectListItem(){
-                                        Text=CandidateStatus.Rejected.ToString(),
-                                        Value=CandidateStatus.Rejected.ToString()
-                                        }
-                                        }).HtmlAttributes(new { style = "width: 100%" }))
-                                     @Html.ValidationMessageFor(m => m.Status)
+                            .Name("Status")
+                            .DataTextField("Text")
+                            .DataValueField("Value")
+                            .BindTo(new List<SelectListItem>
+                                () {
+                                new SelectListItem(){
+                                Text="--Select--",
+                                Value="--Select--"
+                                },
+                                new SelectListItem(){
+                                Text=CandidateStatus.Selected.ToString(),
+                                Value=CandidateStatus.Selected.ToString()
+                                },
+                                new SelectListItem(){
+                                Text=CandidateStatus.Rejected.ToString(),
+                                Value=CandidateStatus.Rejected.ToString()
+                                }
+                                }).HtmlAttributes(new { style = "width: 100%" }))
+                                @Html.ValidationMessageFor(m => m.Status)
                             </div>
                         </div>
                     </div>
@@ -242,14 +241,14 @@
                         <div class="col-md-6"></div>
                         <div class="col-md-2 col-md-offset-4">
                             @(Html.Kendo().Button()
-                                .Name("btnCancel").Icon("cancel")
-                                .HtmlAttributes(new { type = "button" })
-                                .Events(e => e.Click("OnCancel"))
-                                .Content("Cancel"))
-                            @*@if (Model.TestStatus == AppConstants.TestStatusSubmitted)
-                                {*@
-                            <input type="submit" value="Save" class="k-button k-button-icontext" id="btnSave" />
-                            @*}*@
+                        .Name("btnCancel").Icon("cancel")
+                        .HtmlAttributes(new { type = "button" })
+                        .Events(e => e.Click("OnCancel"))
+                        .Content("Cancel"))
+                            @if (Model.Status == CandidateStatus.UnderEvaluation.ToString() || Model.Status == CandidateStatus.TestSubmitted.ToString())
+                            {
+                                <input type="submit" value="Save" class="k-button k-button-icontext" id="btnSave" />
+                            }
                         </div>
                     </div>
                 </fieldset>
@@ -261,8 +260,11 @@
 <script>
     $(document).ready(function () {
         EvaluateTotalResult();
+        if (!('@Model.Status' == '@CandidateStatus.UnderEvaluation.ToString()' || '@Model.Status' == '@CandidateStatus.TestSubmitted.ToString()')) {
+            $('form input[type="text"]').prop("disabled", true);
+            $('textarea').prop("disabled", true);
+        }
     });
-
     $(function () {
         $("form").kendoValidator();
     });

@@ -55,7 +55,7 @@
                             <div class="col-md-6">
                                 <div class="input-group">
                                     <span class="input-group-addon"><span class="glyphicon glyphicon-search" aria-hidden="true"></span></span>
-                                    <input type="text" class="form-control" id='FieldFilter' placeholder="Search...">
+                                    <input type="text" class="form-control" id='FieldFilter' placeholder="Search">
                                     <span class="input-group-btn">
                                         <button id="testSuiteSearch" class="btn btn-default" type="button" style="height:16px;"><span class="glyphicon glyphicon-refresh" aria-hidden="true"></span></button>
                                     </span>
@@ -65,7 +65,7 @@
                         <br />
                         <div class="row">
                             <div class="col-md-3 col-md-push-1" style="float: right; padding-right: 0px; margin-right: -22px;">
-                                <a href='/TestSuite/Add?testSuiteId=0' class='k-button k-button-icontext k-grid-add'><span class='k-icon k-add'></span>Add Test Suite</a>
+                                <a href='/TestSuite/Add?testSuiteId=0' class='k-button k-button-icontext k-grid-add'><span class='k-icon k-add'></span>Add test suite</a>
                             </div>
                         </div>
                     </div>
@@ -117,7 +117,7 @@
 
             var value = $("#FieldFilter").val();
             grid = $("#testSuiteGrids").data("kendoGrid");
-
+            var pageSize = grid.dataSource.pageSize();
             if (value.length >= 1) {
                 if (value) {
                     var filter = { logic: "or", filters: [] };
@@ -125,6 +125,8 @@
                     filter.filters.push({ field: "PositionName", operator: "contains", value: value });
                     filter.filters.push({ field: "PrimaryTagNames", operator: "contains", value: value });
                     grid.dataSource.query({ filter: filter });
+                    grid.dataSource.sort({ field: "TestSuiteName", dir: "asc" });
+                    grid.dataSource.pageSize(pageSize);
                 } else {
                     grid.dataSource.filter({});
                 }

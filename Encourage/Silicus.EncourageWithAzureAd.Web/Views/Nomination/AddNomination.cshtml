@@ -121,7 +121,7 @@
                             </div>
                             <div class="row" id="departmentInput">
                                 <div class="col-lg-3 col-md-4 col-sm-5">
-                                    <div class="form-group" id="projectInput">
+                                    <div class="form-group">
                                         @Html.Label("Department", htmlAttributes: new { @class = "control-label requiredfeild" })
                                         <div>
                                             @if (Model.DepartmentsUnderCurrentUser != null)
@@ -139,27 +139,27 @@
                                 </div>
                             </div>
                             <div class="row">
+                                <div class="col-lg-3 col-md-4 col-sm-5">
+                                    <div class="form-group" id="otherInput">
+                                        @Html.Label("Reason", htmlAttributes: new { @class = "control-label requiredfeild" })
+                                        <div>
+                                            @Html.TextAreaFor(model => model.OtherNominationReason, new { @class = "form-control", @id = "otherReason", maxlength = 500 })
+                                            @Html.ValidationMessageFor(model => model.OtherNominationReason, "", new { @class = "text-danger" })
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
                                 <div class="col-lg-3 col-md-4 col-sm-5" id="employeeInput">
                                     <div class="form-group">
                                         @Html.Label("Employee Name", htmlAttributes: new { @class = "control-label requiredfeild" })
                                         <div>
                                             @Html.DropDownListFor(model => model.ResourceId, Model.Resources as SelectList, "Select", new { @class = "form-control select2-dd", id = "Resources" })
                                             @Html.ValidationMessageFor(model => model.ResourceId, "", new { @class = "text-danger" })
-                                            @*<span class="help-block themeColorBlue"> Select your Employee</span>*@
                                         </div>
-                                   </div>
+                                    </div>
                                 </div>
                             </div>
-                            @*<div class="row" id="employeeInputForOther">
-                                    <div class="col-lg-3 col-md-4 col-sm-5" >
-                                        @Html.Label("Employee Name", htmlAttributes: new { @class = "control-label requiredfeild"})
-                                        @Html.DropDownListFor(model => model.ResourceId, Model.Resources as SelectList, "Select", new {  @class = "form-control" , id = "allResources"})
-                                        @Html.ValidationMessageFor(model => model.ResourceId, "", new { @class = "text-danger" })
-                                    </div>
-                                </div>*@
-                            @*<div  class="form-control"></div>*@
-                            @*@Html.TextBoxFor(model => model.ResourceId, new { @class= "form-control" })*@
-
                             <div class="row">
                                 <div class="form-actions pull-left">
                                     <button type="button" class="btn btn-success btn-nav btn-prev" onclick="moveToNominationStep(1, false);"><i class="fa fa-chevron-circle-left" aria-hidden="true"></i>&nbsp;&nbsp;Prev</button>
@@ -248,35 +248,38 @@
     $(document).ready(function () {
         $('#ProjectRadioButton').prop('checked', true);
         $("#departmentInput").hide();
+        $("#otherInput").hide();
         $("#label").hide();
         $('#Award option').css('color:red');
-        
+
         $("#Resources").select2();
     });
 
     $("#OtherRadioButton").change(function () {
         $("#projectInput").hide();
         $("#departmentInput").hide();
+        $("#otherInput").show();
 
+        var _urlGetAllResourcesForOtherReason = '@Url.Action("GetAllResourcesForOtherReason", "Nomination")';
+        var selectedAward = +$("#Award").val();
         var status = $("#OtherRadioButton").prop("checked");
+        $('#otherReason').val('');
         $('#Resources').empty();
         $('#Resources').append($("<option selected></option>").val(null).html("Select"));
-        $(".loader-overlay").show();
+        showCustomLoader();
         $.ajax({
-            type: 'post',
-            url: '@Url.Action("GetAllResources", "Nomination")',
-            data: JSON.stringify({ getAllResources: status }),
-            contentType: "application/json; charset=utf-8",
+            type: 'GET',
+            url: _urlGetAllResourcesForOtherReason,
+            data: { awardId: selectedAward },
             success: function (data) {
                 var ab = data;
-
                 for (var key in data) {
                     $('#Resources').append($("<option></option>").val(data[key].ID).html(data[key].DisplayName));
                 }
-                $(".loader-overlay").hide();
+                hideCustomLoader();
             },
             error: function (error) {
-                $(".loader-overlay").hide();
+                hideCustomLoader();
                 console.log(error);
             }
         });
@@ -295,6 +298,7 @@
         (
          function () {
              $("#departmentInput").hide();
+             $("#otherInput").hide();
              $("#employeeInputForOther").hide();
              $("#SelectedProject").prop('selectedIndex', 0);
              $('#Resources').empty();
@@ -308,6 +312,7 @@
         (
           function () {
               $("#projectInput").hide();
+              $("#otherInput").hide();
               $("#employeeInputForOther").hide();
               $("#SelectedDepartment").prop('selectedIndex', 0);
               $('#Resources').empty();
@@ -318,68 +323,81 @@
           });
 
     var previousSelectedCategory;
-
-
-    $('#Award').change(function () {
-        $.ajax({
-            type: 'GET',
-            url: '@Url.Action("GetLockedAwardCategories","Nomination")',
-            success: function (data) {
-                var index = 0;
-                var lockedCategories = "";
-                $.each(data, function () {
-                    if (data[index].Id == $('#Award option:selected').val()) {
-                        lockedCategories = data[index].Name;
-                    }
-                    //$('#Award option[value=' + data[index].Id + ']').attr('title', 'Nomination locked').prop('disabled', 'disabled');
-                    index++;
-                });
-                if (lockedCategories != "") {
-                    $('#nextButton').prop('disabled', 'disabled');
-                    sweetAlert("Error", "Nominations for " + lockedCategories + " are locked.");
-                }
-                else {
-                    $('#nextButton').prop('disabled', '');
-                }
-            },
-            error: function () {
-                sweetAlert("Error", "Oops something went wrong!");
-            }
-        })
-    });
+    var isPreviousSelectedCategoryLocked = false;
 
     $("#Award").on('focus', function () {
         // Store the current value on focus and on change
         previousSelectedCategory = this.value;
     });
 
-    $("#Award").change(function (event) {
-        var showDataLoseWarning = $("#showDataLoseWarning").val();
-        if (showDataLoseWarning.toLowerCase() == "true") {
-            swal({
-                title: "Are you sure?",
-                text: "All your changes will be lost! Do you want to continue?",
-                type: "warning",
-                showCancelButton: true,
-                confirmButtonColor: "#337ab7",
-                confirmButtonText: "Yes",
-                cancelButtonText: "No",
-                closeOnConfirm: true,
-                closeOnCancel: true
-            }, function (isConfirm) {
-                if (isConfirm) {
-                    getCriteriaForAwardView();
-                } else {
-                    event.stopPropagation();
-                    $("#Award").val(previousSelectedCategory);
-                    return false;
+    $('#Award').on("change", function (event) {
+        showCustomLoader();
+        $.ajax({
+            type: 'GET',
+            url: '@Url.Action("GetLockedAwardCategories","Nomination")',
+            success: function (data) {
+                hideCustomLoader();
+                var isLocked = true;
+                var index = 0;
+                var lockedCategories = "";
+                $.each(data, function () {
+                    if (data[index].Id == $('#Award option:selected').val()) {
+                        lockedCategories = data[index].Name;
+                    }
+                    if (this.Id == previousSelectedCategory) {
+                        isPreviousSelectedCategoryLocked = true;
+                    }
+                    //$('#Award option[value=' + data[index].Id + ']').attr('title', 'Nomination locked').prop('disabled', 'disabled');
+                    index++;
+                });
+                if (lockedCategories != "") {
+                    $('#nextButton').prop('disabled', 'disabled');
+                    sweetAlert("Error", "Nominations for " + lockedCategories + " are locked.", "error");
+                    isLocked = true;
                 }
-                // Make sure the previous value is updated
-                previous = this.value;
-            });
-        } else {
-            getCriteriaForAwardView();
-        }
+                else {
+                    $('#nextButton').prop('disabled', '');
+                    isLocked = false;
+                }
+
+                if (!isLocked) {
+                    var showDataLoseWarning = $("#showDataLoseWarning").val();
+                    if (showDataLoseWarning.toLowerCase() == "true") {
+                        swal({
+                            title: "Are you sure?",
+                            text: "All your changes will be lost! Do you want to continue?",
+                            type: "warning",
+                            showCancelButton: true,
+                            confirmButtonColor: "#337ab7",
+                            confirmButtonText: "Yes",
+                            cancelButtonText: "No",
+                            closeOnConfirm: true,
+                            closeOnCancel: true
+                        }, function (isConfirm) {
+                            if (isConfirm) {
+                                getCriteriaForAwardView();
+                            } else {
+                                event.stopPropagation();
+                                //Check if previous value is locked
+                                if (!isPreviousSelectedCategoryLocked) {
+                                    $("#Award").val(previousSelectedCategory);
+                                }
+
+                                return false;
+                            }
+                            // Make sure the previous value is updated
+                            previous = this.value;
+                        });
+                    } else {
+                        getCriteriaForAwardView();
+                    }
+                }
+            },
+            error: function () {
+                hideCustomLoader();
+                sweetAlert("Error", "Oops something went wrong!", "error");
+            }
+        });
     });
 
     function getCriteriaForAwardView() {
@@ -444,7 +462,7 @@
 
 
     $("#SelectedProject").change(function () {
-        $(".loader-overlay").show();
+        showCustomLoader();
         var selectedProject = $("#SelectedProject").val();
         var selectedAward = $("#Award").val();
         $('#Resources').empty();
@@ -456,21 +474,21 @@
             data: JSON.stringify({ engagementID: selectedProject, awardId: selectedAward }),
             contentType: "application/json; charset=utf-8",
             success: function (data) {
-                $(".loader-overlay").hide();
+                hideCustomLoader();
                 for (var key in data) {
                     $('#Resources')
                         .append($("<option></option>").val(data[key].ID).html(data[key].DisplayName));
                 }
             },
             error: function (error) {
-                $(".loader-overlay").hide();
+                hideCustomLoader();
                 console.log(error);
             }
         });
     });
 
     $("#SelectedDepartment").change(function () {
-        $(".loader-overlay").show();
+        showCustomLoader();
         var selectedDept = $("#SelectedDepartment").val();
         var selectedAward = $("#Award").val();
         //var ServiceUrl = "/Nomination/ResourcesInDepartment?departmentID=" + selectedDept +""+ selectedAward;
@@ -485,14 +503,14 @@
             data: { departmentID: selectedDept, awardId: selectedAward },
             contentType: "application/json; charset=utf-8",
             success: function (data) {
-                $(".loader-overlay").hide();
+                hideCustomLoader();
                 for (var key in data) {
                     $('#Resources')
                         .append($("<option></option>").val(data[key].ID).html(data[key].DisplayName));
                 }
             },
             error: function (xhr) {
-                $(".loader-overlay").hide();
+                hideCustomLoader();
                 //alert(xhr.toString());
                 console.log(xhr);
             }
@@ -537,7 +555,7 @@
                         if (isConfirm) {
                             var modelbjectToSend = $('#addNominationForm').serialize() + '&' + $.param({ 'submit': "Submit" }, true);
 
-                            $(".loader-overlay").show();
+                            showCustomLoader();
 
                             $.ajax({
                                 type: 'post',
@@ -546,7 +564,7 @@
                                 async: false,
                                 data: modelbjectToSend,
                                 success: function (data) {
-                                    $(".loader-overlay").hide();
+                                    hideCustomLoader();
                                     swal(data.ErrorMessage);
                                     if (data.nominationExceed) {
                                         swal({
@@ -582,7 +600,7 @@
 
                                 },
                                 error: function (error) {
-                                    $(".loader-overlay").hide();
+                                    hideCustomLoader();
                                     if (error.responseText != null && error.responseText != undefined && error.responseText != '') {
                                         swal("Error", error.responseText.replace(/['"]+/g, ''));
                                     }
@@ -592,7 +610,7 @@
                                 }
                             });
                         } else {
-                            $(".loader-overlay").hide();
+                            hideCustomLoader();
                             swal("Cancelled", "Nomination Cancelled");
                         }
                     });
@@ -618,7 +636,7 @@
             },
            function (isConfirm) {
                if (isConfirm) {
-                   $(".loader-overlay").show();
+                   showCustomLoader();
                    var modelbjectToSend = $('#addNominationForm').serialize() + '&' + $.param({ 'submit': "Save" }, true);
 
                    $.ajax({
@@ -626,7 +644,7 @@
                        url: '@Url.Action("AddNomination", "Nomination")',
                        data: modelbjectToSend,
                        success: function (data) {
-                           $(".loader-overlay").hide();
+                           hideCustomLoader();
                            if (data.nominationExceed) {
                                swal({
                                    title: "Error",
@@ -663,7 +681,7 @@
 
                        },
                        error: function (data) {
-                           $(".loader-overlay").hide();
+                           hideCustomLoader();
                            if (data.responseText != null && data.responseText != undefined && data.responseText != '') {
                                swal("Error", data.responseText.replace(/['"]+/g, ''));
                            }

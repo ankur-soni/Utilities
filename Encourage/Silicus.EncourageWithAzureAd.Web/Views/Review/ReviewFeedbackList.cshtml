@@ -1,4 +1,4 @@
-﻿@model IEnumerable<Silicus.EncourageWithAzureAd.Web.Models.ReviewFeedbackListViewModel>
+﻿@model Silicus.EncourageWithAzureAd.Web.Models.ShortlistedNominationViewModel
 @using System.Drawing;
 @{
     ViewBag.Title = "ReviewedNominations";
@@ -19,78 +19,85 @@
 <div class="row">
     <div class="col-lg-12 col-md-12 col-sm-12">
         <div class="box M-T15 M-B60">
-            @if (Model.Count() == 0)
-            {
-                <div class="row">
-                    <div class="col-sm-12">
-                        <div class="box">
-                            <div class="alert alert-danger">
-                                <span class="text-danger" style="font-size:20px">No reviewes are submitted as of now.</span>
+            <div class="sttabs tabs-style-linebox">
+                <nav id="awards-list">
+                    <ul>
+                        <li class="active">
+                            <a id="all-tab" data-toggle="tab" href="#all" data-awardId="0"><span>All</span></a>
+                        </li>
+                        @foreach (var award in Model.Awards)
+                        {
+                            <li><a id="@award.Code.ToLower()-tab" data-toggle="tab" href="@("#"+ award.Code.ToLower())" data-awardId="@award.Id"><span>@award.Code</span></a></li>
+                        }
+                    </ul>
+                </nav>
+                <div class="tab-content content-wrap text-center">
+                    <section id="all" class="tab-pane fade in active">
+                        <div class="sttabs tabs-style-linebox">
+                            <nav>
+                                <ul>
+                                    <li class="active"><a id="current-tab" data-toggle="tab" href="#all-currentMonth" data-awardType="all" onclick="getCurrentMonthData(this);"><span>Current</span></a></li>
+                                    <li><a id="historical-tab" data-toggle="tab" href="#all-historical" data-awardType="all" onclick="getHistoricalData(this);"><span>Historical</span></a></li>
+                                </ul>
+                            </nav>
+                            <div class="tab-content content-wrap text-center">
+                                <section id="all-currentMonth" class="tab-pane fade in active">
+                                    @Html.Partial("~/Views/Review/Shared/_reviewFeedbackList.cshtml", Model.ReviewFeedbackList)
+                                </section>
+                                <section id="all-historical" class="tab-pane fade"></section>
+                            </div>
+                        </div>
+                    </section>
+                    @foreach (var award in Model.Awards)
+                    {
+                        <section id="@award.Code.ToLower()" class="tab-pane fade">
+                            <div class="sttabs tabs-style-linebox">
+                                <nav>
+                                    <ul>
+                                        <li class="active"><a id="current-tab" data-toggle="tab" href="@("#"+award.Code.ToLower()+"-currentMonth")" data-awardType="@award.Code.ToLower()" onclick="getCurrentMonthData(this);"><span>Current</span></a></li>
+                                        <li><a id="historical-tab" data-toggle="tab" href="@("#"+award.Code.ToLower()+"-historical")" data-awardType="@award.Code.ToLower()" onclick="getHistoricalData(this);"><span>Historical</span></a></li>
+                                    </ul>
+                                </nav>
+                                <div class="tab-content content-wrap text-center">
+                                    <section id="@(award.Code.ToLower()+"-currentMonth")" class="tab-pane fade in active"></section>
+                                    <section id="@(award.Code.ToLower()+"-historical")" class="tab-pane fade"></section>
+                                </div>
+                            </div>
+                        </section>
+                    }
+                    <div class="row">
+                        <div class="col-lg-12 col-md-12 col-sm-12">
+                            <div class="pull-right btn-nav">
+
+                                @{  bool _disabled = false;
+                                    foreach (var item in Model.ReviewFeedbackList)
+                                    {
+                                        if (item.IsWinner == true)
+                                        {
+                                            _disabled = true;
+                                            break;
+                                        }
+                                    }
+                                    if (_disabled == false)
+                                    {
+
+                                        <div class="pull-right btn-nav">
+                                            <input type="button" value="Reject All" class="btn btn-primary" id="rejectAll" onclick="return rejectAllNominations()" style="margin-left:3%;" />
+                                        </div>
+                                    }
+                                    else
+                                    {
+                                        <div class="pull-right btn-nav">
+                                            <input type="button" value="Reject All" disabled class="btn btn-primary" id="rejectAll" onclick="return rejectAllNominations()" style="margin-left:3%;" />
+                                        </div>
+                                    }
+                                }
+
                             </div>
                         </div>
                     </div>
-                </div>
-            }
-            else
-            {
-                <div class="sttabs tabs-style-linebox">
-                    <nav>
-                        <ul>
-                            <li class="active"><a id="current-tab" data-toggle="tab" href="#currentMonth"><span>All</span></a></li>
-                            <li><a id="historical-tab" data-toggle="tab" href="#historical"><span>SOM</span></a></li>
-                            <li><a id="historical-tab" data-toggle="tab" href="#historical"><span>Pinnacle</span></a></li>
-                            <li><a id="historical-tab" data-toggle="tab" href="#historical"><span>Team Awesome</span></a></li>
-
-                        </ul>
-                    </nav>
-                    <div class="tab-content content-wrap text-center">
-                        <section id="all" class="tab-pane fade in active">
-                            @Html.Partial("~/Views/Review/Shared/_reviewFeedbackList.cshtml", Model)
-
-                        </section>
-                        <section id="SOM" class="tab-pane fade">
-                            <p>Content yet to come..</p>
-                        </section>
-                        <section id="Pinnacle" class="tab-pane fade">
-                            <p>Content yet to come..</p>
-                        </section>
-                        <section id="team awesome" class="tab-pane fade">
-                            <p>Content yet to come..</p>
-                        </section>
-                        <div class="row">
-                            <div class="col-lg-12 col-md-12 col-sm-12">
-                                <div class="pull-right btn-nav">
-
-                                    @{  bool _disabled = false;
-                                        foreach (var item in Model)
-                                        {
-                                            if (item.IsWinner == true)
-                                            {
-                                                _disabled = true;
-                                                break;
-                                            }
-                                        }
-                                        if (_disabled == false)
-                                        {
-
-                                            <div class="pull-right btn-nav">
-                                                <input type="button" value="Reject All" class="btn btn-primary" id="rejectAll" onclick="return rejectAllNominations()" style="margin-left:3%;" />
-                                            </div>
-                                        }
-                                        else
-                                        {
-                                            <div class="pull-right btn-nav">
-                                                <input type="button" value="Reject All" disabled class="btn btn-primary" id="rejectAll" onclick="return rejectAllNominations()" style="margin-left:3%;" />
-                                            </div>
-                                        }
-                                    }
-
-                                </div>
-                            </div>
-                        </div>
-                    </div><!-- /content -->
-                </div>
-                                        }
+                </div><!-- /content -->
+            </div>
         </div>
     </div>
 
@@ -118,12 +125,12 @@
         },
        function (isConfirm) {
            if (isConfirm) {
-               $(".loader-overlay").show();
+               showCustomLoader();
                $.ajax({
                    type: 'post',
                    url: '@Url.Action("RejectAll", "Review")',
                    success: function (data) {
-                       $(".loader-overlay").hide();
+                       hideCustomLoader();
                        swal({
                            title: "All nominations rejected..",
                            showCancelButton: false,
@@ -137,7 +144,7 @@
                        });
                    },
                    error: function () {
-                       $(".loader-overlay").hide();
+                       hideCustomLoader();
                        swal("Error", "Oops! Something wrong happened..");
                    }
                });
@@ -152,36 +159,98 @@
     var _urlReviewFeedbackListForActiveMonth = '@Url.Action("GetReviewFeedbackListPartialView", "Review", new { forCurrentMonth = true })';
     var _urlReviewFeedbackListForHistoricalMonths = '@Url.Action("GetReviewFeedbackListPartialView", "Review", new { forCurrentMonth = false })';
 
-    $("#historical-tab").on("click", function () {
-        $(".loader-overlay").show();
-        $.ajax({
-            type: "GET",
-            url: _urlReviewFeedbackListForHistoricalMonths,
-            success: function (response) {
-                $(".loader-overlay").hide();
-                $("#historical").html(response);
-            },
-            error: function (error) {
-                $(".loader-overlay").hide();
-                console.log(error);
-            }
-        });
-    })
-
-    $("#current-tab").on("click", function () {
-        $(".loader-overlay").show();
+    $("#pinnacle-tab").on("click", function () {
+        var awardId = +$(this).attr("data-awardId");
+        showCustomLoader();
         $.ajax({
             type: "GET",
             url: _urlReviewFeedbackListForActiveMonth,
+            data: { awardType: awardId },
             success: function (response) {
-                $(".loader-overlay").hide();
-                $("#currentMonth").html(response);
+                hideCustomLoader();
+                $("#pinnacle #pinnacle-currentMonth").html(response);
             },
             error: function (error) {
-                $(".loader-overlay").hide();
+                hideCustomLoader();
                 console.log(error);
             }
         });
-    })
+    });
+
+    $("#som-tab").on("click", function () {
+        var awardId = +$(this).attr("data-awardId");
+        showCustomLoader();
+        $.ajax({
+            type: "GET",
+            url: _urlReviewFeedbackListForActiveMonth,
+            data: { awardType: awardId },
+            success: function (response) {
+                hideCustomLoader();
+                $("#som #som-currentMonth").html(response);
+            },
+            error: function (error) {
+                hideCustomLoader();
+                console.log(error);
+            }
+        });
+    });
+
+    $("#all-tab").on("click", function () {
+        var awardId = +$(this).attr("data-awardId");
+        showCustomLoader();
+        $.ajax({
+            type: "GET",
+            url: _urlReviewFeedbackListForActiveMonth,
+            data: { awardType: awardId },
+            success: function (response) {
+                hideCustomLoader();
+                $("#all #currentMonth").html(response);
+            },
+            error: function (error) {
+                hideCustomLoader();
+                console.log(error);
+            }
+        });
+    });
+
+    function getCurrentMonthData(element) {
+        var awardId = +$("#awards-list li.active a").attr("data-awardid");
+        var area = $(element).attr("data-awardtype");
+        var someId = "#" + area + " #" + area + "-currentMonth";
+        showCustomLoader();
+        $.ajax({
+            type: "GET",
+            url: _urlReviewFeedbackListForActiveMonth,
+            data: { awardType: awardId },
+            success: function (response) {
+                hideCustomLoader();
+                $(someId).html(response);
+            },
+            error: function (error) {
+                hideCustomLoader();
+                console.log(error);
+            }
+        });
+    }
+
+    function getHistoricalData(element) {
+        var awardId = +$("#awards-list li.active a").attr("data-awardid");
+        var area = $(element).attr("data-awardtype");
+        var someId = "#" + area + " #" + area + "-historical";
+        showCustomLoader();
+        $.ajax({
+            type: "GET",
+            url: _urlReviewFeedbackListForHistoricalMonths,
+            data: { awardType: awardId },
+            success: function (response) {
+                hideCustomLoader();
+                $(someId).html(response);
+            },
+            error: function (error) {
+                hideCustomLoader();
+                console.log(error);
+            }
+        });
+    }
 
 </script>

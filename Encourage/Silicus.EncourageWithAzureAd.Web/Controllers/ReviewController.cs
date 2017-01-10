@@ -73,28 +73,56 @@ namespace Silicus.EncourageWithAzureAd.Web.Controllers
         public ActionResult ReviewFeedbackList()
         {
             _logger.Log("Review-ReviewFeedbackList-GET");
-            var reviewFeedbackList = ReviewFeedbackList(true);
-            return View(reviewFeedbackList);
+            int awardType = 0;
+            var shortListedNominations = new ShortlistedNominationViewModel();
+            var reviewFeedbackList = ReviewFeedbackList(true, awardType);
+            var awards = _encourageDatabaseContext.Query<Award>().ToList();
+            foreach (var award in awards)
+            {
+                shortListedNominations.Awards.Add(new LockAwardViewModel { Id = award.Id, Code = award.Code, Name = award.Name});
+            }
+            shortListedNominations.ReviewFeedbackList = reviewFeedbackList;
+            return View(shortListedNominations);
         }
 
         [HttpGet]
         [CustomeAuthorize(AllowedRole = "Admin")]
-        public ActionResult GetReviewFeedbackListPartialView(bool forCurrentMonth)
+        public ActionResult GetReviewFeedbackListPartialView(bool forCurrentMonth,int awardType)
         {
             _logger.Log("Review-ReviewFeedbackList-GET");
-            var reviewFeedbackList = ReviewFeedbackList(forCurrentMonth);
+            var reviewFeedbackList = ReviewFeedbackList(forCurrentMonth, awardType);
             return PartialView("~/Views/Review/Shared/_reviewFeedbackList.cshtml", reviewFeedbackList);
         }
 
-        private List<ReviewFeedbackListViewModel> ReviewFeedbackList(bool forCurrentMonth)
+        private List<ReviewFeedbackListViewModel> ReviewFeedbackList(bool forCurrentMonth,int awardType)
         {
             _logger.Log("Review-ReviewFeedbackList-private-GET");
             var reviewFeedbacks = new List<ReviewFeedbackListViewModel>();
 
             var today = DateTime.Today;
             var prevMonth = new DateTime(today.Year, today.Month, 1).AddMonths(-1);
+            List<Review> uniqueReviewedNomination = new List<Review>();
 
-            var uniqueReviewedNomination = _encourageDatabaseContext.Query<Review>().Where(r => r.IsSubmited == true && (forCurrentMonth ? (r.Nomination.NominationDate >= prevMonth) : (r.Nomination.NominationDate < prevMonth))).GroupBy(x => x.NominationId).Select(group => group.FirstOrDefault()).ToList();
+            if (awardType != 0)
+            {
+                uniqueReviewedNomination = _encourageDatabaseContext.Query<Review>()
+                .Where(r =>
+                        r.IsSubmited == true &&
+                        r.Nomination.AwardId == awardType &&
+                        (forCurrentMonth ? (r.Nomination.NominationDate >= prevMonth) : (r.Nomination.NominationDate < prevMonth)))
+                .GroupBy(x => x.NominationId)
+                .Select(group => group.FirstOrDefault()).ToList();
+            }
+            else
+            {
+                uniqueReviewedNomination = _encourageDatabaseContext.Query<Review>()
+                .Where(r =>
+                        r.IsSubmited == true &&
+                        (forCurrentMonth ? (r.Nomination.NominationDate >= prevMonth) : (r.Nomination.NominationDate < prevMonth)))
+                .GroupBy(x => x.NominationId)
+                .Select(group => group.FirstOrDefault()).ToList();
+            }
+            
 
             foreach (var reviewNomination in uniqueReviewedNomination)
             {
@@ -184,13 +212,23 @@ namespace Silicus.EncourageWithAzureAd.Web.Controllers
 
         [HttpGet]
         [CustomeAuthorize(AllowedRole = "Admin")]
-        public ActionResult ViewNominationForShortlist(ReviewFeedbackListViewModel nominationModel)
+        public ActionResult ViewNominationForShortlist(int nominationId)
         {
             _logger.Log("Review-ViewNominationForShortlist-GET");
             ViewBag.NominationLockStatus = _nominationService.GetNominationLockStatus();
-            var reviews = _reviewService.GetReviewsForNomination(nominationModel.NominationId).ToList();
+            var reviews = _reviewService.GetReviewsForNomination(nominationId).ToList();
             var nomination = _nominationService.GetNomination(reviews.FirstOrDefault().NominationId);
             var allReviewerComments = new List<List<ReviewerCommentViewModel>>();
+            decimal totalCreditPoints = 0;
+
+            foreach (var r in reviews)
+            {
+                foreach (var rc in r.ReviewerComments)
+                {
+                    var managerCommnet = nomination.ManagerComments.FirstOrDefault(mc => mc.CriteriaId == rc.CriteriaId);
+                    totalCreditPoints += (Convert.ToInt32(rc.Credit) * (managerCommnet != null ? managerCommnet.Weightage : 0) / 100m);
+                }
+            }
 
             foreach (var review in reviews)
             {
@@ -215,7 +253,7 @@ namespace Silicus.EncourageWithAzureAd.Web.Controllers
 
             var lockedAwards = _nominationService.GetNominationLockStatus();
             var isLocked = false;
-            var awardOfCurrentNomination = _awardService.GetAwardFromNominationId(nominationModel.NominationId);
+            var awardOfCurrentNomination = _awardService.GetAwardFromNominationId(nominationId);
 
             foreach (var lockedAward in lockedAwards)
             {
@@ -225,20 +263,29 @@ namespace Silicus.EncourageWithAzureAd.Web.Controllers
                 }
             }
 
+            var isShortlisted = false;
+            var isWinner = false;
+            var checkResultStatus = _resultService.IsShortlistedOrWinner(nomination.Id);
+            if (checkResultStatus == 1)
+                isWinner = true;
+            else if (checkResultStatus == 2)
+                isShortlisted = true;
+
+            var nomineeName = _commonDbContext.Query<User>().FirstOrDefault(u => u.ID == nomination.UserId).DisplayName;
             var loggedInAdminId = _awardService.GetUserIdFromEmail(User.Identity.Name);
             var hrAdminsFeedback = _resultService.GetHrAdminsFeedbackForEmployee(loggedInAdminId, nomination.Id);
             var shortlistViewModel = new ViewShortlistDetailsViewModel()
             {
                 NominationId = nomination.Id,
-                UserName = nominationModel.DisplayName,
-                TotalCredits = nominationModel.Credits,
+                UserName = nomineeName,
+                TotalCredits = totalCreditPoints,
                 Manager = _nominationService.GetManagerNameOfCurrentNomination(reviews.FirstOrDefault().NominationId),
                 ProjectOrDepartment = nomination.ProjectID != null ?
                                            _nominationService.GetProjectNameOfCurrentNomination(nomination.Id) :
                                            _nominationService.GetDeptNameOfCurrentNomination(nomination.Id),
                 NominationComment = nomination.Comment,
-                IsShortlisted = nominationModel.IsShortlisted,
-                IsWinner = nominationModel.IsWinner,
+                IsShortlisted = isShortlisted,
+                IsWinner = isWinner,
                 ReviewerComments = allReviewerComments,
                 Criterias = _nominationService.GetCriteriaForNomination(nomination.Id),
                 ManagerComments = nomination.ManagerComments.ToList(),

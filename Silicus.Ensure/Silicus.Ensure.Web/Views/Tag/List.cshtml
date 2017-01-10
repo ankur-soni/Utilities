@@ -12,8 +12,9 @@
                       columns.Bound(p => p.Description);
                       columns.Command(cmd =>
                       {
+                          //command.Edit();
                           //cmd.Edit('').Text('.');//.HtmlAttributes(new { @style = "display:none" });
-                          cmd.Custom("Edit").Click("ConfirmEditRow").HtmlAttributes(new { @class = "k-button k-button-icontext k-grid-delete" });
+                          cmd.Custom("Edit").Text("<span class='k-icon k-edit'></span>Edit").Click("ConfirmEditRow").HtmlAttributes(new { @class = "k-button k-button-icontext k-grid-delete" });
                       }).Title("Actions");
                   })
             .DataSource(dataSource => dataSource
@@ -39,22 +40,23 @@
 
                         <div class="toolbar">
                             <div class="row">
-                                <div class="col-md-6">
-                                    <div class="input-group">
-                                        <span class="input-group-addon"><span class="glyphicon glyphicon-search" aria-hidden="true"></span></span>
-                                        <input type="text" class="form-control" id='FieldFilter' placeholder="Search...">
-                                        <span class="input-group-btn">
-                                            <button id="tagSearch" class="btn btn-default" type="button" style="height:16px;"><span class="glyphicon glyphicon-refresh" aria-hidden="true"></span></button>
-                                        </span>
+                                <div class="col-sm-12 M-B15">
+                                    <div class="col-sm-5 col-md-4 col-lg-3 M-T15">
+                                        <div class="input-group">
+                                            <span class="input-group-addon"><span class="glyphicon glyphicon-search" aria-hidden="true"></span></span>
+                                            <input type="text" class="form-control" id='FieldFilter' placeholder="Search">
+                                            <span class="input-group-btn">
+                                                <button id="tagSearch" class="btn btn-default" type="button" style="height:20px!important;border:1px solid #0070B9!important"><span class="glyphicon glyphicon-refresh" aria-hidden="true"></span></button>
+                                            </span>
+                                        </div>
+
+
                                     </div>
+                                    <a style="margin-top:20px;" href='/#' class='k-button k-button-icontext k-grid-add'><span class='k-icon k-add'></span>Add Tag</a>
+
                                 </div>
                             </div>
-                            <br />
-                            <div class="row">
-                                <div class="col-md-3 col-md-push-1" style="float: right; padding-right: 0px; margin-right: -22px;">
-                                    <a href='/#' class='k-button k-button-icontext k-grid-add'><span class='k-icon k-add'></span>Add Tag</a>
-                                </div>
-                            </div>
+
                         </div>
                     </text>);
                 })
@@ -72,7 +74,7 @@
 
             var value = $("#FieldFilter").val();
             grid = $("#tagsGrids").data("kendoGrid");
-
+            var pageSize = grid.dataSource.pageSize();
             if (value.length > 0) {
                 if (value) {
                     var filter = { logic: "or", filters: [] };
@@ -80,6 +82,7 @@
                     filter.filters.push({ field: "Description", operator: "contains", value: value });
                     grid.dataSource.query({ filter: filter });
                     grid.dataSource.sort({ field: "TagName", dir: "asc" });
+                    grid.dataSource.pageSize(pageSize);
                 } else {
                     grid.dataSource.filter({});
                 }
@@ -116,7 +119,7 @@
             //$("#TagName").attr('disabled', true);
             $("#existingTagName").val(e.model.TagName);
         }
-
+        $(".k-grid-update , .k-grid-cancel").addClass('btn primary-bt');
     }
 
     function requestend_handler(e) {
@@ -128,12 +131,12 @@
 
         if (e.type == "update" && !e.response.Errors) {
             //toastr.success("Auto Pays details has been saved successfully!");
-            ShowMessage("Tag Updated successfully.", 1);
+            ShowMessage("Tag updated successfully.", 1);
             RefreshKendoGrid('tagsGrids');
         }
 
         if (e.type == "create" && !e.response.Errors) {
-            ShowMessage("Tag Created successfully.", 1);
+            ShowMessage("Tag created successfully.", 1);
             RefreshKendoGrid('tagsGrids');
         }
 
@@ -172,7 +175,7 @@
             data: { tagName: tagName },
             success: function (returndata) {
                 if (returndata == true) {
-                    $.when(showConfirmationWindow('This tag is already associated with a question. Are you sure you want to edit this?', 'Edit')).then(function (confirmed) {
+                    $.when(showConfirmationWindow('This tag is already associated with a question. Are you sure you want to edit this?', '&nbsp;Edit')).then(function (confirmed) {
                         if (confirmed) {
                             // $(tr).find('.k-grid-edit').trigger('click');
                             grid.editRow(tr);
@@ -180,7 +183,6 @@
                     });
                 }
                 else {
-                    debugger;
                     grid.editRow(tr);
                 }
             }
@@ -196,7 +198,6 @@
                 async: false,
                 data: { existingTagName: existingName, tagName: updatedName },
                 success: function (returndata) {
-                    debugger;
                     if (returndata == true) {
                         isAvailable = true;
                     }

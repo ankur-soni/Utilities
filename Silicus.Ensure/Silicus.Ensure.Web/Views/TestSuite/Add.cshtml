@@ -43,7 +43,7 @@
             <div class="row">
                 <div class="col-md-12">
                     <div class="col-md-6">
-                        <div class="col-md-6">
+                        <div class="col-md-6" style="padding-left: 0;">
                             @Html.LabelFor(model => model.Position)<b style="color:Red;">*</b>
                         </div>
                         <div class="col-md-6" style="padding-left: 9px;">
@@ -93,7 +93,7 @@
             <div class="row">
                 <div class="col-md-6">
                     <div class="col-md-6">
-                        Question Type
+                        Question Type<b style="color:Red;">*</b>
                     </div>
                     <div class="col-md-6">
                         <div class="col-md-6" style="padding-left:0">
@@ -500,7 +500,7 @@
 
     $(document).ready(function () {
         if (@Model.TestSuiteId== 0) {
-            $('#tag_table').append('<tr><td id="tag_title_row">Skill Tag 1<b style="color:Red;">*</b></td><td id="tag_name_row"><input type="text" name="tagName" id="tag_name" class="autocomplete"></td><td id="weight_title_row">Weightage % 1<b style="color:Red;">*</b></td><td id="weight_name_row"><input type="text" name="WeightName" id="weight_name" class="key-numeric" maxlength="3"></td><td id="efficiency_title_row">Efficiency 1<b style="color:Red;">*</b></td><td id="efficiency_name_row"><input id="efficiency_name" name="efficiency" id="efficiency_name" class="efficiency" style="width:130px;"></td><td><a href="#" style="color:black"  onclick="add_row();"><span class="glyphicon glyphicon-plus" /></a>  </td></tr>')
+            $('#tag_table').append('<tr><td id="tag_title_row">Skill Tag 1<b style="color:Red;">*</b></td><td id="tag_name_row"><input type="text" data-val="true" data-val-required="Tag cant be null!." name="tagName" id="tag_name" class="autocomplete"></td><td id="weight_title_row">Weightage % 1<b style="color:Red;">*</b></td><td id="weight_name_row"><input type="text" data-val="true" data-val-required="Weight cant be null!."  name="WeightName" id="weight_name" class="key-numeric" maxlength="3"></td><td id="efficiency_title_row">Efficiency 1<b style="color:Red;">*</b></td><td id="efficiency_name_row"><input data-val="true" data-val-number="Efficiency must be a number." data-val-required="Efficiency is required!" id="efficiency_name" name="efficiency" id="efficiency_name" class="efficiency" style="width:130px;"></td><td><a href="#" style="color:black"  onclick="add_row();"><span class="glyphicon glyphicon-plus" /></a>  </td></tr>')
         }
     });
 
@@ -511,10 +511,10 @@
             var tagName = $(this).find("td input[type=text][name=tagName]").val();
             var weightName = $(this).find("td input[type=text][name=WeightName]").val();
             var efficiencyValue = $(this).find("td input[name=efficiency]").val();
-            tableContent += "<tr id='row" + rowNum + "'><td id='tag_title_row" + rowNum + "'>" + "Skill Tag " + (parseInt(rowNum)+1) + "<b style='color:Red;'>*</b>" + "</td><td id='tag_name_row" + rowNum + "'>" + "<input type='text' class='autocomplete' name='tagName' id='name_text" + rowNum + "' value='" + tagName + "'>" + "</td><td id='weight_title_row" + rowNum + "'>" + "Weightage % " + (parseInt(rowNum)+1) + "<b style='color:Red;'>*</b>" + "</td><td id='weight_name_row" + rowNum + "'>" + "<input type='text' class='key-numeric' maxlength='3' name='WeightName'  id='name_text" + rowNum + "' value='" + weightName + "'>" + "</td><td id='efficiency_title_row" + rowNum + "'>" + "Efficiency " + (parseInt(rowNum)+1) + "<b style='color:Red;'>*</b>" + "</td><td id='efficiency_name_row" + rowNum + "'><input id='name_text" + rowNum + "' id='efficiency_name' value='" + efficiencyValue + "' name='efficiency' class='efficiency' style='width:130px;'></td><td><a href='#' style='color:black'  onclick='delete_row("+rowNum+");'><span class='glyphicon glyphicon-minus'></span></a></td></tr>";
+            tableContent += "<tr id='row" + rowNum + "'><td id='tag_title_row" + rowNum + "'>" + "Skill Tag " + (parseInt(rowNum)+1) + "<b style='color:Red;'>*</b>" + "</td><td id='tag_name_row" + rowNum + "'>" + "<input type='text' data-val='true' data-val-required='Tag " + parseInt(parseInt(rowNum)+parseInt(1) )+ " cant be null!.' class='autocomplete' name='tagName' id='name_text" + rowNum + "' value='" + tagName + "'>" + "</td><td id='weight_title_row" + rowNum + "'>" + "Weightage % " + (parseInt(rowNum)+1) + "<b style='color:Red;'>*</b>" + "</td><td id='weight_name_row" + rowNum + "'>" + "<input type='text' data-val='true' data-val-required='Weight " + parseInt(parseInt(rowNum)+parseInt(1) )+ " cant be null!.' class='key-numeric' maxlength='3' name='WeightName'  id='name_text" + rowNum + "' value='" + weightName + "'>" + "</td><td id='efficiency_title_row" + rowNum + "'>" + "Efficiency " + (parseInt(rowNum)+1) + "<b style='color:Red;'>*</b>" + "</td><td id='efficiency_name_row" + rowNum + "'><input id='name_text" + rowNum + "' id='efficiency_name' value='" + efficiencyValue + "' name='efficiency' class='efficiency' style='width:130px;'></td><td><a href='#' style='color:black'  onclick='delete_row("+rowNum+");'><span class='glyphicon glyphicon-minus'></span></a></td></tr>";
             rowNum=rowNum + 1;
         })
-        tableContent += "<tr id='row" + rowNum + "'><td id='tag_title_row" + rowNum + "'>" + "Skill Tag " + (parseInt(rowNum)+1) + "<b style='color:Red;'>*</b>" + "</td><td id='tag_name_row" + rowNum + "'>" + "<input type='text' class='autocomplete' name='tagName' id='name_text" + rowNum + "' value='" + '' + "'>" + "</td><td id='weight_title_row" + rowNum + "'>" + "Weightage % " + (parseInt(rowNum)+1) + "<b style='color:Red;'>*</b>" + "</td><td id='weight_name_row" + rowNum + "'>" + "<input type='text' class='key-numeric' maxlength='3' name='WeightName'  id='name_text" + rowNum + "' value='" + '' + "'>" + "</td><td id='efficiency_title_row" + rowNum + "'>" + "Efficiency " + (parseInt(rowNum)+1) + "<b style='color:Red;'>*</b>" + "</td><td id='efficiency_name_row" + rowNum + "'><input id='name_text" + rowNum + "' id='efficiency_name' value='" + '' + "' name='efficiency' class='efficiency' style='width:130px;'></td><td><a href='#' style='color:black'  onclick='delete_row("+rowNum+");;'><span class='glyphicon glyphicon-minus'></span></a> <a href='#'  style='color:black'  onclick='add_row();'><span class='glyphicon glyphicon-plus' ></span></a>  </td></tr>";
+        tableContent += "<tr id='row" + rowNum + "'><td id='tag_title_row" + rowNum + "'>" + "Skill Tag " + (parseInt(rowNum)+1) + "<b style='color:Red;'>*</b>" + "</td><td id='tag_name_row" + rowNum + "'>" + "<input type='text' data-val='true' data-val-required='Tag " +parseInt(parseInt(rowNum)+parseInt(1) ) + " cant be null!.' class='autocomplete' name='tagName' id='name_text" + rowNum + "' value='" + '' + "'>" + "</td><td id='weight_title_row" + rowNum + "'>" + "Weightage % " + (parseInt(rowNum)+1) + "<b style='color:Red;'>*</b>" + "</td><td id='weight_name_row" + rowNum + "'>" + "<input type='text' data-val='true' data-val-required='Weight " + parseInt(parseInt(rowNum)+parseInt(1) )+ " cant be null!.' class='key-numeric' maxlength='3' name='WeightName'  id='name_text" + rowNum + "' value='" + '' + "'>" + "</td><td id='efficiency_title_row" + rowNum + "'>" + "Efficiency " + (parseInt(rowNum)+1) + "<b style='color:Red;'>*</b>" + "</td><td id='efficiency_name_row" + rowNum + "'><input id='name_text" + rowNum + "' id='efficiency_name' value='" + '' + "' name='efficiency' class='efficiency' style='width:130px;'></td><td><a href='#' style='color:black'  onclick='delete_row("+rowNum+");;'><span class='glyphicon glyphicon-minus'></span></a> <a href='#'  style='color:black'  onclick='add_row();'><span class='glyphicon glyphicon-plus' ></span></a>  </td></tr>";
         $("#tag_table > tbody").html(tableContent)
         loadCommon();
     }
@@ -538,16 +538,16 @@
                 {
                     if(table_len != 0)
                     {
-                        tableContent += "<tr id='row" + rowNum + "'><td id='tag_title_row" + rowNum + "'>" + "Skill Tag " + (parseInt(rowNum)+1) + "<b style='color:Red;'>*</b>" + "</td><td id='tag_name_row" + rowNum + "'>" + "<input type='text' class='autocomplete' name='tagName' id='name_text" + rowNum + "' value='" + tagName + "'>" + "</td><td id='weight_title_row" + rowNum + "'>" + "Weightage % " + (parseInt(rowNum)+1) + "<b style='color:Red;'>*</b>" + "</td><td id='weight_name_row" + rowNum + "'>" + "<input type='text' class='key-numeric' maxlength='3' name='WeightName'  id='name_text" + rowNum + "' value='" + weightName + "'>" + "</td><td id='efficiency_title_row" + rowNum + "'>" + "Efficiency " + (parseInt(rowNum)+1) + "<b style='color:Red;'>*</b>" + "</td><td id='efficiency_name_row" + rowNum + "'><input id='name_text" + rowNum + "' id='efficiency_name' value='" + efficiencyValue + "' name='efficiency' class='efficiency' style='width:130px;'></td><td><a href='#' style='color:black' onclick='delete_row("+rowNum+");'><span class='glyphicon glyphicon-minus'></span></a> <a href='#' style='color:black;' onclick='add_row();'><span class='glyphicon glyphicon-plus' ></span></a></td></tr>";
+                        tableContent += "<tr id='row" + rowNum + "'><td id='tag_title_row" + rowNum + "'>" + "Skill Tag " + (parseInt(rowNum)+1) + "<b style='color:Red;'>*</b>" + "</td><td id='tag_name_row" + rowNum + "'>" + "<input type='text' data-val='true' data-val-required='Tag " + parseInt(parseInt(rowNum)+parseInt(1) )+ " cant be null!.' class='autocomplete' name='tagName' id='name_text" + rowNum + "' value='" + tagName + "'>" + "</td><td id='weight_title_row" + rowNum + "'>" + "Weightage % " + (parseInt(rowNum)+1) + "<b style='color:Red;'>*</b>" + "</td><td id='weight_name_row" + rowNum + "'>" + "<input type='text' data-val='true' data-val-required='Weight " + parseInt(parseInt(rowNum)+parseInt(1) )+ " cant be null!.' class='key-numeric' maxlength='3' name='WeightName'  id='name_text" + rowNum + "' value='" + weightName + "'>" + "</td><td id='efficiency_title_row" + rowNum + "'>" + "Efficiency " + (parseInt(rowNum)+1) + "<b style='color:Red;'>*</b>" + "</td><td id='efficiency_name_row" + rowNum + "'><input id='name_text" + rowNum + "' id='efficiency_name' value='" + efficiencyValue + "' name='efficiency' class='efficiency' style='width:130px;'></td><td><a href='#' style='color:black' onclick='delete_row("+rowNum+");'><span class='glyphicon glyphicon-minus'></span></a> <a href='#' style='color:black;' onclick='add_row();'><span class='glyphicon glyphicon-plus' ></span></a></td></tr>";
                     }
                     else
                     {
-                        tableContent += "<tr id='row" + rowNum + "'><td id='tag_title_row" + rowNum + "'>" + "Skill Tag " + (parseInt(rowNum)+1) + "<b style='color:Red;'>*</b>" + "</td><td id='tag_name_row" + rowNum + "'>" + "<input type='text' class='autocomplete' name='tagName' id='name_text" + rowNum + "' value='" + tagName + "'>" + "</td><td id='weight_title_row" + rowNum + "'>" + "Weightage % " + (parseInt(rowNum)+1) + "<b style='color:Red;'>*</b>" + "</td><td id='weight_name_row" + rowNum + "'>" + "<input type='text' class='key-numeric' maxlength='3' name='WeightName'  id='name_text" + rowNum + "' value='" + weightName + "'>" + "</td><td id='efficiency_title_row" + rowNum + "'>" + "Efficiency " + (parseInt(rowNum)+1) + "<b style='color:Red;'>*</b>" + "</td><td id='efficiency_name_row" + rowNum + "'><input id='name_text" + rowNum + "' id='efficiency_name' value='" + efficiencyValue + "' name='efficiency' class='efficiency' style='width:130px;'></td><td> <a href='#' style='color:black'  onclick='add_row();'><span class='glyphicon glyphicon-plus' ></span></a></td></tr>";
+                        tableContent += "<tr id='row" + rowNum + "'><td id='tag_title_row" + rowNum + "'>" + "Skill Tag " + (parseInt(rowNum)+1) + "<b style='color:Red;'>*</b>" + "</td><td id='tag_name_row" + rowNum + "'>" + "<input type='text' data-val='true' data-val-required='Tag " + parseInt(parseInt(rowNum)+parseInt(1) )+ " cant be null!.' class='autocomplete' name='tagName' id='name_text" + rowNum + "' value='" + tagName + "'>" + "</td><td id='weight_title_row" + rowNum + "'>" + "Weightage % " + (parseInt(rowNum)+1) + "<b style='color:Red;'>*</b>" + "</td><td id='weight_name_row" + rowNum + "'>" + "<input type='text' data-val='true' data-val-required='Weight " + parseInt(parseInt(rowNum)+parseInt(1) )+ " cant be null!.' class='key-numeric' maxlength='3' name='WeightName'  id='name_text" + rowNum + "' value='" + weightName + "'>" + "</td><td id='efficiency_title_row" + rowNum + "'>" + "Efficiency " + (parseInt(rowNum)+1) + "<b style='color:Red;'>*</b>" + "</td><td id='efficiency_name_row" + rowNum + "'><input id='name_text" + rowNum + "' id='efficiency_name' value='" + efficiencyValue + "' name='efficiency' class='efficiency' style='width:130px;'></td><td> <a href='#' style='color:black'  onclick='add_row();'><span class='glyphicon glyphicon-plus' ></span></a></td></tr>";
                     }
                 }
                 else
                 {
-                    tableContent += "<tr id='row" + rowNum + "'><td id='tag_title_row" + rowNum + "'>" + "Skill Tag " + (parseInt(rowNum)+1) + "<b style='color:Red;'>*</b>" + "</td><td id='tag_name_row" + rowNum + "'>" + "<input type='text' class='autocomplete' name='tagName' id='name_text" + rowNum + "' value='" + tagName + "'>" + "</td><td id='weight_title_row" + rowNum + "'>" + "Weightage % " + (parseInt(rowNum)+1) + "<b style='color:Red;'>*</b>" + "</td><td id='weight_name_row" + rowNum + "'>" + "<input type='text' class='key-numeric' maxlength='3' name='WeightName'  id='name_text" + rowNum + "' value='" + weightName + "'>" + "</td><td id='efficiency_title_row" + rowNum + "'>" + "Efficiency " + (parseInt(rowNum)+1) + "<b style='color:Red;'>*</b>" + "</td><td id='efficiency_name_row" + rowNum + "'><input id='name_text" + rowNum + "' id='efficiency_name' value='" + efficiencyValue + "' name='efficiency' class='efficiency' style='width:130px;'></td><td><a href='#' style='color:black'  onclick='delete_row("+rowNum+");'><span class='glyphicon glyphicon-minus'></span></a></td></tr>";
+                    tableContent += "<tr id='row" + rowNum + "'><td id='tag_title_row" + rowNum + "'>" + "Skill Tag " + (parseInt(rowNum)+1) + "<b style='color:Red;'>*</b>" + "</td><td id='tag_name_row" + rowNum + "'>" + "<input type='text' data-val='true' data-val-required='Tag " + parseInt(parseInt(rowNum)+parseInt(1) )+ " cant be null!.' class='autocomplete' name='tagName' id='name_text" + rowNum + "' value='" + tagName + "'>" + "</td><td id='weight_title_row" + rowNum + "'>" + "Weightage % " + (parseInt(rowNum)+1) + "<b style='color:Red;'>*</b>" + "</td><td id='weight_name_row" + rowNum + "'>" + "<input type='text' data-val='true' data-val-required='Weight " + parseInt(parseInt(rowNum)+parseInt(1) )+ " cant be null!.' class='key-numeric' maxlength='3' name='WeightName'  id='name_text" + rowNum + "' value='" + weightName + "'>" + "</td><td id='efficiency_title_row" + rowNum + "'>" + "Efficiency " + (parseInt(rowNum)+1) + "<b style='color:Red;'>*</b>" + "</td><td id='efficiency_name_row" + rowNum + "'><input id='name_text" + rowNum + "' id='efficiency_name' value='" + efficiencyValue + "' name='efficiency' class='efficiency' style='width:130px;'></td><td><a href='#' style='color:black'  onclick='delete_row("+rowNum+");'><span class='glyphicon glyphicon-minus'></span></a></td></tr>";
                 }
                 rowNum=rowNum + 1;
             })
@@ -590,17 +590,6 @@
         var isWeight;
         var totalWeight=0;
         $('#tag_table').find('tr').each(function () {
-
-            if($(this).find('td input[type=text][name=tagName]').val()=='')
-            {
-                isError = "tagBlank";
-                return false;
-            }
-            if($(this).find('td input[type=text][name=WeightName]').val()=='')
-            {
-                isError = "weightBlank";
-                return false;
-            }
             if($(this).find('td input[name=efficiency]').val()=='0')
             {
                 isError = "efficiencyBlank";
@@ -618,17 +607,8 @@
             totalWeight+=parseInt($(this).val());
         });
 
-        if(isError=="tagBlank")
-        {
-            ShowMessage("Skill tag cann't be blank.", 0);
-            return false;
-        }
-        else if(isError=="weightBlank")
-        {
-            ShowMessage("Weighatage cann't be blank.", 0);
-            return false;
-        }
-        else if(isError=="efficiencyBlank")
+
+        if(isError=="efficiencyBlank")
         {
             ShowMessage("Efficiency cann't be blank.", 0);
             return false;

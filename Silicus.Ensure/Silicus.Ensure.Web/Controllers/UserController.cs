@@ -16,6 +16,7 @@ using System.IO;
 using Silicus.Ensure.Models.Constants;
 using Silicus.Ensure.Services;
 using System.Collections.Generic;
+using System.Web.Configuration;
 
 namespace Silicus.Ensure.Web.Controllers
 {
@@ -23,12 +24,15 @@ namespace Silicus.Ensure.Web.Controllers
     //[Authorize]
     public class UserController : Controller
     {
+        private readonly IPanelMemberService _panelMemberService;
         private readonly IUserService _userService;
         private readonly IMappingService _mappingService;
         private readonly ITestSuiteService _testSuiteService;
         private readonly IPositionService _positionService;
-        private readonly Silicus.UtilityContainer.Services.Interfaces.IUserService _containerService;
+        private readonly Silicus.UtilityContainer.Services.Interfaces.IUserService _containerUserService;
         private ApplicationUserManager _userManager;
+        private Silicus.UtilityContainer.Services.Interfaces.IUtilityService _utilityService;
+        private Silicus.UtilityContainer.Services.Interfaces.IUtilityUserRoleService _utilityUserRoleService;
         public ApplicationUserManager UserManager
         {
             get
@@ -54,13 +58,17 @@ namespace Silicus.Ensure.Web.Controllers
             }
         }
 
-        public UserController(IUserService userService, MappingService mappingService, ITestSuiteService testSuiteService, PositionService positionService, Silicus.UtilityContainer.Services.Interfaces.IUserService containerService)
+        public UserController(IUserService userService, MappingService mappingService, ITestSuiteService testSuiteService, PositionService positionService, Silicus.UtilityContainer.Services.Interfaces.IUserService containerUserService,
+            Silicus.UtilityContainer.Services.Interfaces.IUtilityService utilityService, Silicus.UtilityContainer.Services.Interfaces.IUtilityUserRoleService utilityUserRoleService, IPanelMemberService panelMemberService)
         {
             _positionService = positionService;
             _userService = userService;
             _mappingService = mappingService;
             _testSuiteService = testSuiteService;
-            _containerService = containerService;
+            _containerUserService = containerUserService;
+            _utilityService = utilityService;
+            _utilityUserRoleService = utilityUserRoleService;
+            _panelMemberService = panelMemberService;
         }
 
         public ActionResult Dashboard()
@@ -76,19 +84,60 @@ namespace Silicus.Ensure.Web.Controllers
         /// <returns></returns>
         public ActionResult GetUserDetails([DataSourceRequest] DataSourceRequest request)
         {
-            var userlist = _containerService.GetAllUsers();
+            var userlist = _containerUserService.GetAllUsers();
+            var userlistViewModel = _mappingService.Map<List<Silicus.UtilityContainer.Models.DataObjects.User>, List<UserDetailViewModel>>(userlist);
+            var UtilityId = getUtilityId();
+            var userRoles = _utilityUserRoleService.GetAllUserRolesForUtility(UtilityId);
 
-            var viewModels = _mappingService.Map<List<Silicus.UtilityContainer.Models.DataObjects.User>,List<ContainerUserViewModel>>(userlist);
-            bool userInRole = User.IsInRole(Silicus.Ensure.Models.Constants.RoleName.Admin.ToString());
+            var userWithRoles = (from userinRoles in userRoles
+                                 join allUsers in userlistViewModel
+                                 on userinRoles.UserId equals allUsers.UserId into temp
+                                 from j in temp.DefaultIfEmpty()
+                                 select new UserDetailViewModel
+                                 {
+                                     RoleName = userinRoles.Role.Name,
+                                     UserName = j.UserName,
+                                     Department = j.Department,
+                                     Designation = j.Designation,
+                                     Email = j.Email,
+                                     FirstName = j.FirstName,
+                                     FullName = j.FullName,
+                                     LastName = j.LastName,
+                                     MiddleName = j.MiddleName,
+                                     RoleId = userinRoles.Role.ID,
+                                     UserId = j.UserId
+                                 }).ToList();
 
-            //for (int j = 0; j < viewModels.Count(); j++)
-            //{
-            //    viewModels[j].IsAdmin = userInRole;
-            //    viewModels[j].FirstName = viewModels[j].FirstName + " " + viewModels[j].LastName;
-            //}
-
-            DataSourceResult result = viewModels.ToDataSourceResult(request);
+            DataSourceResult result = userWithRoles.ToDataSourceResult(request);
             return Json(result);
+        }
+
+        private UserDetailViewModel GetAdUserDetails(string email)
+        {
+            var user = _containerUserService.FindUserByEmail(email);
+            var userViewModel = _mappingService.Map<Silicus.UtilityContainer.Models.DataObjects.User, UserDetailViewModel>(user);
+            var UtilityId = getUtilityId();
+            var userRole = _utilityUserRoleService.GetAllRolesForUser(email);
+
+            var assignedRole = userRole.FirstOrDefault(y => y.Id == userViewModel.UserId);
+
+            if (assignedRole != null)
+                userViewModel.RoleName = assignedRole.Role.Name;
+
+            return userViewModel;
+        }
+
+
+
+        private int getUtilityId()
+        {
+            var utilityProductId = WebConfigurationManager.AppSettings["ProductId"];
+            if (string.IsNullOrWhiteSpace(utilityProductId))
+            {
+                throw new ArgumentNullException();
+            }
+
+            return Convert.ToInt32(utilityProductId);
         }
 
         /// <summary>
@@ -118,18 +167,18 @@ namespace Silicus.Ensure.Web.Controllers
         /// </summary>
         /// <param name="request"></param>
         /// <returns></returns>
-        public async Task<ActionResult> GetCandidateDetails([DataSourceRequest] DataSourceRequest request, string RoleName)
+        public ActionResult GetCandidateDetails([DataSourceRequest] DataSourceRequest request, string RoleName)
         {
             _testSuiteService.TestSuiteActivation();
 
-            var userlist = _userService.GetUserDetails().Where(p => p.Role.ToLower() == RoleName.ToLower()).ToArray();
-            if (User.IsInRole(Silicus.Ensure.Models.Constants.RoleName.Panel.ToString()))
+            var userlist = _userService.GetUserDetails().Where(p => p.Role.ToLower() == RoleName.ToLower()).ToArray().Reverse().ToArray();
+            if (MvcApplication.getCurrentUserRoles().Contains(Silicus.Ensure.Models.Constants.RoleName.Panel.ToString()))
             {
-                var currentUser = _userService.GetUserByEmail(User.Identity.Name);
-                if (currentUser != null)
+                var currentUserMail = HttpContext.User.Identity.Name;
+                var user = _containerUserService.FindUserByEmail(currentUserMail);
+                if (user != null)
                 {
-                    string currentUserId = Convert.ToString(currentUser.UserId);
-                    userlist = userlist.Where(x => x.PanelId != null && x.PanelId.Contains(currentUserId)).ToArray();
+                    userlist = userlist.Where(x => x.PanelId != null && x.PanelId.Contains(Convert.ToString(user.ID))).ToArray();
                 }
             }
             var viewModels = _mappingService.Map<User[], UserViewModel[]>(userlist);
@@ -137,15 +186,9 @@ namespace Silicus.Ensure.Web.Controllers
 
             for (int j = 0; j < viewModels.Count(); j++)
             {
-                var userDetails = await UserManager.FindByEmailAsync(viewModels[j].Email);
-                if (userDetails != null)
-                {
-                    var viewUsersRole = await UserManager.GetRolesAsync(userDetails.Id);
-                    var testSuitId = _testSuiteService.GetUserTestSuiteByUserId(viewModels[j].UserId);
-                    viewModels[j].Role = viewUsersRole.FirstOrDefault();
-                    viewModels[j].IsAdmin = userInRole;
-                    viewModels[j].TestSuiteId = testSuitId != null ? testSuitId.TestSuiteId : 0;
-                }
+                var testSuitId = _testSuiteService.GetUserTestSuiteByUserId(viewModels[j].UserId);
+                viewModels[j].IsAdmin = userInRole;
+                viewModels[j].TestSuiteId = testSuitId != null ? testSuitId.TestSuiteId : 0;
             }
             DataSourceResult result = viewModels.ToDataSourceResult(request);
             return Json(result);
@@ -311,6 +354,7 @@ namespace Silicus.Ensure.Web.Controllers
         {
             ResumeName = Guid.NewGuid() + Path.GetFileName(files.FileName);
             ResumePath = Path.Combine(Server.MapPath("~/Content/CandidateResume"), ResumeName);
+            Directory.CreateDirectory(Server.MapPath("~/Content/CandidateResume"));
             files.SaveAs(ResumePath);
             string fl = ResumePath.Substring(ResumePath.LastIndexOf("\\"));
             string[] split = fl.Split('\\');

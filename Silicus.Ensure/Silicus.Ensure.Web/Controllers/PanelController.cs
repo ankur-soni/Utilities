@@ -53,7 +53,7 @@ namespace Silicus.Ensure.Web.Controllers
             if (_panelService.GetPanelByName(panelName) != null)
                 flag = false;
 
-            return Json(flag);
+            return Json(flag,JsonRequestBehavior.AllowGet);
         }
 
         public ActionResult PanelSave([DataSourceRequest] DataSourceRequest dsRequest, Panel panel)
@@ -65,7 +65,7 @@ namespace Silicus.Ensure.Web.Controllers
                     _panelService.Add(panel);
                 }
             }
-            return Json(ModelState.ToDataSourceResult());
+            return Json(panel,JsonRequestBehavior.AllowGet);
         }
 
         public ActionResult PanelUpdate([DataSourceRequest] DataSourceRequest dsRequest, Panel panel)

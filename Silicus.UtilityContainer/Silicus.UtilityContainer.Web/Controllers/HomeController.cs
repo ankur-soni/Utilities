@@ -4,6 +4,8 @@ using System.Web.Mvc;
 using Silicus.UtilityContainer.Models.DataObjects;
 using Silicus.UtilityContainer.Models.ViewModels;
 using Silicus.UtilityContainer.Services.Interfaces;
+using System.Collections.Generic;
+using Silicus.UtilityContainer.Web.Models;
 
 namespace Silicus.UtilityContainer.Web.Controllers
 {
@@ -56,21 +58,45 @@ namespace Silicus.UtilityContainer.Web.Controllers
             return View(newUserRole);
         }
 
-        [HttpPost]
-        public ActionResult AddRolesToUserForAUtility(UtilityUserRoleViewModel newUserRole)
+        public ActionResult GetAllUsersByRoleInUtility(int utilityId,int roleId)
         {
-            if (newUserRole.RoleId != 0)
+           var users = _userService.GetAllUsersByRoleInUtility(utilityId, roleId);
+            var allUsers = _userService.GetAllUsers();
+            var availableUsers = new List<UsersWithRolesPerUtilityViewModel>();
+            var selectedUsers = new List<UsersWithRolesPerUtilityViewModel>();
+            foreach (var item in allUsers)
+            {
+                if (users.Find( x => x.ID == item.ID) != null)
+                {
+                    availableUsers.Add(new UsersWithRolesPerUtilityViewModel { UserName = item.DisplayName, UserId = item.ID, Status = true});
+                }
+                else
+                {
+                    availableUsers.Add(new UsersWithRolesPerUtilityViewModel { UserName = item.DisplayName, UserId = item.ID });
+                }
+                
+            }
+            foreach (var item in users)
+            {
+                selectedUsers.Add(new UsersWithRolesPerUtilityViewModel { UserName = item.DisplayName, UserId = item.ID });
+            }
+            
+            return Json(new { availableItems = availableUsers, selectedItems = selectedUsers }, JsonRequestBehavior.AllowGet);
+        }
+
+        [HttpPost]
+        public ActionResult AddRolesToUserForAUtility(int utilityId, int roleId, int[] userIds)
+        {
+            if (roleId != 0)
             {
                 _userService.AddRolesToUserForAUtility(new UtilityUserRoleViewModel
                 {
-                    UtilityId = newUserRole.UtilityId,
-                    RoleId = newUserRole.RoleId,
-                    UserId = newUserRole.UserId
+                    UtilityId = utilityId,
+                    RoleId = roleId,
+                    UserId = userIds.ToList()
                 });
                 return RedirectToAction("Index");
             }
-
-
             return RedirectToAction("Index");
         }
 
@@ -79,17 +105,37 @@ namespace Silicus.UtilityContainer.Web.Controllers
         {
             var newUtilityRole = new UtilityRole();
             ViewData["Utilities"] = new SelectList(_utilityService.GetAllUtilities(), "Id", "Name");
-            ViewData["Roles"] = new SelectList(_roleService.GetAllRoles(), "ID", "Name");
+           // ViewData["Roles"] = new SelectList(_roleService.GetAllRoles(), "ID", "Name");
             return View(newUtilityRole);
         }
 
         [HttpPost]
-        public ActionResult AddRoleToUtility(UtilityRole newUtilityRole)
+        public ActionResult AddRoleToUtility(int utilityId, int[] roleIds)
         {
-            ViewData["Utilities"] = new SelectList(_utilityService.GetAllUtilities(), "Id", "Name");
-            ViewData["Roles"] = new SelectList(_roleService.GetAllRoles(), "ID", "Name");
-            _utilityService.SaveUtilityRole(newUtilityRole);
-            return RedirectToAction("Index");
+           // ViewData["Utilities"] = new SelectList(_utilityService.GetAllUtilities(), "Id", "Name");
+            //ViewData["Roles"] = new SelectList(_roleService.GetAllRoles(), "ID", "Name");
+            _utilityService.SaveUtilityRole(new UtilityRoleViewModel { UtilityId = utilityId, RoleIds = roleIds.ToList() });
+            return Json(true, JsonRequestBehavior.AllowGet);
+        }
+
+        public ActionResult GetAllRoles(int utilityId)
+        {
+            var allRoles = _roleService.GetAllRoles();
+            var utilityRoles = _utilityService.GetAllRolesForAnUtility(utilityId);
+            var rolesToSend = new List<RolesViewModel>();
+            foreach (var role in allRoles)
+            {
+                if (utilityRoles.Find( x => x.RoleID == role.ID) != null)
+                {
+                    rolesToSend.Add(new RolesViewModel { Id = role.ID, Name = role.Name, AlreadyExistsInSelectedUtility = true });
+
+                }
+                else
+                {
+                    rolesToSend.Add(new RolesViewModel { Id = role.ID, Name = role.Name });
+                }
+            }
+            return Json(rolesToSend, JsonRequestBehavior.AllowGet);
         }
 
         [HttpGet]

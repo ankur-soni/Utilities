@@ -20,7 +20,7 @@
         @if (Model.Rating == 0)
         {
             @Html.DropDownListFor(i => i.Weightage,
-            Enumerable.Range(0, 20).Select(x => x * 5).
+            Enumerable.Range(0, 21).Select(x => x * 5).
                 Select(j => new SelectListItem
                 {
                     Value = j.ToString(),
@@ -37,7 +37,7 @@
         {
             /**/
             @Html.DropDownListFor(i => i.Weightage,
-            Enumerable.Range(0, 20).Select(x => x * 5).
+            Enumerable.Range(0, 21).Select(x => x * 5).
                 Select(j => new SelectListItem
                 {
                     Value = j.ToString(),
