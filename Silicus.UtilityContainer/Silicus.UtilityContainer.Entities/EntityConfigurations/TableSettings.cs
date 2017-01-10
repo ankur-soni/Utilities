@@ -22,5 +22,6 @@ namespace Silicus.UtilityContainer.Entities.EntityConfigurations
         public static readonly string Holidays = "Holiday";
         public static readonly string Credits = "Credits";
         public static readonly string Client = "Client";
+        public static readonly string SuperUsers = "SuperUser";
     }
 }

@@ -10,5 +10,6 @@ namespace Silicus.Ensure.Web.Application
         public const string TestStatusAssigned = "Assigned";
         public const string TestStatusUnAssigned = "UnAssigned";
         public const string TestStatusSubmitted = "Submitted";
+        public const string ResumeNameSeparationCharacter = "_";
     }
 }

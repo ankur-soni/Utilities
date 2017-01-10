@@ -9,8 +9,8 @@ namespace Silicus.Ensure.Web.Models
         public int PositionId { get; set; }
 
         [StringLength(50)]
-        [Required(ErrorMessage = "Position Name is required!")]
-        [Display(Name = "Position Name")]
+        [Required(ErrorMessage = "Position name is required!")]
+        [Display(Name = "Position name")]
         public string PositionName { get; set; }
 
         public bool IsDeleted { get; set; }

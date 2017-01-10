@@ -15,13 +15,13 @@
     @if (Model.UserId != 0)
     {
         <div class="col-lg-10 col-md-10 col-sm-10">
-            <h1 class="dashboard-name">Edit Candidate</h1>
+            <h1 class="dashboard-name">Edit candidate</h1>
         </div>
     }
     else
     {
         <div class="col-lg-10 col-md-10 col-sm-10">
-            <h1 class="dashboard-name">Add Candidate</h1>
+            <h1 class="dashboard-name">Add candidate</h1>
         </div>
         <script>
             $(document).ready(function()
@@ -166,7 +166,7 @@
                                     </div>
                                     <div class="col-md-6">
                                         <input type="text" style="width:100%;height:30px;" name="DOB" id="DOB" value="@if (Model.UserId != 0)
-                                                                                         { @Model.DOB.ToShortDateString()}" />
+                                                                                         { @Model.DOB.ToShortDateString().Replace("-","/")}" />
                                         @Html.ValidationMessageFor(m => m.DOB)
                                     </div>
                                 </div>
@@ -204,7 +204,7 @@
                                 <div class="col-md-6">
 
                                     <div class="col-md-6">
-                                        <lable>Total Experience <b style="color:Red;">*</b></lable>
+                                        <lable>Total experience <b style="color:Red;">*</b></lable>
                                     </div>
                                     <div class="col-md-6">
                                         <div class="col-md-6 col-sm-6 col-xs-6" style="padding-left:0">
@@ -233,7 +233,7 @@
                                 </div>
                                 <div class="col-md-6">
                                     <div class="col-md-6">
-                                        <lable>Relevant Experience <b style="color:Red;">*</b></lable>
+                                        <lable>Relevant experience <b style="color:Red;">*</b></lable>
                                     </div>
                                     <div class="col-md-6">
                                         <div class="col-md-6 col-sm-6 col-xs-6" style="padding-left:0">
@@ -284,17 +284,17 @@
                             <div class="row" style="margin-bottom:10px!important">
                                 <div class="col-md-6">
                                     <div class="col-md-6">
-                                        Upload Resume<b style="color:Red;">*</b>
+                                        Upload resume<b style="color:Red;">*</b>
                                     </div>
                                     <div class="col-md-6">
                                         <div class="demo-section k-content">
                                             <input name="files" id="file" style="display:none" type="file" />
                                         </div>
-                                        @if (!string.IsNullOrEmpty(Model.ResumeName))
+                                        @if (!string.IsNullOrEmpty(Model.ResumeDisplayName))
                                         {
                                             <div id="uploadFileLink" class="postuploadedfilesholder clearfix">
                                                 <div class="fileupload">
-                                                    <a href="@Html.Raw(Url.Content(Model.ResumePath))" targ target="_blank">@Html.Raw(Model.ResumeName)</a>
+                                                    <a href="@Html.Raw(Url.Content(Model.ResumePath))" targ target="_blank">@Html.Raw(Model.ResumeDisplayName)</a>
                                                     <span class="deleteupload" title="Delete"><a onclick="DeleteF()">x</a></span>
                                                 </div>
                                             </div>
@@ -343,7 +343,7 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal">&times;</button>
-                    <h4 class="modal-title"><span>Add Tag</span></h4>
+                    <h4 class="modal-title"><span>Add tag</span></h4>
                 </div>
                 <div class="modal-body">
 
