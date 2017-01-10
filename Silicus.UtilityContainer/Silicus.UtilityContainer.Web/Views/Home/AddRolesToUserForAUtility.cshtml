@@ -40,22 +40,19 @@
             <div class="form-group" id="users" style="display:none">
                 <div class="col-md-2"></div>
                 <div id='employeeList' class="col-md-10">
-                    <div class="col-md-6" id="available-employees" style="height:200px;overflow-y:scroll;overflow-x:hidden">
+                    <div class="col-md-6" id="available-employees" style="padding-left:40px">
                         <span style="font-weight:bold" class="available-header">Available employees</span>
+                        <hr style="margin-top:10px;margin-bottom:10px" />
+                        <div id="available-contents" style="max-height:200px;overflow-y:auto;overflow-x:hidden;padding-left:40px"></div>
                     </div>
-                    <div class="col-md-6" id="selected-employees" style="height:200px;overflow-y:scroll;overflow-x:hidden">
-                        <span style="font-weight:bold" class="selected-header">Selected employees</span> <br />
+                    <div class="col-md-6" id="selected-employees" style="padding-left:40px">
+                        <span style="font-weight:bold" class="selected-header">Selected employees</span>
+                        <hr style="margin-top:10px;margin-bottom:10px" /> 
+                        <div id="selected-contents" style="max-height:200px;overflow-y:auto;overflow-x:hidden;padding-left:40px"></div>
                     </div>
                 </div>
             </div>
-
-
         </div>
-        @*<div class="form-group">
-        </div>
-        <div>
-            @Html.ActionLink("Back to Dashboard", "Index", "Home", new { @style = "color:#000aaa;" })
-        </div>*@
     </div>
 </div>
 <div class="form-group" style="padding-top:20px;">
@@ -221,8 +218,12 @@
                             $("#users").css("display", "block");
                             $(".users").css("display", "block");
                             $("#search").css("display", "block");
-                            var availableEmployeeContainer = $('#available-employees');
-                            var selectedEmployeeContainer = $('#selected-employees');
+                            //var availableEmployeeContainer = $('#available-employees');
+                            //var selectedEmployeeContainer = $('#selected-employees');
+
+                            var availableEmployeeContainer = $('#available-contents');
+                            var selectedEmployeeContainer = $('#selected-contents');
+                            
                             $('#available-employees').contents(':not(".available-header")').empty();
                             $('#selected-employees').contents(':not(".selected-header")').empty();
                             //availableEmployeeContainer.empty();
@@ -254,14 +255,14 @@
                 debugger;
                 $("<div id='availableemp" + id + "'>").appendTo(container);
                 $('<input />', { type: 'checkbox', id: id, class: 'available', value: name, checked: status }).appendTo('#availableemp' + id + '');
-                $('<span />', { 'id': id, text: name }).appendTo('#availableemp' + id + '');
+                $('<span />', { 'id': id, text: name, style : "padding-left:10px" }).appendTo('#availableemp' + id + '');
                 $('<br>').appendTo('#availableemp' + id + '');
             }
             function addHtmlForSelectedEmployees(name, id, status, container) {
 
                 debugger;
                 $('<span />', { 'id': 'selected' + id, text: name }).appendTo(container);
-                $('<span id="selected' + id + '"><i class="fa fa-times" id="' + id + '" aria-hidden="true" ></i></span>').appendTo(container);
+                $('<span id="selected' + id + '" style="padding-left:10px"><i class="fa fa-times" id="' + id + '" aria-hidden="true"  style="color:#0E69A8" ></i></span>').appendTo(container);
                 $('<br id="' + id + '">').appendTo(container);
             }
 
@@ -273,7 +274,7 @@
                 if ($(this).prop('checked')) {
                     var name = $(this).attr('value');
                     $('<span />', { 'id': 'selected' + id, text: name }).appendTo(selectedEmployeeContainer);
-                    $('<span id="selected' + id + '"><i class="fa fa-times" id="' + id + '" aria-hidden="true" ></i></span>').appendTo(selectedEmployeeContainer);
+                    $('<span id="selected' + id + '" style="padding-left:10px"><i class="fa fa-times" id="' + id + '" aria-hidden="true" style="color:#0E69A8"></i></span>').appendTo(selectedEmployeeContainer);
                     $('<br id="' + id + '">').appendTo(selectedEmployeeContainer);
                 }
                 else if (parseInt($('span[id="' + 'selected' + id + '"]')) > 0) {

@@ -25,9 +25,9 @@
     <link href="~/css/bootstrap-switch.css" rel="stylesheet" />
 </head>
 <body>
-     @if (actname != "login" && actname != "logout")
+    @if (actname != "login" && actname != "logout")
     {
-
+        var superUsers = MvcApplication.GetAllSuperUsers();
         <div class="navbar navbar-inverse navbar-fixed-top" style="background-color:white;border:none;padding-bottom:10px">
             <div class="container">
                 <div class="navbar-header">
@@ -46,8 +46,6 @@
                 </div>
                 @if (Request.IsAuthenticated)
                 {
-
-
                     <div class="navbar-collapse collapse">
                         <div style="float:right;font-size:23px;color:#3F617C;margin: 10px 0 0 10px;text-shadow:0 1px 1px rgba(0,0,0,0.5);font-family:'cartogothic_stdbold' ;">
                             @if (actname != "login")
@@ -64,10 +62,14 @@
                                             <span class="caret"></span>
                                         </button>
                                         <ul class="dropdown-menu">
-                                            <li><a href="@Url.Action("AddRoleToUtility", "Home")">Add Role To Utility</a></li>
-                                            <li><a href="@Url.Action("AddRolesToUserForAUtility", "Home")">Add Roles To User</a></li>
+                                            @if (superUsers.Find(x => x.Email.ToLower() == User.Identity.Name.ToLower()) != null)
+                                            {
+                                                <li><a href="@Url.Action("AddRoleToUtility", "Home")">Add Role To Utility</a></li>
+                                                <li><a href="@Url.Action("AddRolesToUserForAUtility", "Home")">Add Roles To User</a></li>
+                                            }
                                             <li><a href="@Url.Action("SignOut", "Account")">Sign Out</a></li>
                                         </ul>
+
                                     </div>
                                 </div>
 
@@ -90,7 +92,7 @@
         </div>
 
     </div>
-    
+
     <div class="loader-overlay" style="display:none;">
         <div class="loader">
 
