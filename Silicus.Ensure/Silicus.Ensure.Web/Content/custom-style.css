@@ -19,8 +19,12 @@
 #frmSearchAllNdc span.k-dropdown .k-input, .k-dropdown .k-state-focused .k-input, .k-menu .k-popup{height: 30px;margin-top: 5px;}
 .k-grid-pager .k-link, .k-grid-pager .k-link:link{color:#fff!important;}
 #userGrids table{width:100%;overflow-x:auto;display: inherit;}
-span.k-icon.k-add{
-   margin-top:-3px;
+.k-icon.k-i-arrow-s {
+    background-image: url('css/Kendo/2014.1.416/Default/sprite.png');
+    background-position:0px -34px;
+}
+span.k-icon.k-add {
+    margin-top: -3px;
 }
 /*Loader css - Start*/
 .loader {
