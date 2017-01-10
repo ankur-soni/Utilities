@@ -354,6 +354,7 @@ namespace Silicus.Ensure.Web.Controllers
         {
             ResumeName = Guid.NewGuid() + Path.GetFileName(files.FileName);
             ResumePath = Path.Combine(Server.MapPath("~/Content/CandidateResume"), ResumeName);
+            Directory.CreateDirectory(Server.MapPath("~/Content/CandidateResume"));
             files.SaveAs(ResumePath);
             string fl = ResumePath.Substring(ResumePath.LastIndexOf("\\"));
             string[] split = fl.Split('\\');
