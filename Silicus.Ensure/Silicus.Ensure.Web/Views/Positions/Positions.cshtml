@@ -145,12 +145,12 @@
 
         if (e.type == "update" && !e.response.Errors) {
             //toastr.success("Auto Pays details has been saved successfully!");
-            ShowMessage("Position Updated successfully.", 1);
+            ShowMessage("Position updated successfully.", 1);
             RefreshKendoGrid('positionGrids');
         }
 
         if (e.type == "create" && !e.response.Errors) {
-            ShowMessage("Position Created successfully.", 1);
+            ShowMessage("Position created successfully.", 1);
             RefreshKendoGrid('positionGrids');
         }
 

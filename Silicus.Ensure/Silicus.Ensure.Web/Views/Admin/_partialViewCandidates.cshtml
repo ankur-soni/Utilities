@@ -19,7 +19,6 @@
                     filter.filters.push({ field: "FirstName", operator: "contains", value: value });
                     filter.filters.push({ field: "RequisitionId", operator: "contains", value: value });
                     filter.filters.push({ field: "ContactNumber", operator: "contains", value: value });
-                    //filter.filters.push({ field: "TotalExperienceInYear", operator: "contains", value: value });
                     filter.filters.push({ field: "PanelName", operator: "contains", value: value });
                     grid.dataSource.query({ filter: filter });
                     grid.dataSource.pageSize(pageSize);
@@ -56,7 +55,7 @@
             });
         }
         else {
-            alert("Sorry! Cann't perform this operation.");
+            alert("Sorry! Can't perform this operation.");
         }
     }
 
@@ -257,28 +256,28 @@
         });
     }
 </script>
-<div class="toolbar">
-    <div class="row">
-        <div class="col-sm-12">
+    <div class="toolbar">
+                <div class="row">
+                    <div class="col-sm-12">
             <div class="col-sm-5 col-md-4 col-lg-3 M-T15 M-B15">
-                <div class="input-group">
-                    <span class="input-group-addon"><span class="glyphicon glyphicon-search" aria-hidden="true"></span></span>
-                    <input type="text" class="form-control" id='FieldFilter' placeholder="Search">
-                    <span class="input-group-btn">
+                            <div class="input-group">
+                                <span class="input-group-addon"><span class="glyphicon glyphicon-search" aria-hidden="true"></span></span>
+                                <input type="text" class="form-control" id='FieldFilter' placeholder="Search">
+                                <span class="input-group-btn">
                         <button id="candidateSearch" class="btn btn-default" style="border:1px solid #0070B9!important" type="button"><span class="glyphicon glyphicon-refresh" aria-hidden="true"></span></button>
-                    </span>
+                                </span>
+                            </div>
+                        </div>
+                        
+                    </div>
                 </div>
-            </div>
-
-        </div>
-    </div>
-    <div class="row M-B15">
-        <div class="col-sm-12">
+        <div class="row M-B15">
+            <div class="col-sm-12">
             <div class="col-sm-4 col-md-2 col-lg-2">
-                <span class="themeColorBlue"><b>Candidate Status</b></span>
-            </div>
+                    <span class="themeColorBlue"><b>Candidate Status</b></span>
+                </div>
             <div class="col-sm-3 col-md-2 col-lg-2">
-                @(Html.Kendo().DropDownListFor(m => m.CandidateStatus)
+                    @(Html.Kendo().DropDownListFor(m => m.CandidateStatus)
                     .Name("CandidateStatus")
                     .DataTextField("Text")
                     .DataValueField("Value")
@@ -315,12 +314,12 @@
                     Value=Convert.ToString(CandidateStatus.Rejected)
                     }
                     }).HtmlAttributes(new { style = "width: 100%" }))
-            </div>
+                </div>
             <div class="col-sm-2 col-md-2 col-lg-1">
-                <span class="themeColorBlue"><b> Positions</b></span>
-            </div>
+                    <span class="themeColorBlue"><b> Positions</b></span>
+                </div>
             <div class="col-sm-3 col-md-2 col-lg-2">
-                @(Html.Kendo().DropDownList()
+                    @(Html.Kendo().DropDownList()
                             .Name("Position")
                                     .Events(e => e.Change("PositionChange"))
                             .OptionLabel("All")
@@ -329,15 +328,15 @@
                             .DataValueField("Value")
                             .SelectedIndex(0)
                             .HtmlAttributes(new { style = "width: 100%" })
-                )
-            </div>
+                    )
+                </div>
             <div class="col-sm-4 col-md-3 col-lg-3 cust-mar">
                 <a href='#' onclick='AddNew();' class='k-button k-button-icontext k-grid-add'><span class='k-icon k-add'></span>Add Candidate</a>
+                </div>
             </div>
         </div>
-    </div>
 
-</div>
+   </div>
 <div class="table-responsive">
 
     @if (Request.IsAuthenticated)
@@ -420,7 +419,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal">&times;</button>
-                <h4 class="modal-title">Test-Suite List</h4>
+                <h4 class="modal-title">Test suite list</h4>
             </div>
             <div class="modal-body" id="CandidateInfo">
 
@@ -439,7 +438,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal">&times;</button>
-                <h4 class="modal-title">Assign Panel List</h4>
+                <h4 class="modal-title">Panel List</h4>
             </div>
             <div class="modal-body" id="PanelInfo">
 
@@ -458,7 +457,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal">&times;</button>
-                <h4 class="modal-title">View Test Suite</h4>
+                <h4 class="modal-title">View test suite</h4>
             </div>
             <div class="modal-body" id="TestSuitInfo">
 
