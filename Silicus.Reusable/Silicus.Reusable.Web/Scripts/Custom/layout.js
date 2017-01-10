@@ -14,7 +14,7 @@
         if (action == "AddExtensionCode" || action == "ShowMyExtensionCode" || action == "ShowExtensionCode" || action == "ReviewExtensionCodeList") {
             $("#ExtesionMenu").css("display", "block");
         }
-        else {
+        else if (action == "ShowOtherCode" || action == "AddOtherUsefullCode" || action == "ShowMyOtherCode" || action == "ReviewOtherCodeList") {
             $("#OtherCodeMenu").css("display", "block");
             $('.dashboard-name').text('Code Snippets');
         }
