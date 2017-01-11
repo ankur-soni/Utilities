@@ -353,11 +353,11 @@ namespace Silicus.Ensure.Web.Controllers
         private void GetFilePath(HttpPostedFileBase files, out string resumePath, out string resumeName)
         {
             resumeName = Guid.NewGuid() + AppConstants.ResumeNameSeparationCharacter + Path.GetFileName(files.FileName);
-            resumePath = Path.Combine(Server.MapPath("~/Content/CandidateResume"), resumeName);
-            Directory.CreateDirectory(Server.MapPath("~/Content/CandidateResume"));
+            resumePath = Path.Combine(Server.MapPath("~/CandidateResume"), resumeName);
+            Directory.CreateDirectory(Server.MapPath("~/CandidateResume"));
             files.SaveAs(resumePath);
             string newpath = Path.GetFileName(resumePath);
-            resumePath = "~/Content/CandidateResume/" + newpath;
+            resumePath = "~/CandidateResume/" + newpath;
         }
     }
 }

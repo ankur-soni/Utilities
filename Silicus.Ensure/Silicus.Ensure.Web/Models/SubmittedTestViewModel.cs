@@ -25,7 +25,7 @@ namespace Silicus.Ensure.Web.Models
         [Display(Name = "Total makrs")]
         public int TotalMakrs { get; set; }
 
-        [Display(Name = "Test suite Name")]
+        [Display(Name = "Test suite name")]
         public string TestSuitName { get; set; }
 
         [Display(Name = "Postion")]
