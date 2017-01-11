@@ -1,4 +1,5 @@
-﻿using System.Web;
+﻿using System.Configuration;
+using System.Web;
 using System.Web.Optimization;
 
 namespace Silicus.Reusable.Web
@@ -9,7 +10,7 @@ namespace Silicus.Reusable.Web
         public static void RegisterBundles(BundleCollection bundles)
         {
             bundles.Add(new StyleBundle("~/Content/css").Include(
-                      "~/Content/bootstrap.css",                      
+                      "~/Content/bootstrap.css",
                       "~/Content/icon-outlines-style.css",
                       "~/Content/animate.css",
                       "~/Content/custom-style.css",
@@ -34,6 +35,16 @@ namespace Silicus.Reusable.Web
                          "~/Scripts/plugins/perfect-scrollbar/perfect-scrollbar.jquery.js",
                          "~/Scripts/jquery.validate.unobtrusive.js"
                       ));
+
+            //// Loading latest version of Kendo
+            bundles.Add(new ScriptBundle("~/bundles/kendoJS").Include(
+                "~/Scripts/plugins/Kendo/" + ConfigurationManager.AppSettings["KendoVersion"] + "/jquery.min.js",
+                "~/Scripts/plugins/kendo/" + ConfigurationManager.AppSettings["KendoVersion"] + "/kendo.all.min.js",
+                "~/Scripts/plugins/kendo/" + ConfigurationManager.AppSettings["KendoVersion"] + "/kendo.aspnetmvc.min.js"));
+
+            bundles.Add(new StyleBundle("~/Content/kendoCSS").Include(
+            "~/Content/plugins/kendo/" + ConfigurationManager.AppSettings["KendoVersion"] + "/kendo.common.min.css",
+            "~/Content/plugins/kendo/" + ConfigurationManager.AppSettings["KendoVersion"] + "/kendo.custom.css"));
         }
     }
 }

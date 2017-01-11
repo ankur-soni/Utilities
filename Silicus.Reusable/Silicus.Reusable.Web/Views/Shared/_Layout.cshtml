@@ -6,6 +6,9 @@
     <title>FRAMEWORX</title>
     <link rel="shortcut icon" href="~/Images/favicon.ico" />
     @Styles.Render("~/Content/css")
+    @Styles.Render("~/Content/kendoCSS")
+    @Scripts.Render("~/bundles/requiredJS")
+    @Scripts.Render("~/bundles/kendoJS")
     <link href="~/LESS/style.css" rel="stylesheet" />
 </head>
 <body class="container-fluid">
@@ -88,7 +91,7 @@
 
         </div>
     </div>
-    @Scripts.Render("~/bundles/requiredJS")
+    
     @RenderSection("scripts", required: false)
 </body>
 </html>

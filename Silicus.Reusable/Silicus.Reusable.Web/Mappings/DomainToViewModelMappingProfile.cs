@@ -1,4 +1,6 @@
 ﻿using AutoMapper;
+using Silicus.FrameworxProject.Models;
+using Silicus.Reusable.Web.Models.ViewModel;
 using System;
 
 namespace Silicus.Reusable.Web.Mappings
@@ -12,7 +14,8 @@ namespace Silicus.Reusable.Web.Mappings
 
         [Obsolete]
         protected override void Configure()
-        {           
+        {
+            CreateMap<ProductBacklog, ProductBacklogViewModel>();
         }
     }
 }
