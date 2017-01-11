@@ -64,7 +64,9 @@ namespace Silicus.Ensure.Web.Controllers
 
         public ActionResult Add(Int32 testSuiteId = 0)
         {
+           
             TestSuiteViewModel testSuite = new TestSuiteViewModel();
+            //return View("AddTestSuite", testSuite);
             List<TestSuiteTagViewModel> tags = new List<TestSuiteTagViewModel>();
             var tagDetails = _tagsService.GetTagsDetails().OrderByDescending(model => model.TagId);
             var positionDetails = _positionService.GetPositionDetails().OrderBy(model => model.PositionName);
