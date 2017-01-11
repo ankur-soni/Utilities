@@ -6,6 +6,8 @@
     <title>FRAMEWORX</title>
     <link rel="shortcut icon" href="~/Images/favicon.ico" />
     @Styles.Render("~/Content/css")
+    @Styles.Render("~/Content/kendoCSS")
+    @Scripts.Render("~/bundles/jquery")
     <link href="~/LESS/style.css" rel="stylesheet" />
 </head>
 <body class="container-fluid">
@@ -65,9 +67,9 @@
                                 <a href="#"><i class="fa fa-file-code-o"></i><span class="nav-label">Shared Code</span><span class="fa arrow"></span></a>
                                 <ul class="nav nav-second-level">
                                     <li><a href='@Url.Action("ShowExtensionCode", "Extension")' class="active">Extension Method</a></li>
-                                    <li><a href='@Url.Action("ShowOtherCode", "Extension")'class="active">Code Snippets</a></li>
+                                    <li><a href='@Url.Action("ShowOtherCode", "Extension")' class="active">Code Snippets</a></li>
                                 </ul>
-                            </li>                           
+                            </li>
                         </ul>
                     </div>
                 </nav>
@@ -89,6 +91,7 @@
         </div>
     </div>
     @Scripts.Render("~/bundles/requiredJS")
+    @Scripts.Render("~/bundles/kendoJS")
     @RenderSection("scripts", required: false)
 </body>
 </html>

@@ -289,7 +289,7 @@
                     () {
                         new SelectListItem(){
                     Text="All",
-                    Value="All"
+                    Value=""
                     },
                     new SelectListItem(){
                     Text=Convert.ToString(CandidateStatus.New),
@@ -367,7 +367,7 @@
                                                                             #=CandidateStatus#
                                                                         #}
                                                                         #").Title("Status").Width(200);
-                  columns.Bound(c => c.UserId).ClientTemplate(@"<a class='k-button k-button-icontext k-grid-edit' href='" + Url.Action("CandidateAdd", "Admin") + "?UserId=#=UserId#'><span class='k-icon k-edit'></span>Edit</a><a id='testSuiteDel' class='k-button k-button-icontext k-grid-delete' href='\\#' onclick='return deleteUser(#=UserId#)'><span class='k-icon k-delete'></span>Delete</a>").Title("Action").Width(200).Sortable(false);
+                  columns.Bound(c => c.UserId).ClientTemplate(@"<a class='k-button' href='" + Url.Action("CandidateAdd", "Admin") + "?UserId=#=UserId#'>Edit</a><a id='testSuiteDel' class='k-button' href='\\#' onclick='return deleteUser(#=UserId#)'>Delete</a>").Title("Action").Width(200).Sortable(false);
                   columns.Bound(c => c.UserId).ClientTemplate(@"
 
                                          #if(CandidateStatus=='New'){#
