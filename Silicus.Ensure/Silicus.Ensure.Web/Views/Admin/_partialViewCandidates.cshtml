@@ -292,27 +292,27 @@
                     Value=""
                     },
                     new SelectListItem(){
-                    Text=Convert.ToString(CandidateStatus.New),
+                    Text=Convert.ToString(CandidateStatus.New.CandidateStatusString()),
                     Value=Convert.ToString(CandidateStatus.New)
                     },
                     new SelectListItem(){
-                    Text=Convert.ToString(CandidateStatus.TestAssigned),
+                    Text=Convert.ToString(CandidateStatus.TestAssigned.CandidateStatusString()),
                     Value=Convert.ToString(CandidateStatus.TestAssigned)
                     },
                     new SelectListItem(){
-                    Text=Convert.ToString(CandidateStatus.TestSubmitted),
+                    Text=Convert.ToString(CandidateStatus.TestSubmitted.CandidateStatusString()),
                     Value=Convert.ToString(CandidateStatus.TestSubmitted)
                     },
                     new SelectListItem(){
-                    Text=Convert.ToString(CandidateStatus.UnderEvaluation),
+                    Text=Convert.ToString(CandidateStatus.UnderEvaluation.CandidateStatusString()),
                     Value=Convert.ToString(CandidateStatus.UnderEvaluation)
                     },
                     new SelectListItem(){
-                    Text=Convert.ToString(CandidateStatus.Selected),
+                    Text=Convert.ToString(CandidateStatus.Selected.CandidateStatusString()),
                     Value=Convert.ToString(CandidateStatus.Selected)
                     },
                     new SelectListItem(){
-                    Text=Convert.ToString(CandidateStatus.Rejected),
+                    Text=Convert.ToString(CandidateStatus.Rejected.CandidateStatusString()),
                     Value=Convert.ToString(CandidateStatus.Rejected)
                     }
                     }).HtmlAttributes(new { style = "width: 100%" }))
