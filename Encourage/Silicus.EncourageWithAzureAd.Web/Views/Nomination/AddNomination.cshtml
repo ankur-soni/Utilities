@@ -178,9 +178,7 @@
                                             <div class="col-md-12">
                                                 <div class="form-group">
                                                     @Html.TextAreaFor(model => model.MainComment, new { @class = "form-control", placeholder = "Maximum 500 words", id = "managerComment", name = "defaultconfig", rows = "5", maxlength = 500 })
-                                                    <div style="text-align:right;">
-                                                        @Html.ValidationMessageFor(model => model.MainComment, "", new { @class = "text-danger", id = "managerCommentValidationmessage" })
-                                                    </div>
+                                                    @Html.ValidationMessageFor(model => model.MainComment, "", new { @class = "text-danger", id = "managerCommentValidationmessage" })
                                                 </div>
 
                                             </div>
@@ -534,7 +532,8 @@
             }
             if (comments < 1) {
                 $("#criterisCommentValidationmessage").parent().show();
-                $("#criterisCommentValidationmessage").text("Enter at least one criteria comment");
+                //$("#criterisCommentValidationmessage").text("Enter at least one criteria comment");
+                $("#criterisCommentValidationmessage").text("Comment is mandatory if rating is provided for a criteria!");
                 return false;
             } else if (!checkIfCommentsAreRequired()) {
                 return false;
@@ -632,7 +631,7 @@
                 confirmButtonText: "Yes!",
                 cancelButtonText: "No!",
                 closeOnConfirm: false,
-                closeOnCancel: false
+                closeOnCancel: true
             },
            function (isConfirm) {
                if (isConfirm) {
@@ -691,7 +690,8 @@
                        }
                    });
                } else {
-                   swal("Cancelled", "Nomination Cancelled");
+                   hideCustomLoader();
+                   //swal("Cancelled", "Nomination Cancelled");
                    //window.location.href = '@Url.Action("AddNomination", "Nomination")';
                }
            });
