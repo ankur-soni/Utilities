@@ -52,46 +52,6 @@
                     <td class="tblBorder">
                         @nomination.UserName
                     </td>
-                    <td class="tblBorder">
-                        Manager
-                    </td>
-                    <td class="averagePoints tblBorder">
-                        @((nomination.ManagerComments != null ? nomination.ManagerComments.Sum(a => (a.Rating * a.Weightage / 100.0)) : 0).ToString("F"))
-                    </td>
-                    @foreach (var criteria in Model.Criterias)
-                    {
-                        var managerComment = nomination.ManagerComments.FirstOrDefault(mc => mc.CriteriaId == criteria.Id);
-                        if (managerComment != null)
-                        {
-                            <td class="points consolidatedLeftCell"> @((managerComment != null ? managerComment.Rating * managerComment.Weightage / 100m : 0).ToString("F"))</td>
-                            for (int i = 0; i < (Model.Reviewers.Count - 2); i++)
-                            {
-                                <td class="consolidatedMiddleCell"></td>
-                            }
-                            <td class="consolidatedRightCell"></td>
-                        }
-                        else
-                        {
-                            <td class="notNominated consolidatedLeftCell"></td>
-                            for (int i = 0; i < (Model.Reviewers.Count - 2); i++)
-                            {
-                                <td class="notNominated consolidatedMiddleCell"></td>
-                            }
-                            <td class="notNominated consolidatedRightCell"></td>
-                        }
-                    }
-                </tr>
-                <tr>
-                    <td>
-                        @if (!nomination.IsShortListed)
-                        {
-                            <button type="button" onclick="ShortList(@nomination.NominationId)" class="btn btn-primary btn-sm">Shortlist</button>
-                        }
-                        else
-                        {
-                            <button type="button" disabled="disabled" class="btn btn-success-green btn-sm">Shortlisted</button>
-                        }
-                    </td>
                     <td>
                         Reviewer
                     </td>
@@ -128,6 +88,46 @@
                             {
                                 <td class="notNominated"></td>
                             }
+                        }
+                    }
+                </tr>
+                <tr>
+                    <td>
+                        @if (!nomination.IsShortListed)
+                        {
+                            <button type="button" onclick="ShortList(@nomination.NominationId)" class="btn btn-primary btn-sm">Shortlist</button>
+                        }
+                        else
+                        {
+                            <button type="button" disabled="disabled" class="btn btn-success-green btn-sm">Shortlisted</button>
+                        }
+                    </td>
+                    <td class="tblBorder">
+                        Manager
+                    </td>
+                    <td class="averagePoints tblBorder">
+                        @((nomination.ManagerComments != null ? nomination.ManagerComments.Sum(a => (a.Rating * a.Weightage / 100.0)) : 0).ToString("F"))
+                    </td>
+                    @foreach (var criteria in Model.Criterias)
+                    {
+                        var managerComment = nomination.ManagerComments.FirstOrDefault(mc => mc.CriteriaId == criteria.Id);
+                        if (managerComment != null)
+                        {
+                            <td class="points consolidatedLeftCell"> @((managerComment != null ? managerComment.Rating * managerComment.Weightage / 100m : 0).ToString("F"))</td>
+                            for (int i = 0; i < (Model.Reviewers.Count - 2); i++)
+                            {
+                                <td class="consolidatedMiddleCell"></td>
+                            }
+                            <td class="consolidatedRightCell"></td>
+                        }
+                        else
+                        {
+                            <td class="notNominated consolidatedLeftCell"></td>
+                            for (int i = 0; i < (Model.Reviewers.Count - 2); i++)
+                            {
+                                <td class="notNominated consolidatedMiddleCell"></td>
+                            }
+                            <td class="notNominated consolidatedRightCell"></td>
                         }
                     }
                 </tr>
