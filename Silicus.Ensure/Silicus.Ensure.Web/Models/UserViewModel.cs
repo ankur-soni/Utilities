@@ -65,7 +65,7 @@ namespace Silicus.Ensure.Web.Models
 
         [StringLength(50)]
         [Display(Name = "Client name")]
-        [Required(ErrorMessage = "ClientName is required!")]
+        [Required(ErrorMessage = "Client Name is required!")]
         public string ClientName { get; set; }
 
         [StringLength(50)]
