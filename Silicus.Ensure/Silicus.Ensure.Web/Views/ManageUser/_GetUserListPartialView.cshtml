@@ -6,11 +6,11 @@
     ViewBag.Title = "Roles";
 }
 
-<h2>User Management</h2>
+<h2>User management</h2>
 
 <div class="row" style="margin-bottom:20px">
     <div class="col-sm-3">
-        <span style="float:right;    margin-top: 2px;"><b>User Role</b></span>
+        <span style="float:right;    margin-top: 2px;"><b>User role</b></span>
     </div>
     <div class="col-sm-3">
         @(Html.Kendo().DropDownListFor(m => m.Role)
@@ -33,9 +33,9 @@
          .Columns(columns =>
               {
                   columns.Bound(c => c.FullName).Title("Name").Width(200);
-                  columns.Bound(p => p.RoleName).Width(50);
+                  columns.Bound(p => p.RoleName).Title("Role name").Width(50);
                   columns.Bound(p => p.Email).Width(50);
-                  columns.Bound(c => c.RoleId).Title("Action").Width(160).ClientTemplate(" <div align=center> #if(RoleName == 'Recruiter'){#<input type='button' onclick='assignType(event)' value='Manage Type'>#}else if(RoleName == 'Panel') { #<input type='button' onclick='assignPanel(event)' value='Manage Panel'># }else if(RoleName == 'Candidate') { #<input type='button' value='z'># } #");
+                  columns.Bound(c => c.RoleId).Title("Action").Width(160).ClientTemplate(" <div align=center> #if(RoleName == 'Recruiter'){#<input type='button' onclick='assignType(event)' value='Manage Type'>#}else if(RoleName == 'Panel') { #<input type='button' onclick='assignPanel(event)' value='Manage panel'># }else if(RoleName == 'Candidate') { #<input type='button' value='z'># } #");
               })
             .DataSource(dataSource => dataSource.Ajax().Model(model =>
                                                               {
@@ -347,7 +347,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal">&times;</button>
-                <h4 class="modal-title">Manage Panel</h4>
+                <h4 class="modal-title">Manage panel</h4>
             </div>
             
             <div class="modal-body">
@@ -371,7 +371,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal">&times;</button>
-                <h4 class="modal-title">Manage Type</h4>
+                <h4 class="modal-title">Manage type</h4>
             </div>
             <div class="modal-body">
                 <form id="frmAssignType" ></form>
@@ -393,7 +393,7 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal">&times;</button>
-                    <h4 class="modal-title"><span>Add Tag</span></h4>
+                    <h4 class="modal-title"><span>Add tag</span></h4>
                 </div>
                 <div class="modal-body">
 
@@ -419,7 +419,7 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal">&times;</button>
-                    <h4 class="modal-title"><span>Add Panel</span></h4>
+                    <h4 class="modal-title"><span>Add panel</span></h4>
                 </div>
                 <div class="modal-body">
 
