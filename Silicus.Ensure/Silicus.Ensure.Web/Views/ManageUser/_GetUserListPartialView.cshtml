@@ -179,7 +179,7 @@
     }
 
     function deleteUser(userId) {
-        $.when(showConfirmationWindow('Are you sure, do you want to delete this record?', 'Delete')).then(function (confirmed) {
+        $.when(showConfirmationWindow('Are you sure, you want to delete this record?', 'Delete')).then(function (confirmed) {
             if (confirmed) {
                 $.ajax({
                     type: "POST",
