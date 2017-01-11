@@ -5,6 +5,6 @@ namespace Silicus.FrameworxProject.Services.Interfaces
 {
     public interface IProductBacklogService
     {
-        List<ProductBacklog> GetAllProductBacklog();
+        IEnumerable<ProductBacklog> GetAllProductBacklog();
     }
 }
