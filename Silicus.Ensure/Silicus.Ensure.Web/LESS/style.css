@@ -111,6 +111,7 @@ th {
 
 .nav > li.active > a {
     color: #ffffff;
+    margin-left:-4px!important;
 }
 
 .navbar-default .nav > li > a:hover,

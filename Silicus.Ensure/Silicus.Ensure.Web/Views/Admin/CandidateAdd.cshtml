@@ -386,11 +386,9 @@
                     $("#addPositionPopup").modal('hide');
                     var $PositionDrpSelect=$('#Position').data('kendoDropDownList');
                     var multidata=$PositionDrpSelect.dataSource.data();
-                    debugger
                     multidata.push({ PositionName: returndata.PositionName, PositionName: returndata.PositionName});
-                    var selectedValues=$PositionDrpSelect.value();
-                    selectedValues.push(returndata.PositionName);
-                    $PositionDrpSelect.value(selectedValues);
+                    $PositionDrpSelect.value(returndata.PositionName);
+                    $PositionDrpSelect.trigger('change');
                     $("#postionForm").trigger("reset");
                 }
             });
@@ -403,7 +401,6 @@
 
     function AddPosition()
     {
-        // $("#tagForm").kendoValidator();
         $("#postionForm").kendoValidator({
             rules: {
                 tagNamevalidation: function (input, params) {
@@ -420,7 +417,7 @@
                 }
             }
         });
-
+        $('#PositionName').val('');
         $("#addPositionPopup").modal('show');
     }
 

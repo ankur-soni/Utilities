@@ -21,20 +21,22 @@ namespace Silicus.Reusable.Web
                       "~/Content/plugins/switchery/switchery.css",
                       "~/Content/plugins/selectize/selectize.css"));
 
+
+            bundles.Add(new ScriptBundle("~/bundles/jquery").Include("~/Scripts/jquery-{version}.js"));
+
             bundles.Add(new ScriptBundle("~/bundles/requiredJS").Include(
-                        "~/Scripts/jquery-{version}.js",
-                        "~/Scripts/plugins/validate/jquery.validate.min.js",
-                        "~/Scripts/modernizr-*",
-                        "~/Scripts/bootstrap.js",
-                        "~/Scripts/respond.js",
-                        "~/Scripts/jquery.unobtrusive-ajax.min.js",
-                         "~/Scripts/Custom/common.js",
-                         "~/Scripts/plugins/sweetalert/sweetalert.min.js",
-                         "~/Scripts/Custom/layout.js",
-                         "~/Scripts/plugins/perfect-scrollbar/perfect-scrollbar.js",
-                         "~/Scripts/plugins/perfect-scrollbar/perfect-scrollbar.jquery.js",
-                         "~/Scripts/jquery.validate.unobtrusive.js"
-                      ));
+                         "~/Scripts/plugins/validate/jquery.validate.min.js",
+                         "~/Scripts/modernizr-*",
+                         "~/Scripts/bootstrap.js",
+                         "~/Scripts/respond.js",
+                         "~/Scripts/jquery.unobtrusive-ajax.min.js",
+                          "~/Scripts/Custom/common.js",
+                          "~/Scripts/plugins/sweetalert/sweetalert.min.js",
+                          "~/Scripts/Custom/layout.js",
+                          "~/Scripts/plugins/perfect-scrollbar/perfect-scrollbar.js",
+                          "~/Scripts/plugins/perfect-scrollbar/perfect-scrollbar.jquery.js",
+                          "~/Scripts/jquery.validate.unobtrusive.js"
+                       ));
 
             //// Loading latest version of Kendo
             bundles.Add(new ScriptBundle("~/bundles/kendoJS").Include(
