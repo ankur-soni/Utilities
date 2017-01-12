@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
+﻿using System.Collections.Generic;
 
 namespace Silicus.EncourageWithAzureAd.Web.Models
 {
@@ -12,7 +9,7 @@ namespace Silicus.EncourageWithAzureAd.Web.Models
             Awards = new List<AwardViewModel>();
             NominationList = new List<NominationListViewModel>();
         }
-        public List<string> userRoles { get; set; }
+        public List<string> UserRoles { get; set; }
         public List<AwardViewModel> Awards { get; set; }
         public List<NominationListViewModel> NominationList { get; set; }
     }

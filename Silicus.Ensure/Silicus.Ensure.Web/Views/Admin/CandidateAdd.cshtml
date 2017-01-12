@@ -284,12 +284,19 @@
                             <div class="row" style="margin-bottom:10px!important">
                                 <div class="col-md-6">
                                     <div class="col-md-6">
-                                        Upload resume<b style="color:Red;">*</b>
+                                        Upload resume <b style="color:Red;">*</b>
                                     </div>
                                     <div class="col-md-6">
-                                        <div class="demo-section k-content">
-                                            <input name="files" id="file" style="display:none" type="file" />
+                                        <div  class="demo-section k-widget k-upload k-header k-upload-empty">
+                                            <div class="k-dropzone" style="border:1px solid #e7e7e7;">
+                                                <div class="k-button k-upload-button" aria-label="Select files...">
+                                                    <input name="files" type="file" data-role="upload" multiple="multiple" autocomplete="off"><span>Select file...</span>
+                                                </div>
+                                                <em>drop files here to upload</em>
+                                            </div>
+                                            <span class="k-widget k-tooltip k-tooltip-validation k-invalid-msg field-validation-error" style="display:none;" data-for="files" data-valmsg-for="files" id="files_validationMessage" role="alert"><span class="k-icon k-warning"> </span> File is required!</span>
                                         </div>
+                                      
                                         @if (!string.IsNullOrEmpty(Model.ResumeDisplayName))
                                         {
                                             <div id="uploadFileLink" class="postuploadedfilesholder clearfix">
@@ -316,15 +323,14 @@
                             <div class="col-sm-4">
                                 <div class="pull-right btn-nav">
                                     @(Html.Kendo().Button()
-                                                .Name("btnCancel").Icon("cancel")
+                                     .Name("btnSave")
+                                    .HtmlAttributes(new { type = "submit" })
+                                    .Content("Save"))
+                                    @(Html.Kendo().Button()
+                                                .Name("btnCancel")
                                 .HtmlAttributes(new { type = "button" })
                                 .Content("Cancel")
                                 .Events(ev => ev.Click("onCancelClick")))
-
-                                    @(Html.Kendo().Button()
-                                     .Name("btnSave").Icon("tick")
-                                    .HtmlAttributes(new { type = "submit" })
-                                    .Content("Save"))
                                 </div>
                             </div>
                         </div>
@@ -401,7 +407,6 @@
 
     function AddPosition()
     {
-        // $("#tagForm").kendoValidator();
         $("#postionForm").kendoValidator({
             rules: {
                 tagNamevalidation: function (input, params) {

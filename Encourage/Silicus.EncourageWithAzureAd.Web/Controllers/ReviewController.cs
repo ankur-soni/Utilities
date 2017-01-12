@@ -13,7 +13,8 @@ using System.Data.Entity;
 using System.Globalization;
 using System.Linq;
 using System.Web.Mvc;
-using Silicus.EncourageWithAzureAd.Web.Models;
+using IDataContextFactory = Silicus.Encourage.DAL.Interfaces.IDataContextFactory;
+
 namespace Silicus.EncourageWithAzureAd.Web.Controllers
 {
     [Authorize]
@@ -23,19 +24,15 @@ namespace Silicus.EncourageWithAzureAd.Web.Controllers
         private readonly IResultService _resultService;
         private readonly IReviewService _reviewService;
         private readonly INominationService _nominationService;
-        private readonly ICommonDbService _commonDbService;
         private readonly ICommonDataBaseContext _commonDbContext;
         private readonly IEncourageDatabaseContext _encourageDatabaseContext;
-        private readonly Silicus.Encourage.DAL.Interfaces.IDataContextFactory _dataContextFactory;
         private readonly IEmailNotificationOfWinner _emailNotificationOfWinner;
         private readonly ILogger _logger;
 
         public ReviewController(IResultService resultService, INominationService nominationService, ICommonDbService commonDbService, Silicus.Encourage.DAL.Interfaces.IDataContextFactory dataContextFactory, IAwardService awardService, IReviewService reviewService, IEmailNotificationOfWinner EmailNotificationOfWinner, ILogger logger)
         {
-            _commonDbService = commonDbService;
-            _commonDbContext = _commonDbService.GetCommonDataBaseContext();
-            _dataContextFactory = dataContextFactory;
-            _encourageDatabaseContext = _dataContextFactory.CreateEncourageDbContext();
+            _commonDbContext = commonDbService.GetCommonDataBaseContext();
+            _encourageDatabaseContext = dataContextFactory.CreateEncourageDbContext();
             _awardService = awardService;
             _reviewService = reviewService;
             _nominationService = nominationService;
@@ -101,7 +98,7 @@ namespace Silicus.EncourageWithAzureAd.Web.Controllers
 
             var today = DateTime.Today;
             var prevMonth = new DateTime(today.Year, today.Month, 1).AddMonths(-1);
-            List<Review> uniqueReviewedNomination = new List<Review>();
+            List<Review> uniqueReviewedNomination;
 
             if (awardType != 0)
             {
@@ -145,7 +142,7 @@ namespace Silicus.EncourageWithAzureAd.Web.Controllers
                     var managerComments = _encourageDatabaseContext.Query<ManagerComment>().Where(model => model.NominationId == nomination.Id).ToList();
 
                     decimal totalCreditPoints = 0;
-                    decimal averageCredits = 0;
+                    decimal averageCredits;
 
                     foreach (var rc in reviewerComments)
                     {
@@ -336,17 +333,10 @@ namespace Silicus.EncourageWithAzureAd.Web.Controllers
         {
             _logger.Log("Review-SelectWinner-POST");
             var adminId = _awardService.GetUserIdFromEmail(User.Identity.Name);
-            try
-            {
-                _resultService.SelectWinner(nominationId, winningComment, feedback, adminId);
-                _emailNotificationOfWinner.Process();
+            _resultService.SelectWinner(nominationId, winningComment, feedback, adminId);
+            _emailNotificationOfWinner.Process();
 
-                return true;
-            }
-            catch (Exception ex)
-            {
-                throw ex;
-            }
+            return true;
         }
 
         [HttpGet]

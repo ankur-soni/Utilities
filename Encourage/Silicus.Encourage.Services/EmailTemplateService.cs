@@ -17,25 +17,18 @@ namespace Silicus.Encourage.Services
     public class EmailTemplateService : IEmailTemplateService
     {
         private readonly IEncourageDatabaseContext _encourageDatabaseContext;
-        private readonly IDataContextFactory _dataContextFactory;
 
         private readonly UtilityContainer.Entities.ICommonDataBaseContext _commonDataBaseContext;
-        private readonly ICommonDbService _commonDbService;
-
-        private readonly ILogger _logger;
 
         public EmailTemplateService(IDataContextFactory dataContextFactory, ICommonDbService commonDbService, ILogger logger)
         {
-            _dataContextFactory = dataContextFactory;
-            _encourageDatabaseContext = _dataContextFactory.CreateEncourageDbContext();
-            _commonDbService = commonDbService;
-            _commonDataBaseContext = _commonDbService.GetCommonDataBaseContext();
-            _logger = logger;
+            _encourageDatabaseContext = dataContextFactory.CreateEncourageDbContext();
+            _commonDataBaseContext = commonDbService.GetCommonDataBaseContext();
         }
 
         public EmailTemplate GetEmailTemplate(string templateName)
         {
-            return _encourageDatabaseContext.Query<EmailTemplate>().Where(t => t.TemplateName == templateName).FirstOrDefault();
+            return _encourageDatabaseContext.Query<EmailTemplate>().FirstOrDefault(t => t.TemplateName == templateName);
         }
 
         public List<User> GetAllManagers()
@@ -52,7 +45,6 @@ namespace Silicus.Encourage.Services
             _logger.Log("EmailService-SendEmail");
 
             var fromAddress = new MailAddress(ConfigurationManager.AppSettings["MailUserName"], "Silicus Rewards and Recognition Team");
-            string mailbody = string.Empty;
 
             var userName = ConfigurationManager.AppSettings["MailUserName"];
             var password = ConfigurationManager.AppSettings["MailPassword"];
@@ -81,7 +73,6 @@ namespace Silicus.Encourage.Services
                 catch (Exception ex)
                 {
                     _logger.Log("EmailService-SendEmail-" + ex.Message);
-                    var errorMessage = ex.Message;
                     return "Error";
                 }
             }

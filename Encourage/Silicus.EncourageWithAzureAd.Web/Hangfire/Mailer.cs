@@ -1,15 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net;
+﻿using System.Net;
 using System.Net.Mail;
-using System.Web;
 
 namespace Silicus.EncourageWithAzureAd.Web.Hangfire
 {
     public class Mailer
     {
-        public void sendMail()
+        public void SendMail()
         {
             var fromAddress = new MailAddress("abhi.jadhav1515@gmail.com", "From Name");
             var toAddress = new MailAddress("abhishek.jadhav@silicus.com", "To Name");
