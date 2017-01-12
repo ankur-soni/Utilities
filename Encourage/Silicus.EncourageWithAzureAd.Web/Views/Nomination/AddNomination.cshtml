@@ -250,7 +250,9 @@
         $("#label").hide();
         $('#Award option').css('color:red');
 
-        $("#Resources").select2();
+        $("#Resources").select2().on("change", function (e) {
+            $(this).valid(); //jquery validation script validate on change
+        });
     });
 
     $("#OtherRadioButton").change(function () {
