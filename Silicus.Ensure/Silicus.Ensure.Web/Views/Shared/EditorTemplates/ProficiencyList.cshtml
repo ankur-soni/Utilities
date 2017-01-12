@@ -1,0 +1,24 @@
+﻿@using Kendo.Mvc.UI;
+@using Silicus.Ensure.Models.Constants
+
+@(Html.Kendo().DropDownList().Name("ProficiencyName")
+                    .OptionLabel("--Select--")
+                    
+                        .BindTo(new List<SelectListItem>
+    () {
+    new SelectListItem(){
+    Text=Convert.ToString(Proficiency.Beginner),
+    Value=Convert.ToString(Proficiency.Beginner)
+    },
+    new SelectListItem(){
+    Text=Convert.ToString(Proficiency.Intermediate),
+    Value=Convert.ToString(Proficiency.Intermediate)
+    },
+    new SelectListItem(){
+    Text=Convert.ToString(Proficiency.Expert),
+    Value=Convert.ToString(Proficiency.Expert)
+    }
+    })
+    .HtmlAttributes(new { style = "width: 100%",required = "required" } ))
+
+

@@ -64,7 +64,7 @@ namespace Silicus.Ensure.Web.Controllers
 
         public ActionResult Add(Int32 testSuiteId = 0)
         {
-           
+            ViewData["categories"] = _tagsService.GetTagsDetails();
             TestSuiteViewModel testSuite = new TestSuiteViewModel();
             //return View("AddTestSuite", testSuite);
             List<TestSuiteTagViewModel> tags = new List<TestSuiteTagViewModel>();
@@ -75,7 +75,7 @@ namespace Silicus.Ensure.Web.Controllers
             {
                 ViewBag.Type = "New";
                 testSuite.PositionList = positionDetails.ToList();
-                return View(testSuite);
+                return View("AddTestSuite", testSuite);
             }
             else
             {
@@ -93,7 +93,7 @@ namespace Silicus.Ensure.Web.Controllers
                     GetTestSuiteTags(testSuitelist.SingleOrDefault(), out testSuiteTags);
                     viewModels.Tags = testSuiteTags;
                 }
-                return View(viewModels);
+                return View("AddTestSuite",viewModels);
             }
         }
 
