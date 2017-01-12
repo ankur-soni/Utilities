@@ -337,6 +337,7 @@ namespace Silicus.Ensure.Web.Controllers
                 testSuiteTagViewModel.TagName = tagList.Where(x => x.TagId == testSuiteTagViewModel.TagId).Select(x => x.TagName).SingleOrDefault();
                 testSuiteTagViewModel.Weightage = Convert.ToInt32(weights[i]);
                 testSuiteTagViewModel.Proficiency = Convert.ToInt32(proficiency[i]);
+                testSuiteTagViewModel.ProficiencyValue = ((Proficiency)testSuiteTagViewModel.Proficiency).ToString();
                 testSuiteTagViewModel.Minutes = testSuite.Duration * Convert.ToInt32(weights[i]) / 100;
                 testSuiteTags.Add(testSuiteTagViewModel);
             }
@@ -416,7 +417,6 @@ namespace Silicus.Ensure.Web.Controllers
         }
         public ActionResult CandidateAdd(int UserId)
         {
-
             UserViewModel currUser = new UserViewModel();
             currUser.UserId = UserId;
 

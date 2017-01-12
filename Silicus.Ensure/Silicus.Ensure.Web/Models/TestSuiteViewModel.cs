@@ -102,6 +102,8 @@ namespace Silicus.Ensure.Web.Models
 
         public int Proficiency { get; set; }
 
+        public string ProficiencyValue { get; set; }
+
         public int Minutes { get; set; }
     }
 }

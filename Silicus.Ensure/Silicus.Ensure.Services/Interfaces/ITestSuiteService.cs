@@ -44,5 +44,7 @@ namespace Silicus.Ensure.Services.Interfaces
         IEnumerable<Question> GetPriview(TestSuite testSuite);
 
         void TestSuiteActivation();
+
+        List<int> GetAllUserIdsForTestSuite(int testSuiteId);
     }
 }

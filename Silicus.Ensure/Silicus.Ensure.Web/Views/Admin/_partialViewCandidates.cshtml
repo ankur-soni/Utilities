@@ -245,7 +245,6 @@
             data: { TestSuitId: id },
             contenttype: "application/json; charset=utf-8",
             success: function (returndata) {
-                console.log(returndata);
                 $("#TestSuitInfo").html(returndata);
                 $('#ViewTest').fadeIn();
                 $('#ViewTest').modal();

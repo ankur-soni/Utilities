@@ -64,7 +64,7 @@ namespace Silicus.Ensure.Web.Controllers
 
         public ActionResult Add(Int32 testSuiteId = 0)
         {
-           
+
             TestSuiteViewModel testSuite = new TestSuiteViewModel();
             //return View("AddTestSuite", testSuite);
             List<TestSuiteTagViewModel> tags = new List<TestSuiteTagViewModel>();
@@ -209,7 +209,7 @@ namespace Silicus.Ensure.Web.Controllers
         public ActionResult TestSuitUsers([DataSourceRequest] DataSourceRequest request)
         {
             var userlist = _userService.GetUserDetails().Where(x => x.Role.ToLower() == RoleName.Candidate.ToString().ToLower()
-                                                               && x.TestStatus == Convert.ToString(TestStatus.NotAssigned)).ToArray();
+                                                        && (x.TestStatus == Convert.ToString(TestStatus.NotAssigned) || x.TestStatus == Convert.ToString(TestStatus.Assigned))).ToArray();
             var viewModels = _mappingService.Map<User[], UserViewModel[]>(userlist);
 
             int testSuiteId = Convert.ToInt32(TempData["TesSuiteId"]);
@@ -328,6 +328,12 @@ namespace Silicus.Ensure.Web.Controllers
             }
 
             return View(testSuiteViewQuesModel);
+        }
+
+        public JsonResult GetUserIdsForTestSuite(int testSuiteId)
+        {
+            var users = _testSuiteService.GetAllUserIdsForTestSuite(testSuiteId);
+            return Json(users, JsonRequestBehavior.AllowGet);
         }
     }
 }
