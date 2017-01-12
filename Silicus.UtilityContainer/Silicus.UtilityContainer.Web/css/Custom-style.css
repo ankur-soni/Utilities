@@ -12,7 +12,8 @@
 .M-B15{margin-bottom:15px!important;}
 .M-B60{margin-bottom:60px!important;}
 .boxShadow{box-shadow:1px 1px 3px #888888;}
-
+hr{ margin-top: 0px!important;
+    margin-bottom: 0px!important;}
 
 
 /*Dashboard css*/
@@ -130,9 +131,11 @@
   border-left: 1px solid #ccc;
   border-right: 1px solid #ccc;
   border-bottom: none;
+  background:#f5f5f5;
 }
 .el-element-overlay .el-card-item .el-card-content h3 {
   margin: 0px;
+  font-size: 15px;
 }
 .el-element-overlay .el-card-item .el-card-content a {
   color: #686868;
@@ -157,7 +160,7 @@
     -webkit-transition: all .4s linear;
     transition: all .4s linear;
     width: 89%;
-    height: 125px;
+    
     margin: 70px 30px 70px 30px;
 }
 .el-element-overlay .el-card-item .el-overlay-1:hover img {

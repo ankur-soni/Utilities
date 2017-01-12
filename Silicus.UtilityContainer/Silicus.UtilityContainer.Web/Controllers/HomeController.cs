@@ -6,6 +6,7 @@ using Silicus.UtilityContainer.Models.ViewModels;
 using Silicus.UtilityContainer.Services.Interfaces;
 using System.Collections.Generic;
 using Silicus.UtilityContainer.Web.Models;
+using Silicus.UtilityContainer.Web.Filters;
 
 namespace Silicus.UtilityContainer.Web.Controllers
 {
@@ -40,6 +41,7 @@ namespace Silicus.UtilityContainer.Web.Controllers
                 : null;
         }
 
+        [SuperUserOnly]
         public ActionResult AddRolesToUserForAUtility()
         {
             var newUserRole = new UtilityUserRoleViewModel();
@@ -85,6 +87,7 @@ namespace Silicus.UtilityContainer.Web.Controllers
         }
 
         [HttpPost]
+        [SuperUserOnly]
         public ActionResult AddRolesToUserForAUtility(int utilityId, int roleId, int[] userIds)
         {
             if (roleId != 0)
@@ -101,6 +104,7 @@ namespace Silicus.UtilityContainer.Web.Controllers
         }
 
         [HttpGet]
+        [SuperUserOnly]
         public ActionResult AddRoleToUtility()
         {
             var newUtilityRole = new UtilityRole();
@@ -110,6 +114,7 @@ namespace Silicus.UtilityContainer.Web.Controllers
         }
 
         [HttpPost]
+        [SuperUserOnly]
         public ActionResult AddRoleToUtility(int utilityId, int[] roleIds)
         {
            // ViewData["Utilities"] = new SelectList(_utilityService.GetAllUtilities(), "Id", "Name");

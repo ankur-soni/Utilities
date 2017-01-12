@@ -57,10 +57,12 @@
                                             <ul class="dropdown-menu dropdown-user-menu">
                                                     @if (superUsers.Find(x => x.Email.ToLower() == User.Identity.Name.ToLower()) != null)
                                                     {
-                                                        <li><a href="@Url.Action("AddRoleToUtility", "Home")">Add Role To Utility</a></li>
-                                                        <li><a href="@Url.Action("AddRolesToUserForAUtility", "Home")">Add Roles To User</a></li>
+                                                        <li><a href="@Url.Action("AddRoleToUtility", "Home")"><i class="fa fa-user-circle" aria-hidden="true"></i> Add Role To Utility</a></li>
+                                                        <hr />
+                                                        <li><a href="@Url.Action("AddRolesToUserForAUtility", "Home")"><i class="fa fa-user-plus" aria-hidden="true"></i> Add Roles To User</a></li>
+                                                        <hr />
                                                     }
-                                                    <li><a href="@Url.Action("SignOut", "Account")">Sign Out</a></li>
+                                                    <li><a href="@Url.Action("SignOut", "Account")"><i class="fa fa-sign-out" aria-hidden="true"></i> Sign Out</a></li>
                                             </ul>
                                         </li>
                                     }
