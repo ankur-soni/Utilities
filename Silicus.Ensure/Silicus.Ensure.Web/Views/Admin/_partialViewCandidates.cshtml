@@ -204,7 +204,7 @@
     }
 
     function deleteUser(userId) {
-        if (confirm('Are you sure, do you want to delete user?')) {
+        if (confirm('Are you sure, you want to delete this record ?')) {
             $.ajax({
                 type: "POST",
                 url: '@Url.Action("DeleteUser", "User")',
@@ -289,30 +289,30 @@
                     () {
                         new SelectListItem(){
                     Text="All",
-                    Value="All"
+                    Value=""
                     },
                     new SelectListItem(){
-                    Text=Convert.ToString(CandidateStatus.New),
+                    Text=Convert.ToString(CandidateStatus.New.CandidateStatusString()),
                     Value=Convert.ToString(CandidateStatus.New)
                     },
                     new SelectListItem(){
-                    Text=Convert.ToString(CandidateStatus.TestAssigned),
+                    Text=Convert.ToString(CandidateStatus.TestAssigned.CandidateStatusString()),
                     Value=Convert.ToString(CandidateStatus.TestAssigned)
                     },
                     new SelectListItem(){
-                    Text=Convert.ToString(CandidateStatus.TestSubmitted),
+                    Text=Convert.ToString(CandidateStatus.TestSubmitted.CandidateStatusString()),
                     Value=Convert.ToString(CandidateStatus.TestSubmitted)
                     },
                     new SelectListItem(){
-                    Text=Convert.ToString(CandidateStatus.UnderEvaluation),
+                    Text=Convert.ToString(CandidateStatus.UnderEvaluation.CandidateStatusString()),
                     Value=Convert.ToString(CandidateStatus.UnderEvaluation)
                     },
                     new SelectListItem(){
-                    Text=Convert.ToString(CandidateStatus.Selected),
+                    Text=Convert.ToString(CandidateStatus.Selected.CandidateStatusString()),
                     Value=Convert.ToString(CandidateStatus.Selected)
                     },
                     new SelectListItem(){
-                    Text=Convert.ToString(CandidateStatus.Rejected),
+                    Text=Convert.ToString(CandidateStatus.Rejected.CandidateStatusString()),
                     Value=Convert.ToString(CandidateStatus.Rejected)
                     }
                     }).HtmlAttributes(new { style = "width: 100%" }))
@@ -367,7 +367,7 @@
                                                                             #=CandidateStatus#
                                                                         #}
                                                                         #").Title("Status").Width(200);
-                  columns.Bound(c => c.UserId).ClientTemplate(@"<a class='k-button k-button-icontext k-grid-edit' href='" + Url.Action("CandidateAdd", "Admin") + "?UserId=#=UserId#'><span class='k-icon k-edit'></span>Edit</a><a id='testSuiteDel' class='k-button k-button-icontext k-grid-delete' href='\\#' onclick='return deleteUser(#=UserId#)'><span class='k-icon k-delete'></span>Delete</a>").Title("Action").Width(200).Sortable(false);
+                  columns.Bound(c => c.UserId).ClientTemplate(@"<a class='k-button' href='" + Url.Action("CandidateAdd", "Admin") + "?UserId=#=UserId#'>Edit</a><a id='testSuiteDel' class='k-button' href='\\#' onclick='return deleteUser(#=UserId#)'>Delete</a>").Title("Action").Width(200).Sortable(false);
                   columns.Bound(c => c.UserId).ClientTemplate(@"
 
                                          #if(CandidateStatus=='New'){#

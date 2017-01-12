@@ -46,8 +46,8 @@
                   columns.Bound(q => q.Tag).Title("Tags").Width(150);
                   columns.Bound(q => q.ProficiencyLevel).Width(100);
                   columns.Bound(q => q.Id).ClientTemplate(@"
-                    <a href='/QuestionBank/EditQuestion?questionId=#=Id#' class='k-button k-button-icontext k-grid-edit'><span class='k-icon k-edit'></span>Edit</a>
-                    <button onclick='DeleteQuestion(#=Id#,this)' class='k-button k-button-icontext k-grid-delete'><span class='k-icon k-delete'></span>Delete</button>").Title("Actions").Width(150).Sortable(false);
+                    <a href='/QuestionBank/EditQuestion?questionId=#=Id#' class='k-button'>Edit</a>
+                    <button onclick='DeleteQuestion(#=Id#,this)' class='k-button '>Delete</button>").Title("Actions").Width(150).Sortable(false);
               })
               .ToolBar(toolbar =>
               {
@@ -242,7 +242,7 @@
 
         $("#myModal").modal();
         $("#msgMain").text("Warning!");
-        $("#msgContent").text("Are you sure, you want to delete this question from the application?");
+        $("#msgContent").text("Are you sure, you want to delete this record?");
         //$("#btnModalOK").show();
     }
 

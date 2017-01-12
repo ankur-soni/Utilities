@@ -35,7 +35,7 @@
                   columns.Bound(c => c.FullName).Title("Name").Width(200);
                   columns.Bound(p => p.RoleName).Title("Role name").Width(50);
                   columns.Bound(p => p.Email).Width(50);
-                  columns.Bound(c => c.RoleId).Title("Action").Width(160).ClientTemplate(" <div align=center> #if(RoleName == 'Recruiter'){#<input type='button' onclick='assignType(event)' value='Manage Type'>#}else if(RoleName == 'Panel') { #<input type='button' onclick='assignPanel(event)' value='Manage panel'># }else if(RoleName == 'Candidate') { #<input type='button' value='z'># } #");
+                  columns.Bound(c => c.RoleId).Title("Action").Width(160).ClientTemplate(" <div align=center> #if(RoleName == 'Recruiter'){#<input type='button' onclick='assignType(event)' value='Manage type'>#}else if(RoleName == 'Panel') { #<input type='button' onclick='assignPanel(event)' value='Manage panel'># }else if(RoleName == 'Candidate') { #<input type='button' value='z'># } #");
               })
             .DataSource(dataSource => dataSource.Ajax().Model(model =>
                                                               {
@@ -179,7 +179,7 @@
     }
 
     function deleteUser(userId) {
-        $.when(showConfirmationWindow('Are you sure, do you want to delete this record?', 'Delete')).then(function (confirmed) {
+        $.when(showConfirmationWindow('Are you sure, you want to delete this record?', 'Delete')).then(function (confirmed) {
             if (confirmed) {
                 $.ajax({
                     type: "POST",
