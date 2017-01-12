@@ -12,7 +12,8 @@
 .M-B15{margin-bottom:15px!important;}
 .M-B60{margin-bottom:60px!important;}
 .boxShadow{box-shadow:1px 1px 3px #888888;}
-
+hr{ margin-top: 0px!important;
+    margin-bottom: 0px!important;}
 
 
 /*Dashboard css*/
