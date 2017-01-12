@@ -56,10 +56,10 @@ namespace Silicus.Ensure.Web.Models
         [Display(Name = "Project name")]
         public string ProjectName { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "Experience(Years) is required!")]
         public int? FromExperience { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "Experience(Months) is required!")]
         public int? ToExperience { get; set; }
 
         [Range(1, 100, ErrorMessage = "Enter numbers from 1-100")]
@@ -94,13 +94,18 @@ namespace Silicus.Ensure.Web.Models
 
     public class TestSuiteTagViewModel
     {
+        [Required]
         public string TagName { get; set; }
 
         public int TagId { get; set; }
 
+        [Range(1, 100)]
         public int Weightage { get; set; }
 
         public int Proficiency { get; set; }
+
+        [Required]
+        public string ProficiencyName { get; set; }
 
         public int Minutes { get; set; }
     }

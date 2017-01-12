@@ -12,21 +12,15 @@ namespace Silicus.Encourage.DAL
     {
         public ICommonDatabaseContext CreateCommonDbContext()
         {
-            ICommonDatabaseContext dataContext = null;
-
-            dataContext =
-                new CommonDatabaseContext(
-                    ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString);
+            ICommonDatabaseContext dataContext = new CommonDatabaseContext(
+                ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString);
 
             return dataContext;
         }
         public IEncourageDatabaseContext CreateEncourageDbContext()
         {
-            IEncourageDatabaseContext dataContext = null;
-
-            dataContext =
-                new EncourageDatabaseContext(
-                    ConfigurationManager.ConnectionStrings["EncourageDataBaseConnection"].ConnectionString);
+            IEncourageDatabaseContext dataContext = new EncourageDatabaseContext(
+                ConfigurationManager.ConnectionStrings["EncourageDataBaseConnection"].ConnectionString);
 
             return dataContext;
         }

@@ -1,7 +1,4 @@
-﻿using LightInject;
-using Silicus.Encourage.Services;
-using Silicus.Encourage.Services.Interface;
-using Silicus.UtilityContainer.Security;
+﻿using Silicus.UtilityContainer.Security;
 using System.Collections.Generic;
 using System.Web;
 using System.Web.Configuration;
@@ -16,38 +13,28 @@ namespace Silicus.EncourageWithAzureAd.Web
     {
         protected void Application_Start()
         {
-
-            //var container = new ServiceContainer();
-            //container.RegisterApiControllers(typeof(MvcApplication).Assembly);
-            //container.Register<INominationService, NominationService>();
-            ////container.EnablePerWebRequestScope();
-            //container.EnableWebApi(GlobalConfiguration.Configuration);
-
             AreaRegistration.RegisterAllAreas();
             FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
             AttributeRoutingConfig.RegisterRoutes(RouteTable.Routes);
             GlobalConfiguration.Configure(WebApiConfig.Register);
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             BundleConfig.RegisterBundles(BundleTable.Bundles);
-
-            
-
         }
 
-        public string getCurrentUserName()
+        public string GetCurrentUserName()
         {
             return HttpContext.Current.User.Identity.Name;
         }
 
-        public static List<string> getCurrentUserRoles()
+        public static List<string> GetCurrentUserRoles()
         {
             var authorizationService = new Authorization(new Silicus.UtilityContainer.Entities.CommonDataBaseContext("DefaultConnection"));
             string utility = WebConfigurationManager.AppSettings["ProductName"];
-            var commonRoles = authorizationService.GetRoleForUtility(new MvcApplication().getCurrentUserName(), utility);
+            var commonRoles = authorizationService.GetRoleForUtility(new MvcApplication().GetCurrentUserName(), utility);
             return commonRoles;
         }
 
-        public static List<string> getDevelopersName()
+        public static List<string> GetDevelopersName()
         {
             var authorizationService = new Authorization(new Silicus.UtilityContainer.Entities.CommonDataBaseContext("DefaultConnection"));
             var developers = authorizationService.GetNameOfContributors();

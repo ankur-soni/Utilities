@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Silicus.Encourage.DAL.EntityConfigurations
 {
-    internal class TableSettings
+    public static class TableSettings
     {
         public static readonly string DefaultSchema = "dbo";
         public static readonly string Awards = "Award";

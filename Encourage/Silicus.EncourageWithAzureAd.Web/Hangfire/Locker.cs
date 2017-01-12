@@ -67,12 +67,16 @@ namespace Silicus.EncourageWithAzureAd.Web.Hangfire
                 {
                     if (review != null)
                     {
-                        var reviewrow = _nominationService.GetAllNominations().Where(x => x.Id.Equals(review.NominationId)).ToList().First().NominationDate;
-
-                        if ((currentDate.Month - 1).Equals(reviewrow.Value.Month) && (currentDate.Month > 1 ? (currentDate.Year).Equals(reviewrow.Value.Year) : (currentDate.Year - 1).Equals(reviewrow.Value.Year)))
+                        var nomination = _nominationService.GetAllNominations().FirstOrDefault(x => x.Id.Equals(review.NominationId));
+                        if (nomination != null)
                         {
-                            review.IsLocked = true;
-                            _reviewService.UpdateReview(review);
+                            var reviewrow = nomination.NominationDate;
+
+                            if ((currentDate.Month - 1).Equals(reviewrow.Value.Month) && (currentDate.Month > 1 ? (currentDate.Year).Equals(reviewrow.Value.Year) : (currentDate.Year - 1).Equals(reviewrow.Value.Year)))
+                            {
+                                review.IsLocked = true;
+                                _reviewService.UpdateReview(review);
+                            }
                         }
                     }
                 }

@@ -34,6 +34,12 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Silicus.Encourage.Services"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Silicus.EncourageWithAzureAd.Web", "Silicus.EncourageWithAzureAd.Web\Silicus.EncourageWithAzureAd.Web.csproj", "{86989CFC-2B6F-437A-ADD1-B5C4D70DB3A9}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SonarQube", "SonarQube", "{9D3E4ACB-8A51-4159-B12A-122DD1477DBF}"
+	ProjectSection(SolutionItems) = preProject
+		SonarQube\ENCOURAGE-001CSharp.ruleset = SonarQube\ENCOURAGE-001CSharp.ruleset
+		SonarQube\SolutionBinding.sqconfig = SonarQube\SolutionBinding.sqconfig
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Azure|Any CPU = Azure|Any CPU

@@ -84,8 +84,8 @@
                     <nav class="navbar-default navbar-static-side sidebar" role="navigation">
                         <div class="sidebar-collapse">
                             @{
-                List<string> roles = MvcApplication.getCurrentUserRoles();
-                List<string> contributors = MvcApplication.getDevelopersName();
+                List<string> roles = MvcApplication.GetCurrentUserRoles();
+                List<string> contributors = MvcApplication.GetDevelopersName();
                             }
                             @if (roles.Count() != 0)
                             {
