@@ -17,7 +17,6 @@ namespace Silicus.EncourageWithAzureAd.Web.Controllers
     {
         private readonly ICommonDbService _commonDbService;
         private readonly IEncourageDatabaseContext _encourageDatabaseContext;
-        private readonly IDataContextFactory _dataContextFactory;
         private readonly INominationService _nominationService;
         private readonly IResultService _resultService;
         private readonly ILogger _logger;
@@ -26,8 +25,7 @@ namespace Silicus.EncourageWithAzureAd.Web.Controllers
             INominationService nominationService, IResultService resultService, ILogger logger)
         {
             _commonDbService = commonDbService;
-            _dataContextFactory = dataContextFactory;
-            _encourageDatabaseContext = _dataContextFactory.CreateEncourageDbContext();
+            _encourageDatabaseContext = dataContextFactory.CreateEncourageDbContext();
             _nominationService = nominationService;
             _resultService = resultService;
             _logger = logger;
@@ -47,13 +45,13 @@ namespace Silicus.EncourageWithAzureAd.Web.Controllers
 
             if ((commonRoles.Count > 0))
             {
-                dashboardViewModel.userRoles = commonRoles;
+                dashboardViewModel.UserRoles = commonRoles;
                 _logger.Log("No. of roles are: " + commonRoles.Count);
             }
             else
             {
                 commonRoles.Add("User");
-                dashboardViewModel.userRoles = commonRoles;
+                dashboardViewModel.UserRoles = commonRoles;
                 _logger.Log("Current user's role is User");
             }
 
@@ -84,28 +82,19 @@ namespace Silicus.EncourageWithAzureAd.Web.Controllers
 
         private List<NominationListViewModel> GetWinnersList(int month, int year, int awardId)
         {
-            var award = _encourageDatabaseContext.Query<Award>().Where(a => a.Id == awardId).FirstOrDefault();
+            var award = _encourageDatabaseContext.Query<Award>().FirstOrDefault(a => a.Id == awardId);
             var listOfWinners = new List<NominationListViewModel>();
-            List<Shortlist> winners = new List<Shortlist>();
             if (award != null)
             {
                 _logger.Log("Home-GetWinnersList");
 
                 int requiredMonth = month != 0 ? month : DateTime.Now.Month;
                 int requiredYear = year != 0 ? year : DateTime.Now.Year;
-                int requiredAwardId = (award != null ? award.Id : 0);
+                int requiredAwardId = award.Id;
 
+                List<Shortlist> winners;
                 switch (award.Code)
                 {
-                    case "SOM":
-                        winners = _encourageDatabaseContext.Query<Shortlist>()
-                        .Where(w =>
-                            w.IsWinner == true &&
-                            w.WinningDate.Value.Month == requiredMonth &&
-                            w.Nomination.AwardId == requiredAwardId &&
-                            w.WinningDate.Value.Year == requiredYear 
-                            ).ToList();
-                        break;
                     case "PINNACLE":
                         winners = _encourageDatabaseContext.Query<Shortlist>()
                         .Where(w =>
@@ -117,12 +106,12 @@ namespace Silicus.EncourageWithAzureAd.Web.Controllers
                         break;
                     default:
                         winners = _encourageDatabaseContext.Query<Shortlist>()
-                        .Where(w =>
-                            w.IsWinner == true &&
-                            w.WinningDate.Value.Month == requiredMonth &&
-                            w.Nomination.AwardId == requiredAwardId &&
-                            w.WinningDate.Value.Year == requiredYear
-                            ).ToList();
+                       .Where(w =>
+                           w.IsWinner == true &&
+                           w.WinningDate.Value.Month == requiredMonth &&
+                           w.Nomination.AwardId == requiredAwardId &&
+                           w.WinningDate.Value.Year == requiredYear
+                           ).ToList();
                         break;
                 }
 

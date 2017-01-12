@@ -12,20 +12,12 @@ namespace Silicus.Encourage.Services
 {
     public class ReviewService : IReviewService
     {
-        private readonly IDataContextFactory _dataContextFactory;
         private readonly IEncourageDatabaseContext _encourageDatabaseContext;
-        private readonly Silicus.UtilityContainer.Entities.ICommonDataBaseContext _commonDataBaseContext;
-        private readonly ICommonDbService _commonDbService;
-        private readonly INominationService _nominationService;
         private readonly ILogger _logger;
 
         public ReviewService(Silicus.Encourage.DAL.Interfaces.IDataContextFactory dataContextFactory, ICommonDbService commonDbService, INominationService nominationService, ILogger logger)
         {
-            _dataContextFactory = dataContextFactory;
-            _commonDbService = commonDbService;
-            _commonDataBaseContext = _commonDbService.GetCommonDataBaseContext();
-            _encourageDatabaseContext = _dataContextFactory.CreateEncourageDbContext();
-            _nominationService = nominationService;
+            _encourageDatabaseContext = dataContextFactory.CreateEncourageDbContext();
             _logger = logger;
         }
 

@@ -1,9 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Configuration;
-using System.Globalization;
 using System.IdentityModel.Claims;
-using System.Linq;
 using System.Threading.Tasks;
 using System.Web;
 using Microsoft.Owin.Security;
@@ -30,8 +27,6 @@ namespace Silicus.EncourageWithAzureAd.Web
 
         public void ConfigureAuth(IAppBuilder app)
         {
-            ApplicationDbContext db = new ApplicationDbContext();
-
             app.SetDefaultSignInAsAuthenticationType(CookieAuthenticationDefaults.AuthenticationType);
 
             app.UseCookieAuthentication(new CookieAuthenticationOptions());
@@ -51,9 +46,9 @@ namespace Silicus.EncourageWithAzureAd.Web
                             var code = context.Code;
                             ClientCredential credential = new ClientCredential(clientId, appKey);
                             string signedInUserID = context.AuthenticationTicket.Identity.FindFirst(ClaimTypes.NameIdentifier).Value;
-                            AuthenticationContext authContext = new AuthenticationContext(Authority, new ADALTokenCache(signedInUserID));
-                            AuthenticationResult result = authContext.AcquireTokenByAuthorizationCode(
-                            code, new Uri(HttpContext.Current.Request.Url.GetLeftPart(UriPartial.Path)), credential, graphResourceId);
+                            AuthenticationContext authContext = new AuthenticationContext(Authority, new AdalTokenCache(signedInUserID));
+                            authContext.AcquireTokenByAuthorizationCode(
+                                code, new Uri(HttpContext.Current.Request.Url.GetLeftPart(UriPartial.Path)), credential, graphResourceId);
 
                             return Task.FromResult(0);
                         }

@@ -1,9 +1,7 @@
 ﻿using Silicus.Encourage.Services.Interface;
 using Silicus.EncourageWithAzureAd.Web.Models;
-using System;
 using System.Collections.Generic;
 using System.Configuration;
-using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 
