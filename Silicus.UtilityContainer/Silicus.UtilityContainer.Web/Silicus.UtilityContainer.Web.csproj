@@ -283,6 +283,7 @@
     <Content Include="css\bootstrap-switch.css" />
     <Content Include="css\bootstrap.css" />
     <Content Include="css\bootstrap.min.css" />
+    <Content Include="css\Custom-style.css" />
     <Content Include="css\custome-stylesheet.css" />
     <Content Include="css\patterns\1.png" />
     <Content Include="css\patterns\2.png" />
