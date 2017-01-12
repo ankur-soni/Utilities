@@ -262,6 +262,7 @@
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\SweetController.cs" />
     <Compile Include="Controllers\UserProfileController.cs" />
+    <Compile Include="Filters\SuperUserOnlyAttribute.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -458,6 +459,9 @@
     <Content Include="Images\encourageLogo.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="Images\enhanceLogo.png" />
+    <Content Include="Images\ensureLogo.png" />
+    <Content Include="Images\entimeLogo.png" />
     <Content Include="Images\Frameworx.jpg" />
     <Content Include="Images\loginbackground.jpg" />
     <Content Include="Images\logo.jpg" />
@@ -817,6 +821,7 @@
     <Content Include="Views\Home\AddRoleToUtility.cshtml" />
     <Content Include="Views\Home\Shared\_UsersAccordingToRoleInUtility.cshtml" />
     <Content Include="Views\Sweet\Alert.cshtml" />
+    <Content Include="Views\Shared\UnAuthorizedError.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
