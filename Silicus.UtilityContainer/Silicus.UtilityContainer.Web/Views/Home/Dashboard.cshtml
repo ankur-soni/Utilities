@@ -16,39 +16,9 @@
         <div class="f1">
             <div class="row">
                 @if (Model != null)
-            {
-                foreach (var item in Model)
                 {
-                    if (item.Name == "Reusable")
+                    foreach (var item in Model)
                     {
-                            <div class="col-lg-6 col-md-6 col-sm-6">
-                                <div class="el-element-overlay m-b-40">
-                                    <div class="white-box">
-                                        <div class="el-card-item">
-                                            <div class="el-card-avatar el-overlay-1">
-                                    
-                                    <img style="height:100px;width:90%;margin: 90px 30px 70px 30px;" src="~/Images/encourageLogo.png" />
-                                                <div class="el-overlay">
-                                                    <ul class="el-info">
-                                                        <li>
-                                                            <a class="btn default btn-outline image-popup-vertical-fit" href="@item.Url?utilityID=@item.Id" target="_blank" title="@item.Name">
-                                                                <i class="fa fa-eye fa-2x" aria-hidden="true"></i>
-                                                            </a>
-                                                        </li>
-                                                    </ul>
-                                                </div>
-                                            </div>
-                                            <div class="el-card-content">
-                                    <h3 class="box-title"><i class="fa fa-commenting-o" aria-hidden="true"></i> Utility for Award Nomination and Winner Declaration.</h3>
-
-
-                                                <br>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        }
                         if (item.Name == "Encourage")
                         {
                             <div class="col-lg-6 col-md-6 col-sm-6">
@@ -56,8 +26,8 @@
                                     <div class="white-box">
                                         <div class="el-card-item">
                                             <div class="el-card-avatar el-overlay-1">
-                                    
-                                    <img style="height: 80px;width:75%;margin: 95px 30px 80px 65px;"  src="~/Images/enhanceLogo.png" />
+
+                                                <img style="height:100px;width:90%;margin: 90px 30px 70px 30px;" src="~/Images/encourageLogo.png" />
                                                 <div class="el-overlay">
                                                     <ul class="el-info">
                                                         <li>
@@ -69,7 +39,7 @@
                                                 </div>
                                             </div>
                                             <div class="el-card-content">
-                                    <h3 class="box-title"><i class="fa fa-commenting-o" aria-hidden="true"></i> <span>Framework components dashboard and backlog management.</span></h3>
+                                                <h3 class="box-title"><i class="fa fa-commenting-o" aria-hidden="true"></i> Utility for Award Nomination and Winner Declaration.</h3>
 
 
                                                 <br>
@@ -79,6 +49,35 @@
                                 </div>
                             </div>
                         }
+                        if (item.Name == "Enhance")
+                        {
+                            <div class="col-lg-6 col-md-6 col-sm-6">
+                                <div class="el-element-overlay m-b-40">
+                                    <div class="white-box">
+                                        <div class="el-card-item">
+                                            <div class="el-card-avatar el-overlay-1">
+                                    
+                                    <img style="height: 80px;width:75%;margin: 95px 30px 80px 65px;"  src="~/Images/enhanceLogo.png"  />
+                                                <div class="el-overlay">
+                                                    <ul class="el-info">
+                                                        <li>
+                                                            <a class="btn default btn-outline image-popup-vertical-fit" href="@item.Url?utilityID=@item.Id" target="_blank" title="@item.Name">
+                                                                <i class="fa fa-eye fa-2x" aria-hidden="true"></i>
+                                                            </a>
+                                                        </li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                            <div class="el-card-content">
+                                                <h3 class="box-title"><i class="fa fa-commenting-o" aria-hidden="true"></i> <span>Framework components dashboard and backlog management.</span></h3>
+                                                <br>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                        
                         else if (item.Name == "Ensure")
                         {
                             <div class="col-lg-6 col-md-6 col-sm-6">
@@ -109,7 +108,7 @@
                                 </div>
                             </div>
                         }
-                        else if (item.Name == "Enquire")
+                        else if (item.Name == "Entime")
                         {
                             <div class="col-lg-6 col-md-6 col-sm-6">
                                 <div class="el-element-overlay m-b-40">
@@ -121,7 +120,7 @@
                                                 <div class="el-overlay">
                                                     <ul class="el-info">
                                                         <li>
-                                                            <a class="btn default btn-outline image-popup-vertical-fit" href="@item.Url?utilityID=@item.Id" title="@item.Name">
+                                                            <a class="btn default btn-outline image-popup-vertical-fit" href="@item.Url?utilityID=@item.Id" target="_blank" title="@item.Name">
                                                                 <i class="fa fa-eye fa-2x" aria-hidden="true"></i>
                                                             </a>
                                                         </li>

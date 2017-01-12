@@ -9,7 +9,7 @@
         <h2>Add Role To User For Utility</h2>
         <div class="form-horizontal">
             <hr />
-            <div class="form-group">
+            <div class="form-group" style="padding-top:20px">
                 @Html.LabelFor(model => model.UtilityId, "Utility", htmlAttributes: new { @class = "control-label col-md-2 requiredfeild" })
                 <div class="col-md-10">
                     @Html.DropDownListFor(model => model.UtilityId, (SelectList)ViewData["Utilities"], "Select", new { id = "utilityList", @class = "form-control" })
