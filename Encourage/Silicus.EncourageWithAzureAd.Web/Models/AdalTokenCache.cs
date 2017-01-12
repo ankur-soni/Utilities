@@ -1,46 +1,35 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
 using System.Data.Entity;
 using System.Linq;
-using System.Web;
 using System.Web.Security;
 using Microsoft.IdentityModel.Clients.ActiveDirectory;
 
 namespace Silicus.EncourageWithAzureAd.Web.Models
 {
-    public class ADALTokenCache : TokenCache
+    public class AdalTokenCache : TokenCache
     {
-        private ApplicationDbContext db = new ApplicationDbContext();
-        private string userId;
+        private readonly ApplicationDbContext db = new ApplicationDbContext();
+        private readonly string _userId;
         private UserTokenCache Cache;
 
-        public ADALTokenCache(string signedInUserId)
+        public AdalTokenCache(string signedInUserId)
         {
-            try
-            {
-                // associate the cache to the current user of the web app
-                userId = signedInUserId;
-                this.AfterAccess = AfterAccessNotification;
-                this.BeforeAccess = BeforeAccessNotification;
-                this.BeforeWrite = BeforeWriteNotification;
-                // look up the entry in the database
-                Cache = db.UserTokenCacheList.FirstOrDefault(c => c.webUserUniqueId == userId);
-                // place the entry in memory
-                this.Deserialize((Cache == null) ? null : MachineKey.Unprotect(Cache.cacheBits, "ADALCache"));
-            }
-            catch (Exception ex)
-            {
-
-                throw;
-            }
+            // associate the cache to the current user of the web app
+            _userId = signedInUserId;
+            this.AfterAccess = AfterAccessNotification;
+            this.BeforeAccess = BeforeAccessNotification;
+            this.BeforeWrite = BeforeWriteNotification;
+            // look up the entry in the database
+            Cache = db.UserTokenCacheList.FirstOrDefault(c => c.WebUserUniqueId == _userId);
+            // place the entry in memory
+            this.Deserialize((Cache == null) ? null : MachineKey.Unprotect(Cache.CacheBits, "ADALCache"));
         }
 
         // clean up the database
         public override void Clear()
         {
             base.Clear();
-            var cacheEntry = db.UserTokenCacheList.FirstOrDefault(c => c.webUserUniqueId == userId);
+            var cacheEntry = db.UserTokenCacheList.FirstOrDefault(c => c.WebUserUniqueId == _userId);
             db.UserTokenCacheList.Remove(cacheEntry);
             db.SaveChanges();
         }
@@ -52,13 +41,13 @@ namespace Silicus.EncourageWithAzureAd.Web.Models
             if (Cache == null)
             {
                 // first time access
-                Cache = db.UserTokenCacheList.FirstOrDefault(c => c.webUserUniqueId == userId);
+                Cache = db.UserTokenCacheList.FirstOrDefault(c => c.WebUserUniqueId == _userId);
             }
             else
             { 
                 // retrieve last write from the DB
                 var status = from e in db.UserTokenCacheList
-                             where (e.webUserUniqueId == userId)
+                             where (e.WebUserUniqueId == _userId)
                 select new
                 {
                     LastWrite = e.LastWrite
@@ -68,10 +57,10 @@ namespace Silicus.EncourageWithAzureAd.Web.Models
                 if (status.First().LastWrite > Cache.LastWrite)
                 {
                     // read from from storage, update in-memory copy
-                    Cache = db.UserTokenCacheList.FirstOrDefault(c => c.webUserUniqueId == userId);
+                    Cache = db.UserTokenCacheList.FirstOrDefault(c => c.WebUserUniqueId == _userId);
                 }
             }
-            this.Deserialize((Cache == null) ? null : MachineKey.Unprotect(Cache.cacheBits, "ADALCache"));
+            this.Deserialize((Cache == null) ? null : MachineKey.Unprotect(Cache.CacheBits, "ADALCache"));
         }
 
         // Notification raised after ADAL accessed the cache.
@@ -83,8 +72,8 @@ namespace Silicus.EncourageWithAzureAd.Web.Models
             {
                 Cache = new UserTokenCache
                 {
-                    webUserUniqueId = userId,
-                    cacheBits = MachineKey.Protect(this.Serialize(), "ADALCache"),
+                    WebUserUniqueId = _userId,
+                    CacheBits = MachineKey.Protect(this.Serialize(), "ADALCache"),
                     LastWrite = DateTime.Now
                 };
                 // update the DB and the lastwrite 
@@ -97,11 +86,6 @@ namespace Silicus.EncourageWithAzureAd.Web.Models
         void BeforeWriteNotification(TokenCacheNotificationArgs args)
         {
             // if you want to ensure that no concurrent write take place, use this notification to place a lock on the entry
-        }
-
-        public override void DeleteItem(TokenCacheItem item)
-        {
-            base.DeleteItem(item);
         }
     }
 }

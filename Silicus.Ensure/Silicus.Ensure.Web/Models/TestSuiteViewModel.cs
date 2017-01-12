@@ -94,13 +94,18 @@ namespace Silicus.Ensure.Web.Models
 
     public class TestSuiteTagViewModel
     {
+        [Required]
         public string TagName { get; set; }
 
         public int TagId { get; set; }
 
+        [Range(1, 100)]
         public int Weightage { get; set; }
 
         public int Proficiency { get; set; }
+
+        [Required]
+        public string ProficiencyName { get; set; }
 
         public string ProficiencyValue { get; set; }
 

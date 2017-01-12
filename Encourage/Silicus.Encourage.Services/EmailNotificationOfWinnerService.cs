@@ -15,7 +15,7 @@ namespace Silicus.EncourageWithAzureAd.Web
 {
     public class EmailNotificationOfWinnerService : IEmailNotificationOfWinner
     {
-        private IAwardService _awardService;
+        private readonly IAwardService _awardService;
         private readonly ILogger _logger;
 
         public EmailNotificationOfWinnerService(IAwardService awardService,ILogger logger)

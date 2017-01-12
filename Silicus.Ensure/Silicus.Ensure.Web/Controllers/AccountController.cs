@@ -146,9 +146,7 @@ namespace Silicus.Ensure.Web.Controllers
             }
             else
             {
-                Session.Abandon();
-                _cookieHelper.ClearAllCookies();
-                AuthenticationManager.SignOut();
+                throw new Exception();
             }
 
             return View();
@@ -749,10 +747,6 @@ namespace Silicus.Ensure.Web.Controllers
                 HttpContext.GetOwinContext().Authentication.Challenge(new AuthenticationProperties { RedirectUri = "/" },
                     OpenIdConnectAuthenticationDefaults.AuthenticationType);
             }
-            else
-            {
-                RedirectToAction("Login", "Account");
-            }
         }
 
         public void SignOut()
@@ -768,7 +762,7 @@ namespace Silicus.Ensure.Web.Controllers
         {
             if (Request.IsAuthenticated)
             {
-                return RedirectToAction("Index", "Account");
+                return RedirectToAction("Login", "Account");
             }
 
             return View();

@@ -12,42 +12,8 @@
 .boxShadow{box-shadow:1px 1px 3px #888888;}
 .font-Bold{font-weight:bold!important;}
 .width100{width:100%!important;}
+.labelAlignMid{display:inline-block;margin-top:6px;}
 
-.M-T10 {
-    margin-top: 10px;
-}
-
-.M-T15 {
-    margin-top: 15px;
-}
-
-.M-B5 {
-    margin-bottom: 5px;
-}
-
-.M-B15 {
-    margin-bottom: 15px !important;
-}
-
-.M-L15 {
-    margin-left: 15px;
-}
-
-.M-B60 {
-    margin-bottom: 60px !important;
-}
-
-.boxShadow {
-    box-shadow: 1px 1px 3px #888888;
-}
-
-.font-Bold {
-    font-weight: bold !important;
-}
-
-.width100 {
-    width: 100% !important;
-}
 
 
 /*Kendo override css*/
@@ -56,7 +22,7 @@
 }
 
 .k-grid table {
-    background-color: #e7eaec !important;
+    background-color: #e2e6f2 !important;
 }
 
 .k-tabstrip-items .k-state-active, .k-panelbar .k-tabstrip-items .k-state-active {
@@ -64,14 +30,17 @@
 }
 
 #frmSearchAllNdc span.k-dropdown-wrap.k-state-default {
-    height: 35px !important;
+    height: 27px !important;
 }
 
 #frmSearchAllNdc span.k-dropdown .k-input, .k-dropdown .k-state-focused .k-input, .k-menu .k-popup {
-    height: 30px;
-    margin-top: 5px;
+    height: 18px;
+   
 }
-
+.k-webkit .k-editor-toolbar li, .k-ff .k-editor-toolbar li, .k-ie9 .k-editor-toolbar li, .k-ie10 .k-editor-toolbar li{
+    background: rgb(174, 177, 179)!important;
+    color: #fff;
+}
 .k-grid-pager .k-link, .k-grid-pager .k-link:link {
     color: #fff !important;
 }
@@ -90,6 +59,25 @@ span.k-add {
     background-image: url('css/Kendo/2014.1.416/Default/sprite1.png');
     margin-top: -3px;
 }
+.k-upload .k-upload-button {
+    min-width: 7.167em;
+}
+
+.k-upload-button input {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    z-index: 1;
+    font: 170px monospace!important;
+    filter: alpha(opacity=0);
+    opacity: 0;
+    margin: 0;
+    padding: 0;
+    cursor: pointer;
+}
+
+
+
 /*Loader css - Start*/
 .loader {
   border: 10px solid #f3f3f3;
@@ -2212,7 +2200,7 @@ span.select2.select2-container.select2-container--default {
 
 .k-pager-numbers .k-state-selected {
     color: black !important;
-    background: #f5f5f5;
+    background: #e6e6e6;
 }
 
 

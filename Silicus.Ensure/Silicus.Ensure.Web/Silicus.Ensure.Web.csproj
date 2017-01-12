@@ -818,6 +818,8 @@
     <Content Include="Views\Positions\AddPosition.cshtml" />
     <Content Include="Views\ManageUser\_AssignPanel.cshtml" />
     <Content Include="Views\ManageUser\_AssignType.cshtml" />
+    <Content Include="Views\Shared\EditorTemplates\TagList.cshtml" />
+    <Content Include="Views\Shared\EditorTemplates\ProficiencyList.cshtml" />
     <None Include="Web.Azure.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
