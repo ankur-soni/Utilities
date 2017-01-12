@@ -458,6 +458,9 @@
     <Content Include="Images\encourageLogo.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="Images\enhanceLogo.png" />
+    <Content Include="Images\ensureLogo.png" />
+    <Content Include="Images\entimeLogo.png" />
     <Content Include="Images\Frameworx.jpg" />
     <Content Include="Images\loginbackground.jpg" />
     <Content Include="Images\logo.jpg" />
