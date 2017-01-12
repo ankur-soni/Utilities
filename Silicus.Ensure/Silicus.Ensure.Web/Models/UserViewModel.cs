@@ -36,7 +36,7 @@ namespace Silicus.Ensure.Web.Models
         [Required(ErrorMessage = "Requisition id is required!")]
         public string RequisitionId { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "Email is required!")]
         [StringLength(100)]
         [System.Web.Mvc.Remote("IsDuplicateEmail", "User", AdditionalFields = "UserId", ErrorMessage = "Email already name exist !")]
         [RegularExpression(@"^(([\w-]+\.)+[\w-]+|([a-zA-Z]{1}|[\w-]{2,}))@"
@@ -65,7 +65,7 @@ namespace Silicus.Ensure.Web.Models
 
         [StringLength(50)]
         [Display(Name = "Client name")]
-        [Required(ErrorMessage = "ClientName is required!")]
+        [Required(ErrorMessage = "Client Name is required!")]
         public string ClientName { get; set; }
 
         [StringLength(50)]
