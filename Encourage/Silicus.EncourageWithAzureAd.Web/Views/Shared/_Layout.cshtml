@@ -17,21 +17,21 @@
     <link href="~/css/bootstrap-switch.css" rel="stylesheet" />
     <link href="~/Css/plugins/dataTables/jquery.dataTables.min.css" rel="stylesheet" />
     @*<link href="~/Css/plugins/dataTables/dataTables.responsive.css" rel="stylesheet" />
-    <link href="~/Css/plugins/dataTables/dataTables.bootstrap.css" rel="stylesheet" />*@
+        <link href="~/Css/plugins/dataTables/dataTables.bootstrap.css" rel="stylesheet" />*@
     <link href="~/Css/plugins/dataTables/fixedColumns.dataTables.min.css" rel="stylesheet" />
     <link href="~/Css/custom-style.css" rel="stylesheet" />
-    
+
     <link href="~/Css/bars-square.css" rel="stylesheet" />
-    
+
     <script src="~/js/jquery-2.1.1.js"></script>
     @*<script src="~/js/jquery.barrating.min.js"></script>*@
-   
+
 </head>
 <body class="container-fluid">
     <!-- Preloader -->
     @*<div class="preloader">
-        <div class="cssload-speeding-wheel"></div>
-    </div>*@
+            <div class="cssload-speeding-wheel"></div>
+        </div>*@
     <div class="row top-header bbl">
         <div class="col-sm-4 col-xs-6">
             <div class="pll ptm pbs"><img src="~/Images/logo.jpg" class="mts mbs" alt="Silicus Logo" title="Silicus Encloud" /></div>
@@ -48,7 +48,9 @@
                             <li class="dropdown">
                                 <a class="dropdown-toggle count-info" data-toggle="dropdown" href="#">
                                     <span class="hidden-sm hidden-xs">
-                                        <span class="m-r-sm text-muted welcome-message">Welcome @data[0] @data[1]</span> <i class="fa fa-chevron-down"></i>
+                                        <span class="m-r-sm text-muted welcome-message">
+                                            Welcome @data[0] @data[1] <i class="fa fa-chevron-down"></i>
+                                        </span>
                                     </span>
                                     <span class="hidden-md hidden-lg">
                                         <i class="fa fa-user"></i>
@@ -84,36 +86,36 @@
                     <nav class="navbar-default navbar-static-side sidebar" role="navigation">
                         <div class="sidebar-collapse">
                             @{
-                List<string> roles = MvcApplication.GetCurrentUserRoles();
-                List<string> contributors = MvcApplication.GetDevelopersName();
+                                List<string> roles = MvcApplication.GetCurrentUserRoles();
+                                List<string> contributors = MvcApplication.GetDevelopersName();
                             }
                             @if (roles.Count() != 0)
                             {
                                 <ul class="nav metismenu" id="side-menu">
-                                        <li class="active"><a href="@Url.Action("Index", "Home")"><i class="fa fa-dashboard"></i> <span class="nav-label">Dashboard</span></a></li>
-                                        <li>
-                                            <a href="#"><i class="fa fa-user"></i><span class="nav-label">Nominations</span> <span class="fa arrow"></span></a>
-                                            <ul class="nav nav-second-level">
-                                                @if (roles.Contains("Manager"))
-                                                {
-                                                    <li><a href="@Url.Action("AddNomination", "Nomination")" class="active">Add Nominations</a></li>
+                                    <li class="active"><a href="@Url.Action("Index", "Home")"><i class="fa fa-dashboard"></i> <span class="nav-label">Dashboard</span></a></li>
+                                    <li>
+                                        <a href="#"><i class="fa fa-user"></i><span class="nav-label">Nominations</span> <span class="fa arrow"></span></a>
+                                        <ul class="nav nav-second-level">
+                                            @if (roles.Contains("Manager"))
+                                            {
+                                                <li><a href="@Url.Action("AddNomination", "Nomination")" class="active">Add Nominations</a></li>
                                                     <li><a href="@Url.Action("GetNominationList", "Nomination")" class="active">Edit Nominations</a></li>
-                                                }
-                                            </ul>
-                                       </li>
-                                        <li>
-                                            <a href="#"><i class="fa fa-file-text-o"></i><span class="nav-label">Reviews</span><span class="fa arrow"></span></a>
-                                            <ul class="nav nav-second-level">
-                                                @if (roles.Contains("Reviewer"))
-                                                {
-                                                    <li><a href="@Url.Action("ReviewNominations", "Nomination")" class="active">Pending Reviews</a></li>
+                                            }
+                                        </ul>
+                                    </li>
+                                    <li>
+                                        <a href="#"><i class="fa fa-file-text-o"></i><span class="nav-label">Reviews</span><span class="fa arrow"></span></a>
+                                        <ul class="nav nav-second-level">
+                                            @if (roles.Contains("Reviewer"))
+                                            {
+                                                <li><a href="@Url.Action("ReviewNominations", "Nomination")" class="active">Pending Reviews</a></li>
                                                     <li><a href="@Url.Action("SavedReviews", "Nomination")" class="active">Submitted Reviews</a></li>
 
 
-                                                }
-                                            </ul>
-                                        </li>
-                                        
+                                            }
+                                        </ul>
+                                    </li>
+
 
                                     <!-- admin role only -->
                                     @if (roles.Contains("Admin"))
@@ -124,7 +126,7 @@
                                                 @if (roles.Contains("Admin"))
                                                 {
                                                     <li><a href="@Url.Action("ReviewFeedbackList", "Review")" class="active">Shortlisted Nominations</a></li>
-                                                    <li><a href="@Url.Action("ConsolidatedNominations", "Review" )" >Consolidated Nominations</a></li>
+                                                    <li><a href="@Url.Action("ConsolidatedNominations", "Review" )">Consolidated Nominations</a></li>
                                                     <li><a href="@Url.Action("Index", "Email" )">Email Template</a></li>
                                                 }
                                             </ul>
@@ -136,25 +138,25 @@
                         </div>
                     </nav>
                 </div>
-                            var data = "";
-                            var count = contributors.Count;
-                            var recentCount = 0;
-                            foreach (var item in contributors)
-                            {
-                                recentCount++;
-                                if (recentCount == count)
+                                var data = "";
+                                var count = contributors.Count;
+                                var recentCount = 0;
+                                foreach (var item in contributors)
                                 {
-                                    data += item + ". ";
+                                    recentCount++;
+                                    if (recentCount == count)
+                                    {
+                                        data += item + ". ";
+                                    }
+                                    else
+                                    {
+                                        data += item + ", ";
+                                    }
                                 }
-                                else
-                                {
-                                    data += item + ", ";
+                                <div id="credits-data" style="display:none;">
+                                    @data
+                                </div>
                                 }
-                            }
-                            <div id="credits-data" style="display:none;">
-                                @data
-                            </div>
-                            }
             <!-- END LEFT MENU -->
             <!--   START OF CONTENT AREA -->
             <div id="page-wrapper" class="page-wrapper">
@@ -170,18 +172,12 @@
         </div>
     </div>
     <!-- Mainly scripts -->
-   <script src="~/js/perfect-scrollbar.jquery.js"></script>
-
+    <script src="~/js/perfect-scrollbar.jquery.js"></script>
     <script src="~/js/plugins/validate/jquery.validate.min.js"></script>
-
-<script src="~/Scripts/jquery.validate.unobtrusive.js"></script>
-    
+    <script src="~/Scripts/jquery.validate.unobtrusive.js"></script>
     <script src="~/Scripts/jquery.unobtrusive-ajax.min.js"></script>
-
-<script src="~/js/plugins/metisMenu/jquery.metisMenu.js"></script>
-
+    <script src="~/js/plugins/metisMenu/jquery.metisMenu.js"></script>
     <script src="~/js/plugins/slimscroll/jquery.slimscroll.min.js"></script>
-
     <script src="~/js/bootstrap.min.js"></script>
     <script src="~/js/Elipsis.js"></script>
     <!-- Custom and plugin javascript -->
@@ -193,18 +189,17 @@
     <script src="~/js/plugins/footable/footable.all.min.js"></script>
     <script src="~/js/plugins/sweetalert/sweetalert.min.js"></script>
     <script src="~/js/bootstrap-switch.js"></script>
-    
 </body>
 </html>
 
 <script>
-   
+
     function sidebarautoheight() {
         var sidebarheight = 0;
         sidebarheight = $(window).height() - $(".bbl").outerHeight() - $("footer").outerHeight();
         $(".wrapper .page-wrapper").css("min-height", sidebarheight);
     };
-    
+
 
 
     $("#menu-toggle").click(function () {
@@ -212,7 +207,7 @@
     });
 
 
-    var creditsData =($("div #credits-data").html( "<span style='font-weight : bold'>" +$("div #credits-data").text() +"</span>"));
+    var creditsData = ($("div #credits-data").html("<span style='font-weight : bold'>" + $("div #credits-data").text() + "</span>"));
     $(".fa-chevron-down").click(function () {
         $('.dropdown').toggleClass('open')
     })
@@ -225,7 +220,7 @@
     $("#credits").click(function () {
         swal({
             title: "Contributors",
-            text: "If you like the application, thank these people \n"+$("div #credits-data").text(),
+            text: "If you like the application, thank these people \n" + $("div #credits-data").text(),
             showCancelButton: false,
             confirmButtonColor: "#337ab7",
             confirmButtonText: "Ok"
