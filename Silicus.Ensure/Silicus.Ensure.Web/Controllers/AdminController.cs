@@ -310,6 +310,9 @@ namespace Silicus.Ensure.Web.Controllers
             {
                 TestSuite testSuitDetails = _testSuiteService.GetTestSuitById(TestSuitId);
                 TestSuiteViewModel testSuiteViewModel = _mappingService.Map<TestSuite, TestSuiteViewModel>(testSuitDetails);
+                testSuiteViewModel.OverallProficiency = ((Proficiency)Convert.ToInt32(testSuiteViewModel.Competency)).ToString();
+                var position=_positionService.GetPositionById(testSuiteViewModel.Position);
+                testSuiteViewModel.PositionName = position.PositionName;
                 List<TestSuiteTagViewModel> testSuiteTags;
                 GetTestSuiteTags(testSuitDetails, out testSuiteTags);
                 testSuiteViewModel.Tags = testSuiteTags;
@@ -337,7 +340,6 @@ namespace Silicus.Ensure.Web.Controllers
                 testSuiteTagViewModel.TagName = tagList.Where(x => x.TagId == testSuiteTagViewModel.TagId).Select(x => x.TagName).SingleOrDefault();
                 testSuiteTagViewModel.Weightage = Convert.ToInt32(weights[i]);
                 testSuiteTagViewModel.Proficiency = Convert.ToInt32(proficiency[i]);
-                testSuiteTagViewModel.ProficiencyValue = ((Proficiency)testSuiteTagViewModel.Proficiency).ToString();
                 testSuiteTagViewModel.Minutes = testSuite.Duration * Convert.ToInt32(weights[i]) / 100;
                 testSuiteTags.Add(testSuiteTagViewModel);
             }

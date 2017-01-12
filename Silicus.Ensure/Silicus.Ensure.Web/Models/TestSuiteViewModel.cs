@@ -78,6 +78,8 @@ namespace Silicus.Ensure.Web.Models
 
         public string StatusName { get; set; }
 
+        public string OverallProficiency { get; set; }
+
         //[Display(Name = "Experience Range")]
         //public List<string> ExperienceRangeId { get; set; }
 
@@ -106,8 +108,6 @@ namespace Silicus.Ensure.Web.Models
 
         [Required]
         public string ProficiencyName { get; set; }
-
-        public string ProficiencyValue { get; set; }
 
         public int Minutes { get; set; }
     }
