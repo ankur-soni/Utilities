@@ -135,6 +135,7 @@ hr{ margin-top: 0px!important;
 }
 .el-element-overlay .el-card-item .el-card-content h3 {
   margin: 0px;
+  font-size: 15px;
 }
 .el-element-overlay .el-card-item .el-card-content a {
   color: #686868;
