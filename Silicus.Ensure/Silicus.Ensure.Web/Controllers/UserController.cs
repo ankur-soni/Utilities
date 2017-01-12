@@ -173,7 +173,8 @@ namespace Silicus.Ensure.Web.Controllers
             _testSuiteService.TestSuiteActivation();
 
             var userlist = _userService.GetUserDetails().Where(p => p.Role.ToLower() == RoleName.ToLower()).ToArray().Reverse().ToArray();
-            if (MvcApplication.getCurrentUserRoles().Contains(Silicus.Ensure.Models.Constants.RoleName.Panel.ToString()))
+            var currentUserRoles = MvcApplication.getCurrentUserRoles();
+            if (currentUserRoles.Count == 1 && currentUserRoles.Contains(Silicus.Ensure.Models.Constants.RoleName.Panel.ToString()))
             {
                 var currentUserMail = HttpContext.User.Identity.Name;
                 var user = _containerUserService.FindUserByEmail(currentUserMail);
