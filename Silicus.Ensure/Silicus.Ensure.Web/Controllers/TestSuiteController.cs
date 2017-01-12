@@ -75,7 +75,7 @@ namespace Silicus.Ensure.Web.Controllers
             {
                 ViewBag.Type = "New";
                 testSuite.PositionList = positionDetails.ToList();
-                return View("AddTestSuite", testSuite);
+                return View(testSuite);
             }
             else
             {
@@ -93,7 +93,7 @@ namespace Silicus.Ensure.Web.Controllers
                     GetTestSuiteTags(testSuitelist.SingleOrDefault(), out testSuiteTags);
                     viewModels.Tags = testSuiteTags;
                 }
-                return View("AddTestSuite",viewModels);
+                return View(viewModels);
             }
         }
 
