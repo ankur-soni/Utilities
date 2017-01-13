@@ -91,7 +91,7 @@ namespace Silicus.Ensure.Web.Controllers
         }
 
         [HttpGet]
-        [Authorize]
+        [AllowAnonymous]
         public async Task<ActionResult> Login(string returnUrl, string userName)
         {
 
