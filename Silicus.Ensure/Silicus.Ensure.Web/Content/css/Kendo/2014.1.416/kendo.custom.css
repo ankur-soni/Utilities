@@ -313,7 +313,7 @@ html .km-pane-wrapper .k-header {
 .k-pager-numbers .k-current-page .k-link:after,
 .k-scheduler-toolbar > ul.k-scheduler-views > li.k-current-view > .k-link:after,
 .k-gantt-views > .k-current-view > .k-link:after {
-  background-image: url('http://kendo.cdn.telerik.com/2016.3.1118/styles/Material/sprite.png');
+  background-image: url('http://kendo.cdn.telerik.com/2016.3.1118/styles/Black/sprite.png');
   border-color: transparent;
 }
 /* IE will ignore the above selectors if these are added too */
@@ -1876,8 +1876,9 @@ div.k-splitbar.k-state-focused .k-icon,
 .k-button:active:hover,
 .k-button.k-state-active:hover {
   color: #fff;
-  border-color: #999;
-  background-color: #999;
+  font-weight:500;
+  border-color: #777;
+  background-color: #777;
 }
 .k-primary:active,
 .k-primary.k-state-active,

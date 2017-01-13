@@ -136,7 +136,7 @@
                         Final Score
                     </td>
                     <td class="averagePoints">
-                        <span class="averagePoints finalAverageScore_@nomination.NominationId">
+                        <span class="cFinalScore averagePoints finalAverageScore_@nomination.NominationId">
                             @((nomination.ManagerComments != null ? nomination.ManagerComments.Sum(a => a.FinalScore.Value).ToString("F") : "0"))
                         </span>
                     </td>
@@ -144,16 +144,21 @@
                     @foreach (var criteria in Model.Criterias)
                     {
                         var managerComment = nomination.ManagerComments.FirstOrDefault(mc => mc.CriteriaId == criteria.Id);
+                        var isFinalScoreChanged = false;
                         if (managerComment != null)
                         {
+                            if (!string.IsNullOrEmpty(managerComment.AdminComment))
+                            {
+                                isFinalScoreChanged = true;
+                            }
+
                             <td class="points consolidatedLeftCell">
                                 @Html.Hidden("Nominations[" + nominationCount + "].ManagerComments[" + criteriaCount + "].NominationId", nomination.NominationId)
                                 @Html.Hidden("Nominations[" + nominationCount + "].ManagerComments[" + criteriaCount + "].CriteriaId", criteria.Id)
                                 @Html.Hidden("Nominations[" + nominationCount + "].ManagerComments[" + criteriaCount + "].FinalScore", managerComment.FinalScore, new { @class = "finalScore_" + nomination.NominationId })
                                 @Html.Hidden("Nominations[" + nominationCount + "].ManagerComments[" + criteriaCount + "].AdminComment", managerComment.AdminComment)
-                                @*<button type="button" onclick="openCommentPointEditor(@nominationCount, @criteriaCount)" class="btn btn-primary"><span id="spnFinalPoints_@(nomination.NominationId)_@(criteria.Id)" style="font-weight: bold;">@managerComment.FinalScore.ToString("F") </span></button>*@
                                 <a onclick="openCommentPointEditor(@nominationCount, @criteriaCount)">
-                                    <span id="spnFinalPoints_@(nomination.NominationId)_@(criteria.Id)" style="font-weight: bold;">@managerComment.FinalScore.Value.ToString("F") </span>
+                                    <span id="spnFinalPoints_@(nomination.NominationId)_@(criteria.Id)" class="cFinalScore @(isFinalScoreChanged?"cRed":"")">@managerComment.FinalScore.Value.ToString("F") </span>
                                 </a>
                             </td>
                             for (int i = 0; i < (Model.Reviewers.Count - 2); i++)
