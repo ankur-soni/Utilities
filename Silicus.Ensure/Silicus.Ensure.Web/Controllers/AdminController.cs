@@ -25,7 +25,7 @@ using Silicus.FrameWorx.Logger;
 
 namespace Silicus.Ensure.Web.Controllers
 {
-    //[Authorize]
+    [Authorize]
     public class AdminController : Controller
     {
         private readonly IEmailService _emailService;
