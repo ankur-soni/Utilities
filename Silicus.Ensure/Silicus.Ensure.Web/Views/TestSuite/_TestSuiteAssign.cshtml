@@ -9,6 +9,7 @@
             <input type="hidden" id="testSuiteId" name="testSuiteId" value="" />
             <div class="modal-body">
                 @(Html.Kendo().Grid<Silicus.Ensure.Models.DataObjects.User>().Name("userGrids")
+                        .Events(events => events.DataBound("onUserGridsDataBound"))
                 .Columns(columns =>
               {
                   columns.Bound("").ClientTemplate("<input type='checkbox' name='selectUser' value='#= UserId#' />").Width(20);
@@ -81,6 +82,7 @@
                     }
                 });
             }
+           
         });
 
         $("#FieldFilter").keyup(function () {
@@ -99,4 +101,6 @@
                 grid.dataSource.filter({});
         });
     });
+
+    
 </script>

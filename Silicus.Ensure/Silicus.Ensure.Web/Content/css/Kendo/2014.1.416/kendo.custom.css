@@ -293,7 +293,7 @@ html .km-pane-wrapper .k-header {
 .k-column-menu .k-sprite,
 .k-pager-numbers .k-current-page .k-link:after,
 .k-scheduler-toolbar > ul.k-scheduler-views > li.k-current-view > .k-link:after {
-  opacity: 0.7;
+  opacity: 1;
 }
 .k-mobile-list .k-check:checked,
 .k-mobile-list .k-edit-field [type=checkbox]:checked,

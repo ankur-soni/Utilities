@@ -42,6 +42,7 @@ namespace Silicus.Ensure.Web
             ViewEngines.Engines.Clear();
             ViewEngines.Engines.Add(new RazorViewEngine());
             AntiForgeryConfig.UniqueClaimTypeIdentifier = ClaimTypes.NameIdentifier;
+           // HttpContext.Current.Session["RunSession"] = "1";
         }
 
         protected void Application_Error(object sender, EventArgs e)

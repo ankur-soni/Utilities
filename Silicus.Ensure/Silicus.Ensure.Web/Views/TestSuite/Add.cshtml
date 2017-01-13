@@ -179,7 +179,7 @@
                                         {
                                             <tr id="@rowId">
                                                 <td id="tag_title_row @Convert.ToString(i)">Skill Tag @Convert.ToString(i + 1)<b style="color:Red;">*</b></td>
-                                                <td id="tag_name_row @Convert.ToString(i)"><input type="text" class="autocomplete" name="tagName_@Convert.ToString(i)" id="name_text @Convert.ToString(i)" value="@Model.Tags[i].TagName"></td>
+                                                <td id="tag_name_row @Convert.ToString(i)"><input type="text" class="autocomplete" name="tagName" id="name_text @Convert.ToString(i)" value="@Model.Tags[i].TagName"></td>
                                                 <td id="weight_title_row @Convert.ToString(i)">Weightage % @Convert.ToString(i + 1)<b style="color:Red;">*</b></td>
                                                 <td id="weight_name_row @Convert.ToString(i)"><input type="text" name="WeightName" id="name_text @Convert.ToString(i)" value="@Model.Tags[i].Weightage" class="key-numeric" maxlength="3"></td>
                                                 <td id="efficiency_title_row @Convert.ToString(i)">Efficiency @Convert.ToString(i + 1)<b style="color:Red;">*</b></td>
@@ -191,7 +191,7 @@
                                         {
                                             <tr id="@rowId">
                                                 <td id="tag_title_row @Convert.ToString(i)">Skill Tag @Convert.ToString(i + 1)<b style="color:Red;">*</b></td>
-                                                <td id="tag_name_row @Convert.ToString(i)"><input type="text" class="autocomplete" name="tagName_@Convert.ToString(i)" id="name_text @Convert.ToString(i)" value="@Model.Tags[i].TagName"></td>
+                                                <td id="tag_name_row @Convert.ToString(i)"><input type="text" class="autocomplete" name="tagName" id="tag_name" value="@Model.Tags[i].TagName"></td>
                                                 <td id="weight_title_row @Convert.ToString(i)">Weightage % @Convert.ToString(i + 1)<b style="color:Red;">*</b></td>
                                                 <td id="weight_name_row @Convert.ToString(i)"><input type="text" name="WeightName" id="weight_name" value="@Model.Tags[i].Weightage" class="key-numeric" maxlength="3"></td>
                                                 <td id="efficiency_title_row @Convert.ToString(i)">Efficiency @Convert.ToString(i + 1)<b style="color:Red;">*</b></td>
@@ -531,7 +531,7 @@
             var rowNum=0;
             var tableContent='';
             $('#tag_table tr').each(function () {
-                var tagName = $(this).find("td input[type=text][class=autocomplete]").val();
+                var tagName = $(this).find("td input[type=text][name=tagName]").val();
                 var weightName = $(this).find("td input[type=text][name=WeightName]").val();
                 var efficiencyValue = $(this).find("td input[name=efficiency]").val();
                 if(rowNum == table_len)
@@ -582,19 +582,7 @@
         }
     });
     $(function () {
-        $("form").kendoValidator({
-            rules: {
-                Answer:function (input, params) {
-    debugger
-                    if (input.is("[name=efficiency]")) {
-                        input.attr("data-Answer-msg", "Answer cann't be blank !");
-                        return input.val().trim()!="";
-                    }
-                    return true;
-                }
-            }
-
-        });
+        $("form").kendoValidator();
     });
 
     function validateTestSuite() {
@@ -657,7 +645,7 @@
             dataTextField: "name",
             dataValueField: "id",
             dataSource: [
-                { name: '--Select--', id: '' },
+                { name: '--Select--', id: '0' },
                 { name: '@Convert.ToString(Proficiency.Beginner)', id: '@Convert.ToInt32(Proficiency.Beginner)' },
                 { name: '@Convert.ToString(Proficiency.Intermediate)', id: '@Convert.ToInt32(Proficiency.Intermediate)' },
                 { name: '@Convert.ToString(Proficiency.Expert)', id: '@Convert.ToInt32(Proficiency.Expert)' }
