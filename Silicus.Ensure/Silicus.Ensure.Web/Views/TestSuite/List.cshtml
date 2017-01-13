@@ -23,10 +23,10 @@
             <div class="fluid">
 
                 <div class="row">
-            <div class="alert alert-success" id="messageDiv">
-                <span id="messageContent">This alert box could indicate successful action.</span>
-            </div>
-        </div>
+                    <div class="alert alert-success" id="messageDiv">
+                        <span id="messageContent">This alert box could indicate successful action.</span>
+                    </div>
+                </div>
 
                 <div class="toolbar">
                     <div class="row">
@@ -45,20 +45,20 @@
                             </div>
                         </div>
                     </div>
-                    
+
                 </div>
-        <div class="kendogrid">
+                <div class="kendogrid">
 
                     <div class="table-responsive">
-                @if (Request.IsAuthenticated)
-                {
-                    @(Html.Kendo().Grid<Silicus.Ensure.Web.Models.TestSuiteViewModel>().Name("testSuiteGrids")
+                        @if (Request.IsAuthenticated)
+                        {
+                            @(Html.Kendo().Grid<Silicus.Ensure.Web.Models.TestSuiteViewModel>().Name("testSuiteGrids")
                 .Columns(columns =>
                   {
-                          columns.Bound(p => p.TestSuiteName).Width(100).Title("Test Suite");
+                      columns.Bound(p => p.TestSuiteName).Width(100).Title("Test Suite");
                       columns.Bound(p => p.Duration).Width(50);
-                          columns.Bound(p => p.PositionName).Width(100).Title("Position");
-                          columns.Bound(p => p.PrimaryTagNames).Width(80).Title("Tags");
+                      columns.Bound(p => p.PositionName).Width(100).Title("Position");
+                      columns.Bound(p => p.PrimaryTagNames).Width(80).Title("Tags");
                       columns.Bound(p => p.StatusName).Width(50).Title("Status");
                       columns.Bound("").ClientTemplate(@"
 
@@ -68,7 +68,7 @@
                                                             <a class='k-button k-button-icontext k-grid-add M-T3' href='" + Url.Action("Copy", "TestSuite") + "?testSuiteId=#=TestSuiteId#'><span class='k-icon k-add'></span>Copy</a>" +
                                                             "<a class='k-button k-button-icontext k-grid-edit M-T3' href='" + Url.Action("Add", "TestSuite") + "?testSuiteId=#=TestSuiteId#'><span class='k-icon k-edit'></span>Edit</a>" +
                                                             "<a id='testSuiteDel' class='k-button k-button-icontext k-grid-delete M-T3' href='\\#' onclick='return deleteTestSuite(#=TestSuiteId#)'><span class='k-icon k-delete'></span>Delete</a>").Title("Actions").Width(500).Sortable(false);
-                          columns.Bound("").ClientTemplate(@"<a onclick=showTest('#=TestSuiteId#') style='cursor:pointer'>Preview</a>").Title("Action").Width(50).Sortable(false);
+                      columns.Bound("").ClientTemplate(@"<a onclick=showTest('#=TestSuiteId#') style='cursor:pointer'>Preview</a>").Title("Action").Width(50).Sortable(false);
                   })
                 .DataSource(dataSource => dataSource
                   .Ajax()
@@ -84,42 +84,42 @@
                   .Pageable(p => p.PageSizes(true))
               .Sortable()
                             )
-                }
+                        }
+                    </div>
+                </div>
+
+            </div>
+        </div>
+        <div id="modalConfirmYesNo" class="modal fade">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button"
+                                class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                        <h4 id="lblTitleConfirmYesNo" class="modal-title">Confirmation</h4>
+                    </div>
+                    <div class="modal-body">
+                        <p id="lblMsgConfirmYesNo"></p>
+                    </div>
+                    <div class="modal-footer">
+                        <button id="btnYesConfirmYesNo"
+                                type="button" class="btn btn-primary">
+                            Yes
+                        </button>
+                        <button id="btnNoConfirmYesNo"
+                                type="button" class="btn btn-default">
+                            No
+                        </button>
+                    </div>
+                </div>
             </div>
         </div>
 
-    </div>
-</div>
-<div id="modalConfirmYesNo" class="modal fade">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button"
-                        class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-                <h4 id="lblTitleConfirmYesNo" class="modal-title">Confirmation</h4>
-            </div>
-            <div class="modal-body">
-                <p id="lblMsgConfirmYesNo"></p>
-            </div>
-            <div class="modal-footer">
-                <button id="btnYesConfirmYesNo"
-                        type="button" class="btn btn-primary">
-                    Yes
-                </button>
-                <button id="btnNoConfirmYesNo"
-                        type="button" class="btn btn-default">
-                    No
-                </button>
-            </div>
+        <div id="DivUsers">
+
         </div>
-    </div>
-</div>
-
-<div id="DivUsers">
-
-</div>
     </div>
 </div>
 <script>
@@ -204,4 +204,21 @@
         datasource.filter([]);
         $("#FieldFilter").val('');
     });
+
+    function onUserGridsDataBound() {
+        try {
+            var testSuiteId = $('#testSuiteId').val();
+            $.ajax({
+                url: "GetUserIdsForTestSuite?testSuiteId=" + testSuiteId,
+                success: function (userIds) {
+                    if (userIds && userIds.length > 0) {
+                        $.each(userIds, function (i, val) {
+                            $("input[value='" + userIds[i] + "']").attr('checked', 'checked')
+                        });
+                    }
+                }
+
+            });
+        } catch (e) { }
+    }
 </script>

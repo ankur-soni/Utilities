@@ -91,7 +91,7 @@ namespace Silicus.UtilityContainer.Services
 
         public void AddRolesToUserForAUtility(UtilityUserRoleViewModel newUserRole)
         {
-            var myNewUserRole = new UtilityUserRoles();
+            var newUserRoles = new UtilityUserRoles();
             var existingUtilityUserRoles = _commonDBContext.Query<UtilityUserRoles>().Where( x => x.UtilityId == newUserRole.UtilityId && x.RoleId == newUserRole.RoleId ).ToList();
 
             foreach (var item in newUserRole.UserId)
@@ -123,15 +123,22 @@ namespace Silicus.UtilityContainer.Services
                         }
                         else
                         {
-                            myNewUserRole.UtilityId = newUserRole.UtilityId;
-                            myNewUserRole.RoleId = newUserRole.RoleId;
-                            myNewUserRole.UserId = item;
-                            _commonDBContext.Add(myNewUserRole);
+                            newUserRoles.UtilityId = newUserRole.UtilityId;
+                            newUserRoles.RoleId = newUserRole.RoleId;
+                            newUserRoles.UserId = item;
+                            _commonDBContext.Add(newUserRoles);
 
                         }
                        
                     }
                    
+                }
+                else
+                {
+                    newUserRoles.UtilityId = newUserRole.UtilityId;
+                    newUserRoles.RoleId = newUserRole.RoleId;
+                    newUserRoles.UserId = item;
+                    _commonDBContext.Add(newUserRoles);
                 }
 
             }

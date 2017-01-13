@@ -5,76 +5,154 @@
     var isRoleAvailable = ViewBag.noRoleForCUrrentUser;
 }
 
-<h2>Dashboard</h2>
 
-<style>
-    body {
-        background-image: url("~/images/blurred-background-7.jpg");
-        background-repeat: no-repeat;
-        background-attachment: fixed;
-    }
+<div class="row white-bg header-row M-T5">
+    <div class="col-lg-12 col-md-12 col-sm-12">
+        <h1 class="header-name"><i class="fa fa-tachometer" aria-hidden="true"></i> Dashboard</h1>
+    </div>
+</div>
+<div class="row">
+    <div class="box M-T5" style="border-top:5px solid #acb3b7;">
+        <div class="f1">
+            <div class="row">
+                @if (Model != null)
+                {
+                    foreach (var item in Model)
+                    {
+                        if (item.Name == "Encourage")
+                        {
+                            <div class="col-lg-6 col-md-6 col-sm-6">
+                                <div class="el-element-overlay m-b-40">
+                                    <div class="white-box">
+                                        <div class="el-card-item">
+                                            <div class="el-card-avatar el-overlay-1">
 
-    .image.featured {
-        position: static;
-        display: block;
-        margin: 0;
-        height: 200px;
-        border-radius: 6px 6px 0px 0px;
-    }
+                                                <img style="height:100px;width:90%;margin: 90px 30px 70px 30px;" src="~/Images/encourageLogo.png" />
+                                                <div class="el-overlay">
+                                                    <ul class="el-info">
+                                                        <li>
+                                                            <a class="btn default btn-outline image-popup-vertical-fit" href="@item.Url?utilityID=@item.Id" target="_blank" title="@item.Name">
+                                                                <i class="fa fa-eye fa-2x" aria-hidden="true"></i>
+                                                            </a>
+                                                        </li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                            <div class="el-card-content">
+                                                <h3 class="box-title"><i class="fa fa-commenting-o" aria-hidden="true"></i> Utility for Award Nomination and Winner Declaration.</h3>
 
-        .image.featured img {
-            height: 100%;
-            width: 100%;
-        }
 
-    .box {
-        padding: 3em 2em;
-        background: #e6e6e6;
-        text-align: center;
-        border-radius: 0px 0px 6px 6px;
-    }
+                                                <br>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                        if (item.Name == "Enhance")
+                        {
+                            <div class="col-lg-6 col-md-6 col-sm-6">
+                                <div class="el-element-overlay m-b-40">
+                                    <div class="white-box">
+                                        <div class="el-card-item">
+                                            <div class="el-card-avatar el-overlay-1">
+                                    
+                                    <img style="height: 80px;width:75%;margin: 95px 30px 80px 65px;"  src="~/Images/enhanceLogo.png"  />
+                                                <div class="el-overlay">
+                                                    <ul class="el-info">
+                                                        <li>
+                                                            <a class="btn default btn-outline image-popup-vertical-fit" href="@item.Url?utilityID=@item.Id" target="_blank" title="@item.Name">
+                                                                <i class="fa fa-eye fa-2x" aria-hidden="true"></i>
+                                                            </a>
+                                                        </li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                            <div class="el-card-content">
+                                                <h3 class="box-title"><i class="fa fa-commenting-o" aria-hidden="true"></i> <span>Framework components dashboard and backlog management.</span></h3>
+                                                <br>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                        
+                        else if (item.Name == "Ensure")
+                        {
+                            <div class="col-lg-6 col-md-6 col-sm-6">
+                                <div class="el-element-overlay m-b-40">
+                                    <div class="white-box">
+                                        <div class="el-card-item" style="padding-bottom:0px;">
+                                            <div class="el-card-avatar el-overlay-1">
+                                    
+                                    <img style="height: 85px;width:65%;margin: 85px 30px 70px 90px;"  src="~/Images/ensureLogo.png" />
+                                                <div class="el-overlay">
+                                                    <ul class="el-info">
+                                                        <li>
+                                                            <a class="btn default btn-outline image-popup-vertical-fit" href="@item.Url?utilityID=@item.Id" target="_blank" title="@item.Name">
+                                                                <i class="fa fa-eye fa-2x" aria-hidden="true"></i>
+                                                            </a>
+                                                        </li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                            <div class="el-card-content">
+                                    <h3 class="box-title"><i class="fa fa-commenting-o" aria-hidden="true"></i> An online portal for pre-employment assessments.</h3>
 
-    .button {
-        background: #00b8e6;
-        border-radius: 6px;
-        border: 0;
-        color: white;
-        cursor: pointer;
-        display: inline-block;
-        padding: 0.75em 1.5em;
-        text-align: center;
-        text-decoration: none;
-        text-transform: uppercase;
-        display: inline-block;
-        font-size: 1.2em;
-        font-weight: 600;
-        color: white;
-    }
 
-    .block {
-        padding: 40px;
-    }
+                                                <br>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                        else if (item.Name == "Entime")
+                        {
+                            <div class="col-lg-6 col-md-6 col-sm-6">
+                                <div class="el-element-overlay m-b-40">
+                                    <div class="white-box">
+                                        <div class="el-card-item" style="padding-bottom:0px;">
+                                            <div class="el-card-avatar el-overlay-1">
 
-    p {
-        font-family: 'Franklin Gothic';
-        color: #29293d;
-        text-transform: uppercase;
-        font-size: 25px;
-    }
+                                    <img style="height: 83px;width:70%;margin: 88px 30px 70px 80px;"  src="~/Images/entimeLogo.png" />
+                                                <div class="el-overlay">
+                                                    <ul class="el-info">
+                                                        <li>
+                                                            <a class="btn default btn-outline image-popup-vertical-fit" href="@item.Url?utilityID=@item.Id" target="_blank" title="@item.Name">
+                                                                <i class="fa fa-eye fa-2x" aria-hidden="true"></i>
+                                                            </a>
+                                                        </li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                            <div class="el-card-content">
+                                    <h3 class="box-title"><i class="fa fa-commenting-o" aria-hidden="true"></i> Tool of Tracking Employee time and work.</h3>
 
-    #main-logo {
-        float: left;
-        padding-bottom: 5px;
-    }
 
-    #dashboard-image {
-        width: 100%;
-        /*background-repeat: repeat;*/
-    }
-</style>
-<p style="color:red;font-size:20px">@isRoleAvailable</p>
+                                                <br>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                    }
 
-    <div class="animated fadeInRight">
+                }
+               
+            </div>
+            @*<div class="row">
+               
+               
+            </div>*@
+        </div>
+    </div>
+</div>
+@*<p style="color:red;font-size:20px">@isRoleAvailable</p>*@
+
+    @*<div class="animated fadeInRight">
         <div>
 
             @if (Model != null)
@@ -84,13 +162,13 @@
                     if (item.Name == "Reusable")
                     {
                         <section class="block col-lg-6 col-md-6">
-                            <a title="@item.Name" href="@item.Url?utilityID=@item.Id" class="image featured" target="_blank"><img src="~/Images/Frameworx.jpg" alt="Utility Image" /></a>
+                            <a title="@item.Name" href="@item.Url?utilityID=@item.Id" class="image featured" target="_blank"><img src="~/Images/Frameworx.jpg" alt="Utility Image" class="white-bg" /></a>
                         </section>
                     }
                    else if (item.Name == "Encourage")
                     {
                         <section class="block col-lg-6 col-md-6">
-                            <a title="@item.Name" href="@item.Url?utilityID=@item.Id" class="image featured" target="_blank"><img src="~/Images/encourageLogo.png" /></a>
+                            <a title="@item.Name" href="@item.Url?utilityID=@item.Id" class="image featured" target="_blank"><img src="~/Images/encourageLogo.png" class="white-bg" /></a>
                         </section>
                     }
                     else
@@ -103,7 +181,7 @@
 
             }
         </div>
-    </div>
+    </div>*@
 
 
 

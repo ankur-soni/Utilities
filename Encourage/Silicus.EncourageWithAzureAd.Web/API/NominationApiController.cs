@@ -1,6 +1,4 @@
 ﻿using System.Web.Http;
-using AttributeRouting.Web.Mvc;
-using Silicus.Encourage.Services;
 using Silicus.Encourage.Services.Interface;
 using Silicus.FrameWorx.Logger;
 using System.Collections.Generic;
@@ -10,7 +8,7 @@ namespace Silicus.EncourageWithAzureAd.Web.API
 
     public class NominationApiController : ApiController
     {
-        private INominationService _nominationService;
+        private readonly INominationService _nominationService;
         private readonly ILogger _logger;
         private readonly IAwardService _awardService;
         public NominationApiController(INominationService nominationService, ILogger logger, IAwardService awardService)
