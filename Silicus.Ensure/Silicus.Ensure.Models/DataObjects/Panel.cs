@@ -12,7 +12,7 @@ namespace Silicus.Ensure.Models.DataObjects
 
         [StringLength(50)]
         [Required(ErrorMessage = "Panel is required!")]
-        [Remote("IsDuplicatePanelName", "Panel", ErrorMessage = "Panel is already name exist !")]
+        [Remote("IsDuplicatePanelName", "Panel", ErrorMessage = "Panel name already exists!")]
         [Display(Name = "Panel name")]
         public string PanelName { get; set; } 
         public bool IsDeleted { get; set; }
