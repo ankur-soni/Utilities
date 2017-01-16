@@ -377,7 +377,7 @@ namespace Silicus.Encourage.Services
 
         public int GetNominationCountByManagerIdForPinnacle(int managerId, DateTime startDate, int awardId)
         {
-            return _encourageDatabaseContext.Query<Nomination>().Count(x => x.ManagerId == managerId && (x.NominationDate.Value.Year == startDate.Year && x.AwardId == awardId));
+            return _encourageDatabaseContext.Query<Nomination>().Count(x => x.ManagerId == managerId && (x.NominationDate.Value.Year >= startDate.Year && x.AwardId == awardId));
         }
 
         public List<Award> GetNominationLockStatus()
