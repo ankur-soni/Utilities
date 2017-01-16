@@ -84,6 +84,14 @@
                 updateButton.remove();
             }
         }
+
+        $(".hours").kendoMaskedTextBox({
+            mask: "00 : 00"
+        });
+
+        $('.hours').off('blur').on('blur',function(){
+            alert('demo');
+        })
     }
 
     function Accept(e){
@@ -98,10 +106,10 @@
             @(Html.Kendo().Grid<Silicus.Reusable.Web.Models.ViewModel.ProductBacklogViewModel>
                 ()
                 .Name("productBacklogs")
-                .AutoBind(false)
+                .AutoBind(false)                
                 .Events(e => e.DataBound("onDataBound"))
                 .DataSource(dataSource => dataSource
-                .Ajax()
+                .Ajax()               
                 .Model(model =>
                 {
                     model.Id(p => p.Id);
@@ -123,8 +131,8 @@
                     columns.Bound(p => p.Type).Width(10);
                     columns.Bound(p => p.AreaPath).Width(30).Title("Area");
                     columns.Bound(p => p.Assignee).Width(50).Title("Assigned To");
-                    columns.Bound(p => p.TimeAllocatedString).Width(10).Title("Time Allocated (Hrs)");
-                    columns.Bound(p => p.TimeSpentString).Width(10).Title("Time Spent (Hrs)");
+                    columns.Bound(p => p.TimeAllocatedString).Width(10).Title("Time Allocated (Hrs)").ClientTemplate("<input class='hours' value='#=TimeAllocatedString#'  #=(Assignee == 'Unassigned' || TimeAllocatedString == '00:00')?'':'disabled'# />");
+                    columns.Bound(p => p.TimeSpentString).Width(10).Title("Time Spent (Hrs)").ClientTemplate("<input value='#=TimeSpentString#' class='hours'/>");
                     columns.Bound(p => p.State).Width(10);
                     columns.Command(command =>
                     {
