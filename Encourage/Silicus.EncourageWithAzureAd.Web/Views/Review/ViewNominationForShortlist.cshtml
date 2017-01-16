@@ -105,11 +105,11 @@
                         <div class="row">
                             <div class="col-md-12">
                                 <div class="table-responsive">
+                                    @{ var i = 0;}
                                     @foreach (var reviewer in Model.ReviewerComments)
                                     {
                                         var creditCount = 0;
                                         var reviewerName = reviewer.FirstOrDefault();
-
 
                                         <table class="table issue-tracker">
                                             <thead>
@@ -146,7 +146,7 @@
                                                         }
                                                         <td class="col-lg-1 col-md-1 col-sm-1">@(commentObj != null ? commentObj.Weightage.ToString() : "-")</td>
                                                         <td class="col-lg-2 col-md-2 col-sm-2">
-                                                            @Html.DropDownList("rating_" + managerComment.CriteriaId,
+                                                            @Html.DropDownList("rating_"+ i +"_"+ managerComment.CriteriaId,
                                         Enumerable.Range(1, 5).
                                             Select(j => new SelectListItem
                                             {
@@ -161,7 +161,7 @@
                                                     var reviewObj = reviewer.FirstOrDefault(model => model.CriteriaId == @managerComment.CriteriaId);
                                                     if (reviewObj != null)
                                                     {
-                                                        @Html.DropDownList("reviewRating_" + managerComment.CriteriaId, Enumerable.Range(1, 5).
+                                                        @Html.DropDownList("reviewRating_" + i + "_" + managerComment.CriteriaId, Enumerable.Range(1, 5).
                                                 Select(j => new SelectListItem
                                                 {
                                                     Value = j.ToString(),
@@ -195,7 +195,8 @@
                                                 </tr>
                                             </tbody>
                                         </table>
-                                    }
+                                                                    i++;
+                                                                }
                                 </div>
                             </div>
                         </div>
