@@ -335,5 +335,11 @@ namespace Silicus.Ensure.Web.Controllers
             var users = _testSuiteService.GetAllUserIdsForTestSuite(testSuiteId);
             return Json(users, JsonRequestBehavior.AllowGet);
         }
+
+        public JsonResult IsTestSuiteNameAvailable(string testSuiteName)
+        {
+            var testSuite = _testSuiteService.GetTestSuiteByName(testSuiteName);
+            return Json(testSuite == null, JsonRequestBehavior.AllowGet);
+        }
     }
 }
