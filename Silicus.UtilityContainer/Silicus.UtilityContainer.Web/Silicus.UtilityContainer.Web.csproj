@@ -114,7 +114,7 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="Silicus.Encourage.Services">
-      <HintPath>..\..\Encourage\Silicus.Encourage.Services\bin\Release\Silicus.Encourage.Services.dll</HintPath>
+      <HintPath>..\Dependancies\Silicus.Encourage.Services.dll</HintPath>
     </Reference>
     <Reference Include="Silicus.FrameWorx.Logger, Version=1.0.1.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Silicus.FrameWorx.Logger.1.0.1\lib\net45\Silicus.FrameWorx.Logger.dll</HintPath>
