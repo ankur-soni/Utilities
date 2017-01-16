@@ -20,6 +20,9 @@
                     filter.filters.push({ field: "RequisitionId", operator: "contains", value: value });
                     filter.filters.push({ field: "ContactNumber", operator: "contains", value: value });
                     filter.filters.push({ field: "PanelName", operator: "contains", value: value });
+                    filter.filters.push({ field: "Position", operator: "contains", value: value });
+                    //filter.filters.push({ field: "ContactNumber", operator: "contains", value: value });
+                    //filter.filters.push({ field: "TotalExperienceInYear", operator: "contains", value: value });
                     grid.dataSource.query({ filter: filter });
                     grid.dataSource.pageSize(pageSize);
                 } else {
@@ -405,6 +408,7 @@
                           .Update(update => update.Action("UpdateUser", "User"))
                           .Destroy(update => update.Action("DeleteUser", "User"))
                           .PageSize(10)
+                          .ServerOperation(false)
                      )
                   .Pageable(p => p.PageSizes(true))
                   .Sortable()

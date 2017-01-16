@@ -319,8 +319,7 @@
                     $("#addPositionPopup").modal('hide');
                     var $PositionDrpSelect=$('#Position').data('kendoDropDownList');
                     var multidata=$PositionDrpSelect.dataSource.data();
-                    debugger
-                    multidata.push({ PositionName: returndata.PositionName, PositionName: returndata.PositionName});
+                    multidata.unshift({ PositionName: returndata.PositionName, PositionName: returndata.PositionName});
                     var selectedValues=$PositionDrpSelect.value();
                     selectedValues.push(returndata.PositionName);
                     $PositionDrpSelect.value(selectedValues);
