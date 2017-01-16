@@ -501,7 +501,7 @@
                         $("#addPositionPopup").modal('hide');
                         var $PositionSelect = $('#Position').data('kendoDropDownList');
                         var multidata = $PositionSelect.dataSource.data();
-                        multidata.push(returndata);
+                        multidata.unshift(returndata);
                         $("#PositionForm").trigger("reset");
                         $PositionSelect.value(returndata.PositionId);
                     }
