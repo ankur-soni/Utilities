@@ -48,6 +48,14 @@
     .consolidatedRightCell {
         border-left: none !important;
     }
+
+    .cFinalScore {
+        font-weight: bold;
+    }
+
+    .cRed {
+        color: red;
+    }
     
 </style>
 @using (Ajax.BeginForm("ConsolidatedNominations", "Review",
@@ -183,6 +191,7 @@
             scrollCollapse: true,
             paging: false,
             searching: false,
+            "bInfo" : false,
             fixedColumns: {
                 leftColumns: 3
             },
@@ -254,6 +263,7 @@
             var hrPoints = $("#txtHrPoints").val();
             var hrComment = $("#txtHrComment").val();
             $("#spnFinalPoints_" + nominationId + "_" + criteriaId).text(hrPoints);
+            $("#spnFinalPoints_" + nominationId + "_" + criteriaId).addClass("cRed");
             //console.log(hrPoints + ", " + hrComment);
             $("input[name='Nominations[" + g_nominationIndex + "].ManagerComments[" + g_criteriaIndex + "].FinalScore']").val(hrPoints);
             $("input[name='Nominations[" + g_nominationIndex + "].ManagerComments[" + g_criteriaIndex + "].AdminComment']").val(hrComment);
