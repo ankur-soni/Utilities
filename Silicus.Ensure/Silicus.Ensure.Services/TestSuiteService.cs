@@ -23,6 +23,11 @@ namespace Silicus.Ensure.Services
             return _context.Query<TestSuite>();
         }
 
+        public TestSuite GetTestSuiteByName(string testSuiteName)
+        {
+            return _context.Query<TestSuite>().FirstOrDefault(y=>y.TestSuiteName.Equals(testSuiteName,StringComparison.InvariantCultureIgnoreCase));
+        }
+
         public int Add(TestSuite TestSuite)
         {
             _context.Add(TestSuite);
