@@ -45,11 +45,9 @@
         <div class="form-group">
             @Html.LabelFor(model => model.Position, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-8">
-                @*@Html.EditorFor(model => model.Position, new { htmlAttributes = new { @class = "form-control" } })*@
                 @(Html.Kendo().DropDownListFor(m => m.Position)
                                     .DataTextField("PositionName")
                                     .DataValueField("PositionId")
-        //.Placeholder("Select Positions...")
                                     .OptionLabel("Select Position...")
                                             .DataSource(source =>
                                             {
@@ -59,7 +57,6 @@
                                                 })
                                                 .ServerFiltering(false);
                                             })
-        // .Value(Model.Position)
                                     .HtmlAttributes(new { style = "width: 100%", required = "required" }))
                 @Html.ValidationMessageFor(model => model.Position, "", new { @class = "text-danger" })
             </div>
@@ -122,7 +119,6 @@
             </div>
         </div>
 
-
         <div class="form-group">
             <label class="control-label col-md-2">Experience</label>
             <div class="col-md-5">
@@ -149,44 +145,6 @@
             </div>
         </div>
 
-        @*<div class="form-group">
-                @(Html.Kendo().Grid(Model.Tags).Name("TagsGrid").Pageable(pager => { pager.PageSizes(true); })
-                   .Columns(columns =>
-                        {
-
-                            columns.Bound(p => p.TagName)
-                                      .ClientTemplate("#=TagName#")
-                                      .Title("Parameter")
-                                      .EditorTemplateName("TagList").Width(100);
-                            columns.Bound(q => q.Weightage).Width(150);
-                            //columns.Bound(q => q.Proficiency).Width(100);
-                            columns.Bound(p => p.ProficiencyName)
-                                      .ClientTemplate("#=ProficiencyName#")
-                                      .Title("Proficiency")
-                                      .EditorTemplateName("ProficiencyList").Width(100);
-
-                            columns.Command(command => command.Destroy()).Width(150);
-                        })
-                .ToolBar(toolbar => { toolbar.Create(); toolbar.Save(); })
-                .Editable(editable => editable.Mode(GridEditMode.InCell))
-                .DataSource(dataSource =>
-                          dataSource.Ajax()
-                          .Batch(true)
-                          .ServerOperation(false)
-                              //.Events(events => events.Error("grid_error")) // Handle the "error" event.
-                            .Model(model =>
-                            {
-                                model.Id(product => product.TagId);
-                                //model.Field(product => product.TagId).Editable(false);
-                            })
-                            .Create(create => create.Action("Products_Create", "Home"))
-                              //.Read(read => read.Action("Products_Read", "Home"))
-                            .Update(update => update.Action("Products_Update", "Home"))
-                            .Destroy(destroy => destroy.Action("Products_Destroy", "Home"))
-                      )
-                )
-            </div>*@
-        
         <div id="TagCustomControl">
             <div class="form-group">
                 <div class="form-group">
@@ -209,7 +167,6 @@
             @if (Model != null && Model.Tags != null && Model.Tags.Count > 0)
             {
                 int i = 0;
-                // for (int i = 0; i < Model.Tags.Count; i++)
                 var tagCount = Model.Tags.Count;
                 foreach (var tag in Model.Tags)
                 {
@@ -259,7 +216,6 @@
                     </div>
                     <div class="col-md-1">
                         <input data-val="1" type="button" value="Add" class="addbtn" />
-                        @*<input data-val="1" type="button" value="Remove" class="removebtn" />*@
                     </div>
                 </div>
             }
@@ -282,6 +238,9 @@
 }
 
 <script>
+    $(document).ready(function () {
+        SetNavigationMenuActive('TestSuite');
+    });
     function onCancelClick() {
         redirectToTestSuiteList();
     }
@@ -357,7 +316,6 @@
             });
 
             $("#TagCustomControl").on("click", ".addbtn", function () {
-                debugger;
                 var rowno = eval($(this).attr('data-val'));
                 var control = formatOfCustomControl(rowno + 1);
                 $("#TagCustomControl").append(control);
@@ -384,7 +342,6 @@
             });
 
             $("#btnSave").click(function () {
-                debugger;
                 if ($("#frmAddTestSuite").valid()) {
                     tags = '';
                     var TestSuiteId = $("#TestSuiteId").val();
@@ -402,7 +359,6 @@
                     var Weights = '';
                     var Proficiency = '';
                     $('#TagCustomControl input.tagAutoComplete').each(function () {
-                        debugger;
                         if (tags == '') {
                             tags += $(this).val();
                         }
@@ -454,17 +410,14 @@
                             if (response != null && response.status == "success") {
                                 $("#SuccessModel").modal();
                                 if (IsCopy == "True") {
-                                    //$("#msgContent").text("Test suite copy created successfully.");
                                     ShowMessage("Test suite copy created successfully..", 1);
                                     redirectToTestSuiteList();
                                 }
                                 else if (TestSuiteId == 0) {
-                                    //$("#msgContent").text("Test suite created successfully.");
                                     ShowMessage("Test suite created successfully.", 1);
                                     redirectToTestSuiteList();
                                 }
                                 else {
-                                    //$("#msgContent").text("Test suite updated successfully.");
                                     ShowMessage("Test suite updated successfully.", 1);
                                     redirectToTestSuiteList();
                                 }
@@ -479,7 +432,6 @@
                 }
                 else {
                     $("#frmAddTestSuite").submit();
-                    //validateTestSuite();
                 }
             });
 
@@ -497,11 +449,10 @@
                     url: '/Positions/PositionSave',
                     data: $('#PositionForm').serialize(),
                     success: function (returndata) {
-                        debugger;
                         $("#addPositionPopup").modal('hide');
                         var $PositionSelect = $('#Position').data('kendoDropDownList');
                         var multidata = $PositionSelect.dataSource.data();
-                        multidata.push(returndata);
+                        multidata.unshift(returndata);
                         $("#PositionForm").trigger("reset");
                         $PositionSelect.value(returndata.PositionId);
                     }
@@ -512,26 +463,13 @@
             }
         }
         var dataItem1; //This should be Global variable
-        //function getParentID() {
-        //    debugger
-        //    var row = $(event.srcElement).closest("tr");
-        //    var grid = $(event.srcElement).closest("[data-role=grid]").data("kendoGrid");
-        //    dataItem = grid.dataItem(row);
-        //    var arr = [];
-        //    $(dataItem.TagName).each(function () {
-        //        arr.push(this);
-        //    });
-        //    return { values: arr };
-        //}
         function onSelectTag(e) {
-            debugger;
             var selectedValue = this.dataItem(e.item.index()).TagName;
             if (selectedValue != null) {
                 this.dataItem(e.item.index()).TagName = selectedValue;
             }
         }
         function onAdditionalData() {
-
             return {
                 text: $("#TagName").val()
             };

@@ -44,6 +44,12 @@
 .k-grid-pager .k-link, .k-grid-pager .k-link:link {
     color: #fff !important;
 }
+span.k-icon.k-edit{display:none;}
+span.k-icon.k-delete{display:none;}
+span.k-icon.k-cancel{display:none;}
+span.k-icon.k-save{display:none;}
+span.k-icon.k-update{display:none;}
+i.fa.fa-save{display:none;}
 
 #userGrids table {
     width: 100%;

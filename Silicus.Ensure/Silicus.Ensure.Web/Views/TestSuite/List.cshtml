@@ -23,7 +23,7 @@
             <div class="fluid">
 
                 <div class="row">
-                    <div class="alert alert-success" id="messageDiv">
+                    <div class="alert alert-success" id="messageDiv" style="display:none">
                         <span id="messageContent">This alert box could indicate successful action.</span>
                     </div>
                 </div>
@@ -65,10 +65,12 @@
                       columns.Bound("").ClientTemplate(@"
 
                                                         #if (UserInRole){#
-                                                            <a class='k-button k-button-icontext k-grid-add M-T3' href='\\#' onclick= getTestSuiteId('#=TestSuiteId#','#=StatusName#') data-toggle='modal' data-target='\\#myModal'><span class='k-icon k-add'></span>Assign Test</a>
+                                                            <a class='k-button k-button-icontext k-grid-add M-T3' href='\\#' onclick= getTestSuiteId('#=TestSuiteId#','#=StatusName#') data-toggle='modal' data-target='\\#myModal'>Assign Test</a>
                                                         #}#
-                                                            <a class='k-button k-button-icontext k-grid-add M-T3' href='" + Url.Action("Copy", "TestSuite") + "?testSuiteId=#=TestSuiteId#'><span class='k-icon k-add'></span>Copy</a>" +
-                                                                                                                          "<a class='k-button k-button-icontext k-grid-add' onclick=showTest('#=TestSuiteId#')><span class='k-icon k-add'></span>Preview</a>"
+                                                            <a class='k-button k-button-icontext k-grid-add M-T3' href='" + Url.Action("Copy", "TestSuite") + "?testSuiteId=#=TestSuiteId#'>Copy</a>" +
+                                                                                                                          "  #if (StatusName=='Ready'){#" +
+                                                                                                                          "<a class='k-button k-button-icontext k-grid-add' onclick=showTest('#=TestSuiteId#')>Preview</a>"
+                                                                                                                          + "#}#"
                                                               ).Title("Test Actions").Width(400).Sortable(false);
 
 
