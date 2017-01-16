@@ -25,7 +25,7 @@
         <button type="button" class="btn btn-white" aria-label="Left Align">
             <span class="glyphicon glyphicon-print" aria-hidden="true" onclick="printDiv();"> Print</span>
         </button>
-        <a class="k-button" href="/TestSuite/List"><span class="glyphicon glyphicon-arrow-left"></span>Back321</a>
+        <a class="k-button" href="/TestSuite/List"><span class="glyphicon glyphicon-arrow-left"></span>Back</a>
     </div>
     @if (string.IsNullOrWhiteSpace(Model.ErrorMessage))
     {
@@ -184,6 +184,7 @@
 <script>
     $(document).ready(function () {
         $(".box").hide();
+        SetNavigationMenuActive('TestSuite');
     });
 
     function ViewQuestion(divID, chkID) {
