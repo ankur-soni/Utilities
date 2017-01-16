@@ -20,15 +20,16 @@ namespace Silicus.FrameworxProject.Services
         VssBasicCredential _credentials = new VssBasicCredential("", ConfigurationManager.AppSettings["TfsApipat"]);
         Uri _uri = new Uri(ConfigurationManager.AppSettings["TfsApiuri"]);
 
-        public IEnumerable<ProductBacklog> GetAllProductBacklog()
+        public IEnumerable<ProductBacklog> GetAllProductBacklog(string projectName)
         {
             Wiql wiql = new Wiql()
             {
                 Query = "Select * " +
                         "From WorkItems " +
+                        "Where System.TeamProject='" + projectName + "' " +
                         "Order By [State] Asc, [Changed Date] Desc"
             };
-            
+
             using (WorkItemTrackingHttpClient workItemTrackingHttpClient = new WorkItemTrackingHttpClient(_uri, _credentials))
             {
                 WorkItemQueryResult queryResult = workItemTrackingHttpClient.QueryByWiqlAsync(wiql).Result;
@@ -36,7 +37,7 @@ namespace Silicus.FrameworxProject.Services
                 if (queryResult != null && queryResult.WorkItems.Count() > 0)
                 {
                     // return queryResult;
-                    var workItems = GetWorkItemsWithSpecificFields(queryResult.WorkItems.Select(t => t.Id));                  
+                    var workItems = GetWorkItemsWithSpecificFields(queryResult.WorkItems.Select(t => t.Id));
                     List<ProductBacklog> productBacklogs = new List<ProductBacklog>();
 
                     foreach (var item in workItems)
@@ -47,7 +48,7 @@ namespace Silicus.FrameworxProject.Services
                             Title = item.Fields["System.Title"].ToString(),
                             State = item.Fields["System.State"].ToString(),
                             Type = item.Fields.ContainsKey("System.WorkItemType") ? item.Fields["System.WorkItemType"].ToString() : Constants.InformationNotAvailableText,
-                            AreaPath = item.Fields.ContainsKey("System.AreaPath") ? item.Fields["System.AreaPath"].ToString() : Constants.InformationNotAvailableText,                            
+                            AreaPath = item.Fields.ContainsKey("System.AreaPath") ? item.Fields["System.AreaPath"].ToString() : Constants.InformationNotAvailableText,
                             Assignee = item.Fields.ContainsKey("System.AssignedTo") ? item.Fields["System.AssignedTo"].ToString() : "Unassigned",
                             TimeAllocated = item.Fields.ContainsKey("Microsoft.VSTS.Scheduling.OriginalEstimate") ? (double)item.Fields["Microsoft.VSTS.Scheduling.OriginalEstimate"] : 0.00,
                             TimeSpent = item.Fields.ContainsKey("Microsoft.VSTS.Scheduling.CompletedWork") ? (double)item.Fields["Microsoft.VSTS.Scheduling.CompletedWork"] : 0.0
@@ -88,7 +89,7 @@ namespace Silicus.FrameworxProject.Services
                 "System.Title",
                 "System.State",
                 "System.WorkItemType",
-                "System.AreaPath",                
+                "System.AreaPath",
                 "System.AssignedTo",
                 "Microsoft.VSTS.Scheduling.OriginalEstimate",
                 "Microsoft.VSTS.Scheduling.CompletedWork"
@@ -101,12 +102,13 @@ namespace Silicus.FrameworxProject.Services
             }
         }
 
-        public IEnumerable<TeamProjectCollectionReference> GetProjectCollections()
+        public IEnumerable<TeamProjectReference> GetTeamProjects()
         {
-            using (ProjectCollectionHttpClient projectCollectionHttpClient = new ProjectCollectionHttpClient(_uri, _credentials))
+            // create project object
+            using (ProjectHttpClient projectHttpClient = new ProjectHttpClient(_uri, _credentials))
             {
-                IEnumerable<TeamProjectCollectionReference> teamProjectCollectionReference = projectCollectionHttpClient.GetProjectCollections(null).Result;
-                return teamProjectCollectionReference;
+                IEnumerable<TeamProjectReference> projects = projectHttpClient.GetProjects().Result;
+                return projects;
             }
         }
     }
