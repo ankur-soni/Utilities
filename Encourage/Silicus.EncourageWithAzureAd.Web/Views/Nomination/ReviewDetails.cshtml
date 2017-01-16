@@ -21,27 +21,24 @@
                 <div class="panel-heading"> <span>Review For:&nbsp; @Html.DisplayFor(modelItem => modelItem.FirstOrDefault().NomineeName)</span></div>
                 <div class="panel-wrapper collapse in" aria-expanded="true">
                     <div class="panel-body">
-                       
                         <table class="table table-hover issue-tracker white-bg">
-                            
-                                <tr>
-                                    <td class="col-sm-4">
-                                        <label>Project/Department:</label>
-                                    </td>
-                                    <td>
-                                        @Html.DisplayFor(modelItem => modelItem.FirstOrDefault().ProjectOrDepartment)
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td class="col-sm-4">
-                                        <label>Manager:</label>
-                                    </td>
-
-                                    <td>
-                                        @Html.DisplayFor(modelItem => modelItem.FirstOrDefault().Manager)
-                                    </td>
-                                </tr>
-                            
+                            <tr>
+                                <td class="col-sm-4">
+                                    <label>Project/Department:</label>
+                                </td>
+                                <td>
+                                    @{ string employeeFrom = Model.FirstOrDefault().ProjectOrDepartment == "" ? "Other" : Model.FirstOrDefault().ProjectOrDepartment; }
+                                    @Html.DisplayFor(modelItem => employeeFrom)
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="col-sm-4">
+                                    <label>Manager:</label>
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => modelItem.FirstOrDefault().Manager)
+                                </td>
+                            </tr>
                         </table>
                     </div>
                 </div>
@@ -54,7 +51,6 @@
                 <div class="panel-heading"> <span>@Html.DisplayFor(modelItem => modelItem.FirstOrDefault().Manager) Says:</span></div>
                 <div class="panel-wrapper collapse in" aria-expanded="true">
                     <div class="panel-body">
-                       
                         <table class="table table-hover issue-tracker">
                             <tr>
                                 <td class="more" style="word-wrap: break-word;">
@@ -62,7 +58,6 @@
                                 </td>
                             </tr>
                         </table>
-
                     </div>
                 </div>
             </div>
@@ -73,22 +68,15 @@
             <div class="box M-B60">
                 <div class="f1">
                     <div class="wizard-box" style="margin-top:0px;">
-
-                        @{  var reviewerIndex = 1;}
-
-
+                        @{
+                            var j = 0;
+                        }
                         @foreach (var review in Model)
                         {
                             <div class="white-bg">
-                                @*<div class="row col-md-8">
-                                        @Html.Label("Review Comments By : Reviewer " + @reviewerIndex++)
-                                        <div class="row">&nbsp;</div>
-                                    </div>
-                                    <a class="header"><div>Expand the Comments</div></a>*@
                                 <div class="row">
                                     <div class="col-md-12">
                                         <div class="table-responsive">
-
                                             <table class="table issue-tracker">
                                                 <thead>
                                                     <tr>
@@ -106,52 +94,46 @@
                                                         <th>Comments</th>
                                                     </tr>
                                                 </thead>
-                                                @{
-                            var j = 0;
-                                                }
+                                                
                                                 @foreach (var managerComment in review.ManagerComments)
                                                 {
                                                     <tbody>
                                                         <tr>
                                                             @Html.Hidden("CriteriaId", @managerComment.CriteriaId)
                                                             @{
-                                                    var criteria = review.Criterias.FirstOrDefault(mc => mc.Id == managerComment.CriteriaId);
+                                                                var criteria = review.Criterias.FirstOrDefault(mc => mc.Id == managerComment.CriteriaId);
                                                             }
                                                             <td class="col-lg-2 col-md-2 col-sm-2">@(criteria != null ? criteria.Title : "")</td>
                                                             <td class="col-lg-1 col-md-1 col-sm-1">@managerComment.Weightage</td>
                                                             <td class="col-lg-2 col-md-2 col-sm-2">
                                                                 @Html.DropDownList("Comments[" + @j + "].Rating",
-                                        Enumerable.Range(1, 5).
-                                            Select(r => new SelectListItem
-                                            {
-                                                Value = r.ToString(),
-                                                Text = r.ToString()
-                                            }), "", new { @class = "example-square", @autocomplete = "off", @value = managerComment.Rating })
+                                                                Enumerable.Range(1, 5).
+                                                                Select(r => new SelectListItem
+                                                                {
+                                                                    Value = r.ToString(),
+                                                                    Text = r.ToString()
+                                                                }), "", new { @class = "example-square", @autocomplete = "off", @value = managerComment.Rating })
                                                             </td>
                                                             <td class="col-lg-1 col-md-1 col-sm-1">@(managerComment.Weightage * managerComment.Rating / 100.0)</td>
                                                             <td class="more col-lg-1 col-md-1 col-sm-1" style="word-break:break-all">@managerComment.Comment</td>
                                                             @{
-                                                    var reviewwrComment = review.Comments.FirstOrDefault(c => c.CriteriaId == managerComment.CriteriaId);
+                                                                var reviewwrComment = review.Comments.FirstOrDefault(c => c.CriteriaId == managerComment.CriteriaId);
                                                             }
                                                             <td class="col-lg-2 col-md-2 col-sm-2">
-                                                                @Html.DropDownList("Comments[" + @j + "].Credit",
-                                        Enumerable.Range(1, 5).
-                                            Select(r => new SelectListItem
-                                            {
-                                                Value = r.ToString(),
-                                                Text = r.ToString()
-                                            }), "", new { @class = "example-square", @autocomplete = "off", @value = (reviewwrComment != null ? reviewwrComment.Credit : 0) })
+                                                                @Html.DropDownList("Comments[" + j + "].Credit",
+                                                         Enumerable.Range(1, 5).
+                                                             Select(r => new SelectListItem
+                                                             {
+                                                                 Value = r.ToString(),
+                                                                 Text = r.ToString()
+                                                             }), "", new { @class = "example-square", @autocomplete = "off", @value = (reviewwrComment != null ? reviewwrComment.Credit : 0) })
                                                             </td>
-
                                                             <td class="col-lg-3 col-md-3 col-sm-3">@(reviewwrComment != null ? reviewwrComment.Comment : "")<div class="textarea"></div></td>
-
-                                                            @Html.Hidden("Comments[" + @j + "].CriteriaId", managerComment.CriteriaId)
+                                                            @Html.Hidden("Comments[" + j + "].CriteriaId", managerComment.CriteriaId)
                                                         </tr>
                                                     </tbody>
                                                     j++;
-
                                                 }
-
 
                                                 @if (review.ManagerComments != null)
                                                 {
@@ -181,45 +163,23 @@
                                                     </td>
                                                     <td></td>
                                                 </tr>
-
                                             </table>
                                         </div>
                                     </div>
                                 </div>
-
-
-                                        </div>
-                                        }
-
-                                    </div>
-                                    <div class="row M-T15">
-
-                                        <div class="pull-right btn-nav">
-
-                                            <input type="button" value="Back" class="btn btn-primary" onclick="location.href='@Url.Action("SavedReviews","Nomination")'" />
-
-                                        </div>
-
-
-
-                                    </div>
-                                </div>
                             </div>
+                        }
+                    </div>
+                    <div class="row M-T15">
+                        <div class="pull-right btn-nav">
+                            <input type="button" value="Back" class="btn btn-primary" onclick="location.href='@Url.Action("SavedReviews", "Nomination")'" />
+                        </div>
+                    </div>
                 </div>
             </div>
-
+        </div>
+    </div>
 }
-
-
-
-
-
-
-
-
-
-
-
 
 <script src="~/js/jquery-2.1.1.js"></script>
 <script src="~/js/jquery.barrating.min.js"></script>
@@ -236,20 +196,21 @@
         });
     });
 
-    var ratings = $('.example-square');
+    $(document).ready(function () {
+        var ratings = $('.example-square');
 
-    $.each(ratings, function (index) {
-        var id = "#" + this.id;
-        var rating = +this.getAttribute("value");
+        $.each(ratings, function (index) {
+            var id = "#" + this.id;
+            var rating = +this.getAttribute("value");
 
-        $(id).barrating('show', {
-            theme: 'bars-square',
-            showValues: true,
-            showSelectedRating: false,
-            readonly: true
+            $(id).barrating('show', {
+                theme: 'bars-square',
+                showValues: true,
+                showSelectedRating: false,
+                readonly: true
+            });
+
+            $(id).barrating('set', rating);
         });
-
-        $(id).barrating('set', rating);
     });
-    //});
 </script>

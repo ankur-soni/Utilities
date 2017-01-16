@@ -15,17 +15,24 @@
     @if (Model.UserId != 0)
     {
         <div class="col-lg-10 col-md-10 col-sm-10">
-            <h1 class="dashboard-name">Edit candidate</h1>
-        </div>
-    }
-    else
-    {
-        <div class="col-lg-10 col-md-10 col-sm-10">
-            <h1 class="dashboard-name">Add candidate</h1>
+            <h1 class="dashboard-name">Edit Candidate</h1>
         </div>
         <script>
             $(document).ready(function()
             {
+                SetNavigationMenuActive('Candidates');
+            })
+        </script>
+    }
+    else
+    {
+        <div class="col-lg-10 col-md-10 col-sm-10">
+            <h1 class="dashboard-name">Add Candidate</h1>
+        </div>
+        <script>
+            $(document).ready(function()
+            {
+                SetNavigationMenuActive('Candidates');
                 $('#file').css('display','block');
                 fileBool=true;
             })
@@ -284,25 +291,17 @@
                             <div class="row" style="margin-bottom:10px!important">
                                 <div class="col-md-6">
                                     <div class="col-md-6">
-                                        Upload resume <b style="color:Red;">*</b>
+                                        Upload Resume<b style="color:Red;">*</b>
                                     </div>
                                     <div class="col-md-6">
-                                        <div  class="demo-section k-widget k-upload k-header k-upload-empty">
-                                            <div class="k-dropzone" style="border:1px solid #e7e7e7;">
-                                                <div class="k-button k-upload-button" aria-label="Select files...">
-                                                    <input name="files" type="file" data-role="upload" multiple="multiple" autocomplete="off"><span>Select file...</span>
-                                                </div>
-                                                
-                                            </div>
-                                            <span class="k-widget k-tooltip k-tooltip-validation k-invalid-msg field-validation-error" style="display:none;" data-for="files" data-valmsg-for="files" id="files_validationMessage" role="alert">
-                                            <span class="k-icon k-warning"></span> File is required!</span>
+                                        <div class="demo-section k-content">
+                                            <input name="files" id="file" style="display:none" type="file" />
                                         </div>
-                                      
-                                        @if (!string.IsNullOrEmpty(Model.ResumeDisplayName))
+                                        @if (!string.IsNullOrEmpty(Model.ResumeName))
                                         {
                                             <div id="uploadFileLink" class="postuploadedfilesholder clearfix">
-                                                <div class="fileupload fileUpload">
-                                                    <a href="@Html.Raw(Url.Content(Model.ResumePath))" targ target="_blank">@Html.Raw(Model.ResumeDisplayName)</a>
+                                                <div class="fileupload">
+                                                    <a href="@Html.Raw(Url.Content(Model.ResumePath))" targ target="_blank">@Html.Raw(Model.ResumeName)</a>
                                                     <span class="deleteupload" title="Delete"><a onclick="DeleteF()">x</a></span>
                                                 </div>
                                             </div>

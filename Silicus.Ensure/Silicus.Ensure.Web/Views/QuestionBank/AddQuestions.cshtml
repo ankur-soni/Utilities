@@ -18,11 +18,11 @@
         @{
             if (@Model.Id != 0)
             {
-                <h1 class="dashboard-name">Edit question</h1>
+                <h1 class="dashboard-name">Edit Question</h1>
             }
             else
             {
-                <h1 class="dashboard-name">Add question</h1>
+                <h1 class="dashboard-name">Add Question</h1>
             }
         }
     </div>
@@ -350,6 +350,7 @@
                             }
 
                             $(document).ready(function () {
+                                SetNavigationMenuActive('QuestionBank');
                                 $("#IsAnsOption1").removeAttr("data-val-required")
                                 $("#AddQuestionForm").kendoValidator({
                                     rules: {

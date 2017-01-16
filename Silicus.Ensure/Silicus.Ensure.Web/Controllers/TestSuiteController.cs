@@ -75,7 +75,7 @@ namespace Silicus.Ensure.Web.Controllers
             {
                 ViewBag.Type = "New";
                 testSuite.PositionList = positionDetails.ToList();
-                return View("AddTestSuite",testSuite);
+                return View("AddTestSuite", testSuite);
             }
             else
             {
@@ -93,7 +93,7 @@ namespace Silicus.Ensure.Web.Controllers
                     GetTestSuiteTags(testSuitelist.SingleOrDefault(), out testSuiteTags);
                     viewModels.Tags = testSuiteTags;
                 }
-                return View("AddTestSuite",viewModels);
+                return View("AddTestSuite", viewModels);
             }
         }
 
@@ -220,6 +220,7 @@ namespace Silicus.Ensure.Web.Controllers
         public ActionResult AssignTest(string users, int testSuiteId)
         {
             var testSuiteDetails = _testSuiteService.GetTestSuiteDetails().Where(model => model.TestSuiteId == testSuiteId && model.IsDeleted == false).SingleOrDefault();
+            var alreadyAssignedTestSuites = _testSuiteService.GetAllUserIdsForTestSuite(testSuiteId);
             UserTestSuite userTestSuite;
             if (!string.IsNullOrWhiteSpace(users))
             {
@@ -227,11 +228,14 @@ namespace Silicus.Ensure.Web.Controllers
                 {
                     userTestSuite = new UserTestSuite();
                     userTestSuite.UserId = Convert.ToInt32(item);
-                    userTestSuite.TestSuiteId = testSuiteId;
-                    _testSuiteService.AssignSuite(userTestSuite, testSuiteDetails);
-                    var selectUser = _userService.GetUserDetails().Where(model => model.UserId == Convert.ToInt32(item)).FirstOrDefault();
-                    selectUser.TestStatus = Convert.ToString(TestStatus.Assigned);
-                    _userService.Update(selectUser);
+                    if (!alreadyAssignedTestSuites.Contains(userTestSuite.UserId))
+                    {
+                        userTestSuite.TestSuiteId = testSuiteId;
+                        _testSuiteService.AssignSuite(userTestSuite, testSuiteDetails);
+                        var selectUser = _userService.GetUserDetails().Where(model => model.UserId == Convert.ToInt32(item)).FirstOrDefault();
+                        selectUser.TestStatus = Convert.ToString(TestStatus.Assigned);
+                        _userService.Update(selectUser);
+                    }
                 }
                 return Json(1);
             }

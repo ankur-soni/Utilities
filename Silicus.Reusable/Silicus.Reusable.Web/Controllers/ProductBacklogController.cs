@@ -26,9 +26,9 @@ namespace Silicus.FrameworxProject.Web.Controllers
             _mapper = mapper;
         }
 
-        public ActionResult GetProductBacklogs([DataSourceRequest] DataSourceRequest request)
+        public ActionResult GetProductBacklogs([DataSourceRequest] DataSourceRequest request, string projectName)
         {
-            var productBacklogs = _productBacklogService.GetAllProductBacklog();
+            var productBacklogs = _productBacklogService.GetAllProductBacklog(projectName);
             var productBacklogViewModels = _mapper.Map<IEnumerable<ProductBacklog>, IEnumerable<ProductBacklogViewModel>>(productBacklogs);
             foreach (var item in productBacklogViewModels)
             {
@@ -47,16 +47,17 @@ namespace Silicus.FrameworxProject.Web.Controllers
             return View();
         }
 
+        public JsonResult GetProjects([DataSourceRequest] DataSourceRequest request)
+        {
+            var result = _productBacklogService.GetTeamProjects();
+
+            return Json(result.ToDataSourceResult(request), JsonRequestBehavior.AllowGet);
+        }
+
         public ActionResult UpdateAssignee(int Id)
         {
             _productBacklogService.Accept(Id, "Sandeep Gangwar Gangwar");
             return Json(new { success = true });
-        }
-
-        public ActionResult GetProjectCollections([DataSourceRequest] DataSourceRequest request)
-        {
-            var result = _productBacklogService.GetProjectCollections();
-            return Json(result.ToDataSourceResult(request));
         }
     }
 }
