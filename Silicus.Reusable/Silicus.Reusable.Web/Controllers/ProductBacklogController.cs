@@ -7,6 +7,8 @@ using Silicus.Reusable.Web.Models.ViewModel;
 using System.Collections;
 using System.Collections.Generic;
 using Kendo.Mvc.Extensions;
+using Silicus.UtilityContainer.Security;
+using System.Web.Configuration;
 
 namespace Silicus.FrameworxProject.Web.Controllers
 {
@@ -15,11 +17,12 @@ namespace Silicus.FrameworxProject.Web.Controllers
     {
         private readonly IProductBacklogService _productBacklogService;
         private readonly IMapper _mapper;
+        private readonly ICommonDbService _commonDbService;
 
-
-        public ProductBacklogController(IProductBacklogService productBacklogService, IMapper mapper)
+        public ProductBacklogController(IProductBacklogService productBacklogService, IMapper mapper, ICommonDbService commonDbService)
         {
             _productBacklogService = productBacklogService;
+            _commonDbService = commonDbService;
             _mapper = mapper;
         }
 
@@ -27,13 +30,33 @@ namespace Silicus.FrameworxProject.Web.Controllers
         {
             var productBacklogs = _productBacklogService.GetAllProductBacklog();
             var productBacklogViewModels = _mapper.Map<IEnumerable<ProductBacklog>, IEnumerable<ProductBacklogViewModel>>(productBacklogs);
+            foreach (var item in productBacklogViewModels)
+            {
+                item.IsTaskAssignedToUser = item.Assignee.ToLower().Contains(User.Identity.Name.ToLower());
+            }
             return Json(productBacklogViewModels.ToDataSourceResult(request), JsonRequestBehavior.AllowGet);
         }
 
         // GET: AllProductBacklog
         public ActionResult ShowAllProductBacklog()
         {
+            string utility = WebConfigurationManager.AppSettings["ProductName"];
+            var _authorizationService = new Authorization(_commonDbService.GetCommonDataBaseContext());
+            var userRoles = _authorizationService.GetRoleForUtility(User.Identity.Name, utility);
+            ViewBag.IsRolePm = userRoles.Contains("Project Manager");
             return View();
+        }
+
+        public ActionResult UpdateAssignee(int Id)
+        {
+            _productBacklogService.Accept(Id, "Sandeep Gangwar Gangwar");
+            return Json(new { success = true });
+        }
+
+        public ActionResult GetProjectCollections([DataSourceRequest] DataSourceRequest request)
+        {
+            var result = _productBacklogService.GetProjectCollections();
+            return Json(result.ToDataSourceResult(request));
         }
     }
 }

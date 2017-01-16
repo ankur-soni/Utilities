@@ -10,9 +10,9 @@ namespace Silicus.Reusable.Web.Models.ViewModel
         public string Id { get; set; }
         public string Title { get; set; }
         public string Description { get; set; }
-
+        public string Type { get; set; }
+        public string AreaPath { get; set; }
         public string State { get; set; }
-
         public string Assignee { get; set; }
         public string TimeAllocatedString
         {
@@ -32,5 +32,7 @@ namespace Silicus.Reusable.Web.Models.ViewModel
         public Double TimeAllocated { get; set; }
 
         public Double TimeSpent { get; set; }
+
+        public bool IsTaskAssignedToUser { get; set; }
     }
 }

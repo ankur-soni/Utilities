@@ -29,6 +29,7 @@ namespace Silicus.Reusable.Web
         string authority = String.Format(CultureInfo.InvariantCulture, aadInstance, tenant);
 
         public void ConfigureAuth(IAppBuilder app)
+
         {
             app.SetDefaultSignInAsAuthenticationType(CookieAuthenticationDefaults.AuthenticationType);
 
@@ -40,7 +41,7 @@ namespace Silicus.Reusable.Web
                     ClientId = clientId,
                     Authority = authority,
                     PostLogoutRedirectUri = postLogoutRedirectUri,
-                    //RedirectUri = postLogoutRedirectUri,
+                    RedirectUri = postLogoutRedirectUri,
                     Notifications = new OpenIdConnectAuthenticationNotifications
                     {
                         AuthenticationFailed = context =>

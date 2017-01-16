@@ -99,7 +99,7 @@
                                 </div>
                                 <div class="col-sm-2 col-md-2 col-lg-2">
                                     @(Html.Kendo().Button().Name("btnAddOpt1").HtmlAttributes(new { type = "button", param = "1",style="display:none;", @class = "glyphicon glyphicon-plus" }).Events(e => e.Click("OptionAdd")))
-                                </div>
+                            </div>
                             </div>
                             <div class="row" id="rowOpt2">
                                 <div class="col-sm-6 col-md-6 col-lg-6">
@@ -239,7 +239,7 @@
                                             @(Html.Kendo().MultiSelectFor(m => m.SkillTag)
                                     .DataTextField("TagName")
                                     .DataValueField("TagId")
-                                    .Placeholder("Select skill set...")
+                .Placeholder("--Select--")
                                     .BindTo(Model.SkillTagsList)
                                     .Value(Model.SkillTag)
                                     .HtmlAttributes(new { style = "width: 100%" }))
@@ -263,10 +263,11 @@
                                         <div class="form-group">
                                             @(Html.Kendo().DropDownListFor(m => m.ProficiencyLevel)
                                 .Name("ProficiencyLevel")
+             .OptionLabel("--Select--")
                                 .Value(Model.ProficiencyLevel)
                                 .BindTo(EnumHelper.GetSelectList(typeof(Proficiency)))
                                 .HtmlAttributes(new { style = "width: 100%" }))
-
+                                            @Html.ValidationMessageFor(m => m.ProficiencyLevel)
                                         </div>
                                     </div>
                                 </div>
@@ -312,18 +313,9 @@
                                 <input type="button" name="btnCancel" value="Cancel" onclick="OnCancel()" class="btn btn-primary" />
                             </div>
                         </div>
-                        @*<div class="row">
-                                <div class="col-md-6"></div>
-                                <div class="col-md-2 col-md-offset-4">
-                                    <input type="submit" value="Save & Add Another Question" id="btnSaveAndAddNewQuestion" name="btnSaveAndAddNewQuestion" />
-                                    @(Html.Kendo().Button().Name("btnCancel").Icon("cancel").HtmlAttributes(new { type = "button" }).Events(e => e.Click("OnCancel")).Content("Cancel"))
-                                    @(Html.Kendo().Button().Name("btnSave").Icon("tick").HtmlAttributes(new { type = "submit" }).Content("Save"))>
-                                </div>
-                            </div>*@
+
                         @Html.HiddenFor(m => m.OptionCount, new { Value = @Model.OptionCount })
                         <input type="hidden" name="CreatedOn" value="@Model.CreatedOn" />
-                        @*@Html.HiddenFor(m => m.CreatedOn, new { Value = @Model.CreatedOn })*@
-                        @*@Html.TextBoxFor(m => m.CreatedOn, "{0:dd/MM/yyyy}")*@
                         @Html.HiddenFor(m => m.CreatedBy, new { Value = @Model.CreatedBy })
                         @Html.HiddenFor(m => m.Id, new { Value = @Model.Id })
                         @Html.HiddenFor(m => m.Edit, new { Value = @Model.Edit })
@@ -549,8 +541,8 @@
                                 var param = this.element.attr("param");
                                 $.when(showConfirmationWindow('Are you sure,  you want to delete this record?', 'Delete')).then(function (confirmed) {
                                     if (confirmed) {
-                                        OptionDispaly('D', param);
-                                    }
+                                OptionDispaly('D', param);
+                            }
                                 });
                             }
 
