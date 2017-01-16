@@ -393,7 +393,7 @@
                     $("#addPositionPopup").modal('hide');
                     var $PositionDrpSelect=$('#Position').data('kendoDropDownList');
                     var multidata=$PositionDrpSelect.dataSource.data();
-                    multidata.push({ PositionName: returndata.PositionName, PositionName: returndata.PositionName});
+                    multidata.unshift({ PositionName: returndata.PositionName, PositionName: returndata.PositionName});
                     $PositionDrpSelect.value(returndata.PositionName);
                     $PositionDrpSelect.trigger('change');
                     $("#postionForm").trigger("reset");

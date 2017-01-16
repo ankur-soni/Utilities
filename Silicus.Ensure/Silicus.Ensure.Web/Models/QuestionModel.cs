@@ -42,13 +42,14 @@ namespace Silicus.Ensure.Web.Models
         public List<string> CorrectAnswer { get; set; }
         public string Answer { get; set; }
         public string Tag { get; set; }
+        [Required(ErrorMessage="Proficiency level is required.")]
         public string ProficiencyLevel { get; set; }
-        [Required]
+        [Required(ErrorMessage = "Duration (min) is required")]
         [RegularExpression("([1-9][0-9]*)", ErrorMessage = "Allowd only numbers !")]
-        public int Duration { get; set; }
-        [Required]
+        public int? Duration { get; set; }
+        [Required(ErrorMessage = "Marks are required")]
         [RegularExpression("([1-9][0-9]*)", ErrorMessage = "Allowd only numbers !")]
-        public int Marks { get; set; }
+        public int? Marks { get; set; }
         public bool IsPublishd { get; set; }
         public bool IsDeleted { get; set; }
 
@@ -57,9 +58,9 @@ namespace Silicus.Ensure.Web.Models
         public DateTime ModifiedOn { get; set; }
         public int ModifiedBy { get; set; }
         public List<Tags> SkillTagsList { get; set; }
-        [Required]
+        [Required(ErrorMessage = "Skill tag is required")]
         public List<string> SkillTag { get; set; }
-       
+
         public int Success { get; set; }
         public bool Edit { get; set; }
     }
