@@ -44,13 +44,14 @@ namespace Silicus.Ensure.Web.Controllers
             }
         }
 
-        public JsonResult IsDuplicatePositionName([Bind(Prefix = "PanelName")]string positionName)
+        public JsonResult IsDuplicatePositionName([Bind(Prefix = "PanelName")]string positionName1,[Bind(Prefix = "positionName")] string positionName2)
       {
+          string positionName = string.IsNullOrWhiteSpace(positionName1) ? positionName2 : positionName1;
             bool flag = true;
             if (_positionService.GetPositionByName(positionName) != null)
                 flag = false;
 
-            return Json(flag);
+            return Json(flag,JsonRequestBehavior.AllowGet);
         }
 
         public ActionResult PositionSave([DataSourceRequest] DataSourceRequest dsRequest, Position position)

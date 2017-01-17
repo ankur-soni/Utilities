@@ -7,13 +7,13 @@
         </div>
     </nav>
 
-    <div class="col-lg-11 col-md-11 col-sm-11">
+    <div class="col-lg-10 col-md-10 col-sm-10">
         <h1 class="dashboard-name">Dashboard</h1>
     </div>
 </div>
 <div class="row header-row M-T15">
     @{
-        var roles = Model.userRoles;
+        var roles = Model.UserRoles;
     }
     @if (roles == null)
     {
@@ -133,7 +133,7 @@
                                 Value = i.ToString(),
                                 Text = System.Globalization.CultureInfo.InvariantCulture.DateTimeFormat.GetMonthName(i)
                             }),
-                         "-- Month --", new { @class = "form-group form-control" })
+                         "-- Month --", new { @class = "form-group form-control",@onchange= "filterByData();" })
                             </li>
                             <li>
                                 @Html.DropDownList("filterYear",
@@ -143,7 +143,7 @@
                                 Value = i.ToString(),
                                 Text = i.ToString()
                             }),
-             "-- Year --", new { value = DateTime.Now.Year, @class = "form-group form-control" })
+             "-- Year --", new { value = DateTime.Now.Year, @class = "form-group form-control", @onchange = "filterByData();" })
                             </li>
                         </ul>
 
@@ -156,15 +156,43 @@
     </div>
 </div>
 <div class="row">
-    <div id="wofWinnersList">
-        @Html.Partial("_winnersList", Model)
+    <div class="col-lg-12 col-md-12 col-sm-12">
+        <div class="box M-B60">
+            <div class="row">
+                <div class="col-lg-2 col-md-3 col-sm-4 col-xs-4">
+                    @{
+                        var aIndex = 0;
+                    }
+                    <!-- required for floating -->
+                    <!-- Nav tabs -->
+                    <ul id="awardsTabs" class="nav nav-tabs tabs-left">
+                        @foreach (var award in Model.Awards)
+                        {
+                            <li class="@(aIndex == 0 ? "active" : "")" data-awardId="@award.AwardId" onclick = "filterByData(this);">
+                                <a href="#winnerList" data-toggle="tab" aria-expanded="@(aIndex == 0 ? "true" : "false")">
+                                    @award.AwardTitle
+                                </a>
+                            </li>
+                            aIndex++;
+                        }
+                    </ul>
+                </div>
+                <div class="col-lg-10 col-md-9 col-sm-8 col-xs-8 wrap" style="margin-left:-15px;">
+                    <div id="wofWinnersList">
+                        @Html.Partial("_winnersList", Model.NominationList)
+                    </div>
+                </div>
+            </div>
+            <div class="clearfix"></div>
+        </div>
     </div>
 </div>
+
 <span id="processName" style="display:none"></span>
 
-<script src="~/js/jquery-2.1.1.js"></script>
+@*<script src="~/js/jquery-2.1.1.js"></script>
 
-<script src="~/js/bootstrap.min.js"></script>
+<script src="~/js/bootstrap.min.js"></script>*@
 
 <script src="~/js/plugins/metisMenu/jquery.metisMenu.js"></script>
 <script src="~/js/plugins/slimscroll/jquery.slimscroll.min.js"></script>
@@ -330,13 +358,13 @@
                     html: true,
                     text: result,
                     showConfirmButton: ($(result).filter('#no-awards').text() == undefined || $(result).filter('#no-awards').text() == ""),
-                   confirmButtonColor: "#0070b9",
-                   confirmButtonText: "Submit",
-                   showCancelButton: true,
-                   cancelButtonText: "Cancle",
-                   closeOnConfirm: false,
-                   closeOnCancel: true
-        },
+                    confirmButtonColor: "#0070b9",
+                    confirmButtonText: "Submit",
+                    showCancelButton: true,
+                    cancelButtonText: "Cancle",
+                    closeOnConfirm: false,
+                    closeOnCancel: true
+                },
                     function (isConfirm) {
                         if (isConfirm) {
                             var awardId;
@@ -440,12 +468,12 @@
                         }
 
                     });
-    },
-        error: function (data) {
-            hideCustomLoader();
-            swal("Error", "Oops! Something wrong happened..");
-        }
-    });
+            },
+            error: function (data) {
+                hideCustomLoader();
+                swal("Error", "Oops! Something wrong happened..");
+            }
+        });
 
     });
 
@@ -456,24 +484,23 @@
     $("#3").delay(1000).fadeIn();
     $("#4").delay(1000).fadeIn();
 
-    $("#filterMonth").on("change", function () {
-        var month = +$(this).val();
-        var year = +$("#filterYear").val();
-        filterByData(month, year)
-    });
-
-    $("#filterYear").on("change", function () {
+    function filterByData(element) {
         var month = +$("#filterMonth").val();
-        var year = +$(this).val();
-        filterByData(month, year)
-    });
+        var year = +$("#filterYear").val();
+        var awardId;
 
-    function filterByData(month, year) {
+        if (element != null) {
+            awardId = $(element).attr("data-awardId")
+        } else {
+            awardId = +$("#awardsTabs li.active").attr("data-awardId");
+        }
+        
+
         showCustomLoader();
         $.ajax({
             type: "GET",
             url: _urlGetWinnersListPartialView,
-            data: { month: month, year: year },
+            data: { month: month, year: year,awardId:awardId },
             success: function (result) {
                 $("#wofWinnersList").html('');
                 hideCustomLoader();
@@ -483,7 +510,6 @@
                 hideCustomLoader();
                 console.log(error);
             }
-
         });
     }
 </script>

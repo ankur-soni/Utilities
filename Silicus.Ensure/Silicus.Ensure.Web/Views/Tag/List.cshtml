@@ -14,7 +14,7 @@
                       {
                           //command.Edit();
                           //cmd.Edit('').Text('.');//.HtmlAttributes(new { @style = "display:none" });
-                          cmd.Custom("Edit").Text("<span class='k-icon k-edit'></span>Edit").Click("ConfirmEditRow").HtmlAttributes(new { @class = "k-button k-button-icontext k-grid-delete" });
+                          cmd.Custom("Edit").Text("<span class='k-edit'></span>Edit").Click("ConfirmEditRow").HtmlAttributes(new { @class = "k-button k-button-icontext k-grid-delete" });
                       }).Title("Actions");
                   })
             .DataSource(dataSource => dataSource
@@ -32,6 +32,7 @@
                   )
                            .Pageable(pager => { pager.PageSizes(true); })
                   .Sortable()
+                  
                 //.HtmlAttributes(new { style = "height:400px;" })
                   .Editable(ed => ed.Mode(GridEditMode.PopUp).TemplateName("TagEditorTemplate"))
                   .ToolBar(toolbar =>
@@ -44,7 +45,7 @@
                                     <div class="col-sm-5 col-md-4 col-lg-3 M-T15">
                                         <div class="input-group">
                                             <span class="input-group-addon"><span class="glyphicon glyphicon-search" aria-hidden="true"></span></span>
-                                            <input type="text" class="form-control" id='FieldFilter' placeholder="Search">
+                                            <input type="text" class="form-control" id='FieldFilter' placeholder="Search" style="height: 38px;">
                                             <span class="input-group-btn">
                                                 <button id="tagSearch" class="btn btn-default" type="button" style="height:20px!important;border:1px solid #0070B9!important"><span class="glyphicon glyphicon-refresh" aria-hidden="true"></span></button>
                                             </span>
@@ -52,7 +53,7 @@
 
 
                                     </div>
-                                    <a style="margin-top:20px;" href='/#' class='k-button k-button-icontext k-grid-add'><span class='k-icon k-add'></span>Add Tag</a>
+                                    <a style="margin-top:20px;" href='/#' class='k-button k-button-icontext k-grid-add'><span class='k-icon k-add'></span>Add tag</a>
 
                                 </div>
                             </div>
@@ -110,9 +111,9 @@
         //showConfirmationWindow('Are you sure, do you want to delete this record?', 'Delete');
         e.sender.editable.validatable._errorTemplate = kendo.template($('#tooltip-template').html());
         if (e.model.isNew()) {
-            $(".k-window-title").html("Add New Tag");
+            $(".k-window-title").html("Add new tag");
             $("#existingTagName").val('');
-            $(".k-grid-update").html('<span><i class="fa fa-save"></i> Save </span>');
+            $(".k-grid-update").html('<span>Save </span>');
         }
         else {
             $(".k-window-title").html("Edit Tag");
@@ -131,12 +132,12 @@
 
         if (e.type == "update" && !e.response.Errors) {
             //toastr.success("Auto Pays details has been saved successfully!");
-            ShowMessage("Tag Updated successfully.", 1);
+            ShowMessage("Tag updated successfully.", 1);
             RefreshKendoGrid('tagsGrids');
         }
 
         if (e.type == "create" && !e.response.Errors) {
-            ShowMessage("Tag Created successfully.", 1);
+            ShowMessage("Tag created successfully.", 1);
             RefreshKendoGrid('tagsGrids');
         }
 
@@ -175,7 +176,7 @@
             data: { tagName: tagName },
             success: function (returndata) {
                 if (returndata == true) {
-                    $.when(showConfirmationWindow('This tag is already associated with a question. Are you sure you want to edit this?', 'Edit')).then(function (confirmed) {
+                    $.when(showConfirmationWindow('This tag is already associated with a question. Are you sure you want to edit this?', '&nbsp;Edit')).then(function (confirmed) {
                         if (confirmed) {
                             // $(tr).find('.k-grid-edit').trigger('click');
                             grid.editRow(tr);
@@ -183,7 +184,6 @@
                     });
                 }
                 else {
-                    debugger;
                     grid.editRow(tr);
                 }
             }
@@ -199,7 +199,6 @@
                 async: false,
                 data: { existingTagName: existingName, tagName: updatedName },
                 success: function (returndata) {
-                    debugger;
                     if (returndata == true) {
                         isAvailable = true;
                     }

@@ -91,18 +91,19 @@ namespace Silicus.EncourageWithAzureAd.Web.Controllers
                 var startDate = new DateTime();
                 var endDate = new DateTime();
                 var countOfNomination = 0;
+                _logger.Log("Todays Date: " + DateTime.Now);
                 if (currentAwardFrequency.Code == FrequencyCode.MON.ToString())
                 {
                     var firstDateOfCurrentMonth = new DateTime(DateTime.Today.Year, DateTime.Today.Month, 1);
                     startDate = firstDateOfCurrentMonth.AddMonths(-1);
                     endDate = firstDateOfCurrentMonth.AddDays(-1);
-                    countOfNomination = _nominationService.GetNominationCountByManagerIdForSOM(model.ManagerId, startDate, endDate, model.AwardId);
+                    countOfNomination = _nominationService.GetNominationCountByManagerIdForSom(model.ManagerId, startDate, endDate, model.AwardId);
                 }
                 else if (currentAwardFrequency.Code == FrequencyCode.YEAR.ToString())
                 {
                     var firstDateOfCurrentYear = new DateTime(DateTime.Today.Year, 1, 1);
-                    startDate = firstDateOfCurrentYear;
-                    countOfNomination = _nominationService.GetNominationCountByManagerIdForPINNACLE(model.ManagerId, startDate, model.AwardId);
+                    startDate = firstDateOfCurrentYear.AddYears(-1);
+                    countOfNomination = _nominationService.GetNominationCountByManagerIdForPinnacle(model.ManagerId, startDate, model.AwardId);
                 }
 
                 if (noOfNominationForManager <= countOfNomination)
@@ -212,23 +213,24 @@ namespace Silicus.EncourageWithAzureAd.Web.Controllers
             var nominationViewModel = new NominationViewModel();
             var userEmailAddress = User.Identity.Name;
 
-            int currentUserId = 0;
             var projects = _awardService.GetProjectsUnderCurrentUserAsManager(userEmailAddress);
             var departments = _awardService.GetDepartmentsUnderCurrentUserAsManager(userEmailAddress);
             var nominatedUser = _awardService.GetUserById(savedNomination.UserId);
 
-            currentUserId = _awardService.GetUserIdFromEmail(userEmailAddress);
+            var currentUserId = _awardService.GetUserIdFromEmail(userEmailAddress);
             nominationViewModel.ManagerId = currentUserId;
 
             if (savedNomination.ProjectID != null)
             {
                 nominationViewModel.SelectResourcesBy = "Project";
-                nominationViewModel.ProjectOrDeptName = projects.Count() > 0 ? projects.Where(p => p.ID == savedNomination.ProjectID).FirstOrDefault().Name : "";
+                var firstOrDefault = projects.FirstOrDefault(p => p.ID == savedNomination.ProjectID);
+                if (firstOrDefault != null) nominationViewModel.ProjectOrDeptName = projects.Any() ? firstOrDefault.Name : "";
             }
             else if (savedNomination.DepartmentId != null)
             {
                 nominationViewModel.SelectResourcesBy = "Department";
-                nominationViewModel.ProjectOrDeptName = departments.Count() > 0 ? departments.Where(d => d.ID == savedNomination.DepartmentId).FirstOrDefault().Name : "";
+                var firstOrDefault = departments.FirstOrDefault(d => d.ID == savedNomination.DepartmentId);
+                if (firstOrDefault != null) nominationViewModel.ProjectOrDeptName = departments.Any() ? firstOrDefault.Name : "";
             }
             else
             {
@@ -354,8 +356,6 @@ namespace Silicus.EncourageWithAzureAd.Web.Controllers
             if (getAllResources)
             {
                 allResources = _nominationService.GetAllResources();
-                //ViewBag.AllResources = allResources;
-                //return Json(allResources, JsonRequestBehavior.AllowGet);
             }
             return Json(allResources, JsonRequestBehavior.AllowGet);
         }
@@ -364,11 +364,8 @@ namespace Silicus.EncourageWithAzureAd.Web.Controllers
         public JsonResult GetAllResourcesForOtherReason(int awardId)
         {
             _logger.Log("Nomination-GetAllResources-POST");
-            var allResources = new List<User>();
-            var email = User.Identity.Name;
             int managerId = _awardService.GetUserIdFromEmail(User.Identity.Name);
             var filteredResources = _nominationService.GetAllResourcesForOtherReason(awardId, managerId);
-
             return Json(filteredResources, JsonRequestBehavior.AllowGet);
         }
 
@@ -380,41 +377,16 @@ namespace Silicus.EncourageWithAzureAd.Web.Controllers
             var email = User.Identity.Name;
             _awardService.GetProjectsUnderCurrentUserAsManager(email);
             _awardService.GetDepartmentsUnderCurrentUserAsManager(email);
-
-            #region New Changes
-
-            //var managerId = 0;
-            //if (projects.Count>0)
-            //{
-            //    // managerId = _awardService.GetUserIdFromEmail(Session["UserEmailAddress"] as string);
-            //    managerId = _awardService.GetUserIdFromEmail(User.Identity.Name);
-            //}
-            //else
-            //{
-            //    managerId = _awardService.GetUserIdFromEmail(User.Identity.Name);
-            //}
-
-            //if (depts.Count > 0)
-            //{
-            //    // managerId = _awardService.GetUserIdFromEmail(Session["UserEmailAddress"] as string);
-            //    managerId = _awardService.GetUserIdFromEmail(User.Identity.Name);
-            //}
-            //else
-            //{
-            //    managerId = _awardService.GetUserIdFromEmail("tushar.surve@silicus.com");
-            //}
-
-            #endregion New Changes
-
+            
             var nominations = _nominationService.GetAllSubmittedAndSavedNominationsByCurrentUser(managerId);
             var savedNominations = new List<NominationListViewModel>();
 
             foreach (var nomination in nominations)
             {
                 var award = _encourageDatabaseContext.Query<Award>().FirstOrDefault(a => a.Id == nomination.AwardId);
-                var awardFrequencyCode = _nominationService.GetAwardFrequencyById(award.FrequencyId);
                 if (award != null)
                 {
+                    var awardFrequencyCode = _nominationService.GetAwardFrequencyById(award.FrequencyId);
                     var awardName = award.Code;
                     var nomineeName = _commonDbContext.Query<User>().FirstOrDefault(u => u.ID == nomination.UserId);
                     var nominationTime = nomination.NominationDate;
@@ -462,17 +434,10 @@ namespace Silicus.EncourageWithAzureAd.Web.Controllers
         {
             _logger.Log("Nomination-GetNominations-GET");
             var email = User.Identity.Name;
-            var projects = _awardService.GetProjectsUnderCurrentUserAsManager(email);
+            _awardService.GetProjectsUnderCurrentUserAsManager(email);
 
-            var managerId = 0;
-            if (projects.Count > 0)
-            {
-                managerId = _awardService.GetUserIdFromEmail(email);
-            }
-            else
-            {
-                managerId = _awardService.GetUserIdFromEmail(email);
-            }
+            var managerId = _awardService.GetUserIdFromEmail(email);
+            
             var nominations = _nominationService.GetAllSubmittedAndSavedNominationsByCurrentUserAndMonth(managerId, forCurrentMonth);
 
             var savedNominations = new List<NominationListViewModel>();
@@ -572,7 +537,6 @@ namespace Silicus.EncourageWithAzureAd.Web.Controllers
 
             foreach (var item in listOfAllSubmittedRevierComments)
             {
-                var data = item.Where(i => i.ReviewerId == i.ReviewerId);
                 var reviewNominationViewModel = new ReviewSubmitionViewModel()
                 {
                     ManagerComments = _nominationService.GetManagerCommentsForNomination(nominationId),
@@ -584,7 +548,7 @@ namespace Silicus.EncourageWithAzureAd.Web.Controllers
                     NominationId = result.Id,
                     ManagerComment = result.Comment
                 };
-                foreach (var d in data)
+                foreach (var d in item)
                 {
                     reviewNominationViewModel.Comments.Add(
                         new ReviewerCommentViewModel
@@ -682,41 +646,52 @@ namespace Silicus.EncourageWithAzureAd.Web.Controllers
             {
                 var award = _encourageDatabaseContext.Query<Award>().FirstOrDefault(a => a.Id == nomination.AwardId);
                 var awardFrequency = _nominationService.GetAwardFrequencyById(award.FrequencyId);
-                var awardName = _encourageDatabaseContext.Query<Award>().Where(a => a.Id == nomination.AwardId).FirstOrDefault().Code;
-                var nomineeName = _commonDbContext.Query<User>().Where(u => u.ID == nomination.UserId).FirstOrDefault();
-                var nominationTime = _encourageDatabaseContext.Query<Nomination>().Where(n => n.Id == nomination.Id).FirstOrDefault().NominationDate;
-                var reviews = _reviewService.GetAllReview();
-                bool islocked = false;
-
-                try
+                var orDefault = _encourageDatabaseContext.Query<Award>().FirstOrDefault(a => a.Id == nomination.AwardId);
+                if (orDefault != null)
                 {
-                    var reviewData = from r in _reviewService.GetAllReview()
-                                     join n in _nominationService.GetAllNominations()
-                                     on r.NominationId equals n.Id
-                                     where (n.NominationDate.Value.Month.Equals(DateTime.Now.Month - 1)
-                                              &&
-                                              (DateTime.Now.Month > 1 ? (DateTime.Now.Year).Equals(n.NominationDate.Value.Year) : (DateTime.Now.Year - 1).Equals(n.NominationDate.Value.Year))
-                                            )
-                                     select r;
+                    var awardName = orDefault.Code;
+                    var nomineeName = _commonDbContext.Query<User>().FirstOrDefault(u => u.ID == nomination.UserId);
+                    var nominationDb = _encourageDatabaseContext.Query<Nomination>().FirstOrDefault(n => n.Id == nomination.Id);
+                    if (nominationDb != null)
+                    {
+                        var nominationTime = nominationDb.NominationDate;
+                        bool islocked = false;
 
-                    islocked = reviewData.ToList().FirstOrDefault().IsLocked ?? false;
+                        try
+                        {
+                            var reviewData = from r in _reviewService.GetAllReview()
+                                join n in _nominationService.GetAllNominations()
+                                on r.NominationId equals n.Id
+                                where (n.NominationDate.Value.Month.Equals(DateTime.Now.Month - 1)
+                                       &&
+                                       (DateTime.Now.Month > 1 ? (DateTime.Now.Year).Equals(n.NominationDate.Value.Year) : (DateTime.Now.Year - 1).Equals(n.NominationDate.Value.Year))
+                                )
+                                select r;
+
+                            var firstOrDefault = reviewData.FirstOrDefault();
+                            if (firstOrDefault != null) islocked = firstOrDefault.IsLocked ?? false;
+                        }
+                        catch (Exception)
+                        {
+                            // ignored
+                        }
+
+                        string nominationTimeToDisplay = DateTimeFormatInfo.CurrentInfo.GetAbbreviatedMonthName(nominationTime.Value.Month) + "-" + nominationTime.Value.Year.ToString();
+
+                        var reviewNominationViewModel = new NominationListViewModel()
+                        {
+                            Intials = nomineeName.FirstName.Substring(0, 1) + "" + nomineeName.LastName.Substring(0, 1),
+                            AwardName = awardName,
+                            DisplayName = nomineeName.DisplayName,
+                            NominationTime = nominationTimeToDisplay,
+                            Id = nomination.Id,
+                            IsLocked = islocked,
+                            IsDrafted = _nominationService.CheckReviewIsDrafted(nomination.Id),
+                            AwardFrequencyCode = awardFrequency.Code
+                        };
+                        reviewNominations.Add(reviewNominationViewModel);
+                    }
                 }
-                catch (Exception) { }
-
-                string nominationTimeToDisplay = DateTimeFormatInfo.CurrentInfo.GetAbbreviatedMonthName(nominationTime.Value.Month) + "-" + nominationTime.Value.Year.ToString();
-
-                var reviewNominationViewModel = new NominationListViewModel()
-                {
-                    Intials = nomineeName.FirstName.Substring(0, 1) + "" + nomineeName.LastName.Substring(0, 1),
-                    AwardName = awardName,
-                    DisplayName = nomineeName.DisplayName,
-                    NominationTime = nominationTimeToDisplay,
-                    Id = nomination.Id,
-                    IsLocked = islocked,
-                    IsDrafted = _nominationService.checkReviewIsDrafted(nomination.Id),
-                    AwardFrequencyCode = awardFrequency.Code
-                };
-                reviewNominations.Add(reviewNominationViewModel);
             }
             return View(reviewNominations);
         }

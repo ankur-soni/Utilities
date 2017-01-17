@@ -5,10 +5,10 @@
         <div class="row">
             @Html.Hidden("existingTagName")
             <div class="col-md-4">
-                @Html.LabelFor(m => m.TagName) <span>*</span>
+                @Html.LabelFor(m => m.TagName) <span style="color:red;">*</span>
             </div>
 
-            <div class="col-lg-8 col-md-8 col-sm-12 col-xs-12">
+            <div class="col-lg-8 col-md-8 col-sm-12 col-xs-12 M-B15">
                 @Html.TextBoxFor(model => model.TagName, new { @class = "form-control " })
                 <div class="validation">
                     @Html.ValidationMessageFor(m => m.TagName)
@@ -18,7 +18,7 @@
         </div>
         <div class="row">
             <div class="col-md-4">
-                @Html.LabelFor(m => m.Description) <span>*</span>
+                @Html.LabelFor(m => m.Description) <span style="color:red;">*</span>
             </div>
 
             <div class="col-lg-8 col-md-8 col-sm-12 col-xs-12">

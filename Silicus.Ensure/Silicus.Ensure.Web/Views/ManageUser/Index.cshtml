@@ -3,13 +3,33 @@
     ViewBag.Title = "Dashboard";
     var user = Html.Partial("/Views/ManageUser/_GetUserListPartialView.cshtml");
 }
-<div class="main-content">
-    <div class="fluid mt20">
-            <div class="alert alert-success" id="messageDiv">
-                <span id="messageContent">@Convert.ToString(TempData["Success"])</span>
-            </div>
+
+<div class="row white-bg header-row">
+    <nav class="" role="navigation" style="margin-bottom: 0">
+        <div class="navbar-header">
+            <a class="navbar-minimalize minimalize-styl-2 btn btn-primary" id="menu-toggle" style="margin-left:15px;border-radius:0px;" href="#"><i class="fa fa-bars"></i> </a>
+        </div>
+    </nav>
+
+    <div class="col-lg-10 col-md-10 col-sm-10">
+        <h1 class="dashboard-name">User Management</h1>
+    </div>
+</div>
+<div class="row">
+    <div class="col-sm-12">
+        <div class="fluid M-T15">
+            <div class="box M-B60">
+                <div class="row">
+                    <div class="col-sm-12">
+                        <div class="alert alert-success" id="messageDiv" style="display:none;">
+                            <span id="messageContent">@Convert.ToString(TempData["Success"])</span>
+                        </div>
         <div class="kendogrid">
             @(user)
+        </div>
+    </div>
+</div>
+            </div>
         </div>
     </div>
 </div>
@@ -18,6 +38,5 @@
 <script>
     $(document).ready(function () {
         SetNavigationMenuActive('ManageUser');
-        $('#messageDiv').hide();
     });
 </script>

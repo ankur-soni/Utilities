@@ -12,17 +12,13 @@ namespace Silicus.Encourage.Services
 {
     public class ResultService : IResultService
     {
-        private readonly IDataContextFactory _dataContextFactory;
         private readonly IEncourageDatabaseContext _encourageDatabaseContext;
         private readonly Silicus.UtilityContainer.Entities.ICommonDataBaseContext _commonDataBaseContext;
-        private readonly ICommonDbService _commonDbService;
 
         public ResultService(Silicus.Encourage.DAL.Interfaces.IDataContextFactory dataContextFactory, ICommonDbService commonDbService)
         {
-            _dataContextFactory = dataContextFactory;
-            _commonDbService = commonDbService;
-            _commonDataBaseContext = _commonDbService.GetCommonDataBaseContext();
-            _encourageDatabaseContext = _dataContextFactory.CreateEncourageDbContext();
+            _commonDataBaseContext = commonDbService.GetCommonDataBaseContext();
+            _encourageDatabaseContext = dataContextFactory.CreateEncourageDbContext();
 
         }
 

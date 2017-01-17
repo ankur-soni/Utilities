@@ -17,7 +17,6 @@ namespace Silicus.EncourageWithAzureAd.Web.Controllers
     {
         private readonly ICommonDbService _commonDbService;
         private readonly IEncourageDatabaseContext _encourageDatabaseContext;
-        private readonly IDataContextFactory _dataContextFactory;
         private readonly INominationService _nominationService;
         private readonly IResultService _resultService;
         private readonly ILogger _logger;
@@ -26,8 +25,7 @@ namespace Silicus.EncourageWithAzureAd.Web.Controllers
             INominationService nominationService, IResultService resultService, ILogger logger)
         {
             _commonDbService = commonDbService;
-            _dataContextFactory = dataContextFactory;
-            _encourageDatabaseContext = _dataContextFactory.CreateEncourageDbContext();
+            _encourageDatabaseContext = dataContextFactory.CreateEncourageDbContext();
             _nominationService = nominationService;
             _resultService = resultService;
             _logger = logger;
@@ -36,22 +34,8 @@ namespace Silicus.EncourageWithAzureAd.Web.Controllers
         public ActionResult Index()
         {
             _logger.Log("Home-Index");
-            DashboardViewModel dashboardViewModel = GetWinnersList(DateTime.Now.Month, DateTime.Now.Year);
-            return View("Dashboard", dashboardViewModel);
-        }
-
-        public ActionResult GetWinnersListPartialView(int month, int year)
-        {
-            _logger.Log("Home-GetWinnersListPartialView");
-            DashboardViewModel dashboardViewModel = GetWinnersList(month, year);
-            return PartialView("_winnersList", dashboardViewModel);
-        }
-
-        private DashboardViewModel GetWinnersList(int month, int year)
-        {
-            _logger.Log("Home-GetWinnersList");
-            int requiredMonth = month != 0 ? month : DateTime.Now.Month;
-            int requiredYear = year != 0 ? year : DateTime.Now.Year;
+            DashboardViewModel dashboardViewModel = new DashboardViewModel();
+            dashboardViewModel.NominationList = GetWinnersList(DateTime.Now.Month, DateTime.Now.Year, 1);
 
             string utiltyName = WebConfigurationManager.AppSettings["ProductName"];
 
@@ -59,38 +43,79 @@ namespace Silicus.EncourageWithAzureAd.Web.Controllers
 
             var commonRoles = authorizationService.GetRoleForUtility(User.Identity.Name, utiltyName);
 
-            var dashboardModel = new DashboardViewModel();
-            var listOfAwardsAndWinners = new List<AwardViewModel>();
-
             if ((commonRoles.Count > 0))
             {
-                dashboardModel.userRoles = commonRoles;
+                dashboardViewModel.UserRoles = commonRoles;
                 _logger.Log("No. of roles are: " + commonRoles.Count);
             }
             else
             {
                 commonRoles.Add("User");
-                dashboardModel.userRoles = commonRoles;
+                dashboardViewModel.UserRoles = commonRoles;
                 _logger.Log("Current user's role is User");
             }
 
             var typesOfAwards = _encourageDatabaseContext.Query<Award>().ToList();
+            var awardsList = new List<AwardViewModel>();
 
             foreach (var award in typesOfAwards)
             {
-                var awardsAndNominations = new AwardViewModel
+                var awardDetails = new AwardViewModel
                 {
                     AwardId = award.Id,
                     AwardTitle = award.Name,
                     AwardCode = award.Code
                 };
+                awardsList.Add(awardDetails);
+            }
+            dashboardViewModel.Awards = awardsList;
+            return View("Dashboard", dashboardViewModel);
+        }
 
-                var winnersForLastMonth = _encourageDatabaseContext.Query<Shortlist>()
-                    .Where(w => w.IsWinner == true && w.WinningDate.Value.Month == requiredMonth && w.WinningDate.Value.Year == requiredYear && w.Nomination.AwardId == award.Id)
-                    .ToList();
+        public ActionResult GetWinnersListPartialView(int month, int year, int awardId)
+        {
+            _logger.Log("Home-GetWinnersListPartialView");
 
-                var listOfWinners = new List<NominationListViewModel>();
-                foreach (var winner in winnersForLastMonth)
+            var nominationsList = GetWinnersList(month, year, awardId);
+            return PartialView("_winnersList", nominationsList);
+        }
+
+        private List<NominationListViewModel> GetWinnersList(int month, int year, int awardId)
+        {
+            var award = _encourageDatabaseContext.Query<Award>().FirstOrDefault(a => a.Id == awardId);
+            var listOfWinners = new List<NominationListViewModel>();
+            if (award != null)
+            {
+                _logger.Log("Home-GetWinnersList");
+
+                int requiredMonth = month != 0 ? month : DateTime.Now.Month;
+                int requiredYear = year != 0 ? year : DateTime.Now.Year;
+                int requiredAwardId = award.Id;
+
+                List<Shortlist> winners;
+                switch (award.Code)
+                {
+                    case "PINNACLE":
+                        winners = _encourageDatabaseContext.Query<Shortlist>()
+                        .Where(w =>
+                            w.IsWinner == true && 
+                            w.Nomination.AwardId == requiredAwardId &&
+                            w.WinningDate.Value.Year == requiredYear 
+                            
+                            ).ToList();
+                        break;
+                    default:
+                        winners = _encourageDatabaseContext.Query<Shortlist>()
+                       .Where(w =>
+                           w.IsWinner == true &&
+                           w.WinningDate.Value.Month == requiredMonth &&
+                           w.Nomination.AwardId == requiredAwardId &&
+                           w.WinningDate.Value.Year == requiredYear
+                           ).ToList();
+                        break;
+                }
+
+                foreach (var winner in winners)
                 {
                     var winnerName = _nominationService.GetNomineeNameOfCurrentNomination(winner.NominationId);
                     var awardMonthYear = _nominationService.GetAwardMonthAndYear(winner.NominationId);
@@ -98,12 +123,9 @@ namespace Silicus.EncourageWithAzureAd.Web.Controllers
                     var awardComment = _resultService.GetAwardComments(winner.NominationId);
                     listOfWinners.Add(new NominationListViewModel() { DisplayName = winnerName, NominationTime = awardMonthYear, AwardName = awardName, AwardComment = awardComment });
                 }
-                awardsAndNominations.NominationList = listOfWinners;
-                listOfAwardsAndWinners.Add(awardsAndNominations);
             }
-            dashboardModel.Awards.AddRange(listOfAwardsAndWinners);
 
-            return dashboardModel;
+            return listOfWinners;
         }
 
         public ActionResult About()

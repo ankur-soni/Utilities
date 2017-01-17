@@ -39,7 +39,7 @@
 
     <div class="form-group">
         @Html.LabelFor(model => model.PanelIds, "Panel", htmlAttributes: new { @class = "control-label col-md-2" })
-        <div class="col-md-8">
+        <div class="col-md-7">
             @(Html.Kendo().MultiSelectFor(m => m.PanelIds)
                                     .DataTextField("PanelName")
                                     .DataValueField("PanelId")
@@ -58,7 +58,7 @@
             @Html.ValidationMessageFor(model => model.PanelIds, "", new { @class = "text-danger" })
         </div>
         <div class="col-md-2" >
-            <a style="padding:2px 12px;" class="font-Bold themeColorBlue btn btn-primary" href="#" onclick="AddPanel();">Add Panel</a>
+            <a style="padding:2px 12px;" class="themeColorBlue btn btn-primary" href="#" onclick="AddPanel();">Add Panel</a>
         </div>
     </div>
 

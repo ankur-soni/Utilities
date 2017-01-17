@@ -12,27 +12,31 @@ namespace Silicus.Encourage.Services
     public class ReviewerService : IReviewerService
     {
         private readonly IEncourageDatabaseContext _encourageDatabaseContext;
-        private readonly IDataContextFactory _dataContextFactory;
 
         public ReviewerService(IDataContextFactory dataContextFactory)
         {
-            _dataContextFactory = dataContextFactory;
             _encourageDatabaseContext = dataContextFactory.CreateEncourageDbContext();
 
         }
-        public bool addReviewer(int userId)
+        public bool AddReviewer(int userId)
         {
             try
             {
-                _encourageDatabaseContext.Add<Reviewer>(new Reviewer { UserId = userId });
-                _encourageDatabaseContext.SaveChanges();
-                return true;
+                if (!_encourageDatabaseContext.Query<Reviewer>().Any(r => r.UserId == userId))
+                {
+                    _encourageDatabaseContext.Add<Reviewer>(new Reviewer
+                    {
+                        UserId = userId
+                    });
+                    _encourageDatabaseContext.SaveChanges();
+                    return true;
+                }
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 return false;
             }
-
+            return false;
         }
     }
 }

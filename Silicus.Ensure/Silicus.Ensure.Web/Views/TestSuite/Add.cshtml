@@ -57,7 +57,7 @@
                     </div>
                     <div class="col-md-6">
                         <div class="col-md-3">
-                            <a href="#" onclick="AddPosition();">Add Position</a>
+                            <a href="#" onclick="AddPosition();">Add position</a>
                         </div>
                     </div>
                 </div>
@@ -278,7 +278,7 @@
                 <div class="modal-content">
                     <div class="modal-header">
                         <button type="button" class="close" data-dismiss="modal">&times;</button>
-                        <h4 class="modal-title"><span>Add Tag</span></h4>
+                        <h4 class="modal-title"><span>Add tag</span></h4>
                     </div>
                     <div class="modal-body">
 
@@ -319,8 +319,7 @@
                     $("#addPositionPopup").modal('hide');
                     var $PositionDrpSelect=$('#Position').data('kendoDropDownList');
                     var multidata=$PositionDrpSelect.dataSource.data();
-                    debugger
-                    multidata.push({ PositionName: returndata.PositionName, PositionName: returndata.PositionName});
+                    multidata.unshift({ PositionName: returndata.PositionName, PositionName: returndata.PositionName});
                     var selectedValues=$PositionDrpSelect.value();
                     selectedValues.push(returndata.PositionName);
                     $PositionDrpSelect.value(selectedValues);
@@ -473,13 +472,13 @@
                         if (response != null && response.status == "success") {
                             $("#SuccessModel").modal();
                             if (IsCopy == "True") {
-                                $("#msgContent").text("Test Suite copy created successfully.");
+                                $("#msgContent").text("Test suite copy created successfully.");
                             }
                             else if (TestSuiteId == 0) {
-                                $("#msgContent").text("Test Suite created successfully.");
+                                $("#msgContent").text("Test suite created successfully.");
                             }
                             else {
-                                $("#msgContent").text("Test Suite updated successfully.");
+                                $("#msgContent").text("Test suite updated successfully.");
                             }
                         } else {
                             ShowMessage(response.message, 0);
@@ -610,7 +609,7 @@
 
         if(isError=="efficiencyBlank")
         {
-            ShowMessage("Efficiency cann't be blank.", 0);
+            ShowMessage("Efficiency can't be blank.", 0);
             return false;
         }
         else if(totalWeight != '100')
@@ -637,7 +636,7 @@
             dataSource: TagList,
             filter: "contains",
             minLength: 2,
-            placeholder: "Select Tag",
+            placeholder: "Select tag",
             seperator: ","
         });
 

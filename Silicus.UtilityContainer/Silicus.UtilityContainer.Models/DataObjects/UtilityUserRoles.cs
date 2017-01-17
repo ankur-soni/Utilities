@@ -13,8 +13,8 @@ namespace Silicus.UtilityContainer.Models.DataObjects
         public virtual Role Role { get; set; }
         public int UtilityId { get; set; }
         public virtual Utility Utility { get; set; }
-
-    //    public virtual Utility Utilities { get; set; }
-    //    public virtual Role Roles { get; set; }
+        public bool IsActive { get; set; }
+        //    public virtual Utility Utilities { get; set; }
+        //    public virtual Role Roles { get; set; }
     }
 }

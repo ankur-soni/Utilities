@@ -11,7 +11,7 @@
 <div class="row white-bg header-row">
     <nav class="" role="navigation" style="margin-bottom: 0">
         <div class="navbar-header">
-            <a class="navbar-minimalize minimalize-styl-2 btn btn-primary" id="menu-toggle" style="margin-left:15px;" href="#"><i class="fa fa-bars"></i> </a>
+            <a class="navbar-minimalize minimalize-styl-2 btn btn-primary" id="menu-toggle" style="margin-left:15px;border-radius:0px;" href="#"><i class="fa fa-bars"></i> </a>
         </div>
     </nav>
 
@@ -21,7 +21,7 @@
 </div>
 
 <div class="row">
-    <div class="alert alert-success" id="messageDiv">
+    <div class="alert alert-success" id="messageDiv" style="display:none">
         <span id="messageContent"></span>
     </div>
     <div class="col-sm-12">
@@ -46,8 +46,8 @@
                   columns.Bound(q => q.Tag).Title("Tags").Width(150);
                   columns.Bound(q => q.ProficiencyLevel).Width(100);
                   columns.Bound(q => q.Id).ClientTemplate(@"
-                    <a href='/QuestionBank/EditQuestion?questionId=#=Id#' class='k-button k-button-icontext k-grid-edit'><span class='k-icon k-edit'></span>Edit</a>
-                    <button onclick='DeleteQuestion(#=Id#,this)' class='k-button k-button-icontext k-grid-delete'><span class='k-icon k-delete'></span>Delete</button>").Title("Actions").Width(150).Sortable(false);
+                    <a href='/QuestionBank/EditQuestion?questionId=#=Id#' class='k-button'>Edit</a>
+                    <button onclick='DeleteQuestion(#=Id#,this)' class='k-button '>Delete</button>").Title("Actions").Width(150).Sortable(false);
               })
               .ToolBar(toolbar =>
               {
@@ -61,7 +61,7 @@
                         <div class="col-sm-4 col-md-4 col-lg-3 M-T15 M-B15">
                                 <div class="input-group">
                                     <span class="input-group-addon"><span class="glyphicon glyphicon-search" aria-hidden="true"></span></span>
-                                    <input type="text" class="form-control" id='FieldFilter' placeholder="Search">
+                                    <input type="text" class="form-control" id='FieldFilter' placeholder="Search" style="height: 38px;">
                                     <span class="input-group-btn">
                                         <button id="QuestionSearchRefresh" class="btn btn-default" style="height:20px!important;border:1px solid #0070B9!important" type="button"><span class="glyphicon glyphicon-refresh" aria-hidden="true"></span></button>
                                     </span>
@@ -74,7 +74,7 @@
                     <div class="row">
                         <div class="col-sm-12">
                             <div class="col-sm-1 col-md-1 col-lg-1">
-                                            <span style="font-weight:bold;" class="themeColorBlue">Type</span>
+                                <span style="font-weight:bold;" class="themeColorBlue labelAlignMid">Type</span>
                             </div>
                             <div class="col-sm-2 col-md-2 col-lg-1">
                                 @(Html.Kendo().DropDownList()
@@ -99,7 +99,7 @@
                                 }).HtmlAttributes(new { style = "width: 100%" }))
                             </div>
                             <div class="col-sm-1 col-md-1 col-lg-1">
-                                            <span style="font-weight:bold;" class="themeColorBlue">Proficiency Level</span>
+                                <span style="font-weight:bold;" class="themeColorBlue labelAlignMid">Proficiency level</span>
                             </div>
                             <div class="col-sm-2 col-md-2 col-lg-1">
                                 @{
@@ -119,8 +119,8 @@
                                     .HtmlAttributes(new { style = "width: 100%" })
                                 )
                                         </div>
-                            <div class="col-sm-3 col-md-3 col-lg-2">
-                                            <a href='/QuestionBank/AddQuestions?questionId=0' s class='k-button k-button-icontext k-grid-add'><span class='k-icon k-add'></span>Add Question</a>
+                            <div class="col-sm-3 col-md-3 col-lg-2 cust-mar">
+                                            <a href='/QuestionBank/AddQuestions?questionId=0' class='k-button k-button-icontext k-grid-add'><span class='k-icon k-add'></span>Add question</a>
                             </div>
                         </div>
                     </div>
@@ -147,6 +147,7 @@
 
         </div>
     </div>
+</div>
 </div>
 <!-- Modal -->
 <div class="modal fade" id="myModal" role="dialog">
@@ -241,7 +242,7 @@
 
         $("#myModal").modal();
         $("#msgMain").text("Warning!");
-        $("#msgContent").text("Are you sure, you want to delete this question from the application?");
+        $("#msgContent").text("Are you sure, you want to delete this record?");
         //$("#btnModalOK").show();
     }
 

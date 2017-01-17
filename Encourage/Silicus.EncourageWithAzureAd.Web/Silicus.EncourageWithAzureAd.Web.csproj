@@ -38,6 +38,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <CodeAnalysisRuleSet>Silicus.EncourageWithAzureAd.Web.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -46,6 +47,7 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <CodeAnalysisRuleSet>Silicus.EncourageWithAzureAd.Web.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="AttributeRouting, Version=3.5.6.0, Culture=neutral, PublicKeyToken=c10f85d521a011a9, processorArchitecture=MSIL">
@@ -345,7 +347,6 @@
     <Content Include="Css\bootstrap.css" />
     <Content Include="Css\bootstrap.min.css" />
     <Content Include="Css\custom-style.css" />
-    <Content Include="Css\jquery-te-1.4.0.css" />
     <Content Include="Css\patterns\1.png" />
     <Content Include="Css\patterns\2.png" />
     <Content Include="Css\patterns\3.png" />
@@ -510,6 +511,7 @@
     <Content Include="Css\star-rating.css" />
     <Content Include="Css\style.css" />
     <Content Include="Css\style.min.css" />
+    <Content Include="Css\summernote.css" />
     <Content Include="Css\_notes\dwsync.xml" />
     <Content Include="font-awesome\css\font-awesome.css" />
     <Content Include="font-awesome\css\font-awesome.min.css" />
@@ -522,7 +524,6 @@
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
     <Content Include="Images\1.jpg" />
-    <Content Include="Css\jquery-te.png" />
     <Content Include="Images\logo.jpg" />
     <Content Include="Images\loader_small.gif" />
     <Content Include="Images\user.png" />
@@ -539,7 +540,6 @@
     <Content Include="js\Elipsis.js" />
     <Content Include="js\inspinia.js" />
     <Content Include="js\jquery-2.1.1.js" />
-    <Content Include="js\jquery-te-1.4.0.min.js" />
     <Content Include="js\jquery-ui-1.10.4.min.js" />
     <Content Include="js\jquery-ui.custom.min.js" />
     <Content Include="js\jquery.barrating.min.js" />
@@ -763,6 +763,7 @@
     <Content Include="js\plugins\validate\_notes\dwsync.xml" />
     <Content Include="js\select2.min.js" />
     <Content Include="js\star-rating.js" />
+    <Content Include="js\summernote.min.js" />
     <Content Include="js\_notes\dwsync.xml" />
     <Content Include="LESS\style.css" />
     <Content Include="LESS\_notes\dwsync.xml" />
@@ -885,6 +886,7 @@
     <Content Include="Views\Review\Shared\_ProcessesToLockOrUnlock.cshtml" />
     <Content Include="Views\Email\Index.cshtml" />
     <Content Include="Views\Email\Shared\_emailTemplateEditor.cshtml" />
+    <Content Include="Silicus.EncourageWithAzureAd.Web.ruleset" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -914,6 +916,11 @@
       <Project>{b478df7f-933c-4edd-accd-7050f1fa88cd}</Project>
       <Name>Silicus.Encourage.Services</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Analyzer Include="..\packages\SonarAnalyzer.CSharp.1.20.1\analyzers\Google.Protobuf.dll" />
+    <Analyzer Include="..\packages\SonarAnalyzer.CSharp.1.20.1\analyzers\SonarAnalyzer.CSharp.dll" />
+    <Analyzer Include="..\packages\SonarAnalyzer.CSharp.1.20.1\analyzers\SonarAnalyzer.dll" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

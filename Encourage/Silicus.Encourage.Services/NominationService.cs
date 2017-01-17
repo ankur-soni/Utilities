@@ -10,43 +10,26 @@ using System.Globalization;
 using System.Linq;
 using System.Web;
 using System.Web.Configuration;
+using Configuration = Silicus.Encourage.Models.Configuration;
 
 namespace Silicus.Encourage.Services
 {
     public class NominationService : INominationService
     {
-        private readonly IDataContextFactory _dataContextFactory;
         private readonly IEncourageDatabaseContext _encourageDatabaseContext;
         private readonly Silicus.UtilityContainer.Entities.ICommonDataBaseContext _commonDataBaseContext;
-        private readonly ICommonDbService _commonDbService;
         private readonly ILogger _logger;
 
         public NominationService(Silicus.Encourage.DAL.Interfaces.IDataContextFactory dataContextFactory, ICommonDbService commonDbService, ILogger logger)
         {
-            _dataContextFactory = dataContextFactory;
-            _commonDbService = commonDbService;
-            _commonDataBaseContext = _commonDbService.GetCommonDataBaseContext();
-            _encourageDatabaseContext = _dataContextFactory.CreateEncourageDbContext();
+            _commonDataBaseContext = commonDbService.GetCommonDataBaseContext();
+            _encourageDatabaseContext = dataContextFactory.CreateEncourageDbContext();
             _logger = logger;
         }
 
         public List<Nomination> GetAllNominations()
         {
             return _encourageDatabaseContext.Query<Nomination>("ManagerComments").ToList();
-        }
-
-        private List<Nomination> GetCurrentNominations()
-        {
-            _encourageDatabaseContext.Query<Nomination>("ManagerComments").Where(x => x.NominationDate.Value.Month.Equals(DateTime.Now.Month - 1)
-                                                                                      && (x.NominationDate.Value.Year.Equals(DateTime.Now.Month > 1 ? DateTime.Now.Year : DateTime.Now.Year - 1))).ToList();
-            return _encourageDatabaseContext.Query<Nomination>("ManagerComments").Where(x => x.NominationDate.Value.Month.Equals(DateTime.Now.Month - 1)
-            && (x.NominationDate.Value.Year.Equals(DateTime.Now.Month > 1 ? DateTime.Now.Year : DateTime.Now.Year - 1))).ToList();
-        }
-
-        private List<Nomination> GetCurrentLockNominations()
-        {
-            return _encourageDatabaseContext.Query<Nomination>("ManagerComments").Where(x => x.NominationDate.Value.Month.Equals(DateTime.Now.Month - 1)
-            && (x.NominationDate.Value.Year.Equals(DateTime.Now.Month > 1 ? DateTime.Now.Year : DateTime.Now.Year - 1)) && x.IsLocked == true).ToList();
         }
 
         public List<Nomination> GetAllSubmittedAndSavedNominationsByCurrentUser(int managerID)
@@ -60,7 +43,7 @@ namespace Silicus.Encourage.Services
 
             var awardsList = _encourageDatabaseContext.Query<Award>().ToList();
 
-            var alreadyReviewedNominationIds = _encourageDatabaseContext.Query<Review>().Where(r => r.ReviewerId == reviewerId && r.IsSubmited == true).ToList().Select(r => r.NominationId);
+            var alreadyReviewedNominationIds = _encourageDatabaseContext.Query<Review>().Where(r => r.ReviewerId == reviewerId && r.IsSubmited == true).Select(r => r.NominationId);
 
             foreach (var award in awardsList)
             {
@@ -187,7 +170,6 @@ namespace Silicus.Encourage.Services
             string projectName = string.Empty;
             string departmentName = string.Empty;
 
-            var closedProject = ConfigurationManager.AppSettings["ClosedEngagementStage"];
             if (nomination.ProjectID != null)
             {
                 var engagement = _commonDataBaseContext.Query<Engagement>().FirstOrDefault(e => e.PrimaryProjectManagerID == nomination.ManagerId && e.ID == nomination.ProjectID);
@@ -301,7 +283,7 @@ namespace Silicus.Encourage.Services
             _encourageDatabaseContext.Delete<Nomination>(nominationToDelete);
         }
 
-        public bool checkReviewIsDrafted(int nominationId)
+        public bool CheckReviewIsDrafted(int nominationId)
         {
             var reviewerId = GetReviewerIdOfCurrentNomination(HttpContext.Current.User.Identity.Name);
             var data = _encourageDatabaseContext.Query<Review>().Where(review => review.NominationId == nominationId && review.ReviewerId == reviewerId).ToList();
@@ -364,9 +346,7 @@ namespace Silicus.Encourage.Services
         public List<Award> GetAwardstoUnLockOrUnlock(string status)
         {
             _logger.Log("NominationService-GetAwardstoUnLock");
-            var nominationLockKey = WebConfigurationManager.AppSettings["NominationLockKey"];
-            var reviewLockKey = WebConfigurationManager.AppSettings["ReviewLockKey"];
-            var data = new List<Models.Configuration>();
+            List<Configuration> data;
             if (status == ConfigurationManager.AppSettings["Lock"])
             {
                 data = _encourageDatabaseContext.Query<Models.Configuration>().Where(x =>  x.value == false).ToList();
@@ -390,14 +370,14 @@ namespace Silicus.Encourage.Services
         }
 
 
-        public int GetNominationCountByManagerIdForSOM(int managerId, DateTime startDate, DateTime endDate, int awardId)
+        public int GetNominationCountByManagerIdForSom(int managerId, DateTime startDate, DateTime endDate, int awardId)
         {
             return _encourageDatabaseContext.Query<Nomination>().Count(x => x.ManagerId == managerId && (x.NominationDate >= startDate && x.NominationDate <= endDate && x.AwardId == awardId));
         }
 
-        public int GetNominationCountByManagerIdForPINNACLE(int managerId, DateTime startDate, int awardId)
+        public int GetNominationCountByManagerIdForPinnacle(int managerId, DateTime startDate, int awardId)
         {
-            return _encourageDatabaseContext.Query<Nomination>().Count(x => x.ManagerId == managerId && (x.NominationDate.Value.Year == startDate.Year && x.AwardId == awardId));
+            return _encourageDatabaseContext.Query<Nomination>().Count(x => x.ManagerId == managerId && (x.NominationDate.Value.Year >= startDate.Year && x.AwardId == awardId));
         }
 
         public List<Award> GetNominationLockStatus()
@@ -430,15 +410,6 @@ namespace Silicus.Encourage.Services
         public List<User> GetAllResourcesForOtherReason(int awardType, int managerId)
         {
             var toBeExcludedUserIds = new List<int>();
-            var prevMonth = DateTime.Now.AddMonths(-1);
-            //var currentMonthNominees = _encourageDatabaseContext.Query<Nomination>()
-            //                                .Where(n => 
-            //                                n.ManagerId == managerId &&
-            //                                n.NominationDate.Value.Month == prevMonth.Month && 
-            //                                n.NominationDate.Value.Year == prevMonth.Year &&
-            //                                n.AwardId == awardType)
-            //                                .Select(u => u.UserId).ToList();
-            //toBeExcludedUserIds.AddRange(currentMonthNominees);
 
             var prevWinnersUserIds = _encourageDatabaseContext.Query<Shortlist>()
                                         .Where(s => 

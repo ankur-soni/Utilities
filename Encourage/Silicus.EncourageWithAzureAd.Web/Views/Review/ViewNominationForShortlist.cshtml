@@ -21,7 +21,7 @@
             <div class="panel panel-info M-T15">
                 <div class="panel-heading"> <span>Review For:&nbsp; @Html.DisplayFor(modelItem => modelItem.UserName)</span></div>
                 <div class="panel-wrapper collapse in" aria-expanded="true">
-                    <div class="panel-body">
+                    <div class="panel-body" style="padding:25px 25px 0px 25px;">
                         <table class="table table-hover issue-tracker white-bg">
             <thead>
                 <tr>
@@ -60,13 +60,13 @@
             <div class="panel panel-info">
                 <div class="panel-heading"> <span>@Html.DisplayFor(modelItem => modelItem.Manager) Says:</span></div>
                 <div class="panel-wrapper collapse in" aria-expanded="true">
-                    <div class="panel-body">
+                    <div class="panel-body" style="padding:25px 25px 0px 25px;">
                         <table class="table table-hover issue-tracker ">
                             <tr class="white-bg">
                                 <td class="more" style="word-wrap: break-word;">
                                     <div>@Model.NominationComment</div>
                                 </td>
-            </tr>
+                            </tr>
                         </table>
                     </div>
                 </div>
@@ -85,7 +85,7 @@
                                 <table class="table table-hover issue-tracker">
 
             <tr class="white-bg">
-                                        <td class="more" style="word-wrap: break-word;">
+                                        <td>
                                             <div>@Model.HrAdminsfeedback</div>
                                         </td>
             </tr>
@@ -100,102 +100,103 @@
     <div class="row">
         <div class="col-lg-12 col-md-12 col-sm-12">
             <div class="box M-B60">
-                <div class="f1">
+                <div class="f1" style="padding:25px 25px 0px 25px;">
                     <div class="wizard-box" style="margin-top:0px;">
                         <div class="row">
                             <div class="col-md-12">
                                 <div class="table-responsive">
+                                    @{ var i = 0;}
                                     @foreach (var reviewer in Model.ReviewerComments)
-        {
-            var creditCount = 0;
+                                    {
+                                        var creditCount = 0;
                                         var reviewerName = reviewer.FirstOrDefault();
-                                       
 
                                         <table class="table issue-tracker">
-                    <thead>
-                        <tr>
-                            <th>Criteria</th>
+                                            <thead>
+                                                <tr>
+                                                    <th>Criteria</th>
                                                     <th colspan="4">Manager</th>
                                                     <th colspan="2">Reviewer</th>
                                                 </tr>
                                                 <tr>
                                                     <th></th>
-                            <th>Weightage</th>
-                            <th>Rating</th>
-                            <th>Points</th>
+                                                    <th>Weightage</th>
+                                                    <th>Rating</th>
+                                                    <th>Points</th>
                                                     <th>Comments</th>
                                                     <th>Rating</th>
                                                     <th>Comments</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach (var managerComment in Model.ManagerComments)
-                        {
-                            <tr>
-                                @{
-                                    var criteria = Model.Criterias.FirstOrDefault(c => c.Id == managerComment.CriteriaId);
-                                }
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                @foreach (var managerComment in Model.ManagerComments)
+                                                {
+                                                    <tr>
+                                                        @{
+                                                    var criteria = Model.Criterias.FirstOrDefault(c => c.Id == managerComment.CriteriaId);
+                                                        }
                                                         <td class="col-lg-2 col-md-2 col-sm-2">
-                                    @if (criteria != null)
-                                    {
-                                        @criteria.Title
-                                    }
-                                </td>
-                                @{
-                                    var commentObj = Model.ManagerComments.FirstOrDefault(model => model.CriteriaId == @managerComment.CriteriaId);
-                                }
+                                                            @if (criteria != null)
+                                                            {
+                                                                @criteria.Title
+                                                            }
+                                                        </td>
+                                                        @{
+                                                    var commentObj = Model.ManagerComments.FirstOrDefault(model => model.CriteriaId == @managerComment.CriteriaId);
+                                                        }
                                                         <td class="col-lg-1 col-md-1 col-sm-1">@(commentObj != null ? commentObj.Weightage.ToString() : "-")</td>
                                                         <td class="col-lg-2 col-md-2 col-sm-2">
-                                    @Html.DropDownList("rating_" + managerComment.CriteriaId,
+                                                            @Html.DropDownList("rating_"+ i +"_"+ managerComment.CriteriaId,
                                         Enumerable.Range(1, 5).
                                             Select(j => new SelectListItem
                                             {
                                                 Value = j.ToString(),
                                                 Text = j.ToString()
                                             }), "", new { @class = "example-square", @autocomplete = "off", @value = (commentObj != null ? commentObj.Rating : 0) })
-                                </td>
+                                                        </td>
                                                         <td class="col-lg-1 col-md-1 col-sm-1">@(commentObj != null ? (commentObj.Weightage * commentObj.Rating / 100.0) : 0)</td>
                                                         <td class="more col-lg-1 col-md-1 col-sm-1" style="word-break:break-all">@(commentObj != null ? commentObj.Comment : "-")</td>
                                                         <td class="col-lg-2 col-md-2 col-sm-2">
-                                    @{
-                                        var reviewObj = reviewer.FirstOrDefault(model => model.CriteriaId == @managerComment.CriteriaId);
-                                        if (reviewObj != null)
-                                        {
-                                            @Html.DropDownList("reviewRating_" + managerComment.CriteriaId, Enumerable.Range(1, 5).
+                                                            @{
+                                                    var reviewObj = reviewer.FirstOrDefault(model => model.CriteriaId == @managerComment.CriteriaId);
+                                                    if (reviewObj != null)
+                                                    {
+                                                        @Html.DropDownList("reviewRating_" + i + "_" + managerComment.CriteriaId, Enumerable.Range(1, 5).
                                                 Select(j => new SelectListItem
                                                 {
                                                     Value = j.ToString(),
                                                     Text = j.ToString()
                                                 }), "", new { @class = "example-square", @autocomplete = "off", @value = reviewObj.Credit })
-                                        }
-                                    }
-                                </td>
+                                                    }
+                                                            }
+                                                        </td>
                                                         <td class="more col-lg-3 col-md-3 col-sm-3" style="word-break:break-all">@(reviewObj != null ? reviewObj.Comment : "")</td>
-                            </tr>
-                                        }
-                        <tr>
-                            <td></td>
-                            <td></td>
-                            <td style="text-align:center;color:#0063A7;font-weight:bold">Total Points:</td>
-                            <td> @(Model.ManagerComments.Sum(a => (a.Rating * a.Weightage / 100.0))) </td>
-                            <td style="text-align:center;color:#0063A7;font-weight:bold">
-                                Average Ratings:
-                            </td>
-                            <td id="totalCredits" class="col-md-1 text-center font-bold">
-                                @if (reviewer != null && reviewer.Any())
-                                {
-                                    @(reviewer.Average(a => a.Credit))
-                                }
-                                else
-                                {
-                                    @:0.00
+                                                    </tr>
+                                                }
+                                                <tr>
+                                                    <td></td>
+                                                    <td></td>
+                                                    <td style="text-align:center;color:#0063A7;font-weight:bold">Total Points:</td>
+                                                    <td> @(Model.ManagerComments.Sum(a => (a.Rating * a.Weightage / 100.0))) </td>
+                                                    <td style="text-align:center;color:#0063A7;font-weight:bold">
+                                                        Average Ratings:
+                                                    </td>
+                                                    <td id="totalCredits" class="col-md-1 text-center font-bold">
+                                                        @if (reviewer != null && reviewer.Any())
+                                                        {
+                                                            @(reviewer.Average(a => a.Credit))
+                                                        }
+                                                        else
+                                                        {
+                                                            @:0.00
                 }
-                            </td>
-                            <td></td>
-                        </tr>
-                    </tbody>
-                </table>
-                                        }
+                                                    </td>
+                                                    <td></td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                                                    i++;
+                                                                }
                                 </div>
                             </div>
                         </div>
@@ -205,13 +206,13 @@
 
                             <input type="button" value="Back" class="btn btn-primary" onclick="location.href='@Url.Action("ReviewFeedbackList", "Review")'" />
                             <input type="button" value="Shortlist" class="btn btn-primary shortlist" onclick="location.href='#'"
-                                                       @{ if (Model.IsShortlisted || Model.IsWinner) { @: disabled="disabled"
-                                                                                                                                                                                                                                              } } />
+                                   @{ if (Model.IsShortlisted || Model.IsWinner) { @: disabled="disabled"
+                                                                                                                                                                                                                                                                                 } } />
                             <input type="button" value="Mark Winner" class="btn btn-primary" data-toggle="modal" data-target="#myModal"
-                                                       @{ if (Model.IsWinner) { @: disabled="disabled"
-                                                                                                                                                                                                                                      } } />
-                                            </div>
-                                        </div>
+                                   @{ if (Model.IsWinner) { @: disabled="disabled"
+                                                                                                                                                                                                                                                                         } } />
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -247,8 +248,8 @@
                 <span style="color:red;display:none" id="commentRequired"></span>
             </div>
                                         <div class="modal-footer" style="border:none;">
-                <button type="button" class="btn winner btn-default" id="selectWinner">Submit</button>
-                                            <button type="button" class="btn btn-default btn-nav" id="cancel" data-dismiss="modal">Cancel</button>
+                                            <button type="button" class="btn winner btn-primary" id="selectWinner">Submit</button>
+                                            <button type="button" class="btn btn-primary btn-nav" id="cancel" data-dismiss="modal">Cancel</button>
             </div>
         </div>
     </div>

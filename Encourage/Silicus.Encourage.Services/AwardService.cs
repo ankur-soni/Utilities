@@ -12,18 +12,14 @@ namespace Silicus.Encourage.Services
 {
     public class AwardService : IAwardService
     {
-        private readonly IDataContextFactory _contextFactory;
         private readonly IEncourageDatabaseContext _encourageDbcontext;
-        private readonly ICommonDbService _commonDbService;
         private readonly INominationService _nominationService;
         private readonly Silicus.UtilityContainer.Entities.ICommonDataBaseContext _CommonDbContext;
 
         public AwardService(IDataContextFactory contextFactory, ICommonDbService commonDbService, INominationService nominationService)
         {
-            _contextFactory = contextFactory;
-            _encourageDbcontext = _contextFactory.CreateEncourageDbContext();
-            _commonDbService = commonDbService;
-            _CommonDbContext = _commonDbService.GetCommonDataBaseContext();
+            _encourageDbcontext = contextFactory.CreateEncourageDbContext();
+            _CommonDbContext = commonDbService.GetCommonDataBaseContext();
             _nominationService = nominationService;
         }
 
@@ -34,7 +30,7 @@ namespace Silicus.Encourage.Services
                 _encourageDbcontext.Add<Nomination>(nomination);
                 return true;
             }
-            catch (Exception Ex)
+            catch (Exception)
             {
                 return false;
             }
@@ -129,7 +125,6 @@ namespace Silicus.Encourage.Services
 
         public List<User> GetResourcesInEngagement(int engagementId, int userIdToExcept, int awardId)
         {
-            var currentAwardName = _encourageDbcontext.Query<Award>().Where(a => a.Id == awardId).FirstOrDefault().Name;
             var currentUser = _CommonDbContext.Query<User>().Where(user => user.ID == userIdToExcept);
             var currentUserId = currentUser.FirstOrDefault().ID;
             var closedProject = ConfigurationManager.AppSettings["ClosedEngagementStage"];
@@ -156,25 +151,18 @@ namespace Silicus.Encourage.Services
 
             //Start-Winner can not be nominated for next one year.
             var winners = _encourageDbcontext.Query<Shortlist>().Where(w => w.IsWinner == true).ToList();
-            var winnersWithin12Months = new List<Shortlist>();
             var winnerNominationsWithin12Months = new List<Nomination>();
             foreach (var winner in winners)
             {
                 var noOfMonthsFromLastWinningDate = (DateTime.Now.Year - winner.WinningDate.Value.Year) * 12 + (DateTime.Now.Month - winner.WinningDate.Value.Month);
                 var winnernomination = _nominationService.GetNomination(winner.NominationId);
-
-                var previousAwardName = _encourageDbcontext.Query<Award>().Where(a => a.Id == winnernomination.AwardId).FirstOrDefault().Name;
-
+                
                 var previousAwardId = winnernomination.AwardId;
 
-                if (noOfMonthsFromLastWinningDate <= 12)
+                if (noOfMonthsFromLastWinningDate <= 12 && previousAwardId == awardId)
                 {
-                    if (previousAwardId == awardId)
-                    {
-                        winnerNominationsWithin12Months.Add(_nominationService.GetNomination(winner.NominationId));
-                    }
+                    winnerNominationsWithin12Months.Add(_nominationService.GetNomination(winner.NominationId));
                 }
-
             }
 
             foreach (var winnerNomination in winnerNominationsWithin12Months)

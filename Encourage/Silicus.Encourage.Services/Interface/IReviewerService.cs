@@ -8,6 +8,6 @@ namespace Silicus.Encourage.Services.Interface
 {
     public interface IReviewerService
     {
-        bool addReviewer(int userID);
+        bool AddReviewer(int userID);
     }
 }

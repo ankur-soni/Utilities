@@ -14,23 +14,13 @@
 
         <hr />
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-        <div class="form-group">
-            @Html.Label("Utilities", "UtilityId", htmlAttributes: new { @class = "control-label requiredfeild col-md-2" })
+        <div class="form-group" style="padding-top:20px">
+            @Html.Label("Utility", htmlAttributes: new { @class = "control-label requiredfeild col-md-2" })
             <div class="col-md-10">
                 @Html.DropDownList("UtilityId", (SelectList)ViewData["Utilities"], "Select", htmlAttributes: new { @class = "form-control" })
                 @Html.ValidationMessageFor(model => model.UtilityID, "", new { @class = "text-danger" })
             </div>
         </div>
-
-        @*<div class="form-group">
-            @Html.LabelFor(model => model.RoleID, "RoleId", htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.DropDownListFor(model => model.RoleID, new SelectList(Enumerable.Empty<SelectListItem>(), "ID", "RoleName"), "Select a Role", new { @class = "form-control" })*@
-        @*@Html.DropDownList("RoleId", (SelectList)ViewData["Roles"], htmlAttributes: new { @class = "form-control" })*@
-        @*@Html.ValidationMessageFor(model => model.RoleID, "", new { @class = "text-danger" })
-                </div>
-            </div>*@
-       
         <div class="form-group">
             @Html.Label("Roles", htmlAttributes: new { @class = "control-label requiredfeild roles col-md-2", style = "display:none" })
             <div id="search" class="col-md-10" style="display:none">
@@ -39,22 +29,29 @@
                 </div>
             </div>
         </div>
-
-
         <div class="form-group">
             <div class="col-md-2"></div>
-            <div id="Roles" class="col-md-10" style="display:none">
-                <div id="available-roles" class="col-md-6" style="height:200px;overflow-y:scroll;overflow-x:hidden"></div>
-                <div id="selected-roles" class="col-md-6" style="height:200px;overflow-y:scroll;overflow-x:hidden"></div>
+            <div id="Roles" class="col-md-10" style="display:none; padding-left:40px">
+                <div class="col-md-6">
+                    <span style="font-weight:bold" class="available-header">Available Roles</span>
+                    <hr style="margin-top:10px;margin-bottom:10px" />
+                    <div id="available-roles"  style="max-height:200px;overflow-y:auto;overflow-x:hidden"></div>
+                </div>
+                <div class="col-md-6">
+                    <span style="font-weight:bold" class="selected-header">Selected Roles</span>
+                    <hr style="margin-top:10px;margin-bottom:10px" />
+                    <div id="selected-roles"  style="max-height:200px;overflow-y:auto;overflow-x:hidden"></div>
+                </div>
             </div>
         </div>
+        <div><a href="@Url.Action("Index","Home")">Back To Dashboard</a></div>
     </div>
     <div class="form-group" style="padding-top:20px;">
         <div class="col-md-2">
-            <input type="button" value="Add Role" class="btn btn-primary" id="add-role-to-utility" style="width:100%;" />
+            <input type="button" value="Save" class="btn btn-primary" id="add-role-to-utility" style="width:100%;" />
         </div>
         <div class="col-md-2">
-            <a href="@Url.Action("Index", "Home")" class="btn btn-primary" style="width:100%">Back</a>
+            <input type="button" value="Cancel" onclick="window.location.reload()" class="btn btn-primary" style="width:100%" />
         </div>
     </div>
 
@@ -119,7 +116,7 @@
             debugger;
             $("<div id='availablerole" + id + "'>").appendTo(container);
             $('<input />', { type: 'checkbox', id: id, class: 'available', value: name, checked: status }).appendTo('#availablerole' + id + '');
-            $('<span />', { 'id': id, text: name }).appendTo('#availablerole' + id + '');
+            $('<span />', { 'id': id, text: name, style: "padding-left:10px" }).appendTo('#availablerole' + id + '');
             $('<br>').appendTo('#availablerole' + id + '');
         }
         function addHtmlForSelectedRoles(name, id, status, container) {
@@ -127,7 +124,7 @@
             debugger;
             $("<div id='selectedrole" + id + "'>").appendTo(container);
             $('<span />', { 'id': 'selected' + id, text: name }).appendTo('#selectedrole' + id + '');
-            $('<span id="selected' + id + '"><i class="fa fa-times" id="' + id + '" aria-hidden="true"></i></span>').appendTo('#selectedrole' + id + '');
+            $('<span id="selected' + id + '" style="padding-left:10px"><i class="fa fa-times" id="' + id + '" aria-hidden="true" style="color:#0E69A8"></i></span>').appendTo('#selectedrole' + id + '');
             $('<br id="' + id + '">').appendTo('#selectedrole' + id + '');
         }
 
@@ -141,7 +138,7 @@
 
                 $("<div id='selectedrole" + id + "'>").appendTo(selectedRoleContainer);
                 $('<span />', { 'id': 'selected' + id, text: name }).appendTo('#selectedrole' + id + '');
-                $('<span id="selected' + id + '"><i class="fa fa-times" id="' + id + '" aria-hidden="true"></i></span>').appendTo('#selectedrole' + id + '');
+                $('<span id="selected' + id + '" style="padding-left:10px"><i class="fa fa-times" id="' + id + '" aria-hidden="true" style="color:#0E69A8"></i></span>').appendTo('#selectedrole' + id + '');
                 $('<br id="' + id + '">').appendTo('#selectedrole' + id + '');
             }
             else if (parseInt(id) > 0) {

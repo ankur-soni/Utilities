@@ -23,6 +23,11 @@ namespace Silicus.Ensure.Services
             return _context.Query<TestSuite>();
         }
 
+        public TestSuite GetTestSuiteByName(string testSuiteName)
+        {
+            return _context.Query<TestSuite>().FirstOrDefault(y=>y.TestSuiteName.Equals(testSuiteName,StringComparison.InvariantCultureIgnoreCase));
+        }
+
         public int Add(TestSuite TestSuite)
         {
             _context.Add(TestSuite);
@@ -368,6 +373,11 @@ namespace Silicus.Ensure.Services
         public UserTestSuite GetUserTestSuiteByUdi_TestSuitId(int userId, int testsuitId)
         {
             return _context.Query<UserTestSuite>().Where(x => x.UserId == userId && x.TestSuiteId == testsuitId).FirstOrDefault();
+        }
+
+        public List<int> GetAllUserIdsForTestSuite(int testSuiteId)
+        {
+            return _context.Query<UserTestSuite>().Where(x => x.TestSuiteId == testSuiteId).Select(user => user.UserId).ToList();
         }
     }
 }

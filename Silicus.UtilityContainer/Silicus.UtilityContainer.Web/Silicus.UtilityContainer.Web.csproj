@@ -114,7 +114,7 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="Silicus.Encourage.Services">
-      <HintPath>..\..\Encourage\Silicus.Encourage.Services\bin\Release\Silicus.Encourage.Services.dll</HintPath>
+      <HintPath>..\Dependancies\Silicus.Encourage.Services.dll</HintPath>
     </Reference>
     <Reference Include="Silicus.FrameWorx.Logger, Version=1.0.1.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Silicus.FrameWorx.Logger.1.0.1\lib\net45\Silicus.FrameWorx.Logger.dll</HintPath>
@@ -262,6 +262,7 @@
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\SweetController.cs" />
     <Compile Include="Controllers\UserProfileController.cs" />
+    <Compile Include="Filters\SuperUserOnlyAttribute.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -283,6 +284,7 @@
     <Content Include="css\bootstrap-switch.css" />
     <Content Include="css\bootstrap.css" />
     <Content Include="css\bootstrap.min.css" />
+    <Content Include="css\Custom-style.css" />
     <Content Include="css\custome-stylesheet.css" />
     <Content Include="css\patterns\1.png" />
     <Content Include="css\patterns\2.png" />
@@ -457,6 +459,9 @@
     <Content Include="Images\encourageLogo.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="Images\enhanceLogo.png" />
+    <Content Include="Images\ensureLogo.png" />
+    <Content Include="Images\entimeLogo.png" />
     <Content Include="Images\Frameworx.jpg" />
     <Content Include="Images\loginbackground.jpg" />
     <Content Include="Images\logo.jpg" />
@@ -816,6 +821,7 @@
     <Content Include="Views\Home\AddRoleToUtility.cshtml" />
     <Content Include="Views\Home\Shared\_UsersAccordingToRoleInUtility.cshtml" />
     <Content Include="Views\Sweet\Alert.cshtml" />
+    <Content Include="Views\Shared\UnAuthorizedError.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

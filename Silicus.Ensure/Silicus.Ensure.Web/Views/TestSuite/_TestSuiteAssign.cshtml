@@ -4,11 +4,12 @@
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title" id="myModalLabel">Activate Test Suite</h4>
+                <h4 class="modal-title" id="myModalLabel">Assign test suite</h4>
             </div>
             <input type="hidden" id="testSuiteId" name="testSuiteId" value="" />
             <div class="modal-body">
                 @(Html.Kendo().Grid<Silicus.Ensure.Models.DataObjects.User>().Name("userGrids")
+                        .Events(events => events.DataBound("onUserGridsDataBound"))
                 .Columns(columns =>
               {
                   columns.Bound("").ClientTemplate("<input type='checkbox' name='selectUser' value='#= UserId#' />").Width(20);
@@ -37,9 +38,9 @@
                             <div class="col-md-6">
                                 <div class="input-group">
                                     <span class="input-group-addon"><span class="glyphicon glyphicon-search" aria-hidden="true"></span></span>
-                                    <input type="text" class="form-control" id='FieldFilter' placeholder="Search">
+                                    <input type="text" class="form-control" id='FieldFilter' placeholder="Search" style="height: 38px;">
                                     <span class="input-group-btn">
-                                        <button class="btn btn-default" type="button" style="height:16px;"><span class="glyphicon glyphicon-refresh" aria-hidden="true"></span></button>
+                                        <button class="btn btn-default" type="button"><span class="glyphicon glyphicon-refresh" aria-hidden="true"></span></button>
                                     </span>
                                 </div>
                             </div>
@@ -61,26 +62,30 @@
     $(document).ready(function () {
         $('#testSuiteId').val('@TempData["TesSuiteId"]');
         $('#btnAssign').click(function () {
-            if (confirm("Are you sure you want to assign this test suite?")) {
-                var users = $("#userGrids").find("[name='selectUser']:checked").map(function () {
-                    return this.value;
-                }).get().join(",");
-                var testSuiteId = $('#testSuiteId').val();
-                $.ajax({
-                    type: "POST",
-                    url: '@Url.Action("AssignTest", "TestSuite")',
-                    data: { users: users, testSuiteId: testSuiteId },
-                    success: function (returndata) {
-                        if (returndata == 1) {
-                            $('#myModal').modal().hide();
-                            ShowMessage("Activated test suite.", 1);
+
+            $.when(showConfirmationWindow('Are you sure,  you want to assign this test suite?', 'Confirm !')).then(function (confirmed) {
+                if (confirmed) {
+                    var users = $("#userGrids").find("[name='selectUser']:checked").map(function () {
+                        return this.value;
+                    }).get().join(",");
+                    var testSuiteId = $('#testSuiteId').val();
+                    $.ajax({
+                        type: "POST",
+                        url: '@Url.Action("AssignTest", "TestSuite")',
+                        data: { users: users, testSuiteId: testSuiteId },
+                        success: function (returndata) {
+                            if (returndata == 1) {
+                                $('#myModal').modal().hide();
+                                ShowMessage("Activated test suite.", 1);
+                            }
+                            else {
+                                ShowMessage("Error occured while activating test suite.", 0);
+                            }
                         }
-                        else {
-                            ShowMessage("Error occured while activating test suite.", 0);
-                        }
-                    }
-                });
-            }
+                    });
+                }
+            });
+           
         });
 
         $("#FieldFilter").keyup(function () {
@@ -99,4 +104,6 @@
                 grid.dataSource.filter({});
         });
     });
+
+    
 </script>

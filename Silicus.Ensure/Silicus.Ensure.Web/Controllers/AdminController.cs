@@ -25,7 +25,7 @@ using Silicus.FrameWorx.Logger;
 
 namespace Silicus.Ensure.Web.Controllers
 {
-    //[Authorize]
+    [Authorize]
     public class AdminController : Controller
     {
         private readonly IEmailService _emailService;
@@ -217,7 +217,7 @@ namespace Silicus.Ensure.Web.Controllers
 
             List<string> roles = MvcApplication.getCurrentUserRoles();
 
-            ViewBag.UserRoles = RoleManager.Roles.Select(r => new SelectListItem { Text = r.Name, Value = r.Name }).ToList();
+           // ViewBag.UserRoles = RoleManager.Roles.Select(r => new SelectListItem { Text = r.Name, Value = r.Name }).ToList();
             var positionDetails = _positionService.GetPositionDetails().OrderBy(model => model.PositionName);
             ViewBag.PositionListItem = from item in positionDetails
                                        select new SelectListItem()
@@ -310,6 +310,9 @@ namespace Silicus.Ensure.Web.Controllers
             {
                 TestSuite testSuitDetails = _testSuiteService.GetTestSuitById(TestSuitId);
                 TestSuiteViewModel testSuiteViewModel = _mappingService.Map<TestSuite, TestSuiteViewModel>(testSuitDetails);
+                testSuiteViewModel.OverallProficiency = ((Proficiency)Convert.ToInt32(testSuiteViewModel.Competency)).ToString();
+                var position=_positionService.GetPositionById(testSuiteViewModel.Position);
+                testSuiteViewModel.PositionName = position.PositionName;
                 List<TestSuiteTagViewModel> testSuiteTags;
                 GetTestSuiteTags(testSuitDetails, out testSuiteTags);
                 testSuiteViewModel.Tags = testSuiteTags;
@@ -416,7 +419,6 @@ namespace Silicus.Ensure.Web.Controllers
         }
         public ActionResult CandidateAdd(int UserId)
         {
-
             UserViewModel currUser = new UserViewModel();
             currUser.UserId = UserId;
 

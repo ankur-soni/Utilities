@@ -82,4 +82,28 @@
         Ten = 10,
         Eleven = 11
     }
+
+    public static class EnumDisplayNames
+    {
+        public static string CandidateStatusString(this CandidateStatus status)
+        {
+            switch (status)
+            {
+                case CandidateStatus.New:
+                    return "New";
+                case CandidateStatus.Rejected:
+                    return "Rejected";
+                case CandidateStatus.Selected:
+                    return "Selected";
+                case CandidateStatus.TestAssigned:
+                    return "Test assigned";
+                case CandidateStatus.TestSubmitted:
+                    return "Test submitted";
+                case CandidateStatus.UnderEvaluation:
+                    return "Under evaluation";
+                default: return "";
+            }
+        }
+    }
+
 }
