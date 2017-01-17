@@ -17,6 +17,12 @@
         <div class="col-lg-10 col-md-10 col-sm-10">
             <h1 class="dashboard-name">Edit Candidate</h1>
         </div>
+        <script>
+            $(document).ready(function()
+            {
+                SetNavigationMenuActive('Candidates');
+            })
+        </script>
     }
     else
     {
@@ -26,6 +32,7 @@
         <script>
             $(document).ready(function()
             {
+                SetNavigationMenuActive('Candidates');
                 $('#file').css('display','block');
                 fileBool=true;
             })

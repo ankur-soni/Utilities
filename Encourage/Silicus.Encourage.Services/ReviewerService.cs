@@ -22,15 +22,21 @@ namespace Silicus.Encourage.Services
         {
             try
             {
-                _encourageDatabaseContext.Add<Reviewer>(new Reviewer { UserId = userId });
-                _encourageDatabaseContext.SaveChanges();
-                return true;
+                if (!_encourageDatabaseContext.Query<Reviewer>().Any(r => r.UserId == userId))
+                {
+                    _encourageDatabaseContext.Add<Reviewer>(new Reviewer
+                    {
+                        UserId = userId
+                    });
+                    _encourageDatabaseContext.SaveChanges();
+                    return true;
+                }
             }
             catch (Exception)
             {
                 return false;
             }
-
+            return false;
         }
     }
 }

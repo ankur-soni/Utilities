@@ -5,6 +5,26 @@
     ViewBag.Title = "ShowAllProductBacklog";
     var isRolePm = ViewBag.IsRolePm;
 }
+
+<script>
+    var ddlItem;
+    function additionalData(e) {
+        return { projectName : ddlItem }
+    }    
+    function onProjectChange(e) {
+        debugger;
+        ddlItem = this.value();
+        var grid = $("#productBacklogs").data("kendoGrid");
+        grid.dataSource.read();
+    }
+
+    function onProjectDataBound(e) {
+        debugger;
+        ddlItem = this.value();
+        var grid = $("#productBacklogs").data("kendoGrid");
+        grid.dataSource.read();
+    }
+</script>
 <div class="row white-bg header-row">
     <nav class="" role="navigation" style="margin-bottom: 0">
         <div class="navbar-header">
@@ -14,6 +34,36 @@
 
     <div class="col-lg-11 col-md-11 col-sm-11">
         <h1 class="dashboard-name">Product Backlog</h1>
+    </div>
+</div>
+<div class="row">
+    <div class="col-lg-12 col-md-12 col-sm-12">
+        <div class="box header-box M-T15">
+            <div class="header-walloffame">
+                <span>Projects</span>
+                @(Html.Kendo().DropDownList()
+                  .Name("projects")
+                  .DataTextField("Name")
+                  .DataValueField("Name")
+                  .Events(e => e.Change("onProjectChange").DataBound("onProjectDataBound"))
+                  .DataSource(source =>
+                  {
+                      source.Custom()
+                      .ServerFiltering(false)
+                      .Type("aspnetmvc-ajax")
+                      .Transport(transport =>
+                      {
+                          transport.Read("GetProjects", "ProductBacklog");
+                      })
+                      .Schema(schema =>
+                      {
+                          schema.Data("Data")
+                              .Total("Total");
+                      });
+                  })
+                )
+            </div>
+        </div>
     </div>
 </div>
 <script>
@@ -34,12 +84,20 @@
                 updateButton.remove();
             }
         }
+
+        $(".hours").kendoMaskedTextBox({
+            mask: "00 : 00"
+        });
+
+        $('.hours').off('blur').on('blur',function(){
+            alert('demo');
+        })
     }
 
-    function Accept(e){ 	        
+    function Accept(e){
         //var dataItem = this.dataItem($(e.currentTarget).closest("tr"));
         //$.get( "/ProductBacklog/UpdateAssignee", { id: dataItem.Id} );
-    }   
+    }
 </script>
 <div class="row">
     <div class="col-sm-12">
@@ -48,9 +106,10 @@
             @(Html.Kendo().Grid<Silicus.Reusable.Web.Models.ViewModel.ProductBacklogViewModel>
                 ()
                 .Name("productBacklogs")
+                .AutoBind(false)                
                 .Events(e => e.DataBound("onDataBound"))
                 .DataSource(dataSource => dataSource
-                .Ajax()
+                .Ajax()               
                 .Model(model =>
                 {
                     model.Id(p => p.Id);
@@ -61,7 +120,7 @@
                     model.Field(p => p.Assignee).Editable(false);
 
                 })
-                .Read(read => read.Action("GetProductBacklogs", "ProductBacklog"))
+                .Read(read => read.Action("GetProductBacklogs", "ProductBacklog").Data("additionalData"))
                 .PageSize(20)
                 )
 
@@ -72,8 +131,8 @@
                     columns.Bound(p => p.Type).Width(10);
                     columns.Bound(p => p.AreaPath).Width(30).Title("Area");
                     columns.Bound(p => p.Assignee).Width(50).Title("Assigned To");
-                    columns.Bound(p => p.TimeAllocatedString).Width(10).Title("Time Allocated (Hrs)");
-                    columns.Bound(p => p.TimeSpentString).Width(10).Title("Time Spent (Hrs)");
+                    columns.Bound(p => p.TimeAllocatedString).Width(10).Title("Time Allocated (Hrs)").ClientTemplate("<input class='hours' value='#=TimeAllocatedString#'  #=(Assignee == 'Unassigned' || TimeAllocatedString == '00:00')?'':'disabled'# />");
+                    columns.Bound(p => p.TimeSpentString).Width(10).Title("Time Spent (Hrs)").ClientTemplate("<input value='#=TimeSpentString#' class='hours'/>");
                     columns.Bound(p => p.State).Width(10);
                     columns.Command(command =>
                     {

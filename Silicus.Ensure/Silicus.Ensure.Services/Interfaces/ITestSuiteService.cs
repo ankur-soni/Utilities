@@ -7,6 +7,8 @@ namespace Silicus.Ensure.Services.Interfaces
     {
         IEnumerable<TestSuite> GetTestSuiteDetails();
 
+        TestSuite GetTestSuiteByName(string testSuiteByName);
+
         TestSuite GetTestSuitById(int testSuiteId);
 
         UserTestSuite GetUserTestSuiteId(int userTestSuiteId);
