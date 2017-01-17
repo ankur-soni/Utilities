@@ -1,78 +1,36 @@
-﻿$(window).load(function () {
+﻿
+$(window).load(function () {
     var mainW = $(window).height() - 70;
-    //$('.nav').css({ height : mainW })
-	$('.nav-logo').hide()
-	$('#loading').fadeOut(1000);
-	$('.nav-logo').fadeIn()
-}) // Window load
+    $('.nav-logo').hide()
+    $('#loading').fadeOut(1000);
+    $('.nav-logo').fadeIn()
+})
 
 $(window).resize(function () {
-
-    //var mainW = $('.main-content').height();
-    //var mainW = $(window).height() - 70;
-    //$('.nav').css({ height: mainW + 50 })
-    //mQuery();
-
     //Grid Resizing
     kendo.resize($(".kendogrid"));
-    
-}) // Window resize
+})
 
 $(document).ready(function () {
-    $(document).on('click','#menu-toggle', function () {        
+    $(document).on('click', '#menu-toggle', function () {
         $("body").toggleClass("mini-navbar");
     });
-   
+
     $('.nav').css({ height: 0 })
-
-    //toastr.options = {
-    //    "closeButton": true,
-    //    "debug": false,
-    //    "positionClass": "toast-bottom-right",
-    //    "onclick": null,
-    //    "showDuration": "300",
-    //    "hideDuration": "1000",
-    //    "timeOut": "5000",
-    //    "extendedTimeOut": "1000",
-    //    "showEasing": "swing",
-    //    "hideEasing": "linear",
-    //    "showMethod": "fadeIn",
-    //    "hideMethod": "fadeOut"
-    //}
-
-    //setTimeout(function () {
-    //    toastr.info('<span style="color:#333;">Welcome to Silicus! The subtle and striking admin theme.</span>');
-    //}, 2000);
-
-    //setTimeout(function () {
-    //    toastr.warning('<span style="color:#333;">You could navigate the different sections to discover it...</span>');
-    //}, 4500);
-
     mQuery();
-
-    // $('.nav').hide();
     $('.nav-button').click(function () {
-				// $('.nav').toggleClass('show');
-				$('.nav').toggleClass('show')
-				//$('.nav').fadeToggle(function(){
-					
-				//})
-			})
+        $('.nav').toggleClass('show')
+    })
     $('.collapsible > a').click(function () {
-				$(this).parent().toggleClass('open')
-			})
-    
-}); // Ready
+        $(this).parent().toggleClass('open')
+    })
+});
 
 function mQuery() {
     // Same as @media (max-width: 767px) -> hide the navigation
     if ($('.fluid [class*="grid"]').css('float') == 'none' && $('.kendogrid [class*="grid"]').css('float') != 'none') {
         $('.nav').removeClass('show');
     } else {
-        //if($(window).width() >= 995)
-        //    $('.nav').addClass('show');
-        //else
-        //    $('.nav').removeClass('show');
         $('.nav').addClass('show');
     }
 }
@@ -81,8 +39,8 @@ function ShowMessage(content, isSuceess) {
     $("#messageDiv").removeClass("alert-danger");
     $("#messageDiv").removeClass("alert-success");
 
-    if (isSuceess == 0) { $("#messageDiv").addClass("alert-danger");}
-    else { $("#messageDiv").addClass("alert-success");}
+    if (isSuceess == 0) { $("#messageDiv").addClass("alert-danger"); }
+    else { $("#messageDiv").addClass("alert-success"); }
 
     $("#messageDiv").show();
     $("#messageContent").text(content);
@@ -102,4 +60,28 @@ function RefreshKendoGrid(gridName) {
 
 function SetNavigationMenuActive(menuId) {
     $('#' + menuId).addClass('active');
+}
+
+function deleteKendoGridRow(gridId, data) {
+    swal({
+        title: "Are you sure,",
+        text: "Are you sure, you want to delete this record?",
+        type: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#DD6B55",
+        confirmButtonText: "Yes",
+        cancelButtonText: "No",
+        closeOnConfirm: false,
+        closeOnCancel: false
+    },
+    function (isConfirm) {
+        if (isConfirm) {
+            grid = $("#" + gridId).data("kendoGrid");
+            grid.dataSource.remove(data);
+            grid.dataSource.sync();
+            swal("Deleted!", "Record has been deleted.", "success");
+        } else {
+            swal("Cancelled", "Record deletion cancelled.", "error");
+        }
+    });
 }
