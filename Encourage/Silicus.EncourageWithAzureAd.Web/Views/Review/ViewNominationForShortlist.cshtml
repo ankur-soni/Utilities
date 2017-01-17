@@ -306,7 +306,7 @@
                 confirmButtonText: "Yes!",
                 cancelButtonText: "No!",
                 closeOnConfirm: false,
-                closeOnCancel: false
+                closeOnCancel: true
             },
                  function (isConfirm, inputValue) {
 
@@ -339,7 +339,7 @@
                              }
                          });
                      } else {
-                         swal("Cancelled", "This candidate has not been shortlisted");
+                         //swal("Cancelled", "This candidate has not been shortlisted");
                      }
                  });
         });
