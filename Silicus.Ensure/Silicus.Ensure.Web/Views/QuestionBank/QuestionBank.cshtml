@@ -26,58 +26,74 @@
     </div>
     <div class="col-sm-12">
         <div class="box M-T15 M-B60">
-        <div class="kendogrid">
+            <div class="kendogrid">
 
 
-            <div>
-                @{
+                <div>
+                    @{
 
-                    Model.ForEach(y => y.QuestionDescription = Silicus.Ensure.Web.MvcApplication.HtmlToPlainText(y.QuestionDescription));
-                }
+                        Model.ForEach(y => y.QuestionDescription = Silicus.Ensure.Web.MvcApplication.HtmlToPlainText(y.QuestionDescription));
+                    }
 
-                @if (Request.IsAuthenticated)
-                {
-                    @(Html.Kendo().Grid(Model).Name("questionGrids")
+                    @if (Request.IsAuthenticated)
+                    {
+                        @(Html.Kendo().Grid(Model).Name("questionGrids")
                          .Pageable(pager => { pager.PageSizes(true); })
+
+                              .DataSource(dataSource => dataSource
+
+                    .Ajax().Model(model =>
+                        {
+                            model.Id(p => p.Id);
+                            model.Field(p => p.Id).Editable(false);
+
+                        })
+                                 .Destroy(delete => delete.Action("DeleteQuestion", "QuestionBank"))
+                    )
          .Columns(columns =>
               {
-                  columns.Bound(q =>q.QuestionDescription).Width(200);
+                  columns.Bound(q => q.QuestionDescription).Width(200);
                   columns.Bound(q => q.QuestionType).Width(100);
                   columns.Bound(q => q.Tag).Title("Tags").Width(150);
                   columns.Bound(q => q.ProficiencyLevel).Width(100);
                   columns.Bound(q => q.Id).ClientTemplate(@"
                     <a href='/QuestionBank/EditQuestion?questionId=#=Id#' class='k-button'>Edit</a>
-                    <button onclick='DeleteQuestion(#=Id#,this)' class='k-button '>Delete</button>").Title("Actions").Width(150).Sortable(false);
+<a id='testSuiteDel' class='k-button' href='\\#' onclick='ConfirmDeleteQuestionRow(event)'>Delete</a>
+                   ").Title("Actions").Width(150).Sortable(false);
+                  columns.Command(command =>
+                       {
+                           command.Custom("Delete").Click("ConfirmDeleteQuestionRow").HtmlAttributes(new { @class = "k-button k-button-icontext " });
+                       }).Title("Actions").Width(160);
               })
               .ToolBar(toolbar =>
               {
                   toolbar.Template(@<text>
-                            
-                        
-                            
-            <div class="M-B15">
-                <div class="row">
-                    <div class="col-sm-12">
-                        <div class="col-sm-4 col-md-4 col-lg-3 M-T15 M-B15">
-                                <div class="input-group">
-                                    <span class="input-group-addon"><span class="glyphicon glyphicon-search" aria-hidden="true"></span></span>
-                                    <input type="text" class="form-control" id='FieldFilter' placeholder="Search" style="height: 38px;">
-                                    <span class="input-group-btn">
-                                        <button id="QuestionSearchRefresh" class="btn btn-default" style="height:20px!important;border:1px solid #0070B9!important" type="button"><span class="glyphicon glyphicon-refresh" aria-hidden="true"></span></button>
-                                    </span>
+
+
+
+                    <div class="M-B15">
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <div class="col-sm-4 col-md-4 col-lg-3 M-T15 M-B15">
+                                    <div class="input-group">
+                                        <span class="input-group-addon"><span class="glyphicon glyphicon-search" aria-hidden="true"></span></span>
+                                        <input type="text" class="form-control" id='FieldFilter' placeholder="Search" style="height: 38px;">
+                                        <span class="input-group-btn">
+                                            <button id="QuestionSearchRefresh" class="btn btn-default" style="height:20px!important;border:1px solid #0070B9!important" type="button"><span class="glyphicon glyphicon-refresh" aria-hidden="true"></span></button>
+                                        </span>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                            </div>
-                        
-                                
-                    <div class="row">
-                        <div class="col-sm-12">
-                            <div class="col-sm-1 col-md-1 col-lg-1">
-                                <span style="font-weight:bold;" class="themeColorBlue labelAlignMid">Type</span>
-                            </div>
-                            <div class="col-sm-2 col-md-2 col-lg-1">
-                                @(Html.Kendo().DropDownList()
+
+
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <div class="col-sm-1 col-md-1 col-lg-1">
+                                    <span style="font-weight:bold;" class="themeColorBlue labelAlignMid">Type</span>
+                                </div>
+                                <div class="col-sm-2 col-md-2 col-lg-1">
+                                    @(Html.Kendo().DropDownList()
                             .Name("QuestionType")
                             .DataTextField("Text")
                             .DataValueField("Value")
@@ -97,57 +113,57 @@
                                 Value="Practical"
                                 }
                                 }).HtmlAttributes(new { style = "width: 100%" }))
-                            </div>
-                            <div class="col-sm-1 col-md-1 col-lg-1">
-                                <span style="font-weight:bold;" class="themeColorBlue labelAlignMid">Proficiency level</span>
-                            </div>
-                            <div class="col-sm-2 col-md-2 col-lg-1">
-                                @{
-                                    var levelList = new List<SelectListItem>();
-                                    levelList.Add(new SelectListItem() { Text = "All", Value = "" });
-                                    foreach (var level in Enum.GetValues(typeof(Silicus.Ensure.Web.Models.ProficiencyLevel)))
-                                    {
-                                        levelList.Add(new SelectListItem() { Text = level.ToString(), Value = level.ToString() });
+                                </div>
+                                <div class="col-sm-1 col-md-1 col-lg-1">
+                                    <span style="font-weight:bold;" class="themeColorBlue labelAlignMid">Proficiency level</span>
+                                </div>
+                                <div class="col-sm-2 col-md-2 col-lg-1">
+                                    @{
+                                        var levelList = new List<SelectListItem>();
+                                        levelList.Add(new SelectListItem() { Text = "All", Value = "" });
+                                        foreach (var level in Enum.GetValues(typeof(Silicus.Ensure.Web.Models.ProficiencyLevel)))
+                                        {
+                                            levelList.Add(new SelectListItem() { Text = level.ToString(), Value = level.ToString() });
+                                        }
                                     }
-                                }
-                                @(Html.Kendo().DropDownList()
+                                    @(Html.Kendo().DropDownList()
                                     .Name("ProficiencyLevelDropDown")
                                     .DataTextField("Text")
                                     .DataValueField("Value")
                                     .Events(e => e.Change("ProficiencyLevelDropDownChange"))
                                     .BindTo(levelList)
                                     .HtmlAttributes(new { style = "width: 100%" })
-                                )
-                                        </div>
-                            <div class="col-sm-3 col-md-3 col-lg-2 cust-mar">
-                                            <a href='/QuestionBank/AddQuestions?questionId=0' class='k-button k-button-icontext k-grid-add'><span class='k-icon k-add'></span>Add question</a>
+                                    )
+                                </div>
+                                <div class="col-sm-3 col-md-3 col-lg-2 cust-mar">
+                                    <a href='/QuestionBank/AddQuestions?questionId=0' class='k-button k-button-icontext k-grid-add'><span class='k-icon k-add'></span>Add question</a>
+                                </div>
                             </div>
                         </div>
+
+
+
                     </div>
 
-               
-
-                            </div>
-                                
                 </text>);
               })
-                                                                                                                                                                                                                                                                                                                                                                                                                                                .Resizable(resizing => resizing.Columns(true))
-                                                                                                                                                                                                                                                                                                                                                                                                                                .Sortable(sorting => sorting.Enabled(true))
-                                                                                                                                                                                                                                                                                                                                                                                                                                .Reorderable(reorder => reorder.Columns(true))
-                                                                                                                                                                                                                                                                                                                                                                                                                                .Pageable()
-                                                                                                                                                                                                                                                                                                                                                                                                                                .DataSource(dataSource => dataSource
-                                                                                                                                                                                                                                                                                                                                                                                                                                .Ajax()
-                                                                                                                                                                                                                                                                                                                                                                                                                                .PageSize(10)
-                                                                                                                                                                                                                                                                                                                                                                                                                                .ServerOperation(false)
-                                                                                                                                                                                                                                                                                                                                                                                                                                ))
-                }
-            
-</div>
-    
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        .Resizable(resizing => resizing.Columns(true))
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        .Sortable(sorting => sorting.Enabled(true))
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        .Reorderable(reorder => reorder.Columns(true))
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        .Pageable()
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        .DataSource(dataSource => dataSource
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        .Ajax()
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        .PageSize(10)
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        .ServerOperation(false)
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        ))
+                    }
 
+                </div>
+
+
+            </div>
         </div>
     </div>
-</div>
 </div>
 <!-- Modal -->
 <div class="modal fade" id="myModal" role="dialog">
@@ -181,7 +197,7 @@
         $("#FieldFilter").keyup(function () {
             var value = $("#FieldFilter").val();
             var grid = $("#questionGrids").data("kendoGrid");
-            var pageSize=grid.dataSource.pageSize();
+            var pageSize = grid.dataSource.pageSize();
             if (value) {
                 var filter = { logic: "or", filters: [] };
                 filter.filters.push({ field: "QuestionDescription", operator: "contains", value: value });
@@ -195,7 +211,7 @@
                 grid.dataSource.filter({});
             }
         });
-        
+
         $("#QuestionSearchRefresh").click(function (e) {
             e.preventDefault();
             var datasource = $("#questionGrids").data("kendoGrid").dataSource;
@@ -205,8 +221,7 @@
         });
     });
 
-    function ProficiencyLevelAndQuetiontype()
-    {
+    function ProficiencyLevelAndQuetiontype() {
         var queType = $("#QuestionType").val();
         var level = $("#ProficiencyLevelDropDown").val();
 
@@ -266,4 +281,9 @@
         });
     }
 
+    function ConfirmDeleteQuestionRow(e) {
+        var tr = $(e.target).closest("tr");
+        var data = $("#questionGrids").data('kendoGrid').dataItem(tr);
+        deleteKendoGridRow('questionGrids', data);
+    }
 </script>
