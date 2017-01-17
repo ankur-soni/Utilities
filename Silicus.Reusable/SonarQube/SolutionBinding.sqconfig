@@ -1,0 +1,10 @@
+{
+  "ServerUri": "http://codeanalysis.silicus.com/",
+  "ProjectKey": "ENCOURAGE-001",
+  "Profiles": {
+    "CSharp": {
+      "ProfileKey": "cs-silicus-standard-c-67702",
+      "ProfileTimestamp": "2017-01-10T11:51:12+05:30"
+    }
+  }
+}
