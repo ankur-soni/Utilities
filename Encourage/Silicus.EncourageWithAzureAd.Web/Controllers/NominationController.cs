@@ -91,6 +91,7 @@ namespace Silicus.EncourageWithAzureAd.Web.Controllers
                 var startDate = new DateTime();
                 var endDate = new DateTime();
                 var countOfNomination = 0;
+                _logger.Log("Todays Date: " + DateTime.Now);
                 if (currentAwardFrequency.Code == FrequencyCode.MON.ToString())
                 {
                     var firstDateOfCurrentMonth = new DateTime(DateTime.Today.Year, DateTime.Today.Month, 1);
