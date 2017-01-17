@@ -4,12 +4,12 @@
 
 @{
     ViewBag.Title = "Sign in";
-    //var loginProviders = Context.GetOwinContext().Authentication.GetExternalAuthenticationTypes();
+   // var loginProviders = Context.GetOwinContext().Authentication.GetExternalAuthenticationTypes();
 }
 <div class="logincontainer" style="margin-top:15%;background-color: #edf1f5!important">
     <div id="loginbox" class="mainbox col-md-6 col-md-offset-3 col-sm-8 col-sm-offset-2">
         <div class="panel panel-default">
-            @using (Html.BeginForm("Login", "Account", FormMethod.Post, new { ReturnUrl = ViewBag.ReturnUrl, @id = "loginform", @class = "form-horizontal" }))
+            @using (Html.BeginForm("Login", "CandidateAccount", FormMethod.Post, new { ReturnUrl = ViewBag.ReturnUrl, @id = "loginform", @class = "form-horizontal" }))
             {
                 <input type="hidden" name="ReturnUrl" value="@Request.QueryString["ReturnUrl"]" />
 

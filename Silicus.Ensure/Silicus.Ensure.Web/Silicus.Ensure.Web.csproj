@@ -384,6 +384,7 @@
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\AdminController.cs" />
+    <Compile Include="Controllers\CandidateAccountController.cs" />
     <Compile Include="Controllers\CandidateController.cs" />
     <Compile Include="Controllers\CommonController.cs" />
     <Compile Include="Controllers\ErrorController.cs" />
@@ -821,6 +822,7 @@
     <Content Include="Views\Shared\EditorTemplates\TagList.cshtml" />
     <Content Include="Views\Shared\EditorTemplates\ProficiencyList.cshtml" />
     <Content Include="Views\TestSuite\ViewQuestion.cshtml" />
+    <Content Include="Views\CandidateAccount\Login.cshtml" />
     <None Include="Web.Azure.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

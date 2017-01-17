@@ -27,6 +27,9 @@ namespace Silicus.Ensure.Web
     [ExcludeFromCodeCoverage]
     public class MvcApplication : System.Web.HttpApplication
     {
+        protected void Session_Start()
+        {
+        }
         protected void Application_Start()
         {
             var logger = new DatabaseLogger(
