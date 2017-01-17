@@ -193,7 +193,12 @@
 </html>
 
 <script>
-
+    function consolidatedTableBoxHeight() {
+        var consolidatedTableBoxHeight = 0;
+        var headerRowPlusBox1 = $(".header-row").outerHeight() - $("#box1").outerHeight();
+        consolidatedTableBoxHeight = $(".page-wrapper").outerHeight() - headerRowPlusBox1 - $("#box3").outerHeight() - $(".footer").outerHeight() - 156;
+        $("#box2").css("min-height", consolidatedTableBoxHeight);
+    }
     function sidebarautoheight() {
         var sidebarheight = 0;
         sidebarheight = $(window).height() - $(".bbl").outerHeight() - $("footer").outerHeight();
@@ -230,6 +235,7 @@
 
     $(document).ready(function () {
         sidebarautoheight();
+        consolidatedTableBoxHeight();
 
         var pathName = window.location.pathname;
 
@@ -249,6 +255,7 @@
 
     $(window).resize(function () {
         sidebarautoheight();
+        consolidatedTableBoxHeight();
     });
 
     function showCustomLoader() {

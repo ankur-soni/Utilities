@@ -6,36 +6,53 @@
     ViewBag.Title = "Roles";
 }
 
-<h2>User management</h2>
 
-<div class="row" style="margin-bottom:20px">
-    <div class="col-sm-3">
-        <span style="float:right;    margin-top: 2px;"><b>User role</b></span>
+<div class="toolbar" style="height:110px;">
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="col-sm-5 col-md-4 col-lg-3 M-T15 M-B15">
+                <div class="input-group">
+                    <span class="input-group-addon"><span class="glyphicon glyphicon-search" aria-hidden="true"></span></span>
+                    <input type="text" class="form-control" id='FieldFilter' placeholder="Search" style="height: 38px;">
+                    <span class="input-group-btn">
+                        <button id="UserSearchRefresh" class="btn btn-default" style="border:1px solid #0070B9!important" type="button"><span class="glyphicon glyphicon-refresh" aria-hidden="true"></span></button>
+                    </span>
+                </div>
+            </div>
+        </div>
     </div>
-    <div class="col-sm-3">
-        @(Html.Kendo().DropDownListFor(m => m.Role)
+    <div class="row M-B15">
+        <div class="col-sm-12">
+            <div class="col-sm-2 col-md-2 col-lg-1">
+                <span class="themeColorBlue labelAlignMid"><b>User role</b></span>
+            </div>
+            <div class="col-sm-3 col-md-2 col-lg-2">
+                @(Html.Kendo().DropDownListFor(m => m.Role)
                         .Name("Role")
                         .DataTextField("Text")
                         .DataValueField("Value")
                         .Events(e => e.Change("onSelect"))
                         .BindTo(EnumHelper.GetSelectList((typeof(RoleName)))
                         .Select(x => new SelectListItem { Text = x.Text, Value = x.Text })
-                        .Where(y=>y.Text!=RoleName.Candidate.ToString())
+                        .Where(y => y.Text != RoleName.Candidate.ToString())
                         .OrderBy(x => x.Text))
                         .HtmlAttributes(new { style = "width: 100%" })
                         .OptionLabel("All")
-        )
+                )
+            </div>
+        </div>
     </div>
 </div>
-@if (Request.IsAuthenticated)
-{
-    @(Html.Kendo().Grid<Silicus.Ensure.Web.Models.UserDetailViewModel>().Name("UserGrids")
+<div class="table-responsive">
+    @if (Request.IsAuthenticated)
+    {
+        @(Html.Kendo().Grid<Silicus.Ensure.Web.Models.UserDetailViewModel>().Name("UserGrids")
          .Columns(columns =>
               {
                   columns.Bound(c => c.FullName).Title("Name").Width(200);
                   columns.Bound(p => p.RoleName).Title("Role name").Width(50);
                   columns.Bound(p => p.Email).Width(50);
-                  columns.Bound(c => c.RoleId).Title("Action").Width(160).ClientTemplate(" <div align=center> #if(RoleName == 'Recruiter'){#<input type='button' onclick='assignType(event)' value='Manage type'>#}else if(RoleName == 'Panel') { #<input type='button' onclick='assignPanel(event)' value='Manage panel'># }else if(RoleName == 'Candidate') { #<input type='button' value='z'># } #");
+                  columns.Bound(c => c.RoleId).Title("Action").Width(160).ClientTemplate(" <div> #if(RoleName == 'Recruiter'){#<input type='button' class='btn btn-primary' onclick='assignType(event)' value='Manage type'>#}else if(RoleName == 'Panel') { #<input type='button' class='btn btn-primary' onclick='assignPanel(event)' value='Manage panel'># }else if(RoleName == 'Candidate') { #<input type='button' value='z'># } #");
               })
             .DataSource(dataSource => dataSource.Ajax().Model(model =>
                                                               {
@@ -44,152 +61,40 @@
                                                               })
 
                                                                       .Read(read => read.Action("GetUserDetails", "User")).ServerOperation(false)
-                                                              //.Create(update => update.Action("CreateUser", "User"))
-                                                              //.Update(update => update.Action("UpdateUser", "User"))
-                                                              //.Destroy(update => update.Action("DeleteUser", "User"))
+                //.Create(update => update.Action("CreateUser", "User"))
+                //.Update(update => update.Action("UpdateUser", "User"))
+                //.Destroy(update => update.Action("DeleteUser", "User"))
                                                               .PageSize(10))
 
             .Pageable(pager => { pager.PageSizes(true); })
             .Sortable()
             .Resizable(resizing => resizing.Columns(true))
-            .ToolBar(toolbar =>
-            {
-                toolbar.Template(@<text>
-                    <div class="toolbar">
-                        <div class="row">
-                            <div class="col-md-4">
-                                <div class="input-group">
-                                    <span class="input-group-addon"><span class="glyphicon glyphicon-search" aria-hidden="true"></span></span>
-                                    <input type="text" class="form-control" id='FieldFilter' placeholder="Search">
-                                    <span class="input-group-btn">
-                                        <button id="UserSearchRefresh" class="btn btn-default" style="height:16px;" type="button"><span class="glyphicon glyphicon-refresh" aria-hidden="true"></span></button>
-                                    </span>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-md-3 col-md-push-1" style="float: right; padding-right: 0px; margin-right: -22px;">
-                                @*<a href='/ManageUser/AddUser?UserId=0' class='k-button k-button-icontext k-grid-add'><span class='k-icon k-add'></span>Add user</a>*@
-                            </div>
-                        </div>
-                    </div>
-                </text>);
-            }))
-}
-
-
-<script>
-    $(".k-grid-header .k-link").click(function (e) {
-        e.preventDefault();
-        if ($(this).text() === 'Action') {
-            e.stopPropagation();
-        }
-    });
-
-    function assignPanel(e)
-    {
-        var grid = $("#UserGrids").data("kendoGrid");
-        var userDetailViewModel = grid.dataItem($(e.currentTarget).closest("tr"));
-        if (userDetailViewModel && userDetailViewModel.UserId) {
-            $.ajax({
-                type: "Post",
-                url: '/ManageUser/AssignPanelToUserView',
-                contentType: "application/json",
-                data: JSON.stringify(userDetailViewModel),
-                success: function (returndata) {
-                    if (returndata) {
-                        $("#frmAssignPanel").html(returndata);
-                        $("#AssignPanelModal").modal('show');
-                        $("#frmAssignPanel").kendoValidator();
-                    }
-                    else {
-                        ShowMessage("Error occured while delete operation.", 0);
-                    }
-                }
-            });
-        }
-
-        
+        )
     }
+</div>
 
-    function assignType(e) {
-        var grid = $("#UserGrids").data("kendoGrid");
-        var userDetailViewModel = grid.dataItem($(e.currentTarget).closest("tr"));
-        if (userDetailViewModel && userDetailViewModel.UserId) {
-            $.ajax({
-                type: "Post",
-                url: '/ManageUser/AssignTypeToUserView',
-                contentType: "application/json",
-                data: JSON.stringify(userDetailViewModel),
-                success: function (returndata) {
-                    if (returndata) {
-                        $("#frmAssignType").html(returndata);
-                        $("#AssignTypeModal").modal('show');
-                        $("#frmAssignType").kendoValidator();
-                    }
-                    else {
-                        ShowMessage("Error occured while delete operation.", 0);
-                    }
-                }
-            });
-        }
-    }
-
-    function onSelect() {
-        var dataItem = this.dataItem();
-        var value = dataItem['Text'];
-        grid = $("#UserGrids").data("kendoGrid");
-        if (value == "All") {
-            grid.dataSource.filter([]);
-        }
-        else {
-            grid.dataSource.filter({ field: "RoleName", operator: "eq", value: value });
-        }
-    }
-    $(document).ready(function () {
-        $("#FieldFilter").keyup(function () {
-            var value = $("#FieldFilter").val();
-            grid = $("#UserGrids").data("kendoGrid");
-            if (value.length >= 1) {
-                if (value) {
-                    var filter = { logic: "or", filters: [] };
-                    filter.filters.push({ field: "RoleName", operator: "contains", value: value });
-                    filter.filters.push({ field: "Email", operator: "contains", value: value });
-                    filter.filters.push({ field: "FullName", operator: "contains", value: value });
-                    grid.dataSource.query({ filter: filter });
-                } else {
-                    grid.dataSource.filter({});
-                }
-            }
-            else if (value == "")
-                grid.dataSource.filter({});
-        });
-
-        $("#UserSearchRefresh").click(function (e) {
+    <script>
+        $(".k-grid-header .k-link").click(function (e) {
             e.preventDefault();
-            var datasource = $("#UserGrids").data("kendoGrid").dataSource;
-            //Clear filters:
-            datasource.filter([]);
-            $("#FieldFilter").val('');
+            if ($(this).text() === 'Action') {
+                e.stopPropagation();
+            }
         });
-    });
-    function AddNew() {
-        window.location.href = "/Admin/CandidateAdd?UserId=0";
-        return false;
-    }
 
-    function deleteUser(userId) {
-        $.when(showConfirmationWindow('Are you sure, you want to delete this record?', 'Delete')).then(function (confirmed) {
-            if (confirmed) {
+        function assignPanel(e) {
+            var grid = $("#UserGrids").data("kendoGrid");
+            var userDetailViewModel = grid.dataItem($(e.currentTarget).closest("tr"));
+            if (userDetailViewModel && userDetailViewModel.UserId) {
                 $.ajax({
-                    type: "POST",
-                    url: '@Url.Action("DeleteUser", "User")',
-                    data: { UserId: userId },
+                    type: "Post",
+                    url: '/ManageUser/AssignPanelToUserView',
+                    contentType: "application/json",
+                    data: JSON.stringify(userDetailViewModel),
                     success: function (returndata) {
-                        if (returndata == 1) {
-                            $('#UserGrids').data('kendoGrid').dataSource.read();
-                            $('#userGrids').data('kendoGrid').refresh();
-                            ShowMessage("User deleted successfully.", 1);
+                        if (returndata) {
+                            $("#frmAssignPanel").html(returndata);
+                            $("#AssignPanelModal").modal('show');
+                            $("#frmAssignPanel").kendoValidator();
                         }
                         else {
                             ShowMessage("Error occured while delete operation.", 0);
@@ -197,240 +102,324 @@
                     }
                 });
             }
-        });
-    }
 
-    function assignPanelToMeber()
-    {
-        if ($("#PanelIds").val()) {
-            $.ajax({
-                url: '/ManageUser/AssignPanelToUser',
-                type: 'post',
-                dataType: 'json',
-                data: $('#frmAssignPanel').serialize(),
-                success: function (data) {
-                    //  ... do something with the data...
-                    $("#AssignPanelModal").modal('hide');
-                    if (data)
-                        ShowMessage("Panel assigned successfully.", 1);
-                    else
-                        ShowMessage("Problem occured.", 0);
-                }
-            });
-        }
-        else
-        {
-            $("#PanelIds").blur();
-        }
-    }
 
-    function assignTypeToMeber() {
-        if ($("#TagIds").val()) {
-            $.ajax({
-                url: '/ManageUser/AssignTypeToUser',
-                type: 'post',
-                dataType: 'json',
-                data: $('#frmAssignType').serialize(),
-                success: function (data) {
-                    //  ... do something with the data...
-                    $("#AssignTypeModal").modal('hide');
-                    if(data)
-                        ShowMessage("Type assigned successfully.", 1);
-                    else
-                        ShowMessage("Problem occured.", 0);
-                }
-            });
         }
-        else {
-            $("#TagIds").blur();
-        }
-    }
 
-    function saveTag() {
-        if ($("#tagForm").valid()) {
-            $.ajax({
-                type: "POST",
-                url: '/Tag/Save',
-                data: $('#tagForm').serialize(),
-                success: function (returndata) {
-                    $("#addTagPopup").modal('hide');
-                    var $tagMultiSelect = $('#TagIds').data('kendoMultiSelect');
-                    var selectedValues = $tagMultiSelect.value().slice();
-                    var multidata = $tagMultiSelect.dataSource.data();
-                    multidata.push({ TagName: returndata.TagName, TagId: returndata.TagId });
-                    $tagMultiSelect.dataSource.data(multidata);
-                    selectedValues.push(returndata.TagId);
-                    $tagMultiSelect.value(selectedValues);
-                    $("#tagForm").trigger("reset");
-                }
-            });
-        }
-        else {
-            $('#tagForm').submit();
-        }
-    }
-
-    function AddTag() {
-        $("#tagForm").kendoValidator({
-            rules: {
-                tagNamevalidation: function (input, params) {
-                    if (input.is("[name='TagName']") && input.val() != "") {
-                        input.attr("data-tagNamevalidation-msg", "Tag name already exist !");
-                        return isTagNameAvailable("", input.val());
+        function assignType(e) {
+            var grid = $("#UserGrids").data("kendoGrid");
+            var userDetailViewModel = grid.dataItem($(e.currentTarget).closest("tr"));
+            if (userDetailViewModel && userDetailViewModel.UserId) {
+                $.ajax({
+                    type: "Post",
+                    url: '/ManageUser/AssignTypeToUserView',
+                    contentType: "application/json",
+                    data: JSON.stringify(userDetailViewModel),
+                    success: function (returndata) {
+                        if (returndata) {
+                            $("#frmAssignType").html(returndata);
+                            $("#AssignTypeModal").modal('show');
+                            $("#frmAssignType").kendoValidator();
+                        }
+                        else {
+                            ShowMessage("Error occured while delete operation.", 0);
+                        }
                     }
-
-                    return true;
-                }
+                });
             }
+        }
+
+        function onSelect() {
+            var dataItem = this.dataItem();
+            var value = dataItem['Text'];
+            grid = $("#UserGrids").data("kendoGrid");
+            if (value == "All") {
+                grid.dataSource.filter([]);
+            }
+            else {
+                grid.dataSource.filter({ field: "RoleName", operator: "eq", value: value });
+            }
+        }
+        $(document).ready(function () {
+            $("#FieldFilter").keyup(function () {
+                var value = $("#FieldFilter").val();
+                grid = $("#UserGrids").data("kendoGrid");
+                if (value.length >= 1) {
+                    if (value) {
+                        var filter = { logic: "or", filters: [] };
+                        filter.filters.push({ field: "RoleName", operator: "contains", value: value });
+                        filter.filters.push({ field: "Email", operator: "contains", value: value });
+                        filter.filters.push({ field: "FullName", operator: "contains", value: value });
+                        grid.dataSource.query({ filter: filter });
+                    } else {
+                        grid.dataSource.filter({});
+                    }
+                }
+                else if (value == "")
+                    grid.dataSource.filter({});
+            });
+
+            $("#UserSearchRefresh").click(function (e) {
+                e.preventDefault();
+                var datasource = $("#UserGrids").data("kendoGrid").dataSource;
+                //Clear filters:
+                datasource.filter([]);
+                $("#FieldFilter").val('');
+            });
         });
+        function AddNew() {
+            window.location.href = "/Admin/CandidateAdd?UserId=0";
+            return false;
+        }
 
-        $("#addTagPopup").modal('show');
-    }
-
-    function isTagNameAvailable(existingName, updatedName) {
-        var isAvailable = true;
-        if (existingName != updatedName) {
-            $.ajax({
-                type: "POST",
-                url: '/Tag/IsDuplicateTagName',
-                async: false,
-                data: { existingTagName: existingName, tagName: updatedName },
-                success: function (returndata) {
-                    if (returndata == true) {
-                        isAvailable = true;
-                    }
-                    else {
-                        isAvailable = false;
-                    }
+        function deleteUser(userId) {
+            $.when(showConfirmationWindow('Are you sure, you want to delete this record?', 'Delete')).then(function (confirmed) {
+                if (confirmed) {
+                    $.ajax({
+                        type: "POST",
+                        url: '@Url.Action("DeleteUser", "User")',
+                        data: { UserId: userId },
+                        success: function (returndata) {
+                            if (returndata == 1) {
+                                $('#UserGrids').data('kendoGrid').dataSource.read();
+                                $('#userGrids').data('kendoGrid').refresh();
+                                ShowMessage("User deleted successfully.", 1);
+                            }
+                            else {
+                                ShowMessage("Error occured while delete operation.", 0);
+                            }
+                        }
+                    });
                 }
             });
         }
-        return isAvailable;
-    }
 
-    function AddPanel() {
-        $("#addPanelPopup").modal('show');
-    }
+        function assignPanelToMeber() {
+            if ($("#PanelIds").val()) {
+                $.ajax({
+                    url: '/ManageUser/AssignPanelToUser',
+                    type: 'post',
+                    dataType: 'json',
+                    data: $('#frmAssignPanel').serialize(),
+                    success: function (data) {
+                        //  ... do something with the data...
+                        $("#AssignPanelModal").modal('hide');
+                        if (data)
+                            ShowMessage("Panel assigned successfully.", 1);
+                        else
+                            ShowMessage("Problem occured.", 0);
+                    }
+                });
+            }
+            else {
+                $("#PanelIds").blur();
+            }
+        }
 
-    function savePanel()
-    {
-        if ($("#panelForm").valid()) {
-            $.ajax({
-                type: "POST",
-                url: '/Panel/PanelSave',
-                data: $('#panelForm').serialize(),
-                success: function (returndata) {
-                    $("#addPanelPopup").modal('hide');
-                    var $panelMultiSelect = $('#PanelIds').data('kendoMultiSelect');
-                    var multidata = $panelMultiSelect.dataSource.data();
-                    multidata.push({ PanelName: returndata.PanelName, PanelId: returndata.PanelId });
-                    var selectedValues = $panelMultiSelect.value().slice();
-                    selectedValues.push(returndata.PanelId);
-                    $panelMultiSelect.value(selectedValues);
-                    $("#panelForm").trigger("reset");
+        function assignTypeToMeber() {
+            if ($("#TagIds").val()) {
+                $.ajax({
+                    url: '/ManageUser/AssignTypeToUser',
+                    type: 'post',
+                    dataType: 'json',
+                    data: $('#frmAssignType').serialize(),
+                    success: function (data) {
+                        //  ... do something with the data...
+                        $("#AssignTypeModal").modal('hide');
+                        if (data)
+                            ShowMessage("Type assigned successfully.", 1);
+                        else
+                            ShowMessage("Problem occured.", 0);
+                    }
+                });
+            }
+            else {
+                $("#TagIds").blur();
+            }
+        }
+
+        function saveTag() {
+            if ($("#tagForm").valid()) {
+                $.ajax({
+                    type: "POST",
+                    url: '/Tag/Save',
+                    data: $('#tagForm').serialize(),
+                    success: function (returndata) {
+                        $("#addTagPopup").modal('hide');
+                        var $tagMultiSelect = $('#TagIds').data('kendoMultiSelect');
+                        var selectedValues = $tagMultiSelect.value().slice();
+                        var multidata = $tagMultiSelect.dataSource.data();
+                        multidata.unshift({ TagName: returndata.TagName, TagId: returndata.TagId });
+                        $tagMultiSelect.dataSource.data(multidata);
+                        selectedValues.push(returndata.TagId);
+                        $tagMultiSelect.value(selectedValues);
+                        $("#tagForm").trigger("reset");
+                    }
+                });
+            }
+            else {
+                $('#tagForm').submit();
+            }
+        }
+
+        function AddTag() {
+            $("#tagForm").kendoValidator({
+                rules: {
+                    tagNamevalidation: function (input, params) {
+                        if (input.is("[name='TagName']") && input.val() != "") {
+                            input.attr("data-tagNamevalidation-msg", "Tag name already exist !");
+                            return isTagNameAvailable("", input.val());
+                        }
+
+                        return true;
+                    }
                 }
             });
+
+            $("#addTagPopup").modal('show');
         }
-        else {
-            $('#panelForm').submit();
+
+        function isTagNameAvailable(existingName, updatedName) {
+            var isAvailable = true;
+            if (existingName != updatedName) {
+                $.ajax({
+                    type: "POST",
+                    url: '/Tag/IsDuplicateTagName',
+                    async: false,
+                    data: { existingTagName: existingName, tagName: updatedName },
+                    success: function (returndata) {
+                        if (returndata == true) {
+                            isAvailable = true;
+                        }
+                        else {
+                            isAvailable = false;
+                        }
+                    }
+                });
+            }
+            return isAvailable;
         }
-    }
 
-</script>
+        function AddPanel() {
+            $("#addPanelPopup").modal('show');
+        }
+
+        function savePanel() {
+            if ($("#panelForm").valid()) {
+                $.ajax({
+                    type: "POST",
+                    url: '/Panel/PanelSave',
+                    data: $('#panelForm').serialize(),
+                    success: function (returndata) {
+                        $("#addPanelPopup").modal('hide');
+                        var $panelMultiSelect = $('#PanelIds').data('kendoMultiSelect');
+                        var multidata = $panelMultiSelect.dataSource.data();
+                        multidata.unshift({ PanelName: returndata.PanelName, PanelId: returndata.PanelId });
+                        var selectedValues = $panelMultiSelect.value().slice();
+                        selectedValues.push(returndata.PanelId);
+                        $panelMultiSelect.value(selectedValues);
+                        $("#panelForm").trigger("reset");
+                    }
+                });
+            }
+            else {
+                $('#panelForm').submit();
+            }
+        }
+
+    </script>
 
 
-<!-- Modal -->
-<div id="AssignPanelModal" class="modal fade" role="dialog">
-    <div class="modal-dialog">
-
-        <!-- Modal content-->
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal">&times;</button>
-                <h4 class="modal-title">Manage panel</h4>
-            </div>
-            
-            <div class="modal-body">
-                <form id="frmAssignPanel">
-
-                </form>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-default" onclick="assignPanelToMeber()">Save</button>
-                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-            </div>
-        </div>
-
-    </div>
-</div>
-
-<div id="AssignTypeModal" class="modal fade" role="dialog">
-    <div class="modal-dialog">
-
-        <!-- Modal content-->
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal">&times;</button>
-                <h4 class="modal-title">Manage type</h4>
-            </div>
-            <div class="modal-body">
-                <form id="frmAssignType" ></form>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-default" onclick="assignTypeToMeber()">Save</button>
-                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-            </div>
-        </div>
-
-    </div>
-</div>
-
-<div class="modal fade" id="addTagPopup" role="dialog">
-    <form id="tagForm" action="/Tag/Save" method="post">
+    <!-- Modal -->
+    <div id="AssignPanelModal" class="modal fade" role="dialog">
         <div class="modal-dialog">
 
             <!-- Modal content-->
             <div class="modal-content">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal">&times;</button>
-                    <h4 class="modal-title"><span>Add tag</span></h4>
+                    <h4 class="modal-title">Manage panel</h4>
                 </div>
+
                 <div class="modal-body">
-
-                    @Html.Partial("~/Views/Shared/EditorTemplates/TagEditorTemplate.cshtml", new Silicus.Ensure.Models.DataObjects.Tags())
-
+                    <form id="frmAssignPanel"></form>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" onclick="saveTag()" class="btn btn-default">Save</button>
+                    <button type="button" class="btn btn-default" onclick="assignPanelToMeber()">Save</button>
                     <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
                 </div>
             </div>
 
         </div>
-    </form>
-</div>
+    </div>
 
-
-<div class="modal fade" id="addPanelPopup" role="dialog">
-    <form id="panelForm" action="/Panel/Save" method="post">
+    <div id="AssignTypeModal" class="modal fade" role="dialog">
         <div class="modal-dialog">
 
             <!-- Modal content-->
             <div class="modal-content">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal">&times;</button>
-                    <h4 class="modal-title"><span>Add panel</span></h4>
+                    <h4 class="modal-title">Manage type</h4>
                 </div>
                 <div class="modal-body">
-
-                    @Html.Partial("~/Views/Panel/AddPanel.cshtml", new Silicus.Ensure.Models.DataObjects.Panel())
+                    <form id="frmAssignType"></form>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" onclick="savePanel()" class="btn btn-default">Save</button>
+                    <button type="button" class="btn btn-default" onclick="assignTypeToMeber()">Save</button>
                     <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
                 </div>
             </div>
 
         </div>
-    </form>
-</div>
+    </div>
+
+    <div class="modal fade" id="addTagPopup" role="dialog">
+        <form id="tagForm" action="/Tag/Save" method="post">
+            <div class="modal-dialog">
+
+                <!-- Modal content-->
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        <h4 class="modal-title"><span>Add tag</span></h4>
+                    </div>
+                    <div class="modal-body">
+
+                        @Html.Partial("~/Views/Shared/EditorTemplates/TagEditorTemplate.cshtml", new Silicus.Ensure.Models.DataObjects.Tags())
+
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" onclick="saveTag()" class="btn btn-default">Save</button>
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+
+            </div>
+        </form>
+    </div>
+
+
+    <div class="modal fade" id="addPanelPopup" role="dialog">
+        <form id="panelForm" action="/Panel/Save" method="post">
+            <div class="modal-dialog">
+
+                <!-- Modal content-->
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        <h4 class="modal-title"><span>Add panel</span></h4>
+                    </div>
+                    <div class="modal-body">
+
+                        @Html.Partial("~/Views/Panel/AddPanel.cshtml", new Silicus.Ensure.Models.DataObjects.Panel())
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" onclick="savePanel()" class="btn btn-default">Save</button>
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+
+            </div>
+        </form>
+    </div>

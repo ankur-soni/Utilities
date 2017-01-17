@@ -14,7 +14,7 @@
 .width100{width:100%!important;}
 .labelAlignMid{display:inline-block;margin-top:6px;}
 
-
+.btn{padding:2px 12px;}
 
 /*Kendo override css*/
 .k-pager-wrap > .k-link {
@@ -44,13 +44,20 @@
 .k-grid-pager .k-link, .k-grid-pager .k-link:link {
     color: #fff !important;
 }
+span.k-icon.k-edit{display:none;}
+span.k-icon.k-delete{display:none;}
+span.k-icon.k-cancel{display:none;}
+span.k-icon.k-save{display:none;}
+span.k-icon.k-update{display:none;}
+i.fa.fa-save{display:none;}
 
 #userGrids table {
     width: 100%;
     overflow-x: auto;
     display: inherit;
 }
-
+.k-warning{background-image:url('http://kendo.cdn.telerik.com/2016.3.1118/styles/Material/sprite.png');}
+.k-i-calendar:hover{background-image: url('http://kendo.cdn.telerik.com/2016.3.1118/styles/Material/sprite.png');background-position: -32px -176px;}
 .k-icon.k-i-arrow-s {
     background-image: url('css/Kendo/2014.1.416/Default/sprite.png');
     background-position: 0px -34px;
@@ -87,7 +94,7 @@ span.k-add {
   height: 60px;
   -webkit-animation: spin 2s linear infinite;
   animation: spin 2s linear infinite;
-    top: 40%;
+    top: 45%;
     position: relative;
     margin: 0 auto;
 }
@@ -140,7 +147,9 @@ span.k-add {
         .tbl-box .info li {
             padding: 0px 0px 10px 0px;
 }
-
+.fileUpload{
+    background: #e7eaec;padding: 4px;font-size: 12px;font-weight: bold;
+}
 #feedback .el-card-content {
     text-align: left !important;
 }

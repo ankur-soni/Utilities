@@ -48,6 +48,49 @@
     .consolidatedRightCell {
         border-left: none !important;
     }
+    .ReviewerFinalScore{
+        background:#0070b9!important;
+        border-radius:3px;
+    }
+    .cFinalScore {
+        font-weight: bold;
+        color:#fff;
+        background:#379c37;
+        padding:5px;
+        border-radius:3px;
+    }
+
+    .ReviewerFinalScore.cRed {
+        color:#fff;
+        background:#e86554!important;
+        font-weight: bold;
+        padding:5px;
+        border-radius:3px;
+
+    }
+    .colorPanel{
+            padding: 10px 0px 10px 10px;
+    }
+    .colorPanel li{display:inline-block;padding-right: 5px;vertical-align:middle;}
+    .colorPanel li span{font-size:12px;color: #777;}
+    .greenBox{
+        background:#379c37;
+        height: 20px;
+        width: 35px;
+        border-radius:3px;
+    }
+    .blueBox{
+        background:#0070b9;
+        height: 20px;
+        width: 35px;
+        border-radius:3px;
+    }
+    .redBox{
+        background:#e86554;
+        height: 20px;
+        width: 35px;
+        border-radius:3px;
+    }
     
 </style>
 @using (Ajax.BeginForm("ConsolidatedNominations", "Review",
@@ -75,7 +118,7 @@
     </div>
     <div class="row">
         <div class="col-lg-12 col-md-12 col-sm-12">
-            <div class="box M-T15">
+            <div id="box1" class="box M-T15">
                 <div class="pull-right">
                     <ul style="margin-top:0px;">
                         <li>
@@ -122,7 +165,7 @@
 
     <div class="row">
         <div class="col-lg-12 col-md-12 col-sm-12">
-            <div class="box">
+            <div id="box2" class="box">
                 <div class="" id="dvConsolidatedNominations">
                     @Html.Partial("_ConsolidatedNominationsPartialView", Model)
                 </div>
@@ -132,9 +175,35 @@
     </div>
     <div class="row">
         <div class="col-lg-12 col-md-12 col-sm-12">
-            <div class="box M-B60">
+            <div id="box3" class="box M-B60">
+                <div class="row">
+                    <div class="col-sm-9">
+                        <ul class="colorPanel">
+                            <li>
+                                <div class="greenBox"></div>
+                            </li>
+                            <li>
+                                <span>All Criteria Final Score</span>
+                            </li>
+                            <li>
+                                <div class="blueBox"></div>
+                            </li>
+                            <li>
+                                <span>Reviewer's Final Score</span>
+                            </li>
+                            <li>
+                                <div class="redBox"></div>
+                            </li>
+                            <li>
+                                <span>HR Final Score</span>
+                            </li>
+                        </ul>
+                    </div>
 
-                <input type="submit" name="submit" value="Submit" id="submitButton" class="btn btn-primary pull-right" />
+                    <div class="col-sm-3" style="padding-top:8px;">
+                        <input type="submit" name="submit" value="Submit" id="submitButton" class="btn btn-primary pull-right" />
+                    </div>
+                </div>
                 <div class="clearfix"></div>
             </div>
 
@@ -183,6 +252,7 @@
             scrollCollapse: true,
             paging: false,
             searching: false,
+            "bInfo" : false,
             fixedColumns: {
                 leftColumns: 3
             },
@@ -254,6 +324,7 @@
             var hrPoints = $("#txtHrPoints").val();
             var hrComment = $("#txtHrComment").val();
             $("#spnFinalPoints_" + nominationId + "_" + criteriaId).text(hrPoints);
+            $("#spnFinalPoints_" + nominationId + "_" + criteriaId).addClass("cRed");
             //console.log(hrPoints + ", " + hrComment);
             $("input[name='Nominations[" + g_nominationIndex + "].ManagerComments[" + g_criteriaIndex + "].FinalScore']").val(hrPoints);
             $("input[name='Nominations[" + g_nominationIndex + "].ManagerComments[" + g_criteriaIndex + "].AdminComment']").val(hrComment);

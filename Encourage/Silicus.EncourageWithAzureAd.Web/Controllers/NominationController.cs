@@ -102,7 +102,7 @@ namespace Silicus.EncourageWithAzureAd.Web.Controllers
                 else if (currentAwardFrequency.Code == FrequencyCode.YEAR.ToString())
                 {
                     var firstDateOfCurrentYear = new DateTime(DateTime.Today.Year, 1, 1);
-                    startDate = firstDateOfCurrentYear;
+                    startDate = firstDateOfCurrentYear.AddYears(-1);
                     countOfNomination = _nominationService.GetNominationCountByManagerIdForPinnacle(model.ManagerId, startDate, model.AwardId);
                 }
 

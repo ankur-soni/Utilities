@@ -20,6 +20,9 @@
                     filter.filters.push({ field: "RequisitionId", operator: "contains", value: value });
                     filter.filters.push({ field: "ContactNumber", operator: "contains", value: value });
                     filter.filters.push({ field: "PanelName", operator: "contains", value: value });
+                    filter.filters.push({ field: "Position", operator: "contains", value: value });
+                    //filter.filters.push({ field: "ContactNumber", operator: "contains", value: value });
+                    //filter.filters.push({ field: "TotalExperienceInYear", operator: "contains", value: value });
                     grid.dataSource.query({ filter: filter });
                     grid.dataSource.pageSize(pageSize);
                 } else {
@@ -259,19 +262,19 @@
 
                             <div class="toolbar">
                                 <div class="row">
-                    <div class="col-sm-12">
-            <div class="col-sm-5 col-md-4 col-lg-3 M-T15 M-B15">
+                                    <div class="col-sm-12">
+                                        <div class="col-sm-5 col-md-4 col-lg-3 M-T15 M-B15">
                                             <div class="input-group">
                                                 <span class="input-group-addon"><span class="glyphicon glyphicon-search" aria-hidden="true"></span></span>
-                                                <input type="text" class="form-control" id='FieldFilter' placeholder="Search">
+                                                <input type="text" class="form-control" id='FieldFilter' placeholder="Search" style="height: 38px;">
                                                 <span class="input-group-btn">
-                        <button id="candidateSearch" class="btn btn-default" style="border:1px solid #0070B9!important" type="button"><span class="glyphicon glyphicon-refresh" aria-hidden="true"></span></button>
+                                                <button id="candidateSearch" class="btn btn-default" style="border:1px solid #0070B9!important" type="button"><span class="glyphicon glyphicon-refresh" aria-hidden="true"></span></button>
                                                 </span>
                                             </div>
-                        </div>
+                                        </div>
                         
-                    </div>
-                </div>
+                                    </div>
+                                </div>
         <div class="row M-B15">
             <div class="col-sm-12">
             <div class="col-sm-4 col-md-2 col-lg-2">
@@ -347,10 +350,10 @@
          .Columns(columns =>
               {
                   columns.Bound(p => p.FirstName).ClientTemplate("#=FirstName# #=LastName#").Title("Name").Width(200);
-                  columns.Bound(p => p.RequisitionId).Title("Requisition Id").Width(200);
+                  columns.Bound(p => p.RequisitionId).Title("Requisition id").Width(200);
                   columns.Bound(p => p.Position).Width(200);
-                  columns.Bound(p => p.ContactNumber).Title("Contact Number").Width(200);
-                  columns.Bound(p => p.TotalExperienceInYear).ClientTemplate("#=TotalExperienceInYear#.#=TotalExperienceInMonth#").Title("Total Experience").Width(200);
+                  columns.Bound(p => p.ContactNumber).Title("Contact number").Width(200);
+                  columns.Bound(p => p.TotalExperienceInYear).ClientTemplate("#=TotalExperienceInYear#.#=TotalExperienceInMonth#").Title("Total experience").Width(200);
                   columns.Bound(p => p.PanelName).Title("Panel").Width(200);
                   columns.Bound(p => p.CandidateStatus).ClientTemplate(@"
                                                                         #if(CandidateStatus=='TestAssigned'){#
@@ -389,7 +392,7 @@
                                         <a  class ='dialog-window' onclick=CheckAssign('#=TestStatus#',2,#=TestSuiteId#,'#=UserId#') style='cursor:pointer'>View Test</a>
                                         #}
 
-                                        #").Title("Actions").Width(200).Sortable(false);
+                                        #").Title("Test action").Width(200).Sortable(false);
 
               })
             .DataSource(dataSource => dataSource
@@ -405,6 +408,7 @@
                           .Update(update => update.Action("UpdateUser", "User"))
                           .Destroy(update => update.Action("DeleteUser", "User"))
                           .PageSize(10)
+                          .ServerOperation(false)
                      )
                   .Pageable(p => p.PageSizes(true))
                   .Sortable()
@@ -423,7 +427,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal">&times;</button>
-                <h4 class="modal-title">Test suite list</h4>
+                <h4 class="modal-title">Assign test</h4>
             </div>
             <div class="modal-body" id="CandidateInfo">
 
@@ -442,7 +446,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal">&times;</button>
-                <h4 class="modal-title">Panel List</h4>
+                <h4 class="modal-title">Assign panel</h4>
             </div>
             <div class="modal-body" id="PanelInfo">
 

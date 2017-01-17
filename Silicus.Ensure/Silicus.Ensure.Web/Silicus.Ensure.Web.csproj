@@ -820,6 +820,7 @@
     <Content Include="Views\ManageUser\_AssignType.cshtml" />
     <Content Include="Views\Shared\EditorTemplates\TagList.cshtml" />
     <Content Include="Views\Shared\EditorTemplates\ProficiencyList.cshtml" />
+    <Content Include="Views\TestSuite\ViewQuestion.cshtml" />
     <None Include="Web.Azure.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

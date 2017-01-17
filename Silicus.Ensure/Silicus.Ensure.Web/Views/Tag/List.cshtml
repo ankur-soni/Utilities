@@ -32,6 +32,7 @@
                   )
                            .Pageable(pager => { pager.PageSizes(true); })
                   .Sortable()
+                  
                 //.HtmlAttributes(new { style = "height:400px;" })
                   .Editable(ed => ed.Mode(GridEditMode.PopUp).TemplateName("TagEditorTemplate"))
                   .ToolBar(toolbar =>
@@ -44,7 +45,7 @@
                                     <div class="col-sm-5 col-md-4 col-lg-3 M-T15">
                                         <div class="input-group">
                                             <span class="input-group-addon"><span class="glyphicon glyphicon-search" aria-hidden="true"></span></span>
-                                            <input type="text" class="form-control" id='FieldFilter' placeholder="Search">
+                                            <input type="text" class="form-control" id='FieldFilter' placeholder="Search" style="height: 38px;">
                                             <span class="input-group-btn">
                                                 <button id="tagSearch" class="btn btn-default" type="button" style="height:20px!important;border:1px solid #0070B9!important"><span class="glyphicon glyphicon-refresh" aria-hidden="true"></span></button>
                                             </span>
@@ -112,7 +113,7 @@
         if (e.model.isNew()) {
             $(".k-window-title").html("Add new tag");
             $("#existingTagName").val('');
-            $(".k-grid-update").html('<span><i class="fa fa-save"></i> Save </span>');
+            $(".k-grid-update").html('<span>Save </span>');
         }
         else {
             $(".k-window-title").html("Edit Tag");
