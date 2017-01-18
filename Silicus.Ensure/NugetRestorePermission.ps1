@@ -11,6 +11,6 @@ if (-not (Test-Path $nugetFile))
 
 Write-Output "nuget.exe located"
 
-$cmd = "$nugetFile Sources Add -Name "SilicusPackageStore" -Source http://10.4.1.38:5002/nuget -UserName $user -Password $pwd -StorePasswordInClearText"
+$cmd = "$nugetFile Sources Add -Name SilicusPackageStore -Source http://10.4.1.38:5002/nuget -UserName $user -Password $pwd -StorePasswordInClearText"
 Write-Output $cmd
 iex $cmd
