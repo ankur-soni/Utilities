@@ -19,5 +19,6 @@ namespace Silicus.EncourageWithAzureAd.Web.Models
         public bool IsLocked { get; set; }
         public string HrAdminsfeedback { get; set; }
         public string HrAdminName { get; set; }
+        public bool IsHistoricalNomination { get; set; }
     }
 }

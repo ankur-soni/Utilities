@@ -554,6 +554,7 @@
                 },
                     function (isConfirm) {
                         if (isConfirm) {
+                            showCustomLoader();
                             var modelbjectToSend = $('#addNominationForm').serialize() + '&' + $.param({ 'submit': "Submit" }, true);
 
                             showCustomLoader();
@@ -571,16 +572,17 @@
                                         swal({
                                             title: "Error",
                                             text: data.message,
+                                            type:"error",
                                             showCancelButton: false,
                                             confirmButtonColor: "#337ab7",
                                             confirmButtonText: "Ok",
                                         },
-                                                      function () {
-                                                          if (isConfirm) {
-                                                              var managerId = $("#ManagerId").val();
-                                                              window.location.href = '/Nomination/GetNominationList';
-                                                          }
-                                                      });
+                                        function () {
+                                            if (isConfirm) {
+                                                var managerId = $("#ManagerId").val();
+                                                window.location.href = '/Nomination/GetNominationList';
+                                            }
+                                        });
                                     } else {
                                         swal({
                                             title: "Nomination Submitted!",
@@ -590,15 +592,13 @@
                                             confirmButtonColor: "#337ab7",
                                             confirmButtonText: "Ok",
                                         },
-                                                      function () {
-                                                          if (isConfirm) {
-                                                              var managerId = $("#ManagerId").val();
-                                                              window.location.href = '/Nomination/GetNominationList';
-                                                          }
-                                                      });
+                                        function () {
+                                            if (isConfirm) {
+                                                var managerId = $("#ManagerId").val();
+                                                window.location.href = '/Nomination/GetNominationList';
+                                            }
+                                        });
                                     }
-
-
                                 },
                                 error: function (error) {
                                     hideCustomLoader();

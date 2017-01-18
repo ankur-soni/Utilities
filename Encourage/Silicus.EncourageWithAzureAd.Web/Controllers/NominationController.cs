@@ -91,6 +91,7 @@ namespace Silicus.EncourageWithAzureAd.Web.Controllers
                 var startDate = new DateTime();
                 var endDate = new DateTime();
                 var countOfNomination = 0;
+                _logger.Log("Todays Date: " + DateTime.Now);
                 if (currentAwardFrequency.Code == FrequencyCode.MON.ToString())
                 {
                     var firstDateOfCurrentMonth = new DateTime(DateTime.Today.Year, DateTime.Today.Month, 1);
@@ -101,7 +102,7 @@ namespace Silicus.EncourageWithAzureAd.Web.Controllers
                 else if (currentAwardFrequency.Code == FrequencyCode.YEAR.ToString())
                 {
                     var firstDateOfCurrentYear = new DateTime(DateTime.Today.Year, 1, 1);
-                    startDate = firstDateOfCurrentYear;
+                    startDate = firstDateOfCurrentYear.AddYears(-1);
                     countOfNomination = _nominationService.GetNominationCountByManagerIdForPinnacle(model.ManagerId, startDate, model.AwardId);
                 }
 

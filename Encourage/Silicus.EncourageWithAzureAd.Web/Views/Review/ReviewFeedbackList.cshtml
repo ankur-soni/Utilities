@@ -101,6 +101,30 @@
     </div>
 
 </div>
+<div class="modal fade" id="winnerFeedbackModal" role="dialog">
+    @Html.Hidden("hdnNominationId");
+    <div class="modal-dialog">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Select Winner</h4>
+            </div>
+            <div class="modal-body">
+                <span class="requiredfeild">Feedback:</span>
+                <textarea class="form-control M-T15" rows="3" id="feedbackForWinner" style="width:100%;max-width:100%" placeholder="Why this employee shoulde be the winner?" required="required"></textarea>
+                <span style="color:red;display:none" id="feedbackRequired"></span><br />
+                <span class="requiredfeild">Comment:</span>
+                <textarea class="form-control M-T15" rows="3" id="commentForWinner" style="width:100%;max-width:100%" placeholder="To be shared across the company" required="required"></textarea>
+                <span style="color:red;display:none" id="commentRequired"></span>
+            </div>
+            <div class="modal-footer" style="border:none;">
+                <button type="button" class="btn winner btn-primary" id="selectWinner">Submit</button>
+                <button type="button" class="btn btn-primary btn-nav" id="cancel" data-dismiss="modal">Cancel</button>
+            </div>
+        </div>
+    </div>
+</div>
 
 <script src="~/js/jquery-2.1.1.js"></script>
 <script>
@@ -203,7 +227,7 @@
             data: { awardType: awardId },
             success: function (response) {
                 hideCustomLoader();
-                $("#all #currentMonth").html(response);
+                $("#all #all-currentMonth").html(response);
             },
             error: function (error) {
                 hideCustomLoader();
@@ -252,4 +276,86 @@
         });
     }
 
+    function selectWinner(nominationId) {
+        $("#hdnNominationId").val(nominationId);
+    }
+
+    $("#commentForWinner").on("keypress", function () {
+        $("#commentRequired").css("display", "none");
+    });
+
+    $("#feedbackForWinner").on("keypress", function () {
+        $("#feedbackRequired").css("display", "none");
+    });
+
+    $("#cancel").on("click", function () {
+        clearFeedbackDailogBox();
+    });
+
+    function clearFeedbackDailogBox() {
+        $("#commentForWinner").val("");
+        $("#feedbackForWinner").val("");
+        $("#commentRequired").text("");
+        $("#feedbackRequired").text("");
+    }
+
+    $('#selectWinner').on("click", function () {
+        var isLocked = $("div #allow-shortlist").text();
+        if (isLocked == "false") {
+            sweetAlert("Please lock the nomination from dashboard before proceed.");
+            return false;
+        }
+        var nominationIdToShortlist = +$("#hdnNominationId").val();
+
+        var commentForWinner = $("#commentForWinner").val();
+        var feedbackForWinner = $("#feedbackForWinner").val();
+
+        if (commentForWinner != "" && feedbackForWinner != "") {
+            $("#selectWinner").attr("data-dismiss", "modal");
+        }
+        else {
+            if (commentForWinner == "") {
+                $("#commentRequired").text("You must enter a comment!");
+                $("#commentRequired").css("display", "block");
+            }
+            if (feedbackForWinner == "") {
+                $("#feedbackRequired").text("You must enter feedback!");
+                $("#feedbackRequired").css("display", "block");
+            }
+            return false;
+        }
+        showCustomLoader();
+        $.ajax({
+            type: 'post',
+            url: '@Url.Action("SelectWinner", "Review")',
+            data: JSON.stringify({ nominationId: nominationIdToShortlist, winningComment: commentForWinner, feedback: feedbackForWinner }),
+            contentType: "application/json; charset=utf-8",
+            success: function (data) {
+                hideCustomLoader();
+                clearFeedbackDailogBox();
+                var awardId = +$("#awards-list li.active a").attr("data-awardid");
+                var activeArea = $("#awards-list li.active a").attr("href");
+                var someId = activeArea + " " + activeArea + "-currentMonth";
+                showCustomLoader();
+                $.ajax({
+                    type: "GET",
+                    url: _urlReviewFeedbackListForActiveMonth,
+                    data: { awardType: awardId },
+                    success: function (response) {
+                        hideCustomLoader();
+                        $(someId).html(response);
+                    },
+                    error: function (error) {
+                        hideCustomLoader();
+                        console.log(error);
+                    }
+                });
+            },
+            error: function (data) {
+                hideCustomLoader();
+                alert(data);
+                swal("Error", "Oops! Something wrong happened..");
+            }
+        });
+    });
 </script>
