@@ -63,25 +63,6 @@ namespace Silicus.FrameworxProject.Services
                 }
             }
         }
-        public WorkItem Accept(int workItemId, string userName)
-        {
-            JsonPatchDocument patchDocument = new JsonPatchDocument();
-
-            patchDocument.Add(
-                new JsonPatchOperation()
-                {
-                    Operation = Operation.Add,
-                    Path = "/fields/System.AssignedTo",
-                    Value = userName
-                }
-            );
-
-            using (WorkItemTrackingHttpClient workItemTrackingHttpClient = new WorkItemTrackingHttpClient(_uri, _credentials))
-            {
-                WorkItem result = workItemTrackingHttpClient.UpdateWorkItemAsync(patchDocument, workItemId).Result;
-                return result;
-            }
-        }
         private List<WorkItem> GetWorkItemsWithSpecificFields(IEnumerable<int> ids)
         {
             var fields = new string[] {
@@ -101,7 +82,7 @@ namespace Silicus.FrameworxProject.Services
                 return results;
             }
         }
-
+      
         public IEnumerable<TeamProjectReference> GetTeamProjects()
         {
             // create project object
@@ -109,6 +90,36 @@ namespace Silicus.FrameworxProject.Services
             {
                 IEnumerable<TeamProjectReference> projects = projectHttpClient.GetProjects().Result;
                 return projects;
+            }
+        }
+
+        public WorkItem UpdateTimeAllocated(int workItemId, double time)
+        {
+            return UpdateWorkItem(workItemId, "Microsoft.VSTS.Scheduling.OriginalEstimate", time);
+        }
+
+
+        public WorkItem UpdateTimeSpent(int workItemId, double time)
+        {
+            return UpdateWorkItem(workItemId, "Microsoft.VSTS.Scheduling.CompletedWork", time);
+        }
+        private WorkItem UpdateWorkItem(int workItemId, string paramName, object paramValue)
+        {
+            JsonPatchDocument patchDocument = new JsonPatchDocument();
+
+            patchDocument.Add(
+                new JsonPatchOperation()
+                {
+                    Operation = Operation.Add,
+                    Path = "/fields/" + paramName,
+                    Value = paramValue
+                }
+            );
+
+            using (WorkItemTrackingHttpClient workItemTrackingHttpClient = new WorkItemTrackingHttpClient(_uri, _credentials))
+            {
+                WorkItem result = workItemTrackingHttpClient.UpdateWorkItemAsync(patchDocument, workItemId).Result;
+                return result;
             }
         }
     }

@@ -236,8 +236,36 @@ namespace Silicus.Encourage.Services
         {
             var today = DateTime.Today;
             var prevMonth = new DateTime(today.Year, today.Month, 1).AddMonths(-1);
+            var prevYear = new DateTime(today.Year, 01, 01).AddYears(-1);
 
-            var alreadyReviewedRecords = _encourageDatabaseContext.Query<Review>().Where(r => r.ReviewerId == reviewerId && r.IsSubmited == true && (forCurrentMonth ? (r.Nomination.NominationDate >= prevMonth) : (r.Nomination.NominationDate < prevMonth))).ToList();
+            var alreadyReviewedRecords = new List<Review>();
+
+            var listOfAwards = _encourageDatabaseContext.Query<Award>().ToList();
+            foreach (var award in listOfAwards)
+            {
+                var reviewedRecords = new List<Review>();
+                switch (award.Code)
+                {
+                    case "SOM":
+                        reviewedRecords = _encourageDatabaseContext.Query<Review>()
+                            .Where(r => 
+                            r.Nomination.AwardId == award.Id &&
+                            r.ReviewerId == reviewerId && 
+                            r.IsSubmited == true && 
+                            (forCurrentMonth ? (r.Nomination.NominationDate >= prevMonth) : (r.Nomination.NominationDate < prevMonth))).ToList();
+                        break;
+                    case "PINNACLE":
+                        reviewedRecords = _encourageDatabaseContext.Query<Review>()
+                            .Where(r =>
+                            r.Nomination.AwardId == award.Id &&
+                            r.ReviewerId == reviewerId && 
+                            r.IsSubmited == true && 
+                            (forCurrentMonth ? (r.Nomination.NominationDate >= prevYear) : (r.Nomination.NominationDate < prevYear))).ToList();
+                        break;
+                }
+                alreadyReviewedRecords.AddRange(reviewedRecords);
+            }
+                
             var finalNominations = new List<Nomination>();
 
             foreach (var item in alreadyReviewedRecords)

@@ -32,7 +32,7 @@ namespace Silicus.Ensure.Web.Controllers
         public ActionResult Welcome()
         {
             if (!ModelState.IsValid)
-                return RedirectToAction("LogOff", "Account");
+                return RedirectToAction("LogOff", "CandidateAccount");
 
             ViewBag.Status = 0;
             return View();
@@ -41,7 +41,7 @@ namespace Silicus.Ensure.Web.Controllers
         public ActionResult OnlineTest()
         {
             if (!ModelState.IsValid)
-                return RedirectToAction("LogOff", "Account");
+                return RedirectToAction("LogOff", "CandidateAccount");
 
             var userEmail = User.Identity.Name.Trim();
             User user = _userService.GetUserByEmail(userEmail);
@@ -108,7 +108,7 @@ namespace Silicus.Ensure.Web.Controllers
             List<User> userAdmin = _userService.GetUserByRole("ADMIN").ToList();
             SendSubmittedTestMail(userAdmin, candidate.FirstName + " " + candidate.LastName);
 
-            return RedirectToAction("LogOff", "Account");
+            return RedirectToAction("LogOff", "CandidateAccount");
         }
 
         [HttpPost]

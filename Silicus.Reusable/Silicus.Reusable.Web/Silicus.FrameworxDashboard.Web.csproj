@@ -509,6 +509,7 @@
     <Content Include="Scripts\Custom\frameworxFeedbackForm.js" />
     <Content Include="Scripts\Custom\frameworxIndex.js" />
     <Content Include="Scripts\Custom\layout.js" />
+    <Content Include="Scripts\Custom\productBacklogIndex.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />
     <Content Include="Scripts\jquery-1.10.2.min.js" />
     <Content Include="Scripts\jquery.unobtrusive-ajax.js" />
