@@ -86,6 +86,7 @@ function deleteKendoGridRow(gridId, data) {
     });
 }
 
+
 function ShowSweetAlertWithoutCancel(title,text,type){
     swal({
         title: title,
