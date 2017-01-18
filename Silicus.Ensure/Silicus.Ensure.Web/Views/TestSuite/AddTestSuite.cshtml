@@ -279,7 +279,7 @@
         window.location = '@Url.Action("List", "TestSuite")';
     }
     function createControls() {
-        $(".tagAutoComplete").kendoAutoComplete({
+        $("input.tagAutoComplete").kendoAutoComplete({
             dataSource: {
                 serverFiltering: false,
                 transport: {
@@ -295,7 +295,7 @@
 
         });
 
-        $(".proficiencyDropDown").kendoDropDownList({
+        $("input.proficiencyDropDown").kendoDropDownList({
             dataTextField: "name",
             dataValueField: "id",
             required: true,
