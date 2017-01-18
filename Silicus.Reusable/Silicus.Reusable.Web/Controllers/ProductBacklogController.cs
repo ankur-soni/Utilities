@@ -30,10 +30,10 @@ namespace Silicus.FrameworxProject.Web.Controllers
         {
             var productBacklogs = _productBacklogService.GetAllProductBacklog(projectName);
             var productBacklogViewModels = _mapper.Map<IEnumerable<ProductBacklog>, IEnumerable<ProductBacklogViewModel>>(productBacklogs);
-            foreach (var item in productBacklogViewModels)
-            {
-                item.IsTaskAssignedToUser = item.Assignee.ToLower().Contains(User.Identity.Name.ToLower());
-            }
+            //foreach (var item in productBacklogViewModels)
+            //{
+            //    item.IsTaskAssignedToUser = item.Assignee.ToLower().Contains(User.Identity.Name.ToLower());
+            //}
             return Json(productBacklogViewModels.ToDataSourceResult(request), JsonRequestBehavior.AllowGet);
         }
 
@@ -54,10 +54,18 @@ namespace Silicus.FrameworxProject.Web.Controllers
             return Json(result.ToDataSourceResult(request), JsonRequestBehavior.AllowGet);
         }
 
-        public ActionResult UpdateAssignee(int Id)
+        public ActionResult UpdateTimeAllocated(int Id, double time)
         {
-            _productBacklogService.Accept(Id, "Sandeep Gangwar Gangwar");
-            return Json(new { success = true });
+            var result = _productBacklogService.UpdateTimeAllocated(Id, time);
+
+            return Json(new { result = result }, JsonRequestBehavior.AllowGet);
+        }
+
+        public ActionResult UpdateTimeSpent(int Id, double time)
+        {
+            _productBacklogService.UpdateTimeSpent(Id, time);
+
+            return Json(new { success = true }, JsonRequestBehavior.AllowGet);
         }
     }
 }

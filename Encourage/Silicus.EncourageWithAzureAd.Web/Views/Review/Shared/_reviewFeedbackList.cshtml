@@ -16,15 +16,15 @@
                                     <li>
                                         @if (item.IsShortlisted)
                                         {
-                                            <a class="btn default btn-outline image-popup-vertical-fit" href="#">
-                                                <span><i class="fa fa-star fa-2x" title="Shortlisted" aria-hidden="true"></i></span>
+                                            <a class="btn default btn-outline image-popup-vertical-fit" href="#" data-toggle="modal" data-target="#winnerFeedbackModal" onclick="selectWinner(@item.NominationId)">
+                                                <span><i class="fa fa-trophy fa-2x" title="Mark As Winner" aria-hidden="true"></i></span>
                                             </a>
                                         }
                                         else if (item.IsWinner)
                                         {
-                                            <a class="btn default btn-outline image-popup-vertical-fit" href="#">
-                                                <span><i class="fa fa-trophy fa-2x" title="Winner" aria-hidden="true"></i></span>
-                                            </a>
+                                            @*<a class="btn default btn-outline image-popup-vertical-fit" href="#">
+                                                    <span><i class="fa fa-trophy fa-2x" title="Winner" aria-hidden="true"></i></span>
+                                                </a>*@
                                         }
                                         <a class="btn default btn-outline image-popup-vertical-fit" href="@Url.Action("ViewNominationForShortlist", "Review", new { nominationId=item.NominationId })">
                                             <span> <i class="fa fa-file-text-o fa-2x" title="View Nomination" aria-hidden="true"></i> </span>
@@ -39,7 +39,7 @@
                                 @Html.DisplayFor(modelItem => item.AwardName)
                                 @if (item.AwardFrequencyCode == FrequencyCode.YEAR.ToString())
                                 {
-                                    var nominationYear = Convert.ToInt32(item.NominationTime.Substring(item.NominationTime.LastIndexOf('-') + 1)) - 1;
+                                    var nominationYear = Convert.ToInt32(item.NominationTime.Substring(item.NominationTime.LastIndexOf('-') + 1));
                                     @Html.Label("-" + Convert.ToInt32(nominationYear))
                                 }
                                 else
@@ -74,6 +74,13 @@
                                                                     /**/
                                                                     <span class="winner-logo">
                                                                         <i class="fa fa-trophy fa-2x" title="Winner" aria-hidden="true"></i>
+                                                                    </span>
+                                                                }
+                                                                else if (item.IsShortlisted)
+                                                                {
+                                                                    /**/
+                                                                    <span class="winner-logo">
+                                                                        <i class="fa fa-star fa-2x" title="Shortlisted" aria-hidden="true"></i>
                                                                     </span>
                                                                 }
                                                             </li>

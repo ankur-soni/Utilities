@@ -13,7 +13,6 @@ using System.Data.Entity;
 using System.Globalization;
 using System.Linq;
 using System.Web.Mvc;
-using IDataContextFactory = Silicus.Encourage.DAL.Interfaces.IDataContextFactory;
 
 namespace Silicus.EncourageWithAzureAd.Web.Controllers
 {
@@ -76,7 +75,7 @@ namespace Silicus.EncourageWithAzureAd.Web.Controllers
             var awards = _encourageDatabaseContext.Query<Award>().ToList();
             foreach (var award in awards)
             {
-                shortListedNominations.Awards.Add(new LockAwardViewModel { Id = award.Id, Code = award.Code, Name = award.Name});
+                shortListedNominations.Awards.Add(new LockAwardViewModel { Id = award.Id, Code = award.Code, Name = award.Name });
             }
             shortListedNominations.ReviewFeedbackList = reviewFeedbackList;
             return View(shortListedNominations);
@@ -84,48 +83,82 @@ namespace Silicus.EncourageWithAzureAd.Web.Controllers
 
         [HttpGet]
         [CustomeAuthorize(AllowedRole = "Admin")]
-        public ActionResult GetReviewFeedbackListPartialView(bool forCurrentMonth,int awardType)
+        public ActionResult GetReviewFeedbackListPartialView(bool forCurrentMonth, int awardType)
         {
             _logger.Log("Review-ReviewFeedbackList-GET");
             var reviewFeedbackList = ReviewFeedbackList(forCurrentMonth, awardType);
             return PartialView("~/Views/Review/Shared/_reviewFeedbackList.cshtml", reviewFeedbackList);
         }
 
-        private List<ReviewFeedbackListViewModel> ReviewFeedbackList(bool forCurrentMonth,int awardType)
+        private List<ReviewFeedbackListViewModel> ReviewFeedbackList(bool forCurrentMonth, int awardType)
         {
             _logger.Log("Review-ReviewFeedbackList-private-GET");
             var reviewFeedbacks = new List<ReviewFeedbackListViewModel>();
 
             var today = DateTime.Today;
             var prevMonth = new DateTime(today.Year, today.Month, 1).AddMonths(-1);
-            List<Review> uniqueReviewedNomination;
+            var prevYear = new DateTime(today.Year, 01, 01).AddYears(-1);
+            List<Shortlist> shortlistedNominations = new List<Shortlist>();
 
             if (awardType != 0)
             {
-                uniqueReviewedNomination = _encourageDatabaseContext.Query<Review>()
-                .Where(r =>
-                        r.IsSubmited == true &&
+                switch (awardType)
+                {
+                    case 1:
+                        shortlistedNominations = _encourageDatabaseContext.Query<Shortlist>()
+                        .Where(r =>
                         r.Nomination.AwardId == awardType &&
                         (forCurrentMonth ? (r.Nomination.NominationDate >= prevMonth) : (r.Nomination.NominationDate < prevMonth)))
-                .GroupBy(x => x.NominationId)
-                .Select(group => group.FirstOrDefault()).ToList();
+                        .GroupBy(x => x.NominationId)
+                        .Select(group => group.FirstOrDefault()).ToList();
+                        break;
+                    case 2:
+                        shortlistedNominations = _encourageDatabaseContext.Query<Shortlist>()
+                        .Where(r =>
+                        r.Nomination.AwardId == awardType &&
+                        (forCurrentMonth ? (r.Nomination.NominationDate >= prevYear) : (r.Nomination.NominationDate < prevYear)))
+                        .GroupBy(x => x.NominationId)
+                        .Select(group => group.FirstOrDefault()).ToList();
+                        break;
+                    default:
+                        break;
+                }
             }
             else
             {
-                uniqueReviewedNomination = _encourageDatabaseContext.Query<Review>()
-                .Where(r =>
-                        r.IsSubmited == true &&
-                        (forCurrentMonth ? (r.Nomination.NominationDate >= prevMonth) : (r.Nomination.NominationDate < prevMonth)))
-                .GroupBy(x => x.NominationId)
-                .Select(group => group.FirstOrDefault()).ToList();
-            }
-            
+                var listOfAwards = _encourageDatabaseContext.Query<Award>().ToList();
+                foreach (var award in listOfAwards)
+                {
+                    var listOfNominations = new List<Shortlist>();
+                    switch (award.Code)
+                    {
+                        case "SOM":
+                            listOfNominations = _encourageDatabaseContext.Query<Shortlist>()
+                            .Where(r =>
+                                r.Nomination.AwardId == award.Id &&
+                                (forCurrentMonth ? (r.Nomination.NominationDate >= prevMonth) : (r.Nomination.NominationDate < prevMonth)))
+                                    .GroupBy(x => x.NominationId)
+                                .Select(group => group.FirstOrDefault()).ToList();
+                            break;
+                        case "PINNACLE":
+                            listOfNominations = _encourageDatabaseContext.Query<Shortlist>()
+                            .Where(r =>
+                                    r.Nomination.AwardId == award.Id &&
+                                    (forCurrentMonth ? (r.Nomination.NominationDate >= prevYear) : (r.Nomination.NominationDate < prevYear)))
+                            .GroupBy(x => x.NominationId)
+                            .Select(group => group.FirstOrDefault()).ToList();
+                            break;
+                    }
 
-            foreach (var reviewNomination in uniqueReviewedNomination)
+                    shortlistedNominations.AddRange(listOfNominations);
+                }
+            }
+
+            foreach (var shortlistedNomination in shortlistedNominations)
             {
                 var isShortlisted = false;
                 var isWinner = false;
-                var nomination = _encourageDatabaseContext.Query<Nomination>().SingleOrDefault(x => x.Id == reviewNomination.NominationId);
+                var nomination = _encourageDatabaseContext.Query<Nomination>().SingleOrDefault(x => x.Id == shortlistedNomination.NominationId);
                 var award = _encourageDatabaseContext.Query<Award>().SingleOrDefault(a => a.Id == nomination.AwardId);
                 var awardFrequency = _nominationService.GetAwardFrequencyById(award.FrequencyId);
                 if (award != null && nomination != null)
@@ -134,9 +167,7 @@ namespace Silicus.EncourageWithAzureAd.Web.Controllers
                     var nominee = _commonDbContext.Query<User>().FirstOrDefault(u => u.ID == nomination.UserId);
                     var nominationTime = nomination.NominationDate;
                     string nominationTimeToDisplay = DateTimeFormatInfo.CurrentInfo.GetAbbreviatedMonthName(nominationTime.Value.Month) + "-" + nominationTime.Value.Year.ToString();
-                    var totalReviews = _reviewService.GetReviewsForNomination(reviewNomination.NominationId).Count();
-
-
+                    var totalReviews = _reviewService.GetReviewsForNomination(shortlistedNomination.NominationId).Count();
 
                     var reviewerComments = _encourageDatabaseContext.Query<ReviewerComment>().Where(model => model.NominationId == nomination.Id).ToList();
                     var managerComments = _encourageDatabaseContext.Query<ManagerComment>().Where(model => model.NominationId == nomination.Id).ToList();
@@ -218,6 +249,8 @@ namespace Silicus.EncourageWithAzureAd.Web.Controllers
             var allReviewerComments = new List<List<ReviewerCommentViewModel>>();
             decimal totalCreditPoints = 0;
 
+            var isHistoricalNomination = IsHistoricalNomination(nomination);
+
             foreach (var r in reviews)
             {
                 foreach (var rc in r.ReviewerComments)
@@ -271,6 +304,7 @@ namespace Silicus.EncourageWithAzureAd.Web.Controllers
             var nomineeName = _commonDbContext.Query<User>().FirstOrDefault(u => u.ID == nomination.UserId).DisplayName;
             var loggedInAdminId = _awardService.GetUserIdFromEmail(User.Identity.Name);
             var hrAdminsFeedback = _resultService.GetHrAdminsFeedbackForEmployee(loggedInAdminId, nomination.Id);
+
             var shortlistViewModel = new ViewShortlistDetailsViewModel()
             {
                 NominationId = nomination.Id,
@@ -288,10 +322,40 @@ namespace Silicus.EncourageWithAzureAd.Web.Controllers
                 ManagerComments = nomination.ManagerComments.ToList(),
                 IsLocked = isLocked,
                 HrAdminsfeedback = hrAdminsFeedback,
-                HrAdminName = _resultService.GetLoggedInUserName(User.Identity.Name)
+                HrAdminName = _resultService.GetLoggedInUserName(User.Identity.Name),
+                IsHistoricalNomination = isHistoricalNomination
             };
 
             return View(shortlistViewModel);
+        }
+
+        private bool IsHistoricalNomination(Nomination nomination)
+        {
+            var currentNomination = nomination;
+            var typeOfNomination = _encourageDatabaseContext.Query<Award>().FirstOrDefault(n => n.Id == currentNomination.AwardId).Code;
+            var nominationDate = currentNomination.NominationDate;
+            bool IsHistoricalNomination = false;
+
+            switch (typeOfNomination)
+            {
+                case "SOM":
+                    var prevMonth = DateTime.Now.AddMonths(-1);
+                    if (nominationDate.Value.Year < prevMonth.Year && nominationDate.Value.Month < prevMonth.Month)
+                    {
+                        IsHistoricalNomination = true;
+                    }
+                    break;
+                case "PINNACLE":
+                    if (nominationDate.Value.Year < DateTime.Now.AddYears(-1).Year)
+                    {
+                        IsHistoricalNomination = true;
+                    }
+                    break;
+                default:
+                    break;
+            }
+
+            return IsHistoricalNomination;
         }
 
         [HttpPost]
@@ -493,7 +557,6 @@ namespace Silicus.EncourageWithAzureAd.Web.Controllers
         [HttpPost]
         public ActionResult SaveFinalScore(ConsolidatedNominationsViewModel consolidatedNominationsViewModel)
         {
-
             foreach (var nomination in consolidatedNominationsViewModel.Nominations)
             {
                 foreach (var finalComment in nomination.ManagerComments)
@@ -511,7 +574,6 @@ namespace Silicus.EncourageWithAzureAd.Web.Controllers
 
             return Json(true);
         }
-
 
         [HttpPost]
         public ActionResult ShortList(int nominationId)
