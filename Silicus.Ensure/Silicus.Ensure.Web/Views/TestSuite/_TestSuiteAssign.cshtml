@@ -62,8 +62,44 @@
     $(document).ready(function () {
         $('#testSuiteId').val('@TempData["TesSuiteId"]');
         $('#btnAssign').click(function () {
+            swal({
+                title: "Are you sure,",
+                text: "Are you sure, you want to assign this test suite?",
+                type: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#DD6B55",
+                confirmButtonText: "Yes",
+                cancelButtonText: "No",
+                closeOnConfirm: false,
+                closeOnCancel: false
+            },
+   function (isConfirm) {
+       if (isConfirm) {
+           var users = $("#userGrids").find("[name='selectUser']:checked").map(function () {
+               return this.value;
+           }).get().join(",");
+           var testSuiteId = $('#testSuiteId').val();
+           $.ajax({
+               type: "POST",
+               url: '@Url.Action("AssignTest", "TestSuite")',
+               data: { users: users, testSuiteId: testSuiteId },
+               success: function (returndata) {
+                   if (returndata == 1) {
+                       $('#myModal').modal().hide();
+                       $("#testSuiteGrids").data("kendoGrid").dataSource.read();
+                       swal("Activated!", "Activated test suite.", "success");
+                   }
+                   else {
+                       swal("Error!", "Error occured while activating test suite.", "error");
+                   }
+               }
+           });
+       } else {
+           swal("Cancelled", "Record deletion cancelled.", "error");
+       }
+   });
 
-            $.when(showConfirmationWindow('Are you sure,  you want to assign this test suite?', 'Confirm !')).then(function (confirmed) {
+            @*$.when(showConfirmationWindow('Are you sure,  you want to assign this test suite?', 'Confirm !')).then(function (confirmed) {
                 if (confirmed) {
                     var users = $("#userGrids").find("[name='selectUser']:checked").map(function () {
                         return this.value;
@@ -77,6 +113,7 @@
                             if (returndata == 1) {
                                 $('#myModal').modal().hide();
                                 ShowMessage("Activated test suite.", 1);
+                                $("#testSuiteGrids").data('kendoGrid').dataSource.read();
                             }
                             else {
                                 ShowMessage("Error occured while activating test suite.", 0);
@@ -84,8 +121,8 @@
                         }
                     });
                 }
-            });
-           
+            });*@
+
         });
 
         $("#FieldFilter").keyup(function () {
@@ -105,5 +142,5 @@
         });
     });
 
-    
+
 </script>

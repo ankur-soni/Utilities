@@ -516,9 +516,6 @@
     <Content Include="Content\js\bootstrap.js" />
     <Content Include="Content\js\bootstrap.min.js" />
     <Content Include="Content\js\jquery-1.12.4.min.js" />
-    <Content Include="Content\js\plugins\sweetalert2\sweetalert2.css" />
-    <Content Include="Content\js\plugins\sweetalert2\sweetalert2.min.css" />
-    <Content Include="Content\js\plugins\sweetalert2\sweetalert2.min.js" />
     <Content Include="Content\js\plugins\sweetalert\sweetalert.min.js" />
     <Content Include="Content\js\plugins\sweetalert\_notes\dwsync.xml" />
     <Content Include="Content\style.css" />

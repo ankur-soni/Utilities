@@ -4,6 +4,7 @@ using Silicus.Ensure.Entities;
 using Silicus.Ensure.Models.DataObjects;
 using Silicus.Ensure.Services.Interfaces;
 using Silicus.Ensure.Models.Constants;
+using System;
 
 namespace Silicus.Ensure.Services
 {
@@ -86,6 +87,11 @@ namespace Silicus.Ensure.Services
                               ts.Duration
                           }).FirstOrDefault();
             return result;
+        }
+
+        public IEnumerable<UserTestSuite> GetAllTestSuiteDetails()
+        {
+            return _context.Query<UserTestSuite>();
         }
 
         public dynamic GetTestSuiteDetailsWithQuestions(int? userTestSuiteId)

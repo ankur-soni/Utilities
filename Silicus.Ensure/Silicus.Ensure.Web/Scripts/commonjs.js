@@ -85,3 +85,16 @@ function deleteKendoGridRow(gridId, data) {
         }
     });
 }
+
+
+function ShowSweetAlertWithoutCancel(title,text,type){
+    swal({
+        title: title,
+        text: text,
+        type: type,
+        showCancelButton: false,
+        confirmButtonColor: "#DD6B55",
+        confirmButtonText: "Ok",
+        closeOnConfirm: true,
+    });
+}

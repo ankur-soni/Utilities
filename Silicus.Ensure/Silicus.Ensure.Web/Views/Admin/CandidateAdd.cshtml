@@ -328,7 +328,7 @@
                                     .Content("Save"))
                                     @(Html.Kendo().Button()
                                                 .Name("btnCancel")
-                                .HtmlAttributes(new { type = "button" })
+                        .HtmlAttributes(new { type = "button", @class = "btn-secondary" })
                                 .Content("Cancel")
                                 .Events(ev => ev.Click("onCancelClick")))
                                 </div>

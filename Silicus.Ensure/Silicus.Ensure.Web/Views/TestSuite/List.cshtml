@@ -141,7 +141,12 @@
     function ConfirmDeleteTestSuiteRow(e) {
         var tr = $(e.target).closest("tr");
         var data = $("#testSuiteGrids").data('kendoGrid').dataItem(tr);
-        deleteKendoGridRow('testSuiteGrids', data);
+        if (data.IsAssigned) {
+            ShowMessage("Test Suite is assigned to a candidate. You cannot delete it. Please assign another test suite to the candidate in order to continue.", 0);
+        }
+        else {
+            deleteKendoGridRow('testSuiteGrids', data);
+        }
     }
 
     function getTestSuiteId(testSuiteId, statusName) {
