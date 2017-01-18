@@ -9,7 +9,7 @@ function openFeedbackForm() {
         success: function (data) {            
             //Set feedback form body html with data 
             $("#feedbackFormModal .modal-body").html(data);
-            //Show feedback form modal
+            //Show feedback form modal            
             $('#feedbackFormModal').modal('show');
         },
         error: function (e) {

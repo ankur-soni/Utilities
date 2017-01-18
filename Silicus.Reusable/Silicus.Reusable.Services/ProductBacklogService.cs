@@ -82,7 +82,7 @@ namespace Silicus.FrameworxProject.Services
                 return results;
             }
         }
-      
+
         public IEnumerable<TeamProjectReference> GetTeamProjects()
         {
             // create project object
@@ -120,6 +120,37 @@ namespace Silicus.FrameworxProject.Services
             {
                 WorkItem result = workItemTrackingHttpClient.UpdateWorkItemAsync(patchDocument, workItemId).Result;
                 return result;
+            }
+        }
+
+        public ProductBacklog GetWorkItemDetails(int id)
+        {
+            var fields = new string[] {
+                "System.Id",
+                "System.Title",
+                "System.State",
+                "System.WorkItemType",
+                "System.AreaPath",
+                "System.AssignedTo",
+                "Microsoft.VSTS.Scheduling.OriginalEstimate",
+                "Microsoft.VSTS.Scheduling.CompletedWork"
+            };
+
+            using (WorkItemTrackingHttpClient workItemTrackingHttpClient = new WorkItemTrackingHttpClient(_uri, _credentials))
+            {
+                WorkItem result = workItemTrackingHttpClient.GetWorkItemAsync(id, fields).Result;
+
+                return new ProductBacklog()
+                {
+                    Id = result.Fields["System.Id"].ToString(),
+                    Title = result.Fields["System.Title"].ToString(),
+                    State = result.Fields["System.State"].ToString(),
+                    Type = result.Fields.ContainsKey("System.WorkItemType") ? result.Fields["System.WorkItemType"].ToString() : Constants.InformationNotAvailableText,
+                    AreaPath = result.Fields.ContainsKey("System.AreaPath") ? result.Fields["System.AreaPath"].ToString() : Constants.InformationNotAvailableText,
+                    Assignee = result.Fields.ContainsKey("System.AssignedTo") ? result.Fields["System.AssignedTo"].ToString() : "Unassigned",
+                    TimeAllocated = result.Fields.ContainsKey("Microsoft.VSTS.Scheduling.OriginalEstimate") ? (double)result.Fields["Microsoft.VSTS.Scheduling.OriginalEstimate"] : 0.00,
+                    TimeSpent = result.Fields.ContainsKey("Microsoft.VSTS.Scheduling.CompletedWork") ? (double)result.Fields["Microsoft.VSTS.Scheduling.CompletedWork"] : 0.0
+                };
             }
         }
     }
