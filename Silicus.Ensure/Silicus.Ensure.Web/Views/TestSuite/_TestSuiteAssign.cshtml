@@ -86,6 +86,7 @@
                success: function (returndata) {
                    if (returndata == 1) {
                        $('#myModal').modal().hide();
+                       $("#testSuiteGrids").data("kendoGrid").dataSource.read();
                        swal("Activated!", "Activated test suite.", "success");
                    }
                    else {
