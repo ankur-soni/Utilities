@@ -160,13 +160,20 @@ namespace Silicus.Ensure.Web.Controllers
             }
         }
 
-        public ActionResult Delete(int testSuiteId)
+        public ActionResult Delete(TestSuiteViewModel testSuite)
         {
-            var testSuiteDetails = _testSuiteService.GetTestSuiteDetails().Where(model => model.TestSuiteId == testSuiteId && model.IsDeleted == false).SingleOrDefault();
-            if (testSuiteDetails != null)
+            if (testSuite != null)
             {
-                _testSuiteService.Delete(testSuiteDetails);
-                return Json(1);
+                var testSuiteDetails = _testSuiteService.GetTestSuiteDetails().Where(model => model.TestSuiteId == testSuite.TestSuiteId && model.IsDeleted == false).SingleOrDefault();
+                if (testSuiteDetails != null)
+                {
+                    _testSuiteService.Delete(testSuiteDetails);
+                    return Json(1);
+                }
+                else
+                {
+                    return Json(-1);
+                }
             }
             else
             {

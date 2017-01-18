@@ -40,7 +40,7 @@ namespace Silicus.Reusable.Web
 
             //// Loading latest version of Kendo
             bundles.Add(new ScriptBundle("~/bundles/kendoJS").Include(
-                "~/Scripts/plugins/Kendo/" + ConfigurationManager.AppSettings["KendoVersion"] + "/jquery.min.js",
+                //"~/Scripts/plugins/Kendo/" + ConfigurationManager.AppSettings["KendoVersion"] + "/jquery.min.js",
                 "~/Scripts/plugins/kendo/" + ConfigurationManager.AppSettings["KendoVersion"] + "/kendo.all.min.js",
                 "~/Scripts/plugins/kendo/" + ConfigurationManager.AppSettings["KendoVersion"] + "/kendo.aspnetmvc.min.js"));
 

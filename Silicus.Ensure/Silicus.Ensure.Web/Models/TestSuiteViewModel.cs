@@ -64,12 +64,12 @@ namespace Silicus.Ensure.Web.Models
 
         [Range(1, 100, ErrorMessage = "Enter numbers from 1-100")]
         [Required(ErrorMessage = "Optional question is required!")]
-        [Display(Name = "Optional question")]
+        [Display(Name = "Optional")]
         public int OptionalQuestion { get; set; }
 
         [Range(1, 100, ErrorMessage = "Enter numbers from 1-100")]
         [Required(ErrorMessage = "Practical question is required!")]
-        [Display(Name = "Practical question")]
+        [Display(Name = "Practical")]
         public int PracticalQuestion { get; set; }
 
         public int Userid { get; set; }
