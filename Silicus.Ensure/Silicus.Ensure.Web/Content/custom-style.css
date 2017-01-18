@@ -13,14 +13,14 @@
 .font-Bold{font-weight:bold!important;}
 .width100{width:100%!important;}
 .labelAlignMid{display:inline-block;margin-top:6px;}
-
+.btn-secondary{background-color:#3388b7;border-color:#3388b7;color:#fff;}
 .btn{padding:2px 12px;}
 
 /*Kendo override css*/
 .k-pager-wrap > .k-link {
     border: none !important;
 }
-
+.k-editor-toolbar .k-editor-dropdown{margin-left:6px;}
 .k-grid table {
     background-color: #e2e6f2 !important;
 }
@@ -56,6 +56,10 @@ i.fa.fa-save{display:none;}
     overflow-x: auto;
     display: inherit;
 }
+span.k-widget.k-autocomplete.k-header.tagAutoComplete.k-state-default{width:100%;}
+
+input.key-numeric.WeightageField{background-color: #FFFFFF;background-image: none;border: 1px solid #e5e6e7;border-radius: 1px;color: inherit;height: 32px;display: block;padding: 6px 12px;transition: border-color 0.15s ease-in-out 0s, box-shadow 0.15s ease-in-out 0s;width: 100%;font-size: 14px;}
+span.k-widget.k-dropdown.k-header.proficiencyDropDown{width:100%;}
 .k-warning{background-image:url('http://kendo.cdn.telerik.com/2016.3.1118/styles/Material/sprite.png');}
 .k-i-calendar:hover{background-image: url('http://kendo.cdn.telerik.com/2016.3.1118/styles/Material/sprite.png');background-position: -32px -176px;}
 .k-icon.k-i-arrow-s {

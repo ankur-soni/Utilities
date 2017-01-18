@@ -67,5 +67,14 @@ namespace Silicus.FrameworxProject.Web.Controllers
 
             return Json(new { success = true }, JsonRequestBehavior.AllowGet);
         }
+
+        public ActionResult WorkItemDetails(int Id)
+        {
+            var productBacklog  = _productBacklogService.GetWorkItemDetails(Id);
+
+            var productBacklogViewModel = _mapper.Map<ProductBacklog, ProductBacklogViewModel>(productBacklog);
+
+            return PartialView("_Details", productBacklogViewModel);            
+        }
     }
 }

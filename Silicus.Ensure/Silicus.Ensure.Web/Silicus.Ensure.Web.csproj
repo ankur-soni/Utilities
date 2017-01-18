@@ -384,6 +384,7 @@
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\AdminController.cs" />
+    <Compile Include="Controllers\CandidateAccountController.cs" />
     <Compile Include="Controllers\CandidateController.cs" />
     <Compile Include="Controllers\CommonController.cs" />
     <Compile Include="Controllers\ErrorController.cs" />
@@ -483,6 +484,7 @@
     <Content Include="Content\css\JQueryUI\1.11.2\jquery-ui.min.css" />
     <Content Include="Content\css\JQueryUI\1.11.2\jquery-ui.structure.css" />
     <Content Include="Content\css\JQueryUI\1.11.2\jquery-ui.structure.min.css" />
+    <Content Include="Content\css\Kendo\2014.1.416\Default\default.gif" />
     <Content Include="Content\css\Kendo\2014.1.416\Default\sprite1.png" />
     <Content Include="Content\css\Kendo\2014.1.416\kendo.common.min.css" />
     <Content Include="Content\css\Kendo\2014.1.416\kendo.custom.css" />
@@ -828,6 +830,7 @@
     <Content Include="Views\Shared\EditorTemplates\TagList.cshtml" />
     <Content Include="Views\Shared\EditorTemplates\ProficiencyList.cshtml" />
     <Content Include="Views\TestSuite\ViewQuestion.cshtml" />
+    <Content Include="Views\CandidateAccount\Login.cshtml" />
     <None Include="Web.Azure.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

@@ -206,24 +206,10 @@
         return false;
     }
 
-    function deleteUser(userId) {
-        if (confirm('Are you sure, you want to delete this record ?')) {
-            $.ajax({
-                type: "POST",
-                url: '@Url.Action("DeleteUser", "User")',
-                data: { UserId: userId },
-                success: function (returndata) {
-                    if (returndata == 1) {
-                        $('#userGrids').data('kendoGrid').dataSource.read();
-                        $('#userGrids').data('kendoGrid').refresh();
-                        ShowMessage("User deleted successfully.", 1);
-                    }
-                    else {
-                        ShowMessage("Error occured while delete operation.", 0);
-                    }
-                }
-            });
-        }
+    function ConfirmDeleteUserRow(e) {
+        var tr = $(e.target).closest("tr");
+        var data = $("#userGrids").data('kendoGrid').dataItem(tr);
+        deleteKendoGridRow('userGrids', data);
     }
 
     function CheckAssign(status, id, TestSuiteId, UserId) {
@@ -369,20 +355,20 @@
                                                                             #=CandidateStatus#
                                                                         #}
                                                                         #").Title("Status").Width(200);
-                  columns.Bound(c => c.UserId).ClientTemplate(@"<a class='k-button' href='" + Url.Action("CandidateAdd", "Admin") + "?UserId=#=UserId#'>Edit</a><a id='testSuiteDel' class='k-button' href='\\#' onclick='return deleteUser(#=UserId#)'>Delete</a>").Title("Action").Width(200).Sortable(false);
+                  columns.Bound(c => c.UserId).ClientTemplate(@"<a class='k-button' href='" + Url.Action("CandidateAdd", "Admin") + "?UserId=#=UserId#'>Edit</a><a id='testSuiteDel' class='k-button' href='\\#' onclick='ConfirmDeleteUserRow(event)'>Delete</a>").Title("Action").Width(200).Sortable(false);
                   columns.Bound(c => c.UserId).ClientTemplate(@"
 
                                          #if(CandidateStatus=='New'){#
                                         <a onclick=showTest('#=UserId#','#=TestStatus#') style='cursor:pointer'>Assign Test</a> |
-                                        <a  class ='dialog-window' onclick=ReAssignPanel('#=UserId#') style='cursor:pointer'>Assign Panel</a>
+                                        <a  class ='dialog-window' onclick=ReAssignPanel('#=UserId#') style='cursor:pointer'>#if(PanelName){#Reassign Panel#} else{#Assign Panel #}#</a>
                                         #}
                                         else if(CandidateStatus=='TestAssigned') {#
                                         <a  class ='dialog-window' onclick=ReAssign('#=UserId#','#=TestStatus#') style='cursor:pointer'>Reassign Test</a> |
-                                        <a  class ='dialog-window' onclick=ReAssignPanel('#=UserId#') style='cursor:pointer'>Assign Panel</a> |
+                                        <a  class ='dialog-window' onclick=ReAssignPanel('#=UserId#') style='cursor:pointer'>#if(PanelName){#Reassign Panel#} else{#Assign Panel #}#</a> |
                                         <a  class ='dialog-window' onclick=ViewTest('#=TestSuiteId#') style='cursor:pointer'>View Test</a>
                                         #}
                                         else if(CandidateStatus=='TestSubmitted') {#
-                                        <a  class ='dialog-window' onclick=ReAssignPanel('#=UserId#') style='cursor:pointer'>Assign Panel</a> |
+                                        <a  class ='dialog-window' onclick=ReAssignPanel('#=UserId#') style='cursor:pointer'>#if(PanelName){#Reassign Panel#} else{#Assign Panel #}#</a> |
                                         <a  class ='dialog-window' onclick=CheckAssign('#=TestStatus#',2,#=TestSuiteId#,'#=UserId#') style='cursor:pointer'>View Test</a>
                                         #}
                                         else if(CandidateStatus=='UnderEvaluation') {#

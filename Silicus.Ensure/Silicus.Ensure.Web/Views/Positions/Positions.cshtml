@@ -30,8 +30,6 @@
                         columns.Command(command =>
                         {
                             command.Edit();
-                            //command.Destroy();
-                            //command.Custom(" ").Click("ConfirmDeleteRow").HtmlAttributes(new { @class = "k-button k-button-icontext k-grid-delete" });
                             command.Custom("Delete").Click("ConfirmDeletePositionRow").HtmlAttributes(new { @class = "k-button k-button-icontext " });
                         }).Title("Actions").Width(160);
 
@@ -163,7 +161,6 @@
     function ConfirmDeletePositionRow(e) {
         var tr = $(e.target).closest("tr"); //get the row for deletion
         var data = this.dataItem(tr);
-        debugger;
         deleteKendoGridRow('positionGrids', data);
     }
 

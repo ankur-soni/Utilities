@@ -105,7 +105,7 @@
                 .Columns(columns =>
                 {
                     columns.Bound(p => p.Id).Width(10);
-                    columns.Bound(p => p.Title).Width(50);
+                    columns.Bound(p => p.Title).Width(50).ClientTemplate(@"<a href='\\#' onclick='openDetails(#=Id#)'>#=Title#</a>");
                     columns.Bound(p => p.Type).Width(10);
                     columns.Bound(p => p.AreaPath).Width(30).Title("Area");
                     columns.Bound(p => p.Assignee).Width(50).Title("Assigned To");
@@ -135,3 +135,11 @@
         </div>
     </div>
 </div>
+
+@Html.Partial("_BootstrapModalTemplate", new Silicus.Reusable.Web.Models.ViewModel.BootstrapModalTemplateViewModel()
+{
+    Id = "detailsFormModal",
+    Title = "Details",
+    CloseButtonVisible = true,
+    SaveButtonVisible = false
+})
