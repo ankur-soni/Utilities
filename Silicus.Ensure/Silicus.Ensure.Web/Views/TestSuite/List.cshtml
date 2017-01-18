@@ -60,8 +60,8 @@
                       columns.Bound(p => p.PositionName).Width(100).Title("Position");
                       columns.Bound(p => p.PrimaryTagNames).Width(80).Title("Tags");
                       columns.Bound(p => p.StatusName).Width(50).Title("Status");
-                      columns.Bound("").ClientTemplate(@"<a id='testSuiteDel' class='k-button k-button-icontext k-grid-delete M-T3' href='\\#' onclick='return deleteTestSuite(#=TestSuiteId#)'><span class='k-icon k-delete'></span>Delete</a>" +
-                                                            "<a class='k-button k-button-icontext k-grid-edit M-T3' href='" + Url.Action("Add", "TestSuite") + "?testSuiteId=#=TestSuiteId#'><span class='k-icon k-edit'></span>Edit</a>").Title("Actions").Width(200).Sortable(false);
+                      columns.Bound("").ClientTemplate(@"<a class='k-button k-button-icontext k-grid-edit M-T3' href='" + Url.Action("Add", "TestSuite") + "?testSuiteId=#=TestSuiteId#'><span class='k-icon k-edit'></span>Edit</a>" +
+                                                            "<a id='testSuiteDel' class='k-button k-button-icontext k-grid-delete M-T3' href='\\#' onclick='return deleteTestSuite(#=TestSuiteId#)'><span class='k-icon k-delete'></span>Delete</a>").Title("Actions").Width(200).Sortable(false);
                       columns.Bound("").ClientTemplate(@"
 
                                                         #if (UserInRole){#
