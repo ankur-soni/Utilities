@@ -47,3 +47,26 @@ function Accept(e){
     //var dataItem = this.dataItem($(e.currentTarget).closest("tr"));
     //$.get( "/ProductBacklog/UpdateAssignee", { id: dataItem.Id} );
 }
+
+
+//Function to open feedbcak form using ajax call 
+function openDetails(id) {    
+    //Ajax call for controller's OpenFeedbackForm action method to get bulletin details to open dialog 
+    blockUI();
+    $.ajax({
+        url: '/ProductBacklog/WorkItemDetails/',
+        data: { id: id },
+        success: function (data) {
+            //Set feedback form body html with data 
+            $("#detailsFormModal .modal-body").html(data);
+            //Show feedback form modal
+            $('#detailsFormModal').modal('show');
+        },
+        error: function (e) {
+            toastr.error(getErrorMessage(e));
+        },
+        complete: function () {
+            unblockUI();
+        }
+    });
+}
