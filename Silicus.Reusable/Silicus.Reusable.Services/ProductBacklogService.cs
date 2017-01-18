@@ -63,25 +63,6 @@ namespace Silicus.FrameworxProject.Services
                 }
             }
         }
-        public WorkItem Accept(int workItemId, string userName)
-        {
-            JsonPatchDocument patchDocument = new JsonPatchDocument();
-
-            patchDocument.Add(
-                new JsonPatchOperation()
-                {
-                    Operation = Operation.Add,
-                    Path = "/fields/System.AssignedTo",
-                    Value = userName
-                }
-            );
-
-            using (WorkItemTrackingHttpClient workItemTrackingHttpClient = new WorkItemTrackingHttpClient(_uri, _credentials))
-            {
-                WorkItem result = workItemTrackingHttpClient.UpdateWorkItemAsync(patchDocument, workItemId).Result;
-                return result;
-            }
-        }
         private List<WorkItem> GetWorkItemsWithSpecificFields(IEnumerable<int> ids)
         {
             var fields = new string[] {
@@ -109,6 +90,67 @@ namespace Silicus.FrameworxProject.Services
             {
                 IEnumerable<TeamProjectReference> projects = projectHttpClient.GetProjects().Result;
                 return projects;
+            }
+        }
+
+        public WorkItem UpdateTimeAllocated(int workItemId, double time)
+        {
+            return UpdateWorkItem(workItemId, "Microsoft.VSTS.Scheduling.OriginalEstimate", time);
+        }
+
+
+        public WorkItem UpdateTimeSpent(int workItemId, double time)
+        {
+            return UpdateWorkItem(workItemId, "Microsoft.VSTS.Scheduling.CompletedWork", time);
+        }
+        private WorkItem UpdateWorkItem(int workItemId, string paramName, object paramValue)
+        {
+            JsonPatchDocument patchDocument = new JsonPatchDocument();
+
+            patchDocument.Add(
+                new JsonPatchOperation()
+                {
+                    Operation = Operation.Add,
+                    Path = "/fields/" + paramName,
+                    Value = paramValue
+                }
+            );
+
+            using (WorkItemTrackingHttpClient workItemTrackingHttpClient = new WorkItemTrackingHttpClient(_uri, _credentials))
+            {
+                WorkItem result = workItemTrackingHttpClient.UpdateWorkItemAsync(patchDocument, workItemId).Result;
+                return result;
+            }
+        }
+
+        public ProductBacklog GetWorkItemDetails(int id)
+        {
+            var fields = new string[] {
+                "System.Id",
+                "System.Title",
+                "System.State",
+                "System.WorkItemType",
+                "System.AreaPath",
+                "System.AssignedTo",
+                "Microsoft.VSTS.Scheduling.OriginalEstimate",
+                "Microsoft.VSTS.Scheduling.CompletedWork"
+            };
+
+            using (WorkItemTrackingHttpClient workItemTrackingHttpClient = new WorkItemTrackingHttpClient(_uri, _credentials))
+            {
+                WorkItem result = workItemTrackingHttpClient.GetWorkItemAsync(id, fields).Result;
+
+                return new ProductBacklog()
+                {
+                    Id = result.Fields["System.Id"].ToString(),
+                    Title = result.Fields["System.Title"].ToString(),
+                    State = result.Fields["System.State"].ToString(),
+                    Type = result.Fields.ContainsKey("System.WorkItemType") ? result.Fields["System.WorkItemType"].ToString() : Constants.InformationNotAvailableText,
+                    AreaPath = result.Fields.ContainsKey("System.AreaPath") ? result.Fields["System.AreaPath"].ToString() : Constants.InformationNotAvailableText,
+                    Assignee = result.Fields.ContainsKey("System.AssignedTo") ? result.Fields["System.AssignedTo"].ToString() : "Unassigned",
+                    TimeAllocated = result.Fields.ContainsKey("Microsoft.VSTS.Scheduling.OriginalEstimate") ? (double)result.Fields["Microsoft.VSTS.Scheduling.OriginalEstimate"] : 0.00,
+                    TimeSpent = result.Fields.ContainsKey("Microsoft.VSTS.Scheduling.CompletedWork") ? (double)result.Fields["Microsoft.VSTS.Scheduling.CompletedWork"] : 0.0
+                };
             }
         }
     }

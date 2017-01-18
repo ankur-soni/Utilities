@@ -7,24 +7,34 @@
 }
 
 <script>
-    var ddlItem;
-    function additionalData(e) {
-        return { projectName : ddlItem }
-    }    
-    function onProjectChange(e) {
-        debugger;
-        ddlItem = this.value();
+    function onProductBacklogsDataBound(e) {
+        var isRolePm = @ViewBag.IsRolePm.ToString().ToLower();
         var grid = $("#productBacklogs").data("kendoGrid");
-        grid.dataSource.read();
-    }
+        var gridData = grid.dataSource.view();
+        for (var i = 0; i < gridData.length; i++) {
+            var currentUid = gridData[i].uid;
+            var currenRow = grid.table.find("tr[data-uid='" + currentUid + "']");
+            var assignButton = $(currenRow).find(".k-grid-Assign");
+            var updateButton = $(currenRow).find(".k-grid-Update");
+            if (gridData[i].Assignee != "Unassigned" && gridData[i].Assignee != "") {
+                if (assignButton) {
+                    assignButton.text("Re Assign");
+                }
+            }else if(!isRolePm && !gridData[i].IsTaskAssignedToUser){
+                updateButton.remove();
+            }
+        }
 
-    function onProjectDataBound(e) {
-        debugger;
-        ddlItem = this.value();
-        var grid = $("#productBacklogs").data("kendoGrid");
-        grid.dataSource.read();
+        $(".hours").kendoMaskedTextBox({
+            mask: "00 : 00",
+            change: onHrsChange
+        });
     }
 </script>
+
+
+<script src="~/Scripts/Custom/productBacklogIndex.js"></script>
+
 <div class="row white-bg header-row">
     <nav class="" role="navigation" style="margin-bottom: 0">
         <div class="navbar-header">
@@ -66,39 +76,7 @@
         </div>
     </div>
 </div>
-<script>
-    function onDataBound(e) {
-        var isRolePm = @ViewBag.IsRolePm.ToString().ToLower();
-        var grid = $("#productBacklogs").data("kendoGrid");
-        var gridData = grid.dataSource.view();
-        for (var i = 0; i < gridData.length; i++) {
-            var currentUid = gridData[i].uid;
-            var currenRow = grid.table.find("tr[data-uid='" + currentUid + "']");
-            var assignButton = $(currenRow).find(".k-grid-Assign");
-            var updateButton = $(currenRow).find(".k-grid-Update");
-            if (gridData[i].Assignee != "Unassigned" && gridData[i].Assignee != "") {
-                if (assignButton) {
-                    assignButton.text("Re Assign");
-                }
-            }else if(!isRolePm && !gridData[i].IsTaskAssignedToUser){
-                updateButton.remove();
-            }
-        }
 
-        $(".hours").kendoMaskedTextBox({
-            mask: "00 : 00"
-        });
-
-        $('.hours').off('blur').on('blur',function(){
-            alert('demo');
-        })
-    }
-
-    function Accept(e){
-        //var dataItem = this.dataItem($(e.currentTarget).closest("tr"));
-        //$.get( "/ProductBacklog/UpdateAssignee", { id: dataItem.Id} );
-    }
-</script>
 <div class="row">
     <div class="col-sm-12">
         <div class="box">
@@ -106,10 +84,10 @@
             @(Html.Kendo().Grid<Silicus.Reusable.Web.Models.ViewModel.ProductBacklogViewModel>
                 ()
                 .Name("productBacklogs")
-                .AutoBind(false)                
-                .Events(e => e.DataBound("onDataBound"))
+                .AutoBind(false)
+                .Events(e => e.DataBound("onProductBacklogsDataBound"))
                 .DataSource(dataSource => dataSource
-                .Ajax()               
+                .Ajax()
                 .Model(model =>
                 {
                     model.Id(p => p.Id);
@@ -127,12 +105,12 @@
                 .Columns(columns =>
                 {
                     columns.Bound(p => p.Id).Width(10);
-                    columns.Bound(p => p.Title).Width(50);
+                    columns.Bound(p => p.Title).Width(50).ClientTemplate(@"<a href='\\#' onclick='openDetails(#=Id#)'>#=Title#</a>");
                     columns.Bound(p => p.Type).Width(10);
                     columns.Bound(p => p.AreaPath).Width(30).Title("Area");
                     columns.Bound(p => p.Assignee).Width(50).Title("Assigned To");
-                    columns.Bound(p => p.TimeAllocatedString).Width(10).Title("Time Allocated (Hrs)").ClientTemplate("<input class='hours' value='#=TimeAllocatedString#'  #=(Assignee == 'Unassigned' || TimeAllocatedString == '00:00')?'':'disabled'# />");
-                    columns.Bound(p => p.TimeSpentString).Width(10).Title("Time Spent (Hrs)").ClientTemplate("<input value='#=TimeSpentString#' class='hours'/>");
+                    columns.Bound(p => p.TimeAllocatedString).Width(10).Title("Time Allocated (Hrs)").ClientTemplate("<input class='allocated-hours hours' id=#=Id# value='#=TimeAllocatedString#'  #=(Assignee == 'Unassigned' || TimeAllocatedString == '00:00')?'':'disabled'# />");
+                    columns.Bound(p => p.TimeSpentString).Width(10).Title("Time Spent (Hrs)").ClientTemplate("<input value='#=TimeSpentString#' class='spent-hours hours'/>");
                     columns.Bound(p => p.State).Width(10);
                     columns.Command(command =>
                     {
@@ -157,3 +135,11 @@
         </div>
     </div>
 </div>
+
+@Html.Partial("_BootstrapModalTemplate", new Silicus.Reusable.Web.Models.ViewModel.BootstrapModalTemplateViewModel()
+{
+    Id = "detailsFormModal",
+    Title = "Details",
+    CloseButtonVisible = true,
+    SaveButtonVisible = false
+})

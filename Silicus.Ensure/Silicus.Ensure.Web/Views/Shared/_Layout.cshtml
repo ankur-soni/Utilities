@@ -31,7 +31,7 @@
     <!--Kendo css and JS-->
     @Styles.Render("~/Content/kendoCSS")
     @Scripts.Render("~/bundles/kendoJS")
-    <script src="~/Scripts/commonjs.js"></script>
+    
 
     <!--Font Awesome 4.7.0 css-->
     <link href="~/Content/css/font-awesome-4.7.0/css/font-awesome.css" rel="stylesheet" />
@@ -44,12 +44,15 @@
     <!--Perfect scrollbar css-->
     <link href="~/Content/css/perfect-scrollbar.min.css" rel="stylesheet" />
 
+    <link href="~/Content/css/sweetalert/sweetalert.css" rel="stylesheet" />
     @*@Scripts.Render("~/bundles/BootstrapJS")*@
     <script src="~/Content/js/bootstrap.min.js"></script>
     <script src="~/Scripts/jquery.validate.min.js"></script>
     <script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
 
-
+    <script src="~/Content/js/plugins/sweetalert/sweetalert.min.js"></script>
+    <script src="~/Scripts/commonjs.js"></script>
+   
 @{
     var conname = @ViewContext.RouteData.Values["controller"].ToString().ToLower();
     var actname = @ViewContext.RouteData.Values["action"].ToString().ToLower();
@@ -81,7 +84,7 @@
                                     </a>
                                     <ul class="dropdown-menu dropdown-user-menu">
                                         <li>
-                                                <a href='@Url.Action("LogOff", "Account")'>
+                                                <a href='@Url.Action("LogOff", "CandidateAccount")'>
                                                 <div>
                                                     Logout
                                                 </div>
@@ -200,12 +203,6 @@
         });
         $(window).resize(function () {
             sidebarautoheight();
-
-
-            
-
-
-
         });
         function ShowMessage(content, isSuceess) {
             $("#messageDiv").removeClass("alert-danger");

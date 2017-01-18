@@ -384,6 +384,7 @@
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\AdminController.cs" />
+    <Compile Include="Controllers\CandidateAccountController.cs" />
     <Compile Include="Controllers\CandidateController.cs" />
     <Compile Include="Controllers\CommonController.cs" />
     <Compile Include="Controllers\ErrorController.cs" />
@@ -500,6 +501,8 @@
     <Content Include="Content\css\style.min.css" />
     <Content Include="Content\css\suite.css" />
     <Content Include="Content\css\Kendo\2014.1.416\telerik-navigation.css" />
+    <Content Include="Content\css\sweetalert\sweetalert.css" />
+    <Content Include="Content\css\sweetalert\_notes\dwsync.xml" />
     <Content Include="Content\custom-style.css" />
     <Content Include="Content\entity.css" />
     <Content Include="Content\filterGroup.css" />
@@ -514,6 +517,11 @@
     <Content Include="Content\js\bootstrap.js" />
     <Content Include="Content\js\bootstrap.min.js" />
     <Content Include="Content\js\jquery-1.12.4.min.js" />
+    <Content Include="Content\js\plugins\sweetalert2\sweetalert2.css" />
+    <Content Include="Content\js\plugins\sweetalert2\sweetalert2.min.css" />
+    <Content Include="Content\js\plugins\sweetalert2\sweetalert2.min.js" />
+    <Content Include="Content\js\plugins\sweetalert\sweetalert.min.js" />
+    <Content Include="Content\js\plugins\sweetalert\_notes\dwsync.xml" />
     <Content Include="Content\style.css" />
     <Content Include="Content\toastr.css" />
     <Content Include="Content\toastr.min.css" />
@@ -822,6 +830,7 @@
     <Content Include="Views\Shared\EditorTemplates\TagList.cshtml" />
     <Content Include="Views\Shared\EditorTemplates\ProficiencyList.cshtml" />
     <Content Include="Views\TestSuite\ViewQuestion.cshtml" />
+    <Content Include="Views\CandidateAccount\Login.cshtml" />
     <None Include="Web.Azure.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -835,6 +844,39 @@
     <Folder Include="Attachment\" />
     <Folder Include="CandidateResume\" />
     <Folder Include="Content\CandidateResume\" />
+    <Folder Include="Content\js\plugins\chartist\_notes\" />
+    <Folder Include="Content\js\plugins\chartJs\_notes\" />
+    <Folder Include="Content\js\plugins\chosen\_notes\" />
+    <Folder Include="Content\js\plugins\daterangepicker\_notes\" />
+    <Folder Include="Content\js\plugins\easypiechart\_notes\" />
+    <Folder Include="Content\js\plugins\footable\_notes\" />
+    <Folder Include="Content\js\plugins\gritter\images\_notes\" />
+    <Folder Include="Content\js\plugins\gritter\_notes\" />
+    <Folder Include="Content\js\plugins\jasny\_notes\" />
+    <Folder Include="Content\js\plugins\jqGrid\i18n\_notes\" />
+    <Folder Include="Content\js\plugins\jqGrid\_notes\" />
+    <Folder Include="Content\js\plugins\jquery-ui\i18n\_notes\" />
+    <Folder Include="Content\js\plugins\jquery-ui\images\_notes\" />
+    <Folder Include="Content\js\plugins\jquery-ui\_notes\" />
+    <Folder Include="Content\js\plugins\jsTree\_notes\" />
+    <Folder Include="Content\js\plugins\metisMenu\_notes\" />
+    <Folder Include="Content\js\plugins\morris\_notes\" />
+    <Folder Include="Content\js\plugins\nestable\_notes\" />
+    <Folder Include="Content\js\plugins\nouslider\_notes\" />
+    <Folder Include="Content\js\plugins\pace\_notes\" />
+    <Folder Include="Content\js\plugins\peity\_notes\" />
+    <Folder Include="Content\js\plugins\rickshaw\vendor\_notes\" />
+    <Folder Include="Content\js\plugins\rickshaw\_notes\" />
+    <Folder Include="Content\js\plugins\select2\New folder\_notes\" />
+    <Folder Include="Content\js\plugins\select2\_notes\" />
+    <Folder Include="Content\js\plugins\selectize\_notes\" />
+    <Folder Include="Content\js\plugins\slick\_notes\" />
+    <Folder Include="Content\js\plugins\slimscroll\_notes\" />
+    <Folder Include="Content\js\plugins\sparkline\_notes\" />
+    <Folder Include="Content\js\plugins\staps\_notes\" />
+    <Folder Include="Content\js\plugins\switchery\_notes\" />
+    <Folder Include="Content\js\plugins\toastr\_notes\" />
+    <Folder Include="Content\js\plugins\validate\_notes\" />
     <Folder Include="Scripts\Custom\" />
     <Folder Include="ViewModel\" />
     <Folder Include="Views\Common\" />

@@ -62,7 +62,7 @@ namespace Silicus.Ensure.Web.Controllers
                 }
                 var btnValue = Request["btnSaveAndAddNewQuestion"];
                 int success = 1;
-                if(btnValue=="Save & Add Another Question")
+                if (btnValue == "Save & Add Another Question")
                 {
                     success = 2;
                 }
@@ -113,11 +113,17 @@ namespace Silicus.Ensure.Web.Controllers
             return View("AddQuestions", null);
         }
 
-        [HttpDelete]
-        public JsonResult DeleteQuestion(int questionId)
+        public JsonResult DeleteQuestion(QuestionModel question)
         {
-            _questionService.Delete(questionId);
-            return Json(1);
+            if (question != null)
+            {
+                _questionService.Delete(question.Id);
+                return Json(1);
+            }
+            else
+            {
+                return Json(-1);
+            }
         }
 
         private void setAnsToOptions(string correctAnswer, QuestionModel queModel)

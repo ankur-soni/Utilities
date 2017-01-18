@@ -244,7 +244,7 @@
                 confirmButtonText: "Yes!",
                 cancelButtonText: "No!",
                 closeOnConfirm: false,
-                closeOnCancel: false
+                closeOnCancel: true
             },
            function (isConfirm) {
                if (isConfirm) {
@@ -275,7 +275,7 @@
                        }
                    });
                } else {
-                   swal("Cancelled", "Review Cancelled");
+                   //swal("Cancelled", "Review Cancelled");
                    @*window.location.href = '@Url.Action("ReviewNominations", "Nomination")';*@
                }
            });
@@ -322,7 +322,7 @@
                 confirmButtonText: "Yes!",
                 cancelButtonText: "No!",
                 closeOnConfirm: false,
-                closeOnCancel: false
+                closeOnCancel: true
             },
            function (isConfirm) {
                if (isConfirm) {
@@ -353,7 +353,7 @@
                        }
                    });
                } else {
-                   swal("Cancelled", "Review Cancelled");
+                   //swal("Cancelled", "Review Cancelled");
                    @*window.location.href = '@Url.Action("ReviewNominations", "Nomination")';*@
                }
            });
