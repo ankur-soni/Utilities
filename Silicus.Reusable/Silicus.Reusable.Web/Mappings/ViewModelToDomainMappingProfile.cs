@@ -18,6 +18,7 @@ namespace Silicus.Reusable.Web.Mappings
         protected override void Configure()
         {
             CreateMap<FrameworxFeedbackViewModel, FrameworxFeedback>();
+            CreateMap<ProductBacklogViewModel,ProductBacklog>();
         }
     }
 }

@@ -98,3 +98,8 @@ function ShowSweetAlertWithoutCancel(title,text,type){
         closeOnConfirm: true,
     });
 }
+
+//function InitializeKendoGridIcons() {
+//    $(".k-grid-Edit").find("span").addClass("k-icon k-edit");
+//    $(".k-grid-Delete").find("span").addClass("k-icon k-delete");
+//}
