@@ -355,7 +355,7 @@
                                                                             #=CandidateStatus#
                                                                         #}
                                                                         #").Title("Status").Width(200);
-                  columns.Bound(c => c.UserId).ClientTemplate(@"<a class='k-button' href='" + Url.Action("CandidateAdd", "Admin") + "?UserId=#=UserId#'>Edit</a><a id='testSuiteDel' class='k-button M-T4' href='\\#' onclick='ConfirmDeleteUserRow(event)'>Delete</a>").Title("Action").Width(200).Sortable(false);
+                  columns.Bound(c => c.UserId).ClientTemplate(@"<a class='k-button' href='" + Url.Action("CandidateAdd", "Admin") + "?UserId=#=UserId#'>Edit</a><a id='testSuiteDel' class='k-button M-T4' href='\\#' onclick='ConfirmDeleteUserRow(event)'>Delete</a>").Title("Actions").Width(200).Sortable(false);
                   columns.Bound(c => c.UserId).ClientTemplate(@"
 
                                          #if(CandidateStatus=='New'){#
@@ -378,7 +378,7 @@
                                         <a  class ='dialog-window' onclick=CheckAssign('#=TestStatus#',2,#=TestSuiteId#,'#=UserId#') style='cursor:pointer'>View Test</a>
                                         #}
 
-                                        #").Title("Test action").Width(200).Sortable(false);
+                                        #").Title("Test actions").Width(200).Sortable(false);
 
               })
             .DataSource(dataSource => dataSource
