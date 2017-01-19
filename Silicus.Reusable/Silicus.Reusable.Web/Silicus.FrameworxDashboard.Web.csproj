@@ -693,6 +693,7 @@
     <Content Include="Scripts\plugins\Kendo\2014.1.416\kendo.all.min.js.map" />
     <Content Include="Scripts\plugins\Kendo\2014.1.416\kendo.aspnetmvc.min.js.map" />
     <Content Include="Scripts\plugins\Kendo\2014.1.416\kendo.dataviz.min.js.map" />
+    <Content Include="Views\ProductBacklog\_Details.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

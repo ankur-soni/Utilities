@@ -440,6 +440,11 @@
     <Compile Include="Models\TestSuiteQuestionModel.cs" />
     <Compile Include="Models\TestSuiteViewModel.cs" />
     <Compile Include="Models\TestSuiteViewQuesModel.cs" />
+    <Compile Include="Models\Test\QuestionNavigationBasics.cs" />
+    <Compile Include="Models\Test\QuestionNavigationViewModel.cs" />
+    <Compile Include="Models\Test\ReviewerQuestionViewModel.cs" />
+    <Compile Include="Models\Test\TestSummaryViewModel.cs" />
+    <Compile Include="Models\Test\TestViewModel.cs" />
     <Compile Include="Models\UserDetailViewModel.cs" />
     <Compile Include="Models\UserViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -518,9 +523,6 @@
     <Content Include="Content\js\bootstrap.js" />
     <Content Include="Content\js\bootstrap.min.js" />
     <Content Include="Content\js\jquery-1.12.4.min.js" />
-    <Content Include="Content\js\plugins\sweetalert2\sweetalert2.css" />
-    <Content Include="Content\js\plugins\sweetalert2\sweetalert2.min.css" />
-    <Content Include="Content\js\plugins\sweetalert2\sweetalert2.min.js" />
     <Content Include="Content\js\plugins\sweetalert\sweetalert.min.js" />
     <Content Include="Content\js\plugins\sweetalert\_notes\dwsync.xml" />
     <Content Include="Content\style.css" />

@@ -1,26 +1,66 @@
 ﻿/* Common classes*/
 .M-B0{margin-bottom:0px;}
 .M-T3{margin-top:3px!important;}
-.M-T4{margin-top:4px;}
+.M-T4{margin-top:4px!important;}
 .M-T5{margin-top:5px;}
 .M-T10{margin-top:10px;}
 .M-T15{margin-top:15px;}
 .M-B5{margin-bottom:5px;}
 .M-B15{margin-bottom:15px!important;}
+.M-B20{margin-bottom:20px!important;}
+.M-B25{margin-bottom:25px!important;}
 .M-L15{margin-left:15px;}
 .M-B60{margin-bottom:60px!important;}
 .boxShadow{box-shadow:1px 1px 3px #888888;}
 .font-Bold{font-weight:bold!important;}
 .width100{width:100%!important;}
 .labelAlignMid{display:inline-block;margin-top:6px;}
-
+.btn-secondary{background-color:#3388b7;border-color:#3388b7;color:#fff;}
+.btn-secondary:hover, .btn-secondary:focus{color:#fff;}
 .btn{padding:2px 12px;}
 
+
+/* Bootstrap popup style */
+.modal-content{border-radius:6px!important;}
+.modal-header{
+    min-height: 16.428571px;
+    padding: 7px;
+    border-top: 1px solid #fff;
+    border-left: 1px solid #fff;
+    border-right: 1px solid #fff;
+    border-bottom: 1px solid #e5e5e5;
+    background-color: #0063a7;
+    color: #fff;
+    border-top-left-radius:4px;
+    border-top-right-radius:4px;
+}
+.modal-footer{padding:7px;}
+.close {
+    color: #fff; 
+    opacity: 1;
+}
+.close:hover, .close:focus{color:#fff;opacity:1;}
+.fade.in{
+    background: rgba(0, 0, 0, 0.4);
+    opacity:1;
+}
+
+
+
+
+
+
+
+
+
+
 /*Kendo override css*/
+.k-window-titlebar.k-header{font-size:14px;font-weight:bold;}
+.k-window-title{margin-top:-3px;font-size:14px;font-weight:bold;}
 .k-pager-wrap > .k-link {
     border: none !important;
 }
-
+.k-editor-toolbar .k-editor-dropdown{margin-left:6px;}
 .k-grid table {
     background-color: #e2e6f2 !important;
 }
@@ -38,8 +78,8 @@
    
 }
 .k-webkit .k-editor-toolbar li, .k-ff .k-editor-toolbar li, .k-ie9 .k-editor-toolbar li, .k-ie10 .k-editor-toolbar li{
-    background: rgb(174, 177, 179)!important;
-    color: #fff;
+    background: #e7eaec;
+    color: #000;
 }
 .k-grid-pager .k-link, .k-grid-pager .k-link:link {
     color: #fff !important;
@@ -56,12 +96,17 @@ i.fa.fa-save{display:none;}
     overflow-x: auto;
     display: inherit;
 }
+span.k-widget.k-autocomplete.k-header.tagAutoComplete.k-state-default{width:100%;}
+
+input.key-numeric.WeightageField{background-color: #FFFFFF;background-image: none;border: 1px solid #e5e6e7;border-radius: 1px;color: inherit;height: 32px;display: block;padding: 6px 12px;transition: border-color 0.15s ease-in-out 0s, box-shadow 0.15s ease-in-out 0s;width: 100%;font-size: 14px;}
+span.k-widget.k-dropdown.k-header.proficiencyDropDown{width:100%;}
 .k-warning{background-image:url('http://kendo.cdn.telerik.com/2016.3.1118/styles/Material/sprite.png');}
 .k-i-calendar:hover{background-image: url('http://kendo.cdn.telerik.com/2016.3.1118/styles/Material/sprite.png');background-position: -32px -176px;}
 .k-icon.k-i-arrow-s {
     background-image: url('css/Kendo/2014.1.416/Default/sprite.png');
     background-position: 0px -34px;
 }
+
 span.k-add {
     background-image: url('css/Kendo/2014.1.416/Default/sprite1.png');
     margin-top: -3px;

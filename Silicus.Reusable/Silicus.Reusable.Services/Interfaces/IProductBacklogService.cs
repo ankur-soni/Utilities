@@ -11,5 +11,7 @@ namespace Silicus.FrameworxProject.Services.Interfaces
         WorkItem UpdateTimeAllocated(int workItemId, double time);
         WorkItem UpdateTimeSpent(int workItemId, double time);
         IEnumerable<TeamProjectReference> GetTeamProjects();
+        ProductBacklog GetWorkItemDetails(int id);
+        void UpdateAssignee(ProductBacklog productBacklog);
     }
 }

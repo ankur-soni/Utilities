@@ -19,12 +19,14 @@
 
 <div class="row">
     <div class="col-sm-12">
-        <div class="box M-T15">
+        <div class="box M-T15 M-B60">
             <div class="fluid">
 
                 <div class="row">
-                    <div class="alert alert-success" id="messageDiv" style="display:none">
-                        <span id="messageContent">This alert box could indicate successful action.</span>
+                    <div class="col-sm-12">
+                        <div class="alert alert-success" id="messageDiv" style="display:none">
+                            <span id="messageContent">This alert box could indicate successful action.</span>
+                        </div>
                     </div>
                 </div>
 
@@ -60,16 +62,16 @@
                       columns.Bound(p => p.PositionName).Width(100).Title("Position");
                       columns.Bound(p => p.PrimaryTagNames).Width(80).Title("Tags");
                       columns.Bound(p => p.StatusName).Width(50).Title("Status");
-                      columns.Bound("").ClientTemplate(@"<a class='k-button' href='\\#' onclick='ConfirmDeleteTestSuiteRow(event)'>Delete</a>" +
-                                                            "<a class='k-button k-button-icontext k-grid-edit M-T3' href='" + Url.Action("Add", "TestSuite") + "?testSuiteId=#=TestSuiteId#'><span class='k-icon k-edit'></span>Edit</a>").Title("Actions").Width(200).Sortable(false);
+                      columns.Bound("").ClientTemplate(@"<a class='k-button k-button-icontext k-grid-edit M-T4' href='" + Url.Action("Add", "TestSuite") + "?testSuiteId=#=TestSuiteId#'><span class='k-icon k-edit'></span>Edit</a>" +
+                                                            "<a class='k-button k-button-icontext k-grid-delete M-T4' href='\\#' onclick='ConfirmDeleteTestSuiteRow(event)'>Delete</a>").Title("Actions").Width(200).Sortable(false);
                       columns.Bound("").ClientTemplate(@"
 
                                                         #if (UserInRole){#
-                                                            <a class='k-button k-button-icontext k-grid-add M-T3' href='\\#' onclick= getTestSuiteId('#=TestSuiteId#','#=StatusName#') data-toggle='modal' data-target='\\#myModal'>Assign Test</a>
+                                                            <a class='k-button k-button-icontext k-grid-add M-T4' href='\\#' onclick= getTestSuiteId('#=TestSuiteId#','#=StatusName#') data-toggle='modal' data-target='\\#myModal'>Assign Test</a>
                                                         #}#
-                                                            <a class='k-button k-button-icontext k-grid-add M-T3' href='" + Url.Action("Copy", "TestSuite") + "?testSuiteId=#=TestSuiteId#'>Copy</a>" +
+                                                            <a class='k-button k-button-icontext k-grid-add M-T4' href='" + Url.Action("Copy", "TestSuite") + "?testSuiteId=#=TestSuiteId#'>Copy</a>" +
                                                                                                                           "  #if (StatusName=='Ready'){#" +
-                                                                                                                          "<a class='k-button k-button-icontext k-grid-add' onclick=showTest('#=TestSuiteId#')>Preview</a>"
+                                                                                                                          "<a class='k-button k-button-icontext k-grid-add M-T4' onclick=showTest('#=TestSuiteId#')>Preview</a>"
                                                                                                                           + "#}#"
                                                               ).Title("Test Actions").Width(400).Sortable(false);
 
@@ -141,7 +143,12 @@
     function ConfirmDeleteTestSuiteRow(e) {
         var tr = $(e.target).closest("tr");
         var data = $("#testSuiteGrids").data('kendoGrid').dataItem(tr);
-        deleteKendoGridRow('testSuiteGrids', data);
+        if (data.IsAssigned) {
+            ShowMessage("Test Suite is assigned to a candidate. You cannot delete it. Please assign another test suite to the candidate in order to continue.", 0);
+        }
+        else {
+            deleteKendoGridRow('testSuiteGrids', data);
+        }
     }
 
     function getTestSuiteId(testSuiteId, statusName) {

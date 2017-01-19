@@ -30,10 +30,10 @@ namespace Silicus.FrameworxProject.Web.Controllers
         {
             var productBacklogs = _productBacklogService.GetAllProductBacklog(projectName);
             var productBacklogViewModels = _mapper.Map<IEnumerable<ProductBacklog>, IEnumerable<ProductBacklogViewModel>>(productBacklogs);
-            //foreach (var item in productBacklogViewModels)
-            //{
-            //    item.IsTaskAssignedToUser = item.Assignee.ToLower().Contains(User.Identity.Name.ToLower());
-            //}
+            foreach (var item in productBacklogViewModels)
+            {
+                item.IsTaskAssignedToUser = item.Assignee.ToLower().Contains(User.Identity.Name.ToLower());
+            }
             return Json(productBacklogViewModels.ToDataSourceResult(request), JsonRequestBehavior.AllowGet);
         }
 
@@ -66,6 +66,31 @@ namespace Silicus.FrameworxProject.Web.Controllers
             _productBacklogService.UpdateTimeSpent(Id, time);
 
             return Json(new { success = true }, JsonRequestBehavior.AllowGet);
+        }
+
+        public ActionResult AcceptworkItem(ProductBacklogViewModel productBacklogViewModel)
+        {
+            if (ModelState.IsValid)
+            {
+                productBacklogViewModel.Assignee = $"{_commonDbService.FindDisplayNameFromEmail(User.Identity.Name) } <  {User.Identity.Name} >";
+                productBacklogViewModel.AssignedBy = productBacklogViewModel.Assignee;
+                var productBacklog = _mapper.Map<ProductBacklogViewModel, ProductBacklog>(productBacklogViewModel);
+
+                _productBacklogService.UpdateAssignee(productBacklog);
+                return Json(new { Assignee = productBacklogViewModel.Assignee }, JsonRequestBehavior.AllowGet);
+            }
+
+            return Json(null, JsonRequestBehavior.AllowGet);
+
+        }
+
+        public ActionResult WorkItemDetails(int Id)
+        {
+            var productBacklog = _productBacklogService.GetWorkItemDetails(Id);
+
+            var productBacklogViewModel = _mapper.Map<ProductBacklog, ProductBacklogViewModel>(productBacklog);
+
+            return PartialView("_Details", productBacklogViewModel);
         }
     }
 }

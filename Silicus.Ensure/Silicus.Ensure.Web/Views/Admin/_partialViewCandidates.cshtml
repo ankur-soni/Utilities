@@ -355,20 +355,20 @@
                                                                             #=CandidateStatus#
                                                                         #}
                                                                         #").Title("Status").Width(200);
-                  columns.Bound(c => c.UserId).ClientTemplate(@"<a class='k-button' href='" + Url.Action("CandidateAdd", "Admin") + "?UserId=#=UserId#'>Edit</a><a id='testSuiteDel' class='k-button' href='\\#' onclick='ConfirmDeleteUserRow(event)'>Delete</a>").Title("Action").Width(200).Sortable(false);
+                  columns.Bound(c => c.UserId).ClientTemplate(@"<a class='k-button' href='" + Url.Action("CandidateAdd", "Admin") + "?UserId=#=UserId#'>Edit</a><a id='testSuiteDel' class='k-button M-T4' href='\\#' onclick='ConfirmDeleteUserRow(event)'>Delete</a>").Title("Actions").Width(200).Sortable(false);
                   columns.Bound(c => c.UserId).ClientTemplate(@"
 
                                          #if(CandidateStatus=='New'){#
                                         <a onclick=showTest('#=UserId#','#=TestStatus#') style='cursor:pointer'>Assign Test</a> |
-                                        <a  class ='dialog-window' onclick=ReAssignPanel('#=UserId#') style='cursor:pointer'>Assign Panel</a>
+                                        <a  class ='dialog-window' onclick=ReAssignPanel('#=UserId#') style='cursor:pointer'>#if(PanelName){#Reassign Panel#} else{#Assign Panel #}#</a>
                                         #}
                                         else if(CandidateStatus=='TestAssigned') {#
                                         <a  class ='dialog-window' onclick=ReAssign('#=UserId#','#=TestStatus#') style='cursor:pointer'>Reassign Test</a> |
-                                        <a  class ='dialog-window' onclick=ReAssignPanel('#=UserId#') style='cursor:pointer'>Assign Panel</a> |
+                                        <a  class ='dialog-window' onclick=ReAssignPanel('#=UserId#') style='cursor:pointer'>#if(PanelName){#Reassign Panel#} else{#Assign Panel #}#</a> |
                                         <a  class ='dialog-window' onclick=ViewTest('#=TestSuiteId#') style='cursor:pointer'>View Test</a>
                                         #}
                                         else if(CandidateStatus=='TestSubmitted') {#
-                                        <a  class ='dialog-window' onclick=ReAssignPanel('#=UserId#') style='cursor:pointer'>Assign Panel</a> |
+                                        <a  class ='dialog-window' onclick=ReAssignPanel('#=UserId#') style='cursor:pointer'>#if(PanelName){#Reassign Panel#} else{#Assign Panel #}#</a> |
                                         <a  class ='dialog-window' onclick=CheckAssign('#=TestStatus#',2,#=TestSuiteId#,'#=UserId#') style='cursor:pointer'>View Test</a>
                                         #}
                                         else if(CandidateStatus=='UnderEvaluation') {#
@@ -378,7 +378,7 @@
                                         <a  class ='dialog-window' onclick=CheckAssign('#=TestStatus#',2,#=TestSuiteId#,'#=UserId#') style='cursor:pointer'>View Test</a>
                                         #}
 
-                                        #").Title("Test action").Width(200).Sortable(false);
+                                        #").Title("Test actions").Width(200).Sortable(false);
 
               })
             .DataSource(dataSource => dataSource
@@ -420,7 +420,7 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-primary" id="Savebtn">Save</button>
-                <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
             </div>
         </div>
     </div>
@@ -439,7 +439,7 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-primary" id="SavePanlebtn">Save</button>
-                <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
             </div>
         </div>
     </div>

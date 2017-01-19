@@ -328,7 +328,7 @@
                                     .Content("Save"))
                                     @(Html.Kendo().Button()
                                                 .Name("btnCancel")
-                                .HtmlAttributes(new { type = "button" })
+                        .HtmlAttributes(new { type = "button", @class = "btn-secondary" })
                                 .Content("Cancel")
                                 .Events(ev => ev.Click("onCancelClick")))
                                 </div>
@@ -357,7 +357,7 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" onclick="savePostion()" class="btn btn-default">Save</button>
-                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
                 </div>
             </div>
 
