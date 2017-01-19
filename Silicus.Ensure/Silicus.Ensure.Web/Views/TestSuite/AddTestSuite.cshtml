@@ -407,7 +407,7 @@
 
         $("#TagCustomControl").on("click", ".removebtn", function () {
             var $btn = $(this);
-            $.when(showConfirmationWindow('Are you sure,  you want to delete this record?', 'Delete')).then(function (confirmed) {
+            $.when(showConfirmationWindow('Are you sure,  you want to delete this record?', '&nbsp;Delete')).then(function (confirmed) {
                 if (confirmed) {
                     var rowno = eval($btn.attr('data-val')) - 1;
                     $(".addbtn[data-val=" + rowno + "]").show();
