@@ -7,7 +7,7 @@ namespace Silicus.Ensure.Web.Models.Test
 {
     public class QuestionNavigationViewModel
     {
-        public QuestionNavigationBasics Practical { get; set; }
-        public QuestionNavigationBasics Objective { get; set; }
+        public List<QuestionNavigationBasics> Practical { get; set; }
+        public List<QuestionNavigationBasics> Objective { get; set; }
     }
 }

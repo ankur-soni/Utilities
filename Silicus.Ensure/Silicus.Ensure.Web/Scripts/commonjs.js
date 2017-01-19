@@ -4,7 +4,6 @@ $(window).load(function () {
     $('.nav-logo').hide()
     $('#loading').fadeOut(1000);
     $('.nav-logo').fadeIn()
-    InitializeKendoGridIcons();
 })
 
 $(window).resize(function () {

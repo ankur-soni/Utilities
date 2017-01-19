@@ -7,8 +7,8 @@ namespace Silicus.Ensure.Web.Models.Test
 {
     public class QuestionNavigationBasics
     {
-        public List<int> Viewed { get; set; }
-        public List<int> Answered { get; set; }
-        public List<int> QuestionIds { get; set; }
+        public bool Viewed { get; set; }
+        public bool Answered { get; set; }
+        public int QuestionIds { get; set; }
     }
 }

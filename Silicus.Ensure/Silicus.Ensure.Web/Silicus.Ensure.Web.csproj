@@ -835,6 +835,7 @@
     <Content Include="Views\TestSuite\ViewQuestion.cshtml" />
     <Content Include="Views\CandidateAccount\Login.cshtml" />
     <Content Include="Silicus.Ensure.Web.ruleset" />
+    <Content Include="Views\Shared\_QuestionNavigationPanel.cshtml" />
     <None Include="Web.Azure.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
