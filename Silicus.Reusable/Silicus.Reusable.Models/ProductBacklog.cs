@@ -13,6 +13,6 @@ namespace Silicus.FrameworxProject.Models
         public string Assignee { get; set; }
         public double TimeAllocated { get; set; }
         public double TimeSpent { get; set; }
-        public bool IsAssigned { get; set; }
+        public string AssignedBy { get; set; }
     }
 }

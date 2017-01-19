@@ -38,6 +38,7 @@ namespace Silicus.Ensure.Web.Controllers
             var tags = _tagsService.GetTagsDetails();
             var testSuitelist = _testSuiteService.GetTestSuiteDetails().Where(model => model.IsDeleted == false).OrderByDescending(model => model.TestSuiteId).ToArray();
             var viewModels = _mappingService.Map<TestSuite[], TestSuiteViewModel[]>(testSuitelist);
+            var userTestSuites = _userService.GetAllTestSuiteDetails();
             bool userInRole = MvcApplication.getCurrentUserRoles().Contains((Silicus.Ensure.Models.Constants.RoleName.Admin.ToString()));
             foreach (var item in viewModels)
             {
@@ -48,6 +49,7 @@ namespace Silicus.Ensure.Web.Controllers
                                                          select a.TagName));
                 item.StatusName = ((TestSuiteStatus)item.Status).ToString();
                 item.UserInRole = userInRole;
+                item.IsAssigned = userTestSuites.Any(y => y.TestSuiteId == item.TestSuiteId &&  y.StatusId == (int)TestStatus.Assigned);
             }
             return Json(viewModels.ToDataSourceResult(request), JsonRequestBehavior.AllowGet);
         }

@@ -38,5 +38,7 @@ namespace Silicus.Reusable.Web.Models.ViewModel
         public Double TimeSpent { get; set; }
 
         public bool IsTaskAssignedToUser { get; set; }
+
+        public string AssignedBy { get; set; }
     }
 }
