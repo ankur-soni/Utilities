@@ -78,8 +78,8 @@
    
 }
 .k-webkit .k-editor-toolbar li, .k-ff .k-editor-toolbar li, .k-ie9 .k-editor-toolbar li, .k-ie10 .k-editor-toolbar li{
-    background: rgb(174, 177, 179)!important;
-    color: #fff;
+    background: #e7eaec;
+    color: #000;
 }
 .k-grid-pager .k-link, .k-grid-pager .k-link:link {
     color: #fff !important;
