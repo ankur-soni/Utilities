@@ -1,0 +1,75 @@
+﻿@model Silicus.Ensure.Web.Models.Test.QuestionNavigationViewModel
+<div style="width:100px">
+    @{
+        if (Model != null && Model.Practical != null && Model.Practical.Count > 0)
+        {
+            foreach (var question in Model.Practical)
+            {
+                if (question.Answered)
+                {
+                    @*<div class="form-group">*@
+                    <div class="checkbox checkbox-success">
+                        <input type="checkbox" id="@question" style="height:25px;width:25px" checked />
+                        <label for="@question"></label>
+                    </div>
+                    @*</div>*@
+                }
+                else if (question.Viewed)
+                {
+                    <div class="form-group">
+                        <div class="checkbox checkbox-success">
+                            <input type="checkbox" id="@question" style="height:25px;width:25px" checked />
+                            <label for="@question"></label>
+                        </div>
+                    </div>
+                }
+                else
+                {
+                    <div class="form-group">
+                        <div class="checkbox checkbox-success">
+                            <input type="checkbox" id="@question" style="height:25px;width:25px" checked />
+                            <label for="@question"></label>
+                        </div>
+                    </div>
+                }
+            }
+        }
+
+        if (Model != null && Model.Objective != null && Model.Objective.Count > 0)
+        {
+            foreach (var question in Model.Objective)
+            {
+                if (question.Answered)
+                {
+                    @*<div class="form-group">*@
+                    <div class="checkbox checkbox-success">
+                        <input type="checkbox" id="@question" style="height:25px;width:25px" checked />
+                        <label for="@question"></label>
+                    </div>
+                    @*</div>*@
+                }
+                else if (question.Viewed)
+                {
+                    <div class="form-group">
+                        <div class="checkbox checkbox-success">
+                            <input type="checkbox" id="@question" style="height:25px;width:25px" checked />
+                            <label for="@question"></label>
+                        </div>
+                    </div>
+                }
+                else
+                {
+                    <div class="form-group">
+                        <div class="checkbox checkbox-success">
+                            <input type="checkbox" id="@question" style="height:25px;width:25px" checked />
+                            <label for="@question"></label>
+                        </div>
+                    </div>
+                }
+            }
+        }
+    }
+</div>
+
+
+

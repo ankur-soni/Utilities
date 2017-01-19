@@ -21,7 +21,7 @@
                 <nav>
                     <ul>
                         <li class="active"><a id="current-tab" data-toggle="tab" href="#currentMonth"><span>Current</span></a></li>
-                        <li><a id="historical-tab" data-toggle="tab" href="#historical"><span>Historical</span></a></li>
+                        <li><a id="historical-tab" data-toggle="tab" href="#historicalMonth"><span>Historical</span></a></li>
                     </ul>
                 </nav>
                 <div class="tab-content content-wrap text-center">
@@ -43,7 +43,7 @@
                             @Html.Partial("~/Views/Nomination/Shared/_savedReviewsList.cshtml", Model)
                         }
                     </section>
-                    <section id="historical" class="tab-pane fade">
+                    <section id="historicalMonth" class="tab-pane fade">
                         @*<p>Content yet to come..</p>*@
                     </section>
                 </div><!-- /content -->
@@ -52,66 +52,45 @@
     </div>
 </div>
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 <script src="~/js/jquery-2.1.1.js"></script>
 <script>
     $(function () {
-        $("fa-pencil").tooltip();
-        $("fa-info-circle").tooltip();
-    })
+        $(".fa-pencil").tooltip();
+        $(".fa-info-circle").tooltip();
+    });
 
     var _urlGetSavedReviewsForActiveMonth = '@Url.Action("GetSavedReviewsPartialView", "Nomination", new { forCurrentMonth = true })';
     var _urlGetSavedReviewsForHistoricalMonths = '@Url.Action("GetSavedReviewsPartialView", "Nomination", new { forCurrentMonth = false })';
 
     $("#historical-tab").on("click", function () {
+        showCustomLoader();
         $.ajax({
             type: "GET",
             url: _urlGetSavedReviewsForHistoricalMonths,
             success: function (response) {
+                hideCustomLoader();
                 $("#historicalMonth").html(response);
             },
             error: function (error) {
+                hideCustomLoader();
                 console.log(error);
             }
         });
-    })
+    });
 
     $("#current-tab").on("click", function () {
+        showCustomLoader();
         $.ajax({
             type: "GET",
             url: _urlGetSavedReviewsForActiveMonth,
             success: function (response) {
+                hideCustomLoader();
                 $("#currentMonth").html(response);
             },
             error: function (error) {
+                hideCustomLoader();
                 console.log(error);
             }
         });
-    })
+    });
 </script>

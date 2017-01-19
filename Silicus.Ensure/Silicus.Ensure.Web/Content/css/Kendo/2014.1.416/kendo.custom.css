@@ -695,7 +695,7 @@ div.k-filebrowser-dropzone em,
   background-position: 50% 50%;
 }
 .k-tool-icon {
-  background-image: url('http://kendo.cdn.telerik.com/2016.3.1118/styles/Black/sprite.png');
+  background-image: url('http://kendo.cdn.telerik.com/2016.3.1118/styles/Material/sprite.png');
 }
 .k-state-hover > .k-link,
 .k-other-month.k-state-hover .k-link,
@@ -2520,7 +2520,7 @@ table.k-editor {
 }
 .k-editor-toolbar .k-dropdown-wrap.k-state-default,
 .k-toolbar .k-dropdown-wrap.k-state-default {
-  border-color: #fafafa;
+  border-color: #e7eaec;
 }
 .k-editor-toolbar .k-tool.k-state-hover,
 .k-editor-toolbar .k-dropdown-wrap.k-state-hover,
