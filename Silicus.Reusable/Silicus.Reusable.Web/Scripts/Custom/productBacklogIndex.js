@@ -1,21 +1,21 @@
-﻿function onHrsChange(e){    
+﻿function onHrsChange(e) {
     var vm = this;
     var grid = $("#productBacklogs").data("kendoGrid");
     var tr = vm.element.closest('tr'); //get the row for deletion
     var data = grid.dataItem(tr);
     var time = vm.value();
     time = time.toHrs();
-    var url  = this.element.hasClass('allocated-hours') ?"/ProductBacklog/UpdateTimeAllocated":"/ProductBacklog/UpdateTimeSpent";
+    var url = this.element.hasClass('allocated-hours') ? "/ProductBacklog/UpdateTimeAllocated" : "/ProductBacklog/UpdateTimeSpent";
     $.ajax({
         url: url,
-        data:{ id: data.Id,time:time },
+        data: { id: data.Id, time: time },
         success: function (data) {
             vm.value(toHHMM(time));
         },
-        error:function(){
+        error: function () {
             showAlert({ title: 'Error', text: 'Error occurred while updating allocated time.', type: 'error', timer: 2000 });
         },
-        beforeSend:function(){
+        beforeSend: function () {
             blockUI();
         },
         complete: function () {
@@ -27,7 +27,7 @@
 
 var ddlItem;
 function additionalData(e) {
-    return { projectName : ddlItem }
+    return { projectName: ddlItem }
 }
 function onProjectChange(e) {
     ddlItem = this.value();
@@ -43,14 +43,42 @@ function onProjectDataBound(e) {
 
 
 
-function Accept(e){
-    //var dataItem = this.dataItem($(e.currentTarget).closest("tr"));
-    //$.get( "/ProductBacklog/UpdateAssignee", { id: dataItem.Id} );
+function Accept(e) {    
+    var vm = this;
+    var dataItem = vm.dataItem($(e.currentTarget).closest("tr"));
+    $.ajax({
+        url: "/ProductBacklog/AcceptworkItem",
+        data: {
+            AreaPath: dataItem.AreaPath,
+            Assignee: dataItem.Assignee,
+            Description: dataItem.Description,
+            Id: dataItem.Id,
+            State: dataItem.State,
+            TimeAllocated: dataItem.TimeAllocated,
+            TimeSpent: dataItem.TimeSpent,
+            Title: dataItem.Title,
+            Type: dataItem.Type
+        },
+        success: function (data) {            
+            showAlert({ title: 'Accepted successfully!', text: 'The backlog has been accepted successfully!', type: 'success', timer: 2000 });
+            dataItem["Assignee"]= data.Assignee;
+            vm.refresh();
+        },
+        error: function () {
+            showAlert({ title: 'Error', text: 'Error occurred while accept.', type: 'error', timer: 2000 });
+        },
+        beforeSend: function () {
+            blockUI();
+        },
+        complete: function () {
+            unblockUI();
+        }
+    });
 }
 
 
 //Function to open feedbcak form using ajax call 
-function openDetails(id) {    
+function openDetails(id) {
     //Ajax call for controller's OpenFeedbackForm action method to get bulletin details to open dialog 
     blockUI();
     $.ajax({

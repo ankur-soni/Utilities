@@ -489,7 +489,6 @@
     <Content Include="Content\css\JQueryUI\1.11.2\jquery-ui.min.css" />
     <Content Include="Content\css\JQueryUI\1.11.2\jquery-ui.structure.css" />
     <Content Include="Content\css\JQueryUI\1.11.2\jquery-ui.structure.min.css" />
-    <Content Include="Content\css\Kendo\2014.1.416\Default\default.gif" />
     <Content Include="Content\css\Kendo\2014.1.416\Default\sprite1.png" />
     <Content Include="Content\css\Kendo\2014.1.416\kendo.common.min.css" />
     <Content Include="Content\css\Kendo\2014.1.416\kendo.custom.css" />
@@ -522,9 +521,6 @@
     <Content Include="Content\js\bootstrap.js" />
     <Content Include="Content\js\bootstrap.min.js" />
     <Content Include="Content\js\jquery-1.12.4.min.js" />
-    <Content Include="Content\js\plugins\sweetalert2\sweetalert2.css" />
-    <Content Include="Content\js\plugins\sweetalert2\sweetalert2.min.css" />
-    <Content Include="Content\js\plugins\sweetalert2\sweetalert2.min.js" />
     <Content Include="Content\js\plugins\sweetalert\sweetalert.min.js" />
     <Content Include="Content\js\plugins\sweetalert\_notes\dwsync.xml" />
     <Content Include="Content\style.css" />

@@ -4,6 +4,7 @@ $(window).load(function () {
     $('.nav-logo').hide()
     $('#loading').fadeOut(1000);
     $('.nav-logo').fadeIn()
+    InitializeKendoGridIcons();
 })
 
 $(window).resize(function () {
@@ -86,6 +87,7 @@ function deleteKendoGridRow(gridId, data) {
     });
 }
 
+
 function ShowSweetAlertWithoutCancel(title,text,type){
     swal({
         title: title,
@@ -97,3 +99,8 @@ function ShowSweetAlertWithoutCancel(title,text,type){
         closeOnConfirm: true,
     });
 }
+
+//function InitializeKendoGridIcons() {
+//    $(".k-grid-Edit").find("span").addClass("k-icon k-edit");
+//    $(".k-grid-Delete").find("span").addClass("k-icon k-delete");
+//}

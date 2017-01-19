@@ -1,5 +1,5 @@
 ﻿@using Kendo.Mvc.UI;
-<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" style="height:500px;">
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
@@ -86,6 +86,7 @@
                success: function (returndata) {
                    if (returndata == 1) {
                        $('#myModal').modal().hide();
+                       $("#testSuiteGrids").data("kendoGrid").dataSource.read();
                        swal("Activated!", "Activated test suite.", "success");
                    }
                    else {
@@ -112,6 +113,7 @@
                             if (returndata == 1) {
                                 $('#myModal').modal().hide();
                                 ShowMessage("Activated test suite.", 1);
+                                $("#testSuiteGrids").data('kendoGrid').dataSource.read();
                             }
                             else {
                                 ShowMessage("Error occured while activating test suite.", 0);
