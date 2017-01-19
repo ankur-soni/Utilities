@@ -191,15 +191,9 @@
             sidebarheight = $(window).height() - $(".bbl").outerHeight() - $("footer").outerHeight();
             $(".wrapper .page-wrapper").css("min-height", sidebarheight);
         };
-        function onRowBound(e) {
-            $(".k-grid-Edit").find("span").addClass("k-icon k-edit");
-            $(".k-grid-Delete").find("span").addClass("k-icon k-delete");
-            $(".k-grid-View").find("span").addClass("k-icon km-view");
-        }
 
         $(document).ready(function () {
             sidebarautoheight();
-            onRowBound();
         });
         $(window).resize(function () {
             sidebarautoheight();

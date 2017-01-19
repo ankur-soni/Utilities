@@ -4,6 +4,7 @@ $(window).load(function () {
     $('.nav-logo').hide()
     $('#loading').fadeOut(1000);
     $('.nav-logo').fadeIn()
+    InitializeKendoGridIcons();
 })
 
 $(window).resize(function () {
@@ -85,3 +86,8 @@ function deleteKendoGridRow(gridId, data) {
         }
     });
 }
+
+//function InitializeKendoGridIcons() {
+//    $(".k-grid-Edit").find("span").addClass("k-icon k-edit");
+//    $(".k-grid-Delete").find("span").addClass("k-icon k-delete");
+//}
