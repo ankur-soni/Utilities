@@ -438,6 +438,11 @@
     <Compile Include="Models\TestSuiteQuestionModel.cs" />
     <Compile Include="Models\TestSuiteViewModel.cs" />
     <Compile Include="Models\TestSuiteViewQuesModel.cs" />
+    <Compile Include="Models\Test\QuestionNavigationBasics.cs" />
+    <Compile Include="Models\Test\QuestionNavigationViewModel.cs" />
+    <Compile Include="Models\Test\ReviewerQuestionViewModel.cs" />
+    <Compile Include="Models\Test\TestSummaryViewModel.cs" />
+    <Compile Include="Models\Test\TestViewModel.cs" />
     <Compile Include="Models\UserDetailViewModel.cs" />
     <Compile Include="Models\UserViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
