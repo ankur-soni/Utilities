@@ -57,8 +57,8 @@
                   columns.Bound(q => q.Tag).Title("Tags").Width(150);
                   columns.Bound(q => q.ProficiencyLevel).Width(100);
                   columns.Bound(q => q.Id).ClientTemplate(@"
-                    <a href='/QuestionBank/EditQuestion?questionId=#=Id#' class='k-button'>Edit</a>
-<a class='k-button' href='\\#' onclick='ConfirmDeleteQuestionRow(event)'>Delete</a>
+                    <a href='/QuestionBank/EditQuestion?questionId=#=Id#' class='k-button M-T4'>Edit</a>
+<a class='k-button M-T4' href='\\#' onclick='ConfirmDeleteQuestionRow(event)'>Delete</a>
                    ").Title("Actions").Width(150).Sortable(false);
               })
               .ToolBar(toolbar =>

@@ -1,12 +1,14 @@
 ﻿/* Common classes*/
 .M-B0{margin-bottom:0px;}
 .M-T3{margin-top:3px!important;}
-.M-T4{margin-top:4px;}
+.M-T4{margin-top:4px!important;}
 .M-T5{margin-top:5px;}
 .M-T10{margin-top:10px;}
 .M-T15{margin-top:15px;}
 .M-B5{margin-bottom:5px;}
 .M-B15{margin-bottom:15px!important;}
+.M-B20{margin-bottom:20px!important;}
+.M-B25{margin-bottom:25px!important;}
 .M-L15{margin-left:15px;}
 .M-B60{margin-bottom:60px!important;}
 .boxShadow{box-shadow:1px 1px 3px #888888;}
@@ -82,12 +84,12 @@
 .k-grid-pager .k-link, .k-grid-pager .k-link:link {
     color: #fff !important;
 }
-/*span.k-icon.k-edit{display:none;}
+span.k-icon.k-edit{display:none;}
 span.k-icon.k-delete{display:none;}
 span.k-icon.k-cancel{display:none;}
 span.k-icon.k-save{display:none;}
 span.k-icon.k-update{display:none;}
-i.fa.fa-save{display:none;}*/
+i.fa.fa-save{display:none;}
 
 #userGrids table {
     width: 100%;
