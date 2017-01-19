@@ -27,6 +27,7 @@
                   })
                   .Read(read => read.Action("TestSuitUsers", "TestSuite"))
                   .PageSize(10)
+                  .ServerOperation(false)
               )
               .Pageable()
               .Sortable()
@@ -38,7 +39,7 @@
                             <div class="col-md-6">
                                 <div class="input-group">
                                     <span class="input-group-addon"><span class="glyphicon glyphicon-search" aria-hidden="true"></span></span>
-                                    <input type="text" class="form-control" id='FieldFilter' placeholder="Search" style="height: 38px;">
+                                    <input type="text" class="form-control" id='FieldFilterCandidate' placeholder="Search" style="height: 38px;">
                                     <span class="input-group-btn">
                                         <button class="btn btn-default" type="button"><span class="glyphicon glyphicon-refresh" aria-hidden="true"></span></button>
                                     </span>
@@ -99,40 +100,18 @@
        }
    });
 
-            @*$.when(showConfirmationWindow('Are you sure,  you want to assign this test suite?', 'Confirm !')).then(function (confirmed) {
-                if (confirmed) {
-                    var users = $("#userGrids").find("[name='selectUser']:checked").map(function () {
-                        return this.value;
-                    }).get().join(",");
-                    var testSuiteId = $('#testSuiteId').val();
-                    $.ajax({
-                        type: "POST",
-                        url: '@Url.Action("AssignTest", "TestSuite")',
-                        data: { users: users, testSuiteId: testSuiteId },
-                        success: function (returndata) {
-                            if (returndata == 1) {
-                                $('#myModal').modal().hide();
-                                ShowMessage("Activated test suite.", 1);
-                                $("#testSuiteGrids").data('kendoGrid').dataSource.read();
-                            }
-                            else {
-                                ShowMessage("Error occured while activating test suite.", 0);
-                            }
-                        }
-                    });
-                }
-            });*@
 
         });
 
-        $("#FieldFilter").keyup(function () {
-
-            var value = $("#FieldFilter").val();
+        $("#FieldFilterCandidate").keyup(function () {
+            var value = $("#FieldFilterCandidate").val();
             grid = $("#userGrids").data("kendoGrid");
 
-            if (value.length > 1) {
+            if (value.length > 0) {
                 if (value) {
                     grid.dataSource.filter({ field: "FirstName", operator: "contains", value: value });
+                    grid.dataSource.filter({ field: "LastName", operator: "contains", value: value });
+                    grid.dataSource.filter({ field: "Email", operator: "contains", value: value });
                 } else {
                     grid.dataSource.filter({});
                 }
