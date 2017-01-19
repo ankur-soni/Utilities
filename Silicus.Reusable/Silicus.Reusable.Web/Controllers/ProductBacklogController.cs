@@ -32,7 +32,7 @@ namespace Silicus.FrameworxProject.Web.Controllers
             var productBacklogViewModels = _mapper.Map<IEnumerable<ProductBacklog>, IEnumerable<ProductBacklogViewModel>>(productBacklogs);
             foreach (var item in productBacklogViewModels)
             {
-                item.IsTaskAssignedToUser = item.Assignee.ToLower().Contains(User.Identity.Name.ToLower());
+                item.IsTaskAssignedToUser = item.AssigneeEmail != null ? item.AssigneeEmail.ToLower().Equals(User.Identity.Name.ToLower()) : false;
             }
             return Json(productBacklogViewModels.ToDataSourceResult(request), JsonRequestBehavior.AllowGet);
         }
@@ -44,6 +44,10 @@ namespace Silicus.FrameworxProject.Web.Controllers
             var _authorizationService = new Authorization(_commonDbService.GetCommonDataBaseContext());
             var userRoles = _authorizationService.GetRoleForUtility(User.Identity.Name, utility);
             ViewBag.IsRolePm = userRoles.Contains("Project Manager");
+            //   if (ViewBag.IsRolePm)
+            //{
+            ViewBag.Users = _commonDbService.GetAllUsers();
+            // }
             return View();
         }
 
@@ -72,12 +76,31 @@ namespace Silicus.FrameworxProject.Web.Controllers
         {
             if (ModelState.IsValid)
             {
-                productBacklogViewModel.Assignee = $"{_commonDbService.FindDisplayNameFromEmail(User.Identity.Name) } <  {User.Identity.Name} >";
-                productBacklogViewModel.AssignedBy = productBacklogViewModel.Assignee;
+                productBacklogViewModel.AssigneeDisplayName = _commonDbService.FindDisplayNameFromEmail(User.Identity.Name);
+                productBacklogViewModel.AssigneeEmail = User.Identity.Name;
+                productBacklogViewModel.AssignedBy = productBacklogViewModel.AssigneeEmail;
                 var productBacklog = _mapper.Map<ProductBacklogViewModel, ProductBacklog>(productBacklogViewModel);
 
                 _productBacklogService.UpdateAssignee(productBacklog);
-                return Json(new { Assignee = productBacklogViewModel.Assignee }, JsonRequestBehavior.AllowGet);
+
+                return Json(new { AssigneeDisplayName = productBacklogViewModel.AssigneeDisplayName }, JsonRequestBehavior.AllowGet);
+            }
+
+            return Json(null, JsonRequestBehavior.AllowGet);
+
+        }
+
+        public ActionResult AssignworkItem(ProductBacklogViewModel productBacklogViewModel)
+        {
+            if (ModelState.IsValid)
+            {
+                productBacklogViewModel.AssignedBy = User.Identity.Name;
+
+                var productBacklog = _mapper.Map<ProductBacklogViewModel, ProductBacklog>(productBacklogViewModel);
+
+                _productBacklogService.UpdateAssignee(productBacklog);
+
+                return Json(new { AssigneeDisplayName = productBacklogViewModel.AssigneeDisplayName }, JsonRequestBehavior.AllowGet);
             }
 
             return Json(null, JsonRequestBehavior.AllowGet);
