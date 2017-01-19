@@ -10,7 +10,8 @@ namespace Silicus.FrameworxProject.Models
         public string State { get; set; }
         public string Type { get; set; }
         public string AreaPath { get; set; }
-        public string Assignee { get; set; }
+        public string AssigneeDisplayName { get; set; }
+        public string AssigneeEmail { get; set; }
         public double TimeAllocated { get; set; }
         public double TimeSpent { get; set; }
         public string AssignedBy { get; set; }

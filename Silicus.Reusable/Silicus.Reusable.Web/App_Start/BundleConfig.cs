@@ -46,7 +46,7 @@ namespace Silicus.Reusable.Web
 
             bundles.Add(new StyleBundle("~/Content/kendoCSS").Include(
             "~/Content/plugins/kendo/" + ConfigurationManager.AppSettings["KendoVersion"] + "/kendo.common.min.css",
-            "~/Content/plugins/kendo/" + ConfigurationManager.AppSettings["KendoVersion"] + "/kendo.custom.css"));
+            "~/Content/plugins/kendo/" + ConfigurationManager.AppSettings["KendoVersion"] + "/kendo.default.min.css"));
         }
     }
 }
