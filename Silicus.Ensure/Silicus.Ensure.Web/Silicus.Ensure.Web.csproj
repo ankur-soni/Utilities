@@ -832,6 +832,7 @@
     <Content Include="Views\Shared\EditorTemplates\ProficiencyList.cshtml" />
     <Content Include="Views\TestSuite\ViewQuestion.cshtml" />
     <Content Include="Views\CandidateAccount\Login.cshtml" />
+    <Content Include="Views\Shared\_QuestionNavigationPanel.cshtml" />
     <None Include="Web.Azure.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

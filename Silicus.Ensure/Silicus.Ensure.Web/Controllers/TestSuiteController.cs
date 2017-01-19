@@ -49,7 +49,7 @@ namespace Silicus.Ensure.Web.Controllers
                                                          select a.TagName));
                 item.StatusName = ((TestSuiteStatus)item.Status).ToString();
                 item.UserInRole = userInRole;
-                item.IsAssigned = userTestSuites.Any(y => y.TestSuiteId == item.TestSuiteId &&  y.StatusId == (int)TestStatus.Assigned);
+                item.IsAssigned = userTestSuites.Any(y => y.TestSuiteId == item.TestSuiteId && y.StatusId == (int)TestStatus.Assigned);
             }
             return Json(viewModels.ToDataSourceResult(request), JsonRequestBehavior.AllowGet);
         }
