@@ -518,6 +518,7 @@
     <Content Include="Content\css\Kendo\2014.1.416\Default\sprite.png" />
     <Content Include="Content\flipclock.css" />
     <Content Include="Content\Images\digits.png" />
+    <Content Include="Content\Images\login-register.jpg" />
     <Content Include="Content\Images\profile.png" />
     <Content Include="Content\Images\spriteicons.png" />
     <Content Include="Content\js\bootstrap.js" />

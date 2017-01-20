@@ -104,6 +104,7 @@ span.k-widget.k-autocomplete.k-header.tagAutoComplete.k-state-default{width:100%
 input.key-numeric.WeightageField{background-color: #FFFFFF;background-image: none;border: 1px solid #e5e6e7;border-radius: 1px;color: inherit;height: 32px;display: block;padding: 6px 12px;transition: border-color 0.15s ease-in-out 0s, box-shadow 0.15s ease-in-out 0s;width: 100%;font-size: 14px;}
 span.k-widget.k-dropdown.k-header.proficiencyDropDown{width:100%;}
 .k-warning{background-image:url('http://kendo.cdn.telerik.com/2016.3.1118/styles/Material/sprite.png');}
+.k-i-calendar{background-image: url('http://kendo.cdn.telerik.com/2016.3.1118/styles/Material/sprite.png');background-position: -32px -176px;}
 .k-i-calendar:hover{background-image: url('http://kendo.cdn.telerik.com/2016.3.1118/styles/Material/sprite.png');background-position: -32px -176px;}
 .k-icon.k-i-arrow-s {
     background-image: url('css/Kendo/2014.1.416/Default/sprite.png');
@@ -798,8 +799,8 @@ textarea {
 }
 
 .checkbox-primary input[type="checkbox"]:checked + label::before {
-  background-color: #ab8ce4;
-  border-color: #ab8ce4;
+  background-color: #0070b9;
+  border-color: #0070b9;
 }
 
 .checkbox-primary input[type="checkbox"]:checked + label::after {
@@ -2260,11 +2261,112 @@ span.select2.select2-container.select2-container--default {
     background: #e6e6e6;
 }
 
-
-
-
-
-
+/* Candidate portal login page css*/
+.logo{
+    background:#000;padding-top:5px;padding-bottom:5px;padding-left:5px;border-radius: 4px;height: 43px;
+}
+.login-wrapper{width:100%;}
+.login-register {
+    background: url('Images/login-register.jpg') no-repeat center center / cover !important;
+    height: 100%;
+    position: fixed;
+    left:0;
+}
+.login-box {
+  background: #000;
+  width: 400px;
+  margin: 0 auto;
+  margin-top: 10%;
+}
+.login-box .footer {
+  width: 100%;
+  left: 0px;
+  right: 0px;
+}
+.login-box .social {
+  display: block;
+  margin-bottom: 30px;
+}
+.box-title1{
+    display:block;
+    margin: 30px 10px 30px;
+    font-weight: 600;
+    text-transform: uppercase;
+    font-size: 14px;
+    color:#333;
+}
+.waves-effect {
+    position: relative;
+    cursor: pointer;
+    display: inline-block;
+    overflow: hidden;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    -webkit-tap-highlight-color: transparent;
+}
+.btn-info, .btn-info.disabled {
+    background: #03a9f3;
+    border: 1px solid #03a9f3;
+}
+.btn {
+    border-radius: 0px;
+}
+.btn-block {
+    display: block;
+    width: 100%;
+}
+.btn-group-lg>.btn, .btn-lg {
+    padding: 10px 16px;
+    font-size: 18px;
+    line-height: 1.3333333;
+    border-radius: 6px;
+}
+.btn-info {
+    color: #fff;
+    background-color: #5bc0de;
+    border-color: #46b8da;
+}
+/*Material inputs*/
+.form-material .form-group {
+  overflow: hidden;
+}
+.form-material .form-control {
+  background-color: rgba(0, 0, 0, 0);
+  background-position: center bottom, center calc(99%);
+  background-repeat: no-repeat;
+  background-size: 0 2px, 100% 1px;
+  padding: 0;
+  transition: background 0s ease-out 0s;
+}
+.form-material .form-control,
+.form-material .form-control.focus,
+.form-material .form-control:focus {
+  background-image: linear-gradient(#0070b9, #0070b9), linear-gradient(rgba(120, 130, 140, 0.13), rgba(120, 130, 140, 0.13));
+  border: 0 none;
+  border-radius: 0;
+  box-shadow: none;
+  float: none;
+}
+.form-material .form-control.focus,
+.form-material .form-control:focus {
+  background-size: 100% 2px, 100% 1px;
+  outline: 0 none;
+  transition-duration: 0.3s;
+}
+.form-bordered .form-group {
+  border-bottom: 1px solid rgba(120, 130, 140, 0.13);
+  padding-bottom: 20px;
+}
+.rememberMe{
+    font-size: 15px;
+    font-weight: 600!important;
+}
+.forgotPassword{
+    font-size: 15px;
+    color: #777;
+}
 
 
 

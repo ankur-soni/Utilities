@@ -4,77 +4,53 @@
 
 @{
     ViewBag.Title = "Sign in";
-   // var loginProviders = Context.GetOwinContext().Authentication.GetExternalAuthenticationTypes();
+    // var loginProviders = Context.GetOwinContext().Authentication.GetExternalAuthenticationTypes();
 }
-<div class="logincontainer" style="margin-top:15%;background-color: #edf1f5!important">
-    <div id="loginbox" class="mainbox col-md-6 col-md-offset-3 col-sm-8 col-sm-offset-2">
-        <div class="panel panel-default">
-            @using (Html.BeginForm("Login", "CandidateAccount", FormMethod.Post, new { ReturnUrl = ViewBag.ReturnUrl, @id = "loginform", @class = "form-horizontal" }))
-            {
-                <input type="hidden" name="ReturnUrl" value="@Request.QueryString["ReturnUrl"]" />
 
+<div class="login-wrapper login-register logincontainer">
+    <div id="loginbox mainbox" class="login-box">
+        <div class="white-box">
+            <div class="logo">
+                <img src="~/Images/silicus/logo.png" />
+            </div>
+            <div class="form-horizontal form-material">
+                <u tabindex="1">@Html.ActionLink("Sign in", "SignIn", "Account", routeValues: null, htmlAttributes: new { id = "loginLink", @class = "box-title1 M-B20" })</u>
+                @*<a id="loginLink" href="#"><h3 class="box-title m-b-20">Sign In</h3></a>*@
+                @using (Html.BeginForm("Login", "CandidateAccount", FormMethod.Post, new { ReturnUrl = ViewBag.ReturnUrl, @id = "loginform" }))
+                {
+                    <input type="hidden" name="ReturnUrl" value="@Request.QueryString["ReturnUrl"]" />
 
-
-                <div class="p10" style="background-color:#000;"><img src="../../Images/silicus/logo.png" alt="Silicus Technologies, LLC. Logo" /></div>
-                <div class="panel-heading">
-                    @Html.ActionLink("Sign in", "SignIn", "Account", routeValues: null, htmlAttributes: new { id = "loginLink" })
-                    <div class="floatRight positionrel mt20neg"><a href="@Url.Action("ForgotPassword", "Account")" tabindex="5">Forgot your password?</a></div>
-                </div>
-
-                <div class="panel-body p30">
-                    <div id="login-alert" class="alert alert-danger col-sm-12 hidden"></div>
                     @Html.AntiForgeryToken()
                     @Html.ValidationSummary(true)
-                    <div class="input-group mb5">
-                        <span class="input-group-addon"><i class="glyphicon glyphicon-user"></i></span>
-                        @Html.TextBoxFor(m => m.UserName, new { @placeholder = "User Name", @onfocus = "this.placeholder = ''", @onblur = "this.placeholder = 'User name';", tabindex = 1, @class = "form-control" })
-                    </div>
-                    <span class="help-block field-validation-error mt10 mb10">@Html.ValidationMessageFor(m => m.UserName)</span>
-
-                    <div class="input-group mb5">
-                        <span class="input-group-addon"><i class="glyphicon glyphicon-lock"></i></span>
-                        @Html.PasswordFor(m => m.Password, new { @class = "form-control", @placeholder = "Password", @onfocus = "this.placeholder = ''", @onblur = "this.placeholder = 'Password';", tabindex = 2 })
-                    </div>
-                    <span class="help-block field-validation-error mt10 mb10">@Html.ValidationMessageFor(m => m.Password)</span>
-
-
-                    <div class="input-group">
-                        <div class="checkbox">
-                            <label>
-                                @Html.CheckBoxFor(m => m.RememberMe, new { @id = "login-remember", tabindex = 3, @checked = "checked" })
-                                <span><label for="login-remember">Remember me</label></span>
-                            </label>
+                    <div class="form-group ">
+                        <div class="col-xs-12">
+                            <input tabindex="2" class="form-control" id="UserName" name="UserName" type="text" required="" placeholder="Username">
                         </div>
                     </div>
-
-
-                    <div style="margin-top:10px" class="form-group">
-                        <!-- Button -->
-
-                        <div class="col-sm-12 controls">
-                            <input type="submit" value="Sign In" id="btn-login" class="btn btn-success" tabindex="4" />
+                    <div class="form-group">
+                        <div class="col-xs-12">
+                            <input tabindex="3" class="form-control" id="Password" name="Password" type="password" required="" placeholder="Password">
                         </div>
                     </div>
-                </div>
-
-            }
-
-            @* @using (Html.BeginForm("ExternalLogin", "Account", new { ReturnUrl = ViewBag.ReturnUrl }))
-                {
-                    @Html.AntiForgeryToken()
-                    <div id="socialLoginList">
-                        <p>
-                            @foreach (AuthenticationDescription p in loginProviders)
-                            {
-                                <button type="submit" class="btn btn-default" id="@p.AuthenticationType" name="provider" value="@p.AuthenticationType" title="Log in using your @p.Caption account">@p.AuthenticationType</button>
-                            }
-                        </p>
+                    <div class="form-group">
+                        <div class="col-md-12">
+                            <div class="checkbox checkbox-primary pull-left p-t-0">
+                                <input tabindex="4" id="login-remember" type="checkbox">
+                                <label class="rememberMe" for="login-remember"> Remember me </label>
+                            </div>
+                            <a href="@Url.Action(" forgotpassword", "Account" )" tabindex="5" id="to-recover" class="forgotPassword text-dark pull-right"><i class="fa fa-lock m-r-5"></i> Forgot pwd?</a>
+                        </div>
                     </div>
-                }*@
+                    <div class="form-group text-center m-t-20">
+                        <div class="col-xs-12">
+                            <button tabindex="6" type="submit" value="Sign In" id="btn-login" style="background:#0070b9;" class="btn btn-info btn-lg btn-block text-uppercase">Log In</button>
+                        </div>
+                    </div>
+                }
+          </div>
         </div>
     </div>
 </div>
-
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
 }
