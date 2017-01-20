@@ -65,5 +65,15 @@ namespace Silicus.EncourageWithAzureAd.Web.Controllers
 
             return result;
         }
+
+        public string SaveMailTemplate(string processName, string emailTemplate)
+        {
+            var templateOf = processName + "Template";
+            string emailBody = HttpUtility.HtmlDecode(emailTemplate);
+
+            var result = _emailTemplateService.SaveEmailTemplate(templateOf,emailBody);
+
+            return result;
+        }
     }
 }
