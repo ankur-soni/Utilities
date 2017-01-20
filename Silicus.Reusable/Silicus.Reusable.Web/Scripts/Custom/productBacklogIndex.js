@@ -7,8 +7,7 @@
     var isAllocatedTime = vm.element.hasClass('allocated-hours');
     var propName = isAllocatedTime ? "TimeAllocated" : "TimeSpent";
     var url = isAllocatedTime ? "/ProductBacklog/UpdateTimeAllocated" : "/ProductBacklog/UpdateTimeSpent";
-    dataItem[propName] = time.toHrs();
-    dataItem[propName+ "String"] = toHHMM(time);
+    dataItem[propName] = time.toHrs();   
     $.ajax({
         url: url,
         dataType: "json",
@@ -17,7 +16,11 @@
         data: JSON.stringify(dataItem),
         success: function (data) {
             debugger;
-            dataItem = data.result;
+            for (var key in data.result) {
+                if (data.result.hasOwnProperty(key)) {
+                    dataItem[key] = data.result[key];
+                }
+            }
             grid.refresh();
         },
         error: function () {
@@ -100,11 +103,13 @@ function accept(e) {
         type: 'POST',
         contentType: "application/json; charset=utf-8",
         data: JSON.stringify(dataItem),
-        success: function (data) {
-            debugger;
+        success: function (data) {            
             showAlert({ title: 'Accepted successfully!', text: 'The backlog has been accepted successfully!', type: 'success', timer: 2000 });
-            debugger;
-            dataItem = data.result;            
+            for (var key in data.result) {
+                if (data.result.hasOwnProperty(key)) {
+                    dataItem[key] = data.result[key];
+                }
+            }                
             vm.refresh();
         },
         error: function () {
@@ -135,7 +140,11 @@ function assignUser() {
         data: JSON.stringify(dataItem),
         success: function (data) {            
             showAlert({ title: 'Assigned successfully!', text: 'The backlog has been accepted successfully!', type: 'success', timer: 2000 });
-            dataItem = data.result;
+            for (var key in data.result) {
+                if (data.result.hasOwnProperty(key)) {
+                    dataItem[key] = data.result[key];
+                }
+            }
             grid.refresh();
         },
         error: function () {
