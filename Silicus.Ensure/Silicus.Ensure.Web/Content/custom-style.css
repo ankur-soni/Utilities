@@ -55,6 +55,9 @@
 
 
 /*Kendo override css*/
+.k-primary{width:70px;}
+a.k-button.k-button-icontext.k-grid-edit{min-width:70px;}
+a.k-button.k-button-icontext.k-grid-delete{min-width:70px;}
 .k-window-titlebar.k-header{font-size:14px;font-weight:bold;}
 .k-window-title{margin-top:-3px;font-size:14px;font-weight:bold;}
 .k-pager-wrap > .k-link {

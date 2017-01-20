@@ -218,7 +218,7 @@ namespace Silicus.Ensure.Web.Controllers
         public ActionResult TestSuitUsers([DataSourceRequest] DataSourceRequest request)
         {
             var userlist = _userService.GetUserDetails().Where(x => x.Role.ToLower() == RoleName.Candidate.ToString().ToLower()
-                                                        && (x.TestStatus == Convert.ToString(TestStatus.NotAssigned) || x.TestStatus == Convert.ToString(TestStatus.Assigned))).ToArray();
+                                                        && (x.TestStatus == Convert.ToString(TestStatus.NotAssigned))).ToArray();
             var viewModels = _mappingService.Map<User[], UserViewModel[]>(userlist);
 
             int testSuiteId = Convert.ToInt32(TempData["TesSuiteId"]);
