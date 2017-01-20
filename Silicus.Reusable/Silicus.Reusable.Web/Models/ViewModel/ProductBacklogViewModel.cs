@@ -8,14 +8,17 @@ namespace Silicus.Reusable.Web.Models.ViewModel
 {
     public class ProductBacklogViewModel
     {
-        public string Id { get; set; }
+        public int Id { get; set; }
         public string Title { get; set; }
         public string Description { get; set; }
         public string Type { get; set; }
         [Display(Name = "Area")]
         public string AreaPath { get; set; }
         public string State { get; set; }
-        public string Assignee { get; set; }
+        public string AssigneeDisplayName { get; set; }
+
+        public string AssigneeEmail { get; set; }
+
         [Display(Name = "Time Allocated")]
         public string TimeAllocatedString
         {
