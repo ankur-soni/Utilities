@@ -793,21 +793,23 @@ namespace Silicus.EncourageWithAzureAd.Web.Controllers
         public ActionResult SavedReviews()
         {
             _logger.Log("Nomination-SavedReviews");
-            var reviewedNominations = GetSavedReviewsList(true);
+            // 1 is AwardId of SOM
+            var reviewedNominations = GetSavedReviewsList(true,1);
 
             return View(reviewedNominations);
         }
 
         [CustomeAuthorize(AllowedRole = "Reviewer")]
-        public ActionResult GetSavedReviewsPartialView(bool forCurrentMonth)
+        public ActionResult GetSavedReviewsPartialView(bool forCurrentMonth, int awardId)
         {
             _logger.Log("Nomination-GetSavedReviewsPartialView");
-            var reviewedNominations = GetSavedReviewsList(forCurrentMonth);
+            
+            var reviewedNominations = GetSavedReviewsList(forCurrentMonth, awardId);
 
             return PartialView("~/Views/Nomination/Shared/_savedReviewsList.cshtml", reviewedNominations);
         }
 
-        private List<NominationListViewModel> GetSavedReviewsList(bool forCurrentMonth)
+        private List<NominationListViewModel> GetSavedReviewsList(bool forCurrentMonth,int awardId)
         {
             _logger.Log("Nomination-GetSavedReviewsList");
             var reviewedNominations = new List<NominationListViewModel>();
@@ -819,7 +821,7 @@ namespace Silicus.EncourageWithAzureAd.Web.Controllers
                 return reviewedNominations;
             }
 
-            var nominations = _nominationService.GetAllSubmitedReviewedNominations(reviewerId, forCurrentMonth);
+            var nominations = _nominationService.GetAllSubmitedReviewedNominations(reviewerId, forCurrentMonth, awardId);
             foreach (var nomination in nominations)
             {
                 var awardName = _nominationService.GetAwardNameByAwardId(nomination.AwardId);
