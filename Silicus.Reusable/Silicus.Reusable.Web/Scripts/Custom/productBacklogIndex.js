@@ -79,13 +79,14 @@ function openDetails(id) {
     });
 }
 
-function openAssignUserForm(e) {        
+function openAssignUserForm(e) {
+    debugger;
     var dataItem = this.dataItem($(e.currentTarget).closest("tr"));    
     if (!dataItem.TimeAllocated) {
         showAlert({ title: '', text: 'Please allocate time.', type: 'warning', timer: 2000 });
         return false;
     }
-    $("#Assignee").data("kendoDropDownList").value(dataItem.AssigneeDisplayName);
+    $("#Assignee").data("kendoDropDownList").value(dataItem.AssigneeEmail);
     $("#Assignee").prop('target-elem', $(e.currentTarget));
     $('#assineeFormModal').modal('show');
 }
@@ -159,7 +160,7 @@ function assignUser() {
     });
 }
 
-function update(e) {
+function openUpdateForm(e) {
     debugger;
     var $target = $(e.currentTarget).closest("tr").find('.spent-hours');
     this.editCell($target);

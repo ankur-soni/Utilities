@@ -127,7 +127,7 @@
                         // {
                         command.Custom("Assign").Click("openAssignUserForm");
                         // }
-                        command.Custom("Update").Click("update");
+                        command.Custom("Update").Click("openUpdateForm");
                     }).Width(40).Title("Actions");
                 })
                  .Scrollable()
@@ -172,4 +172,14 @@
     SaveButtonVisible = true,
     ContentHtml = str,
     SaveButtonOnlickEvent = "assignUser()"
+})
+
+@Html.Partial("_BootstrapModalTemplate", new Silicus.Reusable.Web.Models.ViewModel.BootstrapModalTemplateViewModel()
+{
+    Id = "updateFormModal",
+    Title = "Update",
+    CloseButtonVisible = true,
+    SaveButtonVisible = true,
+    ContentHtml = str,
+    SaveButtonOnlickEvent = "update()"
 })
