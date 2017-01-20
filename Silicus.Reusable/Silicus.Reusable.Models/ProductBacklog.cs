@@ -4,7 +4,7 @@ namespace Silicus.FrameworxProject.Models
 {
     public class ProductBacklog
     {
-        public string Id { get; set; }
+        public int Id { get; set; }
         public string Title { get; set; }
         public string Description { get; set; }
         public string State { get; set; }

@@ -17,14 +17,22 @@
             var assignButton = $(currenRow).find(".k-grid-Assign");
             var updateButton = $(currenRow).find(".k-grid-Update");
             var acceptButton = $(currenRow).find(".k-grid-Accept");
+            debugger;
             if (gridData[i].AssigneeDisplayName != "Unassigned" && gridData[i].AssigneeDisplayName != "") {
                 if (assignButton) {
                     assignButton.text("Re Assign");
                     acceptButton.remove();
                 }
-            }else if(!isRolePm && !gridData[i].IsTaskAssignedToUser){
+
+                if( !isRolePm && !gridData[i].IsTaskAssignedToUser){
+                    updateButton.remove();
+                }
+
+            }else{
                 updateButton.remove();
             }
+
+
         }
 
         $(".hours").kendoMaskedTextBox({
@@ -95,11 +103,7 @@
                 .Ajax()
                 .Model(model =>
                 {
-                    model.Id(p => p.Id);
-                    model.Field(p => p.Title).Editable(false);
-                    model.Field(p => p.TimeAllocated).Editable(false);
-                    model.Field(p => p.TimeSpent).Editable(false);
-                    model.Field(p => p.State).Editable(false);
+                    model.Id(p => p.Id);                
                 })
                 .Read(read => read.Action("GetProductBacklogs", "ProductBacklog").Data("additionalData"))
                 .PageSize(20)
@@ -113,17 +117,17 @@
                     columns.Bound(p => p.AreaPath).Width(30).Title("Area");
                     columns.Bound(p => p.AssigneeDisplayName).Width(50).Title("Assigned To");
                     columns.Bound(p => p.TimeAllocatedString).Width(10).Title("Time Allocated (Hrs)").ClientTemplate("<input class='allocated-hours hours' id=#=Id# value='#=TimeAllocatedString#'  #=(Assignee == 'Unassigned' || TimeAllocatedString == '00:00')?'':'disabled'# />");
-                    columns.Bound(p => p.TimeSpentString).Width(10).Title("Time Spent (Hrs)").ClientTemplate("<input value='#=TimeSpentString#' class='spent-hours hours'/>");
+                    columns.Bound(p => p.TimeSpentString).Width(10).Title("Time Spent (Hrs)").ClientTemplate("<input value='#=TimeSpentString#' class='spent-hours hours'  #=Assignee == 'Unassigned'?'':'disabled'#/>");
                     columns.Bound(p => p.State).Width(10);
                     columns.Command(command =>
                     {
                         command.Custom("Accept").Click("accept");
 
                         //  if (isRolePm)
-                        //{
+                        // {
                         command.Custom("Assign").Click("openAssignUserForm");
-                        //}
-                        //command.Custom("Update");
+                        // }
+                        command.Custom("Update").Click("update");
                     }).Width(40).Title("Actions");
                 })
                  .Scrollable()
@@ -167,5 +171,5 @@
     CloseButtonVisible = true,
     SaveButtonVisible = true,
     ContentHtml = str,
-    SaveButtonOnlickEvent="assignUser()"
+    SaveButtonOnlickEvent = "assignUser()"
 })

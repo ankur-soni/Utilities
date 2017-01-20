@@ -2,16 +2,23 @@
     var vm = this;
     var grid = $("#productBacklogs").data("kendoGrid");
     var tr = vm.element.closest('tr'); //get the row for deletion
-    var data = grid.dataItem(tr);
-    var time = vm.value();
-    time = time.toHrs();
+    var dataItem = grid.dataItem(tr);
+    var time = vm.value();    
     var isAllocatedTime = vm.element.hasClass('allocated-hours');
-    var url = isAllocatedTime ? "/ProductBacklog/UpdateTimeAllocated" : "/ProductBacklog/UpdateTimeSpent";    
+    var propName = isAllocatedTime ? "TimeAllocated" : "TimeSpent";
+    var url = isAllocatedTime ? "/ProductBacklog/UpdateTimeAllocated" : "/ProductBacklog/UpdateTimeSpent";
+    dataItem[propName] = time.toHrs();
+    dataItem[propName+ "String"] = toHHMM(time);
     $.ajax({
         url: url,
-        data: { id: data.Id, time: time },
+        dataType: "json",
+        type: 'POST',
+        contentType: "application/json; charset=utf-8",
+        data: JSON.stringify(dataItem),
         success: function (data) {
-            vm.value(toHHMM(time));           
+            debugger;
+            dataItem = data.result;
+            grid.refresh();
         },
         error: function () {
             showAlert({ title: 'Error', text: 'Error occurred while updating allocated time.', type: 'error', timer: 2000 });
@@ -71,7 +78,7 @@ function openDetails(id) {
 
 function openAssignUserForm(e) {        
     var dataItem = this.dataItem($(e.currentTarget).closest("tr"));    
-    if (!parseFloat($(e.currentTarget).closest("tr").find('.allocated-hours').val().toHrs())) {
+    if (!dataItem.TimeAllocated) {
         showAlert({ title: '', text: 'Please allocate time.', type: 'warning', timer: 2000 });
         return false;
     }
@@ -83,26 +90,21 @@ function openAssignUserForm(e) {
 function accept(e) {
     var vm = this;
     var dataItem = vm.dataItem($(e.currentTarget).closest("tr"));
-    if (!parseFloat($(e.currentTarget).closest("tr").find('.allocated-hours').val().toHrs())) {
-        showAlert({ title: 'Error', text: 'Please allocate time.', type: 'error', timer: 2000 });
+    if (!dataItem.TimeAllocated) {
+        showAlert({ title: '', text: 'Please allocate time.', type: 'warning', timer: 2000 });
         return false;
     }
     $.ajax({
         url: "/ProductBacklog/AcceptworkItem",
-        data: {
-            AreaPath: dataItem.AreaPath,
-            AssigneeDisplayName: dataItem.AssigneeDisplayName,
-            Description: dataItem.Description,
-            Id: dataItem.Id,
-            State: dataItem.State,
-            TimeAllocated: dataItem.TimeAllocated,
-            TimeSpent: dataItem.TimeSpent,
-            Title: dataItem.Title,
-            Type: dataItem.Type
-        },
+        dataType: "json",
+        type: 'POST',
+        contentType: "application/json; charset=utf-8",
+        data: JSON.stringify(dataItem),
         success: function (data) {
+            debugger;
             showAlert({ title: 'Accepted successfully!', text: 'The backlog has been accepted successfully!', type: 'success', timer: 2000 });
-            dataItem["AssigneeDisplayName"] = data.AssigneeDisplayName;
+            debugger;
+            dataItem = data.result;            
             vm.refresh();
         },
         error: function () {
@@ -122,26 +124,18 @@ function assignUser() {
     var target = $("#Assignee").prop('target-elem');
     var dataItem = grid.dataItem(target.closest("tr"));   
     var email = $("#Assignee").data("kendoDropDownList").value();
-    var name = $("#Assignee").data("kendoDropDownList").text();
+    var name = $("#Assignee").data("kendoDropDownList").text();    
     dataItem["AssigneeDisplayName"] = name;
     dataItem["AssigneeEmail"] = email;
     $.ajax({
         url: "/ProductBacklog/AssignworkItem",
-        data: {
-            AreaPath: dataItem.AreaPath,
-            AssigneeDisplayName: dataItem.AssigneeDisplayName,
-            Description: dataItem.Description,
-            Id: dataItem.Id,
-            State: dataItem.State,
-            TimeAllocated: dataItem.TimeAllocated,
-            TimeSpent: dataItem.TimeSpent,
-            Title: dataItem.Title,
-            Type: dataItem.Type
-        },
-        success: function (data) {
+        dataType: "json",
+        type:'POST',
+        contentType: "application/json; charset=utf-8",
+        data: JSON.stringify(dataItem),
+        success: function (data) {            
             showAlert({ title: 'Assigned successfully!', text: 'The backlog has been accepted successfully!', type: 'success', timer: 2000 });
-            dataItem["AssigneeDisplayName"] = data.AssigneeDisplayName;
-            dataItem["AssigneeEmail"] = email;
+            dataItem = data.result;
             grid.refresh();
         },
         error: function () {
@@ -154,5 +148,11 @@ function assignUser() {
             unblockUI();
         }
     });
+}
+
+function update(e) {
+    debugger;
+    var $target = $(e.currentTarget).closest("tr").find('.spent-hours');
+    this.editCell($target);
 }
 
