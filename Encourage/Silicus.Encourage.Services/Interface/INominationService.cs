@@ -47,7 +47,7 @@ namespace Silicus.Encourage.Services.Interface
         #region Saved Nominations List
         string GetAwardNameByAwardId(int awardId);
         User GetNomineeDetails(int userId);
-        List<Nomination> GetAllSubmittedAndSavedNominationsByCurrentUserAndMonth(int managerID, bool forCurrentMonth);
+        List<Nomination> GetAllSubmittedAndSavedNominationsByCurrentUserAndMonth(int managerID, bool forCurrentMonth,int awardId);
         #endregion
         void UpdateFinalScore(int nominationId);
     }

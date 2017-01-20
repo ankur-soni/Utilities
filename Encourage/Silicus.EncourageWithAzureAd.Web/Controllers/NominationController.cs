@@ -417,20 +417,20 @@ namespace Silicus.EncourageWithAzureAd.Web.Controllers
         public ActionResult GetNominationList()
         {
             _logger.Log("Nomination-GetNominationList-GET");
-            var savedNominations = GetNominations(true);
+            var savedNominations = GetNominations(true,1);
             return View("SavedNomination", savedNominations);
         }
 
         [HttpGet]
         [CustomeAuthorize(AllowedRole = "Manager")]
-        public ActionResult GetNominationListPartialView(bool forCurrentMonth)
+        public ActionResult GetNominationListPartialView(bool forCurrentMonth,int awardId)
         {
             _logger.Log("Nomination-GetNominationListPartialView-GET");
-            var savedNominations = GetNominations(forCurrentMonth);
+            var savedNominations = GetNominations(forCurrentMonth, awardId);
             return PartialView("~/Views/Nomination/Shared/_savedNominationList.cshtml", savedNominations);
         }
 
-        private List<NominationListViewModel> GetNominations(bool forCurrentMonth)
+        private List<NominationListViewModel> GetNominations(bool forCurrentMonth, int awardId)
         {
             _logger.Log("Nomination-GetNominations-GET");
             var email = User.Identity.Name;
@@ -438,7 +438,7 @@ namespace Silicus.EncourageWithAzureAd.Web.Controllers
 
             var managerId = _awardService.GetUserIdFromEmail(email);
             
-            var nominations = _nominationService.GetAllSubmittedAndSavedNominationsByCurrentUserAndMonth(managerId, forCurrentMonth);
+            var nominations = _nominationService.GetAllSubmittedAndSavedNominationsByCurrentUserAndMonth(managerId, forCurrentMonth, awardId);
 
             var savedNominations = new List<NominationListViewModel>();
 
