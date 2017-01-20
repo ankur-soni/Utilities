@@ -324,7 +324,7 @@
                                 <div class="pull-right btn-nav">
                                     @(Html.Kendo().Button()
                                      .Name("btnSave")
-                                    .HtmlAttributes(new { type = "submit" })
+                                    .HtmlAttributes(new { type = "submit", @style="width:58px;" })
                                     .Content("Save"))
                                     @(Html.Kendo().Button()
                                                 .Name("btnCancel")
@@ -356,7 +356,7 @@
                     @Html.Partial("~/Views/Shared/EditorTemplates/PostionEditorTemplete.cshtml", new Silicus.Ensure.Web.Models.PositionViewModel())
                 </div>
                 <div class="modal-footer">
-                    <button type="button" onclick="savePostion()" class="btn btn-default">Save</button>
+                    <button type="button" style="width:70px;"  onclick="savePostion()" class="btn btn-default">Save</button>
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
                 </div>
             </div>

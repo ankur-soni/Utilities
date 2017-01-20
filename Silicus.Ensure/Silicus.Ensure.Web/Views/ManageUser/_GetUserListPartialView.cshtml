@@ -52,7 +52,7 @@
                   columns.Bound(c => c.FullName).Title("Name").Width(200);
                   columns.Bound(p => p.RoleName).Title("Role name").Width(50);
                   columns.Bound(p => p.Email).Width(50);
-                  columns.Bound(c => c.RoleId).Title("Action").Width(160).ClientTemplate(" <div> #if(RoleName == 'Recruiter'){#<input type='button' class='btn btn-primary' onclick='assignType(event)' value='Manage type'>#}else if(RoleName == 'Panel') { #<input type='button' class='btn btn-primary' onclick='assignPanel(event)' value='Manage panel'># }else if(RoleName == 'Candidate') { #<input type='button' value='z'># } #");
+                  columns.Bound(c => c.RoleId).Title("Action").Width(160).ClientTemplate(" <div> #if(RoleName == 'Recruiter'){#<input type='button' style='width:92px' class='btn btn-primary' onclick='assignType(event)' value='Manage type'>#}else if(RoleName == 'Panel') { #<input type='button' class='btn btn-primary' onclick='assignPanel(event)' value='Manage panel'># }else if(RoleName == 'Candidate') { #<input type='button' value='z'># } #");
               })
             .DataSource(dataSource => dataSource.Ajax().Model(model =>
                                                               {
@@ -345,7 +345,7 @@
                     <form id="frmAssignPanel"></form>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-default" onclick="assignPanelToMeber()">Save</button>
+                    <button type="button" style="width:70px;" class="btn btn-default" onclick="assignPanelToMeber()">Save</button>
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
                 </div>
             </div>
@@ -366,7 +366,7 @@
                     <form id="frmAssignType"></form>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-default" onclick="assignTypeToMeber()">Save</button>
+                    <button type="button" style="width:70px;" class="btn btn-default" onclick="assignTypeToMeber()">Save</button>
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
                 </div>
             </div>
@@ -390,7 +390,7 @@
 
                     </div>
                     <div class="modal-footer">
-                        <button type="button" onclick="saveTag()" class="btn btn-default">Save</button>
+                        <button type="button" style="width:70px;" onclick="saveTag()" class="btn btn-default">Save</button>
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
                     </div>
                 </div>
@@ -415,7 +415,7 @@
                         @Html.Partial("~/Views/Panel/AddPanel.cshtml", new Silicus.Ensure.Models.DataObjects.Panel())
                     </div>
                     <div class="modal-footer">
-                        <button type="button" onclick="savePanel()" class="btn btn-default">Save</button>
+                        <button type="button" style="width:70px;" onclick="savePanel()" class="btn btn-default">Save</button>
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
                     </div>
                 </div>
