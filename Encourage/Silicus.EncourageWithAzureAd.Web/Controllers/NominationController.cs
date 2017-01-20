@@ -210,6 +210,7 @@ namespace Silicus.EncourageWithAzureAd.Web.Controllers
         {
             _logger.Log("Nomination-EditSavedNomination-GET");
             var savedNomination = _nominationService.GetNomination(nominationId);
+            var isHistorical = IsHistoricalNomination(savedNomination);
             var nominationViewModel = new NominationViewModel();
             var userEmailAddress = User.Identity.Name;
 
@@ -248,6 +249,7 @@ namespace Silicus.EncourageWithAzureAd.Web.Controllers
             nominationViewModel.ResourceId = savedNomination.UserId;
             nominationViewModel.IsSubmitted = savedNomination.IsSubmitted;
             nominationViewModel.IsOther = savedNomination.Other;
+            nominationViewModel.IsHistorical = isHistorical;
             nominationViewModel.MainComment = savedNomination.Comment;
             nominationViewModel.OtherNominationReason = savedNomination.OtherNominationReason;
             nominationViewModel.AwardName = _awardService.GetAwardNameById(savedNomination.AwardId);
@@ -844,8 +846,36 @@ namespace Silicus.EncourageWithAzureAd.Web.Controllers
             }
             return reviewedNominations;
         }
+
+        private bool IsHistoricalNomination(Nomination nomination)
+        {
+            var currentNomination = nomination;
+            var typeOfNomination = _encourageDatabaseContext.Query<Award>().FirstOrDefault(n => n.Id == currentNomination.AwardId).Code;
+            var nominationDate = currentNomination.NominationDate;
+            bool IsHistoricalNomination = false;
+
+            switch (typeOfNomination)
+            {
+                case "SOM":
+                    var prevMonth = DateTime.Now.AddMonths(-1);
+                    if (nominationDate.Value.Year < prevMonth.Year && nominationDate.Value.Month < prevMonth.Month)
+                    {
+                        IsHistoricalNomination = true;
+                    }
+                    break;
+                case "PINNACLE":
+                    if (nominationDate.Value.Year < DateTime.Now.AddYears(-1).Year)
+                    {
+                        IsHistoricalNomination = true;
+                    }
+                    break;
+                default:
+                    break;
+            }
+
+            return IsHistoricalNomination;
+        }
         #endregion ReviewNomination
     }
 }
-
 #endregion Nomination
