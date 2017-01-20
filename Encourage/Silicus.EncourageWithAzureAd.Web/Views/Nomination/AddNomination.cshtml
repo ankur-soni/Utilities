@@ -49,6 +49,10 @@
                                 </div>
                             </div>
                         </div>
+                        <div id="nominationPeriodText">
+                            <span id="somNominationPeriod" style="display:none;">Nomination for SOM-@(DateTime.Now.AddMonths(-1).ToString("MMM-yyyy"))</span>
+                            <span id="pinnacleNominationPeriod" style="display:none;">Nomination for Pinnacle-@(DateTime.Now.AddYears(-1).Year)</span>
+                        </div>
                         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
                         <div class="wizard-box" id="nominationCategory" nomination-step="1">
                             <div class="row">
@@ -331,6 +335,20 @@
     });
 
     $('#Award').on("change", function (event) {
+        var selectedAward = $(this).context.selectedOptions[0].innerText;
+        if (selectedAward != "Select") {
+            if (selectedAward == "Pinnacle") {
+                $("#pinnacleNominationPeriod").show();
+                $("#somNominationPeriod").hide();
+            } else {
+                $("#somNominationPeriod").show();
+                $("#pinnacleNominationPeriod").hide();
+            }
+        }else {
+            $("#somNominationPeriod").hide();
+            $("#pinnacleNominationPeriod").hide();
+        }
+        
         showCustomLoader();
         $.ajax({
             type: 'GET',
