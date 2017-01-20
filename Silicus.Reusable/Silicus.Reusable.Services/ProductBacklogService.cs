@@ -61,6 +61,7 @@ namespace Silicus.FrameworxProject.Services
                             Type = item.Fields.ContainsKey("System.WorkItemType") ? item.Fields["System.WorkItemType"].ToString() : Constants.InformationNotAvailableText,
                             AreaPath = item.Fields.ContainsKey("System.AreaPath") ? item.Fields["System.AreaPath"].ToString() : Constants.InformationNotAvailableText,
                             AssigneeDisplayName = detailsFromDb.Any(t => t.Id == item.Id) ? detailsFromDb.FirstOrDefault(t => t.Id == item.Id).AssigneeDisplayName : "Unassigned",
+                            AssigneeEmail = detailsFromDb.Any(t => t.Id == item.Id) ? detailsFromDb.FirstOrDefault(t => t.Id == item.Id).AssigneeEmail : "",
                             AssignedBy = detailsFromDb.Any(t => t.Id == item.Id) ? detailsFromDb.FirstOrDefault(t => t.Id == item.Id).AssignedBy : "",
                             TimeAllocated = item.Fields.ContainsKey("Microsoft.VSTS.Scheduling.OriginalEstimate") ? (double)item.Fields["Microsoft.VSTS.Scheduling.OriginalEstimate"] : 0.00,
                             TimeSpent = item.Fields.ContainsKey("Microsoft.VSTS.Scheduling.CompletedWork") ? (double)item.Fields["Microsoft.VSTS.Scheduling.CompletedWork"] : 0.0
@@ -157,7 +158,7 @@ namespace Silicus.FrameworxProject.Services
                     Id = int.Parse(result.Fields["System.Id"].ToString()),
                     Title = result.Fields["System.Title"].ToString(),
                     State = result.Fields["System.State"].ToString(),
-                    Type = result.Fields.ContainsKey("System.WorkItemType") ? result.Fields["System.WorkItemType"].ToString() : Constants.InformationNotAvailableText,
+                    Type = result.Fields.ContainsKey("System.WorkItemType") ? result.Fields["System.WorkItemType"].ToString() : Constants.InformationNotAvailableText,                    
                     AreaPath = result.Fields.ContainsKey("System.AreaPath") ? result.Fields["System.AreaPath"].ToString() : Constants.InformationNotAvailableText,                   
                     TimeAllocated = result.Fields.ContainsKey("Microsoft.VSTS.Scheduling.OriginalEstimate") ? (double)result.Fields["Microsoft.VSTS.Scheduling.OriginalEstimate"] : 0.00,
                     TimeSpent = result.Fields.ContainsKey("Microsoft.VSTS.Scheduling.CompletedWork") ? (double)result.Fields["Microsoft.VSTS.Scheduling.CompletedWork"] : 0.0

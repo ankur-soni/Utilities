@@ -16,8 +16,7 @@
             var currenRow = grid.table.find("tr[data-uid='" + currentUid + "']");
             var assignButton = $(currenRow).find(".k-grid-Assign");
             var updateButton = $(currenRow).find(".k-grid-Update");
-            var acceptButton = $(currenRow).find(".k-grid-Accept");
-            debugger;
+            var acceptButton = $(currenRow).find(".k-grid-Accept");            
             if (gridData[i].AssigneeDisplayName != "Unassigned" && gridData[i].AssigneeDisplayName != "") {
                 if (assignButton) {
                     assignButton.text("Re Assign");
@@ -31,8 +30,6 @@
             }else{
                 updateButton.remove();
             }
-
-
         }
 
         $(".hours").kendoMaskedTextBox({
@@ -116,8 +113,8 @@
                     columns.Bound(p => p.Type).Width(10);
                     columns.Bound(p => p.AreaPath).Width(30).Title("Area");
                     columns.Bound(p => p.AssigneeDisplayName).Width(50).Title("Assigned To");
-                    columns.Bound(p => p.TimeAllocatedString).Width(10).Title("Time Allocated (Hrs)").ClientTemplate("<input class='allocated-hours hours' id=#=Id# value='#=TimeAllocatedString#'  #=(Assignee == 'Unassigned' || TimeAllocatedString == '00:00')?'':'disabled'# />");
-                    columns.Bound(p => p.TimeSpentString).Width(10).Title("Time Spent (Hrs)").ClientTemplate("<input value='#=TimeSpentString#' class='spent-hours hours'  #=Assignee == 'Unassigned'?'':'disabled'#/>");
+                    columns.Bound(p => p.TimeAllocated).Width(10).Title("Time Allocated (Hrs)").ClientTemplate("<input class='allocated-hours hours' id=#=Id# value='#=toHHMM(TimeAllocated)#'  #=(Assignee == 'Unassigned' || TimeAllocated == '0')?'':'disabled'# />");
+                    columns.Bound(p => p.TimeSpent).Width(10).Title("Time Spent (Hrs)").ClientTemplate("<input value='#=toHHMM(TimeSpent)#' class='spent-hours hours'  #=Assignee == 'Unassigned'?'':'disabled'#/>");
                     columns.Bound(p => p.State).Width(10);
                     columns.Command(command =>
                     {
@@ -154,7 +151,7 @@
 })
 
 @{
-    string str = Html.Kendo().DropDownList()
+    string assigneeDropdown = Html.Kendo().DropDownList()
                     .BindTo((IEnumerable)ViewBag.Users)
                     .Filter("contains")
                     .OptionLabel("Unassigned")
@@ -170,7 +167,7 @@
     Title = "Assign User",
     CloseButtonVisible = true,
     SaveButtonVisible = true,
-    ContentHtml = str,
+    ContentHtml = assigneeDropdown,
     SaveButtonOnlickEvent = "assignUser()"
 })
 
@@ -180,6 +177,6 @@
     Title = "Update",
     CloseButtonVisible = true,
     SaveButtonVisible = true,
-    ContentHtml = str,
+    ContentHtml = "<lable> Time  Spent <input id='update-time'#/></label>",
     SaveButtonOnlickEvent = "update()"
 })
