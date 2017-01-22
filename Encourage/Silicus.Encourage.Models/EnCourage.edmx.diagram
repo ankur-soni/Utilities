@@ -33,6 +33,8 @@
         <EntityTypeShape EntityType="EnCourageModel.Configuration" Width="1.5" PointX="0.75" PointY="3.75" />
         <AssociationConnector Association="EnCourageModel.FK__Configura__Award__51300E55" />
         <EntityTypeShape EntityType="EnCourageModel.EmailTemplate" Width="1.5" PointX="3.375" PointY="0.75" />
+        <EntityTypeShape EntityType="EnCourageModel.CustomDate" Width="1.5" PointX="3.375" PointY="3.75" />
+        <AssociationConnector Association="EnCourageModel.FK__CustomDat__Award__7849DB76" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

@@ -135,7 +135,8 @@
                         </li>
                         <li>
                             @Html.DropDownListFor(a => a.AwardYear,
-                                Enumerable.Range(2010, (DateTime.Now.Year + 1) - 2010).
+                                //Enumerable.Range(2010, (DateTime.Now.Year + 1) - 2010).
+                                Enumerable.Range(2010, (Model.CustomDate.Year + 1) - 2010).
                                     Select(i => new SelectListItem
                                     {
                                         Value = i.ToString(),

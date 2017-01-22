@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Web.Mvc;
 
@@ -32,6 +33,7 @@ namespace Silicus.EncourageWithAzureAd.Web.Models
         public SelectList ProjectsUnderCurrentUser { get; set; }
         public SelectList DepartmentsUnderCurrentUser { get; set; }
         public SelectList Resources { get; set; }
+        public DateTime CustomDate { get; set; }
 
         #region For Displaying on Edit Nomination
         public string ResourceName { get; set; }

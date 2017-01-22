@@ -1,0 +1,217 @@
+﻿@model Silicus.EncourageWithAzureAd.Web.Models.CustomdateViewmodel
+
+@{
+}
+
+<div class="row white-bg header-row">
+    <nav class="" role="navigation" style="margin-bottom: 0">
+        <div class="navbar-header">
+            <a class="navbar-minimalize minimalize-styl-2 btn btn-primary " href="#"><i class="fa fa-bars"></i> </a>
+        </div>
+    </nav>
+    <div class="col-lg-11 col-md-11 col-sm-11">
+        <h1 class="header-name">Set Award Period</h1>
+    </div>
+</div>
+<div class="form-horizontal">
+    
+    <div class="form-group">
+        @Html.LabelFor(model => model.Awards, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.DropDownListFor(model => model.Awards, new SelectList(Model.Awards, "Id", "Name"), "Select", htmlAttributes: new { @class = "form-control" })
+            @Html.ValidationMessageFor(model => model.Awards, "", new { @class = "text-danger" })
+        </div>
+    </div>
+    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.Years, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.DropDownListFor(model => model.Years, new SelectList(Model.Years), "Select", htmlAttributes: new { @class = "form-control" })
+            @Html.ValidationMessageFor(model => model.Years, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.Months, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.DropDownListFor(model => model.Months, new SelectList(Model.Months).Select(m => new SelectListItem
+       {
+           Value = m.Text,
+           Text = System.Globalization.CultureInfo.InvariantCulture.DateTimeFormat.GetMonthName(Convert.ToInt32(m.Text)),
+       })
+           , "Select", htmlAttributes: new { @class = "form-control" })
+            @Html.ValidationMessageFor(model => model.Months, "", new { @class = "text-danger" })
+        </div>
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(model => model.MonthToSubtract, "Months To Subtract", htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.TextBoxFor(model => model.MonthToSubtract, "")
+        </div>
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(model => model.IsApplicable, "Apply", htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.CheckBoxFor(model => model.IsApplicable)
+        </div>
+    </div>
+  
+    <div class="form-group">
+        <div class="col-md-offset-2 col-md-10">
+            <input type="button" value="Set" class="btn btn-success" id="set-custom-date" />
+            <input type="button" value="ReSet" class="btn btn-success" id="reset-custom-date" />
+            <input type="button" value="Cancel" class="btn btn-success" id="cancel-custom-date" />
+        </div>
+    </div>
+</div>
+<script>
+    $("#Years").attr("disabled", "disabled");
+    $("#Months").attr("disabled", "disabled");
+    var MON = '@Silicus.EncourageWithAzureAd.Web.Enums.FrequencyCode.MON.ToString()';
+    var YEAR = '@Silicus.EncourageWithAzureAd.Web.Enums.FrequencyCode.YEAR.ToString()';
+    $("#Awards").change(function () {
+        debugger;
+        $("#Months").val("");
+        $("#Years").val("");
+        var awardId = parseInt($("#Awards").val());
+        var selectedAwardFrequency = getSelectedAwardFrequency(awardId);
+        if (selectedAwardFrequency == MON) {
+                    $("#Years").attr("disabled", false);
+                }
+        else if (selectedAwardFrequency == YEAR) {
+                    $("#Years").attr("disabled", false);
+                    $("#Months").attr("disabled", "disabled");
+                }
+    })
+
+    $("#set-custom-date").click(function () {
+        debugger;
+        var awardId = parseInt($("#Awards").val());
+
+        if (awardId > 0) {
+            var month = parseInt($("#Months").val());
+            var year = parseInt($("#Years").val());
+            var selectedAwardFrequency = getSelectedAwardFrequency(awardId);
+            if (selectedAwardFrequency == MON) {
+                if (!month > 0 || !year > 0) {
+                    swal("Error", "Please select month and year.", "error");
+                }
+                else {
+                    setCustomDate(awardId, month, year);
+                }
+            }
+            else if (selectedAwardFrequency == YEAR) {
+                if (!year > 0) {
+                    swal("Error", "Please select year");
+                }
+                else {
+                    setCustomDate(awardId,0, year);
+                }
+            }
+
+        }
+        else {
+            swal("Error", "Please select award.", "error");
+        }
+
+
+    });
+
+    function setCustomDate(awardId, month, year) {
+        debugger;
+        var isApplicable = $("#IsApplicable").is(":checked");
+        var monthToSubtract = parseInt( $("#MonthToSubtract").val());
+        $.ajax({
+            type: "POST",
+            data: { awardId: awardId, month: month, year: year, monthToSubtract: monthToSubtract, isApplicable: isApplicable },
+            url: "@Url.Action("SetAwardPeriod","Review")",
+            success: function (status) {
+                if (status) {
+                    swal("Success", "Award period set successfuly.", "success");
+                }
+                else {
+                    swal("Error", "Award period not set successfuly.", "error");
+
+                }
+            },
+            error: function (status) {
+                swal("Error", "Oops something went wrong!", "error");
+            }
+        });
+    }
+
+
+    $("#Years").change(function () {
+        debugger;
+        var awardId = parseInt($("#Awards").val());
+        var selectedAwardFrequency = getSelectedAwardFrequency(awardId);
+        if (selectedAwardFrequency == MON) {
+            $("#Months").val("");
+            var selectedYear = parseInt($("#Years").val());
+            if (selectedYear > 0) {
+                $("#Months").attr("disabled", false);
+                var selectedYear = parseInt($("#Years").val());
+                var currentDate = new Date();
+                if (currentDate.getFullYear() == selectedYear) {
+                    $("#Months option").each(function () {
+                        var data = $(this).val();
+                        if (parseInt($(this).val()) > currentDate.getMonth() + 1) {
+                            $(this).attr("disabled", "disabled");
+                        }
+                    });
+                }
+            }
+            else {
+                $("#Months").attr("disabled", true);
+            }
+        }
+
+    });
+
+
+    function getSelectedAwardFrequency(awardId) {
+        var status;
+        $.ajax({
+            type: "GET",
+            data: { awardId: awardId },
+            url: "@Url.Action("GetAwardFrequency","Review")",
+            async: false,
+            success: function (frequency) {
+                status = frequency;
+            },
+            error: function () {
+                swal("Error", "Oops something went wrong!", "error");
+            }
+        });
+        return status;
+    }
+
+    $("#reset-custom-date").click(function () {
+        var awardId = $("#Awards").val();
+        if (awardId > 0) {
+            $.ajax({
+                type: 'GET',
+                data: { awardId: awardId },
+                url: "@Url.Action("ResetAwardPeriod","Review")",
+                success: function (status) {
+                    if (status) {
+                        swal("Success", "Award period reset successfuly.", "success");
+                    }
+                    else {
+                        swal("Error", "Award period not reset successfuly.", "error");
+
+                    }
+                }
+            , error: function () {
+                swal("Error", "Oops something went wrong!", "error");
+            }
+        });
+        }
+        else {
+            swal("Error", "Please select award.", "error");
+        }
+        
+    });
+
+</script>

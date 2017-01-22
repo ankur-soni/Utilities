@@ -20,7 +20,7 @@ namespace Silicus.Encourage.Services
 
         private readonly UtilityContainer.Entities.ICommonDataBaseContext _commonDataBaseContext;
 
-        public EmailTemplateService(IDataContextFactory dataContextFactory, ICommonDbService commonDbService, ILogger logger)
+        public EmailTemplateService(IDataContextFactory dataContextFactory, ICommonDbService commonDbService, ILogger logger, ICustomDateService customdateService)
         {
             _encourageDatabaseContext = dataContextFactory.CreateEncourageDbContext();
             _commonDataBaseContext = commonDbService.GetCommonDataBaseContext();

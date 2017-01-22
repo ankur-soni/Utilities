@@ -26,9 +26,10 @@ namespace Silicus.EncourageWithAzureAd.Web.Controllers
         private readonly IEncourageDatabaseContext _encourageDatabaseContext;
         private readonly TextInfo _textInfo;
         private readonly ILogger _logger;
+        private readonly ICustomDateService _customDateService;
 
         public NominationController(INominationService nominationService, Encourage.DAL.Interfaces.IDataContextFactory dataContextFactory,
-            ICommonDbService commonDbService, IAwardService awardService, IReviewService reviewService, ILogger logger)
+            ICommonDbService commonDbService, IAwardService awardService, IReviewService reviewService, ILogger logger, ICustomDateService customDateService)
         {
             _nominationService = nominationService;
             _commonDbContext = commonDbService.GetCommonDataBaseContext();
@@ -37,6 +38,7 @@ namespace Silicus.EncourageWithAzureAd.Web.Controllers
             _reviewService = reviewService;
             _textInfo = new CultureInfo("en-US", false).TextInfo;
             _logger = logger;
+            _customDateService = customDateService;
         }
 
         #region Nomination
@@ -83,6 +85,7 @@ namespace Silicus.EncourageWithAzureAd.Web.Controllers
             try
             {
                 _logger.Log("Nomination-AddNomination-POST-try");
+                var customDate = _customDateService.GetCustomDate(model.AwardId);
                 var awardOfCurrentNomination = _awardService.GetAwardById(model.AwardId);
                 var currentAwardFrequency = _nominationService.GetAwardFrequencyById(awardOfCurrentNomination.FrequencyId);
                 #region RestrictManagerLogic
@@ -91,18 +94,25 @@ namespace Silicus.EncourageWithAzureAd.Web.Controllers
                 var startDate = new DateTime();
                 var endDate = new DateTime();
                 var countOfNomination = 0;
-                _logger.Log("Todays Date: " + DateTime.Now);
+                //_logger.Log("Todays Date: " + DateTime.Now);
+                _logger.Log("Todays Date: " + customDate);
                 if (currentAwardFrequency.Code == FrequencyCode.MON.ToString())
                 {
-                    var firstDateOfCurrentMonth = new DateTime(DateTime.Today.Year, DateTime.Today.Month, 1);
-                    startDate = firstDateOfCurrentMonth.AddMonths(-1);
-                    endDate = firstDateOfCurrentMonth.AddDays(-1);
+                    //var firstDateOfCurrentMonth = new DateTime(DateTime.Today.Year, DateTime.Today.Month, 1);
+                    var firstDateOfCurrentMonth = new DateTime(customDate.Year,customDate.Month, 1);
+                    //startDate = firstDateOfCurrentMonth.AddMonths(-1);
+                    //endDate = firstDateOfCurrentMonth.AddDays(-1);
+                    startDate = firstDateOfCurrentMonth;
+                    var noOfDaysInCurrentMonth = DateTime.DaysInMonth(customDate.Year,customDate.Month);
+                    endDate = new DateTime(customDate.Year, customDate.Month, noOfDaysInCurrentMonth);
                     countOfNomination = _nominationService.GetNominationCountByManagerIdForSom(model.ManagerId, startDate, endDate, model.AwardId);
                 }
                 else if (currentAwardFrequency.Code == FrequencyCode.YEAR.ToString())
                 {
-                    var firstDateOfCurrentYear = new DateTime(DateTime.Today.Year, 1, 1);
-                    startDate = firstDateOfCurrentYear.AddYears(-1);
+                    //var firstDateOfCurrentYear = new DateTime(DateTime.Today.Year, 1, 1);
+                    var firstDateOfCurrentYear = new DateTime(customDate.Year, 1, 1);
+                    //startDate = firstDateOfCurrentYear.AddYears(-1);
+                    startDate = firstDateOfCurrentYear;
                     countOfNomination = _nominationService.GetNominationCountByManagerIdForPinnacle(model.ManagerId, startDate, model.AwardId);
                 }
 
@@ -137,15 +147,18 @@ namespace Silicus.EncourageWithAzureAd.Web.Controllers
                         break;
                 }
 
-                if (currentAwardFrequency.Code == FrequencyCode.YEAR.ToString())
-                {
-                    nomination.NominationDate = DateTime.Now.Date.AddYears(-1);
-                }
-                else
-                {
-                    nomination.NominationDate = DateTime.Now.Date.AddMonths(-1);
+                //if (currentAwardFrequency.Code == FrequencyCode.YEAR.ToString())
+                //{
+                    //nomination.NominationDate = DateTime.Now.Date.AddYears(-1);
+                    nomination.NominationDate = customDate;
+                //}
+                //else
+                //{
+                //    //nomination.NominationDate = DateTime.Now.Date.AddMonths(-1);
+                //    nomination.NominationDate = customDate;
 
-                }
+
+                //}
 
                 nomination.IsSubmitted = submit.Equals("Submit");
 
@@ -210,6 +223,7 @@ namespace Silicus.EncourageWithAzureAd.Web.Controllers
         {
             _logger.Log("Nomination-EditSavedNomination-GET");
             var savedNomination = _nominationService.GetNomination(nominationId);
+            var customDate = _customDateService.GetCustomDate(savedNomination.AwardId);
             var nominationViewModel = new NominationViewModel();
             var userEmailAddress = User.Identity.Name;
 
@@ -251,7 +265,7 @@ namespace Silicus.EncourageWithAzureAd.Web.Controllers
             nominationViewModel.MainComment = savedNomination.Comment;
             nominationViewModel.OtherNominationReason = savedNomination.OtherNominationReason;
             nominationViewModel.AwardName = _awardService.GetAwardNameById(savedNomination.AwardId);
-
+            nominationViewModel.CustomDate = customDate;
             var criterias = _awardService.GetCriteriasForAward(nominationViewModel.AwardId);
 
             int index = 1;
@@ -278,6 +292,7 @@ namespace Silicus.EncourageWithAzureAd.Web.Controllers
         public void EditSavedNomination(NominationViewModel model, string submit)
         {
             _logger.Log("Nomination-EditSavedNomination-POST");
+            var customDate = _customDateService.GetCustomDate(model.AwardId);
             Nomination nomination = new Nomination
             {
                 Id = model.NominationId,
@@ -294,14 +309,17 @@ namespace Silicus.EncourageWithAzureAd.Web.Controllers
             var awardOfCurrentNomination = _awardService.GetAwardById(model.AwardId);
             var currentAwardFrequency = _nominationService.GetAwardFrequencyById(awardOfCurrentNomination.FrequencyId);
 
-            if (currentAwardFrequency.Code == FrequencyCode.YEAR.ToString())
-            {
-                nomination.NominationDate = DateTime.Now.Date.AddYears(-1);
-            }
-            else
-            {
-                nomination.NominationDate = DateTime.Now.Date.AddMonths(-1);
-            }
+            //if (currentAwardFrequency.Code == FrequencyCode.YEAR.ToString())
+            //{
+                //nomination.NominationDate = DateTime.Now.Date.AddYears(-1);
+                nomination.NominationDate = customDate;
+
+            //}
+            //else
+            //{
+            //    //nomination.NominationDate = DateTime.Now.Date.AddMonths(-1);
+            //    nomination.NominationDate = customDate.AddMonths(-1);
+            //}
 
             foreach (var comment in model.Comments)
             {
@@ -574,6 +592,8 @@ namespace Silicus.EncourageWithAzureAd.Web.Controllers
         public ActionResult EditReview(ReviewSubmitionViewModel model, string Submit)
         {
             _logger.Log("Nomination-EditReview-POST");
+            var currentNomination = _nominationService.GetNomination(model.NominationId);
+            var customDate = _customDateService.GetCustomDate(currentNomination.AwardId);
             var alreadyReviewed = _encourageDatabaseContext.Query<Review>().Where(r => r.ReviewerId == model.ReviewerId && r.NominationId == model.NominationId).FirstOrDefault();
             var previousComments = _encourageDatabaseContext.Query<ReviewerComment>().Where(r => r.ReviewerId == model.ReviewerId && r.NominationId == model.NominationId).ToList();
             foreach (var previousComment in previousComments)
@@ -589,7 +609,9 @@ namespace Silicus.EncourageWithAzureAd.Web.Controllers
             var review = new Review();
             review.NominationId = model.NominationId;
             review.ReviewerId = model.ReviewerId;
-            review.ReviewDate = DateTime.UtcNow;
+            //review.ReviewDate = DateTime.UtcNow;
+            review.ReviewDate = customDate;
+
 
             if (!string.IsNullOrEmpty(Submit) && Submit == "Submit")
             {
@@ -645,6 +667,7 @@ namespace Silicus.EncourageWithAzureAd.Web.Controllers
             foreach (var nomination in nominations)
             {
                 var award = _encourageDatabaseContext.Query<Award>().FirstOrDefault(a => a.Id == nomination.AwardId);
+                var customDate = _customDateService.GetCustomDate(award.Id);
                 var awardFrequency = _nominationService.GetAwardFrequencyById(award.FrequencyId);
                 var orDefault = _encourageDatabaseContext.Query<Award>().FirstOrDefault(a => a.Id == nomination.AwardId);
                 if (orDefault != null)
@@ -662,11 +685,15 @@ namespace Silicus.EncourageWithAzureAd.Web.Controllers
                             var reviewData = from r in _reviewService.GetAllReview()
                                 join n in _nominationService.GetAllNominations()
                                 on r.NominationId equals n.Id
-                                where (n.NominationDate.Value.Month.Equals(DateTime.Now.Month - 1)
-                                       &&
-                                       (DateTime.Now.Month > 1 ? (DateTime.Now.Year).Equals(n.NominationDate.Value.Year) : (DateTime.Now.Year - 1).Equals(n.NominationDate.Value.Year))
-                                )
-                                select r;
+                                             //where (n.NominationDate.Value.Month.Equals(DateTime.Now.Month - 1)
+                                             //       &&
+                                             //       (DateTime.Now.Month > 1 ? (DateTime.Now.Year).Equals(n.NominationDate.Value.Year) : (DateTime.Now.Year - 1).Equals(n.NominationDate.Value.Year))
+                                             //)
+                                             where (n.NominationDate.Value.Month.Equals(customDate.Month)
+                                                  &&
+                                                  (customDate.Month > 1 ? (customDate.Year).Equals(n.NominationDate.Value.Year) : (customDate.Year ).Equals(n.NominationDate.Value.Year))
+                                           )
+                                             select r;
 
                             var firstOrDefault = reviewData.FirstOrDefault();
                             if (firstOrDefault != null) islocked = firstOrDefault.IsLocked ?? false;
@@ -741,6 +768,8 @@ namespace Silicus.EncourageWithAzureAd.Web.Controllers
         public ActionResult ReviewNomination(ReviewSubmitionViewModel model, string Submit)
         {
             _logger.Log("Nomination-ReviewNomination-POST");
+            var currentNomination = _nominationService.GetNomination(model.NominationId);
+            var customDate = _customDateService.GetCustomDate(currentNomination.AwardId);
             var alreadyReviewed = _encourageDatabaseContext.Query<Review>().Where(r => r.ReviewerId == model.ReviewerId && r.NominationId == model.NominationId).FirstOrDefault();
             var previousComments = _encourageDatabaseContext.Query<ReviewerComment>().Where(r => r.ReviewerId == model.ReviewerId && r.NominationId == model.NominationId).ToList();
 
@@ -758,7 +787,8 @@ namespace Silicus.EncourageWithAzureAd.Web.Controllers
             var review = new Review();
             review.NominationId = model.NominationId;
             review.ReviewerId = model.ReviewerId;
-            review.ReviewDate = DateTime.UtcNow;
+            //review.ReviewDate = DateTime.UtcNow;
+            review.ReviewDate = customDate;
             review.IsLocked = false;
 
             if (!string.IsNullOrEmpty(Submit) && Submit == "Submit")

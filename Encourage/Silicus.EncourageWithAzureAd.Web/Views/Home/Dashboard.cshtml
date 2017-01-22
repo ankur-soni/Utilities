@@ -137,18 +137,17 @@
                             </li>
                             <li>
                                 @Html.DropDownList("filterYear",
-                            Enumerable.Range(2010, (DateTime.Now.Year + 1) - 2010).
+                            //Enumerable.Range(2010, (DateTime.Now.Year + 1) - 2010).
+                            Enumerable.Range(2010, (Model.CustomDate.Year + 1) - 2010).
                             Select(i => new SelectListItem
                             {
                                 Value = i.ToString(),
                                 Text = i.ToString()
                             }),
-             "-- Year --", new { value = DateTime.Now.Year, @class = "form-group form-control", @onchange = "filterByData();" })
+             //"-- Year --", new { value = DateTime.Now.Year, @class = "form-group form-control", @onchange = "filterByData();" })
+             "-- Year --", new { value = Model.CustomDate.Year, @class = "form-group form-control", @onchange = "filterByData();" })
                             </li>
                         </ul>
-
-
-
                     </div>
                 </div>
             }
@@ -207,8 +206,10 @@
 <script>
     var _urlGetWinnersListPartialView = "@Url.Action("GetWinnersListPartialView", "Home")";
     $(document).ready(function () {
-        $("#filterMonth").val(@DateTime.Now.Month);
-        $("#filterYear").val(@DateTime.Now.Year);
+        @*$("#filterMonth").val(@DateTime.Now.Month);
+        $("#filterYear").val(@DateTime.Now.Year);*@
+        $("#filterMonth").val(@Model.CustomDate.Month);
+        $("#filterYear").val(@Model.CustomDate.Year);
 
     });
     $("#lockNominations").click(function (e) {
