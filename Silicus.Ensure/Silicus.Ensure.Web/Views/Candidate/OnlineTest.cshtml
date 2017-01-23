@@ -168,7 +168,10 @@
             autoStart: false,
             callbacks: {
                 stop: function () {
-                    $("#myModalTC").modal();
+                    // $("#myModalTC").modal();
+                    TestDurationComplete();
+                    var text = "The test duration is over, thank you for your participation. Further, the recruitment team will contact you for the update";
+                    ShowSweetAlertWithoutCancel("Warning!", text, "warning");
                 },
                 interval: ProgressBar
             }
@@ -250,9 +253,9 @@
             if (time == 60) {
                 var timerCntVal = $("#TimerIncCount").val();
                 if (timerCntVal == 0)
-                    ShowProgressPopUp(true, "Please click on 'Add more time' button in order to add 10 more minutes to Test duration.");
+                    ShowProgressPopUp(false, "Please click on 'Add more time' button in order to add 10 more minutes to Test duration.");
                 else if (timerCntVal == 1)
-                    ShowProgressPopUp(true, "Please click on 'Add more time' button for the last time to add 10 more minutes to Test duration.");
+                    ShowProgressPopUp(false, "Please click on 'Add more time' button for the last time to add 10 more minutes to Test duration.");
                 else
                     ShowProgressPopUp(false, "1 minute remaining to complete the test.");
             }
@@ -266,16 +269,38 @@
     }
 
     function ShowProgressPopUp(bl, msg) {
-        $("#myModal").modal();
-        $("#btnSubmitTestOK").hide();
+        //$("#myModal").modal();
+        //$("#btnSubmitTestOK").hide();
 
-        if (bl)
-            $("#btnModalOK").show();
-        else
-            $("#btnModalOK").hide();
+        //if (bl)
+        //    $("#btnModalOK").show();
+        //else
+        //    $("#btnModalOK").hide();
 
-        $("#msgMain").text("Warning!");
-        $("#msgContent").text(msg);
+        //$("#msgMain").text("Warning!");
+        //$("#msgContent").text(msg);
+        if (!bl) {
+            ShowSweetAlertWithoutCancel("Warning!", msg, "warning");
+        }
+        else {
+            swal({
+                title: "Warning!",
+                text: msg,
+                type: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#DD6B55",
+                confirmButtonText: "Yes",
+                cancelButtonText: "No",
+                closeOnConfirm: true,
+                closeOnCancel: true
+            },
+ function (isConfirm) {
+     if (isConfirm) {
+         OnAddMoreTimeOK();
+         swal("Added!", "Now you have extra 10 mins.", "success");
+     }
+ });
+        }
     }
 
     function UpdateTimeDB(tm) {
@@ -335,9 +360,28 @@
     }
 
     function OnSubmitTest() {
-        ShowProgressPopUp(true, "Are you sure, you want to Submit the Test? Once you submit the Test, you cannot revisit to view the Questions and their Answers.");
-        $("#btnModalOK").hide();
-        $("#btnSubmitTestOK").show();
+        //ShowProgressPopUp(false, "Are you sure, you want to Submit the Test? Once you submit the Test, you cannot revisit to view the Questions and their Answers.");
+        var msg = "Are you sure, you want to Submit the Test? Once you submit the Test, you cannot revisit to view the Questions and their Answers.";
+        swal({
+            title: "Warning!",
+            text: msg,
+            type: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#DD6B55",
+            confirmButtonText: "Yes",
+            cancelButtonText: "No",
+            closeOnConfirm: true,
+            closeOnCancel: true
+        },
+    function (isConfirm) {
+        if (isConfirm) {
+            OnSubmitTestOK();
+            var text = "The test is submitted , thank you for your participation. Further, the recruitment team will contact you for the update";
+            swal("Submitted!", "Now you have extra 10 mins.", "success");
+        }
+        //$("#btnModalOK").hide();
+        //$("#btnSubmitTestOK").show();
+    });
     }
 
     function OnSubmitTestOK() {

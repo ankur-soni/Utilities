@@ -23,6 +23,7 @@ namespace Silicus.EncourageWithAzureAd.Web.Models
         public bool IsOther { get; set; }
         public bool IsLocked { get; set; }
         public bool? IsSubmitted { get; set; }
+        public bool IsHistorical { get; set; }
         [Required(ErrorMessage = "Please provide Comment")]
         public string MainComment { get; set; }
         [Required(ErrorMessage = "Select Project or Department")]

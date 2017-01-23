@@ -25,7 +25,7 @@ namespace Silicus.Encourage.Services.Interface
         void AddReviewerCommentsForCurrentNomination(ReviewerComment revrComment);
         string GetAwardMonthAndYear(int nominationId);
         string GetAwardName(int nominationId);
-        List<Nomination> GetAllSubmitedReviewedNominations(int reviewerId, bool forCurrentMonth);
+        List<Nomination> GetAllSubmitedReviewedNominations(int reviewerId, bool forCurrentMonth, int awardId);
         List<Review> GetAllSubmitedReviewsForCurrentNomination(int nominationId);
         List<Nomination> GetAllSavedNominations();
         Nomination GetNomination(int nominationId);
@@ -47,7 +47,7 @@ namespace Silicus.Encourage.Services.Interface
         #region Saved Nominations List
         string GetAwardNameByAwardId(int awardId);
         User GetNomineeDetails(int userId);
-        List<Nomination> GetAllSubmittedAndSavedNominationsByCurrentUserAndMonth(int managerID, bool forCurrentMonth);
+        List<Nomination> GetAllSubmittedAndSavedNominationsByCurrentUserAndMonth(int managerID, bool forCurrentMonth,int awardId);
         #endregion
         void UpdateFinalScore(int nominationId);
     }

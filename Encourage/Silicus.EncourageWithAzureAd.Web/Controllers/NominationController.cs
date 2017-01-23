@@ -224,6 +224,7 @@ namespace Silicus.EncourageWithAzureAd.Web.Controllers
             _logger.Log("Nomination-EditSavedNomination-GET");
             var savedNomination = _nominationService.GetNomination(nominationId);
             var customDate = _customDateService.GetCustomDate(savedNomination.AwardId);
+            var isHistorical = IsHistoricalNomination(savedNomination);
             var nominationViewModel = new NominationViewModel();
             var userEmailAddress = User.Identity.Name;
 
@@ -262,6 +263,7 @@ namespace Silicus.EncourageWithAzureAd.Web.Controllers
             nominationViewModel.ResourceId = savedNomination.UserId;
             nominationViewModel.IsSubmitted = savedNomination.IsSubmitted;
             nominationViewModel.IsOther = savedNomination.Other;
+            nominationViewModel.IsHistorical = isHistorical;
             nominationViewModel.MainComment = savedNomination.Comment;
             nominationViewModel.OtherNominationReason = savedNomination.OtherNominationReason;
             nominationViewModel.AwardName = _awardService.GetAwardNameById(savedNomination.AwardId);
@@ -435,20 +437,20 @@ namespace Silicus.EncourageWithAzureAd.Web.Controllers
         public ActionResult GetNominationList()
         {
             _logger.Log("Nomination-GetNominationList-GET");
-            var savedNominations = GetNominations(true);
+            var savedNominations = GetNominations(true,1);
             return View("SavedNomination", savedNominations);
         }
 
         [HttpGet]
         [CustomeAuthorize(AllowedRole = "Manager")]
-        public ActionResult GetNominationListPartialView(bool forCurrentMonth)
+        public ActionResult GetNominationListPartialView(bool forCurrentMonth,int awardId)
         {
             _logger.Log("Nomination-GetNominationListPartialView-GET");
-            var savedNominations = GetNominations(forCurrentMonth);
+            var savedNominations = GetNominations(forCurrentMonth, awardId);
             return PartialView("~/Views/Nomination/Shared/_savedNominationList.cshtml", savedNominations);
         }
 
-        private List<NominationListViewModel> GetNominations(bool forCurrentMonth)
+        private List<NominationListViewModel> GetNominations(bool forCurrentMonth, int awardId)
         {
             _logger.Log("Nomination-GetNominations-GET");
             var email = User.Identity.Name;
@@ -456,7 +458,7 @@ namespace Silicus.EncourageWithAzureAd.Web.Controllers
 
             var managerId = _awardService.GetUserIdFromEmail(email);
             
-            var nominations = _nominationService.GetAllSubmittedAndSavedNominationsByCurrentUserAndMonth(managerId, forCurrentMonth);
+            var nominations = _nominationService.GetAllSubmittedAndSavedNominationsByCurrentUserAndMonth(managerId, forCurrentMonth, awardId);
 
             var savedNominations = new List<NominationListViewModel>();
 
@@ -823,21 +825,23 @@ namespace Silicus.EncourageWithAzureAd.Web.Controllers
         public ActionResult SavedReviews()
         {
             _logger.Log("Nomination-SavedReviews");
-            var reviewedNominations = GetSavedReviewsList(true);
+            // 1 is AwardId of SOM
+            var reviewedNominations = GetSavedReviewsList(true,1);
 
             return View(reviewedNominations);
         }
 
         [CustomeAuthorize(AllowedRole = "Reviewer")]
-        public ActionResult GetSavedReviewsPartialView(bool forCurrentMonth)
+        public ActionResult GetSavedReviewsPartialView(bool forCurrentMonth, int awardId)
         {
             _logger.Log("Nomination-GetSavedReviewsPartialView");
-            var reviewedNominations = GetSavedReviewsList(forCurrentMonth);
+            
+            var reviewedNominations = GetSavedReviewsList(forCurrentMonth, awardId);
 
             return PartialView("~/Views/Nomination/Shared/_savedReviewsList.cshtml", reviewedNominations);
         }
 
-        private List<NominationListViewModel> GetSavedReviewsList(bool forCurrentMonth)
+        private List<NominationListViewModel> GetSavedReviewsList(bool forCurrentMonth,int awardId)
         {
             _logger.Log("Nomination-GetSavedReviewsList");
             var reviewedNominations = new List<NominationListViewModel>();
@@ -849,7 +853,7 @@ namespace Silicus.EncourageWithAzureAd.Web.Controllers
                 return reviewedNominations;
             }
 
-            var nominations = _nominationService.GetAllSubmitedReviewedNominations(reviewerId, forCurrentMonth);
+            var nominations = _nominationService.GetAllSubmitedReviewedNominations(reviewerId, forCurrentMonth, awardId);
             foreach (var nomination in nominations)
             {
                 var awardName = _nominationService.GetAwardNameByAwardId(nomination.AwardId);
@@ -872,8 +876,36 @@ namespace Silicus.EncourageWithAzureAd.Web.Controllers
             }
             return reviewedNominations;
         }
+
+        private bool IsHistoricalNomination(Nomination nomination)
+        {
+            var currentNomination = nomination;
+            var typeOfNomination = _encourageDatabaseContext.Query<Award>().FirstOrDefault(n => n.Id == currentNomination.AwardId).Code;
+            var nominationDate = currentNomination.NominationDate;
+            bool IsHistoricalNomination = false;
+
+            switch (typeOfNomination)
+            {
+                case "SOM":
+                    var prevMonth = DateTime.Now.AddMonths(-1);
+                    if (nominationDate.Value.Year < prevMonth.Year && nominationDate.Value.Month < prevMonth.Month)
+                    {
+                        IsHistoricalNomination = true;
+                    }
+                    break;
+                case "PINNACLE":
+                    if (nominationDate.Value.Year < DateTime.Now.AddYears(-1).Year)
+                    {
+                        IsHistoricalNomination = true;
+                    }
+                    break;
+                default:
+                    break;
+            }
+
+            return IsHistoricalNomination;
+        }
         #endregion ReviewNomination
     }
 }
-
 #endregion Nomination

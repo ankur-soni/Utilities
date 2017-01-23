@@ -1,6 +1,6 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2013
-VisualStudioVersion = 12.0.31101.0
+# Visual Studio 14
+VisualStudioVersion = 14.0.25123.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{E78A3B8C-D6F3-4824-8F2F-044DBF36282D}"
 EndProject
@@ -32,6 +32,12 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Silicus.Ensure.Entities", "Silicus.Ensure.Entities\Silicus.Ensure.Entities.csproj", "{33F03AEB-5ED5-4F31-A3F5-D39B22373027}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Silicus.Ensure.Integration.Tests", "Silicus.Ensure.Integration.Tests\Silicus.Ensure.Integration.Tests.csproj", "{11DC4C64-6EB2-46B4-87D5-BA2DFF308151}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SonarQube", "SonarQube", "{1644443D-96FA-4AE7-9977-FC5FC79288BC}"
+	ProjectSection(SolutionItems) = preProject
+		SonarQube\ENSURE-001CSharp.ruleset = SonarQube\ENSURE-001CSharp.ruleset
+		SonarQube\SolutionBinding.sqconfig = SonarQube\SolutionBinding.sqconfig
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

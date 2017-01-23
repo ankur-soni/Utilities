@@ -819,6 +819,9 @@
     <Content Include="font-awesome\scss\_variables.scss" />
     <Content Include="js\plugins\chartist\chartist.min.js.map" />
     <Content Include="LESS\.crunch" />
+    <Content Include="fonts\summernote.eot" />
+    <Content Include="fonts\summernote.ttf" />
+    <Content Include="fonts\summernote.woff" />
     <None Include="Properties\PublishProfiles\SilicusEncourageWithAzureAdWeb - FTP %282%29.pubxml" />
     <None Include="Properties\PublishProfiles\SilicusEncourageWithAzureAdWeb - FTP %283%29.pubxml" />
     <None Include="Properties\PublishProfiles\SilicusEncourageWithAzureAdWeb - FTP.pubxml" />

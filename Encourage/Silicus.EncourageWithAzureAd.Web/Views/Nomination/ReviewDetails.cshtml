@@ -128,7 +128,7 @@
                                                                  Text = r.ToString()
                                                              }), "", new { @class = "example-square", @autocomplete = "off", @value = (reviewwrComment != null ? reviewwrComment.Credit : 0) })
                                                             </td>
-                                                            <td class="col-lg-3 col-md-3 col-sm-3">@(reviewwrComment != null ? reviewwrComment.Comment : "")<div class="textarea"></div></td>
+                                                            <td class="more col-lg-3 col-md-3 col-sm-3">@(reviewwrComment != null ? reviewwrComment.Comment : "")<div class="textarea"></div></td>
                                                             @Html.Hidden("Comments[" + j + "].CriteriaId", managerComment.CriteriaId)
                                                         </tr>
                                                     </tbody>

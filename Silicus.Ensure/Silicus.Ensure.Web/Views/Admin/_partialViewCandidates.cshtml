@@ -206,24 +206,10 @@
         return false;
     }
 
-    function deleteUser(userId) {
-        if (confirm('Are you sure, you want to delete this record ?')) {
-            $.ajax({
-                type: "POST",
-                url: '@Url.Action("DeleteUser", "User")',
-                data: { UserId: userId },
-                success: function (returndata) {
-                    if (returndata == 1) {
-                        $('#userGrids').data('kendoGrid').dataSource.read();
-                        $('#userGrids').data('kendoGrid').refresh();
-                        ShowMessage("User deleted successfully.", 1);
-                    }
-                    else {
-                        ShowMessage("Error occured while delete operation.", 0);
-                    }
-                }
-            });
-        }
+    function ConfirmDeleteUserRow(e) {
+        var tr = $(e.target).closest("tr");
+        var data = $("#userGrids").data('kendoGrid').dataItem(tr);
+        deleteKendoGridRow('userGrids', data);
     }
 
     function CheckAssign(status, id, TestSuiteId, UserId) {
@@ -350,10 +336,10 @@
          .Columns(columns =>
               {
                   columns.Bound(p => p.FirstName).ClientTemplate("#=FirstName# #=LastName#").Title("Name").Width(200);
-                  columns.Bound(p => p.RequisitionId).Title("Requisition id").Width(200);
+                  columns.Bound(p => p.RequisitionId).Title("Requisition id").Width(100);
                   columns.Bound(p => p.Position).Width(200);
-                  columns.Bound(p => p.ContactNumber).Title("Contact number").Width(200);
-                  columns.Bound(p => p.TotalExperienceInYear).ClientTemplate("#=TotalExperienceInYear#.#=TotalExperienceInMonth#").Title("Total experience").Width(200);
+                  columns.Bound(p => p.ContactNumber).Title("Contact number").Width(100);
+                  columns.Bound(p => p.TotalExperienceInYear).ClientTemplate("#=TotalExperienceInYear#.#=TotalExperienceInMonth#").Title("Total experience").Width(80);
                   columns.Bound(p => p.PanelName).Title("Panel").Width(200);
                   columns.Bound(p => p.CandidateStatus).ClientTemplate(@"
                                                                         #if(CandidateStatus=='TestAssigned'){#
@@ -368,21 +354,21 @@
                                                                         else{#
                                                                             #=CandidateStatus#
                                                                         #}
-                                                                        #").Title("Status").Width(200);
-                  columns.Bound(c => c.UserId).ClientTemplate(@"<a class='k-button' href='" + Url.Action("CandidateAdd", "Admin") + "?UserId=#=UserId#'>Edit</a><a id='testSuiteDel' class='k-button' href='\\#' onclick='return deleteUser(#=UserId#)'>Delete</a>").Title("Action").Width(200).Sortable(false);
+                                                                        #").Title("Status").Width(250);
+                  columns.Bound(c => c.UserId).ClientTemplate(@"<a class='k-button M-T4' href='" + Url.Action("CandidateAdd", "Admin") + "?UserId=#=UserId#'>Edit</a><a id='testSuiteDel' class='k-button M-T4' href='\\#' onclick='ConfirmDeleteUserRow(event)'>Delete</a>").Title("Actions").Width(500).Sortable(false);
                   columns.Bound(c => c.UserId).ClientTemplate(@"
 
                                          #if(CandidateStatus=='New'){#
                                         <a onclick=showTest('#=UserId#','#=TestStatus#') style='cursor:pointer'>Assign Test</a> |
-                                        <a  class ='dialog-window' onclick=ReAssignPanel('#=UserId#') style='cursor:pointer'>Assign Panel</a>
+                                        <a  class ='dialog-window' onclick=ReAssignPanel('#=UserId#') style='cursor:pointer'>#if(PanelName){#Reassign Panel#} else{#Assign Panel #}#</a>
                                         #}
                                         else if(CandidateStatus=='TestAssigned') {#
                                         <a  class ='dialog-window' onclick=ReAssign('#=UserId#','#=TestStatus#') style='cursor:pointer'>Reassign Test</a> |
-                                        <a  class ='dialog-window' onclick=ReAssignPanel('#=UserId#') style='cursor:pointer'>Assign Panel</a> |
+                                        <a  class ='dialog-window' onclick=ReAssignPanel('#=UserId#') style='cursor:pointer'>#if(PanelName){#Reassign Panel#} else{#Assign Panel #}#</a> |
                                         <a  class ='dialog-window' onclick=ViewTest('#=TestSuiteId#') style='cursor:pointer'>View Test</a>
                                         #}
                                         else if(CandidateStatus=='TestSubmitted') {#
-                                        <a  class ='dialog-window' onclick=ReAssignPanel('#=UserId#') style='cursor:pointer'>Assign Panel</a> |
+                                        <a  class ='dialog-window' onclick=ReAssignPanel('#=UserId#') style='cursor:pointer'>#if(PanelName){#Reassign Panel#} else{#Assign Panel #}#</a> |
                                         <a  class ='dialog-window' onclick=CheckAssign('#=TestStatus#',2,#=TestSuiteId#,'#=UserId#') style='cursor:pointer'>View Test</a>
                                         #}
                                         else if(CandidateStatus=='UnderEvaluation') {#
@@ -392,7 +378,7 @@
                                         <a  class ='dialog-window' onclick=CheckAssign('#=TestStatus#',2,#=TestSuiteId#,'#=UserId#') style='cursor:pointer'>View Test</a>
                                         #}
 
-                                        #").Title("Test action").Width(200).Sortable(false);
+                                        #").Title("Test actions").Width(600).Sortable(false);
 
               })
             .DataSource(dataSource => dataSource
@@ -433,8 +419,8 @@
 
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-primary" id="Savebtn">Save</button>
-                <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
+                <button type="button" style="width:70px;"  class="btn btn-primary" id="Savebtn">Save</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
             </div>
         </div>
     </div>
@@ -452,8 +438,8 @@
 
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-primary" id="SavePanlebtn">Save</button>
-                <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
+                <button type="button" style="width:70px;" class="btn btn-primary" id="SavePanlebtn">Save</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
             </div>
         </div>
     </div>

@@ -23,6 +23,7 @@
                         <div class="col-sm-4">
                             @Html.Label("Category", new { @class = "control-label" })
                             @Html.DropDownList("Process", new SelectList(Model.ProcessesViewModel, "Id", "Name"), "Select", new { @class = "form-control" })
+                            @Html.Label("Please Select a Template!", new {@id="selectCategoryError", @style="display:none;" })
                         </div>
                     </div>
                 </div>
@@ -41,8 +42,9 @@
     $("#Process").on("change", function () {
         var selectedProcess = this.value;
         if (selectedProcess != "") {
-            var selectedProcessName = this.selectedOptions[0].innerText;
             showCustomLoader();
+            $("#selectCategoryError").hide();
+            var selectedProcessName = this.selectedOptions[0].innerText;
 
             $.ajax({
                 type: "GET",
@@ -52,6 +54,7 @@
                     hideCustomLoader();
                     $("#templateEditorContainer").html(template);
                     $("#sendMailButton").removeAttr("disabled", "disabled");
+                    //$("#saveTemplateMailButton").removeAttr("disabled", "disabled");
                 },
                 error: function (error) {
                     hideCustomLoader();
@@ -59,8 +62,11 @@
                 }
             });
         } else {
-            $("#templateEditorContainer").html("Please Select a Template!");
+            $("#selectCategoryError").show();
+            $("#EmailTemplate").summernote('reset');
+            $("#Users").val("").text("");
             $("#sendMailButton").attr("disabled", "disabled");
+            //$("#saveTemplateMailButton").attr("disabled", "disabled");
         }
     });
 </script>

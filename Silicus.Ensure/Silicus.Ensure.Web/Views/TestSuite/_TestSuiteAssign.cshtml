@@ -1,5 +1,5 @@
 ﻿@using Kendo.Mvc.UI;
-<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" style="height:500px;">
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
@@ -13,10 +13,10 @@
                 .Columns(columns =>
               {
                   columns.Bound("").ClientTemplate("<input type='checkbox' name='selectUser' value='#= UserId#' />").Width(20);
-                  columns.Bound(p => p.FirstName).Width(50);
-                  columns.Bound(p => p.LastName).Width(50);
+                  columns.Bound(p => p.FirstName).Width(150);
+                  columns.Bound(p => p.LastName).Width(150);
                   columns.Bound(p => p.CurrentLocation).Width(100);
-                  columns.Bound(p => p.Email).Width(50);
+                  columns.Bound(p => p.Email).Width(150);
               })
             .DataSource(dataSource => dataSource
                   .Ajax()
@@ -27,6 +27,7 @@
                   })
                   .Read(read => read.Action("TestSuitUsers", "TestSuite"))
                   .PageSize(10)
+                  .ServerOperation(false)
               )
               .Pageable()
               .Sortable()
@@ -35,10 +36,11 @@
                    toolbar.Template(@<text>
                     <div class="toolbar">
                         <div class="row">
-                            <div class="col-md-6">
+                            <div class="col-sm-12">
+                                <div class="col-sm-5 col-md-4 col-lg-4 M-T15 M-B15">
                                 <div class="input-group">
                                     <span class="input-group-addon"><span class="glyphicon glyphicon-search" aria-hidden="true"></span></span>
-                                    <input type="text" class="form-control" id='FieldFilter' placeholder="Search" style="height: 38px;">
+                                    <input type="text" class="form-control" id='FieldFilterCandidate' placeholder="Search" style="height: 38px;">
                                     <span class="input-group-btn">
                                         <button class="btn btn-default" type="button"><span class="glyphicon glyphicon-refresh" aria-hidden="true"></span></button>
                                     </span>
@@ -46,13 +48,15 @@
                             </div>
                         </div>
                     </div>
+                    </div>
                 </text>);
                })
                 )
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                
                 <button id="btnAssign" type="button" class="btn btn-primary">Assign</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
             </div>
         </div>
     </div>
@@ -62,40 +66,55 @@
     $(document).ready(function () {
         $('#testSuiteId').val('@TempData["TesSuiteId"]');
         $('#btnAssign').click(function () {
+            swal({
+                title: "Are you sure,",
+                text: "Are you sure, you want to assign this test suite?",
+                type: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#DD6B55",
+                confirmButtonText: "Yes",
+                cancelButtonText: "No",
+                closeOnConfirm: false,
+                closeOnCancel: false
+            },
+   function (isConfirm) {
+       if (isConfirm) {
+           var users = $("#userGrids").find("[name='selectUser']:checked").map(function () {
+               return this.value;
+           }).get().join(",");
+           var testSuiteId = $('#testSuiteId').val();
+           $.ajax({
+               type: "POST",
+               url: '@Url.Action("AssignTest", "TestSuite")',
+               data: { users: users, testSuiteId: testSuiteId },
+               success: function (returndata) {
+                   if (returndata == 1) {
+                       $('#myModal').modal().hide();
+                       $("#testSuiteGrids").data("kendoGrid").dataSource.read();
+                       swal("Activated!", "Activated test suite.", "success");
+                   }
+                   else {
+                       swal("Error!", "Error occured while activating test suite.", "error");
+                   }
+               }
+           });
+       } else {
+           swal("Cancelled", "Record deletion cancelled.", "error");
+       }
+   });
 
-            $.when(showConfirmationWindow('Are you sure,  you want to assign this test suite?', 'Confirm !')).then(function (confirmed) {
-                if (confirmed) {
-                    var users = $("#userGrids").find("[name='selectUser']:checked").map(function () {
-                        return this.value;
-                    }).get().join(",");
-                    var testSuiteId = $('#testSuiteId').val();
-                    $.ajax({
-                        type: "POST",
-                        url: '@Url.Action("AssignTest", "TestSuite")',
-                        data: { users: users, testSuiteId: testSuiteId },
-                        success: function (returndata) {
-                            if (returndata == 1) {
-                                $('#myModal').modal().hide();
-                                ShowMessage("Activated test suite.", 1);
-                            }
-                            else {
-                                ShowMessage("Error occured while activating test suite.", 0);
-                            }
-                        }
-                    });
-                }
-            });
-           
+
         });
 
-        $("#FieldFilter").keyup(function () {
-
-            var value = $("#FieldFilter").val();
+        $("#FieldFilterCandidate").keyup(function () {
+            var value = $("#FieldFilterCandidate").val();
             grid = $("#userGrids").data("kendoGrid");
 
-            if (value.length > 1) {
+            if (value.length > 0) {
                 if (value) {
                     grid.dataSource.filter({ field: "FirstName", operator: "contains", value: value });
+                    grid.dataSource.filter({ field: "LastName", operator: "contains", value: value });
+                    grid.dataSource.filter({ field: "Email", operator: "contains", value: value });
                 } else {
                     grid.dataSource.filter({});
                 }
@@ -105,5 +124,5 @@
         });
     });
 
-    
+
 </script>

@@ -291,7 +291,7 @@
                             <div class="row" style="margin-bottom:10px!important">
                                 <div class="col-md-6">
                                     <div class="col-md-6">
-                                        Upload Resume<b style="color:Red;">*</b>
+                                        Upload Resume <b style="color:Red;">*</b>
                                     </div>
                                     <div class="col-md-6">
                                         <div class="demo-section k-content">
@@ -319,16 +319,16 @@
                             </div>
                         </div>
                         <div class="row" style="margin-bottom:10px!important">
-                            <div class="col-sm-8"></div>
-                            <div class="col-sm-4">
+                            <div class="col-sm-12"></div>
+                            <div class="col-sm-12">
                                 <div class="pull-right btn-nav">
                                     @(Html.Kendo().Button()
                                      .Name("btnSave")
-                                    .HtmlAttributes(new { type = "submit" })
+                                    .HtmlAttributes(new { type = "submit", @style="width:58px;" })
                                     .Content("Save"))
                                     @(Html.Kendo().Button()
                                                 .Name("btnCancel")
-                                .HtmlAttributes(new { type = "button" })
+                        .HtmlAttributes(new { type = "button", @class = "btn-secondary" })
                                 .Content("Cancel")
                                 .Events(ev => ev.Click("onCancelClick")))
                                 </div>
@@ -356,8 +356,8 @@
                     @Html.Partial("~/Views/Shared/EditorTemplates/PostionEditorTemplete.cshtml", new Silicus.Ensure.Web.Models.PositionViewModel())
                 </div>
                 <div class="modal-footer">
-                    <button type="button" onclick="savePostion()" class="btn btn-default">Save</button>
-                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    <button type="button" style="width:70px;"  onclick="savePostion()" class="btn btn-default">Save</button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
                 </div>
             </div>
 

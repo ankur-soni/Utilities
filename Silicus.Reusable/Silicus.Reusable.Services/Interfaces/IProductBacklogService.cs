@@ -8,8 +8,10 @@ namespace Silicus.FrameworxProject.Services.Interfaces
     public interface IProductBacklogService
     {
         IEnumerable<ProductBacklog> GetAllProductBacklog(string projectName);
-        WorkItem UpdateTimeAllocated(int workItemId, double time);
-        WorkItem UpdateTimeSpent(int workItemId, double time);
+        WorkItem UpdateTimeAllocated(ProductBacklog productBackloge);
+        WorkItem UpdateTimeSpent(ProductBacklog productBacklog);
         IEnumerable<TeamProjectReference> GetTeamProjects();
+        ProductBacklog GetWorkItemDetails(int id);
+        void UpdateAssignee(ProductBacklog productBacklog);
     }
 }

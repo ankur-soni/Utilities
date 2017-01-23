@@ -1,5 +1,5 @@
 ﻿@using Kendo.Mvc.UI;
-@using Kendo.Mvc.Extensions;
+@using System.Collections
 
 @{
     ViewBag.Title = "ShowAllProductBacklog";
@@ -16,11 +16,18 @@
             var currenRow = grid.table.find("tr[data-uid='" + currentUid + "']");
             var assignButton = $(currenRow).find(".k-grid-Assign");
             var updateButton = $(currenRow).find(".k-grid-Update");
-            if (gridData[i].Assignee != "Unassigned" && gridData[i].Assignee != "") {
+            var acceptButton = $(currenRow).find(".k-grid-Accept");            
+            if (gridData[i].AssigneeDisplayName != "Unassigned" && gridData[i].AssigneeDisplayName != "") {
                 if (assignButton) {
                     assignButton.text("Re Assign");
+                    acceptButton.remove();
                 }
-            }else if(!isRolePm && !gridData[i].IsTaskAssignedToUser){
+
+                if( !isRolePm && !gridData[i].IsTaskAssignedToUser){
+                    updateButton.remove();
+                }
+
+            }else{
                 updateButton.remove();
             }
         }
@@ -29,7 +36,9 @@
             mask: "00 : 00",
             change: onHrsChange
         });
+
     }
+
 </script>
 
 
@@ -56,6 +65,7 @@
                   .DataTextField("Name")
                   .DataValueField("Name")
                   .Events(e => e.Change("onProjectChange").DataBound("onProjectDataBound"))
+                    .Filter("contains")
                   .DataSource(source =>
                   {
                       source.Custom()
@@ -90,13 +100,7 @@
                 .Ajax()
                 .Model(model =>
                 {
-                    model.Id(p => p.Id);
-                    model.Field(p => p.Title).Editable(false);
-                    model.Field(p => p.TimeAllocated).Editable(false);
-                    model.Field(p => p.TimeSpent).Editable(false);
-                    model.Field(p => p.State).Editable(false);
-                    model.Field(p => p.Assignee).Editable(false);
-
+                    model.Id(p => p.Id);                
                 })
                 .Read(read => read.Action("GetProductBacklogs", "ProductBacklog").Data("additionalData"))
                 .PageSize(20)
@@ -105,25 +109,27 @@
                 .Columns(columns =>
                 {
                     columns.Bound(p => p.Id).Width(10);
-                    columns.Bound(p => p.Title).Width(50);
+                    columns.Bound(p => p.Title).Width(50).ClientTemplate(@"<a href='\\#' onclick='openDetails(#=Id#)'>#=Title#</a>");
                     columns.Bound(p => p.Type).Width(10);
                     columns.Bound(p => p.AreaPath).Width(30).Title("Area");
-                    columns.Bound(p => p.Assignee).Width(50).Title("Assigned To");
-                    columns.Bound(p => p.TimeAllocatedString).Width(10).Title("Time Allocated (Hrs)").ClientTemplate("<input class='allocated-hours hours' id=#=Id# value='#=TimeAllocatedString#'  #=(Assignee == 'Unassigned' || TimeAllocatedString == '00:00')?'':'disabled'# />");
-                    columns.Bound(p => p.TimeSpentString).Width(10).Title("Time Spent (Hrs)").ClientTemplate("<input value='#=TimeSpentString#' class='spent-hours hours'/>");
+                    columns.Bound(p => p.AssigneeDisplayName).Width(50).Title("Assigned To");
+                    columns.Bound(p => p.TimeAllocated).Width(10).Title("Time Allocated (Hrs)").ClientTemplate("<input class='allocated-hours hours' id=#=Id# value='#=toHHMM(TimeAllocated)#'  #=(Assignee == 'Unassigned' || TimeAllocated == '0')?'':'disabled'# />");
+                    columns.Bound(p => p.TimeSpent).Width(10).Title("Time Spent (Hrs)").ClientTemplate("<input value='#=toHHMM(TimeSpent)#' class='spent-hours hours'  #=Assignee == 'Unassigned'?'':'disabled'#/>");
                     columns.Bound(p => p.State).Width(10);
                     columns.Command(command =>
                     {
-                        command.Custom("Accept").Click("Accept");
+                        command.Custom("Accept").Click("accept");
 
-                        if (isRolePm)
-                        {
-                            command.Custom("Assign");
-                        }
-                        command.Custom("Update");
+                        //  if (isRolePm)
+                        // {
+                        command.Custom("Assign").Click("openAssignUserForm");
+                        // }
+                        command.Custom("Update").Click("openUpdateForm");
                     }).Width(40).Title("Actions");
                 })
                  .Scrollable()
+                 .Editable(editable => editable.Mode(GridEditMode.PopUp))
+                 .Filterable(ftb => ftb.Mode(GridFilterMode.Row))
                  .Resizable(resize => resize.Columns(true))
                 .HtmlAttributes(new { style = "height: 750px;" })
                 .Sortable()
@@ -135,3 +141,42 @@
         </div>
     </div>
 </div>
+
+@Html.Partial("_BootstrapModalTemplate", new Silicus.Reusable.Web.Models.ViewModel.BootstrapModalTemplateViewModel()
+{
+    Id = "detailsFormModal",
+    Title = "Details",
+    CloseButtonVisible = true,
+    SaveButtonVisible = false
+})
+
+@{
+    string assigneeDropdown = Html.Kendo().DropDownList()
+                    .BindTo((IEnumerable)ViewBag.Users)
+                    .Filter("contains")
+                    .OptionLabel("Unassigned")
+                    .DataValueField("EmailAddress")
+                    .DataTextField("DisplayName")
+                    .Name("Assignee").ToString();
+
+}
+
+@Html.Partial("_BootstrapModalTemplate", new Silicus.Reusable.Web.Models.ViewModel.BootstrapModalTemplateViewModel()
+{
+    Id = "assineeFormModal",
+    Title = "Assign User",
+    CloseButtonVisible = true,
+    SaveButtonVisible = true,
+    ContentHtml = assigneeDropdown,
+    SaveButtonOnlickEvent = "assignUser()"
+})
+
+@Html.Partial("_BootstrapModalTemplate", new Silicus.Reusable.Web.Models.ViewModel.BootstrapModalTemplateViewModel()
+{
+    Id = "updateFormModal",
+    Title = "Update",
+    CloseButtonVisible = true,
+    SaveButtonVisible = true,
+    ContentHtml = "<lable> Time  Spent <input id='update-time'#/></label>",
+    SaveButtonOnlickEvent = "update()"
+})

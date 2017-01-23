@@ -40,13 +40,13 @@ namespace Silicus.Reusable.Web
 
             //// Loading latest version of Kendo
             bundles.Add(new ScriptBundle("~/bundles/kendoJS").Include(
-                "~/Scripts/plugins/Kendo/" + ConfigurationManager.AppSettings["KendoVersion"] + "/jquery.min.js",
+                //"~/Scripts/plugins/Kendo/" + ConfigurationManager.AppSettings["KendoVersion"] + "/jquery.min.js",
                 "~/Scripts/plugins/kendo/" + ConfigurationManager.AppSettings["KendoVersion"] + "/kendo.all.min.js",
                 "~/Scripts/plugins/kendo/" + ConfigurationManager.AppSettings["KendoVersion"] + "/kendo.aspnetmvc.min.js"));
 
             bundles.Add(new StyleBundle("~/Content/kendoCSS").Include(
             "~/Content/plugins/kendo/" + ConfigurationManager.AppSettings["KendoVersion"] + "/kendo.common.min.css",
-            "~/Content/plugins/kendo/" + ConfigurationManager.AppSettings["KendoVersion"] + "/kendo.custom.css"));
+            "~/Content/plugins/kendo/" + ConfigurationManager.AppSettings["KendoVersion"] + "/kendo.default.min.css"));
         }
     }
 }

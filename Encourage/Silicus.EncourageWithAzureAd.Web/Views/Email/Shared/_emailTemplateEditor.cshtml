@@ -20,6 +20,7 @@
 </div>
 
 <div class="pull-right">
+    @*<input type="button" name="saveTemplate" value="Save Template" id="saveTemplateMailButton" class="btn btn-primary" disabled="disabled" />*@
     <input type="button" name="send" value="Send" id="sendMailButton" class="btn btn-primary" disabled="disabled" />
     <button type="button" class="btn btn-primary" id="cancel" onclick="location.href='@Url.Action("Index", "Home")'">Cancel</button>
 </div>
@@ -31,6 +32,8 @@
 
 <script>
     var _urlSendMail = '@Url.Action("SendMailToManagers", "Email")';
+    var _urlSaveMailTemplate = '@Url.Action("SaveMailTemplate", "Email")';
+
     $(document).ready(function () {
         var managers = $("#Users")[0].options;
         var toBeSelectedManagers = [];
@@ -44,7 +47,7 @@
         var usersSelect2 = $("#Users").select2();
         usersSelect2.val(toBeSelectedManagers).trigger("change");
 
-        $('.summernote').summernote({
+        $('#EmailTemplate').summernote({
             height: 350, // set editor height
             minHeight: null, // set minimum height of editor
             maxHeight: null, // set maximum height of editor
@@ -121,8 +124,54 @@
         }
     });
 
+    $("#saveTemplateMailButton").on("click", function () {
+        if (validateEmailTemplateAndProcess()) {
+            var emailTemplate = htmlEncode($("#EmailTemplate").val());
+            var selectedProcessName = $("#Process");
+
+            showCustomLoader();
+            $.ajax({
+                type: "POST",
+                url: _urlSaveMailTemplate,
+                data: { categoryId: categoryId, emailTemplate: emailTemplate },
+                success: function (result) {
+                    if (result = "Success") {
+                        swal({
+                            title: "Success",
+                            text: "Template Saved Successfully!!",
+                            type: "success",
+                            showCancelButton: false,
+                            confirmButtonColor: "#337ab7",
+                            confirmButtonText: "Ok",
+                        },
+                        function (isConfirm) {
+                            if (isConfirm) {
+                                window.location.href = '/Home/Index';
+                            }
+                        });
+                    } else {
+                        swal({
+                            title: "Error",
+                            text: "Due to some error failed to save the template :(",
+                            type: "error",
+                            showCancelButton: false,
+                            confirmButtonColor: "#337ab7",
+                            confirmButtonText: "Ok",
+                        });
+                    }
+                    hideCustomLoader();
+                }, error: function (error) {
+                    hideCustomLoader();
+                    console.log(error);
+                }
+            });
+        } else {
+            swal("Please Note", "Empty template cannot be saved", "error");
+        }
+    });
+
     function validateEmailTemplateAndUsers() {
-        var template = $("#EmailTemplate").val();
+        var template = $("#EmailTemplate").summernote('isEmpty');
         var users = $("#Users").val();
 
         var areUsersValid = false;
@@ -136,11 +185,31 @@
             });
         }
 
-        if (template != "") {
+        if (!template) {
             isTemplateValid = true;
         }
 
         return (areUsersValid && isTemplateValid);
+    }
+
+    function validateEmailTemplateAndProcess() {
+        var template = $("#EmailTemplate").summernote('isEmpty');
+        var process = $("#Process").val();
+
+        var isProcessSelected = false;
+        var isTemplateValid = false;
+
+        if (process != null && process.length > 0) {
+            if (this.value != "") {
+                isProcessSelected = true;
+            }
+        }
+
+        if (!template) {
+            isTemplateValid = true;
+        }
+
+        return (isProcessSelected && isTemplateValid);
     }
 
     function htmlEncode(value) {

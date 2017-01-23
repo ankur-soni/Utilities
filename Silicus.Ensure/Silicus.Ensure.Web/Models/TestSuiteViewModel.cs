@@ -13,14 +13,14 @@ namespace Silicus.Ensure.Web.Models
 
         [Required(ErrorMessage = "Test suite name is required!")]
         [StringLength(50, ErrorMessage = "Test suite name length should be less than or equal to 50 characters.")]
-        [RegularExpression(@"^\d*[a-zA-Z][a-zA-Z0-9#_+.-]*$",
+        [RegularExpression(@"^\d*[a-zA-Z][a-zA-Z0-9# _+.-]*$",
             ErrorMessage = "Name should start with alphabet. It may contain numbers and the following special characters: _ + . - #")]
         [Display(Name = "Test suite name")]
         public string TestSuiteName { get; set; }
 
         [Required(ErrorMessage = "Duration is required!")]
         [Display(Name = "Duration (min)")]
-        [Range(0, 360, ErrorMessage = "Enter number between 1-360")]
+        [Range(1, 360, ErrorMessage = "Enter number between 1-360")]
         public Int32 Duration { get; set; }
 
         [Required(ErrorMessage = "Position is required!")]
@@ -56,20 +56,20 @@ namespace Silicus.Ensure.Web.Models
         [Display(Name = "Project name")]
         public string ProjectName { get; set; }
 
-        [Required(ErrorMessage = "Experience(Years) is required!")]
+        [Required(ErrorMessage = "Experience (Years) is required!")]
         public int? FromExperience { get; set; }
 
-        [Required(ErrorMessage = "Experience(Months) is required!")]
+        [Required(ErrorMessage = "Experience (Months) is required!")]
         public int? ToExperience { get; set; }
 
         [Range(1, 100, ErrorMessage = "Enter numbers from 1-100")]
         [Required(ErrorMessage = "Optional question is required!")]
-        [Display(Name = "Optional question")]
+        [Display(Name = "Optional")]
         public int OptionalQuestion { get; set; }
 
         [Range(1, 100, ErrorMessage = "Enter numbers from 1-100")]
         [Required(ErrorMessage = "Practical question is required!")]
-        [Display(Name = "Practical question")]
+        [Display(Name = "Practical")]
         public int PracticalQuestion { get; set; }
 
         public int Userid { get; set; }
