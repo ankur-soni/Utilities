@@ -24,19 +24,23 @@ namespace Silicus.Encourage.Services
         {
             var data = _encourageDbcontext.Query<CustomDate>().Where(x => x.AwardId == awardId).FirstOrDefault();
             var award = _encourageDbcontext.Query<Award>().Where(x => x.Id == awardId).FirstOrDefault();
+
+            var currentDate = new DateTime(DateTime.Now.Year, DateTime.Now.Month,1);
+            var somDate = currentDate.AddMonths(-1);
+            var pinnacleDate = currentDate.AddMonths(-12);
+
             if (data != null)
             {
                 if (award != null && data.IsApplicable)
                 {
                     var month = data.Month == null ? DateTime.Today.Month : (int)data.Month;
                     var year = data.Year == null ? DateTime.Today.Year : (int)data.Year;
-                    return new DateTime(year, month, DateTime.Today.Day);
+                    return new DateTime(year, month, 1);
 
                 }
                 else if (award != null && !data.IsApplicable)
                 {
-
-                    return DateTime.Now.AddMonths(-1);
+                    return somDate;
 
                 }
                 
@@ -47,15 +51,15 @@ namespace Silicus.Encourage.Services
 
                 if (awardFrequency.Code == FrequencyCode.MON.ToString())
                 {
-                    return DateTime.Now.AddMonths(-1);
+                    return somDate;
                 }
                 else if (awardFrequency.Code == FrequencyCode.YEAR.ToString())
                 {
-                    return DateTime.Now.AddMonths(-12);
+                    return pinnacleDate;
                 }
             }
 
-            return DateTime.Now;
+            return currentDate;
         }
 
         public bool ReSetCustomDate(int awardId)
