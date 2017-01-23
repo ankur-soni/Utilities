@@ -264,6 +264,18 @@
             ]
         });
     });
+
+    var isAnyUnsavedChanges = false;
+
+    $("form").submit(function () {
+        isAnyUnsavedChanges = false;
+    });
+
+    $(window).bind('beforeunload', function () {
+        if (isAnyUnsavedChanges)
+            return 'Data will be lost if you leave without submit. Are you sure you want to leave?';
+    });
+
     $(window).load(function () {
         $(window).resize();
     });
@@ -333,7 +345,7 @@
             RecalculateFinalScore(nominationId);
             $("#frmHrComments")[0].reset();
             $('#hrCommentModal').modal('hide');
-
+            isAnyUnsavedChanges = true;
             criteriaId = null;
             nominationId = null;
             finalScrore = null;
