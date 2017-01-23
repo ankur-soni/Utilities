@@ -231,12 +231,13 @@ namespace Silicus.Encourage.Services
         public List<Nomination> GetAllSubmitedReviewedNominations(int reviewerId, bool forCurrentMonth, int awardId)
         {
             var toBeComparedDate = _customDateService.GetCustomDate(awardId);
+            var award = _encourageDatabaseContext.Query<Award>().Where(x => x.Id == awardId).FirstOrDefault();
 
-            List<Review> alreadyReviewedRecords = new List<Review>();
-            switch (awardId)
+            List<Review> alreadyReviewedRecords;
+            switch (award.Code)
             {
                 default:
-                case 1:
+                case "SOM":
                     alreadyReviewedRecords = _encourageDatabaseContext.Query<Review>()
                             .Where(r =>
                             r.Nomination.AwardId == awardId &&
@@ -245,7 +246,7 @@ namespace Silicus.Encourage.Services
                             (forCurrentMonth ? (r.Nomination.NominationDate.Value.Month == toBeComparedDate.Month && r.Nomination.NominationDate.Value.Year == toBeComparedDate.Year) : (r.Nomination.NominationDate < toBeComparedDate))).ToList();
                     break;
 
-                case 2:
+                case "PINNACLE":
                     alreadyReviewedRecords = _encourageDatabaseContext.Query<Review>()
                             .Where(r =>
                             r.Nomination.AwardId == awardId &&
@@ -459,20 +460,21 @@ namespace Silicus.Encourage.Services
         public List<Nomination> GetAllSubmittedAndSavedNominationsByCurrentUserAndMonth(int managerID, bool forCurrentMonth, int awardId)
         {
             DateTime toBeComparedDate = _customDateService.GetCustomDate(awardId);
+            var award = _encourageDatabaseContext.Query<Award>().Where(x => x.Id == awardId).FirstOrDefault();
 
-            List<Nomination> allNominations = new List<Nomination>();
+            List<Nomination> allNominations;
 
-            switch (awardId)
+            switch (award.Code)
             {
                 default:
-                case 1:
+                case "SOM":
                     //SOM
                     allNominations = _encourageDatabaseContext.Query<Nomination>().Where(N =>
                             N.ManagerId == managerID &&
                             N.AwardId == awardId &&
                             (forCurrentMonth ? (N.NominationDate.Value.Month == toBeComparedDate.Month && N.NominationDate.Value.Year <= toBeComparedDate.Year) : (N.NominationDate < toBeComparedDate))).ToList();
                     break;
-                case 2:
+                case "PINNACLE":
                     //Pinnacle
                     allNominations = _encourageDatabaseContext.Query<Nomination>().Where(N =>
                             N.ManagerId == managerID &&
