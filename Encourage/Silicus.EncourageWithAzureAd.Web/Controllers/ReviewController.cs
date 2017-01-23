@@ -173,6 +173,7 @@ namespace Silicus.EncourageWithAzureAd.Web.Controllers
                 var awardFrequency = _nominationService.GetAwardFrequencyById(award.FrequencyId);
                 if (award != null && nomination != null)
                 {
+                    var isHistorical = IsHistoricalNomination(nomination);
                     var awardCode = award.Code;
                     var nominee = _commonDbContext.Query<User>().FirstOrDefault(u => u.ID == nomination.UserId);
                     var nominationTime = nomination.NominationDate;
@@ -211,7 +212,8 @@ namespace Silicus.EncourageWithAzureAd.Web.Controllers
                             NumberOfReviews = totalReviews,
                             AverageCredits = averageCredits,
                             NominatedMonth = nominationTime.Value != null ? nominationTime.Value.Month : 0,
-                            AwardFrequencyCode = awardFrequency.Code
+                            AwardFrequencyCode = awardFrequency.Code,
+                            IsHistorical = isHistorical
                         }
                         );
                 }
@@ -359,8 +361,8 @@ namespace Silicus.EncourageWithAzureAd.Web.Controllers
 
             switch (typeOfNomination)
             {
+                default:
                 case "SOM":
-                    //var prevMonth = DateTime.Now.AddMonths(-1);
                     var prevMonth = customDate;
                     if (nominationDate.Value.Year < prevMonth.Year && nominationDate.Value.Month < prevMonth.Month)
                     {
@@ -368,13 +370,10 @@ namespace Silicus.EncourageWithAzureAd.Web.Controllers
                     }
                     break;
                 case "PINNACLE":
-                    //if (nominationDate.Value.Year < DateTime.Now.AddYears(-1).Year)
                     if (nominationDate.Value.Year < customDate.Year)
                     {
                         IsHistoricalNomination = true;
                     }
-                    break;
-                default:
                     break;
             }
 
