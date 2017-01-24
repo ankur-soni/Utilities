@@ -1,10 +1,13 @@
 ﻿using System;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Silicus.FrameworxProject.Models
 {
     public class ProductBacklog
     {
-        public string Id { get; set; }
+        [Key, DatabaseGenerated(DatabaseGeneratedOption.None)]
+        public int Id { get; set; }        
         public string Title { get; set; }
         public string Description { get; set; }
         public string State { get; set; }

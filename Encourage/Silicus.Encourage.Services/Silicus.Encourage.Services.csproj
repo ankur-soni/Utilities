@@ -63,10 +63,13 @@
   <ItemGroup>
     <Compile Include="AwardService.cs" />
     <Compile Include="CommonDbService.cs" />
+    <Compile Include="CustomDateService.cs" />
     <Compile Include="EmailNotificationOfWinnerService.cs" />
     <Compile Include="EmailTemplateService.cs" />
+    <Compile Include="Enums\FrequencyCode.cs" />
     <Compile Include="Interface\IAwardService.cs" />
     <Compile Include="Interface\ICommonDbService.cs" />
+    <Compile Include="Interface\ICustomDateService.cs" />
     <Compile Include="Interface\IEmailNotificationOfWinner.cs" />
     <Compile Include="Interface\IEmailTemplateService.cs" />
     <Compile Include="Interface\INominationService.cs" />

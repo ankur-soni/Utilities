@@ -14,12 +14,12 @@ namespace Silicus.Encourage.Services
     {
         private readonly IEncourageDatabaseContext _encourageDatabaseContext;
         private readonly Silicus.UtilityContainer.Entities.ICommonDataBaseContext _commonDataBaseContext;
-
-        public ResultService(Silicus.Encourage.DAL.Interfaces.IDataContextFactory dataContextFactory, ICommonDbService commonDbService)
+        private readonly ICustomDateService _customDateService;
+        public ResultService(Silicus.Encourage.DAL.Interfaces.IDataContextFactory dataContextFactory, ICommonDbService commonDbService, ICustomDateService customDateService)
         {
             _commonDataBaseContext = commonDbService.GetCommonDataBaseContext();
             _encourageDatabaseContext = dataContextFactory.CreateEncourageDbContext();
-
+            _customDateService = customDateService;
         }
 
         public void ShortlistNomination(int nominationId, int adminId)
@@ -44,11 +44,14 @@ namespace Silicus.Encourage.Services
         public void SelectWinner(int nominationId, string winningComment, string hrAdminsFeedback, int adminId)
         {
             var shortlistedNomination = _encourageDatabaseContext.Query<Shortlist>().Where(model => model.NominationId == nominationId).SingleOrDefault();
+            var currentNomination = _encourageDatabaseContext.Query<Nomination>().Where(x => x.Id == shortlistedNomination.NominationId).FirstOrDefault();
+            var customDate = _customDateService.GetCustomDate(currentNomination.AwardId);
 
             if (shortlistedNomination != null)
             {
                 shortlistedNomination.IsWinner = true;
-                shortlistedNomination.WinningDate = DateTime.Now.Date;
+                //shortlistedNomination.WinningDate = DateTime.Now.Date;
+                shortlistedNomination.WinningDate = customDate.Date;
                 shortlistedNomination.WinningComment = winningComment;
                 shortlistedNomination.HrAdminsFeedback = hrAdminsFeedback;
                 shortlistedNomination.AdminId = adminId;
@@ -60,7 +63,8 @@ namespace Silicus.Encourage.Services
                 {
                     IsWinner = true,
                     NominationId = nominationId,
-                    WinningDate = DateTime.Now.Date,
+                    //WinningDate = DateTime.Now.Date,
+                    WinningDate = customDate.Date,
                     WinningComment = winningComment,
                     HrAdminsFeedback = hrAdminsFeedback,
                     AdminId = adminId

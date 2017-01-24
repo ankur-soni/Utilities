@@ -28,7 +28,8 @@
             <div class="box M-T15">
                 <div class="row">
                     <div class="col-lg-12 col-md-12 col-sm-12 text-center">
-                        <label style="color:#0067AA;padding-bottom:5px;font-weight:bold;font-size:18px;">For  @String.Format("{0:MMMM}", DateTime.Now) - @DateTime.Now.Year</label>
+                       @* <label style="color:#0067AA;padding-bottom:5px;font-weight:bold;font-size:18px;">For  @String.Format("{0:MMMM}", DateTime.Now) - @DateTime.Now.Year</label>*@
+                        <label style="color:#0067AA;padding-bottom:5px;font-weight:bold;font-size:18px;">For  @String.Format("{0:MMMM}", Model.CustomDate) - @Model.CustomDate.Year</label>
                     </div>
                 </div>
 
@@ -218,7 +219,7 @@
                             </div>
                         </div>
                         <div class="row M-T15">
-                            @if (Model.IsSubmitted != true)
+                            @if (Model.IsSubmitted != true && !Model.IsHistorical)
                                             {
                             <div class="pull-right btn-nav">
                                 <input type="button" value="Discard" id="discardButton" class="btn btn-primary" />

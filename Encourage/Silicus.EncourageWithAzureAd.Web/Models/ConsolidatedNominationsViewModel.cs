@@ -1,4 +1,5 @@
 ﻿using Silicus.Encourage.Models;
+using System;
 using System.Collections.Generic;
 using System.Web.Mvc;
 
@@ -13,6 +14,7 @@ namespace Silicus.EncourageWithAzureAd.Web.Models
         public List<Criteria> Criterias { get; set; }
         public List<ReviewerViewModel> Reviewers { get; set; }
         public List<SubmittedNomination> Nominations { get; set; }
+        public DateTime CustomDate { get; set; }
     }
 
     public class SubmittedNomination

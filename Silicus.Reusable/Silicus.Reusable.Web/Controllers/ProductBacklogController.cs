@@ -44,8 +44,8 @@ namespace Silicus.FrameworxProject.Web.Controllers
             var _authorizationService = new Authorization(_commonDbService.GetCommonDataBaseContext());
             var userRoles = _authorizationService.GetRoleForUtility(User.Identity.Name, utility);
             ViewBag.IsRolePm = userRoles.Contains("Project Manager");
-            //   if (ViewBag.IsRolePm)
-            //{
+            //  if (ViewBag.IsRolePm)
+            // {
             ViewBag.Users = _commonDbService.GetAllUsers();
             // }
             return View();
@@ -58,18 +58,30 @@ namespace Silicus.FrameworxProject.Web.Controllers
             return Json(result.ToDataSourceResult(request), JsonRequestBehavior.AllowGet);
         }
 
-        public ActionResult UpdateTimeAllocated(int Id, double time)
+        public ActionResult UpdateTimeAllocated(ProductBacklogViewModel productBacklogViewModel)
         {
-            var result = _productBacklogService.UpdateTimeAllocated(Id, time);
+            if (ModelState.IsValid)
+            {
+                var productBacklog = _mapper.Map<ProductBacklogViewModel, ProductBacklog>(productBacklogViewModel);
+                var result = _productBacklogService.UpdateTimeAllocated(productBacklog);
 
-            return Json(new { result = result }, JsonRequestBehavior.AllowGet);
+                return Json(new { result = productBacklogViewModel }, JsonRequestBehavior.AllowGet);
+            }
+
+            return Json(null, JsonRequestBehavior.AllowGet);
         }
 
-        public ActionResult UpdateTimeSpent(int Id, double time)
+        public ActionResult UpdateTimeSpent(ProductBacklogViewModel productBacklogViewModel)
         {
-            _productBacklogService.UpdateTimeSpent(Id, time);
+            if (ModelState.IsValid)
+            {
+                var productBacklog = _mapper.Map<ProductBacklogViewModel, ProductBacklog>(productBacklogViewModel);
+                _productBacklogService.UpdateTimeSpent(productBacklog);
 
-            return Json(new { success = true }, JsonRequestBehavior.AllowGet);
+                return Json(new { success = productBacklogViewModel }, JsonRequestBehavior.AllowGet);
+            }
+
+            return Json(null, JsonRequestBehavior.AllowGet);
         }
 
         public ActionResult AcceptworkItem(ProductBacklogViewModel productBacklogViewModel)
@@ -79,11 +91,12 @@ namespace Silicus.FrameworxProject.Web.Controllers
                 productBacklogViewModel.AssigneeDisplayName = _commonDbService.FindDisplayNameFromEmail(User.Identity.Name);
                 productBacklogViewModel.AssigneeEmail = User.Identity.Name;
                 productBacklogViewModel.AssignedBy = productBacklogViewModel.AssigneeEmail;
+                productBacklogViewModel.IsTaskAssignedToUser = true;
                 var productBacklog = _mapper.Map<ProductBacklogViewModel, ProductBacklog>(productBacklogViewModel);
 
                 _productBacklogService.UpdateAssignee(productBacklog);
 
-                return Json(new { AssigneeDisplayName = productBacklogViewModel.AssigneeDisplayName }, JsonRequestBehavior.AllowGet);
+                return Json(new { result = productBacklogViewModel }, JsonRequestBehavior.AllowGet);
             }
 
             return Json(null, JsonRequestBehavior.AllowGet);
@@ -95,12 +108,12 @@ namespace Silicus.FrameworxProject.Web.Controllers
             if (ModelState.IsValid)
             {
                 productBacklogViewModel.AssignedBy = User.Identity.Name;
-
+                productBacklogViewModel.IsTaskAssignedToUser = productBacklogViewModel.AssigneeEmail != null ? productBacklogViewModel.AssigneeEmail.ToLower().Equals(User.Identity.Name.ToLower()) : false;
                 var productBacklog = _mapper.Map<ProductBacklogViewModel, ProductBacklog>(productBacklogViewModel);
 
                 _productBacklogService.UpdateAssignee(productBacklog);
 
-                return Json(new { AssigneeDisplayName = productBacklogViewModel.AssigneeDisplayName }, JsonRequestBehavior.AllowGet);
+                return Json(new { result = productBacklogViewModel }, JsonRequestBehavior.AllowGet);
             }
 
             return Json(null, JsonRequestBehavior.AllowGet);

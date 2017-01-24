@@ -49,6 +49,16 @@
           <Property Name="Title" Type="varchar" MaxLength="150" Nullable="false" />
           <Property Name="AwardId" Type="int" Nullable="false" />
         </EntityType>
+        <EntityType Name="CustomDate">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="IsApplicable" Type="bit" Nullable="false" />
+          <Property Name="Month" Type="int" />
+          <Property Name="Year" Type="int" />
+          <Property Name="AwardId" Type="int" Nullable="false" />
+        </EntityType>
         <EntityType Name="EmailTemplate">
           <Key>
             <PropertyRef Name="Id" />
@@ -148,6 +158,18 @@
               <PropertyRef Name="Id" />
             </Principal>
             <Dependent Role="Configurations">
+              <PropertyRef Name="AwardId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__CustomDat__Award__7849DB76">
+          <End Role="Award" Type="Self.Award" Multiplicity="1" />
+          <End Role="CustomDate" Type="Self.CustomDate" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Award">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="CustomDate">
               <PropertyRef Name="AwardId" />
             </Dependent>
           </ReferentialConstraint>
@@ -344,6 +366,7 @@
           <EntitySet Name="AwardCriteria" EntityType="Self.AwardCriteria" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Configurations" EntityType="Self.Configurations" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Criteria" EntityType="Self.Criteria" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="CustomDate" EntityType="Self.CustomDate" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="EmailTemplate" EntityType="Self.EmailTemplate" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="FrequencyMaster" EntityType="Self.FrequencyMaster" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ManagerComment" EntityType="Self.ManagerComment" Schema="dbo" store:Type="Tables" />
@@ -355,6 +378,10 @@
           <AssociationSet Name="FK__Configura__Award__51300E55" Association="Self.FK__Configura__Award__51300E55">
             <End Role="Award" EntitySet="Award" />
             <End Role="Configurations" EntitySet="Configurations" />
+          </AssociationSet>
+          <AssociationSet Name="FK__CustomDat__Award__7849DB76" Association="Self.FK__CustomDat__Award__7849DB76">
+            <End Role="Award" EntitySet="Award" />
+            <End Role="CustomDate" EntitySet="CustomDate" />
           </AssociationSet>
           <AssociationSet Name="FK__ReviewerC__Revie__52593CB8" Association="Self.FK__ReviewerC__Revie__52593CB8">
             <End Role="Review" EntitySet="Review" />
@@ -440,6 +467,7 @@
           <NavigationProperty Name="Criteria" Relationship="Self.FK_dbo_Criteria_dbo_Award_Award_Id" FromRole="Award" ToRole="Criteria" />
           <NavigationProperty Name="Nominations" Relationship="Self.FK_dbo_Nomination_dbo_Award_AwardId" FromRole="Award" ToRole="Nomination" />
           <NavigationProperty Name="Configurations" Relationship="EnCourageModel.FK__Configura__Award__51300E55" FromRole="Award" ToRole="Configuration" />
+          <NavigationProperty Name="CustomDates" Relationship="EnCourageModel.FK__CustomDat__Award__7849DB76" FromRole="Award" ToRole="CustomDate" />
         </EntityType>
         <EntityType Name="AwardCriteria">
           <Key>
@@ -824,6 +852,11 @@
             <End Role="Configuration" EntitySet="Configurations" />
           </AssociationSet>
           <EntitySet Name="EmailTemplates" EntityType="EnCourageModel.EmailTemplate" />
+          <EntitySet Name="CustomDates" EntityType="EnCourageModel.CustomDate" />
+          <AssociationSet Name="FK__CustomDat__Award__7849DB76" Association="EnCourageModel.FK__CustomDat__Award__7849DB76">
+            <End Role="Award" EntitySet="Awards" />
+            <End Role="CustomDate" EntitySet="CustomDates" />
+          </AssociationSet>
         </EntityContainer>
         <EntityType Name="Configuration">
           <Key>
@@ -855,6 +888,29 @@
           <Property Name="TemplateName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="Template" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
         </EntityType>
+        <EntityType Name="CustomDate">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="IsApplicable" Type="Boolean" Nullable="false" />
+          <Property Name="Month" Type="Int32" />
+          <Property Name="Year" Type="Int32" />
+          <Property Name="AwardId" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Award" Relationship="EnCourageModel.FK__CustomDat__Award__7849DB76" FromRole="CustomDate" ToRole="Award" />
+        </EntityType>
+        <Association Name="FK__CustomDat__Award__7849DB76">
+          <End Type="EnCourageModel.Award" Role="Award" Multiplicity="1" />
+          <End Type="EnCourageModel.CustomDate" Role="CustomDate" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Award">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="CustomDate">
+              <PropertyRef Name="AwardId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -1004,6 +1060,17 @@
               <MappingFragment StoreEntitySet="EmailTemplate">
                 <ScalarProperty Name="Template" ColumnName="Template" />
                 <ScalarProperty Name="TemplateName" ColumnName="TemplateName" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="CustomDates">
+            <EntityTypeMapping TypeName="EnCourageModel.CustomDate">
+              <MappingFragment StoreEntitySet="CustomDate">
+                <ScalarProperty Name="AwardId" ColumnName="AwardId" />
+                <ScalarProperty Name="Year" ColumnName="Year" />
+                <ScalarProperty Name="Month" ColumnName="Month" />
+                <ScalarProperty Name="IsApplicable" ColumnName="IsApplicable" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>

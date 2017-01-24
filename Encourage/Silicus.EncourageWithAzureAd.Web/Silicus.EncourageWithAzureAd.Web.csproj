@@ -321,6 +321,7 @@
     <Compile Include="Models\AwardViewModel.cs" />
     <Compile Include="Models\ConsolidatedNominationsViewModel.cs" />
     <Compile Include="Models\CriteriaCommentViewModel.cs" />
+    <Compile Include="Models\CustomdateViewmodel.cs" />
     <Compile Include="Models\DashboardViewModel.cs" />
     <Compile Include="Models\EmailTemplateEditorViewModel.cs" />
     <Compile Include="Models\EmailTemplateViewModel.cs" />
@@ -818,6 +819,9 @@
     <Content Include="font-awesome\scss\_variables.scss" />
     <Content Include="js\plugins\chartist\chartist.min.js.map" />
     <Content Include="LESS\.crunch" />
+    <Content Include="fonts\summernote.eot" />
+    <Content Include="fonts\summernote.ttf" />
+    <Content Include="fonts\summernote.woff" />
     <None Include="Properties\PublishProfiles\SilicusEncourageWithAzureAdWeb - FTP %282%29.pubxml" />
     <None Include="Properties\PublishProfiles\SilicusEncourageWithAzureAdWeb - FTP %283%29.pubxml" />
     <None Include="Properties\PublishProfiles\SilicusEncourageWithAzureAdWeb - FTP.pubxml" />
@@ -887,6 +891,7 @@
     <Content Include="Views\Email\Index.cshtml" />
     <Content Include="Views\Email\Shared\_emailTemplateEditor.cshtml" />
     <Content Include="Silicus.EncourageWithAzureAd.Web.ruleset" />
+    <Content Include="Views\Review\SetAwardPeriod.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

@@ -135,7 +135,8 @@
                         </li>
                         <li>
                             @Html.DropDownListFor(a => a.AwardYear,
-                                Enumerable.Range(2010, (DateTime.Now.Year + 1) - 2010).
+                                //Enumerable.Range(2010, (DateTime.Now.Year + 1) - 2010).
+                                Enumerable.Range(2010, (Model.CustomDate.Year + 1) - 2010).
                                     Select(i => new SelectListItem
                                     {
                                         Value = i.ToString(),
@@ -263,6 +264,18 @@
             ]
         });
     });
+
+    var isAnyUnsavedChanges = false;
+
+    $("form").submit(function () {
+        isAnyUnsavedChanges = false;
+    });
+
+    $(window).bind('beforeunload', function () {
+        if (isAnyUnsavedChanges)
+            return 'Data will be lost if you leave without submit. Are you sure you want to leave?';
+    });
+
     $(window).load(function () {
         $(window).resize();
     });
@@ -326,19 +339,21 @@
             $("#spnFinalPoints_" + nominationId + "_" + criteriaId).text(hrPoints);
             $("#spnFinalPoints_" + nominationId + "_" + criteriaId).addClass("cRed");
             //console.log(hrPoints + ", " + hrComment);
-            $("input[name='Nominations[" + g_nominationIndex + "].ManagerComments[" + g_criteriaIndex + "].FinalScore']").val(hrPoints);
+            $("input[name='Nominations[" + g_nominationIndex + "].ManagerComments[" + g_criteriaIndex + "].FinalScore']").val(parseFloat(hrPoints).toFixed(2));
             $("input[name='Nominations[" + g_nominationIndex + "].ManagerComments[" + g_criteriaIndex + "].AdminComment']").val(hrComment);
 
             RecalculateFinalScore(nominationId);
             $("#frmHrComments")[0].reset();
             $('#hrCommentModal').modal('hide');
-
+            isAnyUnsavedChanges = true;
             criteriaId = null;
             nominationId = null;
             finalScrore = null;
             adminComment = null;
             g_criteriaIndex = null;
             g_nominationIndex = null;
+
+            swal("Final score is changed. To save it permanently please make sure to click submit button once you finish all changes.");
         }
     }
 
