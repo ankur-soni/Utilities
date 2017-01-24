@@ -3,6 +3,7 @@ using Silicus.Ensure.Models.DataObjects;
 using Silicus.Ensure.Services.Interfaces;
 using Silicus.Ensure.Web.Mappings;
 using Silicus.Ensure.Web.Models;
+using Silicus.Ensure.Web.Models.Test;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -119,6 +120,13 @@ namespace Silicus.Ensure.Web.Controllers
             userTestSuite.ExtraCount = count;
             _testSuiteService.UpdateUserTestSuite(userTestSuite);
             return Json(count);
+        }
+
+        [HttpPost]
+        public JsonResult SumbmitCandidateResult(CandidateResultViewmodel candidateResultViewmodel)
+        {
+            
+            return Json(true);
         }
 
         [HttpPost]
