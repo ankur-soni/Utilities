@@ -101,14 +101,14 @@
     </div>
 
 </div>
-<div id="winnerFeedbackModal" class="loader-overlay" style="display:none;">
+<div id="winnerFeedbackModal" class="modal fade" role="dialog">
     @Html.Hidden("hdnNominationId");
-
+    @Html.Hidden("hdnAwardLockStatus");
     <div class="modal-dialog">
         <!-- Modal content-->
         <div class="modal-content">
             <div class="modal-header">
-                <button type="button" class="close" onclick="hideWinnerFeedbackPopup();">&times;</button>
+                <button type="button" id="feedbackPopUpClose" class="close" data-dismiss="modal">&times;</button>
                 <h4 class="modal-title">Select Winner</h4>
             </div>
             <div class="modal-body">
@@ -121,7 +121,7 @@
             </div>
             <div class="modal-footer" style="border:none;">
                 <button type="button" class="btn winner btn-primary" id="selectWinner">Submit</button>
-                <button type="button" class="btn btn-primary btn-nav" id="cancel" onclick="hideWinnerFeedbackPopup();">Cancel</button>
+                <button type="button" class="btn btn-primary btn-nav" id="feedBackCancel" data-dismiss="modal">Cancel</button>
             </div>
         </div>
     </div>
@@ -278,13 +278,7 @@
 
     function selectWinner(nominationId, awardLockStatus) {
         $("#hdnNominationId").val(nominationId);
-        if (!awardLockStatus) {
-            sweetAlert("Please lock the nomination and review from dashboard before proceeding.");
-            $("#winnerFeedbackModal").hide();
-            return false;
-        } else {
-            $("#winnerFeedbackModal").show();
-        }
+        $("#hdnAwardLockStatus").val(awardLockStatus);
     }
 
     function hideWinnerFeedbackPopup() {
@@ -308,9 +302,13 @@
         $("#feedbackRequired").text("");
     }
 
+    $("#feedbackPopUpClose,#feedBackCancel").on("click", function () {
+        clearFeedbackDailogBox();
+    });
+
     $('#selectWinner').on("click", function () {
-        var isLocked = $("div #allow-shortlist").text();
-        if (isLocked == "false") {
+        var isLocked = $("#hdnAwardLockStatus").val();
+        if (isLocked) {
             sweetAlert("Please lock the nomination from dashboard before proceed.");
             return false;
         }
