@@ -1,4 +1,4 @@
-﻿@model Silicus.Ensure.Web.Models.TestSuiteQuestionModel
+﻿@model Silicus.Ensure.Web.Models.Test.TestDetailsViewModel
 
 @using Kendo.Mvc.UI;
 
@@ -9,19 +9,21 @@
                 @if (Model.QuestionType == 1)
                 {
                     <p><strong>Section 1 (Objective question)</strong></p>
+                    <input type="hidden" value="@Model.QuestionType" id="QuestionType" />
                 }
                 else
                 {
                     <p><strong>Section 2 (Practical question)</strong></p>
+                    <input type="hidden" value="@Model.QuestionType" id="QuestionType" />
                 }
-                <p><strong>Question @Model.QuestionNumber: (@Model.Marks Marks)</strong></p>
+                <p><strong>Question @Model.QuestionId: (@Model.Marks Marks)</strong></p>
                 @Html.Raw(HttpUtility.HtmlDecode(Model.QuestionDescription))
             </div>
             <div class="col-md-9 col-md-offset-2" style="border-bottom-width:1px; border-bottom-style:solid; border-bottom-color:black;">
             </div>
-            <input type="hidden" value="@Model.QuestionNumber" id="QuestionNumber" />
-            <input type="hidden" value="@Model.UserTestDetailId" id="UserTestDetailId" />
-            <input type="hidden" value="@Model.QuestionType" id="QuestionType" />
+            <input type="hidden" value="@Model.QuestionId" id="QuestionNumber" />
+            <input type="hidden" value="@Model.TestDetailId" id="UserTestDetailId" />
+
             <input type="hidden" value="@Model.AnswerType" id="AnswerType" />
 
             @if (Model.QuestionType == 1 && Model.AnswerType == 1)
@@ -253,32 +255,29 @@
 
 <div class="row">
     <div class="col-md-9 col-md-offset-2" style="margin-top:1%;">
-        @if (!Model.IsFirst)
+        @if (Model.NextQuestionId != null)
         {
             @(Html.Kendo().Button()
         .Name("btnNext")
-        .HtmlAttributes(new { type = "button" }).Events(e => e.Click("OnNext"))
-        .Content("Next").HtmlAttributes(new { style = "float: right;" }))
+                .HtmlAttributes(new { type = "button" }).Events(e => e.Click("OnNext"))
+                    .Content("Next").HtmlAttributes(new { style = "float: right;", @data_id = Model.NextQuestionId }))
         }
 
-        @if (!Model.IsLast)
+        @if (Model.PreviousQuestionId != null)
         {
             @(Html.Kendo().Button()
-        .Name("btnPrevious")
-        .HtmlAttributes(new { type = "button" }).Events(e => e.Click("OnPrevious"))
-        .Content("Previous").HtmlAttributes(new { style = "float: right;" }))
+                .Name("btnPrevious")
+                .HtmlAttributes(new { type = "button" }).Events(e => e.Click("OnPrevious"))
+            .Content("Previous").HtmlAttributes(new { style = "float: right;", @data_id = Model.PreviousQuestionId }))
         }
     </div>
 </div>
 
 <div class="row">
     <div class="col-md-9 col-md-offset-2" style="margin-top:1%;">
-        @if (Model.IsFirst)
-        {
-            @(Html.Kendo().Button()
+        @(Html.Kendo().Button()
         .Name("btnSubmit")
         .HtmlAttributes(new { type = "button" }).Events(e => e.Click("OnSubmitTest"))
-        .Content("Submit Test").HtmlAttributes(new { style = "float: right;" }))
-        }
+        .Content("Submit Test").HtmlAttributes(new { style = "float: right;" })) 
     </div>
 </div>

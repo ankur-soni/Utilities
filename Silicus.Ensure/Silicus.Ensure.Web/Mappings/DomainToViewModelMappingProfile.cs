@@ -6,6 +6,8 @@ using Silicus.Ensure.Web.Models;
 using Silicus.Ensure.Models.DataObjects;
 using System;
 using Silicus.Ensure.Web.Application;
+using Silicus.Ensure.Models.Test;
+using Silicus.Ensure.Web.Models.Test;
 
 namespace Silicus.Ensure.Web.Mappings
 {
@@ -41,6 +43,9 @@ namespace Silicus.Ensure.Web.Mappings
                 .ForMember(dest => dest.RoleId, opt => opt.MapFrom(s => (s.PrimaryRoleID)))
                 .ForMember(dest => dest.UserId, opt => opt.MapFrom(s => (s.ID)))
                 .ForMember(dest => dest.FullName, opt => opt.MapFrom(s => (s.LastName + " " + s.FirstName)));
+
+            Mapper.CreateMap<QuestionNavigationBusinessModel, QuestionNavigationViewModel>();
+            Mapper.CreateMap<TestDetailsBusinessModel, TestDetailsViewModel>();
         }
     }
 }
