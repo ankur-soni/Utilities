@@ -50,8 +50,8 @@
                             </div>
                         </div>
                         <div id="nominationPeriodText">
-                            <span class="themeColorBlue" id="somNominationPeriod" style="display:none;font-weight:bold;">Nomination for SOM-@(DateTime.Now.AddMonths(-1).ToString("MMM-yyyy"))</span>
-                            <span class="themeColorBlue"  id="pinnacleNominationPeriod" style="display:none;font-weight:bold;">Nomination for Pinnacle-@(DateTime.Now.AddYears(-1).Year)</span>
+                            <span class="themeColorBlue" id="somNominationPeriod" style="display:none;font-weight:bold;">Nomination for SOM-@(Model.SomCustomDate.ToString("MMM-yyyy"))</span>
+                            <span class="themeColorBlue" id="pinnacleNominationPeriod" style="display:none;font-weight:bold;">Nomination for Pinnacle-@(Model.PinnacleCustomDate.Year)</span>
                         </div>
                         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
                         <div class="wizard-box" id="nominationCategory" nomination-step="1">
@@ -344,11 +344,11 @@
                 $("#somNominationPeriod").show();
                 $("#pinnacleNominationPeriod").hide();
             }
-        }else {
+        } else {
             $("#somNominationPeriod").hide();
             $("#pinnacleNominationPeriod").hide();
         }
-        
+
         showCustomLoader();
         $.ajax({
             type: 'GET',
@@ -590,7 +590,7 @@
                                         swal({
                                             title: "Error",
                                             text: data.message,
-                                            type:"error",
+                                            type: "error",
                                             showCancelButton: false,
                                             confirmButtonColor: "#337ab7",
                                             confirmButtonText: "Ok",

@@ -58,6 +58,7 @@ namespace Silicus.EncourageWithAzureAd.Web.Controllers
             var model = new NominationViewModel();
             var userEmailAddress = User.Identity.Name;
             var projects = _awardService.GetProjectsUnderCurrentUserAsManager(userEmailAddress);
+            var listOfAwards = _awardService.GetAllAwards();
 
             if (projects.Any())
             {
@@ -70,8 +71,21 @@ namespace Silicus.EncourageWithAzureAd.Web.Controllers
                 model.DepartmentsUnderCurrentUser = new SelectList(depts, "Id", "Name");
             }
 
+            foreach (var award in listOfAwards)
+            {
+                switch (award.Code)
+                {
+                    case "SOM":
+                        model.SomCustomDate = _customDateService.GetCustomDate(award.Id);
+                        break;
+                    case "PINNACLE":
+                        model.PinnacleCustomDate = _customDateService.GetCustomDate(award.Id);
+                        break;
+                }
+            }
+
             model.Resources = new SelectList(new List<User>(), "Id", "DisplayName");
-            model.ListOfAwards = new SelectList(_awardService.GetAllAwards(), "Id", "Name");
+            model.ListOfAwards = new SelectList(listOfAwards, "Id", "Name");
             model.ManagerId = _awardService.GetUserIdFromEmail(userEmailAddress);
 
             return View(model);
@@ -387,6 +401,11 @@ namespace Silicus.EncourageWithAzureAd.Web.Controllers
             int managerId = _awardService.GetUserIdFromEmail(User.Identity.Name);
             var filteredResources = _nominationService.GetAllResourcesForOtherReason(awardId, managerId);
             return Json(filteredResources, JsonRequestBehavior.AllowGet);
+        }
+
+        public DateTime GetCustomDateForAward(int awardId)
+        {
+            return _customDateService.GetCustomDate(awardId);
         }
 
         [HttpGet]

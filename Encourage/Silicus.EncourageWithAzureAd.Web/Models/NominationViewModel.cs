@@ -36,6 +36,9 @@ namespace Silicus.EncourageWithAzureAd.Web.Models
         public SelectList Resources { get; set; }
         public DateTime CustomDate { get; set; }
 
+        public DateTime SomCustomDate { get; set; }
+        public DateTime PinnacleCustomDate { get; set; }
+
         #region For Displaying on Edit Nomination
         public string ResourceName { get; set; }
         public string AwardName { get; set; }
