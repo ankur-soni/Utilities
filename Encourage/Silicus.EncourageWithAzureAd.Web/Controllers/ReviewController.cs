@@ -305,17 +305,8 @@ namespace Silicus.EncourageWithAzureAd.Web.Controllers
                 allReviewerComments.Add(reviewerCommentList);
             }
 
-            var lockedAwards = _nominationService.GetNominationLockStatus();
-            var isLocked = false;
             var awardOfCurrentNomination = _awardService.GetAwardFromNominationId(nominationId);
-
-            foreach (var lockedAward in lockedAwards)
-            {
-                if (lockedAward.Id == awardOfCurrentNomination.Id)
-                {
-                    isLocked = true;
-                }
-            }
+            var isLocked = GetLockStatusOfAward(awardOfCurrentNomination.Id);
 
             var isShortlisted = false;
             var isWinner = false;
