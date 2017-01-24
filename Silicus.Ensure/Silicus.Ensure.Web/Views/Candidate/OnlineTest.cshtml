@@ -1,5 +1,6 @@
 ﻿@model Silicus.Ensure.Web.Models.TestSuiteCandidateModel
 @using Kendo.Mvc.UI;
+@using Silicus.Ensure.Web.Models.Test
 
 @{
     ViewBag.Title = "Online Test";
@@ -8,7 +9,16 @@
 
 <div class="main-content" id="main">
     <div class="fluid mt20">
+        <div id="DivTestSummary">
+            @Html.Partial("_TestSummary", new TestSummaryViewModel()
+       {
+           Objective =
+               new TestViewModel(),
+           Practical = new TestViewModel()
+       })
 
+           
+        </div>
         <div class="row">
             <div class="col-md-12" style="text-align:center;">
                 <strong>This test is window protected, please do not move away from the window or refresh.</strong>
@@ -113,6 +123,31 @@
     </div>
 </div>
 
+
+<!-- Modal Submit Test On Time Complete-->
+<div class="modal fade" id="testresultPopup" role="dialog" >
+    <div class="modal-dialog">
+
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" >&times;</button>
+                <h4 class="modal-title">Candidate Result</h4>
+            </div>
+            <div class="modal-body">
+                <form id="frmTestresult">
+                    @Html.Partial("_CandidateResult", new CandidateResultViewmodel())
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button id="SubmitCandidateResult" type="button" class="btn btn-default" >OK</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+            </div>
+        </div>
+
+    </div>
+</div>
+
 <script>
     var clock;
     var totalTime;
@@ -123,6 +158,7 @@
 
     $(document).ready(function () {
 
+        $("#frmTestresult").kendoValidator();
         // Hide Submit button of popup. Show when to want submit test.
         $("#btnSubmitTestOK").hide();
 
@@ -162,6 +198,10 @@
         clock.setTime(tm);
         clock.setCountdown(true);
         clock.start();
+
+        $("#btnSubmitEvalution").on("click", submitEvalution);
+        $("#SubmitCandidateResult").on("click", submitCandidateResult);
+        
     });
 
     function AddMoreTime() {
@@ -363,5 +403,48 @@
         var userId = $("#UserId").val();
         window.location.href = '/Candidate/OnSubmitTest?testSuiteId=' + testSuiteId + '&userTestSuiteId=' + userTestSuiteId + '&userTestDetailId=' + userTestDetailId + '&userId=' + userId + '&answer=' + answer;
     }
+
+    function getCurrentQuestionStatus() {
+        var QuestionNumber = $("#QuestionNumber").val();
+        var QuestionType = $("#QuestionType").val();
+        var IsAnswered = false;
+        var IsViewed = true;
+        debugger;
+        if (QuestionType == 1) {
+            IsAnswered = $(".radio input:checked").length > 0 ? true : false;
+        }
+        else {
+            IsAnswered = $("#PracticalAnswer").val().trim().length > 0 ? true : false;
+        }
+        var result = { QuestionNumber: QuestionNumber, Questiontype: QuestionType, IsAnswered: IsAnswered, IsViewed: IsViewed };
+        return result;
+    }
+
+
+    function submitEvalution()
+    {
+        $("#testresultPopup").modal('show');
+    }
+
+    function submitCandidateResult() {
+        var validator = $("#frmTestresult").data("kendoValidator");
+        if(validator.validate())
+        {
+            var formdata = new FormData($('form').get(0));
+            formdata.append('CandidateUserId', 19);
+
+            $.ajax({
+                url: '@Url.Action("SumbmitCandidateResult", "Candidate")',
+                type: 'POST',
+                data: formdata,
+                processData: false,
+                contentType: false,
+                success: function (msg) {
+                    $("#testresultPopup").modal('hide');
+                }
+            });
+        }
+    }
+    
 
 </script>

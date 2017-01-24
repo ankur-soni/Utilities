@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Web.Mvc;
 
@@ -22,6 +23,7 @@ namespace Silicus.EncourageWithAzureAd.Web.Models
         public bool IsOther { get; set; }
         public bool IsLocked { get; set; }
         public bool? IsSubmitted { get; set; }
+        public bool IsHistorical { get; set; }
         [Required(ErrorMessage = "Please provide Comment")]
         public string MainComment { get; set; }
         [Required(ErrorMessage = "Select Project or Department")]
@@ -32,6 +34,7 @@ namespace Silicus.EncourageWithAzureAd.Web.Models
         public SelectList ProjectsUnderCurrentUser { get; set; }
         public SelectList DepartmentsUnderCurrentUser { get; set; }
         public SelectList Resources { get; set; }
+        public DateTime CustomDate { get; set; }
 
         #region For Displaying on Edit Nomination
         public string ResourceName { get; set; }

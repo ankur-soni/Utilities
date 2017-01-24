@@ -13,5 +13,6 @@ namespace Silicus.Encourage.Services.Interface
         EmailTemplate GetEmailTemplate(string templateName);
         List<User> GetAllManagers();
         string SendEmail(List<string> ToEmailAddresses, string body, string emailSubject);
+        string SaveEmailTemplate(string templateName, string updatedTemplate);
     }
 }

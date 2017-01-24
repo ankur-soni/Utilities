@@ -55,14 +55,14 @@ namespace Silicus.FrameworxProject.Services
                     {
                         productBacklogs.Add(new ProductBacklog()
                         {
-                            Id = item.Fields["System.Id"].ToString(),
+                            Id = int.Parse(item.Fields["System.Id"].ToString()),
                             Title = item.Fields["System.Title"].ToString(),
                             State = item.Fields["System.State"].ToString(),
                             Type = item.Fields.ContainsKey("System.WorkItemType") ? item.Fields["System.WorkItemType"].ToString() : Constants.InformationNotAvailableText,
                             AreaPath = item.Fields.ContainsKey("System.AreaPath") ? item.Fields["System.AreaPath"].ToString() : Constants.InformationNotAvailableText,
-                            //Assignee = item.Fields.ContainsKey("System.AssignedTo") ? item.Fields["System.AssignedTo"].ToString() : "Unassigned",
-                            Assignee = detailsFromDb.Any(t => t.Id == item.Id.ToString()) ? detailsFromDb.FirstOrDefault(t => t.Id == item.Id.ToString()).Assignee : "Unassigned",
-                            AssignedBy = detailsFromDb.Any(t => t.Id == item.Id.ToString()) ? detailsFromDb.FirstOrDefault(t => t.Id == item.Id.ToString()).AssignedBy : "",
+                            AssigneeDisplayName = detailsFromDb.Any(t => t.Id == item.Id) ? detailsFromDb.FirstOrDefault(t => t.Id == item.Id).AssigneeDisplayName : "Unassigned",
+                            AssigneeEmail = detailsFromDb.Any(t => t.Id == item.Id) ? detailsFromDb.FirstOrDefault(t => t.Id == item.Id).AssigneeEmail : "",
+                            AssignedBy = detailsFromDb.Any(t => t.Id == item.Id) ? detailsFromDb.FirstOrDefault(t => t.Id == item.Id).AssignedBy : "",
                             TimeAllocated = item.Fields.ContainsKey("Microsoft.VSTS.Scheduling.OriginalEstimate") ? (double)item.Fields["Microsoft.VSTS.Scheduling.OriginalEstimate"] : 0.00,
                             TimeSpent = item.Fields.ContainsKey("Microsoft.VSTS.Scheduling.CompletedWork") ? (double)item.Fields["Microsoft.VSTS.Scheduling.CompletedWork"] : 0.0
                         });
@@ -106,15 +106,15 @@ namespace Silicus.FrameworxProject.Services
             }
         }
 
-        public WorkItem UpdateTimeAllocated(int workItemId, double time)
+        public WorkItem UpdateTimeAllocated(ProductBacklog productBacklog)
         {
-            return UpdateWorkItem(workItemId, "Microsoft.VSTS.Scheduling.OriginalEstimate", time);
+            return UpdateWorkItem(productBacklog.Id, "Microsoft.VSTS.Scheduling.OriginalEstimate", productBacklog.TimeAllocated);
         }
 
 
-        public WorkItem UpdateTimeSpent(int workItemId, double time)
+        public WorkItem UpdateTimeSpent(ProductBacklog productBacklog)
         {
-            return UpdateWorkItem(workItemId, "Microsoft.VSTS.Scheduling.CompletedWork", time);
+            return UpdateWorkItem(productBacklog.Id, "Microsoft.VSTS.Scheduling.CompletedWork", productBacklog.TimeSpent);
         }
 
         private WorkItem UpdateWorkItem(int workItemId, string paramName, object paramValue)
@@ -153,18 +153,20 @@ namespace Silicus.FrameworxProject.Services
             using (WorkItemTrackingHttpClient workItemTrackingHttpClient = new WorkItemTrackingHttpClient(_uri, _credentials))
             {
                 WorkItem result = workItemTrackingHttpClient.GetWorkItemAsync(id, fields).Result;
-
-                return new ProductBacklog()
+                var backlogItem = new ProductBacklog()
                 {
-                    Id = result.Fields["System.Id"].ToString(),
+                    Id = int.Parse(result.Fields["System.Id"].ToString()),
                     Title = result.Fields["System.Title"].ToString(),
                     State = result.Fields["System.State"].ToString(),
-                    Type = result.Fields.ContainsKey("System.WorkItemType") ? result.Fields["System.WorkItemType"].ToString() : Constants.InformationNotAvailableText,
-                    AreaPath = result.Fields.ContainsKey("System.AreaPath") ? result.Fields["System.AreaPath"].ToString() : Constants.InformationNotAvailableText,
-                    Assignee = result.Fields.ContainsKey("System.AssignedTo") ? result.Fields["System.AssignedTo"].ToString() : "Unassigned",
+                    Type = result.Fields.ContainsKey("System.WorkItemType") ? result.Fields["System.WorkItemType"].ToString() : Constants.InformationNotAvailableText,                    
+                    AreaPath = result.Fields.ContainsKey("System.AreaPath") ? result.Fields["System.AreaPath"].ToString() : Constants.InformationNotAvailableText,                   
                     TimeAllocated = result.Fields.ContainsKey("Microsoft.VSTS.Scheduling.OriginalEstimate") ? (double)result.Fields["Microsoft.VSTS.Scheduling.OriginalEstimate"] : 0.00,
                     TimeSpent = result.Fields.ContainsKey("Microsoft.VSTS.Scheduling.CompletedWork") ? (double)result.Fields["Microsoft.VSTS.Scheduling.CompletedWork"] : 0.0
                 };
+
+                backlogItem.AssigneeDisplayName = _FrameworxProjectDatabaseContext.Query<ProductBacklog>().Any(t => t.Id == backlogItem.Id) ? _FrameworxProjectDatabaseContext.Query<ProductBacklog>().FirstOrDefault(t => t.Id == backlogItem.Id).AssigneeDisplayName : "Unassigned";
+
+                return backlogItem;
             }
         }
 

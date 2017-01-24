@@ -66,6 +66,9 @@
     <Compile Include="Criteria.cs">
       <DependentUpon>EnCourage.tt</DependentUpon>
     </Compile>
+    <Compile Include="CustomDate.cs">
+      <DependentUpon>EnCourage.tt</DependentUpon>
+    </Compile>
     <Compile Include="C__MigrationHistory.cs">
       <DependentUpon>EnCourage.tt</DependentUpon>
     </Compile>

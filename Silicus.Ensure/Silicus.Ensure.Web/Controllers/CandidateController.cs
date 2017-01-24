@@ -155,6 +155,15 @@ namespace Silicus.Ensure.Web.Controllers
         }
 
         [HttpPost]
+        public JsonResult SumbmitCandidateResult(CandidateResultViewmodel candidateResultViewmodel)
+        {
+            var user = _userService.GetUserById(candidateResultViewmodel.CandidateUserId);
+            user.CandidateStatus = candidateResultViewmodel.Status.ToString();
+            _userService.Update(user);
+            return Json(true);
+        }
+
+        [HttpPost]
         public JsonResult UpdateTimeCounter(int time, int userTestSuiteId)
         {
             UserTestSuite userTestSuite = _testSuiteService.GetUserTestSuiteId(userTestSuiteId);

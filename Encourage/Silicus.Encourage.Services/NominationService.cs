@@ -19,12 +19,14 @@ namespace Silicus.Encourage.Services
         private readonly IEncourageDatabaseContext _encourageDatabaseContext;
         private readonly Silicus.UtilityContainer.Entities.ICommonDataBaseContext _commonDataBaseContext;
         private readonly ILogger _logger;
+        private readonly ICustomDateService _customDateService;
 
-        public NominationService(Silicus.Encourage.DAL.Interfaces.IDataContextFactory dataContextFactory, ICommonDbService commonDbService, ILogger logger)
+        public NominationService(Silicus.Encourage.DAL.Interfaces.IDataContextFactory dataContextFactory, ICommonDbService commonDbService, ILogger logger, ICustomDateService customDateService)
         {
             _commonDataBaseContext = commonDbService.GetCommonDataBaseContext();
             _encourageDatabaseContext = dataContextFactory.CreateEncourageDbContext();
             _logger = logger;
+            _customDateService = customDateService;
         }
 
         public List<Nomination> GetAllNominations()
@@ -47,10 +49,12 @@ namespace Silicus.Encourage.Services
 
             foreach (var award in awardsList)
             {
+                var customDate = _customDateService.GetCustomDate(award.Id);
                 switch (award.Code)
                 {
+                    default:
                     case "SOM":
-                        var prevMonth = DateTime.Now.AddMonths(-1);
+                        var prevMonth = customDate;
                         var somNominations = _encourageDatabaseContext.Query<Nomination>().Where(N =>
                             N.AwardId == award.Id &&
                             N.IsSubmitted == true &&
@@ -59,21 +63,14 @@ namespace Silicus.Encourage.Services
                             N.NominationDate.Value.Year == prevMonth.Year).ToList();
                         allNominations.AddRange(somNominations);
                         break;
+
                     case "PINNACLE":
                         var pinnacleNominations = _encourageDatabaseContext.Query<Nomination>().Where(N =>
                             N.AwardId == award.Id &&
                             N.IsSubmitted == true &&
                             (!alreadyReviewedNominationIds.Contains(N.Id)) &&
-                            N.NominationDate.Value.Year == (DateTime.Now.Year - 1)).ToList();
+                            N.NominationDate.Value.Year == (customDate.Year)).ToList();
                         allNominations.AddRange(pinnacleNominations);
-                        break;
-                    default:
-                        var nominations = _encourageDatabaseContext.Query<Nomination>().Where(N =>
-                            N.AwardId == award.Id &&
-                            N.IsSubmitted == true &&
-                            (!alreadyReviewedNominationIds.Contains(N.Id)) &&
-                            N.NominationDate.Value.Year == DateTime.Now.Year).ToList();
-                        allNominations.AddRange(nominations);
                         break;
                 }
             }
@@ -232,40 +229,34 @@ namespace Silicus.Encourage.Services
             return reviewerId;
         }
 
-        public List<Nomination> GetAllSubmitedReviewedNominations(int reviewerId, bool forCurrentMonth)
+        public List<Nomination> GetAllSubmitedReviewedNominations(int reviewerId, bool forCurrentMonth, int awardId)
         {
-            var today = DateTime.Today;
-            var prevMonth = new DateTime(today.Year, today.Month, 1).AddMonths(-1);
-            var prevYear = new DateTime(today.Year, 01, 01).AddYears(-1);
+            var toBeComparedDate = _customDateService.GetCustomDate(awardId);
+            var award = _encourageDatabaseContext.Query<Award>().Where(x => x.Id == awardId).FirstOrDefault();
 
-            var alreadyReviewedRecords = new List<Review>();
-
-            var listOfAwards = _encourageDatabaseContext.Query<Award>().ToList();
-            foreach (var award in listOfAwards)
+            List<Review> alreadyReviewedRecords;
+            switch (award.Code)
             {
-                var reviewedRecords = new List<Review>();
-                switch (award.Code)
-                {
-                    case "SOM":
-                        reviewedRecords = _encourageDatabaseContext.Query<Review>()
-                            .Where(r => 
-                            r.Nomination.AwardId == award.Id &&
-                            r.ReviewerId == reviewerId && 
-                            r.IsSubmited == true && 
-                            (forCurrentMonth ? (r.Nomination.NominationDate >= prevMonth) : (r.Nomination.NominationDate < prevMonth))).ToList();
-                        break;
-                    case "PINNACLE":
-                        reviewedRecords = _encourageDatabaseContext.Query<Review>()
+                default:
+                case "SOM":
+                    alreadyReviewedRecords = _encourageDatabaseContext.Query<Review>()
                             .Where(r =>
-                            r.Nomination.AwardId == award.Id &&
-                            r.ReviewerId == reviewerId && 
-                            r.IsSubmited == true && 
-                            (forCurrentMonth ? (r.Nomination.NominationDate >= prevYear) : (r.Nomination.NominationDate < prevYear))).ToList();
-                        break;
-                }
-                alreadyReviewedRecords.AddRange(reviewedRecords);
+                            r.Nomination.AwardId == awardId &&
+                            r.ReviewerId == reviewerId &&
+                            r.IsSubmited == true &&
+                            (forCurrentMonth ? (r.Nomination.NominationDate.Value.Month == toBeComparedDate.Month && r.Nomination.NominationDate.Value.Year == toBeComparedDate.Year) : (r.Nomination.NominationDate < toBeComparedDate))).ToList();
+                    break;
+
+                case "PINNACLE":
+                    alreadyReviewedRecords = _encourageDatabaseContext.Query<Review>()
+                            .Where(r =>
+                            r.Nomination.AwardId == awardId &&
+                            r.ReviewerId == reviewerId &&
+                            r.IsSubmited == true &&
+                            (forCurrentMonth ? (r.Nomination.NominationDate.Value.Year == toBeComparedDate.Year) : (r.Nomination.NominationDate.Value.Year < toBeComparedDate.Year))).ToList();
+                    break;
             }
-                
+
             var finalNominations = new List<Nomination>();
 
             foreach (var item in alreadyReviewedRecords)
@@ -342,7 +333,6 @@ namespace Silicus.Encourage.Services
             {
                 return new List<Award>();
             }
-
         }
 
         public List<Award> UnLockNominations(List<int> awardIds)
@@ -377,11 +367,11 @@ namespace Silicus.Encourage.Services
             List<Configuration> data;
             if (status == ConfigurationManager.AppSettings["Lock"])
             {
-                data = _encourageDatabaseContext.Query<Models.Configuration>().Where(x =>  x.value == false).ToList();
+                data = _encourageDatabaseContext.Query<Models.Configuration>().Where(x => x.value == false).ToList();
             }
             else
             {
-                data = _encourageDatabaseContext.Query<Models.Configuration>().Where(x =>  x.value == true).ToList();
+                data = _encourageDatabaseContext.Query<Models.Configuration>().Where(x => x.value == true).ToList();
             }
             var awardsToUnlock = new List<Award>();
             foreach (var awardconfiguration in data)
@@ -392,11 +382,10 @@ namespace Silicus.Encourage.Services
             }
             if (awardsToUnlock.Any())
             {
-                return awardsToUnlock.GroupBy( x => x.Name).Select( group => group.FirstOrDefault()).ToList();
+                return awardsToUnlock.GroupBy(x => x.Name).Select(group => group.FirstOrDefault()).ToList();
             }
             return new List<Award>();
         }
-
 
         public int GetNominationCountByManagerIdForSom(int managerId, DateTime startDate, DateTime endDate, int awardId)
         {
@@ -405,12 +394,11 @@ namespace Silicus.Encourage.Services
 
         public int GetNominationCountByManagerIdForPinnacle(int managerId, DateTime startDate, int awardId)
         {
-            return _encourageDatabaseContext.Query<Nomination>().Count(x => x.ManagerId == managerId && (x.NominationDate.Value.Year >= startDate.Year && x.AwardId == awardId));
+            return _encourageDatabaseContext.Query<Nomination>().Count(x => x.ManagerId == managerId && (x.NominationDate.Value.Year == startDate.Year && x.AwardId == awardId));
         }
 
         public List<Award> GetNominationLockStatus()
         {
-
             var lockKey = WebConfigurationManager.AppSettings["NominationLockKey"];
             var allAwards = _encourageDatabaseContext.Query<Award>().ToList();
             var lockedAwards = new List<Award>();
@@ -425,6 +413,14 @@ namespace Silicus.Encourage.Services
 
             return lockedAwards;
         }
+
+        public bool GetAwardNominationLockStatus(int awardId)
+        {
+            var lockKey = WebConfigurationManager.AppSettings["NominationLockKey"];
+            var lockStatus = _encourageDatabaseContext.Query<Configuration>().FirstOrDefault(x => x.configurationKey == lockKey && x.AwardId == awardId).value.Value;
+            return lockStatus;
+        }
+
         public List<FrequencyMaster> GetAllAwardFrequencies()
         {
             return _encourageDatabaseContext.Query<FrequencyMaster>().ToList();
@@ -437,12 +433,14 @@ namespace Silicus.Encourage.Services
 
         public List<User> GetAllResourcesForOtherReason(int awardType, int managerId)
         {
+            var customDate = _customDateService.GetCustomDate(awardType);
             var toBeExcludedUserIds = new List<int>();
 
             var prevWinnersUserIds = _encourageDatabaseContext.Query<Shortlist>()
-                                        .Where(s => 
-                                            s.IsWinner == true && 
-                                            s.WinningDate.Value.Year == DateTime.Now.Year && 
+                                        .Where(s =>
+                                            s.IsWinner == true &&
+                                            //s.WinningDate.Value.Year == DateTime.Now.Year &&
+                                            s.WinningDate.Value.Year == customDate.Year &&
                                             s.Nomination.AwardId == awardType &&
                                             s.Nomination.ManagerId == managerId)
                                         .Select(n => n.Nomination.UserId).ToList();
@@ -465,43 +463,33 @@ namespace Silicus.Encourage.Services
             return _commonDataBaseContext.Query<User>().Where(u => u.ID == userId).FirstOrDefault();
         }
 
-        public List<Nomination> GetAllSubmittedAndSavedNominationsByCurrentUserAndMonth(int managerID, bool forCurrentMonth)
+        public List<Nomination> GetAllSubmittedAndSavedNominationsByCurrentUserAndMonth(int managerID, bool forCurrentMonth, int awardId)
         {
-            var today = DateTime.Today;
-            var prevMonth = new DateTime(today.Year, today.Month, 1).AddMonths(-1);
-            var prevYear = DateTime.Now.Year - 1;
+            DateTime toBeComparedDate = _customDateService.GetCustomDate(awardId);
+            var award = _encourageDatabaseContext.Query<Award>().Where(x => x.Id == awardId).FirstOrDefault();
 
-            var allNominations = new List<Nomination>();
+            List<Nomination> allNominations;
 
-            var awardsList = _encourageDatabaseContext.Query<Award>().ToList();
-
-            foreach (var award in awardsList)
+            switch (award.Code)
             {
-                switch (award.Code)
-                {
-                    case "SOM":
-                        var somNominations = _encourageDatabaseContext.Query<Nomination>().Where(N =>
+                default:
+                case "SOM":
+                    //SOM
+                    allNominations = _encourageDatabaseContext.Query<Nomination>().Where(N =>
                             N.ManagerId == managerID &&
-                            N.AwardId == award.Id &&
-                            (forCurrentMonth ? (N.NominationDate >= prevMonth) : (N.NominationDate < prevMonth))).ToList();
-                        allNominations.AddRange(somNominations);
-                        break;
-                    case "PINNACLE":
-                        var pinnacleNominations = _encourageDatabaseContext.Query<Nomination>().Where(N =>
+                            N.AwardId == awardId &&
+                            (forCurrentMonth ? (N.NominationDate.Value.Month == toBeComparedDate.Month && N.NominationDate.Value.Year <= toBeComparedDate.Year) : (N.NominationDate < toBeComparedDate))).ToList();
+                    break;
+
+                case "PINNACLE":
+                    //Pinnacle
+                    allNominations = _encourageDatabaseContext.Query<Nomination>().Where(N =>
                             N.ManagerId == managerID &&
-                            N.AwardId == award.Id &&
-                            (forCurrentMonth ? (N.NominationDate.Value.Year == prevYear) : (N.NominationDate.Value.Year < prevYear))).ToList();
-                        allNominations.AddRange(pinnacleNominations);
-                        break;
-                    default:
-                        var nominations = _encourageDatabaseContext.Query<Nomination>().Where(N =>
-                            N.ManagerId == managerID &&
-                            N.AwardId == award.Id &&
-                            N.NominationDate.Value.Year == DateTime.Now.Year).ToList();
-                        allNominations.AddRange(nominations);
-                        break;
-                }
+                            N.AwardId == awardId &&
+                            (forCurrentMonth ? (N.NominationDate.Value.Year == toBeComparedDate.Year) : (N.NominationDate.Value.Year < toBeComparedDate.Year))).ToList();
+                    break;
             }
+
             return allNominations;
         }
 

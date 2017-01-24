@@ -101,13 +101,14 @@
     </div>
 
 </div>
-<div class="modal fade" id="winnerFeedbackModal" role="dialog">
+<div id="winnerFeedbackModal" class="modal fade" role="dialog">
     @Html.Hidden("hdnNominationId");
+    @Html.Hidden("hdnAwardLockStatus");
     <div class="modal-dialog">
         <!-- Modal content-->
         <div class="modal-content">
             <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <button type="button" id="feedbackPopUpClose" class="close" data-dismiss="modal">&times;</button>
                 <h4 class="modal-title">Select Winner</h4>
             </div>
             <div class="modal-body">
@@ -120,7 +121,7 @@
             </div>
             <div class="modal-footer" style="border:none;">
                 <button type="button" class="btn winner btn-primary" id="selectWinner">Submit</button>
-                <button type="button" class="btn btn-primary btn-nav" id="cancel" data-dismiss="modal">Cancel</button>
+                <button type="button" class="btn btn-primary btn-nav" id="feedBackCancel" data-dismiss="modal">Cancel</button>
             </div>
         </div>
     </div>
@@ -129,7 +130,6 @@
 <script src="~/js/jquery-2.1.1.js"></script>
 <script>
     $(function () {
-
         $('.fa-trophy').tooltip();
         $('.fa-star').tooltip();
     });
@@ -276,8 +276,14 @@
         });
     }
 
-    function selectWinner(nominationId) {
+    function selectWinner(nominationId, awardLockStatus) {
         $("#hdnNominationId").val(nominationId);
+        $("#hdnAwardLockStatus").val(awardLockStatus);
+    }
+
+    function hideWinnerFeedbackPopup() {
+        $("#winnerFeedbackModal").hide();
+        clearFeedbackDailogBox();
     }
 
     $("#commentForWinner").on("keypress", function () {
@@ -288,9 +294,6 @@
         $("#feedbackRequired").css("display", "none");
     });
 
-    $("#cancel").on("click", function () {
-        clearFeedbackDailogBox();
-    });
 
     function clearFeedbackDailogBox() {
         $("#commentForWinner").val("");
@@ -299,8 +302,12 @@
         $("#feedbackRequired").text("");
     }
 
+    $("#feedbackPopUpClose,#feedBackCancel").on("click", function () {
+        clearFeedbackDailogBox();
+    });
+
     $('#selectWinner').on("click", function () {
-        var isLocked = $("div #allow-shortlist").text();
+        var isLocked = $("#hdnAwardLockStatus").val();
         if (isLocked == "false") {
             sweetAlert("Please lock the nomination from dashboard before proceed.");
             return false;

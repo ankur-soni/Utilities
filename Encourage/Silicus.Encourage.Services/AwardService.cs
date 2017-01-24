@@ -15,12 +15,14 @@ namespace Silicus.Encourage.Services
         private readonly IEncourageDatabaseContext _encourageDbcontext;
         private readonly INominationService _nominationService;
         private readonly Silicus.UtilityContainer.Entities.ICommonDataBaseContext _CommonDbContext;
+        private readonly ICustomDateService _customDateService;
 
-        public AwardService(IDataContextFactory contextFactory, ICommonDbService commonDbService, INominationService nominationService)
+        public AwardService(IDataContextFactory contextFactory, ICommonDbService commonDbService, INominationService nominationService, ICustomDateService customDateService)
         {
             _encourageDbcontext = contextFactory.CreateEncourageDbContext();
             _CommonDbContext = commonDbService.GetCommonDataBaseContext();
             _nominationService = nominationService;
+            _customDateService = customDateService;
         }
 
         public bool AddNomination(Nomination nomination)
@@ -100,7 +102,10 @@ namespace Silicus.Encourage.Services
             var winnerNominationsWithin12Months = new List<Nomination>();
             foreach (var winner in winners)
             {
-                var noOfMonthsFromLastWinningDate = (DateTime.Now.Year - winner.WinningDate.Value.Year) * 12 + (DateTime.Now.Month - winner.WinningDate.Value.Month);
+                var currentNomination = _nominationService.GetNomination(winner.NominationId);
+                var customDate = _customDateService.GetCustomDate(currentNomination.AwardId);
+                //var noOfMonthsFromLastWinningDate = (DateTime.Now.Year - winner.WinningDate.Value.Year) * 12 + (DateTime.Now.Month - winner.WinningDate.Value.Month);
+                var noOfMonthsFromLastWinningDate = (customDate.Year - winner.WinningDate.Value.Year) * 12 + (customDate.Month - winner.WinningDate.Value.Month);
                 if (noOfMonthsFromLastWinningDate <= 12)
                 {
                     winnersWithin12Months.Add(winner);
@@ -125,6 +130,7 @@ namespace Silicus.Encourage.Services
 
         public List<User> GetResourcesInEngagement(int engagementId, int userIdToExcept, int awardId)
         {
+            var customDate = _customDateService.GetCustomDate(awardId);
             var currentUser = _CommonDbContext.Query<User>().Where(user => user.ID == userIdToExcept);
             var currentUserId = currentUser.FirstOrDefault().ID;
             var closedProject = ConfigurationManager.AppSettings["ClosedEngagementStage"];
@@ -154,7 +160,8 @@ namespace Silicus.Encourage.Services
             var winnerNominationsWithin12Months = new List<Nomination>();
             foreach (var winner in winners)
             {
-                var noOfMonthsFromLastWinningDate = (DateTime.Now.Year - winner.WinningDate.Value.Year) * 12 + (DateTime.Now.Month - winner.WinningDate.Value.Month);
+                //var noOfMonthsFromLastWinningDate = (DateTime.Now.Year - winner.WinningDate.Value.Year) * 12 + (DateTime.Now.Month - winner.WinningDate.Value.Month);
+                var noOfMonthsFromLastWinningDate = (customDate.Year - winner.WinningDate.Value.Year) * 12 + (customDate.Month - winner.WinningDate.Value.Month);
                 var winnernomination = _nominationService.GetNomination(winner.NominationId);
                 
                 var previousAwardId = winnernomination.AwardId;
@@ -218,8 +225,18 @@ namespace Silicus.Encourage.Services
 
         public List<WinnerData> GetWinnerData()
         {
-
-            var allWinners = _encourageDbcontext.Query<Shortlist>().Where(shortlist => shortlist.IsWinner == true && shortlist.WinningDate.Value.Month == DateTime.Now.Month && shortlist.WinningDate.Value.Year == DateTime.Now.Year).ToList();
+            var allWinnersWithoutDateFilter = _encourageDbcontext.Query<Shortlist>().Where(shortlist => shortlist.IsWinner == true ).ToList();
+            var allWinners = new List<Shortlist>();
+                
+            foreach (var winner in allWinnersWithoutDateFilter)
+            {
+                var currentNomination = _nominationService.GetNomination(winner.NominationId);
+                var customDate = _customDateService.GetCustomDate(currentNomination.AwardId);
+                allWinners.Add(_encourageDbcontext.Query<Shortlist>().Where(shortlist => shortlist.IsWinner == true && shortlist.WinningDate.Value.Month == customDate.Month &&
+                    shortlist.WinningDate.Value.Year == customDate.Year).FirstOrDefault());
+            }
+            //var allWinners = _encourageDbcontext.Query<Shortlist>().Where(shortlist => shortlist.IsWinner == true && shortlist.WinningDate.Value.Month == DateTime.Now.Month && shortlist.WinningDate.Value.Year == DateTime.Now.Year).ToList();
+            
             var winnersList = new List<WinnerData>();
 
             foreach (var winner in allWinners)

@@ -5,8 +5,6 @@ using Silicus.FrameWorx.Logger;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web.Configuration;
-using System;
-using System.Configuration;
 
 namespace Silicus.Encourage.Services
 {
@@ -15,7 +13,7 @@ namespace Silicus.Encourage.Services
         private readonly IEncourageDatabaseContext _encourageDatabaseContext;
         private readonly ILogger _logger;
 
-        public ReviewService(Silicus.Encourage.DAL.Interfaces.IDataContextFactory dataContextFactory, ICommonDbService commonDbService, INominationService nominationService, ILogger logger)
+        public ReviewService(IDataContextFactory dataContextFactory, ICommonDbService commonDbService, INominationService nominationService, ILogger logger)
         {
             _encourageDatabaseContext = dataContextFactory.CreateEncourageDbContext();
             _logger = logger;
@@ -29,7 +27,7 @@ namespace Silicus.Encourage.Services
 
         public void UpdateReview(Review model)
         {
-            _encourageDatabaseContext.Update<Review>(model);
+            _encourageDatabaseContext.Update(model);
         }
 
         public List<Review> GetAllReview()
@@ -42,7 +40,7 @@ namespace Silicus.Encourage.Services
             var previousComments = _encourageDatabaseContext.Query<ReviewerComment>().Where(r => r.ReviewerId == reviewerId && r.NominationId == nominationID).ToList();
             foreach (var previousComment in previousComments)
             {
-                _encourageDatabaseContext.Delete<ReviewerComment>(previousComment);
+                _encourageDatabaseContext.Delete(previousComment);
             }
         }
 
@@ -55,11 +53,11 @@ namespace Silicus.Encourage.Services
             {
                 foreach (var awardId in awardIds)
                 {
-                    var data = _encourageDatabaseContext.Query<Models.Configuration>().Where(x => x.configurationKey == lockKey && x.AwardId == awardId).FirstOrDefault();
+                    var data = _encourageDatabaseContext.Query<Configuration>().Where(x => x.configurationKey == lockKey && x.AwardId == awardId).FirstOrDefault();
                     if (data != null)
                     {
                         data.value = true;
-                        _encourageDatabaseContext.Update<Models.Configuration>(data);
+                        _encourageDatabaseContext.Update(data);
                         lockedAwards.Add(_encourageDatabaseContext.Query<Award>().FirstOrDefault(a => a.Id == awardId));
                     }
                 }
@@ -69,7 +67,6 @@ namespace Silicus.Encourage.Services
             {
                 return new List<Award>();
             }
-
         }
 
         public List<Award> UnLockReview(List<int> awardIds)
@@ -81,14 +78,13 @@ namespace Silicus.Encourage.Services
             {
                 foreach (var awardId in awardIds)
                 {
-                    var data = _encourageDatabaseContext.Query<Models.Configuration>().Where(x => x.configurationKey == lockKey && x.value == true && x.AwardId == awardId).FirstOrDefault();
+                    var data = _encourageDatabaseContext.Query<Configuration>().Where(x => x.configurationKey == lockKey && x.value == true && x.AwardId == awardId).FirstOrDefault();
                     if (data != null)
                     {
                         data.value = false;
-                        _encourageDatabaseContext.Update<Models.Configuration>(data);
+                        _encourageDatabaseContext.Update(data);
                         unlockedAwards.Add(_encourageDatabaseContext.Query<Award>().FirstOrDefault(a => a.Id == awardId));
                     }
-
                 }
                 return unlockedAwards;
             }
@@ -105,7 +101,7 @@ namespace Silicus.Encourage.Services
             var lockedAwards = new List<Award>();
             foreach (var award in allAwards)
             {
-                var result = _encourageDatabaseContext.Query<Models.Configuration>().FirstOrDefault(x => x.configurationKey == lockKey && x.AwardId == award.Id && x.value == true);
+                var result = _encourageDatabaseContext.Query<Configuration>().FirstOrDefault(x => x.configurationKey == lockKey && x.AwardId == award.Id && x.value == true);
                 if (result != null)
                 {
                     lockedAwards.Add(award);
@@ -113,26 +109,28 @@ namespace Silicus.Encourage.Services
             }
 
             return lockedAwards;
-
         }
 
-        public List<Models.Configuration> GetProcessesToLock(int awardId)
+        public bool GetAwardReviewLockStatus(int awardId)
         {
-
-            return _encourageDatabaseContext.Query<Models.Configuration>().Where(x => x.AwardId == awardId && x.value == false).ToList();
-
+            var lockKey = WebConfigurationManager.AppSettings["ReviewLockKey"];
+            var lockStatus = _encourageDatabaseContext.Query<Configuration>().FirstOrDefault(x => x.configurationKey == lockKey && x.AwardId == awardId).value.Value;
+            return lockStatus;
         }
 
-        public List<Models.Configuration> GetProcessesToUnlock(int awardId)
+        public List<Configuration> GetProcessesToLock(int awardId)
         {
-
-            return _encourageDatabaseContext.Query<Models.Configuration>().Where(x => x.AwardId == awardId && x.value == true).ToList();
-
+            return _encourageDatabaseContext.Query<Configuration>().Where(x => x.AwardId == awardId && x.value == false).ToList();
         }
 
-        public Models.Configuration GetConfigurationById(int id)
+        public List<Configuration> GetProcessesToUnlock(int awardId)
         {
-            return _encourageDatabaseContext.Query<Models.Configuration>().Where(x => x.Id == id).FirstOrDefault();
+            return _encourageDatabaseContext.Query<Configuration>().Where(x => x.AwardId == awardId && x.value == true).ToList();
+        }
+
+        public Configuration GetConfigurationById(int id)
+        {
+            return _encourageDatabaseContext.Query<Configuration>().Where(x => x.Id == id).FirstOrDefault();
         }
     }
 }

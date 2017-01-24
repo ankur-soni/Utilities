@@ -441,6 +441,8 @@
     <Compile Include="Models\TestSuiteQuestionModel.cs" />
     <Compile Include="Models\TestSuiteViewModel.cs" />
     <Compile Include="Models\TestSuiteViewQuesModel.cs" />
+    <Compile Include="Models\Test\CandidateResultViewmodel.cs" />
+    <Compile Include="Models\Test\QuestionNavigationBasics.cs" />
     <Compile Include="Models\Test\CandidateInfoViewModel.cs" />
     <Compile Include="Models\Test\QuestionDetailsViewModel.cs" />
     <Compile Include="Models\Test\QuestionNavigationViewModel.cs" />
@@ -522,6 +524,7 @@
     <Content Include="Content\css\Kendo\2014.1.416\Default\sprite.png" />
     <Content Include="Content\flipclock.css" />
     <Content Include="Content\Images\digits.png" />
+    <Content Include="Content\Images\login-register.jpg" />
     <Content Include="Content\Images\profile.png" />
     <Content Include="Content\Images\spriteicons.png" />
     <Content Include="Content\js\bootstrap.js" />
@@ -840,6 +843,8 @@
     <Content Include="Views\CandidateAccount\Login.cshtml" />
     <Content Include="Silicus.Ensure.Web.ruleset" />
     <Content Include="Views\Shared\_QuestionNavigationPanel.cshtml" />
+    <Content Include="Views\Shared\_TestSummary.cshtml" />
+    <Content Include="Views\Shared\_CandidateResult.cshtml" />
     <Content Include="Views\Shared\_CandidateInfo.cshtml" />
     <None Include="Web.Azure.config">
       <DependentUpon>Web.config</DependentUpon>

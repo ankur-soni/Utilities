@@ -71,6 +71,7 @@
     <Compile Include="EntityConfigurations\AwardMap.cs" />
     <Compile Include="EntityConfigurations\ConfigurationMap.cs" />
     <Compile Include="EntityConfigurations\CriteriaMap.cs" />
+    <Compile Include="EntityConfigurations\CustomDateMap.cs" />
     <Compile Include="EntityConfigurations\EmailTemplateMap.cs" />
     <Compile Include="EntityConfigurations\FrequencyMasterMap.cs" />
     <Compile Include="EntityConfigurations\ManagerCommentMap.cs" />

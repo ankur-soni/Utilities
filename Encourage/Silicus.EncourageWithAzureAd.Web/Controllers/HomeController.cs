@@ -20,22 +20,27 @@ namespace Silicus.EncourageWithAzureAd.Web.Controllers
         private readonly INominationService _nominationService;
         private readonly IResultService _resultService;
         private readonly ILogger _logger;
+        private readonly ICustomDateService _customDateService;
 
         public HomeController(ICommonDbService commonDbService, IDataContextFactory dataContextFactory,
-            INominationService nominationService, IResultService resultService, ILogger logger)
+            INominationService nominationService, IResultService resultService, ILogger logger, ICustomDateService customDateService)
         {
             _commonDbService = commonDbService;
             _encourageDatabaseContext = dataContextFactory.CreateEncourageDbContext();
             _nominationService = nominationService;
             _resultService = resultService;
             _logger = logger;
+            _customDateService = customDateService;
         }
+
 
         public ActionResult Index()
         {
             _logger.Log("Home-Index");
+            var customDate = _customDateService.GetCustomDate(1);
             DashboardViewModel dashboardViewModel = new DashboardViewModel();
-            dashboardViewModel.NominationList = GetWinnersList(DateTime.Now.Month, DateTime.Now.Year, 1);
+            //dashboardViewModel.NominationList = GetWinnersList(DateTime.Now.Month, DateTime.Now.Year, 1);
+            dashboardViewModel.NominationList = GetWinnersList(customDate.Month,customDate.Year, 1);
 
             string utiltyName = WebConfigurationManager.AppSettings["ProductName"];
 
@@ -69,6 +74,7 @@ namespace Silicus.EncourageWithAzureAd.Web.Controllers
                 awardsList.Add(awardDetails);
             }
             dashboardViewModel.Awards = awardsList;
+            dashboardViewModel.CustomDate = customDate;
             return View("Dashboard", dashboardViewModel);
         }
 
@@ -82,14 +88,17 @@ namespace Silicus.EncourageWithAzureAd.Web.Controllers
 
         private List<NominationListViewModel> GetWinnersList(int month, int year, int awardId)
         {
+            var customdate = _customDateService.GetCustomDate(awardId);
             var award = _encourageDatabaseContext.Query<Award>().FirstOrDefault(a => a.Id == awardId);
             var listOfWinners = new List<NominationListViewModel>();
             if (award != null)
             {
                 _logger.Log("Home-GetWinnersList");
 
-                int requiredMonth = month != 0 ? month : DateTime.Now.Month;
-                int requiredYear = year != 0 ? year : DateTime.Now.Year;
+                //int requiredMonth = month != 0 ? month : DateTime.Now.Month;
+                //int requiredYear = year != 0 ? year : DateTime.Now.Year;
+                int requiredMonth = month != 0 ? month : customdate.Month;
+                int requiredYear = year != 0 ? year : customdate.Year;
                 int requiredAwardId = award.Id;
 
                 List<Shortlist> winners;

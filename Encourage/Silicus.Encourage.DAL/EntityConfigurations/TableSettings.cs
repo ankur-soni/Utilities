@@ -20,5 +20,6 @@ namespace Silicus.Encourage.DAL.EntityConfigurations
         public static readonly string Shortlists = "Shortlist";
         public static readonly string Configurations = "Configurations";
         public static readonly string EmailTemplate = "EmailTemplate";
+        public static readonly string CustomDate = "CustomDate";
     }
 }

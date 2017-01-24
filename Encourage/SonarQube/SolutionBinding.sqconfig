@@ -1,5 +1,5 @@
 {
-  "ServerUri": "http://codeanalysis.silicus.com",
+  "ServerUri": "http://codeanalysis.silicus.com/",
   "ProjectKey": "ENCOURAGE-001",
   "Profiles": {
     "CSharp": {

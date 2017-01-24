@@ -1,0 +1,49 @@
+﻿@model Silicus.Ensure.Web.Models.Test.CandidateResultViewmodel
+@using Silicus.Ensure.Models.Constants
+@using Kendo.Mvc.UI;
+
+    @using (Html.BeginForm())
+    {
+        @Html.AntiForgeryToken()
+
+        <div style="clear:both;"></div>
+        <div class="form-horizontal">
+
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+            <div class="form-group">
+                @Html.LabelFor(model => model.Status,"Candidate Status", htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @(Html.Kendo().DropDownListFor(m => m.Status)
+                    .OptionLabel("--Select--")
+                    .DataTextField("Text")
+                    .DataValueField("Value")
+                    //.Events(e => e.Change("Change"))
+
+                    .BindTo(new List<SelectListItem>
+                    () {
+                    new SelectListItem(){
+                    Text=Convert.ToString(CandidateStatus.Selected.CandidateStatusString()),
+                    Value=((int)CandidateStatus.Selected)+""
+                    },
+                    new SelectListItem(){
+                    Text=Convert.ToString(CandidateStatus.Rejected.CandidateStatusString()),
+                    Value=((int)CandidateStatus.Rejected)+""
+                    }
+                    }).HtmlAttributes(new { style = "width: 100%", required = "required" }))
+
+                   
+
+                    @Html.ValidationMessageFor(model => model.CandidateUserId, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.ReviewerComment, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.ReviewerComment, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.ReviewerComment, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+        </div>
+    }
