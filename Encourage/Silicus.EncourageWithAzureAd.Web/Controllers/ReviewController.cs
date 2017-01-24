@@ -96,37 +96,35 @@ namespace Silicus.EncourageWithAzureAd.Web.Controllers
         private List<ReviewFeedbackListViewModel> ReviewFeedbackList(bool forCurrentMonth, int awardType)
         {
             _logger.Log("Review-ReviewFeedbackList-private-GET");
-            var customDate = _customDateService.GetCustomDate(awardType);
+            
             var reviewFeedbacks = new List<ReviewFeedbackListViewModel>();
+            var awardDetails = _encourageDatabaseContext.Query<Award>().Where(x => x.Id == awardType).FirstOrDefault();
 
-            //var today = DateTime.Today;
-            var today = customDate;
-            //var prevMonth = new DateTime(today.Year, today.Month, 1).AddMonths(-1);
-            //var prevYear = new DateTime(today.Year, 01, 01).AddYears(-1);
-            var prevMonth = new DateTime(today.Year, today.Month, 1);
-            var prevYear = new DateTime(today.Year, 01, 01);
-
-
+            DateTime toBeComparedDate = DateTime.Now;
 
             List<Shortlist> shortlistedNominations = new List<Shortlist>();
 
             if (awardType != 0)
             {
-                switch (awardType)
+                switch (awardDetails.Code)
                 {
-                    case 1:
+                    case "SOM":
+                        toBeComparedDate = _customDateService.GetCustomDate(awardType);
+
                         shortlistedNominations = _encourageDatabaseContext.Query<Shortlist>()
                         .Where(r =>
                         r.Nomination.AwardId == awardType &&
-                        (forCurrentMonth ? (r.Nomination.NominationDate >= prevMonth) : (r.Nomination.NominationDate < prevMonth)))
+                        (forCurrentMonth ? (r.Nomination.NominationDate.Value.Month == toBeComparedDate.Month && r.Nomination.NominationDate.Value.Year == toBeComparedDate.Year) : (r.Nomination.NominationDate < toBeComparedDate)))
                         .GroupBy(x => x.NominationId)
                         .Select(group => group.FirstOrDefault()).ToList();
                         break;
-                    case 2:
+                    case "PINNACLE":
+                        toBeComparedDate = _customDateService.GetCustomDate(awardType);
+
                         shortlistedNominations = _encourageDatabaseContext.Query<Shortlist>()
                         .Where(r =>
                         r.Nomination.AwardId == awardType &&
-                        (forCurrentMonth ? (r.Nomination.NominationDate >= prevYear) : (r.Nomination.NominationDate < prevYear)))
+                        (forCurrentMonth ? (r.Nomination.NominationDate.Value.Year == toBeComparedDate.Year) : (r.Nomination.NominationDate.Value.Year < toBeComparedDate.Year)))
                         .GroupBy(x => x.NominationId)
                         .Select(group => group.FirstOrDefault()).ToList();
                         break;
@@ -143,18 +141,20 @@ namespace Silicus.EncourageWithAzureAd.Web.Controllers
                     switch (award.Code)
                     {
                         case "SOM":
+                            toBeComparedDate = _customDateService.GetCustomDate(award.Id);
                             listOfNominations = _encourageDatabaseContext.Query<Shortlist>()
                             .Where(r =>
                                 r.Nomination.AwardId == award.Id &&
-                                (forCurrentMonth ? (r.Nomination.NominationDate >= prevMonth) : (r.Nomination.NominationDate < prevMonth)))
+                                (forCurrentMonth ? (r.Nomination.NominationDate.Value.Month == toBeComparedDate.Month && r.Nomination.NominationDate.Value.Year == toBeComparedDate.Year) : (r.Nomination.NominationDate < toBeComparedDate)))
                                     .GroupBy(x => x.NominationId)
                                 .Select(group => group.FirstOrDefault()).ToList();
                             break;
                         case "PINNACLE":
+                            toBeComparedDate = _customDateService.GetCustomDate(award.Id);
                             listOfNominations = _encourageDatabaseContext.Query<Shortlist>()
                             .Where(r =>
                                     r.Nomination.AwardId == award.Id &&
-                                    (forCurrentMonth ? (r.Nomination.NominationDate >= prevYear) : (r.Nomination.NominationDate < prevYear)))
+                                    (forCurrentMonth ? (r.Nomination.NominationDate.Value.Year == toBeComparedDate.Year) : (r.Nomination.NominationDate.Value.Year < toBeComparedDate.Year)))
                             .GroupBy(x => x.NominationId)
                             .Select(group => group.FirstOrDefault()).ToList();
                             break;
@@ -173,6 +173,7 @@ namespace Silicus.EncourageWithAzureAd.Web.Controllers
                 var awardFrequency = _nominationService.GetAwardFrequencyById(award.FrequencyId);
                 if (award != null && nomination != null)
                 {
+                    var isHistorical = IsHistoricalNomination(nomination);
                     var awardCode = award.Code;
                     var nominee = _commonDbContext.Query<User>().FirstOrDefault(u => u.ID == nomination.UserId);
                     var nominationTime = nomination.NominationDate;
@@ -211,7 +212,8 @@ namespace Silicus.EncourageWithAzureAd.Web.Controllers
                             NumberOfReviews = totalReviews,
                             AverageCredits = averageCredits,
                             NominatedMonth = nominationTime.Value != null ? nominationTime.Value.Month : 0,
-                            AwardFrequencyCode = awardFrequency.Code
+                            AwardFrequencyCode = awardFrequency.Code,
+                            IsHistorical = isHistorical
                         }
                         );
                 }
@@ -359,8 +361,8 @@ namespace Silicus.EncourageWithAzureAd.Web.Controllers
 
             switch (typeOfNomination)
             {
+                default:
                 case "SOM":
-                    //var prevMonth = DateTime.Now.AddMonths(-1);
                     var prevMonth = customDate;
                     if (nominationDate.Value.Year < prevMonth.Year && nominationDate.Value.Month < prevMonth.Month)
                     {
@@ -368,13 +370,10 @@ namespace Silicus.EncourageWithAzureAd.Web.Controllers
                     }
                     break;
                 case "PINNACLE":
-                    //if (nominationDate.Value.Year < DateTime.Now.AddYears(-1).Year)
                     if (nominationDate.Value.Year < customDate.Year)
                     {
                         IsHistoricalNomination = true;
                     }
-                    break;
-                default:
                     break;
             }
 
