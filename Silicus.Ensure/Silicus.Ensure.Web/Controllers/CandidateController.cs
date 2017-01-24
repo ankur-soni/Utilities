@@ -125,7 +125,9 @@ namespace Silicus.Ensure.Web.Controllers
         [HttpPost]
         public JsonResult SumbmitCandidateResult(CandidateResultViewmodel candidateResultViewmodel)
         {
-            
+            var user = _userService.GetUserById(candidateResultViewmodel.CandidateUserId);
+            user.CandidateStatus = candidateResultViewmodel.Status.ToString();
+            _userService.Update(user);
             return Json(true);
         }
 

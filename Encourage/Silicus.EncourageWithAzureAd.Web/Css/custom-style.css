@@ -214,7 +214,7 @@ span.font-bold.txt-color label{font-weight:bold;color:#337ab7;}
   border-left-color: transparent;
 }
 .tabs-left>li>a {
-  border-radius: 4px 0 0 4px;
+  border-radius: 0px 0 0 0px;
   margin-right: 0;
   display:block;
 }
@@ -355,7 +355,7 @@ span.font-bold.txt-color label{font-weight:bold;color:#337ab7;}
 }
 .wizard-box{
     
-    margin-top: 60px;
+    margin-top: 35px;
     padding: 30px 30px 10px 30px;
     height: auto;
     box-shadow: 1px 1px 5px #888888;
