@@ -174,6 +174,7 @@ namespace Silicus.EncourageWithAzureAd.Web.Controllers
                 if (award != null && nomination != null)
                 {
                     var isHistorical = IsHistoricalNomination(nomination);
+                    var isAwardLocked = GetLockStatusOfAward(nomination.AwardId);
                     var awardCode = award.Code;
                     var nominee = _commonDbContext.Query<User>().FirstOrDefault(u => u.ID == nomination.UserId);
                     var nominationTime = nomination.NominationDate;
@@ -213,7 +214,8 @@ namespace Silicus.EncourageWithAzureAd.Web.Controllers
                             AverageCredits = averageCredits,
                             NominatedMonth = nominationTime.Value != null ? nominationTime.Value.Month : 0,
                             AwardFrequencyCode = awardFrequency.Code,
-                            IsHistorical = isHistorical
+                            IsHistorical = isHistorical,
+                            IsAwardLocked = isAwardLocked
                         }
                         );
                 }
@@ -423,6 +425,14 @@ namespace Silicus.EncourageWithAzureAd.Web.Controllers
             _emailNotificationOfWinner.Process();
 
             return true;
+        }
+
+        public bool GetLockStatusOfAward(int awardId)
+        {
+            var nominationLockStatus = _nominationService.GetAwardNominationLockStatus(awardId);
+            var reviewLockStatus = _reviewService.GetAwardReviewLockStatus(awardId);
+
+            return (nominationLockStatus && reviewLockStatus);
         }
 
         [HttpGet]
