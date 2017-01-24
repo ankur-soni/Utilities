@@ -13,58 +13,81 @@
         <h1 class="header-name">Set Award Period</h1>
     </div>
 </div>
-<div class="form-horizontal">
-    
-    <div class="form-group">
-        @Html.LabelFor(model => model.Awards, htmlAttributes: new { @class = "control-label col-md-2" })
-        <div class="col-md-10">
-            @Html.DropDownListFor(model => model.Awards, new SelectList(Model.Awards, "Id", "Name"), "Select", htmlAttributes: new { @class = "form-control" })
-            @Html.ValidationMessageFor(model => model.Awards, "", new { @class = "text-danger" })
-        </div>
-    </div>
-    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+<div class="row">
+    <div class="col-sm-12">
+        <div class="box M-T15 M-B60">
+            <div class="f1">
+                <div class="form-horizontal">
 
-    <div class="form-group">
-        @Html.LabelFor(model => model.Years, htmlAttributes: new { @class = "control-label col-md-2" })
-        <div class="col-md-10">
-            @Html.DropDownListFor(model => model.Years, new SelectList(Model.Years), "Select", htmlAttributes: new { @class = "form-control" })
-            @Html.ValidationMessageFor(model => model.Years, "", new { @class = "text-danger" })
-        </div>
-    </div>
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.Awards, htmlAttributes: new { @class = "col-md-2 col-sm-3" })
+                        <div class="col-md-3 col-sm-4">
+                            @Html.DropDownListFor(model => model.Awards, new SelectList(Model.Awards, "Id", "Name"), "Select", htmlAttributes: new { @class = "form-control" })
+                            @Html.ValidationMessageFor(model => model.Awards, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
 
-    <div class="form-group">
-        @Html.LabelFor(model => model.Months, htmlAttributes: new { @class = "control-label col-md-2" })
-        <div class="col-md-10">
-            @Html.DropDownListFor(model => model.Months, new SelectList(Model.Months).Select(m => new SelectListItem
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.Years, htmlAttributes: new { @class = "col-md-2 col-sm-3" })
+                        <div class="col-md-3 col-sm-4">
+                            @Html.DropDownListFor(model => model.Years, new SelectList(Model.Years), "Select", htmlAttributes: new { @class = "form-control" })
+                            @Html.ValidationMessageFor(model => model.Years, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.Months, htmlAttributes: new { @class = "col-md-2 col-sm-3" })
+                        <div class="col-md-3 col-sm-4">
+                            @Html.DropDownListFor(model => model.Months, new SelectList(Model.Months).Select(m => new SelectListItem
        {
            Value = m.Text,
            Text = System.Globalization.CultureInfo.InvariantCulture.DateTimeFormat.GetMonthName(Convert.ToInt32(m.Text)),
        })
            , "Select", htmlAttributes: new { @class = "form-control" })
-            @Html.ValidationMessageFor(model => model.Months, "", new { @class = "text-danger" })
-        </div>
-    </div>
-    <div class="form-group">
-        @Html.LabelFor(model => model.MonthToSubtract, "Months To Subtract", htmlAttributes: new { @class = "control-label col-md-2" })
-        <div class="col-md-10">
-            @Html.TextBoxFor(model => model.MonthToSubtract, "")
-        </div>
-    </div>
-    <div class="form-group">
-        @Html.LabelFor(model => model.IsApplicable, "Apply", htmlAttributes: new { @class = "control-label col-md-2" })
-        <div class="col-md-10">
-            @Html.CheckBoxFor(model => model.IsApplicable)
-        </div>
-    </div>
-  
-    <div class="form-group">
-        <div class="col-md-offset-2 col-md-10">
-            <input type="button" value="Set" class="btn btn-success" id="set-custom-date" />
-            <input type="button" value="ReSet" class="btn btn-success" id="reset-custom-date" />
-            <input type="button" value="Cancel" class="btn btn-success" id="cancel-custom-date" />
+                            @Html.ValidationMessageFor(model => model.Months, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.MonthToSubtract, "Months To Subtract", htmlAttributes: new { @class = "col-md-2 col-sm-3" })
+                        <div class="col-md-3 col-sm-4">
+                            @Html.TextBoxFor(model => model.MonthToSubtract, "", new { @class = "form-control" })
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        @*@Html.LabelFor(model => model.IsApplicable, "Apply", htmlAttributes: new { @class = "col-md-2" })*@
+                        
+                            @*@Html.CheckBoxFor(model => model.IsApplicable)*@
+                            
+                        <div class="col-md-2 col-sm-3">
+                            <div class="checkbox checkbox-success">
+                                <input id="checkbox1" name="IsApplicable" type="checkbox">
+                                <label for="checkbox1" name="IsApplicable">Apply</label>
+                            </div>
+                        </div>
+                            
+                    </div>
+
+                    
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="pull-right">
+                            <input type="button" value="Set" class="btn btn-primary" id="set-custom-date" />
+                            <input type="button" value="Reset" class="btn btn-primary" id="reset-custom-date" />
+                            <input type="button" value="Cancel" class="btn btn-primary" id="cancel-custom-date" />
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </div>
+
+
+
+
+
 <script>
     $("#Years").attr("disabled", "disabled");
     $("#Months").attr("disabled", "disabled");
