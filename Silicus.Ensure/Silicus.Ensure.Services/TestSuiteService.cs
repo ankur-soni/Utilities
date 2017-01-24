@@ -117,6 +117,17 @@ namespace Silicus.Ensure.Services
             return _context.Query<UserTestDetails>().Where(x => x.UserTestSuite.UserTestSuiteId == userTestSuitId);
         }
 
+        public int GetQuestionType(int questionId)
+        {
+            var question = _context.Query<Question>().FirstOrDefault(ques => ques.Id == questionId);
+            if (question != null)
+            {
+                return question.QuestionType;
+            }
+            else
+                return 0;
+        }
+
         public TestDetailsBusinessModel GetUserTestDetailsByUserTestSuitId(int? userTestSuitId, int? questionNumber, int questionType)
         {
             var questionNumberList = GetQuestionsByUserTestSuiteId(userTestSuitId, questionType);
@@ -171,14 +182,12 @@ namespace Silicus.Ensure.Services
 
         private TestDetailsBusinessModel SetFirstObjectiveQuestionAsNextQuestion(TestDetailsBusinessModel result, int? userTestSuitId)
         {
-            result.QuestionType = (int)QuestionType.Objective;
             var objectiveQuestions = GetQuestionsByUserTestSuiteId(userTestSuitId, (int)QuestionType.Objective);
             result.NextQuestionId = objectiveQuestions != null && objectiveQuestions.Count > 0 ? (int?)objectiveQuestions.ElementAtOrDefault(0) : null;
             return result;
         }
         private TestDetailsBusinessModel SetLastPracticalQuestionAsPreviousQuestion(TestDetailsBusinessModel result, int? userTestSuitId)
         {
-            result.QuestionType = (int)QuestionType.Practical;
             var practicalQuestions = GetQuestionsByUserTestSuiteId(userTestSuitId, (int)QuestionType.Practical);
             result.PreviousQuestionId = practicalQuestions != null && practicalQuestions.Count > 0 ? (int?)practicalQuestions.ElementAtOrDefault(practicalQuestions.Count - 1) : null;
             return result;

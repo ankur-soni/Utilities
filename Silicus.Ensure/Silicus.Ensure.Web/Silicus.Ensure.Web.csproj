@@ -442,7 +442,6 @@
     <Compile Include="Models\TestSuiteViewModel.cs" />
     <Compile Include="Models\TestSuiteViewQuesModel.cs" />
     <Compile Include="Models\Test\CandidateResultViewmodel.cs" />
-    <Compile Include="Models\Test\QuestionNavigationBasics.cs" />
     <Compile Include="Models\Test\CandidateInfoViewModel.cs" />
     <Compile Include="Models\Test\QuestionDetailsViewModel.cs" />
     <Compile Include="Models\Test\QuestionNavigationViewModel.cs" />

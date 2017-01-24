@@ -338,7 +338,7 @@
         var userTestSuiteId = $("#UserTestSuiteId").val();
         var userTestDetailId = $("#UserTestDetailId").val();
         var questionType = $("#QuestionType").val();
-        var questionDetails = { QuestionId: questionId, UserTestSuiteId: userTestSuiteId, UserTestDetailId: userTestDetailId, QuestionType: questionType };
+        var questionDetails = { QuestionId: questionId, UserTestSuiteId: userTestSuiteId, UserTestDetailId: userTestDetailId };
         $('#QuestionDetails').load('/Candidate/GetQuestionDetails', questionDetails);
     }
     function GetAnswer() {
