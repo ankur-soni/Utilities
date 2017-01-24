@@ -339,7 +339,7 @@
             $("#spnFinalPoints_" + nominationId + "_" + criteriaId).text(hrPoints);
             $("#spnFinalPoints_" + nominationId + "_" + criteriaId).addClass("cRed");
             //console.log(hrPoints + ", " + hrComment);
-            $("input[name='Nominations[" + g_nominationIndex + "].ManagerComments[" + g_criteriaIndex + "].FinalScore']").val(hrPoints);
+            $("input[name='Nominations[" + g_nominationIndex + "].ManagerComments[" + g_criteriaIndex + "].FinalScore']").val(parseFloat(hrPoints).toFixed(2));
             $("input[name='Nominations[" + g_nominationIndex + "].ManagerComments[" + g_criteriaIndex + "].AdminComment']").val(hrComment);
 
             RecalculateFinalScore(nominationId);
@@ -352,6 +352,8 @@
             adminComment = null;
             g_criteriaIndex = null;
             g_nominationIndex = null;
+
+            swal("Final score is changed. To save it permanently please make sure to click submit button once you finish all changes.");
         }
     }
 
