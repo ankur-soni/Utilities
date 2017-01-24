@@ -141,6 +141,9 @@
     <Compile Include="DocumentBase.cs" />
     <Compile Include="NotificationMessage.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Test\QuestionNavigationBasics.cs" />
+    <Compile Include="Test\QuestionNavigationBusinessModel.cs" />
+    <Compile Include="Test\TestDetailsBusinessModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

@@ -1,5 +1,6 @@
 ﻿using Silicus.Ensure.Models.Constants;
 using Silicus.Ensure.Models.DataObjects;
+using Silicus.Ensure.Models.Test;
 using Silicus.Ensure.Services.Interfaces;
 using Silicus.Ensure.Web.Mappings;
 using Silicus.Ensure.Web.Models;
@@ -62,26 +63,60 @@ namespace Silicus.Ensure.Web.Controllers
             }
 
             TestSuiteCandidateModel testSuiteCandidateModel = _mappingService.Map<UserTestSuite, TestSuiteCandidateModel>(userTestSuite);
+            testSuiteCandidateModel.CandidateInfo = GetCandidateInfo(user);
+            testSuiteCandidateModel.NavigationDetails = GetNavigationDetails(testSuiteCandidateModel.UserTestSuiteId);
             testSuiteCandidateModel.TotalQuestionCount = testSuiteCandidateModel.PracticalCount + testSuiteCandidateModel.ObjectiveCount;
             testSuiteCandidateModel.DurationInMin = testSuiteCandidateModel.Duration;
 
             return View(testSuiteCandidateModel);
         }
 
+        private QuestionNavigationViewModel GetNavigationDetails(int userTestSuiteId)
+        {
+            var navigationDetailsBusinessModel = _testSuiteService.GetNavigationDetails(userTestSuiteId);
+            var navigationDetails = _mappingService.Map<QuestionNavigationBusinessModel, QuestionNavigationViewModel>(navigationDetailsBusinessModel);
+            return navigationDetails;
+        }
+
+        private CandidateInfoViewModel GetCandidateInfo(Ensure.Models.DataObjects.User user)
+        {
+            return new CandidateInfoViewModel
+            {
+                Name = user.FirstName + " " + user.LastName,
+                DOB = user.DOB,
+                RequisitionId = user.RequisitionId,
+                Position = user.Position,
+                TotalExperience = ConvertExperienceIntoDecimal(user.TotalExperienceInYear, user.TotalExperienceInMonth)
+            };
+        }
+
+        private decimal ConvertExperienceIntoDecimal(int totalExperienceInYear, int totalExperienceInMonth)
+        {
+            if (totalExperienceInMonth > 0)
+            {
+                return totalExperienceInYear + (decimal)(totalExperienceInMonth / 12.0);
+            }
+            else
+                return totalExperienceInYear;
+        }
+
         public ActionResult LoadQuestion(int userTestSuiteId)
         {
-            TestSuiteQuestionModel testSuiteQuestionModel = TestSuiteQuestion(1, userTestSuiteId);
+            TestDetailsViewModel testSuiteQuestionModel = TestSuiteQuestion(null, userTestSuiteId, (int)QuestionType.Practical);
             return PartialView("_partialViewQuestion", testSuiteQuestionModel);
         }
 
-        public ActionResult OnNextPrevious(int qNumber, char move, int? userTestSuiteId, int? userTestDetailId, string answer)
+        public ActionResult GetQuestionDetails(QuestionDetailsViewModel questionDetails)
         {
-            answer = HttpUtility.HtmlDecode(answer);
-            UpdateAnswer(answer, userTestDetailId);
-            var testSuiteQuestionModel = (move == 'N') ? TestSuiteQuestion(qNumber += 1, userTestSuiteId) : TestSuiteQuestion(qNumber -= 1, userTestSuiteId);
+            questionDetails.QuestionType = _testSuiteService.GetQuestionType(questionDetails.QuestionId);
+            questionDetails.Answer = HttpUtility.HtmlDecode(questionDetails.Answer);
+            UpdateAnswer(questionDetails.Answer, questionDetails.UserTestDetailId);
+            var testSuiteQuestionModel = TestSuiteQuestion(questionDetails.QuestionId, questionDetails.UserTestSuiteId, questionDetails.QuestionType);
 
             return PartialView("_partialViewQuestion", testSuiteQuestionModel);
         }
+
+
 
         public ActionResult OnSubmitTest(int testSuiteId, int userTestSuiteId, int? userTestDetailId, int userId, string answer)
         {
@@ -147,43 +182,12 @@ namespace Silicus.Ensure.Web.Controllers
             _testSuiteService.UpdateUserTestDetails(userTestDetails);
         }
 
-        private TestSuiteQuestionModel TestSuiteQuestion(int qNumber, int? userTestSuiteId)
+        private TestDetailsViewModel TestSuiteQuestion(int? questionId, int? userTestSuiteId, int questionType)
         {
-            var count = 0;
-            dynamic userTestDetails = _testSuiteService.GetUserTestDetailsByUserTestSuitId(userTestSuiteId);
-            List<TestSuiteQuestionModel> testSuiteQuestionModel = new List<TestSuiteQuestionModel>();
-            TestSuiteQuestionModel model;
-
-            foreach (var obj in userTestDetails)
-            {
-                model = new TestSuiteQuestionModel();
-                model.QuestionNumber = count += 1;
-                model.UserTestDetailId = obj.GetType().GetProperty("TestDetailId").GetValue(obj);
-                model.Answer = obj.GetType().GetProperty("Answer").GetValue(obj);
-                model.Id = obj.GetType().GetProperty("Id").GetValue(obj);
-                model.QuestionType = obj.GetType().GetProperty("QuestionType").GetValue(obj);
-                model.AnswerType = obj.GetType().GetProperty("AnswerType").GetValue(obj);
-                model.QuestionDescription = obj.GetType().GetProperty("QuestionDescription").GetValue(obj);
-                model.OptionCount = obj.GetType().GetProperty("OptionCount").GetValue(obj);
-                model.Option1 = obj.GetType().GetProperty("Option1").GetValue(obj);
-                model.Option2 = obj.GetType().GetProperty("Option2").GetValue(obj);
-                model.Option3 = obj.GetType().GetProperty("Option3").GetValue(obj);
-                model.Option4 = obj.GetType().GetProperty("Option4").GetValue(obj);
-                model.Option5 = obj.GetType().GetProperty("Option5").GetValue(obj);
-                model.Option6 = obj.GetType().GetProperty("Option6").GetValue(obj);
-                model.Option7 = obj.GetType().GetProperty("Option7").GetValue(obj);
-                model.Option8 = obj.GetType().GetProperty("Option8").GetValue(obj);
-                model.Marks = obj.GetType().GetProperty("Marks").GetValue(obj);
-                testSuiteQuestionModel.Add(model);
-            }
-
-            int totalQCount = testSuiteQuestionModel.Count;
-            TestSuiteQuestionModel tQuestion = testSuiteQuestionModel.Where(p => p.QuestionNumber == qNumber).First();
-            if (qNumber == 1)
-                tQuestion.IsLast = true;
-            if (qNumber == totalQCount)
-                tQuestion.IsFirst = true;
-            return tQuestion;
+            TestDetailsBusinessModel userTestDetails = _testSuiteService.GetUserTestDetailsByUserTestSuitId(userTestSuiteId, questionId, questionType);
+            var testDetails = _mappingService.Map<TestDetailsBusinessModel, TestDetailsViewModel>(userTestDetails);
+            testDetails = testDetails ?? new TestDetailsViewModel();
+            return testDetails;
         }
 
         private void SendSubmittedTestMail(List<User> userAdmin, string fullname)

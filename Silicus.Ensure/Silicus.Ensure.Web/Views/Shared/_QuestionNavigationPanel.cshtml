@@ -1,74 +1,77 @@
 ﻿@model Silicus.Ensure.Web.Models.Test.QuestionNavigationViewModel
+<style>
+    .radio, .checkbox {
+        position: relative;
+        display: inline-block;
+        margin: 3px;
+    }
+
+    input[type=checkbox] {
+        height: 20px !important;
+        width: 25px !important;
+    }
+</style>
 <div style="width:100px">
+
     @{
         if (Model != null && Model.Practical != null && Model.Practical.Count > 0)
         {
+            <div>Practical <span>@Model.Practical.Count </span></div>
             foreach (var question in Model.Practical)
             {
-                if (question.Answered)
+                if (question.IsAnswered)
                 {
-                    @*<div class="form-group">*@
-                    <div class="checkbox checkbox-success">
-                        <input type="checkbox" id="@question" style="height:25px;width:25px" checked />
-                        <label for="@question"></label>
-                    </div>
-                    @*</div>*@
+                    <span class="checkbox checkbox-success">
+                        <input type="checkbox" id="@question.QuestionId" checked />
+                        <label for="@question.QuestionId"></label>
+                    </span>
                 }
-                else if (question.Viewed)
+                else if (question.IsViewedOnly)
                 {
-                    <div class="form-group">
-                        <div class="checkbox checkbox-success">
-                            <input type="checkbox" id="@question" style="height:25px;width:25px" checked />
-                            <label for="@question"></label>
-                        </div>
-                    </div>
+                    <span class="checkbox checkbox-success">
+                        <input type="checkbox" id="@question.QuestionId"/>
+                        <label for="@question.QuestionId"></label>
+                    </span>
                 }
                 else
                 {
-                    <div class="form-group">
-                        <div class="checkbox checkbox-success">
-                            <input type="checkbox" id="@question" style="height:25px;width:25px" checked />
-                            <label for="@question"></label>
-                        </div>
-                    </div>
+                    <span class="checkbox checkbox-success">
+                        <input type="checkbox" id="@question.QuestionId"/>
+                        <label for="@question.QuestionId"></label>
+                    </span>
                 }
             }
         }
 
         if (Model != null && Model.Objective != null && Model.Objective.Count > 0)
         {
+            <div>Objective <span>@Model.Objective.Count </span></div>
             foreach (var question in Model.Objective)
             {
-                if (question.Answered)
+                if (question.IsAnswered)
                 {
-                    @*<div class="form-group">*@
-                    <div class="checkbox checkbox-success">
-                        <input type="checkbox" id="@question" style="height:25px;width:25px" checked />
-                        <label for="@question"></label>
-                    </div>
-                    @*</div>*@
+                    <span class="checkbox checkbox-success">
+                        <input type="checkbox" id="@question.QuestionId" checked />
+                        <label for="@question.QuestionId"></label>
+                    </span>
                 }
-                else if (question.Viewed)
+                else if (question.IsViewedOnly)
                 {
-                    <div class="form-group">
-                        <div class="checkbox checkbox-success">
-                            <input type="checkbox" id="@question" style="height:25px;width:25px" checked />
-                            <label for="@question"></label>
-                        </div>
-                    </div>
+                    <span class="checkbox checkbox-success">
+                        <input type="checkbox" id="@question.QuestionId" />
+                        <label for="@question.QuestionId"></label>
+                    </span>
                 }
                 else
                 {
-                    <div class="form-group">
-                        <div class="checkbox checkbox-success">
-                            <input type="checkbox" id="@question" style="height:25px;width:25px" checked />
-                            <label for="@question"></label>
-                        </div>
-                    </div>
+                    <span class="checkbox checkbox-success">
+                        <input type="checkbox" id="@question.QuestionId" />
+                        <label for="@question.QuestionId"></label>
+                    </span>
                 }
             }
         }
-    }
+}
 </div>
 
 

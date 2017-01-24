@@ -1,4 +1,5 @@
 ﻿
+using Silicus.Ensure.Web.Models.Test;
 namespace Silicus.Ensure.Web.Models
 {
     public class TestSuiteCandidateModel
@@ -12,5 +13,7 @@ namespace Silicus.Ensure.Web.Models
         public int TotalQuestionCount { get; set; }
         public int DurationInMin { get; set; }
         public int ExtraCount { get; set; }
+        public QuestionNavigationViewModel NavigationDetails { get; set; }
+        public CandidateInfoViewModel CandidateInfo { get; set; }
     }
 }

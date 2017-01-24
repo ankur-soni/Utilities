@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using Silicus.Ensure.Models.DataObjects;
+using Silicus.Ensure.Models.Test;
 
 namespace Silicus.Ensure.Services.Interfaces
 {
@@ -39,7 +40,7 @@ namespace Silicus.Ensure.Services.Interfaces
 
         IEnumerable<UserTestDetails> GetUserTestDetailsListByUserTestSuitId(int userTestSuitId);
 
-        dynamic GetUserTestDetailsByUserTestSuitId(int? userTestSuitId);
+        TestDetailsBusinessModel GetUserTestDetailsByUserTestSuitId(int? userTestSuitId, int? questionNumber,int questionType);
 
         int AssignSuite(UserTestSuite userTestSuite, TestSuite testSuite);
 
@@ -48,5 +49,9 @@ namespace Silicus.Ensure.Services.Interfaces
         void TestSuiteActivation();
 
         List<int> GetAllUserIdsForTestSuite(int testSuiteId);
+
+        QuestionNavigationBusinessModel GetNavigationDetails(int userTestSuiteId);
+
+        int GetQuestionType(int questionId);
     }
 }
