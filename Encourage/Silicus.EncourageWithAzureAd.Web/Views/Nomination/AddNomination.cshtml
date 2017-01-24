@@ -21,7 +21,7 @@
                 <div class="f1">
                     @using (Html.BeginForm("AddNomination", "Nomination", FormMethod.Post, new { id = "addNominationForm" }))
                     {
-                        <div class="wizard-">
+                        <div class="wizard- M-B15">
                             <div class="f1-steps" id="nomination-steps">
                                 <div class="f1-progress">
                                     <div class="f1-progress-line" data-now-value="25" data-number-of-steps="4" style="width:25%;"></div>
@@ -50,8 +50,8 @@
                             </div>
                         </div>
                         <div id="nominationPeriodText">
-                            <span id="somNominationPeriod" style="display:none;">Nomination for SOM-@(DateTime.Now.AddMonths(-1).ToString("MMM-yyyy"))</span>
-                            <span id="pinnacleNominationPeriod" style="display:none;">Nomination for Pinnacle-@(DateTime.Now.AddYears(-1).Year)</span>
+                            <span class="themeColorBlue" id="somNominationPeriod" style="display:none;font-weight:bold;">Nomination for SOM-@(DateTime.Now.AddMonths(-1).ToString("MMM-yyyy"))</span>
+                            <span class="themeColorBlue"  id="pinnacleNominationPeriod" style="display:none;font-weight:bold;">Nomination for Pinnacle-@(DateTime.Now.AddYears(-1).Year)</span>
                         </div>
                         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
                         <div class="wizard-box" id="nominationCategory" nomination-step="1">
