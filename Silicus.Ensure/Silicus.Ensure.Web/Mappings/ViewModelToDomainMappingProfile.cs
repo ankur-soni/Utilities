@@ -5,6 +5,8 @@ using Silicus.Ensure.Web.Models;
 using Silicus.Ensure.Models.DataObjects;
 using Silicus.Ensure.Models.Constants;
 using System;
+using Silicus.Ensure.Models.Test;
+using Silicus.Ensure.Web.Models.Test;
 namespace Silicus.Ensure.Web.Mappings
 {
     [ExcludeFromCodeCoverage]
@@ -19,7 +21,7 @@ namespace Silicus.Ensure.Web.Mappings
         {
             Mapper.CreateMap<Model, EntityA>();
             Mapper.CreateMap<UserViewModel, User>();
-            Mapper.CreateMap<User,UserViewModel>();
+            Mapper.CreateMap<User, UserViewModel>();
             Mapper.CreateMap<TestSuiteViewModel, TestSuite>();//.ForMember(o => o., b => b.MapFrom(z => z.FirstName + " " + z.LastName));
             Mapper.CreateMap<TestSuite, TestSuiteViewModel>();//.ForMember(o => o.PositionName, Enum.Parse(Competency,"1").ToString();
             Mapper.CreateMap<QuestionModel, Question>();
@@ -30,9 +32,9 @@ namespace Silicus.Ensure.Web.Mappings
             Mapper.CreateMap<UserTestSuite, TestSuiteCandidateModel>();
             Mapper.CreateMap<TestSuiteQuestionModel, object>();
             Mapper.CreateMap<object, TestSuiteQuestionModel>();
-            Mapper.CreateMap<PanelMemberDetailViewModel,PanelMemberDetail >()
+            Mapper.CreateMap<PanelMemberDetailViewModel, PanelMemberDetail>()
                 .ForMember(dest => dest.PanelIds, opt => opt.MapFrom(s => (String.Join(",", s.PanelIds))));
-            Mapper.CreateMap<PanelMemberDetailViewModel,UserDetailViewModel>();
+            Mapper.CreateMap<PanelMemberDetailViewModel, UserDetailViewModel>();
 
             Mapper.CreateMap<RecruiterMemberDetailViewModel, RecruiterMembersDetail>()
                 .ForMember(dest => dest.TagIds, opt => opt.MapFrom(s => (String.Join(",", s.TagIds))));
@@ -43,6 +45,7 @@ namespace Silicus.Ensure.Web.Mappings
                 .ForMember(dest => dest.EmailAddress, opt => opt.MapFrom(s => (s.Email)))
                 .ForMember(dest => dest.ID, opt => opt.MapFrom(s => (s.UserId)))
                 .ForMember(dest => dest.PrimaryRoleID, opt => opt.MapFrom(s => (s.RoleId)));
+            Mapper.CreateMap<TestDetailsViewModel, TestDetailsBusinessModel>();
         }
     }
 }

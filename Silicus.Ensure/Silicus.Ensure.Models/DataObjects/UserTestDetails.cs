@@ -18,6 +18,8 @@ namespace Silicus.Ensure.Models.DataObjects
 
         public string MarkGivenByName { get; set; }
 
+        public bool IsViewedOnly { get; set; }
+
         public DateTime? MarkGivenDate { get; set; }
 
         public virtual UserTestSuite UserTestSuite { get; set; }

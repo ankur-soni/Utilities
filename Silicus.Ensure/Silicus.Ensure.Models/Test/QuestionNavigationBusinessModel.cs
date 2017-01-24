@@ -1,12 +1,12 @@
-﻿using Silicus.Ensure.Models.Test;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Web;
+using System.Text;
+using System.Threading.Tasks;
 
-namespace Silicus.Ensure.Web.Models.Test
+namespace Silicus.Ensure.Models.Test
 {
-    public class QuestionNavigationViewModel
+    public class QuestionNavigationBusinessModel
     {
         public List<QuestionNavigationBasics> Practical { get; set; }
         public List<QuestionNavigationBasics> Objective { get; set; }

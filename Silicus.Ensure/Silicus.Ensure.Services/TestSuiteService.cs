@@ -6,6 +6,7 @@ using Silicus.Ensure.Services.Interfaces;
 using System;
 using System.Configuration;
 using Silicus.Ensure.Models.Constants;
+using Silicus.Ensure.Models.Test;
 
 namespace Silicus.Ensure.Services
 {
@@ -25,7 +26,7 @@ namespace Silicus.Ensure.Services
 
         public TestSuite GetTestSuiteByName(string testSuiteName)
         {
-            return _context.Query<TestSuite>().FirstOrDefault(y=>y.TestSuiteName.Equals(testSuiteName,StringComparison.InvariantCultureIgnoreCase));
+            return _context.Query<TestSuite>().FirstOrDefault(y => y.TestSuiteName.Equals(testSuiteName, StringComparison.InvariantCultureIgnoreCase));
         }
 
         public int Add(TestSuite TestSuite)
@@ -116,32 +117,83 @@ namespace Silicus.Ensure.Services
             return _context.Query<UserTestDetails>().Where(x => x.UserTestSuite.UserTestSuiteId == userTestSuitId);
         }
 
-        public dynamic GetUserTestDetailsByUserTestSuitId(int? userTestSuitId)
+        public TestDetailsBusinessModel GetUserTestDetailsByUserTestSuitId(int? userTestSuitId, int? questionNumber, int questionType)
         {
+            var questionNumberList = GetQuestionsByUserTestSuiteId(userTestSuitId, questionType);
+            questionNumber = questionNumber == null && questionNumberList.Count > 0 ? (int?)questionNumberList.ElementAtOrDefault(0) : questionNumber;
+            if (questionNumber == null)
+            {
+                return null;
+            }
+            var index = questionNumberList.IndexOf((int)questionNumber);
+            int? previousQuestionId = questionNumberList.ElementAtOrDefault(index - 1);
+            int? nextQuestionId = questionNumberList.ElementAtOrDefault(index + 1);
             var result = (from a in _context.Query<UserTestDetails>()
                               .Where(x => x.UserTestSuite.UserTestSuiteId == userTestSuitId)
                           join b in _context.Query<Question>()
                           on a.QuestionId equals b.Id
-                          select new
+                          where b.Id == questionNumber
+                          select new TestDetailsBusinessModel
                           {
-                              a.TestDetailId,
-                              a.Answer,
-                              b.Id,
-                              b.QuestionType,
-                              b.AnswerType,
-                              b.QuestionDescription,
-                              b.OptionCount,
-                              b.Option1,
-                              b.Option2,
-                              b.Option3,
-                              b.Option4,
-                              b.Option5,
-                              b.Option6,
-                              b.Option7,
-                              b.Option8,
-                              b.Marks,
-                          }).OrderBy(o => o.QuestionType).ToList();
+                              TestDetailId = a.TestDetailId,
+                              Answer = a.Answer,
+                              QuestionId = b.Id,
+                              QuestionType = b.QuestionType,
+                              AnswerType = b.AnswerType,
+                              QuestionDescription = b.QuestionDescription,
+                              OptionCount = b.OptionCount,
+                              Option1 = b.Option1,
+                              Option2 = b.Option2,
+                              Option3 = b.Option3,
+                              Option4 = b.Option4,
+                              Option5 = b.Option5,
+                              Option6 = b.Option6,
+                              Option7 = b.Option7,
+                              Option8 = b.Option8,
+                              Marks = b.Marks
+                          }).FirstOrDefault();
+            if (result == null)
+            {
+                return null;
+            }
+            result.PreviousQuestionId = index <= 0 ? null : previousQuestionId;
+            result.NextQuestionId = index >= questionNumberList.Count - 1 ? null : nextQuestionId;
+            if (questionType == (int)QuestionType.Practical && result.NextQuestionId == null)
+            {
+                result = SetFirstObjectiveQuestionAsNextQuestion(result, userTestSuitId);
+            }
+            if (questionType == (int)QuestionType.Objective && result.PreviousQuestionId == null)
+            {
+                result = SetLastPracticalQuestionAsPreviousQuestion(result, userTestSuitId);
+            }
             return result;
+        }
+
+        private TestDetailsBusinessModel SetFirstObjectiveQuestionAsNextQuestion(TestDetailsBusinessModel result, int? userTestSuitId)
+        {
+            result.QuestionType = (int)QuestionType.Objective;
+            var objectiveQuestions = GetQuestionsByUserTestSuiteId(userTestSuitId, (int)QuestionType.Objective);
+            result.NextQuestionId = objectiveQuestions != null && objectiveQuestions.Count > 0 ? (int?)objectiveQuestions.ElementAtOrDefault(0) : null;
+            return result;
+        }
+        private TestDetailsBusinessModel SetLastPracticalQuestionAsPreviousQuestion(TestDetailsBusinessModel result, int? userTestSuitId)
+        {
+            result.QuestionType = (int)QuestionType.Practical;
+            var practicalQuestions = GetQuestionsByUserTestSuiteId(userTestSuitId, (int)QuestionType.Practical);
+            result.PreviousQuestionId = practicalQuestions != null && practicalQuestions.Count > 0 ? (int?)practicalQuestions.ElementAtOrDefault(practicalQuestions.Count - 1) : null;
+            return result;
+        }
+
+        private List<int> GetQuestionsByUserTestSuiteId(int? userTestSuitId, int questionType)
+        {
+            return (from a in _context.Query<UserTestDetails>()
+                                  .Where(x => x.UserTestSuite.UserTestSuiteId == userTestSuitId)
+                    join b in _context.Query<Question>().Where(ques => ques.QuestionType == questionType)
+                    on a.QuestionId equals b.Id
+                    select
+                    (
+                        b.Id
+                    )).OrderBy(questionId => questionId).ToList();
         }
 
         public int AssignSuite(UserTestSuite userTestSuite, TestSuite testSuite)
@@ -378,6 +430,28 @@ namespace Silicus.Ensure.Services
         public List<int> GetAllUserIdsForTestSuite(int testSuiteId)
         {
             return _context.Query<UserTestSuite>().Where(x => x.TestSuiteId == testSuiteId).Select(user => user.UserId).ToList();
+        }
+
+        public QuestionNavigationBusinessModel GetNavigationDetails(int userTestSuiteId)
+        {
+            var navigationDetails = new QuestionNavigationBusinessModel();
+            navigationDetails.Practical = GetQuestionNavigationDetails(userTestSuiteId, (int)QuestionType.Practical);
+            navigationDetails.Objective = GetQuestionNavigationDetails(userTestSuiteId, (int)QuestionType.Objective);
+            return navigationDetails;
+        }
+
+        private List<QuestionNavigationBasics> GetQuestionNavigationDetails(int userTestSuiteId, int questionType)
+        {
+            return (from a in _context.Query<UserTestDetails>()
+                                  .Where(x => x.UserTestSuite.UserTestSuiteId == userTestSuiteId)
+                    join b in _context.Query<Question>().Where(ques => ques.QuestionType == questionType)
+                    on a.QuestionId equals b.Id
+                    select new QuestionNavigationBasics
+                    {
+                        QuestionId = b.Id,
+                        IsViewedOnly = a.IsViewedOnly,
+                        IsAnswered = !(a.Answer.Equals(null) || a.Answer.Trim().Equals(""))
+                    }).ToList();
         }
     }
 }

@@ -24,39 +24,7 @@
         <br />
         <div class="row">
             <div class="col-md-6">
-                <div class="row">
-                    <div class="col-md-6">
-                        <label class="control-label"><strong>No. of objective questions</strong></label>
-                    </div>
-                    <div class="col-md-6">
-                        <label class="control-label">@Model.ObjectiveCount</label>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-md-6">
-                        <label class="control-label"><strong>No. of practical questions</strong></label>
-                    </div>
-
-                    <div class="col-md-6">
-                        <label class="control-label">@Model.PracticalCount</label>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-md-6">
-                        <label class="control-label"><strong>Total questions</strong></label>
-                    </div>
-                    <div class="col-md-6">
-                        <label class="control-label">@Model.TotalQuestionCount</label>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-md-6">
-                        <label class="control-label"><strong>Total duration (mins):</strong></label>
-                    </div>
-                    <div class="col-md-6">
-                        <label class="control-label">@Model.DurationInMin</label>
-                    </div>
-                </div>
+                @Html.Partial("_CandidateInfo", Model.CandidateInfo)
             </div>
             <div class="col-md-6">
                 <div class="row">
@@ -87,12 +55,17 @@
             <div class="col-md-12" style="border-bottom-width:1px; border-bottom-style:solid; border-bottom-color:black;">
             </div>
         </div>
-
-        <div id="QuestionDetails">
-
+        <div class="row">
+            <div class="col-lg-9">
+                <div id="QuestionDetails">
+                </div>
+            </div>
+            <div class="col-lg-3">
+                <div id="QuestionNavigation">
+                    @Html.Partial("_QuestionNavigationPanel", @Model.NavigationDetails)
+                </div>
+            </div>
         </div>
-
-
     </div>
 </div>
 
@@ -269,16 +242,6 @@
     }
 
     function ShowProgressPopUp(bl, msg) {
-        //$("#myModal").modal();
-        //$("#btnSubmitTestOK").hide();
-
-        //if (bl)
-        //    $("#btnModalOK").show();
-        //else
-        //    $("#btnModalOK").hide();
-
-        //$("#msgMain").text("Warning!");
-        //$("#msgContent").text(msg);
         if (!bl) {
             ShowSweetAlertWithoutCancel("Warning!", msg, "warning");
         }
@@ -318,24 +281,26 @@
         });
     }
 
-    function OnNext() {
-        var answer = GetAnswer();
-        var questionNumber = $("#QuestionNumber").val();
-        var userTestSuiteId = $("#UserTestSuiteId").val();
-        var userTestDetailId = $("#UserTestDetailId").val();
-        $('#QuestionDetails').load('/Candidate/OnNextPrevious?qNumber=' + questionNumber + '&move=N&userTestSuiteId=' + userTestSuiteId + '&userTestDetailId=' + userTestDetailId + '&answer=' + answer);
+    function OnNext(e) {
+        var questionId = $('#btnNext').attr('data-id');
+        GetQuestionDetails(questionId);
         return false;
     }
 
     function OnPrevious() {
-        var answer = GetAnswer();
-        var questionNumber = $("#QuestionNumber").val();
-        var userTestSuiteId = $("#UserTestSuiteId").val();
-        var userTestDetailId = $("#UserTestDetailId").val();
-        $('#QuestionDetails').load('/Candidate/OnNextPrevious?qNumber=' + questionNumber + '&move=P&userTestSuiteId=' + userTestSuiteId + '&userTestDetailId=' + userTestDetailId + '&answer=' + answer);
+        var questionId = $('#btnPrevious').attr('data-id');
+        GetQuestionDetails(questionId);
         return false;
     }
 
+    function GetQuestionDetails(questionId) {
+        var answer = GetAnswer();
+        var userTestSuiteId = $("#UserTestSuiteId").val();
+        var userTestDetailId = $("#UserTestDetailId").val();
+        var questionType = $("#QuestionType").val();
+        var questionDetails = { QuestionId: questionId, UserTestSuiteId: userTestSuiteId, UserTestDetailId: userTestDetailId, QuestionType: questionType };
+        $('#QuestionDetails').load('/Candidate/GetQuestionDetails', questionDetails);
+    }
     function GetAnswer() {
         var answer = "";
         if ($("#QuestionType").val().trim() == "1") {
@@ -360,7 +325,6 @@
     }
 
     function OnSubmitTest() {
-        //ShowProgressPopUp(false, "Are you sure, you want to Submit the Test? Once you submit the Test, you cannot revisit to view the Questions and their Answers.");
         var msg = "Are you sure, you want to Submit the Test? Once you submit the Test, you cannot revisit to view the Questions and their Answers.";
         swal({
             title: "Warning!",
@@ -379,8 +343,6 @@
             var text = "The test is submitted , thank you for your participation. Further, the recruitment team will contact you for the update";
             swal("Submitted!", "Now you have extra 10 mins.", "success");
         }
-        //$("#btnModalOK").hide();
-        //$("#btnSubmitTestOK").show();
     });
     }
 

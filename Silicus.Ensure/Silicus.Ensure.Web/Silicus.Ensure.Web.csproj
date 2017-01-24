@@ -401,6 +401,7 @@
     <Compile Include="Controllers\RoleController.cs" />
     <Compile Include="Controllers\TagController.cs" />
     <Compile Include="Controllers\TestSuiteController.cs" />
+    <Compile Include="Controllers\user.cs" />
     <Compile Include="Controllers\UserController.cs" />
     <Compile Include="CookieHelper.cs" />
     <Compile Include="Filters\AuditAttribute.cs" />
@@ -440,9 +441,12 @@
     <Compile Include="Models\TestSuiteQuestionModel.cs" />
     <Compile Include="Models\TestSuiteViewModel.cs" />
     <Compile Include="Models\TestSuiteViewQuesModel.cs" />
-    <Compile Include="Models\Test\QuestionNavigationBasics.cs" />
+    <Compile Include="Models\Test\CandidateInfoViewModel.cs" />
+    <Compile Include="Models\Test\QuestionDetailsViewModel.cs" />
     <Compile Include="Models\Test\QuestionNavigationViewModel.cs" />
     <Compile Include="Models\Test\ReviewerQuestionViewModel.cs" />
+    <Compile Include="Models\Test\ReviwerViewTestViewModel.cs" />
+    <Compile Include="Models\Test\TestDetailsViewModel.cs" />
     <Compile Include="Models\Test\TestSummaryViewModel.cs" />
     <Compile Include="Models\Test\TestViewModel.cs" />
     <Compile Include="Models\UserDetailViewModel.cs" />
@@ -836,6 +840,7 @@
     <Content Include="Views\CandidateAccount\Login.cshtml" />
     <Content Include="Silicus.Ensure.Web.ruleset" />
     <Content Include="Views\Shared\_QuestionNavigationPanel.cshtml" />
+    <Content Include="Views\Shared\_CandidateInfo.cshtml" />
     <None Include="Web.Azure.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
