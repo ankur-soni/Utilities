@@ -16,7 +16,7 @@
                                     <li>
                                         @if (item.IsShortlisted && !item.IsHistorical)
                                         {
-                                            <a class="btn default btn-outline image-popup-vertical-fit" href="#" data-toggle="modal" data-target="#winnerFeedbackModal" onclick="selectWinner(@item.NominationId)">
+                                            <a class="btn default btn-outline image-popup-vertical-fit" href="#" onclick="selectWinner(@item.NominationId,@item.IsAwardLocked.ToString().ToLower())" >
                                                 <span><i class="fa fa-trophy fa-2x" title="Mark As Winner" aria-hidden="true"></i></span>
                                             </a>
                                         }

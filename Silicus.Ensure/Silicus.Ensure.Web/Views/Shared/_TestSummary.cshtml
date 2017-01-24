@@ -1,0 +1,80 @@
+﻿@model Silicus.Ensure.Web.Models.Test.TestSummaryViewModel
+@using Kendo.Mvc.UI;
+<div>
+    <h4>TestSummaryViewModel</h4>
+    <hr />
+    <div class="col-md-9">
+        <table class="table-responsive">
+            <tbody>
+                <tr>
+                    <th>Section</th>
+                    <th>Total Ques</th>
+                    <th>Correct</th>
+                    <th>Wrong</th>
+                    <th>Obtained</th>
+                    <th>Total</th>
+                </tr>
+                <tr>
+                    <td>Practical</td>
+                    <td id="practicalTotalQuestionCount">@Model.Practical.TotalQuestionCount</td>
+                    <td id="practicalCorrectAnswersCount">@Model.Practical.CorrectAnswersCount</td>
+                    <td id="practicalIncorrectAnswersCount">@Model.Practical.IncorrectAnswersCount</td>
+                    <td id="practicalMarksObtained">@Model.Practical.MarksObtained</td>
+                    <td id="practicalMaximumMarks">@Model.Practical.MaximumMarks</td>
+                </tr>
+                <tr>
+                    <td>Objective</td>
+                    <td id="objectiveTotalQuestionCount">@Model.Objective.TotalQuestionCount</td>
+                    <td id="objectiveCorrectAnswersCount">@Model.Objective.CorrectAnswersCount</td>
+                    <td id="objectiveIncorrectAnswersCount">@Model.Objective.IncorrectAnswersCount</td>
+                    <td id="objectiveMarksObtained">@Model.Objective.MarksObtained</td>
+                    <td id="objectiveMaximumMarks">@Model.Objective.MaximumMarks</td>
+                </tr>
+            </tbody>
+        </table>
+        <div>Candidate Score  <span id="totalObtainedMarks">@Model.TotalObtainedMarks</span> out of <span id="totalMaximumMarks">@Model.TotalMaximumMarks</span></div>
+    </div>
+    <div class="col-md-3">
+        <input type="button" value="Sumbit Evaluation" class=".btn-primary" id="btnSubmitEvalution" />
+        <div>Has Scored <span id="percentage">@Model.Percentage </span>%</div>
+    </div>
+</div>
+
+<script>
+    function updateTestSummary() {
+        var QuestionNumber = $("#QuestionNumber").val();
+        var QuestionType = $("#QuestionType").val();
+        var IsCorrectAnswer = false;
+        if (QuestionType == 2) {
+            var marks = parseInt($("#Marks").val());
+            marks = isNaN(marks) ? 0 : marks;
+            IsCorrectAnswer = marks > 0 ? true : false;
+
+            var totalObtainedMarks = parseInt($("#totalObtainedMarks").val());
+            totalObtainedMarks = isNaN(totalObtainedMarks) ? 0 : totalObtainedMarks;
+
+            if (IsCorrectAnswer) {
+                var oldValue = parseInt($("#objectiveCorrectAnswersCount").html());
+                oldValue = isNaN(oldValue) ? 0 : oldValue;
+                $("#objectiveCorrectAnswersCount").html(oldValue + 1);
+                $("#practicalMarksObtained").html(oldValue + marks);
+                $("#totalObtainedMarks").html(totalObtainedMarks + marks);
+            }
+            else {
+                var oldValue = parseInt($("#practicalIncorrectAnswersCount").html());
+                oldValue = isNaN(oldValue) ? 0 : oldValue;
+                $("#practicalIncorrectAnswersCount").html(oldValue + 1);
+            }
+            var totalMaximumMarks = parseInt($("#totalMaximumMarks").html());
+            totalMaximumMarks = isNaN(totalMaximumMarks) ? 0 : totalMaximumMarks;
+            $("#percentage").html(calculatePercentage(totalObtainedMarks,totalMaximumMarks));
+
+        }
+    }
+
+    function calculatePercentage(earned, total)
+    {
+        return ((earned / total) * 100);
+    }
+
+</script>

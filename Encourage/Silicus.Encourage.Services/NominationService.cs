@@ -63,6 +63,7 @@ namespace Silicus.Encourage.Services
                             N.NominationDate.Value.Year == prevMonth.Year).ToList();
                         allNominations.AddRange(somNominations);
                         break;
+
                     case "PINNACLE":
                         var pinnacleNominations = _encourageDatabaseContext.Query<Nomination>().Where(N =>
                             N.AwardId == award.Id &&
@@ -332,7 +333,6 @@ namespace Silicus.Encourage.Services
             {
                 return new List<Award>();
             }
-
         }
 
         public List<Award> UnLockNominations(List<int> awardIds)
@@ -387,7 +387,6 @@ namespace Silicus.Encourage.Services
             return new List<Award>();
         }
 
-
         public int GetNominationCountByManagerIdForSom(int managerId, DateTime startDate, DateTime endDate, int awardId)
         {
             return _encourageDatabaseContext.Query<Nomination>().Count(x => x.ManagerId == managerId && (x.NominationDate >= startDate && x.NominationDate <= endDate && x.AwardId == awardId));
@@ -400,7 +399,6 @@ namespace Silicus.Encourage.Services
 
         public List<Award> GetNominationLockStatus()
         {
-
             var lockKey = WebConfigurationManager.AppSettings["NominationLockKey"];
             var allAwards = _encourageDatabaseContext.Query<Award>().ToList();
             var lockedAwards = new List<Award>();
@@ -415,6 +413,14 @@ namespace Silicus.Encourage.Services
 
             return lockedAwards;
         }
+
+        public bool GetAwardNominationLockStatus(int awardId)
+        {
+            var lockKey = WebConfigurationManager.AppSettings["NominationLockKey"];
+            var lockStatus = _encourageDatabaseContext.Query<Configuration>().FirstOrDefault(x => x.configurationKey == lockKey && x.AwardId == awardId).value.Value;
+            return lockStatus;
+        }
+
         public List<FrequencyMaster> GetAllAwardFrequencies()
         {
             return _encourageDatabaseContext.Query<FrequencyMaster>().ToList();
@@ -433,7 +439,7 @@ namespace Silicus.Encourage.Services
             var prevWinnersUserIds = _encourageDatabaseContext.Query<Shortlist>()
                                         .Where(s =>
                                             s.IsWinner == true &&
-                                            //s.WinningDate.Value.Year == DateTime.Now.Year && 
+                                            //s.WinningDate.Value.Year == DateTime.Now.Year &&
                                             s.WinningDate.Value.Year == customDate.Year &&
                                             s.Nomination.AwardId == awardType &&
                                             s.Nomination.ManagerId == managerId)
@@ -474,6 +480,7 @@ namespace Silicus.Encourage.Services
                             N.AwardId == awardId &&
                             (forCurrentMonth ? (N.NominationDate.Value.Month == toBeComparedDate.Month && N.NominationDate.Value.Year <= toBeComparedDate.Year) : (N.NominationDate < toBeComparedDate))).ToList();
                     break;
+
                 case "PINNACLE":
                     //Pinnacle
                     allNominations = _encourageDatabaseContext.Query<Nomination>().Where(N =>

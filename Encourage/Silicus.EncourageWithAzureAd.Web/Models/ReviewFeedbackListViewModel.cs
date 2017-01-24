@@ -11,6 +11,7 @@
         public bool IsShortlisted { get; set; }
         public bool IsWinner { get; set; }
         public bool IsHistorical { get; set; }
+        public bool IsAwardLocked { get; set; }
         public int NumberOfReviews { get; set; }
         public decimal AverageCredits { get; set; }
         public int NominatedMonth { get; set; }

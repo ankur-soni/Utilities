@@ -16,6 +16,7 @@ namespace Silicus.Encourage.Services.Interface
         List<Award> UnLockReview(List<int> awardIds);
         void DeletePrevoiusReviewerComments(int reviewerId, int nominationID);
         List<Award> GetReviewLockStatus();
+        bool GetAwardReviewLockStatus(int awardId);
         List<Models.Configuration> GetProcessesToLock(int awardId);
         List<Models.Configuration> GetProcessesToUnlock(int awardId);
         Configuration GetConfigurationById(int id);

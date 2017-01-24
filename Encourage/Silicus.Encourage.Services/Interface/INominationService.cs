@@ -39,6 +39,7 @@ namespace Silicus.Encourage.Services.Interface
         int GetNominationCountByManagerIdForSom(int managerId, DateTime startDate, DateTime endDate, int awardId);
         int GetNominationCountByManagerIdForPinnacle(int managerId, DateTime startDate, int awardId);
         List<Award> GetNominationLockStatus();
+        bool GetAwardNominationLockStatus(int awardId);
         FrequencyMaster GetAwardFrequencyByFrequencyCode(string frequencyCode);
         FrequencyMaster GetAwardFrequencyById(int id);
         List<User> GetAllResources();
