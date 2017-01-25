@@ -646,5 +646,13 @@ namespace Silicus.EncourageWithAzureAd.Web.Controllers
         {
             return Json(_customDateService.ReSetCustomDate(awardId),JsonRequestBehavior.AllowGet);
         }
+
+        [HttpGet]
+        public JsonResult GetCustomDateDetailsForAward(int awardId)
+        {
+            CustomDate customDateDetails = _customDateService.CustomDateDetailsForAward(awardId);
+            if (customDateDetails == null) { customDateDetails = new CustomDate(); }
+            return Json(customDateDetails, JsonRequestBehavior.AllowGet);
+        }
     }
 }

@@ -12,5 +12,6 @@ namespace Silicus.Encourage.Services.Interface
         DateTime GetCustomDate(int awardId);
         bool SetCustomDate(int awardId, int month, int year,int monthsToSubtract, bool isApplicable);
         bool ReSetCustomDate(int awardId);
+        CustomDate CustomDateDetailsForAward(int awardId);
     }
 }
