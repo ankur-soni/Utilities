@@ -39,9 +39,17 @@ namespace Silicus.Ensure.Web.Controllers
             User user = _userService.GetUserByEmail(userEmail);
             UserTestSuite userTestSuite = _testSuiteService.GetUserTestSuiteByUserId(user.UserId);
             TestSuiteCandidateModel testSuiteCandidateModel = _mappingService.Map<UserTestSuite, TestSuiteCandidateModel>(userTestSuite);
+            var specialInstruction = GetSpecialInstruction(userTestSuite.TestSuiteId);
+            testSuiteCandidateModel.SpecialInstruction = specialInstruction;
             testSuiteCandidateModel = testSuiteCandidateModel ?? new TestSuiteCandidateModel();
             ViewBag.Status = 0;
             return View(testSuiteCandidateModel);
+        }
+
+        private string GetSpecialInstruction(int testSuiteId)
+        {
+            var testSuite = _testSuiteService.GetTestSuitById(testSuiteId);
+            return testSuite != null ? testSuite.SpecialInstruction : null;
         }
 
         public ActionResult OnlineTest()
@@ -63,7 +71,7 @@ namespace Silicus.Ensure.Web.Controllers
             {
                 ViewBag.Status = 1;
                 ViewBag.Msg = "Test suite is not assigned for you, kindly contact admin.";
-                return View("Welcome",new TestSuiteCandidateModel());
+                return View("Welcome", new TestSuiteCandidateModel());
             }
 
             TestSuiteCandidateModel testSuiteCandidateModel = _mappingService.Map<UserTestSuite, TestSuiteCandidateModel>(userTestSuite);

@@ -80,6 +80,9 @@ namespace Silicus.Ensure.Web.Models
 
         public string OverallProficiency { get; set; }
 
+        [Display(Name = "Special Instruction")]
+        public string SpecialInstruction { get; set; }
+
         //[Display(Name = "Experience Range")]
         //public List<string> ExperienceRangeId { get; set; }
 
