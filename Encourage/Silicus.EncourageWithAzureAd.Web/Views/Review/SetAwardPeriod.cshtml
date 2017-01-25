@@ -1,8 +1,5 @@
 ﻿@model Silicus.EncourageWithAzureAd.Web.Models.CustomdateViewmodel
 
-@{
-}
-
 <div class="row white-bg header-row">
     <nav class="" role="navigation" style="margin-bottom: 0">
         <div class="navbar-header">
@@ -18,7 +15,6 @@
         <div class="box M-T15 M-B60">
             <div class="f1">
                 <div class="form-horizontal">
-
                     <div class="form-group">
                         @Html.LabelFor(model => model.Awards, htmlAttributes: new { @class = "col-md-2 col-sm-3" })
                         <div class="col-md-3 col-sm-4">
@@ -35,15 +31,14 @@
                             @Html.ValidationMessageFor(model => model.Years, "", new { @class = "text-danger" })
                         </div>
                     </div>
-
                     <div class="form-group">
                         @Html.LabelFor(model => model.Months, htmlAttributes: new { @class = "col-md-2 col-sm-3" })
                         <div class="col-md-3 col-sm-4">
-                            @Html.DropDownListFor(model => model.Months, new SelectList(Model.Months).Select(m => new SelectListItem
-       {
-           Value = m.Text,
-           Text = System.Globalization.CultureInfo.InvariantCulture.DateTimeFormat.GetMonthName(Convert.ToInt32(m.Text)),
-       })
+                        @Html.DropDownListFor(model => model.Months, new SelectList(Model.Months).Select(m => new SelectListItem
+                       {
+                           Value = m.Text,
+                           Text = System.Globalization.CultureInfo.InvariantCulture.DateTimeFormat.GetMonthName(Convert.ToInt32(m.Text)),
+                       })
            , "Select", htmlAttributes: new { @class = "form-control" })
                             @Html.ValidationMessageFor(model => model.Months, "", new { @class = "text-danger" })
                         </div>
@@ -55,27 +50,23 @@
                         </div>
                     </div>
                     <div class="form-group">
-                        @*@Html.LabelFor(model => model.IsApplicable, "Apply", htmlAttributes: new { @class = "col-md-2" })*@
-                        
-                            @*@Html.CheckBoxFor(model => model.IsApplicable)*@
-                            
                         <div class="col-md-2 col-sm-3">
                             <div class="checkbox checkbox-success">
+                                @*@Html.LabelFor(model => model.IsApplicable, "Apply", htmlAttributes: new { @class = "col-md-2" })*@
+
+                                @*@Html.CheckBoxFor(model => model.IsApplicable)*@
                                 <input id="checkbox1" name="IsApplicable" type="checkbox">
                                 <label for="checkbox1" name="IsApplicable">Apply</label>
                             </div>
                         </div>
-                            
                     </div>
-
-                    
                 </div>
                 <div class="row">
                     <div class="col-md-12">
                         <div class="pull-right">
                             <input type="button" value="Set" class="btn btn-primary" id="set-custom-date" />
                             <input type="button" value="Reset" class="btn btn-primary" id="reset-custom-date" />
-                            <input type="button" value="Cancel" class="btn btn-primary" id="cancel-custom-date" onclick="location.href='@Url.Action("Index","Home")'"/>
+                            <input type="button" value="Cancel" class="btn btn-primary" id="cancel-custom-date" onclick="location.href='@Url.Action("Index","Home")'" />
                         </div>
                     </div>
                 </div>
@@ -84,29 +75,62 @@
     </div>
 </div>
 
-
-
-
-
 <script>
     $("#Years").attr("disabled", "disabled");
     $("#Months").attr("disabled", "disabled");
+
     var MON = '@Silicus.EncourageWithAzureAd.Web.Enums.FrequencyCode.MON.ToString()';
     var YEAR = '@Silicus.EncourageWithAzureAd.Web.Enums.FrequencyCode.YEAR.ToString()';
+
     $("#Awards").change(function () {
-        debugger;
         $("#Months").val("");
         $("#Years").val("");
-        var awardId = parseInt($("#Awards").val());
-        var selectedAwardFrequency = getSelectedAwardFrequency(awardId);
-        if (selectedAwardFrequency == MON) {
-                    $("#Years").attr("disabled", false);
+        var awardId = +$("#Awards").val();
+        if (awardId != 0) {
+            var selectedAwardFrequency = getSelectedAwardFrequency(awardId);
+            if (selectedAwardFrequency == MON) {
+                $("#Years").attr("disabled", false);
+            }
+            else if (selectedAwardFrequency == YEAR) {
+                $("#Years").attr("disabled", false);
+                $("#Months").attr("disabled", "disabled");
+            }
+
+            showCustomLoader();
+            $.ajax({
+                type: "GET",
+                url: '@Url.Action("GetCustomDateDetailsForAward", "Review")',
+                data: { awardId: awardId },
+                success: function (customDate) {
+                    hideCustomLoader();
+                    if (selectedAwardFrequency == MON) {
+                        $("#Months").attr("disabled", false);
+                    }
+                    $("#Months").val(customDate.Month);
+                    $("#Years").val(customDate.Year);
+                    $("#checkbox1").prop('checked', customDate.IsApplicable);
+                    $("#MonthToSubtract").val(customDate.MonthsToSubtract);
+                },
+                error: function (error) {
+                    swal("Error", "Oops something went wrong!", "error");
+                    hideCustomLoader();
+                    console.log(error);
                 }
-        else if (selectedAwardFrequency == YEAR) {
-                    $("#Years").attr("disabled", false);
-                    $("#Months").attr("disabled", "disabled");
-                }
-    })
+            });
+        } else {
+            hideCustomLoader();
+            clearAwardPeriod();
+        }
+    });
+
+    function clearAwardPeriod() {
+        $("#Months").val("");
+        $("#Years").val("");
+        $("#MonthToSubtract").val(0);
+        $("#checkbox1").prop('checked', false);
+        $("#Years").attr("disabled", true);
+        $("#Months").attr("disabled", "disabled");
+    }
 
     $("#set-custom-date").click(function () {
         debugger;
@@ -129,7 +153,7 @@
                     swal("Error", "Please select year");
                 }
                 else {
-                    setCustomDate(awardId,0, year);
+                    setCustomDate(awardId, 0, year);
                 }
             }
 
@@ -143,13 +167,15 @@
 
     function setCustomDate(awardId, month, year) {
         debugger;
-        var isApplicable = $("#IsApplicable").is(":checked");
-        var monthToSubtract = parseInt( $("#MonthToSubtract").val());
+        var isApplicable = $("#checkbox1").is(":checked");
+        var monthToSubtract = parseInt($("#MonthToSubtract").val());
+        showCustomLoader();
         $.ajax({
             type: "POST",
             data: { awardId: awardId, month: month, year: year, monthToSubtract: monthToSubtract, isApplicable: isApplicable },
             url: "@Url.Action("SetAwardPeriod","Review")",
             success: function (status) {
+                hideCustomLoader();
                 if (status) {
                     swal("Success", "Award period set successfuly.", "success");
                 }
@@ -159,6 +185,7 @@
                 }
             },
             error: function (status) {
+                hideCustomLoader();
                 swal("Error", "Oops something went wrong!", "error");
             }
         });
@@ -195,15 +222,18 @@
 
     function getSelectedAwardFrequency(awardId) {
         var status;
+        showCustomLoader();
         $.ajax({
             type: "GET",
             data: { awardId: awardId },
             url: "@Url.Action("GetAwardFrequency","Review")",
             async: false,
             success: function (frequency) {
+                hideCustomLoader();
                 status = frequency;
             },
             error: function () {
+                hideCustomLoader();
                 swal("Error", "Oops something went wrong!", "error");
             }
         });
@@ -212,12 +242,14 @@
 
     $("#reset-custom-date").click(function () {
         var awardId = $("#Awards").val();
+        showCustomLoader();
         if (awardId > 0) {
             $.ajax({
                 type: 'GET',
                 data: { awardId: awardId },
                 url: "@Url.Action("ResetAwardPeriod","Review")",
                 success: function (status) {
+                    hideCustomLoader();
                     if (status) {
                         swal("Success", "Award period reset successfuly.", "success");
                     }
@@ -227,14 +259,15 @@
                     }
                 }
             , error: function () {
+                hideCustomLoader();
                 swal("Error", "Oops something went wrong!", "error");
             }
-        });
+            });
         }
         else {
             swal("Error", "Please select award.", "error");
         }
-        
+
     });
 
 </script>

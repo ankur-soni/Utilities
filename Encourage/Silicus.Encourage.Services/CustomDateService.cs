@@ -111,5 +111,10 @@ namespace Silicus.Encourage.Services
 
 
         }
+
+        public CustomDate CustomDateDetailsForAward(int awardId)
+        {
+            return _encourageDbcontext.Query<CustomDate>().FirstOrDefault(c => c.AwardId == awardId);
+        }
     }
 }
