@@ -1,5 +1,5 @@
 ﻿@using Kendo.Mvc.UI;
-
+@model Silicus.Ensure.Web.Models.TestSuiteCandidateModel
 @{
     ViewBag.Title = "Welcome";
     Layout = "~/Views/Shared/_LayoutCandidate.cshtml";
@@ -69,15 +69,19 @@
                                                 <li>
                                                     <span><i class="fa fa-clock-o" aria-hidden="true"></i></span>
                                                     <label>Duration</label>
+                                                    <label>@Model.Duration mins</label>
+                                                    <label>This is the duration for complete test.</label>
                                                    
                                                 </li>
                                                 <li>
                                                     <span><i class="fa fa-clock-o" aria-hidden="true"></i></span>
-                                                    <label>Duration</label>
+                                                    <label>Practical Questions</label>
+                                                    <label>@Model.PracticalCount</label>
                                                 </li>
                                                 <li>
                                                     <span><i class="fa fa-clock-o" aria-hidden="true"></i></span>
-                                                    <label>Duration</label>
+                                                    <label>Objective Questions</label>
+                                                    <label>@Model.ObjectiveCount</label>
                                                 </li>
                                                
                                             </ul>
