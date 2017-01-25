@@ -11,7 +11,7 @@
         width: 25px !important;
     }
 </style>
-<div style="width:100px">
+<div style="width:100px" id="NavigationSection">
 
     @{
         if (Model != null && Model.Practical != null && Model.Practical.Count > 0)
@@ -21,22 +21,22 @@
             {
                 if (question.IsAnswered)
                 {
-                    <span class="checkbox checkbox-success">
-                        <input type="checkbox" id="@question.QuestionId" checked />
+                    <span class="QuestionCheckbox checkbox checkbox-success">
+                        <input class="Answered" type="checkbox" id="@question.QuestionId" checked />
                         <label for="@question.QuestionId"></label>
                     </span>
                 }
                 else if (question.IsViewedOnly)
                 {
-                    <span class="checkbox checkbox-success">
-                        <input type="checkbox" id="@question.QuestionId"/>
+                    <span class="QuestionCheckbox checkbox checkbox-success">
+                        <input class="Viewed" type="checkbox" id="@question.QuestionId" />
                         <label for="@question.QuestionId"></label>
                     </span>
                 }
                 else
                 {
-                    <span class="checkbox checkbox-success">
-                        <input type="checkbox" id="@question.QuestionId"/>
+                    <span class="QuestionCheckbox checkbox checkbox-success">
+                        <input type="checkbox" id="@question.QuestionId" />
                         <label for="@question.QuestionId"></label>
                     </span>
                 }
@@ -50,28 +50,28 @@
             {
                 if (question.IsAnswered)
                 {
-                    <span class="checkbox checkbox-success">
-                        <input type="checkbox" id="@question.QuestionId" checked />
+                    <span class="QuestionCheckbox checkbox checkbox-success">
+                        <input class="Answered" type="checkbox" id="@question.QuestionId" checked />
                         <label for="@question.QuestionId"></label>
                     </span>
                 }
                 else if (question.IsViewedOnly)
                 {
-                    <span class="checkbox checkbox-success">
-                        <input type="checkbox" id="@question.QuestionId" />
+                    <span class="QuestionCheckbox checkbox checkbox-success">
+                        <input class="Viewed" type="checkbox" id="@question.QuestionId" />
                         <label for="@question.QuestionId"></label>
                     </span>
                 }
                 else
                 {
-                    <span class="checkbox checkbox-success">
+                    <span class="QuestionCheckbox checkbox checkbox-success">
                         <input type="checkbox" id="@question.QuestionId" />
                         <label for="@question.QuestionId"></label>
                     </span>
                 }
             }
         }
-}
+    }
 </div>
 
 
