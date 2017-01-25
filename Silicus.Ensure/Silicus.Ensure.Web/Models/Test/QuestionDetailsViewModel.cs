@@ -13,6 +13,6 @@ namespace Silicus.Ensure.Web.Models.Test
         public string Answer { get; set; }
         public int QuestionType { get; set; }
         public int Marks { get; set; }
-        public int Comment { get; set; }
+        public string Comment { get; set; }
     }
 }

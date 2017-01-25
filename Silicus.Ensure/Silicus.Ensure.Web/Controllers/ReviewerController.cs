@@ -13,6 +13,7 @@ using Silicus.Ensure.Web.Models;
 
 namespace Silicus.Ensure.Web.Controllers
 {
+    [Authorize]
     public class ReviewerController : Controller
     {
         private readonly IEmailService _emailService;
@@ -43,9 +44,6 @@ namespace Silicus.Ensure.Web.Controllers
         }
 
 
-
-
-
         public ActionResult ReviewTest()
         {
             if (!ModelState.IsValid)
@@ -74,7 +72,7 @@ namespace Silicus.Ensure.Web.Controllers
             testSuiteCandidateModel.TotalQuestionCount = testSuiteCandidateModel.PracticalCount + testSuiteCandidateModel.ObjectiveCount;
             testSuiteCandidateModel.DurationInMin = testSuiteCandidateModel.Duration;
 
-            return View(@"~\Views\Candidate\OnlineTest.cshtml", testSuiteCandidateModel);
+            return View(testSuiteCandidateModel);
 
         }
 
@@ -82,7 +80,7 @@ namespace Silicus.Ensure.Web.Controllers
         {
             questionDetails.QuestionType = _testSuiteService.GetQuestionType(questionDetails.QuestionId);
             questionDetails.Answer = HttpUtility.HtmlDecode(questionDetails.Answer);
-            UpdateAnswer(questionDetails.Answer, questionDetails.UserTestDetailId);
+            UpdateReview(questionDetails.Marks,questionDetails.Comment, questionDetails.UserTestDetailId);
             var reviewerQuestionViewModel = ReviewTestSuiteQuestion(questionDetails.QuestionId, questionDetails.UserTestSuiteId, questionDetails.QuestionType);
 
             return PartialView("_ReviewerViewQuestion", reviewerQuestionViewModel);
@@ -126,10 +124,11 @@ namespace Silicus.Ensure.Web.Controllers
                 return totalExperienceInYear;
         }
 
-        private void UpdateAnswer(string answer, int? userTestDetailId)
+        private void UpdateReview(int mark,string comment, int? userTestDetailId)
         {
             UserTestDetails userTestDetails = _testSuiteService.GetUserTestDetailsId(userTestDetailId);
-            userTestDetails.Answer = answer;
+            userTestDetails.Mark = mark;
+            //userTestDetails.Comment=comment
             _testSuiteService.UpdateUserTestDetails(userTestDetails);
         }
 

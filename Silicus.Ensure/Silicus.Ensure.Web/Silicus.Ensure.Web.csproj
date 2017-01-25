@@ -846,6 +846,7 @@
     <Content Include="Views\Shared\_CandidateResult.cshtml" />
     <Content Include="Views\Shared\_CandidateInfo.cshtml" />
     <Content Include="Views\Reviewer\_ReviewerViewQuestion.cshtml" />
+    <Content Include="Views\Reviewer\ReviewTest.cshtml" />
     <None Include="Web.Azure.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
