@@ -9,5 +9,6 @@ namespace Silicus.Ensure.Web.Models.Test
     {
 
         public string Comment { get; set; }
+        public int ReviwerMark { get; set; }
     }
 }

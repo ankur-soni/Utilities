@@ -95,9 +95,13 @@ namespace Silicus.Ensure.Services
             return _context.Query<UserTestSuite>().Where(x => x.UserTestSuiteId == userTestSuiteId).FirstOrDefault();
         }
 
-        public void UpdateUserTestDetails(UserTestDetails UserTestDetails)
+        public void UpdateUserTestDetails(UserTestDetails userTestDetails)
         {
-            _context.Update(UserTestDetails);
+            if (string.IsNullOrWhiteSpace(userTestDetails.Answer) || userTestDetails.Answer.Equals("undefined",StringComparison.OrdinalIgnoreCase))
+            {
+                userTestDetails.IsViewedOnly = true;
+            }
+            _context.Update(userTestDetails);
 
         }
 
@@ -148,6 +152,7 @@ namespace Silicus.Ensure.Services
                           {
                               TestDetailId = a.TestDetailId,
                               Answer = a.Answer,
+                              ReviwerMark=a.Mark,
                               QuestionId = b.Id,
                               QuestionType = b.QuestionType,
                               AnswerType = b.AnswerType,
@@ -460,7 +465,7 @@ namespace Silicus.Ensure.Services
                         QuestionId = b.Id,
                         IsViewedOnly = a.IsViewedOnly,
                         IsAnswered = !(a.Answer.Equals(null) || a.Answer.Trim().Equals(""))
-                    }).ToList();
+                    }).OrderBy(question => question.QuestionId).ToList();
         }
     }
 }

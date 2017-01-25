@@ -5,57 +5,135 @@
     Layout = "~/Views/Shared/_LayoutCandidate.cshtml";
 }
 
-<div class="main-content" id="main">
-    <div class="fluid mt20">
-        <div class="row">
-            <div class="col-md-12" style="text-align:center;">
-                <strong>This test is window protected, please do not move away from the window or refresh.</strong>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-md-12" style="border-bottom-width:1px; border-bottom-style:solid; border-bottom-color:black;">
-            </div>
-        </div>
-        <br />
-        <div class="row">
-            <div class="col-md-12" style="height:400px;">
-                <div style="text-align:center;"><strong>Online Test Instruction</strong></div>
-                <br />
-                <p>
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-                </p>
-                <p>
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-                </p>
-                <p>
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-                </p>
-                <p>
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-                </p>
-                <p>
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-                </p>
-            </div>
-        </div>
+<div class="row">
+    <div class="col-sm-12">
+       
+            <div class="box M-T15 M-B60">
+                <div class="f1">
+                    <div class="main-content" id="main">
 
-        <div class="row">
-            <div class="col-md-9" style="margin-left:20px;">
-                <label class="checkbox inline" style="margin-top:10px;">
-                    <input type="checkbox" id="Terms"> Agree with the terms and conditions of online test instruction.
-                </label>
+                        <div class="row">
+                            <div class="col-sm-8 col-sm-offset-2">
+                                <div class="alert alert-danger">
+                                    <strong>Attention!</strong> This test is window protected, please do not move away from the window or refresh page.
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <div class="col-md-12" style="border-bottom-width:1px; border-bottom-style:solid; border-bottom-color:#c4c7ca;">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row M-T15">
+                            <div class="col-sm-12">
+                                <div class="greyBox"><strong>Online Test Instruction</strong></div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-10 col-sm-offset-1">
 
-            </div>
-            <div class="col-md-3" style="float:right;">
-                @(Html.Kendo().Button()
-                .Name("btnStart")
-                .HtmlAttributes(new { type = "button" }).Events(e => e.Click("OnClick"))
-                        .Content("Start Online Test").HtmlAttributes(new { style = "float: right;" }))
-            </div>
+                                <label class="M-T15 M-B15" style="font-weight:bold;font-size:18px;">Test Instructions:</label>
+                                <p>
+                                    1. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua labore et dolore magna aliqua.
+                                </p>
+                                <p>
+                                    2. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua labore et dolore magna aliqua.
+                                <p>
+                                    3. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua labore et dolore magna aliqua.
+                                </p>
+                                <p>
+                                    4. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua labore et dolore magna aliqua.
+                                </p>
+                                <p>
+                                    5. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua labore et dolore magna aliqua.
+                                </p>
+
+                                <label class="M-T15 M-B15" style="font-weight:bold;font-size:18px;">Special Instructions:</label>
+
+                                <p>
+                                    1. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua labore et dolore magna aliqua.
+                                </p>
+                                <p>
+                                    2. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua labore et dolore magna aliqua.
+                                </p>
+                                <p>
+                                    3. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua labore et dolore magna aliqua.
+                                </p>
+                            </div>
+                            <div class="col-sm-10 col-sm-offset-1 M-T15 M-B15">
+                                <div class="info-box">
+                                    <div class="row">
+                                        <div class="col-sm-6">
+                                            <ul>
+                                                <li>
+                                                    <span><i class="fa fa-clock-o" aria-hidden="true"></i></span>
+                                                    <label>Duration</label>
+                                                   
+                                                </li>
+                                                <li>
+                                                    <span><i class="fa fa-clock-o" aria-hidden="true"></i></span>
+                                                    <label>Duration</label>
+                                                </li>
+                                                <li>
+                                                    <span><i class="fa fa-clock-o" aria-hidden="true"></i></span>
+                                                    <label>Duration</label>
+                                                </li>
+                                               
+                                            </ul>
+                                            
+                                        </div>
+                                        <div class="col-sm-6">
+                                            <ul>
+                                                <li>
+                                                    <span><i class="fa fa-clock-o" aria-hidden="true"></i></span>
+                                                    <label>Duration</label>
+                                                </li>
+                                                <li>
+                                                    <span><i class="fa fa-clock-o" aria-hidden="true"></i></span>
+                                                    <label>Duration</label>
+                                                </li>
+                                                <li>
+                                                    <span><i class="fa fa-clock-o" aria-hidden="true"></i></span>
+                                                    <label>Duration</label>
+                                                </li>
+                                                
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-sm-10 col-sm-offset-1">
+                                <div class="form-group M-T25 M-B60">
+                                    <div class="checkbox checkbox-success">
+                                        <input id="Terms" type="checkbox">
+                                        <label for="Terms"> <span style="font-weight:bold;">Agree with the terms and conditions of online test instruction.</span> </label>
+                                    </div>
+                               </div>
+                           </div>
+
+
+
+
+                            </div>
+
+                        <div class="row M-B15">
+                            <div class="col-sm-4 col-sm-offset-4" style="text-align: center;">
+                                @(Html.Kendo().Button()
+                        .Name("btnStart")
+                        .HtmlAttributes(new { type = "button" }).Events(e => e.Click("OnClick"))
+                                .Content("Start Online Test").HtmlAttributes(new { @class = "btn btn-lg btn-start" }))
+                            </div>
+                        </div>
+
+
+                    </div>
+                </div>
         </div>
-
     </div>
 </div>
+   
 
 <script>
     $(document).ready(function () {
