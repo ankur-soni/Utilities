@@ -35,9 +35,13 @@ namespace Silicus.Ensure.Web.Controllers
         {
             if (!ModelState.IsValid)
                 return RedirectToAction("LogOff", "CandidateAccount");
-
+            var userEmail = User.Identity.Name.Trim();
+            User user = _userService.GetUserByEmail(userEmail);
+            UserTestSuite userTestSuite = _testSuiteService.GetUserTestSuiteByUserId(user.UserId);
+            TestSuiteCandidateModel testSuiteCandidateModel = _mappingService.Map<UserTestSuite, TestSuiteCandidateModel>(userTestSuite);
+            testSuiteCandidateModel = testSuiteCandidateModel ?? new TestSuiteCandidateModel();
             ViewBag.Status = 0;
-            return View();
+            return View(testSuiteCandidateModel);
         }
 
         public ActionResult OnlineTest()
@@ -50,16 +54,16 @@ namespace Silicus.Ensure.Web.Controllers
             if (user == null)
             {
                 ViewBag.Status = 1;
-                ViewBag.Msg = "User not found for online test, Kindly contact admin.";
-                return View("Welcome");
+                ViewBag.Msg = "User not found for online test, kindly contact admin.";
+                return View("Welcome", new TestSuiteCandidateModel());
             }
 
             UserTestSuite userTestSuite = _testSuiteService.GetUserTestSuiteByUserId(user.UserId);
             if (userTestSuite == null)
             {
                 ViewBag.Status = 1;
-                ViewBag.Msg = "Test suite is not assigned for you, Kindly contact admin.";
-                return View("Welcome");
+                ViewBag.Msg = "Test suite is not assigned for you, kindly contact admin.";
+                return View("Welcome",new TestSuiteCandidateModel());
             }
 
             TestSuiteCandidateModel testSuiteCandidateModel = _mappingService.Map<UserTestSuite, TestSuiteCandidateModel>(userTestSuite);
