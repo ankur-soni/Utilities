@@ -152,7 +152,7 @@ namespace Silicus.Ensure.Services
                           {
                               TestDetailId = a.TestDetailId,
                               Answer = a.Answer,
-                              ReviwerMark=a.Mark==null?0:a.Mark.Value,
+                              ReviwerMark=a.Mark,
                               QuestionId = b.Id,
                               QuestionType = b.QuestionType,
                               AnswerType = b.AnswerType,
@@ -464,7 +464,8 @@ namespace Silicus.Ensure.Services
                     {
                         QuestionId = b.Id,
                         IsViewedOnly = a.IsViewedOnly,
-                        IsAnswered = !(a.Answer.Equals(null) || a.Answer.Trim().Equals(""))
+                        IsAnswered = !(a.Answer.Equals(null) || a.Answer.Trim().Equals("")),
+                        IsReviewed=!a.Mark.Equals(null)
                     }).OrderBy(question => question.QuestionId).ToList();
         }
     }
