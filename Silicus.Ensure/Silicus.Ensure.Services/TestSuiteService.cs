@@ -152,6 +152,7 @@ namespace Silicus.Ensure.Services
                           {
                               TestDetailId = a.TestDetailId,
                               Answer = a.Answer,
+                              ReviwerMark=a.Mark==null?0:a.Mark.Value,
                               QuestionId = b.Id,
                               QuestionType = b.QuestionType,
                               AnswerType = b.AnswerType,
