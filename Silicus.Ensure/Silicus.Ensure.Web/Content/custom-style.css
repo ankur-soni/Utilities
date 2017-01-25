@@ -11,6 +11,7 @@
 .M-B20{margin-bottom:20px!important;}
 .M-B25{margin-bottom:25px!important;}
 .M-L15{margin-left:15px;}
+.M-R15{margin-right:15px;}
 .M-B60{margin-bottom:60px!important;}
 .boxShadow{box-shadow:1px 1px 3px #888888;}
 .font-Bold{font-weight:bold!important;}
@@ -2370,15 +2371,16 @@ span.select2.select2-container.select2-container--default {
 }
 
 /* Candidate portal css*/
+.titleText{color:#337ab7;}
 .btn-start{background-color: #4caf50;border-color: #4caf50;color: #FFFFFF;}
-.greyBox{text-align:center;background:#9c9c9c;height:30px;width:500px;margin:0 auto;border-radius:5px;font-size:18px;color:#fff;}
-.info-box{border:1px solid #9E9E9E;height:355px;width:auto;border-radius:15px;}
+.greyBox{text-align:center;background:#78909C;height:30px;width:500px;margin:0 auto;border-radius:5px;font-size:18px;color:#fff;}
+.info-box{width:auto;border-radius:5px;background:#E8EAF6;}
 .info-box ul{padding:25px;}
-.info-box ul li{padding:25px;list-style:none;height:100px;}
-.info-box ul li i{font-size:25px;margin-right:10px;}
+.info-box ul li{padding:25px;list-style:none;height:auto;}
+.info-box ul li i{font-size:35px;margin-right:10px;color: #337ab7;}
 .info-box ul li label{font-size:15px;vertical-align:top;font-weight:bold;}
-.info-box ul li span{font-size:12px;}
-
+.info-box ul li span{font-size:13px;}
+#Term.checkbox label::before{border: 1px solid rgba(158, 158, 158, 1);}
 
 
 
