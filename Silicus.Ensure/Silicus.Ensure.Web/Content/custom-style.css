@@ -5,6 +5,7 @@
 .M-T5{margin-top:5px;}
 .M-T10{margin-top:10px;}
 .M-T15{margin-top:15px;}
+.M-T25{margin-top:25px;}
 .M-B5{margin-bottom:5px;}
 .M-B15{margin-bottom:15px!important;}
 .M-B20{margin-bottom:20px!important;}
@@ -18,7 +19,7 @@
 .btn-secondary{background-color:#3388b7;border-color:#3388b7;color:#fff;}
 .btn-secondary:hover, .btn-secondary:focus{color:#fff;}
 .btn{padding:2px 12px;}
-
+.BodyColor{background:#edf1f5;}
 
 /* Bootstrap popup style */
 .modal-content{border-radius:6px!important;}
@@ -2368,11 +2369,15 @@ span.select2.select2-container.select2-container--default {
     color: #777;
 }
 
-
-
-
-
-
+/* Candidate portal css*/
+.btn-start{background-color: #4caf50;border-color: #4caf50;color: #FFFFFF;}
+.greyBox{text-align:center;background:#9c9c9c;height:30px;width:500px;margin:0 auto;border-radius:5px;font-size:18px;color:#fff;}
+.info-box{border:1px solid #9E9E9E;height:355px;width:auto;border-radius:15px;}
+.info-box ul{padding:25px;}
+.info-box ul li{padding:25px;list-style:none;height:100px;}
+.info-box ul li i{font-size:25px;margin-right:10px;}
+.info-box ul li label{font-size:15px;vertical-align:top;font-weight:bold;}
+.info-box ul li span{font-size:12px;}
 
 
 
@@ -2486,9 +2491,7 @@ span.select2.select2-container.select2-container--default {
     font-size: 25px;
     }
 
-    #wrapper {
-        background: #;
-    }
+    
     }
     
 @media (max-width:767px) {
