@@ -120,7 +120,7 @@ namespace Silicus.FrameworxProject.Web.Controllers
 
         }
 
-        public ActionResult WorkItemDetails(int Id)
+        public ActionResult Details(int Id)
         {
             var productBacklog = _productBacklogService.GetWorkItemDetails(Id);
 

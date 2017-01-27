@@ -61,7 +61,7 @@ function openDetails(id) {
     //Ajax call for controller's OpenFeedbackForm action method to get bulletin details to open dialog 
     blockUI();
     $.ajax({
-        url: '/ProductBacklog/WorkItemDetails/',
+        url: '/ProductBacklog/Details/',
         data: { id: id },
         success: function (data) {
             //Set feedback form body html with data 

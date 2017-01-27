@@ -100,7 +100,7 @@
                 .Ajax()
                 .Model(model =>
                 {
-                    model.Id(p => p.Id);                
+                    model.Id(p => p.Id);
                 })
                 .Read(read => read.Action("GetProductBacklogs", "ProductBacklog").Data("additionalData"))
                 .PageSize(20)

@@ -8,24 +8,41 @@ namespace Silicus.Reusable.Web.Models.ViewModel
 {
     public class ProductBacklogViewModel
     {
-        public int Id { get; set; }        
+        public int Id { get; set; }
         public string Title { get; set; }
         public string Description { get; set; }
         public string Type { get; set; }
         [Display(Name = "Area")]
         public string AreaPath { get; set; }
+        [Display(Name ="Status")]
         public string State { get; set; }
+        [Display(Name = "Assignee")]
         public string AssigneeDisplayName { get; set; }
 
         public string AssigneeEmail { get; set; }
-      
+
         [Display(Name = "Time Allocated")]
         public Double TimeAllocated { get; set; }
         [Display(Name = "Time Spent")]
         public Double TimeSpent { get; set; }
 
-        public bool IsTaskAssignedToUser { get; set; }
+        [Display(Name = "Time Remaining")]
+        public Double TimeRemaining
+        {
+            get
+            {
+                return TimeAllocated - TimeSpent;
+            }
+        }
 
+        public bool IsTaskAssignedToUser { get; set; }
+        [Display(Name = "Assigned By")]
         public string AssignedBy { get; set; }
+
+        [Display(Name = "Created On")]
+        public DateTime CreatedDate { get; set; }
+
+        [Display(Name = "Last Updated")]
+        public DateTime ChangedDate { get; set; }
     }
 }
