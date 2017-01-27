@@ -1,49 +1,80 @@
 ﻿@model Silicus.Reusable.Web.Models.ViewModel.ProductBacklogViewModel
+@{
+    ViewBag.Title = "Details";
+}
 
 <div class="row">
     <div class="col-sm-12">
-        <div class="box M-T15">            
-            <div class="form-horizontal">
-                <div class="form-group">
-                    @Html.LabelFor(model => model.Title, htmlAttributes: new { @class = "control-label col-md-2" })
-                    <div class="col-md-10">
-                        @Html.DisplayFor(model => model.Title, new { htmlAttributes = new { @class = "form-control" } })
-                    </div>
-                </div>
-                <div class="form-group">
-                    @Html.LabelFor(model => model.State, htmlAttributes: new { @class = "control-label col-md-2" })
-                    <div class="col-md-10">
-                        @Html.DisplayFor(model => model.State, new { htmlAttributes = new { @class = "form-control" } })
-                    </div>
-                </div>
-                <div class="form-group">
-                    @Html.LabelFor(model => model.AreaPath, htmlAttributes: new { @class = "control-label col-md-2" })
-                    <div class="col-md-10">
-                        @Html.DisplayFor(model => model.AreaPath, new { htmlAttributes = new { @class = "form-control" } })
-                    </div>
-                </div>
-                <div class="form-group">
-                    @Html.LabelFor(model => model.Description, htmlAttributes: new { @class = "control-label col-md-2" })
-                    <div class="col-md-10">
-                        @Html.DisplayFor(model => model.Description, new { htmlAttributes = new { @class = "form-control" } })
-                    </div>
-                </div>
-                <div class="form-group">
-                    @Html.LabelFor(model => model.TimeAllocatedString, htmlAttributes: new { @class = "control-label col-md-2" })
-                    <div class="col-md-10">
-                        @Html.DisplayFor(model => model.TimeAllocatedString, new { htmlAttributes = new { @class = "form-control" } })
-                    </div>
-                </div>
-                <div class="form-group">
-                    @Html.LabelFor(model => model.TimeSpentString, htmlAttributes: new { @class = "control-label col-md-2" })
-                    <div class="col-md-10">
-                        @Html.DisplayFor(model => model.TimeSpentString, new { htmlAttributes = new { @class = "form-control" } })
-                    </div>
-                </div>
+        <div class="box M-T15">
+            <div class="row clearfix">       
+                    <form class="form-horizontal">
+                        <fieldset>
+                            <legend align="center">Work Item Details</legend>
+                            <div class="form-group">
+                                @Html.Label("Project", new { @class = "col-md-3 control-label", disabled = "disabled" })
+                                <div class="col-md-9">
+                                    @Html.TextBoxFor(m => m.AreaPath, new { @class = "form-control input-md", disabled = "disabled" })
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                @Html.LabelFor(m => m.Title, new { @class = "col-md-3 control-label" })
+                                <div class="col-md-9">
+                                    @Html.TextBoxFor(m => m.Title, new { @class = "form-control input-md", disabled = "disabled" })
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                @Html.LabelFor(m => m.Description, new { @class = "col-md-3 control-label" })
+                                <div class="col-md-9">
+                                    @Html.TextAreaFor(m => m.Title, new { @class = "form-control", disabled = "disabled" })
+                                </div>
+                            </div>
 
+                            <div class="form-group">
+                                @Html.LabelFor(m => m.AssigneeDisplayName, new { @class = "col-md-3 control-label" })
+                                <div class="col-md-3">
+                                    @Html.TextBoxFor(m => m.AssigneeDisplayName, new { @class = "form-control input-md", disabled = "disabled" })
+                                </div>
+                                @Html.LabelFor(m => m.AssignedBy, new { @class = "col-md-3 control-label" })
+                                <div class="col-md-3">
+                                    @Html.TextBoxFor(m => m.AssignedBy, new { @class = "form-control input-md", disabled = "disabled" })
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                @Html.LabelFor(m => m.CreatedDate, new { @class = "col-md-3 control-label" })
+                                <div class="col-md-3">
+                                    @Html.TextBoxFor(m => m.CreatedDate, Model.ChangedDate.ToShortDateString(),  new { @class = "form-control input-md", disabled = "disabled" })
+                                </div>
+                                @Html.LabelFor(m => m.ChangedDate, new { @class = "col-md-3 control-label" })
+                                <div class="col-md-3">
+                                    @Html.TextBoxFor(m => m.ChangedDate, Model.ChangedDate.ToShortDateString(), new { @class = "form-control input-md", disabled = "disabled" })
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                @Html.LabelFor(m => m.TimeAllocated, new { @class = "col-md-3 control-label" })
+                                <div class="col-md-3">
+                                    @Html.TextBox("TimeAllocated",TimeSpan.FromHours(Model.TimeAllocated).ToString("h\\:mm"),  new { @class = "form-control input-md", disabled = "disabled" })
+                                </div>
+                                @Html.LabelFor(m => m.TimeSpent, new { @class = "col-md-3 control-label" })
+                                <div class="col-md-3">
+                                    @Html.TextBox("TimeSpent", TimeSpan.FromHours(Model.TimeSpent).ToString("h\\:mm"), new { @class = "form-control input-md", disabled = "disabled" })
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                @Html.LabelFor(m => m.TimeRemaining, new { @class = "col-md-3 control-label" })
+                                <div class="col-md-3">
+                                    @Html.TextBox("TimeRemaining", TimeSpan.FromHours(Model.TimeRemaining).ToString("h\\:mm"), new { @class = "form-control input-md", disabled = "disabled" })
+                                </div>
+                                @Html.LabelFor(m => m.State, new { @class = "col-md-3 control-label" })
+                                <div class="col-md-3">
+                                    @Html.TextBoxFor(m => m.State, new { @class = "form-control input-md", disabled = "disabled" })
+                                </div>
+                            </div>                           
+                        </fieldset>
+                    </form>           
             </div>
         </div>
     </div>
 </div>
-
-

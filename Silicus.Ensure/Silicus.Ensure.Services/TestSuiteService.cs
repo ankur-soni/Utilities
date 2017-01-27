@@ -479,5 +479,46 @@ namespace Silicus.Ensure.Services
                         IsReviewed = !a.Mark.Equals(null)
                     }).OrderBy(question => question.QuestionId).ToList();
         }
+
+        public TestSummaryBusinessModel GetTestSummary(int userTestSuiteId)
+        {
+            decimal percentageConstant = 100.00M;
+            var testDetails = new TestSummaryBusinessModel { Practical = new TestSummaryBasicDetails(), Objective = new TestSummaryBasicDetails() };
+            var userTestDetails = (from userTestDetail in _context.Query<UserTestDetails>().Where(detail => detail.UserTestSuite.UserTestSuiteId == userTestSuiteId)
+                                   join question in _context.Query<Question>() on userTestDetail.QuestionId equals question.Id
+                                   select new { questionDetails = userTestDetail, maximumMarks = question.Marks, questionType = question.QuestionType });
+            foreach (var basicDetails in userTestDetails)
+            {
+                if (basicDetails.questionDetails != null)
+                {
+                    if (basicDetails.questionType == (int)QuestionType.Practical)
+                    {
+                        testDetails.Practical.TotalQuestionCount++;
+                        testDetails.Practical.MaximumMarks += (int)basicDetails.maximumMarks;
+                        if (!(basicDetails.questionDetails.Mark == null || basicDetails.questionDetails.Mark > 0))
+                        {
+                            testDetails.Practical.MarksObtained += (int)basicDetails.questionDetails.Mark;
+                            testDetails.Practical.CorrectAnswersCount++;
+                        }
+                    }
+                    else if (basicDetails.questionType == (int)QuestionType.Objective)
+                    {
+                        testDetails.Objective.TotalQuestionCount++;
+                        testDetails.Objective.MaximumMarks += (int)basicDetails.maximumMarks;
+                        if (!(basicDetails.questionDetails.Mark == null || basicDetails.questionDetails.Mark > 0))
+                        {
+                            testDetails.Objective.MarksObtained += (int)basicDetails.questionDetails.Mark;
+                            testDetails.Objective.CorrectAnswersCount++;
+                        }
+                    }
+                }
+            }
+            testDetails.Practical.IncorrectAnswersCount = testDetails.Practical.TotalQuestionCount - testDetails.Practical.CorrectAnswersCount;
+            testDetails.Objective.IncorrectAnswersCount = testDetails.Objective.TotalQuestionCount - testDetails.Objective.CorrectAnswersCount;
+            testDetails.TotalMaximumMarks = testDetails.Practical.MaximumMarks + testDetails.Objective.MaximumMarks;
+            testDetails.TotalObtainedMarks = testDetails.Practical.MarksObtained + testDetails.Objective.MarksObtained;
+            testDetails.Percentage = testDetails.TotalObtainedMarks != 0 ? (decimal)testDetails.TotalObtainedMarks / testDetails.TotalMaximumMarks * percentageConstant : 0;
+            return testDetails;
+        }
     }
 }

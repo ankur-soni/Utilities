@@ -144,6 +144,8 @@
     <Compile Include="Test\QuestionNavigationBasics.cs" />
     <Compile Include="Test\QuestionNavigationBusinessModel.cs" />
     <Compile Include="Test\TestDetailsBusinessModel.cs" />
+    <Compile Include="Test\TestSummaryBasicDetails.cs" />
+    <Compile Include="Test\TestSummaryBusinessModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
