@@ -97,7 +97,7 @@ namespace Silicus.Ensure.Services
 
         public void UpdateUserTestDetails(UserTestDetails userTestDetails)
         {
-            if (string.IsNullOrWhiteSpace(userTestDetails.Answer) || userTestDetails.Answer.Equals("undefined",StringComparison.OrdinalIgnoreCase))
+            if (string.IsNullOrWhiteSpace(userTestDetails.Answer) || userTestDetails.Answer.Equals("undefined", StringComparison.OrdinalIgnoreCase))
             {
                 userTestDetails.IsViewedOnly = true;
             }
@@ -132,6 +132,17 @@ namespace Silicus.Ensure.Services
                 return 0;
         }
 
+        public bool IsAllQuestionEvaluated(int? userTestSuitId)
+        {
+            if (userTestSuitId != null)
+            {
+                var testDetails = _context.Query<UserTestDetails>().Where(x => x.UserTestSuite.UserTestSuiteId == userTestSuitId);
+                var isAllQueustionReviewed = !testDetails.Any(y => y.Mark == null);
+                return isAllQueustionReviewed;
+            } return false;
+
+        }
+
         public TestDetailsBusinessModel GetUserTestDetailsByUserTestSuitId(int? userTestSuitId, int? questionNumber, int questionType)
         {
             var questionNumberList = GetQuestionsByUserTestSuiteId(userTestSuitId, questionType);
@@ -152,7 +163,7 @@ namespace Silicus.Ensure.Services
                           {
                               TestDetailId = a.TestDetailId,
                               Answer = a.Answer,
-                              ReviwerMark=a.Mark,
+                              ReviwerMark = a.Mark,
                               QuestionId = b.Id,
                               QuestionType = b.QuestionType,
                               AnswerType = b.AnswerType,
@@ -465,8 +476,49 @@ namespace Silicus.Ensure.Services
                         QuestionId = b.Id,
                         IsViewedOnly = a.IsViewedOnly,
                         IsAnswered = !(a.Answer.Equals(null) || a.Answer.Trim().Equals("")),
-                        IsReviewed=!a.Mark.Equals(null)
+                        IsReviewed = !a.Mark.Equals(null)
                     }).OrderBy(question => question.QuestionId).ToList();
+        }
+
+        public TestSummaryBusinessModel GetTestSummary(int userTestSuiteId)
+        {
+            decimal percentageConstant = 100.00M;
+            var testDetails = new TestSummaryBusinessModel { Practical = new TestSummaryBasicDetails(), Objective = new TestSummaryBasicDetails() };
+            var userTestDetails = (from userTestDetail in _context.Query<UserTestDetails>().Where(detail => detail.UserTestSuite.UserTestSuiteId == userTestSuiteId)
+                                   join question in _context.Query<Question>() on userTestDetail.QuestionId equals question.Id
+                                   select new { questionDetails = userTestDetail, maximumMarks = question.Marks, questionType = question.QuestionType });
+            foreach (var basicDetails in userTestDetails)
+            {
+                if (basicDetails.questionDetails != null)
+                {
+                    if (basicDetails.questionType == (int)QuestionType.Practical)
+                    {
+                        testDetails.Practical.TotalQuestionCount++;
+                        testDetails.Practical.MaximumMarks += (int)basicDetails.maximumMarks;
+                        if (!(basicDetails.questionDetails.Mark == null || basicDetails.questionDetails.Mark > 0))
+                        {
+                            testDetails.Practical.MarksObtained += (int)basicDetails.questionDetails.Mark;
+                            testDetails.Practical.CorrectAnswersCount++;
+                        }
+                    }
+                    else if (basicDetails.questionType == (int)QuestionType.Objective)
+                    {
+                        testDetails.Objective.TotalQuestionCount++;
+                        testDetails.Objective.MaximumMarks += (int)basicDetails.maximumMarks;
+                        if (!(basicDetails.questionDetails.Mark == null || basicDetails.questionDetails.Mark > 0))
+                        {
+                            testDetails.Objective.MarksObtained += (int)basicDetails.questionDetails.Mark;
+                            testDetails.Objective.CorrectAnswersCount++;
+                        }
+                    }
+                }
+            }
+            testDetails.Practical.IncorrectAnswersCount = testDetails.Practical.TotalQuestionCount - testDetails.Practical.CorrectAnswersCount;
+            testDetails.Objective.IncorrectAnswersCount = testDetails.Objective.TotalQuestionCount - testDetails.Objective.CorrectAnswersCount;
+            testDetails.TotalMaximumMarks = testDetails.Practical.MaximumMarks + testDetails.Objective.MaximumMarks;
+            testDetails.TotalObtainedMarks = testDetails.Practical.MarksObtained + testDetails.Objective.MarksObtained;
+            testDetails.Percentage = testDetails.TotalObtainedMarks != 0 ? (decimal)testDetails.TotalObtainedMarks / testDetails.TotalMaximumMarks * percentageConstant : 0;
+            return testDetails;
         }
     }
 }

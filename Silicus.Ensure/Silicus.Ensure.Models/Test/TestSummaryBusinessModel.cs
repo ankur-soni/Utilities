@@ -1,15 +1,17 @@
-﻿using Silicus.Ensure.Models.Test;
-using System.ComponentModel.DataAnnotations;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
-namespace Silicus.Ensure.Web.Models.Test
+namespace Silicus.Ensure.Models.Test
 {
-    public class TestSummaryViewModel
+    public class TestSummaryBusinessModel
     {
         public TestSummaryBasicDetails Practical { get; set; }
         public TestSummaryBasicDetails Objective { get; set; }
         public int TotalMaximumMarks { get; set; }
         public int TotalObtainedMarks { get; set; }
-        [DisplayFormat(DataFormatString = "{0:n2}")]
         public decimal Percentage { get; set; }
     }
 }
