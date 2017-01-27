@@ -5,10 +5,10 @@ using System.Web;
 
 namespace Silicus.Ensure.Web.Models.Test
 {
-    public class ReviewerQuestionViewModel:TestSuiteQuestionModel
+    public class ReviewerQuestionViewModel : TestDetailsViewModel
     {
-        public string CorrectAnswer { get; set; }
+
         public string Comment { get; set; }
-        public int Marks { get; set; }
+        public int? ReviwerMark { get; set; }
     }
 }
