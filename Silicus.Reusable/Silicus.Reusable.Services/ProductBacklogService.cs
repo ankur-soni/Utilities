@@ -64,7 +64,9 @@ namespace Silicus.FrameworxProject.Services
                             AssigneeEmail = detailsFromDb.Any(t => t.Id == item.Id) ? detailsFromDb.FirstOrDefault(t => t.Id == item.Id).AssigneeEmail : "",
                             AssignedBy = detailsFromDb.Any(t => t.Id == item.Id) ? detailsFromDb.FirstOrDefault(t => t.Id == item.Id).AssignedBy : "",
                             TimeAllocated = item.Fields.ContainsKey("Microsoft.VSTS.Scheduling.OriginalEstimate") ? (double)item.Fields["Microsoft.VSTS.Scheduling.OriginalEstimate"] : 0.00,
-                            TimeSpent = item.Fields.ContainsKey("Microsoft.VSTS.Scheduling.CompletedWork") ? (double)item.Fields["Microsoft.VSTS.Scheduling.CompletedWork"] : 0.0
+                            TimeSpent = item.Fields.ContainsKey("Microsoft.VSTS.Scheduling.CompletedWork") ? (double)item.Fields["Microsoft.VSTS.Scheduling.CompletedWork"] : 0.0,
+                            CreatedDate = (DateTime)item.Fields["System.CreatedDate"],
+                            ChangedDate = (DateTime)item.Fields["System.ChangedDate"]
                         });
                     }
 
@@ -86,7 +88,9 @@ namespace Silicus.FrameworxProject.Services
                 "System.AreaPath",
                 "System.AssignedTo",
                 "Microsoft.VSTS.Scheduling.OriginalEstimate",
-                "Microsoft.VSTS.Scheduling.CompletedWork"
+                "Microsoft.VSTS.Scheduling.CompletedWork",
+                "System.CreatedDate",
+                "System.ChangedDate"
             };
 
             using (WorkItemTrackingHttpClient workItemTrackingHttpClient = new WorkItemTrackingHttpClient(_uri, _credentials))
@@ -147,24 +151,34 @@ namespace Silicus.FrameworxProject.Services
                 "System.AreaPath",
                 "System.AssignedTo",
                 "Microsoft.VSTS.Scheduling.OriginalEstimate",
-                "Microsoft.VSTS.Scheduling.CompletedWork"
+                "Microsoft.VSTS.Scheduling.CompletedWork",
+                "System.CreatedDate",
+                "System.ChangedDate"
             };
 
             using (WorkItemTrackingHttpClient workItemTrackingHttpClient = new WorkItemTrackingHttpClient(_uri, _credentials))
             {
                 WorkItem result = workItemTrackingHttpClient.GetWorkItemAsync(id, fields).Result;
+               
                 var backlogItem = new ProductBacklog()
                 {
                     Id = int.Parse(result.Fields["System.Id"].ToString()),
                     Title = result.Fields["System.Title"].ToString(),
                     State = result.Fields["System.State"].ToString(),
-                    Type = result.Fields.ContainsKey("System.WorkItemType") ? result.Fields["System.WorkItemType"].ToString() : Constants.InformationNotAvailableText,                    
-                    AreaPath = result.Fields.ContainsKey("System.AreaPath") ? result.Fields["System.AreaPath"].ToString() : Constants.InformationNotAvailableText,                   
+                    Type = result.Fields.ContainsKey("System.WorkItemType") ? result.Fields["System.WorkItemType"].ToString() : Constants.InformationNotAvailableText,
+                    AreaPath = result.Fields.ContainsKey("System.AreaPath") ? result.Fields["System.AreaPath"].ToString() : Constants.InformationNotAvailableText,
                     TimeAllocated = result.Fields.ContainsKey("Microsoft.VSTS.Scheduling.OriginalEstimate") ? (double)result.Fields["Microsoft.VSTS.Scheduling.OriginalEstimate"] : 0.00,
-                    TimeSpent = result.Fields.ContainsKey("Microsoft.VSTS.Scheduling.CompletedWork") ? (double)result.Fields["Microsoft.VSTS.Scheduling.CompletedWork"] : 0.0
+                    TimeSpent = result.Fields.ContainsKey("Microsoft.VSTS.Scheduling.CompletedWork") ? (double)result.Fields["Microsoft.VSTS.Scheduling.CompletedWork"] : 0.0,                   
+                    CreatedDate = (DateTime)result.Fields["System.CreatedDate"],
+                    ChangedDate = (DateTime)result.Fields["System.ChangedDate"]
                 };
 
-                backlogItem.AssigneeDisplayName = _FrameworxProjectDatabaseContext.Query<ProductBacklog>().Any(t => t.Id == backlogItem.Id) ? _FrameworxProjectDatabaseContext.Query<ProductBacklog>().FirstOrDefault(t => t.Id == backlogItem.Id).AssigneeDisplayName : "Unassigned";
+                var detailsFromDb = _FrameworxProjectDatabaseContext.Query<ProductBacklog>().FirstOrDefault(t => t.Id == backlogItem.Id);
+                if(detailsFromDb != null)
+                {
+                    backlogItem.AssigneeDisplayName = detailsFromDb.AssigneeDisplayName;
+                    backlogItem.AssignedBy = detailsFromDb.AssignedBy;
+                }
 
                 return backlogItem;
             }
