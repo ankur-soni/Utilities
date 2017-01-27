@@ -11,5 +11,6 @@ namespace Silicus.Ensure.Models.Test
         public int QuestionId { get; set; }
         public bool IsViewedOnly { get; set; }
         public bool IsAnswered { get; set; }
+        public bool IsReviewed { get; set; }
     }
 }

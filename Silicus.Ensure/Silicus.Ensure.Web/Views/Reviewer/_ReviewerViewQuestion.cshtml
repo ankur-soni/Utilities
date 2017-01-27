@@ -244,11 +244,13 @@
             {
                 <div class="col-md-9 col-md-offset-2">
                     Candidate Answer
-                    @Html.Kendo().EditorFor(m => m.Answer).Name("PracticalAnswer").Encode(true).Value(Model.Answer)
+                    @*@Html.Kendo().EditorFor(m => m.Answer).Name("PracticalAnswer").Encode(true).Value(Model.Answer).HtmlAttributes(new { @disabled = "disabled" })*@
+                    @Html.Raw(Model.Answer)
                 </div>
                 <div class="col-md-9 col-md-offset-2">
                     Actual Answer
-                    @Html.Kendo().EditorFor(m => m.CorrectAnswer).Name("CorrectAnswer").Encode(true).Value(Model.CorrectAnswer)
+                    @*@Html.Kendo().EditorFor(m => m.CorrectAnswer).Name("CorrectAnswer").Encode(true).Value(Model.CorrectAnswer).HtmlAttributes(new { @disabled = "disabled" })*@
+                    @Html.Raw(Model.CorrectAnswer)
                 </div>
                  <div class="col-md-9 col-md-offset-2">
                      Reviewer Comment

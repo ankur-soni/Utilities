@@ -14,12 +14,15 @@
 <div style="width:100px" id="NavigationSection">
 
     @{
+        var roles=Silicus.Ensure.Web.MvcApplication.getCurrentUserRoles();
+        var isReviewer = roles.Contains(Silicus.Ensure.Models.Constants.RoleName.Recruiter.ToString());
+
         if (Model != null && Model.Practical != null && Model.Practical.Count > 0)
         {
             <div>Practical <span>@Model.Practical.Count </span></div>
             foreach (var question in Model.Practical)
             {
-                if (question.IsAnswered)
+                if (isReviewer?question.IsReviewed: question.IsAnswered)
                 {
                     <span class="QuestionCheckbox checkbox checkbox-success">
                         <input class="Answered" type="checkbox" id="@question.QuestionId" checked />
@@ -33,6 +36,7 @@
                         <label for="@question.QuestionId"></label>
                     </span>
                 }
+                
                 else
                 {
                     <span class="QuestionCheckbox checkbox checkbox-success">
@@ -48,7 +52,8 @@
             <div>Objective <span>@Model.Objective.Count </span></div>
             foreach (var question in Model.Objective)
             {
-                if (question.IsAnswered)
+
+                if (isReviewer || question.IsAnswered)
                 {
                     <span class="QuestionCheckbox checkbox checkbox-success">
                         <input class="Answered" type="checkbox" id="@question.QuestionId" checked />
