@@ -39,7 +39,7 @@ namespace Silicus.Ensure.Web.Controllers
         public ActionResult LoadQuestion(int userTestSuiteId)
         {
             ReviewerQuestionViewModel testSuiteQuestionModel = ReviewTestSuiteQuestion(null, userTestSuiteId, (int)QuestionType.Practical);
-            
+
             return PartialView("_ReviewerViewQuestion", testSuiteQuestionModel);
         }
 
@@ -49,7 +49,7 @@ namespace Silicus.Ensure.Web.Controllers
             if (!ModelState.IsValid)
                 return RedirectToAction("LogOff", "CandidateAccount");
 
-            var userEmail = "rp@gmail.com";
+            var userEmail = "p@pp.com";
             User user = _userService.GetUserByEmail(userEmail);
             if (user == null)
             {
@@ -57,7 +57,6 @@ namespace Silicus.Ensure.Web.Controllers
                 ViewBag.Msg = "User not found for online test, Kindly contact admin.";
                 return View("Welcome");
             }
-
             UserTestSuite userTestSuite = _testSuiteService.GetUserTestSuiteByUserId(user.UserId);
             if (userTestSuite == null)
             {
@@ -65,22 +64,28 @@ namespace Silicus.Ensure.Web.Controllers
                 ViewBag.Msg = "Test suite is not assigned for you, Kindly contact admin.";
                 return View("Welcome");
             }
-
             TestSuiteCandidateModel testSuiteCandidateModel = _mappingService.Map<UserTestSuite, TestSuiteCandidateModel>(userTestSuite);
             testSuiteCandidateModel.CandidateInfo = GetCandidateInfo(user);
             testSuiteCandidateModel.NavigationDetails = GetNavigationDetails(testSuiteCandidateModel.UserTestSuiteId);
             testSuiteCandidateModel.TotalQuestionCount = testSuiteCandidateModel.PracticalCount + testSuiteCandidateModel.ObjectiveCount;
             testSuiteCandidateModel.DurationInMin = testSuiteCandidateModel.Duration;
-
+            testSuiteCandidateModel.TestSummary = GetTestSummary(testSuiteCandidateModel.UserTestSuiteId);
             return View(testSuiteCandidateModel);
+        }
 
+        private TestSummaryViewModel GetTestSummary(int userTestSuiteId)
+        {
+            var testSummaryBusinessModel = _testSuiteService.GetTestSummary(userTestSuiteId);
+            var testSummary = _mappingService.Map<TestSummaryBusinessModel, TestSummaryViewModel>(testSummaryBusinessModel);
+            testSummary = testSummary ?? new TestSummaryViewModel();
+            return testSummary;
         }
 
         public ActionResult UpdateReviewAndGetQuestionDetails(QuestionDetailsViewModel questionDetails)
         {
             questionDetails.QuestionType = _testSuiteService.GetQuestionType(questionDetails.QuestionId);
             questionDetails.Answer = HttpUtility.HtmlDecode(questionDetails.Answer);
-            UpdateReview(questionDetails.Marks,questionDetails.Comment, questionDetails.UserTestDetailId);
+            UpdateReview(questionDetails.Marks, questionDetails.Comment, questionDetails.UserTestDetailId);
             var reviewerQuestionViewModel = ReviewTestSuiteQuestion(questionDetails.QuestionId, questionDetails.UserTestSuiteId, questionDetails.QuestionType);
 
             return PartialView("_ReviewerViewQuestion", reviewerQuestionViewModel);
@@ -124,7 +129,7 @@ namespace Silicus.Ensure.Web.Controllers
                 return totalExperienceInYear;
         }
 
-        private void UpdateReview(int mark,string comment, int? userTestDetailId)
+        private void UpdateReview(int mark, string comment, int? userTestDetailId)
         {
             UserTestDetails userTestDetails = _testSuiteService.GetUserTestDetailsId(userTestDetailId);
             userTestDetails.Mark = mark;

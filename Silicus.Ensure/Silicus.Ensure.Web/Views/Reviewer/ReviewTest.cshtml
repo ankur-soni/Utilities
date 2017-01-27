@@ -11,14 +11,7 @@
 <div class="main-content" id="main">
     <div class="fluid mt20">
         <div id="DivTestSummary">
-            @Html.Partial("_TestSummary", new TestSummaryViewModel()
-       {
-           Objective =
-               new TestViewModel(),
-           Practical = new TestViewModel()
-       })
-
-
+            @Html.Partial("_TestSummary", @Model.TestSummary)
         </div>
 
         <div class="row">
@@ -33,7 +26,7 @@
             <div class="col-md-6">
                 @Html.Partial("_CandidateInfo", Model.CandidateInfo)
             </div>
-            
+
         </div>
 
         <div class="row">
@@ -124,7 +117,7 @@
 
 
 
-       
+
 
         $("#btnSubmitEvalution").on("click", submitEvalution);
         $("#SubmitCandidateResult").on("click", submitCandidateResult);
@@ -186,7 +179,7 @@
         return result;
     }
 
-    
+
 
     function OnNext(e) {
         var questionId = $('#btnNext').attr('data-id');

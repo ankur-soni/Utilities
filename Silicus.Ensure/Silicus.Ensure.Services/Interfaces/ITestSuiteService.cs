@@ -53,5 +53,7 @@ namespace Silicus.Ensure.Services.Interfaces
         QuestionNavigationBusinessModel GetNavigationDetails(int userTestSuiteId);
 
         int GetQuestionType(int questionId);
+
+        TestSummaryBusinessModel GetTestSummary(int userTestSuiteId);
     }
 }

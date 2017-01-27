@@ -47,6 +47,7 @@ namespace Silicus.Ensure.Web.Mappings
                 .ForMember(dest => dest.PrimaryRoleID, opt => opt.MapFrom(s => (s.RoleId)));
             Mapper.CreateMap<TestDetailsViewModel, TestDetailsBusinessModel>();
             Mapper.CreateMap<ReviewerQuestionViewModel, TestDetailsBusinessModel>();
+            Mapper.CreateMap<TestSummaryBusinessModel, TestSummaryViewModel>();
         }
     }
 }

@@ -37,7 +37,7 @@ namespace Silicus.Ensure.Web.Controllers
                 return RedirectToAction("LogOff", "CandidateAccount");
             var userEmail = User.Identity.Name.Trim();
             User user = _userService.GetUserByEmail(userEmail);
-            if(user==null)
+            if (user == null)
                 return RedirectToAction("LogOff", "CandidateAccount");
             UserTestSuite userTestSuite = _testSuiteService.GetUserTestSuiteByUserId(user.UserId);
             TestSuiteCandidateModel testSuiteCandidateModel = _mappingService.Map<UserTestSuite, TestSuiteCandidateModel>(userTestSuite);
@@ -229,7 +229,7 @@ namespace Silicus.Ensure.Web.Controllers
                 Question question = _questionService.GetSingleQuestion(testDetail.QuestionId);
                 if (question.QuestionType == 1)
                 {
-                    if (question.CorrectAnswer.Trim() == testDetail.Answer.Trim())
+                    if (!string.IsNullOrWhiteSpace(testDetail.Answer) && question.CorrectAnswer.Trim() == testDetail.Answer.Trim())
                         testDetail.Mark = question.Marks;
                     else
                         testDetail.Mark = 0;
