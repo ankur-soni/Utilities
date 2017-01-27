@@ -37,6 +37,8 @@ namespace Silicus.Ensure.Web.Controllers
                 return RedirectToAction("LogOff", "CandidateAccount");
             var userEmail = User.Identity.Name.Trim();
             User user = _userService.GetUserByEmail(userEmail);
+            if(user==null)
+                return RedirectToAction("LogOff", "CandidateAccount");
             UserTestSuite userTestSuite = _testSuiteService.GetUserTestSuiteByUserId(user.UserId);
             TestSuiteCandidateModel testSuiteCandidateModel = _mappingService.Map<UserTestSuite, TestSuiteCandidateModel>(userTestSuite);
             var specialInstruction = GetSpecialInstruction(userTestSuite.TestSuiteId);
