@@ -1,6 +1,7 @@
 ﻿@model Silicus.Ensure.Web.Models.TestSuiteCandidateModel
 @using Kendo.Mvc.UI;
 @using Silicus.Ensure.Web.Models.Test
+@using Silicus.Ensure.Web
 
 @{
     ViewBag.Title = "Online Test";
@@ -9,16 +10,7 @@
 
 <div class="main-content" id="main">
     <div class="fluid mt20">
-        <div id="DivTestSummary">
-            @Html.Partial("_TestSummary", new TestSummaryViewModel()
-       {
-           Objective =
-               new TestViewModel(),
-           Practical = new TestViewModel()
-       })
-
-           
-        </div>
+       
         <div class="row">
             <div class="col-md-12" style="text-align:center;">
                 <strong>This test is window protected, please do not move away from the window or refresh.</strong>
@@ -125,13 +117,13 @@
 
 
 <!-- Modal Submit Test On Time Complete-->
-<div class="modal fade" id="testresultPopup" role="dialog" >
+<div class="modal fade" id="testresultPopup" role="dialog">
     <div class="modal-dialog">
 
         <!-- Modal content-->
         <div class="modal-content">
             <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" >&times;</button>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
                 <h4 class="modal-title">Candidate Result</h4>
             </div>
             <div class="modal-body">
@@ -140,13 +132,15 @@
                 </form>
             </div>
             <div class="modal-footer">
-                <button id="SubmitCandidateResult" type="button" class="btn btn-default" >OK</button>
+                <button id="SubmitCandidateResult" type="button" class="btn btn-default">OK</button>
                 <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
             </div>
         </div>
 
     </div>
 </div>
+
+
 
 <script>
     var clock;
@@ -162,9 +156,13 @@
         // Hide Submit button of popup. Show when to want submit test.
         $("#btnSubmitTestOK").hide();
 
+        debugger;
         // Load First Question On page Load.
         var userTestSuiteId = $("#UserTestSuiteId").val();
-        $('#QuestionDetails').load('/Candidate/LoadQuestion?userTestSuiteId=' + userTestSuiteId);
+        var url = "/Candidate/LoadQuestion?userTestSuiteId=";
+        $('#QuestionDetails').load(url + userTestSuiteId);
+
+        
 
         // Hide "Add More Time" if used 2 times
         var timerCnt = $("#TimerIncCount").val();
@@ -201,8 +199,62 @@
 
         $("#btnSubmitEvalution").on("click", submitEvalution);
         $("#SubmitCandidateResult").on("click", submitCandidateResult);
-        
+        $('.QuestionCheckbox').on('click', QuestionCheckboxClicked);
     });
+        
+    function QuestionCheckboxClicked(event) {
+        var questionId = $(this).find('input').attr('id');
+        UpdateCurrentQuestionAndLoadNewOne(questionId);
+    }
+
+    function UpdateCurrentQuestionAndLoadNewOne(questionId) {
+        var questionNavigationDetails = GetCurrentQuestionStatus();
+        UpdateCurrentQuestionNavigationStatus(questionNavigationDetails);
+        MarkAsViewed(questionId);
+        GetQuestionDetails(questionId);
+    }
+
+    function MarkAsViewed(questionId) {
+        if (questionId) {
+            var input = '#NavigationSection ' + '#' + questionId;
+            if (input) {
+                if (!($(input).hasClass('Viewed') || $(input).hasClass('Answered'))) {
+                    $(input).addClass('Viewed');
+                }
+            }
+        }
+    }
+    function UpdateCurrentQuestionNavigationStatus(questionNavigationDetails) {
+        if (questionNavigationDetails) {
+            var input = '#NavigationSection ' + '#' + questionNavigationDetails.QuestionNumber;
+            if (questionNavigationDetails.IsAnswered) {
+                $(input).removeClass('Viewed');
+                $(input).addClass('Answered');
+            }
+            else if (questionNavigationDetails.IsViewed) {
+                $(input).removeClass('Answered');
+                $(input).addClass('Viewed');
+            }
+            else {
+                $(input).removeClass('Viewed');
+                $(input).removeClass('Answered');
+            }
+        }
+    }
+    function GetCurrentQuestionStatus() {
+        var QuestionNumber = $("#QuestionNumber").val();
+        var QuestionType = $("#QuestionType").val();
+        var IsAnswered = false;
+        var IsViewed = true;
+        if (QuestionType == 1) {
+            IsAnswered = $("#QuestionDetails").find(".radio input:checked,.checkbox input:checked").length > 0 ? true : false;
+        }
+        else {
+            IsAnswered = $("#PracticalAnswer").val().trim().length > 0 ? true : false;
+        }
+        var result = { QuestionNumber: QuestionNumber, Questiontype: QuestionType, IsAnswered: IsAnswered, IsViewed: IsViewed };
+        return result;
+    }
 
     function AddMoreTime() {
         var timerCnt = $("#TimerIncCount").val();
@@ -323,13 +375,14 @@
 
     function OnNext(e) {
         var questionId = $('#btnNext').attr('data-id');
-        GetQuestionDetails(questionId);
+            UpdateCurrentQuestionAndLoadNewOne(questionId);
         return false;
     }
 
     function OnPrevious() {
         var questionId = $('#btnPrevious').attr('data-id');
-        GetQuestionDetails(questionId);
+
+             UpdateCurrentQuestionAndLoadNewOne(questionId);
         return false;
     }
 
@@ -338,9 +391,22 @@
         var userTestSuiteId = $("#UserTestSuiteId").val();
         var userTestDetailId = $("#UserTestDetailId").val();
         var questionType = $("#QuestionType").val();
-        var questionDetails = { QuestionId: questionId, UserTestSuiteId: userTestSuiteId, UserTestDetailId: userTestDetailId };
+        var questionDetails = { QuestionId: questionId, UserTestSuiteId: userTestSuiteId, UserTestDetailId: userTestDetailId, Answer: answer };
         $('#QuestionDetails').load('/Candidate/GetQuestionDetails', questionDetails);
     }
+
+    function UpdateAndGetQuestionReview(questionId) {
+        var answer = GetAnswer();
+        var userTestSuiteId = $("#UserTestSuiteId").val();
+        var userTestDetailId = $("#UserTestDetailId").val();
+        var questionType = $("#QuestionType").val();
+        var candidateId = $("#UserId").val();
+        var comment = $("#Comment").val();
+        var marks = $("#ReviwerMark").val();
+        var reviewerQuestionDetails = { QuestionId: questionId, UserTestSuiteId: userTestSuiteId, UserTestDetailId: userTestDetailId, Comment: comment, Marks: marks };
+        $('#QuestionDetails').load('/Reviewer/UpdateReviewAndGetQuestionDetails', reviewerQuestionDetails);
+    }
+
     function GetAnswer() {
         var answer = "";
         if ($("#QuestionType").val().trim() == "1") {
@@ -409,7 +475,6 @@
         var QuestionType = $("#QuestionType").val();
         var IsAnswered = false;
         var IsViewed = true;
-        debugger;
         if (QuestionType == 1) {
             IsAnswered = $(".radio input:checked").length > 0 ? true : false;
         }
@@ -421,15 +486,13 @@
     }
 
 
-    function submitEvalution()
-    {
+    function submitEvalution() {
         $("#testresultPopup").modal('show');
     }
 
     function submitCandidateResult() {
         var validator = $("#frmTestresult").data("kendoValidator");
-        if(validator.validate())
-        {
+        if (validator.validate()) {
             var formdata = new FormData($('form').get(0));
             formdata.append('CandidateUserId', 19);
 
@@ -446,5 +509,6 @@
         }
     }
     
+
 
 </script>

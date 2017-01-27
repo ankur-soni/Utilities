@@ -12,5 +12,7 @@ namespace Silicus.Ensure.Web.Models.Test
         public int? UserTestDetailId { get; set; }
         public string Answer { get; set; }
         public int QuestionType { get; set; }
+        public int Marks { get; set; }
+        public string Comment { get; set; }
     }
 }
