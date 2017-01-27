@@ -54,7 +54,7 @@
                     hideCustomLoader();
                     $("#templateEditorContainer").html(template);
                     $("#sendMailButton").removeAttr("disabled", "disabled");
-                    //$("#saveTemplateMailButton").removeAttr("disabled", "disabled");
+                    $("#saveTemplateMailButton").removeAttr("disabled", "disabled");
                 },
                 error: function (error) {
                     hideCustomLoader();
@@ -66,7 +66,7 @@
             $("#EmailTemplate").summernote('reset');
             $("#Users").val("").text("");
             $("#sendMailButton").attr("disabled", "disabled");
-            //$("#saveTemplateMailButton").attr("disabled", "disabled");
+            $("#saveTemplateMailButton").attr("disabled", "disabled");
         }
     });
 </script>

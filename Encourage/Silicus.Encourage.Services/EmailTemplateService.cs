@@ -83,6 +83,10 @@ namespace Silicus.Encourage.Services
             var toBeUpdatedTemplate =  _encourageDatabaseContext.Query<EmailTemplate>().FirstOrDefault(t => t.TemplateName == templateName);
             toBeUpdatedTemplate.Template = updatedTemplate;
             var returnedValue = _encourageDatabaseContext.Update<EmailTemplate>(toBeUpdatedTemplate);
+            if (returnedValue == 0)
+            {
+                return "Error";
+            }
             return "Success";
         }
     }

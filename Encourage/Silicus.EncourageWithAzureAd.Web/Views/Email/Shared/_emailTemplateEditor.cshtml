@@ -20,7 +20,7 @@
 </div>
 
 <div class="pull-right">
-    @*<input type="button" name="saveTemplate" value="Save Template" id="saveTemplateMailButton" class="btn btn-primary" disabled="disabled" />*@
+    <input type="button" name="saveTemplate" value="Save Template" id="saveTemplateMailButton" class="btn btn-primary" disabled="disabled" />
     <input type="button" name="send" value="Send" id="sendMailButton" class="btn btn-primary" disabled="disabled" />
     <button type="button" class="btn btn-primary" id="cancel" onclick="location.href='@Url.Action("Index", "Home")'">Cancel</button>
 </div>
@@ -115,6 +115,7 @@
                     }
                     hideCustomLoader();
                 }, error: function (error) {
+                    swal("Error", "Oops something went wrong!", "error");
                     hideCustomLoader();
                     console.log(error);
                 }
@@ -127,13 +128,13 @@
     $("#saveTemplateMailButton").on("click", function () {
         if (validateEmailTemplateAndProcess()) {
             var emailTemplate = htmlEncode($("#EmailTemplate").val());
-            var selectedProcessName = $("#Process");
+            var selectedProcessName = $("#Process")[0].selectedOptions[0].text;
 
             showCustomLoader();
             $.ajax({
                 type: "POST",
                 url: _urlSaveMailTemplate,
-                data: { categoryId: categoryId, emailTemplate: emailTemplate },
+                data: { processName: selectedProcessName, emailTemplate: emailTemplate },
                 success: function (result) {
                     if (result = "Success") {
                         swal({
@@ -143,11 +144,6 @@
                             showCancelButton: false,
                             confirmButtonColor: "#337ab7",
                             confirmButtonText: "Ok",
-                        },
-                        function (isConfirm) {
-                            if (isConfirm) {
-                                window.location.href = '/Home/Index';
-                            }
                         });
                     } else {
                         swal({
@@ -162,6 +158,7 @@
                     hideCustomLoader();
                 }, error: function (error) {
                     hideCustomLoader();
+                    swal("Error", "Oops something went wrong!", "error");
                     console.log(error);
                 }
             });
