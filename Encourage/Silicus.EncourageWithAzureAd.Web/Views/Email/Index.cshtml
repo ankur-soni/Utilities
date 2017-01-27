@@ -44,12 +44,12 @@
         if (selectedProcess != "") {
             showCustomLoader();
             $("#selectCategoryError").hide();
-            var selectedProcessName = this.selectedOptions[0].innerText;
+            //var selectedProcessName = this.selectedOptions[0].innerText;
 
             $.ajax({
                 type: "GET",
                 url: _urlGetEmailTemplate,
-                data: { "processName": selectedProcessName },
+                data: { "processId": selectedProcess },
                 success: function (template) {
                     hideCustomLoader();
                     $("#templateEditorContainer").html(template);
