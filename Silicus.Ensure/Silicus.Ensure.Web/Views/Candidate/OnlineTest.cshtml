@@ -486,29 +486,7 @@
     }
 
 
-    function submitEvalution() {
-        $("#testresultPopup").modal('show');
-    }
 
-    function submitCandidateResult() {
-        var validator = $("#frmTestresult").data("kendoValidator");
-        if (validator.validate()) {
-            var formdata = new FormData($('form').get(0));
-            formdata.append('CandidateUserId', 19);
-
-            $.ajax({
-                url: '@Url.Action("SumbmitCandidateResult", "Candidate")',
-                type: 'POST',
-                data: formdata,
-                processData: false,
-                contentType: false,
-                success: function (msg) {
-                    $("#testresultPopup").modal('hide');
-                }
-            });
-        }
-    }
-    
 
 
 </script>

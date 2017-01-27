@@ -97,7 +97,7 @@ namespace Silicus.Ensure.Services
 
         public void UpdateUserTestDetails(UserTestDetails userTestDetails)
         {
-            if (string.IsNullOrWhiteSpace(userTestDetails.Answer) || userTestDetails.Answer.Equals("undefined",StringComparison.OrdinalIgnoreCase))
+            if (string.IsNullOrWhiteSpace(userTestDetails.Answer) || userTestDetails.Answer.Equals("undefined", StringComparison.OrdinalIgnoreCase))
             {
                 userTestDetails.IsViewedOnly = true;
             }
@@ -132,6 +132,17 @@ namespace Silicus.Ensure.Services
                 return 0;
         }
 
+        public bool IsAllQuestionEvaluated(int? userTestSuitId)
+        {
+            if (userTestSuitId != null)
+            {
+                var testDetails = _context.Query<UserTestDetails>().Where(x => x.UserTestSuite.UserTestSuiteId == userTestSuitId);
+                var isAllQueustionReviewed = !testDetails.Any(y => y.Mark == null);
+                return isAllQueustionReviewed;
+            } return false;
+
+        }
+
         public TestDetailsBusinessModel GetUserTestDetailsByUserTestSuitId(int? userTestSuitId, int? questionNumber, int questionType)
         {
             var questionNumberList = GetQuestionsByUserTestSuiteId(userTestSuitId, questionType);
@@ -152,7 +163,7 @@ namespace Silicus.Ensure.Services
                           {
                               TestDetailId = a.TestDetailId,
                               Answer = a.Answer,
-                              ReviwerMark=a.Mark,
+                              ReviwerMark = a.Mark,
                               QuestionId = b.Id,
                               QuestionType = b.QuestionType,
                               AnswerType = b.AnswerType,
@@ -465,7 +476,7 @@ namespace Silicus.Ensure.Services
                         QuestionId = b.Id,
                         IsViewedOnly = a.IsViewedOnly,
                         IsAnswered = !(a.Answer.Equals(null) || a.Answer.Trim().Equals("")),
-                        IsReviewed=!a.Mark.Equals(null)
+                        IsReviewed = !a.Mark.Equals(null)
                     }).OrderBy(question => question.QuestionId).ToList();
         }
     }
