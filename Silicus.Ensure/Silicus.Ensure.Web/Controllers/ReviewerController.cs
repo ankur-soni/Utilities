@@ -51,7 +51,7 @@ namespace Silicus.Ensure.Web.Controllers
             if (!ModelState.IsValid)
                 return RedirectToAction("LogOff", "CandidateAccount");
 
-            var userEmail = "p@pp.com";
+            var userEmail = "rp@gmail.com";
             User user = _userService.GetUserByEmail(userEmail);
             if (user == null)
             {
