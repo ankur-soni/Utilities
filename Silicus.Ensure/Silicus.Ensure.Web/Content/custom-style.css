@@ -884,7 +884,7 @@ textarea {
   -webkit-transition: border 0.5s ease-in-out;
   background-color: #ffffff;
   border-radius: 50%;
-  border: 1px solid rgba(120, 130, 140, 0.13);
+  border: 1px solid #9E9E9E;
   content: "";
   display: inline-block;
   height: 17px;
@@ -1178,7 +1178,7 @@ label {
   -webkit-transition: border 0.5s ease-in-out;
   background-color: #ffffff;
   border-radius: 50%;
-  border: 1px solid rgba(120, 130, 140, 0.13);
+  border: 1px solid #9E9E9E;
   content: "";
   display: inline-block;
   height: 17px;
@@ -2397,8 +2397,10 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#b4e391', end
 
 /*Candidate test page css*/
 .clock{float:right;}
+.btmBorder{border-bottom:1px solid #cdcdcd;margin: 20px 35px 20px 35px;}
 .btn-addTime{background-color:#a3c3de;border-color:#a3c3de;color:#fff;}
 .btn-addTime:hover{background-color: #e4e8ea;border-color: #e4e8ea;color: #000;}
+#QuestionDetails ul li{padding-top:5px;padding-bottom:5px;}
 .topBox{
     background: #284f6e;
     border-bottom: 5px solid #C5CAE9;
