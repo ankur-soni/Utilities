@@ -32,7 +32,9 @@
 
 <script>
     var _urlSendMail = '@Url.Action("SendMailToManagers", "Email")';
+    var _urlUpdateMailTemplate = '@Url.Action("UpdateMailTemplate", "Email")';
     var _urlSaveMailTemplate = '@Url.Action("SaveMailTemplate", "Email")';
+    var _urlEmailTemplateHome = '@Url.Action("Index","Email")';
 
     $(document).ready(function () {
         var managers = $("#Users")[0].options;
@@ -111,6 +113,11 @@
                             showCancelButton: false,
                             confirmButtonColor: "#337ab7",
                             confirmButtonText: "Ok",
+                        },
+                        function (isConfirm) {
+                            if (isConfirm) {
+                                window.location.href = _urlEmailTemplateHome;
+                            }
                         });
                     }
                     hideCustomLoader();
@@ -127,41 +134,71 @@
 
     $("#saveTemplateMailButton").on("click", function () {
         if (validateEmailTemplateAndProcess()) {
+            swal({
+                title: "Save Template as:",
+                text: "",
+                type: "input",
+                showCancelButton: true,
+                closeOnConfirm: false,
+                confirmButtonText: "Save",
+                animation: "slide-from-top",
+                inputPlaceholder: "Ex: Nomination"
+            },
+        function (processName) {
+            var newTemplateName = processName.trim();
+            if (newTemplateName === false) return false;
+
+            if (newTemplateName === "") {
+                swal.showInputError("Please provide template name!");
+                return false;
+            }
+            if (checkProcessTemplateNameExists(newTemplateName)) {
+                swal.showInputError("Template with same name already exists!");
+                return false;
+            }
+
             var emailTemplate = htmlEncode($("#EmailTemplate").val());
-            var selectedProcessName = $("#Process")[0].selectedOptions[0].text;
+            //var selectedProcessName = $("#Process")[0].selectedOptions[0].text;
 
             showCustomLoader();
             $.ajax({
                 type: "POST",
                 url: _urlSaveMailTemplate,
-                data: { processName: selectedProcessName, emailTemplate: emailTemplate },
-                success: function (result) {
-                    if (result = "Success") {
+                data: { processName: newTemplateName, emailTemplate: emailTemplate },
+                success: function (templateName) {
+                        hideCustomLoader();
                         swal({
-                            title: "Success",
+                            title: templateName,
                             text: "Template Saved Successfully!!",
                             type: "success",
                             showCancelButton: false,
                             confirmButtonColor: "#337ab7",
                             confirmButtonText: "Ok",
+                        },
+                        function (isConfirm) {
+                            if (isConfirm) {
+                                window.location.href = _urlEmailTemplateHome;
+                            }
                         });
-                    } else {
-                        swal({
-                            title: "Error",
-                            text: "Due to some error failed to save the template :(",
-                            type: "error",
-                            showCancelButton: false,
-                            confirmButtonColor: "#337ab7",
-                            confirmButtonText: "Ok",
-                        });
-                    }
-                    hideCustomLoader();
+                    //if (result = "Success") {
+                        
+                    //} else {
+                    //    swal({
+                    //        title: "Error",
+                    //        text: "Due to some error failed to save the template :(",
+                    //        type: "error",
+                    //        showCancelButton: false,
+                    //        confirmButtonColor: "#337ab7",
+                    //        confirmButtonText: "Ok",
+                    //    });
+                    //}
                 }, error: function (error) {
                     hideCustomLoader();
                     swal("Error", "Oops something went wrong!", "error");
                     console.log(error);
                 }
             });
+        })
         } else {
             swal("Please Note", "Empty template cannot be saved", "error");
         }
@@ -207,6 +244,17 @@
         }
 
         return (isProcessSelected && isTemplateValid);
+    }
+
+    function checkProcessTemplateNameExists(processName) {
+        var processNameDoesExists = false;
+        var existingProcess = $("#Process")[0].options;
+        $.each(existingProcess, function () {
+            if ($(this).text() === processName) {
+                processNameDoesExists = true;
+            }
+        });
+        return processNameDoesExists;
     }
 
     function htmlEncode(value) {
