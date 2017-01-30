@@ -123,9 +123,6 @@
     <Reference Include="Silicus.UtilityContainer.Entities">
       <HintPath>..\Silicus.UtilityContainer.Service\bin\Debug\Silicus.UtilityContainer.Entities.dll</HintPath>
     </Reference>
-    <Reference Include="Silicus.UtilityContainer.Security">
-      <HintPath>..\Silicus.UtilityContainer.Security\bin\Debug\Silicus.UtilityContainer.Security.dll</HintPath>
-    </Reference>
     <Reference Include="Silicus.UtilityContainer.Services">
       <HintPath>..\Silicus.UtilityContainer.Service\obj\Debug\Silicus.UtilityContainer.Services.dll</HintPath>
     </Reference>
@@ -846,6 +843,10 @@
     <ProjectReference Include="..\Silicus.UtilityContainer.Models\Silicus.UtilityContainer.Models.csproj">
       <Project>{d5a36dcc-faeb-46bd-bc1c-c24e18d9e587}</Project>
       <Name>Silicus.UtilityContainer.Models</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Silicus.UtilityContainer.Security\Silicus.UtilityContainer.Security.csproj">
+      <Project>{5394c1eb-8f58-468f-aa02-a0e863141f45}</Project>
+      <Name>Silicus.UtilityContainer.Security</Name>
     </ProjectReference>
   </ItemGroup>
   <PropertyGroup>
