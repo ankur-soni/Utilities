@@ -10,7 +10,7 @@
 
 <div class="main-content" id="main">
     <div class="fluid mt20">
-       
+
         <div class="row">
             <div class="col-md-12" style="text-align:center;">
                 <strong>This test is window protected, please do not move away from the window or refresh.</strong>
@@ -166,9 +166,9 @@
 
         $('.QuestionCheckbox').on('click', QuestionCheckboxClicked);
     });
-        
+
     function QuestionCheckboxClicked(event) {
-        var questionId = $(this).find('input').attr('id');
+        var questionId = $(this).attr('id');
         UpdateCurrentQuestionAndLoadNewOne(questionId);
     }
 
@@ -190,19 +190,23 @@
         }
     }
     function UpdateCurrentQuestionNavigationStatus(questionNavigationDetails) {
+        var ClassesForAnsweredQuestion = 'fa fa-check-square';
+        var ClassesForViewedQuestion = 'fa fa-square';
+        var CassForUnSeenQuestion = 'UnSeen';
         if (questionNavigationDetails) {
             var input = '#NavigationSection ' + '#' + questionNavigationDetails.QuestionNumber;
+            input = $(input).find('.QuestionCheckboxInnerDiv');
+            $(input).removeClass(CassForUnSeenQuestion);
+            $(input).removeClass(ClassesForViewedQuestion);
+            $(input).removeClass(ClassesForAnsweredQuestion);
             if (questionNavigationDetails.IsAnswered) {
-                $(input).removeClass('Viewed');
-                $(input).addClass('Answered');
+                $(input).addClass(ClassesForAnsweredQuestion);
             }
             else if (questionNavigationDetails.IsViewed) {
-                $(input).removeClass('Answered');
-                $(input).addClass('Viewed');
+                $(input).addClass(ClassesForViewedQuestion);
             }
             else {
-                $(input).removeClass('Viewed');
-                $(input).removeClass('Answered');
+                $(input).addClass(CassForUnSeenQuestion);
             }
         }
     }
@@ -340,14 +344,14 @@
 
     function OnNext(e) {
         var questionId = $('#btnNext').attr('data-id');
-            UpdateCurrentQuestionAndLoadNewOne(questionId);
+        UpdateCurrentQuestionAndLoadNewOne(questionId);
         return false;
     }
 
     function OnPrevious() {
         var questionId = $('#btnPrevious').attr('data-id');
 
-             UpdateCurrentQuestionAndLoadNewOne(questionId);
+        UpdateCurrentQuestionAndLoadNewOne(questionId);
         return false;
     }
 

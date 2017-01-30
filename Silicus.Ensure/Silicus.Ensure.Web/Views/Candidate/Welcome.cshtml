@@ -4,206 +4,211 @@
     ViewBag.Title = "Welcome";
     Layout = "~/Views/Shared/_LayoutCandidate.cshtml";
 }
+@if (@ViewBag.Status != 1)
+{
+    <div class="row">
+        <div class="col-sm-12">
 
-<div class="row">
-    <div class="col-sm-12">
+            <div class="box M-T15 M-B60">
+                <div class="f1">
+                    <div class="main-content" id="main">
 
-        <div class="box M-T15 M-B60">
-            <div class="f1">
-                <div class="main-content" id="main">
-
-                    <div class="row">
-                        <div class="col-sm-8 col-sm-offset-2">
-                            <div class="alert alert-danger">
-                                <strong>Attention!</strong> This test is window protected, please do not move away from the window or refresh page.
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-sm-12">
-                            <div class="col-md-12" style="border-bottom-width:1px; border-bottom-style:solid; border-bottom-color:#c4c7ca;">
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row M-T15">
-                        <div class="col-sm-12">
-                            <div class="greyBox"><strong>Online Test Instruction</strong></div>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-sm-10 col-sm-offset-1">
-
-                            <label class="M-T15 M-B15 titleText" style="font-weight:bold;font-size:18px;">Test Instructions:</label>
-                            <p>
-                                <b>1.</b> Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua labore et dolore magna aliqua.
-                            </p>
-                            <p>
-                                <b>2.</b> Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua labore et dolore magna aliqua.
-                            <p>
-                                <b>3.</b> Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua labore et dolore magna aliqua.
-                            </p>
-                            <p>
-                                <b>4.</b> Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua labore et dolore magna aliqua.
-                            </p>
-                            <p>
-                                <b>5.</b> Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua labore et dolore magna aliqua.
-                            </p>
-
-                            @{
-                            if (!string.IsNullOrWhiteSpace(Model.SpecialInstruction))
-                            {
-                            <label class="M-T15 M-B15" style="font-weight:bold;font-size:18px;">Special Instructions:</label>
-                            <p>@Html.Raw(@HttpUtility.HtmlDecode(@Model.SpecialInstruction))</p>
-                            }
-                            }
-                        </div>
-                        <div class="col-sm-10 col-sm-offset-1 M-T15 M-B15">
-                            <div class="info-box">
-                                <div class="row">
-                                    <div class="col-sm-12 col-md-6 col-lg-6">
-                                        <ul>
-                                            <li style="padding-bottom: 0px;padding-top: 10px;">
-                                                <div class="row">
-                                                    <div class="col-sm-2 col-md-2 col-lg-2">
-                                                        <span><i class="fa fa-clock-o" aria-hidden="true"></i></span>
-                                                    </div>
-                                                    <div class="col-sm-9 col-md-9 col-lg-9">
-                                                        <label>Duration</label>
-                                                    </div>
-                                                </div>
-                                                <div class="row">
-
-                                                    <div class="col-sm-10 col-sm-offset-2 col-md-10 col-md-offset-2 col-lg-10 col-lg-offset-2">
-                                                        <span>@Model.Duration mins</span>
-                                                    </div>
-                                                </div>
-                                                <div class="row">
-
-                                                    <div class="col-sm-10 col-sm-offset-2 col-md-10 col-md-offset-2 col-lg-10 col-lg-offset-2">
-                                                        <span>This is the duration for complete test.</span>
-                                                    </div>
-                                                </div>
-
-
-
-                                            </li>
-                                            <li style="padding-bottom: 0px;">
-                                                <div class="row">
-                                                    <div class="col-sm-2 col-md-2 col-lg-2">
-                                                        <span><i class="fa fa-file-text-o" aria-hidden="true"></i></span>
-                                                    </div>
-                                                    <div class="col-sm-9 col-md-9 col-lg-9">
-                                                        <label>Practical Questions</label>
-                                                    </div>
-                                                </div>
-                                                <div class="row">
-
-                                                    <div class="col-sm-10 col-sm-offset-2 col-md-10 col-md-offset-2 col-lg-10 col-lg-offset-2">
-                                                        <span>@Model.PracticalCount</span>
-                                                    </div>
-                                                </div>
-
-
-                                            </li>
-                                            <li style="padding-bottom: 0px;">
-                                                <div class="row">
-                                                    <div class="col-sm-2 col-md-2 col-lg-2">
-                                                        <span><i class="fa fa-check-square-o" aria-hidden="true"></i></span>
-                                                    </div>
-                                                    <div class="col-sm-9 col-md-9 col-lg-9">
-                                                        <label>Objective Questions</label>
-                                                    </div>
-                                                </div>
-                                                <div class="row">
-
-                                                    <div class="col-sm-10 col-sm-offset-2 col-md-10 col-md-offset-2 col-lg-10 col-lg-offset-2">
-                                                        <span>@Model.ObjectiveCount</span>
-                                                    </div>
-                                                </div>
-                                                <div class="row">
-
-                                                    <div class="col-sm-10 col-sm-offset-2 col-md-10 col-md-offset-2 col-lg-10 col-lg-offset-2">
-                                                        <span>Contains both single and multiselect Questions.</span>
-                                                    </div>
-                                                </div>
-
-                                            </li>
-
-                                        </ul>
-                                    </div>
-                                    <div class="col-sm-12 col-md-6 col-lg-6">
-                                        <ul>
-                                            <li style="padding-top: 10px;">
-                                                <div class="row">
-                                                    <div class="col-sm-2 col-md-2 col-lg-2">
-                                                        <span><i class="fa fa-square" style="color:#ffffff;" aria-hidden="true"></i></span>
-                                                    </div>
-                                                    <div class="col-sm-9 col-md-9 col-lg-9">
-                                                        <label>Not visited Question</label>
-                                                    </div>
-                                                </div>
-
-
-                                            </li>
-                                            <li>
-                                                <div class="row">
-                                                    <div class="col-sm-2 col-md-2 col-lg-2">
-                                                        <span><i class="fa fa-square" style="color:#337ab7;" aria-hidden="true"></i></span>
-                                                    </div>
-                                                    <div class="col-sm-10 col-md-10 col-lg-10">
-                                                        <label>Visited but not Answered</label>
-                                                    </div>
-                                                </div>
-
-                                            </li>
-                                            <li>
-                                                <div class="row">
-                                                    <div class="col-sm-2 col-md-2 col-lg-2">
-                                                        <span><i class="fa fa-check-square" style="color:#337ab7;" aria-hidden="true"></i></span>
-                                                    </div>
-                                                    <div class="col-sm-9 col-md-9 col-lg-9">
-                                                        <label>Answered</label>
-                                                    </div>
-                                                </div>
-
-                                            </li>
-
-                                        </ul>
-                                    </div>
+                        <div class="row">
+                            <div class="col-sm-8 col-sm-offset-2">
+                                <div class="alert alert-danger">
+                                    <strong>Attention!</strong> This test is window protected, please do not move away from the window or refresh page.
                                 </div>
                             </div>
                         </div>
-
-                        <div class="col-sm-10 col-sm-offset-1">
-                            <div class="form-group M-T25 M-B60">
-                                <div id="Term" class="checkbox checkbox-success">
-                                    <input id="Terms" type="checkbox">
-                                    <label for="Terms"> <span style="font-weight:bold;">Agree with the terms and conditions of online test instruction.</span> </label>
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <div class="col-md-12" style="border-bottom-width:1px; border-bottom-style:solid; border-bottom-color:#c4c7ca;">
                                 </div>
                             </div>
                         </div>
+                        <div class="row M-T15">
+                            <div class="col-sm-12">
+                                <div class="greyBox"><strong>Online Test Instruction</strong></div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-10 col-sm-offset-1">
+
+                                <label class="M-T15 M-B15 titleText" style="font-weight:bold;font-size:18px;">Test Instructions:</label>
+                                <p>
+                                    <b>1.</b> Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua labore et dolore magna aliqua.
+                                </p>
+                                <p>
+                                    <b>2.</b> Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua labore et dolore magna aliqua.
+                                <p>
+                                    <b>3.</b> Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua labore et dolore magna aliqua.
+                                </p>
+                                <p>
+                                    <b>4.</b> Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua labore et dolore magna aliqua.
+                                </p>
+                                <p>
+                                    <b>5.</b> Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua labore et dolore magna aliqua.
+                                </p>
+
+                                @{
+    if (!string.IsNullOrWhiteSpace(Model.SpecialInstruction))
+    {
+        <label class="M-T15 M-B15" style="font-weight:bold;font-size:18px;">Special Instructions:</label>
+                                    <p>@Html.Raw(@HttpUtility.HtmlDecode(@Model.SpecialInstruction))</p>
+    }
+                                }
+                            </div>
+                            <div class="col-sm-10 col-sm-offset-1 M-T15 M-B15">
+                                <div class="info-box">
+                                    <div class="row">
+                                        <div class="col-sm-12 col-md-6 col-lg-6">
+                                            <ul>
+                                                <li style="padding-bottom: 0px;padding-top: 10px;">
+                                                    <div class="row">
+                                                        <div class="col-sm-2 col-md-2 col-lg-2">
+                                                            <span><i class="fa fa-clock-o" aria-hidden="true"></i></span>
+                                                        </div>
+                                                        <div class="col-sm-9 col-md-9 col-lg-9">
+                                                            <label>Duration</label>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row">
+
+                                                        <div class="col-sm-10 col-sm-offset-2 col-md-10 col-md-offset-2 col-lg-10 col-lg-offset-2">
+                                                            <span>@Model.Duration mins</span>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row">
+
+                                                        <div class="col-sm-10 col-sm-offset-2 col-md-10 col-md-offset-2 col-lg-10 col-lg-offset-2">
+                                                            <span>This is the duration for complete test.</span>
+                                                        </div>
+                                                    </div>
+
+
+
+                                                </li>
+                                                <li style="padding-bottom: 0px;">
+                                                    <div class="row">
+                                                        <div class="col-sm-2 col-md-2 col-lg-2">
+                                                            <span><i class="fa fa-file-text-o" aria-hidden="true"></i></span>
+                                                        </div>
+                                                        <div class="col-sm-9 col-md-9 col-lg-9">
+                                                            <label>Practical Questions</label>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row">
+
+                                                        <div class="col-sm-10 col-sm-offset-2 col-md-10 col-md-offset-2 col-lg-10 col-lg-offset-2">
+                                                            <span>@Model.PracticalCount</span>
+                                                        </div>
+                                                    </div>
+
+
+                                                </li>
+                                                <li style="padding-bottom: 0px;">
+                                                    <div class="row">
+                                                        <div class="col-sm-2 col-md-2 col-lg-2">
+                                                            <span><i class="fa fa-check-square-o" aria-hidden="true"></i></span>
+                                                        </div>
+                                                        <div class="col-sm-9 col-md-9 col-lg-9">
+                                                            <label>Objective Questions</label>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row">
+
+                                                        <div class="col-sm-10 col-sm-offset-2 col-md-10 col-md-offset-2 col-lg-10 col-lg-offset-2">
+                                                            <span>@Model.ObjectiveCount</span>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row">
+
+                                                        <div class="col-sm-10 col-sm-offset-2 col-md-10 col-md-offset-2 col-lg-10 col-lg-offset-2">
+                                                            <span>Contains both single and multiselect Questions.</span>
+                                                        </div>
+                                                    </div>
+
+                                                </li>
+
+                                            </ul>
+                                        </div>
+                                        <div class="col-sm-12 col-md-6 col-lg-6">
+                                            <ul>
+                                                <li style="padding-top: 10px;">
+                                                    <div class="row">
+                                                        <div class="col-sm-2 col-md-2 col-lg-2">
+                                                            <span><i class="fa fa-square" style="color:#ffffff;" aria-hidden="true"></i></span>
+                                                        </div>
+                                                        <div class="col-sm-9 col-md-9 col-lg-9">
+                                                            <label>Not visited Question</label>
+                                                        </div>
+                                                    </div>
+
+
+                                                </li>
+                                                <li>
+                                                    <div class="row">
+                                                        <div class="col-sm-2 col-md-2 col-lg-2">
+                                                            <span><i class="fa fa-square" style="color:#337ab7;" aria-hidden="true"></i></span>
+                                                        </div>
+                                                        <div class="col-sm-10 col-md-10 col-lg-10">
+                                                            <label>Visited but not Answered</label>
+                                                        </div>
+                                                    </div>
+
+                                                </li>
+                                                <li>
+                                                    <div class="row">
+                                                        <div class="col-sm-2 col-md-2 col-lg-2">
+                                                            <span><i class="fa fa-check-square" style="color:#337ab7;" aria-hidden="true"></i></span>
+                                                        </div>
+                                                        <div class="col-sm-9 col-md-9 col-lg-9">
+                                                            <label>Answered</label>
+                                                        </div>
+                                                    </div>
+
+                                                </li>
+
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-sm-10 col-sm-offset-1">
+                                <div class="form-group M-T25 M-B60">
+                                    <div id="Term" class="checkbox checkbox-success">
+                                        <input id="Terms" type="checkbox">
+                                        <label for="Terms"> <span style="font-weight:bold;">Agree with the terms and conditions of online test instruction.</span> </label>
+                                    </div>
+                                </div>
+                            </div>
 
 
 
 
-                    </div>
+                        </div>
 
-                    <div class="row M-B15">
-                        <div class="col-sm-4 col-sm-offset-4" style="text-align: center;">
-                            @(Html.Kendo().Button()
+                        <div class="row M-B15">
+                            <div class="col-sm-4 col-sm-offset-4" style="text-align: center;">
+                                @(Html.Kendo().Button()
                             .Name("btnStart")
                             .HtmlAttributes(new { type = "button" }).Events(e => e.Click("OnClick"))
                             .Content("Start Online Test").HtmlAttributes(new { @class = "btn btn-lg btn-start" }))
+                            </div>
                         </div>
+
+
                     </div>
-
-
                 </div>
             </div>
         </div>
     </div>
-</div>
-
+}
+else
+{
+    <h1 class="font-color-red"> @ViewBag.Msg  </h1>
+}
 
 <script>
     $(document).ready(function () {
