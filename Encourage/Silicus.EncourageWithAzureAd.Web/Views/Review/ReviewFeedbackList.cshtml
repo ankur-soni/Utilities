@@ -77,6 +77,12 @@
                                             break;
                                         }
                                     }
+
+                                    if (Model.ReviewFeedbackList.Count == 0)
+                                    {
+                                        _disabled = true;
+                                    }
+
                                     if (_disabled == false)
                                     {
 
@@ -172,8 +178,8 @@
                    }
                });
            } else {
-               swal("Cancelled", "Rejection of all nominations Cancelled");
-               window.location.href = '@Url.Action("ReviewFeedbackList", "Review")';
+               //swal("Cancelled", "Rejection of all nominations Cancelled");
+               @*window.location.href = '@Url.Action("ReviewFeedbackList", "Review")';*@
            }
        });
 
