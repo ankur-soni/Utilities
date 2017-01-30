@@ -1,17 +1,21 @@
 ﻿@model Silicus.Ensure.Web.Models.Test.CandidateInfoViewModel
 <div>
     <div class="row">
-        <div class="col-lg-2">@Html.LabelFor(m => m.Name)</div>
-        <div class="col-lg-3">@Html.DisplayFor(m => m.Name)</div>
-        <div class="col-lg-2">@Html.LabelFor(m => m.RequisitionId)</div>
-        <div class="col-lg-2">@Html.DisplayFor(m => m.RequisitionId)</div>
-        <div class="col-lg-2">@Html.LabelFor(m => m.TotalExperience)</div>
-        <div class="col-lg-1">@Html.DisplayFor(m => m.TotalExperience)</div>
+        <div class="col-lg-2 col-md-3 col-sm-3 M-T15">@Html.LabelFor(m => m.Name, new { style = "font-weight:bold;font-size:14px;color:#fff;" })</div>
+        <div class="col-lg-2 col-md-3 col-sm-3 M-T15">@Html.DisplayFor(m => m.Name)</div>
+        <div class="col-lg-2 col-md-3 col-sm-3 M-T15">@Html.LabelFor(m => m.RequisitionId, new { style = "font-weight:bold;font-size:14px;color:#fff;" })</div>
+        <div class="col-lg-2 col-md-3 col-sm-3 M-T15">@Html.DisplayFor(m => m.RequisitionId)</div>
+        <div class="clearfix visible-md"></div>
+        <div class="clearfix visible-sm"></div>
+        <div class="col-lg-2 col-md-3 col-sm-3 M-T15">@Html.LabelFor(m => m.TotalExperience, new { style = "font-weight:bold;font-size:14px;color:#fff;" })</div>
+        <div class="col-lg-2 col-md-3 col-sm-3 M-T15">@Html.DisplayFor(m => m.TotalExperience)</div>
+        <div class="clearfix visible-lg"></div>
+        <div class="col-lg-2 col-md-3 col-sm-3 M-T15">@Html.LabelFor(m => m.Position, new { style = "font-weight:bold;font-size:14px;color:#fff;" })</div>
+        <div class="col-lg-2 col-md-3 col-sm-3 M-T15">@Html.DisplayFor(m => m.Position)</div>
+        <div class="clearfix visible-md"></div>
+        <div class="clearfix visible-sm"></div>
+        <div class="col-lg-2 col-md-3 col-sm-3 M-T15">@Html.LabelFor(m => m.DOB, new { style = "font-weight:bold;font-size:14px;color:#fff;" })</div>
+        <div class="col-lg-2 col-md-3 col-sm-3 M-T15">@Html.DisplayFor(m => m.DOB)</div>
     </div>
-    <div class="row">
-        <div class="col-lg-2">@Html.LabelFor(m => m.Position)</div>
-        <div class="col-lg-3">@Html.DisplayFor(m => m.Position)</div>
-        <div class="col-lg-3">@Html.LabelFor(m => m.DOB)</div>
-        <div class="col-lg-3 pull-left">@Html.DisplayFor(m => m.DOB)</div>
-    </div>
+   
 </div>
