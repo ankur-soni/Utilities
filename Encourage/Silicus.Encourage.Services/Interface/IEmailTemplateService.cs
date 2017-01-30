@@ -10,9 +10,11 @@ namespace Silicus.Encourage.Services.Interface
 {
     public interface IEmailTemplateService
     {
-        EmailTemplate GetEmailTemplate(string templateName);
+        EmailTemplate GetEmailTemplate(int templateId);
+        List<EmailTemplate> GetAllTemplates();
         List<User> GetAllManagers();
         string SendEmail(List<string> ToEmailAddresses, string body, string emailSubject);
-        string SaveEmailTemplate(string templateName, string updatedTemplate);
+        string UpdateEmailTemplate(int templateId, string updatedTemplate);
+        EmailTemplate SaveEmailTemplate(string templateName, string template);
     }
 }
