@@ -5,16 +5,17 @@
     Layout = "~/Views/Shared/_LayoutCandidate.cshtml";
 }
 
-<div class="row">
-    <div class="col-sm-12">
-       
-            <div class="box M-T15 M-B60">
+<div class="container">
+    <div class="row">
+        <div class="col-sm-12">
+
+            <div style="box-shadow:none;" class="box M-T15 M-B60">
                 <div class="f1">
                     <div class="main-content" id="main">
 
                         <div class="row">
                             <div class="col-sm-8 col-sm-offset-2">
-                                <div class="alert alert-danger">
+                                <div class="alert alert-danger" style="margin-bottom: 30px;">
                                     <strong>Attention!</strong> This test is window protected, please do not move away from the window or refresh page.
                                 </div>
                             </div>
@@ -27,13 +28,13 @@
                         </div>
                         <div class="row M-T15">
                             <div class="col-sm-12">
-                                <div class="greyBox"><strong>Online Test Instruction</strong></div>
+                                <div class="greyBox"><strong>Online Test Instructions</strong></div>
                             </div>
                         </div>
                         <div class="row">
                             <div class="col-sm-10 col-sm-offset-1">
 
-                                <label class="M-T15 M-B15 titleText" style="font-weight:bold;font-size:18px;">Test Instructions:</label>
+                                <label class="M-T15 M-B15 titleText" style="font-weight:bold;font-size:18px;">Test Instructions</label>
                                 <p>
                                     <b>1.</b> Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua labore et dolore magna aliqua.
                                 </p>
@@ -49,7 +50,7 @@
                                     <b>5.</b> Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua labore et dolore magna aliqua.
                                 </p>
 
-                                <label class="M-T15 M-B15 titleText" style="font-weight:bold;font-size:18px;">Special Instructions:</label>
+                                <label class="M-T15 M-B15 titleText" style="font-weight:bold;font-size:18px;">Special Instructions</label>
 
                                 <p>
                                     <b>1.</b> Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua labore et dolore magna aliqua.
@@ -76,20 +77,20 @@
                                                         </div>
                                                     </div>
                                                     <div class="row">
-                                                        
+
                                                         <div class="col-sm-10 col-sm-offset-2 col-md-10 col-md-offset-2 col-lg-10 col-lg-offset-2">
                                                             <span>@Model.Duration mins</span>
                                                         </div>
                                                     </div>
                                                     <div class="row">
-                                                        
+
                                                         <div class="col-sm-10 col-sm-offset-2 col-md-10 col-md-offset-2 col-lg-10 col-lg-offset-2">
                                                             <span>This is the duration for complete test.</span>
                                                         </div>
                                                     </div>
-                                                    
-                                                    
-                                                   
+
+
+
                                                 </li>
                                                 <li style="padding-bottom: 0px;">
                                                     <div class="row">
@@ -103,7 +104,14 @@
                                                     <div class="row">
 
                                                         <div class="col-sm-10 col-sm-offset-2 col-md-10 col-md-offset-2 col-lg-10 col-lg-offset-2">
-                                                            <span>@Model.PracticalCount</span>
+                                                            <span>@Model.PracticalCount mins</span>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="row">
+
+                                                        <div class="col-sm-10 col-sm-offset-2 col-md-10 col-md-offset-2 col-lg-10 col-lg-offset-2">
+                                                            <span>This is set of practical questions.</span>
                                                         </div>
                                                     </div>
 
@@ -121,18 +129,18 @@
                                                     <div class="row">
 
                                                         <div class="col-sm-10 col-sm-offset-2 col-md-10 col-md-offset-2 col-lg-10 col-lg-offset-2">
-                                                            <span>@Model.ObjectiveCount</span>
+                                                            <span>@Model.ObjectiveCount mins</span>
                                                         </div>
                                                     </div>
                                                     <div class="row">
 
                                                         <div class="col-sm-10 col-sm-offset-2 col-md-10 col-md-offset-2 col-lg-10 col-lg-offset-2">
-                                                            <span>Contains both single and multiselect Questions.</span>
+                                                            <span>This is set of single & multiselect Questions.</span>
                                                         </div>
                                                     </div>
 
                                                 </li>
-                                               
+
                                             </ul>
                                         </div>
                                         <div class="col-sm-12 col-md-6 col-lg-6">
@@ -143,7 +151,7 @@
                                                             <span><i class="fa fa-square" style="color:#ffffff;" aria-hidden="true"></i></span>
                                                         </div>
                                                         <div class="col-sm-9 col-md-9 col-lg-9">
-                                                            <label>Not visited Question</label>
+                                                            <label>Not visited the question</label>
                                                         </div>
                                                     </div>
 
@@ -155,7 +163,7 @@
                                                             <span><i class="fa fa-square" style="color:#337ab7;" aria-hidden="true"></i></span>
                                                         </div>
                                                         <div class="col-sm-10 col-md-10 col-lg-10">
-                                                            <label>Visited but not Answered</label>
+                                                            <label>Visited but not answered</label>
                                                         </div>
                                                     </div>
 
@@ -184,13 +192,13 @@
                                         <input id="Terms" type="checkbox">
                                         <label for="Terms"> <span style="font-weight:bold;">Agree with the terms and conditions of online test instruction.</span> </label>
                                     </div>
-                               </div>
-                           </div>
-
-
-
-
+                                </div>
                             </div>
+
+
+
+
+                        </div>
 
                         <div class="row M-B15">
                             <div class="col-sm-4 col-sm-offset-4" style="text-align: center;">
@@ -204,10 +212,10 @@
 
                     </div>
                 </div>
+            </div>
         </div>
     </div>
 </div>
-   
 
 <script>
     $(document).ready(function () {

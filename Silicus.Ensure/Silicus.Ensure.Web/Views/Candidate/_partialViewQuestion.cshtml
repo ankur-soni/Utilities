@@ -2,10 +2,9 @@
 
 @using Kendo.Mvc.UI;
 
-<div class="row">
-    <div class="fluid mt20">
+
         <div class="row">
-            <div class="col-md-9 col-md-offset-2">
+            <div class="col-sm-12">
                 @if (Model.QuestionType == 1)
                 {
                     <p><strong>Section 1 (Objective question)</strong></p>
@@ -19,7 +18,7 @@
                 <p><strong>Question @Model.QuestionId: (@Model.Marks Marks)</strong></p>
                 @Html.Raw(HttpUtility.HtmlDecode(Model.QuestionDescription))
             </div>
-            <div class="col-md-9 col-md-offset-2" style="border-bottom-width:1px; border-bottom-style:solid; border-bottom-color:black;">
+            <div class="col-sm-12">
             </div>
             <input type="hidden" value="@Model.QuestionId" id="QuestionNumber" />
             <input type="hidden" value="@Model.TestDetailId" id="UserTestDetailId" />
@@ -30,7 +29,7 @@
             {
                 if (string.IsNullOrEmpty(Model.Answer))
                 {
-                    <div class="col-md-9 col-md-offset-2">
+                    <div class="col-sm-12">
                         <div class="radio">
                             <label><input type="radio" name="optradio" value="1">@Model.Option1</label>
                         </div>
@@ -65,7 +64,7 @@
                 }
                 else
                 {
-                    <div class="col-md-9 col-md-offset-2">
+                    <div class="col-sm-12">
 
                         <div class="radio">
                             @if (Model.Answer.Trim() == "1")
@@ -162,7 +161,7 @@
 
                 if (string.IsNullOrEmpty(Model.Answer))
                 {
-                    <div class="col-md-9 col-md-offset-2">
+                    <div class="col-sm-12">
                         <div class="checkbox">
                             <label><input type="checkbox" name="optcheckbox" value="1">@Model.Option1</label>
                         </div>
@@ -198,7 +197,7 @@
                 }
                 else
                 {
-                    <div class="col-md-9 col-md-offset-2">
+                    <div class="col-sm-12">
                         <div class="checkbox">
                             <label><input id="optcheckbox1" type="checkbox" name="optcheckbox" value="1">@Model.Option1</label>
                         </div>
@@ -242,25 +241,24 @@
 
             else if (Model.QuestionType == 2)
             {
-                <div class="col-md-9 col-md-offset-2">
+                <div class="col-sm-12">
                     @Html.Kendo().EditorFor(m => m.Answer).Name("PracticalAnswer").Encode(true).Value(Model.Answer)
                 </div>
             }
 
-            <div class="col-md-9 col-md-offset-2" style="border-bottom-width:1px; border-bottom-style:solid; border-bottom-color:black;">
+            <div class="col-sm-12">
             </div>
         </div>
-    </div>
-</div>
+    
 
 <div class="row">
-    <div class="col-md-9 col-md-offset-2" style="margin-top:1%;">
+    <div class="col-sm-12" style="margin-top:1%;">
         @if (Model.NextQuestionId != null)
         {
             @(Html.Kendo().Button()
         .Name("btnNext")
                 .HtmlAttributes(new { type = "button" }).Events(e => e.Click("OnNext"))
-                    .Content("Next").HtmlAttributes(new { style = "float: right;", @data_id = Model.NextQuestionId }))
+                    .Content("Next").HtmlAttributes(new { style = "float: right;", @data_id = Model.NextQuestionId, @class="btn btn-primary" }))
         }
 
         @if (Model.PreviousQuestionId != null)
@@ -268,16 +266,16 @@
             @(Html.Kendo().Button()
                 .Name("btnPrevious")
                 .HtmlAttributes(new { type = "button" }).Events(e => e.Click("OnPrevious"))
-            .Content("Previous").HtmlAttributes(new { style = "float: right;", @data_id = Model.PreviousQuestionId }))
+                .Content("Previous").HtmlAttributes(new { @data_id = Model.PreviousQuestionId, @class = "btn btn-primary" }))
         }
     </div>
 </div>
 
 <div class="row">
-    <div class="col-md-9 col-md-offset-2" style="margin-top:1%;">
+    <div class="col-sm-12" style="margin-top:1%;">
         @(Html.Kendo().Button()
         .Name("btnSubmit")
         .HtmlAttributes(new { type = "button" }).Events(e => e.Click("OnSubmitTest"))
-        .Content("Submit Test").HtmlAttributes(new { style = "float: right;" })) 
+                .Content("Submit Test").HtmlAttributes(new { style = "float: right;", @class = "btn btn-primary" })) 
     </div>
 </div>
