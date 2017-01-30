@@ -110,6 +110,10 @@ namespace Silicus.Ensure.Web.Controllers
             var user = _userService.GetUserById(candidateResultViewmodel.CandidateUserId);
             user.CandidateStatus = candidateResultViewmodel.Status.ToString();
             _userService.Update(user);
+            var userTestSuitedetails = _testSuiteService.GetUserTestSuiteByUserId(candidateResultViewmodel.CandidateUserId);
+            userTestSuitedetails.StatusId = (int)candidateResultViewmodel.Status;
+            userTestSuitedetails.FeedBack = candidateResultViewmodel.ReviewerComment;
+            _testSuiteService.UpdateUserTestSuite(userTestSuitedetails);
             return Json(true);
         }
 

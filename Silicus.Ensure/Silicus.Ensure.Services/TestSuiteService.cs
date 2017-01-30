@@ -177,6 +177,7 @@ namespace Silicus.Ensure.Services
                               Option6 = b.Option6,
                               Option7 = b.Option7,
                               Option8 = b.Option8,
+                              Comment=a.ReviwerComment,
                               Marks = b.Marks
                           }).FirstOrDefault();
             if (result == null)
