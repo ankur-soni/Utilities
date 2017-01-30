@@ -13,12 +13,6 @@ namespace Silicus.UtilityContainer.Models.DataObjects
         public string Name { get; set; }
         public string Initials { get; set; }
         public bool IsActive { get; set; }
-        public Nullable<decimal> MinBillable { get; set; }
-        public Nullable<decimal> MinChargeble { get; set; }
-        public Nullable<decimal> MinProductive { get; set; }
-        public Nullable<decimal> MaxBillable { get; set; }
-        public Nullable<decimal> MaxChargeble { get; set; }
-        public Nullable<decimal> MaxProductive { get; set; }
         public int LocationID { get; set; }
         public Nullable<int> ResourceTypeID { get; set; }
     }
