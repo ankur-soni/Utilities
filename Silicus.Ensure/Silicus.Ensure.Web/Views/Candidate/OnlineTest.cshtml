@@ -130,29 +130,6 @@
 </div>
 
 
-<!-- Modal Submit Test On Time Complete-->
-<div class="modal fade" id="testresultPopup" role="dialog">
-    <div class="modal-dialog">
-
-        <!-- Modal content-->
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal">&times;</button>
-                <h4 class="modal-title">Candidate Result</h4>
-            </div>
-            <div class="modal-body">
-                <form id="frmTestresult">
-                    @Html.Partial("_CandidateResult", new CandidateResultViewmodel())
-                </form>
-            </div>
-            <div class="modal-footer">
-                <button id="SubmitCandidateResult" type="button" class="btn btn-default">OK</button>
-                <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-            </div>
-        </div>
-
-    </div>
-</div>
 
 
 
@@ -160,23 +137,13 @@
     var clock;
     var totalTime;
 
-    //window.onbeforeunload = function () {
-    //    return false;
-    //}
-
     $(document).ready(function () {
-
         $("#frmTestresult").kendoValidator();
         // Hide Submit button of popup. Show when to want submit test.
         $("#btnSubmitTestOK").hide();
-
-        debugger;
-        // Load First Question On page Load.
         var userTestSuiteId = $("#UserTestSuiteId").val();
         var url = "/Candidate/LoadQuestion?userTestSuiteId=";
         $('#QuestionDetails').load(url + userTestSuiteId);
-
-        
 
         // Hide "Add More Time" if used 2 times
         var timerCnt = $("#TimerIncCount").val();
@@ -211,8 +178,6 @@
         clock.setCountdown(true);
         clock.start();
 
-        $("#btnSubmitEvalution").on("click", submitEvalution);
-        $("#SubmitCandidateResult").on("click", submitCandidateResult);
         $('.QuestionCheckbox').on('click', QuestionCheckboxClicked);
     });
         
@@ -500,29 +465,7 @@
     }
 
 
-    function submitEvalution() {
-        $("#testresultPopup").modal('show');
-    }
 
-    function submitCandidateResult() {
-        var validator = $("#frmTestresult").data("kendoValidator");
-        if (validator.validate()) {
-            var formdata = new FormData($('form').get(0));
-            formdata.append('CandidateUserId', 19);
-
-            $.ajax({
-                url: '@Url.Action("SumbmitCandidateResult", "Candidate")',
-                type: 'POST',
-                data: formdata,
-                processData: false,
-                contentType: false,
-                success: function (msg) {
-                    $("#testresultPopup").modal('hide');
-                }
-            });
-        }
-    }
-    
 
 
 </script>

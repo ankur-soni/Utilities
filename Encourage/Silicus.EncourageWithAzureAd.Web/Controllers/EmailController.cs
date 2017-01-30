@@ -2,6 +2,7 @@
 using Silicus.EncourageWithAzureAd.Web.Models;
 using System.Collections.Generic;
 using System.Configuration;
+using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 
@@ -21,20 +22,19 @@ namespace Silicus.EncourageWithAzureAd.Web.Controllers
         public ActionResult Index()
         {
             EmailTemplateViewModel emailTemplateViewModel = new EmailTemplateViewModel();
+            var emailTemplates = _emailTemplateService.GetAllTemplates();
 
-            emailTemplateViewModel.ProcessesViewModel = new List<ProcessesViewModel>()
+            foreach (var template in emailTemplates)
             {
-                new ProcessesViewModel() { Id = 1, Name="Nomination" },
-                new ProcessesViewModel() { Id = 2, Name="Review" }
-            };
+                emailTemplateViewModel.ProcessesViewModel.Add(new ProcessesViewModel() { Id = template.Id, Name = template.TemplateName });
+            }
 
             return View(emailTemplateViewModel);
         }
 
-        public ActionResult GetEmailTemplate(string processName)
+        public ActionResult GetEmailTemplate(int processId)
         {
-            var templateOf = processName + "Template";
-            var emailTemplate = _emailTemplateService.GetEmailTemplate(templateOf);
+            var emailTemplate = _emailTemplateService.GetEmailTemplate(processId);
             EmailTemplateEditorViewModel emailTemplateEditor = new EmailTemplateEditorViewModel();
 
             emailTemplateEditor.EmailTemplate = emailTemplate.Template;
@@ -66,14 +66,23 @@ namespace Silicus.EncourageWithAzureAd.Web.Controllers
             return result;
         }
 
-        public string SaveMailTemplate(string processName, string emailTemplate)
+        public string UpdateMailTemplate(int processId, string emailTemplate)
         {
-            var templateOf = processName + "Template";
             string emailBody = HttpUtility.HtmlDecode(emailTemplate);
 
-            var result = _emailTemplateService.SaveEmailTemplate(templateOf,emailBody);
+            var result = _emailTemplateService.UpdateEmailTemplate(processId, emailBody);
 
             return result;
+        }
+
+        public string SaveMailTemplate(string processName, string emailTemplate)
+        {
+            var templateOf = processName;
+            string emailBody = HttpUtility.HtmlDecode(emailTemplate);
+
+            var result = _emailTemplateService.SaveEmailTemplate(templateOf, emailBody);
+            string newTemplateName = result != null ? result.TemplateName : "";
+            return newTemplateName;
         }
     }
 }

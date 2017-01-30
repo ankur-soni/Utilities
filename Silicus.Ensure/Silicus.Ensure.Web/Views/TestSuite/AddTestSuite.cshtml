@@ -278,7 +278,15 @@
                                 }
                             </div>
 
+                            <div class="form-group">
+                                <div class="col-md-2 col-sm-2 col-xs-2">
+                                    @Html.LabelFor(model => model.SpecialInstruction)
+                                </div>
+                                <div class="col-md-4">
+                                    @Html.Kendo().EditorFor(m => m.SpecialInstruction).Name("SpecialInstruction").Value(@HttpUtility.HtmlDecode(@Model.SpecialInstruction))
 
+                                </div>
+                            </div>
 
                             <div class="">
                                 <div class="col-md-12">
@@ -470,6 +478,7 @@
                 var OptionalQuestion = $("#OptionalQuestion").val();
                 var PracticalQuestion = $("#PracticalQuestion").val();
                 var Status = $("#Status").val();
+                var SpecialInstruction = $("#SpecialInstruction").val();
                 var Weights = '';
                 var Proficiency = '';
                 $('#TagCustomControl input.tagAutoComplete').each(function () {
@@ -519,6 +528,7 @@
                         ToExperience: ToExperience,
                         OptionalQuestion: OptionalQuestion,
                         PracticalQuestion: PracticalQuestion,
+                        SpecialInstruction: SpecialInstruction
                     },
                     success: function (response) {
                         if (response != null && response.status == "success") {

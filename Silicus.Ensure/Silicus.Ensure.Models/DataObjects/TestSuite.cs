@@ -42,6 +42,9 @@ namespace Silicus.Ensure.Models.DataObjects
         public int OptionalQuestion { get; set; }
 
         public int PracticalQuestion { get; set; }
+
+        [Display(Name = "Special Instruction")]
+        public string SpecialInstruction { get; set; }
                 
         public bool IsDeleted { get; set; }
 

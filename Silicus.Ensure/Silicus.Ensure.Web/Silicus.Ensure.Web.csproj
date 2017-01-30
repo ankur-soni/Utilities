@@ -449,7 +449,6 @@
     <Compile Include="Models\Test\ReviwerViewTestViewModel.cs" />
     <Compile Include="Models\Test\TestDetailsViewModel.cs" />
     <Compile Include="Models\Test\TestSummaryViewModel.cs" />
-    <Compile Include="Models\Test\TestViewModel.cs" />
     <Compile Include="Models\UserDetailViewModel.cs" />
     <Compile Include="Models\UserViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -847,6 +846,11 @@
     <Content Include="Views\Shared\_CandidateInfo.cshtml" />
     <Content Include="Views\Reviewer\_ReviewerViewQuestion.cshtml" />
     <Content Include="Views\Reviewer\ReviewTest.cshtml" />
+    <Content Include="Views\Panel\AddPanel.cshtml" />
+    <Content Include="Views\Panel\Panel.cshtml" />
+    <Content Include="Views\Admin\PartialTestSuitView.cshtml">
+      <SubType>Code</SubType>
+    </Content>
     <None Include="Web.Azure.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

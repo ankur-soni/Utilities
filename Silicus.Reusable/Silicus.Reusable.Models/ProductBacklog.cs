@@ -7,7 +7,7 @@ namespace Silicus.FrameworxProject.Models
     public class ProductBacklog
     {
         [Key, DatabaseGenerated(DatabaseGeneratedOption.None)]
-        public int Id { get; set; }        
+        public int Id { get; set; }
         public string Title { get; set; }
         public string Description { get; set; }
         public string State { get; set; }
@@ -18,5 +18,7 @@ namespace Silicus.FrameworxProject.Models
         public double TimeAllocated { get; set; }
         public double TimeSpent { get; set; }
         public string AssignedBy { get; set; }
+        public DateTime CreatedDate { get; set; }
+        public DateTime ChangedDate { get; set; }
     }
 }
