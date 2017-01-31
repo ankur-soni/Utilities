@@ -1,0 +1,1976 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="EnableDevModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012.Azure" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'EnableDev.dbo.vwExt_Client' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="vwExt_Client">
+          <Key>
+            <PropertyRef Name="ID" />
+            <PropertyRef Name="Name" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="Code" Type="nvarchar" MaxLength="50" />
+          <Property Name="IsActive" Type="bit" />
+          <Property Name="AccountManagerID" Type="int" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'EnableDev.dbo.vwExt_Company' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="vwExt_Company">
+          <Key>
+            <PropertyRef Name="ID" />
+            <PropertyRef Name="Name" />
+            <PropertyRef Name="IsMaster" />
+            <PropertyRef Name="StartMonthOfFiscalYear" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="AddressLine1" Type="nvarchar" MaxLength="200" />
+          <Property Name="AddressLine2" Type="nvarchar" MaxLength="200" />
+          <Property Name="City" Type="nvarchar" MaxLength="100" />
+          <Property Name="State" Type="nvarchar" MaxLength="100" />
+          <Property Name="Zip" Type="nvarchar" MaxLength="100" />
+          <Property Name="Country" Type="nvarchar" MaxLength="100" />
+          <Property Name="IsMaster" Type="bit" Nullable="false" />
+          <Property Name="CompanyID" Type="nvarchar" MaxLength="50" />
+          <Property Name="StartMonthOfFiscalYear" Type="int" Nullable="false" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'EnableDev.dbo.vwExt_Department' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="vwExt_Department">
+          <Key>
+            <PropertyRef Name="ID" />
+            <PropertyRef Name="Name" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="100" Nullable="false" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'EnableDev.dbo.vwExt_Engagement' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="vwExt_Engagement">
+          <Key>
+            <PropertyRef Name="ID" />
+            <PropertyRef Name="Name" />
+            <PropertyRef Name="ClientID" />
+            <PropertyRef Name="Code" />
+            <PropertyRef Name="EngagementTypeID" />
+            <PropertyRef Name="Stage" />
+            <PropertyRef Name="LocationID" />
+            <PropertyRef Name="EngagementManagerID" />
+            <PropertyRef Name="PrimaryProjectManagerID" />
+            <PropertyRef Name="BeginDate" />
+            <PropertyRef Name="EndDate" />
+            <PropertyRef Name="IsOpenForTime" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="200" Nullable="false" />
+          <Property Name="ClientID" Type="int" Nullable="false" />
+          <Property Name="Code" Type="nvarchar" MaxLength="30" Nullable="false" />
+          <Property Name="EngagementTypeID" Type="int" Nullable="false" />
+          <Property Name="Stage" Type="nvarchar" MaxLength="10" Nullable="false" />
+          <Property Name="LocationID" Type="int" Nullable="false" />
+          <Property Name="EngagementManagerID" Type="int" Nullable="false" />
+          <Property Name="PrimaryProjectManagerID" Type="int" Nullable="false" />
+          <Property Name="BeginDate" Type="date" Nullable="false" />
+          <Property Name="EndDate" Type="date" Nullable="false" />
+          <Property Name="HoursPerDay" Type="decimal" Precision="4" Scale="2" />
+          <Property Name="Description" Type="nvarchar" MaxLength="400" />
+          <Property Name="IsOpenForTime" Type="bit" Nullable="false" />
+          <Property Name="TimeApprover" Type="nvarchar" MaxLength="50" />
+          <Property Name="TimeApproverID" Type="int" />
+          <Property Name="IndustryManagerID" Type="int" />
+          <Property Name="SalesAccountManagerID" Type="int" />
+          <Property Name="GeneralManagerID" Type="int" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'EnableDev.dbo.vwExt_EngagementPermissions' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="vwExt_EngagementPermissions">
+          <Key>
+            <PropertyRef Name="ID" />
+            <PropertyRef Name="EngagementTypeID" />
+            <PropertyRef Name="UserTypeID" />
+            <PropertyRef Name="Permission" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="EngagementTypeID" Type="int" Nullable="false" />
+          <Property Name="UserTypeID" Type="int" Nullable="false" />
+          <Property Name="Permission" Type="nvarchar" MaxLength="20" Nullable="false" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'EnableDev.dbo.vwExt_EngagementRoles' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="vwExt_EngagementRoles">
+          <Key>
+            <PropertyRef Name="ID" />
+            <PropertyRef Name="EngagementID" />
+            <PropertyRef Name="Name" />
+            <PropertyRef Name="IsDeleted" />
+            <PropertyRef Name="IsBooked" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="EngagementID" Type="int" Nullable="false" />
+          <Property Name="ResourceHistoryID" Type="int" />
+          <Property Name="Name" Type="nvarchar" MaxLength="80" Nullable="false" />
+          <Property Name="StartDate" Type="date" />
+          <Property Name="EndDate" Type="date" />
+          <Property Name="IsDeleted" Type="bit" Nullable="false" />
+          <Property Name="IsBooked" Type="bit" Nullable="false" />
+          <Property Name="Description" Type="nvarchar" MaxLength="50" />
+          <Property Name="OverridenTitleID" Type="int" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'EnableDev.dbo.vwExt_EngagementRolesSchedule' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="vwExt_EngagementRolesSchedule">
+          <Key>
+            <PropertyRef Name="ID" />
+            <PropertyRef Name="EngagementRoleID" />
+            <PropertyRef Name="FillModeID" />
+            <PropertyRef Name="Date" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="EngagementRoleID" Type="int" Nullable="false" />
+          <Property Name="FillModeID" Type="int" Nullable="false" />
+          <Property Name="Date" Type="date" Nullable="false" />
+          <Property Name="ContractHours" Type="decimal" Precision="4" Scale="2" />
+          <Property Name="BookedHours" Type="decimal" Precision="4" Scale="2" />
+          <Property Name="RequestedHours" Type="decimal" Precision="4" Scale="2" />
+          <Property Name="IsOpenRequest" Type="bit" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'EnableDev.dbo.vwExt_EngagementTaskTypes' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="vwExt_EngagementTaskTypes">
+          <Key>
+            <PropertyRef Name="ID" />
+            <PropertyRef Name="EngagementID" />
+            <PropertyRef Name="TaskType" />
+            <PropertyRef Name="StandardTaskTypeID" />
+            <PropertyRef Name="IsDescriptionRequired" />
+            <PropertyRef Name="IsActive" />
+            <PropertyRef Name="DisplayOrder" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="EngagementID" Type="int" Nullable="false" />
+          <Property Name="TaskType" Type="nvarchar" MaxLength="500" Nullable="false" />
+          <Property Name="StandardTaskTypeID" Type="int" Nullable="false" />
+          <Property Name="IsDescriptionRequired" Type="bit" Nullable="false" />
+          <Property Name="IsActive" Type="bit" Nullable="false" />
+          <Property Name="DisplayOrder" Type="int" Nullable="false" />
+          <Property Name="ParentID" Type="int" />
+          <Property Name="IsTaskType" Type="int" />
+          <Property Name="IsTask" Type="int" />
+          <Property Name="TaskTypeID" Type="int" />
+          <Property Name="CanLinkedWithTickets" Type="bit" />
+          <Property Name="StartDate" Type="datetime" />
+          <Property Name="EndDate" Type="datetime" />
+          <Property Name="PlannedEfforts" Type="decimal" Precision="10" Scale="2" />
+          <Property Name="Size" Type="decimal" Precision="10" Scale="2" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'EnableDev.dbo.vwExt_EngagementType' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="vwExt_EngagementType">
+          <Key>
+            <PropertyRef Name="ID" />
+            <PropertyRef Name="Name" />
+            <PropertyRef Name="IsBillable" />
+            <PropertyRef Name="IsActive" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="IsBillable" Type="bit" Nullable="false" />
+          <Property Name="IsActive" Type="bit" Nullable="false" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'EnableDev.dbo.vwExt_Location' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="vwExt_Location">
+          <Key>
+            <PropertyRef Name="ID" />
+            <PropertyRef Name="Name" />
+            <PropertyRef Name="IsActive" />
+            <PropertyRef Name="HoursPerDay" />
+            <PropertyRef Name="StandardHolidaysCount" />
+            <PropertyRef Name="StandardVacationCount" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="IsActive" Type="bit" Nullable="false" />
+          <Property Name="HoursPerDay" Type="decimal" Precision="4" Scale="2" Nullable="false" />
+          <Property Name="StandardHolidaysCount" Type="int" Nullable="false" />
+          <Property Name="StandardVacationCount" Type="int" Nullable="false" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'EnableDev.dbo.vwExt_LocationHoliday' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="vwExt_LocationHoliday">
+          <Key>
+            <PropertyRef Name="ID" />
+            <PropertyRef Name="LocationID" />
+            <PropertyRef Name="Date" />
+            <PropertyRef Name="Name" />
+            <PropertyRef Name="TimeOff" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="LocationID" Type="int" Nullable="false" />
+          <Property Name="Date" Type="date" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="TimeOff" Type="decimal" Precision="4" Scale="2" Nullable="false" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'EnableDev.dbo.vwExt_LocationWorkingSchedule' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="vwExt_LocationWorkingSchedule">
+          <Key>
+            <PropertyRef Name="ID" />
+            <PropertyRef Name="LocationID" />
+            <PropertyRef Name="WeekDayID" />
+            <PropertyRef Name="IsWorkingDay" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="LocationID" Type="int" Nullable="false" />
+          <Property Name="WeekDayID" Type="int" Nullable="false" />
+          <Property Name="IsWorkingDay" Type="bit" Nullable="false" />
+          <Property Name="StartTime" Type="time" Precision="1" />
+          <Property Name="Duration" Type="decimal" Precision="4" Scale="2" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'EnableDev.dbo.vwExt_Resource' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="vwExt_Resource">
+          <Key>
+            <PropertyRef Name="ID" />
+            <PropertyRef Name="UserID" />
+            <PropertyRef Name="IsTimecardsRequireApproval" />
+            <PropertyRef Name="CanDirectManager1ApproveTime" />
+            <PropertyRef Name="CanDirectManager1ApproveSkills" />
+            <PropertyRef Name="CanDirectManager2ApproveTime" />
+            <PropertyRef Name="CanDirectManager2ApproveSkills" />
+            <PropertyRef Name="IsShared" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="UserID" Type="int" Nullable="false" />
+          <Property Name="IsTimecardsRequireApproval" Type="bit" Nullable="false" />
+          <Property Name="DirectManager1ID" Type="int" />
+          <Property Name="CanDirectManager1ApproveTime" Type="bit" Nullable="false" />
+          <Property Name="CanDirectManager1ApproveSkills" Type="bit" Nullable="false" />
+          <Property Name="DirectManager2ID" Type="int" />
+          <Property Name="CanDirectManager2ApproveTime" Type="bit" Nullable="false" />
+          <Property Name="CanDirectManager2ApproveSkills" Type="bit" Nullable="false" />
+          <Property Name="IsShared" Type="bit" Nullable="false" />
+          <Property Name="SkillsLastUpdatedOn" Type="date" />
+          <Property Name="TerminationDate" Type="date" />
+          <Property Name="RehireDate" Type="date" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'EnableDev.dbo.vwExt_ResourceHistory' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="vwExt_ResourceHistory">
+          <Key>
+            <PropertyRef Name="ID" />
+            <PropertyRef Name="ResourceID" />
+            <PropertyRef Name="EffectiveDate" />
+            <PropertyRef Name="ResourceTypeID" />
+            <PropertyRef Name="LocationID" />
+            <PropertyRef Name="TitleID" />
+            <PropertyRef Name="IsBillable" />
+            <PropertyRef Name="IsTemporary" />
+            <PropertyRef Name="IsActive" />
+            <PropertyRef Name="CanApproveOwnTime" />
+            <PropertyRef Name="IsTrackingMissingTime" />
+            <PropertyRef Name="IsSendingMissingTimeEmail" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ResourceID" Type="int" Nullable="false" />
+          <Property Name="EffectiveDate" Type="date" Nullable="false" />
+          <Property Name="ResourceTypeID" Type="int" Nullable="false" />
+          <Property Name="LocationID" Type="int" Nullable="false" />
+          <Property Name="TitleID" Type="int" Nullable="false" />
+          <Property Name="IsBillable" Type="bit" Nullable="false" />
+          <Property Name="IsTemporary" Type="bit" Nullable="false" />
+          <Property Name="IsActive" Type="bit" Nullable="false" />
+          <Property Name="CanApproveOwnTime" Type="bit" Nullable="false" />
+          <Property Name="IsTrackingMissingTime" Type="bit" Nullable="false" />
+          <Property Name="IsSendingMissingTimeEmail" Type="bit" Nullable="false" />
+          <Property Name="IsOvertimeAllowed" Type="bit" />
+          <Property Name="LeavePolicyID" Type="int" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'EnableDev.dbo.vwExt_ResourceSkillLevel' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="vwExt_ResourceSkillLevel">
+          <Key>
+            <PropertyRef Name="ID" />
+            <PropertyRef Name="ResourceID" />
+            <PropertyRef Name="SkillID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ResourceID" Type="int" Nullable="false" />
+          <Property Name="SkillID" Type="int" Nullable="false" />
+          <Property Name="SkillLevel" Type="tinyint" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'EnableDev.dbo.vwExt_ResourceType' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="vwExt_ResourceType">
+          <Key>
+            <PropertyRef Name="ID" />
+            <PropertyRef Name="Name" />
+            <PropertyRef Name="Code" />
+            <PropertyRef Name="IsActive" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="Code" Type="nvarchar" MaxLength="10" Nullable="false" />
+          <Property Name="IsActive" Type="bit" Nullable="false" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'EnableDev.dbo.vwExt_ResourceWorkingScheduleHistory' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="vwExt_ResourceWorkingScheduleHistory">
+          <Key>
+            <PropertyRef Name="ID" />
+            <PropertyRef Name="ResourceID" />
+            <PropertyRef Name="ResourceHistoryID" />
+            <PropertyRef Name="WeekDayID" />
+            <PropertyRef Name="IsOverrideLocationSchedule" />
+            <PropertyRef Name="IsWorkingDay" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ResourceID" Type="int" Nullable="false" />
+          <Property Name="ResourceHistoryID" Type="int" Nullable="false" />
+          <Property Name="WeekDayID" Type="int" Nullable="false" />
+          <Property Name="IsOverrideLocationSchedule" Type="bit" Nullable="false" />
+          <Property Name="IsWorkingDay" Type="bit" Nullable="false" />
+          <Property Name="StartTime" Type="time" Precision="7" />
+          <Property Name="Duration" Type="decimal" Precision="4" Scale="2" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'EnableDev.dbo.vwExt_Skill' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="vwExt_Skill">
+          <Key>
+            <PropertyRef Name="ID" />
+            <PropertyRef Name="Name" />
+            <PropertyRef Name="IsActive" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="DisplayOrder" Type="int" />
+          <Property Name="IsActive" Type="bit" Nullable="false" />
+          <Property Name="ParentID" Type="int" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'EnableDev.dbo.vwExt_TimeCard' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="vwExt_TimeCard">
+          <Key>
+            <PropertyRef Name="ID" />
+            <PropertyRef Name="TimeCardResourceTaskTypeID" />
+            <PropertyRef Name="ResourceID" />
+            <PropertyRef Name="EngagementTaskTypeID" />
+            <PropertyRef Name="TimeCardStatusID" />
+            <PropertyRef Name="Date" />
+            <PropertyRef Name="Hours" />
+            <PropertyRef Name="IsValid" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="TimeCardResourceTaskTypeID" Type="int" Nullable="false" />
+          <Property Name="ResourceID" Type="int" Nullable="false" />
+          <Property Name="EngagementTaskTypeID" Type="int" Nullable="false" />
+          <Property Name="TimeCardStatusID" Type="int" Nullable="false" />
+          <Property Name="Date" Type="date" Nullable="false" />
+          <Property Name="Hours" Type="decimal" Precision="4" Scale="2" Nullable="false" />
+          <Property Name="IsValid" Type="bit" Nullable="false" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'EnableDev.dbo.vwExt_TimeCardResourceEngagements' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="vwExt_TimeCardResourceEngagements">
+          <Key>
+            <PropertyRef Name="ID" />
+            <PropertyRef Name="ResourceID" />
+            <PropertyRef Name="EngagementID" />
+            <PropertyRef Name="EngagementRoleID" />
+            <PropertyRef Name="IsVisible" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ResourceID" Type="int" Nullable="false" />
+          <Property Name="EngagementID" Type="int" Nullable="false" />
+          <Property Name="EngagementRoleID" Type="int" Nullable="false" />
+          <Property Name="IsVisible" Type="bit" Nullable="false" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'EnableDev.dbo.vwExt_TimeCardResourceTaskTypes' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="vwExt_TimeCardResourceTaskTypes">
+          <Key>
+            <PropertyRef Name="ID" />
+            <PropertyRef Name="TimeCardResourceEngagementsID" />
+            <PropertyRef Name="TaskTypeID" />
+            <PropertyRef Name="IsVisible" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="TimeCardResourceEngagementsID" Type="int" Nullable="false" />
+          <Property Name="TaskTypeID" Type="int" Nullable="false" />
+          <Property Name="IsVisible" Type="bit" Nullable="false" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'EnableDev.dbo.vwExt_TimeZoneMaster' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="vwExt_TimeZoneMaster">
+          <Key>
+            <PropertyRef Name="ID" />
+            <PropertyRef Name="Name" />
+          </Key>
+          <Property Name="ID" Type="int" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'EnableDev.dbo.vwExt_Title' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="vwExt_Title">
+          <Key>
+            <PropertyRef Name="ID" />
+            <PropertyRef Name="DepartmentID" />
+            <PropertyRef Name="Name" />
+            <PropertyRef Name="Initials" />
+            <PropertyRef Name="IsActive" />
+            <PropertyRef Name="LocationID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="DepartmentID" Type="int" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="Initials" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="IsActive" Type="bit" Nullable="false" />
+          <Property Name="LocationID" Type="int" Nullable="false" />
+          <Property Name="ResourceTypeID" Type="int" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'EnableDev.dbo.vwExt_TKT_Queue' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="vwExt_TKT_Queue">
+          <Key>
+            <PropertyRef Name="ID" />
+            <PropertyRef Name="Name" />
+            <PropertyRef Name="CategoryMasterID" />
+            <PropertyRef Name="QueueTypeMasterID" />
+            <PropertyRef Name="IsActive" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="CategoryMasterID" Type="int" Nullable="false" />
+          <Property Name="QueueTypeMasterID" Type="int" Nullable="false" />
+          <Property Name="Description" Type="nvarchar" MaxLength="200" />
+          <Property Name="IsDefaultTicketQueue" Type="bit" />
+          <Property Name="IsActive" Type="bit" Nullable="false" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'EnableDev.dbo.vwExt_TKT_QueueTypeMaster' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="vwExt_TKT_QueueTypeMaster">
+          <Key>
+            <PropertyRef Name="Id" />
+            <PropertyRef Name="Name" />
+            <PropertyRef Name="Code" />
+            <PropertyRef Name="IsActive" />
+          </Key>
+          <Property Name="Id" Type="int" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Description" Type="nvarchar" MaxLength="250" />
+          <Property Name="Code" Type="varchar" MaxLength="20" Nullable="false" />
+          <Property Name="IsActive" Type="bit" Nullable="false" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'EnableDev.dbo.vwExt_TKT_RosterCalenderInfo' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="vwExt_TKT_RosterCalenderInfo">
+          <Key>
+            <PropertyRef Name="ID" />
+            <PropertyRef Name="Date" />
+            <PropertyRef Name="QueueID" />
+            <PropertyRef Name="RosterTypeMasterID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Date" Type="date" Nullable="false" />
+          <Property Name="QueueID" Type="int" Nullable="false" />
+          <Property Name="RosterTypeMasterID" Type="int" Nullable="false" />
+          <Property Name="RosterShiftID" Type="int" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'EnableDev.dbo.vwExt_TKT_RosterCalenderUsers' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="vwExt_TKT_RosterCalenderUsers">
+          <Key>
+            <PropertyRef Name="ID" />
+            <PropertyRef Name="RosterCalenderInfoID" />
+            <PropertyRef Name="UserID" />
+            <PropertyRef Name="IsOnCall" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="RosterCalenderInfoID" Type="int" Nullable="false" />
+          <Property Name="UserID" Type="int" Nullable="false" />
+          <Property Name="IsOnCall" Type="bit" Nullable="false" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'EnableDev.dbo.vwExt_TKT_RosterResourceTypeMaster' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="vwExt_TKT_RosterResourceTypeMaster">
+          <Key>
+            <PropertyRef Name="ID" />
+            <PropertyRef Name="Name" />
+            <PropertyRef Name="Value" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="20" Nullable="false" />
+          <Property Name="Value" Type="nvarchar" MaxLength="20" Nullable="false" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'EnableDev.dbo.vwExt_TKT_RosterShift' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="vwExt_TKT_RosterShift">
+          <Key>
+            <PropertyRef Name="ID" />
+            <PropertyRef Name="Name" />
+            <PropertyRef Name="StartTime" />
+            <PropertyRef Name="EndTime" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="StartTime" Type="time" Precision="7" Nullable="false" />
+          <Property Name="EndTime" Type="time" Precision="7" Nullable="false" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'EnableDev.dbo.vwExt_TKT_RosterTypeMaster' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="vwExt_TKT_RosterTypeMaster">
+          <Key>
+            <PropertyRef Name="ID" />
+            <PropertyRef Name="Name" />
+            <PropertyRef Name="Value" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="20" Nullable="false" />
+          <Property Name="Value" Type="nvarchar" MaxLength="20" Nullable="false" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'EnableDev.dbo.vwExt_User' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="vwExt_User">
+          <Key>
+            <PropertyRef Name="ID" />
+            <PropertyRef Name="UserName" />
+            <PropertyRef Name="DisplayName" />
+            <PropertyRef Name="EmailAddress" />
+            <PropertyRef Name="FirstName" />
+            <PropertyRef Name="LastName" />
+            <PropertyRef Name="OverrideTimeZone" />
+            <PropertyRef Name="PrimaryRoleID" />
+            <PropertyRef Name="TimezoneID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="UserName" Type="nvarchar" MaxLength="30" Nullable="false" />
+          <Property Name="ActiveDate" Type="date" />
+          <Property Name="AddressLine1" Type="nvarchar" MaxLength="50" />
+          <Property Name="AddressLine2" Type="nvarchar" MaxLength="100" />
+          <Property Name="ApplicationAuthUserID" Type="nvarchar" MaxLength="38" />
+          <Property Name="ClientID" Type="int" />
+          <Property Name="DisplayName" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="EmailAddress" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="EmployeeID" Type="nvarchar" MaxLength="20" />
+          <Property Name="FirstName" Type="nvarchar" MaxLength="30" Nullable="false" />
+          <Property Name="InactiveDate" Type="date" />
+          <Property Name="Initials" Type="nvarchar" MaxLength="20" />
+          <Property Name="LastName" Type="nvarchar" MaxLength="30" Nullable="false" />
+          <Property Name="MiddleName" Type="nvarchar" MaxLength="30" />
+          <Property Name="MobilePhone" Type="nvarchar" MaxLength="20" />
+          <Property Name="OfficePhone" Type="nvarchar" MaxLength="15" />
+          <Property Name="OverrideTimeZone" Type="bit" Nullable="false" />
+          <Property Name="PrimaryRoleID" Type="int" Nullable="false" />
+          <Property Name="TimezoneID" Type="int" Nullable="false" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'EnableDev.dbo.vwExt_WeekDayMaster' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="vwExt_WeekDayMaster">
+          <Key>
+            <PropertyRef Name="Day" />
+          </Key>
+          <Property Name="Day" Type="nvarchar" MaxLength="20" Nullable="false" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'EnableDev.sys.database_firewall_rules' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="database_firewall_rules">
+          <Key>
+            <PropertyRef Name="id" />
+            <PropertyRef Name="name" />
+            <PropertyRef Name="start_ip_address" />
+            <PropertyRef Name="end_ip_address" />
+            <PropertyRef Name="create_date" />
+            <PropertyRef Name="modify_date" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="name" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="start_ip_address" Type="varchar" MaxLength="45" Nullable="false" />
+          <Property Name="end_ip_address" Type="varchar" MaxLength="45" Nullable="false" />
+          <Property Name="create_date" Type="datetime" Nullable="false" />
+          <Property Name="modify_date" Type="datetime" Nullable="false" />
+        </EntityType>
+        <EntityContainer Name="EnableDevModelStoreContainer">
+          <EntitySet Name="vwExt_Client" EntityType="Self.vwExt_Client" store:Type="Views" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [vwExt_Client].[ID] AS [ID], 
+    [vwExt_Client].[Name] AS [Name], 
+    [vwExt_Client].[Code] AS [Code], 
+    [vwExt_Client].[IsActive] AS [IsActive], 
+    [vwExt_Client].[AccountManagerID] AS [AccountManagerID]
+    FROM [dbo].[vwExt_Client] AS [vwExt_Client]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="vwExt_Company" EntityType="Self.vwExt_Company" store:Type="Views" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [vwExt_Company].[ID] AS [ID], 
+    [vwExt_Company].[Name] AS [Name], 
+    [vwExt_Company].[AddressLine1] AS [AddressLine1], 
+    [vwExt_Company].[AddressLine2] AS [AddressLine2], 
+    [vwExt_Company].[City] AS [City], 
+    [vwExt_Company].[State] AS [State], 
+    [vwExt_Company].[Zip] AS [Zip], 
+    [vwExt_Company].[Country] AS [Country], 
+    [vwExt_Company].[IsMaster] AS [IsMaster], 
+    [vwExt_Company].[CompanyID] AS [CompanyID], 
+    [vwExt_Company].[StartMonthOfFiscalYear] AS [StartMonthOfFiscalYear]
+    FROM [dbo].[vwExt_Company] AS [vwExt_Company]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="vwExt_Department" EntityType="Self.vwExt_Department" store:Type="Views" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [vwExt_Department].[ID] AS [ID], 
+    [vwExt_Department].[Name] AS [Name]
+    FROM [dbo].[vwExt_Department] AS [vwExt_Department]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="vwExt_Engagement" EntityType="Self.vwExt_Engagement" store:Type="Views" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [vwExt_Engagement].[ID] AS [ID], 
+    [vwExt_Engagement].[Name] AS [Name], 
+    [vwExt_Engagement].[ClientID] AS [ClientID], 
+    [vwExt_Engagement].[Code] AS [Code], 
+    [vwExt_Engagement].[EngagementTypeID] AS [EngagementTypeID], 
+    [vwExt_Engagement].[Stage] AS [Stage], 
+    [vwExt_Engagement].[LocationID] AS [LocationID], 
+    [vwExt_Engagement].[EngagementManagerID] AS [EngagementManagerID], 
+    [vwExt_Engagement].[PrimaryProjectManagerID] AS [PrimaryProjectManagerID], 
+    [vwExt_Engagement].[BeginDate] AS [BeginDate], 
+    [vwExt_Engagement].[EndDate] AS [EndDate], 
+    [vwExt_Engagement].[HoursPerDay] AS [HoursPerDay], 
+    [vwExt_Engagement].[Description] AS [Description], 
+    [vwExt_Engagement].[IsOpenForTime] AS [IsOpenForTime], 
+    [vwExt_Engagement].[TimeApprover] AS [TimeApprover], 
+    [vwExt_Engagement].[TimeApproverID] AS [TimeApproverID], 
+    [vwExt_Engagement].[IndustryManagerID] AS [IndustryManagerID], 
+    [vwExt_Engagement].[SalesAccountManagerID] AS [SalesAccountManagerID], 
+    [vwExt_Engagement].[GeneralManagerID] AS [GeneralManagerID]
+    FROM [dbo].[vwExt_Engagement] AS [vwExt_Engagement]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="vwExt_EngagementPermissions" EntityType="Self.vwExt_EngagementPermissions" store:Type="Views" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [vwExt_EngagementPermissions].[ID] AS [ID], 
+    [vwExt_EngagementPermissions].[EngagementTypeID] AS [EngagementTypeID], 
+    [vwExt_EngagementPermissions].[UserTypeID] AS [UserTypeID], 
+    [vwExt_EngagementPermissions].[Permission] AS [Permission]
+    FROM [dbo].[vwExt_EngagementPermissions] AS [vwExt_EngagementPermissions]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="vwExt_EngagementRoles" EntityType="Self.vwExt_EngagementRoles" store:Type="Views" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [vwExt_EngagementRoles].[ID] AS [ID], 
+    [vwExt_EngagementRoles].[EngagementID] AS [EngagementID], 
+    [vwExt_EngagementRoles].[ResourceHistoryID] AS [ResourceHistoryID], 
+    [vwExt_EngagementRoles].[Name] AS [Name], 
+    [vwExt_EngagementRoles].[StartDate] AS [StartDate], 
+    [vwExt_EngagementRoles].[EndDate] AS [EndDate], 
+    [vwExt_EngagementRoles].[IsDeleted] AS [IsDeleted], 
+    [vwExt_EngagementRoles].[IsBooked] AS [IsBooked], 
+    [vwExt_EngagementRoles].[Description] AS [Description], 
+    [vwExt_EngagementRoles].[OverridenTitleID] AS [OverridenTitleID]
+    FROM [dbo].[vwExt_EngagementRoles] AS [vwExt_EngagementRoles]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="vwExt_EngagementRolesSchedule" EntityType="Self.vwExt_EngagementRolesSchedule" store:Type="Views" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [vwExt_EngagementRolesSchedule].[ID] AS [ID], 
+    [vwExt_EngagementRolesSchedule].[EngagementRoleID] AS [EngagementRoleID], 
+    [vwExt_EngagementRolesSchedule].[FillModeID] AS [FillModeID], 
+    [vwExt_EngagementRolesSchedule].[Date] AS [Date], 
+    [vwExt_EngagementRolesSchedule].[ContractHours] AS [ContractHours], 
+    [vwExt_EngagementRolesSchedule].[BookedHours] AS [BookedHours], 
+    [vwExt_EngagementRolesSchedule].[RequestedHours] AS [RequestedHours], 
+    [vwExt_EngagementRolesSchedule].[IsOpenRequest] AS [IsOpenRequest]
+    FROM [dbo].[vwExt_EngagementRolesSchedule] AS [vwExt_EngagementRolesSchedule]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="vwExt_EngagementTaskTypes" EntityType="Self.vwExt_EngagementTaskTypes" store:Type="Views" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [vwExt_EngagementTaskTypes].[ID] AS [ID], 
+    [vwExt_EngagementTaskTypes].[EngagementID] AS [EngagementID], 
+    [vwExt_EngagementTaskTypes].[TaskType] AS [TaskType], 
+    [vwExt_EngagementTaskTypes].[StandardTaskTypeID] AS [StandardTaskTypeID], 
+    [vwExt_EngagementTaskTypes].[IsDescriptionRequired] AS [IsDescriptionRequired], 
+    [vwExt_EngagementTaskTypes].[IsActive] AS [IsActive], 
+    [vwExt_EngagementTaskTypes].[DisplayOrder] AS [DisplayOrder], 
+    [vwExt_EngagementTaskTypes].[ParentID] AS [ParentID], 
+    [vwExt_EngagementTaskTypes].[IsTaskType] AS [IsTaskType], 
+    [vwExt_EngagementTaskTypes].[IsTask] AS [IsTask], 
+    [vwExt_EngagementTaskTypes].[TaskTypeID] AS [TaskTypeID], 
+    [vwExt_EngagementTaskTypes].[CanLinkedWithTickets] AS [CanLinkedWithTickets], 
+    [vwExt_EngagementTaskTypes].[StartDate] AS [StartDate], 
+    [vwExt_EngagementTaskTypes].[EndDate] AS [EndDate], 
+    [vwExt_EngagementTaskTypes].[PlannedEfforts] AS [PlannedEfforts], 
+    [vwExt_EngagementTaskTypes].[Size] AS [Size]
+    FROM [dbo].[vwExt_EngagementTaskTypes] AS [vwExt_EngagementTaskTypes]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="vwExt_EngagementType" EntityType="Self.vwExt_EngagementType" store:Type="Views" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [vwExt_EngagementType].[ID] AS [ID], 
+    [vwExt_EngagementType].[Name] AS [Name], 
+    [vwExt_EngagementType].[IsBillable] AS [IsBillable], 
+    [vwExt_EngagementType].[IsActive] AS [IsActive]
+    FROM [dbo].[vwExt_EngagementType] AS [vwExt_EngagementType]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="vwExt_Location" EntityType="Self.vwExt_Location" store:Type="Views" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [vwExt_Location].[ID] AS [ID], 
+    [vwExt_Location].[Name] AS [Name], 
+    [vwExt_Location].[IsActive] AS [IsActive], 
+    [vwExt_Location].[HoursPerDay] AS [HoursPerDay], 
+    [vwExt_Location].[StandardHolidaysCount] AS [StandardHolidaysCount], 
+    [vwExt_Location].[StandardVacationCount] AS [StandardVacationCount]
+    FROM [dbo].[vwExt_Location] AS [vwExt_Location]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="vwExt_LocationHoliday" EntityType="Self.vwExt_LocationHoliday" store:Type="Views" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [vwExt_LocationHoliday].[ID] AS [ID], 
+    [vwExt_LocationHoliday].[LocationID] AS [LocationID], 
+    [vwExt_LocationHoliday].[Date] AS [Date], 
+    [vwExt_LocationHoliday].[Name] AS [Name], 
+    [vwExt_LocationHoliday].[TimeOff] AS [TimeOff]
+    FROM [dbo].[vwExt_LocationHoliday] AS [vwExt_LocationHoliday]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="vwExt_LocationWorkingSchedule" EntityType="Self.vwExt_LocationWorkingSchedule" store:Type="Views" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [vwExt_LocationWorkingSchedule].[ID] AS [ID], 
+    [vwExt_LocationWorkingSchedule].[LocationID] AS [LocationID], 
+    [vwExt_LocationWorkingSchedule].[WeekDayID] AS [WeekDayID], 
+    [vwExt_LocationWorkingSchedule].[IsWorkingDay] AS [IsWorkingDay], 
+    [vwExt_LocationWorkingSchedule].[StartTime] AS [StartTime], 
+    [vwExt_LocationWorkingSchedule].[Duration] AS [Duration]
+    FROM [dbo].[vwExt_LocationWorkingSchedule] AS [vwExt_LocationWorkingSchedule]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="vwExt_Resource" EntityType="Self.vwExt_Resource" store:Type="Views" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [vwExt_Resource].[ID] AS [ID], 
+    [vwExt_Resource].[UserID] AS [UserID], 
+    [vwExt_Resource].[IsTimecardsRequireApproval] AS [IsTimecardsRequireApproval], 
+    [vwExt_Resource].[DirectManager1ID] AS [DirectManager1ID], 
+    [vwExt_Resource].[CanDirectManager1ApproveTime] AS [CanDirectManager1ApproveTime], 
+    [vwExt_Resource].[CanDirectManager1ApproveSkills] AS [CanDirectManager1ApproveSkills], 
+    [vwExt_Resource].[DirectManager2ID] AS [DirectManager2ID], 
+    [vwExt_Resource].[CanDirectManager2ApproveTime] AS [CanDirectManager2ApproveTime], 
+    [vwExt_Resource].[CanDirectManager2ApproveSkills] AS [CanDirectManager2ApproveSkills], 
+    [vwExt_Resource].[IsShared] AS [IsShared], 
+    [vwExt_Resource].[SkillsLastUpdatedOn] AS [SkillsLastUpdatedOn], 
+    [vwExt_Resource].[TerminationDate] AS [TerminationDate], 
+    [vwExt_Resource].[RehireDate] AS [RehireDate]
+    FROM [dbo].[vwExt_Resource] AS [vwExt_Resource]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="vwExt_ResourceHistory" EntityType="Self.vwExt_ResourceHistory" store:Type="Views" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [vwExt_ResourceHistory].[ID] AS [ID], 
+    [vwExt_ResourceHistory].[ResourceID] AS [ResourceID], 
+    [vwExt_ResourceHistory].[EffectiveDate] AS [EffectiveDate], 
+    [vwExt_ResourceHistory].[ResourceTypeID] AS [ResourceTypeID], 
+    [vwExt_ResourceHistory].[LocationID] AS [LocationID], 
+    [vwExt_ResourceHistory].[TitleID] AS [TitleID], 
+    [vwExt_ResourceHistory].[IsBillable] AS [IsBillable], 
+    [vwExt_ResourceHistory].[IsTemporary] AS [IsTemporary], 
+    [vwExt_ResourceHistory].[IsActive] AS [IsActive], 
+    [vwExt_ResourceHistory].[CanApproveOwnTime] AS [CanApproveOwnTime], 
+    [vwExt_ResourceHistory].[IsTrackingMissingTime] AS [IsTrackingMissingTime], 
+    [vwExt_ResourceHistory].[IsSendingMissingTimeEmail] AS [IsSendingMissingTimeEmail], 
+    [vwExt_ResourceHistory].[IsOvertimeAllowed] AS [IsOvertimeAllowed], 
+    [vwExt_ResourceHistory].[LeavePolicyID] AS [LeavePolicyID]
+    FROM [dbo].[vwExt_ResourceHistory] AS [vwExt_ResourceHistory]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="vwExt_ResourceSkillLevel" EntityType="Self.vwExt_ResourceSkillLevel" store:Type="Views" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [vwExt_ResourceSkillLevel].[ID] AS [ID], 
+    [vwExt_ResourceSkillLevel].[ResourceID] AS [ResourceID], 
+    [vwExt_ResourceSkillLevel].[SkillID] AS [SkillID], 
+    [vwExt_ResourceSkillLevel].[SkillLevel] AS [SkillLevel]
+    FROM [dbo].[vwExt_ResourceSkillLevel] AS [vwExt_ResourceSkillLevel]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="vwExt_ResourceType" EntityType="Self.vwExt_ResourceType" store:Type="Views" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [vwExt_ResourceType].[ID] AS [ID], 
+    [vwExt_ResourceType].[Name] AS [Name], 
+    [vwExt_ResourceType].[Code] AS [Code], 
+    [vwExt_ResourceType].[IsActive] AS [IsActive]
+    FROM [dbo].[vwExt_ResourceType] AS [vwExt_ResourceType]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="vwExt_ResourceWorkingScheduleHistory" EntityType="Self.vwExt_ResourceWorkingScheduleHistory" store:Type="Views" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [vwExt_ResourceWorkingScheduleHistory].[ID] AS [ID], 
+    [vwExt_ResourceWorkingScheduleHistory].[ResourceID] AS [ResourceID], 
+    [vwExt_ResourceWorkingScheduleHistory].[ResourceHistoryID] AS [ResourceHistoryID], 
+    [vwExt_ResourceWorkingScheduleHistory].[WeekDayID] AS [WeekDayID], 
+    [vwExt_ResourceWorkingScheduleHistory].[IsOverrideLocationSchedule] AS [IsOverrideLocationSchedule], 
+    [vwExt_ResourceWorkingScheduleHistory].[IsWorkingDay] AS [IsWorkingDay], 
+    [vwExt_ResourceWorkingScheduleHistory].[StartTime] AS [StartTime], 
+    [vwExt_ResourceWorkingScheduleHistory].[Duration] AS [Duration]
+    FROM [dbo].[vwExt_ResourceWorkingScheduleHistory] AS [vwExt_ResourceWorkingScheduleHistory]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="vwExt_Skill" EntityType="Self.vwExt_Skill" store:Type="Views" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [vwExt_Skill].[ID] AS [ID], 
+    [vwExt_Skill].[Name] AS [Name], 
+    [vwExt_Skill].[DisplayOrder] AS [DisplayOrder], 
+    [vwExt_Skill].[IsActive] AS [IsActive], 
+    [vwExt_Skill].[ParentID] AS [ParentID]
+    FROM [dbo].[vwExt_Skill] AS [vwExt_Skill]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="vwExt_TimeCard" EntityType="Self.vwExt_TimeCard" store:Type="Views" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [vwExt_TimeCard].[ID] AS [ID], 
+    [vwExt_TimeCard].[TimeCardResourceTaskTypeID] AS [TimeCardResourceTaskTypeID], 
+    [vwExt_TimeCard].[ResourceID] AS [ResourceID], 
+    [vwExt_TimeCard].[EngagementTaskTypeID] AS [EngagementTaskTypeID], 
+    [vwExt_TimeCard].[TimeCardStatusID] AS [TimeCardStatusID], 
+    [vwExt_TimeCard].[Date] AS [Date], 
+    [vwExt_TimeCard].[Hours] AS [Hours], 
+    [vwExt_TimeCard].[IsValid] AS [IsValid]
+    FROM [dbo].[vwExt_TimeCard] AS [vwExt_TimeCard]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="vwExt_TimeCardResourceEngagements" EntityType="Self.vwExt_TimeCardResourceEngagements" store:Type="Views" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [vwExt_TimeCardResourceEngagements].[ID] AS [ID], 
+    [vwExt_TimeCardResourceEngagements].[ResourceID] AS [ResourceID], 
+    [vwExt_TimeCardResourceEngagements].[EngagementID] AS [EngagementID], 
+    [vwExt_TimeCardResourceEngagements].[EngagementRoleID] AS [EngagementRoleID], 
+    [vwExt_TimeCardResourceEngagements].[IsVisible] AS [IsVisible]
+    FROM [dbo].[vwExt_TimeCardResourceEngagements] AS [vwExt_TimeCardResourceEngagements]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="vwExt_TimeCardResourceTaskTypes" EntityType="Self.vwExt_TimeCardResourceTaskTypes" store:Type="Views" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [vwExt_TimeCardResourceTaskTypes].[ID] AS [ID], 
+    [vwExt_TimeCardResourceTaskTypes].[TimeCardResourceEngagementsID] AS [TimeCardResourceEngagementsID], 
+    [vwExt_TimeCardResourceTaskTypes].[TaskTypeID] AS [TaskTypeID], 
+    [vwExt_TimeCardResourceTaskTypes].[IsVisible] AS [IsVisible]
+    FROM [dbo].[vwExt_TimeCardResourceTaskTypes] AS [vwExt_TimeCardResourceTaskTypes]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="vwExt_TimeZoneMaster" EntityType="Self.vwExt_TimeZoneMaster" store:Type="Views" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [vwExt_TimeZoneMaster].[ID] AS [ID], 
+    [vwExt_TimeZoneMaster].[Name] AS [Name]
+    FROM [dbo].[vwExt_TimeZoneMaster] AS [vwExt_TimeZoneMaster]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="vwExt_Title" EntityType="Self.vwExt_Title" store:Type="Views" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [vwExt_Title].[ID] AS [ID], 
+    [vwExt_Title].[DepartmentID] AS [DepartmentID], 
+    [vwExt_Title].[Name] AS [Name], 
+    [vwExt_Title].[Initials] AS [Initials], 
+    [vwExt_Title].[IsActive] AS [IsActive], 
+    [vwExt_Title].[LocationID] AS [LocationID], 
+    [vwExt_Title].[ResourceTypeID] AS [ResourceTypeID]
+    FROM [dbo].[vwExt_Title] AS [vwExt_Title]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="vwExt_TKT_Queue" EntityType="Self.vwExt_TKT_Queue" store:Type="Views" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [vwExt_TKT_Queue].[ID] AS [ID], 
+    [vwExt_TKT_Queue].[Name] AS [Name], 
+    [vwExt_TKT_Queue].[CategoryMasterID] AS [CategoryMasterID], 
+    [vwExt_TKT_Queue].[QueueTypeMasterID] AS [QueueTypeMasterID], 
+    [vwExt_TKT_Queue].[Description] AS [Description], 
+    [vwExt_TKT_Queue].[IsDefaultTicketQueue] AS [IsDefaultTicketQueue], 
+    [vwExt_TKT_Queue].[IsActive] AS [IsActive]
+    FROM [dbo].[vwExt_TKT_Queue] AS [vwExt_TKT_Queue]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="vwExt_TKT_QueueTypeMaster" EntityType="Self.vwExt_TKT_QueueTypeMaster" store:Type="Views" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [vwExt_TKT_QueueTypeMaster].[Id] AS [Id], 
+    [vwExt_TKT_QueueTypeMaster].[Name] AS [Name], 
+    [vwExt_TKT_QueueTypeMaster].[Description] AS [Description], 
+    [vwExt_TKT_QueueTypeMaster].[Code] AS [Code], 
+    [vwExt_TKT_QueueTypeMaster].[IsActive] AS [IsActive]
+    FROM [dbo].[vwExt_TKT_QueueTypeMaster] AS [vwExt_TKT_QueueTypeMaster]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="vwExt_TKT_RosterCalenderInfo" EntityType="Self.vwExt_TKT_RosterCalenderInfo" store:Type="Views" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [vwExt_TKT_RosterCalenderInfo].[ID] AS [ID], 
+    [vwExt_TKT_RosterCalenderInfo].[Date] AS [Date], 
+    [vwExt_TKT_RosterCalenderInfo].[QueueID] AS [QueueID], 
+    [vwExt_TKT_RosterCalenderInfo].[RosterTypeMasterID] AS [RosterTypeMasterID], 
+    [vwExt_TKT_RosterCalenderInfo].[RosterShiftID] AS [RosterShiftID]
+    FROM [dbo].[vwExt_TKT_RosterCalenderInfo] AS [vwExt_TKT_RosterCalenderInfo]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="vwExt_TKT_RosterCalenderUsers" EntityType="Self.vwExt_TKT_RosterCalenderUsers" store:Type="Views" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [vwExt_TKT_RosterCalenderUsers].[ID] AS [ID], 
+    [vwExt_TKT_RosterCalenderUsers].[RosterCalenderInfoID] AS [RosterCalenderInfoID], 
+    [vwExt_TKT_RosterCalenderUsers].[UserID] AS [UserID], 
+    [vwExt_TKT_RosterCalenderUsers].[IsOnCall] AS [IsOnCall]
+    FROM [dbo].[vwExt_TKT_RosterCalenderUsers] AS [vwExt_TKT_RosterCalenderUsers]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="vwExt_TKT_RosterResourceTypeMaster" EntityType="Self.vwExt_TKT_RosterResourceTypeMaster" store:Type="Views" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [vwExt_TKT_RosterResourceTypeMaster].[ID] AS [ID], 
+    [vwExt_TKT_RosterResourceTypeMaster].[Name] AS [Name], 
+    [vwExt_TKT_RosterResourceTypeMaster].[Value] AS [Value]
+    FROM [dbo].[vwExt_TKT_RosterResourceTypeMaster] AS [vwExt_TKT_RosterResourceTypeMaster]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="vwExt_TKT_RosterShift" EntityType="Self.vwExt_TKT_RosterShift" store:Type="Views" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [vwExt_TKT_RosterShift].[ID] AS [ID], 
+    [vwExt_TKT_RosterShift].[Name] AS [Name], 
+    [vwExt_TKT_RosterShift].[StartTime] AS [StartTime], 
+    [vwExt_TKT_RosterShift].[EndTime] AS [EndTime]
+    FROM [dbo].[vwExt_TKT_RosterShift] AS [vwExt_TKT_RosterShift]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="vwExt_TKT_RosterTypeMaster" EntityType="Self.vwExt_TKT_RosterTypeMaster" store:Type="Views" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [vwExt_TKT_RosterTypeMaster].[ID] AS [ID], 
+    [vwExt_TKT_RosterTypeMaster].[Name] AS [Name], 
+    [vwExt_TKT_RosterTypeMaster].[Value] AS [Value]
+    FROM [dbo].[vwExt_TKT_RosterTypeMaster] AS [vwExt_TKT_RosterTypeMaster]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="vwExt_User" EntityType="Self.vwExt_User" store:Type="Views" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [vwExt_User].[ID] AS [ID], 
+    [vwExt_User].[UserName] AS [UserName], 
+    [vwExt_User].[ActiveDate] AS [ActiveDate], 
+    [vwExt_User].[AddressLine1] AS [AddressLine1], 
+    [vwExt_User].[AddressLine2] AS [AddressLine2], 
+    [vwExt_User].[ApplicationAuthUserID] AS [ApplicationAuthUserID], 
+    [vwExt_User].[ClientID] AS [ClientID], 
+    [vwExt_User].[DisplayName] AS [DisplayName], 
+    [vwExt_User].[EmailAddress] AS [EmailAddress], 
+    [vwExt_User].[EmployeeID] AS [EmployeeID], 
+    [vwExt_User].[FirstName] AS [FirstName], 
+    [vwExt_User].[InactiveDate] AS [InactiveDate], 
+    [vwExt_User].[Initials] AS [Initials], 
+    [vwExt_User].[LastName] AS [LastName], 
+    [vwExt_User].[MiddleName] AS [MiddleName], 
+    [vwExt_User].[MobilePhone] AS [MobilePhone], 
+    [vwExt_User].[OfficePhone] AS [OfficePhone], 
+    [vwExt_User].[OverrideTimeZone] AS [OverrideTimeZone], 
+    [vwExt_User].[PrimaryRoleID] AS [PrimaryRoleID], 
+    [vwExt_User].[TimezoneID] AS [TimezoneID]
+    FROM [dbo].[vwExt_User] AS [vwExt_User]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="vwExt_WeekDayMaster" EntityType="Self.vwExt_WeekDayMaster" store:Type="Views" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [vwExt_WeekDayMaster].[Day] AS [Day]
+    FROM [dbo].[vwExt_WeekDayMaster] AS [vwExt_WeekDayMaster]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="database_firewall_rules" EntityType="Self.database_firewall_rules" store:Type="Views" store:Schema="sys">
+            <DefiningQuery>SELECT 
+    [database_firewall_rules].[id] AS [id], 
+    [database_firewall_rules].[name] AS [name], 
+    [database_firewall_rules].[start_ip_address] AS [start_ip_address], 
+    [database_firewall_rules].[end_ip_address] AS [end_ip_address], 
+    [database_firewall_rules].[create_date] AS [create_date], 
+    [database_firewall_rules].[modify_date] AS [modify_date]
+    FROM [sys].[database_firewall_rules] AS [database_firewall_rules]</DefiningQuery>
+          </EntitySet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="EnableDevModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="vwExt_Client">
+          <Key>
+            <PropertyRef Name="ID" />
+            <PropertyRef Name="Name" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="IsActive" Type="Boolean" />
+          <Property Name="AccountManagerID" Type="Int32" />
+          <Property Name="Code" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="vwExt_Company">
+          <Key>
+            <PropertyRef Name="ID" />
+            <PropertyRef Name="Name" />
+            <PropertyRef Name="IsMaster" />
+            <PropertyRef Name="StartMonthOfFiscalYear" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="AddressLine1" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="AddressLine2" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="City" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="State" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="Zip" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="Country" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="IsMaster" Type="Boolean" Nullable="false" />
+          <Property Name="CompanyID" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="StartMonthOfFiscalYear" Type="Int32" Nullable="false" />
+        </EntityType>
+        <EntityType Name="vwExt_Department">
+          <Key>
+            <PropertyRef Name="ID" />
+            <PropertyRef Name="Name" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+        </EntityType>
+        <EntityType Name="vwExt_Engagement">
+          <Key>
+            <PropertyRef Name="ID" />
+            <PropertyRef Name="Name" />
+            <PropertyRef Name="ClientID" />
+            <PropertyRef Name="Code" />
+            <PropertyRef Name="EngagementTypeID" />
+            <PropertyRef Name="Stage" />
+            <PropertyRef Name="LocationID" />
+            <PropertyRef Name="EngagementManagerID" />
+            <PropertyRef Name="PrimaryProjectManagerID" />
+            <PropertyRef Name="BeginDate" />
+            <PropertyRef Name="EndDate" />
+            <PropertyRef Name="IsOpenForTime" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="200" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="ClientID" Type="Int32" Nullable="false" />
+          <Property Name="Code" Type="String" MaxLength="30" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="EngagementTypeID" Type="Int32" Nullable="false" />
+          <Property Name="Stage" Type="String" MaxLength="10" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="LocationID" Type="Int32" Nullable="false" />
+          <Property Name="EngagementManagerID" Type="Int32" Nullable="false" />
+          <Property Name="PrimaryProjectManagerID" Type="Int32" Nullable="false" />
+          <Property Name="BeginDate" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="EndDate" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="HoursPerDay" Type="Decimal" Precision="4" Scale="2" />
+          <Property Name="Description" Type="String" MaxLength="400" FixedLength="false" Unicode="true" />
+          <Property Name="IsOpenForTime" Type="Boolean" Nullable="false" />
+          <Property Name="TimeApprover" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="TimeApproverID" Type="Int32" />
+          <Property Name="IndustryManagerID" Type="Int32" />
+          <Property Name="SalesAccountManagerID" Type="Int32" />
+          <Property Name="GeneralManagerID" Type="Int32" />
+        </EntityType>
+        <EntityType Name="vwExt_EngagementPermissions">
+          <Key>
+            <PropertyRef Name="ID" />
+            <PropertyRef Name="EngagementTypeID" />
+            <PropertyRef Name="UserTypeID" />
+            <PropertyRef Name="Permission" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="EngagementTypeID" Type="Int32" Nullable="false" />
+          <Property Name="UserTypeID" Type="Int32" Nullable="false" />
+          <Property Name="Permission" Type="String" MaxLength="20" FixedLength="false" Unicode="true" Nullable="false" />
+        </EntityType>
+        <EntityType Name="vwExt_EngagementRoles">
+          <Key>
+            <PropertyRef Name="ID" />
+            <PropertyRef Name="EngagementID" />
+            <PropertyRef Name="Name" />
+            <PropertyRef Name="IsDeleted" />
+            <PropertyRef Name="IsBooked" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="EngagementID" Type="Int32" Nullable="false" />
+          <Property Name="ResourceHistoryID" Type="Int32" />
+          <Property Name="Name" Type="String" MaxLength="80" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="StartDate" Type="DateTime" Precision="0" />
+          <Property Name="EndDate" Type="DateTime" Precision="0" />
+          <Property Name="IsDeleted" Type="Boolean" Nullable="false" />
+          <Property Name="IsBooked" Type="Boolean" Nullable="false" />
+          <Property Name="Description" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="OverridenTitleID" Type="Int32" />
+        </EntityType>
+        <EntityType Name="vwExt_EngagementRolesSchedule">
+          <Key>
+            <PropertyRef Name="ID" />
+            <PropertyRef Name="EngagementRoleID" />
+            <PropertyRef Name="FillModeID" />
+            <PropertyRef Name="Date" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="EngagementRoleID" Type="Int32" Nullable="false" />
+          <Property Name="FillModeID" Type="Int32" Nullable="false" />
+          <Property Name="Date" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="ContractHours" Type="Decimal" Precision="4" Scale="2" />
+          <Property Name="BookedHours" Type="Decimal" Precision="4" Scale="2" />
+          <Property Name="RequestedHours" Type="Decimal" Precision="4" Scale="2" />
+          <Property Name="IsOpenRequest" Type="Boolean" />
+        </EntityType>
+        <EntityType Name="vwExt_EngagementTaskTypes">
+          <Key>
+            <PropertyRef Name="ID" />
+            <PropertyRef Name="EngagementID" />
+            <PropertyRef Name="TaskType" />
+            <PropertyRef Name="StandardTaskTypeID" />
+            <PropertyRef Name="IsDescriptionRequired" />
+            <PropertyRef Name="IsActive" />
+            <PropertyRef Name="DisplayOrder" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="EngagementID" Type="Int32" Nullable="false" />
+          <Property Name="TaskType" Type="String" MaxLength="500" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="StandardTaskTypeID" Type="Int32" Nullable="false" />
+          <Property Name="IsDescriptionRequired" Type="Boolean" Nullable="false" />
+          <Property Name="IsActive" Type="Boolean" Nullable="false" />
+          <Property Name="DisplayOrder" Type="Int32" Nullable="false" />
+          <Property Name="ParentID" Type="Int32" />
+          <Property Name="IsTaskType" Type="Int32" />
+          <Property Name="IsTask" Type="Int32" />
+          <Property Name="TaskTypeID" Type="Int32" />
+          <Property Name="CanLinkedWithTickets" Type="Boolean" />
+          <Property Name="StartDate" Type="DateTime" Precision="3" />
+          <Property Name="EndDate" Type="DateTime" Precision="3" />
+          <Property Name="PlannedEfforts" Type="Decimal" Precision="10" Scale="2" />
+          <Property Name="Size" Type="Decimal" Precision="10" Scale="2" />
+        </EntityType>
+        <EntityType Name="vwExt_EngagementType">
+          <Key>
+            <PropertyRef Name="ID" />
+            <PropertyRef Name="Name" />
+            <PropertyRef Name="IsBillable" />
+            <PropertyRef Name="IsActive" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="IsBillable" Type="Boolean" Nullable="false" />
+          <Property Name="IsActive" Type="Boolean" Nullable="false" />
+        </EntityType>
+        <EntityType Name="vwExt_Location">
+          <Key>
+            <PropertyRef Name="ID" />
+            <PropertyRef Name="Name" />
+            <PropertyRef Name="IsActive" />
+            <PropertyRef Name="HoursPerDay" />
+            <PropertyRef Name="StandardHolidaysCount" />
+            <PropertyRef Name="StandardVacationCount" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="IsActive" Type="Boolean" Nullable="false" />
+          <Property Name="HoursPerDay" Type="Decimal" Precision="4" Scale="2" Nullable="false" />
+          <Property Name="StandardHolidaysCount" Type="Int32" Nullable="false" />
+          <Property Name="StandardVacationCount" Type="Int32" Nullable="false" />
+        </EntityType>
+        <EntityType Name="vwExt_LocationHoliday">
+          <Key>
+            <PropertyRef Name="ID" />
+            <PropertyRef Name="LocationID" />
+            <PropertyRef Name="Date" />
+            <PropertyRef Name="Name" />
+            <PropertyRef Name="TimeOff" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="LocationID" Type="Int32" Nullable="false" />
+          <Property Name="Date" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="Name" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="TimeOff" Type="Decimal" Precision="4" Scale="2" Nullable="false" />
+        </EntityType>
+        <EntityType Name="vwExt_LocationWorkingSchedule">
+          <Key>
+            <PropertyRef Name="ID" />
+            <PropertyRef Name="LocationID" />
+            <PropertyRef Name="WeekDayID" />
+            <PropertyRef Name="IsWorkingDay" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="LocationID" Type="Int32" Nullable="false" />
+          <Property Name="WeekDayID" Type="Int32" Nullable="false" />
+          <Property Name="IsWorkingDay" Type="Boolean" Nullable="false" />
+          <Property Name="StartTime" Type="Time" Precision="1" />
+          <Property Name="Duration" Type="Decimal" Precision="4" Scale="2" />
+        </EntityType>
+        <EntityType Name="vwExt_Resource">
+          <Key>
+            <PropertyRef Name="ID" />
+            <PropertyRef Name="UserID" />
+            <PropertyRef Name="IsTimecardsRequireApproval" />
+            <PropertyRef Name="CanDirectManager1ApproveTime" />
+            <PropertyRef Name="CanDirectManager1ApproveSkills" />
+            <PropertyRef Name="CanDirectManager2ApproveTime" />
+            <PropertyRef Name="CanDirectManager2ApproveSkills" />
+            <PropertyRef Name="IsShared" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="UserID" Type="Int32" Nullable="false" />
+          <Property Name="IsTimecardsRequireApproval" Type="Boolean" Nullable="false" />
+          <Property Name="DirectManager1ID" Type="Int32" />
+          <Property Name="CanDirectManager1ApproveTime" Type="Boolean" Nullable="false" />
+          <Property Name="CanDirectManager1ApproveSkills" Type="Boolean" Nullable="false" />
+          <Property Name="DirectManager2ID" Type="Int32" />
+          <Property Name="CanDirectManager2ApproveTime" Type="Boolean" Nullable="false" />
+          <Property Name="CanDirectManager2ApproveSkills" Type="Boolean" Nullable="false" />
+          <Property Name="IsShared" Type="Boolean" Nullable="false" />
+          <Property Name="SkillsLastUpdatedOn" Type="DateTime" Precision="0" />
+          <Property Name="TerminationDate" Type="DateTime" Precision="0" />
+          <Property Name="RehireDate" Type="DateTime" Precision="0" />
+        </EntityType>
+        <EntityType Name="vwExt_ResourceHistory">
+          <Key>
+            <PropertyRef Name="ID" />
+            <PropertyRef Name="ResourceID" />
+            <PropertyRef Name="EffectiveDate" />
+            <PropertyRef Name="ResourceTypeID" />
+            <PropertyRef Name="LocationID" />
+            <PropertyRef Name="TitleID" />
+            <PropertyRef Name="IsBillable" />
+            <PropertyRef Name="IsTemporary" />
+            <PropertyRef Name="IsActive" />
+            <PropertyRef Name="CanApproveOwnTime" />
+            <PropertyRef Name="IsTrackingMissingTime" />
+            <PropertyRef Name="IsSendingMissingTimeEmail" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ResourceID" Type="Int32" Nullable="false" />
+          <Property Name="EffectiveDate" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="ResourceTypeID" Type="Int32" Nullable="false" />
+          <Property Name="LocationID" Type="Int32" Nullable="false" />
+          <Property Name="TitleID" Type="Int32" Nullable="false" />
+          <Property Name="IsBillable" Type="Boolean" Nullable="false" />
+          <Property Name="IsTemporary" Type="Boolean" Nullable="false" />
+          <Property Name="IsActive" Type="Boolean" Nullable="false" />
+          <Property Name="CanApproveOwnTime" Type="Boolean" Nullable="false" />
+          <Property Name="IsTrackingMissingTime" Type="Boolean" Nullable="false" />
+          <Property Name="IsSendingMissingTimeEmail" Type="Boolean" Nullable="false" />
+          <Property Name="IsOvertimeAllowed" Type="Boolean" />
+          <Property Name="LeavePolicyID" Type="Int32" />
+        </EntityType>
+        <EntityType Name="vwExt_ResourceSkillLevel">
+          <Key>
+            <PropertyRef Name="ID" />
+            <PropertyRef Name="ResourceID" />
+            <PropertyRef Name="SkillID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ResourceID" Type="Int32" Nullable="false" />
+          <Property Name="SkillID" Type="Int32" Nullable="false" />
+          <Property Name="SkillLevel" Type="Byte" />
+        </EntityType>
+        <EntityType Name="vwExt_ResourceWorkingScheduleHistory">
+          <Key>
+            <PropertyRef Name="ID" />
+            <PropertyRef Name="ResourceID" />
+            <PropertyRef Name="ResourceHistoryID" />
+            <PropertyRef Name="WeekDayID" />
+            <PropertyRef Name="IsOverrideLocationSchedule" />
+            <PropertyRef Name="IsWorkingDay" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ResourceID" Type="Int32" Nullable="false" />
+          <Property Name="ResourceHistoryID" Type="Int32" Nullable="false" />
+          <Property Name="WeekDayID" Type="Int32" Nullable="false" />
+          <Property Name="IsOverrideLocationSchedule" Type="Boolean" Nullable="false" />
+          <Property Name="IsWorkingDay" Type="Boolean" Nullable="false" />
+          <Property Name="StartTime" Type="Time" Precision="7" />
+          <Property Name="Duration" Type="Decimal" Precision="4" Scale="2" />
+        </EntityType>
+        <EntityType Name="vwExt_Skill">
+          <Key>
+            <PropertyRef Name="ID" />
+            <PropertyRef Name="Name" />
+            <PropertyRef Name="IsActive" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="DisplayOrder" Type="Int32" />
+          <Property Name="IsActive" Type="Boolean" Nullable="false" />
+          <Property Name="ParentID" Type="Int32" />
+        </EntityType>
+        <EntityType Name="vwExt_TimeCard">
+          <Key>
+            <PropertyRef Name="ID" />
+            <PropertyRef Name="TimeCardResourceTaskTypeID" />
+            <PropertyRef Name="ResourceID" />
+            <PropertyRef Name="EngagementTaskTypeID" />
+            <PropertyRef Name="TimeCardStatusID" />
+            <PropertyRef Name="Date" />
+            <PropertyRef Name="Hours" />
+            <PropertyRef Name="IsValid" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="TimeCardResourceTaskTypeID" Type="Int32" Nullable="false" />
+          <Property Name="ResourceID" Type="Int32" Nullable="false" />
+          <Property Name="EngagementTaskTypeID" Type="Int32" Nullable="false" />
+          <Property Name="TimeCardStatusID" Type="Int32" Nullable="false" />
+          <Property Name="Date" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="Hours" Type="Decimal" Precision="4" Scale="2" Nullable="false" />
+          <Property Name="IsValid" Type="Boolean" Nullable="false" />
+        </EntityType>
+        <EntityType Name="vwExt_TimeCardResourceEngagements">
+          <Key>
+            <PropertyRef Name="ID" />
+            <PropertyRef Name="ResourceID" />
+            <PropertyRef Name="EngagementID" />
+            <PropertyRef Name="EngagementRoleID" />
+            <PropertyRef Name="IsVisible" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ResourceID" Type="Int32" Nullable="false" />
+          <Property Name="EngagementID" Type="Int32" Nullable="false" />
+          <Property Name="EngagementRoleID" Type="Int32" Nullable="false" />
+          <Property Name="IsVisible" Type="Boolean" Nullable="false" />
+        </EntityType>
+        <EntityType Name="vwExt_TimeCardResourceTaskTypes">
+          <Key>
+            <PropertyRef Name="ID" />
+            <PropertyRef Name="TimeCardResourceEngagementsID" />
+            <PropertyRef Name="TaskTypeID" />
+            <PropertyRef Name="IsVisible" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="TimeCardResourceEngagementsID" Type="Int32" Nullable="false" />
+          <Property Name="TaskTypeID" Type="Int32" Nullable="false" />
+          <Property Name="IsVisible" Type="Boolean" Nullable="false" />
+        </EntityType>
+        <EntityType Name="vwExt_TimeZoneMaster">
+          <Key>
+            <PropertyRef Name="ID" />
+            <PropertyRef Name="Name" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" />
+          <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+        </EntityType>
+        <EntityType Name="vwExt_Title">
+          <Key>
+            <PropertyRef Name="ID" />
+            <PropertyRef Name="DepartmentID" />
+            <PropertyRef Name="Name" />
+            <PropertyRef Name="Initials" />
+            <PropertyRef Name="IsActive" />
+            <PropertyRef Name="LocationID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="DepartmentID" Type="Int32" Nullable="false" />
+          <Property Name="Name" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Initials" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="IsActive" Type="Boolean" Nullable="false" />
+          <Property Name="LocationID" Type="Int32" Nullable="false" />
+          <Property Name="ResourceTypeID" Type="Int32" />
+        </EntityType>
+        <EntityType Name="vwExt_TKT_Queue">
+          <Key>
+            <PropertyRef Name="ID" />
+            <PropertyRef Name="Name" />
+            <PropertyRef Name="CategoryMasterID" />
+            <PropertyRef Name="QueueTypeMasterID" />
+            <PropertyRef Name="IsActive" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="CategoryMasterID" Type="Int32" Nullable="false" />
+          <Property Name="QueueTypeMasterID" Type="Int32" Nullable="false" />
+          <Property Name="Description" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="IsDefaultTicketQueue" Type="Boolean" />
+          <Property Name="IsActive" Type="Boolean" Nullable="false" />
+        </EntityType>
+        <EntityType Name="vwExt_TKT_QueueTypeMaster">
+          <Key>
+            <PropertyRef Name="Id" />
+            <PropertyRef Name="Name" />
+            <PropertyRef Name="Code" />
+            <PropertyRef Name="IsActive" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" />
+          <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Description" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+          <Property Name="Code" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="IsActive" Type="Boolean" Nullable="false" />
+        </EntityType>
+        <EntityType Name="vwExt_TKT_RosterCalenderInfo">
+          <Key>
+            <PropertyRef Name="ID" />
+            <PropertyRef Name="Date" />
+            <PropertyRef Name="QueueID" />
+            <PropertyRef Name="RosterTypeMasterID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Date" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="QueueID" Type="Int32" Nullable="false" />
+          <Property Name="RosterTypeMasterID" Type="Int32" Nullable="false" />
+          <Property Name="RosterShiftID" Type="Int32" />
+        </EntityType>
+        <EntityType Name="vwExt_TKT_RosterCalenderUsers">
+          <Key>
+            <PropertyRef Name="ID" />
+            <PropertyRef Name="RosterCalenderInfoID" />
+            <PropertyRef Name="UserID" />
+            <PropertyRef Name="IsOnCall" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="RosterCalenderInfoID" Type="Int32" Nullable="false" />
+          <Property Name="UserID" Type="Int32" Nullable="false" />
+          <Property Name="IsOnCall" Type="Boolean" Nullable="false" />
+        </EntityType>
+        <EntityType Name="vwExt_TKT_RosterResourceTypeMaster">
+          <Key>
+            <PropertyRef Name="ID" />
+            <PropertyRef Name="Name" />
+            <PropertyRef Name="Value" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="20" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Value" Type="String" MaxLength="20" FixedLength="false" Unicode="true" Nullable="false" />
+        </EntityType>
+        <EntityType Name="vwExt_TKT_RosterShift">
+          <Key>
+            <PropertyRef Name="ID" />
+            <PropertyRef Name="Name" />
+            <PropertyRef Name="StartTime" />
+            <PropertyRef Name="EndTime" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="StartTime" Type="Time" Nullable="false" Precision="7" />
+          <Property Name="EndTime" Type="Time" Nullable="false" Precision="7" />
+        </EntityType>
+        <EntityType Name="vwExt_TKT_RosterTypeMaster">
+          <Key>
+            <PropertyRef Name="ID" />
+            <PropertyRef Name="Name" />
+            <PropertyRef Name="Value" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="20" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Value" Type="String" MaxLength="20" FixedLength="false" Unicode="true" Nullable="false" />
+        </EntityType>
+        <EntityType Name="vwExt_User">
+          <Key>
+            <PropertyRef Name="ID" />
+            <PropertyRef Name="DisplayName" />
+            <PropertyRef Name="EmailAddress" />
+            <PropertyRef Name="FirstName" />
+            <PropertyRef Name="LastName" />
+            <PropertyRef Name="OverrideTimeZone" />
+            <PropertyRef Name="PrimaryRoleID" />
+            <PropertyRef Name="TimezoneID" />
+            <PropertyRef Name="UserName" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ActiveDate" Type="DateTime" Precision="0" />
+          <Property Name="AddressLine1" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="AddressLine2" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="ApplicationAuthUserID" Type="String" MaxLength="38" FixedLength="false" Unicode="true" />
+          <Property Name="ClientID" Type="Int32" />
+          <Property Name="DisplayName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="EmailAddress" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="EmployeeID" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="FirstName" Type="String" MaxLength="30" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="InactiveDate" Type="DateTime" Precision="0" />
+          <Property Name="Initials" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="LastName" Type="String" MaxLength="30" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="MiddleName" Type="String" MaxLength="30" FixedLength="false" Unicode="true" />
+          <Property Name="MobilePhone" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="OfficePhone" Type="String" MaxLength="15" FixedLength="false" Unicode="true" />
+          <Property Name="OverrideTimeZone" Type="Boolean" Nullable="false" />
+          <Property Name="PrimaryRoleID" Type="Int32" Nullable="false" />
+          <Property Name="TimezoneID" Type="Int32" Nullable="false" />
+          <Property Name="UserName" Type="String" Nullable="false" MaxLength="30" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="vwExt_WeekDayMaster">
+          <Key>
+            <PropertyRef Name="Day" />
+          </Key>
+          <Property Name="Day" Type="String" MaxLength="20" FixedLength="false" Unicode="true" Nullable="false" />
+        </EntityType>
+        <EntityType Name="database_firewall_rules">
+          <Key>
+            <PropertyRef Name="id" />
+            <PropertyRef Name="name" />
+            <PropertyRef Name="start_ip_address" />
+            <PropertyRef Name="end_ip_address" />
+            <PropertyRef Name="create_date" />
+            <PropertyRef Name="modify_date" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="name" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="start_ip_address" Type="String" MaxLength="45" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="end_ip_address" Type="String" MaxLength="45" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="create_date" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="modify_date" Type="DateTime" Nullable="false" Precision="3" />
+        </EntityType>
+        <EntityContainer Name="EnableDevEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="vwExt_Client" EntityType="Self.vwExt_Client" />
+          <EntitySet Name="vwExt_Company" EntityType="Self.vwExt_Company" />
+          <EntitySet Name="vwExt_Department" EntityType="Self.vwExt_Department" />
+          <EntitySet Name="vwExt_Engagement" EntityType="Self.vwExt_Engagement" />
+          <EntitySet Name="vwExt_EngagementPermissions" EntityType="Self.vwExt_EngagementPermissions" />
+          <EntitySet Name="vwExt_EngagementRoles" EntityType="Self.vwExt_EngagementRoles" />
+          <EntitySet Name="vwExt_EngagementRolesSchedule" EntityType="Self.vwExt_EngagementRolesSchedule" />
+          <EntitySet Name="vwExt_EngagementTaskTypes" EntityType="Self.vwExt_EngagementTaskTypes" />
+          <EntitySet Name="vwExt_EngagementType" EntityType="Self.vwExt_EngagementType" />
+          <EntitySet Name="vwExt_Location" EntityType="Self.vwExt_Location" />
+          <EntitySet Name="vwExt_LocationHoliday" EntityType="Self.vwExt_LocationHoliday" />
+          <EntitySet Name="vwExt_LocationWorkingSchedule" EntityType="Self.vwExt_LocationWorkingSchedule" />
+          <EntitySet Name="vwExt_Resource" EntityType="Self.vwExt_Resource" />
+          <EntitySet Name="vwExt_ResourceHistory" EntityType="Self.vwExt_ResourceHistory" />
+          <EntitySet Name="vwExt_ResourceSkillLevel" EntityType="Self.vwExt_ResourceSkillLevel" />
+          <EntitySet Name="vwExt_ResourceWorkingScheduleHistory" EntityType="Self.vwExt_ResourceWorkingScheduleHistory" />
+          <EntitySet Name="vwExt_Skill" EntityType="Self.vwExt_Skill" />
+          <EntitySet Name="vwExt_TimeCard" EntityType="Self.vwExt_TimeCard" />
+          <EntitySet Name="vwExt_TimeCardResourceEngagements" EntityType="Self.vwExt_TimeCardResourceEngagements" />
+          <EntitySet Name="vwExt_TimeCardResourceTaskTypes" EntityType="Self.vwExt_TimeCardResourceTaskTypes" />
+          <EntitySet Name="vwExt_TimeZoneMaster" EntityType="Self.vwExt_TimeZoneMaster" />
+          <EntitySet Name="vwExt_Title" EntityType="Self.vwExt_Title" />
+          <EntitySet Name="vwExt_TKT_Queue" EntityType="Self.vwExt_TKT_Queue" />
+          <EntitySet Name="vwExt_TKT_QueueTypeMaster" EntityType="Self.vwExt_TKT_QueueTypeMaster" />
+          <EntitySet Name="vwExt_TKT_RosterCalenderInfo" EntityType="Self.vwExt_TKT_RosterCalenderInfo" />
+          <EntitySet Name="vwExt_TKT_RosterCalenderUsers" EntityType="Self.vwExt_TKT_RosterCalenderUsers" />
+          <EntitySet Name="vwExt_TKT_RosterResourceTypeMaster" EntityType="Self.vwExt_TKT_RosterResourceTypeMaster" />
+          <EntitySet Name="vwExt_TKT_RosterShift" EntityType="Self.vwExt_TKT_RosterShift" />
+          <EntitySet Name="vwExt_TKT_RosterTypeMaster" EntityType="Self.vwExt_TKT_RosterTypeMaster" />
+          <EntitySet Name="vwExt_User" EntityType="Self.vwExt_User" />
+          <EntitySet Name="vwExt_WeekDayMaster" EntityType="Self.vwExt_WeekDayMaster" />
+          <EntitySet Name="database_firewall_rules" EntityType="Self.database_firewall_rules" />
+          <EntitySet Name="vwExt_ResourceType" EntityType="EnableDevModel.vwExt_ResourceType" />
+        </EntityContainer>
+        <EntityType Name="vwExt_ResourceType">
+          <Key>
+            <PropertyRef Name="ID" />
+            <PropertyRef Name="Name" />
+            <PropertyRef Name="Code" />
+            <PropertyRef Name="IsActive" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="Code" Type="String" Nullable="false" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="IsActive" Type="Boolean" Nullable="false" />
+        </EntityType>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="EnableDevModelStoreContainer" CdmEntityContainer="EnableDevEntities">
+          <EntitySetMapping Name="vwExt_Client">
+            <EntityTypeMapping TypeName="EnableDevModel.vwExt_Client">
+              <MappingFragment StoreEntitySet="vwExt_Client">
+                <ScalarProperty Name="Code" ColumnName="Code" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+                <ScalarProperty Name="AccountManagerID" ColumnName="AccountManagerID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="vwExt_Company">
+            <EntityTypeMapping TypeName="EnableDevModel.vwExt_Company">
+              <MappingFragment StoreEntitySet="vwExt_Company">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="AddressLine1" ColumnName="AddressLine1" />
+                <ScalarProperty Name="AddressLine2" ColumnName="AddressLine2" />
+                <ScalarProperty Name="City" ColumnName="City" />
+                <ScalarProperty Name="State" ColumnName="State" />
+                <ScalarProperty Name="Zip" ColumnName="Zip" />
+                <ScalarProperty Name="Country" ColumnName="Country" />
+                <ScalarProperty Name="IsMaster" ColumnName="IsMaster" />
+                <ScalarProperty Name="CompanyID" ColumnName="CompanyID" />
+                <ScalarProperty Name="StartMonthOfFiscalYear" ColumnName="StartMonthOfFiscalYear" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="vwExt_Department">
+            <EntityTypeMapping TypeName="EnableDevModel.vwExt_Department">
+              <MappingFragment StoreEntitySet="vwExt_Department">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="vwExt_Engagement">
+            <EntityTypeMapping TypeName="EnableDevModel.vwExt_Engagement">
+              <MappingFragment StoreEntitySet="vwExt_Engagement">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="ClientID" ColumnName="ClientID" />
+                <ScalarProperty Name="Code" ColumnName="Code" />
+                <ScalarProperty Name="EngagementTypeID" ColumnName="EngagementTypeID" />
+                <ScalarProperty Name="Stage" ColumnName="Stage" />
+                <ScalarProperty Name="LocationID" ColumnName="LocationID" />
+                <ScalarProperty Name="EngagementManagerID" ColumnName="EngagementManagerID" />
+                <ScalarProperty Name="PrimaryProjectManagerID" ColumnName="PrimaryProjectManagerID" />
+                <ScalarProperty Name="BeginDate" ColumnName="BeginDate" />
+                <ScalarProperty Name="EndDate" ColumnName="EndDate" />
+                <ScalarProperty Name="HoursPerDay" ColumnName="HoursPerDay" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="IsOpenForTime" ColumnName="IsOpenForTime" />
+                <ScalarProperty Name="TimeApprover" ColumnName="TimeApprover" />
+                <ScalarProperty Name="TimeApproverID" ColumnName="TimeApproverID" />
+                <ScalarProperty Name="IndustryManagerID" ColumnName="IndustryManagerID" />
+                <ScalarProperty Name="SalesAccountManagerID" ColumnName="SalesAccountManagerID" />
+                <ScalarProperty Name="GeneralManagerID" ColumnName="GeneralManagerID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="vwExt_EngagementPermissions">
+            <EntityTypeMapping TypeName="EnableDevModel.vwExt_EngagementPermissions">
+              <MappingFragment StoreEntitySet="vwExt_EngagementPermissions">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="EngagementTypeID" ColumnName="EngagementTypeID" />
+                <ScalarProperty Name="UserTypeID" ColumnName="UserTypeID" />
+                <ScalarProperty Name="Permission" ColumnName="Permission" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="vwExt_EngagementRoles">
+            <EntityTypeMapping TypeName="EnableDevModel.vwExt_EngagementRoles">
+              <MappingFragment StoreEntitySet="vwExt_EngagementRoles">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="EngagementID" ColumnName="EngagementID" />
+                <ScalarProperty Name="ResourceHistoryID" ColumnName="ResourceHistoryID" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="StartDate" ColumnName="StartDate" />
+                <ScalarProperty Name="EndDate" ColumnName="EndDate" />
+                <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
+                <ScalarProperty Name="IsBooked" ColumnName="IsBooked" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="OverridenTitleID" ColumnName="OverridenTitleID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="vwExt_EngagementRolesSchedule">
+            <EntityTypeMapping TypeName="EnableDevModel.vwExt_EngagementRolesSchedule">
+              <MappingFragment StoreEntitySet="vwExt_EngagementRolesSchedule">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="EngagementRoleID" ColumnName="EngagementRoleID" />
+                <ScalarProperty Name="FillModeID" ColumnName="FillModeID" />
+                <ScalarProperty Name="Date" ColumnName="Date" />
+                <ScalarProperty Name="ContractHours" ColumnName="ContractHours" />
+                <ScalarProperty Name="BookedHours" ColumnName="BookedHours" />
+                <ScalarProperty Name="RequestedHours" ColumnName="RequestedHours" />
+                <ScalarProperty Name="IsOpenRequest" ColumnName="IsOpenRequest" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="vwExt_EngagementTaskTypes">
+            <EntityTypeMapping TypeName="EnableDevModel.vwExt_EngagementTaskTypes">
+              <MappingFragment StoreEntitySet="vwExt_EngagementTaskTypes">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="EngagementID" ColumnName="EngagementID" />
+                <ScalarProperty Name="TaskType" ColumnName="TaskType" />
+                <ScalarProperty Name="StandardTaskTypeID" ColumnName="StandardTaskTypeID" />
+                <ScalarProperty Name="IsDescriptionRequired" ColumnName="IsDescriptionRequired" />
+                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+                <ScalarProperty Name="DisplayOrder" ColumnName="DisplayOrder" />
+                <ScalarProperty Name="ParentID" ColumnName="ParentID" />
+                <ScalarProperty Name="IsTaskType" ColumnName="IsTaskType" />
+                <ScalarProperty Name="IsTask" ColumnName="IsTask" />
+                <ScalarProperty Name="TaskTypeID" ColumnName="TaskTypeID" />
+                <ScalarProperty Name="CanLinkedWithTickets" ColumnName="CanLinkedWithTickets" />
+                <ScalarProperty Name="StartDate" ColumnName="StartDate" />
+                <ScalarProperty Name="EndDate" ColumnName="EndDate" />
+                <ScalarProperty Name="PlannedEfforts" ColumnName="PlannedEfforts" />
+                <ScalarProperty Name="Size" ColumnName="Size" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="vwExt_EngagementType">
+            <EntityTypeMapping TypeName="EnableDevModel.vwExt_EngagementType">
+              <MappingFragment StoreEntitySet="vwExt_EngagementType">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="IsBillable" ColumnName="IsBillable" />
+                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="vwExt_Location">
+            <EntityTypeMapping TypeName="EnableDevModel.vwExt_Location">
+              <MappingFragment StoreEntitySet="vwExt_Location">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+                <ScalarProperty Name="HoursPerDay" ColumnName="HoursPerDay" />
+                <ScalarProperty Name="StandardHolidaysCount" ColumnName="StandardHolidaysCount" />
+                <ScalarProperty Name="StandardVacationCount" ColumnName="StandardVacationCount" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="vwExt_LocationHoliday">
+            <EntityTypeMapping TypeName="EnableDevModel.vwExt_LocationHoliday">
+              <MappingFragment StoreEntitySet="vwExt_LocationHoliday">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="LocationID" ColumnName="LocationID" />
+                <ScalarProperty Name="Date" ColumnName="Date" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="TimeOff" ColumnName="TimeOff" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="vwExt_LocationWorkingSchedule">
+            <EntityTypeMapping TypeName="EnableDevModel.vwExt_LocationWorkingSchedule">
+              <MappingFragment StoreEntitySet="vwExt_LocationWorkingSchedule">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="LocationID" ColumnName="LocationID" />
+                <ScalarProperty Name="WeekDayID" ColumnName="WeekDayID" />
+                <ScalarProperty Name="IsWorkingDay" ColumnName="IsWorkingDay" />
+                <ScalarProperty Name="StartTime" ColumnName="StartTime" />
+                <ScalarProperty Name="Duration" ColumnName="Duration" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="vwExt_Resource">
+            <EntityTypeMapping TypeName="EnableDevModel.vwExt_Resource">
+              <MappingFragment StoreEntitySet="vwExt_Resource">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="UserID" ColumnName="UserID" />
+                <ScalarProperty Name="IsTimecardsRequireApproval" ColumnName="IsTimecardsRequireApproval" />
+                <ScalarProperty Name="DirectManager1ID" ColumnName="DirectManager1ID" />
+                <ScalarProperty Name="CanDirectManager1ApproveTime" ColumnName="CanDirectManager1ApproveTime" />
+                <ScalarProperty Name="CanDirectManager1ApproveSkills" ColumnName="CanDirectManager1ApproveSkills" />
+                <ScalarProperty Name="DirectManager2ID" ColumnName="DirectManager2ID" />
+                <ScalarProperty Name="CanDirectManager2ApproveTime" ColumnName="CanDirectManager2ApproveTime" />
+                <ScalarProperty Name="CanDirectManager2ApproveSkills" ColumnName="CanDirectManager2ApproveSkills" />
+                <ScalarProperty Name="IsShared" ColumnName="IsShared" />
+                <ScalarProperty Name="SkillsLastUpdatedOn" ColumnName="SkillsLastUpdatedOn" />
+                <ScalarProperty Name="TerminationDate" ColumnName="TerminationDate" />
+                <ScalarProperty Name="RehireDate" ColumnName="RehireDate" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="vwExt_ResourceHistory">
+            <EntityTypeMapping TypeName="EnableDevModel.vwExt_ResourceHistory">
+              <MappingFragment StoreEntitySet="vwExt_ResourceHistory">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="ResourceID" ColumnName="ResourceID" />
+                <ScalarProperty Name="EffectiveDate" ColumnName="EffectiveDate" />
+                <ScalarProperty Name="ResourceTypeID" ColumnName="ResourceTypeID" />
+                <ScalarProperty Name="LocationID" ColumnName="LocationID" />
+                <ScalarProperty Name="TitleID" ColumnName="TitleID" />
+                <ScalarProperty Name="IsBillable" ColumnName="IsBillable" />
+                <ScalarProperty Name="IsTemporary" ColumnName="IsTemporary" />
+                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+                <ScalarProperty Name="CanApproveOwnTime" ColumnName="CanApproveOwnTime" />
+                <ScalarProperty Name="IsTrackingMissingTime" ColumnName="IsTrackingMissingTime" />
+                <ScalarProperty Name="IsSendingMissingTimeEmail" ColumnName="IsSendingMissingTimeEmail" />
+                <ScalarProperty Name="IsOvertimeAllowed" ColumnName="IsOvertimeAllowed" />
+                <ScalarProperty Name="LeavePolicyID" ColumnName="LeavePolicyID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="vwExt_ResourceSkillLevel">
+            <EntityTypeMapping TypeName="EnableDevModel.vwExt_ResourceSkillLevel">
+              <MappingFragment StoreEntitySet="vwExt_ResourceSkillLevel">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="ResourceID" ColumnName="ResourceID" />
+                <ScalarProperty Name="SkillID" ColumnName="SkillID" />
+                <ScalarProperty Name="SkillLevel" ColumnName="SkillLevel" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="vwExt_ResourceWorkingScheduleHistory">
+            <EntityTypeMapping TypeName="EnableDevModel.vwExt_ResourceWorkingScheduleHistory">
+              <MappingFragment StoreEntitySet="vwExt_ResourceWorkingScheduleHistory">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="ResourceID" ColumnName="ResourceID" />
+                <ScalarProperty Name="ResourceHistoryID" ColumnName="ResourceHistoryID" />
+                <ScalarProperty Name="WeekDayID" ColumnName="WeekDayID" />
+                <ScalarProperty Name="IsOverrideLocationSchedule" ColumnName="IsOverrideLocationSchedule" />
+                <ScalarProperty Name="IsWorkingDay" ColumnName="IsWorkingDay" />
+                <ScalarProperty Name="StartTime" ColumnName="StartTime" />
+                <ScalarProperty Name="Duration" ColumnName="Duration" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="vwExt_Skill">
+            <EntityTypeMapping TypeName="EnableDevModel.vwExt_Skill">
+              <MappingFragment StoreEntitySet="vwExt_Skill">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="DisplayOrder" ColumnName="DisplayOrder" />
+                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+                <ScalarProperty Name="ParentID" ColumnName="ParentID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="vwExt_TimeCard">
+            <EntityTypeMapping TypeName="EnableDevModel.vwExt_TimeCard">
+              <MappingFragment StoreEntitySet="vwExt_TimeCard">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="TimeCardResourceTaskTypeID" ColumnName="TimeCardResourceTaskTypeID" />
+                <ScalarProperty Name="ResourceID" ColumnName="ResourceID" />
+                <ScalarProperty Name="EngagementTaskTypeID" ColumnName="EngagementTaskTypeID" />
+                <ScalarProperty Name="TimeCardStatusID" ColumnName="TimeCardStatusID" />
+                <ScalarProperty Name="Date" ColumnName="Date" />
+                <ScalarProperty Name="Hours" ColumnName="Hours" />
+                <ScalarProperty Name="IsValid" ColumnName="IsValid" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="vwExt_TimeCardResourceEngagements">
+            <EntityTypeMapping TypeName="EnableDevModel.vwExt_TimeCardResourceEngagements">
+              <MappingFragment StoreEntitySet="vwExt_TimeCardResourceEngagements">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="ResourceID" ColumnName="ResourceID" />
+                <ScalarProperty Name="EngagementID" ColumnName="EngagementID" />
+                <ScalarProperty Name="EngagementRoleID" ColumnName="EngagementRoleID" />
+                <ScalarProperty Name="IsVisible" ColumnName="IsVisible" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="vwExt_TimeCardResourceTaskTypes">
+            <EntityTypeMapping TypeName="EnableDevModel.vwExt_TimeCardResourceTaskTypes">
+              <MappingFragment StoreEntitySet="vwExt_TimeCardResourceTaskTypes">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="TimeCardResourceEngagementsID" ColumnName="TimeCardResourceEngagementsID" />
+                <ScalarProperty Name="TaskTypeID" ColumnName="TaskTypeID" />
+                <ScalarProperty Name="IsVisible" ColumnName="IsVisible" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="vwExt_TimeZoneMaster">
+            <EntityTypeMapping TypeName="EnableDevModel.vwExt_TimeZoneMaster">
+              <MappingFragment StoreEntitySet="vwExt_TimeZoneMaster">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="vwExt_Title">
+            <EntityTypeMapping TypeName="EnableDevModel.vwExt_Title">
+              <MappingFragment StoreEntitySet="vwExt_Title">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="DepartmentID" ColumnName="DepartmentID" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Initials" ColumnName="Initials" />
+                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+                <ScalarProperty Name="LocationID" ColumnName="LocationID" />
+                <ScalarProperty Name="ResourceTypeID" ColumnName="ResourceTypeID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="vwExt_TKT_Queue">
+            <EntityTypeMapping TypeName="EnableDevModel.vwExt_TKT_Queue">
+              <MappingFragment StoreEntitySet="vwExt_TKT_Queue">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="CategoryMasterID" ColumnName="CategoryMasterID" />
+                <ScalarProperty Name="QueueTypeMasterID" ColumnName="QueueTypeMasterID" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="IsDefaultTicketQueue" ColumnName="IsDefaultTicketQueue" />
+                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="vwExt_TKT_QueueTypeMaster">
+            <EntityTypeMapping TypeName="EnableDevModel.vwExt_TKT_QueueTypeMaster">
+              <MappingFragment StoreEntitySet="vwExt_TKT_QueueTypeMaster">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="Code" ColumnName="Code" />
+                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="vwExt_TKT_RosterCalenderInfo">
+            <EntityTypeMapping TypeName="EnableDevModel.vwExt_TKT_RosterCalenderInfo">
+              <MappingFragment StoreEntitySet="vwExt_TKT_RosterCalenderInfo">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="Date" ColumnName="Date" />
+                <ScalarProperty Name="QueueID" ColumnName="QueueID" />
+                <ScalarProperty Name="RosterTypeMasterID" ColumnName="RosterTypeMasterID" />
+                <ScalarProperty Name="RosterShiftID" ColumnName="RosterShiftID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="vwExt_TKT_RosterCalenderUsers">
+            <EntityTypeMapping TypeName="EnableDevModel.vwExt_TKT_RosterCalenderUsers">
+              <MappingFragment StoreEntitySet="vwExt_TKT_RosterCalenderUsers">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="RosterCalenderInfoID" ColumnName="RosterCalenderInfoID" />
+                <ScalarProperty Name="UserID" ColumnName="UserID" />
+                <ScalarProperty Name="IsOnCall" ColumnName="IsOnCall" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="vwExt_TKT_RosterResourceTypeMaster">
+            <EntityTypeMapping TypeName="EnableDevModel.vwExt_TKT_RosterResourceTypeMaster">
+              <MappingFragment StoreEntitySet="vwExt_TKT_RosterResourceTypeMaster">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Value" ColumnName="Value" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="vwExt_TKT_RosterShift">
+            <EntityTypeMapping TypeName="EnableDevModel.vwExt_TKT_RosterShift">
+              <MappingFragment StoreEntitySet="vwExt_TKT_RosterShift">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="StartTime" ColumnName="StartTime" />
+                <ScalarProperty Name="EndTime" ColumnName="EndTime" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="vwExt_TKT_RosterTypeMaster">
+            <EntityTypeMapping TypeName="EnableDevModel.vwExt_TKT_RosterTypeMaster">
+              <MappingFragment StoreEntitySet="vwExt_TKT_RosterTypeMaster">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Value" ColumnName="Value" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="vwExt_User">
+            <EntityTypeMapping TypeName="EnableDevModel.vwExt_User">
+              <MappingFragment StoreEntitySet="vwExt_User">
+                <ScalarProperty Name="UserName" ColumnName="UserName" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="ActiveDate" ColumnName="ActiveDate" />
+                <ScalarProperty Name="AddressLine1" ColumnName="AddressLine1" />
+                <ScalarProperty Name="AddressLine2" ColumnName="AddressLine2" />
+                <ScalarProperty Name="ApplicationAuthUserID" ColumnName="ApplicationAuthUserID" />
+                <ScalarProperty Name="ClientID" ColumnName="ClientID" />
+                <ScalarProperty Name="DisplayName" ColumnName="DisplayName" />
+                <ScalarProperty Name="EmailAddress" ColumnName="EmailAddress" />
+                <ScalarProperty Name="EmployeeID" ColumnName="EmployeeID" />
+                <ScalarProperty Name="FirstName" ColumnName="FirstName" />
+                <ScalarProperty Name="InactiveDate" ColumnName="InactiveDate" />
+                <ScalarProperty Name="Initials" ColumnName="Initials" />
+                <ScalarProperty Name="LastName" ColumnName="LastName" />
+                <ScalarProperty Name="MiddleName" ColumnName="MiddleName" />
+                <ScalarProperty Name="MobilePhone" ColumnName="MobilePhone" />
+                <ScalarProperty Name="OfficePhone" ColumnName="OfficePhone" />
+                <ScalarProperty Name="OverrideTimeZone" ColumnName="OverrideTimeZone" />
+                <ScalarProperty Name="PrimaryRoleID" ColumnName="PrimaryRoleID" />
+                <ScalarProperty Name="TimezoneID" ColumnName="TimezoneID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="vwExt_WeekDayMaster">
+            <EntityTypeMapping TypeName="EnableDevModel.vwExt_WeekDayMaster">
+              <MappingFragment StoreEntitySet="vwExt_WeekDayMaster">
+                <ScalarProperty Name="Day" ColumnName="Day" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="database_firewall_rules">
+            <EntityTypeMapping TypeName="EnableDevModel.database_firewall_rules">
+              <MappingFragment StoreEntitySet="database_firewall_rules">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="name" ColumnName="name" />
+                <ScalarProperty Name="start_ip_address" ColumnName="start_ip_address" />
+                <ScalarProperty Name="end_ip_address" ColumnName="end_ip_address" />
+                <ScalarProperty Name="create_date" ColumnName="create_date" />
+                <ScalarProperty Name="modify_date" ColumnName="modify_date" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="vwExt_ResourceType">
+            <EntityTypeMapping TypeName="EnableDevModel.vwExt_ResourceType">
+              <MappingFragment StoreEntitySet="vwExt_ResourceType">
+                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+                <ScalarProperty Name="Code" ColumnName="Code" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
