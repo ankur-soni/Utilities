@@ -16,20 +16,7 @@ namespace Silicus.UtilityContainer.Models.DataObjects
     {
         public int ID { get; set; }
         public string Name { get; set; }
-        public string ShortName { get; set; }
         public bool IsBillable { get; set; }
-        public bool IsProductive { get; set; }
-        public string DefaultTimeTo { get; set; }
-        public string DefaultCostTo { get; set; }
-        public string ResourcesEnteringTime { get; set; }
-        public string TimeApprover { get; set; }
-        public bool IsReportTimeToAssignedTasksOnly { get; set; }
-        public bool IsRequireDescriptionOnTimeCard { get; set; }
-        public string InitialSchedulingForNewRole { get; set; }
-        public bool IsEnableProjectWorkspace { get; set; }
-        public bool IsEnableDetailedTaskManagement { get; set; }
-        public string TimeContractTerm { get; set; }
-        public string CostContractTerm { get; set; }
         public bool IsActive { get; set; }
     }
 }

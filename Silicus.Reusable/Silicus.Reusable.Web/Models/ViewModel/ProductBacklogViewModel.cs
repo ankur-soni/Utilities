@@ -8,7 +8,7 @@ namespace Silicus.Reusable.Web.Models.ViewModel
 {
     public class ProductBacklogViewModel
     {
-        public int Id { get; set; }
+        public int? Id { get; set; }
         public string Title { get; set; }
         public string Description { get; set; }
         public string Type { get; set; }
@@ -22,12 +22,12 @@ namespace Silicus.Reusable.Web.Models.ViewModel
         public string AssigneeEmail { get; set; }
 
         [Display(Name = "Time Allocated")]
-        public Double TimeAllocated { get; set; }
+        public Double? TimeAllocated { get; set; }
         [Display(Name = "Time Spent")]
-        public Double TimeSpent { get; set; }
+        public Double? TimeSpent { get; set; }
 
         [Display(Name = "Time Remaining")]
-        public Double TimeRemaining
+        public Double? TimeRemaining
         {
             get
             {

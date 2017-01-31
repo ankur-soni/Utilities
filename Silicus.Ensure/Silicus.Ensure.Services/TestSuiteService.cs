@@ -177,6 +177,7 @@ namespace Silicus.Ensure.Services
                               Option6 = b.Option6,
                               Option7 = b.Option7,
                               Option8 = b.Option8,
+                              Comment=a.ReviwerComment,
                               Marks = b.Marks
                           }).FirstOrDefault();
             if (result == null)
@@ -265,10 +266,13 @@ namespace Silicus.Ensure.Services
                         do
                         {
                             practicalQuestion = questionList.Where(x => !questions.Any(y => y.Id == x.Id) && x.QuestionType == 2 && x.ProficiencyLevel == tag.Proficiency);
-                            index = random.Next(practicalQuestion.Count());
-                            Question question = practicalQuestion.ElementAtOrDefault(index);
-                            questions.Add(question);
-                            minutes += question.Duration;
+                            if (practicalQuestion != null)
+                            {
+                                index = random.Next(practicalQuestion.Count());
+                                Question question = practicalQuestion.ElementAtOrDefault(index);
+                                questions.Add(question);
+                                minutes += question.Duration;
+                            }
                         } while (minutes <= requiredMinutes);
                     }
                 }

@@ -70,7 +70,7 @@ function openDetails(id) {
             $('#detailsFormModal').modal('show');
         },
         error: function (e) {
-            toastr.error(getErrorMessage(e));
+           showAlert({ title: 'Error', text: 'Oops!', type: 'error', timer: 2000 });
         },
         complete: function () {
             unblockUI();

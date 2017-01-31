@@ -108,24 +108,18 @@ namespace Silicus.EncourageWithAzureAd.Web.Controllers
                 var startDate = new DateTime();
                 var endDate = new DateTime();
                 var countOfNomination = 0;
-                //_logger.Log("Todays Date: " + DateTime.Now);
                 _logger.Log("Todays Date: " + customDate);
                 if (currentAwardFrequency.Code == FrequencyCode.MON.ToString())
                 {
-                    //var firstDateOfCurrentMonth = new DateTime(DateTime.Today.Year, DateTime.Today.Month, 1);
-                    var firstDateOfCurrentMonth = new DateTime(customDate.Year,customDate.Month, 1);
-                    //startDate = firstDateOfCurrentMonth.AddMonths(-1);
-                    //endDate = firstDateOfCurrentMonth.AddDays(-1);
+                    var firstDateOfCurrentMonth = new DateTime(customDate.Year, customDate.Month, 1);
                     startDate = firstDateOfCurrentMonth;
-                    var noOfDaysInCurrentMonth = DateTime.DaysInMonth(customDate.Year,customDate.Month);
+                    var noOfDaysInCurrentMonth = DateTime.DaysInMonth(customDate.Year, customDate.Month);
                     endDate = new DateTime(customDate.Year, customDate.Month, noOfDaysInCurrentMonth);
                     countOfNomination = _nominationService.GetNominationCountByManagerIdForSom(model.ManagerId, startDate, endDate, model.AwardId);
                 }
                 else if (currentAwardFrequency.Code == FrequencyCode.YEAR.ToString())
                 {
-                    //var firstDateOfCurrentYear = new DateTime(DateTime.Today.Year, 1, 1);
                     var firstDateOfCurrentYear = new DateTime(customDate.Year, 1, 1);
-                    //startDate = firstDateOfCurrentYear.AddYears(-1);
                     startDate = firstDateOfCurrentYear;
                     countOfNomination = _nominationService.GetNominationCountByManagerIdForPinnacle(model.ManagerId, startDate, model.AwardId);
                 }
@@ -161,19 +155,7 @@ namespace Silicus.EncourageWithAzureAd.Web.Controllers
                         break;
                 }
 
-                //if (currentAwardFrequency.Code == FrequencyCode.YEAR.ToString())
-                //{
-                    //nomination.NominationDate = DateTime.Now.Date.AddYears(-1);
-                    nomination.NominationDate = customDate;
-                //}
-                //else
-                //{
-                //    //nomination.NominationDate = DateTime.Now.Date.AddMonths(-1);
-                //    nomination.NominationDate = customDate;
-
-
-                //}
-
+                nomination.NominationDate = customDate;
                 nomination.IsSubmitted = submit.Equals("Submit");
 
                 foreach (var criteria in model.Comments)
@@ -196,14 +178,15 @@ namespace Silicus.EncourageWithAzureAd.Web.Controllers
                 nomination.Comment = model.MainComment != null ? _textInfo.ToTitleCase(model.MainComment) : "";
 
                 nomination.IsLocked = false;
-                _awardService.AddNomination(nomination);
+                var wasSubmitted = _awardService.AddNomination(nomination);
+                return Json(new { success = wasSubmitted }, JsonRequestBehavior.AllowGet);
             }
             catch (Exception ex)
             {
                 _logger.Log("Nomination-AddNomination-POST-catch");
                 _logger.Log("Nomination-AddNomination-POST-" + ex.Message);
             }
-            return Json(new { success = true }, JsonRequestBehavior.AllowGet);
+            return Json(new { success = false }, JsonRequestBehavior.AllowGet);
         }
 
         [HttpPost]
@@ -327,8 +310,8 @@ namespace Silicus.EncourageWithAzureAd.Web.Controllers
 
             //if (currentAwardFrequency.Code == FrequencyCode.YEAR.ToString())
             //{
-                //nomination.NominationDate = DateTime.Now.Date.AddYears(-1);
-                nomination.NominationDate = customDate;
+            //nomination.NominationDate = DateTime.Now.Date.AddYears(-1);
+            nomination.NominationDate = customDate;
 
             //}
             //else
@@ -416,7 +399,7 @@ namespace Silicus.EncourageWithAzureAd.Web.Controllers
             var email = User.Identity.Name;
             _awardService.GetProjectsUnderCurrentUserAsManager(email);
             _awardService.GetDepartmentsUnderCurrentUserAsManager(email);
-            
+
             var nominations = _nominationService.GetAllSubmittedAndSavedNominationsByCurrentUser(managerId);
             var savedNominations = new List<NominationListViewModel>();
 
@@ -456,13 +439,13 @@ namespace Silicus.EncourageWithAzureAd.Web.Controllers
         public ActionResult GetNominationList()
         {
             _logger.Log("Nomination-GetNominationList-GET");
-            var savedNominations = GetNominations(true,1);
+            var savedNominations = GetNominations(true, 1);
             return View("SavedNomination", savedNominations);
         }
 
         [HttpGet]
         [CustomeAuthorize(AllowedRole = "Manager")]
-        public ActionResult GetNominationListPartialView(bool forCurrentMonth,int awardId)
+        public ActionResult GetNominationListPartialView(bool forCurrentMonth, int awardId)
         {
             _logger.Log("Nomination-GetNominationListPartialView-GET");
             var savedNominations = GetNominations(forCurrentMonth, awardId);
@@ -476,7 +459,7 @@ namespace Silicus.EncourageWithAzureAd.Web.Controllers
             _awardService.GetProjectsUnderCurrentUserAsManager(email);
 
             var managerId = _awardService.GetUserIdFromEmail(email);
-            
+
             var nominations = _nominationService.GetAllSubmittedAndSavedNominationsByCurrentUserAndMonth(managerId, forCurrentMonth, awardId);
 
             var savedNominations = new List<NominationListViewModel>();
@@ -704,15 +687,15 @@ namespace Silicus.EncourageWithAzureAd.Web.Controllers
                         try
                         {
                             var reviewData = from r in _reviewService.GetAllReview()
-                                join n in _nominationService.GetAllNominations()
-                                on r.NominationId equals n.Id
+                                             join n in _nominationService.GetAllNominations()
+                                             on r.NominationId equals n.Id
                                              //where (n.NominationDate.Value.Month.Equals(DateTime.Now.Month - 1)
                                              //       &&
                                              //       (DateTime.Now.Month > 1 ? (DateTime.Now.Year).Equals(n.NominationDate.Value.Year) : (DateTime.Now.Year - 1).Equals(n.NominationDate.Value.Year))
                                              //)
                                              where (n.NominationDate.Value.Month.Equals(customDate.Month)
                                                   &&
-                                                  (customDate.Month > 1 ? (customDate.Year).Equals(n.NominationDate.Value.Year) : (customDate.Year ).Equals(n.NominationDate.Value.Year))
+                                                  (customDate.Month > 1 ? (customDate.Year).Equals(n.NominationDate.Value.Year) : (customDate.Year).Equals(n.NominationDate.Value.Year))
                                            )
                                              select r;
 
@@ -845,7 +828,7 @@ namespace Silicus.EncourageWithAzureAd.Web.Controllers
         {
             _logger.Log("Nomination-SavedReviews");
             // 1 is AwardId of SOM
-            var reviewedNominations = GetSavedReviewsList(true,1);
+            var reviewedNominations = GetSavedReviewsList(true, 1);
 
             return View(reviewedNominations);
         }
@@ -854,13 +837,13 @@ namespace Silicus.EncourageWithAzureAd.Web.Controllers
         public ActionResult GetSavedReviewsPartialView(bool forCurrentMonth, int awardId)
         {
             _logger.Log("Nomination-GetSavedReviewsPartialView");
-            
+
             var reviewedNominations = GetSavedReviewsList(forCurrentMonth, awardId);
 
             return PartialView("~/Views/Nomination/Shared/_savedReviewsList.cshtml", reviewedNominations);
         }
 
-        private List<NominationListViewModel> GetSavedReviewsList(bool forCurrentMonth,int awardId)
+        private List<NominationListViewModel> GetSavedReviewsList(bool forCurrentMonth, int awardId)
         {
             _logger.Log("Nomination-GetSavedReviewsList");
             var reviewedNominations = new List<NominationListViewModel>();

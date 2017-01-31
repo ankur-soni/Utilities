@@ -46,13 +46,12 @@ namespace Silicus.Ensure.Web.Controllers
         }
 
 
-        public ActionResult ReviewTest()
+        public ActionResult ReviewTest(int UserId, int TestSuiteId)
         {
             if (!ModelState.IsValid)
                 return RedirectToAction("LogOff", "CandidateAccount");
 
-            var userEmail = "rp@gmail.com";
-            User user = _userService.GetUserByEmail(userEmail);
+            User user = _userService.GetUserById(UserId);
             if (user == null)
             {
                 ViewBag.Status = 1;
@@ -111,6 +110,10 @@ namespace Silicus.Ensure.Web.Controllers
             var user = _userService.GetUserById(candidateResultViewmodel.CandidateUserId);
             user.CandidateStatus = candidateResultViewmodel.Status.ToString();
             _userService.Update(user);
+            var userTestSuitedetails = _testSuiteService.GetUserTestSuiteByUserId(candidateResultViewmodel.CandidateUserId);
+            userTestSuitedetails.StatusId = (int)candidateResultViewmodel.Status;
+            userTestSuitedetails.FeedBack = candidateResultViewmodel.ReviewerComment;
+            _testSuiteService.UpdateUserTestSuite(userTestSuitedetails);
             return Json(true);
         }
 

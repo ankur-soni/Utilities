@@ -7,62 +7,74 @@
     ViewBag.Title = "Online Test";
     Layout = "~/Views/Shared/_LayoutCandidate.cshtml";
 }
-
-<div class="main-content" id="main">
-    <div class="fluid mt20">
-       
         <div class="row">
-            <div class="col-md-12" style="text-align:center;">
-                <strong>This test is window protected, please do not move away from the window or refresh.</strong>
+    <div class="col-sm-12 main-content" id="main" style="background: #ccc;">
+            <div class="row topBox">
+                <div class="col-sm-12">
+                    <div class="alert alert-danger M-T15">
+                        <strong>Attention!</strong> This test is window protected, please do not move away from the window or refresh page.
             </div>
         </div>
-        <div class="row">
-            <div class="col-md-12" style="border-bottom-width:1px; border-bottom-style:solid; border-bottom-color:black;">
             </div>
+            <div class="row">
+                <div class="col-sm-12">
+
             <input type="hidden" value="@Model.TestSuiteId" id="TestSuiteId" />
             <input type="hidden" value="@Model.UserTestSuiteId" id="UserTestSuiteId" />
             <input type="hidden" value="@Model.UserId" id="UserId" />
         </div>
-        <br />
+            </div>
         <div class="row">
-            <div class="col-md-6">
+                <div class="custBox">
+                    <div class="f1" style="background:#067bb5;">
+                        <div class="col-sm-8">
                 @Html.Partial("_CandidateInfo", Model.CandidateInfo)
             </div>
-            <div class="col-md-6">
+                        <div class="col-sm-4">
                 <div class="row">
-                    <div class="col-md-9">
-                        <div id="counter"></div>
+                                <div class="col-sm-12">
+                                    <div class="clock">
+                                        <div id="counter">
+
+                                        </div>
+                                    </div>
+                                </div>
                     </div>
-                    <div class="col-md-3">
+                            <div class="row">
+                                <div class="col-sm-12">
                         @(Html.Kendo().Button()
                         .Name("btnAddMoreTime").Events(e => e.Click("AddMoreTime"))
-                .HtmlAttributes(new { type = "button" }).Content("Add more time").HtmlAttributes(new { style = "margin-top: 15%;" }))
+                                    .HtmlAttributes(new { type = "button" }).Content("Add more time").HtmlAttributes(new { style = "float:right;", @class = "btn btn-addTime btn-lg" }))
 
                         @Html.Hidden("TimerIncCount", Model.ExtraCount)
                     </div>
+                            </div>
+                            
                 </div>
-                <div class="row">
-                    <span>Test Progress</span>
-                    <div class="progress">
+                        <div class="col-sm-12 M-T15">
+                            <span style="font-weight:bold;font-size:15px;color:#fff;">Test Progress</span>
+                            <div class="progress M-T10">
                         <div id="progressBar" class="progress-bar progress-bar-info" role="progressbar" aria-valuenow="50"
                              aria-valuemin="0" aria-valuemax="100" style="width:50%">
                             <span id="progressInfo">50%</span> Complete
                         </div>
                     </div>
                 </div>
-            </div>
+                        <div class="clearfix"></div>
         </div>
 
-        <div class="row">
-            <div class="col-md-12" style="border-bottom-width:1px; border-bottom-style:solid; border-bottom-color:black;">
             </div>
         </div>
-        <div class="row">
-            <div class="col-lg-9">
+            
+            <div class="row M-B25">
+                <div class="col-sm-9 M-T15">
+                    <div class="f1 M-B30" style="background:#fff;">
                 <div id="QuestionDetails">
                 </div>
             </div>
-            <div class="col-lg-3">
+                </div>
+                <div class="col-sm-3 M-T15" style="padding-left:0px;">
+                    <div class="f1 M-B30" style="background:#fff;">
                 <div id="QuestionNavigation">
                     @Html.Partial("_QuestionNavigationPanel", @Model.NavigationDetails)
                 </div>
@@ -70,6 +82,8 @@
         </div>
     </div>
 </div>
+</div>
+
 
 <!-- Modal -->
 <div class="modal fade" id="myModal" role="dialog">
@@ -168,7 +182,7 @@
     });
         
     function QuestionCheckboxClicked(event) {
-        var questionId = $(this).find('input').attr('id');
+        var questionId = $(this).attr('id');
         UpdateCurrentQuestionAndLoadNewOne(questionId);
     }
 
@@ -190,19 +204,23 @@
         }
     }
     function UpdateCurrentQuestionNavigationStatus(questionNavigationDetails) {
+        var ClassesForAnsweredQuestion = 'fa fa-check-square';
+        var ClassesForViewedQuestion = 'fa fa-square';
+        var CassForUnSeenQuestion = 'UnSeen';
         if (questionNavigationDetails) {
             var input = '#NavigationSection ' + '#' + questionNavigationDetails.QuestionNumber;
+            input = $(input).find('.QuestionCheckboxInnerDiv');
+            $(input).removeClass(CassForUnSeenQuestion);
+            $(input).removeClass(ClassesForViewedQuestion);
+            $(input).removeClass(ClassesForAnsweredQuestion);
             if (questionNavigationDetails.IsAnswered) {
-                $(input).removeClass('Viewed');
-                $(input).addClass('Answered');
+                $(input).addClass(ClassesForAnsweredQuestion);
             }
             else if (questionNavigationDetails.IsViewed) {
-                $(input).removeClass('Answered');
-                $(input).addClass('Viewed');
+                $(input).addClass(ClassesForViewedQuestion);
             }
             else {
-                $(input).removeClass('Viewed');
-                $(input).removeClass('Answered');
+                $(input).addClass(CassForUnSeenQuestion);
             }
         }
     }
