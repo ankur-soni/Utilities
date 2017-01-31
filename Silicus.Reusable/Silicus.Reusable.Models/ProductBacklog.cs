@@ -18,7 +18,7 @@ namespace Silicus.FrameworxProject.Models
         public double? TimeAllocated { get; set; }
         public double? TimeSpent { get; set; }
         public string AssignedBy { get; set; }
-        public DateTime CreatedDate { get; set; }
-        public DateTime ChangedDate { get; set; }
+        public DateTime? CreatedDate { get; set; }
+        public DateTime? ChangedDate { get; set; }
     }
 }

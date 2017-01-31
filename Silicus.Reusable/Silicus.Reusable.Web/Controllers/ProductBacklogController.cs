@@ -9,6 +9,7 @@ using System.Collections.Generic;
 using Kendo.Mvc.Extensions;
 using Silicus.UtilityContainer.Security;
 using System.Web.Configuration;
+using System;
 
 namespace Silicus.FrameworxProject.Web.Controllers
 {
@@ -45,10 +46,11 @@ namespace Silicus.FrameworxProject.Web.Controllers
             var userRoles = _authorizationService.GetRoleForUtility(User.Identity.Name, utility);
             ViewBag.IsRolePm = userRoles.Contains("Project Manager");
             ViewBag.CurrentUser = User.Identity.Name;
-            //  if (ViewBag.IsRolePm)
-            // {
-            ViewBag.Users = _commonDbService.GetAllUsers();
-            // }
+            ViewBag.IsFrameworxUser = _productBacklogService.IsFrameworxUser(User.Identity.Name);
+            if (ViewBag.IsRolePm)
+            {
+                ViewBag.Users = _commonDbService.GetAllUsers();
+            }
             return View();
         }
 

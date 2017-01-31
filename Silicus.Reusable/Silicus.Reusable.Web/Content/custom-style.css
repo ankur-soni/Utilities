@@ -2278,6 +2278,10 @@ anchorLink:focus {
     outline: none;
 }
 
+.hours{
+    width:70px;
+}
+
 
 
 

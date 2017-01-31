@@ -139,6 +139,7 @@ namespace Silicus.FrameworxProject.Services
             var fields = new string[] {
                 "System.Id",
                 "System.Title",
+                "System.Description",
                 "System.State",
                 "System.WorkItemType",
                 "System.AreaPath",
@@ -158,12 +159,13 @@ namespace Silicus.FrameworxProject.Services
                     Id = int.Parse(result.Fields["System.Id"].ToString()),
                     Title = result.Fields["System.Title"].ToString(),
                     State = result.Fields["System.State"].ToString(),
+                    Description = result.Fields.ContainsKey("System.Description") ? result.Fields["System.Description"].ToString() : "",
                     Type = result.Fields.ContainsKey("System.WorkItemType") ? result.Fields["System.WorkItemType"].ToString() : Constants.InformationNotAvailableText,
                     AreaPath = result.Fields.ContainsKey("System.AreaPath") ? result.Fields["System.AreaPath"].ToString() : Constants.InformationNotAvailableText,
                     TimeAllocated = result.Fields.ContainsKey("Microsoft.VSTS.Scheduling.OriginalEstimate") ? (double)result.Fields["Microsoft.VSTS.Scheduling.OriginalEstimate"] : 0.00,
                     TimeSpent = result.Fields.ContainsKey("Microsoft.VSTS.Scheduling.CompletedWork") ? (double)result.Fields["Microsoft.VSTS.Scheduling.CompletedWork"] : 0.0,
                     CreatedDate = (DateTime)result.Fields["System.CreatedDate"],
-                    ChangedDate = (DateTime)result.Fields["System.ChangedDate"]
+                    ChangedDate = result.Fields.ContainsKey("System.ChangedDate") ?(DateTime)result.Fields["System.ChangedDate"] : DateTime.Now
                 };
 
                 var detailsFromDb = _FrameworxProjectDatabaseContext.Query<ProductBacklog>().FirstOrDefault(t => t.Id == backlogItem.Id);
@@ -190,7 +192,7 @@ namespace Silicus.FrameworxProject.Services
         public void AddWorkItem(ProductBacklog productBacklog, string projectName)
         {
             JsonPatchDocument patchDocument = new JsonPatchDocument();
-
+            
             patchDocument.Add(
                new JsonPatchOperation()
                {
@@ -199,6 +201,43 @@ namespace Silicus.FrameworxProject.Services
                    Value = productBacklog.Title
                }
            );
+
+            patchDocument.Add(
+             new JsonPatchOperation()
+             {
+                 Operation = Operation.Add,
+                 Path = "/fields/System.Description",
+                 Value = productBacklog.Description
+             }
+         );
+
+            patchDocument.Add(
+              new JsonPatchOperation()
+              {
+                  Operation = Operation.Add,
+                  Path = "/fields/System.State",
+                  Value = productBacklog.State
+              }
+          );
+
+            patchDocument.Add(
+            new JsonPatchOperation()
+            {
+                Operation = Operation.Add,
+                Path = "/fields/Microsoft.VSTS.Scheduling.OriginalEstimate",
+                Value = productBacklog.TimeAllocated
+            }
+        );
+
+            patchDocument.Add(
+           new JsonPatchOperation()
+           {
+               Operation = Operation.Add,
+               Path = "/fields/System.CreatedDate",
+               Value = productBacklog.CreatedDate
+           }
+       );
+
 
             using (WorkItemTrackingHttpClient workItemTrackingHttpClient = new WorkItemTrackingHttpClient(_uri, _credentials))
             {
@@ -210,6 +249,11 @@ namespace Silicus.FrameworxProject.Services
                 }
             }
 
-        }        
+        }
+
+        public bool IsFrameworxUser(string emailAddress)
+        {
+            return _FrameworxProjectDatabaseContext.Query<FrameworxUser>().Any(u => u.EmailAddress == emailAddress);
+        }
     }
 }

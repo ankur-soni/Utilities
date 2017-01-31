@@ -24,6 +24,7 @@ namespace Silicus.FrameworxProject.DAL
         public DbSet<FrameworxFeedback> FrameworxFeedbacks { get; set; }
         public DbSet<FrameworxCredits> FrameworxCredits { get; set; }
         public DbSet<ProductBacklog> ProductBacklogs { get; set; }
+        public DbSet<FrameworxUser> FrameworxUsers { get; set; }
         public int Update<T>(T item) where T : class
         {
 

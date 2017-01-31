@@ -1,13 +1,11 @@
-﻿function onHrsChange(e) {
-    var vm = this;
+﻿function onHrsChange(e) {    
     var grid = $("#productBacklogs").data("kendoGrid");
-    var tr = vm.element.closest('tr'); //get the row for deletion
-    var dataItem = grid.dataItem(tr);
-    var time = vm.value();
-    var isAllocatedTime = vm.element.hasClass('allocated-hours');
+    var tr = $(this).closest('tr');  //get the row for deletion
+    var dataItem = grid.dataItem(tr);    
+    var isAllocatedTime = $(this).hasClass('allocated-hours');
     var propName = isAllocatedTime ? "TimeAllocated" : "TimeSpent";
     var url = isAllocatedTime ? "/ProductBacklog/UpdateTimeAllocated" : "/ProductBacklog/UpdateTimeSpent";
-    dataItem[propName] = time.toHrs();
+    dataItem[propName] = $(this).val();
     $.ajax({
         url: url,
         dataType: "json",
@@ -161,12 +159,12 @@ function assignUser() {
 function openUpdateForm(e) {
     var dataItem = this.dataItem($(e.currentTarget).closest("tr"));
 
-    $('#update-time').val(toHHMM(dataItem.TimeSpent));
+    $('#update-time').val(dataItem.TimeSpent);
     $("#update-time").prop('target-elem', $(e.currentTarget));
 
-    $("#update-time").kendoMaskedTextBox({
-        mask: "00 : 00"
-    });
+    //$("#update-time").kendoMaskedTextBox({
+    //    mask: "00 : 00"
+    //});
 
     $('#updateFormModal').modal('show');
 }
@@ -177,7 +175,7 @@ function update() {
     var dataItem = grid.dataItem(target.closest("tr"));
     var time = $('#update-time').val();
     var url = "/ProductBacklog/UpdateTimeSpent";
-    dataItem["TimeSpent"] = time.toHrs();
+    dataItem["TimeSpent"] = time;
     $.ajax({
         url: url,
         dataType: "json",
