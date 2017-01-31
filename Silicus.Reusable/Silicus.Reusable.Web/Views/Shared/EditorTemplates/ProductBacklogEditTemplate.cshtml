@@ -1,0 +1,164 @@
+﻿@model Silicus.Reusable.Web.Models.ViewModel.ProductBacklogViewModel
+@using System.Collections
+@using Kendo.Mvc.UI;
+@{
+    ViewBag.Title = "Details";
+}
+
+<div class="container-fluid model-550">
+    <div class="acastatus">
+        <div class="row marginbottom">
+            <div class="col-lg-4 col-md-4 col-sm-6 col-xs-6">
+                @Html.LabelFor(m => m.AreaPath, "Project")<label><span>*</span></label>
+            </div>
+
+            <div class="col-lg-8 col-md-8 col-sm-6 col-xs-6">
+                @(Html.Kendo().DropDownListFor(m => m.AreaPath)
+                                    .DataTextField("Name")
+                                    .DataValueField("Name")
+                                    .Filter("contains")
+                                     .HtmlAttributes(new { style = "width: 100%;" })
+                                    .DataSource(source =>
+                                    {
+                                        source.Custom()
+                                        .ServerFiltering(false)
+                                        .Type("aspnetmvc-ajax")
+                                        .Transport(transport =>
+                                        {
+                                            transport.Read("GetProjects", "ProductBacklog");
+                                        })
+                                        .Schema(schema =>
+                                        {
+                                            schema.Data("Data")
+                                        .Total("Total");
+                                        });
+                                    })
+                )
+                <div class="validation">
+                    @Html.ValidationMessageFor(model => model.AreaPath)
+                </div>
+            </div>
+        </div>
+        <div class="row marginbottom">
+            <div class="col-lg-4 col-md-4 col-sm-6 col-xs-6">
+                @Html.LabelFor(m => m.Type)<label><span>*</span></label>
+            </div>
+
+            <div class="col-lg-8 col-md-8 col-sm-6 col-xs-6">
+                @(Html.Kendo().DropDownListFor(m => m.Type)
+                      .DataTextField("Text")
+                      .DataValueField("Value")                      
+                      .BindTo(new List<SelectListItem>() {
+                           new SelectListItem() {
+                              Text = "Task",
+                              Value = "Task"
+                          },
+                          new SelectListItem() {
+                              Text = "Bug",
+                              Value = "Bug"
+                          }
+                      }))                     
+                <div class="validation">
+                    @Html.ValidationMessageFor(model => model.Type)
+                </div>
+            </div>
+        </div>
+
+        <div class="row marginbottom">
+            <div class="col-lg-4 col-md-4 col-sm-6 col-xs-6">
+                @Html.LabelFor(m => m.Title)<label><span>*</span></label>
+            </div>
+
+            <div class="col-lg-8 col-md-8 col-sm-6 col-xs-6">
+                @Html.TextBoxFor(m => m.Title)
+                <div class="validation">
+                    @Html.ValidationMessageFor(model => model.Title)
+                </div>
+            </div>
+        </div>
+
+        <div class="row marginbottom">
+            <div class="col-lg-4 col-md-4 col-sm-6 col-xs-6">
+                @Html.LabelFor(m => m.Description)
+            </div>
+
+            <div class="col-lg-8 col-md-8 col-sm-6 col-xs-6">
+                @Html.TextAreaFor(m => m.Description)
+                <div class="validation">
+                    @Html.ValidationMessageFor(model => model.Description)
+                </div>
+            </div>
+        </div>
+
+        <div class="row marginbottom">
+            <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3">
+                @Html.LabelFor(m => m.AssigneeDisplayName, "Assignee")<label><span>*</span></label>
+            </div>
+
+            <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3">
+                @(Html.Kendo().DropDownListFor(m => m.AssigneeDisplayName)
+                                .BindTo((IEnumerable)ViewBag.Users)
+                                .Filter("contains")
+                                .OptionLabel("Unassigned")
+                                .DataValueField("EmailAddress")
+                                .DataTextField("DisplayName")
+                                .HtmlAttributes(new { @class = "form-control input-md" }))
+                <div class="validation">
+                    @Html.ValidationMessageFor(model => model.AssigneeDisplayName)
+                </div>
+                <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3">
+                    @Html.LabelFor(m => m.AssignedBy)
+                </div>
+                <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3">
+                    @Html.TextBoxFor(m => m.AssignedBy,new { disabled="disabled"})
+                </div>
+            </div>
+        </div>
+        <div class="row marginbottom">
+            <div class="col-lg-4 col-md-4 col-sm-6 col-xs-6">
+                @Html.LabelFor(m => m.CreatedDate)
+            </div>
+
+            <div class="col-lg-8 col-md-8 col-sm-6 col-xs-6">
+                @(Html.Kendo().DatePickerFor(m => m.CreatedDate))
+                <div class="validation">
+                    @Html.ValidationMessageFor(model => model.CreatedDate)
+                </div>
+            </div>
+        </div>
+        <div class="row marginbottom">
+            <div class="col-lg-4 col-md-4 col-sm-6 col-xs-6">
+                @Html.LabelFor(m => m.TimeAllocated, "Estimate")
+            </div>
+
+            <div class="col-lg-8 col-md-8 col-sm-6 col-xs-6">
+                @(Html.Kendo().MaskedTextBoxFor(m => m.TimeAllocated)
+                  .Mask("00:00"))
+                <div class="validation">
+                    @Html.ValidationMessageFor(model => model.TimeAllocated)
+                </div>
+            </div>
+        </div>
+        <div class="row marginbottom">
+            <div class="col-lg-4 col-md-4 col-sm-6 col-xs-6">
+                @Html.LabelFor(m => m.State, "Status")
+            </div>
+
+            <div class="col-lg-8 col-md-8 col-sm-6 col-xs-6">
+               @(Html.Kendo().DropDownListFor(m=>m.State)                      
+                      .DataTextField("Text")
+                      .DataValueField("Value")                      
+                      .BindTo(new List<SelectListItem>() {
+                          new SelectListItem() {
+                              Text = "New",
+                              Value = "New"
+                          }
+                      })
+                      .SelectedIndex(0))
+            <div class="validation">
+                @Html.ValidationMessageFor(model => model.TimeAllocated)
+            </div>
+            </div>
+        </div>
+    </div>
+</div>
