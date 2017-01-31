@@ -514,6 +514,7 @@
     <Content Include="Css\style.min.css" />
     <Content Include="Css\summernote.css" />
     <Content Include="Css\_notes\dwsync.xml" />
+    <Content Include="DatabaseScripts\db _clean.sql" />
     <Content Include="font-awesome\css\font-awesome.css" />
     <Content Include="font-awesome\css\font-awesome.min.css" />
     <Content Include="font-awesome\css\_notes\dwsync.xml" />
