@@ -137,9 +137,7 @@ span.k-add {
     padding: 0;
     cursor: pointer;
 }
-.k-textbox>input, .k-autocomplete .k-input, .k-picker-wrap .k-input, .k-numeric-wrap .k-input, .k-dropdown-wrap .k-input, .k-selectbox .k-input{
-    height:2em!important;
-}
+
 
 
 /*Loader css - Start*/
