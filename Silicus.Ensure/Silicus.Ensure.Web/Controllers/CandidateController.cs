@@ -40,6 +40,12 @@ namespace Silicus.Ensure.Web.Controllers
             if (user == null)
                 return RedirectToAction("LogOff", "CandidateAccount");
             UserTestSuite userTestSuite = _testSuiteService.GetUserTestSuiteByUserId(user.UserId);
+            if (userTestSuite == null)
+            {
+                ViewBag.Status = 1;
+                ViewBag.Msg = "No test is assigned for you, kindly contact admin.";
+                return View("Welcome", new TestSuiteCandidateModel());
+            }
             TestSuiteCandidateModel testSuiteCandidateModel = _mappingService.Map<UserTestSuite, TestSuiteCandidateModel>(userTestSuite);
             var specialInstruction = GetSpecialInstruction(userTestSuite.TestSuiteId);
             testSuiteCandidateModel.SpecialInstruction = specialInstruction;
@@ -72,7 +78,7 @@ namespace Silicus.Ensure.Web.Controllers
             if (userTestSuite == null)
             {
                 ViewBag.Status = 1;
-                ViewBag.Msg = "Test suite is not assigned for you, kindly contact admin.";
+                ViewBag.Msg = ViewBag.Msg = "No test is assigned for you, kindly contact admin.";
                 return View("Welcome", new TestSuiteCandidateModel());
             }
 
