@@ -44,6 +44,7 @@ namespace Silicus.FrameworxProject.Web.Controllers
             var _authorizationService = new Authorization(_commonDbService.GetCommonDataBaseContext());
             var userRoles = _authorizationService.GetRoleForUtility(User.Identity.Name, utility);
             ViewBag.IsRolePm = userRoles.Contains("Project Manager");
+            ViewBag.CurrentUser = User.Identity.Name;
             //  if (ViewBag.IsRolePm)
             // {
             ViewBag.Users = _commonDbService.GetAllUsers();
@@ -127,6 +128,18 @@ namespace Silicus.FrameworxProject.Web.Controllers
             var productBacklogViewModel = _mapper.Map<ProductBacklog, ProductBacklogViewModel>(productBacklog);
 
             return PartialView("_Details", productBacklogViewModel);
+        }
+
+        [AcceptVerbs(HttpVerbs.Post)]
+        public ActionResult AddWorkItem([DataSourceRequest] DataSourceRequest request, ProductBacklogViewModel productBacklogViewModel,string projectName)
+        {
+            if (productBacklogViewModel != null && ModelState.IsValid)
+            {                
+                var productBacklog = _mapper.Map<ProductBacklogViewModel,ProductBacklog>(productBacklogViewModel);
+                _productBacklogService.AddWorkItem(productBacklog, projectName);
+            }
+
+            return Json(new[] { productBacklogViewModel }.ToDataSourceResult(request, ModelState));
         }
     }
 }
