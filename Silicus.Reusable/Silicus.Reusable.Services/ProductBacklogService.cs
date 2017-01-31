@@ -9,9 +9,11 @@ using Silicus.FrameworxProject.Models;
 using Silicus.FrameworxProject.Services.Interfaces;
 using Silicus.Reusable.Services;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Linq;
+using System.Web.Mvc;
 
 namespace Silicus.FrameworxProject.Services
 {
@@ -21,15 +23,12 @@ namespace Silicus.FrameworxProject.Services
         Uri _uri = new Uri(ConfigurationManager.AppSettings["TfsApiuri"]);
         private readonly IDataContextFactory _dataContextFactory;
         private readonly IFrameworxProjectDatabaseContext _FrameworxProjectDatabaseContext;
-
-
         public ProductBacklogService(IDataContextFactory dataContextFactory)
         {
             _dataContextFactory = dataContextFactory;
             _FrameworxProjectDatabaseContext = _dataContextFactory.CreateFrameworxProjectDbContext();
 
         }
-
         public IEnumerable<ProductBacklog> GetAllProductBacklog(string projectName)
         {
             Wiql wiql = new Wiql()
@@ -37,7 +36,7 @@ namespace Silicus.FrameworxProject.Services
                 Query = "Select * " +
                         "From WorkItems " +
                         "Where System.TeamProject='" + projectName + "' " +
-                        "Order By [State] Asc, [Changed Date] Desc"
+                        "Order By [Changed Date] Desc"
             };
 
             using (WorkItemTrackingHttpClient workItemTrackingHttpClient = new WorkItemTrackingHttpClient(_uri, _credentials))
@@ -99,7 +98,6 @@ namespace Silicus.FrameworxProject.Services
                 return results;
             }
         }
-
         public IEnumerable<TeamProjectReference> GetTeamProjects()
         {
             // create project object
@@ -109,18 +107,14 @@ namespace Silicus.FrameworxProject.Services
                 return projects;
             }
         }
-
         public WorkItem UpdateTimeAllocated(ProductBacklog productBacklog)
         {
-            return UpdateWorkItem(productBacklog.Id, "Microsoft.VSTS.Scheduling.OriginalEstimate", productBacklog.TimeAllocated);
+            return UpdateWorkItem(productBacklog.Id.Value, "Microsoft.VSTS.Scheduling.OriginalEstimate", productBacklog.TimeAllocated);
         }
-
-
         public WorkItem UpdateTimeSpent(ProductBacklog productBacklog)
         {
-            return UpdateWorkItem(productBacklog.Id, "Microsoft.VSTS.Scheduling.CompletedWork", productBacklog.TimeSpent);
+            return UpdateWorkItem(productBacklog.Id.Value, "Microsoft.VSTS.Scheduling.CompletedWork", productBacklog.TimeSpent);
         }
-
         private WorkItem UpdateWorkItem(int workItemId, string paramName, object paramValue)
         {
             JsonPatchDocument patchDocument = new JsonPatchDocument();
@@ -140,12 +134,12 @@ namespace Silicus.FrameworxProject.Services
                 return result;
             }
         }
-
         public ProductBacklog GetWorkItemDetails(int id)
         {
             var fields = new string[] {
                 "System.Id",
                 "System.Title",
+                "System.Description",
                 "System.State",
                 "System.WorkItemType",
                 "System.AreaPath",
@@ -159,22 +153,23 @@ namespace Silicus.FrameworxProject.Services
             using (WorkItemTrackingHttpClient workItemTrackingHttpClient = new WorkItemTrackingHttpClient(_uri, _credentials))
             {
                 WorkItem result = workItemTrackingHttpClient.GetWorkItemAsync(id, fields).Result;
-               
+
                 var backlogItem = new ProductBacklog()
                 {
                     Id = int.Parse(result.Fields["System.Id"].ToString()),
                     Title = result.Fields["System.Title"].ToString(),
                     State = result.Fields["System.State"].ToString(),
+                    Description = result.Fields.ContainsKey("System.Description") ? result.Fields["System.Description"].ToString() : "",
                     Type = result.Fields.ContainsKey("System.WorkItemType") ? result.Fields["System.WorkItemType"].ToString() : Constants.InformationNotAvailableText,
                     AreaPath = result.Fields.ContainsKey("System.AreaPath") ? result.Fields["System.AreaPath"].ToString() : Constants.InformationNotAvailableText,
                     TimeAllocated = result.Fields.ContainsKey("Microsoft.VSTS.Scheduling.OriginalEstimate") ? (double)result.Fields["Microsoft.VSTS.Scheduling.OriginalEstimate"] : 0.00,
-                    TimeSpent = result.Fields.ContainsKey("Microsoft.VSTS.Scheduling.CompletedWork") ? (double)result.Fields["Microsoft.VSTS.Scheduling.CompletedWork"] : 0.0,                   
+                    TimeSpent = result.Fields.ContainsKey("Microsoft.VSTS.Scheduling.CompletedWork") ? (double)result.Fields["Microsoft.VSTS.Scheduling.CompletedWork"] : 0.0,
                     CreatedDate = (DateTime)result.Fields["System.CreatedDate"],
-                    ChangedDate = (DateTime)result.Fields["System.ChangedDate"]
+                    ChangedDate = result.Fields.ContainsKey("System.ChangedDate") ?(DateTime)result.Fields["System.ChangedDate"] : DateTime.Now
                 };
 
                 var detailsFromDb = _FrameworxProjectDatabaseContext.Query<ProductBacklog>().FirstOrDefault(t => t.Id == backlogItem.Id);
-                if(detailsFromDb != null)
+                if (detailsFromDb != null)
                 {
                     backlogItem.AssigneeDisplayName = detailsFromDb.AssigneeDisplayName;
                     backlogItem.AssignedBy = detailsFromDb.AssignedBy;
@@ -183,8 +178,6 @@ namespace Silicus.FrameworxProject.Services
                 return backlogItem;
             }
         }
-
-
         public void UpdateAssignee(ProductBacklog productBacklog)
         {
             if (_FrameworxProjectDatabaseContext.Query<ProductBacklog>().Any(t => t.Id == productBacklog.Id))
@@ -195,6 +188,72 @@ namespace Silicus.FrameworxProject.Services
             {
                 _FrameworxProjectDatabaseContext.Add<ProductBacklog>(productBacklog);
             }
+        }
+        public void AddWorkItem(ProductBacklog productBacklog, string projectName)
+        {
+            JsonPatchDocument patchDocument = new JsonPatchDocument();
+            
+            patchDocument.Add(
+               new JsonPatchOperation()
+               {
+                   Operation = Operation.Add,
+                   Path = "/fields/System.Title",
+                   Value = productBacklog.Title
+               }
+           );
+
+            patchDocument.Add(
+             new JsonPatchOperation()
+             {
+                 Operation = Operation.Add,
+                 Path = "/fields/System.Description",
+                 Value = productBacklog.Description
+             }
+         );
+
+            patchDocument.Add(
+              new JsonPatchOperation()
+              {
+                  Operation = Operation.Add,
+                  Path = "/fields/System.State",
+                  Value = productBacklog.State
+              }
+          );
+
+            patchDocument.Add(
+            new JsonPatchOperation()
+            {
+                Operation = Operation.Add,
+                Path = "/fields/Microsoft.VSTS.Scheduling.OriginalEstimate",
+                Value = productBacklog.TimeAllocated
+            }
+        );
+
+            patchDocument.Add(
+           new JsonPatchOperation()
+           {
+               Operation = Operation.Add,
+               Path = "/fields/System.CreatedDate",
+               Value = productBacklog.CreatedDate
+           }
+       );
+
+
+            using (WorkItemTrackingHttpClient workItemTrackingHttpClient = new WorkItemTrackingHttpClient(_uri, _credentials))
+            {
+                WorkItem result = workItemTrackingHttpClient.CreateWorkItemAsync(patchDocument, projectName, productBacklog.Type).Result;
+                if (result != null)
+                {
+                    productBacklog.Id = result.Id;
+                    _FrameworxProjectDatabaseContext.Add<ProductBacklog>(productBacklog);
+                }
+            }
+
+        }
+
+        public bool IsFrameworxUser(string emailAddress)
+        {
+            return _FrameworxProjectDatabaseContext.Query<FrameworxUser>().Any(u => u.EmailAddress == emailAddress);
         }
     }
 }

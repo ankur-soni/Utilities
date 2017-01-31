@@ -304,6 +304,8 @@ namespace Silicus.FrameworxProject.DAL
 
             });
 
+            context.FrameworxUsers.Add(new FrameworxUser { Id = 1, EmailAddress = "Amit.Khandelwal@silicus.com" });
+
 
         }
     }

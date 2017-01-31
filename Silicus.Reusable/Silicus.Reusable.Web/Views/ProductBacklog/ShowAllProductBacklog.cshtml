@@ -16,7 +16,7 @@
             var currenRow = grid.table.find("tr[data-uid='" + currentUid + "']");
             var assignButton = $(currenRow).find(".k-grid-Assign");
             var updateButton = $(currenRow).find(".k-grid-Update");
-            var acceptButton = $(currenRow).find(".k-grid-Accept");            
+            var acceptButton = $(currenRow).find(".k-grid-Accept");
             if (gridData[i].AssigneeDisplayName != "Unassigned" && gridData[i].AssigneeDisplayName != "") {
                 if (assignButton) {
                     assignButton.text("Re Assign");
@@ -32,11 +32,19 @@
             }
         }
 
-        $(".hours").kendoMaskedTextBox({
-            mask: "00 : 00",
-            change: onHrsChange
-        });
+        $(".hours").off('change').on('change',onHrsChange);
 
+    }
+
+    function productBacklogsErrorHandler(){
+        showAlert({ title: 'Error', text: 'Error fetching product backlogs..', type: 'error', timer: 2000 });
+    }
+
+    function requestEnd(e){        
+        if(e.type === "create"){
+            showAlert({ title: 'Work item added successfully!', text: 'Workitem has been added successfully!', type: 'success',timer:2000});
+            this.read();
+        }
     }
 
 </script>
@@ -61,26 +69,26 @@
             <div class="header-walloffame">
                 <span>Projects</span>
                 @(Html.Kendo().DropDownList()
-                  .Name("projects")
-                  .DataTextField("Name")
-                  .DataValueField("Name")
-                  .Events(e => e.Change("onProjectChange").DataBound("onProjectDataBound"))
-                    .Filter("contains")
-                  .DataSource(source =>
-                  {
-                      source.Custom()
-                      .ServerFiltering(false)
-                      .Type("aspnetmvc-ajax")
-                      .Transport(transport =>
-                      {
-                          transport.Read("GetProjects", "ProductBacklog");
-                      })
-                      .Schema(schema =>
-                      {
-                          schema.Data("Data")
-                              .Total("Total");
-                      });
-                  })
+                .Name("projects")
+                .DataTextField("Name")
+                .DataValueField("Name")
+                .Events(e => e.Change("onProjectChange").DataBound("onProjectDataBound"))
+                .Filter("contains")
+                .DataSource(source =>
+                {
+                    source.Custom()
+                    .ServerFiltering(false)
+                    .Type("aspnetmvc-ajax")
+                    .Transport(transport =>
+                    {
+                        transport.Read("GetProjects", "ProductBacklog");
+                    })
+                    .Schema(schema =>
+                    {
+                        schema.Data("Data")
+                    .Total("Total");
+                    });
+                })
                 )
             </div>
         </div>
@@ -98,10 +106,13 @@
                 .Events(e => e.DataBound("onProductBacklogsDataBound"))
                 .DataSource(dataSource => dataSource
                 .Ajax()
+                .Events(events => events.Error("productBacklogsErrorHandler").RequestEnd("requestEnd"))
                 .Model(model =>
                 {
                     model.Id(p => p.Id);
+                    model.Field(p => p.AssignedBy).DefaultValue(ViewBag.CurrentUser);
                 })
+                .Create(update => update.Action("AddWorkItem", "ProductBacklog").Data("additionalData"))
                 .Read(read => read.Action("GetProductBacklogs", "ProductBacklog").Data("additionalData"))
                 .PageSize(20)
                 )
@@ -113,29 +124,34 @@
                     columns.Bound(p => p.Type).Width(10);
                     columns.Bound(p => p.AreaPath).Width(30).Title("Area");
                     columns.Bound(p => p.AssigneeDisplayName).Width(50).Title("Assigned To");
-                    columns.Bound(p => p.TimeAllocated).Width(10).Title("Time Allocated (Hrs)").ClientTemplate("<input class='allocated-hours hours' id=#=Id# value='#=toHHMM(TimeAllocated)#'  #=(Assignee == 'Unassigned' || TimeAllocated == '0')?'':'disabled'# />");
-                    columns.Bound(p => p.TimeSpent).Width(10).Title("Time Spent (Hrs)").ClientTemplate("<input value='#=toHHMM(TimeSpent)#' class='spent-hours hours'  #=Assignee == 'Unassigned'?'':'disabled'#/>");
+                    columns.Bound(p => p.TimeAllocated).Width(10).Title("Time Allocated (hours)").ClientTemplate("<input  class='allocated-hours hours' id=#=Id#  value='#=TimeAllocated#'  #= (AssigneeDisplayName == 'Unassigned' || TimeAllocated=='0') ? ' ' : 'disabled' # />");
+                    columns.Bound(p => p.TimeSpent).Width(10).Title("Time Spent (hours)").ClientTemplate("<input value='#=TimeSpent#' class='spent-hours hours' #= (AssigneeDisplayName == 'Unassigned') ? ' ' : 'disabled' #  />");
                     columns.Bound(p => p.State).Width(10);
                     columns.Command(command =>
                     {
                         command.Custom("Accept").Click("accept");
-
-                        //  if (isRolePm)
-                        // {
-                        command.Custom("Assign").Click("openAssignUserForm");
-                        // }
+                        if ((bool)isRolePm)
+                        {
+                            command.Custom("Assign").Click("openAssignUserForm");
+                        }
                         command.Custom("Update").Click("openUpdateForm");
                     }).Width(40).Title("Actions");
                 })
-                 .Scrollable()
-                 .Editable(editable => editable.Mode(GridEditMode.PopUp))
-                 .Filterable(ftb => ftb.Mode(GridFilterMode.Row))
-                 .Resizable(resize => resize.Columns(true))
+                .Scrollable()
+                .Editable(editable => editable.Mode(GridEditMode.PopUp))
+                .Filterable(ftb => ftb.Mode(GridFilterMode.Row))
+                .Resizable(resize => resize.Columns(true))
                 .HtmlAttributes(new { style = "height: 750px;" })
                 .Sortable()
                 .Pageable(pageable => pageable
                 .Refresh(true))
-                .Editable(ed => ed.Mode(GridEditMode.InLine))
+                .ToolBar(toolbar => {
+                    if ((bool)ViewBag.IsFrameworxUser)
+                    {
+                        toolbar.Create();
+                    }
+                })
+                .Editable(ed => ed.Mode(GridEditMode.PopUp).TemplateName("ProductBacklogEditTemplate"))
             )
 
         </div>
@@ -177,6 +193,6 @@
     Title = "Update",
     CloseButtonVisible = true,
     SaveButtonVisible = true,
-    ContentHtml = "<lable> Time  Spent <input id='update-time'#/></label>",
+    ContentHtml = "<label>Time  Spent <input id='update-time' /></label>",
     SaveButtonOnlickEvent = "update()"
 })
