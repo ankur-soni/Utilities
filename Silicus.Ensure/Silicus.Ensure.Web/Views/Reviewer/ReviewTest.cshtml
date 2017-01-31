@@ -11,14 +11,7 @@
 <div class="main-content" id="main">
     <div class="fluid mt20">
         <div id="DivTestSummary">
-            @Html.Partial("_TestSummary", new TestSummaryViewModel()
-       {
-           Objective =
-               new TestViewModel(),
-           Practical = new TestViewModel()
-       })
-
-
+            @Html.Partial("_TestSummary", @Model.TestSummary)
         </div>
 
         <div class="row">
@@ -33,7 +26,7 @@
             <div class="col-md-6">
                 @Html.Partial("_CandidateInfo", Model.CandidateInfo)
             </div>
-            
+
         </div>
 
         <div class="row">
@@ -116,7 +109,6 @@
         // Hide Submit button of popup. Show when to want submit test.
         $("#btnSubmitTestOK").hide();
 
-        debugger;
         // Load First Question On page Load.
         var userTestSuiteId = $("#UserTestSuiteId").val();
         var url = "/Reviewer/LoadQuestion?userTestSuiteId=";
@@ -124,7 +116,7 @@
 
 
 
-       
+
 
         $("#btnSubmitEvalution").on("click", submitEvalution);
         $("#SubmitCandidateResult").on("click", submitCandidateResult);
@@ -137,10 +129,10 @@
     }
 
     function UpdateCurrentReviewAndLoadNewOne(questionId) {
+        updateTestSummary();
         var questionNavigationDetails = GetCurrentQuestionStatus();
         UpdateCurrentQuestionNavigationStatus(questionNavigationDetails);
         MarkAsViewed(questionId);
-        UpdateAndGetQuestionReview(questionId);
     }
 
 
@@ -186,7 +178,7 @@
         return result;
     }
 
-    
+
 
     function OnNext(e) {
         var questionId = $('#btnNext').attr('data-id');
@@ -211,6 +203,7 @@
     }
 
     function UpdateAndGetQuestionReview(questionId) {
+        updateTestSummary();
         var answer = GetAnswer();
         var userTestSuiteId = $("#UserTestSuiteId").val();
         var userTestDetailId = $("#UserTestDetailId").val();
@@ -219,8 +212,54 @@
         var comment = $("#Comment").val();
         var marks = $("#ReviwerMark").val();
         var reviewerQuestionDetails = { QuestionId: questionId, UserTestSuiteId: userTestSuiteId, UserTestDetailId: userTestDetailId, Comment: comment, Marks: marks };
-        $('#QuestionDetails').load('/Reviewer/UpdateReviewAndGetQuestionDetails', reviewerQuestionDetails);
+        //$('#QuestionDetails').load('/Reviewer/UpdateReviewAndGetQuestionDetails', reviewerQuestionDetails);
+        $.ajax({
+            url: "/Reviewer/UpdateReviewAndGetQuestionDetails",
+            cache: false,
+            dataType: "html",
+            data:reviewerQuestionDetails,
+            success: function (data) {
+                $("#QuestionDetails").html('');
+                $("#QuestionDetails").html(data);
+            }
+        });
     }
+
+    function updateTestSummary() {
+        var QuestionNumber = $("#QuestionNumber").val();
+        var QuestionType = $("#QuestionType").val();
+        var IsCorrectAnswer = false;
+        if (QuestionType == 2) {
+            var marks = parseInt($("#ReviwerMark").val());
+            marks = isNaN(marks) ? 0 : marks;
+            IsCorrectAnswer = marks > 0 ? true : false;
+
+            var totalObtainedMarks = parseInt($("#totalObtainedMarks").html());
+            totalObtainedMarks = isNaN(totalObtainedMarks) ? 0 : totalObtainedMarks;
+
+            if (IsCorrectAnswer) {
+                var oldValue = parseInt($("#practicalCorrectAnswersCount").html());
+                oldValue = isNaN(oldValue) ? 0 : oldValue;
+                $("#practicalCorrectAnswersCount").html(oldValue + 1);
+                $("#practicalMarksObtained").html(oldValue + marks);
+                $("#totalObtainedMarks").html(totalObtainedMarks + marks);
+            }
+            else {
+                var oldValue = parseInt($("#practicalIncorrectAnswersCount").html());
+                oldValue = isNaN(oldValue) ? 0 : oldValue;
+                $("#practicalIncorrectAnswersCount").html(oldValue + 1);
+            }
+            var totalMaximumMarks = parseInt($("#totalMaximumMarks").html());
+            totalMaximumMarks = isNaN(totalMaximumMarks) ? 0 : totalMaximumMarks;
+            $("#percentage").html(calculatePercentage(totalObtainedMarks, totalMaximumMarks));
+
+        }
+    }
+
+    function calculatePercentage(earned, total) {
+        return ((earned / total) * 100);
+    }
+
 
     function GetAnswer() {
         var answer = "";
@@ -263,14 +302,64 @@
 
 
     function submitEvalution() {
-        $("#testresultPopup").modal('show');
+        var answer = GetAnswer();
+        var userTestSuiteId = $("#UserTestSuiteId").val();
+        var userTestDetailId = $("#UserTestDetailId").val();
+        var questionType = $("#QuestionType").val();
+        var candidateId = $("#UserId").val();
+        var comment = $("#Comment").val();
+        var marks = $("#ReviwerMark").val();
+        var questionId = $(this).find('input').attr('id');
+        var reviewerQuestionDetails = { QuestionId: questionId, UserTestSuiteId: userTestSuiteId, UserTestDetailId: userTestDetailId, Comment: comment, Marks: marks };
+        // $('#QuestionDetails').load('/Reviewer/UpdateReviewAndGetQuestionDetails', reviewerQuestionDetails);
+        $.ajax({
+            type: "POST",
+            url: "/Reviewer/SumbmitTestReview",
+            contentType: "application/json; charset=utf-8",
+            data: JSON.stringify(reviewerQuestionDetails),
+            dataType: "json",
+            success: function (data) {
+                if (data)
+                    $("#testresultPopup").modal('show');
+                else
+                {
+                    $("#testresultPopup").modal('hide');
+                    ShowSweetAlertWithoutCancel("Warning!", "Please Review and Mark all Question Before Submit evaluation !", "warning");
+                }
+            }
+        });
+        
     }
 
     function submitCandidateResult() {
         var validator = $("#frmTestresult").data("kendoValidator");
+        var userId = $("#UserId").val();
+        var userTestSuiteId = $("#UserTestSuiteId").val();
         if (validator.validate()) {
             var formdata = new FormData($('form').get(0));
-            formdata.append('CandidateUserId', 19);
+            formdata.append('CandidateUserId', userId);
+            formdata.append('UserTestSuiteId', userTestSuiteId);
+
+            $.ajax({
+                url: '@Url.Action("SumbmitCandidateResult", "Reviewer")',
+                type: 'POST',
+                data: formdata,
+                processData: false,
+                contentType: false,
+                success: function (msg) {
+                    $("#testresultPopup").modal('hide');
+                    window.location.href = "/Admin/Candidates";
+                }
+            });
+        }
+    }
+
+    function SumbmitTestReview() {
+        var validator = $("#frmTestresult").data("kendoValidator");
+        var userId = $("#UserId").val();
+        if (validator.validate()) {
+            var formdata = new FormData($('form').get(0));
+            formdata.append('CandidateUserId', userId);
 
             $.ajax({
                 url: '@Url.Action("SumbmitCandidateResult", "Candidate")',
@@ -284,6 +373,7 @@
             });
         }
     }
+    
 
 
 

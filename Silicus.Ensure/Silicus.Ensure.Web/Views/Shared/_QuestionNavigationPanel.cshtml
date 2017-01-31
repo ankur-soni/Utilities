@@ -1,83 +1,110 @@
 ﻿@model Silicus.Ensure.Web.Models.Test.QuestionNavigationViewModel
 <style>
     .radio, .checkbox {
-        position: relative;
-        display: inline-block;
-        margin: 3px;
     }
 
     input[type=checkbox] {
-        height: 20px !important;
-        width: 25px !important;
+    }
+
+    .QuestionCheckbox {
+        color: #337ab7 !important;
+    }
+
+    .UnSeen {
+        color: #ffffff !important;
     }
 </style>
 <div style="width:100px" id="NavigationSection">
 
     @{
-        var roles=Silicus.Ensure.Web.MvcApplication.getCurrentUserRoles();
+        var roles = Silicus.Ensure.Web.MvcApplication.getCurrentUserRoles();
         var isReviewer = roles.Contains(Silicus.Ensure.Models.Constants.RoleName.Recruiter.ToString());
 
         if (Model != null && Model.Practical != null && Model.Practical.Count > 0)
         {
-            <div>Practical <span>@Model.Practical.Count </span></div>
-            foreach (var question in Model.Practical)
-            {
-                if (isReviewer?question.IsReviewed: question.IsAnswered)
-                {
-                    <span class="QuestionCheckbox checkbox checkbox-success">
-                        <input class="Answered" type="checkbox" id="@question.QuestionId" checked />
-                        <label for="@question.QuestionId"></label>
-                    </span>
-                }
-                else if (question.IsViewedOnly)
-                {
-                    <span class="QuestionCheckbox checkbox checkbox-success">
-                        <input class="Viewed" type="checkbox" id="@question.QuestionId" />
-                        <label for="@question.QuestionId"></label>
-                    </span>
-                }
-                
-                else
-                {
-                    <span class="QuestionCheckbox checkbox checkbox-success">
-                        <input type="checkbox" id="@question.QuestionId" />
-                        <label for="@question.QuestionId"></label>
-                    </span>
-                }
-            }
-        }
+            <table>
+                <thead>Practical @Model.Practical.Count</thead>
+                @{ int count = 0;
+                 foreach (var question in Model.Practical)
+                 {
+                     if (count == 0)
+                     {
+                        @Html.Raw("<tr>" + count);
 
+                     }
+                     if (isReviewer ? question.IsReviewed : question.IsAnswered)
+                     {
+                        <td id="@question.QuestionId" class="QuestionCheckbox">
+                            <div class="QuestionCheckboxInnerDiv fa fa-check-square"></div>
+                            <div class="font-color-blue">@question.QuestionId</div>
+                        </td>
+                     }
+                     else if (question.IsViewedOnly)
+                     {
+                        <td id="@question.QuestionId" class="QuestionCheckbox">
+                            <div class="QuestionCheckboxInnerDiv fa fa-square"></div>
+                            <div class="font-color-blue">@question.QuestionId</div>
+                        </td>
+                     }
+                     else
+                     {
+                        <td id="@question.QuestionId" class="QuestionCheckbox">
+                            <div class="QuestionCheckboxInnerDiv UnSeen"></div>
+                            <div class="font-color-blue">@question.QuestionId</div>
+                        </td>
+                     }
+                     if (count % 3 == 2 || count == Model.Practical.Count - 1)
+                     {
+                        @Html.Raw("</tr>");
+                                          count = 0;
+                     }
+                     count++;
+                 }
+                }
+            </table>
+        }
         if (Model != null && Model.Objective != null && Model.Objective.Count > 0)
         {
-            <div>Objective <span>@Model.Objective.Count </span></div>
-            foreach (var question in Model.Objective)
-            {
+            <table>
+                <thead>Objective @Model.Objective.Count</thead>
+                @{ int count = 0;
+                 foreach (var question in Model.Objective)
+                 {
+                     if (count == 0)
+                     {
+                        @Html.Raw("<tr>");
+                     }
+                     if (isReviewer ? question.IsReviewed : question.IsAnswered)
+                     {
+                        <td id="@question.QuestionId" class="QuestionCheckbox">
+                            <div class="QuestionCheckboxInnerDiv fa fa-check-square"></div>
+                            <div class="font-color-blue">@question.QuestionId</div>
+                        </td>
+                     }
+                     else if (question.IsViewedOnly)
+                     {
+                        <td id="@question.QuestionId">
+                            <div class="QuestionCheckboxInnerDiv fa fa-square"></div>
+                            <div class="font-color-blue">@question.QuestionId</div>
+                        </td>
+                     }
+                     else
+                     {
+                        <td id="@question.QuestionId" class="QuestionCheckbox">
+                            <div class="QuestionCheckboxInnerDiv UnSeen"></div>
+                            <div class="font-color-blue">@question.QuestionId</div>
+                        </td>
+                     }
+                     if (count % 3 == 2 || count == Model.Practical.Count - 1)
+                     {
+                        @Html.Raw("</tr>");
+                                          count = 0;
+                     }
+                     count++;
+                 }
 
-                if (isReviewer || question.IsAnswered)
-                {
-                    <span class="QuestionCheckbox checkbox checkbox-success">
-                        <input class="Answered" type="checkbox" id="@question.QuestionId" checked />
-                        <label for="@question.QuestionId"></label>
-                    </span>
                 }
-                else if (question.IsViewedOnly)
-                {
-                    <span class="QuestionCheckbox checkbox checkbox-success">
-                        <input class="Viewed" type="checkbox" id="@question.QuestionId" />
-                        <label for="@question.QuestionId"></label>
-                    </span>
-                }
-                else
-                {
-                    <span class="QuestionCheckbox checkbox checkbox-success">
-                        <input type="checkbox" id="@question.QuestionId" />
-                        <label for="@question.QuestionId"></label>
-                    </span>
-                }
-            }
+            </table>
         }
     }
 </div>
-
-
-

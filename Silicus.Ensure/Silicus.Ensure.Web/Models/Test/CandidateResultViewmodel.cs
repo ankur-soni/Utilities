@@ -14,5 +14,7 @@ namespace Silicus.Ensure.Web.Models.Test
         public CandidateStatus Status { get; set; }
         [Required]
         public string ReviewerComment { get; set; }
+
+        public int UserTestSuiteId { get; set; }
     }
 }

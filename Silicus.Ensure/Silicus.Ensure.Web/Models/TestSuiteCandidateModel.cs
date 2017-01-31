@@ -16,5 +16,6 @@ namespace Silicus.Ensure.Web.Models
         public string SpecialInstruction { get; set; }
         public QuestionNavigationViewModel NavigationDetails { get; set; }
         public CandidateInfoViewModel CandidateInfo { get; set; }
+        public TestSummaryViewModel TestSummary { get; set; }
     }
 }

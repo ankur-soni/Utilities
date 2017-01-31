@@ -34,7 +34,11 @@
         </div>*@
     <div class="row top-header bbl">
         <div class="col-sm-4 col-xs-6">
-            <div class="pll ptm pbs"><img src="~/Images/logo.jpg" class="mts mbs" alt="Silicus Logo" title="Silicus Encloud" /></div>
+            <div class="pll ptm pbs">
+                <a href="@Url.Action("Index","Home")">
+                    <img src="~/Images/logo.jpg" class="mts mbs" alt="Silicus Logo" title="Silicus Encloud" />
+                </a>
+            </div>
         </div>
         <div class="col-sm-8 col-xs-6">
             <div class="text-center">
@@ -91,49 +95,51 @@
                             }
                             @if (roles.Count() != 0)
                             {
-                                <ul class="nav metismenu" id="side-menu">
-                                    <li class="active"><a href="@Url.Action("Index", "Home")"><i class="fa fa-dashboard"></i> <span class="nav-label">Dashboard</span></a></li>
+                            <ul class="nav metismenu" id="side-menu">
+                                <li class="active">
+                                    <a href="@Url.Action("Index", "Home")">
+                                        <i class="fa fa-dashboard"></i>
+                                        <span class="nav-label">Dashboard</span>
+                                    </a>
+                                </li>
+                                @if (roles.Contains("Manager"))
+                                    {
                                     <li>
                                         <a href="#"><i class="fa fa-user"></i><span class="nav-label">Nominations</span> <span class="fa arrow"></span></a>
                                         <ul class="nav nav-second-level">
-                                            @if (roles.Contains("Manager"))
-                                            {
-                                                <li><a href="@Url.Action("AddNomination", "Nomination")" class="active">Add Nominations</a></li>
-                                                    <li><a href="@Url.Action("GetNominationList", "Nomination")" class="active">Edit Nominations</a></li>
-                                            }
+
+                                            <li><a href="@Url.Action("AddNomination", "Nomination")" class="active">Add Nominations</a></li>
+                                            <li><a href="@Url.Action("GetNominationList", "Nomination")" class="active">Edit Nominations</a></li>
                                         </ul>
                                     </li>
+                                    }
+                                @if (roles.Contains("Reviewer"))
+                                    {
                                     <li>
                                         <a href="#"><i class="fa fa-file-text-o"></i><span class="nav-label">Reviews</span><span class="fa arrow"></span></a>
                                         <ul class="nav nav-second-level">
-                                            @if (roles.Contains("Reviewer"))
-                                            {
-                                                <li><a href="@Url.Action("ReviewNominations", "Nomination")" class="active">Pending Reviews</a></li>
-                                                    <li><a href="@Url.Action("SavedReviews", "Nomination")" class="active">Submitted Reviews</a></li>
-
-
-                                            }
+                                            <li><a href="@Url.Action("ReviewNominations", "Nomination")" class="active">Pending Reviews</a></li>
+                                            <li><a href="@Url.Action("SavedReviews", "Nomination")" class="active">Submitted Reviews</a></li>
                                         </ul>
                                     </li>
-
-
-                                    <!-- admin role only -->
-                                    @if (roles.Contains("Admin"))
-                                    {
-                                        <li>
-                                            <a href="#"><i class="fa fa-user-circle-o"></i><span class="nav-label">Admin</span><span class="fa arrow"></span></a>
-                                            <ul class="nav nav-second-level">
-                                                @if (roles.Contains("Admin"))
-                                                {
-                                                    <li><a href="@Url.Action("ConsolidatedNominations", "Review" )">Consolidated Nominations</a></li>
-                                                    <li><a href="@Url.Action("ReviewFeedbackList", "Review")" class="active">Shortlisted Nominations</a></li>
-                                                    <li><a href="@Url.Action("Index", "Email" )">Email Template</a></li>
-                                                    <li><a href="@Url.Action("SetAwardPeriod","Review")">Set Award Period</a></li>
-                                                }
-                                            </ul>
-                                        </li>
                                     }
-                                </ul>
+                                <!-- admin role only -->
+                                @if (roles.Contains("Admin"))
+                                    {
+                                    <li>
+                                        <a href="#"><i class="fa fa-user-circle-o"></i><span class="nav-label">Admin</span><span class="fa arrow"></span></a>
+                                        <ul class="nav nav-second-level">
+                                            @if (roles.Contains("Admin"))
+                                                {
+                                                <li><a href="@Url.Action("ConsolidatedNominations", "Review" )">Consolidated Nominations</a></li>
+                                                <li><a href="@Url.Action("ReviewFeedbackList", "Review")" class="active">Shortlisted Nominations</a></li>
+                                                <li><a href="@Url.Action("Index", "Email" )">Email Template</a></li>
+                                                <li><a href="@Url.Action("SetAwardPeriod","Review")">Set Award Period</a></li>
+                                                }
+                                        </ul>
+                                    </li>
+                                    }
+                            </ul>
                             }
                             <!--End of if-->
                         </div>

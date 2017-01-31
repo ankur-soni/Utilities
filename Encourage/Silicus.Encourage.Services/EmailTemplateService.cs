@@ -26,9 +26,14 @@ namespace Silicus.Encourage.Services
             _commonDataBaseContext = commonDbService.GetCommonDataBaseContext();
         }
 
-        public EmailTemplate GetEmailTemplate(string templateName)
+        public EmailTemplate GetEmailTemplate(int templateId)
         {
-            return _encourageDatabaseContext.Query<EmailTemplate>().FirstOrDefault(t => t.TemplateName == templateName);
+            return _encourageDatabaseContext.Query<EmailTemplate>().FirstOrDefault(t => t.Id == templateId);
+        }
+
+        public List<EmailTemplate> GetAllTemplates()
+        {
+            return _encourageDatabaseContext.Query<EmailTemplate>().ToList();
         }
 
         public List<User> GetAllManagers()
@@ -78,12 +83,25 @@ namespace Silicus.Encourage.Services
             }
         }
 
-        public string SaveEmailTemplate(string templateName, string updatedTemplate)
+        public string UpdateEmailTemplate(int templateId, string updatedTemplate)
         {
-            var toBeUpdatedTemplate =  _encourageDatabaseContext.Query<EmailTemplate>().FirstOrDefault(t => t.TemplateName == templateName);
+            var toBeUpdatedTemplate =  _encourageDatabaseContext.Query<EmailTemplate>().FirstOrDefault(t => t.Id == templateId);
             toBeUpdatedTemplate.Template = updatedTemplate;
-            var returnedValue = _encourageDatabaseContext.Update<EmailTemplate>(toBeUpdatedTemplate);
+            var returnedValue = _encourageDatabaseContext.Update(toBeUpdatedTemplate);
+            if (returnedValue == 0)
+            {
+                return "Error";
+            }
             return "Success";
+        }
+
+        public EmailTemplate SaveEmailTemplate(string templateName, string template)
+        {
+            EmailTemplate newTemplate = new EmailTemplate();
+            newTemplate.TemplateName = templateName;
+            newTemplate.Template = template;
+
+            return _encourageDatabaseContext.Add(newTemplate);
         }
     }
 }

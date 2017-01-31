@@ -454,7 +454,7 @@
     }
     function edValueKeyPress(key) {
         $('div.textarea' + key + '').html(text_remaining + ' characters remaining').show();
-        var text_max = 500;
+        var text_max = 450;
 
         var text_length = $('#comment' + key + '').val().length;
         var text_remaining = text_max - text_length;
@@ -462,7 +462,7 @@
     }
 
     function hideRemainingCharacterText(key) {
-        var text_max = 500;
+        var text_max = 450;
 
         var commentTextAreaId = '#comment' + key;
         var text_length = $(commentTextAreaId).val().length;
@@ -552,7 +552,6 @@
             }
             if (comments < 1) {
                 $("#criterisCommentValidationmessage").parent().show();
-                //$("#criterisCommentValidationmessage").text("Enter at least one criteria comment");
                 $("#criterisCommentValidationmessage").text("Comment is mandatory if rating is provided for a criteria!");
                 return false;
             } else if (!checkIfCommentsAreRequired()) {
@@ -561,7 +560,7 @@
             else {
                 swal({
                     title: "Submit Nomination",
-                    text: "Do you want to nominate this candidate?",
+                    text: "Are you sure you want to proceed with this nomination?",
                     type: "info",
                     showCancelButton: true,
                     confirmButtonColor: "#337ab7",
@@ -572,11 +571,9 @@
                 },
                     function (isConfirm) {
                         if (isConfirm) {
-                            showCustomLoader();
                             var modelbjectToSend = $('#addNominationForm').serialize() + '&' + $.param({ 'submit': "Submit" }, true);
 
                             showCustomLoader();
-
                             $.ajax({
                                 type: 'post',
                                 url: '@Url.Action("AddNomination", "Nomination")',
@@ -601,7 +598,7 @@
                                                 window.location.href = '/Nomination/GetNominationList';
                                             }
                                         });
-                                    } else {
+                                    } else if (data.success) {
                                         swal({
                                             title: "Nomination Submitted!",
                                             text: "",
@@ -616,15 +613,18 @@
                                                 window.location.href = '/Nomination/GetNominationList';
                                             }
                                         });
+                                    } else {
+                                        swal("Error", "Oops! Something went wrong. Error while saving nomination :( ", "error");
                                     }
+
                                 },
                                 error: function (error) {
                                     hideCustomLoader();
                                     if (error.responseText != null && error.responseText != undefined && error.responseText != '') {
-                                        swal("Error", error.responseText.replace(/['"]+/g, ''));
+                                        swal("Error", error.responseText.replace(/['"]+/g, ''), "error");
                                     }
                                     else {
-                                        swal("Error", "Oops! Something wrong happened..");
+                                        swal("Error", "Oops! Something went wrong ..","error");
                                     }
                                 }
                             });

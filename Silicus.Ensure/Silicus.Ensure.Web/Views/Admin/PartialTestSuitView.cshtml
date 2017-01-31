@@ -70,7 +70,7 @@
                         </div>
                         <div class="col-md-6" style="padding-right:0">
                             <div class="col-md-6" style="padding-left:0">
-                                <span style="vertical-align:central">Practical&nbsp;&nbsp;&nbsp;</span>
+                                <span style="vertical-align:central">Practical &nbsp;&nbsp;&nbsp;</span>
                             </div>
                             <div class="col-md-6" style="padding-left:0">
                                 @Html.DisplayFor(m => m.PracticalQuestion, new { @class = "form-control" })
@@ -133,6 +133,7 @@
             </div>
             <br />
             <br />
+            @*<a class="k-button k-button-icontext " href="/Reviewer/ReviewTest?UserId=@Model.Userid &TestSuiteId=@Model.TestSuiteId"><span class="k-icon k-edit"></span>Preview</a>*@
             <a class="k-button k-button-icontext " href="/Admin/ViewQuestion?TestSuiteId=@Model.TestSuiteId"><span class="k-icon k-edit"></span>Preview</a>
         </div>
 

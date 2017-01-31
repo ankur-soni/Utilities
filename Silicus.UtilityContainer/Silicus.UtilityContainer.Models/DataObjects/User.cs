@@ -17,17 +17,15 @@ namespace Silicus.UtilityContainer.Models.DataObjects
         public bool OverrideTimeZone { get; set; }
         public int TimezoneID { get; set; }
         public string EmployeeID { get; set; }
-        public bool IsClient { get; set; }
-        public int? ClientID { get; set; }
+        public Nullable<int> ClientID { get; set; }
         public int PrimaryRoleID { get; set; }
-        public int PrimaryRoleCostCenterID { get; set; }
         public string OfficePhone { get; set; }
         public string MobilePhone { get; set; }
         public string AddressLine1 { get; set; }
         public string AddressLine2 { get; set; }
-        public DateTime? ActiveDate { get; set; }
-        public DateTime? InactiveDate { get; set; }
-        public int IdentityProviderID { get; set; }
+        public Nullable<System.DateTime> ActiveDate { get; set; }
+        public Nullable<System.DateTime> InactiveDate { get; set; }
         public string ApplicationAuthUserID { get; set; }
+        public virtual Client Client { get; set; }
     }
 }

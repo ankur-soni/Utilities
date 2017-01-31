@@ -22,6 +22,8 @@ namespace Silicus.Ensure.Models.DataObjects
 
         public DateTime? MarkGivenDate { get; set; }
 
+        public string ReviwerComment { get; set; }
+
         public virtual UserTestSuite UserTestSuite { get; set; }
     }
 }

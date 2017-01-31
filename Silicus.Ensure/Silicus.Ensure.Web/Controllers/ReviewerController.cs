@@ -21,14 +21,16 @@ namespace Silicus.Ensure.Web.Controllers
         private readonly IMappingService _mappingService;
         private readonly IUserService _userService;
         private readonly ITestSuiteService _testSuiteService;
+        private readonly Silicus.UtilityContainer.Services.Interfaces.IUserService _containerUserService;
 
-        public ReviewerController(IEmailService emailService, IQuestionService questionService, MappingService mappingService, IUserService userService, ITestSuiteService testSuiteService)
+        public ReviewerController(IEmailService emailService, IQuestionService questionService, MappingService mappingService, IUserService userService, ITestSuiteService testSuiteService,Silicus.UtilityContainer.Services.Interfaces.IUserService containerUserService)
         {
             _emailService = emailService;
             _questionService = questionService;
             _mappingService = mappingService;
             _userService = userService;
             _testSuiteService = testSuiteService;
+            _containerUserService = containerUserService;
         }
 
         // GET: Reviewer
@@ -44,20 +46,18 @@ namespace Silicus.Ensure.Web.Controllers
         }
 
 
-        public ActionResult ReviewTest()
+        public ActionResult ReviewTest(int UserId, int TestSuiteId)
         {
             if (!ModelState.IsValid)
                 return RedirectToAction("LogOff", "CandidateAccount");
 
-            var userEmail = "rp@gmail.com";
-            User user = _userService.GetUserByEmail(userEmail);
+            User user = _userService.GetUserById(UserId);
             if (user == null)
             {
                 ViewBag.Status = 1;
                 ViewBag.Msg = "User not found for online test, Kindly contact admin.";
                 return View("Welcome");
             }
-
             UserTestSuite userTestSuite = _testSuiteService.GetUserTestSuiteByUserId(user.UserId);
             if (userTestSuite == null)
             {
@@ -65,26 +65,58 @@ namespace Silicus.Ensure.Web.Controllers
                 ViewBag.Msg = "Test suite is not assigned for you, Kindly contact admin.";
                 return View("Welcome");
             }
-
             TestSuiteCandidateModel testSuiteCandidateModel = _mappingService.Map<UserTestSuite, TestSuiteCandidateModel>(userTestSuite);
             testSuiteCandidateModel.CandidateInfo = GetCandidateInfo(user);
             testSuiteCandidateModel.NavigationDetails = GetNavigationDetails(testSuiteCandidateModel.UserTestSuiteId);
             testSuiteCandidateModel.TotalQuestionCount = testSuiteCandidateModel.PracticalCount + testSuiteCandidateModel.ObjectiveCount;
             testSuiteCandidateModel.DurationInMin = testSuiteCandidateModel.Duration;
-
+            testSuiteCandidateModel.TestSummary = GetTestSummary(testSuiteCandidateModel.UserTestSuiteId);
             return View(testSuiteCandidateModel);
+        }
 
+        private TestSummaryViewModel GetTestSummary(int userTestSuiteId)
+        {
+            var testSummaryBusinessModel = _testSuiteService.GetTestSummary(userTestSuiteId);
+            var testSummary = _mappingService.Map<TestSummaryBusinessModel, TestSummaryViewModel>(testSummaryBusinessModel);
+            testSummary = testSummary ?? new TestSummaryViewModel();
+            return testSummary;
         }
 
         public ActionResult UpdateReviewAndGetQuestionDetails(QuestionDetailsViewModel questionDetails)
         {
             questionDetails.QuestionType = _testSuiteService.GetQuestionType(questionDetails.QuestionId);
             questionDetails.Answer = HttpUtility.HtmlDecode(questionDetails.Answer);
-            UpdateReview(questionDetails.Marks,questionDetails.Comment, questionDetails.UserTestDetailId);
+            UpdateReview(questionDetails.Marks, questionDetails.Comment, questionDetails.UserTestDetailId);
             var reviewerQuestionViewModel = ReviewTestSuiteQuestion(questionDetails.QuestionId, questionDetails.UserTestSuiteId, questionDetails.QuestionType);
 
             return PartialView("_ReviewerViewQuestion", reviewerQuestionViewModel);
         }
+
+        [HttpPost]
+        public JsonResult SumbmitTestReview(QuestionDetailsViewModel questionDetails)
+        {
+
+            questionDetails.QuestionType = _testSuiteService.GetQuestionType(questionDetails.QuestionId);
+            questionDetails.Answer = HttpUtility.HtmlDecode(questionDetails.Answer);
+            UpdateReview(questionDetails.Marks, questionDetails.Comment, questionDetails.UserTestDetailId);
+            var IsAllQuestionEvaluated =  _testSuiteService.IsAllQuestionEvaluated(questionDetails.UserTestSuiteId);
+
+           return Json(IsAllQuestionEvaluated);
+        }
+
+        [HttpPost]
+        public JsonResult SumbmitCandidateResult(CandidateResultViewmodel candidateResultViewmodel)
+        {
+            var user = _userService.GetUserById(candidateResultViewmodel.CandidateUserId);
+            user.CandidateStatus = candidateResultViewmodel.Status.ToString();
+            _userService.Update(user);
+            var userTestSuitedetails = _testSuiteService.GetUserTestSuiteByUserId(candidateResultViewmodel.CandidateUserId);
+            userTestSuitedetails.StatusId = (int)candidateResultViewmodel.Status;
+            userTestSuitedetails.FeedBack = candidateResultViewmodel.ReviewerComment;
+            _testSuiteService.UpdateUserTestSuite(userTestSuitedetails);
+            return Json(true);
+        }
+
 
 
         #region private
@@ -124,11 +156,19 @@ namespace Silicus.Ensure.Web.Controllers
                 return totalExperienceInYear;
         }
 
-        private void UpdateReview(int mark,string comment, int? userTestDetailId)
+        private void UpdateReview(int mark, string comment, int? userTestDetailId)
         {
             UserTestDetails userTestDetails = _testSuiteService.GetUserTestDetailsId(userTestDetailId);
             userTestDetails.Mark = mark;
-            //userTestDetails.Comment=comment
+            
+            Silicus.UtilityContainer.Models.DataObjects.User user= _containerUserService.FindUserByEmail(HttpContext.User.Identity.Name);
+            if(user!=null)
+            {
+                userTestDetails.MarkGivenBy = user.ID;
+                userTestDetails.MarkGivenByName = user.DisplayName;
+            }
+            userTestDetails.MarkGivenDate = DateTime.Now;
+            userTestDetails.ReviwerComment = comment;
             _testSuiteService.UpdateUserTestDetails(userTestDetails);
         }
 
