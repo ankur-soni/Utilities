@@ -9,24 +9,22 @@
     <div class="acastatus">
         <div class="row marginbottom">
             <div class="col-lg-4 col-md-4 col-sm-6 col-xs-6">
-                @Html.LabelFor(m => m.AreaPath, "Project")<label><span>*</span></label>
+                @Html.LabelFor(m => m.Area, "Area")<label><span>*</span></label>
             </div>
 
             <div class="col-lg-8 col-md-8 col-sm-6 col-xs-6">
-                @(Html.Kendo().DropDownListFor(m => m.AreaPath)
+                @(Html.Kendo().DropDownListFor(m => m.Area)
                                     .DataTextField("Name")
                                     .DataValueField("Name")
                                     .Filter("contains")
                                      .HtmlAttributes(new { style = "width: 100%;" })
                                     .DataSource(source =>
                                     {
-                                        source.Custom()
+                                        source
+                                        .Read(read => read.Action("GetAreas", "ProductBacklog").Data("additionalData"))
+                                        .Custom()                                       
                                         .ServerFiltering(false)
-                                        .Type("aspnetmvc-ajax")
-                                        .Transport(transport =>
-                                        {
-                                            transport.Read("GetProjects", "ProductBacklog");
-                                        })
+                                        .Type("aspnetmvc-ajax")                                        
                                         .Schema(schema =>
                                         {
                                             schema.Data("Data")
@@ -35,7 +33,7 @@
                                     })
                 )
                 <div class="validation">
-                    @Html.ValidationMessageFor(model => model.AreaPath)
+                    @Html.ValidationMessageFor(model => model.Area)
                 </div>
             </div>
         </div>
@@ -47,7 +45,7 @@
             <div class="col-lg-8 col-md-8 col-sm-6 col-xs-6">
                 @(Html.Kendo().DropDownListFor(m => m.Type)
                       .DataTextField("Text")
-                      .DataValueField("Value")                      
+                      .DataValueField("Value")
                       .BindTo(new List<SelectListItem>() {
                            new SelectListItem() {
                               Text = "Task",
@@ -56,8 +54,28 @@
                           new SelectListItem() {
                               Text = "Bug",
                               Value = "Bug"
+                          },
+                          new SelectListItem() {
+                              Text = "Epic",
+                              Value = "Epic"
+                          },
+                           new SelectListItem() {
+                              Text = "Feature",
+                              Value = "Feature"
+                          },
+                            new SelectListItem() {
+                              Text = "Issue",
+                              Value = "Issue"
+                          },
+                             new SelectListItem() {
+                              Text = "Test Case",
+                              Value = "Test Case"
+                          },
+                             new SelectListItem() {
+                              Text = "User Story",
+                              Value = "User Story"
                           }
-                      }))                     
+                      }))                   
                 <div class="validation">
                     @Html.ValidationMessageFor(model => model.Type)
                 </div>
@@ -91,11 +109,11 @@
         </div>
 
         <div class="row marginbottom">
-            <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3">
+            <div class="col-lg-4 col-md-4 col-sm-6 col-xs-6">
                 @Html.LabelFor(m => m.AssigneeDisplayName, "Assignee")<label><span>*</span></label>
             </div>
 
-            <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3">
+            <div class="col-lg-8 col-md-8 col-sm-6 col-xs-6">
                 @(Html.Kendo().DropDownListFor(m => m.AssigneeDisplayName)
                                 .BindTo((IEnumerable)ViewBag.Users)
                                 .Filter("contains")
@@ -104,16 +122,23 @@
                                 .DataTextField("DisplayName")
                                 .HtmlAttributes(new { @class = "form-control input-md" }))
                 <div class="validation">
-                    @Html.ValidationMessageFor(model => model.AssigneeDisplayName)
-                </div>
-                <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3">
-                    @Html.LabelFor(m => m.AssignedBy)
-                </div>
-                <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3">
-                    @Html.TextBoxFor(m => m.AssignedBy,new { disabled="disabled"})
+                   @Html.ValidationMessageFor(model => model.AssigneeDisplayName)
                 </div>
             </div>
         </div>
+
+        <div class="row marginbottom">
+            <div class="col-lg-4 col-md-4 col-sm-6 col-xs-6">
+                @Html.LabelFor(m => m.AssignedBy,"Assigned By")
+            </div>
+
+            <div class="col-lg-8 col-md-8 col-sm-6 col-xs-6">
+                @Html.TextBoxFor(m => m.AssignedBy, new { disabled = "disabled" })
+                <div class="validation">
+                    @Html.ValidationMessageFor(model => model.AssignedBy)
+                </div>
+            </div>
+        </div>        
         <div class="row marginbottom">
             <div class="col-lg-4 col-md-4 col-sm-6 col-xs-6">
                 @Html.LabelFor(m => m.CreatedDate)
@@ -128,7 +153,7 @@
         </div>
         <div class="row marginbottom">
             <div class="col-lg-4 col-md-4 col-sm-6 col-xs-6">
-                @Html.LabelFor(m => m.TimeAllocated, "Estimate")
+                @Html.LabelFor(m => m.TimeAllocated, "Estimate (hours)")
             </div>
 
             <div class="col-lg-8 col-md-8 col-sm-6 col-xs-6">

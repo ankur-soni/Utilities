@@ -77,7 +77,7 @@
                 .DataSource(source =>
                 {
                     source.Custom()
-                    .ServerFiltering(false)
+                    .ServerFiltering(false)                    
                     .Type("aspnetmvc-ajax")
                     .Transport(transport =>
                     {
@@ -103,7 +103,7 @@
                 ()
                 .Name("productBacklogs")
                 .AutoBind(false)
-                .Events(e => e.DataBound("onProductBacklogsDataBound"))
+                .Events(e => e.DataBound("onProductBacklogsDataBound").Edit("onRowEdit"))
                 .DataSource(dataSource => dataSource
                 .Ajax()
                 .Events(events => events.Error("productBacklogsErrorHandler").RequestEnd("requestEnd"))
@@ -122,7 +122,7 @@
                     columns.Bound(p => p.Id).Width(10);
                     columns.Bound(p => p.Title).Width(50).ClientTemplate(@"<a href='\\#' onclick='openDetails(#=Id#)'>#=Title#</a>");
                     columns.Bound(p => p.Type).Width(10);
-                    columns.Bound(p => p.AreaPath).Width(30).Title("Area");
+                    columns.Bound(p => p.Area).Width(30).Title("Area");
                     columns.Bound(p => p.AssigneeDisplayName).Width(50).Title("Assigned To");
                     columns.Bound(p => p.TimeAllocated).Width(10).Title("Time Allocated (hours)").ClientTemplate("<input  class='allocated-hours hours' id=#=Id#  value='#=TimeAllocated#'  #= (AssigneeDisplayName == 'Unassigned' || TimeAllocated=='0') ? ' ' : 'disabled' # />");
                     columns.Bound(p => p.TimeSpent).Width(10).Title("Time Spent (hours)").ClientTemplate("<input value='#=TimeSpent#' class='spent-hours hours' #= (AssigneeDisplayName == 'Unassigned') ? ' ' : 'disabled' #  />");
@@ -130,10 +130,10 @@
                     columns.Command(command =>
                     {
                         command.Custom("Accept").Click("accept");
-                        if ((bool)isRolePm)
-                        {
+                      //  if ((bool)isRolePm)
+                     //   {
                             command.Custom("Assign").Click("openAssignUserForm");
-                        }
+                      //  }
                         command.Custom("Update").Click("openUpdateForm");
                     }).Width(40).Title("Actions");
                 })
@@ -146,10 +146,10 @@
                 .Pageable(pageable => pageable
                 .Refresh(true))
                 .ToolBar(toolbar => {
-                    if ((bool)ViewBag.IsFrameworxUser)
-                    {
+                    //if ((bool)ViewBag.IsFrameworxUser)
+                   // {
                         toolbar.Create();
-                    }
+                  //  }
                 })
                 .Editable(ed => ed.Mode(GridEditMode.PopUp).TemplateName("ProductBacklogEditTemplate"))
             )
@@ -190,9 +190,9 @@
 @Html.Partial("_BootstrapModalTemplate", new Silicus.Reusable.Web.Models.ViewModel.BootstrapModalTemplateViewModel()
 {
     Id = "updateFormModal",
-    Title = "Update",
+    Title = "Update Spent Time",
     CloseButtonVisible = true,
     SaveButtonVisible = true,
-    ContentHtml = "<label>Time  Spent <input id='update-time' /></label>",
+    ContentHtml = "<label>Time  Spent (hours) <input id='update-time' /></label>",
     SaveButtonOnlickEvent = "update()"
 })
