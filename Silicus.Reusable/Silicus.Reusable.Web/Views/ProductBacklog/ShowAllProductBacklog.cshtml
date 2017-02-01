@@ -130,10 +130,10 @@
                     columns.Command(command =>
                     {
                         command.Custom("Accept").Click("accept");
-                      //  if ((bool)isRolePm)
-                     //   {
+                        if ((bool)isRolePm)
+                        {
                             command.Custom("Assign").Click("openAssignUserForm");
-                      //  }
+                        }
                         command.Custom("Update").Click("openUpdateForm");
                     }).Width(40).Title("Actions");
                 })
@@ -146,10 +146,10 @@
                 .Pageable(pageable => pageable
                 .Refresh(true))
                 .ToolBar(toolbar => {
-                    //if ((bool)ViewBag.IsFrameworxUser)
-                   // {
+                    if ((bool)ViewBag.IsFrameworxUser)
+                    {
                         toolbar.Create();
-                  //  }
+                    }
                 })
                 .Editable(ed => ed.Mode(GridEditMode.PopUp).TemplateName("ProductBacklogEditTemplate"))
             )
