@@ -71,21 +71,21 @@
                 </div>
                 <div class="table-responsive M-T30">
                     <table class="table table-striped">
-                            @if (Model.Tags != null)
-                            {
-                                if (Model.Tags.Count() > 0)
-                                {
-                                    for (int i = 0; i < Model.Tags.Count(); i++)
-                                    {
+                           
                         <thead>
                             <tr>
                                 <th>Skill tag name</th>
-                                @*<th id="tag_title_row @Convert.ToString(i)">Skill tag @Convert.ToString(i + 1)</th>*@
-                                <th id="weight_title_row @Convert.ToString(i)">Weightage % @*@Convert.ToString(i + 1)*@</th>
-                                <th id="efficiency_title_row @Convert.ToString(i)">Efficiency @*@Convert.ToString(i + 1)*@</th>
+                                <th>Weightage % </th>
+                                <th>Efficiency</th>
                             </tr>
                         </thead>
 
+@if (Model.Tags != null)
+{
+    if (Model.Tags.Count() > 0)
+    {
+        for (int i = 0; i < Model.Tags.Count(); i++)
+        {
                         <tbody>
                             <tr>
                                 
