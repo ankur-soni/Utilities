@@ -540,7 +540,7 @@
                             // On Click Of "Delete" button of any Option
                             function OptionDelete() {
                                 var param = this.element.attr("param");
-                                $.when(showConfirmationWindow('Are you sure,  you want to delete this record?', 'Delete')).then(function (confirmed) {
+                                $.when(showConfirmationWindow('Are you sure,  you want to delete this record?', '&nbsp;Delete')).then(function (confirmed) {
                                     if (confirmed) {
                                 OptionDispaly('D', param);
                             }
