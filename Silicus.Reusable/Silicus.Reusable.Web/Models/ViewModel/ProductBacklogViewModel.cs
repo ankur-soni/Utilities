@@ -12,8 +12,7 @@ namespace Silicus.Reusable.Web.Models.ViewModel
         public string Title { get; set; }
         public string Description { get; set; }
         public string Type { get; set; }
-        [Display(Name = "Area")]
-        public string AreaPath { get; set; }
+        public string Area { get; set; }
         [Display(Name ="Status")]
         public string State { get; set; }
         [Display(Name = "Assignee")]
