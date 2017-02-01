@@ -47,10 +47,10 @@ namespace Silicus.FrameworxProject.Web.Controllers
             ViewBag.IsRolePm = userRoles.Contains("Project Manager");
             ViewBag.CurrentUser = User.Identity.Name;
             ViewBag.IsFrameworxUser = _productBacklogService.IsFrameworxUser(User.Identity.Name);
-            //if (ViewBag.IsRolePm || ViewBag.IsFrameworxUser)
-            //{
+            if (ViewBag.IsRolePm || ViewBag.IsFrameworxUser)
+            {
                 ViewBag.Users = _commonDbService.GetAllUsers();
-           // }
+            }
             return View();
         }
 
