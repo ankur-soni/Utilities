@@ -72,6 +72,6 @@ function onRowEdit(e) {
         $(".k-window-title").html("Add");        
     } else {
         $(".k-window-title").html("Edit");        
-    }
+    }    
 }
 

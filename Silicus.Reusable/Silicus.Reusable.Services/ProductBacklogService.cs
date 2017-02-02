@@ -52,21 +52,27 @@ namespace Silicus.FrameworxProject.Services
 
                     foreach (var item in workItems)
                     {
-                        productBacklogs.Add(new ProductBacklog()
+
+                        var productBacklogItem = new ProductBacklog()
                         {
                             Id = int.Parse(item.Fields["System.Id"].ToString()),
                             Title = item.Fields["System.Title"].ToString(),
                             State = item.Fields["System.State"].ToString(),
                             Type = item.Fields.ContainsKey("System.WorkItemType") ? item.Fields["System.WorkItemType"].ToString() : Constants.InformationNotAvailableText,
                             Area = item.Fields.ContainsKey("System.AreaPath") ? item.Fields["System.AreaPath"].ToString() : Constants.InformationNotAvailableText,
-                            AssigneeDisplayName = detailsFromDb.Any(t => t.Id == item.Id) ? detailsFromDb.FirstOrDefault(t => t.Id == item.Id).AssigneeDisplayName : "Unassigned",
                             AssigneeEmail = detailsFromDb.Any(t => t.Id == item.Id) ? detailsFromDb.FirstOrDefault(t => t.Id == item.Id).AssigneeEmail : "",
                             AssignedBy = detailsFromDb.Any(t => t.Id == item.Id) ? detailsFromDb.FirstOrDefault(t => t.Id == item.Id).AssignedBy : "",
                             TimeAllocated = item.Fields.ContainsKey("Microsoft.VSTS.Scheduling.OriginalEstimate") ? (double)item.Fields["Microsoft.VSTS.Scheduling.OriginalEstimate"] : 0.00,
                             TimeSpent = item.Fields.ContainsKey("Microsoft.VSTS.Scheduling.CompletedWork") ? (double)item.Fields["Microsoft.VSTS.Scheduling.CompletedWork"] : 0.0,
                             CreatedDate = (DateTime)item.Fields["System.CreatedDate"],
                             ChangedDate = (DateTime)item.Fields["System.ChangedDate"]
-                        });
+                        };
+                        productBacklogItem.AssigneeDisplayName = detailsFromDb.Any(t => t.Id == item.Id) ? detailsFromDb.FirstOrDefault(t => t.Id == item.Id).AssigneeDisplayName : "Unassigned";
+
+                        if (string.IsNullOrWhiteSpace(productBacklogItem.AssigneeDisplayName))
+                            productBacklogItem.AssigneeDisplayName = "Unassigned";
+
+                        productBacklogs.Add(productBacklogItem);
                     }
 
                     return productBacklogs;
@@ -172,6 +178,10 @@ namespace Silicus.FrameworxProject.Services
                 if (detailsFromDb != null)
                 {
                     backlogItem.AssigneeDisplayName = detailsFromDb.AssigneeDisplayName;
+                    if (string.IsNullOrWhiteSpace(backlogItem.AssigneeDisplayName))
+                    {
+                        backlogItem.AssigneeDisplayName = "Unassigned";
+                    }
                     backlogItem.AssignedBy = detailsFromDb.AssignedBy;
                 }
 

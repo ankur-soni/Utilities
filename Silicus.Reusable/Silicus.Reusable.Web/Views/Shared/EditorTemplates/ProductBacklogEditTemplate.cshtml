@@ -16,6 +16,7 @@
                 @(Html.Kendo().DropDownListFor(m => m.Area)
                                     .DataTextField("Name")
                                     .DataValueField("Name")
+                                    .OptionLabel("Select Area")
                                     .Filter("contains")
                                      .HtmlAttributes(new { style = "width: 100%;" })
                                     .DataSource(source =>
@@ -46,6 +47,7 @@
                 @(Html.Kendo().DropDownListFor(m => m.Type)
                       .DataTextField("Text")
                       .DataValueField("Value")
+                      .OptionLabel("Select Type")
                       .BindTo(new List<SelectListItem>() {
                            new SelectListItem() {
                               Text = "Task",
@@ -117,7 +119,7 @@
                 @(Html.Kendo().DropDownListFor(m => m.AssigneeDisplayName)
                                 .BindTo((IEnumerable)ViewBag.Users)
                                 .Filter("contains")
-                                .OptionLabel("Unassigned")
+                                .OptionLabel("Select Assignee")
                                 .DataValueField("EmailAddress")
                                 .DataTextField("DisplayName")
                                 .HtmlAttributes(new { @class = "form-control input-md" }))
@@ -145,7 +147,7 @@
             </div>
 
             <div class="col-lg-8 col-md-8 col-sm-6 col-xs-6">
-                @(Html.Kendo().DatePickerFor(m => m.CreatedDate))
+                @(Html.Kendo().DatePickerFor(m => m.CreatedDate).Enable(false))
                 <div class="validation">
                     @Html.ValidationMessageFor(model => model.CreatedDate)
                 </div>
@@ -156,8 +158,10 @@
                 @Html.LabelFor(m => m.TimeAllocated, "Estimate (hours)")
             </div>
 
-            <div class="col-lg-8 col-md-8 col-sm-6 col-xs-6">
-                @(Html.TextBoxFor(m => m.TimeAllocated))
+            <div class="col-lg-8 col-md-8 col-sm-6 col-xs-6">                
+                @(Html.Kendo().NumericTextBoxFor(m => m.TimeAllocated)                                                
+                        .Min(0)                                            
+                )
                 <div class="validation">
                     @Html.ValidationMessageFor(model => model.TimeAllocated)
                 </div>
@@ -165,22 +169,22 @@
         </div>
         <div class="row marginbottom">
             <div class="col-lg-4 col-md-4 col-sm-6 col-xs-6">
-                @Html.LabelFor(m => m.State, "Status")
+                @Html.LabelFor(m => m.State, "Status")<label><span>*</span></label>
             </div>
 
             <div class="col-lg-8 col-md-8 col-sm-6 col-xs-6">
                @(Html.Kendo().DropDownListFor(m=>m.State)                      
                       .DataTextField("Text")
-                      .DataValueField("Value")                      
+                      .DataValueField("Value")
+                      .OptionLabel("Select State")                      
                       .BindTo(new List<SelectListItem>() {
                           new SelectListItem() {
                               Text = "New",
                               Value = "New"
                           }
-                      })
-                      .SelectedIndex(0))
+                      })                      )
             <div class="validation">
-                @Html.ValidationMessageFor(model => model.TimeAllocated)
+                @Html.ValidationMessageFor(model => model.State)
             </div>
             </div>
         </div>
