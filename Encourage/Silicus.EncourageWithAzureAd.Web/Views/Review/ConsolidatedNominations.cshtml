@@ -100,7 +100,8 @@
                     InsertionMode = InsertionMode.Replace,
                     UpdateTargetId = "dvConsolidatedNominations",
                     OnBegin = "showCustomLoader()",
-                    OnComplete = "hideCustomLoader()"
+                    OnComplete = "hideCustomLoader()",
+                    OnSuccess = "InitializeDatatable()"
                 },
                 new { id = "nominationsFilterForm" }
                 ))
@@ -246,6 +247,11 @@
 
 <script>
     $(document).ready(function () {
+        InitializeDatatable();
+    });
+
+    function InitializeDatatable()
+    {
         var table = $('#consolidatedHrView').DataTable({
             scrollY: "600px",
             scrollX: true,
@@ -263,7 +269,7 @@
       { "width": "70px", "targets": 2 }
             ]
         });
-    });
+    }
 
     var isAnyUnsavedChanges = false;
 

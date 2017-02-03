@@ -45,31 +45,34 @@ namespace Silicus.Encourage.Services
         {
             var shortlistedNomination = _encourageDatabaseContext.Query<Shortlist>().SingleOrDefault(model => model.NominationId == nominationId);
             var currentNomination = _encourageDatabaseContext.Query<Nomination>().FirstOrDefault(x => x.Id == shortlistedNomination.NominationId);
-            var customDate = _customDateService.GetCustomDate(currentNomination.AwardId);
+            if (currentNomination != null)
+            {
+                var customDate = _customDateService.GetCustomDate(currentNomination.AwardId);
 
-            if (shortlistedNomination != null)
-            {
-                shortlistedNomination.IsWinner = true;
-                //shortlistedNomination.WinningDate = DateTime.Now.Date;
-                shortlistedNomination.WinningDate = customDate.Date;
-                shortlistedNomination.WinningComment = winningComment;
-                shortlistedNomination.HrAdminsFeedback = hrAdminsFeedback;
-                shortlistedNomination.AdminId = adminId;
-                _encourageDatabaseContext.Update<Shortlist>(shortlistedNomination);
-            }
-            else
-            {
-                var winner = new Shortlist()
+                if (shortlistedNomination != null)
                 {
-                    IsWinner = true,
-                    NominationId = nominationId,
-                    //WinningDate = DateTime.Now.Date,
-                    WinningDate = customDate.Date,
-                    WinningComment = winningComment,
-                    HrAdminsFeedback = hrAdminsFeedback,
-                    AdminId = adminId
-                };
-                _encourageDatabaseContext.Add<Shortlist>(winner);
+                    shortlistedNomination.IsWinner = true;
+                    //shortlistedNomination.WinningDate = DateTime.Now.Date;
+                    shortlistedNomination.WinningDate = customDate.Date;
+                    shortlistedNomination.WinningComment = winningComment;
+                    shortlistedNomination.HrAdminsFeedback = hrAdminsFeedback;
+                    shortlistedNomination.AdminId = adminId;
+                    _encourageDatabaseContext.Update<Shortlist>(shortlistedNomination);
+                }
+                else
+                {
+                    var winner = new Shortlist()
+                    {
+                        IsWinner = true,
+                        NominationId = nominationId,
+                        //WinningDate = DateTime.Now.Date,
+                        WinningDate = customDate.Date,
+                        WinningComment = winningComment,
+                        HrAdminsFeedback = hrAdminsFeedback,
+                        AdminId = adminId
+                    };
+                    _encourageDatabaseContext.Add<Shortlist>(winner);
+                }
             }
         }
 
