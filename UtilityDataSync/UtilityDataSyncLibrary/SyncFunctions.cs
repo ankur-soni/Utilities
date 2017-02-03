@@ -5,7 +5,8 @@
 using System.IO;
   using System.Linq;
   using System.Reflection;
-using UtilityDataSyncLibrary.Mapping;
+  using System.Text;
+  using UtilityDataSyncLibrary.Mapping;
 
 namespace UtilityDataSyncLibrary
 {
@@ -57,12 +58,19 @@ namespace UtilityDataSyncLibrary
             }
             catch (Exception ex)
             {
-                File.AppendAllText(_path, DateTime.Now.ToString() + ": Error : " + MethodBase.GetCurrentMethod().Name + " : " + ex.Message + Environment.NewLine);
+                StringBuilder sb = new StringBuilder();
+                while (ex.InnerException != null)
+                {
+                    sb.Append(ex.Message);
+                    ex = ex.InnerException;
+                }
+                File.AppendAllText(_path, DateTime.Now.ToString() + ": Error : " + MethodBase.GetCurrentMethod().Name + " : " + sb.ToString() + Environment.NewLine);
             }
         }
 
         public void SyncUsers(EnableDevEntities enableContext, UtilityContainerEntities utilityContainerContext)
         {
+            File.AppendAllText(_path, DateTime.Now.ToString() + " : " + MethodBase.GetCurrentMethod().Name + Environment.NewLine);
             var users = enableContext.vwExt_User.ToList();
             foreach (var vwExtUser in users)
             {
@@ -89,6 +97,7 @@ namespace UtilityDataSyncLibrary
 
         public void SyncEngagements(EnableDevEntities enableContext, UtilityContainerEntities utilityContainerContext)
         {
+            File.AppendAllText(_path, DateTime.Now.ToString() + " : " + MethodBase.GetCurrentMethod().Name + Environment.NewLine);
             var engagements = enableContext.vwExt_Engagement.ToList();
             foreach (var vwExtEngagement in engagements)
             {
@@ -115,6 +124,7 @@ namespace UtilityDataSyncLibrary
 
         public void SyncClients(EnableDevEntities enableContext, UtilityContainerEntities utilityContainerContext)
         {
+            File.AppendAllText(_path, DateTime.Now.ToString() + " : " + MethodBase.GetCurrentMethod().Name + Environment.NewLine);
             File.AppendAllText(_path, MethodBase.GetCurrentMethod().Name + " : " + Environment.NewLine);
             var clients = enableContext.vwExt_Client.ToList();
             foreach (var vwExtClient in clients)
@@ -142,6 +152,7 @@ namespace UtilityDataSyncLibrary
 
         public void SyncResources(EnableDevEntities enableContext, UtilityContainerEntities utilityContainerContext)
         {
+            File.AppendAllText(_path, DateTime.Now.ToString() + " : " + MethodBase.GetCurrentMethod().Name + Environment.NewLine);
             var resources = enableContext.vwExt_Resource.ToList();
             foreach (var vwExtResource in resources)
             {
@@ -168,6 +179,7 @@ namespace UtilityDataSyncLibrary
 
         public void SyncResourceHistories(EnableDevEntities enableContext, UtilityContainerEntities utilityContainerContext)
         {
+            File.AppendAllText(_path, DateTime.Now.ToString() + " : " + MethodBase.GetCurrentMethod().Name + Environment.NewLine);
             var resourceHistories = enableContext.vwExt_ResourceHistory.ToList();
             foreach (var vwExtResourceHistory in resourceHistories)
             {
@@ -194,6 +206,7 @@ namespace UtilityDataSyncLibrary
 
         public void SyncDepartments(EnableDevEntities enableContext, UtilityContainerEntities utilityContainerContext)
         {
+            File.AppendAllText(_path, DateTime.Now.ToString() + " : " + MethodBase.GetCurrentMethod().Name + Environment.NewLine);
             var departments = enableContext.vwExt_Department.ToList();
             try
             {
@@ -227,6 +240,7 @@ namespace UtilityDataSyncLibrary
 
         public void SyncLocations(EnableDevEntities enableContext, UtilityContainerEntities utilityContainerContext)
         {
+            File.AppendAllText(_path, DateTime.Now.ToString() + " : " + MethodBase.GetCurrentMethod().Name + Environment.NewLine);
             var locations = enableContext.vwExt_Location.ToList();
             foreach (var vwExtLocation in locations)
             {
@@ -253,6 +267,7 @@ namespace UtilityDataSyncLibrary
 
         public void SyncEngagementRoles(EnableDevEntities enableContext, UtilityContainerEntities utilityContainerContext)
         {
+            File.AppendAllText(_path, DateTime.Now.ToString() + " : " + MethodBase.GetCurrentMethod().Name + Environment.NewLine);
             var engagementRoles = enableContext.vwExt_EngagementRoles.ToList();
             foreach (var vwExtEngagementRole in engagementRoles)
             {
@@ -279,6 +294,7 @@ namespace UtilityDataSyncLibrary
 
         public void SyncTitles(EnableDevEntities enableContext, UtilityContainerEntities utilityContainerContext)
         {
+            File.AppendAllText(_path, DateTime.Now.ToString() + " : " + MethodBase.GetCurrentMethod().Name + Environment.NewLine);
             var titles = enableContext.vwExt_Title.ToList();
             foreach (var vwExtTitle in titles)
             {
@@ -305,6 +321,7 @@ namespace UtilityDataSyncLibrary
 
         public void SyncResourceSkillLevels(EnableDevEntities enableContext, UtilityContainerEntities utilityContainerContext)
         {
+            File.AppendAllText(_path, DateTime.Now.ToString() + " : " + MethodBase.GetCurrentMethod().Name + Environment.NewLine);
             var ResourceSkillLevels = enableContext.vwExt_ResourceSkillLevel.ToList();
             foreach (var vwExtResourceSkillLevel in ResourceSkillLevels)
             {
@@ -331,6 +348,7 @@ namespace UtilityDataSyncLibrary
 
         public void SyncSkills(EnableDevEntities enableContext, UtilityContainerEntities utilityContainerContext)
         {
+            File.AppendAllText(_path, DateTime.Now.ToString() + " : " + MethodBase.GetCurrentMethod().Name + Environment.NewLine);
             var skills = enableContext.vwExt_Skill.ToList();
             foreach (var vwExtSkill in skills)
             {
@@ -357,6 +375,7 @@ namespace UtilityDataSyncLibrary
 
         public void SyncCompanies(EnableDevEntities enableContext, UtilityContainerEntities utilityContainerContext)
         {
+            File.AppendAllText(_path, DateTime.Now.ToString() + " : " + MethodBase.GetCurrentMethod().Name + Environment.NewLine);
             var companies = enableContext.vwExt_Company.ToList();
             foreach (var vwExtCompany in companies)
             {
@@ -383,6 +402,7 @@ namespace UtilityDataSyncLibrary
 
         public void SyncEngagementTaskTypes(EnableDevEntities enableContext, UtilityContainerEntities utilityContainerContext)
         {
+            File.AppendAllText(_path, DateTime.Now.ToString() + " : " + MethodBase.GetCurrentMethod().Name + Environment.NewLine);
             var engagementTaskTypes = enableContext.vwExt_EngagementTaskTypes.ToList();
             foreach (var vwExtEngagementTaskType in engagementTaskTypes)
             {
@@ -409,6 +429,7 @@ namespace UtilityDataSyncLibrary
 
         public void SyncEngagementTypes(EnableDevEntities enableContext, UtilityContainerEntities utilityContainerContext)
         {
+            File.AppendAllText(_path, DateTime.Now.ToString() + " : " + MethodBase.GetCurrentMethod().Name + Environment.NewLine);
             var engagementTypes = enableContext.vwExt_EngagementType.ToList();
             foreach (var vwExtEngagementType in engagementTypes)
             {
@@ -445,6 +466,7 @@ namespace UtilityDataSyncLibrary
 
         public void SyncResourceTypes(EnableDevEntities enableContext, UtilityContainerEntities utilityContainerContext)
         {
+            File.AppendAllText(_path, DateTime.Now.ToString() + " : " + MethodBase.GetCurrentMethod().Name + Environment.NewLine);
             var resourceTypes = enableContext.vwExt_ResourceType.ToList();
             foreach (var vwExtResourceType in resourceTypes)
             {

@@ -265,10 +265,9 @@
                                 </div>
         <div class="row M-B15">
             <div class="col-sm-12">
-            <div class="col-sm-4 col-md-2 col-lg-2">
+            <div class="col-sm-4 col-md-3 col-lg-2">
                 <span class="themeColorBlue labelAlignMid"><b>Candidate Status</b></span>
-                </div>
-            <div class="col-sm-3 col-md-2 col-lg-2">
+            
                     @(Html.Kendo().DropDownListFor(m => m.CandidateStatus)
                     .Name("CandidateStatus")
                     .DataTextField("Text")
@@ -305,12 +304,11 @@
                     Text=Convert.ToString(CandidateStatus.Rejected.CandidateStatusString()),
                     Value=Convert.ToString(CandidateStatus.Rejected)
                     }
-                    }).HtmlAttributes(new { style = "width: 100%" }))
+                    }).HtmlAttributes(new { style = "width: 100%",@class="M-T5" }))
                 </div>
-            <div class="col-sm-2 col-md-2 col-lg-1">
+            <div class="col-sm-4 col-md-3 col-lg-2">
                 <span class="themeColorBlue labelAlignMid"><b> Positions</b></span>
-                </div>
-            <div class="col-sm-3 col-md-2 col-lg-2">
+                
                     @(Html.Kendo().DropDownList()
                             .Name("Position")
                                     .Events(e => e.Change("PositionChange"))
@@ -319,10 +317,11 @@
                             .DataTextField("Text")
                             .DataValueField("Value")
                             .SelectedIndex(0)
-                            .HtmlAttributes(new { style = "width: 100%" })
+                                    .HtmlAttributes(new { style = "width: 100%", @class = "M-T5" })
                     )
                 </div>
-            <div class="col-sm-4 col-md-3 col-lg-3 cust-mar">
+            <div class="col-sm-4 col-md-3 col-lg-2 cust-mar">
+                
                 <a href='#' onclick='AddNew();' class='k-button k-button-icontext k-grid-add'><span class='k-icon k-add'></span>Add candidate</a>
                                         </div>
                                     </div>

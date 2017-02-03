@@ -50,7 +50,10 @@
     background: rgba(0, 0, 0, 0.4);
     opacity:1;
 }
-
+.outer-box{
+    border:1px solid #e5e6e7;
+    padding:6px;
+}
 
 
 
@@ -121,23 +124,6 @@ span.k-add {
     background-image: url('css/Kendo/2014.1.416/Default/sprite1.png');
     margin-top: -3px;
 }
-.k-upload .k-upload-button {
-    min-width: 7.167em;
-}
-
-.k-upload-button input {
-    position: absolute;
-    bottom: 0;
-    right: 0;
-    z-index: 1;
-    font: 170px monospace!important;
-    filter: alpha(opacity=0);
-    opacity: 0;
-    margin: 0;
-    padding: 0;
-    cursor: pointer;
-}
-
 
 
 /*Loader css - Start*/
@@ -2373,7 +2359,9 @@ span.select2.select2-container.select2-container--default {
     font-size: 15px;
     color: #777;
 }
-
+.cust-mar {
+        margin-top: 30px;
+    }
 /* Candidate portal css*/
 .titleText{color:#337ab7;}
 .btn-start{background: #b4e391; /* Old browsers */
@@ -2429,7 +2417,7 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#b4e391', end
 .panel .panel-heading .panel-title{
     color:#fff!important;
 }
-
+.disBlock{display:block;}
 
 
 
@@ -2512,15 +2500,16 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#b4e391', end
     padding-bottom: 0px;
 }
 
-    .cust-mar {
-        margin-top: 15px;
-    }
+    
      }
 
 @media (max-width:800px) {
 }
 
 @media (max-width:768px) {
+    .cust-mar {
+        margin-top: 15px;
+    }
     .sidebar-wrapper {
         display: none;
     }

@@ -47,7 +47,7 @@ namespace Silicus.FrameworxProject.Web.Controllers
             ViewBag.IsRolePm = userRoles.Contains("Project Manager");
             ViewBag.CurrentUser = User.Identity.Name;
             ViewBag.IsFrameworxUser = _productBacklogService.IsFrameworxUser(User.Identity.Name);
-            if (ViewBag.IsRolePm)
+            if (ViewBag.IsRolePm || ViewBag.IsFrameworxUser)
             {
                 ViewBag.Users = _commonDbService.GetAllUsers();
             }
@@ -57,6 +57,13 @@ namespace Silicus.FrameworxProject.Web.Controllers
         public JsonResult GetProjects([DataSourceRequest] DataSourceRequest request)
         {
             var result = _productBacklogService.GetTeamProjects();
+
+            return Json(result.ToDataSourceResult(request), JsonRequestBehavior.AllowGet);
+        }
+
+        public JsonResult GetAreas([DataSourceRequest] DataSourceRequest request,string projectName)
+        {
+            var result = _productBacklogService.GetAreas(projectName);
 
             return Json(result.ToDataSourceResult(request), JsonRequestBehavior.AllowGet);
         }

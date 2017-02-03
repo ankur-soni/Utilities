@@ -22,8 +22,8 @@ namespace Silicus.Encourage.Services
         }
         public DateTime GetCustomDate(int awardId)
         {
-            var data = _encourageDbcontext.Query<CustomDate>().Where(x => x.AwardId == awardId).FirstOrDefault();
-            var award = _encourageDbcontext.Query<Award>().Where(x => x.Id == awardId).FirstOrDefault();
+            var data = _encourageDbcontext.Query<CustomDate>().FirstOrDefault(x => x.AwardId == awardId);
+            var award = _encourageDbcontext.Query<Award>().FirstOrDefault(x => x.Id == awardId);
 
             var currentDate = new DateTime(DateTime.Now.Year, DateTime.Now.Month,1);
             var somDate = currentDate.AddMonths(-1);
@@ -47,13 +47,13 @@ namespace Silicus.Encourage.Services
             }
             else if (award != null)
             {
-                var awardFrequency = _encourageDbcontext.Query<FrequencyMaster>().Where(x => x.Id == award.FrequencyId).FirstOrDefault();
+                var awardFrequency = _encourageDbcontext.Query<FrequencyMaster>().FirstOrDefault(x => x.Id == award.FrequencyId);
 
-                if (awardFrequency.Code == FrequencyCode.MON.ToString())
+                if (awardFrequency != null && awardFrequency.Code == FrequencyCode.MON.ToString())
                 {
                     return somDate;
                 }
-                else if (awardFrequency.Code == FrequencyCode.YEAR.ToString())
+                if (awardFrequency != null && awardFrequency.Code == FrequencyCode.YEAR.ToString())
                 {
                     return pinnacleDate;
                 }
@@ -64,7 +64,7 @@ namespace Silicus.Encourage.Services
 
         public bool ReSetCustomDate(int awardId)
         {
-            var customDate = _encourageDbcontext.Query<CustomDate>().Where(x => x.AwardId == awardId).FirstOrDefault();
+            var customDate = _encourageDbcontext.Query<CustomDate>().FirstOrDefault(x => x.AwardId == awardId);
             if (customDate != null)
             {
                 _encourageDbcontext.Delete(customDate);
@@ -75,7 +75,7 @@ namespace Silicus.Encourage.Services
 
         public bool SetCustomDate(int awardId, int month, int year, int monthsToSubtract, bool isApplicable)
         {
-            var customDatesForAward = _encourageDbcontext.Query<CustomDate>().Where(x => x.AwardId == awardId).FirstOrDefault();
+            var customDatesForAward = _encourageDbcontext.Query<CustomDate>().FirstOrDefault(x => x.AwardId == awardId);
             if (customDatesForAward != null)
             {
                 if (month > 0)

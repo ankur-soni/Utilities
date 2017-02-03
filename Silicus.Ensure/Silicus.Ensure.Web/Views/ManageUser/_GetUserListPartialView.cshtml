@@ -7,7 +7,7 @@
 }
 
 
-<div class="toolbar" style="height:110px;">
+<div class="toolbar">
     <div class="row">
         <div class="col-sm-12">
             <div class="col-sm-5 col-md-4 col-lg-3 M-T15 M-B15">
@@ -23,10 +23,9 @@
     </div>
     <div class="row M-B15">
         <div class="col-sm-12">
-            <div class="col-sm-3 col-md-2 col-lg-1">
+            <div class="col-sm-4 col-md-3 col-lg-2">
                 <span class="themeColorBlue labelAlignMid"><b>User role</b></span>
-            </div>
-            <div class="col-sm-3 col-md-2 col-lg-2">
+
                 @(Html.Kendo().DropDownListFor(m => m.Role)
                         .Name("Role")
                         .DataTextField("Text")
@@ -36,7 +35,7 @@
                         .Select(x => new SelectListItem { Text = x.Text, Value = x.Text })
                         .Where(y => y.Text != RoleName.Candidate.ToString())
                         .OrderBy(x => x.Text))
-                        .HtmlAttributes(new { style = "width: 100%" })
+                        .HtmlAttributes(new { style = "width: 100%", @class = "M-T5 M-B15" })
                         .OptionLabel("All")
                 )
             </div>

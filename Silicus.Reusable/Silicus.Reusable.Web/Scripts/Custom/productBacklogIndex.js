@@ -6,30 +6,32 @@
     var propName = isAllocatedTime ? "TimeAllocated" : "TimeSpent";
     var url = isAllocatedTime ? "/ProductBacklog/UpdateTimeAllocated" : "/ProductBacklog/UpdateTimeSpent";
     dataItem[propName] = $(this).val();
-    $.ajax({
-        url: url,
-        dataType: "json",
-        type: 'POST',
-        contentType: "application/json; charset=utf-8",
-        data: JSON.stringify(dataItem),
-        success: function (data) {
-            for (var key in data.result) {
-                if (data.result.hasOwnProperty(key)) {
-                    dataItem[key] = data.result[key];
+    if ($(this).val()) {
+        $.ajax({
+            url: url,
+            dataType: "json",
+            type: 'POST',
+            contentType: "application/json; charset=utf-8",
+            data: JSON.stringify(dataItem),
+            success: function (data) {
+                for (var key in data.result) {
+                    if (data.result.hasOwnProperty(key)) {
+                        dataItem[key] = data.result[key];
+                    }
                 }
+                grid.refresh();
+            },
+            error: function () {
+                showAlert({ title: 'Error', text: 'Error occurred while updating  time.', type: 'error', timer: 2000 });
+            },
+            beforeSend: function () {
+                blockUI();
+            },
+            complete: function () {
+                unblockUI();
             }
-            grid.refresh();
-        },
-        error: function () {
-            showAlert({ title: 'Error', text: 'Error occurred while updating  time.', type: 'error', timer: 2000 });
-        },
-        beforeSend: function () {
-            blockUI();
-        },
-        complete: function () {
-            unblockUI();
-        }
-    });
+        });
+    }
 }
 
 
@@ -157,23 +159,17 @@ function assignUser() {
 }
 
 function openUpdateForm(e) {
-    var dataItem = this.dataItem($(e.currentTarget).closest("tr"));
-
-    $('#update-time').val(dataItem.TimeSpent);
-    $("#update-time").prop('target-elem', $(e.currentTarget));
-
-    //$("#update-time").kendoMaskedTextBox({
-    //    mask: "00 : 00"
-    //});
-
+    var dataItem = this.dataItem($(e.currentTarget).closest("tr"));    
+    $("#updateTime").data("kendoNumericTextBox").value(dataItem.TimeSpent);
+    $("#updateTime").prop('target-elem', $(e.currentTarget)); 
     $('#updateFormModal').modal('show');
 }
 
 function update() {
     var grid = $("#productBacklogs").data("kendoGrid");
-    var target = $("#update-time").prop('target-elem');
+    var target = $("#updateTime").prop('target-elem');
     var dataItem = grid.dataItem(target.closest("tr"));
-    var time = $('#update-time').val();
+    var time = $("#updateTime").data("kendoNumericTextBox").value();
     var url = "/ProductBacklog/UpdateTimeSpent";
     dataItem["TimeSpent"] = time;
     $.ajax({
