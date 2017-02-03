@@ -1,12 +1,12 @@
-﻿  using System;
-  using System.Configuration;
-  using System.Data.Entity.Migrations;
-  using System.Data.Entity.Validation;
+﻿using System;
+using System.Configuration;
+using System.Data.Entity.Migrations;
+using System.Data.Entity.Validation;
 using System.IO;
-  using System.Linq;
-  using System.Reflection;
-  using System.Text;
-  using UtilityDataSyncLibrary.Mapping;
+using System.Linq;
+using System.Reflection;
+using System.Text;
+using UtilityDataSyncLibrary.Mapping;
 
 namespace UtilityDataSyncLibrary
 {
@@ -33,8 +33,11 @@ namespace UtilityDataSyncLibrary
                 using (var enableContext = new EnableDevEntities())
                 using (var utilityContainerContext = new UtilityContainerEntities())
                 {
+                    enableContext.Configuration.AutoDetectChangesEnabled = false;
+                    enableContext.Configuration.ValidateOnSaveEnabled = false;
+                   
                     File.AppendAllText(_path, DateTime.Now.ToString() + ":" + MethodBase.GetCurrentMethod().Name + " : Sync started" + Environment.NewLine);
-                    // Master data
+                    //Master data
                     SyncClients(enableContext, utilityContainerContext);
                     SyncEngagementTypes(enableContext, utilityContainerContext);
                     SyncDepartments(enableContext, utilityContainerContext);
@@ -72,25 +75,23 @@ namespace UtilityDataSyncLibrary
         {
             File.AppendAllText(_path, DateTime.Now.ToString() + " : " + MethodBase.GetCurrentMethod().Name + Environment.NewLine);
             var users = enableContext.vwExt_User.ToList();
-            foreach (var vwExtUser in users)
+            var enableUsers = _mappingService.Map<vwExt_User[], User[]>(users.ToArray()).ToList();
+            var utilityUserIds = utilityContainerContext.Users.Select(c => c.ID).ToList();
+            using (var transaction = utilityContainerContext.Database.BeginTransaction())
             {
-                var enableUser = _mappingService.Map<vwExt_User, User>(vwExtUser);
-
-                using (var transaction = utilityContainerContext.Database.BeginTransaction())
+                try
                 {
-                    try
-                    {
-                        utilityContainerContext.Database.ExecuteSqlCommand("SET IDENTITY_INSERT [dbo].[User] ON");
-                        utilityContainerContext.Users.AddOrUpdate(enableUser);
-                        utilityContainerContext.SaveChanges();
-                        utilityContainerContext.Database.ExecuteSqlCommand("SET IDENTITY_INSERT [dbo].[User] OFF");
-                        transaction.Commit();
-                    }
-                    catch (Exception ex)
-                    {
-                        transaction.Rollback();
-                        File.AppendAllText(_path, DateTime.Now.ToString() + " : Error : " + MethodBase.GetCurrentMethod().Name + " : " + ex.Message + Environment.NewLine);
-                    }
+                    utilityContainerContext.Database.ExecuteSqlCommand("SET IDENTITY_INSERT [dbo].[User] ON");
+                    utilityContainerContext.AddAll(enableUsers.Where(e => !utilityUserIds.Contains(e.ID)));
+                    utilityContainerContext.UpdateAll(enableUsers.Where(e => utilityUserIds.Contains(e.ID)));
+                    utilityContainerContext.SaveChanges();
+                    utilityContainerContext.Database.ExecuteSqlCommand("SET IDENTITY_INSERT [dbo].[User] OFF");
+                    transaction.Commit();
+                }
+                catch (Exception ex)
+                {
+                    transaction.Rollback();
+                    File.AppendAllText(_path, DateTime.Now.ToString() + " : Error : " + MethodBase.GetCurrentMethod().Name + " : " + ex.Message + Environment.NewLine);
                 }
             }
         }
@@ -99,25 +100,23 @@ namespace UtilityDataSyncLibrary
         {
             File.AppendAllText(_path, DateTime.Now.ToString() + " : " + MethodBase.GetCurrentMethod().Name + Environment.NewLine);
             var engagements = enableContext.vwExt_Engagement.ToList();
-            foreach (var vwExtEngagement in engagements)
+            var enableEngagements = _mappingService.Map<vwExt_Engagement[], Engagement[]>(engagements.ToArray()).ToList();
+            var utilityEngagementIds = utilityContainerContext.Engagements.Select(c => c.ID).ToList();
+            using (var transaction = utilityContainerContext.Database.BeginTransaction())
             {
-                var enableEngagement = _mappingService.Map<vwExt_Engagement, Engagement>(vwExtEngagement);
-
-                using (var transaction = utilityContainerContext.Database.BeginTransaction())
+                try
                 {
-                    try
-                    {
-                        utilityContainerContext.Database.ExecuteSqlCommand("SET IDENTITY_INSERT [dbo].[Engagement] ON");
-                        utilityContainerContext.Engagements.AddOrUpdate(enableEngagement);
-                        utilityContainerContext.SaveChanges();
-                        utilityContainerContext.Database.ExecuteSqlCommand("SET IDENTITY_INSERT [dbo].[Engagement] OFF");
-                        transaction.Commit();
-                    }
-                    catch (Exception ex)
-                    {
-                        transaction.Rollback();
-                        File.AppendAllText(_path, DateTime.Now.ToString() + " : Error : " + MethodBase.GetCurrentMethod().Name + " : " + ex.Message + Environment.NewLine);
-                    }
+                    utilityContainerContext.Database.ExecuteSqlCommand("SET IDENTITY_INSERT [dbo].[Engagement] ON");
+                    utilityContainerContext.AddAll(enableEngagements.Where(e => !utilityEngagementIds.Contains(e.ID)));
+                    utilityContainerContext.UpdateAll(enableEngagements.Where(e => utilityEngagementIds.Contains(e.ID)));
+                    utilityContainerContext.SaveChanges();
+                    utilityContainerContext.Database.ExecuteSqlCommand("SET IDENTITY_INSERT [dbo].[Engagement] OFF");
+                    transaction.Commit();
+                }
+                catch (Exception ex)
+                {
+                    transaction.Rollback();
+                    File.AppendAllText(_path, DateTime.Now.ToString() + " : Error : " + MethodBase.GetCurrentMethod().Name + " : " + ex.Message + Environment.NewLine);
                 }
             }
         }
@@ -125,27 +124,24 @@ namespace UtilityDataSyncLibrary
         public void SyncClients(EnableDevEntities enableContext, UtilityContainerEntities utilityContainerContext)
         {
             File.AppendAllText(_path, DateTime.Now.ToString() + " : " + MethodBase.GetCurrentMethod().Name + Environment.NewLine);
-            File.AppendAllText(_path, MethodBase.GetCurrentMethod().Name + " : " + Environment.NewLine);
             var clients = enableContext.vwExt_Client.ToList();
-            foreach (var vwExtClient in clients)
+            var enableClients = _mappingService.Map<vwExt_Client[], Client[]>(clients.ToArray()).ToList();
+            var utilityClientIds = utilityContainerContext.Clients.Select(c => c.ID).ToList();
+            using (var transaction = utilityContainerContext.Database.BeginTransaction())
             {
-                var enableClient = _mappingService.Map<vwExt_Client, Client>(vwExtClient);
-
-                using (var transaction = utilityContainerContext.Database.BeginTransaction())
+                try
                 {
-                    try
-                    {
-                        utilityContainerContext.Database.ExecuteSqlCommand("SET IDENTITY_INSERT [dbo].[Client] ON");
-                        utilityContainerContext.Clients.AddOrUpdate(enableClient);
-                        utilityContainerContext.SaveChanges();
-                        utilityContainerContext.Database.ExecuteSqlCommand("SET IDENTITY_INSERT [dbo].[Client] OFF");
-                        transaction.Commit();
-                    }
-                    catch (Exception ex)
-                    {
-                        transaction.Rollback();
-                        File.AppendAllText(_path, DateTime.Now.ToString() + " : Error : " + MethodBase.GetCurrentMethod().Name + " : " + ex.Message + Environment.NewLine);
-                    }
+                    utilityContainerContext.Database.ExecuteSqlCommand("SET IDENTITY_INSERT [dbo].[Client] ON");
+                    utilityContainerContext.AddAll(enableClients.Where(e => !utilityClientIds.Contains(e.ID)));
+                    utilityContainerContext.UpdateAll(enableClients.Where(e => utilityClientIds.Contains(e.ID)));
+                    utilityContainerContext.SaveChanges();
+                    utilityContainerContext.Database.ExecuteSqlCommand("SET IDENTITY_INSERT [dbo].[Client] OFF");
+                    transaction.Commit();
+                }
+                catch (Exception ex)
+                {
+                    transaction.Rollback();
+                    File.AppendAllText(_path, DateTime.Now.ToString() + " : Error : " + MethodBase.GetCurrentMethod().Name + " : " + ex.Message + Environment.NewLine);
                 }
             }
         }
@@ -154,25 +150,23 @@ namespace UtilityDataSyncLibrary
         {
             File.AppendAllText(_path, DateTime.Now.ToString() + " : " + MethodBase.GetCurrentMethod().Name + Environment.NewLine);
             var resources = enableContext.vwExt_Resource.ToList();
-            foreach (var vwExtResource in resources)
+            var enableResources = _mappingService.Map<vwExt_Resource[], Resource[]>(resources.ToArray()).ToList();
+            var utilityResourceIds = utilityContainerContext.Resources.Select(c => c.ID).ToList();
+            using (var transaction = utilityContainerContext.Database.BeginTransaction())
             {
-                var enableResource = _mappingService.Map<vwExt_Resource, Resource>(vwExtResource);
-
-                using (var transaction = utilityContainerContext.Database.BeginTransaction())
+                try
                 {
-                    try
-                    {
-                        utilityContainerContext.Database.ExecuteSqlCommand("SET IDENTITY_INSERT [dbo].[Resource] ON");
-                        utilityContainerContext.Resources.AddOrUpdate(enableResource);
-                        utilityContainerContext.SaveChanges();
-                        utilityContainerContext.Database.ExecuteSqlCommand("SET IDENTITY_INSERT [dbo].[Resource] OFF");
-                        transaction.Commit();
-                    }
-                    catch (Exception ex)
-                    {
-                        transaction.Rollback();
-                        File.AppendAllText(_path, DateTime.Now.ToString() + " : Error : " + MethodBase.GetCurrentMethod().Name + " : " + ex.Message + Environment.NewLine);
-                    }
+                    utilityContainerContext.Database.ExecuteSqlCommand("SET IDENTITY_INSERT [dbo].[Resource] ON");
+                    utilityContainerContext.AddAll(enableResources.Where(e => !utilityResourceIds.Contains(e.ID)));
+                    utilityContainerContext.UpdateAll(enableResources.Where(e => utilityResourceIds.Contains(e.ID)));
+                    utilityContainerContext.SaveChanges();
+                    utilityContainerContext.Database.ExecuteSqlCommand("SET IDENTITY_INSERT [dbo].[Resource] OFF");
+                    transaction.Commit();
+                }
+                catch (Exception ex)
+                {
+                    transaction.Rollback();
+                    File.AppendAllText(_path, DateTime.Now.ToString() + " : Error : " + MethodBase.GetCurrentMethod().Name + " : " + ex.Message + Environment.NewLine);
                 }
             }
         }
@@ -180,26 +174,24 @@ namespace UtilityDataSyncLibrary
         public void SyncResourceHistories(EnableDevEntities enableContext, UtilityContainerEntities utilityContainerContext)
         {
             File.AppendAllText(_path, DateTime.Now.ToString() + " : " + MethodBase.GetCurrentMethod().Name + Environment.NewLine);
-            var resourceHistories = enableContext.vwExt_ResourceHistory.ToList();
-            foreach (var vwExtResourceHistory in resourceHistories)
+            var resourceHistorys = enableContext.vwExt_ResourceHistory.ToList();
+            var enableResourceHistorys = _mappingService.Map<vwExt_ResourceHistory[], ResourceHistory[]>(resourceHistorys.ToArray()).ToList();
+            var utilityResourceHistoryIds = utilityContainerContext.ResourceHistories.Select(c => c.ID).ToList();
+            using (var transaction = utilityContainerContext.Database.BeginTransaction())
             {
-                var enableResourceHistory = _mappingService.Map<vwExt_ResourceHistory, ResourceHistory>(vwExtResourceHistory);
-
-                using (var transaction = utilityContainerContext.Database.BeginTransaction())
+                try
                 {
-                    try
-                    {
-                        utilityContainerContext.Database.ExecuteSqlCommand("SET IDENTITY_INSERT [dbo].[ResourceHistory] ON");
-                        utilityContainerContext.ResourceHistories.AddOrUpdate(enableResourceHistory);
-                        utilityContainerContext.SaveChanges();
-                        utilityContainerContext.Database.ExecuteSqlCommand("SET IDENTITY_INSERT [dbo].[ResourceHistory] OFF");
-                        transaction.Commit();
-                    }
-                    catch (Exception ex)
-                    {
-                        transaction.Rollback();
-                        File.AppendAllText(_path, DateTime.Now.ToString() + " : Error : " + MethodBase.GetCurrentMethod().Name + " : " + ex.Message + Environment.NewLine);
-                    }
+                    utilityContainerContext.Database.ExecuteSqlCommand("SET IDENTITY_INSERT [dbo].[ResourceHistory] ON");
+                    utilityContainerContext.AddAll(enableResourceHistorys.Where(e => !utilityResourceHistoryIds.Contains(e.ID)));
+                    utilityContainerContext.UpdateAll(enableResourceHistorys.Where(e => utilityResourceHistoryIds.Contains(e.ID)));
+                    utilityContainerContext.SaveChanges();
+                    utilityContainerContext.Database.ExecuteSqlCommand("SET IDENTITY_INSERT [dbo].[ResourceHistory] OFF");
+                    transaction.Commit();
+                }
+                catch (Exception ex)
+                {
+                    transaction.Rollback();
+                    File.AppendAllText(_path, DateTime.Now.ToString() + " : Error : " + MethodBase.GetCurrentMethod().Name + " : " + ex.Message + Environment.NewLine);
                 }
             }
         }
@@ -208,33 +200,24 @@ namespace UtilityDataSyncLibrary
         {
             File.AppendAllText(_path, DateTime.Now.ToString() + " : " + MethodBase.GetCurrentMethod().Name + Environment.NewLine);
             var departments = enableContext.vwExt_Department.ToList();
-            try
+            var enableDepartments = _mappingService.Map<vwExt_Department[], Department[]>(departments.ToArray()).ToList();
+            var utilityDepartmentIds = utilityContainerContext.Departments.Select(c => c.ID).ToList();
+            using (var transaction = utilityContainerContext.Database.BeginTransaction())
             {
-                foreach (var vwExtDepartment in departments)
+                try
                 {
-                    var enableDepartment = _mappingService.Map<vwExt_Department, Department>(vwExtDepartment);
-
-                    using (var transaction = utilityContainerContext.Database.BeginTransaction())
-                    {
-                        try
-                        {
-                            utilityContainerContext.Database.ExecuteSqlCommand("SET IDENTITY_INSERT [dbo].[Department] ON");
-                            utilityContainerContext.Departments.AddOrUpdate(enableDepartment);
-                            utilityContainerContext.SaveChanges();
-                            utilityContainerContext.Database.ExecuteSqlCommand("SET IDENTITY_INSERT [dbo].[Department] OFF");
-                            transaction.Commit();
-                        }
-                        catch (Exception ex)
-                        {
-                            transaction.Rollback();
-                            throw;
-                        }
-                    }
+                    utilityContainerContext.Database.ExecuteSqlCommand("SET IDENTITY_INSERT [dbo].[Department] ON");
+                    utilityContainerContext.AddAll(enableDepartments.Where(e => !utilityDepartmentIds.Contains(e.ID)));
+                    utilityContainerContext.UpdateAll(enableDepartments.Where(e => utilityDepartmentIds.Contains(e.ID)));
+                    utilityContainerContext.SaveChanges();
+                    utilityContainerContext.Database.ExecuteSqlCommand("SET IDENTITY_INSERT [dbo].[Department] OFF");
+                    transaction.Commit();
                 }
-            }
-            catch (Exception ex)
-            {
-                File.AppendAllText(_path, DateTime.Now.ToString() + " : Error : " + MethodBase.GetCurrentMethod().Name + " : " + ex.Message + Environment.NewLine);
+                catch (Exception ex)
+                {
+                    transaction.Rollback();
+                    File.AppendAllText(_path, DateTime.Now.ToString() + " : Error : " + MethodBase.GetCurrentMethod().Name + " : " + ex.Message + Environment.NewLine);
+                }
             }
         }
 
@@ -242,25 +225,23 @@ namespace UtilityDataSyncLibrary
         {
             File.AppendAllText(_path, DateTime.Now.ToString() + " : " + MethodBase.GetCurrentMethod().Name + Environment.NewLine);
             var locations = enableContext.vwExt_Location.ToList();
-            foreach (var vwExtLocation in locations)
+            var enableLocations = _mappingService.Map<vwExt_Location[], Location[]>(locations.ToArray()).ToList();
+            var utilityLocationIds = utilityContainerContext.Locations.Select(c => c.ID).ToList();
+            using (var transaction = utilityContainerContext.Database.BeginTransaction())
             {
-                var enableLocation = _mappingService.Map<vwExt_Location, Location>(vwExtLocation);
-
-                using (var transaction = utilityContainerContext.Database.BeginTransaction())
+                try
                 {
-                    try
-                    {
-                        utilityContainerContext.Database.ExecuteSqlCommand("SET IDENTITY_INSERT [dbo].[Location] ON");
-                        utilityContainerContext.Locations.AddOrUpdate(enableLocation);
-                        utilityContainerContext.SaveChanges();
-                        utilityContainerContext.Database.ExecuteSqlCommand("SET IDENTITY_INSERT [dbo].[Location] OFF");
-                        transaction.Commit();
-                    }
-                    catch (Exception ex)
-                    {
-                        transaction.Rollback();
-                        File.AppendAllText(_path, DateTime.Now.ToString() + " : Error : " + MethodBase.GetCurrentMethod().Name + " : " + ex.Message + Environment.NewLine);
-                    }
+                    utilityContainerContext.Database.ExecuteSqlCommand("SET IDENTITY_INSERT [dbo].[Location] ON");
+                    utilityContainerContext.AddAll(enableLocations.Where(e => !utilityLocationIds.Contains(e.ID)));
+                    utilityContainerContext.UpdateAll(enableLocations.Where(e => utilityLocationIds.Contains(e.ID)));
+                    utilityContainerContext.SaveChanges();
+                    utilityContainerContext.Database.ExecuteSqlCommand("SET IDENTITY_INSERT [dbo].[Location] OFF");
+                    transaction.Commit();
+                }
+                catch (Exception ex)
+                {
+                    transaction.Rollback();
+                    File.AppendAllText(_path, DateTime.Now.ToString() + " : Error : " + MethodBase.GetCurrentMethod().Name + " : " + ex.Message + Environment.NewLine);
                 }
             }
         }
@@ -269,25 +250,23 @@ namespace UtilityDataSyncLibrary
         {
             File.AppendAllText(_path, DateTime.Now.ToString() + " : " + MethodBase.GetCurrentMethod().Name + Environment.NewLine);
             var engagementRoles = enableContext.vwExt_EngagementRoles.ToList();
-            foreach (var vwExtEngagementRole in engagementRoles)
+            var enableEngagementRoles = _mappingService.Map<vwExt_EngagementRoles[], EngagementRoles[]>(engagementRoles.ToArray()).ToList();
+            var utilityEngagementRoleIds = utilityContainerContext.EngagementRoles.Select(c => c.ID).ToList();
+            using (var transaction = utilityContainerContext.Database.BeginTransaction())
             {
-                var enableEngagementRole = _mappingService.Map<vwExt_EngagementRoles, EngagementRoles>(vwExtEngagementRole);
-
-                using (var transaction = utilityContainerContext.Database.BeginTransaction())
+                try
                 {
-                    try
-                    {
-                        utilityContainerContext.Database.ExecuteSqlCommand("SET IDENTITY_INSERT [dbo].[EngagementRoles] ON");
-                        utilityContainerContext.EngagementRoles.AddOrUpdate(enableEngagementRole);
-                        utilityContainerContext.SaveChanges();
-                        utilityContainerContext.Database.ExecuteSqlCommand("SET IDENTITY_INSERT [dbo].[EngagementRoles] OFF");
-                        transaction.Commit();
-                    }
-                    catch (Exception ex)
-                    {
-                        transaction.Rollback();
-                        File.AppendAllText(_path, DateTime.Now.ToString() + " : Error : " + MethodBase.GetCurrentMethod().Name + " : " + ex.Message + Environment.NewLine);
-                    }
+                    utilityContainerContext.Database.ExecuteSqlCommand("SET IDENTITY_INSERT [dbo].[EngagementRoles] ON");
+                    utilityContainerContext.AddAll(enableEngagementRoles.Where(e => !utilityEngagementRoleIds.Contains(e.ID)));
+                    utilityContainerContext.UpdateAll(enableEngagementRoles.Where(e => utilityEngagementRoleIds.Contains(e.ID)));
+                    utilityContainerContext.SaveChanges();
+                    utilityContainerContext.Database.ExecuteSqlCommand("SET IDENTITY_INSERT [dbo].[EngagementRoles] OFF");
+                    transaction.Commit();
+                }
+                catch (Exception ex)
+                {
+                    transaction.Rollback();
+                    File.AppendAllText(_path, DateTime.Now.ToString() + " : Error : " + MethodBase.GetCurrentMethod().Name + " : " + ex.Message + Environment.NewLine);
                 }
             }
         }
@@ -296,25 +275,23 @@ namespace UtilityDataSyncLibrary
         {
             File.AppendAllText(_path, DateTime.Now.ToString() + " : " + MethodBase.GetCurrentMethod().Name + Environment.NewLine);
             var titles = enableContext.vwExt_Title.ToList();
-            foreach (var vwExtTitle in titles)
+            var enableTitles = _mappingService.Map<vwExt_Title[], Title[]>(titles.ToArray()).ToList();
+            var utilityTitleIds = utilityContainerContext.Titles.Select(c => c.ID).ToList();
+            using (var transaction = utilityContainerContext.Database.BeginTransaction())
             {
-                var enableTitle = _mappingService.Map<vwExt_Title, Title>(vwExtTitle);
-
-                using (var transaction = utilityContainerContext.Database.BeginTransaction())
+                try
                 {
-                    try
-                    {
-                        utilityContainerContext.Database.ExecuteSqlCommand("SET IDENTITY_INSERT [dbo].[Title] ON");
-                        utilityContainerContext.Titles.AddOrUpdate(enableTitle);
-                        utilityContainerContext.SaveChanges();
-                        utilityContainerContext.Database.ExecuteSqlCommand("SET IDENTITY_INSERT [dbo].[Title] OFF");
-                        transaction.Commit();
-                    }
-                    catch (Exception ex)
-                    {
-                        transaction.Rollback();
-                        File.AppendAllText(_path, DateTime.Now.ToString() + " : Error : " + MethodBase.GetCurrentMethod().Name + " : " + ex.Message + Environment.NewLine);
-                    }
+                    utilityContainerContext.Database.ExecuteSqlCommand("SET IDENTITY_INSERT [dbo].[Title] ON");
+                    utilityContainerContext.AddAll(enableTitles.Where(e => !utilityTitleIds.Contains(e.ID)));
+                    utilityContainerContext.UpdateAll(enableTitles.Where(e => utilityTitleIds.Contains(e.ID)));
+                    utilityContainerContext.SaveChanges();
+                    utilityContainerContext.Database.ExecuteSqlCommand("SET IDENTITY_INSERT [dbo].[Title] OFF");
+                    transaction.Commit();
+                }
+                catch (Exception ex)
+                {
+                    transaction.Rollback();
+                    File.AppendAllText(_path, DateTime.Now.ToString() + " : Error : " + MethodBase.GetCurrentMethod().Name + " : " + ex.Message + Environment.NewLine);
                 }
             }
         }
@@ -322,26 +299,24 @@ namespace UtilityDataSyncLibrary
         public void SyncResourceSkillLevels(EnableDevEntities enableContext, UtilityContainerEntities utilityContainerContext)
         {
             File.AppendAllText(_path, DateTime.Now.ToString() + " : " + MethodBase.GetCurrentMethod().Name + Environment.NewLine);
-            var ResourceSkillLevels = enableContext.vwExt_ResourceSkillLevel.ToList();
-            foreach (var vwExtResourceSkillLevel in ResourceSkillLevels)
+            var resourceSkillLevels = enableContext.vwExt_ResourceSkillLevel.ToList();
+            var enableResourceSkillLevels = _mappingService.Map<vwExt_ResourceSkillLevel[], ResourceSkillLevel[]>(resourceSkillLevels.ToArray()).ToList();
+            var utilityResourceSkillLevelIds = utilityContainerContext.ResourceSkillLevels.Select(c => c.ID).ToList();
+            using (var transaction = utilityContainerContext.Database.BeginTransaction())
             {
-                var enableResourceSkillLevel = _mappingService.Map<vwExt_ResourceSkillLevel, ResourceSkillLevel>(vwExtResourceSkillLevel);
-
-                using (var transaction = utilityContainerContext.Database.BeginTransaction())
+                try
                 {
-                    try
-                    {
-                        utilityContainerContext.Database.ExecuteSqlCommand("SET IDENTITY_INSERT [dbo].[ResourceSkillLevel] ON");
-                        utilityContainerContext.ResourceSkillLevels.AddOrUpdate(enableResourceSkillLevel);
-                        utilityContainerContext.SaveChanges();
-                        utilityContainerContext.Database.ExecuteSqlCommand("SET IDENTITY_INSERT [dbo].[ResourceSkillLevel] OFF");
-                        transaction.Commit();
-                    }
-                    catch (Exception ex)
-                    {
-                        transaction.Rollback();
-                        File.AppendAllText(_path, DateTime.Now.ToString() + " : Error : " + MethodBase.GetCurrentMethod().Name + " : " + ex.Message + Environment.NewLine);
-                    }
+                    utilityContainerContext.Database.ExecuteSqlCommand("SET IDENTITY_INSERT [dbo].[ResourceSkillLevel] ON");
+                    utilityContainerContext.AddAll(enableResourceSkillLevels.Where(e => !utilityResourceSkillLevelIds.Contains(e.ID)));
+                    utilityContainerContext.UpdateAll(enableResourceSkillLevels.Where(e => utilityResourceSkillLevelIds.Contains(e.ID)));
+                    utilityContainerContext.SaveChanges();
+                    utilityContainerContext.Database.ExecuteSqlCommand("SET IDENTITY_INSERT [dbo].[ResourceSkillLevel] OFF");
+                    transaction.Commit();
+                }
+                catch (Exception ex)
+                {
+                    transaction.Rollback();
+                    File.AppendAllText(_path, DateTime.Now.ToString() + " : Error : " + MethodBase.GetCurrentMethod().Name + " : " + ex.Message + Environment.NewLine);
                 }
             }
         }
@@ -350,25 +325,23 @@ namespace UtilityDataSyncLibrary
         {
             File.AppendAllText(_path, DateTime.Now.ToString() + " : " + MethodBase.GetCurrentMethod().Name + Environment.NewLine);
             var skills = enableContext.vwExt_Skill.ToList();
-            foreach (var vwExtSkill in skills)
+            var enableSkills = _mappingService.Map<vwExt_Skill[], Skill[]>(skills.ToArray()).ToList();
+            var utilitySkillIds = utilityContainerContext.Skills.Select(c => c.ID).ToList();
+            using (var transaction = utilityContainerContext.Database.BeginTransaction())
             {
-                var enableSkill = _mappingService.Map<vwExt_Skill, Skill>(vwExtSkill);
-
-                using (var transaction = utilityContainerContext.Database.BeginTransaction())
+                try
                 {
-                    try
-                    {
-                        utilityContainerContext.Database.ExecuteSqlCommand("SET IDENTITY_INSERT [dbo].[Skill] ON");
-                        utilityContainerContext.Skills.AddOrUpdate(enableSkill);
-                        utilityContainerContext.SaveChanges();
-                        utilityContainerContext.Database.ExecuteSqlCommand("SET IDENTITY_INSERT [dbo].[Skill] OFF");
-                        transaction.Commit();
-                    }
-                    catch (Exception ex)
-                    {
-                        transaction.Rollback();
-                        File.AppendAllText(_path, DateTime.Now.ToString() + " : Error : " + MethodBase.GetCurrentMethod().Name + " : " + ex.Message + Environment.NewLine);
-                    }
+                    utilityContainerContext.Database.ExecuteSqlCommand("SET IDENTITY_INSERT [dbo].[Skill] ON");
+                    utilityContainerContext.AddAll(enableSkills.Where(e => !utilitySkillIds.Contains(e.ID)));
+                    utilityContainerContext.UpdateAll(enableSkills.Where(e => utilitySkillIds.Contains(e.ID)));
+                    utilityContainerContext.SaveChanges();
+                    utilityContainerContext.Database.ExecuteSqlCommand("SET IDENTITY_INSERT [dbo].[Skill] OFF");
+                    transaction.Commit();
+                }
+                catch (Exception ex)
+                {
+                    transaction.Rollback();
+                    File.AppendAllText(_path, DateTime.Now.ToString() + " : Error : " + MethodBase.GetCurrentMethod().Name + " : " + ex.Message + Environment.NewLine);
                 }
             }
         }
@@ -377,25 +350,23 @@ namespace UtilityDataSyncLibrary
         {
             File.AppendAllText(_path, DateTime.Now.ToString() + " : " + MethodBase.GetCurrentMethod().Name + Environment.NewLine);
             var companies = enableContext.vwExt_Company.ToList();
-            foreach (var vwExtCompany in companies)
+            var enableCompanies = _mappingService.Map<vwExt_Company[], Company[]>(companies.ToArray()).ToList();
+            var utilityCompanyIds = utilityContainerContext.Companies.Select(c => c.ID).ToList();
+            using (var transaction = utilityContainerContext.Database.BeginTransaction())
             {
-                var enableCompany = _mappingService.Map<vwExt_Company, Company>(vwExtCompany);
-
-                using (var transaction = utilityContainerContext.Database.BeginTransaction())
+                try
                 {
-                    try
-                    {
-                        utilityContainerContext.Database.ExecuteSqlCommand("SET IDENTITY_INSERT [dbo].[Company] ON");
-                        utilityContainerContext.Companies.AddOrUpdate(enableCompany);
-                        utilityContainerContext.SaveChanges();
-                        utilityContainerContext.Database.ExecuteSqlCommand("SET IDENTITY_INSERT [dbo].[Company] OFF");
-                        transaction.Commit();
-                    }
-                    catch (Exception ex)
-                    {
-                        transaction.Rollback();
-                        File.AppendAllText(_path, DateTime.Now.ToString() + " : Error : " + MethodBase.GetCurrentMethod().Name + " : " + ex.Message + Environment.NewLine);
-                    }
+                    utilityContainerContext.Database.ExecuteSqlCommand("SET IDENTITY_INSERT [dbo].[Company] ON");
+                    utilityContainerContext.AddAll(enableCompanies.Where(e => !utilityCompanyIds.Contains(e.ID)));
+                    utilityContainerContext.UpdateAll(enableCompanies.Where(e => utilityCompanyIds.Contains(e.ID)));
+                    utilityContainerContext.SaveChanges();
+                    utilityContainerContext.Database.ExecuteSqlCommand("SET IDENTITY_INSERT [dbo].[Company] OFF");
+                    transaction.Commit();
+                }
+                catch (Exception ex)
+                {
+                    transaction.Rollback();
+                    File.AppendAllText(_path, DateTime.Now.ToString() + " : Error : " + MethodBase.GetCurrentMethod().Name + " : " + ex.Message + Environment.NewLine);
                 }
             }
         }
@@ -404,25 +375,23 @@ namespace UtilityDataSyncLibrary
         {
             File.AppendAllText(_path, DateTime.Now.ToString() + " : " + MethodBase.GetCurrentMethod().Name + Environment.NewLine);
             var engagementTaskTypes = enableContext.vwExt_EngagementTaskTypes.ToList();
-            foreach (var vwExtEngagementTaskType in engagementTaskTypes)
+            var enableEngagementTaskTypes = _mappingService.Map<vwExt_EngagementTaskTypes[], EngagementTaskTypes[]>(engagementTaskTypes.ToArray()).ToList();
+            var utilityEngagementTaskTypeIds = utilityContainerContext.EngagementTaskTypes.Select(c => c.ID).ToList();
+            using (var transaction = utilityContainerContext.Database.BeginTransaction())
             {
-                var enableEngagementTaskType = _mappingService.Map<vwExt_EngagementTaskTypes, EngagementTaskTypes>(vwExtEngagementTaskType);
-
-                using (var transaction = utilityContainerContext.Database.BeginTransaction())
+                try
                 {
-                    try
-                    {
-                        utilityContainerContext.Database.ExecuteSqlCommand("SET IDENTITY_INSERT [dbo].[EngagementTaskTypes] ON");
-                        utilityContainerContext.EngagementTaskTypes.AddOrUpdate(enableEngagementTaskType);
-                        utilityContainerContext.SaveChanges();
-                        utilityContainerContext.Database.ExecuteSqlCommand("SET IDENTITY_INSERT [dbo].[EngagementTaskTypes] OFF");
-                        transaction.Commit();
-                    }
-                    catch (Exception ex)
-                    {
-                        transaction.Rollback();
-                        File.AppendAllText(_path, DateTime.Now.ToString() + " : Error : " + MethodBase.GetCurrentMethod().Name + " : " + ex.Message + Environment.NewLine);
-                    }
+                    utilityContainerContext.Database.ExecuteSqlCommand("SET IDENTITY_INSERT [dbo].[EngagementTaskTypes] ON");
+                    utilityContainerContext.AddAll(enableEngagementTaskTypes.Where(e => !utilityEngagementTaskTypeIds.Contains(e.ID)));
+                    utilityContainerContext.UpdateAll(enableEngagementTaskTypes.Where(e => utilityEngagementTaskTypeIds.Contains(e.ID)));
+                    utilityContainerContext.SaveChanges();
+                    utilityContainerContext.Database.ExecuteSqlCommand("SET IDENTITY_INSERT [dbo].[EngagementTaskTypes] OFF");
+                    transaction.Commit();
+                }
+                catch (Exception ex)
+                {
+                    transaction.Rollback();
+                    File.AppendAllText(_path, DateTime.Now.ToString() + " : Error : " + MethodBase.GetCurrentMethod().Name + " : " + ex.Message + Environment.NewLine);
                 }
             }
         }
@@ -431,35 +400,23 @@ namespace UtilityDataSyncLibrary
         {
             File.AppendAllText(_path, DateTime.Now.ToString() + " : " + MethodBase.GetCurrentMethod().Name + Environment.NewLine);
             var engagementTypes = enableContext.vwExt_EngagementType.ToList();
-            foreach (var vwExtEngagementType in engagementTypes)
+            var enableEngagementTypes = _mappingService.Map<vwExt_EngagementType[], EngagementType[]>(engagementTypes.ToArray()).ToList();
+            var utilityEngagementTypeIds = utilityContainerContext.EngagementTypes.Select(c => c.ID).ToList();
+            using (var transaction = utilityContainerContext.Database.BeginTransaction())
             {
-                var enableEngagementType = _mappingService.Map<vwExt_EngagementType, EngagementType>(vwExtEngagementType);
-
-                using (var transaction = utilityContainerContext.Database.BeginTransaction())
+                try
                 {
-                    try
-                    {
-                        utilityContainerContext.Database.ExecuteSqlCommand("SET IDENTITY_INSERT [dbo].[EngagementType] ON");
-                        utilityContainerContext.EngagementTypes.AddOrUpdate(enableEngagementType);
-                        utilityContainerContext.SaveChanges();
-                        utilityContainerContext.Database.ExecuteSqlCommand("SET IDENTITY_INSERT [dbo].[EngagementType] OFF");
-                        transaction.Commit();
-                    }
-                    catch (DbEntityValidationException e)
-                    {
-                        foreach (var eve in e.EntityValidationErrors)
-                        {
-                            foreach (var ve in eve.ValidationErrors)
-                            {
-
-                            }
-                        }
-                    }
-                    catch (Exception ex)
-                    {
-                        transaction.Rollback();
-                        File.AppendAllText(_path, DateTime.Now.ToString() + " : Error : " + MethodBase.GetCurrentMethod().Name + " : " + ex.Message + Environment.NewLine);
-                    }
+                    utilityContainerContext.Database.ExecuteSqlCommand("SET IDENTITY_INSERT [dbo].[EngagementType] ON");
+                    utilityContainerContext.AddAll(enableEngagementTypes.Where(e => !utilityEngagementTypeIds.Contains(e.ID)));
+                    utilityContainerContext.UpdateAll(enableEngagementTypes.Where(e => utilityEngagementTypeIds.Contains(e.ID)));
+                    utilityContainerContext.SaveChanges();
+                    utilityContainerContext.Database.ExecuteSqlCommand("SET IDENTITY_INSERT [dbo].[EngagementType] OFF");
+                    transaction.Commit();
+                }
+                catch (Exception ex)
+                {
+                    transaction.Rollback();
+                    File.AppendAllText(_path, DateTime.Now.ToString() + " : Error : " + MethodBase.GetCurrentMethod().Name + " : " + ex.Message + Environment.NewLine);
                 }
             }
         }
@@ -468,25 +425,23 @@ namespace UtilityDataSyncLibrary
         {
             File.AppendAllText(_path, DateTime.Now.ToString() + " : " + MethodBase.GetCurrentMethod().Name + Environment.NewLine);
             var resourceTypes = enableContext.vwExt_ResourceType.ToList();
-            foreach (var vwExtResourceType in resourceTypes)
+            var enableResourceTypes = _mappingService.Map<vwExt_ResourceType[], ResourceType[]>(resourceTypes.ToArray()).ToList();
+            var utilityResourceTypeIds = utilityContainerContext.ResourceTypes.Select(c => c.ID).ToList();
+            using (var transaction = utilityContainerContext.Database.BeginTransaction())
             {
-                var enableResourceType = _mappingService.Map<vwExt_ResourceType, ResourceType>(vwExtResourceType);
-
-                using (var transaction = utilityContainerContext.Database.BeginTransaction())
+                try
                 {
-                    try
-                    {
-                        utilityContainerContext.Database.ExecuteSqlCommand("SET IDENTITY_INSERT [dbo].[ResourceType] ON");
-                        utilityContainerContext.ResourceTypes.AddOrUpdate(enableResourceType);
-                        utilityContainerContext.SaveChanges();
-                        utilityContainerContext.Database.ExecuteSqlCommand("SET IDENTITY_INSERT [dbo].[ResourceType] OFF");
-                        transaction.Commit();
-                    }
-                    catch (Exception ex)
-                    {
-                        transaction.Rollback();
-                        File.AppendAllText(_path, DateTime.Now.ToString() + " : Error : " + MethodBase.GetCurrentMethod().Name + " : " + ex.Message + Environment.NewLine);
-                    }
+                    utilityContainerContext.Database.ExecuteSqlCommand("SET IDENTITY_INSERT [dbo].[ResourceType] ON");
+                    utilityContainerContext.AddAll(enableResourceTypes.Where(e => !utilityResourceTypeIds.Contains(e.ID)));
+                    utilityContainerContext.UpdateAll(enableResourceTypes.Where(e => utilityResourceTypeIds.Contains(e.ID)));
+                    utilityContainerContext.SaveChanges();
+                    utilityContainerContext.Database.ExecuteSqlCommand("SET IDENTITY_INSERT [dbo].[ResourceType] OFF");
+                    transaction.Commit();
+                }
+                catch (Exception ex)
+                {
+                    transaction.Rollback();
+                    File.AppendAllText(_path, DateTime.Now.ToString() + " : Error : " + MethodBase.GetCurrentMethod().Name + " : " + ex.Message + Environment.NewLine);
                 }
             }
         }
