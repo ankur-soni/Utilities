@@ -10,6 +10,7 @@ using System.Web;
 using System.Web.Mvc;
 using Silicus.Ensure.Models.DataObjects;
 using Silicus.Ensure.Web.Models;
+using Silicus.Ensure.Models;
 
 namespace Silicus.Ensure.Web.Controllers
 {
@@ -51,7 +52,7 @@ namespace Silicus.Ensure.Web.Controllers
             if (!ModelState.IsValid)
                 return RedirectToAction("LogOff", "CandidateAccount");
 
-            User user = _userService.GetUserById(UserId);
+            var user = _userService.GetUserById(UserId);
             if (user == null)
             {
                 ViewBag.Status = 1;
@@ -135,7 +136,7 @@ namespace Silicus.Ensure.Web.Controllers
             return navigationDetails;
         }
 
-        private CandidateInfoViewModel GetCandidateInfo(Ensure.Models.DataObjects.User user)
+        private CandidateInfoViewModel GetCandidateInfo(UserBusinessModel user)
         {
             return new CandidateInfoViewModel
             {
