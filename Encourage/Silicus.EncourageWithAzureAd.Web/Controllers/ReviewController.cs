@@ -98,7 +98,7 @@ namespace Silicus.EncourageWithAzureAd.Web.Controllers
             _logger.Log("Review-ReviewFeedbackList-private-GET");
             
             var reviewFeedbacks = new List<ReviewFeedbackListViewModel>();
-            var awardDetails = _encourageDatabaseContext.Query<Award>().Where(x => x.Id == awardType).FirstOrDefault();
+            var awardDetails = _encourageDatabaseContext.Query<Award>().FirstOrDefault(x => x.Id == awardType);
 
             DateTime toBeComparedDate = DateTime.Now;
 
@@ -236,8 +236,8 @@ namespace Silicus.EncourageWithAzureAd.Web.Controllers
             {
                 var currentNomination = _nominationService.GetNomination(item.NominationId);
                 var customDate = _customDateService.GetCustomDate(currentNomination.AwardId);
-              rejectAllRviews.Add( _encourageDatabaseContext.Query<Review>().Where(r => r.IsSubmited == true && r.ReviewDate.Value.Month == 
-              customDate.Month && r.ReviewDate.Value.Year == customDate.Year).FirstOrDefault());
+              rejectAllRviews.Add( _encourageDatabaseContext.Query<Review>().FirstOrDefault(r => r.IsSubmited == true && r.ReviewDate.Value.Month == 
+                                                                                                 customDate.Month && r.ReviewDate.Value.Year == customDate.Year));
 
             }
             var shortlist = _encourageDatabaseContext.Query<Shortlist>().Where(s => s.IsWinner == true);

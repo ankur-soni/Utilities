@@ -38,10 +38,21 @@ namespace Silicus.Encourage.Services
 
         public List<User> GetAllManagers()
         {
-            var managerRoleId = _commonDataBaseContext.Query<Role>().Where(r => r.Name == "Manager").FirstOrDefault().ID;
-            var utilityId = _commonDataBaseContext.Query<Utility>().Where(r => r.Name == "Encourage").FirstOrDefault().Id;
-            var listOfMangerIds = _commonDataBaseContext.Query<UtilityUserRoles>().Where(u => u.RoleId == managerRoleId && u.UtilityId == utilityId).Select(m => m.UserId).ToList();
-            return _commonDataBaseContext.Query<User>().Where(u => listOfMangerIds.Contains(u.ID)).ToList();
+            var managers = new List<User>();
+            var orDefault = _commonDataBaseContext.Query<Role>().FirstOrDefault(r => r.Name == "Manager");
+            if (orDefault != null)
+            {
+                var managerRoleId = orDefault.ID;
+                var utility = _commonDataBaseContext.Query<Utility>().FirstOrDefault(r => r.Name == "Encourage");
+                if (utility != null)
+                {
+                    var utilityId = utility.Id;
+                    var listOfMangerIds = _commonDataBaseContext.Query<UtilityUserRoles>().Where(u => u.RoleId == managerRoleId && u.UtilityId == utilityId).Select(m => m.UserId).ToList();
+                    managers = _commonDataBaseContext.Query<User>().Where(u => listOfMangerIds.Contains(u.ID)).ToList();
+                }
+            }
+
+            return managers;
         }
 
         public string SendEmail(List<string> ToEmailAddresses,string body, string emailSubject)

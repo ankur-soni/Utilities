@@ -598,7 +598,7 @@ namespace Silicus.EncourageWithAzureAd.Web.Controllers
             _logger.Log("Nomination-EditReview-POST");
             var currentNomination = _nominationService.GetNomination(model.NominationId);
             var customDate = _customDateService.GetCustomDate(currentNomination.AwardId);
-            var alreadyReviewed = _encourageDatabaseContext.Query<Review>().Where(r => r.ReviewerId == model.ReviewerId && r.NominationId == model.NominationId).FirstOrDefault();
+            var alreadyReviewed = _encourageDatabaseContext.Query<Review>().FirstOrDefault(r => r.ReviewerId == model.ReviewerId && r.NominationId == model.NominationId);
             var previousComments = _encourageDatabaseContext.Query<ReviewerComment>().Where(r => r.ReviewerId == model.ReviewerId && r.NominationId == model.NominationId).ToList();
             foreach (var previousComment in previousComments)
             {
@@ -774,7 +774,7 @@ namespace Silicus.EncourageWithAzureAd.Web.Controllers
             _logger.Log("Nomination-ReviewNomination-POST");
             var currentNomination = _nominationService.GetNomination(model.NominationId);
             var customDate = _customDateService.GetCustomDate(currentNomination.AwardId);
-            var alreadyReviewed = _encourageDatabaseContext.Query<Review>().Where(r => r.ReviewerId == model.ReviewerId && r.NominationId == model.NominationId).FirstOrDefault();
+            var alreadyReviewed = _encourageDatabaseContext.Query<Review>().FirstOrDefault(r => r.ReviewerId == model.ReviewerId && r.NominationId == model.NominationId);
             var previousComments = _encourageDatabaseContext.Query<ReviewerComment>().Where(r => r.ReviewerId == model.ReviewerId && r.NominationId == model.NominationId).ToList();
 
             foreach (var previousComment in previousComments)

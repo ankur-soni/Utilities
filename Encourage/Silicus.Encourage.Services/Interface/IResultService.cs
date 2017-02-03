@@ -13,7 +13,7 @@ namespace Silicus.Encourage.Services.Interface
         void UnShortlistNomination(int nominationId);
         void SelectWinner(int nominationId, string winningComment, string HrAdminsFeedback, int AdminId);
         int IsShortlistedOrWinner(int nominationId);
-        string GetAwardComments(int Id);
+        string GetAwardComments(int winnerId);
         string GetHrAdminsFeedbackForEmployee(int loggedInAdminsId, int nominationId);
         string GetLoggedInUserName(string emailId);
     }
