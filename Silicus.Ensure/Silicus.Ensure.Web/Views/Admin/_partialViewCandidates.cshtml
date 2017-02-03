@@ -63,6 +63,7 @@
     }
 
     function ReAssignPanel(UserId) {
+        debugger;
         //if (TestStatus == '@TestStatus.NotAssigned.ToString()') {
         $.ajax({
             type: 'post',
@@ -142,6 +143,7 @@
 
     $(function () {
         $("#SavePanlebtn").bind("click", function () {
+            debugger
             var chkCheck = false;
             $('input:checkbox').each(function () {
                 if ($(this).is(':checked')) {

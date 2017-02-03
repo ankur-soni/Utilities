@@ -89,6 +89,15 @@ namespace Silicus.Ensure.Entities
             return SaveChanges();
         }
 
+        public void AttachAndMakeStateModified<T>(T item) where T : class
+        {
+            Guard.ArgumentNotNull(item, "item");
+
+            Set<T>().Attach(item);
+
+            Entry(item).State = EntityState.Modified;
+        }
+
         public void UpdateAll<T>(IEnumerable<T> items) where T : class
         {
             Guard.ArgumentNotNull(items, "items");

@@ -18,6 +18,7 @@ using Silicus.Ensure.Services;
 using System.Collections.Generic;
 using System.Web.Configuration;
 using Silicus.Ensure.Web.Application;
+using Silicus.Ensure.Models;
 
 namespace Silicus.Ensure.Web.Controllers
 {
@@ -149,14 +150,10 @@ namespace Silicus.Ensure.Web.Controllers
         [AcceptVerbs(HttpVerbs.Post)]
         public ActionResult DeleteUser(UserViewModel userModel)
         {
-            if (userModel != null)
+            if (userModel != null && userModel.UserId > 0)
             {
-                var user = _userService.GetUserById(userModel.UserId);
-                if (user != null)
-                {
-                    user.IsDeleted = true;
-                    _userService.Update(user);
-                }
+
+                _userService.Delete(userModel.UserId);
                 return Json(1);
             }
 
@@ -183,7 +180,7 @@ namespace Silicus.Ensure.Web.Controllers
                     userlist = userlist.Where(x => x.PanelId != null && x.PanelId.Contains(Convert.ToString(user.ID))).ToArray();
                 }
             }
-            var viewModels = _mappingService.Map<User[], UserViewModel[]>(userlist);
+            var viewModels = _mappingService.Map<UserBusinessModel[], UserViewModel[]>(userlist);
             bool userInRole = User.IsInRole(Silicus.Ensure.Models.Constants.RoleName.Admin.ToString());
             for (int index = 0; index < viewModels.Count(); index++)
             {
@@ -243,7 +240,7 @@ namespace Silicus.Ensure.Web.Controllers
 
                     if (!string.IsNullOrWhiteSpace(vuser.ErrorMessage)) { return RedirectToAction(actionErrorName, controllerName, new { UserId = vuser.UserId }); }
 
-                    var organizationUserDomainModel = _mappingService.Map<UserViewModel, User>(vuser);
+                    var organizationUserDomainModel = _mappingService.Map<UserViewModel, UserBusinessModel>(vuser);
                     organizationUserDomainModel.IsDeleted = false;
                     int Add = _userService.Add(organizationUserDomainModel);
                     TempData["Success"] = "User created successfully!";
@@ -290,7 +287,7 @@ namespace Silicus.Ensure.Web.Controllers
             }
             if (user != null)
             {
-                var organizationUserDomainModel = _mappingService.Map<UserViewModel, User>(vuser);
+                var organizationUserDomainModel = _mappingService.Map<UserViewModel, UserBusinessModel>(vuser);
                 organizationUserDomainModel.TestStatus = user.TestStatus;
                 organizationUserDomainModel.CandidateStatus = user.CandidateStatus;
                 organizationUserDomainModel.IsDeleted = false;
