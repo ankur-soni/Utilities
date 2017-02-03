@@ -1,37 +1,37 @@
-﻿function onHrsChange(e) {
-    var vm = this;
+﻿function onHrsChange(e) {    
     var grid = $("#productBacklogs").data("kendoGrid");
-    var tr = vm.element.closest('tr'); //get the row for deletion
-    var dataItem = grid.dataItem(tr);
-    var time = vm.value();
-    var isAllocatedTime = vm.element.hasClass('allocated-hours');
+    var tr = $(this).closest('tr');  //get the row for deletion
+    var dataItem = grid.dataItem(tr);    
+    var isAllocatedTime = $(this).hasClass('allocated-hours');
     var propName = isAllocatedTime ? "TimeAllocated" : "TimeSpent";
     var url = isAllocatedTime ? "/ProductBacklog/UpdateTimeAllocated" : "/ProductBacklog/UpdateTimeSpent";
-    dataItem[propName] = time.toHrs();
-    $.ajax({
-        url: url,
-        dataType: "json",
-        type: 'POST',
-        contentType: "application/json; charset=utf-8",
-        data: JSON.stringify(dataItem),
-        success: function (data) {
-            for (var key in data.result) {
-                if (data.result.hasOwnProperty(key)) {
-                    dataItem[key] = data.result[key];
+    dataItem[propName] = $(this).val();
+    if ($(this).val()) {
+        $.ajax({
+            url: url,
+            dataType: "json",
+            type: 'POST',
+            contentType: "application/json; charset=utf-8",
+            data: JSON.stringify(dataItem),
+            success: function (data) {
+                for (var key in data.result) {
+                    if (data.result.hasOwnProperty(key)) {
+                        dataItem[key] = data.result[key];
+                    }
                 }
+                grid.refresh();
+            },
+            error: function () {
+                showAlert({ title: 'Error', text: 'Error occurred while updating  time.', type: 'error', timer: 2000 });
+            },
+            beforeSend: function () {
+                blockUI();
+            },
+            complete: function () {
+                unblockUI();
             }
-            grid.refresh();
-        },
-        error: function () {
-            showAlert({ title: 'Error', text: 'Error occurred while updating  time.', type: 'error', timer: 2000 });
-        },
-        beforeSend: function () {
-            blockUI();
-        },
-        complete: function () {
-            unblockUI();
-        }
-    });
+        });
+    }
 }
 
 
@@ -159,25 +159,19 @@ function assignUser() {
 }
 
 function openUpdateForm(e) {
-    var dataItem = this.dataItem($(e.currentTarget).closest("tr"));
-
-    $('#update-time').val(toHHMM(dataItem.TimeSpent));
-    $("#update-time").prop('target-elem', $(e.currentTarget));
-
-    $("#update-time").kendoMaskedTextBox({
-        mask: "00 : 00"
-    });
-
+    var dataItem = this.dataItem($(e.currentTarget).closest("tr"));    
+    $("#updateTime").data("kendoNumericTextBox").value(dataItem.TimeSpent);
+    $("#updateTime").prop('target-elem', $(e.currentTarget)); 
     $('#updateFormModal').modal('show');
 }
 
 function update() {
     var grid = $("#productBacklogs").data("kendoGrid");
-    var target = $("#update-time").prop('target-elem');
+    var target = $("#updateTime").prop('target-elem');
     var dataItem = grid.dataItem(target.closest("tr"));
-    var time = $('#update-time').val();
+    var time = $("#updateTime").data("kendoNumericTextBox").value();
     var url = "/ProductBacklog/UpdateTimeSpent";
-    dataItem["TimeSpent"] = time.toHrs();
+    dataItem["TimeSpent"] = time;
     $.ajax({
         url: url,
         dataType: "json",

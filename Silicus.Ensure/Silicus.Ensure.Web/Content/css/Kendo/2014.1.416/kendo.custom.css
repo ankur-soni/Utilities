@@ -1414,7 +1414,7 @@ html .km-pane-wrapper .km-widget,
 .k-dropdown-wrap.k-state-default {
   background-image: none;
   background-position: 50% 50%;
-  background-color: #fafafa;
+  background-color: #fff;
   border-color: #f0f0f0;
 }
 .k-autocomplete.k-state-hover,

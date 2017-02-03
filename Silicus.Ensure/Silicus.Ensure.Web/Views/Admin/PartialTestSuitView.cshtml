@@ -9,133 +9,105 @@
 <div class="main-content">
     @using (Html.BeginForm("Save", "TestSuite"))
     {
-        <div class="fluid mt20">
-            <div class="row">
-                <div class="col-md-12">
-                    <div class="col-md-6">
-                        @Html.LabelFor(model => model.TestSuiteName)
-                    </div>
-                    <div class="col-md-6">
-                        @Html.DisplayFor(model => model.TestSuiteName, new { @class = "form-control" })
-                    </div>
-                </div>
-            </div>
-            <br />
-            <div class="row">
-                <div class="col-md-12">
-                    <div class="col-md-6">
-                        @Html.LabelFor(model => model.Duration)
-                    </div>
-                    <div class="col-md-6">
-                        @Html.DisplayFor(model => model.Duration, new { @class = "form-control" })
-                    </div>
-                </div>
-            </div>
-            <br />
-            <div class="row">
-                <div class="col-md-12">
-                    <div class="col-md-6">
-                        @Html.LabelFor(model => model.Position)
-                    </div>
-                    <div class="col-md-6">
-                        @Html.DisplayFor(model => model.PositionName, new { @class = "form-control" })
-                    </div>
-                </div>
-            </div>
-            <br />
-            <div class="row">
-                <div class="col-md-12">
-                    <div class="col-md-6">
-                        @Html.LabelFor(model => model.Competency)
-                    </div>
-                    <div class="col-md-6">
-                        @Html.DisplayFor(model => model.OverallProficiency, new { @class = "form-control" })
-                    </div>
-                </div>
-            </div>
-            <br />
-            <div class="row">
-                <div class="col-md-12">
-                    <div class="col-md-6">
-                        Question Type
-                    </div>
-                    <div class="col-md-6">
-                        <div class="col-md-6" style="padding-left:0">
-                            <div class="col-md-6" style="padding-left:0">
-                                <span style="vertical-align:central">Optional &nbsp;&nbsp;&nbsp; </span>
-                            </div>
-                            <div class="col-md-6" style="padding-left:0">
-                                @Html.DisplayFor(m => m.OptionalQuestion, new { @class = "form-control" })
-                            </div>
-                        </div>
-                        <div class="col-md-6" style="padding-right:0">
-                            <div class="col-md-6" style="padding-left:0">
-                                <span style="vertical-align:central">Practical &nbsp;&nbsp;&nbsp;</span>
-                            </div>
-                            <div class="col-md-6" style="padding-left:0">
-                                @Html.DisplayFor(m => m.PracticalQuestion, new { @class = "form-control" })
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <br />
-            <div class="row">
-                <div class="col-md-12">
-                    <div class="col-md-6">
-                        @Html.LabelFor(model => model.ProjectName)
-                    </div>
-                    <div class="col-md-6">
-                        @Html.DisplayFor(model => model.ProjectName, new { @class = "form-control" })
-                    </div>
-                </div>
-            </div>
-            <br />
-            <div class="row">
-                <div class="col-md-12">
-                    <div class="col-md-6">
-                        Experience
-                    </div>
-                    <div class="col-md-6">
-                        @Model.FromExperience.@Model.ToExperience
-                    </div>
-                </div>
-            </div>
-            <br />
-            <div class="row">
-                <div class="col-md-12">
-                    <div class="col-md-2">
-                        Skill Tags:
-                    </div>
-                    <div class="col-md-9" style="margin-left:1.6%">
-                        <table align='center' style="margin:0" class="tag-list" id="tag_table" role="grid" cellspacing="40">
-                            @if (Model.Tags != null)
-                            {
-                                if (Model.Tags.Count() > 0)
-                                {
-                                    for (int i = 0; i < Model.Tags.Count(); i++)
-                                    {
-                            <tr style="margin-bottom:5px">
-                                <td id="tag_title_row @Convert.ToString(i)">Skill Tag @Convert.ToString(i + 1)</td>
-                                <td id="tag_name_row @Convert.ToString(i)">@Model.Tags[i].TagName</td>
-                                <td id="weight_title_row @Convert.ToString(i)">Weightage % @Convert.ToString(i + 1)</td>
-                                <td id="weight_name_row @Convert.ToString(i)">@Model.Tags[i].Weightage</td>
-                                <td id="efficiency_title_row @Convert.ToString(i)">Efficiency @Convert.ToString(i + 1)</td>
-                                <td id="efficiency_name_row @Convert.ToString(i)">@Model.Tags[i].Proficiency</td>
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="table-responsive">
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th>No.</th>
+                                <th>Field Name</th>
+                                <th>Value</th>
+                                <th></th>
                             </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <th scope="row">1</th>
+                                <td>@Html.LabelFor(model => model.TestSuiteName)</td>
+                                <td>@Html.DisplayFor(model => model.TestSuiteName, new { @class = "form-control" })</td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <th scope="row">2</th>
+                                <td>@Html.LabelFor(model => model.Duration)</td>
+                                <td>@Html.DisplayFor(model => model.Duration, new { @class = "form-control" })</td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <th scope="row">3</th>
+                                <td>@Html.LabelFor(model => model.Position)</td>
+                                <td>@Html.DisplayFor(model => model.PositionName, new { @class = "form-control" })</td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <th scope="row">4</th>
+                                <td>@Html.LabelFor(model => model.Competency)</td>
+                                <td>@Html.DisplayFor(model => model.OverallProficiency, new { @class = "form-control" })</td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <th scope="row">5</th>
+                                <td><label>Question type</label></td>
+                                <td>
+                                    <label>Optional @Html.DisplayFor(m => m.OptionalQuestion, new { @class = "form-control" }) %</label>
+                                </td>
+                                <td><label>Practical @Html.DisplayFor(m => m.PracticalQuestion, new { @class = "form-control" }) %</label></td>
+                            </tr>
+                            <tr>
+                                <th scope="row">6</th>
+                                <td>@Html.LabelFor(model => model.ProjectName)</td>
+                                <td>@Html.DisplayFor(model => model.ProjectName, new { @class = "form-control" })</td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <th scope="row">7</th>
+                                <td><label>Experience</label></td>
+                                <td>@Model.FromExperience.@Model.ToExperience</td>
+                                <td></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="table-responsive M-T30">
+                    <table class="table table-striped">
+                           
+                        <thead>
+                            <tr>
+                                <th>Skill tag name</th>
+                                <th>Weightage % </th>
+                                <th>Efficiency</th>
+                            </tr>
+                        </thead>
 
-                                    }
-                                }
-                            }
-                        </table>
+@if (Model.Tags != null)
+{
+    if (Model.Tags.Count() > 0)
+    {
+        for (int i = 0; i < Model.Tags.Count(); i++)
+        {
+                        <tbody>
+                            <tr>
+                                
+                                <td id="tag_name_row @Convert.ToString(i)">@Model.Tags[i].TagName</td>
+                                <td id="weight_name_row @Convert.ToString(i)">@Model.Tags[i].Weightage</td>
+                                <td id="efficiency_name_row @Convert.ToString(i)">@Model.Tags[i].Proficiency</td>
+                                <td></td>
+                            </tr>
+                        </tbody>
+}
+}
+}
+                    </table>
+                </div>
+                <div class="row">
+                    <div class="col-sm-12">
+                        <a class="k-button k-button-icontext pull-right" href="/Admin/ViewQuestion?TestSuiteId=@Model.TestSuiteId"><span class="k-icon k-edit"></span>Preview</a>
                     </div>
                 </div>
+                       
+                </div>
             </div>
-            <br />
-            <br />
-            @*<a class="k-button k-button-icontext " href="/Reviewer/ReviewTest?UserId=@Model.Userid &TestSuiteId=@Model.TestSuiteId"><span class="k-icon k-edit"></span>Preview</a>*@
-            <a class="k-button k-button-icontext " href="/Admin/ViewQuestion?TestSuiteId=@Model.TestSuiteId"><span class="k-icon k-edit"></span>Preview</a>
-        </div>
 
     }
 </div>

@@ -269,7 +269,7 @@ namespace Silicus.EncourageWithAzureAd.Web.Controllers
             _logger.Log("Review-ViewNominationForShortlist-GET");
             ViewBag.NominationLockStatus = _nominationService.GetNominationLockStatus();
             var reviews = _reviewService.GetReviewsForNomination(nominationId).ToList();
-            var nomination = _nominationService.GetNomination(reviews.FirstOrDefault().NominationId);
+            var nomination = _nominationService.GetNomination(nominationId);
             var allReviewerComments = new List<List<ReviewerCommentViewModel>>();
             decimal totalCreditPoints = 0;
 
@@ -325,7 +325,7 @@ namespace Silicus.EncourageWithAzureAd.Web.Controllers
                 NominationId = nomination.Id,
                 UserName = nomineeName,
                 TotalCredits = totalCreditPoints,
-                Manager = _nominationService.GetManagerNameOfCurrentNomination(reviews.FirstOrDefault().NominationId),
+                Manager = _nominationService.GetManagerNameOfCurrentNomination(nominationId),
                 ProjectOrDepartment = nomination.ProjectID != null ?
                                            _nominationService.GetProjectNameOfCurrentNomination(nomination.Id) :
                                            _nominationService.GetDeptNameOfCurrentNomination(nomination.Id),
