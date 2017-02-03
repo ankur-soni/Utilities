@@ -104,7 +104,7 @@ namespace Silicus.EncourageWithAzureAd.Web.Controllers
 
             List<Shortlist> shortlistedNominations = new List<Shortlist>();
 
-            if (awardType != 0)
+            if (awardType != 0 && awardDetails != null)
             {
                 switch (awardDetails.Code)
                 {
@@ -204,8 +204,8 @@ namespace Silicus.EncourageWithAzureAd.Web.Controllers
                         {
                             AwardName = awardCode,
                             Credits = totalCreditPoints,
-                            DisplayName = nominee.DisplayName,
-                            Intials = nominee.FirstName.Substring(0, 1) + "" + nominee.LastName.Substring(0, 1),
+                            DisplayName = nominee == null ? string.Empty : nominee.DisplayName,
+                            Intials = nominee == null ? string.Empty : nominee.FirstName.Substring(0, 1) + "" + nominee.LastName.Substring(0, 1),
                             NominationTime = nominationTimeToDisplay,
                             NominationId = nomination.Id,
                             IsShortlisted = isShortlisted,
@@ -236,8 +236,12 @@ namespace Silicus.EncourageWithAzureAd.Web.Controllers
             {
                 var currentNomination = _nominationService.GetNomination(item.NominationId);
                 var customDate = _customDateService.GetCustomDate(currentNomination.AwardId);
-              rejectAllRviews.Add( _encourageDatabaseContext.Query<Review>().Where(r => r.IsSubmited == true && r.ReviewDate.Value.Month == 
-              customDate.Month && r.ReviewDate.Value.Year == customDate.Year).FirstOrDefault());
+                var review = _encourageDatabaseContext.Query<Review>().Where(r => r.IsSubmited == true && r.ReviewDate.Value.Month ==
+             customDate.Month && r.ReviewDate.Value.Year == customDate.Year).FirstOrDefault();
+                if (review != null)
+                {
+                    rejectAllRviews.Add(review);
+                }
 
             }
             var shortlist = _encourageDatabaseContext.Query<Shortlist>().Where(s => s.IsWinner == true);
@@ -269,7 +273,7 @@ namespace Silicus.EncourageWithAzureAd.Web.Controllers
             _logger.Log("Review-ViewNominationForShortlist-GET");
             ViewBag.NominationLockStatus = _nominationService.GetNominationLockStatus();
             var reviews = _reviewService.GetReviewsForNomination(nominationId).ToList();
-            var nomination = _nominationService.GetNomination(reviews.FirstOrDefault().NominationId);
+            var nomination = _nominationService.GetNomination(reviews.FirstOrDefault() == null ? 0 : reviews.FirstOrDefault().NominationId);
             var allReviewerComments = new List<List<ReviewerCommentViewModel>>();
             decimal totalCreditPoints = 0;
 
@@ -288,7 +292,8 @@ namespace Silicus.EncourageWithAzureAd.Web.Controllers
             {
                 var allreviewerComment = _encourageDatabaseContext.Query<ReviewerComment>().Where(model => model.ReviewId == review.Id);
                 var reviewer = _encourageDatabaseContext.Query<Reviewer>().FirstOrDefault(model => model.Id == review.ReviewerId);
-                var reviewerObj = _commonDbContext.Query<User>().FirstOrDefault(u => u.ID == reviewer.UserId);
+                var reviewerUserId = reviewer == null ? 0 : reviewer.UserId;
+                var reviewerObj = _commonDbContext.Query<User>().FirstOrDefault(u => u.ID == reviewerUserId);
 
                 var reviewerCommentList = new List<ReviewerCommentViewModel>();
                 foreach (var reviewerComment in allreviewerComment)
@@ -298,7 +303,7 @@ namespace Silicus.EncourageWithAzureAd.Web.Controllers
                         CriteriaId = reviewerComment.CriteriaId,
                         Comment = reviewerComment.Comment,
                         Credit = Convert.ToInt32(reviewerComment.Credit),
-                        ReviewerName = reviewerObj.DisplayName
+                        ReviewerName = reviewerObj == null ? string.Empty : reviewerObj.DisplayName
                     };
                     reviewerCommentList.Add(singleReviewerComent);
                 }
@@ -316,16 +321,16 @@ namespace Silicus.EncourageWithAzureAd.Web.Controllers
             else if (checkResultStatus == 2)
                 isShortlisted = true;
 
-            var nomineeName = _commonDbContext.Query<User>().FirstOrDefault(u => u.ID == nomination.UserId).DisplayName;
+            var nominee = _commonDbContext.Query<User>().FirstOrDefault(u => u.ID == nomination.UserId);
             var loggedInAdminId = _awardService.GetUserIdFromEmail(User.Identity.Name);
             var hrAdminsFeedback = _resultService.GetHrAdminsFeedbackForEmployee(loggedInAdminId, nomination.Id);
 
             var shortlistViewModel = new ViewShortlistDetailsViewModel()
             {
                 NominationId = nomination.Id,
-                UserName = nomineeName,
+                UserName = nominee == null ? string.Empty : nominee.DisplayName,
                 TotalCredits = totalCreditPoints,
-                Manager = _nominationService.GetManagerNameOfCurrentNomination(reviews.FirstOrDefault().NominationId),
+                Manager = _nominationService.GetManagerNameOfCurrentNomination(reviews.FirstOrDefault() == null ? 0 : reviews.FirstOrDefault().NominationId),
                 ProjectOrDepartment = nomination.ProjectID != null ?
                                            _nominationService.GetProjectNameOfCurrentNomination(nomination.Id) :
                                            _nominationService.GetDeptNameOfCurrentNomination(nomination.Id),
@@ -348,7 +353,8 @@ namespace Silicus.EncourageWithAzureAd.Web.Controllers
         {
             var customDate = _customDateService.GetCustomDate(nomination.AwardId);
             var currentNomination = nomination;
-            var typeOfNomination = _encourageDatabaseContext.Query<Award>().FirstOrDefault(n => n.Id == currentNomination.AwardId).Code;
+            var award = _encourageDatabaseContext.Query<Award>().FirstOrDefault(n => n.Id == currentNomination.AwardId);
+            var typeOfNomination = award == null ? string.Empty : award.Code;
             var nominationDate = currentNomination.NominationDate;
             bool IsHistoricalNomination = false;
 
@@ -435,7 +441,8 @@ namespace Silicus.EncourageWithAzureAd.Web.Controllers
 
             foreach (var award in awards)
             {
-                awardsToLock.Add(new LockAwardViewModel { Id = award.Id, Code = award.Code, Name = award.Name, FrequencyId = award.FrequencyId, ConfigurationKey = award.Configurations.FirstOrDefault().configurationKey });
+                var configuration = award.Configurations.FirstOrDefault() == null ? string.Empty : award.Configurations.FirstOrDefault().configurationKey;
+                awardsToLock.Add(new LockAwardViewModel { Id = award.Id, Code = award.Code, Name = award.Name, FrequencyId = award.FrequencyId, ConfigurationKey = configuration });
             }
 
             return PartialView("~/Views/Review/Shared/_LockNominations.cshtml", awardsToLock);
@@ -473,9 +480,11 @@ namespace Silicus.EncourageWithAzureAd.Web.Controllers
             _logger.Log("Review-UnlockNomination-GET");
             var awards = _nominationService.GetAwardstoUnLockOrUnlock(ConfigurationManager.AppSettings["UnLock"]);
             var awardsToUnlock = new List<LockAwardViewModel>();
+           
             foreach (var award in awards)
             {
-                awardsToUnlock.Add(new LockAwardViewModel { Code = award.Code, FrequencyId = award.FrequencyId, Id = award.Id, Name = award.Name, ConfigurationKey = award.Configurations.FirstOrDefault().configurationKey });
+                var configuration = award.Configurations.FirstOrDefault() == null ? string.Empty : award.Configurations.FirstOrDefault().configurationKey;
+                awardsToUnlock.Add(new LockAwardViewModel { Code = award.Code, FrequencyId = award.FrequencyId, Id = award.Id, Name = award.Name, ConfigurationKey = configuration });
             }
             return PartialView("~/Views/Review/Shared/_LockNominations.cshtml", awardsToUnlock);
         }

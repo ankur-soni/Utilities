@@ -22,8 +22,9 @@ namespace Silicus.Encourage.Services
         }
         public string FindDisplayNameFromEmail(string email)
         {
-            var userDisplayName = _dataContextFactory.CreateCommonDBContext().Query<User>().Where(user => user.EmailAddress == email).FirstOrDefault().DisplayName;
-            return userDisplayName;
+            var user = _dataContextFactory.CreateCommonDBContext().Query<User>().Where(u => u.EmailAddress == email).FirstOrDefault();
+            var userDisplayName = user == null ? "" : user.DisplayName;
+            return userDisplayName ;
         }
     }
 }

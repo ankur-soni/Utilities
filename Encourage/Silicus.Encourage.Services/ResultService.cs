@@ -44,7 +44,12 @@ namespace Silicus.Encourage.Services
         public void SelectWinner(int nominationId, string winningComment, string hrAdminsFeedback, int adminId)
         {
             var shortlistedNomination = _encourageDatabaseContext.Query<Shortlist>().Where(model => model.NominationId == nominationId).SingleOrDefault();
-            var currentNomination = _encourageDatabaseContext.Query<Nomination>().Where(x => x.Id == shortlistedNomination.NominationId).FirstOrDefault();
+            var currentNomination = new Nomination();
+            if (shortlistedNomination != null)
+            {
+                currentNomination = _encourageDatabaseContext.Query<Nomination>().Where(x => x.Id == shortlistedNomination.NominationId).FirstOrDefault();
+            }
+
             var customDate = _customDateService.GetCustomDate(currentNomination.AwardId);
 
             if (shortlistedNomination != null)
@@ -93,9 +98,15 @@ namespace Silicus.Encourage.Services
 
         public string GetAwardComments(int WinnerId)
         {
-            var comments = _encourageDatabaseContext.Query<Shortlist>().Where(model => model.NominationId == WinnerId).FirstOrDefault().WinningComment;
+            var shortlistedNomination = _encourageDatabaseContext.Query<Shortlist>().Where(model => model.NominationId == WinnerId).FirstOrDefault();
+            if (shortlistedNomination != null)
+            {
+                var comments = shortlistedNomination.WinningComment;
 
-            return comments;
+                return comments;
+            }
+
+            return string.Empty;
         }
 
         public string GetHrAdminsFeedbackForEmployee(int loggedInAdminsId, int nominationId)
@@ -112,7 +123,11 @@ namespace Silicus.Encourage.Services
         public string GetLoggedInUserName(string emailId)
         {
             var data = _commonDataBaseContext.Query<User>().Where(u => u.EmailAddress == emailId).FirstOrDefault();
-            return data.FirstName + " " + data.LastName;
+            if (data != null)
+            {
+                return data.FirstName + " " + data.LastName;
+            }
+            return string.Empty;
         }
 
     }

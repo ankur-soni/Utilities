@@ -49,11 +49,11 @@ namespace Silicus.Encourage.Services
             {
                 var awardFrequency = _encourageDbcontext.Query<FrequencyMaster>().Where(x => x.Id == award.FrequencyId).FirstOrDefault();
 
-                if (awardFrequency.Code == FrequencyCode.MON.ToString())
+                if (awardFrequency != null && awardFrequency.Code == FrequencyCode.MON.ToString())
                 {
                     return somDate;
                 }
-                else if (awardFrequency.Code == FrequencyCode.YEAR.ToString())
+                else if (awardFrequency != null && awardFrequency.Code == FrequencyCode.YEAR.ToString())
                 {
                     return pinnacleDate;
                 }
@@ -114,7 +114,12 @@ namespace Silicus.Encourage.Services
 
         public CustomDate CustomDateDetailsForAward(int awardId)
         {
-            return _encourageDbcontext.Query<CustomDate>().FirstOrDefault(c => c.AwardId == awardId);
+            var customDate = _encourageDbcontext.Query<CustomDate>().FirstOrDefault(c => c.AwardId == awardId);
+            if (customDate != null)
+            {
+                return customDate;
+            }
+            return new CustomDate();
         }
     }
 }

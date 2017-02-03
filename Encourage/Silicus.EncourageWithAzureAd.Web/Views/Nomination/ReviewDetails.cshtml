@@ -18,7 +18,7 @@
     <div class="row">
         <div class="col-lg-12 col-md-12 col-sm-12">
             <div class="panel panel-info M-T15">
-                <div class="panel-heading"> <span>Review For:&nbsp; @Html.DisplayFor(modelItem => modelItem.FirstOrDefault().NomineeName)</span></div>
+                <div class="panel-heading"> <span>Review For:&nbsp; @Html.DisplayFor(modelItem => modelItem.FirstOrDefault() == null ? string.Empty : modelItem.FirstOrDefault().NomineeName)</span></div>
                 <div class="panel-wrapper collapse in" aria-expanded="true">
                     <div class="panel-body" style="padding: 25px 25px 0px 25px;">
                         <table class="table table-hover issue-tracker white-bg">
@@ -27,7 +27,7 @@
                                     <label>Project/Department:</label>
                                 </td>
                                 <td>
-                                    @{ string employeeFrom = Model.FirstOrDefault().ProjectOrDepartment == "" ? "Other" : Model.FirstOrDefault().ProjectOrDepartment; }
+                                    @{ string employeeFrom = Model.FirstOrDefault() == null ? string.Empty : Model.FirstOrDefault().ProjectOrDepartment == "" ? "Other" : Model.FirstOrDefault().ProjectOrDepartment; }
                                     @Html.DisplayFor(modelItem => employeeFrom)
                                 </td>
                             </tr>
@@ -36,7 +36,7 @@
                                     <label>Manager:</label>
                                 </td>
                                 <td>
-                                    @Html.DisplayFor(modelItem => modelItem.FirstOrDefault().Manager)
+                                    @Html.DisplayFor(modelItem => modelItem.FirstOrDefault() == null ? string.Empty : modelItem.FirstOrDefault().Manager)
                                 </td>
                             </tr>
                         </table>
@@ -48,13 +48,18 @@
     <div class="row">
         <div class="col-lg-12 col-md-12 col-sm-12">
             <div class="panel panel-info">
-                <div class="panel-heading"> <span>@Html.DisplayFor(modelItem => modelItem.FirstOrDefault().Manager) Says:</span></div>
+                <div class="panel-heading"> <span>@Html.DisplayFor(modelItem => modelItem.FirstOrDefault() == null ? string.Empty : modelItem.FirstOrDefault().Manager) Says:</span></div>
                 <div class="panel-wrapper collapse in" aria-expanded="true">
                     <div class="panel-body" style="padding: 25px 25px 0px 25px;">
                         <table class="table table-hover issue-tracker">
                             <tr>
                                 <td class="more" style="word-wrap: break-word;">
-                                    <div>@Model.FirstOrDefault().ManagerComment</div>
+                                    <div>
+                                    @if (Model.FirstOrDefault() != null)
+                                    {
+                                        @Model.FirstOrDefault().ManagerComment;
+                                    }
+                                   </div>
                                 </td>
                             </tr>
                         </table>

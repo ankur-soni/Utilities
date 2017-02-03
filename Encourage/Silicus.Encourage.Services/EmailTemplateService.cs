@@ -28,7 +28,12 @@ namespace Silicus.Encourage.Services
 
         public EmailTemplate GetEmailTemplate(int templateId)
         {
-            return _encourageDatabaseContext.Query<EmailTemplate>().FirstOrDefault(t => t.Id == templateId);
+            var emailTemplate = _encourageDatabaseContext.Query<EmailTemplate>().FirstOrDefault(t => t.Id == templateId);
+            if (emailTemplate != null)
+            {
+                return emailTemplate;
+            }
+            return new EmailTemplate();
         }
 
         public List<EmailTemplate> GetAllTemplates()
@@ -38,8 +43,10 @@ namespace Silicus.Encourage.Services
 
         public List<User> GetAllManagers()
         {
-            var managerRoleId = _commonDataBaseContext.Query<Role>().Where(r => r.Name == "Manager").FirstOrDefault().ID;
-            var utilityId = _commonDataBaseContext.Query<Utility>().Where(r => r.Name == "Encourage").FirstOrDefault().Id;
+            var manager = _commonDataBaseContext.Query<Role>().Where(r => r.Name == "Manager").FirstOrDefault();
+            var managerRoleId = manager == null ? 0 : manager.ID;
+            var utility = _commonDataBaseContext.Query<Utility>().Where(r => r.Name == "Encourage").FirstOrDefault();
+            var utilityId = utility == null ? 0 : utility.Id; 
             var listOfMangerIds = _commonDataBaseContext.Query<UtilityUserRoles>().Where(u => u.RoleId == managerRoleId && u.UtilityId == utilityId).Select(m => m.UserId).ToList();
             return _commonDataBaseContext.Query<User>().Where(u => listOfMangerIds.Contains(u.ID)).ToList();
         }
@@ -86,8 +93,12 @@ namespace Silicus.Encourage.Services
         public string UpdateEmailTemplate(int templateId, string updatedTemplate)
         {
             var toBeUpdatedTemplate =  _encourageDatabaseContext.Query<EmailTemplate>().FirstOrDefault(t => t.Id == templateId);
-            toBeUpdatedTemplate.Template = updatedTemplate;
-            var returnedValue = _encourageDatabaseContext.Update(toBeUpdatedTemplate);
+            var returnedValue = 0;
+            if (toBeUpdatedTemplate != null)
+            {
+                toBeUpdatedTemplate.Template = updatedTemplate;
+                returnedValue = _encourageDatabaseContext.Update(toBeUpdatedTemplate);
+            }
             if (returnedValue == 0)
             {
                 return "Error";
