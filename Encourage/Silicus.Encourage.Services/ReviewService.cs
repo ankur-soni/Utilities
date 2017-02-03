@@ -114,7 +114,8 @@ namespace Silicus.Encourage.Services
         public bool GetAwardReviewLockStatus(int awardId)
         {
             var lockKey = WebConfigurationManager.AppSettings["ReviewLockKey"];
-            var lockStatus = _encourageDatabaseContext.Query<Configuration>().FirstOrDefault(x => x.configurationKey == lockKey && x.AwardId == awardId).value.Value;
+            var configuration = _encourageDatabaseContext.Query<Configuration>().FirstOrDefault(x => x.configurationKey == lockKey && x.AwardId == awardId);
+            var lockStatus = configuration != null && configuration.value == true;
             return lockStatus;
         }
 

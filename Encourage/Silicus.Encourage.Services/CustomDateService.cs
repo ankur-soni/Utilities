@@ -49,11 +49,11 @@ namespace Silicus.Encourage.Services
             {
                 var awardFrequency = _encourageDbcontext.Query<FrequencyMaster>().FirstOrDefault(x => x.Id == award.FrequencyId);
 
-                if (awardFrequency.Code == FrequencyCode.MON.ToString())
+                if (awardFrequency != null && awardFrequency.Code == FrequencyCode.MON.ToString())
                 {
                     return somDate;
                 }
-                else if (awardFrequency.Code == FrequencyCode.YEAR.ToString())
+                if (awardFrequency != null && awardFrequency.Code == FrequencyCode.YEAR.ToString())
                 {
                     return pinnacleDate;
                 }

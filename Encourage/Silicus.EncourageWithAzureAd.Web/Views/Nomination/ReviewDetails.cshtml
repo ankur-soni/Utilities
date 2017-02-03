@@ -27,7 +27,14 @@
                                     <label>Project/Department:</label>
                                 </td>
                                 <td>
-                                    @{ string employeeFrom = Model.FirstOrDefault().ProjectOrDepartment == "" ? "Other" : Model.FirstOrDefault().ProjectOrDepartment; }
+                                    @{
+                                        var reviewSubmitionViewModel = Model.FirstOrDefault();
+                                        string employeeFrom = string.Empty;
+                                        if (reviewSubmitionViewModel != null)
+                                        {
+                                            employeeFrom = reviewSubmitionViewModel.ProjectOrDepartment == "" ? "Other" : reviewSubmitionViewModel.ProjectOrDepartment;
+                                        }
+                                    }
                                     @Html.DisplayFor(modelItem => employeeFrom)
                                 </td>
                             </tr>
@@ -54,7 +61,14 @@
                         <table class="table table-hover issue-tracker">
                             <tr>
                                 <td class="more" style="word-wrap: break-word;">
-                                    <div>@Model.FirstOrDefault().ManagerComment</div>
+                                    <div>
+                                        @{
+                                            var submitionViewModel = Model.FirstOrDefault();
+                                        }
+                                        @if (submitionViewModel != null)
+                                         {
+                                             @submitionViewModel.ManagerComment
+                                         }</div>
                                 </td>
                             </tr>
                         </table>
