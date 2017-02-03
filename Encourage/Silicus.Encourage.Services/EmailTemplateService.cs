@@ -28,12 +28,7 @@ namespace Silicus.Encourage.Services
 
         public EmailTemplate GetEmailTemplate(int templateId)
         {
-            var emailTemplate = _encourageDatabaseContext.Query<EmailTemplate>().FirstOrDefault(t => t.Id == templateId);
-            if (emailTemplate != null)
-            {
-                return emailTemplate;
-            }
-            return new EmailTemplate();
+            return _encourageDatabaseContext.Query<EmailTemplate>().FirstOrDefault(t => t.Id == templateId);
         }
 
         public List<EmailTemplate> GetAllTemplates()
@@ -43,12 +38,21 @@ namespace Silicus.Encourage.Services
 
         public List<User> GetAllManagers()
         {
-            var manager = _commonDataBaseContext.Query<Role>().Where(r => r.Name == "Manager").FirstOrDefault();
-            var managerRoleId = manager == null ? 0 : manager.ID;
-            var utility = _commonDataBaseContext.Query<Utility>().Where(r => r.Name == "Encourage").FirstOrDefault();
-            var utilityId = utility == null ? 0 : utility.Id; 
-            var listOfMangerIds = _commonDataBaseContext.Query<UtilityUserRoles>().Where(u => u.RoleId == managerRoleId && u.UtilityId == utilityId).Select(m => m.UserId).ToList();
-            return _commonDataBaseContext.Query<User>().Where(u => listOfMangerIds.Contains(u.ID)).ToList();
+            var managers = new List<User>();
+            var orDefault = _commonDataBaseContext.Query<Role>().FirstOrDefault(r => r.Name == "Manager");
+            if (orDefault != null)
+            {
+                var managerRoleId = orDefault.ID;
+                var utility = _commonDataBaseContext.Query<Utility>().FirstOrDefault(r => r.Name == "Encourage");
+                if (utility != null)
+                {
+                    var utilityId = utility.Id;
+                    var listOfMangerIds = _commonDataBaseContext.Query<UtilityUserRoles>().Where(u => u.RoleId == managerRoleId && u.UtilityId == utilityId).Select(m => m.UserId).ToList();
+                    managers = _commonDataBaseContext.Query<User>().Where(u => listOfMangerIds.Contains(u.ID)).ToList();
+                }
+            }
+
+            return managers;
         }
 
         public string SendEmail(List<string> ToEmailAddresses,string body, string emailSubject)
@@ -93,15 +97,14 @@ namespace Silicus.Encourage.Services
         public string UpdateEmailTemplate(int templateId, string updatedTemplate)
         {
             var toBeUpdatedTemplate =  _encourageDatabaseContext.Query<EmailTemplate>().FirstOrDefault(t => t.Id == templateId);
-            var returnedValue = 0;
             if (toBeUpdatedTemplate != null)
             {
                 toBeUpdatedTemplate.Template = updatedTemplate;
-                returnedValue = _encourageDatabaseContext.Update(toBeUpdatedTemplate);
-            }
-            if (returnedValue == 0)
-            {
-                return "Error";
+                var returnedValue = _encourageDatabaseContext.Update(toBeUpdatedTemplate);
+                if (returnedValue == 0)
+                {
+                    return "Error";
+                }
             }
             return "Success";
         }

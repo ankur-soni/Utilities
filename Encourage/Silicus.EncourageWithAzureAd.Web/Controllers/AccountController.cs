@@ -21,7 +21,8 @@ namespace Silicus.EncourageWithAzureAd.Web.Controllers
 
         public void SignOut()
         {
-            string callbackUrl = Url.Action("SignOutCallback", "Account", routeValues: null, protocol: Request.Url.Scheme);
+            var protocol = Request.Url != null ? Request.Url.Scheme : null;
+            string callbackUrl = Url.Action("SignOutCallback", "Account", null, protocol);
             HttpContext.GetOwinContext().Authentication.SignOut(
                 new AuthenticationProperties { RedirectUri = callbackUrl },
                 OpenIdConnectAuthenticationDefaults.AuthenticationType, CookieAuthenticationDefaults.AuthenticationType);

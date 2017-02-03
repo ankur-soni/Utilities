@@ -79,9 +79,7 @@ namespace Silicus.Encourage.Services
 
         public Nomination GetReviewNomination(int nominationId)
         {
-            var nomination = _encourageDatabaseContext.Query<Nomination>().FirstOrDefault(n => n.Id == nominationId) == null ? new Nomination() :
-                _encourageDatabaseContext.Query<Nomination>().FirstOrDefault(n => n.Id == nominationId);
-            return nomination;
+            return _encourageDatabaseContext.Query<Nomination>().FirstOrDefault(n => n.Id == nominationId);
         }
 
         public List<ManagerComment> GetManagerCommentsForNomination(int nominationId)
@@ -146,7 +144,13 @@ namespace Silicus.Encourage.Services
             {
                 var nominationTime = nomination.NominationDate;
 
-                return DateTimeFormatInfo.CurrentInfo.GetAbbreviatedMonthName(nominationTime.Value.Month) + "-" + nominationTime.Value.Year.ToString();
+                if (CultureInfo.CurrentCulture.DateTimeFormat != null)
+                {
+                    if (nominationTime != null)
+                    {
+                        return CultureInfo.CurrentCulture.DateTimeFormat.GetAbbreviatedMonthName(nominationTime.Value.Month) + "-" + nominationTime.Value.Year.ToString();
+                    }
+                }
             }
             return string.Empty;
         }
@@ -234,10 +238,9 @@ namespace Silicus.Encourage.Services
         public List<Nomination> GetAllSubmitedReviewedNominations(int reviewerId, bool forCurrentMonth, int awardId)
         {
             var toBeComparedDate = _customDateService.GetCustomDate(awardId);
-            var award = _encourageDatabaseContext.Query<Award>().Where(x => x.Id == awardId).FirstOrDefault();
+            var award = _encourageDatabaseContext.Query<Award>().FirstOrDefault(x => x.Id == awardId);
 
-            List<Review> alreadyReviewedRecords;
-            var finalNominations = new List<Nomination>();
+            var alreadyReviewedRecords = new List<Review>();
             if (award != null)
             {
                 switch (award.Code)
@@ -245,7 +248,7 @@ namespace Silicus.Encourage.Services
                     default:
                     case "SOM":
                         alreadyReviewedRecords = _encourageDatabaseContext.Query<Review>()
-                                .Where(r =>
+                            .Where(r =>
                                 r.Nomination.AwardId == awardId &&
                                 r.ReviewerId == reviewerId &&
                                 r.IsSubmited == true &&
@@ -254,24 +257,26 @@ namespace Silicus.Encourage.Services
 
                     case "PINNACLE":
                         alreadyReviewedRecords = _encourageDatabaseContext.Query<Review>()
-                                .Where(r =>
+                            .Where(r =>
                                 r.Nomination.AwardId == awardId &&
                                 r.ReviewerId == reviewerId &&
                                 r.IsSubmited == true &&
                                 (forCurrentMonth ? (r.Nomination.NominationDate.Value.Year == toBeComparedDate.Year) : (r.Nomination.NominationDate.Value.Year < toBeComparedDate.Year))).ToList();
                         break;
                 }
+            }
+            var finalNominations = new List<Nomination>();
 
-                foreach (var item in alreadyReviewedRecords)
+            foreach (var item in alreadyReviewedRecords)
+            {
+                var nomination = _encourageDatabaseContext.Query<Nomination>().FirstOrDefault(N => N.IsSubmitted == true && N.Id == item.NominationId);
+                if (nomination != null)
                 {
-                    var nomination = _encourageDatabaseContext.Query<Nomination>().FirstOrDefault(N => N.IsSubmitted == true && N.Id == item.NominationId);
-                    if (nomination != null)
-                    {
-                        nomination.IsSubmitted = item.IsSubmited;
-                        finalNominations.Add(nomination);
-                    }
+                    nomination.IsSubmitted = item.IsSubmited;
+                    finalNominations.Add(nomination);
                 }
             }
+
             return finalNominations;
         }
 
@@ -327,12 +332,7 @@ namespace Silicus.Encourage.Services
                     {
                         data.value = true;
                         _encourageDatabaseContext.Update<Models.Configuration>(data);
-                        var award = _encourageDatabaseContext.Query<Award>().FirstOrDefault(a => a.Id == awardId);
-                        if (award != null)
-                        {
-                            lockedAwards.Add(award);
-                        }
-                        
+                        lockedAwards.Add(_encourageDatabaseContext.Query<Award>().FirstOrDefault(a => a.Id == awardId));
                     }
                 }
                 return lockedAwards;
@@ -358,11 +358,7 @@ namespace Silicus.Encourage.Services
                     {
                         data.value = false;
                         _encourageDatabaseContext.Update<Models.Configuration>(data);
-                        var award = _encourageDatabaseContext.Query<Award>().FirstOrDefault(a => a.Id == awardId);
-                        if (award != null)
-                        {
-                            unLockedAwards.Add(award);
-                        }
+                        unLockedAwards.Add(_encourageDatabaseContext.Query<Award>().FirstOrDefault(a => a.Id == awardId));
                     }
                 }
                 return unLockedAwards;
@@ -394,7 +390,6 @@ namespace Silicus.Encourage.Services
                     award.Configurations.Add(awardconfiguration);
                     awardsToUnlock.Add(award);
                 }
-                
             }
             if (awardsToUnlock.Any())
             {
@@ -420,7 +415,7 @@ namespace Silicus.Encourage.Services
             var lockedAwards = new List<Award>();
             foreach (var award in allAwards)
             {
-                var result = _encourageDatabaseContext.Query<Encourage.Models.Configuration>().Where(x => x.configurationKey == lockKey && x.AwardId == award.Id && x.value == true).FirstOrDefault();
+                var result = _encourageDatabaseContext.Query<Encourage.Models.Configuration>().FirstOrDefault(x => x.configurationKey == lockKey && x.AwardId == award.Id && x.value == true);
                 if (result != null)
                 {
                     lockedAwards.Add(award);
@@ -433,12 +428,8 @@ namespace Silicus.Encourage.Services
         public bool GetAwardNominationLockStatus(int awardId)
         {
             var lockKey = WebConfigurationManager.AppSettings["NominationLockKey"];
-            var lockData = _encourageDatabaseContext.Query<Configuration>().FirstOrDefault(x => x.configurationKey == lockKey && x.AwardId == awardId);
-            var lockStatus = false;
-            if (lockData != null)
-            {
-                lockStatus = lockData.value.Value;
-            }
+            var configuration = _encourageDatabaseContext.Query<Configuration>().FirstOrDefault(x => x.configurationKey == lockKey && x.AwardId == awardId);
+            var lockStatus = configuration != null && configuration.value == true;
             return lockStatus;
         }
 
@@ -476,30 +467,26 @@ namespace Silicus.Encourage.Services
 
         public string GetAwardNameByAwardId(int awardId)
         {
-            var award =  _encourageDatabaseContext.Query<Award>().Where(a => a.Id == awardId).FirstOrDefault();
+            var award = _encourageDatabaseContext.Query<Award>().FirstOrDefault(a => a.Id == awardId);
             if (award != null)
             {
                 return award.Code;
             }
-            return string.Empty;
+            return null;
         }
 
         public User GetNomineeDetails(int userId)
         {
-            var user = _commonDataBaseContext.Query<User>().Where(u => u.ID == userId).FirstOrDefault();
-            if (user != null)
-            {
-                return user;
-            }
-            return new User();
+            return _commonDataBaseContext.Query<User>().FirstOrDefault(u => u.ID == userId);
         }
 
-        public List<Nomination> GetAllSubmittedAndSavedNominationsByCurrentUserAndMonth(int managerID, bool forCurrentMonth, int awardId)
+        public List<Nomination> GetAllSubmittedAndSavedNominationsByCurrentUserAndMonth(int managerId, bool forCurrentMonth, int awardId)
         {
             DateTime toBeComparedDate = _customDateService.GetCustomDate(awardId);
-            var award = _encourageDatabaseContext.Query<Award>().Where(x => x.Id == awardId).FirstOrDefault();
+            var award = _encourageDatabaseContext.Query<Award>().FirstOrDefault(x => x.Id == awardId);
 
             var allNominations = new List<Nomination>();
+
             if (award != null)
             {
                 switch (award.Code)
@@ -508,17 +495,17 @@ namespace Silicus.Encourage.Services
                     case "SOM":
                         //SOM
                         allNominations = _encourageDatabaseContext.Query<Nomination>().Where(N =>
-                                N.ManagerId == managerID &&
-                                N.AwardId == awardId &&
-                                (forCurrentMonth ? (N.NominationDate.Value.Month == toBeComparedDate.Month && N.NominationDate.Value.Year <= toBeComparedDate.Year) : (N.NominationDate < toBeComparedDate))).ToList();
+                            N.ManagerId == managerId &&
+                            N.AwardId == awardId &&
+                            (forCurrentMonth ? (N.NominationDate.Value.Month == toBeComparedDate.Month && N.NominationDate.Value.Year <= toBeComparedDate.Year) : (N.NominationDate < toBeComparedDate))).ToList();
                         break;
 
                     case "PINNACLE":
                         //Pinnacle
                         allNominations = _encourageDatabaseContext.Query<Nomination>().Where(N =>
-                                N.ManagerId == managerID &&
-                                N.AwardId == awardId &&
-                                (forCurrentMonth ? (N.NominationDate.Value.Year == toBeComparedDate.Year) : (N.NominationDate.Value.Year < toBeComparedDate.Year))).ToList();
+                            N.ManagerId == managerId &&
+                            N.AwardId == awardId &&
+                            (forCurrentMonth ? (N.NominationDate.Value.Year == toBeComparedDate.Year) : (N.NominationDate.Value.Year < toBeComparedDate.Year))).ToList();
                         break;
                 }
             }
@@ -543,22 +530,12 @@ namespace Silicus.Encourage.Services
 
         public FrequencyMaster GetAwardFrequencyByFrequencyCode(string frequencyCode)
         {
-            var frequency = _encourageDatabaseContext.Query<FrequencyMaster>().Where(x => x.Code == frequencyCode).FirstOrDefault();
-            if (frequency != null)
-            {
-                return frequency;
-            }
-            return new FrequencyMaster();
+            return _encourageDatabaseContext.Query<FrequencyMaster>().FirstOrDefault(x => x.Code == frequencyCode);
         }
 
         public FrequencyMaster GetAwardFrequencyById(int id)
         {
-            var frequency = _encourageDatabaseContext.Query<FrequencyMaster>().Where(x => x.Id == id).FirstOrDefault();
-            if (frequency != null)
-            {
-                return frequency;
-            }
-            return new FrequencyMaster();
+            return _encourageDatabaseContext.Query<FrequencyMaster>().FirstOrDefault(x => x.Id == id);
         }
 
         #endregion Get Saved Nominations Details

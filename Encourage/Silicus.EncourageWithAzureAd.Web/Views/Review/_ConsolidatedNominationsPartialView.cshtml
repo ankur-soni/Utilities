@@ -57,12 +57,15 @@
                     <td class="averagePoints">
                         @{
                             var sumOfAverages = 0m;
-                            foreach (var managerComment in nomination.ManagerComments)
+                            if (nomination.ManagerComments != null)
                             {
-                                var reviewersComments = nomination.ReviewerComments.Where(r => r.CriteriaId == managerComment.CriteriaId).ToList();
-                                if (reviewersComments.Any())
+                                foreach (var managerComment in nomination.ManagerComments)
                                 {
-                                    sumOfAverages += (Convert.ToDecimal(reviewersComments.Average(r => r.Credit)) * managerComment.Weightage) / 100m;
+                                    var reviewersComments = nomination.ReviewerComments.Where(r => r.CriteriaId == managerComment.CriteriaId).ToList();
+                                    if (reviewersComments.Any())
+                                    {
+                                        sumOfAverages += (Convert.ToDecimal(reviewersComments.Average(r => r.Credit))*managerComment.Weightage)/100m;
+                                    }
                                 }
                             }
                         }
@@ -70,22 +73,25 @@
                     </td>
                     @foreach (var criteria in Model.Criterias)
                     {
-                        var managerComment = nomination.ManagerComments.FirstOrDefault(mc => mc.CriteriaId == criteria.Id);
-                        if (managerComment != null)
+                        if (nomination.ManagerComments != null)
                         {
-                            foreach (var reviewer in Model.Reviewers)
+                            var managerComment = nomination.ManagerComments.FirstOrDefault(mc => mc.CriteriaId == criteria.Id);
+                            if (managerComment != null)
                             {
-                                var reviewerComment = nomination.ReviewerComments.FirstOrDefault(rc => rc.ReviewerId == reviewer.Id && rc.CriteriaId == criteria.Id);
-                                <td class="points">
-                                    @(reviewerComment != null ? (reviewerComment.Credit * reviewerComment.Weightage / 100m).ToString("F") : "-")
-                                </td>
+                                foreach (var reviewer in Model.Reviewers)
+                                {
+                                    var reviewerComment = nomination.ReviewerComments.FirstOrDefault(rc => rc.ReviewerId == reviewer.Id && rc.CriteriaId == criteria.Id);
+                                    <td class="points">
+                                        @(reviewerComment != null ? (reviewerComment.Credit*reviewerComment.Weightage/100m).ToString("F") : "-")
+                                    </td>
+                                }
                             }
-                        }
-                        else
-                        {
-                            for (int i = 0; i < (Model.Reviewers.Count); i++)
+                            else
                             {
-                                <td class="notNominated"></td>
+                                for (int i = 0; i < (Model.Reviewers.Count); i++)
+                                {
+                                    <td class="notNominated"></td>
+                                }
                             }
                         }
                     }

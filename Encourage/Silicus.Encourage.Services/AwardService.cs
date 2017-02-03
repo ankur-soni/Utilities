@@ -45,7 +45,13 @@ namespace Silicus.Encourage.Services
 
         public Award GetAwardFromNominationId(int nominationId)
         {
-            return _encourageDbcontext.Query<Nomination>("Award").Where(nomination => nomination.Id == nominationId).SingleOrDefault().Award;
+            var singleOrDefault = _encourageDbcontext.Query<Nomination>("Award").SingleOrDefault(nomination => nomination.Id == nominationId);
+            if (singleOrDefault != null)
+            {
+                return singleOrDefault.Award;
+            }
+
+            return null;
         }
 
         public List<Engagement> GetProjectsUnderCurrentUserAsManager(string email)
@@ -57,18 +63,23 @@ namespace Silicus.Encourage.Services
             foreach (var clientid in distinctClientIdsUnderCurrentManager)
             {
                 var data = _CommonDbContext.Query<Engagement>().FirstOrDefault(engagement => engagement.PrimaryProjectManagerID == currentUser.ID && engagement.ClientID == clientid.Key && engagement.Stage != closedProject);
-                if (data != null)
+                var firstOrDefault = _CommonDbContext.Query<Client>().FirstOrDefault(client => client.ID == clientid.Key);
+                if (firstOrDefault != null)
                 {
-                    data.Name = _CommonDbContext.Query<Client>().Where(client => client.ID == clientid.Key).FirstOrDefault().Code;
-                    projectUnderCurrentUser.Add(data);
+                    if (data != null)
+                    {
+                        data.Name = firstOrDefault.Code;
+                    }
                 }
+                projectUnderCurrentUser.Add(data);
+
             }
             return projectUnderCurrentUser;
         }
 
         public List<Department> GetDepartmentsUnderCurrentUserAsManager(string email)
         {
-            var currentUser = _CommonDbContext.Query<User>().Where(user => user.EmailAddress == email).SingleOrDefault();
+            var currentUser = _CommonDbContext.Query<User>().SingleOrDefault(user => user.EmailAddress == email);
 
             var resourcesInDepartment = from resource in _CommonDbContext.Query<Resource>()
                                         join resourceHistory in _CommonDbContext.Query<ResourceHistory>() on resource.ID equals resourceHistory.ResourceID
@@ -90,11 +101,9 @@ namespace Silicus.Encourage.Services
                                      where department.ID == DepartmentId
                                      select user;
             int awardId = 1;
-            var currentUser = _CommonDbContext.Query<User>().Where(user => user.ID == userIdToExcept);
-           
-            var currentUserId = currentUser.Count() <= 0 ? 0 : currentUser.FirstOrDefault().ID;
+            var currentUserId = userIdToExcept;
             var recourcesInDepartmentUnderCurrentManger = _encourageDbcontext.Query<Nomination>().Where(n => n.DepartmentId == DepartmentId && n.ManagerId == currentUserId && n.AwardId == awardId).ToList();
-            resourcesUnderDept = resourcesUnderDept.Except(currentUser);
+            resourcesUnderDept = resourcesUnderDept.Where(u => u.ID != userIdToExcept);
             var userList = resourcesUnderDept.ToList();
             foreach (var item in recourcesInDepartmentUnderCurrentManger)
             {
@@ -133,67 +142,68 @@ namespace Silicus.Encourage.Services
 
         public List<User> GetResourcesInEngagement(int engagementId, int userIdToExcept, int awardId)
         {
+            var userList = new List<User>();
             var customDate = _customDateService.GetCustomDate(awardId);
             var currentUser = _CommonDbContext.Query<User>().Where(user => user.ID == userIdToExcept);
-            var currentUserId = currentUser.Count() <= 0 ? 0 : currentUser.FirstOrDefault().ID;
-            var closedProject = ConfigurationManager.AppSettings["ClosedEngagementStage"];
-            var engagementsForClient = _CommonDbContext.Query<Engagement>().Where(engagement => engagement.PrimaryProjectManagerID == currentUserId && engagement.ID == engagementId);
-            var engagementForClient =  engagementsForClient.Count() <= 0 ? null :  engagementsForClient.FirstOrDefault();
-            var clientId = engagementForClient != null ? engagementForClient.ClientID : 0;
-            var allEngagementIds = _CommonDbContext.Query<Engagement>().Where(engagement => engagement.PrimaryProjectManagerID == currentUserId && engagement.ClientID == clientId && engagement.Stage != closedProject).Select(c => c.ID).ToList();
-
-            var userInEngagement = from engagement in _CommonDbContext.Query<Engagement>()
-                                   join engagementRole in _CommonDbContext.Query<EngagementRole>() on engagement.ID equals engagementRole.EngagementID
-                                   join resourceHistory in _CommonDbContext.Query<ResourceHistory>() on engagementRole.ResourceHistoryID equals resourceHistory.ID
-                                   join resource in _CommonDbContext.Query<Resource>() on resourceHistory.ResourceID equals resource.ID
-                                   join user in _CommonDbContext.Query<User>() on resource.UserID equals user.ID
-                                   where engagement.ClientID == clientId && engagement.Stage != closedProject && allEngagementIds.Contains(engagement.ID)
-                                   select user;
-
-            var recourcesInEnggementUnderCurrentManger = _encourageDbcontext.Query<Nomination>().Where(n => n.ProjectID == engagementId && n.ManagerId == currentUserId && n.AwardId == awardId).ToList();
-            userInEngagement = userInEngagement.Except(currentUser);
-            var userList = userInEngagement.ToList();
-
-            foreach (var item in recourcesInEnggementUnderCurrentManger)
+            var firstOrDefault = currentUser.FirstOrDefault();
+            if (firstOrDefault != null)
             {
-                userList.RemoveAll(u => u.ID == item.UserId);
-            }
+                var currentUserId = firstOrDefault.ID;
+                var closedProject = ConfigurationManager.AppSettings["ClosedEngagementStage"];
+                var engagementForClient = _CommonDbContext.Query<Engagement>().FirstOrDefault(engagement => engagement.PrimaryProjectManagerID == currentUserId && engagement.ID == engagementId);
+                var clientId = engagementForClient != null ? engagementForClient.ClientID : 0;
+                var allEngagementIds = _CommonDbContext.Query<Engagement>().Where(engagement => engagement.PrimaryProjectManagerID == currentUserId && engagement.ClientID == clientId && engagement.Stage != closedProject).Select(c => c.ID).ToList();
 
-            //Start-Winner can not be nominated for next one year.
-            var winners = _encourageDbcontext.Query<Shortlist>().Where(w => w.IsWinner == true).ToList();
-            var winnerNominationsWithin12Months = new List<Nomination>();
-            foreach (var winner in winners)
-            {
-                //var noOfMonthsFromLastWinningDate = (DateTime.Now.Year - winner.WinningDate.Value.Year) * 12 + (DateTime.Now.Month - winner.WinningDate.Value.Month);
-                var noOfMonthsFromLastWinningDate = (customDate.Year - winner.WinningDate.Value.Year) * 12 + (customDate.Month - winner.WinningDate.Value.Month);
-                var winnernomination = _nominationService.GetNomination(winner.NominationId);
-                
-                var previousAwardId = winnernomination.AwardId;
+                var userInEngagement = from engagement in _CommonDbContext.Query<Engagement>()
+                    join engagementRole in _CommonDbContext.Query<EngagementRole>() on engagement.ID equals engagementRole.EngagementID
+                    join resourceHistory in _CommonDbContext.Query<ResourceHistory>() on engagementRole.ResourceHistoryID equals resourceHistory.ID
+                    join resource in _CommonDbContext.Query<Resource>() on resourceHistory.ResourceID equals resource.ID
+                    join user in _CommonDbContext.Query<User>() on resource.UserID equals user.ID
+                    where engagement.ClientID == clientId && engagement.Stage != closedProject && allEngagementIds.Contains(engagement.ID)
+                    select user;
 
-                if (noOfMonthsFromLastWinningDate <= 12 && previousAwardId == awardId)
+                var recourcesInEnggementUnderCurrentManger = _encourageDbcontext.Query<Nomination>().Where(n => n.ProjectID == engagementId && n.ManagerId == currentUserId && n.AwardId == awardId).ToList();
+                userInEngagement = userInEngagement.Except(currentUser);
+                userList = userInEngagement.ToList();
+
+                foreach (var item in recourcesInEnggementUnderCurrentManger)
                 {
-                    winnerNominationsWithin12Months.Add(_nominationService.GetNomination(winner.NominationId));
+                    userList.RemoveAll(u => u.ID == item.UserId);
                 }
-            }
 
-            foreach (var winnerNomination in winnerNominationsWithin12Months)
-            {
-                userList.RemoveAll(user => user.ID == winnerNomination.UserId);
+                //Start-Winner can not be nominated for next one year.
+                var winners = _encourageDbcontext.Query<Shortlist>().Where(w => w.IsWinner == true).ToList();
+                var winnerNominationsWithin12Months = new List<Nomination>();
+                foreach (var winner in winners)
+                {
+                    //var noOfMonthsFromLastWinningDate = (DateTime.Now.Year - winner.WinningDate.Value.Year) * 12 + (DateTime.Now.Month - winner.WinningDate.Value.Month);
+                    var noOfMonthsFromLastWinningDate = (customDate.Year - winner.WinningDate.Value.Year) * 12 + (customDate.Month - winner.WinningDate.Value.Month);
+                    var winnernomination = _nominationService.GetNomination(winner.NominationId);
+                
+                    var previousAwardId = winnernomination.AwardId;
+
+                    if (noOfMonthsFromLastWinningDate <= 12 && previousAwardId == awardId)
+                    {
+                        winnerNominationsWithin12Months.Add(_nominationService.GetNomination(winner.NominationId));
+                    }
+                }
+
+                foreach (var winnerNomination in winnerNominationsWithin12Months)
+                {
+                    userList.RemoveAll(user => user.ID == winnerNomination.UserId);
+                }
+                //End
             }
-            //End
 
             return userList;
         }
 
         public List<User> GetResourcesForEditInEngagement(int engagementId, int userIdToExcept)
         {
-            var currentUser = _CommonDbContext.Query<User>().Where(user => user.ID == userIdToExcept);
-            var currentUserId = currentUser.Count() <= 0 ? 0 : currentUser.FirstOrDefault().ID;
             var closedProject = ConfigurationManager.AppSettings["ClosedEngagementStage"];
-            var engagementsForClient = _CommonDbContext.Query<Engagement>().Where(engagement => engagement.PrimaryProjectManagerID == currentUserId && engagement.ID == engagementId);
-            var engagementForClient = engagementsForClient.Count() <= 0 ? null : engagementsForClient.FirstOrDefault();
+            var engagementForClient = _CommonDbContext.Query<Engagement>().FirstOrDefault(engagement => engagement.PrimaryProjectManagerID == userIdToExcept && engagement.ID == engagementId);
             var clientId = engagementForClient != null ? engagementForClient.ClientID : 0;
-            var allEngagementIds = _CommonDbContext.Query<Engagement>().Where(engagement => engagement.PrimaryProjectManagerID == currentUserId && engagement.ClientID == clientId && engagement.Stage != closedProject).Select(c => c.ID).ToList();
+            var allEngagementIds = _CommonDbContext.Query<Engagement>().Where(engagement => engagement.PrimaryProjectManagerID == userIdToExcept && engagement.ClientID == clientId && engagement.Stage != closedProject).Select(c => c.ID).ToList();
 
             var userInEngagement = from engagement in _CommonDbContext.Query<Engagement>()
                                    join engagementRole in _CommonDbContext.Query<EngagementRole>() on engagement.ID equals engagementRole.EngagementID
@@ -203,7 +213,7 @@ namespace Silicus.Encourage.Services
                                    where engagement.ClientID == clientId && engagement.Stage != closedProject && allEngagementIds.Contains(engagement.ID)
                                    select user;
 
-            userInEngagement = userInEngagement.Except(currentUser);
+            userInEngagement = userInEngagement.Where(u => u.ID != userIdToExcept);
             return userInEngagement.ToList();
         }
 
@@ -225,13 +235,12 @@ namespace Silicus.Encourage.Services
 
         public int GetUserIdFromEmail(string email)
         {
-            var users = _CommonDbContext.Query<User>().Where(user => user.EmailAddress == email);
-            var userId = 0;
-            if (users.Count() <= 0)
+            var firstOrDefault = _CommonDbContext.Query<User>().FirstOrDefault(user => user.EmailAddress == email);
+            if (firstOrDefault != null)
             {
-                userId = users.FirstOrDefault().ID;
+                return firstOrDefault.ID;
             }
-            return userId;
+            return 0;
         }
 
         public List<WinnerData> GetWinnerData()
@@ -243,12 +252,8 @@ namespace Silicus.Encourage.Services
             {
                 var currentNomination = _nominationService.GetNomination(winner.NominationId);
                 var customDate = _customDateService.GetCustomDate(currentNomination.AwardId);
-                var shortlistedNominations = _encourageDbcontext.Query<Shortlist>().Where(shortlist => shortlist.IsWinner == true && shortlist.WinningDate.Value.Month == customDate.Month &&
-                    shortlist.WinningDate.Value.Year == customDate.Year);
-                if (shortlistedNominations.Count() > 0)
-                {
-                    allWinners.Add(shortlistedNominations.FirstOrDefault());
-                }
+                allWinners.Add(_encourageDbcontext.Query<Shortlist>().FirstOrDefault(shortlist => shortlist.IsWinner == true && shortlist.WinningDate.Value.Month == customDate.Month &&
+                                                                                                  shortlist.WinningDate.Value.Year == customDate.Year));
             }
             //var allWinners = _encourageDbcontext.Query<Shortlist>().Where(shortlist => shortlist.IsWinner == true && shortlist.WinningDate.Value.Month == DateTime.Now.Month && shortlist.WinningDate.Value.Year == DateTime.Now.Year).ToList();
             
@@ -257,47 +262,58 @@ namespace Silicus.Encourage.Services
             foreach (var winner in allWinners)
             {
                 string projectName = string.Empty;
-                var nominationsOfWinnner = _encourageDbcontext.Query<Nomination>().Where(nomination => nomination.Id == winner.NominationId);
-                var nominationOfWinnner = nominationsOfWinnner.Count() <= 0 ? new Nomination() : nominationsOfWinnner.FirstOrDefault();
+                var nominationOfWinnner = _encourageDbcontext.Query<Nomination>().FirstOrDefault(nomination => nomination.Id == winner.NominationId);
 
-                var userData = _CommonDbContext.Query<User>().Where(user => user.ID == nominationOfWinnner.UserId).FirstOrDefault();
-                var userName = userData == null ? "" : userData.DisplayName;
-
-                var awardData = _encourageDbcontext.Query<Award>().Where(award => award.Id == nominationOfWinnner.AwardId).FirstOrDefault();
-                var awardName = awardData == null ? "" : awardData.Name;
-
-
-                var manager = _CommonDbContext.Query<User>().Where(user => user.ID == nominationOfWinnner.ManagerId).FirstOrDefault();
-                var managerName = manager == null ? "" : manager.DisplayName;
-
-                if (nominationOfWinnner.ProjectID != null)
+                var user = _CommonDbContext.Query<User>().FirstOrDefault(u => u.ID == nominationOfWinnner.UserId);
+                if (user != null)
                 {
-                    var engagement = _CommonDbContext.Query<Engagement>().Where(enagegement => enagegement.ID == nominationOfWinnner.ProjectID).FirstOrDefault();
-                    if (engagement != null)
+                    var userName = user.DisplayName;
+                    var award = _encourageDbcontext.Query<Award>().FirstOrDefault(a => a.Id == nominationOfWinnner.AwardId);
+                    if (award != null)
                     {
-                        projectName = engagement.Name;
+                        var awardName = award.Name;
+                        var manager = _CommonDbContext.Query<User>().FirstOrDefault(u => u.ID == nominationOfWinnner.ManagerId);
+                        if (manager != null)
+                        {
+                            var managerName = manager.DisplayName;
+
+                            if (nominationOfWinnner != null && nominationOfWinnner.ProjectID != null)
+                            {
+                                var engagement = _CommonDbContext.Query<Engagement>().FirstOrDefault(enagegement => enagegement.ID == nominationOfWinnner.ProjectID);
+                                if (engagement != null)
+                                {
+                                    projectName = engagement.Name;
+                                }
+                            }
+                            else
+                            {
+                                var engagement = _CommonDbContext.Query<Department>().FirstOrDefault(enagegement => enagegement.ID == nominationOfWinnner.DepartmentId);
+                                if (engagement != null)
+                                {
+                                    projectName = engagement.Name;
+                                }
+                            }
+
+                            if (nominationOfWinnner != null)
+                            {
+                                if (nominationOfWinnner.NominationDate != null)
+                                {
+                                    var awardPeriod = nominationOfWinnner.NominationDate.Value.ToString("MMMM") + " - " + nominationOfWinnner.NominationDate.Value.Year.ToString();
+                                    var winnerData = new WinnerData()
+                                    {
+                                        Name = userName,
+                                        AwardName = awardName,
+                                        AwardPeriod = awardPeriod,
+                                        ManagerName = managerName,
+                                        ProjectName = projectName
+                                    };
+
+                                    winnersList.Add(winnerData);
+                                }
+                            }
+                        }
                     }
                 }
-                else
-                {
-                    var engagement = _CommonDbContext.Query<Department>().Where(enagegement => enagegement.ID == nominationOfWinnner.DepartmentId).FirstOrDefault();
-                    if (engagement != null)
-                    {
-                        projectName = engagement.Name;
-                    }
-                }
-
-                var awardPeriod = nominationOfWinnner.NominationDate.Value.ToString("MMMM") + " - " + nominationOfWinnner.NominationDate.Value.Year.ToString();
-                var winnerData = new WinnerData()
-                {
-                    Name = userName,
-                    AwardName = awardName,
-                    AwardPeriod = awardPeriod,
-                    ManagerName = managerName,
-                    ProjectName = projectName
-                };
-
-                winnersList.Add(winnerData);
             }
             return winnersList;
         }
@@ -309,42 +325,27 @@ namespace Silicus.Encourage.Services
 
         public Award GetAwardById(int awardId)
         {
-            var award = _encourageDbcontext.Query<Award>().Where(x => x.Id == awardId).FirstOrDefault();
-            if (award != null)
-            {
-                return award;
-            }
-            return new Award();
+            return _encourageDbcontext.Query<Award>().FirstOrDefault(x => x.Id == awardId);
         }
 
         public Award GetAwardByCode(string awardName)
         {
-            var award = _encourageDbcontext.Query<Award>().Where(x => x.Code == awardName).FirstOrDefault();
-            if (award != null)
-            {
-                return award;
-            }
-            return new Award();
+            return _encourageDbcontext.Query<Award>().FirstOrDefault(x => x.Code == awardName);
         }
 
         public string GetAwardNameById(int awardId)
         {
-            var award = _encourageDbcontext.Query<Award>().Where(x => x.Id == awardId).FirstOrDefault();
-            if (award != null)
+            var firstOrDefault = _encourageDbcontext.Query<Award>().FirstOrDefault(x => x.Id == awardId);
+            if (firstOrDefault != null)
             {
-                return award.Name;
+                return firstOrDefault.Name;
             }
-            return "";
+            return null;
         }
 
         public User GetUserById(int userId)
         {
-            var user = _CommonDbContext.Query<User>().Where(u => u.ID == userId).FirstOrDefault();
-            if (user != null)
-            {
-                return user;
-            }
-            return new User();
+            return _CommonDbContext.Query<User>().FirstOrDefault(u => u.ID == userId);
         }
     }
 }

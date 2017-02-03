@@ -12,13 +12,13 @@ namespace Silicus.FrameworxProject.Models
         public string Description { get; set; }
         public string State { get; set; }
         public string Type { get; set; }
-        public string AreaPath { get; set; }
+        public string Area { get; set; }
         public string AssigneeDisplayName { get; set; }
         public string AssigneeEmail { get; set; }
         public double? TimeAllocated { get; set; }
         public double? TimeSpent { get; set; }
         public string AssignedBy { get; set; }
-        public DateTime CreatedDate { get; set; }
-        public DateTime ChangedDate { get; set; }
+        public DateTime? CreatedDate { get; set; }
+        public DateTime? ChangedDate { get; set; }
     }
 }

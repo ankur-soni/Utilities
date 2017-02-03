@@ -36,45 +36,43 @@ namespace Silicus.Encourage.Services
 
         public void UnShortlistNomination(int nominationId)
         {
-            var shortlistedNomination = _encourageDatabaseContext.Query<Shortlist>().Where(model => model.NominationId == nominationId).SingleOrDefault();
+            var shortlistedNomination = _encourageDatabaseContext.Query<Shortlist>().SingleOrDefault(model => model.NominationId == nominationId);
             if (shortlistedNomination != null)
                 _encourageDatabaseContext.Delete<Shortlist>(shortlistedNomination);
         }
 
         public void SelectWinner(int nominationId, string winningComment, string hrAdminsFeedback, int adminId)
         {
-            var shortlistedNomination = _encourageDatabaseContext.Query<Shortlist>().Where(model => model.NominationId == nominationId).SingleOrDefault();
-            var currentNomination = new Nomination();
-            if (shortlistedNomination != null)
+            var shortlistedNomination = _encourageDatabaseContext.Query<Shortlist>().SingleOrDefault(model => model.NominationId == nominationId);
+            var currentNomination = _encourageDatabaseContext.Query<Nomination>().FirstOrDefault(x => x.Id == shortlistedNomination.NominationId);
+            if (currentNomination != null)
             {
-                currentNomination = _encourageDatabaseContext.Query<Nomination>().Where(x => x.Id == shortlistedNomination.NominationId).FirstOrDefault();
-            }
+                var customDate = _customDateService.GetCustomDate(currentNomination.AwardId);
 
-            var customDate = _customDateService.GetCustomDate(currentNomination.AwardId);
-
-            if (shortlistedNomination != null)
-            {
-                shortlistedNomination.IsWinner = true;
-                //shortlistedNomination.WinningDate = DateTime.Now.Date;
-                shortlistedNomination.WinningDate = customDate.Date;
-                shortlistedNomination.WinningComment = winningComment;
-                shortlistedNomination.HrAdminsFeedback = hrAdminsFeedback;
-                shortlistedNomination.AdminId = adminId;
-                _encourageDatabaseContext.Update<Shortlist>(shortlistedNomination);
-            }
-            else
-            {
-                var winner = new Shortlist()
+                if (shortlistedNomination != null)
                 {
-                    IsWinner = true,
-                    NominationId = nominationId,
-                    //WinningDate = DateTime.Now.Date,
-                    WinningDate = customDate.Date,
-                    WinningComment = winningComment,
-                    HrAdminsFeedback = hrAdminsFeedback,
-                    AdminId = adminId
-                };
-                _encourageDatabaseContext.Add<Shortlist>(winner);
+                    shortlistedNomination.IsWinner = true;
+                    //shortlistedNomination.WinningDate = DateTime.Now.Date;
+                    shortlistedNomination.WinningDate = customDate.Date;
+                    shortlistedNomination.WinningComment = winningComment;
+                    shortlistedNomination.HrAdminsFeedback = hrAdminsFeedback;
+                    shortlistedNomination.AdminId = adminId;
+                    _encourageDatabaseContext.Update<Shortlist>(shortlistedNomination);
+                }
+                else
+                {
+                    var winner = new Shortlist()
+                    {
+                        IsWinner = true,
+                        NominationId = nominationId,
+                        //WinningDate = DateTime.Now.Date,
+                        WinningDate = customDate.Date,
+                        WinningComment = winningComment,
+                        HrAdminsFeedback = hrAdminsFeedback,
+                        AdminId = adminId
+                    };
+                    _encourageDatabaseContext.Add<Shortlist>(winner);
+                }
             }
         }
 
@@ -96,22 +94,20 @@ namespace Silicus.Encourage.Services
                 return 0;
         }
 
-        public string GetAwardComments(int WinnerId)
+        public string GetAwardComments(int winnerId)
         {
-            var shortlistedNomination = _encourageDatabaseContext.Query<Shortlist>().Where(model => model.NominationId == WinnerId).FirstOrDefault();
-            if (shortlistedNomination != null)
+            var comments = string.Empty;
+            var firstOrDefault = _encourageDatabaseContext.Query<Shortlist>().FirstOrDefault(model => model.NominationId == winnerId);
+            if (firstOrDefault != null)
             {
-                var comments = shortlistedNomination.WinningComment;
-
-                return comments;
+                comments = firstOrDefault.WinningComment;
             }
-
-            return string.Empty;
+            return comments;
         }
 
         public string GetHrAdminsFeedbackForEmployee(int loggedInAdminsId, int nominationId)
         {
-            var data = _encourageDatabaseContext.Query<Shortlist>().Where(s => s.NominationId == nominationId && s.AdminId == loggedInAdminsId).FirstOrDefault();
+            var data = _encourageDatabaseContext.Query<Shortlist>().FirstOrDefault(s => s.NominationId == nominationId && s.AdminId == loggedInAdminsId);
             var hrAdminsComment = string.Empty;
             if (data != null)
             {
@@ -122,13 +118,12 @@ namespace Silicus.Encourage.Services
 
         public string GetLoggedInUserName(string emailId)
         {
-            var data = _commonDataBaseContext.Query<User>().Where(u => u.EmailAddress == emailId).FirstOrDefault();
-            if (data != null)
+            var data = _commonDataBaseContext.Query<User>().FirstOrDefault(u => u.EmailAddress == emailId);
+            if (data != null) 
             {
-                return data.FirstName + " " + data.LastName;
+              return  data.FirstName + " " + data.LastName;
             }
-            return string.Empty;
+            return null;
         }
-
     }
 }

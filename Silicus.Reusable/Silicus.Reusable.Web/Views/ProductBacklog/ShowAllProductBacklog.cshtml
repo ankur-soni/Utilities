@@ -7,6 +7,7 @@
 }
 
 <script>
+   
     function onProductBacklogsDataBound(e) {
         var isRolePm = @ViewBag.IsRolePm.ToString().ToLower();
         var grid = $("#productBacklogs").data("kendoGrid");
@@ -17,7 +18,7 @@
             var assignButton = $(currenRow).find(".k-grid-Assign");
             var updateButton = $(currenRow).find(".k-grid-Update");
             var acceptButton = $(currenRow).find(".k-grid-Accept");
-            if (gridData[i].AssigneeDisplayName != "Unassigned" && gridData[i].AssigneeDisplayName != "") {
+            if (gridData[i].AssigneeDisplayName != "Unassigned" && gridData[i].AssigneeDisplayName != "" &&  gridData[i].AssigneeDisplayName != null) {
                 if (assignButton) {
                     assignButton.text("Re Assign");
                     acceptButton.remove();
@@ -32,19 +33,15 @@
             }
         }
 
-        $(".hours").kendoMaskedTextBox({
-            mask: "00 : 00",
-            change: onHrsChange
-        });
-
+        $(".hours").off('change').on('change',onHrsChange);
+        $(".numeric").kendoNumericTextBox({min: 0});
     }
 
     function productBacklogsErrorHandler(){
         showAlert({ title: 'Error', text: 'Error fetching product backlogs..', type: 'error', timer: 2000 });
     }
 
-    function requestEnd(e){
-        debugger;
+    function requestEnd(e){        
         if(e.type === "create"){
             showAlert({ title: 'Work item added successfully!', text: 'Workitem has been added successfully!', type: 'success',timer:2000});
             this.read();
@@ -81,7 +78,7 @@
                 .DataSource(source =>
                 {
                     source.Custom()
-                    .ServerFiltering(false)
+                    .ServerFiltering(false)                    
                     .Type("aspnetmvc-ajax")
                     .Transport(transport =>
                     {
@@ -107,7 +104,7 @@
                 ()
                 .Name("productBacklogs")
                 .AutoBind(false)
-                .Events(e => e.DataBound("onProductBacklogsDataBound"))
+                .Events(e => e.DataBound("onProductBacklogsDataBound").Edit("onRowEdit"))
                 .DataSource(dataSource => dataSource
                 .Ajax()
                 .Events(events => events.Error("productBacklogsErrorHandler").RequestEnd("requestEnd"))
@@ -115,6 +112,7 @@
                 {
                     model.Id(p => p.Id);
                     model.Field(p => p.AssignedBy).DefaultValue(ViewBag.CurrentUser);
+                    model.Field(p => p.CreatedDate).DefaultValue(DateTime.Today);
                 })
                 .Create(update => update.Action("AddWorkItem", "ProductBacklog").Data("additionalData"))
                 .Read(read => read.Action("GetProductBacklogs", "ProductBacklog").Data("additionalData"))
@@ -126,15 +124,15 @@
                     columns.Bound(p => p.Id).Width(10);
                     columns.Bound(p => p.Title).Width(50).ClientTemplate(@"<a href='\\#' onclick='openDetails(#=Id#)'>#=Title#</a>");
                     columns.Bound(p => p.Type).Width(10);
-                    columns.Bound(p => p.AreaPath).Width(30).Title("Area");
+                    columns.Bound(p => p.Area).Width(30).Title("Area");
                     columns.Bound(p => p.AssigneeDisplayName).Width(50).Title("Assigned To");
-                    columns.Bound(p => p.TimeAllocated).Width(10).Title("Time Allocated (hh:mm)").ClientTemplate("<input class='allocated-hours hours' id=#=Id#  value='#=toHHMM(TimeAllocated)#' \\#=(AssigneeDisplayName = ='Unassigned' || TimeAllocated= ='0' )?'':'disabled'\\# />");
-                    columns.Bound(p => p.TimeSpent).Width(10).Title("Time Spent (hh:mm)").ClientTemplate("<input value='#=toHHMM(TimeSpent)#' class='spent-hours hours' \\#= (AssigneeDisplayName = ='Unassigned') ?'' : 'disabled' \\# />");
+                    columns.Bound(p => p.TimeAllocated).Width(10).Title("Time Allocated (hours)").ClientTemplate("<input  class='allocated-hours hours numeric' id=#=Id#  value='#=TimeAllocated#'  #= (AssigneeDisplayName == 'Unassigned' || AssigneeDisplayName == '' || AssigneeDisplayName == null || TimeAllocated=='0') ? ' ' : 'disabled' # />");
+                    columns.Bound(p => p.TimeSpent).Width(10).Title("Time Spent (hours)").ClientTemplate("<input  value='#=TimeSpent#' class='spent-hours hours numeric' #= (AssigneeDisplayName == 'Unassigned') ? ' ' : 'disabled' #  />");
                     columns.Bound(p => p.State).Width(10);
                     columns.Command(command =>
                     {
                         command.Custom("Accept").Click("accept");
-                        if (isRolePm)
+                        if ((bool)isRolePm)
                         {
                             command.Custom("Assign").Click("openAssignUserForm");
                         }
@@ -149,7 +147,12 @@
                 .Sortable()
                 .Pageable(pageable => pageable
                 .Refresh(true))
-                .ToolBar(toolbar => toolbar.Create())
+                .ToolBar(toolbar => {
+                    //   if ((bool)ViewBag.IsFrameworxUser)
+                    //  {
+                    toolbar.Create();
+                    // }
+                })
                 .Editable(ed => ed.Mode(GridEditMode.PopUp).TemplateName("ProductBacklogEditTemplate"))
             )
 
@@ -186,12 +189,18 @@
     SaveButtonOnlickEvent = "assignUser()"
 })
 
+@{ 
+    string textBox = Html.Kendo().NumericTextBox()
+                        .Name("updateTime")                        
+                        .Min(0).ToString();
+}
+
 @Html.Partial("_BootstrapModalTemplate", new Silicus.Reusable.Web.Models.ViewModel.BootstrapModalTemplateViewModel()
 {
     Id = "updateFormModal",
-    Title = "Update",
+    Title = "Update Spent Time",
     CloseButtonVisible = true,
     SaveButtonVisible = true,
-    ContentHtml = "<label>Time  Spent <input id='update-time' /></label>",
+    ContentHtml = "<label>Time  Spent (hours)"+ textBox + "</label>",
     SaveButtonOnlickEvent = "update()"
 })
