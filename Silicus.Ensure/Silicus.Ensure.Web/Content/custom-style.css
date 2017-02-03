@@ -2359,7 +2359,9 @@ span.select2.select2-container.select2-container--default {
     font-size: 15px;
     color: #777;
 }
-
+.cust-mar {
+        margin-top: 30px;
+    }
 /* Candidate portal css*/
 .titleText{color:#337ab7;}
 .btn-start{background: #b4e391; /* Old browsers */
@@ -2415,7 +2417,7 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#b4e391', end
 .panel .panel-heading .panel-title{
     color:#fff!important;
 }
-
+.disBlock{display:block;}
 
 
 
@@ -2498,15 +2500,16 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#b4e391', end
     padding-bottom: 0px;
 }
 
-    .cust-mar {
-        margin-top: 15px;
-    }
+    
      }
 
 @media (max-width:800px) {
 }
 
 @media (max-width:768px) {
+    .cust-mar {
+        margin-top: 15px;
+    }
     .sidebar-wrapper {
         display: none;
     }
