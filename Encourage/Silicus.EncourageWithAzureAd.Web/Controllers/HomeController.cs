@@ -150,5 +150,10 @@ namespace Silicus.EncourageWithAzureAd.Web.Controllers
 
             return View();
         }
+
+        public ActionResult Error()
+        {
+            return View("~/Views/Shared/Error.cshtml");
+        }
     }
 }

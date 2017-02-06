@@ -34,8 +34,12 @@ namespace Silicus.UtilityContainer.Services
 
         public List<UtilityRole> GetAllRolesForAnUtility(int utilityId)
        {
-           return _commmonDBContext.Query<UtilityRole>().Where(utility => utility.UtilityID == utilityId).ToList();
-       }
+            if (_commmonDBContext.Query<UtilityRole>().Where(utility => utility.UtilityID == utilityId) != null)
+            {
+                return _commmonDBContext.Query<UtilityRole>().Where(utility => utility.UtilityID == utilityId).ToList();
+            }
+            return new List<UtilityRole>();
+        }
 
         public void SaveUtilityRole(UtilityRoleViewModel newUtilityRole)
         {
