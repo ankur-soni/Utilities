@@ -64,15 +64,11 @@ namespace Silicus.Encourage.Services
             {
                 var data = _CommonDbContext.Query<Engagement>().FirstOrDefault(engagement => engagement.PrimaryProjectManagerID == currentUser.ID && engagement.ClientID == clientid.Key && engagement.Stage != closedProject);
                 var firstOrDefault = _CommonDbContext.Query<Client>().FirstOrDefault(client => client.ID == clientid.Key);
-                if (firstOrDefault != null)
+                if (firstOrDefault != null && data != null)
                 {
-                    if (data != null)
-                    {
-                        data.Name = firstOrDefault.Code;
-                    }
+                    data.Name = firstOrDefault.Code;
+                    projectUnderCurrentUser.Add(data);
                 }
-                projectUnderCurrentUser.Add(data);
-
             }
             return projectUnderCurrentUser;
         }
