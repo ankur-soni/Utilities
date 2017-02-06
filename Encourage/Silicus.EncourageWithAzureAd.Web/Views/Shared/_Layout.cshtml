@@ -45,6 +45,10 @@
                 <nav class="navbar navbar-static-top  " role="navigation" style="margin-bottom: 0">
                     <ul class="nav navbar-top-links navbar-right">
                         @Html.Partial("_LoginPartial")
+                        @{
+                            var isSuperAdmin = !string.IsNullOrEmpty(User.GetClaimValue("RootUserName"));
+                            var url = isSuperAdmin? Url.Action("LogoutAs", "Account"): Url.Action("SignOut", "Account");
+                        }
                         @if (Request.IsAuthenticated)
                         {
                             var userName = @User.Identity.Name;
@@ -53,7 +57,7 @@
                                 <a class="dropdown-toggle count-info" data-toggle="dropdown" href="#">
                                     <span class="hidden-sm hidden-xs">
                                         <span class="m-r-sm text-muted welcome-message">
-                                            Welcome @data[0] @data[1] <i class="fa fa-chevron-down"></i>
+                                            @(isSuperAdmin ? "Logged In As" :"Welcome") @data[0] @data[1] <i class="fa fa-chevron-down"></i>
                                         </span>
                                     </span>
                                     <span class="hidden-md hidden-lg">
@@ -62,7 +66,7 @@
                                 </a>
                                 <ul class="dropdown-menu dropdown-user-menu">
                                     <li>
-                                        <a href='@Url.Action("SignOut", "Account")'>
+                                        <a href='@url'>
                                             <div>
                                                 Logout
                                             </div>
@@ -90,80 +94,80 @@
                     <nav class="navbar-default navbar-static-side sidebar" role="navigation">
                         <div class="sidebar-collapse">
                             @{
-                                List<string> roles = MvcApplication.GetCurrentUserRoles();
-                                List<string> contributors = MvcApplication.GetDevelopersName();
+                List<string> roles = MvcApplication.GetCurrentUserRoles();
+                List<string> contributors = MvcApplication.GetDevelopersName();
                             }
                             @if (roles.Count() != 0)
                             {
-                            <ul class="nav metismenu" id="side-menu">
-                                <li class="active">
-                                    <a href="@Url.Action("Index", "Home")">
-                                        <i class="fa fa-dashboard"></i>
-                                        <span class="nav-label">Dashboard</span>
-                                    </a>
-                                </li>
-                                @if (roles.Contains("Manager"))
+                                <ul class="nav metismenu" id="side-menu">
+                                    <li class="active">
+                                        <a href="@Url.Action("Index", "Home")">
+                                            <i class="fa fa-dashboard"></i>
+                                            <span class="nav-label">Dashboard</span>
+                                        </a>
+                                    </li>
+                                    @if (roles.Contains("Manager"))
                                     {
-                                    <li>
-                                        <a href="#"><i class="fa fa-user"></i><span class="nav-label">Nominations</span> <span class="fa arrow"></span></a>
-                                        <ul class="nav nav-second-level">
+                                        <li>
+                                            <a href="#"><i class="fa fa-user"></i><span class="nav-label">Nominations</span> <span class="fa arrow"></span></a>
+                                            <ul class="nav nav-second-level">
 
-                                            <li><a href="@Url.Action("AddNomination", "Nomination")" class="active">Add Nominations</a></li>
-                                            <li><a href="@Url.Action("GetNominationList", "Nomination")" class="active">Edit Nominations</a></li>
-                                        </ul>
-                                    </li>
+                                                <li><a href="@Url.Action("AddNomination", "Nomination")" class="active">Add Nominations</a></li>
+                                                <li><a href="@Url.Action("GetNominationList", "Nomination")" class="active">Edit Nominations</a></li>
+                                            </ul>
+                                        </li>
                                     }
-                                @if (roles.Contains("Reviewer"))
+                                    @if (roles.Contains("Reviewer"))
                                     {
-                                    <li>
-                                        <a href="#"><i class="fa fa-file-text-o"></i><span class="nav-label">Reviews</span><span class="fa arrow"></span></a>
-                                        <ul class="nav nav-second-level">
-                                            <li><a href="@Url.Action("ReviewNominations", "Nomination")" class="active">Pending Reviews</a></li>
-                                            <li><a href="@Url.Action("SavedReviews", "Nomination")" class="active">Submitted Reviews</a></li>
-                                        </ul>
-                                    </li>
+                                        <li>
+                                            <a href="#"><i class="fa fa-file-text-o"></i><span class="nav-label">Reviews</span><span class="fa arrow"></span></a>
+                                            <ul class="nav nav-second-level">
+                                                <li><a href="@Url.Action("ReviewNominations", "Nomination")" class="active">Pending Reviews</a></li>
+                                                <li><a href="@Url.Action("SavedReviews", "Nomination")" class="active">Submitted Reviews</a></li>
+                                            </ul>
+                                        </li>
                                     }
-                                <!-- admin role only -->
-                                @if (roles.Contains("Admin"))
+                                    <!-- admin role only -->
+                                    @if (roles.Contains("Admin"))
                                     {
-                                    <li>
-                                        <a href="#"><i class="fa fa-user-circle-o"></i><span class="nav-label">Admin</span><span class="fa arrow"></span></a>
-                                        <ul class="nav nav-second-level">
-                                            @if (roles.Contains("Admin"))
+                                        <li>
+                                            <a href="#"><i class="fa fa-user-circle-o"></i><span class="nav-label">Admin</span><span class="fa arrow"></span></a>
+                                            <ul class="nav nav-second-level">
+                                                @if (roles.Contains("Admin"))
                                                 {
-                                                <li><a href="@Url.Action("ConsolidatedNominations", "Review" )">Consolidated Nominations</a></li>
-                                                <li><a href="@Url.Action("ReviewFeedbackList", "Review")" class="active">Shortlisted Nominations</a></li>
-                                                <li><a href="@Url.Action("Index", "Email" )">Email Template</a></li>
-                                                <li><a href="@Url.Action("SetAwardPeriod","Review")">Set Award Period</a></li>
+                                                    <li><a href="@Url.Action("ConsolidatedNominations", "Review" )">Consolidated Nominations</a></li>
+                                                    <li><a href="@Url.Action("ReviewFeedbackList", "Review")" class="active">Shortlisted Nominations</a></li>
+                                                    <li><a href="@Url.Action("Index", "Email" )">Email Template</a></li>
+                                                    <li><a href="@Url.Action("SetAwardPeriod","Review")">Set Award Period</a></li>
                                                 }
-                                        </ul>
-                                    </li>
+                                            </ul>
+                                        </li>
                                     }
-                            </ul>
+                                </ul>
                             }
                             <!--End of if-->
                         </div>
                     </nav>
                 </div>
-                                var data = "";
-                                var count = contributors.Count;
-                                var recentCount = 0;
-                                foreach (var item in contributors)
+                            var data = "";
+                            var count = contributors.Count;
+                            var recentCount = 0;
+                            foreach (var item in contributors)
+                            {
+                                recentCount++;
+                                if (recentCount == count)
                                 {
-                                    recentCount++;
-                                    if (recentCount == count)
-                                    {
-                                        data += item + ". ";
-                                    }
-                                    else
-                                    {
-                                        data += item + ", ";
-                                    }
+                                    data += item + ". ";
                                 }
-                                <div id="credits-data" style="display:none;">
-                                    @data
-                                </div>
+                                else
+                                {
+                                    data += item + ", ";
                                 }
+                            }
+                            <div id="credits-data" style="display:none;">
+                                @data
+                            </div>
+            }
             <!-- END LEFT MENU -->
             <!--   START OF CONTENT AREA -->
             <div id="page-wrapper" class="page-wrapper">
