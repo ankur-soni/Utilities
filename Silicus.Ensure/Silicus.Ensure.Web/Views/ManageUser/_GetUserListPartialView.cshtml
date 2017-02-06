@@ -1,4 +1,4 @@
-﻿@model Silicus.Ensure.Models.DataObjects.User
+﻿@model Silicus.Ensure.Models.UserBusinessModel
 @using Silicus.Ensure.Models.Constants;
 @using Kendo.Mvc.UI;
 @using System.Linq
@@ -81,6 +81,7 @@
         });
 
         function assignPanel(e) {
+            debugger;
             var grid = $("#UserGrids").data("kendoGrid");
             var userDetailViewModel = grid.dataItem($(e.currentTarget).closest("tr"));
             if (userDetailViewModel && userDetailViewModel.UserId) {

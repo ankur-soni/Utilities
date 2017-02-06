@@ -135,6 +135,7 @@
     </Compile>
     <Compile Include="DataObjects\TestSuiteTag.cs" />
     <Compile Include="DataObjects\User.cs" />
+    <Compile Include="DataObjects\UserApplicationDetails.cs" />
     <Compile Include="DataObjects\UserDetails.cs" />
     <Compile Include="DataObjects\UserTestDetails.cs" />
     <Compile Include="DataObjects\UserTestSuite.cs" />
@@ -146,6 +147,7 @@
     <Compile Include="Test\TestDetailsBusinessModel.cs" />
     <Compile Include="Test\TestSummaryBasicDetails.cs" />
     <Compile Include="Test\TestSummaryBusinessModel.cs" />
+    <Compile Include="UserBusinessModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

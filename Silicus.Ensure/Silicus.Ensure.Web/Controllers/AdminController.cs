@@ -22,6 +22,7 @@ using iTextSharp.text.pdf;
 using iTextSharp.text.html.simpleparser;
 using System.Text;
 using Silicus.FrameWorx.Logger;
+using Silicus.Ensure.Models;
 
 namespace Silicus.Ensure.Web.Controllers
 {
@@ -425,7 +426,7 @@ namespace Silicus.Ensure.Web.Controllers
             if (UserId != 0)
             {
                 var user = _userService.GetUserById(UserId);
-                currUser = _mappingService.Map<User, UserViewModel>(user);
+                currUser = _mappingService.Map<UserBusinessModel, UserViewModel>(user);
             }
             else if (TempData["UserViewModel"] != null)
             {
