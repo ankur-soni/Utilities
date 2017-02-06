@@ -897,24 +897,24 @@ namespace Silicus.EncourageWithAzureAd.Web.Controllers
             var currentNomination = nomination;
             var award = _encourageDatabaseContext.Query<Award>().FirstOrDefault(n => n.Id == currentNomination.AwardId);
             var nominationDate = currentNomination.NominationDate;
+            var toBeComparedDate = _customDateService.GetCustomDate(currentNomination.AwardId);
+
             if (award != null)
             {
                 switch (award.Code)
                 {
+                    default:
                     case "SOM":
-                        var prevMonth = DateTime.Now.AddMonths(-1);
-                        if (nominationDate.Value.Year < prevMonth.Year && nominationDate.Value.Month < prevMonth.Month)
+                        if (nominationDate.Value != toBeComparedDate)
                         {
                             isHistoricalNomination = true;
                         }
                         break;
                     case "PINNACLE":
-                        if (nominationDate.Value.Year < DateTime.Now.AddYears(-1).Year)
+                        if (nominationDate.Value.Year != toBeComparedDate.Year)
                         {
                             isHistoricalNomination = true;
                         }
-                        break;
-                    default:
                         break;
                 }
             }
