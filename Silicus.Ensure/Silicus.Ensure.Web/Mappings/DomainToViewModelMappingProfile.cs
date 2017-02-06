@@ -8,6 +8,7 @@ using System;
 using Silicus.Ensure.Web.Application;
 using Silicus.Ensure.Models.Test;
 using Silicus.Ensure.Web.Models.Test;
+using Silicus.Ensure.Models;
 
 namespace Silicus.Ensure.Web.Mappings
 {
@@ -21,7 +22,7 @@ namespace Silicus.Ensure.Web.Mappings
 
         protected override void Configure()
         {
-            Mapper.CreateMap<User, UserViewModel>()
+            Mapper.CreateMap<UserBusinessModel, UserViewModel>()
                 .ForMember(dest => dest.ResumeDisplayName, opt => opt.MapFrom(s =>
                     !string.IsNullOrWhiteSpace(s.ResumeName) ?
                     (s.ResumeName.Contains(AppConstants.ResumeNameSeparationCharacter) && s.ResumeName.Length >= s.ResumeName.IndexOf(AppConstants.ResumeNameSeparationCharacter) + 1

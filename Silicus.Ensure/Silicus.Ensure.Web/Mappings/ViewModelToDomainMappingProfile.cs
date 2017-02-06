@@ -20,8 +20,7 @@ namespace Silicus.Ensure.Web.Mappings
         protected override void Configure()
         {
             Mapper.CreateMap<Model, EntityA>();
-            Mapper.CreateMap<UserViewModel, User>();
-            Mapper.CreateMap<User, UserViewModel>();
+            Mapper.CreateMap<UserViewModel, UserBusinessModel>();
             Mapper.CreateMap<TestSuiteViewModel, TestSuite>();//.ForMember(o => o., b => b.MapFrom(z => z.FirstName + " " + z.LastName));
             Mapper.CreateMap<TestSuite, TestSuiteViewModel>();//.ForMember(o => o.PositionName, Enum.Parse(Competency,"1").ToString();
             Mapper.CreateMap<QuestionModel, Question>();

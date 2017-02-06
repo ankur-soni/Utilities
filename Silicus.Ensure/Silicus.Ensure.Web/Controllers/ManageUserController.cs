@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNet.Identity.Owin;
 using Silicus.Ensure.Entities.Identity;
+using Silicus.Ensure.Models;
 using Silicus.Ensure.Models.Constants;
 using Silicus.Ensure.Models.DataObjects;
 using Silicus.Ensure.Services;
@@ -154,7 +155,7 @@ namespace Silicus.Ensure.Web.Controllers
                 {
                     var userList = _userService.GetUserDetails();
                     var user = userList.FirstOrDefault(x => x.UserId == userViewModel.UserId);
-                    userViewModel = _mappingService.Map<User, UserViewModel>(user);
+                    userViewModel = _mappingService.Map<UserBusinessModel, UserViewModel>(user);
                 }
                 else if (TempData["UserViewModel"] != null)
                 {
@@ -189,7 +190,7 @@ namespace Silicus.Ensure.Web.Controllers
 
                     if (!string.IsNullOrWhiteSpace(userViewModel.ErrorMessage)) { return RedirectToAction(actionErrorName, controllerName, new { UserId = userViewModel.UserId, RoleN = userViewModel.Role }); }
 
-                    var organizationUserDomainModel = _mappingService.Map<UserViewModel, User>(userViewModel);
+                    var organizationUserDomainModel = _mappingService.Map<UserViewModel, UserBusinessModel>(userViewModel);
                     organizationUserDomainModel.IsDeleted = false;
                     userViewModel.UserId = _userService.Add(organizationUserDomainModel);
                     TempData["Success"] = "User created successfully!";
@@ -225,7 +226,7 @@ namespace Silicus.Ensure.Web.Controllers
             if (user != null)
             {
                 vuser.Role = user.Role;
-                var organizationUserDomainModel = _mappingService.Map<UserViewModel, User>(vuser);
+                var organizationUserDomainModel = _mappingService.Map<UserViewModel, UserBusinessModel>(vuser);
                 organizationUserDomainModel.TestStatus = user.TestStatus;
                 organizationUserDomainModel.IsDeleted = false;
                 _userService.Update(organizationUserDomainModel);

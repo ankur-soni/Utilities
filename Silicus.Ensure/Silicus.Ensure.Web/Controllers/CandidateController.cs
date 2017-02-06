@@ -1,4 +1,5 @@
-﻿using Silicus.Ensure.Models.Constants;
+﻿using Silicus.Ensure.Models;
+using Silicus.Ensure.Models.Constants;
 using Silicus.Ensure.Models.DataObjects;
 using Silicus.Ensure.Models.Test;
 using Silicus.Ensure.Services.Interfaces;
@@ -36,7 +37,7 @@ namespace Silicus.Ensure.Web.Controllers
             if (!ModelState.IsValid)
                 return RedirectToAction("LogOff", "CandidateAccount");
             var userEmail = User.Identity.Name.Trim();
-            User user = _userService.GetUserByEmail(userEmail);
+            var user = _userService.GetUserByEmail(userEmail);
             if (user == null)
                 return RedirectToAction("LogOff", "CandidateAccount");
             UserTestSuite userTestSuite = _testSuiteService.GetUserTestSuiteByUserId(user.UserId);
@@ -66,7 +67,7 @@ namespace Silicus.Ensure.Web.Controllers
                 return RedirectToAction("LogOff", "CandidateAccount");
 
             var userEmail = User.Identity.Name.Trim();
-            User user = _userService.GetUserByEmail(userEmail);
+            var user = _userService.GetUserByEmail(userEmail);
             if (user == null)
             {
                 ViewBag.Status = 1;
@@ -98,7 +99,7 @@ namespace Silicus.Ensure.Web.Controllers
             return navigationDetails;
         }
 
-        private CandidateInfoViewModel GetCandidateInfo(Ensure.Models.DataObjects.User user)
+        private CandidateInfoViewModel GetCandidateInfo(UserBusinessModel user)
         {
             return new CandidateInfoViewModel
             {
@@ -145,7 +146,7 @@ namespace Silicus.Ensure.Web.Controllers
             UpdateAnswer(answer, userTestDetailId);
 
             // Update candidate status as Test "Submitted".
-            User candidate = _userService.GetUserById(userId);
+            var candidate = _userService.GetUserById(userId);
             candidate.TestStatus = TestStatus.Submitted.ToString();
             candidate.CandidateStatus = CandidateStatus.TestSubmitted.ToString();
             _userService.Update(candidate);
@@ -160,9 +161,10 @@ namespace Silicus.Ensure.Web.Controllers
             // Calculate marks on test submit.
             CalculateMarks(userTestSuiteId);
 
+            // Code Need To correct
             // Get All admin to send mail.
-            List<User> userAdmin = _userService.GetUserByRole("ADMIN").ToList();
-            SendSubmittedTestMail(userAdmin, candidate.FirstName + " " + candidate.LastName);
+            //List<User> userAdmin = _userService.GetUserByRole("ADMIN").ToList();
+            //SendSubmittedTestMail(userAdmin, candidate.FirstName + " " + candidate.LastName);
 
             return RedirectToAction("LogOff", "CandidateAccount");
         }

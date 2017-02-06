@@ -50,6 +50,7 @@
     <Reference Include="System.Core" />
     <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Security" />
+    <Reference Include="System.Transactions" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -88,6 +89,7 @@
     <Compile Include="UtilityContainerContext\EngagementRoles.cs" />
     <Compile Include="UtilityContainerContext\EngagementTaskType.cs" />
     <Compile Include="UtilityContainerContext\EngagementType.cs" />
+    <Compile Include="UtilityContainerContext\IDataContext.cs" />
     <Compile Include="UtilityContainerContext\Location.cs" />
     <Compile Include="UtilityContainerContext\Resource.cs" />
     <Compile Include="UtilityContainerContext\ResourceHistory.cs" />

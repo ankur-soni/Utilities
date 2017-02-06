@@ -9,6 +9,7 @@ using Silicus.Ensure.Web.Mappings;
 using Kendo.Mvc.UI;
 using Kendo.Mvc.Extensions;
 using Silicus.Ensure.Models.Constants;
+using Silicus.Ensure.Models;
 
 namespace Silicus.Ensure.Web.Controllers
 {
@@ -219,7 +220,7 @@ namespace Silicus.Ensure.Web.Controllers
         {
             var userlist = _userService.GetUserDetails().Where(x => x.Role.ToLower() == RoleName.Candidate.ToString().ToLower()
                                                         && (x.TestStatus == Convert.ToString(TestStatus.NotAssigned))).ToArray();
-            var viewModels = _mappingService.Map<User[], UserViewModel[]>(userlist);
+            var viewModels = _mappingService.Map<UserBusinessModel[], UserViewModel[]>(userlist);
 
             int testSuiteId = Convert.ToInt32(TempData["TesSuiteId"]);
             DataSourceResult result = viewModels.ToDataSourceResult(request);
