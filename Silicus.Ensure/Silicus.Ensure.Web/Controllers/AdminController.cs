@@ -349,7 +349,7 @@ namespace Silicus.Ensure.Web.Controllers
         {
             var updateCurrentUsers = _userService.GetUserDetails().Where(model => model.UserId == UserId).FirstOrDefault();
             if (updateCurrentUsers != null)
-            {
+             {
                 if (SuiteId > 0 && UserId > 0)
                 {
                     if (IsReAssign == 1)
@@ -366,7 +366,7 @@ namespace Silicus.Ensure.Web.Controllers
                     }
                     var testSuiteDetails = _testSuiteService.GetTestSuiteDetails().Where(model => model.TestSuiteId == SuiteId && model.IsDeleted == false).SingleOrDefault();
                     UserTestSuite userTestSuite = new UserTestSuite();
-                    userTestSuite.UserId = UserId;
+                    userTestSuite.UserId = updateCurrentUsers.UserApplicationId;
                     userTestSuite.TestSuiteId = SuiteId;
                     _testSuiteService.AssignSuite(userTestSuite, testSuiteDetails);
                     var selectUser = _userService.GetUserDetails().Where(model => model.UserId == UserId).FirstOrDefault();

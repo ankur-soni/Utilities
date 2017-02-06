@@ -40,7 +40,7 @@ namespace Silicus.Ensure.Web.Controllers
             var user = _userService.GetUserByEmail(userEmail);
             if (user == null)
                 return RedirectToAction("LogOff", "CandidateAccount");
-            UserTestSuite userTestSuite = _testSuiteService.GetUserTestSuiteByUserId(user.UserId);
+            UserTestSuite userTestSuite = _testSuiteService.GetUserTestSuiteByUserId(user.UserApplicationId);
             if (userTestSuite == null)
             {
                 ViewBag.Status = 1;
@@ -75,7 +75,7 @@ namespace Silicus.Ensure.Web.Controllers
                 return View("Welcome", new TestSuiteCandidateModel());
             }
 
-            UserTestSuite userTestSuite = _testSuiteService.GetUserTestSuiteByUserId(user.UserId);
+            UserTestSuite userTestSuite = _testSuiteService.GetUserTestSuiteByUserId(user.UserApplicationId);
             if (userTestSuite == null)
             {
                 ViewBag.Status = 1;
@@ -144,13 +144,10 @@ namespace Silicus.Ensure.Web.Controllers
             // Update last question answer of test.
             answer = HttpUtility.HtmlDecode(answer);
             UpdateAnswer(answer, userTestDetailId);
-
+          //  UserApplicationDetails GetUserApplicationDetailsById
             // Update candidate status as Test "Submitted".
-            var candidate = _userService.GetUserById(userId);
-            candidate.TestStatus = TestStatus.Submitted.ToString();
-            candidate.CandidateStatus = CandidateStatus.TestSubmitted.ToString();
-            _userService.Update(candidate);
-
+           _userService.UpdateUserApplicationTestDetails(userId);
+        
             // Update total time utilization for test back to UserTestSuite.
             TestSuite suite = _testSuiteService.GetTestSuitById(testSuiteId);
             UserTestSuite testSuit = _testSuiteService.GetUserTestSuiteId(userTestSuiteId);

@@ -246,7 +246,7 @@ namespace Silicus.Ensure.Web.Controllers
             if (vuser.Role.ToLower() == RoleName.Candidate.ToString().ToLower())
             {
                 vuser.TestStatus = TestStatus.NotAssigned.ToString();
-                vuser.CandidateStatus = CandidateStatus.New.ToString();
+                vuser.CandidateStatus = CandidateStatus.TestAssigned.ToString();
             }
 
             vuser.NewPassword = vuser.FirstName.ToUpper() + vuser.LastName.ToLower() + "@123456";
