@@ -42,7 +42,7 @@
 
     });
     function showTest(UserId, TestStatus) {
-        if (TestStatus == '@TestStatus.NotAssigned.ToString()') {
+        if (TestStatus == '@CandidateStatus.New.ToString()') {
             $.ajax({
                 type: 'post',
                 async: false,
@@ -64,7 +64,7 @@
 
     function ReAssignPanel(UserId) {
         debugger;
-        //if (TestStatus == '@TestStatus.NotAssigned.ToString()') {
+        //if (TestStatus == '@CandidateStatus.New.ToString()') {
         $.ajax({
             type: 'post',
             async: false,
@@ -82,7 +82,7 @@
     }
 
     function ReAssign(UserId, TestStatus) {
-        if (TestStatus == '@TestStatus.Assigned.ToString()') {
+        if (TestStatus == '@CandidateStatus.TestAssigned.ToString()') {
             $.ajax({
                 type: 'post',
                 async: false,

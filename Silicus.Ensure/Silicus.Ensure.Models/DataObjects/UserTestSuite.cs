@@ -10,7 +10,7 @@ namespace Silicus.Ensure.Models.DataObjects
 
         public int TestSuiteId { get; set; }
 
-        public int UserId { get; set; }
+        public int UserApplicationId { get; set; }
 
         public int ObjectiveCount { get; set; }
 

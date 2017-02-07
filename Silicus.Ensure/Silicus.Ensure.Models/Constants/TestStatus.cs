@@ -1,13 +1,6 @@
 ﻿namespace Silicus.Ensure.Models.Constants
 {
-    public enum TestStatus
-    {
-        NotAssigned = 1,
-        Assigned = 2,
-        Submitted = 3,
-        Evaluated = 4,
-        Completed = 5
-    }
+ 
 
     public enum CandidateStatus
     {
