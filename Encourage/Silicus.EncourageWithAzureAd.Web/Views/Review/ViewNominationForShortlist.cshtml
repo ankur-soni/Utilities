@@ -109,14 +109,14 @@
                                     @foreach (var reviewer in Model.ReviewerComments)
                                     {
                                         var creditCount = 0;
-                                        var reviewerName = reviewer.FirstOrDefault();
+                                        var reviewerName = reviewer.FirstOrDefault() != null ? reviewer.FirstOrDefault().ReviewerName + " (Reviewer)" : "Reviewer";
 
                                         <table class="table issue-tracker">
                                             <thead>
                                                 <tr>
                                                     <th>Criteria</th>
-                                                    <th colspan="4">Manager</th>
-                                                    <th colspan="2">Reviewer</th>
+                                                    <th colspan="4">@Html.DisplayFor(modelItem => modelItem.Manager) (Manager)</th>
+                                                    <th colspan="2">@reviewerName</th>
                                                 </tr>
                                                 <tr>
                                                     <th></th>

@@ -110,6 +110,17 @@ namespace Silicus.Ensure.Services
             return _context.Query<UserApplicationDetails>().FirstOrDefault(x => x.UserApplicationDetailsId == userApplicationId);
         }
 
+        public void UpdateUserApplicationTestDetails(int UserApplicationDetailsId)
+        {
+            var result = _context.Query<UserApplicationDetails>().FirstOrDefault(x => x.UserApplicationDetailsId ==UserApplicationDetailsId);
+            if (result != null)
+            {
+                result.CandidateStatus = CandidateStatus.TestSubmitted;
+                _context.Update(result);
+                _context.SaveChanges();
+            }
+        }
+
         public UserApplicationDetails GetLatesUserApplication(int userId)
         {
             return _context.Query<UserApplicationDetails>().Where(x => x.UserId == userId).OrderByDescending(y => y.CreatedDate).FirstOrDefault();
@@ -136,7 +147,7 @@ namespace Silicus.Ensure.Services
 
         public dynamic GetTestSuiteDetailsOfUser(int? userId)
         {
-            var result = (from ts in _context.Query<UserTestSuite>().Where(x => x.UserId == userId)
+            var result = (from ts in _context.Query<UserTestSuite>().Where(x => x.UserApplicationId == userId)
                           join t in _context.Query<TestSuite>() on ts.TestSuiteId equals t.TestSuiteId
                           select new
                           {

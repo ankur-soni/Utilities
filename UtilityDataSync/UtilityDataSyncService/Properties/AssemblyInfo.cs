@@ -5,11 +5,11 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("TestService")]
+[assembly: AssemblyTitle("UtilityDataSyncService")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("TestService")]
+[assembly: AssemblyProduct("UtilityDataSyncService")]
 [assembly: AssemblyCopyright("Copyright ©  2017")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
@@ -20,7 +20,7 @@ using System.Runtime.InteropServices;
 [assembly: ComVisible(false)]
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
-[assembly: Guid("407bcbef-0c32-4327-b49e-0f4d28617e88")]
+[assembly: Guid("e32f7c52-9258-4e0e-8419-23cca172a9e5")]
 
 // Version information for an assembly consists of the following four values:
 //

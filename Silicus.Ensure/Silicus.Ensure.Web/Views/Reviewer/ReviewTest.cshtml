@@ -8,199 +8,210 @@
     Layout = "~/Views/Shared/_LayoutCandidate.cshtml";
 }
 
-<div class="main-content" id="main">
-    <div class="fluid mt20">
-        <div id="DivTestSummary">
-            @Html.Partial("_TestSummary", @Model.TestSummary)
+<div class="row main-content" id="main" style="background: #ccc;">
+    <div class="col-sm-12">
+        <div class="row">
+            <div class="custBox">
+                <div class="f1" style="background:#067bb5;padding: 5px 25px 20px 25px;">
+                    <div class="col-sm-8">
+                        @Html.Partial("_CandidateInfo", Model.CandidateInfo)
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+            </div>
         </div>
 
-        <div class="row">
-            <div class="col-md-12" style="border-bottom-width:1px; border-bottom-style:solid; border-bottom-color:black;">
+
+        <div class="row topBox" style="color:#fff;">
+            <div class="col-sm-12">
+                <div id="DivTestSummary">
+                    @Html.Partial("_TestSummary", @Model.TestSummary)
+                </div>
             </div>
+        </div>
+
+
+        <div class="row">
             <input type="hidden" value="@Model.TestSuiteId" id="TestSuiteId" />
             <input type="hidden" value="@Model.UserTestSuiteId" id="UserTestSuiteId" />
             <input type="hidden" value="@Model.UserId" id="UserId" />
         </div>
-        <br />
-        <div class="row">
-            <div class="col-md-6">
-                @Html.Partial("_CandidateInfo", Model.CandidateInfo)
-            </div>
 
-        </div>
+        
 
-        <div class="row">
-            <div class="col-md-12" style="border-bottom-width:1px; border-bottom-style:solid; border-bottom-color:black;">
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-lg-9">
-                <div id="QuestionDetails">
+
+        <div class="row M-B25">
+            <div class="col-sm-9 M-T15">
+                <div class="f1 M-B30" style="background:#fff;">
+                    <div id="QuestionDetails">
+                    </div>
                 </div>
             </div>
-            <div class="col-lg-3">
-                <div id="QuestionNavigation">
-                    @Html.Partial("_QuestionNavigationPanel", @Model.NavigationDetails)
+            <div class="col-sm-3 M-T15" style="padding-left:0px;">
+                <div class="f1 M-B30" style="background:#fff;">
+                    <div id="QuestionNavigation">
+                        @Html.Partial("_QuestionNavigationPanel", @Model.NavigationDetails)
+                    </div>
                 </div>
             </div>
         </div>
     </div>
 </div>
 
-<!-- Modal -->
-<div class="modal fade" id="myModal" role="dialog">
-    <div class="modal-dialog">
+        <!-- Modal -->
+        <div class="modal fade" id="myModal" role="dialog">
+            <div class="modal-dialog">
 
-        <!-- Modal content-->
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal">&times;</button>
-                <h4 class="modal-title"><span id="msgMain">Success!</span></h4>
-            </div>
-            <div class="modal-body">
-                <p id="msgContent">Some text in the modal.</p>
-            </div>
-            <div class="modal-footer">
-                <button id="btnModalOK" type="button" class="btn btn-default" data-dismiss="modal" onclick="OnAddMoreTimeOK();">OK</button>
-                <button id="btnSubmitTestOK" type="button" class="btn btn-default" data-dismiss="modal" onclick="OnSubmitTestOK();">OK</button>
-                <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-            </div>
-        </div>
+                <!-- Modal content-->
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        <h4 class="modal-title"><span id="msgMain">Success!</span></h4>
+                    </div>
+                    <div class="modal-body">
+                        <p id="msgContent">Some text in the modal.</p>
+                    </div>
+                    <div class="modal-footer">
+                        <button id="btnModalOK" type="button" class="btn btn-default" data-dismiss="modal" onclick="OnAddMoreTimeOK();">OK</button>
+                        <button id="btnSubmitTestOK" type="button" class="btn btn-default" data-dismiss="modal" onclick="OnSubmitTestOK();">OK</button>
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                    </div>
+                </div>
 
-    </div>
-</div>
-
-
-
-
-<!-- Modal Submit Test On Time Complete-->
-<div class="modal fade" id="testresultPopup" role="dialog">
-    <div class="modal-dialog">
-
-        <!-- Modal content-->
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal">&times;</button>
-                <h4 class="modal-title">Candidate Result</h4>
-            </div>
-            <div class="modal-body">
-                <form id="frmTestresult">
-                    @Html.Partial("_CandidateResult", new CandidateResultViewmodel())
-                </form>
-            </div>
-            <div class="modal-footer">
-                <button id="SubmitCandidateResult" type="button" class="btn btn-default">OK</button>
-                <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
             </div>
         </div>
 
-    </div>
-</div>
 
 
 
-<script>
-    var clock;
-    var totalTime;
+        <!-- Modal Submit Test On Time Complete-->
+        <div class="modal fade" id="testresultPopup" role="dialog">
+            <div class="modal-dialog">
 
-    $(document).ready(function () {
+                <!-- Modal content-->
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        <h4 class="modal-title">Candidate Result</h4>
+                    </div>
+                    <div class="modal-body">
+                        <form id="frmTestresult">
+                            @Html.Partial("_CandidateResult", new CandidateResultViewmodel())
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button id="SubmitCandidateResult" type="button" class="btn btn-default">OK</button>
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                    </div>
+                </div>
 
-        $("#frmTestresult").kendoValidator();
-        // Hide Submit button of popup. Show when to want submit test.
-        $("#btnSubmitTestOK").hide();
-
-        // Load First Question On page Load.
-        var userTestSuiteId = $("#UserTestSuiteId").val();
-        var url = "/Reviewer/LoadQuestion?userTestSuiteId=";
-        $('#QuestionDetails').load(url + userTestSuiteId);
-
-
-
-
-
-        $("#btnSubmitEvalution").on("click", submitEvalution);
-        $("#SubmitCandidateResult").on("click", submitCandidateResult);
-        $('.QuestionCheckbox').on('click', QuestionCheckboxClicked);
-    });
-
-    function QuestionCheckboxClicked(event) {
-        var questionId = $(this).find('input').attr('id');
-        UpdateCurrentReviewAndLoadNewOne(questionId);
-    }
-
-    function UpdateCurrentReviewAndLoadNewOne(questionId) {
-        updateTestSummary();
-        var questionNavigationDetails = GetCurrentQuestionStatus();
-        UpdateCurrentQuestionNavigationStatus(questionNavigationDetails);
-        MarkAsViewed(questionId);
-    }
+            </div>
+        </div>
 
 
-    function MarkAsViewed(questionId) {
-        if (questionId) {
-            var input = '#NavigationSection ' + '#' + questionId;
-            if (input) {
-                if (!($(input).hasClass('Viewed') || $(input).hasClass('Answered'))) {
-                    $(input).addClass('Viewed');
+
+        <script>
+            var clock;
+            var totalTime;
+
+            $(document).ready(function () {
+
+                $("#frmTestresult").kendoValidator();
+                // Hide Submit button of popup. Show when to want submit test.
+                $("#btnSubmitTestOK").hide();
+
+                // Load First Question On page Load.
+                var userTestSuiteId = $("#UserTestSuiteId").val();
+                var url = "/Reviewer/LoadQuestion?userTestSuiteId=";
+                $('#QuestionDetails').load(url + userTestSuiteId);
+
+
+
+
+
+                $("#btnSubmitEvalution").on("click", submitEvalution);
+                $("#SubmitCandidateResult").on("click", submitCandidateResult);
+                $('.QuestionCheckbox').on('click', QuestionCheckboxClicked);
+            });
+
+            function QuestionCheckboxClicked(event) {
+                var questionId = $(this).find('input').attr('id');
+                UpdateCurrentReviewAndLoadNewOne(questionId);
+            }
+
+            function UpdateCurrentReviewAndLoadNewOne(questionId) {
+                updateTestSummary();
+                var questionNavigationDetails = GetCurrentQuestionStatus();
+                UpdateCurrentQuestionNavigationStatus(questionNavigationDetails);
+                MarkAsViewed(questionId);
+            }
+
+
+            function MarkAsViewed(questionId) {
+                if (questionId) {
+                    var input = '#NavigationSection ' + '#' + questionId;
+                    if (input) {
+                        if (!($(input).hasClass('Viewed') || $(input).hasClass('Answered'))) {
+                            $(input).addClass('Viewed');
+                        }
+                    }
                 }
             }
-        }
-    }
-    function UpdateCurrentQuestionNavigationStatus(questionNavigationDetails) {
-        if (questionNavigationDetails) {
-            var input = '#NavigationSection ' + '#' + questionNavigationDetails.QuestionNumber;
-            if (questionNavigationDetails.IsReviewed) {
-                $(input).removeClass('Viewed');
-                $(input).addClass('Answered');
+            function UpdateCurrentQuestionNavigationStatus(questionNavigationDetails) {
+                if (questionNavigationDetails) {
+                    var input = '#NavigationSection ' + '#' + questionNavigationDetails.QuestionNumber;
+                    if (questionNavigationDetails.IsReviewed) {
+                        $(input).removeClass('Viewed');
+                        $(input).addClass('Answered');
+                    }
+                    else if (questionNavigationDetails.IsViewed) {
+                        $(input).removeClass('Answered');
+                        $(input).addClass('Viewed');
+                    }
+                    else {
+                        $(input).removeClass('Viewed');
+                        $(input).removeClass('Answered');
+                    }
+                }
             }
-            else if (questionNavigationDetails.IsViewed) {
-                $(input).removeClass('Answered');
-                $(input).addClass('Viewed');
+            function GetCurrentQuestionStatus() {
+                var QuestionNumber = $("#QuestionNumber").val();
+                var QuestionType = $("#QuestionType").val();
+                var IsReviewed = false;
+                var IsViewed = true;
+                if (QuestionType == 1) {
+                    IsReviewed = true;
+                }
+                else {
+                    IsReviewed = $("#Comment").val().trim().length > 0 ? true : false;
+                }
+                var result = { QuestionNumber: QuestionNumber, Questiontype: QuestionType, IsReviewed: IsReviewed, IsViewed: IsViewed };
+                return result;
             }
-            else {
-                $(input).removeClass('Viewed');
-                $(input).removeClass('Answered');
+
+
+
+            function OnNext(e) {
+                var questionId = $('#btnNext').attr('data-id');
+                UpdateAndGetQuestionReview(questionId);
+
+                return false;
             }
-        }
-    }
-    function GetCurrentQuestionStatus() {
-        var QuestionNumber = $("#QuestionNumber").val();
-        var QuestionType = $("#QuestionType").val();
-        var IsReviewed = false;
-        var IsViewed = true;
-        if (QuestionType == 1) {
-            IsReviewed = true;
-        }
-        else {
-            IsReviewed = $("#Comment").val().trim().length > 0 ? true : false;
-        }
-        var result = { QuestionNumber: QuestionNumber, Questiontype: QuestionType, IsReviewed: IsReviewed, IsViewed: IsViewed };
-        return result;
-    }
 
+            function OnPrevious() {
+                var questionId = $('#btnPrevious').attr('data-id');
+                UpdateAndGetQuestionReview(questionId);
+                return false;
+            }
 
-
-    function OnNext(e) {
-        var questionId = $('#btnNext').attr('data-id');
-        UpdateAndGetQuestionReview(questionId);
-
-        return false;
-    }
-
-    function OnPrevious() {
-        var questionId = $('#btnPrevious').attr('data-id');
-        UpdateAndGetQuestionReview(questionId);
-        return false;
-    }
-
-    function GetQuestionDetails(questionId) {
-        var answer = GetAnswer();
-        var userTestSuiteId = $("#UserTestSuiteId").val();
-        var userTestDetailId = $("#UserTestDetailId").val();
-        var questionType = $("#QuestionType").val();
-        var questionDetails = { QuestionId: questionId, UserTestSuiteId: userTestSuiteId, UserTestDetailId: userTestDetailId, Answer: answer };
-        $('#QuestionDetails').load('/Candidate/GetQuestionDetails', questionDetails);
-    }
+            function GetQuestionDetails(questionId) {
+                var answer = GetAnswer();
+                var userTestSuiteId = $("#UserTestSuiteId").val();
+                var userTestDetailId = $("#UserTestDetailId").val();
+                var questionType = $("#QuestionType").val();
+                var questionDetails = { QuestionId: questionId, UserTestSuiteId: userTestSuiteId, UserTestDetailId: userTestDetailId, Answer: answer };
+                $('#QuestionDetails').load('/Candidate/GetQuestionDetails', questionDetails);
+            }
 
     function UpdateAndGetQuestionReview(questionId) {
         updateTestSummary();
@@ -224,158 +235,179 @@
             }
         });
     }   
-
-    function updateTestSummary() {
-        var QuestionNumber = $("#QuestionNumber").val();
-        var QuestionType = $("#QuestionType").val();
-        var IsCorrectAnswer = false;
-        if (QuestionType == 2) {
-            var marks = parseInt($("#ReviwerMark").val());
-            marks = isNaN(marks) ? 0 : marks;
-            IsCorrectAnswer = marks > 0 ? true : false;
-
-            var totalObtainedMarks = parseInt($("#totalObtainedMarks").html());
-            totalObtainedMarks = isNaN(totalObtainedMarks) ? 0 : totalObtainedMarks;
-
-            if (IsCorrectAnswer) {
-                var oldValue = parseInt($("#practicalCorrectAnswersCount").html());
-                oldValue = isNaN(oldValue) ? 0 : oldValue;
-                $("#practicalCorrectAnswersCount").html(oldValue + 1);
-                $("#practicalMarksObtained").html(oldValue + marks);
-                $("#totalObtainedMarks").html(totalObtainedMarks + marks);
+            function UpdateAndGetQuestionReview(questionId) {
+                updateTestSummary();
+                var answer = GetAnswer();
+                var userTestSuiteId = $("#UserTestSuiteId").val();
+                var userTestDetailId = $("#UserTestDetailId").val();
+                var questionType = $("#QuestionType").val();
+                var candidateId = $("#UserId").val();
+                var comment = $("#Comment").val();
+                var marks = $("#ReviwerMark").val();
+                var reviewerQuestionDetails = { QuestionId: questionId, UserTestSuiteId: userTestSuiteId, UserTestDetailId: userTestDetailId, Comment: comment, Marks: marks };
+                //$('#QuestionDetails').load('/Reviewer/UpdateReviewAndGetQuestionDetails', reviewerQuestionDetails);
+                $.ajax({
+                    url: "/Reviewer/UpdateReviewAndGetQuestionDetails",
+                    cache: false,
+                    dataType: "html",
+                    data: reviewerQuestionDetails,
+                    success: function (data) {
+                        $("#QuestionDetails").html('');
+                        $("#QuestionDetails").html(data);
+                    }
+                });
             }
-            else {
-                var oldValue = parseInt($("#practicalIncorrectAnswersCount").html());
-                oldValue = isNaN(oldValue) ? 0 : oldValue;
-                $("#practicalIncorrectAnswersCount").html(oldValue + 1);
+
+            function updateTestSummary() {
+                var QuestionNumber = $("#QuestionNumber").val();
+                var QuestionType = $("#QuestionType").val();
+                var IsCorrectAnswer = false;
+                if (QuestionType == 2) {
+                    var marks = parseInt($("#ReviwerMark").val());
+                    marks = isNaN(marks) ? 0 : marks;
+                    IsCorrectAnswer = marks > 0 ? true : false;
+
+                    var totalObtainedMarks = parseInt($("#totalObtainedMarks").html());
+                    totalObtainedMarks = isNaN(totalObtainedMarks) ? 0 : totalObtainedMarks;
+
+                    if (IsCorrectAnswer) {
+                        var oldValue = parseInt($("#practicalCorrectAnswersCount").html());
+                        oldValue = isNaN(oldValue) ? 0 : oldValue;
+                        $("#practicalCorrectAnswersCount").html(oldValue + 1);
+                        $("#practicalMarksObtained").html(oldValue + marks);
+                        $("#totalObtainedMarks").html(totalObtainedMarks + marks);
+                    }
+                    else {
+                        var oldValue = parseInt($("#practicalIncorrectAnswersCount").html());
+                        oldValue = isNaN(oldValue) ? 0 : oldValue;
+                        $("#practicalIncorrectAnswersCount").html(oldValue + 1);
+                    }
+                    var totalMaximumMarks = parseInt($("#totalMaximumMarks").html());
+                    totalMaximumMarks = isNaN(totalMaximumMarks) ? 0 : totalMaximumMarks;
+                    $("#percentage").html(calculatePercentage(totalObtainedMarks, totalMaximumMarks));
+
+                }
             }
-            var totalMaximumMarks = parseInt($("#totalMaximumMarks").html());
-            totalMaximumMarks = isNaN(totalMaximumMarks) ? 0 : totalMaximumMarks;
-            $("#percentage").html(calculatePercentage(totalObtainedMarks, totalMaximumMarks));
 
-        }
-    }
-
-    function calculatePercentage(earned, total) {
-        return ((earned / total) * 100);
-    }
-
-
-    function GetAnswer() {
-        var answer = "";
-        if ($("#QuestionType").val().trim() == "1") {
-            if ($("#AnswerType").val().trim() == "1") {
-                answer = $('[name="optradio"]:radio:checked').val();
+            function calculatePercentage(earned, total) {
+                return ((earned / total) * 100);
             }
-            else {
-                $("input:checkbox[name=optcheckbox]:checked").each(function () {
-                    answer = answer + $(this).val() + ",";
+
+
+            function GetAnswer() {
+                var answer = "";
+                if ($("#QuestionType").val().trim() == "1") {
+                    if ($("#AnswerType").val().trim() == "1") {
+                        answer = $('[name="optradio"]:radio:checked').val();
+                    }
+                    else {
+                        $("input:checkbox[name=optcheckbox]:checked").each(function () {
+                            answer = answer + $(this).val() + ",";
+                        });
+
+                        answer = answer.slice(0, -1);
+                    }
+                }
+                else {
+                    answer = $("#PracticalAnswer").val();
+                    answer = encodeURIComponent(answer);
+                }
+                if (answer == "undefined")
+                    answer = null;
+                return answer;
+            }
+
+
+            function getCurrentQuestionStatus() {
+                var QuestionNumber = $("#QuestionNumber").val();
+                var QuestionType = $("#QuestionType").val();
+                var IsAnswered = false;
+                var IsViewed = true;
+                if (QuestionType == 1) {
+                    IsAnswered = $(".radio input:checked").length > 0 ? true : false;
+                }
+                else {
+                    IsAnswered = $("#PracticalAnswer").val().trim().length > 0 ? true : false;
+                }
+                var result = { QuestionNumber: QuestionNumber, Questiontype: QuestionType, IsAnswered: IsAnswered, IsViewed: IsViewed };
+                return result;
+            }
+
+
+            function submitEvalution() {
+                var answer = GetAnswer();
+                var userTestSuiteId = $("#UserTestSuiteId").val();
+                var userTestDetailId = $("#UserTestDetailId").val();
+                var questionType = $("#QuestionType").val();
+                var candidateId = $("#UserId").val();
+                var comment = $("#Comment").val();
+                var marks = $("#ReviwerMark").val();
+                var questionId = $(this).find('input').attr('id');
+                var reviewerQuestionDetails = { QuestionId: questionId, UserTestSuiteId: userTestSuiteId, UserTestDetailId: userTestDetailId, Comment: comment, Marks: marks };
+                // $('#QuestionDetails').load('/Reviewer/UpdateReviewAndGetQuestionDetails', reviewerQuestionDetails);
+                $.ajax({
+                    type: "POST",
+                    url: "/Reviewer/SumbmitTestReview",
+                    contentType: "application/json; charset=utf-8",
+                    data: JSON.stringify(reviewerQuestionDetails),
+                    dataType: "json",
+                    success: function (data) {
+                        if (data)
+                            $("#testresultPopup").modal('show');
+                        else {
+                            $("#testresultPopup").modal('hide');
+                            ShowSweetAlertWithoutCancel("Warning!", "Please Review and Mark all Question Before Submit evaluation !", "warning");
+                        }
+                    }
                 });
 
-                answer = answer.slice(0, -1);
             }
-        }
-        else {
-            answer = $("#PracticalAnswer").val();
-            answer = encodeURIComponent(answer);
-        }
-        if (answer == "undefined")
-            answer = null;
-        return answer;
-    }
 
+            function submitCandidateResult() {
+                var validator = $("#frmTestresult").data("kendoValidator");
+                var userId = $("#UserId").val();
+                var userTestSuiteId = $("#UserTestSuiteId").val();
+                if (validator.validate()) {
+                    var formdata = new FormData($('form').get(0));
+                    formdata.append('CandidateUserId', userId);
+                    formdata.append('UserTestSuiteId', userTestSuiteId);
 
-    function getCurrentQuestionStatus() {
-        var QuestionNumber = $("#QuestionNumber").val();
-        var QuestionType = $("#QuestionType").val();
-        var IsAnswered = false;
-        var IsViewed = true;
-        if (QuestionType == 1) {
-            IsAnswered = $(".radio input:checked").length > 0 ? true : false;
-        }
-        else {
-            IsAnswered = $("#PracticalAnswer").val().trim().length > 0 ? true : false;
-        }
-        var result = { QuestionNumber: QuestionNumber, Questiontype: QuestionType, IsAnswered: IsAnswered, IsViewed: IsViewed };
-        return result;
-    }
-
-
-    function submitEvalution() {
-        var answer = GetAnswer();
-        var userTestSuiteId = $("#UserTestSuiteId").val();
-        var userTestDetailId = $("#UserTestDetailId").val();
-        var questionType = $("#QuestionType").val();
-        var candidateId = $("#UserId").val();
-        var comment = $("#Comment").val();
-        var marks = $("#ReviwerMark").val();
-        var questionId = $(this).find('input').attr('id');
-        var reviewerQuestionDetails = { QuestionId: questionId, UserTestSuiteId: userTestSuiteId, UserTestDetailId: userTestDetailId, Comment: comment, Marks: marks };
-        // $('#QuestionDetails').load('/Reviewer/UpdateReviewAndGetQuestionDetails', reviewerQuestionDetails);
-        $.ajax({
-            type: "POST",
-            url: "/Reviewer/SumbmitTestReview",
-            contentType: "application/json; charset=utf-8",
-            data: JSON.stringify(reviewerQuestionDetails),
-            dataType: "json",
-            success: function (data) {
-                if (data)
-                    $("#testresultPopup").modal('show');
-                else
-                {
-                    $("#testresultPopup").modal('hide');
-                    ShowSweetAlertWithoutCancel("Warning!", "Please Review and Mark all Question Before Submit evaluation !", "warning");
+                    $.ajax({
+                        url: '@Url.Action("SumbmitCandidateResult", "Reviewer")',
+                        type: 'POST',
+                        data: formdata,
+                        processData: false,
+                        contentType: false,
+                        success: function (msg) {
+                            $("#testresultPopup").modal('hide');
+                            window.location.href = "/Admin/Candidates";
+                        }
+                    });
                 }
             }
-        });
-        
-    }
 
-    function submitCandidateResult() {
-        var validator = $("#frmTestresult").data("kendoValidator");
-        var userId = $("#UserId").val();
-        var userTestSuiteId = $("#UserTestSuiteId").val();
-        if (validator.validate()) {
-            var formdata = new FormData($('form').get(0));
-            formdata.append('CandidateUserId', userId);
-            formdata.append('UserTestSuiteId', userTestSuiteId);
+            function SumbmitTestReview() {
+                var validator = $("#frmTestresult").data("kendoValidator");
+                var userId = $("#UserId").val();
+                if (validator.validate()) {
+                    var formdata = new FormData($('form').get(0));
+                    formdata.append('CandidateUserId', userId);
 
-            $.ajax({
-                url: '@Url.Action("SumbmitCandidateResult", "Reviewer")',
-                type: 'POST',
-                data: formdata,
-                processData: false,
-                contentType: false,
-                success: function (msg) {
-                    $("#testresultPopup").modal('hide');
-                    window.location.href = "/Admin/Candidates";
+                    $.ajax({
+                        url: '@Url.Action("SumbmitCandidateResult", "Candidate")',
+                        type: 'POST',
+                        data: formdata,
+                        processData: false,
+                        contentType: false,
+                        success: function (msg) {
+                            $("#testresultPopup").modal('hide');
+                        }
+                    });
                 }
-            });
-        }
-    }
-
-    function SumbmitTestReview() {
-        var validator = $("#frmTestresult").data("kendoValidator");
-        var userId = $("#UserId").val();
-        if (validator.validate()) {
-            var formdata = new FormData($('form').get(0));
-            formdata.append('CandidateUserId', userId);
-
-            $.ajax({
-                url: '@Url.Action("SumbmitCandidateResult", "Candidate")',
-                type: 'POST',
-                data: formdata,
-                processData: false,
-                contentType: false,
-                success: function (msg) {
-                    $("#testresultPopup").modal('hide');
-                }
-            });
-        }
-    }
-    
+            }
 
 
 
-</script>
+
+        </script>
 
