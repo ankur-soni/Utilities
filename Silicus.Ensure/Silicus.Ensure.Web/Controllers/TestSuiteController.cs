@@ -50,7 +50,7 @@ namespace Silicus.Ensure.Web.Controllers
                                                          select a.TagName));
                 item.StatusName = ((TestSuiteStatus)item.Status).ToString();
                 item.UserInRole = userInRole;
-                item.IsAssigned = userTestSuites.Any(y => y.TestSuiteId == item.TestSuiteId && y.StatusId == (int)TestStatus.Assigned);
+                item.IsAssigned = userTestSuites.Any(y => y.TestSuiteId == item.TestSuiteId && y.StatusId == (int)CandidateStatus.TestAssigned);
             }
             return Json(viewModels.ToDataSourceResult(request), JsonRequestBehavior.AllowGet);
         }
@@ -219,7 +219,7 @@ namespace Silicus.Ensure.Web.Controllers
         public ActionResult TestSuitUsers([DataSourceRequest] DataSourceRequest request)
         {
             var userlist = _userService.GetUserDetails().Where(x => x.Role.ToLower() == RoleName.Candidate.ToString().ToLower()
-                                                        && (x.TestStatus == Convert.ToString(TestStatus.NotAssigned))).ToArray();
+                                                        && (x.TestStatus == Convert.ToString(CandidateStatus.New))).ToArray();
             var viewModels = _mappingService.Map<UserBusinessModel[], UserViewModel[]>(userlist);
 
             int testSuiteId = Convert.ToInt32(TempData["TesSuiteId"]);
@@ -243,7 +243,7 @@ namespace Silicus.Ensure.Web.Controllers
                         userTestSuite.TestSuiteId = testSuiteId;
                         _testSuiteService.AssignSuite(userTestSuite, testSuiteDetails);
                         var selectUser = _userService.GetUserDetails().Where(model => model.UserId == Convert.ToInt32(item)).FirstOrDefault();
-                        selectUser.TestStatus = Convert.ToString(TestStatus.Assigned);
+                        selectUser.TestStatus = Convert.ToString(CandidateStatus.TestAssigned);
                         _userService.Update(selectUser);
                     }
                 }

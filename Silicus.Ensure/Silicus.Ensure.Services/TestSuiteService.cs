@@ -69,6 +69,8 @@ namespace Silicus.Ensure.Services
             if (UserTestSuite.UserId > 0)
             {
                 _context.Update(UserTestSuite);
+                _context.AttachAndMakeStateModified(UserTestSuite);               
+                _context.SaveChanges();
             }
         }
 
@@ -101,6 +103,7 @@ namespace Silicus.Ensure.Services
             {
                 userTestDetails.IsViewedOnly = true;
             }
+            _context.AttachAndMakeStateModified(userTestDetails);
             _context.Update(userTestDetails);
 
         }
@@ -289,7 +292,7 @@ namespace Silicus.Ensure.Services
             userTestSuite.PracticalCount = questions.Where(x => x.QuestionType == 2).Count();
             userTestSuite.MaxScore = questions.Sum(x => x.Marks);
             userTestSuite.Duration = testSuite.Duration;
-            userTestSuite.StatusId = Convert.ToInt32(TestStatus.Assigned);
+            userTestSuite.StatusId = Convert.ToInt32(CandidateStatus.TestAssigned);
             return AddUserTestSuite(userTestSuite);
         }
 

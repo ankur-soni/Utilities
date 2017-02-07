@@ -354,7 +354,7 @@ namespace Silicus.Ensure.Web.Controllers
                 {
                     if (IsReAssign == 1)
                     {
-                        var userTest = _testSuiteService.GetUserTestSuite().Where(x => x.UserId == UserId && x.StatusId == Convert.ToInt32(TestStatus.Assigned)).ToList();
+                        var userTest = _testSuiteService.GetUserTestSuite().Where(x => x.UserId == UserId && x.StatusId == Convert.ToInt32(CandidateStatus.TestAssigned)).ToList();
                         if (userTest.Any())
                         {
                             foreach (var utest in userTest)
@@ -370,7 +370,7 @@ namespace Silicus.Ensure.Web.Controllers
                     userTestSuite.TestSuiteId = SuiteId;
                     _testSuiteService.AssignSuite(userTestSuite, testSuiteDetails);
                     var selectUser = _userService.GetUserDetails().Where(model => model.UserId == UserId).FirstOrDefault();
-                    selectUser.TestStatus = Convert.ToString(TestStatus.Assigned);
+                    selectUser.TestStatus = Convert.ToString(CandidateStatus.TestAssigned);
                     selectUser.CandidateStatus = Convert.ToString(CandidateStatus.TestAssigned);
                     // selectUser.TestSuiteId = SuiteId;
                     _userService.Update(selectUser);
@@ -754,7 +754,7 @@ namespace Silicus.Ensure.Web.Controllers
 
                 userTestSuitDetails.EvaluatedMark = Convert.ToInt32(Request.Form["TotalMarksObtained"].ToString());
                 userTestSuitDetails.FeedBack = Convert.ToString(Request.Form["EvaluatedFeedBack"]);
-                userTestSuitDetails.StatusId = Convert.ToInt32(TestStatus.Evaluated);
+                userTestSuitDetails.StatusId = Convert.ToInt32(CandidateStatus.TestSubmitted);
                 var userTestDetails = (from uDetails in userTestSuitDetails.UserTestDetails
                                        join question in _questionService.GetQuestion().Where(X => X.QuestionType == 2)
                                        on uDetails.QuestionId equals question.Id
@@ -774,12 +774,13 @@ namespace Silicus.Ensure.Web.Controllers
 
                 _testSuiteService.UpdateUserTestSuite(userTestSuitDetails);
                 var user = _userService.GetUserById(Convert.ToInt32(Convert.ToString(Request.Form["UserId"])));
-                user.TestStatus = TestStatus.Evaluated.ToString();
+                user.TestStatus = CandidateStatus.TestSubmitted.ToString();
                 user.CandidateStatus = Convert.ToString(Request.Form["Status"]);
                 _userService.Update(user);
             }
             catch
             {
+                throw;
             }
             return RedirectToAction("Candidates");
         }

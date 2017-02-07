@@ -152,7 +152,7 @@ namespace Silicus.Ensure.Web.Controllers
             TestSuite suite = _testSuiteService.GetTestSuitById(testSuiteId);
             UserTestSuite testSuit = _testSuiteService.GetUserTestSuiteId(userTestSuiteId);
             testSuit.Duration = suite.Duration + (testSuit.ExtraCount * 10);
-            testSuit.StatusId = Convert.ToInt32(TestStatus.Submitted);
+            testSuit.StatusId = Convert.ToInt32(CandidateStatus.TestSubmitted);
             _testSuiteService.UpdateUserTestSuite(testSuit);
 
             // Calculate marks on test submit.

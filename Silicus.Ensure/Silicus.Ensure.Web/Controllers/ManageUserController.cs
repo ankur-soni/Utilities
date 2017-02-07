@@ -245,7 +245,7 @@ namespace Silicus.Ensure.Web.Controllers
             var user = new ApplicationUser { UserName = vuser.Email, Email = vuser.Email };
             if (vuser.Role.ToLower() == RoleName.Candidate.ToString().ToLower())
             {
-                vuser.TestStatus = TestStatus.NotAssigned.ToString();
+                vuser.TestStatus = CandidateStatus.New.ToString();
                 vuser.CandidateStatus = CandidateStatus.TestAssigned.ToString();
             }
 
