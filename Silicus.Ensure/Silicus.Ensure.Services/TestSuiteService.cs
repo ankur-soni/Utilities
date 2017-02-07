@@ -66,7 +66,7 @@ namespace Silicus.Ensure.Services
 
         public void UpdateUserTestSuite(UserTestSuite UserTestSuite)
         {
-            if (UserTestSuite.UserId > 0)
+            if (UserTestSuite.UserApplicationId > 0)
             {
                 _context.Update(UserTestSuite);
                 _context.AttachAndMakeStateModified(UserTestSuite);               
@@ -76,7 +76,7 @@ namespace Silicus.Ensure.Services
 
         public void DeleteUserTestSuite(UserTestSuite UserTestSuite)
         {
-            if (UserTestSuite.UserId > 0)
+            if (UserTestSuite.UserApplicationId > 0)
             {
                 _context.Delete(UserTestSuite);
             }
@@ -89,7 +89,7 @@ namespace Silicus.Ensure.Services
 
         public UserTestSuite GetUserTestSuiteByUserId(int userId)
         {
-            return _context.Query<UserTestSuite>().Where(x => x.UserId == userId).FirstOrDefault();
+            return _context.Query<UserTestSuite>().Where(x => x.UserApplicationId == userId).FirstOrDefault();
         }
 
         public UserTestSuite GetUserTestSuiteId(int userTestSuiteId)
@@ -456,12 +456,12 @@ namespace Silicus.Ensure.Services
 
         public UserTestSuite GetUserTestSuiteByUdi_TestSuitId(int userId, int testsuitId)
         {
-            return _context.Query<UserTestSuite>().Where(x => x.UserId == userId && x.TestSuiteId == testsuitId).FirstOrDefault();
+            return _context.Query<UserTestSuite>().Where(x => x.UserApplicationId == userId && x.TestSuiteId == testsuitId).FirstOrDefault();
         }
 
         public List<int> GetAllUserIdsForTestSuite(int testSuiteId)
         {
-            return _context.Query<UserTestSuite>().Where(x => x.TestSuiteId == testSuiteId).Select(user => user.UserId).ToList();
+            return _context.Query<UserTestSuite>().Where(x => x.TestSuiteId == testSuiteId).Select(user => user.UserApplicationId).ToList();
         }
 
         public QuestionNavigationBusinessModel GetNavigationDetails(int userTestSuiteId)

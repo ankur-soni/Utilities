@@ -88,7 +88,7 @@ namespace Silicus.Ensure.Web.Controllers
             testSuiteCandidateModel.NavigationDetails = GetNavigationDetails(testSuiteCandidateModel.UserTestSuiteId);
             testSuiteCandidateModel.TotalQuestionCount = testSuiteCandidateModel.PracticalCount + testSuiteCandidateModel.ObjectiveCount;
             testSuiteCandidateModel.DurationInMin = testSuiteCandidateModel.Duration;
-
+            testSuiteCandidateModel.UserId = user.UserApplicationId;
             return View(testSuiteCandidateModel);
         }
 

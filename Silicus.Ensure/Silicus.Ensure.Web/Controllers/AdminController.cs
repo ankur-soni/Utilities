@@ -354,7 +354,7 @@ namespace Silicus.Ensure.Web.Controllers
                 {
                     if (IsReAssign == 1)
                     {
-                        var userTest = _testSuiteService.GetUserTestSuite().Where(x => x.UserId == UserId && x.StatusId == Convert.ToInt32(CandidateStatus.TestAssigned)).ToList();
+                        var userTest = _testSuiteService.GetUserTestSuite().Where(x => x.UserApplicationId == UserId && x.StatusId == Convert.ToInt32(CandidateStatus.TestAssigned)).ToList();
                         if (userTest.Any())
                         {
                             foreach (var utest in userTest)
@@ -366,7 +366,7 @@ namespace Silicus.Ensure.Web.Controllers
                     }
                     var testSuiteDetails = _testSuiteService.GetTestSuiteDetails().Where(model => model.TestSuiteId == SuiteId && model.IsDeleted == false).SingleOrDefault();
                     UserTestSuite userTestSuite = new UserTestSuite();
-                    userTestSuite.UserId = updateCurrentUsers.UserApplicationId;
+                    userTestSuite.UserApplicationId = updateCurrentUsers.UserApplicationId;
                     userTestSuite.TestSuiteId = SuiteId;
                     _testSuiteService.AssignSuite(userTestSuite, testSuiteDetails);
                     var selectUser = _userService.GetUserDetails().Where(model => model.UserId == UserId).FirstOrDefault();
@@ -519,7 +519,7 @@ namespace Silicus.Ensure.Web.Controllers
             }
 
             var userDetails = _userService.GetUserDetails().Where(x => x.UserId == UserId).FirstOrDefault();
-            var userTestSuitDetails = _testSuiteService.GetUserTestSuite().Where(x => x.UserId == UserId).FirstOrDefault().UserTestDetails;
+            var userTestSuitDetails = _testSuiteService.GetUserTestSuite().Where(x => x.UserApplicationId == UserId).FirstOrDefault().UserTestDetails;
 
             ViewBag.FNameLName = userDetails.FirstName + userDetails.LastName;
 
@@ -674,7 +674,7 @@ namespace Silicus.Ensure.Web.Controllers
                 submittedTestViewModel.Duration = userTestSuitDetails.Duration;
                 submittedTestViewModel.TotalMakrs = userTestSuitDetails.MaxScore;
                 submittedTestViewModel.TestSuitName = testSuitDetails.TestSuiteName;
-                submittedTestViewModel.UserId = userTestSuitDetails.UserId;
+                submittedTestViewModel.UserId = userTestSuitDetails.UserApplicationId;
                 submittedTestViewModel.Postion = _positionService.GetPositionById(testSuitDetails.Position) != null ? _positionService.GetPositionById(testSuitDetails.Position).PositionName : "";
 
                 foreach (var questionId in userTestSuitDetails.UserTestDetails)
@@ -794,7 +794,7 @@ namespace Silicus.Ensure.Web.Controllers
                 UserId = Convert.ToInt32(id);
             }
             var userDetails = _userService.GetUserDetails().Where(x => x.UserId == UserId).FirstOrDefault();
-            var userTestSuitDetails = _testSuiteService.GetUserTestSuite().Where(x => x.UserId == UserId).FirstOrDefault().UserTestDetails;
+            var userTestSuitDetails = _testSuiteService.GetUserTestSuite().Where(x => x.UserApplicationId == UserId).FirstOrDefault().UserTestDetails;
 
             ViewBag.FNameLName = userDetails.FirstName + userDetails.LastName;
 

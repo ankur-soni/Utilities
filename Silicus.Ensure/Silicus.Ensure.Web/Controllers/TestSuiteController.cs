@@ -237,8 +237,8 @@ namespace Silicus.Ensure.Web.Controllers
                 foreach (var item in users.Split(','))
                 {
                     userTestSuite = new UserTestSuite();
-                    userTestSuite.UserId = Convert.ToInt32(item);
-                    if (!alreadyAssignedTestSuites.Contains(userTestSuite.UserId))
+                    userTestSuite.UserApplicationId = Convert.ToInt32(item);
+                    if (!alreadyAssignedTestSuites.Contains(userTestSuite.UserApplicationId))
                     {
                         userTestSuite.TestSuiteId = testSuiteId;
                         _testSuiteService.AssignSuite(userTestSuite, testSuiteDetails);
