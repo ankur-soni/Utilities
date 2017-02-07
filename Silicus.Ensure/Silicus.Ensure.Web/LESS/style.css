@@ -207,13 +207,13 @@ th {
             white-space: normal;
         }
 
-.navbar-top-links .dropdown-messages,
+/*.navbar-top-links .dropdown-messages,
 .navbar-top-links .dropdown-user-menu,
 .navbar-top-links .dropdown-tasks,
 .navbar-top-links .dropdown-alerts {
     width: 310px;
     min-width: 0;
-}
+}*/
 
 .navbar-top-links .dropdown-messages {
     margin-left: -150px;
@@ -9692,11 +9692,11 @@ body.md-skin {
 }
 
 @media (max-width: 768px) {
-    #page-wrapper {
+    /*#page-wrapper {
         position: inherit;
         margin: 0 0 0 0px;
        
-    }
+    }*/
 
     .body-small .navbar-static-side {
         display: none;
@@ -10115,7 +10115,7 @@ body.md-skin {
 /* Only demo */
 .navbar-fixed-top,
 .navbar-static-top {
-    background: #fff;
+    background: transparent;
 }
 
 .navbar-right-mini {
