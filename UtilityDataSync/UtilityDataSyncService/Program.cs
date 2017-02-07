@@ -1,15 +1,14 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 using UtilityDataSyncLibrary;
 
-namespace TestService
+namespace UtilityDataSyncService
 {
     class Program
     {
-        public Program()
-        {
-            
-        }
-
         static void Main(string[] args)
         {
             try
@@ -19,7 +18,7 @@ namespace TestService
             }
             catch (Exception ex)
             {
-                
+
             }
         }
     }
