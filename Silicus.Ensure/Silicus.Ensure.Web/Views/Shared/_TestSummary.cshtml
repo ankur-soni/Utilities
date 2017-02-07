@@ -1,41 +1,50 @@
 ﻿@model Silicus.Ensure.Web.Models.Test.TestSummaryViewModel
 @using Kendo.Mvc.UI;
-<div>
-    <hr />
-    <div class="col-md-9">
-        <table class="table-responsive">
-            <tbody>
-                <tr>
-                    <th>Section</th>
-                    <th>Total Ques</th>
-                    <th>Correct</th>
-                    <th>Wrong</th>
-                    <th>Obtained</th>
-                    <th>Total</th>
-                </tr>
-                <tr>
-                    <td>Practical</td>
-                    <td id="practicalTotalQuestionCount">@Model.Practical.TotalQuestionCount</td>
-                    <td id="practicalCorrectAnswersCount">@Model.Practical.CorrectAnswersCount</td>
-                    <td id="practicalIncorrectAnswersCount">@Model.Practical.IncorrectAnswersCount</td>
-                    <td id="practicalMarksObtained">@Model.Practical.MarksObtained</td>
-                    <td id="practicalMaximumMarks">@Model.Practical.MaximumMarks</td>
-                </tr>
-                <tr>
-                    <td>Objective</td>
-                    <td id="objectiveTotalQuestionCount">@Model.Objective.TotalQuestionCount</td>
-                    <td id="objectiveCorrectAnswersCount">@Model.Objective.CorrectAnswersCount</td>
-                    <td id="objectiveIncorrectAnswersCount">@Model.Objective.IncorrectAnswersCount</td>
-                    <td id="objectiveMarksObtained">@Model.Objective.MarksObtained</td>
-                    <td id="objectiveMaximumMarks">@Model.Objective.MaximumMarks</td>
-                </tr>
-            </tbody>
-        </table>
-        <div>Candidate Score  <span id="totalObtainedMarks">@Model.TotalObtainedMarks</span> out of <span id="totalMaximumMarks">@Model.TotalMaximumMarks</span></div>
-    </div>
-    <div class="col-md-3">
-        <input type="button" value="Sumbit Evaluation" class=".btn-primary" id="btnSubmitEvalution" />
-        <div>Has Scored <span id="percentage">@Model.Percentage.ToString("0.00") </span>%</div>
+<div class="row">
+    <div class="col-sm-12">
+        <div class="row M-T20">
+            <div class="col-sm-7">
+                <table class="table table-bordered" style="background:#fff;color:#000;">
+                    
+                        <thead>
+                            <tr>
+                                <th>Section</th>
+                                <th>Total Ques</th>
+                                <th>Correct</th>
+                                <th>Wrong</th>
+                                <th>Obtained</th>
+                                <th>Total</th>
+                            </tr>
+                       </thead>
+                    <tbody>
+                        <tr>
+                            <td>Practical</td>
+                            <td id="practicalTotalQuestionCount">@Model.Practical.TotalQuestionCount</td>
+                            <td id="practicalCorrectAnswersCount">@Model.Practical.CorrectAnswersCount</td>
+                            <td id="practicalIncorrectAnswersCount">@Model.Practical.IncorrectAnswersCount</td>
+                            <td id="practicalMarksObtained">@Model.Practical.MarksObtained</td>
+                            <td id="practicalMaximumMarks">@Model.Practical.MaximumMarks</td>
+                        </tr>
+                        <tr>
+                            <td>Objective</td>
+                            <td id="objectiveTotalQuestionCount">@Model.Objective.TotalQuestionCount</td>
+                            <td id="objectiveCorrectAnswersCount">@Model.Objective.CorrectAnswersCount</td>
+                            <td id="objectiveIncorrectAnswersCount">@Model.Objective.IncorrectAnswersCount</td>
+                            <td id="objectiveMarksObtained">@Model.Objective.MarksObtained</td>
+                            <td id="objectiveMaximumMarks">@Model.Objective.MaximumMarks</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="col-sm-2">
+                <div style="font-size:18px;font-weight:600;">Candidate Score  <span id="totalObtainedMarks">@Model.TotalObtainedMarks</span> out of <span id="totalMaximumMarks">@Model.TotalMaximumMarks</span></div>
+                <div class="M-T10" style="font-size:15px;font-weight:600;">Has Scored <span id="percentage">@Model.Percentage.ToString("0.00") </span>%</div>
+            </div>
+            <div class="col-md-3">
+                <input type="button" value="Submit Evaluation" class="btn btn-lg btn-submitEvaluation" id="btnSubmitEvalution" />
+                
+            </div>
+        </div>
     </div>
 </div>
 
