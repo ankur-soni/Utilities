@@ -11,6 +11,7 @@ using System.Web.Mvc;
 using System.Web.Optimization;
 using System.Web.Routing;
 using Silicus.UtilityContainer.Services;
+using Silicus.FrameWorx.Logger;
 
 namespace Silicus.UtilityContainer.Web
 {
@@ -26,6 +27,14 @@ namespace Silicus.UtilityContainer.Web
 
         }
 
+        protected void Application_Error(object sender, EventArgs e)
+        {
+            var exception = Server.GetLastError();
+            ILogger _logger = new DatabaseLogger("name=LoggerDataContext", Type.GetType(string.Empty), (Func<DateTime>)(() => DateTime.UtcNow), string.Empty);
+            _logger.Log("Application_error-" + exception);
+            Server.ClearError();
+            Response.Redirect("/Home/Error");
+        }
         public static List<SuperUser> GetAllSuperUsers()
         {
             var superUserService = new SuperUserService(new CommonDataBaseContext("DefaultConnection"));
