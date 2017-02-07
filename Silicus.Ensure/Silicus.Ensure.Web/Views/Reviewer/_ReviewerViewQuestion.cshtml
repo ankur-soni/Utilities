@@ -332,9 +332,9 @@
                      Reviewer Comment
                     @Html.Kendo().EditorFor(m => m.Comment).Name("Comment").Encode(true).Value(Model.Comment)
                 </div>
-                <div class="col-sm-12" style="padding: 20px 25px 20px 20px;">
+                <div class="col-sm-2" style="padding: 20px 25px 20px 20px;">
                     Marks
-                    @Html.TextBoxFor(m => m.ReviwerMark  )
+                    @Html.TextBoxFor(m => m.ReviwerMark, new { Class = "form-control" })
                 </div>
             }
 
