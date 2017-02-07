@@ -5,6 +5,7 @@
 .M-T5{margin-top:5px;}
 .M-T10{margin-top:10px;}
 .M-T15{margin-top:15px;}
+.M-T20{margin-top:20px;}
 .M-T25{margin-top:25px;}
 .M-T60{margin-top:60px;}
 .M-T30{margin-top:30px;}
@@ -2362,6 +2363,9 @@ span.select2.select2-container.select2-container--default {
 .cust-mar {
         margin-top: 30px;
     }
+.navbar-top-links .dropdown-messages, .navbar-top-links .dropdown-user-menu, .navbar-top-links .dropdown-tasks, .navbar-top-links .dropdown-alerts{
+width: 310px;
+}
 /* Candidate portal css*/
 .titleText{color:#337ab7;}
 .btn-start{background: #b4e391; /* Old browsers */
@@ -2389,7 +2393,9 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#b4e391', end
 /*Candidate test page css*/
 .clock{float:right;}
 .btmBorder{border-bottom:1px solid #cdcdcd;margin: 20px 35px 20px 35px;}
+.btmBorder1{border-bottom:1px solid #cdcdcd;padding: -1px 25px 20px 20px;}
 .btn-addTime{background-color:#a3c3de;border-color:#a3c3de;color:#fff;}
+.btn-submitEvaluation{background-color:#a3c3de;border-color:#a3c3de;color:#fff;}
 .btn-addTime:hover{background-color: #e4e8ea;border-color: #e4e8ea;color: #000;}
 #QuestionDetails ul li{padding-top:5px;padding-bottom:5px;}
 .topBox{
@@ -2488,7 +2494,7 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#b4e391', end
 }
 
     .navbar-top-links .dropdown-messages, .navbar-top-links .dropdown-user-menu, .navbar-top-links .dropdown-tasks, .navbar-top-links .dropdown-alerts {
-        width: 200px;
+        width: 180px;
      }
 
     .navbar-top-links .dropdown-menu li a div {
@@ -2511,9 +2517,11 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#b4e391', end
         margin-top: 15px;
     }
     .sidebar-wrapper {
-        display: none;
+        display: block;
     }
-
+    #page-wrapper{
+        margin: 0 0 0 220px;
+    }
     .navbar-right {
     float: right;
 }
@@ -2539,6 +2547,12 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#b4e391', end
     .table-responsive > .table > tbody > tr > td, .table-responsive > .table > tbody > tr > th, .table-responsive > .table > tfoot > tr > td, .table-responsive > .table > tfoot > tr > th, .table-responsive > .table > thead > tr > td, .table-responsive > .table > thead > tr > th {
         white-space: normal;
 	}
+    .sidebar-wrapper {
+        display: block;
+    }
+    #page-wrapper{
+        margin: 0 0 0 220px;
+    }
 }
 
 @media (max-width:639px) {

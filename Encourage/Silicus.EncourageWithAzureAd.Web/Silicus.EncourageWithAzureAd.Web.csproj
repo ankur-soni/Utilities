@@ -307,6 +307,7 @@
     <Compile Include="Controllers\ReviewController.cs" />
     <Compile Include="Controllers\UserProfileController.cs" />
     <Compile Include="Enums\FrequencyCode.cs" />
+    <Compile Include="Extensions.cs" />
     <Compile Include="Filters\CustomeAuthorizeAttribute.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -325,6 +326,7 @@
     <Compile Include="Models\DashboardViewModel.cs" />
     <Compile Include="Models\EmailTemplateEditorViewModel.cs" />
     <Compile Include="Models\EmailTemplateViewModel.cs" />
+    <Compile Include="Models\LoginAs.cs" />
     <Compile Include="Models\NominationListViewModel.cs" />
     <Compile Include="Models\NominationViewModel.cs" />
     <Compile Include="Models\ProcessesToLockOrUnLockViewModel.cs" />
@@ -893,6 +895,8 @@
     <Content Include="Views\Email\Shared\_emailTemplateEditor.cshtml" />
     <Content Include="Silicus.EncourageWithAzureAd.Web.ruleset" />
     <Content Include="Views\Review\SetAwardPeriod.cshtml" />
+    <Content Include="Views\Home\LoginAs.cshtml" />
+    <None Include="Web.Azure.config" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

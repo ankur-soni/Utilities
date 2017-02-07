@@ -533,10 +533,9 @@ namespace Silicus.EncourageWithAzureAd.Web.Controllers
                 var award = awards.FirstOrDefault(a => a.Code == "SOM");
                 if (award != null)
                 {
+                    customDate = _customDateService.GetCustomDate(award.Id);
                     consolidatedNominationsViewModel.AwardId = award.Id;
-                    //consolidatedNominationsViewModel.AwardMonth = DateTime.Now.AddMonths(-1).Month;
                     consolidatedNominationsViewModel.AwardMonth = customDate.Month;
-                    //consolidatedNominationsViewModel.AwardYear = DateTime.Now.AddMonths(-1).Year;
                     consolidatedNominationsViewModel.AwardYear = customDate.Year;
                 }
             }

@@ -1,14 +1,20 @@
-﻿using Silicus.Encourage.DAL.Interfaces;
+﻿using System.Security.Claims;
+using System.Web.Security;
+using Microsoft.Azure.ActiveDirectory.GraphClient.Internal;
+using Silicus.Encourage.DAL.Interfaces;
 using Silicus.Encourage.Models;
 using Silicus.Encourage.Services.Interface;
+using Silicus.Encourage.Web.Filters;
 using Silicus.EncourageWithAzureAd.Web.Models;
 using Silicus.FrameWorx.Logger;
+using Silicus.UtilityContainer.Models.DataObjects;
 using Silicus.UtilityContainer.Security;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web.Configuration;
 using System.Web.Mvc;
+using User = Silicus.UtilityContainer.Models.DataObjects.User;
 
 namespace Silicus.EncourageWithAzureAd.Web.Controllers
 {
@@ -21,12 +27,14 @@ namespace Silicus.EncourageWithAzureAd.Web.Controllers
         private readonly IResultService _resultService;
         private readonly ILogger _logger;
         private readonly ICustomDateService _customDateService;
+        private readonly Silicus.UtilityContainer.Entities.ICommonDataBaseContext _commonDbContext;
 
         public HomeController(ICommonDbService commonDbService, IDataContextFactory dataContextFactory,
             INominationService nominationService, IResultService resultService, ILogger logger, ICustomDateService customDateService)
         {
             _commonDbService = commonDbService;
             _encourageDatabaseContext = dataContextFactory.CreateEncourageDbContext();
+            _commonDbContext = commonDbService.GetCommonDataBaseContext();
             _nominationService = nominationService;
             _resultService = resultService;
             _logger = logger;
@@ -151,9 +159,52 @@ namespace Silicus.EncourageWithAzureAd.Web.Controllers
             return View();
         }
 
-        public ActionResult Error()
+        [CustomeAuthorize(AllowedRole = "Admin")]
+        public ActionResult LoginAs()
         {
-            return View("~/Views/Shared/Error.cshtml");
+            return View();
+        }
+
+        [HttpPost]
+        [CustomeAuthorize(AllowedRole = "Admin")]
+        public ActionResult LoginAs(LoginAs loginAs)
+        {
+            if (!string.IsNullOrEmpty(loginAs.Username))
+            {
+                var superUserName = User.Identity.Name;
+
+                var user = _commonDbContext.Query<User>().FirstOrDefault(u => u.EmailAddress.ToLower() == loginAs.Username.ToLower());
+                if (user != null)
+                {
+                    string utility = WebConfigurationManager.AppSettings["ProductName"];
+                    var roles = _commonDbContext.Query<UtilityUserRoles>().Where(x => x.User.EmailAddress.ToLower() == loginAs.Username.ToLower() && x.Utility.Name.ToLower() == utility.ToLower()).Select(x => x.Role.Name).ToList();
+
+                    if (roles.Contains("Manager") || roles.Contains("Reviewer"))
+                    {
+                        User.AddUpdateClaim(ClaimTypes.Name, user.EmailAddress);
+                        User.AddUpdateClaim(ClaimTypes.Upn, user.EmailAddress);
+                        User.AddUpdateClaim(ClaimTypes.Surname, user.LastName);
+                        User.AddUpdateClaim(ClaimTypes.GivenName, user.FirstName);
+
+                        if(string.IsNullOrEmpty(User.GetClaimValue("RootUserName")))
+                        {
+                            User.AddUpdateClaim("RootUserName", superUserName);
+                        }
+
+                        return RedirectToAction("Index", "Home");
+                    }
+                    ModelState.AddModelError("error", "User does not have required permissions");
+                }
+                else
+                {
+                    ModelState.AddModelError("error", "User does not exists");
+                }
+            }
+            else
+            {
+                ModelState.AddModelError("error", "User name is required");
+            }
+            return View();
         }
     }
 }
