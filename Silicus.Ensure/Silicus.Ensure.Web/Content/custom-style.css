@@ -5,7 +5,11 @@
 .M-T5{margin-top:5px;}
 .M-T10{margin-top:10px;}
 .M-T15{margin-top:15px;}
+.M-T20{margin-top:20px;}
 .M-T25{margin-top:25px;}
+.M-T60{margin-top:60px;}
+.M-T30{margin-top:30px;}
+.M-T40{margin-top:40px;}
 .M-B5{margin-bottom:5px;}
 .M-B15{margin-bottom:15px!important;}
 .M-B20{margin-bottom:20px!important;}
@@ -47,7 +51,10 @@
     background: rgba(0, 0, 0, 0.4);
     opacity:1;
 }
-
+.outer-box{
+    border:1px solid #e5e6e7;
+    padding:6px;
+}
 
 
 
@@ -118,23 +125,6 @@ span.k-add {
     background-image: url('css/Kendo/2014.1.416/Default/sprite1.png');
     margin-top: -3px;
 }
-.k-upload .k-upload-button {
-    min-width: 7.167em;
-}
-
-.k-upload-button input {
-    position: absolute;
-    bottom: 0;
-    right: 0;
-    z-index: 1;
-    font: 170px monospace!important;
-    filter: alpha(opacity=0);
-    opacity: 0;
-    margin: 0;
-    padding: 0;
-    cursor: pointer;
-}
-
 
 
 /*Loader css - Start*/
@@ -2370,7 +2360,12 @@ span.select2.select2-container.select2-container--default {
     font-size: 15px;
     color: #777;
 }
-
+.cust-mar {
+        margin-top: 30px;
+    }
+.navbar-top-links .dropdown-messages, .navbar-top-links .dropdown-user-menu, .navbar-top-links .dropdown-tasks, .navbar-top-links .dropdown-alerts{
+width: 310px;
+}
 /* Candidate portal css*/
 .titleText{color:#337ab7;}
 .btn-start{background: #b4e391; /* Old browsers */
@@ -2392,13 +2387,15 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#b4e391', end
 .info-box ul li span{font-size:13px;}
 #Term.checkbox label::before{border: 1px solid rgba(158, 158, 158, 1);}
 .progress{margin-bottom:0px!important;}
-.progress-bar-info{background-color:#3cbb68!important;}
-
+.progress-bar-info{background-color:#69d08c!important;}
+#TestSuitInfo .table.table-striped > tbody > tr:nth-child(odd){background-color:#e2e6f2 !important;}
 
 /*Candidate test page css*/
 .clock{float:right;}
 .btmBorder{border-bottom:1px solid #cdcdcd;margin: 20px 35px 20px 35px;}
+.btmBorder1{border-bottom:1px solid #cdcdcd;padding: -1px 25px 20px 20px;}
 .btn-addTime{background-color:#a3c3de;border-color:#a3c3de;color:#fff;}
+.btn-submitEvaluation{background-color:#a3c3de;border-color:#a3c3de;color:#fff;}
 .btn-addTime:hover{background-color: #e4e8ea;border-color: #e4e8ea;color: #000;}
 #QuestionDetails ul li{padding-top:5px;padding-bottom:5px;}
 .topBox{
@@ -2426,7 +2423,7 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#b4e391', end
 .panel .panel-heading .panel-title{
     color:#fff!important;
 }
-
+.disBlock{display:block;}
 
 
 
@@ -2497,7 +2494,7 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#b4e391', end
 }
 
     .navbar-top-links .dropdown-messages, .navbar-top-links .dropdown-user-menu, .navbar-top-links .dropdown-tasks, .navbar-top-links .dropdown-alerts {
-        width: 200px;
+        width: 180px;
      }
 
     .navbar-top-links .dropdown-menu li a div {
@@ -2509,19 +2506,22 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#b4e391', end
     padding-bottom: 0px;
 }
 
-    .cust-mar {
-        margin-top: 15px;
-    }
+    
      }
 
 @media (max-width:800px) {
 }
 
 @media (max-width:768px) {
-    .sidebar-wrapper {
-        display: none;
+    .cust-mar {
+        margin-top: 15px;
     }
-
+    .sidebar-wrapper {
+        display: block;
+    }
+    #page-wrapper{
+        margin: 0 0 0 220px;
+    }
     .navbar-right {
     float: right;
 }
@@ -2547,6 +2547,12 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#b4e391', end
     .table-responsive > .table > tbody > tr > td, .table-responsive > .table > tbody > tr > th, .table-responsive > .table > tfoot > tr > td, .table-responsive > .table > tfoot > tr > th, .table-responsive > .table > thead > tr > td, .table-responsive > .table > thead > tr > th {
         white-space: normal;
 	}
+    .sidebar-wrapper {
+        display: block;
+    }
+    #page-wrapper{
+        margin: 0 0 0 220px;
+    }
 }
 
 @media (max-width:639px) {

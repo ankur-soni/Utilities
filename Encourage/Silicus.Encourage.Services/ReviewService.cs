@@ -53,7 +53,7 @@ namespace Silicus.Encourage.Services
             {
                 foreach (var awardId in awardIds)
                 {
-                    var data = _encourageDatabaseContext.Query<Configuration>().Where(x => x.configurationKey == lockKey && x.AwardId == awardId).FirstOrDefault();
+                    var data = _encourageDatabaseContext.Query<Configuration>().FirstOrDefault(x => x.configurationKey == lockKey && x.AwardId == awardId);
                     if (data != null)
                     {
                         data.value = true;
@@ -78,7 +78,7 @@ namespace Silicus.Encourage.Services
             {
                 foreach (var awardId in awardIds)
                 {
-                    var data = _encourageDatabaseContext.Query<Configuration>().Where(x => x.configurationKey == lockKey && x.value == true && x.AwardId == awardId).FirstOrDefault();
+                    var data = _encourageDatabaseContext.Query<Configuration>().FirstOrDefault(x => x.configurationKey == lockKey && x.value == true && x.AwardId == awardId);
                     if (data != null)
                     {
                         data.value = false;
@@ -114,7 +114,8 @@ namespace Silicus.Encourage.Services
         public bool GetAwardReviewLockStatus(int awardId)
         {
             var lockKey = WebConfigurationManager.AppSettings["ReviewLockKey"];
-            var lockStatus = _encourageDatabaseContext.Query<Configuration>().FirstOrDefault(x => x.configurationKey == lockKey && x.AwardId == awardId).value.Value;
+            var configuration = _encourageDatabaseContext.Query<Configuration>().FirstOrDefault(x => x.configurationKey == lockKey && x.AwardId == awardId);
+            var lockStatus = configuration != null && configuration.value == true;
             return lockStatus;
         }
 
@@ -130,7 +131,7 @@ namespace Silicus.Encourage.Services
 
         public Configuration GetConfigurationById(int id)
         {
-            return _encourageDatabaseContext.Query<Configuration>().Where(x => x.Id == id).FirstOrDefault();
+            return _encourageDatabaseContext.Query<Configuration>().FirstOrDefault(x => x.Id == id);
         }
     }
 }

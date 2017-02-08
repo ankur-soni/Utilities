@@ -9,6 +9,7 @@ using System.Collections.Generic;
 using Kendo.Mvc.Extensions;
 using Silicus.UtilityContainer.Security;
 using System.Web.Configuration;
+using System;
 
 namespace Silicus.FrameworxProject.Web.Controllers
 {
@@ -44,16 +45,25 @@ namespace Silicus.FrameworxProject.Web.Controllers
             var _authorizationService = new Authorization(_commonDbService.GetCommonDataBaseContext());
             var userRoles = _authorizationService.GetRoleForUtility(User.Identity.Name, utility);
             ViewBag.IsRolePm = userRoles.Contains("Project Manager");
-            //  if (ViewBag.IsRolePm)
-            // {
-            ViewBag.Users = _commonDbService.GetAllUsers();
-            // }
+            ViewBag.CurrentUser = User.Identity.Name;
+            ViewBag.IsFrameworxUser = _productBacklogService.IsFrameworxUser(User.Identity.Name);
+            if (ViewBag.IsRolePm || ViewBag.IsFrameworxUser)
+            {
+                ViewBag.Users = _commonDbService.GetAllUsers();
+            }
             return View();
         }
 
         public JsonResult GetProjects([DataSourceRequest] DataSourceRequest request)
         {
             var result = _productBacklogService.GetTeamProjects();
+
+            return Json(result.ToDataSourceResult(request), JsonRequestBehavior.AllowGet);
+        }
+
+        public JsonResult GetAreas([DataSourceRequest] DataSourceRequest request,string projectName)
+        {
+            var result = _productBacklogService.GetAreas(projectName);
 
             return Json(result.ToDataSourceResult(request), JsonRequestBehavior.AllowGet);
         }
@@ -127,6 +137,18 @@ namespace Silicus.FrameworxProject.Web.Controllers
             var productBacklogViewModel = _mapper.Map<ProductBacklog, ProductBacklogViewModel>(productBacklog);
 
             return PartialView("_Details", productBacklogViewModel);
+        }
+
+        [AcceptVerbs(HttpVerbs.Post)]
+        public ActionResult AddWorkItem([DataSourceRequest] DataSourceRequest request, ProductBacklogViewModel productBacklogViewModel,string projectName)
+        {
+            if (productBacklogViewModel != null && ModelState.IsValid)
+            {                
+                var productBacklog = _mapper.Map<ProductBacklogViewModel,ProductBacklog>(productBacklogViewModel);
+                _productBacklogService.AddWorkItem(productBacklog, projectName);
+            }
+
+            return Json(new[] { productBacklogViewModel }.ToDataSourceResult(request, ModelState));
         }
     }
 }

@@ -15,15 +15,19 @@
         </div>
     </nav>
 
-    <div class="col-lg-10 col-md-10 col-sm-10">
+    <div class="col-lg-10 col-md-10 col-sm-10 col-xs-10">
         <h1 class="dashboard-name">Question Bank</h1>
     </div>
 </div>
-
 <div class="row">
-    <div class="alert alert-success" id="messageDiv" style="display:none">
-        <span id="messageContent"></span>
+    <div class="col-sm-12">
+        <div class="alert alert-success M-T15" id="messageDiv" style="display:none;margin-bottom:0px;">
+            <span id="messageContent"></span>
+        </div>
     </div>
+</div>
+<div class="row">
+   
     <div class="col-sm-12">
         <div class="box M-T15 M-B60">
             <div class="kendogrid">
@@ -85,10 +89,9 @@
 
                         <div class="row">
                             <div class="col-sm-12">
-                                <div class="col-sm-1 col-md-1 col-lg-1">
-                                    <span style="font-weight:bold;" class="themeColorBlue labelAlignMid">Type</span>
-                                </div>
-                                <div class="col-sm-2 col-md-2 col-lg-1">
+                                <div class="col-sm-4 col-md-3 col-lg-2">
+                                    <span style="font-weight:bold;" class="themeColorBlue labelAlignMid">Question type</span>
+
                                     @(Html.Kendo().DropDownList()
                             .Name("QuestionType")
                             .DataTextField("Text")
@@ -108,12 +111,11 @@
                                 Text="Practical",
                                 Value="Practical"
                                 }
-                                }).HtmlAttributes(new { style = "width: 100%" }))
+                                }).HtmlAttributes(new { style = "width: 100%", @class="M-T5" }))
                                 </div>
-                                <div class="col-sm-3 col-md-2 col-lg-1">
+                                <div class="col-sm-4 col-md-3 col-lg-2">
                                     <span style="font-weight:bold;" class="themeColorBlue labelAlignMid">Proficiency level</span>
-                                </div>
-                                <div class="col-sm-3 col-md-2 col-lg-1">
+
                                     @{
                                         var levelList = new List<SelectListItem>();
                                         levelList.Add(new SelectListItem() { Text = "All", Value = "" });
@@ -128,7 +130,7 @@
                                     .DataValueField("Value")
                                     .Events(e => e.Change("ProficiencyLevelDropDownChange"))
                                     .BindTo(levelList)
-                                    .HtmlAttributes(new { style = "width: 100%" })
+                                            .HtmlAttributes(new { style = "width: 100%", @class = "M-T5" })
                                     )
                                 </div>
                                 <div class="col-sm-3 col-md-2 col-lg-2 cust-mar">

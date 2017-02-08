@@ -1,4 +1,5 @@
-﻿using Silicus.Ensure.Models.Constants;
+﻿using Silicus.Ensure.Models;
+using Silicus.Ensure.Models.Constants;
 using Silicus.Ensure.Models.DataObjects;
 using Silicus.Ensure.Models.Test;
 using Silicus.Ensure.Services.Interfaces;
@@ -36,10 +37,10 @@ namespace Silicus.Ensure.Web.Controllers
             if (!ModelState.IsValid)
                 return RedirectToAction("LogOff", "CandidateAccount");
             var userEmail = User.Identity.Name.Trim();
-            User user = _userService.GetUserByEmail(userEmail);
+            var user = _userService.GetUserByEmail(userEmail);
             if (user == null)
                 return RedirectToAction("LogOff", "CandidateAccount");
-            UserTestSuite userTestSuite = _testSuiteService.GetUserTestSuiteByUserId(user.UserId);
+            UserTestSuite userTestSuite = _testSuiteService.GetUserTestSuiteByUserId(user.UserApplicationId);
             if (userTestSuite == null)
             {
                 ViewBag.Status = 1;
@@ -66,7 +67,7 @@ namespace Silicus.Ensure.Web.Controllers
                 return RedirectToAction("LogOff", "CandidateAccount");
 
             var userEmail = User.Identity.Name.Trim();
-            User user = _userService.GetUserByEmail(userEmail);
+            var user = _userService.GetUserByEmail(userEmail);
             if (user == null)
             {
                 ViewBag.Status = 1;
@@ -74,14 +75,14 @@ namespace Silicus.Ensure.Web.Controllers
                 return View("Welcome", new TestSuiteCandidateModel());
             }
 
-            UserTestSuite userTestSuite = _testSuiteService.GetUserTestSuiteByUserId(user.UserId);
+            UserTestSuite userTestSuite = _testSuiteService.GetUserTestSuiteByUserId(user.UserApplicationId);
             if (userTestSuite == null)
             {
                 ViewBag.Status = 1;
                 ViewBag.Msg = ViewBag.Msg = "No test is assigned for you, kindly contact admin.";
                 return View("Welcome", new TestSuiteCandidateModel());
             }
-            var testSuiteDetails = _testSuiteService.GetTestSuiteDetails().Where(model => model.TestSuiteId == userTestSuite.TestSuiteId && model.IsDeleted == false).SingleOrDefault();
+            var testSuiteDetails = _testSuiteService.GetTestSuiteDetails().SingleOrDefault(model => model.TestSuiteId == userTestSuite.TestSuiteId && !model.IsDeleted);
             _testSuiteService.AssignSuite(userTestSuite, testSuiteDetails);
             TestSuiteCandidateModel testSuiteCandidateModel = _mappingService.Map<UserTestSuite, TestSuiteCandidateModel>(userTestSuite);
             var candidateInfoBusinessModel = _userService.GetCandidateInfo(user);
@@ -89,7 +90,7 @@ namespace Silicus.Ensure.Web.Controllers
             testSuiteCandidateModel.NavigationDetails = GetNavigationDetails(testSuiteCandidateModel.UserTestSuiteId);
             testSuiteCandidateModel.TotalQuestionCount = testSuiteCandidateModel.PracticalCount + testSuiteCandidateModel.ObjectiveCount;
             testSuiteCandidateModel.DurationInMin = testSuiteCandidateModel.Duration;
-
+            testSuiteCandidateModel.UserId = user.UserApplicationId;
             return View(testSuiteCandidateModel);
         }
 
@@ -123,26 +124,24 @@ namespace Silicus.Ensure.Web.Controllers
             // Update last question answer of test.
             answer = HttpUtility.HtmlDecode(answer);
             UpdateAnswer(answer, userTestDetailId);
-
+          //  UserApplicationDetails GetUserApplicationDetailsById
             // Update candidate status as Test "Submitted".
-            User candidate = _userService.GetUserById(userId);
-            candidate.TestStatus = TestStatus.Submitted.ToString();
-            candidate.CandidateStatus = CandidateStatus.TestSubmitted.ToString();
-            _userService.Update(candidate);
-
+           _userService.UpdateUserApplicationTestDetails(userId);
+        
             // Update total time utilization for test back to UserTestSuite.
             TestSuite suite = _testSuiteService.GetTestSuitById(testSuiteId);
             UserTestSuite testSuit = _testSuiteService.GetUserTestSuiteId(userTestSuiteId);
             testSuit.Duration = suite.Duration + (testSuit.ExtraCount * 10);
-            testSuit.StatusId = Convert.ToInt32(TestStatus.Submitted);
+            testSuit.StatusId = Convert.ToInt32(CandidateStatus.TestSubmitted);
             _testSuiteService.UpdateUserTestSuite(testSuit);
 
             // Calculate marks on test submit.
             CalculateMarks(userTestSuiteId);
 
+            // Code Need To correct
             // Get All admin to send mail.
-            List<User> userAdmin = _userService.GetUserByRole("ADMIN").ToList();
-            SendSubmittedTestMail(userAdmin, candidate.FirstName + " " + candidate.LastName);
+            //List<User> userAdmin = _userService.GetUserByRole("ADMIN").ToList();
+            //SendSubmittedTestMail(userAdmin, candidate.FirstName + " " + candidate.LastName);
 
             return RedirectToAction("LogOff", "CandidateAccount");
         }

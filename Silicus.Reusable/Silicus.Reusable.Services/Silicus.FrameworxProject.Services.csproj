@@ -95,6 +95,7 @@
       <HintPath>..\packages\Microsoft.AspNet.WebApi.Client.5.2.2\lib\net45\System.Net.Http.Formatting.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="System.Web.Mvc, Version=4.0.0.1, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -107,6 +108,7 @@
     <Compile Include="Constants.cs" />
     <Compile Include="FrameworxFeedbackService.cs" />
     <Compile Include="ExtensionCodeService.cs" />
+    <Compile Include="Helper.cs" />
     <Compile Include="Interfaces\ICommonDbService.cs" />
     <Compile Include="Interfaces\IFrameworxFeedbackService.cs" />
     <Compile Include="Interfaces\IExtensionCodeService.cs" />

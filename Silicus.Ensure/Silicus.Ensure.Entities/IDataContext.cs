@@ -1,4 +1,5 @@
-﻿using System;
+﻿
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -44,6 +45,11 @@ namespace Silicus.Ensure.Entities
         int Update<T>(T item) where T : class;
 
         /// <summary>
+        /// Attach the Entity and mark as Modified
+        /// For one to many relationship
+        /// </summary>
+        void AttachAndMakeStateModified<T>(T item) where T : class;
+        /// <summary>
         /// Update a collection of data items to the data store.
         /// </summary>
         /// <remarks>
@@ -61,5 +67,6 @@ namespace Silicus.Ensure.Entities
         void DeleteAll<T>(IEnumerable<T> items) where T : class;
 
         T TryAdd<T>(T state) where T : class;
+
     }
 }

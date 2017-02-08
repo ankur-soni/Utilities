@@ -13,5 +13,8 @@ namespace Silicus.FrameworxProject.Services.Interfaces
         IEnumerable<TeamProjectReference> GetTeamProjects();
         ProductBacklog GetWorkItemDetails(int id);
         void UpdateAssignee(ProductBacklog productBacklog);
+        void AddWorkItem(ProductBacklog productBacklog, string projectName);
+        bool IsFrameworxUser(string emailAddress);
+        IEnumerable<WorkItemClassificationNode> GetAreas(string project, int depth = 100);
     }
 }

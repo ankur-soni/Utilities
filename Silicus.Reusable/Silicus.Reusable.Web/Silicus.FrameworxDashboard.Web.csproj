@@ -763,6 +763,7 @@
     <Content Include="Scripts\plugins\Kendo\2015.3.1111.340\kendo.core.min.js.map" />
     <Content Include="Scripts\plugins\Kendo\2015.3.1111.340\kendo.data.min.js.map" />
     <Content Include="Scripts\plugins\Kendo\2015.3.1111.340\kendo.dataviz.min.js.map" />
+    <Content Include="Views\Shared\EditorTemplates\ProductBacklogEditTemplate.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -803,10 +804,6 @@
   </ItemGroup>
   <ItemGroup>
     <WCFMetadata Include="Service References\" />
-  </ItemGroup>
-  <ItemGroup>
-    <Analyzer Include="..\packages\Microsoft.CodeAnalysis.Analyzers.1.1.0\analyzers\dotnet\cs\Microsoft.CodeAnalysis.Analyzers.dll" />
-    <Analyzer Include="..\packages\Microsoft.CodeAnalysis.Analyzers.1.1.0\analyzers\dotnet\cs\Microsoft.CodeAnalysis.CSharp.Analyzers.dll" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

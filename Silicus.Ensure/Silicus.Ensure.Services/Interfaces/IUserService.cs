@@ -7,19 +7,19 @@ namespace Silicus.Ensure.Services.Interfaces
 {
     public interface IUserService
     {
-        IEnumerable<User> GetUserDetailsAll();
+        IEnumerable<UserBusinessModel> GetUserDetailsAll();
 
-        IEnumerable<User> GetUserDetails();
+        IEnumerable<UserBusinessModel> GetUserDetails();
 
-        int Add(User User);
+        int Add(UserBusinessModel User);
 
-        User GetUserById(int userId);
+        UserBusinessModel GetUserById(int userId);
 
-        void Update(User User);
+        void Update(UserBusinessModel User);
 
-        void Delete(User User);
+        void Delete(int userId);
 
-        User GetUserByEmail(string email);
+        UserBusinessModel GetUserByEmail(string email);
 
         IEnumerable<User> GetUserByRole(string role);
 
@@ -29,6 +29,10 @@ namespace Silicus.Ensure.Services.Interfaces
 
         IEnumerable<UserTestSuite> GetAllTestSuiteDetails();
 
-        CandidateInfoBusinessModel GetCandidateInfo(Ensure.Models.DataObjects.User user);
+        UserApplicationDetails GetUserApplicationDetailsById(int userApplicationId);
+
+        void UpdateUserApplicationTestDetails(int UserApplicationDetailsId);
+
+        CandidateInfoBusinessModel GetCandidateInfo(UserBusinessModel user);
     }
 }

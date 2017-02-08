@@ -12,8 +12,8 @@ function openFeedbackForm() {
             //Show feedback form modal            
             $('#feedbackFormModal').modal('show');
         },
-        error: function (e) {
-            toastr.error(getErrorMessage(e));
+        error: function (e) {            
+            showAlert({ title: 'Error', text: 'Oops!', type: 'error', timer: 2000 });
         },
         complete: function () {
             unblockUI();
@@ -34,7 +34,7 @@ function openContactOwnerForm() {
             $('#contactOwnerFormModal').modal('show');
         },
         error: function (e) {
-            toastr.error(getErrorMessage(e));
+            toshowAlert({ title: 'Error', text: 'Oops!', type: 'error', timer: 2000 });
         },
         complete: function () {
             unblockUI();

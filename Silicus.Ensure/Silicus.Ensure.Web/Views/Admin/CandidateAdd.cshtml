@@ -6,6 +6,7 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
+
 <div class="row white-bg header-row">
     <nav class="" role="navigation" style="margin-bottom: 0">
         <div class="navbar-header">
@@ -14,7 +15,7 @@
     </nav>
     @if (Model.UserId != 0)
     {
-        <div class="col-lg-10 col-md-10 col-sm-10">
+        <div class="col-lg-10 col-md-10 col-sm-10 col-xs-10">
             <h1 class="dashboard-name">Edit Candidate</h1>
         </div>
         <script>
@@ -26,7 +27,7 @@
     }
     else
     {
-        <div class="col-lg-10 col-md-10 col-sm-10">
+        <div class="col-lg-10 col-md-10 col-sm-10 col-xs-10">
             <h1 class="dashboard-name">Add Candidate</h1>
         </div>
         <script>
@@ -294,26 +295,32 @@
                                         Upload Resume <b style="color:Red;">*</b>
                                     </div>
                                     <div class="col-md-6">
+                                        <div class="outer-box">
                                         <div class="demo-section k-content">
-                                            <input name="files" id="file" style="display:none" type="file" />
+                                            <input id="file" name="files" type="file" data-role="upload" style="display:none" />
+                                            @*<input name="files" id="files" type="file" />*@
+                                            
                                         </div>
-                                        @if (!string.IsNullOrEmpty(Model.ResumeName))
-                                        {
-                                            <div id="uploadFileLink" class="postuploadedfilesholder clearfix">
-                                                <div class="fileupload">
-                                                    <a href="@Html.Raw(Url.Content(Model.ResumePath))" targ target="_blank">@Html.Raw(Model.ResumeDisplayName)</a>
-                                                    <span class="deleteupload" title="Delete"><a onclick="DeleteF()">x</a></span>
+                                            @if (!string.IsNullOrEmpty(Model.ResumeName))
+                                            {
+                                                <div id="uploadFileLink" class="postuploadedfilesholder clearfix">
+                                                    <div class="fileupload M-T5">
+                                                        <a href="@Html.Raw(Url.Content(Model.ResumePath))" targ target="_blank"><i class="fa fa-file-text-o" aria-hidden="true"></i> @Html.Raw(Model.ResumeDisplayName)</a>
+                                                        <span class="deleteupload" title="Delete"><a onclick="DeleteF()"><i class="fa fa-window-close" aria-hidden="true"></i></a></span>
+                                                    </div>
                                                 </div>
-                                            </div>
-                                            <script type="text/javascript">
-                                                function DeleteF() {
-                                                    fileBool=true;
-                                                    $('#file').css('display','block')
-                                                    $("#uploadFileLink").html("");
-                                                    $("#ResumeName").val("");
-                                                }
-                                            </script>
-                                        }
+                                                <script type="text/javascript">
+                                                    function DeleteF() {
+                                                        fileBool=true;
+                                                        $('#file').css('display','block')
+                                                        $("#uploadFileLink").html("");
+                                                        $("#ResumeName").val("");
+                                                    }
+                                                </script>
+                                            }
+                                           
+                                        </div> 
+                                        <span class="k-invalid-msg" data-for="files"></span>                                       
                                     </div>
                                 </div>
                             </div>
@@ -371,8 +378,21 @@
     $(document).ready(function () {
         $('#messageDiv').fadeOut(5000);
     });
+    
     $(document).ready(function () {
+        //$('#uploadFileLink').ke
+        $("#files").kendoUpload();
+        $(".toggleEnabled").click(function() {
+            getUpload().toggle();
+        });
 
+        $(".enable").click(function() {
+            getUpload().enable();
+        });
+
+        $(".disable").click(function() {
+            getUpload().disable();
+        });
         $("#DOB").kendoDatePicker({
             format: "dd/MM/yyyy"
         });
@@ -570,8 +590,8 @@
                         }
                     }
                     if (input.is("[id='file']")&&fileBool) {
-                        if (!(input.val() != "")) {
-                            input.attr("data-experiencevalidation-msg", "File is required!");
+                        if (!(input.val() != "")) {                            
+                            input.attr("data-experiencevalidation-msg", "File is required!");                          
                             return false;
                         }
                         else if(input.val() != "")

@@ -1,4 +1,6 @@
-﻿using Silicus.UtilityContainer.Security;
+﻿using Silicus.FrameWorx.Logger;
+using Silicus.UtilityContainer.Security;
+using System;
 using System.Collections.Generic;
 using System.Web;
 using System.Web.Configuration;
@@ -19,6 +21,14 @@ namespace Silicus.EncourageWithAzureAd.Web
             GlobalConfiguration.Configure(WebApiConfig.Register);
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             BundleConfig.RegisterBundles(BundleTable.Bundles);
+        }
+        protected void Application_Error(object sender, EventArgs e)
+        {
+            var exception = Server.GetLastError();
+            ILogger _logger = new DatabaseLogger("name=LoggerDataContext", Type.GetType(string.Empty), (Func<DateTime>)(() => DateTime.UtcNow), string.Empty);
+            _logger.Log("Application_error-"+exception);
+            Server.ClearError();
+            Response.Redirect("/Home/Error");
         }
 
         public string GetCurrentUserName()

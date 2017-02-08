@@ -761,6 +761,8 @@
     <Content Include="Content\bootstrap\mixins.less" />
     <None Include="Properties\PublishProfiles\EnHouse - FTP.pubxml" />
     <None Include="Properties\PublishProfiles\EnHouse - Web Deploy.pubxml" />
+    <None Include="Properties\PublishProfiles\enhouseapp - FTP.pubxml" />
+    <None Include="Properties\PublishProfiles\enhouseapp - Web Deploy.pubxml" />
     <None Include="Properties\PublishProfiles\SilicusUtilityContainerWeb7780 - FTP %282%29.pubxml" />
     <None Include="Properties\PublishProfiles\SilicusUtilityContainerWeb7780 - FTP.pubxml" />
     <None Include="Properties\PublishProfiles\SilicusUtilityContainerWeb7780 - Web Deploy %282%29.pubxml" />
@@ -819,6 +821,12 @@
     <Content Include="Views\Home\Shared\_UsersAccordingToRoleInUtility.cshtml" />
     <Content Include="Views\Sweet\Alert.cshtml" />
     <Content Include="Views\Shared\UnAuthorizedError.cshtml" />
+    <None Include="Web.Production.config">
+      <DependentUpon>Web.config</DependentUpon>
+    </None>
+    <None Include="Web.UAT.config">
+      <DependentUpon>Web.config</DependentUpon>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -852,6 +860,24 @@
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Production|AnyCPU'">
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'UAT|AnyCPU'">
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(VSToolsPath)\WebApplications\Microsoft.WebApplication.targets" Condition="'$(VSToolsPath)' != ''" />

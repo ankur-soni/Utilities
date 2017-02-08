@@ -10,6 +10,7 @@ using System.Web;
 using System.Web.Mvc;
 using Silicus.Ensure.Models.DataObjects;
 using Silicus.Ensure.Web.Models;
+using Silicus.Ensure.Models;
 
 namespace Silicus.Ensure.Web.Controllers
 {
@@ -51,7 +52,7 @@ namespace Silicus.Ensure.Web.Controllers
             if (!ModelState.IsValid)
                 return RedirectToAction("LogOff", "CandidateAccount");
 
-            User user = _userService.GetUserById(UserId);
+            var user = _userService.GetUserById(UserId);
             if (user == null)
             {
                 ViewBag.Status = 1;
@@ -66,7 +67,8 @@ namespace Silicus.Ensure.Web.Controllers
                 return View("Welcome");
             }
             TestSuiteCandidateModel testSuiteCandidateModel = _mappingService.Map<UserTestSuite, TestSuiteCandidateModel>(userTestSuite);
-            testSuiteCandidateModel.CandidateInfo = GetCandidateInfo(user);
+            var candidateInfoBusinessModel = _userService.GetCandidateInfo(user);
+            testSuiteCandidateModel.CandidateInfo = _mappingService.Map<CandidateInfoBusinessModel, CandidateInfoViewModel>(candidateInfoBusinessModel);
             testSuiteCandidateModel.NavigationDetails = GetNavigationDetails(testSuiteCandidateModel.UserTestSuiteId);
             testSuiteCandidateModel.TotalQuestionCount = testSuiteCandidateModel.PracticalCount + testSuiteCandidateModel.ObjectiveCount;
             testSuiteCandidateModel.DurationInMin = testSuiteCandidateModel.Duration;
@@ -117,8 +119,6 @@ namespace Silicus.Ensure.Web.Controllers
             return Json(true);
         }
 
-
-
         #region private
 
         private ReviewerQuestionViewModel ReviewTestSuiteQuestion(int? questionId, int? userTestSuiteId, int questionType)
@@ -133,27 +133,6 @@ namespace Silicus.Ensure.Web.Controllers
             var navigationDetailsBusinessModel = _testSuiteService.GetNavigationDetails(userTestSuiteId);
             var navigationDetails = _mappingService.Map<QuestionNavigationBusinessModel, QuestionNavigationViewModel>(navigationDetailsBusinessModel);
             return navigationDetails;
-        }
-
-        private CandidateInfoViewModel GetCandidateInfo(Ensure.Models.DataObjects.User user)
-        {
-            return new CandidateInfoViewModel
-            {
-                Name = user.FirstName + " " + user.LastName,
-                DOB = user.DOB,
-                RequisitionId = user.RequisitionId,
-                Position = user.Position,
-                TotalExperience = ConvertExperienceIntoDecimal(user.TotalExperienceInYear, user.TotalExperienceInMonth)
-            };
-        }
-        private decimal ConvertExperienceIntoDecimal(int totalExperienceInYear, int totalExperienceInMonth)
-        {
-            if (totalExperienceInMonth > 0)
-            {
-                return totalExperienceInYear + (decimal)(totalExperienceInMonth / 12.0);
-            }
-            else
-                return totalExperienceInYear;
         }
 
         private void UpdateReview(int mark, string comment, int? userTestDetailId)
@@ -171,9 +150,7 @@ namespace Silicus.Ensure.Web.Controllers
             userTestDetails.ReviwerComment = comment;
             _testSuiteService.UpdateUserTestDetails(userTestDetails);
         }
-
-
-
+        
         #endregion
 
         #region Preview
