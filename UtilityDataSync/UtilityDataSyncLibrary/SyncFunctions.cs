@@ -15,7 +15,7 @@ namespace UtilityDataSyncLibrary
     {
         private static IMappingService _mappingService;
         private static ILogger _logger;
-       
+
         public SyncFunctions()
         {
             _mappingService = new MappingService();
@@ -32,8 +32,8 @@ namespace UtilityDataSyncLibrary
                 {
                     enableContext.Configuration.AutoDetectChangesEnabled = false;
                     enableContext.Configuration.ValidateOnSaveEnabled = false;
-                   
-                   _logger.Log("Sync started");
+
+                    _logger.Log("Sync started");
                     //Master data
                     SyncClients(enableContext, utilityContainerContext);
                     SyncEngagementTypes(enableContext, utilityContainerContext);
@@ -81,8 +81,8 @@ namespace UtilityDataSyncLibrary
                 }
                 catch (Exception ex)
                 {
-                    transaction.Rollback();
                     _logger.Log(ex);
+                    transaction.Rollback();
                 }
             }
         }
@@ -106,8 +106,8 @@ namespace UtilityDataSyncLibrary
                 }
                 catch (Exception ex)
                 {
+                    _logger.Log(ex); 
                     transaction.Rollback();
-                    _logger.Log(ex);
                 }
             }
         }
@@ -131,8 +131,8 @@ namespace UtilityDataSyncLibrary
                 }
                 catch (Exception ex)
                 {
+                    _logger.Log(ex); 
                     transaction.Rollback();
-                    _logger.Log(ex);
                 }
             }
         }
@@ -156,8 +156,8 @@ namespace UtilityDataSyncLibrary
                 }
                 catch (Exception ex)
                 {
+                    _logger.Log(ex); 
                     transaction.Rollback();
-                    _logger.Log(ex);
                 }
             }
         }
@@ -181,8 +181,8 @@ namespace UtilityDataSyncLibrary
                 }
                 catch (Exception ex)
                 {
+                    _logger.Log(ex); 
                     transaction.Rollback();
-                    _logger.Log(ex);
                 }
             }
         }
@@ -206,8 +206,8 @@ namespace UtilityDataSyncLibrary
                 }
                 catch (Exception ex)
                 {
+                    _logger.Log(ex); 
                     transaction.Rollback();
-                    _logger.Log(ex);
                 }
             }
         }
@@ -231,8 +231,8 @@ namespace UtilityDataSyncLibrary
                 }
                 catch (Exception ex)
                 {
+                    _logger.Log(ex); 
                     transaction.Rollback();
-                    _logger.Log(ex);
                 }
             }
         }
@@ -256,8 +256,8 @@ namespace UtilityDataSyncLibrary
                 }
                 catch (Exception ex)
                 {
-                    transaction.Rollback();
                     _logger.Log(ex);
+                    transaction.Rollback();
                 }
             }
         }
@@ -281,8 +281,8 @@ namespace UtilityDataSyncLibrary
                 }
                 catch (Exception ex)
                 {
+                    _logger.Log(ex); 
                     transaction.Rollback();
-                    _logger.Log(ex);
                 }
             }
         }
@@ -306,8 +306,8 @@ namespace UtilityDataSyncLibrary
                 }
                 catch (Exception ex)
                 {
+                    _logger.Log(ex); 
                     transaction.Rollback();
-                    _logger.Log(ex);
                 }
             }
         }
@@ -331,8 +331,8 @@ namespace UtilityDataSyncLibrary
                 }
                 catch (Exception ex)
                 {
+                    _logger.Log(ex); 
                     transaction.Rollback();
-                    _logger.Log(ex);
                 }
             }
         }
@@ -356,8 +356,8 @@ namespace UtilityDataSyncLibrary
                 }
                 catch (Exception ex)
                 {
+                    _logger.Log(ex); 
                     transaction.Rollback();
-                    _logger.Log(ex);
                 }
             }
         }
@@ -381,8 +381,8 @@ namespace UtilityDataSyncLibrary
                 }
                 catch (Exception ex)
                 {
+                    _logger.Log(ex); 
                     transaction.Rollback();
-                    _logger.Log(ex);
                 }
             }
         }
@@ -406,8 +406,8 @@ namespace UtilityDataSyncLibrary
                 }
                 catch (Exception ex)
                 {
+                    _logger.Log(ex); 
                     transaction.Rollback();
-                    _logger.Log(ex);
                 }
             }
         }
@@ -431,8 +431,8 @@ namespace UtilityDataSyncLibrary
                 }
                 catch (Exception ex)
                 {
+                    _logger.Log(ex); 
                     transaction.Rollback();
-                    _logger.Log(ex);
                 }
             }
         }
