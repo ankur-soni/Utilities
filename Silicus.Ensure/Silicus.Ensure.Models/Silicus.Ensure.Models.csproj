@@ -130,6 +130,7 @@
     <Compile Include="DataObjects\RecruiterMembersDetail.cs" />
     <Compile Include="DataObjects\Role.cs" />
     <Compile Include="DataObjects\Tags.cs" />
+    <Compile Include="DataObjects\TempPreviewTest.cs" />
     <Compile Include="DataObjects\TestSuite.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -141,6 +142,8 @@
     <Compile Include="DocumentBase.cs" />
     <Compile Include="NotificationMessage.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Test\CandidateInfoBusinessModel.cs" />
+    <Compile Include="Test\PreviewTestBusinessModel.cs" />
     <Compile Include="Test\QuestionNavigationBasics.cs" />
     <Compile Include="Test\QuestionNavigationBusinessModel.cs" />
     <Compile Include="Test\TestDetailsBusinessModel.cs" />

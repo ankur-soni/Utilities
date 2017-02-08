@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using Silicus.Ensure.Models;
 using Silicus.Ensure.Models.DataObjects;
+using Silicus.Ensure.Models.Test;
 
 namespace Silicus.Ensure.Services.Interfaces
 {
@@ -27,6 +28,7 @@ namespace Silicus.Ensure.Services.Interfaces
         dynamic GetTestSuiteDetailsWithQuestions(int? userTestSuiteId);
 
         IEnumerable<UserTestSuite> GetAllTestSuiteDetails();
-        
+
+        CandidateInfoBusinessModel GetCandidateInfo(Ensure.Models.DataObjects.User user);
     }
 }

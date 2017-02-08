@@ -22,6 +22,8 @@ using iTextSharp.text.pdf;
 using iTextSharp.text.html.simpleparser;
 using System.Text;
 using Silicus.FrameWorx.Logger;
+using Silicus.Ensure.Models.Test;
+using Silicus.Ensure.Web.Models.Test;
 
 namespace Silicus.Ensure.Web.Controllers
 {
@@ -37,7 +39,7 @@ namespace Silicus.Ensure.Web.Controllers
         private readonly ITestSuiteService _testSuiteService;
         private readonly IUserService _userService;
         private readonly IPositionService _positionService;
-
+        private readonly Silicus.UtilityContainer.Services.Interfaces.IUserService _containerUserService;
         public ApplicationUserManager UserManager
         {
             get
@@ -63,7 +65,7 @@ namespace Silicus.Ensure.Web.Controllers
             }
         }
 
-        public AdminController(IEmailService emailService, ITagsService tagService, ITestSuiteService testSuiteService, MappingService mappingService, IQuestionService questionService, IUserService userService, IPositionService positionService, ILogger logger)
+        public AdminController(IEmailService emailService, ITagsService tagService, ITestSuiteService testSuiteService, MappingService mappingService, IQuestionService questionService, IUserService userService, IPositionService positionService, ILogger logger, Silicus.UtilityContainer.Services.Interfaces.IUserService containerUserService)
         {
             _emailService = emailService;
             _tagsService = tagService;
@@ -73,6 +75,7 @@ namespace Silicus.Ensure.Web.Controllers
             _userService = userService;
             _positionService = positionService;
             _logger = logger;
+            _containerUserService = containerUserService;
         }
 
         [AcceptVerbs(HttpVerbs.Post)]
@@ -217,7 +220,7 @@ namespace Silicus.Ensure.Web.Controllers
 
             List<string> roles = MvcApplication.getCurrentUserRoles();
 
-           // ViewBag.UserRoles = RoleManager.Roles.Select(r => new SelectListItem { Text = r.Name, Value = r.Name }).ToList();
+            // ViewBag.UserRoles = RoleManager.Roles.Select(r => new SelectListItem { Text = r.Name, Value = r.Name }).ToList();
             var positionDetails = _positionService.GetPositionDetails().OrderBy(model => model.PositionName);
             ViewBag.PositionListItem = from item in positionDetails
                                        select new SelectListItem()
@@ -256,13 +259,13 @@ namespace Silicus.Ensure.Web.Controllers
                             isAssignedPanel = true;
                         }
                         panelList.Add(new PanelViewModel()
-                            {
-                                PanelId = item.UserId,
-                                PanelName = item.FirstName + " " + item.LastName,
-                                Designation = item.Designation,
-                                Department = item.Department,
-                                IsAssignedPanel = isAssignedPanel
-                            });
+                        {
+                            PanelId = item.UserId,
+                            PanelName = item.FirstName + " " + item.LastName,
+                            Designation = item.Designation,
+                            Department = item.Department,
+                            IsAssignedPanel = isAssignedPanel
+                        });
                     }
                     panelList.OrderBy(x => x.IsAssignedPanel == true);
                 }
@@ -304,18 +307,19 @@ namespace Silicus.Ensure.Web.Controllers
             }
         }
 
-        public ActionResult PartialTestSuitView(Int32 TestSuitId)
+        public ActionResult PartialTestSuitView(int testSuiteId, int userId)
         {
             try
             {
-                TestSuite testSuitDetails = _testSuiteService.GetTestSuitById(TestSuitId);
+                TestSuite testSuitDetails = _testSuiteService.GetTestSuitById(testSuiteId);
                 TestSuiteViewModel testSuiteViewModel = _mappingService.Map<TestSuite, TestSuiteViewModel>(testSuitDetails);
                 testSuiteViewModel.OverallProficiency = ((Proficiency)Convert.ToInt32(testSuiteViewModel.Competency)).ToString();
-                var position=_positionService.GetPositionById(testSuiteViewModel.Position);
+                var position = _positionService.GetPositionById(testSuiteViewModel.Position);
                 testSuiteViewModel.PositionName = position.PositionName;
                 List<TestSuiteTagViewModel> testSuiteTags;
                 GetTestSuiteTags(testSuitDetails, out testSuiteTags);
                 testSuiteViewModel.Tags = testSuiteTags;
+                testSuiteViewModel.Userid = userId;
                 return PartialView(testSuiteViewModel);
             }
             catch
@@ -439,17 +443,21 @@ namespace Silicus.Ensure.Web.Controllers
 
         #endregion
 
-        public ActionResult ViewQuestion(int TestSuiteId)
+        public ActionResult ViewQuestion(int testSuiteId, int userId)
         {
+            var viewerEmailId = User.Identity.Name;
+            var viewer = _containerUserService.FindUserByEmail(viewerEmailId);
+            var candidate = _userService.GetUserById(userId);
             int count = 0;
-            TestSuiteViewQuesModel testSuiteViewQuesModel = new Models.TestSuiteViewQuesModel();
-            List<TestSuiteQuestion> testSuiteQuestionList = new List<Models.TestSuiteQuestion>();
+            var testSuiteViewQuesModel = new Models.TestSuiteViewQuesModel();
+            var testSuiteQuestionList = new List<Models.TestSuiteQuestion>();
             try
             {
-                TestSuite testSuitDetails = _testSuiteService.GetTestSuitById(TestSuiteId);
+                TestSuite testSuitDetails = _testSuiteService.GetTestSuitById(testSuiteId);
+                var previewTest = new PreviewTestBusinessModel { TestSuite = testSuitDetails, ViewerId = viewer.ID, CandidateId = userId };
                 if (testSuitDetails != null && testSuitDetails.Status == Convert.ToInt32(TestSuiteStatus.Ready))
                 {
-                    var questionList = _testSuiteService.GetPriview(testSuitDetails);
+                    var questionList = _testSuiteService.GetPreview(previewTest);
                     foreach (var pQuestion in questionList)
                     {
                         count++;
@@ -479,11 +487,26 @@ namespace Silicus.Ensure.Web.Controllers
                     testSuiteViewQuesModel.Duration = testSuitDetails.Duration;
                     testSuiteViewQuesModel.ObjectiveCount = questionList.Where(x => x.QuestionType == 1).ToList().Count;
                     testSuiteViewQuesModel.PracticalCount = questionList.Where(x => x.QuestionType == 2).ToList().Count;
+
+                    var testSuiteDetails = _testSuiteService.GetTestSuiteDetails().Where(model => model.TestSuiteId == testSuiteId && model.IsDeleted == false).SingleOrDefault();
+                    TestSuiteCandidateModel testSuiteCandidateModel = new TestSuiteCandidateModel
+                    {
+                        TestSuiteId = testSuiteId,
+                        UserId = userId,
+                        PracticalCount = testSuiteViewQuesModel.PracticalCount,
+                        ObjectiveCount = testSuiteViewQuesModel.ObjectiveCount,
+                        Duration = testSuiteViewQuesModel.Duration
+                    };
+                    var candidateInfoBusinessModel = _userService.GetCandidateInfo(candidate);
+                    testSuiteCandidateModel.CandidateInfo = _mappingService.Map<CandidateInfoBusinessModel, CandidateInfoViewModel>(candidateInfoBusinessModel);
+                    testSuiteCandidateModel.NavigationDetails = GetQuestionNavigationDetails(questionList);
+                    testSuiteCandidateModel.TotalQuestionCount = testSuiteCandidateModel.PracticalCount + testSuiteCandidateModel.ObjectiveCount;
+                    testSuiteCandidateModel.DurationInMin = testSuiteCandidateModel.Duration;
+                    return View("PreviewTest", testSuiteCandidateModel);
                 }
                 else
                 {
                     testSuiteViewQuesModel.ErrorMessage = "Test suite is not ready.";
-
                 }
 
             }
@@ -495,7 +518,27 @@ namespace Silicus.Ensure.Web.Controllers
             return View(testSuiteViewQuesModel);
         }
 
+        private QuestionNavigationViewModel GetQuestionNavigationDetails(IEnumerable<Question> questions)
+        {
+            var navigation = new QuestionNavigationViewModel { Practical = new List<QuestionNavigationBasics>(), Objective = new List<QuestionNavigationBasics>() };
 
+            if (questions != null && questions.Any())
+            {
+                questions = questions.OrderBy(ques => ques.Id).ToList();
+                foreach (var question in questions)
+                {
+                    if (question.QuestionType == (int)QuestionType.Practical)
+                    {
+                        navigation.Practical.Add(new QuestionNavigationBasics { QuestionId = question.Id, IsViewedOnly = false });
+                    }
+                    else if (question.QuestionType == (int)QuestionType.Objective)
+                    {
+                        navigation.Objective.Add(new QuestionNavigationBasics { QuestionId = question.Id, IsViewedOnly = false });
+                    }
+                }
+            }
+            return navigation;
+        }
         #region Create PDF
 
         public ActionResult CreatePDF(int? id)
@@ -736,7 +779,8 @@ namespace Silicus.Ensure.Web.Controllers
             string optionSelect = "Option:";
             switch (p)
             {
-                default: optionSelect += p;
+                default:
+                    optionSelect += p;
                     break;
             }
             return p == null ? "" : optionSelect;

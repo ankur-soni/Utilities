@@ -23,7 +23,7 @@ namespace Silicus.Ensure.Web.Controllers
         private readonly ITestSuiteService _testSuiteService;
         private readonly Silicus.UtilityContainer.Services.Interfaces.IUserService _containerUserService;
 
-        public ReviewerController(IEmailService emailService, IQuestionService questionService, MappingService mappingService, IUserService userService, ITestSuiteService testSuiteService,Silicus.UtilityContainer.Services.Interfaces.IUserService containerUserService)
+        public ReviewerController(IEmailService emailService, IQuestionService questionService, MappingService mappingService, IUserService userService, ITestSuiteService testSuiteService, Silicus.UtilityContainer.Services.Interfaces.IUserService containerUserService)
         {
             _emailService = emailService;
             _questionService = questionService;
@@ -41,7 +41,7 @@ namespace Silicus.Ensure.Web.Controllers
         public ActionResult LoadQuestion(int userTestSuiteId)
         {
             ReviewerQuestionViewModel testSuiteQuestionModel = ReviewTestSuiteQuestion(null, userTestSuiteId, (int)QuestionType.Practical);
-            
+
             return PartialView("_ReviewerViewQuestion", testSuiteQuestionModel);
         }
 
@@ -99,9 +99,9 @@ namespace Silicus.Ensure.Web.Controllers
             questionDetails.QuestionType = _testSuiteService.GetQuestionType(questionDetails.QuestionId);
             questionDetails.Answer = HttpUtility.HtmlDecode(questionDetails.Answer);
             UpdateReview(questionDetails.Marks, questionDetails.Comment, questionDetails.UserTestDetailId);
-            var IsAllQuestionEvaluated =  _testSuiteService.IsAllQuestionEvaluated(questionDetails.UserTestSuiteId);
+            var IsAllQuestionEvaluated = _testSuiteService.IsAllQuestionEvaluated(questionDetails.UserTestSuiteId);
 
-           return Json(IsAllQuestionEvaluated);
+            return Json(IsAllQuestionEvaluated);
         }
 
         [HttpPost]
@@ -160,9 +160,9 @@ namespace Silicus.Ensure.Web.Controllers
         {
             UserTestDetails userTestDetails = _testSuiteService.GetUserTestDetailsId(userTestDetailId);
             userTestDetails.Mark = mark;
-            
-            Silicus.UtilityContainer.Models.DataObjects.User user= _containerUserService.FindUserByEmail(HttpContext.User.Identity.Name);
-            if(user!=null)
+
+            Silicus.UtilityContainer.Models.DataObjects.User user = _containerUserService.FindUserByEmail(HttpContext.User.Identity.Name);
+            if (user != null)
             {
                 userTestDetails.MarkGivenBy = user.ID;
                 userTestDetails.MarkGivenByName = user.DisplayName;
@@ -174,6 +174,32 @@ namespace Silicus.Ensure.Web.Controllers
 
 
 
+        #endregion
+
+        #region Preview
+        private TestDetailsViewModel PreviewTestSuiteQuestion(int? questionId, int? testSuiteId, int questionType, int candidateId)
+        {
+            var viewerEmailId = User.Identity.Name;
+            var viewer = _containerUserService.FindUserByEmail(viewerEmailId);
+            var previewTest = new PreviewTestBusinessModel { TestSuite = new TestSuite { TestSuiteId = (int)testSuiteId }, ViewerId = viewer.ID, CandidateId = candidateId };
+            TestDetailsBusinessModel userTestDetails = _testSuiteService.GetUserTestDetailsByViewerId(previewTest, questionId, questionType);
+            var testDetails = _mappingService.Map<TestDetailsBusinessModel, TestDetailsViewModel>(userTestDetails);
+            testDetails = testDetails ?? new ReviewerQuestionViewModel();
+            return testDetails;
+        }
+
+        public ActionResult LoadPreviewQuestion(int userId, int testSuiteId)
+        {
+            var testSuiteQuestionModel = PreviewTestSuiteQuestion(null, testSuiteId, (int)QuestionType.Practical, userId);
+            return PartialView("_partialViewQuestion", testSuiteQuestionModel);
+        }
+
+        public ActionResult GetQuestionForPreview(int? testSuiteId, int questionId, int userId)
+        {
+            var questionType = _testSuiteService.GetQuestionType(questionId);
+            var testDetails = PreviewTestSuiteQuestion(questionId, testSuiteId, questionType, userId);
+            return PartialView("_partialViewQuestion", testDetails);
+        }
         #endregion
     }
 }

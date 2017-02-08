@@ -816,7 +816,7 @@
     <Content Include="Views\Positions\Positions.cshtml" />
     <Content Include="Views\Admin\SubmittedTest.cshtml" />
     <Content Include="Views\Admin\CandidateAdd.cshtml" />
-    <Content Include="Views\Candidate\_partialViewQuestion.cshtml" />
+    <Content Include="Views\Shared\_partialViewQuestion.cshtml" />
     <Content Include="Views\Tag\Add.cshtml" />
     <Content Include="Views\Tag\List.cshtml" />
     <Content Include="Views\TestSuite\Add.cshtml" />
@@ -851,6 +851,7 @@
     <Content Include="Views\Admin\PartialTestSuitView.cshtml">
       <SubType>Code</SubType>
     </Content>
+    <Content Include="Views\Shared\PreviewTest.cshtml" />
     <None Include="Web.Azure.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

@@ -139,7 +139,8 @@ namespace Silicus.Ensure.Services
                 var testDetails = _context.Query<UserTestDetails>().Where(x => x.UserTestSuite.UserTestSuiteId == userTestSuitId);
                 var isAllQueustionReviewed = !testDetails.Any(y => y.Mark == null);
                 return isAllQueustionReviewed;
-            } return false;
+            }
+            return false;
 
         }
 
@@ -177,8 +178,9 @@ namespace Silicus.Ensure.Services
                               Option6 = b.Option6,
                               Option7 = b.Option7,
                               Option8 = b.Option8,
-                              Comment=a.ReviwerComment,
-                              Marks = b.Marks
+                              Comment = a.ReviwerComment,
+                              Marks = b.Marks,
+                              DisplayQuestionNumber = index + 1
                           }).FirstOrDefault();
             if (result == null)
             {
@@ -188,26 +190,33 @@ namespace Silicus.Ensure.Services
             result.NextQuestionId = index >= questionNumberList.Count - 1 ? null : nextQuestionId;
             if (questionType == (int)QuestionType.Practical && result.NextQuestionId == null)
             {
-                result = SetFirstObjectiveQuestionAsNextQuestion(result, userTestSuitId);
+                var objectiveQuestions = GetQuestionsByUserTestSuiteId(userTestSuitId, (int)QuestionType.Objective);
+                result.NextQuestionId = GetFirstOrLastQuestionId(objectiveQuestions, QuestionType.Objective);
+                //result = SetFirstObjectiveQuestionAsNextQuestion(result, userTestSuitId);
             }
             if (questionType == (int)QuestionType.Objective && result.PreviousQuestionId == null)
             {
-                result = SetLastPracticalQuestionAsPreviousQuestion(result, userTestSuitId);
+                var practicalQuestions = GetQuestionsByUserTestSuiteId(userTestSuitId, (int)QuestionType.Practical);
+                result.PreviousQuestionId = GetFirstOrLastQuestionId(practicalQuestions, QuestionType.Practical);
+                //result = SetLastPracticalQuestionAsPreviousQuestion(result, userTestSuitId);
             }
             return result;
         }
 
-        private TestDetailsBusinessModel SetFirstObjectiveQuestionAsNextQuestion(TestDetailsBusinessModel result, int? userTestSuitId)
+        private int? GetFirstOrLastQuestionId(List<int> questionIds, QuestionType type)
         {
-            var objectiveQuestions = GetQuestionsByUserTestSuiteId(userTestSuitId, (int)QuestionType.Objective);
-            result.NextQuestionId = objectiveQuestions != null && objectiveQuestions.Count > 0 ? (int?)objectiveQuestions.ElementAtOrDefault(0) : null;
-            return result;
-        }
-        private TestDetailsBusinessModel SetLastPracticalQuestionAsPreviousQuestion(TestDetailsBusinessModel result, int? userTestSuitId)
-        {
-            var practicalQuestions = GetQuestionsByUserTestSuiteId(userTestSuitId, (int)QuestionType.Practical);
-            result.PreviousQuestionId = practicalQuestions != null && practicalQuestions.Count > 0 ? (int?)practicalQuestions.ElementAtOrDefault(practicalQuestions.Count - 1) : null;
-            return result;
+            if (questionIds != null)
+            {
+                if (type == QuestionType.Practical)
+                {
+                    return questionIds.Any() ? (int?)questionIds.ElementAtOrDefault(questionIds.Count - 1) : null;
+                }
+                else if (type == QuestionType.Objective)
+                {
+                    return questionIds.Any() ? (int?)questionIds.ElementAtOrDefault(0) : null;
+                }
+            }
+            return null;
         }
 
         private List<int> GetQuestionsByUserTestSuiteId(int? userTestSuitId, int questionType)
@@ -224,13 +233,31 @@ namespace Silicus.Ensure.Services
 
         public int AssignSuite(UserTestSuite userTestSuite, TestSuite testSuite)
         {
+            var testSuiteDetails = new List<UserTestDetails>();
+            UserTestDetails testSuiteDetail;
+            var questions = GenerateQuestionSet(testSuite);
+            //Attach Questions
+            foreach (var question in questions)
+            {
+                testSuiteDetail = new UserTestDetails();
+                testSuiteDetail.QuestionId = question.Id;
+                testSuiteDetails.Add(testSuiteDetail);
+            }
+            userTestSuite.UserTestDetails = testSuiteDetails;
+            userTestSuite.ObjectiveCount = questions.Where(x => x.QuestionType == 1).Count();
+            userTestSuite.PracticalCount = questions.Where(x => x.QuestionType == 2).Count();
+            userTestSuite.MaxScore = questions.Sum(x => x.Marks);
+            userTestSuite.Duration = testSuite.Duration;
+            userTestSuite.StatusId = Convert.ToInt32(TestStatus.Assigned);
+            return AddUserTestSuite(userTestSuite);
+        }
+
+        private List<Question> GenerateQuestionSet(TestSuite testSuite)
+        {
             int optionalQuestions = Convert.ToInt32(testSuite.OptionalQuestion);
-            int practicalQuestions = Convert.ToInt32(testSuite.PracticalQuestion);
             Random random = new Random();
             int index = 0, requiredMinutes = 0, minutes = 0;
-            UserTestDetails testSuiteDetail;
             List<TestSuiteTag> testSuiteTags;
-            List<UserTestDetails> testSuiteDetails = new List<UserTestDetails>();
             List<Question> questions = new List<Question>();
 
             var questionBank = _context.Query<Question>().ToList();
@@ -270,75 +297,12 @@ namespace Silicus.Ensure.Services
                             {
                                 index = random.Next(practicalQuestion.Count());
                                 Question question = practicalQuestion.ElementAtOrDefault(index);
-                                questions.Add(question);
-                                minutes += question.Duration;
+                                if (question != null)
+                                {
+                                    questions.Add(question);
+                                    minutes += question.Duration;
+                                }
                             }
-                        } while (minutes <= requiredMinutes);
-                    }
-                }
-            }
-            //Attach Questions
-            foreach (var question in questions)
-            {
-                testSuiteDetail = new UserTestDetails();
-                testSuiteDetail.QuestionId = question.Id;
-                testSuiteDetails.Add(testSuiteDetail);
-            }
-            userTestSuite.UserTestDetails = testSuiteDetails;
-            userTestSuite.ObjectiveCount = questions.Where(x => x.QuestionType == 1).Count();
-            userTestSuite.PracticalCount = questions.Where(x => x.QuestionType == 2).Count();
-            userTestSuite.MaxScore = questions.Sum(x => x.Marks);
-            userTestSuite.Duration = testSuite.Duration;
-            userTestSuite.StatusId = Convert.ToInt32(TestStatus.Assigned);
-            return AddUserTestSuite(userTestSuite);
-        }
-
-        public IEnumerable<Question> GetPriview(TestSuite testSuite)
-        {
-            int optionalQuestions = Convert.ToInt32(testSuite.OptionalQuestion);
-            int practicalQuestions = Convert.ToInt32(testSuite.PracticalQuestion);
-            Random random = new Random();
-            int index = 0, requiredMinutes = 0, minutes = 0;
-            List<TestSuiteTag> testSuiteTags;
-            List<Question> questions = new List<Question>();
-
-            var questionBank = _context.Query<Question>().ToList();
-            GetTestSuiteTags(testSuite, out testSuiteTags);
-
-            foreach (var tag in testSuiteTags)
-            {
-                minutes = 0;
-                var questionList = questionBank.Where(x => x.Tags.Split(',').Contains(Convert.ToString(tag.TagId)) && !questions.Any(y => y.Id == x.Id)).ToList();
-                if (questionList.Sum(x => x.Duration) >= tag.Minutes)
-                {
-                    //Optional Questions
-                    var optionalQuestion = questionList.Where(x => !questions.Any(y => y.Id == x.Id) && x.QuestionType == 1 && x.ProficiencyLevel == tag.Proficiency);
-                    requiredMinutes = tag.Minutes * Convert.ToInt32(optionalQuestions) / 100;
-                    if (optionalQuestion.Sum(x => x.Duration) >= requiredMinutes)
-                    {
-                        do
-                        {
-                            optionalQuestion = questionList.Where(x => !questions.Any(y => y.Id == x.Id) && x.QuestionType == 1 && x.ProficiencyLevel == tag.Proficiency);
-                            index = random.Next(optionalQuestion.Count());
-                            Question question = optionalQuestion.ElementAtOrDefault(index);
-                            questions.Add(question);
-                            minutes += question.Duration;
-                        } while (minutes <= requiredMinutes);
-                    }
-
-                    //Practical Questions                    
-                    requiredMinutes = tag.Minutes - minutes;
-                    minutes = 0;
-                    var practicalQuestion = questionList.Where(x => !questions.Any(y => y.Id == x.Id) && x.QuestionType == 2 && x.ProficiencyLevel == tag.Proficiency);
-                    if (practicalQuestion.Sum(x => x.Duration) >= requiredMinutes)
-                    {
-                        do
-                        {
-                            practicalQuestion = questionList.Where(x => !questions.Any(y => y.Id == x.Id) && x.QuestionType == 2 && x.ProficiencyLevel == tag.Proficiency);
-                            index = random.Next(practicalQuestion.Count());
-                            Question question = practicalQuestion.ElementAtOrDefault(index);
-                            questions.Add(question);
-                            minutes += question.Duration;
                         } while (minutes <= requiredMinutes);
                     }
                 }
@@ -346,11 +310,129 @@ namespace Silicus.Ensure.Services
             return questions;
         }
 
+        public List<Question> GetPreview(PreviewTestBusinessModel previewTest)
+        {
+            var questionIds = new List<int>();
+            var tempPreviewTestDetails = new TempPreviewTest();
+            var questions = GenerateQuestionSet(previewTest.TestSuite);
+            if (questions.Any())
+            {
+                questions = questions.OrderBy(ques => ques.Id).ToList();
+                questionIds.AddRange(questions.Select(question => question.Id));
+                tempPreviewTestDetails.QuestionIds = string.Join(",", questionIds);
+                tempPreviewTestDetails.ViewerId = previewTest.ViewerId;
+                tempPreviewTestDetails.CandidateId = previewTest.CandidateId;
+                tempPreviewTestDetails.TestSuiteId = previewTest.TestSuite.TestSuiteId;
+            }
+            add();
+            UpsertTempPreviewTest1(tempPreviewTestDetails);
+            return questions;
+        }
+
+        private void add()
+        {
+            var z = 1 + 1;
+        }
+
+        private void UpsertTempPreviewTest1(TempPreviewTest tempPreviewTestDetails)
+        {
+            var tempPreviewTestPrevious = GetTempPreviewTest(tempPreviewTestDetails);
+            if (tempPreviewTestPrevious != null)
+            {
+                tempPreviewTestPrevious.QuestionIds = tempPreviewTestDetails.QuestionIds;
+                _context.Update(tempPreviewTestPrevious);
+            }
+            else
+            {
+                _context.Add(tempPreviewTestDetails);
+            }
+        }
+
+        private TempPreviewTest GetTempPreviewTest(TempPreviewTest tempPreviewTestDetails)
+        {
+            return _context.Query<TempPreviewTest>().FirstOrDefault(temp => temp.ViewerId == tempPreviewTestDetails.ViewerId
+                && temp.CandidateId == tempPreviewTestDetails.CandidateId && temp.TestSuiteId == tempPreviewTestDetails.TestSuiteId);
+        }
+
+
+
+        public TestDetailsBusinessModel GetUserTestDetailsByViewerId(PreviewTestBusinessModel previewTest, int? questionNumber, int questionType)
+        {
+            List<int> allquestionsForPreview = GetQuestionsForPreview(previewTest);
+            var questionNumberList = FilterQuestionsByType(allquestionsForPreview, (QuestionType)questionType);
+            questionNumber = questionNumber == null && questionNumberList.Count > 0 ? questionNumberList.ElementAtOrDefault(0) : questionNumber;
+            if (questionNumber == null)
+            {
+                return null;
+            }
+            var index = questionNumberList.IndexOf((int)questionNumber);
+            int? previousQuestionId = questionNumberList.ElementAtOrDefault(index - 1);
+            int? nextQuestionId = questionNumberList.ElementAtOrDefault(index + 1);
+            var result = (from b in _context.Query<Question>()
+                          where b.Id == questionNumber
+                          select new TestDetailsBusinessModel
+                          {
+                              QuestionId = b.Id,
+                              Marks = b.Marks,
+                              QuestionType = b.QuestionType,
+                              AnswerType = b.AnswerType,
+                              QuestionDescription = b.QuestionDescription,
+                              OptionCount = b.OptionCount,
+                              Option1 = b.Option1,
+                              Option2 = b.Option2,
+                              Option3 = b.Option3,
+                              Option4 = b.Option4,
+                              Option5 = b.Option5,
+                              Option6 = b.Option6,
+                              Option7 = b.Option7,
+                              Option8 = b.Option8,
+                              DisplayQuestionNumber = index + 1
+                          }).FirstOrDefault();
+            if (result == null)
+            {
+                return null;
+            }
+            result.PreviousQuestionId = index <= 0 ? null : previousQuestionId;
+            result.NextQuestionId = index >= questionNumberList.Count - 1 ? null : nextQuestionId;
+            if (questionType == (int)QuestionType.Practical && result.NextQuestionId == null)
+            {
+                List<int> objectiveQuestions = FilterQuestionsByType(allquestionsForPreview, QuestionType.Objective);
+                result.NextQuestionId = GetFirstOrLastQuestionId(objectiveQuestions, QuestionType.Objective);
+            }
+            if (questionType == (int)QuestionType.Objective && result.PreviousQuestionId == null)
+            {
+                List<int> practicalQuestions = FilterQuestionsByType(allquestionsForPreview, QuestionType.Practical);
+                result.PreviousQuestionId = GetFirstOrLastQuestionId(practicalQuestions, QuestionType.Practical);
+            }
+            return result;
+        }
+
+        private List<int> FilterQuestionsByType(List<int> questionIds, QuestionType questionType)
+        {
+            return (from b in _context.Query<Question>()
+                    where questionIds.Contains(b.Id) && b.QuestionType == (int)questionType
+                    select b.Id).OrderBy(ques => ques).ToList();
+        }
+
+        private List<int> GetQuestionsForPreview(PreviewTestBusinessModel previewTestBusinessModel)
+        {
+            var questionIds = new List<int>();
+            var previewTest = new TempPreviewTest { TestSuiteId = previewTestBusinessModel.TestSuite.TestSuiteId, ViewerId = previewTestBusinessModel.ViewerId, CandidateId = previewTestBusinessModel.CandidateId };
+            var previewTestDetails = GetTempPreviewTest(previewTest);
+            if (previewTestDetails != null)
+            {
+                if (!string.IsNullOrWhiteSpace(previewTestDetails.QuestionIds))
+                {
+                    questionIds = previewTestDetails.QuestionIds.Split(',').Select(int.Parse).ToList();
+                }
+            }
+            return questionIds.OrderBy(ques => ques).ToList();
+        }
+
         private void GetTestSuiteTags(TestSuite testSuite, out List<TestSuiteTag> testSuiteTags)
         {
             TestSuiteTag testSuiteTagViewModel;
             testSuiteTags = new List<TestSuiteTag>();
-            var tagList = _context.Query<Tags>();
             string[] tags = testSuite.PrimaryTags.Split(',');
             string[] weights = testSuite.Weights.Split(',');
             string[] proficiency = testSuite.Proficiency.Split(',');
@@ -436,7 +518,7 @@ namespace Silicus.Ensure.Services
                         }
                     }
 
-                    if (isReady == true)
+                    if (isReady)
                     {
                         testSuite.Status = Convert.ToInt32(TestSuiteStatus.Ready);
                     }

@@ -9,6 +9,7 @@ using Silicus.Ensure.Web.Mappings;
 using Kendo.Mvc.UI;
 using Kendo.Mvc.Extensions;
 using Silicus.Ensure.Models.Constants;
+using Silicus.Ensure.Models.Test;
 
 namespace Silicus.Ensure.Web.Controllers
 {
@@ -295,9 +296,10 @@ namespace Silicus.Ensure.Web.Controllers
             try
             {
                 TestSuite testSuitDetails = _testSuiteService.GetTestSuitById(TestSuitId);
+                var previewTest = new PreviewTestBusinessModel { TestSuite = testSuitDetails };
                 if (testSuitDetails != null && testSuitDetails.Status == Convert.ToInt32(TestSuiteStatus.Ready))
                 {
-                    var questionList = _testSuiteService.GetPriview(testSuitDetails);
+                    var questionList = _testSuiteService.GetPreview(previewTest);
                     foreach (var pQuestion in questionList)
                     {
                         count++;

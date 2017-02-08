@@ -50,6 +50,7 @@ namespace Silicus.Ensure.Entities
             modelBuilder.Configurations.Add(new PanelMap());
             modelBuilder.Configurations.Add(new RecruiterMembersDetailMap());
             modelBuilder.Configurations.Add(new PanelMebersDetailMap());
+            modelBuilder.Configurations.Add(new TempPreviewTestMap());
 
 
             // Many-to-many example - can be moved to Map file as well.

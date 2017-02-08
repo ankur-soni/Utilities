@@ -115,14 +115,14 @@
                                 {
                                     for (int i = 0; i < Model.Tags.Count(); i++)
                                     {
-                            <tr style="margin-bottom:5px">
-                                <td id="tag_title_row @Convert.ToString(i)">Skill Tag @Convert.ToString(i + 1)</td>
-                                <td id="tag_name_row @Convert.ToString(i)">@Model.Tags[i].TagName</td>
-                                <td id="weight_title_row @Convert.ToString(i)">Weightage % @Convert.ToString(i + 1)</td>
-                                <td id="weight_name_row @Convert.ToString(i)">@Model.Tags[i].Weightage</td>
-                                <td id="efficiency_title_row @Convert.ToString(i)">Efficiency @Convert.ToString(i + 1)</td>
-                                <td id="efficiency_name_row @Convert.ToString(i)">@Model.Tags[i].Proficiency</td>
-                            </tr>
+                                        <tr style="margin-bottom:5px">
+                                            <td id="tag_title_row @Convert.ToString(i)">Skill Tag @Convert.ToString(i + 1)</td>
+                                            <td id="tag_name_row @Convert.ToString(i)">@Model.Tags[i].TagName</td>
+                                            <td id="weight_title_row @Convert.ToString(i)">Weightage % @Convert.ToString(i + 1)</td>
+                                            <td id="weight_name_row @Convert.ToString(i)">@Model.Tags[i].Weightage</td>
+                                            <td id="efficiency_title_row @Convert.ToString(i)">Efficiency @Convert.ToString(i + 1)</td>
+                                            <td id="efficiency_name_row @Convert.ToString(i)">@Model.Tags[i].Proficiency</td>
+                                        </tr>
 
                                     }
                                 }
@@ -134,7 +134,7 @@
             <br />
             <br />
             @*<a class="k-button k-button-icontext " href="/Reviewer/ReviewTest?UserId=@Model.Userid &TestSuiteId=@Model.TestSuiteId"><span class="k-icon k-edit"></span>Preview</a>*@
-            <a class="k-button k-button-icontext " href="/Admin/ViewQuestion?TestSuiteId=@Model.TestSuiteId"><span class="k-icon k-edit"></span>Preview</a>
+            <a class="k-button k-button-icontext " href="/Admin/ViewQuestion?testSuiteId=@Model.TestSuiteId  &userId=@Model.Userid"><span class="k-icon k-edit"></span>Preview</a>
         </div>
 
     }
