@@ -23,6 +23,7 @@ using iTextSharp.text.html.simpleparser;
 using System.Text;
 using Silicus.FrameWorx.Logger;
 using Silicus.Ensure.Models;
+using Silicus.Ensure.Web.Filters;
 
 namespace Silicus.Ensure.Web.Controllers
 {
@@ -212,13 +213,11 @@ namespace Silicus.Ensure.Web.Controllers
         }
 
         #region Candidate
-
+        [CustomAuthorize("Admin", "Panel", "Recruiter")]
         public ActionResult Candidates()
         {
 
             List<string> roles = MvcApplication.getCurrentUserRoles();
-
-           // ViewBag.UserRoles = RoleManager.Roles.Select(r => new SelectListItem { Text = r.Name, Value = r.Name }).ToList();
             var positionDetails = _positionService.GetPositionDetails().OrderBy(model => model.PositionName);
             ViewBag.PositionListItem = from item in positionDetails
                                        select new SelectListItem()

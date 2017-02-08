@@ -3,6 +3,7 @@ using Silicus.Ensure.Models.Constants;
 using Silicus.Ensure.Models.DataObjects;
 using Silicus.Ensure.Models.Test;
 using Silicus.Ensure.Services.Interfaces;
+using Silicus.Ensure.Web.Filters;
 using Silicus.Ensure.Web.Mappings;
 using Silicus.Ensure.Web.Models;
 using Silicus.Ensure.Web.Models.Test;
@@ -32,6 +33,7 @@ namespace Silicus.Ensure.Web.Controllers
             _testSuiteService = testSuiteService;
         }
 
+        [CustomAuthorize("Candidate")]
         public ActionResult Welcome()
         {
             if (!ModelState.IsValid)
