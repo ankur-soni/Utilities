@@ -896,6 +896,7 @@
     <Content Include="Silicus.EncourageWithAzureAd.Web.ruleset" />
     <Content Include="Views\Review\SetAwardPeriod.cshtml" />
     <Content Include="Views\Home\LoginAs.cshtml" />
+    <None Include="Web.Azure.config" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
