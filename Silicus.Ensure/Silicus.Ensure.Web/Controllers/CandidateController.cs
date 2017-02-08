@@ -84,9 +84,11 @@ namespace Silicus.Ensure.Web.Controllers
                 ViewBag.Msg = ViewBag.Msg = "No test is assigned for you, kindly contact admin.";
                 return View("Welcome", new TestSuiteCandidateModel());
             }
-
+            var testSuiteDetails = _testSuiteService.GetTestSuiteDetails().SingleOrDefault(model => model.TestSuiteId == userTestSuite.TestSuiteId && !model.IsDeleted);
+            _testSuiteService.AssignSuite(userTestSuite, testSuiteDetails);
             TestSuiteCandidateModel testSuiteCandidateModel = _mappingService.Map<UserTestSuite, TestSuiteCandidateModel>(userTestSuite);
-            testSuiteCandidateModel.CandidateInfo = GetCandidateInfo(user);
+            var candidateInfoBusinessModel = _userService.GetCandidateInfo(user);
+            testSuiteCandidateModel.CandidateInfo = _mappingService.Map<CandidateInfoBusinessModel, CandidateInfoViewModel>(candidateInfoBusinessModel);
             testSuiteCandidateModel.NavigationDetails = GetNavigationDetails(testSuiteCandidateModel.UserTestSuiteId);
             testSuiteCandidateModel.TotalQuestionCount = testSuiteCandidateModel.PracticalCount + testSuiteCandidateModel.ObjectiveCount;
             testSuiteCandidateModel.DurationInMin = testSuiteCandidateModel.Duration;
@@ -99,28 +101,6 @@ namespace Silicus.Ensure.Web.Controllers
             var navigationDetailsBusinessModel = _testSuiteService.GetNavigationDetails(userTestSuiteId);
             var navigationDetails = _mappingService.Map<QuestionNavigationBusinessModel, QuestionNavigationViewModel>(navigationDetailsBusinessModel);
             return navigationDetails;
-        }
-
-        private CandidateInfoViewModel GetCandidateInfo(UserBusinessModel user)
-        {
-            return new CandidateInfoViewModel
-            {
-                Name = user.FirstName + " " + user.LastName,
-                DOB = user.DOB,
-                RequisitionId = user.RequisitionId,
-                Position = user.Position,
-                TotalExperience = ConvertExperienceIntoDecimal(user.TotalExperienceInYear, user.TotalExperienceInMonth)
-            };
-        }
-
-        private decimal ConvertExperienceIntoDecimal(int totalExperienceInYear, int totalExperienceInMonth)
-        {
-            if (totalExperienceInMonth > 0)
-            {
-                return totalExperienceInYear + (decimal)(totalExperienceInMonth / 12.0);
-            }
-            else
-                return totalExperienceInYear;
         }
 
         public ActionResult LoadQuestion(int userTestSuiteId)

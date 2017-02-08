@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using Silicus.Ensure.Models;
 using Silicus.Ensure.Models.DataObjects;
+using Silicus.Ensure.Models.Test;
 
 namespace Silicus.Ensure.Services.Interfaces
 {
@@ -31,5 +32,7 @@ namespace Silicus.Ensure.Services.Interfaces
         UserApplicationDetails GetUserApplicationDetailsById(int userApplicationId);
 
         void UpdateUserApplicationTestDetails(int UserApplicationDetailsId);
+
+        CandidateInfoBusinessModel GetCandidateInfo(UserBusinessModel user);
     }
 }

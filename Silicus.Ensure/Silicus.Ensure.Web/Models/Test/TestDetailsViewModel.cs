@@ -26,5 +26,6 @@ namespace Silicus.Ensure.Web.Models.Test
         public string CorrectAnswer { get; set; }
         public string Answer { get; set; }
         public int Marks { get; set; }
+        public int DisplayQuestionNumber { get; set; }
     }
 }

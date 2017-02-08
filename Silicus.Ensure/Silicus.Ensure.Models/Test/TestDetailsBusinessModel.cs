@@ -29,5 +29,6 @@ namespace Silicus.Ensure.Models.Test
         public int Marks { get; set; }
         public int? ReviwerMark { get; set; }
         public string Comment { get; set; }
+        public int DisplayQuestionNumber { get; set; }
     }
 }

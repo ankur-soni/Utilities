@@ -71,7 +71,7 @@
                 </div>
                 <div class="table-responsive M-T30">
                     <table class="table table-striped">
-                           
+
                         <thead>
                             <tr>
                                 <th>Skill tag name</th>
@@ -80,34 +80,34 @@
                             </tr>
                         </thead>
 
-@if (Model.Tags != null)
-{
-    if (Model.Tags.Count() > 0)
-    {
-        for (int i = 0; i < Model.Tags.Count(); i++)
-        {
-                        <tbody>
-                            <tr>
-                                
-                                <td id="tag_name_row @Convert.ToString(i)">@Model.Tags[i].TagName</td>
-                                <td id="weight_name_row @Convert.ToString(i)">@Model.Tags[i].Weightage</td>
-                                <td id="efficiency_name_row @Convert.ToString(i)">@Model.Tags[i].Proficiency</td>
-                                <td></td>
-                            </tr>
-                        </tbody>
-}
-}
-}
+                        @if (Model.Tags != null)
+                        {
+                            if (Model.Tags.Count() > 0)
+                            {
+                                for (int i = 0; i < Model.Tags.Count(); i++)
+                                {
+                                    <tbody>
+                                        <tr>
+
+                                            <td id="tag_name_row @Convert.ToString(i)">@Model.Tags[i].TagName</td>
+                                            <td id="weight_name_row @Convert.ToString(i)">@Model.Tags[i].Weightage</td>
+                                            <td id="efficiency_name_row @Convert.ToString(i)">@Model.Tags[i].Proficiency</td>
+                                            <td></td>
+                                        </tr>
+                                    </tbody>
+                                }
+                            }
+                        }
                     </table>
                 </div>
                 <div class="row">
                     <div class="col-sm-12">
-                        <a class="k-button k-button-icontext pull-right" href="/Admin/ViewQuestion?TestSuiteId=@Model.TestSuiteId"><span class="k-icon k-edit"></span>Preview</a>
+                        <a class="k-button k-button-icontext pull-right" href="/Admin/ViewQuestion?TestSuiteId=@Model.TestSuiteId &UserId=@Model.Userid"><span class="k-icon k-edit"></span>Preview</a>
                     </div>
                 </div>
-                       
-                </div>
+
             </div>
+        </div>
 
     }
 </div>

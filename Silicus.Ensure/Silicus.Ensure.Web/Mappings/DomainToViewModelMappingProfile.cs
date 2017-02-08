@@ -49,6 +49,8 @@ namespace Silicus.Ensure.Web.Mappings
             Mapper.CreateMap<TestDetailsBusinessModel, TestDetailsViewModel>();
             Mapper.CreateMap<TestDetailsBusinessModel, ReviewerQuestionViewModel>();
             Mapper.CreateMap<TestSummaryBusinessModel, TestSummaryViewModel>();
+
+            Mapper.CreateMap<CandidateInfoBusinessModel, CandidateInfoViewModel>();
         }
     }
 }

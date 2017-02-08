@@ -11,7 +11,7 @@
     }
 
     .UnSeen {
-        color: #ffffff !important;
+        color: #808080 !important;
     }
 </style>
 <div style="width:100px" id="NavigationSection">
@@ -36,27 +36,26 @@
                      {
                         <td id="@question.QuestionId" class="QuestionCheckbox">
                             <div class="QuestionCheckboxInnerDiv fa fa-check-square"></div>
-                            <div class="font-color-blue">@question.QuestionId</div>
+                            <div class="font-color-blue">@(count + 1)</div>
                         </td>
                      }
                      else if (question.IsViewedOnly)
                      {
                         <td id="@question.QuestionId" class="QuestionCheckbox">
                             <div class="QuestionCheckboxInnerDiv fa fa-square"></div>
-                            <div class="font-color-blue">@question.QuestionId</div>
+                            <div class="font-color-blue">@(count+1)</div>
                         </td>
                      }
                      else
                      {
                         <td id="@question.QuestionId" class="QuestionCheckbox">
-                            <div class="QuestionCheckboxInnerDiv UnSeen"></div>
-                            <div class="font-color-blue">@question.QuestionId</div>
+                            <div class="QuestionCheckboxInnerDiv fa fa-square UnSeen"></div>
+                            <div class="font-color-blue">@(count + 1)</div>
                         </td>
                      }
-                     if (count % 3 == 2 || count == Model.Practical.Count - 1)
+                     if ((count + 1) % 3 == 0 || count == Model.Practical.Count - 1)
                      {
                         @Html.Raw("</tr>");
-                                          count = 0;
                      }
                      count++;
                  }
@@ -78,32 +77,31 @@
                      {
                         <td id="@question.QuestionId" class="QuestionCheckbox">
                             <div class="QuestionCheckboxInnerDiv fa fa-check-square"></div>
-                            <div class="font-color-blue">@question.QuestionId</div>
+                            <div class="font-color-blue">@(count + 1)</div>
                         </td>
                      }
                      else if (question.IsViewedOnly)
                      {
-                        <td id="@question.QuestionId">
+                        <td id="@question.QuestionId" class="QuestionCheckbox">
                             <div class="QuestionCheckboxInnerDiv fa fa-square"></div>
-                            <div class="font-color-blue">@question.QuestionId</div>
+                            <div class="font-color-blue">@(count + 1)</div>
                         </td>
                      }
                      else
                      {
                         <td id="@question.QuestionId" class="QuestionCheckbox">
-                            <div class="QuestionCheckboxInnerDiv UnSeen"></div>
-                            <div class="font-color-blue">@question.QuestionId</div>
+                            <div class="QuestionCheckboxInnerDiv fa fa-square UnSeen"></div>
+                            <div class="font-color-blue">@(count + 1)</div>
                         </td>
                      }
-                     if (count % 3 == 2 || count == Model.Practical.Count - 1)
+                     if ((count + 1) % 3 == 0 || count == Model.Objective.Count - 1)
                      {
                         @Html.Raw("</tr>");
-                                          count = 0;
                      }
                      count++;
                  }
 
-                }
+}
             </table>
         }
     }
