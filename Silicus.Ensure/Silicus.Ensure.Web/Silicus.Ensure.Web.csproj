@@ -858,9 +858,6 @@
       <DependentUpon>Web.config</DependentUpon>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="Web.ensure - Web Deploy.config">
-      <DependentUpon>Web.config</DependentUpon>
-    </None>
     <None Include="Web.Integration.config">
       <DependentUpon>Web.config</DependentUpon>
       <SubType>Designer</SubType>
