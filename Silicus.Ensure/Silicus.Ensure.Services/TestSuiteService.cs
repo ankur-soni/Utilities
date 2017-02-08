@@ -297,7 +297,7 @@ namespace Silicus.Ensure.Services
                         do
                         {
                             practicalQuestion = questionList.Where(x => !questions.Any(y => y.Id == x.Id) && x.QuestionType == 2 && x.ProficiencyLevel == tag.Proficiency);
-                            if (practicalQuestion != null)
+                            if (practicalQuestion != null && practicalQuestion.Any())
                             {
                                 index = random.Next(practicalQuestion.Count());
                                 Question question = practicalQuestion.ElementAtOrDefault(index);
@@ -306,6 +306,10 @@ namespace Silicus.Ensure.Services
                                     questions.Add(question);
                                     minutes += question.Duration;
                                 }
+                            }
+                            else
+                            {
+                                break;
                             }
                         } while (minutes <= requiredMinutes);
                     }
