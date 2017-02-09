@@ -197,7 +197,7 @@
 
             function OnNext(e) {
                 var validator = $("#ReviwerMark").data("kendoValidator");
-                if (validator.validate()) {
+                if ($("#ReviwerMark").length == 0 || validator.validate()) {
                     var questionId = $('#btnNext').attr('data-id');
                     UpdateAndGetQuestionReview(questionId);
                 }
@@ -207,7 +207,7 @@
 
             function OnPrevious() {
                 var validator = $("#ReviwerMark").data("kendoValidator");
-                if (validator.validate()) {
+                if ($("#ReviwerMark").length==0 || validator.validate()) {
                     var questionId = $('#btnPrevious').attr('data-id');
                     UpdateAndGetQuestionReview(questionId);
                 }

@@ -449,8 +449,8 @@ namespace Silicus.Ensure.Web.Controllers
             var viewer = _containerUserService.FindUserByEmail(viewerEmailId);
             var candidate = _userService.GetUserById(userId);
             int count = 0;
-            var testSuiteViewQuesModel = new Models.TestSuiteViewQuesModel();
-            var testSuiteQuestionList = new List<Models.TestSuiteQuestion>();
+            var testSuiteViewQuesModel = new TestSuiteViewQuesModel();
+            var testSuiteQuestionList = new List<TestSuiteQuestion>();
             try
             {
                 TestSuite testSuitDetails = _testSuiteService.GetTestSuitById(testSuiteId);
@@ -485,10 +485,8 @@ namespace Silicus.Ensure.Web.Controllers
                     testSuiteViewQuesModel.TestSuiteQuestion = testSuiteQuestionList;
                     testSuiteViewQuesModel.TestSuiteName = testSuitDetails.TestSuiteName;
                     testSuiteViewQuesModel.Duration = testSuitDetails.Duration;
-                    testSuiteViewQuesModel.ObjectiveCount = questionList.Where(x => x.QuestionType == 1).ToList().Count;
-                    testSuiteViewQuesModel.PracticalCount = questionList.Where(x => x.QuestionType == 2).ToList().Count;
-
-                    var testSuiteDetails = _testSuiteService.GetTestSuiteDetails().Where(model => model.TestSuiteId == testSuiteId && model.IsDeleted == false).SingleOrDefault();
+                    testSuiteViewQuesModel.ObjectiveCount = questionList.Count(x => x.QuestionType == 1);
+                    testSuiteViewQuesModel.PracticalCount = questionList.Count(x => x.QuestionType == 2);
                     TestSuiteCandidateModel testSuiteCandidateModel = new TestSuiteCandidateModel
                     {
                         TestSuiteId = testSuiteId,

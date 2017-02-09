@@ -49,6 +49,8 @@ namespace Silicus.Ensure.Web.Controllers
                 ViewBag.Msg = "No test is assigned for you, kindly contact admin.";
                 return View("Welcome", new TestSuiteCandidateModel());
             }
+            var testSuiteDetails = _testSuiteService.GetTestSuiteDetails().SingleOrDefault(model => model.TestSuiteId == userTestSuite.TestSuiteId && !model.IsDeleted);
+            _testSuiteService.AssignSuite(userTestSuite, testSuiteDetails);
             TestSuiteCandidateModel testSuiteCandidateModel = _mappingService.Map<UserTestSuite, TestSuiteCandidateModel>(userTestSuite);
             var specialInstruction = GetSpecialInstruction(userTestSuite.TestSuiteId);
             testSuiteCandidateModel.SpecialInstruction = specialInstruction;
@@ -84,8 +86,6 @@ namespace Silicus.Ensure.Web.Controllers
                 ViewBag.Msg = ViewBag.Msg = "No test is assigned for you, kindly contact admin.";
                 return View("Welcome", new TestSuiteCandidateModel());
             }
-            var testSuiteDetails = _testSuiteService.GetTestSuiteDetails().SingleOrDefault(model => model.TestSuiteId == userTestSuite.TestSuiteId && !model.IsDeleted);
-            _testSuiteService.AssignSuite(userTestSuite, testSuiteDetails);
             TestSuiteCandidateModel testSuiteCandidateModel = _mappingService.Map<UserTestSuite, TestSuiteCandidateModel>(userTestSuite);
             var candidateInfoBusinessModel = _userService.GetCandidateInfo(user);
             testSuiteCandidateModel.CandidateInfo = _mappingService.Map<CandidateInfoBusinessModel, CandidateInfoViewModel>(candidateInfoBusinessModel);
@@ -124,12 +124,9 @@ namespace Silicus.Ensure.Web.Controllers
         public ActionResult OnSubmitTest(int testSuiteId, int userTestSuiteId, int? userTestDetailId, int userId, string answer)
         {
             // Update last question answer of test.
-            answer = HttpUtility.HtmlDecode(answer);
-            UpdateAnswer(answer, userTestDetailId);
-          //  UserApplicationDetails GetUserApplicationDetailsById
-            // Update candidate status as Test "Submitted".
+            answer = HttpUtility.HtmlDecode(answer);      
            _userService.UpdateUserApplicationTestDetails(userId);
-        
+                    
             // Update total time utilization for test back to UserTestSuite.
             TestSuite suite = _testSuiteService.GetTestSuitById(testSuiteId);
             UserTestSuite testSuit = _testSuiteService.GetUserTestSuiteId(userTestSuiteId);
@@ -138,13 +135,7 @@ namespace Silicus.Ensure.Web.Controllers
             _testSuiteService.UpdateUserTestSuite(testSuit);
 
             // Calculate marks on test submit.
-            CalculateMarks(userTestSuiteId);
-
-            // Code Need To correct
-            // Get All admin to send mail.
-            //List<User> userAdmin = _userService.GetUserByRole("ADMIN").ToList();
-            //SendSubmittedTestMail(userAdmin, candidate.FirstName + " " + candidate.LastName);
-
+            CalculateMarks(userTestSuiteId, userTestDetailId, answer);              
             return RedirectToAction("LogOff", "CandidateAccount");
         }
 
@@ -200,21 +191,23 @@ namespace Silicus.Ensure.Web.Controllers
             }
         }
 
-        private void CalculateMarks(int userTestSuiteId)
+        private void CalculateMarks(int userTestSuiteId,int? userLastQuestionDetailId, string answer)
         {
             List<UserTestDetails> userTestDetails = _testSuiteService.GetUserTestDetailsListByUserTestSuitId(userTestSuiteId).ToList();
             foreach (UserTestDetails testDetail in userTestDetails)
             {
+                if (testDetail.TestDetailId == userLastQuestionDetailId)
+                    testDetail.Answer = answer;
                 Question question = _questionService.GetSingleQuestion(testDetail.QuestionId);
                 if (question.QuestionType == 1)
                 {
                     if (!string.IsNullOrWhiteSpace(testDetail.Answer) && question.CorrectAnswer.Trim() == testDetail.Answer.Trim())
                         testDetail.Mark = question.Marks;
                     else
-                        testDetail.Mark = 0;
-
-                    _testSuiteService.UpdateUserTestDetails(testDetail);
+                        testDetail.Mark = 0;                
                 }
+               
+                _testSuiteService.UpdateUserTestDetails(testDetail);
             }
         }
     }
