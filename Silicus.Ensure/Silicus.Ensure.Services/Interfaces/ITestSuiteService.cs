@@ -36,7 +36,7 @@ namespace Silicus.Ensure.Services.Interfaces
 
         void DeleteUserTestSuite(UserTestSuite UserTestSuite);
 
-        UserTestSuite GetUserTestSuiteByUserId(int userId);
+        UserTestSuite GetUserTestSuiteByUserApplicationId(int userId);
 
         IEnumerable<UserTestDetails> GetUserTestDetailsListByUserTestSuitId(int userTestSuitId);
 

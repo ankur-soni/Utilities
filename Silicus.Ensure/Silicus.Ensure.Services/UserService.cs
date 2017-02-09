@@ -133,6 +133,17 @@ namespace Silicus.Ensure.Services
             return UserToBusinessModel(user);
         }
 
+        public UserBusinessModel GetUserByUserApplicationId(int UserApplicationDetailId)
+        {
+            var applicationDetail = _context.Query<UserApplicationDetails>().FirstOrDefault(y => y.UserApplicationDetailsId == UserApplicationDetailId);
+            if (applicationDetail != null)
+            {
+                var user = _context.Query<User>().FirstOrDefault(x => x.UserId == applicationDetail.UserId && x.IsDeleted == false);
+                return UserToBusinessModel(user);
+            }
+            return null;
+        }
+
         public UserBusinessModel GetUserByEmail(string email)
         {
             var user = _context.Query<User>().FirstOrDefault(x => x.Email == email && x.IsDeleted == false);
@@ -208,31 +219,34 @@ namespace Silicus.Ensure.Services
         private UserBusinessModel UserToBusinessModel(User user)
         {
             var objUser = new UserBusinessModel();
-            var applicationDetails = user.UserApplicationDetails.OrderByDescending(y => y.CreatedDate).FirstOrDefault();
-            if (applicationDetails != null)
+            if (user.UserApplicationDetails != null)
             {
-                var position = applicationDetails.Position;
-                objUser.Position = position == null ? "" : position.PositionName;
-                objUser.CandidateStatus = applicationDetails.CandidateStatus.ToString();
-                objUser.ClientName = applicationDetails.ClientName;
-                objUser.ContactNumber = user.ContactNumber;
-                objUser.CurrentCompany = applicationDetails.CurrentCompany;
-                objUser.CurrentLocation = user.CurrentLocation;
-                objUser.CurrentTitle = applicationDetails.CurrentTitle;
-                objUser.RelevantExperienceInMonth = applicationDetails.RelevantExperienceInMonth;
-                objUser.RelevantExperienceInYear = applicationDetails.RelevantExperienceInYear;
-                objUser.RequisitionId = applicationDetails.RequisitionId;
-                objUser.ResumeName = applicationDetails.ResumeName;
-                objUser.ResumePath = applicationDetails.ResumeName;
-                objUser.Technology = applicationDetails.Technology;
-                objUser.TestStatus = applicationDetails.CandidateStatus.ToString();
-                objUser.TotalExperienceInMonth = applicationDetails.TotalExperienceInMonth;
-                objUser.TotalExperienceInYear = applicationDetails.TotalExperienceInYear;
-                objUser.UserApplicationId = applicationDetails.UserApplicationDetailsId;
+                var applicationDetails = user.UserApplicationDetails.OrderByDescending(y => y.CreatedDate).FirstOrDefault();
+                if (applicationDetails != null)
+                {
+                    var position = applicationDetails.Position;
+                    objUser.Position = position == null ? "" : position.PositionName;
+                    objUser.CandidateStatus = applicationDetails.CandidateStatus.ToString();
+                    objUser.ClientName = applicationDetails.ClientName;
+                    objUser.ContactNumber = user.ContactNumber;
+                    objUser.CurrentCompany = applicationDetails.CurrentCompany;
+                    objUser.CurrentLocation = user.CurrentLocation;
+                    objUser.CurrentTitle = applicationDetails.CurrentTitle;
+                    objUser.RelevantExperienceInMonth = applicationDetails.RelevantExperienceInMonth;
+                    objUser.RelevantExperienceInYear = applicationDetails.RelevantExperienceInYear;
+                    objUser.RequisitionId = applicationDetails.RequisitionId;
+                    objUser.ResumeName = applicationDetails.ResumeName;
+                    objUser.ResumePath = applicationDetails.ResumeName;
+                    objUser.Technology = applicationDetails.Technology;
+                    objUser.TestStatus = applicationDetails.CandidateStatus.ToString();
+                    objUser.TotalExperienceInMonth = applicationDetails.TotalExperienceInMonth;
+                    objUser.TotalExperienceInYear = applicationDetails.TotalExperienceInYear;
+                    objUser.UserApplicationId = applicationDetails.UserApplicationDetailsId;
 
-                if (applicationDetails.PanelMemberId != null && applicationDetails.PanelMemberId > 0)
-                    objUser.PanelId = applicationDetails.PanelMemberId.ToString();
+                    if (applicationDetails.PanelMemberId != null && applicationDetails.PanelMemberId > 0)
+                        objUser.PanelId = applicationDetails.PanelMemberId.ToString();
 
+                }
             }
 
 

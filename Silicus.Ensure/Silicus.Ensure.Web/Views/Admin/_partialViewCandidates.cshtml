@@ -214,13 +214,13 @@
         deleteKendoGridRow('userGrids', data);
     }
 
-    function CheckAssign(status, id, TestSuiteId, UserId) {
+    function CheckAssign(status, id, TestSuiteId, UserId, UserApplicationId) {
         if (id == 1) {
             window.location.href = "/Admin/ViewQuestion?UserId=" + UserId + '&TestSuiteId=' + TestSuiteId;
             return false;
         }
         else if (id == 2) {
-            window.location.href = "/Reviewer/ReviewTest?UserId=" + UserId + '&TestSuiteId=' + TestSuiteId;
+            window.location.href = "/Reviewer/ReviewTest?UserApplicationId=" + UserApplicationId ;
             return false;
         }
         else {
@@ -370,13 +370,13 @@
                                         #}
                                         else if(CandidateStatus=='TestSubmitted') {#
                                         <a  class ='dialog-window' onclick=ReAssignPanel('#=UserId#') style='cursor:pointer'>#if(PanelName){#Reassign Panel#} else{#Assign Panel #}#</a> |
-                                        <a  class ='dialog-window' onclick=CheckAssign('#=TestStatus#',2,#=TestSuiteId#,'#=UserId#') style='cursor:pointer'>View Test</a>
+                                        <a  class ='dialog-window' onclick=CheckAssign('#=TestStatus#',2,#=TestSuiteId#,'#=UserId#','#=UserApplicationId#') style='cursor:pointer'>View Test</a>
                                         #}
                                         else if(CandidateStatus=='UnderEvaluation') {#
-                                        <a  class ='dialog-window' onclick=CheckAssign('#=TestStatus#',2,#=TestSuiteId#,'#=UserId#') style='cursor:pointer'>View Test</a>
+                                        <a  class ='dialog-window' onclick=CheckAssign('#=TestStatus#',2,#=TestSuiteId#,'#=UserId#','#=UserApplicationId#') style='cursor:pointer'>View Test</a>
                                         #}
                                         else if(CandidateStatus=='Selected'||CandidateStatus=='Rejected') {#
-                                        <a  class ='dialog-window' onclick=CheckAssign('#=TestStatus#',2,#=TestSuiteId#,'#=UserId#') style='cursor:pointer'>View Test</a>
+                                        <a  class ='dialog-window' onclick=CheckAssign('#=TestStatus#',2,#=TestSuiteId#,'#=UserId#','#=UserApplicationId#') style='cursor:pointer'>View Test</a>
                                         #}
 
                                         #").Title("Test actions").Width(600).Sortable(false);

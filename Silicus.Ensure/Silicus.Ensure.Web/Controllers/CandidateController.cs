@@ -42,7 +42,7 @@ namespace Silicus.Ensure.Web.Controllers
             var user = _userService.GetUserByEmail(userEmail);
             if (user == null)
                 return RedirectToAction("LogOff", "CandidateAccount");
-            UserTestSuite userTestSuite = _testSuiteService.GetUserTestSuiteByUserId(user.UserApplicationId);
+            UserTestSuite userTestSuite = _testSuiteService.GetUserTestSuiteByUserApplicationId(user.UserApplicationId);
             if (userTestSuite == null)
             {
                 ViewBag.Status = 1;
@@ -77,7 +77,7 @@ namespace Silicus.Ensure.Web.Controllers
                 return View("Welcome", new TestSuiteCandidateModel());
             }
 
-            UserTestSuite userTestSuite = _testSuiteService.GetUserTestSuiteByUserId(user.UserApplicationId);
+            UserTestSuite userTestSuite = _testSuiteService.GetUserTestSuiteByUserApplicationId(user.UserApplicationId);
             if (userTestSuite == null)
             {
                 ViewBag.Status = 1;

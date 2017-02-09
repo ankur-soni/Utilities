@@ -34,5 +34,7 @@ namespace Silicus.Ensure.Services.Interfaces
         void UpdateUserApplicationTestDetails(int UserApplicationDetailsId);
 
         CandidateInfoBusinessModel GetCandidateInfo(UserBusinessModel user);
+
+        UserBusinessModel GetUserByUserApplicationId(int UserApplicationDetailId);
     }
 }

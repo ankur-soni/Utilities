@@ -394,7 +394,7 @@ namespace Silicus.Ensure.Web.Controllers
             var testSuitelist = _testSuiteService.GetTestSuiteDetails().Where(model => model.IsDeleted == false).OrderByDescending(model => model.TestSuiteId).ToArray();
             var viewModels = _mappingService.Map<TestSuite[], TestSuiteViewModel[]>(testSuitelist);
             bool userInRole = MvcApplication.getCurrentUserRoles().Contains((Silicus.Ensure.Models.Constants.RoleName.Admin.ToString()));
-            var testSuitId = _testSuiteService.GetUserTestSuiteByUserId(UserId);
+            var testSuitId = _testSuiteService.GetUserTestSuiteByUserApplicationId(UserId);
             foreach (var item in viewModels)
             {
                 if (testSuitId != null)

@@ -124,5 +124,7 @@ namespace Silicus.Ensure.Web.Models
         public string PanelName { get; set; }
 
         public bool IsAdmin { get; set; }
+
+        public int UserApplicationId { get; set; }
     }
 }

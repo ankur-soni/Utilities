@@ -184,7 +184,7 @@ namespace Silicus.Ensure.Web.Controllers
             bool userInRole = User.IsInRole(Silicus.Ensure.Models.Constants.RoleName.Admin.ToString());
             for (int index = 0; index < viewModels.Count(); index++)
             {
-                var testSuitId = _testSuiteService.GetUserTestSuiteByUserId(viewModels[index].UserId);
+                var testSuitId = _testSuiteService.GetUserTestSuiteByUserApplicationId(viewModels[index].UserId);
                 viewModels[index].IsAdmin = userInRole;
                 viewModels[index].TestSuiteId = testSuitId != null ? testSuitId.TestSuiteId : 0;
             }
