@@ -89,7 +89,7 @@ namespace Silicus.Ensure.Services
 
         public UserTestSuite GetUserTestSuiteByUserId(int userId)
         {
-            return _context.Query<UserTestSuite>().Where(x => x.UserApplicationId == userId).FirstOrDefault();
+            return _context.Query<UserTestSuite>().Where(x => x.UserApplicationId == userId).ToList().LastOrDefault();
         }
 
         public UserTestSuite GetUserTestSuiteId(int userTestSuiteId)
@@ -196,13 +196,11 @@ namespace Silicus.Ensure.Services
             {
                 var objectiveQuestions = GetQuestionsByUserTestSuiteId(userTestSuitId, (int)QuestionType.Objective);
                 result.NextQuestionId = GetFirstOrLastQuestionId(objectiveQuestions, QuestionType.Objective);
-                //result = SetFirstObjectiveQuestionAsNextQuestion(result, userTestSuitId);
             }
             if (questionType == (int)QuestionType.Objective && result.PreviousQuestionId == null)
             {
                 var practicalQuestions = GetQuestionsByUserTestSuiteId(userTestSuitId, (int)QuestionType.Practical);
                 result.PreviousQuestionId = GetFirstOrLastQuestionId(practicalQuestions, QuestionType.Practical);
-                //result = SetLastPracticalQuestionAsPreviousQuestion(result, userTestSuitId);
             }
             return result;
         }
@@ -240,7 +238,6 @@ namespace Silicus.Ensure.Services
             var testSuiteDetails = new List<UserTestDetails>();
             UserTestDetails testSuiteDetail;
             var questions = GenerateQuestionSet(testSuite);
-            //Attach Questions
             foreach (var question in questions)
             {
                 testSuiteDetail = new UserTestDetails();
@@ -248,8 +245,8 @@ namespace Silicus.Ensure.Services
                 testSuiteDetails.Add(testSuiteDetail);
             }
             userTestSuite.UserTestDetails = testSuiteDetails;
-            userTestSuite.ObjectiveCount = questions.Where(x => x.QuestionType == 1).Count();
-            userTestSuite.PracticalCount = questions.Where(x => x.QuestionType == 2).Count();
+            userTestSuite.ObjectiveCount = questions.Count(x => x.QuestionType == 1);
+            userTestSuite.PracticalCount = questions.Count(x => x.QuestionType == 2);
             userTestSuite.MaxScore = questions.Sum(x => x.Marks);
             userTestSuite.Duration = testSuite.Duration;
             userTestSuite.StatusId = Convert.ToInt32(CandidateStatus.TestAssigned);
@@ -260,7 +257,7 @@ namespace Silicus.Ensure.Services
         {
             int optionalQuestions = Convert.ToInt32(testSuite.OptionalQuestion);
             Random random = new Random();
-            int index = 0, requiredMinutes = 0, minutes = 0;
+            int index, requiredMinutes, minutes;
             List<TestSuiteTag> testSuiteTags;
             List<Question> questions = new List<Question>();
 
@@ -462,7 +459,7 @@ namespace Silicus.Ensure.Services
             List<Question> questions;
             try
             {
-                var testSuites = _context.Query<TestSuite>().Where(x => x.IsDeleted == false);
+                var testSuites = _context.Query<TestSuite>().Where(x => !x.IsDeleted);
                 var questionBank = _context.Query<Question>().ToList();
 
                 foreach (var testSuite in testSuites)
