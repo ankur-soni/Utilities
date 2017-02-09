@@ -561,7 +561,8 @@ namespace Silicus.Ensure.Services
                         QuestionId = b.Id,
                         IsViewedOnly = a.IsViewedOnly,
                         IsAnswered = !(a.Answer.Equals(null) || a.Answer.Trim().Equals("")),
-                        IsReviewed = !a.Mark.Equals(null)
+                        IsReviewed = !a.Mark.Equals(null),
+                        IsCorrect = !a.Mark.Equals(null) && a.Mark > 0
                     }).OrderBy(question => question.QuestionId).ToList();
         }
 
