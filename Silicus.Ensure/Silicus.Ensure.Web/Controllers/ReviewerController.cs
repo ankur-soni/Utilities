@@ -73,6 +73,7 @@ namespace Silicus.Ensure.Web.Controllers
             testSuiteCandidateModel.TotalQuestionCount = testSuiteCandidateModel.PracticalCount + testSuiteCandidateModel.ObjectiveCount;
             testSuiteCandidateModel.DurationInMin = testSuiteCandidateModel.Duration;
             testSuiteCandidateModel.TestSummary = GetTestSummary(testSuiteCandidateModel.UserTestSuiteId);
+            testSuiteCandidateModel.UserId = user.UserId;
             return View(testSuiteCandidateModel);
         }
 
@@ -118,7 +119,7 @@ namespace Silicus.Ensure.Web.Controllers
             var user = _userService.GetUserById(candidateResultViewmodel.CandidateUserId);
             user.CandidateStatus = candidateResultViewmodel.Status.ToString();
             _userService.Update(user);
-            var userTestSuitedetails = _testSuiteService.GetUserTestSuiteByUserApplicationId(candidateResultViewmodel.UserTestSuiteId);
+            var userTestSuitedetails = _testSuiteService.GetUserTestSuiteId(candidateResultViewmodel.UserTestSuiteId);
             userTestSuitedetails.StatusId = (int)candidateResultViewmodel.Status;
             userTestSuitedetails.FeedBack = candidateResultViewmodel.ReviewerComment;
             _testSuiteService.UpdateUserTestSuite(userTestSuitedetails);
