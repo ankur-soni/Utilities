@@ -105,7 +105,7 @@ namespace Silicus.Ensure.Services
             }
             _context.AttachAndMakeStateModified(userTestDetails);
             _context.Update(userTestDetails);
-
+            _context.SaveChanges();
         }
 
         public int AddUserTestDetails(UserTestDetails UserTestDetails)
