@@ -49,6 +49,8 @@ namespace Silicus.Ensure.Web.Controllers
                 ViewBag.Msg = "No test is assigned for you, kindly contact admin.";
                 return View("Welcome", new TestSuiteCandidateModel());
             }
+            var testSuiteDetails = _testSuiteService.GetTestSuiteDetails().SingleOrDefault(model => model.TestSuiteId == userTestSuite.TestSuiteId && !model.IsDeleted);
+            _testSuiteService.AssignSuite(userTestSuite, testSuiteDetails);
             TestSuiteCandidateModel testSuiteCandidateModel = _mappingService.Map<UserTestSuite, TestSuiteCandidateModel>(userTestSuite);
             var specialInstruction = GetSpecialInstruction(userTestSuite.TestSuiteId);
             testSuiteCandidateModel.SpecialInstruction = specialInstruction;
@@ -76,7 +78,7 @@ namespace Silicus.Ensure.Web.Controllers
                 ViewBag.Msg = "User not found for online test, kindly contact admin.";
                 return View("Welcome", new TestSuiteCandidateModel());
             }
-
+           
             UserTestSuite userTestSuite = _testSuiteService.GetUserTestSuiteByUserId(user.UserApplicationId);
             if (userTestSuite == null)
             {
@@ -84,8 +86,6 @@ namespace Silicus.Ensure.Web.Controllers
                 ViewBag.Msg = ViewBag.Msg = "No test is assigned for you, kindly contact admin.";
                 return View("Welcome", new TestSuiteCandidateModel());
             }
-            var testSuiteDetails = _testSuiteService.GetTestSuiteDetails().SingleOrDefault(model => model.TestSuiteId == userTestSuite.TestSuiteId && !model.IsDeleted);
-            _testSuiteService.AssignSuite(userTestSuite, testSuiteDetails);
             TestSuiteCandidateModel testSuiteCandidateModel = _mappingService.Map<UserTestSuite, TestSuiteCandidateModel>(userTestSuite);
             var candidateInfoBusinessModel = _userService.GetCandidateInfo(user);
             testSuiteCandidateModel.CandidateInfo = _mappingService.Map<CandidateInfoBusinessModel, CandidateInfoViewModel>(candidateInfoBusinessModel);
@@ -126,10 +126,10 @@ namespace Silicus.Ensure.Web.Controllers
             // Update last question answer of test.
             answer = HttpUtility.HtmlDecode(answer);
             UpdateAnswer(answer, userTestDetailId);
-          //  UserApplicationDetails GetUserApplicationDetailsById
+            //  UserApplicationDetails GetUserApplicationDetailsById
             // Update candidate status as Test "Submitted".
-           _userService.UpdateUserApplicationTestDetails(userId);
-        
+            _userService.UpdateUserApplicationTestDetails(userId);
+
             // Update total time utilization for test back to UserTestSuite.
             TestSuite suite = _testSuiteService.GetTestSuitById(testSuiteId);
             UserTestSuite testSuit = _testSuiteService.GetUserTestSuiteId(userTestSuiteId);
