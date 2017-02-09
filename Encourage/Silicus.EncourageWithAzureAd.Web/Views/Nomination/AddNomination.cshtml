@@ -181,7 +181,7 @@
                                             @Html.Label("Comment", htmlAttributes: new { @class = "col-md-12 control-label requiredfeild" })
                                             <div class="col-md-12">
                                                 <div class="form-group">
-                                                    @Html.TextAreaFor(model => model.MainComment, new { @class = "form-control", placeholder = "Maximum 500 words", id = "managerComment", name = "defaultconfig", rows = "5", maxlength = 500 })
+                                                    @Html.TextAreaFor(model => model.MainComment, new { @class = "form-control", placeholder = "Maximum 1000 words", id = "managerComment", name = "defaultconfig", rows = "5", maxlength = 900 })
                                                     @Html.ValidationMessageFor(model => model.MainComment, "", new { @class = "text-danger", id = "managerCommentValidationmessage" })
                                                 </div>
 
