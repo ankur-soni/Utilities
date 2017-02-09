@@ -5,6 +5,7 @@ using Silicus.Ensure.Models.DataObjects;
 using Silicus.Ensure.Services.Interfaces;
 using Silicus.Ensure.Models.Constants;
 using System;
+using Silicus.Ensure.Models.Test;
 using Silicus.Ensure.Models;
 
 namespace Silicus.Ensure.Services
@@ -112,7 +113,7 @@ namespace Silicus.Ensure.Services
 
         public void UpdateUserApplicationTestDetails(int UserApplicationDetailsId)
         {
-            var result = _context.Query<UserApplicationDetails>().FirstOrDefault(x => x.UserApplicationDetailsId ==UserApplicationDetailsId);
+            var result = _context.Query<UserApplicationDetails>().FirstOrDefault(x => x.UserApplicationDetailsId == UserApplicationDetailsId);
             if (result != null)
             {
                 result.CandidateStatus = CandidateStatus.TestSubmitted;
@@ -190,7 +191,17 @@ namespace Silicus.Ensure.Services
                           }).ToList();
             return result;
         }
-
+        public CandidateInfoBusinessModel GetCandidateInfo(UserBusinessModel user)
+        {
+            return new CandidateInfoBusinessModel
+            {
+                Name = user.FirstName + " " + user.LastName,
+                DOB = user.DOB,
+                RequisitionId = user.RequisitionId,
+                Position = user.Position,
+                TotalExperience = ConvertExperienceIntoDecimal(user.TotalExperienceInYear, user.TotalExperienceInMonth)
+            };
+        }
 
 
         #region Private methods
@@ -221,7 +232,7 @@ namespace Silicus.Ensure.Services
 
                 if (applicationDetails.PanelMemberId != null && applicationDetails.PanelMemberId > 0)
                     objUser.PanelId = applicationDetails.PanelMemberId.ToString();
-                
+
             }
 
 
@@ -379,7 +390,15 @@ namespace Silicus.Ensure.Services
         }
 
 
-
+        private decimal ConvertExperienceIntoDecimal(int totalExperienceInYear, int totalExperienceInMonth)
+        {
+            if (totalExperienceInMonth > 0)
+            {
+                return totalExperienceInYear + (decimal)(totalExperienceInMonth / 12.0);
+            }
+            else
+                return totalExperienceInYear;
+        }
         #endregion
     }
 }

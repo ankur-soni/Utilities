@@ -1,40 +1,36 @@
-﻿@model Silicus.Ensure.Web.Models.Test.ReviewerQuestionViewModel
+﻿@model Silicus.Ensure.Web.Models.Test.TestDetailsViewModel
 
 @using Kendo.Mvc.UI;
 
 
 <div class="row">
-    <div class="col-sm-12" style="padding: 20px 25px 20px 20px;">
+    <div class="col-sm-12" style="padding:20px 0px 0px 50px;">
         @if (Model.QuestionType == 1)
         {
-            <p><strong>Section 2 (Objective question)</strong></p>
+            <p><strong style="font-size:20px;">Section 2 (Objective question)</strong></p>
             <input type="hidden" value="@Model.QuestionType" id="QuestionType" />
         }
         else
         {
-            <p><strong>Section 1 (Practical question)</strong></p>
+            <p><strong style="font-size:20px;">Section 1 (Practical question)</strong></p>
             <input type="hidden" value="@Model.QuestionType" id="QuestionType" />
         }
-        <p><strong>Question @Model.DisplayQuestionNumber: (@Model.Marks Marks)</strong></p>
+        <p><strong style="font-size:15px;">Question @Model.DisplayQuestionNumber: (@Model.Marks Marks)</strong></p>
         @Html.Raw(HttpUtility.HtmlDecode(Model.QuestionDescription))
     </div>
     <div class="col-sm-12">
-        <div class="btmBorder1"></div>
-        <input type="hidden" value="@Model.QuestionId" id="QuestionNumber" />
-        <input type="hidden" value="@Model.TestDetailId" id="UserTestDetailId" />
-
-        <input type="hidden" value="@Model.AnswerType" id="AnswerType" />
-
+        <div class="btmBorder"></div>
     </div>
+    <input type="hidden" value="@Model.QuestionId" id="QuestionNumber" />
+    <input type="hidden" value="@Model.TestDetailId" id="UserTestDetailId" />
 
-
-
+    <input type="hidden" value="@Model.AnswerType" id="AnswerType" />
 
     @if (Model.QuestionType == 1 && Model.AnswerType == 1)
-            {
-                if (string.IsNullOrEmpty(Model.Answer))
-                {
-            <div class="col-sm-12" style="padding: 20px 25px 20px 20px;">
+    {
+        if (string.IsNullOrEmpty(Model.Answer))
+        {
+            <div class="col-sm-12" style="padding: 20px 25px 20px 10px;">
                 <ul style="list-style:none;">
                     <li>
                         <div class="radio">
@@ -77,6 +73,7 @@
                         </div>
                     </li>
                 </ul>
+
             </div>
             <script>
                 for(var i=@Model.OptionCount+1; i<=8;i++)
@@ -87,7 +84,7 @@
         }
         else
         {
-            <div class="col-sm-12" style="padding: 20px 25px 20px 20px;">
+            <div class="col-sm-12" style="padding: 20px 25px 20px 10px;">
 
                 <ul style="list-style:none;">
                     <li>
@@ -202,7 +199,7 @@
 
         if (string.IsNullOrEmpty(Model.Answer))
         {
-            <div class="col-sm-12" style="padding: 20px 25px 20px 20px;">
+            <div class="col-sm-12" style="padding: 20px 25px 20px 10px;">
                 <ul style="list-style:none;">
                     <li>
                         <div class="checkbox">
@@ -256,7 +253,7 @@
         }
         else
         {
-            <div class="col-sm-12" style="padding: 20px 25px 20px 20px;">
+            <div class="col-sm-12" style="padding: 20px 25px 20px 10px;">
                 <ul style="list-style:none;">
                     <li>
                         <div class="checkbox">
@@ -318,38 +315,24 @@
 
     else if (Model.QuestionType == 2)
     {
-        <div class="col-sm-12" style="padding: 20px 25px 20px 20px;">
-            Candidate Answer
-            @*@Html.Kendo().EditorFor(m => m.Answer).Name("PracticalAnswer").Encode(true).Value(Model.Answer).HtmlAttributes(new { @disabled = "disabled" })*@
-            @Html.Raw(Model.Answer)
+        <div class="col-sm-12" style="padding: 20px 50px 30px 50px;">
+            @Html.Kendo().EditorFor(m => m.Answer).Name("PracticalAnswer").Encode(true).Value(Model.Answer)
         </div>
-        <div class="col-sm-12" style="padding: 20px 25px 20px 20px;">
-            Actual Answer
-            @*@Html.Kendo().EditorFor(m => m.CorrectAnswer).Name("CorrectAnswer").Encode(true).Value(Model.CorrectAnswer).HtmlAttributes(new { @disabled = "disabled" })*@
-            @Html.Raw(Model.CorrectAnswer)
-        </div>
-                <div class="col-sm-12" style="padding: 20px 25px 20px 20px;">
-                    Reviewer Comment
-                    @Html.Kendo().EditorFor(m => m.Comment).Name("Comment").Encode(true).Value(Model.Comment)
-                </div>
-                <div class="col-sm-2" style="padding: 20px 25px 20px 20px;">
-                    Marks
-                    @Html.TextBoxFor(m => m.ReviwerMark, new { Class = "form-control" })
-                </div>
     }
 
-
+    <div class="col-sm-12">
+    </div>
 </div>
 
 
 <div class="row">
-    <div class="col-sm-12" style="padding: 0px 20px 0px 20px;">
+    <div class="col-sm-12" style="margin-top:1%;padding: 0px 50px 0px 50px;">
         @if (Model.NextQuestionId != null)
         {
             @(Html.Kendo().Button()
         .Name("btnNext")
                 .HtmlAttributes(new { type = "button" }).Events(e => e.Click("OnNext"))
-                    .Content("Next").HtmlAttributes(new { style = "float: right;", @data_id = Model.NextQuestionId }))
+                    .Content("Next").HtmlAttributes(new { style = "float: right;", @data_id = Model.NextQuestionId, @class = "btn btn-primary" }))
         }
 
         @if (Model.PreviousQuestionId != null)
@@ -357,16 +340,16 @@
             @(Html.Kendo().Button()
                 .Name("btnPrevious")
                 .HtmlAttributes(new { type = "button" }).Events(e => e.Click("OnPrevious"))
-            .Content("Previous").HtmlAttributes(new { @data_id = Model.PreviousQuestionId }))
+                .Content("Previous").HtmlAttributes(new { @data_id = Model.PreviousQuestionId, @class = "btn btn-primary" }))
         }
     </div>
 </div>
 
-@*<div class="row">
-        <div class="col-md-9 col-md-offset-2" style="margin-top:1%;">
-            @(Html.Kendo().Button()
-            .Name("btnSubmit")
-            .HtmlAttributes(new { type = "button" }).Events(e => e.Click("OnSubmitTest"))
-            .Content("Submit Test").HtmlAttributes(new { style = "float: right;" }))
-        </div>
-    </div>*@
+<div class="row">
+    <div class="col-sm-12" style="margin-top:1%;padding: 0px 50px 0px 50px;">
+        @(Html.Kendo().Button()
+        .Name("btnSubmit")
+        .HtmlAttributes(new { type = "button" }).Events(e => e.Click("OnSubmitTest"))
+                .Content("Submit Test").HtmlAttributes(new { style = "float: right;", @class = "btn btn-primary" }))
+    </div>
+</div>

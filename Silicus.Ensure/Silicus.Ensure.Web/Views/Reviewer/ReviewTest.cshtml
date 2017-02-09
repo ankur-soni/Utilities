@@ -213,6 +213,28 @@
                 $('#QuestionDetails').load('/Candidate/GetQuestionDetails', questionDetails);
             }
 
+    function UpdateAndGetQuestionReview(questionId) {
+        updateTestSummary();
+        var answer = GetAnswer();
+        var userTestSuiteId = $("#UserTestSuiteId").val();
+        var userTestDetailId = $("#UserTestDetailId").val();
+        var questionType = $("#QuestionType").val();
+        var candidateId = $("#UserId").val();
+        var comment = $("#Comment").val();
+        var marks = $("#ReviwerMark").val();
+        var reviewerQuestionDetails = { QuestionId: questionId, UserTestSuiteId: userTestSuiteId, UserTestDetailId: userTestDetailId, Comment: comment, Marks: marks };
+        //$('#QuestionDetails').load('/Reviewer/UpdateReviewAndGetQuestionDetails', reviewerQuestionDetails);
+        $.ajax({
+            url: "/Reviewer/UpdateReviewAndGetQuestionDetails",
+            cache: false,
+            dataType: "html",
+            data:reviewerQuestionDetails,
+            success: function (data) {
+                $("#QuestionDetails").html('');
+                $("#QuestionDetails").html(data);
+            }
+        });
+    }   
             function UpdateAndGetQuestionReview(questionId) {
                 updateTestSummary();
                 var answer = GetAnswer();

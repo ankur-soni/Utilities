@@ -22,6 +22,9 @@
 
         public static readonly string PanelMemberDetail = "PanelMemberDetail";
         public static readonly string RecruiterMembersDetail = "RecruiterMembersDetail";
+
+        public static readonly string TempPreviewTest = "TempPreviewTest";
+        
         
     }
 }

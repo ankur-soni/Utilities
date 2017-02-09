@@ -405,6 +405,7 @@
     <Compile Include="Controllers\UserController.cs" />
     <Compile Include="CookieHelper.cs" />
     <Compile Include="Filters\AuditAttribute.cs" />
+    <Compile Include="Filters\CustomAuthorizeAttribute.cs" />
     <Compile Include="Filters\CustomAllowAnonymous.cs" />
     <Compile Include="Filters\LogAttribute.cs" />
     <Compile Include="GlimpseSecurityPolicy.cs" />
@@ -767,18 +768,15 @@
     <Content Include="Views\TestSuite\_TestSuiteAssign.cshtml">
       <SubType>Code</SubType>
     </Content>
-    <EmbeddedResource Include="Web.config">
+    <Content Include="Web.config">
       <SubType>Designer</SubType>
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </EmbeddedResource>
+    </Content>
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
       <SubType>Designer</SubType>
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Web.Release.config">
       <DependentUpon>Web.config</DependentUpon>
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="Views\_ViewStart.cshtml" />
     <Content Include="Views\Shared\_LoginPartial.cshtml" />
@@ -819,7 +817,7 @@
     <Content Include="Views\Positions\Positions.cshtml" />
     <Content Include="Views\Admin\SubmittedTest.cshtml" />
     <Content Include="Views\Admin\CandidateAdd.cshtml" />
-    <Content Include="Views\Candidate\_partialViewQuestion.cshtml" />
+    <Content Include="Views\Shared\_partialViewQuestion.cshtml" />
     <Content Include="Views\Tag\Add.cshtml" />
     <Content Include="Views\Tag\List.cshtml" />
     <Content Include="Views\TestSuite\Add.cshtml" />
@@ -854,17 +852,16 @@
     <Content Include="Views\Admin\PartialTestSuitView.cshtml">
       <SubType>Code</SubType>
     </Content>
+    <Content Include="Views\Shared\PreviewTest.cshtml" />
     <None Include="Web.Azure.config">
       <DependentUpon>Web.config</DependentUpon>
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="Web.ensure - Web Deploy.config">
+    <None Include="Web.Beta.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
     <None Include="Web.Integration.config">
       <DependentUpon>Web.config</DependentUpon>
       <SubType>Designer</SubType>
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
   </ItemGroup>
   <ItemGroup>

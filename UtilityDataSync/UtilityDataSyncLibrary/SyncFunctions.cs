@@ -6,6 +6,7 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Text;
+using Silicus.FrameWorx.Logger;
 using UtilityDataSyncLibrary.Mapping;
 
 namespace UtilityDataSyncLibrary
@@ -13,16 +14,12 @@ namespace UtilityDataSyncLibrary
     public class SyncFunctions
     {
         private static IMappingService _mappingService;
-        private string _path;
+        private static ILogger _logger;
 
         public SyncFunctions()
         {
-            _path = ConfigurationManager.AppSettings["LogFilePath"] + "\\UtilitySync_Log_" + DateTime.Now.ToString("MMddyyyy") + ".txt";
-            if (!Directory.Exists(ConfigurationManager.AppSettings["LogFilePath"]))
-            {
-                Directory.CreateDirectory(ConfigurationManager.AppSettings["LogFilePath"]);
-            }
             _mappingService = new MappingService();
+            _logger = new DatabaseLogger("name=UtilityContainerEntities", Type.GetType(string.Empty), (Func<DateTime>)(() => DateTime.UtcNow), string.Empty);
         }
 
         public void SyncData()
@@ -35,8 +32,8 @@ namespace UtilityDataSyncLibrary
                 {
                     enableContext.Configuration.AutoDetectChangesEnabled = false;
                     enableContext.Configuration.ValidateOnSaveEnabled = false;
-                   
-                    File.AppendAllText(_path, DateTime.Now.ToString() + ":" + MethodBase.GetCurrentMethod().Name + " : Sync started" + Environment.NewLine);
+
+                    _logger.Log("Sync started");
                     //Master data
                     SyncClients(enableContext, utilityContainerContext);
                     SyncEngagementTypes(enableContext, utilityContainerContext);
@@ -56,24 +53,18 @@ namespace UtilityDataSyncLibrary
                     SyncEngagementRoles(enableContext, utilityContainerContext);
                     SyncCompanies(enableContext, utilityContainerContext);
 
-                    File.AppendAllText(_path, DateTime.Now.ToString() + ":" + MethodBase.GetCurrentMethod().Name + " : Sync finished" + Environment.NewLine);
+                    _logger.Log("Sync finished");
                 }
             }
             catch (Exception ex)
             {
-                StringBuilder sb = new StringBuilder();
-                while (ex.InnerException != null)
-                {
-                    sb.Append(ex.Message);
-                    ex = ex.InnerException;
-                }
-                File.AppendAllText(_path, DateTime.Now.ToString() + ": Error : " + MethodBase.GetCurrentMethod().Name + " : " + sb.ToString() + Environment.NewLine);
+                _logger.Log(ex);
             }
         }
 
         public void SyncUsers(EnableDevEntities enableContext, UtilityContainerEntities utilityContainerContext)
         {
-            File.AppendAllText(_path, DateTime.Now.ToString() + " : " + MethodBase.GetCurrentMethod().Name + Environment.NewLine);
+            _logger.Log("Running " + MethodBase.GetCurrentMethod().Name);
             var users = enableContext.vwExt_User.ToList();
             var enableUsers = _mappingService.Map<vwExt_User[], User[]>(users.ToArray()).ToList();
             var utilityUserIds = utilityContainerContext.Users.Select(c => c.ID).ToList();
@@ -90,15 +81,15 @@ namespace UtilityDataSyncLibrary
                 }
                 catch (Exception ex)
                 {
+                    _logger.Log(ex);
                     transaction.Rollback();
-                    File.AppendAllText(_path, DateTime.Now.ToString() + " : Error : " + MethodBase.GetCurrentMethod().Name + " : " + ex.Message + Environment.NewLine);
                 }
             }
         }
 
         public void SyncEngagements(EnableDevEntities enableContext, UtilityContainerEntities utilityContainerContext)
         {
-            File.AppendAllText(_path, DateTime.Now.ToString() + " : " + MethodBase.GetCurrentMethod().Name + Environment.NewLine);
+            _logger.Log("Running " + MethodBase.GetCurrentMethod().Name);
             var engagements = enableContext.vwExt_Engagement.ToList();
             var enableEngagements = _mappingService.Map<vwExt_Engagement[], Engagement[]>(engagements.ToArray()).ToList();
             var utilityEngagementIds = utilityContainerContext.Engagements.Select(c => c.ID).ToList();
@@ -115,15 +106,15 @@ namespace UtilityDataSyncLibrary
                 }
                 catch (Exception ex)
                 {
+                    _logger.Log(ex); 
                     transaction.Rollback();
-                    File.AppendAllText(_path, DateTime.Now.ToString() + " : Error : " + MethodBase.GetCurrentMethod().Name + " : " + ex.Message + Environment.NewLine);
                 }
             }
         }
 
         public void SyncClients(EnableDevEntities enableContext, UtilityContainerEntities utilityContainerContext)
         {
-            File.AppendAllText(_path, DateTime.Now.ToString() + " : " + MethodBase.GetCurrentMethod().Name + Environment.NewLine);
+            _logger.Log("Running " + MethodBase.GetCurrentMethod().Name);
             var clients = enableContext.vwExt_Client.ToList();
             var enableClients = _mappingService.Map<vwExt_Client[], Client[]>(clients.ToArray()).ToList();
             var utilityClientIds = utilityContainerContext.Clients.Select(c => c.ID).ToList();
@@ -140,15 +131,15 @@ namespace UtilityDataSyncLibrary
                 }
                 catch (Exception ex)
                 {
+                    _logger.Log(ex); 
                     transaction.Rollback();
-                    File.AppendAllText(_path, DateTime.Now.ToString() + " : Error : " + MethodBase.GetCurrentMethod().Name + " : " + ex.Message + Environment.NewLine);
                 }
             }
         }
 
         public void SyncResources(EnableDevEntities enableContext, UtilityContainerEntities utilityContainerContext)
         {
-            File.AppendAllText(_path, DateTime.Now.ToString() + " : " + MethodBase.GetCurrentMethod().Name + Environment.NewLine);
+            _logger.Log("Running " + MethodBase.GetCurrentMethod().Name);
             var resources = enableContext.vwExt_Resource.ToList();
             var enableResources = _mappingService.Map<vwExt_Resource[], Resource[]>(resources.ToArray()).ToList();
             var utilityResourceIds = utilityContainerContext.Resources.Select(c => c.ID).ToList();
@@ -165,15 +156,15 @@ namespace UtilityDataSyncLibrary
                 }
                 catch (Exception ex)
                 {
+                    _logger.Log(ex); 
                     transaction.Rollback();
-                    File.AppendAllText(_path, DateTime.Now.ToString() + " : Error : " + MethodBase.GetCurrentMethod().Name + " : " + ex.Message + Environment.NewLine);
                 }
             }
         }
 
         public void SyncResourceHistories(EnableDevEntities enableContext, UtilityContainerEntities utilityContainerContext)
         {
-            File.AppendAllText(_path, DateTime.Now.ToString() + " : " + MethodBase.GetCurrentMethod().Name + Environment.NewLine);
+            _logger.Log("Running " + MethodBase.GetCurrentMethod().Name);
             var resourceHistorys = enableContext.vwExt_ResourceHistory.ToList();
             var enableResourceHistorys = _mappingService.Map<vwExt_ResourceHistory[], ResourceHistory[]>(resourceHistorys.ToArray()).ToList();
             var utilityResourceHistoryIds = utilityContainerContext.ResourceHistories.Select(c => c.ID).ToList();
@@ -190,15 +181,15 @@ namespace UtilityDataSyncLibrary
                 }
                 catch (Exception ex)
                 {
+                    _logger.Log(ex); 
                     transaction.Rollback();
-                    File.AppendAllText(_path, DateTime.Now.ToString() + " : Error : " + MethodBase.GetCurrentMethod().Name + " : " + ex.Message + Environment.NewLine);
                 }
             }
         }
 
         public void SyncDepartments(EnableDevEntities enableContext, UtilityContainerEntities utilityContainerContext)
         {
-            File.AppendAllText(_path, DateTime.Now.ToString() + " : " + MethodBase.GetCurrentMethod().Name + Environment.NewLine);
+            _logger.Log("Running " + MethodBase.GetCurrentMethod().Name);
             var departments = enableContext.vwExt_Department.ToList();
             var enableDepartments = _mappingService.Map<vwExt_Department[], Department[]>(departments.ToArray()).ToList();
             var utilityDepartmentIds = utilityContainerContext.Departments.Select(c => c.ID).ToList();
@@ -215,15 +206,15 @@ namespace UtilityDataSyncLibrary
                 }
                 catch (Exception ex)
                 {
+                    _logger.Log(ex); 
                     transaction.Rollback();
-                    File.AppendAllText(_path, DateTime.Now.ToString() + " : Error : " + MethodBase.GetCurrentMethod().Name + " : " + ex.Message + Environment.NewLine);
                 }
             }
         }
 
         public void SyncLocations(EnableDevEntities enableContext, UtilityContainerEntities utilityContainerContext)
         {
-            File.AppendAllText(_path, DateTime.Now.ToString() + " : " + MethodBase.GetCurrentMethod().Name + Environment.NewLine);
+            _logger.Log("Running " + MethodBase.GetCurrentMethod().Name);
             var locations = enableContext.vwExt_Location.ToList();
             var enableLocations = _mappingService.Map<vwExt_Location[], Location[]>(locations.ToArray()).ToList();
             var utilityLocationIds = utilityContainerContext.Locations.Select(c => c.ID).ToList();
@@ -240,15 +231,15 @@ namespace UtilityDataSyncLibrary
                 }
                 catch (Exception ex)
                 {
+                    _logger.Log(ex); 
                     transaction.Rollback();
-                    File.AppendAllText(_path, DateTime.Now.ToString() + " : Error : " + MethodBase.GetCurrentMethod().Name + " : " + ex.Message + Environment.NewLine);
                 }
             }
         }
 
         public void SyncEngagementRoles(EnableDevEntities enableContext, UtilityContainerEntities utilityContainerContext)
         {
-            File.AppendAllText(_path, DateTime.Now.ToString() + " : " + MethodBase.GetCurrentMethod().Name + Environment.NewLine);
+            _logger.Log("Running " + MethodBase.GetCurrentMethod().Name);
             var engagementRoles = enableContext.vwExt_EngagementRoles.ToList();
             var enableEngagementRoles = _mappingService.Map<vwExt_EngagementRoles[], EngagementRoles[]>(engagementRoles.ToArray()).ToList();
             var utilityEngagementRoleIds = utilityContainerContext.EngagementRoles.Select(c => c.ID).ToList();
@@ -265,15 +256,15 @@ namespace UtilityDataSyncLibrary
                 }
                 catch (Exception ex)
                 {
+                    _logger.Log(ex);
                     transaction.Rollback();
-                    File.AppendAllText(_path, DateTime.Now.ToString() + " : Error : " + MethodBase.GetCurrentMethod().Name + " : " + ex.Message + Environment.NewLine);
                 }
             }
         }
 
         public void SyncTitles(EnableDevEntities enableContext, UtilityContainerEntities utilityContainerContext)
         {
-            File.AppendAllText(_path, DateTime.Now.ToString() + " : " + MethodBase.GetCurrentMethod().Name + Environment.NewLine);
+            _logger.Log("Running " + MethodBase.GetCurrentMethod().Name);
             var titles = enableContext.vwExt_Title.ToList();
             var enableTitles = _mappingService.Map<vwExt_Title[], Title[]>(titles.ToArray()).ToList();
             var utilityTitleIds = utilityContainerContext.Titles.Select(c => c.ID).ToList();
@@ -290,15 +281,15 @@ namespace UtilityDataSyncLibrary
                 }
                 catch (Exception ex)
                 {
+                    _logger.Log(ex); 
                     transaction.Rollback();
-                    File.AppendAllText(_path, DateTime.Now.ToString() + " : Error : " + MethodBase.GetCurrentMethod().Name + " : " + ex.Message + Environment.NewLine);
                 }
             }
         }
 
         public void SyncResourceSkillLevels(EnableDevEntities enableContext, UtilityContainerEntities utilityContainerContext)
         {
-            File.AppendAllText(_path, DateTime.Now.ToString() + " : " + MethodBase.GetCurrentMethod().Name + Environment.NewLine);
+            _logger.Log("Running " + MethodBase.GetCurrentMethod().Name);
             var resourceSkillLevels = enableContext.vwExt_ResourceSkillLevel.ToList();
             var enableResourceSkillLevels = _mappingService.Map<vwExt_ResourceSkillLevel[], ResourceSkillLevel[]>(resourceSkillLevels.ToArray()).ToList();
             var utilityResourceSkillLevelIds = utilityContainerContext.ResourceSkillLevels.Select(c => c.ID).ToList();
@@ -315,15 +306,15 @@ namespace UtilityDataSyncLibrary
                 }
                 catch (Exception ex)
                 {
+                    _logger.Log(ex); 
                     transaction.Rollback();
-                    File.AppendAllText(_path, DateTime.Now.ToString() + " : Error : " + MethodBase.GetCurrentMethod().Name + " : " + ex.Message + Environment.NewLine);
                 }
             }
         }
 
         public void SyncSkills(EnableDevEntities enableContext, UtilityContainerEntities utilityContainerContext)
         {
-            File.AppendAllText(_path, DateTime.Now.ToString() + " : " + MethodBase.GetCurrentMethod().Name + Environment.NewLine);
+            _logger.Log("Running " + MethodBase.GetCurrentMethod().Name);
             var skills = enableContext.vwExt_Skill.ToList();
             var enableSkills = _mappingService.Map<vwExt_Skill[], Skill[]>(skills.ToArray()).ToList();
             var utilitySkillIds = utilityContainerContext.Skills.Select(c => c.ID).ToList();
@@ -340,15 +331,15 @@ namespace UtilityDataSyncLibrary
                 }
                 catch (Exception ex)
                 {
+                    _logger.Log(ex); 
                     transaction.Rollback();
-                    File.AppendAllText(_path, DateTime.Now.ToString() + " : Error : " + MethodBase.GetCurrentMethod().Name + " : " + ex.Message + Environment.NewLine);
                 }
             }
         }
 
         public void SyncCompanies(EnableDevEntities enableContext, UtilityContainerEntities utilityContainerContext)
         {
-            File.AppendAllText(_path, DateTime.Now.ToString() + " : " + MethodBase.GetCurrentMethod().Name + Environment.NewLine);
+            _logger.Log("Running " + MethodBase.GetCurrentMethod().Name);
             var companies = enableContext.vwExt_Company.ToList();
             var enableCompanies = _mappingService.Map<vwExt_Company[], Company[]>(companies.ToArray()).ToList();
             var utilityCompanyIds = utilityContainerContext.Companies.Select(c => c.ID).ToList();
@@ -365,15 +356,15 @@ namespace UtilityDataSyncLibrary
                 }
                 catch (Exception ex)
                 {
+                    _logger.Log(ex); 
                     transaction.Rollback();
-                    File.AppendAllText(_path, DateTime.Now.ToString() + " : Error : " + MethodBase.GetCurrentMethod().Name + " : " + ex.Message + Environment.NewLine);
                 }
             }
         }
 
         public void SyncEngagementTaskTypes(EnableDevEntities enableContext, UtilityContainerEntities utilityContainerContext)
         {
-            File.AppendAllText(_path, DateTime.Now.ToString() + " : " + MethodBase.GetCurrentMethod().Name + Environment.NewLine);
+            _logger.Log("Running " + MethodBase.GetCurrentMethod().Name);
             var engagementTaskTypes = enableContext.vwExt_EngagementTaskTypes.ToList();
             var enableEngagementTaskTypes = _mappingService.Map<vwExt_EngagementTaskTypes[], EngagementTaskTypes[]>(engagementTaskTypes.ToArray()).ToList();
             var utilityEngagementTaskTypeIds = utilityContainerContext.EngagementTaskTypes.Select(c => c.ID).ToList();
@@ -390,15 +381,15 @@ namespace UtilityDataSyncLibrary
                 }
                 catch (Exception ex)
                 {
+                    _logger.Log(ex); 
                     transaction.Rollback();
-                    File.AppendAllText(_path, DateTime.Now.ToString() + " : Error : " + MethodBase.GetCurrentMethod().Name + " : " + ex.Message + Environment.NewLine);
                 }
             }
         }
 
         public void SyncEngagementTypes(EnableDevEntities enableContext, UtilityContainerEntities utilityContainerContext)
         {
-            File.AppendAllText(_path, DateTime.Now.ToString() + " : " + MethodBase.GetCurrentMethod().Name + Environment.NewLine);
+            _logger.Log("Running " + MethodBase.GetCurrentMethod().Name);
             var engagementTypes = enableContext.vwExt_EngagementType.ToList();
             var enableEngagementTypes = _mappingService.Map<vwExt_EngagementType[], EngagementType[]>(engagementTypes.ToArray()).ToList();
             var utilityEngagementTypeIds = utilityContainerContext.EngagementTypes.Select(c => c.ID).ToList();
@@ -415,15 +406,15 @@ namespace UtilityDataSyncLibrary
                 }
                 catch (Exception ex)
                 {
+                    _logger.Log(ex); 
                     transaction.Rollback();
-                    File.AppendAllText(_path, DateTime.Now.ToString() + " : Error : " + MethodBase.GetCurrentMethod().Name + " : " + ex.Message + Environment.NewLine);
                 }
             }
         }
 
         public void SyncResourceTypes(EnableDevEntities enableContext, UtilityContainerEntities utilityContainerContext)
         {
-            File.AppendAllText(_path, DateTime.Now.ToString() + " : " + MethodBase.GetCurrentMethod().Name + Environment.NewLine);
+            _logger.Log("Running " + MethodBase.GetCurrentMethod().Name);
             var resourceTypes = enableContext.vwExt_ResourceType.ToList();
             var enableResourceTypes = _mappingService.Map<vwExt_ResourceType[], ResourceType[]>(resourceTypes.ToArray()).ToList();
             var utilityResourceTypeIds = utilityContainerContext.ResourceTypes.Select(c => c.ID).ToList();
@@ -440,8 +431,8 @@ namespace UtilityDataSyncLibrary
                 }
                 catch (Exception ex)
                 {
+                    _logger.Log(ex); 
                     transaction.Rollback();
-                    File.AppendAllText(_path, DateTime.Now.ToString() + " : Error : " + MethodBase.GetCurrentMethod().Name + " : " + ex.Message + Environment.NewLine);
                 }
             }
         }

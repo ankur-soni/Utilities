@@ -40,11 +40,11 @@ namespace Silicus.Ensure.Services.Interfaces
 
         IEnumerable<UserTestDetails> GetUserTestDetailsListByUserTestSuitId(int userTestSuitId);
 
-        TestDetailsBusinessModel GetUserTestDetailsByUserTestSuitId(int? userTestSuitId, int? questionNumber,int questionType);
+        TestDetailsBusinessModel GetUserTestDetailsByUserTestSuitId(int? userTestSuitId, int? questionNumber, int questionType);
 
         int AssignSuite(UserTestSuite userTestSuite, TestSuite testSuite);
 
-        IEnumerable<Question> GetPriview(TestSuite testSuite);
+        List<Question> GetPreview(PreviewTestBusinessModel previewTest);
 
         void TestSuiteActivation();
 
@@ -57,5 +57,7 @@ namespace Silicus.Ensure.Services.Interfaces
         TestSummaryBusinessModel GetTestSummary(int userTestSuiteId);
 
         bool IsAllQuestionEvaluated(int? userTestSuitId);
+
+        TestDetailsBusinessModel GetUserTestDetailsByViewerId(PreviewTestBusinessModel previewTest, int? questionNumber, int questionType);
     }
 }
