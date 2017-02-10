@@ -74,12 +74,17 @@ namespace Silicus.Ensure.Web.Controllers
             testSuiteCandidateModel.DurationInMin = testSuiteCandidateModel.Duration;
             testSuiteCandidateModel.TestSummary = GetTestSummary(testSuiteCandidateModel.UserTestSuiteId);
             testSuiteCandidateModel.UserId = user.UserId;
+            CandidateStatus status;
+            if (Enum.TryParse(user.CandidateStatus, out status))
+            {
+                testSuiteCandidateModel.CandidateStatus = status;
+            }
             return View(testSuiteCandidateModel);
         }
 
         public ActionResult LoadTestSummaryView(int UserTestSuiteId)
         {
-            var testSummary=GetTestSummary(UserTestSuiteId);
+            var testSummary = GetTestSummary(UserTestSuiteId);
             return PartialView("_TestSummary", testSummary);
         }
 
@@ -157,7 +162,7 @@ namespace Silicus.Ensure.Web.Controllers
             userTestDetails.ReviwerComment = comment;
             _testSuiteService.UpdateUserTestDetails(userTestDetails);
         }
-        
+
         #endregion
 
         #region Preview

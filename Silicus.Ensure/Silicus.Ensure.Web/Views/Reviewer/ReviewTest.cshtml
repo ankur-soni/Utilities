@@ -2,6 +2,7 @@
 @using Kendo.Mvc.UI;
 @using Silicus.Ensure.Web.Models.Test
 @using Silicus.Ensure.Web
+@using Silicus.Ensure.Models.Constants;
 
 @{
     ViewBag.Title = "Online Test";
@@ -35,6 +36,7 @@
             <input type="hidden" value="@Model.TestSuiteId" id="TestSuiteId" />
             <input type="hidden" value="@Model.UserTestSuiteId" id="UserTestSuiteId" />
             <input type="hidden" value="@Model.UserId" id="UserId" />
+            <input type="hidden" value="@Model.CandidateStatus" id="CandidateStatus" />
         </div>
 
         
@@ -124,7 +126,7 @@
                 // Load First Question On page Load.
                 var userTestSuiteId = $("#UserTestSuiteId").val();
                 var url = "/Reviewer/LoadQuestion?userTestSuiteId=";
-                $('#QuestionDetails').load(url + userTestSuiteId);
+                $('#QuestionDetails').load(url + userTestSuiteId, disableControls);
 
 
 
@@ -133,6 +135,15 @@
                 $("#SubmitCandidateResult").on("click", submitCandidateResult);
                 $('.QuestionCheckbox').on('click', QuestionCheckboxClicked);
             });
+
+            function disableControls()
+            {
+                var status=$("#CandidateStatus").val();
+                if (!(status) && (status == "@CandidateStatus.Selected" || status == "@CandidateStatus.Rejected")) {
+                    $($('#ReviewerComment').data().kendoEditor.body).attr('contenteditable', false);
+                    $("#ReviwerMark").prop("readonly", true);
+                }
+            }
 
             function QuestionCheckboxClicked(event) {
                 var questionId = $(this).find('input').attr('id');
@@ -265,6 +276,8 @@
                         $("#QuestionDetails").html('');
                         $("#QuestionDetails").html(data);
                         updateTestSummary();
+                       
+                            disableControls();
                     }
                 });
             }

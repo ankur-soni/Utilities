@@ -1,4 +1,5 @@
 ﻿
+using Silicus.Ensure.Models.Constants;
 using Silicus.Ensure.Web.Models.Test;
 namespace Silicus.Ensure.Web.Models
 {
@@ -17,5 +18,6 @@ namespace Silicus.Ensure.Web.Models
         public QuestionNavigationViewModel NavigationDetails { get; set; }
         public CandidateInfoViewModel CandidateInfo { get; set; }
         public TestSummaryViewModel TestSummary { get; set; }
+        public CandidateStatus CandidateStatus { get; set; }
     }
 }
