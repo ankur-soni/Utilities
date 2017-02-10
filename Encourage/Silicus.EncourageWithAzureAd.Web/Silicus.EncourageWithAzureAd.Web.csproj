@@ -825,6 +825,8 @@
     <Content Include="fonts\summernote.eot" />
     <Content Include="fonts\summernote.ttf" />
     <Content Include="fonts\summernote.woff" />
+    <None Include="Properties\PublishProfiles\encourageapp - FTP.pubxml" />
+    <None Include="Properties\PublishProfiles\encourageapp - Web Deploy.pubxml" />
     <None Include="Properties\PublishProfiles\SilicusEncourageWithAzureAdWeb - FTP %282%29.pubxml" />
     <None Include="Properties\PublishProfiles\SilicusEncourageWithAzureAdWeb - FTP %283%29.pubxml" />
     <None Include="Properties\PublishProfiles\SilicusEncourageWithAzureAdWeb - FTP.pubxml" />
@@ -893,8 +895,10 @@
     <Content Include="Silicus.EncourageWithAzureAd.Web.ruleset" />
     <Content Include="Views\Review\SetAwardPeriod.cshtml" />
     <Content Include="Views\Home\LoginAs.cshtml" />
-    <None Include="Web.Azure.config" />
     <None Include="Web.Production.config">
+      <DependentUpon>Web.config</DependentUpon>
+    </None>
+    <None Include="Web.Release.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
     <None Include="Web.UAT.config">
