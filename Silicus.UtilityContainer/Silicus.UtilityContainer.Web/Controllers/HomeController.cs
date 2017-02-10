@@ -172,6 +172,10 @@ namespace Silicus.UtilityContainer.Web.Controllers
 
             return View();
         }
+        public ActionResult Error()
+        {
+            return View("~/Views/Shared/Error.cshtml");
+        }
 
         public ActionResult Contact()
         {

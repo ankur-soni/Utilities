@@ -47,19 +47,19 @@ namespace Silicus.Ensure.Web.Controllers
         }
 
 
-        public ActionResult ReviewTest(int UserId, int TestSuiteId)
+        public ActionResult ReviewTest(int UserApplicationId)
         {
             if (!ModelState.IsValid)
                 return RedirectToAction("LogOff", "CandidateAccount");
 
-            var user = _userService.GetUserById(UserId);
+            var user = _userService.GetUserByUserApplicationId(UserApplicationId);
             if (user == null)
             {
                 ViewBag.Status = 1;
                 ViewBag.Msg = "User not found for online test, Kindly contact admin.";
                 return View("Welcome");
             }
-            UserTestSuite userTestSuite = _testSuiteService.GetUserTestSuiteByUserId(user.UserId);
+            UserTestSuite userTestSuite = _testSuiteService.GetUserTestSuiteByUserApplicationId(UserApplicationId);
             if (userTestSuite == null)
             {
                 ViewBag.Status = 1;
@@ -73,7 +73,14 @@ namespace Silicus.Ensure.Web.Controllers
             testSuiteCandidateModel.TotalQuestionCount = testSuiteCandidateModel.PracticalCount + testSuiteCandidateModel.ObjectiveCount;
             testSuiteCandidateModel.DurationInMin = testSuiteCandidateModel.Duration;
             testSuiteCandidateModel.TestSummary = GetTestSummary(testSuiteCandidateModel.UserTestSuiteId);
+            testSuiteCandidateModel.UserId = user.UserId;
             return View(testSuiteCandidateModel);
+        }
+
+        public ActionResult LoadTestSummaryView(int UserTestSuiteId)
+        {
+            var testSummary=GetTestSummary(UserTestSuiteId);
+            return PartialView("_TestSummary", testSummary);
         }
 
         private TestSummaryViewModel GetTestSummary(int userTestSuiteId)
@@ -112,7 +119,7 @@ namespace Silicus.Ensure.Web.Controllers
             var user = _userService.GetUserById(candidateResultViewmodel.CandidateUserId);
             user.CandidateStatus = candidateResultViewmodel.Status.ToString();
             _userService.Update(user);
-            var userTestSuitedetails = _testSuiteService.GetUserTestSuiteByUserId(candidateResultViewmodel.CandidateUserId);
+            var userTestSuitedetails = _testSuiteService.GetUserTestSuiteId(candidateResultViewmodel.UserTestSuiteId);
             userTestSuitedetails.StatusId = (int)candidateResultViewmodel.Status;
             userTestSuitedetails.FeedBack = candidateResultViewmodel.ReviewerComment;
             _testSuiteService.UpdateUserTestSuite(userTestSuitedetails);

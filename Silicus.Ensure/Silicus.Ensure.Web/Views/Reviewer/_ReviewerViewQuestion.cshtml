@@ -330,11 +330,11 @@
         </div>
                 <div class="col-sm-12" style="padding: 20px 25px 20px 20px;">
                     Reviewer Comment
-                    @Html.Kendo().EditorFor(m => m.Comment).Name("Comment").Encode(true).Value(Model.Comment)
+                    @Html.Kendo().EditorFor(m => m.Comment).Name("ReviewerComment").Encode(true).Value(Model.Comment)
                 </div>
                 <div class="col-sm-2" style="padding: 20px 25px 20px 20px;">
                     Marks
-                    @Html.TextBoxFor(m => m.ReviwerMark, new { Class = "form-control" })
+                    @Html.TextBoxFor(m => m.ReviwerMark, new { Class = "form-control",type="number",min="0",max=Model.Marks })
                 </div>
     }
 
@@ -370,3 +370,7 @@
             .Content("Submit Test").HtmlAttributes(new { style = "float: right;" }))
         </div>
     </div>*@
+
+<script>
+    $("#ReviwerMark").kendoValidator();
+</script>

@@ -87,9 +87,9 @@ namespace Silicus.Ensure.Services
             return _context.Query<TestSuite>().Where(x => x.TestSuiteId == testSuiteId).FirstOrDefault();
         }
 
-        public UserTestSuite GetUserTestSuiteByUserId(int userId)
+        public UserTestSuite GetUserTestSuiteByUserApplicationId(int applicationId)
         {
-            return _context.Query<UserTestSuite>().Where(x => x.UserApplicationId == userId).ToList().LastOrDefault();
+            return _context.Query<UserTestSuite>().Where(x => x.UserApplicationId == applicationId).ToList().LastOrDefault();
         }
 
         public UserTestSuite GetUserTestSuiteId(int userTestSuiteId)
@@ -105,7 +105,7 @@ namespace Silicus.Ensure.Services
             }
             _context.AttachAndMakeStateModified(userTestDetails);
             _context.Update(userTestDetails);
-
+            _context.SaveChanges();
         }
 
         public int AddUserTestDetails(UserTestDetails UserTestDetails)
@@ -581,7 +581,7 @@ namespace Silicus.Ensure.Services
                     {
                         testDetails.Practical.TotalQuestionCount++;
                         testDetails.Practical.MaximumMarks += (int)basicDetails.maximumMarks;
-                        if (!(basicDetails.questionDetails.Mark == null || basicDetails.questionDetails.Mark > 0))
+                        if ((basicDetails.questionDetails.Mark != null && basicDetails.questionDetails.Mark > 0))
                         {
                             testDetails.Practical.MarksObtained += (int)basicDetails.questionDetails.Mark;
                             testDetails.Practical.CorrectAnswersCount++;
@@ -591,7 +591,7 @@ namespace Silicus.Ensure.Services
                     {
                         testDetails.Objective.TotalQuestionCount++;
                         testDetails.Objective.MaximumMarks += (int)basicDetails.maximumMarks;
-                        if (!(basicDetails.questionDetails.Mark == null || basicDetails.questionDetails.Mark > 0))
+                        if (!(basicDetails.questionDetails.Mark == null || basicDetails.questionDetails.Mark <= 0))
                         {
                             testDetails.Objective.MarksObtained += (int)basicDetails.questionDetails.Mark;
                             testDetails.Objective.CorrectAnswersCount++;

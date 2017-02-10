@@ -74,5 +74,6 @@ namespace Silicus.Ensure.Models
         public bool IsDeleted { get; set; }
 
         public int UserApplicationId { get; set; }
+
     }
 }
