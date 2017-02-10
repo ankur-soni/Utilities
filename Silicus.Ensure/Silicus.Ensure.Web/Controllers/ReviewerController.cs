@@ -79,7 +79,7 @@ namespace Silicus.Ensure.Web.Controllers
 
         public ActionResult LoadTestSummaryView(int UserTestSuiteId)
         {
-            var testSummary=GetTestSummary(UserTestSuiteId);
+            var testSummary = GetTestSummary(UserTestSuiteId);
             return PartialView("_TestSummary", testSummary);
         }
 
@@ -97,7 +97,7 @@ namespace Silicus.Ensure.Web.Controllers
             questionDetails.Answer = HttpUtility.HtmlDecode(questionDetails.Answer);
             UpdateReview(questionDetails.Marks, questionDetails.Comment, questionDetails.UserTestDetailId);
             var reviewerQuestionViewModel = ReviewTestSuiteQuestion(questionDetails.QuestionId, questionDetails.UserTestSuiteId, questionDetails.QuestionType);
-
+            reviewerQuestionViewModel.IsCorrect = reviewerQuestionViewModel.ReviwerMark != null && reviewerQuestionViewModel.ReviwerMark > 0;
             return PartialView("_ReviewerViewQuestion", reviewerQuestionViewModel);
         }
 
@@ -157,7 +157,7 @@ namespace Silicus.Ensure.Web.Controllers
             userTestDetails.ReviwerComment = comment;
             _testSuiteService.UpdateUserTestDetails(userTestDetails);
         }
-        
+
         #endregion
 
         #region Preview
