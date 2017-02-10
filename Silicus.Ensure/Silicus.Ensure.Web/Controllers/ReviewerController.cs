@@ -102,7 +102,7 @@ namespace Silicus.Ensure.Web.Controllers
             questionDetails.Answer = HttpUtility.HtmlDecode(questionDetails.Answer);
             UpdateReview(questionDetails.Marks, questionDetails.Comment, questionDetails.UserTestDetailId);
             var reviewerQuestionViewModel = ReviewTestSuiteQuestion(questionDetails.QuestionId, questionDetails.UserTestSuiteId, questionDetails.QuestionType);
-
+            reviewerQuestionViewModel.IsCorrect = reviewerQuestionViewModel.ReviwerMark != null && reviewerQuestionViewModel.ReviwerMark > 0;
             return PartialView("_ReviewerViewQuestion", reviewerQuestionViewModel);
         }
 

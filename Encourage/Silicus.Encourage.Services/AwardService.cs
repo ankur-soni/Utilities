@@ -89,13 +89,13 @@ namespace Silicus.Encourage.Services
 
         public List<User> GetResourcesUnderDepartment(int DepartmentId, int userIdToExcept)
         {
-            var resourcesUnderDept = from user in _CommonDbContext.Query<User>()
+            var resourcesUnderDept = (from user in _CommonDbContext.Query<User>()
                                      join resource in _CommonDbContext.Query<Resource>() on user.ID equals resource.UserID
                                      join resourceHistory in _CommonDbContext.Query<ResourceHistory>() on resource.ID equals resourceHistory.ResourceID
                                      join title in _CommonDbContext.Query<Title>() on resourceHistory.TitleID equals title.ID
                                      join department in _CommonDbContext.Query<Department>() on title.DepartmentID equals department.ID
-                                     where department.ID == DepartmentId
-                                     select user;
+                                     where department.ID == DepartmentId && resource.DirectManager1ID == userIdToExcept
+                                      select user).Distinct();
             int awardId = 1;
             var currentUserId = userIdToExcept;
             var recourcesInDepartmentUnderCurrentManger = _encourageDbcontext.Query<Nomination>().Where(n => n.DepartmentId == DepartmentId && n.ManagerId == currentUserId && n.AwardId == awardId).ToList();

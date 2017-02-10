@@ -10,6 +10,7 @@ namespace Silicus.Ensure.Web.Models.Test
 
         public string Comment { get; set; }
         public int? ReviwerMark { get; set; }
-        public TestSummaryViewModel TestSummary{ get; set; }
+        public TestSummaryViewModel TestSummary { get; set; }
+        public bool IsCorrect { get; set; }
     }
 }
