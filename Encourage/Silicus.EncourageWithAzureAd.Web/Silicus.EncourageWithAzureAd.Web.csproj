@@ -326,7 +326,7 @@
     <Compile Include="Models\DashboardViewModel.cs" />
     <Compile Include="Models\EmailTemplateEditorViewModel.cs" />
     <Compile Include="Models\EmailTemplateViewModel.cs" />
-    <Compile Include="Models\LoginAs.cs" />
+    <Compile Include="Models\LoginAsViewModel.cs" />
     <Compile Include="Models\NominationListViewModel.cs" />
     <Compile Include="Models\NominationViewModel.cs" />
     <Compile Include="Models\ProcessesToLockOrUnLockViewModel.cs" />
