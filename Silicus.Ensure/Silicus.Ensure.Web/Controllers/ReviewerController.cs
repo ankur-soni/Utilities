@@ -175,21 +175,27 @@ namespace Silicus.Ensure.Web.Controllers
             {
                 var CorrectAnswersString = reviewerQuestionViewModel.CorrectAnswer;
                 var candidateAnswersString = reviewerQuestionViewModel.Answer;
-                if (CorrectAnswersString.Contains(","))
+                if (!string.IsNullOrWhiteSpace(CorrectAnswersString))
                 {
-                    reviewerQuestionViewModel.CorrectAnswers = CorrectAnswersString.Split(',').ToList();
+                    if (CorrectAnswersString.Contains(","))
+                    {
+                        reviewerQuestionViewModel.CorrectAnswers = CorrectAnswersString.Split(',').ToList();
+                    }
+                    else
+                    {
+                        reviewerQuestionViewModel.CorrectAnswers.Add(CorrectAnswersString);
+                    }
                 }
-                else
+                if (!string.IsNullOrWhiteSpace(candidateAnswersString))
                 {
-                    reviewerQuestionViewModel.CorrectAnswers.Add(CorrectAnswersString);
-                }
-                if (candidateAnswersString.Contains(","))
-                {
-                    reviewerQuestionViewModel.CandidateAnswers = candidateAnswersString.Split(',').ToList();
-                }
-                else
-                {
-                    reviewerQuestionViewModel.CandidateAnswers.Add(candidateAnswersString);
+                    if (candidateAnswersString.Contains(","))
+                    {
+                        reviewerQuestionViewModel.CandidateAnswers = candidateAnswersString.Split(',').ToList();
+                    }
+                    else
+                    {
+                        reviewerQuestionViewModel.CandidateAnswers.Add(candidateAnswersString);
+                    }
                 }
             }
             return reviewerQuestionViewModel;

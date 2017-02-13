@@ -20,6 +20,14 @@
         }
         <p><strong>Question @Model.DisplayQuestionNumber: (@Model.Marks Marks)</strong></p>
         @Html.Raw(HttpUtility.HtmlDecode(Model.QuestionDescription))
+        @if (Model.IsCorrect)
+        {
+            <div class="fa fa-check-circle font-color-green fa-2x pull-right"></div>
+        }
+        else
+        {
+            <div class="fa fa-times-circle font-color-red fa-2x floatRight pull-right"></div>
+        }
     </div>
     <div class="col-sm-12">
         <div class="btmBorder1"></div>
@@ -32,9 +40,9 @@
 
 
     @if (Model.QuestionType == 1 && Model.AnswerType == 1)
-    {
-        if (string.IsNullOrEmpty(Model.Answer))
-        {
+            {
+                if (string.IsNullOrEmpty(Model.Answer))
+                {
             <div class="col-sm-12" style="padding: 20px 25px 20px 20px;">
                 <ul style="list-style:none;">
                     <li>
@@ -151,11 +159,11 @@
                     </li>
                 </ul>
             </div>
-            <script>
-                for (var i =@Model.OptionCount +1; i <= 8; i++) {
-                    $("#radio" + i).hide();
-                }
-            </script>
+                    <script>
+                        for (var i =@Model.OptionCount +1; i <= 8; i++) {
+                            $("#radio" + i).hide();
+                        }
+                    </script>
         }
         else
         {
@@ -309,12 +317,12 @@
                     </li>
                 </ul>
             </div>
-            <script>
-                for(var i = @Model.OptionCount + 1; i<=8;i++)
-                {
-                    $("#radio"+i).hide();
-                }
-            </script>
+                    <script>
+                        for(var i = @Model.OptionCount + 1; i<=8;i++)
+                        {
+                            $("#radio"+i).hide();
+                        }
+                    </script>
         }
     }
     else if (Model.QuestionType == 1 && Model.AnswerType == 2)
@@ -325,7 +333,7 @@
                 <ul style="list-style:none;">
                     <li>
                         @if (Model.CorrectAnswers.Contains("1"))
-                    {
+                        {
                             <div class="fa fa-check-square font-color-green fa-2x"></div>
                         }
                         else if (Model.CandidateAnswers.Contains("1"))
@@ -430,12 +438,12 @@
                 </ul>
             </div>
 
-            <script>
-                for(var i = @Model.OptionCount + 1; i<=8;i++)
-                {
-                    $("#checkbox"+i).hide();
-                }
-            </script>
+                    <script>
+                        for(var i = @Model.OptionCount + 1; i<=8;i++)
+                        {
+                            $("#checkbox"+i).hide();
+                        }
+                    </script>
         }
         else
         {
@@ -444,7 +452,7 @@
                     <li>
                         <div class="checkbox">
                             @if (Model.CorrectAnswers.Contains("1"))
-                    {
+                            {
                                 <div class="fa fa-check-square font-color-green fa-2x"></div>
                             }
                             else if (Model.CandidateAnswers.Contains("1"))
@@ -457,7 +465,7 @@
                     <li>
                         <div class="checkbox">
                             @if (Model.CorrectAnswers.Contains("2"))
-                    {
+                            {
                                 <div class="fa fa-check-square font-color-green fa-2x"></div>
                             }
                             else if (Model.CandidateAnswers.Contains("2"))
@@ -470,7 +478,7 @@
                     <li>
                         <div class="checkbox" id="checkbox3">
                             @if (Model.CorrectAnswers.Contains("3"))
-                    {
+                            {
                                 <div class="fa fa-check-square font-color-green fa-2x"></div>
                             }
                             else if (Model.CandidateAnswers.Contains("3"))
@@ -483,7 +491,7 @@
                     <li>
                         <div class="checkbox" id="checkbox4">
                             @if (Model.CorrectAnswers.Contains("4"))
-                    {
+                            {
                                 <div class="fa fa-check-square font-color-green fa-2x"></div>
                             }
                             else if (Model.CandidateAnswers.Contains("4"))
@@ -496,7 +504,7 @@
                     <li>
                         <div class="checkbox" id="checkbox5">
                             @if (Model.CorrectAnswers.Contains("5"))
-                    {
+                            {
                                 <div class="fa fa-check-square font-color-green fa-2x"></div>
                             }
                             else if (Model.CandidateAnswers.Contains("5"))
@@ -509,7 +517,7 @@
                     <li>
                         <div class="checkbox" id="checkbox6">
                             @if (Model.CorrectAnswers.Contains("6"))
-                    {
+                            {
                                 <div class="fa fa-check-square font-color-green fa-2x"></div>
                             }
                             else if (Model.CandidateAnswers.Contains("6"))
@@ -522,7 +530,7 @@
                     <li>
                         <div class="checkbox" id="checkbox7">
                             @if (Model.CorrectAnswers.Contains("7"))
-                    {
+                            {
                                 <div class="fa fa-check-square font-color-green fa-2x"></div>
                             }
                             else if (Model.CandidateAnswers.Contains("7"))
@@ -535,7 +543,7 @@
                     <li>
                         <div class="checkbox" id="checkbox8">
                             @if (Model.CorrectAnswers.Contains("8"))
-                    {
+                            {
                                 <div class="fa fa-check-square font-color-green fa-2x"></div>
                             }
                             else if (Model.CandidateAnswers.Contains("8"))
@@ -570,19 +578,19 @@
             @*@Html.Kendo().EditorFor(m => m.Answer).Name("PracticalAnswer").Encode(true).Value(Model.Answer).HtmlAttributes(new { @disabled = "disabled" })*@
             @Html.Raw(Model.Answer)
         </div>
-        <div class="col-sm-12" style="padding: 20px 25px 20px 20px;">
-            Actual Answer
-            @*@Html.Kendo().EditorFor(m => m.CorrectAnswer).Name("CorrectAnswer").Encode(true).Value(Model.CorrectAnswer).HtmlAttributes(new { @disabled = "disabled" })*@
-            @Html.Raw(Model.CorrectAnswer)
-        </div>
-        <div class="col-sm-12" style="padding: 20px 25px 20px 20px;">
-            Reviewer Comment
-            @Html.Kendo().EditorFor(m => m.Comment).Name("ReviewerComment").Encode(true).Value(Model.Comment)
-        </div>
-        <div class="col-sm-2" style="padding: 20px 25px 20px 20px;">
-            Marks
-            @Html.TextBoxFor(m => m.ReviwerMark, new { Class = "form-control", type = "number", min = "0", max = Model.Marks })
-        </div>
+                <div class="col-sm-12" style="padding: 20px 25px 20px 20px;">
+                    Actual Answer
+                    @*@Html.Kendo().EditorFor(m => m.CorrectAnswer).Name("CorrectAnswer").Encode(true).Value(Model.CorrectAnswer).HtmlAttributes(new { @disabled = "disabled" })*@
+                    @Html.Raw(Model.CorrectAnswer)
+                </div>
+                <div class="col-sm-12" style="padding: 20px 25px 20px 20px;">
+                    Reviewer Comment
+                    @Html.Kendo().EditorFor(m => m.Comment).Name("ReviewerComment").Encode(true).Value(Model.Comment)
+                </div>
+                <div class="col-sm-2" style="padding: 20px 25px 20px 20px;">
+                    Marks
+                    @Html.TextBoxFor(m => m.ReviwerMark, new { Class = "form-control", type = "number", min = "0", max = Model.Marks })
+                </div>
     }
 
 
@@ -592,7 +600,7 @@
 <div class="row">
     <div class="col-sm-12" style="padding: 0px 20px 0px 20px;">
         @if (Model.NextQuestionId != null)
-            {
+        {
             @(Html.Kendo().Button()
         .Name("btnNext")
         .HtmlAttributes(new { type = "button" }).Events(e => e.Click("OnNext"))
@@ -600,7 +608,7 @@
         }
 
         @if (Model.PreviousQuestionId != null)
-            {
+        {
             @(Html.Kendo().Button()
         .Name("btnPrevious")
         .HtmlAttributes(new { type = "button" }).Events(e => e.Click("OnPrevious"))
