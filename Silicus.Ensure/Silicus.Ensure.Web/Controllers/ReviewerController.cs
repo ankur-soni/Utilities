@@ -103,6 +103,10 @@ namespace Silicus.Ensure.Web.Controllers
             UpdateReview(questionDetails.Marks, questionDetails.Comment, questionDetails.UserTestDetailId);
             var reviewerQuestionViewModel = ReviewTestSuiteQuestion(questionDetails.QuestionId, questionDetails.UserTestSuiteId, questionDetails.QuestionType);
             reviewerQuestionViewModel.IsCorrect = reviewerQuestionViewModel.ReviwerMark != null && reviewerQuestionViewModel.ReviwerMark > 0;
+            if (reviewerQuestionViewModel.QuestionType == 1 && reviewerQuestionViewModel.AnswerType == 2)
+            {
+                reviewerQuestionViewModel = GetAnswerDetails(reviewerQuestionViewModel);
+            }
             return PartialView("_ReviewerViewQuestion", reviewerQuestionViewModel);
         }
 
@@ -161,6 +165,34 @@ namespace Silicus.Ensure.Web.Controllers
             userTestDetails.MarkGivenDate = DateTime.Now;
             userTestDetails.ReviwerComment = comment;
             _testSuiteService.UpdateUserTestDetails(userTestDetails);
+        }
+
+        private ReviewerQuestionViewModel GetAnswerDetails(ReviewerQuestionViewModel reviewerQuestionViewModel)
+        {
+            reviewerQuestionViewModel.CorrectAnswers = new List<string>();
+            reviewerQuestionViewModel.CandidateAnswers = new List<string>();
+            if (!string.IsNullOrWhiteSpace(reviewerQuestionViewModel.CorrectAnswer))
+            {
+                var CorrectAnswersString = reviewerQuestionViewModel.CorrectAnswer;
+                var candidateAnswersString = reviewerQuestionViewModel.Answer;
+                if (CorrectAnswersString.Contains(","))
+                {
+                    reviewerQuestionViewModel.CorrectAnswers = CorrectAnswersString.Split(',').ToList();
+                }
+                else
+                {
+                    reviewerQuestionViewModel.CorrectAnswers.Add(CorrectAnswersString);
+                }
+                if (candidateAnswersString.Contains(","))
+                {
+                    reviewerQuestionViewModel.CandidateAnswers = candidateAnswersString.Split(',').ToList();
+                }
+                else
+                {
+                    reviewerQuestionViewModel.CandidateAnswers.Add(candidateAnswersString);
+                }
+            }
+            return reviewerQuestionViewModel;
         }
 
         #endregion

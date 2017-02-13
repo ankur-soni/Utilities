@@ -853,6 +853,7 @@
       <SubType>Code</SubType>
     </Content>
     <Content Include="Views\Shared\PreviewTest.cshtml" />
+    <Content Include="Views\Shared\EditorTemplates\PostionEditorTemplete.cshtml" />
     <None Include="Web.Azure.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
