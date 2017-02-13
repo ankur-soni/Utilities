@@ -47,7 +47,7 @@ namespace Silicus.Encourage.Services
                 if (utility != null)
                 {
                     var utilityId = utility.Id;
-                    var listOfMangerIds = _commonDataBaseContext.Query<UtilityUserRoles>().Where(u => u.RoleId == managerRoleId && u.UtilityId == utilityId).Select(m => m.UserId).ToList();
+                    var listOfMangerIds = _commonDataBaseContext.Query<UtilityUserRoles>().Where(u => u.UtilityId == utilityId && u.RoleId == managerRoleId &&  u.IsActive).Select(m => m.UserId).ToList();
                     managers = _commonDataBaseContext.Query<User>().Where(u => listOfMangerIds.Contains(u.ID)).ToList();
                 }
             }
