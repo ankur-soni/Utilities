@@ -17,7 +17,7 @@ namespace Silicus.UtilityContainer.Security
 
         public List<string> GetRoleForUtility(string email, string utiltyName)
         {
-            var result = _commonDBContext.Query<UtilityUserRoles>().Where(x => x.User.EmailAddress.ToLower() == email.ToLower() && x.Utility.Name.ToLower() == utiltyName.ToLower()).Select(x => x.Role.Name).ToList();
+            var result = _commonDBContext.Query<UtilityUserRoles>().Where(x => x.User.EmailAddress.ToLower() == email.ToLower() && x.Utility.Name.ToLower() == utiltyName.ToLower() && x.IsActive).Select(x => x.Role.Name).ToList();
             return result;
         }
 
