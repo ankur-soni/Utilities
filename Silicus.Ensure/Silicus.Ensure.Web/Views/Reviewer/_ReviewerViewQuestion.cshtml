@@ -38,44 +38,116 @@
             <div class="col-sm-12" style="padding: 20px 25px 20px 20px;">
                 <ul style="list-style:none;">
                     <li>
-                        <div class="radio">
-                            <label><input type="radio" name="optradio" value="1">@Model.Option1</label>
-                        </div>
+                        @if (Model.CorrectAnswer.Trim() == "1")
+                        {
+                            <div class="fa fa-check-circle font-color-green fa-2x SingleSelectOption">
+                                @Model.Option1
+                            </div>
+                        }
+                        else
+                        {
+                            <div class="radio">
+                                <label><input type="radio" name="optradio" value="1">@Model.Option1</label>
+                            </div>
+                        }
                     </li>
                     <li>
-                        <div class="radio">
-                            <label><input type="radio" name="optradio" value="2">@Model.Option2</label>
-                        </div>
+                        @if (Model.CorrectAnswer.Trim() == "2")
+                        {
+                            <div class="fa fa-check-circle font-color-green fa-2x SingleSelectOption">
+                                @Model.Option2
+                            </div>
+                        }
+                        else
+                        {
+                            <div class="radio">
+                                <label><input type="radio" name="optradio" value="2">@Model.Option2</label>
+                            </div>
+                        }
                     </li>
                     <li>
-                        <div class="radio" id="radio3">
-                            <label><input type="radio" name="optradio" value="3">@Model.Option3</label>
-                        </div>
+                        @if (Model.CorrectAnswer.Trim() == "3")
+                        {
+                            <div class="fa fa-check-circle font-color-green fa-2x SingleSelectOption">
+                                @Model.Option3
+                            </div>
+                        }
+                        else
+                        {
+                            <div class="radio" id="radio3">
+                                <label><input type="radio" name="optradio" value="3">@Model.Option3</label>
+                            </div>
+                        }
                     </li>
                     <li>
-                        <div class="radio" id="radio4">
-                            <label><input type="radio" name="optradio" value="4">@Model.Option4</label>
-                        </div>
+                        @if (Model.CorrectAnswer.Trim() == "4")
+                        {
+                            <div class="fa fa-check-circle font-color-green fa-2x SingleSelectOption">
+                                @Model.Option4
+                            </div>
+                        }
+                        else
+                        {
+                            <div class="radio" id="radio4">
+                                <label><input type="radio" name="optradio" value="4">@Model.Option4</label>
+                            </div>
+                        }
                     </li>
                     <li>
-                        <div class="radio" id="radio5">
-                            <label><input type="radio" name="optradio" value="5">@Model.Option5</label>
-                        </div>
+                        @if (Model.CorrectAnswer.Trim() == "5")
+                        {
+                            <div class="fa fa-check-circle font-color-green fa-2x SingleSelectOption">
+                                @Model.Option5
+                            </div>
+                        }
+                        else
+                        {
+                            <div class="radio" id="radio5">
+                                <label><input type="radio" name="optradio" value="5">@Model.Option5</label>
+                            </div>
+                        }
                     </li>
                     <li>
-                        <div class="radio" id="radio6">
-                            <label><input type="radio" name="optradio" value="6">@Model.Option6</label>
-                        </div>
+                        @if (Model.CorrectAnswer.Trim() == "6")
+                        {
+                            <div class="fa fa-check-circle font-color-green fa-2x SingleSelectOption">
+                                @Model.Option6
+                            </div>
+                        }
+                        else
+                        {
+                            <div class="radio" id="radio6">
+                                <label><input type="radio" name="optradio" value="6">@Model.Option6</label>
+                            </div>
+                        }
                     </li>
                     <li>
-                        <div class="radio" id="radio7">
-                            <label><input type="radio" name="optradio" value="7">@Model.Option7</label>
-                        </div>
+                        @if (Model.CorrectAnswer.Trim() == "7")
+                        {
+                            <div class="fa fa-check-circle font-color-green fa-2x SingleSelectOption">
+                                @Model.Option7
+                            </div>
+                        }
+                        else
+                        {
+                            <div class="radio" id="radio7">
+                                <label><input type="radio" name="optradio" value="7">@Model.Option7</label>
+                            </div>
+                        }
                     </li>
                     <li>
-                        <div class="radio" id="radio8">
-                            <label><input type="radio" name="optradio" value="8">@Model.Option8</label>
-                        </div>
+                        @if (Model.CorrectAnswer.Trim() == "8")
+                        {
+                            <div class="fa fa-check-circle font-color-green fa-2x SingleSelectOption">
+                                @Model.Option1
+                            </div>
+                        }
+                        else
+                        {
+                            <div class="radio" id="radio8">
+                                <label><input type="radio" name="optradio" value="8">@Model.Option8</label>
+                            </div>
+                        }
                     </li>
                 </ul>
             </div>
