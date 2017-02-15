@@ -5,14 +5,15 @@
 <div class="row M-T15">
     <div class="col-sm-12">
         <div class="form-group">
-            @Html.Label("Send Mail To", new { @class = "control-label" })
-            <a id="clearSelectedUsers" class="pull-right btn btn-primary">Clear</a>
+            @Html.Label("Send Mail To", new { @class = "control-label", @style= "position: absolute;margin-top:18px;" })
+            <a id="clearSelectedUsers" class="pull-right btn btn-primary M-B10">Clear</a>
             @Html.DropDownListFor(m => m.Users, new SelectList(Model.Users, "Email", "Name"), "Select", new { multiple = "multiple", @class = "form-control" })
         </div>
     </div>
 </div>
 <div class="row">
     <div class="col-sm-12">
+       
         @Html.Label("Template", new { @class = "control-label" })
         <div id="emailTemplateEditor">
             @Html.TextAreaFor(m => m.EmailTemplate, new { @class = "summernote" })
