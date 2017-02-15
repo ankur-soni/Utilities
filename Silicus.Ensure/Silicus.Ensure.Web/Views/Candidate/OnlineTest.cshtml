@@ -470,6 +470,61 @@
 
 
 
+    function toggleFullScreen() {
+        if (!document.fullscreenElement &&    // alternative standard method
+            !document.mozFullScreenElement && !document.webkitFullscreenElement && !document.msFullscreenElement) {  // current working methods
+            if (document.documentElement.requestFullscreen) {
+                document.documentElement.requestFullscreen();
+            } else if (document.documentElement.msRequestFullscreen) {
+                document.documentElement.msRequestFullscreen();
+            } else if (document.documentElement.mozRequestFullScreen) {
+                document.documentElement.mozRequestFullScreen();
+            } else if (document.documentElement.webkitRequestFullscreen) {
+                document.documentElement.webkitRequestFullscreen(Element.ALLOW_KEYBOARD_INPUT);
+            }
+        }
+    }
 
+    $(document).ready(function () {
+        var text = "You are navigating to Fullscreen.";
+        ShowSweetAlertWithoutCancel("Warning!", text, "warning");
+
+        swal({
+            title: "FullScreen Mode",
+            text: "You are navigating to Fullscreen.",
+            type: "warning",
+            showCancelButton: false,
+            confirmButtonColor: "#DD6B55",
+            confirmButtonText: "Ok",
+            cancelButtonText: "No",
+            closeOnConfirm: true,
+            closeOnCancel: false
+        },
+   function (isConfirm) {
+       if (isConfirm) {
+           toggleFullScreen();
+       }
+   });
+    });
+
+
+    
+
+    $('#btnNext').on('click', function () {
+        toggleFullScreen();
+    });
+
+
+    $(document).bind('keydown', function (e) {        
+        if (e.keyCode === 27) { // Escape key
+            e.preventDefault();             
+        }
+    });
+
+
+
+    window.onbeforeunload = function () {
+        return "Do you really want to close?";
+    };
 
 </script>
