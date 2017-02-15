@@ -38,7 +38,9 @@ namespace Silicus.Encourage.Services
         {
             var shortlistedNomination = _encourageDatabaseContext.Query<Shortlist>().SingleOrDefault(model => model.NominationId == nominationId);
             if (shortlistedNomination != null)
+            {
                 _encourageDatabaseContext.Delete<Shortlist>(shortlistedNomination);
+            }
         }
 
         public void SelectWinner(int nominationId, string winningComment, string hrAdminsFeedback, int adminId)
@@ -52,7 +54,6 @@ namespace Silicus.Encourage.Services
                 if (shortlistedNomination != null)
                 {
                     shortlistedNomination.IsWinner = true;
-                    //shortlistedNomination.WinningDate = DateTime.Now.Date;
                     shortlistedNomination.WinningDate = customDate.Date;
                     shortlistedNomination.WinningComment = winningComment;
                     shortlistedNomination.HrAdminsFeedback = hrAdminsFeedback;
@@ -91,7 +92,9 @@ namespace Silicus.Encourage.Services
                 return 2;
             }
             else
+            {
                 return 0;
+            }
         }
 
         public string GetAwardComments(int winnerId)
@@ -119,9 +122,9 @@ namespace Silicus.Encourage.Services
         public string GetLoggedInUserName(string emailId)
         {
             var data = _commonDataBaseContext.Query<User>().FirstOrDefault(u => u.EmailAddress == emailId);
-            if (data != null) 
+            if (data != null)
             {
-              return  data.FirstName + " " + data.LastName;
+                return data.FirstName + " " + data.LastName;
             }
             return null;
         }

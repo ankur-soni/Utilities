@@ -18,7 +18,9 @@ namespace Silicus.Encourage.DAL
         {
 
             if (Entry(item).State == EntityState.Detached)
+            {
                 Set<T>().Add(item);
+            }
             Entry(item).State = EntityState.Modified;
             return SaveChanges();
         }
