@@ -39,7 +39,7 @@ namespace Silicus.EncourageWithAzureAd.Web.Controllers
 
             emailTemplateEditor.EmailTemplate = emailTemplate.Template;
 
-            var allManagers = _emailTemplateService.GetAllManagers();
+            var allManagers = _emailTemplateService.GetAllManagers(emailTemplate.TemplateName);
 
             foreach (var manager in allManagers)
             {

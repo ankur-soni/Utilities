@@ -12,7 +12,7 @@ namespace Silicus.Encourage.Services
     {
         private readonly Silicus.UtilityContainer.Entities.IDataContextFactory _dataContextFactory;
 
-        public CommonDbService(Silicus.UtilityContainer.Entities.IDataContextFactory dataContextFactory)
+        public CommonDbService(UtilityContainer.Entities.IDataContextFactory dataContextFactory)
         {
             _dataContextFactory = dataContextFactory;
         }
@@ -30,6 +30,20 @@ namespace Silicus.Encourage.Services
             }
 
             return userDisplayName;
+        }
+
+        public List<User> GetUserWithMultipleRoles()
+        {
+            var users = _dataContextFactory.CreateCommonDBContext().Query<UtilityUserRoles>().Where(u => u.IsActive).GroupBy(u => u.UserId).ToList();
+            var usersWithMultipleRoles = new List<User>();
+            foreach (var userRole in users)
+            {
+                if (userRole.Count() > 1)
+                {
+                    usersWithMultipleRoles.Add(userRole.FirstOrDefault().User);
+                }
+            }
+            return usersWithMultipleRoles;
         }
     }
 }

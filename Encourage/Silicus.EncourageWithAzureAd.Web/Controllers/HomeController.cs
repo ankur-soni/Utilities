@@ -162,12 +162,15 @@ namespace Silicus.EncourageWithAzureAd.Web.Controllers
         [CustomeAuthorize(AllowedRole = "Admin")]
         public ActionResult LoginAs()
         {
-            return View();
+            var usersWithMultipleRoles = _commonDbService.GetUserWithMultipleRoles();
+            LoginAsViewModel loginAsVM = new LoginAsViewModel();
+            loginAsVM.UsersWithMultipleRoles = new SelectList(usersWithMultipleRoles, "EmailAddress", "DisplayName");
+            return View(loginAsVM);
         }
 
         [HttpPost]
         [CustomeAuthorize(AllowedRole = "Admin")]
-        public ActionResult LoginAs(LoginAs loginAs)
+        public ActionResult LoginAs(LoginAsViewModel loginAs)
         {
             if (!string.IsNullOrEmpty(loginAs.Username))
             {

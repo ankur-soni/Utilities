@@ -1,7 +1,11 @@
 ﻿@model Silicus.Ensure.Web.Models.Test.ReviewerQuestionViewModel
 
 @using Kendo.Mvc.UI;
-
+<style>
+    .checkbox label {
+        margin-left: 25px !important;
+    }
+</style>
 <div class="row">
     <div class="col-sm-12" style="padding: 20px 25px 20px 20px;">
         @if (Model.QuestionType == 1)
@@ -16,6 +20,14 @@
         }
         <p><strong>Question @Model.DisplayQuestionNumber: (@Model.Marks Marks)</strong></p>
         @Html.Raw(HttpUtility.HtmlDecode(Model.QuestionDescription))
+        @if (Model.IsCorrect)
+        {
+            <div class="fa fa-check-circle font-color-green fa-2x pull-right"></div>
+        }
+        else
+        {
+            <div class="fa fa-times-circle font-color-red fa-2x floatRight pull-right"></div>
+        }
     </div>
     <div class="col-sm-12">
         <div class="btmBorder1"></div>
@@ -27,8 +39,6 @@
     </div>
 
 
-
-
     @if (Model.QuestionType == 1 && Model.AnswerType == 1)
             {
                 if (string.IsNullOrEmpty(Model.Answer))
@@ -36,70 +46,11 @@
             <div class="col-sm-12" style="padding: 20px 25px 20px 20px;">
                 <ul style="list-style:none;">
                     <li>
-                        <div class="radio">
-                            <label><input type="radio" name="optradio" value="1">@Model.Option1</label>
-                        </div>
-                    </li>
-                    <li>
-                        <div class="radio">
-                            <label><input type="radio" name="optradio" value="2">@Model.Option2</label>
-                        </div>
-                    </li>
-                    <li>
-                        <div class="radio" id="radio3">
-                            <label><input type="radio" name="optradio" value="3">@Model.Option3</label>
-                        </div>
-                    </li>
-                    <li>
-                        <div class="radio" id="radio4">
-                            <label><input type="radio" name="optradio" value="4">@Model.Option4</label>
-                        </div>
-                    </li>
-                    <li>
-                        <div class="radio" id="radio5">
-                            <label><input type="radio" name="optradio" value="5">@Model.Option5</label>
-                        </div>
-                    </li>
-                    <li>
-                        <div class="radio" id="radio6">
-                            <label><input type="radio" name="optradio" value="6">@Model.Option6</label>
-                        </div>
-                    </li>
-                    <li>
-                        <div class="radio" id="radio7">
-                            <label><input type="radio" name="optradio" value="7">@Model.Option7</label>
-                        </div>
-                    </li>
-                    <li>
-                        <div class="radio" id="radio8">
-                            <label><input type="radio" name="optradio" value="8">@Model.Option8</label>
-                        </div>
-                    </li>
-                </ul>
-            </div>
-            <script>
-                for(var i=@Model.OptionCount+1; i<=8;i++)
-                {
-                    $("#radio"+i).hide();
-                }
-            </script>
-        }
-        else
-        {
-            <div class="col-sm-12" style="padding: 20px 25px 20px 20px;">
-
-                <ul style="list-style:none;">
-                    <li>
-                        @if (Model.Answer.Trim() == "1")
+                        @if (Model.CorrectAnswer.Trim() == "1")
                         {
-                            if (Model.IsCorrect)
-                            {
-                                <div class="fa fa-check-circle font-color-green fa-2x SingleSelectOption">@Model.Option1</div>
-                            }
-                            else
-                            {
-                                <div class="fa fa-times-circle font-color-red fa-2x SingleSelectOption">@Model.Option1</div>
-                            }
+                            <div class="fa fa-check-circle font-color-green fa-2x SingleSelectOption">
+                                @Model.Option1
+                            </div>
                         }
                         else
                         {
@@ -109,16 +60,11 @@
                         }
                     </li>
                     <li>
-                        @if (Model.Answer.Trim() == "2")
+                        @if (Model.CorrectAnswer.Trim() == "2")
                         {
-                            if (Model.IsCorrect)
-                            {
-                                <div class="fa fa-check-circle font-color-green fa-2x SingleSelectOption">@Model.Option2</div>
-                            }
-                            else
-                            {
-                                <div class="fa fa-times-circle font-color-red fa-2x SingleSelectOption">@Model.Option2</div>
-                            }
+                            <div class="fa fa-check-circle font-color-green fa-2x SingleSelectOption">
+                                @Model.Option2
+                            </div>
                         }
                         else
                         {
@@ -128,16 +74,11 @@
                         }
                     </li>
                     <li>
-                        @if (Model.Answer.Trim() == "3")
+                        @if (Model.CorrectAnswer.Trim() == "3")
                         {
-                            if (Model.IsCorrect)
-                            {
-                                <div class="fa fa-check-circle font-color-green fa-2x SingleSelectOption">@Model.Option3</div>
-                            }
-                            else
-                            {
-                                <div class="fa fa-times-circle font-color-red fa-2x SingleSelectOption">@Model.Option3</div>
-                            }
+                            <div class="fa fa-check-circle font-color-green fa-2x SingleSelectOption">
+                                @Model.Option3
+                            </div>
                         }
                         else
                         {
@@ -147,17 +88,11 @@
                         }
                     </li>
                     <li>
-                        @if (Model.Answer.Trim() == "4")
+                        @if (Model.CorrectAnswer.Trim() == "4")
                         {
-                            if (Model.IsCorrect)
-                            {
-                                <div class="fa fa-check-circle font-color-green fa-2x SingleSelectOption">@Model.Option4</div>
-                            }
-                            else
-                            {
-
-                                <div class="fa fa-times-circle font-color-red fa-2x SingleSelectOption">@Model.Option4</div>
-                            }
+                            <div class="fa fa-check-circle font-color-green fa-2x SingleSelectOption">
+                                @Model.Option4
+                            </div>
                         }
                         else
                         {
@@ -167,16 +102,11 @@
                         }
                     </li>
                     <li>
-                        @if (Model.Answer.Trim() == "5")
+                        @if (Model.CorrectAnswer.Trim() == "5")
                         {
-                            if (Model.IsCorrect)
-                            {
-                                <div class="fa fa-check-circle font-color-green fa-2x SingleSelectOption">@Model.Option5</div>
-                            }
-                            else
-                            {
-                                <div class="fa fa-times-circle font-color-red fa-2x SingleSelectOption">@Model.Option5</div>
-                            }
+                            <div class="fa fa-check-circle font-color-green fa-2x SingleSelectOption">
+                                @Model.Option5
+                            </div>
                         }
                         else
                         {
@@ -186,16 +116,11 @@
                         }
                     </li>
                     <li>
-                        @if (Model.Answer.Trim() == "6")
+                        @if (Model.CorrectAnswer.Trim() == "6")
                         {
-                            if (Model.IsCorrect)
-                            {
-                                <div class="fa fa-check-circle font-color-green fa-2x SingleSelectOption">@Model.Option6</div>
-                            }
-                            else
-                            {
-                                <div class="fa fa-times-circle font-color-red fa-2x SingleSelectOption">@Model.Option6</div>
-                            }
+                            <div class="fa fa-check-circle font-color-green fa-2x SingleSelectOption">
+                                @Model.Option6
+                            </div>
                         }
                         else
                         {
@@ -205,16 +130,11 @@
                         }
                     </li>
                     <li>
-                        @if (Model.Answer.Trim() == "7")
+                        @if (Model.CorrectAnswer.Trim() == "7")
                         {
-                            if (Model.IsCorrect)
-                            {
-                                <div class="fa fa-check-circle font-color-green fa-2x SingleSelectOption">@Model.Option7</div>
-                            }
-                            else
-                            {
-                                <div class="fa fa-times-circle font-color-red fa-2x SingleSelectOption">@Model.Option7</div>
-                            }
+                            <div class="fa fa-check-circle font-color-green fa-2x SingleSelectOption">
+                                @Model.Option7
+                            </div>
                         }
                         else
                         {
@@ -224,16 +144,168 @@
                         }
                     </li>
                     <li>
-                        @if (Model.Answer.Trim() == "8")
+                        @if (Model.CorrectAnswer.Trim() == "8")
                         {
-                            if (Model.IsCorrect)
-                            {
-                                <div class="fa fa-check-circle font-color-green fa-2x SingleSelectOption">@Model.Option8</div>
-                            }
-                            else
-                            {
-                                <div class="fa fa-times-circle font-color-red fa-2x SingleSelectOption">@Model.Option8</div>
-                            }
+                            <div class="fa fa-check-circle font-color-green fa-2x SingleSelectOption">
+                                @Model.Option1
+                            </div>
+                        }
+                        else
+                        {
+                            <div class="radio" id="radio8">
+                                <label><input type="radio" name="optradio" value="8">@Model.Option8</label>
+                            </div>
+                        }
+                    </li>
+                </ul>
+            </div>
+                    <script>
+                        for (var i =@Model.OptionCount +1; i <= 8; i++) {
+                            $("#radio" + i).hide();
+                        }
+                    </script>
+        }
+        else
+        {
+            <div class="col-sm-12" style="padding: 20px 25px 20px 20px;">
+
+                <ul style="list-style:none;">
+                    <li>
+                        @if (Model.CorrectAnswer.Trim() == "1")
+                        {
+                            <div class="fa fa-check-circle font-color-green fa-2x SingleSelectOption">
+                                @Model.Option1
+                            </div>
+                        }
+                        else if (Model.Answer.Trim() == "1")
+                        {
+                            <div class="fa fa-times-circle font-color-red fa-2x SingleSelectOption">@Model.Option1</div>
+                        }
+                        else
+                        {
+                            <div class="radio" id="radio1">
+                                <label><input type="radio" name="optradio" value="1">@Model.Option1</label>
+                            </div>
+                        }
+                    </li>
+                    <li>
+                        @if (Model.CorrectAnswer.Trim() == "2")
+                        {
+                            <div class="fa fa-check-circle font-color-green fa-2x SingleSelectOption">
+                                @Model.Option2
+                            </div>
+                        }
+                        else if (Model.Answer.Trim() == "2")
+                        {
+                            <div class="fa fa-times-circle font-color-red fa-2x SingleSelectOption">@Model.Option2</div>
+                        }
+                        else
+                        {
+                            <div class="radio" id="radio2">
+                                <label><input type="radio" name="optradio" value="2">@Model.Option2</label>
+                            </div>
+                        }
+                    </li>
+                    <li>
+                        @if (Model.CorrectAnswer.Trim() == "3")
+                        {
+                            <div class="fa fa-check-circle font-color-green fa-2x SingleSelectOption">
+                                @Model.Option3
+                            </div>
+                        }
+                        else if (Model.Answer.Trim() == "3")
+                        {
+                            <div class="fa fa-times-circle font-color-red fa-2x SingleSelectOption">@Model.Option3</div>
+                        }
+                        else
+                        {
+                            <div class="radio" id="radio3">
+                                <label><input type="radio" name="optradio" value="3">@Model.Option3</label>
+                            </div>
+                        }
+                    </li>
+                    <li>
+                        @if (Model.CorrectAnswer.Trim() == "4")
+                        {
+                            <div class="fa fa-check-circle font-color-green fa-2x SingleSelectOption">
+                                @Model.Option4
+                            </div>
+                        }
+                        else if (Model.Answer.Trim() == "4")
+                        {
+                            <div class="fa fa-times-circle font-color-red fa-2x SingleSelectOption">@Model.Option4</div>
+                        }
+                        else
+                        {
+                            <div class="radio" id="radio4">
+                                <label><input type="radio" name="optradio" value="4">@Model.Option4</label>
+                            </div>
+                        }
+                    </li>
+                    <li>
+                        @if (Model.CorrectAnswer.Trim() == "5")
+                        {
+                            <div class="fa fa-check-circle font-color-green fa-2x SingleSelectOption">
+                                @Model.Option5
+                            </div>
+                        }
+                        else if (Model.Answer.Trim() == "5")
+                        {
+                            <div class="fa fa-times-circle font-color-red fa-2x SingleSelectOption">@Model.Option5</div>
+                        }
+                        else
+                        {
+                            <div class="radio" id="radio5">
+                                <label><input type="radio" name="optradio" value="5">@Model.Option5</label>
+                            </div>
+                        }
+                    </li>
+                    <li>
+                        @if (Model.CorrectAnswer.Trim() == "6")
+                        {
+                            <div class="fa fa-check-circle font-color-green fa-2x SingleSelectOption">
+                                @Model.Option6
+                            </div>
+                        }
+                        else if (Model.Answer.Trim() == "6")
+                        {
+                            <div class="fa fa-times-circle font-color-red fa-2x SingleSelectOption">@Model.Option6</div>
+                        }
+                        else
+                        {
+                            <div class="radio" id="radio6">
+                                <label><input type="radio" name="optradio" value="6">@Model.Option6</label>
+                            </div>
+                        }
+                    </li>
+                    <li>
+                        @if (Model.CorrectAnswer.Trim() == "7")
+                        {
+                            <div class="fa fa-check-circle font-color-green fa-2x SingleSelectOption">
+                                @Model.Option8
+                            </div>
+                        }
+                        else if (Model.Answer.Trim() == "7")
+                        {
+                            <div class="fa fa-times-circle font-color-red fa-2x SingleSelectOption">@Model.Option8</div>
+                        }
+                        else
+                        {
+                            <div class="radio" id="radio7">
+                                <label><input type="radio" name="optradio" value="7">@Model.Option8</label>
+                            </div>
+                        }
+                    </li>
+                    <li>
+                        @if (Model.CorrectAnswer.Trim() == "8")
+                        {
+                            <div class="fa fa-check-circle font-color-green fa-2x SingleSelectOption">
+                                @Model.Option8
+                            </div>
+                        }
+                        else if (Model.Answer.Trim() == "8")
+                        {
+                            <div class="fa fa-times-circle font-color-red fa-2x SingleSelectOption">@Model.Option8</div>
                         }
                         else
                         {
@@ -245,57 +317,120 @@
                     </li>
                 </ul>
             </div>
-            <script>
-                for(var i=@Model.OptionCount+1; i<=8;i++)
-                {
-                    $("#radio"+i).hide();
-                }
-            </script>
+                    <script>
+                        for(var i = @Model.OptionCount + 1; i<=8;i++)
+                        {
+                            $("#radio"+i).hide();
+                        }
+                    </script>
         }
     }
     else if (Model.QuestionType == 1 && Model.AnswerType == 2)
     {
-
         if (string.IsNullOrEmpty(Model.Answer))
         {
             <div class="col-sm-12" style="padding: 20px 25px 20px 20px;">
                 <ul style="list-style:none;">
                     <li>
+                        @if (Model.CorrectAnswers.Contains("1"))
+                        {
+                            <div class="fa fa-check-square font-color-green fa-2x"></div>
+                        }
+                        else if (Model.CandidateAnswers.Contains("1"))
+                        {
+                            <div class="fa fa-times-rectangle font-color-red fa-2x"></div>
+                        }
                         <div class="checkbox">
                             <label><input type="checkbox" name="optcheckbox" value="1">@Model.Option1</label>
                         </div>
                     </li>
                     <li>
+                        @if (Model.CorrectAnswers.Contains("2"))
+                        {
+                            <div class="fa fa-check-square font-color-green fa-2x"></div>
+                        }
+                        else if (Model.CandidateAnswers.Contains("2"))
+                        {
+                            <div class="fa fa-times-rectangle font-color-red fa-2x"></div>
+                        }
                         <div class="checkbox">
                             <label><input type="checkbox" name="optcheckbox" value="2">@Model.Option2</label>
                         </div>
                     </li>
                     <li>
+                        @if (Model.CorrectAnswers.Contains("3"))
+                        {
+                            <div class="fa fa-check-square font-color-green fa-2x"></div>
+                        }
+                        else if (Model.CandidateAnswers.Contains("3"))
+                        {
+                            <div class="fa fa-times-rectangle font-color-red fa-2x"></div>
+                        }
                         <div class="checkbox" id="checkbox3">
                             <label><input type="checkbox" name="optcheckbox" value="3">@Model.Option3</label>
                         </div>
                     </li>
                     <li>
+                        @if (Model.CorrectAnswers.Contains("4"))
+                        {
+                            <div class="fa fa-check-square font-color-green fa-2x"></div>
+                        }
+                        else if (Model.CandidateAnswers.Contains("4"))
+                        {
+                            <div class="fa fa-times-rectangle font-color-red fa-2x"></div>
+                        }
                         <div class="checkbox" id="checkbox4">
                             <label><input type="checkbox" name="optcheckbox" value="4">@Model.Option4</label>
                         </div>
                     </li>
                     <li>
+                        @if (Model.CorrectAnswers.Contains("5"))
+                        {
+                            <div class="fa fa-check-square font-color-green fa-2x"></div>
+                        }
+                        else if (Model.CandidateAnswers.Contains("5"))
+                        {
+                            <div class="fa fa-times-rectangle font-color-red fa-2x"></div>
+                        }
                         <div class="checkbox" id="checkbox5">
                             <label><input type="checkbox" name="optcheckbox" value="5">@Model.Option5</label>
                         </div>
                     </li>
                     <li>
+                        @if (Model.CorrectAnswers.Contains("6"))
+                        {
+                            <div class="fa fa-check-square font-color-green fa-2x"></div>
+                        }
+                        else if (Model.CandidateAnswers.Contains("6"))
+                        {
+                            <div class="fa fa-times-rectangle font-color-red fa-2x"></div>
+                        }
                         <div class="checkbox" id="checkbox6">
                             <label><input type="checkbox" name="optcheckbox" value="6">@Model.Option6</label>
                         </div>
                     </li>
                     <li>
+                        @if (Model.CorrectAnswers.Contains("7"))
+                        {
+                            <div class="fa fa-check-square font-color-green fa-2x"></div>
+                        }
+                        else if (Model.CandidateAnswers.Contains("7"))
+                        {
+                            <div class="fa fa-times-rectangle font-color-red fa-2x"></div>
+                        }
                         <div class="checkbox" id="checkbox7">
                             <label><input type="checkbox" name="optcheckbox" value="7">@Model.Option7</label>
                         </div>
                     </li>
                     <li>
+                        @if (Model.CorrectAnswers.Contains("8"))
+                        {
+                            <div class="fa fa-check-square font-color-green fa-2x"></div>
+                        }
+                        else if (Model.CandidateAnswers.Contains("8"))
+                        {
+                            <div class="fa fa-times-rectangle font-color-red fa-2x"></div>
+                        }
                         <div class="checkbox" id="checkbox8">
                             <label><input type="checkbox" name="optcheckbox" value="8">@Model.Option8</label>
                         </div>
@@ -303,12 +438,12 @@
                 </ul>
             </div>
 
-            <script>
-                for(var i=@Model.OptionCount+1; i<=8;i++)
-                {
-                    $("#checkbox"+i).hide();
-                }
-            </script>
+                    <script>
+                        for(var i = @Model.OptionCount + 1; i<=8;i++)
+                        {
+                            $("#checkbox"+i).hide();
+                        }
+                    </script>
         }
         else
         {
@@ -316,41 +451,105 @@
                 <ul style="list-style:none;">
                     <li>
                         <div class="checkbox">
+                            @if (Model.CorrectAnswers.Contains("1"))
+                            {
+                                <div class="fa fa-check-square font-color-green fa-2x"></div>
+                            }
+                            else if (Model.CandidateAnswers.Contains("1"))
+                            {
+                                <div class="fa fa-times-rectangle font-color-red fa-2x"></div>
+                            }
                             <label><input id="optcheckbox1" type="checkbox" name="optcheckbox" value="1">@Model.Option1</label>
                         </div>
                     </li>
                     <li>
                         <div class="checkbox">
+                            @if (Model.CorrectAnswers.Contains("2"))
+                            {
+                                <div class="fa fa-check-square font-color-green fa-2x"></div>
+                            }
+                            else if (Model.CandidateAnswers.Contains("2"))
+                            {
+                                <div class="fa fa-times-rectangle font-color-red fa-2x"></div>
+                            }
                             <label><input id="optcheckbox2" type="checkbox" name="optcheckbox" value="2">@Model.Option2</label>
                         </div>
                     </li>
                     <li>
                         <div class="checkbox" id="checkbox3">
+                            @if (Model.CorrectAnswers.Contains("3"))
+                            {
+                                <div class="fa fa-check-square font-color-green fa-2x"></div>
+                            }
+                            else if (Model.CandidateAnswers.Contains("3"))
+                            {
+                                <div class="fa fa-times-rectangle font-color-red fa-2x"></div>
+                            }
                             <label><input id="optcheckbox3" type="checkbox" name="optcheckbox" value="3">@Model.Option3</label>
                         </div>
                     </li>
                     <li>
                         <div class="checkbox" id="checkbox4">
+                            @if (Model.CorrectAnswers.Contains("4"))
+                            {
+                                <div class="fa fa-check-square font-color-green fa-2x"></div>
+                            }
+                            else if (Model.CandidateAnswers.Contains("4"))
+                            {
+                                <div class="fa fa-times-rectangle font-color-red fa-2x"></div>
+                            }
                             <label><input id="optcheckbox4" type="checkbox" name="optcheckbox" value="4">@Model.Option4</label>
                         </div>
                     </li>
                     <li>
                         <div class="checkbox" id="checkbox5">
+                            @if (Model.CorrectAnswers.Contains("5"))
+                            {
+                                <div class="fa fa-check-square font-color-green fa-2x"></div>
+                            }
+                            else if (Model.CandidateAnswers.Contains("5"))
+                            {
+                                <div class="fa fa-times-rectangle font-color-red fa-2x"></div>
+                            }
                             <label><input id="optcheckbox5" type="checkbox" name="optcheckbox" value="5">@Model.Option5</label>
                         </div>
                     </li>
                     <li>
                         <div class="checkbox" id="checkbox6">
+                            @if (Model.CorrectAnswers.Contains("6"))
+                            {
+                                <div class="fa fa-check-square font-color-green fa-2x"></div>
+                            }
+                            else if (Model.CandidateAnswers.Contains("6"))
+                            {
+                                <div class="fa fa-times-rectangle font-color-red fa-2x"></div>
+                            }
                             <label><input id="optcheckbox6" type="checkbox" name="optcheckbox" value="6">@Model.Option6</label>
                         </div>
                     </li>
                     <li>
                         <div class="checkbox" id="checkbox7">
+                            @if (Model.CorrectAnswers.Contains("7"))
+                            {
+                                <div class="fa fa-check-square font-color-green fa-2x"></div>
+                            }
+                            else if (Model.CandidateAnswers.Contains("7"))
+                            {
+                                <div class="fa fa-times-rectangle font-color-red fa-2x"></div>
+                            }
                             <label><input id="optcheckbox7" type="checkbox" name="optcheckbox" value="7">@Model.Option7</label>
                         </div>
                     </li>
                     <li>
                         <div class="checkbox" id="checkbox8">
+                            @if (Model.CorrectAnswers.Contains("8"))
+                            {
+                                <div class="fa fa-check-square font-color-green fa-2x"></div>
+                            }
+                            else if (Model.CandidateAnswers.Contains("8"))
+                            {
+                                <div class="fa fa-times-rectangle font-color-red fa-2x"></div>
+                            }
                             <label><input id="optcheckbox8" type="checkbox" name="optcheckbox" value="8">@Model.Option8</label>
                         </div>
                     </li>
@@ -364,7 +563,7 @@
             }
 
             <script>
-                for(var i=@Model.OptionCount+1; i<=8;i++)
+                for(var i = @Model.OptionCount + 1; i<=8;i++)
                 {
                     $("#checkbox"+i).hide();
                 }
@@ -379,19 +578,19 @@
             @*@Html.Kendo().EditorFor(m => m.Answer).Name("PracticalAnswer").Encode(true).Value(Model.Answer).HtmlAttributes(new { @disabled = "disabled" })*@
             @Html.Raw(Model.Answer)
         </div>
-        <div class="col-sm-12" style="padding: 20px 25px 20px 20px;">
-            Actual Answer
-            @*@Html.Kendo().EditorFor(m => m.CorrectAnswer).Name("CorrectAnswer").Encode(true).Value(Model.CorrectAnswer).HtmlAttributes(new { @disabled = "disabled" })*@
-            @Html.Raw(Model.CorrectAnswer)
-        </div>
-        <div class="col-sm-12" style="padding: 20px 25px 20px 20px;">
-            Reviewer Comment
-            @Html.Kendo().EditorFor(m => m.Comment).Name("ReviewerComment").Encode(true).Value(Model.Comment)
-        </div>
-        <div class="col-sm-2" style="padding: 20px 25px 20px 20px;">
-            Marks
-            @Html.TextBoxFor(m => m.ReviwerMark, new { Class = "form-control", type = "number", min = "0", max = Model.Marks })
-        </div>
+                <div class="col-sm-12" style="padding: 20px 25px 20px 20px;">
+                    Actual Answer
+                    @*@Html.Kendo().EditorFor(m => m.CorrectAnswer).Name("CorrectAnswer").Encode(true).Value(Model.CorrectAnswer).HtmlAttributes(new { @disabled = "disabled" })*@
+                    @Html.Raw(Model.CorrectAnswer)
+                </div>
+                <div class="col-sm-12" style="padding: 20px 25px 20px 20px;">
+                    Reviewer Comment
+                    @Html.Kendo().EditorFor(m => m.Comment).Name("ReviewerComment").Encode(true).Value(Model.Comment)
+                </div>
+                <div class="col-sm-2" style="padding: 20px 25px 20px 20px;">
+                    Marks
+                    @Html.TextBoxFor(m => m.ReviwerMark, new { Class = "form-control", type = "number", min = "0", max = Model.Marks })
+                </div>
     }
 
 
@@ -404,28 +603,20 @@
         {
             @(Html.Kendo().Button()
         .Name("btnNext")
-                .HtmlAttributes(new { type = "button" }).Events(e => e.Click("OnNext"))
-                    .Content("Next").HtmlAttributes(new { style = "float: right;", @data_id = Model.NextQuestionId }))
+        .HtmlAttributes(new { type = "button" }).Events(e => e.Click("OnNext"))
+        .Content("Next").HtmlAttributes(new { style = "float: right;", @data_id = Model.NextQuestionId }))
         }
 
         @if (Model.PreviousQuestionId != null)
         {
             @(Html.Kendo().Button()
-                .Name("btnPrevious")
-                .HtmlAttributes(new { type = "button" }).Events(e => e.Click("OnPrevious"))
-            .Content("Previous").HtmlAttributes(new { @data_id = Model.PreviousQuestionId }))
+        .Name("btnPrevious")
+        .HtmlAttributes(new { type = "button" }).Events(e => e.Click("OnPrevious"))
+        .Content("Previous").HtmlAttributes(new { @data_id = Model.PreviousQuestionId }))
         }
     </div>
 </div>
 
-@*<div class="row">
-        <div class="col-md-9 col-md-offset-2" style="margin-top:1%;">
-            @(Html.Kendo().Button()
-            .Name("btnSubmit")
-            .HtmlAttributes(new { type = "button" }).Events(e => e.Click("OnSubmitTest"))
-            .Content("Submit Test").HtmlAttributes(new { style = "float: right;" }))
-        </div>
-    </div>*@
 
 <script>
     $("#ReviwerMark").kendoValidator();

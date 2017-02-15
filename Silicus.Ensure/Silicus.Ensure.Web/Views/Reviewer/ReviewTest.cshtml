@@ -146,8 +146,9 @@
             }
 
             function QuestionCheckboxClicked(event) {
-                var questionId = $(this).find('input').attr('id');
+                var questionId = $(this).attr('id');
                 UpdateCurrentReviewAndLoadNewOne(questionId);
+                UpdateAndGetQuestionReview(questionId);
             }
 
     function UpdateCurrentReviewAndLoadNewOne(questionId) {

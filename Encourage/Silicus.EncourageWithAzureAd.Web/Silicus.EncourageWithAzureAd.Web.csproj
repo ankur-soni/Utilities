@@ -145,8 +145,9 @@
     <Reference Include="Silicus.UtilityContainer.Models">
       <HintPath>..\Dependencies\Silicus.UtilityContainer.Models.dll</HintPath>
     </Reference>
-    <Reference Include="Silicus.UtilityContainer.Security">
-      <HintPath>..\Dependencies\Silicus.UtilityContainer.Security.dll</HintPath>
+    <Reference Include="Silicus.UtilityContainer.Security, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\Silicus.UtilityContainer\Silicus.UtilityContainer.Security\bin\Debug\Silicus.UtilityContainer.Security.dll</HintPath>
     </Reference>
     <Reference Include="StackExchange.Redis.StrongName, Version=1.0.316.0, Culture=neutral, PublicKeyToken=c219ff1ca8c2ce46, processorArchitecture=MSIL">
       <HintPath>..\packages\StackExchange.Redis.StrongName.1.0.488\lib\net45\StackExchange.Redis.StrongName.dll</HintPath>
@@ -326,7 +327,7 @@
     <Compile Include="Models\DashboardViewModel.cs" />
     <Compile Include="Models\EmailTemplateEditorViewModel.cs" />
     <Compile Include="Models\EmailTemplateViewModel.cs" />
-    <Compile Include="Models\LoginAs.cs" />
+    <Compile Include="Models\LoginAsViewModel.cs" />
     <Compile Include="Models\NominationListViewModel.cs" />
     <Compile Include="Models\NominationViewModel.cs" />
     <Compile Include="Models\ProcessesToLockOrUnLockViewModel.cs" />

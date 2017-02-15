@@ -12,5 +12,7 @@ namespace Silicus.Ensure.Web.Models.Test
         public int? ReviwerMark { get; set; }
         public TestSummaryViewModel TestSummary { get; set; }
         public bool IsCorrect { get; set; }
+        public List<string> CandidateAnswers { get; set; }
+        public List<string> CorrectAnswers { get; set; }
     }
 }

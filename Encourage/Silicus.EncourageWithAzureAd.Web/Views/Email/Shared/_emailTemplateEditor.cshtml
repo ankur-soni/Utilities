@@ -5,13 +5,15 @@
 <div class="row M-T15">
     <div class="col-sm-12">
         <div class="form-group">
-            @Html.Label("Send Mail To", new { @class = "control-label" })
+            @Html.Label("Send Mail To", new { @class = "control-label", @style= "position: absolute;margin-top:18px;" })
+            <a id="clearSelectedUsers" class="pull-right btn btn-primary M-B10">Clear</a>
             @Html.DropDownListFor(m => m.Users, new SelectList(Model.Users, "Email", "Name"), "Select", new { multiple = "multiple", @class = "form-control" })
         </div>
     </div>
 </div>
 <div class="row">
     <div class="col-sm-12">
+       
         @Html.Label("Template", new { @class = "control-label" })
         <div id="emailTemplateEditor">
             @Html.TextAreaFor(m => m.EmailTemplate, new { @class = "summernote" })
@@ -41,13 +43,17 @@
         var toBeSelectedManagers = [];
 
         $.each(managers, function (index) {
-            if (this.value != "") {
+            if (this.value != "" && this.value != undefined) {
                 toBeSelectedManagers.push(this.value);
             }
         });
 
         var usersSelect2 = $("#Users").select2();
         usersSelect2.val(toBeSelectedManagers).trigger("change");
+
+        $("#clearSelectedUsers").on("click", function () {
+            usersSelect2.val([]).trigger("change");
+        });
 
         $('#EmailTemplate').summernote({
             height: 350, // set editor height
@@ -158,7 +164,6 @@
             }
 
             var emailTemplate = htmlEncode($("#EmailTemplate").val());
-            //var selectedProcessName = $("#Process")[0].selectedOptions[0].text;
 
             showCustomLoader();
             $.ajax({
@@ -180,18 +185,6 @@
                                 window.location.href = _urlEmailTemplateHome;
                             }
                         });
-                    //if (result = "Success") {
-                        
-                    //} else {
-                    //    swal({
-                    //        title: "Error",
-                    //        text: "Due to some error failed to save the template :(",
-                    //        type: "error",
-                    //        showCancelButton: false,
-                    //        confirmButtonColor: "#337ab7",
-                    //        confirmButtonText: "Ok",
-                    //    });
-                    //}
                 }, error: function (error) {
                     hideCustomLoader();
                     swal("Error", "Oops something went wrong!", "error");
@@ -213,7 +206,7 @@
 
         if (users != null && users.length > 0) {
             $.each(users, function (index) {
-                if (this.value != "") {
+                if (this.value != "" && this.value != undefined) {
                     areUsersValid = true;
                 }
             });
