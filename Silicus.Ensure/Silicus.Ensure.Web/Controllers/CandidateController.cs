@@ -171,6 +171,13 @@ namespace Silicus.Ensure.Web.Controllers
             return Json(1);
         }
 
+        [HttpPost]
+        public ActionResult GetCandidates(string firstName, String lastName, DateTime dob)
+        {
+            var candidate=_userService.GetCandidates(firstName,lastName,dob);
+            return Json(0);
+        }
+
         private void UpdateAnswer(string answer, int? userTestDetailId)
         {
             UserTestDetails userTestDetails = _testSuiteService.GetUserTestDetailsId(userTestDetailId);
