@@ -120,6 +120,27 @@ namespace Silicus.Ensure.Services
             return null;
         }
 
+        public IEnumerable<UserBusinessModel> GetCandidates(string firstName, String lastName, DateTime dob)
+        {
+            var users = _context.Query<User>().Where(x => string.Equals(x.FirstName,firstName, StringComparison.OrdinalIgnoreCase)
+            && string.Equals(x.LastName, lastName)
+            && x.DateOfBirth.Date==dob.Date);
+            List<UserBusinessModel> userModel = new List<UserBusinessModel>();
+            foreach (var user in users)
+            {
+                var objUser = UserToBusinessModel(user);
+                //int panelId = 0;
+                //if (int.TryParse(objUser.PanelId, out panelId))
+                //{
+                //    var panelDetails = panelMeberDetails.FirstOrDefault(y => y.UserId == panelId);
+                //    if (panelDetails != null)
+                //        objUser.PanelName = panelDetails.LastName + " " + panelDetails.FirstName;
+                //}
+                userModel.Add(objUser);
+            }
+            return userModel;
+        }
+
         public UserBusinessModel GetUserByEmail(string email)
         {
             var user = _context.Query<User>().FirstOrDefault(x => x.Email == email && x.IsDeleted == false);

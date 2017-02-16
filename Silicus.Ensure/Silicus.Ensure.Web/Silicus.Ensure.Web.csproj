@@ -855,6 +855,8 @@
     </Content>
     <Content Include="Views\Shared\PreviewTest.cshtml" />
     <Content Include="Views\Shared\EditorTemplates\PostionEditorTemplete.cshtml" />
+    <Content Include="Views\Shared\_CandidateProfile.cshtml" />
+    <Content Include="Views\Shared\_CadidateGrid.cshtml" />
     <None Include="Web.Azure.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
