@@ -278,7 +278,7 @@
                                       debugger;
                                       if (isConfirm) {
                                           var processId = [];
-                                          $("input:checkbox").each(function () {
+                                          $("input:checkbox.process-to-lock").each(function () {
                                               if ($(this).prop("checked")) {
                                                   processId.push(parseInt($(this).prop("id")));
                                                   $("#processName").val($(this).val());
@@ -412,7 +412,7 @@
                                           debugger;
                                           if (isConfirm) {
                                               var processId = [];
-                                              $("input:checkbox").each(function () {
+                                              $("input:checkbox.process-to-lock").each(function () {
                                                   if ($(this).prop("checked")) {
                                                       processId.push(parseInt($(this).prop("id")));
                                                       $("#processName").val($(this).val());
