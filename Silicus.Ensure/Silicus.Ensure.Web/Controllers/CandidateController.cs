@@ -72,6 +72,7 @@ namespace Silicus.Ensure.Web.Controllers
             return testSuite != null ? testSuite.SpecialInstruction : null;
         }
 
+        [CustomAuthorize("Admin", "Panel", "Recruiter", "Candidate")]
         public ActionResult OnlineTest()
         {
             if (!ModelState.IsValid)

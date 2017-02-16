@@ -36,18 +36,31 @@ namespace Silicus.Encourage.Services
             return _encourageDatabaseContext.Query<EmailTemplate>().ToList();
         }
 
-        public List<User> GetAllManagers()
+        public List<User> GetAllManagers(string templateName)
         {
             var managers = new List<User>();
-            var orDefault = _commonDataBaseContext.Query<Role>().FirstOrDefault(r => r.Name == "Manager");
-            if (orDefault != null)
+            List<int> orDefault = new List<int>();
+            switch (templateName)
             {
-                var managerRoleId = orDefault.ID;
+                case "Nomination":
+                    orDefault.Add(_commonDataBaseContext.Query<Role>().FirstOrDefault(r => r.Name == "Manager" && r.IsActive).ID);
+                    break;
+                case "Review":
+                    orDefault.Add(_commonDataBaseContext.Query<Role>().FirstOrDefault(r => r.Name == "Reviewer" && r.IsActive).ID);
+                    break;
+                default:
+                    orDefault.Add(_commonDataBaseContext.Query<Role>().FirstOrDefault(r => r.Name == "Manager" && r.IsActive).ID);
+                    orDefault.Add(_commonDataBaseContext.Query<Role>().FirstOrDefault(r => r.Name == "Reviewer" && r.IsActive).ID);
+                    break;
+            }
+            
+            if (orDefault.Count > 0)
+            {
                 var utility = _commonDataBaseContext.Query<Utility>().FirstOrDefault(r => r.Name == "Encourage");
                 if (utility != null)
                 {
                     var utilityId = utility.Id;
-                    var listOfMangerIds = _commonDataBaseContext.Query<UtilityUserRoles>().Where(u => u.UtilityId == utilityId && u.RoleId == managerRoleId &&  u.IsActive).Select(m => m.UserId).ToList();
+                    var listOfMangerIds = _commonDataBaseContext.Query<UtilityUserRoles>().Where(u => u.UtilityId == utilityId && orDefault.Contains(u.RoleId) &&  u.IsActive).Select(m => m.UserId).ToList();
                     managers = _commonDataBaseContext.Query<User>().Where(u => listOfMangerIds.Contains(u.ID)).ToList();
                 }
             }

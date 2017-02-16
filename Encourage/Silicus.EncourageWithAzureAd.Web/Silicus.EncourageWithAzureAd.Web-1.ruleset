@@ -1,0 +1,4 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<RuleSet Name="SonarQube - Encourage Silicus Standard C#" ToolsVersion="14.0">
+  <Include Path="..\sonarqube\encourage-001csharp.ruleset" Action="Default" />
+</RuleSet>

@@ -90,11 +90,11 @@ namespace Silicus.Encourage.Services
         public List<User> GetResourcesUnderDepartment(int DepartmentId, int userIdToExcept)
         {
             var resourcesUnderDept = (from user in _CommonDbContext.Query<User>()
-                                     join resource in _CommonDbContext.Query<Resource>() on user.ID equals resource.UserID
-                                     join resourceHistory in _CommonDbContext.Query<ResourceHistory>() on resource.ID equals resourceHistory.ResourceID
-                                     join title in _CommonDbContext.Query<Title>() on resourceHistory.TitleID equals title.ID
-                                     join department in _CommonDbContext.Query<Department>() on title.DepartmentID equals department.ID
-                                     where department.ID == DepartmentId && resource.DirectManager1ID == userIdToExcept
+                                      join resource in _CommonDbContext.Query<Resource>() on user.ID equals resource.UserID
+                                      join resourceHistory in _CommonDbContext.Query<ResourceHistory>() on resource.ID equals resourceHistory.ResourceID
+                                      join title in _CommonDbContext.Query<Title>() on resourceHistory.TitleID equals title.ID
+                                      join department in _CommonDbContext.Query<Department>() on title.DepartmentID equals department.ID
+                                      where department.ID == DepartmentId && resource.DirectManager1ID == userIdToExcept
                                       select user).Distinct();
             int awardId = 1;
             var currentUserId = userIdToExcept;
@@ -112,7 +112,6 @@ namespace Silicus.Encourage.Services
             {
                 var currentNomination = _nominationService.GetNomination(winner.NominationId);
                 var customDate = _customDateService.GetCustomDate(currentNomination.AwardId);
-                //var noOfMonthsFromLastWinningDate = (DateTime.Now.Year - winner.WinningDate.Value.Year) * 12 + (DateTime.Now.Month - winner.WinningDate.Value.Month);
                 var noOfMonthsFromLastWinningDate = (customDate.Year - winner.WinningDate.Value.Year) * 12 + (customDate.Month - winner.WinningDate.Value.Month);
                 if (noOfMonthsFromLastWinningDate <= 12)
                 {
@@ -151,12 +150,12 @@ namespace Silicus.Encourage.Services
                 var allEngagementIds = _CommonDbContext.Query<Engagement>().Where(engagement => engagement.PrimaryProjectManagerID == currentUserId && engagement.ClientID == clientId && engagement.Stage != closedProject).Select(c => c.ID).ToList();
 
                 var userInEngagement = from engagement in _CommonDbContext.Query<Engagement>()
-                    join engagementRole in _CommonDbContext.Query<EngagementRole>() on engagement.ID equals engagementRole.EngagementID
-                    join resourceHistory in _CommonDbContext.Query<ResourceHistory>() on engagementRole.ResourceHistoryID equals resourceHistory.ID
-                    join resource in _CommonDbContext.Query<Resource>() on resourceHistory.ResourceID equals resource.ID
-                    join user in _CommonDbContext.Query<User>() on resource.UserID equals user.ID
-                    where engagement.ClientID == clientId && engagement.Stage != closedProject && allEngagementIds.Contains(engagement.ID)
-                    select user;
+                                       join engagementRole in _CommonDbContext.Query<EngagementRole>() on engagement.ID equals engagementRole.EngagementID
+                                       join resourceHistory in _CommonDbContext.Query<ResourceHistory>() on engagementRole.ResourceHistoryID equals resourceHistory.ID
+                                       join resource in _CommonDbContext.Query<Resource>() on resourceHistory.ResourceID equals resource.ID
+                                       join user in _CommonDbContext.Query<User>() on resource.UserID equals user.ID
+                                       where engagement.ClientID == clientId && engagement.Stage != closedProject && allEngagementIds.Contains(engagement.ID)
+                                       select user;
 
                 var recourcesInEnggementUnderCurrentManger = _encourageDbcontext.Query<Nomination>().Where(n => n.ProjectID == engagementId && n.ManagerId == currentUserId && n.AwardId == awardId).ToList();
                 userInEngagement = userInEngagement.Except(currentUser);
@@ -172,10 +171,9 @@ namespace Silicus.Encourage.Services
                 var winnerNominationsWithin12Months = new List<Nomination>();
                 foreach (var winner in winners)
                 {
-                    //var noOfMonthsFromLastWinningDate = (DateTime.Now.Year - winner.WinningDate.Value.Year) * 12 + (DateTime.Now.Month - winner.WinningDate.Value.Month);
                     var noOfMonthsFromLastWinningDate = (customDate.Year - winner.WinningDate.Value.Year) * 12 + (customDate.Month - winner.WinningDate.Value.Month);
                     var winnernomination = _nominationService.GetNomination(winner.NominationId);
-                
+
                     var previousAwardId = winnernomination.AwardId;
 
                     if (noOfMonthsFromLastWinningDate <= 12 && previousAwardId == awardId)
@@ -241,9 +239,9 @@ namespace Silicus.Encourage.Services
 
         public List<WinnerData> GetWinnerData()
         {
-            var allWinnersWithoutDateFilter = _encourageDbcontext.Query<Shortlist>().Where(shortlist => shortlist.IsWinner == true ).ToList();
+            var allWinnersWithoutDateFilter = _encourageDbcontext.Query<Shortlist>().Where(shortlist => shortlist.IsWinner == true).ToList();
             var allWinners = new List<Shortlist>();
-                
+
             foreach (var winner in allWinnersWithoutDateFilter)
             {
                 var currentNomination = _nominationService.GetNomination(winner.NominationId);
@@ -251,8 +249,7 @@ namespace Silicus.Encourage.Services
                 allWinners.Add(_encourageDbcontext.Query<Shortlist>().FirstOrDefault(shortlist => shortlist.IsWinner == true && shortlist.WinningDate.Value.Month == customDate.Month &&
                                                                                                   shortlist.WinningDate.Value.Year == customDate.Year));
             }
-            //var allWinners = _encourageDbcontext.Query<Shortlist>().Where(shortlist => shortlist.IsWinner == true && shortlist.WinningDate.Value.Month == DateTime.Now.Month && shortlist.WinningDate.Value.Year == DateTime.Now.Year).ToList();
-            
+
             var winnersList = new List<WinnerData>();
 
             foreach (var winner in allWinners)
@@ -290,22 +287,19 @@ namespace Silicus.Encourage.Services
                                 }
                             }
 
-                            if (nominationOfWinnner != null)
+                            if (nominationOfWinnner != null && nominationOfWinnner.NominationDate != null)
                             {
-                                if (nominationOfWinnner.NominationDate != null)
+                                var awardPeriod = nominationOfWinnner.NominationDate.Value.ToString("MMMM") + " - " + nominationOfWinnner.NominationDate.Value.Year.ToString();
+                                var winnerData = new WinnerData()
                                 {
-                                    var awardPeriod = nominationOfWinnner.NominationDate.Value.ToString("MMMM") + " - " + nominationOfWinnner.NominationDate.Value.Year.ToString();
-                                    var winnerData = new WinnerData()
-                                    {
-                                        Name = userName,
-                                        AwardName = awardName,
-                                        AwardPeriod = awardPeriod,
-                                        ManagerName = managerName,
-                                        ProjectName = projectName
-                                    };
+                                    Name = userName,
+                                    AwardName = awardName,
+                                    AwardPeriod = awardPeriod,
+                                    ManagerName = managerName,
+                                    ProjectName = projectName
+                                };
 
-                                    winnersList.Add(winnerData);
-                                }
+                                winnersList.Add(winnerData);
                             }
                         }
                     }

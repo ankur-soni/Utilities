@@ -896,6 +896,7 @@
     <Content Include="Silicus.EncourageWithAzureAd.Web.ruleset" />
     <Content Include="Views\Review\SetAwardPeriod.cshtml" />
     <Content Include="Views\Home\LoginAs.cshtml" />
+    <Content Include="Silicus.EncourageWithAzureAd.Web-1.ruleset" />
     <None Include="Web.Production.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -946,9 +947,11 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'UAT|AnyCPU'">
     <OutputPath>bin\</OutputPath>
+    <CodeAnalysisRuleSet>Silicus.EncourageWithAzureAd.Web-1.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Production|AnyCPU'">
     <OutputPath>bin\</OutputPath>
+    <CodeAnalysisRuleSet>Silicus.EncourageWithAzureAd.Web-1.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(VSToolsPath)\WebApplications\Microsoft.WebApplication.targets" Condition="'$(VSToolsPath)' != ''" />
