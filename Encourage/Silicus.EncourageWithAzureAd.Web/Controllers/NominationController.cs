@@ -690,7 +690,7 @@ namespace Silicus.EncourageWithAzureAd.Web.Controllers
                                                  //)
                                                  where (n.NominationDate.Value.Month.Equals(customDate.Month)
                                                         &&
-                                                        (customDate.Month > 1 ? (customDate.Year).Equals(n.NominationDate.Value.Year) : (customDate.Year).Equals(n.NominationDate.Value.Year))
+                                                        ((customDate.Year).Equals(n.NominationDate.Value.Year))
                                                      )
                                                  select r;
 
