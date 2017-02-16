@@ -16,8 +16,7 @@ namespace Silicus.Reusable.Web
                       "~/Content/custom-style.css",
                       "~/Content/perfect-scrollbar.css",
                       "~/Content/style.css",
-                      "~/Content/plugins/sweetalert/sweetalert.css",
-                      "~/Content/font-awesome/css/font-awesome.css",
+                      "~/Content/plugins/sweetalert/sweetalert.css",                    
                       "~/Content/plugins/switchery/switchery.css",
                       "~/Content/plugins/selectize/selectize.css"));
 

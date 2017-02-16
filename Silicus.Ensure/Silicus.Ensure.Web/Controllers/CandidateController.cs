@@ -49,8 +49,15 @@ namespace Silicus.Ensure.Web.Controllers
                 ViewBag.Msg = "No test is assigned for you, kindly contact admin.";
                 return View("Welcome", new TestSuiteCandidateModel());
             }
-            var testSuiteDetails = _testSuiteService.GetTestSuiteDetails().SingleOrDefault(model => model.TestSuiteId == userTestSuite.TestSuiteId && !model.IsDeleted);
-            _testSuiteService.AssignSuite(userTestSuite, testSuiteDetails);
+            if (userTestSuite.RemainingTime > 0)
+            {
+                userTestSuite.Duration = userTestSuite.RemainingTime;
+            }
+            else
+            {
+                var testSuiteDetails = _testSuiteService.GetTestSuiteDetails().SingleOrDefault(model => model.TestSuiteId == userTestSuite.TestSuiteId && !model.IsDeleted);
+                _testSuiteService.AssignSuite(userTestSuite, testSuiteDetails);
+            }
             TestSuiteCandidateModel testSuiteCandidateModel = _mappingService.Map<UserTestSuite, TestSuiteCandidateModel>(userTestSuite);
             var specialInstruction = GetSpecialInstruction(userTestSuite.TestSuiteId);
             testSuiteCandidateModel.SpecialInstruction = specialInstruction;
@@ -84,15 +91,16 @@ namespace Silicus.Ensure.Web.Controllers
             if (userTestSuite == null)
             {
                 ViewBag.Status = 1;
-                ViewBag.Msg = ViewBag.Msg = "No test is assigned for you, kindly contact admin.";
+                ViewBag.Msg = "No test is assigned for you, kindly contact admin.";
                 return View("Welcome", new TestSuiteCandidateModel());
             }
             TestSuiteCandidateModel testSuiteCandidateModel = _mappingService.Map<UserTestSuite, TestSuiteCandidateModel>(userTestSuite);
             var candidateInfoBusinessModel = _userService.GetCandidateInfo(user);
             testSuiteCandidateModel.CandidateInfo = _mappingService.Map<CandidateInfoBusinessModel, CandidateInfoViewModel>(candidateInfoBusinessModel);
             testSuiteCandidateModel.NavigationDetails = GetNavigationDetails(testSuiteCandidateModel.UserTestSuiteId);
+            int? x = testSuiteCandidateModel?.UserTestSuiteId;
             testSuiteCandidateModel.TotalQuestionCount = testSuiteCandidateModel.PracticalCount + testSuiteCandidateModel.ObjectiveCount;
-            testSuiteCandidateModel.DurationInMin = testSuiteCandidateModel.Duration;
+            testSuiteCandidateModel.DurationInMin = testSuiteCandidateModel.RemainingTime > 0 ? testSuiteCandidateModel.RemainingTime : testSuiteCandidateModel.Duration;
             testSuiteCandidateModel.UserId = user.UserApplicationId;
             return View(testSuiteCandidateModel);
         }
@@ -116,7 +124,6 @@ namespace Silicus.Ensure.Web.Controllers
             questionDetails.Answer = HttpUtility.HtmlDecode(questionDetails.Answer);
             UpdateAnswer(questionDetails.Answer, questionDetails.UserTestDetailId);
             var testSuiteQuestionModel = TestSuiteQuestion(questionDetails.QuestionId, questionDetails.UserTestSuiteId, questionDetails.QuestionType);
-
             return PartialView("_partialViewQuestion", testSuiteQuestionModel);
         }
 
@@ -125,9 +132,9 @@ namespace Silicus.Ensure.Web.Controllers
         public ActionResult OnSubmitTest(int testSuiteId, int userTestSuiteId, int? userTestDetailId, int userId, string answer)
         {
             // Update last question answer of test.
-            answer = HttpUtility.HtmlDecode(answer);      
-           _userService.UpdateUserApplicationTestDetails(userId);
-                    
+            answer = HttpUtility.HtmlDecode(answer);
+            _userService.UpdateUserApplicationTestDetails(userId);
+
             // Update total time utilization for test back to UserTestSuite.
             TestSuite suite = _testSuiteService.GetTestSuitById(testSuiteId);
             UserTestSuite testSuit = _testSuiteService.GetUserTestSuiteId(userTestSuiteId);
@@ -136,7 +143,7 @@ namespace Silicus.Ensure.Web.Controllers
             _testSuiteService.UpdateUserTestSuite(testSuit);
 
             // Calculate marks on test submit.
-            CalculateMarks(userTestSuiteId, userTestDetailId, answer);              
+            CalculateMarks(userTestSuiteId, userTestDetailId, answer);
             return RedirectToAction("LogOff", "CandidateAccount");
         }
 
@@ -155,9 +162,20 @@ namespace Silicus.Ensure.Web.Controllers
         public JsonResult UpdateTimeCounter(int time, int userTestSuiteId)
         {
             UserTestSuite userTestSuite = _testSuiteService.GetUserTestSuiteId(userTestSuiteId);
-            userTestSuite.Duration = time / 60;
-            _testSuiteService.UpdateUserTestSuite(userTestSuite);
+            if (userTestSuite != null)
+            {
+                int remainingTime = time / 60;
+                userTestSuite.RemainingTime = remainingTime;
+                _testSuiteService.UpdateUserTestSuite(userTestSuite);
+            }
             return Json(1);
+        }
+
+        [HttpPost]
+        public ActionResult GetCandidates(string firstName, String lastName, DateTime dob)
+        {
+            var candidate=_userService.GetCandidates(firstName,lastName,dob);
+            return Json(0);
         }
 
         private void UpdateAnswer(string answer, int? userTestDetailId)
@@ -192,7 +210,7 @@ namespace Silicus.Ensure.Web.Controllers
             }
         }
 
-        private void CalculateMarks(int userTestSuiteId,int? userLastQuestionDetailId, string answer)
+        private void CalculateMarks(int userTestSuiteId, int? userLastQuestionDetailId, string answer)
         {
             List<UserTestDetails> userTestDetails = _testSuiteService.GetUserTestDetailsListByUserTestSuitId(userTestSuiteId).ToList();
             foreach (UserTestDetails testDetail in userTestDetails)
@@ -205,9 +223,9 @@ namespace Silicus.Ensure.Web.Controllers
                     if (!string.IsNullOrWhiteSpace(testDetail.Answer) && question.CorrectAnswer.Trim() == testDetail.Answer.Trim())
                         testDetail.Mark = question.Marks;
                     else
-                        testDetail.Mark = 0;                
+                        testDetail.Mark = 0;
                 }
-               
+
                 _testSuiteService.UpdateUserTestDetails(testDetail);
             }
         }
