@@ -75,6 +75,7 @@ namespace Silicus.EncourageWithAzureAd.Web.Controllers
             {
                 switch (award.Code)
                 {
+                    default:
                     case "SOM":
                         model.SomCustomDate = _customDateService.GetCustomDate(award.Id);
                         break;
@@ -236,13 +237,13 @@ namespace Silicus.EncourageWithAzureAd.Web.Controllers
             {
                 nominationViewModel.SelectResourcesBy = "Project";
                 var firstOrDefault = projects.FirstOrDefault(p => p.ID == savedNomination.ProjectID);
-                if (firstOrDefault != null) nominationViewModel.ProjectOrDeptName = projects.Any() ? firstOrDefault.Name : "";
+                if (firstOrDefault != null) { nominationViewModel.ProjectOrDeptName = projects.Any() ? firstOrDefault.Name : ""; }
             }
             else if (savedNomination.DepartmentId != null)
             {
                 nominationViewModel.SelectResourcesBy = "Department";
                 var firstOrDefault = departments.FirstOrDefault(d => d.ID == savedNomination.DepartmentId);
-                if (firstOrDefault != null) nominationViewModel.ProjectOrDeptName = departments.Any() ? firstOrDefault.Name : "";
+                if (firstOrDefault != null) { nominationViewModel.ProjectOrDeptName = departments.Any() ? firstOrDefault.Name : ""; }
             }
             else
             {
@@ -305,20 +306,7 @@ namespace Silicus.EncourageWithAzureAd.Web.Controllers
                 OtherNominationReason = model.OtherNominationReason
             };
 
-            var awardOfCurrentNomination = _awardService.GetAwardById(model.AwardId);
-            var currentAwardFrequency = _nominationService.GetAwardFrequencyById(awardOfCurrentNomination.FrequencyId);
-
-            //if (currentAwardFrequency.Code == FrequencyCode.YEAR.ToString())
-            //{
-            //nomination.NominationDate = DateTime.Now.Date.AddYears(-1);
             nomination.NominationDate = customDate;
-
-            //}
-            //else
-            //{
-            //    //nomination.NominationDate = DateTime.Now.Date.AddMonths(-1);
-            //    nomination.NominationDate = customDate.AddMonths(-1);
-            //}
 
             foreach (var comment in model.Comments)
             {
@@ -619,7 +607,6 @@ namespace Silicus.EncourageWithAzureAd.Web.Controllers
             var review = new Review();
             review.NominationId = model.NominationId;
             review.ReviewerId = model.ReviewerId;
-            //review.ReviewDate = DateTime.UtcNow;
             review.ReviewDate = customDate;
 
 
@@ -695,20 +682,20 @@ namespace Silicus.EncourageWithAzureAd.Web.Controllers
                             try
                             {
                                 var reviewData = from r in _reviewService.GetAllReview()
-                                    join n in _nominationService.GetAllNominations()
-                                        on r.NominationId equals n.Id
-                                    //where (n.NominationDate.Value.Month.Equals(DateTime.Now.Month - 1)
-                                    //       &&
-                                    //       (DateTime.Now.Month > 1 ? (DateTime.Now.Year).Equals(n.NominationDate.Value.Year) : (DateTime.Now.Year - 1).Equals(n.NominationDate.Value.Year))
-                                    //)
-                                    where (n.NominationDate.Value.Month.Equals(customDate.Month)
-                                           &&
-                                           (customDate.Month > 1 ? (customDate.Year).Equals(n.NominationDate.Value.Year) : (customDate.Year).Equals(n.NominationDate.Value.Year))
-                                        )
-                                    select r;
+                                                 join n in _nominationService.GetAllNominations()
+                                                     on r.NominationId equals n.Id
+                                                 //where (n.NominationDate.Value.Month.Equals(DateTime.Now.Month - 1)
+                                                 //       &&
+                                                 //       (DateTime.Now.Month > 1 ? (DateTime.Now.Year).Equals(n.NominationDate.Value.Year) : (DateTime.Now.Year - 1).Equals(n.NominationDate.Value.Year))
+                                                 //)
+                                                 where (n.NominationDate.Value.Month.Equals(customDate.Month)
+                                                        &&
+                                                        (customDate.Month > 1 ? (customDate.Year).Equals(n.NominationDate.Value.Year) : (customDate.Year).Equals(n.NominationDate.Value.Year))
+                                                     )
+                                                 select r;
 
                                 var firstOrDefault = reviewData.FirstOrDefault();
-                                if (firstOrDefault != null) islocked = firstOrDefault.IsLocked ?? false;
+                                if (firstOrDefault != null) { islocked = firstOrDefault.IsLocked ?? false; }
                             }
                             catch (Exception)
                             {
@@ -745,9 +732,13 @@ namespace Silicus.EncourageWithAzureAd.Web.Controllers
             var userEmailAddress = User.Identity.Name;
             var projectOrDept = string.Empty;
             if (result.ProjectID != null)
+            {
                 projectOrDept = _nominationService.GetProjectNameOfCurrentNomination(nominationId);
+            }
             else if (result.DepartmentId != null)
+            {
                 projectOrDept = _nominationService.GetDeptNameOfCurrentNomination(nominationId);
+            }
 
             var lockedAwards = _nominationService.GetNominationLockStatus();
             var isLocked = false;
@@ -800,7 +791,6 @@ namespace Silicus.EncourageWithAzureAd.Web.Controllers
             var review = new Review();
             review.NominationId = model.NominationId;
             review.ReviewerId = model.ReviewerId;
-            //review.ReviewDate = DateTime.UtcNow;
             review.ReviewDate = customDate;
             review.IsLocked = false;
 

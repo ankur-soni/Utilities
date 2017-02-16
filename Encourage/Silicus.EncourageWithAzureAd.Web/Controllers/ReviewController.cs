@@ -96,7 +96,7 @@ namespace Silicus.EncourageWithAzureAd.Web.Controllers
         private List<ReviewFeedbackListViewModel> ReviewFeedbackList(bool forCurrentMonth, int awardType)
         {
             _logger.Log("Review-ReviewFeedbackList-private-GET");
-            
+
             var reviewFeedbacks = new List<ReviewFeedbackListViewModel>();
             var awardDetails = _encourageDatabaseContext.Query<Award>().FirstOrDefault(x => x.Id == awardType);
 
@@ -107,6 +107,7 @@ namespace Silicus.EncourageWithAzureAd.Web.Controllers
             if (awardType != 0)
             {
                 if (awardDetails != null)
+                {
                     switch (awardDetails.Code)
                     {
                         case "SOM":
@@ -132,6 +133,7 @@ namespace Silicus.EncourageWithAzureAd.Web.Controllers
                         default:
                             break;
                     }
+                }
             }
             else
             {
@@ -141,6 +143,7 @@ namespace Silicus.EncourageWithAzureAd.Web.Controllers
                     var listOfNominations = new List<Shortlist>();
                     switch (award.Code)
                     {
+                        default:
                         case "SOM":
                             toBeComparedDate = _customDateService.GetCustomDate(award.Id);
                             listOfNominations = _encourageDatabaseContext.Query<Shortlist>()
@@ -196,9 +199,13 @@ namespace Silicus.EncourageWithAzureAd.Web.Controllers
                     averageCredits = totalCreditPoints / (totalReviews <= 0 ? 1 : totalReviews);
                     var checkResultStatus = _resultService.IsShortlistedOrWinner(nomination.Id);
                     if (checkResultStatus == 1)
+                    {
                         isWinner = true;
+                    }
                     else if (checkResultStatus == 2)
+                    {
                         isShortlisted = true;
+                    }
 
                     if (nominee != null)
                     {
@@ -233,15 +240,14 @@ namespace Silicus.EncourageWithAzureAd.Web.Controllers
         public ActionResult RejectAll()
         {
             _logger.Log("Review-RejectAll-GET");
-            //var rejectAllRviews = _encourageDatabaseContext.Query<Review>().Where(r => r.IsSubmited == true && r.ReviewDate.Value.Month == DateTime.Now.Month && r.ReviewDate.Value.Year == DateTime.Now.Year).ToList();
             var allReviewsWithoutDate = _encourageDatabaseContext.Query<Review>();
             var rejectAllRviews = new List<Review>();
-              foreach (var item in allReviewsWithoutDate)
+            foreach (var item in allReviewsWithoutDate)
             {
                 var currentNomination = _nominationService.GetNomination(item.NominationId);
                 var customDate = _customDateService.GetCustomDate(currentNomination.AwardId);
-              rejectAllRviews.Add( _encourageDatabaseContext.Query<Review>().FirstOrDefault(r => r.IsSubmited == true && r.ReviewDate.Value.Month == 
-                                                                                                 customDate.Month && r.ReviewDate.Value.Year == customDate.Year));
+                rejectAllRviews.Add(_encourageDatabaseContext.Query<Review>().FirstOrDefault(r => r.IsSubmited == true && r.ReviewDate.Value.Month ==
+                                                                                                  customDate.Month && r.ReviewDate.Value.Year == customDate.Year));
 
             }
             var shortlist = _encourageDatabaseContext.Query<Shortlist>().Where(s => s.IsWinner == true);
@@ -316,9 +322,13 @@ namespace Silicus.EncourageWithAzureAd.Web.Controllers
             var isWinner = false;
             var checkResultStatus = _resultService.IsShortlistedOrWinner(nomination.Id);
             if (checkResultStatus == 1)
+            {
                 isWinner = true;
+            }
             else if (checkResultStatus == 2)
+            {
                 isShortlisted = true;
+            }
 
             var nominee = _commonDbContext.Query<User>().FirstOrDefault(u => u.ID == nomination.UserId);
 
@@ -527,7 +537,7 @@ namespace Silicus.EncourageWithAzureAd.Web.Controllers
         {
             var customDate = _customDateService.GetCustomDate(consolidatedNominationsViewModel.AwardId);
             var awards = _awardService.GetAllAwards();
-            if (consolidatedNominationsViewModel == null || consolidatedNominationsViewModel.AwardId == 0)
+            if (consolidatedNominationsViewModel.AwardId == 0)
             {
                 consolidatedNominationsViewModel = new ConsolidatedNominationsViewModel();
                 var award = awards.FirstOrDefault(a => a.Code == "SOM");
@@ -642,7 +652,7 @@ namespace Silicus.EncourageWithAzureAd.Web.Controllers
             var allAwards = _awardService.GetAllAwards().ToList();
             customdateViewModel.Awards = allAwards;
             customdateViewModel.Months = Enumerable.Range(1, 12).ToList();
-            customdateViewModel.Years = Enumerable.Range(2010, (DateTime.Today.Year + 1) - 2010 ).ToList();
+            customdateViewModel.Years = Enumerable.Range(2010, (DateTime.Today.Year + 1) - 2010).ToList();
             return View(customdateViewModel);
         }
 
@@ -662,7 +672,7 @@ namespace Silicus.EncourageWithAzureAd.Web.Controllers
         [HttpGet]
         public JsonResult ResetAwardPeriod(int awardId)
         {
-            return Json(_customDateService.ReSetCustomDate(awardId),JsonRequestBehavior.AllowGet);
+            return Json(_customDateService.ReSetCustomDate(awardId), JsonRequestBehavior.AllowGet);
         }
 
         [HttpGet]

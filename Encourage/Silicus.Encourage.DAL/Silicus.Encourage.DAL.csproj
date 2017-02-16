@@ -35,9 +35,11 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'UAT|AnyCPU'">
     <OutputPath>bin\UAT\</OutputPath>
+    <CodeAnalysisRuleSet>Silicus.Encourage.DAL-1.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Production|AnyCPU'">
     <OutputPath>bin\Production\</OutputPath>
+    <CodeAnalysisRuleSet>Silicus.Encourage.DAL-1.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
@@ -104,6 +106,7 @@
       <SubType>Designer</SubType>
     </None>
     <None Include="packages.config" />
+    <None Include="Silicus.Encourage.DAL-1.ruleset" />
     <None Include="Silicus.Encourage.DAL.ruleset" />
   </ItemGroup>
   <ItemGroup>

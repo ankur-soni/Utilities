@@ -8,12 +8,14 @@ namespace Silicus.EncourageWithAzureAd.Web
 {
     public static class Extensions
     {
-        public static void AddUpdateClaim(this IPrincipal currentPrincipal,  string key, string value)
+        public static void AddUpdateClaim(this IPrincipal currentPrincipal, string key, string value)
         {
 
             var identity = currentPrincipal.Identity as ClaimsIdentity;
             if (identity == null)
+            {
                 return;
+            }
 
             // check for existing claim and remove it
             var existingClaim = identity.FindFirst(key);
@@ -32,7 +34,9 @@ namespace Silicus.EncourageWithAzureAd.Web
         {
             var identity = currentPrincipal.Identity as ClaimsIdentity;
             if (identity == null)
+            {
                 return null;
+            }
 
             var claim = identity.Claims.FirstOrDefault(c => c.Type == key);
             if (claim != null)
