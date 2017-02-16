@@ -26,7 +26,7 @@
                     @Html.Partial("~/Views/Shared/EditorTemplates/PostionEditorTemplete.cshtml", new Silicus.Ensure.Web.Models.PositionViewModel())
                 </div>
                 <div class="modal-footer">
-                    <button type="button" style="width:70px;"  onclick="savePostion()" class="btn btn-default">Save</button>
+                    <button type="button" style="width:70px;" onclick="savePostion()" class="btn btn-default">Save</button>
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
                 </div>
             </div>
@@ -37,24 +37,24 @@
 
 
 <div class="modal fade" id="candidateGridPopup" role="dialog">
-        <div class="modal-dialog">
-            <!-- Modal content-->
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal">&times;</button>
-                    <h4 class="modal-title"><span>Candidates</span></h4>
-                </div>
-                <div class="modal-body">
-
-                    @Html.Partial("~/Views/Shared/EditorTemplates/PostionEditorTemplete.cshtml", new Silicus.Ensure.Web.Models.PositionViewModel())
-                </div>
-                <div class="modal-footer">
-                    <button type="button" style="width:70px;" onclick="savePostion()" class="btn btn-default">Save</button>
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-                </div>
+    <div class="modal-dialog">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title"><span>Similar candidates found, </br>do you want to select one the candidate as reappare?</span></h4>
             </div>
+            <div class="modal-body">
 
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" style="width:70px;" onclick="loadCandidateDetails()" class="btn btn-default">Yes</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">No</button>
+            </div>
         </div>
+
+    </div>
 </div>
 <script>
 
@@ -63,10 +63,15 @@
     $(document).ready(function () {
         $('#messageDiv').fadeOut(5000);
     });
-    
+
     $(document).ready(function () {
         //$('#uploadFileLink').ke
-        $("#files").kendoUpload();
+    loadKendoControls();
+    });
+
+    function loadKendoControls()
+    {
+         $("#files").kendoUpload();
         $(".toggleEnabled").click(function() {
             getUpload().toggle();
         });
@@ -81,9 +86,7 @@
         $("#DOB").kendoDatePicker({
             format: "dd/MM/yyyy"
         });
-    });
-
-
+    }
 
     function savePostion()
     {
@@ -275,8 +278,8 @@
                         }
                     }
                     if (input.is("[id='file']")&&fileBool) {
-                        if (!(input.val() != "")) {                            
-                            input.attr("data-experiencevalidation-msg", "File is required!");                          
+                        if (!(input.val() != "")) {
+                            input.attr("data-experiencevalidation-msg", "File is required!");
                             return false;
                         }
                         else if(input.val() != "")
@@ -297,7 +300,7 @@
                     debugger
                     if ((input.is("[id='FirstName']") || input.is("[id='LastName']") || input.is("[id='DOB']")) && ($("#FirstName").val() && $("#LastName").val() && $("#DOB").val())) {
 
-                        alert('');
+                        checkExistingCandidate();
                     }
                     return true;
                 }
@@ -334,19 +337,62 @@
         var lastName=$("#LastName").val();
         var dOB=$("#DOB").val();
         $.ajax({
-            url: '/test/PersonSubmit',
+            url: '/Candidate/GetCandidateGrid',
             type: 'post',
-            dataType: 'json',
-            async:false,
+            dataType: 'html',
+            //async:false,
             data: {firstName:firstName,lastName:lastName,dOB:dOB},
             success: function (data) {
                 if(data)
                 {
-                    alert();
+    debugger;
+    //$('#userGrids').data('kendoGrid').dataSource.data(data);
+                    $("#candidateGridPopup .modal-body").html(data);
+    if($('#userGrids').data('kendoGrid').dataSource.total()>0)
+    {
+                    $("#candidateGridPopup").modal('show');
+    }
                 }
             }
-            
+
         });
+    }
+
+    function loadCandidateDetails()
+    {
+       var dataItem=GetDataItemOfSelectedRow();
+        if(dataItem)
+        {
+                $.ajax({
+            url: '/Candidate/GetCandidateProfile',
+            type: 'post',
+            dataType: 'html',
+            //async:false,
+            data: {userId:dataItem.UserId},
+            success: function (data) {
+                if(data)
+                {
+    debugger;
+    //$('#userGrids').data('kendoGrid').dataSource.data(data);
+                    $("#candidateDiv").html(data);
+                    loadKendoControls();
+                }
+            }
+
+        });
+        }
+    }
+        function GetDataItemOfSelectedRow() {
+        debugger;
+        var checkedRow = $("[name=selectUser]:checked");
+        if (checkedRow.length > 0) {
+            var userGrid = $('#userGrids').data("kendoGrid");
+            if (userGrid) {
+                var dataItem = userGrid.dataItem($(checkedRow).closest("tr"));
+                return dataItem;
+            }
+        }
+            return false;
     }
 </script>
 <style>
