@@ -144,12 +144,9 @@ namespace Silicus.Encourage.Services
             {
                 var nominationTime = nomination.NominationDate;
 
-                if (CultureInfo.CurrentCulture.DateTimeFormat != null)
+                if (CultureInfo.CurrentCulture.DateTimeFormat != null && nominationTime != null)
                 {
-                    if (nominationTime != null)
-                    {
-                        return CultureInfo.CurrentCulture.DateTimeFormat.GetAbbreviatedMonthName(nominationTime.Value.Month) + "-" + nominationTime.Value.Year.ToString();
-                    }
+                    return CultureInfo.CurrentCulture.DateTimeFormat.GetAbbreviatedMonthName(nominationTime.Value.Month) + "-" + nominationTime.Value.Year.ToString();
                 }
             }
             return string.Empty;
@@ -300,7 +297,9 @@ namespace Silicus.Encourage.Services
             var managerCommentsToDelete = _encourageDatabaseContext.Query<ManagerComment>().Where(comment => comment.NominationId == nominationId).ToList();
 
             foreach (var managerComments in managerCommentsToDelete)
+            {
                 _encourageDatabaseContext.Delete<ManagerComment>(managerComments);
+            }
         }
 
         public void DiscardNomination(int nominationId)

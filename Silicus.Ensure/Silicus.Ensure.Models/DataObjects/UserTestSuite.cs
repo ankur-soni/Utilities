@@ -24,6 +24,8 @@ namespace Silicus.Ensure.Models.DataObjects
 
         public int Duration { get; set; }
 
+        public int RemainingTime { get; set; }
+
         public int ExtraCount { get; set; }
 
         public bool IsActive { get; set; }

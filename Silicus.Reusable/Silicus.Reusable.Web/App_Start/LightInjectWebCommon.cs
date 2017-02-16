@@ -8,6 +8,8 @@ using Silicus.FrameworxProject.Services.Interfaces;
 using Silicus.FrameworxProject.Services;
 using AutoMapper;
 using Silicus.Reusable.Web.Mappings;
+using Silicus.FrameWorx.Logger;
+using System;
 
 [assembly: WebActivatorEx.PostApplicationStartMethod(typeof(LightInjectWebCommon), "CreateContainer")]
 
@@ -42,6 +44,7 @@ namespace Silicus.FrameworxProject.Web.App_Start
             container.Register<IMapper>((factory) => mapperConfiguration.CreateMapper());
             //container.Register<Silicus.UtilityContainer.Entities.ICommonDataBaseContext, Silicus.UtilityContainer.Entities.CommonDataBaseContext>();
             container.Register<Silicus.UtilityContainer.Entities.IDataContextFactory, Silicus.UtilityContainer.Entities.DataContextFactory>();
+            container.Register<ILogger>((factory) => new DatabaseLogger("name=LoggerDataContext", Type.GetType(string.Empty), (Func<DateTime>)(() => DateTime.UtcNow), string.Empty));
         }
 
     }

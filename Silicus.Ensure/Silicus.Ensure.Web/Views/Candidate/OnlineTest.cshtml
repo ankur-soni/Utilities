@@ -7,7 +7,7 @@
     ViewBag.Title = "Online Test";
     Layout = "~/Views/Shared/_LayoutCandidate.cshtml";
 }
-        <div class="row">
+<div class="row">
     <div class="col-sm-12 main-content" id="main" style="background: #ccc;">
         <div class="row topBox">
             <div class="col-sm-12">
@@ -165,7 +165,7 @@
             }
         });
 
-        var tm =@Model.Duration
+        var tm =@Model.DurationInMin
         tm = parseInt(tm) * 60;
 
         // Initialize progress bar.
@@ -180,13 +180,14 @@
 
         $('.QuestionCheckbox').on('click', QuestionCheckboxClicked);
     });
-        
+
     function QuestionCheckboxClicked(event) {
         var questionId = $(this).attr('id');
         UpdateCurrentQuestionAndLoadNewOne(questionId);
     }
 
     function UpdateCurrentQuestionAndLoadNewOne(questionId) {
+        UpdateTimeDB();
         var questionNavigationDetails = GetCurrentQuestionStatus();
         UpdateCurrentQuestionNavigationStatus(questionNavigationDetails);
         MarkAsViewed(questionId);
@@ -295,9 +296,6 @@
             var newprogress = parseInt((parseInt(leftTm) / parseInt(totalTime)) * 100);
             $('#progressBar').attr('aria-valuenow', clock.getTime()).css('width', newprogress + "%");
             $('#progressInfo').text(newprogress + "%");
-
-            UpdateTimeDB(time);
-
             if (time == 60) {
                 var timerCntVal = $("#TimerIncCount").val();
                 if (timerCntVal == 0)
@@ -341,31 +339,33 @@
         }
     }
 
-    function UpdateTimeDB(tm) {
-        var userTestSuiteId = $("#UserTestSuiteId").val();
-        $.ajax({
-            url: '/Candidate/UpdateTimeCounter',
-            dataType: "json",
-            type: "POST",
-            contentType: 'application/json; charset=utf-8',
-            data: JSON.stringify({ time: tm, userTestSuiteId: userTestSuiteId }),
-            success: function () {
-            },
-            error: function () {
-            }
-        });
+    function UpdateTimeDB() {
+        var time = clock.getTime().time;
+        if (time / 60 != 0) {
+            var userTestSuiteId = $("#UserTestSuiteId").val();
+            $.ajax({
+                url: '/Candidate/UpdateTimeCounter',
+                dataType: "json",
+                type: "POST",
+                contentType: 'application/json; charset=utf-8',
+                data: JSON.stringify({ time: time, userTestSuiteId: userTestSuiteId }),
+                success: function () {
+                },
+                error: function () {
+                }
+            });
+        }
     }
 
     function OnNext(e) {
         var questionId = $('#btnNext').attr('data-id');
-            UpdateCurrentQuestionAndLoadNewOne(questionId);
+        UpdateCurrentQuestionAndLoadNewOne(questionId);
         return false;
     }
 
     function OnPrevious() {
         var questionId = $('#btnPrevious').attr('data-id');
-
-             UpdateCurrentQuestionAndLoadNewOne(questionId);
+        UpdateCurrentQuestionAndLoadNewOne(questionId);
         return false;
     }
 
@@ -508,16 +508,16 @@
     });
 
 
-    
+
 
     $('#btnNext').on('click', function () {
         toggleFullScreen();
     });
 
 
-    $(document).bind('keydown', function (e) {        
+    $(document).bind('keydown', function (e) {
         if (e.keyCode === 27) { // Escape key
-            e.preventDefault();             
+            e.preventDefault();
         }
     });
 
