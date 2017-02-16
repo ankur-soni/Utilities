@@ -900,9 +900,6 @@
     <None Include="Web.Production.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
-    <None Include="Web.Release.config">
-      <DependentUpon>Web.config</DependentUpon>
-    </None>
     <None Include="Web.UAT.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
