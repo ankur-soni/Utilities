@@ -258,51 +258,56 @@ namespace Silicus.Encourage.Services
                 var nominationOfWinnner = _encourageDbcontext.Query<Nomination>().FirstOrDefault(nomination => nomination.Id == winner.NominationId);
 
                 var user = _CommonDbContext.Query<User>().FirstOrDefault(u => u.ID == nominationOfWinnner.UserId);
-                if (user != null)
+                if (user == null)
                 {
-                    var userName = user.DisplayName;
-                    var award = _encourageDbcontext.Query<Award>().FirstOrDefault(a => a.Id == nominationOfWinnner.AwardId);
-                    if (award != null)
+                    continue;
+                }
+                var userName = user.DisplayName;
+                var award = _encourageDbcontext.Query<Award>().FirstOrDefault(a => a.Id == nominationOfWinnner.AwardId);
+                if (award == null)
+                {
+                    continue;
+                }
+
+                var awardName = award.Name;
+                var manager = _CommonDbContext.Query<User>().FirstOrDefault(u => u.ID == nominationOfWinnner.ManagerId);
+                if (manager == null)
+                {
+                    continue;
+                }
+
+                var managerName = manager.DisplayName;
+
+                if (nominationOfWinnner != null && nominationOfWinnner.ProjectID != null)
+                {
+                    var engagement = _CommonDbContext.Query<Engagement>().FirstOrDefault(enagegement => enagegement.ID == nominationOfWinnner.ProjectID);
+                    if (engagement != null)
                     {
-                        var awardName = award.Name;
-                        var manager = _CommonDbContext.Query<User>().FirstOrDefault(u => u.ID == nominationOfWinnner.ManagerId);
-                        if (manager != null)
-                        {
-                            var managerName = manager.DisplayName;
-
-                            if (nominationOfWinnner != null && nominationOfWinnner.ProjectID != null)
-                            {
-                                var engagement = _CommonDbContext.Query<Engagement>().FirstOrDefault(enagegement => enagegement.ID == nominationOfWinnner.ProjectID);
-                                if (engagement != null)
-                                {
-                                    projectName = engagement.Name;
-                                }
-                            }
-                            else
-                            {
-                                var engagement = _CommonDbContext.Query<Department>().FirstOrDefault(enagegement => enagegement.ID == nominationOfWinnner.DepartmentId);
-                                if (engagement != null)
-                                {
-                                    projectName = engagement.Name;
-                                }
-                            }
-
-                            if (nominationOfWinnner != null && nominationOfWinnner.NominationDate != null)
-                            {
-                                var awardPeriod = nominationOfWinnner.NominationDate.Value.ToString("MMMM") + " - " + nominationOfWinnner.NominationDate.Value.Year.ToString();
-                                var winnerData = new WinnerData()
-                                {
-                                    Name = userName,
-                                    AwardName = awardName,
-                                    AwardPeriod = awardPeriod,
-                                    ManagerName = managerName,
-                                    ProjectName = projectName
-                                };
-
-                                winnersList.Add(winnerData);
-                            }
-                        }
+                        projectName = engagement.Name;
                     }
+                }
+                else
+                {
+                    var engagement = _CommonDbContext.Query<Department>().FirstOrDefault(enagegement => enagegement.ID == nominationOfWinnner.DepartmentId);
+                    if (engagement != null)
+                    {
+                        projectName = engagement.Name;
+                    }
+                }
+
+                if (nominationOfWinnner != null && nominationOfWinnner.NominationDate != null)
+                {
+                    var awardPeriod = nominationOfWinnner.NominationDate.Value.ToString("MMMM") + " - " + nominationOfWinnner.NominationDate.Value.Year.ToString();
+                    var winnerData = new WinnerData()
+                    {
+                        Name = userName,
+                        AwardName = awardName,
+                        AwardPeriod = awardPeriod,
+                        ManagerName = managerName,
+                        ProjectName = projectName
+                    };
+
+                    winnersList.Add(winnerData);
                 }
             }
             return winnersList;
