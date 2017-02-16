@@ -19,10 +19,7 @@
             <h1 class="dashboard-name">Edit Candidate</h1>
         </div>
         <script>
-            $(document).ready(function()
-            {
-                SetNavigationMenuActive('Candidates');
-            })
+            SetNavigationMenuActive('Candidates');
         </script>
     }
     else
@@ -31,12 +28,9 @@
             <h1 class="dashboard-name">Add Candidate</h1>
         </div>
         <script>
-            $(document).ready(function()
-            {
-                SetNavigationMenuActive('Candidates');
-                $('#file').css('display','block');
-                fileBool=true;
-            })
+            SetNavigationMenuActive('Candidates');
+            $('#file').css('display','block');
+            fileBool=true;
         </script>
     }
 
@@ -296,11 +290,11 @@
                                     </div>
                                     <div class="col-md-6">
                                         <div class="outer-box">
-                                        <div class="demo-section k-content">
-                                            <input id="file" name="files" type="file" data-role="upload" style="display:none" />
-                                            @*<input name="files" id="files" type="file" />*@
-                                            
-                                        </div>
+                                            <div class="demo-section k-content">
+
+                                                @*<input name="files" id="files" type="file" />*@
+
+                                            </div>
                                             @if (!string.IsNullOrEmpty(Model.ResumeName))
                                             {
                                                 <div id="uploadFileLink" class="postuploadedfilesholder clearfix">
@@ -318,20 +312,34 @@
                                                     }
                                                 </script>
                                             }
-                                           
-                                        </div> 
-                                        <span class="k-invalid-msg" data-for="files"></span>                                       
+                                            else
+                                            {
+                                                <input id="file" name="ResumeFile" type="file" data-role="upload" />
+                                            }
+
+                                        </div>
+                                        <span class="k-invalid-msg" data-for="files"></span>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="col-md-6">
+                                        <label for="file">Upload Image:</label>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <img id="ProfilePhotoImage" src="" style="display:none;height:100px;width:100px">
+                                        <input type="file" name="ProfilePhotofile" id="ProfilePhoto" style="width: 100%;" />
                                     </div>
                                 </div>
                             </div>
                         </div>
+
                         <div class="row" style="margin-bottom:10px!important">
                             <div class="col-sm-12"></div>
                             <div class="col-sm-12">
                                 <div class="pull-right btn-nav">
                                     @(Html.Kendo().Button()
                                      .Name("btnSave")
-                                    .HtmlAttributes(new { type = "submit", @style="width:58px;" })
+                                    .HtmlAttributes(new { type = "submit", @style = "width:58px;" })
                                     .Content("Save"))
                                     @(Html.Kendo().Button()
                                                 .Name("btnCancel")
@@ -363,7 +371,7 @@
                     @Html.Partial("~/Views/Shared/EditorTemplates/PostionEditorTemplete.cshtml", new Silicus.Ensure.Web.Models.PositionViewModel())
                 </div>
                 <div class="modal-footer">
-                    <button type="button" style="width:70px;"  onclick="savePostion()" class="btn btn-default">Save</button>
+                    <button type="button" style="width:70px;" onclick="savePostion()" class="btn btn-default">Save</button>
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
                 </div>
             </div>
@@ -372,15 +380,12 @@
     </form>
 </div>
 <script>
-
-
     var fileBool=false;
     $(document).ready(function () {
         $('#messageDiv').fadeOut(5000);
-    });
-    
-    $(document).ready(function () {
-        //$('#uploadFileLink').ke
+        $('#ProfilePhoto').change(function (){
+            ShowProfilePhoto(this);
+        });
         $("#files").kendoUpload();
         $(".toggleEnabled").click(function() {
             getUpload().toggle();
@@ -398,6 +403,17 @@
         });
     });
 
+    function ShowProfilePhoto(input){
+        if (input.files && input.files[0]) {
+            var reader = new FileReader();
+            reader.onload = function (e) {
+                $('#ProfilePhotoImage').attr('src', e.target.result);
+            }
+            reader.readAsDataURL(input.files[0]);
+            $('#ProfilePhotoImage').show();
+        }
+
+    }
 
 
     function savePostion()
@@ -590,8 +606,8 @@
                         }
                     }
                     if (input.is("[id='file']")&&fileBool) {
-                        if (!(input.val() != "")) {                            
-                            input.attr("data-experiencevalidation-msg", "File is required!");                          
+                        if (!(input.val() != "")) {
+                            input.attr("data-experiencevalidation-msg", "File is required!");
                             return false;
                         }
                         else if(input.val() != "")

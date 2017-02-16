@@ -219,45 +219,56 @@ namespace Silicus.Ensure.Web.Controllers
         /// <summary>
         /// Add or update user details
         /// </summary>
-        /// <param name="vuser"></param>
+        /// <param name="user"></param>
         /// <param name="files"></param>
         /// <returns></returns>
         [HttpPost]
-        public async Task<ActionResult> CandidateSave(UserViewModel vuser, HttpPostedFileBase files)
+        public async Task<ActionResult> CandidateSave(UserViewModel user)
         {
-            string actionErrorName = vuser.Role.ToLower() == RoleName.Candidate.ToString().ToLower() ? "CandidateAdd" : "PanelAdd";
-            string controllerName = vuser.Role.ToLower() == RoleName.Candidate.ToString().ToLower() ? "Admin" : "Panel";
+            string actionErrorName = user.Role.ToLower() == RoleName.Candidate.ToString().ToLower() ? "CandidateAdd" : "PanelAdd";
+            string controllerName = user.Role.ToLower() == RoleName.Candidate.ToString().ToLower() ? "Admin" : "Panel";
             try
             {
-
-                if (vuser.UserId != 0)
+                if (user.ResumeFile != null)
                 {
-                    UpdateUserMethod(vuser, files);
+                    UploadResume(user);
+                }
+
+                if (user.ProfilePhotoFile != null)
+                {
+                    UploadProfilePhoto(user);
+                }
+
+                if (user.UserId != 0)
+                {
+                    UpdateUserMethod(user);
                 }
                 else
                 {
-                    vuser = await CreateUserMethod(vuser, files);
+                    user = await CreateUserMethod(user);
 
-                    if (!string.IsNullOrWhiteSpace(vuser.ErrorMessage)) { return RedirectToAction(actionErrorName, controllerName, new { UserId = vuser.UserId }); }
+                    if (!string.IsNullOrWhiteSpace(user.ErrorMessage)) { return RedirectToAction(actionErrorName, controllerName, new { UserId = user.UserId }); }
 
-                    var organizationUserDomainModel = _mappingService.Map<UserViewModel, UserBusinessModel>(vuser);
+                    var organizationUserDomainModel = _mappingService.Map<UserViewModel, UserBusinessModel>(user);
                     organizationUserDomainModel.IsDeleted = false;
-                    int Add = _userService.Add(organizationUserDomainModel);
+                    _userService.Add(organizationUserDomainModel);
                     TempData["Success"] = "User created successfully!";
                 }
+
+
 
             }
             catch (Exception ex)
             {
                 ModelState.AddModelError("", ex.Message);
-                vuser.ErrorMessage = ex.Message;
-                TempData["UserViewModel"] = vuser;
+                user.ErrorMessage = ex.Message;
+                TempData["UserViewModel"] = user;
                 ViewBag.RoleId = new SelectList(RoleManager.Roles, "Name", "Name");
-                return RedirectToAction(actionErrorName, controllerName, new { UserId = vuser.UserId });
+                return RedirectToAction(actionErrorName, controllerName, new { UserId = user.UserId });
 
             }
             ViewBag.UserRoles = RoleManager.Roles.Select(r => new SelectListItem { Text = r.Name, Value = r.Name }).ToList();
-            return RedirectToAction(vuser.Role.ToLower() == RoleName.Candidate.ToString().ToLower() ? "Candidates" : "Index", controllerName);
+            return RedirectToAction(user.Role.ToLower() == RoleName.Candidate.ToString().ToLower() ? "Candidates" : "Index", controllerName);
         }
 
         /// <summary>
@@ -265,26 +276,9 @@ namespace Silicus.Ensure.Web.Controllers
         /// </summary>
         /// <param name="vuser"></param>
         /// <param name="files"></param>
-        private void UpdateUserMethod(UserViewModel vuser, HttpPostedFileBase files)
+        private void UpdateUserMethod(UserViewModel vuser)
         {
-            string ResumePath = "";
-            string ResumeName = "";
             var user = _userService.GetUserById(vuser.UserId);
-            if (vuser.Role.ToLower() == RoleName.Candidate.ToString().ToLower())
-            {
-                if (files != null)
-                {
-                    GetFilePath(files, out ResumePath, out ResumeName);
-                    vuser.ResumePath = ResumePath;
-                    vuser.ResumeName = ResumeName;
-                }
-                else
-                {
-                    vuser.ResumePath = user.ResumePath;
-                    vuser.ResumeName = user.ResumeName;
-                }
-
-            }
             if (user != null)
             {
                 var organizationUserDomainModel = _mappingService.Map<UserViewModel, UserBusinessModel>(vuser);
@@ -302,10 +296,8 @@ namespace Silicus.Ensure.Web.Controllers
         /// <param name="vuser"></param>
         /// <param name="files"></param>
         /// <returns></returns>
-        private async Task<UserViewModel> CreateUserMethod(UserViewModel vuser, HttpPostedFileBase files)
+        private async Task<UserViewModel> CreateUserMethod(UserViewModel vuser)
         {
-            string ResumePath = "";
-            string ResumeName = "";
             var user = new ApplicationUser { UserName = vuser.Email, Email = vuser.Email };
             if (vuser.Role.ToLower() == RoleName.Candidate.ToString().ToLower())
             {
@@ -319,12 +311,6 @@ namespace Silicus.Ensure.Web.Controllers
             if (userResult.Succeeded)
             {
                 vuser.IdentityUserId = new Guid(user.Id);
-                if (files != null)
-                {
-                    GetFilePath(files, out ResumePath, out ResumeName);
-                    vuser.ResumePath = ResumePath;
-                    vuser.ResumeName = ResumeName;
-                }
                 var result = await UserManager.AddToRoleAsync(user.Id, vuser.Role);
                 if (!result.Succeeded)
                 {
@@ -343,19 +329,42 @@ namespace Silicus.Ensure.Web.Controllers
             return vuser;
         }
 
+        private void UploadProfilePhoto(UserViewModel user)
+        {
+            var fileModel = new FileUploadModel
+            {
+                File = user.ProfilePhotoFile,
+                FolderName = AppConstants.ProfilePhotoFolderName,
+                FileName = user.UserId.ToString() + Path.GetExtension(user.ProfilePhotoFile.FileName)
+            };
+            UploadFile(fileModel);
+            user.ProfilePhotoFilePath = fileModel.FilePath;
+        }
+
+        private void UploadResume(UserViewModel user)
+        {
+            var fileModel = new FileUploadModel
+            {
+                File = user.ResumeFile,
+                FolderName = AppConstants.ResumeFolderName,
+                FileName = Guid.NewGuid() + AppConstants.ResumeNameSeparationCharacter + user.ResumeFile.FileName
+            };
+            UploadFile(fileModel);
+            user.ResumePath = fileModel.FilePath;
+            user.ResumeName = fileModel.FileName;
+        }
+
         /// <summary>
         /// Return file path
         /// </summary>
         /// <param name="files"></param>
         /// <returns></returns>
-        private void GetFilePath(HttpPostedFileBase files, out string resumePath, out string resumeName)
+        private void UploadFile(FileUploadModel fileModel)
         {
-            resumeName = Guid.NewGuid() + AppConstants.ResumeNameSeparationCharacter + Path.GetFileName(files.FileName);
-            resumePath = Path.Combine(Server.MapPath("~/CandidateResume"), resumeName);
-            Directory.CreateDirectory(Server.MapPath("~/CandidateResume"));
-            files.SaveAs(resumePath);
-            string newpath = Path.GetFileName(resumePath);
-            resumePath = "~/CandidateResume/" + newpath;
+            fileModel.FilePath = Path.Combine(Server.MapPath(fileModel.FolderName), fileModel.FileName);
+            Directory.CreateDirectory(Server.MapPath(fileModel.FolderName));
+            fileModel.File.SaveAs(fileModel.FilePath);
+            fileModel.FilePath = Path.Combine(fileModel.FolderName, fileModel.FileName);
         }
     }
 }

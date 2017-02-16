@@ -450,6 +450,7 @@
     <Compile Include="Models\Test\ReviwerViewTestViewModel.cs" />
     <Compile Include="Models\Test\TestDetailsViewModel.cs" />
     <Compile Include="Models\Test\TestSummaryViewModel.cs" />
+    <Compile Include="Models\FileUploadModel.cs" />
     <Compile Include="Models\UserDetailViewModel.cs" />
     <Compile Include="Models\UserViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

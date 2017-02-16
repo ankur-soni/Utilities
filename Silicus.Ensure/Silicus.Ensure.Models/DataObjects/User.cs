@@ -29,6 +29,8 @@ namespace Silicus.Ensure.Models.DataObjects
 
         public string ContactNumber { get; set; }
 
+        public string ProfilePhotoFilePath { get; set; }
+
         public bool IsActive { get; set; }
 
         public bool IsDeleted { get; set; }

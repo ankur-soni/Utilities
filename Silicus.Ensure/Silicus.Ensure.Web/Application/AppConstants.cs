@@ -11,5 +11,7 @@ namespace Silicus.Ensure.Web.Application
         public const string TestStatusUnAssigned = "UnAssigned";
         public const string TestStatusSubmitted = "Submitted";
         public const string ResumeNameSeparationCharacter = "_";
+        public const string ResumeFolderName = "~/CandidateResume";
+        public const string ProfilePhotoFolderName = "~/CandidateProfilePhoto";
     }
 }
