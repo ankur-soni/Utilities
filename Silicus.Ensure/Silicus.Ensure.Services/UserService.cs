@@ -154,13 +154,6 @@ namespace Silicus.Ensure.Services
             foreach (var user in users)
             {
                 var objUser = UserToBusinessModel(user);
-                //int panelId = 0;
-                //if (int.TryParse(objUser.PanelId, out panelId))
-                //{
-                //    var panelDetails = panelMeberDetails.FirstOrDefault(y => y.UserId == panelId);
-                //    if (panelDetails != null)
-                //        objUser.PanelName = panelDetails.LastName + " " + panelDetails.FirstName;
-                //}
                 userModel.Add(objUser);
             }
             return userModel;
