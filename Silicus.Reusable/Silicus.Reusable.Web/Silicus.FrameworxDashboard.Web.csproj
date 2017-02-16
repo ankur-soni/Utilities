@@ -263,6 +263,10 @@
       <HintPath>..\packages\PagedList.Mvc.4.5.0.0\lib\net40\PagedList.Mvc.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="Silicus.FrameWorx.Logger, Version=1.0.1.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Silicus.FrameWorx.Logger.1.0.1\lib\net45\Silicus.FrameWorx.Logger.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="Silicus.UtilityContainer.Entities, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\Dependencies\Silicus.UtilityContainer.Entities.dll</HintPath>
@@ -384,6 +388,7 @@
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="Constants.cs" />
     <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Controllers\ErrorController.cs" />
     <Compile Include="Controllers\FrameworxFeedbackController.cs" />
     <Compile Include="Controllers\ExtensionController.cs" />
     <Compile Include="Controllers\FrameworxProjectController.cs" />
@@ -411,12 +416,24 @@
     <Content Include="Content\font-awesome\css\font-awesome.css" />
     <Content Include="Content\font-awesome\css\font-awesome.min.css" />
     <Content Include="Content\font-awesome\css\_notes\dwsync.xml" />
-    <Content Include="Content\font-awesome\fonts\fontawesome-webfont.eot" />
-    <Content Include="Content\font-awesome\fonts\fontawesome-webfont.svg" />
-    <Content Include="Content\font-awesome\fonts\fontawesome-webfont.ttf" />
-    <Content Include="Content\font-awesome\fonts\fontawesome-webfont.woff" />
-    <Content Include="Content\font-awesome\fonts\fontawesome-webfont.woff2" />
-    <Content Include="Content\font-awesome\fonts\FontAwesome.otf" />
+    <Content Include="Content\font-awesome\fonts\fontawesome-webfont.eot">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\font-awesome\fonts\fontawesome-webfont.svg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\font-awesome\fonts\fontawesome-webfont.ttf">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\font-awesome\fonts\fontawesome-webfont.woff">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\font-awesome\fonts\fontawesome-webfont.woff2">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\font-awesome\fonts\FontAwesome.otf">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="Content\font-awesome\fonts\_notes\dwsync.xml" />
     <Content Include="Content\font-awesome\less\animated.less" />
     <Content Include="Content\font-awesome\less\bordered-pulled.less" />
@@ -520,6 +537,9 @@
     <Content Include="Images\favicon.ico" />
     <Content Include="Images\logo.jpg" />
     <Content Include="Images\logo.svg" />
+    <Content Include="Images\pagenotfound.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="LESS\style.css" />
     <Content Include="LESS\_notes\dwsync.xml" />
     <Content Include="Scripts\ai.0.22.9-build00167.js" />
@@ -557,7 +577,9 @@
     <Content Include="Content\plugins\Kendo\2015.3.1111.340\fonts\glyphs\KendoUIGlyphs.eot" />
     <Content Include="Content\plugins\Kendo\2015.3.1111.340\fonts\glyphs\KendoUIGlyphs.ttf" />
     <Content Include="Content\plugins\Kendo\2015.3.1111.340\fonts\glyphs\KendoUIGlyphs.woff" />
+    <None Include="Properties\PublishProfiles\Reusable - FTP %282%29.pubxml" />
     <None Include="Properties\PublishProfiles\Reusable - FTP.pubxml" />
+    <None Include="Properties\PublishProfiles\Reusable - Web Deploy %282%29.pubxml" />
     <None Include="Properties\PublishProfiles\Reusable - Web Deploy.pubxml" />
     <None Include="Properties\PublishProfiles\Reusable.pubxml" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
@@ -700,7 +722,9 @@
     <Content Include="Web.Release.config">
       <DependentUpon>Web.config</DependentUpon>
     </Content>
-    <Content Include="Views\Web.config" />
+    <Content Include="Views\Web.config">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="Views\_ViewStart.cshtml" />
     <Content Include="Views\Shared\Error.cshtml" />
     <Content Include="Views\Shared\_Layout.cshtml" />
@@ -764,6 +788,13 @@
     <Content Include="Scripts\plugins\Kendo\2015.3.1111.340\kendo.data.min.js.map" />
     <Content Include="Scripts\plugins\Kendo\2015.3.1111.340\kendo.dataviz.min.js.map" />
     <Content Include="Views\Shared\EditorTemplates\ProductBacklogEditTemplate.cshtml" />
+    <Content Include="Views\Error\BadRequest.cshtml" />
+    <Content Include="Views\Error\CustomError.cshtml" />
+    <Content Include="Views\Error\Forbidden.cshtml" />
+    <Content Include="Views\Error\PageNotFound.cshtml" />
+    <Content Include="Views\Error\ServerError.cshtml" />
+    <Content Include="Views\Error\Unauthorized.cshtml" />
+    <Content Include="Views\Shared\_ErrorLayout.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
