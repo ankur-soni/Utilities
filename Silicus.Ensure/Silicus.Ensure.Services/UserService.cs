@@ -65,35 +65,11 @@ namespace Silicus.Ensure.Services
             if (userModel.FirstName != null && userModel.LastName != null)
             {
                 var applicationdetail = UserFromBusinessModelForUpdate(userModel);
-                // var user = UserFromBusinessModel(userModel);
-                // //_context.Entry(user.UserApplicationDetails.or).State = System.Data.EntityState.Modified;
-
-                // var rs = GetUserApplicationDetailsById(user.UserApplicationDetails.FirstOrDefault().UserApplicationDetailsId);
-                // rs.RequisitionId = "zzz1";
-                // rs.User.FirstName = "z121";
-
-                // _context.AttachAndMakeStateModified(rs);
-                // _context.AttachAndMakeStateModified(rs.User);
-                //// _context.Update(rs);
-                //  //_context.UpdateUser(rs);
-                // //_context.Update(user);
-                // _context.SaveChanges();
                 _context.AttachAndMakeStateModified(applicationdetail);
                 _context.AttachAndMakeStateModified(applicationdetail.User);
                 _context.SaveChanges();
 
             }
-            //if (User.Role != null && User.Role.ToLower() == RoleName.Candidate.ToString().ToLower())
-            //{
-            //    if (User.FirstName != null && User.LastName != null)
-            //    {
-            //        _context.Update(User);
-            //    }
-            //}
-            //else if (User.Role != null && (User.Role.ToLower() == RoleName.Admin.ToString().ToLower() || User.Role.ToLower() == RoleName.Panel.ToString().ToLower()))
-            //{
-            //    _context.Update(User);
-            //}
         }
 
         public void Delete(int userId)
@@ -243,21 +219,18 @@ namespace Silicus.Ensure.Services
                     objUser.Position = position == null ? "" : position.PositionName;
                     objUser.CandidateStatus = applicationDetails.CandidateStatus.ToString();
                     objUser.ClientName = applicationDetails.ClientName;
-                    objUser.ContactNumber = user.ContactNumber;
                     objUser.CurrentCompany = applicationDetails.CurrentCompany;
-                    objUser.CurrentLocation = user.CurrentLocation;
                     objUser.CurrentTitle = applicationDetails.CurrentTitle;
                     objUser.RelevantExperienceInMonth = applicationDetails.RelevantExperienceInMonth;
                     objUser.RelevantExperienceInYear = applicationDetails.RelevantExperienceInYear;
                     objUser.RequisitionId = applicationDetails.RequisitionId;
                     objUser.ResumeName = applicationDetails.ResumeName;
-                    objUser.ResumePath = applicationDetails.ResumeName;
+                    objUser.ResumePath = applicationDetails.ResumePath;
                     objUser.Technology = applicationDetails.Technology;
                     objUser.TestStatus = applicationDetails.CandidateStatus.ToString();
                     objUser.TotalExperienceInMonth = applicationDetails.TotalExperienceInMonth;
                     objUser.TotalExperienceInYear = applicationDetails.TotalExperienceInYear;
                     objUser.UserApplicationId = applicationDetails.UserApplicationDetailsId;
-
                     if (applicationDetails.PanelMemberId != null && applicationDetails.PanelMemberId > 0)
                         objUser.PanelId = applicationDetails.PanelMemberId.ToString();
 
@@ -273,11 +246,11 @@ namespace Silicus.Ensure.Services
             objUser.LastName = user.LastName;
             objUser.MiddleName = user.MiddleName;
             objUser.IsDeleted = user.IsDeleted;
-
+            objUser.ProfilePhotoFilePath = user.ProfilePhotoFilePath;
+            objUser.ContactNumber = user.ContactNumber;
+            objUser.CurrentLocation = user.CurrentLocation;
             objUser.Role = RoleName.Candidate.ToString();
-
             objUser.UserId = user.UserId;
-
             return objUser;
         }
 
@@ -302,7 +275,7 @@ namespace Silicus.Ensure.Services
             user.UserId = objUser.UserId;
             user.CurrentLocation = objUser.CurrentLocation;
             user.ContactNumber = objUser.ContactNumber;
-
+            user.ProfilePhotoFilePath = objUser.ProfilePhotoFilePath;
             UserApplicationDetails applicationDetails;
             if (user.UserApplicationDetails != null && user.UserApplicationDetails.Count > 0)
             {
@@ -355,16 +328,11 @@ namespace Silicus.Ensure.Services
             if (objUser.UserId > 0)
             {
                 applicationDetails = GetLatesUserApplication(objUser.UserId);
-                //user.UserApplicationDetails.Where(x => x.UserId == user.UserId).OrderByDescending(y => y.CreatedDate).FirstOrDefault();
-
             }
             else
             {
                 applicationDetails = new UserApplicationDetails();
             }
-
-
-            //User user;
             if (applicationDetails.User == null)
             {
                 applicationDetails.User = new User();
@@ -379,15 +347,13 @@ namespace Silicus.Ensure.Services
             applicationDetails.User.UserId = objUser.UserId;
             applicationDetails.User.CurrentLocation = objUser.CurrentLocation;
             applicationDetails.User.ContactNumber = objUser.ContactNumber;
+            applicationDetails.User.ProfilePhotoFilePath = objUser.ProfilePhotoFilePath;
 
-
-            int panelId = 0;
+            int panelId;
             if (int.TryParse(objUser.PanelId, out panelId) && panelId > 0)
             {
                 applicationDetails.PanelMemberId = panelId;
             }
-
-
             var position = _positionService.GetPositionByName(objUser.Position);
             if (position != null)
                 applicationDetails.PositionId = position.PositionId;
@@ -406,15 +372,7 @@ namespace Silicus.Ensure.Services
             applicationDetails.TotalExperienceInMonth = objUser.TotalExperienceInMonth;
             applicationDetails.TotalExperienceInYear = objUser.TotalExperienceInYear;
             applicationDetails.CreatedDate = DateTime.Now;
-
-            //if (user.UserApplicationDetails == null)
-            //{
-            //    user.UserApplicationDetails = new List<UserApplicationDetails>();
-            //}
-            // user.UserApplicationDetails.Add(applicationDetails);
-
             applicationDetails.User.CreatedDate = DateTime.Now;
-            // user.CreatedBy = DateTime.Now;
             return applicationDetails;
         }
 
