@@ -42,6 +42,8 @@ namespace Silicus.Ensure.Web.Controllers
         private readonly IUserService _userService;
         private readonly IPositionService _positionService;
         private readonly Silicus.UtilityContainer.Services.Interfaces.IUserService _containerUserService;
+
+        private readonly CommonController _commonController;
         public ApplicationUserManager UserManager
         {
             get
@@ -67,7 +69,7 @@ namespace Silicus.Ensure.Web.Controllers
             }
         }
 
-        public AdminController(IEmailService emailService, ITagsService tagService, ITestSuiteService testSuiteService, MappingService mappingService, IQuestionService questionService, IUserService userService, IPositionService positionService, ILogger logger, Silicus.UtilityContainer.Services.Interfaces.IUserService containerUserService)
+        public AdminController(IEmailService emailService, ITagsService tagService, ITestSuiteService testSuiteService, MappingService mappingService, IQuestionService questionService, IUserService userService, IPositionService positionService, ILogger logger, Silicus.UtilityContainer.Services.Interfaces.IUserService containerUserService, CommonController commonController)
         {
             _emailService = emailService;
             _tagsService = tagService;
@@ -78,6 +80,7 @@ namespace Silicus.Ensure.Web.Controllers
             _positionService = positionService;
             _logger = logger;
             _containerUserService = containerUserService;
+            _commonController = commonController;
         }
 
         [AcceptVerbs(HttpVerbs.Post)]
@@ -297,6 +300,9 @@ namespace Silicus.Ensure.Web.Controllers
                     updateUser.PanelId = Convert.ToString(user.UserId);
                     updateUser.PanelName = user.FirstName + " " + user.LastName;
                     _userService.Update(updateUser);
+                    List<string> Receipient = new List<string>() { "Admin", "Panel" };
+                    _commonController.SendMailByRoleName("Panel Assigned For " + updateUser.FirstName + " " + updateUser.LastName + " Successfully", "CandidatePanelAssigned.cshtml", Receipient, updateUser.FirstName + " " + updateUser.LastName);
+
                 }
 
                 return Json(1);
@@ -377,6 +383,10 @@ namespace Silicus.Ensure.Web.Controllers
                     selectUser.CandidateStatus = Convert.ToString(CandidateStatus.TestAssigned);
                     // selectUser.TestSuiteId = SuiteId;
                     _userService.Update(selectUser);
+
+                    //Send Candidate creation mail to Admin and Recruiter
+                    List<string> Receipient = new List<string>() { "Admin", "Panel" };
+                    _commonController.SendMailByRoleName("Test Assigned For "+ selectUser.FirstName+ " " +selectUser.LastName +" Successfully", "CandidateTestAssigned.cshtml", Receipient, selectUser.FirstName + " " + selectUser.LastName);
                     return Json(1);
                 }
                 else
@@ -762,6 +772,10 @@ namespace Silicus.Ensure.Web.Controllers
                     userDetails.CandidateStatus = CandidateStatus.UnderEvaluation.ToString();
                     _userService.Update(userDetails);
                 }
+
+                List<string> Receipient = new List<string>() { "Admin", "Panel" };
+                _commonController.SendMailByRoleName("Test Submitted For " + userDetails.FirstName + " " + userDetails.LastName + " Successfully", "CandidateTestSubmitted.cshtml", Receipient, userDetails.FirstName + " " + userDetails.LastName);
+
                 return View(submittedTestViewModel);
 
             }

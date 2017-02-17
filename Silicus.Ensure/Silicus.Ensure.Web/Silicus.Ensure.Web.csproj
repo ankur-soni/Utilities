@@ -232,6 +232,10 @@
       <HintPath>..\packages\Owin.1.0\lib\net40\Owin.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="RazorEngine, Version=3.9.3.0, Culture=neutral, PublicKeyToken=9ee697374c7e744a, processorArchitecture=MSIL">
+      <HintPath>..\packages\RazorEngine.3.9.3\lib\net45\RazorEngine.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="RazorPDF, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\RazorPDF.1.0.0\lib\net45\RazorPDF.dll</HintPath>
@@ -427,6 +431,7 @@
     <Compile Include="Models\CandidateViewModel.cs" />
     <Compile Include="Models\ChangePasswordModel.cs" />
     <Compile Include="Models\ContainerUserViewModel.cs" />
+    <Compile Include="Models\EmailHelper.cs" />
     <Compile Include="Models\EmailModel.cs" />
     <Compile Include="Models\ForgotPassword.cs" />
     <Compile Include="Models\LoginModel.cs" />
@@ -585,6 +590,15 @@
     </Content>
     <Content Include="Content\css\Kendo\2014.1.416\kendo.custom.dataviz.json" />
     <Content Include="Content\css\Kendo\2014.1.416\kendo.custom.less" />
+    <Content Include="EmailTemplates\WelcomeMail.cshtml" />
+    <Content Include="EmailTemplates\TestAssignedMail.cshtml" />
+    <Content Include="EmailTemplates\TestSubmittedMail .cshtml" />
+    <Content Include="EmailTemplates\EvaluationStartedMail .cshtml" />
+    <Content Include="EmailTemplates\EvaluationSubmittedMail.cshtml" />
+    <Content Include="EmailTemplates\CandidateTestAssigned.cshtml" />
+    <Content Include="EmailTemplates\CandidateCreated.cshtml" />
+    <Content Include="EmailTemplates\CandidateTestSubmitted.cshtml" />
+    <Content Include="EmailTemplates\CandidatePanelAssigned.cshtml" />
     <None Include="Properties\PublishProfiles\ensure - FTP.pubxml" />
     <None Include="Properties\PublishProfiles\ensure - Web Deploy.pubxml" />
     <None Include="Scripts\jquery-2.1.4.intellisense.js" />
