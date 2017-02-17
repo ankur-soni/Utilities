@@ -2,6 +2,7 @@
 using Silicus.Ensure.Models;
 using Silicus.Ensure.Models.DataObjects;
 using Silicus.Ensure.Models.Test;
+using System;
 
 namespace Silicus.Ensure.Services.Interfaces
 {
@@ -36,5 +37,7 @@ namespace Silicus.Ensure.Services.Interfaces
         CandidateInfoBusinessModel GetCandidateInfo(UserBusinessModel user);
 
         UserBusinessModel GetUserByUserApplicationId(int UserApplicationDetailId);
+
+        IEnumerable<UserBusinessModel> GetCandidates(string firstName, string lastName, DateTime dob);
     }
 }

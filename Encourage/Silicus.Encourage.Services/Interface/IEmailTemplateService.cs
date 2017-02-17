@@ -12,7 +12,7 @@ namespace Silicus.Encourage.Services.Interface
     {
         EmailTemplate GetEmailTemplate(int templateId);
         List<EmailTemplate> GetAllTemplates();
-        List<User> GetAllManagers();
+        List<User> GetAllManagers(string templateName);
         string SendEmail(List<string> ToEmailAddresses, string body, string emailSubject);
         string UpdateEmailTemplate(int templateId, string updatedTemplate);
         EmailTemplate SaveEmailTemplate(string templateName, string template);

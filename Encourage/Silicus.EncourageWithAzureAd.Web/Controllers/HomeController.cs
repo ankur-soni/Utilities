@@ -47,8 +47,7 @@ namespace Silicus.EncourageWithAzureAd.Web.Controllers
             _logger.Log("Home-Index");
             var customDate = _customDateService.GetCustomDate(1);
             DashboardViewModel dashboardViewModel = new DashboardViewModel();
-            //dashboardViewModel.NominationList = GetWinnersList(DateTime.Now.Month, DateTime.Now.Year, 1);
-            dashboardViewModel.NominationList = GetWinnersList(customDate.Month,customDate.Year, 1);
+            dashboardViewModel.NominationList = GetWinnersList(customDate.Month, customDate.Year, 1);
 
             string utiltyName = WebConfigurationManager.AppSettings["ProductName"];
 
@@ -103,8 +102,6 @@ namespace Silicus.EncourageWithAzureAd.Web.Controllers
             {
                 _logger.Log("Home-GetWinnersList");
 
-                //int requiredMonth = month != 0 ? month : DateTime.Now.Month;
-                //int requiredYear = year != 0 ? year : DateTime.Now.Year;
                 int requiredMonth = month != 0 ? month : customdate.Month;
                 int requiredYear = year != 0 ? year : customdate.Year;
                 int requiredAwardId = award.Id;
@@ -115,10 +112,10 @@ namespace Silicus.EncourageWithAzureAd.Web.Controllers
                     case "PINNACLE":
                         winners = _encourageDatabaseContext.Query<Shortlist>()
                         .Where(w =>
-                            w.IsWinner == true && 
+                            w.IsWinner == true &&
                             w.Nomination.AwardId == requiredAwardId &&
-                            w.WinningDate.Value.Year == requiredYear 
-                            
+                            w.WinningDate.Value.Year == requiredYear
+
                             ).ToList();
                         break;
                     default:
@@ -176,32 +173,31 @@ namespace Silicus.EncourageWithAzureAd.Web.Controllers
             {
                 var superUserName = User.Identity.Name;
 
-                var user = _commonDbContext.Query<User>().FirstOrDefault(u => u.EmailAddress.ToLower() == loginAs.Username.ToLower());
-                if (user != null)
-                {
-                    string utility = WebConfigurationManager.AppSettings["ProductName"];
-                    var roles = _commonDbContext.Query<UtilityUserRoles>().Where(x => x.User.EmailAddress.ToLower() == loginAs.Username.ToLower() && x.Utility.Name.ToLower() == utility.ToLower()).Select(x => x.Role.Name).ToList();
-
-                    if (roles.Contains("Manager") || roles.Contains("Reviewer"))
-                    {
-                        User.AddUpdateClaim(ClaimTypes.Name, user.EmailAddress);
-                        User.AddUpdateClaim(ClaimTypes.Upn, user.EmailAddress);
-                        User.AddUpdateClaim(ClaimTypes.Surname, user.LastName);
-                        User.AddUpdateClaim(ClaimTypes.GivenName, user.FirstName);
-
-                        if(string.IsNullOrEmpty(User.GetClaimValue("RootUserName")))
-                        {
-                            User.AddUpdateClaim("RootUserName", superUserName);
-                        }
-
-                        return RedirectToAction("Index", "Home");
-                    }
-                    ModelState.AddModelError("error", "User does not have required permissions");
-                }
-                else
+                var user = _commonDbContext.Query<User>().FirstOrDefault(u => u.EmailAddress.ToLowerInvariant() == loginAs.Username.ToLowerInvariant());
+                if (user == null)
                 {
                     ModelState.AddModelError("error", "User does not exists");
+                    return View();
                 }
+                string utility = WebConfigurationManager.AppSettings["ProductName"];
+                var roles = _commonDbContext.Query<UtilityUserRoles>().Where(x => x.User.EmailAddress.ToLowerInvariant() == loginAs.Username.ToLowerInvariant() && x.Utility.Name.ToLowerInvariant() == utility.ToLowerInvariant()).Select(x => x.Role.Name).ToList();
+
+                if (roles.Contains("Manager") || roles.Contains("Reviewer"))
+                {
+                    User.AddUpdateClaim(ClaimTypes.Name, user.EmailAddress);
+                    User.AddUpdateClaim(ClaimTypes.Upn, user.EmailAddress);
+                    User.AddUpdateClaim(ClaimTypes.Surname, user.LastName);
+                    User.AddUpdateClaim(ClaimTypes.GivenName, user.FirstName);
+
+                    if (string.IsNullOrEmpty(User.GetClaimValue("RootUserName")))
+                    {
+                        User.AddUpdateClaim("RootUserName", superUserName);
+                    }
+
+                    return RedirectToAction("Index", "Home");
+                }
+                ModelState.AddModelError("error", "User does not have required permissions");
+
             }
             else
             {
