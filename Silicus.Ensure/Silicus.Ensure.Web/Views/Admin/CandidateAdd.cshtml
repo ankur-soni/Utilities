@@ -7,7 +7,7 @@
 }
 
 <div id="candidateDiv">
-    @Html.Partial("_CandidateProfile",Model)
+    @Html.Partial("_CandidateProfile", Model)
 
 </div>
 
@@ -66,7 +66,7 @@
 
     $(document).ready(function () {
         //$('#uploadFileLink').ke
-    loadKendoControls();
+        loadKendoControls();
     });
 
     function loadKendoControls()
@@ -75,7 +75,7 @@
             ShowProfilePhoto(this);
         });
 
-         $("#files").kendoUpload();
+        $("#files").kendoUpload();
         $(".toggleEnabled").click(function() {
             getUpload().toggle();
         });
@@ -349,56 +349,62 @@
 
     function checkExistingCandidate()
     {
-        var firstName=$("#FirstName").val();
-        var lastName=$("#LastName").val();
-        var dOB=$("#DOB").val();
-        $.ajax({
-            url: '/Candidate/GetCandidateGrid',
-            type: 'post',
-            dataType: 'html',
-            //async:false,
-            data: {firstName:firstName,lastName:lastName,dOB:dOB},
-            success: function (data) {
-                if(data)
-                {
-    debugger;
-    //$('#userGrids').data('kendoGrid').dataSource.data(data);
-                    $("#candidateGridPopup .modal-body").html(data);
-    if($('#userGrids').data('kendoGrid').dataSource.total()>0)
-    {
-                    $("#candidateGridPopup").modal('show');
-    }
+        var userId=$("#UserId").val();
+        if(userId==0)
+        {
+            var firstName=$("#FirstName").val();
+            var lastName=$("#LastName").val();
+            var dOB=$("#DOB").val();
+            $.ajax({
+                url: '/Admin/GetCandidateGrid',
+                type: 'post',
+                dataType: 'html',
+                //async:false,
+                data: {firstName:firstName,lastName:lastName,dOB:dOB},
+                success: function (data) {
+                    if(data)
+                    {
+                        debugger;
+                        //$('#userGrids').data('kendoGrid').dataSource.data(data);
+                        $("#candidateGridPopup .modal-body").html(data);
+                        if($('#userGrids').data('kendoGrid').dataSource.total()>0)
+                        {
+                            $("#candidateGridPopup").modal('show');
+                        }
+                    }
                 }
-            }
 
-        });
+            });
+        }
     }
 
     function loadCandidateDetails()
     {
-       var dataItem=GetDataItemOfSelectedRow();
+        var dataItem=GetDataItemOfSelectedRow();
         if(dataItem)
         {
-                $.ajax({
-            url: '/Candidate/GetCandidateProfile',
-            type: 'post',
-            dataType: 'html',
-            //async:false,
-            data: {userId:dataItem.UserId},
-            success: function (data) {
-                if(data)
-                {
-    debugger;
-    //$('#userGrids').data('kendoGrid').dataSource.data(data);
-                    $("#candidateDiv").html(data);
-                    loadKendoControls();
+            $.ajax({
+                url: '/Admin/GetCandidateProfile',
+                type: 'post',
+                dataType: 'html',
+                //async:false,
+                data: {userId:dataItem.UserId},
+                success: function (data) {
+                    if(data)
+                    {
+                        debugger;
+                        //$('#userGrids').data('kendoGrid').dataSource.data(data);
+                        $("#candidateDiv").html(data);
+                       // loadKendoControls();
+                        $('#IsCandidateReappear').val(true);
+                        $("#candidateGridPopup").modal('hide');
+                    }
                 }
-            }
 
-        });
+            });
         }
     }
-        function GetDataItemOfSelectedRow() {
+    function GetDataItemOfSelectedRow() {
         debugger;
         var checkedRow = $("[name=selectUser]:checked");
         if (checkedRow.length > 0) {
@@ -408,7 +414,7 @@
                 return dataItem;
             }
         }
-            return false;
+        return false;
     }
 </script>
 <style>

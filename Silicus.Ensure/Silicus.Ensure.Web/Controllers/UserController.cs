@@ -239,9 +239,13 @@ namespace Silicus.Ensure.Web.Controllers
                     UploadProfilePhoto(user);
                 }
 
-                if (user.UserId != 0)
+                if (user.UserId != 0 && !user.IsCandidateReappear)
                 {
                     UpdateUserMethod(user);
+                }
+                else if(user.IsCandidateReappear)
+                {
+                    CandidateReappear(user);
                 }
                 else
                 {
@@ -283,6 +287,26 @@ namespace Silicus.Ensure.Web.Controllers
                 organizationUserDomainModel.CandidateStatus = user.CandidateStatus;
                 organizationUserDomainModel.IsDeleted = false;
                 _userService.Update(organizationUserDomainModel);
+                TempData["Success"] = "User updated successfully!";
+            }
+
+        }
+
+        /// <summary>
+        /// Candidate Reappear 
+        /// </summary>
+        /// <param name="vuser"></param>
+        /// <param name="files"></param>
+        private void CandidateReappear(UserViewModel vuser)
+        {
+            var user = _userService.GetUserById(vuser.UserId);
+            if (user != null)
+            {
+                var organizationUserDomainModel = _mappingService.Map<UserViewModel, UserBusinessModel>(vuser);
+                organizationUserDomainModel.TestStatus = user.TestStatus;
+                organizationUserDomainModel.CandidateStatus = user.CandidateStatus;
+                organizationUserDomainModel.IsDeleted = false;
+                _userService.UpdateUserAndCreateNewApplication(organizationUserDomainModel);
                 TempData["Success"] = "User updated successfully!";
             }
 

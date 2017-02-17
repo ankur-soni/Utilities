@@ -45,6 +45,7 @@
                     {
                         <input type="hidden" id="Role" name="Role" value="@Silicus.Ensure.Models.Constants.RoleName.Candidate.ToString()" />
                         @Html.HiddenFor(m => m.UserId)
+                        @Html.HiddenFor(m => m.IsCandidateReappear)
                         <div class="fluid mt20">
                             <div class="row" style="margin-bottom:10px!important">
                                 @if (!string.IsNullOrWhiteSpace(Model.ErrorMessage))
@@ -348,3 +349,4 @@
         </div>
     </div>
 </div>
+
