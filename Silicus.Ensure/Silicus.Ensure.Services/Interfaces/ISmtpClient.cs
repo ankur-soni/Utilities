@@ -32,5 +32,7 @@ namespace Silicus.Ensure.Services.Interfaces
         void Send(MailMessage message);
        
         Task SendAsync(MailMessage message);
+
+        void SendMail(object message);
     }
 }

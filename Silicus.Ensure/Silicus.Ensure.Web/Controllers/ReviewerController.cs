@@ -23,8 +23,9 @@ namespace Silicus.Ensure.Web.Controllers
         private readonly IUserService _userService;
         private readonly ITestSuiteService _testSuiteService;
         private readonly Silicus.UtilityContainer.Services.Interfaces.IUserService _containerUserService;
+        private readonly CommonController _commonController;
 
-        public ReviewerController(IEmailService emailService, IQuestionService questionService, MappingService mappingService, IUserService userService, ITestSuiteService testSuiteService, Silicus.UtilityContainer.Services.Interfaces.IUserService containerUserService)
+        public ReviewerController(IEmailService emailService, IQuestionService questionService, MappingService mappingService, IUserService userService, ITestSuiteService testSuiteService, Silicus.UtilityContainer.Services.Interfaces.IUserService containerUserService, CommonController commonController)
         {
             _emailService = emailService;
             _questionService = questionService;
@@ -32,6 +33,7 @@ namespace Silicus.Ensure.Web.Controllers
             _userService = userService;
             _testSuiteService = testSuiteService;
             _containerUserService = containerUserService;
+            _commonController = commonController;
         }
 
         // GET: Reviewer
@@ -132,6 +134,10 @@ namespace Silicus.Ensure.Web.Controllers
             userTestSuitedetails.StatusId = (int)candidateResultViewmodel.Status;
             userTestSuitedetails.FeedBack = candidateResultViewmodel.ReviewerComment;
             _testSuiteService.UpdateUserTestSuite(userTestSuitedetails);
+
+            List<string> Receipient = new List<string>() { "Admin", "Panel" };
+            _commonController.SendMailByRoleName("Evaluation is submitted for " + user.FirstName + " " + user.LastName + " Successfully", "EvaluationSubmittedMail.cshtml", Receipient, user.FirstName + " " + user.LastName, candidateResultViewmodel.Status.ToString());
+
             return Json(true);
         }
 
