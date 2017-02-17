@@ -13,14 +13,14 @@
             @(Html.Kendo().Grid(Model).Name("userGrids")
          .Columns(columns =>
          {
-             columns.Bound("").ClientTemplate("<input type='checkbox' name='selectUser' value='#= UserId#' />").Width(20);
-             columns.Bound(p => p.FirstName).ClientTemplate("#=FirstName# #=LastName#").Title("Name").Width(200);
+             columns.Bound("").ClientTemplate("<input type='radio' name='selectUser' value='#= UserId#' />").Width(20);
+             columns.Bound(p => p.FirstName).ClientTemplate("<a href=''> #=FirstName# #=LastName#  </a>").Title("Name").Width(200);
              columns.Bound(p => p.Email).Title("Email").Width(200);
              //columns.Bound(p => p.RequisitionId).Title("Requisition id").Width(100);
              columns.Bound(p => p.Position).Width(200);
              columns.Bound(p => p.ContactNumber).Title("Contact number").Width(100);
              columns.Bound(p => p.TotalExperienceInYear).ClientTemplate("#=TotalExperienceInYear#.#=TotalExperienceInMonth#").Title("Total experience").Width(80);
-             columns.Bound(p => p.PanelName).Title("Panel").Width(200);
+            // columns.Bound(p => p.PanelName).Title("Panel").Width(200);
              columns.Bound(p => p.CandidateStatus).ClientTemplate(@"
                                                                         #if(CandidateStatus=='TestAssigned'){#
                                                                             Test Assigned
@@ -79,7 +79,7 @@
                   .Pageable(p => p.PageSizes(true))
                   .Sortable()
                   .Resizable(resizing => resizing.Columns(true))
-                   .ToolBar(toolbar =>
+                   @*.ToolBar(toolbar =>
                    {
                    toolbar.Template(@<text>
             <div class="toolbar">
@@ -98,7 +98,7 @@
                 </div>
             </div>
                 </text>);
-                   })
+                   })*@
             )
 
 

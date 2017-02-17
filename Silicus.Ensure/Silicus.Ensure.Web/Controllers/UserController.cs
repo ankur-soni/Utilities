@@ -223,7 +223,7 @@ namespace Silicus.Ensure.Web.Controllers
                     flag = false;
                 }
             }
-            return Json(flag, JsonRequestBehavior.AllowGet); ;
+            return Json(flag, JsonRequestBehavior.AllowGet); 
         }
 
         /// <summary>
