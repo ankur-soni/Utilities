@@ -122,20 +122,14 @@ namespace Silicus.Ensure.Services
 
         public IEnumerable<UserBusinessModel> GetCandidates(string firstName, String lastName, DateTime dob)
         {
-            var users = _context.Query<User>().Where(x => string.Equals(x.FirstName,firstName, StringComparison.OrdinalIgnoreCase)
-            && string.Equals(x.LastName, lastName)
-            && x.DateOfBirth.Date==dob.Date);
+            var users = _context.Query<User>().Where(x =>x.FirstName==firstName
+            && x.LastName==lastName
+            //&& x.DateOfBirth.Date==dob.Date
+            ).ToList();
             List<UserBusinessModel> userModel = new List<UserBusinessModel>();
             foreach (var user in users)
             {
                 var objUser = UserToBusinessModel(user);
-                //int panelId = 0;
-                //if (int.TryParse(objUser.PanelId, out panelId))
-                //{
-                //    var panelDetails = panelMeberDetails.FirstOrDefault(y => y.UserId == panelId);
-                //    if (panelDetails != null)
-                //        objUser.PanelName = panelDetails.LastName + " " + panelDetails.FirstName;
-                //}
                 userModel.Add(objUser);
             }
             return userModel;

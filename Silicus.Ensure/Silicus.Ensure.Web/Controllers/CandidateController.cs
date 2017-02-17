@@ -172,10 +172,18 @@ namespace Silicus.Ensure.Web.Controllers
         }
 
         [HttpPost]
-        public ActionResult GetCandidates(string firstName, String lastName, DateTime dob)
+        public ActionResult GetCandidateGrid(string firstName, String lastName, DateTime dob)
         {
-            var candidate=_userService.GetCandidates(firstName,lastName,dob);
-            return Json(0);
+            var candidates = _userService.GetCandidates(firstName, lastName, dob).ToList();
+                var candidatebusinessModelList = _mappingService.Map<List<UserBusinessModel>, List<UserViewModel>>(candidates);
+                return PartialView("_CadidateGrid", candidatebusinessModelList);
+        }
+
+        public ActionResult GetCandidateProfile(int userId)
+        {
+            var candidate = _userService.GetUserById(userId);
+            var candidatebusinessModel = _mappingService.Map<UserBusinessModel, UserViewModel>(candidate);
+            return PartialView("_CandidateProfile", candidatebusinessModel);
         }
 
         private void UpdateAnswer(string answer, int? userTestDetailId)
