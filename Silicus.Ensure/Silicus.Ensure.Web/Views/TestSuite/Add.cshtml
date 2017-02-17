@@ -392,7 +392,7 @@
                 loadCommon();
             },
             error: function (errorMsg) {
-                alert(errorMsg);
+                toastr.error(errorMsg);
             }
         });
 
@@ -485,7 +485,7 @@
                         }
                     },
                     error: function (response) {
-                        alert("error!");
+                        toastr.error("error!");
                     }
                 });
             }

@@ -135,7 +135,7 @@
                 });
             }
             else {
-                alert('Please select at least one test suite !')
+                toastr.error('Please select at least one test suite !')
             }
         });
 
@@ -176,7 +176,7 @@
                 });
             }
             else {
-                alert('Please select at least one panel !')
+                toastr.error('Please select at least one panel !')
             }
         });
 
@@ -224,11 +224,10 @@
             return false;
         }
         else {
-            alert('Please assign the test suite first');
+            toastr.error('Please assign the test suite first');
         }
     }
     function ViewTest(testSuiteId, userId) {
-        debugger
         $.ajax({
             type: 'post',
             async: false,
