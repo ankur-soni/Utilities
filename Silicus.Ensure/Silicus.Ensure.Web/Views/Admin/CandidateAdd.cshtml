@@ -71,6 +71,10 @@
 
     function loadKendoControls()
     {
+        $('#ProfilePhoto').change(function (){
+            ShowProfilePhoto(this);
+        });
+
          $("#files").kendoUpload();
         $(".toggleEnabled").click(function() {
             getUpload().toggle();
@@ -86,6 +90,18 @@
         $("#DOB").kendoDatePicker({
             format: "dd/MM/yyyy"
         });
+    }
+
+    function ShowProfilePhoto(input){
+        if (input.files && input.files[0]) {
+            var reader = new FileReader();
+            reader.onload = function (e) {
+                $('#ProfilePhotoImage').attr('src', e.target.result);
+            }
+            reader.readAsDataURL(input.files[0]);
+            $('#ProfilePhotoImage').show();
+        }
+
     }
 
     function savePostion()
