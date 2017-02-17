@@ -133,5 +133,7 @@ namespace Silicus.Ensure.Web.Models
         public HttpPostedFileBase ProfilePhotoFile { get; set; }
 
         public string ProfilePhotoFilePath { get; set; }
+
+        public bool IsCandidateReappear { get; set; }
     }
 }
