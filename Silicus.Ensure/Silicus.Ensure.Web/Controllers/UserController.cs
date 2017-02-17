@@ -19,6 +19,8 @@ using System.Collections.Generic;
 using System.Web.Configuration;
 using Silicus.Ensure.Web.Application;
 using Silicus.Ensure.Models;
+using System.IO;
+using RazorEngine;
 
 namespace Silicus.Ensure.Web.Controllers
 {
@@ -35,6 +37,10 @@ namespace Silicus.Ensure.Web.Controllers
         private ApplicationUserManager _userManager;
         private Silicus.UtilityContainer.Services.Interfaces.IUtilityService _utilityService;
         private Silicus.UtilityContainer.Services.Interfaces.IUtilityUserRoleService _utilityUserRoleService;
+
+
+        private readonly CommonController _commonController;
+        private readonly IEmailService _emailService;
         public ApplicationUserManager UserManager
         {
             get
@@ -61,7 +67,7 @@ namespace Silicus.Ensure.Web.Controllers
         }
 
         public UserController(IUserService userService, MappingService mappingService, ITestSuiteService testSuiteService, PositionService positionService, Silicus.UtilityContainer.Services.Interfaces.IUserService containerUserService,
-            Silicus.UtilityContainer.Services.Interfaces.IUtilityService utilityService, Silicus.UtilityContainer.Services.Interfaces.IUtilityUserRoleService utilityUserRoleService, IPanelMemberService panelMemberService)
+            Silicus.UtilityContainer.Services.Interfaces.IUtilityService utilityService, Silicus.UtilityContainer.Services.Interfaces.IUtilityUserRoleService utilityUserRoleService, IPanelMemberService panelMemberService, IEmailService emailService, CommonController commonController)
         {
             _positionService = positionService;
             _userService = userService;
@@ -71,6 +77,10 @@ namespace Silicus.Ensure.Web.Controllers
             _utilityService = utilityService;
             _utilityUserRoleService = utilityUserRoleService;
             _panelMemberService = panelMemberService;
+            _emailService = emailService;
+            _commonController = commonController;
+
+          
         }
 
         public ActionResult Dashboard()
@@ -269,8 +279,19 @@ namespace Silicus.Ensure.Web.Controllers
 
             }
             ViewBag.UserRoles = RoleManager.Roles.Select(r => new SelectListItem { Text = r.Name, Value = r.Name }).ToList();
+
+            //Send Candidate creation mail to Admin and Recruiter
+            List<string> Receipient = new List<string>() { "Admin", "Recruiter" };
+            _commonController.SendMailByRoleName("Candidate Created Successfully", "CandidateCreated.cshtml", Receipient, user.FirstName+" "+ user.LastName);
+
+
             return RedirectToAction(user.Role.ToLower() == RoleName.Candidate.ToString().ToLower() ? "Candidates" : "Index", controllerName);
         }
+
+
+
+    
+
 
         /// <summary>
         /// update user 
@@ -387,5 +408,8 @@ namespace Silicus.Ensure.Web.Controllers
             fileModel.File.SaveAs(fileModel.FilePath);
             fileModel.FilePath = Path.Combine(fileModel.FolderName, fileModel.FileName);
         }
+
+
+
     }
 }
