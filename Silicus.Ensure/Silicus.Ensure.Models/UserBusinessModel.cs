@@ -75,5 +75,7 @@ namespace Silicus.Ensure.Models
 
         public int UserApplicationId { get; set; }
 
+        public bool IsCandidateReappear { get; set; }
+
     }
 }

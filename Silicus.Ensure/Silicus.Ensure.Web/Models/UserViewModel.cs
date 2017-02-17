@@ -126,5 +126,7 @@ namespace Silicus.Ensure.Web.Models
         public bool IsAdmin { get; set; }
 
         public int UserApplicationId { get; set; }
+
+        public bool IsCandidateReappear { get; set; }
     }
 }
