@@ -231,7 +231,7 @@ namespace Silicus.Ensure.Services
                     objUser.RelevantExperienceInYear = applicationDetails.RelevantExperienceInYear;
                     objUser.RequisitionId = applicationDetails.RequisitionId;
                     objUser.ResumeName = applicationDetails.ResumeName;
-                    objUser.ResumePath = applicationDetails.ResumeName;
+                    objUser.ResumePath = applicationDetails.ResumePath;
                     objUser.Technology = applicationDetails.Technology;
                     objUser.TestStatus = applicationDetails.CandidateStatus.ToString();
                     objUser.TotalExperienceInMonth = applicationDetails.TotalExperienceInMonth;

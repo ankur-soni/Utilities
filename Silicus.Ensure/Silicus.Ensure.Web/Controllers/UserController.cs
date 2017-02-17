@@ -254,9 +254,6 @@ namespace Silicus.Ensure.Web.Controllers
                     _userService.Add(organizationUserDomainModel);
                     TempData["Success"] = "User created successfully!";
                 }
-
-
-
             }
             catch (Exception ex)
             {
