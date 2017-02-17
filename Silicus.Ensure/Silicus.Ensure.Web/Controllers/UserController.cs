@@ -278,10 +278,10 @@ namespace Silicus.Ensure.Web.Controllers
 
             //Send Candidate creation mail to Admin and Recruiter
             List<string> Receipient = new List<string>() { "Admin", "Recruiter" };
-            _commonController.SendMailByRoleName("Candidate Created Successfully", "CandidateCreated.cshtml", Receipient, vuser.FirstName+" "+ vuser.LastName);
+            _commonController.SendMailByRoleName("Candidate Created Successfully", "CandidateCreated.cshtml", Receipient, user.FirstName+" "+ user.LastName);
 
 
-            return RedirectToAction(vuser.Role.ToLower() == RoleName.Candidate.ToString().ToLower() ? "Candidates" : "Index", controllerName);
+            return RedirectToAction(user.Role.ToLower() == RoleName.Candidate.ToString().ToLower() ? "Candidates" : "Index", controllerName);
         }
 
 
