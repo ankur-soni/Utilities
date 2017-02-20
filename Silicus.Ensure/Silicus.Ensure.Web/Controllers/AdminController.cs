@@ -235,6 +235,25 @@ namespace Silicus.Ensure.Web.Controllers
             return View();
         }
 
+
+        
+        [HttpPost]
+        public ActionResult GetCandidateGrid(string firstName, String lastName, DateTime dob)
+        {
+            var candidates = _userService.GetCandidates(firstName, lastName, dob).ToList();
+                var candidatebusinessModelList = _mappingService.Map<List<UserBusinessModel>, List<UserViewModel>>(candidates);
+                return PartialView("_CadidateGrid", candidatebusinessModelList);
+        }
+
+        public ActionResult GetCandidateProfile(int userId)
+        {
+            var candidate = _userService.GetUserById(userId);
+            var candidatebusinessModel = _mappingService.Map<UserBusinessModel, UserViewModel>(candidate);
+            var positionDetails = _positionService.GetPositionDetails().OrderBy(model => model.PositionName);
+            candidatebusinessModel.PositionList = positionDetails.ToList();
+            return PartialView("_CandidateProfile", candidatebusinessModel);
+        }
+
         public ActionResult CandidatesSuit(int UserId, int IsReassign = 0)
         {
             ViewBag.CurrentUser = UserId;
@@ -312,6 +331,79 @@ namespace Silicus.Ensure.Web.Controllers
                 return Json(-1);
             }
         }
+
+        public ActionResult AssignRecruiter(int UserId, int IsReassign = 0)
+        {
+            ViewBag.CurrentUser = UserId;
+            ViewBag.IsReassign = IsReassign;
+            return PartialView("_partialSelectRecruiterList");
+        }
+
+        public ActionResult GetRecruiterDetails([DataSourceRequest] DataSourceRequest request, int UserId)
+        {
+            try
+            {
+                bool isAssignedRecruiter = false;
+                var user = _userService.GetUserById(UserId);
+                var recruiterList = new List<RecruiterViewModel>();
+
+                if (user != null)
+                {
+                    var recruiterUserlist = _positionService.GetAllRecruiterMemberDetails();
+
+                    foreach (var item in recruiterUserlist)
+                    {
+                        isAssignedRecruiter = false;
+                        if (item.UserId == Convert.ToInt32(user.RecruiterId))
+                        {
+                            isAssignedRecruiter = true;
+                        }
+                        recruiterList.Add(new RecruiterViewModel()
+                        {
+                            RecruiterId = item.UserId,
+                            RecruiterName = item.FirstName + " " + item.LastName,
+                            IsAssignedRecruiter = isAssignedRecruiter
+                        });
+                    }
+
+                    recruiterList.OrderBy(x => x.IsAssignedRecruiter == true);             
+                }
+
+                DataSourceResult result = recruiterList.ToDataSourceResult(request);
+                return Json(result);
+            }
+            catch
+            {
+                return Json(-1);
+            }
+        }
+
+
+        public ActionResult AssignRecruiterCandidate(string RecruiterUserId, int UserId, int IsReAssign = 0)
+        {
+            try
+            {
+                var user = _positionService.GetAllRecruiterMemberDetails().FirstOrDefault(x => x.UserId == Convert.ToInt32(RecruiterUserId));
+                if (user != null)
+                {
+                    var updateUser = _userService.GetUserById(UserId);
+                    updateUser.RecruiterId = Convert.ToString(user.UserId);
+                    updateUser.RecruiterName = user.FirstName + " " + user.LastName;
+                    _userService.Update(updateUser);
+                    List<string> Receipient = new List<string>() { "Admin", "Recruiter" };
+                    _commonController.SendMailByRoleName("Recruiter Assigned For " + updateUser.FirstName + " " + updateUser.LastName + " Successfully", "CandidateRecruiterAssigned.cshtml", Receipient, updateUser.FirstName + " " + updateUser.LastName,null,user.FirstName+ " " +user.LastName);
+
+                }
+
+                return Json(1);
+            }
+            catch
+            {
+                return Json(-1);
+            }
+        }
+
+
 
         public ActionResult PartialTestSuitView(int testSuiteId, int userId)
         {

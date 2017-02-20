@@ -418,7 +418,6 @@
                 },
                 TestSuiteName: function (input, params) {
                     if (input.is("[name=TestSuiteName]")) {
-                        debugger;
                         input.attr("data-TestSuiteName-msg", "Test suite name already name exist !");
                         var isAvailable = isTestSuiteNameAvailable(input.val());
                         return isAvailable;

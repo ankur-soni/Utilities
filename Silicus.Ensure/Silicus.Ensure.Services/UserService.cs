@@ -28,6 +28,7 @@ namespace Silicus.Ensure.Services
             List<UserBusinessModel> userModel = new List<UserBusinessModel>();
             var users = _context.Query<User>().ToList();
             var panelMeberDetails = _context.Query<PanelMemberDetail>();
+            var recruiterMeberDetails = _context.Query<RecruiterMembersDetail>();
             foreach (var user in users)
             {
                 var objUser = UserToBusinessModel(user);
@@ -38,6 +39,15 @@ namespace Silicus.Ensure.Services
                     if (panelDetails != null)
                         objUser.PanelName = panelDetails.LastName + " " + panelDetails.FirstName;
                 }
+                int RecruiterMemberId;
+                if (int.TryParse(objUser.RecruiterId, out RecruiterMemberId) && RecruiterMemberId > 0)
+                {
+                    var recruiterDetails = recruiterMeberDetails.FirstOrDefault(y => y.UserId == RecruiterMemberId);
+                    if (recruiterDetails != null)
+                        objUser.RecruiterName = recruiterDetails.LastName + " " + recruiterDetails.FirstName;
+                }
+
+
                 userModel.Add(objUser);
             }
             return userModel;
@@ -68,6 +78,20 @@ namespace Silicus.Ensure.Services
                 _context.AttachAndMakeStateModified(applicationdetail);
                 _context.AttachAndMakeStateModified(applicationdetail.User);
                 _context.SaveChanges();
+
+            }
+        }
+
+        public void UpdateUserAndCreateNewApplication(UserBusinessModel userModel)
+        {
+            if (userModel.FirstName != null && userModel.LastName != null)
+            {
+                var userDetails = MapUserDetails(userModel);
+                var userApplicationDetailsDetails = MapApplicationDetails(userModel);
+                
+                _context.Add(userApplicationDetailsDetails);
+                _context.Update(userDetails);
+               // _context.SaveChanges();
 
             }
         }
@@ -234,6 +258,9 @@ namespace Silicus.Ensure.Services
                     if (applicationDetails.PanelMemberId != null && applicationDetails.PanelMemberId > 0)
                         objUser.PanelId = applicationDetails.PanelMemberId.ToString();
 
+                    if (applicationDetails.RecruiterMemberId != null && applicationDetails.RecruiterMemberId > 0)
+                        objUser.RecruiterId = applicationDetails.RecruiterMemberId.ToString();
+
                 }
             }
 
@@ -277,15 +304,17 @@ namespace Silicus.Ensure.Services
             user.ContactNumber = objUser.ContactNumber;
             user.ProfilePhotoFilePath = objUser.ProfilePhotoFilePath;
             UserApplicationDetails applicationDetails;
-            if (user.UserApplicationDetails != null && user.UserApplicationDetails.Count > 0)
+            if (user.UserApplicationDetails != null && user.UserApplicationDetails.Count > 0 && !objUser.IsCandidateReappear)
             {
                 applicationDetails = user.UserApplicationDetails.Where(x => x.UserId == user.UserId)
                     .OrderByDescending(y => y.CreatedDate).FirstOrDefault();
+                applicationDetails.CandidateStatus = string.IsNullOrWhiteSpace(objUser.CandidateStatus) ? applicationDetails.CandidateStatus : (CandidateStatus)Enum.Parse(typeof(CandidateStatus), objUser.CandidateStatus);
             }
             else
             {
                 applicationDetails = new UserApplicationDetails();
                 user.CreatedDate = DateTime.Now;
+                applicationDetails.CandidateStatus = CandidateStatus.New;
             }
 
             int panelId = 0;
@@ -294,11 +323,16 @@ namespace Silicus.Ensure.Services
                 applicationDetails.PanelMemberId = panelId;
             }
 
+            int RecruiterMemberId;
+            if (int.TryParse(objUser.RecruiterId, out RecruiterMemberId) && RecruiterMemberId > 0)
+            {
+                applicationDetails.RecruiterMemberId = RecruiterMemberId;
+            }
             var position = _positionService.GetPositionByName(objUser.Position);
             if (position != null)
                 applicationDetails.PositionId = position.PositionId;
 
-            applicationDetails.CandidateStatus = string.IsNullOrWhiteSpace(objUser.CandidateStatus) ? applicationDetails.CandidateStatus : (CandidateStatus)Enum.Parse(typeof(CandidateStatus), objUser.CandidateStatus);
+            
             applicationDetails.ClientName = objUser.ClientName;
 
             applicationDetails.CurrentCompany = objUser.CurrentCompany;
@@ -354,6 +388,13 @@ namespace Silicus.Ensure.Services
             {
                 applicationDetails.PanelMemberId = panelId;
             }
+            int RecruiterMemberId;
+            if (int.TryParse(objUser.RecruiterId, out RecruiterMemberId) && RecruiterMemberId > 0)
+            {
+                applicationDetails.RecruiterMemberId = RecruiterMemberId;
+            }
+
+            
             var position = _positionService.GetPositionByName(objUser.Position);
             if (position != null)
                 applicationDetails.PositionId = position.PositionId;
@@ -375,6 +416,74 @@ namespace Silicus.Ensure.Services
             applicationDetails.User.CreatedDate = DateTime.Now;
             return applicationDetails;
         }
+
+        private User MapUserDetails(UserBusinessModel objUser)
+        {
+            User user;
+            if (objUser.UserId > 0)
+            {
+                user = _context.Query<User>().FirstOrDefault(y => y.UserId == objUser.UserId);
+            }
+            else
+            {
+                user = new User();
+            }
+            user.DateOfBirth = objUser.DOB;
+            user.Email = objUser.Email;
+            user.FirstName = objUser.FirstName;
+            user.Gender = objUser.Gender;
+            user.IdentityUserId = objUser.IdentityUserId;
+            user.LastName = objUser.LastName;
+            user.MiddleName = objUser.MiddleName;
+            user.UserId = objUser.UserId;
+            user.CurrentLocation = objUser.CurrentLocation;
+            user.ContactNumber = objUser.ContactNumber;
+            user.ProfilePhotoFilePath = objUser.ProfilePhotoFilePath;
+
+            return user;
+        }
+
+        private UserApplicationDetails MapApplicationDetails(UserBusinessModel objUser)
+        {
+            UserApplicationDetails applicationDetails;
+            if (objUser.UserId > 0 && !objUser.IsCandidateReappear)
+            {
+                applicationDetails = GetLatesUserApplication(objUser.UserId);
+                applicationDetails.CandidateStatus = string.IsNullOrWhiteSpace(objUser.CandidateStatus) ? applicationDetails.CandidateStatus : (CandidateStatus)Enum.Parse(typeof(CandidateStatus), objUser.CandidateStatus);
+            }
+            else
+            {
+                applicationDetails = new UserApplicationDetails();
+                applicationDetails.CandidateStatus = CandidateStatus.New;
+            }
+            applicationDetails.UserId = objUser.UserId;
+
+            int panelId;
+            if (int.TryParse(objUser.PanelId, out panelId) && panelId > 0)
+            {
+                applicationDetails.PanelMemberId = panelId;
+            }
+            var position = _positionService.GetPositionByName(objUser.Position);
+            if (position != null)
+                applicationDetails.PositionId = position.PositionId;
+
+            
+            applicationDetails.ClientName = objUser.ClientName;
+
+            applicationDetails.CurrentCompany = objUser.CurrentCompany;
+            applicationDetails.CurrentTitle = objUser.CurrentTitle;
+            applicationDetails.RelevantExperienceInMonth = objUser.RelevantExperienceInMonth;
+            applicationDetails.RelevantExperienceInYear = objUser.RelevantExperienceInYear;
+            applicationDetails.RequisitionId = objUser.RequisitionId;
+            applicationDetails.ResumeName = objUser.ResumeName;
+            applicationDetails.ResumePath = objUser.ResumePath;
+            applicationDetails.Technology = objUser.Technology;
+            applicationDetails.TotalExperienceInMonth = objUser.TotalExperienceInMonth;
+            applicationDetails.TotalExperienceInYear = objUser.TotalExperienceInYear;
+            applicationDetails.CreatedDate = DateTime.Now;
+            return applicationDetails;
+        }
+
 
 
         private decimal ConvertExperienceIntoDecimal(int totalExperienceInYear, int totalExperienceInMonth)

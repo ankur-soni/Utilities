@@ -15,7 +15,9 @@ namespace Silicus.EncourageWithAzureAd.Web.Mapping
 
         protected override void Configure()
         {
+#pragma warning disable CS0618 // Type or member is obsolete
             Mapper.CreateMap<NominationViewModel, Nomination>();
+#pragma warning restore CS0618 // Type or member is obsolete
         }
     }
 }

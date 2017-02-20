@@ -59,7 +59,7 @@ namespace Silicus.Ensure.Web.Controllers
 
 
 
-     public void SendMailByRoleName(string subject, string templateName,List<string> roleName,string candidateName=null,string candidateStatus=null)
+     public void SendMailByRoleName(string subject, string templateName,List<string> roleName,string candidateName=null,string candidateStatus=null,string RecruiterName=null)
         {
             string retVal = "failed";
             List<EmailModel> emailList = new List<EmailModel>();
@@ -78,7 +78,8 @@ namespace Silicus.Ensure.Web.Controllers
                                 Name = user.DisplayName,
                                 Email = user.EmailAddress,
                                 CandidateName = candidateName,
-                                CandidateStatus=candidateStatus
+                                CandidateStatus=candidateStatus,
+                                RecruiterName=RecruiterName
                             };
                             emailList.Add(viewModel);
                         }

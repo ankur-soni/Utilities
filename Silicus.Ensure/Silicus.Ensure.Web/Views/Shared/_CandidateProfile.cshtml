@@ -48,6 +48,7 @@
                         @Html.HiddenFor(m => m.ResumeName)
                         @Html.HiddenFor(m => m.ResumePath)
                         @Html.HiddenFor(m => m.ProfilePhotoFilePath)
+                        @Html.HiddenFor(m => m.IsCandidateReappear)
                         <div class="fluid mt20">
                             <div class="row" style="margin-bottom:10px!important">
                                 @if (!string.IsNullOrWhiteSpace(Model.ErrorMessage))
@@ -360,3 +361,4 @@
         </div>
     </div>
 </div>
+

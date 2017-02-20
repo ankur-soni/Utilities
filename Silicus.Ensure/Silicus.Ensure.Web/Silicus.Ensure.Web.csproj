@@ -439,6 +439,7 @@
     <Compile Include="Models\PositionViewModel.cs" />
     <Compile Include="Models\QuestionModel.cs" />
     <Compile Include="Models\RecruiterMemberDetailViewModel.cs" />
+    <Compile Include="Models\RecruiterViewModel.cs" />
     <Compile Include="Models\ResetPasswordModel.cs" />
     <Compile Include="Models\RoleViewModel.cs" />
     <Compile Include="Models\SubmittedTestViewModel.cs" />
@@ -599,6 +600,7 @@
     <Content Include="EmailTemplates\CandidateCreated.cshtml" />
     <Content Include="EmailTemplates\CandidateTestSubmitted.cshtml" />
     <Content Include="EmailTemplates\CandidatePanelAssigned.cshtml" />
+    <Content Include="EmailTemplates\CandidateRecruiterAssigned.cshtml" />
     <None Include="Properties\PublishProfiles\ensure - FTP.pubxml" />
     <None Include="Properties\PublishProfiles\ensure - Web Deploy.pubxml" />
     <None Include="Scripts\jquery-2.1.4.intellisense.js" />
@@ -870,6 +872,7 @@
     <Content Include="Views\Shared\EditorTemplates\PostionEditorTemplete.cshtml" />
     <Content Include="Views\Shared\_CandidateProfile.cshtml" />
     <Content Include="Views\Shared\_CadidateGrid.cshtml" />
+    <Content Include="Views\Admin\_partialSelectRecruiterList.cshtml" />
     <None Include="Web.Azure.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
