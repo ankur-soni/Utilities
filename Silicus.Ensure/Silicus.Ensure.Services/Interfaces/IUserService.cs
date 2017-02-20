@@ -39,5 +39,7 @@ namespace Silicus.Ensure.Services.Interfaces
         UserBusinessModel GetUserByUserApplicationId(int UserApplicationDetailId);
 
         IEnumerable<UserBusinessModel> GetCandidates(string firstName, string lastName, DateTime dob);
+
+        void UpdateUserAndCreateNewApplication(UserBusinessModel userModel);
     }
 }

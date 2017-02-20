@@ -36,16 +36,12 @@ function mQuery() {
 }
 
 function ShowMessage(content, isSuceess) {
-    $("#messageDiv").removeClass("alert-danger");
-    $("#messageDiv").removeClass("alert-success");
-
-    if (isSuceess == 0) { $("#messageDiv").addClass("alert-danger"); }
-    else { $("#messageDiv").addClass("alert-success"); }
-
-    $("#messageDiv").show();
-    $("#messageContent").text(content);
-    $("html, body").animate({ scrollTop: 0 }, "slow");
-    $("#messageDiv").fadeOut(9000);
+    if (isSuceess) {
+        toastr.success(content);
+    }
+    else {
+        toastr.error(content)
+    }
 }
 
 function RefreshKendoGrid(gridName) {
@@ -87,7 +83,7 @@ function deleteKendoGridRow(gridId, data) {
 }
 
 
-function ShowSweetAlertWithoutCancel(title,text,type){
+function ShowSweetAlertWithoutCancel(title, text, type) {
     swal({
         title: title,
         text: text,
@@ -98,8 +94,3 @@ function ShowSweetAlertWithoutCancel(title,text,type){
         closeOnConfirm: true,
     });
 }
-
-//function InitializeKendoGridIcons() {
-//    $(".k-grid-Edit").find("span").addClass("k-icon k-edit");
-//    $(".k-grid-Delete").find("span").addClass("k-icon k-delete");
-//}

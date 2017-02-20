@@ -83,9 +83,6 @@
     </div>
 </div>
 
-
-
-
 <!-- Modal Submit Test On Time Complete-->
 <div class="modal fade" id="testresultPopup" role="dialog">
     <div class="modal-dialog">
@@ -110,46 +107,34 @@
     </div>
 </div>
 
-
-
 <script>
     var clock;
     var totalTime;
-
     $(document).ready(function () {
-
         $("#frmTestresult").kendoValidator();
         $("#ReviwerMark").kendoValidator();
-        // Hide Submit button of popup. Show when to want submit test.
         $("#btnSubmitTestOK").hide();
-
-                // Load First Question On page Load.
-                var userTestSuiteId = $("#UserTestSuiteId").val();
-                var url = "/Reviewer/LoadQuestion?userTestSuiteId=";
-                $('#QuestionDetails').load(url + userTestSuiteId, disableControls);
-
-
-
+        var userTestSuiteId = $("#UserTestSuiteId").val();
+        var url = "/Reviewer/LoadQuestion?userTestSuiteId=";
+        $('#QuestionDetails').load(url + userTestSuiteId, disableControls);
         $(document).on("click", "#btnSubmitEvalution", submitEvalution);
-
         $("#SubmitCandidateResult").on("click", submitCandidateResult);
         $('.QuestionCheckbox').on('click', QuestionCheckboxClicked);
     });
 
-            function disableControls()
-            {
-                var status=$("#CandidateStatus").val();
-                if (!(status) && (status == "@CandidateStatus.Selected" || status == "@CandidateStatus.Rejected")) {
-                    $($('#ReviewerComment').data().kendoEditor.body).attr('contenteditable', false);
-                    $("#ReviwerMark").prop("readonly", true);
-                }
-            }
+    function disableControls() {
+        var status = $("#CandidateStatus").val();
+        if (!(status) && (status == "@CandidateStatus.Selected" || status == "@CandidateStatus.Rejected")) {
+            $($('#ReviewerComment').data().kendoEditor.body).attr('contenteditable', false);
+            $("#ReviwerMark").prop("readonly", true);
+        }
+    }
 
-            function QuestionCheckboxClicked(event) {
-                var questionId = $(this).attr('id');
-                UpdateCurrentReviewAndLoadNewOne(questionId);
-                UpdateAndGetQuestionReview(questionId);
-            }
+    function QuestionCheckboxClicked(event) {
+        var questionId = $(this).attr('id');
+        UpdateCurrentReviewAndLoadNewOne(questionId);
+        UpdateAndGetQuestionReview(questionId);
+    }
 
     function UpdateCurrentReviewAndLoadNewOne(questionId) {
         updateTestSummary();
@@ -157,7 +142,6 @@
         UpdateCurrentQuestionNavigationStatus(questionNavigationDetails);
         MarkAsViewed(questionId);
     }
-
 
     function MarkAsViewed(questionId) {
         if (questionId) {
@@ -169,6 +153,7 @@
             }
         }
     }
+
     function UpdateCurrentQuestionNavigationStatus(questionNavigationDetails) {
         var ClassesForAnsweredQuestion = 'fa fa-check-square';
         var ClassesForViewedQuestion = 'fa fa-square';
@@ -190,6 +175,7 @@
             }
         }
     }
+
     function GetCurrentQuestionStatus() {
         var QuestionNumber = $("#QuestionNumber").val();
         var QuestionType = $("#QuestionType").val();
@@ -204,8 +190,6 @@
         var result = { QuestionNumber: QuestionNumber, Questiontype: QuestionType, IsReviewed: IsReviewed, IsViewed: IsViewed };
         return result;
     }
-
-
 
     function OnNext(e) {
         var validator = $("#ReviwerMark").data("kendoValidator");
@@ -235,53 +219,29 @@
         $('#QuestionDetails').load('/Candidate/GetQuestionDetails', questionDetails);
     }
 
-    //function UpdateAndGetQuestionReview(questionId) {
-    //    updateTestSummary();
-    //    var answer = GetAnswer();
-    //    var userTestSuiteId = $("#UserTestSuiteId").val();
-    //    var userTestDetailId = $("#UserTestDetailId").val();
-    //    var questionType = $("#QuestionType").val();
-    //    var candidateId = $("#UserId").val();
-    //    var comment = $("#ReviewerComment").val();
-    //    var marks = $("#ReviwerMark").val();
-    //    var reviewerQuestionDetails = { QuestionId: questionId, UserTestSuiteId: userTestSuiteId, UserTestDetailId: userTestDetailId, Comment: comment, Marks: marks };
-    //    //$('#QuestionDetails').load('/Reviewer/UpdateReviewAndGetQuestionDetails', reviewerQuestionDetails);
-    //    $.ajax({
-    //        url: "/Reviewer/UpdateReviewAndGetQuestionDetails",
-    //        cache: false,
-    //        dataType: "html",
-    //        data:reviewerQuestionDetails,
-    //        success: function (data) {
-    //            $("#QuestionDetails").html('');
-    //            $("#QuestionDetails").html(data);
-    //        }
-    //    });
-    //}   
-            function UpdateAndGetQuestionReview(questionId) {
-                
-                var answer = GetAnswer();
-                var userTestSuiteId = $("#UserTestSuiteId").val();
-                var userTestDetailId = $("#UserTestDetailId").val();
-                var questionType = $("#QuestionType").val();
-                var candidateId = $("#UserId").val();
-                var comment = $("#ReviewerComment").val();
-                var marks = $("#ReviwerMark").val();
-                var reviewerQuestionDetails = { QuestionId: questionId, UserTestSuiteId: userTestSuiteId, UserTestDetailId: userTestDetailId, Comment: comment, Marks: marks };
-                //$('#QuestionDetails').load('/Reviewer/UpdateReviewAndGetQuestionDetails', reviewerQuestionDetails);
-                $.ajax({
-                    url: "/Reviewer/UpdateReviewAndGetQuestionDetails",
-                    cache: false,
-                    dataType: "html",
-                    data: reviewerQuestionDetails,
-                    success: function (data) {
-                        $("#QuestionDetails").html('');
-                        $("#QuestionDetails").html(data);
-                        updateTestSummary();
-                       
-                            disableControls();
-                    }
-                });
+    function UpdateAndGetQuestionReview(questionId) {
+        var answer = GetAnswer();
+        var userTestSuiteId = $("#UserTestSuiteId").val();
+        var userTestDetailId = $("#UserTestDetailId").val();
+        var questionType = $("#QuestionType").val();
+        var candidateId = $("#UserId").val();
+        var comment = $("#ReviewerComment").val();
+        var marks = $("#ReviwerMark").val();
+        var reviewerQuestionDetails = { QuestionId: questionId, UserTestSuiteId: userTestSuiteId, UserTestDetailId: userTestDetailId, Comment: comment, Marks: marks };
+        $.ajax({
+            url: "/Reviewer/UpdateReviewAndGetQuestionDetails",
+            cache: false,
+            dataType: "html",
+            data: reviewerQuestionDetails,
+            success: function (data) {
+                $("#QuestionDetails").html('');
+                $("#QuestionDetails").html(data);
+                updateTestSummary();
+
+                disableControls();
             }
+        });
+    }
 
     function updateTestSummary() {
         var userTestSuiteId = $("#UserTestSuiteId").val();
@@ -295,43 +255,11 @@
                 $("#DivTestSummary").html(data);
             }
         });
-        //var QuestionNumber = $("#QuestionNumber").val();
-        //var QuestionType = $("#QuestionType").val();
-        //var IsCorrectAnswer = false;
-        //if (QuestionType == 2) {
-        //    var marks = parseInt($("#ReviwerMark").val());
-        //    marks = isNaN(marks) ? 0 : marks;
-        //    IsCorrectAnswer = marks > 0 ? true : false;
-
-        //    var totalObtainedMarks = parseInt($("#totalObtainedMarks").html());
-        //    totalObtainedMarks = isNaN(totalObtainedMarks) ? 0 : totalObtainedMarks;
-
-        //    if (IsCorrectAnswer) {
-        //        var oldValue = parseInt($("#practicalCorrectAnswersCount").html());
-        //        oldValue = isNaN(oldValue) ? 0 : oldValue;
-        //        $("#practicalCorrectAnswersCount").html(oldValue + 1);
-        //        $("#practicalMarksObtained").html(oldValue + marks);
-        //        $("#totalObtainedMarks").html(totalObtainedMarks + marks);
-        //        var incorrectAnswersCount = parseInt($("#practicalIncorrectAnswersCount").html());
-        //        //incorrectAnswersCount = isNaN(incorrectAnswersCount) ? 0 : incorrectAnswersCount;
-        //        $("#totalObtainedMarks").val(isNaN(incorrectAnswersCount) ? 0:incorrectAnswersCount - 1);
-        //    }
-        //    else {
-        //        var oldValue = parseInt($("#practicalIncorrectAnswersCount").html());
-        //        oldValue = isNaN(oldValue) ? 0 : oldValue;
-        //        $("#practicalIncorrectAnswersCount").html(oldValue + 1);
-        //    }
-        //    var totalMaximumMarks = parseInt($("#totalMaximumMarks").html());
-        //    totalMaximumMarks = isNaN(totalMaximumMarks) ? 0 : totalMaximumMarks;
-        //    $("#percentage").html(calculatePercentage(totalObtainedMarks, totalMaximumMarks));
-
-        //}
     }
 
     function calculatePercentage(earned, total) {
         return ((earned / total) * 100);
     }
-
 
     function GetAnswer() {
         var answer = "";
@@ -356,7 +284,6 @@
         return answer;
     }
 
-
     function getCurrentQuestionStatus() {
         var QuestionNumber = $("#QuestionNumber").val();
         var QuestionType = $("#QuestionType").val();
@@ -372,7 +299,6 @@
         return result;
     }
 
-
     function submitEvalution() {
         var answer = GetAnswer();
         var userTestSuiteId = $("#UserTestSuiteId").val();
@@ -383,7 +309,6 @@
         var marks = $("#ReviwerMark").val();
         var questionId = $(this).find('input').attr('id');
         var reviewerQuestionDetails = { QuestionId: questionId, UserTestSuiteId: userTestSuiteId, UserTestDetailId: userTestDetailId, Comment: comment, Marks: marks };
-        // $('#QuestionDetails').load('/Reviewer/UpdateReviewAndGetQuestionDetails', reviewerQuestionDetails);
         $.ajax({
             type: "POST",
             url: "/Reviewer/SumbmitTestReview",
@@ -444,9 +369,5 @@
             });
         }
     }
-
-
-
-
 </script>
 

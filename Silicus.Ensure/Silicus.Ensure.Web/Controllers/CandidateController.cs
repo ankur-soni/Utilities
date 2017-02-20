@@ -23,14 +23,15 @@ namespace Silicus.Ensure.Web.Controllers
         private readonly IMappingService _mappingService;
         private readonly IUserService _userService;
         private readonly ITestSuiteService _testSuiteService;
-
-        public CandidateController(IEmailService emailService, IQuestionService questionService, MappingService mappingService, IUserService userService, ITestSuiteService testSuiteService)
+        private readonly CommonController _commonController;
+        public CandidateController(IEmailService emailService, IQuestionService questionService, MappingService mappingService, IUserService userService, ITestSuiteService testSuiteService, CommonController commonController)
         {
             _emailService = emailService;
             _questionService = questionService;
             _mappingService = mappingService;
             _userService = userService;
             _testSuiteService = testSuiteService;
+            _commonController = commonController;
         }
 
         [CustomAuthorize("Candidate")]
@@ -141,9 +142,12 @@ namespace Silicus.Ensure.Web.Controllers
             testSuit.Duration = suite.Duration + (testSuit.ExtraCount * 10);
             testSuit.StatusId = Convert.ToInt32(CandidateStatus.TestSubmitted);
             _testSuiteService.UpdateUserTestSuite(testSuit);
-
+            var userDetails = _userService.GetUserById(userId);
             // Calculate marks on test submit.
             CalculateMarks(userTestSuiteId, userTestDetailId, answer);
+            List<string> Receipient = new List<string>() { "Admin", "Panel" };
+            _commonController.SendMailByRoleName("Test Submitted For " + userDetails.FirstName + " " + userDetails.LastName + " Successfully", "CandidateTestSubmitted.cshtml", Receipient, userDetails.FirstName + " " + userDetails.LastName);
+
             return RedirectToAction("LogOff", "CandidateAccount");
         }
 
@@ -171,12 +175,6 @@ namespace Silicus.Ensure.Web.Controllers
             return Json(1);
         }
 
-        [HttpPost]
-        public ActionResult GetCandidates(string firstName, String lastName, DateTime dob)
-        {
-            var candidate=_userService.GetCandidates(firstName,lastName,dob);
-            return Json(0);
-        }
 
         private void UpdateAnswer(string answer, int? userTestDetailId)
         {

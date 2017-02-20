@@ -21,5 +21,8 @@ namespace Silicus.Ensure.Services.Interfaces
         void Update(Position Position);
 
         void Delete(Position Position);
+
+        IEnumerable<RecruiterMembersDetail> GetAllRecruiterMemberDetails();
+        
     }
 }

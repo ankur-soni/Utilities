@@ -150,6 +150,7 @@
     <Compile Include="Test\TestDetailsBusinessModel.cs" />
     <Compile Include="Test\TestSummaryBasicDetails.cs" />
     <Compile Include="Test\TestSummaryBusinessModel.cs" />
+    <Compile Include="UploadFileBusinessModel.cs" />
     <Compile Include="UserBusinessModel.cs" />
   </ItemGroup>
   <ItemGroup>

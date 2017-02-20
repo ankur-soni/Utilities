@@ -81,7 +81,6 @@
         });
 
         function assignPanel(e) {
-            debugger;
             var grid = $("#UserGrids").data("kendoGrid");
             var userDetailViewModel = grid.dataItem($(e.currentTarget).closest("tr"));
             if (userDetailViewModel && userDetailViewModel.UserId) {

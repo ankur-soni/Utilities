@@ -1,5 +1,7 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
+using System.IO;
+
 
 namespace Silicus.Ensure.Web.Models
 {
@@ -13,6 +15,12 @@ namespace Silicus.Ensure.Web.Models
         [Required]
         //[Display(Name = "Enter Email")]
         public string Email { get; set; }
-               
+
+
+        public string CandidateName { get; set; }
+
+        public string CandidateStatus { get; set; }
+
+        public string RecruiterName { get; set; }
     }
 }
