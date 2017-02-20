@@ -59,7 +59,7 @@ namespace Silicus.Ensure.Web.Controllers
 
 
 
-     public void SendMailByRoleName(string subject, string templateName,List<string> roleName,string candidateName=null,string candidateStatus=null,string RecruiterName=null)
+        public void SendMailByRoleName(string subject, string templateName, List<string> roleName, string candidateName = null, string candidateStatus = null, string RecruiterName = null)
         {
             string retVal = "failed";
             List<EmailModel> emailList = new List<EmailModel>();
@@ -68,27 +68,30 @@ namespace Silicus.Ensure.Web.Controllers
                 if (!string.IsNullOrWhiteSpace(role))
                 {
                     var roleDetails = _roleService.GetRoleByRoleName(role);
-                    List<Silicus.UtilityContainer.Models.DataObjects.User> users = _containerUserService.GetAllUsersByRoleInUtility(1, roleDetails.ID);
-                    foreach (var user in users)
+                    if (roleDetails != null)
                     {
-                        if (user != null)
+                        List<Silicus.UtilityContainer.Models.DataObjects.User> users = _containerUserService.GetAllUsersByRoleInUtility(1, roleDetails.ID);
+                        foreach (var user in users)
                         {
-                            var viewModel = new EmailModel
+                            if (user != null)
                             {
-                                Name = user.DisplayName,
-                                Email = user.EmailAddress,
-                                CandidateName = candidateName,
-                                CandidateStatus=candidateStatus,
-                                RecruiterName=RecruiterName
-                            };
-                            emailList.Add(viewModel);
+                                var viewModel = new EmailModel
+                                {
+                                    Name = user.DisplayName,
+                                    Email = user.EmailAddress,
+                                    CandidateName = candidateName,
+                                    CandidateStatus = candidateStatus,
+                                    RecruiterName = RecruiterName
+                                };
+                                emailList.Add(viewModel);
+                            }
                         }
                     }
                 }
-            }           
-           
+            }
 
-           var template = System.IO.File.ReadAllText(Path.Combine(HttpRuntime.AppDomainAppPath, "EmailTemplates/"+templateName));
+
+            var template = System.IO.File.ReadAllText(Path.Combine(HttpRuntime.AppDomainAppPath, "EmailTemplates/" + templateName));
             foreach (var emails in emailList)
             {
                 if (!string.IsNullOrWhiteSpace(emails.Email))
@@ -100,7 +103,7 @@ namespace Silicus.Ensure.Web.Controllers
                 }
             }
 
-           
+
         }
 
     }
