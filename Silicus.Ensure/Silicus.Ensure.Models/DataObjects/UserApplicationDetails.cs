@@ -50,6 +50,8 @@ namespace Silicus.Ensure.Models.DataObjects
         public virtual Position Position { get; set; }
 
         public virtual User User { get; set; }
-        
+
+        public int? RecruiterMemberId { get; set; }
+
     }
 }

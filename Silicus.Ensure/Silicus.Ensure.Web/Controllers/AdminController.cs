@@ -313,6 +313,79 @@ namespace Silicus.Ensure.Web.Controllers
             }
         }
 
+        public ActionResult AssignRecruiter(int UserId, int IsReassign = 0)
+        {
+            ViewBag.CurrentUser = UserId;
+            ViewBag.IsReassign = IsReassign;
+            return PartialView("_partialSelectRecruiterList");
+        }
+
+        public ActionResult GetRecruiterDetails([DataSourceRequest] DataSourceRequest request, int UserId)
+        {
+            try
+            {
+                bool isAssignedRecruiter = false;
+                var user = _userService.GetUserById(UserId);
+                var recruiterList = new List<RecruiterViewModel>();
+
+                if (user != null)
+                {
+                    var recruiterUserlist = _positionService.GetAllRecruiterMemberDetails();
+
+                    foreach (var item in recruiterUserlist)
+                    {
+                        isAssignedRecruiter = false;
+                        if (item.UserId == Convert.ToInt32(user.RecruiterId))
+                        {
+                            isAssignedRecruiter = true;
+                        }
+                        recruiterList.Add(new RecruiterViewModel()
+                        {
+                            RecruiterId = item.UserId,
+                            RecruiterName = item.FirstName + " " + item.LastName,
+                            IsAssignedRecruiter = isAssignedRecruiter
+                        });
+                    }
+
+                    recruiterList.OrderBy(x => x.IsAssignedRecruiter == true);             
+                }
+
+                DataSourceResult result = recruiterList.ToDataSourceResult(request);
+                return Json(result);
+            }
+            catch
+            {
+                return Json(-1);
+            }
+        }
+
+
+        public ActionResult AssignRecruiterCandidate(string RecruiterUserId, int UserId, int IsReAssign = 0)
+        {
+            try
+            {
+                var user = _positionService.GetAllRecruiterMemberDetails().FirstOrDefault(x => x.UserId == Convert.ToInt32(RecruiterUserId));
+                if (user != null)
+                {
+                    var updateUser = _userService.GetUserById(UserId);
+                    updateUser.RecruiterId = Convert.ToString(user.UserId);
+                    updateUser.RecruiterName = user.FirstName + " " + user.LastName;
+                    _userService.Update(updateUser);
+                    List<string> Receipient = new List<string>() { "Admin", "Recruiter" };
+                    _commonController.SendMailByRoleName("Recruiter Assigned For " + updateUser.FirstName + " " + updateUser.LastName + " Successfully", "CandidateRecruiterAssigned.cshtml", Receipient, updateUser.FirstName + " " + updateUser.LastName,null,user.FirstName+ " " +user.LastName);
+
+                }
+
+                return Json(1);
+            }
+            catch
+            {
+                return Json(-1);
+            }
+        }
+
+
+
         public ActionResult PartialTestSuitView(int testSuiteId, int userId)
         {
             try

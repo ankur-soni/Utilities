@@ -20,6 +20,7 @@
                     filter.filters.push({ field: "RequisitionId", operator: "contains", value: value });
                     filter.filters.push({ field: "ContactNumber", operator: "contains", value: value });
                     filter.filters.push({ field: "PanelName", operator: "contains", value: value });
+                    filter.filters.push({ field: "RecruiterName", operator: "contains", value: value });                    
                     filter.filters.push({ field: "Position", operator: "contains", value: value });
                     //filter.filters.push({ field: "ContactNumber", operator: "contains", value: value });
                     //filter.filters.push({ field: "TotalExperienceInYear", operator: "contains", value: value });
@@ -76,6 +77,27 @@
                 $("#PanelInfo").html(data);
                 $('#myModal1').fadeIn();
                 $('#myModal1').modal();
+            }
+        });
+        //}
+    }
+
+    
+
+    function ReAssignRecruiter(UserId) {
+        debugger;
+        //if (TestStatus == '@CandidateStatus.New.ToString()') {
+        $.ajax({
+            type: 'post',
+            async: false,
+            url: "/Admin/AssignRecruiter",
+            cache: false,
+            data: { UserId: UserId, IsReassign: 1 },
+            contenttype: "application/json; charset=utf-8",
+            success: function (data) {
+                $("#RecruiterInfo").html(data);
+                $('#recruiterModal').fadeIn();
+                $('#recruiterModal').modal();
             }
         });
         //}
@@ -181,6 +203,52 @@
         });
 
     });
+
+    $(function () {
+        $("#SaveRecruiterbtn").bind("click", function () {
+            debugger
+            var chkCheck = false;
+            $('input:checkbox').each(function () {
+                if ($(this).is(':checked')) {
+                    chkCheck = true;
+                }
+            });
+            if (chkCheck) {
+                var uId = $("#CurrentUser").val();
+                var IsReAssign = $("#IsReAssign").val();
+                var checkvals = $("[class='check']:checked").attr("value")
+                //alert(checkvals);
+                $.ajax({
+                    type: 'post',
+                    async: false,
+                    url: "/Admin/AssignRecruiterCandidate",
+                    cache: false,
+                    data: { RecruiterUserId: checkvals, UserId: uId, IsReAssign: IsReAssign },
+                    contenttype: "application/json; charset=utf-8",
+                    success: function (returndata) {
+                        if (returndata == 1) {
+                            $('#userGrids').data('kendoGrid').dataSource.read();
+                            $('#userGrids').data('kendoGrid').refresh();
+                            ShowMessage("Panel assigned successfully.", 1);
+                            $('#recruiterModal').fadeOut();
+                        }
+                    },
+                    error: function (er) {
+                        $('#recruiterModal').fadeOut();
+                    }
+                });
+            }
+            else {
+                alert('Please select at least one recruiter !')
+            }
+        });
+
+    });
+
+    
+
+
+
 
     function Change() {
         dropFilter();
@@ -335,14 +403,15 @@
         {
             @(Html.Kendo().Grid<Silicus.Ensure.Web.Models.UserViewModel>().Name("userGrids")
          .Columns(columns =>
-              {
-                  columns.Bound(p => p.FirstName).ClientTemplate("#=FirstName# #=LastName#").Title("Name").Width(200);
-                  columns.Bound(p => p.RequisitionId).Title("Requisition id").Width(100);
-                  columns.Bound(p => p.Position).Width(200);
-                  columns.Bound(p => p.ContactNumber).Title("Contact number").Width(100);
-                  columns.Bound(p => p.TotalExperienceInYear).ClientTemplate("#=TotalExperienceInYear#.#=TotalExperienceInMonth#").Title("Total experience").Width(80);
-                  columns.Bound(p => p.PanelName).Title("Panel").Width(200);
-                  columns.Bound(p => p.CandidateStatus).ClientTemplate(@"
+         {
+             columns.Bound(p => p.FirstName).ClientTemplate("#=FirstName# #=LastName#").Title("Name").Width(200);
+             columns.Bound(p => p.RequisitionId).Title("Requisition id").Width(100);
+             columns.Bound(p => p.Position).Width(200);
+             columns.Bound(p => p.ContactNumber).Title("Contact number").Width(100);
+             columns.Bound(p => p.TotalExperienceInYear).ClientTemplate("#=TotalExperienceInYear#.#=TotalExperienceInMonth#").Title("Total experience").Width(80);
+             columns.Bound(p => p.PanelName).Title("Panel").Width(200);
+             columns.Bound(p => p.RecruiterName).Title("Recruiter").Width(200);
+             columns.Bound(p => p.CandidateStatus).ClientTemplate(@"
                                                                         #if(CandidateStatus=='TestAssigned'){#
                                                                             Test Assigned
                                                                         #}
@@ -356,16 +425,18 @@
                                                                             #=CandidateStatus#
                                                                         #}
                                                                         #").Title("Status").Width(250);
-                  columns.Bound(c => c.UserId).ClientTemplate(@"<a class='k-button M-T4' href='" + Url.Action("CandidateAdd", "Admin") + "?UserId=#=UserId#'>Edit</a><a id='testSuiteDel' class='k-button M-T4' href='\\#' onclick='ConfirmDeleteUserRow(event)'>Delete</a>").Title("Actions").Width(500).Sortable(false);
-                  columns.Bound(c => c.UserId).ClientTemplate(@"
+             columns.Bound(c => c.UserId).ClientTemplate(@"<a class='k-button M-T4' href='" + Url.Action("CandidateAdd", "Admin") + "?UserId=#=UserId#'>Edit</a><a id='testSuiteDel' class='k-button M-T4' href='\\#' onclick='ConfirmDeleteUserRow(event)'>Delete</a>").Title("Actions").Width(500).Sortable(false);
+             columns.Bound(c => c.UserId).ClientTemplate(@"
 
                                          #if(CandidateStatus=='New'){#
                                         <a onclick=showTest('#=UserId#','#=TestStatus#') style='cursor:pointer'>Assign Test</a> |
-                                        <a  class ='dialog-window' onclick=ReAssignPanel('#=UserId#') style='cursor:pointer'>#if(PanelName){#Reassign Panel#} else{#Assign Panel #}#</a>
+                                        <a  class ='dialog-window' onclick=ReAssignPanel('#=UserId#') style='cursor:pointer'>#if(PanelName){#Reassign Panel#} else{#Assign Panel #}#</a> |
+                                        <a  class ='dialog-window' onclick=ReAssignRecruiter('#=UserId#') style='cursor:pointer'>#if(RecruiterName){#Reassign Recruiter#} else{#Assign Recruiter #}#</a>
                                         #}
                                         else if(CandidateStatus=='TestAssigned') {#
                                         <a  class ='dialog-window' onclick=ReAssign('#=UserId#','#=TestStatus#') style='cursor:pointer'>Reassign Test</a> |
                                         <a  class ='dialog-window' onclick=ReAssignPanel('#=UserId#') style='cursor:pointer'>#if(PanelName){#Reassign Panel#} else{#Assign Panel #}#</a> |
+                                         <a  class ='dialog-window' onclick=ReAssignRecruiter('#=UserId#') style='cursor:pointer'>#if(RecruiterName){#Reassign Recruiter#} else{#Assign Recruiter #}#</a> |
                                         <a  class ='dialog-window' onclick=ViewTest('#=TestSuiteId#','#=UserId#') style='cursor:pointer'>View Test</a>
                                         #}
                                         else if(CandidateStatus=='TestSubmitted') {#
@@ -381,7 +452,7 @@
 
                                         #").Title("Test actions").Width(600).Sortable(false);
 
-              })
+         })
             .DataSource(dataSource => dataSource
                       .Ajax()
                       .Model(model =>
@@ -440,6 +511,26 @@
             </div>
             <div class="modal-footer">
                 <button type="button" style="width:70px;" class="btn btn-primary" id="SavePanlebtn">Save</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="modal fade" id="recruiterModal" data-backdrop="static" role="dialog">
+    <div class="modal-dialog">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Assign Recruiter</h4>
+            </div>
+            <div class="modal-body" id="RecruiterInfo">
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" style="width:70px;" class="btn btn-primary" id="SaveRecruiterbtn">Save</button>
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
             </div>
         </div>
