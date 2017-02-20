@@ -19,7 +19,7 @@ namespace Silicus.Ensure.Services
 
         public SmtpClientWrapper()
         {
-            smtpClient = new SmtpClient();
+            
         }
 
         public X509CertificateCollection ClientCertificates
@@ -145,6 +145,27 @@ namespace Silicus.Ensure.Services
         public void Send(MailMessage message)
         {
             smtpClient.Send(message);
+        }
+
+        public void SendMail(object message)
+        {
+            try
+            {
+                using (SmtpClient smtpClient = new SmtpClient())
+                {
+                    MailMessage mailMessage = (MailMessage)message;
+                    smtpClient.Send(mailMessage);
+                }
+            }
+            catch {               
+            }
+            finally
+            {
+                if (this.smtpClient != null)
+                {
+                    this.smtpClient.Dispose();
+                }
+            }
         }
 
         public Task SendAsync(MailMessage message)

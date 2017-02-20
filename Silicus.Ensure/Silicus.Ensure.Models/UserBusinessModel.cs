@@ -69,11 +69,15 @@ namespace Silicus.Ensure.Models
 
         public string ResumeName { get; set; }
 
+        public string ProfilePhotoFilePath { get; set; }
+
         public Guid IdentityUserId { get; set; }
 
         public bool IsDeleted { get; set; }
 
         public int UserApplicationId { get; set; }
+
+        public bool IsCandidateReappear { get; set; }
 
     }
 }

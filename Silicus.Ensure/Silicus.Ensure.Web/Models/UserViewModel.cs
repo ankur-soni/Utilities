@@ -3,6 +3,7 @@ using Silicus.Ensure.Web.Application;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Web;
 
 namespace Silicus.Ensure.Web.Models
 {
@@ -126,5 +127,13 @@ namespace Silicus.Ensure.Web.Models
         public bool IsAdmin { get; set; }
 
         public int UserApplicationId { get; set; }
+
+        public HttpPostedFileBase ResumeFile { get; set; }
+
+        public HttpPostedFileBase ProfilePhotoFile { get; set; }
+
+        public string ProfilePhotoFilePath { get; set; }
+
+        public bool IsCandidateReappear { get; set; }
     }
 }

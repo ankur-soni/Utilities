@@ -63,7 +63,6 @@
     }
 
     function ReAssignPanel(UserId) {
-        debugger;
         //if (TestStatus == '@CandidateStatus.New.ToString()') {
         $.ajax({
             type: 'post',
@@ -143,7 +142,6 @@
 
     $(function () {
         $("#SavePanlebtn").bind("click", function () {
-            debugger
             var chkCheck = false;
             $('input:checkbox').each(function () {
                 if ($(this).is(':checked')) {
@@ -228,7 +226,6 @@
         }
     }
     function ViewTest(testSuiteId, userId) {
-        debugger
         $.ajax({
             type: 'post',
             async: false,
