@@ -32,7 +32,7 @@ namespace Silicus.Encourage.Services
                 _encourageDbcontext.Add<Nomination>(nomination);
                 return true;
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 return false;
             }

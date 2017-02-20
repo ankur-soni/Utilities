@@ -29,7 +29,7 @@ namespace Silicus.EncourageWithAzureAd.Web.Controllers
         private readonly ILogger _logger;
         private readonly ICustomDateService _customDateService;
 
-        public ReviewController(IResultService resultService, INominationService nominationService, ICommonDbService commonDbService, Silicus.Encourage.DAL.Interfaces.IDataContextFactory dataContextFactory, IAwardService awardService,
+        public ReviewController(IResultService resultService, INominationService nominationService, ICommonDbService commonDbService, Encourage.DAL.Interfaces.IDataContextFactory dataContextFactory, IAwardService awardService,
             IReviewService reviewService, IEmailNotificationOfWinner EmailNotificationOfWinner, ILogger logger, ICustomDateService customDateService)
         {
             _commonDbContext = commonDbService.GetCommonDataBaseContext();
@@ -140,7 +140,7 @@ namespace Silicus.EncourageWithAzureAd.Web.Controllers
                 var listOfAwards = _encourageDatabaseContext.Query<Award>().ToList();
                 foreach (var award in listOfAwards)
                 {
-                    var listOfNominations = new List<Shortlist>();
+                    List<Shortlist> listOfNominations;
                     switch (award.Code)
                     {
                         default:

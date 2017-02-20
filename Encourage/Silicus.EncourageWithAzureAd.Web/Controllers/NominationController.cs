@@ -698,17 +698,16 @@ namespace Silicus.EncourageWithAzureAd.Web.Controllers
                                          on r.NominationId equals n.Id
 
                                      where (n.NominationDate.Value.Month.Equals(customDate.Month)
-                                            &&
-                                            (customDate.Month > 1 ? (customDate.Year).Equals(n.NominationDate.Value.Year) : (customDate.Year).Equals(n.NominationDate.Value.Year))
+                                            && (customDate.Year).Equals(n.NominationDate.Value.Year)
                                          )
                                      select r;
 
                     var firstOrDefault = reviewData.FirstOrDefault();
                     if (firstOrDefault != null) { islocked = firstOrDefault.IsLocked ?? false; }
                 }
-                catch (Exception)
+                catch (Exception ex)
                 {
-                    // ignored
+                    _logger.Log("Nomination-ReviewNominations-POST-" + ex.Message);
                 }
 
                 string nominationTimeToDisplay = CultureInfo.CurrentCulture.DateTimeFormat.GetAbbreviatedMonthName(nominationTime.Month) + "-" + nominationTime.Year.ToString();
