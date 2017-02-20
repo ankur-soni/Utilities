@@ -148,7 +148,7 @@ namespace Silicus.Ensure.Services
         {
             var users = _context.Query<User>().Where(x =>x.FirstName==firstName
             && x.LastName==lastName
-            //&& x.DateOfBirth.Date==dob.Date
+            && x.DateOfBirth==dob.Date
             ).ToList();
             List<UserBusinessModel> userModel = new List<UserBusinessModel>();
             foreach (var user in users)
