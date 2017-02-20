@@ -6,15 +6,15 @@
 
     @if (Request.IsAuthenticated)
     {
-    @(Html.Kendo().Grid<Silicus.Ensure.Models.DataObjects.Panel>
+        @(Html.Kendo().Grid<Silicus.Ensure.Models.DataObjects.Panel>
     ().Name("PanelGrids")
     .Events(e => e.Edit("gvPanel_onRowEdit"))
     .DataSource(dataSource => dataSource
     .Ajax()
     .Model(model =>
     {
-    model.Id(p => p.PanelId);
-    model.Field(p => p.PanelId).Editable(false);
+        model.Id(p => p.PanelId);
+        model.Field(p => p.PanelId).Editable(false);
 
     })
     .Read(read => read.Action("GetPanelDetails", "Panel"))
@@ -25,13 +25,13 @@
     )
     .Columns(columns =>
     {
-    columns.Bound(p => p.PanelId).Visible(false).Width(250);
-    columns.Bound(p => p.PanelName).Title("Panel name").Width(250);
-    columns.Command(command =>
-    {
-        command.Edit().HtmlAttributes(new { style = "margin-top:4px!important;"});
-    command.Custom("Delete").Click("ConfirmDeletePanelRow").HtmlAttributes(new { @class = "k-button k-button-icontext k-grid-delete", style = "margin-top:4px!important;" });
-    }).Title("Actions").Width(160);
+        columns.Bound(p => p.PanelId).Visible(false).Width(250);
+        columns.Bound(p => p.PanelName).Title("Panel name").Width(250);
+        columns.Command(command =>
+        {
+            command.Edit().HtmlAttributes(new { style = "margin-top:4px!important;" });
+            command.Custom("Delete").Click("ConfirmDeletePanelRow").HtmlAttributes(new { @class = "k-button k-button-icontext k-grid-delete", style = "margin-top:4px!important;" });
+        }).Title("Actions").Width(160);
 
     })
     .Pageable(pager => { pager.PageSizes(true); })
@@ -61,15 +61,15 @@
     </text>);
     })
     .Editable(ed => ed.Mode(GridEditMode.InLine))
-    )
+        )
     }
 </div>
 
 <script>
 
     $(document).ready(function () {
-        
-       
+
+
 
         $("#PanelFieldFilter").keyup(function () {
 
@@ -140,19 +140,17 @@
 
     function requestend_handlerPanel(e) {
         if (e.type == "destroy" && !e.response.Errors) {
-            //toastr.success("Auto Pays details has been deleted successfully!");
             ShowMessage("Panel deleted successfully.", 1);
             RefreshKendoGrid('PanelGrids');
         }
 
         if (e.type == "update" && !e.response.Errors) {
-            //toastr.success("Auto Pays details has been saved successfully!");
-            ShowMessage("Panel Updated successfully.", 1);
+            ShowMessage("Panel updated successfully.", 1);
             RefreshKendoGrid('PanelGrids');
         }
 
         if (e.type == "create" && !e.response.Errors) {
-            ShowMessage("Panel Created successfully.", 1);
+            ShowMessage("Panel created successfully.", 1);
             RefreshKendoGrid('PanelGrids');
         }
 
