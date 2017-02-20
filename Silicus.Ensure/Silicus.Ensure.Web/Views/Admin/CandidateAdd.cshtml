@@ -7,7 +7,7 @@
 }
 
 <div id="candidateDiv">
-    @Html.Partial("_CandidateProfile",Model)
+    @Html.Partial("_CandidateProfile", Model)
 
 </div>
 
@@ -42,15 +42,15 @@
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal">&times;</button>
-                <h4 class="modal-title"><span>Candidate already exists in the system.</br> Select a candidate to continue with an existing candidate. </br>Click 'No' to create a new candidate</span></h4>
+                <h4 class="modal-title"><span>Select Candidate</span></h4>
             </div>
             <div class="modal-body">
-
-
+                <span>Candidate already exists in the system.</br> Select a candidate to continue with an existing candidate. </br>Click 'No' to create a new candidate</span>
+                <div id="candidateGridBody"></div>
             </div>
             <div class="modal-footer">
                 <button type="button" style="width:70px;" onclick="loadCandidateDetails()" class="btn btn-default">Yes</button>
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">No</button>
+                <button type="button" class="btn btn-secondary"  data-dismiss="modal">No</button>
             </div>
         </div>
 
@@ -66,16 +66,23 @@
 
     $(document).ready(function () {
         //$('#uploadFileLink').ke
-    loadKendoControls();
+        loadControls();
     });
 
-    function loadKendoControls()
+    function loadControls()
     {
-        $('#ProfilePhoto').change(function (){
+        $('#ProfilePhotofile').change(function (){
             ShowProfilePhoto(this);
         });
 
-         $("#files").kendoUpload();
+        $('#FirstName,#LastName,#DOB').change(function (){
+
+            if ($("#FirstName").val() && $("#LastName").val() && $("#DOB").val()) {
+                checkExistingCandidate();
+            }
+        });
+
+        //$("#files").kendoUpload();
         $(".toggleEnabled").click(function() {
             getUpload().toggle();
         });
@@ -91,15 +98,47 @@
             format: "dd/MM/yyyy"
         });
     }
-
+    function IsInvalidFileType(fileName)
+    {
+        if (fileName == "") {
+            alert("Browse to upload a valid File with png extension");
+            return true;
+        }
+        var extension=fileName.split(".")[1].toUpperCase();
+        if (extension && (extension == "PNG"||extension == "JPG"||extension == "JPEG"))
+            return false;
+        else
+            return true;
+    }
+    function ClearProfilePhoto(){
+        $('#ProfilePhotoImage').attr('src','');
+        $('#ProfilePhotofile').val('');
+        $('#ProfilePhotoImage').hide();
+        $('#RemoveProfilePhoto').hide();
+    }
     function ShowProfilePhoto(input){
+        var maxSize =$(input).data('max-size');
         if (input.files && input.files[0]) {
-            var reader = new FileReader();
-            reader.onload = function (e) {
-                $('#ProfilePhotoImage').attr('src', e.target.result);
+            var fileName=input.files[0].name;
+            var fileSize = input.files[0].size;
+            if(fileSize>maxSize){
+                alert('file size should be less than 2mb');
+                ClearProfilePhoto();
+                return false;
             }
-            reader.readAsDataURL(input.files[0]);
-            $('#ProfilePhotoImage').show();
+            else if(IsInvalidFileType(fileName)){
+                alert('Only jpg, jpeg, png file types are allowed.');
+                ClearProfilePhoto();
+                return false;
+            }
+            else{
+                var reader = new FileReader();
+                reader.onload = function (e) {
+                    $('#ProfilePhotoImage').attr('src', e.target.result);
+                }
+                reader.readAsDataURL(input.files[0]);
+                $('#ProfilePhotoImage').show();
+            }
         }
 
     }
@@ -189,146 +228,7 @@
         day = day.length > 1 ? day : '0' + day;
         return day + '/' +month  + '/' + year;
     }
-    //register custom validation rules
-    (function ($, kendo) {
-        $.extend(true, kendo.ui.validator, {
-            rules: { // custom rules
-                experiencevalidation: function (input, params) {
-                    if (input.is("[name='DOB']")) {
-                        if (!(input.val() != "")) {
-                            input.attr("data-experiencevalidation-msg", "Date of birth is required!");
-                            return false;
-                        }
-                        else if(input.val() != "")
-                        {
-                            var today = new Date();
-                            var currentYear = today.getFullYear();
-                            try{
-                                var parts = input.val().split("/");
-                                var timestamp= new Date(parts[1]+"/"+parts[0]+"/"+parts[2]);
-                                if (isNaN(timestamp)==true||parts[2]<1900||parts[2]>=currentYear)
-                                {
-                                    input.attr("data-experiencevalidation-msg", "Invalid Date");
-                                    return false;
-                                }
-                            }
-                            catch(e){
-                                input.attr("data-experiencevalidation-msg", "Invalid Date");
-                                return false;
-                            }
-                        }
-                        else if(input.val() != "")
-                        {
-                            if( $('#DOB').val()>GetNewDate())
-                            {
-                                input.attr("data-experiencevalidation-msg", "Date of birth can not be greater than today!");
-                                return false;
-                            }
-                        }
-                    }
-                    if (input.is("[name='Position']")) {
-                        if ((input.val() != "" && input.val() == "--Select--")) {
-                            input.attr("data-experiencevalidation-msg", "Position is required!");
-                            $('span[aria-owns="Position_listbox"]').css('border','1px solid red');
-                            return false;
-                        }
-                        else
-                        {
-                            $('span[aria-owns="Position_listbox"]').css('border','none ');
-                            input.attr("data-experiencevalidation-msg", "");
-                        }
-                    }
-                    if (input.is("[name='Gender']")) {
-                        if ((input.val() != "" && input.val() == "--Select--")) {
-                            input.attr("data-experiencevalidation-msg", "Gender is required!");
-                            $('span[aria-owns="Gender_listbox"]').css('border','1px solid red');
-                            return false;
-                        }
-                        else
-                        {
-                            $('span[aria-owns="Gender_listbox"]').css('border','none ');
-                            input.attr("data-experiencevalidation-msg", "");
-                        }
-                    }
-                    if (input.is("[name='RelevantExperienceInYear']")) {
-                        if (input.val() == "") {
-                            input.attr("data-experiencevalidation-msg", "Relevant experience in year is required!");
-                            $('span[aria-owns="RelevantExperienceInYear_listbox"]').css('border','1px solid red');
-                            return false;
-                        }
-                        else if (input.val() != ""&& input.val() > $('#TotalExperienceInYear').val()){
-
-                            input.attr("data-experiencevalidation-msg", "Relevant experience in year can not be greater than total experience in year!");
-                            return false;
-
-                        }
-                        else
-                        {
-                            $('span[aria-owns="RelevantExperienceInYear_listbox"]').css('border','none ');
-                            input.attr("data-experiencevalidation-msg", "");
-                        }
-                    }
-                    if (input.is("[name='RelevantExperienceInMonth']")) {
-                        if (input.val() == "" ) {
-                            input.attr("data-experiencevalidation-msg", "Relevant experience in month is required!");
-                            $('span[aria-owns="RelevantExperienceInMonth_listbox"]').css('border','1px solid red');
-                            return false;
-                        }
-                        else if (input.val() != ""&& ($('#RelevantExperienceInYear').val() == $('#TotalExperienceInYear').val()||$('#RelevantExperienceInYear').val() < $('#TotalExperienceInYear').val()) && input.val() > $('#TotalExperienceInMonth').val()){
-
-                            input.attr("data-experiencevalidation-msg", "Relevant experience can not be greater than total experience!");
-                            return false;
-
-                        }
-                        else
-                        {
-                            $('span[aria-owns="RelevantExperienceInMonth_listbox"]').css('border','none ');
-                            input.attr("data-experiencevalidation-msg", "");
-                        }
-                    }
-                    if (input.is("[data-val-remote]") && input.val() != "") {
-                        var remoteURL = input.attr("data-val-remote-url");
-                        if (!checkMail(input.val(), remoteURL)) {
-                            input.attr("data-experiencevalidation-msg", "Email is already exist!");
-                            return false;
-                        }
-                    }
-                    if (input.is("[id='file']")&&fileBool) {
-                        if (!(input.val() != "")) {
-                            input.attr("data-experiencevalidation-msg", "File is required!");
-                            return false;
-                        }
-                        else if(input.val() != "")
-                        {
-                            var fileName=$('#file')[0].files[0].name;
-                            var extension=fileName.substring(fileName.lastIndexOf('.') + 1)
-                            if(extension.toLowerCase()== "doc"||extension.toLowerCase() == "docx"||extension.toLowerCase() == "pdf")
-                            {
-                                return true;
-                            }
-                            else
-                            {
-                                input.attr("data-experiencevalidation-msg", "Allowed extensions are '.doc, .docx, pdf'!");
-                                return false;
-                            }
-                        }
-                    }
-                    debugger
-                    if ((input.is("[id='FirstName']") || input.is("[id='LastName']") || input.is("[id='DOB']")) && ($("#FirstName").val() && $("#LastName").val() && $("#DOB").val())) {
-
-                        checkExistingCandidate();
-                    }
-                    return true;
-                }
-            },
-            messages: { //custom rules messages
-                experiencevalidation: function (input) {
-                    // return the message text
-                    return input.attr("data-val-experiencevalidation");
-                }
-            }
-        });
-    })(jQuery, kendo);
+   
 
     function checkMail(email,remoteURL)
     {
@@ -349,57 +249,64 @@
 
     function checkExistingCandidate()
     {
-        var firstName=$("#FirstName").val();
-        var lastName=$("#LastName").val();
-        var dOB=$("#DOB").val();
-        $.ajax({
-            url: '/Candidate/GetCandidateGrid',
-            type: 'post',
-            dataType: 'html',
-            //async:false,
-            data: {firstName:firstName,lastName:lastName,dOB:dOB},
-            success: function (data) {
-                if(data)
-                {
-    debugger;
-    //$('#userGrids').data('kendoGrid').dataSource.data(data);
-                    $("#candidateGridPopup .modal-body").html(data);
-    if($('#userGrids').data('kendoGrid').dataSource.total()>0)
-    {
-                    $("#candidateGridPopup").modal('show');
-    }
+        var userId=$("#UserId").val();
+        if(userId==0)
+        {
+            var firstName=$("#FirstName").val();
+            var lastName=$("#LastName").val();
+            var dOB=$("#DOB").val();
+            $.ajax({
+                url: '/Admin/GetCandidateGrid',
+                type: 'post',
+                dataType: 'html',
+                //async:false,
+                data: {firstName:firstName,lastName:lastName,dOB:dOB},
+                success: function (data) {
+                    if(data)
+                    {
+                        //$('#userGrids').data('kendoGrid').dataSource.data(data);
+                        $("#candidateGridBody").html(data);
+                        if($('#userGrids').data('kendoGrid').dataSource.total()>0)
+                        {
+                            $("#candidateGridPopup").modal('show');
+                        }
+                    }
                 }
-            }
 
-        });
+            });
+        }
     }
 
     function loadCandidateDetails()
     {
-       var dataItem=GetDataItemOfSelectedRow();
+        var dataItem=GetDataItemOfSelectedRow();
         if(dataItem)
         {
-                $.ajax({
-            url: '/Candidate/GetCandidateProfile',
-            type: 'post',
-            dataType: 'html',
-            //async:false,
-            data: {userId:dataItem.UserId},
-            success: function (data) {
-                if(data)
-                {
-    debugger;
-    //$('#userGrids').data('kendoGrid').dataSource.data(data);
-                    $("#candidateDiv").html(data);
-                    loadKendoControls();
+            $.ajax({
+                url: '/Admin/GetCandidateProfile',
+                type: 'post',
+                dataType: 'html',
+                //async:false,
+                data: {userId:dataItem.UserId},
+                success: function (data) {
+                    if(data)
+                    {
+                        //$('#userGrids').data('kendoGrid').dataSource.data(data);
+                        $("#candidateDiv").html(data);
+                        loadControls();
+                        $('#IsCandidateReappear').val(true);
+                        $("#candidateGridPopup").modal('hide');
+                    }
                 }
-            }
 
-        });
+            });
+        }
+        else
+        {
+            swal("Warning!", "Please select at least 1 candidate.", "error");
         }
     }
-        function GetDataItemOfSelectedRow() {
-        debugger;
+    function GetDataItemOfSelectedRow() {
         var checkedRow = $("[name=selectUser]:checked");
         if (checkedRow.length > 0) {
             var userGrid = $('#userGrids').data("kendoGrid");
@@ -408,8 +315,146 @@
                 return dataItem;
             }
         }
-            return false;
+        return false;
     }
+
+
+    function RemoveProfilePhoto(){
+        $('#ProfilePhotoImage').attr('src',"");
+        $('#ProfilePhotoImage').hide();
+        $('#ProfilePhotofile').show();
+        $('#RemoveProfilePhoto').hide();
+    }
+
+    //register custom validation rules
+    (function ($, kendo) {
+        $.extend(true, kendo.ui.validator, {
+            rules: { // custom rules
+                experiencevalidation: function (input, params) {
+                    if (input.is("[name='DOB']")) {
+                        if (!(input.val() != "")) {
+                            input.attr("data-experiencevalidation-msg", "Date of birth is required!");
+                            return false;
+                        }
+                        else if (input.val() != "") {
+                            var today = new Date();
+                            var currentYear = today.getFullYear();
+                            try {
+                                var parts = input.val().split("/");
+                                var timestamp = new Date(parts[1] + "/" + parts[0] + "/" + parts[2]);
+                                if (isNaN(timestamp) == true || parts[2] < 1900 || parts[2] >= currentYear) {
+                                    input.attr("data-experiencevalidation-msg", "Invalid Date");
+                                    return false;
+                                }
+                            }
+                            catch (e) {
+                                input.attr("data-experiencevalidation-msg", "Invalid Date");
+                                return false;
+                            }
+                        }
+                        else if (input.val() != "") {
+                            if ($('#DOB').val() > GetNewDate()) {
+                                input.attr("data-experiencevalidation-msg", "Date of birth can not be greater than today!");
+                                return false;
+                            }
+                        }
+                    }
+                    if (input.is("[name='Position']")) {
+                        if ((input.val() != "" && input.val() == "--Select--")) {
+                            input.attr("data-experiencevalidation-msg", "Position is required!");
+                            $('span[aria-owns="Position_listbox"]').css('border', '1px solid red');
+                            return false;
+                        }
+                        else {
+                            $('span[aria-owns="Position_listbox"]').css('border', 'none ');
+                            input.attr("data-experiencevalidation-msg", "");
+                        }
+                    }
+                    if (input.is("[name='Gender']")) {
+                        if ((input.val() != "" && input.val() == "--Select--")) {
+                            input.attr("data-experiencevalidation-msg", "Gender is required!");
+                            $('span[aria-owns="Gender_listbox"]').css('border', '1px solid red');
+                            return false;
+                        }
+                        else {
+                            $('span[aria-owns="Gender_listbox"]').css('border', 'none ');
+                            input.attr("data-experiencevalidation-msg", "");
+                        }
+                    }
+                    if (input.is("[name='RelevantExperienceInYear']")) {
+                        if (input.val() == "") {
+                            input.attr("data-experiencevalidation-msg", "Relevant experience in year is required!");
+                            $('span[aria-owns="RelevantExperienceInYear_listbox"]').css('border', '1px solid red');
+                            return false;
+                        }
+                        else if (input.val() != "" && input.val() > $('#TotalExperienceInYear').val()) {
+
+                            input.attr("data-experiencevalidation-msg", "Relevant experience in year can not be greater than total experience in year!");
+                            return false;
+
+                        }
+                        else {
+                            $('span[aria-owns="RelevantExperienceInYear_listbox"]').css('border', 'none ');
+                            input.attr("data-experiencevalidation-msg", "");
+                        }
+                    }
+                    if (input.is("[name='RelevantExperienceInMonth']")) {
+                        if (input.val() == "") {
+                            input.attr("data-experiencevalidation-msg", "Relevant experience in month is required!");
+                            $('span[aria-owns="RelevantExperienceInMonth_listbox"]').css('border', '1px solid red');
+                            return false;
+                        }
+                        else if (input.val() != "" && ($('#RelevantExperienceInYear').val() == $('#TotalExperienceInYear').val() || $('#RelevantExperienceInYear').val() < $('#TotalExperienceInYear').val()) && input.val() > $('#TotalExperienceInMonth').val()) {
+
+                            input.attr("data-experiencevalidation-msg", "Relevant experience can not be greater than total experience!");
+                            return false;
+
+                        }
+                        else {
+                            $('span[aria-owns="RelevantExperienceInMonth_listbox"]').css('border', 'none ');
+                            input.attr("data-experiencevalidation-msg", "");
+                        }
+                    }
+                    if (input.is("[data-val-remote]") && input.val() != "") {
+                        var remoteURL = input.attr("data-val-remote-url");
+                        if (!checkMail(input.val(), remoteURL)) {
+                            input.attr("data-experiencevalidation-msg", "Email is already exist!");
+                            return false;
+                        }
+                    }
+                    if (input.is("[id='file']") && fileBool) {
+                        if (!(input.val() != "")) {
+                            input.attr("data-experiencevalidation-msg", "File is required!");
+                            return false;
+                        }
+                        else if (input.val() != "") {
+                            var fileName = $('#file')[0].files[0].name;
+                            var extension = fileName.substring(fileName.lastIndexOf('.') + 1)
+                            if (extension.toLowerCase() == "doc" || extension.toLowerCase() == "docx" || extension.toLowerCase() == "pdf") {
+                                return true;
+                            }
+                            else {
+                                input.attr("data-experiencevalidation-msg", "Allowed extensions are '.doc, .docx, pdf'!");
+                                return false;
+                            }
+                        }
+                    }
+
+                    //if ((input.is("[id='FirstName']") || input.is("[id='LastName']") || input.is("[id='DOB']")) && ($("#FirstName").val() && $("#LastName").val() && $("#DOB").val())) {
+
+                    //    checkExistingCandidate();
+                    //}
+                    return true;
+                }
+            },
+            messages: { //custom rules messages
+                experiencevalidation: function (input) {
+                    // return the message text
+                    return input.attr("data-val-experiencevalidation");
+                }
+            }
+        });
+    })(jQuery, kendo);
 </script>
 <style>
     .height {

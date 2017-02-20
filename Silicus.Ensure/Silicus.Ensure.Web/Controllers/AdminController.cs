@@ -235,6 +235,25 @@ namespace Silicus.Ensure.Web.Controllers
             return View();
         }
 
+
+        
+        [HttpPost]
+        public ActionResult GetCandidateGrid(string firstName, String lastName, DateTime dob)
+        {
+            var candidates = _userService.GetCandidates(firstName, lastName, dob).ToList();
+                var candidatebusinessModelList = _mappingService.Map<List<UserBusinessModel>, List<UserViewModel>>(candidates);
+                return PartialView("_CadidateGrid", candidatebusinessModelList);
+        }
+
+        public ActionResult GetCandidateProfile(int userId)
+        {
+            var candidate = _userService.GetUserById(userId);
+            var candidatebusinessModel = _mappingService.Map<UserBusinessModel, UserViewModel>(candidate);
+            var positionDetails = _positionService.GetPositionDetails().OrderBy(model => model.PositionName);
+            candidatebusinessModel.PositionList = positionDetails.ToList();
+            return PartialView("_CandidateProfile", candidatebusinessModel);
+        }
+
         public ActionResult CandidatesSuit(int UserId, int IsReassign = 0)
         {
             ViewBag.CurrentUser = UserId;

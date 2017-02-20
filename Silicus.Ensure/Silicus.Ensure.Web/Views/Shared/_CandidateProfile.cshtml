@@ -45,6 +45,10 @@
                     {
                         <input type="hidden" id="Role" name="Role" value="@Silicus.Ensure.Models.Constants.RoleName.Candidate.ToString()" />
                         @Html.HiddenFor(m => m.UserId)
+                        @Html.HiddenFor(m => m.ResumeName)
+                        @Html.HiddenFor(m => m.ResumePath)
+                        @Html.HiddenFor(m => m.ProfilePhotoFilePath)
+                        @Html.HiddenFor(m => m.IsCandidateReappear)
                         <div class="fluid mt20">
                             <div class="row" style="margin-bottom:10px!important">
                                 @if (!string.IsNullOrWhiteSpace(Model.ErrorMessage))
@@ -88,12 +92,12 @@
                                     <div class="col-md-6">
                                         <div class="col-md-8 col-sm-10 col-xs-10" style="padding-left:0;padding-right:0;height:30px;">
                                             @(Html.Kendo().DropDownListFor(model => model.Position)
-                            .OptionLabel("--Select--")
-                            .BindTo(Model.PositionList)
-                            .DataTextField("PositionName")
-                            .DataValueField("PositionName")
-                            .Value(Model.Position)
-                            .HtmlAttributes(new { style = "width: 100%;border-color: #c5c5c5;" })
+.OptionLabel("--Select--")
+.BindTo(Model.PositionList)
+.DataTextField("PositionName")
+.DataValueField("PositionName")
+.Value(Model.Position)
+.HtmlAttributes(new { style = "width: 100%;border-color: #c5c5c5;" })
                                             )
                                             @Html.ValidationMessageFor(m => m.Position)
                                         </div>
@@ -119,11 +123,11 @@
                                     </div>
                                     <div class="col-md-6">
                                         @(Html.Kendo().DropDownListFor(m => m.Gender)
-                        .Name("Gender")
-                        .DataTextField("Text")
-                        .DataValueField("Value")
-                            .BindTo(new List<SelectListItem>
-                            () {
+.Name("Gender")
+.DataTextField("Text")
+.DataValueField("Value")
+.BindTo(new List<SelectListItem>
+() {
                             new SelectListItem(){
                             Text="--Select--",
                             Value="--Select--"
@@ -136,7 +140,7 @@
                             Text="Female",
                             Value="Female"
                             }
-                            }).HtmlAttributes(new { style = "width: 100%;" }))
+}).HtmlAttributes(new { style = "width: 100%;" }))
                                         @Html.ValidationMessageFor(m => m.Gender)
                                     </div>
                                 </div>
@@ -168,7 +172,7 @@
                                     </div>
                                     <div class="col-md-6">
                                         <input type="text" style="width:100%;" name="DOB" id="DOB" value="@if (Model.UserId != 0)
-                                                                                         { @Model.DOB.ToShortDateString().Replace("-","/")}" />
+                                        { @Model.DOB.ToShortDateString().Replace("-", "/")}" />
                                         @Html.ValidationMessageFor(m => m.DOB)
                                     </div>
                                 </div>
@@ -211,23 +215,23 @@
                                     <div class="col-md-6">
                                         <div class="col-md-6 col-sm-6 col-xs-6" style="padding-left:0">
                                             @(Html.Kendo().DropDownListFor(m => m.TotalExperienceInYear)
-                        .DataTextField("Text")
-                        .DataValueField("Value")
-                        .BindTo(EnumHelper.GetSelectList((typeof(Year)))
-                        .Select(x => new SelectListItem { Text = x.Value, Value = x.Value }))
-                        .HtmlAttributes(new { style = "width: 100%;" })
-                        .OptionLabel("Year")
+.DataTextField("Text")
+.DataValueField("Value")
+.BindTo(EnumHelper.GetSelectList((typeof(Year)))
+.Select(x => new SelectListItem { Text = x.Value, Value = x.Value }))
+.HtmlAttributes(new { style = "width: 100%;" })
+.OptionLabel("Year")
                                             )
                                             @Html.ValidationMessageFor(m => m.TotalExperienceInYear)
                                         </div>
                                         <div class="col-md-6 col-sm-6 col-xs-6" style="padding-right:0">
                                             @(Html.Kendo().DropDownListFor(m => m.TotalExperienceInMonth)
-                        .DataTextField("Text")
-                        .DataValueField("Value")
-                        .BindTo(EnumHelper.GetSelectList((typeof(Month)))
-                        .Select(x => new SelectListItem { Text = x.Value, Value = x.Value }))
-                        .HtmlAttributes(new { style = "width: 100%" })
-                        .OptionLabel("Months")
+.DataTextField("Text")
+.DataValueField("Value")
+.BindTo(EnumHelper.GetSelectList((typeof(Month)))
+.Select(x => new SelectListItem { Text = x.Value, Value = x.Value }))
+.HtmlAttributes(new { style = "width: 100%" })
+.OptionLabel("Months")
                                             )
                                             @Html.ValidationMessageFor(m => m.TotalExperienceInMonth)
                                         </div>
@@ -240,23 +244,23 @@
                                     <div class="col-md-6">
                                         <div class="col-md-6 col-sm-6 col-xs-6" style="padding-left:0">
                                             @(Html.Kendo().DropDownListFor(m => m.RelevantExperienceInYear)
-                            .DataTextField("Text")
-                            .DataValueField("Value")
-                            .BindTo(EnumHelper.GetSelectList((typeof(Year)))
-                            .Select(x => new SelectListItem { Text = x.Value, Value = x.Value }))
-                            .HtmlAttributes(new { style = "width: 100%" })
-                            .OptionLabel("Year")
+.DataTextField("Text")
+.DataValueField("Value")
+.BindTo(EnumHelper.GetSelectList((typeof(Year)))
+.Select(x => new SelectListItem { Text = x.Value, Value = x.Value }))
+.HtmlAttributes(new { style = "width: 100%" })
+.OptionLabel("Year")
                                             )
                                             @Html.ValidationMessageFor(m => m.RelevantExperienceInYear)
                                         </div>
                                         <div class="col-md-6 col-sm-6 col-xs-6" style="padding-right:0">
                                             @(Html.Kendo().DropDownListFor(m => m.RelevantExperienceInMonth)
-                        .DataTextField("Text")
-                        .DataValueField("Value")
-                        .BindTo(EnumHelper.GetSelectList((typeof(Month)))
-                        .Select(x => new SelectListItem { Text = x.Value, Value = x.Value }))
-                        .HtmlAttributes(new { style = "width: 100%" })
-                        .OptionLabel("Months")
+.DataTextField("Text")
+.DataValueField("Value")
+.BindTo(EnumHelper.GetSelectList((typeof(Month)))
+.Select(x => new SelectListItem { Text = x.Value, Value = x.Value }))
+.HtmlAttributes(new { style = "width: 100%" })
+.OptionLabel("Months")
                                             )
                                             @Html.ValidationMessageFor(m => m.RelevantExperienceInMonth)
                                         </div>
@@ -293,7 +297,7 @@
                                             <div class="demo-section k-content">
                                                 <input id="file" name="ResumeFile" type="file" data-role="upload" />
                                             </div>
-                                            @if (!string.IsNullOrEmpty(Model.ResumeName))
+                                            @if (!string.IsNullOrWhiteSpace(Model.ResumeName))
                                             {
                                                 <div id="uploadFileLink" class="postuploadedfilesholder clearfix">
                                                     <div class="fileupload M-T5">
@@ -320,8 +324,17 @@
                                         <label for="file">Upload Image:</label>
                                     </div>
                                     <div class="col-md-6">
-                                        <img id="ProfilePhotoImage" src="" style="display:none;height:100px;width:100px">
-                                        <input type="file" name="ProfilePhotofile" id="ProfilePhoto" style="width: 100%;" />
+                                        @if (!string.IsNullOrWhiteSpace(Model.ProfilePhotoFilePath))
+                                        {
+                                            <img id="ProfilePhotoImage" src="@System.Configuration.ConfigurationManager.AppSettings["ServerName"]@Html.Raw(Url.Content(Model.ProfilePhotoFilePath))" style="height:100px;width:100px">
+                                            <span id="RemoveProfilePhoto" class="deleteupload" title="Delete"><a onclick="RemoveProfilePhoto()"><i class="fa fa-window-close" aria-hidden="true"></i></a></span>
+                                            <input type="file" name="ProfilePhotofile" id="ProfilePhotofile" data-max-size="2097152" style="width: 100%; display:none" accept='image/*' />
+                                        }
+                                        else
+                                        {
+                                            <img id="ProfilePhotoImage" src="" style="height:100px;width:100px;display:none">
+                                            <input type="file" name="ProfilePhotofile" id="ProfilePhotofile" data-max-size="2097152" style="width: 100%;" accept='image/*' />
+                                        }
                                     </div>
                                 </div>
                             </div>
@@ -348,3 +361,4 @@
         </div>
     </div>
 </div>
+
