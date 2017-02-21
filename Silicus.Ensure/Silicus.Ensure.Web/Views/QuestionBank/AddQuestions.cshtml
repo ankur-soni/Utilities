@@ -90,9 +90,9 @@
                             </div>
                             <div class="row" id="rowOpt1">
                                 <div class="col-xs-10 col-sm-10 col-md-10 col-lg-6">
-                                    <div class="input-group form-group">
+                                    <div class="input-group form-group" id="answerDiv">
                                         <div class="input-group-addon">
-                                            @Html.CheckBoxFor(y => y.IsAnsOption1, new { @class = "ansCheckBox" })
+                                            @Html.CheckBoxFor(y => y.IsAnsOption1, new { @class = "ansCheckBox chkValidation" })
                                         </div>
                                         @Html.TextBoxFor(m => m.Option1, new { @class = "form-control", Value = @Model.Option1 })
                                     </div>
@@ -321,10 +321,11 @@
 
                         <script>
                             function isAnySelectedAns(input)
-                            {
+                            {                               
+                                $('#IsAnsOption1_validationMessage').appendTo('#answerDiv');
                                 var qType = $('#QuestionType').val();
-                                if (input.is("[name=IsAnsOption1]") && qType == 1) {
-                                    input.attr("data-IsAnsOption1-msg", "Please select at least single Answer !");
+                                if (input.is("[name=IsAnsOption1]") && qType == 1) {                                 
+                                    input.attr("data-IsAnsOption1-msg", "Please select at least single Answer !");                                  
                                     return $(".ansCheckBox:checked").length>0;
                                 }
                                 return true;

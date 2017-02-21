@@ -255,6 +255,18 @@ namespace Silicus.Ensure.Web.Controllers
           
         }
 
+
+
+        public ActionResult CandidateHistory(int userId)
+        {
+            var candidate = _userService.GetUserById(userId);
+            var candidatebusinessModel = _mappingService.Map<UserBusinessModel, UserViewModel>(candidate);
+            var positionDetails = _positionService.GetPositionDetails().OrderBy(model => model.PositionName);
+            candidatebusinessModel.PositionList = positionDetails.ToList();
+            return View(candidatebusinessModel);
+
+        }
+
         public ActionResult CandidatesSuit(int UserId, int IsReassign = 0)
         {
             ViewBag.CurrentUser = UserId;
