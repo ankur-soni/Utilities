@@ -58,11 +58,11 @@
                                         <div class="form-group">
 
                                             @(Html.Kendo().DropDownListFor(m => m.QuestionType)
-                                    .Name("QuestionType")
-                                    .Value(Model.QuestionType)
-                                    .Events(e => e.Change("QuestionTypeChange"))
-                                    .BindTo(EnumHelper.GetSelectList(typeof(QuestionType)))
-                                    .HtmlAttributes(new { style = "width: 100%" }))
+                                        .Name("QuestionType")
+                                        .Value(Model.QuestionType)
+                                        .Events(e => e.Change("QuestionTypeChange"))
+                                        .BindTo(EnumHelper.GetSelectList(typeof(QuestionType)))
+                                        .HtmlAttributes(new { style = "width: 100%" }))
                                         </div>
                                     </div>
                                 </div>
@@ -90,16 +90,16 @@
                             </div>
                             <div class="row" id="rowOpt1">
                                 <div class="col-xs-10 col-sm-10 col-md-10 col-lg-6">
-                                    <div class="input-group form-group">
+                                    <div class="input-group form-group" id="answerDiv">
                                         <div class="input-group-addon">
-                                            @Html.CheckBoxFor(y => y.IsAnsOption1, new { @class = "ansCheckBox" })
+                                            @Html.CheckBoxFor(y => y.IsAnsOption1, new { @class = "ansCheckBox chkValidation" })
                                         </div>
                                         @Html.TextBoxFor(m => m.Option1, new { @class = "form-control", Value = @Model.Option1 })
                                     </div>
                                 </div>
                                 <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2">
                                     @(Html.Kendo().Button().Name("btnAddOpt1").HtmlAttributes(new { type = "button", param = "1", style = "display:none;padding:6px 13px;font-size:12px;", @class = "fa fa-plus" }).Events(e => e.Click("OptionAdd")))
-                            </div>
+                                </div>
                             </div>
                             <div class="row" id="rowOpt2">
                                 <div class="col-xs-10 col-sm-10 col-md-10 col-lg-6">
@@ -112,7 +112,6 @@
                                 </div>
                                 <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2">
                                     @(Html.Kendo().Button().Name("btnAddOpt2").HtmlAttributes(new { type = "button", param = "2", style = "padding:6px 13px;font-size:12px;", @class = "fa fa-plus" }).Events(e => e.Click("OptionAdd")))
-                                    @(Html.Kendo().Button().Name("btnDelOpt2").HtmlAttributes(new { type = "button", param = "2", style = "padding:6px 13px;font-size:12px;", @class = "fa fa-minus" }).Events(e => e.Click("OptionDelete")))
                                 </div>
 
                             </div>
@@ -237,12 +236,12 @@
                                         <div class="form-group">
 
                                             @(Html.Kendo().MultiSelectFor(m => m.SkillTag)
-                                    .DataTextField("TagName")
-                                    .DataValueField("TagId")
-                .Placeholder("--Select--")
-                                    .BindTo(Model.SkillTagsList)
-                                    .Value(Model.SkillTag)
-                                    .HtmlAttributes(new { style = "width: 100%" }))
+                                        .DataTextField("TagName")
+                                        .DataValueField("TagId")
+                                        .Placeholder("--Select--")
+                                        .BindTo(Model.SkillTagsList)
+                                        .Value(Model.SkillTag)
+                                        .HtmlAttributes(new { style = "width: 100%" }))
                                         </div>
                                     </div>
                                     <div class="col-xs-2 col-sm-2 col-md-2 col-lg-3">
@@ -262,11 +261,11 @@
                                     <div class="col-xs-7 col-sm-7 col-md-7 col-lg-6">
                                         <div class="form-group">
                                             @(Html.Kendo().DropDownListFor(m => m.ProficiencyLevel)
-                                .Name("ProficiencyLevel")
-             .OptionLabel("--Select--")
-                                .Value(Model.ProficiencyLevel)
-                                .BindTo(EnumHelper.GetSelectList(typeof(Proficiency)))
-                                .HtmlAttributes(new { style = "width: 100%" }))
+                                        .Name("ProficiencyLevel")
+                                        .OptionLabel("--Select--")
+                                        .Value(Model.ProficiencyLevel)
+                                        .BindTo(EnumHelper.GetSelectList(typeof(Proficiency)))
+                                        .HtmlAttributes(new { style = "width: 100%" }))
                                             @Html.ValidationMessageFor(m => m.ProficiencyLevel)
                                         </div>
                                     </div>
@@ -322,10 +321,11 @@
 
                         <script>
                             function isAnySelectedAns(input)
-                            {
+                            {                               
+                                $('#IsAnsOption1_validationMessage').appendTo('#answerDiv');
                                 var qType = $('#QuestionType').val();
-                                if (input.is("[name=IsAnsOption1]") && qType == 1) {
-                                    input.attr("data-IsAnsOption1-msg", "Please select at least single Answer !");
+                                if (input.is("[name=IsAnsOption1]") && qType == 1) {                                 
+                                    input.attr("data-IsAnsOption1-msg", "Please select at least single Answer !");                                  
                                     return $(".ansCheckBox:checked").length>0;
                                 }
                                 return true;
@@ -442,12 +442,12 @@
                                 if(success==1 || success==2 )
                                 {
                                     if(edit=="True"){
-                                        $("#myModal").modal();
-                                        $("#msgContent").text("Question updated successfully.");
+                                        ShowMessage("Question updated successfully.",true);
+                                        window.location.href = "/QuestionBank/QuestionBank";
                                     }
                                     else{
-                                        $("#myModal").modal();
-                                        $("#msgContent").text("Question added successfully in the application.");
+                                        ShowMessage("Question added successfully.",true);
+                                        window.location.href = "/QuestionBank/QuestionBank";
                                     }
                                 }
                                 else
@@ -542,8 +542,8 @@
                                 var param = this.element.attr("param");
                                 $.when(showConfirmationWindow('Are you sure,  you want to delete this record?', '&nbsp;Delete')).then(function (confirmed) {
                                     if (confirmed) {
-                                OptionDispaly('D', param);
-                            }
+                                        OptionDispaly('D', param);
+                                    }
                                 });
                             }
 
@@ -717,7 +717,7 @@
 
                 </div>
                 <div class="modal-footer">
-                    <button type="button" style="width:70px;"  onclick="saveTag()" class="btn btn-default">Save</button>
+                    <button type="button" style="width:70px;" onclick="saveTag()" class="btn btn-default">Save</button>
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
                 </div>
             </div>

@@ -49,7 +49,7 @@
                 <div id="candidateGridBody"></div>
             </div>
             <div class="modal-footer">
-                <button type="button" style="width:70px;" onclick="loadCandidateDetails()" class="btn btn-default">Yes</button>
+                <button  style="width:70px;"  onclick="loadCandidateDetails()" class="btn btn-default">Yes</button>
                 <button type="button" class="btn btn-secondary"  data-dismiss="modal">No</button>
             </div>
         </div>
@@ -101,7 +101,7 @@
     function IsInvalidFileType(fileName)
     {
         if (fileName == "") {
-            alert("Browse to upload a valid File with png extension");
+            toastr.error("Browse to upload a valid image file");
             return true;
         }
         var extension=fileName.split(".")[1].toUpperCase();
@@ -122,12 +122,12 @@
             var fileName=input.files[0].name;
             var fileSize = input.files[0].size;
             if(fileSize>maxSize){
-                alert('file size should be less than 2mb');
+                toastr.error('file size should be less than 2mb');
                 ClearProfilePhoto();
                 return false;
             }
             else if(IsInvalidFileType(fileName)){
-                alert('Only jpg, jpeg, png file types are allowed.');
+                toastr.error('Only jpg, jpeg, png file types are allowed.');
                 ClearProfilePhoto();
                 return false;
             }
@@ -276,31 +276,15 @@
             });
         }
     }
+    
 
     function loadCandidateDetails()
     {
         var dataItem=GetDataItemOfSelectedRow();
         if(dataItem)
         {
-            $.ajax({
-                url: '/Admin/GetCandidateProfile',
-                type: 'post',
-                dataType: 'html',
-                //async:false,
-                data: {userId:dataItem.UserId},
-                success: function (data) {
-                    if(data)
-                    {
-                        //$('#userGrids').data('kendoGrid').dataSource.data(data);
-                        $("#candidateDiv").html(data);
-                        loadControls();
-                        $('#IsCandidateReappear').val(true);
-                        $("#candidateGridPopup").modal('hide');
-                    }
-                }
-
-            });
-        }
+            window.location.href = "/Admin/CandidateAdd?UserId="+dataItem.UserId+"&IsCandidateReappear=true";    
+        }  
         else
         {
             swal("Warning!", "Please select at least 1 candidate.", "error");

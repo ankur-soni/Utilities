@@ -20,5 +20,7 @@ namespace Silicus.Ensure.Web.Models
         public string CandidateName { get; set; }
 
         public string CandidateStatus { get; set; }
+
+        public string RecruiterName { get; set; }
     }
 }

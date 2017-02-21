@@ -80,7 +80,7 @@ namespace Silicus.Ensure.Web.Controllers
             _emailService = emailService;
             _commonController = commonController;
 
-          
+
         }
 
         public ActionResult Dashboard()
@@ -194,7 +194,7 @@ namespace Silicus.Ensure.Web.Controllers
             bool userInRole = User.IsInRole(Silicus.Ensure.Models.Constants.RoleName.Admin.ToString());
             for (int index = 0; index < viewModels.Count(); index++)
             {
-                var testSuitId = _testSuiteService.GetUserTestSuiteByUserApplicationId(viewModels[index].UserId);
+                var testSuitId = _testSuiteService.GetUserTestSuiteByUserApplicationId(viewModels[index].UserApplicationId);
                 viewModels[index].IsAdmin = userInRole;
                 viewModels[index].TestSuiteId = testSuitId != null ? testSuitId.TestSuiteId : 0;
             }
@@ -223,7 +223,7 @@ namespace Silicus.Ensure.Web.Controllers
                     flag = false;
                 }
             }
-            return Json(flag, JsonRequestBehavior.AllowGet); 
+            return Json(flag, JsonRequestBehavior.AllowGet);
         }
 
         /// <summary>
@@ -237,52 +237,40 @@ namespace Silicus.Ensure.Web.Controllers
         {
             string actionErrorName = user.Role.ToLower() == RoleName.Candidate.ToString().ToLower() ? "CandidateAdd" : "PanelAdd";
             string controllerName = user.Role.ToLower() == RoleName.Candidate.ToString().ToLower() ? "Admin" : "Panel";
-            try
+            if (user.ResumeFile != null)
             {
-                if (user.ResumeFile != null)
-                {
-                    UploadResume(user);
-                }
-
-                if (user.ProfilePhotoFile != null)
-                {
-                    UploadProfilePhoto(user);
-                }
-
-                if (user.UserId != 0 && !user.IsCandidateReappear)
-                {
-                    UpdateUserMethod(user);
-                }
-                else if(user.IsCandidateReappear)
-                {
-                    CandidateReappear(user);
-                }
-                else
-                {
-                    user = await CreateUserMethod(user);
-
-                    if (!string.IsNullOrWhiteSpace(user.ErrorMessage)) { return RedirectToAction(actionErrorName, controllerName, new { UserId = user.UserId }); }
-
-                    var organizationUserDomainModel = _mappingService.Map<UserViewModel, UserBusinessModel>(user);
-                    organizationUserDomainModel.IsDeleted = false;
-                    _userService.Add(organizationUserDomainModel);
-                    TempData["Success"] = "User created successfully!";
-                }
+                UploadResume(user);
             }
-            catch (Exception ex)
-            {
-                ModelState.AddModelError("", ex.Message);
-                user.ErrorMessage = ex.Message;
-                TempData["UserViewModel"] = user;
-                ViewBag.RoleId = new SelectList(RoleManager.Roles, "Name", "Name");
-                return RedirectToAction(actionErrorName, controllerName, new { UserId = user.UserId });
 
+            if (user.ProfilePhotoFile != null)
+            {
+                UploadProfilePhoto(user);
+            }
+
+            if (user.UserId != 0 && !user.IsCandidateReappear)
+            {
+                UpdateUserMethod(user);
+            }
+            else if (user.IsCandidateReappear)
+            {
+                CandidateReappear(user);
+            }
+            else
+            {
+                user = await CreateUserMethod(user);
+
+                if (!string.IsNullOrWhiteSpace(user.ErrorMessage)) { return RedirectToAction(actionErrorName, controllerName, new { UserId = user.UserId }); }
+
+                var organizationUserDomainModel = _mappingService.Map<UserViewModel, UserBusinessModel>(user);
+                organizationUserDomainModel.IsDeleted = false;
+                _userService.Add(organizationUserDomainModel);
+                TempData["Success"] = "User created successfully!";
             }
             ViewBag.UserRoles = RoleManager.Roles.Select(r => new SelectListItem { Text = r.Name, Value = r.Name }).ToList();
 
             //Send Candidate creation mail to Admin and Recruiter
             List<string> Receipient = new List<string>() { "Admin", "Recruiter" };
-            _commonController.SendMailByRoleName("Candidate Created Successfully", "CandidateCreated.cshtml", Receipient, user.FirstName+" "+ user.LastName);
+            _commonController.SendMailByRoleName("Candidate Created Successfully", "CandidateCreated.cshtml", Receipient, user.FirstName + " " + user.LastName);
 
 
             return RedirectToAction(user.Role.ToLower() == RoleName.Candidate.ToString().ToLower() ? "Candidates" : "Index", controllerName);
@@ -290,7 +278,7 @@ namespace Silicus.Ensure.Web.Controllers
 
 
 
-    
+
 
 
         /// <summary>

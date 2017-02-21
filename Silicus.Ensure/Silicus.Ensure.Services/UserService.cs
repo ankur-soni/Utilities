@@ -28,6 +28,7 @@ namespace Silicus.Ensure.Services
             List<UserBusinessModel> userModel = new List<UserBusinessModel>();
             var users = _context.Query<User>().ToList();
             var panelMeberDetails = _context.Query<PanelMemberDetail>();
+            var recruiterMeberDetails = _context.Query<RecruiterMembersDetail>();
             foreach (var user in users)
             {
                 var objUser = UserToBusinessModel(user);
@@ -38,6 +39,15 @@ namespace Silicus.Ensure.Services
                     if (panelDetails != null)
                         objUser.PanelName = panelDetails.LastName + " " + panelDetails.FirstName;
                 }
+                int RecruiterMemberId;
+                if (int.TryParse(objUser.RecruiterId, out RecruiterMemberId) && RecruiterMemberId > 0)
+                {
+                    var recruiterDetails = recruiterMeberDetails.FirstOrDefault(y => y.UserId == RecruiterMemberId);
+                    if (recruiterDetails != null)
+                        objUser.RecruiterName = recruiterDetails.LastName + " " + recruiterDetails.FirstName;
+                }
+
+
                 userModel.Add(objUser);
             }
             return userModel;
@@ -138,7 +148,7 @@ namespace Silicus.Ensure.Services
         {
             var users = _context.Query<User>().Where(x =>x.FirstName==firstName
             && x.LastName==lastName
-            //&& x.DateOfBirth.Date==dob.Date
+            && x.DateOfBirth==dob.Date
             ).ToList();
             List<UserBusinessModel> userModel = new List<UserBusinessModel>();
             foreach (var user in users)
@@ -248,6 +258,9 @@ namespace Silicus.Ensure.Services
                     if (applicationDetails.PanelMemberId != null && applicationDetails.PanelMemberId > 0)
                         objUser.PanelId = applicationDetails.PanelMemberId.ToString();
 
+                    if (applicationDetails.RecruiterMemberId != null && applicationDetails.RecruiterMemberId > 0)
+                        objUser.RecruiterId = applicationDetails.RecruiterMemberId.ToString();
+
                 }
             }
 
@@ -310,6 +323,11 @@ namespace Silicus.Ensure.Services
                 applicationDetails.PanelMemberId = panelId;
             }
 
+            int RecruiterMemberId;
+            if (int.TryParse(objUser.RecruiterId, out RecruiterMemberId) && RecruiterMemberId > 0)
+            {
+                applicationDetails.RecruiterMemberId = RecruiterMemberId;
+            }
             var position = _positionService.GetPositionByName(objUser.Position);
             if (position != null)
                 applicationDetails.PositionId = position.PositionId;
@@ -370,6 +388,13 @@ namespace Silicus.Ensure.Services
             {
                 applicationDetails.PanelMemberId = panelId;
             }
+            int RecruiterMemberId;
+            if (int.TryParse(objUser.RecruiterId, out RecruiterMemberId) && RecruiterMemberId > 0)
+            {
+                applicationDetails.RecruiterMemberId = RecruiterMemberId;
+            }
+
+            
             var position = _positionService.GetPositionByName(objUser.Position);
             if (position != null)
                 applicationDetails.PositionId = position.PositionId;
