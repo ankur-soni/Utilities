@@ -14,7 +14,7 @@
     <div class="col-sm-12">
         <div class="box M-T15 M-B60">
             <div class="f1">
-                <div class="form-horizontal">
+                <div class="form-horizontal col-sm-9">
                     <div class="form-group">
                         @Html.LabelFor(model => model.Awards, "Nomination Category", htmlAttributes: new { @class = "col-md-2 col-sm-3" })
                         <div class="col-md-3 col-sm-4">
@@ -50,14 +50,43 @@
                         </div>
                     </div>
                     <div class="form-group">
-                        <div class="col-md-2 col-sm-3">
-                            <div class="checkbox checkbox-success">
-                                @*@Html.LabelFor(model => model.IsApplicable, "Apply", htmlAttributes: new { @class = "col-md-2" })*@
-
-                                @*@Html.CheckBoxFor(model => model.IsApplicable)*@
+                        <div class="checkbox checkbox-success">
+                            <div class="col-md-3 col-sm-4">
                                 <input id="checkbox1" name="IsApplicable" type="checkbox">
                                 <label for="checkbox1" name="IsApplicable">Select this checkbox if you want to run Award Category for custom period.</label>
                             </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-horizontal col-sm-3 box boxShadow">
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.Awards, "Nomination Category", new { @class = "col-md-6 col-sm-6" })
+                        <div class="col-md-3 col-sm-4">
+                            <label id="lblForAwardType">--</label>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.Years, "Year", new { @class = "col-md-6 col-sm-6" })
+                        <div class="col-md-3 col-sm-4">
+                            <label id="lblForYear">--</label>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.Months, "Month", new { @class = "col-md-6 col-sm-6" })
+                        <div class="col-md-3 col-sm-4">
+                            <label id="lblForMonth">--</label>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.MonthToSubtract, "Month To Subtract", new { @class = "col-md-6 col-sm-6" })
+                        <div class="col-md-3 col-sm-4">
+                            <label id="lblMonthToSubtract">--</label>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        @Html.Label("", "IsApplicable", new { @class = "col-md-6 col-sm-6" })
+                        <div class="col-md-3 col-sm-4">
+                            <label id="lblIsApplicable">--</label>
                         </div>
                     </div>
                 </div>
@@ -125,7 +154,7 @@
                             $(this).removeAttr("disabled", "disabled");
                         });
                     }
-
+                    fillDefaultValuesGrid();
                 },
                 error: function (error) {
                     swal("Error", "Oops something went wrong!", "error");
@@ -136,6 +165,7 @@
         } else {
             hideCustomLoader();
             clearWholeAwardForm(false);
+            clearDefaultValuesGrid();
         }
     });
 
@@ -180,7 +210,7 @@
         else {
             swal("Error", "Please select award.", "error");
         }
-
+        fillDefaultValuesGrid();
 
     });
 
@@ -202,6 +232,7 @@
                     swal("Error", "Award period not set successfuly.", "error");
 
                 }
+                fillDefaultValuesGrid();
             },
             error: function (status) {
                 hideCustomLoader();
@@ -279,6 +310,7 @@
                         swal("Error", "Award period not reset successfuly.", "error");
 
                     }
+                    fillDefaultValuesGrid();
                 }
             , error: function () {
                 hideCustomLoader();
@@ -292,4 +324,19 @@
 
     });
 
+    function fillDefaultValuesGrid() {
+        $("#lblForAwardType").text($("#Awards")[0].selectedOptions[0].text);
+        $("#lblForYear").text($("#Years")[0].selectedOptions[0].text);
+        $("#lblForMonth").text($("#Months")[0].selectedOptions[0].text);
+        $("#lblIsApplicable").text($("#checkbox1").prop('checked'));
+        $("#lblMonthToSubtract").text($("#MonthToSubtract").val());
+    }
+
+    function clearDefaultValuesGrid() {
+        $("#lblForAwardType").text('--');
+        $("#lblForYear").text('--');
+        $("#lblForMonth").text('--');
+        $("#lblIsApplicable").text('--');
+        $("#lblMonthToSubtract").text('--');
+    }
 </script>
