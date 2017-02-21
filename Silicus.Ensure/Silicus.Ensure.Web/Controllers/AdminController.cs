@@ -252,6 +252,7 @@ namespace Silicus.Ensure.Web.Controllers
             var positionDetails = _positionService.GetPositionDetails().OrderBy(model => model.PositionName);
             candidatebusinessModel.PositionList = positionDetails.ToList();
             return PartialView("_CandidateProfile", candidatebusinessModel);
+          
         }
 
         public ActionResult CandidatesSuit(int UserId, int IsReassign = 0)
@@ -523,7 +524,7 @@ namespace Silicus.Ensure.Web.Controllers
         {
             return _positionService.GetPositionById(positionId);
         }
-        public ActionResult CandidateAdd(int UserId)
+        public ActionResult CandidateAdd(int UserId,bool IsCandidateReappear=false)
         {
             UserViewModel currUser = new UserViewModel();
             currUser.UserId = UserId;
@@ -540,6 +541,7 @@ namespace Silicus.Ensure.Web.Controllers
 
             var positionDetails = _positionService.GetPositionDetails().OrderBy(model => model.PositionName);
             currUser.PositionList = positionDetails.ToList();
+            currUser.IsCandidateReappear = IsCandidateReappear;
             return View(currUser);
         }
 
