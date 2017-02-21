@@ -103,21 +103,20 @@ namespace Silicus.Ensure.Web.Controllers
 
             var userWithRoles = (from userinRoles in userRoles
                                  join allUsers in userlistViewModel
-                                 on userinRoles.UserId equals allUsers.UserId into temp
-                                 from j in temp.DefaultIfEmpty()
+                                 on userinRoles.UserId equals allUsers.UserId
                                  select new UserDetailViewModel
                                  {
-                                     RoleName = userinRoles.Role.Name,
-                                     UserName = j.UserName,
-                                     Department = j.Department,
-                                     Designation = j.Designation,
-                                     Email = j.Email,
-                                     FirstName = j.FirstName,
-                                     FullName = j.FullName,
-                                     LastName = j.LastName,
-                                     MiddleName = j.MiddleName,
+                                     RoleName = userinRoles?.Role?.Name,
+                                     UserName = allUsers.UserName,
+                                     Department = allUsers.Department,
+                                     Designation = allUsers.Designation,
+                                     Email = allUsers.Email,
+                                     FirstName = allUsers.FirstName,
+                                     FullName = allUsers.FullName,
+                                     LastName = allUsers.LastName,
+                                     MiddleName = allUsers.MiddleName,
                                      RoleId = userinRoles.Role.ID,
-                                     UserId = j.UserId
+                                     UserId = allUsers.UserId
                                  }).ToList();
 
             DataSourceResult result = userWithRoles.ToDataSourceResult(request);
