@@ -679,7 +679,14 @@ namespace Silicus.EncourageWithAzureAd.Web.Controllers
         public JsonResult GetCustomDateDetailsForAward(int awardId)
         {
             CustomDate customDateDetails = _customDateService.CustomDateDetailsForAward(awardId);
-            if (customDateDetails == null) { customDateDetails = new CustomDate(); }
+            if (customDateDetails == null)
+            {
+                customDateDetails = new CustomDate();
+                customDateDetails.Year = DateTime.Now.Year;
+                customDateDetails.Month = DateTime.Now.Month;
+                customDateDetails.IsApplicable = true;
+                customDateDetails.MonthsToSubtract = 0;
+            }
             return Json(customDateDetails, JsonRequestBehavior.AllowGet);
         }
     }
