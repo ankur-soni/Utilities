@@ -7,12 +7,12 @@
     <div class="col-sm-12" style="padding:20px 0px 0px 50px;">
         @if (Model.QuestionType == 1)
         {
-            <p><strong style="font-size:20px;">Section 2 (Objective question)</strong></p>
+            <p><strong style="font-size:20px;">Section 1 (Objective question)</strong></p>
             <input type="hidden" value="@Model.QuestionType" id="QuestionType" />
         }
         else
         {
-            <p><strong style="font-size:20px;">Section 1 (Practical question)</strong></p>
+            <p><strong style="font-size:20px;">Section 2 (Practical question)</strong></p>
             <input type="hidden" value="@Model.QuestionType" id="QuestionType" />
         }
         <p><strong style="font-size:15px;">Question @Model.DisplayQuestionNumber: (@Model.Marks Marks)</strong></p>
@@ -330,17 +330,17 @@
         @if (Model.NextQuestionId != null)
         {
             @(Html.Kendo().Button()
-        .Name("btnNext")
-                .HtmlAttributes(new { type = "button" }).Events(e => e.Click("OnNext"))
-                    .Content("Next").HtmlAttributes(new { style = "float: right;", @data_id = Model.NextQuestionId, @class = "btn btn-primary" }))
+    .Name("btnNext")
+            .HtmlAttributes(new { type = "button" }).Events(e => e.Click("OnNext"))
+                .Content("Next").HtmlAttributes(new { style = "float: right;", @data_id = Model.NextQuestionId, @class = "btn btn-primary" }))
         }
 
         @if (Model.PreviousQuestionId != null)
         {
             @(Html.Kendo().Button()
-                .Name("btnPrevious")
-                .HtmlAttributes(new { type = "button" }).Events(e => e.Click("OnPrevious"))
-                .Content("Previous").HtmlAttributes(new { @data_id = Model.PreviousQuestionId, @class = "btn btn-primary" }))
+            .Name("btnPrevious")
+            .HtmlAttributes(new { type = "button" }).Events(e => e.Click("OnPrevious"))
+            .Content("Previous").HtmlAttributes(new { @data_id = Model.PreviousQuestionId, @class = "btn btn-primary" }))
         }
     </div>
 </div>
@@ -348,8 +348,31 @@
 <div class="row">
     <div class="col-sm-12" style="margin-top:1%;padding: 0px 50px 30px 50px;">
         @(Html.Kendo().Button()
-        .Name("btnSubmit")
-        .HtmlAttributes(new { type = "button" }).Events(e => e.Click("OnSubmitTest"))
-                .Content("Submit Test").HtmlAttributes(new { style = "float: right;", @class = "btn btn-primary" }))
+    .Name("btnSubmit")
+    .HtmlAttributes(new { type = "button" }).Events(e => e.Click("OnSubmitTest"))
+            .Content("Submit Test").HtmlAttributes(new { style = "float: right;", @class = "btn btn-primary" }))
     </div>
 </div>
+@{
+    var type = (Silicus.Ensure.Models.Constants.QuestionType)Model.QuestionType;
+    var typeString = type.ToString().ToLower();
+}
+<script>    
+    if($('#objective-test').hasClass('active')  && "@typeString" === "objective"){
+        $('#objective-test-side-bar .nav-link').parent().removeClass('active');
+    }else  if($('#practical-test').hasClass('active') && "@typeString" === "practical"){
+        $('#practical-test-side-bar .nav-link').parent().removeClass('active');
+    }
+
+    if($('#objective-test').hasClass('active') && "@typeString" != "objective"){
+        showPracticalTest();
+        $('#practical-test-side-bar .nav-link').parent().removeClass('active');
+    }else  if($('#practical-test').hasClass('active') && "@typeString" != "practical"){
+        showObjectiveTest();
+        $('#objective-test-side-bar .nav-link').parent().removeClass('active');
+    }
+
+
+    $('#@Model.QuestionId').parent().addClass('active');
+
+</script>

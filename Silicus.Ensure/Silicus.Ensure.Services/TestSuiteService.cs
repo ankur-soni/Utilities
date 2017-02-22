@@ -147,7 +147,7 @@ namespace Silicus.Ensure.Services
 
         }
 
-        public TestDetailsBusinessModel GetUserTestDetailsByUserTestSuitId(int? userTestSuitId, int? questionNumber, int questionType)
+        public TestDetailsBusinessModel GetUserTestDetailsByUserTestSuitId(int? userTestSuitId, int? questionNumber, int questionType, QuestionType testStartWithQuestionType = QuestionType.Practical)
         {
             var questionNumberList = GetQuestionsByUserTestSuiteId(userTestSuitId, questionType);
             questionNumber = questionNumber == null && questionNumberList.Count > 0 ? (int?)questionNumberList.ElementAtOrDefault(0) : questionNumber;
@@ -192,18 +192,36 @@ namespace Silicus.Ensure.Services
             }
             result.PreviousQuestionId = index <= 0 ? null : previousQuestionId;
             result.NextQuestionId = index >= questionNumberList.Count - 1 ? null : nextQuestionId;
-            if (questionType == (int)QuestionType.Practical && result.NextQuestionId == null)
+
+            if (testStartWithQuestionType == QuestionType.Practical)
             {
-                var objectiveQuestions = GetQuestionsByUserTestSuiteId(userTestSuitId, (int)QuestionType.Objective);
-                result.NextQuestionId = GetFirstOrLastQuestionId(objectiveQuestions, QuestionType.Objective);
+                if (questionType == (int)QuestionType.Practical && result.NextQuestionId == null)
+                {
+                    var objectiveQuestions = GetQuestionsByUserTestSuiteId(userTestSuitId, (int)QuestionType.Objective);
+                    result.NextQuestionId = GetFirstOrLastQuestionId(objectiveQuestions, QuestionType.Objective);
+                }
+                if (questionType == (int)QuestionType.Objective && result.PreviousQuestionId == null)
+                {
+                    var practicalQuestions = GetQuestionsByUserTestSuiteId(userTestSuitId, (int)QuestionType.Practical);
+                    result.PreviousQuestionId = GetFirstOrLastQuestionId(practicalQuestions, QuestionType.Practical);
+                }
             }
-            if (questionType == (int)QuestionType.Objective && result.PreviousQuestionId == null)
+            else if (testStartWithQuestionType == QuestionType.Objective)
             {
-                var practicalQuestions = GetQuestionsByUserTestSuiteId(userTestSuitId, (int)QuestionType.Practical);
-                result.PreviousQuestionId = GetFirstOrLastQuestionId(practicalQuestions, QuestionType.Practical);
+                if (questionType == (int)QuestionType.Objective && result.NextQuestionId == null)
+                {
+                    var practicalQuestions = GetQuestionsByUserTestSuiteId(userTestSuitId, (int)QuestionType.Practical);
+                    result.NextQuestionId = practicalQuestions.Any() ? practicalQuestions?.ElementAtOrDefault(0) : null;
+                }
+                if (questionType == (int)QuestionType.Practical && result.PreviousQuestionId == null)
+                {
+                    var objectiveQuestions = GetQuestionsByUserTestSuiteId(userTestSuitId, (int)QuestionType.Objective);
+                    result.PreviousQuestionId = objectiveQuestions.Any() ? objectiveQuestions?.ElementAtOrDefault(objectiveQuestions.Count - 1) : null;
+                }
             }
             return result;
         }
+
 
         private int? GetFirstOrLastQuestionId(List<int> questionIds, QuestionType type)
         {
@@ -562,7 +580,8 @@ namespace Silicus.Ensure.Services
                         IsViewedOnly = a.IsViewedOnly,
                         IsAnswered = !(a.Answer.Equals(null) || a.Answer.Trim().Equals("")),
                         IsReviewed = !a.Mark.Equals(null),
-                        IsCorrect = !a.Mark.Equals(null) && a.Mark > 0
+                        IsCorrect = !a.Mark.Equals(null) && a.Mark > 0,
+                        QuestionDescription = b.QuestionDescription
                     }).OrderBy(question => question.QuestionId).ToList();
         }
 

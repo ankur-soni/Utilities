@@ -8679,6 +8679,12 @@ app-root {
     color: #20a8d8;
 }
 
+.sidebar ul.nav li.active a {
+    background: none!important;
+    color: #000!important;
+    border-left: 4px solid #00aeef !important;
+}
+
 .sidebar ul.nav li.nav-item a.nav-link [class^="icon-"],
 .sidebar ul.nav li.nav-item a.nav-link [class*=" icon-"] {
     display: inline-block;
