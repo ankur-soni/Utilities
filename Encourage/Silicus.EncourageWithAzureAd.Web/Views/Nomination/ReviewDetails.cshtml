@@ -61,15 +61,17 @@
                         <table class="table table-hover issue-tracker">
                             <tr>
                                 <td class="more" style="word-wrap: break-word;">
-                                    <div>
+                                    <div class="form-control">
                                         @{
                                             var submitionViewModel = Model.FirstOrDefault();
                                         }
                                         @if (submitionViewModel != null)
-                                         {
-                                             @submitionViewModel.ManagerComment
-                                         }</div>
+                                        {
+                                            @submitionViewModel.ManagerComment
+                                        }
+                                    </div>
                                 </td>
+
                             </tr>
                         </table>
                     </div>

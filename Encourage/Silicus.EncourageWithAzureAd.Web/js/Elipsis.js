@@ -16,6 +16,22 @@ $(function () {
                 $(this).html(txt);
             }
         });
+
+        var showMoreChar = 200, showtxt = "less", hidetxt = "more";
+        $('.moreText').each(function () {
+            var content = $(this).text();
+            if (content.length > showMoreChar) {
+
+                var con = content.substr(0, showMoreChar);
+                var hcon = content.substr(showMoreChar, content.length - showMoreChar);
+                var txt = con + '<div class="morecontent">' +
+                        '<span id="wholeContent" style="display:none">' + content.trim() + '</span>' +
+                        '<div style="width:100%;max-width:100%;display: none;word-wrap: break-word;">' + hcon + '</div>' +
+                        '<a href="" id="moretxt" class="moretxt" onclick="showCommentInPopup(this);" data-toggle="modal" data-target="#wholeCommentBox">' + hidetxt + '</a>' +
+                     '</div>';
+                $(this).html(txt);
+            }
+        });
     });    
 });
 

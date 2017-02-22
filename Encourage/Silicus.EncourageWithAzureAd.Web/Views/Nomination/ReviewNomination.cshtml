@@ -67,10 +67,8 @@
                         <table class="table issue-tracker">
 
                             <tr class="">
-                                <td class="more">
-
-                                    @Model.ManagerComment
-
+                                <td class="moreText">
+                                    <span>@Model.ManagerComment</span>
                                 </td>
                             </tr>
 
@@ -143,7 +141,7 @@
                                                         }), "", new { @class = "reviewer-rating", @autocomplete = "off"})
                                             </td>
                                              for
-                                            <td class="col-lg-3 col-md-3 col-sm-3">@Html.TextArea("Comments[" + @j + "].Comment", new { @class = "reviewer-comment form-control", name = "reviewercomment", maxlength = "100", onKeyUp = "return onkeyevent(this);", onblur = "return hideRemainingCharacterText(this);" })<div class="textarea"></div></td>
+                                            <td class="col-lg-3 col-md-3 col-sm-3">@Html.TextArea("Comments[" + @j + "].Comment", new { @class = "reviewer-comment form-control", name = "reviewercomment", maxlength = "500", onKeyUp = "return onkeyevent(this);", onblur = "return hideRemainingCharacterText(this);" })<div class="textarea"></div></td>
 
                                             @Html.Hidden("Comments[" + @j + "].CriteriaId", managerComment.CriteriaId)
                                         </tr>
@@ -208,7 +206,7 @@
     function onkeyevent(self)
     {
         $('#' + self.id).siblings("div.textarea").css('display', 'block');
-        var text_max = 100;
+        var text_max = 500;
         var text_length = self.value.length;
         var text_remaining = text_max - text_length;
         $('#' + self.id).siblings("div.textarea").html(text_remaining + ' characters remaining');
