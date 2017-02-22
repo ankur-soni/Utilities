@@ -50,7 +50,7 @@
             </div>
             <div class="modal-footer">
                 <button type="button" style="width:70px;" onclick="loadCandidateDetails()" class="btn btn-default">Yes</button>
-                <button type="button" class="btn btn-secondary"  data-dismiss="modal">No</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">No</button>
             </div>
         </div>
 
@@ -228,7 +228,7 @@
         day = day.length > 1 ? day : '0' + day;
         return day + '/' +month  + '/' + year;
     }
-   
+
 
     function checkMail(email,remoteURL)
     {
@@ -387,9 +387,8 @@
                             $('span[aria-owns="RelevantExperienceInYear_listbox"]').css('border', '1px solid red');
                             return false;
                         }
-                        else if (input.val() != "" && input.val() > $('#TotalExperienceInYear').val()) {
-
-                            input.attr("data-experiencevalidation-msg", "Relevant experience in year can not be greater than total experience in year!");
+                        else if (CompareTotalAndRelavantExperience()) {
+                            input.attr("data-experiencevalidation-msg", "Total experience should be greater than or equal to relevant experience.");
                             return false;
 
                         }
@@ -404,14 +403,47 @@
                             $('span[aria-owns="RelevantExperienceInMonth_listbox"]').css('border', '1px solid red');
                             return false;
                         }
-                        else if (input.val() != "" && ($('#RelevantExperienceInYear').val() == $('#TotalExperienceInYear').val() || $('#RelevantExperienceInYear').val() < $('#TotalExperienceInYear').val()) && input.val() > $('#TotalExperienceInMonth').val()) {
+                        else if (CompareTotalAndRelavantExperience()) {
 
-                            input.attr("data-experiencevalidation-msg", "Relevant experience can not be greater than total experience!");
+                            input.attr("data-experiencevalidation-msg", "Total experience should be greater than or equal to relevant experience.");
                             return false;
 
                         }
                         else {
                             $('span[aria-owns="RelevantExperienceInMonth_listbox"]').css('border', 'none ');
+                            input.attr("data-experiencevalidation-msg", "");
+                        }
+                    }
+                    if (input.is("[name='TotalExperienceInYear']")) {
+                        if (input.val() == "") {
+                            input.attr("data-experiencevalidation-msg", "Relevant experience in year is required!");
+                            $('span[aria-owns="TotalExperienceInYear_listbox"]').css('border', '1px solid red');
+                            return false;
+                        }
+                        else if (CompareTotalAndRelavantExperience()) {
+                            input.attr("data-experiencevalidation-msg", "Total experience should be greater than or equal to relevant experience.");
+                            return false;
+
+                        }
+                        else {
+                            $('span[aria-owns="TotalExperienceInYear_listbox"]').css('border', 'none ');
+                            input.attr("data-experiencevalidation-msg", "");
+                        }
+                    }
+                    if (input.is("[name='TotalExperienceInMonth']")) {
+                        if (input.val() == "") {
+                            input.attr("data-experiencevalidation-msg", "Relevant experience in month is required!");
+                            $('span[aria-owns="TotalExperienceInMonth_listbox"]').css('border', '1px solid red');
+                            return false;
+                        }
+                        else if (CompareTotalAndRelavantExperience()) {
+
+                            input.attr("data-experiencevalidation-msg", "Total experience should be greater than or equal to relevant experience.");
+                            return false;
+
+                        }
+                        else {
+                            $('span[aria-owns="TotalExperienceInMonth_listbox"]').css('border', 'none ');
                             input.attr("data-experiencevalidation-msg", "");
                         }
                     }
@@ -439,11 +471,6 @@
                             }
                         }
                     }
-
-                    //if ((input.is("[id='FirstName']") || input.is("[id='LastName']") || input.is("[id='DOB']")) && ($("#FirstName").val() && $("#LastName").val() && $("#DOB").val())) {
-
-                    //    checkExistingCandidate();
-                    //}
                     return true;
                 }
             },
@@ -455,6 +482,42 @@
             }
         });
     })(jQuery, kendo);
+
+    function CompareTotalAndRelavantExperience()
+    {
+        HideAllExperienceValidationMessages();
+        var totalYears=$('#TotalExperienceInYear').val();
+        var totalMonths=$('#TotalExperienceInMonth').val() ||0;
+        var relevantYears= $('#RelevantExperienceInYear').val();
+        var relevantMonths= $('#RelevantExperienceInMonth').val() ||0 ;
+        var convertedTotalYears=ConvertYearsToMonths(totalYears);
+        var convertedRelevantYears=ConvertYearsToMonths(relevantYears);
+        var totalExperienceInMonths=+totalMonths + +convertedTotalYears;
+        var relevantExperienceInMonths=+relevantMonths + +convertedRelevantYears;
+        if(relevantExperienceInMonths>totalExperienceInMonths)
+        {
+            return true;
+        }
+        return false;
+    }
+
+    function ConvertYearsToMonths (years){
+        if(years&&years>0)
+        {
+            return years*12;
+        }
+        else{
+            return 0;
+        }
+    }
+
+    function HideAllExperienceValidationMessages()
+    {
+        $('#RelevantExperienceInMonth_validationMessage').hide();
+        $('#RelevantExperienceInYear_validationMessage').hide();
+        $('#TotalExperienceInMonth_validationMessage').hide();
+        $('#TotalExperienceInYear_validationMessage').hide();
+    }
 </script>
 <style>
     .height {

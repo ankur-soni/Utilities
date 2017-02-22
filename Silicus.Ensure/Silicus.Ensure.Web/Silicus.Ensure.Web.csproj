@@ -535,6 +535,7 @@
     <Content Include="Content\Images\4X-login-bg.jpg" />
     <Content Include="Content\Images\avatars\6.jpg" />
     <Content Include="Content\Images\digits.png" />
+    <Content Include="Content\Images\favicon.ico" />
     <Content Include="Content\Images\favicon.png" />
     <Content Include="Content\Images\inc_logo.png" />
     <Content Include="Content\Images\login-register.jpg" />
