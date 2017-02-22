@@ -285,7 +285,7 @@ else
 
     function updateQuestionLinkColorClass(questionLinkId, isAnswred, isViewedOnly) {
         var className;
-        if (isAnswred ) {
+        if (isAnswred) {
             className = "is-answered";
         } else if (isViewedOnly == true) {
             className = "is-viewed-only";
@@ -365,7 +365,7 @@ else
             activeLinkId = $('#practical-test-side-bar .active>a').attr('id');
         }
 
-        updateQuestionLinkColorClass('#'+activeLinkId, questionNavigationDetails.IsAnswered, questionNavigationDetails.IsViewed);
+        updateQuestionLinkColorClass('#' + activeLinkId, questionNavigationDetails.IsAnswered, questionNavigationDetails.IsViewed);
         UpdateCurrentQuestionNavigationStatus(questionNavigationDetails);
         MarkAsViewed(questionId);
         GetQuestionDetails(questionId);
@@ -703,5 +703,18 @@ else
     window.onbeforeunload = function () {
         return "Do you really want to close?";
     };
+
+    function refreshAnsweredQuestionCount() {
+        var answeredObjectiveQuestions = parseInt($('#objective-test-side-bar .is-answered').length);
+        var answeredPracticalQuestions = parseInt($('#practical-test-side-bar .is-answered').length);
+        var totalObjectiveQuestions = parseInt($('#objective-test-side-bar .QuestionCheckbox').length);
+        var totalPracticalQuestions = parseInt($('#practical-test-side-bar .QuestionCheckbox').length);
+        if (answeredObjectiveQuestions != NaN && answeredPracticalQuestions != NaN && totalObjectiveQuestions != NaN && totalPracticalQuestions != NaN) {
+            $('#answeredObjectiveQuestionsCount').text(answeredObjectiveQuestions);
+            $('#answeredPracticalQuestionsCount').text(answeredPracticalQuestions);
+            $('#notAnsweredObjectiveQuestionsCount').text(totalObjectiveQuestions - answeredObjectiveQuestions);
+            $('#notAnsweredPracticalQuestionsCount').text(totalPracticalQuestions - answeredPracticalQuestions);
+        }
+    }
 
 </script>

@@ -374,4 +374,5 @@
 
     $('#@Model.QuestionId').parent().addClass('active');
     updateQuestionLinkColorClass('#@Model.QuestionId','@Model.IsAnswered' == 'True', '@Model.IsViewedOnly'== 'True');
+    refreshAnsweredQuestionCount();
 </script>
