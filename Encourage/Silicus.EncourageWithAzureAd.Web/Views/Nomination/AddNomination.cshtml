@@ -28,31 +28,30 @@
                                 </div>
                                 <div class="f1-step active" step="1">
                                     <div class="f1-step-icon" style="cursor:pointer;"><strong class="ico-num">1</strong></div>
-
                                     <p>Nomination Category</p>
+
                                 </div>
                                 <div class="f1-step" step="2">
-
                                     <div class="f1-step-icon" style="cursor:pointer;"><strong class="ico-num">2</strong></div>
-
                                     <p>Employee</p>
+
                                 </div>
                                 <div class="f1-step" step="3">
-
                                     <div class="f1-step-icon" style="cursor:pointer;"><strong class="ico-num">3</strong></div>
                                     <p>Comments</p>
                                 </div>
                                 <div class="f1-step" step="4">
-
                                     <div class="f1-step-icon" style="cursor:pointer;"><strong class="ico-num">4</strong></div>
                                     <p>Criteria & Ratings</p>
                                 </div>
                             </div>
                         </div>
                         <div id="nominationPeriodText">
-                            <span class="themeColorBlue" id="somNominationPeriod" style="display:none;font-weight:bold;">Nomination for SOM-@(Model.SomCustomDate.ToString("MMM-yyyy"))</span>
-                            <span class="themeColorBlue" id="pinnacleNominationPeriod" style="display:none;font-weight:bold;">Nomination for Pinnacle-@(Model.PinnacleCustomDate.Year)</span>
+                            <span class="themeColorBlue" id="somNominationPeriod" style="display:none;font-weight:bold;">Star Of the Month > @(Model.SomCustomDate.ToString("MMM-yyyy"))</span>
+                            <span class="themeColorBlue" id="pinnacleNominationPeriod" style="display:none;font-weight:bold;">Pinnacle > @(Model.PinnacleCustomDate.Year)</span>
+                            <span id="lblEmployeeName" class="themeColorBlue" style="display:none;font-weight:bold;"></span>
                         </div>
+                        
                         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
                         <div class="wizard-box" id="nominationCategory" nomination-step="1">
                             <div class="row">
@@ -78,14 +77,12 @@
                                         <div class="radio-list">
                                             <label class="radio-inline p-0" style="padding-left:0px;">
                                                 <div class="radio radio-info">
-                                                    @*@Html.RadioButtonFor(model => model.SelectResourcesBy, "Project", new { id = "ProjectRadioButton", value = "Project" })Project*@
                                                     <input type="radio" name="SelectResourcesBy" id="ProjectRadioButton" value="Project">
                                                     <label for="radio1">Project</label>
                                                 </div>
                                             </label>
                                             <label class="radio-inline">
                                                 <div class="radio radio-info">
-                                                    @*@Html.RadioButtonFor(model => model.SelectResourcesBy, "Department", new { id = "DepartmentRadioButton", value = "Department" })Department*@
                                                     <input type="radio" name="SelectResourcesBy" id="DepartmentRadioButton" value="Department">
                                                     <label for="radio1">Department</label>
                                                 </div>
@@ -112,7 +109,6 @@
                                             @if (Model.ProjectsUnderCurrentUser != null)
                                             {
                                                 @Html.DropDownListFor(model => model.ProjectID, Model.ProjectsUnderCurrentUser as SelectList, "Select", new { @class = "form-control", id = "SelectedProject" })
-                                                @*<span class="help-block themeColorBlue"> Select your Project </span>*@
                                                 @Html.ValidationMessageFor(model => model.ProjectID, "", new { @class = "text-danger" })
                                             }
                                             else
@@ -131,7 +127,6 @@
                                             @if (Model.DepartmentsUnderCurrentUser != null)
                                             {
                                                 @Html.DropDownListFor(model => model.DepartmentId, Model.DepartmentsUnderCurrentUser as SelectList, "Select", new { @class = "form-control", id = "SelectedDepartment" })
-                                                @*<span class="help-block themeColorBlue"> Select your Department </span>*@
                                                 @Html.ValidationMessageFor(model => model.DepartmentId, "", new { @class = "text-danger" })
                                             }
                                             else
@@ -350,6 +345,7 @@
         }
 
         showCustomLoader();
+        hideSelectedEmployeeName();
         $.ajax({
             type: 'GET',
             url: '@Url.Action("GetLockedAwardCategories","Nomination")',
@@ -624,7 +620,7 @@
                                         swal("Error", error.responseText.replace(/['"]+/g, ''), "error");
                                     }
                                     else {
-                                        swal("Error", "Oops! Something went wrong ..","error");
+                                        swal("Error", "Oops! Something went wrong ..", "error");
                                     }
                                 }
                             });
@@ -755,6 +751,22 @@
         $(nominationStepId).show();
 
         //To move to the next step -- End
+        displaySelectedEmployeeName();
+
+    }
+
+    function displaySelectedEmployeeName() {
+        var employeeName = $("#Resources")[0].selectedOptions[0].text;
+        if (employeeName != null && employeeName != "Select") {
+            var customisedName = "> " + employeeName;
+            $("#lblEmployeeName").text(customisedName);
+            $("#lblEmployeeName").show();
+        }
+    }
+
+    function hideSelectedEmployeeName() {
+        $("#lblEmployeeName").text('');
+        $("#lblEmployeeName").hide();
     }
 
     function checkIfCommentsAreRequired() {
