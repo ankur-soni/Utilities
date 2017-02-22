@@ -222,7 +222,7 @@
 .BindTo(EnumHelper.GetSelectList((typeof(Year)))
 .Select(x => new SelectListItem { Text = x.Value, Value = x.Value }))
 .HtmlAttributes(new { style = "width: 100%;" })
-.OptionLabel("Year")
+.OptionLabel("Years")
                                             )
                                             @Html.ValidationMessageFor(m => m.TotalExperienceInYear)
                                         </div>
@@ -251,7 +251,7 @@
 .BindTo(EnumHelper.GetSelectList((typeof(Year)))
 .Select(x => new SelectListItem { Text = x.Value, Value = x.Value }))
 .HtmlAttributes(new { style = "width: 100%" })
-.OptionLabel("Year")
+.OptionLabel("Years")
                                             )
                                             @Html.ValidationMessageFor(m => m.RelevantExperienceInYear)
                                         </div>

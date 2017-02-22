@@ -317,7 +317,7 @@
                 experiencevalidation: function (input, params) {
                     if (input.is("[name='DOB']")) {
                         if (!(input.val() != "")) {
-                            input.attr("data-experiencevalidation-msg", "Date of birth is required!");
+                            input.attr("data-experiencevalidation-msg", "Date of birth is required.");
                             return false;
                         }
                         else if (input.val() != "") {
@@ -338,14 +338,14 @@
                         }
                         else if (input.val() != "") {
                             if ($('#DOB').val() > GetNewDate()) {
-                                input.attr("data-experiencevalidation-msg", "Date of birth can not be greater than today!");
+                                input.attr("data-experiencevalidation-msg", "Date of birth can not be greater than today.");
                                 return false;
                             }
                         }
                     }
                     if (input.is("[name='Position']")) {
                         if ((input.val() != "" && input.val() == "--Select--")) {
-                            input.attr("data-experiencevalidation-msg", "Position is required!");
+                            input.attr("data-experiencevalidation-msg", "Position is required.");
                             $('span[aria-owns="Position_listbox"]').css('border', '1px solid red');
                             return false;
                         }
@@ -356,7 +356,7 @@
                     }
                     if (input.is("[name='Gender']")) {
                         if ((input.val() != "" && input.val() == "--Select--")) {
-                            input.attr("data-experiencevalidation-msg", "Gender is required!");
+                            input.attr("data-experiencevalidation-msg", "Gender is required.");
                             $('span[aria-owns="Gender_listbox"]').css('border', '1px solid red');
                             return false;
                         }
@@ -367,7 +367,7 @@
                     }
                     if (input.is("[name='RelevantExperienceInYear']")) {
                         if (input.val() == "") {
-                            input.attr("data-experiencevalidation-msg", "Relevant experience in year is required!");
+                            input.attr("data-experiencevalidation-msg", "Relevant experience in year is required.");
                             $('span[aria-owns="RelevantExperienceInYear_listbox"]').css('border', '1px solid red');
                             return false;
                         }
@@ -383,7 +383,7 @@
                     }
                     if (input.is("[name='RelevantExperienceInMonth']")) {
                         if (input.val() == "") {
-                            input.attr("data-experiencevalidation-msg", "Relevant experience in month is required!");
+                            input.attr("data-experiencevalidation-msg", "Relevant experience in month is required.");
                             $('span[aria-owns="RelevantExperienceInMonth_listbox"]').css('border', '1px solid red');
                             return false;
                         }
@@ -400,7 +400,7 @@
                     }
                     if (input.is("[name='TotalExperienceInYear']")) {
                         if (input.val() == "") {
-                            input.attr("data-experiencevalidation-msg", "Relevant experience in year is required!");
+                            input.attr("data-experiencevalidation-msg", "Relevant experience in year is required.");
                             $('span[aria-owns="TotalExperienceInYear_listbox"]').css('border', '1px solid red');
                             return false;
                         }
@@ -416,7 +416,7 @@
                     }
                     if (input.is("[name='TotalExperienceInMonth']")) {
                         if (input.val() == "") {
-                            input.attr("data-experiencevalidation-msg", "Relevant experience in month is required!");
+                            input.attr("data-experiencevalidation-msg", "Relevant experience in month is required.");
                             $('span[aria-owns="TotalExperienceInMonth_listbox"]').css('border', '1px solid red');
                             return false;
                         }
@@ -434,13 +434,13 @@
                     if (input.is("[data-val-remote]") && input.val() != "") {
                         var remoteURL = input.attr("data-val-remote-url");
                         if (!checkMail(input.val(), remoteURL)) {
-                            input.attr("data-experiencevalidation-msg", "Email is already exist!");
+                            input.attr("data-experiencevalidation-msg", "Email already exists.");
                             return false;
                         }
                     }
                     if (input.is("[id='file']") && fileBool) {
                         if (!(input.val() != "")) {
-                            input.attr("data-experiencevalidation-msg", "File is required!");
+                            input.attr("data-experiencevalidation-msg", "File is required.");
                             return false;
                         }
                         else if (input.val() != "") {
@@ -450,7 +450,7 @@
                                 return true;
                             }
                             else {
-                                input.attr("data-experiencevalidation-msg", "Allowed extensions are '.doc, .docx, pdf'!");
+                                input.attr("data-experiencevalidation-msg", "Allowed extensions are '.doc, .docx, pdf'.");
                                 return false;
                             }
                         }
