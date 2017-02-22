@@ -84,7 +84,7 @@
                             <div class="row">
                                 <div class="col-sm-12 col-md-12 col-lg-12">
                                     <div class="">
-                                        <label class="font-Bold themeColorBlue">Answer choices</label>
+                                        <label class="font-Bold themeColorBlue">Answer choices <span style="color:red">*</span></label>
                                     </div>
                                 </div>
                             </div>
@@ -325,7 +325,7 @@
                                 $('#IsAnsOption1_validationMessage').appendTo('#answerDiv');
                                 var qType = $('#QuestionType').val();
                                 if (input.is("[name=IsAnsOption1]") && qType == 1) {                                 
-                                    input.attr("data-IsAnsOption1-msg", "Please select at least single Answer !");                                  
+                                    input.attr("data-IsAnsOption1-msg", "Please select at least single Answer.");                                  
                                     return $(".ansCheckBox:checked").length>0;
                                 }
                                 return true;
@@ -334,7 +334,7 @@
                             {
                                 var qType = $('#QuestionType').val();
                                 if (input.is("[name=Option"+optionNo+"]") && qType == 1 && input.is(".otherOption")) {
-                                    input.attr("data-Option"+optionNo+"-msg", "Option "+optionNo+" can't be blank !");
+                                    input.attr("data-Option"+optionNo+"-msg", "Option "+optionNo+" can't be blank.");
                                     return input.val().trim()!="";
                                 }
                                 return true;
@@ -343,7 +343,7 @@
                             {
                                 var qType = $('#QuestionType').val();
                                 if (input.is("[name=Option"+optionNo+"]") && qType == 1) {
-                                    input.attr("data-Option"+optionNo+"-msg", "Option "+optionNo+" can't be blank !");
+                                    input.attr("data-Option"+optionNo+"-msg", "Option "+optionNo+" can't be blank.");
                                     return input.val().trim()!="";//?isAnySelectedAns(input,optionNo):false;
                                 }
                                 return true;
@@ -385,7 +385,7 @@
                                         Answer:function (input, params) {
                                             var qType = $('#QuestionType').val();
                                             if (input.is("[name=Answer]") && qType == 2) {
-                                                input.attr("data-Answer-msg", "Answer can't be blank !");
+                                                input.attr("data-Answer-msg", "Answer can't be blank.");
                                                 return input.val().trim()!="";
                                             }
                                             return true;
@@ -628,7 +628,7 @@
                                     rules: {
                                         tagNamevalidation: function (input, params) {
                                             if (input.is("[name='TagName']") && input.val() != "") {
-                                                input.attr("data-tagNamevalidation-msg", "Tag name already exist !");
+                                                input.attr("data-tagNamevalidation-msg", "Tag name already exist.");
                                                 return isTagNameAvailable("", input.val());
                                             }
 

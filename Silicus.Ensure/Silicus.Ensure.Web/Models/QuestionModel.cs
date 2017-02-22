@@ -17,7 +17,7 @@ namespace Silicus.Ensure.Web.Models
         [DisplayName("Type")]
         public string QuestionType { get; set; }
         [DisplayName("Question")]
-        [Required]
+        [Required(ErrorMessage ="Question is required.")]
         public string QuestionDescription { get; set; }
         public int AnswerType { get; set; }
         public int OptionCount { get; set; }
@@ -42,13 +42,13 @@ namespace Silicus.Ensure.Web.Models
         public List<string> CorrectAnswer { get; set; }
         public string Answer { get; set; }
         public string Tag { get; set; }
-        [Required(ErrorMessage = "Proficiency level is required!.")]
+        [Required(ErrorMessage = "Proficiency level is required.")]
         public string ProficiencyLevel { get; set; }
         [Required(ErrorMessage = "Duration (min) is required")]
-        [RegularExpression("([1-9][0-9]*)", ErrorMessage = "Allowd only numbers !")]
+        [RegularExpression("([1-9][0-9]*)", ErrorMessage = "Only numbers are allowed.")]
         public int? Duration { get; set; }
-        [Required(ErrorMessage = "Marks are required!.")]
-        [RegularExpression("([1-9][0-9]*)", ErrorMessage = "Allowd only numbers !")]
+        [Required(ErrorMessage = "Marks are required.")]
+        [RegularExpression("([1-9][0-9]*)", ErrorMessage = "Only numbers are allowed.")]
         public int? Marks { get; set; }
         public bool IsPublishd { get; set; }
         public bool IsDeleted { get; set; }
@@ -58,7 +58,7 @@ namespace Silicus.Ensure.Web.Models
         public DateTime ModifiedOn { get; set; }
         public int ModifiedBy { get; set; }
         public List<Tags> SkillTagsList { get; set; }
-        [Required(ErrorMessage = "Skill tag is required!.")]
+        [Required(ErrorMessage = "Skill tag is required.")]
         public List<string> SkillTag { get; set; }
 
         public int Success { get; set; }
