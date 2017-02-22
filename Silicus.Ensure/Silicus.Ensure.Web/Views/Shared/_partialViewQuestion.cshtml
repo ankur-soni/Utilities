@@ -357,7 +357,7 @@
     var type = (Silicus.Ensure.Models.Constants.QuestionType)Model.QuestionType;
     var typeString = type.ToString().ToLower();
 }
-<script>    
+<script>
     if($('#objective-test').hasClass('active')  && "@typeString" === "objective"){
         $('#objective-test-side-bar .nav-link').parent().removeClass('active');
     }else  if($('#practical-test').hasClass('active') && "@typeString" === "practical"){
@@ -372,7 +372,6 @@
         $('#objective-test-side-bar .nav-link').parent().removeClass('active');
     }
 
-
     $('#@Model.QuestionId').parent().addClass('active');
-
+    updateQuestionLinkColorClass('#@Model.QuestionId','@Model.IsAnswered' == 'True', '@Model.IsViewedOnly'== 'True');
 </script>

@@ -1690,3 +1690,12 @@ input[type=text]::-ms-clear {
 .checkbox-inverse input[type="checkbox"]:checked + label::after {
   color: #ffffff;
 }
+.is-answered{
+    color:green!important;
+}
+.is-viewed-only{
+    color:blue!important;
+}
+.is-not-visited{
+    color:gray!important;
+}

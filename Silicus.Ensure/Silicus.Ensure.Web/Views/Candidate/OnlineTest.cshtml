@@ -144,121 +144,137 @@
 </div>
 
 @section Sidebar{
-
     <div class="sidebar">
-    <nav class="sidebar-nav">
+        <nav class="sidebar-nav">
 
-        <!--mobile menu -->
-        <div class="panel-group hidden-lg-up mobileMenu" id="accordion">
-            <div class="panel panel-default">
-                <div class="panel-heading">
-                    <h4 class="panel-title">
-                        <a class="collapsed" data-toggle="collapse" data-parent="#accordion" href="#connectMenu">INSTRUCTIONS</a>
-                    </h4>
-                </div>
-                <div id="connectMenu" class="panel-collapse collapse">
-                    <div class="panel-body">
-                        <ul class="nav">
-                            <li class="nav-item">
-                                <a class="nav-link" href="welcome.html"> Welcome </a>
-                            </li>
-                            <li class="nav-item active ">
-                                <a class="nav-link personal" href="index.html"><i class="fa fa-user"></i> Personal Details </a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link contact" href="contact.html"><i class="fa fa-mobile"></i> Contact Details  </a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link education" href="education.html"><i class="fa fa-graduation-cap"></i> Education Details  </a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link emplyoment" href="emplyoment.html"><i class="fa fa-briefcase"></i> Emplyoment Details  </a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link family" href="family.html"><i class="fa fa-users"></i> Family Details  </a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link upload" href="documentupload.html"><i class="fa fa-cloud"></i> Upload Doucments  </a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link final" href="finalStatus.html"> <i class="fa fa-th-list"></i> Final Status  </a>
-                            </li>
-                        </ul>
+            <!--mobile menu -->
+            <div class="panel-group hidden-lg-up mobileMenu" id="accordion">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h4 class="panel-title">
+                            <a class="collapsed" data-toggle="collapse" data-parent="#accordion" href="#connectMenu">INSTRUCTIONS</a>
+                        </h4>
                     </div>
-                </div>
-            </div>
-            <div class="panel panel-default">
-                <div class="panel-heading">
-                    <h4 class="panel-title">
-                        <a class="collapsed" data-toggle="collapse" data-parent="#accordion" href="#LearnMenu">OBJECTIVE TEST</a>
-                    </h4>
-                </div>
-                <div id="LearnMenu" class="panel-collapse collapse">
-                    <div class="panel-body">
-                    </div>
-                </div>
-            </div>
-            <div class="panel panel-default">
-                <div class="panel-heading">
-                    <h4 class="panel-title">
-                        <a class="collapsed" data-toggle="collapse" data-parent="#accordion" href="#supportMenu">PRACTICAL TEST</a>
-                    </h4>
-                </div>
-                <div id="supportMenu" class="panel-collapse collapse">
-                    <div class="panel-body">
-                    </div>
-                </div>
-            </div>
-        </div>
-        <!--mobile menu end here-->
-        <div class="menu-btn-sidebar" onclick="CustomSidebarOpen();"><i class="fa fa-bars" aria-hidden="true"></i></div>
-        <ul class="nav hidden-md-down">
-            <div id="objective-test-side-bar">
-                <li class="nav-item nav-heading">
-                    <a class="nav-link fontBold" href="#">Objective Questions</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link personal fontBold" href="index.html"><i class="fa fa-check-square-o fontBold" aria-hidden="true"></i> Objective Test </a>
-                </li>
-                <li class="nav-item">
-                    <ol class="questions">
-                        @if (@Model.NavigationDetails != null && @Model.NavigationDetails.Objective != null && @Model.NavigationDetails.Objective.Count > 0)
-                        {
-                            foreach (var question in Model.NavigationDetails.Objective)
-                            {
-                                <li>
-                                    <a class="nav-link contact QuestionCheckbox" id="@question.QuestionId" href="#"> @Html.Raw(@question.QuestionDescription)</a>
+                    <div id="connectMenu" class="panel-collapse collapse">
+                        <div class="panel-body">
+                            <ul class="nav">
+                                <li class="nav-item">
+                                    <a class="nav-link" href="welcome.html"> Welcome </a>
                                 </li>
-                            }
-                        }
-                    </ol>
-                </li>
-            </div>
-            <div id="practical-test-side-bar">
-                <li class="nav-item nav-heading">
-                    <a class="nav-link fontBold" href="#">Practical Questions</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link personal fontBold" href="index.html"><i class="fa fa-check-square-o fontBold" aria-hidden="true"></i> Practical Test </a>
-                </li>
-                <li class="nav-item">
-                    <ol class="questions">
-                        @if (@Model.NavigationDetails != null && @Model.NavigationDetails.Practical != null && @Model.NavigationDetails.Practical.Count > 0)
-                        {
-                            foreach (var question in Model.NavigationDetails.Practical)
-                            {
-                                <li>
-                                    <a class="nav-link contact QuestionCheckbox" id="@question.QuestionId" href="#">@Html.Raw(@question.QuestionDescription)</a>
+                                <li class="nav-item active ">
+                                    <a class="nav-link personal" href="index.html"><i class="fa fa-user"></i> Personal Details </a>
                                 </li>
-                            }
-                        }
-                    </ol>
-                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link contact" href="contact.html"><i class="fa fa-mobile"></i> Contact Details  </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link education" href="education.html"><i class="fa fa-graduation-cap"></i> Education Details  </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link emplyoment" href="emplyoment.html"><i class="fa fa-briefcase"></i> Emplyoment Details  </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link family" href="family.html"><i class="fa fa-users"></i> Family Details  </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link upload" href="documentupload.html"><i class="fa fa-cloud"></i> Upload Doucments  </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link final" href="finalStatus.html"> <i class="fa fa-th-list"></i> Final Status  </a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h4 class="panel-title">
+                            <a class="collapsed" data-toggle="collapse" data-parent="#accordion" href="#LearnMenu">OBJECTIVE TEST</a>
+                        </h4>
+                    </div>
+                    <div id="LearnMenu" class="panel-collapse collapse">
+                        <div class="panel-body">
+                        </div>
+                    </div>
+                </div>
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h4 class="panel-title">
+                            <a class="collapsed" data-toggle="collapse" data-parent="#accordion" href="#supportMenu">PRACTICAL TEST</a>
+                        </h4>
+                    </div>
+                    <div id="supportMenu" class="panel-collapse collapse">
+                        <div class="panel-body">
+                        </div>
+                    </div>
+                </div>
             </div>
-        </ul>
+            <!--mobile menu end here-->
+            <div class="menu-btn-sidebar" onclick="CustomSidebarOpen();"><i class="fa fa-bars" aria-hidden="true"></i></div>
+            <ul class="nav hidden-md-down">
+                <div id="objective-test-side-bar">
+                    <li class="nav-item nav-heading">
+                        <a class="nav-link fontBold" href="#">Objective Questions</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link personal fontBold" href="index.html"><i class="fa fa-check-square-o fontBold" aria-hidden="true"></i> Objective Test </a>
+                    </li>
+                    <li class="nav-item">
+                        <ol class="questions">
+                            @if (@Model.NavigationDetails != null && @Model.NavigationDetails.Objective != null && @Model.NavigationDetails.Objective.Count > 0)
+                            {
+                                foreach (var question in Model.NavigationDetails.Objective)
+                                {
+                                    <li>
+                                        <a class="nav-link contact QuestionCheckbox @QuestionColor(question)" id="@question.QuestionId" href="#"> @Html.Raw(@question.QuestionDescription)</a>
+                                    </li>
+                                }
+                            }
+                        </ol>
+                    </li>
+                </div>
+                <div id="practical-test-side-bar">
+                    <li class="nav-item nav-heading">
+                        <a class="nav-link fontBold" href="#">Practical Questions</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link personal fontBold" href="index.html"><i class="fa fa-check-square-o fontBold" aria-hidden="true"></i> Practical Test </a>
+                    </li>
+                    <li class="nav-item">
+                        <ol class="questions">
+                            @if (@Model.NavigationDetails != null && @Model.NavigationDetails.Practical != null && @Model.NavigationDetails.Practical.Count > 0)
+                            {
+                                foreach (var question in Model.NavigationDetails.Practical)
+                                {
+                                    <li>
+                                        <a class="nav-link contact QuestionCheckbox @QuestionColor(question)" id="@question.QuestionId" href="#">@Html.Raw(@question.QuestionDescription)</a>
+                                    </li>
+                                }
+                            }
+                        </ol>
+                    </li>
+                </div>
+            </ul>
 
-    </nav>
-</div>
+        </nav>
+    </div>
+
+}
+
+@helper QuestionColor(Silicus.Ensure.Models.Test.QuestionNavigationBasics question)
+{
+if (question.IsAnswered)
+{
+        @("is-answered");
+}
+else if (question.IsViewedOnly)
+{
+        @("is-viewed-only");
+}
+else
+{
+        @("is-not-visited");
+    }
 
 }
 
@@ -267,6 +283,22 @@
 <script>
     var clock;
     var totalTime;
+
+    function updateQuestionLinkColorClass(questionLinkId, isAnswred, isViewedOnly) {        
+        var className;
+        if (isAnswred ) {
+            className = "is-answered";
+        } else if (isViewedOnly == true) {
+            className = "is-viewed-only";
+        } else {
+            className = "is-not-visited";
+        }
+        $(questionLinkId).removeClass('is-answered');
+        $(questionLinkId).removeClass('is-viewed-only');
+        $(questionLinkId).removeClass('is-not-visited');
+
+        $(questionLinkId).addClass(className);
+    }
 
     $(document).ready(function () {
         $('.breadcrumb-item.active').removeClass('active');
@@ -316,16 +348,25 @@
         $('.QuestionCheckbox').on('click', QuestionCheckboxClicked);
     });
 
-    function QuestionCheckboxClicked(event) {        
+    function QuestionCheckboxClicked(event) {
         if (!$(this).parent().hasClass('active')) {
             var questionId = $(this).attr('id');
             UpdateCurrentQuestionAndLoadNewOne(questionId);
         }
     }
 
-    function UpdateCurrentQuestionAndLoadNewOne(questionId) {
+    function UpdateCurrentQuestionAndLoadNewOne(questionId) {        
         UpdateTimeDB();
         var questionNavigationDetails = GetCurrentQuestionStatus();
+        var activeLinkId;
+        
+        if (questionNavigationDetails.Questiontype == 1) {
+            activeLinkId = $('#objective-test-side-bar .active>a').attr('id');
+        } else if (questionNavigationDetails.Questiontype == 2) {
+            activeLinkId = $('#practical-test-side-bar .active>a').attr('id');
+        }
+
+        updateQuestionLinkColorClass('#'+activeLinkId, questionNavigationDetails.IsAnswered, questionNavigationDetails.IsViewed);
         UpdateCurrentQuestionNavigationStatus(questionNavigationDetails);
         MarkAsViewed(questionId);
         GetQuestionDetails(questionId);
@@ -494,13 +535,13 @@
         }
     }
 
-    function OnNext(e) {
+    function OnNext(e) {        
         var questionId = $('#btnNext').attr('data-id');
         UpdateCurrentQuestionAndLoadNewOne(questionId);
         return false;
     }
 
-    function OnPrevious() {
+    function OnPrevious() {        
         var questionId = $('#btnPrevious').attr('data-id');
         UpdateCurrentQuestionAndLoadNewOne(questionId);
         return false;

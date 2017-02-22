@@ -184,7 +184,9 @@ namespace Silicus.Ensure.Services
                               CorrectAnswer = b.CorrectAnswer,
                               Comment = a.ReviwerComment,
                               Marks = b.Marks,
-                              DisplayQuestionNumber = index + 1
+                              DisplayQuestionNumber = index + 1,
+                              IsViewedOnly = a.IsViewedOnly,
+                              IsAnswered = !(a.Answer.Equals(null) || a.Answer.Trim().Equals(""))
                           }).FirstOrDefault();
             if (result == null)
             {

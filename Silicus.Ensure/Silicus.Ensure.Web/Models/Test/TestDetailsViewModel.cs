@@ -27,5 +27,7 @@ namespace Silicus.Ensure.Web.Models.Test
         public string Answer { get; set; }
         public int Marks { get; set; }
         public int DisplayQuestionNumber { get; set; }
+        public bool IsViewedOnly { get; set; }
+        public bool IsAnswered { get; set; }
     }
 }
