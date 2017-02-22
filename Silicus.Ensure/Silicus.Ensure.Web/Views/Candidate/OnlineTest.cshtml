@@ -217,7 +217,7 @@
                         <a class="nav-link fontBold" href="#">Objective Questions</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link personal fontBold" href="index.html"><i class="fa fa-check-square-o fontBold" aria-hidden="true"></i> Objective Test </a>
+                        <a class="nav-link personal fontBold" href="#"><i class="fa fa-check-square-o fontBold" aria-hidden="true"></i> Objective Test </a>
                     </li>
                     <li class="nav-item">
                         <ol class="questions">
@@ -238,7 +238,7 @@
                         <a class="nav-link fontBold" href="#">Practical Questions</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link personal fontBold" href="index.html"><i class="fa fa-check-square-o fontBold" aria-hidden="true"></i> Practical Test </a>
+                        <a class="nav-link personal fontBold" href="#"><i class="fa fa-check-square-o fontBold" aria-hidden="true"></i> Practical Test </a>
                     </li>
                     <li class="nav-item">
                         <ol class="questions">
@@ -258,7 +258,6 @@
 
         </nav>
     </div>
-
 }
 
 @helper QuestionColor(Silicus.Ensure.Models.Test.QuestionNavigationBasics question)
@@ -284,7 +283,7 @@ else
     var clock;
     var totalTime;
 
-    function updateQuestionLinkColorClass(questionLinkId, isAnswred, isViewedOnly) {        
+    function updateQuestionLinkColorClass(questionLinkId, isAnswred, isViewedOnly) {
         var className;
         if (isAnswred ) {
             className = "is-answered";
@@ -355,11 +354,11 @@ else
         }
     }
 
-    function UpdateCurrentQuestionAndLoadNewOne(questionId) {        
+    function UpdateCurrentQuestionAndLoadNewOne(questionId) {
         UpdateTimeDB();
         var questionNavigationDetails = GetCurrentQuestionStatus();
         var activeLinkId;
-        
+
         if (questionNavigationDetails.Questiontype == 1) {
             activeLinkId = $('#objective-test-side-bar .active>a').attr('id');
         } else if (questionNavigationDetails.Questiontype == 2) {
@@ -535,13 +534,13 @@ else
         }
     }
 
-    function OnNext(e) {        
+    function OnNext(e) {
         var questionId = $('#btnNext').attr('data-id');
         UpdateCurrentQuestionAndLoadNewOne(questionId);
         return false;
     }
 
-    function OnPrevious() {        
+    function OnPrevious() {
         var questionId = $('#btnPrevious').attr('data-id');
         UpdateCurrentQuestionAndLoadNewOne(questionId);
         return false;
