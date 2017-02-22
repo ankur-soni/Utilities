@@ -67,17 +67,19 @@ function deleteKendoGridRow(gridId, data) {
         confirmButtonColor: "#DD6B55",
         confirmButtonText: "Yes",
         cancelButtonText: "No",
-        closeOnConfirm: false,
-        closeOnCancel: false
+        closeOnConfirm: true,
+        closeOnCancel: true
     },
     function (isConfirm) {
         if (isConfirm) {
             grid = $("#" + gridId).data("kendoGrid");
             grid.dataSource.remove(data);
             grid.dataSource.sync();
-            swal("Deleted!", "Record has been deleted.", "success");
+         
+            ShowMessage("Record has been deleted.", 1);
         } else {
-            swal("Cancelled", "Record deletion cancelled.", "error");
+          
+            ShowMessage("Record deletion cancelled.", 1);
         }
     });
 }
