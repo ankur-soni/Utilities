@@ -20,8 +20,8 @@
     <td class="col-lg-1 col-md-2 col-sm-3 col-xs-2">
         @Html.DisplayFor(modelItem => modelItem.Weightage)
     </td>
-    <td class="col-lg-3 col-md-4 col-sm-3 col-xs-3">
-        @Html.TextAreaFor(modelItem => modelItem.Comment, htmlAttributes: new { @class = "col-md-12 form-control", @readonly = "readonly" })
+    <td class="col-lg-3 col-md-4 col-sm-3 col-xs-3 more" style="word-break:break-all">
+        @(Model.Comment != null ? Model.Comment : "")
     </td>
 </tr>
 
