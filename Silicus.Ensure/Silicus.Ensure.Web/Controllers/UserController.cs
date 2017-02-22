@@ -98,7 +98,7 @@ namespace Silicus.Ensure.Web.Controllers
         {
             var userlist = _containerUserService.GetAllUsers();
             var userlistViewModel = _mappingService.Map<List<Silicus.UtilityContainer.Models.DataObjects.User>, List<UserDetailViewModel>>(userlist);
-            var UtilityId = getUtilityId();
+            var UtilityId = GetUtilityId();
             var userRoles = _utilityUserRoleService.GetAllUserRolesForUtility(UtilityId);
 
             var userWithRoles = (from userinRoles in userRoles
@@ -123,24 +123,7 @@ namespace Silicus.Ensure.Web.Controllers
             return Json(result);
         }
 
-        private UserDetailViewModel GetAdUserDetails(string email)
-        {
-            var user = _containerUserService.FindUserByEmail(email);
-            var userViewModel = _mappingService.Map<Silicus.UtilityContainer.Models.DataObjects.User, UserDetailViewModel>(user);
-            var UtilityId = getUtilityId();
-            var userRole = _utilityUserRoleService.GetAllRolesForUser(email);
-
-            var assignedRole = userRole.FirstOrDefault(y => y.Id == userViewModel.UserId);
-
-            if (assignedRole != null)
-                userViewModel.RoleName = assignedRole.Role.Name;
-
-            return userViewModel;
-        }
-
-
-
-        private int getUtilityId()
+        private int GetUtilityId()
         {
             var utilityProductId = WebConfigurationManager.AppSettings["ProductId"];
             if (string.IsNullOrWhiteSpace(utilityProductId))
