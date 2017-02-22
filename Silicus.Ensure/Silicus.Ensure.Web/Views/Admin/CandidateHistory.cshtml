@@ -1,4 +1,5 @@
-﻿@model Silicus.Ensure.Web.Models.UserViewModel
+﻿@model List<Silicus.Ensure.Web.Models.CandidateHistoryViewModel>
+
 @using Silicus.Ensure.Models.Constants;
 @using Kendo.Mvc.UI;
 
@@ -9,171 +10,173 @@
 }
 
 
-<div class="row">
-    <div class="col-sm-12">
-        <div class="box M-T15 M-B60">
-            <div class="f1">
-                <div class="main-content">                 
+<div class="row white-bg header-row">
+    <nav class="" role="navigation" style="margin-bottom: 0">
+        <div class="navbar-header">
+            <a class="navbar-minimalize minimalize-styl-2 btn btn-primary" id="menu-toggle" style="margin-left:15px;border-radius:0px;" href="#"><i class="fa fa-bars"></i> </a>
+        </div>
+    </nav>
+
+    <div class="col-lg-10 col-md-10 col-sm-10 col-xs-10">
+        <h1 class="dashboard-name">Candidate History</h1>
+    </div>
+
+
+</div>
+
+@{int count = 0; }
+@foreach (var candidateApplicationDetails in Model)
+{
+    count = count + 1;
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="box M-T15 ">
+                <div class="f1">
+                    <div class="main-content">
+                        <h3>
+                            @count     &emsp;     <b> Candidate  Name : </b>   @Html.DisplayFor(model => candidateApplicationDetails.FirstName)   @Html.DisplayFor(model => candidateApplicationDetails.LastName)
+                            <div style="float:right">
+                                <b> Candidate Status : </b>   @Html.DisplayFor(model => candidateApplicationDetails.CandidateStatus)
+                            </div>
+                        </h3>
+                    </div>
+                </div>
+
+
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="box M-T15 M-B60">
+                <div class="f1">
+                    <div class="main-content">
                         <input type="hidden" id="Role" name="Role" value="@Silicus.Ensure.Models.Constants.RoleName.Candidate.ToString()" />
-                        @Html.HiddenFor(m => m.UserId)
-                        @Html.HiddenFor(m => m.ResumeName)
-                        @Html.HiddenFor(m => m.ResumePath)
-                        @Html.HiddenFor(m => m.ProfilePhotoFilePath)
-                        @Html.HiddenFor(m => m.IsCandidateReappear)
+                        <h3>  <b> Candidate Profile</b> </h3><br /><br />
                         <div class="fluid mt20">
                             <div class="row" style="margin-bottom:10px!important">
-                                @if (!string.IsNullOrWhiteSpace(Model.ErrorMessage))
-                                {
-                                    <div class="alert alert-success" id="messageDiv">
-                                        <strong>Error!</strong> <span id="messageContent">@Model.ErrorMessage</span>
-                                    </div>
-                                }
+
                                 <div class="col-md-6">
                                     <div class="col-md-6">
-                                        @Html.LabelFor(model => model.FirstName) <b style="color:Red;">*</b>
+                                        @Html.LabelFor(model => candidateApplicationDetails.FirstName)
                                     </div>
                                     <div class="col-md-6">
-                                        @Html.TextBoxFor(model => model.FirstName, new { @class = "form-control" })
-                                        @Html.ValidationMessageFor(m => m.FirstName)
+                                        @Html.DisplayFor(model => candidateApplicationDetails.FirstName)
+
                                     </div>
                                 </div>
                                 <div class="col-md-6">
                                     <div class="col-md-6">
-                                        @Html.LabelFor(model => model.MiddleName)
+                                        @Html.LabelFor(model => candidateApplicationDetails.MiddleName)
                                     </div>
                                     <div class="col-md-6">
-                                        @Html.TextBoxFor(model => model.MiddleName, new { @class = "form-control" })
+                                        @Html.DisplayFor(model => candidateApplicationDetails.MiddleName)
                                     </div>
                                 </div>
                             </div>
                             <div class="row" style="margin-bottom:10px!important">
                                 <div class="col-md-6">
                                     <div class="col-md-6">
-                                        @Html.LabelFor(model => model.LastName) <b style="color:Red;">*</b>
+                                        @Html.LabelFor(model => candidateApplicationDetails.LastName)
                                     </div>
                                     <div class="col-md-6">
-                                        @Html.TextBoxFor(model => model.LastName, new { @class = "form-control" })
-                                        @Html.ValidationMessageFor(m => m.LastName)
+                                        @Html.DisplayFor(model => candidateApplicationDetails.LastName, new { @class = "form-control" })
+
                                     </div>
                                 </div>
                                 <div class="col-md-6">
                                     <div class="col-md-6">
-                                        @Html.LabelFor(model => model.Position) <b style="color:Red;">*</b>
+                                        @Html.LabelFor(model => candidateApplicationDetails.Position)
                                     </div>
                                     <div class="col-md-6">
+
+
                                         <div class="col-md-8 col-sm-10 col-xs-10" style="padding-left:0;padding-right:0;height:30px;">
-                                            @(Html.Kendo().DropDownListFor(model => model.Position)
-.OptionLabel("--Select--")
-.BindTo(Model.PositionList)
-.DataTextField("PositionName")
-.DataValueField("PositionName")
-.Value(Model.Position)
-.HtmlAttributes(new { style = "width: 100%;border-color: #c5c5c5;" })
-                                            )
-                                            @Html.ValidationMessageFor(m => m.Position)
+
+                                            @Html.DisplayFor(model => candidateApplicationDetails.Position)
+
                                         </div>
-                                        <div class="col-md-4 col-sm-2 col-xs-2">
-                                            <a href="#" class="font-Bold themeColorBlue btn btn-primary" onclick="AddPosition();"><span style="font-size: 12px;" class="glyphicon glyphicon-plus"></span></a>
-                                        </div>
+
                                     </div>
                                 </div>
                             </div>
                             <div class="row" style="margin-bottom:10px!important">
                                 <div class="col-md-6">
                                     <div class="col-md-6">
-                                        @Html.LabelFor(model => model.RequisitionId) <b style="color:Red;">*</b>
+                                        @Html.LabelFor(model => candidateApplicationDetails.RequisitionId)
                                     </div>
                                     <div class="col-md-6">
-                                        @Html.TextBoxFor(model => model.RequisitionId, new { @class = "form-control" })
-                                        @Html.ValidationMessageFor(m => m.RequisitionId)
+                                        @Html.DisplayFor(model => candidateApplicationDetails.RequisitionId, new { @class = "form-control" })
+
                                     </div>
                                 </div>
                                 <div class="col-md-6">
                                     <div class="col-md-6">
-                                        @Html.LabelFor(model => model.Gender) <b style="color:Red;">*</b>
+                                        @Html.LabelFor(model => candidateApplicationDetails.Gender)
                                     </div>
                                     <div class="col-md-6">
-                                        @(Html.Kendo().DropDownListFor(m => m.Gender)
-.Name("Gender")
-.DataTextField("Text")
-.DataValueField("Value")
-.BindTo(new List<SelectListItem>
-() {
-                            new SelectListItem(){
-                            Text="--Select--",
-                            Value="--Select--"
-                            },
-                            new SelectListItem(){
-                            Text="Male",
-                            Value="Male"
-                            },
-                            new SelectListItem(){
-                            Text="Female",
-                            Value="Female"
-                            }
-}).HtmlAttributes(new { style = "width: 100%;" }))
-                                        @Html.ValidationMessageFor(m => m.Gender)
+                                        @Html.DisplayFor(model => candidateApplicationDetails.Gender, new { @class = "form-control" })
+
                                     </div>
                                 </div>
                             </div>
                             <div class="row" style="margin-bottom:10px!important">
                                 <div class="col-md-6">
                                     <div class="col-md-6">
-                                        @Html.LabelFor(model => model.Email) <b style="color:Red;">*</b>
+                                        @Html.LabelFor(model => candidateApplicationDetails.Email)
                                     </div>
                                     <div class="col-md-6">
-                                        @Html.TextBoxFor(model => model.Email, new { @class = "form-control" })
-                                        @Html.ValidationMessageFor(m => m.Email)
-                                    </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <div class="col-md-6">
-                                        @Html.LabelFor(model => model.CurrentLocation) <b style="color:Red;">*</b>
-                                    </div>
-                                    <div class="col-md-6">
-                                        @Html.TextBoxFor(model => model.CurrentLocation, new { @class = "form-control" })
-                                        @Html.ValidationMessageFor(m => m.CurrentLocation)
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="row" style="margin-bottom:10px!important">
-                                <div class="col-md-6">
-                                    <div class="col-md-6">
-                                        @Html.LabelFor(model => model.DOB) <b style="color:Red;">*</b>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <input type="text" style="width:100%;" name="DOB" id="DOB" value="@if (Model.UserId != 0)
-                                        { @Model.DOB.ToShortDateString().Replace("-", "/")}" />
-                                        @Html.ValidationMessageFor(m => m.DOB)
+                                        @Html.DisplayFor(model => candidateApplicationDetails.Email, new { @class = "form-control" })
+
                                     </div>
                                 </div>
                                 <div class="col-md-6">
                                     <div class="col-md-6">
-                                        @Html.LabelFor(model => model.ContactNumber) <b style="color:Red;">*</b>
+                                        @Html.LabelFor(model => candidateApplicationDetails.CurrentLocation)
                                     </div>
                                     <div class="col-md-6">
-                                        @Html.TextBoxFor(model => model.ContactNumber, new { @class = "form-control" })
-                                        @Html.ValidationMessageFor(m => m.ContactNumber)
+                                        @Html.DisplayFor(model => candidateApplicationDetails.CurrentLocation, new { @class = "form-control" })
+
                                     </div>
                                 </div>
                             </div>
                             <div class="row" style="margin-bottom:10px!important">
                                 <div class="col-md-6">
                                     <div class="col-md-6">
-                                        @Html.LabelFor(model => model.ClientName) <b style="color:Red;">*</b>
+                                        @Html.LabelFor(model => candidateApplicationDetails.DOB)
                                     </div>
                                     <div class="col-md-6">
-                                        @Html.TextBoxFor(model => model.ClientName, new { @class = "form-control" })
-                                        @Html.ValidationMessageFor(m => m.ClientName)
+                                        @Html.DisplayFor(model => candidateApplicationDetails.DOB, new { @class = "form-control" })
+
                                     </div>
                                 </div>
                                 <div class="col-md-6">
                                     <div class="col-md-6">
-                                        @Html.LabelFor(model => model.Technology) <b style="color:Red;">*</b>
+                                        @Html.LabelFor(model => candidateApplicationDetails.ContactNumber)
                                     </div>
                                     <div class="col-md-6">
-                                        @Html.TextBoxFor(model => model.Technology, new { @class = "form-control" })
-                                        @Html.ValidationMessageFor(m => m.Technology)
+                                        @Html.DisplayFor(model => candidateApplicationDetails.ContactNumber, new { @class = "form-control" })
+
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row" style="margin-bottom:10px!important">
+                                <div class="col-md-6">
+                                    <div class="col-md-6">
+                                        @Html.LabelFor(model => candidateApplicationDetails.ClientName)
+                                    </div>
+                                    <div class="col-md-6">
+                                        @Html.DisplayFor(model => candidateApplicationDetails.ClientName, new { @class = "form-control" })
+
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="col-md-6">
+                                        @Html.LabelFor(model => candidateApplicationDetails.Technology)
+                                    </div>
+                                    <div class="col-md-6">
+                                        @Html.DisplayFor(model => candidateApplicationDetails.Technology, new { @class = "form-control" })
                                     </div>
                                 </div>
                             </div>
@@ -181,59 +184,34 @@
                                 <div class="col-md-6">
 
                                     <div class="col-md-6">
-                                        <lable>Total experience <b style="color:Red;">*</b></lable>
+                                        <lable>Total experience</lable>
                                     </div>
                                     <div class="col-md-6">
                                         <div class="col-md-6 col-sm-6 col-xs-6" style="padding-left:0">
-                                            @(Html.Kendo().DropDownListFor(m => m.TotalExperienceInYear)
-.DataTextField("Text")
-.DataValueField("Value")
-.BindTo(EnumHelper.GetSelectList((typeof(Year)))
-.Select(x => new SelectListItem { Text = x.Value, Value = x.Value }))
-.HtmlAttributes(new { style = "width: 100%;" })
-.OptionLabel("Year")
-                                            )
-                                            @Html.ValidationMessageFor(m => m.TotalExperienceInYear)
+                                            @Html.DisplayFor(model => candidateApplicationDetails.TotalExperienceInYear, new { @class = "form-control" })
+                                            Years
+
                                         </div>
                                         <div class="col-md-6 col-sm-6 col-xs-6" style="padding-right:0">
-                                            @(Html.Kendo().DropDownListFor(m => m.TotalExperienceInMonth)
-.DataTextField("Text")
-.DataValueField("Value")
-.BindTo(EnumHelper.GetSelectList((typeof(Month)))
-.Select(x => new SelectListItem { Text = x.Value, Value = x.Value }))
-.HtmlAttributes(new { style = "width: 100%" })
-.OptionLabel("Months")
-                                            )
-                                            @Html.ValidationMessageFor(m => m.TotalExperienceInMonth)
+                                            @Html.DisplayFor(model => candidateApplicationDetails.TotalExperienceInMonth, new { @class = "form-control" }) Months
+
                                         </div>
                                     </div>
                                 </div>
                                 <div class="col-md-6">
                                     <div class="col-md-6">
-                                        <lable>Relevant experience <b style="color:Red;">*</b></lable>
+                                        <lable>Relevant experience</lable>
                                     </div>
                                     <div class="col-md-6">
                                         <div class="col-md-6 col-sm-6 col-xs-6" style="padding-left:0">
-                                            @(Html.Kendo().DropDownListFor(m => m.RelevantExperienceInYear)
-.DataTextField("Text")
-.DataValueField("Value")
-.BindTo(EnumHelper.GetSelectList((typeof(Year)))
-.Select(x => new SelectListItem { Text = x.Value, Value = x.Value }))
-.HtmlAttributes(new { style = "width: 100%" })
-.OptionLabel("Year")
-                                            )
-                                            @Html.ValidationMessageFor(m => m.RelevantExperienceInYear)
+                                            @Html.DisplayFor(model => candidateApplicationDetails.RelevantExperienceInYear, new { @class = "form-control" })
+                                            Years
+
                                         </div>
                                         <div class="col-md-6 col-sm-6 col-xs-6" style="padding-right:0">
-                                            @(Html.Kendo().DropDownListFor(m => m.RelevantExperienceInMonth)
-.DataTextField("Text")
-.DataValueField("Value")
-.BindTo(EnumHelper.GetSelectList((typeof(Month)))
-.Select(x => new SelectListItem { Text = x.Value, Value = x.Value }))
-.HtmlAttributes(new { style = "width: 100%" })
-.OptionLabel("Months")
-                                            )
-                                            @Html.ValidationMessageFor(m => m.RelevantExperienceInMonth)
+
+                                            @Html.DisplayFor(model => candidateApplicationDetails.RelevantExperienceInMonth, new { @class = "form-control" })
+                                            Months
                                         </div>
                                     </div>
                                 </div>
@@ -241,79 +219,178 @@
                             <div class="row" style="margin-bottom:10px!important">
                                 <div class="col-md-6">
                                     <div class="col-md-6">
-                                        @Html.LabelFor(model => model.CurrentCompany) <b style="color:Red;">*</b>
+                                        @Html.LabelFor(model => candidateApplicationDetails.CurrentCompany)
                                     </div>
                                     <div class="col-md-6">
-                                        @Html.TextBoxFor(model => model.CurrentCompany, new { @class = "form-control" })
-                                        @Html.ValidationMessageFor(m => m.CurrentCompany)
+                                        @Html.DisplayFor(model => candidateApplicationDetails.CurrentCompany, new { @class = "form-control" })
+
                                     </div>
                                 </div>
                                 <div class="col-md-6">
                                     <div class="col-md-6">
-                                        @Html.LabelFor(model => model.CurrentTitle) <b style="color:Red;">*</b>
+                                        @Html.LabelFor(model => candidateApplicationDetails.CurrentTitle)
                                     </div>
                                     <div class="col-md-6">
-                                        @Html.TextBoxFor(model => model.CurrentTitle, new { @class = "form-control" })
-                                        @Html.ValidationMessageFor(m => m.CurrentTitle)
+                                        @Html.DisplayFor(model => candidateApplicationDetails.CurrentTitle, new { @class = "form-control" })
+
                                     </div>
                                 </div>
                             </div>
                             <div class="row" style="margin-bottom:10px!important">
                                 <div class="col-md-6">
                                     <div class="col-md-6">
-                                        Upload Resume <b style="color:Red;">*</b>
+                                        Upload Resume
                                     </div>
                                     <div class="col-md-6">
                                         <div class="outer-box">
                                             <div class="demo-section k-content">
-                                                <input id="file" name="ResumeFile" type="file" data-role="upload" />
+
                                             </div>
-                                            @if (!string.IsNullOrWhiteSpace(Model.ResumeName))
+                                            @if (!string.IsNullOrWhiteSpace(candidateApplicationDetails.ResumeName))
                                             {
                                                 <div id="uploadFileLink" class="postuploadedfilesholder clearfix">
                                                     <div class="fileupload M-T5">
-                                                        <a href="@System.Configuration.ConfigurationManager.AppSettings["ServerName"]@Html.Raw(Url.Content(Model.ResumePath))" targ target="_blank"><i class="fa fa-file-text-o" aria-hidden="true"></i> @Html.Raw(Model.ResumeDisplayName)</a>
+                                                        <a href="@System.Configuration.ConfigurationManager.AppSettings["ServerName"]@Html.Raw(Url.Content(candidateApplicationDetails.ResumePath))" targ target="_blank">
+                                                            <i class="fa fa-file-text-o" aria-hidden="true"></i>
+
+                                                            @Html.Raw(candidateApplicationDetails.ResumeDisplayName)
+                                                        </a>
                                                         <span class="deleteupload" title="Delete"><a onclick="DeleteF()"><i class="fa fa-window-close" aria-hidden="true"></i></a></span>
                                                     </div>
                                                 </div>
-                                                <script type="text/javascript">
-                                                    $('#file').hide();
-                                                    function DeleteF() {
-                                                        fileBool = true;
-                                                        $('#file').show();
-                                                        $("#uploadFileLink").html("");
-                                                        $("#ResumeName").val("");
-                                                    }
-                                                </script>
+
                                             }
                                         </div>
                                         <span class="k-invalid-msg" data-for="files"></span>
                                     </div>
                                 </div>
-                                <div class="col-md-6">
-                                    <div class="col-md-6">
-                                        <label for="file">Upload Image:</label>
-                                    </div>
-                                    <div class="col-md-6">
-                                        @if (!string.IsNullOrWhiteSpace(Model.ProfilePhotoFilePath))
-                                        {
-                                            <img id="ProfilePhotoImage" src="@System.Configuration.ConfigurationManager.AppSettings["ServerName"]@Html.Raw(Url.Content(Model.ProfilePhotoFilePath))" style="height:100px;width:100px">
-                                            <span id="RemoveProfilePhoto" class="deleteupload" title="Delete"><a onclick="RemoveProfilePhoto()"><i class="fa fa-window-close" aria-hidden="true"></i></a></span>
-                                            <input type="file" name="ProfilePhotofile" id="ProfilePhotofile" data-max-size="2097152" style="width: 100%; display:none" accept='image/*' />
-                                        }
-                                        else
-                                        {
-                                            <img id="ProfilePhotoImage" src="" style="height:100px;width:100px;display:none">
-                                            <input type="file" name="ProfilePhotofile" id="ProfilePhotofile" data-max-size="2097152" style="width: 100%;" accept='image/*' />
-                                        }
-                                    </div>
-                                </div>
+
                             </div>
                         </div>
-                     
-                    
+
+                        <br />
+                        <h3>
+                            <b> Candidate Test Details</b>
+
+                        </h3> <br />
+                        @if (candidateApplicationDetails.TestSuiteViewModel != null)
+                        {
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <b> Test  Date : </b>   @Html.DisplayFor(model => candidateApplicationDetails.ApplicationDate)   &emsp;&emsp;&emsp; <a class="k-button k-button-icontext" href="/Admin/ViewQuestion?TestSuiteId=@candidateApplicationDetails.TestSuiteViewModel.TestSuiteId &UserId=@candidateApplicationDetails.TestSuiteViewModel.Userid"><span class="k-icon k-edit"></span>View Test</a>
+                                </div>
+                            </div>
+
+
+
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <div class="table-responsive">
+                                        <table class="table table-striped">
+                                            <thead>
+                                                <tr>
+                                                    <th>No.</th>
+                                                    <th>Field Name</th>
+                                                    <th>Value</th>
+                                                    <th></th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <th scope="row">1</th>
+                                                    <td>@Html.LabelFor(model => candidateApplicationDetails.TestSuiteViewModel.TestSuiteName)</td>
+                                                    <td>@Html.DisplayFor(model => candidateApplicationDetails.TestSuiteViewModel.TestSuiteName, new { @class = "form-control" })</td>
+                                                    <td></td>
+                                                </tr>
+                                                <tr>
+                                                    <th scope="row">2</th>
+                                                    <td>@Html.LabelFor(model => candidateApplicationDetails.TestSuiteViewModel.Duration)</td>
+                                                    <td>@Html.DisplayFor(model => candidateApplicationDetails.TestSuiteViewModel.Duration, new { @class = "form-control" })</td>
+                                                    <td></td>
+                                                </tr>
+                                                <tr>
+                                                    <th scope="row">3</th>
+                                                    <td>@Html.LabelFor(model => candidateApplicationDetails.TestSuiteViewModel.Position)</td>
+                                                    <td>@Html.DisplayFor(model => candidateApplicationDetails.TestSuiteViewModel.PositionName, new { @class = "form-control" })</td>
+                                                    <td></td>
+                                                </tr>
+                                                <tr>
+                                                    <th scope="row">4</th>
+                                                    <td>@Html.LabelFor(model => candidateApplicationDetails.TestSuiteViewModel.Competency)</td>
+                                                    <td>@Html.DisplayFor(model => candidateApplicationDetails.TestSuiteViewModel.OverallProficiency, new { @class = "form-control" })</td>
+                                                    <td></td>
+                                                </tr>
+                                                <tr>
+                                                    <th scope="row">5</th>
+                                                    <td><label>Question type</label></td>
+                                                    <td>
+                                                        <label>Optional @Html.DisplayFor(m => candidateApplicationDetails.TestSuiteViewModel.OptionalQuestion, new { @class = "form-control" }) %</label>
+                                                    </td>
+                                                    <td><label>Practical @Html.DisplayFor(m => candidateApplicationDetails.TestSuiteViewModel.PracticalQuestion, new { @class = "form-control" }) %</label></td>
+                                                </tr>
+                                                <tr>
+                                                    <th scope="row">6</th>
+                                                    <td>@Html.LabelFor(model => candidateApplicationDetails.TestSuiteViewModel.ProjectName)</td>
+                                                    <td>@Html.DisplayFor(model => candidateApplicationDetails.TestSuiteViewModel.ProjectName, new { @class = "form-control" })</td>
+                                                    <td></td>
+                                                </tr>
+                                                <tr>
+                                                    <th scope="row">7</th>
+                                                    <td><label>Experience</label></td>
+                                                    <td>@candidateApplicationDetails.TestSuiteViewModel.FromExperience.@candidateApplicationDetails.TestSuiteViewModel.ToExperience</td>
+                                                    <td></td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    <div class="table-responsive M-T30">
+                                        <table class="table table-striped">
+
+                                            <thead>
+                                                <tr>
+                                                    <th>Skill tag name</th>
+                                                    <th>Weightage % </th>
+                                                    <th>Efficiency</th>
+                                                </tr>
+                                            </thead>
+
+                                            @if (candidateApplicationDetails.TestSuiteViewModel.Tags != null)
+                                        {
+                                            if (candidateApplicationDetails.TestSuiteViewModel.Tags.Count() > 0)
+                                            {
+                                                for (int i = 0; i < candidateApplicationDetails.TestSuiteViewModel.Tags.Count(); i++)
+                                                {
+                                        <tbody>
+                                            <tr>
+
+                                                <td id="tag_name_row @Convert.ToString(i)">@candidateApplicationDetails.TestSuiteViewModel.Tags[i].TagName</td>
+                                                <td id="weight_name_row @Convert.ToString(i)">@candidateApplicationDetails.TestSuiteViewModel.Tags[i].Weightage</td>
+                                                <td id="efficiency_name_row @Convert.ToString(i)">@candidateApplicationDetails.TestSuiteViewModel.Tags[i].Proficiency</td>
+                                                <td></td>
+                                            </tr>
+                                        </tbody>
+                                                }
+                                            }
+                                        }
+                                        </table>
+                                    </div>
+
+
+                                </div>
+                            </div>
+                        }
+                        else
+                        {
+                            <b>No Test Details Found</b>
+                        }
+
+
+
+
+                    </div>
                 </div>
             </div>
         </div>
     </div>
-</div>
+
+}

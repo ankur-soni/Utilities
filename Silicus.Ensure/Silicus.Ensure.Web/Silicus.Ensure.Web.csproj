@@ -428,6 +428,7 @@
     <Compile Include="Models\ApplicationDbContext.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Models\CandidateHistoryViewModel.cs" />
     <Compile Include="Models\CandidateViewModel.cs" />
     <Compile Include="Models\ChangePasswordModel.cs" />
     <Compile Include="Models\ContainerUserViewModel.cs" />

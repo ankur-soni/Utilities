@@ -142,12 +142,16 @@ namespace Silicus.Ensure.Web.Controllers
             testSuit.Duration = suite.Duration + (testSuit.ExtraCount * 10);
             testSuit.StatusId = Convert.ToInt32(CandidateStatus.TestSubmitted);
             _testSuiteService.UpdateUserTestSuite(testSuit);
-            var userDetails = _userService.GetUserById(userId);
+           
             // Calculate marks on test submit.
             CalculateMarks(userTestSuiteId, userTestDetailId, answer);
             List<string> Receipient = new List<string>() { "Admin", "Panel" };
-            _commonController.SendMailByRoleName("Test Submitted For " + userDetails.FirstName + " " + userDetails.LastName + " Successfully", "CandidateTestSubmitted.cshtml", Receipient, userDetails.FirstName + " " + userDetails.LastName);
-
+            var users = _userService.GetUserApplicationDetailsById(userId);
+            if (users != null)
+            {
+                var userDetails = _userService.GetUserById(users.UserId);
+                _commonController.SendMailByRoleName("Test Submitted For " + userDetails.FirstName + " " + userDetails.LastName + " Successfully", "CandidateTestSubmitted.cshtml", Receipient, userDetails.FirstName + " " + userDetails.LastName);
+            }
             return RedirectToAction("LogOff", "CandidateAccount");
         }
 
