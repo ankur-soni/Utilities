@@ -179,10 +179,10 @@
         $("#checkbox1").prop('checked', false);
         $("#Years").attr("disabled", true);
         $("#Months").attr("disabled", "disabled");
+        clearDefaultValuesGrid();
     }
 
     $("#set-custom-date").click(function () {
-        debugger;
         var awardId = parseInt($("#Awards").val());
 
         if (awardId > 0) {
@@ -308,7 +308,6 @@
                     }
                     else {
                         swal("Error", "Award period not reset successfuly.", "error");
-
                     }
                     fillDefaultValuesGrid();
                 }
@@ -325,11 +324,29 @@
     });
 
     function fillDefaultValuesGrid() {
-        $("#lblForAwardType").text($("#Awards")[0].selectedOptions[0].text);
-        $("#lblForYear").text($("#Years")[0].selectedOptions[0].text);
-        $("#lblForMonth").text($("#Months")[0].selectedOptions[0].text);
-        $("#lblIsApplicable").text($("#checkbox1").prop('checked'));
-        $("#lblMonthToSubtract").text($("#MonthToSubtract").val());
+        var awardId = $("#Awards").val();
+        if (awardId > 0) {
+            showCustomLoader();
+            $.ajax({
+                type: "GET",
+                url: '@Url.Action("GetCustomDateDetailsForAward","Review")',
+                data: { awardId: awardId },
+                success: function (customDate) {
+                    $("#lblForAwardType").text(customDate.AwardName);
+                    $("#lblForYear").text(customDate.Year);
+                    $("#lblForMonth").text(customDate.MonthName);
+                    $("#lblIsApplicable").text(customDate.IsApplicable);
+                    $("#lblMonthToSubtract").text(customDate.MonthsToSubtract);
+                    hideCustomLoader();
+                },
+                error: function (error) {
+                    hideCustomLoader();
+                    console.log(error);
+                }
+            });
+        } else {
+            clearDefaultValuesGrid();
+        }
     }
 
     function clearDefaultValuesGrid() {
