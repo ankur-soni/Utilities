@@ -1699,3 +1699,9 @@ input[type=text]::-ms-clear {
 .is-not-visited{
     color:gray!important;
 }
+.questionView{
+    white-space: nowrap;
+    width: 9em;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
