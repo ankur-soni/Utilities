@@ -155,7 +155,7 @@
                                             }), "", new { @class = "example-square", @autocomplete = "off", @value = (commentObj != null ? commentObj.Rating : 0) })
                                                         </td>
                                                         <td class="col-lg-1 col-md-1 col-sm-1">@(commentObj != null ? (commentObj.Weightage * commentObj.Rating / 100.0) : 0)</td>
-                                                        <td class="more col-lg-1 col-md-1 col-sm-1" style="word-break:break-all">@(commentObj != null ? commentObj.Comment : "-")</td>
+                                                        <td class="more col-lg-2 col-md-2 col-sm-2 col-xs-3" style="word-break:break-all">@(commentObj != null ? commentObj.Comment : "-")</td>
                                                         <td class="col-lg-2 col-md-2 col-sm-2">
                                                             @{
                                                                 var reviewObj = reviewer.FirstOrDefault(model => model.CriteriaId == @managerComment.CriteriaId);
@@ -170,7 +170,7 @@
                                                                 }
                                                             }
                                                         </td>
-                                                        <td class="more col-lg-3 col-md-3 col-sm-3" style="word-break:break-all">@(reviewObj != null ? reviewObj.Comment : "")</td>
+                                                        <td class="more col-lg-2 col-md-2 col-sm-2 col-xs-3" style="word-break:break-all">@(reviewObj != null ? reviewObj.Comment : "")</td>
                                                     </tr>
                                                                 }
                                                 <tr>

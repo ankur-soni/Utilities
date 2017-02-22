@@ -14,89 +14,100 @@
     <div class="col-sm-12">
         <div class="box M-T15 M-B60">
             <div class="f1">
-                <div class="form-horizontal col-sm-9">
-                    <div class="form-group">
-                        @Html.LabelFor(model => model.Awards, "Nomination Category", htmlAttributes: new { @class = "col-md-2 col-sm-3" })
-                        <div class="col-md-3 col-sm-4">
-                            @Html.DropDownListFor(model => model.Awards, new SelectList(Model.Awards, "Id", "Name"), "Select", htmlAttributes: new { @class = "form-control" })
-                            @Html.ValidationMessageFor(model => model.Awards, "", new { @class = "text-danger" })
-                        </div>
-                    </div>
-                    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                <div class="row">
+                    <div class="col-sm-12">
+                        <div class="row">
+                            <div class="form-horizontal col-sm-8 col-md-8 col-lg-8">
 
-                    <div class="form-group">
-                        @Html.LabelFor(model => model.Years, "Select Year", htmlAttributes: new { @class = "col-md-2 col-sm-3" })
-                        <div class="col-md-3 col-sm-4">
-                            @Html.DropDownListFor(model => model.Years, new SelectList(Model.Years), "Select", htmlAttributes: new { @class = "form-control" })
-                            @Html.ValidationMessageFor(model => model.Years, "", new { @class = "text-danger" })
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        @Html.LabelFor(model => model.Months, "Select Month", htmlAttributes: new { @class = "col-md-2 col-sm-3" })
-                        <div class="col-md-3 col-sm-4">
-                            @Html.DropDownListFor(model => model.Months, new SelectList(Model.Months).Select(m => new SelectListItem
-                   {
-                       Value = m.Text,
-                       Text = System.Globalization.CultureInfo.InvariantCulture.DateTimeFormat.GetMonthName(Convert.ToInt32(m.Text)),
-                   })
+                                <div class="form-group">
+                                    @Html.LabelFor(model => model.Awards, "Nomination Category", htmlAttributes: new { @class = "col-lg-3 col-md-4 col-sm-5" })
+                                    <div class="col-lg-3 col-md-4 col-sm-5">
+                                        @Html.DropDownListFor(model => model.Awards, new SelectList(Model.Awards, "Id", "Name"), "Select", htmlAttributes: new { @class = "form-control" })
+                                        @Html.ValidationMessageFor(model => model.Awards, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+                                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+                                <div class="form-group">
+                                    @Html.LabelFor(model => model.Years, "Select Year", htmlAttributes: new { @class = "col-lg-3 col-md-4 col-sm-5" })
+                                    <div class="col-lg-3 col-md-4 col-sm-5">
+                                        @Html.DropDownListFor(model => model.Years, new SelectList(Model.Years), "Select", htmlAttributes: new { @class = "form-control" })
+                                        @Html.ValidationMessageFor(model => model.Years, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    @Html.LabelFor(model => model.Months, "Select Month", htmlAttributes: new { @class = "col-lg-3 col-md-4 col-sm-5" })
+                                    <div class="col-lg-3 col-md-4 col-sm-5">
+                                        @Html.DropDownListFor(model => model.Months, new SelectList(Model.Months).Select(m => new SelectListItem
+                           {
+                               Value = m.Text,
+                               Text = System.Globalization.CultureInfo.InvariantCulture.DateTimeFormat.GetMonthName(Convert.ToInt32(m.Text)),
+                           })
            , "Select", htmlAttributes: new { @class = "form-control" })
-                            @Html.ValidationMessageFor(model => model.Months, "", new { @class = "text-danger" })
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        @Html.LabelFor(model => model.MonthToSubtract, "Months To Subtract (if required)", htmlAttributes: new { @class = "col-md-2 col-sm-3" })
-                        <div class="col-md-3 col-sm-4">
-                            @Html.TextBoxFor(model => model.MonthToSubtract, "", new { @class = "form-control" })
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <div class="checkbox checkbox-success">
-                            <div class="col-md-3 col-sm-4">
-                                <input id="checkbox1" name="IsApplicable" type="checkbox">
-                                <label for="checkbox1" name="IsApplicable">Select this checkbox if you want to run Award Category for custom period.</label>
+                                        @Html.ValidationMessageFor(model => model.Months, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    @Html.LabelFor(model => model.MonthToSubtract, "Months To Subtract (if required)", htmlAttributes: new { @class = "col-lg-3 col-md-4 col-sm-5" })
+                                    <div class="col-lg-3 col-md-4 col-sm-5">
+                                        @Html.TextBoxFor(model => model.MonthToSubtract, "", new { @class = "form-control" })
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="checkbox checkbox-success">
+                                        <div class="col-lg-8 col-md-8 col-sm-8">
+                                            <input id="checkbox1" name="IsApplicable" type="checkbox">
+                                            <label for="checkbox1" name="IsApplicable">Select this checkbox if you want to run Award Category for custom period.</label>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                            <div class="form-horizontal col-sm-4 col-md-4 col-lg-4">
+                                <div class="box M-B15">
+                                    <div class="form-group">
+                                        @Html.LabelFor(model => model.Awards, "Nomination Category", new { @class = "col-lg-6 col-md-6 col-sm-6 col-xs-6" })
+                                        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                                            <label id="lblForAwardType" class="themeColorBlue font-bold">--</label>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        @Html.LabelFor(model => model.Years, "Year", new { @class = "col-lg-6 col-md-6 col-sm-6 col-xs-6" })
+                                        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                                            <label id="lblForYear" class="themeColorBlue font-bold">--</label>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        @Html.LabelFor(model => model.Months, "Month", new { @class = "col-lg-6 col-md-6 col-sm-6 col-xs-6" })
+                                        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                                            <label id="lblForMonth" class="themeColorBlue font-bold">--</label>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        @Html.LabelFor(model => model.MonthToSubtract, "Month To Subtract", new { @class = "col-lg-6 col-md-6 col-sm-6 col-xs-6" })
+                                        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                                            <label id="lblMonthToSubtract" class="themeColorBlue font-bold">--</label>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        @Html.Label("", "IsApplicable", new { @class = "col-lg-6 col-md-6 col-sm-6 col-xs-6" })
+                                        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                                            <label id="lblIsApplicable" class="themeColorBlue font-bold">--</label>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
-                <div class="form-horizontal col-sm-3 box boxShadow">
-                    <div class="form-group">
-                        @Html.LabelFor(model => model.Awards, "Nomination Category", new { @class = "col-md-6 col-sm-6" })
-                        <div class="col-md-3 col-sm-4">
-                            <label id="lblForAwardType">--</label>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        @Html.LabelFor(model => model.Years, "Year", new { @class = "col-md-6 col-sm-6" })
-                        <div class="col-md-3 col-sm-4">
-                            <label id="lblForYear">--</label>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        @Html.LabelFor(model => model.Months, "Month", new { @class = "col-md-6 col-sm-6" })
-                        <div class="col-md-3 col-sm-4">
-                            <label id="lblForMonth">--</label>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        @Html.LabelFor(model => model.MonthToSubtract, "Month To Subtract", new { @class = "col-md-6 col-sm-6" })
-                        <div class="col-md-3 col-sm-4">
-                            <label id="lblMonthToSubtract">--</label>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        @Html.Label("", "IsApplicable", new { @class = "col-md-6 col-sm-6" })
-                        <div class="col-md-3 col-sm-4">
-                            <label id="lblIsApplicable">--</label>
-                        </div>
-                    </div>
-                </div>
+                
                 <div class="row">
                     <div class="col-md-12">
                         <div class="pull-right">
-                            <input type="button" value="Save Changes" class="btn btn-primary" id="set-custom-date" />
-                            <input type="button" value="Set To Default Period" class="btn btn-primary" id="reset-custom-date" />
-                            <input type="button" value="Reset" class="btn btn-primary" id="clearCustomDateForm" onclick="clearWholeAwardForm(true)" />
-                            <input type="button" value="Cancel" class="btn btn-primary" id="cancel-custom-date" onclick="location.href='@Url.Action("Index","Home")'" />
+                            <input type="button" value="Save Changes" class="btn btn-primary M-B3" id="set-custom-date" />
+                            <input type="button" value="Set To Default Period" class="btn btn-primary M-B3" id="reset-custom-date" />
+                            <input type="button" value="Reset" class="btn btn-primary M-B3" id="clearCustomDateForm" onclick="clearWholeAwardForm(true)" />
+                            <input type="button" value="Cancel" class="btn btn-primary M-B3" id="cancel-custom-date" onclick="location.href='@Url.Action("Index","Home")'" />
                         </div>
                     </div>
                 </div>

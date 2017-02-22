@@ -60,7 +60,7 @@
                     <div class="panel-body" style="padding: 25px 25px 0px 25px;">
                         <table class="table table-hover issue-tracker">
                             <tr>
-                                <td class="more" style="word-wrap: break-word;">
+                                <td class="moreText" style="word-wrap: break-word;">
                                     <div>
                                         @{
                                             var submitionViewModel = Model.FirstOrDefault();
@@ -130,7 +130,7 @@
                                                                 }), "", new { @class = "example-square", @autocomplete = "off", @value = managerComment.Rating })
                                                             </td>
                                                             <td class="col-lg-1 col-md-1 col-sm-1">@(managerComment.Weightage * managerComment.Rating / 100.0)</td>
-                                                            <td class="more col-lg-1 col-md-1 col-sm-1" style="word-break:break-all">@managerComment.Comment</td>
+                                                            <td class="more col-lg-2 col-md-2 col-sm-2 col-xs-3" style="word-break:break-all">@managerComment.Comment</td>
                                                             @{
                                                                 var reviewwrComment = review.Comments.FirstOrDefault(c => c.CriteriaId == managerComment.CriteriaId);
                                                             }
@@ -143,7 +143,7 @@
                                                                  Text = r.ToString()
                                                              }), "", new { @class = "example-square", @autocomplete = "off", @value = (reviewwrComment != null ? reviewwrComment.Credit : 0) })
                                                             </td>
-                                                            <td class="more col-lg-3 col-md-3 col-sm-3">@(reviewwrComment != null ? reviewwrComment.Comment : "")<div class="textarea"></div></td>
+                                                            <td class="more col-lg-3 col-md-3 col-sm-3 col-xs-3">@(reviewwrComment != null ? reviewwrComment.Comment : "")<div class="textarea"></div></td>
                                                             @Html.Hidden("Comments[" + j + "].CriteriaId", managerComment.CriteriaId)
                                                         </tr>
                                                     </tbody>

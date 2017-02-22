@@ -129,7 +129,7 @@
                                                         }), "", new { @class = "example-square", @autocomplete = "off", @value = managerComment.Rating })
                                             </td>
                                             <td class="col-lg-1 col-md-1 col-sm-1">@(managerComment.Weightage * managerComment.Rating / 100.0)</td>
-                                            <td class="more col-lg-1 col-md-1 col-sm-1" style="word-break: break-all">@managerComment.Comment</td>
+                                            <td class="more col-lg-2 col-md-2 col-sm-2 col-xs-3" style="word-break: break-all">@managerComment.Comment</td>
 
                                             <td class="col-lg-2 col-md-2 col-sm-2">
                                                 @Html.DropDownList("Comments[" + @j + "].Credit",
@@ -141,7 +141,7 @@
                                                         }), "", new { @class = "reviewer-rating", @autocomplete = "off"})
                                             </td>
                                              for
-                                            <td class="col-lg-3 col-md-3 col-sm-3">@Html.TextArea("Comments[" + @j + "].Comment", new { @class = "reviewer-comment form-control", name = "reviewercomment", maxlength = "500", onKeyUp = "return onkeyevent(this);", onblur = "return hideRemainingCharacterText(this);" })<div class="textarea"></div></td>
+                                            <td class="col-lg-2 col-md-2 col-sm-2 col-xs-3">@Html.TextArea("Comments[" + @j + "].Comment", new { @class = "reviewer-comment form-control", name = "reviewercomment", maxlength = "500", onKeyUp = "return onkeyevent(this);", onblur = "return hideRemainingCharacterText(this);" })<div class="textarea"></div></td>
 
                                             @Html.Hidden("Comments[" + @j + "].CriteriaId", managerComment.CriteriaId)
                                         </tr>
