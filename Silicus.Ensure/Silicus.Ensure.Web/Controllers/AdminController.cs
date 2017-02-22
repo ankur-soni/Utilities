@@ -259,11 +259,39 @@ namespace Silicus.Ensure.Web.Controllers
 
         public ActionResult CandidateHistory(int userId)
         {
-            var candidate = _userService.GetUserById(userId);
-            var candidatebusinessModel = _mappingService.Map<UserBusinessModel, UserViewModel>(candidate);
-            var positionDetails = _positionService.GetPositionDetails().OrderBy(model => model.PositionName);
-            candidatebusinessModel.PositionList = positionDetails.ToList();
-            return View(candidatebusinessModel);
+            List<CandidateHistoryViewModel> objUserApplicationDetails = new List<CandidateHistoryViewModel>();          
+
+            var candidateApplicationDetails = _userService.GetUserWithAllApplicationDetails(userId);
+            foreach (var candidateApplication in candidateApplicationDetails)
+            {
+                TestSuiteViewModel testSuiteViewModel = null;
+                var candidatebusinessModel = _mappingService.Map<UserBusinessModel, CandidateHistoryViewModel>(candidateApplication);
+                var positionDetails = _positionService.GetPositionDetails().OrderBy(m => m.PositionName);
+                candidatebusinessModel.PositionList = positionDetails.ToList();
+              
+               
+                var userTestSuiteDetails = _userService.GetTestSuiteDetailsOfUser(candidateApplication.UserApplicationId);
+                if (userTestSuiteDetails != null)
+                {
+                    testSuiteViewModel = new TestSuiteViewModel();
+                    TestSuite testSuitDetails = _testSuiteService.GetTestSuitById(userTestSuiteDetails.GetType().GetProperty("TestSuiteId").GetValue(userTestSuiteDetails, null));
+                    testSuiteViewModel = _mappingService.Map<TestSuite, TestSuiteViewModel>(testSuitDetails);
+                    testSuiteViewModel.OverallProficiency = ((Proficiency)Convert.ToInt32(testSuiteViewModel.Competency)).ToString();
+                    var position = _positionService.GetPositionById(testSuiteViewModel.Position);
+                    testSuiteViewModel.PositionName = position.PositionName;
+                    List<TestSuiteTagViewModel> testSuiteTags;
+                    GetTestSuiteTags(testSuitDetails, out testSuiteTags);
+                    testSuiteViewModel.Tags = testSuiteTags;
+                    testSuiteViewModel.Userid = userId;
+                }             
+
+                candidatebusinessModel.TestSuiteViewModel = testSuiteViewModel;
+                objUserApplicationDetails.Add(candidatebusinessModel);
+            }
+
+         
+
+            return View(objUserApplicationDetails);
 
         }
 
