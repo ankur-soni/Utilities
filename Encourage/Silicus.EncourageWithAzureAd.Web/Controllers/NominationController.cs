@@ -167,7 +167,7 @@ namespace Silicus.EncourageWithAzureAd.Web.Controllers
                             new ManagerComment
                             {
                                 CriteriaId = criteria.Id,
-                                Comment = criteria.Comment != null ? _textInfo.ToTitleCase(criteria.Comment) : "",
+                                Comment = criteria.Comment != null ? criteria.Comment : "",
                                 Rating = criteria.Rating,
                                 Weightage = criteria.Weightage,
                                 FinalScore = 0,
@@ -176,7 +176,7 @@ namespace Silicus.EncourageWithAzureAd.Web.Controllers
                         );
                     }
                 }
-                nomination.Comment = model.MainComment != null ? _textInfo.ToTitleCase(model.MainComment) : "";
+                nomination.Comment = model.MainComment != null ? model.MainComment : "";
 
                 nomination.IsLocked = false;
                 var wasSubmitted = _awardService.AddNomination(nomination);
@@ -315,7 +315,7 @@ namespace Silicus.EncourageWithAzureAd.Web.Controllers
                     nomination.ManagerComments.Add(new ManagerComment
                     {
                         CriteriaId = comment.Id,
-                        Comment = comment.Comment != null ? _textInfo.ToTitleCase(comment.Comment) : "",
+                        Comment = comment.Comment != null ? comment.Comment : "",
                         NominationId = model.NominationId,
                         Rating = comment.Rating,
                         Weightage = comment.Weightage,
@@ -325,7 +325,7 @@ namespace Silicus.EncourageWithAzureAd.Web.Controllers
                 }
             }
 
-            nomination.Comment = model.MainComment != null ? _textInfo.ToTitleCase(model.MainComment) : "";
+            nomination.Comment = model.MainComment != null ? model.MainComment : "";
 
             _nominationService.DeletePrevoiusManagerComments(model.NominationId);
             _nominationService.UpdateNomination(nomination);
