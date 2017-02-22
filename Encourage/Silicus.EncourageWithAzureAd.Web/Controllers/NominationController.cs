@@ -634,7 +634,7 @@ namespace Silicus.EncourageWithAzureAd.Web.Controllers
                         NominationId = model.NominationId,
                         ReviewerId = model.ReviewerId,
                         CriteriaId = item.CriteriaId,
-                        Comment = item.Comment != null ? _textInfo.ToTitleCase(item.Comment) : "",
+                        Comment = item.Comment != null ? item.Comment : "",
                         Credit = Convert.ToInt32(item.Credit),
                         ReviewId = review.Id
                     };
@@ -813,7 +813,7 @@ namespace Silicus.EncourageWithAzureAd.Web.Controllers
                     NominationId = model.NominationId,
                     ReviewerId = model.ReviewerId,
                     CriteriaId = item.CriteriaId,
-                    Comment = item.Comment != null ? _textInfo.ToTitleCase(item.Comment) : "",
+                    Comment = item.Comment != null ? item.Comment : "",
                     Credit = item.Credit,
                     ReviewId = review.Id
                 };
