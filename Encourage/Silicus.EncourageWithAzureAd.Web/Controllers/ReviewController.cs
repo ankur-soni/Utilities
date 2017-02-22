@@ -686,8 +686,20 @@ namespace Silicus.EncourageWithAzureAd.Web.Controllers
                 customDateDetails.Month = DateTime.Now.Month;
                 customDateDetails.IsApplicable = true;
                 customDateDetails.MonthsToSubtract = 0;
+
             }
-            return Json(customDateDetails, JsonRequestBehavior.AllowGet);
+            customDateDetails.Award = _awardService.GetAwardById(awardId);
+
+            var details = new 
+            {
+                AwardName = customDateDetails.Award.Name,
+                Year = customDateDetails.Year,
+                Month = customDateDetails.Month,
+                MonthName = CultureInfo.CurrentCulture.DateTimeFormat.GetMonthName(customDateDetails.Month.Value),
+                IsApplicable = customDateDetails.IsApplicable,
+                MonthsToSubtract = customDateDetails.MonthsToSubtract
+            };
+            return Json(details, JsonRequestBehavior.AllowGet);
         }
     }
 }
