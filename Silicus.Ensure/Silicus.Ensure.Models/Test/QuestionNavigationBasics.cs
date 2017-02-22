@@ -8,5 +8,6 @@ namespace Silicus.Ensure.Models.Test
         public bool IsAnswered { get; set; }
         public bool IsReviewed { get; set; }
         public bool IsCorrect { get; set; }
+        public string QuestionDescription { get; set; }
     }
 }
