@@ -155,6 +155,7 @@ header.navbar .nav-item .nav-link:focus {
 
 .breadcrumb .active a {
     color: #000;
+     text-decoration: none;
     padding-bottom: 8px;
     border-bottom: 5px solid #00aeef;
 }
@@ -1092,7 +1093,7 @@ margin-top:30px;
     -webkit-transition: border .5s ease-in-out;
     background-color: #fff;
     border-radius: 50%;
-    border: 1px solid rgba(120, 130, 140, .13);
+    border: 1px solid rgb(114, 114, 114);
     content: "";
     display: inline-block;
     height: 17px;
@@ -1721,3 +1722,4 @@ input[type=text]::-ms-clear {
     background:red;
     color:#fff;
 }
+#progressInfo{margin-left:5px;}
