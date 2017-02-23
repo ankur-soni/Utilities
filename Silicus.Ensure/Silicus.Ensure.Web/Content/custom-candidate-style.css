@@ -1386,9 +1386,9 @@ input {
 input[type=text]::-ms-clear {
     display: none;
 }
-.radio input[type=radio], .radio-inline input[type=radio], .checkbox input[type=checkbox], .checkbox-inline input[type=checkbox]{
+/*.radio input[type=radio], .radio-inline input[type=radio], .checkbox input[type=checkbox], .checkbox-inline input[type=checkbox]{
     margin-left:0px;
-}
+}*/
 /*Questions list css*/
 .questions {
   margin: 0;
