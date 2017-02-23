@@ -140,12 +140,12 @@ namespace Silicus.Ensure.Web.Controllers
         /// <param name="UserId"></param>
         /// <returns></returns>
         [AcceptVerbs(HttpVerbs.Post)]
-        public ActionResult DeleteUser(UserViewModel userModel)
+        public ActionResult DeleteUser(int UserId)
         {
-            if (userModel != null && userModel.UserId > 0)
+            if (UserId > 0)
             {
 
-                _userService.Delete(userModel.UserId);
+                _userService.Delete(UserId);
                 return Json(1);
             }
 

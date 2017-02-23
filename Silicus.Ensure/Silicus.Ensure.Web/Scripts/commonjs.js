@@ -85,6 +85,8 @@ function deleteKendoGridRow(gridId, data) {
 }
 
 
+
+
 function ShowSweetAlertWithoutCancel(title, text, type) {
     swal({
         title: title,
@@ -95,4 +97,12 @@ function ShowSweetAlertWithoutCancel(title, text, type) {
         confirmButtonText: "Ok",
         closeOnConfirm: true,
     });
+}
+
+function showCustomLoader() {
+    $(".loader-overlay").show();
+}
+
+function hideCustomLoader() {
+    $(".loader-overlay").hide();
 }
