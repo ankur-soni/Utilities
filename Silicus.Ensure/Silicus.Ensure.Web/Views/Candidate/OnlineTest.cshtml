@@ -418,8 +418,7 @@ else
    
   
     function UpdateTimeDB() {        
-        var counterTimeArray = $('#counter').countdown('getTimes');
-        var time = counterTimeArray[counterTimeArray.length - 3] * 60 * 60 + counterTimeArray[counterTimeArray.length - 2] * 60 + counterTimeArray[counterTimeArray.length - 1];
+        var time = $.countdown.periodsToSeconds($('#counter').countdown('getTimes'));
         if (time / 60 != 0) {
             var userTestSuiteId = $("#UserTestSuiteId").val();
             $.ajax({
@@ -534,6 +533,8 @@ else
         }
     }
 
+   
+
     $(document).ready(function () {
         var text = "You are navigating to Fullscreen.";
         ShowSweetAlertWithoutCancel("Warning!", text, "warning");
@@ -552,9 +553,7 @@ else
    function (isConfirm) {
        if (isConfirm) {
            toggleFullScreen();
-           $('#counter').countdown('resume');
-           $('#counter').addClass('timerActive');
-           $('.numbers').addClass('numbersActive');
+           startCounter();
            isCounterStarted = true;
        }
    });

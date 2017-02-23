@@ -98,7 +98,7 @@
 
 <script>
     var isCounterStarted = false;
-    var testDurationComplete = false;
+    var testDurationComplete = false;    
     $(document).ready(function () {
        
         var tm =@Model.DurationInMin
@@ -107,14 +107,12 @@
         // Initialize progress bar.
         totalTime = tm;
         $('#progressBar').attr('aria-valuemax', totalTime).css('width', '0%');
-        $('#progressInfo').text('0%');
-
+        $('#progressInfo').text('0%');        
         $('#counter').countdown({
             until:tm, compact: true,
             format: 'HMS', description: '',
             onTick: ProgressBar,
-            onExpiry: function () {
-                            // $("#myModalTC").modal();
+            onExpiry: function () {                            
                             TestDurationComplete();
                             var text = "The test duration is over, thank you for your participation. Further, the recruitment team will contact you for the update";
                             ShowSweetAlertWithoutCancel("Warning!", text, "warning");
@@ -147,6 +145,11 @@
             answer = null;
         return answer;
     }
+    function startCounter() {
+        $('#counter').countdown('resume');
+        $('#counter').addClass('timerActive');
+        $('.numbers').addClass('numbersActive');
+    }
 
 
     function TestDurationComplete() {
@@ -161,9 +164,8 @@
     
     function ProgressBar() {        
         //var time = clock.getTime().time;
-        if (isCounterStarted) {
-            var counterTimeArray = $('#counter').countdown('getTimes');
-            var time = counterTimeArray[counterTimeArray.length - 3] * 60 * 60 + counterTimeArray[counterTimeArray.length - 2] * 60 + counterTimeArray[counterTimeArray.length - 1];
+        if (isCounterStarted) {            
+            var time = $.countdown.periodsToSeconds($('#counter').countdown('getTimes'));
             if (time % 60 == 0) {
                 var leftTm = parseInt(totalTime) - time;
                 var newprogress = parseInt((parseInt(leftTm) / parseInt(totalTime)) * 100);
@@ -222,10 +224,8 @@
             ShowProgressPopUp(true, "This is the last chance. Are you sure, you want to increase time limit by 10 Mins?");
     }
 
-    function OnAddMoreTimeOK() {
-        debugger;
-        var counterTimeArray = $('#counter').countdown('getTimes');
-        var time = counterTimeArray[counterTimeArray.length - 3] * 60 * 60 + counterTimeArray[counterTimeArray.length - 2] * 60 + counterTimeArray[counterTimeArray.length - 1];
+    function OnAddMoreTimeOK() {        
+        var time = $.countdown.periodsToSeconds($('#counter').countdown('getTimes'));
         var timerCnt = $("#TimerIncCount").val();
         if (timerCnt == null || timerCnt == "")
             timerCnt = 0;
@@ -237,12 +237,11 @@
             contentType: 'application/json; charset=utf-8',
             data: JSON.stringify({ count: timerCnt, userTestSuiteId: userTestSuiteId }),
             success: function (data) {
-                if (data < 3) {
-                    debugger;
+                if (data < 3) {                    
                     // Add time in counter
                     var newtm = parseInt(time) + parseInt(60 * 10);
                     //clock.setTime(newtm);
-                    $("#counter").countdown({ until: newtm });
+                    $("#counter").countdown('option', { until: newtm });
 
                     // Assign reduced chance
                     $("#TimerIncCount").val(data);
@@ -259,6 +258,8 @@
                     if (data == 2) {
                         $("#btnAddMoreTime").hide();
                     }
+
+                    UpdateTimeDB();
 
                 }
             },
