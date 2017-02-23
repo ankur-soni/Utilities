@@ -1,5 +1,4 @@
-﻿using Silicus.Ensure.Models;
-using Silicus.Ensure.Models.Constants;
+﻿using Silicus.Ensure.Models.Constants;
 using Silicus.Ensure.Models.DataObjects;
 using Silicus.Ensure.Models.Test;
 using Silicus.Ensure.Services.Interfaces;
@@ -17,16 +16,14 @@ namespace Silicus.Ensure.Web.Controllers
 {
     [Authorize]
     public class CandidateController : Controller
-    {
-        private readonly IEmailService _emailService;
+    {        
         private readonly IQuestionService _questionService;
         private readonly IMappingService _mappingService;
         private readonly IUserService _userService;
         private readonly ITestSuiteService _testSuiteService;
         private readonly CommonController _commonController;
-        public CandidateController(IEmailService emailService, IQuestionService questionService, MappingService mappingService, IUserService userService, ITestSuiteService testSuiteService, CommonController commonController)
-        {
-            _emailService = emailService;
+        public CandidateController(IQuestionService questionService, MappingService mappingService, IUserService userService, ITestSuiteService testSuiteService, CommonController commonController)
+        {            
             _questionService = questionService;
             _mappingService = mappingService;
             _userService = userService;
@@ -49,7 +46,7 @@ namespace Silicus.Ensure.Web.Controllers
                 ViewBag.Status = 1;
                 ViewBag.Msg = "No test is assigned for you, kindly contact admin.";
                 return View("Welcome", new TestSuiteCandidateModel());
-            }          
+            }
             ViewBag.Status = 0;
             return View();
         }
@@ -73,7 +70,7 @@ namespace Silicus.Ensure.Web.Controllers
                 {
                     var testSuiteDetails = _testSuiteService.GetTestSuiteDetails().SingleOrDefault(model => model.TestSuiteId == userTestSuite.TestSuiteId && !model.IsDeleted);
                     _testSuiteService.AssignSuite(userTestSuite, testSuiteDetails);
-                }                
+                }
             }
 
             TestSuiteCandidateModel testSuiteCandidateModel = _mappingService.Map<UserTestSuite, TestSuiteCandidateModel>(userTestSuite);
@@ -86,11 +83,6 @@ namespace Silicus.Ensure.Web.Controllers
 
             return PartialView("_testSuiteAndCandidateDetails", testSuiteCandidateModel);
         }
-        //private string GetSpecialInstruction(int testSuiteId)
-        //{
-        //    var testSuite = _testSuiteService.GetTestSuitById(testSuiteId);
-        //    return testSuite != null ? testSuite.SpecialInstruction : null;
-        //}
 
         [CustomAuthorize("Admin", "Panel", "Recruiter", "Candidate")]
         public ActionResult OnlineTest()
@@ -118,6 +110,7 @@ namespace Silicus.Ensure.Web.Controllers
             var candidateInfoBusinessModel = _userService.GetCandidateInfo(user);
             testSuiteCandidateModel.CandidateInfo = _mappingService.Map<CandidateInfoBusinessModel, CandidateInfoViewModel>(candidateInfoBusinessModel);
             testSuiteCandidateModel.NavigationDetails = GetNavigationDetails(testSuiteCandidateModel.UserTestSuiteId);
+            int? x = testSuiteCandidateModel?.UserTestSuiteId;
             testSuiteCandidateModel.TotalQuestionCount = testSuiteCandidateModel.PracticalCount + testSuiteCandidateModel.ObjectiveCount;
             testSuiteCandidateModel.DurationInMin = testSuiteCandidateModel.RemainingTime > 0 ? testSuiteCandidateModel.RemainingTime : testSuiteCandidateModel.Duration;
             testSuiteCandidateModel.UserId = user.UserApplicationId;
@@ -133,7 +126,7 @@ namespace Silicus.Ensure.Web.Controllers
 
         public ActionResult LoadQuestion(int userTestSuiteId)
         {
-            TestDetailsViewModel testSuiteQuestionModel = TestSuiteQuestion(null, userTestSuiteId, (int)QuestionType.Objective);
+            TestDetailsViewModel testSuiteQuestionModel = TestSuiteQuestion(null, userTestSuiteId, (int)QuestionType.Practical);
             return PartialView("_partialViewQuestion", testSuiteQuestionModel);
         }
 
@@ -160,12 +153,16 @@ namespace Silicus.Ensure.Web.Controllers
             testSuit.Duration = suite.Duration + (testSuit.ExtraCount * 10);
             testSuit.StatusId = Convert.ToInt32(CandidateStatus.TestSubmitted);
             _testSuiteService.UpdateUserTestSuite(testSuit);
-            var userDetails = _userService.GetUserById(userId);
+
             // Calculate marks on test submit.
             CalculateMarks(userTestSuiteId, userTestDetailId, answer);
             List<string> Receipient = new List<string>() { "Admin", "Panel" };
-            _commonController.SendMailByRoleName("Test Submitted For " + userDetails.FirstName + " " + userDetails.LastName + " Successfully", "CandidateTestSubmitted.cshtml", Receipient, userDetails.FirstName + " " + userDetails.LastName);
-
+            var users = _userService.GetUserApplicationDetailsById(userId);
+            if (users != null)
+            {
+                var userDetails = _userService.GetUserById(users.UserId);
+                _commonController.SendMailByRoleName("Test Submitted For " + userDetails.FirstName + " " + userDetails.LastName + " Successfully", "CandidateTestSubmitted.cshtml", Receipient, userDetails.FirstName + " " + userDetails.LastName);
+            }
             return RedirectToAction("LogOff", "CandidateAccount");
         }
 
@@ -203,27 +200,10 @@ namespace Silicus.Ensure.Web.Controllers
 
         private TestDetailsViewModel TestSuiteQuestion(int? questionId, int? userTestSuiteId, int questionType)
         {
-            TestDetailsBusinessModel userTestDetails = _testSuiteService.GetUserTestDetailsByUserTestSuitId(userTestSuiteId, questionId, questionType, testStartWithQuestionType: QuestionType.Objective);
+            TestDetailsBusinessModel userTestDetails = _testSuiteService.GetUserTestDetailsByUserTestSuitId(userTestSuiteId, questionId, questionType);
             var testDetails = _mappingService.Map<TestDetailsBusinessModel, TestDetailsViewModel>(userTestDetails);
             testDetails = testDetails ?? new TestDetailsViewModel();
             return testDetails;
-        }
-
-        private void SendSubmittedTestMail(List<User> userAdmin, string fullname)
-        {
-            string subject = "Test Submitted for " + fullname;
-
-            foreach (var usr in userAdmin)
-            {
-                string body = "Dear " + usr.FirstName + " " + usr.LastName + "," +
-                              "The Online Test has been submitted for Candidate " + fullname + " on " + DateTime.Now + ". Please review, evatuate and add your valuable feedback of the Test in order to conduct first round of interview." +
-                              "This is an auto-generated email sent by Ensure. Please do not reply to this email." +
-                              "Regards," +
-                              "Ensure, IT Support";
-
-
-                _emailService.SendEmailAsync(usr.Email, subject, body);
-            }
         }
 
         private void CalculateMarks(int userTestSuiteId, int? userLastQuestionDetailId, string answer)
