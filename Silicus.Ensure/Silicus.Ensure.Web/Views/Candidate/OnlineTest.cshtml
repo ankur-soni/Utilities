@@ -526,5 +526,9 @@
     window.onbeforeunload = function () {
         return "Do you really want to close?";
     };
+    $('.confirm').click(function () {       
+        window.onbeforeunload = null;
+    });
+
 
 </script>

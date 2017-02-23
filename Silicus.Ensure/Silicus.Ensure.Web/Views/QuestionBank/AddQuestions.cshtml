@@ -308,8 +308,8 @@
 
                             <div class="pull-right">
                                 <input type="submit" name="btnSaveAndAddNewQuestion" id="btnSaveAndAddNewQuestion" value="Save & add another question" class="btn btn-primary" />
-                                <input type="submit" style="width: 70px;margin-left:1px;" name="btnSave" value="Save" class="btn btn-primary" />
-                                <input type="button" name="btnCancel" value="Cancel" onclick="OnCancel()" class="btn btn-secondary" />
+                                <input type="submit" style="width: 70px;margin-left:1px;" id="btnSave" name="btnSave" value="Save" class="btn btn-primary" />
+                                <input type="button" name="btnCancel" value="Cancel" onclick="OnCancel()"  class="btn btn-secondary" />
                             </div>
                         </div>
 
@@ -725,9 +725,4 @@
         </div>
     </form>
 </div>
-<script>
 
-    window.onbeforeunload = function () {
-        return "Do you really want to close?";
-    };
-</script>
