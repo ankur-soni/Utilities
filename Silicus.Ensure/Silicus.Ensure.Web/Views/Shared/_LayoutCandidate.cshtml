@@ -97,7 +97,7 @@
         <header class="app-header navbar">
             <button class="navbar-toggler mobile-sidebar-toggler hidden-lg-up" type="button">☰</button>
             <a class="navbar-brand" href="#"></a>
-            
+
             <ul id="rightMenu" class="nav navbar-nav ml-auto hidden-md-down">
                 @if (Request.IsAuthenticated)
                 {
@@ -124,7 +124,7 @@
     {
     <!-- Breadcrumb -->
         <ol class="breadcrumb hidden-md-down">
-            <li class="breadcrumb-item active"><a href="#" onclick="navigateToInstructions()">INSTRUCTIONS</a> </li>
+            <li class="breadcrumb-item active" id="instruction"><a href="#" onclick="navigateToInstructions()">INSTRUCTIONS</a> </li>
             <li class="breadcrumb-item" id="objective-test"><a href="#" onclick="navigateToTest('Objective')">OBJECTIVE TEST</a> </li>
             <li class="breadcrumb-item" id="practical-test"><a href="#" onclick="navigateToTest('Practical')">PRACTICAL TEST</a> </li>
             <!-- Breadcrumb Menu-->
@@ -146,14 +146,23 @@
 
 
 
-            <main class="main">
+            <div class="main" id="main-section">
                 <div class="container-fluid">
                     <div class="containerInner">
                         @RenderBody()
                     </div>
                 </div>
                 <!-- /.conainer-fluid -->
-            </main>
+            </div>
+
+            <div class="main" id="read-only-instructions" style="display:none">
+                <div class="container-fluid">
+                    <div class="containerInner">
+                        @{Html.RenderAction("ReadOnlyInstructions", "Candidate");}
+                    </div>
+                </div>
+                <!-- /.conainer-fluid -->
+            </div>
 
             <!--aside menu-->
             <aside class="aside-menu">
@@ -179,22 +188,22 @@
 
 
     <!--footer start here-->
-                            <footer class="app-footer">
-                                <a href="#" class="copyRightText">
-                                    Copyright © 2014 -
-                                    <script>document.write(new Date().getFullYear())</script> Silicus Technologies, LLC <img class="incLogo" src="~/Content/Images/inc_logo.png" alt="INC 5000">
-                                </a>
-                                <span class="float-right socialIcon">
-                                    <ul>
-                                        <li class="Facebook"><a target="_blank" href="https://www.facebook.com/silicustech/"><i class="fa fa-facebook" aria-hidden="true"></i></a></li>
-                                        <li class="Twitter"><a target="_blank" href="https://twitter.com/silicustech"><i class="fa fa-twitter" aria-hidden="true"></i></a></li>
-                                        <li class="Linkedin"><a target="_blank" href="https://www.linkedin.com/company/silicus-technologies"><i class="fa fa-linkedin" aria-hidden="true"></i></a></li>
-                                        <li class="Gplus"><a target="_blank" href="https://plus.google.com/+Silicus"><i class="fa fa-google-plus" aria-hidden="true"></i></a></li>
-                                    </ul>
-                                </span>
-                            </footer>
+                        <footer class="app-footer">
+                            <a href="#" class="copyRightText">
+                                Copyright © 2014 -
+                                <script>document.write(new Date().getFullYear())</script> Silicus Technologies, LLC <img class="incLogo" src="~/Content/Images/inc_logo.png" alt="INC 5000">
+                            </a>
+                            <span class="float-right socialIcon">
+                                <ul>
+                                    <li class="Facebook"><a target="_blank" href="https://www.facebook.com/silicustech/"><i class="fa fa-facebook" aria-hidden="true"></i></a></li>
+                                    <li class="Twitter"><a target="_blank" href="https://twitter.com/silicustech"><i class="fa fa-twitter" aria-hidden="true"></i></a></li>
+                                    <li class="Linkedin"><a target="_blank" href="https://www.linkedin.com/company/silicus-technologies"><i class="fa fa-linkedin" aria-hidden="true"></i></a></li>
+                                    <li class="Gplus"><a target="_blank" href="https://plus.google.com/+Silicus"><i class="fa fa-google-plus" aria-hidden="true"></i></a></li>
+                                </ul>
+                            </span>
+                        </footer>
 
-                            }
+                        }
     @RenderSection("scripts", required: false)
 
 
@@ -206,7 +215,10 @@
 
         function navigateToInstructions() {
             if ($('#objective-test').hasClass('active') || $('#practical-test').hasClass('active')) {
-
+                $("#read-only-instructions").show();
+                $("#main-section,.sidebar").hide();
+                $('.breadcrumb-item').removeClass('active');
+                $('#instruction').addClass('active');
             }
         }
 
@@ -226,7 +238,7 @@
 
         function navigateToTest(testType) {
             var questionId;
-            if (testType === "Practical" && $('#objective-test').hasClass('active')) {
+            if (testType === "Practical" && ($('#objective-test').hasClass('active') || $("#read-only-instructions").is(':visible'))) {
                 showPracticalTest();
                 if ($('#practical-test-side-bar li.active').length) {
                     var elem = $('#practical-test-side-bar li.active>a');
@@ -239,7 +251,8 @@
                 if (typeof (questionId) !== "undefined")
                     UpdateCurrentQuestionAndLoadNewOne(questionId);
 
-            } else if (testType === "Objective" && $('#practical-test').hasClass('active')) {
+
+            } else if (testType === "Objective" && ($('#practical-test').hasClass('active') || $("#read-only-instructions").is(':visible'))) {
                 showObjectiveTest();
                 if ($('#objective-test-side-bar li.active').length) {
                     var elem = $('#objective-test-side-bar li.active>a');
@@ -252,11 +265,15 @@
 
                 if (typeof (questionId) !== "undefined")
                     UpdateCurrentQuestionAndLoadNewOne(questionId);
+            }
 
+            if ($("#read-only-instructions").is(':visible')) {
+                $("#read-only-instructions").hide();
+                $("#main-section,.sidebar").show();
             }
         }
 
-        function customSidebarToggle() {            
+        function customSidebarToggle() {
             $('.sidebar').toggleClass('.menu-btn-sidebar');
             $('.sidebar').show("slide", { direction: "left" }, 1000);
             $('.sidebar').toggleClass("CustomSidebar");
