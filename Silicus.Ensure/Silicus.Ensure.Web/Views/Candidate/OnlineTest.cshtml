@@ -210,7 +210,7 @@
                 </div>
             </div>
             <!--mobile menu end here-->
-            <div class="menu-btn-sidebar" onclick="CustomSidebarOpen();"><i class="fa fa-bars" aria-hidden="true"></i></div>
+            <div class="menu-btn-sidebar" onclick="customSidebarToggle();"><i class="fa fa-bars" aria-hidden="true"></i></div>
             <ul class="nav hidden-md-down">
                 <div id="objective-test-side-bar">
                     <li class="nav-item nav-heading">
@@ -281,8 +281,7 @@ else
 
 <script>
     var clock;
-    var totalTime;
-
+    var totalTime;   
     function updateQuestionLinkColorClass(questionLinkId, isAnswred, isViewedOnly) {
         var className;
         if (isAnswred) {
@@ -299,7 +298,7 @@ else
         $(questionLinkId).addClass(className);
     }
 
-    $(document).ready(function () {
+    $(document).ready(function () {       
         $('.breadcrumb-item.active').removeClass('active');
         $('#objective-test').addClass('active');
         $('#practical-test-side-bar').hide();
@@ -316,33 +315,33 @@ else
         if (timerCnt >= 2)
             $("#btnAddMoreTime").hide();
 
-        // Timer
-        clock = $('#counter').FlipClock({
-            clockFace: 'HourlyCounter',
-            autoStart: false,
-            callbacks: {
-                stop: function () {
-                    // $("#myModalTC").modal();
-                    TestDurationComplete();
-                    var text = "The test duration is over, thank you for your participation. Further, the recruitment team will contact you for the update";
-                    ShowSweetAlertWithoutCancel("Warning!", text, "warning");
-                },
-                interval: ProgressBar
-            }
-        });
+        //// Timer
+        //clock = $('#counter').FlipClock({
+        //    clockFace: 'HourlyCounter',
+        //    autoStart: false,
+        //    callbacks: {
+        //        stop: function () {
+        //            // $("#myModalTC").modal();
+        //            TestDurationComplete();
+        //            var text = "The test duration is over, thank you for your participation. Further, the recruitment team will contact you for the update";
+        //            ShowSweetAlertWithoutCancel("Warning!", text, "warning");
+        //        },
+        //        interval: ProgressBar
+        //    }
+        //});
 
-        var tm =@Model.DurationInMin
+        @*var tm =@Model.DurationInMin
         tm = parseInt(tm) * 60;
 
         // Initialize progress bar.
         totalTime = tm;
         $('#progressBar').attr('aria-valuemax', totalTime).css('width', '0%');
-        $('#progressInfo').text('0%');
+        $('#progressInfo').text('0%');*@
 
         // Set counter time and start.
-        clock.setTime(tm);
-        clock.setCountdown(true);
-        clock.start();
+        //clock.setTime(tm);
+        //clock.setCountdown(true);
+        //clock.start();
 
         $('.QuestionCheckbox').on('click', QuestionCheckboxClicked);
     });
@@ -416,108 +415,11 @@ else
         var result = { QuestionNumber: QuestionNumber, Questiontype: QuestionType, IsAnswered: IsAnswered, IsViewed: IsViewed };
         return result;
     }
-
-    function AddMoreTime() {
-        var timerCnt = $("#TimerIncCount").val();
-        if (timerCnt == 0)
-            ShowProgressPopUp(true, "You have only 2 chances. Are you sure, you want to increase time limit by 10 Mins?");
-        else
-            ShowProgressPopUp(true, "This is the last chance. Are you sure, you want to increase time limit by 10 Mins?");
-    }
-
-    function OnAddMoreTimeOK() {
-        var timerCnt = $("#TimerIncCount").val();
-        if (timerCnt == null || timerCnt == "")
-            timerCnt = 0;
-        var userTestSuiteId = $("#UserTestSuiteId").val();
-        $.ajax({
-            url: '/Candidate/AddMoreTime',
-            dataType: "json",
-            type: "POST",
-            contentType: 'application/json; charset=utf-8',
-            data: JSON.stringify({ count: timerCnt, userTestSuiteId: userTestSuiteId }),
-            success: function (data) {
-                if (data < 3) {
-                    // Add time in counter
-                    var newtm = parseInt(clock.getTime()) + parseInt(60 * 10);
-                    clock.setTime(newtm);
-
-                    // Assign reduced chance
-                    $("#TimerIncCount").val(data);
-
-                    // Update Progress bar
-                    totalTime = parseInt(totalTime) + parseInt(60 * 10);
-                    var leftTm = parseInt(totalTime) - clock.getTime();
-                    var newprogress = parseInt((parseInt(leftTm) / parseInt(totalTime)) * 100);
-                    $('#progressBar').attr('aria-valuemax', totalTime).css('width', newprogress + "%");
-                    $('#progressBar').attr('aria-valuenow', clock.getTime()).css('width', newprogress + "%");
-                    $('#progressInfo').text(newprogress + "%");
-
-                    // Hide Add more time button.
-                    if (data == 2) {
-                        $("#btnAddMoreTime").hide();
-                    }
-
-                }
-            },
-            error: function () {
-
-            }
-        });
-    }
-
-    function ProgressBar() {
-        var time = clock.getTime().time;
-        if (time % 60 == 0) {
-            var leftTm = parseInt(totalTime) - clock.getTime();
-            var newprogress = parseInt((parseInt(leftTm) / parseInt(totalTime)) * 100);
-            $('#progressBar').attr('aria-valuenow', clock.getTime()).css('width', newprogress + "%");
-            $('#progressInfo').text(newprogress + "%");
-            if (time == 60) {
-                var timerCntVal = $("#TimerIncCount").val();
-                if (timerCntVal == 0)
-                    ShowProgressPopUp(false, "Please click on 'Add more time' button in order to add 10 more minutes to Test duration.");
-                else if (timerCntVal == 1)
-                    ShowProgressPopUp(false, "Please click on 'Add more time' button for the last time to add 10 more minutes to Test duration.");
-                else
-                    ShowProgressPopUp(false, "1 minute remaining to complete the test.");
-            }
-            else if (time == 900 && totalTime > 1799)
-                ShowProgressPopUp(false, "15 minute remaining to complete the test.");
-            else if (time == 1800 && totalTime != 1800)
-                ShowProgressPopUp(false, "30 minute remaining to complete the test.");
-            else if (time == 3600 && totalTime != 3600)
-                ShowProgressPopUp(false, "60 minute remaining to complete the test.");
-        }
-    }
-
-    function ShowProgressPopUp(bl, msg) {
-        if (!bl) {
-            ShowSweetAlertWithoutCancel("Warning!", msg, "warning");
-        }
-        else {
-            swal({
-                title: "Warning!",
-                text: msg,
-                type: "warning",
-                showCancelButton: true,
-                confirmButtonColor: "#DD6B55",
-                confirmButtonText: "Yes",
-                cancelButtonText: "No",
-                closeOnConfirm: true,
-                closeOnCancel: true
-            },
- function (isConfirm) {
-     if (isConfirm) {
-         OnAddMoreTimeOK();
-         swal("Added!", "Now you have extra 10 mins.", "success");
-     }
- });
-        }
-    }
-
-    function UpdateTimeDB() {
-        var time = clock.getTime().time;
+   
+  
+    function UpdateTimeDB() {        
+        var counterTimeArray = $('#counter').countdown('getTimes');
+        var time = counterTimeArray[counterTimeArray.length - 3] * 60 * 60 + counterTimeArray[counterTimeArray.length - 2] * 60 + counterTimeArray[counterTimeArray.length - 1];
         if (time / 60 != 0) {
             var userTestSuiteId = $("#UserTestSuiteId").val();
             $.ajax({
@@ -567,28 +469,6 @@ else
         $('#QuestionDetails').load('/Reviewer/UpdateReviewAndGetQuestionDetails', reviewerQuestionDetails);
     }
 
-    function GetAnswer() {
-        var answer = "";
-        if ($("#QuestionType").val().trim() == "1") {
-            if ($("#AnswerType").val().trim() == "1") {
-                answer = $('[name="optradio"]:radio:checked').val();
-            }
-            else {
-                $("input:checkbox[name=optcheckbox]:checked").each(function () {
-                    answer = answer + $(this).val() + ",";
-                });
-
-                answer = answer.slice(0, -1);
-            }
-        }
-        else {
-            answer = $("#PracticalAnswer").val();
-            answer = encodeURIComponent(answer);
-        }
-        if (answer == "undefined")
-            answer = null;
-        return answer;
-    }
 
     function OnSubmitTest() {
         var msg = "Are you sure, you want to Submit the Test? Once you submit the Test, you cannot revisit to view the Questions and their Answers.";
@@ -618,15 +498,7 @@ else
         var userTestSuiteId = $("#UserTestSuiteId").val();
         var userTestDetailId = $("#UserTestDetailId").val();
         var userId = $("#UserId").val();
-        window.location.href = '/Candidate/OnSubmitTest?testSuiteId=' + testSuiteId + '&userTestSuiteId=' + userTestSuiteId + '&userTestDetailId=' + userTestDetailId + '&userId=' + userId + '&answer=' + answer;
-    }
-
-    function TestDurationComplete() {
-        var answer = GetAnswer();
-        var testSuiteId = $("#TestSuiteId").val();
-        var userTestSuiteId = $("#UserTestSuiteId").val();
-        var userTestDetailId = $("#UserTestDetailId").val();
-        var userId = $("#UserId").val();
+        window.onbeforeunload = null;
         window.location.href = '/Candidate/OnSubmitTest?testSuiteId=' + testSuiteId + '&userTestSuiteId=' + userTestSuiteId + '&userTestDetailId=' + userTestDetailId + '&userId=' + userId + '&answer=' + answer;
     }
 
@@ -680,6 +552,10 @@ else
    function (isConfirm) {
        if (isConfirm) {
            toggleFullScreen();
+           $('#counter').countdown('resume');
+           $('#counter').addClass('timerActive');
+           $('.numbers').addClass('numbersActive');
+           isCounterStarted = true;
        }
    });
     });
@@ -700,7 +576,7 @@ else
 
 
 
-    window.onbeforeunload = function () {
+    window.onbeforeunload = function () {       
         return "Do you really want to close?";
     };
 

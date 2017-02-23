@@ -1699,3 +1699,20 @@ input[type=text]::-ms-clear {
 .is-not-visited{
     color:gray!important;
 }
+
+.questionView{
+    white-space: nowrap;
+    width: 9em;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+.timerActive{
+    background:#295071 !important;
+}
+.timerActive span{
+    color:#fff !important;
+}
+.numbersActive{
+    background:red;
+    color:#fff;
+}

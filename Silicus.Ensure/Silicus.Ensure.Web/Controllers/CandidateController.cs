@@ -49,26 +49,13 @@ namespace Silicus.Ensure.Web.Controllers
                 ViewBag.Status = 1;
                 ViewBag.Msg = "No test is assigned for you, kindly contact admin.";
                 return View("Welcome", new TestSuiteCandidateModel());
-            }
-            //if (userTestSuite.RemainingTime > 0)
-            //{
-            //    userTestSuite.Duration = userTestSuite.RemainingTime;
-            //}
-            //else
-            //{
-            //    var testSuiteDetails = _testSuiteService.GetTestSuiteDetails().SingleOrDefault(model => model.TestSuiteId == userTestSuite.TestSuiteId && !model.IsDeleted);
-            //    _testSuiteService.AssignSuite(userTestSuite, testSuiteDetails);
-            //}
-            //TestSuiteCandidateModel testSuiteCandidateModel = _mappingService.Map<UserTestSuite, TestSuiteCandidateModel>(userTestSuite);
-            //var specialInstruction = GetSpecialInstruction(userTestSuite.TestSuiteId);
-            //testSuiteCandidateModel.SpecialInstruction = specialInstruction;
-            //testSuiteCandidateModel = testSuiteCandidateModel ?? new TestSuiteCandidateModel();
+            }          
             ViewBag.Status = 0;
             return View();
         }
 
         [CustomAuthorize("Candidate")]
-        public ActionResult TestSuitDetails()
+        public ActionResult TestSuiteAndCandidateDetails()
         {
             var userEmail = User.Identity.Name.Trim();
             var user = _userService.GetUserByEmail(userEmail);
@@ -86,15 +73,18 @@ namespace Silicus.Ensure.Web.Controllers
                 {
                     var testSuiteDetails = _testSuiteService.GetTestSuiteDetails().SingleOrDefault(model => model.TestSuiteId == userTestSuite.TestSuiteId && !model.IsDeleted);
                     _testSuiteService.AssignSuite(userTestSuite, testSuiteDetails);
-                }
+                }                
             }
 
             TestSuiteCandidateModel testSuiteCandidateModel = _mappingService.Map<UserTestSuite, TestSuiteCandidateModel>(userTestSuite);
             testSuiteCandidateModel = testSuiteCandidateModel ?? new TestSuiteCandidateModel();
+            var candidateInfoBusinessModel = _userService.GetCandidateInfo(user);
+            testSuiteCandidateModel.CandidateInfo = _mappingService.Map<CandidateInfoBusinessModel, CandidateInfoViewModel>(candidateInfoBusinessModel);
 
             testSuiteCandidateModel.NavigationDetails = GetNavigationDetails(testSuiteCandidateModel.UserTestSuiteId);
+            testSuiteCandidateModel.DurationInMin = testSuiteCandidateModel.RemainingTime > 0 ? testSuiteCandidateModel.RemainingTime : testSuiteCandidateModel.Duration;
 
-            return PartialView("_testSuiteDetails", testSuiteCandidateModel);
+            return PartialView("_testSuiteAndCandidateDetails", testSuiteCandidateModel);
         }
         //private string GetSpecialInstruction(int testSuiteId)
         //{
