@@ -93,6 +93,7 @@ else
         if(@ViewBag.Status==1){
             $("#myModal").modal();
             $("#msgContent").text("@ViewBag.Msg");
+            $('.aside-menu').remove();
         }
     });
 
@@ -106,5 +107,6 @@ else
         }
 
     }
+
 </script>
 

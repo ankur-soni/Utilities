@@ -542,6 +542,7 @@
     <Content Include="Content\Images\logo.png" />
     <Content Include="Content\Images\profile.png" />
     <Content Include="Content\Images\spriteicons.png" />
+    <Content Include="Content\jquery.countdown.css" />
     <Content Include="Content\js\bootstrap.js" />
     <Content Include="Content\js\bootstrap.min.js" />
     <Content Include="Content\js\jquery-1.12.4.min.js" />
@@ -633,7 +634,9 @@
     <Content Include="Scripts\jquery-2.1.4.min.js" />
     <None Include="Scripts\jquery.validate-vsdoc.js" />
     <Content Include="Scripts\jquery.bootstrap-responsive-tabs.min.js" />
+    <Content Include="Scripts\jquery.countdown.min.js" />
     <Content Include="Scripts\jquery.min.js" />
+    <Content Include="Scripts\jquery.plugin.min.js" />
     <Content Include="Scripts\jquery.unobtrusive-ajax.js" />
     <Content Include="Scripts\jquery.unobtrusive-ajax.min.js" />
     <Content Include="Scripts\jquery.validate.js" />
@@ -898,7 +901,7 @@
     <Content Include="Views\Shared\_CandidateProfile.cshtml" />
     <Content Include="Views\Shared\_CadidateGrid.cshtml" />
     <Content Include="Views\Admin\_partialSelectRecruiterList.cshtml" />
-    <Content Include="Views\Shared\_testSuiteDetails.cshtml" />
+    <Content Include="Views\Shared\_testSuiteAndCandidateDetails.cshtml" />
     <None Include="Web.Azure.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

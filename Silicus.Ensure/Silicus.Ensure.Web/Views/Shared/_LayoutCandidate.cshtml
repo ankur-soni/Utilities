@@ -119,12 +119,12 @@
 
 
 
-    }  
+    }
     @if (actname != "login" && actname != "logoff" && actname != "forgotpassword")
     {
     <!-- Breadcrumb -->
         <ol class="breadcrumb hidden-md-down">
-            <li class="breadcrumb-item active"><a href="#">INSTRUCTIONS</a> </li>
+            <li class="breadcrumb-item active"><a href="#" onclick="navigateToInstructions()">INSTRUCTIONS</a> </li>
             <li class="breadcrumb-item" id="objective-test"><a href="#" onclick="navigateToTest('Objective')">OBJECTIVE TEST</a> </li>
             <li class="breadcrumb-item" id="practical-test"><a href="#" onclick="navigateToTest('Practical')">PRACTICAL TEST</a> </li>
             <!-- Breadcrumb Menu-->
@@ -143,7 +143,7 @@
         <div class="app-body">
             @RenderSection("Sidebar", required: false)
             <!--sidebar start here-->
-        
+
 
 
             <main class="main">
@@ -167,39 +167,34 @@
                         <a class="nav-link" data-toggle="tab" href="#details" role="tab">Details</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" data-toggle="tab" href="#activity" role="tab">Activity</a>
+                        <a class="nav-link" data-toggle="tab" href="#profile" role="tab">Profile</a>
                     </li>
                 </ul>
                 <!-- Tab panes -->
                 <div class="tab-content">
-                    <div class="tab-pane p-1 active" id="details" role="tabpanel">
-                        @{Html.RenderAction("TestSuitDetails", "Candidate");} 
-                    </div>
-                    <div class="tab-pane " id="activity" role="tabpanel">
-
-                    </div>
+                    @{Html.RenderAction("TestSuiteAndCandidateDetails", "Candidate");}
                 </div>
             </aside>
         </div>
 
 
     <!--footer start here-->
-        <footer class="app-footer">
-            <a href="#" class="copyRightText">
-                Copyright © 2014 -
-                <script>document.write(new Date().getFullYear())</script> Silicus Technologies, LLC <img class="incLogo" src="~/Content/Images/inc_logo.png" alt="INC 5000">
-            </a>
-            <span class="float-right socialIcon">
-                <ul>
-                    <li class="Facebook"><a target="_blank" href="https://www.facebook.com/silicustech/"><i class="fa fa-facebook" aria-hidden="true"></i></a></li>
-                    <li class="Twitter"><a target="_blank" href="https://twitter.com/silicustech"><i class="fa fa-twitter" aria-hidden="true"></i></a></li>
-                    <li class="Linkedin"><a target="_blank" href="https://www.linkedin.com/company/silicus-technologies"><i class="fa fa-linkedin" aria-hidden="true"></i></a></li>
-                    <li class="Gplus"><a target="_blank" href="https://plus.google.com/+Silicus"><i class="fa fa-google-plus" aria-hidden="true"></i></a></li>
-                </ul>
-            </span>
-        </footer>
+                            <footer class="app-footer">
+                                <a href="#" class="copyRightText">
+                                    Copyright © 2014 -
+                                    <script>document.write(new Date().getFullYear())</script> Silicus Technologies, LLC <img class="incLogo" src="~/Content/Images/inc_logo.png" alt="INC 5000">
+                                </a>
+                                <span class="float-right socialIcon">
+                                    <ul>
+                                        <li class="Facebook"><a target="_blank" href="https://www.facebook.com/silicustech/"><i class="fa fa-facebook" aria-hidden="true"></i></a></li>
+                                        <li class="Twitter"><a target="_blank" href="https://twitter.com/silicustech"><i class="fa fa-twitter" aria-hidden="true"></i></a></li>
+                                        <li class="Linkedin"><a target="_blank" href="https://www.linkedin.com/company/silicus-technologies"><i class="fa fa-linkedin" aria-hidden="true"></i></a></li>
+                                        <li class="Gplus"><a target="_blank" href="https://plus.google.com/+Silicus"><i class="fa fa-google-plus" aria-hidden="true"></i></a></li>
+                                    </ul>
+                                </span>
+                            </footer>
 
-    }
+                            }
     @RenderSection("scripts", required: false)
 
 
@@ -208,6 +203,12 @@
     <script src="~/Scripts/bootstrap-select.min.js"></script>
     <script src="~/Scripts/app.js"></script>
     <script>
+
+        function navigateToInstructions() {
+            if ($('#objective-test').hasClass('active') || $('#practical-test').hasClass('active')) {
+
+            }
+        }
 
         function showObjectiveTest() {
             $('.breadcrumb-item.active').removeClass('active');
@@ -255,17 +256,14 @@
             }
         }
 
-        function CustomSidebarOpen() {
-            $(".menu-btn-sidebar").click(function () {
+        function customSidebarToggle() {            
+            $('.sidebar').toggleClass('.menu-btn-sidebar');
+            $('.sidebar').show("slide", { direction: "left" }, 1000);
+            $('.sidebar').toggleClass("CustomSidebar");
+            $('.sidebar ul.nav').addClass('width800');
+            $('.sidebar .sidebar-nav').toggleClass('width800');
+            $('.main').toggleClass('marginLeft800');
 
-                $(this).addClass('.menu-btn-sidebar');
-                $('.sidebar').show("slide", { direction: "left" }, 1000);
-                $('.sidebar').addClass("CustomSidebar");
-                $('.sidebar ul.nav').addClass('width800');
-                $('.sidebar .sidebar-nav').addClass('width800');
-                $('.main').addClass('marginLeft800');
-                $('ol.questions li a').removeClass('questionView');
-            });
         }
 
 
