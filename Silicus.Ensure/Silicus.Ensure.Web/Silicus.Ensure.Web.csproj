@@ -899,6 +899,7 @@
     <Content Include="Views\Shared\_CadidateGrid.cshtml" />
     <Content Include="Views\Admin\_partialSelectRecruiterList.cshtml" />
     <Content Include="Views\Shared\_testSuiteAndCandidateDetails.cshtml" />
+    <Content Include="Views\Candidate\ReadOnlyInstructions.cshtml" />
     <None Include="Web.Azure.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

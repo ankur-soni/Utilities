@@ -16,14 +16,14 @@ namespace Silicus.Ensure.Web.Controllers
 {
     [Authorize]
     public class CandidateController : Controller
-    {        
+    {
         private readonly IQuestionService _questionService;
         private readonly IMappingService _mappingService;
         private readonly IUserService _userService;
         private readonly ITestSuiteService _testSuiteService;
         private readonly CommonController _commonController;
         public CandidateController(IQuestionService questionService, MappingService mappingService, IUserService userService, ITestSuiteService testSuiteService, CommonController commonController)
-        {            
+        {
             _questionService = questionService;
             _mappingService = mappingService;
             _userService = userService;
@@ -84,6 +84,18 @@ namespace Silicus.Ensure.Web.Controllers
             return PartialView("_testSuiteAndCandidateDetails", testSuiteCandidateModel);
         }
 
+        [CustomAuthorize("Candidate")]
+        public ActionResult ReadOnlyInstructions()
+        {
+            if (!ModelState.IsValid)
+                return RedirectToAction("LogOff", "CandidateAccount");
+            var userEmail = User.Identity.Name.Trim();
+            var user = _userService.GetUserByEmail(userEmail);
+            if (user == null)
+                return RedirectToAction("LogOff", "CandidateAccount");           
+            return PartialView("ReadOnlyInstructions");
+        }
+
         [CustomAuthorize("Admin", "Panel", "Recruiter", "Candidate")]
         public ActionResult OnlineTest()
         {
@@ -126,7 +138,7 @@ namespace Silicus.Ensure.Web.Controllers
 
         public ActionResult LoadQuestion(int userTestSuiteId)
         {
-            TestDetailsViewModel testSuiteQuestionModel = TestSuiteQuestion(null, userTestSuiteId, (int)QuestionType.Practical);
+            TestDetailsViewModel testSuiteQuestionModel = TestSuiteQuestion(null, userTestSuiteId, (int)QuestionType.Objective);
             return PartialView("_partialViewQuestion", testSuiteQuestionModel);
         }
 
