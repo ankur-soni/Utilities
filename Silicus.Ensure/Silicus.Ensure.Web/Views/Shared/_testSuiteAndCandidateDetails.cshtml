@@ -20,7 +20,7 @@
     </div>
     <div class="time-section">
         <h6>DURATION</h6>
-        <a href="#" id="btnAddMoreTime" name="btnAddMoreTime" onclick="AddMoreTime()"><span>Add Extra Time </span></a>
+        <a style="width: 35%;float: right;margin-top: -27px;" href="#" id="btnAddMoreTime" name="btnAddMoreTime" onclick="AddMoreTime()"><span>Add Extra Time </span></a>
         @Html.Hidden("TimerIncCount", Model.ExtraCount)
         <div class="timeBox" id="counter">
             <span>00:00:00</span>
@@ -67,27 +67,27 @@
 <div class="tab-pane " id="profile" role="tabpanel">
     <div class="container">
         <div class="row">
-            <div class="col-lg-2 col-md-3 col-sm-3 M-T15">@Html.LabelFor(m => m.CandidateInfo.Name, new { style = "font-weight:bold;font-size:14px;" })</div>
-            <div class="col-lg-2 col-md-3 col-sm-3 M-T15">@Html.DisplayFor(m => m.CandidateInfo.Name)</div>
+            <div class="col-lg-2 col-md-2 M-T15">@Html.LabelFor(m => m.CandidateInfo.Name, new { style = "font-weight:bold;font-size:15px;" })</div>
+            <div class="col-lg-2 col-md-2  M-T15">@Html.DisplayFor(m => m.CandidateInfo.Name)</div>
         </div>
         <div class="row">
 
-            <div class="col-lg-2 col-md-3 col-sm-3 M-T15">@Html.LabelFor(m => m.CandidateInfo.RequisitionId, new { style = "font-weight:bold;font-size:14px;" })</div>
-            <div class="col-lg-2 col-md-3 col-sm-3 M-T15">@Html.DisplayFor(m => m.CandidateInfo.RequisitionId)</div>
+            <div class="col-lg-2 col-md-2 M-T15">@Html.LabelFor(m => m.CandidateInfo.RequisitionId, new { style = "font-weight:bold;font-size:15px;" })</div>
+            <div class="col-lg-2 col-md-2  M-T15">@Html.DisplayFor(m => m.CandidateInfo.RequisitionId)</div>
         </div>
         <div class="row">
 
-            <div class="col-lg-2 col-md-3 col-sm-3 M-T15">@Html.LabelFor(m => m.CandidateInfo.TotalExperience, new { style = "font-weight:bold;font-size:14px;" })</div>
-            <div class="col-lg-2 col-md-3 col-sm-3 M-T15">@Html.DisplayFor(m => m.CandidateInfo.TotalExperience)</div>
+            <div class="col-lg-2 col-md-2  M-T15">@Html.LabelFor(m => m.CandidateInfo.TotalExperience, new { style = "font-weight:bold;font-size:15px;" })</div>
+            <div class="col-lg-2 col-md-2  M-T15">@Html.DisplayFor(m => m.CandidateInfo.TotalExperience)</div>
         </div>
         <div class="row">
-            <div class="col-lg-2 col-md-3 col-sm-3 M-T15">@Html.LabelFor(m => m.CandidateInfo.Position, new { style = "font-weight:bold;font-size:14px;" })</div>
-            <div class="col-lg-2 col-md-3 col-sm-3 M-T15">@Html.DisplayFor(m => m.CandidateInfo.Position)</div>
+            <div class="col-lg-2 col-md-2  M-T15">@Html.LabelFor(m => m.CandidateInfo.Position, new { style = "font-weight:bold;font-size:15px;" })</div>
+            <div class="col-lg-2 col-md-2 c M-T15">@Html.DisplayFor(m => m.CandidateInfo.Position)</div>
         </div>
         <div class="row">
 
-            <div class="col-lg-2 col-md-3 col-sm-3 M-T15">@Html.LabelFor(m => m.CandidateInfo.DOB, new { style = "font-weight:bold;font-size:14px;" })</div>
-            <div class="col-lg-2 col-md-3 col-sm-3 M-T15">@Html.DisplayFor(m => m.CandidateInfo.DOB)</div>
+            <div class="col-lg-2 col-md-2  M-T15">@Html.LabelFor(m => m.CandidateInfo.DOB, new { style = "font-weight:bold;font-size:15px;" })</div>
+            <div class="col-lg-2 col-md-2  M-T15">@Html.DisplayFor(m => m.CandidateInfo.DOB)</div>
         </div>
     </div>
 </div>
