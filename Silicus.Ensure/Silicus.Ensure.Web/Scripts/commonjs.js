@@ -16,24 +16,24 @@ $(document).ready(function () {
         $("body").toggleClass("mini-navbar");
     });
 
-    $('.nav').css({ height: 0 })
-    mQuery();
-    $('.nav-button').click(function () {
-        $('.nav').toggleClass('show')
-    })
-    $('.collapsible > a').click(function () {
-        $(this).parent().toggleClass('open')
-    })
+    //$('.nav').css({ height: 0 })
+    //mQuery();
+    //$('.nav-button').click(function () {
+    //    $('.nav').toggleClass('show')
+    //})
+    //$('.collapsible > a').click(function () {
+    //    $(this).parent().toggleClass('open')
+    //})
 });
 
-function mQuery() {
-    // Same as @media (max-width: 767px) -> hide the navigation
-    if ($('.fluid [class*="grid"]').css('float') == 'none' && $('.kendogrid [class*="grid"]').css('float') != 'none') {
-        $('.nav').removeClass('show');
-    } else {
-        $('.nav').addClass('show');
-    }
-}
+//function mQuery() {
+//    // Same as @media (max-width: 767px) -> hide the navigation
+//    if ($('.fluid [class*="grid"]').css('float') == 'none' && $('.kendogrid [class*="grid"]').css('float') != 'none') {
+//        $('.nav').removeClass('show');
+//    } else {
+//        $('.nav').addClass('show');
+//    }
+//}
 
 function ShowMessage(content, isSuceess) {
     if (isSuceess) {

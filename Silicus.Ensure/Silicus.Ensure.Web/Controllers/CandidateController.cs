@@ -115,7 +115,7 @@ namespace Silicus.Ensure.Web.Controllers
 
         public ActionResult LoadQuestion(int userTestSuiteId)
         {
-            TestDetailsViewModel testSuiteQuestionModel = TestSuiteQuestion(null, userTestSuiteId, (int)QuestionType.Practical);
+            TestDetailsViewModel testSuiteQuestionModel = TestSuiteQuestion(null, userTestSuiteId, (int)QuestionType.Objective);
             return PartialView("_partialViewQuestion", testSuiteQuestionModel);
         }
 
@@ -189,7 +189,7 @@ namespace Silicus.Ensure.Web.Controllers
 
         private TestDetailsViewModel TestSuiteQuestion(int? questionId, int? userTestSuiteId, int questionType)
         {
-            TestDetailsBusinessModel userTestDetails = _testSuiteService.GetUserTestDetailsByUserTestSuitId(userTestSuiteId, questionId, questionType);
+            TestDetailsBusinessModel userTestDetails = _testSuiteService.GetUserTestDetailsByUserTestSuitId(userTestSuiteId, questionId, questionType,testStartWithQuestionType:QuestionType.Objective);
             var testDetails = _mappingService.Map<TestDetailsBusinessModel, TestDetailsViewModel>(userTestDetails);
             testDetails = testDetails ?? new TestDetailsViewModel();
             return testDetails;
