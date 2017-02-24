@@ -2084,14 +2084,14 @@ fieldset[disabled] a.btn {
 
 .btn-primary {
     color: #fff;
-    background-color: #20a8d8;
-    border-color: #20a8d8;
+    background-color: #00adef;
+    border-color: #0292c7;
 }
 
 .btn-primary:hover {
     color: #fff;
-    background-color: #1985ac;
-    border-color: #187fa3;
+    background-color: #00adef;
+    border-color: #0292c7;
 }
 
 .btn-primary:focus,
@@ -8031,9 +8031,9 @@ a.bg-inverse:hover {
     text-transform: uppercase !important;
 }
 
-.text-capitalize {
+/*.text-capitalize {
     text-transform: capitalize !important;
-}
+}*/
 
 .font-weight-normal {
     font-weight: normal;

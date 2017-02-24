@@ -671,11 +671,11 @@ namespace Silicus.Ensure.Web.Controllers
                 {
                     if (question.QuestionType == (int)QuestionType.Practical)
                     {
-                        navigation.Practical.Add(new QuestionNavigationBasics { QuestionId = question.Id, IsViewedOnly = false });
+                        navigation.Practical.Add(new QuestionNavigationBasics { QuestionId = question.Id,QuestionDescription=question.QuestionDescription, IsViewedOnly = false });
                     }
                     else if (question.QuestionType == (int)QuestionType.Objective)
                     {
-                        navigation.Objective.Add(new QuestionNavigationBasics { QuestionId = question.Id, IsViewedOnly = false });
+                        navigation.Objective.Add(new QuestionNavigationBasics { QuestionId = question.Id,QuestionDescription = question.QuestionDescription,IsViewedOnly = false });
                     }
                 }
             }

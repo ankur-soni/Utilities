@@ -532,7 +532,6 @@
     <Content Include="Content\css\Kendo\2014.1.416\Default\loading.gif" />
     <Content Include="Content\css\Kendo\2014.1.416\Default\loading-image.gif" />
     <Content Include="Content\css\Kendo\2014.1.416\Default\sprite.png" />
-    <Content Include="Content\flipclock.css" />
     <Content Include="Content\Images\4X-login-bg.jpg" />
     <Content Include="Content\Images\avatars\6.jpg" />
     <Content Include="Content\Images\digits.png" />
@@ -543,6 +542,7 @@
     <Content Include="Content\Images\logo.png" />
     <Content Include="Content\Images\profile.png" />
     <Content Include="Content\Images\spriteicons.png" />
+    <Content Include="Content\jquery.countdown.css" />
     <Content Include="Content\js\bootstrap.js" />
     <Content Include="Content\js\bootstrap.min.js" />
     <Content Include="Content\js\jquery-1.12.4.min.js" />
@@ -628,13 +628,13 @@
     <None Include="Properties\PublishProfiles\ensure - FTP.pubxml" />
     <None Include="Properties\PublishProfiles\ensure - Web Deploy.pubxml" />
     <None Include="Scripts\jquery-2.1.4.intellisense.js" />
-    <Content Include="Scripts\flipclock.js" />
-    <Content Include="Scripts\flipclock.min.js" />
     <Content Include="Scripts\jquery-2.1.4.js" />
     <Content Include="Scripts\jquery-2.1.4.min.js" />
     <None Include="Scripts\jquery.validate-vsdoc.js" />
     <Content Include="Scripts\jquery.bootstrap-responsive-tabs.min.js" />
+    <Content Include="Scripts\jquery.countdown.min.js" />
     <Content Include="Scripts\jquery.min.js" />
+    <Content Include="Scripts\jquery.plugin.min.js" />
     <Content Include="Scripts\jquery.unobtrusive-ajax.js" />
     <Content Include="Scripts\jquery.unobtrusive-ajax.min.js" />
     <Content Include="Scripts\jquery.validate.js" />
@@ -900,6 +900,8 @@
     <Content Include="Views\Shared\_CadidateGrid.cshtml" />
     <Content Include="Views\Admin\_partialSelectRecruiterList.cshtml" />
     <Content Include="Views\Admin\CandidateHistory.cshtml" />
+    <Content Include="Views\Shared\_testSuiteAndCandidateDetails.cshtml" />
+    <Content Include="Views\Candidate\ReadOnlyInstructions.cshtml" />
     <None Include="Web.Azure.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

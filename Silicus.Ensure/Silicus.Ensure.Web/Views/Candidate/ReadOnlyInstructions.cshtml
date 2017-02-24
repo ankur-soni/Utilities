@@ -1,0 +1,78 @@
+﻿@using Kendo.Mvc.UI;
+@*<style>
+    .sidebar-fixed .main, .sidebar-fixed .app-footer {
+        margin-left: 0px;
+    }
+</style>*@
+
+
+<div class="row">
+    <div class="col-sm-12">
+        <div class="main-content" id="main">
+            <div class="row">
+                <div class="col-sm-10 col-sm-offset-1">
+                    <div class="custom-alert">
+                        <a href="#" class="close" data-dismiss="alert" aria-label="close" title="close">×</a>
+                        <span>Welcome <b>User</b> to Silicus Online Exam Center</span>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-10 col-sm-offset-1">
+                    <div class="greyBox M-B15">Please go through the Online test instructions before you commence the test.</div>
+                </div>
+
+                <div class="col-sm-10 col-sm-offset-1">
+
+                    <label class="M-T15 M-B15 titleText">INSTRUCTIONS</label>
+                    <div class="M-L50">
+                        <ol class="points">
+                            <li><span>On commencing the Online test, the <a href="#" style="color:#00aff2;text-decoration: underline;">clock displays</a> the Total Time, Remaining Time of the test.</span></li>
+
+                            <li><span>Click <a href="#" style="color:#00aff2;text-decoration: underline;">Show All Questions</a> to view the question paper.</span></li>
+
+                            <li><span>Click <a href="#" style="color:#00aff2;text-decoration: underline;">question number</a> to view the respective question only.</span></li>
+
+                            <li> <span>Don't refresh the page.</span></li>
+
+                            <li> <span>Check the appropriate answer and navigate to next question by clicking <a href="#" style="color:#00aff2;text-decoration: underline;">Next >></a> or the corresponding question number.</span></li>
+
+                            <li> <span>At any point during the test you can click <a href="#" style="color:#00aff2;text-decoration: underline;"> << Previous </a> to go to previous question.</span></li>
+
+                            <li> <span>Once you have completed the Online test you can proceed to click <a href="#" style="color:#00aff2;text-decoration: underline;">Test Completed</a> to finish the test Candidate may not return to a test once it has been completed.</span></li>
+
+                            <li>
+                                <span>
+                                    When the test ends abruptly due to power failure,problem with INTERNET connection or any other reason,the Online test session will be disabled and you cannot continue further.
+                                    To resume the test contact the appropriate person.
+                                </span>
+                            </li>
+                        </ol>
+                    </div>
+
+                </div>
+                <div class="col-sm-10 col-sm-offset-1  M-B15">
+                    <div class="form-group">
+                        <div class="M-L30">
+                            <div id="Term" class="checkbox checkbox-success">
+                                <input  type="checkbox" checked>
+                                <label > <span style="font-weight:500;">I have read all the instructions and agree to all the terms.</span> </label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-sm-10 col-sm-offset-1">
+                    <div class="M-L30">
+                        @(Html.Kendo().Button()
+                        .Name("btnStartTest").Enable(false)
+                        .HtmlAttributes(new { type = "button" })
+                        .Content("Start Online Test").HtmlAttributes(new { @class = "btn btn-lg btn-start" }))
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
