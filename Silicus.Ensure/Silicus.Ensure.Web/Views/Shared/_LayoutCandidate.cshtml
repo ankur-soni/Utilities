@@ -71,8 +71,7 @@
       <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
       <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
     <![endif]-->
-    <style>
-    </style>
+    
 </head>
 
 @{
@@ -97,21 +96,7 @@
         <header class="app-header navbar">
             <button class="navbar-toggler mobile-sidebar-toggler hidden-lg-up" type="button">☰</button>
             <a class="navbar-brand" href="#"></a>
-            <ul class="nav navbar-nav">
-                <li class="hidden-md-down">
-                    <div id="custom-search-input">
-                        <div class="input-group col-lg-12">
-                            <span class="input-group-btn">
-                                <button class="btn" type="button">
-                                    <span class="glyphicon glyphicon-search"></span>
-                                </button>
-                            </span>
-                            <input type="text" class="search-query form-control" placeholder="Search Portal" />
 
-                        </div>
-                    </div>
-                </li>
-            </ul>
             <ul id="rightMenu" class="nav navbar-nav ml-auto hidden-md-down">
                 @if (Request.IsAuthenticated)
                 {
@@ -119,7 +104,7 @@
                     <li class="nav-item">
 
                         <a class="nav-link dropdown-toggle nav-link" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
-                            <span class="hidden-md-down"> Welcome @userName </span>
+                            <span class="hidden-md-down"> Welcome, <b>@userName</b> </span>
                             <img src="~/Content/Images/avatars/6.jpg" class="img-avatar" alt="admin@bootstrapmaster.com">
                         </a>
                         <ul class="dropdown-menu userMenu" aria-labelledby="dropdownMenu1">
@@ -134,24 +119,11 @@
 
 
     }
-    @*<div class="row">
-            <div id="wrapper">
-                <div id="main">
-
-                    @if (actname != "login" && actname != "logoff" && actname != "forgotpassword")
-                    {
-                        <div style="background:#fff;" class="container-fluid" id="main-container">
-                            @RenderBody()
-                        </div>
-                    }
-                </div>
-            </div>
-        </div>*@
     @if (actname != "login" && actname != "logoff" && actname != "forgotpassword")
     {
     <!-- Breadcrumb -->
         <ol class="breadcrumb hidden-md-down">
-            <li class="breadcrumb-item active"><a href="@Url.Action("Welcome", "Candidate")">INSTRUCTIONS</a> </li>
+            <li class="breadcrumb-item active" id="instruction"><a href="#" onclick="navigateToInstructions()">INSTRUCTIONS</a> </li>
             <li class="breadcrumb-item" id="objective-test"><a href="#" onclick="navigateToTest('Objective')">OBJECTIVE TEST</a> </li>
             <li class="breadcrumb-item" id="practical-test"><a href="#" onclick="navigateToTest('Practical')">PRACTICAL TEST</a> </li>
             <!-- Breadcrumb Menu-->
@@ -170,114 +142,67 @@
         <div class="app-body">
             @RenderSection("Sidebar", required: false)
             <!--sidebar start here-->
-        
 
 
-            <main class="main">
+
+            <div class="main" id="main-section">
                 <div class="container-fluid">
                     <div class="containerInner">
                         @RenderBody()
                     </div>
                 </div>
                 <!-- /.conainer-fluid -->
-            </main>
+            </div>
+
+            <div class="main" id="read-only-instructions" style="display:none">
+                <div class="container-fluid">
+                    <div class="containerInner">
+                        @{Html.RenderAction("ReadOnlyInstructions", "Candidate");}
+                    </div>
+                </div>
+
+            </div>
 
             <!--aside menu-->
             <aside class="aside-menu">
                 <div class="taskTitle">
-                    <i class="fa fa-check-square pull-left" aria-hidden="true"></i>
-                    <h4> Task Completed </h4>
+                    <i class="fa fa-book" aria-hidden="true"></i>
+                    <h4> Information </h4>
                     <i class="fa fa-times navbar-toggler aside-menu-toggler pull-right" aria-hidden="true"></i>
                 </div>
                 <ul class="nav nav-tabs asideTab" role="tablist">
                     <li class="nav-item active">
-                        <a class="nav-link" data-toggle="tab" href="#details" role="tab">Details</a>
+                        <a class="nav-link" data-toggle="tab" href="#details" role="tab">Test Summary</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" data-toggle="tab" href="#activity" role="tab">Activity</a>
+                        <a class="nav-link" data-toggle="tab" href="#profile" role="tab">Candidate Info</a>
                     </li>
                 </ul>
                 <!-- Tab panes -->
                 <div class="tab-content">
-                    <div class="tab-pane p-1 active" id="details" role="tabpanel">
-                        <div class="progressBar">
-                            <h6>PROGRESS</h6>
-                            <div class="progress">
-                                <div class="progress-bar" role="progressbar" aria-valuenow="70"
-                                     aria-valuemin="0" aria-valuemax="100" style="width:70%">
-                                    70%
-                                </div>
-                            </div>
-                        </div>
-                        <div class="time-section">
-                            <h6>DURATION</h6>
-                            <div class="timeBox">
-                                <span>1:30:00:0</span>
-                            </div>
-                        </div>
-                        <div class="test-summary">
-                            <h6>TEST SUMMARY</h6>
-                            <div class="summaryBox">
-                                <table class="table">
-                                    <tbody>
-                                        <tr>
-                                            <td>Total Questions</td>
-                                            <td>Objectives</td>
-                                            <td>Practical</td>
-                                        </tr>
-                                        <tr>
-                                            <td></td>
-                                            <td class="textAlignCenter">
-                                                <span class="numbers">
-                                                    100
-                                                </span>
-                                            </td>
-                                            <td class="textAlignCenter">
-                                                <span class="numbers">
-                                                    40
-                                                </span>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>Answered</td>
-                                            <td class="textAlignCenter">0</td>
-                                            <td class="textAlignCenter">100</td>
-                                        </tr>
-                                        <tr>
-                                            <td>Not answered</td>
-                                            <td class="textAlignCenter">0</td>
-                                            <td class="textAlignCenter">40</td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="tab-pane " id="activity" role="tabpanel">
-
-                    </div>
+                    @{Html.RenderAction("TestSuiteAndCandidateDetails", "Candidate");}
                 </div>
             </aside>
         </div>
 
 
     <!--footer start here-->
-        <footer class="app-footer">
-            <a href="#" class="copyRightText">
-                Copyright © 2014 -
-                <script>document.write(new Date().getFullYear())</script> Silicus Technologies, LLC <img class="incLogo" src="~/Content/Images/inc_logo.png" alt="INC 5000">
-            </a>
-            <span class="float-right socialIcon">
-                <ul>
-                    <li class="Facebook"><a target="_blank" href="https://www.facebook.com/silicustech/"><i class="fa fa-facebook" aria-hidden="true"></i></a></li>
-                    <li class="Twitter"><a target="_blank" href="https://twitter.com/silicustech"><i class="fa fa-twitter" aria-hidden="true"></i></a></li>
-                    <li class="Linkedin"><a target="_blank" href="https://www.linkedin.com/company/silicus-technologies"><i class="fa fa-linkedin" aria-hidden="true"></i></a></li>
-                    <li class="Gplus"><a target="_blank" href="https://plus.google.com/+Silicus"><i class="fa fa-google-plus" aria-hidden="true"></i></a></li>
-                </ul>
-            </span>
-        </footer>
+                        <footer class="app-footer">
+                            <a href="#" class="copyRightText">
+                                Copyright © 2014 -
+                                <script>document.write(new Date().getFullYear())</script> Silicus Technologies, LLC <img class="incLogo" src="~/Content/Images/inc_logo.png" alt="INC 5000">
+                            </a>
+                            <span class="float-right socialIcon">
+                                <ul>
+                                    <li class="Facebook"><a target="_blank" href="https://www.facebook.com/silicustech/"><i class="fa fa-facebook" aria-hidden="true"></i></a></li>
+                                    <li class="Twitter"><a target="_blank" href="https://twitter.com/silicustech"><i class="fa fa-twitter" aria-hidden="true"></i></a></li>
+                                    <li class="Linkedin"><a target="_blank" href="https://www.linkedin.com/company/silicus-technologies"><i class="fa fa-linkedin" aria-hidden="true"></i></a></li>
+                                    <li class="Gplus"><a target="_blank" href="https://plus.google.com/+Silicus"><i class="fa fa-google-plus" aria-hidden="true"></i></a></li>
+                                </ul>
+                            </span>
+                        </footer>
 
-    }
+                        }
     @RenderSection("scripts", required: false)
 
 
@@ -286,6 +211,16 @@
     <script src="~/Scripts/bootstrap-select.min.js"></script>
     <script src="~/Scripts/app.js"></script>
     <script>
+
+        function navigateToInstructions() {
+            if ($('#objective-test').hasClass('active') || $('#practical-test').hasClass('active')) {
+                $("#read-only-instructions").show();
+                $("#main-section,.sidebar").hide();
+                $('.breadcrumb-item').removeClass('active');
+                $('#instruction').addClass('active');
+                $('#read-only-instructions').css('margin-left', '250px');
+            }
+        }
 
         function showObjectiveTest() {
             $('.breadcrumb-item.active').removeClass('active');
@@ -303,7 +238,7 @@
 
         function navigateToTest(testType) {
             var questionId;
-            if (testType === "Practical" && $('#objective-test').hasClass('active')) {
+            if (testType === "Practical" && ($('#objective-test').hasClass('active') || $("#read-only-instructions").is(':visible'))) {
                 showPracticalTest();
                 if ($('#practical-test-side-bar li.active').length) {
                     var elem = $('#practical-test-side-bar li.active>a');
@@ -316,7 +251,8 @@
                 if (typeof (questionId) !== "undefined")
                     UpdateCurrentQuestionAndLoadNewOne(questionId);
 
-            } else if (testType === "Objective" && $('#practical-test').hasClass('active')) {
+
+            } else if (testType === "Objective" && ($('#practical-test').hasClass('active') || $("#read-only-instructions").is(':visible'))) {
                 showObjectiveTest();
                 if ($('#objective-test-side-bar li.active').length) {
                     var elem = $('#objective-test-side-bar li.active>a');
@@ -329,20 +265,24 @@
 
                 if (typeof (questionId) !== "undefined")
                     UpdateCurrentQuestionAndLoadNewOne(questionId);
+            }
 
+            if ($("#read-only-instructions").is(':visible')) {
+                $("#read-only-instructions").hide();
+                $("#main-section,.sidebar").show();
             }
         }
 
-        function CustomSidebarOpen() {
-            $(".menu-btn-sidebar").click(function () {
-
-                $(this).addClass('.menu-btn-sidebar');
-                $('.sidebar').show("slide", { direction: "left" }, 1000);
-                $('.sidebar').addClass("CustomSidebar");
-                $('.sidebar ul.nav').addClass('width800');
-                $('.sidebar .sidebar-nav').addClass('width800');
-                $('.main').addClass('marginLeft800');
-            });
+        function customSidebarToggle() {
+            $('.sidebar').toggleClass('.menu-btn-sidebar');
+            $('.sidebar').show("slide", { direction: "left" }, 1000);
+            $('.sidebar').toggleClass("CustomSidebar");
+            $('.sidebar ul.nav').addClass('width800');
+            $('.sidebar .sidebar-nav').toggleClass('width800');
+            $('.main').toggleClass('marginLeft800');
+            $('.questions li a').toggleClass('questionView');
+            $('.menu-btn-sidebar i').toggleClass('fa-bars fa-times');
+           
         }
 
 

@@ -4,7 +4,7 @@
         margin-left: 0px;
     }
 </style>
-@model Silicus.Ensure.Web.Models.TestSuiteCandidateModel
+
 @{
     ViewBag.Title = "Welcome";
     Layout = "~/Views/Shared/_LayoutCandidate.cshtml";
@@ -89,10 +89,14 @@ else
 
 
 <script>
+       
     $(document).ready(function () {
         if(@ViewBag.Status==1){
             $("#myModal").modal();
             $("#msgContent").text("@ViewBag.Msg");
+            $('.aside-menu').remove();
+        }else{
+            $('#btnAddMoreTime').hide();
         }
     });
 
@@ -106,5 +110,6 @@ else
         }
 
     }
+
 </script>
 
