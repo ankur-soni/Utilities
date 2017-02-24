@@ -78,7 +78,7 @@ header.navbar .nav-item .nav-link:focus {
 .userMenu {
     z-index: 3;
     margin-top: 9px!important;
-    margin-left:60px;
+    margin-left:118px;
 }
 
 .userMenu a {
@@ -222,7 +222,7 @@ header.navbar .nav-item .nav-link:focus {
 }
 
 .aside-menu .taskTitle .fa {
-    font-size: 20px;
+    font-size: 25px;
     display: inline-block;
     padding: 0.25rem 0.75rem;
 }
@@ -1314,9 +1314,9 @@ margin-top:30px;
     letter-spacing: 1px;
 }
 
-input {
+/*input {
     text-transform: capitalize;
-}
+}*/
 
 
 /*serch style*/
@@ -1697,10 +1697,10 @@ input[type=text]::-ms-clear {
   color: #ffffff;
 }
 .is-answered{
-    color:#33842f!important;
+    color:#13af0b!important;
 }
 .is-viewed-only{
-    color:#2196F3!important;
+    color:#00adef!important;
 }
 .is-not-visited{
     color:#777!important;

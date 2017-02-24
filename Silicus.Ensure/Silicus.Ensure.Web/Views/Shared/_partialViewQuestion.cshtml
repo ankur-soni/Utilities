@@ -384,9 +384,13 @@
         }
     </div>
 </div>
-
 <div class="row">
-    <div class="col-sm-12" style="margin-top:1%;padding: 0px 50px 30px 50px;">
+    <div class="col-sm-12">
+        <div class="btmBorder"></div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-sm-12" style="padding: 0px 50px 30px 50px;">
         @(Html.Kendo().Button()
     .Name("btnSubmit")
     .HtmlAttributes(new { type = "button" }).Events(e => e.Click("OnSubmitTest"))
