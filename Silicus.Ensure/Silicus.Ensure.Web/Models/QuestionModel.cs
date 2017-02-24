@@ -45,10 +45,10 @@ namespace Silicus.Ensure.Web.Models
         [Required(ErrorMessage = "Proficiency level is required.")]
         public string ProficiencyLevel { get; set; }
         [Required(ErrorMessage = "Duration (min) is required")]
-        [RegularExpression("([1-9][0-9]*)", ErrorMessage = "Only numbers are allowed.")]
+        [Range(minimum:1,maximum:360,ErrorMessage = "Duration must be between 1 to 360.")]
         public int? Duration { get; set; }
         [Required(ErrorMessage = "Marks are required.")]
-        [RegularExpression("([1-9][0-9]*)", ErrorMessage = "Only numbers are allowed.")]
+        [Range(minimum: 1, maximum: 100, ErrorMessage = "Duration must be between 1 to 100.")]
         public int? Marks { get; set; }
         public bool IsPublishd { get; set; }
         public bool IsDeleted { get; set; }

@@ -62,7 +62,7 @@ namespace Silicus.Ensure.Web.Controllers
                 }
                 var btnValue = Request["btnSaveAndAddNewQuestion"];
                 int success = 1;
-                if (btnValue == "Save & Add Another Question")
+                if (!string.IsNullOrWhiteSpace(btnValue) && btnValue.Equals("save & add another question",StringComparison.OrdinalIgnoreCase))
                 {
                     success = 2;
                 }

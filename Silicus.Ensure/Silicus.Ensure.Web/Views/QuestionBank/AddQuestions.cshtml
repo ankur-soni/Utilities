@@ -309,7 +309,7 @@
                             <div class="pull-right">
                                 <input type="submit" name="btnSaveAndAddNewQuestion" id="btnSaveAndAddNewQuestion" value="Save & add another question" class="btn btn-primary" />
                                 <input type="submit" style="width: 70px;margin-left:1px;" id="btnSave" name="btnSave" value="Save" class="btn btn-primary" />
-                                <input type="button" name="btnCancel" value="Cancel" onclick="OnCancel()"  class="btn btn-secondary" />
+                                <input type="button" name="btnCancel" value="Cancel" onclick="OnCancel()" class="btn btn-secondary" />
                             </div>
                         </div>
 
@@ -321,11 +321,11 @@
 
                         <script>
                             function isAnySelectedAns(input)
-                            {                               
+                            {
                                 $('#IsAnsOption1_validationMessage').appendTo('#answerDiv');
                                 var qType = $('#QuestionType').val();
-                                if (input.is("[name=IsAnsOption1]") && qType == 1) {                                 
-                                    input.attr("data-IsAnsOption1-msg", "Please select at least single Answer.");                                  
+                                if (input.is("[name=IsAnsOption1]") && qType == 1) {
+                                    input.attr("data-IsAnsOption1-msg", "Please select at least single Answer.");
                                     return $(".ansCheckBox:checked").length>0;
                                 }
                                 return true;
@@ -351,6 +351,11 @@
 
                             $(document).ready(function () {
                                 SetNavigationMenuActive('QuestionBank');
+                                var questionType = $("#QuestionType").val();
+                                if(questionType&&questionType==2)
+                                {
+                                    QuestionTypeChange();
+                                }
                                 $("#IsAnsOption1").removeAttr("data-val-required")
                                 $("#AddQuestionForm").kendoValidator({
                                     rules: {
@@ -439,7 +444,7 @@
 
                                 var success =@Model.Success;
                                 var edit="@Model.Edit";
-                                if(success==1 || success==2 )
+                                if(success==1)
                                 {
                                     if(edit=="True"){
                                         ShowMessage("Question updated successfully.",true);
@@ -449,6 +454,9 @@
                                         ShowMessage("Question added successfully.",true);
                                         window.location.href = "/QuestionBank/QuestionBank";
                                     }
+                                }
+                                if(success==2){
+                                    ShowMessage("Question added successfully.",true);
                                 }
                                 else
                                 {
@@ -513,9 +521,6 @@
                                 skillTag.value([]);
                                 var answerType = $("#AnswerType");
                                 answerType.val("1");
-                                var proficiency = $("#ProficiencyLevel").data("kendoDropDownList");
-                                proficiency.value("1");
-                                var duration = $("#Duration").val('1');
                             }
 
                             function OnCancel() {
