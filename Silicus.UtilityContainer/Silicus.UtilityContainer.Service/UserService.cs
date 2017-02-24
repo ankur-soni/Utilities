@@ -1,4 +1,6 @@
-﻿using Silicus.UtilityContainer.Models.DataObjects;
+﻿using System.Net;
+using System.Web;
+using Silicus.UtilityContainer.Models.DataObjects;
 using Silicus.UtilityContainer.Services.Interfaces;
 using System;
 using System.Collections.Generic;
@@ -98,12 +100,17 @@ namespace Silicus.UtilityContainer.Services
                     newUserRoles.UserId = userId;
                     newUserRoles.IsActive = true;
                     _commonDBContext.Add(newUserRoles);
-
-                    string url = ConfigurationManager.AppSettings["Addreviewer"] + userId;
-                    HttpClient client = new HttpClient();
-                    client.BaseAddress = new Uri(url);
-                    var response = client.GetAsync(url).Result;
                 }
+
+                if (HttpContext.Current.Request.IsLocal)
+                {
+                    ServicePointManager.ServerCertificateValidationCallback = delegate { return true; };
+                }
+
+                string url = ConfigurationManager.AppSettings["Addreviewer"] + userId;
+                HttpClient client = new HttpClient();
+                client.BaseAddress = new Uri(url);
+                var response = client.GetAsync(url).Result;
             }
 
             RemoveRolesOfUserFromUtility(newUserRole);
