@@ -30,7 +30,7 @@ namespace Silicus.Ensure.Web
             bundles.Add(new StyleBundle("~/Content/kendoCSS").Include(
             "~/Content/css/kendo/" + ConfigurationManager.AppSettings["KendoVersion"] + "/kendo.common.min.css",
             "~/Content/css/kendo/" + ConfigurationManager.AppSettings["KendoVersion"] + "/kendo.custom.css"));
-            
+
 
             //// Loading latest version of Bootstrap
             bundles.Add(new ScriptBundle("~/bundles/BootstrapJS").Include(
@@ -64,12 +64,12 @@ namespace Silicus.Ensure.Web
                         "~/Scripts/toastr.min.js",
                         "~/Scripts/prefixfree.min.js",
                         "~/Scripts/commonjs.js"));
-
             //Count Down Timer js and CSS
             bundles.Add(new ScriptBundle("~/bundles/Timer").Include(
-                        "~/Scripts/flipclock.js"));
+                   "~/Scripts/jquery.plugin.min.js",
+                   "~/Scripts/jquery.countdown.min.js"));
             bundles.Add(new StyleBundle("~/Content/TimerCSS").Include(
-            "~/Content/flipclock.css"));
+            "~/Content/jquery.countdown.css"));
         }
 
     }

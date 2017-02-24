@@ -16,24 +16,24 @@ $(document).ready(function () {
         $("body").toggleClass("mini-navbar");
     });
 
-    $('.nav').css({ height: 0 })
-    mQuery();
-    $('.nav-button').click(function () {
-        $('.nav').toggleClass('show')
-    })
-    $('.collapsible > a').click(function () {
-        $(this).parent().toggleClass('open')
-    })
+    //$('.nav').css({ height: 0 })
+    //mQuery();
+    //$('.nav-button').click(function () {
+    //    $('.nav').toggleClass('show')
+    //})
+    //$('.collapsible > a').click(function () {
+    //    $(this).parent().toggleClass('open')
+    //})
 });
 
-function mQuery() {
-    // Same as @media (max-width: 767px) -> hide the navigation
-    if ($('.fluid [class*="grid"]').css('float') == 'none' && $('.kendogrid [class*="grid"]').css('float') != 'none') {
-        $('.nav').removeClass('show');
-    } else {
-        $('.nav').addClass('show');
-    }
-}
+//function mQuery() {
+//    // Same as @media (max-width: 767px) -> hide the navigation
+//    if ($('.fluid [class*="grid"]').css('float') == 'none' && $('.kendogrid [class*="grid"]').css('float') != 'none') {
+//        $('.nav').removeClass('show');
+//    } else {
+//        $('.nav').addClass('show');
+//    }
+//}
 
 function ShowMessage(content, isSuceess) {
     if (isSuceess) {
@@ -67,20 +67,24 @@ function deleteKendoGridRow(gridId, data) {
         confirmButtonColor: "#DD6B55",
         confirmButtonText: "Yes",
         cancelButtonText: "No",
-        closeOnConfirm: false,
-        closeOnCancel: false
+        closeOnConfirm: true,
+        closeOnCancel: true
     },
     function (isConfirm) {
         if (isConfirm) {
             grid = $("#" + gridId).data("kendoGrid");
             grid.dataSource.remove(data);
             grid.dataSource.sync();
-            swal("Deleted!", "Record has been deleted.", "success");
+         
+            ShowMessage("Record has been deleted.", 1);
         } else {
-            swal("Cancelled", "Record deletion cancelled.", "error");
+          
+            ShowMessage("Record deletion cancelled.", 1);
         }
     });
 }
+
+
 
 
 function ShowSweetAlertWithoutCancel(title, text, type) {
@@ -93,4 +97,12 @@ function ShowSweetAlertWithoutCancel(title, text, type) {
         confirmButtonText: "Ok",
         closeOnConfirm: true,
     });
+}
+
+function showCustomLoader() {
+    $(".loader-overlay").show();
+}
+
+function hideCustomLoader() {
+    $(".loader-overlay").hide();
 }

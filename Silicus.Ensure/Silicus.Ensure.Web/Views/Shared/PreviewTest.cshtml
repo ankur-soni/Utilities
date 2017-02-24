@@ -9,7 +9,7 @@
 }
 <div class="row">
     <div class="col-sm-12 main-content" id="main" style="background: #ccc;">
-        <div class="row topBox">
+        @*<div class="row topBox">
             <div class="col-sm-12">
                 <div class="alert alert-danger M-T15">
                     <strong>Attention!</strong> This test is window protected, please do not move away from the window or refresh page.
@@ -80,6 +80,19 @@
                     </div>
                 </div>
             </div>
+        </div>*@
+        <div class="row">
+            <div class="col-sm-12">
+                <input type="hidden" value="@Model.TestSuiteId" id="TestSuiteId" />
+                <input type="hidden" value="@Model.UserTestSuiteId" id="UserTestSuiteId" />
+                <input type="hidden" value="@Model.UserId" id="UserId" />
+            </div>
+        </div>
+        <div class="col-sm-12 M-T15">
+            <div class="f1 M-B30" style="background:#fff;border-radius:5px;">
+                <div id="QuestionDetails">
+                </div>
+            </div>
         </div>
     </div>
 </div>
@@ -130,12 +143,124 @@
 </div>
 
 
+@section Sidebar{
+    <div class="sidebar">
+        <nav class="sidebar-nav">
+
+            <!--mobile menu -->
+            <div class="panel-group hidden-lg-up mobileMenu" id="accordion">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h4 class="panel-title">
+                            <a class="collapsed" data-toggle="collapse" data-parent="#accordion" href="#LearnMenu">OBJECTIVE TEST</a>
+                        </h4>
+                    </div>
+                    <div id="LearnMenu" class="panel-collapse collapse">
+                        <div class="panel-body">
+                        </div>
+                    </div>
+                </div>
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h4 class="panel-title">
+                            <a class="collapsed" data-toggle="collapse" data-parent="#accordion" href="#supportMenu">PRACTICAL TEST</a>
+                        </h4>
+                    </div>
+                    <div id="supportMenu" class="panel-collapse collapse">
+                        <div class="panel-body">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!--mobile menu end here-->
+            <div class="menu-btn-sidebar" onclick="CustomSidebarOpen();"><i class="fa fa-bars" aria-hidden="true"></i></div>
+            <ul class="nav hidden-md-down">
+                <div id="objective-test-side-bar">
+                    <li class="nav-item nav-heading">
+                        <a class="nav-link fontBold" href="#">Objective Questions</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link personal fontBold" href="index.html"><i class="fa fa-check-square-o fontBold" aria-hidden="true"></i> Objective Test </a>
+                    </li>
+                    <li class="nav-item">
+                        <ol class="questions">
+                            @if (@Model.NavigationDetails != null && @Model.NavigationDetails.Objective != null && @Model.NavigationDetails.Objective.Count > 0)
+                            {
+                                foreach (var question in Model.NavigationDetails.Objective)
+                                {
+                                    <li>
+                                        <a class="nav-link contact QuestionCheckbox @QuestionColor(question)" id="@question.QuestionId" href="#"> @Html.Raw(@question.QuestionDescription)</a>
+                                    </li>
+                                }
+                            }
+                        </ol>
+                    </li>
+                </div>
+                <div id="practical-test-side-bar">
+                    <li class="nav-item nav-heading">
+                        <a class="nav-link fontBold" href="#">Practical Questions</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link personal fontBold" href="index.html"><i class="fa fa-check-square-o fontBold" aria-hidden="true"></i> Practical Test </a>
+                    </li>
+                    <li class="nav-item">
+                        <ol class="questions">
+                            @if (@Model.NavigationDetails != null && @Model.NavigationDetails.Practical != null && @Model.NavigationDetails.Practical.Count > 0)
+                            {
+                                foreach (var question in Model.NavigationDetails.Practical)
+                                {
+                                    <li>
+                                        <a class="nav-link contact QuestionCheckbox @QuestionColor(question)" id="@question.QuestionId" href="#">@Html.Raw(@question.QuestionDescription)</a>
+                                    </li>
+                                }
+                            }
+                        </ol>
+                    </li>
+                </div>
+            </ul>
+
+        </nav>
+    </div>
+
+}
+
+@helper QuestionColor(Silicus.Ensure.Models.Test.QuestionNavigationBasics question)
+{
+if (question.IsAnswered)
+{
+        @("is-answered");
+}
+else if (question.IsViewedOnly)
+{
+        @("is-viewed-only");
+}
+else
+{
+        @("is-not-visited");
+    }
+
+}
 
 
 
 <script>
     var clock;
     var totalTime;
+    function updateQuestionLinkColorClass(questionLinkId, isAnswred, isViewedOnly) {
+        var className;
+        if (isAnswred) {
+            className = "is-answered";
+        } else if (isViewedOnly == true) {
+            className = "is-viewed-only";
+        } else {
+            className = "is-not-visited";
+        }
+        $(questionLinkId).removeClass('is-answered');
+        $(questionLinkId).removeClass('is-viewed-only');
+        $(questionLinkId).removeClass('is-not-visited');
+
+        $(questionLinkId).addClass(className);
+    }
     function LoadFirstQuestion(userId) {
 
         var testSuiteId = $("#TestSuiteId").val();
@@ -149,6 +274,10 @@
 
     }
     $(document).ready(function () {
+        $('.breadcrumb-item.active').removeClass('active');
+        $('#objective-test').addClass('active');
+        $('#practical-test-side-bar').hide();
+
         $("#frmTestresult").kendoValidator();
         // Hide Submit button of popup. Show when to want submit test.
         var userId = $("#UserId").val();
@@ -194,11 +323,13 @@
     });
 
     function QuestionCheckboxClicked(event) {
-        var questionId = $(this).attr('id');
-        UpdateCurrentQuestionAndLoadNewOne(questionId);
+        if (!$(this).parent().hasClass('active')) {
+            var questionId = $(this).attr('id');
+            UpdateCurrentQuestionAndLoadNewOne(questionId);
+        }
     }
 
-    function UpdateCurrentQuestionAndLoadNewOne(questionId) {
+    function UpdateCurrentQuestionAndLoadNewOne(questionId) {        
         var questionNavigationDetails = GetCurrentQuestionStatus();
         UpdateCurrentQuestionNavigationStatus(questionNavigationDetails);
         GetQuestionDetails(questionId);

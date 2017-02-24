@@ -830,6 +830,8 @@
     <Content Include="fonts\summernote.woff" />
     <None Include="Properties\PublishProfiles\encourageapp - FTP.pubxml" />
     <None Include="Properties\PublishProfiles\encourageapp - Web Deploy.pubxml" />
+    <None Include="Properties\PublishProfiles\prod-encourage - FTP.pubxml" />
+    <None Include="Properties\PublishProfiles\prod-encourage - Web Deploy.pubxml" />
     <None Include="Properties\PublishProfiles\SilicusEncourageWithAzureAdWeb - FTP %282%29.pubxml" />
     <None Include="Properties\PublishProfiles\SilicusEncourageWithAzureAdWeb - FTP %283%29.pubxml" />
     <None Include="Properties\PublishProfiles\SilicusEncourageWithAzureAdWeb - FTP.pubxml" />

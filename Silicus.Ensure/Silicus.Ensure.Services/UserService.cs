@@ -58,7 +58,7 @@ namespace Silicus.Ensure.Services
         public IEnumerable<UserBusinessModel> GetUserDetails()
         {
 
-            return GetUserDetailsAll().Where(x => x.IsDeleted == false);
+            return GetUserDetailsAll();
         }
 
 
@@ -102,8 +102,13 @@ namespace Silicus.Ensure.Services
             if (user != null)
             {
                 user.IsDeleted = true;
-                _context.Update(user);
             }
+            var userDetails = GetLatesUserApplication(userId);
+            if (userDetails != null)
+            {
+                userDetails.CandidateStatus = CandidateStatus.Archieved;             
+            }
+            _context.Update(user);
         }
 
         public UserApplicationDetails GetUserApplicationDetailsById(int userApplicationId)

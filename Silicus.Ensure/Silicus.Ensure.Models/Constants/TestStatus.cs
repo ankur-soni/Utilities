@@ -10,7 +10,8 @@
         UnderEvaluation = 4,
         Selected = 5,
         Rejected = 6,
-        OnHold =7
+        OnHold =7,
+        Archieved = 8
     }
 
     public enum RoleName

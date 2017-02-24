@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using Silicus.Ensure.Models.DataObjects;
 using Silicus.Ensure.Models.Test;
+using Silicus.Ensure.Models.Constants;
 
 namespace Silicus.Ensure.Services.Interfaces
 {
@@ -40,7 +41,7 @@ namespace Silicus.Ensure.Services.Interfaces
 
         IEnumerable<UserTestDetails> GetUserTestDetailsListByUserTestSuitId(int userTestSuitId);
 
-        TestDetailsBusinessModel GetUserTestDetailsByUserTestSuitId(int? userTestSuitId, int? questionNumber, int questionType);
+        TestDetailsBusinessModel GetUserTestDetailsByUserTestSuitId(int? userTestSuitId, int? questionNumber, int questionType, QuestionType testStartWithQuestionType = QuestionType.Practical);
 
         int AssignSuite(UserTestSuite userTestSuite, TestSuite testSuite);
 

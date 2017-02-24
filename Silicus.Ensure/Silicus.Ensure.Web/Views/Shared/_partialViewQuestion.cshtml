@@ -7,12 +7,12 @@
     <div class="col-sm-12" style="padding:20px 0px 0px 50px;">
         @if (Model.QuestionType == 1)
         {
-            <p><strong style="font-size:20px;">Section 2 (Objective question)</strong></p>
+            <p><strong style="font-size:20px;">Section 1 (Objective question)</strong></p>
             <input type="hidden" value="@Model.QuestionType" id="QuestionType" />
         }
         else
         {
-            <p><strong style="font-size:20px;">Section 1 (Practical question)</strong></p>
+            <p><strong style="font-size:20px;">Section 2 (Practical question)</strong></p>
             <input type="hidden" value="@Model.QuestionType" id="QuestionType" />
         }
         <p><strong style="font-size:15px;">Question @Model.DisplayQuestionNumber: (@Model.Marks Marks)</strong></p>
@@ -30,46 +30,54 @@
     {
         if (string.IsNullOrEmpty(Model.Answer))
         {
-            <div class="col-sm-12" style="padding: 20px 25px 20px 10px;">
+            <div class="col-sm-12" style="padding: 20px 25px 20px 30px;">
                 <ul style="list-style:none;">
                     <li>
-                        <div class="radio">
-                            <label><input type="radio" name="optradio" value="1">@Model.Option1</label>
+                        <div class="radio radio-info">
+                            <input type="radio"  name="optradio" value="1">
+                            <label >@Model.Option1</label>
                         </div>
                     </li>
                     <li>
-                        <div class="radio">
-                            <label><input type="radio" name="optradio" value="2">@Model.Option2</label>
+                        <div class="radio radio-info">
+                            <input type="radio"  name="optradio" value="2">
+                            <label >@Model.Option2</label>
                         </div>
                     </li>
                     <li>
-                        <div class="radio" id="radio3">
-                            <label><input type="radio" name="optradio" value="3">@Model.Option3</label>
+                        <div class="radio radio-info" id="radio3">
+                            <input type="radio"  name="optradio" value="3">
+                            <label >@Model.Option3</label>
                         </div>
                     </li>
                     <li>
-                        <div class="radio" id="radio4">
-                            <label><input type="radio" name="optradio" value="4">@Model.Option4</label>
+                        <div class="radio radio-info" id="radio4">
+                            <input type="radio"  name="optradio" value="4">
+                            <label >@Model.Option4</label>
                         </div>
                     </li>
                     <li>
-                        <div class="radio" id="radio5">
-                            <label><input type="radio" name="optradio" value="5">@Model.Option5</label>
+                        <div class="radio radio-info" id="radio5">
+                            <input type="radio"  name="optradio" value="5">
+                            <label >@Model.Option5</label>
                         </div>
                     </li>
                     <li>
-                        <div class="radio" id="radio6">
-                            <label><input type="radio" name="optradio" value="6">@Model.Option6</label>
+                        <div class="radio radio-info" id="radio6">
+                            <input type="radio"  name="optradio" value="6">
+                            <label >@Model.Option6</label>
                         </div>
                     </li>
                     <li>
-                        <div class="radio" id="radio7">
-                            <label><input type="radio" name="optradio" value="7">@Model.Option7</label>
+                        <div class="radio radio-info" id="radio7">
+                            <input type="radio"  name="optradio" value="7">
+                            <label >@Model.Option7</label>
                         </div>
                     </li>
                     <li>
-                        <div class="radio" id="radio8">
-                            <label><input type="radio" name="optradio" value="8">@Model.Option8</label>
+                        <div class="radio radio-info" id="radio8">
+                            <input type="radio"  name="optradio" value="8">
+                            <label >@Model.Option8</label>
                         </div>
                     </li>
                 </ul>
@@ -84,103 +92,119 @@
         }
         else
         {
-            <div class="col-sm-12" style="padding: 20px 25px 20px 10px;">
+            <div class="col-sm-12" style="padding: 20px 25px 20px 30px;">
 
                 <ul style="list-style:none;">
                     <li>
-                        <div class="radio">
+                        <div class="radio radio-info">
                             @if (Model.Answer.Trim() == "1")
                             {
-                                <label><input type="radio" name="optradio" value="1" checked="checked">@Model.Option1</label>
+                                <input type="radio"  name="optradio" value="1" checked="checked">
+                                <label >@Model.Option1</label>
                             }
                             else
                             {
-                                <label><input type="radio" name="optradio" value="1">@Model.Option1</label>
+                                <input type="radio"  name="optradio" value="1">
+                                <label >@Model.Option1</label>
                             }
 
                         </div>
                     </li>
                     <li>
-                        <div class="radio">
+                        <div class="radio radio-info">
                             @if (Model.Answer.Trim() == "2")
                             {
-                                <label><input type="radio" name="optradio" value="2" checked="checked">@Model.Option2</label>
+                                <input type="radio"  name="optradio" value="2" checked="checked">
+                                <label >@Model.Option2</label>
                             }
                             else
                             {
-                                <label><input type="radio" name="optradio" value="2">@Model.Option2</label>
+                                <input type="radio"  name="optradio" value="2">
+                                <label >@Model.Option2</label>
                             }
                         </div>
                     </li>
                     <li>
-                        <div class="radio" id="radio3">
+                        <div class="radio radio-info" id="radio3">
                             @if (Model.Answer.Trim() == "3")
                             {
-                                <label><input type="radio" name="optradio" value="3" checked="checked">@Model.Option3</label>
+                                <input type="radio"  name="optradio" value="3" checked="checked">
+                                <label >@Model.Option3</label>
                             }
                             else
                             {
-                                <label><input type="radio" name="optradio" value="3">@Model.Option3</label>
+                                <input type="radio"  name="optradio" value="3">
+                                <label >@Model.Option3</label>
                             }
                         </div>
                     </li>
                     <li>
-                        <div class="radio" id="radio4">
+                        <div class="radio radio-info" id="radio4">
                             @if (Model.Answer.Trim() == "4")
                             {
-                                <label><input type="radio" name="optradio" value="4" checked="checked">@Model.Option4</label>
+                                <input type="radio"  name="optradio" value="4" checked="checked">
+                                <label >@Model.Option4</label>
                             }
                             else
                             {
-                                <label><input type="radio" name="optradio" value="4">@Model.Option4</label>
+                                <input type="radio"  name="optradio" value="4">
+                                <label >@Model.Option4</label>
                             }
                         </div>
                     </li>
                     <li>
-                        <div class="radio" id="radio5">
+                        <div class="radio radio-info" id="radio5">
                             @if (Model.Answer.Trim() == "5")
                             {
-                                <label><input type="radio" name="optradio" value="5" checked="checked">@Model.Option5</label>
+                                <input type="radio"  name="optradio" value="5" checked="checked">
+                                <label >@Model.Option5</label>
                             }
                             else
                             {
-                                <label><input type="radio" name="optradio" value="5">@Model.Option5</label>
+                                <input type="radio" name="optradio" value="5">
+                                <label >@Model.Option5</label>
                             }
                         </div>
                     </li>
                     <li>
-                        <div class="radio" id="radio6">
+                        <div class="radio radio-info" id="radio6">
                             @if (Model.Answer.Trim() == "6")
                             {
-                                <label><input type="radio" name="optradio" value="6" checked="checked">@Model.Option6</label>
+                                <input type="radio"  name="optradio" value="6" checked="checked">
+                                <label >@Model.Option6</label>
                             }
                             else
                             {
-                                <label><input type="radio" name="optradio" value="6">@Model.Option6</label>
+                                <input type="radio"  name="optradio" value="6">
+                                <label >@Model.Option6</label>
                             }
                         </div>
                     </li>
                     <li>
-                        <div class="radio" id="radio7">
+                        <div class="radio radio-info" id="radio7">
                             @if (Model.Answer.Trim() == "7")
                             {
-                                <label><input type="radio" name="optradio" value="7" checked="checked">@Model.Option7</label>
+                                <input type="radio"  name="optradio" value="7" checked="checked">
+                                <label >@Model.Option7</label>
                             }
                             else
                             {
-                                <label><input type="radio" name="optradio" value="7">@Model.Option7</label>
+                                <input type="radio"  name="optradio" value="7">
+                                <label >@Model.Option7</label>
                             }
                         </div>
                     </li>
                     <li>
-                        <div class="radio" id="radio8">
+                        <div class="radio radio-info" id="radio8">
                             @if (Model.Answer.Trim() == "8")
                             {
-                                <label><input type="radio" name="optradio" value="8" checked="checked">@Model.Option8</label>
+                                <input type="radio"  name="optradio" value="8" checked="checked">
+                                <label >@Model.Option8</label>
                             }
                             else
                             {
-                                <label><input type="radio" name="optradio" value="8">@Model.Option8</label>
+                                <input type="radio"  name="optradio" value="8">
+                                <label >@Model.Option8</label>
                             }
                         </div>
                     </li>
@@ -203,42 +227,50 @@
                 <ul style="list-style:none;">
                     <li>
                         <div class="checkbox">
-                            <label><input type="checkbox" name="optcheckbox" value="1">@Model.Option1</label>
+                            <input type="checkbox"  name="optcheckbox" value="1">
+                            <label >@Model.Option1</label>
                         </div>
                     </li>
                     <li>
                         <div class="checkbox">
-                            <label><input type="checkbox" name="optcheckbox" value="2">@Model.Option2</label>
+                            <input type="checkbox"  name="optcheckbox" value="2">
+                            <label >@Model.Option2</label>
                         </div>
                     </li>
                     <li>
                         <div class="checkbox" id="checkbox3">
-                            <label><input type="checkbox" name="optcheckbox" value="3">@Model.Option3</label>
+                            <input type="checkbox"  name="optcheckbox" value="3">
+                            <label >@Model.Option3</label>
                         </div>
                     </li>
                     <li>
                         <div class="checkbox" id="checkbox4">
-                            <label><input type="checkbox" name="optcheckbox" value="4">@Model.Option4</label>
+                            <input type="checkbox"  name="optcheckbox" value="4">
+                            <label >@Model.Option4</label>
                         </div>
                     </li>
                     <li>
                         <div class="checkbox" id="checkbox5">
-                            <label><input type="checkbox" name="optcheckbox" value="5">@Model.Option5</label>
+                            <input type="checkbox"  name="optcheckbox" value="5">
+                            <label >@Model.Option5</label>
                         </div>
                     </li>
                     <li>
-                        <div class="checkbox" id="checkbox6">
-                            <label><input type="checkbox" name="optcheckbox" value="6">@Model.Option6</label>
+                        <div class="checkbox" id="checkbox6" >
+                            <input type="checkbox"  name="optcheckbox" value="6">
+                            <label >@Model.Option6</label>
                         </div>
                     </li>
                     <li>
                         <div class="checkbox" id="checkbox7">
-                            <label><input type="checkbox" name="optcheckbox" value="7">@Model.Option7</label>
+                            <input type="checkbox"  name="optcheckbox" value="7">
+                            <label >@Model.Option7</label>
                         </div>
                     </li>
                     <li>
                         <div class="checkbox" id="checkbox8">
-                            <label><input type="checkbox" name="optcheckbox" value="8">@Model.Option8</label>
+                            <input type="checkbox"  name="optcheckbox" value="8">
+                            <label >@Model.Option8</label>
                         </div>
                     </li>
                 </ul>
@@ -257,42 +289,50 @@
                 <ul style="list-style:none;">
                     <li>
                         <div class="checkbox">
-                            <label><input id="optcheckbox1" type="checkbox" name="optcheckbox" value="1">@Model.Option1</label>
+                            <input id="optcheckbox1" type="checkbox" name="optcheckbox" value="1">
+                            <label >@Model.Option1</label>
                         </div>
                     </li>
                     <li>
                         <div class="checkbox">
-                            <label><input id="optcheckbox2" type="checkbox" name="optcheckbox" value="2">@Model.Option2</label>
+                            <input id="optcheckbox2" type="checkbox" name="optcheckbox" value="2">
+                            <label >@Model.Option2</label>
                         </div>
                     </li>
                     <li>
                         <div class="checkbox" id="checkbox3">
-                            <label><input id="optcheckbox3" type="checkbox" name="optcheckbox" value="3">@Model.Option3</label>
+                            <input id="optcheckbox3" type="checkbox" name="optcheckbox" value="3">
+                            <label >@Model.Option3</label>
                         </div>
                     </li>
                     <li>
                         <div class="checkbox" id="checkbox4">
-                            <label><input id="optcheckbox4" type="checkbox" name="optcheckbox" value="4">@Model.Option4</label>
+                            <input id="optcheckbox4" type="checkbox" name="optcheckbox" value="4">
+                            <label >@Model.Option4</label>
                         </div>
                     </li>
                     <li>
                         <div class="checkbox" id="checkbox5">
-                            <label><input id="optcheckbox5" type="checkbox" name="optcheckbox" value="5">@Model.Option5</label>
+                            <input id="optcheckbox5" type="checkbox" name="optcheckbox" value="5">
+                            <label >@Model.Option5</label>
                         </div>
                     </li>
                     <li>
                         <div class="checkbox" id="checkbox6">
-                            <label><input id="optcheckbox6" type="checkbox" name="optcheckbox" value="6">@Model.Option6</label>
+                            <input id="optcheckbox6" type="checkbox" name="optcheckbox" value="6">
+                            <label >@Model.Option6</label>
                         </div>
                     </li>
                     <li>
                         <div class="checkbox" id="checkbox7">
-                            <label><input id="optcheckbox7" type="checkbox" name="optcheckbox" value="7">@Model.Option7</label>
+                            <input id="optcheckbox7" type="checkbox" name="optcheckbox" value="7">
+                            <label >@Model.Option7</label>
                         </div>
                     </li>
                     <li>
                         <div class="checkbox" id="checkbox8">
-                            <label><input id="optcheckbox8" type="checkbox" name="optcheckbox" value="8">@Model.Option8</label>
+                            <input id="optcheckbox8" type="checkbox" name="optcheckbox" value="8">
+                            <label >@Model.Option8</label>
                         </div>
                     </li>
                 </ul>
@@ -330,26 +370,53 @@
         @if (Model.NextQuestionId != null)
         {
             @(Html.Kendo().Button()
-        .Name("btnNext")
-                .HtmlAttributes(new { type = "button" }).Events(e => e.Click("OnNext"))
-                    .Content("Next").HtmlAttributes(new { style = "float: right;", @data_id = Model.NextQuestionId, @class = "btn btn-primary" }))
+    .Name("btnNext")
+            .HtmlAttributes(new { type = "button" }).Events(e => e.Click("OnNext"))
+                .Content("Next").HtmlAttributes(new { style = "float: right;", @data_id = Model.NextQuestionId, @class = "btn btn-primary" }))
         }
 
         @if (Model.PreviousQuestionId != null)
         {
             @(Html.Kendo().Button()
-                .Name("btnPrevious")
-                .HtmlAttributes(new { type = "button" }).Events(e => e.Click("OnPrevious"))
-                .Content("Previous").HtmlAttributes(new { @data_id = Model.PreviousQuestionId, @class = "btn btn-primary" }))
+            .Name("btnPrevious")
+            .HtmlAttributes(new { type = "button" }).Events(e => e.Click("OnPrevious"))
+            .Content("Previous").HtmlAttributes(new { @data_id = Model.PreviousQuestionId, @class = "btn btn-primary" }))
         }
     </div>
 </div>
-
 <div class="row">
-    <div class="col-sm-12" style="margin-top:1%;padding: 0px 50px 0px 50px;">
-        @(Html.Kendo().Button()
-        .Name("btnSubmit")
-        .HtmlAttributes(new { type = "button" }).Events(e => e.Click("OnSubmitTest"))
-                .Content("Submit Test").HtmlAttributes(new { style = "float: right;", @class = "btn btn-primary" }))
+    <div class="col-sm-12">
+        <div class="btmBorder"></div>
     </div>
 </div>
+<div class="row">
+    <div class="col-sm-12" style="padding: 0px 50px 30px 50px;">
+        @(Html.Kendo().Button()
+    .Name("btnSubmit")
+    .HtmlAttributes(new { type = "button" }).Events(e => e.Click("OnSubmitTest"))
+            .Content("Submit Test").HtmlAttributes(new { style = "float: right;", @class = "btn btn-primary" }))
+    </div>
+</div>
+@{
+    var type = (Silicus.Ensure.Models.Constants.QuestionType)Model.QuestionType;
+    var typeString = type.ToString().ToLower();
+}
+<script>
+    if($('#objective-test').hasClass('active')  && "@typeString" === "objective"){
+        $('#objective-test-side-bar .nav-link').parent().removeClass('active');
+    }else  if($('#practical-test').hasClass('active') && "@typeString" === "practical"){
+        $('#practical-test-side-bar .nav-link').parent().removeClass('active');
+    }
+
+    if($('#objective-test').hasClass('active') && "@typeString" != "objective"){
+        showPracticalTest();
+        $('#practical-test-side-bar .nav-link').parent().removeClass('active');
+    }else  if($('#practical-test').hasClass('active') && "@typeString" != "practical"){
+        showObjectiveTest();
+        $('#objective-test-side-bar .nav-link').parent().removeClass('active');
+    }
+
+    $('#@Model.QuestionId').parent().addClass('active');
+    updateQuestionLinkColorClass('#@Model.QuestionId','@Model.IsAnswered' == 'True', '@Model.IsViewedOnly'== 'True');
+    refreshAnsweredQuestionCount();
+</script>

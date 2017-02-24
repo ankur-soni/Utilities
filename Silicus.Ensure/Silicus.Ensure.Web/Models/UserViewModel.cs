@@ -13,7 +13,7 @@ namespace Silicus.Ensure.Web.Models
 
         [StringLength(50)]
         [Display(Name = "First name")]
-        [Required(ErrorMessage = "First name is required!")]
+        [Required(ErrorMessage = "First name is required.")]
         public string FirstName { get; set; }
 
         [StringLength(50)]
@@ -22,7 +22,7 @@ namespace Silicus.Ensure.Web.Models
 
         [StringLength(50)]
         [Display(Name = "Last name")]
-        [Required(ErrorMessage = "Last name is required!")]
+        [Required(ErrorMessage = "Last name is required.")]
         public string LastName { get; set; }
 
         [DataType(DataType.Password)]
@@ -34,66 +34,66 @@ namespace Silicus.Ensure.Web.Models
 
         [StringLength(50)]
         [Display(Name = "Requisition id")]
-        [Required(ErrorMessage = "Requisition id is required!")]
+        [Required(ErrorMessage = "Requisition id is required.")]
         public string RequisitionId { get; set; }
 
-        [Required(ErrorMessage = "Email is required!")]
+        [Required(ErrorMessage = "Email is required.")]
         [StringLength(100)]
-        [System.Web.Mvc.Remote("IsDuplicateEmail", "User", AdditionalFields = "UserId", ErrorMessage = "Email already name exist !")]
+        [System.Web.Mvc.Remote("IsDuplicateEmail", "User", AdditionalFields = "UserId", ErrorMessage = "Email already exists.")]
         [RegularExpression(@"^(([\w-]+\.)+[\w-]+|([a-zA-Z]{1}|[\w-]{2,}))@"
      + @"((([0-1]?[0-9]{1,2}|25[0-5]|2[0-4][0-9])\.([0-1]?
 				[0-9]{1,2}|25[0-5]|2[0-4][0-9])\."
      + @"([0-1]?[0-9]{1,2}|25[0-5]|2[0-4][0-9])\.([0-1]?
 				[0-9]{1,2}|25[0-5]|2[0-4][0-9])){1}|"
      + @"([a-zA-Z0-9]+[\w-]+\.)+[a-zA-Z]{1}[a-zA-Z0-9-]{1,23})$",
-     ErrorMessage = "Please enter correct email!")]
+     ErrorMessage = "Please enter correct email.")]
         public string Email { get; set; }
 
         [StringLength(500)]
         [Display(Name = "Current location")]
-        [Required(ErrorMessage = "Current location is required!")]
+        [Required(ErrorMessage = "Current location is required.")]
         public string CurrentLocation { get; set; }
 
         [Display(Name = "Date Of birth")]
-        [Required(ErrorMessage = "Date of birth is required!")]
+        [Required(ErrorMessage = "Date of birth is required.")]
         public DateTime DOB { get; set; }
 
         [StringLength(10)]
         [Display(Name = "Contact number")]
-        [Required(ErrorMessage = "Contact number is required!")]
-        [RegularExpression(@"^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$", ErrorMessage = "Contact number is not a valid phone number!")]
+        [Required(ErrorMessage = "Contact number is required.")]
+        [RegularExpression(@"^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$", ErrorMessage = "Contact number is not a valid phone number.")]
         public string ContactNumber { get; set; }
 
         [StringLength(50)]
         [Display(Name = "Client name")]
-        [Required(ErrorMessage = "Client name is required!")]
+        [Required(ErrorMessage = "Client name is required.")]
         public string ClientName { get; set; }
 
         [StringLength(50)]
         [Display(Name = "Technology")]
-        [Required(ErrorMessage = "Technology is required!")]
+        [Required(ErrorMessage = "Technology is required.")]
         public string Technology { get; set; }
 
-        [Required(ErrorMessage = "Total experience year is required!")]
+        [Required(ErrorMessage = "Total experience years are required.")]
         public int? TotalExperienceInYear { get; set; }
 
-        [Required(ErrorMessage = "Total experience month is required!")]
+        [Required(ErrorMessage = "Total experience months are required.")]
         public int? TotalExperienceInMonth { get; set; }
 
-        [Required(ErrorMessage = "Relevant experience year is required!")]
+        [Required(ErrorMessage = "Relevant experience years are required.")]
         public int? RelevantExperienceInYear { get; set; }
 
-        [Required(ErrorMessage = "Relevant experience month is required!")]
+        [Required(ErrorMessage = "Relevant experience months are required.")]
         public int? RelevantExperienceInMonth { get; set; }
 
         [StringLength(50)]
         [Display(Name = "Current company")]
-        [Required(ErrorMessage = "Current company is required!")]
+        [Required(ErrorMessage = "Current company is required.")]
         public string CurrentCompany { get; set; }
 
         [StringLength(50)]
         [Display(Name = "Current title")]
-        [Required(ErrorMessage = "Current title is required!")]
+        [Required(ErrorMessage = "Current title is required.")]
         public string CurrentTitle { get; set; }
 
         public string ResumePath { get; set; }
@@ -105,7 +105,7 @@ namespace Silicus.Ensure.Web.Models
         public string Role { get; set; }
 
         [Display(Name = "Gender")]
-        [Required(ErrorMessage = "Gender is required!")]
+        [Required(ErrorMessage = "Gender is required.")]
         public string Gender { get; set; }
 
         public string CandidateStatus { get; set; }
