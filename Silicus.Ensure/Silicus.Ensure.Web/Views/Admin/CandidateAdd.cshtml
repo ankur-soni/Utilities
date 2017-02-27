@@ -502,6 +502,17 @@
         $('#TotalExperienceInMonth_validationMessage').hide();
         $('#TotalExperienceInYear_validationMessage').hide();
     }
+
+    window.onbeforeunload = function () {
+        return "Do you really want to close?";
+    };
+    $('#btnSave').click(function()
+    {
+
+        $(window).unbind('unload');
+        //rest of your code here
+    });
+
 </script>
 <style>
     .height {

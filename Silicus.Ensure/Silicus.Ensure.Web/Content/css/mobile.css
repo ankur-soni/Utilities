@@ -1,0 +1,82 @@
+﻿/*for iPad landscape*/
+/* mobive view */
+@media only screen and (max-width :991px) {
+	 body{
+		 overflow:auto;
+	 }
+	 .main .container-fluid{
+		     padding: 0 15px;
+			 margin-top:15px;
+	 }
+	 .containerInner > .row{
+			margin-top:0px;
+	 }
+	 .header-fixed .app-body{
+		 margin-top:55px;
+	 }
+	 .containerInner{
+		 height:auto;
+	 }
+	 .bootstrap-select:not([class*=col-]):not([class*=form-control]):not(.input-group-btn){
+		 width:100%;
+		 margin:0px 0px 15px 0px;
+	 }
+	 
+	 /*footer*/
+	 .app-footer{
+		 margin:0px;
+		 padding:0px;
+		 text-align:center;
+		 line-height:20px;
+	 }
+	 .app-footer .socialIcon {
+		 background:#000;
+		 width:100%;
+		 text-align:center;
+		 line-height:36px;
+	 }
+	 .app-footer .socialIcon ul{
+		 width:140px;
+		 margin:0px auto;
+		 display:block;
+		 overflow:hidden; 
+	 }
+	 .app-footer .copyRightText{
+		 display:block;
+		 margin:0px 0px 10px 0px;
+	 }
+	 
+	 /*sidebar*/
+	 .sidebar-mobile-show {
+		 overflow:hidden;
+		 background:#ccc; 
+	 }
+	 .sidebar-mobile-show .main {
+		margin-right: 0px !important;
+		margin-left: 0px !important;
+		opacity:0.2;
+	}
+	.sidebar-mobile-show .sidebar{
+		z-index:3;
+		background:#eeeeee;
+	} 
+}
+.mobileMenu .panel-default, .mobileMenu .panel-default>.panel-heading, .mobileMenu .panel-body{ 
+		background:none;
+		margin:0px;
+		padding:0px;
+		border:none;
+}
+ 
+.mobileMenu .panel-title > a:before {
+    float: right !important;
+    font-family: FontAwesome;
+    content: "\f068";
+    padding-right: 5px;
+    color: #224c72;
+}
+.mobileMenu .panel-title > a.collapsed:before {
+    float: right !important;
+    content: "\f067";
+	color:#767676;
+}

@@ -310,6 +310,7 @@
     <Compile Include="Enums\FrequencyCode.cs" />
     <Compile Include="Extensions.cs" />
     <Compile Include="Filters\CustomeAuthorizeAttribute.cs" />
+    <Compile Include="Filters\LogAttribute.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>

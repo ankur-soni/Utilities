@@ -13,41 +13,28 @@
             <div class="col-sm-12">
                 <div class="table-responsive">
                     <table class="table table-striped">
-                        <thead>
-                            <tr>
-                                <th>No.</th>
-                                <th>Field Name</th>
-                                <th>Value</th>
-                                <th></th>
-                            </tr>
-                        </thead>
                         <tbody>
                             <tr>
-                                <th scope="row">1</th>
                                 <td>@Html.LabelFor(model => model.TestSuiteName)</td>
                                 <td>@Html.DisplayFor(model => model.TestSuiteName, new { @class = "form-control" })</td>
                                 <td></td>
                             </tr>
                             <tr>
-                                <th scope="row">2</th>
                                 <td>@Html.LabelFor(model => model.Duration)</td>
                                 <td>@Html.DisplayFor(model => model.Duration, new { @class = "form-control" })</td>
                                 <td></td>
                             </tr>
                             <tr>
-                                <th scope="row">3</th>
                                 <td>@Html.LabelFor(model => model.Position)</td>
                                 <td>@Html.DisplayFor(model => model.PositionName, new { @class = "form-control" })</td>
                                 <td></td>
                             </tr>
                             <tr>
-                                <th scope="row">4</th>
                                 <td>@Html.LabelFor(model => model.Competency)</td>
                                 <td>@Html.DisplayFor(model => model.OverallProficiency, new { @class = "form-control" })</td>
                                 <td></td>
                             </tr>
                             <tr>
-                                <th scope="row">5</th>
                                 <td><label>Question type</label></td>
                                 <td>
                                     <label>Optional @Html.DisplayFor(m => m.OptionalQuestion, new { @class = "form-control" }) %</label>
@@ -55,15 +42,13 @@
                                 <td><label>Practical @Html.DisplayFor(m => m.PracticalQuestion, new { @class = "form-control" }) %</label></td>
                             </tr>
                             <tr>
-                                <th scope="row">6</th>
                                 <td>@Html.LabelFor(model => model.ProjectName)</td>
                                 <td>@Html.DisplayFor(model => model.ProjectName, new { @class = "form-control" })</td>
                                 <td></td>
                             </tr>
                             <tr>
-                                <th scope="row">7</th>
                                 <td><label>Experience</label></td>
-                                <td>@Model.FromExperience.@Model.ToExperience</td>
+                                <td>@Model.FromExperience</td>
                                 <td></td>
                             </tr>
                         </tbody>

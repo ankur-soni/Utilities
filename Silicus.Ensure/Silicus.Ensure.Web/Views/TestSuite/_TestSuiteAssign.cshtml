@@ -74,8 +74,8 @@
                 confirmButtonColor: "#DD6B55",
                 confirmButtonText: "Yes",
                 cancelButtonText: "No",
-                closeOnConfirm: false,
-                closeOnCancel: false
+                closeOnConfirm: true,
+                closeOnCancel: true
             },
    function (isConfirm) {
        if (isConfirm) {
@@ -90,11 +90,12 @@
                success: function (returndata) {
                    if (returndata == 1) {
                        $('#myModal').modal().hide();
-                       $("#testSuiteGrids").data("kendoGrid").dataSource.read();
-                       swal("Activated!", "Activated test suite.", "success");
+                       $("#testSuiteGrids").data("kendoGrid").dataSource.read();                      
+                       ShowMessage("Activated test suite.", 1);
                    }
                    else {
-                       swal("Error!", "Error occured while activating test suite.", "error");
+                       ShowMessage("Error occured while activating test suite.", 1);
+                       
                    }
                }
            });

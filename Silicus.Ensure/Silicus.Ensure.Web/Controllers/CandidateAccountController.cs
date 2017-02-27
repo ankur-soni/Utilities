@@ -19,9 +19,7 @@ namespace Silicus.Ensure.Web.Controllers
     {
         private readonly ICookieHelper _cookieHelper;
         private readonly ILogger _logger;
-        private readonly IDataContextFactory _dataContextFactory;
-        private readonly IEmailService _emailService;
-        private readonly IRolesService _rolesService;
+        private readonly IUserService _userService;
 
         private ApplicationUserManager _userManager;
         public ApplicationUserManager UserManager
@@ -68,14 +66,11 @@ namespace Silicus.Ensure.Web.Controllers
             }
         }
 
-        public CandidateAccountController(ICookieHelper cookieHelper, ILogger logger,
-            IDataContextFactory dataContextFactory, IEmailService emailService, IRolesService rolesService)
+        public CandidateAccountController(ICookieHelper cookieHelper, ILogger logger, IUserService userService)
         {
             _cookieHelper = cookieHelper;
             _logger = logger;
-            _dataContextFactory = dataContextFactory;
-            _emailService = emailService;
-            _rolesService = rolesService;
+            _userService = userService;
         }
 
 
@@ -109,6 +104,16 @@ namespace Silicus.Ensure.Web.Controllers
                         _logger.Log(user.Email + " isAdmin: " + isAdmin);
                         var isCandidate = await UserManager.IsInRoleAsync(user.Id, "Candidate");
                         _logger.Log(user.Email + " isCandidate: " + isCandidate);
+
+                        if (isCandidate)
+                        {
+                            var candidate = _userService.GetUserByEmail(model.UserName);
+                            if (candidate.CandidateStatus == CandidateStatus.TestSubmitted.ToString())
+                            {
+                                ModelState.AddModelError("", "You have already submitted your test.");
+                                return View(model);
+                            }
+                        }
 
                         var isPanel = await UserManager.IsInRoleAsync(user.Id, RoleName.Panel.ToString());
                         _logger.Log(user.Email + " isPanel: " + isPanel);

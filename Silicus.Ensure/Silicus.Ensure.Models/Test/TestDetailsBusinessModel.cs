@@ -30,5 +30,7 @@ namespace Silicus.Ensure.Models.Test
         public int? ReviwerMark { get; set; }
         public string Comment { get; set; }
         public int DisplayQuestionNumber { get; set; }
+        public bool IsViewedOnly { get; set; }
+        public bool IsAnswered { get; set; }
     }
 }

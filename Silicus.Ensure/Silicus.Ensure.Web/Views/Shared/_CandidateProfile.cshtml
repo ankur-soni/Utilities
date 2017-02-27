@@ -369,3 +369,13 @@
 <script src="~/Scripts/jquery.validate.min.js"></script>
 <script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
 <script src="~/Scripts/jquery.unobtrusive-ajax.min.js" type="text/javascript"> </script>
+
+<script>
+    $('#btnSave').click(function () {       
+        window.onbeforeunload = null;   
+    });
+
+    $('frmSearchAllNdc').submit(function () {
+        window.onbeforeunload = null;
+    });
+</script>

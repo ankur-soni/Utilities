@@ -2366,64 +2366,7 @@ span.select2.select2-container.select2-container--default {
 .navbar-top-links .dropdown-messages, .navbar-top-links .dropdown-user-menu, .navbar-top-links .dropdown-tasks, .navbar-top-links .dropdown-alerts{
 width: 310px;
 }
-/* Candidate portal css*/
-.titleText{color:#337ab7;}
-.btn-start{background: #b4e391; /* Old browsers */
-background: -moz-linear-gradient(top,  #b4e391 0%, #61c419 50%, #b4e391 100%); /* FF3.6-15 */
-background: -webkit-linear-gradient(top,  #b4e391 0%,#61c419 50%,#b4e391 100%); /* Chrome10-25,Safari5.1-6 */
-background: linear-gradient(to bottom,  #b4e391 0%,#61c419 50%,#b4e391 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
-filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#b4e391', endColorstr='#b4e391',GradientType=0 ); /* IE6-9 */ color: #FFFFFF;border:1px solid #b4e391;}
-.btn-start:hover{background: #b4e391; /* Old browsers */
-background: -moz-linear-gradient(top,  #b4e391 0%, #61c419 50%, #b4e391 100%); /* FF3.6-15 */
-background: -webkit-linear-gradient(top,  #b4e391 0%,#61c419 50%,#b4e391 100%); /* Chrome10-25,Safari5.1-6 */
-background: linear-gradient(to bottom,  #b4e391 0%,#61c419 50%,#b4e391 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
-filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#b4e391', endColorstr='#b4e391',GradientType=0 ); /* IE6-9 */ color: #FFFFFF;border:1px solid #b4e391;}
-.greyBox{text-align:center;background:#78909C;height:30px;width:500px;margin:0 auto;border-radius:5px;font-size:18px;color:#fff;padding:2px;}
-.info-box{width:auto;border-radius:5px;background:#E8EAF6;}
-.info-box ul{padding:25px;}
-.info-box ul li{padding:25px;list-style:none;height:auto;}
-.info-box ul li i{font-size:35px;margin-right:10px;color: #337ab7;}
-.info-box ul li label{font-size:15px;vertical-align:top;font-weight:bold;}
-.info-box ul li span{font-size:13px;}
-#Term.checkbox label::before{border: 1px solid rgba(158, 158, 158, 1);}
-.progress{margin-bottom:0px!important;}
-.progress-bar-info{background-color:#69d08c!important;}
-#TestSuitInfo .table.table-striped > tbody > tr:nth-child(odd){background-color:#e2e6f2 !important;}
 
-/*Candidate test page css*/
-.clock{float:right;}
-.btmBorder{border-bottom:1px solid #cdcdcd;margin: 20px 35px 20px 35px;}
-.btmBorder1{border-bottom:1px solid #cdcdcd;padding: -1px 25px 20px 20px;}
-.btn-addTime{background-color:#a3c3de;border-color:#a3c3de;color:#fff;}
-.btn-submitEvaluation{background-color:#a3c3de;border-color:#a3c3de;color:#fff;}
-.btn-addTime:hover{background-color: #e4e8ea;border-color: #e4e8ea;color: #000;}
-#QuestionDetails ul li{padding-top:5px;padding-bottom:5px;}
-.topBox{
-    background: #284f6e;
-    border-bottom: 5px solid #C5CAE9;
-}
-.custBox{
-    background:#006699;
-    color:#fff;
-    padding: 10px;
-    width: auto;
-    height: auto;
-    box-shadow: 1px 1px 3px #888888;
-    border-bottom: 4px solid #c3c8e6;
-    margin-top:-2px;
-}
-.collapse.collapse.in{
-    padding:20px;
-
-}
-.panel-heading{
-    background:#006699!important;
-    
-}
-.panel .panel-heading .panel-title{
-    color:#fff!important;
-}
-.disBlock{display:block;}
 
 
 
