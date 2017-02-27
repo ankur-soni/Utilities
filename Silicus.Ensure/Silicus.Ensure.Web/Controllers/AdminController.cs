@@ -598,7 +598,7 @@ namespace Silicus.Ensure.Web.Controllers
             try
             {
                 TestSuite testSuitDetails = _testSuiteService.GetTestSuitById(testSuiteId);
-                var previewTest = new PreviewTestBusinessModel { TestSuite = testSuitDetails, ViewerId = viewer.ID, CandidateId = userId };
+                var previewTest = new PreviewTestBusinessModel { TestSuite = testSuitDetails, ViewerId = viewer.ID, CandidateId = candidate.UserApplicationId };
                 if (testSuitDetails != null && testSuitDetails.Status == Convert.ToInt32(TestSuiteStatus.Ready))
                 {
                     var questionList = _testSuiteService.GetPreview(previewTest);

@@ -9,78 +9,6 @@
 }
 <div class="row">
     <div class="col-sm-12 main-content" id="main" style="background: #ccc;">
-        @*<div class="row topBox">
-            <div class="col-sm-12">
-                <div class="alert alert-danger M-T15">
-                    <strong>Attention!</strong> This test is window protected, please do not move away from the window or refresh page.
-                </div>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-sm-12">
-
-                <input type="hidden" value="@Model.TestSuiteId" id="TestSuiteId" />
-                <input type="hidden" value="@Model.UserTestSuiteId" id="UserTestSuiteId" />
-                <input type="hidden" value="@Model.UserId" id="UserId" />
-            </div>
-        </div>
-        <div class="row">
-            <div class="custBox">
-                <div class="f1">
-                    <div class="col-sm-8">
-                        @Html.Partial("_CandidateInfo", Model.CandidateInfo)
-                    </div>
-                    <div class="col-sm-4">
-                        <div class="row">
-                            <div class="col-sm-12">
-                                <div class="clock">
-                                    <div id="counter">
-
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-sm-12">
-                                @(Html.Kendo().Button()
-                        .Name("btnAddMoreTime")
-                                            .HtmlAttributes(new { type = "button" }).Content("Add more time").HtmlAttributes(new { style = "float:right;", @class = "btn btn-addTime btn-lg", disabled = "disabled" }))
-
-                                @Html.Hidden("TimerIncCount", Model.ExtraCount)
-                            </div>
-                        </div>
-
-                    </div>
-                    <div class="col-sm-12 M-T15">
-                        <span style="font-weight:bold;font-size:15px;color:#fff;">Test Progress</span>
-                        <div class="progress M-T10">
-                            <div id="progressBar" class="progress-bar progress-bar-info" role="progressbar" aria-valuenow="50"
-                                 aria-valuemin="0" aria-valuemax="100" style="width:50%">
-                                <span id="progressInfo">50%</span> Complete
-                            </div>
-                        </div>
-                    </div>
-                    <div class="clearfix"></div>
-                </div>
-
-            </div>
-        </div>
-
-        <div class="row M-B25">
-            <div class="col-sm-9 M-T15">
-                <div class="f1 M-B30" style="background:#fff;">
-                    <div id="QuestionDetails">
-                    </div>
-                </div>
-            </div>
-            <div class="col-sm-3 M-T15" style="padding-left:0px;">
-                <div class="f1 M-B30" style="background:#fff;">
-                    <div id="QuestionNavigation">
-                        @Html.Partial("_QuestionNavigationPanel", @Model.NavigationDetails)
-                    </div>
-                </div>
-            </div>
-        </div>*@
         <div class="row">
             <div class="col-sm-12">
                 <input type="hidden" value="@Model.TestSuiteId" id="TestSuiteId" />
@@ -224,6 +152,10 @@
 
 }
 
+@section CandidateDetails {
+    @Html.Partial("_testSuiteAndCandidateDetails", Model);
+}
+
 @helper QuestionColor(Silicus.Ensure.Models.Test.QuestionNavigationBasics question)
 {
 if (question.IsAnswered)
@@ -274,10 +206,11 @@ else
 
     }
     $(document).ready(function () {
+
         $('.breadcrumb-item.active').removeClass('active');
         $('#objective-test').addClass('active');
         $('#practical-test-side-bar').hide();
-
+        $('#instruction').hide();
         $("#frmTestresult").kendoValidator();
         // Hide Submit button of popup. Show when to want submit test.
         var userId = $("#UserId").val();
@@ -290,21 +223,8 @@ else
         var timerCnt = $("#TimerIncCount").val();
         if (timerCnt >= 2)
             $("#btnAddMoreTime").hide();
-
+        startCounter();
         // Timer
-        clock = $('#counter').FlipClock({
-            clockFace: 'HourlyCounter',
-            autoStart: false,
-            callbacks: {
-                stop: function () {
-                    // $("#myModalTC").modal();
-                    //TestDurationComplete();
-                    var text = "The test duration is over, thank you for your participation. Further, the recruitment team will contact you for the update";
-                    ShowSweetAlertWithoutCancel("Warning!", text, "warning");
-                },
-                interval: ProgressBar
-            }
-        });
 
         var tm =@Model.Duration
         tm = parseInt(tm) * 60;
@@ -315,9 +235,6 @@ else
         $('#progressInfo').text('0%');
 
         // Set counter time and start.
-        clock.setTime(tm);
-        clock.setCountdown(true);
-        clock.start();
 
         $('.QuestionCheckbox').on('click', QuestionCheckboxClicked);
     });
@@ -329,28 +246,12 @@ else
         }
     }
 
-    function UpdateCurrentQuestionAndLoadNewOne(questionId) {        
+    function UpdateCurrentQuestionAndLoadNewOne(questionId) {
         var questionNavigationDetails = GetCurrentQuestionStatus();
-        UpdateCurrentQuestionNavigationStatus(questionNavigationDetails);
+        updateQuestionLinkColorClass('#' + questionNavigationDetails.QuestionNumber, questionNavigationDetails.IsAnswered, questionNavigationDetails.IsViewed);
         GetQuestionDetails(questionId);
     }
 
-    function UpdateCurrentQuestionNavigationStatus(questionNavigationDetails) {
-        var ClassesForViewedQuestion = 'fa fa-square';
-        var ClassForUnSeenQuestion = 'UnSeen';
-        if (questionNavigationDetails) {
-            var input = '#NavigationSection ' + '#' + questionNavigationDetails.QuestionNumber;
-            input = $(input).find('.QuestionCheckboxInnerDiv');
-            $(input).removeClass(ClassForUnSeenQuestion);
-            $(input).removeClass(ClassesForViewedQuestion);
-            if (questionNavigationDetails.IsViewed) {
-                $(input).addClass(ClassesForViewedQuestion);
-            }
-            else {
-                $(input).addClass(ClassForUnSeenQuestion);
-            }
-        }
-    }
     function GetCurrentQuestionStatus() {
         var QuestionNumber = $("#QuestionNumber").val();
         var QuestionType = $("#QuestionType").val();
@@ -557,5 +458,17 @@ else
         return result;
     }
     function OnSubmitTest() { }
+    function refreshAnsweredQuestionCount() {
+        var answeredObjectiveQuestions = parseInt($('#objective-test-side-bar .is-answered').length);
+        var answeredPracticalQuestions = parseInt($('#practical-test-side-bar .is-answered').length);
+        var totalObjectiveQuestions = parseInt($('#objective-test-side-bar .QuestionCheckbox').length);
+        var totalPracticalQuestions = parseInt($('#practical-test-side-bar .QuestionCheckbox').length);
+        if (answeredObjectiveQuestions != NaN && answeredPracticalQuestions != NaN && totalObjectiveQuestions != NaN && totalPracticalQuestions != NaN) {
+            $('#answeredObjectiveQuestionsCount').text(answeredObjectiveQuestions);
+            $('#answeredPracticalQuestionsCount').text(answeredPracticalQuestions);
+            $('#notAnsweredObjectiveQuestionsCount').text(totalObjectiveQuestions - answeredObjectiveQuestions);
+            $('#notAnsweredPracticalQuestionsCount').text(totalPracticalQuestions - answeredPracticalQuestions);
+        }
+    }
 
 </script>

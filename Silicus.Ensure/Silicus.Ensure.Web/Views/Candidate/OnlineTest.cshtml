@@ -1,7 +1,4 @@
 ﻿@model Silicus.Ensure.Web.Models.TestSuiteCandidateModel
-@using Kendo.Mvc.UI;
-@using Silicus.Ensure.Web.Models.Test
-@using Silicus.Ensure.Web
 
 @{
     ViewBag.Title = "Online Test";
@@ -9,79 +6,6 @@
 }
 <div class="row">
     <div class="col-sm-12 main-content" id="main">
-        @*<div class="row topBox">
-                <div class="col-sm-12">
-                    <div class="alert alert-danger M-T15">
-                        <strong>Attention!</strong> This test is window protected, please do not move away from the window or refresh page.
-                    </div>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-sm-12">
-
-                    <input type="hidden" value="@Model.TestSuiteId" id="TestSuiteId" />
-                    <input type="hidden" value="@Model.UserTestSuiteId" id="UserTestSuiteId" />
-                    <input type="hidden" value="@Model.UserId" id="UserId" />
-                </div>
-            </div>
-            <div class="row">
-                <div class="custBox">
-                    <div class="f1" style="background:#067bb5;">
-                        <div class="col-sm-8">
-                            @Html.Partial("_CandidateInfo", Model.CandidateInfo)
-                        </div>
-                        <div class="col-sm-4">
-                            <div class="row">
-                                <div class="col-sm-12">
-                                    <div class="clock">
-                                        <div id="counter">
-
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-sm-12">
-                                    @(Html.Kendo().Button()
-                            .Name("btnAddMoreTime").Events(e => e.Click("AddMoreTime"))
-                                        .HtmlAttributes(new { type = "button" }).Content("Add more time").HtmlAttributes(new { style = "float:right;", @class = "btn btn-addTime btn-lg" }))
-
-                                    @Html.Hidden("TimerIncCount", Model.ExtraCount)
-                                </div>
-                            </div>
-
-                        </div>
-                        <div class="col-sm-12 M-T15">
-                            <span style="font-weight:bold;font-size:15px;color:#fff;">Test Progress</span>
-                            <div class="progress M-T10">
-                                <div id="progressBar" class="progress-bar progress-bar-info" role="progressbar" aria-valuenow="50"
-                                     aria-valuemin="0" aria-valuemax="100" style="width:50%">
-                                    <span id="progressInfo">50%</span> Complete
-                                </div>
-                            </div>
-                        </div>
-                        <div class="clearfix"></div>
-                    </div>
-
-                </div>
-            </div>*@
-
-        @*<div class="row M-B25">
-                    <div class="col-sm-9 M-T15">
-                        <div class="f1 M-B30" style="background:#fff;">
-                            <div id="QuestionDetails">
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-sm-3 M-T15" style="padding-left:0px;">
-                        <div class="f1 M-B30" style="background:#fff;">
-                            <div id="QuestionNavigation">
-                                @Html.Partial("_QuestionNavigationPanel", @Model.NavigationDetails)
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>*@
         <div class="row">
             <div class="col-sm-12">
 
@@ -260,6 +184,15 @@
     </div>
 }
 
+
+@section CandidateDetails {
+    @Html.Partial("_testSuiteAndCandidateDetails", Model);
+}
+
+@section ReadOnlyInstructions {
+    @Html.Partial("~/Views/Candidate/ReadOnlyInstructions.cshtml")
+}
+
 @helper QuestionColor(Silicus.Ensure.Models.Test.QuestionNavigationBasics question)
 {
 if (question.IsAnswered)
@@ -273,7 +206,7 @@ else if (question.IsViewedOnly)
 else
 {
         @("is-not-visited");
-    }
+}
 
 }
 
@@ -281,7 +214,7 @@ else
 
 <script>
     var clock;
-    var totalTime;   
+    var totalTime;
     function updateQuestionLinkColorClass(questionLinkId, isAnswred, isViewedOnly) {
         var className;
         if (isAnswred) {
@@ -298,7 +231,7 @@ else
         $(questionLinkId).addClass(className);
     }
 
-    $(document).ready(function () {       
+    $(document).ready(function () {
         $('.breadcrumb-item.active').removeClass('active');
         $('#objective-test').addClass('active');
         $('#practical-test-side-bar').hide();
@@ -314,35 +247,6 @@ else
         var timerCnt = $("#TimerIncCount").val();
         if (timerCnt >= 2)
             $("#btnAddMoreTime").hide();
-
-        //// Timer
-        //clock = $('#counter').FlipClock({
-        //    clockFace: 'HourlyCounter',
-        //    autoStart: false,
-        //    callbacks: {
-        //        stop: function () {
-        //            // $("#myModalTC").modal();
-        //            TestDurationComplete();
-        //            var text = "The test duration is over, thank you for your participation. Further, the recruitment team will contact you for the update";
-        //            ShowSweetAlertWithoutCancel("Warning!", text, "warning");
-        //        },
-        //        interval: ProgressBar
-        //    }
-        //});
-
-        @*var tm =@Model.DurationInMin
-        tm = parseInt(tm) * 60;
-
-        // Initialize progress bar.
-        totalTime = tm;
-        $('#progressBar').attr('aria-valuemax', totalTime).css('width', '0%');
-        $('#progressInfo').text('0%');*@
-
-        // Set counter time and start.
-        //clock.setTime(tm);
-        //clock.setCountdown(true);
-        //clock.start();
-
         $('.QuestionCheckbox').on('click', QuestionCheckboxClicked);
     });
 
@@ -365,7 +269,6 @@ else
         }
 
         updateQuestionLinkColorClass('#' + activeLinkId, questionNavigationDetails.IsAnswered, questionNavigationDetails.IsViewed);
-        UpdateCurrentQuestionNavigationStatus(questionNavigationDetails);
         MarkAsViewed(questionId);
         GetQuestionDetails(questionId);
     }
@@ -377,27 +280,6 @@ else
                 if (!($(input).hasClass('Viewed') || $(input).hasClass('Answered'))) {
                     $(input).addClass('Viewed');
                 }
-            }
-        }
-    }
-    function UpdateCurrentQuestionNavigationStatus(questionNavigationDetails) {
-        var ClassesForAnsweredQuestion = 'fa fa-check-square';
-        var ClassesForViewedQuestion = 'fa fa-square';
-        var CassForUnSeenQuestion = 'UnSeen';
-        if (questionNavigationDetails) {
-            var input = '#NavigationSection ' + '#' + questionNavigationDetails.QuestionNumber;
-            input = $(input).find('.QuestionCheckboxInnerDiv');
-            $(input).removeClass(CassForUnSeenQuestion);
-            $(input).removeClass(ClassesForViewedQuestion);
-            $(input).removeClass(ClassesForAnsweredQuestion);
-            if (questionNavigationDetails.IsAnswered) {
-                $(input).addClass(ClassesForAnsweredQuestion);
-            }
-            else if (questionNavigationDetails.IsViewed) {
-                $(input).addClass(ClassesForViewedQuestion);
-            }
-            else {
-                $(input).addClass(CassForUnSeenQuestion);
             }
         }
     }
@@ -415,9 +297,9 @@ else
         var result = { QuestionNumber: QuestionNumber, Questiontype: QuestionType, IsAnswered: IsAnswered, IsViewed: IsViewed };
         return result;
     }
-   
-  
-    function UpdateTimeDB() {        
+
+
+    function UpdateTimeDB() {
         var time = $.countdown.periodsToSeconds($('#counter').countdown('getTimes'));
         if (time / 60 != 0) {
             var userTestSuiteId = $("#UserTestSuiteId").val();
@@ -533,7 +415,7 @@ else
         }
     }
 
-   
+
 
     $(document).ready(function () {
         var text = "You are navigating to Fullscreen.";
@@ -575,10 +457,10 @@ else
 
 
 
-    window.onbeforeunload = function () {       
+    window.onbeforeunload = function () {
         return "Do you really want to close?";
     };
-    $('.confirm').click(function () {       
+    $('.confirm').click(function () {
         window.onbeforeunload = null;
     });
 
