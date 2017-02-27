@@ -43,5 +43,7 @@ namespace Silicus.Ensure.Services.Interfaces
         void UpdateUserAndCreateNewApplication(UserBusinessModel userModel);
 
         List<UserBusinessModel> GetUserWithAllApplicationDetails(int userId);
+
+        List<UserBusinessModel> GetUserDetails(int userId);
     }
 }
