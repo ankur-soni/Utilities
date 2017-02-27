@@ -591,14 +591,14 @@ namespace Silicus.Ensure.Web.Controllers
         {
             var viewerEmailId = User.Identity.Name;
             var viewer = _containerUserService.FindUserByEmail(viewerEmailId);
-            var candidate = _userService.GetUserById(userId);
+            var candidate = _userService.GetUserById(userId);       
             int count = 0;
             var testSuiteViewQuesModel = new TestSuiteViewQuesModel();
             var testSuiteQuestionList = new List<TestSuiteQuestion>();
             try
             {
                 TestSuite testSuitDetails = _testSuiteService.GetTestSuitById(testSuiteId);
-                var previewTest = new PreviewTestBusinessModel { TestSuite = testSuitDetails, ViewerId = viewer.ID, CandidateId = userId };
+                var previewTest = new PreviewTestBusinessModel { TestSuite = testSuitDetails, ViewerId = viewer.ID, CandidateId = candidate.UserApplicationId };
                 if (testSuitDetails != null && testSuitDetails.Status == Convert.ToInt32(TestSuiteStatus.Ready))
                 {
                     var questionList = _testSuiteService.GetPreview(previewTest);
