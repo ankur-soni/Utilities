@@ -109,6 +109,7 @@ namespace Silicus.Ensure.Services
                 userDetails.CandidateStatus = CandidateStatus.Archieved;             
             }
             _context.Update(user);
+            _context.Update(userDetails);
         }
 
         public UserApplicationDetails GetUserApplicationDetailsById(int userApplicationId)
