@@ -18,5 +18,7 @@ namespace Silicus.Ensure.Web.Models.Test
         [Display(Name = "Date Of Birth")]
         [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}")]
         public DateTime DOB { get; set; }
+        public int TotalExperienceInYear { get; set; }
+        public int TotalExperienceInMonth { get; set; }
     }
 }

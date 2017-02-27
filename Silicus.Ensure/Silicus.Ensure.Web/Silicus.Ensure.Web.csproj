@@ -428,6 +428,7 @@
     <Compile Include="Models\ApplicationDbContext.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Models\CandidateHistoryViewModel.cs" />
     <Compile Include="Models\CandidateViewModel.cs" />
     <Compile Include="Models\ChangePasswordModel.cs" />
     <Compile Include="Models\ContainerUserViewModel.cs" />
@@ -482,6 +483,7 @@
     <Content Include="Content\css\font-awesome-4.7.0\css\font-awesome.min.css" />
     <Content Include="Content\css\font-awesome-4.7.0\fonts\fontawesome-webfont.eot" />
     <Content Include="Content\css\font-awesome-4.7.0\fonts\fontawesome-webfont.svg" />
+    <Content Include="Content\css\font-awesome-4.7.0\fonts\Simple-Line-Icons.svg" />
     <Content Include="Content\css\font-awesome-4.7.0\HELP-US-OUT.txt" />
     <Content Include="Content\css\fonts\CartoGothicStd-Bold-webfont.svg" />
     <Content Include="Content\css\fonts\CartoGothicStd-Book-webfont.svg" />
@@ -508,7 +510,9 @@
     <Content Include="Content\css\Kendo\2014.1.416\kendo.dataviz.default.min.css" />
     <Content Include="Content\css\Kendo\2014.1.416\kendo.dataviz.min.css" />
     <Content Include="Content\css\Kendo\2014.1.416\kendo.default.min.css" />
+    <Content Include="Content\css\login.css" />
     <Content Include="Content\css\master_reset.css" />
+    <Content Include="Content\css\mobile.css" />
     <Content Include="Content\css\perfect-scrollbar.css" />
     <Content Include="Content\css\perfect-scrollbar.min.css" />
     <Content Include="Content\css\select2.css" />
@@ -520,6 +524,7 @@
     <Content Include="Content\css\Kendo\2014.1.416\telerik-navigation.css" />
     <Content Include="Content\css\sweetalert\sweetalert.css" />
     <Content Include="Content\css\sweetalert\_notes\dwsync.xml" />
+    <Content Include="Content\custom-candidate-style.css" />
     <Content Include="Content\custom-style.css" />
     <Content Include="Content\entity.css" />
     <Content Include="Content\filterGroup.css" />
@@ -527,16 +532,24 @@
     <Content Include="Content\css\Kendo\2014.1.416\Default\loading.gif" />
     <Content Include="Content\css\Kendo\2014.1.416\Default\loading-image.gif" />
     <Content Include="Content\css\Kendo\2014.1.416\Default\sprite.png" />
-    <Content Include="Content\flipclock.css" />
+    <Content Include="Content\Images\4X-login-bg.jpg" />
+    <Content Include="Content\Images\avatars\6.jpg" />
     <Content Include="Content\Images\digits.png" />
+    <Content Include="Content\Images\favicon.ico" />
+    <Content Include="Content\Images\favicon.png" />
+    <Content Include="Content\Images\inc_logo.png" />
     <Content Include="Content\Images\login-register.jpg" />
+    <Content Include="Content\Images\logo.png" />
     <Content Include="Content\Images\profile.png" />
     <Content Include="Content\Images\spriteicons.png" />
+    <Content Include="Content\jquery.countdown.css" />
     <Content Include="Content\js\bootstrap.js" />
     <Content Include="Content\js\bootstrap.min.js" />
     <Content Include="Content\js\jquery-1.12.4.min.js" />
     <Content Include="Content\js\plugins\sweetalert\sweetalert.min.js" />
     <Content Include="Content\js\plugins\sweetalert\_notes\dwsync.xml" />
+    <Content Include="Content\scrollbar.css" />
+    <Content Include="Content\style-candidate.css" />
     <Content Include="Content\style.css" />
     <Content Include="Content\toastr.css" />
     <Content Include="Content\toastr.min.css" />
@@ -547,7 +560,10 @@
     <Content Include="Images\silicus\logo.png" />
     <Content Include="LESS\style.css" />
     <Content Include="LESS\_notes\dwsync.xml" />
+    <Content Include="Scripts\app.js" />
     <Content Include="Scripts\bootbox.min.js" />
+    <Content Include="Scripts\bootstrap-select.min.js" />
+    <Content Include="Scripts\bootstrap.min.js" />
     <Content Include="Scripts\Bootstrap\3.3.1\bootstrap.js" />
     <Content Include="Scripts\Bootstrap\3.3.1\bootstrap.min.js" />
     <Content Include="Content\toastr.scss" />
@@ -601,14 +617,24 @@
     <Content Include="EmailTemplates\CandidateTestSubmitted.cshtml" />
     <Content Include="EmailTemplates\CandidatePanelAssigned.cshtml" />
     <Content Include="EmailTemplates\CandidateRecruiterAssigned.cshtml" />
+    <Content Include="Content\css\font-awesome-4.7.0\fonts\glyphicons-halflings-regular.eot" />
+    <Content Include="Content\css\font-awesome-4.7.0\fonts\glyphicons-halflings-regular.ttf" />
+    <Content Include="Content\css\font-awesome-4.7.0\fonts\glyphicons-halflings-regular.woff" />
+    <Content Include="Content\css\font-awesome-4.7.0\fonts\glyphicons-halflings-regular.woff2" />
+    <Content Include="Content\css\font-awesome-4.7.0\fonts\Simple-Line-Icons.eot" />
+    <Content Include="Content\css\font-awesome-4.7.0\fonts\Simple-Line-Icons.ttf" />
+    <Content Include="Content\css\font-awesome-4.7.0\fonts\Simple-Line-Icons.woff" />
+    <Content Include="Content\css\font-awesome-4.7.0\fonts\Simple-Line-Icons.woff2" />
     <None Include="Properties\PublishProfiles\ensure - FTP.pubxml" />
     <None Include="Properties\PublishProfiles\ensure - Web Deploy.pubxml" />
     <None Include="Scripts\jquery-2.1.4.intellisense.js" />
-    <Content Include="Scripts\flipclock.js" />
-    <Content Include="Scripts\flipclock.min.js" />
     <Content Include="Scripts\jquery-2.1.4.js" />
     <Content Include="Scripts\jquery-2.1.4.min.js" />
     <None Include="Scripts\jquery.validate-vsdoc.js" />
+    <Content Include="Scripts\jquery.bootstrap-responsive-tabs.min.js" />
+    <Content Include="Scripts\jquery.countdown.min.js" />
+    <Content Include="Scripts\jquery.min.js" />
+    <Content Include="Scripts\jquery.plugin.min.js" />
     <Content Include="Scripts\jquery.unobtrusive-ajax.js" />
     <Content Include="Scripts\jquery.unobtrusive-ajax.min.js" />
     <Content Include="Scripts\jquery.validate.js" />
@@ -873,6 +899,10 @@
     <Content Include="Views\Shared\_CandidateProfile.cshtml" />
     <Content Include="Views\Shared\_CadidateGrid.cshtml" />
     <Content Include="Views\Admin\_partialSelectRecruiterList.cshtml" />
+    <Content Include="Views\Admin\CandidateHistory.cshtml" />
+    <Content Include="Views\Shared\_testSuiteAndCandidateDetails.cshtml" />
+    <Content Include="Views\Candidate\ReadOnlyInstructions.cshtml" />
+    <Content Include="Views\Shared\PreviewQuestions.cshtml" />
     <None Include="Web.Azure.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

@@ -252,6 +252,47 @@ namespace Silicus.Ensure.Web.Controllers
             var positionDetails = _positionService.GetPositionDetails().OrderBy(model => model.PositionName);
             candidatebusinessModel.PositionList = positionDetails.ToList();
             return PartialView("_CandidateProfile", candidatebusinessModel);
+          
+        }
+
+
+
+        public ActionResult CandidateHistory(int userId)
+        {
+            List<CandidateHistoryViewModel> objUserApplicationDetails = new List<CandidateHistoryViewModel>();          
+
+            var candidateApplicationDetails = _userService.GetUserDetails(userId);
+            foreach (var candidateApplication in candidateApplicationDetails)
+            {
+                TestSuiteViewModel testSuiteViewModel = null;
+                var candidatebusinessModel = _mappingService.Map<UserBusinessModel, CandidateHistoryViewModel>(candidateApplication);
+                var positionDetails = _positionService.GetPositionDetails().OrderBy(m => m.PositionName);
+                candidatebusinessModel.PositionList = positionDetails.ToList();
+              
+               
+                var userTestSuiteDetails = _userService.GetTestSuiteDetailsOfUser(candidateApplication.UserApplicationId);
+                if (userTestSuiteDetails != null)
+                {
+                    testSuiteViewModel = new TestSuiteViewModel();
+                    TestSuite testSuitDetails = _testSuiteService.GetTestSuitById(userTestSuiteDetails.GetType().GetProperty("TestSuiteId").GetValue(userTestSuiteDetails, null));
+                    testSuiteViewModel = _mappingService.Map<TestSuite, TestSuiteViewModel>(testSuitDetails);
+                    testSuiteViewModel.OverallProficiency = ((Proficiency)Convert.ToInt32(testSuiteViewModel.Competency)).ToString();
+                    var position = _positionService.GetPositionById(testSuiteViewModel.Position);
+                    testSuiteViewModel.PositionName = position.PositionName;
+                    List<TestSuiteTagViewModel> testSuiteTags;
+                    GetTestSuiteTags(testSuitDetails, out testSuiteTags);
+                    testSuiteViewModel.Tags = testSuiteTags;
+                    testSuiteViewModel.Userid = userId;
+                }             
+
+                candidatebusinessModel.TestSuiteViewModel = testSuiteViewModel;
+                objUserApplicationDetails.Add(candidatebusinessModel);
+            }
+
+         
+
+            return View(objUserApplicationDetails);
+
         }
 
         public ActionResult CandidatesSuit(int UserId, int IsReassign = 0)
@@ -523,7 +564,7 @@ namespace Silicus.Ensure.Web.Controllers
         {
             return _positionService.GetPositionById(positionId);
         }
-        public ActionResult CandidateAdd(int UserId)
+        public ActionResult CandidateAdd(int UserId,bool IsCandidateReappear=false)
         {
             UserViewModel currUser = new UserViewModel();
             currUser.UserId = UserId;
@@ -540,6 +581,7 @@ namespace Silicus.Ensure.Web.Controllers
 
             var positionDetails = _positionService.GetPositionDetails().OrderBy(model => model.PositionName);
             currUser.PositionList = positionDetails.ToList();
+            currUser.IsCandidateReappear = IsCandidateReappear;
             return View(currUser);
         }
 
@@ -549,14 +591,14 @@ namespace Silicus.Ensure.Web.Controllers
         {
             var viewerEmailId = User.Identity.Name;
             var viewer = _containerUserService.FindUserByEmail(viewerEmailId);
-            var candidate = _userService.GetUserById(userId);
+            var candidate = _userService.GetUserById(userId);       
             int count = 0;
             var testSuiteViewQuesModel = new TestSuiteViewQuesModel();
             var testSuiteQuestionList = new List<TestSuiteQuestion>();
             try
             {
                 TestSuite testSuitDetails = _testSuiteService.GetTestSuitById(testSuiteId);
-                var previewTest = new PreviewTestBusinessModel { TestSuite = testSuitDetails, ViewerId = viewer.ID, CandidateId = userId };
+                var previewTest = new PreviewTestBusinessModel { TestSuite = testSuitDetails, ViewerId = viewer.ID, CandidateId = candidate.UserApplicationId };
                 if (testSuitDetails != null && testSuitDetails.Status == Convert.ToInt32(TestSuiteStatus.Ready))
                 {
                     var questionList = _testSuiteService.GetPreview(previewTest);
@@ -629,11 +671,11 @@ namespace Silicus.Ensure.Web.Controllers
                 {
                     if (question.QuestionType == (int)QuestionType.Practical)
                     {
-                        navigation.Practical.Add(new QuestionNavigationBasics { QuestionId = question.Id, IsViewedOnly = false });
+                        navigation.Practical.Add(new QuestionNavigationBasics { QuestionId = question.Id,QuestionDescription=question.QuestionDescription, IsViewedOnly = false });
                     }
                     else if (question.QuestionType == (int)QuestionType.Objective)
                     {
-                        navigation.Objective.Add(new QuestionNavigationBasics { QuestionId = question.Id, IsViewedOnly = false });
+                        navigation.Objective.Add(new QuestionNavigationBasics { QuestionId = question.Id,QuestionDescription = question.QuestionDescription,IsViewedOnly = false });
                     }
                 }
             }

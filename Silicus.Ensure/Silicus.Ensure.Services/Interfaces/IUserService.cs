@@ -24,7 +24,7 @@ namespace Silicus.Ensure.Services.Interfaces
 
         IEnumerable<User> GetUserByRole(string role);
 
-        dynamic GetTestSuiteDetailsOfUser(int? userId);
+        dynamic GetTestSuiteDetailsOfUser(int? UserApplicationId);
 
         dynamic GetTestSuiteDetailsWithQuestions(int? userTestSuiteId);
 
@@ -41,5 +41,9 @@ namespace Silicus.Ensure.Services.Interfaces
         IEnumerable<UserBusinessModel> GetCandidates(string firstName, string lastName, DateTime dob);
 
         void UpdateUserAndCreateNewApplication(UserBusinessModel userModel);
+
+        List<UserBusinessModel> GetUserWithAllApplicationDetails(int userId);
+
+        List<UserBusinessModel> GetUserDetails(int userId);
     }
 }

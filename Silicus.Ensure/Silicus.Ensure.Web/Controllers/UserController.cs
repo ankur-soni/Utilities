@@ -98,50 +98,32 @@ namespace Silicus.Ensure.Web.Controllers
         {
             var userlist = _containerUserService.GetAllUsers();
             var userlistViewModel = _mappingService.Map<List<Silicus.UtilityContainer.Models.DataObjects.User>, List<UserDetailViewModel>>(userlist);
-            var UtilityId = getUtilityId();
+            var UtilityId = GetUtilityId();
             var userRoles = _utilityUserRoleService.GetAllUserRolesForUtility(UtilityId);
 
             var userWithRoles = (from userinRoles in userRoles
                                  join allUsers in userlistViewModel
-                                 on userinRoles.UserId equals allUsers.UserId into temp
-                                 from j in temp.DefaultIfEmpty()
+                                 on userinRoles.UserId equals allUsers.UserId
                                  select new UserDetailViewModel
                                  {
-                                     RoleName = userinRoles.Role.Name,
-                                     UserName = j.UserName,
-                                     Department = j.Department,
-                                     Designation = j.Designation,
-                                     Email = j.Email,
-                                     FirstName = j.FirstName,
-                                     FullName = j.FullName,
-                                     LastName = j.LastName,
-                                     MiddleName = j.MiddleName,
+                                     RoleName = userinRoles?.Role?.Name,
+                                     UserName = allUsers.UserName,
+                                     Department = allUsers.Department,
+                                     Designation = allUsers.Designation,
+                                     Email = allUsers.Email,
+                                     FirstName = allUsers.FirstName,
+                                     FullName = allUsers.FullName,
+                                     LastName = allUsers.LastName,
+                                     MiddleName = allUsers.MiddleName,
                                      RoleId = userinRoles.Role.ID,
-                                     UserId = j.UserId
+                                     UserId = allUsers.UserId
                                  }).ToList();
 
             DataSourceResult result = userWithRoles.ToDataSourceResult(request);
             return Json(result);
         }
 
-        private UserDetailViewModel GetAdUserDetails(string email)
-        {
-            var user = _containerUserService.FindUserByEmail(email);
-            var userViewModel = _mappingService.Map<Silicus.UtilityContainer.Models.DataObjects.User, UserDetailViewModel>(user);
-            var UtilityId = getUtilityId();
-            var userRole = _utilityUserRoleService.GetAllRolesForUser(email);
-
-            var assignedRole = userRole.FirstOrDefault(y => y.Id == userViewModel.UserId);
-
-            if (assignedRole != null)
-                userViewModel.RoleName = assignedRole.Role.Name;
-
-            return userViewModel;
-        }
-
-
-
-        private int getUtilityId()
+        private int GetUtilityId()
         {
             var utilityProductId = WebConfigurationManager.AppSettings["ProductId"];
             if (string.IsNullOrWhiteSpace(utilityProductId))
@@ -158,12 +140,12 @@ namespace Silicus.Ensure.Web.Controllers
         /// <param name="UserId"></param>
         /// <returns></returns>
         [AcceptVerbs(HttpVerbs.Post)]
-        public ActionResult DeleteUser(UserViewModel userModel)
+        public ActionResult DeleteUser(int UserId)
         {
-            if (userModel != null && userModel.UserId > 0)
+            if (UserId > 0)
             {
 
-                _userService.Delete(userModel.UserId);
+                _userService.Delete(UserId);
                 return Json(1);
             }
 
@@ -194,7 +176,7 @@ namespace Silicus.Ensure.Web.Controllers
             bool userInRole = User.IsInRole(Silicus.Ensure.Models.Constants.RoleName.Admin.ToString());
             for (int index = 0; index < viewModels.Count(); index++)
             {
-                var testSuitId = _testSuiteService.GetUserTestSuiteByUserApplicationId(viewModels[index].UserId);
+                var testSuitId = _testSuiteService.GetUserTestSuiteByUserApplicationId(viewModels[index].UserApplicationId);
                 viewModels[index].IsAdmin = userInRole;
                 viewModels[index].TestSuiteId = testSuitId != null ? testSuitId.TestSuiteId : 0;
             }

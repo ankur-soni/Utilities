@@ -55,17 +55,17 @@ namespace Silicus.EncourageWithAzureAd.Web.Controllers
 
             var commonRoles = authorizationService.GetRoleForUtility(User.Identity.Name, utiltyName);
 
-            if ((commonRoles.Count > 0))
-            {
+            //if ((commonRoles.Count > 0))
+            //{
                 dashboardViewModel.UserRoles = commonRoles;
-                _logger.Log("No. of roles are: " + commonRoles.Count);
-            }
-            else
-            {
-                commonRoles.Add("User");
-                dashboardViewModel.UserRoles = commonRoles;
-                _logger.Log("Current user's role is User");
-            }
+            //    _logger.Log("No. of roles are: " + commonRoles.Count);
+            //}
+            //else
+            //{
+            //    commonRoles.Add("User");
+            //    dashboardViewModel.UserRoles = commonRoles;
+            //    _logger.Log("Current user's role is User");
+            //}
 
             var typesOfAwards = _encourageDatabaseContext.Query<Award>().ToList();
             var awardsList = new List<AwardViewModel>();
@@ -160,9 +160,9 @@ namespace Silicus.EncourageWithAzureAd.Web.Controllers
         public ActionResult LoginAs()
         {
             var usersWithMultipleRoles = _commonDbService.GetUserWithMultipleRoles();
-            LoginAsViewModel loginAsVM = new LoginAsViewModel();
-            loginAsVM.UsersWithMultipleRoles = new SelectList(usersWithMultipleRoles, "EmailAddress", "DisplayName");
-            return View(loginAsVM);
+            //LoginAsViewModel loginAsVM = new LoginAsViewModel();
+            //loginAsVM.UsersWithMultipleRoles = new SelectList(usersWithMultipleRoles, "EmailAddress", "DisplayName");
+            return View();
         }
 
         [HttpPost]
@@ -173,14 +173,14 @@ namespace Silicus.EncourageWithAzureAd.Web.Controllers
             {
                 var superUserName = User.Identity.Name;
 
-                var user = _commonDbContext.Query<User>().FirstOrDefault(u => u.EmailAddress.ToLowerInvariant() == loginAs.Username.ToLowerInvariant());
+                var user = _commonDbContext.Query<User>().FirstOrDefault(u => u.EmailAddress.ToLower() == loginAs.Username.ToLower());
                 if (user == null)
                 {
                     ModelState.AddModelError("error", "User does not exists");
                     return View();
                 }
                 string utility = WebConfigurationManager.AppSettings["ProductName"];
-                var roles = _commonDbContext.Query<UtilityUserRoles>().Where(x => x.User.EmailAddress.ToLowerInvariant() == loginAs.Username.ToLowerInvariant() && x.Utility.Name.ToLowerInvariant() == utility.ToLowerInvariant()).Select(x => x.Role.Name).ToList();
+                var roles = _commonDbContext.Query<UtilityUserRoles>().Where(x => x.User.EmailAddress.ToLower() == loginAs.Username.ToLower() && x.Utility.Name.ToLower() == utility.ToLower()).Select(x => x.Role.Name).ToList();
 
                 if (roles.Contains("Manager") || roles.Contains("Reviewer"))
                 {
@@ -204,6 +204,10 @@ namespace Silicus.EncourageWithAzureAd.Web.Controllers
                 ModelState.AddModelError("error", "User name is required");
             }
             return View();
+        }
+        public ActionResult Error()
+        {
+            return View("~/Views/Shared/Error.cshtml");
         }
     }
 }

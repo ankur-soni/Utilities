@@ -3,6 +3,8 @@
 @using Kendo.Mvc.UI;
 
 
+
+
 <div class="row white-bg header-row">
     <nav class="" role="navigation" style="margin-bottom: 0">
         <div class="navbar-header">
@@ -220,7 +222,7 @@
 .BindTo(EnumHelper.GetSelectList((typeof(Year)))
 .Select(x => new SelectListItem { Text = x.Value, Value = x.Value }))
 .HtmlAttributes(new { style = "width: 100%;" })
-.OptionLabel("Year")
+.OptionLabel("Years")
                                             )
                                             @Html.ValidationMessageFor(m => m.TotalExperienceInYear)
                                         </div>
@@ -249,7 +251,7 @@
 .BindTo(EnumHelper.GetSelectList((typeof(Year)))
 .Select(x => new SelectListItem { Text = x.Value, Value = x.Value }))
 .HtmlAttributes(new { style = "width: 100%" })
-.OptionLabel("Year")
+.OptionLabel("Years")
                                             )
                                             @Html.ValidationMessageFor(m => m.RelevantExperienceInYear)
                                         </div>
@@ -321,7 +323,7 @@
                                 </div>
                                 <div class="col-md-6">
                                     <div class="col-md-6">
-                                        <label for="file">Upload Image:</label>
+                                        <label for="file">Upload Image</label>
                                     </div>
                                     <div class="col-md-6">
                                         @if (!string.IsNullOrWhiteSpace(Model.ProfilePhotoFilePath))
@@ -362,3 +364,18 @@
     </div>
 </div>
 
+
+
+<script src="~/Scripts/jquery.validate.min.js"></script>
+<script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
+<script src="~/Scripts/jquery.unobtrusive-ajax.min.js" type="text/javascript"> </script>
+
+<script>
+    $('#btnSave').click(function () {       
+        window.onbeforeunload = null;   
+    });
+
+    $('frmSearchAllNdc').submit(function () {
+        window.onbeforeunload = null;
+    });
+</script>

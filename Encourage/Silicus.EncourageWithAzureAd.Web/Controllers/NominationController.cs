@@ -167,7 +167,7 @@ namespace Silicus.EncourageWithAzureAd.Web.Controllers
                             new ManagerComment
                             {
                                 CriteriaId = criteria.Id,
-                                Comment = criteria.Comment != null ? _textInfo.ToTitleCase(criteria.Comment) : "",
+                                Comment = criteria.Comment != null ? criteria.Comment : "",
                                 Rating = criteria.Rating,
                                 Weightage = criteria.Weightage,
                                 FinalScore = 0,
@@ -176,7 +176,7 @@ namespace Silicus.EncourageWithAzureAd.Web.Controllers
                         );
                     }
                 }
-                nomination.Comment = model.MainComment != null ? _textInfo.ToTitleCase(model.MainComment) : "";
+                nomination.Comment = model.MainComment != null ? model.MainComment : "";
 
                 nomination.IsLocked = false;
                 var wasSubmitted = _awardService.AddNomination(nomination);
@@ -315,7 +315,7 @@ namespace Silicus.EncourageWithAzureAd.Web.Controllers
                     nomination.ManagerComments.Add(new ManagerComment
                     {
                         CriteriaId = comment.Id,
-                        Comment = comment.Comment != null ? _textInfo.ToTitleCase(comment.Comment) : "",
+                        Comment = comment.Comment != null ? comment.Comment : "",
                         NominationId = model.NominationId,
                         Rating = comment.Rating,
                         Weightage = comment.Weightage,
@@ -325,7 +325,7 @@ namespace Silicus.EncourageWithAzureAd.Web.Controllers
                 }
             }
 
-            nomination.Comment = model.MainComment != null ? _textInfo.ToTitleCase(model.MainComment) : "";
+            nomination.Comment = model.MainComment != null ? model.MainComment : "";
 
             _nominationService.DeletePrevoiusManagerComments(model.NominationId);
             _nominationService.UpdateNomination(nomination);
@@ -634,7 +634,7 @@ namespace Silicus.EncourageWithAzureAd.Web.Controllers
                         NominationId = model.NominationId,
                         ReviewerId = model.ReviewerId,
                         CriteriaId = item.CriteriaId,
-                        Comment = item.Comment != null ? _textInfo.ToTitleCase(item.Comment) : "",
+                        Comment = item.Comment != null ? item.Comment : "",
                         Credit = Convert.ToInt32(item.Credit),
                         ReviewId = review.Id
                     };
@@ -813,7 +813,7 @@ namespace Silicus.EncourageWithAzureAd.Web.Controllers
                     NominationId = model.NominationId,
                     ReviewerId = model.ReviewerId,
                     CriteriaId = item.CriteriaId,
-                    Comment = item.Comment != null ? _textInfo.ToTitleCase(item.Comment) : "",
+                    Comment = item.Comment != null ? item.Comment : "",
                     Credit = item.Credit,
                     ReviewId = review.Id
                 };

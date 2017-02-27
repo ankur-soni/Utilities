@@ -679,8 +679,27 @@ namespace Silicus.EncourageWithAzureAd.Web.Controllers
         public JsonResult GetCustomDateDetailsForAward(int awardId)
         {
             CustomDate customDateDetails = _customDateService.CustomDateDetailsForAward(awardId);
-            if (customDateDetails == null) { customDateDetails = new CustomDate(); }
-            return Json(customDateDetails, JsonRequestBehavior.AllowGet);
+            if (customDateDetails == null)
+            {
+                customDateDetails = new CustomDate();
+                customDateDetails.Year = DateTime.Now.Year;
+                customDateDetails.Month = DateTime.Now.Month;
+                customDateDetails.IsApplicable = true;
+                customDateDetails.MonthsToSubtract = 0;
+
+            }
+            customDateDetails.Award = _awardService.GetAwardById(awardId);
+
+            var details = new 
+            {
+                AwardName = customDateDetails.Award.Name,
+                Year = customDateDetails.Year,
+                Month = customDateDetails.Month,
+                MonthName = CultureInfo.CurrentCulture.DateTimeFormat.GetMonthName(customDateDetails.Month.Value),
+                IsApplicable = customDateDetails.IsApplicable,
+                MonthsToSubtract = customDateDetails.MonthsToSubtract
+            };
+            return Json(details, JsonRequestBehavior.AllowGet);
         }
     }
 }

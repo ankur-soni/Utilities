@@ -84,5 +84,7 @@ namespace Silicus.Ensure.Models
 
         public string RecruiterName { get; set; }
 
+        public DateTime ApplicationDate { get; set; }
+
     }
 }

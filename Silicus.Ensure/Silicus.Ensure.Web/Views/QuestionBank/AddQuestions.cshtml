@@ -84,15 +84,15 @@
                             <div class="row">
                                 <div class="col-sm-12 col-md-12 col-lg-12">
                                     <div class="">
-                                        <label class="font-Bold themeColorBlue">Answer choices</label>
+                                        <label class="font-Bold themeColorBlue">Answer choices <span style="color:red">*</span></label>
                                     </div>
                                 </div>
                             </div>
                             <div class="row" id="rowOpt1">
                                 <div class="col-xs-10 col-sm-10 col-md-10 col-lg-6">
-                                    <div class="input-group form-group">
+                                    <div class="input-group form-group" id="answerDiv">
                                         <div class="input-group-addon">
-                                            @Html.CheckBoxFor(y => y.IsAnsOption1, new { @class = "ansCheckBox" })
+                                            @Html.CheckBoxFor(y => y.IsAnsOption1, new { @class = "ansCheckBox chkValidation" })
                                         </div>
                                         @Html.TextBoxFor(m => m.Option1, new { @class = "form-control", Value = @Model.Option1 })
                                     </div>
@@ -308,7 +308,7 @@
 
                             <div class="pull-right">
                                 <input type="submit" name="btnSaveAndAddNewQuestion" id="btnSaveAndAddNewQuestion" value="Save & add another question" class="btn btn-primary" />
-                                <input type="submit" style="width: 70px;margin-left:1px;" name="btnSave" value="Save" class="btn btn-primary" />
+                                <input type="submit" style="width: 70px;margin-left:1px;" id="btnSave" name="btnSave" value="Save" class="btn btn-primary" />
                                 <input type="button" name="btnCancel" value="Cancel" onclick="OnCancel()" class="btn btn-secondary" />
                             </div>
                         </div>
@@ -322,9 +322,10 @@
                         <script>
                             function isAnySelectedAns(input)
                             {
+                                $('#IsAnsOption1_validationMessage').appendTo('#answerDiv');
                                 var qType = $('#QuestionType').val();
                                 if (input.is("[name=IsAnsOption1]") && qType == 1) {
-                                    input.attr("data-IsAnsOption1-msg", "Please select at least single Answer !");
+                                    input.attr("data-IsAnsOption1-msg", "Please select at least single Answer.");
                                     return $(".ansCheckBox:checked").length>0;
                                 }
                                 return true;
@@ -333,7 +334,7 @@
                             {
                                 var qType = $('#QuestionType').val();
                                 if (input.is("[name=Option"+optionNo+"]") && qType == 1 && input.is(".otherOption")) {
-                                    input.attr("data-Option"+optionNo+"-msg", "Option "+optionNo+" can't be blank !");
+                                    input.attr("data-Option"+optionNo+"-msg", "Option "+optionNo+" can't be blank.");
                                     return input.val().trim()!="";
                                 }
                                 return true;
@@ -342,7 +343,7 @@
                             {
                                 var qType = $('#QuestionType').val();
                                 if (input.is("[name=Option"+optionNo+"]") && qType == 1) {
-                                    input.attr("data-Option"+optionNo+"-msg", "Option "+optionNo+" can't be blank !");
+                                    input.attr("data-Option"+optionNo+"-msg", "Option "+optionNo+" can't be blank.");
                                     return input.val().trim()!="";//?isAnySelectedAns(input,optionNo):false;
                                 }
                                 return true;
@@ -350,6 +351,11 @@
 
                             $(document).ready(function () {
                                 SetNavigationMenuActive('QuestionBank');
+                                var questionType = $("#QuestionType").val();
+                                if(questionType&&questionType==2)
+                                {
+                                    QuestionTypeChange();
+                                }
                                 $("#IsAnsOption1").removeAttr("data-val-required")
                                 $("#AddQuestionForm").kendoValidator({
                                     rules: {
@@ -384,7 +390,7 @@
                                         Answer:function (input, params) {
                                             var qType = $('#QuestionType').val();
                                             if (input.is("[name=Answer]") && qType == 2) {
-                                                input.attr("data-Answer-msg", "Answer can't be blank !");
+                                                input.attr("data-Answer-msg", "Answer can't be blank.");
                                                 return input.val().trim()!="";
                                             }
                                             return true;
@@ -438,7 +444,7 @@
 
                                 var success =@Model.Success;
                                 var edit="@Model.Edit";
-                                if(success==1 || success==2 )
+                                if(success==1)
                                 {
                                     if(edit=="True"){
                                         ShowMessage("Question updated successfully.",true);
@@ -448,6 +454,9 @@
                                         ShowMessage("Question added successfully.",true);
                                         window.location.href = "/QuestionBank/QuestionBank";
                                     }
+                                }
+                                if(success==2){
+                                    ShowMessage("Question added successfully.",true);
                                 }
                                 else
                                 {
@@ -512,9 +521,6 @@
                                 skillTag.value([]);
                                 var answerType = $("#AnswerType");
                                 answerType.val("1");
-                                var proficiency = $("#ProficiencyLevel").data("kendoDropDownList");
-                                proficiency.value("1");
-                                var duration = $("#Duration").val('1');
                             }
 
                             function OnCancel() {
@@ -627,7 +633,7 @@
                                     rules: {
                                         tagNamevalidation: function (input, params) {
                                             if (input.is("[name='TagName']") && input.val() != "") {
-                                                input.attr("data-tagNamevalidation-msg", "Tag name already exist !");
+                                                input.attr("data-tagNamevalidation-msg", "Tag name already exist.");
                                                 return isTagNameAvailable("", input.val());
                                             }
 
@@ -724,3 +730,4 @@
         </div>
     </form>
 </div>
+

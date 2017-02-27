@@ -88,13 +88,13 @@
                                         return true;
                                     }
                                     else
-                                        input.attr("data-experiencevalidation-msg", "Experience should not be greater than 30!");
+                                        input.attr("data-experiencevalidation-msg", "Experience should not be greater than 30.");
                                     return false;
                                 }
                                 if (input.is("[name='Position']")) {
                                     if( !(input.val() != "" && input.val()!="--Select--"))
                                     {
-                                        input.attr("data-experiencevalidation-msg", "Position is required!");
+                                        input.attr("data-experiencevalidation-msg", "Position is required.");
                                         return false;
                                     }
                                 }
@@ -102,7 +102,7 @@
                                     var remoteURL = input.attr("data-val-remote-url");
                                     if(!checkMail(input.val(),remoteURL))
                                     {
-                                        input.attr("data-experiencevalidation-msg", "Email is already exist!");
+                                        input.attr("data-experiencevalidation-msg", "Email is already exist.");
                                         return false;
                                     }
                                 }
