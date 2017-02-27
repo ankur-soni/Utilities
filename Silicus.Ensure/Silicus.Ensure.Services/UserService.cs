@@ -88,10 +88,10 @@ namespace Silicus.Ensure.Services
             {
                 var userDetails = MapUserDetails(userModel);
                 var userApplicationDetailsDetails = MapApplicationDetails(userModel);
-                
+
                 _context.Add(userApplicationDetailsDetails);
                 _context.Update(userDetails);
-               // _context.SaveChanges();
+                // _context.SaveChanges();
 
             }
         }
@@ -106,7 +106,7 @@ namespace Silicus.Ensure.Services
             var userDetails = GetLatesUserApplication(userId);
             if (userDetails != null)
             {
-                userDetails.CandidateStatus = CandidateStatus.Archived;             
+                userDetails.CandidateStatus = CandidateStatus.Archived;
             }
             _context.Update(user);
             _context.Update(userDetails);
@@ -165,9 +165,9 @@ namespace Silicus.Ensure.Services
 
         public IEnumerable<UserBusinessModel> GetCandidates(string firstName, String lastName, DateTime dob)
         {
-            var users = _context.Query<User>().Where(x =>x.FirstName==firstName
-            && x.LastName==lastName
-            && x.DateOfBirth==dob.Date
+            var users = _context.Query<User>().Where(x => x.FirstName == firstName
+            && x.LastName == lastName
+            && x.DateOfBirth == dob.Date
             ).ToList();
             List<UserBusinessModel> userModel = new List<UserBusinessModel>();
             foreach (var user in users)
@@ -245,7 +245,9 @@ namespace Silicus.Ensure.Services
                 DOB = user.DOB,
                 RequisitionId = user.RequisitionId,
                 Position = user.Position,
-                TotalExperience = ConvertExperienceIntoDecimal(user.TotalExperienceInYear, user.TotalExperienceInMonth)
+                TotalExperience = ConvertExperienceIntoDecimal(user.TotalExperienceInYear, user.TotalExperienceInMonth),
+                TotalExperienceInMonth = user.TotalExperienceInMonth,
+                TotalExperienceInYear = user.TotalExperienceInYear
             };
         }
 
@@ -413,7 +415,7 @@ namespace Silicus.Ensure.Services
             if (position != null)
                 applicationDetails.PositionId = position.PositionId;
 
-            
+
             applicationDetails.ClientName = objUser.ClientName;
 
             applicationDetails.CurrentCompany = objUser.CurrentCompany;
@@ -475,7 +477,7 @@ namespace Silicus.Ensure.Services
                 applicationDetails.RecruiterMemberId = RecruiterMemberId;
             }
 
-            
+
             var position = _positionService.GetPositionByName(objUser.Position);
             if (position != null)
                 applicationDetails.PositionId = position.PositionId;
@@ -548,7 +550,7 @@ namespace Silicus.Ensure.Services
             if (position != null)
                 applicationDetails.PositionId = position.PositionId;
 
-            
+
             applicationDetails.ClientName = objUser.ClientName;
 
             applicationDetails.CurrentCompany = objUser.CurrentCompany;
