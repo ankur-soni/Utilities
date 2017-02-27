@@ -261,7 +261,7 @@ namespace Silicus.Ensure.Web.Controllers
         {
             List<CandidateHistoryViewModel> objUserApplicationDetails = new List<CandidateHistoryViewModel>();          
 
-            var candidateApplicationDetails = _userService.GetUserWithAllApplicationDetails(userId);
+            var candidateApplicationDetails = _userService.GetUserDetails(userId);
             foreach (var candidateApplication in candidateApplicationDetails)
             {
                 TestSuiteViewModel testSuiteViewModel = null;
