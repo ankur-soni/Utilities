@@ -261,7 +261,7 @@ namespace Silicus.Ensure.Web.Controllers
         {
             List<CandidateHistoryViewModel> objUserApplicationDetails = new List<CandidateHistoryViewModel>();          
 
-            var candidateApplicationDetails = _userService.GetUserWithAllApplicationDetails(userId);
+            var candidateApplicationDetails = _userService.GetUserDetails(userId);
             foreach (var candidateApplication in candidateApplicationDetails)
             {
                 TestSuiteViewModel testSuiteViewModel = null;
@@ -591,7 +591,7 @@ namespace Silicus.Ensure.Web.Controllers
         {
             var viewerEmailId = User.Identity.Name;
             var viewer = _containerUserService.FindUserByEmail(viewerEmailId);
-            var candidate = _userService.GetUserById(userId);
+            var candidate = _userService.GetUserById(userId);       
             int count = 0;
             var testSuiteViewQuesModel = new TestSuiteViewQuesModel();
             var testSuiteQuestionList = new List<TestSuiteQuestion>();

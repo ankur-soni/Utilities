@@ -287,20 +287,18 @@
     });
     function RecalculateFinalScore(nominationId) {
         var points = 0.0;
-        var count = 0;
         $(".finalScore_" + nominationId).each(function () {
             if ($(this).val().trim()) {
                 var currentPoints = parseFloat($(this).val());
                 if (currentPoints != 0) {
                     points = points + currentPoints;
-                    count++;
                 }
             } else {
                 $(this).val("0.00");
             }
         });
 
-        $(".finalAverageScore_" + nominationId).text((points / count).toFixed(2));
+        $(".finalAverageScore_" + nominationId).text((points).toFixed(2));
     }
 
     $(".filterChanged").change(function () {

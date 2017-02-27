@@ -60,5 +60,7 @@ namespace Silicus.Ensure.Services.Interfaces
         bool IsAllQuestionEvaluated(int? userTestSuitId);
 
         TestDetailsBusinessModel GetUserTestDetailsByViewerId(PreviewTestBusinessModel previewTest, int? questionNumber, int questionType);
+
+        TestDetailsBusinessModel GetTestDetailsByTestSuit(PreviewTestBusinessModel previewTest, int? questionNumber, int questionType);
     }
 }

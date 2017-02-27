@@ -1723,3 +1723,7 @@ input[type=text]::-ms-clear {
     color:#fff;
 }
 #progressInfo{margin-left:5px;}
+
+ a.disabled {
+   pointer-events: none !important;
+   cursor: default !important;

@@ -135,11 +135,11 @@
                                         <div class="col-md-4 col-sm-4 col-xs-4">
                                             @if (Model != null && Model.OptionalQuestion == 0)
                                             {
-                                                @Html.TextBoxFor(m => m.OptionalQuestion, new { @class = "form-control", Value = "" })
+                                                @Html.TextBoxFor(m => m.OptionalQuestion, new { @class = "form-control", Value = "", placeholder = "in %" })
                                             }
                                             else
                                             {
-                                                @Html.TextBoxFor(m => m.OptionalQuestion, new { @class = "form-control" })
+                                                @Html.TextBoxFor(m => m.OptionalQuestion, new { @class = "form-control", placeholder = "in %" })
                                             }
                                             @Html.ValidationMessageFor(m => m.OptionalQuestion)
                                         </div>
@@ -149,11 +149,11 @@
                                         <div class="col-md-4 col-sm-4 col-xs-4">
                                             @if (Model != null && Model.PracticalQuestion == 0)
                                             {
-                                                @Html.TextBoxFor(m => m.PracticalQuestion, new { @class = "form-control", Value = "" })
+                                                @Html.TextBoxFor(m => m.PracticalQuestion, new { @class = "form-control", Value = "", placeholder = "in %" })
                                             }
                                             else
                                             {
-                                                @Html.TextBoxFor(m => m.PracticalQuestion, new { @class = "form-control" })
+                                                @Html.TextBoxFor(m => m.PracticalQuestion, new { @class = "form-control", placeholder = "in %" })
                                             }
                                             @Html.ValidationMessageFor(m => m.PracticalQuestion)
                                         </div>

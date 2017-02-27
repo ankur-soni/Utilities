@@ -312,7 +312,7 @@
     function deleteCandidateKendoGridRow(gridId, data) {
         swal({
             title: "Are you sure,",
-            text: "Are you sure, you want to archieve this record?",
+            text: "Are you sure, you want to archive this record?",
             type: "warning",
             showCancelButton: true,
             confirmButtonColor: "#DD6B55",
@@ -333,15 +333,15 @@
                         grid = $("#" + gridId).data("kendoGrid");
                         grid.dataSource.sync();
                         $("#" + gridId).data("kendoGrid").dataSource.read();
-                        ShowMessage("Record has been archeived.", 1);
+                        ShowMessage("Record has been archived.", 1);
                     },
                     error: function (er) {
-                        ShowMessage("Error occured in archeiveing.", 1);
+                        ShowMessage("Error occured in archiveing.", 1);
                     }
                 });               
             } else {
 
-                ShowMessage("Record archieve cancelled.", 1);
+                ShowMessage("Record archive cancelled.", 1);
             }
         });
     }
@@ -403,6 +403,10 @@
                     new SelectListItem(){
                     Text=Convert.ToString(CandidateStatus.Rejected.CandidateStatusString()),
                     Value=Convert.ToString(CandidateStatus.Rejected)
+                    }                    ,
+                    new SelectListItem(){
+                    Text=Convert.ToString(CandidateStatus.Archived.CandidateStatusString()),
+                    Value=Convert.ToString(CandidateStatus.Archived)
                     }
                     }).HtmlAttributes(new { style = "width: 100%",@class="M-T5" }))
                 </div>
@@ -457,7 +461,7 @@
                                                                             #=CandidateStatus#
                                                                         #}
                                                                         #").Title("Status").Width(250);
-             columns.Bound(c => c.UserId).ClientTemplate(@"<a class='k-button M-T4' href='" + Url.Action("CandidateAdd", "Admin") + "?UserId=#=UserId#'>Edit</a>    #if(CandidateStatus!='Archieved'){# <a id='testSuiteDel' class='k-button M-T4' href='\\#' onclick='ConfirmDeleteUserRow(event)'>Archieve</a>  #} #").Title("Actions").Width(500).Sortable(false);
+             columns.Bound(c => c.UserId).ClientTemplate(@"<a class='k-button M-T4' href='" + Url.Action("CandidateAdd", "Admin") + "?UserId=#=UserId#'>Edit</a>    #if(CandidateStatus!='Archived'){# <a id='testSuiteDel' class='k-button M-T4' href='\\#' onclick='ConfirmDeleteUserRow(event)'>Archive</a>  #} #").Title("Actions").Width(500).Sortable(false);
              columns.Bound(c => c.UserId).ClientTemplate(@"
 
                                          #if(CandidateStatus=='New'){#
@@ -481,7 +485,7 @@
                                         else if(CandidateStatus=='Selected'||CandidateStatus=='Rejected') {#
                                         <a  class ='dialog-window' onclick=CheckAssign('#=TestStatus#',2,#=TestSuiteId#,'#=UserId#','#=UserApplicationId#') style='cursor:pointer'>View Test</a>
                                         #}
-                                         else if(CandidateStatus=='Archieved') {#
+                                         else if(CandidateStatus=='Archived') {#
                                    <a class='dialog-window' href='/Admin/CandidateHistory?UserId=+#=UserId#' target='_blank' style='cursor:pointer'>View History</a>
                                         #}
                                         
