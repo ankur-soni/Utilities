@@ -16,13 +16,7 @@
         <h1 class="dashboard-name">Test Suite</h1>
     </div>
 </div>
-<div class="row">
-    <div class="col-sm-12">
-        <div class="alert alert-success M-T15" id="messageDiv" style="display:none;margin-bottom:0px;">
-            <span id="messageContent">This alert box could indicate successful action.</span>
-        </div>
-    </div>
-</div>
+
 <div class="row">
     <div class="col-sm-12">
         <div class="box M-T15 M-B60">
@@ -148,9 +142,36 @@
             ShowMessage("Test Suite is assigned to a candidate. You cannot delete it. Please assign another test suite to the candidate in order to continue.", 0);
         }
         else {
-            deleteKendoGridRow('testSuiteGrids', data);
+            deleteGridRow('testSuiteGrids', data);
+            
         }
     }
+
+    function deleteGridRow(gridId, data) {
+        swal({
+            title: "Are you sure,",
+            text: "Are you sure, you want to delete this record?",
+            type: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#DD6B55",
+            confirmButtonText: "Yes",
+            cancelButtonText: "No",
+            closeOnConfirm: true,
+            closeOnCancel: true
+        },
+        function (isConfirm) {
+            if (isConfirm) {
+                grid = $("#" + gridId).data("kendoGrid");
+                grid.dataSource.remove(data);
+                grid.dataSource.sync();
+                ShowMessage("Test Suite deleted successfully.", 1);
+
+            } else {
+                ShowMessage("Test Suite cancelled successfully.", 1);
+            }
+        });
+    }
+
 
     function getTestSuiteId(testSuiteId, statusName) {
         if (statusName != '@Convert.ToString(Silicus.Ensure.Models.Constants.TestSuiteStatus.Pending)') {
