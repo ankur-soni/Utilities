@@ -761,6 +761,8 @@
     <Content Include="Content\bootstrap\mixins.less" />
     <None Include="Properties\PublishProfiles\enhouseapp - FTP.pubxml" />
     <None Include="Properties\PublishProfiles\enhouseapp - Web Deploy.pubxml" />
+    <None Include="Properties\PublishProfiles\prod-enhouse - FTP.pubxml" />
+    <None Include="Properties\PublishProfiles\prod-enhouse - Web Deploy.pubxml" />
     <None Include="Properties\PublishProfiles\SilicusUtilityContainerWeb7780 - FTP.pubxml" />
     <None Include="Properties\PublishProfiles\SilicusUtilityContainerWeb7780 - Web Deploy.pubxml" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
