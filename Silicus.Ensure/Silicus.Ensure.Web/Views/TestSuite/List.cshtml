@@ -108,7 +108,8 @@
 </div>
 <script>
     function showTest(id) {
-             window.location.href = "/TestSuite/PreViewQuestion?testSuiteId=" + id;
+         //  window.location.href =;
+             window.open( "/TestSuite/PreViewQuestion?testSuiteId=" + id, '_blank');
     }
     $(document).ready(function () {
         SetNavigationMenuActive('TestSuite');

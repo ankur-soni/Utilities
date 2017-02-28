@@ -135,7 +135,7 @@ namespace Silicus.Ensure.Services
 
         public UserBusinessModel GetUserById(int userId)
         {
-            var user = _context.Query<User>().FirstOrDefault(x => x.UserId == userId && x.IsDeleted == false);
+            var user = _context.Query<User>().FirstOrDefault(x => x.UserId == userId);
             return UserToBusinessModel(user);
         }
 
