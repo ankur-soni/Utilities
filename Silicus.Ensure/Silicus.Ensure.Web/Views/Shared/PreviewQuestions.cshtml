@@ -197,8 +197,7 @@ else
             }
         });
         $('#btnSubmit').hide();
-
-    }
+     }
     $(document).ready(function () {
         $('.breadcrumb-item.active').removeClass('active');
         $('#objective-test').addClass('active');
@@ -228,6 +227,7 @@ else
 
         $('.QuestionCheckbox').on('click', QuestionCheckboxClicked);
         $('#btnSubmit').hide();
+        $('#instruction').hide();
     });
 
     function QuestionCheckboxClicked(event) {
