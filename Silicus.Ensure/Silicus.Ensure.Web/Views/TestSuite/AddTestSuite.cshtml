@@ -464,6 +464,7 @@
         });
 
         $("#btnSave").click(function () {
+            window.onbeforeunload = null;
             if ($("#frmAddTestSuite").valid()) {
                 tags = '';
                 var TestSuiteId = $("#TestSuiteId").val();
