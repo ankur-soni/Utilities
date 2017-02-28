@@ -508,9 +508,14 @@
     };
     $('#btnSave').click(function()
     {
+        window.onbeforeunload = null;   
+        $(window).unbind('unload');       
+    });
 
-        $(window).unbind('unload');
-        //rest of your code here
+    $('#btnCancel').click(function()
+    {  
+        window.onbeforeunload = null;   
+        $(window).unbind('unload');       
     });
 
 </script>

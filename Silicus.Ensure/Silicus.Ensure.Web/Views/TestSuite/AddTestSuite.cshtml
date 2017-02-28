@@ -315,6 +315,8 @@
         SetNavigationMenuActive('TestSuite');
     });
     function onCancelClick() {
+        window.onbeforeunload = null;
+        $(window).unbind('unload');
         redirectToTestSuiteList();
     }
     function redirectToTestSuiteList() {
