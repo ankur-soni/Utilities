@@ -229,6 +229,33 @@
     function ConfirmDeleteQuestionRow(e) {
         var tr = $(e.target).closest("tr");
         var data = $("#questionGrids").data('kendoGrid').dataItem(tr);
-        deleteKendoGridRow('questionGrids', data);
+        deleteGridRow('questionGrids', data);
+      
     }
+
+
+    function deleteGridRow(gridId, data) {
+        swal({
+            title: "Are you sure,",
+            text: "Are you sure, you want to delete this record?",
+            type: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#DD6B55",
+            confirmButtonText: "Yes",
+            cancelButtonText: "No",
+            closeOnConfirm: true,
+            closeOnCancel: true
+        },
+        function (isConfirm) {
+            if (isConfirm) {
+                grid = $("#" + gridId).data("kendoGrid");
+                grid.dataSource.remove(data);
+                grid.dataSource.sync();
+                ShowMessage("Question Bank deleted successfully.", 1);
+            } else {
+                ShowMessage("Question Bank cancelled successfully.", 1);
+            }
+        });
+    }
+
 </script>
