@@ -108,16 +108,16 @@ namespace Silicus.Ensure.Web.Controllers
                         if (isCandidate)
                         {
                             var candidate = _userService.GetUserByEmail(model.UserName);
-                            if (candidate != null && candidate.CandidateStatus == CandidateStatus.TestSubmitted.ToString())
-                            {
-                                ModelState.AddModelError("", "You have already submitted your test.");
-                                return View(model);
-                            }
-                            else
+                            if (candidate == null)
                             {
                                 ModelState.AddModelError("", "No user exists.Please contact administrator.");
                                 return View(model);
                             }
+                            else if (candidate.CandidateStatus == CandidateStatus.TestSubmitted.ToString())
+                            {
+                                ModelState.AddModelError("", "You have already submitted your test.");
+                                return View(model);
+                            }                            
                         }
 
                         var isPanel = await UserManager.IsInRoleAsync(user.Id, RoleName.Panel.ToString());
