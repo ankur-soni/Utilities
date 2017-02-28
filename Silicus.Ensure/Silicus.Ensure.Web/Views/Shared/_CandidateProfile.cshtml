@@ -174,7 +174,7 @@
                                     </div>
                                     <div class="col-md-6">
                                         <input type="text" style="width:100%;" name="DOB" id="DOB" value="@if (Model.UserId != 0)
-                                        { @Model.DOB.ToShortDateString().Replace("-", "/")}" />
+                                        { @Model.DOB.Replace("-", "/")}" />
                                         @Html.ValidationMessageFor(m => m.DOB)
                                     </div>
                                 </div>

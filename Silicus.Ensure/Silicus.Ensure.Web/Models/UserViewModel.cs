@@ -56,7 +56,7 @@ namespace Silicus.Ensure.Web.Models
 
         [Display(Name = "Date Of birth")]
         [Required(ErrorMessage = "Date of birth is required.")]
-        public DateTime DOB { get; set; }
+        public string DOB { get; set; }
 
         [StringLength(10)]
         [Display(Name = "Contact number")]
