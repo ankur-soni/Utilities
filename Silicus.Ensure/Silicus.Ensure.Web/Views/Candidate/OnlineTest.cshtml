@@ -239,6 +239,7 @@ else
         $('.breadcrumb-item.active').removeClass('active');
         $('#objective-test').addClass('active');
         $('#practical-test-side-bar').hide();
+        $('#objective-test>a,#practical-test>a').removeClass('disabled');
 
         $("#frmTestresult").kendoValidator();
         // Hide Submit button of popup. Show when to want submit test.
