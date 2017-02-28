@@ -169,9 +169,6 @@ else
 
 }
 
-
-<link href="https://cdn.rawgit.com/objectivehtml/FlipClock/master/src/flipclock/css/flipclock.css" rel="stylesheet" />
-<script src="https://cdn.rawgit.com/objectivehtml/FlipClock/master/compiled/flipclock.min.js"></script>
 <script>
     var clock;
     var totalTime;
@@ -190,8 +187,7 @@ else
 
         $(questionLinkId).addClass(className);
     }
-    function LoadFirstQuestion(userId) {
-        debugger;
+    function LoadFirstQuestion(userId) {     
         var testSuiteId = $("#TestSuiteId").val();
         $.ajax({
             url: "/Reviewer/PreviewQuestion",
@@ -222,20 +218,6 @@ else
             $("#btnAddMoreTime").hide();
 
         // Timer
-        clock = $('#counter').FlipClock({
-            clockFace: 'HourlyCounter',
-            autoStart: false,
-            callbacks: {
-                stop: function () {
-                    // $("#myModalTC").modal();
-                    //TestDurationComplete();
-                    var text = "The test duration is over, thank you for your participation. Further, the recruitment team will contact you for the update";
-                    ShowSweetAlertWithoutCancel("Warning!", text, "warning");
-                },
-                interval: ProgressBar
-            }
-        });
-
         var tm =@Model.Duration
         tm = parseInt(tm) * 60;
 
@@ -243,11 +225,6 @@ else
         totalTime = tm;
         $('#progressBar').attr('aria-valuemax', totalTime).css('width', '0%');
         $('#progressInfo').text('0%');
-
-        // Set counter time and start.
-        clock.setTime(tm);
-        clock.setCountdown(true);
-        clock.start();
 
         $('.QuestionCheckbox').on('click', QuestionCheckboxClicked);
         $('#btnSubmit').hide();
@@ -262,6 +239,7 @@ else
 
     function UpdateCurrentQuestionAndLoadNewOne(questionId) {
         var questionNavigationDetails = GetCurrentQuestionStatus();
+        updateQuestionLinkColorClass('#' + questionNavigationDetails.QuestionNumber, questionNavigationDetails.IsAnswered, questionNavigationDetails.IsViewed);
         UpdateCurrentQuestionNavigationStatus(questionNavigationDetails);
         GetQuestionDetails(questionId);
     }
