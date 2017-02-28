@@ -2239,9 +2239,9 @@ span.select2.select2-container.select2-container--default {
 }
 
 .primary-bt, .primary-bt:hover, .primary-bt:visited, .primary-bt:focus {
-    color: #fff;
+    color: #fff!important;
     outline: none;
-    background: #0063a7;
+    background: #0063a7!important;
 }
 
 
