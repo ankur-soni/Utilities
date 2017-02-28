@@ -41,7 +41,7 @@ namespace Silicus.Ensure.Services.Interfaces
 
         IEnumerable<UserTestDetails> GetUserTestDetailsListByUserTestSuitId(int userTestSuitId);
 
-        TestDetailsBusinessModel GetUserTestDetailsByUserTestSuitId(int? userTestSuitId, int? questionNumber, int questionType, QuestionType testStartWithQuestionType = QuestionType.Practical);
+        TestDetailsBusinessModel GetUserTestDetailsByUserTestSuitId(int? userTestSuitId, int? questionNumber, int questionType, QuestionType testStartWithQuestionType = QuestionType.Objective);
 
         int AssignSuite(UserTestSuite userTestSuite, TestSuite testSuite);
 

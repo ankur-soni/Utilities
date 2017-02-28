@@ -147,7 +147,7 @@ namespace Silicus.Ensure.Services
 
         }
 
-        public TestDetailsBusinessModel GetUserTestDetailsByUserTestSuitId(int? userTestSuitId, int? questionNumber, int questionType, QuestionType testStartWithQuestionType = QuestionType.Practical)
+        public TestDetailsBusinessModel GetUserTestDetailsByUserTestSuitId(int? userTestSuitId, int? questionNumber, int questionType, QuestionType testStartWithQuestionType = QuestionType.Objective)
         {
             var questionNumberList = GetQuestionsByUserTestSuiteId(userTestSuitId, questionType);
             questionNumber = questionNumber == null && questionNumberList.Count > 0 ? (int?)questionNumberList.ElementAtOrDefault(0) : questionNumber;
