@@ -903,6 +903,7 @@
     <Content Include="Views\Shared\_testSuiteAndCandidateDetails.cshtml" />
     <Content Include="Views\Candidate\ReadOnlyInstructions.cshtml" />
     <Content Include="Views\Shared\PreviewQuestions.cshtml" />
+    <Content Include="Views\Reviewer\_reviewerTestSummaryAndCandidateDetails.cshtml" />
     <None Include="Web.Azure.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
