@@ -108,9 +108,14 @@ namespace Silicus.Ensure.Web.Controllers
                         if (isCandidate)
                         {
                             var candidate = _userService.GetUserByEmail(model.UserName);
-                            if (candidate.CandidateStatus == CandidateStatus.TestSubmitted.ToString())
+                            if (candidate != null && candidate.CandidateStatus == CandidateStatus.TestSubmitted.ToString())
                             {
                                 ModelState.AddModelError("", "You have already submitted your test.");
+                                return View(model);
+                            }
+                            else
+                            {
+                                ModelState.AddModelError("", "No user exists.Please contact administrator.");
                                 return View(model);
                             }
                         }
