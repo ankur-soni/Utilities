@@ -1,10 +1,42 @@
 ﻿@model Silicus.Ensure.Web.Models.Test.TestSummaryViewModel
 @using Kendo.Mvc.UI;
+
+<style>
+    .eval-table thead{
+    background:#f3f3f3;
+}
+.eval-footer{
+    background:#f3f3f3;
+}
+.table>thead>tr>th, .table>tbody>tr>th, .table>tfoot>tr>th, .table>thead>tr>td, .table>tbody>tr>td, .table>tfoot>tr>td{
+    font-size: 15px;
+    font-weight: 600!important;
+    color:#777;
+}
+.candidate-score-alert{
+    background: #e1fdfe;
+    padding: 10px 10px 10px 15px;
+    width: 100%;
+    color:#00adef;
+    font-weight: 600!important;
+
+}
+.candidate-per{
+    margin-top:10px;
+    margin-bottom: 10px;
+    background: #e9f3fd;
+    padding: 10px 10px 10px 15px;
+    width: 100%;
+    color:#295379;
+    font-weight: 600!important;
+}
+</style>
+
 <div class="row">
     <div class="col-sm-12">
         <div class="row M-T20">
-            <div class="col-sm-11">
-                <label style="font-weight:bold;font-size:15px;" class="M-B15">Test Summary</label>
+            <div class="col-sm-12">
+               
                 <table class="table eval-table">
                     <thead>
                         <tr>
@@ -80,12 +112,18 @@
                     </table>*@
             </div>
         </div>
-        <div>
-            <div style="font-size:18px;font-weight:600;">Candidate Score  <span id="totalObtainedMarks">@Model.TotalObtainedMarks</span> out of <span id="totalMaximumMarks">@Model.TotalMaximumMarks</span></div>
-            <div class="M-T10" style="font-size:15px;font-weight:600;">Has Scored <span id="percentage">@Model.Percentage.ToString("0.00") </span>%</div>
+
+
+        <div class="row">
+            <div class="col-sm-12 candidate-score-alert">Candidate Score  <span id="totalObtainedMarks">@Model.TotalObtainedMarks</span> out of <span id="totalMaximumMarks">@Model.TotalMaximumMarks</span></div>
         </div>
-        <div>
-            <input type="button" value="Submit Evaluation" class="btn btn-lg btn-submitEvaluation" id="btnSubmitEvalution" />
+        <div class="row">
+            <div class="col-sm-12 candidate-per">Has Scored <span id="percentage">@Model.Percentage.ToString("0.00") </span>%</div>
+        </div>
+        <div class="row">
+            <div class="col-sm-12">
+                <button class="btn btn-primary btn-lg submitEvaluation" value="Submit Evaluation" style="width:100%;background:#319d9d;" data-role="button" role="button" aria-disabled="false" tabindex="0">Submit Evaluation</button>
+            </div>
         </div>
     </div>
 </div>

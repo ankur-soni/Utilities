@@ -8,205 +8,360 @@
     ViewBag.Title = "Online Test";
     Layout = "~/Views/Shared/_LayoutCandidate.cshtml";
 }
+<style>
+    .section-title{
+    color:#ed913c;
+    font-size:20px;
+    margin: 20px 35px 0px 35px;
+}
+.section-title-emp{
+    color:#235077;
+    font-size:20px;
+    margin: 20px 35px 0px 35px;
+}
+.btmBorder1{
+    border-bottom: 1px solid #cdcdcd;
+    margin: 10px 35px 20px 35px;
+}
+.question-line{
+    color:#01aef3;
+    font-size:20px;
+    margin: 0px 35px 20px 35px;
+}
+.candidate-answer{
 
-<div class="row main-content" id="main" style="background: #ccc;">
-    <div class="col-sm-12">
-        @*<div class="row">
-                <div class="custBox">
-                    <div class="f1" style="background:#067bb5;padding: 5px 25px 20px 25px;">
-                        <div class="col-sm-8">
-                            @Html.Partial("_CandidateInfo", Model.CandidateInfo)
+    margin: 0px 35px 30px 35px;
+}
+.reviewers-comment{margin: 0px 35px 30px 35px;}
+.marks1{margin: 0px 35px 30px -30px;}
+.marks{
+    
+    height: 80px!important;s
+    line-height: 1.8!important;
+    padding: 0!important;
+    text-align: center;
+    font-size: 34px;
+}
+.nav-btn{
+     margin: 0px 35px 20px 35px;
+}
+.inner{
+        border-right: 1px solid #ccc;
+    background: #ccc;
+    height: 80px;
+}
+.themeColor{
+    color:#20a8d8;
+}
+</style>
+
+
+
+<div class="row">
+    <div class="col-lg-12">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="">
+                    <div class="f1" style="background:#fff;border-radius:5px;">
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <div class="section-title" style="margin-top:15px;">
+                                    <span>OBJECTIVE QUESTIONS</span>
+                                </div>
+                            </div>
                         </div>
-                        <div class="clearfix"></div>
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <div class="btmBorder1"></div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <div class="question-line">
+                                    <span>Q7. 'OS' computer abbrivation usually means ?</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <div class="candidate-answer">
+                                    <div class="form-group">
+                                        <label style="font-size:14px;" class="M-B0">Candidate Answer</label>
+                                        <div class="radio radio-info">
+                                            <input type="radio" name="radio" id="radio1" value="option1">
+                                            <label for="radio1">Open Software</label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <div class="candidate-answer">
+                                    <div class="form-group">
+                                        <label style="font-size:14px;" class="M-B0">Actual Answer</label>
+                                        <div class="radio radio-info">
+                                            <input type="radio" name="radio" id="radio1" value="option1">
+                                            <label for="radio1">Order of Significance</label>
+                                        </div>
+                                        <div class="radio radio-info">
+                                            <input type="radio" name="radio" id="radio1" value="option1">
+                                            <label for="radio1">Open Software</label>
+                                        </div>
+                                        <div class="radio radio-info">
+                                            <input type="radio" name="radio" id="radio1" value="option1">
+                                            <label for="radio1">Operating System</label>
+                                        </div>
+                                        <div class="radio radio-info">
+                                            <input type="radio" name="radio" id="radio1" value="option1">
+                                            <label for="radio1">Optical Sensor</label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-8">
+                                <div class="reviewers-comment">
+                                    <div class="form-group">
+                                        <label style="font-size:14px;" class="M-B0">Reviewers Comment</label>
+                                        <textarea style="height:80px;" class="form-control"></textarea>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-2">
+                                <div class="marks1">
+                                    <div class="form-group">
+                                        <label style="font-size:14px;" class="M-B0">Marks</label>
+                                        <div class="form-control marks" style="line-height: 2.3!important;">
+                                            <div class="col-sm-6 inner"><span>20</span></div>
+                                            <div class="col-sm-6"><span class="themeColor">15</span></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <div class="nav-btn">
+                                    <button class="btn btn-primary btn-lg" style="float: right;" data-role="button" role="button" aria-disabled="false" tabindex="0">Next</button>
+
+                                    <button class="btn btn-primary btn-lg" data-role="button" role="button" aria-disabled="false" tabindex="0">Previous</button>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
-
-
-            <div class="row topBox" style="color:#fff;">
-                <div class="col-sm-12">
-                    <div id="DivTestSummary">
-                        @Html.Partial("_TestSummary", @Model.TestSummary)
-                    </div>
-                </div>
-            </div>
-
-
-            <div class="row">
-                <input type="hidden" value="@Model.TestSuiteId" id="TestSuiteId" />
-                <input type="hidden" value="@Model.UserTestSuiteId" id="UserTestSuiteId" />
-                <input type="hidden" value="@Model.UserId" id="UserId" />
-                <input type="hidden" value="@Model.CandidateStatus" id="CandidateStatus" />
-            </div>
-
-
-
-
-            <div class="row M-B25">
-                <div class="col-sm-9 M-T15">
-                    <div class="f1 M-B30" style="background:#fff;">
-                        <div id="QuestionDetails">
-                        </div>
-                    </div>
-                </div>
-                <div class="col-sm-3 M-T15" style="padding-left:0px;">
-                    <div class="f1 M-B30" style="background:#fff;">
-                        <div id="QuestionNavigation">
-                            @Html.Partial("_QuestionNavigationPanel", @Model.NavigationDetails)
-                        </div>
-                    </div>
-                </div>
-            </div>*@
-
+        </div>
+        </div>
+    </div>
         <div class="row">
             <input type="hidden" value="@Model.TestSuiteId" id="TestSuiteId" />
             <input type="hidden" value="@Model.UserTestSuiteId" id="UserTestSuiteId" />
             <input type="hidden" value="@Model.UserId" id="UserId" />
             <input type="hidden" value="@Model.CandidateStatus" id="CandidateStatus" />
         </div>
-        <div class="col-sm-12 M-T15">
-            <div class="f1 M-B30" style="background:#fff;border-radius:5px;">
-                <div id="QuestionDetails">
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
 
-<!-- Modal -->
-<div class="modal fade" id="myModal" role="dialog">
-    <div class="modal-dialog">
 
-        <!-- Modal content-->
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal">&times;</button>
-                <h4 class="modal-title"><span id="msgMain">Success!</span></h4>
-            </div>
-            <div class="modal-body">
-                <p id="msgContent">Some text in the modal.</p>
-            </div>
-            <div class="modal-footer">
-                <button id="btnModalOK" type="button" class="btn btn-default" data-dismiss="modal" onclick="OnAddMoreTimeOK();">OK</button>
-                <button id="btnSubmitTestOK" type="button" class="btn btn-default" data-dismiss="modal" onclick="OnSubmitTestOK();">OK</button>
-                <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-            </div>
-        </div>
+        @*<div class="row main-content" id="main">
+                <div class="col-sm-12">
+                    @*<div class="row">
+                            <div class="custBox">
+                                <div class="f1" style="background:#067bb5;padding: 5px 25px 20px 25px;">
+                                    <div class="col-sm-8">
+                                        @Html.Partial("_CandidateInfo", Model.CandidateInfo)
+                                    </div>
+                                    <div class="clearfix"></div>
+                                </div>
+                            </div>
+                        </div>
 
-    </div>
-</div>
 
-<!-- Modal Submit Test On Time Complete-->
-<div class="modal fade" id="testresultPopup" role="dialog">
-    <div class="modal-dialog">
+                        <div class="row topBox" style="color:#fff;">
+                            <div class="col-sm-12">
+                                <div id="DivTestSummary">
+                                    @Html.Partial("_TestSummary", @Model.TestSummary)
+                                </div>
+                            </div>
+                        </div>
 
-        <!-- Modal content-->
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal">&times;</button>
-                <h4 class="modal-title">Candidate Result</h4>
-            </div>
-            <div class="modal-body">
-                <form id="frmTestresult">
-                    @Html.Partial("_CandidateResult", new CandidateResultViewmodel())
-                </form>
-            </div>
-            <div class="modal-footer">
-                <button id="SubmitCandidateResult" type="button" class="btn btn-default">OK</button>
-                <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-            </div>
-        </div>
 
-    </div>
-</div>
+                        <div class="row">
+                            <input type="hidden" value="@Model.TestSuiteId" id="TestSuiteId" />
+                            <input type="hidden" value="@Model.UserTestSuiteId" id="UserTestSuiteId" />
+                            <input type="hidden" value="@Model.UserId" id="UserId" />
+                            <input type="hidden" value="@Model.CandidateStatus" id="CandidateStatus" />
+                        </div>
 
-@section Sidebar{
-    <div class="sidebar">
-        <nav class="sidebar-nav">
 
-            <!--mobile menu -->
-            <div class="panel-group hidden-lg-up mobileMenu" id="accordion">
-                <div class="panel panel-default">
-                    <div class="panel-heading">
-                        <h4 class="panel-title">
-                            <a class="collapsed" data-toggle="collapse" data-parent="#accordion" href="#LearnMenu">OBJECTIVE TEST</a>
-                        </h4>
+
+
+                        <div class="row M-B25">
+                            <div class="col-sm-9 M-T15">
+                                <div class="f1 M-B30" style="background:#fff;">
+                                    <div id="QuestionDetails">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-3 M-T15" style="padding-left:0px;">
+                                <div class="f1 M-B30" style="background:#fff;">
+                                    <div id="QuestionNavigation">
+                                        @Html.Partial("_QuestionNavigationPanel", @Model.NavigationDetails)
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    <div class="row">
+                        <input type="hidden" value="@Model.TestSuiteId" id="TestSuiteId" />
+                        <input type="hidden" value="@Model.UserTestSuiteId" id="UserTestSuiteId" />
+                        <input type="hidden" value="@Model.UserId" id="UserId" />
+                        <input type="hidden" value="@Model.CandidateStatus" id="CandidateStatus" />
                     </div>
-                    <div id="LearnMenu" class="panel-collapse collapse">
-                        <div class="panel-body">
+                    <div class="col-sm-12 M-T15">
+                        <div class="f1 M-B30" style="background:#fff;border-radius:5px;">
+                            <div id="QuestionDetails">
+                            </div>
                         </div>
                     </div>
                 </div>
-                <div class="panel panel-default">
-                    <div class="panel-heading">
-                        <h4 class="panel-title">
-                            <a class="collapsed" data-toggle="collapse" data-parent="#accordion" href="#supportMenu">PRACTICAL TEST</a>
-                        </h4>
+            </div>*@
+
+        <!-- Modal -->
+        <div class="modal fade" id="myModal" role="dialog">
+            <div class="modal-dialog">
+
+                <!-- Modal content-->
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        <h4 class="modal-title"><span id="msgMain">Success!</span></h4>
                     </div>
-                    <div id="supportMenu" class="panel-collapse collapse">
-                        <div class="panel-body">
-                        </div>
+                    <div class="modal-body">
+                        <p id="msgContent">Some text in the modal.</p>
+                    </div>
+                    <div class="modal-footer">
+                        <button id="btnModalOK" type="button" class="btn btn-default" data-dismiss="modal" onclick="OnAddMoreTimeOK();">OK</button>
+                        <button id="btnSubmitTestOK" type="button" class="btn btn-default" data-dismiss="modal" onclick="OnSubmitTestOK();">OK</button>
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
                     </div>
                 </div>
+
             </div>
-            <!--mobile menu end here-->
-            <div class="menu-btn-sidebar" onclick="CustomSidebarOpen();"><i class="fa fa-bars" aria-hidden="true"></i></div>
-            <ul class="nav hidden-md-down">
-                <div id="objective-test-side-bar">
-                    <li class="nav-item nav-heading">
-                        <a class="nav-link fontBold" href="#">Objective Questions</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link personal fontBold" href="index.html"><i class="fa fa-check-square-o fontBold" aria-hidden="true"></i> Objective Test </a>
-                    </li>
-                    <li class="nav-item">
-                        <ol class="questions">
-                            @if (@Model.NavigationDetails != null && @Model.NavigationDetails.Objective != null && @Model.NavigationDetails.Objective.Count > 0)
+        </div>
+
+        <!-- Modal Submit Test On Time Complete-->
+        <div class="modal fade" id="testresultPopup" role="dialog">
+            <div class="modal-dialog">
+
+                <!-- Modal content-->
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        <h4 class="modal-title">Candidate Result</h4>
+                    </div>
+                    <div class="modal-body">
+                        <form id="frmTestresult">
+                            @Html.Partial("_CandidateResult", new CandidateResultViewmodel())
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button id="SubmitCandidateResult" type="button" class="btn btn-default">OK</button>
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        @section Sidebar{
+            <div class="sidebar">
+                <nav class="sidebar-nav">
+
+                    <!--mobile menu -->
+                    <div class="panel-group hidden-lg-up mobileMenu" id="accordion">
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                                <h4 class="panel-title">
+                                    <a class="collapsed" data-toggle="collapse" data-parent="#accordion" href="#LearnMenu">OBJECTIVE TEST</a>
+                                </h4>
+                            </div>
+                            <div id="LearnMenu" class="panel-collapse collapse">
+                                <div class="panel-body">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                                <h4 class="panel-title">
+                                    <a class="collapsed" data-toggle="collapse" data-parent="#accordion" href="#supportMenu">PRACTICAL TEST</a>
+                                </h4>
+                            </div>
+                            <div id="supportMenu" class="panel-collapse collapse">
+                                <div class="panel-body">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!--mobile menu end here-->
+                    <div class="menu-btn-sidebar" onclick="customSidebarToggle();"><i class="fa fa-bars" aria-hidden="true"></i></div>
+                    <ul class="nav hidden-md-down">
+                        <div id="objective-test-side-bar">
+                            <li class="nav-item nav-heading">
+                                <a class="nav-link fontBold" href="#">Objective Questions</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link personal fontBold" href="index.html"><i class="fa fa-check-square-o fontBold" aria-hidden="true"></i> Objective Test </a>
+                            </li>
+                            <li class="nav-item">
+                                <ol class="questions">
+                                    @if (@Model.NavigationDetails != null && @Model.NavigationDetails.Objective != null && @Model.NavigationDetails.Objective.Count > 0)
                             {
                                 foreach (var question in Model.NavigationDetails.Objective)
                                 {
-                                    <li>
-                                        <a class="nav-link contact QuestionCheckbox @QuestionColor(question)" id="@question.QuestionId" href="#"> @Html.Raw(@question.QuestionDescription)</a>
-                                    </li>
+                            <li>
+                                <a class="nav-link contact questionView QuestionCheckbox @QuestionColor(question)" id="@question.QuestionId" href="#"> @Html.Raw(@question.QuestionDescription)</a>
+                            </li>
                                 }
                             }
-                        </ol>
-                    </li>
-                </div>
-                <div id="practical-test-side-bar">
-                    <li class="nav-item nav-heading">
-                        <a class="nav-link fontBold" href="#">Practical Questions</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link personal fontBold" href="index.html"><i class="fa fa-check-square-o fontBold" aria-hidden="true"></i> Practical Test </a>
-                    </li>
-                    <li class="nav-item">
-                        <ol class="questions">
-                            @if (@Model.NavigationDetails != null && @Model.NavigationDetails.Practical != null && @Model.NavigationDetails.Practical.Count > 0)
+                                </ol>
+                            </li>
+                        </div>
+                        <div id="practical-test-side-bar">
+                            <li class="nav-item nav-heading">
+                                <a class="nav-link fontBold" href="#">Practical Questions</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link personal fontBold" href="index.html"><i class="fa fa-check-square-o fontBold" aria-hidden="true"></i> Practical Test </a>
+                            </li>
+                            <li class="nav-item">
+                                <ol class="questions">
+                                    @if (@Model.NavigationDetails != null && @Model.NavigationDetails.Practical != null && @Model.NavigationDetails.Practical.Count > 0)
                             {
                                 foreach (var question in Model.NavigationDetails.Practical)
                                 {
-                                    <li>
-                                        <a class="nav-link contact QuestionCheckbox @QuestionColor(question)" id="@question.QuestionId" href="#">@Html.Raw(@question.QuestionDescription)</a>
-                                    </li>
+                            <li>
+                                <a class="nav-link contact QuestionCheckbox @QuestionColor(question)" id="@question.QuestionId" href="#">@Html.Raw(@question.QuestionDescription)</a>
+                            </li>
                                 }
                             }
-                        </ol>
-                    </li>
-                </div>
-            </ul>
+                                </ol>
+                            </li>
+                        </div>
+                    </ul>
 
-        </nav>
-    </div>
+                </nav>
+            </div>
 
-}
+        }
 
-@section CandidateDetails {
-    @Html.Partial("_reviewerTestSummaryAndCandidateDetails", Model)
-}
+        @section CandidateDetails {
+            @Html.Partial("_reviewerTestSummaryAndCandidateDetails", Model)
+        }
 
-@helper QuestionColor(Silicus.Ensure.Models.Test.QuestionNavigationBasics question)
-{
+        @helper QuestionColor(Silicus.Ensure.Models.Test.QuestionNavigationBasics question)
+        {
 if (question.IsAnswered)
 {
         @("is-answered");
@@ -222,7 +377,8 @@ else
 
 }
 
-<script>
+        <script>
+
     var clock;
     var totalTime;
     $(document).ready(function () {
@@ -495,5 +651,5 @@ else
             $('#notAnsweredPracticalQuestionsCount').text(totalPracticalQuestions - answeredPracticalQuestions);
         }
     }
-</script>
+        </script>
 
