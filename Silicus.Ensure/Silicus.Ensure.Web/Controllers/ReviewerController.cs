@@ -102,15 +102,18 @@ namespace Silicus.Ensure.Web.Controllers
         {
             questionDetails.QuestionType = _testSuiteService.GetQuestionType(questionDetails.QuestionId);
             questionDetails.Answer = HttpUtility.HtmlDecode(questionDetails.Answer);
-            UpdateReview(questionDetails.Marks, questionDetails.Comment, questionDetails.UserTestDetailId);
             var reviewerQuestionViewModel = ReviewTestSuiteQuestion(questionDetails.QuestionId, questionDetails.UserTestSuiteId, questionDetails.QuestionType);
-            reviewerQuestionViewModel.IsCorrect = reviewerQuestionViewModel.ReviwerMark != null && reviewerQuestionViewModel.ReviwerMark > 0;
+            if (questionDetails.QuestionType == (int)QuestionType.Practical)
+            {
+                UpdateReview(questionDetails.Marks, questionDetails.Comment, questionDetails.UserTestDetailId);
+            }
             if (reviewerQuestionViewModel.QuestionType == 1 && reviewerQuestionViewModel.AnswerType == 2)
             {
                 reviewerQuestionViewModel = GetAnswerDetails(reviewerQuestionViewModel);
             }
             return PartialView("_ReviewerViewQuestion", reviewerQuestionViewModel);
         }
+
 
         [HttpPost]
         public JsonResult SumbmitTestReview(QuestionDetailsViewModel questionDetails)
@@ -147,6 +150,10 @@ namespace Silicus.Ensure.Web.Controllers
         {
             TestDetailsBusinessModel userTestDetails = _testSuiteService.GetUserTestDetailsByUserTestSuitId(userTestSuiteId, questionId, questionType);
             var testDetails = _mappingService.Map<TestDetailsBusinessModel, ReviewerQuestionViewModel>(userTestDetails);
+            if (testDetails != null && testDetails.QuestionType == (int)QuestionType.Objective)
+            {
+                testDetails.ReviwerMark = userTestDetails.Marks;
+            }
             testDetails = testDetails ?? new ReviewerQuestionViewModel();
             return testDetails;
         }
@@ -226,7 +233,7 @@ namespace Silicus.Ensure.Web.Controllers
         {
             var viewerEmailId = User.Identity.Name;
             var viewer = _containerUserService.FindUserByEmail(viewerEmailId);
-            var previewTest = new PreviewTestBusinessModel { TestSuite = new TestSuite { TestSuiteId = (int)testSuiteId }, ViewerId = viewer.ID};
+            var previewTest = new PreviewTestBusinessModel { TestSuite = new TestSuite { TestSuiteId = (int)testSuiteId }, ViewerId = viewer.ID };
             TestDetailsBusinessModel userTestDetails = _testSuiteService.GetTestDetailsByTestSuit(previewTest, questionId, questionType);
             var testDetails = _mappingService.Map<TestDetailsBusinessModel, TestDetailsViewModel>(userTestDetails);
             testDetails = testDetails ?? new ReviewerQuestionViewModel();
@@ -249,7 +256,7 @@ namespace Silicus.Ensure.Web.Controllers
         public ActionResult GetQuestionForPreview(int? testSuiteId, int questionId, int userId)
         {
             var questionType = _testSuiteService.GetQuestionType(questionId);
-            var testDetails = PreviewTestSuiteQuestion(questionId, testSuiteId, questionType,userId);
+            var testDetails = PreviewTestSuiteQuestion(questionId, testSuiteId, questionType, userId);
             return PartialView("_partialViewQuestion", testDetails);
         }
 
@@ -265,7 +272,7 @@ namespace Silicus.Ensure.Web.Controllers
         {
             var viewerEmailId = User.Identity.Name;
             var viewer = _containerUserService.FindUserByEmail(viewerEmailId);
-            var previewTest = new PreviewTestBusinessModel { TestSuite = new TestSuite { TestSuiteId = (int)testSuiteId }, ViewerId = viewer.ID};
+            var previewTest = new PreviewTestBusinessModel { TestSuite = new TestSuite { TestSuiteId = (int)testSuiteId }, ViewerId = viewer.ID };
             TestDetailsBusinessModel userTestDetails = _testSuiteService.GetTestDetailsByTestSuit(previewTest, questionId, questionType);
             var testDetails = _mappingService.Map<TestDetailsBusinessModel, TestDetailsViewModel>(userTestDetails);
             testDetails = testDetails ?? new ReviewerQuestionViewModel();
