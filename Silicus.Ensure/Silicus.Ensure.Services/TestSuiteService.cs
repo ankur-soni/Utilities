@@ -372,7 +372,7 @@ namespace Silicus.Ensure.Services
             return _context.Query<TempPreviewTest>().FirstOrDefault(temp => temp.ViewerId == tempPreviewTestDetails.ViewerId
                 && temp.CandidateId == tempPreviewTestDetails.CandidateId && temp.TestSuiteId == tempPreviewTestDetails.TestSuiteId);
         }
-         
+
 
         public TestDetailsBusinessModel GetUserTestDetailsByViewerId(PreviewTestBusinessModel previewTest, int? questionNumber, int questionType)
         {
@@ -600,8 +600,8 @@ namespace Silicus.Ensure.Services
                     if (basicDetails.questionType == (int)QuestionType.Practical)
                     {
                         testDetails.Practical.TotalQuestionCount++;
-                        testDetails.Practical.MaximumMarks += (int)basicDetails.maximumMarks;
-                        if ((basicDetails.questionDetails.Mark != null && basicDetails.questionDetails.Mark > 0))
+                        testDetails.Practical.MaximumMarks += basicDetails.maximumMarks;
+                        if (basicDetails.questionDetails.Mark != null && basicDetails.questionDetails.Mark > 0)
                         {
                             testDetails.Practical.MarksObtained += (int)basicDetails.questionDetails.Mark;
                             testDetails.Practical.CorrectAnswersCount++;
@@ -610,8 +610,8 @@ namespace Silicus.Ensure.Services
                     else if (basicDetails.questionType == (int)QuestionType.Objective)
                     {
                         testDetails.Objective.TotalQuestionCount++;
-                        testDetails.Objective.MaximumMarks += (int)basicDetails.maximumMarks;
-                        if (!(basicDetails.questionDetails.Mark == null || basicDetails.questionDetails.Mark <= 0))
+                        testDetails.Objective.MaximumMarks += basicDetails.maximumMarks;
+                        if (basicDetails.questionDetails.Mark != null && basicDetails.questionDetails.Mark > 0)
                         {
                             testDetails.Objective.MarksObtained += (int)basicDetails.questionDetails.Mark;
                             testDetails.Objective.CorrectAnswersCount++;
@@ -701,7 +701,7 @@ namespace Silicus.Ensure.Services
         {
             return _context.Query<TempPreviewTest>().FirstOrDefault(temp => temp.ViewerId == tempPreviewTestDetails.ViewerId
                && temp.TestSuiteId == tempPreviewTestDetails.TestSuiteId);
-        } 
+        }
         #endregion
     }
 }
