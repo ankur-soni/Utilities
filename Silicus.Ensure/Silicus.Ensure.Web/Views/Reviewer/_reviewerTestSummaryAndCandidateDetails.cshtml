@@ -1,0 +1,208 @@
+﻿@model Silicus.Ensure.Web.Models.TestSuiteCandidateModel
+
+@{
+    int answeredObjectiveQuestions = Model.NavigationDetails != null ? Model.NavigationDetails.Objective.Where(q => q.IsAnswered).Count() : 0;
+    int answeredPracticalQuestions = Model.NavigationDetails != null ? Model.NavigationDetails.Practical.Where(q => q.IsAnswered).Count() : 0;
+    int notAnsweredObjectiveQuestions = Model.ObjectiveCount - answeredObjectiveQuestions;
+    int notAnsweredPracticalQuestions = Model.PracticalCount - answeredPracticalQuestions;
+}
+
+
+<div class="tab-pane p-1 active" id="details" role="tabpanel">
+    <div class="progressBar">
+        <h6>PROGRESS</h6>
+        <div class="progress">
+            <div class="progress-bar" role="progressbar" aria-valuenow="0" id="progressBar"
+                 aria-valuemin="0" aria-valuemax="100" style="width:0%">
+                <span id="progressInfo">0%</span> Complete
+            </div>
+        </div>
+    </div>
+    <div class="test-summary">
+        <h6>TEST SUMMARY</h6>
+        <div class="summaryBox">
+            @Html.Partial("_TestSummary", Model.TestSummary)
+        </div>
+    </div>
+</div>
+<div class="tab-pane " id="profile" role="tabpanel">
+    <div class="container">
+        @Html.Partial("_CandidateInfo", Model.CandidateInfo)
+    </div>
+</div>
+
+
+
+<script>
+    var isCounterStarted = false;
+    var testDurationComplete = false;
+    $(document).ready(function () {
+
+        var tm =@Model.DurationInMin
+        tm = parseInt(tm) * 60;
+
+        // Initialize progress bar.
+        totalTime = tm;
+        $('#progressBar').attr('aria-valuemax', totalTime).css('width', '0%');
+        $('#progressInfo').text('0%');
+        $('#counter').countdown({
+            until: tm, compact: true,
+            format: 'HMS', description: '',
+            onTick: ProgressBar,
+            onExpiry: function () {
+                TestDurationComplete();
+                var text = "The test duration is over, thank you for your participation. Further, the recruitment team will contact you for the update";
+                ShowSweetAlertWithoutCancel("Warning!", text, "warning");
+            }
+        });
+        $('#counter').countdown('pause');
+        $('.countdown-period').remove();
+    });
+
+
+    function GetAnswer() {
+        var answer = "";
+        if ($("#QuestionType").val().trim() == "1") {
+            if ($("#AnswerType").val().trim() == "1") {
+                answer = $('[name="optradio"]:radio:checked').val();
+            }
+            else {
+                $("input:checkbox[name=optcheckbox]:checked").each(function () {
+                    answer = answer + $(this).val() + ",";
+                });
+
+                answer = answer.slice(0, -1);
+            }
+        }
+        else {
+            answer = $("#PracticalAnswer").val();
+            answer = encodeURIComponent(answer);
+        }
+        if (answer == "undefined")
+            answer = null;
+        return answer;
+    }
+    function startCounter() {
+        $('#counter').countdown('resume');
+        $('#counter').addClass('timerActive');
+        $('.numbers').addClass('numbersActive');
+    }
+
+
+    function TestDurationComplete() {
+        var answer = GetAnswer();
+        var testSuiteId = $("#TestSuiteId").val();
+        var userTestSuiteId = $("#UserTestSuiteId").val();
+        var userTestDetailId = $("#UserTestDetailId").val();
+        var userId = $("#UserId").val();
+        testDurationComplete = true;
+        window.location.href = '/Candidate/OnSubmitTest?testSuiteId=' + testSuiteId + '&userTestSuiteId=' + userTestSuiteId + '&userTestDetailId=' + userTestDetailId + '&userId=' + userId + '&answer=' + answer;
+    }
+
+    function ProgressBar() {
+        //var time = clock.getTime().time;
+        if (isCounterStarted) {
+            var time = $.countdown.periodsToSeconds($('#counter').countdown('getTimes'));
+            if (time % 60 == 0) {
+                var leftTm = parseInt(totalTime) - time;
+                var newprogress = parseInt((parseInt(leftTm) / parseInt(totalTime)) * 100);
+                $('#progressBar').attr('aria-valuenow', time).css('width', newprogress + "%");
+                $('#progressInfo').text(newprogress + "%");
+                if (time == 60) {
+                    var timerCntVal = $("#TimerIncCount").val();
+                    if (timerCntVal == 0)
+                        ShowProgressPopUp(false, "Please click on 'Add more time' button in order to add 10 more minutes to Test duration.");
+                    else if (timerCntVal == 1)
+                        ShowProgressPopUp(false, "Please click on 'Add more time' button for the last time to add 10 more minutes to Test duration.");
+                    else
+                        ShowProgressPopUp(false, "1 minute remaining to complete the test.");
+                }
+                else if (time == 900 && totalTime > 1799)
+                    ShowProgressPopUp(false, "15 minute remaining to complete the test.");
+                else if (time == 1800 && totalTime != 1800)
+                    ShowProgressPopUp(false, "30 minute remaining to complete the test.");
+                else if (time == 3600 && totalTime != 3600)
+                    ShowProgressPopUp(false, "60 minute remaining to complete the test.");
+            }
+        }
+    }
+
+
+    function ShowProgressPopUp(bl, msg) {
+        if (!bl) {
+            ShowSweetAlertWithoutCancel("Warning!", msg, "warning");
+        }
+        else {
+            swal({
+                title: "Warning!",
+                text: msg,
+                type: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#DD6B55",
+                confirmButtonText: "Yes",
+                cancelButtonText: "No",
+                closeOnConfirm: true,
+                closeOnCancel: true
+            },
+ function (isConfirm) {
+     if (isConfirm) {
+         OnAddMoreTimeOK();
+         swal("Added!", "Now you have extra 10 mins.", "success");
+     }
+ });
+        }
+    }
+
+    function AddMoreTime() {
+        var timerCnt = $("#TimerIncCount").val();
+        if (timerCnt == 0)
+            ShowProgressPopUp(true, "You have only 2 chances. Are you sure, you want to increase time limit by 10 Mins?");
+        else
+            ShowProgressPopUp(true, "This is the last chance. Are you sure, you want to increase time limit by 10 Mins?");
+    }
+
+    function OnAddMoreTimeOK() {
+        var time = $.countdown.periodsToSeconds($('#counter').countdown('getTimes'));
+        var timerCnt = $("#TimerIncCount").val();
+        if (timerCnt == null || timerCnt == "")
+            timerCnt = 0;
+        var userTestSuiteId = $("#UserTestSuiteId").val();
+        $.ajax({
+            url: '/Candidate/AddMoreTime',
+            dataType: "json",
+            type: "POST",
+            contentType: 'application/json; charset=utf-8',
+            data: JSON.stringify({ count: timerCnt, userTestSuiteId: userTestSuiteId }),
+            success: function (data) {
+                if (data < 3) {
+                    // Add time in counter
+                    var newtm = parseInt(time) + parseInt(60 * 10);
+                    //clock.setTime(newtm);
+                    $("#counter").countdown('option', { until: newtm });
+
+                    // Assign reduced chance
+                    $("#TimerIncCount").val(data);
+
+                    // Update Progress bar
+                    totalTime = parseInt(totalTime) + parseInt(60 * 10);
+                    var leftTm = parseInt(totalTime) - time;
+                    var newprogress = parseInt((parseInt(leftTm) / parseInt(totalTime)) * 100);
+                    $('#progressBar').attr('aria-valuemax', totalTime).css('width', newprogress + "%");
+                    $('#progressBar').attr('aria-valuenow', time).css('width', newprogress + "%");
+                    $('#progressInfo').text(newprogress + "%");
+
+                    // Hide Add more time button.
+                    if (data == 2) {
+                        $("#btnAddMoreTime").hide();
+                    }
+
+                    UpdateTimeDB();
+
+                }
+            },
+            error: function () {
+
+            }
+        });
+    }
+</script>

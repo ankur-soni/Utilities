@@ -31,8 +31,11 @@
                                 <div class="col-lg-3 col-md-4 col-sm-5 M-B10">
                                     <div class="">
                                         @Html.Label("Login As Username", htmlAttributes: new { @class = "requiredfeild" })
-                                        @Html.DropDownListFor(model => model.Username, Model.UsersWithMultipleRoles as SelectList, "Select", new { @class = "form-control", id = "UserName", style = "margin-bottom:0px;!important" })
-                                        @Html.ValidationMessageFor(model => model.Username, "", new { @class = "text-danger" })
+                                        @*@Html.DropDownListFor(model => model.Username, Model.UsersWithMultipleRoles as SelectList, "Select", new { @class = "form-control", id = "UserName", style = "margin-bottom:0px;!important" })
+                                        @Html.ValidationMessageFor(model => model.Username, "", new { @class = "text-danger" })*@
+                                        
+                                        @Html.TextBoxFor(u => u.Username, new { @class = "form-control", maxlength = 200, required = "" })
+                                        @Html.ValidationMessageFor(u => u.Username, "", new { @class = "text-danger" })
                                     </div>
                                 </div>
                             </div>

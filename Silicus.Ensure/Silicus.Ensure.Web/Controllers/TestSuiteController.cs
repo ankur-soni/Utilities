@@ -11,6 +11,7 @@ using Kendo.Mvc.Extensions;
 using Silicus.Ensure.Models.Constants;
 using Silicus.Ensure.Models;
 using Silicus.Ensure.Models.Test;
+using Silicus.Ensure.Web.Models.Test;
 
 namespace Silicus.Ensure.Web.Controllers
 {
@@ -23,8 +24,9 @@ namespace Silicus.Ensure.Web.Controllers
         private readonly IPositionService _positionService;
         private readonly IQuestionService _questionService;
         private readonly IUserService _userService;
+        private readonly Silicus.UtilityContainer.Services.Interfaces.IUserService _containerUserService;
 
-        public TestSuiteController(ITestSuiteService testSuiteService, ITagsService tagsService, IMappingService mappingService, IPositionService positionService, IQuestionService questionService, IUserService userService)
+        public TestSuiteController(ITestSuiteService testSuiteService, ITagsService tagsService, IMappingService mappingService, IPositionService positionService, IQuestionService questionService, IUserService userService, Silicus.UtilityContainer.Services.Interfaces.IUserService containerUserService)
         {
             _testSuiteService = testSuiteService;
             _tagsService = tagsService;
@@ -32,6 +34,7 @@ namespace Silicus.Ensure.Web.Controllers
             _positionService = positionService;
             _questionService = questionService;
             _userService = userService;
+            _containerUserService = containerUserService;
         }
 
         public ActionResult GetTestSuiteDetails([DataSourceRequest] DataSourceRequest request)
@@ -245,6 +248,7 @@ namespace Silicus.Ensure.Web.Controllers
                         _testSuiteService.AssignSuite(userTestSuite, testSuiteDetails);
                         var selectUser = _userService.GetUserDetails().Where(model => model.UserId == Convert.ToInt32(item)).FirstOrDefault();
                         selectUser.TestStatus = Convert.ToString(CandidateStatus.TestAssigned);
+                        selectUser.CandidateStatus = Convert.ToString(CandidateStatus.TestAssigned);
                         _userService.Update(selectUser);
                     }
                 }
@@ -346,6 +350,98 @@ namespace Silicus.Ensure.Web.Controllers
             return View(testSuiteViewQuesModel);
         }
 
+
+        public ActionResult PreViewQuestion(int testSuiteId)
+        {
+            var viewerEmailId = User.Identity.Name;
+            var viewer = _containerUserService.FindUserByEmail(viewerEmailId);        
+            int count = 0;
+            var testSuiteViewQuesModel = new TestSuiteViewQuesModel();
+            var testSuiteQuestionList = new List<TestSuiteQuestion>();
+            try
+            {
+                TestSuite testSuitDetails = _testSuiteService.GetTestSuitById(testSuiteId);
+                var previewTest = new PreviewTestBusinessModel { TestSuite = testSuitDetails, ViewerId = viewer.ID };
+                if (testSuitDetails != null && testSuitDetails.Status == Convert.ToInt32(TestSuiteStatus.Ready))
+                {
+                    var questionList = _testSuiteService.GetPreview(previewTest);
+                    foreach (var pQuestion in questionList)
+                    {
+                        count++;
+                        testSuiteQuestionList.Add(new TestSuiteQuestion()
+                        {
+                            QuestionType = pQuestion.QuestionType,
+                            QuestionNumber = count,
+                            QuestionDescription = pQuestion.QuestionDescription,
+                            OptionCount = pQuestion.OptionCount,
+                            Answer = pQuestion.Answer,
+                            CorrectAnswer = pQuestion.CorrectAnswer,
+                            Id = pQuestion.Id,
+                            Marks = pQuestion.Marks,
+                            Option1 = pQuestion.Option1,
+                            Option2 = pQuestion.Option2,
+                            Option3 = pQuestion.Option3,
+                            Option4 = pQuestion.Option4,
+                            Option5 = pQuestion.Option5,
+                            Option6 = pQuestion.Option6,
+                            Option7 = pQuestion.Option7,
+                            Option8 = pQuestion.Option8,
+                        });
+                    }
+
+                    testSuiteViewQuesModel.TestSuiteQuestion = testSuiteQuestionList;
+                    testSuiteViewQuesModel.TestSuiteName = testSuitDetails.TestSuiteName;
+                    testSuiteViewQuesModel.Duration = testSuitDetails.Duration;
+                    testSuiteViewQuesModel.ObjectiveCount = questionList.Count(x => x.QuestionType == 1);
+                    testSuiteViewQuesModel.PracticalCount = questionList.Count(x => x.QuestionType == 2);
+                    TestSuiteCandidateModel testSuiteCandidateModel = new TestSuiteCandidateModel
+                    {
+                        TestSuiteId = testSuiteId,
+                        PracticalCount = testSuiteViewQuesModel.PracticalCount,
+                        ObjectiveCount = testSuiteViewQuesModel.ObjectiveCount,
+                        Duration = testSuiteViewQuesModel.Duration
+                    };             
+                    testSuiteCandidateModel.NavigationDetails = GetQuestionNavigationDetails(questionList);
+                    testSuiteCandidateModel.TotalQuestionCount = testSuiteCandidateModel.PracticalCount + testSuiteCandidateModel.ObjectiveCount;
+                    testSuiteCandidateModel.DurationInMin = testSuiteCandidateModel.Duration;
+                    return View("PreviewQuestions", testSuiteCandidateModel);
+                }
+                else
+                {
+                    testSuiteViewQuesModel.ErrorMessage = "Test suite is not ready.";
+                }
+
+            }
+            catch
+            {
+                testSuiteViewQuesModel.ErrorMessage = "Something went wrong! Please try later.";
+            }
+
+            return View(testSuiteViewQuesModel);
+        }
+
+
+        private QuestionNavigationViewModel GetQuestionNavigationDetails(IEnumerable<Question> questions)
+        {
+            var navigation = new QuestionNavigationViewModel { Practical = new List<QuestionNavigationBasics>(), Objective = new List<QuestionNavigationBasics>() };
+
+            if (questions != null && questions.Any())
+            {
+                questions = questions.OrderBy(ques => ques.Id).ToList();
+                foreach (var question in questions)
+                {
+                    if (question.QuestionType == (int)QuestionType.Practical)
+                    {
+                        navigation.Practical.Add(new QuestionNavigationBasics { QuestionId = question.Id, QuestionDescription = question.QuestionDescription, IsViewedOnly = false });
+                    }
+                    else if (question.QuestionType == (int)QuestionType.Objective)
+                    {
+                        navigation.Objective.Add(new QuestionNavigationBasics { QuestionId = question.Id, QuestionDescription = question.QuestionDescription, IsViewedOnly = false });
+                    }
+                }
+            }
+            return navigation;
+        }
         public JsonResult GetUserIdsForTestSuite(int testSuiteId)
         {
             var users = _testSuiteService.GetAllUserIdsForTestSuite(testSuiteId);

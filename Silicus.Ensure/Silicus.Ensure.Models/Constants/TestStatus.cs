@@ -10,7 +10,8 @@
         UnderEvaluation = 4,
         Selected = 5,
         Rejected = 6,
-        OnHold =7
+        OnHold =7,
+        Archived = 8
     }
 
     public enum RoleName
@@ -95,6 +96,8 @@
                     return "Test submitted";
                 case CandidateStatus.UnderEvaluation:
                     return "Under evaluation";
+                case CandidateStatus.Archived:
+                    return "Archived";
                 default: return "";
             }
         }

@@ -13,5 +13,7 @@ namespace Silicus.Ensure.Models.Test
         public decimal TotalExperience { get; set; }
         public string Position { get; set; }
         public DateTime DOB { get; set; }
+        public int TotalExperienceInYear { get; set; }
+        public int TotalExperienceInMonth { get; set; }
     }
 }

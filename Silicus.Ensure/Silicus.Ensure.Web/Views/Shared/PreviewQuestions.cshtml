@@ -1,0 +1,484 @@
+﻿@model Silicus.Ensure.Web.Models.TestSuiteCandidateModel
+@using Kendo.Mvc.UI;
+@using Silicus.Ensure.Web.Models.Test
+@using Silicus.Ensure.Web
+
+@{
+    ViewBag.Title = "Preview Question";
+    Layout = "~/Views/Shared/_LayoutCandidate.cshtml";
+}
+<div class="row">
+    <div class="col-sm-12 main-content" id="main" style="background: #ccc;">     
+        <div class="row">
+            <div class="col-sm-12">
+                <input type="hidden" value="@Model.TestSuiteId" id="TestSuiteId" />
+                <input type="hidden" value="@Model.UserTestSuiteId" id="UserTestSuiteId" />
+                <input type="hidden" value="@Model.UserId" id="UserId" />
+            </div>
+        </div>
+        <div class="col-sm-12 M-T15">
+            <div class="f1 M-B30" style="background:#fff;border-radius:5px;">
+                <div id="QuestionDetails">
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- Modal -->
+<div class="modal fade" id="myModal" role="dialog">
+    <div class="modal-dialog">
+
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title"><span id="msgMain">Success!</span></h4>
+            </div>
+            <div class="modal-body">
+                <p id="msgContent">Some text in the modal.</p>
+            </div>
+            <div class="modal-footer">
+                <button id="btnModalOK" type="button" class="btn btn-default" data-dismiss="modal">OK</button>
+                <button id="btnSubmitTestOK" type="button" class="btn btn-default" data-dismiss="modal">OK</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<!-- Modal Submit Test On Time Complete-->
+<div class="modal fade" id="myModalTC" role="dialog" onclick="TestDurationComplete();">
+    <div class="modal-dialog">
+
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" onclick="TestDurationComplete();">&times;</button>
+                <h4 class="modal-title"><span id="msgMainTC">Warning!</span></h4>
+            </div>
+            <div class="modal-body">
+                <p id="msgContentTC">The test duration is over, thank you for your participation. Further, the recruitment team will contact you for the update.</p>
+            </div>
+            <div class="modal-footer">
+                <button id="btnModalOKTC" type="button" class="btn btn-default" data-dismiss="modal" onclick="TestDurationComplete();">OK</button>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+
+@section Sidebar{
+    <div class="sidebar">
+        <nav class="sidebar-nav">
+
+            <!--mobile menu -->
+            <div class="panel-group hidden-lg-up mobileMenu" id="accordion">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h4 class="panel-title">
+                            <a class="collapsed" data-toggle="collapse" data-parent="#accordion" href="#LearnMenu">OBJECTIVE TEST</a>
+                        </h4>
+                    </div>
+                    <div id="LearnMenu" class="panel-collapse collapse">
+                        <div class="panel-body">
+                        </div>
+                    </div>
+                </div>
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h4 class="panel-title">
+                            <a class="collapsed" data-toggle="collapse" data-parent="#accordion" href="#supportMenu">PRACTICAL TEST</a>
+                        </h4>
+                    </div>
+                    <div id="supportMenu" class="panel-collapse collapse">
+                        <div class="panel-body">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!--mobile menu end here-->
+            <div class="menu-btn-sidebar" onclick="CustomSidebarOpen();"><i class="fa fa-bars" aria-hidden="true"></i></div>
+            <ul class="nav hidden-md-down">
+                <div id="objective-test-side-bar">
+                    <li class="nav-item nav-heading">
+                        <a class="nav-link fontBold" href="#">Objective Questions</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link personal fontBold" href="index.html"><i class="fa fa-check-square-o fontBold" aria-hidden="true"></i> Objective Test </a>
+                    </li>
+                    <li class="nav-item">
+                        <ol class="questions">
+                            @if (@Model.NavigationDetails != null && @Model.NavigationDetails.Objective != null && @Model.NavigationDetails.Objective.Count > 0)
+                            {
+                                foreach (var question in Model.NavigationDetails.Objective)
+                                {
+                                    <li>
+                                        <a class="nav-link contact QuestionCheckbox @QuestionColor(question)" id="@question.QuestionId" href="#"> @Html.Raw(@question.QuestionDescription)</a>
+                                    </li>
+                                }
+                            }
+                        </ol>
+                    </li>
+                </div>
+                <div id="practical-test-side-bar">
+                    <li class="nav-item nav-heading">
+                        <a class="nav-link fontBold" href="#">Practical Questions</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link personal fontBold" href="index.html"><i class="fa fa-check-square-o fontBold" aria-hidden="true"></i> Practical Test </a>
+                    </li>
+                    <li class="nav-item">
+                        <ol class="questions">
+                            @if (@Model.NavigationDetails != null && @Model.NavigationDetails.Practical != null && @Model.NavigationDetails.Practical.Count > 0)
+                            {
+                                foreach (var question in Model.NavigationDetails.Practical)
+                                {
+                                    <li>
+                                        <a class="nav-link contact QuestionCheckbox @QuestionColor(question)" id="@question.QuestionId" href="#">@Html.Raw(@question.QuestionDescription)</a>
+                                    </li>
+                                }
+                            }
+                        </ol>
+                    </li>
+                </div>
+            </ul>
+
+        </nav>
+    </div>
+
+}
+
+@helper QuestionColor(Silicus.Ensure.Models.Test.QuestionNavigationBasics question)
+{
+if (question.IsAnswered)
+{
+        @("is-answered");
+}
+else if (question.IsViewedOnly)
+{
+        @("is-viewed-only");
+}
+else
+{
+        @("is-not-visited");
+    }
+
+}
+
+<script>
+    var clock;
+    var totalTime;
+    function updateQuestionLinkColorClass(questionLinkId, isAnswred, isViewedOnly) {
+        var className;
+        if (isAnswred) {
+            className = "is-answered";
+        } else if (isViewedOnly == true) {
+            className = "is-viewed-only";
+        } else {
+            className = "is-not-visited";
+        }
+        $(questionLinkId).removeClass('is-answered');
+        $(questionLinkId).removeClass('is-viewed-only');
+        $(questionLinkId).removeClass('is-not-visited');
+
+        $(questionLinkId).addClass(className);
+    }
+    function LoadFirstQuestion(userId) {     
+        var testSuiteId = $("#TestSuiteId").val();
+        $.ajax({
+            url: "/Reviewer/PreviewQuestion",
+            data: { testSuiteId: testSuiteId },
+            success: function (data) {
+                $('#QuestionDetails').html(data);
+            }
+        });
+        $('#btnSubmit').hide();
+     }
+    $(document).ready(function () {
+        $('.breadcrumb-item.active').removeClass('active');
+        $('#objective-test').addClass('active');
+        $('#practical-test-side-bar').hide();
+              
+        $("#frmTestresult").kendoValidator();
+        // Hide Submit button of popup. Show when to want submit test.
+        var userId = $("#UserId").val();
+        $("#btnSubmitTestOK").hide();
+        var userTestSuiteId = $("#UserTestSuiteId").val();
+        LoadFirstQuestion(userId);
+        //$('#QuestionDetails').load(url + userTestSuiteId);
+
+        // Hide "Add More Time" if used 2 times
+        var timerCnt = $("#TimerIncCount").val();
+        if (timerCnt >= 2)
+            $("#btnAddMoreTime").hide();
+
+        // Timer
+        var tm =@Model.Duration
+        tm = parseInt(tm) * 60;
+
+        // Initialize progress bar.
+        totalTime = tm;
+        $('#progressBar').attr('aria-valuemax', totalTime).css('width', '0%');
+        $('#progressInfo').text('0%');
+
+        $('.QuestionCheckbox').on('click', QuestionCheckboxClicked);
+        $('#btnSubmit').hide();
+        $('#instruction').hide();
+    });
+
+    function QuestionCheckboxClicked(event) {
+        if (!$(this).parent().hasClass('active')) {
+            var questionId = $(this).attr('id');
+            UpdateCurrentQuestionAndLoadNewOne(questionId);
+        }
+    }
+
+    function UpdateCurrentQuestionAndLoadNewOne(questionId) {
+        var questionNavigationDetails = GetCurrentQuestionStatus();
+        updateQuestionLinkColorClass('#' + questionNavigationDetails.QuestionNumber, questionNavigationDetails.IsAnswered, questionNavigationDetails.IsViewed);
+        UpdateCurrentQuestionNavigationStatus(questionNavigationDetails);
+        GetQuestionDetails(questionId);
+    }
+
+    function UpdateCurrentQuestionNavigationStatus(questionNavigationDetails) {
+        var ClassesForViewedQuestion = 'fa fa-square';
+        var ClassForUnSeenQuestion = 'UnSeen';
+        if (questionNavigationDetails) {
+            var input = '#NavigationSection ' + '#' + questionNavigationDetails.QuestionNumber;
+            input = $(input).find('.QuestionCheckboxInnerDiv');
+            $(input).removeClass(ClassForUnSeenQuestion);
+            $(input).removeClass(ClassesForViewedQuestion);
+            if (questionNavigationDetails.IsViewed) {
+                $(input).addClass(ClassesForViewedQuestion);
+            }
+            else {
+                $(input).addClass(ClassForUnSeenQuestion);
+            }
+        }
+    }
+    function GetCurrentQuestionStatus() {
+        var QuestionNumber = $("#QuestionNumber").val();
+        var QuestionType = $("#QuestionType").val();
+        var IsAnswered = false;
+        var IsViewed = true;
+        if (QuestionType == 1) {
+            IsAnswered = $("#QuestionDetails").find(".radio input:checked,.checkbox input:checked").length > 0 ? true : false;
+        }
+        else {
+            IsAnswered = $("#PracticalAnswer").val().trim().length > 0 ? true : false;
+        }
+        var result = { QuestionNumber: QuestionNumber, Questiontype: QuestionType, IsAnswered: IsAnswered, IsViewed: IsViewed };
+        return result;
+    }
+
+    function AddMoreTime() {
+        var timerCnt = $("#TimerIncCount").val();
+        if (timerCnt == 0)
+            ShowProgressPopUp(true, "You have only 2 chances. Are you sure, you want to increase time limit by 10 Mins?");
+        else
+            ShowProgressPopUp(true, "This is the last chance. Are you sure, you want to increase time limit by 10 Mins?");
+    }
+
+    function OnAddMoreTimeOK() {
+        var timerCnt = $("#TimerIncCount").val();
+        if (timerCnt == null || timerCnt == "")
+            timerCnt = 0;
+        var userTestSuiteId = $("#UserTestSuiteId").val();
+        $.ajax({
+            url: '/Candidate/AddMoreTime',
+            dataType: "json",
+            type: "POST",
+            contentType: 'application/json; charset=utf-8',
+            data: JSON.stringify({ count: timerCnt, userTestSuiteId: userTestSuiteId }),
+            success: function (data) {
+                if (data < 3) {
+                    // Add time in counter
+                    var newtm = parseInt(clock.getTime()) + parseInt(60 * 10);
+                    clock.setTime(newtm);
+
+                    // Assign reduced chance
+                    $("#TimerIncCount").val(data);
+
+                    // Update Progress bar
+                    totalTime = parseInt(totalTime) + parseInt(60 * 10);
+                    var leftTm = parseInt(totalTime) - clock.getTime();
+                    var newprogress = parseInt((parseInt(leftTm) / parseInt(totalTime)) * 100);
+                    $('#progressBar').attr('aria-valuemax', totalTime).css('width', newprogress + "%");
+                    $('#progressBar').attr('aria-valuenow', clock.getTime()).css('width', newprogress + "%");
+                    $('#progressInfo').text(newprogress + "%");
+
+                    // Hide Add more time button.
+                    if (data == 2) {
+                        $("#btnAddMoreTime").hide();
+                    }
+
+                }
+            },
+            error: function () {
+
+            }
+        });
+    }
+
+    function ProgressBar() {
+        var time = clock.getTime().time;
+        if (time % 60 == 0) {
+            var leftTm = parseInt(totalTime) - clock.getTime();
+            var newprogress = parseInt((parseInt(leftTm) / parseInt(totalTime)) * 100);
+            $('#progressBar').attr('aria-valuenow', clock.getTime()).css('width', newprogress + "%");
+            $('#progressInfo').text(newprogress + "%");
+
+            //   UpdateTimeDB(time);
+
+            if (time == 60) {
+                var timerCntVal = $("#TimerIncCount").val();
+                if (timerCntVal == 0)
+                    ShowProgressPopUp(false, "Please click on 'Add more time' button in order to add 10 more minutes to Test duration.");
+                else if (timerCntVal == 1)
+                    ShowProgressPopUp(false, "Please click on 'Add more time' button for the last time to add 10 more minutes to Test duration.");
+                else
+                    ShowProgressPopUp(false, "1 minute remaining to complete the test.");
+            }
+            else if (time == 900 && totalTime > 1799)
+                ShowProgressPopUp(false, "15 minute remaining to complete the test.");
+            else if (time == 1800 && totalTime != 1800)
+                ShowProgressPopUp(false, "30 minute remaining to complete the test.");
+            else if (time == 3600 && totalTime != 3600)
+                ShowProgressPopUp(false, "60 minute remaining to complete the test.");
+        }
+    }
+
+    function ShowProgressPopUp(bl, msg) {
+        if (!bl) {
+            ShowSweetAlertWithoutCancel("Warning!", msg, "warning");
+        }
+        else {
+            swal({
+                title: "Warning!",
+                text: msg,
+                type: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#DD6B55",
+                confirmButtonText: "Yes",
+                cancelButtonText: "No",
+                closeOnConfirm: true,
+                closeOnCancel: true
+            },
+ function (isConfirm) {
+     if (isConfirm) {
+         OnAddMoreTimeOK();
+         swal("Added!", "Now you have extra 10 mins.", "success");
+     }
+ });
+        }
+    }
+
+    function UpdateTimeDB(tm) {
+        var userTestSuiteId = $("#UserTestSuiteId").val();
+        $.ajax({
+            url: '/Candidate/UpdateTimeCounter',
+            dataType: "json",
+            type: "POST",
+            contentType: 'application/json; charset=utf-8',
+            data: JSON.stringify({ time: tm, userTestSuiteId: userTestSuiteId }),
+            success: function () {
+            },
+            error: function () {
+            }
+        });
+    }
+
+    function OnNext(e) {
+        var questionId = $('#btnNext').attr('data-id');
+        UpdateCurrentQuestionAndLoadNewOne(questionId);
+        return false;
+    }
+
+    function OnPrevious() {
+        var questionId = $('#btnPrevious').attr('data-id');
+        UpdateCurrentQuestionAndLoadNewOne(questionId);
+        return false;
+    }
+
+    function GetQuestionDetails(questionId) {
+        var answer = GetAnswer();
+        var userId = $("#UserId").val();
+        var testSuiteId = $("#TestSuiteId").val();
+        var userTestSuiteId = $("#UserTestSuiteId").val();
+        var userTestDetailId = $("#UserTestDetailId").val();
+        var questionType = $("#QuestionType").val();
+        var questionDetails = { testSuiteId: testSuiteId, QuestionId: questionId};
+        $('#QuestionDetails').load('/Reviewer/GetQuestionForPreviewTestSuite', questionDetails);
+    }
+
+    function UpdateAndGetQuestionReview(questionId) {
+        var answer = GetAnswer();
+        var userTestSuiteId = $("#UserTestSuiteId").val();
+        var userTestDetailId = $("#UserTestDetailId").val();
+        var questionType = $("#QuestionType").val();
+        var candidateId = $("#UserId").val();
+        var comment = $("#Comment").val();
+        var marks = $("#ReviwerMark").val();
+        var reviewerQuestionDetails = { QuestionId: questionId, UserTestSuiteId: userTestSuiteId, UserTestDetailId: userTestDetailId, Comment: comment, Marks: marks };
+        $('#QuestionDetails').load('/Reviewer/UpdateReviewAndGetQuestionDetails', reviewerQuestionDetails);
+    }
+
+    function GetAnswer() {
+        var answer = "";
+        if ($("#QuestionType").val().trim() == "1") {
+            if ($("#AnswerType").val().trim() == "1") {
+                answer = $('[name="optradio"]:radio:checked').val();
+            }
+            else {
+                $("input:checkbox[name=optcheckbox]:checked").each(function () {
+                    answer = answer + $(this).val() + ",";
+                });
+
+                answer = answer.slice(0, -1);
+            }
+        }
+        else {
+            answer = $("#PracticalAnswer").val();
+            answer = encodeURIComponent(answer);
+        }
+        if (answer == "undefined")
+            answer = null;
+        return answer;
+    }
+
+
+    function getCurrentQuestionStatus() {
+        var QuestionNumber = $("#QuestionNumber").val();
+        var QuestionType = $("#QuestionType").val();
+        var IsAnswered = false;
+        var IsViewed = true;
+        if (QuestionType == 1) {
+            IsAnswered = $(".radio input:checked").length > 0 ? true : false;
+        }
+        else {
+            IsAnswered = $("#PracticalAnswer").val().trim().length > 0 ? true : false;
+        }
+        var result = { QuestionNumber: QuestionNumber, Questiontype: QuestionType, IsAnswered: IsAnswered, IsViewed: IsViewed };
+        return result;
+    }
+    function OnSubmitTest() { }
+
+    function refreshAnsweredQuestionCount() {    
+        var answeredObjectiveQuestions = parseInt($('#objective-test-side-bar .is-answered').length);
+        var answeredPracticalQuestions = parseInt($('#practical-test-side-bar .is-answered').length);
+        var totalObjectiveQuestions = parseInt($('#objective-test-side-bar .QuestionCheckbox').length);
+        var totalPracticalQuestions = parseInt($('#practical-test-side-bar .QuestionCheckbox').length);
+        if (answeredObjectiveQuestions != NaN && answeredPracticalQuestions != NaN && totalObjectiveQuestions != NaN && totalPracticalQuestions != NaN) {
+            $('#answeredObjectiveQuestionsCount').text(answeredObjectiveQuestions);
+            $('#answeredPracticalQuestionsCount').text(answeredPracticalQuestions);
+            $('#notAnsweredObjectiveQuestionsCount').text(totalObjectiveQuestions - answeredObjectiveQuestions);
+            $('#notAnsweredPracticalQuestionsCount').text(totalPracticalQuestions - answeredPracticalQuestions);
+        }
+    }
+
+   
+</script>

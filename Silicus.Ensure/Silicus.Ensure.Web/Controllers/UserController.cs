@@ -21,6 +21,7 @@ using Silicus.Ensure.Web.Application;
 using Silicus.Ensure.Models;
 using System.IO;
 using RazorEngine;
+using System.Globalization;
 
 namespace Silicus.Ensure.Web.Controllers
 {
@@ -140,12 +141,12 @@ namespace Silicus.Ensure.Web.Controllers
         /// <param name="UserId"></param>
         /// <returns></returns>
         [AcceptVerbs(HttpVerbs.Post)]
-        public ActionResult DeleteUser(UserViewModel userModel)
+        public ActionResult DeleteUser(int UserId)
         {
-            if (userModel != null && userModel.UserId > 0)
+            if (UserId > 0)
             {
 
-                _userService.Delete(userModel.UserId);
+                _userService.Delete(UserId);
                 return Json(1);
             }
 
@@ -217,8 +218,11 @@ namespace Silicus.Ensure.Web.Controllers
         [HttpPost]
         public async Task<ActionResult> CandidateSave(UserViewModel user)
         {
+                 
             string actionErrorName = user.Role.ToLower() == RoleName.Candidate.ToString().ToLower() ? "CandidateAdd" : "PanelAdd";
             string controllerName = user.Role.ToLower() == RoleName.Candidate.ToString().ToLower() ? "Admin" : "Panel";
+            DateTime dt = DateTime.ParseExact(user.DOB, "dd/MM/yyyy", CultureInfo.InvariantCulture);
+            user.DOB = dt.ToString();
             if (user.ResumeFile != null)
             {
                 UploadResume(user);
@@ -247,12 +251,13 @@ namespace Silicus.Ensure.Web.Controllers
                 organizationUserDomainModel.IsDeleted = false;
                 _userService.Add(organizationUserDomainModel);
                 TempData["Success"] = "User created successfully!";
+
+                //Send Candidate creation mail to Admin and Recruiter
+                List<string> Receipient = new List<string>() { "Admin", "Recruiter" };
+                _commonController.SendMailByRoleName("Candidate Created Successfully", "CandidateCreated.cshtml", Receipient, user.FirstName + " " + user.LastName);
+
             }
             ViewBag.UserRoles = RoleManager.Roles.Select(r => new SelectListItem { Text = r.Name, Value = r.Name }).ToList();
-
-            //Send Candidate creation mail to Admin and Recruiter
-            List<string> Receipient = new List<string>() { "Admin", "Recruiter" };
-            _commonController.SendMailByRoleName("Candidate Created Successfully", "CandidateCreated.cshtml", Receipient, user.FirstName + " " + user.LastName);
 
 
             return RedirectToAction(user.Role.ToLower() == RoleName.Candidate.ToString().ToLower() ? "Candidates" : "Index", controllerName);

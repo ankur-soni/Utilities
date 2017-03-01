@@ -94,18 +94,19 @@
                                     <div class="col-md-6">
                                         <div class="col-md-8 col-sm-10 col-xs-10" style="padding-left:0;padding-right:0;height:30px;">
                                             @(Html.Kendo().DropDownListFor(model => model.Position)
-.OptionLabel("--Select--")
-.BindTo(Model.PositionList)
-.DataTextField("PositionName")
-.DataValueField("PositionName")
-.Value(Model.Position)
-.HtmlAttributes(new { style = "width: 100%;border-color: #c5c5c5;" })
+                                            .OptionLabel("--Select--")
+                                            .BindTo(Model.PositionList)
+                                            .DataTextField("PositionName")
+                                            .DataValueField("PositionName")
+                                            .Value(Model.Position)
+                                            .HtmlAttributes(new { style = "width: 100%;border-color: #c5c5c5;" })
                                             )
-                                            @Html.ValidationMessageFor(m => m.Position)
+                                            
                                         </div>
                                         <div class="col-md-4 col-sm-2 col-xs-2">
                                             <a href="#" class="font-Bold themeColorBlue btn btn-primary" onclick="AddPosition();"><span style="font-size: 12px;" class="glyphicon glyphicon-plus"></span></a>
                                         </div>
+                                        @Html.ValidationMessageFor(m => m.Position)
                                     </div>
                                 </div>
                             </div>
@@ -174,7 +175,7 @@
                                     </div>
                                     <div class="col-md-6">
                                         <input type="text" style="width:100%;" name="DOB" id="DOB" value="@if (Model.UserId != 0)
-                                        { @Model.DOB.ToShortDateString().Replace("-", "/")}" />
+                                        { @Model.DOB.Replace("-", "/")}" />
                                         @Html.ValidationMessageFor(m => m.DOB)
                                     </div>
                                 </div>
@@ -222,7 +223,7 @@
 .BindTo(EnumHelper.GetSelectList((typeof(Year)))
 .Select(x => new SelectListItem { Text = x.Value, Value = x.Value }))
 .HtmlAttributes(new { style = "width: 100%;" })
-.OptionLabel("Year")
+.OptionLabel("Years")
                                             )
                                             @Html.ValidationMessageFor(m => m.TotalExperienceInYear)
                                         </div>
@@ -251,7 +252,7 @@
 .BindTo(EnumHelper.GetSelectList((typeof(Year)))
 .Select(x => new SelectListItem { Text = x.Value, Value = x.Value }))
 .HtmlAttributes(new { style = "width: 100%" })
-.OptionLabel("Year")
+.OptionLabel("Years")
                                             )
                                             @Html.ValidationMessageFor(m => m.RelevantExperienceInYear)
                                         </div>
@@ -323,7 +324,7 @@
                                 </div>
                                 <div class="col-md-6">
                                     <div class="col-md-6">
-                                        <label for="file">Upload Image:</label>
+                                        <label for="file">Upload Image</label>
                                     </div>
                                     <div class="col-md-6">
                                         @if (!string.IsNullOrWhiteSpace(Model.ProfilePhotoFilePath))
@@ -369,3 +370,16 @@
 <script src="~/Scripts/jquery.validate.min.js"></script>
 <script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
 <script src="~/Scripts/jquery.unobtrusive-ajax.min.js" type="text/javascript"> </script>
+
+<script>
+    $('#btnSave').click(function () {       
+        window.onbeforeunload = null;   
+    });
+
+    $('frmSearchAllNdc').submit(function () {
+        window.onbeforeunload = null;
+    });
+    $('#btnCancel').click(function () {
+        window.onbeforeunload = null;
+    });
+</script>

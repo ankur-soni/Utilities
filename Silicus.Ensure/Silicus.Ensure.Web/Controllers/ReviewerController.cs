@@ -221,17 +221,55 @@ namespace Silicus.Ensure.Web.Controllers
             return testDetails;
         }
 
+
+        private TestDetailsViewModel PreviewTestSuits(int? questionId, int? testSuiteId, int questionType)
+        {
+            var viewerEmailId = User.Identity.Name;
+            var viewer = _containerUserService.FindUserByEmail(viewerEmailId);
+            var previewTest = new PreviewTestBusinessModel { TestSuite = new TestSuite { TestSuiteId = (int)testSuiteId }, ViewerId = viewer.ID};
+            TestDetailsBusinessModel userTestDetails = _testSuiteService.GetTestDetailsByTestSuit(previewTest, questionId, questionType);
+            var testDetails = _mappingService.Map<TestDetailsBusinessModel, TestDetailsViewModel>(userTestDetails);
+            testDetails = testDetails ?? new ReviewerQuestionViewModel();
+            return testDetails;
+        }
         public ActionResult LoadPreviewQuestion(int userId, int testSuiteId)
         {
             var testSuiteQuestionModel = PreviewTestSuiteQuestion(null, testSuiteId, (int)QuestionType.Practical, userId);
             return PartialView("_partialViewQuestion", testSuiteQuestionModel);
         }
 
+
+        public ActionResult PreviewQuestion(int testSuiteId)
+        {
+            var testSuiteQuestionModel = PreviewTestSuits(null, testSuiteId, (int)QuestionType.Practical);
+            return PartialView("_partialViewQuestion", testSuiteQuestionModel);
+        }
+
+
         public ActionResult GetQuestionForPreview(int? testSuiteId, int questionId, int userId)
         {
             var questionType = _testSuiteService.GetQuestionType(questionId);
-            var testDetails = PreviewTestSuiteQuestion(questionId, testSuiteId, questionType, userId);
+            var testDetails = PreviewTestSuiteQuestion(questionId, testSuiteId, questionType,userId);
             return PartialView("_partialViewQuestion", testDetails);
+        }
+
+
+        public ActionResult GetQuestionForPreviewTestSuite(int? testSuiteId, int questionId)
+        {
+            var questionType = _testSuiteService.GetQuestionType(questionId);
+            var testDetails = PreviewTestSuiteQuestion(questionId, testSuiteId, questionType);
+            return PartialView("_partialViewQuestion", testDetails);
+        }
+
+        private TestDetailsViewModel PreviewTestSuiteQuestion(int? questionId, int? testSuiteId, int questionType)
+        {
+            var viewerEmailId = User.Identity.Name;
+            var viewer = _containerUserService.FindUserByEmail(viewerEmailId);
+            var previewTest = new PreviewTestBusinessModel { TestSuite = new TestSuite { TestSuiteId = (int)testSuiteId }, ViewerId = viewer.ID};
+            TestDetailsBusinessModel userTestDetails = _testSuiteService.GetTestDetailsByTestSuit(previewTest, questionId, questionType);
+            var testDetails = _mappingService.Map<TestDetailsBusinessModel, TestDetailsViewModel>(userTestDetails);
+            testDetails = testDetails ?? new ReviewerQuestionViewModel();
+            return testDetails;
         }
         #endregion
     }
