@@ -218,8 +218,6 @@ else
     }
 
     function updateQuestionLinkColorClass(questionLinkId, isAnswred, isViewedOnly) {
-    debugger
-        if ($('#ReviwerMark').val()) {
             var className;
             if (isAnswred) {
                 className = "is-answered";
@@ -233,10 +231,6 @@ else
             $(questionLinkId).removeClass('is-not-visited');
 
             $(questionLinkId).addClass(className);
-        }
-        else {
-            $(questionLinkId).addClass('is-answered');
-        }
     }
 
     function GetCurrentQuestionStatus() {

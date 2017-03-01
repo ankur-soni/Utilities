@@ -150,10 +150,6 @@ namespace Silicus.Ensure.Web.Controllers
         {
             TestDetailsBusinessModel userTestDetails = _testSuiteService.GetUserTestDetailsByUserTestSuitId(userTestSuiteId, questionId, questionType);
             var testDetails = _mappingService.Map<TestDetailsBusinessModel, ReviewerQuestionViewModel>(userTestDetails);
-            if (testDetails != null && testDetails.QuestionType == (int)QuestionType.Objective)
-            {
-                testDetails.ReviwerMark = userTestDetails.Marks;
-            }
             testDetails = testDetails ?? new ReviewerQuestionViewModel();
             return testDetails;
         }
