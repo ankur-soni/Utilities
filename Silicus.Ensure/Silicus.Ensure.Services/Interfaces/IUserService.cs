@@ -45,5 +45,7 @@ namespace Silicus.Ensure.Services.Interfaces
         List<UserBusinessModel> GetUserWithAllApplicationDetails(int userId);
 
         List<UserBusinessModel> GetUserDetails(int userId);
+
+        int GetUserLastestApplicationId(int userId);
     }
 }

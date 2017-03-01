@@ -117,6 +117,14 @@ namespace Silicus.Ensure.Services
             return _context.Query<UserApplicationDetails>().FirstOrDefault(x => x.UserApplicationDetailsId == userApplicationId);
         }
 
+
+        public int GetUserLastestApplicationId(int userId)
+        {
+           return _context.Query<User>().FirstOrDefault(x => x.UserId == userId).UserApplicationDetails.LastOrDefault().UserApplicationDetailsId;
+         
+
+        }
+
         public void UpdateUserApplicationTestDetails(int UserApplicationDetailsId)
         {
             var result = _context.Query<UserApplicationDetails>().FirstOrDefault(x => x.UserApplicationDetailsId == UserApplicationDetailsId);

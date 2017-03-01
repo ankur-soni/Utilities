@@ -279,7 +279,8 @@ namespace Silicus.Ensure.Web.Controllers
                     testSuiteViewModel = _mappingService.Map<TestSuite, TestSuiteViewModel>(testSuitDetails);
                     testSuiteViewModel.OverallProficiency = ((Proficiency)Convert.ToInt32(testSuiteViewModel.Competency)).ToString();
                     var position = _positionService.GetPositionById(testSuiteViewModel.Position);
-                    testSuiteViewModel.PositionName = position.PositionName;
+                    if(position!=null)
+                        testSuiteViewModel.PositionName = position.PositionName;
                     List<TestSuiteTagViewModel> testSuiteTags;
                     GetTestSuiteTags(testSuitDetails, out testSuiteTags);
                     testSuiteViewModel.Tags = testSuiteTags;
@@ -455,7 +456,8 @@ namespace Silicus.Ensure.Web.Controllers
                 TestSuiteViewModel testSuiteViewModel = _mappingService.Map<TestSuite, TestSuiteViewModel>(testSuitDetails);
                 testSuiteViewModel.OverallProficiency = ((Proficiency)Convert.ToInt32(testSuiteViewModel.Competency)).ToString();
                 var position = _positionService.GetPositionById(testSuiteViewModel.Position);
-                testSuiteViewModel.PositionName = position.PositionName;
+                if(position!=null)
+                    testSuiteViewModel.PositionName = position.PositionName;
                 List<TestSuiteTagViewModel> testSuiteTags;
                 GetTestSuiteTags(testSuitDetails, out testSuiteTags);
                 testSuiteViewModel.Tags = testSuiteTags;
