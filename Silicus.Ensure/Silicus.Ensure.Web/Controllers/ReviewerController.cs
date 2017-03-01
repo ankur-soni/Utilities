@@ -251,8 +251,9 @@ namespace Silicus.Ensure.Web.Controllers
 
         public ActionResult GetQuestionForPreview(int? testSuiteId, int questionId, int userId)
         {
+            int applicationDetails = _userService.GetUserLastestApplicationId(userId);
             var questionType = _testSuiteService.GetQuestionType(questionId);
-            var testDetails = PreviewTestSuiteQuestion(questionId, testSuiteId, questionType, userId);
+            var testDetails = PreviewTestSuiteQuestion(questionId, testSuiteId, questionType, applicationDetails);
             return PartialView("_partialViewQuestion", testDetails);
         }
 

@@ -66,7 +66,11 @@
 
     </div>
 </div>
+<div class="loader-overlay" style="display:none;">
+    <div class="loader">
 
+    </div>
+</div>
 @section Sidebar{
     <div class="sidebar">
         <nav class="sidebar-nav">
@@ -367,6 +371,7 @@ else
         },
     function (isConfirm) {
         if (isConfirm) {
+            showCustomLoader();
             OnSubmitTestOK();
             var text = "The test is submitted , thank you for your participation. Further, the recruitment team will contact you for the update";
             swal("Submitted!", "Now you have extra 10 mins.", "success");
@@ -381,7 +386,9 @@ else
         var userTestDetailId = $("#UserTestDetailId").val();
         var userId = $("#UserId").val();
         window.onbeforeunload = null;
+        debugger;
         window.location.href = '/Candidate/OnSubmitTest?testSuiteId=' + testSuiteId + '&userTestSuiteId=' + userTestSuiteId + '&userTestDetailId=' + userTestDetailId + '&userId=' + userId + '&answer=' + answer;
+        $(".loader-overlay").hide();
     }
 
     function getCurrentQuestionStatus() {
@@ -478,5 +485,7 @@ else
             $('#notAnsweredPracticalQuestionsCount').text(totalPracticalQuestions - answeredPracticalQuestions);
         }
     }
+
+
 
 </script>
