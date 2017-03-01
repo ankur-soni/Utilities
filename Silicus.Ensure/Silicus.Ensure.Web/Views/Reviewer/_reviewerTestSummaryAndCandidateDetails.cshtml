@@ -7,24 +7,19 @@
     int notAnsweredPracticalQuestions = Model.PracticalCount - answeredPracticalQuestions;
 }
 
-
-<div class="tab-pane p-1 active" id="details" role="tabpanel">
-    <div class="test-summary">
-        <h6>TEST SUMMARY</h6>
-        <div class="summaryBox">
-            @Html.Partial("_TestSummary", Model.TestSummary)
+<div class="tab-content">
+    <div class="tab-pane p-1 active" id="details" role="tabpanel">
+            <div class="">
+                @Html.Partial("_TestSummary", Model.TestSummary)
+            </div>
+    </div>
+    <div class="tab-pane " id="profile" role="tabpanel">
+        <div class="container">
+            @Html.Partial("_CandidateInfo", Model.CandidateInfo)
         </div>
-    
-</div>
-<div class="tab-pane " id="profile" role="tabpanel">
-    <div class="container">
-        @Html.Partial("_CandidateInfo", Model.CandidateInfo)
     </div>
 </div>
-
-
-
-<script>
+    <script>
     var isCounterStarted = false;
     var testDurationComplete = false;
     $(document).ready(function () {
@@ -196,4 +191,4 @@
             }
         });
     }
-</script>
+    </script>
