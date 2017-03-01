@@ -26,6 +26,7 @@ using Silicus.Ensure.Models;
 using Silicus.Ensure.Models.Test;
 using Silicus.Ensure.Web.Models.Test;
 using Silicus.Ensure.Web.Filters;
+using System.Globalization;
 
 namespace Silicus.Ensure.Web.Controllers
 {
@@ -582,6 +583,15 @@ namespace Silicus.Ensure.Web.Controllers
             var positionDetails = _positionService.GetPositionDetails().OrderBy(model => model.PositionName);
             currUser.PositionList = positionDetails.ToList();
             currUser.IsCandidateReappear = IsCandidateReappear;
+            if (!string.IsNullOrWhiteSpace(currUser.DOB))
+            {
+                DateTime dt = DateTime.Parse(currUser.DOB);
+                currUser.DOB = dt.ToString("dd/MM/yyyy");
+            }
+            
+            
+
+           
             return View(currUser);
         }
 
