@@ -10,6 +10,9 @@
 }
 
 <style>
+    textarea {
+    resize: none;
+}
     #ReviwerMark_validationMessage {
     font-size: 12px !important;
     margin-left: -103px;
@@ -124,116 +127,121 @@
     </div>
 </div>
 
+
 <!-- Modal Submit Test On Time Complete-->
 <div class="modal fade" id="testresultPopup" role="dialog">
-    <div class="modal-dialog">
+   
+        <div class="modal-dialog modal-md">
 
-        <!-- Modal content-->
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal">&times;</button>
-                <h4 class="modal-title">Candidate Result</h4>
-            </div>
-            <div class="modal-body">
-                <form id="frmTestresult">
-                    @Html.Partial("_CandidateResult", new CandidateResultViewmodel())
-                </form>
-            </div>
-            <div class="modal-footer">
-                <button id="SubmitCandidateResult" type="button" class="btn btn-default">OK</button>
-                <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-            </div>
-        </div>
 
-    </div>
-</div>
-
-@section Sidebar{
-    <div class="sidebar">
-        <nav class="sidebar-nav">
-
-            <!--mobile menu -->
-            <div class="panel-group hidden-lg-up mobileMenu" id="accordion">
-                <div class="panel panel-default">
-                    <div class="panel-heading">
-                        <h4 class="panel-title">
-                            <a class="collapsed" data-toggle="collapse" data-parent="#accordion" href="#LearnMenu">OBJECTIVE TEST</a>
-                        </h4>
-                    </div>
-                    <div id="LearnMenu" class="panel-collapse collapse">
-                        <div class="panel-body">
+            <!-- Modal content-->
+            
+                    <div class="modal-content">
+                        <div style="background:#294f71;color:#fff;" class="modal-header">
+                            <button style="color:#fff;" type="button" class="close" data-dismiss="modal">&times;</button>
+                            <h4 class="modal-title" style="font-size:16px;">EMPLOYEE SELECTION PROCESS</h4>
                         </div>
-                    </div>
-                </div>
-                <div class="panel panel-default">
-                    <div class="panel-heading">
-                        <h4 class="panel-title">
-                            <a class="collapsed" data-toggle="collapse" data-parent="#accordion" href="#supportMenu">PRACTICAL TEST</a>
-                        </h4>
-                    </div>
-                    <div id="supportMenu" class="panel-collapse collapse">
-                        <div class="panel-body">
+                        <div class="modal-body">
+                            <form id="frmTestresult">
+                                @Html.Partial("_CandidateResult", new CandidateResultViewmodel())
+                            </form>
+                        </div>
+                        <div class="modal-footer">
+                            <button id="SubmitCandidateResult" type="button" class="btn btn-primary">OK</button>
+
                         </div>
                     </div>
                 </div>
             </div>
-            <!--mobile menu end here-->
-            <div class="menu-btn-sidebar" onclick="customSidebarToggle();"><i class="fa fa-bars" aria-hidden="true"></i></div>
-            <ul class="nav hidden-md-down">
-                <div id="objective-test-side-bar">
-                    <li class="nav-item nav-heading">
-                        <a class="nav-link fontBold" href="#">Objective Questions</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link personal fontBold" href="index.html"><i class="fa fa-check-square-o fontBold" aria-hidden="true"></i> Objective Test </a>
-                    </li>
-                    <li class="nav-item">
-                        <ol class="questions">
-                            @if (@Model.NavigationDetails != null && @Model.NavigationDetails.Objective != null && @Model.NavigationDetails.Objective.Count > 0)
-                            {
-                                foreach (var question in Model.NavigationDetails.Objective)
-                                {
-                                    <li>
-                                        <a class="nav-link questionView contact QuestionCheckbox @QuestionColor(question)" id="@question.QuestionId" href="#"> @Html.Raw(@question.QuestionDescription)</a>
-                                    </li>
-                                }
-                            }
-                        </ol>
-                    </li>
-                </div>
-                <div id="practical-test-side-bar">
-                    <li class="nav-item nav-heading">
-                        <a class="nav-link fontBold" href="#">Practical Questions</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link personal fontBold" href="index.html"><i class="fa fa-check-square-o fontBold" aria-hidden="true"></i> Practical Test </a>
-                    </li>
-                    <li class="nav-item">
-                        <ol class="questions">
-                            @if (@Model.NavigationDetails != null && @Model.NavigationDetails.Practical != null && @Model.NavigationDetails.Practical.Count > 0)
-                            {
-                                foreach (var question in Model.NavigationDetails.Practical)
-                                {
-                                    <li>
-                                        <a class="nav-link questionView contact QuestionCheckbox @QuestionColor(question)" id="@question.QuestionId" href="#">@Html.Raw(@question.QuestionDescription)</a>
-                                    </li>
-                                }
-                            }
-                        </ol>
-                    </li>
-                </div>
-            </ul>
+        
+          
 
-        </nav>
-    </div>
+        @section Sidebar{
+            <div class="sidebar">
+                <nav class="sidebar-nav">
 
-}
+                    <!--mobile menu -->
+                    <div class="panel-group hidden-lg-up mobileMenu" id="accordion">
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                                <h4 class="panel-title">
+                                    <a class="collapsed" data-toggle="collapse" data-parent="#accordion" href="#LearnMenu">OBJECTIVE TEST</a>
+                                </h4>
+                            </div>
+                            <div id="LearnMenu" class="panel-collapse collapse">
+                                <div class="panel-body">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                                <h4 class="panel-title">
+                                    <a class="collapsed" data-toggle="collapse" data-parent="#accordion" href="#supportMenu">PRACTICAL TEST</a>
+                                </h4>
+                            </div>
+                            <div id="supportMenu" class="panel-collapse collapse">
+                                <div class="panel-body">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!--mobile menu end here-->
+                    <div class="menu-btn-sidebar" onclick="customSidebarToggle();"><i class="fa fa-bars" aria-hidden="true"></i></div>
+                    <ul class="nav hidden-md-down">
+                        <div id="objective-test-side-bar">
+                            <li class="nav-item nav-heading">
+                                <a class="nav-link fontBold" href="#">Objective Questions</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link personal fontBold" href="index.html"><i class="fa fa-check-square-o fontBold" aria-hidden="true"></i> Objective Test </a>
+                            </li>
+                            <li class="nav-item">
+                                <ol class="questions">
+                                    @if (@Model.NavigationDetails != null && @Model.NavigationDetails.Objective != null && @Model.NavigationDetails.Objective.Count > 0)
+                                    {
+                                        foreach (var question in Model.NavigationDetails.Objective)
+                                        {
+                                            <li>
+                                                <a class="nav-link questionView contact QuestionCheckbox @QuestionColor(question)" id="@question.QuestionId" href="#"> @Html.Raw(@question.QuestionDescription)</a>
+                                            </li>
+                                        }
+                                    }
+                                </ol>
+                            </li>
+                        </div>
+                        <div id="practical-test-side-bar">
+                            <li class="nav-item nav-heading">
+                                <a class="nav-link fontBold" href="#">Practical Questions</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link personal fontBold" href="index.html"><i class="fa fa-check-square-o fontBold" aria-hidden="true"></i> Practical Test </a>
+                            </li>
+                            <li class="nav-item">
+                                <ol class="questions">
+                                    @if (@Model.NavigationDetails != null && @Model.NavigationDetails.Practical != null && @Model.NavigationDetails.Practical.Count > 0)
+                                    {
+                                        foreach (var question in Model.NavigationDetails.Practical)
+                                        {
+                                            <li>
+                                                <a class="nav-link questionView contact QuestionCheckbox @QuestionColor(question)" id="@question.QuestionId" href="#">@Html.Raw(@question.QuestionDescription)</a>
+                                            </li>
+                                        }
+                                    }
+                                </ol>
+                            </li>
+                        </div>
+                    </ul>
 
-@section CandidateDetails {
-    @Html.Partial("_reviewerTestSummaryAndCandidateDetails", Model)
-}
+                </nav>
+            </div>
 
-@helper QuestionColor(Silicus.Ensure.Models.Test.QuestionNavigationBasics question)
+        }
+
+        @section CandidateDetails {
+            @Html.Partial("_reviewerTestSummaryAndCandidateDetails", Model)
+        }
+
+        @helper QuestionColor(Silicus.Ensure.Models.Test.QuestionNavigationBasics question)
         {
 if (question.IsAnswered)
 {
@@ -250,7 +258,7 @@ else
 
 }
 
-<script>
+        <script>
     var clock;
     var totalTime;
     $(document).ready(function () {
@@ -515,6 +523,6 @@ else
             $('#notAnsweredPracticalQuestionsCount').text(totalPracticalQuestions - answeredPracticalQuestions);
         }
     }
-</script>
+        </script>
 
 
