@@ -109,9 +109,7 @@
                             <span class="hidden-md-down"> Welcome, <b>@userName</b> </span>
                             <img src="~/Content/Images/avatars/6.jpg" class="img-avatar" alt="admin@bootstrapmaster.com">
                         </a>                       
-                        <ul class="dropdown-menu userMenu" aria-labelledby="dropdownMenu1">
-                            <li><a href="@Url.Action("LogOff", "CandidateAccount")">Log out</a></li>
-                        </ul>
+                       
                     </li>
                 }
             </ul>
@@ -293,12 +291,12 @@
                 }
             });
 
-            // for dropdown logout button
-            $("#rightMenu").click(function () {
-                $(this).find(".dropdown-menu").show();
-                $(this).addClass("activeBtn");
-                $("#dropdownMenu").removeClass("activeBtn");
-            });
+            //// for dropdown logout button
+            //$("#rightMenu").click(function () {
+            //    $(this).find(".dropdown-menu").show();
+            //    $(this).addClass("activeBtn");
+            //    $("#dropdownMenu").removeClass("activeBtn");
+            //});
 
             // for setting button
 
