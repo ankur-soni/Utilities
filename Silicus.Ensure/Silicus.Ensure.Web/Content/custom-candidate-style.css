@@ -1919,3 +1919,69 @@ input[type=text]::-ms-clear {
 a.disabled {
     pointer-events: none !important;
     cursor: default !important;
+}
+
+
+    /*all media query start from here*/
+@media (min-width:1400px) {
+}
+   
+@media (max-width:1399px) {
+  
+}
+
+@media (max-width:1280px) {
+    .breadcrumb li a {
+    font-size:15px;
+}
+}
+
+@media (max-width:1199px) {
+}
+
+@media (max-width:991px) {
+   
+}
+
+@media (max-width:800px) {
+}
+
+@media (max-width:768px) {
+    
+}
+    
+@media (max-width:767px) {
+  
+}
+
+@media (max-width:639px) {
+}
+
+@media (max-width:499px) {
+  
+}
+
+@media (max-width:484px) {
+   
+}
+
+@media (max-width:474px) {
+   
+}
+
+@media (max-width:435px) {
+  
+    }
+
+@media (max-width:479px) {
+}
+
+@media (max-width:410px) {
+}
+
+@media (max-width:399px) {
+   
+}
+	
+@media (max-width:360px) {
+}

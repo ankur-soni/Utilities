@@ -16,5 +16,7 @@
         public decimal AverageCredits { get; set; }
         public int NominatedMonth { get; set; }
         public string AwardFrequencyCode { get; set; }
+        public int UserId { get; set; }
+        public string EmployeeId { get; set; }
     }
 }

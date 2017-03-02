@@ -10,7 +10,14 @@
                 <div class="@(item.IsSubmitted == true ? "blue-box" : "white-box")">
                     <div class="el-card-item">
                         <div class="el-card-avatar el-overlay-1">
-                            <img src="~/Images/1.jpg" />
+                            @if (File.Exists(Server.MapPath("~/UserProfilePicture") + "/" + item.EmployeeId + ".jpg"))
+                            {
+                                <img src="~/UserProfilePicture/@(item.EmployeeId).jpg" />
+                            }
+                            else
+                            {
+                                <img src="~/UserProfilePicture/Default.jpg" />
+                            }
                             <div class="el-overlay">
                                 <ul class="el-info">
                                     <li>
