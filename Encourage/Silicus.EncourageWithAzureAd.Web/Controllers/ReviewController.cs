@@ -225,7 +225,9 @@ namespace Silicus.EncourageWithAzureAd.Web.Controllers
                                 NominatedMonth = nominationTime.Month,
                                 AwardFrequencyCode = awardFrequency.Code,
                                 IsHistorical = isHistorical,
-                                IsAwardLocked = isAwardLocked
+                                IsAwardLocked = isAwardLocked,
+                                EmployeeId = nominee.EmployeeID,
+                                UserId = nominee.ID
                             }
                             );
                     }

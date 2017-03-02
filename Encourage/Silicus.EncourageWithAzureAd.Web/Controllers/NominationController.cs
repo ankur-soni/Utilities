@@ -400,7 +400,7 @@ namespace Silicus.EncourageWithAzureAd.Web.Controllers
                 }
                 var awardFrequencyCode = _nominationService.GetAwardFrequencyById(award.FrequencyId);
                 var awardName = award.Code;
-                var nomineeName = _commonDbContext.Query<User>().FirstOrDefault(u => u.ID == nomination.UserId);
+                var nominee = _commonDbContext.Query<User>().FirstOrDefault(u => u.ID == nomination.UserId);
                 var nominationTime = nomination.NominationDate;
                 if (nominationTime == null)
                 {
@@ -408,17 +408,19 @@ namespace Silicus.EncourageWithAzureAd.Web.Controllers
                 }
 
                 string nominationTimeToDisplay = CultureInfo.CurrentCulture.DateTimeFormat.GetAbbreviatedMonthName(nominationTime.Value.Month) + "-" + nominationTime.Value.Year;
-                if (nomineeName != null)
+                if (nominee != null)
                 {
                     var reviewNominationViewModel = new NominationListViewModel()
                     {
-                        Intials = nomineeName.FirstName.Substring(0, 1) + "" + nomineeName.LastName.Substring(0, 1),
+                        Intials = nominee.FirstName.Substring(0, 1) + "" + nominee.LastName.Substring(0, 1),
                         AwardName = awardName,
-                        DisplayName = nomineeName.DisplayName,
+                        DisplayName = nominee.DisplayName,
                         NominationTime = nominationTimeToDisplay,
                         Id = nomination.Id,
                         IsSubmitted = nomination.IsSubmitted,
-                        AwardFrequencyCode = awardFrequencyCode.Code
+                        AwardFrequencyCode = awardFrequencyCode.Code,
+                        UserId = nominee.ID,
+                        EmployeeId = nominee.EmployeeID
                     };
                     savedNominations.Add(reviewNominationViewModel);
                 }
@@ -477,7 +479,9 @@ namespace Silicus.EncourageWithAzureAd.Web.Controllers
                         NominationTime = nominationTimeToDisplay,
                         Id = nomination.Id,
                         IsSubmitted = nomination.IsSubmitted,
-                        AwardFrequencyCode = awardFrequency.Code
+                        AwardFrequencyCode = awardFrequency.Code,
+                        UserId = nominee.ID,
+                        EmployeeId = nominee.EmployeeID
                     };
                     savedNominations.Add(reviewNominationViewModel);
                 }
@@ -721,7 +725,9 @@ namespace Silicus.EncourageWithAzureAd.Web.Controllers
                     Id = nomination.Id,
                     IsLocked = islocked,
                     IsDrafted = _nominationService.CheckReviewIsDrafted(nomination.Id),
-                    AwardFrequencyCode = awardFrequency.Code
+                    AwardFrequencyCode = awardFrequency.Code,
+                    UserId = nominee.ID,
+                    EmployeeId = nominee.EmployeeID
                 };
                 reviewNominations.Add(reviewNominationViewModel);
             }
@@ -878,7 +884,9 @@ namespace Silicus.EncourageWithAzureAd.Web.Controllers
                         NominationTime = nominationTimeToDisplay,
                         Id = nomination.Id,
                         IsSubmitted = nomination.IsSubmitted,
-                        AwardFrequencyCode = awardFrequency.Code
+                        AwardFrequencyCode = awardFrequency.Code,
+                        UserId = nominee.ID,
+                        EmployeeId = nominee.EmployeeID
                     };
                     reviewedNominations.Add(reviewNominationViewModel);
                 }
