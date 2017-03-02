@@ -4,11 +4,11 @@
 @using Silicus.Ensure.Web
 
 @{
-    ViewBag.Title = "Online Test";
+    ViewBag.Title = "Preview Question";
     Layout = "~/Views/Shared/_LayoutCandidate.cshtml";
 }
 <div class="row">
-    <div class="col-sm-12 main-content" id="main" style="background: #ccc;">
+    <div class="col-sm-12 main-content" id="main" style="background: #ccc;">     
         <div class="row">
             <div class="col-sm-12">
                 <input type="hidden" value="@Model.TestSuiteId" id="TestSuiteId" />
@@ -152,10 +152,6 @@
 
 }
 
-@section CandidateDetails {
-    @Html.Partial("_testSuiteAndCandidateDetails", Model)
-}
-
 @helper QuestionColor(Silicus.Ensure.Models.Test.QuestionNavigationBasics question)
 {
 if (question.IsAnswered)
@@ -172,8 +168,6 @@ else
     }
 
 }
-
-
 
 <script>
     var clock;
@@ -193,24 +187,22 @@ else
 
         $(questionLinkId).addClass(className);
     }
-    function LoadFirstQuestion(userId) {
-
+    function LoadFirstQuestion(userId) {     
         var testSuiteId = $("#TestSuiteId").val();
         $.ajax({
-            url: "/Reviewer/LoadPreviewQuestion",
-            data: { userId: userId, testSuiteId: testSuiteId },
+            url: "/Reviewer/PreviewQuestion",
+            data: { testSuiteId: testSuiteId },
             success: function (data) {
                 $('#QuestionDetails').html(data);
             }
         });
-
-    }
+        $('#btnSubmit').hide();
+     }
     $(document).ready(function () {
-
         $('.breadcrumb-item.active').removeClass('active');
         $('#objective-test').addClass('active');
         $('#practical-test-side-bar').hide();
-        $('#instruction').hide();
+              
         $("#frmTestresult").kendoValidator();
         // Hide Submit button of popup. Show when to want submit test.
         var userId = $("#UserId").val();
@@ -223,9 +215,8 @@ else
         var timerCnt = $("#TimerIncCount").val();
         if (timerCnt >= 2)
             $("#btnAddMoreTime").hide();
-        startCounter();
-        // Timer
 
+        // Timer
         var tm =@Model.Duration
         tm = parseInt(tm) * 60;
 
@@ -234,25 +225,41 @@ else
         $('#progressBar').attr('aria-valuemax', totalTime).css('width', '0%');
         $('#progressInfo').text('0%');
 
-        // Set counter time and start.
-
         $('.QuestionCheckbox').on('click', QuestionCheckboxClicked);
-     
+        $('#btnSubmit').hide();
+        $('#instruction').hide();
     });
 
     function QuestionCheckboxClicked(event) {
         if (!$(this).parent().hasClass('active')) {
             var questionId = $(this).attr('id');
             UpdateCurrentQuestionAndLoadNewOne(questionId);
-        }     
+        }
     }
 
-    function UpdateCurrentQuestionAndLoadNewOne(questionId) {       
+    function UpdateCurrentQuestionAndLoadNewOne(questionId) {
         var questionNavigationDetails = GetCurrentQuestionStatus();
         updateQuestionLinkColorClass('#' + questionNavigationDetails.QuestionNumber, questionNavigationDetails.IsAnswered, questionNavigationDetails.IsViewed);
+        UpdateCurrentQuestionNavigationStatus(questionNavigationDetails);
         GetQuestionDetails(questionId);
     }
 
+    function UpdateCurrentQuestionNavigationStatus(questionNavigationDetails) {
+        var ClassesForViewedQuestion = 'fa fa-square';
+        var ClassForUnSeenQuestion = 'UnSeen';
+        if (questionNavigationDetails) {
+            var input = '#NavigationSection ' + '#' + questionNavigationDetails.QuestionNumber;
+            input = $(input).find('.QuestionCheckboxInnerDiv');
+            $(input).removeClass(ClassForUnSeenQuestion);
+            $(input).removeClass(ClassesForViewedQuestion);
+            if (questionNavigationDetails.IsViewed) {
+                $(input).addClass(ClassesForViewedQuestion);
+            }
+            else {
+                $(input).addClass(ClassForUnSeenQuestion);
+            }
+        }
+    }
     function GetCurrentQuestionStatus() {
         var QuestionNumber = $("#QuestionNumber").val();
         var QuestionType = $("#QuestionType").val();
@@ -404,8 +411,8 @@ else
         var userTestSuiteId = $("#UserTestSuiteId").val();
         var userTestDetailId = $("#UserTestDetailId").val();
         var questionType = $("#QuestionType").val();
-        var questionDetails = { testSuiteId: testSuiteId, QuestionId: questionId, userId: userId };
-        $('#QuestionDetails').load('/Reviewer/GetQuestionForPreview', questionDetails);
+        var questionDetails = { testSuiteId: testSuiteId, QuestionId: questionId};
+        $('#QuestionDetails').load('/Reviewer/GetQuestionForPreviewTestSuite', questionDetails);
     }
 
     function UpdateAndGetQuestionReview(questionId) {
@@ -459,7 +466,8 @@ else
         return result;
     }
     function OnSubmitTest() { }
-    function refreshAnsweredQuestionCount() {
+
+    function refreshAnsweredQuestionCount() {    
         var answeredObjectiveQuestions = parseInt($('#objective-test-side-bar .is-answered').length);
         var answeredPracticalQuestions = parseInt($('#practical-test-side-bar .is-answered').length);
         var totalObjectiveQuestions = parseInt($('#objective-test-side-bar .QuestionCheckbox').length);
@@ -473,4 +481,5 @@ else
         $('#editorDiv').append('<div style="position: absolute;top:0;left:0;width: 100%;height:100%;z-index:2;opacity:0.4;filter: alpha(opacity = 50)"></div>');
     }
 
+   
 </script>

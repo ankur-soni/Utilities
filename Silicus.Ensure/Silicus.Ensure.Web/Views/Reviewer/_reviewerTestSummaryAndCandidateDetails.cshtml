@@ -7,72 +7,19 @@
     int notAnsweredPracticalQuestions = Model.PracticalCount - answeredPracticalQuestions;
 }
 
-
-<div class="tab-pane p-1 active" id="details" role="tabpanel">
-    <div class="progressBar">
-        <h6>PROGRESS</h6>
-        <div class="progress">
-            <div class="progress-bar" role="progressbar" aria-valuenow="0" id="progressBar"
-                 aria-valuemin="0" aria-valuemax="100" style="width:0%">
-                <span id="progressInfo">0%</span> Complete
+<div class="tab-content">
+    <div class="tab-pane p-1 active" id="details" role="tabpanel">
+            <div class="" id="TestSummaryDiv">
+                @Html.Partial("_TestSummary", Model.TestSummary)
             </div>
-        </div>
     </div>
-    <div class="time-section">
-        <h6>DURATION</h6>
-        <a style="width: 35%;float: right;margin-top: -27px;" href="#" id="btnAddMoreTime" name="btnAddMoreTime" onclick="AddMoreTime()"><span>Add Extra Time </span></a>
-        @Html.Hidden("TimerIncCount", Model.ExtraCount)
-        <div class="timeBox" id="counter">
-            <span>00:00:00</span>
-        </div>
-    </div>
-    <div class="test-summary">
-        <h6>TEST SUMMARY</h6>
-        <div class="summaryBox">
-            <table class="table">
-                <tbody>
-                    <tr>
-                        <td>Total Questions</td>
-                        <td>Objectives</td>
-                        <td>Practical</td>
-                    </tr>
-                    <tr>
-                        <td></td>
-                        <td class="textAlignCenter">
-                            <span class="numbers">
-                                @Model.ObjectiveCount
-                            </span>
-                        </td>
-                        <td class="textAlignCenter">
-                            <span class="numbers">
-                                @Model.PracticalCount
-                            </span>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>Answered</td>
-                        <td class="textAlignCenter" id="answeredObjectiveQuestionsCount">@answeredObjectiveQuestions</td>
-                        <td class="textAlignCenter" id="answeredPracticalQuestionsCount">@answeredPracticalQuestions</td>
-                    </tr>
-                    <tr>
-                        <td>Not answered</td>
-                        <td class="textAlignCenter" id="notAnsweredObjectiveQuestionsCount">@notAnsweredObjectiveQuestions</td>
-                        <td class="textAlignCenter" id="notAnsweredPracticalQuestionsCount">@notAnsweredPracticalQuestions</td>
-                    </tr>
-                </tbody>
-            </table>
+    <div class="tab-pane " id="profile" role="tabpanel">
+        <div class="container">
+            @Html.Partial("_CandidateInfo", Model.CandidateInfo)
         </div>
     </div>
 </div>
-<div class="tab-pane " id="profile" role="tabpanel">
-    <div class="container">
-       @Html.Partial("_CandidateInfo",Model.CandidateInfo)
-    </div>
-</div>
-
-
-
-<script>
+    <script>
     var isCounterStarted = false;
     var testDurationComplete = false;
     $(document).ready(function () {
@@ -244,4 +191,4 @@
             }
         });
     }
-</script>
+    </script>

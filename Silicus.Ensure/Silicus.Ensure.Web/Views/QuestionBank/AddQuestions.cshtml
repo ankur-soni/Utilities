@@ -229,7 +229,7 @@
                                 <div class="row">
                                     <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3">
                                         <div class="form-group">
-                                            <label class="font-Bold themeColorBlue labelAlignMid">Tags <span style="color:red">*</span></label>
+                                            <label class="font-Bold themeColorBlue labelAlignMid">Skill tags <span style="color:red">*</span></label>
                                         </div>
                                     </div>
                                     <div class="col-xs-7 col-sm-7 col-md-7 col-lg-6">
@@ -242,11 +242,15 @@
                                         .BindTo(Model.SkillTagsList)
                                         .Value(Model.SkillTag)
                                         .HtmlAttributes(new { style = "width: 100%" }))
+                                            @Html.ValidationMessageFor(m => m.SkillTag)
                                         </div>
+                                       
                                     </div>
+                                    
                                     <div class="col-xs-2 col-sm-2 col-md-2 col-lg-3">
                                         <a style="padding:2px 12px;" class="themeColorBlue btn btn-primary" href="#" onclick="AddTag();"><i class="fa fa-plus" aria-hidden="true"></i></a>
                                     </div>
+                                   
                                 </div>
                             </div>
                         </div>
@@ -320,6 +324,23 @@
                         @Html.HiddenFor(m => m.Edit, new { Value = @Model.Edit })
 
                         <script>
+
+                            window.onbeforeunload = function () {
+                                return "Do you really want to close?";
+                            };
+
+                            $('#btnSave').click(function()
+                            {
+                                window.onbeforeunload = null;   
+                                $(window).unbind('unload');       
+                            });
+
+                            $('#btnSaveAndAddNewQuestion').click(function()
+                            {  
+                                window.onbeforeunload = null;   
+                                $(window).unbind('unload');       
+                            });
+
                             function isAnySelectedAns(input)
                             {
                                 $('#IsAnsOption1_validationMessage').appendTo('#answerDiv');
@@ -446,6 +467,8 @@
                                 var edit="@Model.Edit";
                                 if(success==1)
                                 {
+                                    window.onbeforeunload = null;   
+                                    $(window).unbind('unload');     
                                     if(edit=="True"){
                                         ShowMessage("Question updated successfully.",true);
                                         window.location.href = "/QuestionBank/QuestionBank";
@@ -456,6 +479,8 @@
                                     }
                                 }
                                 if(success==2){
+                                    window.onbeforeunload = null;   
+                                    $(window).unbind('unload');     
                                     ShowMessage("Question added successfully.",true);
                                 }
                                 else
@@ -524,6 +549,8 @@
                             }
 
                             function OnCancel() {
+                                window.onbeforeunload = null;
+                                $(window).unbind('unload');
                                 var success="@Model.Success";
                                 if(success==2)
                                 {

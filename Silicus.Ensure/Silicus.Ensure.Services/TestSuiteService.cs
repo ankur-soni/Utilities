@@ -147,7 +147,7 @@ namespace Silicus.Ensure.Services
 
         }
 
-        public TestDetailsBusinessModel GetUserTestDetailsByUserTestSuitId(int? userTestSuitId, int? questionNumber, int questionType, QuestionType testStartWithQuestionType = QuestionType.Practical)
+        public TestDetailsBusinessModel GetUserTestDetailsByUserTestSuitId(int? userTestSuitId, int? questionNumber, int questionType, QuestionType testStartWithQuestionType = QuestionType.Objective)
         {
             var questionNumberList = GetQuestionsByUserTestSuiteId(userTestSuitId, questionType);
             questionNumber = questionNumber == null && questionNumberList.Count > 0 ? (int?)questionNumberList.ElementAtOrDefault(0) : questionNumber;
@@ -372,7 +372,6 @@ namespace Silicus.Ensure.Services
             return _context.Query<TempPreviewTest>().FirstOrDefault(temp => temp.ViewerId == tempPreviewTestDetails.ViewerId
                 && temp.CandidateId == tempPreviewTestDetails.CandidateId && temp.TestSuiteId == tempPreviewTestDetails.TestSuiteId);
         }
-
 
 
         public TestDetailsBusinessModel GetUserTestDetailsByViewerId(PreviewTestBusinessModel previewTest, int? questionNumber, int questionType)
@@ -601,8 +600,8 @@ namespace Silicus.Ensure.Services
                     if (basicDetails.questionType == (int)QuestionType.Practical)
                     {
                         testDetails.Practical.TotalQuestionCount++;
-                        testDetails.Practical.MaximumMarks += (int)basicDetails.maximumMarks;
-                        if ((basicDetails.questionDetails.Mark != null && basicDetails.questionDetails.Mark > 0))
+                        testDetails.Practical.MaximumMarks += basicDetails.maximumMarks;
+                        if (basicDetails.questionDetails.Mark != null && basicDetails.questionDetails.Mark > 0)
                         {
                             testDetails.Practical.MarksObtained += (int)basicDetails.questionDetails.Mark;
                             testDetails.Practical.CorrectAnswersCount++;
@@ -611,8 +610,8 @@ namespace Silicus.Ensure.Services
                     else if (basicDetails.questionType == (int)QuestionType.Objective)
                     {
                         testDetails.Objective.TotalQuestionCount++;
-                        testDetails.Objective.MaximumMarks += (int)basicDetails.maximumMarks;
-                        if (!(basicDetails.questionDetails.Mark == null || basicDetails.questionDetails.Mark <= 0))
+                        testDetails.Objective.MaximumMarks += basicDetails.maximumMarks;
+                        if (basicDetails.questionDetails.Mark != null && basicDetails.questionDetails.Mark > 0)
                         {
                             testDetails.Objective.MarksObtained += (int)basicDetails.questionDetails.Mark;
                             testDetails.Objective.CorrectAnswersCount++;
@@ -627,5 +626,82 @@ namespace Silicus.Ensure.Services
             testDetails.Percentage = testDetails.TotalObtainedMarks != 0 ? (decimal)testDetails.TotalObtainedMarks / testDetails.TotalMaximumMarks * percentageConstant : 0;
             return testDetails;
         }
+
+
+        #region Get TestDetails By Test Suit
+
+        public TestDetailsBusinessModel GetTestDetailsByTestSuit(PreviewTestBusinessModel previewTest, int? questionNumber, int questionType)
+        {
+            List<int> allquestionsForPreview = GetQuestionsForPreviewTestSuite(previewTest);
+            var questionNumberList = FilterQuestionsByType(allquestionsForPreview, (QuestionType)questionType);
+            questionNumber = questionNumber == null && questionNumberList.Count > 0 ? questionNumberList.ElementAtOrDefault(0) : questionNumber;
+            if (questionNumber == null)
+            {
+                return null;
+            }
+            var index = questionNumberList.IndexOf((int)questionNumber);
+            int? previousQuestionId = questionNumberList.ElementAtOrDefault(index - 1);
+            int? nextQuestionId = questionNumberList.ElementAtOrDefault(index + 1);
+            var result = (from b in _context.Query<Question>()
+                          where b.Id == questionNumber
+                          select new TestDetailsBusinessModel
+                          {
+                              QuestionId = b.Id,
+                              Marks = b.Marks,
+                              QuestionType = b.QuestionType,
+                              AnswerType = b.AnswerType,
+                              QuestionDescription = b.QuestionDescription,
+                              OptionCount = b.OptionCount,
+                              Option1 = b.Option1,
+                              Option2 = b.Option2,
+                              Option3 = b.Option3,
+                              Option4 = b.Option4,
+                              Option5 = b.Option5,
+                              Option6 = b.Option6,
+                              Option7 = b.Option7,
+                              Option8 = b.Option8,
+                              DisplayQuestionNumber = index + 1
+                          }).FirstOrDefault();
+            if (result == null)
+            {
+                return null;
+            }
+            result.PreviousQuestionId = index <= 0 ? null : previousQuestionId;
+            result.NextQuestionId = index >= questionNumberList.Count - 1 ? null : nextQuestionId;
+            if (questionType == (int)QuestionType.Practical && result.NextQuestionId == null)
+            {
+                List<int> objectiveQuestions = FilterQuestionsByType(allquestionsForPreview, QuestionType.Objective);
+                result.NextQuestionId = GetFirstOrLastQuestionId(objectiveQuestions, QuestionType.Objective);
+            }
+            if (questionType == (int)QuestionType.Objective && result.PreviousQuestionId == null)
+            {
+                List<int> practicalQuestions = FilterQuestionsByType(allquestionsForPreview, QuestionType.Practical);
+                result.PreviousQuestionId = GetFirstOrLastQuestionId(practicalQuestions, QuestionType.Practical);
+            }
+            return result;
+        }
+
+
+        private List<int> GetQuestionsForPreviewTestSuite(PreviewTestBusinessModel previewTestBusinessModel)
+        {
+            var questionIds = new List<int>();
+            var previewTest = new TempPreviewTest { TestSuiteId = previewTestBusinessModel.TestSuite.TestSuiteId, ViewerId = previewTestBusinessModel.ViewerId };
+            var previewTestDetails = GetTempPreviewTestSuite(previewTest);
+            if (previewTestDetails != null)
+            {
+                if (!string.IsNullOrWhiteSpace(previewTestDetails.QuestionIds))
+                {
+                    questionIds = previewTestDetails.QuestionIds.Split(',').Select(int.Parse).ToList();
+                }
+            }
+            return questionIds.OrderBy(ques => ques).ToList();
+        }
+
+        private TempPreviewTest GetTempPreviewTestSuite(TempPreviewTest tempPreviewTestDetails)
+        {
+            return _context.Query<TempPreviewTest>().FirstOrDefault(temp => temp.ViewerId == tempPreviewTestDetails.ViewerId
+               && temp.TestSuiteId == tempPreviewTestDetails.TestSuiteId);
+        }
+        #endregion
     }
 }

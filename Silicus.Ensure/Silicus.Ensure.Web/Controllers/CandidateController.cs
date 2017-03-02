@@ -92,7 +92,7 @@ namespace Silicus.Ensure.Web.Controllers
             var userEmail = User.Identity.Name.Trim();
             var user = _userService.GetUserByEmail(userEmail);
             if (user == null)
-                return RedirectToAction("LogOff", "CandidateAccount");           
+                return RedirectToAction("LogOff", "CandidateAccount");
             return PartialView("ReadOnlyInstructions");
         }
 
@@ -165,7 +165,7 @@ namespace Silicus.Ensure.Web.Controllers
             testSuit.Duration = suite.Duration + (testSuit.ExtraCount * 10);
             testSuit.StatusId = Convert.ToInt32(CandidateStatus.TestSubmitted);
             _testSuiteService.UpdateUserTestSuite(testSuit);
-           
+
             // Calculate marks on test submit.
             CalculateMarks(userTestSuiteId, userTestDetailId, answer);
             List<string> Receipient = new List<string>() { "Admin", "Panel" };
@@ -228,7 +228,7 @@ namespace Silicus.Ensure.Web.Controllers
                 Question question = _questionService.GetSingleQuestion(testDetail.QuestionId);
                 if (question.QuestionType == 1)
                 {
-                    if (!string.IsNullOrWhiteSpace(testDetail.Answer) && question.CorrectAnswer.Trim() == testDetail.Answer.Trim())
+                    if (!string.IsNullOrWhiteSpace(testDetail.Answer) && question.CorrectAnswer.Trim().Contains(testDetail.Answer.Trim()))
                         testDetail.Mark = question.Marks;
                     else
                         testDetail.Mark = 0;

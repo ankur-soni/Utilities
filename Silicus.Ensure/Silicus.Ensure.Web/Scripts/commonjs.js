@@ -74,12 +74,10 @@ function deleteKendoGridRow(gridId, data) {
         if (isConfirm) {
             grid = $("#" + gridId).data("kendoGrid");
             grid.dataSource.remove(data);
-            grid.dataSource.sync();
-         
-            ShowMessage("Record has been deleted.", 1);
-        } else {
-          
-            ShowMessage("Record deletion cancelled.", 1);
+            grid.dataSource.sync();         
+           
+        } else {          
+           
         }
     });
 }
