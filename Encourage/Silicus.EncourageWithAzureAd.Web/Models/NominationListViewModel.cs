@@ -19,6 +19,7 @@ namespace Silicus.EncourageWithAzureAd.Web.Models
         [DisplayName("Feedback")]
         public string AwardComment { get; set; }
         public string AwardFrequencyCode { get; set; }
-
+        public int UserId { get; set; }
+        public string EmployeeId { get; set; }
     }
 }

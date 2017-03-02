@@ -853,6 +853,7 @@
     <Content Include="Scripts\respond.js" />
     <Content Include="Scripts\respond.min.js" />
     <Content Include="Scripts\_references.js" />
+    <Content Include="UserProfilePicture\Default.jpg" />
     <Content Include="Views\SendMailAfterWinnerSelected.html">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
