@@ -162,7 +162,7 @@ namespace Silicus.Ensure.Web.Controllers
         {
             _testSuiteService.TestSuiteActivation();
 
-            var userlist = _userService.GetUserDetails().Where(p => p.Role.ToLower() == RoleName.ToLower()).ToArray().Reverse().ToArray();
+            var userlist = _userService.GetUserDetails().Where(p => p.Role.ToLower() == RoleName.ToLower()).ToArray().Reverse().OrderByDescending(x=>x.CandidateStatus).ToArray();
             var currentUserRoles = MvcApplication.getCurrentUserRoles();
             if (currentUserRoles.Count == 1 && currentUserRoles.Contains(Silicus.Ensure.Models.Constants.RoleName.Panel.ToString()))
             {
@@ -181,6 +181,8 @@ namespace Silicus.Ensure.Web.Controllers
                 viewModels[index].IsAdmin = userInRole;
                 viewModels[index].TestSuiteId = testSuitId != null ? testSuitId.TestSuiteId : 0;
             }
+
+           // viewModels = viewModels.OrderByDescending(x => x.CandidateStatus).ToList();
             DataSourceResult result = viewModels.ToDataSourceResult(request);
             return Json(result);
         }
