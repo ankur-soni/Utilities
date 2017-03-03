@@ -1,3 +1,16 @@
+.k-icon.k-i-arrow-s {
+    background-image: url('css/Kendo/2014.1.416/Default/sprite.png');
+    background-position: 0px -34px;
+}
+.k-warning{background-image:url('http://kendo.cdn.telerik.com/2016.3.1118/styles/Material/sprite.png');}
+.k-i-calendar{background-image: url('http://kendo.cdn.telerik.com/2016.3.1118/styles/Material/sprite.png');background-position: -32px -176px;}
+.k-i-calendar:hover{background-image: url('http://kendo.cdn.telerik.com/2016.3.1118/styles/Material/sprite.png');background-position: -32px -176px;}
+span.k-add {
+    background-image: url('css/Kendo/2014.1.416/Default/sprite1.png');
+    margin-top: -3px;
+}
+
+
 /*
 * === LAYOUT START HERE ===
 */
