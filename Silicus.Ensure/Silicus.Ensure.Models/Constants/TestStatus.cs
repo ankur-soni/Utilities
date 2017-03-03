@@ -98,6 +98,8 @@
                     return "Under evaluation";
                 case CandidateStatus.Archived:
                     return "Archived";
+                case CandidateStatus.OnHold:
+                    return "On Hold";
                 default: return "";
             }
         }
