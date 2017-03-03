@@ -97,7 +97,7 @@
 
         <header class="app-header navbar">
             <button class="navbar-toggler mobile-sidebar-toggler hidden-lg-up" type="button">☰</button>
-            <a class="navbar-brand" href="#"></a>
+            <div class="navbar-brand" href="#"></div>
 
             <ul id="rightMenu" class="nav navbar-nav ml-auto hidden-md-down">
                 @if (Request.IsAuthenticated)
@@ -130,11 +130,7 @@
 
             <li id="gearBtn" class="breadcrumb-menu hidden-md-down">
                 <a class="menuBtn asideBtn navbar-toggler aside-menu-toggler activeBtn" href="#"> <i class="fa fa-info-circle" aria-hidden="true"></i></a>
-                <a class="menuBtn settingBtn dropdown-toggle" href="#" id="dropdownMenu" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> <i class="fa fa-cog" aria-hidden="true"></i></a>
-                <ul class="dropdown-menu settingMenu" aria-labelledby="dropdownMenu">
-                    <li><a href="#">Change Profile </a></li>
-                    <li><a href="#">Change Password </a></li>
-                </ul>
+                
             </li>
         </ol>
 

@@ -373,6 +373,7 @@
     .Name("btnNext")
             .HtmlAttributes(new { type = "button" }).Events(e => e.Click("OnNext"))
                 .Content("Next").HtmlAttributes(new { style = "float: right;", @data_id = Model.NextQuestionId, @class = "btn btn-primary" }))
+           
         }
 
         @if (Model.PreviousQuestionId != null)
@@ -394,7 +395,8 @@
         @(Html.Kendo().Button()
     .Name("btnSubmit")
     .HtmlAttributes(new { type = "button" }).Events(e => e.Click("OnSubmitTest"))
-            .Content("Submit Test").HtmlAttributes(new { style = "float: right;", @class = "btn btn-primary" }))
+    .Content("Submit Test").HtmlAttributes(new { style = "float: right;", @class = "btn btn-primary" }))
+    
     </div>
 </div>
 @{
