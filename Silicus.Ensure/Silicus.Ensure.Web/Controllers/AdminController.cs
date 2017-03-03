@@ -264,7 +264,7 @@ namespace Silicus.Ensure.Web.Controllers
 
             var candidateApplicationDetails = _userService.GetUserDetails(userId);
             foreach (var candidateApplication in candidateApplicationDetails)
-            {
+            {           
                 TestSuiteViewModel testSuiteViewModel = null;
                 var candidatebusinessModel = _mappingService.Map<UserBusinessModel, CandidateHistoryViewModel>(candidateApplication);
                 var positionDetails = _positionService.GetPositionDetails().OrderBy(m => m.PositionName);
