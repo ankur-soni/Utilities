@@ -920,7 +920,7 @@ namespace Silicus.Ensure.Web.Controllers
                 }
 
                 List<string> Receipient = new List<string>() { "Admin", "Panel" };
-                _commonController.SendMailByRoleName("Test Submitted For " + userDetails.FirstName + " " + userDetails.LastName + " Successfully", "CandidateTestSubmitted.cshtml", Receipient, userDetails.FirstName + " " + userDetails.LastName);
+                _commonController.SendMailByRoleName("Online Test Submitted For " + userDetails.FirstName + " " + userDetails.LastName + "", "CandidateTestSubmitted.cshtml", Receipient, userDetails.FirstName + " " + userDetails.LastName);
 
                 return View(submittedTestViewModel);
 
