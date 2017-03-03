@@ -135,7 +135,7 @@ namespace Silicus.Ensure.Web.Controllers
             _testSuiteService.UpdateUserTestSuite(userTestSuitedetails);
 
             List<string> Receipient = new List<string>() { "Admin", "Panel" };
-            _commonController.SendMailByRoleName("Evaluation is submitted for " + user.FirstName + " " + user.LastName + " Successfully", "EvaluationSubmittedMail.cshtml", Receipient, user.FirstName + " " + user.LastName, candidateResultViewmodel.Status.ToString());
+            _commonController.SendMailByRoleName("Evaluation is submitted for " + user.FirstName + " " + user.LastName + "", "EvaluationSubmittedMail.cshtml", Receipient, user.FirstName + " " + user.LastName, candidateResultViewmodel.Status.ToString());
 
             return Json(true);
         }

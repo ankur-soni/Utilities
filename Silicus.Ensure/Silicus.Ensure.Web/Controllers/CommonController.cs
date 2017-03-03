@@ -69,7 +69,7 @@ namespace Silicus.Ensure.Web.Controllers
                     var roleDetails = _roleService.GetRoleByRoleName(role);
                     if (roleDetails != null)
                     {
-                        List<Silicus.UtilityContainer.Models.DataObjects.User> users = _containerUserService.GetAllUsersByRoleInUtility(1, roleDetails.ID);
+                        List<Silicus.UtilityContainer.Models.DataObjects.User> users = _containerUserService.GetAllUsersByRoleInUtility(2, roleDetails.ID);
                         foreach (var user in users)
                         {
                             if (user != null)
