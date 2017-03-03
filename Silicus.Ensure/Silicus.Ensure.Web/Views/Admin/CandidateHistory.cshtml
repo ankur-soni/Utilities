@@ -35,14 +35,16 @@
 
                         <div class="panel-group" id="view-history">
                             <div class="panel panel-default">
-                                <div class="panel-heading">
-                                    <h4 class="panel-title">
-                                        <a data-toggle="collapse" data-parent="#accordion" href="#@count">@count     &emsp;     <b> Candidate  Name : </b>   @Html.DisplayFor(model => candidateApplicationDetails.FirstName)   @Html.DisplayFor(model => candidateApplicationDetails.LastName)</a>
-                                        <div style="float:right">
-                                            <b> Candidate Status : </b>   @Html.DisplayFor(model => candidateApplicationDetails.CandidateStatus)
-                                        </div>
-                                    </h4>
-                                </div>
+                                <a data-toggle="collapse" data-parent="#accordion" href="#@count">
+                                    <div class="panel-heading">
+                                        <h4 class="panel-title">
+                                            @count&emsp;<b> Candidate  Name : </b>@Html.DisplayFor(model => candidateApplicationDetails.FirstName)   @Html.DisplayFor(model => candidateApplicationDetails.LastName)
+                                            <div style="float:right">
+                                                <b> Candidate Status : </b>   @Html.DisplayFor(model => candidateApplicationDetails.CandidateStatus)
+                                            </div>
+                                        </h4>
+                                    </div>
+                                </a>
                                 <div id="@count" class="panel-collapse collapse in">
                                     <div class="panel-body">
 
