@@ -412,15 +412,15 @@ namespace Silicus.Ensure.Services
             }
             result.PreviousQuestionId = index <= 0 ? null : previousQuestionId;
             result.NextQuestionId = index >= questionNumberList.Count - 1 ? null : nextQuestionId;
-            if (questionType == (int)QuestionType.Practical && result.NextQuestionId == null)
+            if (questionType == (int)QuestionType.Practical && result.PreviousQuestionId == null)
             {
                 List<int> objectiveQuestions = FilterQuestionsByType(allquestionsForPreview, QuestionType.Objective);
-                result.NextQuestionId = GetFirstOrLastQuestionId(objectiveQuestions, QuestionType.Objective);
+                result.PreviousQuestionId = objectiveQuestions?.ElementAtOrDefault(objectiveQuestions.Count - 1);
             }
-            if (questionType == (int)QuestionType.Objective && result.PreviousQuestionId == null)
+            if (questionType == (int)QuestionType.Objective && result.NextQuestionId == null)
             {
                 List<int> practicalQuestions = FilterQuestionsByType(allquestionsForPreview, QuestionType.Practical);
-                result.PreviousQuestionId = GetFirstOrLastQuestionId(practicalQuestions, QuestionType.Practical);
+                result.NextQuestionId = practicalQuestions?.ElementAtOrDefault(0);
             }
             return result;
         }
@@ -668,15 +668,15 @@ namespace Silicus.Ensure.Services
             }
             result.PreviousQuestionId = index <= 0 ? null : previousQuestionId;
             result.NextQuestionId = index >= questionNumberList.Count - 1 ? null : nextQuestionId;
-            if (questionType == (int)QuestionType.Practical && result.NextQuestionId == null)
+            if (questionType == (int)QuestionType.Practical && result.PreviousQuestionId == null)
             {
                 List<int> objectiveQuestions = FilterQuestionsByType(allquestionsForPreview, QuestionType.Objective);
-                result.NextQuestionId = GetFirstOrLastQuestionId(objectiveQuestions, QuestionType.Objective);
+                result.PreviousQuestionId = objectiveQuestions?.ElementAtOrDefault(objectiveQuestions.Count - 1);
             }
-            if (questionType == (int)QuestionType.Objective && result.PreviousQuestionId == null)
+            if (questionType == (int)QuestionType.Objective && result.NextQuestionId == null)
             {
                 List<int> practicalQuestions = FilterQuestionsByType(allquestionsForPreview, QuestionType.Practical);
-                result.PreviousQuestionId = GetFirstOrLastQuestionId(practicalQuestions, QuestionType.Practical);
+                result.NextQuestionId = practicalQuestions?.ElementAtOrDefault(0);
             }
             return result;
         }

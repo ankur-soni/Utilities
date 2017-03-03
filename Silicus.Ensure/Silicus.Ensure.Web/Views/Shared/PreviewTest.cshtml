@@ -200,16 +200,17 @@ else
             url: "/Reviewer/LoadPreviewQuestion",
             data: { userId: userId, testSuiteId: testSuiteId },
             success: function (data) {
+    debugger
                 $('#QuestionDetails').html(data);
             }
         });
 
     }
     $(document).ready(function () {
-
         $('.breadcrumb-item.active').removeClass('active');
         $('#objective-test').addClass('active');
         $('#practical-test-side-bar').hide();
+        $('#objective-test>a,#practical-test>a').removeClass('disabled');
         $('#instruction').hide();
         $("#frmTestresult").kendoValidator();
         // Hide Submit button of popup. Show when to want submit test.
@@ -406,18 +407,6 @@ else
         var questionType = $("#QuestionType").val();
         var questionDetails = { testSuiteId: testSuiteId, QuestionId: questionId, userId: userId };
         $('#QuestionDetails').load('/Reviewer/GetQuestionForPreview', questionDetails);
-    }
-
-    function UpdateAndGetQuestionReview(questionId) {
-        var answer = GetAnswer();
-        var userTestSuiteId = $("#UserTestSuiteId").val();
-        var userTestDetailId = $("#UserTestDetailId").val();
-        var questionType = $("#QuestionType").val();
-        var candidateId = $("#UserId").val();
-        var comment = $("#Comment").val();
-        var marks = $("#ReviwerMark").val();
-        var reviewerQuestionDetails = { QuestionId: questionId, UserTestSuiteId: userTestSuiteId, UserTestDetailId: userTestDetailId, Comment: comment, Marks: marks };
-        $('#QuestionDetails').load('/Reviewer/UpdateReviewAndGetQuestionDetails', reviewerQuestionDetails);
     }
 
     function GetAnswer() {
