@@ -54,7 +54,7 @@ namespace Silicus.Ensure.Web.Models
         [Required(ErrorMessage = "Current location is required.")]
         public string CurrentLocation { get; set; }
 
-        [Display(Name = "Date Of birth")]
+        [Display(Name = "Date of birth")]
         [Required(ErrorMessage = "Date of birth is required.")]
         public string DOB { get; set; }
 
