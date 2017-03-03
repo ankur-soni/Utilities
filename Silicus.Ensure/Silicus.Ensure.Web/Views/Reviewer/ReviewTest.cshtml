@@ -263,8 +263,9 @@ else
     var totalTime;
     $(document).ready(function () {
         $('.breadcrumb-item.active').removeClass('active');
-        $('#practical-test').addClass('active');
-        $('#objective-test-side-bar').hide();
+        $('#objective-test').addClass('active');
+        $('#practical-test-side-bar').hide();
+        $('#objective-test>a,#practical-test>a').removeClass('disabled');
         $('#instruction').hide();
         $("#frmTestresult").kendoValidator();
         $("#ReviwerMark").kendoValidator();

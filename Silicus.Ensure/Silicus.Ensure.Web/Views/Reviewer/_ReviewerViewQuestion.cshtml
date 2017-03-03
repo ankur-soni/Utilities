@@ -446,34 +446,36 @@
                 @Html.Raw(Model.CorrectAnswer)
             </div>
         </div>
-    }
-    </div>
-    <div class="row">
-        <div class="col-sm-8 col-md-8 col-lg-8">
-            <div class="reviewers-comment">
-                <div class="form-group">
-                    <label style="font-size:14px;" class="M-B0">Reviewers Comment</label>
-                    @Html.Kendo().EditorFor(m => m.Comment).Name("ReviewerComment").Encode(true).Value(Model.Comment)
-                </div>
-            </div>
-        </div>
-        <div class="col-sm-2 col-md-3 col-lg-2">
-          
-            <div class="">
-                <div class="form-group" style="border-bottom: 1px solid #ccc;">
-                    <label style="font-size:14px;" class="M-B0">Marks</label>
-                    <div class="form-control marks" style="line-height: 2.3!important;">
-                        <div class="col-sm-6 inner"><span>@Model.Marks</span></div>
-                        <div class="col-sm-6"><span class="themeColor">@Html.TextBoxFor(m => m.ReviwerMark, new { Class = "txtBoxMark", type = "number", min = "0", max = Model.Marks })</span></div>
+
+        <div class="row">
+            <div class="col-sm-8 col-md-8 col-lg-8">
+                <div class="reviewers-comment">
+                    <div class="form-group">
+                        <label style="font-size:14px;" class="M-B0">Reviewers Comment</label>
+                        @Html.Kendo().EditorFor(m => m.Comment).Name("ReviewerComment").Encode(true).Value(Model.Comment)
                     </div>
                 </div>
+            </div>
+            <div class="col-sm-2 col-md-3 col-lg-2">
+
+                <div class="">
+                    <div class="form-group" style="border-bottom: 1px solid #ccc;">
+                        <label style="font-size:14px;" class="M-B0">Marks</label>
+                        <div class="form-control marks" style="line-height: 2.3!important;">
+                            <div class="col-sm-6 inner"><span>@Model.Marks</span></div>
+                            <div class="col-sm-6"><span class="themeColor">@Html.TextBoxFor(m => m.ReviwerMark, new { Class = "txtBoxMark", type = "number", min = "0", max = Model.Marks })</span></div>
+                        </div>
+                    </div>
+
+                </div>
 
             </div>
+            @Html.ValidationMessageFor(m => m.ReviwerMark)
 
         </div>
-        @Html.ValidationMessageFor(m => m.ReviwerMark)
-        
+    }
     </div>
+ 
    
 <div class="row">
     <div class="col-sm-12" style="margin-top:1%;padding: 0px 50px 30px 50px;">
