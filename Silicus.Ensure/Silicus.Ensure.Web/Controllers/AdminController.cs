@@ -1044,5 +1044,13 @@ namespace Silicus.Ensure.Web.Controllers
         }
 
         #endregion
+
+
+        [HttpPost]
+        public JsonResult SessionTimeout()
+        {
+            return Json("success");
+        }
+
     }
 }

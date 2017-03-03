@@ -7,39 +7,27 @@
     }
 </style>
 <div class="row">
-    <div class="col-sm-12" style="padding: 20px 25px 0px 20px;">
+    <div class="col-sm-12" style="padding:20px 0px 0px 50px;">
         @if (Model.QuestionType == 1)
         {
-            <div class="row">
-                <div class="col-sm-12">
-                    <div class="section-title" style="margin-top:15px;">
-                        <p><strong>OBJECTIVE QUESTIONS</strong></p>
-                    </div>
-                </div>
-            </div>
+           
+            <p><strong style="font-size:20px;">Section 1 (Objective question)</strong></p>
+                   
             <input type="hidden" value="@Model.QuestionType" id="QuestionType" />
         }
         else
         {
-            <div class="row">
-                <div class="col-sm-12">
-                    <div class="section-title" style="margin-top:15px;">
-                        <p><strong>PRACTICAL QUESTIONS</strong></p>
-                    </div>
-                </div>
-            </div>
+           
+            <p><strong style="font-size:20px;">Section 2 (Practical question)</strong></p>
+                 
             <input type="hidden" value="@Model.QuestionType" id="QuestionType" />
         }
-        @*<p><strong>Question @Model.DisplayQuestionNumber: (@Model.Marks Marks)</strong></p>*@
-        <div class="row">
-            <div class="col-sm-12">
-                <div class="question-line">
+      
+            <p><strong>Question @Model.DisplayQuestionNumber: (@Model.Marks Marks)</strong></p>
+        
                     @Html.Raw(HttpUtility.HtmlDecode(Model.QuestionDescription))
-                </div>
-            </div>
-        </div>
-    </div>
-
+       </div>
+    
     <div class="col-sm-12">
         <div class="btmBorder1"></div>
         <input type="hidden" value="@Model.QuestionId" id="QuestionNumber" />
@@ -319,13 +307,13 @@
                                 <li>
                                     @if (Model.CorrectAnswers.Contains("1"))
                                     {
-                                        <div class="checkbox">
+                                        <div class="checkbox checkbox-info">
                                             <input type="checkbox" name="Correctoptcheckbox" value="1" checked><label>@Model.Option1</label>
                                         </div>
                                     }
                                     else
                                     {
-                                        <div class="checkbox">
+                                        <div class="checkbox checkbox-info">
                                             <input type="checkbox" name="Correctoptcheckbox" value="1"><label>@Model.Option1</label>
                                         </div>
                                     }
@@ -333,13 +321,13 @@
                                 <li>
                                     @if (Model.CorrectAnswers.Contains("2"))
                                     {
-                                        <div class="checkbox">
+                                        <div class="checkbox checkbox-info">
                                             <input type="checkbox" name="Correctoptcheckbox" value="2" checked><label>@Model.Option2</label>
                                         </div>
                                     }
                                     else
                                     {
-                                        <div class="checkbox">
+                                        <div class="checkbox checkbox-info">
                                             <input type="checkbox" name="Correctoptcheckbox" value="2"><label>@Model.Option2</label>
                                         </div>
                                     }
@@ -347,13 +335,13 @@
                                 <li>
                                     @if (Model.CorrectAnswers.Contains("3"))
                                     {
-                                        <div class="checkbox" id="checkbox3">
+                                        <div class="checkbox checkbox-info" id="checkbox3">
                                             <input type="checkbox" name="Correctoptcheckbox" value="3" checked><label>@Model.Option3</label>
                                         </div>
                                     }
                                     else
                                     {
-                                        <div class="checkbox" id="checkbox3">
+                                        <div class="checkbox checkbox-info" id="checkbox3">
                                             <input type="checkbox" name="Correctoptcheckbox" value="3"><label>@Model.Option3</label>
                                         </div>
                                     }
@@ -361,13 +349,13 @@
                                 <li>
                                     @if (Model.CorrectAnswers.Contains("4"))
                                     {
-                                        <div class="checkbox" id="checkbox4">
+                                        <div class="checkbox checkbox-info" id="checkbox4">
                                             <input type="checkbox" name="Correctoptcheckbox" value="4" checked><label>@Model.Option4</label>
                                         </div>
                                     }
                                     else
                                     {
-                                        <div class="checkbox" id="checkbox4">
+                                        <div class="checkbox checkbox-info" id="checkbox4">
                                             <input type="checkbox" name="Correctoptcheckbox" value="4"><label>@Model.Option4</label>
                                         </div>
                                     }
@@ -375,13 +363,13 @@
                                 <li>
                                     @if (Model.CorrectAnswers.Contains("5"))
                                     {
-                                        <div class="checkbox" id="checkbox5">
+                                        <div class="checkbox checkbox-info" id="checkbox5">
                                             <input type="checkbox" name="Correctoptcheckbox" value="5" checked><label>@Model.Option5</label>
                                         </div>
                                     }
                                     else
                                     {
-                                        <div class="checkbox" id="checkbox5">
+                                        <div class="checkbox checkbox-info" id="checkbox5">
                                             <input type="checkbox" name="Correctoptcheckbox" value="5"><label>@Model.Option5</label>
                                         </div>
                                     }
@@ -389,13 +377,13 @@
                                 <li>
                                     @if (Model.CorrectAnswers.Contains("6"))
                                     {
-                                        <div class="checkbox" id="checkbox6">
+                                        <div class="checkbox checkbox-info" id="checkbox6">
                                             <input type="checkbox" name="Correctoptcheckbox" value="6" checked><label>@Model.Option6</label>
                                         </div>
                                     }
                                     else
                                     {
-                                        <div class="checkbox" id="checkbox6">
+                                        <div class="checkbox checkbox-info" id="checkbox6">
                                             <input type="checkbox" name="Correctoptcheckbox" value="6"><label>@Model.Option6</label>
                                         </div>
                                     }
@@ -403,13 +391,13 @@
                                 <li>
                                     @if (Model.CorrectAnswers.Contains("7"))
                                     {
-                                        <div class="checkbox" id="checkbox7">
+                                        <div class="checkbox checkbox-info" id="checkbox7">
                                             <input type="checkbox" name="Correctoptcheckbox" value="7" checked><label>@Model.Option7</label>
                                         </div>
                                     }
                                     else
                                     {
-                                        <div class="checkbox" id="checkbox7">
+                                        <div class="checkbox checkbox-info" id="checkbox7">
                                             <input type="checkbox" name="Correctoptcheckbox" value="7"><label>@Model.Option7</label>
                                         </div>
                                     }
@@ -417,13 +405,13 @@
                                 <li>
                                     @if (Model.CorrectAnswers.Contains("8"))
                                     {
-                                        <div class="checkbox" id="checkbox8">
+                                        <div class="checkbox checkbox-info" id="checkbox8">
                                             <input type="checkbox" name="Correctoptcheckbox" value="8" checked><label>@Model.Option8</label>
                                         </div>
                                     }
                                     else
                                     {
-                                        <div class="checkbox" id="checkbox8">
+                                        <div class="checkbox checkbox-info" id="checkbox8">
                                             <input type="checkbox" name="Correctoptcheckbox" value="8"><label>@Model.Option8</label>
                                         </div>
                                     }
@@ -470,12 +458,7 @@
             </div>
         </div>
         <div class="col-sm-2 col-md-3 col-lg-2">
-            @*<div class="marks1">
-                    <div class="form-group">
-                        <label style="font-size:14px;" class="M-B0">Marks</label>
-
-                    </div>
-                </div>*@
+          
             <div class="">
                 <div class="form-group" style="border-bottom: 1px solid #ccc;">
                     <label style="font-size:14px;" class="M-B0">Marks</label>
@@ -491,51 +474,27 @@
         @Html.ValidationMessageFor(m => m.ReviwerMark)
         
     </div>
-    <div class="row">
-        <div class="col-sm-12" style="padding: 20px 25px 20px 20px;">
-            <div class="nav-btn">
-                @if (Model.NextQuestionId != null)
-                {
-                    @(Html.Kendo().Button()
-            .Name("btnNext")
-        .HtmlAttributes(new { type = "button", @class = "btn btn-primary btn-lg" }).Events(e => e.Click("OnNext"))
-        .Content("Next").HtmlAttributes(new { style = "float: right;", @data_id = Model.NextQuestionId }))
-                }
-
-                @if (Model.PreviousQuestionId != null)
-                {
-                    @(Html.Kendo().Button()
-        .Name("btnPrevious")
-        .HtmlAttributes(new { type = "button", @class = "btn btn-primary btn-lg" }).Events(e => e.Click("OnPrevious"))
-        .Content("Previous").HtmlAttributes(new { @data_id = Model.PreviousQuestionId }))
-                }
-            </div>
-        </div>
-    </div>
-
-
-
-
-
-@*<div class="row">
-        <div class="col-sm-12" style="padding: 0px 20px 0px 20px;">
-
-                @(Html.Kendo().Button()
-            .Name("btnNext")
+   
+<div class="row">
+    <div class="col-sm-12" style="margin-top:1%;padding: 0px 50px 30px 50px;">
+        @if (Model.NextQuestionId != null)
+        {
+            @(Html.Kendo().Button()
+    .Name("btnNext")
             .HtmlAttributes(new { type = "button" }).Events(e => e.Click("OnNext"))
-            .Content("Next").HtmlAttributes(new { style = "float: right;", @data_id = Model.NextQuestionId }))
-            }
+                .Content("Next").HtmlAttributes(new { style = "float: right;", @data_id = Model.NextQuestionId, @class = "btn btn-primary" }))
 
-            @if (Model.PreviousQuestionId != null)
-                {
-                @(Html.Kendo().Button()
+        }
+
+        @if (Model.PreviousQuestionId != null)
+        {
+            @(Html.Kendo().Button()
             .Name("btnPrevious")
             .HtmlAttributes(new { type = "button" }).Events(e => e.Click("OnPrevious"))
-            .Content("Previous").HtmlAttributes(new { @data_id = Model.PreviousQuestionId }))
-            }
-        </div>
-    </div>*@
-
+            .Content("Previous").HtmlAttributes(new { @data_id = Model.PreviousQuestionId, @class = "btn btn-primary" }))
+        }
+    </div>
+</div>
 
 <script>
     $("#ReviwerMark").kendoValidator();
