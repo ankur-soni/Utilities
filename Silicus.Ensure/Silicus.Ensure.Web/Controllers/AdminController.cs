@@ -289,7 +289,7 @@ namespace Silicus.Ensure.Web.Controllers
 
                 candidatebusinessModel.TestSuiteViewModel = testSuiteViewModel;
                 objUserApplicationDetails.Add(candidatebusinessModel);
-                objUserApplicationDetails.Add(candidatebusinessModel);
+               
             }
 
          

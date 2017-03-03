@@ -37,13 +37,13 @@
                             <div class="panel panel-default">
                                 <div class="panel-heading">
                                     <h4 class="panel-title">
-                                        <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne">@count     &emsp;     <b> Candidate  Name : </b>   @Html.DisplayFor(model => candidateApplicationDetails.FirstName)   @Html.DisplayFor(model => candidateApplicationDetails.LastName)</a>
+                                        <a data-toggle="collapse" data-parent="#accordion" href="#@count">@count     &emsp;     <b> Candidate  Name : </b>   @Html.DisplayFor(model => candidateApplicationDetails.FirstName)   @Html.DisplayFor(model => candidateApplicationDetails.LastName)</a>
                                         <div style="float:right">
                                             <b> Candidate Status : </b>   @Html.DisplayFor(model => candidateApplicationDetails.CandidateStatus)
                                         </div>
                                     </h4>
                                 </div>
-                                <div id="collapseOne" class="panel-collapse collapse in">
+                                <div id="@count" class="panel-collapse collapse in">
                                     <div class="panel-body">
 
 
