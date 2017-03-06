@@ -1875,10 +1875,10 @@ div.k-splitbar.k-state-focused .k-icon,
 .k-button.k-state-hover,
 .k-button:active:hover,
 .k-button.k-state-active:hover {
-  color: #fff;
-  font-weight:500;
-  border-color: #777;
-  background-color: #777;
+      border-radius: 4px!important;
+    color: #ffffff;
+    border-color: #0063a7;
+    background-color: #0063a7;
 }
 .k-primary:active,
 .k-primary.k-state-active,
@@ -1917,9 +1917,9 @@ div.k-splitbar.k-state-focused .k-icon,
 }
 .k-widget .k-button:active,
 .k-widget .k-button.k-state-active {
-  color: #444444;
-  background-color: #dbdbdb;
-  border-color: #ebebeb;
+  color: #fff;
+  background-color: #0063a7;
+  border-color: #0063a7;
 }
 .k-toolbar .k-overflow-anchor.k-state-active,
 .k-toolbar .k-overflow-anchor.k-state-border-down {

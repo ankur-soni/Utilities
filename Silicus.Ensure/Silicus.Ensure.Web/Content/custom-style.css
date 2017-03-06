@@ -25,7 +25,7 @@
 .width100{width:100%!important;}
 .labelAlignMid{display:inline-block;margin-top:6px;}
 .btn-secondary{background-color:#3388b7;border-color:#3388b7;color:#fff;}
-.btn-secondary:hover, .btn-secondary:focus{color:#fff;}
+.btn-secondary:hover, .btn-secondary:focus{background-color: #3388b7!important;border-color: #3388b7;color: #fff;}
 .btn{padding:2px 12px;}
 .BodyColor{color:#000;}
 
@@ -35,7 +35,20 @@
     border-bottom: 1px solid #cdcdcd;
     margin: 0px 10px 20px 10px;
 }
+.profile-box{
+    margin-right: 12px;width:200px;display: inline-block;vertical-align: top;
+}
+.info-box{
+    width: calc(100% - 217px);
+    /* Firefox */
+width: -moz-calc(100% - 217px);
+/* WebKit */
+width: -webkit-calc(100% - 217px);
+/* Opera */
+width: -o-calc(100% - 217px);
 
+    display: inline-block;
+}
 
 /* Bootstrap popup style */
 .modal-content{border-radius:6px!important;}
