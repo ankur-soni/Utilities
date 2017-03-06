@@ -69,6 +69,12 @@
     }
 
     function ReAssignPanel(UserId) {
+        var modalHeader = 'Reassign panel';
+        AssignPanel(UserId, modalHeader);
+    }
+
+    function AssignPanel(UserId, modalHeader) {
+        //if (TestStatus == '@CandidateStatus.New.ToString()') {
           showCustomLoader();
         $.ajax({
             type: 'post',
@@ -81,15 +87,21 @@
                 $("#PanelInfo").html(data);
                 $('#myModal1').fadeIn();
                 $('#myModal1').modal();
+                if (modalHeader) {
+                    $('#panelModalHeader').text(modalHeader);
+                }
                 $(".loader-overlay").hide();
             }
-        });        
+        });
     }
 
-
-
     function ReAssignRecruiter(UserId) {
-        showCustomLoader();
+        var modalHeader = 'Reassign recruiter';
+        AssignRecruiter(UserId, modalHeader);
+    }
+
+    function AssignRecruiter(UserId, modalHeader) {
+    showCustomLoader();
         //if (TestStatus == '@CandidateStatus.New.ToString()') {
         $.ajax({
             type: 'post',
@@ -102,16 +114,18 @@
                 $("#RecruiterInfo").html(data);
                 $('#recruiterModal').fadeIn();
                 $('#recruiterModal').modal();
-                $(".loader-overlay").hide();
+                if (modalHeader) {
+                    $('#recruiterModalHeader').text(modalHeader);
+                }
+     $(".loader-overlay").hide();
             }
         });
         //}
     }
-
     function ReAssign(UserId, TestStatus) {
             if (TestStatus == '@CandidateStatus.TestAssigned.ToString()') {
             showCustomLoader();
-            $('#assignTestHeader').text('Re Assign Test');
+            $('#assignTestHeader').text('Reassign Test');
             $.ajax({
                 type: 'post',
                 async: false,
@@ -220,7 +234,6 @@
 
     $(function () {
         $("#SaveRecruiterbtn").bind("click", function () {
-            showCustomLoader();
             var chkCheck = false;
             $('input:checkbox').each(function () {
                 if ($(this).is(':checked')) {
@@ -305,7 +318,7 @@
             return false;
         }
         else if (id == 2) {
-            window.location.href = "/Reviewer/ReviewTest?UserApplicationId=" + UserApplicationId ;
+            window.location.href = "/Reviewer/ReviewTest?UserApplicationId=" + UserApplicationId;
             return false;
         }
         else {
@@ -499,17 +512,17 @@
 
                                          #if(CandidateStatus=='New'){#
                                         <a onclick=showTest('#=UserId#','#=TestStatus#') style='cursor:pointer'>Assign Test</a> |
-                                        <a  class ='dialog-window' onclick=ReAssignPanel('#=UserId#') style='cursor:pointer'>#if(PanelName){#Reassign Panel#} else{#Assign Panel #}#</a> |
-                                        <a  class ='dialog-window' onclick=ReAssignRecruiter('#=UserId#') style='cursor:pointer'>#if(RecruiterName){#Reassign Recruiter#} else{#Assign Recruiter #}#</a>
+                                        #if(PanelName){#<a  class ='dialog-window' onclick=ReAssignPanel('#=UserId#') style='cursor:pointer'>Reassign Panel#} else{#<a  class ='dialog-window' onclick=AssignPanel('#=UserId#') style='cursor:pointer'>Assign Panel #}#</a> |
+                                       #if(RecruiterName){# <a  class ='dialog-window' onclick=ReAssignRecruiter('#=UserId#') style='cursor:pointer'>Reassign Recruiter#} else{#<a  class ='dialog-window' onclick=AssignRecruiter('#=UserId#') style='cursor:pointer'>Assign Recruiter #}#</a>|
                                         #}
                                         else if(CandidateStatus=='TestAssigned') {#
                                         <a  class ='dialog-window' onclick=ReAssign('#=UserId#','#=TestStatus#') style='cursor:pointer'>Reassign Test</a> |
-                                        <a  class ='dialog-window' onclick=ReAssignPanel('#=UserId#') style='cursor:pointer'>#if(PanelName){#Reassign Panel#} else{#Assign Panel #}#</a> |
-                                         <a  class ='dialog-window' onclick=ReAssignRecruiter('#=UserId#') style='cursor:pointer'>#if(RecruiterName){#Reassign Recruiter#} else{#Assign Recruiter #}#</a> |
+                                        #if(PanelName){#<a  class ='dialog-window' onclick=ReAssignPanel('#=UserId#') style='cursor:pointer'>Reassign Panel#} else{#<a  class ='dialog-window' onclick=AssignPanel('#=UserId#') style='cursor:pointer'>Assign Panel #}#</a> |
+                                         #if(RecruiterName){# <a  class ='dialog-window' onclick=ReAssignRecruiter('#=UserId#') style='cursor:pointer'>Reassign Recruiter#} else{#<a  class ='dialog-window' onclick=AssignRecruiter('#=UserId#') style='cursor:pointer'>Assign Recruiter #}#</a>|
                                         <a  class ='dialog-window' onclick=ViewTest('#=TestSuiteId#','#=UserId#') style='cursor:pointer'>View Test</a>
                                         #}
                                         else if(CandidateStatus=='TestSubmitted') {#
-                                        <a  class ='dialog-window' onclick=ReAssignPanel('#=UserId#') style='cursor:pointer'>#if(PanelName){#Reassign Panel#} else{#Assign Panel #}#</a> |
+                                        #if(PanelName){#<a  class ='dialog-window' onclick=ReAssignPanel('#=UserId#') style='cursor:pointer'>Reassign Panel#} else{#<a  class ='dialog-window' onclick=AssignPanel('#=UserId#') style='cursor:pointer'>Assign Panel #}#</a> |
                                         <a  class ='dialog-window' onclick=CheckAssign('#=TestStatus#',2,#=TestSuiteId#,'#=UserId#','#=UserApplicationId#') style='cursor:pointer'>View Test</a>
                                         #}
                                         else if(CandidateStatus=='UnderEvaluation') {#
@@ -576,7 +589,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal">&times;</button>
-                <h4 class="modal-title">Assign panel</h4>
+                <h4 id="panelModalHeader" class="modal-title">Assign panel</h4>
             </div>
             <div class="modal-body" id="PanelInfo">
 
@@ -596,7 +609,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal">&times;</button>
-                <h4 class="modal-title">Assign Recruiter</h4>
+                <h4 id="recruiterModalHeader" class="modal-title">Assign Recruiter</h4>
             </div>
             <div class="modal-body" id="RecruiterInfo">
 

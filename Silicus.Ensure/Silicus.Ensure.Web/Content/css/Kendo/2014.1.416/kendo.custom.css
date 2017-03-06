@@ -1860,9 +1860,9 @@ div.k-splitbar.k-state-focused .k-icon,
 .k-button.k-state-active,
 .k-button:focus,
 .k-button.k-state-focused {
-  color: #444444;
-  background-color: #dbdbdb;
-  border-color: #dbdbdb;
+  color: #fff;
+  background-color: #0063a7;
+  border-color: #0063a7;
 }
 .k-button:active:hover,
 .k-button.k-state-active:hover {
@@ -1885,9 +1885,9 @@ div.k-splitbar.k-state-focused .k-icon,
 .k-primary:focus,
 .k-primary.k-state-focused {
   color: #ffffff;
-  border-color: #283593;
+  border-color: #0063a7;
   background-image: none;
-  background-color: #283593;
+  background-color: #0063a7;
   box-shadow: 0 6px 17px 0 rgba(0, 0, 0, 0.3);
 }
 .k-primary:hover,
@@ -1895,8 +1895,8 @@ div.k-splitbar.k-state-focused .k-icon,
 .k-primary:active:hover,
 .k-primary.k-state-active:hover {
   color: #ffffff;
-  border-color: #5c6bc0;
-  background-color: #5c6bc0;
+  border-color: #0063a7;
+  background-color: #0063a7;
 }
 .k-primary:focus:not(.k-state-disabled):not([disabled]),
 .k-primary:focus:active:not(.k-state-disabled):not([disabled]) {
@@ -1927,9 +1927,9 @@ div.k-splitbar.k-state-focused .k-icon,
 }
 .k-widget .k-button:active:hover,
 .k-widget .k-button.k-state-active:hover {
-  color: #444444;
-  border-color: #ebebeb;
-  background-color: #ebebeb;
+  color: #fff;
+  border-color: #0063a7;
+  background-color: #0063a7;
 }
 .k-button[disabled],
 .k-button.k-state-disabled,

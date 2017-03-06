@@ -1,5 +1,4 @@
-﻿/* Common classes*/
-.M-B0{margin-bottom:0px;}
+﻿.M-B0{margin-bottom:0px;}
 .M-T3{margin-top:3px!important;}
 .M-T4{margin-top:4px!important;}
 .M-T5{margin-top:5px;}
@@ -2286,6 +2285,12 @@ span.select2.select2-container.select2-container--default {
 .k-pager-numbers .k-state-selected {
     color: black !important;
     background: #e6e6e6;
+}
+
+.secondary-bt, .secondary-bt:hover, .secondary-bt:visited, .secondary-bt:focus {
+    color: #fff!important;
+    outline: none;
+    background: #3388b7!important;
 }
 
 /* Candidate portal login page css*/
