@@ -8,19 +8,22 @@
 </style>
 <div class="row">
     <div class="col-sm-12" style="padding:20px 0px 0px 50px;">
+        <input type="hidden" value="@Model.QuestionType" id="QuestionType" />
         @if (Model.QuestionType == 1)
         {
            
             <p><strong style="font-size:20px;">Section 1 (Objective question)</strong></p>
-                   
-            <input type="hidden" value="@Model.QuestionType" id="QuestionType" />
+            <script>
+                SelectObjectiveQuestion();
+            </script>
         }
         else
         {
            
             <p><strong style="font-size:20px;">Section 2 (Practical question)</strong></p>
-                 
-            <input type="hidden" value="@Model.QuestionType" id="QuestionType" />
+            <script>
+                SelectPracticalQuestion();
+            </script>
         }
       
             <p><strong>Question @Model.DisplayQuestionNumber: (@Model.Marks Marks)</strong></p>

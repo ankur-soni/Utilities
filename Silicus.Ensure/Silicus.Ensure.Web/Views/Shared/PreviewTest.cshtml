@@ -194,13 +194,11 @@ else
         $(questionLinkId).addClass(className);
     }
     function LoadFirstQuestion(userId) {
-
         var testSuiteId = $("#TestSuiteId").val();
         $.ajax({
             url: "/Reviewer/LoadPreviewQuestion",
             data: { userId: userId, testSuiteId: testSuiteId },
             success: function (data) {
-    debugger
                 $('#QuestionDetails').html(data);
             }
         });
