@@ -20,7 +20,7 @@
                     filter.filters.push({ field: "RequisitionId", operator: "contains", value: value });
                     filter.filters.push({ field: "ContactNumber", operator: "contains", value: value });
                     filter.filters.push({ field: "PanelName", operator: "contains", value: value });
-                    filter.filters.push({ field: "RecruiterName", operator: "contains", value: value });                    
+                    filter.filters.push({ field: "RecruiterName", operator: "contains", value: value });
                     filter.filters.push({ field: "Position", operator: "contains", value: value });
                     //filter.filters.push({ field: "ContactNumber", operator: "contains", value: value });
                     //filter.filters.push({ field: "TotalExperienceInYear", operator: "contains", value: value });
@@ -65,7 +65,12 @@
     }
 
     function ReAssignPanel(UserId) {
-        //if (TestStatus == '@CandidateStatus.New.ToString()') {      
+        var modalHeader = 'Reassign panel';
+        AssignPanel(UserId, modalHeader);
+    }
+
+    function AssignPanel(UserId, modalHeader) {
+        //if (TestStatus == '@CandidateStatus.New.ToString()') {
         $.ajax({
             type: 'post',
             async: false,
@@ -77,14 +82,20 @@
                 $("#PanelInfo").html(data);
                 $('#myModal1').fadeIn();
                 $('#myModal1').modal();
+                if (modalHeader) {
+                    $('#panelModalHeader').text(modalHeader);
+                }
             }
         });
         //}
     }
 
-    
+    function ReAssignRecruiter(UserId) {
+        var modalHeader = 'Reassign recruiter';
+        AssignRecruiter(UserId, modalHeader);
+    }
 
-    function ReAssignRecruiter(UserId) {        
+    function AssignRecruiter(UserId, modalHeader) {
         //if (TestStatus == '@CandidateStatus.New.ToString()') {
         $.ajax({
             type: 'post',
@@ -97,16 +108,16 @@
                 $("#RecruiterInfo").html(data);
                 $('#recruiterModal').fadeIn();
                 $('#recruiterModal').modal();
+                if (modalHeader) {
+                    $('#recruiterModalHeader').text(modalHeader);
+                }
             }
         });
         //}
     }
-
     function ReAssign(UserId, TestStatus) {
-        debugger;
-       
         if (TestStatus == '@CandidateStatus.TestAssigned.ToString()') {
-            $('#assignTestHeader').text('Re Assign Test');        
+            $('#assignTestHeader').text('Reassign test');
             $.ajax({
                 type: 'post',
                 async: false,
@@ -206,7 +217,7 @@
     });
 
     $(function () {
-        $("#SaveRecruiterbtn").bind("click", function () {            
+        $("#SaveRecruiterbtn").bind("click", function () {
             var chkCheck = false;
             $('input:checkbox').each(function () {
                 if ($(this).is(':checked')) {
@@ -245,7 +256,7 @@
 
     });
 
-    
+
 
 
 
@@ -288,7 +299,7 @@
             return false;
         }
         else if (id == 2) {
-            window.location.href = "/Reviewer/ReviewTest?UserApplicationId=" + UserApplicationId ;
+            window.location.href = "/Reviewer/ReviewTest?UserApplicationId=" + UserApplicationId;
             return false;
         }
         else {
@@ -326,7 +337,7 @@
             closeOnCancel: true
         },
         function (isConfirm) {
-            if (isConfirm) {              
+            if (isConfirm) {
                 $.ajax({
                     type: 'post',
                     async: false,
@@ -342,7 +353,7 @@
                     error: function (er) {
                         ShowMessage("Error occured in archiveing.", 1);
                     }
-                });               
+                });
             } else {
 
                 ShowMessage("Record archive cancelled.", 1);
@@ -473,17 +484,17 @@
 
                                          #if(CandidateStatus=='New'){#
                                         <a onclick=showTest('#=UserId#','#=TestStatus#') style='cursor:pointer'>Assign Test</a> |
-                                        <a  class ='dialog-window' onclick=ReAssignPanel('#=UserId#') style='cursor:pointer'>#if(PanelName){#Reassign Panel#} else{#Assign Panel #}#</a> |
-                                        <a  class ='dialog-window' onclick=ReAssignRecruiter('#=UserId#') style='cursor:pointer'>#if(RecruiterName){#Reassign Recruiter#} else{#Assign Recruiter #}#</a>
+                                        #if(PanelName){#<a  class ='dialog-window' onclick=ReAssignPanel('#=UserId#') style='cursor:pointer'>Reassign Panel#} else{#<a  class ='dialog-window' onclick=AssignPanel('#=UserId#') style='cursor:pointer'>Assign Panel #}#</a> |
+                                       #if(RecruiterName){# <a  class ='dialog-window' onclick=ReAssignRecruiter('#=UserId#') style='cursor:pointer'>Reassign Recruiter#} else{#<a  class ='dialog-window' onclick=AssignRecruiter('#=UserId#') style='cursor:pointer'>Assign Recruiter #}#</a>|
                                         #}
                                         else if(CandidateStatus=='TestAssigned') {#
                                         <a  class ='dialog-window' onclick=ReAssign('#=UserId#','#=TestStatus#') style='cursor:pointer'>Reassign Test</a> |
-                                        <a  class ='dialog-window' onclick=ReAssignPanel('#=UserId#') style='cursor:pointer'>#if(PanelName){#Reassign Panel#} else{#Assign Panel #}#</a> |
-                                         <a  class ='dialog-window' onclick=ReAssignRecruiter('#=UserId#') style='cursor:pointer'>#if(RecruiterName){#Reassign Recruiter#} else{#Assign Recruiter #}#</a> |
+                                        #if(PanelName){#<a  class ='dialog-window' onclick=ReAssignPanel('#=UserId#') style='cursor:pointer'>Reassign Panel#} else{#<a  class ='dialog-window' onclick=AssignPanel('#=UserId#') style='cursor:pointer'>Assign Panel #}#</a> |
+                                         #if(RecruiterName){# <a  class ='dialog-window' onclick=ReAssignRecruiter('#=UserId#') style='cursor:pointer'>Reassign Recruiter#} else{#<a  class ='dialog-window' onclick=AssignRecruiter('#=UserId#') style='cursor:pointer'>Assign Recruiter #}#</a>|
                                         <a  class ='dialog-window' onclick=ViewTest('#=TestSuiteId#','#=UserId#') style='cursor:pointer'>View Test</a>
                                         #}
                                         else if(CandidateStatus=='TestSubmitted') {#
-                                        <a  class ='dialog-window' onclick=ReAssignPanel('#=UserId#') style='cursor:pointer'>#if(PanelName){#Reassign Panel#} else{#Assign Panel #}#</a> |
+                                        #if(PanelName){#<a  class ='dialog-window' onclick=ReAssignPanel('#=UserId#') style='cursor:pointer'>Reassign Panel#} else{#<a  class ='dialog-window' onclick=AssignPanel('#=UserId#') style='cursor:pointer'>Assign Panel #}#</a> |
                                         <a  class ='dialog-window' onclick=CheckAssign('#=TestStatus#',2,#=TestSuiteId#,'#=UserId#','#=UserApplicationId#') style='cursor:pointer'>View Test</a>
                                         #}
                                         else if(CandidateStatus=='UnderEvaluation') {#
@@ -550,7 +561,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal">&times;</button>
-                <h4 class="modal-title">Assign panel</h4>
+                <h4 id="panelModalHeader" class="modal-title">Assign panel</h4>
             </div>
             <div class="modal-body" id="PanelInfo">
 
@@ -570,7 +581,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal">&times;</button>
-                <h4 class="modal-title">Assign Recruiter</h4>
+                <h4 id="recruiterModalHeader" class="modal-title">Assign Recruiter</h4>
             </div>
             <div class="modal-body" id="RecruiterInfo">
 
