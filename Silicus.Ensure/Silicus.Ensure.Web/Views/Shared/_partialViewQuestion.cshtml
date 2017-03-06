@@ -8,20 +8,20 @@
         <input type="hidden" value="@Model.QuestionType" id="QuestionType" />
         @if (Model.QuestionType == 1)
         {
-            <p><strong style="font-size:20px;">Section 1 (Objective question)</strong></p>
+            <p><strong style="font-size:20px;">OBJECTIVE QUESTION</strong></p>
             <script>
                 SelectObjectiveQuestion();
             </script>
         }
         else
         {
-            <p><strong style="font-size:20px;">Section 2 (Practical question)</strong></p>
+            <p><strong style="font-size:20px;">PRACTICAL QUESTION</strong></p>
             <script>
                 SelectPracticalQuestion();
             </script>
         }
-        <p><strong style="font-size:15px;">Question @Model.DisplayQuestionNumber: (@Model.Marks Marks)</strong></p>
-        @Html.Raw(HttpUtility.HtmlDecode(Model.QuestionDescription))
+       
+        <b>Q @Model.DisplayQuestionNumber.</b> @Html.Raw(HttpUtility.HtmlDecode(Model.QuestionDescription)) <b>(@Model.Marks Marks)</b>
     </div>
     <div class="col-sm-12">
         <div class="btmBorder"></div>

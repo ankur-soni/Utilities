@@ -630,7 +630,7 @@ header.navbar {
     .sidebar ul.nav li.nav-item a.nav-link:hover {
         background: none !important;
         color: #000 !important;
-        border-left: 4px solid #00aeef;
+        /*border-left: 4px solid #00aeef;*/
     }
 
     .sidebar ul.nav li.nav-item a.nav-link i {
