@@ -557,6 +557,7 @@
     <Content Include="Dependencies\Silicus.UtilityContainer.Entities.dll" />
     <Content Include="Dependencies\Silicus.UtilityContainer.Models.dll" />
     <Content Include="Dependencies\Silicus.UtilityContainer.Security.dll" />
+    <Content Include="Images\no-user-img.png" />
     <Content Include="Images\silicus\logo.png" />
     <Content Include="LESS\style.css" />
     <Content Include="LESS\_notes\dwsync.xml" />
