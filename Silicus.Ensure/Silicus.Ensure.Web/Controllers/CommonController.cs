@@ -60,7 +60,8 @@ namespace Silicus.Ensure.Web.Controllers
 
 
      public void SendMailByRoleName(string subject, string templateName,List<string> roleName,string candidateName=null,string candidateStatus=null,string RecruiterName=null)
-        {           
+        {
+            string extension = ".cshtml";
             List<EmailModel> emailList = new List<EmailModel>();
             foreach (string role in roleName)
             {
@@ -87,17 +88,19 @@ namespace Silicus.Ensure.Web.Controllers
                         }
                     }
                 }
-            }           
-           
+            }
 
-           var template = System.IO.File.ReadAllText(Path.Combine(HttpRuntime.AppDomainAppPath, "EmailTemplates/"+templateName));
-            foreach (var emails in emailList)
+            if (emailList.Count > 0)
             {
-                if (!string.IsNullOrWhiteSpace(emails.Email))
+                var template = System.IO.File.ReadAllText(Path.Combine(HttpRuntime.AppDomainAppPath, "EmailTemplates/" + templateName));
+                foreach (var emails in emailList)
                 {
-                    var body = RazorEngine.Razor.Parse(template, emails);
-                    _emailService.SendEmailInBackgroundThread(emails.Email, subject, body);
-                  
+                    if (!string.IsNullOrWhiteSpace(emails.Email))
+                    {                     
+                        var body = RazorEngine.Razor.Run(templateName.Substring(0, templateName.Length - extension.Length), emails);
+                        _emailService.SendEmailInBackgroundThread(emails.Email, subject, body);
+
+                    }
                 }
             }
 

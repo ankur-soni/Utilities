@@ -16,6 +16,9 @@ using Silicus.UtilityContainer.Security;
 using System.Web.Helpers;
 using System.IdentityModel.Claims;
 using System.Text.RegularExpressions;
+using RazorEngine;
+using System.IO;
+using System.Linq;
 
 namespace Silicus.Ensure.Web
 {
@@ -45,7 +48,13 @@ namespace Silicus.Ensure.Web
             ViewEngines.Engines.Clear();
             ViewEngines.Engines.Add(new RazorViewEngine());
             AntiForgeryConfig.UniqueClaimTypeIdentifier = ClaimTypes.NameIdentifier;
-           // HttpContext.Current.Session["RunSession"] = "1";
+            // For email template caching
+            foreach (string templateName in Directory.EnumerateFiles(Path.Combine(HttpRuntime.AppDomainAppPath, "EmailTemplates"), "*.cshtml"))
+            {
+                var template = System.IO.File.ReadAllText(templateName);
+                RazorEngine.Razor.Compile(template, Path.GetFileNameWithoutExtension(templateName));
+            }
+           
         }
 
         protected void Application_Error(object sender, EventArgs e)

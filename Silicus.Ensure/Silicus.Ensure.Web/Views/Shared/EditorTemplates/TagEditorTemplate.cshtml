@@ -9,7 +9,7 @@
             </div>
 
             <div class="col-lg-8 col-md-8 col-sm-12 col-xs-12 M-B15">
-                @Html.TextBoxFor(model => model.TagName, new { @class = "form-control " })
+                @Html.TextBoxFor(model => model.TagName, new { @class = "form-control",@style="height:22px;" })
                 <div class="validation">
                     @Html.ValidationMessageFor(m => m.TagName)
                 </div>

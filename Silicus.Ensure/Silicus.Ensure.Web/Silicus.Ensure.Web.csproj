@@ -553,6 +553,7 @@
     <Content Include="Content\style.css" />
     <Content Include="Content\toastr.css" />
     <Content Include="Content\toastr.min.css" />
+    <Content Include="favicon.ico" />
     <Content Include="Images\logo.jpg" />
     <Content Include="Dependencies\Silicus.UtilityContainer.Entities.dll" />
     <Content Include="Dependencies\Silicus.UtilityContainer.Models.dll" />
@@ -626,6 +627,7 @@
     <Content Include="Content\css\font-awesome-4.7.0\fonts\Simple-Line-Icons.ttf" />
     <Content Include="Content\css\font-awesome-4.7.0\fonts\Simple-Line-Icons.woff" />
     <Content Include="Content\css\font-awesome-4.7.0\fonts\Simple-Line-Icons.woff2" />
+    <Content Include="EmailTemplates\TestReassign.cshtml" />
     <None Include="Properties\PublishProfiles\ensure - FTP.pubxml" />
     <None Include="Properties\PublishProfiles\ensure - Web Deploy.pubxml" />
     <None Include="Scripts\jquery-2.1.4.intellisense.js" />
@@ -667,7 +669,6 @@
     <Content Include="Content\css\fonts\CartoGothicStd-Book-webfont.ttf" />
     <Content Include="Content\css\fonts\CartoGothicStd-Book-webfont.woff" />
     <Compile Include="App_Start\Startup.Auth.cs" />
-    <Content Include="favicon.ico" />
     <Content Include="Images\accent.png" />
     <Content Include="Images\activitylandingbg.jpg" />
     <Content Include="Images\actsearchtitle.png" />

@@ -493,6 +493,7 @@ namespace Silicus.Ensure.Web.Controllers
         }
         public ActionResult AssignSuite(int SuiteId, int UserId, int IsReAssign = 0)
         {
+            string mailsubject = "";
             var updateCurrentUsers = _userService.GetUserDetails().Where(model => model.UserId == UserId).FirstOrDefault();
             if (updateCurrentUsers != null)
             {
@@ -520,10 +521,20 @@ namespace Silicus.Ensure.Web.Controllers
                     selectUser.CandidateStatus = Convert.ToString(CandidateStatus.TestAssigned);
                     // selectUser.TestSuiteId = SuiteId;
                     _userService.Update(selectUser);
-
                     //Send Candidate creation mail to Admin and Recruiter
                     List<string> Receipient = new List<string>() { "Admin", "Panel" };
-                    _commonController.SendMailByRoleName("Test Assigned For "+ selectUser.FirstName+ " " +selectUser.LastName +" Successfully", "CandidateTestAssigned.cshtml", Receipient, selectUser.FirstName + " " + selectUser.LastName);
+
+                    if (IsReAssign == 0)
+                    {
+                        mailsubject = "Test Assigned For " + selectUser.FirstName + " " + selectUser.LastName + " Successfully";
+                        _commonController.SendMailByRoleName(mailsubject, "CandidateTestAssigned.cshtml", Receipient, selectUser.FirstName + " " + selectUser.LastName);
+                    }
+                    else
+                    {
+                        mailsubject = "Test Re-Assigned For " + selectUser.FirstName + " " + selectUser.LastName + " Successfully";
+                        _commonController.SendMailByRoleName(mailsubject, "TestReassign.cshtml", Receipient, selectUser.FirstName + " " + selectUser.LastName);
+                    }
+                                      
                     return Json(1);
                 }
                 else
