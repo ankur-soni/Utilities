@@ -25,7 +25,19 @@ $(document).ready(function () {
     //    $(this).parent().toggleClass('open')
     //})
 });
+function SelectObjectiveQuestion() {
+    $('#practical-test-side-bar').hide();
+    $('#objective-test-side-bar').show();
+    $('#practical-test').removeClass('active');
+    $('#objective-test').addClass('active');
+}
 
+function SelectPracticalQuestion() {
+    $('#objective-test-side-bar').hide();
+    $('#practical-test-side-bar').show();
+    $('#objective-test').removeClass('active');
+    $('#practical-test').addClass('active');
+}
 //function mQuery() {
 //    // Same as @media (max-width: 767px) -> hide the navigation
 //    if ($('.fluid [class*="grid"]').css('float') == 'none' && $('.kendogrid [class*="grid"]').css('float') != 'none') {
