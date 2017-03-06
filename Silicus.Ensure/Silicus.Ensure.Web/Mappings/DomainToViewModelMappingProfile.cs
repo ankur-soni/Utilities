@@ -32,7 +32,7 @@ namespace Silicus.Ensure.Web.Mappings
             Mapper.CreateMap<TestSuite, TestSuiteViewModel>();
             Mapper.CreateMap<Silicus.UtilityContainer.Models.DataObjects.User, ContainerUserViewModel>();
             Mapper.CreateMap<PanelMemberDetail, PanelMemberDetailViewModel>()
-                .ForMember(dest => dest.PanelIds, opt => opt.MapFrom(s => (s.PanelIds.Split(','))));
+                .ForMember(dest => dest.Panel, opt => opt.MapFrom(s => (s.PanelIds.Split(','))));
             Mapper.CreateMap<UserDetailViewModel, PanelMemberDetailViewModel>();
 
             Mapper.CreateMap<RecruiterMembersDetail, RecruiterMemberDetailViewModel>()
