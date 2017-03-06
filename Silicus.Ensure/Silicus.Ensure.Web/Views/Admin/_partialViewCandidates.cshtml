@@ -8,6 +8,7 @@
 
 <script>
     $(document).ready(function () {
+        showCustomLoader();
         SetNavigationMenuActive('Candidates');
         $("#FieldFilter").keyup(function () {
             var value = $("#FieldFilter").val();
@@ -40,10 +41,11 @@
             datasource.filter([]);
             $("#FieldFilter").val('');
         });
-
+        $(".loader-overlay").hide();
     });
     function showTest(UserId, TestStatus) {
         if (TestStatus == '@CandidateStatus.New.ToString()') {
+            showCustomLoader();
             $('#assignTestHeader').text('Assign Test');
             $.ajax({
                 type: 'post',
@@ -56,11 +58,13 @@
                     $("#CandidateInfo").html(data);
                     $('#myModal').fadeIn();
                     $('#myModal').modal();
+                    $(".loader-overlay").hide();
                 }
             });
         }
         else {
             alert("Sorry! Can't perform this operation.");
+            $(".loader-overlay").hide();
         }
     }
 
@@ -71,6 +75,7 @@
 
     function AssignPanel(UserId, modalHeader) {
         //if (TestStatus == '@CandidateStatus.New.ToString()') {
+          showCustomLoader();
         $.ajax({
             type: 'post',
             async: false,
@@ -85,9 +90,9 @@
                 if (modalHeader) {
                     $('#panelModalHeader').text(modalHeader);
                 }
+                $(".loader-overlay").hide();
             }
         });
-        //}
     }
 
     function ReAssignRecruiter(UserId) {
@@ -96,6 +101,7 @@
     }
 
     function AssignRecruiter(UserId, modalHeader) {
+    showCustomLoader();
         //if (TestStatus == '@CandidateStatus.New.ToString()') {
         $.ajax({
             type: 'post',
@@ -111,13 +117,15 @@
                 if (modalHeader) {
                     $('#recruiterModalHeader').text(modalHeader);
                 }
+     $(".loader-overlay").hide();
             }
         });
         //}
     }
     function ReAssign(UserId, TestStatus) {
-        if (TestStatus == '@CandidateStatus.TestAssigned.ToString()') {
-            $('#assignTestHeader').text('Reassign test');
+            if (TestStatus == '@CandidateStatus.TestAssigned.ToString()') {
+            showCustomLoader();
+            $('#assignTestHeader').text('Reassign Test');
             $.ajax({
                 type: 'post',
                 async: false,
@@ -129,6 +137,7 @@
                     $("#CandidateInfo").html(data);
                     $('#myModal').fadeIn();
                     $('#myModal').modal();
+                    $(".loader-overlay").hide();
                 }
             });
         }
@@ -137,6 +146,7 @@
 
     $(function () {
         $("#Savebtn").bind("click", function () {
+            showCustomLoader();
             var chkCheck = false;
             $('input:checkbox').each(function () {
                 if ($(this).is(':checked')) {
@@ -162,15 +172,17 @@
                             $('#userGrids').data('kendoGrid').refresh();
                             ShowMessage("Test suite assigned successfully.", 1);
                             $('#myModal').fadeOut();
+                            $(".loader-overlay").hide();
                         }
                     },
                     error: function (er) {
-
+                        $(".loader-overlay").hide();
                     }
                 });
             }
             else {
                 toastr.error('Please select at least one test suite !')
+                $(".loader-overlay").hide();
             }
         });
 
@@ -178,6 +190,7 @@
 
     $(function () {
         $("#SavePanlebtn").bind("click", function () {
+            showCustomLoader();
             var chkCheck = false;
             $('input:checkbox').each(function () {
                 if ($(this).is(':checked')) {
@@ -202,15 +215,18 @@
                             $('#userGrids').data('kendoGrid').refresh();
                             ShowMessage("Panel assigned successfully.", 1);
                             $('#myModal1').fadeOut();
+                            $(".loader-overlay").hide();
                         }
                     },
                     error: function (er) {
                         $('#myModal1').fadeOut();
+                        $(".loader-overlay").hide();
                     }
                 });
             }
             else {
                 toastr.error('Please select at least one panel !')
+                $(".loader-overlay").hide();
             }
         });
 
@@ -242,15 +258,18 @@
                             $('#userGrids').data('kendoGrid').refresh();
                             ShowMessage("Recruiter assigned successfully.", 1);
                             $('#recruiterModal').fadeOut();
+                            $(".loader-overlay").hide();
                         }
                     },
                     error: function (er) {
                         $('#recruiterModal').fadeOut();
+                        $(".loader-overlay").hide();
                     }
                 });
             }
             else {
                 alert('Please select at least one recruiter !')
+                $(".loader-overlay").hide();
             }
         });
 
@@ -360,6 +379,15 @@
             }
         });
     }
+
+
+    $(document).ajaxStop(function () {
+        $(".loader-overlay").hide();
+    });
+
+    $(document).ajaxStart(function () {
+        showCustomLoader();
+    });
 </script>
 <div class="">
 

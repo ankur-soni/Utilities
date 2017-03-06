@@ -500,7 +500,7 @@ namespace Silicus.Ensure.Web.Controllers
                 {
                     if (IsReAssign == 1)
                     {
-                        var userTest = _testSuiteService.GetUserTestSuite().Where(x => x.UserApplicationId == UserId && x.StatusId == Convert.ToInt32(CandidateStatus.TestAssigned)).ToList();
+                        var userTest = _testSuiteService.GetUserTestSuite().Where(x => x.UserApplicationId == updateCurrentUsers.UserApplicationId && x.StatusId == Convert.ToInt32(CandidateStatus.TestAssigned)).ToList();
                         if (userTest.Any())
                         {
                             foreach (var utest in userTest)

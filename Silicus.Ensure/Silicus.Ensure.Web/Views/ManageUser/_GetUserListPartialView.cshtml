@@ -51,7 +51,7 @@
                   columns.Bound(c => c.FullName).Title("Name").Width(200);
                   columns.Bound(p => p.RoleName).Title("Role name").Width(50);
                   columns.Bound(p => p.Email).Width(50);
-                  columns.Bound(c => c.RoleId).Title("Action").Width(160).ClientTemplate(" <div> #if(RoleName == 'Recruiter'){#<input type='button' style='width:92px' class='btn btn-primary' onclick='assignType(event)' value='Manage type'>#}else if(RoleName == 'Panel') { #<input type='button' class='btn btn-primary' onclick='assignPanel(event)' value='Manage panel'># }else if(RoleName == 'Candidate') { #<input type='button' value='z'># } #");
+                  columns.Bound(c => c.RoleId).Title("Action").Sortable(false).Width(160).ClientTemplate(" <div> #if(RoleName == 'Recruiter'){#<input type='button' style='width:92px' class='btn btn-primary' onclick='assignType(event)' value='Manage type'>#}else if(RoleName == 'Panel') { #<input type='button' class='btn btn-primary' onclick='assignPanel(event)' value='Manage panel'># }else if(RoleName == 'Candidate') { #<input type='button' value='z'># } #");
               })
             .DataSource(dataSource => dataSource.Ajax().Model(model =>
                                                               {
@@ -73,12 +73,8 @@
 </div>
 
     <script>
-        $(".k-grid-header .k-link").click(function (e) {
-            e.preventDefault();
-            if ($(this).text() === 'Action') {
-                e.stopPropagation();
-            }
-        });
+   
+   
 
         function assignPanel(e) {
             var grid = $("#UserGrids").data("kendoGrid");
@@ -158,12 +154,32 @@
                     grid.dataSource.filter({});
             });
 
-            $("#UserSearchRefresh").click(function (e) {
-                e.preventDefault();
-                var datasource = $("#UserGrids").data("kendoGrid").dataSource;
-                //Clear filters:
-                datasource.filter([]);
-                $("#FieldFilter").val('');
+            $("#UserSearchRefresh").click(function (e) {      
+                var value = $("#Role").val();
+                if (typeof (value) == "undefined" && value == null) {
+                       e.preventDefault();
+                    var datasource = $("#UserGrids").data("kendoGrid").dataSource;
+                    //Clear filters:
+                    datasource.filter([]);
+                    $("#FieldFilter").val('');
+                }
+                else {
+                  
+                    grid = $("#UserGrids").data("kendoGrid");
+                    if (value.length >= 1) {
+                        if (value) {
+                            var filter = { logic: "or", filters: [] };
+                            filter.filters.push({ field: "RoleName", operator: "contains", value: value });
+                            filter.filters.push({ field: "Email", operator: "contains", value: value });
+                            filter.filters.push({ field: "FullName", operator: "contains", value: value });
+                            grid.dataSource.query({ filter: filter });
+                        } else {
+                            grid.dataSource.filter({});
+                        }
+                    }
+                }
+        
+
             });
         });
         function AddNew() {
@@ -273,8 +289,9 @@
                         return true;
                     }
                 }
-            });
-
+            });          
+            $('#TagName').val("");
+            $('#Description').val("");
             $("#addTagPopup").modal('show');
         }
 
@@ -300,6 +317,8 @@
         }
 
         function AddPanel() {
+            debugger;
+            $('#PanelName').val("");
             $("#addPanelPopup").modal('show');
         }
 
