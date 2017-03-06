@@ -255,7 +255,7 @@ namespace Silicus.Ensure.Web.Controllers
                 TempData["Success"] = "User created successfully!";
 
                 //Send Candidate creation mail to Admin and Recruiter
-                List<string> Receipient = new List<string>() { "Admin", "Recruiter" };
+                List<string> Receipient = new List<string>() { "Admin"};
                 _commonController.SendMailByRoleName("Candidate Created Successfully", "CandidateCreated.cshtml", Receipient, user.FirstName + " " + user.LastName);
 
             }
