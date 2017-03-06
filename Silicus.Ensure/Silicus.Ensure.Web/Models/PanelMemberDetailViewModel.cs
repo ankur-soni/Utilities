@@ -11,6 +11,8 @@ namespace Silicus.Ensure.Web.Models
         [Key]
         public int Id { get; set; }
         [Required]
-        public List<string> PanelIds { get; set; }
+    
+        [Display(Name = "Panel")]
+        public List<string> Panel { get; set; }
     }
 }

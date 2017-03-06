@@ -38,12 +38,12 @@
 
 
     <div class="form-group">
-        @Html.LabelFor(model => model.TagIds, "Tag", htmlAttributes: new { @class = "col-md-2 col-sm-2" })
+        <div class="col-md-2 col-sm-2">    @Html.LabelFor(model => model.Tag, "Tag") <b color:Red;">*</b></div>
         <div class="col-md-7 col-sm-7">
-            @(Html.Kendo().MultiSelectFor(m => m.TagIds)
+            @(Html.Kendo().MultiSelectFor(m => m.Tag)
                                     .DataTextField("TagName")
                                     .DataValueField("TagId")
-                                    .Placeholder("Select Tags...")
+                                    .Placeholder("--Select--")
                                             .DataSource(source =>
                                             {
                                                 source.Read(read =>
@@ -52,10 +52,10 @@
                                                 })
                                                 .ServerFiltering(false);
                                             })
-                                            .Value(Model.TagIds)
+                                            .Value(Model.Tag)
                                     .HtmlAttributes(new { style = "width: 100%", required = "required" }))
 
-            @Html.ValidationMessageFor(model => model.TagIds, "", new { @class = "text-danger" })
+            @Html.ValidationMessageFor(model => model.Tag, "", new { @class = "text-danger" })
         </div>
         <div class="col-md-2">
             <a style="padding:2px 12px;" class="themeColorBlue btn btn-primary" href="#" onclick="AddTag();">Add Tag</a>

@@ -51,7 +51,7 @@
                   columns.Bound(c => c.FullName).Title("Name").Width(200);
                   columns.Bound(p => p.RoleName).Title("Role name").Width(50);
                   columns.Bound(p => p.Email).Width(50);
-                  columns.Bound(c => c.RoleId).Title("Action").Width(160).ClientTemplate(" <div> #if(RoleName == 'Recruiter'){#<input type='button' style='width:92px' class='btn btn-primary' onclick='assignType(event)' value='Manage type'>#}else if(RoleName == 'Panel') { #<input type='button' class='btn btn-primary' onclick='assignPanel(event)' value='Manage panel'># }else if(RoleName == 'Candidate') { #<input type='button' value='z'># } #");
+                  columns.Bound(c => c.RoleId).Title("Action").Sortable(false).Width(160).ClientTemplate(" <div> #if(RoleName == 'Recruiter'){#<input type='button' style='width:92px' class='btn btn-primary' onclick='assignType(event)' value='Manage type'>#}else if(RoleName == 'Panel') { #<input type='button' class='btn btn-primary' onclick='assignPanel(event)' value='Manage panel'># }else if(RoleName == 'Candidate') { #<input type='button' value='z'># } #");
               })
             .DataSource(dataSource => dataSource.Ajax().Model(model =>
                                                               {
@@ -73,12 +73,8 @@
 </div>
 
     <script>
-        $(".k-grid-header .k-link").click(function (e) {
-            e.preventDefault();
-            if ($(this).text() === 'Action') {
-                e.stopPropagation();
-            }
-        });
+   
+   
 
         function assignPanel(e) {
             var grid = $("#UserGrids").data("kendoGrid");
@@ -273,8 +269,9 @@
                         return true;
                     }
                 }
-            });
-
+            });          
+            $('#TagName').val("");
+            $('#Description').val("");
             $("#addTagPopup").modal('show');
         }
 
@@ -300,6 +297,8 @@
         }
 
         function AddPanel() {
+            debugger;
+            $('#PanelName').val("");
             $("#addPanelPopup").modal('show');
         }
 
