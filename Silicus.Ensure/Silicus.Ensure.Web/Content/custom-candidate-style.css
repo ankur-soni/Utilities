@@ -1742,9 +1742,9 @@ input[type=text]::-ms-clear {
     margin-left: 30px;
 }
 
-.checkbox {
+/*.checkbox {
     padding-left: 20px;
-}
+}*/
 
     .checkbox label {
         display: inline-block;
@@ -1934,7 +1934,12 @@ a.disabled {
     pointer-events: none !important;
     cursor: default !important;
 }
-
+.mobileMenu .panel-title a{
+    padding:10px;
+}
+.spanLabel{
+    display:block;margin-top:-5px;
+}
 
 
 
