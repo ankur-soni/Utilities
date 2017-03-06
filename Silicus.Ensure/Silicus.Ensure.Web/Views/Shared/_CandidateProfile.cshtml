@@ -48,7 +48,7 @@
                            
                            <img id="ProfilePhotoImage" src="@System.Configuration.ConfigurationManager.AppSettings["ServerName"]@Html.Raw(Url.Content(Model.ProfilePhotoFilePath))" style="height:180px;width:160px">
                        </div>
-                       <span id="RemoveProfilePhoto" class="deleteupload" title="Delete"><a onclick="RemoveProfilePhoto()"><i class="fa fa-window-close" aria-hidden="true"></i></a></span>
+                       <span id="RemoveProfilePhoto" class="deleteupload" title="Delete"><a onclick="RemoveProfilePhoto()"><i class="fa fa-close" aria-hidden="true"></i></a></span>
                        <input type="file" name="ProfilePhotofile" id="ProfilePhotofile" data-max-size="2097152" style="width: 100%; display:none" accept='image/*' />
                    }
                    else
@@ -335,7 +335,7 @@
                                                     <div id="uploadFileLink" class="postuploadedfilesholder clearfix">
                                                         <div class="fileupload M-T5">
                                                             <a href="@System.Configuration.ConfigurationManager.AppSettings["ServerName"]@Html.Raw(Url.Content(Model.ResumePath))" targ target="_blank"><i class="fa fa-file-text-o" aria-hidden="true"></i> @Html.Raw(Model.ResumeDisplayName)</a>
-                                                            <span class="deleteupload" title="Delete"><a onclick="DeleteF()"><i class="fa fa-window-close" aria-hidden="true"></i></a></span>
+                                                            <span class="deleteupload" title="Delete"><a onclick="DeleteF()"><i class="fa fa-close" aria-hidden="true"></i></a></span>
                                                         </div>
                                                     </div>
                                                     <script type="text/javascript">
@@ -360,7 +360,7 @@
                                                 @if (!string.IsNullOrWhiteSpace(Model.ProfilePhotoFilePath))
                                                 {
                                                     <img id="ProfilePhotoImage" src="@System.Configuration.ConfigurationManager.AppSettings["ServerName"]@Html.Raw(Url.Content(Model.ProfilePhotoFilePath))" style="height:100px;width:100px">
-                                                    <span id="RemoveProfilePhoto" class="deleteupload" title="Delete"><a onclick="RemoveProfilePhoto()"><i class="fa fa-window-close" aria-hidden="true"></i></a></span>
+                                                    <span id="RemoveProfilePhoto" class="deleteupload" title="Delete"><a onclick="RemoveProfilePhoto()"><i class="fa fa-close" aria-hidden="true"></i></a></span>
                                                     <input type="file" name="ProfilePhotofile" id="ProfilePhotofile" data-max-size="2097152" style="width: 100%; display:none" accept='image/*' />
                                                 }
                                                 else
