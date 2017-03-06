@@ -10,7 +10,7 @@ namespace Silicus.Ensure.Web.Models
     {
         [Key]
         public int Id { get; set; }
-        [Required]
-        public List<string> TagIds { get; set; }
+        [Required(ErrorMessage = "Tag is required!")]
+        public List<string> Tag { get; set; }
     }
 }

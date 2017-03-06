@@ -36,7 +36,7 @@ namespace Silicus.Ensure.Web.Mappings
             Mapper.CreateMap<PanelMemberDetailViewModel, UserDetailViewModel>();
 
             Mapper.CreateMap<RecruiterMemberDetailViewModel, RecruiterMembersDetail>()
-                .ForMember(dest => dest.TagIds, opt => opt.MapFrom(s => (String.Join(",", s.TagIds))));
+                .ForMember(dest => dest.TagIds, opt => opt.MapFrom(s => (String.Join(",", s.Tag))));
             Mapper.CreateMap<RecruiterMemberDetailViewModel, UserDetailViewModel>();
 
             Mapper.CreateMap<ContainerUserViewModel, Silicus.UtilityContainer.Models.DataObjects.User>();
