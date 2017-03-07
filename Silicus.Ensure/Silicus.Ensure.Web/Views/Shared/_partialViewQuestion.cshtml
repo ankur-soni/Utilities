@@ -368,10 +368,14 @@
     </div>
 </div>
 
-
+<div class="row">
+    <div class="col-sm-12">
+        <div class="btmBorder"></div>
+    </div>
+</div>
 
 <div class="row">
-    <div class="col-sm-12" style="margin-top:1%;padding: 0px 50px 0px 50px;">
+    <div class="col-sm-12" style="margin-top:1%;padding: 0px 50px 20px 50px;">
         @if (Model.NextQuestionId != null)
         {
             @(Html.Kendo().Button()
@@ -390,20 +394,8 @@
         }
     </div>
 </div>
-<div class="row">
-    <div class="col-sm-12">
-        <div class="btmBorder"></div>
-    </div>
-</div>
-<div class="row">
-    <div class="col-sm-12" style="padding: 0px 50px 30px 50px;">
-        @(Html.Kendo().Button()
-    .Name("btnSubmit")
-    .HtmlAttributes(new { type = "button" }).Events(e => e.Click("OnSubmitTest"))
-    .Content("Submit Test").HtmlAttributes(new { style = "float: right;", @class = "btn btn-primary" }))
 
-    </div>
-</div>
+
 @{
     var type = (Silicus.Ensure.Models.Constants.QuestionType)Model.QuestionType;
     var typeString = type.ToString().ToLower();
