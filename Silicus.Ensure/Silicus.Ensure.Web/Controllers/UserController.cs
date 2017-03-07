@@ -238,10 +238,12 @@ namespace Silicus.Ensure.Web.Controllers
             if (user.UserId != 0 && !user.IsCandidateReappear)
             {
                 UpdateUserMethod(user);
+                TempData["Success"] = "Candidate details updated successfully.";
             }
             else if (user.IsCandidateReappear)
             {
                 CandidateReappear(user);
+                TempData["Success"] = "Candidate details updated successfully.";
             }
             else
             {
@@ -252,16 +254,13 @@ namespace Silicus.Ensure.Web.Controllers
                 var organizationUserDomainModel = _mappingService.Map<UserViewModel, UserBusinessModel>(user);
                 organizationUserDomainModel.IsDeleted = false;
                 _userService.Add(organizationUserDomainModel);
-                TempData["Success"] = "User created successfully!";
-
+                TempData["Success"] = "Candidate created successfully.";
                 //Send Candidate creation mail to Admin and Recruiter
                 List<string> Receipient = new List<string>() { "Admin"};
                 _commonController.SendMailByRoleName("Candidate Created Successfully", "CandidateCreated.cshtml", Receipient, user.FirstName + " " + user.LastName);
 
             }
             ViewBag.UserRoles = RoleManager.Roles.Select(r => new SelectListItem { Text = r.Name, Value = r.Name }).ToList();
-
-            TempData["Success"] = "Added Successfully!";
             return RedirectToAction(user.Role.ToLower() == RoleName.Candidate.ToString().ToLower() ? "Candidates" : "Index", controllerName);
         }
 

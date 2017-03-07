@@ -5,6 +5,16 @@
 @{
     ViewBag.Title = "Roles";
 }
+@{
+    if (TempData["Success"] != null && !string.IsNullOrWhiteSpace(@TempData["Success"].ToString()))
+    {
+        var message = TempData["Success"] as string;
+        <script type="text/javascript">
+            var jsMessage='@Html.Raw(@message)';
+            toastr.success(jsMessage);
+        </script>
+    }
+}
 
 <script>
     $(document).ready(function () {
@@ -23,8 +33,6 @@
                     filter.filters.push({ field: "PanelName", operator: "contains", value: value });
                     filter.filters.push({ field: "RecruiterName", operator: "contains", value: value });
                     filter.filters.push({ field: "Position", operator: "contains", value: value });
-                    //filter.filters.push({ field: "ContactNumber", operator: "contains", value: value });
-                    //filter.filters.push({ field: "TotalExperienceInYear", operator: "contains", value: value });
                     grid.dataSource.query({ filter: filter });
                     grid.dataSource.pageSize(pageSize);
                 } else {
@@ -75,7 +83,7 @@
 
     function AssignPanel(UserId, modalHeader) {
         //if (TestStatus == '@CandidateStatus.New.ToString()') {
-          showCustomLoader();
+        showCustomLoader();
         $.ajax({
             type: 'post',
             async: false,
@@ -101,7 +109,7 @@
     }
 
     function AssignRecruiter(UserId, modalHeader) {
-    showCustomLoader();
+        showCustomLoader();
         //if (TestStatus == '@CandidateStatus.New.ToString()') {
         $.ajax({
             type: 'post',
@@ -117,13 +125,13 @@
                 if (modalHeader) {
                     $('#recruiterModalHeader').text(modalHeader);
                 }
-     $(".loader-overlay").hide();
+                $(".loader-overlay").hide();
             }
         });
         //}
     }
     function ReAssign(UserId, TestStatus) {
-            if (TestStatus == '@CandidateStatus.TestAssigned.ToString()') {
+        if (TestStatus == '@CandidateStatus.TestAssigned.ToString()') {
             showCustomLoader();
             $('#assignTestHeader').text('Reassign Test');
             $.ajax({
@@ -385,7 +393,7 @@
         $(".loader-overlay").hide();
     });
 
-    $(document).ajaxStart(function () {      
+    $(document).ajaxStart(function () {
         showCustomLoader();
     });
 </script>
@@ -408,9 +416,9 @@
         </div>
         <div class="row M-B15">
             <div class="col-sm-12">
-            <div class="col-sm-4 col-md-3 col-lg-2">
-                <span class="themeColorBlue labelAlignMid"><b>Candidate Status</b></span>
-            
+                <div class="col-sm-4 col-md-3 col-lg-2">
+                    <span class="themeColorBlue labelAlignMid"><b>Candidate Status</b></span>
+
                     @(Html.Kendo().DropDownListFor(m => m.CandidateStatus)
                     .Name("CandidateStatus")
                     .DataTextField("Text")
@@ -455,11 +463,11 @@
                     Text=Convert.ToString(CandidateStatus.OnHold.CandidateStatusString()),
                     Value=Convert.ToString(CandidateStatus.OnHold)
                     }
-                    }).HtmlAttributes(new { style = "width: 100%",@class="M-T5" }))
+                    }).HtmlAttributes(new { style = "width: 100%", @class = "M-T5" }))
                 </div>
-            <div class="col-sm-4 col-md-3 col-lg-2">
-                <span class="themeColorBlue labelAlignMid"><b> Positions</b></span>
-                
+                <div class="col-sm-4 col-md-3 col-lg-2">
+                    <span class="themeColorBlue labelAlignMid"><b> Positions</b></span>
+
                     @(Html.Kendo().DropDownList()
                             .Name("Position")
                                     .Events(e => e.Change("PositionChange"))
@@ -471,12 +479,12 @@
                                     .HtmlAttributes(new { style = "width: 100%", @class = "M-T5" })
                     )
                 </div>
-            <div class="col-sm-4 col-md-3 col-lg-2 cust-mar">
-                
-                <a href='#' onclick='AddNew();' class='k-button k-button-icontext k-grid-add'><span class='k-icon k-add'></span>Add candidate</a>
-                                        </div>
-                                    </div>
-                                </div>
+                <div class="col-sm-4 col-md-3 col-lg-2 cust-mar">
+
+                    <a href='#' onclick='AddNew();' class='k-button k-button-icontext k-grid-add'><span class='k-icon k-add'></span>Add candidate</a>
+                </div>
+            </div>
+        </div>
 
     </div>
 
@@ -538,17 +546,17 @@
                                          else if(CandidateStatus=='Archived') {#
                                    <a class='dialog-window' href='/Admin/CandidateHistory?UserId=+#=UserId#' style='cursor:pointer'>View History</a>
                                         #}
-                                        
+
 
                                        #").Title("Test actions").Width(600).Sortable(false);
 
-                                       })
+         })
                                        .DataSource(dataSource => dataSource
                                        .Ajax()
                                        .Model(model =>
                                        {
-                                       model.Id(p => p.UserId);
-                                       model.Field(p => p.UserId).Editable(false);
+                                           model.Id(p => p.UserId);
+                                           model.Field(p => p.UserId).Editable(false);
                                        })
 
                                        .Read(read => read.Action("GetCandidateDetails", "User", new { RoleName = RoleName.Candidate.ToString() }))
@@ -560,14 +568,14 @@
                                        .Pageable(p => p.PageSizes(true))
                                        .Sortable()
                                        .Resizable(resizing => resizing.Columns(true))
-                                       )
+            )
 
 
-                                       }
+        }
 
-</div>
     </div>
-   
+</div>
+
 <div class="modal fade" id="myModal" data-backdrop="static" role="dialog">
     <div class="modal-dialog">
         <!-- Modal content-->
@@ -641,8 +649,7 @@
     </div>
 </div>
 <style>
-#userGrids .k-loading-image {
-    background-image: none;
-}
-
+    #userGrids .k-loading-image {
+        background-image: none;
+    }
 </style>
