@@ -246,9 +246,7 @@
                 grid = $("#" + gridId).data("kendoGrid");
                 grid.dataSource.remove(data);
                 grid.dataSource.sync();
-                ShowMessage("Question Bank deleted successfully.", 1);
-            } else {
-                ShowMessage("Question Bank cancelled successfully.", 1);
+                ShowMessage("Question deleted successfully.", 1);
             }
         });
     }
