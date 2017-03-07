@@ -86,5 +86,7 @@ namespace Silicus.Ensure.Models
 
         public DateTime ApplicationDate { get; set; }
 
+        public DateTime CreatedDate { get; set; }
+
     }
 }

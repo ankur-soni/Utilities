@@ -162,7 +162,7 @@ namespace Silicus.Ensure.Web.Controllers
         {
             _testSuiteService.TestSuiteActivation();
 
-            var userlist = _userService.GetUserDetails().Where(p => p.Role.ToLower() == RoleName.ToLower()).ToArray().Reverse().OrderByDescending(x=>x.CandidateStatus).ToArray();
+            var userlist = _userService.GetUserDetails().Where(p => p.Role.ToLower() == RoleName.ToLower()).ToArray().Reverse().OrderByDescending(x => x.CandidateStatus.StartsWith("New")).ToArray();
             var currentUserRoles = MvcApplication.getCurrentUserRoles();
             if (currentUserRoles.Count == 1 && currentUserRoles.Contains(Silicus.Ensure.Models.Constants.RoleName.Panel.ToString()))
             {

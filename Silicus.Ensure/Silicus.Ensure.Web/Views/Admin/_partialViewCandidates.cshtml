@@ -450,6 +450,10 @@
                     new SelectListItem(){
                     Text=Convert.ToString(CandidateStatus.Archived.CandidateStatusString()),
                     Value=Convert.ToString(CandidateStatus.Archived)
+                    },
+                     new SelectListItem(){
+                    Text=Convert.ToString(CandidateStatus.OnHold.CandidateStatusString()),
+                    Value=Convert.ToString(CandidateStatus.OnHold)
                     }
                     }).HtmlAttributes(new { style = "width: 100%",@class="M-T5" }))
                 </div>
