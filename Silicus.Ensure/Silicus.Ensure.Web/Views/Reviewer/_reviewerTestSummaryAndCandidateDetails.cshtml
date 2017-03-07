@@ -10,21 +10,25 @@
 
 <div class="tab-content">
     <div class="tab-pane p-1 active" id="details" role="tabpanel">
-            <div class="" id="TestSummaryDiv">
-                @Html.Partial("_TestSummary", Model.TestSummary)
+        <div class="" id="TestSummaryDiv">
+            @Html.Partial("_TestSummary", Model.TestSummary)
 
-                <div class="row M-T15">
-                    <div class="col-sm-12 candidate-score-alert">Candidate Score  <span id="totalObtainedMarks"></span> out of <span id="totalMaximumMarks"></span></div>
-                </div>
-                <div class="row">
-                    <div class="col-sm-12 candidate-per">Has Scored <span id="percentage"></span>%</div>
-                </div>
-                <div class="row M-T15">
-                    <div class="col-sm-12">
-                        <button class="btn btn-primary btn-lg submitEvaluation" id="btnSubmitEvalution" value="Submit Evaluation" style="width:100%;background:#319d9d;padding:5px;border-radius:2px;" data-role="button" role="button" aria-disabled="false" tabindex="0">Submit Evaluation</button>
-                    </div>
+            <div class="row M-T15">
+                <div class="col-sm-12 candidate-score-alert">Candidate score  <span id="totalObtainedMarks">@Model.TestSummary.TotalObtainedMarks</span> out of <span id="totalMaximumMarks">@Model.TestSummary.TotalMaximumMarks</span></div>
+            </div>
+            <div class="row">
+                @{
+                    string[] name = Model.CandidateInfo.Name.Split(' ');
+                    string firstName = name == null || name.Length == 0 ? "" : name[0];
+                    <div class="col-sm-12 candidate-per">@firstName has scored <span id="percentage">@Html.DisplayFor(m => m.TestSummary.Percentage)</span>%</div>
+                }
+            </div>
+            <div class="row M-T15">
+                <div class="col-sm-12">
+                    <button class="btn btn-primary btn-lg submitEvaluation" id="btnSubmitEvalution" value="Submit Evaluation" style="width:100%;background:#319d9d;padding:5px;border-radius:2px;" data-role="button" role="button" aria-disabled="false" tabindex="0">Submit Evaluation</button>
                 </div>
             </div>
+        </div>
     </div>
     <div class="tab-pane " id="profile" role="tabpanel">
         <div class="container">
@@ -32,7 +36,7 @@
         </div>
     </div>
 </div>
-    <script>
+<script>
     var isCounterStarted = false;
     var testDurationComplete = false;
     $(document).ready(function () {
@@ -204,4 +208,4 @@
             }
         });
     }
-    </script>
+</script>
