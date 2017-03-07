@@ -186,6 +186,8 @@
 
         </nav>
     </div>
+
+
 }
 
 
@@ -425,10 +427,11 @@ else
 
 
 
-    $(document).ready(function () {
-        var text = "You are navigating to Fullscreen.";
-        ShowSweetAlertWithoutCancel("Warning!", text, "warning");
 
+    fullScreen();
+
+    function fullScreen()
+    {
         swal({
             title: "FullScreen Mode",
             text: "You are navigating to Fullscreen.",
@@ -438,19 +441,16 @@ else
             confirmButtonText: "Ok",
             cancelButtonText: "No",
             closeOnConfirm: true,
-            closeOnCancel: false
+            closeOnCancel: false   
         },
-   function (isConfirm) {
-       if (isConfirm) {
-           toggleFullScreen();
-           startCounter();
-           isCounterStarted = true;
-       }
-   });
-    });
-
-
-
+ function (isConfirm) {
+     if (isConfirm) {
+         toggleFullScreen();
+         startCounter();
+         isCounterStarted = true;
+     }
+ });
+    }
 
     $('#btnNext').on('click', function () {
         toggleFullScreen();
