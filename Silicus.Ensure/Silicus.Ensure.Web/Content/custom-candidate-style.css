@@ -1937,7 +1937,7 @@ input[type=text]::-ms-clear {
     }
 
 .numbersActive {
-    background: red;
+    background: #00aeef;
     color: #fff;
 }
 
