@@ -330,7 +330,7 @@
                         @Html.HiddenFor(m => m.Edit, new { Value = @Model.Edit })
 
                         <script>
-
+                           
                             window.onbeforeunload = function () {
                                 return "Do you really want to close?";
                             };
@@ -343,8 +343,7 @@
 
                             $('#btnSaveAndAddNewQuestion').click(function()
                             {
-                                window.onbeforeunload = null;
-                                $(window).unbind('unload');
+                                window.onbeforeunload = null;                                
                             });
 
                             function isAnySelectedAns(input)
@@ -377,6 +376,10 @@
                             }
 
                             $(document).ready(function () {
+                                debugger;
+                                window.onbeforeunload = function () {
+                                    return "Do you really want to close?";
+                                };
                                 SetNavigationMenuActive('QuestionBank');
                                 var questionType = $("#QuestionType").val();
                                 if(questionType&&questionType==2)
@@ -477,9 +480,7 @@
                                         window.location.href = "/QuestionBank/QuestionBank";
                                     }
                                 }
-                                if(success==2){
-                                    window.onbeforeunload = null;
-                                    $(window).unbind('unload');
+                                if(success==2){                                  
                                     ShowMessage("Question added successfully.",true);
                                 }
                                 else
