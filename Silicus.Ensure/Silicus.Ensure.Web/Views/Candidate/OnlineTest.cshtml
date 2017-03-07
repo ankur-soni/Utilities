@@ -382,6 +382,7 @@ else
     }
 
     function OnSubmitTestOK() {
+        showCustomLoader();
         var answer = GetAnswer();
         var testSuiteId = $("#TestSuiteId").val();
         var userTestSuiteId = $("#UserTestSuiteId").val();
