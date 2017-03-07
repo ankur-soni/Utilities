@@ -8643,6 +8643,7 @@ app-root {
 
 .sidebar ul.nav {
     width: 250px;
+    padding-bottom:50px;
     flex-direction: column !important;
 }
 
@@ -8718,7 +8719,7 @@ app-root {
 
 .sidebar ul.nav li.nav-item a.nav-link i {
     width: 20px;
-    margin: 0 0.5rem 0 0;
+    margin: 0 1rem 0;
     font-size: 14px;
     color: #b0bec5;
     text-align: center;

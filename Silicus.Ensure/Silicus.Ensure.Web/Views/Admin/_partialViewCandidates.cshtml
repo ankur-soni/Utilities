@@ -385,7 +385,7 @@
         $(".loader-overlay").hide();
     });
 
-    $(document).ajaxStart(function () {
+    $(document).ajaxStart(function () {      
         showCustomLoader();
     });
 </script>
@@ -450,6 +450,10 @@
                     new SelectListItem(){
                     Text=Convert.ToString(CandidateStatus.Archived.CandidateStatusString()),
                     Value=Convert.ToString(CandidateStatus.Archived)
+                    },
+                     new SelectListItem(){
+                    Text=Convert.ToString(CandidateStatus.OnHold.CandidateStatusString()),
+                    Value=Convert.ToString(CandidateStatus.OnHold)
                     }
                     }).HtmlAttributes(new { style = "width: 100%",@class="M-T5" }))
                 </div>
@@ -521,7 +525,7 @@
                                          #if(RecruiterName){# <a  class ='dialog-window' onclick=ReAssignRecruiter('#=UserId#') style='cursor:pointer'>Reassign Recruiter#} else{#<a  class ='dialog-window' onclick=AssignRecruiter('#=UserId#') style='cursor:pointer'>Assign Recruiter #}#</a>|
                                         <a  class ='dialog-window' onclick=ViewTest('#=TestSuiteId#','#=UserId#') style='cursor:pointer'>View Test</a>
                                         #}
-                                        else if(CandidateStatus=='TestSubmitted') {#
+                                        else if(CandidateStatus=='TestSubmitted' || CandidateStatus=='OnHold') {#
                                         #if(PanelName){#<a  class ='dialog-window' onclick=ReAssignPanel('#=UserId#') style='cursor:pointer'>Reassign Panel#} else{#<a  class ='dialog-window' onclick=AssignPanel('#=UserId#') style='cursor:pointer'>Assign Panel #}#</a> |
                                         <a  class ='dialog-window' onclick=CheckAssign('#=TestStatus#',2,#=TestSuiteId#,'#=UserId#','#=UserApplicationId#') style='cursor:pointer'>View Test</a>
                                         #}
@@ -531,7 +535,7 @@
                                         else if(CandidateStatus=='Selected'||CandidateStatus=='Rejected') {#
                                         <a  class ='dialog-window' onclick=CheckAssign('#=TestStatus#',2,#=TestSuiteId#,'#=UserId#','#=UserApplicationId#') style='cursor:pointer'>View Test</a>
                                         #}
-                                         else if(CandidateStatus=='Archived' ||CandidateStatus=='OnHold') {#
+                                         else if(CandidateStatus=='Archived') {#
                                    <a class='dialog-window' href='/Admin/CandidateHistory?UserId=+#=UserId#' style='cursor:pointer'>View History</a>
                                         #}
                                         
@@ -636,3 +640,12 @@
         </div>
     </div>
 </div>
+<style>
+
+
+
+#userGrids .k-loading-image {
+    background-image: none;
+}
+
+</style>

@@ -623,7 +623,7 @@ header.navbar {
     color: #777777;
     font-weight: 600;
     padding: 0px 0px 0px 20px;
-    margin: 8px 0px 8px 0px;
+    margin: 8px 0px 8px -20px;
     border-left: 4px solid #eee;
 }
 
@@ -1493,7 +1493,7 @@ input[type=text]::-ms-clear {
 /*Questions list css*/
 .questions {
     margin: 0;
-    padding: 0px 0px 0px 70px;
+    padding: 0px 0px 0px 95px;
     list-style-type: decimal;
 }
 
@@ -1676,6 +1676,20 @@ input[type=text]::-ms-clear {
     border-color: #a3c3de;
     color: #fff;
 }
+.btn-submitTest{
+    background:#319d9d;
+    padding:5px;
+    font-size:20px;
+    border-radius:2px;
+    color: #fff;
+}
+.btn-submitTest:hover, .btn-submitTest:active, .btn-submitTest:focus{
+    background:#319d9d;
+    padding:5px;
+    font-size:20px;
+    border-radius:2px;
+    color: #fff;
+}
 
 .btn-addTime:hover {
     background-color: #e4e8ea;
@@ -1742,9 +1756,9 @@ input[type=text]::-ms-clear {
     margin-left: 30px;
 }
 
-.checkbox {
+/*.checkbox {
     padding-left: 20px;
-}
+}*/
 
     .checkbox label {
         display: inline-block;
@@ -1908,7 +1922,7 @@ input[type=text]::-ms-clear {
 
 .questionView {
     white-space: nowrap;
-    width: 9em;
+    width: 8.9em;
     overflow: hidden;
     text-overflow: ellipsis;
 }
@@ -1934,7 +1948,12 @@ a.disabled {
     pointer-events: none !important;
     cursor: default !important;
 }
-
+.mobileMenu .panel-title a{
+    padding:10px;
+}
+.spanLabel{
+    display:block;margin-top:-5px;
+}
 
 
 
