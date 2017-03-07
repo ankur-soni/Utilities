@@ -53,7 +53,7 @@
                                                                     {
                                                                         <li>
                                                                             <div class="radio radio-info">
-                                                                                <input type="radio" name="optradio" value="1" checked><label><span class="spanLabel">@Model.Option1</span></label>
+                                                                                <input type="radio" name="optradio" id="CandidateOptradio1" value="1" checked><label for="CandidateOptradio1"><span class="spanLabel">@Model.Option1</span></label>
                                                                             </div>
                                                                         </li>
                                                                     }
@@ -61,15 +61,15 @@
                                                                     {
                                                                         <li>
                                                                             <div class="radio radio-info">
-                                                                                <input type="radio" name="optradio" value="2" checked><label><span class="spanLabel">@Model.Option2</span></label>
-                                                                            </div>
+                                                                                <input type="radio" name="optradio" id="CandidateOptradio2" value="2" checked><label for="CandidateOptradio2"><span class="spanLabel">@Model.Option2</span></label>
+</div>
                                                                             </li>
                                                                     }
                                                                     else if (Model.Answer.Contains("3"))
                                                                     {
                                                                         <li>
                                                                             <div class="radio radio-info">
-                                                                                <input type="radio" name="optradio" value="3" checked><label><span class="spanLabel">@Model.Option3</span></label>
+                                                                                <input type="radio" name="optradio" id="CandidateOptradio3" value="3" checked><label for="CandidateOptradio3"><span class="spanLabel">@Model.Option3</span></label>
                                                                             </div>
                                                                             </li>
                                                                     }
@@ -77,40 +77,40 @@
                                                                     {
                                                                         <li>
                                                                             <div class="radio radio-info">
-                                                                                <input type="radio" name="optradio" value="4" checked><label><span class="spanLabel">@Model.Option4</span></label>
-                                                                            </div>
+                                                                                <input type="radio" name="optradio" id="CandidateOptradio4" value="4" checked><label for="CandidateOptradio4"><span class="spanLabel">@Model.Option4</span></label>
+</div>
                                                                             </li>
                                                                     }
                                                                     else if (Model.Answer.Contains("5"))
                                                                     {
                                                                         <li>
                                                                             <div class="radio radio-info">
-                                                                                <input type="radio" name="optradio" value="5" checked><label><span class="spanLabel">@Model.Option5</span></label>
-                                                                            </div>
+                                                                                <input type="radio" name="optradio" id="CandidateOptradio5" value="5" checked><label for="CandidateOptradio5"><span class="spanLabel">@Model.Option5</span></label>
+</div>
                                                                             </li>
                                                                     }
                                                                     else if (Model.Answer.Contains("6"))
                                                                     {
                                                                         <li>
                                                                             <div class="radio radio-info">
-                                                                                <input type="radio" name="optradio" value="6" checked><label><span class="spanLabel">@Model.Option6</span></label>
-                                                                            </div>
+                                                                                <input type="radio" name="optradio" id="CandidateOptradio6" value="6" checked><label for="CandidateOptradio6"><span class="spanLabel">@Model.Option6</span></label>
+</div>
                                                                             </li>
                                                                     }
                                                                     else if (Model.Answer.Contains("7"))
                                                                     {
                                                                         <li>
                                                                             <div class="radio radio-info">
-                                                                                <input type="radio" name="optradio" value="7" checked><label><span class="spanLabel">@Model.Option7</span></label>
-                                                                            </div>
+                                                                                <input type="radio" name="optradio" id="CandidateOptradio7" value="7" checked><label for="CandidateOptradio7"><span class="spanLabel">@Model.Option7</span></label>
+</div>
                                                                             </li>
                                                                     }
                                                                     else if (Model.Answer.Contains("8"))
                                                                     {
                                                                         <li>
                                                                             <div class="radio radio-info">
-                                                                                <input type="radio" name="optradio" value="8" checked><label><span class="spanLabel">@Model.Option8</span></label>
-                                                                            </div>
+                                                                                <input type="radio" name="optradio" id="CandidateOptradio8" value="8" checked><label for="CandidateOptradio8"><span class="spanLabel">@Model.Option8</span></label>
+</div>
                                                                             </li>
                                                                             }
                                                                             }
@@ -130,13 +130,13 @@
                                     @if (!string.IsNullOrWhiteSpace(Model.CorrectAnswer) && Model.CorrectAnswer.Contains("1"))
                                     {
                                     <div class="radio radio-info" id="radio1">
-                                        <input type="radio" name="CorrectOptradio" value="1" checked><label><span class="spanLabel">@Model.Option1</span></label>
+                                        <input type="radio" name="CorrectOptradio" id="CorrectOptradio1" value="1" checked><label for="CorrectOptradio1"><span class="spanLabel">@Model.Option1</span></label>
                                     </div>
                                     }
                                     else
                                     {
                                     <div class="radio radio-info" id="radio1">
-                                        <input type="radio" name="CorrectOptradio" value="1"><label><span class="spanLabel">@Model.Option1</span></label>
+                                        <input type="radio" name="CorrectOptradio" id="CorrectOptradio1" value="1"><label for="CorrectOptradio1"><span class="spanLabel">@Model.Option1</span></label>
                                     </div>
                                     }
                                 </li>
@@ -144,13 +144,13 @@
                                     @if (!string.IsNullOrWhiteSpace(Model.CorrectAnswer) && Model.CorrectAnswer.Contains("2"))
                                     {
                                     <div class="radio radio-info" id="radio2">
-                                        <input type="radio" name="CorrectOptradio" value="2" checked><label><span class="spanLabel">@Model.Option2</span></label>
+                                        <input type="radio" name="CorrectOptradio" id="CorrectOptradio2" value="2" checked><label for="CorrectOptradio2"><span class="spanLabel">@Model.Option2</span></label>
                                     </div>
                                     }
                                     else
                                     {
                                     <div class="radio radio-info" id="radio2">
-                                        <input type="radio" name="CorrectOptradio" value="2"><label><span class="spanLabel">@Model.Option2</span></label>
+                                        <input type="radio" name="CorrectOptradio" id="CorrectOptradio2" value="2"><label for="CorrectOptradio2"><span class="spanLabel">@Model.Option2</span></label>
                                     </div>
                                     }
                                 </li>
@@ -158,13 +158,13 @@
                                     @if (!string.IsNullOrWhiteSpace(Model.CorrectAnswer) && Model.CorrectAnswer.Contains("3"))
                                     {
                                     <div class="radio radio-info" id="radio3">
-                                        <input type="radio" name="CorrectOptradio" value="3" checked><label><span class="spanLabel">@Model.Option3</span></label>
+                                        <input type="radio" name="CorrectOptradio" id="CorrectOptradio3" value="3" checked><label for="CorrectOptradio3"><span class="spanLabel">@Model.Option3</span></label>
                                     </div>
                                     }
                                     else
                                     {
                                     <div class="radio radio-info" id="radio3">
-                                        <input type="radio" name="CorrectOptradio" value="3"><label><span class="spanLabel">@Model.Option3</span></label>
+                                        <input type="radio" name="CorrectOptradio" id="CorrectOptradio3" value="3"><label for="CorrectOptradio3"><span class="spanLabel">@Model.Option3</span></label>
                                     </div>
                                     }
                                 </li>
@@ -172,13 +172,13 @@
                                     @if (!string.IsNullOrWhiteSpace(Model.CorrectAnswer) && Model.CorrectAnswer.Contains("4"))
                                     {
                                     <div class="radio radio-info" id="radio4">
-                                        <input type="radio" name="CorrectOptradio" value="4" checked><label><span class="spanLabel">@Model.Option4</span></label>
+                                        <input type="radio" name="CorrectOptradio" id="CorrectOptradio4" value="4" checked><label for="CorrectOptradio4"><span class="spanLabel">@Model.Option4</span></label>
                                     </div>
                                     }
                                     else
                                     {
                                     <div class="radio radio-info" id="radio4">
-                                        <input type="radio" name="CorrectOptradio" value="4"><label><span class="spanLabel">@Model.Option4</span></label>
+                                       <input type="radio" name="CorrectOptradio" id="CorrectOptradio4" value="4"><label for="CorrectOptradio4"><span class="spanLabel">@Model.Option4</span></label>
                                     </div>
                                     }
                                 </li>
@@ -186,13 +186,13 @@
                                     @if (!string.IsNullOrWhiteSpace(Model.CorrectAnswer) && Model.CorrectAnswer.Contains("5"))
                                     {
                                     <div class="radio radio-info" id="radio5">
-                                        <input type="radio" name="CorrectOptradio" value="5" checked><label><span class="spanLabel">@Model.Option5</span></label>
+                                        <input type="radio" name="CorrectOptradio" id="CorrectOptradio5" value="5" checked><label for="CorrectOptradio5"><span class="spanLabel">@Model.Option5</span></label>
                                     </div>
                                     }
                                     else
                                     {
                                     <div class="radio radio-info" id="radio5">
-                                        <input type="radio" name="CorrectOptradio" value="5"><label><span class="spanLabel">@Model.Option5</span></label>
+                                        <input type="radio" name="CorrectOptradio" id="CorrectOptradio5" value="5"><label for="CorrectOptradio5"><span class="spanLabel">@Model.Option5</span></label>
                                     </div>
                                     }
                                 </li>
@@ -200,13 +200,13 @@
                                     @if (!string.IsNullOrWhiteSpace(Model.CorrectAnswer) && Model.CorrectAnswer.Contains("6"))
                                     {
                                     <div class="radio radio-info" id="radio6">
-                                        <input type="radio" name="CorrectOptradio" value="6" checked><label><span class="spanLabel">@Model.Option6</span></label>
+                                        <input type="radio" name="CorrectOptradio" id="CorrectOptradio6" value="6" checked><label for="CorrectOptradio6"><span class="spanLabel">@Model.Option6</span></label>
                                     </div>
                                     }
                                     else
                                     {
                                     <div class="radio radio-info" id="radio6">
-                                        <input type="radio" name="CorrectOptradio" value="6"><label><span class="spanLabel">@Model.Option6</span></label>
+                                        <input type="radio" name="CorrectOptradio" id="CorrectOptradio6" value="6"><label for="CorrectOptradio6"><span class="spanLabel">@Model.Option6</span></label>
                                     </div>
                                     }
                                 </li>
@@ -214,13 +214,13 @@
                                     @if (!string.IsNullOrWhiteSpace(Model.CorrectAnswer) && Model.CorrectAnswer.Contains("7"))
                                     {
                                     <div class="radio radio-info" id="radio7">
-                                        <input type="radio" name="CorrectOptradio" value="7" checked><label><span class="spanLabel">@Model.Option8</span></label>
+                                        <input type="radio" name="CorrectOptradio" id="CorrectOptradio7" value="7" checked><label for="CorrectOptradio7"><span class="spanLabel">@Model.Option8</span></label>
                                     </div>
                                     }
                                     else
                                     {
                                     <div class="radio radio-info" id="radio7">
-                                        <input type="radio" name="CorrectOptradio" value="7"><label><span class="spanLabel">@Model.Option8</span></label>
+                                        <input type="radio" name="CorrectOptradio" id="CorrectOptradio7" value="7"><label for="CorrectOptradio7"><span class="spanLabel">@Model.Option8</span></label>
                                     </div>
                                     }
                                 </li>
@@ -228,13 +228,13 @@
                                     @if (!string.IsNullOrWhiteSpace(Model.CorrectAnswer) && Model.CorrectAnswer.Contains("8"))
                                     {
                                     <div class="radio radio-info" id="radio8">
-                                        <input type="radio" name="CorrectOptradio" value="8" checked><label><span class="spanLabel">@Model.Option8</span></label>
+                                        <input type="radio" name="CorrectOptradio" id="CorrectOptradio8" value="8" checked><label for="CorrectOptradio8"><span class="spanLabel">@Model.Option8</span></label>
                                     </div>
                                     }
                                     else
                                     {
                                     <div class="radio radio-info" id="radio8">
-                                        <input type="radio" name="CorrectOptradio" value="8"><label><span class="spanLabel">@Model.Option8</span></label>
+                                        <input type="radio" name="CorrectOptradio" id="CorrectOptradio8" value="8"><label for="CorrectOptradio8"><span class="spanLabel">@Model.Option8</span></label>
                                     </div>
                                     }
 
@@ -267,7 +267,7 @@
                                     {
                                         <li>
                                             <div class="checkbox checkbox-info">
-                                                <input type="checkbox" name="optcheckbox" value="1" checked><label><span class="spanLabel">@Model.Option1</span></label>
+                                                <input type="checkbox" id="candidateCheckbox1" name="optcheckbox" value="1" checked><label for="candidateCheckbox1"><span class="spanLabel">@Model.Option1</span></label>
                                             </div>
                                         </li>
                                     }
@@ -275,7 +275,7 @@
                                     {
                                         <li>
                                             <div class="checkbox checkbox-info">
-                                                <input type="checkbox" name="optcheckbox" value="2" checked><label><span class="spanLabel">@Model.Option2</span></label>
+                                                <input type="checkbox" id="candidateCheckbox2" name="optcheckbox" value="2" checked><label for="candidateCheckbox2"><span class="spanLabel">@Model.Option2</span></label>
                                             </div>
                                         </li>
                                     }
@@ -283,7 +283,7 @@
                                     {
                                         <li>
                                             <div class="checkbox checkbox-info">
-                                                <input type="checkbox" name="optcheckbox" value="3" checked><label><span class="spanLabel">@Model.Option3</span></label>
+                                                <input type="checkbox" id="candidateCheckbox3" name="optcheckbox" value="3" checked><label for="candidateCheckbox3"><span class="spanLabel">@Model.Option3</span></label>
                                             </div>
                                         </li>
                                     }
@@ -291,7 +291,7 @@
                                     {
                                         <li>
                                             <div class="checkbox checkbox-info">
-                                                <input type="checkbox" name="optcheckbox" value="4" checked><label><span class="spanLabel">@Model.Option4</span></label>
+                                                <input type="checkbox" id="candidateCheckbox4" name="optcheckbox" value="4" checked><label for="candidateCheckbox4"><span class="spanLabel">@Model.Option4</span></label>
                                             </div>
                                         </li>
                                     }
@@ -299,7 +299,7 @@
                                     {
                                         <li>
                                             <div class="checkbox checkbox-info">
-                                                <input type="checkbox" name="optcheckbox" value="5" checked><label><span class="spanLabel">@Model.Option5</span></label>
+                                                <input type="checkbox" id="candidateCheckbox5" name="optcheckbox" value="5" checked><label for="candidateCheckbox5"><span class="spanLabel">@Model.Option5</span></label>
                                             </div>
                                         </li>
                                     }
@@ -307,7 +307,7 @@
                                     {
                                         <li>
                                             <div class="checkbox checkbox-info">
-                                                <input type="checkbox" name="optcheckbox" value="6" checked><label><span class="spanLabel">@Model.Option6</span></label>
+                                                <input type="checkbox" id="candidateCheckbox6" name="optcheckbox" value="6" checked><label for="candidateCheckbox6"><span class="spanLabel">@Model.Option6</span></label>
                                             </div>
                                         </li>
                                     }
@@ -315,7 +315,7 @@
                                     {
                                         <li>
                                             <div class="checkbox checkbox-info">
-                                                <input type="checkbox" name="optcheckbox" value="7" checked><label><span class="spanLabel">@Model.Option7</span></label>
+                                                <input type="checkbox" id="candidateCheckbox7" name="optcheckbox" value="7" checked><label for="candidateCheckbox7"><span class="spanLabel">@Model.Option7</span></label>
                                             </div>
                                         </li>
                                     }
@@ -323,7 +323,7 @@
                                     {
                                          <li>
                                             <div class="checkbox checkbox-info">
-                                                <input type="checkbox" name="optcheckbox" value="8" checked><label><span class="spanLabel">@Model.Option8</span></label>
+                                                <input type="checkbox" id="candidateCheckbox8" name="optcheckbox" value="8" checked><label for="candidateCheckbox8"><span class="spanLabel">@Model.Option8</span></label>
                                             </div>
                                         </li>
                                     }
@@ -345,13 +345,13 @@
                                                 @if (Model.CorrectAnswers.Contains("1"))
                                                 {
                                                     <div class="checkbox checkbox-info">
-                                                        <input type="checkbox" name="Correctoptcheckbox" value="1" checked><label><span class="spanLabel">@Model.Option1</span></label>
+                                                        <input type="checkbox" id="correctCheckbox1" name="Correctoptcheckbox" value="1" checked><label for="correctCheckbox1"><span class="spanLabel">@Model.Option1</span></label>
                                                     </div>
                                                 }
                                                 else
                                                 {
                                                     <div class="checkbox checkbox-info">
-                                                        <input type="checkbox" name="Correctoptcheckbox" value="1"><label><span class="spanLabel">@Model.Option1</span></label>
+                                                        <input type="checkbox" id="correctCheckbox1" name="Correctoptcheckbox" value="1"><label for="correctCheckbox1"><span class="spanLabel">@Model.Option1</span></label>
                                                     </div>
                                                 }
                                             </li>
@@ -359,13 +359,13 @@
                                                 @if (Model.CorrectAnswers.Contains("2"))
                                                 {
                                                     <div class="checkbox checkbox-info">
-                                                        <input type="checkbox" name="Correctoptcheckbox" value="2" checked><label><span class="spanLabel">@Model.Option2</span></label>
+                                                        <input type="checkbox" id="correctCheckbox2" name="Correctoptcheckbox" value="2" checked><label for="correctCheckbox2"><span class="spanLabel">@Model.Option2</span></label>
                                                     </div>
                                                 }
                                                 else
                                                 {
                                                     <div class="checkbox checkbox-info">
-                                                        <input type="checkbox" name="Correctoptcheckbox" value="2"><label><span class="spanLabel">@Model.Option2</span></label>
+                                                        <input type="checkbox" id="correctCheckbox2" name="Correctoptcheckbox" value="2"><label for="correctCheckbox2"><span class="spanLabel">@Model.Option2</span></label>
                                                     </div>
                                                 }
                                             </li>
@@ -373,13 +373,13 @@
                                                 @if (Model.CorrectAnswers.Contains("3"))
                                                 {
                                                     <div class="checkbox checkbox-info" id="checkbox3">
-                                                        <input type="checkbox" name="Correctoptcheckbox" value="3" checked><label><span class="spanLabel">@Model.Option3</span></label>
+                                                        <input type="checkbox" id="correctCheckbox3" name="Correctoptcheckbox" value="3" checked><label for="correctCheckbox3"><span class="spanLabel">@Model.Option3</span></label>
                                                     </div>
                                                 }
                                                 else
                                                 {
                                                     <div class="checkbox checkbox-info" id="checkbox3">
-                                                        <input type="checkbox" name="Correctoptcheckbox" value="3"><label><span class="spanLabel">@Model.Option3</span></label>
+                                                        <input type="checkbox" id="correctCheckbox3" name="Correctoptcheckbox" value="3"><label for="correctCheckbox3"><span class="spanLabel">@Model.Option3</span></label>
                                                     </div>
                                                 }
                                             </li>
@@ -387,13 +387,13 @@
                                                 @if (Model.CorrectAnswers.Contains("4"))
                                                 {
                                                     <div class="checkbox checkbox-info" id="checkbox4">
-                                                        <input type="checkbox" name="Correctoptcheckbox" value="4" checked><label><span class="spanLabel">@Model.Option4</span></label>
+                                                        <input type="checkbox" id="correctCheckbox4" name="Correctoptcheckbox" value="4" checked><label for="correctCheckbox4"><span class="spanLabel">@Model.Option4</span></label>
                                                     </div>
                                                 }
                                                 else
                                                 {
                                                     <div class="checkbox checkbox-info" id="checkbox4">
-                                                        <input type="checkbox" name="Correctoptcheckbox" value="4"><label><span class="spanLabel">@Model.Option4</span></label>
+                                                        <input type="checkbox" id="correctCheckbox4" name="Correctoptcheckbox" value="4"><label for="correctCheckbox4"><span class="spanLabel">@Model.Option4</span></label>
                                                     </div>
                                                 }
                                             </li>
@@ -401,13 +401,13 @@
                                                 @if (Model.CorrectAnswers.Contains("5"))
                                                 {
                                                     <div class="checkbox checkbox-info" id="checkbox5">
-                                                        <input type="checkbox" name="Correctoptcheckbox" value="5" checked><label><span class="spanLabel">@Model.Option5</span></label>
+                                                        <input type="checkbox" id="correctCheckbox5" name="Correctoptcheckbox" value="5" checked><label for="correctCheckbox5"><span class="spanLabel">@Model.Option5</span></label>
                                                     </div>
                                                 }
                                                 else
                                                 {
                                                     <div class="checkbox checkbox-info" id="checkbox5">
-                                                        <input type="checkbox" name="Correctoptcheckbox" value="5"><label><span class="spanLabel">@Model.Option5</span></label>
+                                                        <input type="checkbox" id="correctCheckbox5" name="Correctoptcheckbox" value="5"><label for="correctCheckbox5"><span class="spanLabel">@Model.Option5</span></label>
                                                     </div>
                                                 }
                                             </li>
@@ -415,13 +415,13 @@
                                                 @if (Model.CorrectAnswers.Contains("6"))
                                                 {
                                                     <div class="checkbox checkbox-info" id="checkbox6">
-                                                        <input type="checkbox" name="Correctoptcheckbox" value="6" checked><label><span class="spanLabel">@Model.Option6</span></label>
+                                                        <input type="checkbox" id="correctCheckbox6" name="Correctoptcheckbox" value="6" checked><label for="correctCheckbox6"><span class="spanLabel">@Model.Option6</span></label>
                                                     </div>
                                                 }
                                                 else
                                                 {
                                                     <div class="checkbox checkbox-info" id="checkbox6">
-                                                        <input type="checkbox" name="Correctoptcheckbox" value="6"><label><span class="spanLabel">@Model.Option6</span></label>
+                                                        <input type="checkbox" id="correctCheckbox6" name="Correctoptcheckbox" value="6"><label for="correctCheckbox6"><span class="spanLabel">@Model.Option6</span></label>
                                                     </div>
                                                 }
                                             </li>
@@ -429,13 +429,13 @@
                                                 @if (Model.CorrectAnswers.Contains("7"))
                                                 {
                                                     <div class="checkbox checkbox-info" id="checkbox7">
-                                                        <input type="checkbox" name="Correctoptcheckbox" value="7" checked><label><span class="spanLabel">@Model.Option7</span></label>
+                                                        <input type="checkbox" id="correctCheckbox7" name="Correctoptcheckbox" value="7" checked><label for="correctCheckbox7"><span class="spanLabel">@Model.Option7</span></label>
                                                     </div>
                                                 }
                                                 else
                                                 {
                                                     <div class="checkbox checkbox-info" id="checkbox7">
-                                                        <input type="checkbox" name="Correctoptcheckbox" value="7"><label><span class="spanLabel">@Model.Option7</span></label>
+                                                        <input type="checkbox" id="correctCheckbox7" name="Correctoptcheckbox" value="7"><label for="correctCheckbox7"><span class="spanLabel">@Model.Option7</span></label>
                                                     </div>
                                                 }
                                             </li>
@@ -443,13 +443,13 @@
                                                 @if (Model.CorrectAnswers.Contains("8"))
                                                 {
                                                     <div class="checkbox checkbox-info" id="checkbox8">
-                                                        <input type="checkbox" name="Correctoptcheckbox" value="8" checked><label><span class="spanLabel">@Model.Option8</span></label>
+                                                        <input type="checkbox" id="correctCheckbox8" name="Correctoptcheckbox" value="8" checked><label for="correctCheckbox8"><span class="spanLabel">@Model.Option8</span></label>
                                                     </div>
                                                 }
                                                 else
                                                 {
                                                     <div class="checkbox checkbox-info" id="checkbox8">
-                                                        <input type="checkbox" name="Correctoptcheckbox" value="8"><label><span class="spanLabel">@Model.Option8</span></label>
+                                                        <input type="checkbox" id="correctCheckbox8" name="Correctoptcheckbox" value="8"><label for="correctCheckbox8"><span class="spanLabel">@Model.Option8</span></label>
                                                     </div>
                                                 }
 
