@@ -1,5 +1,6 @@
 ﻿@model Silicus.Ensure.Web.Models.TestSuiteCandidateModel
 
+
 @{
     int answeredObjectiveQuestions = Model.NavigationDetails != null ? Model.NavigationDetails.Objective.Where(q => q.IsAnswered).Count() : 0;
     int answeredPracticalQuestions = Model.NavigationDetails != null ? Model.NavigationDetails.Practical.Where(q => q.IsAnswered).Count() : 0;
@@ -11,6 +12,18 @@
     <div class="tab-pane p-1 active" id="details" role="tabpanel">
             <div class="" id="TestSummaryDiv">
                 @Html.Partial("_TestSummary", Model.TestSummary)
+
+                <div class="row M-T15">
+                    <div class="col-sm-12 candidate-score-alert">Candidate Score  <span id="totalObtainedMarks"></span> out of <span id="totalMaximumMarks"></span></div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-12 candidate-per">Has Scored <span id="percentage"></span>%</div>
+                </div>
+                <div class="row M-T15">
+                    <div class="col-sm-12">
+                        <button class="btn btn-primary btn-lg submitEvaluation" id="btnSubmitEvalution" value="Submit Evaluation" style="width:100%;background:#319d9d;padding:5px;border-radius:2px;" data-role="button" role="button" aria-disabled="false" tabindex="0">Submit Evaluation</button>
+                    </div>
+                </div>
             </div>
     </div>
     <div class="tab-pane " id="profile" role="tabpanel">
