@@ -40,6 +40,7 @@ namespace Silicus.Ensure.Web.Controllers
             var user = _userService.GetUserByEmail(userEmail);
             if (user == null)
                 return RedirectToAction("LogOff", "CandidateAccount");
+            ViewBag.CandidateName = user.FirstName;
             UserTestSuite userTestSuite = _testSuiteService.GetUserTestSuiteByUserApplicationId(user.UserApplicationId);
             if (userTestSuite == null)
             {
