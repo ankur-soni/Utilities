@@ -591,12 +591,13 @@ header.navbar {
 .marginLeft800 {
     margin-left: 800px !important;
 }
-
+.nav-link.personal.fontBold{cursor:default!important;}
 .menu-btn-sidebar {
     float: right;
     padding: 10px 10px 0px 0px;
     color: #00aeef;
     font-size: 20px;
+    cursor:pointer;
 }
 
 .CustomSidebar {
@@ -634,7 +635,7 @@ header.navbar {
     }
 
     .sidebar ul.nav li.nav-item a.nav-link i {
-        font-size: 15px;
+        font-size: 18px;
     }
 
     .sidebar ul.nav li.nav-item a.nav-link .fa-mobile {

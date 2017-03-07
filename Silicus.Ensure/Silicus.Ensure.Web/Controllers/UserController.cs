@@ -261,7 +261,7 @@ namespace Silicus.Ensure.Web.Controllers
             }
             ViewBag.UserRoles = RoleManager.Roles.Select(r => new SelectListItem { Text = r.Name, Value = r.Name }).ToList();
 
-
+            TempData["Success"] = "Added Successfully!";
             return RedirectToAction(user.Role.ToLower() == RoleName.Candidate.ToString().ToLower() ? "Candidates" : "Index", controllerName);
         }
 
