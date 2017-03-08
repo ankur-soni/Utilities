@@ -32,12 +32,12 @@
             <table class="table">
                 <tbody>
                     <tr>
-                        <td>Total Questions</td>
+                        <td>Question Type</td>
                         <td>Objectives</td>
                         <td>Practical</td>
                     </tr>
                     <tr>
-                        <td></td>
+                        <td>Total Questions</td>
                         <td class="textAlignCenter">
                             <span class="numbers">
                                 @Model.ObjectiveCount
@@ -61,6 +61,11 @@
                     </tr>
                 </tbody>
             </table>
+        </div>
+    </div>
+    <div class="row M-T15">
+        <div class="col-sm-12">
+            <button class="btn btn-primary btn-lg"  value="Submit Test" style="width:100%;background:#319d9d;padding:5px;border-radius:2px;" data-role="button" role="button" aria-disabled="false" tabindex="0" onclick="OnSubmitTest();">Submit Test</button>
         </div>
     </div>
 </div>
@@ -129,6 +134,7 @@
 
 
     function TestDurationComplete() {
+        showCustomLoader();
         var answer = GetAnswer();
         var testSuiteId = $("#TestSuiteId").val();
         var userTestSuiteId = $("#UserTestSuiteId").val();
@@ -136,6 +142,7 @@
         var userId = $("#UserId").val();
         testDurationComplete = true;
         window.location.href = '/Candidate/OnSubmitTest?testSuiteId=' + testSuiteId + '&userTestSuiteId=' + userTestSuiteId + '&userTestDetailId=' + userTestDetailId + '&userId=' + userId + '&answer=' + answer;
+        $(".loader-overlay").hide();
     }
 
     function ProgressBar() {

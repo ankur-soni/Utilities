@@ -40,6 +40,13 @@ namespace Silicus.Ensure.Web.Controllers
             var user = _userService.GetUserByEmail(userEmail);
             if (user == null)
                 return RedirectToAction("LogOff", "CandidateAccount");
+            else if (user.CandidateStatus == CandidateStatus.TestSubmitted.ToString())
+            {
+                ViewBag.Status = 1;
+                ViewBag.Msg = "You have already submitted your test.";
+                return View("Welcome", new TestSuiteCandidateModel());
+            }
+            ViewBag.CandidateName = user.FirstName;
             UserTestSuite userTestSuite = _testSuiteService.GetUserTestSuiteByUserApplicationId(user.UserApplicationId);
             if (userTestSuite == null)
             {
@@ -110,7 +117,12 @@ namespace Silicus.Ensure.Web.Controllers
                 ViewBag.Msg = "User not found for online test, kindly contact admin.";
                 return View("Welcome", new TestSuiteCandidateModel());
             }
-
+            else if (user.CandidateStatus == CandidateStatus.TestSubmitted.ToString())
+            {
+                ViewBag.Status = 1;
+                ViewBag.Msg="You have already submitted your test.";
+                return View("Welcome", new TestSuiteCandidateModel());
+            }
             UserTestSuite userTestSuite = _testSuiteService.GetUserTestSuiteByUserApplicationId(user.UserApplicationId);
             if (userTestSuite == null)
             {
@@ -173,7 +185,7 @@ namespace Silicus.Ensure.Web.Controllers
             if (users != null)
             {
                 var userDetails = _userService.GetUserById(users.UserId);
-                _commonController.SendMailByRoleName("Test Submitted For " + userDetails.FirstName + " " + userDetails.LastName + " Successfully", "CandidateTestSubmitted.cshtml", Receipient, userDetails.FirstName + " " + userDetails.LastName);
+             //   _commonController.SendMailByRoleName("Online Test Submitted For " + userDetails.FirstName + " " + userDetails.LastName + "", "CandidateTestSubmitted.cshtml", Receipient, userDetails.FirstName + " " + userDetails.LastName);
             }
             return RedirectToAction("LogOff", "CandidateAccount");
         }

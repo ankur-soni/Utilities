@@ -1,5 +1,4 @@
-﻿/* Common classes*/
-.M-B0{margin-bottom:0px;}
+﻿.M-B0{margin-bottom:0px;}
 .M-T3{margin-top:3px!important;}
 .M-T4{margin-top:4px!important;}
 .M-T5{margin-top:5px;}
@@ -10,6 +9,7 @@
 .M-T60{margin-top:60px;}
 .M-T30{margin-top:30px;}
 .M-T40{margin-top:40px;}
+.M-T50 {margin-top: 50px;}
 .M-B3{margin-bottom:3px;}
 .M-B5{margin-bottom:5px;}
 .M-B15{margin-bottom:15px!important;}
@@ -24,9 +24,30 @@
 .width100{width:100%!important;}
 .labelAlignMid{display:inline-block;margin-top:6px;}
 .btn-secondary{background-color:#3388b7;border-color:#3388b7;color:#fff;}
-.btn-secondary:hover, .btn-secondary:focus{color:#fff;}
+.btn-secondary:hover, .btn-secondary:focus{background-color: #3388b7!important;border-color: #3388b7;color: #fff;}
 .btn{padding:2px 12px;}
 .BodyColor{color:#000;}
+
+
+
+.btmBorder {
+    border-bottom: 1px solid #cdcdcd;
+    margin: 0px 10px 20px 10px;
+}
+.profile-box{
+    margin-right: 12px;width:200px;display: inline-block;vertical-align: top;
+}
+.info-box{
+    width: calc(100% - 217px);
+    /* Firefox */
+width: -moz-calc(100% - 217px);
+/* WebKit */
+width: -webkit-calc(100% - 217px);
+/* Opera */
+width: -o-calc(100% - 217px);
+
+    display: inline-block;
+}
 
 /* Bootstrap popup style */
 .modal-content{border-radius:6px!important;}
@@ -87,10 +108,10 @@ a.k-button.k-button-icontext.k-grid-delete{min-width:70px;}
     height: 27px !important;
 }
 
-#frmSearchAllNdc span.k-dropdown .k-input, .k-dropdown .k-state-focused .k-input, .k-menu .k-popup {
+/*#frmSearchAllNdc span.k-dropdown .k-input, .k-dropdown .k-state-focused .k-input, .k-menu .k-popup {
     height: 18px;
    
-}
+}*/
 .k-webkit .k-editor-toolbar li, .k-ff .k-editor-toolbar li, .k-ie9 .k-editor-toolbar li, .k-ie10 .k-editor-toolbar li{
     background: #e7eaec;
     color: #000;
@@ -1732,6 +1753,17 @@ label {
     flex: none;
   }
 }
+
+#view-history .panel-heading{
+    background: #0070b9;
+}
+#view-history .panel-title{
+    color:#fff;
+}
+#view-history .panel-body{
+    background:#e8e6ec;
+}
+
 /*Panels*/
 .panel {
   border-radius: 0px;
@@ -2253,6 +2285,12 @@ span.select2.select2-container.select2-container--default {
 .k-pager-numbers .k-state-selected {
     color: black !important;
     background: #e6e6e6;
+}
+
+.secondary-bt, .secondary-bt:hover, .secondary-bt:visited, .secondary-bt:focus {
+    color: #fff!important;
+    outline: none;
+    background: #3388b7!important;
 }
 
 /* Candidate portal login page css*/

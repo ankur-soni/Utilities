@@ -28,6 +28,11 @@
                                                             Text=Convert.ToString(CandidateStatus.Rejected.CandidateStatusString()),
                                                             Value=((int)CandidateStatus.Rejected)+""
                                                             }
+                                                            ,
+                                                            new SelectListItem(){
+                                                            Text=Convert.ToString(CandidateStatus.OnHold.CandidateStatusString()),
+                                                            Value=((int)CandidateStatus.OnHold)+""
+                                                            }
                                                             }).HtmlAttributes(new { style = "width: 100%", required = "required" }))
 
 

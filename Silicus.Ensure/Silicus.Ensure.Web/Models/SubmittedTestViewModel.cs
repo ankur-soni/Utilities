@@ -37,10 +37,10 @@ namespace Silicus.Ensure.Web.Models
 
         public int TotalMarksObtained { get; set; }
 
-        [Required(ErrorMessage = "Evaluated feed back is required!")]
+        [Required(ErrorMessage = "Evaluated feed back is required.")]
         public string EvaluatedFeedBack { get; set; }
 
-        [Required(ErrorMessage = "Status is required!")]
+        [Required(ErrorMessage = "Status is required.")]
         public string Status { get; set; }
 
         public int PracticalQuestionCount { get; set; }

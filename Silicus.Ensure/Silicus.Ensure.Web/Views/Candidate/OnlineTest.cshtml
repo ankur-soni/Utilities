@@ -141,11 +141,11 @@
             <div class="menu-btn-sidebar" onclick="customSidebarToggle();"><i class="fa fa-bars" aria-hidden="true"></i></div>
             <ul class="nav hidden-md-down">
                 <div id="objective-test-side-bar">
-                    <li class="nav-item nav-heading">
+                    @*<li class="nav-item nav-heading">
                         <a class="nav-link fontBold" href="#">Objective Questions</a>
-                    </li>
+                    </li>*@
                     <li class="nav-item">
-                        <a class="nav-link personal fontBold" href="#"><i class="fa fa-check-square-o fontBold" aria-hidden="true"></i> Objective Test </a>
+                        <a class="nav-link personal fontBold" href="#"><i class="fa fa-folder-open" aria-hidden="true"></i> OBJECTIVE QUESTIONS </a>
                     </li>
                     <li class="nav-item">
                         <ol class="questions">
@@ -154,7 +154,7 @@
                                 foreach (var question in Model.NavigationDetails.Objective)
                                 {
                                     <li>
-                                        <a class="nav-link questionView contact QuestionCheckbox @QuestionColor(question)" id="@question.QuestionId" href="#"> @Html.Raw(@question.QuestionDescription)</a>
+                                        <a class="nav-link questionView contact QuestionCheckbox @QuestionColor(question)" id="@question.QuestionId" href="#">@Html.Raw(@question.QuestionDescription)</a>
                                     </li>
                                 }
                             }
@@ -162,11 +162,11 @@
                     </li>
                 </div>
                 <div id="practical-test-side-bar">
-                    <li class="nav-item nav-heading">
+                    @*<li class="nav-item nav-heading">
                         <a class="nav-link fontBold" href="#">Practical Questions</a>
-                    </li>
+                    </li>*@
                     <li class="nav-item">
-                        <a class="nav-link personal fontBold" href="#"><i class="fa fa-check-square-o fontBold" aria-hidden="true"></i> Practical Test </a>
+                        <a class="nav-link personal fontBold" href="#"><i class="fa fa-folder-open" aria-hidden="true"></i> PRACTICAL QUESTIONS </a>
                     </li>
                     <li class="nav-item">
                         <ol class="questions">
@@ -186,11 +186,13 @@
 
         </nav>
     </div>
+
+
 }
 
 
 @section CandidateDetails {
-    @Html.Partial("_testSuiteAndCandidateDetails", Model);
+    @Html.Partial("_testSuiteAndCandidateDetails", Model)
 }
 
 @section ReadOnlyInstructions {
@@ -380,15 +382,15 @@ else
     }
 
     function OnSubmitTestOK() {
+        showCustomLoader();    
         var answer = GetAnswer();
         var testSuiteId = $("#TestSuiteId").val();
         var userTestSuiteId = $("#UserTestSuiteId").val();
         var userTestDetailId = $("#UserTestDetailId").val();
         var userId = $("#UserId").val();
         window.onbeforeunload = null;
-        debugger;
+        
         window.location.href = '/Candidate/OnSubmitTest?testSuiteId=' + testSuiteId + '&userTestSuiteId=' + userTestSuiteId + '&userTestDetailId=' + userTestDetailId + '&userId=' + userId + '&answer=' + answer;
-        $(".loader-overlay").hide();
     }
 
     function getCurrentQuestionStatus() {
@@ -425,10 +427,11 @@ else
 
 
 
-    $(document).ready(function () {
-        var text = "You are navigating to Fullscreen.";
-        ShowSweetAlertWithoutCancel("Warning!", text, "warning");
 
+    fullScreen();
+
+    function fullScreen()
+    {
         swal({
             title: "FullScreen Mode",
             text: "You are navigating to Fullscreen.",
@@ -438,19 +441,16 @@ else
             confirmButtonText: "Ok",
             cancelButtonText: "No",
             closeOnConfirm: true,
-            closeOnCancel: false
+            closeOnCancel: false   
         },
-   function (isConfirm) {
-       if (isConfirm) {
-           toggleFullScreen();
-           startCounter();
-           isCounterStarted = true;
-       }
-   });
-    });
-
-
-
+ function (isConfirm) {
+     if (isConfirm) {
+         toggleFullScreen();
+         startCounter();
+         isCounterStarted = true;
+     }
+ });
+    }
 
     $('#btnNext').on('click', function () {
         toggleFullScreen();

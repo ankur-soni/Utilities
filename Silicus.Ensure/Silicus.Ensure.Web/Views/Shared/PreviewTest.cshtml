@@ -8,7 +8,7 @@
     Layout = "~/Views/Shared/_LayoutCandidate.cshtml";
 }
 <div class="row">
-    <div class="col-sm-12 main-content" id="main" style="background: #ccc;">
+    <div class="col-sm-12 main-content" id="main">
         <div class="row">
             <div class="col-sm-12">
                 <input type="hidden" value="@Model.TestSuiteId" id="TestSuiteId" />
@@ -104,11 +104,11 @@
             <div class="menu-btn-sidebar" onclick="customSidebarToggle();"><i class="fa fa-bars" aria-hidden="true"></i></div>
             <ul class="nav hidden-md-down">
                 <div id="objective-test-side-bar">
-                    <li class="nav-item nav-heading">
+                    @*<li class="nav-item nav-heading">
                         <a class="nav-link fontBold" href="#">Objective Questions</a>
-                    </li>
+                    </li>*@
                     <li class="nav-item">
-                        <a class="nav-link personal fontBold" href="index.html"><i class="fa fa-check-square-o fontBold" aria-hidden="true"></i> Objective Test </a>
+                        <a class="nav-link personal fontBold" href="#"><i class="fa fa-folder-open" aria-hidden="true"></i> OBJECTIVE QUESTIONS </a>
                     </li>
                     <li class="nav-item">
                         <ol class="questions">
@@ -117,7 +117,7 @@
                                 foreach (var question in Model.NavigationDetails.Objective)
                                 {
                                     <li>
-                                        <a class="nav-link contact questionView QuestionCheckbox @QuestionColor(question)" id="@question.QuestionId" href="#"> @Html.Raw(@question.QuestionDescription)</a>
+                                        <a class="nav-link contact questionView QuestionCheckbox @QuestionColor(question)" id="@question.QuestionId" href="#">@Html.Raw(@question.QuestionDescription)</a>
                                     </li>
                                 }
                             }
@@ -125,11 +125,11 @@
                     </li>
                 </div>
                 <div id="practical-test-side-bar">
-                    <li class="nav-item nav-heading">
+                    @*<li class="nav-item nav-heading">
                         <a class="nav-link fontBold" href="#">Practical Questions</a>
-                    </li>
+                    </li>*@
                     <li class="nav-item">
-                        <a class="nav-link personal fontBold" href="index.html"><i class="fa fa-check-square-o fontBold" aria-hidden="true"></i> Practical Test </a>
+                        <a class="nav-link personal fontBold" href="#"><i class="fa fa-folder-open" aria-hidden="true"></i> PRACTICAL QUESTIONS </a>
                     </li>
                     <li class="nav-item">
                         <ol class="questions">
@@ -194,7 +194,6 @@ else
         $(questionLinkId).addClass(className);
     }
     function LoadFirstQuestion(userId) {
-
         var testSuiteId = $("#TestSuiteId").val();
         $.ajax({
             url: "/Reviewer/LoadPreviewQuestion",
@@ -206,10 +205,10 @@ else
 
     }
     $(document).ready(function () {
-
         $('.breadcrumb-item.active').removeClass('active');
         $('#objective-test').addClass('active');
         $('#practical-test-side-bar').hide();
+        $('#objective-test>a,#practical-test>a').removeClass('disabled');
         $('#instruction').hide();
         $("#frmTestresult").kendoValidator();
         // Hide Submit button of popup. Show when to want submit test.
@@ -408,18 +407,6 @@ else
         $('#QuestionDetails').load('/Reviewer/GetQuestionForPreview', questionDetails);
     }
 
-    function UpdateAndGetQuestionReview(questionId) {
-        var answer = GetAnswer();
-        var userTestSuiteId = $("#UserTestSuiteId").val();
-        var userTestDetailId = $("#UserTestDetailId").val();
-        var questionType = $("#QuestionType").val();
-        var candidateId = $("#UserId").val();
-        var comment = $("#Comment").val();
-        var marks = $("#ReviwerMark").val();
-        var reviewerQuestionDetails = { QuestionId: questionId, UserTestSuiteId: userTestSuiteId, UserTestDetailId: userTestDetailId, Comment: comment, Marks: marks };
-        $('#QuestionDetails').load('/Reviewer/UpdateReviewAndGetQuestionDetails', reviewerQuestionDetails);
-    }
-
     function GetAnswer() {
         var answer = "";
         if ($("#QuestionType").val().trim() == "1") {
@@ -470,7 +457,8 @@ else
             $('#notAnsweredObjectiveQuestionsCount').text(totalObjectiveQuestions - answeredObjectiveQuestions);
             $('#notAnsweredPracticalQuestionsCount').text(totalPracticalQuestions - answeredPracticalQuestions);
         }
-        $('#editorDiv').append('<div style="position: absolute;top:0;left:0;width: 100%;height:100%;z-index:2;opacity:0.4;filter: alpha(opacity = 50)"></div>');
+        $('#questionDiv').append('<div style="-webkit-touch-callout: none;-webkit-user-select: none; -khtml-user-select: none; -moz-user-select: none; -ms-user-select: none;  -o-user-select: none;user-select: none;      pointer-events: none;"></div>');
+
     }
 
 </script>

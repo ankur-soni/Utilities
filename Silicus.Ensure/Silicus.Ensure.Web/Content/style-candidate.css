@@ -8643,6 +8643,7 @@ app-root {
 
 .sidebar ul.nav {
     width: 250px;
+    padding-bottom:50px;
     flex-direction: column !important;
 }
 
@@ -8706,7 +8707,7 @@ app-root {
 .sidebar ul.nav li.active a {
     background: none!important;
     color: #000!important;
-    border-left: 4px solid #00aeef !important;
+    /*border-left: 4px solid #00aeef !important;*/
 }
 
 .sidebar ul.nav li.nav-item a.nav-link [class^="icon-"],
@@ -8718,7 +8719,7 @@ app-root {
 
 .sidebar ul.nav li.nav-item a.nav-link i {
     width: 20px;
-    margin: 0 0.5rem 0 0;
+    margin: 0 1rem 0;
     font-size: 14px;
     color: #b0bec5;
     text-align: center;
@@ -11732,3 +11733,29 @@ base-chart.chart {
 .label-pill {
     border-radius: 1rem !important;
 }
+
+/*Loader css - Start*/
+.loader {
+  border: 10px solid #f3f3f3;
+  border-radius: 50%;
+  border-top: 10px solid #337ab7;
+  width: 60px;
+  height: 60px;
+  -webkit-animation: spin 2s linear infinite;
+  animation: spin 2s linear infinite;
+  top:40%;
+  position:relative;
+  margin:0 auto;
+}
+
+.loader-overlay {
+    position: relative;
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    background: rgba(0,0,0,.8);
+    z-index:999999;
+}
+/*Loader css - End*/

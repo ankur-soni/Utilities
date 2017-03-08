@@ -355,7 +355,7 @@ namespace Silicus.Ensure.Services
                 }
             }
 
-
+            
             objUser.DOB = user.DateOfBirth;
             objUser.Email = user.Email;
             objUser.FirstName = user.FirstName;
@@ -369,6 +369,7 @@ namespace Silicus.Ensure.Services
             objUser.CurrentLocation = user.CurrentLocation;
             objUser.Role = RoleName.Candidate.ToString();
             objUser.UserId = user.UserId;
+            objUser.CreatedDate = user.CreatedDate;
             return objUser;
         }
 

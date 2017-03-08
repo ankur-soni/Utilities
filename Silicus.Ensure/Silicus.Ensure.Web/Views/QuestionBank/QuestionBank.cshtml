@@ -21,7 +21,7 @@
 </div>
 
 <div class="row">
-   
+
     <div class="col-sm-12">
         <div class="box M-T15 M-B60">
             <div class="kendogrid">
@@ -36,108 +36,108 @@
                     @if (Request.IsAuthenticated)
                     {
                         @(Html.Kendo().Grid(Model).Name("questionGrids")
-                         .Pageable(pager => { pager.PageSizes(true); })
-
-                              .DataSource(dataSource => dataSource
-
-                    .Ajax().Model(model =>
-                        {
-                            model.Id(p => p.Id);
-                            model.Field(p => p.Id).Editable(false);
-
-                        })
+                             .Columns(columns =>
+                                     {
+                                         columns.Bound(q => q.QuestionDescription).Width(200);
+                                         columns.Bound(q => q.QuestionType).Width(100);
+                                         columns.Bound(q => q.Tag).Title("Tags").Width(150);
+                                         columns.Bound(q => q.ProficiencyLevel).Width(100);
+                                         columns.Bound(q => q.Id).ClientTemplate(@"
+                                                <a href='/QuestionBank/EditQuestion?questionId=#=Id#' class='k-button M-T4'>Edit</a>
+                            <a class='k-button M-T4' href='\\#' onclick='ConfirmDeleteQuestionRow(event)'>Delete</a>
+                                               ").Title("Actions").Width(150).Sortable(false);
+                                     }) 
+                              .DataSource(dataSource => dataSource.Ajax().Model(model =>
+                                    {
+                                        model.Id(p => p.Id);
+                                        model.Field(p => p.Id).Editable(false);
+                                    })
                                  .Destroy(delete => delete.Action("DeleteQuestion", "QuestionBank"))
-                    )
-         .Columns(columns =>
-              {
-                  columns.Bound(q => q.QuestionDescription).Width(200);
-                  columns.Bound(q => q.QuestionType).Width(100);
-                  columns.Bound(q => q.Tag).Title("Tags").Width(150);
-                  columns.Bound(q => q.ProficiencyLevel).Width(100);
-                  columns.Bound(q => q.Id).ClientTemplate(@"
-                    <a href='/QuestionBank/EditQuestion?questionId=#=Id#' class='k-button M-T4'>Edit</a>
-<a class='k-button M-T4' href='\\#' onclick='ConfirmDeleteQuestionRow(event)'>Delete</a>
-                   ").Title("Actions").Width(150).Sortable(false);
-              })
-              .ToolBar(toolbar =>
-              {
-                  toolbar.Template(@<text>
+                                 .PageSize(10)
+                                 .ServerOperation(false)
+                                    ).Pageable(p => p.PageSizes(true))
+                                     .Sortable()
+                                     .Resizable(resizing => resizing.Columns(true))
+                                    
+                                  .ToolBar(toolbar =>
+                                  {
+                                  toolbar.Template(@<text>
 
 
 
-                    <div class="M-B15">
-                        <div class="row">
-                            <div class="col-sm-12">
-                                <div class="col-sm-4 col-md-4 col-lg-3 M-T15 M-B15">
-                                    <div class="input-group">
-                                        <span class="input-group-addon"><span class="glyphicon glyphicon-search" aria-hidden="true"></span></span>
-                                        <input type="text" class="form-control" id='FieldFilter' placeholder="Search" style="height: 38px;">
-                                        <span class="input-group-btn">
-                                            <button id="QuestionSearchRefresh" class="btn btn-default" style="height:20px!important;border:1px solid #0070B9!important" type="button"><span class="glyphicon glyphicon-refresh" aria-hidden="true"></span></button>
-                                        </span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+                                            <div class="M-B15">
+                                                <div class="row">
+                                                    <div class="col-sm-12">
+                                                        <div class="col-sm-4 col-md-4 col-lg-3 M-T15 M-B15">
+                                                            <div class="input-group">
+                                                                <span class="input-group-addon"><span class="glyphicon glyphicon-search" aria-hidden="true"></span></span>
+                                                                <input type="text" class="form-control" id='FieldFilter' placeholder="Search" style="height: 38px;">
+                                                                <span class="input-group-btn">
+                                                                    <button id="QuestionSearchRefresh" class="btn btn-default" style="height:20px!important;border:1px solid #0070B9!important" type="button"><span class="glyphicon glyphicon-refresh" aria-hidden="true"></span></button>
+                                                                </span>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
 
 
-                        <div class="row">
-                            <div class="col-sm-12">
-                                <div class="col-sm-4 col-md-3 col-lg-2">
-                                    <span style="font-weight:bold;" class="themeColorBlue labelAlignMid">Question type</span>
+                                                <div class="row">
+                                                    <div class="col-sm-12">
+                                                        <div class="col-sm-4 col-md-3 col-lg-2">
+                                                            <span style="font-weight:bold;" class="themeColorBlue labelAlignMid">Question type</span>
 
-                                    @(Html.Kendo().DropDownList()
-                            .Name("QuestionType")
-                            .DataTextField("Text")
-                            .DataValueField("Value")
-                            .Events(e => e.Change("QuestionTypeChange"))
-                                .BindTo(new List<SelectListItem>
-                                () {
-                                    new SelectListItem(){
-                                Text="All",
-                                Value=""
-                                },
-                                new SelectListItem(){
-                                Text="Objective",
-                                Value="Objective"
-                                },
-                                new SelectListItem(){
-                                Text="Practical",
-                                Value="Practical"
-                                }
-                                }).HtmlAttributes(new { style = "width: 100%", @class="M-T5" }))
-                                </div>
-                                <div class="col-sm-4 col-md-3 col-lg-2">
-                                    <span style="font-weight:bold;" class="themeColorBlue labelAlignMid">Proficiency level</span>
+                                                            @(Html.Kendo().DropDownList()
+                                                .Name("QuestionType")
+                                                .DataTextField("Text")
+                                                .DataValueField("Value")
+                                                .Events(e => e.Change("QuestionTypeChange"))
+                                                    .BindTo(new List<SelectListItem>
+                                                    () {
+                                                        new SelectListItem(){
+                                                    Text="All",
+                                                    Value=""
+                                                    },
+                                                    new SelectListItem(){
+                                                    Text="Objective",
+                                                    Value="Objective"
+                                                    },
+                                                    new SelectListItem(){
+                                                    Text="Practical",
+                                                    Value="Practical"
+                                                    }
+                                                    }).HtmlAttributes(new { style = "width: 100%", @class = "M-T5" }))
+                                                        </div>
+                                                        <div class="col-sm-4 col-md-3 col-lg-2">
+                                                            <span style="font-weight:bold;" class="themeColorBlue labelAlignMid">Proficiency level</span>
 
-                                    @{
-                                        var levelList = new List<SelectListItem>();
-                                        levelList.Add(new SelectListItem() { Text = "All", Value = "" });
-                                        foreach (var level in Enum.GetValues(typeof(Silicus.Ensure.Web.Models.ProficiencyLevel)))
-                                        {
-                                            levelList.Add(new SelectListItem() { Text = level.ToString(), Value = level.ToString() });
-                                        }
-                                    }
-                                    @(Html.Kendo().DropDownList()
-                                    .Name("ProficiencyLevelDropDown")
-                                    .DataTextField("Text")
-                                    .DataValueField("Value")
-                                    .Events(e => e.Change("ProficiencyLevelDropDownChange"))
-                                    .BindTo(levelList)
-                                            .HtmlAttributes(new { style = "width: 100%", @class = "M-T5" })
-                                    )
-                                </div>
-                                <div class="col-sm-3 col-md-2 col-lg-2 cust-mar">
-                                    <a href='/QuestionBank/AddQuestions?questionId=0' class='k-button k-button-icontext k-grid-add'><span class='k-icon k-add'></span>Add question</a>
-                                </div>
-                            </div>
-                        </div>
+                                                            @{
+                                                                var levelList = new List<SelectListItem>();
+                                                                levelList.Add(new SelectListItem() { Text = "All", Value = "" });
+                                                                foreach (var level in Enum.GetValues(typeof(Silicus.Ensure.Web.Models.ProficiencyLevel)))
+                                                                {
+                                                                    levelList.Add(new SelectListItem() { Text = level.ToString(), Value = level.ToString() });
+                                                                }
+                                                            }
+                                                            @(Html.Kendo().DropDownList()
+                                                        .Name("ProficiencyLevelDropDown")
+                                                        .DataTextField("Text")
+                                                        .DataValueField("Value")
+                                                        .Events(e => e.Change("ProficiencyLevelDropDownChange"))
+                                                        .BindTo(levelList)
+                                                                .HtmlAttributes(new { style = "width: 100%", @class = "M-T5" })
+                                                            )
+                                                        </div>
+                                                        <div class="col-sm-3 col-md-2 col-lg-2 cust-mar">
+                                                            <a href='/QuestionBank/AddQuestions?questionId=0' class='k-button k-button-icontext k-grid-add'><span class='k-icon k-add'></span>Add question</a>
+                                                        </div>
+                                                    </div>
+                                                </div>
 
 
 
-                    </div>
+                                            </div>
 
-                </text>);
+                                </text>);
               })
                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             .Resizable(resizing => resizing.Columns(true))
                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             .Sortable(sorting => sorting.Enabled(true))
@@ -148,7 +148,7 @@
                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             .PageSize(10)
                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             .ServerOperation(false)
                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             ))
-                    }
+                                            }
 
                 </div>
 
@@ -190,6 +190,8 @@
             datasource.filter([]);
             $("#FieldFilter").val('');
         });
+
+
     });
 
     function ProficiencyLevelAndQuetiontype() {
@@ -224,7 +226,7 @@
         var tr = $(e.target).closest("tr");
         var data = $("#questionGrids").data('kendoGrid').dataItem(tr);
         deleteGridRow('questionGrids', data);
-      
+
     }
 
 
@@ -245,11 +247,24 @@
                 grid = $("#" + gridId).data("kendoGrid");
                 grid.dataSource.remove(data);
                 grid.dataSource.sync();
-                ShowMessage("Question Bank deleted successfully.", 1);
-            } else {
-                ShowMessage("Question Bank cancelled successfully.", 1);
+                ShowMessage("Question deleted successfully.", 1);
             }
         });
     }
+
+
+    $(window).on(function () {   
+        showCustomLoader();
+    });
+
+
+
+    function onBegin() {
+        showCustomLoader();
+    }
+    function onComplete() {
+        $(".loader-overlay").hide();
+    }
+</script>
 
 </script>

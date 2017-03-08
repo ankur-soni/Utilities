@@ -520,7 +520,7 @@ namespace Silicus.Encourage.Services
                 var reviewersComments = _encourageDatabaseContext.Query<ReviewerComment>().Where(r => r.CriteriaId == managerComment.CriteriaId && r.NominationId == managerComment.NominationId).ToList();
                 if (reviewersComments.Any())
                 {
-                    managerComment.FinalScore = (Convert.ToDecimal(reviewersComments.Average(r => r.Credit)) * managerComment.Weightage) / 100m;
+                    managerComment.FinalScore =Math.Round((Convert.ToDecimal(reviewersComments.Average(r => r.Credit)) * managerComment.Weightage) / 100m, 2);
                 }
 
                 _encourageDatabaseContext.Update(managerComment);

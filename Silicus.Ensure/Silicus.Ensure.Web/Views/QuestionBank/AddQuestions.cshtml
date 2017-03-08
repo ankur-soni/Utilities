@@ -19,6 +19,12 @@
             if (@Model.Id != 0)
             {
                 <h1 class="dashboard-name">Edit Question</h1>
+                <script>
+                    $(window).load(function () {
+                        var dropdownlist = $("#QuestionType").data("kendoDropDownList");
+                        dropdownlist.enable(false);
+                    });
+                </script>
             }
             else
             {
@@ -204,8 +210,8 @@
                             <div class="row">
                                 <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
                                     <div class="form-group">
-                                        <div class="checkbox">
-                                            <input id="IsAllowedmoreThanOneAns" type="checkbox">
+                                        <div class="checkbox" id="IsAllowedmoreThanOneAns">
+                                            <input id="checkbox33" type="checkbox">
                                             <label for="checkbox33">Allow more than one answer to this question</label>
                                         </div>
                                         @Html.HiddenFor(y => y.AnswerType)
@@ -220,7 +226,9 @@
                                     <label class="font-Bold themeColorBlue">Answer <span style="color:red">*</span></label>
 
                                     @Html.Kendo().EditorFor(m => m.Answer).Name("Answer").Encode(true).Value(Model.Answer)
+                                    @Html.ValidationMessageFor(m => m.Answer)
                                 </div>
+                               
                             </div>
 
                         </div>
@@ -244,13 +252,13 @@
                                         .HtmlAttributes(new { style = "width: 100%" }))
                                             @Html.ValidationMessageFor(m => m.SkillTag)
                                         </div>
-                                       
+
                                     </div>
-                                    
+
                                     <div class="col-xs-2 col-sm-2 col-md-2 col-lg-3">
                                         <a style="padding:2px 12px;" class="themeColorBlue btn btn-primary" href="#" onclick="AddTag();"><i class="fa fa-plus" aria-hidden="true"></i></a>
                                     </div>
-                                   
+
                                 </div>
                             </div>
                         </div>
@@ -324,21 +332,20 @@
                         @Html.HiddenFor(m => m.Edit, new { Value = @Model.Edit })
 
                         <script>
-
+                           
                             window.onbeforeunload = function () {
                                 return "Do you really want to close?";
                             };
 
                             $('#btnSave').click(function()
                             {
-                                window.onbeforeunload = null;   
-                                $(window).unbind('unload');       
+                                window.onbeforeunload = null;
+                                $(window).unbind('unload');
                             });
 
                             $('#btnSaveAndAddNewQuestion').click(function()
-                            {  
-                                window.onbeforeunload = null;   
-                                $(window).unbind('unload');       
+                            {
+                                window.onbeforeunload = null;                                
                             });
 
                             function isAnySelectedAns(input)
@@ -365,12 +372,15 @@
                                 var qType = $('#QuestionType').val();
                                 if (input.is("[name=Option"+optionNo+"]") && qType == 1) {
                                     input.attr("data-Option"+optionNo+"-msg", "Option "+optionNo+" can't be blank.");
-                                    return input.val().trim()!="";//?isAnySelectedAns(input,optionNo):false;
+                                    return input.val().trim()!="";
                                 }
                                 return true;
                             }
 
-                            $(document).ready(function () {
+                            $(document).ready(function () {                             
+                                window.onbeforeunload = function () {
+                                    return "Do you really want to close?";
+                                };
                                 SetNavigationMenuActive('QuestionBank');
                                 var questionType = $("#QuestionType").val();
                                 if(questionType&&questionType==2)
@@ -411,7 +421,7 @@
                                         Answer:function (input, params) {
                                             var qType = $('#QuestionType').val();
                                             if (input.is("[name=Answer]") && qType == 2) {
-                                                input.attr("data-Answer-msg", "Answer can't be blank.");
+                                                input.attr("data-Answer-msg", "Answer is required.");
                                                 return input.val().trim()!="";
                                             }
                                             return true;
@@ -439,12 +449,10 @@
                                         $ansCheckBoxes.prop("checked",false);
                                 })
 
-
                                 $(".ansCheckBox").on("click",function()
                                 {
                                     if(!$("#IsAllowedmoreThanOneAns").is(":checked"))
                                     {
-                                        //var isCheked=$(this).is(":checked");
                                         $(".ansCheckBox").prop("checked",false);
                                         $(this).prop("checked",true);
                                     }
@@ -455,20 +463,15 @@
                                 {
                                     $("#rowOpt"+i).hide();
                                 }
-
-                                //ShowRequiredOptionInCorrectAnswerDropDown();
-
                                 $("#errorDiv").hide();
                                 $("#durationRequired").hide();
                                 $("#practicalAns").hide();
-
-
                                 var success =@Model.Success;
                                 var edit="@Model.Edit";
                                 if(success==1)
                                 {
-                                    window.onbeforeunload = null;   
-                                    $(window).unbind('unload');     
+                                    window.onbeforeunload = null;
+                                    $(window).unbind('unload');
                                     if(edit=="True"){
                                         ShowMessage("Question updated successfully.",true);
                                         window.location.href = "/QuestionBank/QuestionBank";
@@ -478,9 +481,7 @@
                                         window.location.href = "/QuestionBank/QuestionBank";
                                     }
                                 }
-                                if(success==2){
-                                    window.onbeforeunload = null;   
-                                    $(window).unbind('unload');     
+                                if(success==2){                                  
                                     ShowMessage("Question added successfully.",true);
                                 }
                                 else
@@ -492,8 +493,6 @@
                                     }
                                 }
 
-
-
                                 // Check Question Type on Edit.
                                 var qtype=@Model.QuestionType;
                                 if (qtype == "2") {
@@ -501,10 +500,6 @@
                                     $("#practicalAns").show();
                                     $("#durationRequired").show();
                                 }
-
-
-
-
                             });
 
                             // Show Error Animation
@@ -515,8 +510,16 @@
                                 $("#errorDiv").fadeOut(10000);
                             }
 
+                            $('#QuestionType').change(function() {
+                            
+                                debugger;
+                                var skillTag = $('#SkillTag').data("kendoMultiSelect");
+                                skillTag.value([]);                            
+                            });
+
                             // Question Type Change - > Set default values of controls.
                             function QuestionTypeChange() {
+                              
                                 var value = $("#QuestionType").val();
                                 if (value == "2") {
                                     $("#practical").hide();
@@ -542,8 +545,7 @@
                                 //var correctAnswer = $('#CorrectAnswer').data("kendoMultiSelect");
                                 //correctAnswer.value([]);
                                 $(".ansCheckBox").prop("checked",false);
-                                var skillTag = $('#SkillTag').data("kendoMultiSelect");
-                                skillTag.value([]);
+                              
                                 var answerType = $("#AnswerType");
                                 answerType.val("1");
                             }
@@ -635,7 +637,7 @@
                                         type: "POST",
                                         url: '/Tag/Save',
                                         data: $('#tagForm').serialize(),
-                                        success: function (returndata) {
+                                        success: function (returndata) {                                          
                                             $("#addTagPopup").modal('hide');
                                             var $tagMultiSelect=$('#SkillTag').data('kendoMultiSelect');
                                             var multidata=$tagMultiSelect.dataSource.data();
@@ -667,8 +669,9 @@
                                             return true;
                                         }
                                     }
-                                });
-
+                                });                               
+                                $('#TagName').val("");
+                                $('#Description').val("");
                                 $("#addTagPopup").modal('show');
                             }
 
@@ -741,7 +744,7 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal">&times;</button>
-                    <h4 class="modal-title"><span>Add tag</span></h4>
+                    <h4 class="modal-title"><span>Add skill tag</span></h4>
                 </div>
                 <div class="modal-body">
 

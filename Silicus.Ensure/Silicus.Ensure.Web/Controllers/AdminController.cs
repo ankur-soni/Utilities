@@ -264,7 +264,7 @@ namespace Silicus.Ensure.Web.Controllers
 
             var candidateApplicationDetails = _userService.GetUserDetails(userId);
             foreach (var candidateApplication in candidateApplicationDetails)
-            {
+            {           
                 TestSuiteViewModel testSuiteViewModel = null;
                 var candidatebusinessModel = _mappingService.Map<UserBusinessModel, CandidateHistoryViewModel>(candidateApplication);
                 var positionDetails = _positionService.GetPositionDetails().OrderBy(m => m.PositionName);
@@ -289,6 +289,7 @@ namespace Silicus.Ensure.Web.Controllers
 
                 candidatebusinessModel.TestSuiteViewModel = testSuiteViewModel;
                 objUserApplicationDetails.Add(candidatebusinessModel);
+               
             }
 
          
@@ -492,14 +493,15 @@ namespace Silicus.Ensure.Web.Controllers
         }
         public ActionResult AssignSuite(int SuiteId, int UserId, int IsReAssign = 0)
         {
-            var updateCurrentUsers = _userService.GetUserDetails().Where(model => model.UserId == UserId).FirstOrDefault();
+            string mailsubject = "";
+            var updateCurrentUsers = _userService.GetUserById(UserId);
             if (updateCurrentUsers != null)
             {
                 if (SuiteId > 0 && UserId > 0)
                 {
                     if (IsReAssign == 1)
                     {
-                        var userTest = _testSuiteService.GetUserTestSuite().Where(x => x.UserApplicationId == UserId && x.StatusId == Convert.ToInt32(CandidateStatus.TestAssigned)).ToList();
+                        var userTest = _testSuiteService.GetUserTestSuite().Where(x => x.UserApplicationId == updateCurrentUsers.UserApplicationId && x.StatusId == Convert.ToInt32(CandidateStatus.TestAssigned)).ToList();
                         if (userTest.Any())
                         {
                             foreach (var utest in userTest)
@@ -517,12 +519,22 @@ namespace Silicus.Ensure.Web.Controllers
                     var selectUser = _userService.GetUserDetails().Where(model => model.UserId == UserId).FirstOrDefault();
                     selectUser.TestStatus = Convert.ToString(CandidateStatus.TestAssigned);
                     selectUser.CandidateStatus = Convert.ToString(CandidateStatus.TestAssigned);
-                    // selectUser.TestSuiteId = SuiteId;
+                  
                     _userService.Update(selectUser);
-
-                    //Send Candidate creation mail to Admin and Recruiter
+                  
                     List<string> Receipient = new List<string>() { "Admin", "Panel" };
-                    _commonController.SendMailByRoleName("Test Assigned For "+ selectUser.FirstName+ " " +selectUser.LastName +" Successfully", "CandidateTestAssigned.cshtml", Receipient, selectUser.FirstName + " " + selectUser.LastName);
+
+                    if (IsReAssign == 0)
+                    {
+                        mailsubject = "Test Assigned For " + selectUser.FirstName + " " + selectUser.LastName + " Successfully";
+                        _commonController.SendMailByRoleName(mailsubject, "CandidateTestAssigned.cshtml", Receipient, selectUser.FirstName + " " + selectUser.LastName);
+                    }
+                    else
+                    {
+                        mailsubject = "Test Re-Assigned For " + selectUser.FirstName + " " + selectUser.LastName + " Successfully";
+                        _commonController.SendMailByRoleName(mailsubject, "TestReassign.cshtml", Receipient, selectUser.FirstName + " " + selectUser.LastName);
+                    }
+                                      
                     return Json(1);
                 }
                 else
@@ -851,7 +863,7 @@ namespace Silicus.Ensure.Web.Controllers
                 var userTestSuitDetails = _testSuiteService.GetUserTestSuiteByUdi_TestSuitId(UserId, TestSuiteId);
                 if (userTestSuitDetails == null)
                 {
-                    TempData["ErrorMsg"] = userDetails == null ? "User id can not be null !" : "Test suite is not assigned to user !";
+                    TempData["ErrorMsg"] = userDetails == null ? "User id can not be null." : "Test suite is not assigned to user.";
                     return RedirectToAction("Candidates");
                 }
 
@@ -859,7 +871,7 @@ namespace Silicus.Ensure.Web.Controllers
 
                 if (testSuitDetails == null)
                 {
-                    TempData["ErrorMsg"] = "Test suite is not assigned to user !";
+                    TempData["ErrorMsg"] = "Test suite is not assigned to user.";
                     return RedirectToAction("Candidates");
                 }
 
@@ -920,7 +932,7 @@ namespace Silicus.Ensure.Web.Controllers
                 }
 
                 List<string> Receipient = new List<string>() { "Admin", "Panel" };
-                _commonController.SendMailByRoleName("Test Submitted For " + userDetails.FirstName + " " + userDetails.LastName + " Successfully", "CandidateTestSubmitted.cshtml", Receipient, userDetails.FirstName + " " + userDetails.LastName);
+                _commonController.SendMailByRoleName("Online Test Submitted For " + userDetails.FirstName + " " + userDetails.LastName + "", "CandidateTestSubmitted.cshtml", Receipient, userDetails.FirstName + " " + userDetails.LastName);
 
                 return View(submittedTestViewModel);
 
