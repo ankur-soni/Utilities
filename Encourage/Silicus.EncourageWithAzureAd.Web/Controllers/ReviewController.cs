@@ -239,6 +239,7 @@ namespace Silicus.EncourageWithAzureAd.Web.Controllers
         }
 
         [CustomeAuthorize(AllowedRole = "Admin")]
+        //[HttpPost]
         public ActionResult RejectAll()
         {
             _logger.Log("Review-RejectAll-GET");
@@ -248,8 +249,14 @@ namespace Silicus.EncourageWithAzureAd.Web.Controllers
             {
                 var currentNomination = _nominationService.GetNomination(item.NominationId);
                 var customDate = _customDateService.GetCustomDate(currentNomination.AwardId);
-                rejectAllRviews.Add(_encourageDatabaseContext.Query<Review>().FirstOrDefault(r => r.IsSubmited == true && r.ReviewDate.Value.Month ==
-                                                                                                  customDate.Month && r.ReviewDate.Value.Year == customDate.Year));
+                //var recordToReject = _encourageDatabaseContext.Query<Review>().FirstOrDefault(r => r.IsSubmited == true && r.ReviewDate.Value.Month ==
+                //                                                                              customDate.Month && r.ReviewDate.Value.Year == customDate.Year);
+                var recordToReject = _reviewService.GetSubmitedReviewByDate(customDate.Month, customDate.Year);
+                if (recordToReject != null)
+                {
+                    rejectAllRviews.Add(recordToReject);
+                    
+                }
 
             }
             var shortlist = _encourageDatabaseContext.Query<Shortlist>().Where(s => s.IsWinner == true);

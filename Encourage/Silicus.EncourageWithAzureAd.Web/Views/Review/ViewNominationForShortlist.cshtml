@@ -40,14 +40,14 @@
                                         @Html.DisplayFor(modelItem => modelItem.Manager)
                                     </td>
                                 </tr>
-                                <tr>
+                                @*<tr>
                                     <td class="col-sm-4">
                                         <label>Credits</label>
                                     </td>
                                     <td>
                                         @Html.DisplayFor(modelItem => modelItem.TotalCredits)
                                     </td>
-                                </tr>
+                                </tr>*@
                             </thead>
                         </table>
                     </div>
@@ -184,7 +184,7 @@
                                                     <td id="totalCredits" class="col-md-1 text-center font-bold">
                                                         @if (reviewer != null && reviewer.Any())
                                                         {
-                                                            @(reviewer.Average(a => a.Credit))
+                                                            @(reviewer.Average(a => a.Credit).ToString("F"))
                                                         }
                                                         else
                                                         {
@@ -203,17 +203,26 @@
                     </div>
                     <div class="row M-T15">
                         <div class="pull-right btn-nav">
-
-                            <input type="button" value="Back" class="btn btn-primary" onclick="location.href='@Url.Action("ReviewFeedbackList", "Review")'" />
+                            @{
+                                var actionName = "ReviewFeedbackList";
+                                if (Request.UrlReferrer != null)
+                                 {
+                                     if (Request.UrlReferrer.ToString().Contains("ConsolidatedNominations"))
+                                     {
+                                         actionName = "ConsolidatedNominations";
+                                     }
+                                 }
+                            }
+                            <input type="button" value="Back" class="btn btn-primary" onclick="location.href='@Url.Action(actionName, "Review")'" />
                             @if (!Model.IsHistoricalNomination)
                             {
                                 /**/
-                                <input type="button" value="Shortlist" class="btn btn-primary shortlist" onclick="location.href='#'"
-                                       @{ if (Model.IsShortlisted || Model.IsWinner) { @: disabled="disabled"
-                                                                            } } />
-                                                                                                                                                                                                                                <input type="button" value="Mark Winner" class="btn btn-primary" data-toggle="modal" data-target="#myModal"
-                                        @{ if (Model.IsWinner) { @: disabled="disabled"
-                                                                            } } />
+                            <input type="button" value="Shortlist" class="btn btn-primary shortlist" onclick="location.href='#'"
+                            @{ if (Model.IsShortlisted || Model.IsWinner) { @: disabled="disabled"
+                            } } />
+                                <input type="button" value="Mark Winner" class="btn btn-primary" data-toggle="modal" data-target="#myModal"
+                                @{ if (Model.IsWinner) { @: disabled="disabled"
+                                } } />
                             }
                         </div>
                     </div>

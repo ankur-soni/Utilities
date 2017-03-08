@@ -177,7 +177,7 @@
             data: { tagName: tagName },
             success: function (returndata) {
                 if (returndata == true) {
-                    $.when(showConfirmationWindow('This tag is already associated with a question. Are you sure you want to edit this?', '&nbsp;Edit')).then(function (confirmed) {
+                    $.when(showConfirmationWindow('This tag is already associated with a question. <br> Are you sure, you want to edit this ?', '&nbsp;Edit')).then(function (confirmed) {
                         if (confirmed) {
                             // $(tr).find('.k-grid-edit').trigger('click');
                             grid.editRow(tr);

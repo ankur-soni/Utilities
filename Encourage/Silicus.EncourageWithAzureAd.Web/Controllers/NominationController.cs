@@ -571,8 +571,20 @@ namespace Silicus.EncourageWithAzureAd.Web.Controllers
                     NominationId = result.Id,
                     ManagerComment = result.Comment
                 };
+
                 foreach (var d in item)
                 {
+                    var reviewerName = string.Empty;
+                    var reviewer = _encourageDatabaseContext.Query<Reviewer>().FirstOrDefault(r => r.Id == d.ReviewerId);
+                    if (reviewer != null)
+                    {
+                        var user = _commonDbContext.Query<User>().FirstOrDefault(u => u.ID == reviewer.UserId);
+                        if (user != null)
+                        {
+                            reviewerName = user.DisplayName;
+                        }
+                    }
+
                     reviewNominationViewModel.Comments.Add(
                         new ReviewerCommentViewModel
                         {
@@ -580,6 +592,7 @@ namespace Silicus.EncourageWithAzureAd.Web.Controllers
                             Comment = d.Comment,
                             Credit = Convert.ToInt32(d.Credit),
                             Id = d.Id,
+                            ReviewerName =reviewerName
                         });
                     if (d.Credit == 1)
                     {

@@ -37,24 +37,27 @@ namespace Silicus.Ensure.Web.Controllers
             if (!ModelState.IsValid)
                 return RedirectToAction("LogOff", "CandidateAccount");
             var userEmail = User.Identity.Name.Trim();
-            var user = _userService.GetUserByEmail(userEmail);
-            if (user == null)
-                return RedirectToAction("LogOff", "CandidateAccount");
-            else if (user.CandidateStatus == CandidateStatus.TestSubmitted.ToString())
+            if (!string.IsNullOrWhiteSpace(userEmail))
             {
-                ViewBag.Status = 1;
-                ViewBag.Msg = "You have already submitted your test.";
-                return View("Welcome", new TestSuiteCandidateModel());
+                var user = _userService.GetUserByEmail(userEmail);
+                if (user == null)
+                    return RedirectToAction("LogOff", "CandidateAccount");
+                else if (user.CandidateStatus == CandidateStatus.TestSubmitted.ToString())
+                {
+                    ViewBag.Status = 1;
+                    ViewBag.Msg = "You have already submitted your test.";
+                    return View("Welcome", new TestSuiteCandidateModel());
+                }
+                ViewBag.CandidateName = user.FirstName;
+                UserTestSuite userTestSuite = _testSuiteService.GetUserTestSuiteByUserApplicationId(user.UserApplicationId);
+                if (userTestSuite == null)
+                {
+                    ViewBag.Status = 1;
+                    ViewBag.Msg = "No test is assigned for you, kindly contact admin.";
+                    return View("Welcome", new TestSuiteCandidateModel());
+                }
+                ViewBag.Status = 0;
             }
-            ViewBag.CandidateName = user.FirstName;
-            UserTestSuite userTestSuite = _testSuiteService.GetUserTestSuiteByUserApplicationId(user.UserApplicationId);
-            if (userTestSuite == null)
-            {
-                ViewBag.Status = 1;
-                ViewBag.Msg = "No test is assigned for you, kindly contact admin.";
-                return View("Welcome", new TestSuiteCandidateModel());
-            }
-            ViewBag.Status = 0;
             return View();
         }
 
