@@ -863,7 +863,7 @@ namespace Silicus.Ensure.Web.Controllers
                 var userTestSuitDetails = _testSuiteService.GetUserTestSuiteByUdi_TestSuitId(UserId, TestSuiteId);
                 if (userTestSuitDetails == null)
                 {
-                    TempData["ErrorMsg"] = userDetails == null ? "User id can not be null !" : "Test suite is not assigned to user !";
+                    TempData["ErrorMsg"] = userDetails == null ? "User id can not be null." : "Test suite is not assigned to user.";
                     return RedirectToAction("Candidates");
                 }
 
@@ -871,7 +871,7 @@ namespace Silicus.Ensure.Web.Controllers
 
                 if (testSuitDetails == null)
                 {
-                    TempData["ErrorMsg"] = "Test suite is not assigned to user !";
+                    TempData["ErrorMsg"] = "Test suite is not assigned to user.";
                     return RedirectToAction("Candidates");
                 }
 

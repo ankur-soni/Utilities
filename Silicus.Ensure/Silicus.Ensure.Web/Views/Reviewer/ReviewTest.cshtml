@@ -42,7 +42,15 @@
     }
 
     .candidate-answer {
-        margin: 0px 35px 30px 35px;
+        margin: 0px 35px 30px 35px;  
+ -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    -o-user-select: none;
+    user-select: none;
+      pointer-events: none;
     }
 
     .reviewers-comment {
@@ -274,7 +282,7 @@ else
         $('#QuestionDetails').load(url + userTestSuiteId, disableControls);
         $(document).on("click", "#btnSubmitEvalution", submitEvalution);
         $("#SubmitCandidateResult").on("click", submitCandidateResult);
-        $('.QuestionCheckbox').on('click', QuestionCheckboxClicked);
+        $('.QuestionCheckbox').on('click', QuestionCheckboxClicked);       
     });
 
     function disableControls() {
@@ -290,7 +298,7 @@ else
 
     function QuestionCheckboxClicked(event) {
         var questionId = $(this).attr('id');
-        UpdateCurrentQuestionAndLoadNewOne(questionId);
+        UpdateCurrentQuestionAndLoadNewOne(questionId);      
     }
 
     function UpdateCurrentQuestionAndLoadNewOne(questionId) {
@@ -356,7 +364,7 @@ else
         var userTestDetailId = $("#UserTestDetailId").val();
         var questionType = $("#QuestionType").val();
         var questionDetails = { QuestionId: questionId, UserTestSuiteId: userTestSuiteId, UserTestDetailId: userTestDetailId, Answer: answer };
-        $('#QuestionDetails').load('/Candidate/GetQuestionDetails', questionDetails);
+        $('#QuestionDetails').load('/Candidate/GetQuestionDetails', questionDetails);       
     }
 
     function UpdateAndGetQuestionReview(questionId) {
@@ -390,8 +398,7 @@ else
             cache: false,
             dataType: "html",
             data: { userTestSuiteId: userTestSuiteId },
-            success: function (data) {
-                debugger
+            success: function (data) {               
                 $("#TestSummaryDiv").html('');
                 $("#TestSummaryDiv").html(data);
             }
@@ -521,7 +528,9 @@ else
             $('#answeredPracticalQuestionsCount').text(answeredPracticalQuestions);
             $('#notAnsweredObjectiveQuestionsCount').text(totalObjectiveQuestions - answeredObjectiveQuestions);
             $('#notAnsweredPracticalQuestionsCount').text(totalPracticalQuestions - answeredPracticalQuestions);
-        }
+        }   
+        $('#questionDiv').append('<div style="-webkit-touch-callout: none;-webkit-user-select: none; -khtml-user-select: none; -moz-user-select: none; -ms-user-select: none;  -o-user-select: none;user-select: none;      pointer-events: none;"></div>');
+
     }
         </script>
 

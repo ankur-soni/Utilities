@@ -284,7 +284,7 @@ namespace Silicus.Ensure.Web.Controllers
                 organizationUserDomainModel.CandidateStatus = user.CandidateStatus;
                 organizationUserDomainModel.IsDeleted = false;
                 _userService.Update(organizationUserDomainModel);
-                TempData["Success"] = "User updated successfully!";
+                TempData["Success"] = "User updated successfully.";
             }
 
         }
@@ -304,7 +304,7 @@ namespace Silicus.Ensure.Web.Controllers
                 organizationUserDomainModel.CandidateStatus = user.CandidateStatus;
                 organizationUserDomainModel.IsDeleted = false;
                 _userService.UpdateUserAndCreateNewApplication(organizationUserDomainModel);
-                TempData["Success"] = "User updated successfully!";
+                TempData["Success"] = "User updated successfully.";
             }
 
         }

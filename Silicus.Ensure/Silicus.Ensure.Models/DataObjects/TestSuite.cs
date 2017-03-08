@@ -11,18 +11,18 @@ namespace Silicus.Ensure.Models.DataObjects
         [Key]
         public int TestSuiteId { get; set; }
 
-        [Required(ErrorMessage = "Test suite name is required!")]
+        [Required(ErrorMessage = "Test suite name is required.")]
         [StringLength(50, ErrorMessage = "Test suite name length should be less than or equal to 50 characters.")]
         [Display(Name = "Test suite name")]
         public string TestSuiteName { get; set; }
 
-        [Required(ErrorMessage="Duration is required!")]
+        [Required(ErrorMessage="Duration is required.")]
         public Int32 Duration { get; set; }        
 
-        [Required(ErrorMessage = "Position is required!")]
+        [Required(ErrorMessage = "Position is required.")]
         public Int32 Position { get; set; }
 
-        [Required(ErrorMessage = "Competency is required!")]
+        [Required(ErrorMessage = "Competency is required.")]
         public Int32 Competency { get; set; }
 
         public string PrimaryTags { get; set; }
