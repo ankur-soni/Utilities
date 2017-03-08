@@ -208,6 +208,7 @@
     }
 
     function OnAddMoreTimeOK() {
+        debugger;
         var time = $.countdown.periodsToSeconds($('#counter').countdown('getTimes'));
         var timerCnt = $("#TimerIncCount").val();
         if (timerCnt == null || timerCnt == "")
@@ -221,6 +222,7 @@
             data: JSON.stringify({ count: timerCnt, userTestSuiteId: userTestSuiteId }),
             success: function (data) {
                 if (data < 3) {
+                    UpdateTimeDB();
                     // Add time in counter
                     var newtm = parseInt(time) + parseInt(60 * 10);
                     //clock.setTime(newtm);
@@ -242,7 +244,7 @@
                         $("#btnAddMoreTime").hide();
                     }
 
-                    UpdateTimeDB();
+                  
 
                 }
             },
