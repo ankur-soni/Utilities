@@ -275,7 +275,7 @@ else
         return result;
     }
 
-    function AddMoreTime() {
+    function AddMoreTime() {      
         var timerCnt = $("#TimerIncCount").val();
         if (timerCnt == 0)
             ShowProgressPopUp(true, "You have only 2 chances. Are you sure, you want to increase time limit by 10 Mins?");
@@ -284,6 +284,7 @@ else
     }
 
     function OnAddMoreTimeOK() {
+        debugger;
         var timerCnt = $("#TimerIncCount").val();
         if (timerCnt == null || timerCnt == "")
             timerCnt = 0;
@@ -302,7 +303,7 @@ else
 
                     // Assign reduced chance
                     $("#TimerIncCount").val(data);
-
+                    debugger;
                     // Update Progress bar
                     totalTime = parseInt(totalTime) + parseInt(60 * 10);
                     var leftTm = parseInt(totalTime) - clock.getTime();
