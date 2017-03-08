@@ -18,7 +18,7 @@ namespace Silicus.Ensure.Web.Models
         [Display(Name = "Test suite name")]
         public string TestSuiteName { get; set; }
 
-        [Required(ErrorMessage = "Duration (min) is required.")]
+        [Required(ErrorMessage = "Duration in min is required.")]
         [Display(Name = "Duration (min)")]
         [Range(1, 360, ErrorMessage = "Enter number between 1-360")]
         public Int32 Duration { get; set; }
@@ -56,10 +56,10 @@ namespace Silicus.Ensure.Web.Models
         [Display(Name = "Project name")]
         public string ProjectName { get; set; }
 
-        [Required(ErrorMessage = "Experience (Years) is required.")]
+        [Required(ErrorMessage = "Experience in years is required.")]
         public int? FromExperience { get; set; }
 
-        [Required(ErrorMessage = "Experience (Months) is required.")]
+        [Required(ErrorMessage = "Experience in months is required.")]
         public int? ToExperience { get; set; }
 
         [Range(1, 100, ErrorMessage = "Enter numbers from 1-100")]

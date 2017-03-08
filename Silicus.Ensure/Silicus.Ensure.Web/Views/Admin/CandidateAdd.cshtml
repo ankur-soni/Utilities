@@ -13,13 +13,13 @@
 
 <div class="modal fade" id="addPositionPopup" role="dialog">
     <form id="postionForm">
-        <div class="modal-dialog">
+        <div class="modal-dialog" >
 
             <!-- Modal content-->
             <div class="modal-content">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal">&times;</button>
-                    <h4 class="modal-title"><span>Add tag</span></h4>
+                    <h4 class="modal-title"><span>Add position</span></h4>
                 </div>
                 <div class="modal-body">
 
@@ -37,7 +37,7 @@
 
 
 <div class="modal fade" id="candidateGridPopup" role="dialog">
-    <div class="modal-dialog">
+    <div class="modal-dialog" style="width: 800px;">
         <!-- Modal content-->
         <div class="modal-content">
             <div class="modal-header">
@@ -45,9 +45,10 @@
                 <h4 class="modal-title"><span>Select Candidate</span></h4>
             </div>
             <div class="modal-body">
-                <span>Candidate already exists in the system.</br> Select a candidate to continue with an existing candidate. </br>Click 'No' to create a new candidate</span>
-                <div id="candidateGridBody"></div>
-            </div>
+              
+             <b style="color:Red;">Candidate already exists in the system. Select a candidate to continue with an existing candidate. Click 'No' to create a new candidate </b> <br/><br />
+                    <div id="candidateGridBody"></div>
+</div>
             <div class="modal-footer">
                 <button  style="width:70px;"  onclick="loadCandidateDetails()" class="btn btn-default">Yes</button>
                 <button type="button" class="btn btn-secondary"  data-dismiss="modal">No</button>
@@ -101,7 +102,7 @@
     function IsInvalidFileType(fileName)
     {
         if (fileName == "") {
-            toastr.error("Browse to upload a valid image file");
+            toastr.error("Browse to upload a valid image file.");
             return true;
         }
         var extension=fileName.split(".")[1].toUpperCase();
@@ -122,7 +123,7 @@
             var fileName=input.files[0].name;
             var fileSize = input.files[0].size;
             if(fileSize>maxSize){
-                toastr.error('file size should be less than 2mb');
+                toastr.error('file size should be less than 2mb.');
                 ClearProfilePhoto();
                 return false;
             }
@@ -346,7 +347,7 @@
                     if (input.is("[name='Position']")) {
                         if ((input.val() != "" && input.val() == "--Select--")) {
                             input.attr("data-experiencevalidation-msg", "Position is required.");
-                            $('span[aria-owns="Position_listbox"]').css('border', '1px solid red');
+                            //$('span[aria-owns="Position_listbox"]').css('border', '1px solid red');
                             return false;
                         }
                         else {
@@ -357,7 +358,7 @@
                     if (input.is("[name='Gender']")) {
                         if ((input.val() != "" && input.val() == "--Select--")) {
                             input.attr("data-experiencevalidation-msg", "Gender is required.");
-                            $('span[aria-owns="Gender_listbox"]').css('border', '1px solid red');
+                            //$('span[aria-owns="Gender_listbox"]').css('border', '1px solid red');
                             return false;
                         }
                         else {

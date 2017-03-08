@@ -48,7 +48,8 @@ namespace Silicus.Ensure.Web.Models
         public string CurrentLocation { get; set; }
 
         [Display(Name = "Date Of birth")]
-        [Required(ErrorMessage = "Date of birth is required!")]
+        [DisplayFormat(DataFormatString = "{0:dd MMM yyyy}")]
+        [Required(ErrorMessage = "Date of birth is required.")]
         public DateTime DOB { get; set; }
 
  
@@ -125,6 +126,7 @@ namespace Silicus.Ensure.Web.Models
 
         public bool IsCandidateReappear { get; set; }
 
+        [DisplayFormat(DataFormatString = "{0:dd MMM yyyy}")]
         public DateTime ApplicationDate { get; set; }
 
 

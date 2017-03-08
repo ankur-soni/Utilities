@@ -162,7 +162,7 @@ namespace Silicus.Ensure.Web.Controllers
         {
             _testSuiteService.TestSuiteActivation();
 
-            var userlist = _userService.GetUserDetails().Where(p => p.Role.ToLower() == RoleName.ToLower()).ToArray().Reverse().ToArray();
+            var userlist = _userService.GetUserDetails().Where(p => p.Role.ToLower() == RoleName.ToLower()).ToArray().Reverse().OrderByDescending(x => x.CandidateStatus.StartsWith("New")).ToArray();
             var currentUserRoles = MvcApplication.getCurrentUserRoles();
             if (currentUserRoles.Count == 1 && currentUserRoles.Contains(Silicus.Ensure.Models.Constants.RoleName.Panel.ToString()))
             {
@@ -181,6 +181,8 @@ namespace Silicus.Ensure.Web.Controllers
                 viewModels[index].IsAdmin = userInRole;
                 viewModels[index].TestSuiteId = testSuitId != null ? testSuitId.TestSuiteId : 0;
             }
+
+           // viewModels = viewModels.OrderByDescending(x => x.CandidateStatus).ToList();
             DataSourceResult result = viewModels.ToDataSourceResult(request);
             return Json(result);
         }
@@ -236,10 +238,12 @@ namespace Silicus.Ensure.Web.Controllers
             if (user.UserId != 0 && !user.IsCandidateReappear)
             {
                 UpdateUserMethod(user);
+                TempData["Success"] = "Candidate details updated successfully.";
             }
             else if (user.IsCandidateReappear)
             {
                 CandidateReappear(user);
+                TempData["Success"] = "Candidate details updated successfully.";
             }
             else
             {
@@ -250,16 +254,13 @@ namespace Silicus.Ensure.Web.Controllers
                 var organizationUserDomainModel = _mappingService.Map<UserViewModel, UserBusinessModel>(user);
                 organizationUserDomainModel.IsDeleted = false;
                 _userService.Add(organizationUserDomainModel);
-                TempData["Success"] = "User created successfully!";
-
+                TempData["Success"] = "Candidate created successfully.";
                 //Send Candidate creation mail to Admin and Recruiter
-                List<string> Receipient = new List<string>() { "Admin", "Recruiter" };
+                List<string> Receipient = new List<string>() { "Admin"};
                 _commonController.SendMailByRoleName("Candidate Created Successfully", "CandidateCreated.cshtml", Receipient, user.FirstName + " " + user.LastName);
 
             }
             ViewBag.UserRoles = RoleManager.Roles.Select(r => new SelectListItem { Text = r.Name, Value = r.Name }).ToList();
-
-
             return RedirectToAction(user.Role.ToLower() == RoleName.Candidate.ToString().ToLower() ? "Candidates" : "Index", controllerName);
         }
 
@@ -283,7 +284,7 @@ namespace Silicus.Ensure.Web.Controllers
                 organizationUserDomainModel.CandidateStatus = user.CandidateStatus;
                 organizationUserDomainModel.IsDeleted = false;
                 _userService.Update(organizationUserDomainModel);
-                TempData["Success"] = "User updated successfully!";
+                TempData["Success"] = "User updated successfully.";
             }
 
         }
@@ -303,7 +304,7 @@ namespace Silicus.Ensure.Web.Controllers
                 organizationUserDomainModel.CandidateStatus = user.CandidateStatus;
                 organizationUserDomainModel.IsDeleted = false;
                 _userService.UpdateUserAndCreateNewApplication(organizationUserDomainModel);
-                TempData["Success"] = "User updated successfully!";
+                TempData["Success"] = "User updated successfully.";
             }
 
         }

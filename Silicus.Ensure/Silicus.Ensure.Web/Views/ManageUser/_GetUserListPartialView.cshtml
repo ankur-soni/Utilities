@@ -51,7 +51,7 @@
                   columns.Bound(c => c.FullName).Title("Name").Width(200);
                   columns.Bound(p => p.RoleName).Title("Role name").Width(50);
                   columns.Bound(p => p.Email).Width(50);
-                  columns.Bound(c => c.RoleId).Title("Action").Width(160).ClientTemplate(" <div> #if(RoleName == 'Recruiter'){#<input type='button' style='width:92px' class='btn btn-primary' onclick='assignType(event)' value='Manage type'>#}else if(RoleName == 'Panel') { #<input type='button' class='btn btn-primary' onclick='assignPanel(event)' value='Manage panel'># }else if(RoleName == 'Candidate') { #<input type='button' value='z'># } #");
+                  columns.Bound(c => c.RoleId).Title("Action").Sortable(false).Width(160).ClientTemplate(" <div> #if(RoleName == 'Recruiter'){#<input type='button' style='width:92px' class='btn btn-primary' onclick='assignType(event)' value='Manage type'>#}else if(RoleName == 'Panel') { #<input type='button' class='btn btn-primary' onclick='assignPanel(event)' value='Manage panel'># }else if(RoleName == 'Candidate') { #<input type='button' value='z'># } #");
               })
             .DataSource(dataSource => dataSource.Ajax().Model(model =>
                                                               {
@@ -73,12 +73,8 @@
 </div>
 
     <script>
-        $(".k-grid-header .k-link").click(function (e) {
-            e.preventDefault();
-            if ($(this).text() === 'Action') {
-                e.stopPropagation();
-            }
-        });
+   
+   
 
         function assignPanel(e) {
             var grid = $("#UserGrids").data("kendoGrid");
@@ -158,12 +154,33 @@
                     grid.dataSource.filter({});
             });
 
-            $("#UserSearchRefresh").click(function (e) {
-                e.preventDefault();
-                var datasource = $("#UserGrids").data("kendoGrid").dataSource;
-                //Clear filters:
-                datasource.filter([]);
+            $("#UserSearchRefresh").click(function (e) {      
+                var value = $("#Role").val();
                 $("#FieldFilter").val('');
+                if (typeof (value) == "undefined" && value == null) {
+                       e.preventDefault();
+                    var datasource = $("#UserGrids").data("kendoGrid").dataSource;
+                    //Clear filters:
+                    datasource.filter([]);
+                    $("#FieldFilter").val('');
+                }
+                else {
+                  
+                    grid = $("#UserGrids").data("kendoGrid");
+                    if (value.length >= 1) {
+                        if (value) {
+                            var filter = { logic: "or", filters: [] };
+                            filter.filters.push({ field: "RoleName", operator: "contains", value: value });
+                            filter.filters.push({ field: "Email", operator: "contains", value: value });
+                            filter.filters.push({ field: "FullName", operator: "contains", value: value });
+                            grid.dataSource.query({ filter: filter });
+                        } else {
+                            grid.dataSource.filter({});
+                        }
+                    }
+                }
+        
+
             });
         });
         function AddNew() {
@@ -193,8 +210,8 @@
             });
         }
 
-        function assignPanelToMeber() {
-            if ($("#PanelIds").val()) {
+        function assignPanelToMeber() {           
+            if ($("#Panel").val()) {
                 $.ajax({
                     url: '/ManageUser/AssignPanelToUser',
                     type: 'post',
@@ -211,12 +228,12 @@
                 });
             }
             else {
-                $("#PanelIds").blur();
+                $("#Panel").blur();
             }
         }
 
-        function assignTypeToMeber() {
-            if ($("#TagIds").val()) {
+        function assignTypeToMeber() {           
+            if ($("#Tag").val()) {
                 $.ajax({
                     url: '/ManageUser/AssignTypeToUser',
                     type: 'post',
@@ -233,11 +250,11 @@
                 });
             }
             else {
-                $("#TagIds").blur();
+                $("#Tag").blur();
             }
         }
 
-        function saveTag() {
+        function saveTag() {           
             if ($("#tagForm").valid()) {
                 $.ajax({
                     type: "POST",
@@ -245,7 +262,7 @@
                     data: $('#tagForm').serialize(),
                     success: function (returndata) {
                         $("#addTagPopup").modal('hide');
-                        var $tagMultiSelect = $('#TagIds').data('kendoMultiSelect');
+                        var $tagMultiSelect = $('#Tag').data('kendoMultiSelect');
                         var selectedValues = $tagMultiSelect.value().slice();
                         var multidata = $tagMultiSelect.dataSource.data();
                         multidata.unshift({ TagName: returndata.TagName, TagId: returndata.TagId });
@@ -273,8 +290,9 @@
                         return true;
                     }
                 }
-            });
-
+            });          
+            $('#TagName').val("");
+            $('#Description').val("");
             $("#addTagPopup").modal('show');
         }
 
@@ -299,11 +317,12 @@
             return isAvailable;
         }
 
-        function AddPanel() {
+        function AddPanel() {         
+            $('#PanelName').val("");
             $("#addPanelPopup").modal('show');
         }
 
-        function savePanel() {
+        function savePanel() {          
             if ($("#panelForm").valid()) {
                 $.ajax({
                     type: "POST",
@@ -311,7 +330,7 @@
                     data: $('#panelForm').serialize(),
                     success: function (returndata) {
                         $("#addPanelPopup").modal('hide');
-                        var $panelMultiSelect = $('#PanelIds').data('kendoMultiSelect');
+                        var $panelMultiSelect = $('#Panel').data('kendoMultiSelect');
                         var multidata = $panelMultiSelect.dataSource.data();
                         multidata.unshift({ PanelName: returndata.PanelName, PanelId: returndata.PanelId });
                         var selectedValues = $panelMultiSelect.value().slice();
@@ -344,7 +363,7 @@
                     <form id="frmAssignPanel"></form>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" style="width:70px;" class="btn btn-default" onclick="assignPanelToMeber()">Save</button>
+                    <button type="button" style="width:70px;" class="btn btn-primary" onclick="assignPanelToMeber()">Save</button>
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
                 </div>
             </div>
@@ -365,7 +384,7 @@
                     <form id="frmAssignType"></form>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" style="width:70px;" class="btn btn-default" onclick="assignTypeToMeber()">Save</button>
+                    <button type="button" style="width:70px;" class="btn btn-primary" onclick="assignTypeToMeber()">Save</button>
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
                 </div>
             </div>
@@ -389,7 +408,7 @@
 
                     </div>
                     <div class="modal-footer">
-                        <button type="button" style="width:70px;" onclick="saveTag()" class="btn btn-default">Save</button>
+                        <button type="button" style="width:70px;" onclick="saveTag()" class="btn btn-primary">Save</button>
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
                     </div>
                 </div>
@@ -414,7 +433,7 @@
                         @Html.Partial("~/Views/Panel/AddPanel.cshtml", new Silicus.Ensure.Models.DataObjects.Panel())
                     </div>
                     <div class="modal-footer">
-                        <button type="button" style="width:70px;" onclick="savePanel()" class="btn btn-default">Save</button>
+                        <button type="button" style="width:70px;" onclick="savePanel()" class="btn btn-primary">Save</button>
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
                     </div>
                 </div>
@@ -422,3 +441,10 @@
             </div>
         </form>
     </div>
+
+<style>
+    #userGrids .k-loading-image {
+        background-image: none;
+    }
+</style>
+

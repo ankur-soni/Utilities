@@ -138,8 +138,11 @@ namespace Silicus.Ensure.Web.Controllers
 
                             var user1 = await UserManager.FindByNameAsync(model.UserName);
 
-                            _logger.Log(string.Format("User Id is: {0}", user1.Id),
-                                LogCategory.Information, GetUserIdentifiableString(model.UserName));
+                            if (user1 != null)
+                            {                                
+                                _logger.Log(string.Format("User Id is: {0}", user1.Id),
+                                    LogCategory.Information, GetUserIdentifiableString(model.UserName));
+                            }
 
                             ModelState.AddModelError("", "Invalid login attempt.");
                             return View(model);

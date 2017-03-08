@@ -11,15 +11,15 @@
 {
     @(Html.Kendo().Grid<Silicus.Ensure.Web.Models.TestSuiteViewModel>().Name("testSuiteGrids")
                      .Columns(columns =>
-                          {
-                              columns.Bound(p => p.TestSuiteId).ClientTemplate("<input type='checkbox' #if(IsAssigned){# checked='checked' #}# class='check' id='chkHeader' value='#=TestSuiteId#'/>").Title("");
-                              columns.Bound(p => p.TestSuiteName).Width(100);
-                              columns.Bound(p => p.Duration).Width(50);
-                              columns.Bound(p => p.PositionName).Width(50);
-                              columns.Bound(p => p.PrimaryTagNames).Width(200);
-                              columns.Bound(p => p.Userid).ClientTemplate("<input type='text' class='textu' id='txtUser' value='#=Userid#'/>").Hidden();
-                              //columns.Bound("").ClientTemplate("<a class='k-button k-button-icontext k-grid-add' href='\\#' data-toggle='modal' data-target='\\#myModal'><span class='k-icon k-add'></span>Activate Test Suite</a><a class='k-button k-button-icontext k-grid-add' href='" + Url.Action("TestSuiteCopy", "Admin") + "?testSuiteId=#=TestSuiteId#'><span class='k-icon k-add'></span>Copy</a><a class='k-button k-button-icontext k-grid-edit' href='" + Url.Action("TestSuiteAdd", "Admin") + "?testSuiteId=#=TestSuiteId#'><span class='k-icon k-edit'></span>Edit</a><a class='k-button k-button-icontext k-grid-delete' href='" + Url.Action("TestSuiteDelete", "Admin") + "?testSuiteId=#=TestSuiteId#'><span class='k-icon k-delete'></span>Delete</a>");
-                          })
+                     {
+                         columns.Bound(p => p.TestSuiteId).ClientTemplate("<input type='checkbox' #if(IsAssigned){# checked='checked' #}# class='check' id='chkHeader' value='#=TestSuiteId#'/>").Title("");
+                         columns.Bound(p => p.TestSuiteName).Width(100);
+                         columns.Bound(p => p.Duration).Width(50);
+                         columns.Bound(p => p.PositionName).Width(50);
+                         columns.Bound(p => p.PrimaryTagNames).Width(200);
+                         columns.Bound(p => p.Userid).ClientTemplate("<input type='text' class='textu' id='txtUser' value='#=Userid#'/>").Hidden();
+                         //columns.Bound("").ClientTemplate("<a class='k-button k-button-icontext k-grid-add' href='\\#' data-toggle='modal' data-target='\\#myModal'><span class='k-icon k-add'></span>Activate Test Suite</a><a class='k-button k-button-icontext k-grid-add' href='" + Url.Action("TestSuiteCopy", "Admin") + "?testSuiteId=#=TestSuiteId#'><span class='k-icon k-add'></span>Copy</a><a class='k-button k-button-icontext k-grid-edit' href='" + Url.Action("TestSuiteAdd", "Admin") + "?testSuiteId=#=TestSuiteId#'><span class='k-icon k-edit'></span>Edit</a><a class='k-button k-button-icontext k-grid-delete' href='" + Url.Action("TestSuiteDelete", "Admin") + "?testSuiteId=#=TestSuiteId#'><span class='k-icon k-delete'></span>Delete</a>");
+                     })
                               .DataSource(dataSource => dataSource
                                   .Ajax()
                                   .Model(model =>
@@ -29,9 +29,34 @@
                                   })
                                           .Read(read => read.Action("GetTestSuiteDetails", "Admin", new { UserId = @ViewBag.CurrentUser }))
                                   .PageSize(10)
+                                  .ServerOperation(false)
                               )
                                   .Pageable(x => x.PageSizes(true))
+
                           .Sortable()
+                           .ToolBar(toolbar =>
+                           {
+                           toolbar.Template(@<text>
+        <div class="toolbar">
+            <div class="row">
+                <div class="col-sm-12 M-B15">
+                    <div class="col-sm-4 M-T15">
+                        <div class="input-group">
+                            <span class="input-group-addon"><span class="glyphicon glyphicon-search" aria-hidden="true"></span></span>
+                            <input type="text" class="form-control" id='TestSuiteFieldFilter' placeholder="Search" style="height: 38px;">
+                            <span class="input-group-btn">
+                                <button id="TestSuiteSearch" class="btn btn-default" type="button" style="height:20px!important;border:1px solid #0070B9!important"><span class="glyphicon glyphicon-refresh" aria-hidden="true"></span></button>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+
+
+            </div>
+
+        </div>
+                        </text>);
+                           })
 
     )
 
@@ -44,5 +69,35 @@
         var v = $(this).is(":checked");
         $("input.check", "#testSuiteGrids").prop("checked", false);
         $(this).prop("checked", v);
+    });
+    $(document).ready(function () {
+
+
+
+        $("#TestSuiteFieldFilter").keyup(function () {
+
+            var value = $("#TestSuiteFieldFilter").val();
+            grid = $("#testSuiteGrids").data("kendoGrid");
+            var pageSize = grid.dataSource.pageSize();
+            if (value.length > 0) {
+                if (value) {
+                    grid.dataSource.filter({ field: "TestSuiteName", operator: "contains", value: value });
+                    grid.dataSource.sort({ field: "TestSuiteName", dir: "asc" });
+                    grid.dataSource.pageSize(pageSize);
+                } else {
+                    grid.dataSource.filter({});
+                }
+            }
+            else if (value == "")
+                grid.dataSource.filter({});
+        });
+
+        $("#TestSuiteSearch").click(function (e) {
+            e.preventDefault();
+            var datasource = $("#testSuiteGrids").data("kendoGrid").dataSource;
+            //Clear filters:
+            datasource.filter([]);
+            $("#TestSuiteFieldFilter").val('');
+        });
     });
 </script>

@@ -17,18 +17,14 @@ namespace Silicus.Ensure.Web.Controllers
     [Authorize]
     public class ReviewerController : Controller
     {
-        private readonly IEmailService _emailService;
-        private readonly IQuestionService _questionService;
         private readonly IMappingService _mappingService;
         private readonly IUserService _userService;
         private readonly ITestSuiteService _testSuiteService;
         private readonly Silicus.UtilityContainer.Services.Interfaces.IUserService _containerUserService;
         private readonly CommonController _commonController;
 
-        public ReviewerController(IEmailService emailService, IQuestionService questionService, MappingService mappingService, IUserService userService, ITestSuiteService testSuiteService, Silicus.UtilityContainer.Services.Interfaces.IUserService containerUserService, CommonController commonController)
+        public ReviewerController(IEmailService emailService, IQuestionService questionService, MappingService mappingService, IUserService userService, ITestSuiteService testSuiteService, UtilityContainer.Services.Interfaces.IUserService containerUserService, CommonController commonController)
         {
-            _emailService = emailService;
-            _questionService = questionService;
             _mappingService = mappingService;
             _userService = userService;
             _testSuiteService = testSuiteService;
@@ -43,7 +39,7 @@ namespace Silicus.Ensure.Web.Controllers
         }
         public ActionResult LoadQuestion(int userTestSuiteId)
         {
-            ReviewerQuestionViewModel testSuiteQuestionModel = ReviewTestSuiteQuestion(null, userTestSuiteId, (int)QuestionType.Practical);
+            ReviewerQuestionViewModel testSuiteQuestionModel = ReviewTestSuiteQuestion(null, userTestSuiteId, (int)QuestionType.Objective);
 
             return PartialView("_ReviewerViewQuestion", testSuiteQuestionModel);
         }
@@ -139,7 +135,7 @@ namespace Silicus.Ensure.Web.Controllers
             _testSuiteService.UpdateUserTestSuite(userTestSuitedetails);
 
             List<string> Receipient = new List<string>() { "Admin", "Panel" };
-            _commonController.SendMailByRoleName("Evaluation is submitted for " + user.FirstName + " " + user.LastName + " Successfully", "EvaluationSubmittedMail.cshtml", Receipient, user.FirstName + " " + user.LastName, candidateResultViewmodel.Status.ToString());
+            _commonController.SendMailByRoleName("Evaluation is submitted for " + user.FirstName + " " + user.LastName + "", "EvaluationSubmittedMail.cshtml", Receipient, user.FirstName + " " + user.LastName, candidateResultViewmodel.Status.ToString());
 
             return Json(true);
         }
@@ -238,14 +234,14 @@ namespace Silicus.Ensure.Web.Controllers
         public ActionResult LoadPreviewQuestion(int userId, int testSuiteId)
         {
             int applicationDetailsId = _userService.GetUserLastestApplicationId(userId);
-            var testSuiteQuestionModel = PreviewTestSuiteQuestion(null, testSuiteId, (int)QuestionType.Practical, applicationDetailsId);
+            var testSuiteQuestionModel = PreviewTestSuiteQuestion(null, testSuiteId, (int)QuestionType.Objective, applicationDetailsId);
             return PartialView("_partialViewQuestion", testSuiteQuestionModel);
         }
 
 
         public ActionResult PreviewQuestion(int testSuiteId)
         {
-            var testSuiteQuestionModel = PreviewTestSuits(null, testSuiteId, (int)QuestionType.Practical);
+            var testSuiteQuestionModel = PreviewTestSuits(null, testSuiteId, (int)QuestionType.Objective);
             return PartialView("_partialViewQuestion", testSuiteQuestionModel);
         }
 
