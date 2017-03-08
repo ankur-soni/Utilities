@@ -230,7 +230,7 @@ namespace Silicus.Ensure.Web.Controllers
                 organizationUserDomainModel.TestStatus = user.TestStatus;
                 organizationUserDomainModel.IsDeleted = false;
                 _userService.Update(organizationUserDomainModel);
-                TempData["Success"] = "User updated successfully!";
+                TempData["Success"] = "User updated successfully.";
             }
 
         }

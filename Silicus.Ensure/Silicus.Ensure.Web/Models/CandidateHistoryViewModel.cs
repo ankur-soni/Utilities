@@ -49,7 +49,7 @@ namespace Silicus.Ensure.Web.Models
 
         [Display(Name = "Date Of birth")]
         [DisplayFormat(DataFormatString = "{0:dd MMM yyyy}")]
-        [Required(ErrorMessage = "Date of birth is required!")]
+        [Required(ErrorMessage = "Date of birth is required.")]
         public DateTime DOB { get; set; }
 
  
