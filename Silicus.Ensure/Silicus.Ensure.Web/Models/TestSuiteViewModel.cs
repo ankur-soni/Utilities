@@ -56,10 +56,10 @@ namespace Silicus.Ensure.Web.Models
         [Display(Name = "Project name")]
         public string ProjectName { get; set; }
 
-        [Required(ErrorMessage = "Experience (Years) is required.")]
+        [Required(ErrorMessage = "Experience in Years are required.")]
         public int? FromExperience { get; set; }
 
-        [Required(ErrorMessage = "Experience (Months) is required.")]
+        [Required(ErrorMessage = "Experience in Months are required.")]
         public int? ToExperience { get; set; }
 
         [Range(1, 100, ErrorMessage = "Enter numbers from 1-100")]

@@ -174,7 +174,7 @@ namespace Silicus.Ensure.Web.Controllers
             if (users != null)
             {
                 var userDetails = _userService.GetUserById(users.UserId);
-                _commonController.SendMailByRoleName("Online Test Submitted For " + userDetails.FirstName + " " + userDetails.LastName + "", "CandidateTestSubmitted.cshtml", Receipient, userDetails.FirstName + " " + userDetails.LastName);
+             //   _commonController.SendMailByRoleName("Online Test Submitted For " + userDetails.FirstName + " " + userDetails.LastName + "", "CandidateTestSubmitted.cshtml", Receipient, userDetails.FirstName + " " + userDetails.LastName);
             }
             return RedirectToAction("LogOff", "CandidateAccount");
         }

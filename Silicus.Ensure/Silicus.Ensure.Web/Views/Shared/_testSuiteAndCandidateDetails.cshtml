@@ -134,6 +134,7 @@
 
 
     function TestDurationComplete() {
+        showCustomLoader();
         var answer = GetAnswer();
         var testSuiteId = $("#TestSuiteId").val();
         var userTestSuiteId = $("#UserTestSuiteId").val();
@@ -141,6 +142,7 @@
         var userId = $("#UserId").val();
         testDurationComplete = true;
         window.location.href = '/Candidate/OnSubmitTest?testSuiteId=' + testSuiteId + '&userTestSuiteId=' + userTestSuiteId + '&userTestDetailId=' + userTestDetailId + '&userId=' + userId + '&answer=' + answer;
+        $(".loader-overlay").hide();
     }
 
     function ProgressBar() {
