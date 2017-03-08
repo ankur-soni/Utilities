@@ -153,7 +153,7 @@
 
 
     $(function () {
-        $("#Savebtn").bind("click", function () {
+        $("#Savebtn").bind("click", function () {        
             showCustomLoader();
             var chkCheck = false;
             $('input:checkbox').each(function () {
@@ -176,10 +176,12 @@
                     contenttype: "application/json; charset=utf-8",
                     success: function (returndata) {
                         if (returndata == 1) {
+                            $('#myModal').fadeOut();
+                            debugger;
+                          
+                            ShowMessage("Test suite assigned successfully.", 1);
                             $('#userGrids').data('kendoGrid').dataSource.read();
                             $('#userGrids').data('kendoGrid').refresh();
-                            ShowMessage("Test suite assigned successfully.", 1);
-                            $('#myModal').fadeOut();
                             $(".loader-overlay").hide();
                         }
                     },

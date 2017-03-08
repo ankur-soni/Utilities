@@ -508,8 +508,16 @@
                                 $("#errorDiv").fadeOut(10000);
                             }
 
+                            $('#QuestionType').change(function() {
+                            
+                                debugger;
+                                var skillTag = $('#SkillTag').data("kendoMultiSelect");
+                                skillTag.value([]);                            
+                            });
+
                             // Question Type Change - > Set default values of controls.
                             function QuestionTypeChange() {
+                              
                                 var value = $("#QuestionType").val();
                                 if (value == "2") {
                                     $("#practical").hide();
@@ -535,8 +543,7 @@
                                 //var correctAnswer = $('#CorrectAnswer').data("kendoMultiSelect");
                                 //correctAnswer.value([]);
                                 $(".ansCheckBox").prop("checked",false);
-                                var skillTag = $('#SkillTag').data("kendoMultiSelect");
-                                skillTag.value([]);
+                              
                                 var answerType = $("#AnswerType");
                                 answerType.val("1");
                             }
@@ -628,7 +635,7 @@
                                         type: "POST",
                                         url: '/Tag/Save',
                                         data: $('#tagForm').serialize(),
-                                        success: function (returndata) {
+                                        success: function (returndata) {                                          
                                             $("#addTagPopup").modal('hide');
                                             var $tagMultiSelect=$('#SkillTag').data('kendoMultiSelect');
                                             var multidata=$tagMultiSelect.dataSource.data();
