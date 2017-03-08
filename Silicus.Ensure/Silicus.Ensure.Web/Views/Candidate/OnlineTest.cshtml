@@ -154,7 +154,7 @@
                                 foreach (var question in Model.NavigationDetails.Objective)
                                 {
                                     <li>
-                                        <a class="nav-link questionView contact QuestionCheckbox @QuestionColor(question)" id="@question.QuestionId" href="#"> @Html.Raw(@question.QuestionDescription)</a>
+                                        <a class="nav-link questionView contact QuestionCheckbox @QuestionColor(question)" id="@question.QuestionId" href="#">@Html.Raw(@question.QuestionDescription)</a>
                                     </li>
                                 }
                             }
