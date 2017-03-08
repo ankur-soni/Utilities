@@ -279,12 +279,16 @@ else
         $("#ReviwerMark").kendoValidator();
         $("#btnSubmitTestOK").hide();
         var userTestSuiteId = $("#UserTestSuiteId").val();
-        var url = "/Reviewer/LoadQuestion?userTestSuiteId=";
-        $('#QuestionDetails').load(url + userTestSuiteId, disableControls);
+        LoadFirstQuestion(userTestSuiteId, disableControls);
         $(document).on("click", "#btnSubmitEvalution", submitEvalution);
         $("#SubmitCandidateResult").on("click", submitCandidateResult);
         $('.QuestionCheckbox').on('click', QuestionCheckboxClicked);       
     });
+
+    function LoadFirstQuestion(userTestSuiteId, disableControls) {
+        var url = "/Reviewer/LoadQuestion?userTestSuiteId=";
+        $('#QuestionDetails').load(url + userTestSuiteId, disableControls);
+    }
 
     function disableControls() {
         var status = $("#CandidateStatus").val();
@@ -392,6 +396,44 @@ else
         });
     }
 
+    function UpdateQuestionBeforeSubmit(questionId) {
+        var answer = GetAnswer();
+        var userTestSuiteId = $("#UserTestSuiteId").val();
+        var userTestDetailId = $("#UserTestDetailId").val();
+        var questionType = $("#QuestionType").val();
+        var candidateId = $("#UserId").val();
+        var comment = $("#ReviewerComment").val();
+        var marks = $("#ReviwerMark").val();
+        var reviewerQuestionDetails = { QuestionId: questionId, UserTestSuiteId: userTestSuiteId, UserTestDetailId: userTestDetailId, Comment: comment, Marks: marks };
+        $.ajax({
+            url: "/Reviewer/UpdateReviewAndGetQuestionDetails",
+            cache: false,
+            dataType: "html",
+            data: reviewerQuestionDetails,
+            success: function (data) {
+                updateTestSummary();
+                disableControls();
+                var reviewerQuestionDetails = { QuestionId: questionId, UserTestSuiteId: userTestSuiteId, UserTestDetailId: userTestDetailId, Comment: comment, Marks: marks };
+                $.ajax({
+                    type: "POST",
+                    url: "/Reviewer/SumbmitTestReview",
+                    contentType: "application/json; charset=utf-8",
+                    data: JSON.stringify(reviewerQuestionDetails),
+                    dataType: "json",
+                    success: function (data) {
+                        if (data)
+                            $("#testresultPopup").modal('show');
+                        else {
+                            $("#testresultPopup").modal('hide');
+                            ShowSweetAlertWithoutCancel("Warning!", "Please give appropriate comments and marks for all practical questions before submitting evaluation.", "warning");
+                        }
+                    }
+                });
+              
+            }
+        });
+    }
+
     function updateTestSummary() {
         var userTestSuiteId = $("#UserTestSuiteId").val();
         $.ajax({
@@ -449,31 +491,8 @@ else
     }
 
     function submitEvalution() {
-        var answer = GetAnswer();
-        var userTestSuiteId = $("#UserTestSuiteId").val();
-        var userTestDetailId = $("#UserTestDetailId").val();
-        var questionType = $("#QuestionType").val();
-        var candidateId = $("#UserId").val();
-        var comment = $("#ReviewerComment").val();
-        var marks = $("#ReviwerMark").val();
         var questionId = $(this).find('input').attr('id');
-        var reviewerQuestionDetails = { QuestionId: questionId, UserTestSuiteId: userTestSuiteId, UserTestDetailId: userTestDetailId, Comment: comment, Marks: marks };
-        $.ajax({
-            type: "POST",
-            url: "/Reviewer/SumbmitTestReview",
-            contentType: "application/json; charset=utf-8",
-            data: JSON.stringify(reviewerQuestionDetails),
-            dataType: "json",
-            success: function (data) {
-                if (data)
-                    $("#testresultPopup").modal('show');
-                else {
-                    $("#testresultPopup").modal('hide');
-                    ShowSweetAlertWithoutCancel("Warning!", "Please Review and Mark all Question Before Submit evaluation !", "warning");
-                }
-            }
-        });
-
+        UpdateQuestionBeforeSubmit(questionId);
     }
 
     function submitCandidateResult() {

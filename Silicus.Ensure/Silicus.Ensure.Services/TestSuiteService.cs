@@ -137,10 +137,21 @@ namespace Silicus.Ensure.Services
 
         public bool IsAllQuestionEvaluated(int? userTestSuitId)
         {
+
             if (userTestSuitId != null)
             {
-                var testDetails = _context.Query<UserTestDetails>().Where(x => x.UserTestSuite.UserTestSuiteId == userTestSuitId);
-                var isAllQueustionReviewed = !testDetails.Any(y => y.Mark == null);
+                //var testDetails = _context.Query<UserTestDetails>().Where(x => x.UserTestSuite.UserTestSuiteId == userTestSuitId);
+                var testDetails = from a in _context.Query<UserTestDetails>()
+                                               .Where(x => x.UserTestSuite.UserTestSuiteId == userTestSuitId)
+                                  join b in _context.Query<Question>()
+                                  on a.QuestionId equals b.Id
+                                  where b.Id == a.QuestionId && b.QuestionType == (int)QuestionType.Practical
+                                  select new TestDetailsBusinessModel
+                                  {
+                                      ReviwerMark = a.Mark,
+                                      Comment = a.ReviwerComment
+                                  };
+                var isAllQueustionReviewed = testDetails==null || !testDetails.Any(y => y.ReviwerMark == null || y.Comment == null || y.Comment.Trim() == "");
                 return isAllQueustionReviewed;
             }
             return false;
