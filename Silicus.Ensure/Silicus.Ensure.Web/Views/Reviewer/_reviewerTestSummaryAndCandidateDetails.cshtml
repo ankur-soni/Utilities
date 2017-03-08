@@ -14,7 +14,7 @@
             @Html.Partial("_TestSummary", Model.TestSummary)
 
             <div class="row M-T15">
-                <div class="col-sm-12 candidate-score-alert">Candidate score  <span id="totalObtainedMarks">@Model.TestSummary.TotalObtainedMarks</span> out of <span id="totalMaximumMarks">@Model.TestSummary.TotalMaximumMarks</span></div>
+                <div class="col-sm-12 candidate-score-alert">@Model.CandidateInfo.Name score  <span id="totalObtainedMarks">@Model.TestSummary.TotalObtainedMarks</span> out of <span id="totalMaximumMarks">@Model.TestSummary.TotalMaximumMarks</span></div>
             </div>
             <div class="row">
                 @{

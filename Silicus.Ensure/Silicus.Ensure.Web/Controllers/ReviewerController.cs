@@ -75,6 +75,11 @@ namespace Silicus.Ensure.Web.Controllers
             CandidateStatus status;
             if (Enum.TryParse(user.CandidateStatus, out status))
             {
+                if (user.CandidateStatus == CandidateStatus.TestSubmitted.ToString())
+                {
+                    user.CandidateStatus= CandidateStatus.UnderEvaluation.ToString();
+                    _userService.Update(user);
+                }
                 testSuiteCandidateModel.CandidateStatus = status;
             }
             return View(testSuiteCandidateModel);

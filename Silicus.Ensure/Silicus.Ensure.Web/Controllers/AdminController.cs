@@ -494,7 +494,7 @@ namespace Silicus.Ensure.Web.Controllers
         public ActionResult AssignSuite(int SuiteId, int UserId, int IsReAssign = 0)
         {
             string mailsubject = "";
-            var updateCurrentUsers = _userService.GetUserDetails().Where(model => model.UserId == UserId).FirstOrDefault();
+            var updateCurrentUsers = _userService.GetUserById(UserId);
             if (updateCurrentUsers != null)
             {
                 if (SuiteId > 0 && UserId > 0)
@@ -519,9 +519,9 @@ namespace Silicus.Ensure.Web.Controllers
                     var selectUser = _userService.GetUserDetails().Where(model => model.UserId == UserId).FirstOrDefault();
                     selectUser.TestStatus = Convert.ToString(CandidateStatus.TestAssigned);
                     selectUser.CandidateStatus = Convert.ToString(CandidateStatus.TestAssigned);
-                    // selectUser.TestSuiteId = SuiteId;
+                  
                     _userService.Update(selectUser);
-                    //Send Candidate creation mail to Admin and Recruiter
+                  
                     List<string> Receipient = new List<string>() { "Admin", "Panel" };
 
                     if (IsReAssign == 0)
