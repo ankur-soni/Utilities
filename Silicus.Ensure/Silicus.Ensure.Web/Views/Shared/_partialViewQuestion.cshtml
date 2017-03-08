@@ -29,12 +29,12 @@
     <input type="hidden" value="@Model.QuestionId" id="QuestionNumber" />
     <input type="hidden" value="@Model.TestDetailId" id="UserTestDetailId" />
     <input type="hidden" value="@Model.AnswerType" id="AnswerType" />
-    <div id="questionDiv">
+    <div >
         @if (Model.QuestionType == 1 && Model.AnswerType == 1)
         {
             if (string.IsNullOrEmpty(Model.Answer))
             {
-                <div class="col-sm-12" style="padding: 20px 25px 20px 10px;">
+                <div class="col-sm-12 questionDiv" i style="padding: 20px 25px 20px 10px;">
                     <ul style="list-style:none;">
                         <li>
                             <div class="radio radio-info">
@@ -96,7 +96,7 @@
             }
             else
             {
-                <div class="col-sm-12" style="padding: 20px 25px 20px 10px;">
+                <div class="col-sm-12 questionDiv" style="padding: 20px 25px 20px 10px;">
 
                     <ul style="list-style:none;">
                         <li>
@@ -227,7 +227,7 @@
 
             if (string.IsNullOrEmpty(Model.Answer))
             {
-                <div class="col-sm-12" style="padding: 20px 25px 20px 32px;">
+                <div class="col-sm-12 questionDiv" style="padding: 20px 25px 20px 32px;">
                     <ul style="list-style:none;">
                         <li>
                             <div class="checkbox checkbox-info">
@@ -289,7 +289,7 @@
             }
             else
             {
-                <div class="col-sm-12" style="padding: 20px 25px 20px 32px;">
+                <div class="col-sm-12 questionDiv" style="padding: 20px 25px 20px 32px;">
                     <ul style="list-style:none;">
                         <li>
                             <div class="checkbox checkbox-info">
@@ -359,7 +359,7 @@
 
         else if (Model.QuestionType == 2)
         {
-        <div class="col-sm-12" id="editorDiv" style="padding: 20px 50px 30px 50px;">
+        <div class="col-sm-12 questionDiv" id="editorDiv" style="padding: 20px 50px 30px 50px;">
             @Html.Kendo().EditorFor(m => m.Answer).Name("PracticalAnswer").Encode(true).Value(Model.Answer)
         </div>
         }
