@@ -156,6 +156,7 @@
 
             $("#UserSearchRefresh").click(function (e) {      
                 var value = $("#Role").val();
+                $("#FieldFilter").val('');
                 if (typeof (value) == "undefined" && value == null) {
                        e.preventDefault();
                     var datasource = $("#UserGrids").data("kendoGrid").dataSource;
@@ -209,8 +210,8 @@
             });
         }
 
-        function assignPanelToMeber() {
-            if ($("#PanelIds").val()) {
+        function assignPanelToMeber() {           
+            if ($("#Panel").val()) {
                 $.ajax({
                     url: '/ManageUser/AssignPanelToUser',
                     type: 'post',
@@ -227,12 +228,12 @@
                 });
             }
             else {
-                $("#PanelIds").blur();
+                $("#Panel").blur();
             }
         }
 
-        function assignTypeToMeber() {
-            if ($("#TagIds").val()) {
+        function assignTypeToMeber() {           
+            if ($("#Tag").val()) {
                 $.ajax({
                     url: '/ManageUser/AssignTypeToUser',
                     type: 'post',
@@ -249,11 +250,11 @@
                 });
             }
             else {
-                $("#TagIds").blur();
+                $("#Tag").blur();
             }
         }
 
-        function saveTag() {
+        function saveTag() {           
             if ($("#tagForm").valid()) {
                 $.ajax({
                     type: "POST",
@@ -261,7 +262,7 @@
                     data: $('#tagForm').serialize(),
                     success: function (returndata) {
                         $("#addTagPopup").modal('hide');
-                        var $tagMultiSelect = $('#TagIds').data('kendoMultiSelect');
+                        var $tagMultiSelect = $('#Tag').data('kendoMultiSelect');
                         var selectedValues = $tagMultiSelect.value().slice();
                         var multidata = $tagMultiSelect.dataSource.data();
                         multidata.unshift({ TagName: returndata.TagName, TagId: returndata.TagId });
@@ -321,7 +322,7 @@
             $("#addPanelPopup").modal('show');
         }
 
-        function savePanel() {
+        function savePanel() {          
             if ($("#panelForm").valid()) {
                 $.ajax({
                     type: "POST",
@@ -329,7 +330,7 @@
                     data: $('#panelForm').serialize(),
                     success: function (returndata) {
                         $("#addPanelPopup").modal('hide');
-                        var $panelMultiSelect = $('#PanelIds').data('kendoMultiSelect');
+                        var $panelMultiSelect = $('#Panel').data('kendoMultiSelect');
                         var multidata = $panelMultiSelect.dataSource.data();
                         multidata.unshift({ PanelName: returndata.PanelName, PanelId: returndata.PanelId });
                         var selectedValues = $panelMultiSelect.value().slice();

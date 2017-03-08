@@ -11,7 +11,7 @@
         var message = TempData["Success"] as string;
         <script type="text/javascript">
             var jsMessage='@Html.Raw(@message)';
-            toastr.success(jsMessage);
+            ShowMessage(jsMessage,true);
         </script>
     }
 }

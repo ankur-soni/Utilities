@@ -11733,3 +11733,29 @@ base-chart.chart {
 .label-pill {
     border-radius: 1rem !important;
 }
+
+/*Loader css - Start*/
+.loader {
+  border: 10px solid #f3f3f3;
+  border-radius: 50%;
+  border-top: 10px solid #337ab7;
+  width: 60px;
+  height: 60px;
+  -webkit-animation: spin 2s linear infinite;
+  animation: spin 2s linear infinite;
+  top:40%;
+  position:relative;
+  margin:0 auto;
+}
+
+.loader-overlay {
+    position: relative;
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    background: rgba(0,0,0,.8);
+    z-index:999999;
+}
+/*Loader css - End*/

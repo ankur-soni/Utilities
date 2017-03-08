@@ -382,15 +382,15 @@ else
     }
 
     function OnSubmitTestOK() {
+        showCustomLoader();    
         var answer = GetAnswer();
         var testSuiteId = $("#TestSuiteId").val();
         var userTestSuiteId = $("#UserTestSuiteId").val();
         var userTestDetailId = $("#UserTestDetailId").val();
         var userId = $("#UserId").val();
         window.onbeforeunload = null;
-        debugger;
+        
         window.location.href = '/Candidate/OnSubmitTest?testSuiteId=' + testSuiteId + '&userTestSuiteId=' + userTestSuiteId + '&userTestDetailId=' + userTestDetailId + '&userId=' + userId + '&answer=' + answer;
-        $(".loader-overlay").hide();
     }
 
     function getCurrentQuestionStatus() {

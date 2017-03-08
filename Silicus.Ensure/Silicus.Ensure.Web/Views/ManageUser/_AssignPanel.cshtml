@@ -43,7 +43,7 @@
             @(Html.Kendo().MultiSelectFor(m => m.Panel)
                                     .DataTextField("PanelName")
                                     .DataValueField("PanelId")
-                                    .Placeholder("Select Panels...")
+                                    .Placeholder("--Select--")
                                             .DataSource(source =>
                                             {
                                                 source.Read(read =>
@@ -58,7 +58,7 @@
             @Html.ValidationMessageFor(model => model.Panel, "", new { @class = "text-danger" })
         </div>
         <div class="col-md-2" >
-            <a style="padding:2px 12px;" class="themeColorBlue btn btn-primary" href="#" onclick="AddPanel();">Add Panel</a>
+            <a style="padding:2px 12px;" class="themeColorBlue btn btn-primary" href="#" onclick="AddPanel();">Add panel</a>
         </div>
     </div>
 
