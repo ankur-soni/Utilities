@@ -352,45 +352,8 @@
                                                     }
                                                 </div>
                                                 <span class="k-invalid-msg" data-for="files"></span>
-                                                @*<div id="example">
-                                                    <div>
-                                                        <div class="demo-section k-content">
-                                                            <input name="files" id="files" type="file" />
-                                                        </div>
-                                                    </div>
-
-                                                    <script>
-                                                        $(document).ready(function () {
-                                                            $("#files").kendoUpload({
-                                                                async: {
-                                                                    saveUrl: "save",
-                                                                    removeUrl: "remove",
-                                                                    autoUpload: true
-                                                                }
-                                                            });
-                                                        });
-                                                    </script>
-                                                </div>*@
                                                 </div>
                                         </div>
-                                        @*<div class="col-md-6">
-                                                <div class="col-md-6">
-                                                    <label for="file">Upload Image</label>
-                                                </div>
-                                                <div class="col-md-6">
-                                                    @if (!string.IsNullOrWhiteSpace(Model.ProfilePhotoFilePath))
-                                                    {
-                                                        <img id="ProfilePhotoImage" src="@System.Configuration.ConfigurationManager.AppSettings["ServerName"]@Html.Raw(Url.Content(Model.ProfilePhotoFilePath))" style="height:100px;width:100px">
-                                                        <span id="RemoveProfilePhoto" class="deleteupload" title="Delete"><a onclick="RemoveProfilePhoto()"><i class="fa fa-close" aria-hidden="true"></i></a></span>
-                                                        <input type="file" name="ProfilePhotofile" id="ProfilePhotofile" data-max-size="2097152" style="width: 100%; display:none" accept='image/*' />
-                                                    }
-                                                    else
-                                                    {
-                                                        <img id="ProfilePhotoImage" src="" style="height:100px;width:100px;display:none">
-                                                        <input type="file" name="ProfilePhotofile" id="ProfilePhotofile" data-max-size="2097152" style="width: 100%;" accept='image/*' />
-                                                    }
-                                                </div>
-                                            </div>*@
                                     </div>
                                 </div>
                                 <div class="row" style="margin-bottom:10px!important">

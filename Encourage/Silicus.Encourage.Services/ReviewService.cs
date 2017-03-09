@@ -27,7 +27,7 @@ namespace Silicus.Encourage.Services
 
         public Review GetSubmitedReviewByDate(int month, int year)
         {
-         return   _encourageDatabaseContext.Query<Review>().FirstOrDefault(r => r.IsSubmited == true && r.ReviewDate.Value.Month ==
+            return   _encourageDatabaseContext.Query<Review>().FirstOrDefault(r => r.IsSubmited == true && r.ReviewDate.Value.Month == month && r.ReviewDate.Value.Year == year);
         }
 
         public void UpdateReview(Review model)
