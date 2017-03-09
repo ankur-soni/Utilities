@@ -251,31 +251,22 @@ namespace Silicus.EncourageWithAzureAd.Web.Controllers
                 var customDate = _customDateService.GetCustomDate(currentNomination.AwardId);
                 //var recordToReject = _encourageDatabaseContext.Query<Review>().FirstOrDefault(r => r.IsSubmited == true && r.ReviewDate.Value.Month ==
                 //                                                                              customDate.Month && r.ReviewDate.Value.Year == customDate.Year);
-                var recordToReject = _reviewService.GetSubmitedReviewByDate(customDate.Month, customDate.Year);
+                var recordToReject = _reviewService.GetSubmitedReviewByDate( item.NominationId, customDate.Month, customDate.Year);
                 if (recordToReject != null)
                 {
                     rejectAllRviews.Add(recordToReject);
-                    
                 }
-
             }
+
             var shortlist = _encourageDatabaseContext.Query<Shortlist>().Where(s => s.IsWinner == true);
             foreach (var shortListedEmployee in shortlist)
             {
                 rejectAllRviews.RemoveAll(r => r.NominationId == shortListedEmployee.NominationId);
             }
 
-            foreach (var item in rejectAllRviews)
+            foreach (var nominationIdToreject in rejectAllRviews.Select(d=>d.NominationId).Distinct())
             {
-                var Comments = _encourageDatabaseContext.Query<ReviewerComment>().Where(rc => rc.ReviewId == item.Id).ToList();
-
-                foreach (var reviewComment in Comments)
-                {
-                    _encourageDatabaseContext.Delete<ReviewerComment>(reviewComment);
-                }
-
-                _encourageDatabaseContext.Delete<Review>(item);
-                _resultService.UnShortlistNomination(item.NominationId);
+                _resultService.UnShortlistNomination(nominationIdToreject);
             }
 
             return RedirectToAction("Index", "Home");

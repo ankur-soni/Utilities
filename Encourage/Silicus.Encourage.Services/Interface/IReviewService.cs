@@ -20,6 +20,6 @@ namespace Silicus.Encourage.Services.Interface
         List<Models.Configuration> GetProcessesToLock(int awardId);
         List<Models.Configuration> GetProcessesToUnlock(int awardId);
         Configuration GetConfigurationById(int id);
-        Review GetSubmitedReviewByDate(int month, int year);
+        Review GetSubmitedReviewByDate(int nominationId, int month, int year);
     }
 }
