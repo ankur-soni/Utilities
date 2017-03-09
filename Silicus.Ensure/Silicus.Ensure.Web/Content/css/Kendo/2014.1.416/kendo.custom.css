@@ -1414,17 +1414,18 @@ html .km-pane-wrapper .km-widget,
 .k-dropdown-wrap.k-state-default {
   background-image: none;
   background-position: 50% 50%;
-  background-color: #fff;
-  border-color: #f0f0f0;
+  background-color: #ebebeb!important;
+  border-color: #ebebeb!important;
 }
 .k-autocomplete.k-state-hover,
 .k-picker-wrap.k-state-hover,
 .k-numeric-wrap.k-state-hover,
 .k-dropdown-wrap.k-state-hover {
-  background-color: #ffffff;
+  background-color: #ebebeb;
   background-image: none;
   background-position: 50% 50%;
-  border-color: #f5f5f5;
+  border-color: #ebebeb;
+
 }
 .k-multiselect.k-header {
   border-color: #f0f0f0;
@@ -1437,10 +1438,10 @@ html .km-pane-wrapper .km-widget,
 .k-numeric-wrap.k-state-focused,
 .k-dropdown-wrap.k-state-focused,
 .k-multiselect.k-header.k-state-focused {
-  background-color: #ffffff;
+  background-color: #ebebeb!important;
   background-image: none;
   background-position: 50% 50%;
-  border-color: #f5f5f5;
+  border-color: #ebebeb!important;
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2), 0 2px 3px rgba(0, 0, 0, 0.05);
 }
 .k-list-container {
@@ -1992,7 +1993,7 @@ span.k-colorpicker {
 .k-picker-wrap.k-state-hover,
 .k-numeric-wrap.k-state-hover,
 .k-dropdown-wrap.k-state-hover {
-  background-color: #ffffff;
+  background-color: #ebebeb;
   border-color: #f5f5f5;
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2), 0 2px 3px rgba(0, 0, 0, 0.05);
 }
