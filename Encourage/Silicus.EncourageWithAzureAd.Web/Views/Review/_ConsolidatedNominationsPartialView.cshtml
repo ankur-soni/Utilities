@@ -49,7 +49,7 @@
             {
                 <tr>
                     <td class="tblBorder">
-                        @nomination.UserName
+                        @Html.ActionLink(nomination.UserName, "ViewNominationForShortlist", "Review", new { nominationId = nomination.NominationId }, null)
                     </td>
                     <td>
                         Reviewer

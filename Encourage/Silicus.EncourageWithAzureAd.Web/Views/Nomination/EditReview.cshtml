@@ -165,7 +165,7 @@
                                             <td id="totalCredits" class="col-md-1 text-center font-bold">
                                                 @if (Model.Comments != null && Model.Comments.Any())
                                     {
-                                                    @(Model.Comments.Average(a => a.Credit))
+                                                    @(Model.Comments.Average(a => a.Credit).ToString("F"))
                                     }
                                     else
                                     {

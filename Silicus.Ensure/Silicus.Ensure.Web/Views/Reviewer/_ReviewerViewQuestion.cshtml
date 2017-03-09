@@ -489,7 +489,7 @@
                                                 <div class="reviewers-comment">
                                                     <div class="form-group">
                                                         <label style="font-size:14px;" class="M-B0">Reviewers Comment</label>
-                                                        @Html.Kendo().EditorFor(m => m.Comment).Name("ReviewerComment").Encode(true).Value(Model.Comment)
+                                                        @Html.Kendo().EditorFor(m => m.Comment).Name("ReviewerComment").Encode(true).Value(@Html.Raw(HttpUtility.HtmlDecode(Model.Comment)).ToString())
                                                     </div>
                                                 </div>
                                             </div>
@@ -535,6 +535,19 @@
                                     </div>
 
                                     <script>
-                                        $("#ReviwerMark").kendoValidator();
+                                        //$(document).ready(function() {
+
+                                        //    $("#ReviwerMark").on('change', function () {
+                                        //        updateTestSummary();
+                                        //    })
+                                        //})
+                                            var maxValue="@Model.Marks";
+                                            $("#ReviwerMark").kendoNumericTextBox({
+                                                format: "n0",
+                                                min: 0,
+                                                max: maxValue,
+                                                step: 1
+                                            });
+                                            $("#ReviwerMark").kendoValidator();
                                         $("#btnAddMoreTime").hide();
                                     </script>

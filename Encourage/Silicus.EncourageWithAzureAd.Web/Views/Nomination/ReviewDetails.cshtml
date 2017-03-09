@@ -88,6 +88,8 @@
                         }
                         @foreach (var review in Model)
                         {
+                            var reviewerName = review.Comments != null && review.Comments.FirstOrDefault() != null ? review.Comments.FirstOrDefault().ReviewerName + " (Reviewer)" : "Reviewer";
+                            
                             <div class="white-bg">
                                 <div class="row">
                                     <div class="col-md-12">
@@ -96,8 +98,8 @@
                                                 <thead>
                                                     <tr>
                                                         <th>Criteria</th>
-                                                        <th colspan="4">Manager</th>
-                                                        <th colspan="2">Reviewer</th>
+                                                        <th colspan="4">@review.Manager (Manager)</th>
+                                                        <th colspan="2">@reviewerName</th>
                                                     </tr>
                                                     <tr>
                                                         <th></th>
@@ -169,7 +171,7 @@
                                                     <td id="totalCredits" class="col-md-1 text-center font-bold">
                                                         @if (review.Comments != null && review.Comments.Any())
                                                         {
-                                                            @(review.Comments.Average(a => a.Credit))
+                                                            @(review.Comments.Average(a => a.Credit).ToString("F"))
                                                         }
                                                         else
                                                         {

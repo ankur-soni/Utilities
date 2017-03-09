@@ -64,7 +64,7 @@ namespace Silicus.Ensure.Web.Models
 
         [Range(1, 100, ErrorMessage = "Enter numbers from 1-100")]
         [Required(ErrorMessage = "Optional weightage is required.")]
-        [Display(Name = "Optional")]
+        [Display(Name = "Objective")]
         public int OptionalQuestion { get; set; }
 
         [Range(1, 100, ErrorMessage = "Enter numbers from 1-100")]
