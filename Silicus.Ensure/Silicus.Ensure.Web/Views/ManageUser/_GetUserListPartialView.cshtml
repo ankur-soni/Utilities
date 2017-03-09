@@ -283,7 +283,7 @@
                 rules: {
                     tagNamevalidation: function (input, params) {
                         if (input.is("[name='TagName']") && input.val() != "") {
-                            input.attr("data-tagNamevalidation-msg", "Tag name already exist !");
+                            input.attr("data-tagNamevalidation-msg", "Tag name already exist.");
                             return isTagNameAvailable("", input.val());
                         }
 
