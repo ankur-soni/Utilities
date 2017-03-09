@@ -36,6 +36,7 @@
                     @if (Request.IsAuthenticated)
                     {
                         @(Html.Kendo().Grid(Model).Name("questionGrids")
+                            .Events(eve=>eve.DataBinding("OnQuestionGridsDataBound"))
                              .Columns(columns =>
                                      {
                                          columns.Bound(q => q.QuestionDescription).Width(200);
@@ -160,7 +161,7 @@
 
 <script>
     $(document).ready(function () {
-
+       
         $("#messageDiv").hide();
 
         SetNavigationMenuActive('QuestionBank');
@@ -191,7 +192,7 @@
             $("#FieldFilter").val('');
         });
 
-
+        hideCustomLoader();
     });
 
     function ProficiencyLevelAndQuetiontype() {
@@ -252,19 +253,7 @@
         });
     }
 
-
-    $(window).on(function () {   
-        showCustomLoader();
-    });
-
-
-
-    function onBegin() {
-        showCustomLoader();
+    function OnQuestionGridsDataBound() {
+    showCustomLoader();
     }
-    function onComplete() {
-        $(".loader-overlay").hide();
-    }
-</script>
-
 </script>
