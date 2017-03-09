@@ -15,7 +15,7 @@ namespace Silicus.Ensure.Web.Models.Test
         [DisplayFormat(DataFormatString = "{0:n2}")]
         public decimal TotalExperience { get; set; }
         public string Position { get; set; }
-        [Display(Name = "Date Of Birth")]
+        [Display(Name = "Date of Birth")]
         [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}")]
         public DateTime DOB { get; set; }
         public int TotalExperienceInYear { get; set; }

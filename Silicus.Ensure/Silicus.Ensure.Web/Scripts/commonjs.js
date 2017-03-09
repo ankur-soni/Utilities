@@ -12,18 +12,10 @@ $(window).resize(function () {
 })
 
 $(document).ready(function () {
+    $(document).on('click', '#QuestionBank', showCustomLoader);
     $(document).on('click', '#menu-toggle', function () {
         $("body").toggleClass("mini-navbar");
     });
-
-    //$('.nav').css({ height: 0 })
-    //mQuery();
-    //$('.nav-button').click(function () {
-    //    $('.nav').toggleClass('show')
-    //})
-    //$('.collapsible > a').click(function () {
-    //    $(this).parent().toggleClass('open')
-    //})
 });
 function SelectObjectiveQuestion() {
     $('#practical-test-side-bar').hide();
@@ -38,14 +30,6 @@ function SelectPracticalQuestion() {
     $('#objective-test').removeClass('active');
     $('#practical-test').addClass('active');
 }
-//function mQuery() {
-//    // Same as @media (max-width: 767px) -> hide the navigation
-//    if ($('.fluid [class*="grid"]').css('float') == 'none' && $('.kendogrid [class*="grid"]').css('float') != 'none') {
-//        $('.nav').removeClass('show');
-//    } else {
-//        $('.nav').addClass('show');
-//    }
-//}
 
 function ShowMessage(content, isSuceess) {
     if (isSuceess) {
