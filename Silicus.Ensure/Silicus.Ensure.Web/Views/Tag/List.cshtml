@@ -126,13 +126,13 @@
 
     function requestend_handler(e) {
         if (e.type == "destroy" && !e.response.Errors) {
-            //toastr.success("Auto Pays details has been deleted successfully!");
+            //toastr.success("Auto Pays details has been deleted successfully.");
             ShowMessage("Tag deleted successfully.", 1);
             RefreshKendoGrid('tagsGrids');
         }
 
         if (e.type == "update" && !e.response.Errors) {
-            //toastr.success("Auto Pays details has been saved successfully!");
+            //toastr.success("Auto Pays details has been saved successfully.");
             ShowMessage("Tag updated successfully.", 1);
             RefreshKendoGrid('tagsGrids');
         }
@@ -217,7 +217,7 @@
             rules: { // custom rules
                 tagNamevalidation: function (input, params) {
                     if (input.is("[name='TagName']") && input.val() != "") {
-                        input.attr("data-tagNamevalidation-msg", "Tag name already exist !");
+                        input.attr("data-tagNamevalidation-msg", "Tag name already exist.");
                         return isTagNameAvailable($("#existingTagName").val(), input.val());
                         //return /^[A-Z]/.test(input.val());
                     }

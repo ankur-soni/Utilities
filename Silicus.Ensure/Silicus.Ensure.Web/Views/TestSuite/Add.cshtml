@@ -256,7 +256,7 @@
                     <div class="modal-content">
                         <div class="modal-header">
                             <button type="button" class="close" data-dismiss="modal" onclick="onCancelClick();">&times;</button>
-                            <h4 class="modal-title"><span id="msgMain">Success!</span></h4>
+                            <h4 class="modal-title"><span id="msgMain">Success.</span></h4>
                         </div>
                         <div class="modal-body">
                             <p id="msgContent">Some text in the modal.</p>
@@ -343,7 +343,7 @@
                         var bool=isTagNameAvailable("", input.val());
                         if(!bool)
                         {
-                            input.attr("data-tagNamevalidation-msg", "Position name already exist !");
+                            input.attr("data-tagNamevalidation-msg", "Position name already exist.");
                             return false;
                         }
                     }
