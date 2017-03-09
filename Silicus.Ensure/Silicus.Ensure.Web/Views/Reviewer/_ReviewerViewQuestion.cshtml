@@ -44,7 +44,7 @@
                 <div class="col-sm-12">
                     <div class="candidate-answer">
                         <div class="form-group">
-                            <label style="font-size:15px;font-weight:bold;" class="M-B0">Candidate Answer</label>
+                            <label style="font-size:15px;font-weight:bold;margin-left:-6px;" class="M-B0">Candidate Answer</label>
                             <ul style="list-style:none;padding-left:0px;">
                                                                 @if (!string.IsNullOrWhiteSpace(Model.Answer))
                                                                 {
@@ -123,7 +123,7 @@
                 <div class="col-sm-12">
                     <div class="candidate-answer">
                         <div class="form-group">
-                            <label style="font-size:15px;font-weight:bold;" class="M-B0">Correct Answer</label>
+                            <label style="font-size:15px;font-weight:bold;margin-left:-6px;" class="M-B0">Correct Answer</label>
 
                             <ul style="list-style:none;padding-left:0px;">
                                 <li>
@@ -259,7 +259,7 @@
                 <div class="col-sm-12">
                     <div class="candidate-answer">
                         <div class="form-group">
-                            <label style="font-size:15px;font-weight:bold;" class="M-B0">Candidate Answer</label>
+                            <label style="font-size:15px;font-weight:bold;margin-left:-6px;" class="M-B0">Candidate Answer</label>
                             <ul style="list-style:none;padding-left:0px;">
                                 @if (!string.IsNullOrWhiteSpace(Model.Answer))
                                 {
@@ -337,7 +337,7 @@
                         <div class="col-sm-12">
                             <div class="candidate-answer">
                                 <div class="form-group">
-                                    <label style="font-size:15px;font-weight:bold;" class="M-B0">Correct Answer</label>
+                                    <label style="font-size:15px;font-weight:bold;margin-left:-6px;" class="M-B0">Correct Answer</label>
                                     <ul style="list-style:none;padding-left:0px;">
                                         @if ((!string.IsNullOrWhiteSpace(Model.CorrectAnswer)))
                                         {
@@ -471,14 +471,14 @@
                                     {
                                         <div class="col-sm-12" style="padding: 20px 25px 20px 20px;word-break:break-all;">
                                             <div class="candidate-answer">
-                                                <span style="font-size:15px;font-weight:bold;color:#777;">Candidate Answer</span><br>
+                                                <span style="font-size:15px;font-weight:bold;color:#777;margin-left:-6px;">Candidate Answer</span><br>
                                                 @*@Html.Kendo().EditorFor(m => m.Answer).Name("PracticalAnswer").Encode(true).Value(Model.Answer).HtmlAttributes(new { @disabled = "disabled" })*@
                                                 @Html.Raw(Model.Answer)
                                             </div>
                                         </div>
                                         <div class="col-sm-12" style="padding: 0px 25px 20px 20px;word-break:break-all;">
                                             <div class="candidate-answer">
-                                                <span style="font-size:15px;font-weight:bold;color:#777;">Correct Answer</span><br>
+                                                <span style="font-size:15px;font-weight:bold;color:#777;margin-left:-6px;">Correct Answer</span><br>
                                                 @*@Html.Kendo().EditorFor(m => m.CorrectAnswer).Name("CorrectAnswer").Encode(true).Value(Model.CorrectAnswer).HtmlAttributes(new { @disabled = "disabled" })*@
                                                 @Html.Raw(Model.CorrectAnswer)
                                             </div>
@@ -497,7 +497,7 @@
                                         <div class="row">
                                             <div class="col-sm-3 col-md-3 col-lg-3">
                                                 <div class="reviewers-comment">
-                                                    Marks
+                                                    <label style="font-size:14px;font-weight:500;color:#777;">Marks</label>
                                                     @Html.TextBoxFor(m => m.ReviwerMark, new { Class = "form-control", type = "number", min = "0", max = Model.Marks })
                                                 </div>
 

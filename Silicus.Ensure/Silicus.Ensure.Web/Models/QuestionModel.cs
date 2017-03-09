@@ -42,9 +42,9 @@ namespace Silicus.Ensure.Web.Models
         public List<string> CorrectAnswer { get; set; }
         public string Answer { get; set; }
         public string Tag { get; set; }
-        [Required(ErrorMessage = "Proficiency level is required.")]
+        [Required(ErrorMessage = "Proficiency is required.")]
         public string ProficiencyLevel { get; set; }
-        [Required(ErrorMessage = "Duration in min is required")]
+        [Required(ErrorMessage = "Duration in min is required.")]
         [Range(minimum:1,maximum:360,ErrorMessage = "Duration must be between 1 to 360.")]
         public int? Duration { get; set; }
         [Required(ErrorMessage = "Marks are required.")]
