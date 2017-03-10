@@ -621,12 +621,12 @@
                     <button type="button" class="close" data-dismiss="modal">&times;</button>
                     <h4 class="modal-title"><span>Add Position</span></h4>
                 </div>
-                <div class="modal-body">
+                <div class="modal-body" style="padding: 20px 30px 0px 30px;">
 
                     @Html.Partial("~/Views/Positions/AddPosition.cshtml", new Silicus.Ensure.Models.DataObjects.Position())
                 </div>
                 <div class="modal-footer">
-                    <button type="button" style="width:70px;" id="SavePositionButton" onclick="savePosition()" class="btn btn-default">Save</button>
+                    <button type="button" style="width:70px;" id="SavePositionButton" onclick="savePosition()" class="btn btn-primary">Save</button>
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
                 </div>
             </div>
