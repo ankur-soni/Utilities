@@ -380,7 +380,7 @@
     function validateWeightage(input, params) {
         var sum = 0;
         if (input.hasClass("WeightageField")) {
-            input.attr("data-Weightage-msg", "Weightage sum must be 100 !");
+            input.attr("data-Weightage-msg", "Weightage sum must be 100.");
             $summands = $(".WeightageField");
             $summands.each(function () {
                 var value = Number($(this).val());
@@ -419,7 +419,7 @@
                 },
                 TestSuiteName: function (input, params) {
                     if (input.is("[name=TestSuiteName]")) {
-                        input.attr("data-TestSuiteName-msg", "Test suite name already name exist !");
+                        input.attr("data-TestSuiteName-msg", "Test suite name already exist.");
                         var isAvailable = isTestSuiteNameAvailable(input.val());
                         return isAvailable;
                     }
@@ -535,7 +535,7 @@
                         if (response != null && response.status == "success") {
                             $("#SuccessModel").modal();
                             if (IsCopy == "True") {
-                                ShowMessage("Test suite copy created successfully..", 1);
+                                ShowMessage("Test suite copy created successfully.", 1);
                                 redirectToTestSuiteList();
                             }
                             else if (TestSuiteId == 0) {
