@@ -314,6 +314,9 @@
 <script>
     $(document).ready(function () {
         SetNavigationMenuActive('TestSuite');
+        $('#addPositionPopup').on('hidden.bs.modal', function () {
+            $('.field-validation-error').hide();
+        });
     });
     function onCancelClick() {
         window.onbeforeunload = null;

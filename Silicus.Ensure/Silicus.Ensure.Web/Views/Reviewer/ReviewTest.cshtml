@@ -281,6 +281,9 @@ else
         $(document).on("click", "#btnSubmitEvalution", submitEvalution);
         $("#SubmitCandidateResult").on("click", submitCandidateResult);
         $('.QuestionCheckbox').on('click', QuestionCheckboxClicked);
+        $('#testresultPopup').on('hidden.bs.modal', function () {
+            $('.field-validation-error').hide();
+        });
     });
 
     function LoadFirstQuestion(userTestSuiteId, disableControls) {

@@ -381,6 +381,9 @@
                                 window.onbeforeunload = function () {
                                     return "Do you really want to close?";
                                 };
+                                $('#addTagPopup').on('hidden.bs.modal', function () {
+                                    $('.field-validation-error').hide();
+                                });
                                 SetNavigationMenuActive('QuestionBank');
                                 var questionType = $("#QuestionType").val();
                                 if(questionType&&questionType==2)
@@ -427,7 +430,6 @@
                                             return true;
                                         }
                                     }
-
                                 });
 
 

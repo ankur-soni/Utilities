@@ -68,6 +68,9 @@
     $(document).ready(function () {
         //$('#uploadFileLink').ke
         loadControls();
+        $('#addPositionPopup').on('hidden.bs.modal', function () {
+            $('.field-validation-error').hide();
+        });
     });
 
     function loadControls()
@@ -510,7 +513,8 @@
     $('#btnSave').click(function()
     {
         window.onbeforeunload = null;   
-        $(window).unbind('unload');       
+        $(window).unbind('unload');
+        showCustomLoader();
     });
 
     $('#btnCancel').click(function()

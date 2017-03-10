@@ -182,7 +182,12 @@
         
 
             });
+
+            $('#addTagPopup,#addPanelPopup').on('hidden.bs.modal', function () {
+                $('.field-validation-error').hide();
+            });
         });
+
         function AddNew() {
             window.location.href = "/Admin/CandidateAdd?UserId=0";
             return false;
