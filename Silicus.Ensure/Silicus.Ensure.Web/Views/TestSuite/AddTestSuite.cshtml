@@ -247,9 +247,10 @@
 
 
                                                     <span data-val="@i" style="margin-right:5px; @isDisply" class="addbtn btn btn-primary"><i class="fa fa-plus" aria-hidden="true"></i></span>
-                                                    <span data-val="@i" style="margin-right:5px; @isDisply" class="removebtn btn btn-primary"><i class="fa fa-minus" aria-hidden="true"></i></span>
-                                                    @*<input data-val="@i" type="button" value="Remove" class="removebtn btn btn-primary" style=@isDisply />*@
-                                                    @*<input data-val="@i" type="button" value="Add" class="addbtn btn btn-primary" style=@isDisply />*@
+                                                    if (Model.Tags.Count > 1)
+                                                    {
+                                                        <span data-val="@i" style="margin-right:5px; @isDisply" class="removebtn btn btn-primary"><i class="fa fa-minus" aria-hidden="true"></i></span>
+                                                    }
                                                 }
                                             </div>
                                         </div>
