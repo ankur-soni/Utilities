@@ -43,7 +43,7 @@ namespace Silicus.Encourage.Services.Interface
         FrequencyMaster GetAwardFrequencyByFrequencyCode(string frequencyCode);
         FrequencyMaster GetAwardFrequencyById(int id);
         List<User> GetAllResources();
-
+        List<Nomination> GetNominationsByDate(int month, int year, int awardId);
         List<User> GetAllResourcesForOtherReason(int awardId,int managerId);
         #region Saved Nominations List
         string GetAwardNameByAwardId(int awardId);

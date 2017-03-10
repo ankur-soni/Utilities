@@ -10,6 +10,7 @@ namespace Silicus.Encourage.Services.Interface
    public interface ICustomDateService
     {
         DateTime GetCustomDate(int awardId);
+        List<CustomDate> GetAllCustomDates();
         bool SetCustomDate(int awardId, int month, int year,int monthsToSubtract, bool isApplicable);
         bool ReSetCustomDate(int awardId);
         CustomDate CustomDateDetailsForAward(int awardId);
