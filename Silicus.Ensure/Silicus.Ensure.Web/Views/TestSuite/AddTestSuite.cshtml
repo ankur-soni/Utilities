@@ -247,9 +247,10 @@
 
 
                                                     <span data-val="@i" style="margin-right:5px; @isDisply" class="addbtn btn btn-primary"><i class="fa fa-plus" aria-hidden="true"></i></span>
-                                                    <span data-val="@i" style="margin-right:5px; @isDisply" class="removebtn btn btn-primary"><i class="fa fa-minus" aria-hidden="true"></i></span>
-                                                    @*<input data-val="@i" type="button" value="Remove" class="removebtn btn btn-primary" style=@isDisply />*@
-                                                    @*<input data-val="@i" type="button" value="Add" class="addbtn btn btn-primary" style=@isDisply />*@
+                                                    if (Model.Tags.Count > 1)
+                                                    {
+                                                        <span data-val="@i" style="margin-right:5px; @isDisply" class="removebtn btn btn-primary"><i class="fa fa-minus" aria-hidden="true"></i></span>
+                                                    }
                                                 }
                                             </div>
                                         </div>
@@ -313,6 +314,9 @@
 <script>
     $(document).ready(function () {
         SetNavigationMenuActive('TestSuite');
+        $('#addPositionPopup').on('hidden.bs.modal', function () {
+            $('.field-validation-error').hide();
+        });
     });
     function onCancelClick() {
         window.onbeforeunload = null;
@@ -621,12 +625,12 @@
                     <button type="button" class="close" data-dismiss="modal">&times;</button>
                     <h4 class="modal-title"><span>Add Position</span></h4>
                 </div>
-                <div class="modal-body">
+                <div class="modal-body" style="padding: 20px 30px 0px 30px;">
 
                     @Html.Partial("~/Views/Positions/AddPosition.cshtml", new Silicus.Ensure.Models.DataObjects.Position())
                 </div>
                 <div class="modal-footer">
-                    <button type="button" style="width:70px;" id="SavePositionButton" onclick="savePosition()" class="btn btn-default">Save</button>
+                    <button type="button" style="width:70px;" id="SavePositionButton" onclick="savePosition()" class="btn btn-primary">Save</button>
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
                 </div>
             </div>

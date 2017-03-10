@@ -2521,7 +2521,7 @@ width: 310px;
 
     
     }
-    
+
 @media (max-width:767px) {
     .pll {
         padding-left: 0px;
@@ -2530,12 +2530,21 @@ width: 310px;
     .table-responsive > .table > tbody > tr > td, .table-responsive > .table > tbody > tr > th, .table-responsive > .table > tfoot > tr > td, .table-responsive > .table > tfoot > tr > th, .table-responsive > .table > thead > tr > td, .table-responsive > .table > thead > tr > th {
         white-space: normal;
 	}
-    .sidebar-wrapper {
+    /*.sidebar-wrapper {
         display: block;
     }
     #page-wrapper{
         margin: 0 0 0 220px;
+    }*/
+    .body-small.mini-navbar .navbar-static-side{
+        display:block;
     }
+    .sidebar-wrapper {
+        display: none;
+    }
+     #page-wrapper {
+        position: inherit;
+        margin: 0 0 0 0px;
 }
 
 @media (max-width:639px) {
