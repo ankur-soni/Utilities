@@ -153,10 +153,12 @@
             closeOnCancel: true
         },
        function (isConfirm) {
+           var awardId = $("#awards-list .active a").attr("data-awardid") != undefined ? parseInt($("#awards-list .active a").attr("data-awardid")) : 0;
            if (isConfirm) {
                showCustomLoader();
                $.ajax({
                    type: 'post',
+                   data: { awardId:awardId },
                    url: '@Url.Action("RejectAll", "Review")',
                    success: function (data) {
                        hideCustomLoader();

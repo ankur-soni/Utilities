@@ -112,6 +112,11 @@ namespace Silicus.Encourage.Services
 
         }
 
+        public List<CustomDate> GetAllCustomDates()
+        {
+            return _encourageDbcontext.Query<CustomDate>().ToList();
+        }
+
         public CustomDate CustomDateDetailsForAward(int awardId)
         {
             return _encourageDbcontext.Query<CustomDate>().FirstOrDefault(c => c.AwardId == awardId);
