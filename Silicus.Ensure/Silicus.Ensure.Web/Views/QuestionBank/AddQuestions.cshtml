@@ -556,15 +556,7 @@
                                 window.onbeforeunload = null;
                                 $(window).unbind('unload');
                                 var success="@Model.Success";
-                                if(success==2)
-                                {
-                                    window.location.href = "/QuestionBank/AddQuestions";
-                                }
-                                else
-                                {
-                                    window.location.href = "/QuestionBank/QuestionBank";
-                                }
-
+                                window.location.href = "/QuestionBank/QuestionBank";
                             }
 
                             // On Click Of "Add" button of any Option

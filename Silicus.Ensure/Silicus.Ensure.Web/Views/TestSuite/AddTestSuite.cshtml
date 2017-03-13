@@ -486,6 +486,8 @@
                 var SpecialInstruction = $("#SpecialInstruction").val();
                 var Weights = '';
                 var Proficiency = '';
+                
+
                 $('#TagCustomControl input.tagAutoComplete').each(function () {
                     if (tags == '') {
                         tags += $(this).val();
@@ -556,11 +558,13 @@
                     },
                     error: function (response) {
                         ShowMessage("error!");
+                        
                     }
                 });
             }
             else {
                 $("#frmAddTestSuite").submit();
+                
             }
         });
 
@@ -571,9 +575,11 @@
     function addPosition() {
         $("#PositionForm")[0].reset();
         $("#addPositionPopup").modal('show');
+        $('#validationPosition').css('display', 'none');
     }
     function ValidateAndSavePostion() {
         if ($("#PositionForm").valid()) {
+           
             $.ajax({
                 type: "POST",
                 url: '/Positions/PositionSave',
@@ -586,12 +592,15 @@
                     $("#PositionForm").trigger("reset");
                     $PositionSelect.value(returndata.PositionId);
                     $('#SavePositionButton').attr('disabled', false);
+                    
                 }
             });
+            
         }
         else {
             $("#PositionForm").trigger("reset");
             $('#SavePositionButton').attr('disabled', false);
+            $('#validationPosition').css('display', 'block');
         }
     }
     function savePosition() {
