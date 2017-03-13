@@ -18,7 +18,7 @@
 
             <div class="col-lg-8 col-md-8 col-sm-12 col-xs-12">
                 @Html.TextBoxFor(model => model.PositionName, new { @class = "form-control " })
-                <div class="validation">
+                <div class="validation" id="validationPosition">
                     <span class="k-widget k-tooltip k-tooltip-validation k-invalid-msg field-validation-error" data-for="FromExperience" data-valmsg-for="FromExperience" id="FromExperience_validationMessage" role="alert"><span class="k-icon k-warning"> </span>Position is required.</span>
                     @*@Html.ValidationMessageFor(m => m.PositionName, "", new { @class = "text-position" })*@
                 </div>
