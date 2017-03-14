@@ -8,11 +8,11 @@
             </div>
             <input type="hidden" id="testSuiteId" name="testSuiteId" value="" />
             <div class="modal-body">
-                @(Html.Kendo().Grid<Silicus.Ensure.Models.DataObjects.User>().Name("userGrids")
+                @(Html.Kendo().Grid<Silicus.Ensure.Web.Models.UserViewModel>().Name("userGrids")
                         .Events(events => events.DataBound("onUserGridsDataBound"))
                 .Columns(columns =>
               {
-                  columns.Bound("").ClientTemplate("<input type='checkbox' name='selectUser' value='#= UserId#' />").Width(20);
+                  columns.Bound("").ClientTemplate("<input type='checkbox' name='selectUser' value='#=UserApplicationId#' />").Width(20);
                   columns.Bound(p => p.FirstName).Width(150);
                   columns.Bound(p => p.LastName).Width(150);
                   columns.Bound(p => p.CurrentLocation).Width(100);

@@ -246,7 +246,7 @@ namespace Silicus.Ensure.Web.Controllers
                     {
                         userTestSuite.TestSuiteId = testSuiteId;
                         _testSuiteService.AssignSuite(userTestSuite, testSuiteDetails);
-                        var selectUser = _userService.GetUserDetails().Where(model => model.UserId == Convert.ToInt32(item)).FirstOrDefault();
+                        var selectUser = _userService.GetUserDetails().Where(model => model.UserApplicationId == Convert.ToInt32(item)).FirstOrDefault();
                         selectUser.TestStatus = Convert.ToString(CandidateStatus.TestAssigned);
                         selectUser.CandidateStatus = Convert.ToString(CandidateStatus.TestAssigned);
                         _userService.Update(selectUser);
