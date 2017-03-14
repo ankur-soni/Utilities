@@ -421,10 +421,9 @@
         }
 
         function AddPanel() {
-            debugger;
             $('#PanelName').val("");
             $("#addPanelPopup").modal('show');
-            //$("#validationPanelUserMgmt").css('display', 'none!important;');
+            $("#validationPanelUserMgmt").css('display', 'none');
 
         }
 
@@ -448,7 +447,7 @@
             }
             else {
                 $('#panelForm').submit();
-                //$("#validationPanelUserMgmt").css('display', 'block!important;');
+                $("#validationPanelUserMgmt").css('display', 'block');
             }
         }
 
