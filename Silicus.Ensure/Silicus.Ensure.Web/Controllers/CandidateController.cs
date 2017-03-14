@@ -160,9 +160,10 @@ namespace Silicus.Ensure.Web.Controllers
         public ActionResult GetQuestionDetails(QuestionDetailsViewModel questionDetails)
         {
             questionDetails.QuestionType = _testSuiteService.GetQuestionType(questionDetails.QuestionId);
-            questionDetails.Answer = HttpUtility.HtmlDecode(questionDetails.Answer);
+            questionDetails.Answer = HttpUtility.UrlDecode(questionDetails.Answer);
             UpdateAnswer(questionDetails.Answer, questionDetails.UserTestDetailId);
             var testSuiteQuestionModel = TestSuiteQuestion(questionDetails.QuestionId, questionDetails.UserTestSuiteId, questionDetails.QuestionType);
+            ModelState.Clear();
             return PartialView("_partialViewQuestion", testSuiteQuestionModel);
         }
 

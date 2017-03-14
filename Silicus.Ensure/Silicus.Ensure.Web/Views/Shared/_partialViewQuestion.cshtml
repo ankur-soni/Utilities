@@ -29,7 +29,7 @@
     <input type="hidden" value="@Model.QuestionId" id="QuestionNumber" />
     <input type="hidden" value="@Model.TestDetailId" id="UserTestDetailId" />
     <input type="hidden" value="@Model.AnswerType" id="AnswerType" />
-    <div >
+    <div>
         @if (Model.QuestionType == 1 && Model.AnswerType == 1)
         {
             if (string.IsNullOrEmpty(Model.Answer))
@@ -359,9 +359,9 @@
 
         else if (Model.QuestionType == 2)
         {
-        <div class="col-sm-12 questionDiv" id="editorDiv" style="padding: 20px 50px 30px 50px;">
-            @Html.Kendo().EditorFor(m => m.Answer).Name("PracticalAnswer").Encode(true).Value(Model.Answer)
-        </div>
+            <div class="col-sm-12 questionDiv" id="editorDiv" style="padding: 20px 50px 30px 50px;">
+                @Html.Kendo().EditorFor(m => m.Answer).Name("PracticalAnswer").Encode(false).Value(Model.Answer)
+            </div>
         }
     </div>
     <div class="col-sm-12">
