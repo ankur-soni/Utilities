@@ -1,9 +1,14 @@
 ﻿@using Kendo.Mvc.UI;
-@*<style>
-    .sidebar-fixed .main, .sidebar-fixed .app-footer {
-        margin-left: 0px;
+
+<style>
+    .box {
+        background: #fff;
+        padding: 10px;
+        width: auto;
+        height: auto;
+        box-shadow: 1px 1px 3px #888888;
     }
-</style>*@
+</style>
 
 @{
     ViewBag.Title = "Welcome";
@@ -83,7 +88,13 @@
 else
 {
     @*<h1 class="font-color-red"> @ViewBag.Msg  </h1>*@
-    @Html.Partial("_TestnotAssigned");
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="box">
+                <h3 style="color:red;">@ViewBag.Msg</h3>
+            </div>
+        </div>
+    </div>
 }
 
 

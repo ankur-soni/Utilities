@@ -479,6 +479,15 @@ namespace Silicus.Encourage.Services
             return _commonDataBaseContext.Query<User>().FirstOrDefault(u => u.ID == userId);
         }
 
+        public List<Nomination> GetNominationsByDate(int month, int year,int awardId)
+        {
+            if (awardId <= 0)
+            {
+                 return _encourageDatabaseContext.Query<Nomination>().Where(x => x.NominationDate.Value.Month == month && x.NominationDate.Value.Year == year ).ToList();
+            }
+            return _encourageDatabaseContext.Query<Nomination>().Where(x => x.NominationDate.Value.Month == month && x.NominationDate.Value.Year == year && x.AwardId == awardId).ToList();
+        }
+
         public List<Nomination> GetAllSubmittedAndSavedNominationsByCurrentUserAndMonth(int managerId, bool forCurrentMonth, int awardId)
         {
             DateTime toBeComparedDate = _customDateService.GetCustomDate(awardId);

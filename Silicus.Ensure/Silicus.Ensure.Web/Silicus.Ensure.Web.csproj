@@ -630,6 +630,8 @@
     <Content Include="EmailTemplates\TestReassign.cshtml" />
     <None Include="Properties\PublishProfiles\ensure - FTP.pubxml" />
     <None Include="Properties\PublishProfiles\ensure - Web Deploy.pubxml" />
+    <None Include="Properties\PublishProfiles\ensurestaging - FTP.pubxml" />
+    <None Include="Properties\PublishProfiles\ensurestaging - Web Deploy.pubxml" />
     <None Include="Scripts\jquery-2.1.4.intellisense.js" />
     <Content Include="Scripts\jquery-2.1.4.js" />
     <Content Include="Scripts\jquery-2.1.4.min.js" />
@@ -907,7 +909,6 @@
     <Content Include="Views\Candidate\ReadOnlyInstructions.cshtml" />
     <Content Include="Views\Shared\PreviewQuestions.cshtml" />
     <Content Include="Views\Reviewer\_reviewerTestSummaryAndCandidateDetails.cshtml" />
-    <Content Include="Views\Shared\_TestnotAssigned.cshtml" />
     <None Include="Web.Azure.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

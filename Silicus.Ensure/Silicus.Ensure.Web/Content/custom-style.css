@@ -119,18 +119,20 @@ a.k-button.k-button-icontext.k-grid-delete{min-width:70px;}
 .k-grid-pager .k-link, .k-grid-pager .k-link:link {
     color: #fff !important;
 }
+.k-textbox > input, .k-autocomplete .k-input, .k-multiselect-wrap{height:25px;}
 span.k-icon.k-edit{display:none;}
-span.k-icon.k-delete{display:none;}
+/*span.k-icon.k-delete{display:none;}*/
 span.k-icon.k-cancel{display:none;}
 span.k-icon.k-save{display:none;}
 span.k-icon.k-update{display:none;}
 i.fa.fa-save{display:none;}
 
-#userGrids table {
+#userGrids table, #testSuiteGrids table {
     width: 100%;
     overflow-x: auto;
     display: inherit;
 }
+
 span.k-widget.k-autocomplete.k-header.tagAutoComplete.k-state-default{width:100%;}
 
 input.key-numeric.WeightageField{background-color: #FFFFFF;background-image: none;border: 1px solid #e5e6e7;border-radius: 1px;color: inherit;height: 32px;display: block;padding: 6px 12px;transition: border-color 0.15s ease-in-out 0s, box-shadow 0.15s ease-in-out 0s;width: 100%;font-size: 14px;}
@@ -2495,6 +2497,7 @@ width: 310px;
 }
 
 @media (max-width:768px) {
+
     .cust-mar {
         margin-top: 15px;
     }
@@ -2520,7 +2523,7 @@ width: 310px;
 
     
     }
-    
+
 @media (max-width:767px) {
     .pll {
         padding-left: 0px;
@@ -2529,12 +2532,21 @@ width: 310px;
     .table-responsive > .table > tbody > tr > td, .table-responsive > .table > tbody > tr > th, .table-responsive > .table > tfoot > tr > td, .table-responsive > .table > tfoot > tr > th, .table-responsive > .table > thead > tr > td, .table-responsive > .table > thead > tr > th {
         white-space: normal;
 	}
-    .sidebar-wrapper {
+    /*.sidebar-wrapper {
         display: block;
     }
     #page-wrapper{
         margin: 0 0 0 220px;
+    }*/
+    .body-small.mini-navbar .navbar-static-side{
+        display:block;
     }
+    /*.sidebar-wrapper {
+        display: none;
+    }*/
+     #page-wrapper {
+        position: inherit;
+        margin: 0 0 0 0px;
 }
 
 @media (max-width:639px) {

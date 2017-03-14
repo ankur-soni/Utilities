@@ -120,17 +120,17 @@ namespace Silicus.Ensure.Web.Controllers
                 ViewBag.Msg = "User not found for online test, kindly contact admin.";
                 return View("Welcome", new TestSuiteCandidateModel());
             }
-            else if (user.CandidateStatus == CandidateStatus.TestSubmitted.ToString())
-            {
-                ViewBag.Status = 1;
-                ViewBag.Msg="You have already submitted your test.";
-                return View("Welcome", new TestSuiteCandidateModel());
-            }
             UserTestSuite userTestSuite = _testSuiteService.GetUserTestSuiteByUserApplicationId(user.UserApplicationId);
             if (userTestSuite == null)
             {
                 ViewBag.Status = 1;
                 ViewBag.Msg = "No test is assigned for you, kindly contact admin.";
+                return View("Welcome", new TestSuiteCandidateModel());
+            }
+            else if (user.CandidateStatus != CandidateStatus.TestAssigned.ToString())
+            {
+                ViewBag.Status = 1;
+                ViewBag.Msg = "You have already submitted your test.";
                 return View("Welcome", new TestSuiteCandidateModel());
             }
             TestSuiteCandidateModel testSuiteCandidateModel = _mappingService.Map<UserTestSuite, TestSuiteCandidateModel>(userTestSuite);

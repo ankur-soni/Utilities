@@ -229,13 +229,14 @@
                                                 Skill Tags
                                             </div>
                                             <div class="col-md-2 col-sm-2 col-xs-2">
-                                                <input type="text" id="Tag_@i" value="@tag.TagName" name="Tag_@i" data-val="true" data-val-required="Skill tags is required!." class="tagAutoComplete">
+                                                <input type="text" id="Tag_@i" value="@tag.TagName" name="Tag_@i" data-val="true" data-val-required="Skill tags is required." class="tagAutoComplete">
+
                                             </div>
                                             <div class="col-md-2 col-sm-2 col-xs-2">
-                                                <input type="text" id="Weightage_@i" value="@tag.Weightage" name="Weightage_@i" data-val="true" data-val-required="Weightage is required!." class="key-numeric WeightageField" />
+                                                <input type="text" id="Weightage_@i" value="@tag.Weightage" name="Weightage_@i" data-val="true" data-val-required="Weightage is required." class="key-numeric WeightageField" />
                                             </div>
                                             <div class="col-md-2 col-sm-3 col-xs-3">
-                                                <input type="text" id="Proficiency_@i" value="@tag.Proficiency" name="Proficiency_@i" data-val="true" data-val-required="Efficiency is required!." required class="proficiencyDropDown" />
+                                                <input type="text" id="Proficiency_@i" value="@tag.Proficiency" name="Proficiency_@i" data-val="true" data-val-required="Efficiency is required." required class="proficiencyDropDown" />
                                             </div>
                                             <div class="col-md-2 col-sm-3 col-xs-3">
 
@@ -247,9 +248,10 @@
 
 
                                                     <span data-val="@i" style="margin-right:5px; @isDisply" class="addbtn btn btn-primary"><i class="fa fa-plus" aria-hidden="true"></i></span>
-                                                    <span data-val="@i" style="margin-right:5px; @isDisply" class="removebtn btn btn-primary"><i class="fa fa-minus" aria-hidden="true"></i></span>
-                                                    @*<input data-val="@i" type="button" value="Remove" class="removebtn btn btn-primary" style=@isDisply />*@
-                                                    @*<input data-val="@i" type="button" value="Add" class="addbtn btn btn-primary" style=@isDisply />*@
+                                                    if (Model.Tags.Count > 1)
+                                                    {
+                                                        <span data-val="@i" style="margin-right:5px; @isDisply" class="removebtn btn btn-primary"><i class="fa fa-minus" aria-hidden="true"></i></span>
+                                                    }
                                                 }
                                             </div>
                                         </div>
@@ -313,6 +315,9 @@
 <script>
     $(document).ready(function () {
         SetNavigationMenuActive('TestSuite');
+        $('#addPositionPopup').on('hidden.bs.modal', function () {
+            $('.field-validation-error').hide();
+        });
     });
     function onCancelClick() {
         window.onbeforeunload = null;
@@ -380,7 +385,7 @@
     function validateWeightage(input, params) {
         var sum = 0;
         if (input.hasClass("WeightageField")) {
-            input.attr("data-Weightage-msg", "Weightage sum must be 100 !");
+            input.attr("data-Weightage-msg", "Weightage sum must be 100.");
             $summands = $(".WeightageField");
             $summands.each(function () {
                 var value = Number($(this).val());
@@ -419,7 +424,7 @@
                 },
                 TestSuiteName: function (input, params) {
                     if (input.is("[name=TestSuiteName]")) {
-                        input.attr("data-TestSuiteName-msg", "Test suite name already name exist !");
+                        input.attr("data-TestSuiteName-msg", "Test suite name already exist.");
                         var isAvailable = isTestSuiteNameAvailable(input.val());
                         return isAvailable;
                     }
@@ -482,6 +487,8 @@
                 var SpecialInstruction = $("#SpecialInstruction").val();
                 var Weights = '';
                 var Proficiency = '';
+                
+
                 $('#TagCustomControl input.tagAutoComplete').each(function () {
                     if (tags == '') {
                         tags += $(this).val();
@@ -535,7 +542,7 @@
                         if (response != null && response.status == "success") {
                             $("#SuccessModel").modal();
                             if (IsCopy == "True") {
-                                ShowMessage("Test suite copy created successfully..", 1);
+                                ShowMessage("Test suite copy created successfully.", 1);
                                 redirectToTestSuiteList();
                             }
                             else if (TestSuiteId == 0) {
@@ -552,11 +559,13 @@
                     },
                     error: function (response) {
                         ShowMessage("error!");
+                        
                     }
                 });
             }
             else {
                 $("#frmAddTestSuite").submit();
+                
             }
         });
 
@@ -567,9 +576,11 @@
     function addPosition() {
         $("#PositionForm")[0].reset();
         $("#addPositionPopup").modal('show');
+        $('#validationPosition').css('display', 'none');
     }
     function ValidateAndSavePostion() {
         if ($("#PositionForm").valid()) {
+           
             $.ajax({
                 type: "POST",
                 url: '/Positions/PositionSave',
@@ -582,12 +593,15 @@
                     $("#PositionForm").trigger("reset");
                     $PositionSelect.value(returndata.PositionId);
                     $('#SavePositionButton').attr('disabled', false);
+                    
                 }
             });
+            
         }
         else {
             $("#PositionForm").trigger("reset");
             $('#SavePositionButton').attr('disabled', false);
+            $('#validationPosition').css('display', 'block');
         }
     }
     function savePosition() {
@@ -621,12 +635,12 @@
                     <button type="button" class="close" data-dismiss="modal">&times;</button>
                     <h4 class="modal-title"><span>Add Position</span></h4>
                 </div>
-                <div class="modal-body">
+                <div class="modal-body" style="padding: 20px 30px 0px 30px;">
 
                     @Html.Partial("~/Views/Positions/AddPosition.cshtml", new Silicus.Ensure.Models.DataObjects.Position())
                 </div>
                 <div class="modal-footer">
-                    <button type="button" style="width:70px;" id="SavePositionButton" onclick="savePosition()" class="btn btn-default">Save</button>
+                    <button type="button" style="width:70px;" id="SavePositionButton" onclick="savePosition()" class="btn btn-primary">Save</button>
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
                 </div>
             </div>

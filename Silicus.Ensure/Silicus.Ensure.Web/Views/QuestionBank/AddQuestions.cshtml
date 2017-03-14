@@ -381,6 +381,9 @@
                                 window.onbeforeunload = function () {
                                     return "Do you really want to close?";
                                 };
+                                $('#addTagPopup').on('hidden.bs.modal', function () {
+                                    $('.field-validation-error').hide();
+                                });
                                 SetNavigationMenuActive('QuestionBank');
                                 var questionType = $("#QuestionType").val();
                                 if(questionType&&questionType==2)
@@ -427,7 +430,6 @@
                                             return true;
                                         }
                                     }
-
                                 });
 
 
@@ -554,15 +556,7 @@
                                 window.onbeforeunload = null;
                                 $(window).unbind('unload');
                                 var success="@Model.Success";
-                                if(success==2)
-                                {
-                                    window.location.href = "/QuestionBank/AddQuestions";
-                                }
-                                else
-                                {
-                                    window.location.href = "/QuestionBank/QuestionBank";
-                                }
-
+                                window.location.href = "/QuestionBank/QuestionBank";
                             }
 
                             // On Click Of "Add" button of any Option
@@ -752,7 +746,7 @@
 
                 </div>
                 <div class="modal-footer">
-                    <button type="button" style="width:70px;" onclick="saveTag()" class="btn btn-default">Save</button>
+                    <button type="button" style="width:70px;" onclick="saveTag()" class="btn btn-primary">Save</button>
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
                 </div>
             </div>

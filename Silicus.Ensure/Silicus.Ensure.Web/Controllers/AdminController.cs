@@ -239,8 +239,10 @@ namespace Silicus.Ensure.Web.Controllers
 
         
         [HttpPost]
-        public ActionResult GetCandidateGrid(string firstName, String lastName, DateTime dob)
+        public ActionResult GetCandidateGrid(string firstName, String lastName, string dobString)
         {
+            DateTime dob;
+            DateTime.TryParseExact(dobString, "dd/MM/yyyy", CultureInfo.InvariantCulture, DateTimeStyles.None, out dob);
             var candidates = _userService.GetCandidates(firstName, lastName, dob).ToList();
                 var candidatebusinessModelList = _mappingService.Map<List<UserBusinessModel>, List<UserViewModel>>(candidates);
                 return PartialView("_CadidateGrid", candidatebusinessModelList);

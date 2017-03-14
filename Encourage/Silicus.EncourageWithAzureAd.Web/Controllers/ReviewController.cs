@@ -239,39 +239,68 @@ namespace Silicus.EncourageWithAzureAd.Web.Controllers
         }
 
         [CustomeAuthorize(AllowedRole = "Admin")]
-        //[HttpPost]
-        public ActionResult RejectAll()
+        public ActionResult RejectAll(int awardId)
         {
             _logger.Log("Review-RejectAll-GET");
-            var allReviewsWithoutDate = _encourageDatabaseContext.Query<Review>();
-            var rejectAllRviews = new List<Review>();
-            foreach (var item in allReviewsWithoutDate)
+            
+            var nominationInCurrentAwardPeriod = new List<Nomination>();
+            var nominationIdsToReject = new List<int>();
+            var awards = _awardService.GetAllAwards();
+            if (awardId == 0)
             {
-                var currentNomination = _nominationService.GetNomination(item.NominationId);
-                var customDate = _customDateService.GetCustomDate(currentNomination.AwardId);
-                //var recordToReject = _encourageDatabaseContext.Query<Review>().FirstOrDefault(r => r.IsSubmited == true && r.ReviewDate.Value.Month ==
-                //                                                                              customDate.Month && r.ReviewDate.Value.Year == customDate.Year);
-                var recordToReject = _reviewService.GetSubmitedReviewByDate( item.NominationId, customDate.Month, customDate.Year);
-                if (recordToReject != null)
+                var customeDatesFoAllAwards = _customDateService.GetAllCustomDates();
+                if (customeDatesFoAllAwards.Count > 0)
                 {
-                    rejectAllRviews.Add(recordToReject);
+                var awardIsWithCustomdate = customeDatesFoAllAwards.Select( x => x.AwardId ).ToList();
+                    foreach (var customDate in customeDatesFoAllAwards)
+                    {
+                        nominationInCurrentAwardPeriod.AddRange(_nominationService.GetNominationsByDate(customDate.Month.Value, customDate.Year.Value, customDate.AwardId));
+                    }
+
+                    awards = awards.Where(x => !awardIsWithCustomdate.Contains(x.Id));
+
+                    nominationInCurrentAwardPeriod.AddRange(GetnominationInCurrentAwardPeriod(awards.ToList()));
+
+                }
+                else
+                {
+                    nominationInCurrentAwardPeriod = GetnominationInCurrentAwardPeriod(awards.ToList());
+                }
+               
+            }
+            else
+            {
+                var customDate = _customDateService.GetCustomDate(awardId);
+
+                nominationInCurrentAwardPeriod = _nominationService.GetNominationsByDate(customDate.Month, customDate.Year, awardId);
+            }
+
+            foreach (var item in nominationInCurrentAwardPeriod)
+            {
+                var shortlist = _encourageDatabaseContext.Query<Shortlist>().Any(x => x.NominationId == item.Id && x.IsWinner == false);
+                if (shortlist)
+                {
+                    nominationIdsToReject.Add(item.Id);
                 }
             }
-
-            var shortlist = _encourageDatabaseContext.Query<Shortlist>().Where(s => s.IsWinner == true);
-            foreach (var shortListedEmployee in shortlist)
-            {
-                rejectAllRviews.RemoveAll(r => r.NominationId == shortListedEmployee.NominationId);
-            }
-
-            foreach (var nominationIdToreject in rejectAllRviews.Select(d=>d.NominationId).Distinct())
+            
+            foreach (var nominationIdToreject in nominationIdsToReject)
             {
                 _resultService.UnShortlistNomination(nominationIdToreject);
             }
-
             return RedirectToAction("Index", "Home");
         }
 
+
+        private List<Nomination> GetnominationInCurrentAwardPeriod(List<Award> awards)
+        {
+            var nominationInCurrentAwardPeriod = new List<Nomination>();
+            foreach (var award in awards)
+            {
+                nominationInCurrentAwardPeriod.AddRange(_nominationService.GetNominationsByDate(DateTime.Now.Month - 1, DateTime.Now.Year, award.Id));
+            }
+            return nominationInCurrentAwardPeriod;
+        }
         [HttpGet]
         [CustomeAuthorize(AllowedRole = "Admin")]
         public ActionResult ViewNominationForShortlist(int nominationId)
@@ -690,7 +719,7 @@ namespace Silicus.EncourageWithAzureAd.Web.Controllers
             }
             customDateDetails.Award = _awardService.GetAwardById(awardId);
 
-            var details = new 
+            var details = new
             {
                 AwardName = customDateDetails.Award.Name,
                 Year = customDateDetails.Year,

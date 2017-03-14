@@ -45,7 +45,7 @@
 
             @if (!string.IsNullOrWhiteSpace(Model.ProfilePhotoFilePath))
             {
-                <div class="thumbnail" style="height: 200px;background-image: url('../../Images/no-user-img.png'); ">
+                <div class="thumbnail" style="height: 200px;">
 
                     <img id="ProfilePhotoImage" src="@System.Configuration.ConfigurationManager.AppSettings["ServerName"]@Html.Raw(Url.Content(Model.ProfilePhotoFilePath))" style="height:180px;width:160px">
                 </div>

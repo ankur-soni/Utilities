@@ -72,280 +72,7 @@
     }
 </div>
 
-    <script>
-   
-   
-
-        function assignPanel(e) {
-            var grid = $("#UserGrids").data("kendoGrid");
-            var userDetailViewModel = grid.dataItem($(e.currentTarget).closest("tr"));
-            if (userDetailViewModel && userDetailViewModel.UserId) {
-                $.ajax({
-                    type: "Post",
-                    url: '/ManageUser/AssignPanelToUserView',
-                    contentType: "application/json",
-                    data: JSON.stringify(userDetailViewModel),
-                    success: function (returndata) {
-                        if (returndata) {
-                            $("#frmAssignPanel").html(returndata);
-                            $("#AssignPanelModal").modal('show');
-                            $("#frmAssignPanel").kendoValidator();
-                        }
-                        else {
-                            ShowMessage("Error occured while delete operation.", 0);
-                        }
-                    }
-                });
-            }
-
-
-        }
-
-        function assignType(e) {
-            var grid = $("#UserGrids").data("kendoGrid");
-            var userDetailViewModel = grid.dataItem($(e.currentTarget).closest("tr"));
-            if (userDetailViewModel && userDetailViewModel.UserId) {
-                $.ajax({
-                    type: "Post",
-                    url: '/ManageUser/AssignTypeToUserView',
-                    contentType: "application/json",
-                    data: JSON.stringify(userDetailViewModel),
-                    success: function (returndata) {
-                        if (returndata) {
-                            $("#frmAssignType").html(returndata);
-                            $("#AssignTypeModal").modal('show');
-                            $("#frmAssignType").kendoValidator();
-                        }
-                        else {
-                            ShowMessage("Error occured while delete operation.", 0);
-                        }
-                    }
-                });
-            }
-        }
-
-        function onSelect() {
-            var dataItem = this.dataItem();
-            var value = dataItem['Text'];
-            grid = $("#UserGrids").data("kendoGrid");
-            if (value == "All") {
-                grid.dataSource.filter([]);
-            }
-            else {
-                grid.dataSource.filter({ field: "RoleName", operator: "eq", value: value });
-            }
-        }
-        $(document).ready(function () {
-            $("#FieldFilter").keyup(function () {
-                var value = $("#FieldFilter").val();
-                grid = $("#UserGrids").data("kendoGrid");
-                if (value.length >= 1) {
-                    if (value) {
-                        var filter = { logic: "or", filters: [] };
-                        filter.filters.push({ field: "RoleName", operator: "contains", value: value });
-                        filter.filters.push({ field: "Email", operator: "contains", value: value });
-                        filter.filters.push({ field: "FullName", operator: "contains", value: value });
-                        grid.dataSource.query({ filter: filter });
-                    } else {
-                        grid.dataSource.filter({});
-                    }
-                }
-                else if (value == "")
-                    grid.dataSource.filter({});
-            });
-
-            $("#UserSearchRefresh").click(function (e) {      
-                var value = $("#Role").val();
-                $("#FieldFilter").val('');
-                if (typeof (value) == "undefined" && value == null) {
-                       e.preventDefault();
-                    var datasource = $("#UserGrids").data("kendoGrid").dataSource;
-                    //Clear filters:
-                    datasource.filter([]);
-                    $("#FieldFilter").val('');
-                }
-                else {
-                  
-                    grid = $("#UserGrids").data("kendoGrid");
-                    if (value.length >= 1) {
-                        if (value) {
-                            var filter = { logic: "or", filters: [] };
-                            filter.filters.push({ field: "RoleName", operator: "contains", value: value });
-                            filter.filters.push({ field: "Email", operator: "contains", value: value });
-                            filter.filters.push({ field: "FullName", operator: "contains", value: value });
-                            grid.dataSource.query({ filter: filter });
-                        } else {
-                            grid.dataSource.filter({});
-                        }
-                    }
-                }
-        
-
-            });
-        });
-        function AddNew() {
-            window.location.href = "/Admin/CandidateAdd?UserId=0";
-            return false;
-        }
-
-        function deleteUser(userId) {
-            $.when(showConfirmationWindow('Are you sure, you want to delete this record?', 'Delete')).then(function (confirmed) {
-                if (confirmed) {
-                    $.ajax({
-                        type: "POST",
-                        url: '@Url.Action("DeleteUser", "User")',
-                        data: { UserId: userId },
-                        success: function (returndata) {
-                            if (returndata == 1) {
-                                $('#UserGrids').data('kendoGrid').dataSource.read();
-                                $('#userGrids').data('kendoGrid').refresh();
-                                ShowMessage("User deleted successfully.", 1);
-                            }
-                            else {
-                                ShowMessage("Error occured while delete operation.", 0);
-                            }
-                        }
-                    });
-                }
-            });
-        }
-
-        function assignPanelToMeber() {           
-            if ($("#Panel").val()) {
-                $.ajax({
-                    url: '/ManageUser/AssignPanelToUser',
-                    type: 'post',
-                    dataType: 'json',
-                    data: $('#frmAssignPanel').serialize(),
-                    success: function (data) {
-                        //  ... do something with the data...
-                        $("#AssignPanelModal").modal('hide');
-                        if (data)
-                            ShowMessage("Panel assigned successfully.", 1);
-                        else
-                            ShowMessage("Problem occured.", 0);
-                    }
-                });
-            }
-            else {
-                $("#Panel").blur();
-            }
-        }
-
-        function assignTypeToMeber() {           
-            if ($("#Tag").val()) {
-                $.ajax({
-                    url: '/ManageUser/AssignTypeToUser',
-                    type: 'post',
-                    dataType: 'json',
-                    data: $('#frmAssignType').serialize(),
-                    success: function (data) {
-                        //  ... do something with the data...
-                        $("#AssignTypeModal").modal('hide');
-                        if (data)
-                            ShowMessage("Type assigned successfully.", 1);
-                        else
-                            ShowMessage("Problem occured.", 0);
-                    }
-                });
-            }
-            else {
-                $("#Tag").blur();
-            }
-        }
-
-        function saveTag() {           
-            if ($("#tagForm").valid()) {
-                $.ajax({
-                    type: "POST",
-                    url: '/Tag/Save',
-                    data: $('#tagForm').serialize(),
-                    success: function (returndata) {
-                        $("#addTagPopup").modal('hide');
-                        var $tagMultiSelect = $('#Tag').data('kendoMultiSelect');
-                        var selectedValues = $tagMultiSelect.value().slice();
-                        var multidata = $tagMultiSelect.dataSource.data();
-                        multidata.unshift({ TagName: returndata.TagName, TagId: returndata.TagId });
-                        $tagMultiSelect.dataSource.data(multidata);
-                        selectedValues.push(returndata.TagId);
-                        $tagMultiSelect.value(selectedValues);
-                        $("#tagForm").trigger("reset");
-                    }
-                });
-            }
-            else {
-                $('#tagForm').submit();
-            }
-        }
-
-        function AddTag() {
-            $("#tagForm").kendoValidator({
-                rules: {
-                    tagNamevalidation: function (input, params) {
-                        if (input.is("[name='TagName']") && input.val() != "") {
-                            input.attr("data-tagNamevalidation-msg", "Tag name already exist !");
-                            return isTagNameAvailable("", input.val());
-                        }
-
-                        return true;
-                    }
-                }
-            });          
-            $('#TagName').val("");
-            $('#Description').val("");
-            $("#addTagPopup").modal('show');
-        }
-
-        function isTagNameAvailable(existingName, updatedName) {
-            var isAvailable = true;
-            if (existingName != updatedName) {
-                $.ajax({
-                    type: "POST",
-                    url: '/Tag/IsDuplicateTagName',
-                    async: false,
-                    data: { existingTagName: existingName, tagName: updatedName },
-                    success: function (returndata) {
-                        if (returndata == true) {
-                            isAvailable = true;
-                        }
-                        else {
-                            isAvailable = false;
-                        }
-                    }
-                });
-            }
-            return isAvailable;
-        }
-
-        function AddPanel() {         
-            $('#PanelName').val("");
-            $("#addPanelPopup").modal('show');
-        }
-
-        function savePanel() {          
-            if ($("#panelForm").valid()) {
-                $.ajax({
-                    type: "POST",
-                    url: '/Panel/PanelSave',
-                    data: $('#panelForm').serialize(),
-                    success: function (returndata) {
-                        $("#addPanelPopup").modal('hide');
-                        var $panelMultiSelect = $('#Panel').data('kendoMultiSelect');
-                        var multidata = $panelMultiSelect.dataSource.data();
-                        multidata.unshift({ PanelName: returndata.PanelName, PanelId: returndata.PanelId });
-                        var selectedValues = $panelMultiSelect.value().slice();
-                        selectedValues.push(returndata.PanelId);
-                        $panelMultiSelect.value(selectedValues);
-                        $("#panelForm").trigger("reset");
-                    }
-                });
-            }
-            else {
-                $('#panelForm').submit();
-            }
-        }
-
-    </script>
+    
 
 
     <!-- Modal -->
@@ -428,7 +155,7 @@
                         <button type="button" class="close" data-dismiss="modal">&times;</button>
                         <h4 class="modal-title"><span>Add panel</span></h4>
                     </div>
-                    <div class="modal-body">
+                    <div class="modal-body" style="padding:20px 30px 50px 30px">
 
                         @Html.Partial("~/Views/Panel/AddPanel.cshtml", new Silicus.Ensure.Models.DataObjects.Panel())
                     </div>
@@ -441,6 +168,290 @@
             </div>
         </form>
     </div>
+
+
+<script>
+
+
+
+        function assignPanel(e) {
+            var grid = $("#UserGrids").data("kendoGrid");
+            var userDetailViewModel = grid.dataItem($(e.currentTarget).closest("tr"));
+            if (userDetailViewModel && userDetailViewModel.UserId) {
+                $.ajax({
+                    type: "Post",
+                    url: '/ManageUser/AssignPanelToUserView',
+                    contentType: "application/json",
+                    data: JSON.stringify(userDetailViewModel),
+                    success: function (returndata) {
+                        if (returndata) {
+                            $("#frmAssignPanel").html(returndata);
+                            $("#AssignPanelModal").modal('show');
+                            $("#frmAssignPanel").kendoValidator();
+                        }
+                        else {
+                            ShowMessage("Error occured while delete operation.", 0);
+                        }
+                    }
+                });
+            }
+
+
+        }
+
+        function assignType(e) {
+            var grid = $("#UserGrids").data("kendoGrid");
+            var userDetailViewModel = grid.dataItem($(e.currentTarget).closest("tr"));
+            if (userDetailViewModel && userDetailViewModel.UserId) {
+                $.ajax({
+                    type: "Post",
+                    url: '/ManageUser/AssignTypeToUserView',
+                    contentType: "application/json",
+                    data: JSON.stringify(userDetailViewModel),
+                    success: function (returndata) {
+                        if (returndata) {
+                            $("#frmAssignType").html(returndata);
+                            $("#AssignTypeModal").modal('show');
+                            $("#frmAssignType").kendoValidator();
+                        }
+                        else {
+                            ShowMessage("Error occured while delete operation.", 0);
+                        }
+                    }
+                });
+            }
+        }
+
+        function onSelect() {
+            var dataItem = this.dataItem();
+            var value = dataItem['Text'];
+            grid = $("#UserGrids").data("kendoGrid");
+            if (value == "All") {
+                grid.dataSource.filter([]);
+            }
+            else {
+                grid.dataSource.filter({ field: "RoleName", operator: "eq", value: value });
+            }
+        }
+        $(document).ready(function () {
+            $("#FieldFilter").keyup(function () {
+                var value = $("#FieldFilter").val();
+                grid = $("#UserGrids").data("kendoGrid");
+                if (value.length >= 1) {
+                    if (value) {
+                        var filter = { logic: "or", filters: [] };
+                        filter.filters.push({ field: "RoleName", operator: "contains", value: value });
+                        filter.filters.push({ field: "Email", operator: "contains", value: value });
+                        filter.filters.push({ field: "FullName", operator: "contains", value: value });
+                        grid.dataSource.query({ filter: filter });
+                    } else {
+                        grid.dataSource.filter({});
+                    }
+                }
+                else if (value == "")
+                    grid.dataSource.filter({});
+            });
+
+            $("#UserSearchRefresh").click(function (e) {
+                var value = $("#Role").val();
+                $("#FieldFilter").val('');
+                if (typeof (value) == "undefined" && value == null) {
+                       e.preventDefault();
+                    var datasource = $("#UserGrids").data("kendoGrid").dataSource;
+                    //Clear filters:
+                    datasource.filter([]);
+                    $("#FieldFilter").val('');
+                }
+                else {
+
+                    grid = $("#UserGrids").data("kendoGrid");
+                    if (value.length >= 1) {
+                        if (value) {
+                            var filter = { logic: "or", filters: [] };
+                            filter.filters.push({ field: "RoleName", operator: "contains", value: value });
+                            filter.filters.push({ field: "Email", operator: "contains", value: value });
+                            filter.filters.push({ field: "FullName", operator: "contains", value: value });
+                            grid.dataSource.query({ filter: filter });
+                        } else {
+                            grid.dataSource.filter({});
+                        }
+                    }
+                }
+
+
+            });
+
+            $('#addTagPopup,#addPanelPopup').on('hidden.bs.modal', function () {
+                $('.field-validation-error').hide();
+            });
+        });
+
+        function AddNew() {
+            window.location.href = "/Admin/CandidateAdd?UserId=0";
+            return false;
+        }
+
+        function deleteUser(userId) {
+            $.when(showConfirmationWindow('Are you sure, you want to delete this record?', 'Delete')).then(function (confirmed) {
+                if (confirmed) {
+                    $.ajax({
+                        type: "POST",
+                        url: '@Url.Action("DeleteUser", "User")',
+                        data: { UserId: userId },
+                        success: function (returndata) {
+                            if (returndata == 1) {
+                                $('#UserGrids').data('kendoGrid').dataSource.read();
+                                $('#userGrids').data('kendoGrid').refresh();
+                                ShowMessage("User deleted successfully.", 1);
+                            }
+                            else {
+                                ShowMessage("Error occured while delete operation.", 0);
+                            }
+                        }
+                    });
+                }
+            });
+        }
+
+        function assignPanelToMeber() {
+            if ($("#Panel").val()) {
+                $.ajax({
+                    url: '/ManageUser/AssignPanelToUser',
+                    type: 'post',
+                    dataType: 'json',
+                    data: $('#frmAssignPanel').serialize(),
+                    success: function (data) {
+                        //  ... do something with the data...
+                        $("#AssignPanelModal").modal('hide');
+                        if (data)
+                            ShowMessage("Panel assigned successfully.", 1);
+                        else
+                            ShowMessage("Problem occured.", 0);
+                    }
+                });
+            }
+            else {
+                $("#Panel").blur();
+            }
+        }
+
+        function assignTypeToMeber() {
+            if ($("#Tag").val()) {
+                $.ajax({
+                    url: '/ManageUser/AssignTypeToUser',
+                    type: 'post',
+                    dataType: 'json',
+                    data: $('#frmAssignType').serialize(),
+                    success: function (data) {
+                        //  ... do something with the data...
+                        $("#AssignTypeModal").modal('hide');
+                        if (data)
+                            ShowMessage("Type assigned successfully.", 1);
+                        else
+                            ShowMessage("Problem occured.", 0);
+                    }
+                });
+            }
+            else {
+                $("#Tag").blur();
+            }
+        }
+
+        function saveTag() {
+            if ($("#tagForm").valid()) {
+                $.ajax({
+                    type: "POST",
+                    url: '/Tag/Save',
+                    data: $('#tagForm').serialize(),
+                    success: function (returndata) {
+                        $("#addTagPopup").modal('hide');
+                        var $tagMultiSelect = $('#Tag').data('kendoMultiSelect');
+                        var selectedValues = $tagMultiSelect.value().slice();
+                        var multidata = $tagMultiSelect.dataSource.data();
+                        multidata.unshift({ TagName: returndata.TagName, TagId: returndata.TagId });
+                        $tagMultiSelect.dataSource.data(multidata);
+                        selectedValues.push(returndata.TagId);
+                        $tagMultiSelect.value(selectedValues);
+                        $("#tagForm").trigger("reset");
+                    }
+                });
+            }
+            else {
+                $('#tagForm').submit();
+            }
+        }
+
+        function AddTag() {
+            $("#tagForm").kendoValidator({
+                rules: {
+                    tagNamevalidation: function (input, params) {
+                        if (input.is("[name='TagName']") && input.val() != "") {
+                            input.attr("data-tagNamevalidation-msg", "Tag name already exist.");
+                            return isTagNameAvailable("", input.val());
+                        }
+
+                        return true;
+                    }
+                }
+            });
+            $('#TagName').val("");
+            $('#Description').val("");
+            $("#addTagPopup").modal('show');
+        }
+
+        function isTagNameAvailable(existingName, updatedName) {
+            var isAvailable = true;
+            if (existingName != updatedName) {
+                $.ajax({
+                    type: "POST",
+                    url: '/Tag/IsDuplicateTagName',
+                    async: false,
+                    data: { existingTagName: existingName, tagName: updatedName },
+                    success: function (returndata) {
+                        if (returndata == true) {
+                            isAvailable = true;
+                        }
+                        else {
+                            isAvailable = false;
+                        }
+                    }
+                });
+            }
+            return isAvailable;
+        }
+
+        function AddPanel() {
+            $('#PanelName').val("");
+            $("#addPanelPopup").modal('show');
+            $("#validationPanelUserMgmt").css('display', 'none');
+
+        }
+
+        function savePanel() {
+            if ($("#panelForm").valid()) {
+                $.ajax({
+                    type: "POST",
+                    url: '/Panel/PanelSave',
+                    data: $('#panelForm').serialize(),
+                    success: function (returndata) {
+                        $("#addPanelPopup").modal('hide');
+                        var $panelMultiSelect = $('#Panel').data('kendoMultiSelect');
+                        var multidata = $panelMultiSelect.dataSource.data();
+                        multidata.unshift({ PanelName: returndata.PanelName, PanelId: returndata.PanelId });
+                        var selectedValues = $panelMultiSelect.value().slice();
+                        selectedValues.push(returndata.PanelId);
+                        $panelMultiSelect.value(selectedValues);
+                        $("#panelForm").trigger("reset");
+                    }
+                });
+            }
+            else {
+                $('#panelForm').submit();
+                $("#validationPanelUserMgmt").css('display', 'block');
+            }
+        }
+
+</script>
 
 <style>
     #userGrids .k-loading-image {

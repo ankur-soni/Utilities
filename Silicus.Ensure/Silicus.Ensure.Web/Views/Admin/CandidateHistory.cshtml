@@ -20,12 +20,14 @@
     <div class="col-lg-10 col-md-10 col-sm-10 col-xs-10">
         <h1 class="dashboard-name">Candidate History</h1>
     </div>
-
+    
 
 </div>
 <div class="row">
+  
     <div class="col-sm-12">
         <div class="box M-T15 M-B60">
+            <div><a class="k-button btn btn-primary" href="/Admin/Candidates"><span>Back</span></a> </div>
             <div class="f1" style="padding: 25px 25px 0px 25px;">
                 <div class="main-content">
                     @{int count = 0; }
@@ -330,7 +332,7 @@
                             {
                                                             <div class="row M-B15">
                                                                 <div class="col-sm-12">
-                                                                    <b class="themeColorBlue"> Test  Date : </b>   @Html.DisplayFor(model => candidateApplicationDetails.ApplicationDate)   &emsp;&emsp;&emsp; <a class="k-button k-button-icontext" href="/Admin/ViewQuestion?TestSuiteId=@candidateApplicationDetails.TestSuiteViewModel.TestSuiteId &UserId=@candidateApplicationDetails.TestSuiteViewModel.Userid"><span class="k-icon k-edit"></span>View Test</a>
+                                                                    <b class="themeColorBlue"> Test  Date : </b>   @Html.DisplayFor(model => candidateApplicationDetails.ApplicationDate)   &emsp;&emsp;&emsp; <a class="k-button k-button-icontext" target="_blank" href="/Admin/ViewQuestion?TestSuiteId=@candidateApplicationDetails.TestSuiteViewModel.TestSuiteId &UserId=@candidateApplicationDetails.TestSuiteViewModel.Userid"><span class="k-icon k-edit"></span>View Test</a>
                                                                 </div>
                                                             </div>
 

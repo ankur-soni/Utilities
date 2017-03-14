@@ -9697,7 +9697,11 @@ body.md-skin {
         margin: 0 0 0 0px;
        
     }*/
-
+    .navbar-static-side {
+    z-index: 2001;
+    position: absolute;
+    width: 220px;
+}
     .body-small .navbar-static-side {
         display: none;
         z-index: 2001;
