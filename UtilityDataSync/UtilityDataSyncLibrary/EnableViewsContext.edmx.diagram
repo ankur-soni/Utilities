@@ -9,35 +9,17 @@
         <EntityTypeShape EntityType="EnableDevModel.vwExt_Company" Width="1.5" PointX="2.75" PointY="0.75" IsExpanded="true" />
         <EntityTypeShape EntityType="EnableDevModel.vwExt_Department" Width="1.5" PointX="4.75" PointY="0.75" IsExpanded="true" />
         <EntityTypeShape EntityType="EnableDevModel.vwExt_Engagement" Width="1.5" PointX="0.75" PointY="4.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="EnableDevModel.vwExt_EngagementPermissions" Width="1.5" PointX="2.75" PointY="4.75" IsExpanded="true" />
         <EntityTypeShape EntityType="EnableDevModel.vwExt_EngagementRoles" Width="1.5" PointX="4.75" PointY="3.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="EnableDevModel.vwExt_EngagementRolesSchedule" Width="1.5" PointX="6.75" PointY="0.75" IsExpanded="true" />
         <EntityTypeShape EntityType="EnableDevModel.vwExt_EngagementTaskTypes" Width="1.5" PointX="6.75" PointY="4.75" IsExpanded="true" />
         <EntityTypeShape EntityType="EnableDevModel.vwExt_EngagementType" Width="1.5" PointX="2.75" PointY="7.75" IsExpanded="true" />
         <EntityTypeShape EntityType="EnableDevModel.vwExt_Location" Width="1.5" PointX="8.75" PointY="0.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="EnableDevModel.vwExt_LocationHoliday" Width="1.5" PointX="8.75" PointY="3.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="EnableDevModel.vwExt_LocationWorkingSchedule" Width="1.5" PointX="8.75" PointY="6.75" IsExpanded="true" />
         <EntityTypeShape EntityType="EnableDevModel.vwExt_Resource" Width="1.5" PointX="4.75" PointY="9.75" IsExpanded="true" />
         <EntityTypeShape EntityType="EnableDevModel.vwExt_ResourceHistory" Width="1.5" PointX="6.75" PointY="9.75" IsExpanded="true" />
         <EntityTypeShape EntityType="EnableDevModel.vwExt_ResourceSkillLevel" Width="1.5" PointX="8.75" PointY="9.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="EnableDevModel.vwExt_ResourceWorkingScheduleHistory" Width="1.5" PointX="10.75" PointY="0.75" IsExpanded="true" />
         <EntityTypeShape EntityType="EnableDevModel.vwExt_Skill" Width="1.5" PointX="0.75" PointY="10.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="EnableDevModel.vwExt_TimeCard" Width="1.5" PointX="10.75" PointY="4.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="EnableDevModel.vwExt_TimeCardResourceEngagements" Width="1.5" PointX="10.75" PointY="8.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="EnableDevModel.vwExt_TimeCardResourceTaskTypes" Width="1.5" PointX="10.75" PointY="11.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="EnableDevModel.vwExt_TimeZoneMaster" Width="1.5" PointX="12.75" PointY="0.75" IsExpanded="true" />
         <EntityTypeShape EntityType="EnableDevModel.vwExt_Title" Width="1.5" PointX="12.75" PointY="3.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="EnableDevModel.vwExt_TKT_Queue" Width="1.5" PointX="12.75" PointY="7.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="EnableDevModel.vwExt_TKT_QueueTypeMaster" Width="1.5" PointX="12.75" PointY="11.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="EnableDevModel.vwExt_TKT_RosterCalenderInfo" Width="1.5" PointX="0.75" PointY="13.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="EnableDevModel.vwExt_TKT_RosterCalenderUsers" Width="1.5" PointX="14.75" PointY="0.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="EnableDevModel.vwExt_TKT_RosterResourceTypeMaster" Width="1.5" PointX="2.75" PointY="14.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="EnableDevModel.vwExt_TKT_RosterShift" Width="1.5" PointX="14.75" PointY="3.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="EnableDevModel.vwExt_TKT_RosterTypeMaster" Width="1.5" PointX="4.75" PointY="14.75" IsExpanded="true" />
         <EntityTypeShape EntityType="EnableDevModel.vwExt_User" Width="1.5" PointX="14.75" PointY="6.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="EnableDevModel.vwExt_WeekDayMaster" Width="1.5" PointX="6.75" PointY="14.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="EnableDevModel.database_firewall_rules" Width="1.5" PointX="8.75" PointY="14.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="EnableDevModel.vwExt_ResourceType" Width="1.5" PointX="11.375" PointY="14.75" />
+        <EntityTypeShape EntityType="EnableDevModel.vwExt_ResourceType" Width="1.5" PointX="8.75" PointY="11.875" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

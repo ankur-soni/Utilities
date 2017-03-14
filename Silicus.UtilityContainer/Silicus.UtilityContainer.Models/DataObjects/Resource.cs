@@ -16,18 +16,13 @@ namespace Silicus.UtilityContainer.Models.DataObjects
     public partial class Resource
     {
         public int ID { get; set; }
-        [ForeignKey("User")]
         public int UserID { get; set; }
-
-        public virtual User User { get; set; }
         public bool IsTimecardsRequireApproval { get; set; }
         public Nullable<int> DirectManager1ID { get; set; }
         public bool CanDirectManager1ApproveTime { get; set; }
-        public bool CanDirectManager1ApproveExpense { get; set; }
         public bool CanDirectManager1ApproveSkills { get; set; }
         public Nullable<int> DirectManager2ID { get; set; }
         public bool CanDirectManager2ApproveTime { get; set; }
-        public bool CanDirectManager2ApproveExpense { get; set; }
         public bool CanDirectManager2ApproveSkills { get; set; }
         public bool IsShared { get; set; }
         public Nullable<System.DateTime> SkillsLastUpdatedOn { get; set; }
