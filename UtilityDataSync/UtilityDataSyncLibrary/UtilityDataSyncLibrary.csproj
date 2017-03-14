@@ -62,9 +62,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="database_firewall_rules.cs">
-      <DependentUpon>EnableViewsContext.tt</DependentUpon>
-    </Compile>
     <Compile Include="EnableViewsContext.Context.cs">
       <DependentUpon>EnableViewsContext.Context.tt</DependentUpon>
       <AutoGen>True</AutoGen>
@@ -115,13 +112,7 @@
     <Compile Include="vwExt_Engagement.cs">
       <DependentUpon>EnableViewsContext.tt</DependentUpon>
     </Compile>
-    <Compile Include="vwExt_EngagementPermissions.cs">
-      <DependentUpon>EnableViewsContext.tt</DependentUpon>
-    </Compile>
     <Compile Include="vwExt_EngagementRoles.cs">
-      <DependentUpon>EnableViewsContext.tt</DependentUpon>
-    </Compile>
-    <Compile Include="vwExt_EngagementRolesSchedule.cs">
       <DependentUpon>EnableViewsContext.tt</DependentUpon>
     </Compile>
     <Compile Include="vwExt_EngagementTaskTypes.cs">
@@ -131,12 +122,6 @@
       <DependentUpon>EnableViewsContext.tt</DependentUpon>
     </Compile>
     <Compile Include="vwExt_Location.cs">
-      <DependentUpon>EnableViewsContext.tt</DependentUpon>
-    </Compile>
-    <Compile Include="vwExt_LocationHoliday.cs">
-      <DependentUpon>EnableViewsContext.tt</DependentUpon>
-    </Compile>
-    <Compile Include="vwExt_LocationWorkingSchedule.cs">
       <DependentUpon>EnableViewsContext.tt</DependentUpon>
     </Compile>
     <Compile Include="vwExt_Resource.cs">
@@ -151,52 +136,13 @@
     <Compile Include="vwExt_ResourceType.cs">
       <DependentUpon>EnableViewsContext.tt</DependentUpon>
     </Compile>
-    <Compile Include="vwExt_ResourceWorkingScheduleHistory.cs">
-      <DependentUpon>EnableViewsContext.tt</DependentUpon>
-    </Compile>
     <Compile Include="vwExt_Skill.cs">
-      <DependentUpon>EnableViewsContext.tt</DependentUpon>
-    </Compile>
-    <Compile Include="vwExt_TimeCard.cs">
-      <DependentUpon>EnableViewsContext.tt</DependentUpon>
-    </Compile>
-    <Compile Include="vwExt_TimeCardResourceEngagements.cs">
-      <DependentUpon>EnableViewsContext.tt</DependentUpon>
-    </Compile>
-    <Compile Include="vwExt_TimeCardResourceTaskTypes.cs">
-      <DependentUpon>EnableViewsContext.tt</DependentUpon>
-    </Compile>
-    <Compile Include="vwExt_TimeZoneMaster.cs">
       <DependentUpon>EnableViewsContext.tt</DependentUpon>
     </Compile>
     <Compile Include="vwExt_Title.cs">
       <DependentUpon>EnableViewsContext.tt</DependentUpon>
     </Compile>
-    <Compile Include="vwExt_TKT_Queue.cs">
-      <DependentUpon>EnableViewsContext.tt</DependentUpon>
-    </Compile>
-    <Compile Include="vwExt_TKT_QueueTypeMaster.cs">
-      <DependentUpon>EnableViewsContext.tt</DependentUpon>
-    </Compile>
-    <Compile Include="vwExt_TKT_RosterCalenderInfo.cs">
-      <DependentUpon>EnableViewsContext.tt</DependentUpon>
-    </Compile>
-    <Compile Include="vwExt_TKT_RosterCalenderUsers.cs">
-      <DependentUpon>EnableViewsContext.tt</DependentUpon>
-    </Compile>
-    <Compile Include="vwExt_TKT_RosterResourceTypeMaster.cs">
-      <DependentUpon>EnableViewsContext.tt</DependentUpon>
-    </Compile>
-    <Compile Include="vwExt_TKT_RosterShift.cs">
-      <DependentUpon>EnableViewsContext.tt</DependentUpon>
-    </Compile>
-    <Compile Include="vwExt_TKT_RosterTypeMaster.cs">
-      <DependentUpon>EnableViewsContext.tt</DependentUpon>
-    </Compile>
     <Compile Include="vwExt_User.cs">
-      <DependentUpon>EnableViewsContext.tt</DependentUpon>
-    </Compile>
-    <Compile Include="vwExt_WeekDayMaster.cs">
       <DependentUpon>EnableViewsContext.tt</DependentUpon>
     </Compile>
   </ItemGroup>

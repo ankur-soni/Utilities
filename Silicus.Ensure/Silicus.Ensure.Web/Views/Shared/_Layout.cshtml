@@ -238,9 +238,24 @@
 
         $(document).ready(function () {
             sidebarautoheight();
+            if ($(window).width() <= 768) {
+                $("body").addClass("mini-navbar");
+                $("#menu-toggle").fadeOut();
+            }
+            else {
+                $("#menu-toggle").fadeIn();
+            }
+
         });
         $(window).resize(function () {
             sidebarautoheight();
+            if ($(window).width() <= 768) {
+                $("body").addClass("mini-navbar");
+                $("#menu-toggle").fadeOut();
+            }
+            else {
+                $("#menu-toggle").fadeIn();
+            }
         });
 
         $(document).ajaxStop(function () {

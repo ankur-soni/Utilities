@@ -190,7 +190,7 @@ namespace UtilityDataSyncLibrary
         public virtual DbSet<EngagementRoles> EngagementRoles { get; set; }
         public virtual DbSet<EngagementTaskTypes> EngagementTaskTypes { get; set; }
         public virtual DbSet<EngagementType> EngagementTypes { get; set; }
-        public virtual DbSet<Location> Locations { get; set; }
+        //public virtual DbSet<Location> Locations { get; set; }
         public virtual DbSet<Resource> Resources { get; set; }
         public virtual DbSet<ResourceHistory> ResourceHistories { get; set; }
         public virtual DbSet<ResourceSkillLevel> ResourceSkillLevels { get; set; }

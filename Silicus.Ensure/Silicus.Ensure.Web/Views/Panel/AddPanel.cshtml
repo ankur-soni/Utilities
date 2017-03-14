@@ -7,7 +7,10 @@
             <div class="col-md-3">@Html.LabelFor(model => model.PanelName) <b style="color:Red;">*</b></div>
             <div class="col-md-9">
                 @Html.EditorFor(model => model.PanelName, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.PanelName, "", new { @class = "text-danger" })
+                @*@Html.ValidationMessageFor(model => model.PanelName, "", new { @class = "text-danger" })*@
+                <div id="validationPanelUserMgmt">
+                    <span class="k-widget k-tooltip k-tooltip-validation k-invalid-msg field-validation-error" data-for="Tag" data-valmsg-for="Tag" id="Tag_validationMessage" role="alert"><span class="k-icon k-warning"> </span> Panel name is required.</span>
+                </div>
             </div>
         </div>
 
