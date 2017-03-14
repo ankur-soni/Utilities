@@ -2497,6 +2497,7 @@ width: 310px;
 }
 
 @media (max-width:768px) {
+
     .cust-mar {
         margin-top: 15px;
     }
@@ -2540,9 +2541,9 @@ width: 310px;
     .body-small.mini-navbar .navbar-static-side{
         display:block;
     }
-    .sidebar-wrapper {
+    /*.sidebar-wrapper {
         display: none;
-    }
+    }*/
      #page-wrapper {
         position: inherit;
         margin: 0 0 0 0px;
