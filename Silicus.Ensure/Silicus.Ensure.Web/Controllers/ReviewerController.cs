@@ -85,10 +85,19 @@ namespace Silicus.Ensure.Web.Controllers
             return View(testSuiteCandidateModel);
         }
 
-        public ActionResult LoadTestSummaryView(int UserTestSuiteId)
+        public ActionResult LoadTestSummaryView(int userId,int UserTestSuiteId)
         {
-            var testSummary = GetTestSummary(UserTestSuiteId);
-            return PartialView("_TestSummary", testSummary);
+            var user = _userService.GetUserById(userId);
+            UserTestSuite userTestSuite = _testSuiteService.GetUserTestSuiteByUserApplicationId(user.UserApplicationId);
+            TestSuiteCandidateModel testSuiteCandidateModel = _mappingService.Map<UserTestSuite, TestSuiteCandidateModel>(userTestSuite);
+            var candidateInfoBusinessModel = _userService.GetCandidateInfo(user);
+            testSuiteCandidateModel.CandidateInfo = _mappingService.Map<CandidateInfoBusinessModel, CandidateInfoViewModel>(candidateInfoBusinessModel);
+            testSuiteCandidateModel.NavigationDetails = GetNavigationDetails(testSuiteCandidateModel.UserTestSuiteId);
+            testSuiteCandidateModel.TotalQuestionCount = testSuiteCandidateModel.PracticalCount + testSuiteCandidateModel.ObjectiveCount;
+            testSuiteCandidateModel.DurationInMin = testSuiteCandidateModel.Duration;
+            testSuiteCandidateModel.TestSummary = GetTestSummary(testSuiteCandidateModel.UserTestSuiteId);
+            testSuiteCandidateModel.UserId = user.UserId;
+            return PartialView("_reviewerTestSummaryAndCandidateDetails", testSuiteCandidateModel);
         }
 
         private TestSummaryViewModel GetTestSummary(int userTestSuiteId)

@@ -256,7 +256,9 @@
 }
 
 @section CandidateDetails {
-    @Html.Partial("_reviewerTestSummaryAndCandidateDetails", Model)
+    <div id="TestSummaryAndCandidateDetailsDiv">
+        @Html.Partial("_reviewerTestSummaryAndCandidateDetails", Model)
+    </div>
 }
 
 @helper QuestionColor(Silicus.Ensure.Models.Test.QuestionNavigationBasics question)
@@ -443,14 +445,15 @@ else
 
     function updateTestSummary() {
         var userTestSuiteId = $("#UserTestSuiteId").val();
+        var userId = $("#UserId").val();
         $.ajax({
             url: "/Reviewer/LoadTestSummaryView",
             cache: false,
             dataType: "html",
-            data: { userTestSuiteId: userTestSuiteId },
+            data: { userId: userId, userTestSuiteId: userTestSuiteId },
             success: function (data) {
-                $("#TestSummaryDiv").html('');
-                $("#TestSummaryDiv").html(data);
+                $("#TestSummaryAndCandidateDetailsDiv").html('');
+                $("#TestSummaryAndCandidateDetailsDiv").html(data);
             }
         });
     }
@@ -560,5 +563,4 @@ else
 
     }
 </script>
-
 
