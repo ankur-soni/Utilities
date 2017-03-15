@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
+using System.Web.Mvc;
 
 namespace Silicus.Ensure.Web.Models
 {
@@ -18,6 +19,7 @@ namespace Silicus.Ensure.Web.Models
         public string QuestionType { get; set; }
         [DisplayName("Question")]
         [Required(ErrorMessage ="Question is required.")]
+        [AllowHtml]
         public string QuestionDescription { get; set; }
         public int AnswerType { get; set; }
         public int OptionCount { get; set; }
@@ -40,6 +42,7 @@ namespace Silicus.Ensure.Web.Models
         public bool IsAnsOption8 { get; set; }
 
         public List<string> CorrectAnswer { get; set; }
+        [AllowHtml]
         public string Answer { get; set; }
         public string Tag { get; set; }
         [Required(ErrorMessage = "Proficiency is required.")]
