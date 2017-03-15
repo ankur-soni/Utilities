@@ -253,32 +253,11 @@
             });
 
             $("#UserSearchRefresh").click(function (e) {
-                var value = $("#Role").val();
+                e.preventDefault();
+                var datasource = $("#UserGrids").data("kendoGrid").dataSource;
+                //Clear filters:
+                datasource.filter([]);
                 $("#FieldFilter").val('');
-                if (typeof (value) == "undefined" && value == null) {
-                       e.preventDefault();
-                    var datasource = $("#UserGrids").data("kendoGrid").dataSource;
-                    //Clear filters:
-                    datasource.filter([]);
-                    $("#FieldFilter").val('');
-                }
-                else {
-
-                    grid = $("#UserGrids").data("kendoGrid");
-                    if (value.length >= 1) {
-                        if (value) {
-                            var filter = { logic: "or", filters: [] };
-                            filter.filters.push({ field: "RoleName", operator: "contains", value: value });
-                            filter.filters.push({ field: "Email", operator: "contains", value: value });
-                            filter.filters.push({ field: "FullName", operator: "contains", value: value });
-                            grid.dataSource.query({ filter: filter });
-                        } else {
-                            grid.dataSource.filter({});
-                        }
-                    }
-                }
-
-
             });
 
             $('#addTagPopup,#addPanelPopup').on('hidden.bs.modal', function () {
