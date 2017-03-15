@@ -8,7 +8,7 @@ using Silicus.Finder.Web.Filters;
 
 namespace Silicus.Finder.Web.Controllers
 {
-    
+    [Authorize]
     public class DashboardController : Controller
     {
         private readonly IEmployeeService _employeeService;
@@ -22,21 +22,8 @@ namespace Silicus.Finder.Web.Controllers
             _skillsetservice = skillsetservice;
         }
 
-        //private ApplicationRoleManager _roleManager;
-        //public ApplicationRoleManager RoleManager
-        //{
-        //    get
-        //    {
-        //        return _roleManager ?? HttpContext.GetOwinContext().Get<ApplicationRoleManager>();
-        //    }
-        //    private set
-        //    {
-        //        _roleManager = value;
-        //    }
-        //}
-
-       // [UtilityAuthorizationAttribute]
-        [CustomAuthorizeAttribute(AllowedRole = "Admin, Manager, User")]
+        // [UtilityAuthorizationAttribute]
+       // [CustomAuthorizeAttribute(AllowedRole = "Admin, Manager, User")]
         public ActionResult Dashboard()
         {
             //ViewBag.UserRoles = RoleManager.Roles.Select(r => new SelectListItem { Text = r.Name, Value = r.Name }).ToList();

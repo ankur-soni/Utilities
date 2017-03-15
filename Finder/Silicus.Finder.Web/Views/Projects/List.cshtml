@@ -104,8 +104,10 @@
 
             columns.Bound(c => c.ProjectCode).Width(76);
             columns.Bound(c => c.ProjectType).Width(74);
-            columns.Bound(c => c.EngagementType).Template(c => c.EngagementType.GetDescription()).Width(100);
-            columns.Bound(c => c.Status).Template(c => c.Status.GetDescription()).Width(90);
+            columns.Bound(c => c.EngagementType).Width(100);
+            columns.Bound(c => c.Status).Width(90);
+            //columns.Bound(c => c.EngagementType).Template(c => c.EngagementType.GetDescription()).Width(100);
+            //columns.Bound(c => c.Status).Template(c => c.Status.GetDescription()).Width(90);
         })
             .Scrollable(scr => scr.Height(300))
             .Pageable(pageable => pageable

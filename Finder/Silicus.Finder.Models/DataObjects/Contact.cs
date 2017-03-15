@@ -30,7 +30,7 @@ namespace Silicus.Finder.Models.DataObjects
 
         
         [Display(Name = "Mobile Number")]
-        public Int64? MobileNumber { get; set; }
+        public string MobileNumber { get; set; }
 
         //public virtual Employee Employee { get; set; }
     }

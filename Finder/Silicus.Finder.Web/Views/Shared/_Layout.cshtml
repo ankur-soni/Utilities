@@ -95,23 +95,24 @@
                                     <div class="menuList">
                                         <div class="dropdown" style="float:right">
                                             <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">
-                                                @if (HttpContext.Current.Session["Role"].ToString()=="Admin")
+                                                @*@if (HttpContext.Current.Session["Role"].ToString()=="Admin")
                                                 {
                                                     <span>Admin</span>
-                                                }
-                                                else
-                                                {
+                                                }*@
+                                                @*else*@
+                                                @*{*@
                                                     <span>My Account</span>
-                                                }
+                                                @*  }*@
                                                 <span class="caret"></span>
                                             </button>
                                             <ul class="dropdown-menu">
-                                                @if (HttpContext.Current.Session["Role"].ToString() == "Admin")
+                                                @*@if (HttpContext.Current.Session["Role"].ToString() == "Admin")
                                                 {
                                                     <li><a href="@Url.Action("GetLockedUsers", "Admin")">Locked Users</a></li>
-                                                }
-                                                <li><a href="@Url.Action("LogOff", "Account")">Log Out</a></li>
+                                                }*@
+                                                <li><a href="@Url.Action("SignOut", "Account")">Log Out</a></li>
                                             </ul>
+                                            @Html.Partial("_LoginPartial")
                                         </div>
                                     </div>
                                 }

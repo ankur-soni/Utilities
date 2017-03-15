@@ -17,6 +17,7 @@ using Silicus.Finder.Web.Filters;
 
 namespace Silicus.Finder.Web.Controllers
 {
+    [Authorize]
     public class TechnologyController : Controller
     {
         private readonly ISkillSetService _skillSetService;
@@ -71,7 +72,7 @@ namespace Silicus.Finder.Web.Controllers
        }
 
         //[Authorize(Roles = "Admin,Manager,User")]
-        [CustomAuthorizeAttribute(AllowedRole = "Admin, Manager, User")]
+        //[CustomAuthorizeAttribute(AllowedRole = "Admin, Manager, User")]
         public ActionResult GetAllSkillSet()
         {
             var skillSetList =  _skillSetService.GetAllSkills();
@@ -84,7 +85,7 @@ namespace Silicus.Finder.Web.Controllers
             return View(skillSetListViewModel);
         }
 
-        [CustomAuthorizeAttribute(AllowedRole = "Admin, Manager, User")]
+        //[CustomAuthorizeAttribute(AllowedRole = "Admin, Manager, User")]
         public ActionResult GetSkillSetListByName(string name)
         {
             //if (ModelState.IsValid)

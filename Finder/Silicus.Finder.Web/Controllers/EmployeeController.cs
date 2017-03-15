@@ -20,6 +20,7 @@ using Silicus.Finder.Web.Filters;
 namespace Silicus.Finder.Web.Controllers
 {
     //[Authorize(Roles="Admin")]
+    [Authorize]
     public class EmployeeController : Controller
     {
         private readonly IEmployeeService _employeeService;
@@ -36,7 +37,7 @@ namespace Silicus.Finder.Web.Controllers
 
         }
 
-        [CustomAuthorizeAttribute(AllowedRole = "Admin, Manager, User")]
+        //[CustomAuthorizeAttribute(AllowedRole = "Admin, Manager, User")]
         [ValidateInput(false)]
         public ActionResult SearchEmployeeByName(string name)
         {
@@ -50,7 +51,7 @@ namespace Silicus.Finder.Web.Controllers
             return View("GetAllEmployeesList", employees);
         }
 
-        [CustomAuthorizeAttribute(AllowedRole = "Admin, Manager, User")]
+        //[CustomAuthorizeAttribute(AllowedRole = "Admin, Manager, User")]
         public ActionResult GetAllEmployees()
         {
             var employeesList = _employeeService.GetAllEmployees();
@@ -63,7 +64,7 @@ namespace Silicus.Finder.Web.Controllers
         }
 
 
-        [CustomAuthorizeAttribute(AllowedRole = "Admin, Manager, User")]
+        //[CustomAuthorizeAttribute(AllowedRole = "Admin, Manager, User")]
         public ActionResult GetEmployeesByCriteria(EmployeeSearchCriteriaViewModel criteria)
         {
             var searchCriteriaModel = new EmployeeSearchCriteriaModel();
@@ -80,21 +81,19 @@ namespace Silicus.Finder.Web.Controllers
         }
 
 
-        [CustomAuthorizeAttribute(AllowedRole = "Admin, Manager, User")]
+        //[CustomAuthorizeAttribute(AllowedRole = "Admin, Manager, User")]
         public ActionResult Details(string id)
         {
-            // _roleService.GetRoleDetails();
             var selectedEmployee = _employeeService.GetEmployeeById(id);
             var employeeViewModel = new EmployeeViewModel();
             ViewBag.selectedEmployeesRole = _roleService.getFindersRole(selectedEmployee.Contact.EmailAddress, "Finder");
-                //_roleService.GetRoleById(Convert.ToInt32(selectedEmployee.Role)).RoleName;
             Mapper.Map(selectedEmployee, employeeViewModel);
             ViewBag.EmployeesList = _employeeService.GetAllEmployees();
             return PartialView("_Details", employeeViewModel);
 
         }
 
-        [CustomAuthorizeAttribute(AllowedRole = "Admin, Manager, User")]
+       // [CustomAuthorizeAttribute(AllowedRole = "Admin, Manager, User")]
         public ActionResult EmployeeDetails(string id)
         {
             var selectedEmployee = _employeeService.GetEmployeeById(id);
@@ -107,10 +106,10 @@ namespace Silicus.Finder.Web.Controllers
 
         
         [HttpPost]
-        public ActionResult ValidateDateEqualOrLess(DateTime GivenOn)
+        public ActionResult ValidateDateEqualOrLess(DateTime givenOn)
         {
             // validate your date here and return True if validated
-            if (GivenOn <= DateTime.Now)
+            if (givenOn <= DateTime.Now)
             {
                 return Json(true);
             }
