@@ -151,8 +151,8 @@
                 inputPlaceholder: "Ex: Nomination"
             },
         function (processName) {
+            if (processName === false) return false;
             var newTemplateName = processName.trim();
-            if (newTemplateName === false) return false;
 
             if (newTemplateName === "") {
                 swal.showInputError("Please provide template name!");
