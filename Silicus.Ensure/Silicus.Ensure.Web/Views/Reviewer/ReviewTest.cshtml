@@ -273,7 +273,14 @@ else
 }
 
 }
-
+@{if (!string.IsNullOrWhiteSpace(Model.ProfilePhotoFilePath))
+            {
+        <script>
+            $(document).ready(function () {
+                $('#CandidatePhotoImg').attr('src', "@System.Configuration.ConfigurationManager.AppSettings["ServerName"]@Html.Raw(Url.Content(Model.ProfilePhotoFilePath))");
+            });
+        </script>
+    }}
 <script>
     var clock;
     var totalTime;

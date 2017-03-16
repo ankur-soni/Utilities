@@ -14,6 +14,14 @@
     ViewBag.Title = "Welcome";
     Layout = "~/Views/Shared/_LayoutCandidate.cshtml";
 }
+@{if (!string.IsNullOrWhiteSpace(ViewBag.ProfilePhotoPath))
+    {
+        <script>
+            $(document).ready(function () {
+                $('#CandidatePhotoImg').attr('src', "@System.Configuration.ConfigurationManager.AppSettings["ServerName"]@Html.Raw(Url.Content(ViewBag.ProfilePhotoPath))");
+            });
+        </script>
+    }}
 @if (@ViewBag.Status != 1)
 {
 
@@ -99,7 +107,7 @@ else
 
 
 <script>
-       
+
     $(document).ready(function () {
 
 
@@ -108,7 +116,7 @@ else
             //$('#warning').css('color','red');
         });
 
-  
+
 
         if(@ViewBag.Status==1){
             $("#myModal").modal();
@@ -117,7 +125,7 @@ else
         }else{
             $('#btnAddMoreTime').hide();
         }
-        $('#objective-test>a,#practical-test>a').addClass('disabled');        
+        $('#objective-test>a,#practical-test>a').addClass('disabled');
     });
 
     function OnClick() {

@@ -66,6 +66,7 @@ namespace Silicus.Ensure.Web.Controllers
             }
             TestSuiteCandidateModel testSuiteCandidateModel = _mappingService.Map<UserTestSuite, TestSuiteCandidateModel>(userTestSuite);
             var candidateInfoBusinessModel = _userService.GetCandidateInfo(user);
+            testSuiteCandidateModel.ProfilePhotoFilePath = user.ProfilePhotoFilePath;
             testSuiteCandidateModel.CandidateInfo = _mappingService.Map<CandidateInfoBusinessModel, CandidateInfoViewModel>(candidateInfoBusinessModel);
             testSuiteCandidateModel.NavigationDetails = GetNavigationDetails(testSuiteCandidateModel.UserTestSuiteId);
             testSuiteCandidateModel.TotalQuestionCount = testSuiteCandidateModel.PracticalCount + testSuiteCandidateModel.ObjectiveCount;
