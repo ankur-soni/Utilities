@@ -205,8 +205,8 @@
         var isTemplateValid = false;
 
         if (users != null && users.length > 0) {
-            $.each(users, function (index) {
-                if (this.value != "" && this.value != undefined) {
+            $.each(users, function (index,value) {
+                if (value != "" && value != undefined) {
                     areUsersValid = true;
                 }
             });
