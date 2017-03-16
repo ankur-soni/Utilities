@@ -42,7 +42,7 @@
         <div class="box M-T15 M-B60">
             <div class="f1">
 
-                @using (Html.BeginForm("AddQuestions", "QuestionBank", FormMethod.Post, new { id = "AddQuestionForm" }))
+                @using (Html.BeginForm("AddQuestions", "QuestionBank", FormMethod.Post, new { id = "AddQuestionForm",onsubmit="OnSubmit()" }))
                 {
                     <div class="fluid">
                         <div class="row">
@@ -80,7 +80,7 @@
                                 <div class="form-group">
                                     <label class="font-Bold themeColorBlue">Question <span style="color:red">*</span></label>
 
-                                    @Html.Kendo().EditorFor(m => m.QuestionDescription).Name("QuestionDescription").Encode(true).Value(Model.QuestionDescription)
+                                    @Html.Kendo().EditorFor(m => m.QuestionDescription).Name("QuestionDescription").Encode(false).Value(Model.QuestionDescription)
                                     @Html.ValidationMessageFor(m => m.QuestionDescription)
                                 </div>
                             </div>
@@ -225,7 +225,7 @@
                                 <div class="form-group">
                                     <label class="font-Bold themeColorBlue">Answer <span style="color:red">*</span></label>
 
-                                    @Html.Kendo().EditorFor(m => m.Answer).Name("Answer").Encode(true).Value(Model.Answer)
+                                    @Html.Kendo().EditorFor(m => m.Answer).Name("Answer").Encode(false).Value(Model.Answer)
                                     @Html.ValidationMessageFor(m => m.Answer)
                                 </div>
                                
@@ -376,7 +376,10 @@
                                 }
                                 return true;
                             }
-
+                            function OnSubmit(e){
+                                var dropdownlist = $("#QuestionType").data("kendoDropDownList");
+                                dropdownlist.enable(true);
+                            }
                             $(document).ready(function () {                             
                                 window.onbeforeunload = function () {
                                     return "Do you really want to close?";
@@ -543,7 +546,7 @@
                                 $("#Option7").val("");
                                 $("#Option8").val("");
                                 var answer = $("#Answer").data("kendoEditor");
-                                answer.value("");
+                                //answer.value("");
                                 //var correctAnswer = $('#CorrectAnswer').data("kendoMultiSelect");
                                 //correctAnswer.value([]);
                                 $(".ansCheckBox").prop("checked",false);
