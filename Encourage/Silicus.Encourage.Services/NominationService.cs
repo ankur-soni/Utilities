@@ -439,7 +439,7 @@ namespace Silicus.Encourage.Services
 
         public List<User> GetAllResources()
         {
-            return _commonDataBaseContext.Query<User>().ToList();
+            return _commonDataBaseContext.Query<User>().Where(u => u.InactiveDate == null).ToList();
         }
 
         public List<User> GetAllResourcesForOtherReason(int awardType, int managerId)
