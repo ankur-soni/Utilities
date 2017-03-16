@@ -670,6 +670,7 @@ namespace Silicus.Ensure.Web.Controllers
                     testSuiteCandidateModel.NavigationDetails = GetQuestionNavigationDetails(questionList);
                     testSuiteCandidateModel.TotalQuestionCount = testSuiteCandidateModel.PracticalCount + testSuiteCandidateModel.ObjectiveCount;
                     testSuiteCandidateModel.DurationInMin = testSuiteCandidateModel.Duration;
+                    testSuiteCandidateModel.ProfilePhotoFilePath = candidate.ProfilePhotoFilePath;
                     return View("PreviewTest", testSuiteCandidateModel);
                 }
                 else

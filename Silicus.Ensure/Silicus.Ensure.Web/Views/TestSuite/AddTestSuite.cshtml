@@ -181,7 +181,7 @@
                         .BindTo(EnumHelper.GetSelectList((typeof(Year)))
                         .Select(x => new SelectListItem { Text = x.Value, Value = x.Value }))
                         .HtmlAttributes(new { style = "width: 100%" })
-                        .OptionLabel("Year")
+                        .OptionLabel("Years")
                                     )
                                     @Html.ValidationMessageFor(m => m.FromExperience)
                                 </div>
@@ -226,7 +226,7 @@
                                         i++;
                                         <div class="form-group">
                                             <div class="col-md-2 col-sm-2 col-xs-2">
-                                                Skill Tags
+                                                Skill Tags <span style="color:red;">*</span>
                                             </div>
                                             <div class="col-md-2 col-sm-2 col-xs-2">
                                                 <input type="text" id="Tag_@i" value="@tag.TagName" name="Tag_@i" data-val="true" data-val-required="Skill tags is required." class="tagAutoComplete">
@@ -633,7 +633,7 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal">&times;</button>
-                    <h4 class="modal-title"><span>Add Position</span></h4>
+                    <h4 class="modal-title"><span>Add position</span></h4>
                 </div>
                 <div class="modal-body" style="padding: 20px 30px 0px 30px;">
 

@@ -92,6 +92,7 @@ namespace Silicus.Ensure.Web.Controllers
 
         public ActionResult EditQuestion(string questionId)
         {
+            ModelState.Clear();
             if (!string.IsNullOrEmpty(questionId))
             {
                 Question question = _questionService.GetSingleQuestion(Convert.ToInt32(questionId));

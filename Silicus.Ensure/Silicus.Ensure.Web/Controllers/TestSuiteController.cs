@@ -22,19 +22,18 @@ namespace Silicus.Ensure.Web.Controllers
         private readonly ITagsService _tagsService;
         private readonly IMappingService _mappingService;
         private readonly IPositionService _positionService;
-        private readonly IQuestionService _questionService;
         private readonly IUserService _userService;
         private readonly Silicus.UtilityContainer.Services.Interfaces.IUserService _containerUserService;
-
-        public TestSuiteController(ITestSuiteService testSuiteService, ITagsService tagsService, IMappingService mappingService, IPositionService positionService, IQuestionService questionService, IUserService userService, Silicus.UtilityContainer.Services.Interfaces.IUserService containerUserService)
+        private readonly CommonController _commonController;
+        public TestSuiteController(ITestSuiteService testSuiteService, ITagsService tagsService, IMappingService mappingService, IPositionService positionService, IUserService userService, Silicus.UtilityContainer.Services.Interfaces.IUserService containerUserService, CommonController commonController)
         {
             _testSuiteService = testSuiteService;
             _tagsService = tagsService;
             _mappingService = mappingService;
             _positionService = positionService;
-            _questionService = questionService;
             _userService = userService;
             _containerUserService = containerUserService;
+            _commonController = commonController;
         }
 
         public ActionResult GetTestSuiteDetails([DataSourceRequest] DataSourceRequest request)
@@ -233,6 +232,7 @@ namespace Silicus.Ensure.Web.Controllers
 
         public ActionResult AssignTest(string users, int testSuiteId)
         {
+            string mailsubject = "";
             var testSuiteDetails = _testSuiteService.GetTestSuiteDetails().Where(model => model.TestSuiteId == testSuiteId && model.IsDeleted == false).SingleOrDefault();
             var alreadyAssignedTestSuites = _testSuiteService.GetAllUserIdsForTestSuite(testSuiteId);
             UserTestSuite userTestSuite;
@@ -246,10 +246,13 @@ namespace Silicus.Ensure.Web.Controllers
                     {
                         userTestSuite.TestSuiteId = testSuiteId;
                         _testSuiteService.AssignSuite(userTestSuite, testSuiteDetails);
-                        var selectUser = _userService.GetUserDetails().Where(model => model.UserId == Convert.ToInt32(item)).FirstOrDefault();
+                        var selectUser = _userService.GetUserDetails().Where(model => model.UserApplicationId == Convert.ToInt32(item)).FirstOrDefault();
                         selectUser.TestStatus = Convert.ToString(CandidateStatus.TestAssigned);
                         selectUser.CandidateStatus = Convert.ToString(CandidateStatus.TestAssigned);
                         _userService.Update(selectUser);
+                        List<string> receipient = new List<string>() { "Admin", "Panel" };
+                        mailsubject = "Test Assigned For " + selectUser.FirstName + " " + selectUser.LastName + " Successfully";
+                        _commonController.SendMailByRoleName(mailsubject, "CandidateTestAssigned.cshtml", receipient, selectUser.FirstName + " " + selectUser.LastName);
                     }
                 }
                 return Json(1);
@@ -354,7 +357,7 @@ namespace Silicus.Ensure.Web.Controllers
         public ActionResult PreViewQuestion(int testSuiteId)
         {
             var viewerEmailId = User.Identity.Name;
-            var viewer = _containerUserService.FindUserByEmail(viewerEmailId);        
+            var viewer = _containerUserService.FindUserByEmail(viewerEmailId);
             int count = 0;
             var testSuiteViewQuesModel = new TestSuiteViewQuesModel();
             var testSuiteQuestionList = new List<TestSuiteQuestion>();
@@ -400,7 +403,7 @@ namespace Silicus.Ensure.Web.Controllers
                         PracticalCount = testSuiteViewQuesModel.PracticalCount,
                         ObjectiveCount = testSuiteViewQuesModel.ObjectiveCount,
                         Duration = testSuiteViewQuesModel.Duration
-                    };             
+                    };
                     testSuiteCandidateModel.NavigationDetails = GetQuestionNavigationDetails(questionList);
                     testSuiteCandidateModel.TotalQuestionCount = testSuiteCandidateModel.PracticalCount + testSuiteCandidateModel.ObjectiveCount;
                     testSuiteCandidateModel.DurationInMin = testSuiteCandidateModel.Duration;

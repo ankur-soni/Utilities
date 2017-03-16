@@ -56,6 +56,7 @@ namespace Silicus.Ensure.Web.Controllers
                     ViewBag.Msg = "No test is assigned for you, kindly contact admin.";
                     return View("Welcome", new TestSuiteCandidateModel());
                 }
+                ViewBag.ProfilePhotoPath = user.ProfilePhotoFilePath;
                 ViewBag.Status = 0;
             }
             return View();
@@ -136,8 +137,8 @@ namespace Silicus.Ensure.Web.Controllers
             TestSuiteCandidateModel testSuiteCandidateModel = _mappingService.Map<UserTestSuite, TestSuiteCandidateModel>(userTestSuite);
             var candidateInfoBusinessModel = _userService.GetCandidateInfo(user);
             testSuiteCandidateModel.CandidateInfo = _mappingService.Map<CandidateInfoBusinessModel, CandidateInfoViewModel>(candidateInfoBusinessModel);
+            testSuiteCandidateModel.ProfilePhotoFilePath = user.ProfilePhotoFilePath;
             testSuiteCandidateModel.NavigationDetails = GetNavigationDetails(testSuiteCandidateModel.UserTestSuiteId);
-            int? x = testSuiteCandidateModel?.UserTestSuiteId;
             testSuiteCandidateModel.TotalQuestionCount = testSuiteCandidateModel.PracticalCount + testSuiteCandidateModel.ObjectiveCount;
             testSuiteCandidateModel.DurationInMin = testSuiteCandidateModel.RemainingTime > 0 ? testSuiteCandidateModel.RemainingTime : testSuiteCandidateModel.Duration;
             testSuiteCandidateModel.UserId = user.UserApplicationId;
@@ -160,9 +161,10 @@ namespace Silicus.Ensure.Web.Controllers
         public ActionResult GetQuestionDetails(QuestionDetailsViewModel questionDetails)
         {
             questionDetails.QuestionType = _testSuiteService.GetQuestionType(questionDetails.QuestionId);
-            questionDetails.Answer = HttpUtility.HtmlDecode(questionDetails.Answer);
+            questionDetails.Answer = HttpUtility.UrlDecode(questionDetails.Answer);
             UpdateAnswer(questionDetails.Answer, questionDetails.UserTestDetailId);
             var testSuiteQuestionModel = TestSuiteQuestion(questionDetails.QuestionId, questionDetails.UserTestSuiteId, questionDetails.QuestionType);
+            ModelState.Clear();
             return PartialView("_partialViewQuestion", testSuiteQuestionModel);
         }
 

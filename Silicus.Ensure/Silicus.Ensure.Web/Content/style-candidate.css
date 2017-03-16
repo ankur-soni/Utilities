@@ -8665,13 +8665,13 @@ app-root {
     transition: background .3s ease-in-out;
 }
 
-.sidebar ul.nav li.nav-item ul {
+/*.sidebar ul.nav li.nav-item ul {
     max-height: 0;
     padding: 0;
     margin: 0;
     overflow-y: hidden;
     transition: max-height .3s ease-in-out;
-}
+}*/
 
 .sidebar ul.nav li.nav-item ul li {
     padding: 0;

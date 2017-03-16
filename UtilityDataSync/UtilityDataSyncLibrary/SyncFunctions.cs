@@ -38,7 +38,7 @@ namespace UtilityDataSyncLibrary
                     SyncClients(enableContext, utilityContainerContext);
                     SyncEngagementTypes(enableContext, utilityContainerContext);
                     SyncDepartments(enableContext, utilityContainerContext);
-                    SyncLocations(enableContext, utilityContainerContext);
+                    //SyncLocations(enableContext, utilityContainerContext);
                     SyncResourceTypes(enableContext, utilityContainerContext);
                     SyncSkills(enableContext, utilityContainerContext);
 
@@ -46,15 +46,15 @@ namespace UtilityDataSyncLibrary
                     SyncTitles(enableContext, utilityContainerContext);
                     SyncUsers(enableContext, utilityContainerContext);
                     SyncEngagements(enableContext, utilityContainerContext);
-                    SyncEngagementTaskTypes(enableContext, utilityContainerContext);
+                    //SyncEngagementTaskTypes(enableContext, utilityContainerContext);
                     SyncResources(enableContext, utilityContainerContext);
                     SyncResourceHistories(enableContext, utilityContainerContext);
-                    SyncResourceSkillLevels(enableContext, utilityContainerContext);
+                    //SyncResourceSkillLevels(enableContext, utilityContainerContext);
                     SyncEngagementRoles(enableContext, utilityContainerContext);
-                    SyncCompanies(enableContext, utilityContainerContext);
+                    //SyncCompanies(enableContext, utilityContainerContext);
 
                     _logger.Log("Sync finished");
-                }
+                }  
             }
             catch (Exception ex)
             {
@@ -212,30 +212,30 @@ namespace UtilityDataSyncLibrary
             }
         }
 
-        public void SyncLocations(EnableDevEntities enableContext, UtilityContainerEntities utilityContainerContext)
-        {
-            _logger.Log("Running " + MethodBase.GetCurrentMethod().Name);
-            var locations = enableContext.vwExt_Location.ToList();
-            var enableLocations = _mappingService.Map<vwExt_Location[], Location[]>(locations.ToArray()).ToList();
-            var utilityLocationIds = utilityContainerContext.Locations.Select(c => c.ID).ToList();
-            using (var transaction = utilityContainerContext.Database.BeginTransaction())
-            {
-                try
-                {
-                    utilityContainerContext.Database.ExecuteSqlCommand("SET IDENTITY_INSERT [dbo].[Location] ON");
-                    utilityContainerContext.AddAll(enableLocations.Where(e => !utilityLocationIds.Contains(e.ID)));
-                    utilityContainerContext.UpdateAll(enableLocations.Where(e => utilityLocationIds.Contains(e.ID)));
-                    utilityContainerContext.SaveChanges();
-                    utilityContainerContext.Database.ExecuteSqlCommand("SET IDENTITY_INSERT [dbo].[Location] OFF");
-                    transaction.Commit();
-                }
-                catch (Exception ex)
-                {
-                    _logger.Log(ex); 
-                    transaction.Rollback();
-                }
-            }
-        }
+        //public void SyncLocations(EnableDevEntities enableContext, UtilityContainerEntities utilityContainerContext)
+        //{
+        //    _logger.Log("Running " + MethodBase.GetCurrentMethod().Name);
+        //    var locations = enableContext.vwExt_Location.ToList();
+        //    var enableLocations = _mappingService.Map<vwExt_Location[], Location[]>(locations.ToArray()).ToList();
+        //    var utilityLocationIds = utilityContainerContext.Locations.Select(c => c.ID).ToList();
+        //    using (var transaction = utilityContainerContext.Database.BeginTransaction())
+        //    {
+        //        try
+        //        {
+        //            utilityContainerContext.Database.ExecuteSqlCommand("SET IDENTITY_INSERT [dbo].[Location] ON");
+        //            utilityContainerContext.AddAll(enableLocations.Where(e => !utilityLocationIds.Contains(e.ID)));
+        //            utilityContainerContext.UpdateAll(enableLocations.Where(e => utilityLocationIds.Contains(e.ID)));
+        //            utilityContainerContext.SaveChanges();
+        //            utilityContainerContext.Database.ExecuteSqlCommand("SET IDENTITY_INSERT [dbo].[Location] OFF");
+        //            transaction.Commit();
+        //        }
+        //        catch (Exception ex)
+        //        {
+        //            _logger.Log(ex); 
+        //            transaction.Rollback();
+        //        }
+        //    }
+        //}
 
         public void SyncEngagementRoles(EnableDevEntities enableContext, UtilityContainerEntities utilityContainerContext)
         {

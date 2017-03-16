@@ -93,7 +93,7 @@ namespace Silicus.Ensure.Web.Controllers
 
         public void SignOut()
         {
-            string callbackUrl = Url.Action("SignOutCallback", "Account", routeValues: null, protocol: Request.Url.Scheme);
+            string callbackUrl = Url.Action("Candidates", "Admin", routeValues: null, protocol: Request.Url.Scheme);
             string[] cookies = HttpContext.Request.Cookies.AllKeys;
             HttpContext.GetOwinContext().Authentication.SignOut(
                 new AuthenticationProperties { RedirectUri = callbackUrl },

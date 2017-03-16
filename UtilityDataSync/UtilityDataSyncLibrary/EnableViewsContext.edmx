@@ -88,18 +88,6 @@ warning 6002: The table/view 'EnableDev.dbo.vwExt_Engagement' does not have a pr
         </EntityType>
         <!--Errors Found During Generation:
 warning 6002: The table/view 'EnableDev.dbo.vwExt_EngagementPermissions' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
-        <EntityType Name="vwExt_EngagementPermissions">
-          <Key>
-            <PropertyRef Name="ID" />
-            <PropertyRef Name="EngagementTypeID" />
-            <PropertyRef Name="UserTypeID" />
-            <PropertyRef Name="Permission" />
-          </Key>
-          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="EngagementTypeID" Type="int" Nullable="false" />
-          <Property Name="UserTypeID" Type="int" Nullable="false" />
-          <Property Name="Permission" Type="nvarchar" MaxLength="20" Nullable="false" />
-        </EntityType>
         <!--Errors Found During Generation:
 warning 6002: The table/view 'EnableDev.dbo.vwExt_EngagementRoles' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="vwExt_EngagementRoles">
@@ -123,22 +111,6 @@ warning 6002: The table/view 'EnableDev.dbo.vwExt_EngagementRoles' does not have
         </EntityType>
         <!--Errors Found During Generation:
 warning 6002: The table/view 'EnableDev.dbo.vwExt_EngagementRolesSchedule' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
-        <EntityType Name="vwExt_EngagementRolesSchedule">
-          <Key>
-            <PropertyRef Name="ID" />
-            <PropertyRef Name="EngagementRoleID" />
-            <PropertyRef Name="FillModeID" />
-            <PropertyRef Name="Date" />
-          </Key>
-          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="EngagementRoleID" Type="int" Nullable="false" />
-          <Property Name="FillModeID" Type="int" Nullable="false" />
-          <Property Name="Date" Type="date" Nullable="false" />
-          <Property Name="ContractHours" Type="decimal" Precision="4" Scale="2" />
-          <Property Name="BookedHours" Type="decimal" Precision="4" Scale="2" />
-          <Property Name="RequestedHours" Type="decimal" Precision="4" Scale="2" />
-          <Property Name="IsOpenRequest" Type="bit" />
-        </EntityType>
         <!--Errors Found During Generation:
 warning 6002: The table/view 'EnableDev.dbo.vwExt_EngagementTaskTypes' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="vwExt_EngagementTaskTypes">
@@ -202,36 +174,8 @@ warning 6002: The table/view 'EnableDev.dbo.vwExt_Location' does not have a prim
         </EntityType>
         <!--Errors Found During Generation:
 warning 6002: The table/view 'EnableDev.dbo.vwExt_LocationHoliday' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
-        <EntityType Name="vwExt_LocationHoliday">
-          <Key>
-            <PropertyRef Name="ID" />
-            <PropertyRef Name="LocationID" />
-            <PropertyRef Name="Date" />
-            <PropertyRef Name="Name" />
-            <PropertyRef Name="TimeOff" />
-          </Key>
-          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="LocationID" Type="int" Nullable="false" />
-          <Property Name="Date" Type="date" Nullable="false" />
-          <Property Name="Name" Type="nvarchar" MaxLength="100" Nullable="false" />
-          <Property Name="TimeOff" Type="decimal" Precision="4" Scale="2" Nullable="false" />
-        </EntityType>
         <!--Errors Found During Generation:
 warning 6002: The table/view 'EnableDev.dbo.vwExt_LocationWorkingSchedule' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
-        <EntityType Name="vwExt_LocationWorkingSchedule">
-          <Key>
-            <PropertyRef Name="ID" />
-            <PropertyRef Name="LocationID" />
-            <PropertyRef Name="WeekDayID" />
-            <PropertyRef Name="IsWorkingDay" />
-          </Key>
-          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="LocationID" Type="int" Nullable="false" />
-          <Property Name="WeekDayID" Type="int" Nullable="false" />
-          <Property Name="IsWorkingDay" Type="bit" Nullable="false" />
-          <Property Name="StartTime" Type="time" Precision="1" />
-          <Property Name="Duration" Type="decimal" Precision="4" Scale="2" />
-        </EntityType>
         <!--Errors Found During Generation:
 warning 6002: The table/view 'EnableDev.dbo.vwExt_Resource' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="vwExt_Resource">
@@ -320,24 +264,6 @@ warning 6002: The table/view 'EnableDev.dbo.vwExt_ResourceType' does not have a 
         </EntityType>
         <!--Errors Found During Generation:
 warning 6002: The table/view 'EnableDev.dbo.vwExt_ResourceWorkingScheduleHistory' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
-        <EntityType Name="vwExt_ResourceWorkingScheduleHistory">
-          <Key>
-            <PropertyRef Name="ID" />
-            <PropertyRef Name="ResourceID" />
-            <PropertyRef Name="ResourceHistoryID" />
-            <PropertyRef Name="WeekDayID" />
-            <PropertyRef Name="IsOverrideLocationSchedule" />
-            <PropertyRef Name="IsWorkingDay" />
-          </Key>
-          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="ResourceID" Type="int" Nullable="false" />
-          <Property Name="ResourceHistoryID" Type="int" Nullable="false" />
-          <Property Name="WeekDayID" Type="int" Nullable="false" />
-          <Property Name="IsOverrideLocationSchedule" Type="bit" Nullable="false" />
-          <Property Name="IsWorkingDay" Type="bit" Nullable="false" />
-          <Property Name="StartTime" Type="time" Precision="7" />
-          <Property Name="Duration" Type="decimal" Precision="4" Scale="2" />
-        </EntityType>
         <!--Errors Found During Generation:
 warning 6002: The table/view 'EnableDev.dbo.vwExt_Skill' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="vwExt_Skill">
@@ -354,66 +280,12 @@ warning 6002: The table/view 'EnableDev.dbo.vwExt_Skill' does not have a primary
         </EntityType>
         <!--Errors Found During Generation:
 warning 6002: The table/view 'EnableDev.dbo.vwExt_TimeCard' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
-        <EntityType Name="vwExt_TimeCard">
-          <Key>
-            <PropertyRef Name="ID" />
-            <PropertyRef Name="TimeCardResourceTaskTypeID" />
-            <PropertyRef Name="ResourceID" />
-            <PropertyRef Name="EngagementTaskTypeID" />
-            <PropertyRef Name="TimeCardStatusID" />
-            <PropertyRef Name="Date" />
-            <PropertyRef Name="Hours" />
-            <PropertyRef Name="IsValid" />
-          </Key>
-          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="TimeCardResourceTaskTypeID" Type="int" Nullable="false" />
-          <Property Name="ResourceID" Type="int" Nullable="false" />
-          <Property Name="EngagementTaskTypeID" Type="int" Nullable="false" />
-          <Property Name="TimeCardStatusID" Type="int" Nullable="false" />
-          <Property Name="Date" Type="date" Nullable="false" />
-          <Property Name="Hours" Type="decimal" Precision="4" Scale="2" Nullable="false" />
-          <Property Name="IsValid" Type="bit" Nullable="false" />
-        </EntityType>
         <!--Errors Found During Generation:
 warning 6002: The table/view 'EnableDev.dbo.vwExt_TimeCardResourceEngagements' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
-        <EntityType Name="vwExt_TimeCardResourceEngagements">
-          <Key>
-            <PropertyRef Name="ID" />
-            <PropertyRef Name="ResourceID" />
-            <PropertyRef Name="EngagementID" />
-            <PropertyRef Name="EngagementRoleID" />
-            <PropertyRef Name="IsVisible" />
-          </Key>
-          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="ResourceID" Type="int" Nullable="false" />
-          <Property Name="EngagementID" Type="int" Nullable="false" />
-          <Property Name="EngagementRoleID" Type="int" Nullable="false" />
-          <Property Name="IsVisible" Type="bit" Nullable="false" />
-        </EntityType>
         <!--Errors Found During Generation:
 warning 6002: The table/view 'EnableDev.dbo.vwExt_TimeCardResourceTaskTypes' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
-        <EntityType Name="vwExt_TimeCardResourceTaskTypes">
-          <Key>
-            <PropertyRef Name="ID" />
-            <PropertyRef Name="TimeCardResourceEngagementsID" />
-            <PropertyRef Name="TaskTypeID" />
-            <PropertyRef Name="IsVisible" />
-          </Key>
-          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="TimeCardResourceEngagementsID" Type="int" Nullable="false" />
-          <Property Name="TaskTypeID" Type="int" Nullable="false" />
-          <Property Name="IsVisible" Type="bit" Nullable="false" />
-        </EntityType>
         <!--Errors Found During Generation:
 warning 6002: The table/view 'EnableDev.dbo.vwExt_TimeZoneMaster' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
-        <EntityType Name="vwExt_TimeZoneMaster">
-          <Key>
-            <PropertyRef Name="ID" />
-            <PropertyRef Name="Name" />
-          </Key>
-          <Property Name="ID" Type="int" Nullable="false" />
-          <Property Name="Name" Type="nvarchar" MaxLength="50" Nullable="false" />
-        </EntityType>
         <!--Errors Found During Generation:
 warning 6002: The table/view 'EnableDev.dbo.vwExt_Title' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="vwExt_Title">
@@ -435,104 +307,18 @@ warning 6002: The table/view 'EnableDev.dbo.vwExt_Title' does not have a primary
         </EntityType>
         <!--Errors Found During Generation:
 warning 6002: The table/view 'EnableDev.dbo.vwExt_TKT_Queue' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
-        <EntityType Name="vwExt_TKT_Queue">
-          <Key>
-            <PropertyRef Name="ID" />
-            <PropertyRef Name="Name" />
-            <PropertyRef Name="CategoryMasterID" />
-            <PropertyRef Name="QueueTypeMasterID" />
-            <PropertyRef Name="IsActive" />
-          </Key>
-          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="Name" Type="nvarchar" MaxLength="100" Nullable="false" />
-          <Property Name="CategoryMasterID" Type="int" Nullable="false" />
-          <Property Name="QueueTypeMasterID" Type="int" Nullable="false" />
-          <Property Name="Description" Type="nvarchar" MaxLength="200" />
-          <Property Name="IsDefaultTicketQueue" Type="bit" />
-          <Property Name="IsActive" Type="bit" Nullable="false" />
-        </EntityType>
         <!--Errors Found During Generation:
 warning 6002: The table/view 'EnableDev.dbo.vwExt_TKT_QueueTypeMaster' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
-        <EntityType Name="vwExt_TKT_QueueTypeMaster">
-          <Key>
-            <PropertyRef Name="Id" />
-            <PropertyRef Name="Name" />
-            <PropertyRef Name="Code" />
-            <PropertyRef Name="IsActive" />
-          </Key>
-          <Property Name="Id" Type="int" Nullable="false" />
-          <Property Name="Name" Type="nvarchar" MaxLength="50" Nullable="false" />
-          <Property Name="Description" Type="nvarchar" MaxLength="250" />
-          <Property Name="Code" Type="varchar" MaxLength="20" Nullable="false" />
-          <Property Name="IsActive" Type="bit" Nullable="false" />
-        </EntityType>
         <!--Errors Found During Generation:
 warning 6002: The table/view 'EnableDev.dbo.vwExt_TKT_RosterCalenderInfo' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
-        <EntityType Name="vwExt_TKT_RosterCalenderInfo">
-          <Key>
-            <PropertyRef Name="ID" />
-            <PropertyRef Name="Date" />
-            <PropertyRef Name="QueueID" />
-            <PropertyRef Name="RosterTypeMasterID" />
-          </Key>
-          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="Date" Type="date" Nullable="false" />
-          <Property Name="QueueID" Type="int" Nullable="false" />
-          <Property Name="RosterTypeMasterID" Type="int" Nullable="false" />
-          <Property Name="RosterShiftID" Type="int" />
-        </EntityType>
         <!--Errors Found During Generation:
 warning 6002: The table/view 'EnableDev.dbo.vwExt_TKT_RosterCalenderUsers' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
-        <EntityType Name="vwExt_TKT_RosterCalenderUsers">
-          <Key>
-            <PropertyRef Name="ID" />
-            <PropertyRef Name="RosterCalenderInfoID" />
-            <PropertyRef Name="UserID" />
-            <PropertyRef Name="IsOnCall" />
-          </Key>
-          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="RosterCalenderInfoID" Type="int" Nullable="false" />
-          <Property Name="UserID" Type="int" Nullable="false" />
-          <Property Name="IsOnCall" Type="bit" Nullable="false" />
-        </EntityType>
         <!--Errors Found During Generation:
 warning 6002: The table/view 'EnableDev.dbo.vwExt_TKT_RosterResourceTypeMaster' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
-        <EntityType Name="vwExt_TKT_RosterResourceTypeMaster">
-          <Key>
-            <PropertyRef Name="ID" />
-            <PropertyRef Name="Name" />
-            <PropertyRef Name="Value" />
-          </Key>
-          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="Name" Type="nvarchar" MaxLength="20" Nullable="false" />
-          <Property Name="Value" Type="nvarchar" MaxLength="20" Nullable="false" />
-        </EntityType>
         <!--Errors Found During Generation:
 warning 6002: The table/view 'EnableDev.dbo.vwExt_TKT_RosterShift' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
-        <EntityType Name="vwExt_TKT_RosterShift">
-          <Key>
-            <PropertyRef Name="ID" />
-            <PropertyRef Name="Name" />
-            <PropertyRef Name="StartTime" />
-            <PropertyRef Name="EndTime" />
-          </Key>
-          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="Name" Type="nvarchar" MaxLength="50" Nullable="false" />
-          <Property Name="StartTime" Type="time" Precision="7" Nullable="false" />
-          <Property Name="EndTime" Type="time" Precision="7" Nullable="false" />
-        </EntityType>
         <!--Errors Found During Generation:
 warning 6002: The table/view 'EnableDev.dbo.vwExt_TKT_RosterTypeMaster' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
-        <EntityType Name="vwExt_TKT_RosterTypeMaster">
-          <Key>
-            <PropertyRef Name="ID" />
-            <PropertyRef Name="Name" />
-            <PropertyRef Name="Value" />
-          </Key>
-          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="Name" Type="nvarchar" MaxLength="20" Nullable="false" />
-          <Property Name="Value" Type="nvarchar" MaxLength="20" Nullable="false" />
-        </EntityType>
         <!--Errors Found During Generation:
 warning 6002: The table/view 'EnableDev.dbo.vwExt_User' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
         <EntityType Name="vwExt_User">
@@ -570,30 +356,8 @@ warning 6002: The table/view 'EnableDev.dbo.vwExt_User' does not have a primary 
         </EntityType>
         <!--Errors Found During Generation:
 warning 6002: The table/view 'EnableDev.dbo.vwExt_WeekDayMaster' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
-        <EntityType Name="vwExt_WeekDayMaster">
-          <Key>
-            <PropertyRef Name="Day" />
-          </Key>
-          <Property Name="Day" Type="nvarchar" MaxLength="20" Nullable="false" />
-        </EntityType>
         <!--Errors Found During Generation:
 warning 6002: The table/view 'EnableDev.sys.database_firewall_rules' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
-        <EntityType Name="database_firewall_rules">
-          <Key>
-            <PropertyRef Name="id" />
-            <PropertyRef Name="name" />
-            <PropertyRef Name="start_ip_address" />
-            <PropertyRef Name="end_ip_address" />
-            <PropertyRef Name="create_date" />
-            <PropertyRef Name="modify_date" />
-          </Key>
-          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="name" Type="nvarchar" MaxLength="128" Nullable="false" />
-          <Property Name="start_ip_address" Type="varchar" MaxLength="45" Nullable="false" />
-          <Property Name="end_ip_address" Type="varchar" MaxLength="45" Nullable="false" />
-          <Property Name="create_date" Type="datetime" Nullable="false" />
-          <Property Name="modify_date" Type="datetime" Nullable="false" />
-        </EntityType>
         <EntityContainer Name="EnableDevModelStoreContainer">
           <EntitySet Name="vwExt_Client" EntityType="Self.vwExt_Client" store:Type="Views" store:Schema="dbo">
             <DefiningQuery>SELECT 
@@ -648,14 +412,6 @@ warning 6002: The table/view 'EnableDev.sys.database_firewall_rules' does not ha
     [vwExt_Engagement].[GeneralManagerID] AS [GeneralManagerID]
     FROM [dbo].[vwExt_Engagement] AS [vwExt_Engagement]</DefiningQuery>
           </EntitySet>
-          <EntitySet Name="vwExt_EngagementPermissions" EntityType="Self.vwExt_EngagementPermissions" store:Type="Views" store:Schema="dbo">
-            <DefiningQuery>SELECT 
-    [vwExt_EngagementPermissions].[ID] AS [ID], 
-    [vwExt_EngagementPermissions].[EngagementTypeID] AS [EngagementTypeID], 
-    [vwExt_EngagementPermissions].[UserTypeID] AS [UserTypeID], 
-    [vwExt_EngagementPermissions].[Permission] AS [Permission]
-    FROM [dbo].[vwExt_EngagementPermissions] AS [vwExt_EngagementPermissions]</DefiningQuery>
-          </EntitySet>
           <EntitySet Name="vwExt_EngagementRoles" EntityType="Self.vwExt_EngagementRoles" store:Type="Views" store:Schema="dbo">
             <DefiningQuery>SELECT 
     [vwExt_EngagementRoles].[ID] AS [ID], 
@@ -669,18 +425,6 @@ warning 6002: The table/view 'EnableDev.sys.database_firewall_rules' does not ha
     [vwExt_EngagementRoles].[Description] AS [Description], 
     [vwExt_EngagementRoles].[OverridenTitleID] AS [OverridenTitleID]
     FROM [dbo].[vwExt_EngagementRoles] AS [vwExt_EngagementRoles]</DefiningQuery>
-          </EntitySet>
-          <EntitySet Name="vwExt_EngagementRolesSchedule" EntityType="Self.vwExt_EngagementRolesSchedule" store:Type="Views" store:Schema="dbo">
-            <DefiningQuery>SELECT 
-    [vwExt_EngagementRolesSchedule].[ID] AS [ID], 
-    [vwExt_EngagementRolesSchedule].[EngagementRoleID] AS [EngagementRoleID], 
-    [vwExt_EngagementRolesSchedule].[FillModeID] AS [FillModeID], 
-    [vwExt_EngagementRolesSchedule].[Date] AS [Date], 
-    [vwExt_EngagementRolesSchedule].[ContractHours] AS [ContractHours], 
-    [vwExt_EngagementRolesSchedule].[BookedHours] AS [BookedHours], 
-    [vwExt_EngagementRolesSchedule].[RequestedHours] AS [RequestedHours], 
-    [vwExt_EngagementRolesSchedule].[IsOpenRequest] AS [IsOpenRequest]
-    FROM [dbo].[vwExt_EngagementRolesSchedule] AS [vwExt_EngagementRolesSchedule]</DefiningQuery>
           </EntitySet>
           <EntitySet Name="vwExt_EngagementTaskTypes" EntityType="Self.vwExt_EngagementTaskTypes" store:Type="Views" store:Schema="dbo">
             <DefiningQuery>SELECT 
@@ -719,25 +463,6 @@ warning 6002: The table/view 'EnableDev.sys.database_firewall_rules' does not ha
     [vwExt_Location].[StandardHolidaysCount] AS [StandardHolidaysCount], 
     [vwExt_Location].[StandardVacationCount] AS [StandardVacationCount]
     FROM [dbo].[vwExt_Location] AS [vwExt_Location]</DefiningQuery>
-          </EntitySet>
-          <EntitySet Name="vwExt_LocationHoliday" EntityType="Self.vwExt_LocationHoliday" store:Type="Views" store:Schema="dbo">
-            <DefiningQuery>SELECT 
-    [vwExt_LocationHoliday].[ID] AS [ID], 
-    [vwExt_LocationHoliday].[LocationID] AS [LocationID], 
-    [vwExt_LocationHoliday].[Date] AS [Date], 
-    [vwExt_LocationHoliday].[Name] AS [Name], 
-    [vwExt_LocationHoliday].[TimeOff] AS [TimeOff]
-    FROM [dbo].[vwExt_LocationHoliday] AS [vwExt_LocationHoliday]</DefiningQuery>
-          </EntitySet>
-          <EntitySet Name="vwExt_LocationWorkingSchedule" EntityType="Self.vwExt_LocationWorkingSchedule" store:Type="Views" store:Schema="dbo">
-            <DefiningQuery>SELECT 
-    [vwExt_LocationWorkingSchedule].[ID] AS [ID], 
-    [vwExt_LocationWorkingSchedule].[LocationID] AS [LocationID], 
-    [vwExt_LocationWorkingSchedule].[WeekDayID] AS [WeekDayID], 
-    [vwExt_LocationWorkingSchedule].[IsWorkingDay] AS [IsWorkingDay], 
-    [vwExt_LocationWorkingSchedule].[StartTime] AS [StartTime], 
-    [vwExt_LocationWorkingSchedule].[Duration] AS [Duration]
-    FROM [dbo].[vwExt_LocationWorkingSchedule] AS [vwExt_LocationWorkingSchedule]</DefiningQuery>
           </EntitySet>
           <EntitySet Name="vwExt_Resource" EntityType="Self.vwExt_Resource" store:Type="Views" store:Schema="dbo">
             <DefiningQuery>SELECT 
@@ -790,18 +515,6 @@ warning 6002: The table/view 'EnableDev.sys.database_firewall_rules' does not ha
     [vwExt_ResourceType].[IsActive] AS [IsActive]
     FROM [dbo].[vwExt_ResourceType] AS [vwExt_ResourceType]</DefiningQuery>
           </EntitySet>
-          <EntitySet Name="vwExt_ResourceWorkingScheduleHistory" EntityType="Self.vwExt_ResourceWorkingScheduleHistory" store:Type="Views" store:Schema="dbo">
-            <DefiningQuery>SELECT 
-    [vwExt_ResourceWorkingScheduleHistory].[ID] AS [ID], 
-    [vwExt_ResourceWorkingScheduleHistory].[ResourceID] AS [ResourceID], 
-    [vwExt_ResourceWorkingScheduleHistory].[ResourceHistoryID] AS [ResourceHistoryID], 
-    [vwExt_ResourceWorkingScheduleHistory].[WeekDayID] AS [WeekDayID], 
-    [vwExt_ResourceWorkingScheduleHistory].[IsOverrideLocationSchedule] AS [IsOverrideLocationSchedule], 
-    [vwExt_ResourceWorkingScheduleHistory].[IsWorkingDay] AS [IsWorkingDay], 
-    [vwExt_ResourceWorkingScheduleHistory].[StartTime] AS [StartTime], 
-    [vwExt_ResourceWorkingScheduleHistory].[Duration] AS [Duration]
-    FROM [dbo].[vwExt_ResourceWorkingScheduleHistory] AS [vwExt_ResourceWorkingScheduleHistory]</DefiningQuery>
-          </EntitySet>
           <EntitySet Name="vwExt_Skill" EntityType="Self.vwExt_Skill" store:Type="Views" store:Schema="dbo">
             <DefiningQuery>SELECT 
     [vwExt_Skill].[ID] AS [ID], 
@@ -810,41 +523,6 @@ warning 6002: The table/view 'EnableDev.sys.database_firewall_rules' does not ha
     [vwExt_Skill].[IsActive] AS [IsActive], 
     [vwExt_Skill].[ParentID] AS [ParentID]
     FROM [dbo].[vwExt_Skill] AS [vwExt_Skill]</DefiningQuery>
-          </EntitySet>
-          <EntitySet Name="vwExt_TimeCard" EntityType="Self.vwExt_TimeCard" store:Type="Views" store:Schema="dbo">
-            <DefiningQuery>SELECT 
-    [vwExt_TimeCard].[ID] AS [ID], 
-    [vwExt_TimeCard].[TimeCardResourceTaskTypeID] AS [TimeCardResourceTaskTypeID], 
-    [vwExt_TimeCard].[ResourceID] AS [ResourceID], 
-    [vwExt_TimeCard].[EngagementTaskTypeID] AS [EngagementTaskTypeID], 
-    [vwExt_TimeCard].[TimeCardStatusID] AS [TimeCardStatusID], 
-    [vwExt_TimeCard].[Date] AS [Date], 
-    [vwExt_TimeCard].[Hours] AS [Hours], 
-    [vwExt_TimeCard].[IsValid] AS [IsValid]
-    FROM [dbo].[vwExt_TimeCard] AS [vwExt_TimeCard]</DefiningQuery>
-          </EntitySet>
-          <EntitySet Name="vwExt_TimeCardResourceEngagements" EntityType="Self.vwExt_TimeCardResourceEngagements" store:Type="Views" store:Schema="dbo">
-            <DefiningQuery>SELECT 
-    [vwExt_TimeCardResourceEngagements].[ID] AS [ID], 
-    [vwExt_TimeCardResourceEngagements].[ResourceID] AS [ResourceID], 
-    [vwExt_TimeCardResourceEngagements].[EngagementID] AS [EngagementID], 
-    [vwExt_TimeCardResourceEngagements].[EngagementRoleID] AS [EngagementRoleID], 
-    [vwExt_TimeCardResourceEngagements].[IsVisible] AS [IsVisible]
-    FROM [dbo].[vwExt_TimeCardResourceEngagements] AS [vwExt_TimeCardResourceEngagements]</DefiningQuery>
-          </EntitySet>
-          <EntitySet Name="vwExt_TimeCardResourceTaskTypes" EntityType="Self.vwExt_TimeCardResourceTaskTypes" store:Type="Views" store:Schema="dbo">
-            <DefiningQuery>SELECT 
-    [vwExt_TimeCardResourceTaskTypes].[ID] AS [ID], 
-    [vwExt_TimeCardResourceTaskTypes].[TimeCardResourceEngagementsID] AS [TimeCardResourceEngagementsID], 
-    [vwExt_TimeCardResourceTaskTypes].[TaskTypeID] AS [TaskTypeID], 
-    [vwExt_TimeCardResourceTaskTypes].[IsVisible] AS [IsVisible]
-    FROM [dbo].[vwExt_TimeCardResourceTaskTypes] AS [vwExt_TimeCardResourceTaskTypes]</DefiningQuery>
-          </EntitySet>
-          <EntitySet Name="vwExt_TimeZoneMaster" EntityType="Self.vwExt_TimeZoneMaster" store:Type="Views" store:Schema="dbo">
-            <DefiningQuery>SELECT 
-    [vwExt_TimeZoneMaster].[ID] AS [ID], 
-    [vwExt_TimeZoneMaster].[Name] AS [Name]
-    FROM [dbo].[vwExt_TimeZoneMaster] AS [vwExt_TimeZoneMaster]</DefiningQuery>
           </EntitySet>
           <EntitySet Name="vwExt_Title" EntityType="Self.vwExt_Title" store:Type="Views" store:Schema="dbo">
             <DefiningQuery>SELECT 
@@ -856,65 +534,6 @@ warning 6002: The table/view 'EnableDev.sys.database_firewall_rules' does not ha
     [vwExt_Title].[LocationID] AS [LocationID], 
     [vwExt_Title].[ResourceTypeID] AS [ResourceTypeID]
     FROM [dbo].[vwExt_Title] AS [vwExt_Title]</DefiningQuery>
-          </EntitySet>
-          <EntitySet Name="vwExt_TKT_Queue" EntityType="Self.vwExt_TKT_Queue" store:Type="Views" store:Schema="dbo">
-            <DefiningQuery>SELECT 
-    [vwExt_TKT_Queue].[ID] AS [ID], 
-    [vwExt_TKT_Queue].[Name] AS [Name], 
-    [vwExt_TKT_Queue].[CategoryMasterID] AS [CategoryMasterID], 
-    [vwExt_TKT_Queue].[QueueTypeMasterID] AS [QueueTypeMasterID], 
-    [vwExt_TKT_Queue].[Description] AS [Description], 
-    [vwExt_TKT_Queue].[IsDefaultTicketQueue] AS [IsDefaultTicketQueue], 
-    [vwExt_TKT_Queue].[IsActive] AS [IsActive]
-    FROM [dbo].[vwExt_TKT_Queue] AS [vwExt_TKT_Queue]</DefiningQuery>
-          </EntitySet>
-          <EntitySet Name="vwExt_TKT_QueueTypeMaster" EntityType="Self.vwExt_TKT_QueueTypeMaster" store:Type="Views" store:Schema="dbo">
-            <DefiningQuery>SELECT 
-    [vwExt_TKT_QueueTypeMaster].[Id] AS [Id], 
-    [vwExt_TKT_QueueTypeMaster].[Name] AS [Name], 
-    [vwExt_TKT_QueueTypeMaster].[Description] AS [Description], 
-    [vwExt_TKT_QueueTypeMaster].[Code] AS [Code], 
-    [vwExt_TKT_QueueTypeMaster].[IsActive] AS [IsActive]
-    FROM [dbo].[vwExt_TKT_QueueTypeMaster] AS [vwExt_TKT_QueueTypeMaster]</DefiningQuery>
-          </EntitySet>
-          <EntitySet Name="vwExt_TKT_RosterCalenderInfo" EntityType="Self.vwExt_TKT_RosterCalenderInfo" store:Type="Views" store:Schema="dbo">
-            <DefiningQuery>SELECT 
-    [vwExt_TKT_RosterCalenderInfo].[ID] AS [ID], 
-    [vwExt_TKT_RosterCalenderInfo].[Date] AS [Date], 
-    [vwExt_TKT_RosterCalenderInfo].[QueueID] AS [QueueID], 
-    [vwExt_TKT_RosterCalenderInfo].[RosterTypeMasterID] AS [RosterTypeMasterID], 
-    [vwExt_TKT_RosterCalenderInfo].[RosterShiftID] AS [RosterShiftID]
-    FROM [dbo].[vwExt_TKT_RosterCalenderInfo] AS [vwExt_TKT_RosterCalenderInfo]</DefiningQuery>
-          </EntitySet>
-          <EntitySet Name="vwExt_TKT_RosterCalenderUsers" EntityType="Self.vwExt_TKT_RosterCalenderUsers" store:Type="Views" store:Schema="dbo">
-            <DefiningQuery>SELECT 
-    [vwExt_TKT_RosterCalenderUsers].[ID] AS [ID], 
-    [vwExt_TKT_RosterCalenderUsers].[RosterCalenderInfoID] AS [RosterCalenderInfoID], 
-    [vwExt_TKT_RosterCalenderUsers].[UserID] AS [UserID], 
-    [vwExt_TKT_RosterCalenderUsers].[IsOnCall] AS [IsOnCall]
-    FROM [dbo].[vwExt_TKT_RosterCalenderUsers] AS [vwExt_TKT_RosterCalenderUsers]</DefiningQuery>
-          </EntitySet>
-          <EntitySet Name="vwExt_TKT_RosterResourceTypeMaster" EntityType="Self.vwExt_TKT_RosterResourceTypeMaster" store:Type="Views" store:Schema="dbo">
-            <DefiningQuery>SELECT 
-    [vwExt_TKT_RosterResourceTypeMaster].[ID] AS [ID], 
-    [vwExt_TKT_RosterResourceTypeMaster].[Name] AS [Name], 
-    [vwExt_TKT_RosterResourceTypeMaster].[Value] AS [Value]
-    FROM [dbo].[vwExt_TKT_RosterResourceTypeMaster] AS [vwExt_TKT_RosterResourceTypeMaster]</DefiningQuery>
-          </EntitySet>
-          <EntitySet Name="vwExt_TKT_RosterShift" EntityType="Self.vwExt_TKT_RosterShift" store:Type="Views" store:Schema="dbo">
-            <DefiningQuery>SELECT 
-    [vwExt_TKT_RosterShift].[ID] AS [ID], 
-    [vwExt_TKT_RosterShift].[Name] AS [Name], 
-    [vwExt_TKT_RosterShift].[StartTime] AS [StartTime], 
-    [vwExt_TKT_RosterShift].[EndTime] AS [EndTime]
-    FROM [dbo].[vwExt_TKT_RosterShift] AS [vwExt_TKT_RosterShift]</DefiningQuery>
-          </EntitySet>
-          <EntitySet Name="vwExt_TKT_RosterTypeMaster" EntityType="Self.vwExt_TKT_RosterTypeMaster" store:Type="Views" store:Schema="dbo">
-            <DefiningQuery>SELECT 
-    [vwExt_TKT_RosterTypeMaster].[ID] AS [ID], 
-    [vwExt_TKT_RosterTypeMaster].[Name] AS [Name], 
-    [vwExt_TKT_RosterTypeMaster].[Value] AS [Value]
-    FROM [dbo].[vwExt_TKT_RosterTypeMaster] AS [vwExt_TKT_RosterTypeMaster]</DefiningQuery>
           </EntitySet>
           <EntitySet Name="vwExt_User" EntityType="Self.vwExt_User" store:Type="Views" store:Schema="dbo">
             <DefiningQuery>SELECT 
@@ -939,21 +558,6 @@ warning 6002: The table/view 'EnableDev.sys.database_firewall_rules' does not ha
     [vwExt_User].[PrimaryRoleID] AS [PrimaryRoleID], 
     [vwExt_User].[TimezoneID] AS [TimezoneID]
     FROM [dbo].[vwExt_User] AS [vwExt_User]</DefiningQuery>
-          </EntitySet>
-          <EntitySet Name="vwExt_WeekDayMaster" EntityType="Self.vwExt_WeekDayMaster" store:Type="Views" store:Schema="dbo">
-            <DefiningQuery>SELECT 
-    [vwExt_WeekDayMaster].[Day] AS [Day]
-    FROM [dbo].[vwExt_WeekDayMaster] AS [vwExt_WeekDayMaster]</DefiningQuery>
-          </EntitySet>
-          <EntitySet Name="database_firewall_rules" EntityType="Self.database_firewall_rules" store:Type="Views" store:Schema="sys">
-            <DefiningQuery>SELECT 
-    [database_firewall_rules].[id] AS [id], 
-    [database_firewall_rules].[name] AS [name], 
-    [database_firewall_rules].[start_ip_address] AS [start_ip_address], 
-    [database_firewall_rules].[end_ip_address] AS [end_ip_address], 
-    [database_firewall_rules].[create_date] AS [create_date], 
-    [database_firewall_rules].[modify_date] AS [modify_date]
-    FROM [sys].[database_firewall_rules] AS [database_firewall_rules]</DefiningQuery>
           </EntitySet>
         </EntityContainer>
       </Schema></edmx:StorageModels>
@@ -1033,18 +637,6 @@ warning 6002: The table/view 'EnableDev.sys.database_firewall_rules' does not ha
           <Property Name="SalesAccountManagerID" Type="Int32" />
           <Property Name="GeneralManagerID" Type="Int32" />
         </EntityType>
-        <EntityType Name="vwExt_EngagementPermissions">
-          <Key>
-            <PropertyRef Name="ID" />
-            <PropertyRef Name="EngagementTypeID" />
-            <PropertyRef Name="UserTypeID" />
-            <PropertyRef Name="Permission" />
-          </Key>
-          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="EngagementTypeID" Type="Int32" Nullable="false" />
-          <Property Name="UserTypeID" Type="Int32" Nullable="false" />
-          <Property Name="Permission" Type="String" MaxLength="20" FixedLength="false" Unicode="true" Nullable="false" />
-        </EntityType>
         <EntityType Name="vwExt_EngagementRoles">
           <Key>
             <PropertyRef Name="ID" />
@@ -1063,22 +655,6 @@ warning 6002: The table/view 'EnableDev.sys.database_firewall_rules' does not ha
           <Property Name="IsBooked" Type="Boolean" Nullable="false" />
           <Property Name="Description" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="OverridenTitleID" Type="Int32" />
-        </EntityType>
-        <EntityType Name="vwExt_EngagementRolesSchedule">
-          <Key>
-            <PropertyRef Name="ID" />
-            <PropertyRef Name="EngagementRoleID" />
-            <PropertyRef Name="FillModeID" />
-            <PropertyRef Name="Date" />
-          </Key>
-          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="EngagementRoleID" Type="Int32" Nullable="false" />
-          <Property Name="FillModeID" Type="Int32" Nullable="false" />
-          <Property Name="Date" Type="DateTime" Nullable="false" Precision="0" />
-          <Property Name="ContractHours" Type="Decimal" Precision="4" Scale="2" />
-          <Property Name="BookedHours" Type="Decimal" Precision="4" Scale="2" />
-          <Property Name="RequestedHours" Type="Decimal" Precision="4" Scale="2" />
-          <Property Name="IsOpenRequest" Type="Boolean" />
         </EntityType>
         <EntityType Name="vwExt_EngagementTaskTypes">
           <Key>
@@ -1134,34 +710,6 @@ warning 6002: The table/view 'EnableDev.sys.database_firewall_rules' does not ha
           <Property Name="HoursPerDay" Type="Decimal" Precision="4" Scale="2" Nullable="false" />
           <Property Name="StandardHolidaysCount" Type="Int32" Nullable="false" />
           <Property Name="StandardVacationCount" Type="Int32" Nullable="false" />
-        </EntityType>
-        <EntityType Name="vwExt_LocationHoliday">
-          <Key>
-            <PropertyRef Name="ID" />
-            <PropertyRef Name="LocationID" />
-            <PropertyRef Name="Date" />
-            <PropertyRef Name="Name" />
-            <PropertyRef Name="TimeOff" />
-          </Key>
-          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="LocationID" Type="Int32" Nullable="false" />
-          <Property Name="Date" Type="DateTime" Nullable="false" Precision="0" />
-          <Property Name="Name" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="TimeOff" Type="Decimal" Precision="4" Scale="2" Nullable="false" />
-        </EntityType>
-        <EntityType Name="vwExt_LocationWorkingSchedule">
-          <Key>
-            <PropertyRef Name="ID" />
-            <PropertyRef Name="LocationID" />
-            <PropertyRef Name="WeekDayID" />
-            <PropertyRef Name="IsWorkingDay" />
-          </Key>
-          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="LocationID" Type="Int32" Nullable="false" />
-          <Property Name="WeekDayID" Type="Int32" Nullable="false" />
-          <Property Name="IsWorkingDay" Type="Boolean" Nullable="false" />
-          <Property Name="StartTime" Type="Time" Precision="1" />
-          <Property Name="Duration" Type="Decimal" Precision="4" Scale="2" />
         </EntityType>
         <EntityType Name="vwExt_Resource">
           <Key>
@@ -1229,24 +777,6 @@ warning 6002: The table/view 'EnableDev.sys.database_firewall_rules' does not ha
           <Property Name="SkillID" Type="Int32" Nullable="false" />
           <Property Name="SkillLevel" Type="Byte" />
         </EntityType>
-        <EntityType Name="vwExt_ResourceWorkingScheduleHistory">
-          <Key>
-            <PropertyRef Name="ID" />
-            <PropertyRef Name="ResourceID" />
-            <PropertyRef Name="ResourceHistoryID" />
-            <PropertyRef Name="WeekDayID" />
-            <PropertyRef Name="IsOverrideLocationSchedule" />
-            <PropertyRef Name="IsWorkingDay" />
-          </Key>
-          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="ResourceID" Type="Int32" Nullable="false" />
-          <Property Name="ResourceHistoryID" Type="Int32" Nullable="false" />
-          <Property Name="WeekDayID" Type="Int32" Nullable="false" />
-          <Property Name="IsOverrideLocationSchedule" Type="Boolean" Nullable="false" />
-          <Property Name="IsWorkingDay" Type="Boolean" Nullable="false" />
-          <Property Name="StartTime" Type="Time" Precision="7" />
-          <Property Name="Duration" Type="Decimal" Precision="4" Scale="2" />
-        </EntityType>
         <EntityType Name="vwExt_Skill">
           <Key>
             <PropertyRef Name="ID" />
@@ -1258,60 +788,6 @@ warning 6002: The table/view 'EnableDev.sys.database_firewall_rules' does not ha
           <Property Name="DisplayOrder" Type="Int32" />
           <Property Name="IsActive" Type="Boolean" Nullable="false" />
           <Property Name="ParentID" Type="Int32" />
-        </EntityType>
-        <EntityType Name="vwExt_TimeCard">
-          <Key>
-            <PropertyRef Name="ID" />
-            <PropertyRef Name="TimeCardResourceTaskTypeID" />
-            <PropertyRef Name="ResourceID" />
-            <PropertyRef Name="EngagementTaskTypeID" />
-            <PropertyRef Name="TimeCardStatusID" />
-            <PropertyRef Name="Date" />
-            <PropertyRef Name="Hours" />
-            <PropertyRef Name="IsValid" />
-          </Key>
-          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="TimeCardResourceTaskTypeID" Type="Int32" Nullable="false" />
-          <Property Name="ResourceID" Type="Int32" Nullable="false" />
-          <Property Name="EngagementTaskTypeID" Type="Int32" Nullable="false" />
-          <Property Name="TimeCardStatusID" Type="Int32" Nullable="false" />
-          <Property Name="Date" Type="DateTime" Nullable="false" Precision="0" />
-          <Property Name="Hours" Type="Decimal" Precision="4" Scale="2" Nullable="false" />
-          <Property Name="IsValid" Type="Boolean" Nullable="false" />
-        </EntityType>
-        <EntityType Name="vwExt_TimeCardResourceEngagements">
-          <Key>
-            <PropertyRef Name="ID" />
-            <PropertyRef Name="ResourceID" />
-            <PropertyRef Name="EngagementID" />
-            <PropertyRef Name="EngagementRoleID" />
-            <PropertyRef Name="IsVisible" />
-          </Key>
-          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="ResourceID" Type="Int32" Nullable="false" />
-          <Property Name="EngagementID" Type="Int32" Nullable="false" />
-          <Property Name="EngagementRoleID" Type="Int32" Nullable="false" />
-          <Property Name="IsVisible" Type="Boolean" Nullable="false" />
-        </EntityType>
-        <EntityType Name="vwExt_TimeCardResourceTaskTypes">
-          <Key>
-            <PropertyRef Name="ID" />
-            <PropertyRef Name="TimeCardResourceEngagementsID" />
-            <PropertyRef Name="TaskTypeID" />
-            <PropertyRef Name="IsVisible" />
-          </Key>
-          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="TimeCardResourceEngagementsID" Type="Int32" Nullable="false" />
-          <Property Name="TaskTypeID" Type="Int32" Nullable="false" />
-          <Property Name="IsVisible" Type="Boolean" Nullable="false" />
-        </EntityType>
-        <EntityType Name="vwExt_TimeZoneMaster">
-          <Key>
-            <PropertyRef Name="ID" />
-            <PropertyRef Name="Name" />
-          </Key>
-          <Property Name="ID" Type="Int32" Nullable="false" />
-          <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
         </EntityType>
         <EntityType Name="vwExt_Title">
           <Key>
@@ -1329,92 +805,6 @@ warning 6002: The table/view 'EnableDev.sys.database_firewall_rules' does not ha
           <Property Name="IsActive" Type="Boolean" Nullable="false" />
           <Property Name="LocationID" Type="Int32" Nullable="false" />
           <Property Name="ResourceTypeID" Type="Int32" />
-        </EntityType>
-        <EntityType Name="vwExt_TKT_Queue">
-          <Key>
-            <PropertyRef Name="ID" />
-            <PropertyRef Name="Name" />
-            <PropertyRef Name="CategoryMasterID" />
-            <PropertyRef Name="QueueTypeMasterID" />
-            <PropertyRef Name="IsActive" />
-          </Key>
-          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Name" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="CategoryMasterID" Type="Int32" Nullable="false" />
-          <Property Name="QueueTypeMasterID" Type="Int32" Nullable="false" />
-          <Property Name="Description" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
-          <Property Name="IsDefaultTicketQueue" Type="Boolean" />
-          <Property Name="IsActive" Type="Boolean" Nullable="false" />
-        </EntityType>
-        <EntityType Name="vwExt_TKT_QueueTypeMaster">
-          <Key>
-            <PropertyRef Name="Id" />
-            <PropertyRef Name="Name" />
-            <PropertyRef Name="Code" />
-            <PropertyRef Name="IsActive" />
-          </Key>
-          <Property Name="Id" Type="Int32" Nullable="false" />
-          <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="Description" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
-          <Property Name="Code" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="IsActive" Type="Boolean" Nullable="false" />
-        </EntityType>
-        <EntityType Name="vwExt_TKT_RosterCalenderInfo">
-          <Key>
-            <PropertyRef Name="ID" />
-            <PropertyRef Name="Date" />
-            <PropertyRef Name="QueueID" />
-            <PropertyRef Name="RosterTypeMasterID" />
-          </Key>
-          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Date" Type="DateTime" Nullable="false" Precision="0" />
-          <Property Name="QueueID" Type="Int32" Nullable="false" />
-          <Property Name="RosterTypeMasterID" Type="Int32" Nullable="false" />
-          <Property Name="RosterShiftID" Type="Int32" />
-        </EntityType>
-        <EntityType Name="vwExt_TKT_RosterCalenderUsers">
-          <Key>
-            <PropertyRef Name="ID" />
-            <PropertyRef Name="RosterCalenderInfoID" />
-            <PropertyRef Name="UserID" />
-            <PropertyRef Name="IsOnCall" />
-          </Key>
-          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="RosterCalenderInfoID" Type="Int32" Nullable="false" />
-          <Property Name="UserID" Type="Int32" Nullable="false" />
-          <Property Name="IsOnCall" Type="Boolean" Nullable="false" />
-        </EntityType>
-        <EntityType Name="vwExt_TKT_RosterResourceTypeMaster">
-          <Key>
-            <PropertyRef Name="ID" />
-            <PropertyRef Name="Name" />
-            <PropertyRef Name="Value" />
-          </Key>
-          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Name" Type="String" MaxLength="20" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="Value" Type="String" MaxLength="20" FixedLength="false" Unicode="true" Nullable="false" />
-        </EntityType>
-        <EntityType Name="vwExt_TKT_RosterShift">
-          <Key>
-            <PropertyRef Name="ID" />
-            <PropertyRef Name="Name" />
-            <PropertyRef Name="StartTime" />
-            <PropertyRef Name="EndTime" />
-          </Key>
-          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="StartTime" Type="Time" Nullable="false" Precision="7" />
-          <Property Name="EndTime" Type="Time" Nullable="false" Precision="7" />
-        </EntityType>
-        <EntityType Name="vwExt_TKT_RosterTypeMaster">
-          <Key>
-            <PropertyRef Name="ID" />
-            <PropertyRef Name="Name" />
-            <PropertyRef Name="Value" />
-          </Key>
-          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Name" Type="String" MaxLength="20" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="Value" Type="String" MaxLength="20" FixedLength="false" Unicode="true" Nullable="false" />
         </EntityType>
         <EntityType Name="vwExt_User">
           <Key>
@@ -1449,61 +839,21 @@ warning 6002: The table/view 'EnableDev.sys.database_firewall_rules' does not ha
           <Property Name="TimezoneID" Type="Int32" Nullable="false" />
           <Property Name="UserName" Type="String" Nullable="false" MaxLength="30" FixedLength="false" Unicode="true" />
         </EntityType>
-        <EntityType Name="vwExt_WeekDayMaster">
-          <Key>
-            <PropertyRef Name="Day" />
-          </Key>
-          <Property Name="Day" Type="String" MaxLength="20" FixedLength="false" Unicode="true" Nullable="false" />
-        </EntityType>
-        <EntityType Name="database_firewall_rules">
-          <Key>
-            <PropertyRef Name="id" />
-            <PropertyRef Name="name" />
-            <PropertyRef Name="start_ip_address" />
-            <PropertyRef Name="end_ip_address" />
-            <PropertyRef Name="create_date" />
-            <PropertyRef Name="modify_date" />
-          </Key>
-          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="name" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="start_ip_address" Type="String" MaxLength="45" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="end_ip_address" Type="String" MaxLength="45" FixedLength="false" Unicode="false" Nullable="false" />
-          <Property Name="create_date" Type="DateTime" Nullable="false" Precision="3" />
-          <Property Name="modify_date" Type="DateTime" Nullable="false" Precision="3" />
-        </EntityType>
         <EntityContainer Name="EnableDevEntities" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="vwExt_Client" EntityType="Self.vwExt_Client" />
           <EntitySet Name="vwExt_Company" EntityType="Self.vwExt_Company" />
           <EntitySet Name="vwExt_Department" EntityType="Self.vwExt_Department" />
           <EntitySet Name="vwExt_Engagement" EntityType="Self.vwExt_Engagement" />
-          <EntitySet Name="vwExt_EngagementPermissions" EntityType="Self.vwExt_EngagementPermissions" />
           <EntitySet Name="vwExt_EngagementRoles" EntityType="Self.vwExt_EngagementRoles" />
-          <EntitySet Name="vwExt_EngagementRolesSchedule" EntityType="Self.vwExt_EngagementRolesSchedule" />
           <EntitySet Name="vwExt_EngagementTaskTypes" EntityType="Self.vwExt_EngagementTaskTypes" />
           <EntitySet Name="vwExt_EngagementType" EntityType="Self.vwExt_EngagementType" />
           <EntitySet Name="vwExt_Location" EntityType="Self.vwExt_Location" />
-          <EntitySet Name="vwExt_LocationHoliday" EntityType="Self.vwExt_LocationHoliday" />
-          <EntitySet Name="vwExt_LocationWorkingSchedule" EntityType="Self.vwExt_LocationWorkingSchedule" />
           <EntitySet Name="vwExt_Resource" EntityType="Self.vwExt_Resource" />
           <EntitySet Name="vwExt_ResourceHistory" EntityType="Self.vwExt_ResourceHistory" />
           <EntitySet Name="vwExt_ResourceSkillLevel" EntityType="Self.vwExt_ResourceSkillLevel" />
-          <EntitySet Name="vwExt_ResourceWorkingScheduleHistory" EntityType="Self.vwExt_ResourceWorkingScheduleHistory" />
           <EntitySet Name="vwExt_Skill" EntityType="Self.vwExt_Skill" />
-          <EntitySet Name="vwExt_TimeCard" EntityType="Self.vwExt_TimeCard" />
-          <EntitySet Name="vwExt_TimeCardResourceEngagements" EntityType="Self.vwExt_TimeCardResourceEngagements" />
-          <EntitySet Name="vwExt_TimeCardResourceTaskTypes" EntityType="Self.vwExt_TimeCardResourceTaskTypes" />
-          <EntitySet Name="vwExt_TimeZoneMaster" EntityType="Self.vwExt_TimeZoneMaster" />
           <EntitySet Name="vwExt_Title" EntityType="Self.vwExt_Title" />
-          <EntitySet Name="vwExt_TKT_Queue" EntityType="Self.vwExt_TKT_Queue" />
-          <EntitySet Name="vwExt_TKT_QueueTypeMaster" EntityType="Self.vwExt_TKT_QueueTypeMaster" />
-          <EntitySet Name="vwExt_TKT_RosterCalenderInfo" EntityType="Self.vwExt_TKT_RosterCalenderInfo" />
-          <EntitySet Name="vwExt_TKT_RosterCalenderUsers" EntityType="Self.vwExt_TKT_RosterCalenderUsers" />
-          <EntitySet Name="vwExt_TKT_RosterResourceTypeMaster" EntityType="Self.vwExt_TKT_RosterResourceTypeMaster" />
-          <EntitySet Name="vwExt_TKT_RosterShift" EntityType="Self.vwExt_TKT_RosterShift" />
-          <EntitySet Name="vwExt_TKT_RosterTypeMaster" EntityType="Self.vwExt_TKT_RosterTypeMaster" />
           <EntitySet Name="vwExt_User" EntityType="Self.vwExt_User" />
-          <EntitySet Name="vwExt_WeekDayMaster" EntityType="Self.vwExt_WeekDayMaster" />
-          <EntitySet Name="database_firewall_rules" EntityType="Self.database_firewall_rules" />
           <EntitySet Name="vwExt_ResourceType" EntityType="EnableDevModel.vwExt_ResourceType" />
         </EntityContainer>
         <EntityType Name="vwExt_ResourceType">
@@ -1585,16 +935,6 @@ warning 6002: The table/view 'EnableDev.sys.database_firewall_rules' does not ha
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="vwExt_EngagementPermissions">
-            <EntityTypeMapping TypeName="EnableDevModel.vwExt_EngagementPermissions">
-              <MappingFragment StoreEntitySet="vwExt_EngagementPermissions">
-                <ScalarProperty Name="ID" ColumnName="ID" />
-                <ScalarProperty Name="EngagementTypeID" ColumnName="EngagementTypeID" />
-                <ScalarProperty Name="UserTypeID" ColumnName="UserTypeID" />
-                <ScalarProperty Name="Permission" ColumnName="Permission" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="vwExt_EngagementRoles">
             <EntityTypeMapping TypeName="EnableDevModel.vwExt_EngagementRoles">
               <MappingFragment StoreEntitySet="vwExt_EngagementRoles">
@@ -1608,20 +948,6 @@ warning 6002: The table/view 'EnableDev.sys.database_firewall_rules' does not ha
                 <ScalarProperty Name="IsBooked" ColumnName="IsBooked" />
                 <ScalarProperty Name="Description" ColumnName="Description" />
                 <ScalarProperty Name="OverridenTitleID" ColumnName="OverridenTitleID" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="vwExt_EngagementRolesSchedule">
-            <EntityTypeMapping TypeName="EnableDevModel.vwExt_EngagementRolesSchedule">
-              <MappingFragment StoreEntitySet="vwExt_EngagementRolesSchedule">
-                <ScalarProperty Name="ID" ColumnName="ID" />
-                <ScalarProperty Name="EngagementRoleID" ColumnName="EngagementRoleID" />
-                <ScalarProperty Name="FillModeID" ColumnName="FillModeID" />
-                <ScalarProperty Name="Date" ColumnName="Date" />
-                <ScalarProperty Name="ContractHours" ColumnName="ContractHours" />
-                <ScalarProperty Name="BookedHours" ColumnName="BookedHours" />
-                <ScalarProperty Name="RequestedHours" ColumnName="RequestedHours" />
-                <ScalarProperty Name="IsOpenRequest" ColumnName="IsOpenRequest" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -1666,29 +992,6 @@ warning 6002: The table/view 'EnableDev.sys.database_firewall_rules' does not ha
                 <ScalarProperty Name="HoursPerDay" ColumnName="HoursPerDay" />
                 <ScalarProperty Name="StandardHolidaysCount" ColumnName="StandardHolidaysCount" />
                 <ScalarProperty Name="StandardVacationCount" ColumnName="StandardVacationCount" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="vwExt_LocationHoliday">
-            <EntityTypeMapping TypeName="EnableDevModel.vwExt_LocationHoliday">
-              <MappingFragment StoreEntitySet="vwExt_LocationHoliday">
-                <ScalarProperty Name="ID" ColumnName="ID" />
-                <ScalarProperty Name="LocationID" ColumnName="LocationID" />
-                <ScalarProperty Name="Date" ColumnName="Date" />
-                <ScalarProperty Name="Name" ColumnName="Name" />
-                <ScalarProperty Name="TimeOff" ColumnName="TimeOff" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="vwExt_LocationWorkingSchedule">
-            <EntityTypeMapping TypeName="EnableDevModel.vwExt_LocationWorkingSchedule">
-              <MappingFragment StoreEntitySet="vwExt_LocationWorkingSchedule">
-                <ScalarProperty Name="ID" ColumnName="ID" />
-                <ScalarProperty Name="LocationID" ColumnName="LocationID" />
-                <ScalarProperty Name="WeekDayID" ColumnName="WeekDayID" />
-                <ScalarProperty Name="IsWorkingDay" ColumnName="IsWorkingDay" />
-                <ScalarProperty Name="StartTime" ColumnName="StartTime" />
-                <ScalarProperty Name="Duration" ColumnName="Duration" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -1741,20 +1044,6 @@ warning 6002: The table/view 'EnableDev.sys.database_firewall_rules' does not ha
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="vwExt_ResourceWorkingScheduleHistory">
-            <EntityTypeMapping TypeName="EnableDevModel.vwExt_ResourceWorkingScheduleHistory">
-              <MappingFragment StoreEntitySet="vwExt_ResourceWorkingScheduleHistory">
-                <ScalarProperty Name="ID" ColumnName="ID" />
-                <ScalarProperty Name="ResourceID" ColumnName="ResourceID" />
-                <ScalarProperty Name="ResourceHistoryID" ColumnName="ResourceHistoryID" />
-                <ScalarProperty Name="WeekDayID" ColumnName="WeekDayID" />
-                <ScalarProperty Name="IsOverrideLocationSchedule" ColumnName="IsOverrideLocationSchedule" />
-                <ScalarProperty Name="IsWorkingDay" ColumnName="IsWorkingDay" />
-                <ScalarProperty Name="StartTime" ColumnName="StartTime" />
-                <ScalarProperty Name="Duration" ColumnName="Duration" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="vwExt_Skill">
             <EntityTypeMapping TypeName="EnableDevModel.vwExt_Skill">
               <MappingFragment StoreEntitySet="vwExt_Skill">
@@ -1763,49 +1052,6 @@ warning 6002: The table/view 'EnableDev.sys.database_firewall_rules' does not ha
                 <ScalarProperty Name="DisplayOrder" ColumnName="DisplayOrder" />
                 <ScalarProperty Name="IsActive" ColumnName="IsActive" />
                 <ScalarProperty Name="ParentID" ColumnName="ParentID" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="vwExt_TimeCard">
-            <EntityTypeMapping TypeName="EnableDevModel.vwExt_TimeCard">
-              <MappingFragment StoreEntitySet="vwExt_TimeCard">
-                <ScalarProperty Name="ID" ColumnName="ID" />
-                <ScalarProperty Name="TimeCardResourceTaskTypeID" ColumnName="TimeCardResourceTaskTypeID" />
-                <ScalarProperty Name="ResourceID" ColumnName="ResourceID" />
-                <ScalarProperty Name="EngagementTaskTypeID" ColumnName="EngagementTaskTypeID" />
-                <ScalarProperty Name="TimeCardStatusID" ColumnName="TimeCardStatusID" />
-                <ScalarProperty Name="Date" ColumnName="Date" />
-                <ScalarProperty Name="Hours" ColumnName="Hours" />
-                <ScalarProperty Name="IsValid" ColumnName="IsValid" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="vwExt_TimeCardResourceEngagements">
-            <EntityTypeMapping TypeName="EnableDevModel.vwExt_TimeCardResourceEngagements">
-              <MappingFragment StoreEntitySet="vwExt_TimeCardResourceEngagements">
-                <ScalarProperty Name="ID" ColumnName="ID" />
-                <ScalarProperty Name="ResourceID" ColumnName="ResourceID" />
-                <ScalarProperty Name="EngagementID" ColumnName="EngagementID" />
-                <ScalarProperty Name="EngagementRoleID" ColumnName="EngagementRoleID" />
-                <ScalarProperty Name="IsVisible" ColumnName="IsVisible" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="vwExt_TimeCardResourceTaskTypes">
-            <EntityTypeMapping TypeName="EnableDevModel.vwExt_TimeCardResourceTaskTypes">
-              <MappingFragment StoreEntitySet="vwExt_TimeCardResourceTaskTypes">
-                <ScalarProperty Name="ID" ColumnName="ID" />
-                <ScalarProperty Name="TimeCardResourceEngagementsID" ColumnName="TimeCardResourceEngagementsID" />
-                <ScalarProperty Name="TaskTypeID" ColumnName="TaskTypeID" />
-                <ScalarProperty Name="IsVisible" ColumnName="IsVisible" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="vwExt_TimeZoneMaster">
-            <EntityTypeMapping TypeName="EnableDevModel.vwExt_TimeZoneMaster">
-              <MappingFragment StoreEntitySet="vwExt_TimeZoneMaster">
-                <ScalarProperty Name="ID" ColumnName="ID" />
-                <ScalarProperty Name="Name" ColumnName="Name" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -1819,79 +1065,6 @@ warning 6002: The table/view 'EnableDev.sys.database_firewall_rules' does not ha
                 <ScalarProperty Name="IsActive" ColumnName="IsActive" />
                 <ScalarProperty Name="LocationID" ColumnName="LocationID" />
                 <ScalarProperty Name="ResourceTypeID" ColumnName="ResourceTypeID" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="vwExt_TKT_Queue">
-            <EntityTypeMapping TypeName="EnableDevModel.vwExt_TKT_Queue">
-              <MappingFragment StoreEntitySet="vwExt_TKT_Queue">
-                <ScalarProperty Name="ID" ColumnName="ID" />
-                <ScalarProperty Name="Name" ColumnName="Name" />
-                <ScalarProperty Name="CategoryMasterID" ColumnName="CategoryMasterID" />
-                <ScalarProperty Name="QueueTypeMasterID" ColumnName="QueueTypeMasterID" />
-                <ScalarProperty Name="Description" ColumnName="Description" />
-                <ScalarProperty Name="IsDefaultTicketQueue" ColumnName="IsDefaultTicketQueue" />
-                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="vwExt_TKT_QueueTypeMaster">
-            <EntityTypeMapping TypeName="EnableDevModel.vwExt_TKT_QueueTypeMaster">
-              <MappingFragment StoreEntitySet="vwExt_TKT_QueueTypeMaster">
-                <ScalarProperty Name="Id" ColumnName="Id" />
-                <ScalarProperty Name="Name" ColumnName="Name" />
-                <ScalarProperty Name="Description" ColumnName="Description" />
-                <ScalarProperty Name="Code" ColumnName="Code" />
-                <ScalarProperty Name="IsActive" ColumnName="IsActive" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="vwExt_TKT_RosterCalenderInfo">
-            <EntityTypeMapping TypeName="EnableDevModel.vwExt_TKT_RosterCalenderInfo">
-              <MappingFragment StoreEntitySet="vwExt_TKT_RosterCalenderInfo">
-                <ScalarProperty Name="ID" ColumnName="ID" />
-                <ScalarProperty Name="Date" ColumnName="Date" />
-                <ScalarProperty Name="QueueID" ColumnName="QueueID" />
-                <ScalarProperty Name="RosterTypeMasterID" ColumnName="RosterTypeMasterID" />
-                <ScalarProperty Name="RosterShiftID" ColumnName="RosterShiftID" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="vwExt_TKT_RosterCalenderUsers">
-            <EntityTypeMapping TypeName="EnableDevModel.vwExt_TKT_RosterCalenderUsers">
-              <MappingFragment StoreEntitySet="vwExt_TKT_RosterCalenderUsers">
-                <ScalarProperty Name="ID" ColumnName="ID" />
-                <ScalarProperty Name="RosterCalenderInfoID" ColumnName="RosterCalenderInfoID" />
-                <ScalarProperty Name="UserID" ColumnName="UserID" />
-                <ScalarProperty Name="IsOnCall" ColumnName="IsOnCall" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="vwExt_TKT_RosterResourceTypeMaster">
-            <EntityTypeMapping TypeName="EnableDevModel.vwExt_TKT_RosterResourceTypeMaster">
-              <MappingFragment StoreEntitySet="vwExt_TKT_RosterResourceTypeMaster">
-                <ScalarProperty Name="ID" ColumnName="ID" />
-                <ScalarProperty Name="Name" ColumnName="Name" />
-                <ScalarProperty Name="Value" ColumnName="Value" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="vwExt_TKT_RosterShift">
-            <EntityTypeMapping TypeName="EnableDevModel.vwExt_TKT_RosterShift">
-              <MappingFragment StoreEntitySet="vwExt_TKT_RosterShift">
-                <ScalarProperty Name="ID" ColumnName="ID" />
-                <ScalarProperty Name="Name" ColumnName="Name" />
-                <ScalarProperty Name="StartTime" ColumnName="StartTime" />
-                <ScalarProperty Name="EndTime" ColumnName="EndTime" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="vwExt_TKT_RosterTypeMaster">
-            <EntityTypeMapping TypeName="EnableDevModel.vwExt_TKT_RosterTypeMaster">
-              <MappingFragment StoreEntitySet="vwExt_TKT_RosterTypeMaster">
-                <ScalarProperty Name="ID" ColumnName="ID" />
-                <ScalarProperty Name="Name" ColumnName="Name" />
-                <ScalarProperty Name="Value" ColumnName="Value" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -1918,25 +1091,6 @@ warning 6002: The table/view 'EnableDev.sys.database_firewall_rules' does not ha
                 <ScalarProperty Name="OverrideTimeZone" ColumnName="OverrideTimeZone" />
                 <ScalarProperty Name="PrimaryRoleID" ColumnName="PrimaryRoleID" />
                 <ScalarProperty Name="TimezoneID" ColumnName="TimezoneID" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="vwExt_WeekDayMaster">
-            <EntityTypeMapping TypeName="EnableDevModel.vwExt_WeekDayMaster">
-              <MappingFragment StoreEntitySet="vwExt_WeekDayMaster">
-                <ScalarProperty Name="Day" ColumnName="Day" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="database_firewall_rules">
-            <EntityTypeMapping TypeName="EnableDevModel.database_firewall_rules">
-              <MappingFragment StoreEntitySet="database_firewall_rules">
-                <ScalarProperty Name="id" ColumnName="id" />
-                <ScalarProperty Name="name" ColumnName="name" />
-                <ScalarProperty Name="start_ip_address" ColumnName="start_ip_address" />
-                <ScalarProperty Name="end_ip_address" ColumnName="end_ip_address" />
-                <ScalarProperty Name="create_date" ColumnName="create_date" />
-                <ScalarProperty Name="modify_date" ColumnName="modify_date" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

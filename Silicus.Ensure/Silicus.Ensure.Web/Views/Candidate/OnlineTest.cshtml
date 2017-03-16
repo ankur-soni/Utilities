@@ -142,8 +142,8 @@
             <ul class="nav hidden-md-down">
                 <div id="objective-test-side-bar">
                     @*<li class="nav-item nav-heading">
-                        <a class="nav-link fontBold" href="#">Objective Questions</a>
-                    </li>*@
+                            <a class="nav-link fontBold" href="#">Objective Questions</a>
+                        </li>*@
                     <li class="nav-item">
                         <a class="nav-link personal fontBold" href="#"><i class="fa fa-folder-open" aria-hidden="true"></i> OBJECTIVE QUESTIONS </a>
                     </li>
@@ -151,11 +151,15 @@
                         <ol class="questions">
                             @if (@Model.NavigationDetails != null && @Model.NavigationDetails.Objective != null && @Model.NavigationDetails.Objective.Count > 0)
                             {
+                                int count = 1;
                                 foreach (var question in Model.NavigationDetails.Objective)
                                 {
                                     <li>
-                                        <a class="nav-link questionView contact QuestionCheckbox @QuestionColor(question)" id="@question.QuestionId" href="#">@Html.Raw(@question.QuestionDescription)</a>
+                                        <a class="nav-link questionView contact QuestionCheckbox @QuestionColor(question)" id="@question.QuestionId" href="#">@*<span>@count. </span>*@@HttpUtility.HtmlDecode(!string.IsNullOrWhiteSpace(question.QuestionDescription) ? @question.QuestionDescription.Replace("&nbsp;", "").Trim() : "")</a>
                                     </li>
+                                    {
+                                        count = count + 1;
+                                    }
                                 }
                             }
                         </ol>
@@ -163,8 +167,8 @@
                 </div>
                 <div id="practical-test-side-bar">
                     @*<li class="nav-item nav-heading">
-                        <a class="nav-link fontBold" href="#">Practical Questions</a>
-                    </li>*@
+                            <a class="nav-link fontBold" href="#">Practical Questions</a>
+                        </li>*@
                     <li class="nav-item">
                         <a class="nav-link personal fontBold" href="#"><i class="fa fa-folder-open" aria-hidden="true"></i> PRACTICAL QUESTIONS </a>
                     </li>
@@ -172,11 +176,15 @@
                         <ol class="questions">
                             @if (@Model.NavigationDetails != null && @Model.NavigationDetails.Practical != null && @Model.NavigationDetails.Practical.Count > 0)
                             {
+                                int count = 1;
                                 foreach (var question in Model.NavigationDetails.Practical)
                                 {
                                     <li>
-                                        <a class="nav-link questionView contact QuestionCheckbox @QuestionColor(question)" id="@question.QuestionId" href="#">@Html.Raw(@question.QuestionDescription)</a>
+                                        <a class="nav-link questionView contact QuestionCheckbox @QuestionColor(question)" id="@question.QuestionId" href="#">@*<span>@count. </span>*@@HttpUtility.HtmlDecode(!string.IsNullOrWhiteSpace(question.QuestionDescription) ? @question.QuestionDescription.Replace("&nbsp;", "").Trim() : "")</a>
                                     </li>
+                                    {
+                                        count = count + 1;
+                                    }
                                 }
                             }
                         </ol>
@@ -217,7 +225,14 @@ else
 }
 
 
-
+@{if (!string.IsNullOrWhiteSpace(Model.ProfilePhotoFilePath))
+            {
+        <script>
+            $(document).ready(function () {
+                $('#CandidatePhotoImg').attr('src', "@System.Configuration.ConfigurationManager.AppSettings["ServerName"]@Html.Raw(Url.Content(Model.ProfilePhotoFilePath))");
+            });
+        </script>
+    }}
 <script>
     var clock;
     var totalTime;
@@ -376,20 +391,20 @@ else
             showCustomLoader();
             OnSubmitTestOK();
             var text = "The test is submitted , thank you for your participation. Further, the recruitment team will contact you for the update";
-            swal("Submitted!",text, "success");
+            swal("Submitted!", text, "success");
         }
     });
     }
 
     function OnSubmitTestOK() {
-        showCustomLoader();    
+        showCustomLoader();
         var answer = GetAnswer();
         var testSuiteId = $("#TestSuiteId").val();
         var userTestSuiteId = $("#UserTestSuiteId").val();
         var userTestDetailId = $("#UserTestDetailId").val();
         var userId = $("#UserId").val();
         window.onbeforeunload = null;
-        
+
         window.location.href = '/Candidate/OnSubmitTest?testSuiteId=' + testSuiteId + '&userTestSuiteId=' + userTestSuiteId + '&userTestDetailId=' + userTestDetailId + '&userId=' + userId + '&answer=' + answer;
     }
 
@@ -430,8 +445,7 @@ else
 
     fullScreen();
 
-    function fullScreen()
-    {
+    function fullScreen() {
         swal({
             title: "FullScreen Mode",
             text: "You are navigating to Fullscreen.",
@@ -441,7 +455,7 @@ else
             confirmButtonText: "Ok",
             cancelButtonText: "No",
             closeOnConfirm: true,
-            closeOnCancel: false   
+            closeOnCancel: false
         },
  function (isConfirm) {
      if (isConfirm) {

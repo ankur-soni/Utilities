@@ -14,6 +14,14 @@
     ViewBag.Title = "Welcome";
     Layout = "~/Views/Shared/_LayoutCandidate.cshtml";
 }
+@{if (!string.IsNullOrWhiteSpace(ViewBag.ProfilePhotoPath))
+    {
+        <script>
+            $(document).ready(function () {
+                $('#CandidatePhotoImg').attr('src', "@System.Configuration.ConfigurationManager.AppSettings["ServerName"]@Html.Raw(Url.Content(ViewBag.ProfilePhotoPath))");
+            });
+        </script>
+    }}
 @if (@ViewBag.Status != 1)
 {
 
@@ -30,7 +38,7 @@
                 </div>
                 <div class="row">
                     <div class="col-sm-10 col-sm-offset-1">
-                        <div class="M-B15" id="warning">Please go through the Online test instructions before you commence the test.</div>
+                        <div class="M-B15" id="warning">Please go through the online test instructions before you commence the test.</div>
                     </div>
 
                     <div class="col-sm-10 col-sm-offset-1">
@@ -38,7 +46,7 @@
                         <label class="M-T15 M-B15 titleText">INSTRUCTIONS</label>
                         <div class="M-L50">
                             <ol class="points">
-                                <li><span>On commencing the Online test, the <a href="#" class="disabled" style="color:#00aff2;text-decoration: underline;">clock displays</a> the Total Time, Remaining Time of the test.</span></li>
+                                <li><span>On commencing the online test, the <a href="#" class="disabled" style="color:#00aff2;text-decoration: underline;">clock displays</a> the total time, remaining time of the test.</span></li>
 
                                 <li><span>Click <a href="#" class="disabled" style="color:#00aff2;text-decoration: underline;">question number</a> to view the respective question only.</span></li>
 
@@ -48,12 +56,12 @@
 
                                 <li> <span>At any point during the test you can click <a href="#" class="disabled" style="color:#00aff2;text-decoration: underline;"> << Previous </a> to go to previous question.</span></li>
 
-                                <li> <span>Once you have completed the Online test you can proceed to click <a href="#" class="disabled" style="color:#00aff2;text-decoration: underline;">Submit Test</a> to finish the test Candidate may not return to a test once it has been completed.</span></li>
+                                <li> <span>Once you have completed the online test you can proceed to click <a href="#" class="disabled" style="color:#00aff2;text-decoration: underline;">Submit Test</a> to finish the test candidate may not return to a test once it has been completed.</span></li>
 
                                 <li>
                                     <span>
-                                        When the test ends abruptly due to power failure,problem with INTERNET connection or any other reason,the Online test session will be disabled and you cannot continue further.
-                                        To resume the test contact the appropriate person.
+                                        When the test ends abruptly due to power failure, problem with INTERNET connection or any other reason, the online test session will be disabled and you cannot continue further.
+                                        to resume the test contact the appropriate person.
                                     </span>
                                 </li>
                             </ol>
@@ -62,7 +70,7 @@
                     </div>
                     <div class="col-sm-10 col-sm-offset-1  M-B15">
                         <div class="form-group">
-                            <div class="M-L30">
+                            <div class="M-L50">
                                 <div id="Term" class="checkbox checkbox-success">
                                     <input id="Terms" type="checkbox">
                                     <label for="Terms"> <span style="font-weight:500;">I have read all the instructions and agree to all the terms.</span> </label>
@@ -76,7 +84,7 @@
                             @(Html.Kendo().Button()
                                         .Name("btnStart")
                                         .HtmlAttributes(new { type = "button" }).Events(e => e.Click("OnClick"))
-                                        .Content("Start Online Test").HtmlAttributes(new { @class = "btn btn-lg btn-start" }))
+                                        .Content("Start online test").HtmlAttributes(new { @class = "btn btn-lg btn-start" }))
                         </div>
                     </div>
                 </div>
@@ -99,7 +107,7 @@ else
 
 
 <script>
-       
+
     $(document).ready(function () {
 
 
@@ -108,7 +116,7 @@ else
             //$('#warning').css('color','red');
         });
 
-  
+
 
         if(@ViewBag.Status==1){
             $("#myModal").modal();
@@ -117,7 +125,7 @@ else
         }else{
             $('#btnAddMoreTime').hide();
         }
-        $('#objective-test>a,#practical-test>a').addClass('disabled');        
+        $('#objective-test>a,#practical-test>a').addClass('disabled');
     });
 
     function OnClick() {

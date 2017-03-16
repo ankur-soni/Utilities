@@ -57,7 +57,7 @@ namespace Silicus.EncourageWithAzureAd.Web.Controllers
 
             //if ((commonRoles.Count > 0))
             //{
-                dashboardViewModel.UserRoles = commonRoles;
+            dashboardViewModel.UserRoles = commonRoles;
             //    _logger.Log("No. of roles are: " + commonRoles.Count);
             //}
             //else
@@ -131,11 +131,23 @@ namespace Silicus.EncourageWithAzureAd.Web.Controllers
 
                 foreach (var winner in winners)
                 {
+                    var nomination = _encourageDatabaseContext.Query<Nomination>().FirstOrDefault(n => n.Id == winner.NominationId);
+                    var nominee = _commonDbContext.Query<User>().FirstOrDefault(u => u.ID == nomination.UserId);
+                    var employeeId = nominee != null ? nominee.EmployeeID : string.Empty;
+
                     var winnerName = _nominationService.GetNomineeNameOfCurrentNomination(winner.NominationId);
                     var awardMonthYear = _nominationService.GetAwardMonthAndYear(winner.NominationId);
                     var awardName = _nominationService.GetAwardName(winner.NominationId);
-                    var awardComment = _resultService.GetAwardComments(winner.NominationId);
-                    listOfWinners.Add(new NominationListViewModel() { DisplayName = winnerName, NominationTime = awardMonthYear, AwardName = awardName, AwardComment = awardComment });
+                    var awardComment = winner.WinningComment;
+
+                    listOfWinners.Add(new NominationListViewModel()
+                    {
+                        DisplayName = winnerName,
+                        NominationTime = awardMonthYear,
+                        AwardName = awardName,
+                        AwardComment = awardComment,
+                        EmployeeId = employeeId
+                    });
                 }
             }
 

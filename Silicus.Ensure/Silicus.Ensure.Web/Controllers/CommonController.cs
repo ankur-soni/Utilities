@@ -10,6 +10,7 @@ using RazorEngine;
 using Silicus.Ensure.Web.Models;
 using Silicus.Ensure.Models.Constants;
 using System.Threading.Tasks;
+using System.Web.Configuration;
 
 namespace Silicus.Ensure.Web.Controllers
 {
@@ -63,6 +64,7 @@ namespace Silicus.Ensure.Web.Controllers
         {
             string extension = ".cshtml";
             List<EmailModel> emailList = new List<EmailModel>();
+            var utilityId = GetUtilityId();
             foreach (string role in roleName)
             {
                 if (!string.IsNullOrWhiteSpace(role))
@@ -70,7 +72,7 @@ namespace Silicus.Ensure.Web.Controllers
                     var roleDetails = _roleService.GetRoleByRoleName(role);
                     if (roleDetails != null)
                     {
-                        List<Silicus.UtilityContainer.Models.DataObjects.User> users = _containerUserService.GetAllUsersByRoleInUtility(2, roleDetails.ID);
+                        List<Silicus.UtilityContainer.Models.DataObjects.User> users = _containerUserService.GetAllUsersByRoleInUtility(utilityId, roleDetails.ID);
                         foreach (var user in users)
                         {
                             if (user != null)
@@ -105,6 +107,17 @@ namespace Silicus.Ensure.Web.Controllers
             }
 
            
+        }
+
+        private int GetUtilityId()
+        {
+            var utilityProductId = WebConfigurationManager.AppSettings["ProductId"];
+            if (string.IsNullOrWhiteSpace(utilityProductId))
+            {
+                throw new ArgumentNullException();
+            }
+
+            return Convert.ToInt32(utilityProductId);
         }
 
     }

@@ -20,5 +20,6 @@ namespace Silicus.Ensure.Web.Models
         public CandidateInfoViewModel CandidateInfo { get; set; }
         public TestSummaryViewModel TestSummary { get; set; }
         public CandidateStatus CandidateStatus { get; set; }
+        public string ProfilePhotoFilePath { get; set; }
     }
 }
