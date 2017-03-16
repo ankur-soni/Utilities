@@ -148,21 +148,21 @@
                         <a class="nav-link personal fontBold" href="#"><i class="fa fa-folder-open" aria-hidden="true"></i> OBJECTIVE QUESTIONS </a>
                     </li>
                     <li class="nav-item">
-                        <ul class="questions">
+                        <ol class="questions">
                             @if (@Model.NavigationDetails != null && @Model.NavigationDetails.Objective != null && @Model.NavigationDetails.Objective.Count > 0)
                             {
                                 int count = 1;
                                 foreach (var question in Model.NavigationDetails.Objective)
                                 {
                                     <li>
-                                        <a class="nav-link questionView contact QuestionCheckbox @QuestionColor(question)" id="@question.QuestionId" href="#"><span>@count. </span>@HttpUtility.HtmlDecode(!string.IsNullOrWhiteSpace(question.QuestionDescription) ? @question.QuestionDescription.Replace("&nbsp;", "").Trim() : "")</a>
+                                        <a class="nav-link questionView contact QuestionCheckbox @QuestionColor(question)" id="@question.QuestionId" href="#">@*<span>@count. </span>*@@HttpUtility.HtmlDecode(!string.IsNullOrWhiteSpace(question.QuestionDescription) ? @question.QuestionDescription.Replace("&nbsp;", "").Trim() : "")</a>
                                     </li>
                                     {
                                         count = count + 1;
                                     }
                                 }
                             }
-                        </ul>
+                        </ol>
                     </li>
                 </div>
                 <div id="practical-test-side-bar">
@@ -173,21 +173,21 @@
                         <a class="nav-link personal fontBold" href="#"><i class="fa fa-folder-open" aria-hidden="true"></i> PRACTICAL QUESTIONS </a>
                     </li>
                     <li class="nav-item">
-                        <ul class="questions">
+                        <ol class="questions">
                             @if (@Model.NavigationDetails != null && @Model.NavigationDetails.Practical != null && @Model.NavigationDetails.Practical.Count > 0)
                             {
                                 int count = 1;
                                 foreach (var question in Model.NavigationDetails.Practical)
                                 {
                                     <li>
-                                        <a class="nav-link questionView contact QuestionCheckbox @QuestionColor(question)" id="@question.QuestionId" href="#"><span>@count. </span>@HttpUtility.HtmlDecode(!string.IsNullOrWhiteSpace(question.QuestionDescription) ? @question.QuestionDescription.Replace("&nbsp;", "").Trim() : "")</a>
+                                        <a class="nav-link questionView contact QuestionCheckbox @QuestionColor(question)" id="@question.QuestionId" href="#">@*<span>@count. </span>*@@HttpUtility.HtmlDecode(!string.IsNullOrWhiteSpace(question.QuestionDescription) ? @question.QuestionDescription.Replace("&nbsp;", "").Trim() : "")</a>
                                     </li>
                                     {
                                         count = count + 1;
                                     }
                                 }
                             }
-                        </ul>
+                        </ol>
                     </li>
                 </div>
             </ul>

@@ -64,7 +64,12 @@ span.k-add {
 .M-T40 {
     margin-top: 40px;
 }
-
+.M-T50 {
+    margin-top: 50px!important;
+}
+.M-T80 {
+    margin-top: 80px!important;
+}
 
 .M-B5 {
     margin-bottom: 5px;
@@ -593,14 +598,25 @@ header.navbar {
 .width250 {
     width: 250px;
 }
-
+.fixed-heading{
+    font-size: 15px;
+    margin-top: 20px;
+    margin-left: 5px;
+    color: #333!important;
+}
 .marginLeft800 {
     margin-left: 800px !important;
 }
+.width12{
+    width:12.5%!important;
+}
+.width40{
+    width:40.5%!important;
+}
 .nav-link.personal.fontBold{cursor:default!important;}
 .menu-btn-sidebar {
-    float: right;
-    padding: 10px 10px 0px 0px;
+   float:right;
+    padding: 20px 10px 10px 10px;
     color: #00aeef;
     font-size: 20px;
     cursor:pointer;
@@ -629,8 +645,8 @@ header.navbar {
 .sidebar ul.nav li.nav-item a.nav-link {
     color: #777777;
     font-weight: 600;
-    padding: 0px 0px 0px 20px;
-    margin: 8px 0px 8px -20px;
+    padding: 0px 0px 0px 40px;
+    margin: 8px 0px 8px -42px;
     border-left: 4px solid #eee;
 }
 
@@ -1500,7 +1516,7 @@ input[type=text]::-ms-clear {
 /*Questions list css*/
 .questions {
     margin: 0;
-    padding: 0px 0px 0px 95px;
+    padding: 0px 0px 0px 100px;
     list-style-type: decimal;
 }
 
@@ -1929,7 +1945,7 @@ input[type=text]::-ms-clear {
 
 .questionView {
     white-space: nowrap;
-    width: 8.9em;
+    width: 10.5em;
     overflow: hidden;
     text-overflow: ellipsis;
 }

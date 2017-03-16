@@ -22,6 +22,9 @@ function SelectObjectiveQuestion() {
     $('#objective-test-side-bar').show();
     $('#practical-test').removeClass('active');
     $('#objective-test').addClass('active');
+    //$('#pracQuestion').hide();
+    //$('#objQuestion').show();
+    //$('#objQuestion').text('OBJECTIVE QUESTION');
 }
 
 function SelectPracticalQuestion() {
@@ -29,6 +32,9 @@ function SelectPracticalQuestion() {
     $('#practical-test-side-bar').show();
     $('#objective-test').removeClass('active');
     $('#practical-test').addClass('active');
+    //$('#objQuestion').hide();
+    //$('#pracQuestion').show();
+    //$('#pracQuestion').text('PRACTICAL QUESTION');
 }
 
 function ShowMessage(content, isSuceess) {
