@@ -42,9 +42,10 @@ namespace Silicus.UtilityContainer.Services
             }
             return users;
         }
+
         public List<User> GetAllUsers()
         {
-            return _commonDBContext.Query<User>().OrderBy(user => user.DisplayName).ToList();
+            return _commonDBContext.Query<User>().Where(u => u.InactiveDate == null).OrderBy(user => user.DisplayName).ToList();
         }
         
         public User FindUserByEmail(string email)
@@ -128,13 +129,19 @@ namespace Silicus.UtilityContainer.Services
 
         public User GetUserByID(int ID)
         {
-            return _commonDBContext.Query<User>().Where(user => user.ID == ID).FirstOrDefault();
+            return _commonDBContext.Query<User>().FirstOrDefault(user => user.ID == ID);
         }
 
 
         public string FindDisplayNameFromEmail(string email)
         {
-            var userDisplayName = _commonDBContext.Query<User>().Where(user => user.EmailAddress == email).FirstOrDefault().DisplayName;
+            var userDisplayName = string.Empty;
+            var firstOrDefault = _commonDBContext.Query<User>().FirstOrDefault(user => user.EmailAddress == email);
+            if (firstOrDefault != null)
+            {
+                userDisplayName = firstOrDefault.DisplayName;
+            }
+
             return userDisplayName;
         }
 
@@ -145,7 +152,11 @@ namespace Silicus.UtilityContainer.Services
 
             foreach (var id in allManagerUseId)
             {
-                manageremailAdddresses.Add(_commonDBContext.Query<User>().Where(user => user.ID == id).SingleOrDefault().EmailAddress);
+                var singleOrDefault = _commonDBContext.Query<User>().SingleOrDefault(user => user.ID == id);
+                if (singleOrDefault != null)
+                {
+                    manageremailAdddresses.Add(singleOrDefault.EmailAddress);
+                }
             }
 
             return manageremailAdddresses;
