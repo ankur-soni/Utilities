@@ -534,6 +534,7 @@
     <Content Include="Content\css\Kendo\2014.1.416\Default\sprite.png" />
     <Content Include="Content\Images\4X-login-bg.jpg" />
     <Content Include="Content\Images\avatars\6.jpg" />
+    <Content Include="Content\Images\Default_Candidate_Image.png" />
     <Content Include="Content\Images\digits.png" />
     <Content Include="Content\Images\favicon.ico" />
     <Content Include="Content\Images\favicon.png" />
