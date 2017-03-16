@@ -55,11 +55,11 @@ namespace Silicus.EncourageWithAzureAd.Web.Controllers
         }
 
         [HttpPost]
-        public string SendMailToManagers(List<string> managersList,string emailTemplate)
+        public string SendMailToManagers(List<string> managersList,string emailTemplate, string subject)
         {
             string emailBody = HttpUtility.HtmlDecode(emailTemplate);
 
-            string subject = ConfigurationManager.AppSettings["MailNominationSubject"];
+          //  string subject = ConfigurationManager.AppSettings["MailNominationSubject"];
 
             var result = _emailTemplateService.SendEmail(managersList, emailBody, subject);
 

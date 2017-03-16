@@ -85,6 +85,7 @@
 
             var managersList = [];
             var emailTemplate = htmlEncode($("#EmailTemplate").val());
+            var subject = $("#Process option:Selected").text();
             $.each(selectedManagersList, function (index) {
                 if (this.value == "") {
                     selectedManagersList.pop(this.value);
@@ -95,7 +96,7 @@
             $.ajax({
                 type: "POST",
                 url: _urlSendMail,
-                data: { managersList: selectedManagersList, emailTemplate: emailTemplate },
+                data: { managersList: selectedManagersList, emailTemplate: emailTemplate, subject: subject },
                 success: function (result) {
                     if (result = "Success") {
                         swal({
