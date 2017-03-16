@@ -1,5 +1,6 @@
 ﻿using Silicus.Encourage.Services.Interface;
 using Silicus.EncourageWithAzureAd.Web.Models;
+using Silicus.FrameWorx.Logger;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Linq;
@@ -11,10 +12,12 @@ namespace Silicus.EncourageWithAzureAd.Web.Controllers
     [Authorize]
     public class EmailController : Controller
     {
-        private readonly IEmailTemplateService _emailTemplateService;  
-        public EmailController(IEmailTemplateService emailTemplateService)
+        private readonly IEmailTemplateService _emailTemplateService;
+        private readonly ILogger _logger;
+        public EmailController(IEmailTemplateService emailTemplateService,ILogger logger)
         {
             _emailTemplateService = emailTemplateService;
+            _logger = logger;
         }
 
 
@@ -55,14 +58,15 @@ namespace Silicus.EncourageWithAzureAd.Web.Controllers
         }
 
         [HttpPost]
-        public string SendMailToManagers(List<string> managersList,string emailTemplate)
+        public string SendMailToManagers(List<string> managersList,string emailTemplate, string subject)
         {
+            _logger.Log("Post - SendMailToManagers - start");
             string emailBody = HttpUtility.HtmlDecode(emailTemplate);
 
-            string subject = ConfigurationManager.AppSettings["MailNominationSubject"];
+          //  string subject = ConfigurationManager.AppSettings["MailNominationSubject"];
 
             var result = _emailTemplateService.SendEmail(managersList, emailBody, subject);
-
+            _logger.Log("Post - SendMailToManagers - end - result -"+result);
             return result;
         }
 

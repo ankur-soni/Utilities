@@ -18,6 +18,7 @@ using System.Web.Mvc;
 
 namespace Silicus.Finder.Web.Controllers
 {
+    [Authorize]
     public class ProjectsController : Controller
     {
         private readonly IProjectService _projectService;
@@ -52,7 +53,7 @@ namespace Silicus.Finder.Web.Controllers
             return View("GetAllEmployeeList", employeesListViewModel);
         }
 
-       [CustomAuthorizeAttribute(AllowedRole = "Admin, Manager, User")]
+      // [CustomAuthorizeAttribute(AllowedRole = "Admin, Manager, User")]
         public ActionResult GetProjects()
         {
             ViewData["Employees"] = _projectService.GetAllEmployees();
@@ -65,7 +66,7 @@ namespace Silicus.Finder.Web.Controllers
             return View("List", projects);
         }
 
-        [CustomAuthorizeAttribute(AllowedRole = "Admin, Manager, User")]
+       // [CustomAuthorizeAttribute(AllowedRole = "Admin, Manager, User")]
         public ActionResult GetProjectsByCriteria(ProjectSearchCriteriaViewModel criteria)
         {
             IEnumerable<Project> projectsList;
@@ -84,7 +85,7 @@ namespace Silicus.Finder.Web.Controllers
             return View("List", projects);
         }
 
-        [CustomAuthorizeAttribute(AllowedRole = "Admin, Manager, User")]
+        //[CustomAuthorizeAttribute(AllowedRole = "Admin, Manager, User")]
         public ActionResult GetProjectsByName(string projectName)
         {
             IEnumerable<Project> projectsList;
@@ -108,7 +109,7 @@ namespace Silicus.Finder.Web.Controllers
             return View("RecordNotFound");
         }
 
-        [CustomAuthorizeAttribute(AllowedRole = "Admin, Manager, User")]
+       // [CustomAuthorizeAttribute(AllowedRole = "Admin, Manager, User")]
         public ActionResult GetProjectDetails(int projectId)
         {
             ViewData["Employees"] = _projectService.GetAllEmployees();
@@ -118,7 +119,7 @@ namespace Silicus.Finder.Web.Controllers
             return PartialView("_Details", projectViewModel);
         }
 
-        [CustomAuthorizeAttribute(AllowedRole = "Admin, Manager, User")]
+        //[CustomAuthorizeAttribute(AllowedRole = "Admin, Manager, User")]
         public ActionResult ProjectDetails(int projectId)
         {
             ViewData["Employees"] = _projectService.GetAllEmployees();
@@ -131,7 +132,7 @@ namespace Silicus.Finder.Web.Controllers
         }
 
         [ChildActionOnly]
-        [CustomAuthorizeAttribute(AllowedRole = "Admin, Manager, User")]
+        //[CustomAuthorizeAttribute(AllowedRole = "Admin, Manager, User")]
         public ActionResult GetProjectCountBySkill(int skillSetId)
         {
             var projectCount = _projectService.GetProjectCountBySkill(skillSetId);

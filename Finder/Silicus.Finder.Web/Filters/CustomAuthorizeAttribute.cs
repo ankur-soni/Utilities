@@ -29,13 +29,13 @@ namespace Silicus.Finder.Web.Filters
             if (adAuthenticationCookie != null)
             {
                 bool status = false;
-                var userRole = string.Empty;
+                var userRole = new List<string>();
                 string[] allowedRoles = AllowedRole.Split(new char[] { ',', ' ' }, StringSplitOptions.RemoveEmptyEntries);
 
                
                 if (!string.IsNullOrEmpty(HttpContext.Current.Session["Role"] as string))
                 {
-                    userRole = HttpContext.Current.Session["Role"].ToString();
+                    userRole.Add(HttpContext.Current.Session["Role"].ToString());
                 }
                 else
                 {
@@ -49,10 +49,13 @@ namespace Silicus.Finder.Web.Filters
                     var _commonMapper = new CommonMapper();
                     var _authorizationService = new Authorization(_commonMapper.GetCommonDataBAseContext());
                     userRole = _authorizationService.GetRoleForUtility(user.Email, utility);
-                }  
-                 
-                if (allowedRoles.Contains(userRole))
-                    status = true;
+                }
+                foreach (var role in userRole)
+                {
+                    if (allowedRoles.Contains(role))
+                        status = true;
+                }
+                
                 return status;
             }
 

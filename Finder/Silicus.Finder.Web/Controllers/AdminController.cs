@@ -15,6 +15,7 @@ using Microsoft.AspNet.Identity;
 
 namespace Silicus.Finder.Web.Controllers
 {
+    [Authorize]
     public class AdminController : Controller
     {
         private readonly IEmailService _emailService;

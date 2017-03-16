@@ -32,7 +32,7 @@ namespace Silicus.Finder.ModelMappingService
             {
                 var contact = new Contact();
                 contact.EmailAddress = user.EmailAddress;
-                contact.MobileNumber = Convert.ToInt64(user.MobilePhone);
+                contact.MobileNumber = user.MobilePhone;
                 contact.PhoneNumber = user.OfficePhone;
 
                 employee.EmployeeId = user.ID;
@@ -232,7 +232,7 @@ namespace Silicus.Finder.ModelMappingService
                                  select engagamentTypeInstance;
 
             project.ProjectType = engagementType.Count() > 0 ? engagementType.FirstOrDefault().Name : "Not Defined"; 
-            project.EngagementType = engagement.ContractTypeID == null ? Silicus.Finder.Models.DataObjects.EngagementType.None : (Silicus.Finder.Models.DataObjects.EngagementType)engagement.ContractTypeID;
+            project.EngagementType = engagement.EngagementTypeID == null ? Silicus.Finder.Models.DataObjects.EngagementType.None : (Silicus.Finder.Models.DataObjects.EngagementType)engagement.EngagementTypeID;
 
             if (engagement.BeginDate > DateTime.Now)
                 project.Status = Status.Not_Started;
@@ -249,8 +249,8 @@ namespace Silicus.Finder.ModelMappingService
             project.ProjectManagerId = engagement.PrimaryProjectManagerID;
             //project.AdditionalNotes=engagement.
             //project.skillSetId=
-            var userInEngagement = commonDbContext.Query<EngagementUserPermission>().Where(model => model.EngagementID == engagement.ID).Select(model => model.UserID).ToList();
-            project.EmployeeIds = userInEngagement.ToArray();
+            //var userInEngagement = commonDbContext.Query<EngagementUserPermission>().Where(model => model.EngagementID == engagement.ID).Select(model => model.UserID).ToList();
+            //project.EmployeeIds = userInEngagement.ToArray();
 
             return project;
         }

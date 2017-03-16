@@ -41,9 +41,7 @@ namespace Silicus.Finder.Services
         }
 
 
-
-
-        public string getFindersRole(string email, string utility)
+        public List<string> getFindersRole(string email, string utility)
         {
             var authorization = new Authorization(_mapper.GetCommonDataBAseContext());
             return authorization.GetRoleForUtility(email, utility);

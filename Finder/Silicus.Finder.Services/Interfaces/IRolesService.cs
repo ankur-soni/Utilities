@@ -10,6 +10,6 @@ namespace Silicus.Finder.Services.Interfaces
 
        Role GetRoleById(int Id);
 
-       string getFindersRole(string email, string utility);
+       List<string> getFindersRole(string email, string utility);
     }
 }
