@@ -1,4 +1,10 @@
 ﻿@model  IEnumerable<Silicus.EncourageWithAzureAd.Web.Models.NominationListViewModel>
+<style type="text/css">
+    .winner-photo {
+        height: 128px;
+        width: 128px;
+    }
+</style>
 <div class="tab-content">
     @{
         var index = 0;
@@ -19,7 +25,14 @@
                     <div class="well">
                         <div class="media">
                             <a class="pull-left" href="#">
-                                <img class="media-object" src="~/Images/user2.png" />
+                                @if (File.Exists(Server.MapPath("~/UserProfilePicture") + "/" + item.EmployeeId + ".jpg"))
+                                {
+                                    <img  src="~/UserProfilePicture/@(item.EmployeeId).jpg" />
+                                }
+                                else
+                                {
+                                    <img  src="~/UserProfilePicture/Default.jpg" />
+                                }
                             </a>
                             <div class="media-body">
                                 <span class="font-bold txt-color">@Html.LabelFor(modelItem => item.DisplayName): </span><span class="media-heading font-normal">@Html.DisplayFor(modelItem => item.DisplayName)</span>

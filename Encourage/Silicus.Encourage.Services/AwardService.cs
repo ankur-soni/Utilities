@@ -95,6 +95,7 @@ namespace Silicus.Encourage.Services
                                       join title in _CommonDbContext.Query<Title>() on resourceHistory.TitleID equals title.ID
                                       join department in _CommonDbContext.Query<Department>() on title.DepartmentID equals department.ID
                                       where department.ID == DepartmentId && resource.DirectManager1ID == userIdToExcept
+                                      && user.InactiveDate == null
                                       select user).Distinct();
             int awardId = 1;
             var currentUserId = userIdToExcept;
@@ -155,6 +156,7 @@ namespace Silicus.Encourage.Services
                                        join resource in _CommonDbContext.Query<Resource>() on resourceHistory.ResourceID equals resource.ID
                                        join user in _CommonDbContext.Query<User>() on resource.UserID equals user.ID
                                        where engagement.ClientID == clientId && engagement.Stage != closedProject && allEngagementIds.Contains(engagement.ID)
+                                       && user.InactiveDate == null
                                        select user;
 
                 var recourcesInEnggementUnderCurrentManger = _encourageDbcontext.Query<Nomination>().Where(n => n.ProjectID == engagementId && n.ManagerId == currentUserId && n.AwardId == awardId).ToList();
