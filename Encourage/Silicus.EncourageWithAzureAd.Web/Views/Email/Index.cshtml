@@ -53,6 +53,7 @@
                 success: function (template) {
                     hideCustomLoader();
                     $("#templateEditorContainer").html(template);
+                    $("#clearSelectedUsers").click();
                     $("#sendMailButton").removeAttr("disabled", "disabled");
                     $("#saveTemplateMailButton").removeAttr("disabled", "disabled");
                 },
