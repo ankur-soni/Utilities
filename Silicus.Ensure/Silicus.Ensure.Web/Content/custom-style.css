@@ -127,7 +127,7 @@ span.k-icon.k-save{display:none;}
 span.k-icon.k-update{display:none;}
 i.fa.fa-save{display:none;}
 
-#userGrids table, #testSuiteGrids table {
+#userGrids table, #questionGrids table, #UserGrids table, #tagsGrids table, #positionGrids table, #PanelGrids table, #testSuiteGrids table {
     width: 100%;
     overflow-x: auto;
     display: inherit;

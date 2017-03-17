@@ -1,21 +1,43 @@
 ﻿@using Kendo.Mvc.UI;
 <div class="kendogrid">
     @*<h2>Tags</h2>*@
-    <div>
+
+    <div class="toolbar">
+        <div class="row">
+            <div class="col-sm-12 M-B15">
+                <div class="col-sm-5 col-md-4 col-lg-3 M-T15">
+                    <div class="input-group">
+                        <span class="input-group-addon"><span class="glyphicon glyphicon-search" aria-hidden="true"></span></span>
+                        <input type="text" class="form-control" id='FieldFilter' placeholder="Search" style="height: 38px;">
+                        <span class="input-group-btn">
+                            <button id="tagSearch" class="btn btn-default" type="button" style="height:20px!important;border:1px solid #0070B9!important"><span class="glyphicon glyphicon-refresh" aria-hidden="true"></span></button>
+                        </span>
+                    </div>
+
+
+                </div>
+                <a style="margin-top:20px;" href='/#' class='k-button k-button-icontext k-grid-add'><span class='k-icon k-add'></span>Add tag</a>
+
+            </div>
+        </div>
+
+    </div>
+
+    <div class="table-responsive">
         @if (Request.IsAuthenticated)
         {
             @(Html.Kendo().Grid<Silicus.Ensure.Models.DataObjects.Tags>().Name("tagsGrids")
                     .Events(e => e.Edit("gvTag_onRowEdit"))
              .Columns(columns =>
                   {
-                      columns.Bound(p => p.TagName).Width(100);
-                      columns.Bound(p => p.Description);
+                      columns.Bound(p => p.TagName).Width(600);
+                      columns.Bound(p => p.Description).Width(600);
                       columns.Command(cmd =>
                       {
                           //command.Edit();
                           //cmd.Edit('').Text('.');//.HtmlAttributes(new { @style = "display:none" });
                           cmd.Custom("Edit").Text("Edit").Click("ConfirmEditRow").HtmlAttributes(new { @class = "k-button k-button-icontext k-grid-delete M-T4" });
-                      }).Title("Actions");
+                      }).Title("Actions").Width(800);
                   })
             .DataSource(dataSource => dataSource
                       .Ajax()
@@ -35,34 +57,10 @@
                   
                 //.HtmlAttributes(new { style = "height:400px;" })
                   .Editable(ed => ed.Mode(GridEditMode.PopUp).TemplateName("TagEditorTemplate"))
-                  .ToolBar(toolbar =>
-                {
-                    toolbar.Template(@<text>
-
-                        <div class="toolbar">
-                            <div class="row">
-                                <div class="col-sm-12 M-B15">
-                                    <div class="col-sm-5 col-md-4 col-lg-3 M-T15">
-                                        <div class="input-group">
-                                            <span class="input-group-addon"><span class="glyphicon glyphicon-search" aria-hidden="true"></span></span>
-                                            <input type="text" class="form-control" id='FieldFilter' placeholder="Search" style="height: 38px;">
-                                            <span class="input-group-btn">
-                                                <button id="tagSearch" class="btn btn-default" type="button" style="height:20px!important;border:1px solid #0070B9!important"><span class="glyphicon glyphicon-refresh" aria-hidden="true"></span></button>
-                                            </span>
-                                        </div>
-
-
-                                    </div>
-                                    <a style="margin-top:20px;" href='/#' class='k-button k-button-icontext k-grid-add'><span class='k-icon k-add'></span>Add tag</a>
-
-                                </div>
-                            </div>
-
-                        </div>
-                    </text>);
-                })
-            )
-        }
+                  );
+                }
+            
+        
     </div>
 </div>
 
