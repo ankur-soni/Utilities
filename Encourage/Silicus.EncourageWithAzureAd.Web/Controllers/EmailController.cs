@@ -14,10 +14,12 @@ namespace Silicus.EncourageWithAzureAd.Web.Controllers
     {
         private readonly IEmailTemplateService _emailTemplateService;
         private readonly ILogger _logger;
-        public EmailController(IEmailTemplateService emailTemplateService,ILogger logger)
+        private readonly INominationService _nominationService;
+        public EmailController(IEmailTemplateService emailTemplateService,ILogger logger, INominationService nominationService)
         {
             _emailTemplateService = emailTemplateService;
             _logger = logger;
+            _nominationService = nominationService;
         }
 
 
@@ -38,21 +40,27 @@ namespace Silicus.EncourageWithAzureAd.Web.Controllers
         public ActionResult GetEmailTemplate(int processId)
         {
             var emailTemplate = _emailTemplateService.GetEmailTemplate(processId);
-            EmailTemplateEditorViewModel emailTemplateEditor = new EmailTemplateEditorViewModel();
+            var emailTemplateEditor = new EmailTemplateEditorViewModel {EmailTemplate = emailTemplate.Template};
+            var allEmployees = _nominationService.GetAllResources();
 
-            emailTemplateEditor.EmailTemplate = emailTemplate.Template;
-
-            var allManagers = _emailTemplateService.GetAllManagers(emailTemplate.TemplateName);
-
-            foreach (var manager in allManagers)
+            allEmployees.ForEach(x => emailTemplateEditor.Users.Add(new UserViewModel()
             {
-                var user = new UserViewModel();
-                user.Email = manager.EmailAddress;
-                user.Name = manager.DisplayName;
-                user.UserId = manager.ID;
+                UserId = x.ID,
+                Email = x.EmailAddress,
+                Name = x.DisplayName
+            })
+            );
+            //var allManagers = _emailTemplateService.GetAllManagers(emailTemplate.TemplateName);
 
-                emailTemplateEditor.Users.Add(user);
-            }
+            //foreach (var manager in allManagers)
+            //{
+            //    var user = new UserViewModel();
+            //    user.Email = manager.EmailAddress;
+            //    user.Name = manager.DisplayName;
+            //    user.UserId = manager.ID;
+
+            //    emailTemplateEditor.Users.Add(user);
+            //}
 
             return PartialView("~/Views/Email/Shared/_emailTemplateEditor.cshtml", emailTemplateEditor);
         }
