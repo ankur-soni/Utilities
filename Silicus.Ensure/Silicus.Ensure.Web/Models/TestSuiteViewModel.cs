@@ -63,7 +63,7 @@ namespace Silicus.Ensure.Web.Models
         public int? ToExperience { get; set; }
 
         [Range(1, 100, ErrorMessage = "Enter numbers from 1-100")]
-        [Required(ErrorMessage = "Optional weightage is required.")]
+        [Required(ErrorMessage = "Objective weightage is required.")]
         [Display(Name = "Objective")]
         public int OptionalQuestion { get; set; }
 

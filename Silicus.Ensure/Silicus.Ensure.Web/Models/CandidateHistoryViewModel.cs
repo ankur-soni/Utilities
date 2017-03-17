@@ -47,7 +47,7 @@ namespace Silicus.Ensure.Web.Models
         [Display(Name = "Current location")]
         public string CurrentLocation { get; set; }
 
-        [Display(Name = "Date Of birth")]
+        [Display(Name = "Date of birth")]
         [DisplayFormat(DataFormatString = "{0:dd MMM yyyy}")]
         [Required(ErrorMessage = "Date of birth is required.")]
         public DateTime DOB { get; set; }
