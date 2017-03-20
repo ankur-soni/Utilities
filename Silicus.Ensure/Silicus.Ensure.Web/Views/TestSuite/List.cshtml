@@ -61,7 +61,7 @@
                       columns.Bound("").ClientTemplate(@"
 
                                                         #if (UserInRole){#
-                                                            <a class='k-button k-button-icontext k-grid-add M-T4' href='\\#' onclick= getTestSuiteId('#=TestSuiteId#','#=StatusName#') data-toggle='modal' data-target='\\#myModal'>Assign test</a>
+                                                            <a class='k-button k-button-icontext k-grid-add M-T4' href='\\#' onclick= getTestSuiteId('#=TestSuiteId#','#=StatusName#')>Assign test</a>
                                                         #}#
                                                             <a class='k-button k-button-icontext k-grid-add M-T4' href='" + Url.Action("Copy", "TestSuite") + "?testSuiteId=#=TestSuiteId#'>Copy</a>" +
                                                                                                                           "  #if (StatusName=='Ready'){#" +
