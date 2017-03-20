@@ -487,7 +487,7 @@
                 var SpecialInstruction = $("#SpecialInstruction").val();
                 var Weights = '';
                 var Proficiency = '';
-                
+
 
                 $('#TagCustomControl input.tagAutoComplete').each(function () {
                     if (tags == '') {
@@ -559,28 +559,60 @@
                     },
                     error: function (response) {
                         ShowMessage("error!");
-                        
+
                     }
                 });
             }
             else {
                 $("#frmAddTestSuite").submit();
-                
+
             }
         });
 
     });
-
+    function isTagNameAvailable(existingName, updatedName) {
+        var isAvailable = true;
+        if (existingName != updatedName) {
+            $.ajax({
+                type: "POST",
+                url: '/Positions/IsDuplicatePositionName',
+                async: false,
+                data: { PositionName: updatedName },
+                success: function (returndata) {
+                    if (returndata == true) {
+                        isAvailable = true;
+                    }
+                    else {
+                        isAvailable = false;
+                    }
+                }
+            });
+        }
+        return isAvailable;
+    }
 
 
     function addPosition() {
-        $("#PositionForm")[0].reset();
+        $("#PositionForm").kendoValidator({
+            rules: {
+                tagNamevalidation: function (input, params) {
+                    if (input.is("[name='PositionName']") && input.val() != "") {
+                        var bool = isTagNameAvailable("", input.val());
+                        if (!bool) {
+                            input.attr("data-tagNamevalidation-msg", "Position name already exist.");
+                            return false;
+                        }
+                    }
+                    return true;
+                }
+            }
+        });
+        $('#PositionName').val('');
         $("#addPositionPopup").modal('show');
-        $('#validationPosition').css('display', 'none');
     }
-    function ValidateAndSavePostion() {
+
+    function savePosition() {
         if ($("#PositionForm").valid()) {
-           
             $.ajax({
                 type: "POST",
                 url: '/Positions/PositionSave',
@@ -593,20 +625,14 @@
                     $("#PositionForm").trigger("reset");
                     $PositionSelect.value(returndata.PositionId);
                     $('#SavePositionButton').attr('disabled', false);
-                    
+
                 }
             });
-            
+
         }
         else {
-            $("#PositionForm").trigger("reset");
-            $('#SavePositionButton').attr('disabled', false);
-            $('#validationPosition').css('display', 'block');
+            $('#PositionForm').submit();
         }
-    }
-    function savePosition() {
-        $('#SavePositionButton').attr('disabled', true);
-        setTimeout(ValidateAndSavePostion, 3000);
     }
     var dataItem1; //This should be Global variable
     function onSelectTag(e) {
@@ -637,7 +663,7 @@
                 </div>
                 <div class="modal-body" style="padding: 20px 30px 0px 30px;">
 
-                    @Html.Partial("~/Views/Positions/AddPosition.cshtml", new Silicus.Ensure.Models.DataObjects.Position())
+                    @Html.Partial("~/Views/Shared/EditorTemplates/PostionEditorTemplete.cshtml", new Silicus.Ensure.Web.Models.PositionViewModel())
                 </div>
                 <div class="modal-footer">
                     <button type="button" style="width:70px;" id="SavePositionButton" onclick="savePosition()" class="btn btn-primary">Save</button>
