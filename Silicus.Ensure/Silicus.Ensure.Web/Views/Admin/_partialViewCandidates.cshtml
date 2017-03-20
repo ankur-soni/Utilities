@@ -509,16 +509,16 @@
              columns.Bound(p => p.RecruiterName).Title("Recruiter").Width(200);
              columns.Bound(p => p.CandidateStatus).ClientTemplate(@"
                                                                         #if(CandidateStatus=='TestAssigned'){#
-                                                                            Test Assigned
+                                                                            Test assigned
                                                                         #}
                                                                         else if(CandidateStatus=='TestSubmitted') {#
-                                                                            Test Submitted
+                                                                            Test submitted
                                                                         #}
                                                                         else if(CandidateStatus=='UnderEvaluation') {#
-                                                                            Under Evaluation
+                                                                            Under evaluation
                                                                         #}
                                                                         else if(CandidateStatus=='OnHold') {#
-                                                                           On Hold
+                                                                           On hold
                                                                         #}
                                                                         else{#
                                                                             #=CandidateStatus#
@@ -529,7 +529,7 @@
 
                                          #if(CandidateStatus=='New'){#
                                         <a onclick=showTest('#=UserId#','#=TestStatus#') style='cursor:pointer'>Assign test</a> |
-                                        #if(PanelName){#<a  class ='dialog-window' onclick=ReAssignPanel('#=UserId#') style='cursor:pointer'>Reassign Panel#} else{#<a  class ='dialog-window' onclick=AssignPanel('#=UserId#') style='cursor:pointer'>Assign panel #}#</a> |
+                                        #if(PanelName){#<a  class ='dialog-window' onclick=ReAssignPanel('#=UserId#') style='cursor:pointer'>Reassign panel#} else{#<a  class ='dialog-window' onclick=AssignPanel('#=UserId#') style='cursor:pointer'>Assign panel #}#</a> |
                                        #if(RecruiterName){# <a  class ='dialog-window' onclick=ReAssignRecruiter('#=UserId#') style='cursor:pointer'>Reassign Recruiter#} else{#<a  class ='dialog-window' onclick=AssignRecruiter('#=UserId#') style='cursor:pointer'>Assign recruiter #}#</a>
                                         #}
                                         else if(CandidateStatus=='TestAssigned') {#
