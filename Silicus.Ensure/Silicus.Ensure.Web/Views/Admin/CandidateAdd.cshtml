@@ -451,7 +451,7 @@
                     }
                     if (input.is("[id='file']") && fileBool) {
                         if (!(input.val() != "")) {
-                            input.attr("data-experiencevalidation-msg", "File is required.");
+                            input.attr("data-experiencevalidation-msg", "Resume is required.");
                             return false;
                         }
                         else if (input.val() != "") {
@@ -521,7 +521,6 @@
     {
         window.onbeforeunload = null;   
         $(window).unbind('unload');
-        showCustomLoader();
     });
 
     $('#btnCancel').click(function()
