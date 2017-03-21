@@ -164,10 +164,7 @@
                 grid = $("#" + gridId).data("kendoGrid");
                 grid.dataSource.remove(data);
                 grid.dataSource.sync();
-                ShowMessage("Test Suite deleted successfully.", 1);
-
-            } else {
-                ShowMessage("Test Suite cancelled successfully.", 1);
+                ShowMessage("Test suite deleted successfully.", 1);
             }
         });
     }
