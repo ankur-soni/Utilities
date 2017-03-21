@@ -571,7 +571,7 @@
                                        .Create(update => update.Action("CreateUser", "User"))
                                        .Update(update => update.Action("UpdateUser", "User"))
                                        .PageSize(10)
-                                       .ServerOperation(false)
+                                       .ServerOperation(true)
                                        )
                                        .Pageable(p => p.PageSizes(true))
                                        .Sortable()
