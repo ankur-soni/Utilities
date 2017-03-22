@@ -182,7 +182,7 @@ namespace Silicus.Ensure.Web.Controllers
                 viewModels[index].TestSuiteId = testSuitId != null ? testSuitId.TestSuiteId : 0;
             }
 
-           // viewModels = viewModels.OrderByDescending(x => x.CandidateStatus).ToList();
+            // viewModels = viewModels.OrderByDescending(x => x.CandidateStatus).ToList();
             DataSourceResult result = viewModels.ToDataSourceResult(request);
             return Json(result);
         }
@@ -190,25 +190,18 @@ namespace Silicus.Ensure.Web.Controllers
         /// <summary>
         /// Check for duplicate mail id in identity table as well as user table in the application
         /// </summary>
-        /// <param name="Email"></param>
+        /// <param name="email"></param>
         /// <param name="UserId"></param>
         /// <returns></returns>
-        public JsonResult IsDuplicateEmail(string Email, int UserId)
+        public JsonResult IsDuplicateEmail(string email, int userId)
         {
-            bool flag = true;
+            bool isDuplicateEmail = false;
             var userDetails = _userService.GetUserDetails();
-            if (UserId == 0 && (UserManager.FindByEmailAsync(Email).Result != null || userDetails.Any(x => x.Email == Email)))
+            if (userDetails != null && userDetails.Any(x => x.Email == email) && !userDetails.Any(x => x.UserId == userId && x.Email == email))
             {
-                flag = false;
+                isDuplicateEmail = true;
             }
-            else
-            {
-                if (UserManager.FindByEmailAsync(Email).Result != null && userDetails.Any(x => x.Email == Email) && userDetails.Where(x => x.Email == Email).Count() > 1)
-                {
-                    flag = false;
-                }
-            }
-            return Json(flag, JsonRequestBehavior.AllowGet);
+            return Json(isDuplicateEmail, JsonRequestBehavior.AllowGet);
         }
 
         /// <summary>
@@ -220,7 +213,7 @@ namespace Silicus.Ensure.Web.Controllers
         [HttpPost]
         public async Task<ActionResult> CandidateSave(UserViewModel user)
         {
-                 
+
             string actionErrorName = user.Role.ToLower() == RoleName.Candidate.ToString().ToLower() ? "CandidateAdd" : "PanelAdd";
             string controllerName = user.Role.ToLower() == RoleName.Candidate.ToString().ToLower() ? "Admin" : "Panel";
             DateTime dt = DateTime.ParseExact(user.DOB, "dd/MM/yyyy", CultureInfo.InvariantCulture);
@@ -256,7 +249,7 @@ namespace Silicus.Ensure.Web.Controllers
                 _userService.Add(organizationUserDomainModel);
                 TempData["Success"] = "Candidate created successfully.";
                 //Send Candidate creation mail to Admin and Recruiter
-                List<string> Receipient = new List<string>() { "Admin"};
+                List<string> Receipient = new List<string>() { "Admin" };
                 _commonController.SendMailByRoleName("Candidate Created Successfully", "CandidateCreated.cshtml", Receipient, user.FirstName + " " + user.LastName);
 
             }
