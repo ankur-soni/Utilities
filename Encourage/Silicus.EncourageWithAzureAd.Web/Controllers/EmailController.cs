@@ -57,7 +57,7 @@ namespace Silicus.EncourageWithAzureAd.Web.Controllers
         {
             var emailTemplate = _emailTemplateService.GetEmailTemplate(processId);
             var emailTemplateEditor = new EmailTemplateEditorViewModel {EmailTemplate = emailTemplate.Template};
-            var allEmployees = _nominationService.GetAllResources();
+            var allEmployees = _nominationService.GetAllResources().OrderBy( x => x.DisplayName ).ToList();
 
             allEmployees.ForEach(x => emailTemplateEditor.Users.Add(new UserViewModel()
             {
