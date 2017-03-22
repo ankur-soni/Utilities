@@ -92,7 +92,7 @@
         $('#counter').countdown({
             until: tm, compact: true,
             format: 'HMS', description: '',
-            onTick: ProgressBar,
+            onTick: CheckTimeRemaining,
             onExpiry: function () {
                 TestDurationComplete();
                 var text = "The test duration is over, thank you for your participation. Further, the recruitment team will contact you for the update";
@@ -145,15 +145,11 @@
         $(".loader-overlay").hide();
     }
 
-    function ProgressBar() {
+    function CheckTimeRemaining() {
         //var time = clock.getTime().time;
         if (isCounterStarted) {
             var time = $.countdown.periodsToSeconds($('#counter').countdown('getTimes'));
             if (time % 60 == 0) {
-                var leftTm = parseInt(totalTime) - time;
-                var newprogress = parseInt((parseInt(leftTm) / parseInt(totalTime)) * 100);
-                $('#progressBar').attr('aria-valuenow', time).css('width', newprogress + "%");
-                $('#progressInfo').text(newprogress + "%");
                 if (time == 60) {
                     var timerCntVal = $("#TimerIncCount").val();
                     if (timerCntVal == 0)
@@ -208,7 +204,6 @@
     }
 
     function OnAddMoreTimeOK() {
-        debugger;
         var time = $.countdown.periodsToSeconds($('#counter').countdown('getTimes'));
         var timerCnt = $("#TimerIncCount").val();
         if (timerCnt == null || timerCnt == "")

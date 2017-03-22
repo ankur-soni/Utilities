@@ -248,7 +248,6 @@ else
         $(questionLinkId).removeClass('is-answered');
         $(questionLinkId).removeClass('is-viewed-only');
         $(questionLinkId).removeClass('is-not-visited');
-
         $(questionLinkId).addClass(className);
     }
 
@@ -264,7 +263,7 @@ else
         $("#btnSubmitTestOK").hide();
         var userTestSuiteId = $("#UserTestSuiteId").val();
         var url = "/Candidate/LoadQuestion?userTestSuiteId=";
-        $('#QuestionDetails').load(url + userTestSuiteId);
+        $('#QuestionDetails').load(url + userTestSuiteId,UpdateProgressBar);
 
         // Hide "Add More Time" if used 2 times
         var timerCnt = $("#TimerIncCount").val();
@@ -294,6 +293,7 @@ else
         updateQuestionLinkColorClass('#' + activeLinkId, questionNavigationDetails.IsAnswered, questionNavigationDetails.IsViewed);
         MarkAsViewed(questionId);
         GetQuestionDetails(questionId);
+        UpdateProgressBar();
     }
 
     function MarkAsViewed(questionId) {
@@ -501,6 +501,13 @@ else
         }
     }
 
+    function UpdateProgressBar() {
+        var totalQuestions = $('.QuestionCheckbox').length;
+        var totalAnswered = $('.is-answered').length ? $('.is-answered').length : 0;
+        var progress = parseInt(totalAnswered / totalQuestions * 100);
+        $('#progressBar').attr('aria-valuenow', progress).css('width', progress + "%");
+        $('#progressInfo').text(progress + "%");
+    }
 
 
 </script>
