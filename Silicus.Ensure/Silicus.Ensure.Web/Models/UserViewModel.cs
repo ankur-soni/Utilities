@@ -39,7 +39,7 @@ namespace Silicus.Ensure.Web.Models
 
         [Required(ErrorMessage = "Email is required.")]
         [StringLength(100)]
-        [System.Web.Mvc.Remote("IsDuplicateEmail", "User", AdditionalFields = "UserId", ErrorMessage = "Email already exists.")]
+        //[System.Web.Mvc.Remote("IsDuplicateEmail", "User", AdditionalFields = "UserId", ErrorMessage = "Email already exists.")]
         [RegularExpression(@"^(([\w-]+\.)+[\w-]+|([a-zA-Z]{1}|[\w-]{2,}))@"
      + @"((([0-1]?[0-9]{1,2}|25[0-5]|2[0-4][0-9])\.([0-1]?
 				[0-9]{1,2}|25[0-5]|2[0-4][0-9])\."

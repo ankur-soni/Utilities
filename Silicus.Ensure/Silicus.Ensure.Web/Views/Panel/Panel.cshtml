@@ -26,12 +26,12 @@
     .Columns(columns =>
     {
         columns.Bound(p => p.PanelId).Visible(false).Width(250);
-        columns.Bound(p => p.PanelName).Title("Panel name").Width(250);
+        columns.Bound(p => p.PanelName).Title("Panel name").Width(1250);
         columns.Command(command =>
         {
             command.Edit().HtmlAttributes(new { style = "margin-top:4px!important;" });
             command.Custom("Delete").Click("ConfirmDeletePanelRow").HtmlAttributes(new { @class = "k-button k-button-icontext k-grid-delete", style = "margin-top:4px!important;" });
-        }).Title("Actions").Width(160);
+        }).Title("Actions").Width(660);
 
     })
     .Pageable(pager => { pager.PageSizes(true); })

@@ -151,7 +151,7 @@ namespace Silicus.Ensure.Services
                                       ReviwerMark = a.Mark,
                                       Comment = a.ReviwerComment
                                   };
-                var isAllQueustionReviewed = testDetails==null || !testDetails.Any(y => y.ReviwerMark == null || y.Comment == null || y.Comment.Trim() == "");
+                var isAllQueustionReviewed = testDetails == null || !testDetails.Any(y => y.ReviwerMark == null || y.Comment == null || y.Comment.Trim() == "");
                 return isAllQueustionReviewed;
             }
             return false;
@@ -192,7 +192,7 @@ namespace Silicus.Ensure.Services
                               Option6 = b.Option6,
                               Option7 = b.Option7,
                               Option8 = b.Option8,
-                              CorrectAnswer = b.CorrectAnswer,
+                              CorrectAnswer = questionType == (int)QuestionType.Objective ? b.CorrectAnswer : b.Answer,
                               Comment = a.ReviwerComment,
                               Marks = b.Marks,
                               DisplayQuestionNumber = index + 1,

@@ -15,7 +15,11 @@
         </script>
     }
 }
-
+<style>
+    .k-loading-image {
+        background-image: none !important;
+    }
+</style>
 <script>
     $(document).ready(function () {
         showCustomLoader();
@@ -54,7 +58,7 @@
     function showTest(UserId, TestStatus) {
         if (TestStatus == '@CandidateStatus.New.ToString()') {
             showCustomLoader();
-            $('#assignTestHeader').text('Assign Test');
+            $('#assignTestHeader').text('Assign test');
             $.ajax({
                 type: 'post',
                 async: false,
@@ -133,7 +137,7 @@
     function ReAssign(UserId, TestStatus) {
         if (TestStatus == '@CandidateStatus.TestAssigned.ToString()') {
             showCustomLoader();
-            $('#assignTestHeader').text('Reassign Test');
+            $('#assignTestHeader').text('Reassign test');
             $.ajax({
                 type: 'post',
                 async: false,
@@ -377,7 +381,7 @@
                         grid = $("#" + gridId).data("kendoGrid");
                         grid.dataSource.sync();
                         $("#" + gridId).data("kendoGrid").dataSource.read();
-                        ShowMessage("Record has been archived.", 1);
+                        ShowMessage("Candidate has been archived.", 1);
                     },
                     error: function (er) {
                         ShowMessage("Error occured in archiveing.", 1);
@@ -505,16 +509,16 @@
              columns.Bound(p => p.RecruiterName).Title("Recruiter").Width(200);
              columns.Bound(p => p.CandidateStatus).ClientTemplate(@"
                                                                         #if(CandidateStatus=='TestAssigned'){#
-                                                                            Test Assigned
+                                                                            Test assigned
                                                                         #}
                                                                         else if(CandidateStatus=='TestSubmitted') {#
-                                                                            Test Submitted
+                                                                            Test submitted
                                                                         #}
                                                                         else if(CandidateStatus=='UnderEvaluation') {#
-                                                                            Under Evaluation
+                                                                            Under evaluation
                                                                         #}
                                                                         else if(CandidateStatus=='OnHold') {#
-                                                                           On Hold
+                                                                           On hold
                                                                         #}
                                                                         else{#
                                                                             #=CandidateStatus#
@@ -525,7 +529,7 @@
 
                                          #if(CandidateStatus=='New'){#
                                         <a onclick=showTest('#=UserId#','#=TestStatus#') style='cursor:pointer'>Assign test</a> |
-                                        #if(PanelName){#<a  class ='dialog-window' onclick=ReAssignPanel('#=UserId#') style='cursor:pointer'>Reassign Panel#} else{#<a  class ='dialog-window' onclick=AssignPanel('#=UserId#') style='cursor:pointer'>Assign panel #}#</a> |
+                                        #if(PanelName){#<a  class ='dialog-window' onclick=ReAssignPanel('#=UserId#') style='cursor:pointer'>Reassign panel#} else{#<a  class ='dialog-window' onclick=AssignPanel('#=UserId#') style='cursor:pointer'>Assign panel #}#</a> |
                                        #if(RecruiterName){# <a  class ='dialog-window' onclick=ReAssignRecruiter('#=UserId#') style='cursor:pointer'>Reassign Recruiter#} else{#<a  class ='dialog-window' onclick=AssignRecruiter('#=UserId#') style='cursor:pointer'>Assign recruiter #}#</a>
                                         #}
                                         else if(CandidateStatus=='TestAssigned') {#
@@ -567,7 +571,7 @@
                                        .Create(update => update.Action("CreateUser", "User"))
                                        .Update(update => update.Action("UpdateUser", "User"))
                                        .PageSize(10)
-                                       .ServerOperation(false)
+                                       .ServerOperation(true)
                                        )
                                        .Pageable(p => p.PageSizes(true))
                                        .Sortable()
@@ -625,7 +629,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal">&times;</button>
-                <h4 id="recruiterModalHeader" class="modal-title">Assign Recruiter</h4>
+                <h4 id="recruiterModalHeader" class="modal-title">Assign recruiter</h4>
             </div>
             <div class="modal-body" id="RecruiterInfo">
 

@@ -110,6 +110,8 @@ else
 
     $(document).ready(function () {
 
+        $('body').toggleClass('aside-menu-hidden');
+        $('#gearBtn a').removeClass('activeBtn');
 
         $('.close').on('click', function() {
             $('#welcomeAlert').css('visibility','hidden');

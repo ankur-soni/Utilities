@@ -377,7 +377,6 @@
                                 return true;
                             }
                             function OnSubmit(e){
-                                showCustomLoader();
                                 var dropdownlist = $("#QuestionType").data("kendoDropDownList");
                                 dropdownlist.enable(true);
                             }
@@ -661,7 +660,7 @@
                                     rules: {
                                         tagNamevalidation: function (input, params) {
                                             if (input.is("[name='TagName']") && input.val() != "") {
-                                                input.attr("data-tagNamevalidation-msg", "Tag name already exist.");
+                                                input.attr("data-tagNamevalidation-msg", "Tag name already exists.");
                                                 return isTagNameAvailable("", input.val());
                                             }
 

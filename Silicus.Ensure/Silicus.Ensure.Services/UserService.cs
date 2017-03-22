@@ -26,7 +26,7 @@ namespace Silicus.Ensure.Services
         public IEnumerable<UserBusinessModel> GetUserDetailsAll()
         {
             List<UserBusinessModel> userModel = new List<UserBusinessModel>();
-            var users = _context.Query<User>().ToList();
+            var users = _context.Query<User>();
             var panelMeberDetails = _context.Query<PanelMemberDetail>();
             var recruiterMeberDetails = _context.Query<RecruiterMembersDetail>();
             foreach (var user in users)

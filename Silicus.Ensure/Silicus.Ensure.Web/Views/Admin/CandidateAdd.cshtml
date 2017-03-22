@@ -13,7 +13,7 @@
 
 <div class="modal fade" id="addPositionPopup" role="dialog">
     <form id="postionForm">
-        <div class="modal-dialog" >
+        <div class="modal-dialog">
 
             <!-- Modal content-->
             <div class="modal-content">
@@ -45,20 +45,20 @@
                 <h4 class="modal-title"><span>Select Candidate</span></h4>
             </div>
             <div class="modal-body">
-              <div class="box M-B15">
-                 
-                      <div style="margin-bottom:0px;" class="alert alert-danger">
-                          <span><b>Candidate already exists in the system.</b></span></br> 
-                          <span>Select a candidate, to continue with an existing candidate or click 'No' to create a new candidate.</span>
-                      </div>
-                  
-              </div>
-            
-            <div id="candidateGridBody"></div>
+                <div class="box M-B15">
+
+                    <div style="margin-bottom:0px;" class="alert alert-danger">
+                        <span><b>Candidate already exists in the system.</b></span></br>
+                        <span>Select a candidate, to continue with an existing candidate or click 'No' to create a new candidate.</span>
+                    </div>
+
+                </div>
+
+                <div id="candidateGridBody"></div>
             </div>
             <div class="modal-footer">
-                <button  style="width:70px;"  onclick="loadCandidateDetails()" class="btn btn-default">Yes</button>
-                <button type="button" class="btn btn-secondary"  data-dismiss="modal">No</button>
+                <button style="width:70px;" onclick="loadCandidateDetails()" class="btn btn-default">Yes</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">No</button>
             </div>
         </div>
 
@@ -68,16 +68,15 @@
 
 
     var fileBool=false;
-    $(document).ready(function () {
-        $('#messageDiv').fadeOut(5000);
-    });
-
+    //This is global variable
+    IsEmailValid=false;
     $(document).ready(function () {
         //$('#uploadFileLink').ke
         loadControls();
         $('#addPositionPopup').on('hidden.bs.modal', function () {
             $('.field-validation-error').hide();
         });
+        $('#Email').on('change',IsDuplicateEmail);
     });
 
     function loadControls()
@@ -238,24 +237,6 @@
         var day = date.getDate().toString();
         day = day.length > 1 ? day : '0' + day;
         return day + '/' +month  + '/' + year;
-    }
-
-
-    function checkMail(email,remoteURL)
-    {
-        var valid;
-        $.ajax({
-            async: false,
-            type: "POST",
-            url: remoteURL,
-            data: JSON.stringify({ 'Email': email,'UserId':@Model.UserId }),
-            contentType: "application/json; charset=utf-8",
-            dataType: "json",
-            success: function (data) {
-                valid = data;
-            }
-        });
-        return valid;
     }
 
     function checkExistingCandidate()
@@ -442,16 +423,9 @@
                             input.attr("data-experiencevalidation-msg", "");
                         }
                     }
-                    if (input.is("[data-val-remote]") && input.val() != "") {
-                        var remoteURL = input.attr("data-val-remote-url");
-                        if (!checkMail(input.val(), remoteURL)) {
-                            input.attr("data-experiencevalidation-msg", "Email already exists.");
-                            return false;
-                        }
-                    }
                     if (input.is("[id='file']") && fileBool) {
                         if (!(input.val() != "")) {
-                            input.attr("data-experiencevalidation-msg", "File is required.");
+                            input.attr("data-experiencevalidation-msg", "Resume is required.");
                             return false;
                         }
                         else if (input.val() != "") {
@@ -519,17 +493,39 @@
     };
     $('#btnSave').click(function()
     {
-        window.onbeforeunload = null;   
+        window.onbeforeunload = null;
         $(window).unbind('unload');
-        showCustomLoader();
     });
 
     $('#btnCancel').click(function()
-    {  
-        window.onbeforeunload = null;   
-        $(window).unbind('unload');       
+    {
+        window.onbeforeunload = null;
+        $(window).unbind('unload');
     });
 
+    function IsDuplicateEmail(e)
+    {
+        //This is global variable
+        IsEmailValid=false;
+        $('#EmailValidationSpan').hide();
+        var email=$('#Email').val();
+        $.ajax({
+            async: false,
+            type: 'POST',
+            url: '/User/IsDuplicateEmail',
+            data: JSON.stringify({ 'email': email,'userId':@Model.UserId }),
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            success: function (isDuplicate) {
+                if(isDuplicate){
+                    $('#EmailValidationSpan').show();
+                }
+                else{
+                    IsEmailValid=true;
+                }
+            }
+        });
+    }
 </script>
 <style>
     .height {

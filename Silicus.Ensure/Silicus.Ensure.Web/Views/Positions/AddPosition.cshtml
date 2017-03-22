@@ -28,7 +28,9 @@
 
 
 <script>
-
+    $(document).ready(function () {
+        $('#FromExperience_validationMessage').hide();
+    });
     window.onbeforeunload = function () {
         return "Do you really want to close?";
     };

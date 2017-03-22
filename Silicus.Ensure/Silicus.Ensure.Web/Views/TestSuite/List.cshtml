@@ -52,22 +52,22 @@
                 .Columns(columns =>
                   {
                       columns.Bound(p => p.TestSuiteName).Width(300).Title("Test Suite");
-                      columns.Bound(p => p.Duration).Width(50);
+                      columns.Bound(p => p.Duration).Width(150);
                       columns.Bound(p => p.PositionName).Width(300).Title("Position");
-                      columns.Bound(p => p.PrimaryTagNames).Width(180).Title("Tags");
-                      columns.Bound(p => p.StatusName).Width(150).Title("Status");
+                      columns.Bound(p => p.PrimaryTagNames).Width(200).Title("Tags");
+                      columns.Bound(p => p.StatusName).Width(200).Title("Status");
                       columns.Bound("").ClientTemplate(@"<a class='k-button k-button-icontext k-grid-edit M-T4' href='" + Url.Action("Add", "TestSuite") + "?testSuiteId=#=TestSuiteId#'><span class='k-icon k-edit'></span>Edit</a>" +
                                                             "<a class='k-button k-button-icontext k-grid-delete M-T4' href='\\#' onclick='ConfirmDeleteTestSuiteRow(event)'>Delete</a>").Title("Actions").Width(300).Sortable(false);
                       columns.Bound("").ClientTemplate(@"
 
                                                         #if (UserInRole){#
-                                                            <a class='k-button k-button-icontext k-grid-add M-T4' href='\\#' onclick= getTestSuiteId('#=TestSuiteId#','#=StatusName#') data-toggle='modal' data-target='\\#myModal'>Assign test</a>
+                                                            <a class='k-button k-button-icontext k-grid-add M-T4' href='\\#' onclick= getTestSuiteId('#=TestSuiteId#','#=StatusName#')>Assign test</a>
                                                         #}#
                                                             <a class='k-button k-button-icontext k-grid-add M-T4' href='" + Url.Action("Copy", "TestSuite") + "?testSuiteId=#=TestSuiteId#'>Copy</a>" +
                                                                                                                           "  #if (StatusName=='Ready'){#" +
                                                                                                                           "<a class='k-button k-button-icontext k-grid-add M-T4' onclick=showTest('#=TestSuiteId#')>Preview</a>"
                                                                                                                           + "#}#"
-                                                              ).Title("Test Actions").Width(400).Sortable(false);
+                                                              ).Title("Test Actions").Width(500).Sortable(false);
 
 
 
@@ -164,10 +164,7 @@
                 grid = $("#" + gridId).data("kendoGrid");
                 grid.dataSource.remove(data);
                 grid.dataSource.sync();
-                ShowMessage("Test Suite deleted successfully.", 1);
-
-            } else {
-                ShowMessage("Test Suite cancelled successfully.", 1);
+                ShowMessage("Test suite deleted successfully.", 1);
             }
         });
     }
