@@ -83,7 +83,7 @@ namespace Silicus.UtilityContainer.Web.Controllers
                 selectedUsers.Add(new UsersWithRolesPerUtilityViewModel { UserName = item.DisplayName, UserId = item.ID });
             }
             
-            return Json(new { availableItems = availableUsers, selectedItems = selectedUsers }, JsonRequestBehavior.AllowGet);
+            return Json(new { availableItems = availableUsers, selectedItems = selectedUsers.OrderBy( x => x.UserName) }, JsonRequestBehavior.AllowGet);
         }
 
         [HttpPost]
