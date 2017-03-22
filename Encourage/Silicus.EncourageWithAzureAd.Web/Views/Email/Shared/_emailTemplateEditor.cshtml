@@ -7,7 +7,7 @@
         <div class="form-group">
             @Html.Label("Send Mail To", new { @class = "control-label", @style= "position: absolute;margin-top:18px;" })
             <a id="clearSelectedUsers" class="pull-right btn btn-primary M-B10">Clear</a>
-            @Html.DropDownListFor(m => m.Users, new SelectList(Model.Users, "Email", "Name"), "Select", new { multiple = "multiple", @class = "form-control" })
+            @Html.DropDownListFor(m => m.Users, new SelectList(Model.Users, "Email", "Name"), "Select", new { multiple = "multiple", @class = "form-control" ,@disabled = "disabled" })
         </div>
     </div>
 </div>

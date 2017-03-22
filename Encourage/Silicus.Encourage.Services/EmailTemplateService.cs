@@ -73,16 +73,16 @@ namespace Silicus.Encourage.Services
             ILogger _logger = new DatabaseLogger("name=LoggerDataContext", Type.GetType(string.Empty), (Func<DateTime>)(() => DateTime.UtcNow), string.Empty);
             _logger.Log("EmailService-SendEmail");
 
-            var fromAddress = new MailAddress(ConfigurationManager.AppSettings["MailUserName"], "Silicus Rewards and Recognition Team");
-
-            var userName = ConfigurationManager.AppSettings["MailUserName"];
-            var password = ConfigurationManager.AppSettings["MailPassword"];
-
-            var smtp = new SmtpClient("smtp.gmail.com", 587)
+            var smtp = new SmtpClient
             {
-                Credentials = new NetworkCredential(userName, password),
-                EnableSsl = true
+                DeliveryMethod = SmtpDeliveryMethod.Network,
+                Host = "mail.global.frontbridge.com",
+                Port = 25,
+                EnableSsl = false,
+                Timeout = 600000
             };
+
+            var fromAddress = new MailAddress(ConfigurationManager.AppSettings["MailUserName"], "Silicus Rewards and Recognition Team");
 
             using (var message = new MailMessage() { Subject = emailSubject, Body = body })
             {
@@ -90,13 +90,14 @@ namespace Silicus.Encourage.Services
 
                 foreach (string email in ToEmailAddresses)
                 {
-                    message.To.Add(email);
+                    message.Bcc.Add(email);
+                   // message.To.Add(email);
                 }
                 message.IsBodyHtml = true;
                 try
                 {
                     _logger.Log("EmailService-SendEmail-try");
-                    smtp.Send(message);
+                     smtp.Send(message);
                     return "Success";
                 }
                 catch (Exception ex)

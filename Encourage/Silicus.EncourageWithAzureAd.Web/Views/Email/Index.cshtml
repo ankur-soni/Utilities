@@ -21,9 +21,18 @@
                 <div class="row">
                     <div class="form-group">
                         <div class="col-sm-4">
-                            @Html.Label("Template", new { @class = "control-label" })
-                            @Html.DropDownList("Process", new SelectList(Model.ProcessesViewModel, "Id", "Name"), "Select", new { @class = "form-control" })
-                            @Html.Label("Please Select a Template!", new {@id="selectCategoryError", @style="display:none;" })
+                            @Html.Label("Template", new {@class = "control-label"})
+                            @Html.DropDownList("Process", new SelectList(Model.ProcessesViewModel, "Id", "Name"), "Select", new {@class = "form-control"})
+                            @Html.Label("Please Select a Template!", new {@id = "selectCategoryError", @style = "display:none;"})
+                        </div>
+                    </div>
+                </div>
+                <div class="row">&nbsp;</div>
+                <div class="row">
+                    <div class="form-group">
+                        <div class="col-sm-4">
+                            @Html.Label("Award", new { @class = "control-label" })
+                            @Html.DropDownListFor(model => model.Awards, new SelectList(Model.Awards, "AwardId", "AwardTitle"), "Select", new { @class = "form-control", @disabled = "disabled" })
                         </div>
                     </div>
                 </div>
@@ -52,9 +61,11 @@
                 data: { "processId": selectedProcess },
                 success: function (template) {
                     hideCustomLoader();
+                    $("#Awards").removeAttr("disabled");
+                    $("#Awards").removeAttr("title");
+                    $("#Awards option:selected").removeAttr("selected");
                     $("#templateEditorContainer").html(template);
                     $("#clearSelectedUsers").click();
-                    $("#sendMailButton").removeAttr("disabled", "disabled");
                     $("#saveTemplateMailButton").removeAttr("disabled", "disabled");
                 },
                 error: function (error) {
@@ -70,4 +81,31 @@
             $("#saveTemplateMailButton").attr("disabled", "disabled");
         }
     });
+
+    $("#Awards").on("change",
+        function () {
+            showCustomLoader();
+            var awardName = $("#Awards option:selected").text();
+            $("#Awards").attr("title", "Before changing award, please change template first");
+            $("#Awards").attr("disabled", "disabled");
+            $("#Users").removeAttr("disabled");
+            $("#sendMailButton").removeAttr("disabled", "disabled");
+            var awardId = parseInt( $("#Awards option:selected").val() );
+            $.ajax({
+                type: "GET",
+                data: {awardId: awardId},
+                url: '@Url.Action("GetAwardPeriod","Email")',
+                success: function (awardPeriod) {
+                    $(".panel-body").html($(".panel-body").html().replace(/{awardname}/g, awardName.bold()));
+                    $(".panel-body").html($(".panel-body").html().replace(/{awardperiod}/g, awardPeriod.bold()));
+                    $("#EmailTemplate").html($("#EmailTemplate").html().replace(/{awardname}/g, awardName.bold()));
+                    $("#EmailTemplate").html($("#EmailTemplate").html().replace(/{awardperiod}/g, awardPeriod.bold()));
+                    hideCustomLoader();
+                },
+                error: function() {
+                    hideCustomLoader();
+                    swal("Error", "Oops something went wrong!", "error");
+                }
+            });
+        });
 </script>

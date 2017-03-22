@@ -286,7 +286,7 @@
                     $('<span id="selected' + id + '" style="padding-left:10px"><i class="fa fa-times" id="' + id + '" aria-hidden="true" style="color:#0E69A8"></i></span>').appendTo(selectedEmployeeContainer);
                     $('<br id="' + id + '">').appendTo(selectedEmployeeContainer);
                 }
-                else if (parseInt($('span[id="' + 'selected' + id + '"]')) > 0) {
+                else if (parseInt(id) > 0) {
                     $('span[id="' + 'selected' + id + '"]').remove();
                     $('br[id="' + id + '"]').remove();
                 }
