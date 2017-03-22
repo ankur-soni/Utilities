@@ -1,11 +1,15 @@
-﻿using Silicus.Encourage.Services.Interface;
+﻿using System;
+using Silicus.Encourage.Services.Interface;
 using Silicus.EncourageWithAzureAd.Web.Models;
 using Silicus.FrameWorx.Logger;
 using System.Collections.Generic;
 using System.Configuration;
+using System.Globalization;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
+using Microsoft.Ajax.Utilities;
 
 namespace Silicus.EncourageWithAzureAd.Web.Controllers
 {
@@ -15,18 +19,30 @@ namespace Silicus.EncourageWithAzureAd.Web.Controllers
         private readonly IEmailTemplateService _emailTemplateService;
         private readonly ILogger _logger;
         private readonly INominationService _nominationService;
-        public EmailController(IEmailTemplateService emailTemplateService,ILogger logger, INominationService nominationService)
+        private readonly IAwardService _awardService;
+        private readonly ICustomDateService _customDateService;
+        public EmailController(IEmailTemplateService emailTemplateService,ILogger logger, INominationService nominationService, IAwardService awardService, ICustomDateService customDateService)
         {
             _emailTemplateService = emailTemplateService;
             _logger = logger;
             _nominationService = nominationService;
+            _awardService = awardService;
+            _customDateService = customDateService;
         }
 
 
         // GET: Email
         public ActionResult Index()
         {
-            EmailTemplateViewModel emailTemplateViewModel = new EmailTemplateViewModel();
+            var awards = _awardService.GetAllAwards().Select( x => new AwardViewModel()
+            {
+                AwardId =  x.Id,
+                AwardCode = x.Code,
+                AwardTitle = x.Name
+            }
+            ).ToList();
+
+            var emailTemplateViewModel = new EmailTemplateViewModel() { Awards = awards };
             var emailTemplates = _emailTemplateService.GetAllTemplates();
 
             foreach (var template in emailTemplates)
@@ -50,18 +66,6 @@ namespace Silicus.EncourageWithAzureAd.Web.Controllers
                 Name = x.DisplayName
             })
             );
-            //var allManagers = _emailTemplateService.GetAllManagers(emailTemplate.TemplateName);
-
-            //foreach (var manager in allManagers)
-            //{
-            //    var user = new UserViewModel();
-            //    user.Email = manager.EmailAddress;
-            //    user.Name = manager.DisplayName;
-            //    user.UserId = manager.ID;
-
-            //    emailTemplateEditor.Users.Add(user);
-            //}
-
             return PartialView("~/Views/Email/Shared/_emailTemplateEditor.cshtml", emailTemplateEditor);
         }
 
@@ -69,10 +73,7 @@ namespace Silicus.EncourageWithAzureAd.Web.Controllers
         public string SendMailToManagers(List<string> managersList,string emailTemplate, string subject)
         {
             _logger.Log("Post - SendMailToManagers - start");
-            string emailBody = HttpUtility.HtmlDecode(emailTemplate);
-
-          //  string subject = ConfigurationManager.AppSettings["MailNominationSubject"];
-
+            var emailBody = HttpUtility.HtmlDecode(emailTemplate);
             var result = _emailTemplateService.SendEmail(managersList, emailBody, subject);
             _logger.Log("Post - SendMailToManagers - end - result -"+result);
             return result;
@@ -95,6 +96,14 @@ namespace Silicus.EncourageWithAzureAd.Web.Controllers
             var result = _emailTemplateService.SaveEmailTemplate(templateOf, emailBody);
             string newTemplateName = result != null ? result.TemplateName : "";
             return newTemplateName;
+        }
+
+        public string GetAwardPeriod(int awardId)
+        {
+            var awardPeriod = _customDateService.GetCustomDate(awardId);
+           var month = @System.Globalization.CultureInfo.InvariantCulture.DateTimeFormat.GetMonthName(awardPeriod.Month);
+            var stringtoReturn = month + "-" + awardPeriod.Year;
+            return stringtoReturn;
         }
     }
 }

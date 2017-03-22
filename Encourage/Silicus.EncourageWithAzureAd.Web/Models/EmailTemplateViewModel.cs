@@ -11,7 +11,7 @@ namespace Silicus.EncourageWithAzureAd.Web.Models
         }
 
         public List<ProcessesViewModel> ProcessesViewModel { get; set; }
-
+        public List<AwardViewModel> Awards  { get; set; }
         public EmailTemplateEditorViewModel EmailTemplateEditor { get; set; }
     }
 }
