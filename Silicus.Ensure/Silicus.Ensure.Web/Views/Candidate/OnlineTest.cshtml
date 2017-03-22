@@ -200,6 +200,7 @@
 
 
 @section CandidateDetails {
+
     @Html.Partial("_testSuiteAndCandidateDetails", Model)
 }
 
@@ -270,6 +271,7 @@ else
         if (timerCnt >= 2)
             $("#btnAddMoreTime").hide();
         $('.QuestionCheckbox').on('click', QuestionCheckboxClicked);
+        $('#gearBtn').show();
     });
 
     function QuestionCheckboxClicked(event) {
