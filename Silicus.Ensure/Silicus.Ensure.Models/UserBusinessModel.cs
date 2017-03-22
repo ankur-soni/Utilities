@@ -79,6 +79,7 @@ namespace Silicus.Ensure.Models
 
         public bool IsCandidateReappear { get; set; }
 
+        public bool HasHistory { get; set; }
 
         public string RecruiterId { get; set; }
 

@@ -343,6 +343,10 @@ namespace Silicus.Ensure.Services
                 objUser.CreatedDate = user.CreatedDate;
                 if (user.UserApplicationDetails != null)
                 {
+                    if (user.UserApplicationDetails != null && user.UserApplicationDetails.Count > 1)
+                    {
+                       objUser.HasHistory = true;
+                    }
                     var applicationDetails = user.UserApplicationDetails.OrderByDescending(y => y.CreatedDate).FirstOrDefault();
                     if (applicationDetails != null)
                     {

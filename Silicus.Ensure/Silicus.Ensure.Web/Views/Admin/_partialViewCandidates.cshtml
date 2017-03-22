@@ -531,7 +531,8 @@
                                         <a onclick=showTest('#=UserId#','#=TestStatus#') style='cursor:pointer'>Assign test</a> |
                                         #if(PanelName){#<a  class ='dialog-window' onclick=ReAssignPanel('#=UserId#') style='cursor:pointer'>Reassign panel#} else{#<a  class ='dialog-window' onclick=AssignPanel('#=UserId#') style='cursor:pointer'>Assign panel #}#</a> |
                                        #if(RecruiterName){# <a  class ='dialog-window' onclick=ReAssignRecruiter('#=UserId#') style='cursor:pointer'>Reassign Recruiter#} else{#<a  class ='dialog-window' onclick=AssignRecruiter('#=UserId#') style='cursor:pointer'>Assign recruiter #}#</a>
-                                        #}
+                                         #if(HasHistory){#<a class='dialog-window' href='/Admin/CandidateHistory?UserId=+#=UserId#' style='cursor:pointer'>| View history #}#</a>
+#}
                                         else if(CandidateStatus=='TestAssigned') {#
                                         <a  class ='dialog-window' onclick=ReAssign('#=UserId#','#=TestStatus#') style='cursor:pointer'>Reassign test</a> |
                                         #if(PanelName){#<a  class ='dialog-window' onclick=ReAssignPanel('#=UserId#') style='cursor:pointer'>Reassign panel#} else{#<a  class ='dialog-window' onclick=AssignPanel('#=UserId#') style='cursor:pointer'>Assign panel #}#</a> |

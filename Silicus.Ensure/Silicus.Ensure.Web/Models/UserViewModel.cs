@@ -140,6 +140,8 @@ namespace Silicus.Ensure.Web.Models
 
         public bool IsCandidateReappear { get; set; }
 
+        public bool HasHistory { get; set; }
+
         public DateTime ApplicationDate { get; set; }
     }
 }
