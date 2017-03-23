@@ -90,11 +90,6 @@
     </div>
     <div class="kendogrid">
         <div class="table-responsive">
-            @{
-
-            Model.ForEach(y => y.QuestionDescription = Silicus.Ensure.Web.MvcApplication.HtmlToPlainText(y.QuestionDescription));
-            }
-
             @if (Request.IsAuthenticated)
         {
                 @(Html.Kendo().Grid(Model).Name("questionGrids")
