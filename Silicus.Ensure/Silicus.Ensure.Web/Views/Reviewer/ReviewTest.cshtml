@@ -220,9 +220,9 @@
                                     }
                                 }
                             }
-                            </ol>
+                        </ol>
                     </li>
-                    
+
                 </div>
                 <div id="practical-test-side-bar">
                     @*<li class="nav-item nav-heading">
@@ -274,19 +274,10 @@ else
 }
 
 }
-@*@{if (!string.IsNullOrWhiteSpace(Model.ProfilePhotoFilePath))
-            {
-        <script>
-            $(document).ready(function () {
-                $('#CandidatePhotoImg').attr('src', "@System.Configuration.ConfigurationManager.AppSettings["ServerName"]@Html.Raw(Url.Content(Model.ProfilePhotoFilePath))");
-            });
-        </script>
-    }}*@
 <script>
     var clock;
     var totalTime;
     $(document).ready(function () {
-        $('title').html("Review test");
         $('.breadcrumb-item.active').removeClass('active');
         $('#objective-test').addClass('active');
         $('#practical-test-side-bar').hide();
