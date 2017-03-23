@@ -357,7 +357,7 @@ else
         var validator = $("#ReviwerMark").data("kendoValidator");
         if ($("#ReviwerMark").length == 0 || validator.validate()) {
             var questionId = $('#btnNext').attr('data-id');
-            UpdateAndGetQuestionReview(questionId);
+            UpdateCurrentQuestionAndLoadNewOne(questionId);
         }
 
         return false;
@@ -367,7 +367,7 @@ else
         var validator = $("#ReviwerMark").data("kendoValidator");
         if ($("#ReviwerMark").length == 0 || validator.validate()) {
             var questionId = $('#btnPrevious').attr('data-id');
-            UpdateAndGetQuestionReview(questionId);
+            UpdateCurrentQuestionAndLoadNewOne(questionId);
         }
         return false;
     }
