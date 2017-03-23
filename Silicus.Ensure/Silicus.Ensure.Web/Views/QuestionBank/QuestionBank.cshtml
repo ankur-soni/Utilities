@@ -1,4 +1,6 @@
-﻿@using Kendo.Mvc.UI;
+﻿@model List<Silicus.Ensure.Web.Models.QuestionModel>
+
+@using Kendo.Mvc.UI;
 
 @{
     ViewBag.Title = "Question Bank";
@@ -64,12 +66,12 @@
                     <span style="font-weight:bold;" class="themeColorBlue labelAlignMid">Proficiency level</span>
 
                     @{
-                                var levelList = new List<SelectListItem>();
-                                levelList.Add(new SelectListItem() { Text = "All", Value = "" });
-                                foreach (var level in Enum.GetValues(typeof(Silicus.Ensure.Web.Models.ProficiencyLevel)))
-                                {
-                                    levelList.Add(new SelectListItem() { Text = level.ToString(), Value = level.ToString() });
-                                }
+                        var levelList = new List<SelectListItem>();
+                        levelList.Add(new SelectListItem() { Text = "All", Value = "" });
+                        foreach (var level in Enum.GetValues(typeof(Silicus.Ensure.Web.Models.ProficiencyLevel)))
+                        {
+                            levelList.Add(new SelectListItem() { Text = level.ToString(), Value = level.ToString() });
+                        }
                     }
                     @(Html.Kendo().DropDownList()
                                                         .Name("ProficiencyLevelDropDown")
@@ -88,13 +90,38 @@
     </div>
     <div class="kendogrid">
         <div class="table-responsive">
-        @Html.Partial("_QuestionsGrid")  
+            @if (Request.IsAuthenticated)
+            {
+                @(Html.Kendo().Grid(Model).Name("questionGrids")
+                             .Columns(columns =>
+                             {
+                                 columns.Bound(q => q.QuestionDescription).Title("Question description").Width(400);
+                                 columns.Bound(q => q.QuestionType).Width(400);
+                                 columns.Bound(q => q.Tag).Title("Tags").Width(400);
+                                 columns.Bound(q => q.ProficiencyLevel).Title("Proficiency level").Width(400);
+                                 columns.Bound(q => q.Id).ClientTemplate(@"
+                                                <a href='/QuestionBank/EditQuestion?questionId=#=Id#' class='k-button M-T4'>Edit</a>
+                            <a class='k-button M-T4' href='\\#' onclick='ConfirmDeleteQuestionRow(event)'>Delete</a>
+                                               ").Title("Actions").Width(400).Sortable(false);
+                             })
+                              .DataSource(dataSource => dataSource.Ajax().Model(model =>
+                              {
+                                  model.Id(p => p.Id);
+                                  model.Field(p => p.Id).Editable(false);
+                              })
+                                 .Destroy(delete => delete.Action("DeleteQuestion", "QuestionBank"))
+                                 .PageSize(10)
+                                 .ServerOperation(false)
+                                    ).Pageable(p => p.PageSizes(true))
+                                     .Sortable()
+                                     .Resizable(resizing => resizing.Columns(true))
+                )}
         </div>
     </div>
 </div>
 <script>
     $(document).ready(function () {
-       
+
         $("#messageDiv").hide();
 
         SetNavigationMenuActive('QuestionBank');
