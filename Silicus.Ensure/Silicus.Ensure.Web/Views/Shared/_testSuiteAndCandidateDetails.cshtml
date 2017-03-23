@@ -227,12 +227,6 @@
                     $("#TimerIncCount").val(data);
 
                     // Update Progress bar
-                    totalTime = parseInt(totalTime) + parseInt(60 * 10);
-                    var leftTm = parseInt(totalTime) - time;
-                    var newprogress = parseInt((parseInt(leftTm) / parseInt(totalTime)) * 100);
-                    $('#progressBar').attr('aria-valuemax', totalTime).css('width', newprogress + "%");
-                    $('#progressBar').attr('aria-valuenow', time).css('width', newprogress + "%");
-                    $('#progressInfo').text(newprogress + "%");
 
                     // Hide Add more time button.
                     if (data == 2) {
