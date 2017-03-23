@@ -101,10 +101,10 @@
                             .Events(eve => eve.DataBinding("OnQuestionGridsDataBound"))
                              .Columns(columns =>
                              {
-                                 columns.Bound(q => q.QuestionDescription).Width(400);
+                                 columns.Bound(q => q.QuestionDescription).Title("Question description").Width(400);
                                  columns.Bound(q => q.QuestionType).Width(400);
                                  columns.Bound(q => q.Tag).Title("Tags").Width(400);
-                                 columns.Bound(q => q.ProficiencyLevel).Width(400);
+                                 columns.Bound(q => q.ProficiencyLevel).Title("Proficiency level").Width(400);
                                  columns.Bound(q => q.Id).ClientTemplate(@"
                                                 <a href='/QuestionBank/EditQuestion?questionId=#=Id#' class='k-button M-T4'>Edit</a>
                             <a class='k-button M-T4' href='\\#' onclick='ConfirmDeleteQuestionRow(event)'>Delete</a>
