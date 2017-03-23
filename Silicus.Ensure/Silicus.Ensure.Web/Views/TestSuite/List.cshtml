@@ -83,7 +83,7 @@
                       .Read(read => read.Action("GetTestSuiteDetails", "TestSuite"))
                                   .Destroy(delete => delete.Action("Delete", "TestSuite"))
                       .PageSize(10)
-                      .ServerOperation(false)
+                      .ServerOperation(true)
                   )
                       .Pageable(p => p.PageSizes(true))
                   .Sortable()

@@ -1,6 +1,4 @@
-﻿@model List<Silicus.Ensure.Web.Models.QuestionModel>
-
-@using Kendo.Mvc.UI;
+﻿@using Kendo.Mvc.UI;
 
 @{
     ViewBag.Title = "Question Bank";
@@ -90,32 +88,7 @@
     </div>
     <div class="kendogrid">
         <div class="table-responsive">
-            @if (Request.IsAuthenticated)
-        {
-                @(Html.Kendo().Grid(Model).Name("questionGrids")
-                             .Columns(columns =>
-                             {
-                                 columns.Bound(q => q.QuestionDescription).Title("Question description").Width(400);
-                                 columns.Bound(q => q.QuestionType).Width(400);
-                                 columns.Bound(q => q.Tag).Title("Tags").Width(400);
-                                 columns.Bound(q => q.ProficiencyLevel).Title("Proficiency level").Width(400);
-                                 columns.Bound(q => q.Id).ClientTemplate(@"
-                                                <a href='/QuestionBank/EditQuestion?questionId=#=Id#' class='k-button M-T4'>Edit</a>
-                            <a class='k-button M-T4' href='\\#' onclick='ConfirmDeleteQuestionRow(event)'>Delete</a>
-                                               ").Title("Actions").Width(400).Sortable(false);
-                             })
-                              .DataSource(dataSource => dataSource.Ajax().Model(model =>
-                              {
-                                  model.Id(p => p.Id);
-                                  model.Field(p => p.Id).Editable(false);
-                              })
-                                 .Destroy(delete => delete.Action("DeleteQuestion", "QuestionBank"))
-                                 .PageSize(10)
-                                 .ServerOperation(false)
-                                    ).Pageable(p => p.PageSizes(true))
-                                     .Sortable()
-                                     .Resizable(resizing => resizing.Columns(true))
-                               )}
+        @Html.Partial("_QuestionsGrid")  
         </div>
     </div>
 </div>

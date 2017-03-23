@@ -1,4 +1,6 @@
-﻿using Silicus.Ensure.Models.DataObjects;
+﻿using Kendo.Mvc.Extensions;
+using Kendo.Mvc.UI;
+using Silicus.Ensure.Models.DataObjects;
 using Silicus.Ensure.Services.Interfaces;
 using Silicus.Ensure.Web.Mappings;
 using Silicus.Ensure.Web.Models;
@@ -62,11 +64,11 @@ namespace Silicus.Ensure.Web.Controllers
                 }
                 var btnValue = Request["btnSaveAndAddNewQuestion"];
                 int success = 1;
-                if (!string.IsNullOrWhiteSpace(btnValue) && btnValue.Equals("save & add another question",StringComparison.OrdinalIgnoreCase))
+                if (!string.IsNullOrWhiteSpace(btnValue) && btnValue.Equals("save & add another question", StringComparison.OrdinalIgnoreCase))
                 {
                     success = 2;
                 }
-                question = new QuestionModel() { Success = success, Edit = isEdit, QuestionType = "0", SkillTagsList = Tags() };              
+                question = new QuestionModel() { Success = success, Edit = isEdit, QuestionType = "0", SkillTagsList = Tags() };
             }
             else
             {
@@ -78,8 +80,13 @@ namespace Silicus.Ensure.Web.Controllers
 
         public ActionResult QuestionBank()
         {
-            var que = _questionService.GetQuestion().OrderByDescending(x => x.ModifiedOn).ToList();
-            var queModel = _mappingService.Map<List<Question>, List<QuestionModel>>(que);
+            return View();
+        }
+
+        public ActionResult GetAllQuestions([DataSourceRequest] DataSourceRequest request)
+        {
+            var que = _questionService.GetQuestion().OrderByDescending(x => x.ModifiedOn);
+            var queModel = _mappingService.Map<IEnumerable<Question>, IEnumerable<QuestionModel>>(que);
             foreach (var q in queModel)
             {
                 q.QuestionDescription = q.QuestionDescription.Substring(0, Math.Min(q.QuestionDescription.Length, 100));
@@ -87,7 +94,8 @@ namespace Silicus.Ensure.Web.Controllers
                 q.Tag = string.Join(" | ", Tags().Where(t => que.Where(x => x.Id == q.Id).Select(p => p.Tags).First().ToString().Split(',').Contains(t.TagId.ToString())).Select(l => l.TagName).ToList());
                 q.ProficiencyLevel = GetCompetency(q.ProficiencyLevel);
             }
-            return View(queModel);
+            DataSourceResult result = queModel.ToDataSourceResult(request);
+            return Json(result);
         }
 
         public ActionResult EditQuestion(string questionId)
