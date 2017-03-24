@@ -9,6 +9,9 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 <style>
+    .Normal-Text-Style  {
+        text-transform:none;
+    }
     .table-striped > tbody > tr:nth-child(odd){
         background-color: #f9f8fb;
     }
@@ -48,9 +51,9 @@
                                 <a data-toggle="collapse" data-parent="#accordion" href="#@count">
                                     <div class="panel-heading">
                                         <h4 class="panel-title">
-                                            @count)<b> Candidate  Name -&nbsp;</b><span style="text-transform:lowercase;">@Html.DisplayFor(model => candidateApplicationDetails.FirstName)</span>&nbsp;<span style="text-transform:lowercase">@Html.DisplayFor(model => candidateApplicationDetails.LastName, new { @class = "" })</span>
+                                            @count)<b class="Normal-Text-Style"> Candidate  name &nbsp;</b><span style="text-transform:lowercase;font-style:italic">@Html.DisplayFor(model => candidateApplicationDetails.FirstName)</span>&nbsp;<span style="text-transform:lowercase;font-style:italic">@Html.DisplayFor(model => candidateApplicationDetails.LastName, new { @class = "" })</span>
                                             <div style="float:right">
-                                                <b> Candidate Status -&nbsp;</b><span style="text-transform:lowercase;">@Html.DisplayFor(model => candidateApplicationDetails.CandidateStatus)</span>
+                                                <b class="Normal-Text-Style"> Candidate status &nbsp;</b><span style="text-transform:lowercase;font-style:italic">@Html.DisplayFor(model => candidateApplicationDetails.CandidateStatus)</span>
                                             </div>
                                         </h4>
                                     </div>
@@ -69,7 +72,7 @@
                                                             <div class="candidate-pro">
                                                                 <div class="row">
                                                                     <div class="col-sm-12">
-                                                                        <h3><b>Candidate Profile</b></h3>
+                                                                        <h3><b class="Normal-Text-Style">Candidate profile</b></h3>
                                                                     </div>
                                                                 </div>
                                                                 <div class="row">
@@ -103,7 +106,7 @@
                                                                         </div>
                                                                     </div>
                                                                 </div>
-                                                                <div class="row" style="margin-bottom:10px!important">
+                                                                <div class="row">
                                                                     <div class="col-sm-6 col-md-6 col-lg-4">
                                                                         <div class="row">
                                                                             <div class="col-sm-6 col-md-6 col-lg-6">
@@ -235,12 +238,12 @@
                                                                                 <lable class="font-Bold themeColorBlue">Total experience</lable>
                                                                             </div>
                                                                             <div class="col-sm-6 col-md-6 col-lg-6">
-                                                                                <div class="col-md-6 col-sm-6 col-xs-6" style="padding-left:0">
+                                                                                <div class="col-md-4 col-sm-6 col-xs-6" style="padding-left:0">
                                                                                     @Html.DisplayFor(model => candidateApplicationDetails.TotalExperienceInYear, new { @class = "form-control" })
                                                                                     Years
 
                                                                                 </div>
-                                                                                <div class="col-md-6 col-sm-6 col-xs-6" style="padding-right:0">
+                                                                                <div class="col-md-4 col-sm-6 col-xs-6" style="padding-right:0">
                                                                                     @Html.DisplayFor(model => candidateApplicationDetails.TotalExperienceInMonth, new { @class = "form-control" }) Months
 
                                                                                 </div>
@@ -253,12 +256,12 @@
                                                                                 <lable class="font-Bold themeColorBlue">Relevant experience</lable>
                                                                             </div>
                                                                             <div class="col-sm-6 col-md-6 col-lg-6">
-                                                                                <div class="col-md-6 col-sm-6 col-xs-6" style="padding-left:0">
+                                                                                <div class="col-md-4 col-sm-6 col-xs-6" style="padding-left:0">
                                                                                     @Html.DisplayFor(model => candidateApplicationDetails.RelevantExperienceInYear, new { @class = "form-control" })
                                                                                     Years
 
                                                                                 </div>
-                                                                                <div class="col-md-6 col-sm-6 col-xs-6" style="padding-right:0">
+                                                                                <div class="col-md-4 col-sm-6 col-xs-6" style="padding-right:0">
 
                                                                                     @Html.DisplayFor(model => candidateApplicationDetails.RelevantExperienceInMonth, new { @class = "form-control" })
                                                                                     Months
@@ -296,7 +299,7 @@
                                                                     <div class="col-sm-6 col-md-6 col-lg-4">
                                                                         <div class="row">
                                                                             <div class="col-sm-6 col-md-6 col-lg-6">
-                                                                                <label class="font-Bold themeColorBlue">Upload Resume</label>
+                                                                                <label class="font-Bold themeColorBlue">Resume</label>
                                                                             </div>
                                                                             <div class="col-sm-6 col-md-6 col-lg-6">
                                                                                 <div class="outer-box">
@@ -331,7 +334,7 @@
                                                                 <div class="row">
                                                                     <div class="col-sm-12">
                                                                         <h3>
-                                                                            <b> Candidate Test Details</b>
+                                                                            <b class="Normal-Text-Style"> Candidate test details</b>
 
                                                                         </h3>
                                                                     </div>
@@ -346,7 +349,7 @@
                                                                 {
                                                                     <div class="row M-B15">
                                                                         <div class="col-sm-12">
-                                                                            <b class="themeColorBlue" > Test  date : </b>   @Html.DisplayFor(model => candidateApplicationDetails.ApplicationDate)   &emsp;&emsp;&emsp; <a class="k-button k-button-icontext" target="_blank" href="/Admin/ViewQuestion?TestSuiteId=@candidateApplicationDetails.TestSuiteViewModel.TestSuiteId &UserId=@candidateApplicationDetails.TestSuiteViewModel.Userid"><span class="k-icon k-edit"></span>View test</a>
+                                                                            <b class="themeColorBlue" > Test  date  </b><span style="font-style:italic">@Html.DisplayFor(model => candidateApplicationDetails.ApplicationDate)</span>   &emsp;&emsp;&emsp; <a class="k-button k-button-icontext" target="_blank" href="/Admin/ViewQuestion?TestSuiteId=@candidateApplicationDetails.TestSuiteViewModel.TestSuiteId &UserId=@candidateApplicationDetails.TestSuiteViewModel.Userid"><span class="k-icon k-edit"></span>View test</a>
                                                                         </div>
                                                                     </div>
 

@@ -49,7 +49,12 @@ namespace Silicus.Ensure.Web.Mappings
             Mapper.CreateMap<TestDetailsBusinessModel, TestDetailsViewModel>();
             Mapper.CreateMap<TestDetailsBusinessModel, ReviewerQuestionViewModel>();
             Mapper.CreateMap<TestSummaryBusinessModel, TestSummaryViewModel>();
-
+            Mapper.CreateMap<UserBusinessModel, CandidateHistoryViewModel>().ForMember(dest => dest.ResumeDisplayName, opt => opt.MapFrom(s =>
+                  !string.IsNullOrWhiteSpace(s.ResumeName) ?
+                  (s.ResumeName.Contains(AppConstants.ResumeNameSeparationCharacter) && s.ResumeName.Length >= s.ResumeName.IndexOf(AppConstants.ResumeNameSeparationCharacter) + 1
+                  ? s.ResumeName.Substring(s.ResumeName.IndexOf(AppConstants.ResumeNameSeparationCharacter) + 1) : "")
+                  : "")
+                    );
             Mapper.CreateMap<CandidateInfoBusinessModel, CandidateInfoViewModel>();
         }
     }
