@@ -285,6 +285,9 @@ else
         $('#instruction').hide();
         $("#frmTestresult").kendoValidator();
         $("#ReviwerMark").kendoValidator();
+        $(document).on("change", "#ReviwerMark", function () {
+            UpdateReview();
+        })
         $("#btnSubmitTestOK").hide();
         var userTestSuiteId = $("#UserTestSuiteId").val();
         LoadFirstQuestion(userTestSuiteId, disableControls);
@@ -295,6 +298,7 @@ else
             $('.field-validation-error').hide();
         });
     });
+
 
     function LoadFirstQuestion(userTestSuiteId, disableControls) {
         var url = "/Reviewer/LoadQuestion?userTestSuiteId=";
@@ -561,6 +565,27 @@ else
         }
         $('#questionDiv').append('<div style="-webkit-touch-callout: none;-webkit-user-select: none; -khtml-user-select: none; -moz-user-select: none; -ms-user-select: none;  -o-user-select: none;user-select: none;      pointer-events: none;"></div>');
 
+    }
+
+    function UpdateReview() {
+        var questionId = $('#QuestionNumber').val()
+        var answer = GetAnswer();
+        var userTestSuiteId = $("#UserTestSuiteId").val();
+        var userTestDetailId = $("#UserTestDetailId").val();
+        var questionType = $("#QuestionType").val();
+        var candidateId = $("#UserId").val();
+        var comment = $("#ReviewerComment").val();
+        var marks = $("#ReviwerMark").val();
+        var reviewerQuestionDetails = { QuestionId: questionId, UserTestSuiteId: userTestSuiteId, UserTestDetailId: userTestDetailId, Comment: comment, Marks: marks };
+        $.ajax({
+            url: "/Reviewer/UpdateReviewAndGetQuestionDetails",
+            cache: false,
+            dataType: "html",
+            data: reviewerQuestionDetails,
+            success: function (data) {
+                updateTestSummary();
+            }
+        });
     }
 </script>
 

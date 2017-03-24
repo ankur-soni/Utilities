@@ -197,7 +197,7 @@ namespace Silicus.Ensure.Web.Controllers
         {
             bool isDuplicateEmail = false;
             var userDetails = _userService.GetUserDetails();
-            if (userDetails != null && userDetails.Any(x => x.Email == email) && !userDetails.Any(x => x.UserId == userId && x.Email == email))
+            if (userDetails != null && userDetails.Any(x => x.Email.IsCaseInsensitiveEqual(email)) && !userDetails.Any(x => x.UserId == userId && x.Email.IsCaseInsensitiveEqual(email)))
             {
                 isDuplicateEmail = true;
             }
