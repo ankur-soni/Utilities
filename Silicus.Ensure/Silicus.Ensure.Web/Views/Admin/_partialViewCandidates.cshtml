@@ -181,8 +181,6 @@
                     success: function (returndata) {
                         if (returndata == 1) {
                             $('#myModal').fadeOut();
-                            debugger;
-                          
                             ShowMessage("Test suite assigned successfully.", 1);
                             $('#userGrids').data('kendoGrid').dataSource.read();
                             $('#userGrids').data('kendoGrid').refresh();
