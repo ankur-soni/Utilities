@@ -43,7 +43,14 @@
 {
     <div class="profile-box">
         <div class="box M-T15 M-B60">
-
+@if (!string.IsNullOrWhiteSpace(Model.ProfilePhotoFilePath))
+{
+            <label for="file" class="font-Bold themeColorBlue M-T5">Change profile picture</label>
+}
+else
+{
+            <label for="file" class="font-Bold themeColorBlue M-T5">Upload profile picture</label>
+}
             @if (!string.IsNullOrWhiteSpace(Model.ProfilePhotoFilePath))
             {
                 <div class="thumbnail" style="height: 200px;">
@@ -52,7 +59,7 @@
                 </div>
                 @*<span id="RemoveProfilePhoto" class="deleteupload" title="Delete"><a onclick="RemoveProfilePhoto()"><i class="fa fa-close" aria-hidden="true"></i></a></span>*@
                 <input type="file" name="ProfilePhotofile" id="ProfilePhotofile" data-max-size="2097152" style="width: 100%;" accept='image/*'>
-                <label for="file" class="font-Bold themeColorBlue M-T5">Change profile picture</label>
+                @*<label for="file" class="font-Bold themeColorBlue M-T5">Change profile picture</label>*@
             }
             else
             {
@@ -60,7 +67,7 @@
                     <img id="ProfilePhotoImage" src="" style="height:180px;width:160px;display:none">
                 </div>
                 <input type="file" name="ProfilePhotofile" id="ProfilePhotofile" data-max-size="2097152" style="width: 100%;" accept='image/*' />
-                <label for="file" class="font-Bold themeColorBlue M-T5">Upload profile picture</label>
+                @*<label for="file" class="font-Bold themeColorBlue M-T5">Upload profile picture</label>*@
             }
 
 
