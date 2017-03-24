@@ -15,46 +15,46 @@
                     <table class="table table-striped">
                         <tbody>
                             <tr>
-                                <td>@Html.LabelFor(model => model.TestSuiteName)</td>
+                                <td>@Html.LabelFor(model => model.TestSuiteName, new { @style = "font-weight:700;" })</td>
                                 <td>@Html.DisplayFor(model => model.TestSuiteName, new { @class = "form-control" })</td>
                                 <td></td>
                             </tr>
                             <tr>
-                                <td>@Html.LabelFor(model => model.Duration)</td>
+                                <td>@Html.LabelFor(model => model.Duration, new { @style = "font-weight:700;" })</td>
                                 <td>@Html.DisplayFor(model => model.Duration, new { @class = "form-control" })</td>
                                 <td></td>
                             </tr>
                             <tr>
-                                <td>@Html.LabelFor(model => model.Position)</td>
+                                <td>@Html.LabelFor(model => model.Position, new { @style = "font-weight:700;" })</td>
                                 <td>@Html.DisplayFor(model => model.PositionName, new { @class = "form-control" })</td>
                                 <td></td>
                             </tr>
                             <tr>
-                                <td>@Html.LabelFor(model => model.Competency)</td>
+                                <td>@Html.LabelFor(model => model.Competency, new { @style = "font-weight:700;" })</td>
                                 <td>@Html.DisplayFor(model => model.OverallProficiency, new { @class = "form-control" })</td>
                                 <td></td>
                             </tr>
                             <tr>
-                                <td><label>Question type</label></td>
+                                <td><label style="font-weight:700;">Question type</label></td>
                                 <td>
                                     <label>Objective @Html.DisplayFor(m => m.OptionalQuestion, new { @class = "form-control" }) %</label>
                                 </td>
                                 <td><label>Practical @Html.DisplayFor(m => m.PracticalQuestion, new { @class = "form-control" }) %</label></td>
                             </tr>
                             <tr>
-                                <td>@Html.LabelFor(model => model.ProjectName)</td>
+                                <td>@Html.LabelFor(model => model.ProjectName, new { @style = "font-weight:700;" })</td>
                                 <td>@Html.DisplayFor(model => model.ProjectName, new { @class = "form-control" })</td>
                                 <td></td>
                             </tr>
                             <tr>
-                                <td><label>Experience</label></td>
+                                <td><label style="font-weight:700;">Experience</label></td>
                                 <td>@Model.FromExperience</td>
                                 <td></td>
                             </tr>
                         </tbody>
                     </table>
                 </div>
-                <div class="table-responsive M-T30">
+                <div class="table-responsive">
                     <table class="table table-striped">
 
                         <thead>
