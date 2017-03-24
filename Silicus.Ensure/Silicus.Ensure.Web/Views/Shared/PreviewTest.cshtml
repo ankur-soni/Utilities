@@ -221,9 +221,6 @@ else
     }
     $(document).ready(function () {
         $('#submitBtn').css('cursor', 'default');
-
-        $('title').html("Preview test");
-
         $('.breadcrumb-item.active').removeClass('active');
         $('#objective-test').addClass('active');
         $('#practical-test-side-bar').hide();
@@ -256,6 +253,7 @@ else
 
         $('.QuestionCheckbox').on('click', QuestionCheckboxClicked);    
         $('.questionDiv').css('pointer-events', 'none');
+        $('#submitBtn').hide();
     });
 
     function QuestionCheckboxClicked(event) {

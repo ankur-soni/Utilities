@@ -217,17 +217,23 @@
                                     </div>
                                 </div>
 
+                              
                                 @if (Model != null && Model.Tags != null && Model.Tags.Count > 0)
                                 {
+                                    <div class="col-md-2 col-sm-2 col-xs-2" style="margin-right:-5px;">
+                                        Skill tags <span style="color:red;">*</span>
+                                    </div>
                                     int i = 0;
                                     var tagCount = Model.Tags.Count;
                                     foreach (var tag in Model.Tags)
                                     {
                                         i++;
                                         <div class="form-group">
-                                            <div class="col-md-2 col-sm-2 col-xs-2">
-                                                Skill tags <span style="color:red;">*</span>
-                                            </div>
+                                            @if (i != 1)
+                                            {
+                                                <div class="col-md-2 col-sm-2 col-xs-2">
+                                                </div>
+                                            }
                                             <div class="col-md-2 col-sm-2 col-xs-2">
                                                 <input type="text" id="Tag_@i" value="@tag.TagName" name="Tag_@i" data-val="true" data-val-required="Skill tags is required." class="tagAutoComplete">
 
@@ -363,7 +369,7 @@
 
     function formatOfCustomControl(rowno) {
         return '<div class="form-group">' +
-                    '<div class="col-md-2 col-sm-2 col-xs-2 col-lg-2">Skill tags <span style="color:red;">*</span></div>' +
+                    '<div class="col-md-2 col-sm-2 col-xs-2 col-lg-2"> <span style="color:red;"></span></div>' +
                     '<div class="col-md-2 col-sm-2 col-xs-2">' +
                         '<input type="text" id="Tag_' + rowno + '" name="Tag_' + rowno + '" data-val="true" data-val-required="Skill tags is required." class="tagAutoComplete">' +
                     '</div>' +

@@ -35,6 +35,7 @@
 
     })
     .Pageable(pager => { pager.PageSizes(true); })
+    .Resizable(build => build.Columns(true))
     .Sortable()
     .ToolBar(toolbar =>
     {

@@ -234,7 +234,9 @@ else
         $('#progressInfo').text('0%');
 
         $('.QuestionCheckbox').on('click', QuestionCheckboxClicked);
+        $('body').toggleClass('aside-menu-hidden');
         $('#btnSubmit').hide();
+        $('#gearBtn').hide();
         $('#instruction').hide();
     });
 

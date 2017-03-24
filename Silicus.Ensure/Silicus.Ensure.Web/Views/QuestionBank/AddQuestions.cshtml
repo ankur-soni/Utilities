@@ -77,22 +77,15 @@
                         </div>
                         <div class="row">
                             <div class="col-sm-12 col-md-10 col-lg-8">
-                                <div class="row">
-                                    <div class="col-sm-4 col-md-4 col-lg-3">
-                                        <div class="form-group">
-                                            <label class="">Question <span style="color:red">*</span></label>
-                                        </div>
-                                    </div>
-                                    <div class="col-sm-8 col-md-8 col-lg-8">
-                                        <div class="form-group">
-                                            @Html.Kendo().EditorFor(m => m.QuestionDescription).Name("QuestionDescription").Encode(false).Value(Model.QuestionDescription)
-                                            @Html.ValidationMessageFor(m => m.QuestionDescription)
+                                <div class="form-group">
+                                    <label class="font-Bold themeColorBlue">Question <span style="color:red">*</span></label>
 
-                                        </div>
-                                    </div>
+                                    @Html.TextAreaFor(m => m.QuestionDescription, new { @rows = "5", @class = "form-control " })
+                                    @Html.ValidationMessageFor(m => m.QuestionDescription)
                                 </div>
                             </div>
                         </div>
+
                         <div id="practical">
                             <div class="row">
                                 <div class="col-sm-12 col-md-10 col-lg-8">
@@ -279,23 +272,16 @@
                        
                         <div class="row" id="practicalAns">
                             <div class="col-sm-12 col-md-10 col-lg-8">
-                                <div class="row">
-                                    <div class="col-sm-4 col-md-4 col-lg-3">
-                                        <div class="form-group">
-                                            <label class="">Answer <span style="color:red">*</span></label>
-                                        </div>
-                                    </div>
-                                    <div class="col-sm-8 col-md-8 col-lg-8">
-                                        <div class="form-group">
-                                            @Html.Kendo().EditorFor(m => m.Answer).Name("Answer").Encode(false).Value(Model.Answer)
-                                            @Html.ValidationMessageFor(m => m.Answer)
+                                <div class="form-group">
+                                    <label class="font-Bold themeColorBlue">Answer <span style="color:red">*</span></label>
 
-                                        </div>
-                                    </div>
+                                    @Html.TextAreaFor(m => m.Answer, new { @rows = "5", @class = "form-control " })
+                                    @Html.ValidationMessageFor(m => m.Answer)
                                 </div>
-                            </div>
-                        </div>
 
+                            </div>
+
+                        </div>
                         <div class="row">
                             <div class="col-sm-12 col-md-10 col-lg-8">
                                 <div class="row">
@@ -397,9 +383,9 @@
 
                         <script>
 
-                                                                window.onbeforeunload = function () {
-                                                                    return "Do you really want to close?";
-                                                                };
+                            window.onbeforeunload = function () {
+                                return "Do you really want to close?";
+                            };
 
                                                                 $('#btnSave').click(function()
                                                                 {
@@ -407,98 +393,98 @@
                                                                     $(window).unbind('unload');
                                                                 });
 
-                                                                $('#btnSaveAndAddNewQuestion').click(function()
-                                                                {
-                                                                    window.onbeforeunload = null;
-                                                                });
+                            $('#btnSaveAndAddNewQuestion').click(function()
+                            {
+                                window.onbeforeunload = null;
+                            });
 
-                                                                function isAnySelectedAns(input)
-                                                                {
-                                                                    $('#IsAnsOption1_validationMessage').appendTo('#answerDiv');
-                                                                    var qType = $('#QuestionType').val();
-                                                                    if (input.is("[name=IsAnsOption1]") && qType == 1) {
-                                                                        input.attr("data-IsAnsOption1-msg", "Please select at least single Answer.");
-                                                                        return $(".ansCheckBox:checked").length>0;
-                                                                    }
-                                                                    return true;
-                                                                }
-                                                                function validateOtherOptions(input, params,optionNo)
-                                                                {
-                                                                    var qType = $('#QuestionType').val();
-                                                                    if (input.is("[name=Option"+optionNo+"]") && qType == 1 && input.is(".otherOption")) {
-                                                                        input.attr("data-Option"+optionNo+"-msg", "Option "+optionNo+" can't be blank.");
-                                                                        return input.val().trim()!="";
-                                                                    }
-                                                                    return true;
-                                                                }
-                                                                function validateOptions(input, params,optionNo)
-                                                                {
-                                                                    var qType = $('#QuestionType').val();
-                                                                    if (input.is("[name=Option"+optionNo+"]") && qType == 1) {
-                                                                        input.attr("data-Option"+optionNo+"-msg", "Option "+optionNo+" can't be blank.");
-                                                                        return input.val().trim()!="";
-                                                                    }
-                                                                    return true;
-                                                                }
-                                                                function OnSubmit(e){
-                                                                    var dropdownlist = $("#QuestionType").data("kendoDropDownList");
-                                                                    dropdownlist.enable(true);
-                                                                }
-                                                                $(document).ready(function () {
-                                                                    window.onbeforeunload = function () {
-                                                                        return "Do you really want to close?";
-                                                                    };
-                                                                    $('#addTagPopup').on('hidden.bs.modal', function () {
-                                                                        $('.field-validation-error').hide();
-                                                                    });
-                                                                    SetNavigationMenuActive('QuestionBank');
-                                                                    $('.k-editor-toolbar').hide();
-                                                                    var questionType = $("#QuestionType").val();
-                                                                    if(questionType&&questionType==2)
-                                                                    {
-                                                                        QuestionTypeChange();
-                                                                    }
-                                                                    $("#IsAnsOption1").removeAttr("data-val-required")
-                                                                    $("#AddQuestionForm").kendoValidator({
-                                                                        rules: {
-                                                                            Option1: function (input, params) {
-                                                                                return validateOptions(input, params,1);
-                                                                            },
-                                                                            Option2: function (input, params) {
-                                                                                return validateOptions(input, params,2);
-                                                                            },
-                                                                            Option3: function (input, params) {
-                                                                                return validateOtherOptions(input, params,3);
-                                                                            },
-                                                                            Option4: function (input, params) {
-                                                                                return validateOtherOptions(input, params,4);
-                                                                            }
-                                                                            ,
-                                                                            Option5: function (input, params) {
-                                                                                return validateOtherOptions(input, params,5);
-                                                                            },
-                                                                            Option6: function (input, params) {
-                                                                                return validateOtherOptions(input, params,6);
-                                                                            },
-                                                                            Option7: function (input, params) {
-                                                                                return validateOtherOptions(input, params,7);
-                                                                            },
-                                                                            Option8: function (input, params) {
-                                                                                return validateOtherOptions(input, params,8);
-                                                                            },
-                                                                            IsAnsOption1: function (input, params) {
-                                                                                return isAnySelectedAns(input);
-                                                                            },
-                                                                            Answer:function (input, params) {
-                                                                                var qType = $('#QuestionType').val();
-                                                                                if (input.is("[name=Answer]") && qType == 2) {
-                                                                                    input.attr("data-Answer-msg", "Answer is required.");
-                                                                                    return input.val().trim()!="";
-                                                                                }
-                                                                                return true;
-                                                                            }
-                                                                        }
-                                                                    });
+                            function isAnySelectedAns(input)
+                            {
+                                $('#IsAnsOption1_validationMessage').appendTo('#answerDiv');
+                                var qType = $('#QuestionType').val();
+                                if (input.is("[name=IsAnsOption1]") && qType == 1) {
+                                    input.attr("data-IsAnsOption1-msg", "Please select at least single Answer.");
+                                    return $(".ansCheckBox:checked").length>0;
+                                }
+                                return true;
+                            }
+                            function validateOtherOptions(input, params,optionNo)
+                            {
+                                var qType = $('#QuestionType').val();
+                                if (input.is("[name=Option"+optionNo+"]") && qType == 1 && input.is(".otherOption")) {
+                                    input.attr("data-Option"+optionNo+"-msg", "Option "+optionNo+" can't be blank.");
+                                    return input.val().trim()!="";
+                                }
+                                return true;
+                            }
+                            function validateOptions(input, params,optionNo)
+                            {
+                                var qType = $('#QuestionType').val();
+                                if (input.is("[name=Option"+optionNo+"]") && qType == 1) {
+                                    input.attr("data-Option"+optionNo+"-msg", "Option "+optionNo+" can't be blank.");
+                                    return input.val().trim()!="";
+                                }
+                                return true;
+                            }
+                            function OnSubmit(e){
+                                var dropdownlist = $("#QuestionType").data("kendoDropDownList");
+                                dropdownlist.enable(true);
+                            }
+                            $(document).ready(function () {
+                                window.onbeforeunload = function () {
+                                    return "Do you really want to close?";
+                                };
+                                $('#addTagPopup').on('hidden.bs.modal', function () {
+                                    $('.field-validation-error').hide();
+                                });
+                                SetNavigationMenuActive('QuestionBank');
+                                $('.k-editor-toolbar').hide();
+                                var questionType = $("#QuestionType").val();
+                                if(questionType&&questionType==2)
+                                {
+                                    QuestionTypeChange();
+                                }
+                                $("#IsAnsOption1").removeAttr("data-val-required")
+                                $("#AddQuestionForm").kendoValidator({
+                                    rules: {
+                                        Option1: function (input, params) {
+                                            return validateOptions(input, params,1);
+                                        },
+                                        Option2: function (input, params) {
+                                            return validateOptions(input, params,2);
+                                        },
+                                        Option3: function (input, params) {
+                                            return validateOtherOptions(input, params,3);
+                                        },
+                                        Option4: function (input, params) {
+                                            return validateOtherOptions(input, params,4);
+                                        }
+                                        ,
+                                        Option5: function (input, params) {
+                                            return validateOtherOptions(input, params,5);
+                                        },
+                                        Option6: function (input, params) {
+                                            return validateOtherOptions(input, params,6);
+                                        },
+                                        Option7: function (input, params) {
+                                            return validateOtherOptions(input, params,7);
+                                        },
+                                        Option8: function (input, params) {
+                                            return validateOtherOptions(input, params,8);
+                                        },
+                                        IsAnsOption1: function (input, params) {
+                                            return isAnySelectedAns(input);
+                                        },
+                                        Answer:function (input, params) {
+                                            var qType = $('#QuestionType').val();
+                                            if (input.is("[name=Answer]") && qType == 2) {
+                                                input.attr("data-Answer-msg", "Answer is required.");
+                                                return input.val().trim()!="";
+                                            }
+                                            return true;
+                                        }
+                                    }
+                                });
 
 
                                                                     var $answerType=$("#AnswerType");
@@ -528,40 +514,40 @@
                                                                         }
                                                                     });
 
-                                                                    // Hide More Than 2 Options.
-                                                                    for(var i=3; i<=8; i++)
-                                                                    {
-                                                                        $("#rowOpt"+i).hide();
-                                                                    }
-                                                                    $("#errorDiv").hide();
-                                                                    $("#durationRequired").hide();
-                                                                    $("#practicalAns").hide();
-                                                                    var success =@Model.Success;
-                                                                    var edit="@Model.Edit";
-                                                                    if(success==1)
-                                                                    {
-                                                                        window.onbeforeunload = null;
-                                                                        $(window).unbind('unload');
-                                                                        if(edit=="True"){
-                                                                            ShowMessage("Question updated successfully.",true);
-                                                                            window.location.href = "/QuestionBank/QuestionBank";
-                                                                        }
-                                                                        else{
-                                                                            ShowMessage("Question added successfully.",true);
-                                                                            window.location.href = "/QuestionBank/QuestionBank";
-                                                                        }
-                                                                    }
-                                                                    if(success==2){
-                                                                        ShowMessage("Question added successfully.",true);
-                                                                    }
-                                                                    else
-                                                                    {
-                                                                        if(edit=="True"){
-                                                                            var optCnt=@Model.OptionCount;
-                                                                            OptionDispalyOnEdit(optCnt);
-                                                                            //ShowRequiredOptionInCorrectAnswerDropDown();
-                                                                        }
-                                                                    }
+                                // Hide More Than 2 Options.
+                                for(var i=3; i<=8; i++)
+                                {
+                                    $("#rowOpt"+i).hide();
+                                }
+                                $("#errorDiv").hide();
+                                $("#durationRequired").hide();
+                                $("#practicalAns").hide();
+                                var success =@Model.Success;
+                                var edit="@Model.Edit";
+                                if(success==1)
+                                {
+                                    window.onbeforeunload = null;
+                                    $(window).unbind('unload');
+                                    if(edit=="True"){
+                                        ShowMessage("Question updated successfully.",true);
+                                        window.location.href = "/QuestionBank/QuestionBank";
+                                    }
+                                    else{
+                                        ShowMessage("Question added successfully.",true);
+                                        window.location.href = "/QuestionBank/QuestionBank";
+                                    }
+                                }
+                                if(success==2){
+                                    ShowMessage("Question added successfully.",true);
+                                }
+                                else
+                                {
+                                    if(edit=="True"){
+                                        var optCnt=@Model.OptionCount;
+                                        OptionDispalyOnEdit(optCnt);
+                                        //ShowRequiredOptionInCorrectAnswerDropDown();
+                                    }
+                                }
 
                                                                     // Check Question Type on Edit.
                                                                     var qtype=@Model.QuestionType;
@@ -580,45 +566,43 @@
                                                                     $("#errorDiv").fadeOut(10000);
                                                                 }
 
-                                                                $('#QuestionType').change(function() {
+                            $('#QuestionType').change(function() {
+                                var skillTag = $('#SkillTag').data("kendoMultiSelect");
+                                skillTag.value([]);
+                            });
 
-                                                                    debugger;
-                                                                    var skillTag = $('#SkillTag').data("kendoMultiSelect");
-                                                                    skillTag.value([]);
-                                                                });
+                            // Question Type Change - > Set default values of controls.
+                            function QuestionTypeChange() {
 
-                                                                // Question Type Change - > Set default values of controls.
-                                                                function QuestionTypeChange() {
-
-                                                                    var value = $("#QuestionType").val();
-                                                                    if (value == "2") {
-                                                                        $("#practical").hide();
-                                                                        $("#practicalAns").show();
-                                                                        $("#durationRequired").show();
-                                                                    } else {
-                                                                        $("#practical").show();
-                                                                        $("#practicalAns").hide();
-                                                                        $("#durationRequired").hide();
+                                var value = $("#QuestionType").val();
+                                if (value == "2") {
+                                    $("#practical").hide();
+                                    $("#practicalAns").show();
+                                    $("#durationRequired").show();
+                                } else {
+                                    $("#practical").show();
+                                    $("#practicalAns").hide();
+                                    $("#durationRequired").hide();
 
                                                                     }
 
-                                                                    $("#Option1").val("");
-                                                                    $("#Option2").val("");
-                                                                    $("#Option3").val("");
-                                                                    $("#Option4").val("");
-                                                                    $("#Option5").val("");
-                                                                    $("#Option6").val("");
-                                                                    $("#Option7").val("");
-                                                                    $("#Option8").val("");
-                                                                    var answer = $("#Answer").data("kendoEditor");
-                                                                    //answer.value("");
-                                                                    //var correctAnswer = $('#CorrectAnswer').data("kendoMultiSelect");
-                                                                    //correctAnswer.value([]);
-                                                                    $(".ansCheckBox").prop("checked",false);
+                                $("#Option1").val("");
+                                $("#Option2").val("");
+                                $("#Option3").val("");
+                                $("#Option4").val("");
+                                $("#Option5").val("");
+                                $("#Option6").val("");
+                                $("#Option7").val("");
+                                $("#Option8").val("");
+                                var answer = $("#Answer").data("kendoEditor");
+                                //answer.value("");
+                                //var correctAnswer = $('#CorrectAnswer').data("kendoMultiSelect");
+                                //correctAnswer.value([]);
+                                $(".ansCheckBox").prop("checked",false);
 
-                                                                    var answerType = $("#AnswerType");
-                                                                    answerType.val("1");
-                                                                }
+                                var answerType = $("#AnswerType");
+                                answerType.val("1");
+                            }
 
                                                                 function OnCancel() {
                                                                     window.onbeforeunload = null;
@@ -691,31 +675,31 @@
                                                                     }
                                                                 }
 
-                                                                function saveTag()
-                                                                {
-                                                                    if($("#tagForm").valid())
-                                                                    {
-                                                                        $.ajax({
-                                                                            type: "POST",
-                                                                            url: '/Tag/Save',
-                                                                            data: $('#tagForm').serialize(),
-                                                                            success: function (returndata) {
-                                                                                $("#addTagPopup").modal('hide');
-                                                                                var $tagMultiSelect=$('#SkillTag').data('kendoMultiSelect');
-                                                                                var multidata=$tagMultiSelect.dataSource.data();
-                                                                                multidata.unshift({ TagName: returndata.TagName, TagId: returndata.TagId});
-                                                                                var selectedValues=$tagMultiSelect.value().slice();
-                                                                                selectedValues.push(returndata.TagId);
-                                                                                $tagMultiSelect.value(selectedValues);
-                                                                                $("#tagForm").trigger("reset");
-                                                                            }
-                                                                        });
-                                                                    }
-                                                                    else
-                                                                    {
-                                                                        $('#tagForm').submit();
-                                                                    }
-                                                                }
+                            function saveTag()
+                            {
+                                if($("#tagForm").valid())
+                                {
+                                    $.ajax({
+                                        type: "POST",
+                                        url: '/Tag/Save',
+                                        data: $('#tagForm').serialize(),
+                                        success: function (returndata) {
+                                            $("#addTagPopup").modal('hide');
+                                            var $tagMultiSelect=$('#SkillTag').data('kendoMultiSelect');
+                                            var multidata=$tagMultiSelect.dataSource.data();
+                                            multidata.unshift({ TagName: returndata.TagName, TagId: returndata.TagId});
+                                            var selectedValues=$tagMultiSelect.value().slice();
+                                            selectedValues.push(returndata.TagId);
+                                            $tagMultiSelect.value(selectedValues);
+                                            $("#tagForm").trigger("reset");
+                                        }
+                                    });
+                                }
+                                else
+                                {
+                                    $('#tagForm').submit();
+                                }
+                            }
 
                                                                 function AddTag()
                                                                 {
@@ -728,14 +712,14 @@
                                                                                     return isTagNameAvailable("", input.val());
                                                                                 }
 
-                                                                                return true;
-                                                                            }
-                                                                        }
-                                                                    });
-                                                                    $('#TagName').val("");
-                                                                    $('#Description').val("");
-                                                                    $("#addTagPopup").modal('show');
-                                                                }
+                                            return true;
+                                        }
+                                    }
+                                });
+                                $('#TagName').val("");
+                                $('#Description').val("");
+                                $("#addTagPopup").modal('show');
+                            }
 
                                                                 function isTagNameAvailable(existingName,updatedName)
                                                                 {

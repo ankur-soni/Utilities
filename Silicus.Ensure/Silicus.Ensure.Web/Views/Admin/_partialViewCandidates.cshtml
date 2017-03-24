@@ -504,7 +504,7 @@
              columns.Bound(p => p.RequisitionId).Title("Requisition id").Width(100);
              columns.Bound(p => p.Position).Width(200);
              columns.Bound(p => p.ContactNumber).Title("Contact number").Width(100);
-             columns.Bound(p => p.TotalExperienceInYear).ClientTemplate("#=TotalExperienceInYear#.#=TotalExperienceInMonth#").Title("Total experience").Width(80);
+             columns.Bound(p => p.TotalExperienceInYear).ClientTemplate("#=TotalExperienceInYear#(y) #=TotalExperienceInMonth#(m)").Title("Total experience").Width(80);
              columns.Bound(p => p.PanelName).Title("Panel").Width(200);
              columns.Bound(p => p.RecruiterName).Title("Recruiter").Width(200);
              columns.Bound(p => p.CandidateStatus).ClientTemplate(@"

@@ -21,7 +21,7 @@
             </script>
         }
 
-        <span>Q&nbsp;@Model.DisplayQuestionNumber.</span> @Html.Raw(HttpUtility.HtmlDecode(Model.QuestionDescription)) <b>(@Model.Marks Marks)</b>
+        <span>Q&nbsp;@Model.DisplayQuestionNumber.</span> @Model.QuestionDescription <b>(@Model.Marks Marks)</b>
     </div>
     <div class="col-sm-12">
         <div class="btmBorder"></div>
@@ -360,7 +360,7 @@
         else if (Model.QuestionType == 2)
         {
             <div class="col-sm-12 questionDiv" id="editorDiv" style="padding: 20px 50px 30px 50px;">
-                @Html.Kendo().EditorFor(m => m.Answer).Name("PracticalAnswer").Encode(false).Value(Model.Answer)
+                @Html.TextAreaFor(m => m.Answer, new {@Id= "PracticalAnswer", @rows = "10", @class = "form-control " })
             </div>
         }
     </div>
