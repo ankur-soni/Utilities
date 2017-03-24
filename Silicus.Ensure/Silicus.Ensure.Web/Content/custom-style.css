@@ -50,7 +50,7 @@ width: -o-calc(100% - 217px);
     display: inline-block;
 }
 .candidate-pro{padding:20px;background:#f5f8fd;box-shadow: 2px 3px 3px #ccc;}
-.candidate-test{padding:20px;background:rgba(148, 157, 191, 0.31);}
+.candidate-test{padding:20px;background:#f5f8fd;margin-top:10px;box-shadow: 2px 3px 3px #ccc;}
 .bk-btn{float: right;
     margin-right: 25px;
     margin-top: 10px;

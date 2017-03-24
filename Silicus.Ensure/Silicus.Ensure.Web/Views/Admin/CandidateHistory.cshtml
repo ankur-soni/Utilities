@@ -8,14 +8,17 @@
     ViewBag.Title = "Add Questions";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
-<style>
+@*<style>
     .Normal-Text-Style  {
         text-transform:none;
     }
     .table-striped > tbody > tr:nth-child(odd){
-        background-color: #f9f8fb;
+        background-color: #e0e1ec;
     }
-</style>
+    .table-striped > tbody > tr:nth-child(even){
+        background-color:#ffffff;
+    }
+</style>*@
 
 <div class="row white-bg header-row">
     <nav class="" role="navigation" style="margin-bottom: 0">
@@ -334,7 +337,7 @@
                                                                 <div class="row">
                                                                     <div class="col-sm-12">
                                                                         <h3>
-                                                                            <b class="Normal-Text-Style"> Candidate test details</b>
+                                                                            <b style="margin-left:10px;" class="Normal-Text-Style"> Candidate test details</b>
 
                                                                         </h3>
                                                                     </div>
@@ -349,43 +352,43 @@
                                                                 {
                                                                     <div class="row M-B15">
                                                                         <div class="col-sm-12">
-                                                                            <b class="themeColorBlue" > Test  date  </b><span style="font-style:italic">@Html.DisplayFor(model => candidateApplicationDetails.ApplicationDate)</span>   &emsp;&emsp;&emsp; <a class="k-button k-button-icontext" target="_blank" href="/Admin/ViewQuestion?TestSuiteId=@candidateApplicationDetails.TestSuiteViewModel.TestSuiteId &UserId=@candidateApplicationDetails.TestSuiteViewModel.Userid"><span class="k-icon k-edit"></span>View test</a>
+                                                                            <b class="themeColorBlue" style="margin-left:10px;"> Test  date  </b><span style="font-style:italic">@Html.DisplayFor(model => candidateApplicationDetails.ApplicationDate)</span>   &emsp;&emsp;&emsp; <a class="k-button k-button-icontext" target="_blank" href="/Admin/ViewQuestion?TestSuiteId=@candidateApplicationDetails.TestSuiteViewModel.TestSuiteId &UserId=@candidateApplicationDetails.TestSuiteViewModel.Userid"><span class="k-icon k-edit"></span>View test</a>
                                                                         </div>
                                                                     </div>
 
                                                                     <div class="row">
                                                                         <div class="col-sm-12">
                                                                             <div class="table-responsive">
-                                                                                <table class="table table-striped">
+                                                                                <table class="table">
 
                                                                                     <tbody >
                                                                                         <tr>
 
-                                                                                            <td class="col-sm-3">@Html.LabelFor(model => candidateApplicationDetails.TestSuiteViewModel.TestSuiteName, new { @style = "font-weight:700;" })</td>
-                                                                                            <td class="col-sm-2">@Html.DisplayFor(model => candidateApplicationDetails.TestSuiteViewModel.TestSuiteName, new { @class = "form-control" })</td>
-                                                                                            <td class="col-sm-7"></td>
+                                                                                            <td style="width:17%;">@Html.LabelFor(model => candidateApplicationDetails.TestSuiteViewModel.TestSuiteName, new { @style = "font-weight:700;", @class= "themeColorBlue" })</td>
+                                                                                            <td style="width:17%;">@Html.DisplayFor(model => candidateApplicationDetails.TestSuiteViewModel.TestSuiteName, new { @class = "form-control" })</td>
+                                                                                            <td ></td>
                                                                                         </tr>
                                                                                         <tr>
 
-                                                                                            <td>@Html.LabelFor(model => candidateApplicationDetails.TestSuiteViewModel.Duration, new { @style = "font-weight:700;" })</td>
+                                                                                            <td>@Html.LabelFor(model => candidateApplicationDetails.TestSuiteViewModel.Duration, new { @style = "font-weight:700;", @class = "themeColorBlue" })</td>
                                                                                             <td>@Html.DisplayFor(model => candidateApplicationDetails.TestSuiteViewModel.Duration, new { @class = "form-control" })</td>
                                                                                             <td></td>
                                                                                         </tr>
                                                                                         <tr>
 
-                                                                                            <td>@Html.LabelFor(model => candidateApplicationDetails.TestSuiteViewModel.Position, new { @style = "font-weight:700;" })</td>
+                                                                                            <td>@Html.LabelFor(model => candidateApplicationDetails.TestSuiteViewModel.Position, new { @style = "font-weight:700;", @class = "themeColorBlue" })</td>
                                                                                             <td>@Html.DisplayFor(model => candidateApplicationDetails.TestSuiteViewModel.PositionName, new { @class = "form-control" })</td>
                                                                                             <td></td>
                                                                                         </tr>
                                                                                         <tr>
 
-                                                                                            <td>@Html.LabelFor(model => candidateApplicationDetails.TestSuiteViewModel.Competency, new { @style = "font-weight:700;" })</td>
+                                                                                            <td>@Html.LabelFor(model => candidateApplicationDetails.TestSuiteViewModel.Competency, new { @style = "font-weight:700;", @class = "themeColorBlue" })</td>
                                                                                             <td>@Html.DisplayFor(model => candidateApplicationDetails.TestSuiteViewModel.OverallProficiency, new { @class = "form-control" })</td>
                                                                                             <td></td>
                                                                                         </tr>
                                                                                         <tr>
 
-                                                                                            <td><label style="font-weight:700;">Question type</label></td>
+                                                                                            <td><label style="font-weight:700;" class="themeColorBlue">Question type</label></td>
                                                                                             <td>
                                                                                                 <label>Objective @Html.DisplayFor(m => candidateApplicationDetails.TestSuiteViewModel.OptionalQuestion, new { @class = "form-control" }) %</label>
                                                                                             </td>
@@ -393,13 +396,13 @@
                                                                                         </tr>
                                                                                         <tr>
 
-                                                                                            <td>@Html.LabelFor(model => candidateApplicationDetails.TestSuiteViewModel.ProjectName, new { @style = "font-weight:700;" })</td>
+                                                                                            <td>@Html.LabelFor(model => candidateApplicationDetails.TestSuiteViewModel.ProjectName, new { @style = "font-weight:700;", @class = "themeColorBlue" })</td>
                                                                                             <td>@Html.DisplayFor(model => candidateApplicationDetails.TestSuiteViewModel.ProjectName, new { @class = "form-control" })</td>
                                                                                             <td></td>
                                                                                         </tr>
                                                                                         <tr>
 
-                                                                                            <td><label style="font-weight:700;">Experience</label></td>
+                                                                                            <td><label style="font-weight:700;" class="themeColorBlue">Experience</label></td>
                                                                                             <td>@candidateApplicationDetails.TestSuiteViewModel.FromExperience.@candidateApplicationDetails.TestSuiteViewModel.ToExperience</td>
                                                                                             <td></td>
                                                                                         </tr>
@@ -407,7 +410,7 @@
                                                                                 </table>
                                                                             </div>
                                                                             <div class="table-responsive">
-                                                                                <table class="table table-striped">
+                                                                                <table class="table">
 
                                                                                     <thead>
                                                                                         <tr>
@@ -426,9 +429,9 @@
                                                                             <tbody>
                                                                                 <tr>
 
-                                                                                    <td class="col-sm-3" id="tag_name_row @Convert.ToString(i)">@candidateApplicationDetails.TestSuiteViewModel.Tags[i].TagName</td>
-                                                                                    <td class="col-sm-2" id="weight_name_row @Convert.ToString(i)">@candidateApplicationDetails.TestSuiteViewModel.Tags[i].Weightage</td>
-                                                                                    <td class="col-sm-7" id="efficiency_name_row @Convert.ToString(i)">@candidateApplicationDetails.TestSuiteViewModel.Tags[i].Proficiency</td>
+                                                                                    <td  style="width:17%;" id="tag_name_row @Convert.ToString(i)">@candidateApplicationDetails.TestSuiteViewModel.Tags[i].TagName</td>
+                                                                                    <td  style="width:17%;" id="weight_name_row @Convert.ToString(i)">@candidateApplicationDetails.TestSuiteViewModel.Tags[i].Weightage</td>
+                                                                                    <td  id="efficiency_name_row @Convert.ToString(i)">@candidateApplicationDetails.TestSuiteViewModel.Tags[i].Proficiency</td>
                                                                                     <td></td>
                                                                                 </tr>
                                                                             </tbody>
