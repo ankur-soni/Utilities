@@ -42,7 +42,7 @@
 @using (Html.BeginForm("CandidateSave", "User", FormMethod.Post, new { id = "frmSearchAllNdc", EncType = "multipart/form-data", onsubmit = "validateForm(event)" }))
 {
     <div class="profile-box">
-        <div class="box M-T15 M-B60">
+        <div class="box M-T15">
 @if (!string.IsNullOrWhiteSpace(Model.ProfilePhotoFilePath))
 {
             <label  class="font-Bold themeColorBlue M-T5">Change profile picture</label>
