@@ -511,7 +511,7 @@
                                                                     }
                                                                     $("#IsAllowedmoreThanOneAns").on("click",function()
                                                                     {
-                                                                        $("#AnswerType").val($("#IsAllowedmoreThanOneAns").is(":checked")?2:1);
+                                                                        $("#AnswerType").val($("#IsAllowedmoreThanOneAns input").is(":checked")?2:1);
                                                                         var $ansCheckBoxes=$(".ansCheckBox:checked");
                                                                         if($ansCheckBoxes.length>1)
                                                                             $ansCheckBoxes.prop("checked",false);
@@ -519,7 +519,7 @@
 
                                                                     $(".ansCheckBox").on("click",function()
                                                                     {
-                                                                        if(!$("#IsAllowedmoreThanOneAns").is(":checked"))
+                                                                        if(!$("#IsAllowedmoreThanOneAns input").is(":checked"))
                                                                         {
                                                                             $(".ansCheckBox").prop("checked",false);
                                                                             $(this).prop("checked",true);
