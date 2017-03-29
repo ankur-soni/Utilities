@@ -206,8 +206,7 @@
             if (chkCheck) {
                 var uId = $("#CurrentUser").val();
                 var IsReAssign = $("#IsReAssign").val();
-                var checkvals = $("[class='check']:checked").attr("value")
-                //alert(checkvals);
+                var checkvals = $("#PanelInfo [class='check']:checked").attr("value")
                 $.ajax({
                     type: 'post',
                     async: false,
@@ -249,8 +248,7 @@
             if (chkCheck) {
                 var uId = $("#CurrentUser").val();
                 var IsReAssign = $("#IsReAssign").val();
-                var checkvals = $("[class='check']:checked").attr("value")
-                //alert(checkvals);
+                var checkvals = $("#RecruiterInfo [class='check']:checked").attr("value")
                 $.ajax({
                     type: 'post',
                     async: false,
