@@ -49,7 +49,7 @@ width: -o-calc(100% - 217px);
 
     display: inline-block;
 }
-.candidate-pro{padding:20px;background:#f5f8fd;box-shadow: 2px 3px 3px #ccc;}
+.candidate-pro{padding:20px 20px 20px 27px;background:#f5f8fd;box-shadow: 2px 3px 3px #ccc;}
 .candidate-test{padding:20px;background:#f5f8fd;margin-top:10px;box-shadow: 2px 3px 3px #ccc;}
 .bk-btn{float: right;
     margin-right: 25px;
@@ -126,7 +126,7 @@ a.k-button.k-button-icontext.k-grid-delete{min-width:70px;}
 .k-grid-pager .k-link, .k-grid-pager .k-link:link {
     color: #fff !important;
 }
-.k-textbox > input, .k-autocomplete .k-input, .k-multiselect-wrap{height:25px;}
+/*.k-textbox > input, .k-autocomplete .k-input, .k-multiselect-wrap{height:25px;}*/
 span.k-icon.k-edit{display:none;}
 /*span.k-icon.k-delete{display:none;}*/
 span.k-icon.k-cancel{display:none;}
@@ -845,8 +845,8 @@ textarea {
 }
 
 .checkbox-info input[type="checkbox"]:checked + label::before {
-  background-color: #03a9f3;
-  border-color: #03a9f3;
+  background-color: #0063a7;
+  border-color: #0063a7;
 }
 
 .checkbox-info input[type="checkbox"]:checked + label::after {
