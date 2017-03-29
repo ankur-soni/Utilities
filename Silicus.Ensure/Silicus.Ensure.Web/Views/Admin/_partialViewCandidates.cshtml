@@ -70,7 +70,6 @@
                     $("#CandidateInfo").html(data);
                     $('#myModal').fadeIn();
                     $('#myModal').modal();
-                    $(".loader-overlay").hide();
                 }
             });
         }
@@ -86,7 +85,6 @@
     }
 
     function AssignPanel(UserId, modalHeader) {
-        //if (TestStatus == '@CandidateStatus.New.ToString()') {
         showCustomLoader();
         $.ajax({
             type: 'post',
@@ -102,7 +100,6 @@
                 if (modalHeader) {
                     $('#panelModalHeader').text(modalHeader);
                 }
-                $(".loader-overlay").hide();
             }
         });
     }
@@ -114,7 +111,6 @@
 
     function AssignRecruiter(UserId, modalHeader) {
         showCustomLoader();
-        //if (TestStatus == '@CandidateStatus.New.ToString()') {
         $.ajax({
             type: 'post',
             async: false,
@@ -129,7 +125,6 @@
                 if (modalHeader) {
                     $('#recruiterModalHeader').text(modalHeader);
                 }
-                $(".loader-overlay").hide();
             }
         });
         //}
@@ -149,7 +144,6 @@
                     $("#CandidateInfo").html(data);
                     $('#myModal').fadeIn();
                     $('#myModal').modal();
-                    $(".loader-overlay").hide();
                 }
             });
         }
