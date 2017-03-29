@@ -845,8 +845,8 @@ textarea {
 }
 
 .checkbox-info input[type="checkbox"]:checked + label::before {
-  background-color: #03a9f3;
-  border-color: #03a9f3;
+  background-color: #0063a7;
+  border-color: #0063a7;
 }
 
 .checkbox-info input[type="checkbox"]:checked + label::after {
