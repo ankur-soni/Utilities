@@ -126,7 +126,7 @@ a.k-button.k-button-icontext.k-grid-delete{min-width:70px;}
 .k-grid-pager .k-link, .k-grid-pager .k-link:link {
     color: #fff !important;
 }
-.k-textbox > input, .k-autocomplete .k-input, .k-multiselect-wrap{height:25px;}
+/*.k-textbox > input, .k-autocomplete .k-input, .k-multiselect-wrap{height:25px;}*/
 span.k-icon.k-edit{display:none;}
 /*span.k-icon.k-delete{display:none;}*/
 span.k-icon.k-cancel{display:none;}
