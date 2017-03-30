@@ -415,7 +415,7 @@
                                 $('#IsAnsOption1_validationMessage').appendTo('#answerDiv');
                                 var qType = $('#QuestionType').val();
                                 if (input.is("[name=IsAnsOption1]") && qType == 1) {
-                                    input.attr("data-IsAnsOption1-msg", "Please select at least single Answer.");
+                                    input.attr("data-IsAnsOption1-msg", "Please select at least single answer.");
                                     return $(".ansCheckBox:checked").length>0;
                                 }
                                 return true;
