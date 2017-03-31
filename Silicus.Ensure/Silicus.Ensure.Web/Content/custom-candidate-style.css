@@ -1,7 +1,7 @@
 /*Kendo style override*/
 
 .k-icon.k-i-arrow-n{
-    background-image:url("https://localhost:44300/Content/css/Kendo/2014.1.416/Default/sprite.png")!important;
+    background-image:url("css/Kendo/2014.1.416/Default/sprite.png")!important;
     border-color: transparent;
 }
 .k-icon.k-i-arrow-s {
