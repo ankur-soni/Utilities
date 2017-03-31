@@ -1776,7 +1776,7 @@ html .km-pane-wrapper .km-widget,
   .k-mobile-list .k-check:checked,
   .k-mobile-list .k-edit-field [type=checkbox]:checked,
   .k-mobile-list .k-edit-field [type=radio]:checked {
-    /*background-image: url('http://kendo.cdn.telerik.com/2016.3.1118/styles/Black/sprite_2x.png');*/
+    background-image: url('http://kendo.cdn.telerik.com/2016.3.1118/styles/Black/sprite_2x.png');
     background-size: 340px 336px;
   }
   .k-dropdown-wrap .k-input,
