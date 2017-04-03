@@ -631,8 +631,12 @@
     <Content Include="EmailTemplates\TestReassign.cshtml" />
     <None Include="Properties\PublishProfiles\ensure - FTP.pubxml" />
     <None Include="Properties\PublishProfiles\ensure - Web Deploy.pubxml" />
+    <None Include="Properties\PublishProfiles\EnsureBeta - FTP.pubxml" />
+    <None Include="Properties\PublishProfiles\EnsureBeta - Web Deploy.pubxml" />
     <None Include="Properties\PublishProfiles\ensurestaging - FTP.pubxml" />
     <None Include="Properties\PublishProfiles\ensurestaging - Web Deploy.pubxml" />
+    <None Include="Properties\PublishProfiles\SilicusEnsureBeta - FTP.pubxml" />
+    <None Include="Properties\PublishProfiles\SilicusEnsureBeta - Web Deploy.pubxml" />
     <None Include="Scripts\jquery-2.1.4.intellisense.js" />
     <Content Include="Scripts\jquery-2.1.4.js" />
     <Content Include="Scripts\jquery-2.1.4.min.js" />

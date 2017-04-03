@@ -71,7 +71,10 @@
     //This is global variable
     IsEmailValid=false;
     $(document).ready(function () {
-        //$('#uploadFileLink').ke
+        var isCandidateReappear = location.search.split('IsCandidateReappear=')[1];
+        if(isCandidateReappear){
+            DisableInvariableDataControls();
+        }
         loadControls();
         $('#addPositionPopup').on('hidden.bs.modal', function () {
             $('.field-validation-error').hide();
@@ -79,6 +82,15 @@
         $('#Email').on('change',IsDuplicateEmail);
     });
 
+    function DisableInvariableDataControls (){
+        $('#FirstName').attr('disabled',true);
+        $('#LastName').attr('disabled',true);
+        $('#DOB').attr('disabled',true);
+        var dropdownlist = $("#Gender").data("kendoDropDownList");
+        if(dropdownlist){
+            dropdownlist.enable(false);
+        }
+    }
     function loadControls()
     {
         $('#ProfilePhotofile').change(function (){

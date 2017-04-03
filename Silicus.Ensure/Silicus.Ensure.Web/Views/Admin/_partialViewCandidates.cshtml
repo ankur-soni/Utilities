@@ -6,12 +6,15 @@
     ViewBag.Title = "Roles";
 }
 @{
+            var role = Silicus.Ensure.Web.MvcApplication.getCurrentUserRoles();
+}
+@{
     if (TempData["Success"] != null && !string.IsNullOrWhiteSpace(@TempData["Success"].ToString()))
     {
         var message = TempData["Success"] as string;
         <script type="text/javascript">
-            var jsMessage='@Html.Raw(@message)';
-            ShowMessage(jsMessage,true);
+            var jsMessage = '@Html.Raw(@message)';
+            ShowMessage(jsMessage, true);
         </script>
     }
 }
@@ -151,7 +154,7 @@
 
 
     $(function () {
-        $("#Savebtn").bind("click", function () {        
+        $("#Savebtn").bind("click", function () {
             showCustomLoader();
             var chkCheck = false;
             $('input:checkbox').each(function () {
@@ -475,8 +478,10 @@
                     )
                 </div>
                 <div class="col-sm-4 col-md-3 col-lg-2 cust-mar">
-
-                    <a href='#' onclick='AddNew();' class='k-button k-button-icontext k-grid-add'><span class='k-icon k-add'></span>Add candidate</a>
+                    @if (role.Contains(Silicus.Ensure.Models.Constants.RoleName.Admin.ToString())|| role.Contains(Silicus.Ensure.Models.Constants.RoleName.Recruiter.ToString()))
+                    {
+                        <a href='#' onclick='AddNew();' class='k-button k-button-icontext k-grid-add'><span class='k-icon k-add'></span>Add candidate</a>
+                    }
                 </div>
             </div>
         </div>
