@@ -80,10 +80,11 @@
                 <div class="panel panel-default">
                     <div class="panel-heading">
                         <h4 class="panel-title">
-                            <a class="collapsed" data-toggle="collapse" data-parent="#accordion" href="#connectMenu">INSTRUCTIONS</a>
+                            @*<a class="collapsed" data-toggle="collapse" data-parent="#accordion" href="#connectMenu">INSTRUCTIONS</a>*@
+                            <a href="#" onclick="navigateToInstructions()">INSTRUCTIONS</a>
                         </h4>
                     </div>
-                    <div id="connectMenu" class="panel-collapse collapse">
+                    @*<div id="connectMenu" class="panel-collapse collapse">
                         <div class="panel-body">
                             <ul class="nav">
                                 <li class="nav-item">
@@ -112,29 +113,31 @@
                                 </li>
                             </ul>
                         </div>
-                    </div>
+                    </div>*@
                 </div>
                 <div class="panel panel-default">
                     <div class="panel-heading">
                         <h4 class="panel-title">
-                            <a class="collapsed" data-toggle="collapse" data-parent="#accordion" href="#LearnMenu">OBJECTIVE TEST</a>
+                            @*<a id="objective-test" class="collapsed" data-toggle="collapse" data-parent="#accordion" onclick="navigateToTest('Objective') href="#">OBJECTIVE TEST</a>*@
+                            <a href="#" onclick="navigateToTest('Objective')">OBJECTIVE TEST</a> </li>
                         </h4>
                     </div>
-                    <div id="LearnMenu" class="panel-collapse collapse">
+                    @*<div id="LearnMenu" class="panel-collapse collapse">
                         <div class="panel-body">
                         </div>
-                    </div>
+                    </div>*@
                 </div>
                 <div class="panel panel-default">
                     <div class="panel-heading">
                         <h4 class="panel-title">
-                            <a class="collapsed" data-toggle="collapse" data-parent="#accordion" href="#supportMenu">PRACTICAL TEST</a>
+                            @*<a class="collapsed" data-toggle="collapse" data-parent="#accordion" href="#supportMenu">PRACTICAL TEST</a>*@
+                            <a href="#" onclick="navigateToTest('Practical')">PRACTICAL TEST</a>
                         </h4>
                     </div>
-                    <div id="supportMenu" class="panel-collapse collapse">
+                    @*<div id="supportMenu" class="panel-collapse collapse">
                         <div class="panel-body">
                         </div>
-                    </div>
+                    </div>*@
                 </div>
             </div>
             <!--mobile menu end here-->
