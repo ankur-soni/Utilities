@@ -274,9 +274,13 @@ else
 }
 
 }
+@{
+            var role = Silicus.Ensure.Web.MvcApplication.getCurrentUserRoles();
+}
 <script>
     var clock;
     var totalTime;
+    userRole = @Html.Raw(Json.Encode(role));
     $(document).ready(function () {
         $('.breadcrumb-item.active').removeClass('active');
         $('#objective-test').addClass('active');
@@ -306,6 +310,11 @@ else
     }
 
     function disableControls() {
+        if (userRole.indexOf("@Silicus.Ensure.Models.Constants.RoleName.Panel.ToString()")<0) {
+            $('.k-editor-toolbar').hide();
+            $($('#ReviewerComment').data().kendoEditor.body).attr('contenteditable', false);
+            $('#ReviwerMark').data('kendoNumericTextBox').enable(false);
+        }
         var status = $("#CandidateStatus").val();
         if (status && (status == "@CandidateStatus.Selected" || status == "@CandidateStatus.Rejected")) {
             if ($('#ReviwerMark').val()) {
