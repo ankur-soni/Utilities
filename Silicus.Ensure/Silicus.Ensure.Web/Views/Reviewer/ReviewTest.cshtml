@@ -351,7 +351,7 @@ else
             IsReviewed = true;
         }
         else {
-            IsReviewed = $("#ReviewerComment").val().trim().length > 0 ? true : false;
+            IsReviewed = $("#ReviewerComment").val().trim().length > 0 && $("#ReviwerMark").val().trim().length > 0 ? true : false;
         }
         var result = { QuestionNumber: QuestionNumber, Questiontype: QuestionType, IsReviewed: IsReviewed, IsViewed: IsViewed };
         return result;
