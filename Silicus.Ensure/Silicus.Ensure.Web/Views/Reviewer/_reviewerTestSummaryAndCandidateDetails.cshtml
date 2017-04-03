@@ -6,8 +6,8 @@
     int answeredPracticalQuestions = Model.NavigationDetails != null ? Model.NavigationDetails.Practical.Where(q => q.IsAnswered).Count() : 0;
     int notAnsweredObjectiveQuestions = Model.ObjectiveCount - answeredObjectiveQuestions;
     int notAnsweredPracticalQuestions = Model.PracticalCount - answeredPracticalQuestions;
+    var role = Silicus.Ensure.Web.MvcApplication.getCurrentUserRoles();
 }
-
 <div class="tab-content">
     <div class="tab-pane p-1 active" id="details" role="tabpanel">
         @{
@@ -25,7 +25,10 @@
         }
         <div class="row M-T15">
             <div class="col-sm-12">
-                <button class="btn btn-primary btn-lg submitEvaluation" id="btnSubmitEvalution" value="Submit Evaluation" style="width:100%;background:#319d9d;padding:5px;border-radius:2px;" data-role="button" role="button" aria-disabled="false" tabindex="0">Submit Evaluation</button>
+                @if (role.Contains(Silicus.Ensure.Models.Constants.RoleName.Panel.ToString()))
+                {
+                    <button class="btn btn-primary btn-lg submitEvaluation" id="btnSubmitEvalution" value="Submit Evaluation" style="width:100%;background:#319d9d;padding:5px;border-radius:2px;" data-role="button" role="button" aria-disabled="false" tabindex="0">Submit Evaluation</button>
+                }
             </div>
         </div>
     </div>
