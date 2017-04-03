@@ -18,7 +18,7 @@
         </div>
         <script>
             $(document).ready(function () {
-                $('#RequisitionId').attr('disabled',true);
+                $('#RequisitionId').attr('disabled', true);
                 IsEmailValid = true;
                 SetNavigationMenuActive('Candidates');
             })
@@ -44,14 +44,14 @@
 {
     <div class="profile-box">
         <div class="box M-T15">
-@if (!string.IsNullOrWhiteSpace(Model.ProfilePhotoFilePath))
-{
-            <label  class="font-Bold themeColorBlue M-T5">Change profile picture</label>
-}
-else
-{
-            <label  class="font-Bold themeColorBlue M-T5">Upload profile picture</label>
-}
+            @if (!string.IsNullOrWhiteSpace(Model.ProfilePhotoFilePath))
+            {
+                <label class="font-Bold themeColorBlue M-T5">Change profile picture</label>
+            }
+            else
+            {
+                <label class="font-Bold themeColorBlue M-T5">Upload profile picture</label>
+            }
             @if (!string.IsNullOrWhiteSpace(Model.ProfilePhotoFilePath))
             {
                 <div class="thumbnail" style="height: 200px;">
@@ -417,7 +417,21 @@ else
             event.preventDefault();
         }
         else if ($('#frmSearchAllNdc').valid()) {
+            var isCandidateReappear = location.search.split('IsCandidateReappear=')[1];
+            if (isCandidateReappear) {
+                EnableInvariableDataControls();
+            }
             showCustomLoader();
         }
     }
+
+    function EnableInvariableDataControls() {
+        var dropdownlist = $("#Gender").data("kendoDropDownList");
+        if (dropdownlist) {
+            dropdownlist.enable(true);
+        }
+        $('#FirstName').attr('disabled', false);
+        $('#LastName').attr('disabled', false);
+        $('#DOB').attr('disabled', false);
+}
 </script>
