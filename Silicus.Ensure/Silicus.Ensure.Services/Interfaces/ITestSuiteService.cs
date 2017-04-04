@@ -55,6 +55,7 @@ namespace Silicus.Ensure.Services.Interfaces
 
         int GetQuestionType(int questionId);
 
+        int GetQuestionTypeFromUserTestDetailId(int questionId);
         TestSummaryBusinessModel GetTestSummary(int userTestSuiteId);
 
         bool IsAllQuestionEvaluated(int? userTestSuitId);
