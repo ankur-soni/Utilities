@@ -84,7 +84,11 @@ width: -o-calc(100% - 217px);
     border:1px solid #e5e6e7;
     padding:6px;
 }
-
+.inputSkillTag{
+    width: 100%;
+    padding: 0px!important;
+    height: 30px!important;
+}
 
 
 
@@ -106,7 +110,9 @@ a.k-button.k-button-icontext.k-grid-delete{min-width:70px;}
 .k-grid table {
     background-color: #e2e6f2 !important;
 }
-
+span.k-widget.k-autocomplete.k-header.tagAutoComplete.inputSkillTag.k-state-default{
+    height:32px!important;
+}
 .k-tabstrip-items .k-state-active, .k-panelbar .k-tabstrip-items .k-state-active {
     border-bottom: 4px solid #00b0ff;
 }
@@ -144,7 +150,7 @@ i.fa.fa-save{display:none;}
         background-image: none !important;
     }
 
-span.k-widget.k-autocomplete.k-header.tagAutoComplete.k-state-default{width:100%;}
+/*span.k-widget.k-autocomplete.k-header.tagAutoComplete.k-state-default{width:100%;}*/
 
 input.key-numeric.WeightageField{background-color: #FFFFFF;background-image: none;border: 1px solid #e5e6e7;border-radius: 1px;color: inherit;height: 32px;display: block;padding: 6px 12px;transition: border-color 0.15s ease-in-out 0s, box-shadow 0.15s ease-in-out 0s;width: 100%;font-size: 14px;}
 span.k-widget.k-dropdown.k-header.proficiencyDropDown{width:100%;}
