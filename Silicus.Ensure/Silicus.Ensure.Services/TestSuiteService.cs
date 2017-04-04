@@ -135,6 +135,21 @@ namespace Silicus.Ensure.Services
                 return 0;
         }
 
+        public int GetQuestionTypeFromUserTestDetailId(int userTestDetailId)
+        {
+            var question = (from a in _context.Query<UserTestDetails>()
+                                               .Where(x => x.TestDetailId == userTestDetailId)
+                            join b in _context.Query<Question>()
+                            on a.QuestionId equals b.Id
+                            select b).SingleOrDefault();
+            if (question != null)
+            {
+                return question.QuestionType;
+            }
+            else
+                return 0;
+        }
+
         public bool IsAllQuestionEvaluated(int? userTestSuitId)
         {
 
@@ -205,7 +220,7 @@ namespace Silicus.Ensure.Services
             }
             result.PreviousQuestionId = index <= 0 ? null : previousQuestionId;
             result.NextQuestionId = index >= questionNumberList.Count - 1 ? null : nextQuestionId;
-
+            result.DisplayQuestionNumber = result.DisplayQuestionNumber == 0 ? 1 : result.DisplayQuestionNumber;
             if (testStartWithQuestionType == QuestionType.Practical)
             {
                 if (questionType == (int)QuestionType.Practical && result.NextQuestionId == null)

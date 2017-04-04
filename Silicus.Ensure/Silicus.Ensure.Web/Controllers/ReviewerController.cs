@@ -78,7 +78,7 @@ namespace Silicus.Ensure.Web.Controllers
             {
                 if (user.CandidateStatus == CandidateStatus.TestSubmitted.ToString())
                 {
-                    user.CandidateStatus= CandidateStatus.UnderEvaluation.ToString();
+                    user.CandidateStatus = CandidateStatus.UnderEvaluation.ToString();
                     _userService.Update(user);
                 }
                 testSuiteCandidateModel.CandidateStatus = status;
@@ -86,7 +86,7 @@ namespace Silicus.Ensure.Web.Controllers
             return View(testSuiteCandidateModel);
         }
 
-        public ActionResult LoadTestSummaryView(int userId,int UserTestSuiteId)
+        public ActionResult LoadTestSummaryView(int userId, int UserTestSuiteId)
         {
             var user = _userService.GetUserById(userId);
             UserTestSuite userTestSuite = _testSuiteService.GetUserTestSuiteByUserApplicationId(user.UserApplicationId);
@@ -111,7 +111,7 @@ namespace Silicus.Ensure.Web.Controllers
 
         public ActionResult UpdateReviewAndGetQuestionDetails(QuestionDetailsViewModel questionDetails)
         {
-            questionDetails.QuestionType = _testSuiteService.GetQuestionType(questionDetails.QuestionId);
+            questionDetails.QuestionType = _testSuiteService.GetQuestionTypeFromUserTestDetailId((int)questionDetails.UserTestDetailId);
             questionDetails.Answer = HttpUtility.HtmlDecode(questionDetails.Answer);
             var reviewerQuestionViewModel = ReviewTestSuiteQuestion(questionDetails.QuestionId, questionDetails.UserTestSuiteId, questionDetails.QuestionType);
             if (questionDetails.QuestionType == (int)QuestionType.Practical)
