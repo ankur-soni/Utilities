@@ -16,7 +16,7 @@
                     <strong>Error!</strong> <span id="messageContent">@Html.ValidationSummary(true)</span>
                 </div>
                 <div class="col-md-4">
-                    @Html.LabelFor(model => model.TagName)<b style="color:Red;">*</b>:
+                    @Html.LabelFor(model => model.TagName)<span style="color:red;">*</span>:
                 </div>
                 <div class="col-md-8">
                     @Html.TextBoxFor(model => model.TagName, new { @class = "form-control" })                    

@@ -102,7 +102,7 @@
                                     }
                                     <div class="col-lg-6 col-md-12 col-sm-12">
                                         <div class="col-md-12 col-lg-6">
-                                            @Html.LabelFor(model => model.FirstName) <b style="color:Red;">*</b>
+                                            @Html.LabelFor(model => model.FirstName) <span style="color:red;">*</span>
                                         </div>
                                         <div class="col-md-12 col-lg-6">
                                             @Html.TextBoxFor(model => model.FirstName, new { @class = "form-control" })
@@ -121,7 +121,7 @@
                                 <div class="row" style="margin-bottom:10px!important">
                                     <div class="col-lg-6 col-md-12 col-sm-12">
                                         <div class="col-md-12 col-lg-6">
-                                            @Html.LabelFor(model => model.LastName) <b style="color:Red;">*</b>
+                                            @Html.LabelFor(model => model.LastName) <span style="color:red;">*</span>
                                         </div>
                                         <div class="col-md-12 col-lg-6">
                                             @Html.TextBoxFor(model => model.LastName, new { @class = "form-control" })
@@ -130,7 +130,7 @@
                                     </div>
                                     <div class="col-lg-6 col-md-12 col-sm-12">
                                         <div class="col-md-12 col-lg-6">
-                                            @Html.LabelFor(model => model.Position) <b style="color:Red;">*</b>
+                                            @Html.LabelFor(model => model.Position) <span style="color:red;">*</span>
                                         </div>
                                         <div class="col-md-12 col-lg-6">
                                             <div class="col-md-8 col-sm-10 col-xs-10" style="padding-left:0;padding-right:0;height:30px;">
@@ -154,7 +154,7 @@
                                 <div class="row" style="margin-bottom:10px!important">
                                     <div class="col-lg-6 col-md-12 col-sm-12">
                                         <div class="col-md-12 col-lg-6">
-                                            @Html.LabelFor(model => model.RequisitionId) <b style="color:Red;">*</b>
+                                            @Html.LabelFor(model => model.RequisitionId) <span style="color:red;">*</span>
                                         </div>
                                         <div class="col-md-12 col-lg-6">
                                             @Html.TextBoxFor(model => model.RequisitionId, new { @class = "form-control" })
@@ -163,7 +163,7 @@
                                     </div>
                                     <div class="col-lg-6 col-md-12 col-sm-12">
                                         <div class="col-md-12 col-lg-6">
-                                            @Html.LabelFor(model => model.Gender) <b style="color:Red;">*</b>
+                                            @Html.LabelFor(model => model.Gender) <span style="color:red;">*</span>
                                         </div>
                                         <div class="col-md-12 col-lg-6">
                                             @(Html.Kendo().DropDownListFor(m => m.Gender)
@@ -192,7 +192,7 @@
                                 <div class="row" style="margin-bottom:10px!important">
                                     <div class="col-lg-6 col-md-12 col-sm-12">
                                         <div class="col-md-12 col-lg-6">
-                                            @Html.LabelFor(model => model.Email) <b style="color:Red;">*</b>
+                                            @Html.LabelFor(model => model.Email) <span style="color:red;">*</span>
                                         </div>
                                         <div class="col-md-12 col-lg-6">
                                             @Html.TextBoxFor(model => model.Email, new { @class = "form-control" })
@@ -207,7 +207,7 @@
                                     </div>
                                     <div class="col-lg-6 col-md-12 col-sm-12">
                                         <div class="col-md-12 col-lg-6">
-                                            @Html.LabelFor(model => model.CurrentLocation) <b style="color:Red;">*</b>
+                                            @Html.LabelFor(model => model.CurrentLocation) <span style="color:red;">*</span>
                                         </div>
                                         <div class="col-md-12 col-lg-6">
                                             @Html.TextBoxFor(model => model.CurrentLocation, new { @class = "form-control" })
@@ -218,7 +218,7 @@
                                 <div class="row" style="margin-bottom:10px!important">
                                     <div class="col-lg-6 col-md-12 col-sm-12">
                                         <div class="col-md-12 col-lg-6">
-                                            @Html.LabelFor(model => model.DOB) <b style="color:Red;">*</b>
+                                            @Html.LabelFor(model => model.DOB) <span style="color:red;">*</span>
                                         </div>
                                         <div class="col-md-12 col-lg-6">
                                             <input type="text" style="width:100%;" name="DOB" id="DOB" value="@if (Model.UserId != 0)
@@ -228,7 +228,7 @@
                                     </div>
                                     <div class="col-lg-6 col-md-12 col-sm-12">
                                         <div class="col-md-12 col-lg-6">
-                                            @Html.LabelFor(model => model.ContactNumber) <b style="color:Red;">*</b>
+                                            @Html.LabelFor(model => model.ContactNumber) <span style="color:red;">*</span>
                                         </div>
                                         <div class="col-md-12 col-lg-6">
                                             @Html.TextBoxFor(model => model.ContactNumber, new { @class = "form-control" })
@@ -239,7 +239,7 @@
                                 <div class="row" style="margin-bottom:10px!important">
                                     <div class="col-lg-6 col-md-12 col-sm-12">
                                         <div class="col-md-12 col-lg-6">
-                                            @Html.LabelFor(model => model.ClientName) <b style="color:Red;">*</b>
+                                            @Html.LabelFor(model => model.ClientName) <span style="color:red;">*</span>
                                         </div>
                                         <div class="col-md-12 col-lg-6">
                                             @Html.TextBoxFor(model => model.ClientName, new { @class = "form-control" })
@@ -248,7 +248,7 @@
                                     </div>
                                     <div class="col-lg-6 col-md-12 col-sm-12">
                                         <div class="col-md-12 col-lg-6">
-                                            @Html.LabelFor(model => model.Technology) <b style="color:Red;">*</b>
+                                            @Html.LabelFor(model => model.Technology) <span style="color:red;">*</span>
                                         </div>
                                         <div class="col-md-12 col-lg-6">
                                             @Html.TextBoxFor(model => model.Technology, new { @class = "form-control" })
@@ -260,7 +260,7 @@
                                     <div class="col-lg-6 col-md-12 col-sm-12">
 
                                         <div class="col-md-12 col-lg-6">
-                                            <lable>Total experience <b style="color:Red;">*</b></lable>
+                                            <lable>Total experience <span style="color:red;">*</span></lable>
                                         </div>
                                         <div class="col-md-12 col-lg-6">
                                             <div class="col-md-6 col-sm-6 col-xs-6" style="padding-left:0">
@@ -289,7 +289,7 @@
                                     </div>
                                     <div class="col-lg-6 col-md-12 col-sm-12">
                                         <div class="col-md-12 col-lg-6">
-                                            <lable>Relevant experience <b style="color:Red;">*</b></lable>
+                                            <lable>Relevant experience <span style="color:red;">*</span></lable>
                                         </div>
                                         <div class="col-md-12 col-lg-6">
                                             <div class="col-md-6 col-sm-6 col-xs-6" style="padding-left:0">
@@ -320,7 +320,7 @@
                                 <div class="row" style="margin-bottom:10px!important">
                                     <div class="col-lg-6 col-md-12 col-sm-12">
                                         <div class="col-md-12 col-lg-6">
-                                            @Html.LabelFor(model => model.CurrentCompany) <b style="color:Red;">*</b>
+                                            @Html.LabelFor(model => model.CurrentCompany) <span style="color:red;">*</span>
                                         </div>
                                         <div class="col-md-12 col-lg-6">
                                             @Html.TextBoxFor(model => model.CurrentCompany, new { @class = "form-control" })
@@ -329,7 +329,7 @@
                                     </div>
                                     <div class="col-lg-6 col-md-12 col-sm-12">
                                         <div class="col-md-12 col-lg-6">
-                                            @Html.LabelFor(model => model.CurrentTitle) <b style="color:Red;">*</b>
+                                            @Html.LabelFor(model => model.CurrentTitle) <span style="color:red;">*</span>
                                         </div>
                                         <div class="col-md-6">
                                             @Html.TextBoxFor(model => model.CurrentTitle, new { @class = "form-control" })
@@ -340,7 +340,7 @@
                                 <div class="row" style="margin-bottom:10px!important">
                                     <div class="col-lg-6 col-md-12 col-sm-12">
                                         <div class="col-md-12 col-lg-6">
-                                            Upload resume <b style="color:Red;">*</b>
+                                            Upload resume <span style="color:red;">*</span>
                                         </div>
                                         <div class="col-md-12 col-lg-6">
                                             <div class="outer-box">
@@ -366,7 +366,8 @@
                                                     </script>
                                                 }
                                             </div>
-                                            <span class="k-invalid-msg" data-for="files"></span>
+                                           
+                                            @Html.ValidationMessage("ResumeFile")
                                         </div>
                                     </div>
                                 </div>
