@@ -235,11 +235,11 @@
                                                 </div>
                                             }
                                             <div class="col-md-2 col-sm-2 col-xs-2">
-                                                <input type="text" id="Tag_@i" value="@tag.TagName" name="Tag_@i" data-val="true" data-val-required="Skill tags is required." class="tagAutoComplete">
+                                                <input type="text" id="Tag_@i" value="@tag.TagName" name="Tag_@i" data-val="true" data-val-required="Skill tags is required." class="tagAutoComplete inputSkillTag"/>
 
                                             </div>
                                             <div class="col-md-2 col-sm-2 col-xs-2">
-                                                <input type="text" id="Weightage_@i" value="@tag.Weightage" name="Weightage_@i" data-val="true" data-val-required="Weightage is required." class="key-numeric WeightageField" />
+                                                <input type="text" id="Weightage_@i" value="@tag.Weightage" name="Weightage_@i" data-val="true" data-val-required="Weightage is required." class="key-numeric WeightageField form-control" />
                                             </div>
                                             <div class="col-md-2 col-sm-3 col-xs-3">
                                                 <input type="text" id="Proficiency_@i" value="@tag.Proficiency" name="Proficiency_@i" data-val="true" data-val-required="Efficiency is required." required class="proficiencyDropDown" />
@@ -270,7 +270,7 @@
                                                                 Skill tags <span style="color:red;">*</span>
                                                             </div>
                                                             <div class="col-md-2 col-sm-2 col-xs-2">
-                                                                <input type="text" id="Tag_1" name="Tag_1" data-val="true" data-val-required="Skill tags is required." class="tagAutoComplete">
+                                                                <input type="text" id="Tag_1" name="Tag_1" data-val="true" data-val-required="Skill tags is required." class="tagAutoComplete inputSkillTag"/>
                                                             </div>
                                                             <div class="col-md-2 col-sm-2 col-xs-2">
                                                                 <input type="text" id="Weightage_1" name="Weightage_1" data-val="true" data-val-required="Weightage is required." class="key-numeric WeightageField form-control" />
@@ -371,7 +371,7 @@
         return '<div class="form-group">' +
                     '<div class="col-md-2 col-sm-2 col-xs-2 col-lg-2"> <span style="color:red;"></span></div>' +
                     '<div class="col-md-2 col-sm-2 col-xs-2">' +
-                        '<input type="text" id="Tag_' + rowno + '" name="Tag_' + rowno + '" data-val="true" data-val-required="Skill tags is required." class="tagAutoComplete">' +
+                        '<input type="text" id="Tag_' + rowno + '" name="Tag_' + rowno + '" data-val="true" data-val-required="Skill tags is required." class="tagAutoComplete inputSkillTag">' +
                     '</div>' +
                     '<div class="col-md-2 col-sm-2 col-xs-2">' +
                         '<input type="text" id="Weightage_' + rowno + '" name="Weightage_' + rowno + '" data-val="true" data-val-required="Weightage is required." class="key-numeric WeightageField" />' +
