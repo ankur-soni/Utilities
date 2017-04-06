@@ -6,7 +6,7 @@ using Silicus.Ensure.Services.Interfaces;
 
 namespace Silicus.Ensure.Services
 {
-    public class TagService:ITagsService
+    public class TagService : ITagsService
     {
         private readonly IDataContext _context;
 
@@ -46,7 +46,7 @@ namespace Silicus.Ensure.Services
         {
             if (!string.IsNullOrWhiteSpace(tagName))
             {
-               return _context.Query<Tags>().FirstOrDefault(y=>y.TagName==tagName);                
+                return _context.Query<Tags>().FirstOrDefault(y => y.TagName == tagName);
             }
             return null;
         }
@@ -62,6 +62,23 @@ namespace Silicus.Ensure.Services
                 }
             }
             return false;
+        }
+
+        public List<string> GetTagNames(List<int> tagIds)
+        {
+            var tagNames = new List<string>();
+            if (tagIds != null && tagIds.Count > 0)
+            {
+                foreach (var tagId in tagIds)
+                {
+                    var tag = _context.Query<Tags>().FirstOrDefault(y => y.TagId == tagId);
+                    if (tag != null)
+                    {
+                        tagNames.Add(tag.TagName);
+                    }
+                }
+            }
+            return tagNames;
         }
     }
 }

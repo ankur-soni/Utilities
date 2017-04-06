@@ -111,11 +111,11 @@ a.k-button.k-button-icontext.k-grid-delete{min-width:70px;}
     border-bottom: 4px solid #00b0ff;
 }
 
-#frmSearchAllNdc span.k-dropdown-wrap.k-state-default {
+#CandidateDetailsForm span.k-dropdown-wrap.k-state-default {
     height: 27px !important;
 }
 
-/*#frmSearchAllNdc span.k-dropdown .k-input, .k-dropdown .k-state-focused .k-input, .k-menu .k-popup {
+/*#CandidateDetailsForm span.k-dropdown .k-input, .k-dropdown .k-state-focused .k-input, .k-menu .k-popup {
     height: 18px;
    
 }*/

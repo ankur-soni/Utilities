@@ -17,5 +17,7 @@ namespace Silicus.Ensure.Services.Interfaces
         Tags GetTagDetailsByName(string tagName);
 
         bool isTagAssociatedWithQuetion(string tagName);
+
+        List<string> GetTagNames(List<int> tagIds);
     }
 }

@@ -196,7 +196,7 @@
             rules: {
                 tagNamevalidation: function (input, params) {
                     if (input.is("[name='PositionName']") && input.val() != "") {
-                        var bool=isTagNameAvailable("", input.val());
+                        var bool=IsDuplicatePositionName("", input.val());
                         if(!bool)
                         {
                             input.attr("data-tagNamevalidation-msg", "Position name already exist.");
@@ -212,7 +212,7 @@
         $("#addPositionPopup").modal('show');
     }
 
-    function isTagNameAvailable(existingName,updatedName)
+    function IsDuplicatePositionName(existingName,updatedName)
     {
         var isAvailable = true;
         if (existingName != updatedName) {
