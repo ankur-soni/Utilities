@@ -74,12 +74,17 @@ namespace Silicus.Ensure.Web.Controllers
             testSuiteCandidateModel.TestSummary = GetTestSummary(testSuiteCandidateModel.UserTestSuiteId);
             testSuiteCandidateModel.UserId = user.UserId;
             CandidateStatus status;
+
             if (Enum.TryParse(user.CandidateStatus, out status))
             {
                 if (user.CandidateStatus == CandidateStatus.TestSubmitted.ToString())
                 {
-                    user.CandidateStatus = CandidateStatus.UnderEvaluation.ToString();
-                    _userService.Update(user);
+                    var userRole = MvcApplication.getCurrentUserRoles();
+                    if (userRole.Contains(RoleName.Panel.ToString()))
+                    {
+                        user.CandidateStatus = CandidateStatus.UnderEvaluation.ToString();
+                        _userService.Update(user);
+                    }
                 }
                 testSuiteCandidateModel.CandidateStatus = status;
             }
