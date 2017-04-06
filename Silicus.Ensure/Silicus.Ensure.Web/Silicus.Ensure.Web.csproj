@@ -915,6 +915,7 @@
     <Content Include="Views\Shared\PreviewQuestions.cshtml" />
     <Content Include="Views\Reviewer\_reviewerTestSummaryAndCandidateDetails.cshtml" />
     <Content Include="Views\QuestionBank\_QuestionsGrid.cshtml" />
+    <Content Include="Views\Admin\Dashboard.cshtml" />
     <None Include="Web.Azure.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
