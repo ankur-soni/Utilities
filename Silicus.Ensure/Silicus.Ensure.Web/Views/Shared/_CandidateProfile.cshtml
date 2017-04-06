@@ -248,19 +248,27 @@
                                             @Html.LabelFor(model => model.Technology) <span style="color:red;">*</span>
                                         </div>
                                         <div class="col-md-12 col-lg-6">
-                                            @(Html.Kendo().MultiSelectFor(x => x.SkillTags)
-    .DataTextField("TagName")
-    .DataValueField("TagId")
-    .DataSource(dataSource => dataSource
-        .Read(read => read.Action("Tags", "Tag"))
-        .ServerFiltering(false)
-    ).AutoBind(true)
-    .Placeholder("--Select--")
-    .Value(Model.SkillTags)
-     .HtmlAttributes(new { style = "width: 100%" }))
-                                            @Html.ValidationMessageFor(m => m.Technology)
-                                            <a style="padding:2px 12px;" class="themeColorBlue btn btn-primary" href="#" onclick="AddTag();"><i class="fa fa-plus" aria-hidden="true"></i></a>
+                                            <div class="col-md-8 col-sm-10 col-xs-10" style="padding-left:0;padding-right:0;">
+
+                                                @(Html.Kendo().MultiSelectFor(x => x.SkillTags)
+                                                    .DataTextField("TagName")
+                                                    .DataValueField("TagId")
+                                                    .Placeholder("--Select--")
+                                                    .DataSource(dataSource => dataSource
+                                                        .Read(read => read.Action("Tags", "Tag"))
+                                                        .ServerFiltering(false)
+                                                    ).AutoBind(true)
+                                                    .Value(Model.SkillTags)
+                                                     .HtmlAttributes(new { style = "width: 100%" }))
+                                                @*@Html.ValidationMessageFor(m => m.Technology)*@
+                                            </div>
+                                            
+                                            <div class="col-md-4 col-sm-2 col-xs-2">
+                                                <a style="padding:2px 12px;" class="themeColorBlue btn btn-primary" href="#" onclick="AddTag();"><i class="fa fa-plus" aria-hidden="true"></i></a>
+                                            </div>
+                                            <span class="k-invalid-msg" data-for="SkillTags"></span>
                                         </div>
+                                        
                                     </div>
                                 </div>
                                 <div class="row" style="margin-bottom:10px!important">

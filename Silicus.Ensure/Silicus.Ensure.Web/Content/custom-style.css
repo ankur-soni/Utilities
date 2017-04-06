@@ -141,8 +141,11 @@ span.k-icon.k-update{display:none;}
 i.fa.fa-save{display:none;}
 
 #userGrids table, #questionGrids table, #UserGrids table, #tagsGrids table, #positionGrids table, #PanelGrids table, #testSuiteGrids table {
+    min-height:458px;
     width: 100%;
     overflow-x: auto;
+    height: 450px;
+    overflow-y: auto;
     display: inherit;
 }
 
