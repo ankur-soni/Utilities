@@ -20,7 +20,7 @@
     </div>
 </div>
 
-<div class="box M-T15 M-B60">
+<div class="box M-T15">
     <div class="toolbar">
         <div class="row">
             <div class="col-sm-12">
@@ -66,12 +66,12 @@
                     <span style="font-weight:bold;" class="themeColorBlue labelAlignMid">Proficiency level</span>
 
                     @{
-                                var levelList = new List<SelectListItem>();
-                                levelList.Add(new SelectListItem() { Text = "All", Value = "" });
-                                foreach (var level in Enum.GetValues(typeof(Silicus.Ensure.Web.Models.ProficiencyLevel)))
-                                {
-                                    levelList.Add(new SelectListItem() { Text = level.ToString(), Value = level.ToString() });
-                                }
+                        var levelList = new List<SelectListItem>();
+                        levelList.Add(new SelectListItem() { Text = "All", Value = "" });
+                        foreach (var level in Enum.GetValues(typeof(Silicus.Ensure.Web.Models.ProficiencyLevel)))
+                        {
+                            levelList.Add(new SelectListItem() { Text = level.ToString(), Value = level.ToString() });
+                        }
                     }
                     @(Html.Kendo().DropDownList()
                                                         .Name("ProficiencyLevelDropDown")
@@ -90,21 +90,15 @@
     </div>
     <div class="kendogrid">
         <div class="table-responsive">
-            @{
-
-            Model.ForEach(y => y.QuestionDescription = Silicus.Ensure.Web.MvcApplication.HtmlToPlainText(y.QuestionDescription));
-            }
-
             @if (Request.IsAuthenticated)
-        {
+            {
                 @(Html.Kendo().Grid(Model).Name("questionGrids")
-                            .Events(eve => eve.DataBinding("OnQuestionGridsDataBound"))
                              .Columns(columns =>
                              {
-                                 columns.Bound(q => q.QuestionDescription).Width(400);
+                                 columns.Bound(q => q.QuestionDescription).Title("Question description").Width(400);
                                  columns.Bound(q => q.QuestionType).Width(400);
                                  columns.Bound(q => q.Tag).Title("Tags").Width(400);
-                                 columns.Bound(q => q.ProficiencyLevel).Width(400);
+                                 columns.Bound(q => q.ProficiencyLevel).Title("Proficiency level").Width(400);
                                  columns.Bound(q => q.Id).ClientTemplate(@"
                                                 <a href='/QuestionBank/EditQuestion?questionId=#=Id#' class='k-button M-T4'>Edit</a>
                             <a class='k-button M-T4' href='\\#' onclick='ConfirmDeleteQuestionRow(event)'>Delete</a>
@@ -121,13 +115,13 @@
                                     ).Pageable(p => p.PageSizes(true))
                                      .Sortable()
                                      .Resizable(resizing => resizing.Columns(true))
-                               )}
+                )}
         </div>
     </div>
 </div>
 <script>
     $(document).ready(function () {
-       
+        $('.page-wrapper').css('padding-bottom', '60px');
         $("#messageDiv").hide();
 
         SetNavigationMenuActive('QuestionBank');
@@ -219,7 +213,4 @@
         });
     }
 
-    function OnQuestionGridsDataBound() {
-    //showCustomLoader();
-    }
 </script>

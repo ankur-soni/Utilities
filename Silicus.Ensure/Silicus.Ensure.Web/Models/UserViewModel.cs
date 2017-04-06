@@ -69,9 +69,9 @@ namespace Silicus.Ensure.Web.Models
         [Required(ErrorMessage = "Client name is required.")]
         public string ClientName { get; set; }
 
-        [StringLength(50)]
-        [Display(Name = "Technology")]
         [Required(ErrorMessage = "Technology is required.")]
+        public List<string> SkillTags { get; set; }
+      
         public string Technology { get; set; }
 
         [Required(ErrorMessage = "Total experience in years is required.")]
@@ -126,7 +126,7 @@ namespace Silicus.Ensure.Web.Models
 
 
         public string RecruiterName { get; set; }
-        
+
 
         public bool IsAdmin { get; set; }
 
@@ -140,6 +140,9 @@ namespace Silicus.Ensure.Web.Models
 
         public bool IsCandidateReappear { get; set; }
 
+        public bool HasHistory { get; set; }
+
         public DateTime ApplicationDate { get; set; }
+
     }
 }

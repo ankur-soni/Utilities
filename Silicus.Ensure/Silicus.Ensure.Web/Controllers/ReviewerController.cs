@@ -74,19 +74,24 @@ namespace Silicus.Ensure.Web.Controllers
             testSuiteCandidateModel.TestSummary = GetTestSummary(testSuiteCandidateModel.UserTestSuiteId);
             testSuiteCandidateModel.UserId = user.UserId;
             CandidateStatus status;
+
             if (Enum.TryParse(user.CandidateStatus, out status))
             {
                 if (user.CandidateStatus == CandidateStatus.TestSubmitted.ToString())
                 {
-                    user.CandidateStatus= CandidateStatus.UnderEvaluation.ToString();
-                    _userService.Update(user);
+                    var userRole = MvcApplication.getCurrentUserRoles();
+                    if (userRole.Contains(RoleName.Panel.ToString()))
+                    {
+                        user.CandidateStatus = CandidateStatus.UnderEvaluation.ToString();
+                        _userService.Update(user);
+                    }
                 }
                 testSuiteCandidateModel.CandidateStatus = status;
             }
             return View(testSuiteCandidateModel);
         }
 
-        public ActionResult LoadTestSummaryView(int userId,int UserTestSuiteId)
+        public ActionResult LoadTestSummaryView(int userId, int UserTestSuiteId)
         {
             var user = _userService.GetUserById(userId);
             UserTestSuite userTestSuite = _testSuiteService.GetUserTestSuiteByUserApplicationId(user.UserApplicationId);
@@ -111,7 +116,7 @@ namespace Silicus.Ensure.Web.Controllers
 
         public ActionResult UpdateReviewAndGetQuestionDetails(QuestionDetailsViewModel questionDetails)
         {
-            questionDetails.QuestionType = _testSuiteService.GetQuestionType(questionDetails.QuestionId);
+            questionDetails.QuestionType = _testSuiteService.GetQuestionTypeFromUserTestDetailId((int)questionDetails.UserTestDetailId);
             questionDetails.Answer = HttpUtility.HtmlDecode(questionDetails.Answer);
             var reviewerQuestionViewModel = ReviewTestSuiteQuestion(questionDetails.QuestionId, questionDetails.UserTestSuiteId, questionDetails.QuestionType);
             if (questionDetails.QuestionType == (int)QuestionType.Practical)

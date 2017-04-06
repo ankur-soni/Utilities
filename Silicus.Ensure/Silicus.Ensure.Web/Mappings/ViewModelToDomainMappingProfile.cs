@@ -7,6 +7,8 @@ using Silicus.Ensure.Models.Constants;
 using System;
 using Silicus.Ensure.Models.Test;
 using Silicus.Ensure.Web.Models.Test;
+using Newtonsoft.Json;
+
 namespace Silicus.Ensure.Web.Mappings
 {
     [ExcludeFromCodeCoverage]
@@ -20,7 +22,8 @@ namespace Silicus.Ensure.Web.Mappings
         protected override void Configure()
         {
             Mapper.CreateMap<Model, EntityA>();
-            Mapper.CreateMap<UserViewModel, UserBusinessModel>();
+            Mapper.CreateMap<UserViewModel, UserBusinessModel>()
+                 .ForMember(dest => dest.Technology, opt => opt.MapFrom(s => s.SkillTags != null ? string.Join(",", s.SkillTags.ToArray()) : ""));
             Mapper.CreateMap<TestSuiteViewModel, TestSuite>();//.ForMember(o => o., b => b.MapFrom(z => z.FirstName + " " + z.LastName));
             Mapper.CreateMap<TestSuite, TestSuiteViewModel>();//.ForMember(o => o.PositionName, Enum.Parse(Competency,"1").ToString();
             Mapper.CreateMap<QuestionModel, Question>();
@@ -50,7 +53,7 @@ namespace Silicus.Ensure.Web.Mappings
 
             Mapper.CreateMap<CandidateInfoViewModel, CandidateInfoBusinessModel>();
             Mapper.CreateMap<CandidateHistoryViewModel, UserBusinessModel>();
-            Mapper.CreateMap<UserBusinessModel, CandidateHistoryViewModel>();
+
         }
     }
 }

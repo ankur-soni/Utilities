@@ -62,11 +62,11 @@ namespace Silicus.Ensure.Web.Controllers
                 }
                 var btnValue = Request["btnSaveAndAddNewQuestion"];
                 int success = 1;
-                if (!string.IsNullOrWhiteSpace(btnValue) && btnValue.Equals("save & add another question",StringComparison.OrdinalIgnoreCase))
+                if (!string.IsNullOrWhiteSpace(btnValue) && btnValue.Equals("save & add another question", StringComparison.OrdinalIgnoreCase))
                 {
                     success = 2;
                 }
-                question = new QuestionModel() { Success = success, Edit = isEdit, QuestionType = "0", SkillTagsList = Tags() };              
+                question = new QuestionModel() { Success = success, Edit = isEdit, QuestionType = "0", SkillTagsList = Tags() };
             }
             else
             {

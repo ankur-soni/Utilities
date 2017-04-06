@@ -6,12 +6,15 @@
     ViewBag.Title = "Roles";
 }
 @{
+            var role = Silicus.Ensure.Web.MvcApplication.getCurrentUserRoles();
+}
+@{
     if (TempData["Success"] != null && !string.IsNullOrWhiteSpace(@TempData["Success"].ToString()))
     {
         var message = TempData["Success"] as string;
         <script type="text/javascript">
-            var jsMessage='@Html.Raw(@message)';
-            ShowMessage(jsMessage,true);
+            var jsMessage = '@Html.Raw(@message)';
+            ShowMessage(jsMessage, true);
         </script>
     }
 }
@@ -70,7 +73,6 @@
                     $("#CandidateInfo").html(data);
                     $('#myModal').fadeIn();
                     $('#myModal').modal();
-                    $(".loader-overlay").hide();
                 }
             });
         }
@@ -86,7 +88,6 @@
     }
 
     function AssignPanel(UserId, modalHeader) {
-        //if (TestStatus == '@CandidateStatus.New.ToString()') {
         showCustomLoader();
         $.ajax({
             type: 'post',
@@ -102,7 +103,6 @@
                 if (modalHeader) {
                     $('#panelModalHeader').text(modalHeader);
                 }
-                $(".loader-overlay").hide();
             }
         });
     }
@@ -114,7 +114,6 @@
 
     function AssignRecruiter(UserId, modalHeader) {
         showCustomLoader();
-        //if (TestStatus == '@CandidateStatus.New.ToString()') {
         $.ajax({
             type: 'post',
             async: false,
@@ -129,7 +128,6 @@
                 if (modalHeader) {
                     $('#recruiterModalHeader').text(modalHeader);
                 }
-                $(".loader-overlay").hide();
             }
         });
         //}
@@ -149,7 +147,6 @@
                     $("#CandidateInfo").html(data);
                     $('#myModal').fadeIn();
                     $('#myModal').modal();
-                    $(".loader-overlay").hide();
                 }
             });
         }
@@ -157,7 +154,7 @@
 
 
     $(function () {
-        $("#Savebtn").bind("click", function () {        
+        $("#Savebtn").bind("click", function () {
             showCustomLoader();
             var chkCheck = false;
             $('input:checkbox').each(function () {
@@ -181,8 +178,6 @@
                     success: function (returndata) {
                         if (returndata == 1) {
                             $('#myModal').fadeOut();
-                            debugger;
-                          
                             ShowMessage("Test suite assigned successfully.", 1);
                             $('#userGrids').data('kendoGrid').dataSource.read();
                             $('#userGrids').data('kendoGrid').refresh();
@@ -214,8 +209,7 @@
             if (chkCheck) {
                 var uId = $("#CurrentUser").val();
                 var IsReAssign = $("#IsReAssign").val();
-                var checkvals = $("[class='check']:checked").attr("value")
-                //alert(checkvals);
+                var checkvals = $("#PanelInfo [class='check']:checked").attr("value")
                 $.ajax({
                     type: 'post',
                     async: false,
@@ -257,8 +251,7 @@
             if (chkCheck) {
                 var uId = $("#CurrentUser").val();
                 var IsReAssign = $("#IsReAssign").val();
-                var checkvals = $("[class='check']:checked").attr("value")
-                //alert(checkvals);
+                var checkvals = $("#RecruiterInfo [class='check']:checked").attr("value")
                 $.ajax({
                     type: 'post',
                     async: false,
@@ -485,8 +478,10 @@
                     )
                 </div>
                 <div class="col-sm-4 col-md-3 col-lg-2 cust-mar">
-
-                    <a href='#' onclick='AddNew();' class='k-button k-button-icontext k-grid-add'><span class='k-icon k-add'></span>Add candidate</a>
+                    @if (role.Contains(Silicus.Ensure.Models.Constants.RoleName.Admin.ToString())|| role.Contains(Silicus.Ensure.Models.Constants.RoleName.Recruiter.ToString()))
+                    {
+                        <a href='#' onclick='AddNew();' class='k-button k-button-icontext k-grid-add'><span class='k-icon k-add'></span>Add candidate</a>
+                    }
                 </div>
             </div>
         </div>
@@ -504,7 +499,7 @@
              columns.Bound(p => p.RequisitionId).Title("Requisition id").Width(100);
              columns.Bound(p => p.Position).Width(200);
              columns.Bound(p => p.ContactNumber).Title("Contact number").Width(100);
-             columns.Bound(p => p.TotalExperienceInYear).ClientTemplate("#=TotalExperienceInYear#.#=TotalExperienceInMonth#").Title("Total experience").Width(80);
+             columns.Bound(p => p.TotalExperienceInYear).ClientTemplate("#=TotalExperienceInYear#(y) #=TotalExperienceInMonth#(m)").Title("Total experience").Width(80);
              columns.Bound(p => p.PanelName).Title("Panel").Width(200);
              columns.Bound(p => p.RecruiterName).Title("Recruiter").Width(200);
              columns.Bound(p => p.CandidateStatus).ClientTemplate(@"
@@ -531,7 +526,8 @@
                                         <a onclick=showTest('#=UserId#','#=TestStatus#') style='cursor:pointer'>Assign test</a> |
                                         #if(PanelName){#<a  class ='dialog-window' onclick=ReAssignPanel('#=UserId#') style='cursor:pointer'>Reassign panel#} else{#<a  class ='dialog-window' onclick=AssignPanel('#=UserId#') style='cursor:pointer'>Assign panel #}#</a> |
                                        #if(RecruiterName){# <a  class ='dialog-window' onclick=ReAssignRecruiter('#=UserId#') style='cursor:pointer'>Reassign Recruiter#} else{#<a  class ='dialog-window' onclick=AssignRecruiter('#=UserId#') style='cursor:pointer'>Assign recruiter #}#</a>
-                                        #}
+                                         #if(HasHistory){#<a class='dialog-window' href='/Admin/CandidateHistory?UserId=+#=UserId#' style='cursor:pointer'>| View history #}#</a>
+#}
                                         else if(CandidateStatus=='TestAssigned') {#
                                         <a  class ='dialog-window' onclick=ReAssign('#=UserId#','#=TestStatus#') style='cursor:pointer'>Reassign test</a> |
                                         #if(PanelName){#<a  class ='dialog-window' onclick=ReAssignPanel('#=UserId#') style='cursor:pointer'>Reassign panel#} else{#<a  class ='dialog-window' onclick=AssignPanel('#=UserId#') style='cursor:pointer'>Assign panel #}#</a> |

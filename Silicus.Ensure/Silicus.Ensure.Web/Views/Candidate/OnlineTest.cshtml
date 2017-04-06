@@ -80,10 +80,11 @@
                 <div class="panel panel-default">
                     <div class="panel-heading">
                         <h4 class="panel-title">
-                            <a class="collapsed" data-toggle="collapse" data-parent="#accordion" href="#connectMenu">INSTRUCTIONS</a>
+                            @*<a class="collapsed" data-toggle="collapse" data-parent="#accordion" href="#connectMenu">INSTRUCTIONS</a>*@
+                            <a href="#" onclick="navigateToInstructions()">INSTRUCTIONS</a>
                         </h4>
                     </div>
-                    <div id="connectMenu" class="panel-collapse collapse">
+                    @*<div id="connectMenu" class="panel-collapse collapse">
                         <div class="panel-body">
                             <ul class="nav">
                                 <li class="nav-item">
@@ -112,29 +113,31 @@
                                 </li>
                             </ul>
                         </div>
-                    </div>
+                    </div>*@
                 </div>
                 <div class="panel panel-default">
                     <div class="panel-heading">
                         <h4 class="panel-title">
-                            <a class="collapsed" data-toggle="collapse" data-parent="#accordion" href="#LearnMenu">OBJECTIVE TEST</a>
+                            @*<a id="objective-test" class="collapsed" data-toggle="collapse" data-parent="#accordion" onclick="navigateToTest('Objective') href="#">OBJECTIVE TEST</a>*@
+                            <a href="#" onclick="navigateToTest('Objective')">OBJECTIVE TEST</a> </li>
                         </h4>
                     </div>
-                    <div id="LearnMenu" class="panel-collapse collapse">
+                    @*<div id="LearnMenu" class="panel-collapse collapse">
                         <div class="panel-body">
                         </div>
-                    </div>
+                    </div>*@
                 </div>
                 <div class="panel panel-default">
                     <div class="panel-heading">
                         <h4 class="panel-title">
-                            <a class="collapsed" data-toggle="collapse" data-parent="#accordion" href="#supportMenu">PRACTICAL TEST</a>
+                            @*<a class="collapsed" data-toggle="collapse" data-parent="#accordion" href="#supportMenu">PRACTICAL TEST</a>*@
+                            <a href="#" onclick="navigateToTest('Practical')">PRACTICAL TEST</a>
                         </h4>
                     </div>
-                    <div id="supportMenu" class="panel-collapse collapse">
+                    @*<div id="supportMenu" class="panel-collapse collapse">
                         <div class="panel-body">
                         </div>
-                    </div>
+                    </div>*@
                 </div>
             </div>
             <!--mobile menu end here-->
@@ -200,6 +203,7 @@
 
 
 @section CandidateDetails {
+
     @Html.Partial("_testSuiteAndCandidateDetails", Model)
 }
 
@@ -248,12 +252,10 @@ else
         $(questionLinkId).removeClass('is-answered');
         $(questionLinkId).removeClass('is-viewed-only');
         $(questionLinkId).removeClass('is-not-visited');
-
         $(questionLinkId).addClass(className);
     }
 
     $(document).ready(function () {
-        $('title').html("Online test");
         $('.breadcrumb-item.active').removeClass('active');
         $('#objective-test').addClass('active');
         $('#practical-test-side-bar').hide();
@@ -264,13 +266,14 @@ else
         $("#btnSubmitTestOK").hide();
         var userTestSuiteId = $("#UserTestSuiteId").val();
         var url = "/Candidate/LoadQuestion?userTestSuiteId=";
-        $('#QuestionDetails').load(url + userTestSuiteId);
+        $('#QuestionDetails').load(url + userTestSuiteId,UpdateProgressBar);
 
         // Hide "Add More Time" if used 2 times
         var timerCnt = $("#TimerIncCount").val();
         if (timerCnt >= 2)
             $("#btnAddMoreTime").hide();
         $('.QuestionCheckbox').on('click', QuestionCheckboxClicked);
+        $('#gearBtn').show();
     });
 
     function QuestionCheckboxClicked(event) {
@@ -294,6 +297,7 @@ else
         updateQuestionLinkColorClass('#' + activeLinkId, questionNavigationDetails.IsAnswered, questionNavigationDetails.IsViewed);
         MarkAsViewed(questionId);
         GetQuestionDetails(questionId);
+        UpdateProgressBar();
     }
 
     function MarkAsViewed(questionId) {
@@ -375,7 +379,7 @@ else
 
 
     function OnSubmitTest() {
-        var msg = "Are you sure, you want to submit the test? once you submit the test, you cannot revisit to view the questions and their answers.";
+        var msg = "Are you sure, you want to submit the test?";
         swal({
             title: "Warning!",
             text: msg,
@@ -449,7 +453,7 @@ else
     function fullScreen() {
         swal({
             title: "FullScreen Mode",
-            text: "You are navigating to Fullscreen.",
+            text: "You are navigating to fullscreen.",
             type: "warning",
             showCancelButton: false,
             confirmButtonColor: "#DD6B55",
@@ -501,6 +505,13 @@ else
         }
     }
 
+    function UpdateProgressBar() {
+        var totalQuestions = $('.QuestionCheckbox').length;
+        var totalAnswered = $('.is-answered').length ? $('.is-answered').length : 0;
+        var progress = parseInt(totalAnswered / totalQuestions * 100);
+        $('#progressBar').attr('aria-valuenow', progress).css('width', progress + "%");
+        $('#progressInfo').text(progress + "%");
+    }
 
 
 </script>

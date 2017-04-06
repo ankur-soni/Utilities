@@ -71,12 +71,16 @@
 .mobileMenu .panel-title > a:before {
     float: right !important;
     font-family: FontAwesome;
-    content: "\f068";
+    /*content: "\f068";*/
     padding-right: 5px;
     color: #224c72;
 }
-.mobileMenu .panel-title > a.collapsed:before {
+/*.mobileMenu .panel-title > a.collapsed:before {
     float: right !important;
     content: "\f067";
 	color:#767676;
+}*/
+a:focus, a:hover {
+    color: #fff;
+    text-decoration: none;
 }

@@ -93,5 +93,11 @@ namespace Silicus.Ensure.Web.Controllers
             }
             return Json(isTagAssosiatedWithQuetion, JsonRequestBehavior.AllowGet);
         }
+
+        public JsonResult Tags([DataSourceRequest] DataSourceRequest request)
+        {
+            List<Tags> tags = _tagsService.GetTagsDetails().ToList();
+            return Json(tags,JsonRequestBehavior.AllowGet);
+        }
     }
 }

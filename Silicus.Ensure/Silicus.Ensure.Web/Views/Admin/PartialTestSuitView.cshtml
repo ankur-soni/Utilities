@@ -12,50 +12,50 @@
         <div class="row">
             <div class="col-sm-12">
                 <div class="table-responsive">
-                    <table class="table table-striped">
+                    <table class="table" style="background:#f5f8fd;">
                         <tbody>
                             <tr>
-                                <td>@Html.LabelFor(model => model.TestSuiteName)</td>
-                                <td>@Html.DisplayFor(model => model.TestSuiteName, new { @class = "form-control" })</td>
+                                <td style="width:30%;">@Html.LabelFor(model => model.TestSuiteName, new { @style = "font-weight:700;",@class = "themeColorBlue" })</td>
+                                <td style="width:30%;">@Html.DisplayFor(model => model.TestSuiteName, new { @class = "form-control" })</td>
                                 <td></td>
                             </tr>
                             <tr>
-                                <td>@Html.LabelFor(model => model.Duration)</td>
+                                <td>@Html.LabelFor(model => model.Duration, new { @style = "font-weight:700;", @class = "themeColorBlue" })</td>
                                 <td>@Html.DisplayFor(model => model.Duration, new { @class = "form-control" })</td>
                                 <td></td>
                             </tr>
                             <tr>
-                                <td>@Html.LabelFor(model => model.Position)</td>
+                                <td>@Html.LabelFor(model => model.Position, new { @style = "font-weight:700;", @class = "themeColorBlue" })</td>
                                 <td>@Html.DisplayFor(model => model.PositionName, new { @class = "form-control" })</td>
                                 <td></td>
                             </tr>
                             <tr>
-                                <td>@Html.LabelFor(model => model.Competency)</td>
+                                <td>@Html.LabelFor(model => model.Competency, new { @style = "font-weight:700;", @class = "themeColorBlue" })</td>
                                 <td>@Html.DisplayFor(model => model.OverallProficiency, new { @class = "form-control" })</td>
                                 <td></td>
                             </tr>
                             <tr>
-                                <td><label>Question type</label></td>
+                                <td><label style="font-weight:700;" class="themeColorBlue">Question type</label></td>
                                 <td>
                                     <label>Objective @Html.DisplayFor(m => m.OptionalQuestion, new { @class = "form-control" }) %</label>
                                 </td>
                                 <td><label>Practical @Html.DisplayFor(m => m.PracticalQuestion, new { @class = "form-control" }) %</label></td>
                             </tr>
                             <tr>
-                                <td>@Html.LabelFor(model => model.ProjectName)</td>
+                                <td>@Html.LabelFor(model => model.ProjectName, new { @style = "font-weight:700;", @class = "themeColorBlue" })</td>
                                 <td>@Html.DisplayFor(model => model.ProjectName, new { @class = "form-control" })</td>
                                 <td></td>
                             </tr>
                             <tr>
-                                <td><label>Experience</label></td>
+                                <td><label style="font-weight:700;" class="themeColorBlue">Experience</label></td>
                                 <td>@Model.FromExperience</td>
                                 <td></td>
                             </tr>
                         </tbody>
                     </table>
                 </div>
-                <div class="table-responsive M-T30">
-                    <table class="table table-striped">
+                <div class="table-responsive">
+                    <table class="table" style="background:#f5f8fd;">
 
                         <thead>
                             <tr>
@@ -74,8 +74,8 @@
                                     <tbody>
                                         <tr>
 
-                                            <td id="tag_name_row @Convert.ToString(i)">@Model.Tags[i].TagName</td>
-                                            <td id="weight_name_row @Convert.ToString(i)">@Model.Tags[i].Weightage</td>
+                                            <td style="width:30%;" id="tag_name_row @Convert.ToString(i)">@Model.Tags[i].TagName</td>
+                                            <td style="width:30%;" id="weight_name_row @Convert.ToString(i)">@Model.Tags[i].Weightage</td>
                                             <td id="efficiency_name_row @Convert.ToString(i)">@Model.Tags[i].Proficiency</td>
                                             <td></td>
                                         </tr>

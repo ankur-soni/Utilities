@@ -42,7 +42,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal">&times;</button>
-                <h4 class="modal-title"><span>Select Candidate</span></h4>
+                <h4 class="modal-title"><span>Select candidate</span></h4>
             </div>
             <div class="modal-body">
                 <div class="box M-B15">
@@ -71,7 +71,10 @@
     //This is global variable
     IsEmailValid=false;
     $(document).ready(function () {
-        //$('#uploadFileLink').ke
+        var isCandidateReappear = location.search.split('IsCandidateReappear=')[1];
+        if(isCandidateReappear){
+            DisableInvariableDataControls();
+        }
         loadControls();
         $('#addPositionPopup').on('hidden.bs.modal', function () {
             $('.field-validation-error').hide();
@@ -79,6 +82,15 @@
         $('#Email').on('change',IsDuplicateEmail);
     });
 
+    function DisableInvariableDataControls (){
+        $('#FirstName').attr('disabled',true);
+        $('#LastName').attr('disabled',true);
+        $('#DOB').attr('disabled',true);
+        var dropdownlist = $("#Gender").data("kendoDropDownList");
+        if(dropdownlist){
+            dropdownlist.enable(false);
+        }
+    }
     function loadControls()
     {
         $('#ProfilePhotofile').change(function (){
@@ -184,7 +196,7 @@
             rules: {
                 tagNamevalidation: function (input, params) {
                     if (input.is("[name='PositionName']") && input.val() != "") {
-                        var bool=isTagNameAvailable("", input.val());
+                        var bool=IsDuplicatePositionName("", input.val());
                         if(!bool)
                         {
                             input.attr("data-tagNamevalidation-msg", "Position name already exist.");
@@ -200,7 +212,7 @@
         $("#addPositionPopup").modal('show');
     }
 
-    function isTagNameAvailable(existingName,updatedName)
+    function IsDuplicatePositionName(existingName,updatedName)
     {
         var isAvailable = true;
         if (existingName != updatedName) {

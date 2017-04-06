@@ -38,7 +38,7 @@ namespace Silicus.Ensure.Web.Controllers
         private ApplicationUserManager _userManager;
         private Silicus.UtilityContainer.Services.Interfaces.IUtilityService _utilityService;
         private Silicus.UtilityContainer.Services.Interfaces.IUtilityUserRoleService _utilityUserRoleService;
-
+        private ITagsService _tagsService;
 
         private readonly CommonController _commonController;
         private readonly IEmailService _emailService;
@@ -68,7 +68,8 @@ namespace Silicus.Ensure.Web.Controllers
         }
 
         public UserController(IUserService userService, MappingService mappingService, ITestSuiteService testSuiteService, PositionService positionService, Silicus.UtilityContainer.Services.Interfaces.IUserService containerUserService,
-            Silicus.UtilityContainer.Services.Interfaces.IUtilityService utilityService, Silicus.UtilityContainer.Services.Interfaces.IUtilityUserRoleService utilityUserRoleService, IPanelMemberService panelMemberService, IEmailService emailService, CommonController commonController)
+            Silicus.UtilityContainer.Services.Interfaces.IUtilityService utilityService, Silicus.UtilityContainer.Services.Interfaces.IUtilityUserRoleService utilityUserRoleService, IPanelMemberService panelMemberService, IEmailService emailService, CommonController commonController,
+            ITagsService tagService)
         {
             _positionService = positionService;
             _userService = userService;
@@ -80,8 +81,7 @@ namespace Silicus.Ensure.Web.Controllers
             _panelMemberService = panelMemberService;
             _emailService = emailService;
             _commonController = commonController;
-
-
+            _tagsService = tagService;
         }
 
         public ActionResult Dashboard()
@@ -197,7 +197,7 @@ namespace Silicus.Ensure.Web.Controllers
         {
             bool isDuplicateEmail = false;
             var userDetails = _userService.GetUserDetails();
-            if (userDetails != null && userDetails.Any(x => x.Email == email) && !userDetails.Any(x => x.UserId == userId && x.Email == email))
+            if (userDetails != null && userDetails.Any(x => x.Email.IsCaseInsensitiveEqual(email)) && !userDetails.Any(x => x.UserId == userId && x.Email.IsCaseInsensitiveEqual(email)))
             {
                 isDuplicateEmail = true;
             }
@@ -213,7 +213,6 @@ namespace Silicus.Ensure.Web.Controllers
         [HttpPost]
         public async Task<ActionResult> CandidateSave(UserViewModel user)
         {
-
             string actionErrorName = user.Role.ToLower() == RoleName.Candidate.ToString().ToLower() ? "CandidateAdd" : "PanelAdd";
             string controllerName = user.Role.ToLower() == RoleName.Candidate.ToString().ToLower() ? "Admin" : "Panel";
             DateTime dt = DateTime.ParseExact(user.DOB, "dd/MM/yyyy", CultureInfo.InvariantCulture);
@@ -256,12 +255,7 @@ namespace Silicus.Ensure.Web.Controllers
             ViewBag.UserRoles = RoleManager.Roles.Select(r => new SelectListItem { Text = r.Name, Value = r.Name }).ToList();
             return RedirectToAction(user.Role.ToLower() == RoleName.Candidate.ToString().ToLower() ? "Candidates" : "Index", controllerName);
         }
-
-
-
-
-
-
+        
         /// <summary>
         /// update user 
         /// </summary>
@@ -377,8 +371,5 @@ namespace Silicus.Ensure.Web.Controllers
             fileModel.File.SaveAs(fileModel.FilePath);
             fileModel.FilePath = Path.Combine(fileModel.FolderName, fileModel.FileName);
         }
-
-
-
     }
 }

@@ -51,7 +51,7 @@
                             @(Html.Kendo().Grid<Silicus.Ensure.Web.Models.TestSuiteViewModel>().Name("testSuiteGrids")
                 .Columns(columns =>
                   {
-                      columns.Bound(p => p.TestSuiteName).Width(300).Title("Test Suite");
+                      columns.Bound(p => p.TestSuiteName).Width(300).Title("Test suite");
                       columns.Bound(p => p.Duration).Width(150);
                       columns.Bound(p => p.PositionName).Width(300).Title("Position");
                       columns.Bound(p => p.PrimaryTagNames).Width(200).Title("Tags");
@@ -67,7 +67,7 @@
                                                                                                                           "  #if (StatusName=='Ready'){#" +
                                                                                                                           "<a class='k-button k-button-icontext k-grid-add M-T4' onclick=showTest('#=TestSuiteId#')>Preview</a>"
                                                                                                                           + "#}#"
-                                                              ).Title("Test Actions").Width(500).Sortable(false);
+                                                              ).Title("Test actions").Width(500).Sortable(false);
 
 
 
@@ -83,7 +83,7 @@
                       .Read(read => read.Action("GetTestSuiteDetails", "TestSuite"))
                                   .Destroy(delete => delete.Action("Delete", "TestSuite"))
                       .PageSize(10)
-                      .ServerOperation(false)
+                      .ServerOperation(true)
                   )
                       .Pageable(p => p.PageSizes(true))
                   .Sortable()
