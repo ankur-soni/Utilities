@@ -217,7 +217,7 @@
                                     </div>
                                 </div>
 
-                              
+
                                 @if (Model != null && Model.Tags != null && Model.Tags.Count > 0)
                                 {
                                     <div class="col-md-2 col-sm-2 col-xs-2" style="margin-right:-5px;">
@@ -235,7 +235,7 @@
                                                 </div>
                                             }
                                             <div class="col-md-2 col-sm-2 col-xs-2">
-                                                <input type="text" id="Tag_@i" value="@tag.TagName" name="Tag_@i" data-val="true" data-val-required="Skill tags is required." class="tagAutoComplete inputSkillTag"/>
+                                                <input type="text" id="Tag_@i" value="@tag.TagName" name="Tag_@i" data-val="true" data-val-required="Skill tags is required." class="tagAutoComplete inputSkillTag" />
 
                                             </div>
                                             <div class="col-md-2 col-sm-2 col-xs-2">
@@ -270,7 +270,7 @@
                                                                 Skill tags <span style="color:red;">*</span>
                                                             </div>
                                                             <div class="col-md-2 col-sm-2 col-xs-2">
-                                                                <input type="text" id="Tag_1" name="Tag_1" data-val="true" data-val-required="Skill tags is required." class="tagAutoComplete inputSkillTag"/>
+                                                                <input type="text" id="Tag_1" name="Tag_1" data-val="true" data-val-required="Skill tags is required." class="tagAutoComplete inputSkillTag" />
                                                             </div>
                                                             <div class="col-md-2 col-sm-2 col-xs-2">
                                                                 <input type="text" id="Weightage_1" name="Weightage_1" data-val="true" data-val-required="Weightage is required." class="key-numeric WeightageField form-control" />
@@ -389,6 +389,9 @@
     }
 
     function validateWeightage(input, params) {
+        $('span[id ^= "Weightage_"]').hide();
+        $('span[id ^= "Proficiency_"]').hide();
+        $('span[id ^= "Tag_"]').hide();
         var sum = 0;
         if (input.hasClass("WeightageField")) {
             input.attr("data-Weightage-msg", "Weightage sum must be 100.");
@@ -421,7 +424,6 @@
     $(function () {
         SetNavigationMenuActive('TestSuite');
         createControls();
-        //$("#TestSuiteName").on("change", isTestSuiteNameAvailable);
 
         $("#frmAddTestSuite").kendoValidator({
             rules: {
@@ -476,7 +478,18 @@
 
         $("#btnSave").click(function () {
             window.onbeforeunload = null;
-            if ($("#frmAddTestSuite").valid()) {
+            var sum=0;
+            $summands = $(".WeightageField");
+            $summands.each(function () {
+                var value = Number($(this).val());
+                if (!isNaN(value)) sum += value;
+            });
+            var validatable = $("form").kendoValidator().data("kendoValidator");
+            if (sum != 100)
+            {
+                toastr.error("Weightage sum must be 100.")
+            }
+            else if (validatable.validate()) {
                 tags = '';
                 var TestSuiteId = $("#TestSuiteId").val();
                 var IsCopy = $("#IsCopy").val();
@@ -568,10 +581,6 @@
 
                     }
                 });
-            }
-            else {
-                $("#frmAddTestSuite").submit();
-
             }
         });
 
