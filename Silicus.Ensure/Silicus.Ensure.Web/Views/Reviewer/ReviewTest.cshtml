@@ -103,6 +103,7 @@
                 <input type="hidden" value="@Model.UserTestSuiteId" id="UserTestSuiteId" />
                 <input type="hidden" value="@Model.UserId" id="UserId" />
                 <input type="hidden" value="@Model.CandidateStatus" id="CandidateStatus" />
+                <span id="PrintTest" class="fa-2x fa-print" data-UserTestSuiteId="@Model.UserTestSuiteId" data-UserId="@Model.UserId"></span>
             </div>
         </div>
         <div class="col-sm-12 M-T15">
@@ -291,7 +292,7 @@ else
         $("#ReviwerMark").kendoValidator();
         $(document).on("change", "#ReviwerMark", function () {
             UpdateReview();
-        })
+        });
         $("#btnSubmitTestOK").hide();
         var userTestSuiteId = $("#UserTestSuiteId").val();
         LoadFirstQuestion(userTestSuiteId, disableControls);
@@ -300,6 +301,18 @@ else
         $('.QuestionCheckbox').on('click', QuestionCheckboxClicked);
         $('#testresultPopup').on('hidden.bs.modal', function () {
             $('.field-validation-error').hide();
+        });
+        $('#PrintTest').on('click',function(){
+            var userTestSuiteId=$(this).attr('data-UserTestSuiteId');
+            var userId=$(this).attr('data-UserId');
+            $.ajax({
+                url: "/Reviewer/CreateDocument",
+                cache: false,
+                dataType: "html",
+                data: {userId:userId,userTestSuiteId:userTestSuiteId},
+                success: function (data) {
+                }
+            });
         });
     });
 

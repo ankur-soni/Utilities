@@ -729,5 +729,40 @@ namespace Silicus.Ensure.Services
                && temp.TestSuiteId == tempPreviewTestDetails.TestSuiteId);
         }
         #endregion
+
+        #region Export
+        public List<TestDetailsBusinessModel> GetUserTestDetailsForExport(int userTestSuitId)
+        {
+            var result = (from a in _context.Query<UserTestDetails>()
+                              .Where(x => x.UserTestSuite.UserTestSuiteId == userTestSuitId)
+                          join b in _context.Query<Question>()
+                          on a.QuestionId equals b.Id
+                          select new TestDetailsBusinessModel
+                          {
+                              TestDetailId = a.TestDetailId,
+                              Answer = a.Answer,
+                              ReviwerMark = a.Mark,
+                              QuestionId = b.Id,
+                              QuestionType = b.QuestionType,
+                              AnswerType = b.AnswerType,
+                              QuestionDescription = b.QuestionDescription,
+                              OptionCount = b.OptionCount,
+                              Option1 = b.Option1,
+                              Option2 = b.Option2,
+                              Option3 = b.Option3,
+                              Option4 = b.Option4,
+                              Option5 = b.Option5,
+                              Option6 = b.Option6,
+                              Option7 = b.Option7,
+                              Option8 = b.Option8,
+                              CorrectAnswer = b.QuestionType == (int)QuestionType.Objective ? b.CorrectAnswer : b.Answer,
+                              Comment = a.ReviwerComment,
+                              Marks = b.Marks
+                          }
+                              ).ToList();
+            return result;
+        }
+
+        #endregion
     }
 }

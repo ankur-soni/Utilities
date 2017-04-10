@@ -11,6 +11,14 @@ using System.Web.Mvc;
 using Silicus.Ensure.Models.DataObjects;
 using Silicus.Ensure.Web.Models;
 using Silicus.Ensure.Models;
+using iTextSharp.text;
+using iTextSharp.text.pdf;
+using System.IO;
+using System.Data;
+using iTextSharp.text.html.simpleparser;
+using RazorEngine.Compilation;
+using RazorEngine.Compilation.CSharp;
+using System.Web.Razor;
 
 namespace Silicus.Ensure.Web.Controllers
 {
@@ -89,6 +97,8 @@ namespace Silicus.Ensure.Web.Controllers
                 testSuiteCandidateModel.CandidateStatus = status;
             }
             return View(testSuiteCandidateModel);
+
+            return View();
         }
 
         public ActionResult LoadTestSummaryView(int userId, int UserTestSuiteId)
@@ -291,6 +301,45 @@ namespace Silicus.Ensure.Web.Controllers
             var testDetails = _mappingService.Map<TestDetailsBusinessModel, TestDetailsViewModel>(userTestDetails);
             testDetails = testDetails ?? new ReviewerQuestionViewModel();
             return testDetails;
+        }
+        #endregion
+
+        #region Export Data
+        public void CreateDocument(int userId, int userTestSuiteId)
+        {
+            var user = _userService.GetUserById(userId);
+            var candidateInfoBusinessModel = _userService.GetCandidateInfo(user);
+            var candidateInfo = _mappingService.Map<CandidateInfoBusinessModel, CandidateInfoViewModel>(candidateInfoBusinessModel);
+            var questions = _testSuiteService.GetUserTestDetailsForExport(userTestSuiteId);
+            var questionsModel = _mappingService.Map<List<TestDetailsBusinessModel>, List<TestDetailsViewModel>>(questions);
+            var exportModel = new ExportQuestionsViewModel
+            {
+                CandidateInfo = candidateInfo,
+                Objective = questionsModel.Where(q => q.QuestionType == ((int)QuestionType.Objective)).ToList(),
+                Practical = questionsModel.Where(q => q.QuestionType == ((int)QuestionType.Practical)).ToList()
+            };
+            Document document = new Document();
+            PdfWriter writer = PdfWriter.GetInstance(document, new FileStream("d://sample1.pdf", FileMode.Create));
+            document.Open();
+            var htmlString = RenderRazorViewToString("Export", exportModel);
+            HTMLWorker hw = new HTMLWorker(document);
+            hw.Parse(new StringReader(htmlString));
+            document.Close();
+        }
+
+        public string RenderRazorViewToString(string viewName, object model)
+        {
+            ViewData.Model = model;
+            using (var sw = new StringWriter())
+            {
+                var viewResult = ViewEngines.Engines.FindPartialView(ControllerContext,
+                                                                         viewName);
+                var viewContext = new ViewContext(ControllerContext, viewResult.View,
+                                             ViewData, TempData, sw);
+                viewResult.View.Render(viewContext, sw);
+                viewResult.ViewEngine.ReleaseView(ControllerContext, viewResult.View);
+                return sw.GetStringBuilder().ToString();
+            }
         }
         #endregion
     }

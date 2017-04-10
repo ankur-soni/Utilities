@@ -450,6 +450,7 @@
     <Compile Include="Models\TestSuiteViewQuesModel.cs" />
     <Compile Include="Models\Test\CandidateResultViewmodel.cs" />
     <Compile Include="Models\Test\CandidateInfoViewModel.cs" />
+    <Compile Include="Models\Test\ExportQuestionsViewModel.cs" />
     <Compile Include="Models\Test\QuestionDetailsViewModel.cs" />
     <Compile Include="Models\Test\QuestionNavigationViewModel.cs" />
     <Compile Include="Models\Test\ReviewerQuestionViewModel.cs" />
@@ -555,12 +556,16 @@
     <Content Include="Content\toastr.css" />
     <Content Include="Content\toastr.min.css" />
     <Content Include="favicon.ico" />
+    <Content Include="Images\checkedCheckbox.png" />
     <Content Include="Images\logo.jpg" />
     <Content Include="Dependencies\Silicus.UtilityContainer.Entities.dll" />
     <Content Include="Dependencies\Silicus.UtilityContainer.Models.dll" />
     <Content Include="Dependencies\Silicus.UtilityContainer.Security.dll" />
     <Content Include="Images\no-user-img.png" />
+    <Content Include="Images\radioBtnChecked.png" />
+    <Content Include="Images\radioBtnUnchecked.png" />
     <Content Include="Images\silicus\logo.png" />
+    <Content Include="Images\UncheckedCheckbox.jpg" />
     <Content Include="LESS\style.css" />
     <Content Include="LESS\_notes\dwsync.xml" />
     <Content Include="Scripts\app.js" />
@@ -916,6 +921,8 @@
     <Content Include="Views\Reviewer\_reviewerTestSummaryAndCandidateDetails.cshtml" />
     <Content Include="Views\QuestionBank\_QuestionsGrid.cshtml" />
     <Content Include="Views\Admin\Dashboard.cshtml" />
+    <Content Include="Views\Shared\Export.cshtml" />
+    <Content Include="Views\Shared\_CandidateInfoForPrint.cshtml" />
     <None Include="Web.Azure.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
