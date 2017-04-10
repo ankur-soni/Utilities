@@ -40,7 +40,8 @@ namespace Silicus.Encourage.Services
             {
                 if (userRole.Count() > 1)
                 {
-                    usersWithMultipleRoles.Add(userRole.FirstOrDefault().User);
+                    var utilityUserRoles = userRole.FirstOrDefault();
+                    if (utilityUserRoles != null) usersWithMultipleRoles.Add(utilityUserRoles.User);
                 }
             }
             return usersWithMultipleRoles;
