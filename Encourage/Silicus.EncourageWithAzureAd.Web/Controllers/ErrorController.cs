@@ -2,47 +2,52 @@
 using System.Diagnostics.CodeAnalysis;
 using System.Net;
 using System.Web.Mvc;
+using Silicus.FrameWorx.Logger;
 
 namespace Silicus.EncourageWithAzureAd.Web.Controllers
 {
     [AllowAnonymous]
     public class ErrorController : Controller
     {
+        private readonly ILogger _logger;
+        public ErrorController(ILogger logger)
+        {
+            _logger = logger;
+        }
         public ActionResult BadRequest()
         {
-            Response.StatusCode = (int)HttpStatusCode.BadRequest;
+            _logger.Log("Error - BadRequest");
             return View();
         }
 
         public ActionResult Unauthorized()
         {
-            Response.StatusCode = (int)HttpStatusCode.Unauthorized;
+            _logger.Log("Error - Unauthorized");
             return View();
         }
 
         public ActionResult Forbidden()
         {
-            Response.StatusCode = (int)HttpStatusCode.Forbidden;
+            _logger.Log("Error - Forbidden");
             return View();
         }
 
         public ActionResult PageNotFound()
         {
-            Response.StatusCode = (int)HttpStatusCode.NotFound;
+            _logger.Log("Error - PageNotFound");
             return View();
         }
 
-        [ExcludeFromCodeCoverage]
         public ActionResult ServerError()
         {
-            Response.StatusCode = (int)HttpStatusCode.InternalServerError;
+            _logger.Log("Error - ServerError");
             return View("CustomError");
         }
 
-        [ExcludeFromCodeCoverage]
+       
         public ActionResult CustomError()
         {
-            Response.StatusCode = (int)HttpStatusCode.InternalServerError;
+            _logger.Log("Error - CustomError");
             return View();
         }
     }
