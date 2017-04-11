@@ -1,20 +1,20 @@
 ﻿@model Silicus.Ensure.Web.Models.Test.ExportQuestionsViewModel
-
+<script src="~/Scripts/jquery.min.js"></script>
 @{
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
-
 <script>
-    $(document).ready({
-        function() {
-            $('#PrintToPDF').on('click', PrintToPDF);
-        }
-    });
     function PrintToPDF() {
         window.frames["print_frame"].document.body.innerHTML = document.getElementById("printableDiv").innerHTML;
         window.frames["print_frame"].window.focus();
         window.frames["print_frame"].window.print();
     }
+    $(document).ready({
+        function() {
+            $('#PrintToPDF').on('click', PrintToPDF);
+        }
+    });
+  
 </script>
 <div id="printableDiv">
     <div>

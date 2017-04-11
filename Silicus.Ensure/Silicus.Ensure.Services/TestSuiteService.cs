@@ -730,8 +730,8 @@ namespace Silicus.Ensure.Services
         }
         #endregion
 
-        #region Export
-        public List<TestDetailsBusinessModel> GetUserTestDetailsForExport(int userTestSuitId)
+        #region Print
+        public List<TestDetailsBusinessModel> GetUserTestDetailsForPrint(int userTestSuitId)
         {
             var result = (from a in _context.Query<UserTestDetails>()
                               .Where(x => x.UserTestSuite.UserTestSuiteId == userTestSuitId)
@@ -763,6 +763,30 @@ namespace Silicus.Ensure.Services
             return result;
         }
 
+        public List<TestDetailsBusinessModel> GetUserTestDetailsByViewerIdForPrint(PreviewTestBusinessModel previewTest)
+        {
+            List<int> allquestionsForPreview = GetQuestionsForPreview(previewTest);
+            var result = (from b in _context.Query<Question>()
+                          where  allquestionsForPreview.Contains(b.Id)
+                          select new TestDetailsBusinessModel
+                          {
+                              QuestionId = b.Id,
+                              Marks = b.Marks,
+                              QuestionType = b.QuestionType,
+                              AnswerType = b.AnswerType,
+                              QuestionDescription = b.QuestionDescription,
+                              OptionCount = b.OptionCount,
+                              Option1 = b.Option1,
+                              Option2 = b.Option2,
+                              Option3 = b.Option3,
+                              Option4 = b.Option4,
+                              Option5 = b.Option5,
+                              Option6 = b.Option6,
+                              Option7 = b.Option7,
+                              Option8 = b.Option8
+                          }).ToList();
+            return result;
+        }
         #endregion
     }
 }

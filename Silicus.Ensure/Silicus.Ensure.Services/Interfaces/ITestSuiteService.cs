@@ -64,6 +64,8 @@ namespace Silicus.Ensure.Services.Interfaces
 
         TestDetailsBusinessModel GetTestDetailsByTestSuit(PreviewTestBusinessModel previewTest, int? questionNumber, int questionType);
 
-        List<TestDetailsBusinessModel> GetUserTestDetailsForExport(int userTestSuitId);
+        List<TestDetailsBusinessModel> GetUserTestDetailsForPrint(int userTestSuitId);
+
+        List<TestDetailsBusinessModel> GetUserTestDetailsByViewerIdForPrint(PreviewTestBusinessModel previewTest);
     }
 }
