@@ -325,8 +325,13 @@ else
     function disableControls() {
         if (userRole.indexOf("@Silicus.Ensure.Models.Constants.RoleName.Panel.ToString()")<0) {
             $('.k-editor-toolbar').hide();
-            $($('#ReviewerComment').data().kendoEditor.body).attr('contenteditable', false);
-            $('#ReviwerMark').data('kendoNumericTextBox').enable(false);
+            if($('#ReviewerComment').data())
+            {
+                $($('#ReviewerComment').data().kendoEditor.body).attr('contenteditable', false);
+            }
+            if( $('#ReviwerMark').data('kendoNumericTextBox')){
+                $('#ReviwerMark').data('kendoNumericTextBox').enable(false);
+            }
         }
         var status = $("#CandidateStatus").val();
         if (status && (status == "@CandidateStatus.Selected" || status == "@CandidateStatus.Rejected")) {
@@ -610,4 +615,3 @@ else
         });
     }
 </script>
-
