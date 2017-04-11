@@ -307,10 +307,10 @@ else
             var userId=$(this).attr('data-UserId');
             $.ajax({
                 url: "/Reviewer/CreateDocument",
-                cache: false,
-                dataType: "html",
                 data: {userId:userId,userTestSuiteId:userTestSuiteId},
-                success: function (data) {
+                success:function(result){
+                    var w = window.open();
+                    $(w.document.body).html(result);
                 }
             });
         });

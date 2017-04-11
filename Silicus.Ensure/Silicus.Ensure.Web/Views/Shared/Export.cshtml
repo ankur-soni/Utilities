@@ -50,20 +50,20 @@
                     <div class="col-sm-12 questionDiv" style="padding: 20px 25px 20px 10px;">
 
                         <div class="radio radio-info">
-                            <img class="radioBtnImg" height="10" width="10" src="@System.Web.Hosting.HostingEnvironment.ApplicationPhysicalPath/Images/radioBtnUnchecked.png" />
+                            <img class="radioBtnImg" height="10" width="10" src="@System.Configuration.ConfigurationManager.AppSettings["ServerName"]/Images/radioBtnChecked.png" />
                             <label for="op1"><span class="spanLabel">@question.Option1</span></label>
                         </div>
 
 
                         <div class="radio radio-info">
-                            <img class="radioBtnImg" height="10" width="10" src="@System.Web.Hosting.HostingEnvironment.ApplicationPhysicalPath/Images/radioBtnUnchecked.png" />
+                            <img class="radioBtnImg" height="10" width="10" src="@System.Configuration.ConfigurationManager.AppSettings["ServerName"]/Images/radioBtnChecked.png" />
                             <label for="op2"><span class="spanLabel">@question.Option2</span></label>
                         </div>
 
                         @if (!string.IsNullOrWhiteSpace(@question.Option3))
                         {
                             <div class="radio radio-info" id="radio3">
-                                <img class="radioBtnImg" height="10" width="10" src="@System.Web.Hosting.HostingEnvironment.ApplicationPhysicalPath/Images/radioBtnUnchecked.png" />
+                                <img class="radioBtnImg" height="10" width="10" src="@System.Configuration.ConfigurationManager.AppSettings["ServerName"]/Images/radioBtnChecked.png" />
                                 <label for="op3"><span class="spanLabel">@question.Option3</span></label>
                             </div>
                         }
@@ -72,7 +72,7 @@
                         @if (!string.IsNullOrWhiteSpace(@question.Option4))
                         {
                             <div class="radio radio-info" id="radio4">
-                                <img class="radioBtnImg" height="10" width="10" src="@System.Web.Hosting.HostingEnvironment.ApplicationPhysicalPath/Images/radioBtnUnchecked.png" />
+                                <img class="radioBtnImg" height="10" width="10" src="@System.Configuration.ConfigurationManager.AppSettings["ServerName"]/Images/radioBtnChecked.png" />
                                 <label for="op4"><span class="spanLabel">@question.Option4</span></label>
                             </div>
                         }
@@ -81,7 +81,7 @@
                         @if (!string.IsNullOrWhiteSpace(@question.Option5))
                         {
                             <div class="radio radio-info" id="radio5">
-                                <img class="radioBtnImg" height="10" width="10" src="@System.Web.Hosting.HostingEnvironment.ApplicationPhysicalPath/Images/radioBtnUnchecked.png" />
+                                <img class="radioBtnImg" height="10" width="10" src="@System.Configuration.ConfigurationManager.AppSettings["ServerName"]/Images/radioBtnChecked.png" />
                                 <label for="op5"><span class="spanLabel">@question.Option5</span></label>
                             </div>
                         }
@@ -90,7 +90,7 @@
                         {
 
                             <div class="radio radio-info" id="radio6">
-                                <img class="radioBtnImg" height="10" width="10" src="@System.Web.Hosting.HostingEnvironment.ApplicationPhysicalPath/Images/radioBtnUnchecked.png" />
+                                <img class="radioBtnImg" height="10" width="10" src="@System.Configuration.ConfigurationManager.AppSettings["ServerName"]/Images/radioBtnChecked.png" />
                                 <label for="op6"><span class="spanLabel">@question.Option6</span></label>
                             </div>
                         }
@@ -100,7 +100,7 @@
                         {
 
                             <div class="radio radio-info" id="radio7">
-                                <img class="radioBtnImg" height="10" width="10" src="@System.Web.Hosting.HostingEnvironment.ApplicationPhysicalPath/Images/radioBtnUnchecked.png" />
+                                <img class="radioBtnImg" height="10" width="10" src="@System.Configuration.ConfigurationManager.AppSettings["ServerName"]/Images/radioBtnChecked.png" />
                                 <label for="op7"><span class="spanLabel">@question.Option7</span></label>
                             </div>
                         }
@@ -108,7 +108,7 @@
                         @if (!string.IsNullOrWhiteSpace(@question.Option8))
                         {
                             <div class="radio radio-info" id="radio8">
-                                <img class="radioBtnImg" height="10" width="10" src="@System.Web.Hosting.HostingEnvironment.ApplicationPhysicalPath/Images/radioBtnUnchecked.png" />
+                                <img class="radioBtnImg" height="10" width="10" src="@System.Configuration.ConfigurationManager.AppSettings["ServerName"]/Images/radioBtnChecked.png" />
                                 <label for="op8"><span class="spanLabel">@question.Option8</span></label>
                             </div>
                         }
@@ -123,12 +123,12 @@
                         <div class="radio radio-info">
                             @if (question.Answer.Trim() == "1")
                             {
-                                <img class="radioBtnImg" height="10" width="10" src="@System.Web.Hosting.HostingEnvironment.ApplicationPhysicalPath/Images/radioBtnChecked.png" />
+                                <img class="radioBtnImg" height="10" width="10" src="@System.Configuration.ConfigurationManager.AppSettings["ServerName"]/Images/radioBtnChecked.png" />
                                 <span class="spanLabel">@question.Option1</span>
                             }
                             else
                             {
-                                <img class="radioBtnImg" height="10" width="10" src="@System.Web.Hosting.HostingEnvironment.ApplicationPhysicalPath/Images/radioBtnUnchecked.png" />
+                                <img class="radioBtnImg" height="10" width="10" src="@System.Configuration.ConfigurationManager.AppSettings["ServerName"]/Images/radioBtnChecked.png" />
                                 <span class="spanLabel">@question.Option1</span>
                             }
 
@@ -138,12 +138,12 @@
                         <div class="radio radio-info">
                             @if (question.Answer.Trim() == "2")
                             {
-                                <img class="radioBtnImg" height="10" width="10" src="@System.Web.Hosting.HostingEnvironment.ApplicationPhysicalPath/Images/radioBtnChecked.png" />
+                                <img class="radioBtnImg" height="10" width="10" src="@System.Configuration.ConfigurationManager.AppSettings["ServerName"]/Images/radioBtnChecked.png" />
                                 <label for="op12"><span class="spanLabel">@question.Option2</span></label>
                             }
                             else
                             {
-                                <img class="radioBtnImg" height="10" width="10" src="@System.Web.Hosting.HostingEnvironment.ApplicationPhysicalPath/Images/radioBtnUnchecked.png" />
+                                <img class="radioBtnImg" height="10" width="10" src="@System.Configuration.ConfigurationManager.AppSettings["ServerName"]/Images/radioBtnChecked.png" />
                                 <label for="op12"><span class="spanLabel">@question.Option2</span></label>
                             }
                         </div>
@@ -151,12 +151,12 @@
 
                         @if (question.Answer.Trim() == "3")
                         {
-                            <img class="radioBtnImg" height="10" width="10" src="@System.Web.Hosting.HostingEnvironment.ApplicationPhysicalPath/Images/radioBtnChecked.png" />@question.Option3
+                            <img class="radioBtnImg" height="10" width="10" src="@System.Configuration.ConfigurationManager.AppSettings["ServerName"]/Images/radioBtnChecked.png" />@question.Option3
 
                         }
                         else if (!string.IsNullOrWhiteSpace(@question.Option4))
                         {
-                            <img class="radioBtnImg" height="10" width="10" src="@System.Web.Hosting.HostingEnvironment.ApplicationPhysicalPath/Images/radioBtnUnchecked.png" />
+                            <img class="radioBtnImg" height="10" width="10" src="@System.Configuration.ConfigurationManager.AppSettings["ServerName"]/Images/radioBtnChecked.png" />
                             <label for="op13"><span class="spanLabel">@question.Option3</span></label>
                         }
 
@@ -164,12 +164,12 @@
                         <div class="radio radio-info" id="radio4">
                             @if (question.Answer.Trim() == "4")
                             {
-                                <img class="radioBtnImg" height="10" width="10" src="@System.Web.Hosting.HostingEnvironment.ApplicationPhysicalPath/Images/radioBtnChecked.png" />
+                                <img class="radioBtnImg" height="10" width="10" src="@System.Configuration.ConfigurationManager.AppSettings["ServerName"]/Images/radioBtnChecked.png" />
                                 <label for="op14"><span class="spanLabel">@question.Option4</span></label>
                             }
                             else if (!string.IsNullOrWhiteSpace(@question.Option4))
                             {
-                                <img class="radioBtnImg" height="10" width="10" src="@System.Web.Hosting.HostingEnvironment.ApplicationPhysicalPath/Images/radioBtnUnchecked.png" />
+                                <img class="radioBtnImg" height="10" width="10" src="@System.Configuration.ConfigurationManager.AppSettings["ServerName"]/Images/radioBtnChecked.png" />
                                 <label for="op14"><span class="spanLabel">@question.Option4</span></label>
                             }
                         </div>
@@ -178,12 +178,12 @@
                         <div class="radio radio-info" id="radio5">
                             @if (question.Answer.Trim() == "5")
                             {
-                                <img class="radioBtnImg" height="10" width="10" src="@System.Web.Hosting.HostingEnvironment.ApplicationPhysicalPath/Images/radioBtnChecked.png" />
+                                <img class="radioBtnImg" height="10" width="10" src="@System.Configuration.ConfigurationManager.AppSettings["ServerName"]/Images/radioBtnChecked.png" />
                                 <label for="op15"><span class="spanLabel">@question.Option5</span></label>
                             }
                             else if (!string.IsNullOrWhiteSpace(@question.Option5))
                             {
-                                <img class="radioBtnImg" height="10" width="10" src="@System.Web.Hosting.HostingEnvironment.ApplicationPhysicalPath/Images/radioBtnUnchecked.png" />
+                                <img class="radioBtnImg" height="10" width="10" src="@System.Configuration.ConfigurationManager.AppSettings["ServerName"]/Images/radioBtnChecked.png" />
                                 <label for="op15"><span class="spanLabel">@question.Option5</span></label>
                             }
                         </div>
@@ -192,12 +192,12 @@
                         <div class="radio radio-info" id="radio6">
                             @if (question.Answer.Trim() == "6")
                             {
-                                <img class="radioBtnImg" height="10" width="10" src="@System.Web.Hosting.HostingEnvironment.ApplicationPhysicalPath/Images/radioBtnChecked.png" />
+                                <img class="radioBtnImg" height="10" width="10" src="@System.Configuration.ConfigurationManager.AppSettings["ServerName"]/Images/radioBtnChecked.png" />
                                 <label for="op16"><span class="spanLabel">@question.Option6</span></label>
                             }
                             else if (!string.IsNullOrWhiteSpace(@question.Option6))
                             {
-                                <img class="radioBtnImg" height="10" width="10" src="@System.Web.Hosting.HostingEnvironment.ApplicationPhysicalPath/Images/radioBtnUnchecked.png" />
+                                <img class="radioBtnImg" height="10" width="10" src="@System.Configuration.ConfigurationManager.AppSettings["ServerName"]/Images/radioBtnChecked.png" />
                                 <label for="op16"><span class="spanLabel">@question.Option6</span></label>
                             }
                         </div>
@@ -206,12 +206,12 @@
                         <div class="radio radio-info" id="radio7">
                             @if (question.Answer.Trim() == "7")
                             {
-                                <img class="radioBtnImg" height="10" width="10" src="@System.Web.Hosting.HostingEnvironment.ApplicationPhysicalPath/Images/radioBtnChecked.png" />
+                                <img class="radioBtnImg" height="10" width="10" src="@System.Configuration.ConfigurationManager.AppSettings["ServerName"]/Images/radioBtnChecked.png" />
                                 <label for="op17"><span class="spanLabel">@question.Option7</span></label>
                             }
                             else if (!string.IsNullOrWhiteSpace(@question.Option7))
                             {
-                                <img class="radioBtnImg" height="10" width="10" src="@System.Web.Hosting.HostingEnvironment.ApplicationPhysicalPath/Images/radioBtnUnchecked.png" />
+                                <img class="radioBtnImg" height="10" width="10" src="@System.Configuration.ConfigurationManager.AppSettings["ServerName"]/Images/radioBtnChecked.png" />
                                 <label for="op17"><span class="spanLabel">@question.Option7</span></label>
                             }
                         </div>
@@ -220,12 +220,12 @@
                         <div class="radio radio-info" id="radio8">
                             @if (question.Answer.Trim() == "8")
                             {
-                                <img class="radioBtnImg" height="10" width="10" src="@System.Web.Hosting.HostingEnvironment.ApplicationPhysicalPath/Images/radioBtnChecked.png" />
+                                <img class="radioBtnImg" height="10" width="10" src="@System.Configuration.ConfigurationManager.AppSettings["ServerName"]/Images/radioBtnChecked.png" />
                                 <label for="op18"><span class="spanLabel">@question.Option8</span></label>
                             }
                             else if (!string.IsNullOrWhiteSpace(@question.Option8))
                             {
-                                <img class="radioBtnImg" height="10" width="10" src="@System.Web.Hosting.HostingEnvironment.ApplicationPhysicalPath/Images/radioBtnUnchecked.png" />
+                                <img class="radioBtnImg" height="10" width="10" src="@System.Configuration.ConfigurationManager.AppSettings["ServerName"]/Images/radioBtnChecked.png" />
                                 <label for="op18"><span class="spanLabel">@question.Option8</span></label>
                             }
                         </div>
@@ -241,20 +241,20 @@
 
 
                         <div class="checkbox checkbox-info">
-                            <img height="10" width="10" src="@System.Web.Hosting.HostingEnvironment.ApplicationPhysicalPath/Images/UncheckedCheckbox.jpg" />
+                            <img height="10" width="10" src="@System.Configuration.ConfigurationManager.AppSettings["ServerName"]/Images/UncheckedCheckbox.jpg" />
                             <label for="ch1"><span class="spanLabel">@question.Option1</span></label>
                         </div>
 
 
                         <div class="checkbox checkbox-info">
-                            <img height="10" width="10" src="@System.Web.Hosting.HostingEnvironment.ApplicationPhysicalPath/Images/UncheckedCheckbox.jpg" />
+                            <img height="10" width="10" src="@System.Configuration.ConfigurationManager.AppSettings["ServerName"]/Images/UncheckedCheckbox.jpg" />
                             <label for="ch2"><span class="spanLabel">@question.Option2</span></label>
                         </div>
 
                         @if (!string.IsNullOrWhiteSpace(@question.Option3))
                         {
                             <div class="checkbox checkbox-info" id="checkbox3">
-                                <img height="10" width="10" src="@System.Web.Hosting.HostingEnvironment.ApplicationPhysicalPath/Images/UncheckedCheckbox.jpg" />
+                                <img height="10" width="10" src="@System.Configuration.ConfigurationManager.AppSettings["ServerName"]/Images/UncheckedCheckbox.jpg" />
                                 <label for="ch3"><span class="spanLabel">@question.Option3</span></label>
                             </div>
                         }
@@ -262,7 +262,7 @@
                         @if (!string.IsNullOrWhiteSpace(@question.Option4))
                         {
                             <div class="checkbox checkbox-info" id="checkbox4">
-                                <img height="10" width="10" src="@System.Web.Hosting.HostingEnvironment.ApplicationPhysicalPath/Images/UncheckedCheckbox.jpg" />
+                                <img height="10" width="10" src="@System.Configuration.ConfigurationManager.AppSettings["ServerName"]/Images/UncheckedCheckbox.jpg" />
                                 <label for="ch4"><span class="spanLabel">@question.Option4</span></label>
                             </div>
                         }
@@ -270,7 +270,7 @@
                         {
 
                             <div class="checkbox checkbox-info" id="checkbox5">
-                                <img height="10" width="10" src="@System.Web.Hosting.HostingEnvironment.ApplicationPhysicalPath/Images/UncheckedCheckbox.jpg" />
+                                <img height="10" width="10" src="@System.Configuration.ConfigurationManager.AppSettings["ServerName"]/Images/UncheckedCheckbox.jpg" />
                                 <label for="ch5"><span class="spanLabel">@question.Option5</span></label>
                             </div>
                         }
@@ -279,14 +279,14 @@
                         {
 
                             <div class="checkbox checkbox-info" id="checkbox6">
-                                <img height="10" width="10" src="@System.Web.Hosting.HostingEnvironment.ApplicationPhysicalPath/Images/UncheckedCheckbox.jpg" />
+                                <img height="10" width="10" src="@System.Configuration.ConfigurationManager.AppSettings["ServerName"]/Images/UncheckedCheckbox.jpg" />
                                 <label for="ch6"><span class="spanLabel">@question.Option6</span></label>
                             </div>
                         }
                         @if (!string.IsNullOrWhiteSpace(@question.Option7))
                         {
                             <div class="checkbox checkbox-info" id="checkbox7">
-                                <img height="10" width="10" src="@System.Web.Hosting.HostingEnvironment.ApplicationPhysicalPath/Images/UncheckedCheckbox.jpg" />
+                                <img height="10" width="10" src="@System.Configuration.ConfigurationManager.AppSettings["ServerName"]/Images/UncheckedCheckbox.jpg" />
                                 <label for="ch7"><span class="spanLabel">@question.Option7</span></label>
                             </div>
                         }
@@ -295,7 +295,7 @@
                         {
 
                             <div class="checkbox checkbox-info" id="checkbox8">
-                                <img height="10" width="10" src="@System.Web.Hosting.HostingEnvironment.ApplicationPhysicalPath/Images/UncheckedCheckbox.jpg" />
+                                <img height="10" width="10" src="@System.Configuration.ConfigurationManager.AppSettings["ServerName"]/Images/UncheckedCheckbox.jpg" />
                                 <label for="ch8"><span class="spanLabel">@question.Option8</span></label>
                             </div>
                         }
@@ -308,20 +308,20 @@
 
 
                         <div class="checkbox checkbox-info">
-                            <img height="10" width="10" src="@System.Web.Hosting.HostingEnvironment.ApplicationPhysicalPath/Images/checkedCheckbox.png" />
+                            <img height="10" width="10" src="@System.Configuration.ConfigurationManager.AppSettings["ServerName"]/Images/checkedCheckbox.png" />
                             <label for="optcheckbox1"><span class="spanLabel">@question.Option1</span></label>
                         </div>
 
 
                         <div class="checkbox checkbox-info">
-                            <img height="10" width="10" src="@System.Web.Hosting.HostingEnvironment.ApplicationPhysicalPath/Images/checkedCheckbox.png" />
+                            <img height="10" width="10" src="@System.Configuration.ConfigurationManager.AppSettings["ServerName"]/Images/checkedCheckbox.png" />
                             <label for="optcheckbox2"><span class="spanLabel">@question.Option2</span></label>
                         </div>
 
                         @if (!string.IsNullOrWhiteSpace(@question.Option3))
                         {
                             <div class="checkbox checkbox-info" id="checkbox3">
-                                <img height="10" width="10" src="@System.Web.Hosting.HostingEnvironment.ApplicationPhysicalPath/Images/checkedCheckbox.png" />
+                                <img height="10" width="10" src="@System.Configuration.ConfigurationManager.AppSettings["ServerName"]/Images/checkedCheckbox.png" />
                                 <label for="optcheckbox3"><span class="spanLabel">@question.Option3</span></label>
                             </div>
                         }
@@ -330,14 +330,14 @@
                         {
 
                             <div class="checkbox checkbox-info" id="checkbox4">
-                                <img height="10" width="10" src="@System.Web.Hosting.HostingEnvironment.ApplicationPhysicalPath/Images/checkedCheckbox.png" />
+                                <img height="10" width="10" src="@System.Configuration.ConfigurationManager.AppSettings["ServerName"]/Images/checkedCheckbox.png" />
                                 <label for="optcheckbox4"><span class="spanLabel">@question.Option4</span></label>
                             </div>
                         }
                         @if (!string.IsNullOrWhiteSpace(@question.Option5))
                         {
                             <div class="checkbox checkbox-info" id="checkbox5">
-                                <img height="10" width="10" src="@System.Web.Hosting.HostingEnvironment.ApplicationPhysicalPath/Images/checkedCheckbox.png" />
+                                <img height="10" width="10" src="@System.Configuration.ConfigurationManager.AppSettings["ServerName"]/Images/checkedCheckbox.png" />
                                 <label for="optcheckbox5"><span class="spanLabel">@question.Option5</span></label>
                             </div>
                         }
@@ -345,21 +345,21 @@
                         @if (!string.IsNullOrWhiteSpace(@question.Option6))
                         {
                             <div class="checkbox checkbox-info" id="checkbox6">
-                                <img height="10" width="10" src="@System.Web.Hosting.HostingEnvironment.ApplicationPhysicalPath/Images/checkedCheckbox.png" />
+                                <img height="10" width="10" src="@System.Configuration.ConfigurationManager.AppSettings["ServerName"]/Images/checkedCheckbox.png" />
                                 <label for="optcheckbox6"><span class="spanLabel">@question.Option6</span></label>
                             </div>
                         }
                         @if (!string.IsNullOrWhiteSpace(@question.Option7))
                         {
                             <div class="checkbox checkbox-info" id="checkbox7">
-                                <img height="10" width="10" src="@System.Web.Hosting.HostingEnvironment.ApplicationPhysicalPath/Images/checkedCheckbox.png" />
+                                <img height="10" width="10" src="@System.Configuration.ConfigurationManager.AppSettings["ServerName"]/Images/checkedCheckbox.png" />
                                 <label for="optcheckbox7"><span class="spanLabel">@question.Option7</span></label>
                             </div>
                         }
                         @if (!string.IsNullOrWhiteSpace(@question.Option8))
                         {
                             <div class="checkbox checkbox-info" id="checkbox8">
-                                <img height="10" width="10" src="@System.Web.Hosting.HostingEnvironment.ApplicationPhysicalPath/Images/checkedCheckbox.png" />
+                                <img height="10" width="10" src="@System.Configuration.ConfigurationManager.AppSettings["ServerName"]/Images/checkedCheckbox.png" />
                                 <label for="optcheckbox8"><span class="spanLabel">@question.Option8</span></label>
                             </div>
                         }

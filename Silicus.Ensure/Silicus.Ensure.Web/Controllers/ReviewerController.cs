@@ -305,7 +305,7 @@ namespace Silicus.Ensure.Web.Controllers
         #endregion
 
         #region Export Data
-        public void CreateDocument(int userId, int userTestSuiteId)
+        public ActionResult CreateDocument(int userId, int userTestSuiteId)
         {
             var user = _userService.GetUserById(userId);
             var candidateInfoBusinessModel = _userService.GetCandidateInfo(user);
@@ -318,13 +318,8 @@ namespace Silicus.Ensure.Web.Controllers
                 Objective = questionsModel.Where(q => q.QuestionType == ((int)QuestionType.Objective)).ToList(),
                 Practical = questionsModel.Where(q => q.QuestionType == ((int)QuestionType.Practical)).ToList()
             };
-            Document document = new Document();
-            PdfWriter writer = PdfWriter.GetInstance(document, new FileStream("d://sample1.pdf", FileMode.Create));
-            document.Open();
-            var htmlString = RenderRazorViewToString("Export", exportModel);
-            HTMLWorker hw = new HTMLWorker(document);
-            hw.Parse(new StringReader(htmlString));
-            document.Close();
+
+            return View("Export", exportModel);
         }
 
         public string RenderRazorViewToString(string viewName, object model)
