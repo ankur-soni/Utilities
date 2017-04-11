@@ -3,7 +3,16 @@
 @{
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
+<style>
+     @@media print {
+        @@page{
+      size:auto;
+      margin:0;
+    }
+        
+}
 
+</style>
 <script>
     $(document).ready({
         function() {
@@ -16,30 +25,40 @@
         window.frames["print_frame"].window.print();
     }
 </script>
-<div id="printableDiv">
+<div id="printableDiv" class="M-B60">
     <div>
         @Html.Partial("_CandidateInfoForPrint", Model.CandidateInfo)
-        <span id="PrintToPDF">Print</span>
+        @*<span id="PrintToPDF">Print</span>*@
     </div>
     @if (Model != null && Model.Objective != null && Model.Objective.Count > 0)
     {
         var count = 0;
-        <h3>Objective Questions</h3>
+        <div class="row M-T25">
+            <div class="col-sm-12">
+                <h3>Objective Questions:</h3>
+            </div>
+        </div>
+        <hr />
         foreach (var question in Model.Objective)
         {
-            <span>@(++count).</span> @question.QuestionDescription <b>(@question.Marks Marks)</b>
+            <div class="row M-T15">
+                <div class="col-sm-12">
+                    <span>@(++count).</span> <span>@question.QuestionDescription </span><span><b>(@question.Marks Marks)</b></span>
+                </div>
+            </div>
+            
             <div>
                 @if (question.QuestionType == 1 && question.AnswerType == 1)
                 {
                     if (string.IsNullOrEmpty(question.Answer))
                     {
-                        <div class="col-sm-12 questionDiv" style="padding: 20px 25px 20px 10px;">
+                        <div class="col-sm-12 questionDiv" style="padding: 20px 25px 20px 0px;">
 
                             <div class="radio radio-info">
                                 <img class="radioBtnImg" height="10" width="10" src="@System.Configuration.ConfigurationManager.AppSettings["ServerName"]/Images/radioBtnChecked.png" />
                                 <label for="op1"><span class="spanLabel">@question.Option1</span></label>
                             </div>
-
+                            
 
                             <div class="radio radio-info">
                                 <img class="radioBtnImg" height="10" width="10" src="@System.Configuration.ConfigurationManager.AppSettings["ServerName"]/Images/radioBtnChecked.png" />
@@ -104,18 +123,18 @@
                     }
                     else
                     {
-                        <div class="col-sm-12 questionDiv" style="padding: 20px 25px 20px 10px;">
+                        <div class="col-sm-12 questionDiv" style="padding: 20px 25px 20px 0px;">
 
                             <div class="radio radio-info">
                                 @if (question.Answer.Trim() == "1")
                             {
                                     <img class="radioBtnImg" height="10" width="10" src="@System.Configuration.ConfigurationManager.AppSettings["ServerName"]/Images/radioBtnChecked.png" />
-                                    <span class="spanLabel">@question.Option1</span>
+                                    <label class="spanLabel">@question.Option1</label>
                                 }
                                 else
                                 {
                                     <img class="radioBtnImg" height="10" width="10" src="@System.Configuration.ConfigurationManager.AppSettings["ServerName"]/Images/radioBtnChecked.png" />
-                                    <span class="spanLabel">@question.Option1</span>
+                                    <label class="spanLabel">@question.Option1</label>
                                 }
 
                             </div>
@@ -134,88 +153,88 @@
                                 }
                             </div>
 
-
-                            @if (question.Answer.Trim() == "3")
+                            <div class="radio radio-info">
+                                @if (question.Answer.Trim() == "3")
                             {
-                                <img class="radioBtnImg" height="10" width="10" src="@System.Configuration.ConfigurationManager.AppSettings["ServerName"]/Images/radioBtnChecked.png" />@question.Option3
+                                    <img class="radioBtnImg" height="10" width="10" src="@System.Configuration.ConfigurationManager.AppSettings["ServerName"]/Images/radioBtnChecked.png" />@question.Option3
 
-                            }
-                            else if (!string.IsNullOrWhiteSpace(@question.Option4))
-                            {
-                                <img class="radioBtnImg" height="10" width="10" src="@System.Configuration.ConfigurationManager.AppSettings["ServerName"]/Images/radioBtnChecked.png" />
-                                <label for="op13"><span class="spanLabel">@question.Option3</span></label>
-                            }
-
-
-                            <div class="radio radio-info" id="radio4">
-                                @if (question.Answer.Trim() == "4")
-                            {
-                                    <img class="radioBtnImg" height="10" width="10" src="@System.Configuration.ConfigurationManager.AppSettings["ServerName"]/Images/radioBtnChecked.png" />
-                                    <label for="op14"><span class="spanLabel">@question.Option4</span></label>
                                 }
                                 else if (!string.IsNullOrWhiteSpace(@question.Option4))
                                 {
                                     <img class="radioBtnImg" height="10" width="10" src="@System.Configuration.ConfigurationManager.AppSettings["ServerName"]/Images/radioBtnChecked.png" />
-                                    <label for="op14"><span class="spanLabel">@question.Option4</span></label>
+                                    <label for="op13"><span class="spanLabel">@question.Option3</span></label>
                                 }
                             </div>
 
-
-                            <div class="radio radio-info" id="radio5">
-                                @if (question.Answer.Trim() == "5")
+                                <div class="radio radio-info" id="radio4">
+                                    @if (question.Answer.Trim() == "4")
                             {
-                                    <img class="radioBtnImg" height="10" width="10" src="@System.Configuration.ConfigurationManager.AppSettings["ServerName"]/Images/radioBtnChecked.png" />
-                                    <label for="op15"><span class="spanLabel">@question.Option5</span></label>
-                                }
-                                else if (!string.IsNullOrWhiteSpace(@question.Option5))
-                                {
-                                    <img class="radioBtnImg" height="10" width="10" src="@System.Configuration.ConfigurationManager.AppSettings["ServerName"]/Images/radioBtnChecked.png" />
-                                    <label for="op15"><span class="spanLabel">@question.Option5</span></label>
-                                }
-                            </div>
+                                        <img class="radioBtnImg" height="10" width="10" src="@System.Configuration.ConfigurationManager.AppSettings["ServerName"]/Images/radioBtnChecked.png" />
+                                        <label for="op14"><span class="spanLabel">@question.Option4</span></label>
+                                    }
+                                    else if (!string.IsNullOrWhiteSpace(@question.Option4))
+                                    {
+                                        <img class="radioBtnImg" height="10" width="10" src="@System.Configuration.ConfigurationManager.AppSettings["ServerName"]/Images/radioBtnChecked.png" />
+                                        <label for="op14"><span class="spanLabel">@question.Option4</span></label>
+                                    }
+                                </div>
 
 
-                            <div class="radio radio-info" id="radio6">
-                                @if (question.Answer.Trim() == "6")
+                                <div class="radio radio-info" id="radio5">
+                                    @if (question.Answer.Trim() == "5")
                             {
-                                    <img class="radioBtnImg" height="10" width="10" src="@System.Configuration.ConfigurationManager.AppSettings["ServerName"]/Images/radioBtnChecked.png" />
-                                    <label for="op16"><span class="spanLabel">@question.Option6</span></label>
-                                }
-                                else if (!string.IsNullOrWhiteSpace(@question.Option6))
-                                {
-                                    <img class="radioBtnImg" height="10" width="10" src="@System.Configuration.ConfigurationManager.AppSettings["ServerName"]/Images/radioBtnChecked.png" />
-                                    <label for="op16"><span class="spanLabel">@question.Option6</span></label>
-                                }
-                            </div>
+                                        <img class="radioBtnImg" height="10" width="10" src="@System.Configuration.ConfigurationManager.AppSettings["ServerName"]/Images/radioBtnChecked.png" />
+                                        <label for="op15"><span class="spanLabel">@question.Option5</span></label>
+                                    }
+                                    else if (!string.IsNullOrWhiteSpace(@question.Option5))
+                                    {
+                                        <img class="radioBtnImg" height="10" width="10" src="@System.Configuration.ConfigurationManager.AppSettings["ServerName"]/Images/radioBtnChecked.png" />
+                                        <label for="op15"><span class="spanLabel">@question.Option5</span></label>
+                                    }
+                                </div>
 
 
-                            <div class="radio radio-info" id="radio7">
-                                @if (question.Answer.Trim() == "7")
+                                <div class="radio radio-info" id="radio6">
+                                    @if (question.Answer.Trim() == "6")
                             {
-                                    <img class="radioBtnImg" height="10" width="10" src="@System.Configuration.ConfigurationManager.AppSettings["ServerName"]/Images/radioBtnChecked.png" />
-                                    <label for="op17"><span class="spanLabel">@question.Option7</span></label>
-                                }
-                                else if (!string.IsNullOrWhiteSpace(@question.Option7))
-                                {
-                                    <img class="radioBtnImg" height="10" width="10" src="@System.Configuration.ConfigurationManager.AppSettings["ServerName"]/Images/radioBtnChecked.png" />
-                                    <label for="op17"><span class="spanLabel">@question.Option7</span></label>
-                                }
-                            </div>
+                                        <img class="radioBtnImg" height="10" width="10" src="@System.Configuration.ConfigurationManager.AppSettings["ServerName"]/Images/radioBtnChecked.png" />
+                                        <label for="op16"><span class="spanLabel">@question.Option6</span></label>
+                                    }
+                                    else if (!string.IsNullOrWhiteSpace(@question.Option6))
+                                    {
+                                        <img class="radioBtnImg" height="10" width="10" src="@System.Configuration.ConfigurationManager.AppSettings["ServerName"]/Images/radioBtnChecked.png" />
+                                        <label for="op16"><span class="spanLabel">@question.Option6</span></label>
+                                    }
+                                </div>
 
 
-                            <div class="radio radio-info" id="radio8">
-                                @if (question.Answer.Trim() == "8")
+                                <div class="radio radio-info" id="radio7">
+                                    @if (question.Answer.Trim() == "7")
                             {
-                                    <img class="radioBtnImg" height="10" width="10" src="@System.Configuration.ConfigurationManager.AppSettings["ServerName"]/Images/radioBtnChecked.png" />
-                                    <label for="op18"><span class="spanLabel">@question.Option8</span></label>
-                                }
-                                else if (!string.IsNullOrWhiteSpace(@question.Option8))
-                                {
-                                    <img class="radioBtnImg" height="10" width="10" src="@System.Configuration.ConfigurationManager.AppSettings["ServerName"]/Images/radioBtnChecked.png" />
-                                    <label for="op18"><span class="spanLabel">@question.Option8</span></label>
-                                }
+                                        <img class="radioBtnImg" height="10" width="10" src="@System.Configuration.ConfigurationManager.AppSettings["ServerName"]/Images/radioBtnChecked.png" />
+                                        <label for="op17"><span class="spanLabel">@question.Option7</span></label>
+                                    }
+                                    else if (!string.IsNullOrWhiteSpace(@question.Option7))
+                                    {
+                                        <img class="radioBtnImg" height="10" width="10" src="@System.Configuration.ConfigurationManager.AppSettings["ServerName"]/Images/radioBtnChecked.png" />
+                                        <label for="op17"><span class="spanLabel">@question.Option7</span></label>
+                                    }
+                                </div>
+
+
+                                <div class="radio radio-info" id="radio8">
+                                    @if (question.Answer.Trim() == "8")
+                            {
+                                        <img class="radioBtnImg" height="10" width="10" src="@System.Configuration.ConfigurationManager.AppSettings["ServerName"]/Images/radioBtnChecked.png" />
+                                        <label for="op18"><span class="spanLabel">@question.Option8</span></label>
+                                    }
+                                    else if (!string.IsNullOrWhiteSpace(@question.Option8))
+                                    {
+                                        <img class="radioBtnImg" height="10" width="10" src="@System.Configuration.ConfigurationManager.AppSettings["ServerName"]/Images/radioBtnChecked.png" />
+                                        <label for="op18"><span class="spanLabel">@question.Option8</span></label>
+                                    }
+                                </div>
                             </div>
-                        </div>
                     }
                 }
                 else if (question.QuestionType == 1 && question.AnswerType == 2)
@@ -223,7 +242,7 @@
 
                     if (string.IsNullOrEmpty(question.Answer))
                     {
-                        <div class="col-sm-12 questionDiv" style="padding: 20px 25px 20px 32px;">
+                        <div class="col-sm-12 questionDiv" style="padding: 20px 25px 20px 0px;">
 
 
                             <div class="checkbox checkbox-info">
@@ -290,7 +309,7 @@
                     }
                     else
                     {
-                        <div class="col-sm-12 questionDiv" style="padding: 20px 25px 20px 32px;">
+                        <div class="col-sm-12 questionDiv" style="padding: 20px 25px 20px 0px;">
 
 
                             <div class="checkbox checkbox-info">
@@ -360,20 +379,35 @@
     }
     @if (Model != null && Model.Practical != null && Model.Practical.Count > 0)
     {
-        <div>
-            <div></div>
-        </div>
+        
         var count = 0;
-        <h3>Practical Questions</h3>
+        <div class="row M-T15">
+            <div class="col-sm-12">
+                <h3>Practical Questions:</h3>
+            </div>
+        </div>
+        <hr />
+
         foreach (var question in Model.Practical)
         {
-            <span>@(++count).</span>@question.QuestionDescription <b>(@question.Marks Marks)</b>
+
+            <div class="row M-T10">
+                <div class="col-sm-12">
+                    
+                        <span>@(++count).</span><span>@question.QuestionDescription</span><span><b>(@question.Marks Marks)</b></span>
+
+                </div>
+            </div>
+
+            
             if (!string.IsNullOrEmpty(question.Answer))
             {
-                <div>
-                    <p>
-                        @question.Answer
-                    </p>
+                <div class="row M-T10">
+                    <div class="col-sm-12">
+                        <span>
+                            @question.Answer
+                        </span>
+                    </div>
                 </div>
             }
             <div></div>
