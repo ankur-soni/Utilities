@@ -7,7 +7,7 @@
                      .Columns(columns =>
                           {
                               columns.Bound(p => p.RecruiterId).ClientTemplate(@"<input type='checkbox' #if(IsAssignedRecruiter){# checked='checked' #}# class='check' id='chkHeader' value='#=RecruiterId#'/>").Title("").Width(100);
-                              columns.Bound(p => p.RecruiterName).Width(200);
+                              columns.Bound(p => p.RecruiterName).Width(700);
                             
                           })
                               .DataSource(dataSource => dataSource

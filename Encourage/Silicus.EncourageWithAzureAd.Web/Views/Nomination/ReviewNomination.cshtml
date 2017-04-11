@@ -140,7 +140,6 @@
                                                             Text = r.ToString()
                                                         }), "", new { @class = "reviewer-rating", @autocomplete = "off"})
                                             </td>
-                                             for
                                             <td class="col-lg-2 col-md-2 col-sm-2 col-xs-3">@Html.TextArea("Comments[" + @j + "].Comment", new { @class = "reviewer-comment form-control", name = "reviewercomment", maxlength = "500", onKeyUp = "return onkeyevent(this);", onblur = "return hideRemainingCharacterText(this);" })<div class="textarea"></div></td>
 
                                             @Html.Hidden("Comments[" + @j + "].CriteriaId", managerComment.CriteriaId)
