@@ -305,14 +305,7 @@ else
         $('#PrintTest').on('click',function(){
             var userTestSuiteId=$(this).attr('data-UserTestSuiteId');
             var userId=$(this).attr('data-UserId');
-            $.ajax({
-                url: "/Reviewer/CreateDocument",
-                data: {userId:userId,userTestSuiteId:userTestSuiteId},
-                success:function(result){
-                    var w = window.open();
-                    $(w.document.body).html(result);
-                }
-            });
+            window.open("/Reviewer/CreateDocument?userId=" + userId + '&userTestSuiteId=' + userTestSuiteId,'_blank');
         });
     });
 
