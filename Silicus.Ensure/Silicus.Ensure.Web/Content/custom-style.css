@@ -941,6 +941,7 @@ textarea {
   -webkit-transform: scale(0, 0);
   -webkit-transition: -webkit-transform 0.3s cubic-bezier(0.8, -0.33, 0.2, 1.33);
   background-color: #2b2b2b;
+  
   border-radius: 50%;
   content: " ";
   display: inline-block;
@@ -2665,21 +2666,25 @@ width: 310px;
 @media (max-width:360px) {
 }
 
-
+.radioBtnImg, .checkboxBtnImg{margin-right:5px!important;}
+.marginTopRow{padding-top:15px!important;}
+hr {margin-top:0px!important;margin-bottom:5px!important;border-top: 1px solid #777;}
 
 
  @media print {
 
-     span{
-         font-size:13px!important;
-     }
+     
+     span{font-size:13px!important;}
+    .marginTopRow{margin-top:15px!important;}
     #printableDiv{padding-left:15px;padding-right:15px;}
    .sidebar-wrapper, .footer{display:none!important;}
    #page-wrapper{margin:0!important;}
    .page-wrapper{background:#fff!important;}
-   
-
+   #headerRow{display:none!important;}
+   .f1{padding:0!important;}
+   .fa-print{display:none!important;}
    hr {margin-top:0px!important;margin-bottom:5px!important;}
+   
     .col-sm-1, .col-sm-2, .col-sm-3, .col-sm-4, .col-sm-5, .col-sm-6, .col-sm-7, .col-sm-8, .col-sm-9, .col-sm-10, .col-sm-11, .col-sm-12 {
     float: left;
     }
