@@ -1,27 +1,28 @@
 ﻿@model Silicus.Ensure.Web.Models.Test.ExportQuestionsViewModel
-
+<script src="~/Scripts/jquery.min.js"></script>
 @{
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 <style>
-         @@media print {
-            @@page{
-          size:auto;
-          margin:0;
+    @@media print {
+        @@page {
+            size: auto;
+            margin: 0;
         }
     }
 </style>
 <script>
-    $(document).ready({
-        function() {
-            $('#PrintToPDF').on('click', PrintToPDF);
-        }
-    });
     function PrintToPDF() {
         window.frames["print_frame"].document.body.innerHTML = document.getElementById("printableDiv").innerHTML;
         window.frames["print_frame"].window.focus();
         window.frames["print_frame"].window.print();
     }
+    $(document).ready({
+        function() {
+            $('#PrintToPDF').on('click', PrintToPDF);
+        }
+    });
+
 </script>
 
 
@@ -328,106 +329,182 @@
                                         <div class="col-sm-12 questionDiv" style="padding: 20px 25px 20px 0px;">
 
 
-                                            <div class="">
-                                                <img class="checkboxBtnImg" height="15" width="15" src="@System.Configuration.ConfigurationManager.AppSettings["ServerName"]/Images/checkedCheckbox.png" />
-                                                <label for="optcheckbox1"><span class="spanLabel">@question.Option1</span></label>
-                                            </div>
+                            @if (question.Answer.Contains("1"))
+                            {
+                                <div class="checkbox checkbox-info">
+                                    <img height="10" width="10" src="@System.Configuration.ConfigurationManager.AppSettings["ServerName"]/Images/checkedCheckbox.png" />
+                                    <label for="optcheckbox1"><span class="spanLabel">@question.Option1</span></label>
+                                </div>
+                            }
+                            else
+                            {
+                                <div class="checkbox checkbox-info" id="checkbox1">
+                                    <img height="10" width="10" src="@System.Configuration.ConfigurationManager.AppSettings["ServerName"]/Images/UncheckedCheckbox.jpg" />
+                                    <label for="ch1"><span class="spanLabel">@question.Option1</span></label>
+                                </div>
+                            }
 
-
-                                            <div class="">
-                                                <img class="checkboxBtnImg" height="15" width="15" src="@System.Configuration.ConfigurationManager.AppSettings["ServerName"]/Images/checkedCheckbox.png" />
-                                                <label for="optcheckbox2"><span class="spanLabel">@question.Option2</span></label>
-                                            </div>
+                            @if (question.Answer.Contains("2"))
+                            {
+                                <div class="checkbox checkbox-info">
+                                    <img height="10" width="10" src="@System.Configuration.ConfigurationManager.AppSettings["ServerName"]/Images/checkedCheckbox.png" />
+                                    <label for="optcheckbox2"><span class="spanLabel">@question.Option2</span></label>
+                                </div>
+                            }
+                            else
+                            {
+                                <div class="checkbox checkbox-info" id="checkbox3">
+                                    <img height="10" width="10" src="@System.Configuration.ConfigurationManager.AppSettings["ServerName"]/Images/UncheckedCheckbox.jpg" />
+                                    <label for="ch3"><span class="spanLabel">@question.Option3</span></label>
+                                </div>
+                            }
 
                                             @if (!string.IsNullOrWhiteSpace(@question.Option3))
                             {
-                                                <div class="" id="checkbox3">
-                                                    <img class="checkboxBtnImg" height="15" width="15" src="@System.Configuration.ConfigurationManager.AppSettings["ServerName"]/Images/checkedCheckbox.png" />
-                                                    <label for="optcheckbox3"><span class="spanLabel">@question.Option3</span></label>
-                                                </div>
-                                            }
-
-                                            @if (!string.IsNullOrWhiteSpace(@question.Option4))
+                                if (question.Answer.Contains("3"))
+                                {
+                                    <div class="checkbox checkbox-info" id="checkbox3">
+                                        <img height="10" width="10" src="@System.Configuration.ConfigurationManager.AppSettings["ServerName"]/Images/checkedCheckbox.png" />
+                                        <label for="optcheckbox3"><span class="spanLabel">@question.Option3</span></label>
+                                    </div>
+                                }
+                                else
+                                {
+                                    <div class="checkbox checkbox-info" id="checkbox3">
+                                        <img height="10" width="10" src="@System.Configuration.ConfigurationManager.AppSettings["ServerName"]/Images/UncheckedCheckbox.jpg" />
+                                        <label for="ch3"><span class="spanLabel">@question.Option3</span></label>
+                                    </div>
+                                }
+                            }
+                            @if (!string.IsNullOrWhiteSpace(@question.Option4))
                             {
-
-                                                <div class="" id="checkbox4">
-                                                    <img class="checkboxBtnImg" height="15" width="15" src="@System.Configuration.ConfigurationManager.AppSettings["ServerName"]/Images/checkedCheckbox.png" />
-                                                    <label for="optcheckbox4"><span class="spanLabel">@question.Option4</span></label>
-                                                </div>
-                                            }
-                                            @if (!string.IsNullOrWhiteSpace(@question.Option5))
+                                if (question.Answer.Contains("4"))
+                                {
+                                    <div class="checkbox checkbox-info" id="checkbox4">
+                                        <img height="10" width="10" src="@System.Configuration.ConfigurationManager.AppSettings["ServerName"]/Images/checkedCheckbox.png" />
+                                        <label for="optcheckbox4"><span class="spanLabel">@question.Option4</span></label>
+                                    </div>
+                                }
+                                else
+                                {
+                                    <div class="checkbox checkbox-info" id="checkbox3">
+                                        <img height="10" width="10" src="@System.Configuration.ConfigurationManager.AppSettings["ServerName"]/Images/UncheckedCheckbox.jpg" />
+                                        <label for="ch3"><span class="spanLabel">@question.Option3</span></label>
+                                    </div>
+                                }
+                            }
+                            @if (!string.IsNullOrWhiteSpace(@question.Option5))
                             {
-                                                <div class="" id="checkbox5">
-                                                    <img class="checkboxBtnImg" height="15" width="15" src="@System.Configuration.ConfigurationManager.AppSettings["ServerName"]/Images/checkedCheckbox.png" />
-                                                    <label for="optcheckbox5"><span class="spanLabel">@question.Option5</span></label>
-                                                </div>
-                                            }
+                                if (question.Answer.Contains("5"))
+                                {
+                                    <div class="checkbox checkbox-info" id="checkbox5">
+                                        <img height="10" width="10" src="@System.Configuration.ConfigurationManager.AppSettings["ServerName"]/Images/checkedCheckbox.png" />
+                                        <label for="optcheckbox5"><span class="spanLabel">@question.Option5</span></label>
+                                    </div>
+                                }
+                                else
+                                {
+                                    <div class="checkbox checkbox-info" id="checkbox4">
+                                        <img height="10" width="10" src="@System.Configuration.ConfigurationManager.AppSettings["ServerName"]/Images/UncheckedCheckbox.jpg" />
+                                        <label for="ch4"><span class="spanLabel">@question.Option4</span></label>
+                                    </div>
+                                }
+                            }
 
                                             @if (!string.IsNullOrWhiteSpace(@question.Option6))
                             {
-                                                <div class="" id="checkbox6">
-                                                    <img class="checkboxBtnImg" height="15" width="15" src="@System.Configuration.ConfigurationManager.AppSettings["ServerName"]/Images/checkedCheckbox.png" />
-                                                    <label for="optcheckbox6"><span class="spanLabel">@question.Option6</span></label>
-                                                </div>
-                                            }
-                                            @if (!string.IsNullOrWhiteSpace(@question.Option7))
-                            {
-                                                <div class="" id="checkbox7">
-                                                    <img class="checkboxBtnImg" height="15" width="15" src="@System.Configuration.ConfigurationManager.AppSettings["ServerName"]/Images/checkedCheckbox.png" />
-                                                    <label for="optcheckbox7"><span class="spanLabel">@question.Option7</span></label>
-                                                </div>
-                                            }
-                                            @if (!string.IsNullOrWhiteSpace(@question.Option8))
-                            {
-                                                <div class="" id="checkbox8">
-                                                    <img class="checkboxBtnImg" height="15" width="15" src="@System.Configuration.ConfigurationManager.AppSettings["ServerName"]/Images/checkedCheckbox.png" />
-                                                    <label for="optcheckbox8"><span class="spanLabel">@question.Option8</span></label>
-                                                </div>
-                                            }
-
-                                        </div>
-                                    }
-                                }
-                            </div>
-
-                        }
-
-                    }
-                    @if (Model != null && Model.Practical != null && Model.Practical.Count > 0)
-                    {
-
-                        var count = 0;
-                        <div class="row M-T15">
-                            <div class="col-sm-12">
-                                <h3>Practical Questions:</h3>
-                            </div>
-                        </div>
-                        <hr />
-
-                        foreach (var question in Model.Practical)
-                        {
-
-                            <div class="row M-T10">
-                                <div class="col-sm-12">
-
-                                    <span>@(++count).</span><span>@question.QuestionDescription</span><span><b>(@question.Marks Marks)</b></span>
-
-                                </div>
-                            </div>
-
-
-                            if (!string.IsNullOrEmpty(question.Answer))
-                            {
-                                <div class="row M-T10">
-                                    <div class="col-sm-12">
-                                        <span>
-                                            @question.Answer
-                                        </span>
+                                if (question.Answer.Contains("6"))
+                                {
+                                    <div class="checkbox checkbox-info" id="checkbox6">
+                                        <img height="10" width="10" src="@System.Configuration.ConfigurationManager.AppSettings["ServerName"]/Images/checkedCheckbox.png" />
+                                        <label for="optcheckbox6"><span class="spanLabel">@question.Option6</span></label>
                                     </div>
-                                </div>
+                                }
+                                else
+                                {
+                                    <div class="checkbox checkbox-info" id="checkbox5">
+                                        <img height="10" width="10" src="@System.Configuration.ConfigurationManager.AppSettings[" ServerName"]/Images/UncheckedCheckbox.jpg" />
+                                        <label for="ch5"><span class="spanLabel">@question.Option5</span></label>
+                                    </div>
+                                }
                             }
-                            <div></div>
-                        }
+                            @if (!string.IsNullOrWhiteSpace(@question.Option7))
+                            {
+                                if (question.Answer.Contains("7"))
+                                {
+                                    <div class="checkbox checkbox-info" id="checkbox7">
+                                        <img height="10" width="10" src="@System.Configuration.ConfigurationManager.AppSettings["ServerName"]/Images/checkedCheckbox.png" />
+                                        <label for="optcheckbox7"><span class="spanLabel">@question.Option7</span></label>
+                                    </div>
+                                }
+                                else
+                                {
+                                    <div class="checkbox checkbox-info" id="checkbox6">
+                                        <img height="10" width="10" src="@System.Configuration.ConfigurationManager.AppSettings["ServerName"]/Images/UncheckedCheckbox.jpg" />
+                                        <label for="ch6"><span class="spanLabel">@question.Option6</span></label>
+                                    </div>
+                                }
+                            }
+                            @if (!string.IsNullOrWhiteSpace(@question.Option8))
+                            {
+                                if (question.Answer.Contains("8"))
+                                {
+                                    <div class="checkbox checkbox-info" id="checkbox8">
+                                        <img height="10" width="10" src="@System.Configuration.ConfigurationManager.AppSettings["ServerName"]/Images/checkedCheckbox.png" />
+                                        <label for="optcheckbox8"><span class="spanLabel">@question.Option8</span></label>
+                                    </div>
+                                }
+                                else
+                                {
+                                    <div class="checkbox checkbox-info" id="checkbox7">
+                                        <img height="10" width="10" src="@System.Configuration.ConfigurationManager.AppSettings["ServerName"]/Images/UncheckedCheckbox.jpg" />
+                                        <label for="ch7"><span class="spanLabel">@question.Option7</span></label>
+                                    </div>
+                                }
+                            }
+
+                        </div>
+                    }
+                }
+            </div>
+
+        }
+
+    }
+    @if (Model != null && Model.Practical != null && Model.Practical.Count > 0)
+    {
+
+        var practCount = 0;
+        <div class="row M-T15">
+            <div class="col-sm-12">
+                <h3>Practical Questions:</h3>
+            </div>
+        </div>
+        <hr />
+
+        foreach (var practQuestion in Model.Practical)
+        {
+
+            <div class="row M-T10">
+                <div class="col-sm-12">
+
+                    <span>@(++practCount).</span><span>@practQuestion.QuestionDescription</span><span><b>(@practQuestion.Marks Marks)</b></span>
+
+                                </div>
+                            </div>
+
+
+            if (!string.IsNullOrEmpty(practQuestion.Answer))
+            {
+                <div class="row M-T10">
+                    <div class="col-sm-12">
+                        <span>
+                            @practQuestion.Answer
+                        </span>
+                    </div>
+                </div>
+            }
+        }
 
                     }
                 </div>

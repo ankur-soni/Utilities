@@ -303,8 +303,8 @@ else
             $('.field-validation-error').hide();
         });
         $('#PrintTest').on('click',function(){
-            var userTestSuiteId=$(this).attr('data-UserTestSuiteId');
-            var userId=$(this).attr('data-UserId');
+            var userTestSuiteId="@Model.UserTestSuiteId";
+            var userId="@Model.UserId";
             window.open("/Reviewer/CreateDocument?userId=" + userId + '&userTestSuiteId=' + userTestSuiteId,'_blank');
         });
     });
@@ -607,4 +607,8 @@ else
             }
         });
     }
+
+    $(window).load(function (){
+        $('#PrintTest').show();
+    })
 </script>

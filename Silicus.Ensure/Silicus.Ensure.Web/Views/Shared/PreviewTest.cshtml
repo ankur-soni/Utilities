@@ -254,6 +254,11 @@ else
         $('.QuestionCheckbox').on('click', QuestionCheckboxClicked);    
         $('.questionDiv').css('pointer-events', 'none');
         $('#submitBtn').hide();
+        $('#PrintTest').on('click', function () {
+            var testSuiteId = "@Model.TestSuiteId";
+            var userId = "@Model.UserId";
+            window.open("/Reviewer/PrintFromPreview?candidateId=" + userId + '&testSuiteId=' + testSuiteId, '_blank');
+        });
     });
 
     function QuestionCheckboxClicked(event) {
@@ -478,4 +483,7 @@ else
         $('.questionDiv').css('pointer-events', 'none');
     }
 
+    $(window).load(function () {
+        $('#PrintTest').show();
+    })
 </script>

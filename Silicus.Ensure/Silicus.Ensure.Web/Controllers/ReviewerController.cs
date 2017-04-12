@@ -304,13 +304,13 @@ namespace Silicus.Ensure.Web.Controllers
         }
         #endregion
 
-        #region Export Data
+        #region Print Data
         public ActionResult CreateDocument(int userId, int userTestSuiteId)
         {
             var user = _userService.GetUserById(userId);
             var candidateInfoBusinessModel = _userService.GetCandidateInfo(user);
             var candidateInfo = _mappingService.Map<CandidateInfoBusinessModel, CandidateInfoViewModel>(candidateInfoBusinessModel);
-            var questions = _testSuiteService.GetUserTestDetailsForExport(userTestSuiteId);
+            var questions = _testSuiteService.GetUserTestDetailsForPrint(userTestSuiteId);
             var questionsModel = _mappingService.Map<List<TestDetailsBusinessModel>, List<TestDetailsViewModel>>(questions);
             var exportModel = new ExportQuestionsViewModel
             {
@@ -322,20 +322,30 @@ namespace Silicus.Ensure.Web.Controllers
             return View("Export", exportModel);
         }
 
-        public string RenderRazorViewToString(string viewName, object model)
+        public ActionResult PrintFromPreview(int candidateId,int testSuiteId)
         {
-            ViewData.Model = model;
-            using (var sw = new StringWriter())
+            var candidate = _userService.GetUserById(candidateId);
+            var candidateInfoBusinessModel = _userService.GetCandidateInfo(candidate);
+            var candidateInfo = _mappingService.Map<CandidateInfoBusinessModel, CandidateInfoViewModel>(candidateInfoBusinessModel);
+
+            var viewerEmailId = User.Identity.Name;
+            var viewer = _containerUserService.FindUserByEmail(viewerEmailId);
+            TestSuite testSuitDetails = _testSuiteService.GetTestSuitById(testSuiteId);
+            var previewTest = new PreviewTestBusinessModel { TestSuite = testSuitDetails, ViewerId = viewer.ID, CandidateId = candidateId };
+          
+            _testSuiteService.GetPreview(previewTest);
+            var questions = _testSuiteService.GetUserTestDetailsByViewerIdForPrint(previewTest);
+            var questionsModel = _mappingService.Map<List<TestDetailsBusinessModel>, List<TestDetailsViewModel>>(questions);
+            var exportModel = new ExportQuestionsViewModel
             {
-                var viewResult = ViewEngines.Engines.FindPartialView(ControllerContext,
-                                                                         viewName);
-                var viewContext = new ViewContext(ControllerContext, viewResult.View,
-                                             ViewData, TempData, sw);
-                viewResult.View.Render(viewContext, sw);
-                viewResult.ViewEngine.ReleaseView(ControllerContext, viewResult.View);
-                return sw.GetStringBuilder().ToString();
-            }
+                CandidateInfo = candidateInfo,
+                Objective = questionsModel.Where(q => q.QuestionType == ((int)QuestionType.Objective)).ToList(),
+                Practical = questionsModel.Where(q => q.QuestionType == ((int)QuestionType.Practical)).ToList()
+            };
+
+            return View("Export", exportModel);
         }
+       
         #endregion
     }
 }
