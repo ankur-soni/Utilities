@@ -1,35 +1,57 @@
 ﻿@model Silicus.Ensure.Web.Models.Test.CandidateInfoViewModel
 
+<style>
+    @@media print {
+        @@page {
+            size: auto;
+           margin:0;
+        }
+    }
+</style>
+
 
     <div class="row">
         <div class="col-sm-12">
             <div >
                 <h3 class="pull-left">Candidate Details:</h3>
-                <i title="Print Page" class="fa fa-2x fa-print pull-right" aria-hidden="true"></i>
+                <i onClick="window.print();" title="Print Page" class="fa fa-2x fa-print pull-right" aria-hidden="true"></i>
             </div>
         </div>
     </div>
 <hr />
     <div class="row M-T15">
-        <div class="col-lg-2 col-md-3 col-sm-3">@Html.LabelFor(m => m.Name, new { style = "font-weight:bold;font-size:13px;" })</div>
-        <div class="col-lg-2 col-md-3 col-sm-3 ">@Model.Name</div>
-        <div class="col-lg-2 col-md-3 col-sm-3 ">@Html.LabelFor(m => m.RequisitionId, new { style = "font-weight:bold;font-size:13px;" })</div>
-        <div class="col-lg-2 col-md-3 col-sm-3 ">@Model.RequisitionId</div>
+        <div class="col-lg-2 col-md-3 col-sm-3 col-xs-3">@Html.LabelFor(m => m.Name, new { style = "font-weight:bold;font-size:13px;" })</div>
+        <div class="col-lg-2 col-md-3 col-sm-3 col-xs-3">@Model.Name</div>
+        <div class="col-lg-2 col-md-3 col-sm-3 col-xs-3">@Html.LabelFor(m => m.RequisitionId, new { style = "font-weight:bold;font-size:13px;" })</div>
+        <div class="col-lg-2 col-md-3 col-sm-3 col-xs-3">@Model.RequisitionId</div>
         <div class="clearfix visible-sm"></div>
         <div class="clearfix visible-md"></div>
         <div class="clearfix visible-lg"></div>
         <div class="clearfix visible-xs"></div>
-        <div class="col-lg-2 col-md-3 col-sm-3">@Html.LabelFor(m => m.TotalExperience, new { style = "font-weight:bold;font-size:13px;" })</div>
-        <div class="col-lg-2 col-md-3 col-sm-3">@Html.DisplayFor(m => m.TotalExperience)</div>
+        <div class="col-lg-2 col-md-3 col-sm-3 col-xs-3">@Html.LabelFor(m => m.TotalExperience, new { style = "font-weight:bold;font-size:13px;" })</div>
+        <div class="col-lg-2 col-md-3 col-sm-3 col-xs-3">@Html.DisplayFor(m => m.TotalExperience)</div>
         
-        <div class="col-lg-2 col-md-3 col-sm-3">@Html.LabelFor(m => m.Position, new { style = "font-weight:bold;font-size:13px;" })</div>
-        <div class="col-lg-2 col-md-3 col-sm-3">@Model.Position</div>
+        <div class="col-lg-2 col-md-3 col-sm-3 col-xs-3">@Html.LabelFor(m => m.Position, new { style = "font-weight:bold;font-size:13px;" })</div>
+        <div class="col-lg-2 col-md-3 col-sm-3 col-xs-3">@Model.Position</div>
         <div class="clearfix visible-sm"></div>
         <div class="clearfix visible-md"></div>
         <div class="clearfix visible-lg"></div>
         <div class="clearfix visible-xs"></div>
-        <div class="col-lg-2 col-md-3 col-sm-3">@Html.LabelFor(m => m.DOB, new { style = "font-weight:bold;font-size:13px;" })</div>
-        <div class="col-lg-2 col-md-3 col-sm-3">@Html.DisplayFor(m => m.DOB)</div>
+        <div class="col-lg-2 col-md-3 col-sm-3 col-xs-3">@Html.LabelFor(m => m.DOB, new { style = "font-weight:bold;font-size:13px;" })</div>
+        <div class="col-lg-2 col-md-3 col-sm-3 col-xs-3">@Html.DisplayFor(m => m.DOB)</div>
     </div>
 
 
+@*<script>
+    function PrintToPDF() {
+        window.frames["print_frame"].document.body.innerHTML = document.getElementById("printableDiv").innerHTML;
+        window.frames["print_frame"].window.focus();
+        window.frames["print_frame"].window.print();
+    }
+    $(document).ready({
+        function() {
+            $('#PrintToPDF').on('click', PrintToPDF);
+        }
+    });
+
+</script>*@

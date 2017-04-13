@@ -3,27 +3,7 @@
 @{
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
-<style>
-    @@media print {
-        @@page {
-            size: auto;
-            margin: 0;
-        }
-    }
-</style>
-<script>
-    function PrintToPDF() {
-        window.frames["print_frame"].document.body.innerHTML = document.getElementById("printableDiv").innerHTML;
-        window.frames["print_frame"].window.focus();
-        window.frames["print_frame"].window.print();
-    }
-    $(document).ready({
-        function() {
-            $('#PrintToPDF').on('click', PrintToPDF);
-        }
-    });
 
-</script>
 <div id="headerRow" class="row white-bg header-row">
     <nav class="" role="navigation" style="margin-bottom: 0">
         <div class="navbar-header">
@@ -37,9 +17,6 @@
 </div>
 
 
-
-
-
 <div id="print" class="row">
     <div class="col-sm-12">
         <div class="box M-T15 M-B60">
@@ -47,7 +24,7 @@
                 <div id="printableDiv">
                     <div>
                         @Html.Partial("_CandidateInfoForPrint", Model.CandidateInfo)
-                        @*<span id="PrintToPDF">Print</span>*@
+                        
                     </div>
                     @if (Model != null && Model.Objective != null && Model.Objective.Count > 0)
                     {
@@ -508,7 +485,7 @@
 
                     }
                 </div>
-                <iframe name="print_frame" width="0" height="0" frameborder="0" style="visibility:hidden" src="about:blank"></iframe>
+                
             </div>
         </div>
     </div>
