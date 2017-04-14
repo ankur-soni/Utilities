@@ -105,6 +105,7 @@ namespace Silicus.Ensure.Web.Controllers
             var userWithRoles = (from userinRoles in userRoles
                                  join allUsers in userlistViewModel
                                  on userinRoles.UserId equals allUsers.UserId
+                                 where userinRoles.IsActive
                                  select new UserDetailViewModel
                                  {
                                      RoleName = userinRoles?.Role?.Name,
