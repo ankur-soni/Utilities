@@ -2668,7 +2668,7 @@ width: 310px;
 
 .radioBtnImg, .checkboxBtnImg{margin-right:5px!important;}
 .marginTopRow{padding-top:15px!important;}
-hr {margin-top:0px!important;margin-bottom:5px!important;border-top: 1px solid #777;}
+/*hr {margin-top:0px!important;margin-bottom:5px!important;border-top: 1px solid #777;}*/
 #printLogo, #printBorder{display:none!important;}
 
  @media print {
