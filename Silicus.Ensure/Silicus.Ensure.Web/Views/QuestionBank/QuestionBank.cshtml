@@ -1,12 +1,19 @@
 ﻿@model List<Silicus.Ensure.Web.Models.QuestionModel>
-
 @using Kendo.Mvc.UI;
 
 @{
     ViewBag.Title = "Question Bank";
-    Layout = "~/Views/Shared/_Layout.cshtml";
+    var role = Silicus.Ensure.Web.MvcApplication.getCurrentUserRoles();
 }
-
+<script>
+    $(window).load(function (){
+        userRole = @Html.Raw(Json.Encode(role));
+        if ((userRole.indexOf("@Silicus.Ensure.Models.Constants.RoleName.Panel.ToString()")<0)) {
+            $('#ReviewAllQuestions').hide();
+        }
+    })
+  
+</script>
 
 <div class="row white-bg header-row">
     <nav class="" role="navigation" style="margin-bottom: 0">
@@ -82,9 +89,11 @@
                                                                 .HtmlAttributes(new { style = "width: 100%", @class = "M-T5" })
                     )
                 </div>
-                <div class="col-sm-3 col-md-3 col-lg-2 cust-mar">
+                <div class="col-sm-5 col-md-5 col-lg-4 cust-mar">
                     <a href='/QuestionBank/AddQuestions?questionId=0' class='k-button k-button-icontext k-grid-add'><span class='k-icon k-add'></span>Add question</a>
+                    
                 </div>
+                <Button id="ReviewAllQuestions"><span></span>Review questions</Button>
             </div>
         </div>
     </div>
@@ -104,8 +113,11 @@
                                                 <a href='/QuestionBank/EditQuestion?questionId=#=Id#' class='k-button M-T4'>Edit</a>
                             <a class='k-button M-T4' href='\\#' onclick='ConfirmDeleteQuestionRow(event)'>Delete</a>
                                                ").Title("Actions").Width(400).Sortable(false);
+                                 columns.Bound(q => q.StatusName).ClientGroupHeaderTemplate("#= value# (#=count#)").Hidden(true);
                              })
-                              .DataSource(dataSource => dataSource.Ajax().Sort(sort => sort.Add("Id").Ascending()).Model(model =>
+                              .DataSource(dataSource => dataSource.Ajax()
+                              .Group(group => group.Add(p => p.StatusName)).Aggregates(aggr => aggr.Add(p => p.StatusName).Count())
+                              .Sort(sort => sort.Add("Id").Ascending()).Model(model =>
                               {
                                   model.Id(p => p.Id);
                                   model.Field(p => p.Id).Editable(false);
@@ -124,7 +136,7 @@
     $(document).ready(function () {
         $('.page-wrapper').css('padding-bottom', '60px');
         $("#messageDiv").hide();
-
+        $('#ReviewAllQuestions').on('click', ReviewAllQuestions);
         SetNavigationMenuActive('QuestionBank');
         // Kendo Grid Filter (Search)
         $("#FieldFilter").keyup(function () {
@@ -159,7 +171,7 @@
     function ProficiencyLevelAndQuetiontype() {
         var queType = $("#QuestionType").val();
         var level = $("#ProficiencyLevelDropDown").val();
-
+        
         var grid = $("#questionGrids").data("kendoGrid");
         var filterArray = new Array();
 
@@ -214,4 +226,60 @@
         });
     }
 
+    function ReviewAllQuestions(e) {
+        hideCustomLoader();
+        $.ajax({
+            url: '/questionbank/reviewquestion?questionid=2',
+            success: function (data) {
+                hideCustomLoader();
+                $('#ReviewQuestionModal').modal('show');
+                $('#ReviewQuestionModal .modal-body').html("");
+                $('#ReviewQuestionModal .modal-body').html(data);
+                // settimeout(showdata(data), 9000);
+            }
+        });
+    }
+
+    function  ApproveQuestion(){
+        var questionId=$('#QuestionId').attr('data-value');
+        alert(questionId);
+    }
+
 </script>
+@*<div id="dialog" title="Create Album" style="overflow: hidden;"></div>*@
+<div class="modal fade" id="ReviewQuestionModal" role="dialog" style="z-index:99999" tabindex='-1' data-keyboard="false" data-backdrop="static">
+    <div class="modal-dialog">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <div class="popup-header-wrapper dashboard-header-bgcolor mainheading txt-color-white">
+                    <div class="container-fluid">
+                        <div class="row">
+                            <div class="">
+                                <span class="font24">Configuration</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-body">
+            </div>
+            <div class="modal-footer">
+                <div class="popup-cancel-btn">
+                    <div class="container-fluid">
+                        <div class="row">
+                            <div class="col-lg-4 col-sm-4 pull-right">
+                                <div id="saveRehireEmployeeConfig">
+                                    <button id="ApproveQuestion" type="button" class="save bg-red form-group">
+                                        <i class="fa fa-save" onlick="ApproveQuestion()"></i> Approve
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

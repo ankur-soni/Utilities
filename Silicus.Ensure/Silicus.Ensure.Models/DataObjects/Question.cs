@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Silicus.Ensure.Models.Constants;
+using System;
+using System.Collections.Generic;
 
 namespace Silicus.Ensure.Models.DataObjects
 {
@@ -29,5 +31,7 @@ namespace Silicus.Ensure.Models.DataObjects
         public int CreatedBy { get; set; }
         public DateTime ModifiedOn { get; set; }
         public int ModifiedBy { get; set; }
+        public QuestionStatus Status { get; set; }
+        public virtual ICollection<QuestionStatusDetails> QuestionStatusDetails { get; set; }
     }
 }

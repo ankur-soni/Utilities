@@ -148,6 +148,7 @@
     <Compile Include="EntityConfigurations\ProjectDetailMap.cs" />
     <Compile Include="EntityConfigurations\ProjectMap.cs" />
     <Compile Include="EntityConfigurations\QuestionMap.cs" />
+    <Compile Include="EntityConfigurations\QuestionStatusDetailsMap.cs" />
     <Compile Include="EntityConfigurations\RecruiterMembersDetailMap.cs" />
     <Compile Include="EntityConfigurations\RolesMap.cs" />
     <Compile Include="EntityConfigurations\TableSettings.cs" />

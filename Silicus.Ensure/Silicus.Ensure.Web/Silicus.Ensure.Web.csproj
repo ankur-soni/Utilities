@@ -923,6 +923,7 @@
     <Content Include="Views\Admin\Dashboard.cshtml" />
     <Content Include="Views\Shared\Export.cshtml" />
     <Content Include="Views\Shared\_CandidateInfoForPrint.cshtml" />
+    <Content Include="Views\QuestionBank\_ReviewQuestion.cshtml" />
     <None Include="Web.Azure.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

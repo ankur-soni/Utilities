@@ -1,4 +1,5 @@
-﻿using Silicus.Ensure.Models.DataObjects;
+﻿using Silicus.Ensure.Models.Constants;
+using Silicus.Ensure.Models.DataObjects;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -31,7 +32,6 @@ namespace Silicus.Ensure.Web.Models
         public string Option6 { get; set; }
         public string Option7 { get; set; }
         public string Option8 { get; set; }
-
         public bool IsAnsOption1 { get; set; }
         public bool IsAnsOption2 { get; set; }
         public bool IsAnsOption3 { get; set; }
@@ -55,7 +55,6 @@ namespace Silicus.Ensure.Web.Models
         public int? Marks { get; set; }
         public bool IsPublishd { get; set; }
         public bool IsDeleted { get; set; }
-
         public DateTime CreatedOn { get; set; }
         public int CreatedBy { get; set; }
         public DateTime ModifiedOn { get; set; }
@@ -63,9 +62,10 @@ namespace Silicus.Ensure.Web.Models
         public List<Tags> SkillTagsList { get; set; }
         [Required(ErrorMessage = "Skill tag is required.")]
         public List<string> SkillTag { get; set; }
-
         public int Success { get; set; }
         public bool Edit { get; set; }
+        public QuestionStatus Status { get; set; }
+        public string StatusName { get; set; }
     }
 
     public enum ProficiencyLevel

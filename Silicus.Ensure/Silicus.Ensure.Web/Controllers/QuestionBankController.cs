@@ -5,10 +5,11 @@ using Silicus.Ensure.Web.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Web;
 using System.Web.Mvc;
-
+using System.ComponentModel;
 namespace Silicus.Ensure.Web.Controllers
 {
     [Authorize]
@@ -84,6 +85,7 @@ namespace Silicus.Ensure.Web.Controllers
             {
                 q.QuestionDescription = q.QuestionDescription.Substring(0, Math.Min(q.QuestionDescription.Length, 100));
                 q.QuestionType = GetQuestionType(q.QuestionType);
+                q.StatusName = GetEnumDescription(q.Status);
                 q.Tag = string.Join(" | ", Tags().Where(t => que.Where(x => x.Id == q.Id).Select(p => p.Tags).First().ToString().Split(',').Contains(t.TagId.ToString())).Select(l => l.TagName).ToList());
                 q.ProficiencyLevel = GetCompetency(q.ProficiencyLevel);
             }
@@ -113,6 +115,30 @@ namespace Silicus.Ensure.Web.Controllers
                 return View("AddQuestions", queModel);
             }
             return View("AddQuestions", null);
+        }
+
+        public ActionResult ReviewQuestion(string questionId)
+        {
+            if (!string.IsNullOrEmpty(questionId))
+            {
+                Question question = _questionService.GetSingleQuestion(Convert.ToInt32(questionId));
+                QuestionModel queModel = _mappingService.Map<Question, QuestionModel>(question);
+                queModel.QuestionDescription = HttpUtility.HtmlDecode(question.QuestionDescription);
+                //queModel.CorrectAnswer = (question.CorrectAnswer != null) ? question.CorrectAnswer.Split(',').ToList() : null;
+
+                if (question.CorrectAnswer != null)
+                {
+                    setAnsToOptions(question.CorrectAnswer, queModel);
+                }
+
+                queModel.Answer = HttpUtility.HtmlDecode(question.Answer);
+                queModel.SkillTag = question.Tags.Split(',').ToList();
+                queModel.Success = 0;
+                queModel.Edit = true;
+                queModel.SkillTagsList = Tags();
+                return View("_ReviewQuestion",queModel);
+            }
+            return View("_ReviewQuestion", null);
         }
 
         public JsonResult DeleteQuestion(QuestionModel question)
@@ -178,7 +204,22 @@ namespace Silicus.Ensure.Web.Controllers
             else
                 return "Expert";
         }
+        
+        public static string GetEnumDescription(Enum value)
+        {
+            FieldInfo field = value.GetType().GetField(value.ToString());
 
+            DescriptionAttribute[] attributes =
+                (DescriptionAttribute[])field.GetCustomAttributes(
+                typeof(DescriptionAttribute),
+                false);
+
+            if (attributes != null &&
+                attributes.Length > 0)
+                return attributes[0].Description;
+            else
+                return value.ToString();
+        }
 
     }
 }
