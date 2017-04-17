@@ -478,109 +478,111 @@
 
         $("#btnSave").click(function () {
             window.onbeforeunload = null;
-            var sum=0;
+            var sum = 0;
             $summands = $(".WeightageField");
             $summands.each(function () {
                 var value = Number($(this).val());
                 if (!isNaN(value)) sum += value;
             });
             var validatable = $("form").kendoValidator().data("kendoValidator");
-            if (sum != 100)
-            {
-                toastr.error("Weightage sum must be 100.")
-            }
-            else if (validatable.validate()) {
-                tags = '';
-                var TestSuiteId = $("#TestSuiteId").val();
-                var IsCopy = $("#IsCopy").val();
-                var TestSuiteName = $("#TestSuiteName").val();
-                var Duration = $("#Duration").val();
-                var Position = $("#Position").val();
-                var Competency = $("#Competency").val();
-                var ProjectName = $("#ProjectName").val();
-                var FromExperience = $("#FromExperience").val();
-                var ToExperience = $("#ToExperience").val();
-                var OptionalQuestion = $("#OptionalQuestion").val();
-                var PracticalQuestion = $("#PracticalQuestion").val();
-                var Status = $("#Status").val();
-                var SpecialInstruction = $("#SpecialInstruction").val();
-                var Weights = '';
-                var Proficiency = '';
+
+            if (validatable.validate()) {
+                if (sum != 100) {
+                    toastr.error("Weightage sum must be 100.")
+                }
+                else {
+                    tags = '';
+                    var TestSuiteId = $("#TestSuiteId").val();
+                    var IsCopy = $("#IsCopy").val();
+                    var TestSuiteName = $("#TestSuiteName").val();
+                    var Duration = $("#Duration").val();
+                    var Position = $("#Position").val();
+                    var Competency = $("#Competency").val();
+                    var ProjectName = $("#ProjectName").val();
+                    var FromExperience = $("#FromExperience").val();
+                    var ToExperience = $("#ToExperience").val();
+                    var OptionalQuestion = $("#OptionalQuestion").val();
+                    var PracticalQuestion = $("#PracticalQuestion").val();
+                    var Status = $("#Status").val();
+                    var SpecialInstruction = $("#SpecialInstruction").val();
+                    var Weights = '';
+                    var Proficiency = '';
 
 
-                $('#TagCustomControl input.tagAutoComplete').each(function () {
-                    if (tags == '') {
-                        tags += $(this).val();
-                    }
-                    else {
-                        tags += "," + $(this).val();
-                    }
-                })
-
-                $('#TagCustomControl input.WeightageField').each(function () {
-                    if (Weights == '') {
-                        Weights += $(this).val();
-                    }
-                    else {
-                        Weights += "," + $(this).val();
-                    }
-                })
-
-                $('#TagCustomControl input.proficiencyDropDown').each(function () {
-                    if (Proficiency == '') {
-                        Proficiency += $(this).val();
-                    }
-                    else {
-                        Proficiency += "," + $(this).val();
-                    }
-                })
-
-                $.ajax(
-                {
-                    type: "POST",
-                    url: "Save",
-                    data: {
-                        TestSuiteId: TestSuiteId,
-                        IsCopy: IsCopy,
-                        TestSuiteName: TestSuiteName,
-                        Duration: Duration,
-                        Position: Position,
-                        Competency: Competency,
-                        PrimaryTagNames: tags,
-                        Weights: Weights,
-                        Proficiency: Proficiency,
-                        ProjectName: ProjectName,
-                        Status: Status,
-                        FromExperience: FromExperience,
-                        ToExperience: ToExperience,
-                        OptionalQuestion: OptionalQuestion,
-                        PracticalQuestion: PracticalQuestion,
-                        SpecialInstruction: SpecialInstruction
-                    },
-                    success: function (response) {
-                        if (response != null && response.status == "success") {
-                            $("#SuccessModel").modal();
-                            if (IsCopy == "True") {
-                                ShowMessage("Test suite copy created successfully.", 1);
-                                redirectToTestSuiteList();
-                            }
-                            else if (TestSuiteId == 0) {
-                                ShowMessage("Test suite created successfully.", 1);
-                                redirectToTestSuiteList();
-                            }
-                            else {
-                                ShowMessage("Test suite updated successfully.", 1);
-                                redirectToTestSuiteList();
-                            }
-                        } else {
-                            ShowMessage(response.message, 0);
+                    $('#TagCustomControl input.tagAutoComplete').each(function () {
+                        if (tags == '') {
+                            tags += $(this).val();
                         }
-                    },
-                    error: function (response) {
-                        ShowMessage("error!");
+                        else {
+                            tags += "," + $(this).val();
+                        }
+                    })
 
-                    }
-                });
+                    $('#TagCustomControl input.WeightageField').each(function () {
+                        if (Weights == '') {
+                            Weights += $(this).val();
+                        }
+                        else {
+                            Weights += "," + $(this).val();
+                        }
+                    })
+
+                    $('#TagCustomControl input.proficiencyDropDown').each(function () {
+                        if (Proficiency == '') {
+                            Proficiency += $(this).val();
+                        }
+                        else {
+                            Proficiency += "," + $(this).val();
+                        }
+                    })
+
+                    $.ajax(
+                    {
+                        type: "POST",
+                        url: "Save",
+                        data: {
+                            TestSuiteId: TestSuiteId,
+                            IsCopy: IsCopy,
+                            TestSuiteName: TestSuiteName,
+                            Duration: Duration,
+                            Position: Position,
+                            Competency: Competency,
+                            PrimaryTagNames: tags,
+                            Weights: Weights,
+                            Proficiency: Proficiency,
+                            ProjectName: ProjectName,
+                            Status: Status,
+                            FromExperience: FromExperience,
+                            ToExperience: ToExperience,
+                            OptionalQuestion: OptionalQuestion,
+                            PracticalQuestion: PracticalQuestion,
+                            SpecialInstruction: SpecialInstruction
+                        },
+                        success: function (response) {
+                            if (response != null && response.status == "success") {
+                                $("#SuccessModel").modal();
+                                if (IsCopy == "True") {
+                                    ShowMessage("Test suite copy created successfully.", 1);
+                                    redirectToTestSuiteList();
+                                }
+                                else if (TestSuiteId == 0) {
+                                    ShowMessage("Test suite created successfully.", 1);
+                                    redirectToTestSuiteList();
+                                }
+                                else {
+                                    ShowMessage("Test suite updated successfully.", 1);
+                                    redirectToTestSuiteList();
+                                }
+                            } else {
+                                ShowMessage(response.message, 0);
+                            }
+                        },
+                        error: function (response) {
+                            ShowMessage("error!");
+
+                        }
+                    });
+                }
             }
         });
 
