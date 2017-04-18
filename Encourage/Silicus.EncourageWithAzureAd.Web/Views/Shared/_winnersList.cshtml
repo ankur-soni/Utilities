@@ -25,14 +25,16 @@
                     <div class="well">
                         <div class="media">
                             <a class="pull-left" href="#">
-                                @if (File.Exists(Server.MapPath("~/UserProfilePicture") + "/" + item.EmployeeId + ".jpg"))
-                                {
-                                    <img  src="~/UserProfilePicture/@(item.EmployeeId).jpg" />
-                                }
-                                else
-                                {
-                                    <img  src="~/UserProfilePicture/Default.jpg" />
-                                }
+                                <div class="fixed-img">
+                                    @if (File.Exists(Server.MapPath("~/UserProfilePicture") + "/" + item.EmployeeId + ".jpg"))
+                                    {
+                                        <img class="pro-pic-img" src="~/UserProfilePicture/@(item.EmployeeId).jpg" />
+                                    }
+                                    else
+                                    {
+                                        <img class="pro-pic-img" src="~/UserProfilePicture/Default.jpg" />
+                                    }
+                                </div>
                             </a>
                             <div class="media-body">
                                 <span class="font-bold txt-color">@Html.LabelFor(modelItem => item.DisplayName): </span><span class="media-heading font-normal">@Html.DisplayFor(modelItem => item.DisplayName)</span>

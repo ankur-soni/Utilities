@@ -9,6 +9,15 @@
 .M-B60{margin-bottom:60px!important;}
 .boxShadow{box-shadow:1px 1px 3px #888888;}
 
+.fixed-img{
+    width:120px;
+    height:120px;
+}
+.pro-pic-img{
+    object-fit: contain;
+    width: 100%;
+    height: 100%;
+}
 /*Loader css - Start*/
 .loader {
   border: 10px solid #f3f3f3;
