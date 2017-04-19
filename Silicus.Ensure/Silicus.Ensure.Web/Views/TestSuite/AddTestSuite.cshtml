@@ -72,10 +72,10 @@
                             </div>
 
                             <div class="form-group">
-                                <div class="col-md-2 col-sm-2 col-xs-2">
+                                <div class="col-md-2 col-sm-2 col-xs-12">
                                     @Html.LabelFor(model => model.Position) <span style="color:red;">*</span>
                                 </div>
-                                <div class="col-md-4 col-sm-8 col-xs-8">
+                                <div class="col-md-4 col-sm-8 col-xs-9">
                                     @(Html.Kendo().DropDownListFor(m => m.Position)
                                     .DataTextField("PositionName")
                                     .DataValueField("PositionId")
@@ -123,16 +123,16 @@
                             </div>
 
                             <div class="form-group">
-                                <div class="col-md-2 col-sm-2 col-xs-2">
+                                <div class="col-md-2 col-sm-2 col-xs-12">
                                     Question type <span style="color:red;">*</span>
                                 </div>
-                                <div class="col-lg-4 col-md-8 col-sm-10 col-xs-10">
+                                <div class="col-lg-4 col-md-8 col-sm-10 col-xs-12">
 
                                     <div class="row">
-                                        <div class="col-md-2 col-sm-2 col-xs-2">
+                                        <div class="col-md-2 col-sm-2 col-xs-12">
                                             @Html.LabelFor(model => model.OptionalQuestion, htmlAttributes: new { @class = "" })
                                         </div>
-                                        <div class="col-md-4 col-sm-4 col-xs-4">
+                                        <div class="col-md-4 col-sm-4 col-xs-12">
                                             @if (Model != null && Model.OptionalQuestion == 0)
                                             {
                                                 @Html.TextBoxFor(m => m.OptionalQuestion, new { @class = "form-control", Value = "", placeholder = "in %" })
@@ -143,10 +143,10 @@
                                             }
                                             @Html.ValidationMessageFor(m => m.OptionalQuestion)
                                         </div>
-                                        <div class="col-md-2 col-sm-2 col-xs-2">
+                                        <div class="col-md-2 col-sm-2 col-xs-12">
                                             @Html.LabelFor(model => model.PracticalQuestion, htmlAttributes: new { @class = "" })
                                         </div>
-                                        <div class="col-md-4 col-sm-4 col-xs-4">
+                                        <div class="col-md-4 col-sm-4 col-xs-12">
                                             @if (Model != null && Model.PracticalQuestion == 0)
                                             {
                                                 @Html.TextBoxFor(m => m.PracticalQuestion, new { @class = "form-control", Value = "", placeholder = "in %" })
@@ -171,10 +171,10 @@
                             </div>
 
                             <div class="form-group">
-                                <div class="col-md-2 col-sm-2 col-xs-2">
+                                <div class="col-md-2 col-sm-2 col-xs-12">
                                     Experience <span style="color:red;">*</span>
                                 </div>
-                                <div class="col-md-2 col-sm-5 col-xs-5">
+                                <div class="col-md-2 col-sm-5 col-xs-6">
                                     @(Html.Kendo().DropDownListFor(m => m.FromExperience)
                         .DataTextField("Text")
                         .DataValueField("Value")
@@ -185,7 +185,7 @@
                                     )
                                     @Html.ValidationMessageFor(m => m.FromExperience)
                                 </div>
-                                <div class="col-md-2 col-sm-5 col-xs-5">
+                                <div class="col-md-2 col-sm-5 col-xs-6">
                                     @(Html.Kendo().DropDownListFor(m => m.ToExperience)
                         .DataTextField("Text")
                         .DataValueField("Value")
@@ -201,18 +201,18 @@
                             <div id="TagCustomControl">
 
                                 <div class="form-group">
-                                    <div class="col-md-2 col-sm-2 col-xs-2">
+                                    <div class="col-md-2 col-sm-2 col-xs-12">
                                     </div>
-                                    <div class="col-md-2 col-sm-2 col-xs-2">
+                                    <div class="col-md-2 col-sm-2 col-xs-12">
                                         <span class="font-Bold themeColorBlue">Skill tags </span> <span style="color:red;">*</span>
                                     </div>
-                                    <div class="col-md-2 col-sm-2 col-xs-2">
+                                    <div class="col-md-2 col-sm-2 col-xs-12">
                                         <span class="font-Bold themeColorBlue"> Weightage % </span> <span style="color:red;">*</span>
                                     </div>
-                                    <div class="col-md-2 col-sm-2 col-xs-2">
+                                    <div class="col-md-2 col-sm-2 col-xs-12">
                                         <span class="font-Bold themeColorBlue">Efficiency</span> <span style="color:red;">*</span>
                                     </div>
-                                    <div class="col-md-2 col-sm-2 col-xs-2">
+                                    <div class="col-md-2 col-sm-2 col-xs-12">
                                         <span class="font-Bold themeColorBlue"></span>
                                     </div>
                                 </div>
@@ -220,7 +220,7 @@
 
                                 @if (Model != null && Model.Tags != null && Model.Tags.Count > 0)
                                 {
-                                    <div class="col-md-2 col-sm-2 col-xs-2" style="margin-right:-5px;">
+                                    <div class="col-md-2 col-sm-2 col-xs-12" style="margin-right:-5px;">
                                         Skill tags <span style="color:red;">*</span>
                                     </div>
                                     int i = 0;
@@ -231,20 +231,20 @@
                                         <div class="form-group">
                                             @if (i != 1)
                                             {
-                                                <div class="col-md-2 col-sm-2 col-xs-2">
+                                                <div class="col-md-2 col-sm-2 col-xs-12 M-T10">
                                                 </div>
                                             }
-                                            <div class="col-md-2 col-sm-2 col-xs-2">
+                                            <div class="col-md-2 col-sm-2 col-xs-12 M-T10">
                                                 <input type="text" id="Tag_@i" value="@tag.TagName" name="Tag_@i" data-val="true" data-val-required="Skill tags is required." class="tagAutoComplete inputSkillTag" />
 
                                             </div>
-                                            <div class="col-md-2 col-sm-2 col-xs-2">
+                                            <div class="col-md-2 col-sm-2 col-xs-12 M-T10">
                                                 <input type="text" id="Weightage_@i" value="@tag.Weightage" name="Weightage_@i" data-val="true" data-val-required="Weightage is required." class="key-numeric WeightageField form-control" />
                                             </div>
-                                            <div class="col-md-2 col-sm-3 col-xs-3">
+                                            <div class="col-md-2 col-sm-3 col-xs-12 M-T10">
                                                 <input type="text" id="Proficiency_@i" value="@tag.Proficiency" name="Proficiency_@i" data-val="true" data-val-required="Efficiency is required." required class="proficiencyDropDown" />
                                             </div>
-                                            <div class="col-md-2 col-sm-3 col-xs-3">
+                                            <div class="col-md-2 col-sm-3 col-xs-12 M-T10">
 
                                                 @{var isDisply = "";
                                                     if (tagCount > i)
@@ -266,19 +266,19 @@
                                                     else
                                                     {
                                                         <div class="form-group">
-                                                            <div class="col-md-2 col-sm-2 col-xs-2">
+                                                            <div class="col-md-2 col-sm-2 col-xs-12 M-T10">
                                                                 Skill tags <span style="color:red;">*</span>
                                                             </div>
-                                                            <div class="col-md-2 col-sm-2 col-xs-2">
+                                                            <div class="col-md-2 col-sm-2 col-xs-12 M-T10">
                                                                 <input type="text" id="Tag_1" name="Tag_1" data-val="true" data-val-required="Skill tags is required." class="tagAutoComplete inputSkillTag" />
                                                             </div>
-                                                            <div class="col-md-2 col-sm-2 col-xs-2">
+                                                            <div class="col-md-2 col-sm-2 col-xs-12 M-T10">
                                                                 <input type="text" id="Weightage_1" name="Weightage_1" data-val="true" data-val-required="Weightage is required." class="key-numeric WeightageField form-control" />
                                                             </div>
-                                                            <div class="col-md-2 col-sm-3 col-xs-3">
+                                                            <div class="col-md-2 col-sm-3 col-xs-12 M-T10">
                                                                 <input type="text" id="Proficiency_1" name="Proficiency_1" data-val="true" data-val-required="Efficiency is required." class="proficiencyDropDown" />
                                                             </div>
-                                                            <div class="col-md-2 col-sm-3 col-xs-3">
+                                                            <div class="col-md-2 col-sm-3 col-xs-12 M-T10">
                                                                 @*<input data-val="1" type="button" value="Add" class="addbtn btn btn-primary" />*@
                                                                 <span data-val="1" class="addbtn btn btn-primary"><i class="fa fa-plus" aria-hidden="true"></i></span>
                                                             </div>
@@ -369,17 +369,17 @@
 
     function formatOfCustomControl(rowno) {
         return '<div class="form-group">' +
-                    '<div class="col-md-2 col-sm-2 col-xs-2 col-lg-2"> <span style="color:red;"></span></div>' +
-                    '<div class="col-md-2 col-sm-2 col-xs-2">' +
+                    '<div class="col-md-2 col-sm-2 col-xs-12 col-lg-2"> <span style="color:red;"></span></div>' +
+                    '<div class="col-md-2 col-sm-2 col-xs-12 M-T10">' +
                         '<input type="text" id="Tag_' + rowno + '" name="Tag_' + rowno + '" data-val="true" data-val-required="Skill tags is required." class="tagAutoComplete inputSkillTag">' +
                     '</div>' +
-                    '<div class="col-md-2 col-sm-2 col-xs-2">' +
+                    '<div class="col-md-2 col-sm-2 col-xs-12 M-T10">' +
                         '<input type="text" id="Weightage_' + rowno + '" name="Weightage_' + rowno + '" data-val="true" data-val-required="Weightage is required." class="key-numeric WeightageField" />' +
                     '</div>' +
-                    '<div class="col-md-2 col-sm-3 col-xs-2">' +
+                    '<div class="col-md-2 col-sm-3 col-xs-12 M-T10">' +
                         '<input type="text" id="Proficiency_' + rowno + '" name="Proficiency_' + rowno + '" data-val="true" data-val-required="Efficiency is required." class="proficiencyDropDown" />' +
                     '</div>' +
-        '<div class="col-md-2 col-sm-3 col-xs-2">' +
+        '<div class="col-md-2 col-sm-3 col-xs-12 M-T10">' +
 
             '<span data-val="' + rowno + '" style="margin-right:5px;" class="addbtn btn btn-primary"><i class="fa fa-plus" aria-hidden="true"></i></span>' +
 
