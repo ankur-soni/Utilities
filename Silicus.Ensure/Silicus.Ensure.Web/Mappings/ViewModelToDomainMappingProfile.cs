@@ -53,7 +53,7 @@ namespace Silicus.Ensure.Web.Mappings
 
             Mapper.CreateMap<CandidateInfoViewModel, CandidateInfoBusinessModel>();
             Mapper.CreateMap<CandidateHistoryViewModel, UserBusinessModel>();
-
+            Mapper.CreateMap<TechnologyViewModel,TechnologyBusinessModel>();
         }
     }
 }

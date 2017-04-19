@@ -1,0 +1,34 @@
+﻿@using Kendo.Mvc.UI;
+@model Silicus.Ensure.Web.Models.TechnologyViewModel
+<form>
+    <div class="container-fluid model-550">
+        <div class="row">
+            <div class="col-md-4">
+                @Html.LabelFor(m => m.TechnologyName) <span style="color:red;">*</span>
+            </div>
+
+            <div class="col-lg-8 col-md-8 col-sm-12 col-xs-12 M-B15">
+                @Html.TextBoxFor(model => model.TechnologyName, new { @class = "form-control" })
+                <div class="validation">
+                    @Html.ValidationMessageFor(m => m.TechnologyName)
+                </div>
+            </div>
+
+        </div>
+        <div class="row">
+            <div class="col-md-4">
+                @Html.LabelFor(m => m.Description) <span style="color:red;">*</span>
+            </div>
+
+            <div class="col-lg-8 col-md-8 col-sm-12 col-xs-12">
+                @Html.TextAreaFor(model => model.Description, new { @rows = "5", @class = "form-control " })
+                <div class="validation">
+                    @Html.ValidationMessageFor(m => m.Description)
+                </div>
+            </div>
+
+        </div>
+    </div>
+    @Html.HiddenFor(m => m.TechnologyId)
+</form>
+

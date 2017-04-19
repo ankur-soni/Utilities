@@ -60,6 +60,7 @@ namespace Silicus.Ensure.Web.Mappings
                   : "")
                     );
             Mapper.CreateMap<CandidateInfoBusinessModel, CandidateInfoViewModel>();
+            Mapper.CreateMap<TechnologyBusinessModel, TechnologyViewModel>();
         }
     }
 }

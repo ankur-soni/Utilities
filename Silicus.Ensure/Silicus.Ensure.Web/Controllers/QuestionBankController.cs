@@ -10,6 +10,8 @@ using System.Text;
 using System.Web;
 using System.Web.Mvc;
 using System.ComponentModel;
+using Silicus.Ensure.Models.Constants;
+
 namespace Silicus.Ensure.Web.Controllers
 {
     [Authorize]
@@ -17,13 +19,17 @@ namespace Silicus.Ensure.Web.Controllers
     {
         private readonly IQuestionService _questionService;
         private readonly ITagsService _tagsService;
+        private readonly ITechnologyService _technologyService;
         private readonly IMappingService _mappingService;
-
-        public QuestionBankController(IQuestionService questionService, ITagsService tagService, MappingService mappingService)
+        private readonly UtilityContainer.Services.Interfaces.IUserService _containerUserService;
+        public QuestionBankController(IQuestionService questionService, ITagsService tagService,
+            MappingService mappingService, UtilityContainer.Services.Interfaces.IUserService containerUserService, ITechnologyService technologyService)
         {
             _questionService = questionService;
             _tagsService = tagService;
             _mappingService = mappingService;
+            _containerUserService = containerUserService;
+            _technologyService = technologyService;
         }
 
         public ActionResult AddQuestions(string questionId)
@@ -43,22 +49,22 @@ namespace Silicus.Ensure.Web.Controllers
                 que.Answer = HttpUtility.HtmlDecode(question.Answer);
                 que.Tags = string.Join(",", question.SkillTag);
                 que.IsPublishd = true;
-                que.ModifiedOn = DateTime.Now;
-                que.ModifiedBy = 0;
+                var userEmailId = User.Identity.Name;
+                var user = _containerUserService.FindUserByEmail(userEmailId);
                 bool isEdit = false;
 
-
+                que.Status = QuestionStatus.ReadyForReview;
                 if (question.Edit)
                 {
                     isEdit = true;
-                    que.CreatedOn = question.CreatedOn;
-                    que.CreatedBy = question.CreatedBy;
+                    que.ModifiedBy = user.ID;
+                    que.ModifiedOn = DateTime.Now;
                     _questionService.Update(que);
                 }
                 else
                 {
                     que.CreatedOn = DateTime.Now;
-                    que.CreatedBy = 0;
+                    que.CreatedBy = user.ID;
                     _questionService.Add(que);
                 }
                 var btnValue = Request["btnSaveAndAddNewQuestion"];
@@ -85,6 +91,7 @@ namespace Silicus.Ensure.Web.Controllers
             {
                 q.QuestionDescription = q.QuestionDescription.Substring(0, Math.Min(q.QuestionDescription.Length, 100));
                 q.QuestionType = GetQuestionType(q.QuestionType);
+                q.TechnologyName = GetTechnologyName(q.TechnologyId);
                 q.StatusName = GetEnumDescription(q.Status);
                 q.Tag = string.Join(" | ", Tags().Where(t => que.Where(x => x.Id == q.Id).Select(p => p.Tags).First().ToString().Split(',').Contains(t.TagId.ToString())).Select(l => l.TagName).ToList());
                 q.ProficiencyLevel = GetCompetency(q.ProficiencyLevel);
@@ -136,7 +143,7 @@ namespace Silicus.Ensure.Web.Controllers
                 queModel.Success = 0;
                 queModel.Edit = true;
                 queModel.SkillTagsList = Tags();
-                return View("_ReviewQuestion",queModel);
+                return View("_ReviewQuestion", queModel);
             }
             return View("_ReviewQuestion", null);
         }
@@ -204,7 +211,7 @@ namespace Silicus.Ensure.Web.Controllers
             else
                 return "Expert";
         }
-        
+
         public static string GetEnumDescription(Enum value)
         {
             FieldInfo field = value.GetType().GetField(value.ToString());
@@ -219,6 +226,12 @@ namespace Silicus.Ensure.Web.Controllers
                 return attributes[0].Description;
             else
                 return value.ToString();
+        }
+
+        private string GetTechnologyName(int technologyId)
+        {
+            var technology = _technologyService.GetTechnologyById(technologyId);
+            return technology?.TechnologyName;
         }
 
     }

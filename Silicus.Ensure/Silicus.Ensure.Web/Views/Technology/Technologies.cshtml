@@ -1,0 +1,204 @@
+﻿@using Kendo.Mvc.UI;
+<div class="kendogrid">
+    @*<h2>Tags</h2>*@
+    <div>
+        @if (Request.IsAuthenticated)
+        {
+            @(Html.Kendo().Grid<Silicus.Ensure.Web.Models.TechnologyViewModel>().Name("technologiesGrid")
+                    .Events(e => e.Edit("gvTechnology_onRowEdit"))
+             .Columns(columns =>
+             {
+                 columns.Bound(p => p.TechnologyName).Width(700);
+                 columns.Bound(p => p.Description).Width(700);
+                 columns.Command(cmd =>
+                 {
+                     cmd.Custom("Edit").Text("Edit").Click("ConfirmEditTechnologyRow").HtmlAttributes(new { @class = "k-button k-button-icontext k-grid-delete M-T4" });
+                 }).Title("Actions").Width(500);
+             })
+            .DataSource(dataSource => dataSource
+                      .Ajax()
+                      .Model(model =>
+                      {
+                          model.Id(p => p.TechnologyId);
+                          model.Field(p => p.TechnologyId).Editable(false);
+                      })
+                      .Read(read => read.Action("GetAllTechnologies", "Technology"))
+                      .Create(update => update.Action("Save", "Technology"))
+                      .Events(events => events.Error("technology_error_handler").RequestEnd("technology_requestend_handler"))
+                      .Update(up => up.Action("Update", "Technology"))
+                      .PageSize(10)
+                  )
+                           .Pageable(pager => { pager.PageSizes(true); })
+                  .Sortable()
+
+                  //.HtmlAttributes(new { style = "height:400px;" })
+                  .Editable(ed => ed.Mode(GridEditMode.PopUp).TemplateName("TechnologyEditorTemplate"))
+                  .Resizable(build => build.Columns(true))
+                  .ToolBar(toolbar =>
+                  {
+                  toolbar.Template(@<text>
+
+            <div class="toolbar">
+                <div class="row">
+                    <div class="col-sm-12 M-B15">
+                        <div class="col-sm-5 col-md-4 col-lg-3 M-T15">
+                            <div class="input-group">
+                                <span class="input-group-addon"><span class="glyphicon glyphicon-search" aria-hidden="true"></span></span>
+                                <input type="text" class="form-control" id='TechnologyFieldFilter' placeholder="Search" style="height: 38px;">
+                                <span class="input-group-btn">
+                                    <button id="technologySearch" class="btn btn-default" type="button" style="height:20px!important;border:1px solid #0070B9!important"><span class="glyphicon glyphicon-refresh" aria-hidden="true"></span></button>
+                                </span>
+                            </div>
+
+
+                        </div>
+                        <a style="margin-top:20px;" href='/#' class='k-button k-button-icontext k-grid-add'><span class='k-icon k-add'></span>Add Technology</a>
+
+                    </div>
+                </div>
+
+            </div>
+                </text>);
+                  })
+            )
+        }
+    </div>
+</div>
+
+<script>
+    $(document).ready(function () {
+
+        $("#messageDiv").hide();
+
+        $("#TechnologyFieldFilter").keyup(function () {
+
+            var value = $("#TechnologyFieldFilter").val();
+            grid = $("#technologiesGrid").data("kendoGrid");
+            var pageSize = grid.dataSource.pageSize();
+            if (value.length > 0) {
+                if (value) {
+                    var filter = { logic: "or", filters: [] };
+                    filter.filters.push({ field: "TechnologyName", operator: "contains", value: value });
+                    filter.filters.push({ field: "Description", operator: "contains", value: value });
+                    grid.dataSource.query({ filter: filter });
+                    grid.dataSource.sort({ field: "TechnologyName", dir: "asc" });
+                    grid.dataSource.pageSize(pageSize);
+                } else {
+                    grid.dataSource.filter({});
+                }
+            }
+            else if (value == "")
+                grid.dataSource.filter({});
+        });
+    });
+
+    $("#technologySearch").click(function (e) {
+        e.preventDefault();
+        var datasource = $("#technologiesGrid").data("kendoGrid").dataSource;
+        //Clear filters:
+        datasource.filter([]);
+        $("#TechnologyFieldFilter").val('');
+    });
+
+
+    function gvTechnology_onRowEdit(e) {
+        e.sender.editable.validatable._errorTemplate = kendo.template($('#tooltip-template').html());
+        if (e.model.isNew()) {
+            $(".k-window-title").html("Add technology");
+            $(".k-grid-update").html('<span>Save </span>');
+        }
+        else {
+            $(".k-window-title").html("Edit technology");
+        }
+        $(".k-grid-update").addClass('btn primary-bt');
+        $(".k-grid-cancel").addClass("btn secondary-bt");
+    }
+
+    function technology_requestend_handler(e) {
+        if (e.type == "update" && !e.response.Errors) {
+            //toastr.success("Auto Pays details has been saved successfully.");
+            ShowMessage("Technology updated successfully.", 1);
+            RefreshKendoGrid('technologiesGrid');
+        }
+
+        if (e.type == "create" && !e.response.Errors) {
+            ShowMessage("Technology created successfully.", 1);
+            RefreshKendoGrid('technologiesGrid');
+        }
+
+    }
+
+    function technology_error_handler(e) {
+        ShowMessage(getErrorMessage(e, 0));
+    }
+
+    function IsDuplicateTechnologyName(technologyName) {
+        var isAvailable = true;
+        var technologyId = $('#TechnologyId').val();
+        if (technologyName && technologyName.trim()!="") {
+            $.ajax({
+                type: "POST",
+                url: '/Technology/IsDuplicateTechnologyName',
+                async: false,
+                data: { technologyName: technologyName, technologyId: technologyId },
+                success: function (returndata) {
+                    if (returndata == true) {
+                        isAvailable = true;
+                    }
+                    else {
+                        isAvailable = false;
+                    }
+                }
+            });
+        }
+        return isAvailable;
+    }
+
+    function ConfirmEditTechnologyRow(e) {
+        var tr = $(e.target).closest("tr"); //get the row for deletion
+        var data = this.dataItem(tr);
+        var grid = this;
+        var technologyName = data.TechnologyName;
+        $.ajax({
+            type: "POST",
+            url: '/Technology/IsTechnologyAssosiatedWithQuetion',
+            data: { technologyName: technologyName },
+            success: function (returndata) {
+                if (returndata == true) {
+                    $.when(showConfirmationWindow('This technology is already associated with a question. <br> Are you sure, you want to edit this ?', '&nbsp;Edit')).then(function (confirmed) {
+                        if (confirmed) {
+                            grid.editRow(tr);
+                        }
+                    });
+                }
+                else {
+                    grid.editRow(tr);
+                }
+            }
+        });
+    }
+
+    (function ($, kendo) {
+        $.extend(true, kendo.ui.validator, {
+            rules: { // custom rules
+                technologyNameValidation: function (input, params) {
+                    if (input.is("[name='TechnologyName']") && input.val() != "") {
+                        input.attr("data-technologyNameValidation-msg", "Technology name already exists.");
+                        return IsDuplicateTechnologyName(input.val());
+                    }
+                    return true;
+                }
+            },
+            messages: { //custom rules messages
+                technologyName: function (input) {
+                    // return the message text
+                    return input.attr("data-val-technologyNameValidation");
+                }
+            }
+        });
+    })(jQuery, kendo);
+
+</script>
+<script id="tooltip-template" type="text/x-kendo-template">
+    <span class="k-widget k-tooltip k-tooltip-validation k-invalid-msg"> <span class="k-icon k-warning"> </span>#=message#</span>
+</script>

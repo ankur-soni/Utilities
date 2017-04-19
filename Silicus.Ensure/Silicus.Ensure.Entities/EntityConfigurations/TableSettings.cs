@@ -25,7 +25,7 @@
 
         public static readonly string TempPreviewTest = "TempPreviewTest";
         public static readonly string QuestionStatusDetails = "QuestionStatusDetails";
-
+        public static readonly string Technology = "Technology";
 
     }
 }

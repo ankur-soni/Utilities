@@ -52,6 +52,7 @@ namespace Silicus.Ensure.Entities
             modelBuilder.Configurations.Add(new PanelMebersDetailMap());
             modelBuilder.Configurations.Add(new TempPreviewTestMap());
             modelBuilder.Configurations.Add(new QuestionStatusDetailsMap());
+            modelBuilder.Configurations.Add(new TechnologyMap());
 
 
             // Many-to-many example - can be moved to Map file as well.
