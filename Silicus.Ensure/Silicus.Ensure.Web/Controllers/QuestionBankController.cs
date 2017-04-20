@@ -124,30 +124,6 @@ namespace Silicus.Ensure.Web.Controllers
             return View("AddQuestions", null);
         }
 
-        public ActionResult ReviewQuestion(string questionId)
-        {
-            if (!string.IsNullOrEmpty(questionId))
-            {
-                Question question = _questionService.GetSingleQuestion(Convert.ToInt32(questionId));
-                QuestionModel queModel = _mappingService.Map<Question, QuestionModel>(question);
-                queModel.QuestionDescription = HttpUtility.HtmlDecode(question.QuestionDescription);
-                //queModel.CorrectAnswer = (question.CorrectAnswer != null) ? question.CorrectAnswer.Split(',').ToList() : null;
-
-                if (question.CorrectAnswer != null)
-                {
-                    setAnsToOptions(question.CorrectAnswer, queModel);
-                }
-
-                queModel.Answer = HttpUtility.HtmlDecode(question.Answer);
-                queModel.SkillTag = question.Tags.Split(',').ToList();
-                queModel.Success = 0;
-                queModel.Edit = true;
-                queModel.SkillTagsList = Tags();
-                return View("_ReviewQuestion", queModel);
-            }
-            return View("_ReviewQuestion", null);
-        }
-
         public JsonResult DeleteQuestion(QuestionModel question)
         {
             if (question != null)

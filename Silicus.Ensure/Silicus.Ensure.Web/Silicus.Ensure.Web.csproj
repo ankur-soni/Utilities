@@ -402,6 +402,7 @@
     <Compile Include="Controllers\PositionsController.cs" />
     <Compile Include="Controllers\ProjectController.cs" />
     <Compile Include="Controllers\QuestionBankController.cs" />
+    <Compile Include="Controllers\QuestionReviewController.cs" />
     <Compile Include="Controllers\ReviewerController.cs" />
     <Compile Include="Controllers\RoleController.cs" />
     <Compile Include="Controllers\TagController.cs" />
@@ -443,6 +444,8 @@
     <Compile Include="Models\RecruiterMemberDetailViewModel.cs" />
     <Compile Include="Models\RecruiterViewModel.cs" />
     <Compile Include="Models\ResetPasswordModel.cs" />
+    <Compile Include="Models\ReviewQuestion\ReviewQuestionViewModel.cs" />
+    <Compile Include="Models\ReviewQuestion\SubmitQuestionReviewViewModel.cs" />
     <Compile Include="Models\RoleViewModel.cs" />
     <Compile Include="Models\SubmittedTestViewModel.cs" />
     <Compile Include="Models\TechnologyViewModel.cs" />
@@ -555,6 +558,9 @@
     <Content Include="Content\scrollbar.css" />
     <Content Include="Content\style-candidate.css" />
     <Content Include="Content\style.css" />
+    <Content Include="Content\sweetalert2\sweetalert2.css" />
+    <Content Include="Content\sweetalert2\sweetalert2.min.css" />
+    <Content Include="Content\sweetalert2\sweetalert2.min.js" />
     <Content Include="Content\toastr.css" />
     <Content Include="Content\toastr.min.css" />
     <Content Include="favicon.ico" />
@@ -925,9 +931,10 @@
     <Content Include="Views\Admin\Dashboard.cshtml" />
     <Content Include="Views\Shared\Export.cshtml" />
     <Content Include="Views\Shared\_CandidateInfoForPrint.cshtml" />
-    <Content Include="Views\QuestionBank\_ReviewQuestion.cshtml" />
+    <Content Include="Views\QuestionReview\_ReviewQuestion.cshtml" />
     <Content Include="Views\Technology\Technologies.cshtml" />
     <Content Include="Views\Shared\EditorTemplates\TechnologyEditorTemplate.cshtml" />
+    <Content Include="Views\QuestionReview\Index.cshtml" />
     <None Include="Web.Azure.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
