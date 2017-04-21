@@ -1,6 +1,7 @@
 ﻿using Silicus.Ensure.Entities;
 using Silicus.Ensure.Models.Constants;
 using Silicus.Ensure.Models.DataObjects;
+using Silicus.Ensure.Models.ReviewQuestion;
 using Silicus.Ensure.Services.Interfaces;
 using System;
 using System.Collections.Generic;
@@ -53,5 +54,37 @@ namespace Silicus.Ensure.Services
         {
             throw new NotImplementedException();
         }
+        public int? AddQuestionStatusDetails(QuestionStatusDetails statusDetails)
+        {
+            if (statusDetails != null)
+            {
+                _context.Add(statusDetails);
+                return statusDetails.Id;
+            }
+            return null;
+        }
+        public ReviewQuestionBusinessModel GetQuestionDetailsForReview(int? questionId, int technologyId, int userId)
+        {
+            var reviewQuestionBusinessModel = new ReviewQuestionBusinessModel();
+            var questionIds = GetQuestionsReadyForReview(userId, technologyId);
+            if (questionIds != null && questionIds.Any())
+            {
+                if (questionId == null)
+                {
+                    questionId = questionIds.First();
+                }
+
+                reviewQuestionBusinessModel.QuestionDetails = GetSingleQuestion((int)questionId);
+                var questionIndex = questionIds.IndexOf((int)questionId);
+                reviewQuestionBusinessModel.NextQuestionId = questionIndex >= 0 && questionIndex + 1 != questionIds.Count ? (int?)questionIds.ElementAtOrDefault(questionIndex + 1) : null;
+            }
+            return reviewQuestionBusinessModel;
+        }
+
+        public IList<int> GetQuestionsReadyForReview(int userId, int technologyId)
+        {
+            return _context.Query<Question>().Where(ques => ques.TechnologyId == technologyId && ques.CreatedBy != userId && ques.ModifiedBy != userId && ques.Status == QuestionStatus.ReadyForReview).Select(q => q.Id).OrderBy(i => i).ToList();
+        }
+
     }
 }

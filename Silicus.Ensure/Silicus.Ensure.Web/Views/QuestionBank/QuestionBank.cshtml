@@ -12,7 +12,7 @@
             $('#ReviewAllQuestions').hide();
         }
     })
-  
+
 </script>
 
 <div class="row white-bg header-row">
@@ -91,7 +91,7 @@
                 </div>
                 <div class="col-sm-5 col-md-5 col-lg-4 cust-mar">
                     <a href='/QuestionBank/AddQuestions?questionId=0' class='k-button k-button-icontext k-grid-add'><span class='k-icon k-add'></span>Add question</a>
-                    
+
                 </div>
                 <Button id="ReviewAllQuestions"><span></span>Review questions</Button>
             </div>
@@ -106,17 +106,20 @@
                              {
                                  columns.Bound(q => q.Id).Title("Id").Width(100);
                                  columns.Bound(q => q.QuestionDescription).Title("Question description").Width(400);
-                                 columns.Bound(q => q.QuestionType).Width(400);
+                                 columns.Bound(q => q.QuestionType).Width(200);
+                                 columns.Bound(q => q.TechnologyName).Title("Technology").Width(200);
+                                 columns.Bound(q => q.StatusName).Title("Status").Width(400);
+                                 //.ClientGroupHeaderTemplate("#= value# (#=count#)").Hidden(true);
                                  columns.Bound(q => q.Tag).Title("Tags").Width(400);
                                  columns.Bound(q => q.ProficiencyLevel).Title("Proficiency level").Width(400);
                                  columns.Bound(q => q.Id).ClientTemplate(@"
                                                 <a href='/QuestionBank/EditQuestion?questionId=#=Id#' class='k-button M-T4'>Edit</a>
                             <a class='k-button M-T4' href='\\#' onclick='ConfirmDeleteQuestionRow(event)'>Delete</a>
                                                ").Title("Actions").Width(400).Sortable(false);
-                                 columns.Bound(q => q.StatusName).ClientGroupHeaderTemplate("#= value# (#=count#)").Hidden(true);
+                                 //.ClientGroupHeaderTemplate("#= value# (#=count#)").Hidden(true);
                              })
                               .DataSource(dataSource => dataSource.Ajax()
-                              .Group(group => group.Add(p => p.StatusName)).Aggregates(aggr => aggr.Add(p => p.StatusName).Count())
+                              //.Group(group => group.Add(p => p.StatusName)).Aggregates(aggr => aggr.Add(p => p.StatusName).Count())
                               .Sort(sort => sort.Add("Id").Ascending()).Model(model =>
                               {
                                   model.Id(p => p.Id);
@@ -171,7 +174,7 @@
     function ProficiencyLevelAndQuetiontype() {
         var queType = $("#QuestionType").val();
         var level = $("#ProficiencyLevelDropDown").val();
-        
+
         var grid = $("#questionGrids").data("kendoGrid");
         var filterArray = new Array();
 

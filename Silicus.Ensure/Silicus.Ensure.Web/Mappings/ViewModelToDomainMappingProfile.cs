@@ -8,6 +8,8 @@ using System;
 using Silicus.Ensure.Models.Test;
 using Silicus.Ensure.Web.Models.Test;
 using Newtonsoft.Json;
+using Silicus.Ensure.Web.Models.ReviewQuestion;
+using Silicus.Ensure.Models.ReviewQuestion;
 
 namespace Silicus.Ensure.Web.Mappings
 {
@@ -53,7 +55,8 @@ namespace Silicus.Ensure.Web.Mappings
 
             Mapper.CreateMap<CandidateInfoViewModel, CandidateInfoBusinessModel>();
             Mapper.CreateMap<CandidateHistoryViewModel, UserBusinessModel>();
-
+            Mapper.CreateMap<TechnologyViewModel, TechnologyBusinessModel>();
+            Mapper.CreateMap<ReviewQuestionViewModel, ReviewQuestionBusinessModel>();
         }
     }
 }

@@ -31,7 +31,7 @@
     <!--Kendo css and JS-->
     @Styles.Render("~/Content/kendoCSS")
     @Scripts.Render("~/bundles/kendoJS")
-    
+
 
     <!--Font Awesome 4.7.0 css-->
     <link href="~/Content/css/font-awesome-4.7.0/css/font-awesome.css" rel="stylesheet" />
@@ -45,8 +45,10 @@
     <link href="~/Content/css/perfect-scrollbar.min.css" rel="stylesheet" />
 
     <link href="~/Content/css/sweetalert/sweetalert.css" rel="stylesheet" />
+    
     @*@Scripts.Render("~/bundles/BootstrapJS")*@
     <script src="~/Content/js/bootstrap.min.js"></script>
+
     <script src="~/Scripts/jquery.validate.min.js"></script>
     <script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
     <link href="~/Content/toastr.css" rel="stylesheet" />
@@ -54,10 +56,10 @@
     <script src="~/Content/js/plugins/sweetalert/sweetalert.min.js"></script>
     <script src="~/Scripts/commonjs.js"></script>
 
-@{
-    var conname = @ViewContext.RouteData.Values["controller"].ToString().ToLower();
-    var actname = @ViewContext.RouteData.Values["action"].ToString().ToLower();
-}
+    @{
+        var conname = @ViewContext.RouteData.Values["controller"].ToString().ToLower();
+        var actname = @ViewContext.RouteData.Values["action"].ToString().ToLower();
+    }
 
 </head>
 <body class="container-fluid">
@@ -136,7 +138,7 @@
                                     </a>
                                     <ul class="dropdown-menu dropdown-user-menu">
                                         <li>
-                                                <a href='@Url.Action("SignOut", "Account")'>
+                                            <a href='@Url.Action("SignOut", "Account")'>
                                                 <div>
                                                     Log out
                                                 </div>
@@ -161,21 +163,21 @@
                 <div class="sidebar-wrapper">
                     <nav class="navbar-default navbar-static-side sidebar" role="navigation">
                         <div class="sidebar-collapse">
-                                @{
-            var role = Silicus.Ensure.Web.MvcApplication.getCurrentUserRoles();
-                                }
-                                @if (role.Contains(Silicus.Ensure.Models.Constants.RoleName.Admin.ToString()) || role.Contains(Silicus.Ensure.Models.Constants.RoleName.Panel.ToString()))
-                                {
+                            @{
+                                var role = Silicus.Ensure.Web.MvcApplication.getCurrentUserRoles();
+                            }
+                            @if (role.Contains(Silicus.Ensure.Models.Constants.RoleName.Admin.ToString()) || role.Contains(Silicus.Ensure.Models.Constants.RoleName.Panel.ToString()))
+                            {
 
                                 <ul class="nav metismenu" id="side-menu">
-                                        @if (role.Contains(Silicus.Ensure.Models.Constants.RoleName.Admin.ToString()))
+                                    @if (role.Contains(Silicus.Ensure.Models.Constants.RoleName.Admin.ToString()))
                                     {
-                                            <li id="ManageUser" class="SideBarMenu"><a href="/ManageUser/Index"><i class="fa fa-users" aria-hidden="true"></i> <span class="nav-label">User Management</span></a></li>
-                                            <li id="Setup" class="SideBarMenu"><a href="/Master/Index"><i class="fa fa-cog" aria-hidden="true"></i> <span class="nav-label">Setup</span></a></li>
+                                        <li id="ManageUser" class="SideBarMenu"><a href="/ManageUser/Index"><i class="fa fa-users" aria-hidden="true"></i> <span class="nav-label">User Management</span></a></li>
+                                        <li id="Setup" class="SideBarMenu"><a href="/Master/Index"><i class="fa fa-cog" aria-hidden="true"></i> <span class="nav-label">Setup</span></a></li>
                                     }
-                                        <li id="Candidates" class="SideBarMenu"><a href="/Admin/Candidates"><i class="fa fa-user" aria-hidden="true"></i> <span class="nav-label">Candidates</span></a></li>
-                                        <li id="QuestionBank" class="SideBarMenu"><a href="/QuestionBank/QuestionBank"><i class="fa fa-question-circle" aria-hidden="true"></i> <span class="nav-label">Question Bank</span></a></li>
-                                        <li id="TestSuite" class="SideBarMenu"><a href="/TestSuite/List"><i class="fa fa-file-text-o" aria-hidden="true"></i> <span class="nav-label">Test Suite</span></a></li>
+                                    <li id="Candidates" class="SideBarMenu"><a href="/Admin/Candidates"><i class="fa fa-user" aria-hidden="true"></i> <span class="nav-label">Candidates</span></a></li>
+                                    <li id="QuestionBank" class="SideBarMenu"><a href="/QuestionBank/QuestionBank"><i class="fa fa-question-circle" aria-hidden="true"></i> <span class="nav-label">Question Bank</span></a></li>
+                                    <li id="TestSuite" class="SideBarMenu"><a href="/TestSuite/List"><i class="fa fa-file-text-o" aria-hidden="true"></i> <span class="nav-label">Test Suite</span></a></li>
                                 </ul>
                             }
                         </div>
@@ -195,18 +197,18 @@
                 <span id="credits" class="pull-right" style="font-weight:bold;">Credits</span>
             </div>
         </div>
-    }
-    else
-    {
-        @RenderBody()
-    }
+                                }
+                                else
+                                {
+                                    @RenderBody()
+                                }
 
 
     <!--Start Show Session Expire Warning Popup here -->
     <div class="modal fade" id="session-expire-warning-modal" aria-hidden="true" data-keyboard="false" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
-                <div class="modal-header">                  
+                <div class="modal-header">
                     <h4 class="modal-title">Session Expire Warning</h4>
                 </div>
                 <div class="modal-body">
@@ -313,7 +315,7 @@
             $(".loader-overlay").hide();
         });
 
-        $(document).ajaxStart(function () {        
+        $(document).ajaxStart(function () {
             showCustomLoader();
         });
 
@@ -333,7 +335,7 @@
             <input type="button" class="confirm_no k-button" value="No" style="width: 70px" />
         </div>
     </script>
- 
-  
+
+
 </body>
 </html>

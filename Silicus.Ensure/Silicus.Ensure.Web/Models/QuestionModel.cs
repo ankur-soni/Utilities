@@ -19,7 +19,7 @@ namespace Silicus.Ensure.Web.Models
         [DisplayName("Type")]
         public string QuestionType { get; set; }
         [DisplayName("Question")]
-        [Required(ErrorMessage ="Question is required.")]
+        [Required(ErrorMessage = "Question is required.")]
         [AllowHtml]
         public string QuestionDescription { get; set; }
         public int AnswerType { get; set; }
@@ -45,10 +45,13 @@ namespace Silicus.Ensure.Web.Models
         [AllowHtml]
         public string Answer { get; set; }
         public string Tag { get; set; }
+        [Required(ErrorMessage = "Technology is required.")]
+        [Display(Name = "Technology")]
+        public int TechnologyId { get; set; }
         [Required(ErrorMessage = "Proficiency is required.")]
         public string ProficiencyLevel { get; set; }
         [Required(ErrorMessage = "Duration in min is required.")]
-        [Range(minimum:1,maximum:360,ErrorMessage = "Duration must be between 1 to 360.")]
+        [Range(minimum: 1, maximum: 360, ErrorMessage = "Duration must be between 1 to 360.")]
         public int? Duration { get; set; }
         [Required(ErrorMessage = "Marks are required.")]
         [Range(minimum: 1, maximum: 100, ErrorMessage = "Duration must be between 1 to 100.")]
@@ -57,8 +60,8 @@ namespace Silicus.Ensure.Web.Models
         public bool IsDeleted { get; set; }
         public DateTime CreatedOn { get; set; }
         public int CreatedBy { get; set; }
-        public DateTime ModifiedOn { get; set; }
-        public int ModifiedBy { get; set; }
+        public DateTime? ModifiedOn { get; set; }
+        public int? ModifiedBy { get; set; }
         public List<Tags> SkillTagsList { get; set; }
         [Required(ErrorMessage = "Skill tag is required.")]
         public List<string> SkillTag { get; set; }
@@ -66,6 +69,8 @@ namespace Silicus.Ensure.Web.Models
         public bool Edit { get; set; }
         public QuestionStatus Status { get; set; }
         public string StatusName { get; set; }
+        public Technology Technology { get; set; }
+        public string TechnologyName { get; set; }
     }
 
     public enum ProficiencyLevel

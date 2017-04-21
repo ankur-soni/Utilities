@@ -8,6 +8,7 @@
     var tagList = Html.Partial("~/Views/Tag/List.cshtml");
     var positionList = Html.Partial("~/Views/Positions/Positions.cshtml");
     var panleList = Html.Partial("~/Views/Panel/Panel.cshtml");
+    var technologies = Html.Partial("~/Views/Technology/Technologies.cshtml");
 }
 <style>
     .k-loading-image {
@@ -34,11 +35,12 @@
                     @(Html.Kendo().TabStrip()
                 .Name("Tabs")
                 .Items(tabstrip =>
-               {
-                   tabstrip.Add().Text("Tags").Selected(true).Content(tagList.ToString());
-                   tabstrip.Add().Text("Positions").Selected(false).Content(positionList.ToString());
-                   tabstrip.Add().Text("Panel").Selected(false).Content(panleList.ToString());
-               })
+                {
+                    tabstrip.Add().Text("Tags").Selected(true).Content(tagList.ToString());
+                    tabstrip.Add().Text("Positions").Selected(false).Content(positionList.ToString());
+                    tabstrip.Add().Text("Panels").Selected(false).Content(panleList.ToString());
+                    tabstrip.Add().Text("Technologies").Selected(false).Content(technologies.ToString());
+                })
                     )
 
                 </div>
@@ -47,9 +49,9 @@
     </div>
 </div>
 
-            <script>
-                $(document).ready(function () {
-                    $("#messageDiv").fadeOut();
-                    SetNavigationMenuActive('Setup');
-                });
-            </script>
+<script>
+    $(document).ready(function () {
+        $("#messageDiv").fadeOut();
+        SetNavigationMenuActive('Setup');
+    });
+</script>

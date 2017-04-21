@@ -93,6 +93,7 @@ namespace Silicus.Ensure.Web
             kernel.Bind<IRecruiterMeberService>().To<RecruiterMeberService>();
             kernel.Bind<IPanelService>().To<PanelService>()
                 .WithConstructorArgument("connectionString", "name=SilicusAuditingDataContext");
+            kernel.Bind<ITechnologyService>().To<TechnologyService>();
         }
     }
 }

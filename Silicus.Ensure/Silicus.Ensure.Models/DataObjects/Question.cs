@@ -23,15 +23,17 @@ namespace Silicus.Ensure.Models.DataObjects
         public string Answer { get; set; }
         public string Tags { get; set; }
         public int ProficiencyLevel { get; set; }
+        public int TechnologyId { get; set; }
         public int Duration { get; set; }
         public int Marks { get; set; }
         public bool IsPublishd { get; set; }
         public bool IsDeleted { get; set; }
         public DateTime CreatedOn { get; set; }
         public int CreatedBy { get; set; }
-        public DateTime ModifiedOn { get; set; }
-        public int ModifiedBy { get; set; }
+        public DateTime? ModifiedOn { get; set; }
+        public int? ModifiedBy { get; set; }
         public QuestionStatus Status { get; set; }
         public virtual ICollection<QuestionStatusDetails> QuestionStatusDetails { get; set; }
+        public virtual Technology Technology { get; set; }
     }
 }
