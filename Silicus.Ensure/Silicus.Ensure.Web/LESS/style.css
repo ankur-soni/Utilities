@@ -120,11 +120,11 @@ th {
     color: white;
 }
 
-.nav .open > a,
+/*.nav .open > a,
 .nav .open > a:hover,
 .nav .open > a:focus {
     background: #fff;
-}
+}*/
 
 .nav.navbar-top-links > li > a:hover,
 .nav.navbar-top-links > li > a:focus {
@@ -133,6 +133,7 @@ th {
 
 .nav > li > a i {
     margin-right: 6px;
+    font-size:18px;
 }
 
 .navbar {
@@ -181,7 +182,7 @@ th {
         border-radius: 3px;
         color: inherit;
         line-height: 25px;
-        margin: 4px;
+        /*margin: 4px;*/
         text-align: left;
         font-weight: normal;
     }

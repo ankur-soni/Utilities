@@ -64,16 +64,67 @@
     @if (actname != "login" && actname != "logoff" && actname != "forgotpassword")
     {
         <div class="row top-header bbl">
-            <div class="col-sm-4 col-xs-6">
+            <div class="col-sm-4 col-xs-4">
                 <div class="pll ptm pbs"><img src="~/Images/logo.jpg" class="mts mbs" alt="Silicus Logo" title="Silicus Encloud" /></div>
             </div>
-            <div class="col-sm-8 col-xs-6">
-                <div class="text-center">
-                    <nav class="navbar navbar-static-top  " role="navigation" style="margin-bottom: 0">
-                        <ul class="nav navbar-top-links navbar-right" style="height:0!important">
+            <div class="col-sm-8 col-xs-8 right-menu">
+                
+                    <nav class="navbar" role="navigation" style="margin-bottom: 0">
+                        <ul class="nav navbar-nav navbar-right cust-ul">
                             @if (Request.IsAuthenticated)
                             {
                                 var userName = @User.Identity.Name;
+                                <li>
+                                    <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                                        <i class="fa fa-envelope" aria-hidden="true"></i>
+
+                                    </a>
+                                </li>
+
+
+                                <li class="dropdown">
+                                    <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                                        <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+                                        
+                                    </a>
+                                    <ul class="dropdown-menu mailbox animated bounceInDown">
+                                        <li>
+                                            <div class="drop-title">Skill Tags</div>
+                                        </li>
+                                        <li>
+                                            <div class="message-center">
+                                                <a href="#">
+
+                                                    <div class="mail-content">
+                                                        <span><u>HTML</u></span><span class="badge pull-right">5</span>
+                                                    </div>
+                                                </a>  
+                                                <a href="#">
+
+                                                    <div class="mail-content">
+                                                        <span><u>.NET</u></span><span class="badge pull-right">8</span>
+                                                    </div>
+                                                </a>
+                                                <a href="#">
+
+                                                    <div class="mail-content">
+                                                        <span><u>C++</u></span><span class="badge pull-right">4</span>
+                                                    </div>
+                                                </a>
+                                                <a href="#">
+
+                                                    <div class="mail-content">
+                                                        <span><u>VB</u></span><span class="badge pull-right">5</span>
+                                                    </div>
+                                                </a>
+                                            </div>
+                                        </li>
+                                        <li>
+                                            <a class="text-center" href="javascript:void(0);"> <strong>See all skill tags</strong> <i class="fa fa-angle-right"></i> </a>
+                                        </li>
+                                    </ul>
+                                    <!-- /.dropdown-messages -->
+                                </li>
                                 <li class="dropdown">
                                     <a class="dropdown-toggle count-info" data-toggle="dropdown" href="#">
                                         <span class="hidden-sm hidden-xs">
@@ -96,7 +147,7 @@
                             }
                         </ul>
                     </nav>
-                </div><!-- pad -->
+                
             </div>
         </div>
         <div class="loader-overlay" style="display:none;">

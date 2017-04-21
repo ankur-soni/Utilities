@@ -28,9 +28,58 @@
 .btn-secondary:hover, .btn-secondary:focus{background-color: #3388b7!important;border-color: #3388b7;color: #fff;}
 .btn{padding:2px 12px;}
 .BodyColor{color:#000;}
+.text-center{text-align:center;}
+.mail-content .badge{
+    background-color:#edf1f5;
+}
+.right-menu .nav > li > a i{color:#0067aa;}
+.right-menu .nav > li > a:active, .right-menu .nav > li > a:focus, .right-menu .nav > li > a:hover{
+    text-decoration: none;
+    background-color: #edf1f5;
+}
+.message-center a:hover{
+    background-color: #edf1f5;
+}
+.mail-content span{color:#565656;font-weight:600;}
+.navbar-right .dropdown-menu {
+    left: auto;
+    right: 0;
+}
+.mailbox {
+    width: 280px;
+    overflow: auto;
+    padding-bottom: 0;
+}
+.drop-title {
+    border-bottom: 1px solid rgba(0,0,0,.1);
+    color: #0067aa;
+    font-size: 14px;
+    font-weight: 600;
+    padding: 11px 20px 15px;
+}
+.message-center a {
+    border-bottom: 1px solid rgba(120,130,140,.13);
+    display: block;
+    padding: 9px 15px;
+}
 
 
 
+
+
+
+
+
+
+
+
+
+
+span.m-r-sm.welcome-message.themeColorBlue{font-size:14px;}
+.right-menu nav{height:103px;margin:0;}
+.right-menu nav ul.cust-ul{height:100%;}
+.right-menu .nav > li{height:100%;}
+.right-menu .nav > li > a{line-height:75px;}
 .btmBorder {
     border-bottom: 1px solid #cdcdcd;
     margin: 0px 10px 20px 10px;
@@ -2521,6 +2570,29 @@ width: 310px;
 }
 
 @media (max-width:768px) {
+ .navbar-right .dropdown-menu {
+    background:#fff!important;
+    left: auto!important;
+    right: 0;
+    margin-top:2px!important;
+}
+.mailbox {
+    width: 280px!important;
+    overflow: auto;
+    padding-bottom: 0;
+}
+    .right-menu .nav > li{display:inline-block!important;vertical-align: top;}
+    .navbar-nav{margin:0px;}
+    
+    .navbar-nav .open .dropdown-menu{
+        left: -98.7813px;
+        position:absolute;
+    }
+    .navbar-nav .open .dropdown-menu > li > a{
+        padding:9px 20px;
+        margin:4px;
+    }
+
 
     .cust-mar {
         margin-top: 15px;
@@ -2544,7 +2616,7 @@ width: 310px;
     margin-left: 55px;
     font-size: 25px;
     }
-
+    
     
     }
 
