@@ -1,4 +1,5 @@
-﻿using Silicus.Ensure.Models.DataObjects;
+﻿using Silicus.Ensure.Models.Constants;
+using Silicus.Ensure.Models.DataObjects;
 using Silicus.Ensure.Models.ReviewQuestion;
 using Silicus.Ensure.Services.Interfaces;
 using Silicus.Ensure.Web.Mappings;
@@ -33,25 +34,29 @@ namespace Silicus.Ensure.Web.Controllers
             return View(technologyId);
         }
 
-        public ActionResult ReviewQuestion(int? questionId, int technologyId)
+        public ActionResult ReviewQuestion(int? questionId, int technologyId, QuestionStatus questionStatusType)
         {
             var userEmailId = User.Identity.Name;
             var user = _containerUserService.FindUserByEmail(userEmailId);
             if (user != null && technologyId != 0)
             {
-                var reviewQuestion = _questionService.GetQuestionDetailsForReview(questionId,technologyId, user.ID);
-                var reviewQuestionViewModel = _mappingService.Map<ReviewQuestionBusinessModel, ReviewQuestionViewModel>(reviewQuestion);
-                reviewQuestionViewModel.QuestionDetails.QuestionDescription = HttpUtility.HtmlDecode(reviewQuestionViewModel.QuestionDetails.QuestionDescription);
-                if (!string.IsNullOrWhiteSpace(reviewQuestion.QuestionDetails.CorrectAnswer))
+                var reviewQuestion = _questionService.GetQuestionDetailsForReview(questionId, technologyId, user.ID, questionStatusType);
+                if (reviewQuestion != null && reviewQuestion.QuestionDetails != null)
                 {
-                    SetAnsToOptions(reviewQuestion.QuestionDetails.CorrectAnswer, reviewQuestionViewModel.QuestionDetails);
+                    var reviewQuestionViewModel = _mappingService.Map<ReviewQuestionBusinessModel, ReviewQuestionViewModel>(reviewQuestion);
+                    reviewQuestionViewModel.QuestionDetails.QuestionDescription = HttpUtility.HtmlDecode(reviewQuestionViewModel.QuestionDetails.QuestionDescription);
+                    if (!string.IsNullOrWhiteSpace(reviewQuestion.QuestionDetails.CorrectAnswer))
+                    {
+                        SetAnsToOptions(reviewQuestion.QuestionDetails.CorrectAnswer, reviewQuestionViewModel.QuestionDetails);
+                    }
+                    reviewQuestionViewModel.QuestionDetails.Answer = HttpUtility.HtmlDecode(reviewQuestionViewModel.QuestionDetails.Answer);
+                    reviewQuestionViewModel.QuestionDetails.SkillTag = reviewQuestion.QuestionDetails.Tags.Split(',').ToList();
+                    reviewQuestionViewModel.QuestionDetails.Success = 0;
+                    reviewQuestionViewModel.QuestionDetails.Edit = true;
+                    reviewQuestionViewModel.QuestionDetails.SkillTagsList = _tagService.GetTagsDetails().ToList();
+                    reviewQuestionViewModel.QuestionStatusType = questionStatusType;
+                    return View("_ReviewQuestion", reviewQuestionViewModel);
                 }
-                reviewQuestionViewModel.QuestionDetails.Answer = HttpUtility.HtmlDecode(reviewQuestionViewModel.QuestionDetails.Answer);
-                reviewQuestionViewModel.QuestionDetails.SkillTag = reviewQuestion.QuestionDetails.Tags.Split(',').ToList();
-                reviewQuestionViewModel.QuestionDetails.Success = 0;
-                reviewQuestionViewModel.QuestionDetails.Edit = true;
-                reviewQuestionViewModel.QuestionDetails.SkillTagsList = _tagService.GetTagsDetails().ToList();
-                return View("_ReviewQuestion", reviewQuestionViewModel);
             }
             return View("_ReviewQuestion", null);
         }
@@ -63,7 +68,7 @@ namespace Silicus.Ensure.Web.Controllers
                 UpdateQuestionStatus(review);
                 if (review.NextQuestionId != 0)
                 {
-                    return RedirectToAction("ReviewQuestion", new { questionId = review.NextQuestionId, technologyId = review.TechnologyId });
+                    return RedirectToAction("ReviewQuestion", new { questionId = review.NextQuestionId, technologyId = review.TechnologyId, questionStatusType = review.QuestionStatusType });
                 }
             }
             return null;

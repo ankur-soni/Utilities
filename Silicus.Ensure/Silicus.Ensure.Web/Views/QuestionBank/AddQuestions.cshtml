@@ -47,7 +47,7 @@
         <div class="box M-T15 M-B60">
             <div class="f1">
 
-                @using (Html.BeginForm("AddQuestions", "QuestionBank", FormMethod.Post, new { id = "AddQuestionForm", onsubmit = "OnSubmit()" }))
+                @using (Html.BeginForm("EditAndApproveQuestion", "QuestionReview", FormMethod.Post, new { id = "AddQuestionForm", onsubmit = "OnSubmit()" }))
                 {
                     <div class="fluid">
                         <div class="row">

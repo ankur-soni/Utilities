@@ -1,5 +1,6 @@
 ﻿@model  Int32
 @using Kendo.Mvc.UI;
+@using Silicus.Ensure.Models.Constants;
 @{
     ViewBag.Title = "Index";
 }
@@ -29,10 +30,10 @@
                 .Name("ReviewQuestionTabs")
                 .Items(tabstrip =>
                 {
-                    tabstrip.Add().Text("Ready for review").Selected(true).LoadContentFrom("/QuestionReview/ReviewQuestion?technologyId="+ @Model);
-                    tabstrip.Add().Text("On Hold").Selected(false).LoadContentFrom("/QuestionReview/ReviewQuestion?technologyId=" + @Model);
-                    tabstrip.Add().Text("Approved").Selected(false).LoadContentFrom("/QuestionReview/ReviewQuestion?technologyId=" + @Model);
-                    tabstrip.Add().Text("Rejected").Selected(false).LoadContentFrom("/QuestionReview/ReviewQuestion?technologyId=" + @Model);
+                    tabstrip.Add().Text("Ready for review").Selected(true).LoadContentFrom("/QuestionReview/ReviewQuestion?technologyId="+ @Model+"&questionStatusType="+ QuestionStatus.ReadyForReview);
+                    tabstrip.Add().Text("On Hold").Selected(false).LoadContentFrom("/QuestionReview/ReviewQuestion?technologyId=" + @Model + "&questionStatusType=" + QuestionStatus.OnHold);
+                //    tabstrip.Add().Text("Approved").Selected(false).LoadContentFrom("/QuestionReview/ReviewQuestion?technologyId=" + @Model + "&questionStatusType=" + QuestionStatus.Approved);
+                    tabstrip.Add().Text("Rejected").Selected(false).LoadContentFrom("/QuestionReview/ReviewQuestion?technologyId=" + @Model + "&questionStatusType=" + QuestionStatus.Rejected);
                 })
                 .Events(eve => eve.Select("OnSelect"))
                     )

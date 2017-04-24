@@ -13,5 +13,7 @@ namespace Silicus.Ensure.Web.Models.ReviewQuestion
         public string Comment { get; set; }
         public int NextQuestionId { get; set; }
         public int TechnologyId { get; set; }
+        public QuestionStatus QuestionStatusType { get; set; }
+
     }
 }

@@ -63,10 +63,10 @@ namespace Silicus.Ensure.Services
             }
             return null;
         }
-        public ReviewQuestionBusinessModel GetQuestionDetailsForReview(int? questionId, int technologyId, int userId)
+        public ReviewQuestionBusinessModel GetQuestionDetailsForReview(int? questionId, int technologyId, int userId, QuestionStatus questionStatusType)
         {
             var reviewQuestionBusinessModel = new ReviewQuestionBusinessModel();
-            var questionIds = GetQuestionsReadyForReview(userId, technologyId);
+            var questionIds = GetQuestionsReadyForReview(userId, technologyId, questionStatusType);
             if (questionIds != null && questionIds.Any())
             {
                 if (questionId == null)
@@ -81,9 +81,21 @@ namespace Silicus.Ensure.Services
             return reviewQuestionBusinessModel;
         }
 
-        public IList<int> GetQuestionsReadyForReview(int userId, int technologyId)
+        public IList<int> GetQuestionsReadyForReview(int userId, int technologyId, QuestionStatus questionStatusType)
         {
-            return _context.Query<Question>().Where(ques => ques.TechnologyId == technologyId && ques.CreatedBy != userId && ques.ModifiedBy != userId && ques.Status == QuestionStatus.ReadyForReview).Select(q => q.Id).OrderBy(i => i).ToList();
+            switch (questionStatusType)
+            {
+                case QuestionStatus.ReadyForReview:
+                    return _context.Query<Question>().Where(ques => ques.TechnologyId == technologyId &&  ques.Status == QuestionStatus.ReadyForReview&& ((ques.ModifiedBy == null && ques.CreatedBy != userId) || (ques.ModifiedBy != userId)))
+                        .Select(q => q.Id).OrderBy(i => i).ToList();
+                case QuestionStatus.Approved:
+                case QuestionStatus.Rejected:
+                    return _context.Query<Question>().Where(ques => ques.TechnologyId == technologyId && ques.Status == questionStatusType).Select(q => q.Id).OrderBy(i => i).ToList();
+                case QuestionStatus.OnHold:
+                    return _context.Query<Question>().Where(ques => ques.TechnologyId == technologyId && ques.Status == QuestionStatus.OnHold&& ((ques.ModifiedBy == null && ques.CreatedBy != userId) || (ques.ModifiedBy != userId))).Select(q => q.Id).OrderBy(i => i).ToList();
+                default:
+                    return null;
+            }
         }
 
     }
