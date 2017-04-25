@@ -141,7 +141,7 @@
         });
         function ApproveQuestion(e){
             swal({
-                title: "Are you sure,",
+                title: "Are you sure?",
                 text: "Are you sure, you want to approve this question?",
                 type: "warning",
                 showCancelButton: true,
@@ -181,8 +181,8 @@
 
         function PutQuestionOnHold(){
             swal({
-                title: "Why?,",
-                text: "Why, you want to put this question on hold?",
+                title: "Why?",
+                text: "Please give suitable reason for placing this question on hold.",
                 input:"textarea",
                 inputValidator: function (value) {
                     return new Promise(function (resolve, reject) {
@@ -229,8 +229,8 @@
 
         function RejectQuestion(){
             swal({
-                title: "Why?,",
-                text: "Why, you want to put this question on hold?",
+                title: "Why?",
+                text: "Please give suitable reason for rejecting this question.",
                 input:"textarea",
                 inputValidator: function (value) {
                     return new Promise(function (resolve, reject) {
