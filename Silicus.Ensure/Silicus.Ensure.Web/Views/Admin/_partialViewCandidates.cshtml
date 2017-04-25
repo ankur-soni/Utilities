@@ -19,6 +19,7 @@
     }
 }
 <style>
+    .M-T4{margin-top:4px!important;}
     .k-loading-image {
         background-image: none !important;
     }
@@ -398,7 +399,7 @@
 <div class="">
 
     <div class="toolbar">
-        <div class="row">
+        @*<div class="row">
             <div class="col-sm-12">
                 <div class="col-sm-5 col-md-4 col-lg-3 M-T15 M-B15">
                     <div class="input-group">
@@ -411,13 +412,12 @@
                 </div>
 
             </div>
-        </div>
+        </div>*@
         <div class="row M-B15">
-            <div class="col-sm-12">
                 <div class="col-sm-4 col-md-3 col-lg-2">
-                    <span class="themeColorBlue labelAlignMid"><b>Candidate Status</b></span>
-
-                    @(Html.Kendo().DropDownListFor(m => m.CandidateStatus)
+                    <div class="form-group">
+                        <label>Candidate Status</label>
+                        @(Html.Kendo().DropDownListFor(m => m.CandidateStatus)
                     .Name("CandidateStatus")
                     .DataTextField("Text")
                     .DataValueField("Value")
@@ -462,11 +462,16 @@
                     Value=Convert.ToString(CandidateStatus.OnHold)
                     }
                     }).HtmlAttributes(new { style = "width: 100%", @class = "M-T5" }))
-                </div>
-                <div class="col-sm-4 col-md-3 col-lg-2">
-                    <span class="themeColorBlue labelAlignMid"><b> Positions</b></span>
+                    </div>
 
-                    @(Html.Kendo().DropDownList()
+                   
+
+                   
+                </div>
+            <div class="col-sm-4 col-md-3 col-lg-2">
+                <div class="form-group">
+                <label>Positions</label>
+                @(Html.Kendo().DropDownList()
                             .Name("Position")
                                     .Events(e => e.Change("PositionChange"))
                             .OptionLabel("All")
@@ -475,15 +480,16 @@
                             .DataValueField("Value")
                             .SelectedIndex(0)
                                     .HtmlAttributes(new { style = "width: 100%", @class = "M-T5" })
-                    )
+                )
+            </div>
                 </div>
                 <div class="col-sm-4 col-md-3 col-lg-2 cust-mar">
                     @if (role.Contains(Silicus.Ensure.Models.Constants.RoleName.Admin.ToString())|| role.Contains(Silicus.Ensure.Models.Constants.RoleName.Recruiter.ToString()))
                     {
-                        <a href='#' onclick='AddNew();' class='k-button k-button-icontext k-grid-add'><span class='k-icon k-add'></span>Add candidate</a>
+                        <a href='#' style="margin-top:25px;" onclick='AddNew();' class='k-button k-button-icontext k-grid-add'><span style="padding-right:5px;" class='fa fa-plus'></span>Add candidate</a>
                     }
                 </div>
-            </div>
+           
         </div>
 
     </div>
@@ -519,7 +525,7 @@
                                                                             #=CandidateStatus#
                                                                         #}
                                                                         #").Title("Status").Width(250);
-             columns.Bound(c => c.UserId).ClientTemplate(@"<a class='k-button M-T4' href='" + Url.Action("CandidateAdd", "Admin") + "?UserId=#=UserId#'>Edit</a>    #if(CandidateStatus!='Archived'){# <a id='testSuiteDel' class='k-button M-T4' href='\\#' onclick='ConfirmDeleteUserRow(event)'>Archive</a>  #} #").Title("Actions").Width(500).Sortable(false);
+             columns.Bound(c => c.UserId).ClientTemplate(@"<a class='k-button' href='" + Url.Action("CandidateAdd", "Admin") + "?UserId=#=UserId#'>Edit</a>    #if(CandidateStatus!='Archived'){# <a id='testSuiteDel' class='k-button' href='\\#' onclick='ConfirmDeleteUserRow(event)'>Archive</a>  #} #").Title("Actions").Width(250).Sortable(false);
              columns.Bound(c => c.UserId).ClientTemplate(@"
 
                                          #if(CandidateStatus=='New'){#
@@ -599,9 +605,23 @@
     </div>
 </div>
 
-<div class="modal fade" id="myModal1" data-backdrop="static" role="dialog">
+    <div id="myModal1" class="modal fade" data-backdrop="static" role="dialog" tabindex="-1" data-width="760" aria-hidden="false" style="display: block; width: 760px; margin-left: -380px; margin-top: -288.5px;">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+            <h4 id="panelModalHeader" class="modal-title">Assign panel</h4>
+        </div>
+        <div class="modal-body" id="PanelInfo">
+
+        </div>
+        <div class="modal-footer">
+            <button type="button" data-dismiss="modal" class="btn btn-outline dark" id="SavePanlebtn">Close</button>
+            <button type="button" class="btn green">Save changes</button>
+        </div>
+    </div>
+
+@*<div class="modal fade" id="myModal1" data-backdrop="static" role="dialog">
     <div class="modal-dialog">
-        <!-- Modal content-->
+         Modal content
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal">&times;</button>
@@ -616,7 +636,7 @@
             </div>
         </div>
     </div>
-</div>
+</div>*@
 
 
 <div class="modal fade" id="recruiterModal" data-backdrop="static" role="dialog">

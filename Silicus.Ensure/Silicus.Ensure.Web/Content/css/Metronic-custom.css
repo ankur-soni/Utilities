@@ -1,0 +1,90 @@
+﻿
+.k-grid td{border-bottom: 1px solid #e7ecf1;}
+.k-grid-header .k-header{
+    padding: .8em .6em .8em .6em;
+}
+a.dialog-window{text-decoration:underline;}
+a.dialog-window:hover{text-decoration:none;color:#444;}
+
+
+
+/*all media query start from here*/
+@media (max-width:1755px) 
+{
+   #userGrids td a.k-button{margin-bottom:4px;}
+   .k-grid tbody .k-button, .k-ie8 .k-grid tbody button.k-button{min-width:50px;}
+}
+
+@media (min-width:1400px) 
+{
+   
+}
+
+@media (max-width:1399px) 
+{
+    
+}
+
+@media (max-width:1280px) 
+{
+
+}
+
+@media (max-width:1199px) 
+{
+	
+}
+@media (max-width:991px) 
+{
+
+
+}
+@media (max-width:800px) 
+{
+
+}
+@media (max-width:768px) 
+{
+    
+}
+@media (max-width:767px) 
+{   
+   
+}
+
+@media (max-width:639px) 
+{
+
+}
+@media (max-width:499px){
+   
+}
+@media (max-width:484px){
+   
+}
+@media (max-width:474px){
+    
+}
+@media (max-width:435px){
+    
+
+}
+@media (max-width:479px) 
+{
+	
+
+}
+
+@media (max-width:410px) 
+{
+
+
+}
+@media (max-width:399px) 
+{
+	
+}
+@media (max-width:360px) 
+{
+	
+}
