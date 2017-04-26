@@ -13,5 +13,7 @@ namespace Silicus.Ensure.Models.Test
         public int TotalMaximumMarks { get; set; }
         public int TotalObtainedMarks { get; set; }
         public decimal Percentage { get; set; }
+        public int TimeAllotted { get; set; }
+        public int TimeTaken { get; set; }
     }
 }

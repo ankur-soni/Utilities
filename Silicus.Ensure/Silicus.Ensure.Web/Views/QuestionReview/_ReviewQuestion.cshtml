@@ -244,8 +244,8 @@
                                 tabStrip = $("#ReviewQuestionTabs").data("kendoTabStrip");
                                 var index=tabStrip.select().index()+1;
                                 if(tabStrip){
-                                    var status="@((int)QuestionStatus.Rejected)"
-                                    var questionStatusType="@((int)Model.QuestionStatusType)"
+                                    var status="@((int)QuestionStatus.Rejected)";
+                                    var questionStatusType="@((int)Model.QuestionStatusType)";
                                     $('#ReviewQuestionTabs-'+index).html('');
                                     $.ajax({
                                         url:'/QuestionReview/SubmitQuestionReview/',
