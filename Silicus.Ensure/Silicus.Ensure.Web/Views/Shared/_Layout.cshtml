@@ -75,7 +75,7 @@
                 
                     <nav class="navbar" role="navigation" style="margin-bottom: 0">
                         <ul class="nav navbar-nav navbar-right cust-ul">
-                            @if (!role.Contains(RoleName.Panel.ToString()))
+                            @if (role.Contains(RoleName.Panel.ToString()))
                             {
 
                                 <li class="dropdown">
