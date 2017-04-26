@@ -540,6 +540,7 @@ namespace Silicus.EncourageWithAzureAd.Web.Controllers
             return View(reviewNominationViewModel);
         }
 
+        [CustomeAuthorize(AllowedRole = "Reviewer")]
         public ActionResult ReviewDetails(int nominationId)
         {
             _logger.Log("Nomination-ReviewDetails");

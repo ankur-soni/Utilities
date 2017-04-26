@@ -650,6 +650,34 @@ namespace Silicus.Ensure.Services
             testDetails.TotalMaximumMarks = testDetails.Practical.MaximumMarks + testDetails.Objective.MaximumMarks;
             testDetails.TotalObtainedMarks = testDetails.Practical.MarksObtained + testDetails.Objective.MarksObtained;
             testDetails.Percentage = testDetails.TotalObtainedMarks != 0 ? (decimal)testDetails.TotalObtainedMarks / testDetails.TotalMaximumMarks * percentageConstant : 0;
+            testDetails = GetTimeDetails(userTestSuiteId, testDetails);
+            return testDetails;
+        }
+
+        private TestSummaryBusinessModel GetTimeDetails(int userTestSuiteId, TestSummaryBusinessModel testDetails)
+        {
+            var userTestSuite = GetUserTestSuiteId(userTestSuiteId);
+            if (userTestSuite != null)
+            {
+                var testSuite = GetTestSuitById(userTestSuite.TestSuiteId);
+                if (testSuite != null)
+                {
+                    var totalTimeAllotted = testSuite.Duration;
+                    if (userTestSuite.ExtraCount > 0)
+                    {
+                        if (userTestSuite.ExtraCount == 1)
+                        {
+                            totalTimeAllotted = testSuite.Duration + 10;
+                        }
+                        else if (userTestSuite.ExtraCount == 2)
+                        {
+                            totalTimeAllotted = testSuite.Duration + 20;
+                        }
+                    }
+                    testDetails.TimeTaken = totalTimeAllotted - userTestSuite.RemainingTime;
+                    testDetails.TimeAllotted = testSuite.Duration;
+                }
+            }
             return testDetails;
         }
 
@@ -767,7 +795,7 @@ namespace Silicus.Ensure.Services
         {
             List<int> allquestionsForPreview = GetQuestionsForPreview(previewTest);
             var result = (from b in _context.Query<Question>()
-                          where  allquestionsForPreview.Contains(b.Id)
+                          where allquestionsForPreview.Contains(b.Id)
                           select new TestDetailsBusinessModel
                           {
                               QuestionId = b.Id,

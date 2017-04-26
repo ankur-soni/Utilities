@@ -305,6 +305,7 @@
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\EmailController.cs" />
+    <Compile Include="Controllers\ErrorController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\NominationController.cs" />
     <Compile Include="Controllers\ReviewController.cs" />
@@ -904,6 +905,11 @@
     <Content Include="Views\Review\SetAwardPeriod.cshtml" />
     <Content Include="Views\Home\LoginAs.cshtml" />
     <Content Include="Silicus.EncourageWithAzureAd.Web-1.ruleset" />
+    <Content Include="Views\Error\BadRequest.cshtml" />
+    <Content Include="Views\Error\Unauthorized.cshtml" />
+    <Content Include="Views\Error\PageNotFound.cshtml" />
+    <Content Include="Views\Error\CustomError.cshtml" />
+    <Content Include="Views\Error\Forbidden.cshtml" />
     <None Include="Web.Production.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

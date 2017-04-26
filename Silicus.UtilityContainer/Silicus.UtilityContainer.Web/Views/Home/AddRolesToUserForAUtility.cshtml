@@ -73,65 +73,70 @@
     <script src="~/Scripts/knockout.mapping-latest.debug.js"></script>
     <script src="~/Scripts/knockout.mapping-latest.js"></script>
     <script type="text/javascript">
-        $(document).ready(function () {
+        $(document).ready(function() {
             var lastSelectOption = $("#utilityList option:selected").text();
-            $("#utilityList").click(function () {
+            $("#utilityList").click(function() {
                 lastSelectOption = $("#utilityList option:selected");
             });
 
             function changeUtility(uID) {
                 $.ajax({
                     type: 'GET',
-                    url: '@Url.Action("FillRoles","Home")',
+                    url: '@Url.Action("FillRoles", "Home")',
                     data: { utilityId: uID },
                     dataType: 'json',
-                    success: function (data) {
+                    success: function(data) {
                         $(".loader-overlay").hide();
                         var select = $("#rolesList");
                         select.empty();
-                        select.append($('<option/>', {
+                        select.append($('<option/>',
+                        {
                             value: 0,
                             text: "Select a Role"
                         }));
-                        $.each(data, function (index, itemData) {
-                            debugger;
-                            select.append($('<option/>', {
-                                value: itemData.Value,
-                                text: itemData.Text
+                        $.each(data,
+                            function(index, itemData) {
+                                debugger;
+                                select.append($('<option/>',
+                                {
+                                    value: itemData.Value,
+                                    text: itemData.Text
 
-                            }));
+                                }));
 
-                        });
+                            });
                     },
-                    error: function () { }
+                    error: function() {}
                 });
             }
 
-            $("#utilityList").change(function () {
+            $("#utilityList").change(function() {
                 $(".loader-overlay").show();
                 var uID = $(this).val();
                 debugger;
 
                 if (uID > 0) {
-                    if ($("#utilityList").val().trim() != "" && parseInt($("#utilityList").val()) != 0 && $("#rolesList").val().trim() != "" && parseInt($("#rolesList").val()) != 0) {
-                        if (!confirm("Do you want to change the utility to " + $("#utilityList option:selected").text())) {
+                    if ($("#utilityList").val().trim() != "" &&
+                        parseInt($("#utilityList").val()) != 0 &&
+                        $("#rolesList").val().trim() != "" &&
+                        parseInt($("#rolesList").val()) != 0) {
+                        if (!confirm("Do you want to change the utility to " + $("#utilityList option:selected").text())
+                        ) {
                             lastSelectOption.prop("selected", true);
                             $(".loader-overlay").hide();
-                        }
-                        else {
+                        } else {
                             $("#users").hide();
                             changeUtility(uID);
                         }
-                    }
-                    else {
+                    } else {
                         changeUtility(uID);
                     }
-                }
-                else {
+                } else {
                     $(".loader-overlay").hide();
                     var select = $("#rolesList");
                     select.empty();
-                    select.append($('<option/>', {
+                    select.append($('<option/>',
+                    {
                         value: 0,
                         text: "Select a Role"
                     }));
@@ -141,13 +146,13 @@
                 }
             });
 
-            $("#add-role").click(function () {
+            $("#add-role").click(function() {
                 debugger;
                 $(".loader-overlay").show();
                 var selectedUserIds = [];
                 var utilityId = parseInt($("#utilityList").val());
                 var roleId = parseInt($("#rolesList").val());
-                $("input:checkbox[class=available]:checked").each(function () {
+                $("input:checkbox[class=available]:checked").each(function() {
                     selectedUserIds.push(parseInt($(this).attr('id')));
                 });
 
@@ -158,124 +163,149 @@
                                 type: 'POST',
                                 url: "@Url.Action("AddRolesToUserForAUtility", "Home")",
                                 data: { utilityId: utilityId, roleId: roleId, userIds: selectedUserIds },
-                                success: function (data) {
+                                success: function(data) {
                                     $(".loader-overlay").hide();
-                                    swal("Success", "Roles added successfully.", "success");
-                                },
-                                error: function (data) {
-                                    $(".loader-overlay").hide()
-                                    swal("Error", "OOps! something went wrong.", "error");
-                                }
-                            });
-                        }
-                        else {
-                            $(".loader-overlay").hide();
-                            swal("Error", "Please select at least 1 employee.", "error");
-                        }
-                    }
-                    else {
-                        $(".loader-overlay").hide();
-                        swal("Error", "Please select role.", "error");
-                    }
-
-                }
-                else {
-                    $(".loader-overlay").hide();
-                    swal("Error", "Please select utility.", "error");
-                }
-
-            });
-
-
-            $("#employee-search").keyup(function () {
-                debugger;
-                var searchData = $(this).val();
-                var foundIds = [];
-                $("div[id^=availableemp]").css("display", "none");
-                if (searchData) {
-                    var allEmployees = $("#available-employees #available-contents span").toArray();
-                    $.each(allEmployees, function (i, v) {
-                        if ($(this).text().toLowerCase().indexOf(searchData.toLowerCase()) != -1) {
-                            foundIds.push(parseInt($(this).attr("id")));
-                        } 
-                    })
-
-                    //var $found = allEmployees.find("div span:contains(" + searchData + ")").each(function () { $(this).parent().css("display", "block") });
-                    $.each(foundIds, function (i, v) { $("div #availableemp"+ v +"").css("display", "block") })
-                }
-                else {
-                    $("div[id^=availableemp]").css("display", "block");
-                }
-            });
-
-            $("#rolesList").change(function (e) {
-                debugger;
-                $(".loader-overlay").show();
-                var currentUtilityId = parseInt($("#utilityList").val());
-                var currentRoleId = parseInt($("#rolesList").val());
-                e.preventDefault();
-                $("#roleRequired").empty();
-                var data = $("#rolesList option:selected").val();
-                if (currentRoleId > 0) {
-                    $.ajax({
-                        type: 'GET',
-                        url: "@Url.Action("GetAllUsersByRoleInUtility", "Home")",
-                        data: { utilityId: currentUtilityId, roleId: currentRoleId },
-                        dataType: 'json',
-                        success: function (data) {
-                            $(".loader-overlay").hide();
-                            $("#users").css("display", "block");
-                            $(".users").css("display", "block");
-                            $("#search").css("display", "block");
-                            //var availableEmployeeContainer = $('#available-employees');
-                            //var selectedEmployeeContainer = $('#selected-employees');
-
-                            var availableEmployeeContainer = $('#available-contents');
-                            var selectedEmployeeContainer = $('#selected-contents');
-                            
-                            $('#available-employees').contents(':not(".available-header")').empty();
-                            $('#selected-employees').contents(':not(".selected-header")').empty();
-                            //availableEmployeeContainer.empty();
-                            //selectedEmployeeContainer.empty();
-
-                            $(data.availableItems).each(function (index, value) {
-                                addHtmlForAvailableEmployees(value.UserName, value.UserId, value.Status, availableEmployeeContainer)
-                            });
-
-                            $(data.selectedItems).each(function (index, value) {
-                                addHtmlForSelectedEmployees(value.UserName, value.UserId, value.Status, selectedEmployeeContainer)
-                            });
-
+                                    swal({
+                                            title: "Success",
+                                            text: "Roles added successfully.",
+                                            type: "success"
+                                        },
+                                        function(isConfirm) {
+                                            debugger;
+                                            if (isConfirm) {
+                                                $("#rolesList").change();
+                                            }
+                                        }
+                                );
                         },
-                        error: function (data) {
-                            swal('Error', 'Oops! something went wrong.', 'error');
+                        error: function(data) {
+                            $(".loader-overlay").hide();
+                            swal("Error", "OOps! something went wrong.", "error");
                         }
                     });
-                }
-                else {
-                    $("#users").css('display', 'none');
-                    $(".loader-overlay").hide();
-                }
+        }
+        else
+        {
+            $(".loader-overlay").hide();
+            swal("Error", "Please select at least 1 employee.", "error");
+        }
+        }
+        else
+        {
+            $(".loader-overlay").hide();
+            swal("Error", "Please select role.", "error");
+        }
+        }
+        else
+        {
+            $(".loader-overlay").hide();
+            swal("Error", "Please select utility.", "error");
+        }
+        });
 
-            })
 
+        $("#employee-search").keyup(function() {
+            debugger;
+            var searchData = $(this).val();
+            var foundIds = [];
+            $("div[id^=availableemp]").css("display", "none");
+            if (searchData) {
+                var allEmployees = $("#available-employees #available-contents span").toArray();
+                $.each(allEmployees,
+                    function(i, v) {
+                        if ($(this).text().toLowerCase().indexOf(searchData.toLowerCase()) != -1) {
+                            foundIds.push(parseInt($(this).attr("id")));
+                        }
+                    });
 
-            function addHtmlForAvailableEmployees(name, id, status, container) {
-                debugger;
-                $("<div id='availableemp" + id + "'>").appendTo(container);
-                $('<input />', { type: 'checkbox', id: id, class: 'available', value: name, checked: status }).appendTo('#availableemp' + id + '');
-                $('<span />', { 'id': id, text: name, style : "padding-left:10px" }).appendTo('#availableemp' + id + '');
-                $('<br>').appendTo('#availableemp' + id + '');
+                //var $found = allEmployees.find("div span:contains(" + searchData + ")").each(function () { $(this).parent().css("display", "block") });
+                $.each(foundIds, function(i, v) { $("div #availableemp" + v + "").css("display", "block") })
+            } else {
+                $("div[id^=availableemp]").css("display", "block");
             }
-            function addHtmlForSelectedEmployees(name, id, status, container) {
+        });
 
-                debugger;
-                $('<span />', { 'id': 'selected' + id, text: name }).appendTo(container);
-                $('<span id="selected' + id + '" style="padding-left:10px"><i class="fa fa-times" id="' + id + '" aria-hidden="true"  style="color:#0E69A8" ></i></span>').appendTo(container);
-                $('<br id="' + id + '">').appendTo(container);
+        $("#rolesList").change(function(e) {
+            debugger;
+            $(".loader-overlay").show();
+            var currentUtilityId = parseInt($("#utilityList").val());
+            var currentRoleId = parseInt($("#rolesList").val());
+            e.preventDefault();
+            $("#roleRequired").empty();
+            var data = $("#rolesList option:selected").val();
+            if (currentRoleId > 0) {
+                $.ajax({
+                    type: 'GET',
+                    url: "@Url.Action("GetAllUsersByRoleInUtility", "Home")",
+                    data: { utilityId: currentUtilityId, roleId: currentRoleId },
+                    dataType: 'json',
+                    success: function(data) {
+                        $(".loader-overlay").hide();
+                        $("#users").css("display", "block");
+                        $(".users").css("display", "block");
+                        $("#search").css("display", "block");
+                        //var availableEmployeeContainer = $('#available-employees');
+                        //var selectedEmployeeContainer = $('#selected-employees');
+
+                        var availableEmployeeContainer = $('#available-contents');
+                        var selectedEmployeeContainer = $('#selected-contents');
+
+                        $('#available-employees').contents(':not(".available-header")').empty();
+                        $('#selected-employees').contents(':not(".selected-header")').empty();
+                        //availableEmployeeContainer.empty();
+                        //selectedEmployeeContainer.empty();
+
+                        $(data.availableItems).each(function(index, value) {
+                            addHtmlForAvailableEmployees(value.UserName,
+                                value.UserId,
+                                value.Status,
+                                availableEmployeeContainer)
+                        });
+
+                        $(data.selectedItems).each(function(index, value) {
+                            addHtmlForSelectedEmployees(value.UserName,
+                                value.UserId,
+                                value.Status,
+                                selectedEmployeeContainer)
+                        });
+
+                    },
+                    error: function(data) {
+                        swal('Error', 'Oops! something went wrong.', 'error');
+                    }
+                });
+            } else {
+                $("#users").css('display', 'none');
+                $(".loader-overlay").hide();
             }
 
-            $(document).on("click", ".available", function () {
+        })
+
+
+        function addHtmlForAvailableEmployees(name, id, status, container) {
+            debugger;
+            $("<div id='availableemp" + id + "'>").appendTo(container);
+            $('<input />', { type: 'checkbox', id: id, class: 'available', value: name, checked: status })
+                .appendTo('#availableemp' + id + '');
+            $('<span />', { 'id': id, text: name, style: "padding-left:10px" }).appendTo('#availableemp' + id + '');
+            $('<br>').appendTo('#availableemp' + id + '');
+        }
+
+        function addHtmlForSelectedEmployees(name, id, status, container) {
+
+            debugger;
+            $('<span />', { 'id': 'selected' + id, text: name }).appendTo(container);
+            $('<span id="selected' +
+                id +
+                '" style="padding-left:10px"><i class="fa fa-times" id="' +
+                id +
+                '" aria-hidden="true"  style="color:#0E69A8" ></i></span>').appendTo(container);
+            $('<br id="' + id + '">').appendTo(container);
+        }
+
+        $(document).on("click",
+            ".available",
+            function() {
                 debugger;
                 var selectedEmployeeContainer = $('#selected-contents');
                 var id = $(this).attr('id');
@@ -283,16 +313,21 @@
                 if ($(this).prop('checked')) {
                     var name = $(this).attr('value');
                     $('<span />', { 'id': 'selected' + id, text: name }).appendTo(selectedEmployeeContainer);
-                    $('<span id="selected' + id + '" style="padding-left:10px"><i class="fa fa-times" id="' + id + '" aria-hidden="true" style="color:#0E69A8"></i></span>').appendTo(selectedEmployeeContainer);
+                    $('<span id="selected' +
+                        id +
+                        '" style="padding-left:10px"><i class="fa fa-times" id="' +
+                        id +
+                        '" aria-hidden="true" style="color:#0E69A8"></i></span>').appendTo(selectedEmployeeContainer);
                     $('<br id="' + id + '">').appendTo(selectedEmployeeContainer);
-                }
-                else if (parseInt(id) > 0) {
+                } else if (parseInt(id) > 0) {
                     $('span[id="' + 'selected' + id + '"]').remove();
                     $('br[id="' + id + '"]').remove();
                 }
             });
 
-            $(document).on("click", ".fa-times", function () {
+        $(document).on("click",
+            ".fa-times",
+            function() {
                 debugger;
                 var id = $(this).attr('id');
                 console.log("deselecteCheckbox");
@@ -302,52 +337,49 @@
             });
 
 
-            $("#userNames").click(function (e) {
-                debugger;
-                e.preventDefault();
-                $("#userRequired").empty();
-                if ($("#rolesList").val().trim() == "" || $("#rolesList").val() == 0) {
-                    $("#roleRequired").empty();
+        $("#userNames").click(function(e) {
+            debugger;
+            e.preventDefault();
+            $("#userRequired").empty();
+            if ($("#rolesList").val().trim() == "" || $("#rolesList").val() == 0) {
+                $("#roleRequired").empty();
 
-                    $("#roleRequired").append("Please select the role first.")
+                $("#roleRequired").append("Please select the role first.")
 
+            } else {
+                var userNames = [];
+
+                $("#userNames option:selected").each(function(i, selected) {
+                    userNames[i] = $(selected).text();
+
+                });
+
+                var deselectName = $("#userIds").text();
+
+                $("#userIds").empty();
+
+                userNames.forEach(function(item) { $('#userIds').append("<option>" + item + "</option>"); })
+
+                $("#userNames option:selected").hide();
+
+
+                if (deselectName != "" && $("#userNames option:selected").size() == 1) {
+                    $('#userNames option:contains(' + deselectName + ')').show();
                 }
-                else {
-                    var userNames = [];
 
-                    $("#userNames option:selected").each(function (i, selected) {
-                        userNames[i] = $(selected).text();
+            }
+        })
 
-                    });
+        $("#userIds").click(function(e) {
+            debugger;
+            e.preventDefault()
+            var dselectdUserName = $("#userIds option:selected").text();
+            $("#userIds option:selected").hide();
 
-                    var deselectName = $("#userIds").text();
+            $('#userNames option:contains(' + dselectdUserName + ')').show().attr("selected", false);
 
-                    $("#userIds").empty();
-
-                    userNames.forEach(function (item) { $('#userIds').append("<option>" + item + "</option>"); })
-
-                    $("#userNames option:selected").hide();
-
-
-
-                    if (deselectName != "" && $("#userNames option:selected").size() == 1) {
-                        $('#userNames option:contains(' + deselectName + ')').show();
-                    }
-
-                }
-            })
-
-            $("#userIds").click(function (e) {
-                debugger;
-                e.preventDefault()
-                var dselectdUserName = $("#userIds option:selected").text();
-                $("#userIds option:selected").hide();
-
-                $('#userNames option:contains(' + dselectdUserName + ')').show().attr("selected", false);
-
-            })
-
-        });
+        })
+    });
     </script>
 
 }

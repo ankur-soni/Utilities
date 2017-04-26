@@ -11,5 +11,6 @@ namespace Silicus.Ensure.Services.Interfaces
         TechnologyBusinessModel GetTechnologyByName(string name);
         bool IsTechnologyAssosiatedWithQuetion(string technologyName);
         TechnologyBusinessModel GetTechnologyById(int technologyId);
+        IDictionary<int, int> GetAllTechnologiesWithQuestionCount(int userId);
     }
 }

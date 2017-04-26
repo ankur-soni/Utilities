@@ -19,7 +19,7 @@ namespace Silicus.Ensure.Services.Interfaces
 
         IList<string> GenerateQuestionList(string tag, long duration, Proficiency competency);
 
-        ReviewQuestionBusinessModel GetQuestionDetailsForReview(int? questionId,int technologyId, int userId);
+        ReviewQuestionBusinessModel GetQuestionDetailsForReview(int? questionId,int technologyId, int userId,QuestionStatus questionStatusType);
         int? AddQuestionStatusDetails(QuestionStatusDetails statusDetails);
     }
 }

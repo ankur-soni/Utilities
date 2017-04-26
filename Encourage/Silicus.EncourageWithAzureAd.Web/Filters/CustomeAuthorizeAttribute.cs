@@ -33,7 +33,7 @@ namespace Silicus.Encourage.Web.Filters
                 {
                     filterContext.Result = new ViewResult
                     {
-                        ViewName = "~/Views/Shared/Error.cshtml"
+                        ViewName = "~/Views/Error/Unauthorized.cshtml"
                     };
                 }
 

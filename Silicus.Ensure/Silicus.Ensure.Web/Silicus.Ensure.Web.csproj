@@ -446,6 +446,7 @@
     <Compile Include="Models\ResetPasswordModel.cs" />
     <Compile Include="Models\ReviewQuestion\ReviewQuestionViewModel.cs" />
     <Compile Include="Models\ReviewQuestion\SubmitQuestionReviewViewModel.cs" />
+    <Compile Include="Models\ReviewQuestion\TabSelectionViewModel.cs" />
     <Compile Include="Models\RoleViewModel.cs" />
     <Compile Include="Models\SubmittedTestViewModel.cs" />
     <Compile Include="Models\TechnologyViewModel.cs" />
@@ -651,6 +652,7 @@
     <None Include="Properties\PublishProfiles\SilicusEnsureBeta - FTP.pubxml" />
     <None Include="Properties\PublishProfiles\SilicusEnsureBeta - Web Deploy.pubxml" />
     <None Include="Scripts\jquery-2.1.4.intellisense.js" />
+    <Content Include="Scripts\Custom\addquestion.js" />
     <Content Include="Scripts\jquery-2.1.4.js" />
     <Content Include="Scripts\jquery-2.1.4.min.js" />
     <None Include="Scripts\jquery.validate-vsdoc.js" />
@@ -935,6 +937,7 @@
     <Content Include="Views\Technology\Technologies.cshtml" />
     <Content Include="Views\Shared\EditorTemplates\TechnologyEditorTemplate.cshtml" />
     <Content Include="Views\QuestionReview\Index.cshtml" />
+    <Content Include="Views\QuestionReview\_QuestionDetailsForm.cshtml" />
     <None Include="Web.Azure.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -984,7 +987,6 @@
     <Folder Include="Content\js\plugins\switchery\_notes\" />
     <Folder Include="Content\js\plugins\toastr\_notes\" />
     <Folder Include="Content\js\plugins\validate\_notes\" />
-    <Folder Include="Scripts\Custom\" />
     <Folder Include="ViewModel\" />
     <Folder Include="Views\Common\" />
     <Folder Include="Views\Shared\DisplayTemplates\" />

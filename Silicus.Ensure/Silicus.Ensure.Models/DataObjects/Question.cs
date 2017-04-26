@@ -1,6 +1,7 @@
 ﻿using Silicus.Ensure.Models.Constants;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Silicus.Ensure.Models.DataObjects
 {
@@ -35,5 +36,7 @@ namespace Silicus.Ensure.Models.DataObjects
         public QuestionStatus Status { get; set; }
         public virtual ICollection<QuestionStatusDetails> QuestionStatusDetails { get; set; }
         public virtual Technology Technology { get; set; }
+        [NotMapped]
+        public string ReviewerComment { get; set; }
     }
 }

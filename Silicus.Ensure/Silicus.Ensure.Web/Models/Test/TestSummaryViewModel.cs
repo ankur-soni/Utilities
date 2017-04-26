@@ -11,5 +11,7 @@ namespace Silicus.Ensure.Web.Models.Test
         public int TotalObtainedMarks { get; set; }
         [DisplayFormat(DataFormatString = "{0:n2}")]
         public decimal Percentage { get; set; }
+        public int TimeAllotted { get; set; }
+        public int TimeTaken { get; set; }
     }
 }

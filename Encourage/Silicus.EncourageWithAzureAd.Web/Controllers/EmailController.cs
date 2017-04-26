@@ -10,6 +10,7 @@ using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
 using Microsoft.Ajax.Utilities;
+using Silicus.Encourage.Web.Filters;
 
 namespace Silicus.EncourageWithAzureAd.Web.Controllers
 {
@@ -32,6 +33,7 @@ namespace Silicus.EncourageWithAzureAd.Web.Controllers
 
 
         // GET: Email
+        [CustomeAuthorize(AllowedRole = "Admin")]
         public ActionResult Index()
         {
             var awards = _awardService.GetAllAwards().Select( x => new AwardViewModel()
@@ -53,6 +55,7 @@ namespace Silicus.EncourageWithAzureAd.Web.Controllers
             return View(emailTemplateViewModel);
         }
 
+        [CustomeAuthorize(AllowedRole = "Admin")]
         public ActionResult GetEmailTemplate(int processId)
         {
             var emailTemplate = _emailTemplateService.GetEmailTemplate(processId);

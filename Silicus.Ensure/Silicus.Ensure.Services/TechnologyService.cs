@@ -1,5 +1,6 @@
 ﻿using Silicus.Ensure.Entities;
 using Silicus.Ensure.Models;
+using Silicus.Ensure.Models.Constants;
 using Silicus.Ensure.Models.DataObjects;
 using Silicus.Ensure.Services.Interfaces;
 using System;
@@ -33,6 +34,25 @@ namespace Silicus.Ensure.Services
                 );
 
         }
+
+        public IDictionary<int, int> GetAllTechnologiesWithQuestionCount(int userId)
+        {
+            return
+           (from tech in _context.Query<Technology>()
+            join ques in _context.Query<Question>()
+                        on tech.TechnologyId equals ques.TechnologyId
+            where ques.Status != QuestionStatus.Approved
+            && ((ques.ModifiedBy==null && ques.CreatedBy!=userId) || (ques.ModifiedBy != userId))
+            group ques by ques.TechnologyId into grouped
+            select new
+            {
+                Count = grouped.Count(),
+                TechnologyId = grouped.Key
+            }).ToDictionary(mc => mc.TechnologyId,
+                                 mc => mc.Count);
+
+        }
+
 
         public int? Add(TechnologyBusinessModel technology)
         {
@@ -115,25 +135,5 @@ namespace Silicus.Ensure.Services
                 IsActive = technology.IsActive
             };
         }
-
-        //private TechnologyBusinessModel TechnologyEntityToBusinessModel(Technology technology)
-        //{
-        //    if (technology == null)
-        //    {
-        //        return null;
-        //    }
-        //    return new TechnologyBusinessModel
-        //    {
-        //        TechnologyId = technology.TechnologyId,
-        //        TechnologyName = technology.TechnologyName,
-        //        Description = technology.Description,
-        //        CreatedBy = technology.CreatedBy,
-        //        CreatedDate = technology.CreatedDate,
-        //        ModifiedBy = technology.ModifiedBy,
-        //        ModifiedDate = technology.ModifiedDate,
-        //        IsActive = technology.IsActive
-        //    };
-        //}
-
     }
 }

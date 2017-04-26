@@ -1,0 +1,10 @@
+﻿@{
+    ViewBag.Title = "Page Not Found";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div style="width:80%;padding-top:10%" class="text-center">
+    <span class="text-danger" style="font-weight:bolder;">
+        The page you have requested cannot be found.<br><a href="@Url.Action("Index","Home")" data-rel="back">Back to homepage</a>
+    </span>
+</div>
