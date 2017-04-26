@@ -60,8 +60,12 @@ namespace Silicus.Ensure.Web.Models
         public bool IsDeleted { get; set; }
         public DateTime CreatedOn { get; set; }
         public int CreatedBy { get; set; }
+        public string CreatedByName { get; set;}
+
         public DateTime? ModifiedOn { get; set; }
         public int? ModifiedBy { get; set; }
+        public string ModifiedByName { get; set; }
+
         public List<Tags> SkillTagsList { get; set; }
         [Required(ErrorMessage = "Skill tag is required.")]
         public List<string> SkillTag { get; set; }
