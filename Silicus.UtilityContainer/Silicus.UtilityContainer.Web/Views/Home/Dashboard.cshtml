@@ -49,7 +49,7 @@
                                 </div>
                             </div>
                         }
-                        if (item.Name == "Enhance")
+                        if (item.Name == "Entask")
                         {
                             <div class="col-lg-6 col-md-6 col-sm-6">
                                 <div class="el-element-overlay m-b-40">
@@ -57,15 +57,11 @@
                                         <div class="el-card-item">
                                             <div class="el-card-avatar el-overlay-1">
                                     
-                                    <img style="height: 80px;width:75%;margin: 95px 30px 80px 65px;"  src="~/Images/enhanceLogo.png"  />
+                                                <img style="height: 80px;width:75%;margin: 95px 30px 80px 65px;" src="~/Images/entaskLogo.png" />
                                                 <div class="el-overlay">
                                                     <ul class="el-info">
                                                         <li>
-                                                            @*<a class="btn default btn-outline image-popup-vertical-fit" href="@item.Url?utilityID=@item.Id" target="_blank" title="Coming soon" disabled>
-                                                                <i class="fa fa-eye fa-2x" aria-hidden="true"></i>
-                                                            </a>*@
-                                                           
-                                                            <a class="btn default btn-outline image-popup-vertical-fit" href="javascript:void(0)"  title="Coming soon" >
+                                                            <a class="btn default btn-outline image-popup-vertical-fit" href="@item.Url?utilityID=@item.Id" target="_blank" title="@item.Name">
                                                                 <i class="fa fa-eye fa-2x" aria-hidden="true"></i>
                                                             </a>
                                                         </li>
@@ -73,7 +69,7 @@
                                                 </div>
                                             </div>
                                             <div class="el-card-content">
-                                                <h3 class="box-title"><i class="fa fa-commenting-o" aria-hidden="true"></i> <span>Framework components dashboard and backlog management.</span></h3>
+                                                <h3 class="box-title"><i class="fa fa-commenting-o" aria-hidden="true"></i> <span>Utility for creating standard development tasks automatically.</span></h3>
                                                 <br>
                                             </div>
                                         </div>
