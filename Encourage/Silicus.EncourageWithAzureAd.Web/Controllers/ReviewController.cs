@@ -473,6 +473,7 @@ namespace Silicus.EncourageWithAzureAd.Web.Controllers
         }
 
         [HttpGet]
+        [CustomeAuthorize(AllowedRole = "Admin")]
         public ActionResult LockNomination()
         {
             _logger.Log("Review-LockNomination-GET");
@@ -494,6 +495,7 @@ namespace Silicus.EncourageWithAzureAd.Web.Controllers
         }
 
         [HttpPost]
+        [CustomeAuthorize(AllowedRole = "Admin")]
         public JsonResult LockNomination(int[] awardIds, int[] processIds)
         {
             _logger.Log("Review-LockNomi-Post");
@@ -520,6 +522,7 @@ namespace Silicus.EncourageWithAzureAd.Web.Controllers
         }
 
         [HttpGet]
+        [CustomeAuthorize(AllowedRole = "Admin")]
         public ActionResult UnlockNomination()
         {
             _logger.Log("Review-UnlockNomination-GET");
@@ -539,6 +542,7 @@ namespace Silicus.EncourageWithAzureAd.Web.Controllers
         }
 
         [HttpPost]
+        [CustomeAuthorize(AllowedRole = "Admin")]
         public JsonResult UnlockNomination(int[] awardIds, int[] processIds)
         {
             _logger.Log("Review-UnlockNomination-GET");
@@ -562,6 +566,7 @@ namespace Silicus.EncourageWithAzureAd.Web.Controllers
             return Json(data);
         }
 
+        [CustomeAuthorize(AllowedRole = "Admin")]
         public ActionResult ConsolidatedNominations(ConsolidatedNominationsViewModel consolidatedNominationsViewModel)
         {
             var customDate = _customDateService.GetCustomDate(consolidatedNominationsViewModel.AwardId);
@@ -639,6 +644,7 @@ namespace Silicus.EncourageWithAzureAd.Web.Controllers
         }
 
         [HttpPost]
+        [CustomeAuthorize(AllowedRole = "Admin")]
         public ActionResult SaveFinalScore(ConsolidatedNominationsViewModel consolidatedNominationsViewModel)
         {
             foreach (var nomination in consolidatedNominationsViewModel.Nominations)
@@ -660,6 +666,7 @@ namespace Silicus.EncourageWithAzureAd.Web.Controllers
         }
 
         [HttpPost]
+        [CustomeAuthorize(AllowedRole = "Admin")]
         public ActionResult ShortList(int nominationId)
         {
             try
@@ -675,6 +682,7 @@ namespace Silicus.EncourageWithAzureAd.Web.Controllers
             }
         }
         [HttpGet]
+        [CustomeAuthorize(AllowedRole = "Admin")]
         public ActionResult SetAwardPeriod()
         {
             var customdateViewModel = new CustomdateViewmodel();
@@ -686,6 +694,7 @@ namespace Silicus.EncourageWithAzureAd.Web.Controllers
         }
 
         [HttpGet]
+        [CustomeAuthorize(AllowedRole = "Admin")]
         public JsonResult GetAwardFrequency(int awardId)
         {
             var currentAward = _awardService.GetAwardById(awardId);

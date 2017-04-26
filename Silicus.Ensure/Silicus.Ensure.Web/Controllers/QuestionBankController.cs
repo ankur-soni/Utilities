@@ -118,6 +118,22 @@ namespace Silicus.Ensure.Web.Controllers
                 queModel.SkillTag = question.Tags.Split(',').ToList();
                 queModel.Success = 0;
                 queModel.Edit = true;
+
+                if (queModel.CreatedBy > 0)
+                {
+                    var Creatoruser = _containerUserService.GetUserByID(queModel.CreatedBy);
+                    queModel.CreatedByName = Creatoruser.FirstName + " " + Creatoruser.LastName + "(" + Creatoruser.EmployeeID + ")";
+                }
+
+                if (queModel.ModifiedBy.HasValue)
+                {
+                    if (queModel.ModifiedBy.Value > 0)
+                    {
+                        var Modifieruser = _containerUserService.GetUserByID(queModel.ModifiedBy.Value);
+                        queModel.ModifiedByName = Modifieruser.FirstName + " " + Modifieruser.LastName + "(" + Modifieruser.EmployeeID + ")";
+                    }
+                }
+
                 queModel.SkillTagsList = Tags();
                 return View("AddQuestions", queModel);
             }
