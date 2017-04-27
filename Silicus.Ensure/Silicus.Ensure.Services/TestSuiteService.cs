@@ -629,7 +629,7 @@ namespace Silicus.Ensure.Services
                         testDetails.Practical.MaximumMarks += basicDetails.maximumMarks;
                         if (basicDetails.questionDetails.Mark != null && basicDetails.questionDetails.Mark > 0)
                         {
-                            testDetails.Practical.MarksObtained += (int)basicDetails.questionDetails.Mark;
+                            testDetails.Practical.MarksObtained += (decimal)basicDetails.questionDetails.Mark;
                             testDetails.Practical.CorrectAnswersCount++;
                         }
                     }
@@ -639,7 +639,7 @@ namespace Silicus.Ensure.Services
                         testDetails.Objective.MaximumMarks += basicDetails.maximumMarks;
                         if (basicDetails.questionDetails.Mark != null && basicDetails.questionDetails.Mark > 0)
                         {
-                            testDetails.Objective.MarksObtained += (int)basicDetails.questionDetails.Mark;
+                            testDetails.Objective.MarksObtained += (decimal)basicDetails.questionDetails.Mark;
                             testDetails.Objective.CorrectAnswersCount++;
                         }
                     }
@@ -649,7 +649,7 @@ namespace Silicus.Ensure.Services
             testDetails.Objective.IncorrectAnswersCount = testDetails.Objective.TotalQuestionCount - testDetails.Objective.CorrectAnswersCount;
             testDetails.TotalMaximumMarks = testDetails.Practical.MaximumMarks + testDetails.Objective.MaximumMarks;
             testDetails.TotalObtainedMarks = testDetails.Practical.MarksObtained + testDetails.Objective.MarksObtained;
-            testDetails.Percentage = testDetails.TotalObtainedMarks != 0 ? (decimal)testDetails.TotalObtainedMarks / testDetails.TotalMaximumMarks * percentageConstant : 0;
+            testDetails.Percentage = testDetails.TotalObtainedMarks != 0 ? testDetails.TotalObtainedMarks / testDetails.TotalMaximumMarks * percentageConstant : 0;
             testDetails = GetTimeDetails(userTestSuiteId, testDetails);
             return testDetails;
         }

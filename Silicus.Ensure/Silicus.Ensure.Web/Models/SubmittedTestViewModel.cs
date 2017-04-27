@@ -75,6 +75,6 @@ namespace Silicus.Ensure.Web.Models
 
         public int Weightage { get; set; }
 
-        public int? EvaluatedMark { get; set; }
+        public decimal? EvaluatedMark { get; set; }
     }
 }

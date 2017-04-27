@@ -186,7 +186,7 @@ namespace Silicus.Ensure.Web.Controllers
             return navigationDetails;
         }
 
-        private void UpdateReview(int? mark, string comment, int? userTestDetailId)
+        private void UpdateReview(decimal? mark, string comment, int? userTestDetailId)
         {
             UserTestDetails userTestDetails = _testSuiteService.GetUserTestDetailsId(userTestDetailId);
             userTestDetails.Mark = mark;

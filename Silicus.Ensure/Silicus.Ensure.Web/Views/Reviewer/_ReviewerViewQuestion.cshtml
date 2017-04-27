@@ -397,20 +397,20 @@
                                             </div>
                                         }
                                     </li>
-                                            <li>
-                                                @if (Model.CorrectAnswer.Contains("5"))
-                                                {
-                                                    <div class="checkbox checkbox-info" id="checkbox5">
-                                                        <input type="checkbox" id="correctCheckbox5" name="Correctoptcheckbox" value="5" checked><label for="correctCheckbox5"><span class="spanLabel">@Model.Option5</span></label>
-                                                    </div>
-                                                }
-                                                else
-                                                {
-                                                    <div class="checkbox checkbox-info" id="checkbox5">
-                                                        <input type="checkbox" id="correctCheckbox5" name="Correctoptcheckbox" value="5"><label for="correctCheckbox5"><span class="spanLabel">@Model.Option5</span></label>
-                                                    </div>
-                                                }
-                                            </li>
+                                    <li>
+                                        @if (Model.CorrectAnswer.Contains("5"))
+                                        {
+                                            <div class="checkbox checkbox-info" id="checkbox5">
+                                                <input type="checkbox" id="correctCheckbox5" name="Correctoptcheckbox" value="5" checked><label for="correctCheckbox5"><span class="spanLabel">@Model.Option5</span></label>
+                                            </div>
+                                        }
+                                        else
+                                        {
+                                            <div class="checkbox checkbox-info" id="checkbox5">
+                                                <input type="checkbox" id="correctCheckbox5" name="Correctoptcheckbox" value="5"><label for="correctCheckbox5"><span class="spanLabel">@Model.Option5</span></label>
+                                            </div>
+                                        }
+                                    </li>
                                             <li>
                                                 @if (Model.CorrectAnswer.Contains("6"))
                                                 {
@@ -535,12 +535,27 @@
 </div>
 
 <script>
-    var maxValue = "@Model.Marks";
+    var maxValue = "@Model.Marks" + ".00";
     $("#ReviwerMark").kendoNumericTextBox({
-        format: "n0",
+        format: "n",
         min: 0,
         max: maxValue,
-        step: 1
+        step: 0.5,
+        change: function () {
+            var value = this.value();
+            if (value && value != 0) {
+                var remainder = value % 0.5;
+                if (remainder != 0) {
+                    value = value - remainder;
+                    var reviewerMark = $("#ReviwerMark").data('kendoNumericTextBox');
+                    if (reviewerMark) {
+                        reviewerMark.value(value);
+                    }
+
+                }
+            }
+            UpdateReview();
+        }
     });
     $("#ReviwerMark").kendoValidator();
     $("#btnAddMoreTime").hide();
