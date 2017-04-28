@@ -275,7 +275,7 @@ textarea.k-textbox:hover,
 .k-draghandle,
 .k-treemap-tile,
 html .km-pane-wrapper .k-header {
-  background-color: #0063a7;
+  background-color: #36c6d3;
 }
 /* icons */
 .k-icon:hover,
@@ -1470,6 +1470,7 @@ html .km-pane-wrapper .km-widget,
 .k-tabstrip-items .k-state-default .k-link,
 .k-panelbar > li.k-state-default > .k-link {
   color: #ffffff;
+
 }
 .k-tabstrip-items .k-state-hover .k-link,
 .k-panelbar > li.k-state-hover > .k-link,
@@ -1544,10 +1545,10 @@ html .km-pane-wrapper .km-widget,
 .k-primary,
 .k-overflow-container .k-primary {
   color: #ffffff;
-  border-color: #0063a7;
+  border-color: #36c6d3;
   background-image: none;
   background-position: 50% 50%;
-  background-color: #0063a7;
+  background-color: #36c6d3;
   box-shadow: none;
 }
 .k-primary:focus,
@@ -1896,8 +1897,8 @@ div.k-splitbar.k-state-focused .k-icon,
 .k-primary:active:hover,
 .k-primary.k-state-active:hover {
   color: #ffffff;
-  border-color: #0063a7;
-  background-color: #0063a7;
+  border-color: #36c6d3;
+  background-color: #36c6d3;
 }
 .k-primary:focus:not(.k-state-disabled):not([disabled]),
 .k-primary:focus:active:not(.k-state-disabled):not([disabled]) {
@@ -1919,8 +1920,8 @@ div.k-splitbar.k-state-focused .k-icon,
 .k-widget .k-button:active,
 .k-widget .k-button.k-state-active {
   color: #fff;
-  background-color: #0063a7;
-  border-color: #0063a7;
+  background-color: #36c6d3;
+  border-color: #36c6d3;
 }
 .k-toolbar .k-overflow-anchor.k-state-active,
 .k-toolbar .k-overflow-anchor.k-state-border-down {
@@ -2115,8 +2116,8 @@ span.k-colorpicker {
   box-shadow: none;
 }
 .k-window-titlebar .k-state-hover {
-  background-color: #5c6dc4;
-  border-color: #5c6dc4;
+  background-color: #26a1ab;
+  border-color: #26a1ab;
 }
 /* TabStrip */
 .k-tabstrip > .k-tabstrip-items > .k-item {
@@ -2124,16 +2125,16 @@ span.k-colorpicker {
 }
 .k-tabstrip-items .k-state-active,
 .k-panelbar .k-tabstrip-items .k-state-active {
-  background-color: #0063a7;
+  background-color: #26a1ab;
   background-image: none;
-  border-bottom-color: #00b0ff;
+  border-bottom: 2px solid #fff;
 }
 .k-tabstrip .k-content.k-state-active {
   border-color: transparent;
 }
 .k-tabstrip-items .k-item.k-state-hover {
-  background: #5c6dc4;
-  border-color: #5c6dc4;
+  background: #26a1ab;
+  border-color: #26a1ab;
 }
 .k-tabstrip-items .k-state-hover .k-link {
   color: #ffffff;
@@ -2217,8 +2218,8 @@ span.k-colorpicker {
 .k-gantt .k-gantt-toolbar .k-gantt-views li.k-state-hover .k-link,
 .k-gantt .k-gantt-toolbar .k-button:hover,
 .km-pane-wrapper .k-header .k-button:hover {
-  background-color: #5c6dc4;
-  border-color: #5c6dc4;
+  background-color: #26a1ab;
+  border-color: #26a1ab;
 }
 .km-pane-wrapper .k-header .k-button:active:hover {
   color: #ffffff;

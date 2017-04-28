@@ -13,24 +13,12 @@
 
 <div class="toolbar">
     <div class="row">
-        <div class="col-sm-12">
-            <div class="col-sm-5 col-md-4 col-lg-3 M-T15 M-B15">
-                <div class="input-group">
-                    <span class="input-group-addon"><span class="glyphicon glyphicon-search" aria-hidden="true"></span></span>
-                    <input type="text" class="form-control" id='FieldFilter' placeholder="Search" style="height: 38px;">
-                    <span class="input-group-btn">
-                        <button id="UserSearchRefresh" class="btn btn-default" style="border:1px solid #0070B9!important" type="button"><span class="glyphicon glyphicon-refresh" aria-hidden="true"></span></button>
-                    </span>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="row M-B15">
-        <div class="col-sm-12">
+        
             <div class="col-sm-4 col-md-3 col-lg-2">
-                <span class="themeColorBlue labelAlignMid"><b>User role</b></span>
-
-                @(Html.Kendo().DropDownListFor(m => m.Role)
+                
+                    <div class="form-group">
+                        <label>User role</label>
+                        @(Html.Kendo().DropDownListFor(m => m.Role)
                         .Name("Role")
                         .DataTextField("Text")
                         .DataValueField("Value")
@@ -41,9 +29,23 @@
                         .OrderBy(x => x.Text))
                         .HtmlAttributes(new { style = "width: 100%", @class = "M-T5 M-B15" })
                         .OptionLabel("All")
-                )
+                        )
+                    </div>
+                
+            </div>       
+       
+            <div class="col-sm-4 col-md-3 col-lg-2 pull-right">
+                <div class="form-group">
+                    
+                    <div class="input-group userMgmtInputGroup">
+                        <span class="input-group-addon"><span class="glyphicon glyphicon-search" aria-hidden="true"></span></span>
+                        <input type="text" class="form-control" id='FieldFilter' placeholder="Search" style="height: 31px;">
+                        <span class="input-group-btn">
+                            <button id="UserSearchRefresh" class="btn btn-default btn-search" type="button"><span class="glyphicon glyphicon-refresh" aria-hidden="true"></span></button>
+                        </span>
+                    </div>
+                </div>
             </div>
-        </div>
     </div>
 </div>
 <div class="table-responsive">
@@ -75,8 +77,6 @@
         )
     }
 </div>
-
-
 
 
 <!-- Modal -->
@@ -148,7 +148,6 @@
     </form>
 </div>
 
-
 <div class="modal fade" id="addPanelPopup" role="dialog">
     <form id="panelForm" action="/Panel/Save" method="post">
         <div class="modal-dialog">
@@ -175,8 +174,6 @@
 
 
 <script>
-
-
 
     function assignPanel(e) {
         var grid = $("#UserGrids").data("kendoGrid");

@@ -1,12 +1,85 @@
-﻿
+﻿/*Common classes*/
+.M-B0{margin-bottom:0px;}
+.M-T3{margin-top:3px!important;}
+.M-T4{margin-top:4px!important;}
+.M-T5{margin-top:5px;}
+.M-T10{margin-top:10px;}
+.M-T15{margin-top:15px;}
+.M-T20{margin-top:20px;}
+.M-T25{margin-top:25px;}
+.M-T60{margin-top:60px;}
+.M-T30{margin-top:30px;}
+.M-T40{margin-top:40px;}
+.M-T50 {margin-top: 50px;}
+.M-B3{margin-bottom:3px;}
+.M-B5{margin-bottom:5px;}
+.M-B10{margin-bottom:10px!important;}
+.M-B15{margin-bottom:15px!important;}
+.M-B20{margin-bottom:20px!important;}
+.M-B25{margin-bottom:25px!important;}
+.M-L15{margin-left:15px;}
+.M-R15{margin-right:15px;}
+.M-B60{margin-bottom:60px!important;}
+.M-B30{margin-bottom:30px!important;}
+
+.btn:not(.md-skip):not(.bs-select-all):not(.bs-deselect-all){padding:5px 5px 5px !important;}
+#candidateSearch.btn:not(.md-skip):not(.bs-select-all):not(.bs-deselect-all){padding:8px 14px 7px !important;}
+#PanelSearch.btn:not(.md-skip):not(.bs-select-all):not(.bs-deselect-all),#postionSearch.btn:not(.md-skip):not(.bs-select-all):not(.bs-deselect-all),#tagSearch.btn:not(.md-skip):not(.bs-select-all):not(.bs-deselect-all),#technologySearch.btn:not(.md-skip):not(.bs-select-all):not(.bs-deselect-all),#UserSearchRefresh.btn:not(.md-skip):not(.bs-select-all):not(.bs-deselect-all),#QuestionSearchRefresh.btn:not(.md-skip):not(.bs-select-all):not(.bs-deselect-all),#testSuiteSearch.btn:not(.md-skip):not(.bs-select-all):not(.bs-deselect-all){padding:8px 14px 6px!important}
+
+
+
+/*kendo style override*/
 .k-grid td{border-bottom: 1px solid #e7ecf1;}
 .k-grid-header .k-header{
     padding: .8em .6em .8em .6em;
 }
+span.k-icon.k-edit{display:none;}
+/*span.k-icon.k-delete{display:none;}*/
+span.k-icon.k-cancel{display:none;}
+span.k-icon.k-save{display:none;}
+span.k-icon.k-update{display:none;}
+i.fa.fa-save{display:none;}
+
+.k-tabstrip>.k-content, .k-panelbar .k-tabstrip>.k-content{padding:0;}
 a.dialog-window{text-decoration:underline;}
 a.dialog-window:hover{text-decoration:none;color:#444;}
+.addTag{float: left;margin-right: 15px;}
+#tagsGrids .toolbar, #positionGrids .toolbar, #PanelGrids .toolbar, #technologiesGrid .toolbar{padding: 0px 10px 0px 10px;}
 
 
+.candidateAnchor, .questionBankAnchor, .testsuitAnchor{margin-top:30px;margin-right: 15px;}
+.candidateInputGroup, .questionBankInputGroup, .userMgmtInputGroup, .testsuitInputGroup{width:250px;float:right;margin-top: 30px;}
+
+.input-group-addon{
+    background: #f1f4f7;
+    color: #000;
+}
+.btn-search{
+    border: 1px solid #ccc!important;
+    border-radius: 0px 3px 3px 0px!important;
+    height: 31px;
+    box-shadow: none!important;
+    color: #000;
+    background: #f1f4f7;
+    padding: 7px 14px 7px!important;
+}
+.addclearFloat{float:right;}
+.clearFloat1{float:right;}
+
+.profile-box{
+    margin-right: 12px;width:200px;display: inline-block;vertical-align: top;
+}
+.info-box{
+    width: calc(100% - 217px);
+    /* Firefox */
+width: -moz-calc(100% - 217px);
+/* WebKit */
+width: -webkit-calc(100% - 217px);
+/* Opera */
+width: -o-calc(100% - 217px);
+
+    display: inline-block;
+}
 
 /*all media query start from here*/
 @media (max-width:1755px) 
@@ -33,6 +106,12 @@ a.dialog-window:hover{text-decoration:none;color:#444;}
 @media (max-width:1199px) 
 {
 	
+    .addclearFloat1{clear:both;}
+}
+@media (max-width:1082px) 
+{
+    .candidateInputGroup, .questionBankInputGroup, .userMgmtInputGroup, .testsuitInputGroup {width:200px;}
+    
 }
 @media (max-width:991px) 
 {
@@ -74,7 +153,11 @@ a.dialog-window:hover{text-decoration:none;color:#444;}
 	
 
 }
+@media (max-width:406px) 
+{
+    #tagSearch1{padding-top:10px;}
 
+}
 @media (max-width:410px) 
 {
 

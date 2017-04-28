@@ -15,21 +15,17 @@
 
 </script>
 
-<div class="row white-bg header-row">
-    <nav class="" role="navigation" style="margin-bottom: 0">
-        <div class="navbar-header">
-            <a class="navbar-minimalize minimalize-styl-2 btn btn-primary" id="menu-toggle" style="margin-left:15px;border-radius:0px;" href="#"><i class="fa fa-bars"></i> </a>
-        </div>
-    </nav>
-
-    <div class="col-lg-10 col-md-10 col-sm-10 col-xs-10">
-        <h1 class="dashboard-name">Question Bank</h1>
+<div class="row">
+    <div class="col-sm-12">
+        <h1 class="page-title">
+            QUESTION BANK
+        </h1>
     </div>
 </div>
 
-<div class="box M-T15">
+
     <div class="toolbar">
-        <div class="row">
+        @*<div class="row">
             <div class="col-sm-12">
                 <div class="col-sm-4 col-md-4 col-lg-3 M-T15 M-B15">
                     <div class="input-group">
@@ -41,12 +37,12 @@
                     </div>
                 </div>
             </div>
-        </div>
+        </div>*@
 
-        <div class="row">
-            <div class="col-sm-12 M-B15">
-                <div class="col-sm-4 col-md-3 col-lg-2">
-                    <span style="font-weight:bold;" class="themeColorBlue labelAlignMid">Question type</span>
+        <div class="row M-B15">
+            
+                <div class="col-sm-3 col-md-3 col-lg-2">
+                    <label>Question type</label>
 
                     @(Html.Kendo().DropDownList()
                                                 .Name("QuestionType")
@@ -69,8 +65,8 @@
                                                     }
                                                     }).HtmlAttributes(new { style = "width: 100%", @class = "M-T5" }))
                 </div>
-                <div class="col-sm-4 col-md-3 col-lg-2">
-                    <span style="font-weight:bold;" class="themeColorBlue labelAlignMid">Proficiency level</span>
+                <div class="col-sm-3 col-md-3 col-lg-2">
+                    <label>Proficiency level</label>
 
                     @{
                         var levelList = new List<SelectListItem>();
@@ -89,11 +85,19 @@
                                                                 .HtmlAttributes(new { style = "width: 100%", @class = "M-T5" })
                     )
                 </div>
-                <div class="col-sm-5 col-md-5 col-lg-4 cust-mar">
-                    <a href='/QuestionBank/AddQuestions?questionId=0' class='k-button k-button-icontext k-grid-add'><span class='k-icon k-add'></span>Add question</a>
-
+               
+                @*<Button id="ReviewAllQuestions"><span></span>Review questions</Button>*@
+            <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 addclearFloat">
+                <div class="form-group clearFloat1 addclearFloat1">
+                    <a href='/QuestionBank/AddQuestions?questionId=0' class='k-button k-button-icontext k-grid-add questionBankAnchor'><span class='fa fa-plus'></span>&nbsp;Add question</a>
+                    <div class="input-group questionBankInputGroup">
+                        <span class="input-group-addon"><span class="glyphicon glyphicon-search" aria-hidden="true"></span></span>
+                        <input type="text" class="form-control" id='FieldFilter' placeholder="Search" style="height: 31px;">
+                        <span class="input-group-btn">
+                            <button id="QuestionSearchRefresh" class="btn btn-default btn-search" type="button"><span class="glyphicon glyphicon-refresh" aria-hidden="true"></span></button>
+                        </span>
+                    </div>
                 </div>
-                <Button id="ReviewAllQuestions"><span></span>Review questions</Button>
             </div>
         </div>
     </div>
@@ -134,10 +138,11 @@
                 )}
         </div>
     </div>
-</div>
+
 <script>
     $(document).ready(function () {
-        $('.page-wrapper').css('padding-bottom', '60px');
+        //$('.page-wrapper').css('padding-bottom', '60px');
+        SelectedMenu("#questionbank-link");
         $("#messageDiv").hide();
         $('#ReviewAllQuestions').on('click', ReviewAllQuestions);
         SetNavigationMenuActive('QuestionBank');

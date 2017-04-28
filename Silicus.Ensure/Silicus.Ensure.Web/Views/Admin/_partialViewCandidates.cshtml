@@ -399,22 +399,8 @@
 <div class="">
 
     <div class="toolbar">
-        @*<div class="row">
-            <div class="col-sm-12">
-                <div class="col-sm-5 col-md-4 col-lg-3 M-T15 M-B15">
-                    <div class="input-group">
-                        <span class="input-group-addon"><span class="glyphicon glyphicon-search" aria-hidden="true"></span></span>
-                        <input type="text" class="form-control" id='FieldFilter' placeholder="Search" style="height: 38px;">
-                        <span class="input-group-btn">
-                            <button id="candidateSearch" class="btn btn-default" style="border:1px solid #0070B9!important" type="button"><span class="glyphicon glyphicon-refresh" aria-hidden="true"></span></button>
-                        </span>
-                    </div>
-                </div>
-
-            </div>
-        </div>*@
         <div class="row M-B15">
-                <div class="col-sm-4 col-md-3 col-lg-2">
+                <div class="col-sm-3 col-md-3 col-lg-2">
                     <div class="form-group">
                         <label>Candidate Status</label>
                         @(Html.Kendo().DropDownListFor(m => m.CandidateStatus)
@@ -468,7 +454,7 @@
 
                    
                 </div>
-            <div class="col-sm-4 col-md-3 col-lg-2">
+                <div class="col-sm-3 col-md-3 col-lg-2">
                 <div class="form-group">
                 <label>Positions</label>
                 @(Html.Kendo().DropDownList()
@@ -483,13 +469,23 @@
                 )
             </div>
                 </div>
-                <div class="col-sm-4 col-md-3 col-lg-2 cust-mar">
-                    @if (role.Contains(Silicus.Ensure.Models.Constants.RoleName.Admin.ToString())|| role.Contains(Silicus.Ensure.Models.Constants.RoleName.Recruiter.ToString()))
+               
+                <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 addclearFloat">
+                <div class="form-group clearFloat1 addclearFloat1">
+                    @if (role.Contains(Silicus.Ensure.Models.Constants.RoleName.Admin.ToString()) || role.Contains(Silicus.Ensure.Models.Constants.RoleName.Recruiter.ToString()))
                     {
-                        <a href='#' style="margin-top:25px;" onclick='AddNew();' class='k-button k-button-icontext k-grid-add'><span style="padding-right:5px;" class='fa fa-plus'></span>Add candidate</a>
+                        <a href='#' onclick='AddNew();' class='k-button k-button-icontext k-grid-add candidateAnchor'><span style="padding-right:5px;" class='fa fa-plus'></span>Add candidate</a>
                     }
+                    
+                    <div class="input-group candidateInputGroup">
+                        <span class="input-group-addon"><span class="glyphicon glyphicon-search" aria-hidden="true"></span></span>
+                        <input type="text" class="form-control" id='FieldFilter' placeholder="Search" style="height: 31px;">
+                        <span class="input-group-btn">
+                            <button id="candidateSearch" class="btn btn-default btn-search" type="button"><span class="glyphicon glyphicon-refresh" aria-hidden="true"></span></button>
+                        </span>
+                    </div>
                 </div>
-           
+            </div>
         </div>
 
     </div>
