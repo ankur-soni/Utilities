@@ -18,9 +18,9 @@ namespace Silicus.Ensure.Services
             _context = dataContextFactory.Create(ConnectionType.Ip);
         }
 
-        public IEnumerable<Question> GetQuestion()
+        public IQueryable<Question> GetQuestion()
         {
-            return _context.Query<Question>().Where(x => x.IsDeleted == false).OrderByDescending(x => x.Id);
+            return _context.Query<Question>().Where(x => !x.IsDeleted);
         }
 
         public Question GetSingleQuestion(int id)

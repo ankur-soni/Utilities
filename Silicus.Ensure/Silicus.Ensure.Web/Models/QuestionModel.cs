@@ -44,7 +44,7 @@ namespace Silicus.Ensure.Web.Models
         public List<string> CorrectAnswer { get; set; }
         [AllowHtml]
         public string Answer { get; set; }
-        public string Tag { get; set; }
+        public string Tags { get; set; }
         [Required(ErrorMessage = "Technology is required.")]
         [Display(Name = "Technology")]
         public int TechnologyId { get; set; }

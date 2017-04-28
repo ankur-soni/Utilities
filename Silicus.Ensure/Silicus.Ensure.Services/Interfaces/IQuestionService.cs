@@ -2,12 +2,13 @@
 using Silicus.Ensure.Models.DataObjects;
 using Silicus.Ensure.Models.ReviewQuestion;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Silicus.Ensure.Services.Interfaces
 {
     public interface IQuestionService
     {
-        IEnumerable<Question> GetQuestion();
+        IQueryable<Question> GetQuestion();
 
         Question GetSingleQuestion(int id);
 
