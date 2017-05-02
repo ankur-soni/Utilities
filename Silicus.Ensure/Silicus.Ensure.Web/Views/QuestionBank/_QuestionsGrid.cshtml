@@ -8,8 +8,8 @@
                             columns.Bound(q => q.Id).Title("Id").Width(100);
                             columns.Bound(q => q.QuestionDescription).Title("Question description").Width(400);
                             columns.Bound(q => q.QuestionType).Width(200);
-                            columns.Bound(q => q.TechnologyName).Title("Technology").Width(200);
-                            columns.Bound(q => q.StatusName).Title("Status").Width(400);
+                            columns.Bound(q => q.TechnologyId).ClientTemplate("#=TechnologyName#").Title("Technology").Width(200);
+                            columns.Bound(q => q.Status).ClientTemplate("#=StatusName#").Title("Status").Width(400);
                             //.ClientGroupHeaderTemplate("#= value# (#=count#)").Hidden(true);
                             columns.Bound(q => q.Tags).Title("Tags").Width(400);
                             columns.Bound(q => q.ProficiencyLevel).Title("Proficiency level").Width(400);
