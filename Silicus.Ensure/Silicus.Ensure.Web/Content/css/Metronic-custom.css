@@ -24,8 +24,8 @@
 
 .logo-default{height: 25px;margin: 10px 0px 0px 0px!important;}
 .btn:not(.md-skip):not(.bs-select-all):not(.bs-deselect-all){padding:5px 5px 5px !important;}
-#candidateSearch.btn:not(.md-skip):not(.bs-select-all):not(.bs-deselect-all){padding:8px 14px 7px !important;}
-#PanelSearch.btn:not(.md-skip):not(.bs-select-all):not(.bs-deselect-all),#postionSearch.btn:not(.md-skip):not(.bs-select-all):not(.bs-deselect-all),#tagSearch.btn:not(.md-skip):not(.bs-select-all):not(.bs-deselect-all),#technologySearch.btn:not(.md-skip):not(.bs-select-all):not(.bs-deselect-all),#UserSearchRefresh.btn:not(.md-skip):not(.bs-select-all):not(.bs-deselect-all),#QuestionSearchRefresh.btn:not(.md-skip):not(.bs-select-all):not(.bs-deselect-all),#testSuiteSearch.btn:not(.md-skip):not(.bs-select-all):not(.bs-deselect-all){padding:8px 14px 6px!important}
+#candidateSearch.btn:not(.md-skip):not(.bs-select-all):not(.bs-deselect-all){padding:8px 12px 7px !important;}
+#PanelSearch.btn:not(.md-skip):not(.bs-select-all):not(.bs-deselect-all),#postionSearch.btn:not(.md-skip):not(.bs-select-all):not(.bs-deselect-all),#tagSearch.btn:not(.md-skip):not(.bs-select-all):not(.bs-deselect-all),#technologySearch.btn:not(.md-skip):not(.bs-select-all):not(.bs-deselect-all),#UserSearchRefresh.btn:not(.md-skip):not(.bs-select-all):not(.bs-deselect-all),#QuestionSearchRefresh.btn:not(.md-skip):not(.bs-select-all):not(.bs-deselect-all),#testSuiteSearch.btn:not(.md-skip):not(.bs-select-all):not(.bs-deselect-all){padding:8px 12px 6px!important}
 
 .popUp-modalbody{padding:20px 30px 0px 30px;}
 .popUp-footer{padding:0px 45px 15px 15px;}
@@ -44,6 +44,12 @@ span.k-icon.k-save{display:none;}
 span.k-icon.k-update{display:none;}
 i.fa.fa-save{display:none;}
 
+.modal-btn{
+    background-color: rgb(53, 168, 179);
+    color: rgb(255, 255, 255);
+    width: 70px;
+    border: 1px solid rgb(53, 168, 179);
+}
 .k-tabstrip>.k-content, .k-panelbar .k-tabstrip>.k-content{padding:0;}
 a.dialog-window{text-decoration:underline;}
 a.dialog-window:hover{text-decoration:none;color:#444;}

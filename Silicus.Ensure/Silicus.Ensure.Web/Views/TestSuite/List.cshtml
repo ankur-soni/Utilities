@@ -8,7 +8,7 @@
 <div class="row">
     <div class="col-sm-12">
         <h1 class="page-title">
-            Test Suit
+            Test Suite
         </h1>
     </div>
 </div>
@@ -50,11 +50,11 @@
                       columns.Bound("").ClientTemplate(@"
 
                                                         #if (UserInRole){#
-                                                            <a class='k-button k-button-icontext k-grid-add M-T4' href='\\#' onclick= getTestSuiteId('#=TestSuiteId#','#=StatusName#')>Assign test</a>
+                                                            <a class='dialog-window M-T4' href='\\#' onclick= getTestSuiteId('#=TestSuiteId#','#=StatusName#')>Assign test</a> |
                                                         #}#
-                                                            <a class='k-button k-button-icontext k-grid-add M-T4' href='" + Url.Action("Copy", "TestSuite") + "?testSuiteId=#=TestSuiteId#'>Copy</a>" +
+                                                            <a class='dialog-window M-T4' href='" + Url.Action("Copy", "TestSuite") + "?testSuiteId=#=TestSuiteId#'>Copy</a> |" +
                                                                                                                           "  #if (StatusName=='Ready'){#" +
-                                                                                                                          "<a class='k-button k-button-icontext k-grid-add M-T4' onclick=showTest('#=TestSuiteId#')>Preview</a>"
+                                                                                                                          "<a class='dialog-window M-T4' onclick=showTest('#=TestSuiteId#')>Preview</a>"
                                                                                                                           + "#}#"
                                                               ).Title("Test actions").Width(500).Sortable(false);
 

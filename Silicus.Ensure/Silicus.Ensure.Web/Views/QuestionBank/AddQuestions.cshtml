@@ -47,12 +47,7 @@
         <div class="caption">
             <i class="fa fa-plus"></i>Add Question
         </div>
-        <div class="tools">
-            <a href="javascript:;" class="collapse" data-original-title="" title=""> </a>
-            <a href="#portlet-config" data-toggle="modal" class="config" data-original-title="" title=""> </a>
-            <a href="javascript:;" class="reload" data-original-title="" title=""> </a>
-            <a href="javascript:;" class="remove" data-original-title="" title=""> </a>
-        </div>
+       
     </div>
     <div class="portlet-body form">
         <div class="form-body">
@@ -136,13 +131,13 @@
                                     <div id="rowOpt1">
                                         <div class="col-xs-10 col-sm-6 col-md-6 col-lg-6">
                                             <div class="form-group">
-                                                <div class="input-group form-group" id="answerDiv">
-                                                    <div class="input-group-addon">
+                                                <div class="input-group" id="answerDiv">
+                                                    <span class="input-group-addon">
                                                         @Html.CheckBoxFor(y => y.IsAnsOption1, new { @class = "ansCheckBox chkValidation" })
-                                                    </div>
+                                                    </span>
                                                     @Html.TextBoxFor(m => m.Option1, new { @class = "form-control", Value = @Model.Option1 })
                                                 </div>
-
+                                                <span class="k-invalid-msg" data-for="Option1"></span>
                                             </div>
                                         </div>
                                         <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2">
@@ -156,12 +151,13 @@
                                     <div id="rowOpt2">
                                         <div class="col-xs-10 col-sm-6 col-md-6 col-lg-6">
                                             <div class="form-group">
-                                                <div class="input-group form-group">
-                                                    <div class="input-group-addon">
+                                                <div class="input-group">
+                                                    <span class="input-group-addon">
                                                         @Html.CheckBoxFor(y => y.IsAnsOption2, new { @class = "ansCheckBox" })
-                                                    </div>
+                                                    </span>
                                                     @Html.TextBoxFor(m => m.Option2, new { @class = "form-control", Value = @Model.Option2 })
                                                 </div>
+                                                <span class="k-invalid-msg" data-for="Option2"></span>
                                             </div>
                                         </div>
                                         <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2">
@@ -176,12 +172,13 @@
                                     <div id="rowOpt3">
                                         <div class="col-xs-10 col-sm-6 col-md-6 col-lg-6">
                                             <div class="form-group">
-                                                <div class="input-group form-group">
-                                                    <div class="input-group-addon">
+                                                <div class="input-group">
+                                                    <span class="input-group-addon">
                                                         @Html.CheckBoxFor(y => y.IsAnsOption3, new { @class = "ansCheckBox" })
-                                                    </div>
+                                                    </span>
                                                     @Html.TextBoxFor(m => m.Option3, new { @class = "form-control", Value = @Model.Option3 })
                                                 </div>
+                                                <span class="k-invalid-msg" data-for="Option3"></span>
                                             </div>
                                         </div>
                                         <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2">
@@ -197,12 +194,13 @@
                                     <div id="rowOpt4">
                                         <div class="col-xs-10 col-sm-6 col-md-6 col-lg-6">
                                             <div class="form-group">
-                                                <div class="input-group form-group">
-                                                    <div class="input-group-addon">
+                                                <div class="input-group">
+                                                    <span class="input-group-addon">
                                                         @Html.CheckBoxFor(y => y.IsAnsOption4, new { @class = "ansCheckBox" })
-                                                    </div>
+                                                    </span>
                                                     @Html.TextBoxFor(m => m.Option4, new { @class = "form-control", Value = @Model.Option4 })
                                                 </div>
+                                                <span class="k-invalid-msg" data-for="Option4"></span>
                                             </div>
                                         </div>
                                         <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2">
@@ -217,12 +215,13 @@
                                     <div id="rowOpt5">
                                         <div class="col-xs-10 col-sm-6 col-md-6 col-lg-6">
                                             <div class="form-group">
-                                                <div class="input-group form-group">
-                                                    <div class="input-group-addon">
+                                                <div class="input-group">
+                                                    <span class="input-group-addon">
                                                         @Html.CheckBoxFor(y => y.IsAnsOption5, new { @class = "ansCheckBox" })
-                                                    </div>
+                                                    </span>
                                                     @Html.TextBoxFor(m => m.Option5, new { @class = "form-control", Value = @Model.Option5 })
                                                 </div>
+                                                <span class="k-invalid-msg" data-for="Option5"></span>
                                             </div>
                                         </div>
                                         <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2">
@@ -237,12 +236,13 @@
                                     <div id="rowOpt6">
                                         <div class="col-xs-10 col-sm-6 col-md-6 col-lg-6">
                                             <div class="form-group">
-                                                <div class="input-group form-group">
-                                                    <div class="input-group-addon">
+                                                <div class="input-group">
+                                                    <span class="input-group-addon">
                                                         @Html.CheckBoxFor(y => y.IsAnsOption6, new { @class = "ansCheckBox" })
-                                                    </div>
+                                                    </span>
                                                     @Html.TextBoxFor(m => m.Option6, new { @class = "form-control", Value = @Model.Option6 })
                                                 </div>
+                                                <span class="k-invalid-msg" data-for="Option6"></span>
                                             </div>
                                         </div>
                                         <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2">
@@ -257,12 +257,13 @@
                                     <div id="rowOpt7">
                                         <div class="col-xs-10 col-sm-6 col-md-6 col-lg-6">
                                             <div class="form-group">
-                                                <div class="input-group form-group">
-                                                    <div class="input-group-addon">
+                                                <div class="input-group">
+                                                    <span class="input-group-addon">
                                                         @Html.CheckBoxFor(y => y.IsAnsOption7, new { @class = "ansCheckBox" })
-                                                    </div>
+                                                    </span>
                                                     @Html.TextBoxFor(m => m.Option7, new { @class = "form-control", Value = @Model.Option7 })
                                                 </div>
+                                                <span class="k-invalid-msg" data-for="Option7"></span>
                                             </div>
                                         </div>
                                         <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2">
@@ -277,12 +278,13 @@
                                     <div id="rowOpt8">
                                         <div class="col-xs-10 col-sm-6 col-md-6 col-lg-6">
                                             <div class="form-group">
-                                                <div class="input-group form-group">
-                                                    <div class="input-group-addon">
+                                                <div class="input-group">
+                                                    <span class="input-group-addon">
                                                         @Html.CheckBoxFor(y => y.IsAnsOption8, new { @class = "ansCheckBox" })
-                                                    </div>
+                                                    </span>
                                                     @Html.TextBoxFor(m => m.Option8, new { @class = "form-control", Value = @Model.Option8 })
                                                 </div>
+                                                <span class="k-invalid-msg" data-for="Option8"></span>
                                             </div>
                                         </div>
                                         <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2">
@@ -296,10 +298,13 @@
 
                                     <div class="col-sm-8 col-md-8 col-lg-6">
                                         <div class="form-group">
-                                            <div class="checkbox checkbox-info" id="IsAllowedmoreThanOneAns">
-                                                <input id="checkbox33" type="checkbox">
-                                                <label for="checkbox33">Allow more than one answer to this question</label>
-                                            </div>
+                                            
+                                                <label class="mt-checkbox mt-checkbox-outline" id="IsAllowedmoreThanOneAns" for="checkbox33">
+                                                    <input id="checkbox33" type="checkbox">
+                                                        Allow more than one answer to this question
+                                                    <span></span>
+                                                </label>
+                                            
                                             @Html.HiddenFor(y => y.AnswerType)
                                         </div>
                                     </div>

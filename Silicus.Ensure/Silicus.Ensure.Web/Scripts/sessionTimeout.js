@@ -91,7 +91,6 @@ function checkIdleTimeout() {
 
         $('.modal-backdrop').css("z-index", parseInt($('.modal-backdrop').css('z-index')) + 100);
         $("#session-expired-modal").css('z-index', 2000);
-        $('#btnExpiredOk').css('background-color', '#428bca');
         $('#btnExpiredOk').css('color', '#fff');
 
         isTimout = true;
