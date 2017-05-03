@@ -4563,7 +4563,9 @@
     <Content Include="favicon.ico" />
     <Content Include="Images\avatar3_small.jpg" />
     <Content Include="Images\checkedCheckbox.png" />
+    <Content Include="Images\logo%281%29.svg" />
     <Content Include="Images\logo-new.png" />
+    <Content Include="Images\logo.gif" />
     <Content Include="Images\logo.jpg" />
     <Content Include="Dependencies\Silicus.UtilityContainer.Entities.dll" />
     <Content Include="Dependencies\Silicus.UtilityContainer.Models.dll" />
