@@ -112,21 +112,27 @@ namespace Silicus.Ensure.Web.Controllers
         {
             var userEmailId = User.Identity.Name;
             var user = _containerUserService.FindUserByEmail(userEmailId);
-            UpdateQuestion(question);
+            var isOnHold = false;
+            var isReject = false;
             var questionStatusDetails = new QuestionStatusDetails();
-            questionStatusDetails.QuestionId = question.Id;
             if (question.Status == QuestionStatus.OnHold)
             {
                 questionStatusDetails.Status = QuestionStatus.Approved;
+                question.Status = QuestionStatus.Approved;
+                isOnHold = true;
             }
             else
             {
                 questionStatusDetails.Status = QuestionStatus.ReadyForReview;
+                question.Status = QuestionStatus.ReadyForReview;
+                isReject = true;
             }
+            UpdateQuestion(question);
+            questionStatusDetails.QuestionId = question.Id;
             questionStatusDetails.ChangedBy = user.ID;
             questionStatusDetails.ChangedDate = DateTime.Now;
             _questionService.AddQuestionStatusDetails(questionStatusDetails);
-            return RedirectToAction("Index", new TabSelectionViewModel { QuestionId = question.NextQuestionId, TechnologyId = question.TechnologyId, IsOnHold = true });
+            return RedirectToAction("Index", new TabSelectionViewModel { QuestionId = question.NextQuestionId, TechnologyId = question.TechnologyId, IsOnHold = isOnHold,IsRejected=isReject });
         }
 
         private void UpdateQuestion(QuestionModel question)
@@ -139,7 +145,6 @@ namespace Silicus.Ensure.Web.Controllers
             que.IsPublishd = true;
             var userEmailId = User.Identity.Name;
             var user = _containerUserService.FindUserByEmail(userEmailId);
-            que.Status = QuestionStatus.Approved;
             que.ModifiedBy = user.ID;
             que.ModifiedOn = DateTime.Now;
             _questionService.Update(que);

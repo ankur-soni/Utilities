@@ -126,7 +126,6 @@
                 if(edit=="True"){
                     var optCnt=@Model.QuestionDetails.OptionCount;
                     OptionDispalyOnEdit(optCnt);
-                    //ShowRequiredOptionInCorrectAnswerDropDown();
                 }
             }
 
@@ -304,7 +303,6 @@
 
             @using (Html.BeginForm("EditAndApproveQuestion", "QuestionReview", FormMethod.Post, new { id = "AddQuestionForm", onsubmit = "OnSubmit()" }))
             {
-                // @Html.HiddenFor(ques => ques.QuestionDetails.TechnologyId, new { @id = "TechnologyId" });
                 @Html.HiddenFor(ques => ques.NextQuestionId, new { @id = "NextQuestionId" });
                 
                         <div class="row">
