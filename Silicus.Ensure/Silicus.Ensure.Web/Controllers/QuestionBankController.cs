@@ -159,11 +159,14 @@ namespace Silicus.Ensure.Web.Controllers
                 Status = qu.Status,
                 Technology = qu.Technology,
                 QuestionDescription = qu.QuestionDescription.Substring(0, Math.Min(qu.QuestionDescription.Length, 100)),
-                QuestionType = GetQuestionType(qu.QuestionType.ToString()),
+                QuestionType = qu.QuestionType.ToString(),
+                QuestionTypeString = GetQuestionType(qu.QuestionType.ToString()),
                 TechnologyName = GetTechnologyName(qu.TechnologyId),
                 StatusName = GetEnumDescription(qu.Status),
-                Tags = GetTagNames(qu.Tags),
-                ProficiencyLevel = GetCompetency(qu.ProficiencyLevel.ToString())
+                Tags= qu.Tags,
+                TagsString = GetTagNames(qu.Tags),
+                ProficiencyLevel = qu.ProficiencyLevel.ToString(),
+                ProficiencyLevelString = GetCompetency(qu.ProficiencyLevel.ToString())
             });
 
             return Json(result);

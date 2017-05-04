@@ -77,6 +77,9 @@ namespace Silicus.Ensure.Web.Models
         public string TechnologyName { get; set; }
         public int? NextQuestionId { get; set; }
         public string ReviewerComment { get; set; }
+        public string QuestionTypeString { get; set; }
+        public string ProficiencyLevelString { get; set; }
+        public string TagsString { get; set; }
     }
 
     public enum ProficiencyLevel
