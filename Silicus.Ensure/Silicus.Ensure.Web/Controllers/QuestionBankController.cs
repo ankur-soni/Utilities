@@ -86,54 +86,8 @@ namespace Silicus.Ensure.Web.Controllers
         }
         public ActionResult GetAllQuestions([DataSourceRequest] DataSourceRequest request)
         {
-            var que = _questionService.GetQuestion().OrderByDescending(x => x.ModifiedOn);
-            //.Skip(request.Page * request.PageSize).Take(request.PageSize);
-            // var queModel = _mappingService.Map<IEnumerable<Question>, IEnumerable<QuestionModel>>(que);
-            //var queModel = (from qu in que
-            //                select new QuestionModel
-            //                {
-            //                    Id = qu.Id,
-            //                    AnswerType = qu.AnswerType,
-            //                    OptionCount = qu.OptionCount,
-            //                    Option1 = qu.Option1,
-            //                    Option2 = qu.Option2,
-            //                    Option3 = qu.Option3,
-            //                    Option4 = qu.Option4,
-            //                    Option5 = qu.Option5,
-            //                    Option6 = qu.Option6,
-            //                    Option7 = qu.Option7,
-            //                    Option8 = qu.Option8,
-            //                    Answer = qu.Answer,
-            //                    TechnologyId = qu.TechnologyId,
-            //                    Duration = qu.Duration,
-            //                    Marks = qu.Marks,
-            //                    IsPublishd = qu.IsPublishd,
-            //                    IsDeleted = qu.IsDeleted,
-            //                    CreatedOn = qu.CreatedOn,
-            //                    CreatedBy = qu.CreatedBy,
-            //                    ModifiedOn = qu.ModifiedOn,
-            //                    ModifiedBy = qu.ModifiedBy,
-            //                    Status = qu.Status,
-            //                    Technology = qu.Technology,
-            //                 //   QuestionDescription = qu.QuestionDescription.Substring(0, Math.Min(qu.QuestionDescription.Length, 100)),
-            //                    QuestionType = GetQuestionType(qu.QuestionType.ToString()),
-            //                    TechnologyName = GetTechnologyName(qu.TechnologyId),
-            //                    StatusName = GetEnumDescription(qu.Status),
-            //                    Tags = GetTagNames(qu.Tags),
-            //                    ProficiencyLevel = GetCompetency(qu.ProficiencyLevel.ToString())
-            //                    //ReviewerComment = qu.ReviewerComment
-            //                });
-            //var x1=  from q in queModel select newQ
-            //  {
-            //      q.QuestionDescription = q.QuestionDescription.Substring(0, Math.Min(q.QuestionDescription.Length, 100));
-            //      q.QuestionType = GetQuestionType(q.QuestionType);
-            //      q.TechnologyName = GetTechnologyName(q.TechnologyId);
-            //      q.StatusName = GetEnumDescription(q.Status);
-            //      q.Tags = GetTagNames(q.Tags);
-            //      q.ProficiencyLevel = GetCompetency(q.ProficiencyLevel);
-            //  }
-            //DataSourceResult result = queModel.ToDataSourceResult(request);
-            DataSourceResult result = que.ToDataSourceResult(request, qu => new QuestionModel
+            var questions = _questionService.GetQuestion().OrderByDescending(x => x.ModifiedOn);
+            DataSourceResult result = questions.ToDataSourceResult(request, qu => new QuestionModel
             {
                 Id = qu.Id,
                 AnswerType = qu.AnswerType,
@@ -158,18 +112,25 @@ namespace Silicus.Ensure.Web.Controllers
                 ModifiedBy = qu.ModifiedBy,
                 Status = qu.Status,
                 Technology = qu.Technology,
+                CreatedByName = GetCreatedByName(qu.CreatedBy),
                 QuestionDescription = qu.QuestionDescription.Substring(0, Math.Min(qu.QuestionDescription.Length, 100)),
                 QuestionType = qu.QuestionType.ToString(),
                 QuestionTypeString = GetQuestionType(qu.QuestionType.ToString()),
                 TechnologyName = GetTechnologyName(qu.TechnologyId),
                 StatusName = GetEnumDescription(qu.Status),
-                Tags= qu.Tags,
+                Tags = qu.Tags,
                 TagsString = GetTagNames(qu.Tags),
                 ProficiencyLevel = qu.ProficiencyLevel.ToString(),
                 ProficiencyLevelString = GetCompetency(qu.ProficiencyLevel.ToString())
             });
 
             return Json(result);
+        }
+
+        private string GetCreatedByName(int createdById)
+        {
+            var user=_containerUserService.GetUserByID(createdById);
+            return user != null ? user.FirstName + " " + user.LastName : "";
         }
 
         private string GetTagNames(string tags)

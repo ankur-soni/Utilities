@@ -4,22 +4,20 @@
     @(Html.Kendo().Grid<Silicus.Ensure.Web.Models.QuestionModel>().Name("questionGrids")
                                 .Columns(columns =>
                                 {
-                                    columns.Bound(q => q.Id).Title("Id").Width(100).Filterable(ftb => ftb.Cell(cell => cell.Operator("equals").ShowOperators(false).InputWidth(100)));
+                                    columns.Bound(q => q.Id).Title("Id").Width(100).Filterable(ftb => ftb.Cell(cell => cell.Operator("equals").Template("IdNumericTextBox").ShowOperators(false).InputWidth(80)));
                                     columns.Bound(q => q.QuestionDescription).Title("Question description").Width(400).Filterable(ftb => ftb.Cell(cell => cell.Operator("contains").ShowOperators(false)));
                                     columns.Bound(q => q.QuestionType).ClientTemplate("#=QuestionTypeString#").Width(200).Filterable(ftb => ftb.Cell(cell => cell.Operator("equals").Template("QuestionTypeDropDownList").ShowOperators(false)));
                                     columns.Bound(q => q.TechnologyId).ClientTemplate("#=TechnologyName#").Title("Technology").Width(200).Filterable(ftb => ftb.Cell(cell => cell.Operator("equals").Template("TechnologyDropDownList").ShowOperators(false)));
-                                    columns.Bound(q => q.Status).ClientTemplate("#=StatusName#").Title("Status").Width(400).Filterable(ftb => ftb.Cell(cell => cell.Operator("equals").Template("StatusDropDownList").ShowOperators(false)));
-                                    //.ClientGroupHeaderTemplate("#= value# (#=count#)").Hidden(true);
-                                    columns.Bound(q => q.Tags).ClientTemplate("#=TagsString#").ClientTemplate("#=TagsString#").Title("Tags").Width(400).Filterable(ftb => ftb.Cell(cell => cell.Operator("equals").Template("TagsAutoComplete").ShowOperators(false)));
-                                    columns.Bound(q => q.ProficiencyLevel).ClientTemplate("#=ProficiencyLevelString#").Title("Proficiency level").Width(400).Filterable(ftb => ftb.Cell(cell => cell.Operator("equals").Template("ProficiencyLevelDropDownList").ShowOperators(false)));
+                                    columns.Bound(q => q.Status).ClientTemplate("#=StatusName#").Title("Status").Width(300).Filterable(ftb => ftb.Cell(cell => cell.Operator("equals").Template("StatusDropDownList").ShowOperators(false)));
+                                    columns.Bound(q => q.Tags).ClientTemplate("#=TagsString#").ClientTemplate("#=TagsString#").Title("Tags").Width(400).Filterable(ftb => ftb.Cell(cell => cell.Operator("equals").Template("TagsDropDownList").ShowOperators(false)));
+                                    columns.Bound(q => q.ProficiencyLevel).ClientTemplate("#=ProficiencyLevelString#").Title("Proficiency level").Width(300).Filterable(ftb => ftb.Cell(cell => cell.Operator("equals").Template("ProficiencyLevelDropDownList").ShowOperators(false)));
+                                    columns.Bound(q => q.CreatedBy).ClientTemplate("#=CreatedByName#").Title("Created by").Width(300).Sortable(false).Filterable(false);
                                     columns.Bound(q => q.Id).ClientTemplate(@"
                                                 <a href='/QuestionBank/EditQuestion?questionId=#=Id#' class='k-button M-T4'>Edit</a>
                             <a class='k-button M-T4' href='\\#' onclick='ConfirmDeleteQuestionRow(event)'>Delete</a>
                                                ").Title("Actions").Width(400).Sortable(false).Filterable(false);
-                                    //.ClientGroupHeaderTemplate("#= value# (#=count#)").Hidden(true);
                                 })
-                                      .DataSource(dataSource => dataSource.Ajax().Events(eve => eve.RequestStart("OnRequestStart"))
-                                      //.Group(group => group.Add(p => p.StatusName)).Aggregates(aggr => aggr.Add(p => p.StatusName).Count())
+                                      .DataSource(dataSource => dataSource.Ajax()
                                       .Sort(sort => sort.Add("Id").Ascending()).Model(model =>
                                       {
                                           model.Id(p => p.Id);
@@ -37,7 +35,15 @@
 
 
 <script>
-    var tagsValue = "";
+    function IdNumericTextBox(args) {
+        var idNumericTextBox = args.element.kendoNumericTextBox({
+            format: "0",
+            decimals: 0,
+            step: 0
+        });
+
+    }
+
     function QuestionTypeDropDownList(args) {
         args.element.kendoDropDownList({
             dataSource: args.dataSource,
@@ -90,32 +96,21 @@
         });
     }
 
-    function TagsAutoComplete(args) {
-        args.element.kendoAutoComplete({
+    function TagsDropDownList(args) {
+        args.element.kendoDropDownList({
             dataSource: {
                 transport: {
                     read: "/Common/GetAllTagDetails",
-                    dataType:"jsonp"
+                    dataType: "jsonp"
                 }
             },
-            select:OnSelect,
+            filter: "startswith",
             dataValueField: "TagId",
             dataTextField: "TagName",
-            minLength: 1,
-            seperator: ",",
-            valuePrimitive:true
+            autoBind: false,
+            valuePrimitive: true
 
         });
     }
-
-    function OnRequestStart(e) {
-        debugger
-
-    }
-
-    function OnSelect(e) {
-        var dataItem = this.dataItem(e.item.index());
-        tagsValue = dataItem.TagId;
-        }
 
 </script>
