@@ -41,7 +41,7 @@ namespace Silicus.Ensure.Services
            (from tech in _context.Query<Technology>()
             join ques in _context.Query<Question>()
                         on tech.TechnologyId equals ques.TechnologyId
-            where ques.Status != QuestionStatus.Approved
+            where ques.Status != QuestionStatus.Approved && !ques.IsDeleted
             && ((ques.ModifiedBy==null && ques.CreatedBy!=userId) || (ques.ModifiedBy != userId))
             group ques by ques.TechnologyId into grouped
             select new

@@ -12,9 +12,6 @@
 {
     <script>
         $(document).ready(function () {
-            //window.onbeforeunload = function () {
-            //    return "Do you really want to close?";
-            //};
             $('#addTagPopup').on('hidden.bs.modal', function () {
                 $('.field-validation-error').hide();
             });
@@ -107,7 +104,6 @@
             var edit="@Model.QuestionDetails.Edit";
             if(success==1)
             {
-                window.onbeforeunload = null;
                 $(window).unbind('unload');
                 if(edit=="True"){
                     ShowMessage("Question updated successfully.",true);
