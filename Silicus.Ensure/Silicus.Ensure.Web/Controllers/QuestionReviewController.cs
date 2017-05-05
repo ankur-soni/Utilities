@@ -32,7 +32,23 @@ namespace Silicus.Ensure.Web.Controllers
         // GET: QuestionReview
         public ActionResult Index(TabSelectionViewModel tabSelection)
         {
+            tabSelection=GetCounts(tabSelection);
             return View(tabSelection);
+        }
+
+        public TabSelectionViewModel GetCounts(TabSelectionViewModel tabSelection)
+        {
+            var userEmailId = User.Identity.Name;
+            var user = _containerUserService.FindUserByEmail(userEmailId);
+            if (user != null) { 
+            var tabSelectionBusinessModel = _mappingService.Map<TabSelectionViewModel, TabSelectionBusinessModel>(tabSelection);
+                tabSelectionBusinessModel.UserId = user.ID;
+                tabSelectionBusinessModel = _questionService.GetCounts(tabSelectionBusinessModel);
+                tabSelection.ReadyForReviewCount = tabSelectionBusinessModel.ReadyForReviewCount;
+                tabSelection.OnHoldCount = tabSelectionBusinessModel.OnHoldCount;
+                tabSelection.RejectedCount = tabSelectionBusinessModel.RejectedCount;
+            }
+            return tabSelection;
         }
 
         public ActionResult ReviewQuestion(int? questionId, int technologyId, QuestionStatus questionStatusType)
@@ -139,7 +155,7 @@ namespace Silicus.Ensure.Web.Controllers
         {
             Question que = _mappingService.Map<QuestionModel, Question>(question);
             que.QuestionDescription = HttpUtility.HtmlDecode(question.QuestionDescription);
-            que.CorrectAnswer = setCorrectAnswer(question);
+            que.CorrectAnswer = SetCorrectAnswer(question);
             que.Answer = HttpUtility.HtmlDecode(question.Answer);
             que.Tags = string.Join(",", question.SkillTag);
             que.IsPublishd = true;
@@ -150,7 +166,7 @@ namespace Silicus.Ensure.Web.Controllers
             _questionService.Update(que);
         }
 
-        private string setCorrectAnswer(QuestionModel queModel)
+        private string SetCorrectAnswer(QuestionModel queModel)
         {
             StringBuilder ans = new StringBuilder();
             ans.Append(queModel.IsAnsOption1 ? "1," : "");

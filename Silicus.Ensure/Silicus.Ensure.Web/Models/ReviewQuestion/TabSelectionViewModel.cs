@@ -13,5 +13,8 @@ namespace Silicus.Ensure.Web.Models.ReviewQuestion
         public bool IsApproved { get; set; }
         public bool IsOnHold { get; set; }
         public bool IsRejected { get; set; }
+        public int ReadyForReviewCount { get; set; }
+        public int OnHoldCount { get; set; }
+        public int RejectedCount { get; set; }
     }
 }

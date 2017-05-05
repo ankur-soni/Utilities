@@ -30,9 +30,9 @@
                 .Name("ReviewQuestionTabs")
                 .Items(tabstrip =>
                 {
-                    tabstrip.Add().Text("Ready for review").Selected(Model.IsReadyForReview).LoadContentFrom("/QuestionReview/ReviewQuestion?technologyId=" + @Model.TechnologyId + "&questionId=" + Model.QuestionId + "&questionStatusType=" + QuestionStatus.ReadyForReview);
-                    tabstrip.Add().Text("On Hold").Selected(Model.IsOnHold).LoadContentFrom("/QuestionReview/ReviewQuestion?technologyId=" + @Model.TechnologyId + "&questionId=" + Model.QuestionId + "&questionStatusType=" + QuestionStatus.OnHold);
-                    tabstrip.Add().Text("Rejected").Selected(Model.IsRejected).LoadContentFrom("/QuestionReview/ReviewQuestion?technologyId=" + @Model.TechnologyId + "&questionId=" + Model.QuestionId + "&questionStatusType=" + QuestionStatus.Rejected);
+                    tabstrip.Add().Text("Ready for review" + " (" + Model.ReadyForReviewCount + ")").Selected(Model.IsReadyForReview).LoadContentFrom("/QuestionReview/ReviewQuestion?technologyId=" + @Model.TechnologyId + "&questionId=" + Model.QuestionId + "&questionStatusType=" + QuestionStatus.ReadyForReview);
+                    tabstrip.Add().Text("On Hold" + " (" + Model.OnHoldCount + ")").Selected(Model.IsOnHold).LoadContentFrom("/QuestionReview/ReviewQuestion?technologyId=" + @Model.TechnologyId + "&questionId=" + Model.QuestionId + "&questionStatusType=" + QuestionStatus.OnHold);
+                    tabstrip.Add().Text("Rejected" + " (" + Model.RejectedCount + ")").Selected(Model.IsRejected).LoadContentFrom("/QuestionReview/ReviewQuestion?technologyId=" + @Model.TechnologyId + "&questionId=" + Model.QuestionId + "&questionStatusType=" + QuestionStatus.Rejected);
                 })
                 .Events(eve => eve.Select("OnSelect"))
                     )
