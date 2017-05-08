@@ -27,29 +27,25 @@
 
 </script>
 
-<div class="row white-bg header-row">
-    <nav class="" role="navigation" style="margin-bottom: 0">
-        <div class="navbar-header">
-            <a class="navbar-minimalize minimalize-styl-2 btn btn-primary" id="menu-toggle" style="margin-left:15px;border-radius:0px;" href="#"><i class="fa fa-bars"></i> </a>
-        </div>
-    </nav>
 
-    <div class="col-lg-10 col-md-10 col-sm-10 col-xs-10">
-        <h1 class="dashboard-name">Candidate History</h1>
+<div class="row">
+    <div class="col-sm-12">
+        <h1 class="page-title">
+            Candidate History
+        </h1>
     </div>
-    
-
 </div>
+
 <div class="row">
   
     <div class="col-sm-12">
-        <div class="box M-T15 M-B60">
-            <div class="row">
+        
+            <div class="row M-B15">
                 <div class="col-sm-12">
                     <a class="k-button btn btn-primary bk-btn" href="/Admin/Candidates"><span>Back</span></a>
                 </div>
             </div>
-            <div class="f1" style="padding: 25px 25px 0px 25px;">
+            <div class="f1">
                 <div class="main-content">
                     @{int count = 0; }
                     @foreach (var candidateApplicationDetails in Model)
@@ -469,9 +465,418 @@
                                 </div>
                             </div>
                         </div>
+                        @*<div class="portlet box green" id="view-history">
+                            <div class="portlet-title">
+                                <div class="caption">
+                                    @count)<b class="Normal-Text-Style"> Candidate  name &nbsp;</b><span style="text-transform:lowercase;font-style:italic">@Html.DisplayFor(model => candidateApplicationDetails.FirstName)</span>&nbsp;<span style="text-transform:lowercase;font-style:italic">@Html.DisplayFor(model => candidateApplicationDetails.LastName, new { @class = "" })</span>
+                                    <div style="float:right">
+                                        <b class="Normal-Text-Style"> Candidate status &nbsp;</b><span style="text-transform:lowercase;font-style:italic">@Html.DisplayFor(model => candidateApplicationDetails.CandidateStatus)</span>
+                                    </div>
+                                </div>
+                                <div class="tools">
+                                    <a href="javascript:;" class="collapse" data-original-title="" title=""> </a>
+                                </div>
+                            </div>
+                            <div id="@count" class="portlet-body">
+
+                                <div class="row">
+                                    <div class="col-sm-12">
+                                        <div class="box">
+
+                                            <div class="main-content">
+                                                <input type="hidden" id="Role" name="Role" value="@Silicus.Ensure.Models.Constants.RoleName.Candidate.ToString()" />
+
+                                                <div class="candidate-pro">
+                                                    <div class="row">
+                                                        <div class="col-sm-12">
+                                                            <h3><b class="Normal-Text-Style">Candidate profile</b></h3>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row">
+
+                                                        <div class="btmBorder"></div>
+
+                                                    </div>
+
+
+                                                    <div class="row" style="margin-bottom:10px!important">
+
+                                                        <div class="col-sm-6 col-md-6 col-lg-4">
+                                                            <div class="row">
+                                                                <div class="col-sm-6 col-md-6 col-lg-6">
+                                                                    @Html.LabelFor(model => candidateApplicationDetails.FirstName, new { @class = "font-Bold themeColorBlue" })
+                                                                </div>
+                                                                <div class="col-sm-6 col-md-6 col-lg-6">
+                                                                    @Html.DisplayFor(model => candidateApplicationDetails.FirstName)
+
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-sm-6 col-md-6 col-lg-4">
+                                                            <div class="row">
+                                                                <div class="col-sm-6 col-md-6 col-lg-6">
+                                                                    @Html.LabelFor(model => candidateApplicationDetails.MiddleName, new { @class = "font-Bold themeColorBlue" })
+                                                                </div>
+                                                                <div class="col-sm-6 col-md-6 col-lg-6">
+                                                                    @Html.DisplayFor(model => candidateApplicationDetails.MiddleName)
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="col-sm-6 col-md-6 col-lg-4">
+                                                            <div class="row">
+                                                                <div class="col-sm-6 col-md-6 col-lg-6">
+                                                                    @Html.LabelFor(model => candidateApplicationDetails.LastName, new { @class = "font-Bold themeColorBlue" })
+                                                                </div>
+                                                                <div class="col-sm-6 col-md-6 col-lg-6">
+                                                                    @Html.DisplayFor(model => candidateApplicationDetails.LastName, new { @class = "form-control" })
+
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-sm-6 col-md-6 col-lg-4">
+                                                            <div class="row">
+                                                                <div class="col-sm-6 col-md-6 col-lg-6">
+                                                                    @Html.LabelFor(model => candidateApplicationDetails.Position, new { @class = "font-Bold themeColorBlue" })
+                                                                </div>
+                                                                <div class="col-sm-6 col-md-6 col-lg-6">
+
+
+                                                                    <div class="col-md-8 col-sm-10 col-xs-10" style="padding-left:0;padding-right:0;height:30px;">
+
+                                                                        @Html.DisplayFor(model => candidateApplicationDetails.Position)
+
+                                                                    </div>
+
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row" style="margin-bottom:10px!important">
+                                                        <div class="col-sm-6 col-md-6 col-lg-4">
+                                                            <div class="row">
+                                                                <div class="col-sm-6 col-md-6 col-lg-6">
+                                                                    @Html.LabelFor(model => candidateApplicationDetails.RequisitionId, new { @class = "font-Bold themeColorBlue" })
+                                                                </div>
+                                                                <div class="col-sm-6 col-md-6 col-lg-6">
+                                                                    @Html.DisplayFor(model => candidateApplicationDetails.RequisitionId, new { @class = "form-control" })
+
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-sm-6 col-md-6 col-lg-4">
+                                                            <div class="row">
+                                                                <div class="col-sm-6 col-md-6 col-lg-6">
+                                                                    @Html.LabelFor(model => candidateApplicationDetails.Gender, new { @class = "font-Bold themeColorBlue" })
+                                                                </div>
+                                                                <div class="col-sm-6 col-md-6 col-lg-6">
+                                                                    @Html.DisplayFor(model => candidateApplicationDetails.Gender, new { @class = "form-control" })
+
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row" style="margin-bottom:10px!important">
+                                                        <div class="col-sm-6 col-md-6 col-lg-4">
+                                                            <div class="row">
+                                                                <div class="col-sm-6 col-md-6 col-lg-6">
+                                                                    @Html.LabelFor(model => candidateApplicationDetails.Email, new { @class = "font-Bold themeColorBlue" })
+                                                                </div>
+                                                                <div class="col-sm-6 col-md-6 col-lg-6">
+                                                                    @Html.DisplayFor(model => candidateApplicationDetails.Email, new { @class = "form-control" })
+
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-sm-6 col-md-6 col-lg-4">
+                                                            <div class="row">
+                                                                <div class="col-sm-6 col-md-6 col-lg-6">
+                                                                    @Html.LabelFor(model => candidateApplicationDetails.CurrentLocation, new { @class = "font-Bold themeColorBlue" })
+                                                                </div>
+                                                                <div class="col-sm-6 col-md-6 col-lg-6">
+                                                                    @Html.DisplayFor(model => candidateApplicationDetails.CurrentLocation, new { @class = "form-control" })
+
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row" style="margin-bottom:10px!important">
+                                                        <div class="col-sm-6 col-md-6 col-lg-4">
+                                                            <div class="row">
+                                                                <div class="col-sm-6 col-md-6 col-lg-6">
+                                                                    @Html.LabelFor(model => candidateApplicationDetails.DOB, new { @class = "font-Bold themeColorBlue" })
+                                                                </div>
+                                                                <div class="col-sm-6 col-md-6 col-lg-6">
+                                                                    @Html.DisplayFor(model => candidateApplicationDetails.DOB, new { @class = "form-control" })
+
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-sm-6 col-md-6 col-lg-4">
+                                                            <div class="row">
+                                                                <div class="col-sm-6 col-md-6 col-lg-6">
+                                                                    @Html.LabelFor(model => candidateApplicationDetails.ContactNumber, new { @class = "font-Bold themeColorBlue" })
+                                                                </div>
+                                                                <div class="col-sm-6 col-md-6 col-lg-6">
+                                                                    @Html.DisplayFor(model => candidateApplicationDetails.ContactNumber, new { @class = "form-control" })
+
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row" style="margin-bottom:10px!important">
+                                                        <div class="col-sm-6 col-md-6 col-lg-4">
+                                                            <div class="row">
+                                                                <div class="col-sm-6 col-md-6 col-lg-6">
+                                                                    @Html.LabelFor(model => candidateApplicationDetails.ClientName, new { @class = "font-Bold themeColorBlue" })
+                                                                </div>
+                                                                <div class="col-sm-6 col-md-6 col-lg-6">
+                                                                    @Html.DisplayFor(model => candidateApplicationDetails.ClientName, new { @class = "form-control" })
+
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-sm-6 col-md-6 col-lg-4">
+                                                            <div class="row">
+                                                                <div class="col-sm-6 col-md-6 col-lg-6">
+                                                                    @Html.LabelFor(model => candidateApplicationDetails.Technology, new { @class = "font-Bold themeColorBlue" })
+                                                                </div>
+                                                                <div class="col-sm-6 col-md-6 col-lg-6">
+                                                                    @Html.DisplayFor(model => candidateApplicationDetails.Technology, new { @class = "form-control" })
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row" style="margin-bottom:10px!important">
+                                                        <div class="col-sm-6 col-md-6 col-lg-4">
+                                                            <div class="row">
+                                                                <div class="col-sm-6 col-md-6 col-lg-6">
+                                                                    <lable class="font-Bold themeColorBlue">Total experience</lable>
+                                                                </div>
+                                                                <div class="col-sm-6 col-md-6 col-lg-6">
+                                                                    <div class="col-md-6 col-sm-6 col-xs-6" style="padding-left:0;padding-right:0;">
+                                                                        @Html.DisplayFor(model => candidateApplicationDetails.TotalExperienceInYear, new { @class = "form-control" })
+                                                                        years
+
+                                                                    </div>
+                                                                    <div class="col-md-6 col-sm-6 col-xs-6" style="padding-right:0;padding-left:0;">
+                                                                        @Html.DisplayFor(model => candidateApplicationDetails.TotalExperienceInMonth, new { @class = "form-control" }) months
+
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-sm-6 col-md-6 col-lg-4">
+                                                            <div class="row">
+                                                                <div class="col-sm-6 col-md-6 col-lg-6">
+                                                                    <lable class="font-Bold themeColorBlue">Relevant experience</lable>
+                                                                </div>
+                                                                <div class="col-sm-6 col-md-6 col-lg-6">
+                                                                    <div class="col-md-4 col-sm-6 col-xs-6" style="padding-left:0">
+                                                                        @Html.DisplayFor(model => candidateApplicationDetails.RelevantExperienceInYear, new { @class = "form-control" })
+                                                                        years
+
+                                                                    </div>
+                                                                    <div class="col-md-4 col-sm-6 col-xs-6" style="padding-right:0">
+
+                                                                        @Html.DisplayFor(model => candidateApplicationDetails.RelevantExperienceInMonth, new { @class = "form-control" })
+                                                                        months
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row" style="margin-bottom:10px!important">
+                                                        <div class="col-sm-6 col-md-6 col-lg-4">
+                                                            <div class="row">
+                                                                <div class="col-sm-6 col-md-6 col-lg-6">
+                                                                    @Html.LabelFor(model => candidateApplicationDetails.CurrentCompany, new { @class = "font-Bold themeColorBlue" })
+                                                                </div>
+                                                                <div class="col-sm-6 col-md-6 col-lg-6">
+                                                                    @Html.DisplayFor(model => candidateApplicationDetails.CurrentCompany, new { @class = "form-control" })
+
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-sm-6 col-md-6 col-lg-4">
+                                                            <div class="row">
+                                                                <div class="col-sm-6 col-md-6 col-lg-6">
+                                                                    @Html.LabelFor(model => candidateApplicationDetails.CurrentTitle, new { @class = "font-Bold themeColorBlue" })
+                                                                </div>
+                                                                <div class="col-sm-6 col-md-6 col-lg-6">
+                                                                    @Html.DisplayFor(model => candidateApplicationDetails.CurrentTitle, new { @class = "form-control" })
+
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row" style="margin-bottom:10px!important">
+
+                                                        <div class="col-sm-6 col-md-6 col-lg-4">
+                                                            <div class="row">
+                                                                <div class="col-sm-6 col-md-6 col-lg-6">
+                                                                    <label class="font-Bold themeColorBlue">Resume</label>
+                                                                </div>
+                                                                <div class="col-sm-6 col-md-6 col-lg-6">
+                                                                    <div class="outer-box">
+                                                                        <div class="demo-section k-content">
+
+                                                                        </div>
+                                                                        @if (!string.IsNullOrWhiteSpace(candidateApplicationDetails.ResumeName))
+                                                                        {
+                                                                            <div id="uploadFileLink" class="postuploadedfilesholder clearfix">
+                                                                                <div class="fileupload M-T5">
+                                                                                    <a href="@System.Configuration.ConfigurationManager.AppSettings["ServerName"]@Html.Raw(Url.Content(candidateApplicationDetails.ResumePath))" targ target="_blank">
+                                                                                        <i class="fa fa-file-text-o" aria-hidden="true"></i>
+
+                                                                                        @Html.Raw(candidateApplicationDetails.ResumeDisplayName)
+                                                                                    </a>
+                                                                                    @*<span class="deleteupload" title="Delete"><a onclick="DeleteF()"><i class="fa fa-close" aria-hidden="true"></i></a></span>
+                                                                                </div>
+                                                                            </div>
+
+                                                                        }
+                                                                    </div>
+                                                                    <span class="k-invalid-msg" data-for="files"></span>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+
+                                                    </div>
+                                                </div>
+
+
+                                                <div class="candidate-test">
+                                                    <div class="row">
+                                                        <div class="col-sm-12">
+                                                            <h3>
+                                                                <b style="margin-left:6px;" class="Normal-Text-Style"> Candidate test details</b>
+
+                                                            </h3>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row">
+
+                                                        <div class="btmBorder"></div>
+
+                                                    </div>
+
+                                                    @if (candidateApplicationDetails.TestSuiteViewModel != null)
+                                                    {
+                                                        <div class="row M-B15">
+                                                            <div class="col-sm-12">
+                                                                <b class="themeColorBlue" style="margin-left:6px;"> Test  date  </b><span style="font-style:italic">@Html.DisplayFor(model => candidateApplicationDetails.ApplicationDate)</span>   &emsp;&emsp;&emsp; <a class="k-button k-button-icontext" target="_blank" href="/Admin/ViewQuestion?TestSuiteId=@candidateApplicationDetails.TestSuiteViewModel.TestSuiteId &UserId=@candidateApplicationDetails.TestSuiteViewModel.Userid"><span class="k-icon k-edit"></span>View test</a>
+                                                            </div>
+                                                        </div>
+
+                                                                    <div class="row">
+                                                                        <div class="col-sm-12">
+                                                                            <div class="table-responsive">
+                                                                                <table class="table">
+
+                                                                                    <tbody>
+                                                                                        <tr>
+
+                                                                                            <td style="width:17%;">@Html.LabelFor(model => candidateApplicationDetails.TestSuiteViewModel.TestSuiteName, new { @style = "font-weight:700;", @class = "themeColorBlue" })</td>
+                                                                                            <td style="width:17%;">@Html.DisplayFor(model => candidateApplicationDetails.TestSuiteViewModel.TestSuiteName, new { @class = "form-control" })</td>
+                                                                                            <td></td>
+                                                                                        </tr>
+                                                                                        <tr>
+
+                                                                                            <td>@Html.LabelFor(model => candidateApplicationDetails.TestSuiteViewModel.Duration, new { @style = "font-weight:700;", @class = "themeColorBlue" })</td>
+                                                                                            <td>@Html.DisplayFor(model => candidateApplicationDetails.TestSuiteViewModel.Duration, new { @class = "form-control" })</td>
+                                                                                            <td></td>
+                                                                                        </tr>
+                                                                                        <tr>
+
+                                                                                            <td>@Html.LabelFor(model => candidateApplicationDetails.TestSuiteViewModel.Position, new { @style = "font-weight:700;", @class = "themeColorBlue" })</td>
+                                                                                            <td>@Html.DisplayFor(model => candidateApplicationDetails.TestSuiteViewModel.PositionName, new { @class = "form-control" })</td>
+                                                                                            <td></td>
+                                                                                        </tr>
+                                                                                        <tr>
+
+                                                                                            <td>@Html.LabelFor(model => candidateApplicationDetails.TestSuiteViewModel.Competency, new { @style = "font-weight:700;", @class = "themeColorBlue" })</td>
+                                                                                            <td>@Html.DisplayFor(model => candidateApplicationDetails.TestSuiteViewModel.OverallProficiency, new { @class = "form-control" })</td>
+                                                                                            <td></td>
+                                                                                        </tr>
+                                                                                        <tr>
+
+                                                                                            <td><label style="font-weight:700;" class="themeColorBlue">Question type</label></td>
+                                                                                            <td>
+                                                                                                <label>Objective @Html.DisplayFor(m => candidateApplicationDetails.TestSuiteViewModel.OptionalQuestion, new { @class = "form-control" }) %</label>
+                                                                                            </td>
+                                                                                            <td><label>Practical @Html.DisplayFor(m => candidateApplicationDetails.TestSuiteViewModel.PracticalQuestion, new { @class = "form-control" }) %</label></td>
+                                                                                        </tr>
+                                                                                        <tr>
+
+                                                                                            <td>@Html.LabelFor(model => candidateApplicationDetails.TestSuiteViewModel.ProjectName, new { @style = "font-weight:700;", @class = "themeColorBlue" })</td>
+                                                                                            <td>@Html.DisplayFor(model => candidateApplicationDetails.TestSuiteViewModel.ProjectName, new { @class = "form-control" })</td>
+                                                                                            <td></td>
+                                                                                        </tr>
+                                                                                        <tr>
+
+                                                                                            <td><label style="font-weight:700;" class="themeColorBlue">Experience</label></td>
+                                                                                            <td>@candidateApplicationDetails.TestSuiteViewModel.FromExperience.@candidateApplicationDetails.TestSuiteViewModel.ToExperience</td>
+                                                                                            <td></td>
+                                                                                        </tr>
+                                                                                    </tbody>
+                                                                                </table>
+                                                                            </div>
+                                                                            <div class="table-responsive">
+                                                                                <table class="table">
+
+                                                                                    <thead>
+                                                                                        <tr>
+                                                                                            <th>Skill tag name</th>
+                                                                                            <th>Weightage % </th>
+                                                                                            <th>Efficiency</th>
+                                                                                        </tr>
+                                                                                    </thead>
+
+                                                                                    @if (candidateApplicationDetails.TestSuiteViewModel.Tags != null)
+                                                                                    {
+                                                                                        if (candidateApplicationDetails.TestSuiteViewModel.Tags.Count() > 0)
+                                                                                        {
+                                                                                            for (int i = 0; i < candidateApplicationDetails.TestSuiteViewModel.Tags.Count(); i++)
+                                                                                            {
+                                                                                                <tbody>
+                                                                                                    <tr>
+
+                                                                                                        <td style="width:17%;" id="tag_name_row @Convert.ToString(i)">@candidateApplicationDetails.TestSuiteViewModel.Tags[i].TagName</td>
+                                                                                                        <td style="width:17%;" id="weight_name_row @Convert.ToString(i)">@candidateApplicationDetails.TestSuiteViewModel.Tags[i].Weightage</td>
+                                                                                                        <td id="efficiency_name_row @Convert.ToString(i)">@candidateApplicationDetails.TestSuiteViewModel.Tags[i].Proficiency</td>
+                                                                                                        <td></td>
+                                                                                                    </tr>
+                                                                                                </tbody>
+                                                                                            }
+                                                                                        }
+                                                                                    }
+                                                                                </table>
+                                                                            </div>
+
+
+                                                                        </div>
+                                                                    </div>
+                                                    }
+                                                    else
+                                                    {
+                                                        <b style="margin-left: 6px;">No test details found.</b>
+                                                    }
+
+
+                                                </div>
+
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>*@
                     }
                 </div>
             </div>
-        </div>
+        
     </div>
 </div>

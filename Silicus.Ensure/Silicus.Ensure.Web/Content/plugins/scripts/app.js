@@ -17,7 +17,7 @@ var App = function() {
 
     var globalPluginsPath = 'global/plugins/';
 
-    var globalCssPath = 'global/css/';
+    var globalCssPath = 'layouts/layout/css/';
 
     // theme layout color set
 

@@ -8,7 +8,7 @@
                 @Html.LabelFor(m => m.TagName) <span style="color:red;">*</span>
             </div>
 
-            <div class="col-lg-8 col-md-8 col-sm-12 col-xs-12 M-B15">
+            <div class="col-lg-11 col-md-11 col-sm-11 col-xs-12 M-B15">
                 @Html.TextBoxFor(model => model.TagName, new { @class = "form-control" })
                 <div class="validation">
                     @Html.ValidationMessageFor(m => m.TagName)
@@ -21,7 +21,7 @@
                 @Html.LabelFor(m => m.Description) <span style="color:red;">*</span>
             </div>
 
-            <div class="col-lg-8 col-md-8 col-sm-12 col-xs-12">
+            <div class="col-lg-11 col-md-11 col-sm-11 col-xs-12">
                 @Html.TextAreaFor(model => model.Description, new { @rows = "5", @class = "form-control " })
                 <div class="validation">
                     @Html.ValidationMessageFor(m => m.Description)
