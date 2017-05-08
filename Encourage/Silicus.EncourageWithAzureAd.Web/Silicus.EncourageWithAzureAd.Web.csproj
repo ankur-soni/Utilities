@@ -311,6 +311,7 @@
     <Compile Include="Controllers\ReviewController.cs" />
     <Compile Include="Controllers\UserProfileController.cs" />
     <Compile Include="Enums\FrequencyCode.cs" />
+    <Compile Include="Enums\Roles.cs" />
     <Compile Include="Extensions.cs" />
     <Compile Include="Filters\CustomeAuthorizeAttribute.cs" />
     <Compile Include="Filters\LogAttribute.cs" />
