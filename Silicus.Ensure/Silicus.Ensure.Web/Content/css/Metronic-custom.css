@@ -39,7 +39,7 @@ input#TagName.form-control, input#TechnologyName.form-control{height:20px;}
 }
 .k-pager-sizes{color:#333;}
 #tagsGrids div.k-header.k-grid-toolbar.k-grid-top, #positionGrids div.k-header.k-grid-toolbar.k-grid-top, #PanelGrids div.k-header.k-grid-toolbar.k-grid-top, #technologiesGrid div.k-header.k-grid-toolbar.k-grid-top{background:#fafafa!important;}
-
+#userGrids div.k-header.k-grid-toolbar.k-grid-top{background:#fafafa!important;}
 span.k-icon.k-edit{display:none;}
 /*span.k-icon.k-delete{display:none;}*/
 span.k-icon.k-cancel{display:none;}

@@ -44,10 +44,19 @@
 
 <div class="portlet box green">
     <div class="portlet-title">
+
+    @if (@Model.Id != 0)
+    {
+        <div class="caption">
+            <i class="fa fa-edit"></i>Edit Question
+        </div>
+    }
+    else
+    {
         <div class="caption">
             <i class="fa fa-plus"></i>Add Question
         </div>
-       
+    }
     </div>
     <div class="portlet-body form">
         <div class="form-body">
