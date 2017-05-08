@@ -46,9 +46,12 @@
 
     function QuestionTypeDropDownList(args) {
         args.element.kendoDropDownList({
-            dataSource: args.dataSource,
-            dataTextField: "QuestionTypeString",
-            dataValueField: "QuestionType",
+            dataSource: [
+               { text: "Objective", value: 1 },
+               { text: "Practical", value: 2 }
+            ],
+            dataTextField: "text",
+            dataValueField: "value",
             autoBind: false,
             valuePrimitive: true
         });
@@ -57,9 +60,13 @@
 
     function ProficiencyLevelDropDownList(args) {
         args.element.kendoDropDownList({
-            dataSource: args.dataSource,
-            dataTextField: "ProficiencyLevelString",
-            dataValueField: "ProficiencyLevel",
+            dataSource: [
+               { text: "Beginner", value: 1 },
+               { text: "Intermediate", value: 2 },
+               { text: "Expert", value: 3 }
+            ],
+            dataTextField: "text",
+            dataValueField: "value",
             autoBind: false,
             valuePrimitive: true
         });
