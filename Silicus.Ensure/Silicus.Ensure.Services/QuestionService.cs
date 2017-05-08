@@ -18,9 +18,9 @@ namespace Silicus.Ensure.Services
             _context = dataContextFactory.Create(ConnectionType.Ip);
         }
 
-        public IEnumerable<Question> GetQuestion()
+        public IQueryable<Question> GetQuestion()
         {
-            return _context.Query<Question>().Where(x => x.IsDeleted == false).OrderByDescending(x => x.Id);
+            return _context.Query<Question>().Where(x => !x.IsDeleted);
         }
 
         public Question GetSingleQuestion(int id)
@@ -98,6 +98,14 @@ namespace Silicus.Ensure.Services
                     return null;
             }
         }
+
+        public TabSelectionBusinessModel GetCounts(TabSelectionBusinessModel tabSelection)
+        {
+            tabSelection.ReadyForReviewCount = _context.Query<Question>().Count(ques => ques.TechnologyId == tabSelection.TechnologyId && ques.Status == QuestionStatus.ReadyForReview && ((ques.ModifiedBy == null && ques.CreatedBy != tabSelection.UserId) || (ques.ModifiedBy != tabSelection.UserId)));
+            tabSelection.RejectedCount = _context.Query<Question>().Count(ques => ques.TechnologyId == tabSelection.TechnologyId && ques.Status == QuestionStatus.Rejected);
+            tabSelection.OnHoldCount = _context.Query<Question>().Count(ques => ques.TechnologyId == tabSelection.TechnologyId && ques.Status == QuestionStatus.OnHold && ((ques.ModifiedBy == null && ques.CreatedBy != tabSelection.UserId) || (ques.ModifiedBy != tabSelection.UserId)));
+            return tabSelection;
+        }
         private string GetLatestCommenForQuestion(int questionId)
         {
             var questionStatusDetails = _context.Query<QuestionStatusDetails>().Where(ques => ques.QuestionId == questionId)
@@ -106,7 +114,5 @@ namespace Silicus.Ensure.Services
 
             return questionStatusDetails?.Comment;
         }
-
-
     }
 }

@@ -12,9 +12,6 @@
 {
     <script>
         $(document).ready(function () {
-            //window.onbeforeunload = function () {
-            //    return "Do you really want to close?";
-            //};
             $('#addTagPopup').on('hidden.bs.modal', function () {
                 $('.field-validation-error').hide();
             });
@@ -107,7 +104,6 @@
             var edit="@Model.QuestionDetails.Edit";
             if(success==1)
             {
-                window.onbeforeunload = null;
                 $(window).unbind('unload');
                 if(edit=="True"){
                     ShowMessage("Question updated successfully.",true);
@@ -126,7 +122,6 @@
                 if(edit=="True"){
                     var optCnt=@Model.QuestionDetails.OptionCount;
                     OptionDispalyOnEdit(optCnt);
-                    //ShowRequiredOptionInCorrectAnswerDropDown();
                 }
             }
 
@@ -304,39 +299,38 @@
 
             @using (Html.BeginForm("EditAndApproveQuestion", "QuestionReview", FormMethod.Post, new { id = "AddQuestionForm", onsubmit = "OnSubmit()" }))
             {
-                // @Html.HiddenFor(ques => ques.QuestionDetails.TechnologyId, new { @id = "TechnologyId" });
                 @Html.HiddenFor(ques => ques.NextQuestionId, new { @id = "NextQuestionId" });
-                
-                        <div class="row">
-                            <div class="btn-nav">
-                                <div class="pull-right">
-                                    @if (Model.QuestionStatusType == QuestionStatus.ReadyForReview || Model.QuestionStatusType == QuestionStatus.OnHold)
-                                    {
-                                        <input type="button" id="btnApproveQuestion" onclick="ApproveQuestion()" value="Approve" class="btn btn-primary M-T4" data-NextQuestionId="@Model.NextQuestionId" />
-                                        <input type="button" id="btnRejectQuestion" onclick="RejectQuestion()" value="Reject" class="btn btn-primary M-T4" data-NextQuestionId="@Model.NextQuestionId" />
-                                        if (Model.QuestionStatusType == QuestionStatus.ReadyForReview)
-                                        {
-                                            <input type="button" style="width: 70px;margin-left:1px;" id="btnQuestionOnHold" onclick="PutQuestionOnHold()" name="btnOnHold" value="On Hold" class="btn btn-primary M-T4" data-NextQuestionId="@Model.NextQuestionId" />
-                                        }
-                                        else
-                                        {
-                                            <input type="submit"  id="btnEditAndApproveQuestion" name="btnEditAndApproveQuestion" value="Edit And Approve" class="btn btn-primary M-T4" />
-                                        }
-                                    }
-                                    else if (Model.QuestionStatusType == QuestionStatus.Rejected)
-                                    {
-                                        <input type="submit" style="width: 70px;margin-left:1px;" id="btnEditAndApproveQuestion" name="btnEditAndApproveQuestion" value="Save" class="btn btn-primary M-T4" />
-                                    }
-                                    @if (Model.NextQuestionId != null)
-                                    {
-                                        <input type="button" value="Skip" id="btnSkipQuestion" onclick="SkipQuestion()" class="btn btn-secondary M-T4" data-NextQuestionId="@Model.NextQuestionId" />
-                                    }
-                                </div>
-                            </div>
+
+                <div class="row">
+                    <div class="btn-nav">
+                        <div class="pull-right">
+                            @if (Model.QuestionStatusType == QuestionStatus.ReadyForReview || Model.QuestionStatusType == QuestionStatus.OnHold)
+                            {
+                                <input type="button" id="btnRejectQuestion" onclick="RejectQuestion()" value="Reject" class="btn btn-primary M-T4" data-NextQuestionId="@Model.NextQuestionId" />
+                                if (Model.QuestionStatusType == QuestionStatus.ReadyForReview)
+                                {
+                                    <input type="button" id="btnApproveQuestion" onclick="ApproveQuestion()" value="Approve" class="btn btn-primary M-T4" data-NextQuestionId="@Model.NextQuestionId" />
+                                    <input type="button" style="width: 70px;margin-left:1px;" id="btnQuestionOnHold" onclick="PutQuestionOnHold()" name="btnOnHold" value="On Hold" class="btn btn-primary M-T4" data-NextQuestionId="@Model.NextQuestionId" />
+                                }
+                                else
+                                {
+                                    <input type="submit" id="btnEditAndApproveQuestion" name="btnEditAndApproveQuestion" value="Approve" class="btn btn-primary M-T4" />
+                                }
+                            }
+                            else if (Model.QuestionStatusType == QuestionStatus.Rejected)
+                            {
+                                <input type="submit" style="width: 70px;margin-left:1px;" id="btnEditAndApproveQuestion" name="btnEditAndApproveQuestion" value="Save" class="btn btn-primary M-T4" />
+                            }
+                            @if (Model.NextQuestionId != null)
+                            {
+                                <input type="button" value="Skip" id="btnSkipQuestion" onclick="SkipQuestion()" class="btn btn-secondary M-T4" data-NextQuestionId="@Model.NextQuestionId" />
+                            }
                         </div>
-                        <div id="ReviewQuestionFormElements">
-                            @Html.Partial("_QuestionDetailsForm", Model.QuestionDetails)
-                        </div>
+                    </div>
+                </div>
+                <div id="ReviewQuestionFormElements">
+                    @Html.Partial("_QuestionDetailsForm", Model.QuestionDetails)
+                </div>
             }
         </div>
     </div>
@@ -387,8 +381,9 @@
     </div>
 
 }
-else {
-<div>No more questions here.</div>
+else
+{
+    <div>No more questions here.</div>
 }
 
 @if (Model != null)

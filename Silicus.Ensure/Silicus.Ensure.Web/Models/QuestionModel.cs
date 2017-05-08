@@ -44,7 +44,7 @@ namespace Silicus.Ensure.Web.Models
         public List<string> CorrectAnswer { get; set; }
         [AllowHtml]
         public string Answer { get; set; }
-        public string Tag { get; set; }
+        public string Tags { get; set; }
         [Required(ErrorMessage = "Technology is required.")]
         [Display(Name = "Technology")]
         public int TechnologyId { get; set; }
@@ -60,8 +60,12 @@ namespace Silicus.Ensure.Web.Models
         public bool IsDeleted { get; set; }
         public DateTime CreatedOn { get; set; }
         public int CreatedBy { get; set; }
+        public string CreatedByName { get; set;}
+
         public DateTime? ModifiedOn { get; set; }
         public int? ModifiedBy { get; set; }
+        public string ModifiedByName { get; set; }
+
         public List<Tags> SkillTagsList { get; set; }
         [Required(ErrorMessage = "Skill tag is required.")]
         public List<string> SkillTag { get; set; }
@@ -73,6 +77,9 @@ namespace Silicus.Ensure.Web.Models
         public string TechnologyName { get; set; }
         public int? NextQuestionId { get; set; }
         public string ReviewerComment { get; set; }
+        public string QuestionTypeString { get; set; }
+        public string ProficiencyLevelString { get; set; }
+        public string TagsString { get; set; }
     }
 
     public enum ProficiencyLevel

@@ -12,7 +12,7 @@ namespace Silicus.Ensure.Web.Models.Test
         public string Comment { get; set; }
 
         [Display(Name ="Reviewer Marks")]
-        public int? ReviwerMark { get; set; }
+        public decimal? ReviwerMark { get; set; }
         public TestSummaryViewModel TestSummary { get; set; }
         public bool IsCorrect { get; set; }
         public List<string> CandidateAnswers { get; set; }

@@ -11,6 +11,8 @@ using System.Web;
 using System.Web.Mvc;
 using System.ComponentModel;
 using Silicus.Ensure.Models.Constants;
+using Kendo.Mvc.UI;
+using Kendo.Mvc.Extensions;
 
 namespace Silicus.Ensure.Web.Controllers
 {
@@ -82,21 +84,76 @@ namespace Silicus.Ensure.Web.Controllers
             ModelState.Clear();
             return View(question);
         }
+        public ActionResult GetAllQuestions([DataSourceRequest] DataSourceRequest request)
+        {
+            var questions = _questionService.GetQuestion().OrderByDescending(x => x.ModifiedOn);
+            DataSourceResult result = questions.ToDataSourceResult(request, qu => new QuestionModel
+            {
+                Id = qu.Id,
+                AnswerType = qu.AnswerType,
+                OptionCount = qu.OptionCount,
+                Option1 = qu.Option1,
+                Option2 = qu.Option2,
+                Option3 = qu.Option3,
+                Option4 = qu.Option4,
+                Option5 = qu.Option5,
+                Option6 = qu.Option6,
+                Option7 = qu.Option7,
+                Option8 = qu.Option8,
+                Answer = qu.Answer,
+                TechnologyId = qu.TechnologyId,
+                Duration = qu.Duration,
+                Marks = qu.Marks,
+                IsPublishd = qu.IsPublishd,
+                IsDeleted = qu.IsDeleted,
+                CreatedOn = qu.CreatedOn,
+                CreatedBy = qu.CreatedBy,
+                ModifiedOn = qu.ModifiedOn,
+                ModifiedBy = qu.ModifiedBy,
+                Status = qu.Status,
+                Technology = qu.Technology,
+                CreatedByName = GetCreatedByName(qu.CreatedBy),
+                QuestionDescription = qu.QuestionDescription.Substring(0, Math.Min(qu.QuestionDescription.Length, 100)),
+                QuestionType = qu.QuestionType.ToString(),
+                QuestionTypeString = GetQuestionType(qu.QuestionType.ToString()),
+                TechnologyName = GetTechnologyName(qu.TechnologyId),
+                StatusName = GetEnumDescription(qu.Status),
+                Tags = qu.Tags,
+                TagsString = GetTagNames(qu.Tags),
+                ProficiencyLevel = qu.ProficiencyLevel.ToString(),
+                ProficiencyLevelString = GetCompetency(qu.ProficiencyLevel.ToString())
+            });
+
+            return Json(result);
+        }
+
+        private string GetCreatedByName(int createdById)
+        {
+            var user=_containerUserService.GetUserByID(createdById);
+            return user != null ? user.FirstName + " " + user.LastName : "";
+        }
+
+        private string GetTagNames(string tags)
+        {
+            var tagNamesString = "";
+            var tagNames = new List<string>();
+            if (tags != null)
+            {
+                int temp;
+                var tagIds = tags.Split(',')
+    .Select(s => new { P = int.TryParse(s, out temp), I = temp })
+    .Where(x => x.P)
+    .Select(x => x.I)
+    .ToList();
+                tagNames = _tagsService.GetTagNames(tagIds);
+            }
+            tagNamesString = string.Join(" | ", tagNames);
+            return tagNamesString;
+        }
 
         public ActionResult QuestionBank()
         {
-            var que = _questionService.GetQuestion().OrderByDescending(x => x.ModifiedOn).ToList();
-            var queModel = _mappingService.Map<List<Question>, List<QuestionModel>>(que);
-            foreach (var q in queModel)
-            {
-                q.QuestionDescription = q.QuestionDescription.Substring(0, Math.Min(q.QuestionDescription.Length, 100));
-                q.QuestionType = GetQuestionType(q.QuestionType);
-                q.TechnologyName = GetTechnologyName(q.TechnologyId);
-                q.StatusName = GetEnumDescription(q.Status);
-                q.Tag = string.Join(" | ", Tags().Where(t => que.Where(x => x.Id == q.Id).Select(p => p.Tags).First().ToString().Split(',').Contains(t.TagId.ToString())).Select(l => l.TagName).ToList());
-                q.ProficiencyLevel = GetCompetency(q.ProficiencyLevel);
-            }
-            return View(queModel);
+            return View();
         }
 
         public ActionResult EditQuestion(string questionId)
@@ -118,6 +175,22 @@ namespace Silicus.Ensure.Web.Controllers
                 queModel.SkillTag = question.Tags.Split(',').ToList();
                 queModel.Success = 0;
                 queModel.Edit = true;
+
+                if (queModel.CreatedBy > 0)
+                {
+                    var Creatoruser = _containerUserService.GetUserByID(queModel.CreatedBy);
+                    queModel.CreatedByName = Creatoruser.FirstName + " " + Creatoruser.LastName + "(" + Creatoruser.EmployeeID + ")";
+                }
+
+                if (queModel.ModifiedBy.HasValue)
+                {
+                    if (queModel.ModifiedBy.Value > 0)
+                    {
+                        var Modifieruser = _containerUserService.GetUserByID(queModel.ModifiedBy.Value);
+                        queModel.ModifiedByName = Modifieruser.FirstName + " " + Modifieruser.LastName + "(" + Modifieruser.EmployeeID + ")";
+                    }
+                }
+
                 queModel.SkillTagsList = Tags();
                 return View("AddQuestions", queModel);
             }

@@ -7,8 +7,10 @@ namespace Silicus.Ensure.Web.Models.Test
     {
         public TestSummaryBasicDetails Practical { get; set; }
         public TestSummaryBasicDetails Objective { get; set; }
+        [DisplayFormat(DataFormatString = "{0:n2}")]
         public int TotalMaximumMarks { get; set; }
-        public int TotalObtainedMarks { get; set; }
+        [DisplayFormat(DataFormatString = "{0:n2}")]
+        public decimal TotalObtainedMarks { get; set; }
         [DisplayFormat(DataFormatString = "{0:n2}")]
         public decimal Percentage { get; set; }
         public int TimeAllotted { get; set; }

@@ -32,7 +32,23 @@ namespace Silicus.Ensure.Web.Controllers
         // GET: QuestionReview
         public ActionResult Index(TabSelectionViewModel tabSelection)
         {
+            tabSelection=GetCounts(tabSelection);
             return View(tabSelection);
+        }
+
+        public TabSelectionViewModel GetCounts(TabSelectionViewModel tabSelection)
+        {
+            var userEmailId = User.Identity.Name;
+            var user = _containerUserService.FindUserByEmail(userEmailId);
+            if (user != null) { 
+            var tabSelectionBusinessModel = _mappingService.Map<TabSelectionViewModel, TabSelectionBusinessModel>(tabSelection);
+                tabSelectionBusinessModel.UserId = user.ID;
+                tabSelectionBusinessModel = _questionService.GetCounts(tabSelectionBusinessModel);
+                tabSelection.ReadyForReviewCount = tabSelectionBusinessModel.ReadyForReviewCount;
+                tabSelection.OnHoldCount = tabSelectionBusinessModel.OnHoldCount;
+                tabSelection.RejectedCount = tabSelectionBusinessModel.RejectedCount;
+            }
+            return tabSelection;
         }
 
         public ActionResult ReviewQuestion(int? questionId, int technologyId, QuestionStatus questionStatusType)
@@ -112,40 +128,45 @@ namespace Silicus.Ensure.Web.Controllers
         {
             var userEmailId = User.Identity.Name;
             var user = _containerUserService.FindUserByEmail(userEmailId);
-            UpdateQuestion(question);
+            var isOnHold = false;
+            var isReject = false;
             var questionStatusDetails = new QuestionStatusDetails();
-            questionStatusDetails.QuestionId = question.Id;
             if (question.Status == QuestionStatus.OnHold)
             {
                 questionStatusDetails.Status = QuestionStatus.Approved;
+                question.Status = QuestionStatus.Approved;
+                isOnHold = true;
             }
             else
             {
                 questionStatusDetails.Status = QuestionStatus.ReadyForReview;
+                question.Status = QuestionStatus.ReadyForReview;
+                isReject = true;
             }
+            UpdateQuestion(question);
+            questionStatusDetails.QuestionId = question.Id;
             questionStatusDetails.ChangedBy = user.ID;
             questionStatusDetails.ChangedDate = DateTime.Now;
             _questionService.AddQuestionStatusDetails(questionStatusDetails);
-            return RedirectToAction("Index", new TabSelectionViewModel { QuestionId = question.NextQuestionId, TechnologyId = question.TechnologyId, IsOnHold = true });
+            return RedirectToAction("Index", new TabSelectionViewModel { QuestionId = question.NextQuestionId, TechnologyId = question.TechnologyId, IsOnHold = isOnHold,IsRejected=isReject });
         }
 
         private void UpdateQuestion(QuestionModel question)
         {
             Question que = _mappingService.Map<QuestionModel, Question>(question);
             que.QuestionDescription = HttpUtility.HtmlDecode(question.QuestionDescription);
-            que.CorrectAnswer = setCorrectAnswer(question);
+            que.CorrectAnswer = SetCorrectAnswer(question);
             que.Answer = HttpUtility.HtmlDecode(question.Answer);
             que.Tags = string.Join(",", question.SkillTag);
             que.IsPublishd = true;
             var userEmailId = User.Identity.Name;
             var user = _containerUserService.FindUserByEmail(userEmailId);
-            que.Status = QuestionStatus.Approved;
             que.ModifiedBy = user.ID;
             que.ModifiedOn = DateTime.Now;
             _questionService.Update(que);
         }
 
-        private string setCorrectAnswer(QuestionModel queModel)
+        private string SetCorrectAnswer(QuestionModel queModel)
         {
             StringBuilder ans = new StringBuilder();
             ans.Append(queModel.IsAnsOption1 ? "1," : "");

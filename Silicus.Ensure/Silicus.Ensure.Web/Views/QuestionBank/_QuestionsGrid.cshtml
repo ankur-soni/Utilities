@@ -1,30 +1,123 @@
 ﻿@using Kendo.Mvc.UI;
-
 @if (Request.IsAuthenticated)
 {
     @(Html.Kendo().Grid<Silicus.Ensure.Web.Models.QuestionModel>().Name("questionGrids")
-                             .Columns(columns =>
-                             {
-                                 columns.Bound(q => q.QuestionDescription).Title("Question description").Width(400);
-                                 columns.Bound(q => q.QuestionType).Width(400);
-                                 columns.Bound(q => q.Tag).Title("Tags").Width(400);
-                                 columns.Bound(q => q.ProficiencyLevel).Title("Proficiency level").Width(400);
-                                 columns.Bound(q => q.Id).ClientTemplate(@"
+                                .Columns(columns =>
+                                {
+                                    columns.Bound(q => q.Id).Title("Id").Width(100).Filterable(ftb => ftb.Cell(cell => cell.Operator("equals").Template("IdNumericTextBox").ShowOperators(false).InputWidth(80)));
+                                    columns.Bound(q => q.QuestionDescription).Title("Question description").Width(400).Filterable(ftb => ftb.Cell(cell => cell.Operator("contains").ShowOperators(false)));
+                                    columns.Bound(q => q.QuestionType).ClientTemplate("#=QuestionTypeString#").Width(200).Filterable(ftb => ftb.Cell(cell => cell.Operator("equals").Template("QuestionTypeDropDownList").ShowOperators(false)));
+                                    columns.Bound(q => q.TechnologyId).ClientTemplate("#=TechnologyName#").Title("Technology").Width(200).Filterable(ftb => ftb.Cell(cell => cell.Operator("equals").Template("TechnologyDropDownList").ShowOperators(false)));
+                                    columns.Bound(q => q.Status).ClientTemplate("#=StatusName#").Title("Status").Width(300).Filterable(ftb => ftb.Cell(cell => cell.Operator("equals").Template("StatusDropDownList").ShowOperators(false)));
+                                    columns.Bound(q => q.Tags).ClientTemplate("#=TagsString#").ClientTemplate("#=TagsString#").Title("Tags").Width(400).Filterable(ftb => ftb.Cell(cell => cell.Operator("equals").Template("TagsDropDownList").ShowOperators(false)));
+                                    columns.Bound(q => q.ProficiencyLevel).ClientTemplate("#=ProficiencyLevelString#").Title("Proficiency level").Width(300).Filterable(ftb => ftb.Cell(cell => cell.Operator("equals").Template("ProficiencyLevelDropDownList").ShowOperators(false)));
+                                    columns.Bound(q => q.CreatedBy).ClientTemplate("#=CreatedByName#").Title("Created by").Width(300).Sortable(false).Filterable(false);
+                                    columns.Bound(q => q.Id).ClientTemplate(@"
                                                 <a href='/QuestionBank/EditQuestion?questionId=#=Id#' class='k-button M-T4'>Edit</a>
                             <a class='k-button M-T4' href='\\#' onclick='ConfirmDeleteQuestionRow(event)'>Delete</a>
-                                               ").Title("Actions").Width(400).Sortable(false);
-                             })
-                              .DataSource(dataSource => dataSource.Ajax().Model(model =>
-                              {
-                                  model.Id(p => p.Id);
-                                  model.Field(p => p.Id).Editable(false);
-                              })
-                                 .Read(read => read.Action("GetAllQuestions", "QuestionBank"))
-                                 .Destroy(delete => delete.Action("DeleteQuestion", "QuestionBank"))
-                                 .PageSize(10)
-                                 .ServerOperation(true)
-                                    ).Pageable(p => p.PageSizes(true))
-                                     .Sortable()
-                                     .Resizable(resizing => resizing.Columns(true))
+                                               ").Title("Actions").Width(400).Sortable(false).Filterable(false);
+                                })
+                                      .DataSource(dataSource => dataSource.Ajax()
+                                      .Sort(sort => sort.Add("Id").Ascending()).Model(model =>
+                                      {
+                                          model.Id(p => p.Id);
+                                          model.Field(p => p.Id).Editable(false);
+                                      })
+                                         .Read(read => read.Action("GetAllQuestions", "QuestionBank"))
+                                         .Destroy(delete => delete.Action("DeleteQuestion", "QuestionBank"))
+                                         .PageSize(10)
+                                         .ServerOperation(true)
+                                            ).Pageable(p => p.PageSizes(true))
+                                             .Sortable()
+                                             .Filterable(ftb => ftb.Mode(GridFilterMode.Row))
+                                             .Resizable(resizing => resizing.Columns(true))
     )}
 
+
+<script>
+    function IdNumericTextBox(args) {
+        var idNumericTextBox = args.element.kendoNumericTextBox({
+            format: "0",
+            decimals: 0,
+            step: 0
+        });
+
+    }
+
+    function QuestionTypeDropDownList(args) {
+        args.element.kendoDropDownList({
+            dataSource: [
+               { text: "Objective", value: 1 },
+               { text: "Practical", value: 2 }
+            ],
+            dataTextField: "text",
+            dataValueField: "value",
+            autoBind: false,
+            valuePrimitive: true
+        });
+    }
+
+
+    function ProficiencyLevelDropDownList(args) {
+        args.element.kendoDropDownList({
+            dataSource: [
+               { text: "Beginner", value: 1 },
+               { text: "Intermediate", value: 2 },
+               { text: "Expert", value: 3 }
+            ],
+            dataTextField: "text",
+            dataValueField: "value",
+            autoBind: false,
+            valuePrimitive: true
+        });
+    }
+
+    function StatusDropDownList(args) {
+        args.element.kendoDropDownList({
+            dataSource: [
+               { text: "Ready For Review", value: 1 },
+               { text: "Approved", value: 2 },
+               { text: "On Hold", value: 3 },
+               { text: "Rejected", value: 4 }
+            ],
+            dataTextField: "text",
+            dataValueField: "value",
+            autoBind: false,
+            valuePrimitive: true
+        });
+    }
+
+    function TechnologyDropDownList(args) {
+        args.element.kendoDropDownList({
+            dataSource: {
+                transport: {
+                    read: {
+                        url: "/Technology/GetAllTechnologiesForDropDown"
+                    }
+                }
+            },
+            dataTextField: "TechnologyName",
+            dataValueField: "TechnologyId",
+            autoBind: false,
+            valuePrimitive: true
+        });
+    }
+
+    function TagsDropDownList(args) {
+        args.element.kendoDropDownList({
+            dataSource: {
+                transport: {
+                    read: "/Common/GetAllTagDetails",
+                    dataType: "jsonp"
+                }
+            },
+            filter: "startswith",
+            dataValueField: "TagId",
+            dataTextField: "TagName",
+            autoBind: false,
+            valuePrimitive: true
+
+        });
+    }
+
+</script>

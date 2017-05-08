@@ -1,5 +1,4 @@
 ﻿@model Silicus.Ensure.Web.Models.TestSuiteCandidateModel
-@using Kendo.Mvc.UI;
 @using Silicus.Ensure.Web.Models.Test
 @using Silicus.Ensure.Web
 @using Silicus.Ensure.Models.Constants;
@@ -276,7 +275,7 @@ else
 
 }
 @{
-            var role = Silicus.Ensure.Web.MvcApplication.getCurrentUserRoles();
+            var role = MvcApplication.getCurrentUserRoles();
 }
 <script>
     var clock;
@@ -290,9 +289,6 @@ else
         $('#instruction').hide();
         $("#frmTestresult").kendoValidator();
         $("#ReviwerMark").kendoValidator();
-        $(document).on("change", "#ReviwerMark", function () {
-            UpdateReview();
-        });
         $("#btnSubmitTestOK").hide();
         var userTestSuiteId = $("#UserTestSuiteId").val();
         LoadFirstQuestion(userTestSuiteId, disableControls);
@@ -316,7 +312,7 @@ else
     }
 
     function disableControls() {
-        if (userRole.indexOf("@Silicus.Ensure.Models.Constants.RoleName.Panel.ToString()")<0) {
+        if (userRole.indexOf("@RoleName.Panel.ToString()")<0) {
             $('.k-editor-toolbar').hide();
             if($('#ReviewerComment').data())
             {

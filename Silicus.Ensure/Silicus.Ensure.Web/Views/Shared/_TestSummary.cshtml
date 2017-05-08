@@ -55,8 +55,8 @@
                         <tr >
 
                             <td>Total marks</td>
-                            <td id="practicalMaximumMarks">@Model.Practical.MaximumMarks</td>
-                            <td id="objectiveMaximumMarks">@Model.Objective.MaximumMarks</td>
+                            <td id="practicalMaximumMarks">@Html.DisplayFor(m => m.Practical.MaximumMarks)</td>
+                            <td id="objectiveMaximumMarks">@Html.DisplayFor(m => m.Objective.MaximumMarks)</td>
                         </tr>
                         <tr>
 
@@ -73,8 +73,8 @@
                         <tr class="eval-footer">
 
                             <td>Obtained marks</td>
-                            <td id="practicalMarksObtained">@Model.Practical.MarksObtained</td>
-                            <td id="objectiveMarksObtained">@Model.Objective.MarksObtained</td>
+                            <td id="practicalMarksObtained">@Html.DisplayFor(m=>m.Practical.MarksObtained)</td>
+                            <td id="objectiveMarksObtained">@Html.DisplayFor(m=>m.Objective.MarksObtained)</td>
                         </tr>
                         <tr></tr>
                         <tr>

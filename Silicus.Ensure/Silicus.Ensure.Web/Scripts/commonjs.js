@@ -12,7 +12,7 @@ $(window).resize(function () {
 })
 
 $(document).ready(function () {
-    $(document).on('click', '#QuestionBank', showCustomLoader);
+ //   $(document).on('click', '#QuestionBank', showCustomLoader);
     $(document).on('click', '#menu-toggle', function () {
         $("body").toggleClass("mini-navbar");
     });

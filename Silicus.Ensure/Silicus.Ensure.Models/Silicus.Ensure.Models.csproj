@@ -147,6 +147,7 @@
     <Compile Include="NotificationMessage.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ReviewQuestion\ReviewQuestionBusinessModel.cs" />
+    <Compile Include="ReviewQuestion\TabSelectionBusinessModel.cs" />
     <Compile Include="TechnologyBusinessModel.cs" />
     <Compile Include="Test\CandidateInfoBusinessModel.cs" />
     <Compile Include="Test\PreviewTestBusinessModel.cs" />
