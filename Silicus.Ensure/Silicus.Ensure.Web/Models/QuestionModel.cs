@@ -80,6 +80,7 @@ namespace Silicus.Ensure.Web.Models
         public string QuestionTypeString { get; set; }
         public string ProficiencyLevelString { get; set; }
         public string TagsString { get; set; }
+        public QuestionStatus? ChangeStatusTo { get; set; }
     }
 
     public enum ProficiencyLevel

@@ -32,7 +32,7 @@ namespace Silicus.Ensure.Web.Controllers
         // GET: QuestionReview
         public ActionResult Index(TabSelectionViewModel tabSelection)
         {
-            tabSelection=GetCounts(tabSelection);
+            tabSelection = GetCounts(tabSelection);
             return View(tabSelection);
         }
 
@@ -40,8 +40,9 @@ namespace Silicus.Ensure.Web.Controllers
         {
             var userEmailId = User.Identity.Name;
             var user = _containerUserService.FindUserByEmail(userEmailId);
-            if (user != null) { 
-            var tabSelectionBusinessModel = _mappingService.Map<TabSelectionViewModel, TabSelectionBusinessModel>(tabSelection);
+            if (user != null)
+            {
+                var tabSelectionBusinessModel = _mappingService.Map<TabSelectionViewModel, TabSelectionBusinessModel>(tabSelection);
                 tabSelectionBusinessModel.UserId = user.ID;
                 tabSelectionBusinessModel = _questionService.GetCounts(tabSelectionBusinessModel);
                 tabSelection.ReadyForReviewCount = tabSelectionBusinessModel.ReadyForReviewCount;
@@ -133,8 +134,8 @@ namespace Silicus.Ensure.Web.Controllers
             var questionStatusDetails = new QuestionStatusDetails();
             if (question.Status == QuestionStatus.OnHold)
             {
-                questionStatusDetails.Status = QuestionStatus.Approved;
-                question.Status = QuestionStatus.Approved;
+                questionStatusDetails.Status = question.ChangeStatusTo != null ? (QuestionStatus)question.ChangeStatusTo : QuestionStatus.Approved;
+                question.Status = question.ChangeStatusTo != null ? (QuestionStatus)question.ChangeStatusTo : QuestionStatus.Approved;
                 isOnHold = true;
             }
             else
@@ -148,7 +149,7 @@ namespace Silicus.Ensure.Web.Controllers
             questionStatusDetails.ChangedBy = user.ID;
             questionStatusDetails.ChangedDate = DateTime.Now;
             _questionService.AddQuestionStatusDetails(questionStatusDetails);
-            return RedirectToAction("Index", new TabSelectionViewModel { QuestionId = question.NextQuestionId, TechnologyId = question.TechnologyId, IsOnHold = isOnHold,IsRejected=isReject });
+            return RedirectToAction("Index", new TabSelectionViewModel { QuestionId = question.NextQuestionId, TechnologyId = question.TechnologyId, IsOnHold = isOnHold, IsRejected = isReject });
         }
 
         private void UpdateQuestion(QuestionModel question)

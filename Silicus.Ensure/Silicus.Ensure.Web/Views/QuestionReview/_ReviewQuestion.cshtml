@@ -292,6 +292,14 @@
                 }
             }
         }
+
+        function SaveQuestionClicked(){
+            var changeTo=$('#ChangeStatusTo');
+            if(changeTo)
+            {
+                changeTo.val("@((int)QuestionStatus.ReadyForReview)");
+            }
+        }
     </script>
 
     <div class="row">
@@ -306,16 +314,17 @@
                         <div class="pull-right">
                             @if (Model.QuestionStatusType == QuestionStatus.ReadyForReview || Model.QuestionStatusType == QuestionStatus.OnHold)
                             {
-                                <input type="button" id="btnRejectQuestion" onclick="RejectQuestion()" value="Reject" class="btn btn-primary M-T4" data-NextQuestionId="@Model.NextQuestionId" />
                                 if (Model.QuestionStatusType == QuestionStatus.ReadyForReview)
                                 {
-                                    <input type="button" id="btnApproveQuestion" onclick="ApproveQuestion()" value="Approve" class="btn btn-primary M-T4" data-NextQuestionId="@Model.NextQuestionId" />
                                     <input type="button" style="width: 70px;margin-left:1px;" id="btnQuestionOnHold" onclick="PutQuestionOnHold()" name="btnOnHold" value="On Hold" class="btn btn-primary M-T4" data-NextQuestionId="@Model.NextQuestionId" />
+                                    <input type="button" id="btnApproveQuestion" onclick="ApproveQuestion()" value="Approve" class="btn btn-primary M-T4" data-NextQuestionId="@Model.NextQuestionId" />
                                 }
                                 else
                                 {
+                                    <input type="submit" id="btnSaveQuestion" onclick="SaveQuestionClicked()" name="btnSaveQuestion" value="Save" class="btn btn-primary M-T4" />
                                     <input type="submit" id="btnEditAndApproveQuestion" name="btnEditAndApproveQuestion" value="Approve" class="btn btn-primary M-T4" />
                                 }
+                                <input type="button" id="btnRejectQuestion" onclick="RejectQuestion()" value="Reject" class="btn btn-primary M-T4" data-NextQuestionId="@Model.NextQuestionId" />
                             }
                             else if (Model.QuestionStatusType == QuestionStatus.Rejected)
                             {
