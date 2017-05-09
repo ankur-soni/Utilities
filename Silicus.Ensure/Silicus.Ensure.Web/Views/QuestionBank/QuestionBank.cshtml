@@ -50,50 +50,6 @@
 
         <div class="row">
             <div class="col-sm-12 M-B15">
-                <div class="col-sm-4 col-md-3 col-lg-2">
-                    <span style="font-weight:bold;" class="themeColorBlue labelAlignMid">Question type</span>
-
-                    @(Html.Kendo().DropDownList()
-                                                .Name("QuestionType")
-                                                .DataTextField("Text")
-                                                .DataValueField("Value")
-                                                .Events(e => e.Change("QuestionTypeChange"))
-                                                    .BindTo(new List<SelectListItem>
-                                                    () {
-                                                        new SelectListItem(){
-                                                    Text="All",
-                                                    Value=""
-                                                    },
-                                                    new SelectListItem(){
-                                                    Text="Objective",
-                                                    Value="Objective"
-                                                    },
-                                                    new SelectListItem(){
-                                                    Text="Practical",
-                                                    Value="Practical"
-                                                    }
-                                                    }).HtmlAttributes(new { style = "width: 100%", @class = "M-T5" }))
-                </div>
-                <div class="col-sm-4 col-md-3 col-lg-2">
-                    <span style="font-weight:bold;" class="themeColorBlue labelAlignMid">Proficiency level</span>
-
-                    @{
-                        var levelList = new List<SelectListItem>();
-                        levelList.Add(new SelectListItem() { Text = "All", Value = "" });
-                        foreach (var level in Enum.GetValues(typeof(Silicus.Ensure.Web.Models.ProficiencyLevel)))
-                        {
-                            levelList.Add(new SelectListItem() { Text = level.ToString(), Value = level.ToString() });
-                        }
-                    }
-                    @(Html.Kendo().DropDownList()
-                                                        .Name("ProficiencyLevelDropDown")
-                                                        .DataTextField("Text")
-                                                        .DataValueField("Value")
-                                                        .Events(e => e.Change("ProficiencyLevelDropDownChange"))
-                                                        .BindTo(levelList)
-                                                                .HtmlAttributes(new { style = "width: 100%", @class = "M-T5" })
-                    )
-                </div>
                 <div class="col-sm-5 col-md-5 col-lg-4 cust-mar">
                     <a href='/QuestionBank/AddQuestions?questionId=0' class='k-button k-button-icontext k-grid-add'><span class='k-icon k-add'></span>Add question</a>
                 </div>
