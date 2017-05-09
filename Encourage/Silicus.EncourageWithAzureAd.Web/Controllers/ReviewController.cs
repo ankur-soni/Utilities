@@ -13,6 +13,8 @@ using System.Data.Entity;
 using System.Globalization;
 using System.Linq;
 using System.Web.Mvc;
+using Silicus.EncourageWithAzureAd.Web.Enums;
+using WebGrease.Css.Ast.Selectors;
 
 namespace Silicus.EncourageWithAzureAd.Web.Controllers
 {
@@ -588,9 +590,20 @@ namespace Silicus.EncourageWithAzureAd.Web.Controllers
             consolidatedNominationsViewModel.Reviewers = new List<ReviewerViewModel>();
             consolidatedNominationsViewModel.Nominations = new List<SubmittedNomination>();
             consolidatedNominationsViewModel.ListOfAwards = new SelectList(awards, "Id", "Name");
-            var reviewers = _encourageDatabaseContext.Query<Reviewer>().ToList();
+            var activeReviewers = new List<UtilityUserRoles>();
 
-            foreach (var reviewer in reviewers)
+            if (consolidatedNominationsViewModel.AwardMonth == customDate.Month && consolidatedNominationsViewModel.AwardYear == customDate.Year)
+            {
+                activeReviewers = _commonDbContext.Query<UtilityUserRoles>().Where(x => x.IsActive && x.RoleId == (int)Roles.Reviewer).ToList();
+            }
+            else
+            {
+                activeReviewers = _commonDbContext.Query<UtilityUserRoles>().Where(x => x.RoleId == (int)Roles.Reviewer).ToList();
+            }
+          
+           // var reviewers = _encourageDatabaseContext.Query<Reviewer>().ToList();
+
+            foreach (var reviewer in activeReviewers)
             {
                 var reviewerObj = _commonDbContext.Query<User>().FirstOrDefault(u => u.ID == reviewer.UserId);
                 consolidatedNominationsViewModel.Reviewers.Add(new ReviewerViewModel
