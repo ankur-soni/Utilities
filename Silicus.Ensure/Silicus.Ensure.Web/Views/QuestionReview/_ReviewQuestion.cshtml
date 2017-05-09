@@ -11,6 +11,7 @@
 @if (Model != null && Model.QuestionDetails != null)
 {
     <script>
+        window.onbeforeunload = null;
         $(document).ready(function () {
             $('#addTagPopup').on('hidden.bs.modal', function () {
                 $('.field-validation-error').hide();
