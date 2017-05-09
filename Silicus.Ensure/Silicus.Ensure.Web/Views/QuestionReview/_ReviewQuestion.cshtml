@@ -149,7 +149,7 @@
        function () {
            var questionId=$('#QuestionId').attr('data-value');
            var nextQuestionId=$('#btnApproveQuestion').attr('data-NextQuestionId');
-           var technologyId=$('#TechnologyId').val();
+           var technologyId=$('#SelectedTechnologyId').val();
            if(questionId && technologyId){
                tabStrip = $("#ReviewQuestionTabs").data("kendoTabStrip");
                var questionStatusType="@((int)Model.QuestionStatusType)";
@@ -187,7 +187,7 @@
                         }
                         else{ var questionId=$('#QuestionId').attr('data-value');
                             var nextQuestionId=$('#btnQuestionOnHold').attr('data-NextQuestionId');
-                            var technologyId=$('#TechnologyId').val();
+                            var technologyId=$('#SelectedTechnologyId').val();
                             if(questionId && technologyId){
                                 tabStrip = $("#ReviewQuestionTabs").data("kendoTabStrip");
                                 var index=tabStrip.select().index()+1;
@@ -236,7 +236,7 @@
                         }
                         else{ var questionId=$('#QuestionId').attr('data-value');
                             var nextQuestionId=$('#btnRejectQuestion').attr('data-NextQuestionId');
-                            var technologyId=$('#TechnologyId').val();
+                            var technologyId=$('#SelectedTechnologyId').val();
                             if(questionId && technologyId){
                                 tabStrip = $("#ReviewQuestionTabs").data("kendoTabStrip");
                                 var index=tabStrip.select().index()+1;
@@ -276,7 +276,7 @@
         function SkipQuestion(){
             var questionId=$('#QuestionId').attr('data-value');
             var nextQuestionId=$('#btnSkipQuestion').attr('data-NextQuestionId');
-            var technologyId=$('#TechnologyId').val();
+            var technologyId=$('#SelectedTechnologyId').val();
             var questionStatusType="@((int)Model.QuestionStatusType)"
             if(questionId && technologyId){
                 tabStrip = $("#ReviewQuestionTabs").data("kendoTabStrip");
@@ -328,7 +328,7 @@
             @using (Html.BeginForm("EditAndApproveQuestion", "QuestionReview", FormMethod.Post, new { id = "AddQuestionForm", onsubmit = "OnSubmit()" }))
             {
                 @Html.HiddenFor(ques => ques.NextQuestionId, new { @id = "NextQuestionId" });
-
+                @Html.HiddenFor(ques => ques.TechnologyId, new { @id = "SelectedTechnologyId" });
                 <div class="row">
                     <div class="btn-nav">
                         <div class="pull-right">
