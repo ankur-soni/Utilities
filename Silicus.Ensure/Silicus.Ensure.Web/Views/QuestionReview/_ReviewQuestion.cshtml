@@ -162,6 +162,7 @@
                        data:{QuestionId:questionId,NextQuestionId:nextQuestionId,Status:status,TechnologyId:technologyId,questionStatusType:questionStatusType},
                        success: function(data){
                            toastr.success("Question has been approved.");
+                           UpdateReviewQuestionsCount(technologyId);
                            if(nextQuestionId){
                                $('#ReviewQuestionTabs-'+index).html(data);
                            }
@@ -199,6 +200,7 @@
                                         data:{QuestionId:questionId,NextQuestionId:nextQuestionId,Status:status,TechnologyId:technologyId,comment:value,questionStatusType:questionStatusType},
                                         success: function(data){
                                             toastr.success("Question has been put on hold.");
+                                            UpdateReviewQuestionsCount(technologyId);
                                             if(nextQuestionId){
                                                 $('#ReviewQuestionTabs-'+index).html(data);
                                             }
@@ -247,6 +249,7 @@
                                         data:{QuestionId:questionId,NextQuestionId:nextQuestionId,Status:status,TechnologyId:technologyId,comment:value,questionStatusType:questionStatusType},
                                         success: function(data){
                                             toastr.success("Question has been Rejected.");
+                                            UpdateReviewQuestionsCount(technologyId);
                                             if(nextQuestionId){
                                                 $('#ReviewQuestionTabs-'+index).html(data);
                                             }
@@ -299,6 +302,23 @@
             {
                 changeTo.val("@((int)QuestionStatus.ReadyForReview)");
             }
+        }
+
+        function UpdateReviewQuestionsCount(technologyId){
+            $.ajax({
+                url:'/QuestionReview/GetReviewQuestionsCounts',
+                data:{technologyId:technologyId},
+                success: function(data){
+                    if(data){
+                        var readyForReview="@QuestionStatus.ReadyForReview.ToString()"+"Header";
+                        var onHold="@QuestionStatus.OnHold.ToString()"+"Header";
+                        var rejected="@QuestionStatus.Rejected.ToString()"+"Header";
+                        $('#'+readyForReview).find('a').text("Ready for review ("+data.ReadyForReviewCount+")");
+                        $('#'+onHold).find('a').text("On hold ("+data.OnHoldCount+")");
+                        $('#'+rejected).find('a').text("Rejected ("+data.RejectedCount+")");
+                    }
+                }
+            })
         }
     </script>
 

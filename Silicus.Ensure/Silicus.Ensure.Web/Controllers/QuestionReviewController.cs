@@ -35,23 +35,11 @@ namespace Silicus.Ensure.Web.Controllers
             tabSelection = GetCounts(tabSelection);
             return View(tabSelection);
         }
-
-        public TabSelectionViewModel GetCounts(TabSelectionViewModel tabSelection)
+        public JsonResult GetReviewQuestionsCounts(TabSelectionViewModel tabSelection)
         {
-            var userEmailId = User.Identity.Name;
-            var user = _containerUserService.FindUserByEmail(userEmailId);
-            if (user != null)
-            {
-                var tabSelectionBusinessModel = _mappingService.Map<TabSelectionViewModel, TabSelectionBusinessModel>(tabSelection);
-                tabSelectionBusinessModel.UserId = user.ID;
-                tabSelectionBusinessModel = _questionService.GetCounts(tabSelectionBusinessModel);
-                tabSelection.ReadyForReviewCount = tabSelectionBusinessModel.ReadyForReviewCount;
-                tabSelection.OnHoldCount = tabSelectionBusinessModel.OnHoldCount;
-                tabSelection.RejectedCount = tabSelectionBusinessModel.RejectedCount;
-            }
-            return tabSelection;
+            var countInfo = GetCounts(tabSelection);
+            return Json(countInfo, JsonRequestBehavior.AllowGet);
         }
-
         public ActionResult ReviewQuestion(int? questionId, int technologyId, QuestionStatus questionStatusType)
         {
             var userEmailId = User.Identity.Name;
@@ -181,5 +169,22 @@ namespace Silicus.Ensure.Web.Controllers
 
             return ans.ToString();
         }
+
+        private TabSelectionViewModel GetCounts(TabSelectionViewModel tabSelection)
+        {
+            var userEmailId = User.Identity.Name;
+            var user = _containerUserService.FindUserByEmail(userEmailId);
+            if (user != null)
+            {
+                var tabSelectionBusinessModel = _mappingService.Map<TabSelectionViewModel, TabSelectionBusinessModel>(tabSelection);
+                tabSelectionBusinessModel.UserId = user.ID;
+                tabSelectionBusinessModel = _questionService.GetCounts(tabSelectionBusinessModel);
+                tabSelection.ReadyForReviewCount = tabSelectionBusinessModel.ReadyForReviewCount;
+                tabSelection.OnHoldCount = tabSelectionBusinessModel.OnHoldCount;
+                tabSelection.RejectedCount = tabSelectionBusinessModel.RejectedCount;
+            }
+            return tabSelection;
+        }
+
     }
 }
