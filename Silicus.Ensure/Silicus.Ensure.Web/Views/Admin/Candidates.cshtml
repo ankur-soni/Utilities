@@ -7,42 +7,28 @@
     var users = Html.Partial("/Views/Admin/_partialViewCandidates.cshtml");
 }
 
-<div class="row white-bg header-row">
-    <nav class="" role="navigation" style="margin-bottom: 0">
-        <div class="navbar-header">
-            <a class="navbar-minimalize minimalize-styl-2 btn btn-primary" id="menu-toggle" style="margin-left:15px;border-radius:0px;" href="#"><i class="fa fa-bars"></i> </a>
-        </div>
-    </nav>
 
-    <div class="col-lg-10 col-md-10 col-sm-10 col-xs-10">
-        <h1 class="dashboard-name">Candidates</h1>
-    </div>
-</div>
+<!-- BEGIN PAGE TITLE-->
 <div class="row">
     <div class="col-sm-12">
-        <div class="fluid M-T15">
-            
-            
-            <div class="box M-B60">
-                
-                <div class="row">
-                    <div class="col-sm-12">
-                      
-                        <div class="kendogrid toolbar">
-                            @users
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-
-        </div>
+        <h1 class="page-title">
+            Candidates
+        </h1>
     </div>
 </div>
+
+<!-- END PAGE TITLE-->
+
+<div class="kendogrid toolbar">
+    @users
+</div>
+         
+           
 
 
 <script>
-    $(document).ready(function () {
+    $(document).ready(function () {        
+        SelectedMenu("#candidate-link");
         if ('@Convert.ToString(TempData["ErrorMsg"])' != '') {
             ShowMessage("@Convert.ToString(TempData["ErrorMsg"])", 0);
         }

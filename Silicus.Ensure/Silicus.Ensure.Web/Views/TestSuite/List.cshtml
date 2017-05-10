@@ -5,43 +5,32 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<div class="row white-bg header-row">
-    <nav class="" role="navigation" style="margin-bottom: 0">
-        <div class="navbar-header">
-            <a class="navbar-minimalize minimalize-styl-2 btn btn-primary" id="menu-toggle" style="margin-left:15px;border-radius:0px;" href="#"><i class="fa fa-bars"></i> </a>
-        </div>
-    </nav>
-
-    <div class="col-lg-10 col-md-10 col-sm-10 col-xs-10">
-        <h1 class="dashboard-name">Test Suite</h1>
+<div class="row">
+    <div class="col-sm-12">
+        <h1 class="page-title">
+            Test Suite
+        </h1>
     </div>
 </div>
 
 <div class="row">
     <div class="col-sm-12">
-        <div class="box M-T15 M-B60">
-            <div class="fluid">
-
-                
-
+        <div class="M-B60">
                 <div class="toolbar">
-                    <div class="row">
-                        <div class="col-sm-12">
-                            <div class="col-sm-5 col-md-4 col-lg-3 M-T15 M-B15">
-                                <div class="input-group">
+                    <div class="row M-B15">
+                        <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 addclearFloat">
+                            <div class="form-group clearFloat1 addclearFloat1">
+                                <a href='/TestSuite/Add?testSuiteId=0' class='k-button k-button-icontext k-grid-add addTag testsuitAnchor'><span style="padding-right:5px;" class='fa fa-plus'></span>Add test suite</a>
+                                <div class="input-group testsuitInputGroup">
                                     <span class="input-group-addon"><span class="glyphicon glyphicon-search" aria-hidden="true"></span></span>
-                                    <input type="text" class="form-control" id='FieldFilter' placeholder="Search" style="height: 38px;">
+                                    <input type="text" class="form-control" id='FieldFilter' placeholder="Search" style="height: 31px;">
                                     <span class="input-group-btn">
-                                        <button id="testSuiteSearch" class="btn btn-default" style="border:1px solid #0070B9!important" type="button"><span class="glyphicon glyphicon-refresh" aria-hidden="true"></span></button>
+                                        <button id="testSuiteSearch" class="btn btn-default btn-search"  type="button"><span class="glyphicon glyphicon-refresh" aria-hidden="true"></span></button>
                                     </span>
                                 </div>
                             </div>
-                            <div class="col-sm-4 M-B15" style="margin-top:20px;">
-                                <a href='/TestSuite/Add?testSuiteId=0' class='k-button k-button-icontext k-grid-add'><span class='k-icon k-add'></span>Add test suite</a>
-                            </div>
                         </div>
                     </div>
-
                 </div>
                 <div class="kendogrid">
 
@@ -56,16 +45,16 @@
                       columns.Bound(p => p.PositionName).Width(300).Title("Position");
                       columns.Bound(p => p.PrimaryTagNames).Width(200).Title("Tags");
                       columns.Bound(p => p.StatusName).Width(200).Title("Status");
-                      columns.Bound("").ClientTemplate(@"<a class='k-button k-button-icontext k-grid-edit M-T4' href='" + Url.Action("Add", "TestSuite") + "?testSuiteId=#=TestSuiteId#'><span class='k-icon k-edit'></span>Edit</a>" +
-                                                            "<a class='k-button k-button-icontext k-grid-delete M-T4' href='\\#' onclick='ConfirmDeleteTestSuiteRow(event)'>Delete</a>").Title("Actions").Width(300).Sortable(false);
+                      columns.Bound("").ClientTemplate(@"<a class='k-button k-button-icontext k-grid-edit M-T2 M-B2' href='" + Url.Action("Add", "TestSuite") + "?testSuiteId=#=TestSuiteId#'><span class='k-icon k-edit'></span>Edit</a>" +
+                                                            "<a class='k-button k-button-icontext k-grid-delete M-T2 M-B2' href='\\#' onclick='ConfirmDeleteTestSuiteRow(event)'>Delete</a>").Title("Actions").Width(300).Sortable(false);
                       columns.Bound("").ClientTemplate(@"
 
                                                         #if (UserInRole){#
-                                                            <a class='k-button k-button-icontext k-grid-add M-T4' href='\\#' onclick= getTestSuiteId('#=TestSuiteId#','#=StatusName#')>Assign test</a>
+                                                            <a class='dialog-window M-T4' href='\\#' onclick= getTestSuiteId('#=TestSuiteId#','#=StatusName#')>Assign test</a> |
                                                         #}#
-                                                            <a class='k-button k-button-icontext k-grid-add M-T4' href='" + Url.Action("Copy", "TestSuite") + "?testSuiteId=#=TestSuiteId#'>Copy</a>" +
+                                                            <a class='dialog-window M-T4' href='" + Url.Action("Copy", "TestSuite") + "?testSuiteId=#=TestSuiteId#'>Copy</a> |" +
                                                                                                                           "  #if (StatusName=='Ready'){#" +
-                                                                                                                          "<a class='k-button k-button-icontext k-grid-add M-T4' onclick=showTest('#=TestSuiteId#')>Preview</a>"
+                                                                                                                          "<a class='dialog-window M-T4' onclick=showTest('#=TestSuiteId#')>Preview</a>"
                                                                                                                           + "#}#"
                                                               ).Title("Test actions").Width(500).Sortable(false);
 
@@ -92,7 +81,7 @@
                     </div>
                 </div>
 
-            </div>
+            
         </div>
 
         <div id="DivUsers">
@@ -106,6 +95,7 @@
              window.open( "/TestSuite/PreViewQuestion?testSuiteId=" + id, '_blank');
     }
     $(document).ready(function () {
+        SelectedMenu("#testsuite-link");
         SetNavigationMenuActive('TestSuite');
         $("#messageDiv").hide();
         $("#FieldFilter").keyup(function () {

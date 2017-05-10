@@ -12,7 +12,7 @@
                  columns.Bound(p => p.Description).Width(700);
                  columns.Command(cmd =>
                  {
-                     cmd.Custom("Edit").Text("Edit").Click("ConfirmEditTechnologyRow").HtmlAttributes(new { @class = "k-button k-button-icontext k-grid-delete M-T4" });
+                     cmd.Custom("Edit").Text("Edit").Click("ConfirmEditTechnologyRow").HtmlAttributes(new { @class = "k-button k-button-icontext k-grid-delete M-T2 M-B2" });
                  }).Title("Actions").Width(500);
              })
             .DataSource(dataSource => dataSource
@@ -39,21 +39,19 @@
                   toolbar.Template(@<text>
 
             <div class="toolbar">
+               
                 <div class="row">
-                    <div class="col-sm-12 M-B15">
-                        <div class="col-sm-5 col-md-4 col-lg-3 M-T15">
-                            <div class="input-group">
+                    <div class="col-xs-11 col-sm-8 col-md-7 col-lg-6 pull-right">
+                        <div class="form-group M-T10 pull-right">
+                            <a href='javascript:void(0);' class='k-button k-button-icontext k-grid-add addTag' style="margin-right:15px;"><span style="padding-right:5px;" class='fa fa-plus'></span>Add technology</a>
+                            <div id="tagSearch1" style="width:250px;" class="input-group">
                                 <span class="input-group-addon"><span class="glyphicon glyphicon-search" aria-hidden="true"></span></span>
-                                <input type="text" class="form-control" id='TechnologyFieldFilter' placeholder="Search" style="height: 38px;">
+                                <input type="text" class="form-control" id='TechnologyFieldFilter' placeholder="Search" style="height: 31px;">
                                 <span class="input-group-btn">
-                                    <button id="technologySearch" class="btn btn-default" type="button" style="height:20px!important;border:1px solid #0070B9!important"><span class="glyphicon glyphicon-refresh" aria-hidden="true"></span></button>
+                                    <button id="technologySearch" class="btn btn-default btn-search" style="height:15px;" type="button"><span class="glyphicon glyphicon-refresh" aria-hidden="true"></span></button>
                                 </span>
                             </div>
-
-
                         </div>
-                        <a style="margin-top:20px;" href='/#' class='k-button k-button-icontext k-grid-add'><span class='k-icon k-add'></span>Add Technology</a>
-
                     </div>
                 </div>
 
@@ -110,8 +108,8 @@
         else {
             $(".k-window-title").html("Edit technology");
         }
-        $(".k-grid-update").addClass('btn primary-bt');
-        $(".k-grid-cancel").addClass("btn secondary-bt");
+        $(".k-grid-update").addClass('btn green').css('width','70px');
+        $(".k-grid-cancel").addClass("btn btn-default").css('width', '70px');
     }
 
     function technology_requestend_handler(e) {

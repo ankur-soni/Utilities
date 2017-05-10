@@ -2,6 +2,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <meta charset="utf-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
     <link href="~/favicon.ico" rel="shortcut icon" type="image/x-icon" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
@@ -19,16 +20,41 @@
     <meta name="GOOGLEBOT" content="INDEX, FOLLOW" />
     <meta name="revisit-after" content="2 days" />
     <meta name="author" content="Silicus Technologies, LLC." />
-    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
     <meta http-equiv="imagetoolbar" content="no" />
     <meta http-equiv="cache-control" content="no-cache" />
     <meta http-equiv="expires" content="-1" />
     <meta http-equiv="pragma" content="no-cache" />
     <title>Ensure</title>
 
-    @*@Scripts.Render("~/Content/BootstrapCSS")*@
+    <!-- BEGIN GLOBAL MANDATORY STYLES -->
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:400,300,600,700&subset=all" rel="stylesheet" type="text/css" />
+    <link href="~/Content/plugins/simple-line-icons/simple-line-icons.min.css" rel="stylesheet" />
+    <link href="~/Content/plugins/bootstrap-switch/css/bootstrap-switch.min.css" rel="stylesheet" />
+    <!-- END GLOBAL MANDATORY STYLES -->
+    <!-- Bootstrap styles -->
     <link href="~/Content/css/Bootstrap/3.3.1/bootstrap.min.css" rel="stylesheet" />
     <link href="~/Content/css/Bootstrap/3.3.1/bootstrap.css" rel="stylesheet" />
+
+    <!-- BEGIN PAGE LEVEL PLUGINS -->
+    <link href="~/Content/plugins/bootstrap-daterangepicker/daterangepicker.min.css" rel="stylesheet" />
+    <link href="~/Content/plugins/morris/morris.css" rel="stylesheet" />
+    <link href="~/Content/plugins/fullcalendar/fullcalendar.min.css" rel="stylesheet" />
+    <link href="~/Content/plugins/jqvmap/jqvmap/jqvmap.css" rel="stylesheet" />
+    <!-- END PAGE LEVEL PLUGINS -->
+    <!--BOOTSTRAP MODAL CSS-->
+    <link href="~/Content/plugins/bootstrap-modal/css/bootstrap-modal-bs3patch.css" rel="stylesheet" />
+    <link href="~/Content/plugins/bootstrap-modal/css/bootstrap-modal.css" rel="stylesheet" />
+    <!-- BOOTSTRAP MODAL CSS-->
+    <!-- BEGIN THEME GLOBAL STYLES -->
+    <link href="~/Content/css/Metronic css/components-md.min.css" rel="stylesheet" />
+    <link href="~/Content/css/Metronic css/plugins-md.min.css" rel="stylesheet" />
+    <!-- END THEME GLOBAL STYLES -->
+    <!-- BEGIN THEME LAYOUT STYLES -->
+    <link href="~/Content/css/Metronic css/layout.min.css" rel="stylesheet" />
+    <link href="~/assets/layouts/layout/css/themes/darkblue.min.css" rel="stylesheet" id="style_color" />
+    <link href="~/Content/css/Metronic css/custom.min.css" rel="stylesheet" />
+    <!-- END THEME LAYOUT STYLES -->
+    <script src="~/Content/plugins/jquery.min.js"></script>
     <!--Kendo css and JS-->
     @Styles.Render("~/Content/kendoCSS")
     @Scripts.Render("~/bundles/kendoJS")
@@ -39,58 +65,66 @@
     <link href="~/Content/css/font-awesome-4.7.0/css/font-awesome.min.css" rel="stylesheet" />
 
     <!--Custom css-->
-    <link href="~/Content/custom-style.css" rel="stylesheet" />
-    <link href="~/LESS/style.css" rel="stylesheet" />
+    <link href="~/Content/css/Metronic-custom.css" rel="stylesheet" />
     <link href="~/Content/scrollbar.css" rel="stylesheet" />
-    <!--Perfect scrollbar css-->
-    <link href="~/Content/css/perfect-scrollbar.min.css" rel="stylesheet" />
-
     <link href="~/Content/css/sweetalert/sweetalert.css" rel="stylesheet" />
-
-    @*@Scripts.Render("~/bundles/BootstrapJS")*@
-    <script src="~/Content/js/bootstrap.min.js"></script>
-
+    <script src="~/Content/js/plugins/sweetalert/sweetalert.min.js"></script>
     <script src="~/Scripts/jquery.validate.min.js"></script>
     <script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
     <link href="~/Content/toastr.css" rel="stylesheet" />
     <script src="~/Scripts/toastr.min.js"></script>
-    <script src="~/Content/js/plugins/sweetalert/sweetalert.min.js"></script>
     <script src="~/Scripts/commonjs.js"></script>
 
     @{
         var conname = @ViewContext.RouteData.Values["controller"].ToString().ToLower();
         var actname = @ViewContext.RouteData.Values["action"].ToString().ToLower();
         var role = Silicus.Ensure.Web.MvcApplication.getCurrentUserRoles();
-
     }
+
 </head>
-<body class="container-fluid">
+<body class="page-header-fixed page-footer-fixed page-sidebar-closed-hide-logo page-content-white page-md">
     @if (actname != "login" && actname != "logoff" && actname != "forgotpassword")
     {
-        <div class="row top-header bbl">
-            <div class="col-sm-4 col-xs-4">
-                <div class="pll ptm pbs"><img src="~/Images/logo.jpg" class="mts mbs" alt="Silicus Logo" title="Silicus Encloud" /></div>
-            </div>
-            <div class="col-sm-8 col-xs-8 right-menu">
-                
-                    <nav class="navbar" role="navigation" style="margin-bottom: 0">
-                        <ul class="nav navbar-nav navbar-right cust-ul">
-                            @if (role.Contains(RoleName.Panel.ToString()))
+        <div class="page-wrapper">
+            <!-- BEGIN HEADER -->
+            <div class="page-header navbar navbar-fixed-top">
+                <!-- BEGIN HEADER INNER -->
+                <div class="page-header-inner ">
+                    <!-- BEGIN LOGO -->
+                    <div class="page-logo">
+                        <a href="index.html">
+
+                            <img src="~/Images/logo.gif" alt="logo" class="logo-default" />
+                        </a>
+                        <div class="menu-toggler sidebar-toggler">
+                            <span></span>
+                        </div>
+                    </div>
+                    <!-- END LOGO -->
+                    <!-- BEGIN RESPONSIVE MENU TOGGLER -->
+                    <a href="javascript:;" class="menu-toggler responsive-toggler" data-toggle="collapse" data-target=".navbar-collapse">
+                        <span></span>
+                    </a>
+                    <!-- END RESPONSIVE MENU TOGGLER -->
+                    <!-- BEGIN TOP NAVIGATION MENU -->
+                    <div class="top-menu">
+                        <ul class="nav navbar-nav pull-right">
+                            @if (!role.Contains(RoleName.Panel.ToString()))
                             {
 
                                 <li class="dropdown">
                                     <a class="dropdown-toggle" data-toggle="dropdown" href="#">
                                         <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
-                                        
+
                                     </a>
                                     <ul class="dropdown-menu mailbox animated bounceInDown">
                                         <li>
                                             <div class="drop-title">Technologies</div>
                                         </li>
-                                       
+
                                         <li>
                                             <div id="TechnologyList" class="message-center">
-                                                
+
                                             </div>
                                         </li>
                                     </ul>
@@ -100,111 +134,309 @@
                             @if (Request.IsAuthenticated)
                             {
                                 var userName = @User.Identity.Name;
-                                <li class="dropdown">
-                                    <a class="dropdown-toggle count-info" data-toggle="dropdown" href="#">
-                                        <span class="hidden-sm hidden-xs">
-                                            <span class="m-r-sm welcome-message themeColorBlue">Welcome @userName</span> <i class="fa fa-chevron-down"></i>
-                                        </span>
-                                        <span class="hidden-md hidden-lg">
-                                            <i class="fa fa-user"></i>
-                                        </span>
+                        <!-- BEGIN NOTIFICATION DROPDOWN -->
+                                <li class="dropdown dropdown-extended dropdown-notification" id="header_notification_bar">
+                                    <a href="javascript:;" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-close-others="true">
+                                        <i class="icon-bell"></i>
+                                        <span class="badge badge-default"> 7 </span>
                                     </a>
-                                    <ul class="dropdown-menu dropdown-user-menu">
+                                    <ul class="dropdown-menu">
+                                        <li class="external">
+                                            <h3>
+                                                <span class="bold">12 pending</span> notifications
+                                            </h3>
+                                            <a href="page_user_profile_1.html">view all</a>
+                                        </li>
                                         <li>
-                                            <a href='@Url.Action("SignOut", "Account")'>
-                                                <div>
-                                                    Log out
-                                                </div>
+                                            <ul class="dropdown-menu-list scroller" style="height: 250px;" data-handle-color="#637283">
+                                                <li>
+                                                    <a href="javascript:;">
+                                                        <span class="time">just now</span>
+                                                        <span class="details">
+                                                            <span class="label label-sm label-icon label-success">
+                                                                <i class="fa fa-plus"></i>
+                                                            </span> New user registered.
+                                                        </span>
+                                                    </a>
+                                                </li>
+                                                <li>
+                                                    <a href="javascript:;">
+                                                        <span class="time">3 mins</span>
+                                                        <span class="details">
+                                                            <span class="label label-sm label-icon label-danger">
+                                                                <i class="fa fa-bolt"></i>
+                                                            </span> Server #12 overloaded.
+                                                        </span>
+                                                    </a>
+                                                </li>
+                                                <li>
+                                                    <a href="javascript:;">
+                                                        <span class="time">10 mins</span>
+                                                        <span class="details">
+                                                            <span class="label label-sm label-icon label-warning">
+                                                                <i class="fa fa-bell-o"></i>
+                                                            </span> Server #2 not responding.
+                                                        </span>
+                                                    </a>
+                                                </li>
+                                                <li>
+                                                    <a href="javascript:;">
+                                                        <span class="time">14 hrs</span>
+                                                        <span class="details">
+                                                            <span class="label label-sm label-icon label-info">
+                                                                <i class="fa fa-bullhorn"></i>
+                                                            </span> Application error.
+                                                        </span>
+                                                    </a>
+                                                </li>
+                                                <li>
+                                                    <a href="javascript:;">
+                                                        <span class="time">2 days</span>
+                                                        <span class="details">
+                                                            <span class="label label-sm label-icon label-danger">
+                                                                <i class="fa fa-bolt"></i>
+                                                            </span> Database overloaded 68%.
+                                                        </span>
+                                                    </a>
+                                                </li>
+                                                <li>
+                                                    <a href="javascript:;">
+                                                        <span class="time">3 days</span>
+                                                        <span class="details">
+                                                            <span class="label label-sm label-icon label-danger">
+                                                                <i class="fa fa-bolt"></i>
+                                                            </span> A user IP blocked.
+                                                        </span>
+                                                    </a>
+                                                </li>
+                                                <li>
+                                                    <a href="javascript:;">
+                                                        <span class="time">4 days</span>
+                                                        <span class="details">
+                                                            <span class="label label-sm label-icon label-warning">
+                                                                <i class="fa fa-bell-o"></i>
+                                                            </span> Storage Server #4 not responding dfdfdfd.
+                                                        </span>
+                                                    </a>
+                                                </li>
+                                                <li>
+                                                    <a href="javascript:;">
+                                                        <span class="time">5 days</span>
+                                                        <span class="details">
+                                                            <span class="label label-sm label-icon label-info">
+                                                                <i class="fa fa-bullhorn"></i>
+                                                            </span> System Error.
+                                                        </span>
+                                                    </a>
+                                                </li>
+                                                <li>
+                                                    <a href="javascript:;">
+                                                        <span class="time">9 days</span>
+                                                        <span class="details">
+                                                            <span class="label label-sm label-icon label-danger">
+                                                                <i class="fa fa-bolt"></i>
+                                                            </span> Storage server failed.
+                                                        </span>
+                                                    </a>
+                                                </li>
+                                            </ul>
+                                        </li>
+                                    </ul>
+                                </li>
+                        <!-- END NOTIFICATION DROPDOWN -->
+                        <!-- BEGIN USER LOGIN DROPDOWN -->
+                                <li class="dropdown dropdown-user">
+                                    <a href="javascript:;" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-close-others="true">
+                                        <img alt="" class="img-circle" src="~/Images/avatar3_small.jpg" />
+
+                                        <span class="username username-hide-on-mobile"> @userName </span>
+                                        <i class="fa fa-angle-down"></i>
+                                    </a>
+                                    <ul class="dropdown-menu dropdown-menu-default">
+
+                                        <li>
+                                            <a href="@Url.Action("SignOut", "Account")">
+                                                <i class="icon-key"></i> Log Out
                                             </a>
                                         </li>
                                     </ul>
                                 </li>
+                        <!-- END USER LOGIN DROPDOWN -->
                             }
+
                         </ul>
-                    </nav>
-                
+                    </div>
+                    <!-- END TOP NAVIGATION MENU -->
+                </div>
+                <!-- END HEADER INNER -->
             </div>
-        </div>
-        <div class="loader-overlay" style="display:none;">
-            <div class="loader">
+            <!-- END HEADER -->
+            <!-- BEGIN HEADER & CONTENT DIVIDER -->
+            <div class="clearfix"> </div>
+            <!-- END HEADER & CONTENT DIVIDER -->
+            <!-- BEGIN CONTAINER -->
+            <div class="page-container">
+                <!-- BEGIN SIDEBAR -->
+                <div class="page-sidebar-wrapper">
+                    <!-- BEGIN SIDEBAR -->
 
-            </div>
-        </div>
-        <div class="row">
-            <div id="wrapper" class="wrapper">
-
-                <div class="sidebar-wrapper">
-                    <nav class="navbar-default navbar-static-side sidebar" role="navigation">
-                        <div class="sidebar-collapse">
-                            @if (role.Contains(RoleName.Admin.ToString()) || role.Contains(RoleName.Panel.ToString()))
-                            {  <ul class="nav metismenu" id="side-menu">
+                    <div class="page-sidebar navbar-collapse collapse">
+                        <!-- BEGIN SIDEBAR MENU -->
+                        
+                        @if (role.Contains(RoleName.Admin.ToString()) || role.Contains(RoleName.Panel.ToString()))
+                        {
+                            <ul class="page-sidebar-menu  page-header-fixed " data-keep-expanded="false" data-auto-scroll="true" data-slide-speed="200" style="padding-top: 20px">
+                                <!-- DOC: To remove the sidebar toggler from the sidebar you just need to completely remove the below "sidebar-toggler-wrapper" LI element -->
+                                <!-- BEGIN SIDEBAR TOGGLER BUTTON -->
+                                <li class="sidebar-toggler-wrapper hide">
+                                    <div class="sidebar-toggler">
+                                        <span></span>
+                                    </div>
+                                </li>
+                                <!-- END SIDEBAR TOGGLER BUTTON -->
                                 @if (role.Contains(RoleName.Admin.ToString()))
                                 {
-                                    <li id="ManageUser" class="SideBarMenu"><a href="/ManageUser/Index"><i class="fa fa-users" aria-hidden="true"></i> <span class="nav-label">User Management</span></a></li>
-                                    <li id="Setup" class="SideBarMenu"><a href="/Master/Index"><i class="fa fa-cog" aria-hidden="true"></i> <span class="nav-label">Setup</span></a></li>
+                                    <li class="nav-item start" id="user-mgmt-link">
+                                        <a href="/ManageUser/Index" class="nav-link nav-toggle">
+                                            <i class="fa fa-users"></i>
+                                            <span class="title">User Management</span>
+                                            <span class="selected"></span>
+                                            @*<span class="arrow open"></span>*@
+                                        </a>
+                                    </li>
+                                    <li class="nav-item start" id="setup-link">
+                                        <a href="/Master/Index" class="nav-link nav-toggle">
+                                            <i class="fa fa-gear"></i>
+                                            <span class="title">Setup</span>
+                                            <span class="selected"></span>
+                                            @*<span class="arrow open"></span>*@
+                                        </a>
+                                    </li>
                                 }
-                                <li id="Candidates" class="SideBarMenu"><a href="/Admin/Candidates"><i class="fa fa-user" aria-hidden="true"></i> <span class="nav-label">Candidates</span></a></li>
-                                <li id="QuestionBank" class="SideBarMenu"><a href="/QuestionBank/QuestionBank"><i class="fa fa-question-circle" aria-hidden="true"></i> <span class="nav-label">Question Bank</span></a></li>
-                                <li id="TestSuite" class="SideBarMenu"><a href="/TestSuite/List"><i class="fa fa-file-text-o" aria-hidden="true"></i> <span class="nav-label">Test Suite</span></a></li>
-                            </ul>
-                            }
-                        </div>
-                    </nav>
-                </div>
-                <!-- END LEFT MENU -->
-                <!--   START OF CONTENT AREA -->
-                <div id="page-wrapper" class="page-wrapper">
-                    @RenderBody()
-                </div>
-            </div>
-        </div>
-        <div class="footer fixed_full">
-            <div>
-                <strong>&copy;Copyright</strong> 2014 -
-                <script>document.write(new Date().getFullYear())</script> Silicus Technologies
-                <span id="credits" class="pull-right" style="font-weight:bold;">Credits</span>
-            </div>
-        </div>
-    }
-    else
-    {
-        @RenderBody()
-    }
+                                <li class="nav-item start" id="candidate-link">
+                                    <a href="/Admin/Candidates" class="nav-link nav-toggle">
+                                        <i class="fa fa-user"></i>
+                                        <span class="title">Candidate</span>
+                                        <span class="selected"></span>
+                                        @*<span class="arrow open"></span>*@
+                                    </a>
+                                </li>
+                                <li class="nav-item start" id="questionbank-link">
+                                    <a href="/QuestionBank/QuestionBank" class="nav-link nav-toggle">
+                                        <i class="fa fa-question-circle"></i>
+                                        <span class="title">Question Bank</span>
+                                        <span class="selected"></span>
+                                        @*<span class="arrow open"></span>*@
+                                    </a>
+                                </li>
+                                <li class="nav-item start" id="testsuite-link">
+                                    <a href="/TestSuite/List" class="nav-link nav-toggle">
+                                        <i class="fa fa-file-text-o"></i>
+                                        <span class="title">Test Suite</span>
+                                        <span class="selected"></span>
+                                        @*<span class="arrow open"></span>*@
+                                    </a>
+                                </li>
 
+                            </ul>
+                        }
+                        <!-- END SIDEBAR MENU -->
+                        <!-- END SIDEBAR MENU -->
+                    </div>
+                    <!-- END SIDEBAR -->
+                </div>
+                <!-- END SIDEBAR -->
+                <!-- BEGIN CONTENT -->
+                <div class="page-content-wrapper">
+                    <!-- BEGIN CONTENT BODY -->
+                    <div class="page-content">
+                        <!-- BEGIN THEME PANEL -->
+                        <div class="theme-panel hidden-xs hidden-sm">
+                            <div class="toggler"> </div>
+                            <div class="toggler-close"> </div>
+                            <div class="theme-options">
+                                <div class="theme-option theme-colors clearfix">
+                                    <span> THEME COLOR </span>
+                                    <ul>
+                                        <li class="color-default current tooltips" data-style="default" data-container="body" data-original-title="Default"> </li>
+                                        <li class="color-darkblue tooltips" data-style="darkblue" data-container="body" data-original-title="Dark Blue"> </li>
+                                        <li class="color-blue tooltips" data-style="blue" data-container="body" data-original-title="Blue"> </li>
+                                        <li class="color-grey tooltips" data-style="grey" data-container="body" data-original-title="Grey"> </li>
+                                        <li class="color-light tooltips" data-style="light" data-container="body" data-original-title="Light"> </li>
+                                        <li class="color-light2 tooltips" data-style="light2" data-container="body" data-html="true" data-original-title="Light 2"> </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- END THEME PANEL -->
+                        <!-- BEGIN PAGE BAR -->
+                        <div class="page-bar">
+                            <ul class="page-breadcrumb">
+                                <li>
+                                    <a href="index.html">Home</a>
+                                    <i class="fa fa-circle"></i>
+                                </li>
+                                <li>
+                                    <span>Candidate</span>
+                                </li>
+                            </ul>
+
+                        </div>
+                        <!-- END PAGE BAR -->
+                        @RenderBody()
+                    </div>
+                    <!-- END CONTENT BODY -->
+                </div>
+                <!-- END CONTENT -->
+
+            </div>
+            <!-- END CONTAINER -->
+            <!-- BEGIN FOOTER -->
+            <div class="page-footer">
+                <div class="page-footer-inner">
+                    Copyright © 2016 Silicus Technologies, LLC
+                </div>
+                <div class="scroll-to-top">
+                    <i class="icon-arrow-up"></i>
+                </div>
+            </div>
+            <!-- END FOOTER -->
+        </div>
+                            }
+                            else
+                            {
+                                @RenderBody()
+                            }
 
     <!--Start Show Session Expire Warning Popup here -->
-    <div class="modal fade" id="session-expire-warning-modal" aria-hidden="true" data-keyboard="false" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h4 class="modal-title">Session Expire Warning</h4>
-                </div>
-                <div class="modal-body">
-                    Your session will expire in <span id="seconds-timer"></span> seconds. Do you want to extend the session?
-                </div>
-                <div class="modal-footer">
-                    <button id="btnOk" type="button" class="btn btn-default" style="padding: 6px 12px; margin-bottom: 0; font-size: 14px; font-weight: normal; border: 1px solid transparent; border-radius: 4px;  background-color: #428bca; color: #FFF;">Ok</button>
-                    <button id="btnSessionExpiredCancelled" type="button" class="btn btn-default" data-dismiss="modal" style="padding: 6px 12px; margin-bottom: 0; font-size: 14px; font-weight: normal; border: 1px solid transparent; border-radius: 4px; background-color: #428bca; color: #FFF;">Cancel</button>
-                    <button id="btnLogoutNow" type="button" class="btn btn-default" style="padding: 6px 12px; margin-bottom: 0; font-size: 14px; font-weight: normal; border: 1px solid transparent; border-radius: 4px;  background-color: #428bca; color: #FFF;">Logout now</button>
-                </div>
-            </div>
+
+    <div id="session-expire-warning-modal" class="modal fade" data-backdrop="static" role="dialog" tabindex="-1" data-width="760" aria-hidden="false" style="display: block; width: 760px; margin-left: -380px; margin-top: -288.5px;">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+            <h4 class="modal-title">Session Expire Warning</h4>
+        </div>
+        <div class="modal-body">
+            Your session will expire in <span id="seconds-timer"></span> seconds. Do you want to extend the session?
+        </div>
+        <div class="modal-footer">
+            <button id="btnOk" type="button" class="btn green">Ok</button>
+            <button id="btnSessionExpiredCancelled" type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+            <button id="btnLogoutNow" type="button" class="btn btn-default">Logout now</button>
         </div>
     </div>
+
     <!--End Show Session Expire Warning Popup here -->
     <!--Start Show Session Expire Popup here -->
-    <div class="modal fade" id="session-expired-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h4 class="modal-title">Session Expired</h4>
-                </div>
-                <div class="modal-body">
-                    Your session is expired.
-                </div>
-                <div class="modal-footer">
-                    <button id="btnExpiredOk" onclick="sessionExpiredRedirect()" type="button" class="btn btn-primary" data-dismiss="modal" style="padding: 6px 12px; margin-bottom: 0; font-size: 14px; font-weight: normal; border: 1px solid transparent; border-radius: 4px; background-color: #428bca; color: #FFF;">Ok</button>
-                </div>
-            </div>
+    <div id="session-expired-modal" class="modal fade" data-backdrop="static" role="dialog" tabindex="-1" data-width="760" aria-hidden="false" style="display: block; width: 760px; margin-left: -380px; margin-top: -288.5px;">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+            <h4 class="modal-title">Session Expired</h4>
+        </div>
+        <div class="modal-body">
+            Your session is expired.
+        </div>
+        <div class="modal-footer">
+            <button id="btnExpiredOk" onclick="sessionExpiredRedirect()" type="button" class="modal-btn btn green" data-dismiss="modal">Ok</button>
         </div>
     </div>
 
@@ -212,6 +444,105 @@
     <script src="~/Scripts/sessionTimeout.js"></script>
 
 
+
+    <!--[if lt IE 9]>
+                <script src=" assets/global/plugins/respond.min.js"></script>
+    <script src=" assets/global/plugins/excanvas.min.js"></script>
+    <script src=" assets/global/plugins/ie8.fix.min.js"></script>
+    <![endif]-->
+    <!-- BEGIN CORE PLUGINS -->
+
+    <script src="~/Content/plugins/bootstrap/js/bootstrap.min.js"></script>
+    <script src="~/Content/plugins/js.cookie.min.js"></script>
+    <script src="~/Content/plugins/jquery-slimscroll/jquery.slimscroll.min.js"></script>
+    <script src="~/Content/plugins/jquery.blockui.min.js"></script>
+    <script src="~/Content/plugins/bootstrap-switch/js/bootstrap-switch.min.js"></script>
+    <!-- END CORE PLUGINS -->
+    <!-- BEGIN PAGE LEVEL PLUGINS -->
+    <script src="~/Content/plugins/bootstrap-modal/js/bootstrap-modalmanager.js"></script>
+    <script src="~/Content/plugins/bootstrap-modal/js/bootstrap-modal.js"></script>
+    <script src="~/Content/plugins/ui-extended-modals.min.js"></script>
+
+    <script src="~/Content/plugins/moment.min.js"></script>
+
+    <link href="~/Content/plugins/bootstrap-daterangepicker/daterangepicker.min.css" rel="stylesheet" />
+
+    <script src="~/Content/plugins/morris/morris.min.js"></script>
+
+    <script src="~/Content/plugins/morris/raphael-min.js"></script>
+
+    <script src="~/Content/plugins/counterup/jquery.waypoints.min.js"></script>
+
+    <script src="~/Content/plugins/counterup/jquery.counterup.min.js"></script>
+
+    <script src="~/Content/plugins/amcharts/amcharts/amcharts.js"></script>
+
+    <script src="~/Content/plugins/amcharts/amcharts/serial.js"></script>
+
+    <script src="~/Content/plugins/amcharts/amcharts/pie.js"></script>
+
+    <script src="~/Content/plugins/amcharts/amcharts/radar.js"></script>
+
+    <script src="~/Content/plugins/amcharts/amcharts/themes/light.js"></script>
+
+    <script src="~/Content/plugins/amcharts/amcharts/themes/patterns.js"></script>
+
+    <script src="~/Content/plugins/amcharts/amcharts/themes/chalk.js"></script>
+
+    <script src="~/Content/plugins/amcharts/ammap/ammap.js"></script>
+
+    <script src="~/Content/plugins/amcharts/ammap/maps/js/worldLow.js"></script>
+
+    <script src="~/Content/plugins/amcharts/amstockcharts/amstock.js"></script>
+
+    <script src="~/Content/plugins/fullcalendar/fullcalendar.min.js"></script>
+
+    <script src="~/Content/plugins/horizontal-timeline/horizontal-timeline.js"></script>
+
+    <script src="~/Content/plugins/flot/jquery.flot.min.js"></script>
+
+    <script src="~/Content/plugins/flot/jquery.flot.resize.min.js"></script>
+
+    <script src="~/Content/plugins/flot/jquery.flot.categories.min.js"></script>
+
+    <script src="~/Content/plugins/jquery-easypiechart/jquery.easypiechart.min.js"></script>
+
+    <script src="~/Content/plugins/jquery.sparkline.min.js"></script>
+
+    <script src="~/Content/plugins/jqvmap/jqvmap/jquery.vmap.js"></script>
+
+    <script src="~/Content/plugins/jqvmap/jqvmap/maps/jquery.vmap.russia.js"></script>
+
+    <script src="~/Content/plugins/jqvmap/jqvmap/maps/jquery.vmap.world.js"></script>
+
+    <script src="~/Content/plugins/jqvmap/jqvmap/maps/jquery.vmap.europe.js"></script>
+
+    <script src="~/Content/plugins/jqvmap/jqvmap/maps/jquery.vmap.germany.js"></script>
+
+    <script src="~/Content/plugins/jqvmap/jqvmap/maps/jquery.vmap.usa.js"></script>
+
+    <script src="~/Content/plugins/jqvmap/jqvmap/data/jquery.vmap.sampledata.js"></script>
+
+
+    <!-- END PAGE LEVEL PLUGINS -->
+    <!-- BEGIN THEME GLOBAL SCRIPTS -->
+    <script src="~/Content/plugins/scripts/app.min.js"></script>
+
+    <!-- END THEME GLOBAL SCRIPTS -->
+    <!-- BEGIN PAGE LEVEL SCRIPTS -->
+    <script src="~/Content/plugins/scripts/dashboard.min.js"></script>
+
+    <!-- END PAGE LEVEL SCRIPTS -->
+    <!-- BEGIN THEME LAYOUT SCRIPTS -->
+    <script src="~/Content/plugins/scripts/layout.min.js"></script>
+
+    <script src="~/Content/plugins/scripts/demo.min.js"></script>
+
+    <script src="~/Content/plugins/scripts/quick-sidebar.min.js"></script>
+
+    <script src="~/Content/plugins/scripts/quick-nav.min.js"></script>
+
+    <!-- END THEME LAYOUT SCRIPTS -->
     <script>
         function showConfirmationWindow(message, header) {
             return showWindow('#confirmationTemplate', message, header)
@@ -250,23 +581,17 @@
             });
             return dfd.promise();
         };
+        initSessionMonitor();
 
-        function sidebarautoheight() {
-            var sidebarheight = 0;
-            sidebarheight = $(window).height() - $(".bbl").outerHeight() - $("footer").outerHeight();
-            $(".wrapper .page-wrapper").css("min-height", sidebarheight);
-        };
 
+        function SelectedMenu(mainMenuSelector, subMenuSelector) {
+            $(mainMenuSelector).addClass("active");
+
+            if (subMenuSelector) {
+                $(subMenuSelector).addClass("active");
+            }
+        }
         $(document).ready(function () {
-            sidebarautoheight();
-            if ($(window).width() <= 768) {
-                $("body").addClass("mini-navbar");
-                $("#menu-toggle").fadeOut();
-            }
-            else {
-                $("#menu-toggle").fadeIn();
-            }
-
             var url = '/Technology/GetAllTechnologiesWithQuestionCount';
 
             $.getJSON(url, function (data) {
@@ -284,30 +609,6 @@
             });
 
         });
-        $(window).resize(function () {
-            sidebarautoheight();
-            if ($(window).width() <= 768) {
-                $("body").addClass("mini-navbar");
-                $("#menu-toggle").fadeOut();
-            }
-            else {
-                $("#menu-toggle").fadeIn();
-            }
-        });
-
-        $(document).ajaxStop(function () {
-            $(".loader-overlay").hide();
-        });
-
-        $(document).ajaxStart(function () {
-            showCustomLoader();
-        });
-
-        initSessionMonitor();
-
-
-
-
     </script>
     <script id="confirmationTemplate" type="text/x-kendo-template">
         <div class="popupMessage"></div>
@@ -319,7 +620,6 @@
             <input type="button" class="confirm_no k-button" value="No" style="width: 70px" />
         </div>
     </script>
-
-
 </body>
+
 </html>

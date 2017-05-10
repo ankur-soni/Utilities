@@ -29,7 +29,7 @@
                     columns.Bound(p => p.PositionName).Width(1250);
                     columns.Command(command =>
                     {
-                        command.Edit().HtmlAttributes(new { style = "margin-top:4px!important;" });
+                        command.Edit().HtmlAttributes(new { style = "margin-top:2px!important;margin-bottom:2px!important;" });
                         //command.Custom("Delete").Click("ConfirmDeletePositionRow").HtmlAttributes(new { @class = "k-button k-button-icontext", style = "margin-top:4px!important;" });
                     }).Title("Actions").Width(760);
 
@@ -42,18 +42,18 @@
                 toolbar.Template(@<text>
         <div class="toolbar">
             <div class="row">
-                <div class="col-sm-12 M-B15">
-                    <div class="col-sm-3 M-T15">
-                        <div class="input-group">
+              
+                <div class="col-xs-11 col-sm-8 col-md-7 col-lg-6 pull-right">
+                    <div class="form-group M-T10 pull-right">
+                        <a href='/Positions/PositionSave' class='k-button k-button-icontext k-grid-add addTag' style="margin-right:15px;"><span style="padding-right:5px;" class='fa fa-plus'></span>Add position</a>
+                        <div id="tagSearch1" style="width:250px;" class="input-group">
                             <span class="input-group-addon"><span class="glyphicon glyphicon-search" aria-hidden="true"></span></span>
-                            <input type="text" class="form-control" id='PositionFieldFilter' placeholder="Search" style="height: 38px;">
+                            <input type="text" class="form-control" id='PositionFieldFilter' placeholder="Search" style="height: 31px;">
                             <span class="input-group-btn">
-                                <button id="postionSearch" class="btn btn-default" type="button" style="height:20px!important;border:1px solid #0070B9!important"><span class="glyphicon glyphicon-refresh" aria-hidden="true"></span></button>
+                                <button id="postionSearch" class="btn btn-default btn-search" style="height:15px;" type="button"><span class="glyphicon glyphicon-refresh" aria-hidden="true"></span></button>
                             </span>
                         </div>
-
                     </div>
-                    <a href='/Positions/PositionSave' style="margin-top:20px;" class='k-button k-button-icontext k-grid-add'><span class='k-icon k-add'></span>Add position</a>
                 </div>
             </div>
 

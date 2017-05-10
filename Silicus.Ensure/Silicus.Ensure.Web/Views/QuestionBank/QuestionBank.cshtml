@@ -20,23 +20,19 @@
 
 </script>
 
-<div class="row white-bg header-row">
-    <nav class="" role="navigation" style="margin-bottom: 0">
-        <div class="navbar-header">
-            <a class="navbar-minimalize minimalize-styl-2 btn btn-primary" id="menu-toggle" style="margin-left:15px;border-radius:0px;" href="#"><i class="fa fa-bars"></i> </a>
-        </div>
-    </nav>
-
-    <div class="col-lg-10 col-md-10 col-sm-10 col-xs-10">
-        <h1 class="dashboard-name">Question Bank</h1>
+<div class="row">
+    <div class="col-sm-12">
+        <h1 class="page-title">
+            Question Bank
+        </h1>
     </div>
 </div>
 
-<div class="box M-T15">
+
     <div class="toolbar">
         <div class="row">
             <div class="col-sm-12">
-                <div class="col-sm-4 col-md-4 col-lg-3 M-T15 M-B15">
+                @*<div class="col-sm-4 col-md-4 col-lg-3 M-T15 M-B15">
                     <div class="input-group">
                         <span class="input-group-addon"><span class="glyphicon glyphicon-search" aria-hidden="true"></span></span>
                         <input type="text" class="form-control" id='FieldFilter' placeholder="Search" style="height: 38px;">
@@ -44,7 +40,7 @@
                             <button id="QuestionSearchRefresh" class="btn btn-default" style="border:1px solid #0070B9!important" type="button"><span class="glyphicon glyphicon-refresh" aria-hidden="true"></span></button>
                         </span>
                     </div>
-                </div>
+                </div>*@
             </div>
         </div>
 
@@ -59,10 +55,11 @@
     <div class="kendogrid">
         @Html.Partial("_QuestionsGrid")
     </div>
-</div>
+
 <script>
     $(document).ready(function () {
-        $('.page-wrapper').css('padding-bottom', '60px');
+        //$('.page-wrapper').css('padding-bottom', '60px');
+        SelectedMenu("#questionbank-link");
         $("#messageDiv").hide();
         $('#ReviewAllQuestions').on('click', ReviewAllQuestions);
         SetNavigationMenuActive('QuestionBank');

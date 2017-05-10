@@ -239,7 +239,7 @@ textarea.k-textbox:hover,
 .k-header,
 .k-treemap-title,
 .k-grid-header .k-header > .k-link {
-  color: #ffffff;
+  color: #444;
 }
 .k-header,
 .k-grid-header,
@@ -275,7 +275,7 @@ textarea.k-textbox:hover,
 .k-draghandle,
 .k-treemap-tile,
 html .km-pane-wrapper .k-header {
-  background-color: #0063a7;
+  background-color: #36c6d3;
 }
 /* icons */
 .k-icon:hover,
@@ -313,7 +313,7 @@ html .km-pane-wrapper .k-header {
 .k-pager-numbers .k-current-page .k-link:after,
 .k-scheduler-toolbar > ul.k-scheduler-views > li.k-current-view > .k-link:after,
 .k-gantt-views > .k-current-view > .k-link:after {
-  background-image: url('http://kendo.cdn.telerik.com/2016.3.1118/styles/Black/sprite.png');
+  background-image: url('http://kendo.cdn.telerik.com/2016.3.1118/styles/Material/sprite.png');
   border-color: transparent;
 }
 /* IE will ignore the above selectors if these are added too */
@@ -340,8 +340,8 @@ html .km-pane-wrapper .k-header {
 .k-button {
 border-radius:4px!important;
   color: #ffffff;
-  border-color: #0063a7;
-  background-color: #0063a7;
+  border-color: #36c6d3;
+  background-color: #36c6d3;
 }
 .k-draghandle {
   border-color: #0063a7;
@@ -1470,6 +1470,7 @@ html .km-pane-wrapper .km-widget,
 .k-tabstrip-items .k-state-default .k-link,
 .k-panelbar > li.k-state-default > .k-link {
   color: #ffffff;
+
 }
 .k-tabstrip-items .k-state-hover .k-link,
 .k-panelbar > li.k-state-hover > .k-link,
@@ -1544,10 +1545,10 @@ html .km-pane-wrapper .km-widget,
 .k-primary,
 .k-overflow-container .k-primary {
   color: #ffffff;
-  border-color: #0063a7;
+  border-color: #36c6d3;
   background-image: none;
   background-position: 50% 50%;
-  background-color: #0063a7;
+  background-color: #36c6d3;
   box-shadow: none;
 }
 .k-primary:focus,
@@ -1862,8 +1863,8 @@ div.k-splitbar.k-state-focused .k-icon,
 .k-button:focus,
 .k-button.k-state-focused {
   color: #fff;
-  background-color: #0063a7;
-  border-color: #0063a7;
+  background-color: #36c6d3;
+  border-color: #36c6d3;
 }
 .k-button:active:hover,
 .k-button.k-state-active:hover {
@@ -1878,8 +1879,8 @@ div.k-splitbar.k-state-focused .k-icon,
 .k-button.k-state-active:hover {
       border-radius: 4px!important;
     color: #ffffff;
-    border-color: #0063a7;
-    background-color: #0063a7;
+    border-color: #26a1ab;
+    background-color: #26a1ab;
 }
 .k-primary:active,
 .k-primary.k-state-active,
@@ -1896,8 +1897,8 @@ div.k-splitbar.k-state-focused .k-icon,
 .k-primary:active:hover,
 .k-primary.k-state-active:hover {
   color: #ffffff;
-  border-color: #0063a7;
-  background-color: #0063a7;
+  border-color: #36c6d3;
+  background-color: #36c6d3;
 }
 .k-primary:focus:not(.k-state-disabled):not([disabled]),
 .k-primary:focus:active:not(.k-state-disabled):not([disabled]) {
@@ -1919,8 +1920,8 @@ div.k-splitbar.k-state-focused .k-icon,
 .k-widget .k-button:active,
 .k-widget .k-button.k-state-active {
   color: #fff;
-  background-color: #0063a7;
-  border-color: #0063a7;
+  background-color: #36c6d3;
+  border-color: #36c6d3;
 }
 .k-toolbar .k-overflow-anchor.k-state-active,
 .k-toolbar .k-overflow-anchor.k-state-border-down {
@@ -1929,8 +1930,8 @@ div.k-splitbar.k-state-focused .k-icon,
 .k-widget .k-button:active:hover,
 .k-widget .k-button.k-state-active:hover {
   color: #fff;
-  border-color: #0063a7;
-  background-color: #0063a7;
+  border-color: #36c6d3;
+  background-color: #36c6d3;
 }
 .k-button[disabled],
 .k-button.k-state-disabled,
@@ -1950,7 +1951,7 @@ div.k-splitbar.k-state-focused .k-icon,
   border-color: #e7eaec;
   background-image: none;
   background-position: 50% 50%;
-  background-color: #e7eaec;
+  background-color: #fff;
  
 }
 .k-dropdown,
@@ -2115,8 +2116,8 @@ span.k-colorpicker {
   box-shadow: none;
 }
 .k-window-titlebar .k-state-hover {
-  background-color: #5c6dc4;
-  border-color: #5c6dc4;
+  background-color: #26a1ab;
+  border-color: #26a1ab;
 }
 /* TabStrip */
 .k-tabstrip > .k-tabstrip-items > .k-item {
@@ -2124,16 +2125,16 @@ span.k-colorpicker {
 }
 .k-tabstrip-items .k-state-active,
 .k-panelbar .k-tabstrip-items .k-state-active {
-  background-color: #0063a7;
+  background-color: #26a1ab;
   background-image: none;
-  border-bottom-color: #00b0ff;
+  border-bottom: 2px solid #fff;
 }
 .k-tabstrip .k-content.k-state-active {
   border-color: transparent;
 }
 .k-tabstrip-items .k-item.k-state-hover {
-  background: #5c6dc4;
-  border-color: #5c6dc4;
+  background: #26a1ab;
+  border-color: #26a1ab;
 }
 .k-tabstrip-items .k-state-hover .k-link {
   color: #ffffff;
@@ -2205,8 +2206,8 @@ span.k-colorpicker {
 .k-gantt-toolbar .k-button,
 .km-pane-wrapper .k-header .k-button {
   color: #ffffff;
-  background-color: #0063a7;
-  border-color: #0063a7;
+  background-color: #36c6d3;
+  border-color: #36c6d3;
   box-shadow: none;
 }
 .k-grid .k-header .k-button:hover,
@@ -2217,8 +2218,8 @@ span.k-colorpicker {
 .k-gantt .k-gantt-toolbar .k-gantt-views li.k-state-hover .k-link,
 .k-gantt .k-gantt-toolbar .k-button:hover,
 .km-pane-wrapper .k-header .k-button:hover {
-  background-color: #5c6dc4;
-  border-color: #5c6dc4;
+  background-color: #26a1ab;
+  border-color: #26a1ab;
 }
 .km-pane-wrapper .k-header .k-button:active:hover {
   color: #ffffff;
@@ -2244,7 +2245,7 @@ span.k-colorpicker {
 }
 /* Grid */
 .k-grid .k-alt {
-  background-color: #ffffff;
+  background-color: #fafafa;
 }
 .k-grouping-row td,
 td.k-group-cell,
@@ -2268,7 +2269,7 @@ td.k-group-cell,
 .k-scheduler-header,
 .km-pane-wrapper .k-grid-header .k-header {
   color: #444;
-  background-color: #0067aa;
+  background-color: #f1f4f7;
 }
 .k-header.k-scheduler-footer .k-header,
 .k-header.k-scheduler-footer ul.k-header li .k-link {
@@ -2333,7 +2334,7 @@ td.k-group-cell,
   color: #ffffff;
 }
 .k-grid tr:hover {
-  background-color: rgba(51, 93, 183, 0.34);
+  background-color: #c1e7ea;
 }
 .k-grid .k-filter-row:hover,
 .k-pivot-rowheaders .k-grid tr:hover {
@@ -2354,7 +2355,9 @@ td.k-group-cell,
 .k-pager-info,
 .k-scheduler-header,
 .k-scheduler-agendaview .k-scheduler-datecolumn {
-  color: #ffffff;
+  color: #444;
+  font-weight: 600;
+  font-size: 13px;
 }
 .k-gantt .k-task-draghandle {
   border-color: #00b0ff;
