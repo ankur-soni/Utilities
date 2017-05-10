@@ -1930,8 +1930,8 @@ div.k-splitbar.k-state-focused .k-icon,
 .k-widget .k-button:active:hover,
 .k-widget .k-button.k-state-active:hover {
   color: #fff;
-  border-color: #0063a7;
-  background-color: #0063a7;
+  border-color: #36c6d3;
+  background-color: #36c6d3;
 }
 .k-button[disabled],
 .k-button.k-state-disabled,

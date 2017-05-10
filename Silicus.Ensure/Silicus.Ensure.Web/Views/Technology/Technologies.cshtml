@@ -12,7 +12,7 @@
                  columns.Bound(p => p.Description).Width(700);
                  columns.Command(cmd =>
                  {
-                     cmd.Custom("Edit").Text("Edit").Click("ConfirmEditTechnologyRow").HtmlAttributes(new { @class = "k-button k-button-icontext k-grid-delete M-T4" });
+                     cmd.Custom("Edit").Text("Edit").Click("ConfirmEditTechnologyRow").HtmlAttributes(new { @class = "k-button k-button-icontext k-grid-delete M-T2 M-B2" });
                  }).Title("Actions").Width(500);
              })
             .DataSource(dataSource => dataSource

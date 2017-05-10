@@ -117,8 +117,8 @@
                                  columns.Bound(q => q.Tag).Title("Tags").Width(400);
                                  columns.Bound(q => q.ProficiencyLevel).Title("Proficiency level").Width(400);
                                  columns.Bound(q => q.Id).ClientTemplate(@"
-                                                <a href='/QuestionBank/EditQuestion?questionId=#=Id#' class='k-button M-T4'>Edit</a>
-                            <a class='k-button M-T4' href='\\#' onclick='ConfirmDeleteQuestionRow(event)'>Delete</a>
+                                                <a href='/QuestionBank/EditQuestion?questionId=#=Id#' class='k-button M-T2 M-B2'>Edit</a>
+                            <a class='k-button M-T2 M-B2' href='\\#' onclick='ConfirmDeleteQuestionRow(event)'>Delete</a>
                                                ").Title("Actions").Width(400).Sortable(false);
                                  //.ClientGroupHeaderTemplate("#= value# (#=count#)").Hidden(true);
                              })
