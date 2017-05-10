@@ -58,6 +58,8 @@ function RefreshKendoGrid(gridName) {
 
 function SetNavigationMenuActive(menuId) {
     $('#' + menuId).addClass('active');
+    var title = $('.page-title').text();
+    $('#CurrentPageTitle').text(title);
 }
 
 function deleteKendoGridRow(gridId, data) {
