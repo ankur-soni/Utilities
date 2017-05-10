@@ -81,6 +81,11 @@ namespace Silicus.Ensure.Web.Models
         public string ProficiencyLevelString { get; set; }
         public string TagsString { get; set; }
         public QuestionStatus? ChangeStatusTo { get; set; }
+
+        public int NoOfTimesIncludedInTest { get; set; }
+        public int NoOfTimesCorrectlyAnswered { get; set; }
+        public int NoOfTimesIncorrectlyAnswered { get; set; }
+        
     }
 
     public enum ProficiencyLevel

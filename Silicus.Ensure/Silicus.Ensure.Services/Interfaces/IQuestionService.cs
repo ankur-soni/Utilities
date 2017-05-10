@@ -24,5 +24,7 @@ namespace Silicus.Ensure.Services.Interfaces
         int? AddQuestionStatusDetails(QuestionStatusDetails statusDetails);
 
         TabSelectionBusinessModel GetCounts(TabSelectionBusinessModel tabSelection);
+        int GetCountOfInclusion(int questionId);
+        int GetCountOfCorrectlyAnswered(int questionId);
     }
 }

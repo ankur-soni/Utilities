@@ -24,6 +24,7 @@ namespace Silicus.Ensure.Web.Controllers
         private readonly ITechnologyService _technologyService;
         private readonly IMappingService _mappingService;
         private readonly UtilityContainer.Services.Interfaces.IUserService _containerUserService;
+
         public QuestionBankController(IQuestionService questionService, ITagsService tagService,
             MappingService mappingService, UtilityContainer.Services.Interfaces.IUserService containerUserService, ITechnologyService technologyService)
         {
@@ -127,6 +128,17 @@ namespace Silicus.Ensure.Web.Controllers
             return Json(result);
         }
 
+        private int GetCountOfCorrectlyAnswered(int questionId)
+        {
+            var count = _questionService.GetCountOfCorrectlyAnswered(questionId);
+            return count;
+        }
+
+        private int GetCountOfInclusion(int questionId)
+        {
+            var count= _questionService.GetCountOfInclusion(questionId);
+            return count;
+        }
         private string GetCreatedByName(int createdById)
         {
             var user=_containerUserService.GetUserByID(createdById);

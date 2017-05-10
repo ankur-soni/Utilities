@@ -106,6 +106,22 @@ namespace Silicus.Ensure.Services
             tabSelection.OnHoldCount = _context.Query<Question>().Count(ques => ques.TechnologyId == tabSelection.TechnologyId && ques.Status == QuestionStatus.OnHold && ((ques.ModifiedBy == null && ques.CreatedBy != tabSelection.UserId) || (ques.ModifiedBy != tabSelection.UserId)));
             return tabSelection;
         }
+        public int GetCountOfInclusion(int questionId)
+        {
+
+            var noOfTimesincluded = _context.Query<UserTestDetails>().Count(ut => ut.QuestionId == questionId);
+            return noOfTimesincluded;
+        }
+
+        public int GetCountOfCorrectlyAnswered(int questionId)
+        {
+            var noOfTimesCorrectlyAnswered = (from q in _context.Query<Question>().Where(ques => ques.Id == questionId)
+                     join ut in _context.Query<UserTestDetails>()
+on q.Id equals ut.QuestionId
+                     where ut.Mark > q.Marks / 2
+                     select q).Count();
+            return noOfTimesCorrectlyAnswered;
+        }
         private string GetLatestCommenForQuestion(int questionId)
         {
             var questionStatusDetails = _context.Query<QuestionStatusDetails>().Where(ques => ques.QuestionId == questionId)
