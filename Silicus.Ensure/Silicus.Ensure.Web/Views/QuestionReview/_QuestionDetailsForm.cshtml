@@ -257,10 +257,12 @@
 
                     <div class="col-sm-8 col-md-8 col-lg-6">
                         <div class="form-group">
-                            <div class="checkbox checkbox-info" id="IsAllowedmoreThanOneAns">
+                            <label class="mt-checkbox mt-checkbox-outline" id="IsAllowedmoreThanOneAns" for="checkbox33">
                                 <input id="checkbox33" type="checkbox">
-                                <label for="checkbox33">Allow more than one answer to this question</label>
-                            </div>
+                                Allow more than one answer to this question
+                                <span></span>
+                            </label>
+                           
                             @Html.HiddenFor(y => y.AnswerType)
                         </div>
                     </div>
