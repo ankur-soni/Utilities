@@ -365,70 +365,61 @@
            
     }
            </div>
-   
+
     <!-- Modal -->
-    <div class="modal fade" id="myModal" role="dialog" onclick="OnCancel();">
-        <div class="modal-dialog">
+
 
-            <!-- Modal content-->
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" onclick="OnCancel();">&times;</button>
-                    <h4 class="modal-title"><span id="msgMain">Success!</span></h4>
-                </div>
-                <div class="modal-body">
-                    <p id="msgContent">Some text in the modal.</p>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-default" data-dismiss="modal" onclick="OnCancel();">Cancel</button>
-                </div>
-            </div>
-
+    <div id="myModal" class="modal fade" onclick="OnCancel();" data-backdrop="static" role="dialog" tabindex="-1" data-width="760" aria-hidden="false" style="display: block; width: 760px; margin-left: -380px; margin-top: -288.5px;">
+        <div class="modal-header">
+            <button type="button" onclick="OnCancel();" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+            <h4 class="modal-title"><span id="msgMain">Success!</span></h4>
+        </div>
+        <div class="modal-body">
+            <p id="msgContent">Some text in the modal.</p>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal" onclick="OnCancel();">Cancel</button>
         </div>
     </div>
-    <div class="modal fade" id="addTagPopup" role="dialog">
-        <form id="tagForm" action="/Tag/Save" method="post">
-            <div class="modal-dialog">
 
-                <!-- Modal content-->
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal">&times;</button>
-                        <h4 class="modal-title"><span>Add skill tag</span></h4>
-                    </div>
-                    <div class="modal-body">
-
-                        @Html.Partial("~/Views/Shared/EditorTemplates/TagEditorTemplate.cshtml", new Silicus.Ensure.Models.DataObjects.Tags())
-
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" style="width:70px;" onclick="saveTag()" class="btn btn-primary">Save</button>
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-                    </div>
+        <div id="addTagPopup" class="modal fade" onclick="OnCancel();" data-backdrop="static" role="dialog" tabindex="-1" data-width="760" aria-hidden="false" style="display: block; width: 760px; margin-left: -380px; margin-top: -288.5px;">
+            <form id="tagForm" action="/Tag/Save" method="post">
+                <div class="modal-header">
+                    <button type="button" onclick="OnCancel();" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title"><span>Add skill tag</span></h4>
                 </div>
+                <div class="modal-body">
 
-            </div>
-        </form>
-    </div>
+                    @Html.Partial("~/Views/Shared/EditorTemplates/TagEditorTemplate.cshtml", new Silicus.Ensure.Models.DataObjects.Tags())
 
-}
-else
-{
-    <div>No more questions here.</div>
-}
+                </div>
+                <div class="modal-footer">
+                    <button type="button" style="width:70px;" onclick="saveTag()" class="btn green">Save</button>
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                </div>
+            </form>
+        </div>
 
-@if (Model != null)
-{
-    <script>
+            
+
+            }
+            else
+            {
+            <div>No more questions here.</div>
+            }
+
+            @if (Model != null)
+            {
+                <script>
         var questionTypeDropDown = $("#QuestionType").data("kendoDropDownList");
         if (questionTypeDropDown)
         {
             questionTypeDropDown.enable(false);
         }
-    </script>
-    if (Model.QuestionStatusType == QuestionStatus.ReadyForReview)
-    {
-        <script>
+                </script>
+                if (Model.QuestionStatusType == QuestionStatus.ReadyForReview)
+                {
+                    <script>
             $('#ReviewQuestionFormElements').find('input, textarea, button, select,a,ul').attr('disabled','disabled');
             var multiselect = $("#SkillTag").data("kendoMultiSelect");
             if(multiselect){
@@ -442,6 +433,6 @@ else
             if(proficiencyDropDown){
                 proficiencyDropDown.enable(false);
             }
-        </script>
-    }
-}
+                    </script>
+                }
+            }
