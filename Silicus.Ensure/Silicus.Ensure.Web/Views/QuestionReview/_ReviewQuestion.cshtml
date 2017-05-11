@@ -338,22 +338,22 @@
                             if (Model.QuestionStatusType == QuestionStatus.ReadyForReview)
                             {
                                 <input type="button" style="width: 70px;margin-left:1px;" id="btnQuestionOnHold" onclick="PutQuestionOnHold()" name="btnOnHold" value="On Hold" class="btn green M-T4" data-NextQuestionId="@Model.NextQuestionId" />
-                                        <input type="button" id="btnApproveQuestion" onclick="ApproveQuestion()" value="Approve" class="btn green M-T4" data-NextQuestionId="@Model.NextQuestionId" />
+                                        <input style="width:70px;" type="button" id="btnApproveQuestion" onclick="ApproveQuestion()" value="Approve" class="btn green M-T4" data-NextQuestionId="@Model.NextQuestionId" />
                             }
                             else
                             {
-                                <input type="submit" id="btnSaveQuestion" onclick="SaveQuestionClicked()" name="btnSaveQuestion" value="Save" class="btn green M-T4" />
-                                        <input type="submit" id="btnEditAndApproveQuestion" name="btnEditAndApproveQuestion" value="Approve" class="btn green M-T4" />
+                                <input style="width:70px;" type="submit" id="btnSaveQuestion" onclick="SaveQuestionClicked()" name="btnSaveQuestion" value="Save" class="btn green M-T4" />
+                                        <input style="width:70px;" type="submit" id="btnEditAndApproveQuestion" name="btnEditAndApproveQuestion" value="Approve" class="btn green M-T4" />
                             }
-                            <input type="button" id="btnRejectQuestion" onclick="RejectQuestion()" value="Reject" class="btn btn-default M-T4" data-NextQuestionId="@Model.NextQuestionId" />
+                            <input style="width:70px;" type="button" id="btnRejectQuestion" onclick="RejectQuestion()" value="Reject" class="btn btn-default M-T4" data-NextQuestionId="@Model.NextQuestionId" />
                         }
                         else if (Model.QuestionStatusType == QuestionStatus.Rejected)
                         {
-                            <input type="submit" style="width: 70px;margin-left:1px;" id="btnEditAndApproveQuestion" name="btnEditAndApproveQuestion" value="Save" class="btn green M-T4" />
+                            <input style="width:70px;" type="submit" style="width: 70px;margin-left:1px;" id="btnEditAndApproveQuestion" name="btnEditAndApproveQuestion" value="Save" class="btn green M-T4" />
                         }
                         @if (Model.NextQuestionId != null)
                         {
-                            <input type="button" value="Skip" id="btnSkipQuestion" onclick="SkipQuestion()" class="btn btn-default M-T4" data-NextQuestionId="@Model.NextQuestionId" />
+                            <input style="width:70px;" type="button" value="Skip" id="btnSkipQuestion" onclick="SkipQuestion()" class="btn btn-default M-T4" data-NextQuestionId="@Model.NextQuestionId" />
                         }
                     </div>
                 </div>

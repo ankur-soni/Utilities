@@ -13,12 +13,12 @@
 
 <div class="toolbar">
     <div class="row">
-        
-            <div class="col-sm-4 col-md-3 col-lg-2">
-                
-                    <div class="form-group">
-                        <label>User role</label>
-                        @(Html.Kendo().DropDownListFor(m => m.Role)
+
+        <div class="col-sm-4 col-md-3 col-lg-2">
+
+            <div class="form-group">
+                <label>User role</label>
+                @(Html.Kendo().DropDownListFor(m => m.Role)
                         .Name("Role")
                         .DataTextField("Text")
                         .DataValueField("Value")
@@ -29,29 +29,29 @@
                         .OrderBy(x => x.Text))
                         .HtmlAttributes(new { style = "width: 100%", @class = "M-T5 M-B15" })
                         .OptionLabel("All")
-                        )
-                    </div>
-                
-            </div>       
-       
-            <div class="col-sm-4 col-md-3 col-lg-2 pull-right">
-                <div class="form-group">
-                    
-                    <div class="input-group userMgmtInputGroup">
-                        <span class="input-group-addon"><span class="glyphicon glyphicon-search" aria-hidden="true"></span></span>
-                        <input type="text" class="form-control" id='FieldFilter' placeholder="Search" style="height: 31px;">
-                        <span class="input-group-btn">
-                            <button id="UserSearchRefresh" class="btn btn-default btn-search" type="button"><span class="glyphicon glyphicon-refresh" aria-hidden="true"></span></button>
-                        </span>
-                    </div>
+                )
+            </div>
+
+        </div>
+
+        <div class="col-sm-4 col-md-3 col-lg-2 pull-right">
+            <div class="form-group">
+
+                <div class="input-group userMgmtInputGroup">
+                    <span class="input-group-addon"><span class="glyphicon glyphicon-search" aria-hidden="true"></span></span>
+                    <input type="text" class="form-control" id='FieldFilter' placeholder="Search" style="height: 31px;">
+                    <span class="input-group-btn">
+                        <button id="UserSearchRefresh" class="btn btn-default btn-search" type="button"><span class="glyphicon glyphicon-refresh" aria-hidden="true"></span></button>
+                    </span>
                 </div>
             </div>
+        </div>
     </div>
 </div>
 <div class="table-responsive">
     @if (Request.IsAuthenticated)
     {
-        @(Html.Kendo().Grid<Silicus.Ensure.Web.Models.UserDetailViewModel>().Name("UserGrids")
+    @(Html.Kendo().Grid<Silicus.Ensure.Web.Models.UserDetailViewModel>().Name("UserGrids")
          .Columns(columns =>
          {
              columns.Bound(c => c.FullName).Title("Name").Width(400);
@@ -74,7 +74,7 @@
             .Pageable(pager => { pager.PageSizes(true); })
             .Sortable()
             .Resizable(resizing => resizing.Columns(true))
-        )
+    )
     }
 </div>
 
@@ -84,7 +84,7 @@
 <div id="AssignPanelModal" class="modal fade" data-backdrop="static" role="dialog" tabindex="-1" data-width="760" aria-hidden="false" style="display: block; width: 760px; margin-left: -380px; margin-top: -288.5px;">
     <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-        <h4  class="modal-title">Manage panel</h4>
+        <h4 class="modal-title">Manage panel</h4>
     </div>
     <div class="modal-body">
         <form id="frmAssignPanel"></form>
@@ -95,9 +95,9 @@
     </div>
 </div>
 
-    
 
-<div  id="AssignTypeModal" class="modal fade" data-backdrop="static" role="dialog" tabindex="-1" data-width="760" aria-hidden="false" style="display: block; width: 760px; margin-left: -380px; margin-top: -288.5px;">
+
+<div id="AssignTypeModal" class="modal fade" data-backdrop="static" role="dialog" tabindex="-1" data-width="760" aria-hidden="false" style="display: block; width: 760px; margin-left: -380px; margin-top: -288.5px;">
     <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
         <h4 class="modal-title">Manage type</h4>
@@ -111,169 +111,60 @@
     </div>
 </div>
 
-   
-    <div class="modal fade" id="addTagPopup" role="dialog">
-        <form id="tagForm" action="/Tag/Save" method="post">
-            <div class="modal-dialog">
 
-                <!-- Modal content-->
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal">&times;</button>
-                        <h4 class="modal-title"><span>Add tag</span></h4>
-                    </div>
-                    <div class="modal-body">
+<div id="addTagPopup" class="modal fade" data-backdrop="static" role="dialog" tabindex="-1" data-width="760" aria-hidden="false" style="display: block; width: 760px; margin-left: -380px; margin-top: -288.5px;">
+    <form id="tagForm" action="/Tag/Save" method="post">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+            <h4 class="modal-title"><span>Add tag</span></h4>
+        </div>
+        <div class="modal-body">
 
-                        @Html.Partial("~/Views/Shared/EditorTemplates/TagEditorTemplate.cshtml", new Silicus.Ensure.Models.DataObjects.Tags())
+            @Html.Partial("~/Views/Shared/EditorTemplates/TagEditorTemplate.cshtml", new Silicus.Ensure.Models.DataObjects.Tags())
 
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" style="width:70px;" onclick="saveTag()" class="btn btn-primary">Save</button>
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-                    </div>
-                </div>
+        </div>
+        <div class="modal-footer">
+            <button type="button" style="width:70px;" onclick="saveTag()" class="btn green">Save</button>
+            <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+        </div>
+    </form>
+</div>
 
-            </div>
+
+<div id="addPanelPopup" class="modal fade" data-backdrop="static" role="dialog" tabindex="-1" data-width="760" aria-hidden="false" style="display: block; width: 760px; margin-left: -380px; margin-top: -288.5px;">
+    <form id="panelForm" action="/Panel/Save" method="post">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+            <h4 class="modal-title"><span>Add panel</span></h4>
+        </div>
+        <div class="modal-body" style="padding:20px 30px 50px 30px">
+
+            @Html.Partial("~/Views/Panel/AddPanel.cshtml", new Silicus.Ensure.Models.DataObjects.Panel())
+        </div>
+        <div class="modal-footer">
+            <button type="button" style="width:70px;" onclick="savePanel()" class="btn green">Save</button>
+            <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+        </div>
         </form>
-    </div>
-
-    <div class="modal fade" id="addPanelPopup" role="dialog">
-        <form id="panelForm" action="/Panel/Save" method="post">
-            <div class="modal-dialog">
-
-                <!-- Modal content-->
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal">&times;</button>
-                        <h4 class="modal-title"><span>Add panel</span></h4>
-                    </div>
-                    <div class="modal-body" style="padding:20px 30px 50px 30px">
-
-                        @Html.Partial("~/Views/Panel/AddPanel.cshtml", new Silicus.Ensure.Models.DataObjects.Panel())
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" style="width:70px;" onclick="savePanel()" class="btn btn-primary">Save</button>
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-                    </div>
-                </div>
-
-            </div>
-        </form>
-    </div>
+</div>
 
 
-    <script>
+        <script>
 
-        function assignPanel(e) {
-            var grid = $("#UserGrids").data("kendoGrid");
-            var userDetailViewModel = grid.dataItem($(e.currentTarget).closest("tr"));
-            if (userDetailViewModel && userDetailViewModel.UserId) {
-                $.ajax({
-                    type: "Post",
-                    url: '/ManageUser/AssignPanelToUserView',
-                    contentType: "application/json",
-                    data: JSON.stringify(userDetailViewModel),
-                    success: function (returndata) {
-                        if (returndata) {
-                            $("#frmAssignPanel").html(returndata);
-                            $("#AssignPanelModal").modal('show');
-                            $("#frmAssignPanel").kendoValidator();
-                        }
-                        else {
-                            ShowMessage("Error occured while delete operation.", 0);
-                        }
-                    }
-                });
-            }
-
-
-        }
-
-        function assignType(e) {
-            var grid = $("#UserGrids").data("kendoGrid");
-            var userDetailViewModel = grid.dataItem($(e.currentTarget).closest("tr"));
-            if (userDetailViewModel && userDetailViewModel.UserId) {
-                $.ajax({
-                    type: "Post",
-                    url: '/ManageUser/AssignTypeToUserView',
-                    contentType: "application/json",
-                    data: JSON.stringify(userDetailViewModel),
-                    success: function (returndata) {
-                        if (returndata) {
-                            $("#frmAssignType").html(returndata);
-                            $("#AssignTypeModal").modal('show');
-                            $("#frmAssignType").kendoValidator();
-                        }
-                        else {
-                            ShowMessage("Error occured while delete operation.", 0);
-                        }
-                    }
-                });
-            }
-        }
-
-        function onSelect() {
-            var dataItem = this.dataItem();
-            var value = dataItem['Text'];
-            grid = $("#UserGrids").data("kendoGrid");
-            if (value == "All") {
-                grid.dataSource.filter([]);
-            }
-            else {
-                grid.dataSource.filter({ field: "RoleName", operator: "eq", value: value });
-            }
-        }
-        $(document).ready(function () {
-            $("#FieldFilter").keyup(function () {
-                var value = $("#FieldFilter").val();
-                grid = $("#UserGrids").data("kendoGrid");
-                var pageSize = grid.dataSource.pageSize();
-                if (value.length >= 1) {
-                    if (value) {
-                        var filter = { logic: "or", filters: [] };
-                        filter.filters.push({ field: "RoleName", operator: "contains", value: value });
-                        filter.filters.push({ field: "Email", operator: "contains", value: value });
-                        filter.filters.push({ field: "FullName", operator: "contains", value: value });
-                        grid.dataSource.query({ filter: filter });
-                        grid.dataSource.pageSize(pageSize);
-                    } else {
-                        grid.dataSource.filter({});
-                    }
-                }
-                else if (value == "")
-                    grid.dataSource.filter({});
-            });
-
-            $("#UserSearchRefresh").click(function (e) {
-                e.preventDefault();
-                var datasource = $("#UserGrids").data("kendoGrid").dataSource;
-                //Clear filters:
-                datasource.filter([]);
-                $("#FieldFilter").val('');
-            });
-
-            $('#addTagPopup,#addPanelPopup').on('hidden.bs.modal', function () {
-                $('.field-validation-error').hide();
-            });
-        });
-
-        function AddNew() {
-            window.location.href = "/Admin/CandidateAdd?UserId=0";
-            return false;
-        }
-
-        function deleteUser(userId) {
-            $.when(showConfirmationWindow('Are you sure, you want to delete this record?', 'Delete')).then(function (confirmed) {
-                if (confirmed) {
+            function assignPanel(e) {
+                var grid = $("#UserGrids").data("kendoGrid");
+                var userDetailViewModel = grid.dataItem($(e.currentTarget).closest("tr"));
+                if (userDetailViewModel && userDetailViewModel.UserId) {
                     $.ajax({
-                        type: "POST",
-                        url: '@Url.Action("DeleteUser", "User")',
-                        data: { UserId: userId },
+                        type: "Post",
+                        url: '/ManageUser/AssignPanelToUserView',
+                        contentType: "application/json",
+                        data: JSON.stringify(userDetailViewModel),
                         success: function (returndata) {
-                            if (returndata == 1) {
-                                $('#UserGrids').data('kendoGrid').dataSource.read();
-                                $('#userGrids').data('kendoGrid').refresh();
-                                ShowMessage("User deleted successfully.", 1);
+                            if (returndata) {
+                                $("#frmAssignPanel").html(returndata);
+                                $("#AssignPanelModal").modal('show');
+                                $("#frmAssignPanel").kendoValidator();
                             }
                             else {
                                 ShowMessage("Error occured while delete operation.", 0);
@@ -281,176 +172,272 @@
                         }
                     });
                 }
-            });
-        }
 
-        function assignPanelToMeber() {
-            if ($("#Panel").val()) {
-                $.ajax({
-                    url: '/ManageUser/AssignPanelToUser',
-                    type: 'post',
-                    dataType: 'json',
-                    data: $('#frmAssignPanel').serialize(),
-                    success: function (data) {
-                        //  ... do something with the data...
-                        $("#AssignPanelModal").modal('hide');
-                        if (data)
-                            ShowMessage("Panel assigned successfully.", 1);
-                        else
-                            ShowMessage("Problem occured.", 0);
-                    }
-                });
+
             }
-            else {
-                $("#Panel").blur();
-            }
-        }
 
-        function assignTypeToMeber() {
-            if ($("#Tag").val()) {
-                $.ajax({
-                    url: '/ManageUser/AssignTypeToUser',
-                    type: 'post',
-                    dataType: 'json',
-                    data: $('#frmAssignType').serialize(),
-                    success: function (data) {
-                        //  ... do something with the data...
-                        $("#AssignTypeModal").modal('hide');
-                        if (data)
-                            ShowMessage("Type assigned successfully.", 1);
-                        else
-                            ShowMessage("Problem occured.", 0);
-                    }
-                });
-            }
-            else {
-                $("#Tag").blur();
-            }
-        }
-
-        function saveTag() {
-            if ($("#tagForm").valid()) {
-                $.ajax({
-                    type: "POST",
-                    url: '/Tag/Save',
-                    data: $('#tagForm').serialize(),
-                    success: function (returndata) {
-                        $("#addTagPopup").modal('hide');
-                        var $tagMultiSelect = $('#Tag').data('kendoMultiSelect');
-                        var selectedValues = $tagMultiSelect.value().slice();
-                        var multidata = $tagMultiSelect.dataSource.data();
-                        multidata.unshift({ TagName: returndata.TagName, TagId: returndata.TagId });
-                        $tagMultiSelect.dataSource.data(multidata);
-                        selectedValues.push(returndata.TagId);
-                        $tagMultiSelect.value(selectedValues);
-                        $("#tagForm").trigger("reset");
-                    }
-                });
-            }
-            else {
-                $('#tagForm').submit();
-            }
-        }
-
-        function AddTag() {
-            $("#tagForm").kendoValidator({
-                rules: {
-                    tagNamevalidation: function (input, params) {
-                        if (input.is("[name='TagName']") && input.val() != "") {
-                            input.attr("data-tagNamevalidation-msg", "Tag name already exists.");
-                            return isTagNameAvailable("", input.val());
-                        }
-
-                        return true;
-                    }
-                }
-            });
-            $('#TagName').val("");
-            $('#Description').val("");
-            $("#addTagPopup").modal('show');
-        }
-
-        function isTagNameAvailable(existingName, updatedName) {
-            var isAvailable = true;
-            if (existingName != updatedName) {
-                $.ajax({
-                    type: "POST",
-                    url: '/Tag/IsDuplicateTagName',
-                    async: false,
-                    data: { existingTagName: existingName, tagName: updatedName },
-                    success: function (returndata) {
-                        if (returndata == true) {
-                            isAvailable = true;
-                        }
-                        else {
-                            isAvailable = false;
-                        }
-                    }
-                });
-            }
-            return isAvailable;
-        }
-
-        function AddPanel() {
-            $("#panelForm").off();
-            $('#PanelName').val("");
-            $("#addPanelPopup").modal('show');
-            $("#validationPanelUserMgmt").css('display', 'none');
-
-        }
-
-        function savePanel() {
-            $('#Tag_validationMessage').text('')
-            $('#Tag_validationMessage').hide();
-            var panelName = $('#PanelName').val();
-            if (panelName) {
-                var isAvailable = isPanelNameAvailable(panelName);
-                if (!isAvailable) {
-                    $("#panelForm").on();
+            function assignType(e) {
+                var grid = $("#UserGrids").data("kendoGrid");
+                var userDetailViewModel = grid.dataItem($(e.currentTarget).closest("tr"));
+                if (userDetailViewModel && userDetailViewModel.UserId) {
                     $.ajax({
-                        type: "POST",
-                        url: '/Panel/PanelSave',
-                        data: $('#panelForm').serialize(),
+                        type: "Post",
+                        url: '/ManageUser/AssignTypeToUserView',
+                        contentType: "application/json",
+                        data: JSON.stringify(userDetailViewModel),
                         success: function (returndata) {
-                            $("#addPanelPopup").modal('hide');
-                            var $panelMultiSelect = $('#Panel').data('kendoMultiSelect');
-                            var multidata = $panelMultiSelect.dataSource.data();
-                            multidata.unshift({ PanelName: returndata.PanelName, PanelId: returndata.PanelId });
-                            var selectedValues = $panelMultiSelect.value().slice();
-                            selectedValues.push(returndata.PanelId);
-                            $panelMultiSelect.value(selectedValues);
-                            $("#panelForm").trigger("reset");
-                            $("#panelForm").off();
+                            if (returndata) {
+                                $("#frmAssignType").html(returndata);
+                                $("#AssignTypeModal").modal('show');
+                                $("#frmAssignType").kendoValidator();
+                            }
+                            else {
+                                ShowMessage("Error occured while delete operation.", 0);
+                            }
+                        }
+                    });
+                }
+            }
+
+            function onSelect() {
+                var dataItem = this.dataItem();
+                var value = dataItem['Text'];
+                grid = $("#UserGrids").data("kendoGrid");
+                if (value == "All") {
+                    grid.dataSource.filter([]);
+                }
+                else {
+                    grid.dataSource.filter({ field: "RoleName", operator: "eq", value: value });
+                }
+            }
+            $(document).ready(function () {
+                $("#FieldFilter").keyup(function () {
+                    var value = $("#FieldFilter").val();
+                    grid = $("#UserGrids").data("kendoGrid");
+                    var pageSize = grid.dataSource.pageSize();
+                    if (value.length >= 1) {
+                        if (value) {
+                            var filter = { logic: "or", filters: [] };
+                            filter.filters.push({ field: "RoleName", operator: "contains", value: value });
+                            filter.filters.push({ field: "Email", operator: "contains", value: value });
+                            filter.filters.push({ field: "FullName", operator: "contains", value: value });
+                            grid.dataSource.query({ filter: filter });
+                            grid.dataSource.pageSize(pageSize);
+                        } else {
+                            grid.dataSource.filter({});
+                        }
+                    }
+                    else if (value == "")
+                        grid.dataSource.filter({});
+                });
+
+                $("#UserSearchRefresh").click(function (e) {
+                    e.preventDefault();
+                    var datasource = $("#UserGrids").data("kendoGrid").dataSource;
+                    //Clear filters:
+                    datasource.filter([]);
+                    $("#FieldFilter").val('');
+                });
+
+                $('#addTagPopup,#addPanelPopup').on('hidden.bs.modal', function () {
+                    $('.field-validation-error').hide();
+                });
+            });
+
+            function AddNew() {
+                window.location.href = "/Admin/CandidateAdd?UserId=0";
+                return false;
+            }
+
+            function deleteUser(userId) {
+                $.when(showConfirmationWindow('Are you sure, you want to delete this record?', 'Delete')).then(function (confirmed) {
+                    if (confirmed) {
+                        $.ajax({
+                            type: "POST",
+                            url: '@Url.Action("DeleteUser", "User")',
+                            data: { UserId: userId },
+                            success: function (returndata) {
+                                if (returndata == 1) {
+                                    $('#UserGrids').data('kendoGrid').dataSource.read();
+                                    $('#userGrids').data('kendoGrid').refresh();
+                                    ShowMessage("User deleted successfully.", 1);
+                                }
+                                else {
+                                    ShowMessage("Error occured while delete operation.", 0);
+                                }
+                            }
+                        });
+                    }
+                });
+            }
+
+            function assignPanelToMeber() {
+                if ($("#Panel").val()) {
+                    $.ajax({
+                        url: '/ManageUser/AssignPanelToUser',
+                        type: 'post',
+                        dataType: 'json',
+                        data: $('#frmAssignPanel').serialize(),
+                        success: function (data) {
+                            //  ... do something with the data...
+                            $("#AssignPanelModal").modal('hide');
+                            if (data)
+                                ShowMessage("Panel assigned successfully.", 1);
+                            else
+                                ShowMessage("Problem occured.", 0);
                         }
                     });
                 }
                 else {
-                    $('#validationPanelUserMgmt').show()
-                    $('#Tag_validationMessage').text('Panel name already exists.')
-                    $('#Tag_validationMessage').show()
+                    $("#Panel").blur();
                 }
             }
-            else {
-                $('#validationPanelUserMgmt').show()
-                $('#Tag_validationMessage').html('<span class="k-icon k-warning"></span> Panel name is required.')
-                $('#Tag_validationMessage').show()
-            }
-        }
 
-        function isPanelNameAvailable(panelName) {
-            var isAvailable = true;
-            if (panelName) {
-                $.ajax({
-                    url: '/Panel/IsDuplicatePanelName',
-                    async: false,
-                    data: { panelName: panelName },
-                    success: function (returndata) {
-                        if (returndata) {
-                            isAvailable = false;
+            function assignTypeToMeber() {
+                if ($("#Tag").val()) {
+                    $.ajax({
+                        url: '/ManageUser/AssignTypeToUser',
+                        type: 'post',
+                        dataType: 'json',
+                        data: $('#frmAssignType').serialize(),
+                        success: function (data) {
+                            //  ... do something with the data...
+                            $("#AssignTypeModal").modal('hide');
+                            if (data)
+                                ShowMessage("Type assigned successfully.", 1);
+                            else
+                                ShowMessage("Problem occured.", 0);
+                        }
+                    });
+                }
+                else {
+                    $("#Tag").blur();
+                }
+            }
+
+            function saveTag() {
+                if ($("#tagForm").valid()) {
+                    $.ajax({
+                        type: "POST",
+                        url: '/Tag/Save',
+                        data: $('#tagForm').serialize(),
+                        success: function (returndata) {
+                            $("#addTagPopup").modal('hide');
+                            var $tagMultiSelect = $('#Tag').data('kendoMultiSelect');
+                            var selectedValues = $tagMultiSelect.value().slice();
+                            var multidata = $tagMultiSelect.dataSource.data();
+                            multidata.unshift({ TagName: returndata.TagName, TagId: returndata.TagId });
+                            $tagMultiSelect.dataSource.data(multidata);
+                            selectedValues.push(returndata.TagId);
+                            $tagMultiSelect.value(selectedValues);
+                            $("#tagForm").trigger("reset");
+                        }
+                    });
+                }
+                else {
+                    $('#tagForm').submit();
+                }
+            }
+
+            function AddTag() {
+                $("#tagForm").kendoValidator({
+                    rules: {
+                        tagNamevalidation: function (input, params) {
+                            if (input.is("[name='TagName']") && input.val() != "") {
+                                input.attr("data-tagNamevalidation-msg", "Tag name already exists.");
+                                return isTagNameAvailable("", input.val());
+                            }
+
+                            return true;
                         }
                     }
                 });
+                $('#TagName').val("");
+                $('#Description').val("");
+                $("#addTagPopup").modal('show');
             }
-            return isAvailable;
-        }
-    </script>
+
+            function isTagNameAvailable(existingName, updatedName) {
+                var isAvailable = true;
+                if (existingName != updatedName) {
+                    $.ajax({
+                        type: "POST",
+                        url: '/Tag/IsDuplicateTagName',
+                        async: false,
+                        data: { existingTagName: existingName, tagName: updatedName },
+                        success: function (returndata) {
+                            if (returndata == true) {
+                                isAvailable = true;
+                            }
+                            else {
+                                isAvailable = false;
+                            }
+                        }
+                    });
+                }
+                return isAvailable;
+            }
+
+            function AddPanel() {
+                $("#panelForm").off();
+                $('#PanelName').val("");
+                $("#addPanelPopup").modal('show');
+                $("#validationPanelUserMgmt").css('display', 'none');
+
+            }
+
+            function savePanel() {
+                $('#Tag_validationMessage').text('')
+                $('#Tag_validationMessage').hide();
+                var panelName = $('#PanelName').val();
+                if (panelName) {
+                    var isAvailable = isPanelNameAvailable(panelName);
+                    if (!isAvailable) {
+                        $("#panelForm").on();
+                        $.ajax({
+                            type: "POST",
+                            url: '/Panel/PanelSave',
+                            data: $('#panelForm').serialize(),
+                            success: function (returndata) {
+                                $("#addPanelPopup").modal('hide');
+                                var $panelMultiSelect = $('#Panel').data('kendoMultiSelect');
+                                var multidata = $panelMultiSelect.dataSource.data();
+                                multidata.unshift({ PanelName: returndata.PanelName, PanelId: returndata.PanelId });
+                                var selectedValues = $panelMultiSelect.value().slice();
+                                selectedValues.push(returndata.PanelId);
+                                $panelMultiSelect.value(selectedValues);
+                                $("#panelForm").trigger("reset");
+                                $("#panelForm").off();
+                            }
+                        });
+                    }
+                    else {
+                        $('#validationPanelUserMgmt').show()
+                        $('#Tag_validationMessage').text('Panel name already exists.')
+                        $('#Tag_validationMessage').show()
+                    }
+                }
+                else {
+                    $('#validationPanelUserMgmt').show()
+                    $('#Tag_validationMessage').html('<span class="k-icon k-warning"></span> Panel name is required.')
+                    $('#Tag_validationMessage').show()
+                }
+            }
+
+            function isPanelNameAvailable(panelName) {
+                var isAvailable = true;
+                if (panelName) {
+                    $.ajax({
+                        url: '/Panel/IsDuplicatePanelName',
+                        async: false,
+                        data: { panelName: panelName },
+                        success: function (returndata) {
+                            if (returndata) {
+                                isAvailable = false;
+                            }
+                        }
+                    });
+                }
+                return isAvailable;
+            }
+        </script>
