@@ -81,8 +81,8 @@ function stopIdleTime() {
 }
 
 function checkIdleTimeout() {
-    var sessionTimeout =19 * 60000;  // $('#sessionValue').val() * 60000;
-    var idleTime = (parseInt(localStorage.getItem('sessIdleTimeCounter')) + (sessionTimeout)); 
+    var sessionTimeout = 8 * 60 * 60000;  // $('#sessionValue').val() * 60000;
+    var idleTime = (parseInt(localStorage.getItem('sessIdleTimeCounter')) + (sessionTimeout));
     if ($.now() > idleTime + 60000) {
         $("#session-expire-warning-modal").modal('hide');
         $("#session-expired-modal").modal('show');
@@ -168,7 +168,7 @@ function countdownDisplay() {
             startIdleTime();
             clearInterval(remainingTimer);
         }
-        else if (localStorage.getItem('sessionSlide') == "loggedOut") {         
+        else if (localStorage.getItem('sessionSlide') == "loggedOut") {
             $("#session-expire-warning-modal").modal('hide');
             $("#session-expired-modal").modal('show');
         }

@@ -591,14 +591,14 @@ namespace Silicus.EncourageWithAzureAd.Web.Controllers
             consolidatedNominationsViewModel.Nominations = new List<SubmittedNomination>();
             consolidatedNominationsViewModel.ListOfAwards = new SelectList(awards, "Id", "Name");
             var activeReviewers = new List<UtilityUserRoles>();
-
+            var utility = _commonDbContext.Query<Utility>().FirstOrDefault(r => r.Name == "Encourage");
             if (consolidatedNominationsViewModel.AwardMonth == customDate.Month && consolidatedNominationsViewModel.AwardYear == customDate.Year)
             {
-                activeReviewers = _commonDbContext.Query<UtilityUserRoles>().Where(x => x.IsActive && x.RoleId == (int)Roles.Reviewer).ToList();
+                activeReviewers = _commonDbContext.Query<UtilityUserRoles>().Where(x => x.IsActive && x.UtilityId == utility.Id && x.RoleId == (int)Roles.Reviewer).ToList();
             }
             else
             {
-                activeReviewers = _commonDbContext.Query<UtilityUserRoles>().Where(x => x.RoleId == (int)Roles.Reviewer).ToList();
+                activeReviewers = _commonDbContext.Query<UtilityUserRoles>().Where(x => x.RoleId == (int)Roles.Reviewer && x.UtilityId == utility.Id).ToList();
             }
           
            // var reviewers = _encourageDatabaseContext.Query<Reviewer>().ToList();
