@@ -29,10 +29,10 @@
 .btn:not(.md-skip):not(.bs-select-all):not(.bs-deselect-all){padding:5px 5px 5px !important;}
 #candidateSearch.btn:not(.md-skip):not(.bs-select-all):not(.bs-deselect-all){padding:8px 12px 7px !important;}
 #PanelSearch.btn:not(.md-skip):not(.bs-select-all):not(.bs-deselect-all),#postionSearch.btn:not(.md-skip):not(.bs-select-all):not(.bs-deselect-all),#tagSearch.btn:not(.md-skip):not(.bs-select-all):not(.bs-deselect-all),#technologySearch.btn:not(.md-skip):not(.bs-select-all):not(.bs-deselect-all),#UserSearchRefresh.btn:not(.md-skip):not(.bs-select-all):not(.bs-deselect-all),#QuestionSearchRefresh.btn:not(.md-skip):not(.bs-select-all):not(.bs-deselect-all),#testSuiteSearch.btn:not(.md-skip):not(.bs-select-all):not(.bs-deselect-all){padding:8px 12px 6px!important}
-
+.btn-nav{padding:10px 15px;}
 .popUp-modalbody{padding:20px 30px 0px 30px;}
 .popUp-footer{padding:0px 45px 15px 15px;}
-
+.mail-content{padding: 10px;border-bottom: 1px solid #EFF2F6!important;}
 
 
 /*kendo style override*/
@@ -74,13 +74,8 @@ div.k-edit-buttons.k-state-default{
 }
 
 
-
-
-
-
-
-
-
+/*For all grid to be responsive*/
+#UserGrids table, #userGrids table, #questionGrids table, #testSuiteGrids table, #tagsGrids table, #positionGrids table, #PanelGrids table, #technologiesGrid table{width:100%;overflow-x:auto;display: inherit;}
 
 
 .modal-btn{

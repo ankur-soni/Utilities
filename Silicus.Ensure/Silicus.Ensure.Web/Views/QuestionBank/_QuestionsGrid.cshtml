@@ -1,7 +1,9 @@
 ﻿@using Kendo.Mvc.UI;
-@if (Request.IsAuthenticated)
-{
-    @(Html.Kendo().Grid<Silicus.Ensure.Web.Models.QuestionModel>().Name("questionGrids")
+
+<div class="table-responsive">
+    @if (Request.IsAuthenticated)
+    {
+        @(Html.Kendo().Grid<Silicus.Ensure.Web.Models.QuestionModel>().Name("questionGrids")
                                 .Columns(columns =>
                                 {
                                     columns.Bound(q => q.Id).Title("Id").Width(100).Filterable(ftb => ftb.Cell(cell => cell.Operator("equals").Template("IdNumericTextBox").ShowOperators(false).InputWidth(80)));
@@ -31,10 +33,10 @@
                                              .Sortable()
                                              .Filterable(ftb => ftb.Mode(GridFilterMode.Row))
                                              .Resizable(resizing => resizing.Columns(true))
-    )}
+        )}
 
-
-<script>
+    </div>
+    <script>
     function IdNumericTextBox(args) {
         var idNumericTextBox = args.element.kendoNumericTextBox({
             format: "0",
@@ -120,4 +122,4 @@
         });
     }
 
-</script>
+    </script>
