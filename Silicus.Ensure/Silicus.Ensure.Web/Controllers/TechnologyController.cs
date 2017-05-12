@@ -117,26 +117,29 @@ namespace Silicus.Ensure.Web.Controllers
         public ActionResult GetAllTechnologiesWithQuestionCount([DataSourceRequest] DataSourceRequest request)
         {
             var userEmailId = User.Identity.Name;
-            var user = _containerUserService.FindUserByEmail(userEmailId);
-            if (user != null)
+            if (!string.IsNullOrWhiteSpace(userEmailId))
             {
-                var technologies = _technologyService.GetAllTechnologies();
-                if (technologies != null && technologies.Any())
+                var user = _containerUserService.FindUserByEmail(userEmailId);
+                if (user != null)
                 {
-                    technologies = technologies.ToList();
-                    var technologiesWithCount = _technologyService.GetAllTechnologiesWithQuestionCount(user.ID);
-
-                    foreach (var technology in technologies)
+                    var technologies = _technologyService.GetAllTechnologies();
+                    if (technologies != null && technologies.Any())
                     {
-                        int count;
-                        if (technologiesWithCount.TryGetValue(technology.TechnologyId, out count))
-                        {
-                            technology.Count = count;
-                        }
+                        technologies = technologies.ToList();
+                        var technologiesWithCount = _technologyService.GetAllTechnologiesWithQuestionCount(user.ID);
 
+                        foreach (var technology in technologies)
+                        {
+                            int count;
+                            if (technologiesWithCount.TryGetValue(technology.TechnologyId, out count))
+                            {
+                                technology.Count = count;
+                            }
+
+                        }
+                        var technologiesViewModel = _mappingService.Map<IEnumerable<TechnologyBusinessModel>, IEnumerable<TechnologyViewModel>>(technologies);
+                        return Json(technologiesViewModel, JsonRequestBehavior.AllowGet);
                     }
-                    var technologiesViewModel = _mappingService.Map<IEnumerable<TechnologyBusinessModel>, IEnumerable<TechnologyViewModel>>(technologies);
-                    return Json(technologiesViewModel, JsonRequestBehavior.AllowGet);
                 }
             }
             return null;
