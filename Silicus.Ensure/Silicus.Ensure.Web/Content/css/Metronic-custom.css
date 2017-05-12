@@ -37,11 +37,11 @@
 .mail-content:hover{background:#e9f6f7;}
 
 /*kendo style override*/
-.k-filtercell>span>.k-button, .k-filter-row .k-dropdown-operator{top:11px;padding: 0 4px;}
+.k-filtercell>span>.k-button, .k-filter-row .k-dropdown-operator{padding: 0 4px;}
 .k-grid td{border-bottom: 1px solid #e7ecf1;}
-.k-grid-header .k-header{
+/*.k-grid-header .k-header{
     padding: .8em .6em .8em .6em;
-}
+}*/
 .k-pager-sizes{color:#333;}
 #tagsGrids div.k-header.k-grid-toolbar.k-grid-top, #positionGrids div.k-header.k-grid-toolbar.k-grid-top, #PanelGrids div.k-header.k-grid-toolbar.k-grid-top, #technologiesGrid div.k-header.k-grid-toolbar.k-grid-top{background:#fafafa!important;}
 #userGrids div.k-header.k-grid-toolbar.k-grid-top{background:#fafafa!important;}

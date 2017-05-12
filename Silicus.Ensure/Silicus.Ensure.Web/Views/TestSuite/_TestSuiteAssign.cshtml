@@ -1,7 +1,7 @@
 ﻿@using Kendo.Mvc.UI;
 
 
-<div id="myModal" class="modal fade" data-backdrop="static" role="dialog" tabindex="-1" data-width="760" aria-hidden="false" style="display: block; width: 760px; margin-left: -380px; margin-top: -288.5px;">
+<div id="myModal" class="modal fade" aria-labelledby="myModalLabel" data-backdrop="static" role="dialog" tabindex="-1" data-width="760" aria-hidden="false" style="display: block; width: 760px; margin-left: -380px; margin-top: -288.5px;">
     <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
         <h4 class="modal-title" id="myModalLabel">Assign test suite</h4>
@@ -13,8 +13,8 @@
                 .Columns(columns =>
               {
                   columns.Bound("").ClientTemplate("<input type='checkbox' name='selectUser' value='#=UserApplicationId#' />").Width(20);
-                  columns.Bound(p => p.FirstName).Width(150);
-                  columns.Bound(p => p.LastName).Width(150);
+                  columns.Bound(p => p.FirstName).Width(250);
+                  columns.Bound(p => p.LastName).Width(250);
                   columns.Bound(p => p.CurrentLocation).Width(100);
                   columns.Bound(p => p.Email).Width(150);
               })
@@ -72,6 +72,7 @@
 
     <script>
         $(document).ready(function () {
+         
             $('#testSuiteId').val('@TempData["TesSuiteId"]');
             $('#btnAssign').click(function () {
                 swal({
@@ -85,7 +86,7 @@
                     closeOnConfirm: true,
                     closeOnCancel: true
                 },
-       function (isConfirm) {
+       function (isConfirm) {           
            if (isConfirm) {
                var users = $("#userGrids").find("[name='selectUser']:checked").map(function () {
                    return this.value;
@@ -97,6 +98,7 @@
                    data: { users: users, testSuiteId: testSuiteId },
                    success: function (returndata) {
                        if (returndata == 1) {
+                           
                            $('#myModal').modal().hide();
                            $("#testSuiteGrids").data("kendoGrid").dataSource.read();
                            ShowMessage("Test suite assigned successfully.", 1);
