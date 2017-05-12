@@ -581,18 +581,6 @@
     <Content Include="Content\css\Metronic css\plugins-md.min.css" />
     <Content Include="Content\css\Metronic css\plugins.css" />
     <Content Include="Content\css\Metronic css\plugins.min.css" />
-    <Content Include="Content\css\Metronic css\themes\blue.css" />
-    <Content Include="Content\css\Metronic css\themes\blue.min.css" />
-    <Content Include="Content\css\Metronic css\themes\darkblue.css" />
-    <Content Include="Content\css\Metronic css\themes\darkblue.min.css" />
-    <Content Include="Content\css\Metronic css\themes\default.css" />
-    <Content Include="Content\css\Metronic css\themes\default.min.css" />
-    <Content Include="Content\css\Metronic css\themes\grey.css" />
-    <Content Include="Content\css\Metronic css\themes\grey.min.css" />
-    <Content Include="Content\css\Metronic css\themes\light.css" />
-    <Content Include="Content\css\Metronic css\themes\light.min.css" />
-    <Content Include="Content\css\Metronic css\themes\light2.css" />
-    <Content Include="Content\css\Metronic css\themes\light2.min.css" />
     <Content Include="Content\css\Metronic-custom.css" />
     <Content Include="Content\css\mobile.css" />
     <Content Include="Content\css\perfect-scrollbar.css" />
@@ -5480,7 +5468,6 @@
     <Folder Include="Content\js\plugins\toastr\_notes\" />
     <Folder Include="Content\js\plugins\validate\_notes\" />
     <Folder Include="Content\plugins\angularjs\plugins\angular-file-upload\uploads\" />
-    <Folder Include="Scripts\Custom\" />
     <Folder Include="ViewModel\" />
     <Folder Include="Views\Common\" />
     <Folder Include="Views\Shared\DisplayTemplates\" />
