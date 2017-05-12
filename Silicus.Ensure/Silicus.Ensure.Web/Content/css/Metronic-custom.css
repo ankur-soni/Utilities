@@ -37,6 +37,7 @@
 .mail-content:hover{background:#e9f6f7;}
 
 /*kendo style override*/
+.k-filtercell>span>.k-button, .k-filter-row .k-dropdown-operator{top:11px;padding: 0 4px;}
 .k-grid td{border-bottom: 1px solid #e7ecf1;}
 .k-grid-header .k-header{
     padding: .8em .6em .8em .6em;
@@ -55,7 +56,6 @@ i.fa.fa-save{display:none;}
 /* Kendo popup style */
 #TagCustomControl span.tagAutoComplete{width:100%!important;}
 #TagCustomControl span.k-dropdown{width:100%!important;}
-
 .k-window-titlebar.k-header{
     margin-top: -32.92px;
     background: #fff;
@@ -65,7 +65,31 @@ i.fa.fa-save{display:none;}
 .k-window-title{
     padding: 5px 0px 10px 8px;
 }
+/*End of popup style*/
 
+/*Kendo icons sprite setting*/
+.k-i-calendar:hover{background-image: url('http://kendo.cdn.telerik.com/2016.3.1118/styles/Material/sprite.png');background-position: -32px -176px;}
+span.k-icon.k-i-close{background-image: url(http://kendo.cdn.telerik.com/2016.3.1118/styles/Material/sprite.png);border-color: transparent;background-position: -48px -16px;}
+
+.k-widget.k-window span.k-icon.k-i-close{background-image: url(http://kendo.cdn.telerik.com/2016.3.1118/styles/Material/sprite.png);background-position: -32px -16px;}
+.k-widget.k-window span.k-icon.k-i-close:hover{background-image: url(http://kendo.cdn.telerik.com/2016.3.1118/styles/Material/sprite.png);background-position: -48px -16px;}
+
+.k-state-hover>*>.k-i-arrow-s{background-image: url(http://kendo.cdn.telerik.com/2016.3.1118/styles/Material/sprite.png);border-color: transparent;background-position: 0px -32px;}
+.k-state-hover>*>.k-i-calendar{background-image: url(http://kendo.cdn.telerik.com/2016.3.1118/styles/Material/sprite.png);border-color: transparent;background-position: -32px -176px;}
+
+.k-link:not(.k-state-disabled):hover>.k-i-arrow-e{background-image: url(http://kendo.cdn.telerik.com/2016.3.1118/styles/Material/sprite.png);border-color: transparent;background-position: 0px -16px;}
+.k-link:not(.k-state-disabled):hover>.k-i-arrow-w{background-image: url(http://kendo.cdn.telerik.com/2016.3.1118/styles/Material/sprite.png);border-color: transparent;background-position: 0px -48px;}
+
+.k-numerictextbox .k-state-hover .k-link span.k-i-arrow-n{background-image: url(http://kendo.cdn.telerik.com/2016.3.1118/styles/Material/sprite.png);border-color: transparent;background-position: 0px -3px;}
+.k-numerictextbox .k-state-hover .k-link span.k-i-arrow-s{background-image: url(http://kendo.cdn.telerik.com/2016.3.1118/styles/Material/sprite.png);border-color: transparent;background-position: 0px -35px;}
+
+/*End of sprite setting*/
+#questionGrids.k-grid td{
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    max-width: 275px;
+}
 .k-edit-form-container{width:auto;}
 /*div.container-fluid.model-550{width: 645px;}*/
 .k-widget.k-window{width: 645px;}
