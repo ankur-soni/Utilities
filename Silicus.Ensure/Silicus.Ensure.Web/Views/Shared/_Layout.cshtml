@@ -172,10 +172,15 @@
                 <!-- END HEADER INNER -->
             </div>
             <!-- END HEADER -->
-            <!-- BEGIN HEADER & CONTENT DIVIDER -->
+            @*<!-- BEGIN HEADER & CONTENT DIVIDER -->
             <div class="clearfix"> </div>
-            <!-- END HEADER & CONTENT DIVIDER -->
+            <!-- END HEADER & CONTENT DIVIDER -->*@
             <!-- BEGIN CONTAINER -->
+            <div class="loader-overlay" style="display:none;">
+                <div class="loader">
+
+                </div>
+            </div>
             <div class="page-container">
                 <!-- BEGIN SIDEBAR -->
                 <div class="page-sidebar-wrapper">
@@ -445,6 +450,28 @@
 
     <!-- END THEME LAYOUT SCRIPTS -->
     <script>
+        $(document).ajaxStop(function () {
+            $(".loader-overlay").hide();
+        });
+
+        $(document).ajaxStart(function () {
+            showCustomLoader();
+        });
+
+        function pageContentSectionheight() {
+            var pageContentSectionheight = 0;
+            pageContentSectionheight = $(window).height() - $(".page-header.navbar").outerHeight();
+            $(".page-content").css("min-height", pageContentSectionheight);
+        };
+
+        $(document).ready(function () {
+            pageContentSectionheight();
+            
+        });
+        $(window).resize(function () {
+            pageContentSectionheight();
+            
+        });
         function showConfirmationWindow(message, header) {
             return showWindow('#confirmationTemplate', message, header)
         };
