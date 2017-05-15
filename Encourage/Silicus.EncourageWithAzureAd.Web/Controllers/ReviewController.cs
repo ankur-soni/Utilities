@@ -590,7 +590,7 @@ namespace Silicus.EncourageWithAzureAd.Web.Controllers
             consolidatedNominationsViewModel.Reviewers = new List<ReviewerViewModel>();
             consolidatedNominationsViewModel.Nominations = new List<SubmittedNomination>();
             consolidatedNominationsViewModel.ListOfAwards = new SelectList(awards, "Id", "Name");
-            var activeReviewers = new List<UtilityUserRoles>();
+            List<UtilityUserRoles> activeReviewers;
             var utility = _commonDbContext.Query<Utility>().FirstOrDefault(r => r.Name == "Encourage");
             if (consolidatedNominationsViewModel.AwardMonth == customDate.Month && consolidatedNominationsViewModel.AwardYear == customDate.Year)
             {

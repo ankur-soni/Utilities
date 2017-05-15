@@ -159,11 +159,13 @@ namespace Silicus.Encourage.Services
                                        && user.InactiveDate == null
                                        select user;
 
-                var recourcesInEnggementUnderCurrentManger = _encourageDbcontext.Query<Nomination>().Where(n => n.ProjectID == engagementId && n.ManagerId == currentUserId && n.AwardId == awardId).ToList();
+                var recourcesInEnggementUnderCurrentMangerAlreadyNominated = _encourageDbcontext.Query<Nomination>().Where(n => n.ProjectID == engagementId && n.ManagerId == currentUserId 
+                && n.AwardId == awardId && n.NominationDate.Value.Month == customDate.Month && n.NominationDate.Value.Year == customDate.Year).ToList();
                 userInEngagement = userInEngagement.Except(currentUser);
+
                 userList = userInEngagement.ToList();
 
-                foreach (var item in recourcesInEnggementUnderCurrentManger)
+                foreach (var item in recourcesInEnggementUnderCurrentMangerAlreadyNominated)
                 {
                     userList.RemoveAll(u => u.ID == item.UserId);
                 }
