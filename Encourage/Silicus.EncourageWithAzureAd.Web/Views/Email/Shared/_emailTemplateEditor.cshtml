@@ -1,6 +1,10 @@
 ﻿@model Silicus.EncourageWithAzureAd.Web.Models.EmailTemplateEditorViewModel
 
-
+<style>
+    .select2-results .select2-results__option[aria-selected=true] {
+        pointer-events: none;
+}
+</style>
 
 <div class="row M-T15">
     <div class="col-sm-12">
@@ -74,9 +78,9 @@
     });
 
     window.edit = function () {
-        $(".click2edit").summernote()
+        $(".click2edit").summernote();
     }, window.save = function () {
-        $(".click2edit").destroy()
+        $(".click2edit").destroy();
     }
 
     $("#sendMailButton").on("click", function () {
