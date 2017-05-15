@@ -715,9 +715,9 @@ namespace Silicus.EncourageWithAzureAd.Web.Controllers
             return Json(awardFrequency.Code, JsonRequestBehavior.AllowGet);
         }
         [HttpPost]
-        public JsonResult SetAwardPeriod(int awardId, int month, int year, int monthToSubtract, bool isApplicable)
+        public JsonResult SetAwardPeriod(int awardId, int month, int year, bool isApplicable)
         {
-            return Json(_customDateService.SetCustomDate(awardId, month, year, monthToSubtract, isApplicable), JsonRequestBehavior.AllowGet);
+            return Json(_customDateService.SetCustomDate(awardId, month, year, isApplicable), JsonRequestBehavior.AllowGet);
         }
 
         [HttpGet]

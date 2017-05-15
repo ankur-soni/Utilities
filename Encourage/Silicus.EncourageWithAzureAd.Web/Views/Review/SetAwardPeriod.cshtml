@@ -47,12 +47,12 @@
                                         @Html.ValidationMessageFor(model => model.Months, "", new { @class = "text-danger" })
                                     </div>
                                 </div>
-                                <div class="form-group">
+                                @*<div class="form-group">
                                     @Html.LabelFor(model => model.MonthToSubtract, "Months To Subtract (if required)", htmlAttributes: new { @class = "col-lg-3 col-md-4 col-sm-5" })
                                     <div class="col-lg-3 col-md-4 col-sm-5">
                                         @Html.TextBoxFor(model => model.MonthToSubtract, "", new { @class = "form-control" })
                                     </div>
-                                </div>
+                                </div>*@
                                 <div class="form-group">
                                     <div class="checkbox checkbox-success">
                                         <div class="col-lg-8 col-md-8 col-sm-8">
@@ -83,14 +83,14 @@
                                             <label id="lblForMonth" class="themeColorBlue font-bold">--</label>
                                         </div>
                                     </div>
-                                    <div class="form-group">
+                                    @*<div class="form-group">
                                         @Html.LabelFor(model => model.MonthToSubtract, "Month To Subtract", new { @class = "col-lg-6 col-md-6 col-sm-6 col-xs-6" })
                                         <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
                                             <label id="lblMonthToSubtract" class="themeColorBlue font-bold">--</label>
                                         </div>
-                                    </div>
+                                    </div>*@
                                     <div class="form-group">
-                                        @Html.Label("", "Is Applicable", new { @class = "col-lg-6 col-md-6 col-sm-6 col-xs-6" })
+                                        @Html.Label("", "Is custom date in use ?", new { @class = "col-lg-6 col-md-6 col-sm-6 col-xs-6" })
                                         <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
                                             <label id="lblIsApplicable" class="themeColorBlue font-bold">--</label>
                                         </div>
@@ -150,7 +150,7 @@
                     $("#Months").val(customDate.Month);
                     $("#Years").val(customDate.Year);
                     $("#checkbox1").prop('checked', customDate.IsApplicable);
-                    $("#MonthToSubtract").val(customDate.MonthsToSubtract);
+                    //$("#MonthToSubtract").val(customDate.MonthsToSubtract);
                     var currentDate = new Date();
                     var selectedYear = parseInt($("#Years").val());
                     if (currentDate.getFullYear() == selectedYear) {
@@ -186,7 +186,7 @@
         }
         $("#Months").val("");
         $("#Years").val("");
-        $("#MonthToSubtract").val(0);
+        //$("#MonthToSubtract").val(0);
         $("#checkbox1").prop('checked', false);
         $("#Years").attr("disabled", true);
         $("#Months").attr("disabled", "disabled");
@@ -228,11 +228,11 @@
     function setCustomDate(awardId, month, year) {
         debugger;
         var isApplicable = $("#checkbox1").is(":checked");
-        var monthToSubtract = parseInt($("#MonthToSubtract").val());
+       // var monthToSubtract = parseInt($("#MonthToSubtract").val());
         showCustomLoader();
         $.ajax({
             type: "POST",
-            data: { awardId: awardId, month: month, year: year, monthToSubtract: monthToSubtract, isApplicable: isApplicable },
+            data: { awardId: awardId, month: month, year: year, isApplicable: isApplicable },
             url: "@Url.Action("SetAwardPeriod","Review")",
             success: function (status) {
                 hideCustomLoader();
@@ -346,8 +346,13 @@
                     $("#lblForAwardType").text(customDate.AwardName);
                     $("#lblForYear").text(customDate.Year);
                     $("#lblForMonth").text(customDate.MonthName);
-                    $("#lblIsApplicable").text(customDate.IsApplicable);
-                    $("#lblMonthToSubtract").text(customDate.MonthsToSubtract);
+                    // $("#lblIsApplicable").text(customDate.IsApplicable);
+                    if (customDate.IsApplicable) {
+                        $("#lblIsApplicable").text("Yes");
+                    } else {
+                        $("#lblIsApplicable").text("No");
+                    }
+                    //$("#lblMonthToSubtract").text(customDate.MonthsToSubtract);
                     hideCustomLoader();
                 },
                 error: function (error) {
@@ -365,6 +370,6 @@
         $("#lblForYear").text('--');
         $("#lblForMonth").text('--');
         $("#lblIsApplicable").text('--');
-        $("#lblMonthToSubtract").text('--');
+        //$("#lblMonthToSubtract").text('--');
     }
 </script>

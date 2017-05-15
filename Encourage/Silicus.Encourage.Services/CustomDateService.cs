@@ -73,7 +73,7 @@ namespace Silicus.Encourage.Services
             return false;
         }
 
-        public bool SetCustomDate(int awardId, int month, int year, int monthsToSubtract, bool isApplicable)
+        public bool SetCustomDate(int awardId, int month, int year, bool isApplicable)
         {
             var customDatesForAward = _encourageDbcontext.Query<CustomDate>().FirstOrDefault(x => x.AwardId == awardId);
             if (customDatesForAward != null)
@@ -82,7 +82,7 @@ namespace Silicus.Encourage.Services
                 {
                     customDatesForAward.Month = month;
                     customDatesForAward.Year = year;
-                    customDatesForAward.MonthsToSubtract = monthsToSubtract;
+                   // customDatesForAward.MonthsToSubtract = monthsToSubtract;
                     customDatesForAward.IsApplicable = isApplicable;
                     _encourageDbcontext.Update(customDatesForAward);
                     return true;
@@ -91,7 +91,7 @@ namespace Silicus.Encourage.Services
                 {
                     customDatesForAward.Year = year;
                     customDatesForAward.IsApplicable = isApplicable;
-                    customDatesForAward.MonthsToSubtract = monthsToSubtract;
+                    //customDatesForAward.MonthsToSubtract = monthsToSubtract;
                     _encourageDbcontext.Update(customDatesForAward);
                     return true;
                 }
@@ -99,12 +99,12 @@ namespace Silicus.Encourage.Services
 
             if (month > 0)
             {
-                _encourageDbcontext.Add(new CustomDate { AwardId = awardId, Month = month, Year = year, MonthsToSubtract = monthsToSubtract, IsApplicable = isApplicable });
+                _encourageDbcontext.Add(new CustomDate { AwardId = awardId, Month = month, Year = year, IsApplicable = isApplicable });
                 return true;
             }
             else if (year > 0)
             {
-                _encourageDbcontext.Add(new CustomDate { AwardId = awardId, Month = DateTime.Today.Month, Year = year, MonthsToSubtract = monthsToSubtract, IsApplicable = isApplicable });
+                _encourageDbcontext.Add(new CustomDate { AwardId = awardId, Month = DateTime.Today.Month, Year = year, IsApplicable = isApplicable });
                 return true;
             }
             return false;
