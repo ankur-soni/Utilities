@@ -109,7 +109,7 @@
                     <!-- BEGIN TOP NAVIGATION MENU -->
                     <div class="top-menu">
                         <ul class="nav navbar-nav pull-right">
-                            @if (!role.Contains(RoleName.Panel.ToString()))
+                            @if (role.Contains(RoleName.Panel.ToString()))
                             {
 
                                 <li class="dropdown dropdown-extended dropdown-notification" id="header_notification_bar">
