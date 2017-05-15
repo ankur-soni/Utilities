@@ -445,6 +445,20 @@
 
     <!-- END THEME LAYOUT SCRIPTS -->
     <script>
+        function pageContentSectionheight() {
+            var pageContentSectionheight = 0;
+            pageContentSectionheight = $(window).height() - $(".page-header.navbar").outerHeight();
+            $(".page-content").css("min-height", pageContentSectionheight);
+        };
+
+        $(document).ready(function () {
+            pageContentSectionheight();
+            
+        });
+        $(window).resize(function () {
+            pageContentSectionheight();
+            
+        });
         function showConfirmationWindow(message, header) {
             return showWindow('#confirmationTemplate', message, header)
         };
