@@ -2,6 +2,7 @@
 @{
     ViewBag.Title = "ShortlistNomination";
 }
+<script src="~/js/remaining-character-text.js"></script>
 <div class="row white-bg header-row">
     <nav class="" role="navigation" style="margin-bottom: 0">
         <div class="navbar-header">
@@ -250,10 +251,12 @@
             </div>
             <div class="modal-body">
                 <span class="requiredfeild">Feedback:</span>
-                <textarea class="form-control M-T15" rows="3" id="feedback" style="width:100%;max-width:100%" placeholder="Why this employee shoulde be the winner?" required="required"></textarea>
+                <textarea class="form-control M-T15" rows="3" id="feedback" style="width:100%;max-width:100%" maxlength="500" placeholder="Why this employee shoulde be the winner?" required="required" onKeyUp = "showRemainingCharacterTextMessage($(this))", onblur = "hideRemainingCharacterTextMessage($(this))"></textarea>
+                <div class="textarea"></div>
                 <span style="color:red;display:none" id="feedbackRequired"></span><br />
                 <span class="requiredfeild">Comment:</span>
-                <textarea class="form-control M-T15" rows="3" id="comment" style="width:100%;max-width:100%" placeholder="To be shared across the company" required="required"></textarea>
+                <textarea class="form-control M-T15" rows="3" id="comment" style="width:100%;max-width:100%" maxlength="150" placeholder="To be shared across the company" required="required" onKeyUp = "showRemainingCharacterTextMessage($(this))", onblur = "hideRemainingCharacterTextMessage($(this))"></textarea>
+                <div class="textarea"></div>
                 <span style="color:red;display:none" id="commentRequired"></span>
             </div>
             <div class="modal-footer" style="border:none;">

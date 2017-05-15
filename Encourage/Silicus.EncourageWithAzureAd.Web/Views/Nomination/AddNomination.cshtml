@@ -2,7 +2,7 @@
 @{
     ViewBag.Title = "AddNomination";
 }
-
+<script src="~/js/remaining-character-text.js"></script>
 <div class="row white-bg header-row">
     <nav class="" role="navigation" style="margin-bottom: 0">
         <div class="navbar-header">
@@ -176,7 +176,8 @@
                                             @Html.Label("Comment", htmlAttributes: new { @class = "col-md-12 control-label requiredfeild" })
                                             <div class="col-md-12">
                                                 <div class="form-group">
-                                                    @Html.TextAreaFor(model => model.MainComment, new { @class = "form-control", placeholder = "Maximum 1000 words", id = "managerComment", name = "defaultconfig", rows = "5", maxlength = 1000 })
+                                                    @Html.TextAreaFor(model => model.MainComment, new { @class = "form-control", placeholder = "Maximum 1000 words", id = "managerComment", name = "defaultconfig", rows = "5", maxlength = 1000, onKeyUp = "showRemainingCharacterTextMessage($(this).attr('maxlength'),$(this).attr('id'))", onblur = "hideRemainingCharacterTextMessage($(this).attr('maxlength'),$(this).attr('id'))" })
+                                                   <div class="textarea" ></div>
                                                     @Html.ValidationMessageFor(model => model.MainComment, "", new { @class = "text-danger", id = "managerCommentValidationmessage" })
                                                 </div>
 
