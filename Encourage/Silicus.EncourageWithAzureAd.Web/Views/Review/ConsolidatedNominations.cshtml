@@ -93,6 +93,7 @@
     }
     
 </style>
+<script src="~/js/remaining-character-text.js"></script>
 @using (Ajax.BeginForm("ConsolidatedNominations", "Review",
                 new AjaxOptions
                 {
@@ -231,7 +232,8 @@
                     </div>
                     <div class="form-group">
                         <label for="txtHrComment" class="form-control-label">Comments:<span class="asterisk">*</span></label>
-                        <textarea class="form-control" id="txtHrComment" name="txtHrComment" required></textarea>
+                        <textarea class="form-control" id="txtHrComment" name="txtHrComment" maxlength="1000" onKeyUp = "showRemainingCharacterTextMessage($(this))", onblur = "hideRemainingCharacterTextMessage($(this))" required></textarea>
+                        <div class="textarea"></div>
                     </div>
 
                 </div>
