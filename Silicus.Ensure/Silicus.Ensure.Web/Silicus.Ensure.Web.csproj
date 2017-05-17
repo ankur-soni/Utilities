@@ -436,6 +436,8 @@
     <Compile Include="Models\ContainerUserViewModel.cs" />
     <Compile Include="Models\EmailModel.cs" />
     <Compile Include="Models\ForgotPassword.cs" />
+    <Compile Include="Models\JobVite\JobViteCandidateViewModel.cs" />
+    <Compile Include="Models\JobVite\RequisitionViewModel.cs" />
     <Compile Include="Models\LoginModel.cs" />
     <Compile Include="Models\PanelMemberDetailViewModel.cs" />
     <Compile Include="Models\PanelViewModel.cs" />
@@ -5415,6 +5417,7 @@
     <Content Include="Scripts\Kendo\2015.3.1111.340\kendo.core.min.js.map" />
     <Content Include="Scripts\Kendo\2015.3.1111.340\kendo.data.min.js.map" />
     <Content Include="Scripts\Kendo\2015.3.1111.340\kendo.dataviz.min.js.map" />
+    <Content Include="Views\Candidate\_AssignTest.cshtml" />
     <None Include="Web.Azure.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

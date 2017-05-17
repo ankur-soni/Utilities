@@ -13,6 +13,8 @@ using Newtonsoft.Json;
 using System.Collections.Generic;
 using Silicus.Ensure.Models.ReviewQuestion;
 using Silicus.Ensure.Web.Models.ReviewQuestion;
+using Silicus.Ensure.Models.JobVite;
+using Silicus.Ensure.Web.Models.JobVite;
 
 namespace Silicus.Ensure.Web.Mappings
 {
@@ -65,7 +67,8 @@ namespace Silicus.Ensure.Web.Mappings
             Mapper.CreateMap<TechnologyBusinessModel, TechnologyViewModel>();
             Mapper.CreateMap<ReviewQuestionBusinessModel, ReviewQuestionViewModel>();
             Mapper.CreateMap<TabSelectionBusinessModel, TabSelectionViewModel>();
-
+            Mapper.CreateMap<JobViteCandidateBusinessModel, JobViteCandidateViewModel>();
+            Mapper.CreateMap<RequisitionBusinessModel,RequisitionViewModel>();
         }
     }
 }

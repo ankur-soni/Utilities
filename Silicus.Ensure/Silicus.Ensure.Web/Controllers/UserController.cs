@@ -97,6 +97,7 @@ namespace Silicus.Ensure.Web.Controllers
         /// <returns></returns>
         public ActionResult GetUserDetails([DataSourceRequest] DataSourceRequest request)
         {
+            SyncCandidatesFromJobVite();
             var userlist = _containerUserService.GetAllUsers();
             var userlistViewModel = _mappingService.Map<List<Silicus.UtilityContainer.Models.DataObjects.User>, List<UserDetailViewModel>>(userlist);
             var UtilityId = GetUtilityId();
@@ -256,7 +257,14 @@ namespace Silicus.Ensure.Web.Controllers
             ViewBag.UserRoles = RoleManager.Roles.Select(r => new SelectListItem { Text = r.Name, Value = r.Name }).ToList();
             return RedirectToAction(user.Role.ToLower() == RoleName.Candidate.ToString().ToLower() ? "Candidates" : "Index", controllerName);
         }
-        
+
+        #region JobVite 
+        public void SyncCandidatesFromJobVite()
+        {
+            var x = _userService.GetCandidatesFromJobVite();
+        }
+        #endregion
+
         /// <summary>
         /// update user 
         /// </summary>

@@ -1,0 +1,85 @@
+﻿@using Kendo.Mvc.UI;
+@using Silicus.Ensure.Models.Constants;
+<script>
+    function additionalInfo() {
+        return {
+            requisitionId: 2
+        }
+    }
+</script>
+<div>
+    <div class="form-group">
+        <label>Requisition ID</label>
+        @(Html.Kendo().DropDownList()
+                    .Name("RequisitionId")
+                    .DataTextField("Title")
+                    .DataValueField("RequisitionId")
+                    .OptionLabel("--Select--")
+                    .DataSource(source => source
+          .Custom()
+          .Transport(transport => transport
+                .Read(read =>
+                {
+                    read.Url("/Candidate/GetAllRequisitions/");
+                })
+          )
+          .Schema(schema => schema
+                .Data("Data")
+                .Total("Total")
+                .Errors("errors")
+           )
+      ).HtmlAttributes(new { style = "width: 100%", @class = "M-T5" }))
+    </div>
+</div>
+
+<div class="">
+    <div class="form-group">
+        <label>Candidate Status</label>
+        @(Html.Kendo().DropDownList()
+                    .Name("Candidates")
+                    .DataTextField("FirstName")
+                    .DataValueField("LastName")
+                    .OptionLabel("--Select--")
+                    .CascadeFrom("RequisitionId")
+                  .DataSource(source => source
+          .Custom()
+          .Transport(transport => transport
+                .Read(read =>
+                {
+                    read.Url("/Candidate/GetCandidatesByRequisition").Data("additionalInfo");
+                })
+          )
+          .Schema(schema => schema
+                .Data("Data")
+                .Total("Total")
+                .Errors("errors")
+           ).ServerFiltering(true)
+      )
+      .HtmlAttributes(new { style = "width: 100%", @class = "M-T5" }))
+    </div>
+
+    <div>
+        @(Html.Kendo().DropDownList().Name("TestSuiteId")
+          .DataTextField("TestSuiteName")
+          .DataValueField("TestSuiteId")
+          .OptionLabel("--Select--")
+          .DataSource(source => source
+          .Custom()
+          .Transport(transport => transport
+                .Read(read =>
+                {
+                    read.Url("/TestSuite/GetTestSuiteDetails/");
+                })
+          )
+          .Schema(schema => schema
+                .Data("Data")
+                .Total("Total")
+                .Errors("errors")
+           )
+      )
+          .HtmlAttributes(new { style = "width: 100%" })
+        )
+    </div>
+</div>
+
+
