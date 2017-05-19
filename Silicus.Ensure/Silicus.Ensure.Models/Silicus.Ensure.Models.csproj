@@ -144,6 +144,7 @@
     <Compile Include="DataObjects\UserTestDetails.cs" />
     <Compile Include="DataObjects\UserTestSuite.cs" />
     <Compile Include="DocumentBase.cs" />
+    <Compile Include="JobVite\AssignTestBusinessModel.cs" />
     <Compile Include="JobVite\JobViteCandidateBusinessModel.cs" />
     <Compile Include="JobVite\RequisitionBusinessModel.cs" />
     <Compile Include="NotificationMessage.cs" />

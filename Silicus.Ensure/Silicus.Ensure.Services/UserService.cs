@@ -428,9 +428,9 @@ namespace Silicus.Ensure.Services
             {
                 applicationDetails.RecruiterMemberId = RecruiterMemberId;
             }
-            var position = _positionService.GetPositionByName(objUser.Position);
-            if (position != null)
-                applicationDetails.PositionId = position.PositionId;
+            //var position = _positionService.GetPositionByName(objUser.Position);
+            //if (position != null)
+                applicationDetails.PositionId =1;
 
 
             applicationDetails.ClientName = objUser.ClientName;

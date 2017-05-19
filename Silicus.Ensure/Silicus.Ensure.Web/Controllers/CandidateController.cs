@@ -268,6 +268,11 @@ namespace Silicus.Ensure.Web.Controllers
         {
             var candidatesBusinessModel = _userService.GetCandidatesFromJobVite();
             var candidatesViewModel = _mappingService.Map<List<JobViteCandidateBusinessModel>, List<JobViteCandidateViewModel>>(candidatesBusinessModel);
+            foreach (var candidate in candidatesViewModel)
+            {
+                candidate.CandidateJson = "";
+                candidate.CandidateJson = Newtonsoft.Json.JsonConvert.SerializeObject(candidate);
+            }
             return Json(candidatesViewModel.ToDataSourceResult(request), JsonRequestBehavior.AllowGet);
         }
 
@@ -277,6 +282,13 @@ namespace Silicus.Ensure.Web.Controllers
             var requistionsViewModel = _mappingService.Map<List<RequisitionBusinessModel>, List<RequisitionViewModel>>(requistionsBusinessModel);
             return Json(requistionsViewModel.ToDataSourceResult(request), JsonRequestBehavior.AllowGet);
         }
+
+        //public ActionResult SaveCandidateAndAssignTest(AssignTestViewModel assignTestViewModel)
+        //{
+        //    var assignTestBusinessModel = _mappingService.Map<AssignTestViewModel, AssignTestBusinessModel>(assignTestViewModel);
+        //    //var candidateBusinessModel=new US
+        //    return PartialView("_AssignTestFormElements", new AssignTestBusinessModel());
+        //}
         #endregion
     }
 }

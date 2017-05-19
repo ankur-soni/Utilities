@@ -22,6 +22,9 @@ using Silicus.Ensure.Models;
 using System.IO;
 using RazorEngine;
 using System.Globalization;
+using Silicus.Ensure.Web.Models.JobVite;
+using Silicus.Ensure.Models.JobVite;
+using Newtonsoft.Json;
 
 namespace Silicus.Ensure.Web.Controllers
 {
@@ -97,7 +100,6 @@ namespace Silicus.Ensure.Web.Controllers
         /// <returns></returns>
         public ActionResult GetUserDetails([DataSourceRequest] DataSourceRequest request)
         {
-            SyncCandidatesFromJobVite();
             var userlist = _containerUserService.GetAllUsers();
             var userlistViewModel = _mappingService.Map<List<Silicus.UtilityContainer.Models.DataObjects.User>, List<UserDetailViewModel>>(userlist);
             var UtilityId = GetUtilityId();
@@ -259,9 +261,46 @@ namespace Silicus.Ensure.Web.Controllers
         }
 
         #region JobVite 
-        public void SyncCandidatesFromJobVite()
+        public async Task<ActionResult> SaveCandidateAndAssignTest(AssignTestViewModel assignTestViewModel)
         {
-            var x = _userService.GetCandidatesFromJobVite();
+            var assignTestBusinessModel = _mappingService.Map<AssignTestViewModel, AssignTestBusinessModel>(assignTestViewModel);
+            if (assignTestBusinessModel.CandidatesJson != null && assignTestBusinessModel.CandidatesJson.Any())
+            {
+                foreach (var candidateJson in assignTestBusinessModel.CandidatesJson)
+                {
+                    var jobViteCandidate = JsonConvert.DeserializeObject<JobViteCandidateBusinessModel>(candidateJson);
+
+                    var user = new UserViewModel
+                    {
+
+                        FirstName = jobViteCandidate.FirstName,
+                        LastName = jobViteCandidate.LastName,
+                        Email = jobViteCandidate.Email,
+                        Role = RoleName.Candidate.ToString(),
+                        DOB = DateTime.Now.ToString()
+
+                    };
+                    //string actionErrorName = user.Role.ToLower() == RoleName.Candidate.ToString().ToLower() ? "CandidateAdd" : "PanelAdd";
+                    //string controllerName = user.Role.ToLower() == RoleName.Candidate.ToString().ToLower() ? "Admin" : "Panel";
+                    //DateTime dt = DateTime.ParseExact(user.DOB, "dd/MM/yyyy", CultureInfo.InvariantCulture);
+                    //user.DOB = dt.ToString();
+
+                    user = await CreateUserMethod(user);
+                    //   if (!string.IsNullOrWhiteSpace(user.ErrorMessage)) { return RedirectToAction(actionErrorName, controllerName, new { UserId = user.UserId }); }
+                   
+                    var organizationUserDomainModel = _mappingService.Map<UserViewModel, UserBusinessModel>(user);
+                    organizationUserDomainModel.ApplicationDate = DateTime.Now;
+                    organizationUserDomainModel.CreatedDate = DateTime.Now;
+                    organizationUserDomainModel.IsDeleted = false;
+                   
+                    _userService.Add(organizationUserDomainModel);
+                    TempData["Success"] = "Candidate created successfully.";
+                    //Send Candidate creation mail to Admin and Recruiter
+                    List<string> Receipient = new List<string>() { "Admin" };
+                    _commonController.SendMailByRoleName("Candidate Created Successfully", "CandidateCreated.cshtml", Receipient, user.FirstName + " " + user.LastName);
+                }
+            }
+            return Content("success");
         }
         #endregion
 
@@ -380,5 +419,7 @@ namespace Silicus.Ensure.Web.Controllers
             fileModel.File.SaveAs(fileModel.FilePath);
             fileModel.FilePath = Path.Combine(fileModel.FolderName, fileModel.FileName);
         }
+
+
     }
 }

@@ -45,9 +45,9 @@ namespace Silicus.Ensure.Models.JobVite
         public string VeteranStatus { get; set; }
         public string JobviteChannel { get; set; }
         public string Comments { get; set; }
-        public Resume Resume { get; set; }
-        public Coverletter Coverletter { get; set; }
-        public List<Attachment> Attachments { get; set; }
+        //public Resume Resume { get; set; }
+        //public Coverletter Coverletter { get; set; }
+        //public List<Attachment> Attachments { get; set; }
         public List<CustomField> CustomField { get; set; }
     }
 
@@ -56,15 +56,15 @@ namespace Silicus.Ensure.Models.JobVite
         public string Email { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
-        public string HomePhone { get; set; }
-        public string WorkPhone { get; set; }
-        public string Mobile { get; set; }
-        public string Address { get; set; }
-        public string Address2 { get; set; }
-        public string City { get; set; }
-        public string State { get; set; }
-        public string Country { get; set; }
-        public string PostalCode { get; set; }
+        //public string HomePhone { get; set; }
+        //public string WorkPhone { get; set; }
+        //public string Mobile { get; set; }
+        //public string Address { get; set; }
+        //public string Address2 { get; set; }
+        //public string City { get; set; }
+        //public string State { get; set; }
+        //public string Country { get; set; }
+        //public string PostalCode { get; set; }
         public string Title { get; set; }
         public Application Application { get; set; }
     }
