@@ -1,5 +1,9 @@
 ﻿@model Silicus.Ensure.Web.Models.JobVite.AssignTestViewModel
 <script>
+    $(document).ready(function () {
+        $("form").kendoValidator({
+        });
+    });
     function additionalInfo() {
         return {
             requisitionId: 2
@@ -16,5 +20,4 @@
     <div id="AssignTestFormContentDiv">
         @Html.Partial("_AssignTestFormElements", Model)
     </div>
-    <button type="submit">Assign</button>
 }

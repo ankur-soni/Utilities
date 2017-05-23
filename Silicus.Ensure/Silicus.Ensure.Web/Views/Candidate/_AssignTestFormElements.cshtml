@@ -21,6 +21,7 @@
                 .Errors("errors")
            )
       ).HtmlAttributes(new { style = "width: 100%", @class = "M-T5" }))
+    @Html.ValidationMessageFor(m => m.RequisitionId)
 </div>
 
 <div class="form-group">
@@ -45,6 +46,7 @@
            ).ServerFiltering(true)
       )
       .HtmlAttributes(new { style = "width: 100%", @class = "M-T5" }))
+    @Html.ValidationMessageFor(m => m.CandidatesJson)
 </div>
 
 <div class="form-group">
@@ -69,4 +71,5 @@
       )
           .HtmlAttributes(new { style = "width: 100%" })
     )
+    @Html.ValidationMessageFor(m => m.TestSuiteId)
 </div>

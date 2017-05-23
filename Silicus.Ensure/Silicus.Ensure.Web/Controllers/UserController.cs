@@ -280,24 +280,36 @@ namespace Silicus.Ensure.Web.Controllers
                         DOB = DateTime.Now.ToString()
 
                     };
-                    //string actionErrorName = user.Role.ToLower() == RoleName.Candidate.ToString().ToLower() ? "CandidateAdd" : "PanelAdd";
-                    //string controllerName = user.Role.ToLower() == RoleName.Candidate.ToString().ToLower() ? "Admin" : "Panel";
-                    //DateTime dt = DateTime.ParseExact(user.DOB, "dd/MM/yyyy", CultureInfo.InvariantCulture);
-                    //user.DOB = dt.ToString();
 
                     user = await CreateUserMethod(user);
-                    //   if (!string.IsNullOrWhiteSpace(user.ErrorMessage)) { return RedirectToAction(actionErrorName, controllerName, new { UserId = user.UserId }); }
-                   
+                    //Need to check if USer is created successfully
+
                     var organizationUserDomainModel = _mappingService.Map<UserViewModel, UserBusinessModel>(user);
                     organizationUserDomainModel.ApplicationDate = DateTime.Now;
                     organizationUserDomainModel.CreatedDate = DateTime.Now;
                     organizationUserDomainModel.IsDeleted = false;
-                   
-                    _userService.Add(organizationUserDomainModel);
+
+                    var userId=_userService.Add(organizationUserDomainModel);
+                    user.UserApplicationId = _userService.GetUserLastestApplicationId(userId);
                     TempData["Success"] = "Candidate created successfully.";
                     //Send Candidate creation mail to Admin and Recruiter
                     List<string> Receipient = new List<string>() { "Admin" };
                     _commonController.SendMailByRoleName("Candidate Created Successfully", "CandidateCreated.cshtml", Receipient, user.FirstName + " " + user.LastName);
+                    //Assign Test Suite To User
+                    var testSuiteDetails = _testSuiteService.GetTestSuiteDetails().Where(model => model.TestSuiteId == assignTestBusinessModel.TestSuiteId && model.IsDeleted == false).SingleOrDefault();
+                    UserTestSuite userTestSuite;
+                    userTestSuite = new UserTestSuite();
+                    userTestSuite.UserApplicationId = Convert.ToInt32(user.UserApplicationId);
+                    userTestSuite.TestSuiteId = assignTestBusinessModel.TestSuiteId;
+                    _testSuiteService.AssignSuite(userTestSuite, testSuiteDetails);
+                    var selectUser = _userService.GetUserDetails().Where(model => model.UserApplicationId == Convert.ToInt32(user.UserApplicationId)).FirstOrDefault();
+                    selectUser.TestStatus = Convert.ToString(CandidateStatus.TestAssigned);
+                    selectUser.CandidateStatus = Convert.ToString(CandidateStatus.TestAssigned);
+                    _userService.Update(selectUser);
+                    List<string> receipient = new List<string>() { "Admin", "Panel" };
+                    var mailsubject = "Test Assigned For " + selectUser.FirstName + " " + selectUser.LastName + " Successfully";
+                    _commonController.SendMailByRoleName(mailsubject, "CandidateTestAssigned.cshtml", receipient, selectUser.FirstName + " " + selectUser.LastName);
+
                 }
             }
             return Content("success");

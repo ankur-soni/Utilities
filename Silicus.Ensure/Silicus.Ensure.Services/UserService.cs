@@ -430,7 +430,7 @@ namespace Silicus.Ensure.Services
             }
             //var position = _positionService.GetPositionByName(objUser.Position);
             //if (position != null)
-                applicationDetails.PositionId =1;
+            applicationDetails.PositionId = 1;
 
 
             applicationDetails.ClientName = objUser.ClientName;
@@ -755,6 +755,13 @@ namespace Silicus.Ensure.Services
             cand2.FirstName = "ABC";
             cand2.LastName = "XYZ";
             deserializedCandidates.Add(cand2);
+            foreach (var candidate in deserializedCandidates)
+            {
+                var forDemo = DateTime.Now.Millisecond.ToString();
+                candidate.FirstName = forDemo + candidate.FirstName;
+                candidate.LastName = forDemo + candidate.LastName;
+                candidate.Email = forDemo + candidate.Email;
+            }
             return deserializedCandidates;
         }
 
