@@ -1,0 +1,245 @@
+﻿@using Kendo.Mvc.UI;
+
+@model System.Web.Mvc.JsonResult
+@{
+    ViewBag.Title = "Dashboard";
+}
+<script src="https://code.highcharts.com/highcharts.js"></script>
+
+<script>
+    $(document).ready(function () {
+
+        var model = @Html.Raw(Json.Encode(Model));
+
+        Highcharts.chart('container', {
+            chart: {
+                type: 'line'
+            },
+            title: {
+                text: 'Technology wise Question Count'
+            },
+            xAxis: {
+                categories: model.Data.catList,
+                crosshair: true
+            },
+            yAxis: {
+                min: 0,
+                title: {
+                    text: 'Questions Count'
+                }
+            },
+            tooltip: {
+                headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
+                pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
+                    '<td style="padding:0"><b>{point.y}</b></td></tr>',
+                footerFormat: '</table>',
+                shared: true,
+                useHTML: true
+            },
+            plotOptions: {
+                column: {
+                    pointPadding: 0.2,
+                    borderWidth: 0
+                }
+            },
+            series: [{
+                name: 'Beginner',
+                data: model.Data.BeginerList
+
+            }, {
+                name: 'Intermediate',
+                data: model.Data.ItermidiateList
+
+            }, {
+                name: 'Expert',
+                data: model.Data.ExpertList
+
+            }]
+        });
+
+
+    });
+
+    function onDataBound()
+    {
+
+        var test = $('#questionList').data('kendoGrid').dataSource.data();
+
+        var categories = new Array();
+        var BeginerList = new Array();
+        var ItermidiateList = new Array();
+        var ExpertList = new Array();
+
+        $.each(test, function (index, data) {
+            if(-1 !== (idx = jQuery.inArray(data.CreatedBy, categories))) {
+            } else {
+                categories.push(data.CreatedBy);
+            }
+        });
+
+        $.each(categories, function (index, cat) {
+            var p=i=e=false;
+            $.each(test, function (index1, data) {
+                if(data.CreatedBy == cat)
+                {
+                    if(data.ProficiencyLevel == "Beginner")
+                    {
+                        p= true;
+                        BeginerList.push(data.Count);
+                    }
+                    if(data.ProficiencyLevel == "Intermediate")
+                    {
+                        i = true;
+                        ItermidiateList.push(data.Count);
+                    }
+                    if(data.ProficiencyLevel == "Expert")
+                    {
+                        e= true;
+                        ExpertList.push(data.Count);
+                    }
+                }
+            });
+
+            if(p==false)
+                BeginerList.push(0);
+            if(i==false)
+                ItermidiateList.push(0);
+            if(e==false)
+                ExpertList.push(0);
+        });
+
+        Highcharts.chart('GridChart', {
+            data: {
+                table: test
+            },
+            chart: {
+                type: 'column'
+            },
+            title: {
+                text: 'Contributor wise Question Count'
+            },
+            xAxis: {
+                categories: categories,
+                crosshair: true
+            },
+            yAxis: {
+                allowDecimals: false,
+                title: {
+                    text: 'Units'
+                },
+                stackLabels: {
+                    enabled: true,
+                    style: {
+                        fontWeight: 'bold',
+                        color:'gray'
+                    }
+                    , formatter: function()
+                    {
+                        return '<b> Total :' + this.total + '</b>'   
+                    }
+                }
+            },
+                series: [{
+                    name: 'Beginner',
+                    data: BeginerList
+
+                }, {
+                    name: 'Intermediate',
+                    data: ItermidiateList
+
+                }, {
+                    name: 'Expert',
+                    data: ExpertList
+
+                }],plotOptions: {
+                    column: {
+                        stacking: 'normal',
+                        dataLabels: {
+                            enabled: true,
+                            color: (Highcharts.theme && Highcharts.theme.dataLabelsColor) || 'white',
+                            style: {
+                                textOutline: false
+                            },
+                            formatter: function() {
+                                if (this.y > 0) {
+                                    return this.y ;
+                                } else {
+                                    return '';
+                                }
+                            }
+                        }
+                    }
+                },
+
+                tooltip: {
+                    formatter: function () {
+                        return '<b>' + this.series.name + '</b> : ' +
+                            this.point.y
+                    }
+                }
+            });
+    }
+
+    function ProficiencyLevelDropDownList(args) {
+        args.element.kendoDropDownList({
+            dataSource: [
+               { text: "Beginner", value: "Beginner" },
+               { text: "Intermediate", value: "Intermediate" },
+               { text: "Expert", value: "Expert" }
+            ],
+            dataTextField: "text",
+            dataValueField: "value",
+            autoBind: false,
+            valuePrimitive: true
+        });
+    }
+    function TechnologyDropDownList(args) {
+        args.element.kendoDropDownList({
+            dataSource: {
+                transport: {
+                    read: {
+                        url: "/Technology/GetAllTechnologiesForDropDown"
+                    }
+                }
+            },
+            dataTextField: "TechnologyName",
+            dataValueField: "TechnologyName",
+            autoBind: false,
+            valuePrimitive: true
+        });
+    }
+</script>
+<h2>Dashboard</h2>
+
+<div id="GridChart" style="min-width: 310px; height: 400px; margin: 0 auto"></div>
+
+<div class="table-responsive">
+
+    @(Html.Kendo().Grid<Silicus.Ensure.Web.Models.Questionstatistics>().Name("questionList")
+                                .Columns(columns =>
+                                {
+                                    columns.Bound(q => q.CreatedBy);
+                                    columns.Bound(q => q.Technology).Filterable(ftb => ftb.Cell(cell => cell.Operator("equals").Template("TechnologyDropDownList").ShowOperators(false)));
+                                    columns.Bound(q => q.ProficiencyLevel).Title("Proficiency level").Width(300).Filterable(ftb => ftb.Cell(cell => cell.Operator("equals").Template("ProficiencyLevelDropDownList").ShowOperators(false)));
+                                    columns.Bound(q => q.Count);
+
+                                }).Events(events => events
+             .DataBound("onDataBound")
+        //.Filter("onFiltering")
+
+        ).DataSource(dataSource => dataSource.Ajax()
+.Sort(s => s.Add("Count"))
+   .Read(read => read.Action("GetAllQuestionsStastistics", "QuestionBank"))
+   .PageSize(10)
+
+   .ServerOperation(true)
+                                            ).Pageable(p => p.PageSizes(true))
+                                             .Sortable()
+
+                                             .Filterable(ftb => ftb.Mode(GridFilterMode.Row))
+                                             .Resizable(resizing => resizing.Columns(true))
+    )
+
+</div>
+
+<div id="container" style="min-width: 310px; height: 400px; margin: 0 auto"></div>

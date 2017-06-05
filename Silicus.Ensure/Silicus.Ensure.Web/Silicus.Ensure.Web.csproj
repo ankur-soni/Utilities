@@ -393,6 +393,7 @@
     <Compile Include="Controllers\CandidateAccountController.cs" />
     <Compile Include="Controllers\CandidateController.cs" />
     <Compile Include="Controllers\CommonController.cs" />
+    <Compile Include="Controllers\EmployeeController.cs" />
     <Compile Include="Controllers\ErrorController.cs" />
     <Compile Include="Controllers\ManageUserController.cs" />
     <Compile Include="Controllers\MasterController.cs" />
@@ -5420,6 +5421,9 @@
     <Content Include="Scripts\Kendo\2015.3.1111.340\kendo.dataviz.min.js.map" />
     <Content Include="Views\Candidate\_AssignTest.cshtml" />
     <Content Include="Views\Candidate\_AssignTestFormElements.cshtml" />
+    <Content Include="Views\QuestionBank\Dashboard.cshtml" />
+    <Content Include="Views\Employee\EmployeeList.cshtml" />
+    <Content Include="Views\Employee\_employeeGrid.cshtml" />
     <None Include="Web.Azure.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -5472,6 +5476,7 @@
     <Folder Include="Content\plugins\angularjs\plugins\angular-file-upload\uploads\" />
     <Folder Include="ViewModel\" />
     <Folder Include="Views\Common\" />
+    <Folder Include="Views\QuestionBankDashboard\" />
     <Folder Include="Views\Shared\DisplayTemplates\" />
     <Folder Include="Views\Staff\" />
     <Folder Include="Views\UserManagement\" />

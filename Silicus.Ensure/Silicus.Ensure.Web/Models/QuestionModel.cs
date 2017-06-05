@@ -60,7 +60,7 @@ namespace Silicus.Ensure.Web.Models
         public bool IsDeleted { get; set; }
         public DateTime CreatedOn { get; set; }
         public int CreatedBy { get; set; }
-        public string CreatedByName { get; set;}
+        public string CreatedByName { get; set; }
 
         public DateTime? ModifiedOn { get; set; }
         public int? ModifiedBy { get; set; }
@@ -85,9 +85,17 @@ namespace Silicus.Ensure.Web.Models
         public int NoOfTimesIncludedInTest { get; set; }
         public int NoOfTimesCorrectlyAnswered { get; set; }
         public int NoOfTimesIncorrectlyAnswered { get; set; }
-        
+
     }
 
+    public class Questionstatistics
+    {
+        public string CreatedBy { get; set; }
+        public string Technology { get; set; }
+        public string ProficiencyLevel { get; set; }
+        public int Count { get; set; }
+
+    }
     public enum ProficiencyLevel
     {
         Beginner,

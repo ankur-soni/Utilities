@@ -15,6 +15,9 @@ namespace Silicus.Ensure.Web.Models
         public string Designation { get; set; }
         public string Email { get; set; }
         public string Department { get; set; }
+
+        public string EmployeeId { get; set; }
+
         public int RoleId { get; set; }
         public string RoleName { get; set; }
         public int UserId { get; set; }

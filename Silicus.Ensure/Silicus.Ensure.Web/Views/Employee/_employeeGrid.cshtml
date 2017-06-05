@@ -1,0 +1,40 @@
+﻿@model Silicus.Ensure.Models.UserBusinessModel
+@using Silicus.Ensure.Models.Constants;
+@using Kendo.Mvc.UI;
+@using System.Linq
+@{
+    ViewBag.Title = "_employeeGrid";
+}
+
+
+<div class="table-responsive">
+    @if (Request.IsAuthenticated)
+    {
+        @(Html.Kendo().Grid<Silicus.Ensure.Web.Models.UserDetailViewModel>().Name("UserGrids")
+         .Columns(columns =>
+         {
+             columns.Bound(c => c.FullName).Title("Name").Width(400);
+             columns.Bound(p => p.RoleName).Title("Role name").Width(450);
+             columns.Bound(p => p.EmployeeId).Title("EmployeeId").Width(450);
+             columns.Bound(p => p.Email).Width(550);
+            // columns.Bound(c => c.RoleId).Title("Action").Sortable(false).Width(650).ClientTemplate(" <div> #if(RoleName == 'Recruiter'){#<input type='button' style='width:92px;font-size:14px;text-transform:initial;' class='btn green' onclick='assignType(event)' value='Manage type'>#}else if(RoleName == 'Panel') { #<input type='button' style='font-size:14px;text-transform:initial;' class='btn green' onclick='assignPanel(event)' value='Manage panel'># }else if(RoleName == 'Candidate') { #<input type='button' value='z'># } #");
+         
+         })
+            .DataSource(dataSource => dataSource.Ajax().Model(model =>
+            {
+                model.Id(p => p.Email);
+                model.Field(p => p.Email).Editable(false);
+            })
+
+                                                                      .Read(read => read.Action("GetUserDetails", "Employee")).ServerOperation(false)
+                                                              //.Create(update => update.Action("CreateUser", "User"))
+                                                              //.Update(update => update.Action("UpdateUser", "User"))
+                                                              //.Destroy(update => update.Action("DeleteUser", "User"))
+                                                              .PageSize(10))
+
+            .Pageable(pager => { pager.PageSizes(true); })
+            .Sortable()
+            .Resizable(resizing => resizing.Columns(true))
+        )
+    }
+</div>

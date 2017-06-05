@@ -35,6 +35,61 @@ namespace Silicus.Ensure.Web.Controllers
             _technologyService = technologyService;
         }
 
+        public ActionResult Dashboard()
+        {
+            var questionsList = _questionService.GetQuestion().GroupBy(q => new { q.Technology, q.ProficiencyLevel })
+                .Select(y => new
+                {
+                    Technology = y.Key.Technology.TechnologyName,
+                    Level = y.Key.ProficiencyLevel,
+                    Count = y.Count()
+                }
+                );
+
+            var catList = questionsList.Select(q => q.Technology).Distinct().ToList();
+
+            var BeginerList = new List<int>();
+            var ItermidiateList = new List<int>();
+            var ExpertList = new List<int>();
+
+            foreach (var cat in catList)
+            {
+                BeginerList.Add(questionsList.Where(c => c.Technology == cat && c.Level == 1).Select(q => q.Count).FirstOrDefault());
+                ItermidiateList.Add(questionsList.Where(c => c.Technology == cat && c.Level == 2).Select(q => q.Count).FirstOrDefault());
+                ExpertList.Add(questionsList.Where(c => c.Technology == cat && c.Level == 3).Select(q => q.Count).FirstOrDefault());
+
+            }
+            // var ConsolidatedQList = questionsList.Select(t => t.)
+            var ChartData = new { catList = catList, BeginerList = BeginerList, ItermidiateList = ItermidiateList, ExpertList = ExpertList };
+
+            var fromJson = Json(ChartData);
+            return View(fromJson);
+        }
+
+        public ActionResult GetAllQuestionsStastistics([DataSourceRequest] DataSourceRequest request)
+        {
+            var questions = _questionService.GetQuestion().OrderByDescending(x => x.ModifiedOn);
+            var QList = questions.GroupBy(q => new { q.CreatedBy, q.TechnologyId, q.ProficiencyLevel }).Select(qu => new Questionstatistics()
+            {
+                CreatedBy = qu.Key.CreatedBy.ToString(),
+                Technology = qu.Key.TechnologyId.ToString(),
+                ProficiencyLevel = qu.Key.ProficiencyLevel.ToString(),
+                Count = qu.Count()
+            }).ToList();
+
+            foreach(var obj in QList)
+            {
+                obj.CreatedBy = GetCreatedByName(int.Parse(obj.CreatedBy));
+                obj.ProficiencyLevel = GetCompetency(obj.ProficiencyLevel);
+                obj.Technology = GetTechnologyName(int.Parse(obj.Technology));
+            }
+
+            //var jsonResult = Json(QList.ToArray().ToDataSourceResult(request), JsonRequestBehavior.AllowGet);
+
+            return Json(QList.ToDataSourceResult(request));
+        }
+
+
         public ActionResult AddQuestions(string questionId)
         {
             QuestionModel que = new QuestionModel { QuestionType = "0", OptionCount = 2, SkillTagsList = Tags() };
@@ -136,12 +191,13 @@ namespace Silicus.Ensure.Web.Controllers
 
         private int GetCountOfInclusion(int questionId)
         {
-            var count= _questionService.GetCountOfInclusion(questionId);
+            var count = _questionService.GetCountOfInclusion(questionId);
             return count;
         }
+
         private string GetCreatedByName(int createdById)
         {
-            var user=_containerUserService.GetUserByID(createdById);
+            var user = _containerUserService.GetUserByID(createdById);
             return user != null ? user.FirstName + " " + user.LastName : "";
         }
 

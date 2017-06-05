@@ -227,13 +227,38 @@
                                         @*<span class="arrow open"></span>*@
                                     </a>
                                 </li>
+                                <li class="nav-item start" id="candidate-link">
+                                    <a href="/Employee/Index" class="nav-link nav-toggle">
+                                        <i class="fa fa-user"></i>
+                                        <span class="title">Employee</span>
+                                        <span class="selected"></span>
+                                        @*<span class="arrow open"></span>*@
+                                    </a>
+                                </li>
                                 <li class="nav-item start" id="questionbank-link">
-                                    <a href="/QuestionBank/QuestionBank" class="nav-link nav-toggle">
+                                    <a href="#" class="nav-link nav-toggle">
                                         <i class="fa fa-question-circle"></i>
                                         <span class="title">Question Bank</span>
                                         <span class="selected"></span>
                                         @*<span class="arrow open"></span>*@
                                     </a>
+                                    <ul class="sub-menu">
+                                        <li class="nav-item start">
+                                            <a href="/QuestionBank/Dashboard" class="nav-link ">
+                                                <i class="fa fa-tachometer" aria-hidden="true"></i>
+                                                <span class="title">Dashboard</span>
+                                                <span class="selected"></span>
+                                            </a>
+                                        </li>
+                                        <li class="nav-item start" id="questionList-link">
+                                            <a href="/QuestionBank/QuestionBank" class="nav-link ">
+                                                <i class="fa fa-question" aria-hidden="true"></i>
+                                                <span class="title">Question List</span>
+
+                                            </a>
+                                        </li>
+
+                                    </ul>
                                 </li>
                                 <li class="nav-item start" id="testsuite-link">
                                     <a href="/TestSuite/List" class="nav-link nav-toggle">
