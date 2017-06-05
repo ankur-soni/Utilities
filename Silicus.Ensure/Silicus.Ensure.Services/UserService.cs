@@ -26,7 +26,7 @@ namespace Silicus.Ensure.Services
         }
 
         public IEnumerable<UserBusinessModel> GetUserDetailsAll()
-        {
+        {          
             List<UserBusinessModel> userModel = new List<UserBusinessModel>();
             var users = _context.Query<User>();
             var panelMeberDetails = _context.Query<PanelMemberDetail>();
@@ -59,7 +59,7 @@ namespace Silicus.Ensure.Services
 
         public IEnumerable<UserBusinessModel> GetUserDetails()
         {
-
+            
             return GetUserDetailsAll();
         }
 

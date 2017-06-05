@@ -139,6 +139,8 @@
     <Compile Include="..\SharedAssemblyInfo.cs">
       <Link>Properties\SharedAssemblyInfo.cs</Link>
     </Compile>
+    <Compile Include="EntityConfigurations\EmployeeTestSuiteMap.cs" />
+    <Compile Include="EntityConfigurations\EmployeeTestDetailsMap.cs" />
     <Compile Include="EntityConfigurations\EmailAvailableMap.cs" />
     <Compile Include="EntityConfigurations\ManagerMap.cs" />
     <Compile Include="EntityConfigurations\OrganizationMap.cs" />
@@ -167,6 +169,7 @@
     <Compile Include="Initializer\SilicusIpDropCreateDatabaseAlwaysInitializer.cs" />
     <Compile Include="Initializer\SilicusIpDropCreateDatabaseIfModelChangesInitializer.cs" />
     <Compile Include="IIncluder.cs" />
+    <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="QueryableExtensions.cs" />
     <Compile Include="ConnectionType.cs" />
     <Compile Include="DataContextFactory.cs" />

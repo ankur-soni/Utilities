@@ -16,6 +16,9 @@
         public static readonly string UserTestSuite = "UserTestSuite";
         public static readonly string UserTestDetails = "UserTestDetails";
 
+        public static readonly string EmployeeTestSuite = "EmployeeTestSuite";
+        public static readonly string EmployeeTestDetails = "EmployeeTestDetails";
+
         public static readonly string Position = "Position";
         public static readonly string Panel = "Panel";
         public static readonly string TestSuiteTag = "TestSuiteTag";

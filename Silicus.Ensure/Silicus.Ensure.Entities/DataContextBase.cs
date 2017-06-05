@@ -46,6 +46,8 @@ namespace Silicus.Ensure.Entities
             modelBuilder.Configurations.Add(new TestSuiteMap());
             modelBuilder.Configurations.Add(new UserTestSuiteMap());
             modelBuilder.Configurations.Add(new UserTestDetailsMap());
+            modelBuilder.Configurations.Add(new EmployeeTestSuiteMap());
+            modelBuilder.Configurations.Add(new EmployeeTestDetailsMap());
             modelBuilder.Configurations.Add(new PositionMap());
             modelBuilder.Configurations.Add(new PanelMap());
             modelBuilder.Configurations.Add(new RecruiterMembersDetailMap());
