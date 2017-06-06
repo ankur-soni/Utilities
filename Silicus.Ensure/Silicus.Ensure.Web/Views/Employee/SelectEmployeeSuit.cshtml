@@ -1,0 +1,100 @@
+﻿
+@*@model List<Silicus.Ensure.Web.Models.TestSuiteViewModel>*@
+@using Kendo.Mvc.UI;
+
+
+@{
+    ViewBag.Title = "TestSuite List";
+
+}
+<div class="toolbar">
+    <div class="row">
+        <div class="col-sm-12 addclearFloat">
+            <div class="form-group clearFloat1 addclearFloat1">
+
+                <div class="input-group searchInputGroup">
+                    <span class="input-group-addon"><span class="glyphicon glyphicon-search" aria-hidden="true"></span></span>
+                    <input type="text" class="form-control" id='TestSuiteFieldFilter' placeholder="Search" style="height: 31px;">
+                    <span class="input-group-btn">
+                        <button id="TestSuiteSearch" class="btn green" type="button" style="padding:6px 13px 5px !important;"><span class="glyphicon glyphicon-refresh" aria-hidden="true"></span></button>
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@if (Request.IsAuthenticated)
+{
+    @(Html.Kendo().Grid<Silicus.Ensure.Web.Models.TestSuiteViewModel>().Name("testSuiteGrids")
+                     .Columns(columns =>
+                     {
+                         columns.Bound(p => p.TestSuiteId).ClientTemplate("<input type='checkbox' #if(IsAssigned){# checked='checked' #}# class='check' id='chkHeader' value='#=TestSuiteId#'/>").Title("");
+                         columns.Bound(p => p.TestSuiteName).Width(200);
+                         columns.Bound(p => p.Duration).Width(150);
+                         columns.Bound(p => p.PositionName).Width(150);
+                         columns.Bound(p => p.PrimaryTagNames).Width(200);
+                         columns.Bound(p => p.Userid).ClientTemplate("<input type='text' class='textu' id='txtUser' value='#=Userid#'/>").Hidden();
+                     })
+                              .DataSource(dataSource => dataSource
+                                  .Ajax()
+                                  .Model(model =>
+                                  {
+                                      model.Id(p => p.TestSuiteId);
+                                      model.Field(p => p.TestSuiteId).Editable(false);
+                                  })
+                                          //.Read(read => read.Action("GetEmployeeTestSuiteDetails", "Admin", new { UserId = @ViewBag.CurrentUser }))
+                                          .Read(read => read.Action("GetEmployeeTestSuiteDetails", "Employee", new { UserId = @ViewBag.CurrentUser }))
+                                  .PageSize(10)
+                                  .ServerOperation(false)
+                              )
+                                  .Pageable(x => x.PageSizes(true))
+
+                          .Sortable()
+
+
+    )
+
+}
+<input type="hidden" value="@ViewBag.CurrentUser" id="CurrentUser" />
+<input type="hidden" value="@ViewBag.IsReassign" id="IsReAssign" />
+
+<script>
+
+  
+
+    $("#testSuiteGrids").on("change", "input.check", function (e) {
+        var v = $(this).is(":checked");
+        $("input.check", "#testSuiteGrids").prop("checked", false);
+        $(this).prop("checked", v);
+    });
+    $(document).ready(function () {
+
+
+
+        $("#TestSuiteFieldFilter").keyup(function () {
+
+            var value = $("#TestSuiteFieldFilter").val();
+            grid = $("#testSuiteGrids").data("kendoGrid");
+            var pageSize = grid.dataSource.pageSize();
+            if (value.length > 0) {
+                if (value) {
+                    grid.dataSource.filter({ field: "TestSuiteName", operator: "contains", value: value });
+                    grid.dataSource.sort({ field: "TestSuiteName", dir: "asc" });
+                    grid.dataSource.pageSize(pageSize);
+                } else {
+                    grid.dataSource.filter({});
+                }
+            }
+            else if (value == "")
+                grid.dataSource.filter({});
+        });
+
+        $("#TestSuiteSearch").click(function (e) {
+            e.preventDefault();
+            var datasource = $("#testSuiteGrids").data("kendoGrid").dataSource;
+            //Clear filters:
+            datasource.filter([]);
+            $("#TestSuiteFieldFilter").val('');
+        });
+    });
+</script>

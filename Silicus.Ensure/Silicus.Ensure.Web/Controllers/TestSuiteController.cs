@@ -46,7 +46,15 @@ namespace Silicus.Ensure.Web.Controllers
             bool userInRole = MvcApplication.getCurrentUserRoles().Contains((Silicus.Ensure.Models.Constants.RoleName.Admin.ToString()));
             foreach (var item in viewModels)
             {
-                item.PositionName = GetPosition(item.Position) == null ? "deleted from master" : GetPosition(item.Position).PositionName;
+                if (item.Position.HasValue)
+                {
+                    item.PositionName = GetPosition((int)item.Position.Value) == null ? "deleted from master" : GetPosition((int)item.Position.Value).PositionName;
+                }
+                else
+                {
+                    item.PositionName = "Not assigned";
+                }
+                
                 List<Int32> TagId = item.PrimaryTags.Split(',').Select(int.Parse).ToList();
                 item.PrimaryTagNames = string.Join(",", (from a in tags
                                                          where TagId.Contains(a.TagId)

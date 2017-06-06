@@ -39,11 +39,15 @@ namespace Silicus.Ensure.Services.Interfaces
 
         UserTestSuite GetUserTestSuiteByUserApplicationId(int userId);
 
+        EmployeeTestSuite GetEmployeeTestSuiteByEmployeeId(int userId);
+
         IEnumerable<UserTestDetails> GetUserTestDetailsListByUserTestSuitId(int userTestSuitId);
 
         TestDetailsBusinessModel GetUserTestDetailsByUserTestSuitId(int? userTestSuitId, int? questionNumber, int questionType, QuestionType testStartWithQuestionType = QuestionType.Objective);
 
         int AssignSuite(UserTestSuite userTestSuite, TestSuite testSuite);
+
+        int AssignEmployeeSuite(EmployeeTestSuite userTestSuite, TestSuite testSuite);
 
         List<Question> GetPreview(PreviewTestBusinessModel previewTest);
 

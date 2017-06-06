@@ -64,6 +64,12 @@ namespace Silicus.Ensure.Services
             return UserTestSuite.UserTestSuiteId;
         }
 
+        public int AddEmployeeTestSuite(EmployeeTestSuite UserTestSuite)
+        {
+            _context.Add(UserTestSuite);
+            return UserTestSuite.EmployeeTestSuiteId;
+        }
+
         public void UpdateUserTestSuite(UserTestSuite UserTestSuite)
         {
             if (UserTestSuite.UserApplicationId > 0)
@@ -90,6 +96,12 @@ namespace Silicus.Ensure.Services
         public UserTestSuite GetUserTestSuiteByUserApplicationId(int applicationId)
         {
             return _context.Query<UserTestSuite>().Where(x => x.UserApplicationId == applicationId).FirstOrDefault();
+        }
+
+        //ADK
+        public EmployeeTestSuite GetEmployeeTestSuiteByEmployeeId(int employeeId)
+        {
+            return _context.Query<EmployeeTestSuite>().Where(x => x.EmployeeId == employeeId).FirstOrDefault();
         }
 
         public UserTestSuite GetUserTestSuiteId(int userTestSuiteId)
@@ -297,6 +309,26 @@ namespace Silicus.Ensure.Services
             userTestSuite.Duration = testSuite.Duration;
             userTestSuite.StatusId = Convert.ToInt32(CandidateStatus.TestAssigned);
             return AddUserTestSuite(userTestSuite);
+        }
+
+        public int AssignEmployeeSuite(EmployeeTestSuite employeeTestSuite, TestSuite testSuite)
+        {
+            var testSuiteDetails = new List<EmployeeTestDetails>();
+            EmployeeTestDetails testSuiteDetail;
+            var questions = GenerateQuestionSet(testSuite);
+            foreach (var question in questions)
+            {
+                testSuiteDetail = new EmployeeTestDetails();
+                testSuiteDetail.QuestionId = question.Id;
+                testSuiteDetails.Add(testSuiteDetail);
+            }
+            employeeTestSuite.EmployeeTestDetails = testSuiteDetails;
+            employeeTestSuite.ObjectiveCount = questions.Count(x => x.QuestionType == 1);
+            employeeTestSuite.PracticalCount = questions.Count(x => x.QuestionType == 2);
+            employeeTestSuite.MaxScore = questions.Sum(x => x.Marks);
+            employeeTestSuite.Duration = testSuite.Duration;
+            employeeTestSuite.StatusId = Convert.ToInt32(CandidateStatus.TestAssigned);
+            return AddEmployeeTestSuite(employeeTestSuite);
         }
 
         private List<Question> GenerateQuestionSet(TestSuite testSuite)

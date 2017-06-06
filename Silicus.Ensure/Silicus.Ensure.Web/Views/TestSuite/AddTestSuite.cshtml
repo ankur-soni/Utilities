@@ -15,60 +15,71 @@
     @Html.AntiForgeryToken()
     <div class="portlet box green">
         <div class="portlet-title">
-           
+
             <div class="caption">
                 @ViewBag.Type test suit
             </div>
-          
+
 
         </div>
         <div class="portlet-body form">
             <div class="form-body">
-                 <div class="form-horizontal">
+                <div class="form-horizontal">
 
-                                        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-                                        @if (Model != null)
+                    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                    @if (Model != null)
+                    {
+                        @Html.HiddenFor(model => model.TestSuiteId)
+                        @Html.HiddenFor(model => model.IsCopy)
+                        @Html.HiddenFor(model => model.Status)
+                        @Html.HiddenFor(model => model.PrimaryTagNames)
+                    }
+
+
+                    <div class="form-group">
+                        <div class="col-md-2">
+                            @Html.LabelFor(model => model.TestSuiteName) <span style="color:red;">*</span>
+                        </div>
+                        <div class="col-md-4">
+                            @Html.EditorFor(model => model.TestSuiteName, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.TestSuiteName, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="col-md-2">
+                            @Html.LabelFor(model => model.IsExternal) <span style="color:red;">*</span>
+                        </div>
+                        <div class="col-md-4">
+                            @Html.RadioButtonFor(model => model.IsExternal, true, true) Yes  
+                            @Html.RadioButtonFor(model=>model.IsExternal, false, false) No 
+                            @Html.ValidationMessageFor(model => model.IsExternal, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="col-md-2">
+                            @Html.LabelFor(model => model.Duration) <span style="color:red;">*</span>
+                        </div>
+                        <div class="col-md-4">
+                            @if (Model != null && Model.Duration == 0)
                             {
-                            @Html.HiddenFor(model => model.TestSuiteId)
-                            @Html.HiddenFor(model => model.IsCopy)
-                            @Html.HiddenFor(model => model.Status)
-                            @Html.HiddenFor(model => model.PrimaryTagNames)
+                                @Html.EditorFor(model => model.Duration, new { htmlAttributes = new { @class = "form-control", Value = "" } })
                             }
+                            else
+                            {
+                                @Html.EditorFor(model => model.Duration, new { htmlAttributes = new { @class = "form-control" } })
+                            }
+                            @Html.ValidationMessageFor(model => model.Duration, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
 
-
-                                        <div class="form-group">
-                                            <div class="col-md-2">
-                                                @Html.LabelFor(model => model.TestSuiteName) <span style="color:red;">*</span>
-                                            </div>
-                                            <div class="col-md-4">
-                                                @Html.EditorFor(model => model.TestSuiteName, new { htmlAttributes = new { @class = "form-control" } })
-                                                @Html.ValidationMessageFor(model => model.TestSuiteName, "", new { @class = "text-danger" })
-                                            </div>
-                                        </div>
-
-                                        <div class="form-group">
-                                            <div class="col-md-2">
-                                                @Html.LabelFor(model => model.Duration) <span style="color:red;">*</span>
-                                            </div>
-                                            <div class="col-md-4">
-                                                @if (Model != null && Model.Duration == 0)
-                                    {
-                                    @Html.EditorFor(model => model.Duration, new { htmlAttributes = new { @class = "form-control", Value = "" } })
-                                    }
-                                    else
-                                    {
-                                    @Html.EditorFor(model => model.Duration, new { htmlAttributes = new { @class = "form-control" } })
-                                    }
-                                                @Html.ValidationMessageFor(model => model.Duration, "", new { @class = "text-danger" })
-                                            </div>
-                                        </div>
-
-                                        <div class="form-group">
-                                            <div class="col-md-2 col-sm-2 col-xs-12">
-                                                @Html.LabelFor(model => model.Position) <span style="color:red;">*</span>
-                                            </div>
-                                            <div class="col-md-4 col-sm-8 col-xs-9">
-                                                @(Html.Kendo().DropDownListFor(m => m.Position)
+                    <div class="form-group">
+                        <div class="col-md-2 col-sm-2 col-xs-12">
+                            @Html.LabelFor(model => model.Position)
+                        </div>
+                        <div class="col-md-4 col-sm-8 col-xs-9">
+                            @(Html.Kendo().DropDownListFor(m => m.Position)
                                     .DataTextField("PositionName")
                                     .DataValueField("PositionId")
                                     .OptionLabel("--Select--")
@@ -81,19 +92,19 @@
                                                 .ServerFiltering(false);
                                             })
                                     .HtmlAttributes(new { style = "width: 100%" }))
-                                                @Html.ValidationMessageFor(model => model.Position, "", new { @class = "text-danger" })
-                                            </div>
-                                            <div class="col-md-4 col-sm-2 col-xs-2">
-                                                <a href="#" onclick="addPosition();"><span class="btn green"><i class="fa fa-plus" aria-hidden="true"></i></span></a>
-                                            </div>
-                                        </div>
+                            @*@Html.ValidationMessageFor(model => model.Position, "", new { @class = "text-danger" })*@
+                        </div>
+                        <div class="col-md-4 col-sm-2 col-xs-2">
+                            <a href="#" onclick="addPosition();"><span class="btn green"><i class="fa fa-plus" aria-hidden="true"></i></span></a>
+                        </div>
+                    </div>
 
-                                        <div class="form-group">
-                                            <div class="col-md-2">
-                                                @Html.LabelFor(model => model.Competency) <span style="color:red;">*</span>
-                                            </div>
-                                            <div class="col-md-4">
-                                                @(Html.Kendo().DropDownListFor(model => model.Competency)
+                    <div class="form-group">
+                        <div class="col-md-2">
+                            @Html.LabelFor(model => model.Competency) <span style="color:red;">*</span>
+                        </div>
+                        <div class="col-md-4">
+                            @(Html.Kendo().DropDownListFor(model => model.Competency)
                     .OptionLabel("--Select--")
                     .BindTo(new List<SelectListItem>() {
                     new SelectListItem(){
@@ -110,127 +121,127 @@
                     }
                     })
                    .HtmlAttributes(new { style = "width: 100%" }))
-                                                @Html.ValidationMessageFor(model => model.Competency, "", new { @class = "text-danger" })
-                                            </div>
-                                        </div>
+                            @Html.ValidationMessageFor(model => model.Competency, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
 
-                                        <div class="form-group">
-                                            <div class="col-md-2 col-sm-2 col-xs-12">
-                                                Question type <span style="color:red;">*</span>
-                                            </div>
-                                            <div class="col-lg-4 col-md-8 col-sm-10 col-xs-12">
+                    <div class="form-group">
+                        <div class="col-md-2 col-sm-2 col-xs-12">
+                            Question type <span style="color:red;">*</span>
+                        </div>
+                        <div class="col-lg-4 col-md-8 col-sm-10 col-xs-12">
 
-                                                <div class="row">
-                                                    <div class="col-md-2 col-sm-2 col-xs-12">
-                                                        @Html.LabelFor(model => model.OptionalQuestion, htmlAttributes: new { @class = "" })
-                                                    </div>
-                                                    <div class="col-md-4 col-sm-4 col-xs-12">
-                                                        @if (Model != null && Model.OptionalQuestion == 0)
-                                            {
-                                            @Html.TextBoxFor(m => m.OptionalQuestion, new { @class = "form-control", Value = "", placeholder = "in %" })
-                                            }
-                                            else
-                                            {
-                                            @Html.TextBoxFor(m => m.OptionalQuestion, new { @class = "form-control", placeholder = "in %" })
-                                            }
-                                                        @Html.ValidationMessageFor(m => m.OptionalQuestion)
-                                                    </div>
-                                                    <div class="col-md-2 col-sm-2 col-xs-12">
-                                                        @Html.LabelFor(model => model.PracticalQuestion, htmlAttributes: new { @class = "" })
-                                                    </div>
-                                                    <div class="col-md-4 col-sm-4 col-xs-12">
-                                                        @if (Model != null && Model.PracticalQuestion == 0)
-                                            {
-                                            @Html.TextBoxFor(m => m.PracticalQuestion, new { @class = "form-control", Value = "", placeholder = "in %" })
-                                            }
-                                            else
-                                            {
-                                            @Html.TextBoxFor(m => m.PracticalQuestion, new { @class = "form-control", placeholder = "in %" })
-                                            }
-                                                        @Html.ValidationMessageFor(m => m.PracticalQuestion)
-                                                    </div>
-                                                </div>
-                                            </div>
+                            <div class="row">
+                                <div class="col-md-2 col-sm-2 col-xs-12">
+                                    @Html.LabelFor(model => model.OptionalQuestion, htmlAttributes: new { @class = "" })
+                                </div>
+                                <div class="col-md-4 col-sm-4 col-xs-12">
+                                    @if (Model != null && Model.OptionalQuestion == 0)
+                                    {
+                                        @Html.TextBoxFor(m => m.OptionalQuestion, new { @class = "form-control", Value = "", placeholder = "in %" })
+                                    }
+                                    else
+                                    {
+                                        @Html.TextBoxFor(m => m.OptionalQuestion, new { @class = "form-control", placeholder = "in %" })
+                                    }
+                                    @Html.ValidationMessageFor(m => m.OptionalQuestion)
+                                </div>
+                                <div class="col-md-2 col-sm-2 col-xs-12">
+                                    @Html.LabelFor(model => model.PracticalQuestion, htmlAttributes: new { @class = "" })
+                                </div>
+                                <div class="col-md-4 col-sm-4 col-xs-12">
+                                    @if (Model != null && Model.PracticalQuestion == 0)
+                                    {
+                                        @Html.TextBoxFor(m => m.PracticalQuestion, new { @class = "form-control", Value = "", placeholder = "in %" })
+                                    }
+                                    else
+                                    {
+                                        @Html.TextBoxFor(m => m.PracticalQuestion, new { @class = "form-control", placeholder = "in %" })
+                                    }
+                                    @Html.ValidationMessageFor(m => m.PracticalQuestion)
+                                </div>
+                            </div>
+                        </div>
 
-                                        </div>
+                    </div>
 
-                                        <div class="form-group">
-                                            @Html.LabelFor(model => model.ProjectName, htmlAttributes: new { @class = "col-md-2" })
-                                            <div class="col-md-4">
-                                                @Html.EditorFor(model => model.ProjectName, new { htmlAttributes = new { @class = "form-control" } })
-                                                @Html.ValidationMessageFor(model => model.ProjectName, "", new { @class = "text-danger" })
-                                            </div>
-                                        </div>
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.ProjectName, htmlAttributes: new { @class = "col-md-2" })
+                        <div class="col-md-4">
+                            @Html.EditorFor(model => model.ProjectName, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.ProjectName, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
 
-                                        <div class="form-group">
-                                            <div class="col-md-2 col-sm-2 col-xs-12">
-                                                Experience <span style="color:red;">*</span>
-                                            </div>
-                                            <div class="col-md-2 col-sm-5 col-xs-6">
-                                                @(Html.Kendo().DropDownListFor(m => m.FromExperience)
+                    <div class="form-group">
+                        <div class="col-md-2 col-sm-2 col-xs-12">
+                            Experience <span style="color:red;">*</span>
+                        </div>
+                        <div class="col-md-2 col-sm-5 col-xs-6">
+                            @(Html.Kendo().DropDownListFor(m => m.FromExperience)
                         .DataTextField("Text")
                         .DataValueField("Value")
                         .BindTo(EnumHelper.GetSelectList((typeof(Year)))
                         .Select(x => new SelectListItem { Text = x.Value, Value = x.Value }))
                         .HtmlAttributes(new { style = "width: 100%" })
                         .OptionLabel("Years")
-                                                )
-                                                @Html.ValidationMessageFor(m => m.FromExperience)
-                                            </div>
-                                            <div class="col-md-2 col-sm-5 col-xs-6">
-                                                @(Html.Kendo().DropDownListFor(m => m.ToExperience)
+                            )
+                            @Html.ValidationMessageFor(m => m.FromExperience)
+                        </div>
+                        <div class="col-md-2 col-sm-5 col-xs-6">
+                            @(Html.Kendo().DropDownListFor(m => m.ToExperience)
                         .DataTextField("Text")
                         .DataValueField("Value")
                         .BindTo(EnumHelper.GetSelectList((typeof(Year)))
                         .Select(x => new SelectListItem { Text = x.Value, Value = x.Value }))
                         .HtmlAttributes(new { style = "width: 100%" })
                         .OptionLabel("Months")
-                                                )
-                                                @Html.ValidationMessageFor(m => m.ToExperience)
-                                            </div>
-                                        </div>
+                            )
+                            @Html.ValidationMessageFor(m => m.ToExperience)
+                        </div>
+                    </div>
 
-                                        <div id="TagCustomControl">
+                    <div id="TagCustomControl">
 
-                                            <div class="form-group">
-                                                <div class="col-md-2 col-sm-2 col-xs-12">
-                                                </div>
-                                                <div class="col-md-2 col-sm-2 col-xs-12">
-                                                    <span class="font-Bold themeColorBlue">Skill tags </span> <span style="color:red;">*</span>
-                                                </div>
-                                                <div class="col-md-2 col-sm-2 col-xs-12">
-                                                    <span class="font-Bold themeColorBlue"> Weightage % </span> <span style="color:red;">*</span>
-                                                </div>
-                                                <div class="col-md-2 col-sm-2 col-xs-12">
-                                                    <span class="font-Bold themeColorBlue">Efficiency</span> <span style="color:red;">*</span>
-                                                </div>
-                                                <div class="col-md-2 col-sm-2 col-xs-12">
-                                                    <span class="font-Bold themeColorBlue"></span>
-                                                </div>
-                                            </div>
+                        <div class="form-group">
+                            <div class="col-md-2 col-sm-2 col-xs-12">
+                            </div>
+                            <div class="col-md-2 col-sm-2 col-xs-12">
+                                <span class="font-Bold themeColorBlue">Skill tags </span> <span style="color:red;">*</span>
+                            </div>
+                            <div class="col-md-2 col-sm-2 col-xs-12">
+                                <span class="font-Bold themeColorBlue"> Weightage % </span> <span style="color:red;">*</span>
+                            </div>
+                            <div class="col-md-2 col-sm-2 col-xs-12">
+                                <span class="font-Bold themeColorBlue">Efficiency</span> <span style="color:red;">*</span>
+                            </div>
+                            <div class="col-md-2 col-sm-2 col-xs-12">
+                                <span class="font-Bold themeColorBlue"></span>
+                            </div>
+                        </div>
 
 
-                                            @if (Model != null && Model.Tags != null && Model.Tags.Count > 0)
-                                {
-                                <div class="col-md-2 col-sm-2 col-xs-12" style="margin-right:5px;margin-left:-15px;">
-                                    Skill tags <span style="color:red;">*</span>
-                                </div>
-                                    int i = 0;
-                                    var tagCount = Model.Tags.Count;
-                                    foreach (var tag in Model.Tags)
-                                    {
-                                        i++;
+                        @if (Model != null && Model.Tags != null && Model.Tags.Count > 0)
+                        {
+                            <div class="col-md-2 col-sm-2 col-xs-12" style="margin-right:5px;margin-left:-15px;">
+                                Skill tags <span style="color:red;">*</span>
+                            </div>
+                            int i = 0;
+                            var tagCount = Model.Tags.Count;
+                            foreach (var tag in Model.Tags)
+                            {
+                                i++;
                                 <div class="form-group">
                                     @if (i != 1)
-                                            {
-                                            <div class="col-md-2 col-sm-2 col-xs-12 M-T10">
-                                            </div>
-                                            }
+                                    {
+                                        <div class="col-md-2 col-sm-2 col-xs-12 M-T10">
+                                        </div>
+                                    }
                                     <div class="col-md-2 col-sm-2 col-xs-12 M-T10">
                                         <input type="text" id="Tag_@i" value="@tag.TagName" name="Tag_@i" data-val="true" data-val-required="Skill tags is required." class="tagAutoComplete inputSkillTag" />
-                                        
+
                                     </div>
-                                    
+
                                     <div class="col-md-2 col-sm-2 col-xs-12 M-T10">
                                         <input type="text" id="Weightage_@i" value="@tag.Weightage" name="Weightage_@i" data-val="true" data-val-required="Weightage is required." class="key-numeric WeightageField form-control" />
                                     </div>
@@ -240,57 +251,57 @@
                                     <div class="col-md-2 col-sm-3 col-xs-12 M-T10">
 
                                         @{var isDisply = "";
-                                                    if (tagCount > i)
-                                                    {
-                                                        isDisply = "display:none;";
-                                                    }
+                                            if (tagCount > i)
+                                            {
+                                                isDisply = "display:none;";
+                                            }
 
 
-                                                <span data-val="@i" style="margin-right:5px; @isDisply" class="addbtn btn green"><i class="fa fa-plus" aria-hidden="true"></i></span>
-                                                    if (Model.Tags.Count > 1)
-                                                    {
+                                            <span data-val="@i" style="margin-right:5px; @isDisply" class="addbtn btn green"><i class="fa fa-plus" aria-hidden="true"></i></span>
+                                            if (Model.Tags.Count > 1)
+                                            {
                                                 <span data-val="@i" style="margin-right:5px; @isDisply" class="removebtn btn green"><i class="fa fa-minus" aria-hidden="true"></i></span>
-                                                    }
+                                            }
                                         }
                                     </div>
                                 </div>
-                                                        }
-                                                    }
-                                                    else
-                                                    {
-                                <div class="form-group">
-                                    <div class="col-md-2 col-sm-2 col-xs-12 M-T10">
-                                        Skill tags <span style="color:red;">*</span>
-                                    </div>
-                                    <div class="col-md-2 col-sm-2 col-xs-12 M-T10">
-                                        <input type="text" id="Tag_1" name="Tag_1" data-val="true" data-val-required="Skill tags is required." class="tagAutoComplete inputSkillTag" />
-                                    </div>
-                                    <div class="col-md-2 col-sm-2 col-xs-12 M-T10">
-                                        <input type="text" id="Weightage_1" name="Weightage_1" data-val="true" data-val-required="Weightage is required." class="key-numeric WeightageField form-control" />
-                                    </div>
-                                    <div class="col-md-2 col-sm-3 col-xs-12 M-T10">
-                                        <input type="text" id="Proficiency_1" name="Proficiency_1" data-val="true" data-val-required="Efficiency is required." class="proficiencyDropDown" />
-                                    </div>
-                                    <div class="col-md-2 col-sm-3 col-xs-12 M-T10">
-                                        @*<input data-val="1" type="button" value="Add" class="addbtn btn btn-primary" />*@
-                                        <span data-val="1" class="addbtn btn green"><i class="fa fa-plus" aria-hidden="true"></i></span>
-                                    </div>
-                                </div>
-                                                    }
-                                        </div>
+                                                }
+                                            }
+                                            else
+                                            {
+                                                <div class="form-group">
+                                                    <div class="col-md-2 col-sm-2 col-xs-12 M-T10">
+                                                        Skill tags <span style="color:red;">*</span>
+                                                    </div>
+                                                    <div class="col-md-2 col-sm-2 col-xs-12 M-T10">
+                                                        <input type="text" id="Tag_1" name="Tag_1" data-val="true" data-val-required="Skill tags is required." class="tagAutoComplete inputSkillTag" />
+                                                    </div>
+                                                    <div class="col-md-2 col-sm-2 col-xs-12 M-T10">
+                                                        <input type="text" id="Weightage_1" name="Weightage_1" data-val="true" data-val-required="Weightage is required." class="key-numeric WeightageField form-control" />
+                                                    </div>
+                                                    <div class="col-md-2 col-sm-3 col-xs-12 M-T10">
+                                                        <input type="text" id="Proficiency_1" name="Proficiency_1" data-val="true" data-val-required="Efficiency is required." class="proficiencyDropDown" />
+                                                    </div>
+                                                    <div class="col-md-2 col-sm-3 col-xs-12 M-T10">
+                                                        @*<input data-val="1" type="button" value="Add" class="addbtn btn btn-primary" />*@
+                                                        <span data-val="1" class="addbtn btn green"><i class="fa fa-plus" aria-hidden="true"></i></span>
+                                                    </div>
+                                                </div>
+                                            }
+                    </div>
 
-                                        <div class="form-group">
-                                            <div class="col-md-2 col-sm-12 col-xs-12">
-                                                @Html.LabelFor(model => model.SpecialInstruction)
-                                            </div>
-                                            <div class="col-md-8 col-sm-12 col-xs-12">
-                                                @Html.Kendo().EditorFor(m => m.SpecialInstruction).Name("SpecialInstruction").Value(@HttpUtility.HtmlDecode(@Model.SpecialInstruction))
+                    <div class="form-group">
+                        <div class="col-md-2 col-sm-12 col-xs-12">
+                            @Html.LabelFor(model => model.SpecialInstruction)
+                        </div>
+                        <div class="col-md-8 col-sm-12 col-xs-12">
+                            @Html.Kendo().EditorFor(m => m.SpecialInstruction).Name("SpecialInstruction").Value(@HttpUtility.HtmlDecode(@Model.SpecialInstruction))
 
-                                            </div>
-                                        </div>
+                        </div>
+                    </div>
 
-                                       
-                                    </div>
+
+                </div>
                 <div class="form-group">
 
                     <div class="pull-right">
@@ -302,13 +313,13 @@
             </div>
         </div>
     </div>
-                    
-}
+
+                                            }
 
 
 
-                @Scripts.Render("~/bundles/jqueryval")
-                <script>
+@Scripts.Render("~/bundles/jqueryval")
+<script>
                     $(document).ready(function () {
                         SetNavigationMenuActive('TestSuite');
                         $('#addPositionPopup').on('hidden.bs.modal', function () {
@@ -495,6 +506,7 @@
                                     var PracticalQuestion = $("#PracticalQuestion").val();
                                     var Status = $("#Status").val();
                                     var SpecialInstruction = $("#SpecialInstruction").val();
+                                    var IsExternal = $('input[name=IsExternal]:checked').val();
                                     var Weights = '';
                                     var Proficiency = '';
 
@@ -546,7 +558,8 @@
                                             ToExperience: ToExperience,
                                             OptionalQuestion: OptionalQuestion,
                                             PracticalQuestion: PracticalQuestion,
-                                            SpecialInstruction: SpecialInstruction
+                                            SpecialInstruction: SpecialInstruction,
+                                            IsExternal: IsExternal
                                         },
                                         success: function (response) {
                                             if (response != null && response.status == "success") {
@@ -655,7 +668,7 @@
                     }
 
 
-                </script>
+</script>
 
 
 <div id="addPositionPopup" class="modal fade" data-backdrop="static" role="dialog" tabindex="-1" data-width="760" aria-hidden="false" style="display: block; width: 760px; margin-left: -380px; margin-top: -288.5px;">
