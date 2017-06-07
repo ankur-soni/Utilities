@@ -436,6 +436,7 @@
     <Compile Include="Models\ChangePasswordModel.cs" />
     <Compile Include="Models\ContainerUserViewModel.cs" />
     <Compile Include="Models\EmailModel.cs" />
+    <Compile Include="Models\Employee\EmployeeTestSuitViewModel.cs" />
     <Compile Include="Models\ForgotPassword.cs" />
     <Compile Include="Models\JobVite\AssignTestViewModel.cs" />
     <Compile Include="Models\JobVite\JobViteCandidateViewModel.cs" />
@@ -5424,6 +5425,10 @@
     <Content Include="Views\QuestionBank\Dashboard.cshtml" />
     <Content Include="Views\Employee\EmployeeList.cshtml" />
     <Content Include="Views\Employee\_employeeGrid.cshtml" />
+    <Content Include="Views\Employee\AssigedTest.cshtml" />
+    <Content Include="Views\Employee\OnlineTest.cshtml" />
+    <Content Include="Views\Employee\Welcome.cshtml" />
+    <Content Include="Views\Employee\_testSuiteAndCandidateDetails.cshtml" />
     <None Include="Web.Azure.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

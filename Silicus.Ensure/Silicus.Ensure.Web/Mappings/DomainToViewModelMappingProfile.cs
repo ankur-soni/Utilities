@@ -15,6 +15,7 @@ using Silicus.Ensure.Models.ReviewQuestion;
 using Silicus.Ensure.Web.Models.ReviewQuestion;
 using Silicus.Ensure.Models.JobVite;
 using Silicus.Ensure.Web.Models.JobVite;
+using Silicus.Ensure.Web.Models.Employee;
 
 namespace Silicus.Ensure.Web.Mappings
 {
@@ -38,6 +39,7 @@ namespace Silicus.Ensure.Web.Mappings
                     .ForMember(dest => dest.SkillTags, opt => opt.MapFrom(s => !string.IsNullOrWhiteSpace(s.Technology) ? s.Technology.Split(',') : null)
                     );
             Mapper.CreateMap<TestSuite, TestSuiteViewModel>();
+            Mapper.CreateMap<EmployeeTestSuite, EmployeeTestSuitViewModel>();
             Mapper.CreateMap<Silicus.UtilityContainer.Models.DataObjects.User, ContainerUserViewModel>();
             Mapper.CreateMap<PanelMemberDetail, PanelMemberDetailViewModel>()
                 .ForMember(dest => dest.Panel, opt => opt.MapFrom(s => (s.PanelIds.Split(','))));
@@ -52,7 +54,7 @@ namespace Silicus.Ensure.Web.Mappings
                 .ForMember(dest => dest.RoleId, opt => opt.MapFrom(s => (s.PrimaryRoleID)))
                 .ForMember(dest => dest.UserId, opt => opt.MapFrom(s => (s.ID)))
                 .ForMember(dest => dest.FullName, opt => opt.MapFrom(s => (s.LastName + " " + s.FirstName)));
-
+            Mapper.CreateMap<EmployeeTestSuite, TestSuiteEmployeeModel>();
             Mapper.CreateMap<QuestionNavigationBusinessModel, QuestionNavigationViewModel>();
             Mapper.CreateMap<TestDetailsBusinessModel, TestDetailsViewModel>();
             Mapper.CreateMap<TestDetailsBusinessModel, ReviewerQuestionViewModel>();

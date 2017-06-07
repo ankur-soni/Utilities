@@ -16,4 +16,5 @@ namespace Silicus.Ensure.Web.Models.Test
         public decimal? Marks { get; set; }
         public string Comment { get; set; }
     }
+
 }

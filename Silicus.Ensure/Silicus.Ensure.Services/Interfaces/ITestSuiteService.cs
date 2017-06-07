@@ -15,6 +15,8 @@ namespace Silicus.Ensure.Services.Interfaces
 
         UserTestSuite GetUserTestSuiteId(int userTestSuiteId);
 
+        IEnumerable<EmployeeTestSuite> GetEmployeeTestSuite();
+
         UserTestSuite GetUserTestSuiteByUdi_TestSuitId(int userId, int testsuitId);
 
         UserTestDetails GetUserTestDetailsId(int? userTestDetailsId);
@@ -67,5 +69,11 @@ namespace Silicus.Ensure.Services.Interfaces
         List<TestDetailsBusinessModel> GetUserTestDetailsForPrint(int userTestSuitId);
 
         List<TestDetailsBusinessModel> GetUserTestDetailsByViewerIdForPrint(PreviewTestBusinessModel previewTest);
+        EmployeeTestSuite GetEmployeeTestSuiteById(int userApplicationId);
+        IEnumerable<EmployeeTestDetails> GetEmployeeTestDetailsListByEmployeeTestSuitId(int employeeTestSuitId);
+        void UpdateEmployeeTestDetails(EmployeeTestDetails testDetail);
+        void UpdateEmployeeTestSuite(EmployeeTestSuite employeeTestSuite);
+        EmployeeTestDetails GetEmployeeTestDetailsId(int employeeTestSuitId);
+        TestDetailsBusinessModel GeEmployeeTestDetailsByEmployeeTestSuitId(int? employeeTestSuiteId, int? questionId, int questionType, QuestionType testStartWithQuestionType = QuestionType.Objective);
     }
 }

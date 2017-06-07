@@ -55,15 +55,11 @@ namespace Silicus.Ensure.Services
             return userModel;
         }
 
-
-
         public IEnumerable<UserBusinessModel> GetUserDetails()
         {
             
             return GetUserDetailsAll();
         }
-
-
 
         public int Add(UserBusinessModel userModel)
         {

@@ -57,6 +57,11 @@ namespace Silicus.Ensure.Services
         {
             return _context.Query<UserTestSuite>();
         }
+        
+        public IEnumerable<EmployeeTestSuite> GetEmployeeTestSuite()
+        {
+            return _context.Query<EmployeeTestSuite>();
+        }
 
         public int AddUserTestSuite(UserTestSuite UserTestSuite)
         {
@@ -64,12 +69,28 @@ namespace Silicus.Ensure.Services
             return UserTestSuite.UserTestSuiteId;
         }
 
+        public int AddEmployeeTestSuite(EmployeeTestSuite EmployeeTestSuite)
+        {
+            _context.Add(EmployeeTestSuite);
+            return EmployeeTestSuite.EmployeeTestSuiteId;
+        }
+
+
         public void UpdateUserTestSuite(UserTestSuite UserTestSuite)
         {
             if (UserTestSuite.UserApplicationId > 0)
             {
                 _context.Update(UserTestSuite);
                 _context.AttachAndMakeStateModified(UserTestSuite);
+                _context.SaveChanges();
+            }
+        }
+        public void UpdateEmployeeTestSuite(EmployeeTestSuite EmployeeTestSuite)
+        {
+            if (EmployeeTestSuite.EmployeeTestSuiteId > 0)
+            {
+                _context.Update(EmployeeTestSuite);
+                _context.AttachAndMakeStateModified(EmployeeTestSuite);
                 _context.SaveChanges();
             }
         }
@@ -87,6 +108,10 @@ namespace Silicus.Ensure.Services
             return _context.Query<TestSuite>().Where(x => x.TestSuiteId == testSuiteId).FirstOrDefault();
         }
 
+        public EmployeeTestSuite GetEmployeeTestSuiteById(int employeeApplicationId)
+        {
+            return _context.Query<EmployeeTestSuite>().Where(x => x.EmployeeTestSuiteId == employeeApplicationId).FirstOrDefault();
+        }
         public UserTestSuite GetUserTestSuiteByUserApplicationId(int applicationId)
         {
             return _context.Query<UserTestSuite>().Where(x => x.UserApplicationId == applicationId).FirstOrDefault();
@@ -108,6 +133,17 @@ namespace Silicus.Ensure.Services
             _context.SaveChanges();
         }
 
+        public void UpdateEmployeeTestDetails(EmployeeTestDetails employeeTestDetails)
+        {
+            if (string.IsNullOrWhiteSpace(employeeTestDetails.Answer) || employeeTestDetails.Answer.Equals("undefined", StringComparison.OrdinalIgnoreCase))
+            {
+                employeeTestDetails.IsViewedOnly = true;
+            }
+            _context.AttachAndMakeStateModified(employeeTestDetails);
+            _context.Update(employeeTestDetails);
+            _context.SaveChanges();
+        }
+
         public int AddUserTestDetails(UserTestDetails UserTestDetails)
         {
             _context.Add(UserTestDetails);
@@ -117,6 +153,16 @@ namespace Silicus.Ensure.Services
         public UserTestDetails GetUserTestDetailsId(int? userTestDetailsId)
         {
             return _context.Query<UserTestDetails>().Where(x => x.TestDetailId == userTestDetailsId).First();
+        }
+
+        public EmployeeTestDetails GetEmployeeTestDetailsId(int employeeTestSuitId)
+        {
+            return _context.Query<EmployeeTestDetails>().Where(x => x.EmployeeTestSuite.EmployeeTestSuiteId == employeeTestSuitId).First();
+        }
+
+        public IEnumerable<EmployeeTestDetails> GetEmployeeTestDetailsListByEmployeeTestSuitId(int employeeTestSuitId)
+        {
+            return _context.Query<EmployeeTestDetails>().Where(x => x.EmployeeTestSuite.EmployeeTestSuiteId == employeeTestSuitId);
         }
 
         public IEnumerable<UserTestDetails> GetUserTestDetailsListByUserTestSuitId(int userTestSuitId)
@@ -251,6 +297,84 @@ namespace Silicus.Ensure.Services
         }
 
 
+        public TestDetailsBusinessModel GeEmployeeTestDetailsByEmployeeTestSuitId(int? employeeTestSuitId, int? questionNumber, int questionType, QuestionType testStartWithQuestionType = QuestionType.Objective)
+        {
+            var questionNumberList = GetQuestionsByEmployeeTestSuiteId(employeeTestSuitId, questionType);
+            questionNumber = questionNumber == null && questionNumberList.Count > 0 ? (int?)questionNumberList.ElementAtOrDefault(0) : questionNumber;
+            if (questionNumber == null)
+            {
+                return null;
+            }
+            var index = questionNumberList.IndexOf((int)questionNumber);
+            int? previousQuestionId = questionNumberList.ElementAtOrDefault(index - 1);
+            int? nextQuestionId = questionNumberList.ElementAtOrDefault(index + 1);
+            var result = (from a in _context.Query<EmployeeTestDetails>()
+                              .Where(x => x.EmployeeTestSuite.EmployeeTestSuiteId == employeeTestSuitId)
+                          join b in _context.Query<Question>()
+                          on a.QuestionId equals b.Id
+                          where b.Id == questionNumber
+                          select new TestDetailsBusinessModel
+                          {
+                              TestDetailId = a.TestDetailId,
+                              Answer = a.Answer,
+                              ReviwerMark = a.Mark,
+                              QuestionId = b.Id,
+                              QuestionType = b.QuestionType,
+                              AnswerType = b.AnswerType,
+                              QuestionDescription = b.QuestionDescription,
+                              OptionCount = b.OptionCount,
+                              Option1 = b.Option1,
+                              Option2 = b.Option2,
+                              Option3 = b.Option3,
+                              Option4 = b.Option4,
+                              Option5 = b.Option5,
+                              Option6 = b.Option6,
+                              Option7 = b.Option7,
+                              Option8 = b.Option8,
+                              CorrectAnswer = questionType == (int)QuestionType.Objective ? b.CorrectAnswer : b.Answer,
+                              Comment = a.ReviwerComment,
+                              Marks = b.Marks,
+                              DisplayQuestionNumber = index + 1,
+                              IsViewedOnly = a.IsViewedOnly,
+                              IsAnswered = !(a.Answer.Equals(null) || a.Answer.Trim().Equals(""))
+                          }).FirstOrDefault();
+            if (result == null)
+            {
+                return null;
+            }
+            result.PreviousQuestionId = index <= 0 ? null : previousQuestionId;
+            result.NextQuestionId = index >= questionNumberList.Count - 1 ? null : nextQuestionId;
+            result.DisplayQuestionNumber = result.DisplayQuestionNumber == 0 ? 1 : result.DisplayQuestionNumber;
+            if (testStartWithQuestionType == QuestionType.Practical)
+            {
+                if (questionType == (int)QuestionType.Practical && result.NextQuestionId == null)
+                {
+                    var objectiveQuestions = GetQuestionsByEmployeeTestSuiteId(employeeTestSuitId, (int)QuestionType.Objective);
+                    result.NextQuestionId = GetFirstOrLastQuestionId(objectiveQuestions, QuestionType.Objective);
+                }
+                if (questionType == (int)QuestionType.Objective && result.PreviousQuestionId == null)
+                {
+                    var practicalQuestions = GetQuestionsByEmployeeTestSuiteId(employeeTestSuitId, (int)QuestionType.Practical);
+                    result.PreviousQuestionId = GetFirstOrLastQuestionId(practicalQuestions, QuestionType.Practical);
+                }
+            }
+            else if (testStartWithQuestionType == QuestionType.Objective)
+            {
+                if (questionType == (int)QuestionType.Objective && result.NextQuestionId == null)
+                {
+                    var practicalQuestions = GetQuestionsByEmployeeTestSuiteId(employeeTestSuitId, (int)QuestionType.Practical);
+                    result.NextQuestionId = practicalQuestions.Any() ? practicalQuestions?.ElementAtOrDefault(0) : null;
+                }
+                if (questionType == (int)QuestionType.Practical && result.PreviousQuestionId == null)
+                {
+                    var objectiveQuestions = GetQuestionsByEmployeeTestSuiteId(employeeTestSuitId, (int)QuestionType.Objective);
+                    result.PreviousQuestionId = objectiveQuestions.Any() ? objectiveQuestions?.ElementAtOrDefault(objectiveQuestions.Count - 1) : null;
+                }
+            }
+            return result;
+        }
+
+
         private int? GetFirstOrLastQuestionId(List<int> questionIds, QuestionType type)
         {
             if (questionIds != null)
@@ -279,6 +403,17 @@ namespace Silicus.Ensure.Services
                     )).OrderBy(questionId => questionId).ToList();
         }
 
+        private List<int> GetQuestionsByEmployeeTestSuiteId(int? employeeTestSuitId, int questionType)
+        {
+            return (from a in _context.Query<EmployeeTestDetails>()
+                                  .Where(x => x.EmployeeTestSuite.EmployeeTestSuiteId == employeeTestSuitId)
+                    join b in _context.Query<Question>().Where(ques => ques.QuestionType == questionType)
+                    on a.QuestionId equals b.Id
+                    select
+                    (
+                        b.Id
+                    )).OrderBy(questionId => questionId).ToList();
+        }
         public int AssignSuite(UserTestSuite userTestSuite, TestSuite testSuite)
         {
             var testSuiteDetails = new List<UserTestDetails>();
