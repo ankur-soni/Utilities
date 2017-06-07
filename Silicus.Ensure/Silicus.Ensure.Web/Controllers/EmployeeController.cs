@@ -107,8 +107,9 @@ namespace Silicus.Ensure.Web.Controllers
             {
                 if (SuiteId > 0 && UserId > 0)
                 {
-                    if (IsReAssign == 1)
-                    {
+                    //Need confirmation for TestStatus - TBD
+                    //if (IsReAssign == 1)
+                    //{
                         var employeeTestSuits = _testSuiteService.GetEmployeeTestSuite().Where(x => x.EmployeeId == UserId && x.StatusId == Convert.ToInt32(CandidateStatus.TestAssigned)).ToList();
                         if (employeeTestSuits.Any())
                         {
@@ -117,7 +118,7 @@ namespace Silicus.Ensure.Web.Controllers
                                 _testSuiteService.DeleteEmployeeTestSuite(empTestSuite);
                             }
                         }
-                    }
+                    //}
 
                     var testSuiteDetails = _testSuiteService.GetTestSuiteDetails().Where(model => model.TestSuiteId == SuiteId && model.IsDeleted == false).SingleOrDefault();
                     EmployeeTestSuite userTestSuite = new EmployeeTestSuite();
