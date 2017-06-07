@@ -6,3 +6,17 @@
 <h2>EmployeeList</h2>
 
 @Html.Partial("_employeeGrid")
+
+<div id="myEmpModal" class="modal fade" data-backdrop="static" role="dialog" tabindex="-1" data-width="760" aria-hidden="false" style="display: block; width: 760px; margin-left: -380px; margin-top: -288.5px;">
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h4 id="assignTestHeader" class="modal-title">Assign Employee Test</h4>
+    </div>
+    <div class="modal-body" id="EmployeeInfo">
+
+    </div>
+    <div class="modal-footer">
+        <button type="submit" id="Savebtn" style="width:70px;" class="btn green">Save</button>
+        <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+    </div>
+</div>

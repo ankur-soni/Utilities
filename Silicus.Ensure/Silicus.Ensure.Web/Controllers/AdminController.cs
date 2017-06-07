@@ -278,9 +278,13 @@ namespace Silicus.Ensure.Web.Controllers
                     TestSuite testSuitDetails = _testSuiteService.GetTestSuitById(userTestSuiteDetails.GetType().GetProperty("TestSuiteId").GetValue(userTestSuiteDetails, null));
                     testSuiteViewModel = _mappingService.Map<TestSuite, TestSuiteViewModel>(testSuitDetails);
                     testSuiteViewModel.OverallProficiency = ((Proficiency)Convert.ToInt32(testSuiteViewModel.Competency)).ToString();
-                    var position = _positionService.GetPositionById((int)testSuiteViewModel.Position);
-                    if (position != null)
-                        testSuiteViewModel.PositionName = position.PositionName;
+                    if (testSuiteViewModel.Position.HasValue)
+                    {
+                        var position = _positionService.GetPositionById((int)testSuiteViewModel.Position);
+                        if (position != null)
+                            testSuiteViewModel.PositionName = position.PositionName;
+                    }
+
                     List<TestSuiteTagViewModel> testSuiteTags;
                     GetTestSuiteTags(testSuitDetails, out testSuiteTags);
                     testSuiteViewModel.Tags = testSuiteTags;
@@ -478,9 +482,13 @@ namespace Silicus.Ensure.Web.Controllers
                 TestSuite testSuitDetails = _testSuiteService.GetTestSuitById(testSuiteId);
                 TestSuiteViewModel testSuiteViewModel = _mappingService.Map<TestSuite, TestSuiteViewModel>(testSuitDetails);
                 testSuiteViewModel.OverallProficiency = ((Proficiency)Convert.ToInt32(testSuiteViewModel.Competency)).ToString();
-                var position = _positionService.GetPositionById((int)testSuiteViewModel.Position);
-                if (position != null)
-                    testSuiteViewModel.PositionName = position.PositionName;
+                if(testSuiteViewModel.Position.HasValue)
+                {
+                    var position = _positionService.GetPositionById((int)testSuiteViewModel.Position);
+                    if (position != null)
+                        testSuiteViewModel.PositionName = position.PositionName;
+                }
+                
                 List<TestSuiteTagViewModel> testSuiteTags;
                 GetTestSuiteTags(testSuitDetails, out testSuiteTags);
                 testSuiteViewModel.Tags = testSuiteTags;
@@ -586,7 +594,15 @@ namespace Silicus.Ensure.Web.Controllers
                     }
                 }
 
-                item.PositionName = GetPosition((int)item.Position) == null ? "deleted from master" : GetPosition((int)item.Position).PositionName;
+                if(item.Position.HasValue)
+                {
+                    item.PositionName = GetPosition((int)item.Position) == null ? "deleted from master" : GetPosition((int)item.Position).PositionName;
+
+                }
+                else
+                {
+                    item.PositionName = "Not assigned";
+                }
                 List<Int32> TagId = item.PrimaryTags.Split(',').Select(int.Parse).ToList();
                 item.PrimaryTagNames = string.Join(",", (from a in tags
                                                          where TagId.Contains(a.TagId)
@@ -996,7 +1012,10 @@ namespace Silicus.Ensure.Web.Controllers
                 submittedTestViewModel.TotalMakrs = userTestSuitDetails.MaxScore;
                 submittedTestViewModel.TestSuitName = testSuitDetails.TestSuiteName;
                 submittedTestViewModel.UserId = userTestSuitDetails.UserApplicationId;
-                submittedTestViewModel.Postion = _positionService.GetPositionById((int)testSuitDetails.Position) != null ? _positionService.GetPositionById((int)testSuitDetails.Position).PositionName : "";
+                if(testSuitDetails.Position.HasValue)
+                {
+                    submittedTestViewModel.Postion = _positionService.GetPositionById((int)testSuitDetails.Position) != null ? _positionService.GetPositionById((int)testSuitDetails.Position).PositionName : "";
+                }
 
                 foreach (var questionId in userTestSuitDetails.UserTestDetails)
                 {

@@ -42,7 +42,6 @@
                                       model.Id(p => p.TestSuiteId);
                                       model.Field(p => p.TestSuiteId).Editable(false);
                                   })
-                                          //.Read(read => read.Action("GetEmployeeTestSuiteDetails", "Admin", new { UserId = @ViewBag.CurrentUser }))
                                           .Read(read => read.Action("GetEmployeeTestSuiteDetails", "Employee", new { UserId = @ViewBag.CurrentUser }))
                                   .PageSize(10)
                                   .ServerOperation(false)
