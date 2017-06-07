@@ -19,8 +19,8 @@ namespace Silicus.Ensure.Models.DataObjects
         [Required(ErrorMessage="Duration is required.")]
         public Int32 Duration { get; set; }        
 
-        [Required(ErrorMessage = "Position is required.")]
-        public Int32 Position { get; set; }
+        //[Required(ErrorMessage = "Position is required.")]
+        public Int32? Position { get; set; }
 
         [Required(ErrorMessage = "Competency is required.")]
         public Int32 Competency { get; set; }
@@ -55,5 +55,8 @@ namespace Silicus.Ensure.Models.DataObjects
         public DateTime? CreatedDate { get; set; }
 
         public string CreatedBy { get; set; }
+
+        [Display(Name = "Is External")]
+        public bool? IsExternal { get; set; }
     }
 }

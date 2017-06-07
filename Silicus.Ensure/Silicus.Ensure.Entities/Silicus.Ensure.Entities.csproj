@@ -169,7 +169,6 @@
     <Compile Include="Initializer\SilicusIpDropCreateDatabaseAlwaysInitializer.cs" />
     <Compile Include="Initializer\SilicusIpDropCreateDatabaseIfModelChangesInitializer.cs" />
     <Compile Include="IIncluder.cs" />
-    <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="QueryableExtensions.cs" />
     <Compile Include="ConnectionType.cs" />
     <Compile Include="DataContextFactory.cs" />

@@ -15,7 +15,7 @@ namespace Silicus.Ensure.Services.Interfaces
 
         UserTestSuite GetUserTestSuiteId(int userTestSuiteId);
 
-        IEnumerable<EmployeeTestSuite> GetEmployeeTestSuite();
+        IEnumerable<EmployeeTestSuite> GetEmployeeTestSuite(int userId);
 
         UserTestSuite GetUserTestSuiteByUdi_TestSuitId(int userId, int testsuitId);
 
@@ -41,11 +41,15 @@ namespace Silicus.Ensure.Services.Interfaces
 
         UserTestSuite GetUserTestSuiteByUserApplicationId(int userId);
 
+        EmployeeTestSuite GetEmployeeTestSuiteByEmployeeId(int userId);
+
         IEnumerable<UserTestDetails> GetUserTestDetailsListByUserTestSuitId(int userTestSuitId);
 
         TestDetailsBusinessModel GetUserTestDetailsByUserTestSuitId(int? userTestSuitId, int? questionNumber, int questionType, QuestionType testStartWithQuestionType = QuestionType.Objective);
 
         int AssignSuite(UserTestSuite userTestSuite, TestSuite testSuite);
+
+        int AssignEmployeeSuite(EmployeeTestSuite userTestSuite, TestSuite testSuite);
 
         List<Question> GetPreview(PreviewTestBusinessModel previewTest);
 
@@ -75,5 +79,6 @@ namespace Silicus.Ensure.Services.Interfaces
         void UpdateEmployeeTestSuite(EmployeeTestSuite employeeTestSuite);
         EmployeeTestDetails GetEmployeeTestDetailsId(int employeeTestSuitId);
         TestDetailsBusinessModel GeEmployeeTestDetailsByEmployeeTestSuitId(int? employeeTestSuiteId, int? questionId, int questionType, QuestionType testStartWithQuestionType = QuestionType.Objective);
+        QuestionNavigationBusinessModel GetEmployeeNavigationDetails(int employeeTestSuiteId);
     }
 }

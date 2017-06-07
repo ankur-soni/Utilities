@@ -4,6 +4,7 @@ using System.Data.Entity;
 using System.Linq;
 using System.Transactions;
 using Silicus.FrameWorx.Utility;
+using System.Data.Entity.Validation;
 
 namespace Silicus.Ensure.Entities
 {
@@ -13,6 +14,10 @@ namespace Silicus.Ensure.Entities
     /// </summary>
     public class SilicusIpDataContext : DataContextBase, IDataContext
     {
+        //public SilicusIpDataContext() : base(@"Data Source=.\SQLEXPRESS2014;Initial Catalog=UtilityContainer2;Integrated Security=true")
+        //{
+                
+        //}
         public SilicusIpDataContext(string connectionString)
             : base(connectionString)
         {

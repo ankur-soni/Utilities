@@ -4,6 +4,9 @@ using Silicus.Ensure.Models.Constants;
 using Silicus.Ensure.Models.DataObjects;
 using Silicus.Ensure.Models.Test;
 using Silicus.Ensure.Services.Interfaces;
+using Silicus.Ensure.Models.Constants;
+using Silicus.Ensure.Models.DataObjects;
+using Silicus.Ensure.Services.Interfaces;
 using Silicus.Ensure.Web.Mappings;
 using Silicus.Ensure.Web.Models;
 using Silicus.Ensure.Web.Models.Test;
@@ -23,8 +26,12 @@ namespace Silicus.Ensure.Web.Controllers
         private readonly IMappingService _mappingService;
         private Silicus.UtilityContainer.Services.Interfaces.IUtilityUserRoleService _utilityUserRoleService;
         private readonly ITestSuiteService _testSuiteService;
+        private readonly IUserService _userService;
+        private readonly CommonController _commonController;
+        private readonly IPositionService _positionService;
+        private readonly ITagsService _tagsService;
 
-        public EmployeeController(IQuestionService questionService, MappingService mappingService, ITestSuiteService testSuiteService, UtilityContainer.Services.Interfaces.IUserService containerUserService, Silicus.UtilityContainer.Services.Interfaces.IUtilityUserRoleService utilityUserRoleService)
+        public EmployeeController(IQuestionService questionService, MappingService mappingService, UtilityContainer.Services.Interfaces.IUserService containerUserService, Silicus.UtilityContainer.Services.Interfaces.IUtilityUserRoleService utilityUserRoleService, ITestSuiteService testSuiteService, IUserService userService, CommonController commonController, IPositionService positionService, ITagsService tagsService)
         {
             //_positionService = positionService;
             //_userService = userService;
@@ -38,10 +45,22 @@ namespace Silicus.Ensure.Web.Controllers
             //_emailService = emailService;
             //_commonController = commonController;
             //_tagsService = tagService;
+            _testSuiteService = testSuiteService;
+            _userService = userService;
+            _commonController = commonController;
+            _positionService = positionService;
+            _tagsService = tagsService;
         }
         // GET: Employee
         public ActionResult Index()
         {
+            return View("EmployeeList");
+            //return View("AssigedTest");
+        }
+
+        public ActionResult AssignedTest()
+        {
+            //return View("EmployeeList");
             return View("AssigedTest");
         }
 
@@ -89,12 +108,22 @@ namespace Silicus.Ensure.Web.Controllers
 
         public ActionResult GetEmployeeTestSuits([DataSourceRequest] DataSourceRequest request)
         {
-            var TestSuits = _testSuiteService.GetEmployeeTestSuite();
+            var userEmailId = User.Identity.Name;
+            var user = _containerUserService.FindUserByEmail(userEmailId);
+
+            var TestSuits = _testSuiteService.GetEmployeeTestSuite(user.ID);
 
             var userlistViewModel = _mappingService.Map<IEnumerable<EmployeeTestSuite>, IEnumerable<Models.Employee.EmployeeTestSuitViewModel>>(TestSuits);
 
             DataSourceResult result = userlistViewModel.ToDataSourceResult(request);
             return Json(result);
+        }
+
+        public ActionResult EmployeeSuit(int UserId, int IsReassign = 0)
+        {
+            ViewBag.CurrentUser = UserId;
+            ViewBag.IsReassign = IsReassign;
+            return PartialView("SelectEmployeeSuit");
         }
 
         public ActionResult OnlineTest(int EmployeeTestSuitId)
@@ -110,7 +139,7 @@ namespace Silicus.Ensure.Web.Controllers
             //    ViewBag.Msg = "User not found for online test, kindly contact admin.";
             //    return View("Welcome", new TestSuiteCandidateModel());
             //}
-           EmployeeTestSuite employeeTestSuite = _testSuiteService.GetEmployeeTestSuiteById(EmployeeTestSuitId);
+            EmployeeTestSuite employeeTestSuite = _testSuiteService.GetEmployeeTestSuiteById(EmployeeTestSuitId);
             if (employeeTestSuite == null)
             {
                 ViewBag.Status = 1;
@@ -170,7 +199,7 @@ namespace Silicus.Ensure.Web.Controllers
 
 
 
-        public ActionResult OnSubmitTest(int testSuiteId, int userTestSuiteId, int? userTestDetailId, int userId, string answer)
+        public ActionResult OnSubmitTest(int testSuiteId, int EmployeeTestSuiteId, int? employeeTestDetailId, int EmployeeId, string answer)
         {
             // Update last question answer of test.
             answer = HttpUtility.HtmlDecode(answer);
@@ -178,13 +207,13 @@ namespace Silicus.Ensure.Web.Controllers
 
             // Update total time utilization for test back to UserTestSuite.
             TestSuite suite = _testSuiteService.GetTestSuitById(testSuiteId);
-            UserTestSuite testSuit = _testSuiteService.GetUserTestSuiteId(userTestSuiteId);
+            EmployeeTestSuite testSuit = _testSuiteService.GetEmployeeTestSuiteById(EmployeeTestSuiteId);
             testSuit.Duration = suite.Duration + (testSuit.ExtraCount * 10);
             testSuit.StatusId = Convert.ToInt32(CandidateStatus.TestSubmitted);
-            _testSuiteService.UpdateUserTestSuite(testSuit);
+            _testSuiteService.UpdateEmployeeTestSuite(testSuit);
 
             // Calculate marks on test submit.
-            CalculateMarks(userTestSuiteId, userTestDetailId, answer);
+            CalculateMarks(EmployeeTestSuiteId, employeeTestDetailId, answer);
             //List<string> Receipient = new List<string>() { "Admin", "Panel" };
             //var users = _userService.GetUserApplicationDetailsById(userId);
             //if (users != null)
@@ -192,7 +221,7 @@ namespace Silicus.Ensure.Web.Controllers
             //    var userDetails = _userService.GetUserById(users.UserId);
             //    //   _commonController.SendMailByRoleName("Online Test Submitted For " + userDetails.FirstName + " " + userDetails.LastName + "", "CandidateTestSubmitted.cshtml", Receipient, userDetails.FirstName + " " + userDetails.LastName);
             //}
-            return RedirectToAction("LogOff", "CandidateAccount");
+            return RedirectToAction("AssignedTest", "Employee");
         }
 
         private void UpdateAnswer(string answer, int? employeeTestDetailId)
@@ -232,9 +261,99 @@ namespace Silicus.Ensure.Web.Controllers
 
         private QuestionNavigationViewModel GetNavigationDetails(int EmployeeTestSuiteId)
         {
-            var navigationDetailsBusinessModel = _testSuiteService.GetNavigationDetails(EmployeeTestSuiteId);
+            var navigationDetailsBusinessModel = _testSuiteService.GetEmployeeNavigationDetails(EmployeeTestSuiteId);
             var navigationDetails = _mappingService.Map<QuestionNavigationBusinessModel, QuestionNavigationViewModel>(navigationDetailsBusinessModel);
             return navigationDetails;
         }
-    }
+
+        public ActionResult AssignEmployeeSuite(int SuiteId, int UserId, int IsReAssign = 0)
+        {
+            string mailsubject = "";
+            var updateCurrentUsers = _userService.GetUserById(UserId);
+            if (updateCurrentUsers != null)
+            {
+                if (SuiteId > 0 && UserId > 0)
+                {
+                    if (IsReAssign == 1)
+                    {
+                        var userTest = _testSuiteService.GetUserTestSuite().Where(x => x.UserApplicationId == updateCurrentUsers.UserApplicationId && x.StatusId == Convert.ToInt32(CandidateStatus.TestAssigned)).ToList();
+                        if (userTest.Any())
+                        {
+                            foreach (var utest in userTest)
+                            {
+
+                                _testSuiteService.DeleteUserTestSuite(utest);
+                            }
+                        }
+                    }
+                    var testSuiteDetails = _testSuiteService.GetTestSuiteDetails().Where(model => model.TestSuiteId == SuiteId && model.IsDeleted == false).SingleOrDefault();
+                    EmployeeTestSuite userTestSuite = new EmployeeTestSuite();
+                    userTestSuite.EmployeeId = UserId;
+                    userTestSuite.TestSuiteId = SuiteId;
+                    userTestSuite.StatusId = (int)CandidateStatus.TestAssigned;
+                    _testSuiteService.AssignEmployeeSuite(userTestSuite, testSuiteDetails);
+
+                    List<string> Receipient = new List<string>() { "Admin", "Panel" };
+                    //Need to work on following to configure email
+                    //if (IsReAssign == 0)
+                    //{
+                    //    mailsubject = "Test Assigned For " + selectUser.FirstName + " " + selectUser.LastName + " Successfully";
+                    //    _commonController.SendMailByRoleName(mailsubject, "CandidateTestAssigned.cshtml", Receipient, selectUser.FirstName + " " + selectUser.LastName);
+                    //}
+                    //else
+                    //{
+                    //    mailsubject = "Test Re-Assigned For " + selectUser.FirstName + " " + selectUser.LastName + " Successfully";
+                    //    _commonController.SendMailByRoleName(mailsubject, "TestReassign.cshtml", Receipient, selectUser.FirstName + " " + selectUser.LastName);
+                    //}
+
+                    return Json(1);
+                }
+                else
+                {
+                    return Json(-1);
+                }
+            }
+            return View();
+        }
+
+        public ActionResult GetEmployeeTestSuiteDetails([DataSourceRequest] DataSourceRequest request, int UserId)
+        {
+            _testSuiteService.TestSuiteActivation();
+            var tags = _tagsService.GetTagsDetails();
+            var testSuitelist = _testSuiteService.GetTestSuiteDetails().Where(model => model.IsDeleted == false && model.IsExternal == false).OrderByDescending(model => model.TestSuiteId).ToArray();
+            var viewModels = _mappingService.Map<TestSuite[], TestSuiteViewModel[]>(testSuitelist);
+            bool userInRole = MvcApplication.getCurrentUserRoles().Contains((Silicus.Ensure.Models.Constants.RoleName.Admin.ToString()));
+            var testSuitId = _testSuiteService.GetEmployeeTestSuiteByEmployeeId(UserId);
+            foreach (var item in viewModels)
+            {
+                if (testSuitId != null)
+                {
+                    if (testSuitId.TestSuiteId != 0 && item.TestSuiteId == testSuitId.TestSuiteId)
+                    {
+                        item.IsAssigned = true;
+                    }
+                }
+                if (item.Position.HasValue)
+                {
+                    item.PositionName = GetPosition((int)item.Position) == null ? "deleted from master" : GetPosition((int)item.Position).PositionName;
+                }
+                else
+                {
+                    item.PositionName = "Not assigned";
+                }
+                List<Int32> TagId = item.PrimaryTags.Split(',').Select(int.Parse).ToList();
+                item.PrimaryTagNames = string.Join(",", (from a in tags
+                                                         where TagId.Contains(a.TagId)
+                                                         select a.TagName));
+                item.StatusName = ((TestSuiteStatus)item.Status).ToString();
+                item.UserInRole = userInRole;
+            }
+            return Json(viewModels.ToDataSourceResult(request), JsonRequestBehavior.AllowGet);
+        }
+
+        private Position GetPosition(int positionId)
+        {
+            return _positionService.GetPositionById(positionId);
+        }
+    } 
 }

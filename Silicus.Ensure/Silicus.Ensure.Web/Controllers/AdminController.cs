@@ -278,7 +278,7 @@ namespace Silicus.Ensure.Web.Controllers
                     TestSuite testSuitDetails = _testSuiteService.GetTestSuitById(userTestSuiteDetails.GetType().GetProperty("TestSuiteId").GetValue(userTestSuiteDetails, null));
                     testSuiteViewModel = _mappingService.Map<TestSuite, TestSuiteViewModel>(testSuitDetails);
                     testSuiteViewModel.OverallProficiency = ((Proficiency)Convert.ToInt32(testSuiteViewModel.Competency)).ToString();
-                    var position = _positionService.GetPositionById(testSuiteViewModel.Position);
+                    var position = _positionService.GetPositionById((int)testSuiteViewModel.Position);
                     if (position != null)
                         testSuiteViewModel.PositionName = position.PositionName;
                     List<TestSuiteTagViewModel> testSuiteTags;
@@ -478,7 +478,7 @@ namespace Silicus.Ensure.Web.Controllers
                 TestSuite testSuitDetails = _testSuiteService.GetTestSuitById(testSuiteId);
                 TestSuiteViewModel testSuiteViewModel = _mappingService.Map<TestSuite, TestSuiteViewModel>(testSuitDetails);
                 testSuiteViewModel.OverallProficiency = ((Proficiency)Convert.ToInt32(testSuiteViewModel.Competency)).ToString();
-                var position = _positionService.GetPositionById(testSuiteViewModel.Position);
+                var position = _positionService.GetPositionById((int)testSuiteViewModel.Position);
                 if (position != null)
                     testSuiteViewModel.PositionName = position.PositionName;
                 List<TestSuiteTagViewModel> testSuiteTags;
@@ -586,7 +586,7 @@ namespace Silicus.Ensure.Web.Controllers
                     }
                 }
 
-                item.PositionName = GetPosition(item.Position) == null ? "deleted from master" : GetPosition(item.Position).PositionName;
+                item.PositionName = GetPosition((int)item.Position) == null ? "deleted from master" : GetPosition((int)item.Position).PositionName;
                 List<Int32> TagId = item.PrimaryTags.Split(',').Select(int.Parse).ToList();
                 item.PrimaryTagNames = string.Join(",", (from a in tags
                                                          where TagId.Contains(a.TagId)
@@ -597,6 +597,95 @@ namespace Silicus.Ensure.Web.Controllers
             viewModels = viewModels.Where(x => x.StatusName == TestSuiteStatus.Ready.ToString()).ToArray();
             return Json(viewModels.ToDataSourceResult(request), JsonRequestBehavior.AllowGet);
         }
+
+        #region Remove Later
+
+        //public ActionResult AssignEmployeeSuite(int SuiteId, int UserId, int IsReAssign = 0)
+        //{
+        //    string mailsubject = "";
+        //    var updateCurrentUsers = _userService.GetUserById(UserId);
+        //    if (updateCurrentUsers != null)
+        //    {
+        //        if (SuiteId > 0 && UserId > 0)
+        //        {
+        //            if (IsReAssign == 1)
+        //            {
+        //                var userTest = _testSuiteService.GetUserTestSuite().Where(x => x.UserApplicationId == updateCurrentUsers.UserApplicationId && x.StatusId == Convert.ToInt32(CandidateStatus.TestAssigned)).ToList();
+        //                if (userTest.Any())
+        //                {
+        //                    foreach (var utest in userTest)
+        //                    {
+
+        //                        _testSuiteService.DeleteUserTestSuite(utest);
+        //                    }
+        //                }
+        //            }
+        //            var testSuiteDetails = _testSuiteService.GetTestSuiteDetails().Where(model => model.TestSuiteId == SuiteId && model.IsDeleted == false).SingleOrDefault();
+        //            EmployeeTestSuite userTestSuite = new EmployeeTestSuite();
+        //            userTestSuite.EmployeeId = UserId;
+        //            userTestSuite.TestSuiteId = SuiteId;
+        //            _testSuiteService.AssignEmployeeSuite(userTestSuite, testSuiteDetails);
+        //            var selectUser = _userService.GetUserDetails().Where(model => model.UserId == UserId).FirstOrDefault();
+        //            selectUser.TestStatus = Convert.ToString(CandidateStatus.TestAssigned);
+        //            selectUser.CandidateStatus = Convert.ToString(CandidateStatus.TestAssigned);
+
+        //            _userService.Update(selectUser);
+
+        //            List<string> Receipient = new List<string>() { "Admin", "Panel" };
+
+        //            if (IsReAssign == 0)
+        //            {
+        //                mailsubject = "Test Assigned For " + selectUser.FirstName + " " + selectUser.LastName + " Successfully";
+        //                _commonController.SendMailByRoleName(mailsubject, "CandidateTestAssigned.cshtml", Receipient, selectUser.FirstName + " " + selectUser.LastName);
+        //            }
+        //            else
+        //            {
+        //                mailsubject = "Test Re-Assigned For " + selectUser.FirstName + " " + selectUser.LastName + " Successfully";
+        //                _commonController.SendMailByRoleName(mailsubject, "TestReassign.cshtml", Receipient, selectUser.FirstName + " " + selectUser.LastName);
+        //            }
+
+        //            return Json(1);
+        //        }
+        //        else
+        //        {
+        //            return Json(-1);
+        //        }
+        //    }
+        //    return View();
+        //}
+
+        //public ActionResult GetEmployeeTestSuiteDetails([DataSourceRequest] DataSourceRequest request, int UserId)
+        //{
+        //    _testSuiteService.TestSuiteActivation();
+        //    var tags = _tagsService.GetTagsDetails();
+        //    var testSuitelist = _testSuiteService.GetTestSuiteDetails().Where(model => model.IsDeleted == false && model.IsExternal == false).OrderByDescending(model => model.TestSuiteId).ToArray();
+        //    var viewModels = _mappingService.Map<TestSuite[], TestSuiteViewModel[]>(testSuitelist);
+        //    bool userInRole = MvcApplication.getCurrentUserRoles().Contains((Silicus.Ensure.Models.Constants.RoleName.Admin.ToString()));
+        //    //var userApplicationId = _userService.GetUserLastestApplicationId(UserId);
+        //    var testSuitId = _testSuiteService.GetEmployeeTestSuiteByEmployeeId(UserId);
+        //    foreach (var item in viewModels)
+        //    {
+        //        if (testSuitId != null)
+        //        {
+        //            if (testSuitId.TestSuiteId != 0 && item.TestSuiteId == testSuitId.TestSuiteId)
+        //            {
+        //                item.IsAssigned = true;
+        //            }
+        //        }
+
+        //        item.PositionName = GetPosition((int)item.Position) == null ? "deleted from master" : GetPosition((int)item.Position).PositionName;
+        //        List<Int32> TagId = item.PrimaryTags.Split(',').Select(int.Parse).ToList();
+        //        item.PrimaryTagNames = string.Join(",", (from a in tags
+        //                                                 where TagId.Contains(a.TagId)
+        //                                                 select a.TagName));
+        //        item.StatusName = ((TestSuiteStatus)item.Status).ToString();
+        //        item.UserInRole = userInRole;
+        //    }
+        //    //viewModels = viewModels.Where(x => x.StatusName == TestSuiteStatus.Ready.ToString()).ToArray();
+        //    return Json(viewModels.ToDataSourceResult(request), JsonRequestBehavior.AllowGet);
+        //}
+
+        #endregion
 
         private Position GetPosition(int positionId)
         {
@@ -907,7 +996,7 @@ namespace Silicus.Ensure.Web.Controllers
                 submittedTestViewModel.TotalMakrs = userTestSuitDetails.MaxScore;
                 submittedTestViewModel.TestSuitName = testSuitDetails.TestSuiteName;
                 submittedTestViewModel.UserId = userTestSuitDetails.UserApplicationId;
-                submittedTestViewModel.Postion = _positionService.GetPositionById(testSuitDetails.Position) != null ? _positionService.GetPositionById(testSuitDetails.Position).PositionName : "";
+                submittedTestViewModel.Postion = _positionService.GetPositionById((int)testSuitDetails.Position) != null ? _positionService.GetPositionById((int)testSuitDetails.Position).PositionName : "";
 
                 foreach (var questionId in userTestSuitDetails.UserTestDetails)
                 {

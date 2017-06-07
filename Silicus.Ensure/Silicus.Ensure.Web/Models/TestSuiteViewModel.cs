@@ -23,9 +23,9 @@ namespace Silicus.Ensure.Web.Models
         [Range(1, 360, ErrorMessage = "Enter number between 1-360")]
         public Int32 Duration { get; set; }
 
-        [Required(ErrorMessage = "Position is required.")]
+        //[Required(ErrorMessage = "Position is required.")]
         [Display(Name = "Position")]
-        public Int32 Position { get; set; }
+        public Int32? Position { get; set; }
 
         [Required(ErrorMessage = "Overall proficiency is required.")]
         [Display(Name = "Overall proficiency")]
@@ -90,6 +90,9 @@ namespace Silicus.Ensure.Web.Models
         public bool UserInRole { get; set; }
 
         public bool IsAssigned { get; set; }
+
+        [Display(Name = "Is External")]
+        public bool? IsExternal { get; set; }
     }
 
     public class TestSuiteTagViewModel

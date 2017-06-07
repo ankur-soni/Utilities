@@ -5429,6 +5429,7 @@
     <Content Include="Views\Employee\OnlineTest.cshtml" />
     <Content Include="Views\Employee\Welcome.cshtml" />
     <Content Include="Views\Employee\_testSuiteAndCandidateDetails.cshtml" />
+    <Content Include="Views\Employee\SelectEmployeeSuit.cshtml" />
     <None Include="Web.Azure.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

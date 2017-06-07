@@ -58,8 +58,9 @@ namespace Silicus.Ensure.Services
             return _context.Query<UserTestSuite>();
         }
         
-        public IEnumerable<EmployeeTestSuite> GetEmployeeTestSuite()
+        public IEnumerable<EmployeeTestSuite> GetEmployeeTestSuite(int CurrentEmpId)
         {
+            //TODO filter using SharedParameter
             return _context.Query<EmployeeTestSuite>();
         }
 
@@ -117,6 +118,12 @@ namespace Silicus.Ensure.Services
             return _context.Query<UserTestSuite>().Where(x => x.UserApplicationId == applicationId).FirstOrDefault();
         }
 
+        //ADK
+        public EmployeeTestSuite GetEmployeeTestSuiteByEmployeeId(int employeeId)
+        {
+            return _context.Query<EmployeeTestSuite>().Where(x => x.EmployeeId == employeeId).FirstOrDefault();
+        }
+
         public UserTestSuite GetUserTestSuiteId(int userTestSuiteId)
         {
             return _context.Query<UserTestSuite>().Where(x => x.UserTestSuiteId == userTestSuiteId).FirstOrDefault();
@@ -155,9 +162,9 @@ namespace Silicus.Ensure.Services
             return _context.Query<UserTestDetails>().Where(x => x.TestDetailId == userTestDetailsId).First();
         }
 
-        public EmployeeTestDetails GetEmployeeTestDetailsId(int employeeTestSuitId)
+        public EmployeeTestDetails GetEmployeeTestDetailsId(int employeeTestDetailsId)
         {
-            return _context.Query<EmployeeTestDetails>().Where(x => x.EmployeeTestSuite.EmployeeTestSuiteId == employeeTestSuitId).First();
+            return _context.Query<EmployeeTestDetails>().Where(x => x.TestDetailId== employeeTestDetailsId).First();
         }
 
         public IEnumerable<EmployeeTestDetails> GetEmployeeTestDetailsListByEmployeeTestSuitId(int employeeTestSuitId)
@@ -432,6 +439,26 @@ namespace Silicus.Ensure.Services
             userTestSuite.Duration = testSuite.Duration;
             userTestSuite.StatusId = Convert.ToInt32(CandidateStatus.TestAssigned);
             return AddUserTestSuite(userTestSuite);
+        }
+
+        public int AssignEmployeeSuite(EmployeeTestSuite employeeTestSuite, TestSuite testSuite)
+        {
+            var testSuiteDetails = new List<EmployeeTestDetails>();
+            EmployeeTestDetails testSuiteDetail;
+            var questions = GenerateQuestionSet(testSuite);
+            foreach (var question in questions)
+            {
+                testSuiteDetail = new EmployeeTestDetails();
+                testSuiteDetail.QuestionId = question.Id;
+                testSuiteDetails.Add(testSuiteDetail);
+            }
+            employeeTestSuite.EmployeeTestDetails = testSuiteDetails;
+            employeeTestSuite.ObjectiveCount = questions.Count(x => x.QuestionType == 1);
+            employeeTestSuite.PracticalCount = questions.Count(x => x.QuestionType == 2);
+            employeeTestSuite.MaxScore = questions.Sum(x => x.Marks);
+            employeeTestSuite.Duration = testSuite.Duration;
+            employeeTestSuite.StatusId = Convert.ToInt32(CandidateStatus.TestAssigned);
+            return AddEmployeeTestSuite(employeeTestSuite);
         }
 
         private List<Question> GenerateQuestionSet(TestSuite testSuite)
@@ -734,6 +761,31 @@ namespace Silicus.Ensure.Services
             navigationDetails.Practical = GetQuestionNavigationDetails(userTestSuiteId, (int)QuestionType.Practical);
             navigationDetails.Objective = GetQuestionNavigationDetails(userTestSuiteId, (int)QuestionType.Objective);
             return navigationDetails;
+        }
+
+        public QuestionNavigationBusinessModel GetEmployeeNavigationDetails(int employeeTestSuiteId)
+        {
+            var navigationDetails = new QuestionNavigationBusinessModel();
+            navigationDetails.Practical = GetEmployeeQuestionNavigationDetails(employeeTestSuiteId, (int)QuestionType.Practical);
+            navigationDetails.Objective = GetEmployeeQuestionNavigationDetails(employeeTestSuiteId, (int)QuestionType.Objective);
+            return navigationDetails;
+        }
+
+        private List<QuestionNavigationBasics> GetEmployeeQuestionNavigationDetails(int employeeTestSuiteId, int questionType)
+        {
+            return (from a in _context.Query<EmployeeTestDetails>()
+                                  .Where(x => x.EmployeeTestSuite.EmployeeTestSuiteId == employeeTestSuiteId)
+                    join b in _context.Query<Question>().Where(ques => ques.QuestionType == questionType)
+                    on a.QuestionId equals b.Id
+                    select new QuestionNavigationBasics
+                    {
+                        QuestionId = b.Id,
+                        IsViewedOnly = a.IsViewedOnly,
+                        IsAnswered = !(a.Answer.Equals(null) || a.Answer.Trim().Equals("")),
+                        IsReviewed = !a.Mark.Equals(null),
+                        IsCorrect = !a.Mark.Equals(null) && a.Mark > 0,
+                        QuestionDescription = b.QuestionDescription
+                    }).OrderBy(question => question.QuestionId).ToList();
         }
 
         private List<QuestionNavigationBasics> GetQuestionNavigationDetails(int userTestSuiteId, int questionType)
