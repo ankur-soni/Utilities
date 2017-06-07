@@ -58,6 +58,11 @@ namespace Silicus.Ensure.Services
             return _context.Query<UserTestSuite>();
         }
 
+        public IEnumerable<EmployeeTestSuite> GetEmployeeTestSuite()
+        {
+            return _context.Query<EmployeeTestSuite>();
+        }
+
         public int AddUserTestSuite(UserTestSuite UserTestSuite)
         {
             _context.Add(UserTestSuite);
@@ -85,6 +90,14 @@ namespace Silicus.Ensure.Services
             if (UserTestSuite.UserApplicationId > 0)
             {
                 _context.Delete(UserTestSuite);
+            }
+        }
+
+        public void DeleteEmployeeTestSuite(EmployeeTestSuite EmployeeTestSuite)
+        {
+            if (EmployeeTestSuite.EmployeeId > 0)
+            {
+                _context.Delete(EmployeeTestSuite);
             }
         }
 

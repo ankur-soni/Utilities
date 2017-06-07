@@ -27,6 +27,8 @@ namespace Silicus.Ensure.Services.Interfaces
 
         IEnumerable<UserTestSuite> GetUserTestSuite();
 
+        IEnumerable<EmployeeTestSuite> GetEmployeeTestSuite();
+
         int AddUserTestSuite(UserTestSuite UserTestSuite);
 
         void UpdateUserTestSuite(UserTestSuite UserTestSuite);
@@ -36,6 +38,8 @@ namespace Silicus.Ensure.Services.Interfaces
         void UpdateUserTestDetails(UserTestDetails UserTestDetails);
 
         void DeleteUserTestSuite(UserTestSuite UserTestSuite);
+
+        void DeleteEmployeeTestSuite(EmployeeTestSuite EmployeeTestSuite); 
 
         UserTestSuite GetUserTestSuiteByUserApplicationId(int userId);
 

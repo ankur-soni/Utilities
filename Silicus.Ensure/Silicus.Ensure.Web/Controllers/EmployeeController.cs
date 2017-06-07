@@ -109,16 +109,16 @@ namespace Silicus.Ensure.Web.Controllers
                 {
                     if (IsReAssign == 1)
                     {
-                        var userTest = _testSuiteService.GetUserTestSuite().Where(x => x.UserApplicationId == updateCurrentUsers.UserApplicationId && x.StatusId == Convert.ToInt32(CandidateStatus.TestAssigned)).ToList();
-                        if (userTest.Any())
+                        var employeeTestSuits = _testSuiteService.GetEmployeeTestSuite().Where(x => x.EmployeeId == UserId && x.StatusId == Convert.ToInt32(CandidateStatus.TestAssigned)).ToList();
+                        if (employeeTestSuits.Any())
                         {
-                            foreach (var utest in userTest)
+                            foreach (var empTestSuite in employeeTestSuits)
                             {
-
-                                _testSuiteService.DeleteUserTestSuite(utest);
+                                _testSuiteService.DeleteEmployeeTestSuite(empTestSuite);
                             }
                         }
                     }
+
                     var testSuiteDetails = _testSuiteService.GetTestSuiteDetails().Where(model => model.TestSuiteId == SuiteId && model.IsDeleted == false).SingleOrDefault();
                     EmployeeTestSuite userTestSuite = new EmployeeTestSuite();
                     userTestSuite.EmployeeId = UserId;
@@ -153,7 +153,8 @@ namespace Silicus.Ensure.Web.Controllers
         {
             _testSuiteService.TestSuiteActivation();
             var tags = _tagsService.GetTagsDetails();
-            var testSuitelist = _testSuiteService.GetTestSuiteDetails().Where(model => model.IsDeleted == false && model.IsExternal == false).OrderByDescending(model => model.TestSuiteId).ToArray();
+            var testSuitelist = _testSuiteService.GetTestSuiteDetails()
+                .Where(model => model.IsDeleted == false && model.IsExternal == false).OrderByDescending(model => model.TestSuiteId).ToArray();
             var viewModels = _mappingService.Map<TestSuite[], TestSuiteViewModel[]>(testSuitelist);
             bool userInRole = MvcApplication.getCurrentUserRoles().Contains((Silicus.Ensure.Models.Constants.RoleName.Admin.ToString()));
             var testSuitId = _testSuiteService.GetEmployeeTestSuiteByEmployeeId(UserId);
