@@ -6,6 +6,47 @@
     ViewBag.Title = "_employeeGrid";
 }
 
+<div class="toolbar">
+    <div class="row">
+        <div class="col-xs-6 col-sm-3 col-md-3 col-lg-1">
+            Test Suit
+        </div>
+        <div class="col-xs-12 col-sm-6 col-md-4 col-lg-4">
+            <div class="form-group">
+                @(Html.Kendo().DropDownList()
+          .Name("DDTestSuit")
+          .DataTextField("TestSuiteName")
+          .DataValueField("TestSuiteId")
+        .Events(e =>
+                            {
+                                e.DataBound("getAssignedEmpID")
+                                .Change("getAssignedEmpID");
+                            })
+          .DataSource(source =>
+          {
+              source.Custom()
+
+                  .Transport(transport =>
+                  {
+                      transport.Read("GetEmployeeTestSuiteDetails", "Employee");
+                  })
+                  .Schema(schema =>
+                  {
+                      schema.Data("Data")
+                            .Total("Total");
+                  });
+
+          })
+
+
+                )
+            </div>
+        </div>
+    </div>
+    <button type="button" id="Savebtn" style="width:70px;" class="btn green">Save</button>
+
+</div>
+
 
 <div class="table-responsive">
     @if (Request.IsAuthenticated)
@@ -13,11 +54,12 @@
         @(Html.Kendo().Grid<Silicus.Ensure.Web.Models.UserDetailViewModel>().Name("UserGrids")
          .Columns(columns =>
          {
+             columns.Bound(o => o).ClientTemplate("<input type='checkbox' class='EmployeeSelection' Id='#=UserId#' / />").Width(50).Filterable(false).Sortable(false).Title("<input type='checkbox' id='chkselectallEmployeeRecord'  / />").Groupable(false).IncludeInMenu(false);
              columns.Bound(c => c.FullName).Title("Name").Width(400);
              columns.Bound(p => p.RoleName).Title("Role name").Width(450);
              columns.Bound(p => p.EmployeeId).Title("EmployeeId").Width(450);
              columns.Bound(p => p.Email).Width(550);
-             columns.Bound("").ClientTemplate(@"<a onclick=AssignEmployeeTest('#=UserId#','New') style='cursor:pointer'>Assign test</a>").Title("Assign Test").Width(500).Sortable(false);
+             //columns.Bound("").ClientTemplate(@"<a onclick=AssignEmployeeTest('#=UserId#','New') style='cursor:pointer'>Assign test</a>").Title("Assign Test").Width(500).Sortable(false);
              //columns.Bound("").ClientTemplate(@"<a onclick=AssignEmployeeTest('#=UserId#','#=TestStatus#') style='cursor:pointer'>Assign test</a>").Title("Assign Test").Width(500).Sortable(false);
              //columns.Bound(c => c.RoleId).Title("Action").Sortable(false).Width(650).ClientTemplate(" <div> #if(RoleName == 'Recruiter'){#<input type='button' style='width:92px;font-size:14px;text-transform:initial;' class='btn green' onclick='assignType(event)' value='Manage type'>#}else if(RoleName == 'Panel') { #<input type='button' style='font-size:14px;text-transform:initial;' class='btn green' onclick='assignPanel(event)' value='Manage panel'># }else if(RoleName == 'Candidate') { #<input type='button' value='z'># } #");
 
@@ -28,14 +70,16 @@
                 model.Field(p => p.Email).Editable(false);
             })
 
-                                                               .Read(read => read.Action("GetUserDetails", "Employee")).ServerOperation(false)
-                                                              //.Create(update => update.Action("CreateUser", "User"))
-                                                              //.Update(update => update.Action("UpdateUser", "User"))
-                                                              //.Destroy(update => update.Action("DeleteUser", "User"))
-                                                              .PageSize(10))
-
-            .Pageable(pager => { pager.PageSizes(true); })
+            .Read(read => read.Action("GetUserDetails", "Employee")).ServerOperation(false)
+            //.Create(update => update.Action("CreateUser", "User"))
+            //.Update(update => update.Action("UpdateUser", "User"))
+            //.Destroy(update => update.Action("DeleteUser", "User"))
+            .PageSize(100))
+            .Pageable(pager => { pager.PageSizes(false); })
             .Sortable()
+            .HtmlAttributes(new { style = "height: 700px;" })
+             .Scrollable(scrollable => scrollable.Virtual(true))
+              .Filterable(ftb => ftb.Mode(GridFilterMode.Row))
             .Resizable(resizing => resizing.Columns(true))
         )
     }
@@ -43,59 +87,93 @@
 
 <script type="text/javascript">
     $(document).ready(function () {
+        $('#chkselectallEmployeeRecord').on('click', function (e) {
+            $('.EmployeeSelection').prop('checked', $(this).is(':checked'));
+        });
+       
 
-        $(function () {
-            $("#Savebtn").bind("click", function () {
-                showCustomLoader();
-                var chkCheck = false;
-                $('input:checkbox').each(function () {
-                    if ($(this).is(':checked')) {
-                        chkCheck = true;
-                    }
-                });
-                if (chkCheck) {
-                    var uId = $("#CurrentUser").val();
-                    var IsReAssign = $("#IsReAssign").val();
-                    var checkvals = $("[class='check']:checked").attr("value")
+        function GenerateSelectedEmpArray() {
+            var row = $("#UserGrids").data("kendoGrid").tbody.find('tr');
+            var SelectedTrans = new Array();
 
-                    $('#myEmpModal').find('input[type=checkbox]:checked').removeAttr('checked');
-                    $.ajax({
-                        type: 'post',
-                        async: false,
-                        url: "/Employee/AssignEmployeeSuite",
-                        cache: false,
-                        data: { SuiteId: checkvals, UserId: uId, IsReAssign: IsReAssign },
-                        contenttype: "application/json; charset=utf-8",
-                        success: function (returndata) {
-                            if (returndata == 1) {
-                             
-                                $('#myEmpModal').fadeOut();
-                             
-                                ShowMessage("Test suite assigned successfully.", 1);
-                             
-                                $('#UserGrids').data('kendoGrid').dataSource.read();
-                             
-                                $('#UserGrids').data('kendoGrid').refresh();
-                                $(".loader-overlay").hide();
-                                $(".modal-scrollable").hide();
-                                $(".modal-backdrop").hide();
-                                
-                            }
-                        },
-                        error: function (er) {
-                            $(".loader-overlay").hide();
-                        }
-                    });
-                }
-                else {
-                    toastr.error('Please select at least one test suite.')
-                    $(".loader-overlay").hide();
+            $.each(row, function (index) {
+                var checkbox = $(this).find('input.EmployeeSelection')[0];
+                if ($(checkbox).is(':checked')) {
+                    SelectedTrans.push($(checkbox).attr("id"));
                 }
             });
+            return SelectedTrans;
+        }
 
+        $("#Savebtn").bind("click", function () {
+            showCustomLoader();
+            var empArray = GenerateSelectedEmpArray();
+            var testSuitData = $("#DDTestSuit").data("kendoDropDownList");
+            debugger;
+            if (empArray.length > 0 && testSuitData.value() > 0) {
+                //var uId = $("#CurrentUser").val();
+                //var IsReAssign = $("#IsReAssign").val();
+                //var checkvals = $("[class='check']:checked").attr("value")
+
+                $('#myEmpModal').find('input[type=checkbox]:checked').removeAttr('checked');
+                $.ajax({
+                    type: 'post',
+                    async: false,
+                    url: "/Employee/AssignEmployeeSuite",
+                    cache: false,
+                    data: { SuiteId: testSuitData.value(), UserList: empArray },
+                    contenttype: "application/json; charset=utf-8",
+                    success: function (returndata) {
+                        if (returndata == 1) {
+
+                            //$('#myEmpModal').fadeOut();
+
+                            ShowMessage("Test suite assigned successfully.", 1);
+
+                            $('#UserGrids').data('kendoGrid').dataSource.read();
+
+                            //$('#UserGrids').data('kendoGrid').refresh();
+                            $(".loader-overlay").hide();
+                            //$(".modal-scrollable").hide();
+                            //$(".modal-backdrop").hide();
+
+                        }
+                    },
+                    error: function (er) {
+                        $(".loader-overlay").hide();
+                    }
+                });
+            }
+            else {
+                toastr.error('Please select at least one test suite or Employee.')
+                $(".loader-overlay").hide();
+            }
         });
+
     });
-    function AssignEmployeeTest(UserId, TestStatus) {
+
+
+    function getAssignedEmpID()
+    {
+       
+        var testSuitData = $("#DDTestSuit").data("kendoDropDownList");
+        $.ajax({
+            type:'get',
+            url: "/Employee/GetEmployeeassigedforTestSuits",
+            data: { suitId: testSuitData.value() },
+            success: function (empList) {
+               // debugger;
+                $.each(empList, function (index, data) {
+                    $('#' + data).prop('checked', true);
+                });
+               
+            },
+            error: function (er) {
+                $(".loader-overlay").hide();
+            }
+        });
+        }
+    @*function AssignEmployeeTest(UserId, TestStatus) {
         $(".modal-scrollable").show();
         $(".modal-backdrop").show();
         if (TestStatus == '@CandidateStatus.New.ToString()') {
@@ -119,5 +197,5 @@
             alert("Sorry! Can't perform this operation.");
             $(".loader-overlay").hide();
         }
-    }
+    }*@
 </script>
