@@ -36,10 +36,17 @@
                                                                             #=StatusId#
                                                                         #}
                                                                         #").Title("Status").Width(250);
-             
-             columns.Bound(p => p.StatusId).ClientTemplate("<a href='/Employee/OnlineTest?EmployeeTestSuitId=#=EmployeeTestSuiteId#'>Start Test</a>").Title("Test Action");
-
-         })
+             columns.Bound(p => p.StatusId).ClientTemplate(@"
+                                                                        #if(StatusId==2){#
+                                                                            <a href='/Employee/OnlineTest?EmployeeTestSuitId=#=EmployeeTestSuiteId#'>Start Test</a>
+                                                                        #}
+                                                                        else if(StatusId==3) {#
+                                                                            Test Submitted
+                                                                        #}
+                                                                        else{#
+                                                                            --------------
+                                                                        #}
+                                                                        #").Title("Test Action");})
                                        .DataSource(dataSource => dataSource
                                        .Ajax()
                                        .Model(model =>

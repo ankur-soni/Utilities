@@ -77,7 +77,7 @@ namespace Silicus.Ensure.Services.Interfaces
         List<TestDetailsBusinessModel> GetUserTestDetailsForPrint(int userTestSuitId);
 
         List<TestDetailsBusinessModel> GetUserTestDetailsByViewerIdForPrint(PreviewTestBusinessModel previewTest);
-        EmployeeTestSuite GetEmployeeTestSuiteById(int userApplicationId);
+        EmployeeTestSuite GetEmployeeTestSuiteById(int EmployeeTestSuitId);
         IEnumerable<EmployeeTestDetails> GetEmployeeTestDetailsListByEmployeeTestSuitId(int employeeTestSuitId);
         void UpdateEmployeeTestDetails(EmployeeTestDetails testDetail);
         void UpdateEmployeeTestSuite(EmployeeTestSuite employeeTestSuite);

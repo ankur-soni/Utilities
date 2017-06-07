@@ -111,19 +111,31 @@ namespace Silicus.Ensure.Web.Controllers
             var userEmailId = User.Identity.Name;
             var user = _containerUserService.FindUserByEmail(userEmailId);
 
-            var TestSuits = _testSuiteService.GetEmployeeTestSuite(user.ID);
+            var empTestSuits = _testSuiteService.GetEmployeeTestSuite(user.ID);
+            var testSuits = _testSuiteService.GetTestSuiteDetails();
+            var userlistViewModel = _mappingService.Map<IEnumerable<EmployeeTestSuite>, IEnumerable<Models.Employee.EmployeeTestSuitViewModel>>(empTestSuits);
 
-            var userlistViewModel = _mappingService.Map<IEnumerable<EmployeeTestSuite>, IEnumerable<Models.Employee.EmployeeTestSuitViewModel>>(TestSuits);
+            #region Custom Map - Name Of Test Suit
+            try
+            {
+                if (empTestSuits.Any() && testSuits.Any())
+                {
+                    var empTestSuitIds = empTestSuits.Select(p => p.TestSuiteId).ToList();
+                    var relatedTestSuits = testSuits.Where(p => empTestSuitIds.Contains(p.TestSuiteId));
+                    Dictionary<int, string> testSuiteMap = relatedTestSuits.ToDictionary(x => x.TestSuiteId, x => x.TestSuiteName);
+                    foreach (var item in userlistViewModel)
+                        if (testSuiteMap.ContainsKey(item.TestSuiteId))
+                            item.TestSuitName = testSuiteMap[item.TestSuiteId];
+                }
+            }
+            catch (Exception)
+            {
+                //TBD - Graceful Failure
+            }
+            #endregion
 
             DataSourceResult result = userlistViewModel.ToDataSourceResult(request);
             return Json(result);
-        }
-
-        public ActionResult GetEmployeeassigedforTestSuits(int suitId)
-        {
-            var TestSuits = _testSuiteService.GetEmployeeTestSuite().Where(ts => ts.TestSuiteId == suitId).Select(ts => ts.EmployeeId).ToList<int>();
-
-            return Json(TestSuits, JsonRequestBehavior.AllowGet);
         }
 
         public ActionResult EmployeeSuit(int UserId, int IsReassign = 0)
@@ -135,23 +147,19 @@ namespace Silicus.Ensure.Web.Controllers
 
         public ActionResult OnlineTest(int EmployeeTestSuitId)
         {
-            if (!ModelState.IsValid)
-                return RedirectToAction("LogOff", "CandidateAccount");
-
-            //var userEmail = User.Identity.Name.Trim();
-            //var user = _userService.GetUserByEmail(userEmail);
-            //if (user == null)
-            //{
-            //    ViewBag.Status = 1;
-            //    ViewBag.Msg = "User not found for online test, kindly contact admin.";
-            //    return View("Welcome", new TestSuiteCandidateModel());
-            //}
+            var userEmailId = User.Identity.Name;
+            var user = _containerUserService.FindUserByEmail(userEmailId);
             EmployeeTestSuite employeeTestSuite = _testSuiteService.GetEmployeeTestSuiteById(EmployeeTestSuitId);
+
             if (employeeTestSuite == null)
             {
                 ViewBag.Status = 1;
                 ViewBag.Msg = "No test is assigned for you, kindly contact admin.";
                 return View("Welcome", new TestSuiteEmployeeModel());
+            }
+            else if (employeeTestSuite.EmployeeId != user.ID)
+            {
+                return RedirectToAction("AssignedTest", "Employee");
             }
             else if (employeeTestSuite.StatusId != (int)CandidateStatus.TestAssigned)
             {
@@ -160,16 +168,9 @@ namespace Silicus.Ensure.Web.Controllers
                 return View("Welcome", new TestSuiteEmployeeModel());
             }
             TestSuiteEmployeeModel testSuiteEmployeeModel = _mappingService.Map<EmployeeTestSuite, TestSuiteEmployeeModel>(employeeTestSuite);
-            //var candidateInfoBusinessModel = _userService.GetCandidateInfo(user);
-            //testSuiteCandidateModel.CandidateInfo = _mappingService.Map<CandidateInfoBusinessModel, CandidateInfoViewModel>(candidateInfoBusinessModel);
-            //testSuiteCandidateModel.ProfilePhotoFilePath = user.ProfilePhotoFilePath;
             testSuiteEmployeeModel.NavigationDetails = GetNavigationDetails(testSuiteEmployeeModel.EmployeeTestSuiteId);
             testSuiteEmployeeModel.TotalQuestionCount = testSuiteEmployeeModel.PracticalCount + testSuiteEmployeeModel.ObjectiveCount;
             testSuiteEmployeeModel.DurationInMin = testSuiteEmployeeModel.RemainingTime > 0 ? testSuiteEmployeeModel.RemainingTime : testSuiteEmployeeModel.Duration;
-
-            var userEmailId = User.Identity.Name;
-            var user = _containerUserService.FindUserByEmail(userEmailId);
-
             testSuiteEmployeeModel.EmployeeId = user.ID;
 
             return View(testSuiteEmployeeModel);
@@ -204,7 +205,7 @@ namespace Silicus.Ensure.Web.Controllers
             return PartialView("_partialViewQuestion", testSuiteQuestionModel);
         }
 
-        
+
         public ActionResult OnSubmitTest(int testSuiteId, int EmployeeTestSuiteId, int? employeeTestDetailId, int EmployeeId, string answer)
         {
             // Update last question answer of test.

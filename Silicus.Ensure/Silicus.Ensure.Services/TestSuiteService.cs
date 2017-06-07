@@ -61,7 +61,7 @@ namespace Silicus.Ensure.Services
         public IEnumerable<EmployeeTestSuite> GetEmployeeTestSuite(int CurrentEmpId)
         {
             //TODO filter using SharedParameter
-            return _context.Query<EmployeeTestSuite>();
+            return _context.Query<EmployeeTestSuite>().Where(p=>p.EmployeeId == CurrentEmpId);
         }
 
         public IEnumerable<EmployeeTestSuite> GetEmployeeTestSuite()
