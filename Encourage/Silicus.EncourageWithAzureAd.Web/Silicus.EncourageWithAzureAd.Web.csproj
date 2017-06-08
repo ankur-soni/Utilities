@@ -309,6 +309,7 @@
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\NominationController.cs" />
     <Compile Include="Controllers\ReviewController.cs" />
+    <Compile Include="Controllers\UserController.cs" />
     <Compile Include="Controllers\UserProfileController.cs" />
     <Compile Include="Enums\FrequencyCode.cs" />
     <Compile Include="Enums\Roles.cs" />
@@ -344,6 +345,7 @@
     <Compile Include="Models\ShortlistedNominationViewModel.cs" />
     <Compile Include="Models\UserViewModel.cs" />
     <Compile Include="Models\ViewShortlistDetailsViewModel.cs" />
+    <Compile Include="Models\UserWinningHistoryViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
     <Compile Include="StaticClasses\GetRoles.cs" />
@@ -772,6 +774,7 @@
     <Content Include="js\plugins\toastr\_notes\dwsync.xml" />
     <Content Include="js\plugins\validate\jquery.validate.min.js" />
     <Content Include="js\plugins\validate\_notes\dwsync.xml" />
+    <Content Include="js\remaining-character-text.js" />
     <Content Include="js\select2.min.js" />
     <Content Include="js\star-rating.js" />
     <Content Include="js\summernote.min.js" />
@@ -856,6 +859,7 @@
     <Content Include="Scripts\modernizr-2.6.2.js" />
     <Content Include="Scripts\respond.js" />
     <Content Include="Scripts\respond.min.js" />
+    <Content Include="Scripts\users-winning-history.js" />
     <Content Include="Scripts\_references.js" />
     <Content Include="UserProfilePicture\Default.jpg" />
     <Content Include="Views\SendMailAfterWinnerSelected.html">
@@ -911,6 +915,8 @@
     <Content Include="Views\Error\PageNotFound.cshtml" />
     <Content Include="Views\Error\CustomError.cshtml" />
     <Content Include="Views\Error\Forbidden.cshtml" />
+    <Content Include="Views\User\History.cshtml" />
+    <Content Include="Views\Shared\_usersWinningHistory.cshtml" />
     <None Include="Web.Production.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -959,6 +965,9 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'UAT|AnyCPU'">
     <OutputPath>bin\</OutputPath>
     <CodeAnalysisRuleSet>Silicus.EncourageWithAzureAd.Web-1.ruleset</CodeAnalysisRuleSet>
+    <DefineConstants>TRACE;DEBUG</DefineConstants>
+    <DebugType>full</DebugType>
+    <DebugSymbols>true</DebugSymbols>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Production|AnyCPU'">
     <OutputPath>bin\</OutputPath>

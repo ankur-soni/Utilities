@@ -107,6 +107,7 @@
                                             <span class="nav-label">Dashboard</span>
                                         </a>
                                     </li>
+                                   
                                     @if (roles.Contains("Manager"))
                                     {
                                         <li>
@@ -144,6 +145,13 @@
                                             </ul>
                                         </li>
                                     }
+                                    <li>
+                                        <a href="#"><i class="fa fa-user"></i><span class="nav-label">My Data</span> <span class="fa arrow"></span></a>
+                                        <ul class="nav nav-second-level">
+                                            <li><a href="@Url.Action("History", "User")">History</a></li>
+                                        </ul>
+                                    </li>   
+                                    
                                 </ul>
                             }
                             <!--End of if-->

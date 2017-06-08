@@ -1,0 +1,58 @@
+﻿@model List<Silicus.Encourage.Services.Models.UserWinningHistory>
+
+<div class="row white-bg header-row">
+    <nav class="" role="navigation" style="margin-bottom: 0">
+        <div class="navbar-header">
+            <a class="navbar-minimalize minimalize-styl-2 btn btn-primary " href="#"><i class="fa fa-bars"></i> </a>
+        </div>
+    </nav>
+    <div class="col-lg-11 col-md-11 col-sm-11">
+        <h1 class="header-name">Winning History</h1>
+    </div>
+</div>
+<div class="row">
+    <div class="col-lg-12 col-md-12 col-sm-12">
+        <div class="box M-T15 M-B60">
+            <div class="sttabs tabs-style-linebox">
+                <nav id="awards-list">
+                    <ul>
+                        <li class="active"><a id="all-tab" data-toggle="tab" href="#all" data-awarId="0"><span>All</span></a></li>
+                        <li><a id="som-tab" data-toggle="tab" href="#som" data-awardId="1"><span>SOM</span></a></li>
+                        <li><a id="pinnacle-tab" data-toggle="tab" href="#pinnacle" data-awardId="2"><span>Pinnacle</span></a></li>
+                    </ul>
+                </nav>
+                <div class="tab-content content-wrap text-center">
+                    <section id="all" class="tab-pane fade">
+                        <div class="sttabs tabs-style-linebox">
+                            <div class="tab-content content-wrap text-center">
+                                <section id="all-currentMonth" class="tab-pane fade in active">
+                                    @Html.Partial("~/Views/Shared/_usersWinningHistory.cshtml", Model)
+                                </section>
+                            </div>
+                        </div>
+                    </section>
+                    <section id="som" class="tab-pane fade in active">
+                        <div class="sttabs tabs-style-linebox">
+                            <div class="tab-content content-wrap text-center">
+                                <section id="som-currentMonth" class="tab-pane fade in active">
+                                    @Html.Partial("~/Views/Shared/_usersWinningHistory.cshtml", Model)
+                                </section>
+                            </div>
+                        </div>
+                    </section>
+                    <section id="pinnacle" class="tab-pane fade">
+                        <div class="sttabs tabs-style-linebox">
+                            <div class="tab-content content-wrap text-center">
+                                <section id="pinnacle-currentMonth" class="tab-pane fade in active">
+                                    @Html.Partial("~/Views/Shared/_usersWinningHistory.cshtml", Model)
+                                </section>
+                            </div>
+                        </div>
+                    </section>
+                </div>
+                <!-- /content -->
+            </div>
+        </div>
+    </div>
+</div>
+

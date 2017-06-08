@@ -326,11 +326,11 @@ namespace Silicus.Encourage.Services
             {
                 foreach (var awardId in awardIds)
                 {
-                    var data = _encourageDatabaseContext.Query<Models.Configuration>().FirstOrDefault(x => x.configurationKey == lockKey && x.AwardId == awardId);
+                    var data = _encourageDatabaseContext.Query<Configuration>().FirstOrDefault(x => x.configurationKey == lockKey && x.AwardId == awardId);
                     if (data != null)
                     {
                         data.value = true;
-                        _encourageDatabaseContext.Update<Models.Configuration>(data);
+                        _encourageDatabaseContext.Update<Configuration>(data);
                         lockedAwards.Add(_encourageDatabaseContext.Query<Award>().FirstOrDefault(a => a.Id == awardId));
                     }
                 }
@@ -352,11 +352,11 @@ namespace Silicus.Encourage.Services
             {
                 foreach (var awardId in awardIds)
                 {
-                    var data = _encourageDatabaseContext.Query<Models.Configuration>().FirstOrDefault(x => x.configurationKey == lockKey && x.AwardId == awardId && x.value == true);
+                    var data = _encourageDatabaseContext.Query<Configuration>().FirstOrDefault(x => x.configurationKey == lockKey && x.AwardId == awardId && x.value == true);
                     if (data != null)
                     {
                         data.value = false;
-                        _encourageDatabaseContext.Update<Models.Configuration>(data);
+                        _encourageDatabaseContext.Update<Configuration>(data);
                         unLockedAwards.Add(_encourageDatabaseContext.Query<Award>().FirstOrDefault(a => a.Id == awardId));
                     }
                 }
@@ -374,11 +374,11 @@ namespace Silicus.Encourage.Services
             List<Configuration> data;
             if (status == ConfigurationManager.AppSettings["Lock"])
             {
-                data = _encourageDatabaseContext.Query<Models.Configuration>().Where(x => x.value == false).ToList();
+                data = _encourageDatabaseContext.Query<Configuration>().Where(x => x.value == false).ToList();
             }
             else
             {
-                data = _encourageDatabaseContext.Query<Models.Configuration>().Where(x => x.value == true).ToList();
+                data = _encourageDatabaseContext.Query<Configuration>().Where(x => x.value == true).ToList();
             }
             var awardsToUnlock = new List<Award>();
             foreach (var awardconfiguration in data)

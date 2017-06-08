@@ -10,6 +10,7 @@ using Silicus.UtilityContainer.Security;
 using System.Web.Http;
 using Silicus.FrameWorx.Logger;
 using System;
+using System.Web.UI;
 
 [assembly: WebActivatorEx.PostApplicationStartMethod(typeof(LightInjectWebCommon), "CreateContainer")]
 
@@ -47,6 +48,7 @@ namespace Silicus.EncourageWithAzureAd.Web
             container.Register<IEmailTemplateService, EmailTemplateService>();
             container.Register<ICustomDateService, CustomDateService>();
             container.Register<ILogger>((factory) => new DatabaseLogger("name=LoggerDataContext", Type.GetType(string.Empty), (Func<DateTime>)(() => DateTime.UtcNow), string.Empty));
+            container.Register<IWinnerUserService, WinnerUserService>();
 
         }
 
