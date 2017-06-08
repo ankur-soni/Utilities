@@ -30,7 +30,7 @@
         columns.Command(command =>
         {
             command.Edit().HtmlAttributes(new { style = "margin-top:2px!important;margin-bottom:2px!important" });
-            command.Custom("Delete").Click("ConfirmDeletePanelRow").HtmlAttributes(new { @class = "k-button k-button-icontext k-grid-delete", style = "margin-top:2px!important;margin-bottom:2px!important;" });
+            command.Custom("Delete").Click("ConfirmDeletePanelRow").HtmlAttributes(new { @class = "k-button k-button-icontext", style = "margin-top:2px!important;margin-bottom:2px!important;" });
         }).Title("Actions").Width(660);
 
     })

@@ -323,111 +323,103 @@
         }
     </script>
 
-    <div class="row">
-        <div class="f1">
-
-            @using (Html.BeginForm("EditAndApproveQuestion", "QuestionReview", FormMethod.Post, new { id = "AddQuestionForm", onsubmit = "OnSubmit()" }))
-            {
-                @Html.HiddenFor(ques => ques.NextQuestionId, new { @id = "NextQuestionId" });
-                @Html.HiddenFor(ques => ques.TechnologyId, new { @id = "SelectedTechnologyId" });
-                <div class="row">
-                    <div class="btn-nav">
-                        <div class="pull-right">
-                            @if (Model.QuestionStatusType == QuestionStatus.ReadyForReview || Model.QuestionStatusType == QuestionStatus.OnHold)
+   
+       
+            <div>
+    @using (Html.BeginForm("EditAndApproveQuestion", "QuestionReview", FormMethod.Post, new { id = "AddQuestionForm", onsubmit = "OnSubmit()" }))
+    {
+        @Html.HiddenFor(ques => ques.NextQuestionId, new { @id = "NextQuestionId" });
+        @Html.HiddenFor(ques => ques.TechnologyId, new { @id = "SelectedTechnologyId" });
+       
+                <div class="btn-nav">
+                    <div class="pull-right">
+                        @if (Model.QuestionStatusType == QuestionStatus.ReadyForReview || Model.QuestionStatusType == QuestionStatus.OnHold)
+                        {
+                            if (Model.QuestionStatusType == QuestionStatus.ReadyForReview)
                             {
-                                if (Model.QuestionStatusType == QuestionStatus.ReadyForReview)
-                                {
-                                    <input type="button" style="width: 70px;margin-left:1px;" id="btnQuestionOnHold" onclick="PutQuestionOnHold()" name="btnOnHold" value="On Hold" class="btn btn-primary M-T4" data-NextQuestionId="@Model.NextQuestionId" />
-                                    <input type="button" id="btnApproveQuestion" onclick="ApproveQuestion()" value="Approve" class="btn btn-primary M-T4" data-NextQuestionId="@Model.NextQuestionId" />
-                                }
-                                else
-                                {
-                                    <input type="submit" id="btnSaveQuestion" onclick="SaveQuestionClicked()" name="btnSaveQuestion" value="Save" class="btn btn-primary M-T4" />
-                                    <input type="submit" id="btnEditAndApproveQuestion" name="btnEditAndApproveQuestion" value="Approve" class="btn btn-primary M-T4" />
-                                }
-                                <input type="button" id="btnRejectQuestion" onclick="RejectQuestion()" value="Reject" class="btn btn-primary M-T4" data-NextQuestionId="@Model.NextQuestionId" />
+                                <input type="button" style="width: 70px;margin-left:1px;" id="btnQuestionOnHold" onclick="PutQuestionOnHold()" name="btnOnHold" value="On Hold" class="btn green M-T4" data-NextQuestionId="@Model.NextQuestionId" />
+                                        <input style="width:70px;" type="button" id="btnApproveQuestion" onclick="ApproveQuestion()" value="Approve" class="btn green M-T4" data-NextQuestionId="@Model.NextQuestionId" />
                             }
-                            else if (Model.QuestionStatusType == QuestionStatus.Rejected)
+                            else
                             {
-                                <input type="submit" style="width: 70px;margin-left:1px;" id="btnEditAndApproveQuestion" name="btnEditAndApproveQuestion" value="Save" class="btn btn-primary M-T4" />
+                                <input style="width:70px;" type="submit" id="btnSaveQuestion" onclick="SaveQuestionClicked()" name="btnSaveQuestion" value="Save" class="btn green M-T4" />
+                                        <input style="width:70px;" type="submit" id="btnEditAndApproveQuestion" name="btnEditAndApproveQuestion" value="Approve" class="btn green M-T4" />
                             }
-                            @if (Model.NextQuestionId != null)
-                            {
-                                <input type="button" value="Skip" id="btnSkipQuestion" onclick="SkipQuestion()" class="btn btn-secondary M-T4" data-NextQuestionId="@Model.NextQuestionId" />
-                            }
-                        </div>
+                            <input style="width:70px;" type="button" id="btnRejectQuestion" onclick="RejectQuestion()" value="Reject" class="btn btn-default M-T4" data-NextQuestionId="@Model.NextQuestionId" />
+                        }
+                        else if (Model.QuestionStatusType == QuestionStatus.Rejected)
+                        {
+                            <input type="submit" style="width: 70px;margin-left:1px;" id="btnEditAndApproveQuestion" name="btnEditAndApproveQuestion" value="Save" class="btn green M-T4" />
+                        }
+                        @if (Model.NextQuestionId != null)
+                        {
+                            <input style="width:70px;" type="button" value="Skip" id="btnSkipQuestion" onclick="SkipQuestion()" class="btn btn-default M-T4" data-NextQuestionId="@Model.NextQuestionId" />
+                        }
                     </div>
                 </div>
+
                 <div id="ReviewQuestionFormElements">
                     @Html.Partial("_QuestionDetailsForm", Model.QuestionDetails)
                 </div>
-            }
-        </div>
-    </div>
+                
+           
+    }
+           </div>
 
     <!-- Modal -->
-    <div class="modal fade" id="myModal" role="dialog" onclick="OnCancel();">
-        <div class="modal-dialog">
+
 
-            <!-- Modal content-->
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" onclick="OnCancel();">&times;</button>
-                    <h4 class="modal-title"><span id="msgMain">Success!</span></h4>
-                </div>
-                <div class="modal-body">
-                    <p id="msgContent">Some text in the modal.</p>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-default" data-dismiss="modal" onclick="OnCancel();">Cancel</button>
-                </div>
-            </div>
-
+    <div id="myModal" class="modal fade" onclick="OnCancel();" data-backdrop="static" role="dialog" tabindex="-1" data-width="760" aria-hidden="false" style="display: block; width: 760px; margin-left: -380px; margin-top: -288.5px;">
+        <div class="modal-header">
+            <button type="button" onclick="OnCancel();" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+            <h4 class="modal-title"><span id="msgMain">Success!</span></h4>
+        </div>
+        <div class="modal-body">
+            <p id="msgContent">Some text in the modal.</p>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal" onclick="OnCancel();">Cancel</button>
         </div>
     </div>
-    <div class="modal fade" id="addTagPopup" role="dialog">
-        <form id="tagForm" action="/Tag/Save" method="post">
-            <div class="modal-dialog">
 
-                <!-- Modal content-->
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal">&times;</button>
-                        <h4 class="modal-title"><span>Add skill tag</span></h4>
-                    </div>
-                    <div class="modal-body">
-
-                        @Html.Partial("~/Views/Shared/EditorTemplates/TagEditorTemplate.cshtml", new Silicus.Ensure.Models.DataObjects.Tags())
-
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" style="width:70px;" onclick="saveTag()" class="btn btn-primary">Save</button>
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-                    </div>
+        <div id="addTagPopup" class="modal fade" onclick="OnCancel();" data-backdrop="static" role="dialog" tabindex="-1" data-width="760" aria-hidden="false" style="display: block; width: 760px; margin-left: -380px; margin-top: -288.5px;">
+            <form id="tagForm" action="/Tag/Save" method="post">
+                <div class="modal-header">
+                    <button type="button" onclick="OnCancel();" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title"><span>Add skill tag</span></h4>
                 </div>
+                <div class="modal-body">
 
-            </div>
-        </form>
-    </div>
+                    @Html.Partial("~/Views/Shared/EditorTemplates/TagEditorTemplate.cshtml", new Silicus.Ensure.Models.DataObjects.Tags())
 
-}
-else
-{
-    <div>No more questions here.</div>
-}
+                </div>
+                <div class="modal-footer">
+                    <button type="button" style="width:70px;" onclick="saveTag()" class="btn green">Save</button>
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                </div>
+            </form>
+        </div>
 
-@if (Model != null)
-{
-    <script>
+            
+
+            }
+            else
+            {
+            <div>No more questions here.</div>
+            }
+
+            @if (Model != null)
+            {
+                <script>
         var questionTypeDropDown = $("#QuestionType").data("kendoDropDownList");
         if (questionTypeDropDown)
         {
             questionTypeDropDown.enable(false);
         }
-    </script>
-    if (Model.QuestionStatusType == QuestionStatus.ReadyForReview)
-    {
-        <script>
+                </script>
+                if (Model.QuestionStatusType == QuestionStatus.ReadyForReview)
+                {
+                    <script>
             $('#ReviewQuestionFormElements').find('input, textarea, button, select,a,ul').attr('disabled','disabled');
             var multiselect = $("#SkillTag").data("kendoMultiSelect");
             if(multiselect){
@@ -441,6 +433,6 @@ else
             if(proficiencyDropDown){
                 proficiencyDropDown.enable(false);
             }
-        </script>
-    }
-}
+                    </script>
+                }
+            }

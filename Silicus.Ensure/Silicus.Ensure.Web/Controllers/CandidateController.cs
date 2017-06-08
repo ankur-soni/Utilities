@@ -1,5 +1,6 @@
 ﻿using Silicus.Ensure.Models.Constants;
 using Silicus.Ensure.Models.DataObjects;
+using Silicus.Ensure.Models.JobVite;
 using Silicus.Ensure.Models.Test;
 using Silicus.Ensure.Services.Interfaces;
 using Silicus.Ensure.Web.Filters;
@@ -11,6 +12,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using Kendo.Mvc.Extensions;
+using Kendo.Mvc.UI;
+using Silicus.Ensure.Web.Models.JobVite;
 
 namespace Silicus.Ensure.Web.Controllers
 {
@@ -190,7 +194,7 @@ namespace Silicus.Ensure.Web.Controllers
             if (users != null)
             {
                 var userDetails = _userService.GetUserById(users.UserId);
-             //   _commonController.SendMailByRoleName("Online Test Submitted For " + userDetails.FirstName + " " + userDetails.LastName + "", "CandidateTestSubmitted.cshtml", Receipient, userDetails.FirstName + " " + userDetails.LastName);
+                //   _commonController.SendMailByRoleName("Online Test Submitted For " + userDetails.FirstName + " " + userDetails.LastName + "", "CandidateTestSubmitted.cshtml", Receipient, userDetails.FirstName + " " + userDetails.LastName);
             }
             return RedirectToAction("LogOff", "CandidateAccount");
         }
@@ -218,7 +222,6 @@ namespace Silicus.Ensure.Web.Controllers
             }
             return Json(1);
         }
-
 
         private void UpdateAnswer(string answer, int? userTestDetailId)
         {
@@ -254,5 +257,38 @@ namespace Silicus.Ensure.Web.Controllers
                 _testSuiteService.UpdateUserTestDetails(testDetail);
             }
         }
+
+        #region Assign Test
+        public ActionResult AssignTest()
+        {
+            return PartialView("_AssignTest");
+        }
+
+        public JsonResult GetCandidatesByRequisition([DataSourceRequest] DataSourceRequest request, int requisitionId)
+        {
+            var candidatesBusinessModel = _userService.GetCandidatesFromJobVite();
+            var candidatesViewModel = _mappingService.Map<List<JobViteCandidateBusinessModel>, List<JobViteCandidateViewModel>>(candidatesBusinessModel);
+            foreach (var candidate in candidatesViewModel)
+            {
+                candidate.CandidateJson = "";
+                candidate.CandidateJson = Newtonsoft.Json.JsonConvert.SerializeObject(candidate);
+            }
+            return Json(candidatesViewModel.ToDataSourceResult(request), JsonRequestBehavior.AllowGet);
+        }
+
+        public JsonResult GetAllRequisitions([DataSourceRequest] DataSourceRequest request)
+        {
+            var requistionsBusinessModel = _userService.GetAllRequistions();
+            var requistionsViewModel = _mappingService.Map<List<RequisitionBusinessModel>, List<RequisitionViewModel>>(requistionsBusinessModel);
+            return Json(requistionsViewModel.ToDataSourceResult(request), JsonRequestBehavior.AllowGet);
+        }
+
+        //public ActionResult SaveCandidateAndAssignTest(AssignTestViewModel assignTestViewModel)
+        //{
+        //    var assignTestBusinessModel = _mappingService.Map<AssignTestViewModel, AssignTestBusinessModel>(assignTestViewModel);
+        //    //var candidateBusinessModel=new US
+        //    return PartialView("_AssignTestFormElements", new AssignTestBusinessModel());
+        //}
+        #endregion
     }
 }

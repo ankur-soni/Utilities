@@ -436,6 +436,9 @@
     <Compile Include="Models\ContainerUserViewModel.cs" />
     <Compile Include="Models\EmailModel.cs" />
     <Compile Include="Models\ForgotPassword.cs" />
+    <Compile Include="Models\JobVite\AssignTestViewModel.cs" />
+    <Compile Include="Models\JobVite\JobViteCandidateViewModel.cs" />
+    <Compile Include="Models\JobVite\RequisitionViewModel.cs" />
     <Compile Include="Models\LoginModel.cs" />
     <Compile Include="Models\PanelMemberDetailViewModel.cs" />
     <Compile Include="Models\PanelViewModel.cs" />
@@ -581,18 +584,6 @@
     <Content Include="Content\css\Metronic css\plugins-md.min.css" />
     <Content Include="Content\css\Metronic css\plugins.css" />
     <Content Include="Content\css\Metronic css\plugins.min.css" />
-    <Content Include="Content\css\Metronic css\themes\blue.css" />
-    <Content Include="Content\css\Metronic css\themes\blue.min.css" />
-    <Content Include="Content\css\Metronic css\themes\darkblue.css" />
-    <Content Include="Content\css\Metronic css\themes\darkblue.min.css" />
-    <Content Include="Content\css\Metronic css\themes\default.css" />
-    <Content Include="Content\css\Metronic css\themes\default.min.css" />
-    <Content Include="Content\css\Metronic css\themes\grey.css" />
-    <Content Include="Content\css\Metronic css\themes\grey.min.css" />
-    <Content Include="Content\css\Metronic css\themes\light.css" />
-    <Content Include="Content\css\Metronic css\themes\light.min.css" />
-    <Content Include="Content\css\Metronic css\themes\light2.css" />
-    <Content Include="Content\css\Metronic css\themes\light2.min.css" />
     <Content Include="Content\css\Metronic-custom.css" />
     <Content Include="Content\css\mobile.css" />
     <Content Include="Content\css\perfect-scrollbar.css" />
@@ -3610,7 +3601,6 @@
     <Content Include="Content\plugins\icheck\demo\css\montserrat-regular.svg" />
     <Content Include="Content\plugins\icheck\demo\css\normalize.css" />
     <Content Include="Content\plugins\icheck\demo\index.html" />
-    <Content Include="Content\plugins\icheck\demo\js\custom.js" />
     <Content Include="Content\plugins\icheck\demo\js\custom.min.js" />
     <Content Include="Content\plugins\icheck\demo\js\jquery.js" />
     <Content Include="Content\plugins\icheck\demo\js\zepto.js" />
@@ -4608,7 +4598,6 @@
     <Content Include="favicon.ico" />
     <Content Include="Images\avatar3_small.jpg" />
     <Content Include="Images\checkedCheckbox.png" />
-    <Content Include="Images\logo%281%29.svg" />
     <Content Include="Images\logo-new.png" />
     <Content Include="Images\logo.gif" />
     <Content Include="Images\logo.jpg" />
@@ -4921,7 +4910,6 @@
     <Content Include="Content\plugins\gmaps\README.md" />
     <Content Include="Content\plugins\icheck\bower.json" />
     <Content Include="Content\plugins\icheck\CHANGELOG.md" />
-    <Content Include="Content\plugins\icheck\demo\css\custom.styl" />
     <Content Include="Content\plugins\icheck\demo\css\montserrat-bold.eot" />
     <Content Include="Content\plugins\icheck\demo\css\montserrat-bold.ttf" />
     <Content Include="Content\plugins\icheck\demo\css\montserrat-bold.woff" />
@@ -5430,6 +5418,8 @@
     <Content Include="Scripts\Kendo\2015.3.1111.340\kendo.core.min.js.map" />
     <Content Include="Scripts\Kendo\2015.3.1111.340\kendo.data.min.js.map" />
     <Content Include="Scripts\Kendo\2015.3.1111.340\kendo.dataviz.min.js.map" />
+    <Content Include="Views\Candidate\_AssignTest.cshtml" />
+    <Content Include="Views\Candidate\_AssignTestFormElements.cshtml" />
     <None Include="Web.Azure.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -5480,7 +5470,6 @@
     <Folder Include="Content\js\plugins\toastr\_notes\" />
     <Folder Include="Content\js\plugins\validate\_notes\" />
     <Folder Include="Content\plugins\angularjs\plugins\angular-file-upload\uploads\" />
-    <Folder Include="Scripts\Custom\" />
     <Folder Include="ViewModel\" />
     <Folder Include="Views\Common\" />
     <Folder Include="Views\Shared\DisplayTemplates\" />

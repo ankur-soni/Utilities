@@ -22,6 +22,9 @@ using Silicus.Ensure.Models;
 using System.IO;
 using RazorEngine;
 using System.Globalization;
+using Silicus.Ensure.Web.Models.JobVite;
+using Silicus.Ensure.Models.JobVite;
+using Newtonsoft.Json;
 
 namespace Silicus.Ensure.Web.Controllers
 {
@@ -256,7 +259,63 @@ namespace Silicus.Ensure.Web.Controllers
             ViewBag.UserRoles = RoleManager.Roles.Select(r => new SelectListItem { Text = r.Name, Value = r.Name }).ToList();
             return RedirectToAction(user.Role.ToLower() == RoleName.Candidate.ToString().ToLower() ? "Candidates" : "Index", controllerName);
         }
-        
+
+        #region JobVite 
+        public async Task<ActionResult> SaveCandidateAndAssignTest(AssignTestViewModel assignTestViewModel)
+        {
+            var assignTestBusinessModel = _mappingService.Map<AssignTestViewModel, AssignTestBusinessModel>(assignTestViewModel);
+            if (assignTestBusinessModel.CandidatesJson != null && assignTestBusinessModel.CandidatesJson.Any())
+            {
+                foreach (var candidateJson in assignTestBusinessModel.CandidatesJson)
+                {
+                    var jobViteCandidate = JsonConvert.DeserializeObject<JobViteCandidateBusinessModel>(candidateJson);
+
+                    var user = new UserViewModel
+                    {
+
+                        FirstName = jobViteCandidate.FirstName,
+                        LastName = jobViteCandidate.LastName,
+                        Email = jobViteCandidate.Email,
+                        Role = RoleName.Candidate.ToString(),
+                        DOB = DateTime.Now.ToString()
+
+                    };
+
+                    user = await CreateUserMethod(user);
+                    //Need to check if USer is created successfully
+
+                    var organizationUserDomainModel = _mappingService.Map<UserViewModel, UserBusinessModel>(user);
+                    organizationUserDomainModel.ApplicationDate = DateTime.Now;
+                    organizationUserDomainModel.CreatedDate = DateTime.Now;
+                    organizationUserDomainModel.IsDeleted = false;
+
+                    var userId=_userService.Add(organizationUserDomainModel);
+                    user.UserApplicationId = _userService.GetUserLastestApplicationId(userId);
+                    TempData["Success"] = "Candidate created successfully.";
+                    //Send Candidate creation mail to Admin and Recruiter
+                    List<string> Receipient = new List<string>() { "Admin" };
+                    _commonController.SendMailByRoleName("Candidate Created Successfully", "CandidateCreated.cshtml", Receipient, user.FirstName + " " + user.LastName);
+                    //Assign Test Suite To User
+                    var testSuiteDetails = _testSuiteService.GetTestSuiteDetails().Where(model => model.TestSuiteId == assignTestBusinessModel.TestSuiteId && model.IsDeleted == false).SingleOrDefault();
+                    UserTestSuite userTestSuite;
+                    userTestSuite = new UserTestSuite();
+                    userTestSuite.UserApplicationId = Convert.ToInt32(user.UserApplicationId);
+                    userTestSuite.TestSuiteId = assignTestBusinessModel.TestSuiteId;
+                    _testSuiteService.AssignSuite(userTestSuite, testSuiteDetails);
+                    var selectUser = _userService.GetUserDetails().Where(model => model.UserApplicationId == Convert.ToInt32(user.UserApplicationId)).FirstOrDefault();
+                    selectUser.TestStatus = Convert.ToString(CandidateStatus.TestAssigned);
+                    selectUser.CandidateStatus = Convert.ToString(CandidateStatus.TestAssigned);
+                    _userService.Update(selectUser);
+                    List<string> receipient = new List<string>() { "Admin", "Panel" };
+                    var mailsubject = "Test Assigned For " + selectUser.FirstName + " " + selectUser.LastName + " Successfully";
+                    _commonController.SendMailByRoleName(mailsubject, "CandidateTestAssigned.cshtml", receipient, selectUser.FirstName + " " + selectUser.LastName);
+
+                }
+            }
+            return Content("success");
+        }
+        #endregion
+
         /// <summary>
         /// update user 
         /// </summary>
@@ -372,5 +431,7 @@ namespace Silicus.Ensure.Web.Controllers
             fileModel.File.SaveAs(fileModel.FilePath);
             fileModel.FilePath = Path.Combine(fileModel.FolderName, fileModel.FileName);
         }
+
+
     }
 }

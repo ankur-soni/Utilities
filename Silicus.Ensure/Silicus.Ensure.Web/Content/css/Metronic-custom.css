@@ -25,21 +25,80 @@
 .M-B60{margin-bottom:60px!important;}
 .M-B30{margin-bottom:30px!important;}
 
+
+.loader {
+  border: 10px solid #f3f3f3;
+  border-radius: 50%;
+  border-top: 10px solid #36c6d3;
+  width: 60px;
+  height: 60px;
+  -webkit-animation: spin 2s linear infinite;
+  animation: spin 2s linear infinite;
+  top: 45%;
+  position: relative;
+  margin: 0 auto;
+}
+
+.loader-overlay {
+    position: relative;
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    background: rgba(0,0,0,.8);
+    z-index: 999999;
+}
+@-webkit-keyframes spin {
+    0% {
+        -webkit-transform: rotate(0deg);
+        transform: rotate(0deg);
+    }
+
+    100% {
+        -webkit-transform: rotate(360deg);
+        transform: rotate(360deg);
+    }
+}
+
+@-moz-keyframes spin {
+    0% {
+        transform: rotate(0deg);
+}
+
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+@keyframes spin {
+    0% {
+        transform: rotate(0deg);
+}
+
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+#header_notification_bar .slimScrollDiv{height:auto!important;}
+.badge{background:#36c6d3;}
 .logo-default{height: 25px;margin: 10px 0px 0px 0px!important;}
-.btn:not(.md-skip):not(.bs-select-all):not(.bs-deselect-all){padding:5px 5px 5px !important;}
+.btn:not(.md-skip):not(.bs-select-all):not(.bs-deselect-all){padding:5px 5px 5px !important;font-size: 14px;font-weight: 500;text-transform: initial;}
 #candidateSearch.btn:not(.md-skip):not(.bs-select-all):not(.bs-deselect-all){padding:8px 12px 7px !important;}
 #PanelSearch.btn:not(.md-skip):not(.bs-select-all):not(.bs-deselect-all),#postionSearch.btn:not(.md-skip):not(.bs-select-all):not(.bs-deselect-all),#tagSearch.btn:not(.md-skip):not(.bs-select-all):not(.bs-deselect-all),#technologySearch.btn:not(.md-skip):not(.bs-select-all):not(.bs-deselect-all),#UserSearchRefresh.btn:not(.md-skip):not(.bs-select-all):not(.bs-deselect-all),#QuestionSearchRefresh.btn:not(.md-skip):not(.bs-select-all):not(.bs-deselect-all),#testSuiteSearch.btn:not(.md-skip):not(.bs-select-all):not(.bs-deselect-all){padding:8px 12px 6px!important}
-
+.btn-nav{padding:10px 15px;}
 .popUp-modalbody{padding:20px 30px 0px 30px;}
 .popUp-footer{padding:0px 45px 15px 15px;}
-
-
+.mail-content{padding: 10px;font-weight: 600;color: #777;font-size: 13px;border-bottom: 1px solid #EFF2F6!important;}
+.mail-content:hover{background:#e9f6f7;}
 
 /*kendo style override*/
+.k-filtercell>span>.k-button, .k-filter-row .k-dropdown-operator{padding: 0 4px;}
 .k-grid td{border-bottom: 1px solid #e7ecf1;}
-.k-grid-header .k-header{
+/*.k-grid-header .k-header{
     padding: .8em .6em .8em .6em;
-}
+}*/
 .k-pager-sizes{color:#333;}
 #tagsGrids div.k-header.k-grid-toolbar.k-grid-top, #positionGrids div.k-header.k-grid-toolbar.k-grid-top, #PanelGrids div.k-header.k-grid-toolbar.k-grid-top, #technologiesGrid div.k-header.k-grid-toolbar.k-grid-top{background:#fafafa!important;}
 #userGrids div.k-header.k-grid-toolbar.k-grid-top{background:#fafafa!important;}
@@ -54,7 +113,6 @@ i.fa.fa-save{display:none;}
 /* Kendo popup style */
 #TagCustomControl span.tagAutoComplete{width:100%!important;}
 #TagCustomControl span.k-dropdown{width:100%!important;}
-
 .k-window-titlebar.k-header{
     margin-top: -32.92px;
     background: #fff;
@@ -64,7 +122,31 @@ i.fa.fa-save{display:none;}
 .k-window-title{
     padding: 5px 0px 10px 8px;
 }
+/*End of popup style*/
 
+/*Kendo icons sprite setting*/
+.k-i-calendar:hover{background-image: url('http://kendo.cdn.telerik.com/2016.3.1118/styles/Material/sprite.png');background-position: -32px -176px;}
+span.k-icon.k-i-close{background-image: url(http://kendo.cdn.telerik.com/2016.3.1118/styles/Material/sprite.png);border-color: transparent;background-position: -48px -16px;}
+
+.k-widget.k-window span.k-icon.k-i-close{background-image: url(http://kendo.cdn.telerik.com/2016.3.1118/styles/Material/sprite.png);background-position: -32px -16px;}
+.k-widget.k-window span.k-icon.k-i-close:hover{background-image: url(http://kendo.cdn.telerik.com/2016.3.1118/styles/Material/sprite.png);background-position: -48px -16px;}
+
+.k-state-hover>*>.k-i-arrow-s{background-image: url(http://kendo.cdn.telerik.com/2016.3.1118/styles/Material/sprite.png);border-color: transparent;background-position: 0px -32px;}
+.k-state-hover>*>.k-i-calendar{background-image: url(http://kendo.cdn.telerik.com/2016.3.1118/styles/Material/sprite.png);border-color: transparent;background-position: -32px -176px;}
+
+.k-link:not(.k-state-disabled):hover>.k-i-arrow-e{background-image: url(http://kendo.cdn.telerik.com/2016.3.1118/styles/Material/sprite.png);border-color: transparent;background-position: 0px -16px;}
+.k-link:not(.k-state-disabled):hover>.k-i-arrow-w{background-image: url(http://kendo.cdn.telerik.com/2016.3.1118/styles/Material/sprite.png);border-color: transparent;background-position: 0px -48px;}
+
+.k-numerictextbox .k-state-hover .k-link span.k-i-arrow-n{background-image: url(http://kendo.cdn.telerik.com/2016.3.1118/styles/Material/sprite.png);border-color: transparent;background-position: 0px -3px;}
+.k-numerictextbox .k-state-hover .k-link span.k-i-arrow-s{background-image: url(http://kendo.cdn.telerik.com/2016.3.1118/styles/Material/sprite.png);border-color: transparent;background-position: 0px -35px;}
+
+/*End of sprite setting*/
+#questionGrids.k-grid td{
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    max-width: 275px;
+}
 .k-edit-form-container{width:auto;}
 /*div.container-fluid.model-550{width: 645px;}*/
 .k-widget.k-window{width: 645px;}
@@ -74,13 +156,8 @@ div.k-edit-buttons.k-state-default{
 }
 
 
-
-
-
-
-
-
-
+/*For all grid to be responsive*/
+#UserGrids table, #userGrids table, #questionGrids table, #testSuiteGrids table, #tagsGrids table, #positionGrids table, #PanelGrids table, #technologiesGrid table{width:100%;overflow-x:auto;display: inherit;}
 
 
 .modal-btn{

@@ -1,0 +1,23 @@
+﻿@model Silicus.Ensure.Web.Models.JobVite.AssignTestViewModel
+<script>
+    $(document).ready(function () {
+        $("form").kendoValidator({
+        });
+    });
+    function additionalInfo() {
+        return {
+            requisitionId: 2
+        }
+    }
+
+    function OnSuccess() {
+        $('#AssignTestForm')[0].reset();
+        toastr.success("Test assigned successfully");
+    }
+</script>
+@using (Ajax.BeginForm("SaveCandidateAndAssignTest", "User", null, new AjaxOptions { InsertionMode = InsertionMode.Replace, OnSuccess = "OnSuccess" }, new { id = "AssignTestForm" }))
+{
+    <div id="AssignTestFormContentDiv">
+        @Html.Partial("_AssignTestFormElements", Model)
+    </div>
+}

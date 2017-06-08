@@ -7,6 +7,8 @@ using Silicus.Ensure.Models.Constants;
 using System;
 using Silicus.Ensure.Models.Test;
 using Silicus.Ensure.Models;
+using Silicus.Ensure.Models.JobVite;
+using Newtonsoft.Json;
 
 namespace Silicus.Ensure.Services
 {
@@ -120,8 +122,8 @@ namespace Silicus.Ensure.Services
 
         public int GetUserLastestApplicationId(int userId)
         {
-           return _context.Query<User>().FirstOrDefault(x => x.UserId == userId).UserApplicationDetails.LastOrDefault().UserApplicationDetailsId;
-         
+            return _context.Query<User>().FirstOrDefault(x => x.UserId == userId).UserApplicationDetails.LastOrDefault().UserApplicationDetailsId;
+
 
         }
 
@@ -345,7 +347,7 @@ namespace Silicus.Ensure.Services
                 {
                     if (user.UserApplicationDetails != null && user.UserApplicationDetails.Count > 1)
                     {
-                       objUser.HasHistory = true;
+                        objUser.HasHistory = true;
                     }
                     var applicationDetails = user.UserApplicationDetails.OrderByDescending(y => y.CreatedDate).FirstOrDefault();
                     if (applicationDetails != null)
@@ -426,9 +428,9 @@ namespace Silicus.Ensure.Services
             {
                 applicationDetails.RecruiterMemberId = RecruiterMemberId;
             }
-            var position = _positionService.GetPositionByName(objUser.Position);
-            if (position != null)
-                applicationDetails.PositionId = position.PositionId;
+            //var position = _positionService.GetPositionByName(objUser.Position);
+            //if (position != null)
+            applicationDetails.PositionId = 1;
 
 
             applicationDetails.ClientName = objUser.ClientName;
@@ -592,6 +594,248 @@ namespace Silicus.Ensure.Services
             }
             else
                 return totalExperienceInYear;
+        }
+        #endregion
+
+        #region JobVite
+        public List<JobViteCandidateBusinessModel> GetCandidatesFromJobVite()
+        {
+            #region JsonString 
+            // BuildMyString.com generated code. Please enjoy your string responsibly.
+
+            string candidatesString = "[" +
+"{" +
+"\"address\": \"100 Thistle St\"," +
+"\"address2\": \"\"," +
+"\"application\": {" +
+"\"comments\": null," +
+"\"customField\": []," +
+"\"disposition\": null," +
+"\"eId\": \"pXbHWiwy\"," +
+"\"gender\": \"Undefined\"," +
+"\"hireDate\": null," +
+"\"job\": {" +
+"\"company\": \"Chester Group\"," +
+"\"customField\": [" +
+"{" +
+"\"key\": \"Coding Test\"," +
+"\"value\": \"Test A\"" +
+"}" +
+"]," +
+"\"department\": \"\"," +
+"\"eId\": \"oLMz1fwR\"," +
+"\"hiringManagers\": [" +
+"{" +
+"\"employeeId\": null," +
+"\"firstName\": \"Christie\"," +
+"\"lastName\": \"Cheung-Chester\"," +
+"\"userId\": \"syTmqgwY\"," +
+"\"userName\": \"chestergroupceo@gmail.com\"" +
+"}" +
+"]," +
+"\"location\": \"San Francisco\"," +
+"\"recruiters\": [" +
+"{" +
+"\"employeeId\": null," +
+"\"firstName\": \"Christie\"," +
+"\"lastName\": \"Cheung-Chester\"," +
+"\"userId\": \"syTmqgwY\"," +
+"\"userName\": \"chestergroupceo@gmail.com\"" +
+"}" +
+"]," +
+"\"requisitionId\": \"001\"," +
+"\"subsidiaryId\": \"fnV9Vfw6\"," +
+"\"title\": \"Dog Focused Web Developer\"" +
+"}," +
+"\"lastUpdatedDate\": 1443682800000," +
+"\"race\": \"Decline to Self Identify\"," +
+"\"resume\": {" +
+"\"content\": \"\"," +
+"\"format\": \"Text\"" +
+"}," +
+"\"source\": \"Christie Cute-Chester\"," +
+"\"sourceType\": \"Recruiter\"," +
+"\"startDate\": null," +
+"\"status\": null," +
+"\"veteranStatus\": \"Undefined\"," +
+"\"workflowState\": \"Background Check - Talentwise\"" +
+"}," +
+"\"city\": \"San Francisco\"," +
+"\"companyName\": \"\"," +
+"\"country\": \"USA\"," +
+"\"eId\": \"e2JcehwX\"," +
+"\"email\": \"chestergroupceo@gmail.com\"," +
+"\"firstName\": \"Charlie\"," +
+"\"homePhone\": \"650-555-1000\"," +
+"\"lastName\": \"Candidate\"," +
+"\"location\": \"San Francisco, California United States\"," +
+"\"postalCode\": \"94121\"," +
+"\"state\": \"California\"," +
+"\"title\": \"\"," +
+"\"workPhone\": \"650-444-2000\"," +
+"\"workStatus\": \"None\"" +
+"}," +
+"{" +
+"\"address\": \"100 Thistle St\"," +
+"\"address2\": \"\"," +
+"\"application\": {" +
+"\"comments\": null," +
+"\"customField\": []," +
+"\"disposition\": null," +
+"\"eId\": \"po7g3iwB\"," +
+"\"gender\": \"Undefined\"," +
+"\"hireDate\": null," +
+"\"job\": {" +
+"\"company\": \"Chester Group\"," +
+"\"customField\": [" +
+"{" +
+"\"key\": \"Assessment Type\"," +
+"\"value\": \"Test A\"" +
+"}" +
+"]," +
+"\"department\": \"Pet Sitting & Dog Walking\"," +
+"\"eId\": \"oITr1fwN\"," +
+"\"hiringManagers\": [" +
+"{" +
+"\"employeeId\": null," +
+"\"firstName\": \"Christie\"," +
+"\"lastName\": \"Cute-Chester\"," +
+"\"userId\": \"syTmqgwY\"," +
+"\"userName\": \"chestergroupceo@gmail.com\"" +
+"}" +
+"]," +
+"\"location\": \"San Mateo\"," +
+"\"recruiters\": [" +
+"{" +
+"\"employeeId\": null," +
+"\"firstName\": \"Christie\"," +
+"\"lastName\": \"Cute-Chester\"," +
+"\"userId\": \"syTmqgwY\"," +
+"\"userName\": \"chestergroupceo@gmail.com\"" +
+"}" +
+"]," +
+"\"requisitionId\": \"\"," +
+"\"subsidiaryId\": \"fnV9Vfw6\"," +
+"\"title\": \"Dog Walker\"" +
+"}," +
+"\"lastUpdatedDate\": 1443682800000," +
+"\"race\": \"Decline to Self Identify\"," +
+"\"resume\": null," +
+"\"source\": \"Christie Cute-Chester\"," +
+"\"sourceType\": \"Recruiter\"," +
+"\"startDate\": null," +
+"\"status\": null," +
+"\"veteranStatus\": \"Undefined\"," +
+"\"workflowState\": \"Background Check - Talentgreat\"" +
+"}," +
+"\"city\": \"San Francisco\"," +
+"\"companyName\": \"\"," +
+"\"country\": \"USA\"," +
+"\"eId\": \"e2JcehwX\"," +
+"\"email\": \"chestergroupceo@gmail.com\"," +
+"\"firstName\": \"Charlie\"," +
+"\"homePhone\": \"650-555-1000\"," +
+"\"lastName\": \"Candidate\"," +
+"\"location\": \"San Francisco, California United States\"," +
+"\"postalCode\": \"94121\"," +
+"\"state\": \"California\"," +
+"\"title\": \"\"," +
+"\"workPhone\": \"650-444-2000\"," +
+"\"workStatus\": \"None\"" +
+"}" +
+"]";
+
+
+
+            #endregion
+
+
+            var deserializedCandidates = JsonConvert.DeserializeObject<List<JobViteCandidateBusinessModel>>(candidatesString);
+            var cand2 = deserializedCandidates.FirstOrDefault();
+            cand2.FirstName = "ABC";
+            cand2.LastName = "XYZ";
+            deserializedCandidates.Add(cand2);
+            foreach (var candidate in deserializedCandidates)
+            {
+                var forDemo = DateTime.Now.Millisecond.ToString();
+                candidate.FirstName = forDemo + candidate.FirstName;
+                candidate.LastName = forDemo + candidate.LastName;
+                candidate.Email = forDemo + candidate.Email;
+            }
+            return deserializedCandidates;
+        }
+
+        public List<RequisitionBusinessModel> GetAllRequistions()
+        {
+            // BuildMyString.com generated code. Please enjoy your string responsibly.
+
+            var requisitionJson = "[" +
+            "{" +
+            "\"applyLink\": null," +
+            "\"approveDate\": null," +
+            "\"bonus\": \"\"," +
+            "\"briefDescription\": \"Dog Talent Agent - identify cute dogs\"," +
+            "\"category\": \"Customer Service\"," +
+            "\"closeDate\": 253402237799000," +
+            "\"company\": null," +
+            "\"companyId\": \"qGbaVfwG\"," +
+            "\"customField\": null," +
+            "\"department\": \"Walking\"," +
+            "\"description\": \"Keen eye to spot cute and well behaved dogs for modelling opportunities\"," +
+            "\"distribution\": true," +
+            "\"eId\": \"oaGp2fw1\"," +
+            "\"eeoCategory\": null," +
+            "\"emailLanguage\": null," +
+            "\"endDate\": null," +
+            "\"evaluationFormName\": null," +
+            "\"filledOn\": null," +
+            "\"hiringManagers\": [" +
+            "{" +
+            "\"email\": \"haleyhiringmanager@gmail.com\"," +
+            "\"employeeId\": null," +
+            "\"firstName\": \"Haley\"," +
+            "\"lastName\": \"Hiringmanager\"," +
+            "\"userId\": \"s4g5wgwG\"," +
+            "\"userName\": null" +
+            "}" +
+            "]," +
+            "\"internalOnly\": true," +
+            "\"jobLink\": null," +
+            "\"jobSource\": \"Manual\"," +
+            "\"jobState\": \"Open\"," +
+            "\"jobType\": \"Full-Time\"," +
+            "\"lastUpdatedDate\": 1452676228403," +
+            "\"location\": \"San Mateo\"," +
+            "\"locationCity\": \"San Mateo\"," +
+            "\"locationCountry\": \"United States\"," +
+            "\"locationPostalCode\": \"94403\"," +
+            "\"locationState\": \"California\"," +
+            "\"postingType\": \"Limited Access\"," +
+            "\"preInterviewFormName\": null," +
+            "\"primaryHiringManagerEmail\": \"haleyhiringmanager@gmail.com\"," +
+            "\"primaryRecruiterEmail\": null," +
+            "\"private\": true," +
+            "\"putOnHoldDate\": null," +
+            "\"recruiters\": null," +
+            "\"referralBonus\": null," +
+            "\"region\": \"San Francisco Bay Area\"," +
+            "\"requisitionId\": \"00015 \"," +
+            "\"sentDate\": 1452676228403," +
+            "\"startDate\": null," +
+            "\"subsidiaryId\": null," +
+            "\"subsidiaryName\": null," +
+            "\"title\": \"Dog Talent Agent - 3\"," +
+            "\"workflow\": \"General\"" +
+            "}" +
+            "]";
+
+
+            var deserializedRequistions = JsonConvert.DeserializeObject<List<RequisitionBusinessModel>>(requisitionJson);
+            var reqsn2 = deserializedRequistions.FirstOrDefault();
+            reqsn2.RequisitionId = "00016";
+            reqsn2.Title = "Demo Requisition 2";
+            deserializedRequistions.Add(reqsn2);
+            return deserializedRequistions;
         }
         #endregion
     }

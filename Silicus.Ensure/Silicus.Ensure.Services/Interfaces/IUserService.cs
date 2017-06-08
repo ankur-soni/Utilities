@@ -3,6 +3,7 @@ using Silicus.Ensure.Models;
 using Silicus.Ensure.Models.DataObjects;
 using Silicus.Ensure.Models.Test;
 using System;
+using Silicus.Ensure.Models.JobVite;
 
 namespace Silicus.Ensure.Services.Interfaces
 {
@@ -47,5 +48,9 @@ namespace Silicus.Ensure.Services.Interfaces
         List<UserBusinessModel> GetUserDetails(int userId);
 
         int GetUserLastestApplicationId(int userId);
+
+        List<JobViteCandidateBusinessModel> GetCandidatesFromJobVite();
+
+        List<RequisitionBusinessModel> GetAllRequistions();
     }
 }

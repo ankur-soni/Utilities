@@ -1,15 +1,15 @@
 ﻿@model Silicus.Ensure.Web.Models.QuestionModel
 @using Kendo.Mvc.UI;
 @using Silicus.Ensure.Models.Constants;
-<div class="fluid">
-    <div class="row">
-        <div class="col-sm-12">
+
+    
+        <div class="col-sm-11 M-T15">
             <div class="alert alert-danger" id="errorDiv" style="display:none">
                 <strong>Error!</strong> <span id="errorContent"></span>
             </div>
         </div>
-    </div>
-    <div class="row" id="QuestionIdDiv">
+   
+    <div id="QuestionIdDiv">
         <div class="col-xs-10 col-sm-12 col-md-10 col-lg-8">
             <div class="row">
                 <div class="col-sm-2 col-md-2 col-lg-2">
@@ -23,12 +23,12 @@
                     </div>
                 </div>
             </div>
-        </div>
+            </div>
 
     </div>
     @if (!string.IsNullOrEmpty(Model.ReviewerComment))
     {
-        <div class="row">
+        
             <div class="col-xs-10 col-sm-12 col-md-10 col-lg-8">
                 <div class="row">
                     <div class="col-sm-2 col-md-2 col-lg-2">
@@ -43,9 +43,9 @@
                     </div>
                 </div>
             </div>
-        </div>
+       
     }
-    <div class="row">
+   
         <div class="col-xs-10 col-sm-12 col-md-10 col-lg-8">
             <div class="row">
                 <div class="col-sm-2 col-md-2 col-lg-2">
@@ -66,8 +66,8 @@
             </div>
         </div>
 
-    </div>
-    <div class="row">
+   
+    
         <div class="col-xs-10 col-sm-12 col-md-10 col-lg-8">
             <div class="row">
                 <div class="col-sm-2 col-md-2 col-lg-2">
@@ -83,10 +83,10 @@
                 </div>
             </div>
         </div>
-    </div>
+    
 
     <div id="practical">
-        <div class="row">
+       
             <div class="col-sm-12 col-md-10 col-lg-8">
                 <div class="row">
                     <div class="col-sm-2 col-md-2 col-lg-2">
@@ -107,7 +107,7 @@
                             </div>
                         </div>
                         <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2">
-                            @(Html.Kendo().Button().Name("btnAddOpt1").HtmlAttributes(new { type = "button", param = "1", style = "display:none;padding:6px 13px;font-size:12px;", @class = "fa fa-plus" }).Events(e => e.Click("OptionAdd")))
+                            @(Html.Kendo().Button().Name("btnAddOpt1").HtmlAttributes(new { type = "button", param = "1", style = "display:none;padding:6px 8px;font-size:12px;", @class = "fa fa-plus" }).Events(e => e.Click("OptionAdd")))
                         </div>
                     </div>
                 </div>
@@ -126,7 +126,7 @@
                             </div>
                         </div>
                         <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2">
-                            @(Html.Kendo().Button().Name("btnAddOpt2").HtmlAttributes(new { type = "button", param = "2", style = "padding:6px 13px;font-size:12px;", @class = "fa fa-plus" }).Events(e => e.Click("OptionAdd")))
+                            @(Html.Kendo().Button().Name("btnAddOpt2").HtmlAttributes(new { type = "button", param = "2", style = "padding:6px 8px;font-size:12px;", @class = "fa fa-plus" }).Events(e => e.Click("OptionAdd")))
                         </div>
                     </div>
 
@@ -146,8 +146,8 @@
                             </div>
                         </div>
                         <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2">
-                            @(Html.Kendo().Button().Name("btnAddOpt3").HtmlAttributes(new { type = "button", param = "3", style = "padding:6px 13px;font-size:12px;", @class = "fa fa-plus" }).Events(e => e.Click("OptionAdd")))
-                            @(Html.Kendo().Button().Name("btnDelOpt3").HtmlAttributes(new { type = "button", param = "3", style = "padding:6px 13px;font-size:12px;", @class = "fa fa-minus" }).Events(e => e.Click("OptionDelete")))
+                            @(Html.Kendo().Button().Name("btnAddOpt3").HtmlAttributes(new { type = "button", param = "3", style = "padding:6px 8px;font-size:12px;", @class = "fa fa-plus" }).Events(e => e.Click("OptionAdd")))
+                            @(Html.Kendo().Button().Name("btnDelOpt3").HtmlAttributes(new { type = "button", param = "3", style = "padding:6px 8px;font-size:12px;", @class = "fa fa-minus" }).Events(e => e.Click("OptionDelete")))
                         </div>
                     </div>
 
@@ -167,8 +167,8 @@
                             </div>
                         </div>
                         <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2">
-                            @(Html.Kendo().Button().Name("btnAddOpt4").HtmlAttributes(new { type = "button", param = "4", style = "padding:6px 13px;font-size:12px;", @class = "fa fa-plus" }).Events(e => e.Click("OptionAdd")))
-                            @(Html.Kendo().Button().Name("btnDelOpt4").HtmlAttributes(new { type = "button", param = "4", style = "padding:6px 13px;font-size:12px;", @class = "fa fa-minus" }).Events(e => e.Click("OptionDelete")))
+                            @(Html.Kendo().Button().Name("btnAddOpt4").HtmlAttributes(new { type = "button", param = "4", style = "padding:6px 8px;font-size:12px;", @class = "fa fa-plus" }).Events(e => e.Click("OptionAdd")))
+                            @(Html.Kendo().Button().Name("btnDelOpt4").HtmlAttributes(new { type = "button", param = "4", style = "padding:6px 8px;font-size:12px;", @class = "fa fa-minus" }).Events(e => e.Click("OptionDelete")))
                         </div>
                     </div>
                 </div>
@@ -187,8 +187,8 @@
                             </div>
                         </div>
                         <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2">
-                            @(Html.Kendo().Button().Name("btnAddOpt5").HtmlAttributes(new { type = "button", param = "5", style = "padding:6px 13px;font-size:12px;", @class = "fa fa-plus" }).Events(e => e.Click("OptionAdd")))
-                            @(Html.Kendo().Button().Name("btnDelOpt5").HtmlAttributes(new { type = "button", param = "5", style = "padding:6px 13px;font-size:12px;", @class = "fa fa-minus" }).Events(e => e.Click("OptionDelete")))
+                            @(Html.Kendo().Button().Name("btnAddOpt5").HtmlAttributes(new { type = "button", param = "5", style = "padding:6px 8px;font-size:12px;", @class = "fa fa-plus" }).Events(e => e.Click("OptionAdd")))
+                            @(Html.Kendo().Button().Name("btnDelOpt5").HtmlAttributes(new { type = "button", param = "5", style = "padding:6px 8px;font-size:12px;", @class = "fa fa-minus" }).Events(e => e.Click("OptionDelete")))
                         </div>
                     </div>
                 </div>
@@ -207,8 +207,8 @@
                             </div>
                         </div>
                         <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2">
-                            @(Html.Kendo().Button().Name("btnAddOpt6").HtmlAttributes(new { type = "button", param = "6", style = "padding:6px 13px;font-size:12px;", @class = "fa fa-plus" }).Events(e => e.Click("OptionAdd")))
-                            @(Html.Kendo().Button().Name("btnDelOpt6").HtmlAttributes(new { type = "button", param = "6", style = "padding:6px 13px;font-size:12px;", @class = "fa fa-minus" }).Events(e => e.Click("OptionDelete")))
+                            @(Html.Kendo().Button().Name("btnAddOpt6").HtmlAttributes(new { type = "button", param = "6", style = "padding:6px 8px;font-size:12px;", @class = "fa fa-plus" }).Events(e => e.Click("OptionAdd")))
+                            @(Html.Kendo().Button().Name("btnDelOpt6").HtmlAttributes(new { type = "button", param = "6", style = "padding:6px 8px;font-size:12px;", @class = "fa fa-minus" }).Events(e => e.Click("OptionDelete")))
                         </div>
                     </div>
                 </div>
@@ -227,8 +227,8 @@
                             </div>
                         </div>
                         <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2">
-                            @(Html.Kendo().Button().Name("btnAddOpt7").HtmlAttributes(new { type = "button", param = "7", style = "padding:6px 13px;font-size:12px;", @class = "fa fa-plus" }).Events(e => e.Click("OptionAdd")))
-                            @(Html.Kendo().Button().Name("btnDelOpt7").HtmlAttributes(new { type = "button", param = "7", style = "padding:6px 13px;font-size:12px;", @class = "fa fa-minus" }).Events(e => e.Click("OptionDelete")))
+                            @(Html.Kendo().Button().Name("btnAddOpt7").HtmlAttributes(new { type = "button", param = "7", style = "padding:6px 8px;font-size:12px;", @class = "fa fa-plus" }).Events(e => e.Click("OptionAdd")))
+                            @(Html.Kendo().Button().Name("btnDelOpt7").HtmlAttributes(new { type = "button", param = "7", style = "padding:6px 8px;font-size:12px;", @class = "fa fa-minus" }).Events(e => e.Click("OptionDelete")))
                         </div>
                     </div>
                 </div>
@@ -247,7 +247,7 @@
                             </div>
                         </div>
                         <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2">
-                            @(Html.Kendo().Button().Name("btnDelOpt8").HtmlAttributes(new { type = "button", param = "8", style = "padding:6px 13px;font-size:12px;", @class = "fa fa-minus" }).Events(e => e.Click("OptionDelete")))
+                            @(Html.Kendo().Button().Name("btnDelOpt8").HtmlAttributes(new { type = "button", param = "8", style = "padding:6px 8px;font-size:12px;", @class = "fa fa-minus" }).Events(e => e.Click("OptionDelete")))
                         </div>
                     </div>
                 </div>
@@ -257,18 +257,20 @@
 
                     <div class="col-sm-8 col-md-8 col-lg-6">
                         <div class="form-group">
-                            <div class="checkbox checkbox-info" id="IsAllowedmoreThanOneAns">
+                            <label class="mt-checkbox mt-checkbox-outline" id="IsAllowedmoreThanOneAns" for="checkbox33">
                                 <input id="checkbox33" type="checkbox">
-                                <label for="checkbox33">Allow more than one answer to this question</label>
-                            </div>
+                                Allow more than one answer to this question
+                                <span></span>
+                            </label>
+                           
                             @Html.HiddenFor(y => y.AnswerType)
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
+        
     </div>
-    <div class="row" id="practicalAns">
+    <div id="practicalAns">
         <div class="col-xs-10 col-sm-12 col-md-10 col-lg-8">
             <div class="row">
                 <div class="col-sm-2 col-md-2 col-lg-2">
@@ -285,7 +287,7 @@
             </div>
         </div>
     </div>
-    <div class="row">
+   
         <div class="col-sm-12 col-md-10 col-lg-8">
             <div class="row">
                 <div class="col-xs-10 col-sm-2 col-md-2 col-lg-2">
@@ -315,13 +317,13 @@
                 </div>
 
                 <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2">
-                    <a style="padding:2px 12px;" class="themeColorBlue btn btn-primary" href="#" onclick="AddTag();"><i class="fa fa-plus" aria-hidden="true"></i></a>
+                    <a style="padding:2px 12px;" class="themeColorBlue btn green" href="#" onclick="AddTag();"><i class="fa fa-plus" aria-hidden="true"></i></a>
                 </div>
 
             </div>
         </div>
-    </div>
-    <div class="row">
+   
+    
         <div class="col-sm-12 col-md-10 col-lg-8">
             <div class="row">
                 <div class="col-xs-10 col-sm-2 col-md-2 col-lg-2">
@@ -345,13 +347,13 @@
                 </div>
 
                 <div class="col-xs-2 col-sm-2 col-md-2 col-lg-2">
-                    <a style="padding:2px 12px;" class="themeColorBlue btn btn-primary" href="#" onclick="AddTag();"><i class="fa fa-plus" aria-hidden="true"></i></a>
+                    <a style="padding:2px 12px;" class="themeColorBlue btn green" href="#" onclick="AddTag();"><i class="fa fa-plus" aria-hidden="true"></i></a>
                 </div>
 
             </div>
         </div>
-    </div>
-    <div class="row">
+    
+    
         <div class="col-sm-12 col-md-10 col-lg-8">
             <div class="row">
                 <div class="col-xs-10 col-sm-2 col-md-2 col-lg-2">
@@ -372,8 +374,8 @@
                 </div>
             </div>
         </div>
-    </div>
-    <div class="row">
+    
+    
         <div class="col-sm-12 col-md-10 col-lg-8">
             <div class="row">
                 <div class="col-xs-10 col-sm-2 col-md-2 col-lg-2">
@@ -388,8 +390,8 @@
                 </div>
             </div>
         </div>
-    </div>
-    <div class="row">
+   
+   
         <div class="col-sm-12 col-md-10 col-lg-8">
             <div class="row">
                 <div class="col-xs-10 col-sm-2 col-md-2 col-lg-2">
@@ -404,7 +406,7 @@
                 </div>
             </div>
         </div>
-    </div>
+    
 
     @Html.HiddenFor(m => m.OptionCount, new { Value = @Model.OptionCount })
     <input type="hidden" name="CreatedOn" value="@Model.CreatedOn" />
@@ -423,4 +425,4 @@
         }
     </style>
 
-</div>
+
