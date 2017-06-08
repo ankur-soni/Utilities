@@ -6,7 +6,13 @@
     ViewBag.Title = "AssigedTest";
 }
 
-<h2>AssigedTest</h2>
+<h2>Assiged Tests</h2>
+<script>
+    $(document).ready(function () {
+        SelectedMenu('#emp-assigned-test');
+        SetNavigationMenuActive('AssignedTest');
+    });
+</script>
 <div class="table-responsive M-B15">
 
    
@@ -15,9 +21,9 @@
          .Columns(columns =>
          {
              columns.Bound(p => p.TestSuitName).Title("Test Suit Name").Width(200);
-             columns.Bound(p => p.Duration).Title("Requisition id").Width(100);
-             columns.Bound(p => p.EmployeeId).Width(200);
-             columns.Bound(p => p.TotalQuestionCount).Title("Contact number").Width(100);
+             // columns.Bound(p => p.Duration).Title("Requisition id").Width(100);
+              columns.Bound(p => p.Duration).ClientTemplate(@"#=Duration# Mins");
+             columns.Bound(p => p.PracticalCount).ClientTemplate(@"#=ObjectiveCount #+#PracticalCount #").Title("Total Questions").Width(130);
 
              columns.Bound(p => p.StatusId).ClientTemplate(@"
                                                                         #if(StatusId==2){#
@@ -53,14 +59,16 @@
                                        {
                                            model.Id(p => p.EmployeeTestSuiteId);
                                            model.Field(p => p.EmployeeId).Editable(false);
-                                       })
+                                       }).Group(g => g.Add(c => c.StatusId))
 
                                        .Read(read => read.Action("GetEmployeeTestSuits", "Employee"))
 
-                                       .PageSize(10)
+                                       .PageSize(100)
                                        .ServerOperation(true)
                                        )
-                                       .Pageable(p => p.PageSizes(true))
+                                       .HtmlAttributes(new { style = "height: 70vh;" })
+                                       .Pageable(p => p.PageSizes(false))
+                                        .Scrollable(scrollable => scrollable.Virtual(true))
                                        .Sortable()
                                        .Resizable(resizing => resizing.Columns(true))
         )

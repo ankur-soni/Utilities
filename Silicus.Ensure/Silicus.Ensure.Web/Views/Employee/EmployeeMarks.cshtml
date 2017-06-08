@@ -7,6 +7,13 @@
 }
 
 <h2>Employee Test Result List</h2>
+<script>
+    $(document).ready(function () {
+        SelectedMenu('#emp-mark-test');
+        $("#empsubmenu").css("display", "block");
+        SetNavigationMenuActive('Marksheer');
+    });
+</script>
 
 <div class="table-responsive">
     @if (Request.IsAuthenticated)
@@ -18,6 +25,7 @@
              columns.Bound(c => c.TestSuitName).Title("Test Name");
              columns.Bound(p => p.EmpName).Title("Emp name");
              columns.Bound(p => p.EmployeeId).Title("EmployeeId");
+             columns.Bound(p => p.MaxScore).Title("Total Marks");
              columns.Bound(p => p.MarksObtained);
              columns.Bound(p => p.StatusId).ClientTemplate(@"
                                                                         #if(StatusId==2){#
@@ -42,7 +50,7 @@
             {
                 model.Id(p => p.TestSuitId);
                 model.Field(p => p.EmployeeId).Editable(false);
-                
+
             }).Group(g => g.Add(c => c.TestSuitName))
 
             .Read(read => read.Action("GetTestSuitResult", "Employee")).ServerOperation(false)

@@ -5125,6 +5125,7 @@
     <Content Include="Content\css\Kendo\2015.3.1111.340\fonts\glyphs\KendoUIGlyphs.woff" />
     <Content Include="Content\css\Kendo\2015.3.1111.340\kendo.custom.dataviz.json" />
     <Content Include="Content\css\Kendo\2015.3.1111.340\kendo.custom.less" />
+    <None Include="Properties\PublishProfiles\Anand.pubxml" />
     <None Include="Properties\PublishProfiles\ensure - FTP.pubxml" />
     <None Include="Properties\PublishProfiles\ensure - Web Deploy.pubxml" />
     <None Include="Properties\PublishProfiles\EnsureBeta - FTP.pubxml" />

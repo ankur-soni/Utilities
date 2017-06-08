@@ -36,6 +36,8 @@ namespace Silicus.Ensure.Web.Models.Employee
 
         public string EmpName { get; set; }
 
+        public int MaxScore { get; set;}
+
         public decimal? MarksObtained { get; set; }
 
         public int TestSuitId { get; set; }

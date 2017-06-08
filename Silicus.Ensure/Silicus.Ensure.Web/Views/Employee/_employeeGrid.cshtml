@@ -44,21 +44,21 @@
         </div>
     </div>
     <button type="button" id="Savebtn" style="width:70px;" class="btn green">Save</button>
-
+    
 </div>
 
-
-<div class="table-responsive">
+<br />
+<div class="">
     @if (Request.IsAuthenticated)
     {
-        @(Html.Kendo().Grid<Silicus.Ensure.Web.Models.UserDetailViewModel>().Name("UserGrids")
+        @(Html.Kendo().Grid<Silicus.Ensure.Web.Models.UserDetailViewModel>().Name("EmployeeGrids")
          .Columns(columns =>
          {
-             columns.Bound(o => o).ClientTemplate("<input type='checkbox' class='EmployeeSelection' Id='#=UserId#' / />").Width(50).Filterable(false).Sortable(false).Title("<input type='checkbox' id='chkselectallEmployeeRecord'  / />").Groupable(false).IncludeInMenu(false);
-             columns.Bound(c => c.FullName).Title("Name").Width(400);
-             columns.Bound(p => p.RoleName).Title("Role name").Width(450);
-             columns.Bound(p => p.EmployeeId).Title("EmployeeId").Width(450);
-             columns.Bound(p => p.Email).Width(550);
+             columns.Bound(o => o).ClientTemplate("<input type='checkbox' class='EmployeeSelection' Id='#=UserId#' / />").Filterable(false).Sortable(false).Title("<input type='checkbox' id='chkselectallEmployeeRecord'  / />").Groupable(false).IncludeInMenu(false).Width(50);
+             columns.Bound(c => c.FullName).Title("Name");
+             columns.Bound(p => p.RoleName).Title("Role name");
+             columns.Bound(p => p.EmployeeId).Title("EmployeeId");
+             columns.Bound(p => p.Email);
              //columns.Bound("").ClientTemplate(@"<a onclick=AssignEmployeeTest('#=UserId#','New') style='cursor:pointer'>Assign test</a>").Title("Assign Test").Width(500).Sortable(false);
              //columns.Bound("").ClientTemplate(@"<a onclick=AssignEmployeeTest('#=UserId#','#=TestStatus#') style='cursor:pointer'>Assign test</a>").Title("Assign Test").Width(500).Sortable(false);
              //columns.Bound(c => c.RoleId).Title("Action").Sortable(false).Width(650).ClientTemplate(" <div> #if(RoleName == 'Recruiter'){#<input type='button' style='width:92px;font-size:14px;text-transform:initial;' class='btn green' onclick='assignType(event)' value='Manage type'>#}else if(RoleName == 'Panel') { #<input type='button' style='font-size:14px;text-transform:initial;' class='btn green' onclick='assignPanel(event)' value='Manage panel'># }else if(RoleName == 'Candidate') { #<input type='button' value='z'># } #");
@@ -77,10 +77,10 @@
             .PageSize(100))
             .Pageable(pager => { pager.PageSizes(false); })
             .Sortable()
-            .HtmlAttributes(new { style = "height: 700px;" })
+            .HtmlAttributes(new { style = "height: 70vh;" })
              .Scrollable(scrollable => scrollable.Virtual(true))
               .Filterable(ftb => ftb.Mode(GridFilterMode.Row))
-            .Resizable(resizing => resizing.Columns(true))
+            //.Resizable(resizing => resizing.Columns(true))
         )
     }
 </div>
@@ -93,7 +93,7 @@
        
 
         function GenerateSelectedEmpArray() {
-            var row = $("#UserGrids").data("kendoGrid").tbody.find('tr');
+            var row = $("#EmployeeGrids").data("kendoGrid").tbody.find('tr');
             var SelectedTrans = new Array();
 
             $.each(row, function (index) {
@@ -109,7 +109,7 @@
             showCustomLoader();
             var empArray = GenerateSelectedEmpArray();
             var testSuitData = $("#DDTestSuit").data("kendoDropDownList");
-            debugger;
+           
             if (empArray.length > 0 && testSuitData.value() > 0) {
                 //var uId = $("#CurrentUser").val();
                 //var IsReAssign = $("#IsReAssign").val();
@@ -130,9 +130,9 @@
 
                             ShowMessage("Test suite assigned successfully.", 1);
 
-                            $('#UserGrids').data('kendoGrid').dataSource.read();
+                            $('#EmployeeGrids').data('kendoGrid').dataSource.read();
 
-                            //$('#UserGrids').data('kendoGrid').refresh();
+                            //$('#EmployeeGrids').data('kendoGrid').refresh();
                             $(".loader-overlay").hide();
                             //$(".modal-scrollable").hide();
                             //$(".modal-backdrop").hide();
@@ -154,8 +154,7 @@
 
 
     function getAssignedEmpID()
-    {
-       
+    {      
         var testSuitData = $("#DDTestSuit").data("kendoDropDownList");
         $.ajax({
             type:'get',

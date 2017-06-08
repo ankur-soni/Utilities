@@ -71,6 +71,12 @@ namespace Silicus.Ensure.Web.Controllers
             return View("EmployeeMarks");
         }
 
+        public ActionResult GetEmployeeassigedforTestSuits(int suitId)
+        {
+            var TestSuits = _testSuiteService.GetEmployeeTestSuite().Where(ts => ts.TestSuiteId == suitId).Select(ts => ts.EmployeeId).ToList<int>();
+
+            return Json(TestSuits, JsonRequestBehavior.AllowGet);
+        }
         private int GetUtilityId()
         {
             var utilityProductId = WebConfigurationManager.AppSettings["ProductId"];
@@ -98,6 +104,7 @@ namespace Silicus.Ensure.Web.Controllers
                                    UserId = users.ID,
                                    EmployeeId = users.EmployeeID,
                                    EmpName = users.DisplayName,
+                                   MaxScore = tests.MaxScore,
                                    MarksObtained = tests.EmployeeTestDetails.Select(x=>x.Mark).Sum(),
                                    TestSuitId = tests.TestSuiteId,
                                    TestSuitName = testDetail.TestSuiteName,
