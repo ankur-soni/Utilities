@@ -26,4 +26,22 @@ namespace Silicus.Ensure.Web.Models.Employee
         public TestSummaryViewModel TestSummary { get; set; }
         public CandidateStatus StatusId { get; set; }
     }
+
+
+    public class EmployeeTestResultViewModel
+    {
+        public int UserId { get; set; }
+
+        public string EmployeeId { get; set; }
+
+        public string EmpName { get; set; }
+
+        public decimal? MarksObtained { get; set; }
+
+        public int TestSuitId { get; set; }
+
+        public string TestSuitName { get; set; }
+
+        public int StatusId { get; set; }
+    }
 }

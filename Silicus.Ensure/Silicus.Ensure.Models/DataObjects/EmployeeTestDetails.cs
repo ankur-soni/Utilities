@@ -12,7 +12,7 @@ namespace Silicus.Ensure.Models.DataObjects
 
         public string Answer { get; set; }
 
-        public decimal? Mark { get; set; }
+        public int? Mark { get; set; }
 
         public int? MarkGivenBy { get; set; }
 

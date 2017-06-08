@@ -1,0 +1,60 @@
+﻿@model Silicus.Ensure.Web.Models.Employee.EmployeeTestResultViewModel
+@using Silicus.Ensure.Web.Models.Employee;
+@using Kendo.Mvc.UI;
+@using System.Linq
+@{
+    ViewBag.Title = "Obtained Marks";
+}
+
+<h2>Employee Test Result List</h2>
+
+<div class="table-responsive">
+    @if (Request.IsAuthenticated)
+    {
+        @(Html.Kendo().Grid<Silicus.Ensure.Web.Models.Employee.EmployeeTestResultViewModel>().Name("empTestResultGrids")
+         .Columns(columns =>
+         {
+
+             columns.Bound(c => c.TestSuitName).Title("Test Name");
+             columns.Bound(p => p.EmpName).Title("Emp name");
+             columns.Bound(p => p.EmployeeId).Title("EmployeeId");
+             columns.Bound(p => p.MarksObtained);
+             columns.Bound(p => p.StatusId).ClientTemplate(@"
+                                                                        #if(StatusId==2){#
+                                                                            Test assigned
+                                                                        #}
+                                                                        else if(StatusId==3) {#
+                                                                            Test submitted
+                                                                        #}
+                                                                        else if(StatusId==4) {#
+                                                                            Under evaluation
+                                                                        #}
+                                                                        else if(StatusId==7) {#
+                                                                           On hold
+                                                                        #}
+                                                                        else{#
+                                                                            #=StatusId#
+                                                                        #}
+                                                                        #").Title("Status").Width(250); ;
+
+         })
+            .DataSource(dataSource => dataSource.Ajax().Model(model =>
+            {
+                model.Id(p => p.TestSuitId);
+                model.Field(p => p.EmployeeId).Editable(false);
+                
+            }).Group(g => g.Add(c => c.TestSuitName))
+
+            .Read(read => read.Action("GetTestSuitResult", "Employee")).ServerOperation(false)
+
+            .PageSize(100))
+            .Pageable(pager => { pager.PageSizes(false); })
+            .Sortable()
+            .Groupable()
+            .HtmlAttributes(new { style = "height: 700px;" })
+             .Scrollable(scrollable => scrollable.Virtual(true))
+              .Filterable(ftb => ftb.Mode(GridFilterMode.Row))
+            .Resizable(resizing => resizing.Columns(true))
+        )
+    }
+</div>

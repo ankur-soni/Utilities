@@ -202,6 +202,33 @@
                                 <!-- END SIDEBAR TOGGLER BUTTON -->
                                 @if (role.Contains(RoleName.Admin.ToString()))
                                 {
+                                    <li class="nav-item start" id="questionbank-link">
+                                        <a href="#" class="nav-link nav-toggle">
+                                            <i class="fa fa-question-circle"></i>
+                                            <span class="title">Employees</span>
+                                            <span class="selected"></span>
+                                            @*<span class="arrow open"></span>*@
+                                        </a>
+                                        <ul class="sub-menu">
+                                            <li class="nav-item start" id="questionList-link">
+                                                <a href="/Employee/MarkDashboard" class="nav-link ">
+                                                    <i class="fa fa-question" aria-hidden="true"></i>
+                                                    <span class="title">Dashboard</span>
+
+                                                </a>
+                                            </li>
+                                            <li class="nav-item start">
+                                                <a href="/Employee/Index" class="nav-link nav-toggle">
+                                                    <i class="fa fa-user"></i>
+                                                    <span class="title">Assign Tests</span>
+                                                    <span class="selected"></span>
+                                                </a>
+                                            </li>
+
+
+                                        </ul>
+                                    </li>
+
                                     <li class="nav-item start" id="user-mgmt-link">
                                         <a href="/ManageUser/Index" class="nav-link nav-toggle">
                                             <i class="fa fa-users"></i>
@@ -235,14 +262,9 @@
                                         @*<span class="arrow open"></span>*@
                                     </a>
                                 </li>
-                                <li class="nav-item start" id="candidate-link">
-                                    <a href="/Employee/Index" class="nav-link nav-toggle">
-                                        <i class="fa fa-user"></i>
-                                        <span class="title">Employee</span>
-                                        <span class="selected"></span>
-                                        @*<span class="arrow open"></span>*@
-                                    </a>
-                                </li>
+
+                              
+                        
                                 <li class="nav-item start" id="questionbank-link">
                                     <a href="#" class="nav-link nav-toggle">
                                         <i class="fa fa-question-circle"></i>

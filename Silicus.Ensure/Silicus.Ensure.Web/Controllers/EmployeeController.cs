@@ -16,6 +16,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Configuration;
 using System.Web.Mvc;
+using Silicus.Ensure.Web.Models.Employee;
 
 namespace Silicus.Ensure.Web.Controllers
 {
@@ -64,6 +65,12 @@ namespace Silicus.Ensure.Web.Controllers
             return View("AssigedTest");
         }
 
+        public ActionResult MarkDashboard()
+        {
+            //return View("EmployeeList");
+            return View("EmployeeMarks");
+        }
+
         private int GetUtilityId()
         {
             var utilityProductId = WebConfigurationManager.AppSettings["ProductId"];
@@ -73,6 +80,33 @@ namespace Silicus.Ensure.Web.Controllers
             }
 
             return Convert.ToInt32(utilityProductId);
+        }
+
+        public ActionResult GetTestSuitResult([DataSourceRequest] DataSourceRequest request)
+        {
+            var userlist = _containerUserService.GetAllUsers();
+            var testSuitelist = _testSuiteService.GetTestSuiteDetails().Where(model => model.IsDeleted == false && model.IsExternal == false);
+            var TestSuits = _testSuiteService.GetEmployeeTestSuite();
+
+            var TestResults = (from tests in TestSuits
+                               join users in userlist
+                               on tests.EmployeeId equals users.ID
+                               join testDetail in testSuitelist
+                                on tests.TestSuiteId equals testDetail.TestSuiteId
+                               select new EmployeeTestResultViewModel
+                               {
+                                   UserId = users.ID,
+                                   EmployeeId = users.EmployeeID,
+                                   EmpName = users.DisplayName,
+                                   MarksObtained = tests.EmployeeTestDetails.Select(x=>x.Mark).Sum(),
+                                   TestSuitId = tests.TestSuiteId,
+                                   TestSuitName = testDetail.TestSuiteName,
+                                   StatusId = tests.StatusId
+                               }).ToList();
+
+            DataSourceResult result = TestResults.ToDataSourceResult(request);
+            return Json(result);
+
         }
 
         public ActionResult GetUserDetails([DataSourceRequest] DataSourceRequest request)
