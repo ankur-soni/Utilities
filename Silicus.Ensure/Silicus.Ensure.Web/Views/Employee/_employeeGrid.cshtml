@@ -5,7 +5,10 @@
 @{
     ViewBag.Title = "_employeeGrid";
 }
-
+<style>
+    #ddl-employee-list, #ddl-selectedEmployee-List{height:500px;}
+    .btn-grp-arrowWrapper{margin-top: 250px;margin-left:35%;}
+</style>
 <div class="toolbar">
     <div class="row">
         <div class="col-xs-6 col-sm-3 col-md-3 col-lg-1">
@@ -27,12 +30,11 @@
             </div>
         </div>
     </div>
-    <button type="button" id="Savebtn" style="width:70px;" class="btn green">Save</button>
+    
 
 </div>
 
-<br />
-<div class="">
+<div class="row">
     @if (Request.IsAuthenticated)
     {
         <div class="col-lg-3 col-md-3 col-sm-3 col-xs-12">
@@ -42,8 +44,10 @@
 
 
         <div class="col-lg-1 col-md-1 col-sm-1 col-xs-1 arrow-wrapper">
-            <button class="btn btn-xs" id="btnMovetoSelected"><span class="btn btn-xs" type=""><span class="fa fa-angle-double-right fa-2x"></span></span></button><br /><br />
-            <button class="btn btn-xs" id="btnMovetoNotSelected"><span class="btn btn-xs" type=""><span class="fa fa-angle-double-left fa-2x"></span></span></button>
+            <div class="btn-grp-arrowWrapper">
+                <button style="padding:10px!important;" class="btn btn-xs btn-primary green" id="btnMovetoSelected"><span class="" type=""><span class="fa fa-angle-double-right fa-2x"></span></span></button><br /><br />
+                <button style="padding:10px!important;" class="btn btn-xs btn-primary green" id="btnMovetoNotSelected"><span class="" type=""><span class="fa fa-angle-double-left fa-2x"></span></span></button>
+            </div>
         </div>
 
         <div class="col-lg-3 col-md-3 col-sm-3 col-xs-12">
@@ -85,7 +89,11 @@
         //)
     }
 </div>
-
+<div class="row M-T20 M-B60">
+    <div class="col-sm-12">
+        <button type="button" id="Savebtn" style="width:70px;float:right;margin-right:10px;" class="btn green">Save</button>
+    </div>
+</div>
 <script type="text/javascript">
     $(document).ready(function () {
         $('#btnMovetoSelected').click(function (e) {
