@@ -168,19 +168,24 @@
     }
 
     function getAssignedEmpID() {
+        $("#ddl-employee-list").append($('#ddl-selectedEmployee-List').find('option'));
+        $('#ddl-selectedEmployee-List').find('option').remove();
+       
         var testSuitData = $("#DDTestSuit").data("kendoDropDownList");
         $.ajax({
             type: 'get',
             url: "/Employee/GetEmployeeassigedforTestSuits",
             data: { suitId: testSuitData.value() },
             success: function (empList) {
+                debugger;
                 var obj = $("#ddl-employee-list option");
                 var selectedEmp = new Array();
                 for (i = 0; i < obj.length; i++) {
                     $.each(empList, function (index, data) {
                         if (obj[i].value == data) {
                             selectedEmp.push(obj[i]);
-                            $("#Enmarcado option[value='" + obj[i].value + "']").remove();
+                            //$("#ddl-employee-list option[value='" + obj[i].value + "']").remove();
+                            
                         }
                     });
 

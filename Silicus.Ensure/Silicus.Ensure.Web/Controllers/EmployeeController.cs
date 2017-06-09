@@ -80,7 +80,7 @@ namespace Silicus.Ensure.Web.Controllers
 
         public ActionResult GetEmployeeassigedforTestSuits(int suitId)
         {
-            var TestSuits = _testSuiteService.GetEmployeeTestSuite().Where(ts => ts.TestSuiteId == suitId && ts.StatusId == 2).Select(ts => ts.EmployeeId).ToList<int>();
+            var TestSuits = _testSuiteService.GetEmployeeTestSuite().Where(ts => ts.TestSuiteId == suitId && ts.StatusId == 2).Select(ts => ts.EmployeeId).Distinct().ToList<int>();
 
             return Json(TestSuits, JsonRequestBehavior.AllowGet);
         }
@@ -134,12 +134,12 @@ namespace Silicus.Ensure.Web.Controllers
             var userWithRoles = (from userinRoles in userRoles
                                  join allUsers in userlistViewModel
                                  on userinRoles.UserId equals allUsers.UserId
-                                 where userinRoles.IsActive
+                                 where userinRoles.IsActive && userinRoles.UtilityId == UtilityId
                                  select new SelectListItem
                                  {
                                      Text = allUsers.FullName,
                                      Value = allUsers.UserId.ToString()
-                                 }).ToList();
+                                 }).OrderBy(t=>t.Text).Distinct< SelectListItem>().ToList();
 
             return userWithRoles;
         }
