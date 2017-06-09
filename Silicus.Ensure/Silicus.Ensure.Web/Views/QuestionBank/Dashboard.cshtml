@@ -8,7 +8,12 @@
 
 <script>
     $(document).ready(function () {
-
+       
+        SelectedMenu('#question-bank-dashboard');
+        $("#questionbank-submenu").css("display", "block");
+        $("#questionbank-link a span.arrow").addClass("open");
+            //SetNavigationMenuActive('Marksheer');
+       
         var model = @Html.Raw(Json.Encode(Model));
 
         Highcharts.chart('container', {

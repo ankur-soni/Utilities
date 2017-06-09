@@ -202,7 +202,7 @@
                                 <!-- END SIDEBAR TOGGLER BUTTON -->
                                 @if (role.Contains(RoleName.Admin.ToString()))
                                 {
-                                    <li class="nav-item start" id="questionbank-link">
+                                    <li class="nav-item start" id="employee-link">
                                         <a href="#" class="nav-link nav-toggle">
                                             <i class="fa fa-user"></i>
                                             <span class="title">Employees</span>
@@ -271,8 +271,8 @@
                                         <span class="selected"></span>
                                         <span class="arrow"></span>
                                     </a>
-                                    <ul class="sub-menu">
-                                        <li class="nav-item start">
+                                    <ul class="sub-menu" id="questionbank-submenu">
+                                        <li class="nav-item start" id="question-bank-dashboard">
                                             <a href="/QuestionBank/Dashboard" class="nav-link ">
                                                 <i class="fa fa-tachometer" aria-hidden="true"></i>
                                                 <span class="title">Dashboard</span>

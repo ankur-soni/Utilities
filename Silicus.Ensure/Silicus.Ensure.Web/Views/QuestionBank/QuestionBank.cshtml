@@ -59,7 +59,9 @@
 <script>
     $(document).ready(function () {
         //$('.page-wrapper').css('padding-bottom', '60px');
-        SelectedMenu("#questionbank-link");
+        SelectedMenu('#questionList-link');
+        $("#questionbank-submenu").css("display", "block");
+        $("#questionbank-link a span.arrow").addClass("open");
         $("#messageDiv").hide();
         $('#ReviewAllQuestions').on('click', ReviewAllQuestions);
         SetNavigationMenuActive('QuestionBank');
